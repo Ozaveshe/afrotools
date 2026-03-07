@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kenya PAYE Calculator 2025/26 — KRA Tax, NSSF, SHIF, Housing Levy | AfroTools</title>
+<meta name="description" content="Kenya PAYE calculator 2025/2026. KRA tax bands 10%–35%, NSSF Tier I+II (Feb 2025 rates), SHIF 2.75% (replaced NHIF Oct 2024), Affordable Housing Levy 1.5%. Accurate, free.">
+<link rel="canonical" href="https://afrotools.com/kenya/ke-paye">
+<meta property="og:title" content="Kenya PAYE Calculator 2025/26 | AfroTools">
+<meta property="og:description" content="Most accurate Kenya salary tax calculator. KRA PAYE, NSSF, SHIF & Housing Levy — all current 2025 rates.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.css">
+<link rel="stylesheet" href="/assets/css/global.css">
+<script src="/assets/js/components/navbar.js" defer></script>
+<script src="/assets/js/components/footer.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --ke-red: #BB0000; /* Kenya flag red */
+    --ke-red-light: #d63031;
+    --ke-red-subtle: #fef2f2;
+  }
+
+  .tool-hero { background: var(--color-bg-dark); padding: 44px 0 36px; position: relative; overflow: hidden; }
+  .tool-hero::after { content: '🇰🇪'; position: absolute; right: 5%; top: 50%; transform: translateY(-50%); font-size: 8rem; opacity: 0.06; pointer-events: none; }
+  .tool-hero-inner { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; }
+  .breadcrumb { font-size: 0.72rem; font-weight: 500; color: rgba(255,255,255,0.3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
+  .breadcrumb a { color: rgba(255,255,255,0.3); text-decoration: none; }
+  .breadcrumb span { color: #fc8181; }
+  .tool-hero h1 { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; color: #fff; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 10px; }
+  .tool-hero h1 em { color: #fc8181; font-style: normal; }
+  .tool-hero-sub { font-size: 0.88rem; color: rgba(255,255,255,0.45); line-height: 1.6; max-width: 540px; margin-bottom: 14px; }
+  .hero-badges { display: flex; flex-wrap: wrap; gap: 8px; }
+  .h-badge { display: inline-block; padding: 3px 10px; border-radius: 3px; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+  .h-badge.green { background: rgba(93,219,158,0.15); color: #5ddb9e; border: 1px solid rgba(93,219,158,0.25); }
+  .h-badge.red { background: rgba(252,129,129,0.15); color: #fc8181; border: 1px solid rgba(252,129,129,0.25); }
+  .h-badge.amber { background: rgba(245,166,35,0.15); color: #F5A623; border: 1px solid rgba(245,166,35,0.25); }
+
+  .tool-body { max-width: 860px; margin: 0 auto; padding: 36px 24px 80px; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+
+  .calc-card { background: #fff; border: 1px solid var(--color-border); border-radius: 12px; padding: 26px; }
+  .calc-card h3 { font-size: 0.85rem; font-weight: 700; color: var(--color-text); margin-bottom: 18px; padding-bottom: 10px; border-bottom: 1px solid #f3f4f6; display: flex; align-items: center; gap: 8px; }
+
+  .salary-slider-wrap { margin-bottom: 20px; }
+  .slider-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+  .slider-label { font-size: 0.72rem; font-weight: 600; color: var(--color-muted); letter-spacing: 0.06em; text-transform: uppercase; }
+  .slider-val { font-size: 1.3rem; font-weight: 800; color: var(--color-text); font-variant-numeric: tabular-nums; }
+  .slider-val span { font-size: 0.75rem; font-weight: 500; color: var(--color-muted); }
+  input[type=range] { width: 100%; height: 4px; appearance: none; background: var(--color-border); border-radius: 2px; outline: none; }
+  input[type=range]::-webkit-slider-thumb { appearance: none; width: 18px; height: 18px; border-radius: 50%; background: var(--ke-red); cursor: pointer; box-shadow: 0 0 0 3px rgba(187,0,0,0.12); }
+  .slider-range { display: flex; justify-content: space-between; font-size: 0.68rem; color: var(--color-muted); margin-top: 4px; }
+
+  .manual-input-wrap { margin-bottom: 20px; }
+  .mi-label { font-size: 0.72rem; font-weight: 600; color: var(--color-muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; display: block; }
+  .mi-field { display: flex; align-items: center; gap: 0; }
+  .mi-prefix { padding: 10px 12px; background: #f3f4f6; border: 1.5px solid var(--color-border); border-right: none; border-radius: 7px 0 0 7px; font-size: 0.82rem; font-weight: 700; color: var(--color-muted); }
+  .mi-input { flex: 1; padding: 10px 12px; border: 1.5px solid var(--color-border); border-radius: 0 7px 7px 0; font-size: 0.88rem; font-family: 'DM Sans', sans-serif; color: var(--color-text); outline: none; background: #fafaf8; }
+  .mi-input:focus { border-color: var(--ke-red); background: #fff; }
+
+  .period-toggle { display: flex; gap: 4px; background: #f3f4f6; padding: 3px; border-radius: 7px; margin-bottom: 20px; width: fit-content; }
+  .pt-btn { padding: 6px 14px; border-radius: 5px; font-size: 0.78rem; font-weight: 600; cursor: pointer; color: var(--color-muted); border: none; background: none; font-family: 'DM Sans', sans-serif; transition: all 0.15s; }
+  .pt-btn.active { background: #fff; color: var(--color-text); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+
+  .deduction-section h4 { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-muted); margin-bottom: 12px; }
+  .deduction-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f9fafb; }
+  .dr-left { flex: 1; }
+  .dr-name { font-size: 0.82rem; font-weight: 600; color: var(--color-text); }
+  .dr-rate { font-size: 0.7rem; color: var(--color-muted); margin-top: 1px; }
+  .dr-amount { font-size: 0.82rem; font-weight: 700; color: var(--color-muted); font-variant-numeric: tabular-nums; min-width: 90px; text-align: right; margin-right: 12px; }
+  .toggle { position: relative; width: 38px; height: 22px; flex-shrink: 0; }
+  .toggle input { opacity: 0; width: 0; height: 0; }
+  .toggle-track { position: absolute; inset: 0; background: #d1d5db; border-radius: 11px; cursor: pointer; transition: background 0.2s; }
+  .toggle input:checked + .toggle-track { background: var(--ke-red); }
+  .toggle-track::after { content: ''; position: absolute; width: 16px; height: 16px; background: #fff; border-radius: 50%; top: 3px; left: 3px; transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.15); }
+  .toggle input:checked + .toggle-track::after { transform: translateX(16px); }
+
+  .optional-input { padding: 8px 12px; border: 1.5px solid var(--color-border); border-radius: 6px; font-size: 0.82rem; font-family: 'DM Sans', sans-serif; width: 100%; margin-top: 8px; outline: none; }
+  .optional-input:focus { border-color: var(--ke-red); }
+
+  /* Results */
+  .results-col { display: flex; flex-direction: column; gap: 16px; }
+  .result-hero { background: var(--color-bg-dark); border-radius: 10px; padding: 20px; }
+  .rh-label { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 4px; }
+  .rh-main { font-size: 2rem; font-weight: 800; color: #fff; font-variant-numeric: tabular-nums; line-height: 1; }
+  .rh-main.ke-green { color: #5ddb9e; }
+  .rh-sub { font-size: 0.8rem; color: rgba(255,255,255,0.35); margin-top: 4px; }
+  .rh-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .rh-mini { background: rgba(255,255,255,0.05); border-radius: 6px; padding: 10px; }
+  .rh-mini-label { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 3px; }
+  .rh-mini-val { font-size: 0.9rem; font-weight: 800; color: rgba(255,255,255,0.8); font-variant-numeric: tabular-nums; }
+
+  .breakdown-card { background: #fff; border: 1px solid var(--color-border); border-radius: 10px; padding: 18px; }
+  .bc-title { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-muted); margin-bottom: 12px; }
+  .bc-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid #f9fafb; font-size: 0.82rem; }
+  .bc-row:last-child { border: none; }
+  .bc-row .bc-label { color: var(--color-muted); }
+  .bc-row .bc-val { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .bc-row .bc-val.red { color: #c0392b; }
+  .bc-row .bc-val.green { color: var(--color-brand); }
+  .bc-row.total { border-top: 2px solid var(--color-border); padding-top: 10px; margin-top: 3px; }
+  .bc-row.total .bc-label { font-weight: 700; color: var(--color-text); font-size: 0.85rem; }
+  .bc-row.total .bc-val { font-size: 0.9rem; color: var(--color-brand); }
+
+  .rate-bar-wrap { margin: 4px 0 10px; }
+  .rate-bar-track { height: 5px; background: #e5e7eb; border-radius: 3px; overflow: hidden; }
+  .rate-bar-fill { height: 100%; background: var(--ke-red); border-radius: 3px; transition: width 0.4s; }
+  .rate-label { font-size: 0.72rem; color: var(--color-muted); margin-top: 3px; display: flex; justify-content: space-between; }
+
+  .chart-card { background: #fff; border: 1px solid var(--color-border); border-radius: 10px; padding: 18px; }
+  .chart-card canvas { max-height: 200px; }
+
+  .band-detail { background: #f9fafb; border-radius: 8px; padding: 14px; }
+  .bd-title { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-muted); margin-bottom: 10px; }
+  .bd-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; font-size: 0.78rem; border-bottom: 1px solid #f3f4f6; }
+  .bd-row:last-child { border: none; }
+  .bd-rate { font-weight: 700; color: var(--ke-red); min-width: 35px; }
+  .bd-range { color: var(--color-muted); flex: 1; margin: 0 10px; }
+  .bd-tax { font-weight: 700; font-variant-numeric: tabular-nums; }
+
+  .update-notice { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 12px 16px; font-size: 0.78rem; color: #1e40af; line-height: 1.5; margin-bottom: 16px; }
+  .update-notice strong { font-weight: 700; }
+
+  .legal-sources { background: #f9fafb; border: 1px solid var(--color-border); border-radius: 8px; padding: 16px 20px; margin-top: 20px; }
+  .legal-sources h4 { font-size: 0.75rem; font-weight: 700; color: var(--color-text); margin-bottom: 10px; }
+  .legal-sources ul { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+  .legal-sources li { font-size: 0.75rem; color: var(--color-muted); display: flex; gap: 8px; line-height: 1.4; }
+  .legal-sources li::before { content: '§'; color: var(--ke-red); font-weight: 700; flex-shrink: 0; }
+
+  @media (max-width: 700px) {
+    .two-col { grid-template-columns: 1fr; }
+    .rh-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Kenya PAYE Calculator 2025/2026",
+  "description": "KRA PAYE tax calculator with NSSF, SHIF, and Affordable Housing Levy for Kenya.",
+  "url": "https://afrotools.com/kenya/ke-paye",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KES" }
+}
+</script>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<section class="tool-hero">
+  <div class="tool-hero-inner">
+    <nav class="breadcrumb"><a href="/">AfroTools</a> / Kenya / <span>PAYE Calculator</span></nav>
+    <h1>🇰🇪 Kenya PAYE<br><em>Tax Calculator</em></h1>
+    <p class="tool-hero-sub">KRA income tax bands 10%–35% with NSSF (Feb 2025 rates), SHIF (replaced NHIF Oct 2024), and Affordable Housing Levy. Finance Act 2024 compliant.</p>
+    <div class="hero-badges">
+      <span class="h-badge green">KRA 2025/26 rates</span>
+      <span class="h-badge red">SHIF 2.75% — NHIF replaced</span>
+      <span class="h-badge amber">NSSF Feb 2025 tiers</span>
+      <span class="h-badge green">Housing Levy 1.5%</span>
+    </div>
+  </div>
+</section>
+
+<div class="tool-body">
+
+  <div class="update-notice">
+    <strong>2025/26 changes:</strong> NSSF UEL increased to KES 72,000 (effective Feb 2025). SHIF replaced NHIF from 1 Oct 2024 — contributions now 2.75% of gross (no upper cap, min KES 300). SHIF is now an allowable deduction against PAYE. Housing Levy 1.5% in force since March 2024.
+  </div>
+
+  <div class="two-col">
+    <!-- LEFT: INPUTS -->
+    <div class="calc-col">
+      <div class="calc-card" style="margin-bottom:16px;">
+        <h3>📊 Gross Salary</h3>
+
+        <div class="salary-slider-wrap">
+          <div class="slider-top">
+            <span class="slider-label">Monthly Gross</span>
+            <span class="slider-val" id="sliderDisplay">KES <span id="sliderNum">50,000</span></span>
+          </div>
+          <input type="range" id="salarySlider" min="15000" max="800000" step="1000" value="50000" oninput="syncSlider(this.value)">
+          <div class="slider-range"><span>KES 15k</span><span>KES 800k</span></div>
+        </div>
+
+        <div class="manual-input-wrap">
+          <span class="mi-label">Or type exact amount</span>
+          <div class="mi-field">
+            <span class="mi-prefix">KES</span>
+            <input class="mi-input" type="number" id="salaryInput" value="50000" min="0" oninput="syncInput(this.value)" placeholder="Monthly gross salary">
+          </div>
+        </div>
+
+        <div class="period-toggle">
+          <button class="pt-btn active" onclick="setPeriod('monthly',this)" id="ptMonthly">Monthly</button>
+          <button class="pt-btn" onclick="setPeriod('annual',this)" id="ptAnnual">Annual</button>
+        </div>
+      </div>
+
+      <div class="calc-card">
+        <h3>⚙️ Deductions & Reliefs</h3>
+
+        <div class="deduction-section">
+          <h4>Statutory Deductions</h4>
+
+          <div class="deduction-row">
+            <div class="dr-left">
+              <div class="dr-name">NSSF Tier I + Tier II</div>
+              <div class="dr-rate">6% of first KES 8k (T1) + 6% of next KES 64k (T2) — Feb 2025</div>
+            </div>
+            <span class="dr-amount" id="amtNSSF">—</span>
+            <label class="toggle"><input type="checkbox" id="toggleNSSF" checked onchange="recalc()"><span class="toggle-track"></span></label>
+          </div>
+
+          <div class="deduction-row">
+            <div class="dr-left">
+              <div class="dr-name">SHIF (Social Health Insurance Fund)</div>
+              <div class="dr-rate">2.75% of gross · min KES 300 · no cap · replaced NHIF Oct 2024</div>
+            </div>
+            <span class="dr-amount" id="amtSHIF">—</span>
+            <label class="toggle"><input type="checkbox" id="toggleSHIF" checked onchange="recalc()"><span class="toggle-track"></span></label>
+          </div>
+
+          <div class="deduction-row">
+            <div class="dr-left">
+              <div class="dr-name">Affordable Housing Levy (AHL)</div>
+              <div class="dr-rate">1.5% of gross · deductible for PAYE purposes · since March 2024</div>
+            </div>
+            <span class="dr-amount" id="amtAHL">—</span>
+            <label class="toggle"><input type="checkbox" id="toggleAHL" checked onchange="recalc()"><span class="toggle-track"></span></label>
+          </div>
+        </div>
+
+        <div class="deduction-section" style="margin-top:16px;">
+          <h4>Reliefs &amp; Allowances</h4>
+
+          <div class="deduction-row">
+            <div class="dr-left">
+              <div class="dr-name">Personal Relief</div>
+              <div class="dr-rate">KES 2,400 / month (KES 28,800 / year) — statutory</div>
+            </div>
+            <span class="dr-amount">KES 2,400</span>
+            <label class="toggle"><input type="checkbox" id="togglePersonalRelief" checked onchange="recalc()"><span class="toggle-track"></span></label>
+          </div>
+
+          <div class="deduction-row">
+            <div class="dr-left">
+              <div class="dr-name">Insurance Relief</div>
+              <div class="dr-rate">15% of premium paid · max KES 5,000/month</div>
+            </div>
+            <span class="dr-amount" id="amtInsurance">KES 0</span>
+            <label class="toggle"><input type="checkbox" id="toggleInsurance" onchange="toggleInsuranceInput(); recalc()"><span class="toggle-track"></span></label>
+          </div>
+          <div id="insuranceInputWrap" style="display:none;padding:8px 0;">
+            <input class="optional-input" type="number" id="insurancePremium" placeholder="Monthly insurance premium (KES)" oninput="recalc()">
+          </div>
+
+          <div class="deduction-row">
+            <div class="dr-left">
+              <div class="dr-name">Registered Pension Scheme</div>
+              <div class="dr-rate">Actual contribution · max KES 30,000/month (KES 360k/year)</div>
+            </div>
+            <span class="dr-amount" id="amtPension">KES 0</span>
+            <label class="toggle"><input type="checkbox" id="togglePension" onchange="togglePensionInput(); recalc()"><span class="toggle-track"></span></label>
+          </div>
+          <div id="pensionInputWrap" style="display:none;padding:8px 0;">
+            <input class="optional-input" type="number" id="pensionContrib" placeholder="Monthly pension contribution (KES)" oninput="recalc()">
+          </div>
+
+          <div class="deduction-row">
+            <div class="dr-left">
+              <div class="dr-name">Post-Retirement Medical Fund</div>
+              <div class="dr-rate">Max KES 15,000/month</div>
+            </div>
+            <span class="dr-amount" id="amtPRMF">KES 0</span>
+            <label class="toggle"><input type="checkbox" id="togglePRMF" onchange="togglePRMFInput(); recalc()"><span class="toggle-track"></span></label>
+          </div>
+          <div id="prMFInputWrap" style="display:none;padding:8px 0;">
+            <input class="optional-input" type="number" id="prmfContrib" placeholder="Monthly PRMF contribution (KES)" oninput="recalc()">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: RESULTS -->
+    <div class="results-col">
+
+      <div class="result-hero">
+        <div class="rh-label">Monthly Take-Home Pay</div>
+        <div class="rh-main ke-green" id="rNetMonthly">KES —</div>
+        <div class="rh-sub" id="rNetAnnual">Annual: KES —</div>
+        <div class="rh-grid">
+          <div class="rh-mini">
+            <div class="rh-mini-label">PAYE Tax</div>
+            <div class="rh-mini-val" id="rPAYE">—</div>
+          </div>
+          <div class="rh-mini">
+            <div class="rh-mini-label">Effective Rate</div>
+            <div class="rh-mini-val" id="rEffRate">—</div>
+          </div>
+          <div class="rh-mini">
+            <div class="rh-mini-label">Total Deductions</div>
+            <div class="rh-mini-val" id="rTotalDed">—</div>
+          </div>
+          <div class="rh-mini">
+            <div class="rh-mini-label">Employer NSSF+AHL</div>
+            <div class="rh-mini-val" id="rEmployerCost">—</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="breakdown-card">
+        <div class="bc-title">Deduction Breakdown</div>
+        <div class="bc-row">
+          <span class="bc-label">Gross Salary</span>
+          <span class="bc-val" id="bGross">—</span>
+        </div>
+        <div class="bc-row">
+          <span class="bc-label">NSSF (employee)</span>
+          <span class="bc-val red" id="bNSSF">—</span>
+        </div>
+        <div class="bc-row">
+          <span class="bc-label">SHIF (2.75%)</span>
+          <span class="bc-val red" id="bSHIF">—</span>
+        </div>
+        <div class="bc-row">
+          <span class="bc-label">Housing Levy (1.5%)</span>
+          <span class="bc-val red" id="bAHL">—</span>
+        </div>
+        <div class="bc-row">
+          <span class="bc-label">Pension / PRMF</span>
+          <span class="bc-val red" id="bPension">—</span>
+        </div>
+        <div class="bc-row">
+          <span class="bc-label">Taxable Income</span>
+          <span class="bc-val" id="bTaxable">—</span>
+        </div>
+        <div class="bc-row">
+          <span class="bc-label">Gross Tax</span>
+          <span class="bc-val red" id="bGrossTax">—</span>
+        </div>
+        <div class="bc-row">
+          <span class="bc-label">Less: Personal Relief</span>
+          <span class="bc-val green" id="bPersonalRelief">—</span>
+        </div>
+        <div class="bc-row">
+          <span class="bc-label">Less: Insurance Relief</span>
+          <span class="bc-val green" id="bInsRelief">—</span>
+        </div>
+        <div class="bc-row">
+          <span class="bc-label">PAYE Tax</span>
+          <span class="bc-val red" id="bPAYE">—</span>
+        </div>
+        <div class="bc-row total">
+          <span class="bc-label">Net Take-Home</span>
+          <span class="bc-val" id="bNet">—</span>
+        </div>
+      </div>
+
+      <div class="breakdown-card">
+        <div class="bc-title">Effective Tax Rate</div>
+        <div class="rate-bar-wrap">
+          <div class="rate-bar-track"><div class="rate-bar-fill" id="effRateBar" style="width:0%"></div></div>
+          <div class="rate-label"><span>0%</span><span id="effRateLabel">—</span><span>35%</span></div>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="bc-title">Salary Composition</div>
+        <canvas id="donutChart"></canvas>
+      </div>
+
+      <div class="band-detail" id="bandDetail">
+        <div class="bd-title">PAYE Band-by-Band Computation</div>
+        <div id="bandRows"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="legal-sources" style="margin-top:32px;">
+    <h4>Legal Basis — Kenya PAYE 2025/26</h4>
+    <ul>
+      <li>Income Tax Act Cap 470 — PAYE bands: 10% on first KES 24,000/mo, 25% to KES 32,333, 30% to KES 500,000, 32.5% to KES 800,000, 35% above KES 800,000/mo</li>
+      <li>Personal Relief: KES 2,400/month (KES 28,800/year) — statutory, no conditions</li>
+      <li>NSSF Act 2013 — Tier I: 6% on first KES 8,000 (= KES 480); Tier II: 6% on KES 8,001–72,000 (max KES 3,840). Effective Feb 2025.</li>
+      <li>Social Health Insurance Act 2023 — SHIF replaces NHIF from 1 Oct 2024. Rate: 2.75% gross, min KES 300, no cap. Deductible for PAYE per Tax Laws (Amendment) Act 2024.</li>
+      <li>Affordable Housing Act 2024 — 1.5% employee contribution (matched by employer). Deductible for PAYE. Effective March 2024.</li>
+      <li>Remittance deadline: PAYE + SHIF + AHL by 9th of following month via KRA iTax (Form P10)</li>
+      <li>NSSF remittance: 9th of following month via NSSF i-portal. Late penalty: 5% + 1% monthly interest.</li>
+      <li>SHIF late penalty: 2% per month on outstanding. AHL late penalty: 3% per month.</li>
+    </ul>
+  </div>
+
+</div>
+
+<afro-footer></afro-footer>
+
+<script>
+// ── CONSTANTS ────────────────────────────────────────────
+const KES_BANDS_MONTHLY = [
+  { limit: 24000,  rate: 0.10 },
+  { limit: 8333,   rate: 0.25 },  // 32,333 - 24,000
+  { limit: 467667, rate: 0.30 },  // 500,000 - 32,333
+  { limit: 300000, rate: 0.325 }, // 800,000 - 500,000
+  { limit: Infinity,rate: 0.35 },
+];
+const PERSONAL_RELIEF_MONTHLY = 2400;
+let showPeriod = 'monthly';
+let donutChart = null;
+
+// ── NSSF Feb 2025 ─────────────────────────────────────────
+function calcNSSF(gross) {
+  const LEL = 8000, UEL = 72000;
+  const t1 = Math.min(gross, LEL) * 0.06;
+  const t2 = Math.max(0, Math.min(gross, UEL) - LEL) * 0.06;
+  return t1 + t2;  // max = 480 + 3840 = 4,320
+}
+
+// ── PAYE bands ────────────────────────────────────────────
+function calcGrossTax(taxable) {
+  let remaining = Math.max(0, taxable);
+  let tax = 0;
+  const detail = [];
+  for (const band of KES_BANDS_MONTHLY) {
+    if (remaining <= 0) break;
+    const income = band.limit === Infinity ? remaining : Math.min(remaining, band.limit);
+    const bandTax = income * band.rate;
+    tax += bandTax;
+    detail.push({ rate: (band.rate * 100).toFixed(1), income, tax: bandTax });
+    remaining -= income;
+    if (income === 0) break;
+  }
+  return { tax, detail };
+}
+
+function fmt(n) { return 'KES ' + Math.round(Math.abs(n)).toLocaleString('en-KE'); }
+function pct(r) { return (r * 100).toFixed(1) + '%'; }
+
+// ── MAIN CALCULATION ──────────────────────────────────────
+function recalc() {
+  let gross = parseFloat(document.getElementById('salaryInput').value) || 0;
+  if (showPeriod === 'annual') gross = gross / 12;
+
+  // Statutory deductions (deductible before PAYE taxable income)
+  const nssf   = document.getElementById('toggleNSSF').checked   ? calcNSSF(gross) : 0;
+  const shif   = document.getElementById('toggleSHIF').checked   ? Math.max(300, gross * 0.0275) : 0;
+  const ahl    = document.getElementById('toggleAHL').checked    ? gross * 0.015 : 0;
+
+  // Voluntary deductions
+  const pensionRaw = parseFloat(document.getElementById('pensionContrib')?.value) || 0;
+  const pension = document.getElementById('togglePension').checked ? Math.min(30000, pensionRaw) : 0;
+  const prmfRaw = parseFloat(document.getElementById('prmfContrib')?.value) || 0;
+  const prmf = document.getElementById('togglePRMF').checked ? Math.min(15000, prmfRaw) : 0;
+
+  // Taxable income = gross - NSSF - SHIF - AHL - pension - PRMF
+  const taxable = Math.max(0, gross - nssf - shif - ahl - pension - prmf);
+
+  // Gross tax
+  const { tax: grossTax, detail: bandDetail } = calcGrossTax(taxable);
+
+  // Reliefs
+  const personalRelief = document.getElementById('togglePersonalRelief').checked ? PERSONAL_RELIEF_MONTHLY : 0;
+  const insPremium = parseFloat(document.getElementById('insurancePremium')?.value) || 0;
+  const insRelief = document.getElementById('toggleInsurance').checked ? Math.min(5000, insPremium * 0.15) : 0;
+
+  // PAYE tax
+  const paye = Math.max(0, grossTax - personalRelief - insRelief);
+
+  // Net
+  const totalDeductions = nssf + shif + ahl + pension + prmf + paye;
+  const net = gross - totalDeductions;
+  const effectiveRate = gross > 0 ? paye / gross : 0;
+
+  // Employer cost
+  const employerNSSF = calcNSSF(gross);
+  const employerAHL = gross * 0.015;
+
+  // Update slider displays
+  document.getElementById('amtNSSF').textContent = document.getElementById('toggleNSSF').checked ? fmt(nssf) : '—';
+  document.getElementById('amtSHIF').textContent = document.getElementById('toggleSHIF').checked ? fmt(shif) : '—';
+  document.getElementById('amtAHL').textContent  = document.getElementById('toggleAHL').checked  ? fmt(ahl)  : '—';
+  document.getElementById('amtPension').textContent = document.getElementById('togglePension').checked ? fmt(pension) : 'KES 0';
+  document.getElementById('amtPRMF').textContent    = document.getElementById('togglePRMF').checked    ? fmt(prmf)    : 'KES 0';
+  document.getElementById('amtInsurance').textContent = document.getElementById('toggleInsurance').checked ? fmt(insRelief) : 'KES 0';
+
+  // Results
+  const mult = showPeriod === 'annual' ? 12 : 1;
+  document.getElementById('rNetMonthly').textContent = fmt(net * (showPeriod === 'annual' ? 1 : 1));
+  document.getElementById('rNetMonthly').textContent = showPeriod === 'annual' ? fmt(net * 12) : fmt(net);
+  document.getElementById('rNetAnnual').textContent  = showPeriod === 'annual' ? `Monthly: ${fmt(net)}` : `Annual: ${fmt(net * 12)}`;
+  document.getElementById('rPAYE').textContent       = fmt(paye);
+  document.getElementById('rEffRate').textContent    = pct(effectiveRate);
+  document.getElementById('rTotalDed').textContent   = fmt(totalDeductions);
+  document.getElementById('rEmployerCost').textContent = fmt(employerNSSF + employerAHL);
+
+  // Breakdown
+  document.getElementById('bGross').textContent = fmt(gross);
+  document.getElementById('bNSSF').textContent  = nssf > 0  ? `(${fmt(nssf)})` : '—';
+  document.getElementById('bSHIF').textContent  = shif > 0  ? `(${fmt(shif)})` : '—';
+  document.getElementById('bAHL').textContent   = ahl > 0   ? `(${fmt(ahl)})`  : '—';
+  document.getElementById('bPension').textContent = (pension+prmf) > 0 ? `(${fmt(pension+prmf)})` : '—';
+  document.getElementById('bTaxable').textContent  = fmt(taxable);
+  document.getElementById('bGrossTax').textContent = grossTax > 0 ? `(${fmt(grossTax)})` : '—';
+  document.getElementById('bPersonalRelief').textContent = personalRelief > 0 ? fmt(personalRelief) : '—';
+  document.getElementById('bInsRelief').textContent = insRelief > 0 ? fmt(insRelief) : '—';
+  document.getElementById('bPAYE').textContent  = paye > 0 ? `(${fmt(paye)})` : '—';
+  document.getElementById('bNet').textContent   = fmt(net);
+  document.getElementById('bNet').style.color   = '#008751';
+
+  // Effective rate bar
+  document.getElementById('effRateBar').style.width = Math.min(effectiveRate / 0.35 * 100, 100) + '%';
+  document.getElementById('effRateLabel').textContent = pct(effectiveRate);
+
+  // Band detail
+  const bandCumulative = [
+    { label: 'First KES 24,000', rate: 10 },
+    { label: 'KES 24,001–32,333', rate: 25 },
+    { label: 'KES 32,334–500,000', rate: 30 },
+    { label: 'KES 500,001–800,000', rate: 32.5 },
+    { label: 'Above KES 800,000', rate: 35 },
+  ];
+  document.getElementById('bandRows').innerHTML = bandDetail.map((b, i) =>
+    `<div class="bd-row">
+      <span class="bd-rate">${b.rate}%</span>
+      <span class="bd-range">${bandCumulative[i]?.label || ''}</span>
+      <span class="bd-tax" style="color:${b.tax>0?'#c0392b':'#9ca3af'}">${fmt(b.tax)}</span>
+    </div>`
+  ).join('') + `<div class="bd-row" style="border-top:2px solid #e5e7eb;margin-top:4px;padding-top:8px;font-weight:700">
+    <span class="bd-rate" style="color:var(--color-text)">Total</span><span></span>
+    <span class="bd-tax" style="color:#c0392b">${fmt(paye)} (net of relief)</span>
+  </div>`;
+
+  // Donut chart
+  const chartData = [
+    { label: 'Take-Home', val: Math.max(0,net), color: '#008751' },
+    { label: 'PAYE Tax', val: paye, color: '#c0392b' },
+    { label: 'NSSF', val: nssf, color: '#3b82f6' },
+    { label: 'SHIF', val: shif, color: '#f59e0b' },
+    { label: 'Housing Levy', val: ahl, color: '#8b5cf6' },
+    ...(pension+prmf > 0 ? [{ label: 'Pension/PRMF', val: pension+prmf, color: '#06b6d4' }] : []),
+  ].filter(d => d.val > 0);
+
+  if (donutChart) { donutChart.destroy(); donutChart = null; }
+  const ctx = document.getElementById('donutChart').getContext('2d');
+  donutChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: chartData.map(d => d.label),
+      datasets: [{ data: chartData.map(d => d.val), backgroundColor: chartData.map(d => d.color), borderWidth: 2, borderColor: '#fff' }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: true, cutout: '68%',
+      plugins: {
+        legend: { position: 'bottom', labels: { padding: 12, font: { family: 'DM Sans', size: 11 } } },
+        tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${fmt(ctx.raw)} (${(ctx.raw/gross*100).toFixed(1)}%)` } }
+      }
+    }
+  });
+}
+
+// ── SYNC ──────────────────────────────────────────────────
+function syncSlider(val) {
+  document.getElementById('salaryInput').value = val;
+  document.getElementById('sliderNum').textContent = parseFloat(val).toLocaleString('en-KE');
+  recalc();
+}
+
+function syncInput(val) {
+  const v = Math.min(Math.max(parseFloat(val) || 0, 15000), 800000);
+  document.getElementById('salarySlider').value = v;
+  document.getElementById('sliderNum').textContent = v.toLocaleString('en-KE');
+  recalc();
+}
+
+function setPeriod(p, btn) {
+  showPeriod = p;
+  document.querySelectorAll('.pt-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const curr = parseFloat(document.getElementById('salaryInput').value) || 0;
+  // Convert display value between periods
+  if (p === 'annual') {
+    document.getElementById('salaryInput').value = Math.round(curr * 12);
+  } else {
+    document.getElementById('salaryInput').value = Math.round(curr / 12);
+  }
+  recalc();
+}
+
+function toggleInsuranceInput() {
+  document.getElementById('insuranceInputWrap').style.display = document.getElementById('toggleInsurance').checked ? 'block' : 'none';
+}
+function togglePensionInput() {
+  document.getElementById('pensionInputWrap').style.display = document.getElementById('togglePension').checked ? 'block' : 'none';
+}
+function togglePRMFInput() {
+  document.getElementById('prMFInputWrap').style.display = document.getElementById('togglePRMF').checked ? 'block' : 'none';
+}
+
+// Initial render
+recalc();
+</script>
+</body>
+</html>
