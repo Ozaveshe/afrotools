@@ -38,7 +38,7 @@
 .tool-page { background: #FAFAF8; min-height: 100vh; }
 
 /* ── HERO ── */
-.tool-hero { background: #111111; padding: 36px 0 32px; border-bottom: 1px solid rgba(0,200,115,0.12); }
+.tool-hero { background: #1a2420; padding: 36px 0 32px; border-bottom: 1px solid rgba(0,200,115,0.1); }
 .tool-hero .container { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
 .breadcrumb { display: flex; align-items: center; gap: 6px; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.06em; color: rgba(255,255,255,0.35); margin-bottom: 12px; }
 .breadcrumb a { color: rgba(255,255,255,0.35); text-decoration: none; }
@@ -56,7 +56,7 @@
 .hero-meta { font-size: 0.7rem; font-weight: 400; color: rgba(255,255,255,0.25); margin-top: 4px; }
 
 /* ── REGIME TABS ── */
-.regime-bar { background: #0d0d0d; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.regime-bar { background: #141c18; border-bottom: 1px solid rgba(255,255,255,0.07); }
 .regime-bar .container { display: flex; }
 .regime-tab { flex: 1; padding: 14px 20px; font-size: 0.8rem; font-weight: 700; border: none; background: transparent; cursor: pointer; color: rgba(255,255,255,0.35); border-bottom: 3px solid transparent; transition: all 0.18s; text-align: center; }
 .regime-tab small { display: block; font-size: 0.65rem; font-weight: 400; margin-top: 2px; opacity: 0.65; }
@@ -142,7 +142,7 @@ input[type=range]::-webkit-slider-thumb {
 /* ── RESULTS HERO ── */
 .results-card { display: none; margin-top: 18px; }
 .results-card.on { display: block; }
-.res-hero { background: #111111; padding: 24px; text-align: center; border-radius: 10px 10px 0 0; }
+.res-hero { background: #1a2420; padding: 24px; text-align: center; border-radius: 10px 10px 0 0; }
 .res-hero-label { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 6px; }
 .res-hero-amount { font-size: clamp(2.2rem, 4.5vw, 3rem); font-weight: 800; color: #5ddb9e; letter-spacing: -0.02em; line-height: 1; }
 .res-hero-period { font-size: 0.78rem; font-weight: 400; color: rgba(255,255,255,0.35); margin-top: 5px; }
@@ -194,7 +194,7 @@ input[type=range]::-webkit-slider-thumb {
 /* ── PDF MODAL ── */
 .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 9999; display: none; align-items: center; justify-content: center; padding: 20px; }
 .modal-bg.on { display: flex; }
-.modal { background: #fff; border-radius: 12px; padding: 32px; max-width: 400px; width: 100%; box-shadow: 0 24px 60px rgba(0,0,0,0.2); }
+.modal { background: #fff; border-radius: 12px; padding: 32px; max-width: 420px; width: 100%; box-shadow: 0 24px 60px rgba(0,0,0,0.2); position: relative; }
 .modal h3 { font-size: 1.1rem; font-weight: 800; color: #1a2e22; margin-bottom: 6px; }
 .modal p  { font-size: 0.83rem; font-weight: 400; color: #4a6a55; line-height: 1.6; margin-bottom: 20px; }
 .modal-input { width: 100%; padding: 12px 14px; border: 1.5px solid #cfe0d8; border-radius: 7px; font-size: 0.9rem; font-weight: 400; color: #1a2e22; outline: none; margin-bottom: 10px; background: #f4f8f5; transition: border-color 0.15s; }
@@ -211,7 +211,7 @@ input[type=range]::-webkit-slider-thumb {
 .sidebar { display: flex; flex-direction: column; gap: 16px; }
 
 /* ── AI CARD ── */
-.ai-card { background: #111111; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); overflow: hidden; }
+.ai-card { background: #1a2420; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); overflow: hidden; }
 .ai-head { padding: 14px 18px; border-bottom: 1px solid rgba(255,255,255,0.07); display: flex; align-items: center; gap: 9px; }
 .ai-dot { width: 8px; height: 8px; border-radius: 50%; background: #5ddb9e; animation: pulse 2s infinite; flex-shrink: 0; }
 @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
@@ -291,16 +291,7 @@ input[type=range]::-webkit-slider-thumb {
 </style>
 </head>
 <body class="tool-page">
-<!-- Netlify Forms detector — required for Netlify to register the form at build time -->
-<form name="pdf-leads" data-netlify="true" netlify-honeypot="bot-field" hidden>
-  <input type="hidden" name="form-name" value="pdf-leads">
-  <input name="bot-field">
-  <input type="text" name="name">
-  <input type="email" name="email">
-  <input type="hidden" name="tool">
-  <input type="hidden" name="regime">
-  <input type="hidden" name="gross_salary">
-</form>
+
 <afro-navbar theme="dark" active="tools"></afro-navbar>
 
 <!-- HERO -->
@@ -576,7 +567,7 @@ input[type=range]::-webkit-slider-thumb {
     <div id="modalForm">
       <h3>📄 Download Your Tax Summary</h3>
       <p>Enter your email to get a clean PDF breakdown — we'll notify you when Nigerian tax law changes.</p>
-      <form name="pdf-leads" id="leadForm" onsubmit="submitPdf(event)">
+      <form name="pdf-leads" data-netlify="true" netlify-honeypot="bot-field" id="leadForm" onsubmit="submitPdf(event)">
         <input type="hidden" name="form-name" value="pdf-leads">
         <input type="hidden" name="tool" value="ng-salary-tax">
         <input type="hidden" name="regime" id="hiddenRegime" value="">
@@ -588,10 +579,11 @@ input[type=range]::-webkit-slider-thumb {
       <button class="modal-cancel" onclick="closePdfModal()">No thanks</button>
     </div>
     <div class="modal-success" id="modalSuccess">
+      <button onclick="closePdfModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#9ca3af;line-height:1;" aria-label="Close">✕</button>
       <div class="big-check">✅</div>
-      <h4>PDF on its way!</h4>
-      <p>Check your inbox. We'll notify you whenever Nigerian tax rates change.</p>
-      <button class="modal-cancel" onclick="closePdfModal(); generatePdf()">Download now instead →</button>
+      <h4>Downloading now!</h4>
+      <p>Your PDF is saving to your device. We'll notify you whenever Nigerian tax law changes.</p>
+      <button class="modal-submit" onclick="closePdfModal()" style="margin-top:14px">Done →</button>
     </div>
   </div>
 </div>
@@ -931,40 +923,294 @@ async function submitPdf(e) {
 
 function generatePdf() {
   if (!R) return;
-  // Simple print-based PDF — opens print dialog with formatted results
-  const w = window.open('', '_blank');
-  const regime = R.regime === 'nta' ? 'NTA 2026' : 'PITA 2025';
-  w.document.write(`<!DOCTYPE html><html><head><title>AfroTools — Nigeria Tax Summary</title>
-  <style>
-    body { font-family: 'DM Sans', Arial, sans-serif; max-width: 600px; margin: 40px auto; color: #1a2e22; }
-    h1 { font-size: 1.4rem; font-weight: 800; margin-bottom: 4px; }
-    .sub { font-size: 0.8rem; color: #8aaa95; margin-bottom: 24px; }
-    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-    td { padding: 8px 0; border-bottom: 1px solid #eaf2e5; font-size: 0.85rem; }
-    td:last-child { text-align: right; font-weight: 700; }
-    .big { font-size: 1.1rem; font-weight: 800; color: #008751; }
-    .red { color: #c0392b; }
-    .footer { font-size: 0.65rem; color: #8aaa95; margin-top: 30px; border-top: 1px solid #eaf2e5; padding-top: 12px; }
-    @media print { button { display: none; } }
-  </style></head><body>
-  <h1>🇳🇬 Nigeria Tax Summary</h1>
-  <p class="sub">AfroTools.com · ${regime} · Generated ${new Date().toLocaleDateString('en-NG', {day:'numeric',month:'long',year:'numeric'})}</p>
+  const regime   = R.regime === 'nta' ? 'NTA 2026' : 'PITA 2025';
+  const otherR   = R.regime === 'pita' ? calcNTA(R.gross) : calcPITA(R.gross);
+  const otherName= R.regime === 'pita' ? 'NTA 2026' : 'PITA 2025';
+  const dateStr  = new Date().toLocaleDateString('en-NG', {day:'numeric',month:'long',year:'numeric'});
+  const refNo    = 'AFT-NG-' + Date.now().toString(36).toUpperCase().slice(-8);
+
+  // Band breakdown rows
+  const bandRows = R.bandBreakdown.length > 0
+    ? R.bandBreakdown.map(b => `<tr><td style="padding-left:14px;color:#4b5563">@ ${b.rate}% on ${fmt(b.income)}</td><td class="num red">(${fmt(b.amount)})</td></tr>`).join('')
+    : '<tr><td style="padding-left:14px;color:#4b5563">Below tax-free threshold</td><td class="num" style="color:#008751">₦0</td></tr>';
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AfroTools — Nigeria PAYE Tax Report ${dateStr}</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',Arial,sans-serif;background:#fff;color:#111827;font-size:9pt;line-height:1.5}
+  @page{size:A4;margin:0}
+
+  /* COVER HEADER */
+  .cover{background:#1a2420;padding:28px 36px 22px;color:#fff}
+  .cover-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+  .brand{display:flex;align-items:center;gap:10px}
+  .brand-diamond{width:32px;height:32px}
+  .brand-name{font-size:13pt;font-weight:800;letter-spacing:0.02em}
+  .brand-name b{color:#00c873}
+  .brand-sub{font-size:6pt;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-top:2px}
+  .ref-block{text-align:right}
+  .ref-label{font-size:6pt;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35)}
+  .ref-val{font-size:8pt;font-weight:700;color:rgba(255,255,255,0.7);margin-top:2px;font-variant-numeric:tabular-nums}
+  .doc-title{font-size:18pt;font-weight:800;color:#fff;letter-spacing:-0.02em;line-height:1.1}
+  .doc-title span{color:#00c873}
+  .doc-meta{margin-top:8px;font-size:7.5pt;font-weight:400;color:rgba(255,255,255,0.45)}
+  .regime-badge{display:inline-block;margin-top:10px;padding:3px 10px;border-radius:3px;font-size:7pt;font-weight:700;letter-spacing:0.06em;text-transform:uppercase}
+  .regime-pita{background:rgba(245,166,35,0.2);color:#F5A623;border:1px solid rgba(245,166,35,0.35)}
+  .regime-nta {background:rgba(0,200,115,0.15);color:#00c873;border:1px solid rgba(0,200,115,0.3)}
+
+  /* BODY */
+  .body{padding:24px 36px 28px}
+
+  /* SUMMARY HERO */
+  .summary-hero{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .sh-item{text-align:center;flex:1}
+  .sh-label{font-size:6pt;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#9ca3af;margin-bottom:3px}
+  .sh-val{font-size:13pt;font-weight:800;color:#111827;font-variant-numeric:tabular-nums}
+  .sh-val.green{color:#008751}
+  .sh-val.red{color:#c0392b}
+  .sh-divider{width:1px;height:40px;background:#e5e7eb;flex-shrink:0}
+
+  /* SECTION HEADERS */
+  .sec-head{font-size:6.5pt;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#9ca3af;padding:0 0 5px;border-bottom:1.5px solid #e5e7eb;margin:16px 0 8px}
+
+  /* TABLES */
+  table{width:100%;border-collapse:collapse;margin-bottom:4px}
+  tr{border-bottom:1px solid #f3f4f6}
+  td{padding:5px 4px;font-size:8.5pt;vertical-align:middle}
+  td.num{text-align:right;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+  td.label{color:#374151;font-weight:400}
+  td.label-bold{color:#111827;font-weight:700}
+  .red{color:#c0392b}
+  .green{color:#008751}
+  .muted{color:#9ca3af}
+  tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-size:9.5pt}
+  tr.subtotal td{background:#f9fafb;font-weight:600}
+  tr.section-gap td{padding-top:10px}
+
+  /* COMPARISON */
+  .compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px}
+  .cmp-card{border:1px solid #e5e7eb;border-radius:6px;padding:12px 14px}
+  .cmp-card.active{border-color:#008751;background:#f0fdf4}
+  .cmp-head{font-size:7pt;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:8px}
+  .cmp-head.pita{color:#d97706}
+  .cmp-head.nta{color:#008751}
+  .cmp-row{display:flex;justify-content:space-between;font-size:8pt;padding:3px 0;border-bottom:1px solid #f3f4f6}
+  .cmp-row:last-child{border:none}
+  .cmp-row .v{font-weight:600;font-variant-numeric:tabular-nums}
+
+  /* BAND TABLE */
+  .band-bar-wrap{margin:4px 0 2px}
+  .band-bar{height:5px;background:#008751;border-radius:2px;margin-top:3px}
+
+  /* RATE VISUAL */
+  .rate-track{height:6px;background:#e5e7eb;border-radius:3px;margin:6px 0 3px;overflow:hidden}
+  .rate-fill{height:100%;background:#008751;border-radius:3px}
+
+  /* FOOTER */
+  .footer{background:#f9fafb;border-top:1px solid #e5e7eb;padding:14px 36px;margin-top:auto}
+  .footer-row{display:flex;justify-content:space-between;align-items:center}
+  .footer-brand{font-size:7pt;font-weight:700;color:#111827}
+  .footer-brand b{color:#008751}
+  .footer-legal{font-size:6.5pt;color:#9ca3af;max-width:420px;line-height:1.4;margin-top:4px}
+  .footer-page{font-size:6.5pt;color:#9ca3af}
+
+  /* SOURCES */
+  .source-tag{display:inline-block;padding:2px 7px;background:#f3f4f6;border-radius:3px;font-size:6.5pt;font-weight:600;color:#6b7280;margin-right:4px}
+
+  @media print{
+    body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .no-print{display:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER HEADER -->
+<div class="cover">
+  <div class="cover-top">
+    <div class="brand">
+      <svg class="brand-diamond" viewBox="0 0 68 68" fill="none">
+        <polygon points="34,20 48,34 34,48 20,34" fill="#00c873"/>
+        <polygon points="34,2 44,14 34,20 24,14" fill="#F5A623"/>
+        <polygon points="34,48 44,60 34,68 24,60" fill="#008751"/>
+        <polygon points="2,24 14,34 2,44 -10,34" fill="#5ddb9e" opacity="0.7"/>
+        <polygon points="52,24 64,34 52,44 40,34" fill="#5ddb9e" opacity="0.55"/>
+      </svg>
+      <div>
+        <div class="brand-name">AFRO<b>TOOLS</b></div>
+        <div class="brand-sub">Africa's Financial Platform</div>
+      </div>
+    </div>
+    <div class="ref-block">
+      <div class="ref-label">Reference</div>
+      <div class="ref-val">${refNo}</div>
+      <div class="ref-val" style="font-size:7pt;margin-top:3px">${dateStr}</div>
+    </div>
+  </div>
+  <div class="doc-title">Nigeria PAYE<br><span>Tax Report</span></div>
+  <div class="doc-meta">🇳🇬 Federal Republic of Nigeria · Source: ${R.regime==='pita'?'Personal Income Tax Act (as amended)':'Nigeria Tax Act 2025, effective 1 January 2026'}</div>
+  <span class="regime-badge ${R.regime==='pita'?'regime-pita':'regime-nta'}">${regime} — ${R.regime==='pita'?'PITA / CRA System':'NTA 2026 / Rent Relief System'}</span>
+</div>
+
+<div class="body">
+
+  <!-- SUMMARY HERO STRIP -->
+  <div class="summary-hero">
+    <div class="sh-item">
+      <div class="sh-label">Gross Annual</div>
+      <div class="sh-val">${fmt(R.gross)}</div>
+    </div>
+    <div class="sh-divider"></div>
+    <div class="sh-item">
+      <div class="sh-label">Monthly Take-Home</div>
+      <div class="sh-val green">${fmt(R.netMonthly)}</div>
+    </div>
+    <div class="sh-divider"></div>
+    <div class="sh-item">
+      <div class="sh-label">Annual Take-Home</div>
+      <div class="sh-val green">${fmt(R.netAnnual)}</div>
+    </div>
+    <div class="sh-divider"></div>
+    <div class="sh-item">
+      <div class="sh-label">Total Tax Paid</div>
+      <div class="sh-val red">${fmt(R.tax)}</div>
+    </div>
+    <div class="sh-divider"></div>
+    <div class="sh-item">
+      <div class="sh-label">Effective Rate</div>
+      <div class="sh-val red">${pct(R.effectiveRate)}</div>
+    </div>
+  </div>
+
+  <!-- SECTION 1: FULL COMPUTATION -->
+  <div class="sec-head">Section 1 — Full PAYE Computation (${regime})</div>
   <table>
-    <tr><td>Gross Annual Salary</td><td>${fmt(R.gross)}</td></tr>
-    <tr><td>Pension (8%)</td><td class="red">(${fmt(R.pension)})</td></tr>
-    <tr><td>NHF (2.5%)</td><td class="red">(${fmt(R.nhf)})</td></tr>
-    <tr><td>NHIS (1.75%)</td><td class="red">(${fmt(R.nhis)})</td></tr>
-    <tr><td>${R.regime==='pita'?'Consolidated Relief (CRA)':'Rent Relief'}</td><td class="red">(${fmt(R.regime==='pita'?R.cra:R.rentRelief)})</td></tr>
-    <tr><td>Taxable Income</td><td>${fmt(R.taxable)}</td></tr>
-    <tr><td>PAYE Income Tax</td><td class="red">(${fmt(R.tax)})</td></tr>
-    <tr><td class="big">Annual Take-Home</td><td class="big">${fmt(R.netAnnual)}</td></tr>
-    <tr><td class="big">Monthly Take-Home</td><td class="big">${fmt(R.netMonthly)}</td></tr>
-    <tr><td>Effective Tax Rate</td><td>${pct(R.effectiveRate)}</td></tr>
+    <tr><td class="label-bold">A. Gross Annual Emoluments</td><td class="num">${fmt(R.gross)}</td></tr>
+    <tr><td class="label-bold">B. Gross Monthly</td><td class="num muted">${fmt(R.gross/12)}</td></tr>
+
+    <tr class="section-gap"><td class="label" style="color:#9ca3af;font-size:7.5pt;padding-top:8px">STATUTORY DEDUCTIONS</td><td></td></tr>
+    ${R.pension>0?`<tr><td class="label" style="padding-left:12px">Pension Contribution (8% ${R.regime==='nta'?'of pensionable emoluments':'of gross'})</td><td class="num red">(${fmt(R.pension)})</td></tr>`:''}
+    ${R.nhf>0?`<tr><td class="label" style="padding-left:12px">National Housing Fund — NHF (2.5%)</td><td class="num red">(${fmt(R.nhf)})</td></tr>`:''}
+    ${R.nhis>0?`<tr><td class="label" style="padding-left:12px">National Health Insurance Scheme — NHIS (1.75%)</td><td class="num red">(${fmt(R.nhis)})</td></tr>`:''}
+    ${R.life>0?`<tr><td class="label" style="padding-left:12px">Life Assurance Premium</td><td class="num red">(${fmt(R.life)})</td></tr>`:''}
+    <tr class="subtotal"><td class="label-bold" style="padding-left:12px">Total Statutory Deductions</td><td class="num red">(${fmt(R.statutory)})</td></tr>
+
+    <tr class="section-gap"><td class="label" style="color:#9ca3af;font-size:7.5pt;padding-top:8px">TAX RELIEF</td><td></td></tr>
+    ${R.regime==='pita'
+      ? `<tr><td class="label" style="padding-left:12px">Consolidated Relief Allowance — CRA<br><span style="font-size:7pt;color:#9ca3af">Higher of ₦200,000 or 1% gross (₦${Math.round(Math.max(200000,R.gross*0.01)).toLocaleString('en-NG')}) + 20% gross</span></td><td class="num green">${fmt(R.cra)}</td></tr>`
+      : (R.rentRelief>0
+          ? `<tr><td class="label" style="padding-left:12px">Rent Relief<br><span style="font-size:7pt;color:#9ca3af">Lower of 20% of rent paid or ₦500,000 cap</span></td><td class="num green">${fmt(R.rentRelief)}</td></tr>`
+          : `<tr><td class="label" style="padding-left:12px">Rent Relief</td><td class="num muted">Not applicable</td></tr>`)
+    }
+    <tr class="subtotal"><td class="label-bold" style="padding-left:12px">Chargeable / Taxable Income</td><td class="num">${fmt(R.taxable)}</td></tr>
   </table>
-  <p class="footer">For informational purposes only. Verify with a qualified Nigerian tax professional. AfroTools.com — Africa's Financial Calculator Platform.</p>
-  <button onclick="window.print()" style="margin-top:16px;padding:10px 20px;background:#008751;color:#fff;border:none;border-radius:6px;font-size:0.85rem;font-weight:700;cursor:pointer">Print / Save as PDF</button>
-  </body></html>`);
-  w.document.close();
+
+  <!-- SECTION 2: BAND-BY-BAND TAX -->
+  <div class="sec-head" style="margin-top:14px">Section 2 — Band-by-Band Tax Computation</div>
+  <table>
+    <tr style="background:#f9fafb">
+      <td class="label-bold">Tax Band</td>
+      <td class="num label-bold">Income in Band</td>
+      <td class="num label-bold">Rate</td>
+      <td class="num label-bold">Tax</td>
+    </tr>
+    ${R.regime==='pita' ? `
+    <tr><td class="label" style="padding-left:10px">First ₦300,000</td><td class="num muted">${fmt(Math.min(R.taxable,300000))}</td><td class="num">7%</td><td class="num red">${R.taxable>0?fmt(Math.min(R.taxable,300000)*0.07):'₦0'}</td></tr>
+    <tr><td class="label" style="padding-left:10px">Next ₦300,000</td><td class="num muted">${fmt(Math.max(0,Math.min(R.taxable-300000,300000)))}</td><td class="num">11%</td><td class="num red">${R.taxable>300000?fmt(Math.min(R.taxable-300000,300000)*0.11):'₦0'}</td></tr>
+    <tr><td class="label" style="padding-left:10px">Next ₦500,000</td><td class="num muted">${fmt(Math.max(0,Math.min(R.taxable-600000,500000)))}</td><td class="num">15%</td><td class="num red">${R.taxable>600000?fmt(Math.min(R.taxable-600000,500000)*0.15):'₦0'}</td></tr>
+    <tr><td class="label" style="padding-left:10px">Next ₦500,000</td><td class="num muted">${fmt(Math.max(0,Math.min(R.taxable-1100000,500000)))}</td><td class="num">19%</td><td class="num red">${R.taxable>1100000?fmt(Math.min(R.taxable-1100000,500000)*0.19):'₦0'}</td></tr>
+    <tr><td class="label" style="padding-left:10px">Next ₦1,600,000</td><td class="num muted">${fmt(Math.max(0,Math.min(R.taxable-1600000,1600000)))}</td><td class="num">21%</td><td class="num red">${R.taxable>1600000?fmt(Math.min(R.taxable-1600000,1600000)*0.21):'₦0'}</td></tr>
+    <tr><td class="label" style="padding-left:10px">Above ₦3,200,000</td><td class="num muted">${fmt(Math.max(0,R.taxable-3200000))}</td><td class="num">24%</td><td class="num red">${R.taxable>3200000?fmt((R.taxable-3200000)*0.24):'₦0'}</td></tr>
+    ` : `
+    <tr><td class="label" style="padding-left:10px">₦0 – ₦800,000 (exempt)</td><td class="num muted">${fmt(Math.min(R.taxable,800000))}</td><td class="num">0%</td><td class="num muted">₦0</td></tr>
+    <tr><td class="label" style="padding-left:10px">₦800,001 – ₦3,000,000</td><td class="num muted">${fmt(Math.max(0,Math.min(R.taxable-800000,2200000)))}</td><td class="num">15%</td><td class="num red">${R.taxable>800000?fmt(Math.min(R.taxable-800000,2200000)*0.15):'₦0'}</td></tr>
+    <tr><td class="label" style="padding-left:10px">₦3,000,001 – ₦12,000,000</td><td class="num muted">${fmt(Math.max(0,Math.min(R.taxable-3000000,9000000)))}</td><td class="num">18%</td><td class="num red">${R.taxable>3000000?fmt(Math.min(R.taxable-3000000,9000000)*0.18):'₦0'}</td></tr>
+    <tr><td class="label" style="padding-left:10px">₦12,000,001 – ₦25,000,000</td><td class="num muted">${fmt(Math.max(0,Math.min(R.taxable-12000000,13000000)))}</td><td class="num">21%</td><td class="num red">${R.taxable>12000000?fmt(Math.min(R.taxable-12000000,13000000)*0.21):'₦0'}</td></tr>
+    <tr><td class="label" style="padding-left:10px">₦25,000,001 – ₦50,000,000</td><td class="num muted">${fmt(Math.max(0,Math.min(R.taxable-25000000,25000000)))}</td><td class="num">23%</td><td class="num red">${R.taxable>25000000?fmt(Math.min(R.taxable-25000000,25000000)*0.23):'₦0'}</td></tr>
+    <tr><td class="label" style="padding-left:10px">Above ₦50,000,000</td><td class="num muted">${fmt(Math.max(0,R.taxable-50000000))}</td><td class="num">25%</td><td class="num red">${R.taxable>50000000?fmt((R.taxable-50000000)*0.25):'₦0'}</td></tr>
+    `}
+    ${R.minTaxApplied?`<tr style="background:#fffbeb"><td class="label" colspan="3" style="color:#d97706">⚠ Minimum tax rule applied (1% of gross income)</td><td class="num red">${fmt(R.tax)}</td></tr>`:''}
+    <tr class="total"><td class="label-bold" colspan="3">Total PAYE Tax</td><td class="num red">(${fmt(R.tax)})</td></tr>
+  </table>
+
+  <!-- EFFECTIVE RATE BAR -->
+  <div style="margin:10px 0 16px;display:flex;align-items:center;gap:10px">
+    <span style="font-size:7.5pt;font-weight:600;color:#4b5563;white-space:nowrap">Effective rate:</span>
+    <div class="rate-track" style="flex:1"><div class="rate-fill" style="width:${Math.min(R.effectiveRate*2.5,100)}%"></div></div>
+    <span style="font-size:8pt;font-weight:800;color:#c0392b;white-space:nowrap">${pct(R.effectiveRate)}</span>
+  </div>
+
+  <!-- NET PAY SUMMARY -->
+  <table>
+    <tr class="subtotal"><td class="label-bold">Total Annual Deductions (Statutory + Tax)</td><td class="num red">(${fmt(R.statutory+R.tax)})</td></tr>
+    <tr class="total"><td class="label-bold" style="color:#008751">Annual Take-Home Pay</td><td class="num green">${fmt(R.netAnnual)}</td></tr>
+    <tr class="total"><td class="label-bold" style="color:#008751">Monthly Take-Home Pay</td><td class="num green">${fmt(R.netMonthly)}</td></tr>
+    <tr><td class="label muted">Daily equivalent (÷ 365)</td><td class="num muted">${fmt(R.netAnnual/365)}</td></tr>
+  </table>
+
+  <!-- SECTION 3: REGIME COMPARISON -->
+  <div class="sec-head" style="margin-top:18px">Section 3 — PITA 2025 vs NTA 2026 Comparison</div>
+  <div class="compare-grid">
+    <div class="cmp-card ${R.regime==='pita'?'active':''}">
+      <div class="cmp-head pita">PITA 2025 ${R.regime==='pita'?'✓ Current':'(for reference)'}</div>
+      ${[['Statutory deductions',fmt(calcPITA(R.gross).statutory)],['CRA',fmt(calcPITA(R.gross).cra)],['Taxable income',fmt(calcPITA(R.gross).taxable)],['PAYE tax',fmt(calcPITA(R.gross).tax)],['Annual take-home',fmt(calcPITA(R.gross).netAnnual)],['Effective rate',pct(calcPITA(R.gross).effectiveRate)]].map(([l,v])=>`<div class="cmp-row"><span>${l}</span><span class="v">${v}</span></div>`).join('')}
+    </div>
+    <div class="cmp-card ${R.regime==='nta'?'active':''}">
+      <div class="cmp-head nta">NTA 2026 ${R.regime==='nta'?'✓ Current':'(for reference)'}</div>
+      ${[['Statutory deductions',fmt(calcNTA(R.gross).statutory)],['Rent Relief',fmt(calcNTA(R.gross).rentRelief)],['Taxable income',fmt(calcNTA(R.gross).taxable)],['PAYE tax',fmt(calcNTA(R.gross).tax)],['Annual take-home',fmt(calcNTA(R.gross).netAnnual)],['Effective rate',pct(calcNTA(R.gross).effectiveRate)]].map(([l,v])=>`<div class="cmp-row"><span>${l}</span><span class="v">${v}</span></div>`).join('')}
+    </div>
+  </div>
+  ${(()=>{const diff=calcNTA(R.gross).netAnnual-calcPITA(R.gross).netAnnual; return `<p style="font-size:8pt;color:${diff>0?'#008751':'#c0392b'};font-weight:600;margin-top:4px">${diff>0?'▲ NTA 2026 is better by '+fmt(Math.abs(diff))+'/year':'▼ PITA 2025 is better by '+fmt(Math.abs(diff))+'/year'}</p>`})()}
+
+  <!-- SECTION 4: LEGAL SOURCES -->
+  <div class="sec-head" style="margin-top:18px">Section 4 — Legal Basis & Sources</div>
+  <table>
+    <tr><td class="label" style="width:30%"><span class="source-tag">PITA</span>Personal Income Tax Act</td><td class="label" style="color:#6b7280">Cap P8 LFN 2004 as amended by Finance Acts 2019–2023. PAYE bands: 7%–24%. CRA = higher of ₦200k or 1% gross, plus 20% gross.</td></tr>
+    <tr><td class="label"><span class="source-tag">NTA 2025</span>Nigeria Tax Act</td><td class="label" style="color:#6b7280">Signed 26 June 2025. Effective 1 January 2026. Repeals PITA. Introduces 0%–25% bands, ₦800k exemption, Rent Relief, pensionable emoluments rule.</td></tr>
+    <tr><td class="label"><span class="source-tag">PRA 2004</span>Pension Reform Act</td><td class="label" style="color:#6b7280">Employee pension: 8% of pensionable emoluments. Under NTA 2026: Basic + Housing + Transport only. Deductible from taxable income.</td></tr>
+    <tr><td class="label"><span class="source-tag">NHIS</span>Health Insurance</td><td class="label" style="color:#6b7280">National Health Insurance Authority Act 2022. Employee contribution 1.75%. Deductible with documentation.</td></tr>
+    <tr><td class="label"><span class="source-tag">NHF</span>Housing Fund</td><td class="label" style="color:#6b7280">National Housing Fund Act Cap N45 LFN. 2.5% of basic salary. Mandatory for employees in formal sector.</td></tr>
+    <tr><td class="label"><span class="source-tag">FIRS</span>Authority</td><td class="label" style="color:#6b7280">Federal Inland Revenue Service. PAYE remittance due by 10th of following month. Late remittance: 10% penalty + interest.</td></tr>
+  </table>
+
+</div><!-- /body -->
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-row">
+    <div>
+      <div class="footer-brand">AFRO<b>TOOLS</b>.COM — Africa's Financial Calculator Platform</div>
+      <div class="footer-legal">This report is for informational purposes only and does not constitute professional tax or financial advice. Tax computations are estimates based on information provided. Actual tax liability may vary. Consult a qualified Nigerian tax professional or the Federal Inland Revenue Service (FIRS) for binding guidance.</div>
+    </div>
+    <div class="footer-page" style="text-align:right;flex-shrink:0">
+      <div>Ref: ${refNo}</div>
+      <div style="margin-top:3px">${dateStr}</div>
+      <div style="margin-top:3px">afrotools.com</div>
+    </div>
+  </div>
+</div>
+
+</body></html>`;
+
+  // Auto-download as PDF via blob — no print dialog, no new tab
+  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  a.download = `AfroTools-Nigeria-Tax-Report-${new Date().toISOString().slice(0,10)}.html`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 5000);
+
+  // Also open in new tab so user can print to PDF
+  const w = window.open(url, '_blank');
+  if (w) setTimeout(() => w.print(), 800);
 }
 
 // ── SHARE ─────────────────────────────────────
