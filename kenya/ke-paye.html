@@ -6,8 +6,25 @@
 <title>Kenya PAYE Calculator 2025/26 — KRA Tax, NSSF, SHIF, Housing Levy | AfroTools</title>
 <meta name="description" content="Kenya PAYE calculator 2025/2026. KRA tax bands 10%–35%, NSSF Tier I+II (Feb 2025 rates), SHIF 2.75% (replaced NHIF Oct 2024), Affordable Housing Levy 1.5%. Accurate, free.">
 <link rel="canonical" href="https://afrotools.com/kenya/ke-paye">
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/logo-mark.svg">
+  <link rel="apple-touch-icon" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Kenya PAYE Calculator 2025/26 | AfroTools">
 <meta property="og:description" content="Most accurate Kenya salary tax calculator. KRA PAYE, NSSF, SHIF & Housing Levy — all current 2025 rates.">
+<meta property="og:type"        content="website">
+<meta property="og:url"         content="https://afrotools.com/kenya/ke-paye">
+<meta property="og:image"       content="https://afrotools.com/assets/img/og-ke-paye.png">
+<meta property="og:locale"      content="en_KE">
+<meta property="og:site_name"   content="AfroTools">
+<meta name="twitter:card"        content="summary_large_image">
+<meta name="twitter:site"        content="@afrotools">
+<meta name="twitter:title"       content="Kenya PAYE Calculator 2025/26 | AfroTools">
+<meta name="twitter:description" content="Most accurate Kenya salary tax calculator. KRA PAYE, NSSF, SHIF & Housing Levy — all current 2025 rates.">
+<meta name="twitter:image"       content="https://afrotools.com/assets/img/og-ke-paye.png">
+<meta name="robots"              content="index, follow">
+<meta name="author"              content="AfroTools">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com"},{"@type":"ListItem","position":2,"name":"Kenya","item":"https://afrotools.com/kenya"},{"@type":"ListItem","position":3,"name":"Kenya PAYE Calculator","item":"https://afrotools.com/kenya/ke-paye"}]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.css">
@@ -142,6 +159,10 @@
   "description": "KRA PAYE tax calculator with NSSF, SHIF, and Affordable Housing Levy for Kenya.",
   "url": "https://afrotools.com/kenya/ke-paye",
   "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "inLanguage": "en",
+  "dateModified": "2026-02-01",
+  "isAccessibleForFree": true,
   "operatingSystem": "Web",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KES" }
 }
@@ -369,7 +390,7 @@
 
       <div class="chart-card">
         <div class="bc-title">Salary Composition</div>
-        <canvas id="donutChart"></canvas>
+        <canvas id="CHART"></canvas>
       </div>
 
       <div class="band-detail" id="bandDetail">
@@ -380,6 +401,18 @@
     </div>
   </div>
 
+  <!-- Action Buttons -->
+  <div style="display:flex;gap:12px;margin-top:28px;flex-wrap:wrap;">
+    <button onclick="openPdfModal()" style="flex:1;min-width:160px;padding:13px 20px;background:#fff;border:1.5px solid #e5e7eb;border-radius:9px;font-size:0.88rem;font-weight:700;color:#374151;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+      Download PDF Report
+    </button>
+    <button onclick="shareResult()" style="flex:1;min-width:160px;padding:13px 20px;background:#fff;border:1.5px solid #e5e7eb;border-radius:9px;font-size:0.88rem;font-weight:700;color:#374151;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;" id="keShareBtn">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      Share Result
+    </button>
+  </div>
+
   <div class="legal-sources" style="margin-top:32px;">
     <h4>Legal Basis — Kenya PAYE 2025/26</h4>
     <ul>
@@ -387,13 +420,53 @@
       <li>Personal Relief: KES 2,400/month (KES 28,800/year) — statutory, no conditions</li>
       <li>NSSF Act 2013 — Tier I: 6% on first KES 8,000 (= KES 480); Tier II: 6% on KES 8,001–72,000 (max KES 3,840). Effective Feb 2025.</li>
       <li>Social Health Insurance Act 2023 — SHIF replaces NHIF from 1 Oct 2024. Rate: 2.75% gross, min KES 300, no cap. Deductible for PAYE per Tax Laws (Amendment) Act 2024.</li>
-      <li>Affordable Housing Act 2024 — 1.5% employee contribution (matched by employer). Deductible for PAYE. Effective March 2024.</li>
+      <li>Affordable Housing Act 2024 — 1.5% employee contribution (matched by employer). <strong>AHL tax relief repealed by Tax Laws (Amendment) Act 2024 (effective Dec 2024)</strong> — deducted from net pay, no longer reduces taxable income. Most calculators get this wrong.</li>
       <li>Remittance deadline: PAYE + SHIF + AHL by 9th of following month via KRA iTax (Form P10)</li>
       <li>NSSF remittance: 9th of following month via NSSF i-portal. Late penalty: 5% + 1% monthly interest.</li>
       <li>SHIF late penalty: 2% per month on outstanding. AHL late penalty: 3% per month.</li>
     </ul>
   </div>
 
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     PDF MODAL
+══════════════════════════════════════════ -->
+<div id="pdfModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:9999;align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:14px;padding:32px;max-width:420px;width:90%;position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.25);">
+    <button onclick="closePdfModal()" style="position:absolute;top:14px;right:16px;border:none;background:none;font-size:1.3rem;color:#9ca3af;cursor:pointer;line-height:1;">✕</button>
+    <div id="modalForm">
+      <div style="font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#008751;margin-bottom:6px;">Kenya PAYE Report</div>
+      <h3 style="font-size:1.15rem;font-weight:800;color:#111827;margin-bottom:6px;letter-spacing:-0.02em;">Download Your Tax Report</h3>
+      <p style="font-size:0.82rem;color:#6b7280;margin-bottom:20px;line-height:1.5;">A full PDF breakdown — KRA bands, all deductions, employer cost. Enter your email to receive future law change alerts.</p>
+      <form id="keLeadForm" name="pdf-leads" data-netlify="true" onsubmit="submitKePdf(event)">
+        <input type="hidden" name="form-name"    value="pdf-leads">
+        <input type="hidden" name="country"       value="Kenya">
+        <input type="hidden" name="country_code"  value="KE">
+        <input type="hidden" name="tool"          value="paye">
+        <input type="hidden" name="tool_id"       value="ke-paye">
+        <input type="hidden" name="currency"      value="KES">
+        <input type="hidden" name="gross_salary"  id="keHiddenGross" value="">
+        <input type="email" name="email" id="kePdfEmail" placeholder="your@email.com" required
+          style="width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:8px;font-size:0.9rem;font-family:inherit;margin-bottom:12px;outline:none;">
+        <button type="submit"
+          style="width:100%;padding:13px;background:#008751;color:#fff;border:none;border-radius:8px;font-size:0.9rem;font-weight:700;cursor:pointer;font-family:inherit;">
+          Download PDF Report →
+        </button>
+      </form>
+      <p style="font-size:0.72rem;color:#9ca3af;margin-top:10px;text-align:center;">No spam. Unsubscribe anytime. We only email on law changes.</p>
+    </div>
+    <div id="modalSuccess" style="display:none;text-align:center;padding:10px 0;">
+      <div style="font-size:2rem;margin-bottom:10px;">📄</div>
+      <div style="font-size:1rem;font-weight:700;color:#111827;margin-bottom:6px;">Opening your PDF</div>
+      <p style="font-size:0.82rem;color:#6b7280;margin-bottom:20px;line-height:1.5;">Click <strong>Save as PDF</strong> in the print dialog that opens.</p>
+      <button onclick="closePdfModal()" class="modal-done-btn"
+        style="padding:11px 28px;background:#008751;color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-family:inherit;">
+        Done ✓
+      </button>
+    </div>
+  </div>
 </div>
 
 <afro-footer></afro-footer>
@@ -408,8 +481,8 @@ const KES_BANDS_MONTHLY = [
   { limit: Infinity,rate: 0.35 },
 ];
 const PERSONAL_RELIEF_MONTHLY = 2400;
-let showPeriod = 'monthly';
-let donutChart = null;
+let PERIOD = 'monthly';       // 'monthly' | 'annual'
+let CHART  = null;          // Chart.js instance
 
 // ── NSSF Feb 2025 ─────────────────────────────────────────
 function calcNSSF(gross) {
@@ -437,17 +510,18 @@ function calcGrossTax(taxable) {
 }
 
 function fmt(n) { return 'KES ' + Math.round(Math.abs(n)).toLocaleString('en-KE'); }
-function pct(r) { return (r * 100).toFixed(1) + '%'; }
+// pct(ratio) — pass 0–1 ratio, returns clean % e.g. pct(0.0995) → '9.95%', pct(0.1) → '10%'
+const pct = r => { const v = r * 100; return (v % 1 === 0 ? v.toFixed(0) : parseFloat(v.toFixed(2)).toString()) + '%'; };
 
 // ── MAIN CALCULATION ──────────────────────────────────────
 function recalc() {
   let gross = parseFloat(document.getElementById('salaryInput').value) || 0;
-  if (showPeriod === 'annual') gross = gross / 12;
+  if (PERIOD === 'annual') gross = gross / 12;
 
-  // Statutory deductions (deductible before PAYE taxable income)
+  // Deductions: NSSF + SHIF reduce taxable income; AHL does NOT (relief repealed Dec 2024)
   const nssf   = document.getElementById('toggleNSSF').checked   ? calcNSSF(gross) : 0;
   const shif   = document.getElementById('toggleSHIF').checked   ? Math.max(300, gross * 0.0275) : 0;
-  const ahl    = document.getElementById('toggleAHL').checked    ? gross * 0.015 : 0;
+  const ahl    = document.getElementById('toggleAHL').checked    ? gross * 0.015 : 0;  // deducted from net only
 
   // Voluntary deductions
   const pensionRaw = parseFloat(document.getElementById('pensionContrib')?.value) || 0;
@@ -455,8 +529,10 @@ function recalc() {
   const prmfRaw = parseFloat(document.getElementById('prmfContrib')?.value) || 0;
   const prmf = document.getElementById('togglePRMF').checked ? Math.min(15000, prmfRaw) : 0;
 
-  // Taxable income = gross - NSSF - SHIF - AHL - pension - PRMF
-  const taxable = Math.max(0, gross - nssf - shif - ahl - pension - prmf);
+  // Taxable income = gross - NSSF - SHIF - pension - PRMF
+  // AHL relief was REPEALED by Tax Laws (Amendment) Act 2024 (effective Dec 2024)
+  // AHL 1.5% is deducted from net pay, NOT from taxable income
+  const taxable = Math.max(0, gross - nssf - shif - pension - prmf);
 
   // Gross tax
   const { tax: grossTax, detail: bandDetail } = calcGrossTax(taxable);
@@ -487,10 +563,10 @@ function recalc() {
   document.getElementById('amtInsurance').textContent = document.getElementById('toggleInsurance').checked ? fmt(insRelief) : 'KES 0';
 
   // Results
-  const mult = showPeriod === 'annual' ? 12 : 1;
-  document.getElementById('rNetMonthly').textContent = fmt(net * (showPeriod === 'annual' ? 1 : 1));
-  document.getElementById('rNetMonthly').textContent = showPeriod === 'annual' ? fmt(net * 12) : fmt(net);
-  document.getElementById('rNetAnnual').textContent  = showPeriod === 'annual' ? `Monthly: ${fmt(net)}` : `Annual: ${fmt(net * 12)}`;
+  const mult = PERIOD === 'annual' ? 12 : 1;
+  document.getElementById('rNetMonthly').textContent = fmt(net * (PERIOD === 'annual' ? 1 : 1));
+  document.getElementById('rNetMonthly').textContent = PERIOD === 'annual' ? fmt(net * 12) : fmt(net);
+  document.getElementById('rNetAnnual').textContent  = PERIOD === 'annual' ? `Monthly: ${fmt(net)}` : `Annual: ${fmt(net * 12)}`;
   document.getElementById('rPAYE').textContent       = fmt(paye);
   document.getElementById('rEffRate').textContent    = pct(effectiveRate);
   document.getElementById('rTotalDed').textContent   = fmt(totalDeductions);
@@ -543,9 +619,9 @@ function recalc() {
     ...(pension+prmf > 0 ? [{ label: 'Pension/PRMF', val: pension+prmf, color: '#06b6d4' }] : []),
   ].filter(d => d.val > 0);
 
-  if (donutChart) { donutChart.destroy(); donutChart = null; }
-  const ctx = document.getElementById('donutChart').getContext('2d');
-  donutChart = new Chart(ctx, {
+  if (CHART) { CHART.destroy(); CHART = null; }
+  const ctx = document.getElementById('CHART').getContext('2d');
+  CHART = new Chart(ctx, {
     type: 'doughnut',
     data: {
       labels: chartData.map(d => d.label),
@@ -576,7 +652,7 @@ function syncInput(val) {
 }
 
 function setPeriod(p, btn) {
-  showPeriod = p;
+  PERIOD = p;
   document.querySelectorAll('.pt-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   const curr = parseFloat(document.getElementById('salaryInput').value) || 0;
@@ -601,6 +677,332 @@ function togglePRMFInput() {
 
 // Initial render
 recalc();
+
+// ── STORE last calculated result for PDF ─────────────────
+let RESULT = null;       // current calculation result
+
+function calculate() {
+  let gross = parseFloat(document.getElementById('salaryInput').value) || 0;
+  if (PERIOD === 'annual') gross = gross / 12;
+  const nssf   = document.getElementById('toggleNSSF').checked   ? calcNSSF(gross) : 0;
+  const shif   = document.getElementById('toggleSHIF').checked   ? Math.max(300, gross * 0.0275) : 0;
+  const ahl    = document.getElementById('toggleAHL').checked    ? gross * 0.015 : 0;
+  const pensionRaw = parseFloat(document.getElementById('pensionContrib')?.value) || 0;
+  const pension = document.getElementById('togglePension').checked ? Math.min(30000, pensionRaw) : 0;
+  const prmfRaw = parseFloat(document.getElementById('prmfContrib')?.value) || 0;
+  const prmf = document.getElementById('togglePRMF').checked ? Math.min(15000, prmfRaw) : 0;
+  const taxable = Math.max(0, gross - nssf - shif - pension - prmf);
+  const { tax: grossTax, detail: bandDetail } = calcGrossTax(taxable);
+  const personalRelief = document.getElementById('togglePersonalRelief').checked ? PERSONAL_RELIEF_MONTHLY : 0;
+  const insPremium = parseFloat(document.getElementById('insurancePremium')?.value) || 0;
+  const insRelief = document.getElementById('toggleInsurance').checked ? Math.min(5000, insPremium * 0.15) : 0;
+  const paye = Math.max(0, grossTax - personalRelief - insRelief);
+  const totalDeductions = nssf + shif + ahl + pension + prmf + paye;
+  const net = gross - totalDeductions;
+  const effectiveRate = gross > 0 ? paye / gross : 0;
+  const employerNSSF = calcNSSF(gross);
+  const employerAHL = gross * 0.015;
+
+  RESULT = { gross, nssf, shif, ahl, pension, prmf, taxable, grossTax, personalRelief,
+           insRelief, paye, net, effectiveRate, totalDeductions,
+           employerNSSF, employerAHL, bandDetail };
+
+  document.getElementById('amtNSSF').textContent = document.getElementById('toggleNSSF').checked ? fmt(nssf) : '—';
+  document.getElementById('amtSHIF').textContent = document.getElementById('toggleSHIF').checked ? fmt(shif) : '—';
+  document.getElementById('amtAHL').textContent  = document.getElementById('toggleAHL').checked  ? fmt(ahl)  : '—';
+  document.getElementById('amtPension').textContent = document.getElementById('togglePension').checked ? fmt(pension) : 'KES 0';
+  document.getElementById('amtPRMF').textContent    = document.getElementById('togglePRMF').checked    ? fmt(prmf)    : 'KES 0';
+  document.getElementById('amtInsurance').textContent = document.getElementById('toggleInsurance').checked ? fmt(insRelief) : 'KES 0';
+  document.getElementById('rNetMonthly').textContent = PERIOD === 'annual' ? fmt(net * 12) : fmt(net);
+  document.getElementById('rNetAnnual').textContent  = PERIOD === 'annual' ? `Monthly: ${fmt(net)}` : `Annual: ${fmt(net * 12)}`;
+  document.getElementById('rPAYE').textContent       = fmt(paye);
+  document.getElementById('rEffRate').textContent    = pct(effectiveRate);
+  document.getElementById('rTotalDed').textContent   = fmt(totalDeductions);
+  document.getElementById('rEmployerCost').textContent = fmt(employerNSSF + employerAHL);
+  document.getElementById('bGross').textContent = fmt(gross);
+  document.getElementById('bNSSF').textContent  = nssf > 0  ? `(${fmt(nssf)})` : '—';
+  document.getElementById('bSHIF').textContent  = shif > 0  ? `(${fmt(shif)})` : '—';
+  document.getElementById('bAHL').textContent   = ahl > 0   ? `(${fmt(ahl)})`  : '—';
+  document.getElementById('bPension').textContent = (pension+prmf) > 0 ? `(${fmt(pension+prmf)})` : '—';
+  document.getElementById('bTaxable').textContent  = fmt(taxable);
+  document.getElementById('bGrossTax').textContent = grossTax > 0 ? `(${fmt(grossTax)})` : '—';
+  document.getElementById('bPersonalRelief').textContent = personalRelief > 0 ? fmt(personalRelief) : '—';
+  document.getElementById('bInsRelief').textContent = insRelief > 0 ? fmt(insRelief) : '—';
+  document.getElementById('bPAYE').textContent  = paye > 0 ? `(${fmt(paye)})` : '—';
+  document.getElementById('bNet').textContent   = fmt(net);
+  document.getElementById('bNet').style.color   = '#008751';
+  document.getElementById('effRateBar').style.width = Math.min(effectiveRate / 0.35 * 100, 100) + '%';
+  document.getElementById('effRateLabel').textContent = pct(effectiveRate);
+  const bandCumulative = [
+    { label: 'First KES 24,000', rate: 10 },
+    { label: 'KES 24,001–32,333', rate: 25 },
+    { label: 'KES 32,334–500,000', rate: 30 },
+    { label: 'KES 500,001–800,000', rate: 32.5 },
+    { label: 'Above KES 800,000', rate: 35 },
+  ];
+  document.getElementById('bandRows').innerHTML = bandDetail.map((b, i) =>
+    `<div class="bd-row">
+      <span class="bd-rate">${b.rate}%</span>
+      <span class="bd-range">${bandCumulative[i]?.label || ''}</span>
+      <span class="bd-tax" style="color:${b.tax>0?'#c0392b':'#9ca3af'}">${fmt(b.tax)}</span>
+    </div>`
+  ).join('') + `<div class="bd-row" style="border-top:2px solid #e5e7eb;margin-top:4px;padding-top:8px;font-weight:700">
+    <span class="bd-rate" style="color:var(--color-text)">Total</span><span></span>
+    <span class="bd-tax" style="color:#c0392b">${fmt(paye)} (net of relief)</span>
+  </div>`;
+  const chartData = [
+    { label: 'Take-Home', val: Math.max(0,net), color: '#008751' },
+    { label: 'PAYE Tax', val: paye, color: '#c0392b' },
+    { label: 'NSSF', val: nssf, color: '#3b82f6' },
+    { label: 'SHIF', val: shif, color: '#f59e0b' },
+    { label: 'Housing Levy', val: ahl, color: '#8b5cf6' },
+    ...(pension+prmf > 0 ? [{ label: 'Pension/PRMF', val: pension+prmf, color: '#06b6d4' }] : []),
+  ].filter(d => d.val > 0);
+  if (CHART) { CHART.destroy(); CHART = null; }
+  const ctx = document.getElementById('CHART').getContext('2d');
+  CHART = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: chartData.map(d => d.label),
+      datasets: [{ data: chartData.map(d => d.val), backgroundColor: chartData.map(d => d.color), borderWidth: 2, borderColor: '#fff' }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: true, cutout: '68%',
+      plugins: {
+        legend: { position: 'bottom', labels: { padding: 12, font: { family: 'DM Sans', size: 11 } } },
+        tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${fmt(ctx.raw)} (${(ctx.raw/gross*100).toFixed(1)}%)` } }
+      }
+    }
+  });
+}
+
+// ── PDF MODAL ────────────────────────────────────────────
+function openPdfModal() {
+  if (!RESULT) return;
+  document.getElementById('pdfModal').style.display = 'flex';
+  document.getElementById('modalForm').style.display = 'block';
+  document.getElementById('modalSuccess').style.display = 'none';
+  document.getElementById('keHiddenGross').value = RESULT.gross;
+}
+function closePdfModal() { document.getElementById('pdfModal').style.display = 'none'; }
+document.getElementById('pdfModal').addEventListener('click', function(e) { if (e.target===this) closePdfModal(); });
+
+async function submitKePdf(e) {
+  e.preventDefault();
+  const email = document.getElementById('kePdfEmail').value.trim();
+  if (!email || !email.includes('@')) {
+    document.getElementById('kePdfEmail').style.borderColor = '#c0392b';
+    setTimeout(() => document.getElementById('kePdfEmail').style.borderColor = '', 2000);
+    return;
+  }
+  try {
+    await fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ 'form-name': 'pdf-leads', email, country: 'Kenya', country_code: 'KE', tool: 'paye', tool_id: 'ke-paye', currency: 'KES', gross_salary: RESULT.gross }).toString()
+    });
+  } catch (err) {
+    console.error('[AfroTools][ke-paye] Form submission failed:', err.message);
+  }
+  document.getElementById('modalForm').style.display = 'none';
+  document.getElementById('modalSuccess').style.display = 'block';
+  generateKePdf();
+}
+
+function generateKePdf() {
+  if (!RESULT) return;
+  const R = RESULT;
+  const dateStr = new Date().toLocaleDateString('en-KE', {day:'numeric',month:'long',year:'numeric'});
+  const refNo = 'AFT-KE-PAYE-' + Date.now().toString(36).toUpperCase().slice(-6);
+  // Uses canonical fmt() from outer scope
+  // Uses canonical pct() from outer scope
+
+  const bandLabels = ['First KES 24,000','KES 24,001–32,333','KES 32,334–500,000','KES 500,001–800,000','Above KES 800,000'];
+  const bandRows = R.bandDetail.map((b,i) =>
+    `<tr><td style="padding-left:12px;color:#4b5563">${bandLabels[i]||''} @ ${b.rate}%</td><td style="text-align:right;color:#4b5563">${fmt(b.income)}</td><td style="text-align:right;font-weight:600;color:#c0392b">${fmt(b.tax)}</td></tr>`
+  ).join('');
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AfroTools — Kenya PAYE Tax Report ${dateStr}</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',Arial,sans-serif;background:#fff;color:#111827;font-size:9pt;line-height:1.5}
+  @page{size:A4;margin:0}
+  .cover{background:#1a2420;padding:28px 36px 22px;color:#fff}
+  .cover-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+  .brand-name{font-size:13pt;font-weight:800;letter-spacing:0.02em}
+  .brand-name b{color:#00c873}
+  .brand-sub{font-size:6pt;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-top:2px}
+  .ref-block{text-align:right}
+  .ref-label{font-size:6pt;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35)}
+  .ref-val{font-size:8pt;font-weight:700;color:rgba(255,255,255,0.7);margin-top:2px}
+  .doc-title{font-size:18pt;font-weight:800;color:#fff;letter-spacing:-0.02em;line-height:1.1}
+  .doc-title span{color:#00c873}
+  .doc-meta{margin-top:8px;font-size:7.5pt;color:rgba(255,255,255,0.45)}
+  .amendment-badge{display:inline-block;margin-top:10px;padding:3px 10px;border-radius:3px;font-size:7pt;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;background:rgba(252,129,129,0.15);color:#fc8181;border:1px solid rgba(252,129,129,0.3)}
+  .body{padding:22px 36px 28px}
+  .summary-hero{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:14px 18px;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .sh-item{text-align:center;flex:1}
+  .sh-label{font-size:6pt;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#9ca3af;margin-bottom:3px}
+  .sh-val{font-size:12pt;font-weight:800;color:#111827}
+  .sh-val.green{color:#008751}.sh-val.red{color:#c0392b}
+  .sh-divider{width:1px;height:36px;background:#e5e7eb;flex-shrink:0}
+  .sec-head{font-size:6.5pt;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#9ca3af;padding:0 0 5px;border-bottom:1.5px solid #e5e7eb;margin:14px 0 8px}
+  table{width:100%;border-collapse:collapse;margin-bottom:4px}
+  tr{border-bottom:1px solid #f3f4f6}
+  td{padding:5px 4px;font-size:8.5pt;vertical-align:middle}
+  td.num{text-align:right;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+  td.label{color:#374151}.td.label-bold{color:#111827;font-weight:700}
+  .red{color:#c0392b}.green{color:#008751}.muted{color:#9ca3af}
+  tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-size:9.5pt}
+  tr.subtotal td{background:#f9fafb;font-weight:600}
+  .notice{background:#fff7ed;border:1px solid #fed7aa;border-radius:6px;padding:10px 14px;margin:12px 0;font-size:7.5pt;color:#92400e;line-height:1.5}
+  .notice strong{font-weight:700}
+  .source-tag{display:inline-block;padding:2px 7px;background:#f3f4f6;border-radius:3px;font-size:6.5pt;font-weight:600;color:#6b7280;margin-right:4px}
+  .rate-track{height:6px;background:#e5e7eb;border-radius:3px;margin:6px 0 3px;overflow:hidden}
+  .rate-fill{height:100%;background:#008751;border-radius:3px}
+  .footer{background:#f9fafb;border-top:1px solid #e5e7eb;padding:12px 36px}
+  .footer-brand{font-size:7pt;font-weight:700;color:#111827}
+  .footer-brand b{color:#008751}
+  .footer-legal{font-size:6.5pt;color:#9ca3af;max-width:420px;line-height:1.4;margin-top:3px}
+  .footer-row{display:flex;justify-content:space-between;align-items:flex-start}
+  .footer-page{font-size:6.5pt;color:#9ca3af;text-align:right;flex-shrink:0}
+  @media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<div class="cover">
+  <div class="cover-top">
+    <div>
+      <div class="brand-name">AFRO<b>TOOLS</b></div>
+      <div class="brand-sub">Africa's Financial Platform</div>
+    </div>
+    <div class="ref-block">
+      <div class="ref-label">Reference</div>
+      <div class="ref-val">${refNo}</div>
+      <div class="ref-val" style="font-size:7pt;margin-top:2px">${dateStr}</div>
+    </div>
+  </div>
+  <div class="doc-title">Kenya PAYE<br><span>Tax Report</span></div>
+  <div class="doc-meta">🇰🇪 Republic of Kenya · KRA Income Tax Act Cap 470 · Finance Act 2023 · Tax Laws (Amendment) Act 2024</div>
+  <span class="amendment-badge">2024 Amendment — SHIF, NSSF Feb 2025, AHL Relief Repealed</span>
+</div>
+
+<div class="body">
+  <div class="summary-hero">
+    <div class="sh-item"><div class="sh-label">Gross Monthly</div><div class="sh-val">${fmt(R.gross)}</div></div>
+    <div class="sh-divider"></div>
+    <div class="sh-item"><div class="sh-label">Take-Home</div><div class="sh-val green">${fmt(R.net)}</div></div>
+    <div class="sh-divider"></div>
+    <div class="sh-item"><div class="sh-label">Annual Take-Home</div><div class="sh-val green">${fmt(R.net*12)}</div></div>
+    <div class="sh-divider"></div>
+    <div class="sh-item"><div class="sh-label">PAYE Tax</div><div class="sh-val red">${fmt(R.paye)}</div></div>
+    <div class="sh-divider"></div>
+    <div class="sh-item"><div class="sh-label">Effective Rate</div><div class="sh-val red">${pct(R.effectiveRate)}</div></div>
+  </div>
+
+  <div class="sec-head">Section 1 — Full PAYE Computation (Monthly)</div>
+  <table>
+    <tr><td style="font-weight:700">Gross Monthly Salary</td><td class="num">${fmt(R.gross)}</td></tr>
+    <tr><td style="color:#9ca3af;font-size:7.5pt;padding-top:8px">STATUTORY DEDUCTIONS (reduce taxable income)</td><td></td></tr>
+    <tr><td style="padding-left:12px;color:#374151">NSSF — Tier I + Tier II (NSSF Act 2013, Feb 2025)</td><td class="num red">(${fmt(R.nssf)})</td></tr>
+    <tr><td style="padding-left:12px;color:#374151">SHIF — Social Health Insurance Fund (2.75%, min KES 300)</td><td class="num red">(${fmt(R.shif)})</td></tr>
+    ${R.pension>0?`<tr><td style="padding-left:12px;color:#374151">Registered Pension Contribution</td><td class="num red">(${fmt(R.pension)})</td></tr>`:''}
+    ${R.prmf>0?`<tr><td style="padding-left:12px;color:#374151">Post-Retirement Medical Fund (PRMF)</td><td class="num red">(${fmt(R.prmf)})</td></tr>`:''}
+    <tr class="subtotal"><td style="padding-left:12px;font-weight:700">Taxable Income</td><td class="num">${fmt(R.taxable)}</td></tr>
+  </table>
+
+  <div class="sec-head" style="margin-top:12px">Section 2 — Band-by-Band Tax Computation</div>
+  <table>
+    <tr style="background:#f9fafb"><td style="font-weight:700">Tax Band</td><td class="num" style="font-weight:700">Income in Band</td><td class="num" style="font-weight:700">Tax</td></tr>
+    ${bandRows}
+    <tr><td style="padding-left:12px;color:#374151">Less: Personal Relief</td><td class="num"></td><td class="num green">(${fmt(R.personalRelief)})</td></tr>
+    ${R.insRelief>0?`<tr><td style="padding-left:12px;color:#374151">Less: Insurance Relief (15% of premium, max KES 5,000)</td><td class="num"></td><td class="num green">(${fmt(R.insRelief)})</td></tr>`:''}
+    <tr class="total"><td colspan="2" style="font-weight:800">PAYE Tax Payable</td><td class="num red">(${fmt(R.paye)})</td></tr>
+  </table>
+
+  <div style="margin:10px 0 14px;display:flex;align-items:center;gap:10px">
+    <span style="font-size:7.5pt;font-weight:600;color:#4b5563;white-space:nowrap">Effective rate:</span>
+    <div class="rate-track" style="flex:1"><div class="rate-fill" style="width:${Math.min(R.effectiveRate/0.35*100,100)}%"></div></div>
+    <span style="font-size:8pt;font-weight:800;color:#c0392b;white-space:nowrap">${pct(R.effectiveRate)}</span>
+  </div>
+
+  <div class="sec-head">Section 3 — Net Pay Summary</div>
+  <table>
+    <tr><td style="color:#374151">NSSF (employee)</td><td class="num red">(${fmt(R.nssf)})</td></tr>
+    <tr><td style="color:#374151">SHIF</td><td class="num red">(${fmt(R.shif)})</td></tr>
+    <tr><td style="color:#374151">Affordable Housing Levy — AHL (1.5%)<br><span style="font-size:7pt;color:#9ca3af">Deducted from net pay — relief repealed Dec 2024</span></td><td class="num red">(${fmt(R.ahl)})</td></tr>
+    <tr><td style="color:#374151">PAYE Income Tax</td><td class="num red">(${fmt(R.paye)})</td></tr>
+    <tr class="subtotal"><td style="font-weight:700">Total Deductions</td><td class="num red">(${fmt(R.totalDeductions)})</td></tr>
+    <tr class="total"><td style="color:#008751;font-weight:800">Monthly Take-Home Pay</td><td class="num green">${fmt(R.net)}</td></tr>
+    <tr class="total"><td style="color:#008751;font-weight:800">Annual Take-Home Pay</td><td class="num green">${fmt(R.net*12)}</td></tr>
+    <tr><td style="color:#9ca3af">Daily equivalent (÷ 365)</td><td class="num muted">${fmt(R.net*12/365)}</td></tr>
+  </table>
+
+  <div class="notice">
+    <strong>⚠ 2024 Amendment Note:</strong> Tax Laws (Amendment) Act 2024 repealed AHL tax relief effective December 2024. AHL (1.5%) is now deducted from net pay and does NOT reduce taxable income. Most competitors still apply the old (incorrect) treatment, overstating your take-home pay.
+  </div>
+
+  <div class="sec-head" style="margin-top:14px">Section 4 — Employer Costs</div>
+  <table>
+    <tr><td style="color:#374151">Employee gross salary</td><td class="num">${fmt(R.gross)}</td></tr>
+    <tr><td style="color:#374151">Employer NSSF contribution (matching)</td><td class="num red">(${fmt(R.employerNSSF)})</td></tr>
+    <tr><td style="color:#374151">Employer AHL contribution (matching 1.5%)</td><td class="num red">(${fmt(R.employerAHL)})</td></tr>
+    <tr class="total"><td style="font-weight:800">Total Monthly Employer Cost</td><td class="num red">${fmt(R.gross + R.employerNSSF + R.employerAHL)}</td></tr>
+  </table>
+
+  <div class="sec-head" style="margin-top:14px">Section 5 — Legal Basis & Sources</div>
+  <table>
+    <tr><td style="width:28%"><span class="source-tag">ITA Cap 470</span>Income Tax Act</td><td style="color:#6b7280;font-size:8pt">PAYE bands: 10% / 25% / 30% / 32.5% / 35%. Personal relief KES 2,400/month (KES 28,800/year).</td></tr>
+    <tr><td><span class="source-tag">NSSF 2013</span>NSSF Act</td><td style="color:#6b7280;font-size:8pt">Tier I: 6% on first KES 8,000 (max KES 480). Tier II: 6% on KES 8,001–72,000 (max KES 3,840). UEL increased to KES 72,000 effective Feb 2025.</td></tr>
+    <tr><td><span class="source-tag">SHA 2023</span>SHIF</td><td style="color:#6b7280;font-size:8pt">Replaced NHIF 1 Oct 2024. Rate: 2.75% of gross, min KES 300, no upper cap. Deductible for PAYE.</td></tr>
+    <tr><td><span class="source-tag">AHL 2024</span>Housing Levy</td><td style="color:#6b7280;font-size:8pt">1.5% employee + 1.5% employer. Tax relief repealed Dec 2024 by Tax Laws (Amendment) Act 2024. Deducted from net pay only.</td></tr>
+    <tr><td><span class="source-tag">KRA</span>Authority</td><td style="color:#6b7280;font-size:8pt">PAYE remittance by 9th of following month via KRA iTax (Form P10). NSSF: NSSF i-portal.</td></tr>
+  </table>
+</div>
+
+<div class="footer">
+  <div class="footer-row">
+    <div>
+      <div class="footer-brand">AFRO<b>TOOLS</b>.COM — Africa's Financial Calculator Platform</div>
+      <div class="footer-legal">Informational purposes only. Not professional tax advice. Verify with KRA or a qualified Kenyan tax professional before making financial decisions.</div>
+    </div>
+    <div class="footer-page">
+      <div>Ref: ${refNo}</div>
+      <div style="margin-top:2px">${dateStr}</div>
+      <div style="margin-top:2px">afrotools.com</div>
+    </div>
+  </div>
+</div>
+</body></html>`;
+
+  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const w = window.open(url, '_blank');
+  if (w) {
+    w.addEventListener('load', () => { setTimeout(() => { w.print(); setTimeout(() => URL.revokeObjectURL(url), 3000); }, 600); });
+    setTimeout(() => { try { w.print(); } catch(e){} }, 1200);
+  }
+}
+
+// ── SHARE ───────────────────────────────────────────────
+function shareResult() {
+  if (!RESULT) return;
+  const R = RESULT;
+  const text = `My Kenya PAYE breakdown: Gross KES ${Math.round(R.gross).toLocaleString()}/mo → Take-home KES ${Math.round(R.net).toLocaleString()}/mo (${(R.effectiveRate*100).toFixed(1)}% effective rate). Calculated at afrotools.com/kenya/ke-paye`;
+  if (navigator.share) {
+    navigator.share({ title: 'My Kenya Tax Breakdown', text, url: 'https://afrotools.com/kenya/ke-paye' });
+  } else if (navigator.clipboard) {
+    navigator.clipboard.writeText(text);
+    const btn = document.getElementById('keShareBtn');
+    btn.textContent = '✓ Copied!';
+    setTimeout(() => btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share Result`, 2500);
+  }
+}
 </script>
 </body>
 </html>
