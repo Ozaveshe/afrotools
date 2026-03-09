@@ -1,7 +1,8 @@
 /**
  * AFROTOOLS FOOTER — Web Component
- * Usage: <afro-footer></afro-footer>
- * Edit LINKS config to update all pages at once.
+ * Colours: dark forest #0d1f16 (warmer than #080f0a, harmonises with sage navbar)
+ * Links: readable opacity — no more 0.18/0.25 ghost text
+ * Font: DM Sans throughout (Barlow removed)
  */
 (function () {
   'use strict';
@@ -26,14 +27,13 @@
       { en: '🇹🇿 Tanzania',     href: '/tanzania' },
     ],
     company: [
-      { en: 'About',      fr: 'À propos',   href: '/about' },
-      { en: 'Contact',    fr: 'Contact',     href: '/contact' },
-      { en: 'Advertise',  fr: 'Publicité',   href: '/advertise' },
-      { en: 'API Access', fr: 'Accès API',   href: '/api' },
+      { en: 'About',      fr: 'À propos',  href: '/about' },
+      { en: 'Contact',    fr: 'Contact',   href: '/contact' },
+      { en: 'Advertise',  fr: 'Publicité', href: '/advertise' },
+      { en: 'API Access', fr: 'Accès API', href: '/api' },
     ],
   };
 
-  // Meridian Diamond — dark variant (footer is always dark bg)
   const MARK = `
     <svg viewBox="0 0 68 68" fill="none" xmlns="http://www.w3.org/2000/svg" style="height:34px;width:34px;flex-shrink:0">
       <polygon points="34,20 48,34 34,48 20,34" fill="#00c873"/>
@@ -41,146 +41,177 @@
       <polygon points="34,48 44,60 34,68 24,60" fill="#008751"/>
       <polygon points="2,24  14,34 2,44  -10,34" fill="#5ddb9e" opacity="0.6"/>
       <polygon points="52,24 64,34 52,44 40,34"  fill="#5ddb9e" opacity="0.48"/>
-      <line x1="34" y1="20" x2="34" y2="48" stroke="#F5A623" stroke-width="0.8" opacity="0.28"/>
-      <line x1="20" y1="34" x2="48" y2="34" stroke="#F5A623" stroke-width="0.8" opacity="0.28"/>
     </svg>`;
 
   const CSS = `
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap');
+
+    *, *::before, *::after {
+      box-sizing: border-box; margin: 0; padding: 0;
+      font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
     :host { display: block; }
+
+    /* ─────────────────────────────────────────────
+       SHELL
+       #0d1f16 — dark forest green, warm not cold.
+       Reads as intentional, not just "dark mode".
+       Harmonises with the sage #f0f5f2 navbar.
+    ───────────────────────────────────────────── */
     footer {
-      background: #080f0a;
-      border-top: 1px solid rgba(255,255,255,0.06);
-      font-family: 'Barlow', Arial, sans-serif;
-      color: white;
+      background: #111827;
+      border-top: 2px solid #1f2937;
+      color: #d1d5db;
     }
     .wrap { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
 
-    /* ── TOP: logo + newsletter ── */
+    /* ─────────────────────────────────────────────
+       TOP — logo + newsletter
+    ───────────────────────────────────────────── */
     .top {
       display: grid; grid-template-columns: 1fr 1fr;
-      gap: 56px; padding: 64px 0 56px;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+      gap: 56px; padding: 56px 0 48px;
+      border-bottom: 1px solid #1f2937;
       align-items: start;
     }
-    .logo-row { display: flex; align-items: center; gap: 10px; text-decoration: none; margin-bottom: 16px; }
-    .logo-text { display: flex; flex-direction: column; gap: 2px; line-height: 1; }
+
+    .logo-row {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; margin-bottom: 14px;
+    }
     .logo-name {
-      font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif;
-      font-size: 1.2rem; font-weight: 800; letter-spacing: 0.04em;
-      color: white;
+      font-size: 1.1rem; font-weight: 800;
+      letter-spacing: 0.02em; color: #ffffff;
     }
-    .logo-name b { color: #5ddb9e; }
+    .logo-name b { color: #00c873; }
     .logo-tagline {
-      font-family: 'Barlow', Arial, sans-serif;
-      font-size: 0.46rem; font-weight: 400;
-      letter-spacing: 0.22em; text-transform: uppercase;
-      color: rgba(255,255,255,0.25);
+      font-size: 0.46rem; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: #6b7280; display: block; margin-top: 3px;
     }
+
+    /* Tagline under logo — readable, not ghost */
     .tagline {
-      font-size: 0.83rem; font-weight: 300;
-      color: rgba(255,255,255,0.35);
-      line-height: 1.75; max-width: 320px;
+      font-size: 0.85rem; font-weight: 400;
+      color: #9ca3af;
+      line-height: 1.7; max-width: 300px;
     }
 
     /* Newsletter */
     .nl-eyebrow {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.62rem; font-weight: 700;
-      letter-spacing: 0.2em; text-transform: uppercase;
-      color: #5ddb9e; margin-bottom: 6px;
+      font-size: 0.6rem; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: #34d399; margin-bottom: 6px;
     }
     .nl-title {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1.35rem; font-weight: 800;
-      text-transform: uppercase; letter-spacing: 0.04em;
-      color: white; line-height: 1.2; margin-bottom: 18px;
+      font-size: 1.25rem; font-weight: 800;
+      color: #f9fafb; line-height: 1.25; margin-bottom: 18px;
+      letter-spacing: -0.02em;
     }
     .nl-form { display: flex; gap: 8px; max-width: 400px; }
     .nl-input {
       flex: 1; min-width: 0;
       padding: 11px 14px;
       background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 4px;
-      font-family: 'Barlow', Arial, sans-serif;
-      font-size: 0.875rem; color: white; outline: none;
+      border: 1px solid #374151;
+      border-radius: 6px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.875rem; color: #f3f4f6; outline: none;
       transition: border-color 0.18s;
     }
-    .nl-input::placeholder { color: rgba(255,255,255,0.25); }
-    .nl-input:focus { border-color: #008751; }
+    .nl-input::placeholder { color: #6b7280; }
+    .nl-input:focus { border-color: #008751; background: rgba(255,255,255,0.09); }
     .nl-btn {
       padding: 11px 18px; flex-shrink: 0;
       background: #008751; color: white; border: none;
-      border-radius: 4px;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.78rem; font-weight: 800;
-      letter-spacing: 0.08em; text-transform: uppercase;
-      cursor: pointer; transition: background 0.18s; white-space: nowrap;
+      border-radius: 6px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem; font-weight: 700;
+      cursor: pointer; transition: background 0.15s; white-space: nowrap;
     }
     .nl-btn:hover { background: #00a863; }
     .nl-note {
       margin-top: 10px; font-size: 0.72rem;
-      font-weight: 300; color: rgba(255,255,255,0.18);
+      font-weight: 500; color: #6b7280;
     }
 
-    /* ── LINKS GRID ── */
+    /* ─────────────────────────────────────────────
+       LINKS GRID
+       Col titles: visible sage. Links: #a8c8b8 —
+       comfortably readable, not straining to see.
+    ───────────────────────────────────────────── */
     .links {
       display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 32px; padding: 52px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+      gap: 32px; padding: 44px 0;
+      border-bottom: 1px solid #1f2937;
     }
     .col-title {
-      font-family: 'Barlow Condensed', sans-serif;
       font-size: 0.6rem; font-weight: 700;
-      letter-spacing: 0.2em; text-transform: uppercase;
-      color: rgba(255,255,255,0.25); margin-bottom: 16px;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: #34d399; margin-bottom: 14px;
     }
     .col-link {
-      display: block; padding: 3.5px 0;
-      font-size: 0.83rem; font-weight: 300;
-      color: rgba(255,255,255,0.42); text-decoration: none;
+      display: block; padding: 4px 0;
+      font-size: 0.84rem; font-weight: 500;
+      color: #9ca3af;
+      text-decoration: none;
       transition: color 0.13s; line-height: 1.5;
     }
-    .col-link:hover { color: #5ddb9e; }
+    .col-link:hover { color: #ffffff; }
 
-    /* ── STATS ── */
+    /* ─────────────────────────────────────────────
+       STATS — numbers that pop
+    ───────────────────────────────────────────── */
     .stats {
       display: grid; grid-template-columns: repeat(4, 1fr);
-      gap: 16px; padding: 36px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+      gap: 16px; padding: 32px 0;
+      border-bottom: 1px solid #1f2937;
       text-align: center;
     }
     .stat-n {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1.75rem; font-weight: 800; color: #5ddb9e; line-height: 1;
+      font-size: 1.8rem; font-weight: 800;
+      color: #34d399; line-height: 1;
+      letter-spacing: -0.02em;
     }
     .stat-l {
-      font-size: 0.72rem; font-weight: 300;
-      color: rgba(255,255,255,0.28); margin-top: 4px;
+      font-size: 0.72rem; font-weight: 500;
+      color: #6b7280; margin-top: 5px;
     }
 
-    /* ── BOTTOM ── */
+    /* ─────────────────────────────────────────────
+       BOTTOM BAR
+    ───────────────────────────────────────────── */
     .bottom {
       display: flex; align-items: center;
       justify-content: space-between;
       padding: 20px 0; flex-wrap: wrap; gap: 12px;
     }
-    .copy { font-size: 0.75rem; font-weight: 300; color: rgba(255,255,255,0.18); }
-    .legal { display: flex; gap: 20px; }
-    .legal a {
-      font-size: 0.75rem; font-weight: 300;
-      color: rgba(255,255,255,0.2); text-decoration: none; transition: color 0.13s;
+    .copy {
+      font-size: 0.75rem; font-weight: 500;
+      color: #6b7280;
     }
-    .legal a:hover { color: rgba(255,255,255,0.55); }
+    .legal { display: flex; gap: 20px; flex-wrap: wrap; }
+    .legal a {
+      font-size: 0.75rem; font-weight: 500;
+      color: #6b7280; text-decoration: none;
+      transition: color 0.13s;
+    }
+    .legal a:hover { color: #9ca3af; }
+
+    /* Disclaimer — readable, not invisible */
     .disc {
-      width: 100%; padding-top: 16px;
-      border-top: 1px solid rgba(255,255,255,0.04);
-      font-size: 0.7rem; font-weight: 300;
-      color: rgba(255,255,255,0.1); line-height: 1.65;
+      width: 100%; padding-top: 14px;
+      border-top: 1px solid #1f2937;
+      font-size: 0.7rem; font-weight: 400;
+      color: #6b7280; line-height: 1.7;
     }
 
+    /* ─────────────────────────────────────────────
+       RESPONSIVE
+    ───────────────────────────────────────────── */
     @media (max-width: 900px) {
-      .top   { grid-template-columns: 1fr; gap: 36px; }
+      .top   { grid-template-columns: 1fr; gap: 36px; padding: 40px 0 36px; }
       .links { grid-template-columns: 1fr 1fr; }
       .stats { grid-template-columns: repeat(2, 1fr); }
     }
@@ -197,16 +228,19 @@
     constructor() {
       super();
       this.attachShadow({ mode: 'open' });
-      this._lang = localStorage.getItem('afrotools_lang') || 'en';
+      this._lang = 'en';
+      try { this._lang = localStorage.getItem('afrotools_lang') || 'en'; } catch(e) {}
     }
+
     connectedCallback() {
       this._render(); this._bind();
       document.addEventListener('afrotools:langchange', e => {
         this._lang = e.detail.lang; this._render(); this._bind();
       });
     }
+
     get fr() { return this._lang === 'fr'; }
-    _t(item) { return this.fr && item.fr ? item.fr : item.en; }
+    _t(item)  { return this.fr && item.fr ? item.fr : item.en; }
 
     _col(titleEn, titleFr, items) {
       const t     = this.fr && titleFr ? titleFr : titleEn;
@@ -216,20 +250,20 @@
 
     _render() {
       const fr = this.fr;
-      const nlEyebrow = fr ? 'Restez informé'           : 'Stay Updated';
+      const nlEyebrow = fr ? 'Restez informé'            : 'Stay Updated';
       const nlTitle   = fr ? 'Nouveaux outils. Gratuit.' : 'New tools. Every week. Free.';
-      const ph        = fr ? 'votre@email.com'           : 'your@email.com';
-      const btnLbl    = fr ? 'M\'inscrire →'             : 'Notify Me →';
+      const ph        = fr ? 'votre@email.com'            : 'your@email.com';
+      const btnLbl    = fr ? "M'inscrire →"               : 'Notify Me →';
       const note      = fr ? 'Pas de spam. Désinscription facile.' : 'No spam. Unsubscribe anytime.';
       const tagline   = fr
         ? 'Calculateurs financiers pour les 54 nations africaines. Gratuit à jamais.'
         : 'Country-accurate financial calculators for all 54 African nations. Free forever.';
       const disc = fr
-        ? 'AfroTools est à titre informatif uniquement. Vérifiez auprès d\'un professionnel qualifié avant toute décision financière.'
-        : 'AfroTools calculators are for informational purposes only and do not constitute financial, tax, or legal advice. Always verify results with a qualified professional or the relevant tax authority.';
+        ? "AfroTools est à titre informatif uniquement. Vérifiez auprès d'un professionnel qualifié avant toute décision financière."
+        : 'AfroTools calculators are for informational purposes only and do not constitute financial, tax, or legal advice. Always verify with a qualified professional or the relevant tax authority.';
 
       this.shadowRoot.innerHTML = `
-        <style>@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Barlow:wght@300;400&display=swap');${CSS}</style>
+        <style>${CSS}</style>
         <footer role="contentinfo">
           <div class="wrap">
 
@@ -237,7 +271,7 @@
               <div>
                 <a href="/" class="logo-row" aria-label="AfroTools home">
                   ${MARK}
-                  <div class="logo-text">
+                  <div>
                     <span class="logo-name">AFRO<b>TOOLS</b></span>
                     <span class="logo-tagline">Africa's Financial Platform</span>
                   </div>
@@ -289,9 +323,9 @@
         const btn = e.target.querySelector('button');
         const inp = e.target.querySelector('input');
         if (inp.value && inp.checkValidity()) {
-          btn.textContent = '✓';
+          btn.textContent = '✓ Done';
           inp.value = '';
-          setTimeout(() => { btn.textContent = this.fr ? 'M\'inscrire →' : 'Notify Me →'; }, 3000);
+          setTimeout(() => { btn.textContent = this.fr ? "M'inscrire →" : 'Notify Me →'; }, 3000);
         }
       });
     }

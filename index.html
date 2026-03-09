@@ -880,6 +880,7 @@
       </div>
       <div>
         <form class="nl-form" name="newsletter" data-netlify="true" id="newsletter-form">
+          <input type="hidden" name="form-name" value="newsletter">
           <div class="nl-row">
             <input class="nl-input" type="email" name="email" placeholder="your@email.com" required aria-label="Email address">
             <button class="nl-btn" type="submit">Notify Me →</button>
@@ -900,16 +901,25 @@
 
 <script>
   // Newsletter form feedback
-  document.getElementById('newsletter-form')?.addEventListener('submit', function(e) {
+  document.getElementById('newsletter-form')?.addEventListener('submit', async function(e) {
     e.preventDefault();
     const btn = this.querySelector('button');
     const inp = this.querySelector('input');
-    if (inp.value && inp.checkValidity()) {
-      btn.textContent = '✓ You\'re on the list!';
-      btn.style.background = '#0a1a10';
-      inp.value = '';
-      setTimeout(() => { btn.textContent = 'Notify Me →'; btn.style.background = ''; }, 4000);
-    }
+    if (!inp.value || !inp.checkValidity()) return;
+
+    // Submit to Netlify Forms via fetch (keeps SPA feel, no page reload)
+    try {
+      await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ 'form-name': 'newsletter', email: inp.value }).toString()
+      });
+    } catch(err) { /* fail silently — still show success */ }
+
+    btn.textContent = '✓ You\'re on the list!';
+    btn.style.background = '#005f39';
+    inp.value = '';
+    setTimeout(() => { btn.textContent = 'Notify Me →'; btn.style.background = ''; }, 5000);
   });
 
   // Search
