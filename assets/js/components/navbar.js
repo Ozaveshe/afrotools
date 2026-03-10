@@ -1,130 +1,82 @@
 /**
  * AFROTOOLS NAVBAR — Everything Platform Edition
- * Mega-menu with 8 categories. Mobile drawer. Web Component.
+ * Mega-menu with 12 categories from tool registry. Mobile drawer. Web Component.
  */
 (function () {
   'use strict';
 
   const NAV_ITEMS = [
     {
-      id: 'finance',
-      label: 'Finance & Tax',
-      icon: '💰',
-      desc: 'Tax, payroll, budgeting',
-      href: '/finance',
-      color: '#e8f5ee',
-      accent: '#008751',
-      tools: [
-        { label: 'Salary & Tax',       href: '/salary-tax',       icon: '💰', desc: 'PAYE, income tax, take-home' },
-        { label: 'VAT & Business Tax', href: '/vat-business-tax', icon: '🧾', desc: 'VAT, CIT, withholding tax' },
-        { label: 'Mortgage & Property',href: '/mortgage',         icon: '🏠', desc: 'Repayments, LTV, stamp duty' },
-        { label: 'Business & ROI',     href: '/business-roi',     icon: '📈', desc: 'ROI, margins, break-even' },
-      ]
+      id: 'financial', label: 'Salary & Tax', icon: '💰',
+      desc: 'PAYE, income tax, take-home pay',
+      href: '/salary-tax', color: '#eaf5ef', accent: '#008751',
+      tools: []
     },
     {
-      id: 'jobs',
-      label: 'Jobs & Career',
-      icon: '💼',
-      desc: 'Salaries, CVs, market data',
-      href: '/jobs',
-      color: '#e8f0fe',
-      accent: '#1a56db',
-      tools: [
-        { label: 'Salary Benchmarks',  href: '/jobs/salary-benchmarks', icon: '📊', desc: 'Compare pay by role & country' },
-        { label: 'CV Builder',         href: '/jobs/cv-builder',         icon: '📄', desc: 'Africa-ready CV templates' },
-        { label: 'Job Market Data',    href: '/jobs/market-data',        icon: '🔍', desc: 'Hiring trends by sector' },
-        { label: 'Freelance Rates',    href: '/jobs/freelance-rates',    icon: '💻', desc: 'What to charge per country' },
-      ]
+      id: 'document-pdf', label: 'Document & PDF', icon: '📄',
+      desc: 'Merge, split, compress, convert',
+      href: '/document-pdf', color: '#eff6ff', accent: '#3b82f6',
+      tools: []
     },
     {
-      id: 'health',
-      label: 'Health',
-      icon: '🏥',
-      desc: 'Insurance, costs, cover',
-      href: '/health',
-      color: '#fce8e8',
-      accent: '#dc2626',
-      tools: [
-        { label: 'NHIF / SHIF',        href: '/health/nhif',       icon: '🏥', desc: 'Kenya health insurance calc' },
-        { label: 'Insurance Premiums', href: '/health/insurance',   icon: '🛡️', desc: 'Compare cover by country' },
-        { label: 'Hospital Cost Est.', href: '/health/costs',       icon: '💊', desc: 'Estimate treatment costs' },
-        { label: 'Medical Aid SA',     href: '/health/medical-aid', icon: '❤️', desc: 'South Africa medical aid' },
-      ]
+      id: 'image-design', label: 'Image & Design', icon: '🖼️',
+      desc: 'Compress, resize, QR codes',
+      href: '/image-design', color: '#fdf2f8', accent: '#ec4899',
+      tools: []
     },
     {
-      id: 'travel',
-      label: 'Travel & Visa',
-      icon: '✈️',
-      desc: 'Visa, forex, cost of living',
-      href: '/travel',
-      color: '#f0e8fe',
-      accent: '#7c3aed',
-      tools: [
-        { label: 'Visa Requirements',  href: '/travel/visa',      icon: '🛂', desc: 'African passport visa-free access' },
-        { label: 'Forex Calculator',   href: '/travel/forex',     icon: '💱', desc: 'Live African currency rates' },
-        { label: 'Cost of Living',     href: '/travel/cost',      icon: '🏙️', desc: 'Compare cities across Africa' },
-        { label: 'Flight Cost Est.',   href: '/travel/flights',   icon: '✈️', desc: 'Budget for intra-Africa travel' },
-      ]
+      id: 'developer', label: 'Developer Tools', icon: '⌨️',
+      desc: 'JSON, Base64, hash, regex',
+      href: '/developer-tools', color: '#ede9fe', accent: '#8b5cf6',
+      tools: []
     },
     {
-      id: 'property',
-      label: 'Property',
-      icon: '🏘️',
-      desc: 'Buy, rent, invest',
-      href: '/property',
-      color: '#fff3e0',
-      accent: '#f57c00',
-      tools: [
-        { label: 'Mortgage Calculator',href: '/mortgage',          icon: '🏠', desc: 'Repayments across Africa' },
-        { label: 'Rent vs Buy',        href: '/property/rent-buy', icon: '🔑', desc: 'Which makes sense for you?' },
-        { label: 'Stamp Duty',         href: '/property/stamp-duty',icon: '📜', desc: 'Transfer taxes by country' },
-        { label: 'Rental Yield',       href: '/property/yield',    icon: '💹', desc: 'Investment return on property' },
-      ]
+      id: 'education', label: 'Education', icon: '🎓',
+      desc: 'GPA, WAEC, loans, fees',
+      href: '/education', color: '#e8fef6', accent: '#059669',
+      tools: []
     },
     {
-      id: 'education',
-      label: 'Education',
-      icon: '🎓',
-      desc: 'Fees, loans, scholarships',
-      href: '/education',
-      color: '#e8fef6',
-      accent: '#059669',
-      tools: [
-        { label: 'University Fees',    href: '/education/fees',        icon: '🎓', desc: 'Compare costs across Africa' },
-        { label: 'Student Loans',      href: '/education/loans',       icon: '📚', desc: 'Repayment calculators' },
-        { label: 'Scholarships',       href: '/education/scholarships',icon: '🏅', desc: 'African scholarship finder' },
-        { label: 'Study Abroad Cost',  href: '/education/study-abroad',icon: '🌍', desc: 'Budget for overseas study' },
-      ]
+      id: 'health', label: 'Health & Agriculture', icon: '🏥',
+      desc: 'BMI, SHIF, pregnancy, crops',
+      href: '/health', color: '#fce8e8', accent: '#dc2626',
+      tools: []
     },
     {
-      id: 'lifestyle',
-      label: 'Lifestyle',
-      icon: '🛒',
-      desc: 'Budget, inflation, cost',
-      href: '/lifestyle',
-      color: '#fef9e8',
-      accent: '#d97706',
-      tools: [
-        { label: 'Budget Planner',     href: '/lifestyle/budget',     icon: '💳', desc: '50/30/20 rule for Africa' },
-        { label: 'Inflation Tracker',  href: '/lifestyle/inflation',  icon: '📉', desc: 'Real purchasing power today' },
-        { label: 'Cost Comparisons',   href: '/lifestyle/costs',      icon: '🛒', desc: 'What things cost by city' },
-        { label: 'Savings Goals',      href: '/lifestyle/savings',    icon: '🏦', desc: 'How long to reach your target' },
-      ]
+      id: 'ecommerce', label: 'VAT & Business Tax', icon: '🧾',
+      desc: 'VAT, margins, break-even',
+      href: '/vat-business-tax', color: '#fff7ed', accent: '#f59e0b',
+      tools: []
     },
     {
-      id: 'business',
-      label: 'Business',
-      icon: '📊',
-      desc: 'Start, run, grow',
-      href: '/business',
-      color: '#f3e8fe',
-      accent: '#9333ea',
-      tools: [
-        { label: 'Payroll Calculator', href: '/business/payroll',    icon: '💰', desc: 'Full employer cost per country' },
-        { label: 'Break-even Calc',    href: '/business/break-even', icon: '📊', desc: 'When does your business pay?' },
-        { label: 'Company Setup Cost', href: '/business/setup',      icon: '🏢', desc: 'Cost to register by country' },
-        { label: 'Invoice Builder',    href: '/business/invoice',    icon: '🧾', desc: 'Africa-ready invoice generator' },
-      ]
+      id: 'legal', label: 'Mortgage & Property', icon: '🏠',
+      desc: 'Registration, compliance, property',
+      href: '/legal', color: '#e0f2fe', accent: '#0ea5e9',
+      tools: []
+    },
+    {
+      id: 'data-productivity', label: 'Business & ROI', icon: '📊',
+      desc: 'Productivity, data, investment',
+      href: '/data-productivity', color: '#eef2ff', accent: '#6366f1',
+      tools: []
+    },
+    {
+      id: 'language', label: 'Language & Translation', icon: '🗣️',
+      desc: 'Yoruba, Swahili, Hausa, Amharic',
+      href: '/language', color: '#faf5ff', accent: '#a855f7',
+      tools: []
+    },
+    {
+      id: 'african', label: 'Uniquely African', icon: '🌍',
+      desc: 'Japa, generator, ajo, mobile money',
+      href: '/african', color: '#fef2f2', accent: '#dc2626',
+      tools: []
+    },
+    {
+      id: 'engineering', label: 'Engineering & CAD', icon: '🔧',
+      desc: 'Solar, structural, borehole, CAD',
+      href: '/engineering', color: '#f5f5f4', accent: '#78716c',
+      tools: []
     },
   ];
 
@@ -213,15 +165,11 @@
       border-radius: 10px; padding: 14px;
       border: 1.5px solid transparent;
       transition: border-color 0.13s, background 0.13s;
+      display: flex; align-items: center; gap: 9px;
+      text-decoration: none; cursor: pointer;
     }
     .mega-col:hover { border-color: var(--col-accent, #008751); background: #fafdf9; }
 
-    .mega-col-head {
-      display: flex; align-items: center; gap: 9px;
-      text-decoration: none; padding-bottom: 10px;
-      border-bottom: 1px solid #f3f4f6;
-      margin-bottom: 8px;
-    }
     .mega-col-icon {
       width: 34px; height: 34px; border-radius: 8px;
       display: flex; align-items: center; justify-content: center;
@@ -229,18 +177,6 @@
     }
     .mega-col-name { font-size: 0.83rem; font-weight: 800; color: #111827; line-height: 1.2; }
     .mega-col-desc { font-size: 0.65rem; font-weight: 400; color: #9ca3af; margin-top: 1px; }
-
-    .mega-tool {
-      display: flex; align-items: center; gap: 8px;
-      padding: 6px 5px; border-radius: 6px;
-      text-decoration: none;
-      transition: background 0.1s;
-      min-height: 38px;
-    }
-    .mega-tool:hover { background: #f0f9f4; }
-    .mega-tool-icon { font-size: 0.85rem; flex-shrink: 0; width: 18px; text-align: center; }
-    .mega-tool-label { font-size: 0.77rem; font-weight: 600; color: #374151; line-height: 1.2; }
-    .mega-tool-desc { font-size: 0.64rem; font-weight: 400; color: #9ca3af; }
 
     .mega-footer {
       max-width: 1200px; margin: 0 auto;
@@ -363,23 +299,13 @@
 
     _megaContent() {
       return NAV_ITEMS.map(cat => `
-        <div class="mega-col" style="--col-accent:${cat.accent}">
-          <a href="${cat.href}" class="mega-col-head">
-            <div class="mega-col-icon" style="background:${cat.color}">${cat.icon}</div>
-            <div>
-              <div class="mega-col-name">${cat.label}</div>
-              <div class="mega-col-desc">${cat.desc}</div>
-            </div>
-          </a>
-          ${cat.tools.map(t => `
-            <a href="${t.href}" class="mega-tool">
-              <span class="mega-tool-icon">${t.icon}</span>
-              <div>
-                <div class="mega-tool-label">${t.label}</div>
-                <div class="mega-tool-desc">${t.desc}</div>
-              </div>
-            </a>`).join('')}
-        </div>`).join('');
+        <a href="${cat.href}" class="mega-col" style="--col-accent:${cat.accent}">
+          <div class="mega-col-icon" style="background:${cat.color}">${cat.icon}</div>
+          <div>
+            <div class="mega-col-name">${cat.label}</div>
+            <div class="mega-col-desc">${cat.desc}</div>
+          </div>
+        </a>`).join('');
     }
 
     _mobileContent() {
@@ -417,10 +343,10 @@
                 </button>
               </li>
               <li><a href="/salary-tax" class="lnk">Salary &amp; Tax</a></li>
-              <li><a href="/tools/pdf-workspace" class="lnk">PDF Tools</a></li>
-              <li><a href="/tools/currency-converter" class="lnk">Currency</a></li>
-              <li><a href="/tools/cv-builder" class="lnk">CV Builder</a></li>
-              <li><a href="/tools/vat-calculator" class="lnk">VAT</a></li>
+              <li><a href="/document-pdf" class="lnk">PDF Tools</a></li>
+              <li><a href="/developer-tools" class="lnk">Dev Tools</a></li>
+              <li><a href="/african" class="lnk">African</a></li>
+              <li><a href="/education" class="lnk">Education</a></li>
             </ul>
 
             <div class="right">
