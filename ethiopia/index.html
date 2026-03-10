@@ -9,7 +9,7 @@
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <link rel="apple-touch-icon" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Ethiopia Tools | AfroTools">
-<meta property="og:description" content="Free tools built for Ethiopia. Tax calculators, PDF workspace, currency tools — all free, all accurate.">
+<meta property="og:description" content="Free tools built for Ethiopia. Tax calculators, PDF workspace, currency tools — all free.">
 <meta property="og:url" content="https://afrotools.com/ethiopia">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
@@ -19,100 +19,93 @@
 <script src="/assets/js/components/footer.js" defer></script>
 <script src="/assets/js/components/tool-registry.js" defer></script>
 <style>
-  .et-hero { background:var(--color-bg-dark);padding:64px 0 48px;border-bottom:1px solid rgba(255,255,255,0.06); }
-  .et-hero-inner { max-width:900px;margin:0 auto;padding:0 24px; }
-  .et-flag-row { display:flex;align-items:center;gap:12px;margin-bottom:16px; }
-  .et-flag { font-size:2rem; }
-  .et-breadcrumb { font-size:0.75rem;font-weight:500;color:rgba(255,255,255,0.35);letter-spacing:0.08em;text-transform:uppercase; }
-  .et-breadcrumb a { color:rgba(255,255,255,0.35);text-decoration:none; }
-  .et-breadcrumb span { color:var(--color-brand-light); }
-  .et-hero h1 { font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;color:#fff;line-height:1.1;letter-spacing:-0.02em;margin-bottom:12px; }
-  .et-hero h1 em { color:var(--color-brand-light);font-style:normal; }
-  .et-hero-sub { font-size:1rem;color:rgba(255,255,255,0.5);max-width:560px;line-height:1.6;margin-bottom:24px; }
-  .et-meta-row { display:flex;flex-wrap:wrap;gap:20px; }
-  .et-meta-item { display:flex;align-items:center;gap:6px;font-size:0.78rem;font-weight:600;color:rgba(255,255,255,0.4); }
-  .et-meta-dot { width:6px;height:6px;border-radius:50%;background:var(--color-brand); }
-  .et-sec { padding:48px 0; }
-  .et-sec--grey { background:#f3f4f6; }
-  .et-wrap { max-width:900px;margin:0 auto;padding:0 24px; }
-  .et-eyebrow { display:inline-flex;align-items:center;gap:7px;font-size:0.65rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#008751;margin-bottom:8px; }
-  .et-eyebrow::before { content:'';width:14px;height:2px;background:#008751;border-radius:2px; }
-  .et-sec-title { font-size:clamp(1.4rem,2.5vw,1.75rem);font-weight:800;color:#111827;letter-spacing:-0.025em;line-height:1.15;margin-bottom:6px; }
-  .et-sec-sub { font-size:0.88rem;color:#6b7280;line-height:1.7;max-width:520px;margin-bottom:28px; }
-  #tool-grid { min-height:120px; }
-  .et-info-grid { display:grid;grid-template-columns:1fr 1fr;gap:16px; }
-  .et-info-card { background:#fff;border:1px solid var(--color-border);border-radius:10px;padding:20px; }
-  .et-info-card h4 { font-size:0.85rem;font-weight:700;color:var(--color-text);margin-bottom:6px; }
-  .et-info-card p { font-size:0.82rem;color:var(--color-muted);line-height:1.5; }
-  .et-cta { background:linear-gradient(135deg,#008751 0%,#00a863 100%);border-radius:14px;padding:36px 32px;color:#fff;text-align:center;margin-top:40px; }
-  .et-cta h3 { font-size:1.2rem;font-weight:800;margin-bottom:8px; }
-  .et-cta p { font-size:0.88rem;color:rgba(255,255,255,0.8);margin-bottom:18px; }
-  .et-cta a { display:inline-block;padding:11px 24px;background:#fff;color:#008751;border-radius:8px;font-weight:700;font-size:0.88rem;text-decoration:none;transition:transform 0.15s; }
-  .et-cta a:hover { transform:translateY(-2px); }
-  @media(max-width:600px) { .et-info-grid{grid-template-columns:1fr;} }
+  .hub-hero{background:var(--color-bg-dark);padding:64px 0 48px;border-bottom:1px solid rgba(255,255,255,.06)}
+  .hub-inner{max-width:900px;margin:0 auto;padding:0 24px}
+  .hub-flag-row{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+  .hub-flag{font-size:2rem}
+  .hub-bc{font-size:.75rem;font-weight:500;color:rgba(255,255,255,.35);letter-spacing:.08em;text-transform:uppercase}
+  .hub-bc a{color:rgba(255,255,255,.35);text-decoration:none;transition:color .15s}
+  .hub-bc a:hover{color:#5ddb9e}
+  .hub-bc .current{color:var(--color-brand-light)}
+  .hub-hero h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;color:#fff;line-height:1.1;letter-spacing:-.02em;margin-bottom:12px}
+  .hub-hero h1 em{color:var(--color-brand-light);font-style:normal}
+  .hub-sub{font-size:1rem;color:rgba(255,255,255,.5);max-width:560px;line-height:1.6;margin-bottom:24px}
+  .hub-meta{display:flex;flex-wrap:wrap;gap:20px}
+  .hub-mi{display:flex;align-items:center;gap:6px;font-size:.78rem;font-weight:600;color:rgba(255,255,255,.4)}
+  .hub-dot{width:6px;height:6px;border-radius:50%;background:var(--color-brand)}
+  .hub-sec{padding:48px 0}
+  .hub-sec--grey{background:#f3f4f6}
+  .hub-wrap{max-width:900px;margin:0 auto;padding:0 24px}
+  .hub-eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:.65rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#008751;margin-bottom:8px}
+  .hub-eyebrow::before{content:'';width:14px;height:2px;background:#008751;border-radius:2px}
+  .hub-sec-title{font-size:clamp(1.4rem,2.5vw,1.75rem);font-weight:800;color:#111827;letter-spacing:-.025em;line-height:1.15;margin-bottom:6px}
+  .hub-sec-sub{font-size:.88rem;color:#6b7280;line-height:1.7;max-width:520px;margin-bottom:28px}
+  #tool-grid{min-height:120px}
+  /* ═══ TOOL CARD HOVER — targets registry-rendered inline-styled cards ═══ */
+  #tool-grid a[style*="border:1.5px"],
+  #tool-grid a[style*="border: 1.5px"]{transition:border-color .2s,box-shadow .2s,transform .2s}
+  #tool-grid a[style*="border:1.5px"]:hover,
+  #tool-grid a[style*="border: 1.5px"]:hover{border-color:#008751 !important;box-shadow:0 8px 24px rgba(0,135,81,.1);transform:translateY(-2px)}
+  .hub-info-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .hub-info-card{background:#fff;border:1px solid var(--color-border);border-radius:10px;padding:20px}
+  .hub-info-card h4{font-size:.85rem;font-weight:700;color:var(--color-text);margin-bottom:6px}
+  .hub-info-card p{font-size:.82rem;color:var(--color-muted);line-height:1.5}
+  .hub-cta{background:linear-gradient(135deg,#008751 0%,#00a863 100%);border-radius:14px;padding:36px 32px;color:#fff;text-align:center;margin-top:40px}
+  .hub-cta h3{font-size:1.2rem;font-weight:800;margin-bottom:8px}
+  .hub-cta p{font-size:.88rem;color:rgba(255,255,255,.8);margin-bottom:18px}
+  .hub-cta a{display:inline-block;padding:11px 24px;background:#fff;color:#008751;border-radius:8px;font-weight:700;font-size:.88rem;text-decoration:none;transition:transform .15s}
+  .hub-cta a:hover{transform:translateY(-2px)}
+  @media(max-width:600px){.hub-info-grid{grid-template-columns:1fr}}
 </style>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"CollectionPage","name":"Ethiopia Tools | AfroTools","description":"Free tools for Ethiopia. Tax, PDF, currency and more.","url":"https://afrotools.com/ethiopia","publisher":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
+{"@context":"https://schema.org","@type":"CollectionPage","name":"Ethiopia Tools | AfroTools","description":"Free tools for Ethiopia.","url":"https://afrotools.com/ethiopia","publisher":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
 </script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
 
-<section class="et-hero">
-  <div class="et-hero-inner">
-    <div class="et-flag-row">
-      <span class="et-flag">🇪🇹</span>
-      <nav class="et-breadcrumb" aria-label="breadcrumb">
-        <a href="/">AfroTools</a> / <span>Ethiopia</span>
+<section class="hub-hero">
+  <div class="hub-inner">
+    <div class="hub-flag-row">
+      <span class="hub-flag">🇪🇹</span>
+      <nav class="hub-bc" aria-label="breadcrumb">
+        <a href="/">AfroTools</a> / <a href="/countries">Countries</a> / <span class="current">Ethiopia</span>
       </nav>
     </div>
     <h1>Ethiopia<br><em>Tools</em></h1>
-    <p class="et-hero-sub">Tax calculators, PDF workspace, currency tools and more — all built for Ethiopia. Accurate for MoR regulations and the ETB (Br).</p>
-    <div class="et-meta-row">
-      <span class="et-meta-item"><span class="et-meta-dot"></span>MoR compliant</span>
-      <span class="et-meta-item"><span class="et-meta-dot"></span>ETB (Br)</span>
-      <span class="et-meta-item" id="tool-count"><span class="et-meta-dot"></span>Loading…</span>
-      <span class="et-meta-item"><span class="et-meta-dot"></span>Free forever</span>
+    <p class="hub-sub">Tax calculators, PDF workspace, currency tools and more — all built for Ethiopia. Accurate for MoR regulations and the ETB (Br).</p>
+    <div class="hub-meta">
+      <span class="hub-mi"><span class="hub-dot"></span>MoR compliant</span>
+      <span class="hub-mi"><span class="hub-dot"></span>ETB (Br)</span>
+      <span class="hub-mi" id="tool-count"><span class="hub-dot"></span>Loading…</span>
+      <span class="hub-mi"><span class="hub-dot"></span>Free forever</span>
     </div>
   </div>
 </section>
 
-<section class="et-sec">
-  <div class="et-wrap">
-    <div class="et-eyebrow">Tools</div>
-    <h2 class="et-sec-title">All Ethiopia Tools</h2>
-    <p class="et-sec-sub">Tools built specifically for Ethiopia, plus tools available across all 54 African countries.</p>
+<section class="hub-sec">
+  <div class="hub-wrap">
+    <div class="hub-eyebrow">Tools</div>
+    <h2 class="hub-sec-title">All Ethiopia Tools</h2>
+    <p class="hub-sec-sub">Tools built specifically for Ethiopia, plus tools available across all 54 African countries.</p>
     <div id="tool-grid"></div>
   </div>
 </section>
 
-<section class="et-sec et-sec--grey">
-  <div class="et-wrap">
-    <div class="et-eyebrow">Quick Facts</div>
-    <h2 class="et-sec-title">Ethiopia at a Glance</h2>
-    <p class="et-sec-sub">Key financial and tax information for Ethiopia.</p>
-    <div class="et-info-grid">
-      <div class="et-info-card">
-        <h4>🏛️ Tax Authority</h4>
-        <p>MoR — Ethiopia's national revenue and tax administration body.</p>
-      </div>
-      <div class="et-info-card">
-        <h4>💰 Currency</h4>
-        <p>ETB (Br) — the official currency used in Ethiopia.</p>
-      </div>
-      <div class="et-info-card">
-        <h4>🌍 Region</h4>
-        <p>East Africa — one of the 54 nations covered by AfroTools.</p>
-      </div>
-      <div class="et-info-card">
-        <h4>📊 Tools Available</h4>
-        <p>Country-specific tools plus all pan-African tools. More launching every week.</p>
-      </div>
+<section class="hub-sec hub-sec--grey">
+  <div class="hub-wrap">
+    <div class="hub-eyebrow">Quick Facts</div>
+    <h2 class="hub-sec-title">Ethiopia at a Glance</h2>
+    <p class="hub-sec-sub">Key financial and tax information for Ethiopia.</p>
+    <div class="hub-info-grid">
+      <div class="hub-info-card"><h4>🏛️ Tax Authority</h4><p>MoR — Ethiopia's revenue and tax administration.</p></div>
+      <div class="hub-info-card"><h4>💰 Currency</h4><p>ETB (Br) — official currency of Ethiopia.</p></div>
+      <div class="hub-info-card"><h4>🌍 AfroTools Coverage</h4><p>Country-specific tools plus all pan-African tools. More launching every week.</p></div>
+      <div class="hub-info-card"><h4>📊 Always Accurate</h4><p>Rates and rules sourced from MoR. Updated when legislation changes.</p></div>
     </div>
-
-    <div class="et-cta">
+    <div class="hub-cta">
       <h3>More Ethiopia tools coming soon</h3>
-      <p>PAYE calculator, VAT tools, and more — all built for MoR regulations.</p>
+      <p>PAYE calculator, VAT tools, and more — built for MoR regulations.</p>
       <a href="/contact">Request a Tool →</a>
     </div>
   </div>
@@ -121,13 +114,13 @@
 <afro-footer></afro-footer>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-  if (typeof renderToolGrid==='function') renderToolGrid('tool-grid','ET');
-  if (typeof getToolsFor==='function') {
+document.addEventListener('DOMContentLoaded',function(){
+  if(typeof renderToolGrid==='function') renderToolGrid('tool-grid','ET');
+  if(typeof getToolsFor==='function'){
     var live=getToolsFor('ET','live');
     var fresh=getToolsFor('ET','new');
     var el=document.getElementById('tool-count');
-    if(el) el.innerHTML='<span class="et-meta-dot"></span>'+(live.length+fresh.length)+' live tools';
+    if(el) el.innerHTML='<span class="hub-dot"></span>'+(live.length+fresh.length)+' live tools';
   }
 });
 </script>
