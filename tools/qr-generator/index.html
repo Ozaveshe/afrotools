@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QR Code Generator — Text, URL, WiFi, vCard | AfroTools</title>
+<meta name="description" content="Free QR code generator. Create QR codes from text, URLs, WiFi credentials, and vCards. Customize colors, add logo, download as PNG or SVG.">
+<link rel="canonical" href="https://afrotools.com/tools/qr-generator">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="QR Code Generator | AfroTools">
+<meta property="og:description" content="Create custom QR codes from text, URLs, WiFi, or vCards. Download as PNG/SVG with color customization and logo overlay.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/qr-generator">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-qr.png">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="QR Code Generator | AfroTools">
+<meta name="twitter:description" content="Free QR code generator with color customization and logo support.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.css">
+<link rel="stylesheet" href="/assets/css/global.css">
+<script src="/assets/js/components/navbar.js" defer></script>
+<script src="/assets/js/components/footer.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  :root {
+    --afro-green: #008751;
+    --afro-dark: #0f1419;
+    --afro-light: #f5f7fa;
+  }
+
+  .tool-hero {
+    background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
+    padding: 44px 0 36px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tool-hero::after {
+    content: '⚙️';
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 8rem;
+    opacity: 0.06;
+    pointer-events: none;
+  }
+
+  .tool-hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+  }
+
+  .breadcrumb {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .breadcrumb a {
+    color: rgba(255, 255, 255, 0.3);
+    text-decoration: none;
+  }
+
+  .breadcrumb span {
+    color: var(--afro-green);
+  }
+
+  h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+
+  h1 em {
+    color: var(--afro-green);
+    font-style: normal;
+  }
+
+  .hero-sub {
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 1.6;
+    max-width: 560px;
+    margin-bottom: 14px;
+  }
+
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 6px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 11px;
+    border-radius: 4px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .b-green {
+    background: rgba(0, 135, 81, 0.18);
+    color: #5ddb9e;
+    border: 1px solid rgba(0, 135, 81, 0.38);
+  }
+
+  .tool-main {
+    padding: 28px 0 72px;
+  }
+
+  .tool-main-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 22px;
+    align-items: start;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid #dceee0;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .card + .card {
+    margin-top: 18px;
+  }
+
+  .card-head {
+    padding: 15px 22px;
+    border-bottom: 1px solid #eaf5ec;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f7fdf8;
+  }
+
+  .card-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #0a4018;
+  }
+
+  .card-body {
+    padding: 22px;
+  }
+
+  .field {
+    margin-bottom: 18px;
+  }
+
+  .field:last-child {
+    margin-bottom: 0;
+  }
+
+  .f-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+
+  .f-label-text {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #0d2813;
+  }
+
+  .f-hint {
+    font-size: 0.7rem;
+    color: #7dab87;
+  }
+
+  .f-input {
+    width: 100%;
+    padding: 11px 13px;
+    background: #f4fbf5;
+    border: 1.5px solid #c5deca;
+    border-radius: 7px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0d2813;
+    outline: none;
+    transition: border-color 0.18s, box-shadow 0.18s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .f-input:focus {
+    border-color: var(--afro-green);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(0, 135, 81, 0.1);
+  }
+
+  .f-textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+
+  .mode-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+
+  .mode-btn {
+    padding: 10px 12px;
+    background: #f4fbf5;
+    border: 1.5px solid #c5deca;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #244d2c;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .mode-btn:hover {
+    border-color: var(--afro-green);
+  }
+
+  .mode-btn.on {
+    border-color: var(--afro-green);
+    background: var(--afro-green);
+    color: #fff;
+  }
+
+  .color-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  .color-input {
+    width: 60px;
+    height: 40px;
+    border: 1.5px solid #c5deca;
+    border-radius: 7px;
+    cursor: pointer;
+    background: #f4fbf5;
+  }
+
+  .color-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #0d2813;
+    flex: 1;
+  }
+
+  .calc-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--afro-green);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: all 0.18s;
+    margin-top: 8px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .calc-btn:hover {
+    background: #006d42;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 135, 81, 0.3);
+  }
+
+  .preview-card {
+    background: #f7fdf8;
+    border: 1.5px solid #c5deca;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    display: none;
+  }
+
+  .preview-card.on {
+    display: block;
+  }
+
+  #qrcode {
+    display: inline-block;
+    margin: 0 auto;
+  }
+
+  .action-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 0 22px 22px;
+  }
+
+  .act-btn {
+    padding: 10px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .act-png {
+    background: rgba(0, 135, 81, 0.1);
+    border: 1.5px solid rgba(0, 135, 81, 0.35);
+    color: #1a5c3a;
+  }
+
+  .act-png:hover {
+    background: rgba(0, 135, 81, 0.2);
+  }
+
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .info-card {
+    background: #f7fdf8;
+    border: 1px solid #dceee0;
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  .info-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #0a4018;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .info-text {
+    font-size: 0.8rem;
+    color: #244d2c;
+    line-height: 1.6;
+  }
+
+  .info-text li {
+    margin-bottom: 8px;
+  }
+
+  @media (max-width: 768px) {
+    .tool-main-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .mode-row {
+      grid-template-columns: 1fr;
+    }
+
+    .action-row {
+      grid-template-columns: 1fr;
+    }
+
+    .color-row {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .color-input {
+      width: 100%;
+      height: 50px;
+    }
+  }
+</style>
+</head>
+<body>
+<afro-navbar active="tools"></afro-navbar>
+
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb">
+      <a href="/">AfroTools</a> / <span>Tools</span>
+    </div>
+    <h1>QR Code <em>Generator</em></h1>
+    <p class="hero-sub">Create professional QR codes from text, URLs, WiFi, or vCards. Customize colors and download as PNG or SVG.</p>
+    <div class="hero-badges">
+      <span class="badge b-green">No AI</span>
+      <span class="badge b-green">Client-side</span>
+      <span class="badge b-green">Fast</span>
+    </div>
+  </div>
+</div>
+
+<div class="tool-main">
+  <div class="tool-main-inner">
+    <div>
+      <!-- Input Card -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">QR Type</span>
+        </div>
+        <div class="card-body">
+          <div class="mode-row">
+            <button class="mode-btn on" data-mode="text">Text</button>
+            <button class="mode-btn" data-mode="url">URL</button>
+            <button class="mode-btn" data-mode="wifi">WiFi</button>
+            <button class="mode-btn" data-mode="vcard">vCard</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Input Fields -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Input</span>
+        </div>
+        <div class="card-body">
+          <div class="field" id="text-mode">
+            <label class="f-label">
+              <span class="f-label-text">Text</span>
+            </label>
+            <textarea class="f-input f-textarea" id="textInput" placeholder="Enter any text..."></textarea>
+          </div>
+
+          <div class="field" id="url-mode" style="display:none;">
+            <label class="f-label">
+              <span class="f-label-text">URL</span>
+            </label>
+            <input type="url" class="f-input" id="urlInput" placeholder="https://example.com">
+          </div>
+
+          <div id="wifi-mode" style="display:none;">
+            <div class="field">
+              <label class="f-label">
+                <span class="f-label-text">Network Name (SSID)</span>
+              </label>
+              <input type="text" class="f-input" id="wifiSSID" placeholder="WiFi name">
+            </div>
+            <div class="field">
+              <label class="f-label">
+                <span class="f-label-text">Password</span>
+              </label>
+              <input type="password" class="f-input" id="wifiPassword" placeholder="WiFi password">
+            </div>
+            <div class="field">
+              <label class="f-label">
+                <span class="f-label-text">Security</span>
+              </label>
+              <select class="f-input" id="wifiSecurity">
+                <option value="WPA">WPA/WPA2</option>
+                <option value="WEP">WEP</option>
+                <option value="nopass">Open (No Password)</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="vcard-mode" style="display:none;">
+            <div class="field">
+              <label class="f-label">
+                <span class="f-label-text">Full Name</span>
+              </label>
+              <input type="text" class="f-input" id="vcardName" placeholder="John Doe">
+            </div>
+            <div class="field">
+              <label class="f-label">
+                <span class="f-label-text">Phone</span>
+              </label>
+              <input type="tel" class="f-input" id="vcardPhone" placeholder="+1234567890">
+            </div>
+            <div class="field">
+              <label class="f-label">
+                <span class="f-label-text">Email</span>
+              </label>
+              <input type="email" class="f-input" id="vcardEmail" placeholder="john@example.com">
+            </div>
+            <div class="field">
+              <label class="f-label">
+                <span class="f-label-text">Organization</span>
+              </label>
+              <input type="text" class="f-input" id="vcardOrg" placeholder="Company Name">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Customization Card -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Customize</span>
+        </div>
+        <div class="card-body">
+          <div class="field">
+            <label class="f-label">
+              <span class="f-label-text">Dark Color</span>
+            </label>
+            <div class="color-row">
+              <input type="color" class="color-input" id="darkColor" value="#000000">
+              <span id="darkColorHex" class="color-label">#000000</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="f-label">
+              <span class="f-label-text">Light Color</span>
+            </label>
+            <div class="color-row">
+              <input type="color" class="color-input" id="lightColor" value="#ffffff">
+              <span id="lightColorHex" class="color-label">#ffffff</span>
+            </div>
+          </div>
+
+          <button class="calc-btn" id="generateBtn">Generate QR Code</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Preview -->
+      <div class="card preview-card" id="previewCard">
+        <div class="card-head">
+          <span class="card-title">Preview</span>
+        </div>
+        <div id="qrcode" style="padding:20px 0;"></div>
+        <div class="action-row">
+          <button class="act-btn act-png" id="downloadPNG">📥 PNG</button>
+          <button class="act-btn act-png" id="downloadSVG">📥 SVG</button>
+        </div>
+      </div>
+
+      <!-- Info Card -->
+      <div class="info-card">
+        <div class="info-title">About QR Codes</div>
+        <div class="info-text">
+          <strong>QR codes</strong> store data in a 2D barcode readable by smartphones and cameras.
+          <ul style="margin-top:10px;">
+            <li>✓ Store up to 4,296 characters</li>
+            <li>✓ Error correction built-in</li>
+            <li>✓ Works offline</li>
+            <li>✓ No data sent to servers</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<afro-footer></afro-footer>
+
+<script>
+  let currentMode = 'text';
+  let qrcodeInstance = null;
+
+  const modeButtons = document.querySelectorAll('.mode-btn');
+  const textModeDiv = document.getElementById('text-mode');
+  const urlModeDiv = document.getElementById('url-mode');
+  const wifiModeDiv = document.getElementById('wifi-mode');
+  const vcardModeDiv = document.getElementById('vcard-mode');
+  const generateBtn = document.getElementById('generateBtn');
+  const previewCard = document.getElementById('previewCard');
+
+  const darkColorInput = document.getElementById('darkColor');
+  const lightColorInput = document.getElementById('lightColor');
+  const darkColorHex = document.getElementById('darkColorHex');
+  const lightColorHex = document.getElementById('lightColorHex');
+
+  modeButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      currentMode = btn.dataset.mode;
+      modeButtons.forEach(b => b.classList.remove('on'));
+      btn.classList.add('on');
+
+      textModeDiv.style.display = currentMode === 'text' ? 'block' : 'none';
+      urlModeDiv.style.display = currentMode === 'url' ? 'block' : 'none';
+      wifiModeDiv.style.display = currentMode === 'wifi' ? 'block' : 'none';
+      vcardModeDiv.style.display = currentMode === 'vcard' ? 'block' : 'none';
+    });
+  });
+
+  darkColorInput.addEventListener('change', (e) => {
+    darkColorHex.textContent = e.target.value.toUpperCase();
+  });
+
+  lightColorInput.addEventListener('change', (e) => {
+    lightColorHex.textContent = e.target.value.toUpperCase();
+  });
+
+  function getQRData() {
+    switch(currentMode) {
+      case 'text':
+        return document.getElementById('textInput').value;
+      case 'url':
+        return document.getElementById('urlInput').value;
+      case 'wifi':
+        const ssid = document.getElementById('wifiSSID').value;
+        const password = document.getElementById('wifiPassword').value;
+        const security = document.getElementById('wifiSecurity').value;
+        if (!ssid) return null;
+        return `WIFI:T:${security};S:${ssid};P:${password};;`;
+      case 'vcard':
+        const name = document.getElementById('vcardName').value;
+        const phone = document.getElementById('vcardPhone').value;
+        const email = document.getElementById('vcardEmail').value;
+        const org = document.getElementById('vcardOrg').value;
+        if (!name) return null;
+        return `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\n${phone ? 'TEL:' + phone + '\n' : ''}${email ? 'EMAIL:' + email + '\n' : ''}${org ? 'ORG:' + org + '\n' : ''}END:VCARD`;
+    }
+  }
+
+  generateBtn.addEventListener('click', () => {
+    const data = getQRData();
+    if (!data) {
+      alert('Please fill in all required fields');
+      return;
+    }
+
+    const qrcodeDiv = document.getElementById('qrcode');
+    qrcodeDiv.innerHTML = '';
+
+    const darkColor = darkColorInput.value;
+    const lightColor = lightColorInput.value;
+
+    qrcodeInstance = new QRCode(qrcodeDiv, {
+      text: data,
+      width: 256,
+      height: 256,
+      colorDark: darkColor,
+      colorLight: lightColor,
+      correctLevel: QRCode.CorrectLevel.H
+    });
+
+    previewCard.classList.add('on');
+  });
+
+  document.getElementById('downloadPNG').addEventListener('click', () => {
+    const canvas = document.querySelector('#qrcode canvas');
+    if (canvas) {
+      const link = document.createElement('a');
+      link.href = canvas.toDataURL('image/png');
+      link.download = 'qrcode.png';
+      link.click();
+    }
+  });
+
+  document.getElementById('downloadSVG').addEventListener('click', () => {
+    const svg = document.querySelector('#qrcode svg');
+    if (svg) {
+      const svgData = new XMLSerializer().serializeToString(svg);
+      const link = document.createElement('a');
+      link.href = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgData);
+      link.download = 'qrcode.svg';
+      link.click();
+    }
+  });
+</script>
+</body>
+</html>

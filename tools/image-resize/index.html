@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image Resize — Instagram, Facebook, Twitter, LinkedIn | AfroTools</title>
+<meta name="description" content="Free online image resizer. Resize images with custom dimensions or social media presets (Instagram, Facebook, Twitter, WhatsApp, LinkedIn). Convert PNG, JPG, WebP formats. Client-side processing.">
+<link rel="canonical" href="https://afrotools.com/tools/image-resize">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Image Resizer | AfroTools">
+<meta property="og:description" content="Resize images with presets for Instagram, Facebook, Twitter, and more. No uploads to server.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/image-resize">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-image.png">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Image Resizer | AfroTools">
+<meta name="twitter:description" content="Free image resizing tool with social media presets.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.css">
+<link rel="stylesheet" href="/assets/css/global.css">
+<script src="/assets/js/components/navbar.js" defer></script>
+<script src="/assets/js/components/footer.js" defer></script>
+<style>
+  :root {
+    --afro-green: #008751;
+    --afro-dark: #0f1419;
+    --afro-light: #f5f7fa;
+  }
+
+  .tool-hero {
+    background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
+    padding: 44px 0 36px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tool-hero::after {
+    content: '🖼️';
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 8rem;
+    opacity: 0.06;
+    pointer-events: none;
+  }
+
+  .tool-hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+  }
+
+  .breadcrumb {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .breadcrumb a {
+    color: rgba(255, 255, 255, 0.3);
+    text-decoration: none;
+  }
+
+  .breadcrumb span {
+    color: var(--afro-green);
+  }
+
+  h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+
+  h1 em {
+    color: var(--afro-green);
+    font-style: normal;
+  }
+
+  .hero-sub {
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 1.6;
+    max-width: 560px;
+    margin-bottom: 14px;
+  }
+
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 6px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 11px;
+    border-radius: 4px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .b-green {
+    background: rgba(0, 135, 81, 0.18);
+    color: #5ddb9e;
+    border: 1px solid rgba(0, 135, 81, 0.38);
+  }
+
+  .tool-main {
+    padding: 28px 0 72px;
+  }
+
+  .tool-main-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 22px;
+    align-items: start;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid #dceee0;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .card + .card {
+    margin-top: 18px;
+  }
+
+  .card-head {
+    padding: 15px 22px;
+    border-bottom: 1px solid #eaf5ec;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f7fdf8;
+  }
+
+  .card-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #0a4018;
+  }
+
+  .card-body {
+    padding: 22px;
+  }
+
+  .field {
+    margin-bottom: 18px;
+  }
+
+  .field:last-child {
+    margin-bottom: 0;
+  }
+
+  .f-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+
+  .f-label-text {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #0d2813;
+  }
+
+  .f-hint {
+    font-size: 0.7rem;
+    color: #7dab87;
+  }
+
+  .f-input {
+    width: 100%;
+    padding: 11px 13px;
+    background: #f4fbf5;
+    border: 1.5px solid #c5deca;
+    border-radius: 7px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0d2813;
+    outline: none;
+    transition: border-color 0.18s, box-shadow 0.18s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .f-input:focus {
+    border-color: var(--afro-green);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(0, 135, 81, 0.1);
+  }
+
+  .preset-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+
+  .preset-btn {
+    padding: 10px 12px;
+    background: #f4fbf5;
+    border: 1.5px solid #c5deca;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #244d2c;
+    font-family: 'DM Sans', sans-serif;
+    text-align: center;
+  }
+
+  .preset-btn:hover {
+    border-color: var(--afro-green);
+  }
+
+  .preset-btn.on {
+    border-color: var(--afro-green);
+    background: var(--afro-green);
+    color: #fff;
+  }
+
+  .calc-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--afro-green);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: all 0.18s;
+    margin-top: 8px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .calc-btn:hover {
+    background: #006d42;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 135, 81, 0.3);
+  }
+
+  .calc-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .upload-area {
+    border: 2px dashed #c5deca;
+    border-radius: 8px;
+    padding: 30px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.18s;
+    background: #f4fbf5;
+  }
+
+  .upload-area:hover {
+    border-color: var(--afro-green);
+    background: rgba(0, 135, 81, 0.05);
+  }
+
+  .upload-area.active {
+    border-color: var(--afro-green);
+    background: rgba(0, 135, 81, 0.08);
+  }
+
+  .upload-icon {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+  }
+
+  .upload-text {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #244d2c;
+    margin-bottom: 4px;
+  }
+
+  .upload-hint {
+    font-size: 0.75rem;
+    color: #7dab87;
+  }
+
+  #imageInput {
+    display: none;
+  }
+
+  .preview-img {
+    max-width: 100%;
+    border-radius: 8px;
+    margin-bottom: 12px;
+  }
+
+  .checkbox-field {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .checkbox-field input {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+  }
+
+  .action-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 0 22px 22px;
+  }
+
+  .act-btn {
+    padding: 10px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-family: 'DM Sans', sans-serif;
+    border: none;
+  }
+
+  .act-download {
+    background: rgba(0, 135, 81, 0.1);
+    border: 1.5px solid rgba(0, 135, 81, 0.35);
+    color: #1a5c3a;
+  }
+
+  .act-download:hover {
+    background: rgba(0, 135, 81, 0.2);
+  }
+
+  .preview-card {
+    background: #f7fdf8;
+    border: 1.5px solid #c5deca;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    display: none;
+  }
+
+  .preview-card.on {
+    display: block;
+  }
+
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .info-card {
+    background: #f7fdf8;
+    border: 1px solid #dceee0;
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  .info-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #0a4018;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .info-text {
+    font-size: 0.8rem;
+    color: #244d2c;
+    line-height: 1.6;
+  }
+
+  .info-text li {
+    margin-bottom: 8px;
+  }
+
+  @media (max-width: 768px) {
+    .tool-main-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .preset-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .action-row {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body>
+<afro-navbar active="tools"></afro-navbar>
+
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb">
+      <a href="/">AfroTools</a> / <span>Tools</span>
+    </div>
+    <h1>Image <em>Resize</em></h1>
+    <p class="hero-sub">Resize images with custom dimensions or social media presets. Convert between PNG, JPG, and WebP formats with aspect ratio control.</p>
+    <div class="hero-badges">
+      <span class="badge b-green">Client-side</span>
+      <span class="badge b-green">No Upload</span>
+      <span class="badge b-green">Fast</span>
+    </div>
+  </div>
+</div>
+
+<div class="tool-main">
+  <div class="tool-main-inner">
+    <div>
+      <!-- Upload Card -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Upload Image</span>
+        </div>
+        <div class="card-body">
+          <div class="upload-area" id="uploadArea">
+            <div class="upload-icon">📤</div>
+            <div class="upload-text">Choose an image or drag it here</div>
+            <div class="upload-hint">PNG, JPG, WebP (Max 10MB)</div>
+            <input type="file" id="imageInput" accept="image/*">
+          </div>
+        </div>
+      </div>
+
+      <!-- Presets Card -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Social Media Presets</span>
+        </div>
+        <div class="card-body">
+          <div class="preset-grid">
+            <button class="preset-btn" data-preset="instagram-feed" data-w="1080" data-h="1080">Instagram (1:1)</button>
+            <button class="preset-btn" data-preset="instagram-story" data-w="1080" data-h="1920">Instagram Story</button>
+            <button class="preset-btn" data-preset="facebook" data-w="1200" data-h="628">Facebook</button>
+            <button class="preset-btn" data-preset="twitter" data-w="1200" data-h="675">Twitter</button>
+            <button class="preset-btn" data-preset="whatsapp" data-w="1080" data-h="1440">WhatsApp</button>
+            <button class="preset-btn" data-preset="linkedin" data-w="1200" data-h="627">LinkedIn</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Custom Dimensions Card -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Custom Dimensions</span>
+        </div>
+        <div class="card-body">
+          <div class="field">
+            <label class="f-label">
+              <span class="f-label-text">Width (px)</span>
+            </label>
+            <input type="number" class="f-input" id="widthInput" placeholder="e.g., 800" min="1">
+          </div>
+          <div class="field">
+            <label class="f-label">
+              <span class="f-label-text">Height (px)</span>
+            </label>
+            <input type="number" class="f-input" id="heightInput" placeholder="e.g., 600" min="1">
+          </div>
+
+          <div class="checkbox-field">
+            <input type="checkbox" id="aspectRatio" checked>
+            <label for="aspectRatio" style="font-size: 0.85rem; color: #244d2c; margin: 0; cursor: pointer;">Maintain aspect ratio</label>
+          </div>
+
+          <div class="field">
+            <label class="f-label">
+              <span class="f-label-text">Format</span>
+            </label>
+            <select class="f-input" id="formatSelect">
+              <option value="png">PNG</option>
+              <option value="jpg">JPG</option>
+              <option value="webp">WebP</option>
+            </select>
+          </div>
+
+          <button class="calc-btn" id="resizeBtn" disabled>Resize Image</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Preview -->
+      <div class="card preview-card" id="previewCard">
+        <div class="card-head">
+          <span class="card-title">Preview</span>
+        </div>
+        <div class="card-body">
+          <canvas id="previewCanvas" style="max-width: 100%; border-radius: 8px; margin-bottom: 12px;"></canvas>
+          <div style="font-size: 0.75rem; color: #7dab87; margin-bottom: 12px;">
+            <span id="previewDims"></span>
+          </div>
+        </div>
+        <div class="action-row">
+          <button class="act-btn act-download" id="downloadBtn">📥 Download</button>
+        </div>
+      </div>
+
+      <!-- Info Card -->
+      <div class="info-card">
+        <div class="info-title">Image Resizer</div>
+        <div class="info-text">
+          Resize images for any platform with preset dimensions or custom sizes.
+          <ul style="margin-top:10px;">
+            <li>✓ Social media presets</li>
+            <li>✓ Aspect ratio control</li>
+            <li>✓ Multiple formats</li>
+            <li>✓ Client-side processing</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<afro-footer></afro-footer>
+
+<script>
+  const uploadArea = document.getElementById('uploadArea');
+  const imageInput = document.getElementById('imageInput');
+  const widthInput = document.getElementById('widthInput');
+  const heightInput = document.getElementById('heightInput');
+  const aspectRatioCheck = document.getElementById('aspectRatio');
+  const formatSelect = document.getElementById('formatSelect');
+  const resizeBtn = document.getElementById('resizeBtn');
+  const previewCard = document.getElementById('previewCard');
+  const previewCanvas = document.getElementById('previewCanvas');
+  const previewDims = document.getElementById('previewDims');
+  const downloadBtn = document.getElementById('downloadBtn');
+  const presetBtns = document.querySelectorAll('.preset-btn');
+
+  let originalImage = null;
+  let originalWidth = 0;
+  let originalHeight = 0;
+
+  // Upload area events
+  uploadArea.addEventListener('click', () => imageInput.click());
+  uploadArea.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    uploadArea.classList.add('active');
+  });
+  uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('active'));
+  uploadArea.addEventListener('drop', (e) => {
+    e.preventDefault();
+    uploadArea.classList.remove('active');
+    if (e.dataTransfer.files.length) {
+      imageInput.files = e.dataTransfer.files;
+      handleImageUpload();
+    }
+  });
+
+  imageInput.addEventListener('change', handleImageUpload);
+
+  function handleImageUpload() {
+    const file = imageInput.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        originalImage = img;
+        originalWidth = img.width;
+        originalHeight = img.height;
+        widthInput.value = originalWidth;
+        heightInput.value = originalHeight;
+        resizeBtn.disabled = false;
+        previewCard.classList.add('on');
+        updatePreview();
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  presetBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      presetBtns.forEach(b => b.classList.remove('on'));
+      btn.classList.add('on');
+      widthInput.value = btn.dataset.w;
+      heightInput.value = btn.dataset.h;
+      if (originalImage) updatePreview();
+    });
+  });
+
+  widthInput.addEventListener('input', () => {
+    if (aspectRatioCheck.checked && originalImage) {
+      const ratio = originalHeight / originalWidth;
+      heightInput.value = Math.round(widthInput.value * ratio);
+    }
+    if (originalImage) updatePreview();
+  });
+
+  heightInput.addEventListener('input', () => {
+    if (aspectRatioCheck.checked && originalImage) {
+      const ratio = originalWidth / originalHeight;
+      widthInput.value = Math.round(heightInput.value * ratio);
+    }
+    if (originalImage) updatePreview();
+  });
+
+  function updatePreview() {
+    const width = parseInt(widthInput.value) || originalWidth;
+    const height = parseInt(heightInput.value) || originalHeight;
+
+    const canvas = previewCanvas;
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(originalImage, 0, 0, width, height);
+    previewDims.textContent = `${width}x${height}px`;
+  }
+
+  resizeBtn.addEventListener('click', () => {
+    const width = parseInt(widthInput.value);
+    const height = parseInt(heightInput.value);
+    const format = formatSelect.value;
+
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(originalImage, 0, 0, width, height);
+
+    downloadBtn.onclick = () => {
+      const mimeType = format === 'jpg' ? 'image/jpeg' : `image/${format}`;
+      canvas.toBlob((blob) => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `resized.${format}`;
+        a.click();
+        URL.revokeObjectURL(url);
+      }, mimeType, format === 'jpg' ? 0.9 : undefined);
+    };
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GPA Calculator — 4.0 & 5.0 Scale | AfroTools</title>
+<meta name="description" content="GPA calculator supporting 4.0 and 5.0 scales (US, Nigeria, Kenya, South Africa). Calculate CGPA with course credits.">
+<link rel="canonical" href="https://afrotools.com/tools/gpa-calculator">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="GPA Calculator | AfroTools">
+<meta property="og:description" content="Calculate GPA and CGPA. Support for 4.0 and 5.0 scales. African education systems included.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/gpa-calculator">
+<meta property="og:site_name" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.css">
+<link rel="stylesheet" href="/assets/css/global.css">
+<script src="/assets/js/components/navbar.js" defer></script>
+<script src="/assets/js/components/footer.js" defer></script>
+<style>
+  :root { --afro-green: #008751; --afro-dark: #0f1419; }
+  .tool-hero { background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%); padding: 44px 0 36px; position: relative; overflow: hidden; }
+  .tool-hero::after { content: '🎓'; position: absolute; right: 5%; top: 50%; transform: translateY(-50%); font-size: 8rem; opacity: 0.06; pointer-events: none; }
+  .tool-hero-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; }
+  .breadcrumb { font-size: 0.72rem; font-weight: 500; color: rgba(255, 255, 255, 0.3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
+  .breadcrumb a { color: rgba(255, 255, 255, 0.3); text-decoration: none; }
+  .breadcrumb span { color: var(--afro-green); }
+  h1 { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; color: #fff; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 10px; }
+  h1 em { color: var(--afro-green); font-style: normal; }
+  .hero-sub { font-size: 0.88rem; color: rgba(255, 255, 255, 0.45); line-height: 1.6; max-width: 560px; margin-bottom: 14px; }
+  .hero-badges { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 6px; }
+  .badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 11px; border-radius: 4px; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.05em; }
+  .b-green { background: rgba(0, 135, 81, 0.18); color: #5ddb9e; border: 1px solid rgba(0, 135, 81, 0.38); }
+  .tool-main { padding: 28px 0 72px; }
+  .tool-main-inner { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+  .card { background: #fff; border: 1px solid #dceee0; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05); }
+  .card + .card { margin-top: 18px; }
+  .card-head { padding: 15px 22px; border-bottom: 1px solid #eaf5ec; background: #f7fdf8; }
+  .card-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #0a4018; }
+  .card-body { padding: 22px; }
+  .scale-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 18px; }
+  .scale-btn { padding: 10px; background: #f4fbf5; border: 1.5px solid #c5deca; border-radius: 7px; cursor: pointer; font-size: 0.72rem; font-weight: 700; color: #244d2c; transition: all 0.15s; }
+  .scale-btn.on { background: var(--afro-green); color: #fff; border-color: var(--afro-green); }
+  .course-item { background: #f7fdf8; border: 1px solid #c5deca; border-radius: 8px; padding: 14px; margin-bottom: 12px; }
+  .course-item.last { margin-bottom: 0; }
+  .course-row { display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 8px; align-items: end; }
+  .f-label { display: block; font-size: 0.65rem; font-weight: 700; color: #0d2813; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.05em; }
+  .f-input { width: 100%; padding: 8px 10px; background: #fff; border: 1px solid #c5deca; border-radius: 6px; font-size: 0.85rem; color: #0d2813; outline: none; font-family: 'DM Sans', sans-serif; }
+  .f-input:focus { border-color: var(--afro-green); box-shadow: 0 0 0 3px rgba(0, 135, 81, 0.1); }
+  .remove-btn { padding: 8px 12px; background: rgba(192, 57, 43, 0.1); border: 1px solid rgba(192, 57, 43, 0.35); color: #8b2e1f; border-radius: 6px; cursor: pointer; font-size: 0.7rem; font-weight: 700; }
+  .add-btn { padding: 12px 18px; background: rgba(0, 135, 81, 0.1); border: 1.5px solid rgba(0, 135, 81, 0.35); color: #1a5c3a; border-radius: 7px; cursor: pointer; font-size: 0.75rem; font-weight: 700; margin-bottom: 18px; width: 100%; }
+  .result-box { background: linear-gradient(135deg, #1a1f2e 0%, var(--afro-dark) 100%); color: var(--afro-green); border-radius: 8px; padding: 20px; text-align: center; margin-top: 18px; }
+  .result-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255, 255, 255, 0.4); margin-bottom: 8px; }
+  .result-gpa { font-size: 2.4rem; font-weight: 800; line-height: 1; }
+  .result-scale { font-size: 0.75rem; color: rgba(255, 255, 255, 0.3); margin-top: 6px; }
+</style>
+</head>
+<body>
+<afro-navbar active="tools"></afro-navbar>
+
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb"><a href="/">AfroTools</a> / <span>Tools</span></div>
+    <h1>GPA <em>Calculator</em></h1>
+    <p class="hero-sub">Calculate GPA and CGPA. Support for 4.0 and 5.0 scales (US, Nigerian, Kenyan, South African systems).</p>
+    <div class="hero-badges">
+      <span class="badge b-green">4.0 & 5.0</span>
+      <span class="badge b-green">Credits</span>
+    </div>
+  </div>
+</div>
+
+<div class="tool-main">
+  <div class="tool-main-inner">
+    <div class="card">
+      <div class="card-head"><span class="card-title">GPA Settings</span></div>
+      <div class="card-body">
+        <div class="scale-toggle">
+          <button class="scale-btn on" data-scale="4.0">4.0 Scale (US)</button>
+          <button class="scale-btn" data-scale="5.0">5.0 Scale (Africa)</button>
+        </div>
+
+        <div id="coursesList"></div>
+
+        <button class="add-btn" id="addCourseBtn">+ Add Course</button>
+
+        <div class="result-box">
+          <div class="result-label">Your GPA</div>
+          <div class="result-gpa" id="gpaDisplay">0.00</div>
+          <div class="result-scale" id="scaleDisplay">4.0 Scale</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<afro-footer></afro-footer>
+
+<script>
+  let scale = '4.0';
+  let courses = [{ name: '', credits: 3, grade: 'A' }];
+
+  const scaleBtns = document.querySelectorAll('.scale-btn');
+  const addCourseBtn = document.getElementById('addCourseBtn');
+  const coursesList = document.getElementById('coursesList');
+  const gpaDisplay = document.getElementById('gpaDisplay');
+  const scaleDisplay = document.getElementById('scaleDisplay');
+
+  const gradeScale40 = { 'A': 4.0, 'A-': 3.7, 'B+': 3.3, 'B': 3.0, 'B-': 2.7, 'C+': 2.3, 'C': 2.0, 'C-': 1.7, 'D': 1.0, 'F': 0.0 };
+  const gradeScale50 = { 'A': 5.0, 'A-': 4.5, 'B+': 4.0, 'B': 3.5, 'B-': 3.0, 'C': 2.5, 'D': 2.0, 'F': 0.0 };
+
+  scaleBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      scale = btn.dataset.scale;
+      scaleBtns.forEach(b => b.classList.remove('on'));
+      btn.classList.add('on');
+      scaleDisplay.textContent = scale === '4.0' ? '4.0 Scale' : '5.0 Scale';
+      calculateGPA();
+      renderCourses();
+    });
+  });
+
+  function renderCourses() {
+    coursesList.innerHTML = courses.map((c, i) => {
+      const gradeScale = scale === '4.0' ? gradeScale40 : gradeScale50;
+      const gradeOptions = Object.keys(gradeScale).map(g => `<option value="${g}" ${c.grade === g ? 'selected' : ''}>${g}</option>`).join('');
+      return `
+        <div class="course-item ${i === courses.length - 1 ? 'last' : ''}">
+          <div class="course-row">
+            <div><label class="f-label">Course Name</label><input type="text" class="f-input" value="${c.name}" onchange="updateCourse(${i}, 'name', this.value)"></div>
+            <div><label class="f-label">Credits</label><input type="number" class="f-input" value="${c.credits}" min="1" max="6" onchange="updateCourse(${i}, 'credits', this.value)"></div>
+            <div><label class="f-label">Grade</label><select class="f-input" onchange="updateCourse(${i}, 'grade', this.value)">${gradeOptions}</select></div>
+            <button class="remove-btn" onclick="removeCourse(${i})">Remove</button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function updateCourse(i, field, value) {
+    if (field === 'credits') value = parseInt(value);
+    courses[i][field] = value;
+    calculateGPA();
+  }
+
+  function removeCourse(i) {
+    if (courses.length > 1) {
+      courses.splice(i, 1);
+      renderCourses();
+      calculateGPA();
+    }
+  }
+
+  addCourseBtn.addEventListener('click', () => {
+    courses.push({ name: '', credits: 3, grade: 'A' });
+    renderCourses();
+    calculateGPA();
+  });
+
+  function calculateGPA() {
+    const gradeScale = scale === '4.0' ? gradeScale40 : gradeScale50;
+    let totalPoints = 0, totalCredits = 0;
+    courses.forEach(c => {
+      const points = (gradeScale[c.grade] || 0) * c.credits;
+      totalPoints += points;
+      totalCredits += c.credits;
+    });
+    const gpa = totalCredits > 0 ? (totalPoints / totalCredits).toFixed(2) : 0;
+    gpaDisplay.textContent = gpa;
+  }
+
+  renderCourses();
+  calculateGPA();
+</script>
+</body>
+</html>

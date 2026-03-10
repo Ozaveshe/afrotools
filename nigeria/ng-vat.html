@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nigeria VAT Calculator 2026 — Standard 7.5%, Zero-Rated Food, Exempt Healthcare | AfroTools</title>
+<meta name="description" content="Nigeria VAT calculator 2026. Standard 7.5%, zero-rated food (Jan 2026), exempt healthcare, education, transport. Calculate VAT-inclusive, VAT-exclusive, reverse VAT. Free PDF download.">
+<link rel="canonical" href="https://afrotools.com/nigeria/ng-vat">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title"       content="Nigeria VAT Calculator 2026 | AfroTools">
+<meta property="og:description" content="Nigeria VAT: Standard 7.5%, zero-rated food from Jan 2026, exempt healthcare, education, transport. Calculate VAT inclusive/exclusive, reverse VAT extraction. Free PDF.">
+<meta property="og:type"        content="website">
+<meta property="og:url"         content="https://afrotools.com/nigeria/ng-vat">
+<meta property="og:image"       content="https://afrotools.com/assets/img/og-ng-vat.png">
+<meta property="og:locale"      content="en_NG">
+<meta property="og:site_name"   content="AfroTools">
+<meta name="twitter:card"       content="summary_large_image">
+<meta name="twitter:title"      content="Nigeria VAT Calculator 2026 | AfroTools">
+<meta name="twitter:description" content="Nigeria VAT: 7.5% standard, food zero-rated, healthcare/education/transport exempt.">
+<meta name="robots"             content="index, follow">
+<meta name="author"             content="AfroTools">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com"},{"@type":"ListItem","position":2,"name":"Nigeria","item":"https://afrotools.com/nigeria"},{"@type":"ListItem","position":3,"name":"Nigeria VAT Calculator","item":"https://afrotools.com/nigeria/ng-vat"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Nigeria VAT Calculator 2026","url":"https://afrotools.com/nigeria/ng-vat","description":"Calculate Nigeria VAT: standard 7.5%, zero-rated food (Jan 2026), exempt healthcare/education/transport. Calculate VAT-inclusive, VAT-exclusive, reverse VAT.","applicationCategory":"FinanceApplication","operatingSystem":"Web","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"NGN"},"provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the Nigeria VAT rate for 2026?","acceptedAnswer":{"@type":"Answer","text":"Nigeria's standard VAT rate is 7.5% on most goods and services. From January 2026, certain food items are zero-rated. Healthcare, education, domestic transport, and financial services remain exempt from VAT."}},{"@type":"Question","name":"Which food items are zero-rated in Nigeria?","acceptedAnswer":{"@type":"Answer","text":"From January 2026, unprocessed food items including grains, vegetables, fruits, meat, fish, eggs, and dairy products are zero-rated. Processed foods generally remain subject to standard 7.5% VAT."}},{"@type":"Question","name":"What goods and services are exempt from VAT in Nigeria?","acceptedAnswer":{"@type":"Answer","text":"Exempt from VAT: healthcare services (doctor, hospital, medicine); education (tuition, textbooks); domestic transport (local flights, buses); financial services (banking, insurance); and agricultural inputs."}}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.css">
+<link rel="stylesheet" href="/assets/css/global.css">
+<script src="/assets/js/components/navbar.js" defer></script>
+<script src="/assets/js/components/footer.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --ng-green:  #008751;   /* Nigeria flag green  */
+    --ng-white:  #FFFFFF;   /* Nigeria flag white */
+    --ng-gold:   #FFA500;   /* Accent gold */
+    --ng-black:  #111827;
+    --ng-dark:   #0a3d2a;
+  }
+
+  .tool-hero{background:var(--ng-dark);padding:44px 0 36px;position:relative;overflow:hidden}
+  .tool-hero::after{content:'🇳🇬';position:absolute;right:5%;top:50%;transform:translateY(-50%);font-size:8rem;opacity:.06;pointer-events:none}
+  .tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px;position:relative}
+  .breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+  .breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}
+  .breadcrumb span{color:var(--ng-gold)}
+  h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+  h1 em{color:var(--ng-gold);font-style:normal}
+  .hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+  .hero-badges{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:6px}
+  .badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+  .b-gold{background:rgba(255,165,0,.14);color:#e6a800;border:1px solid rgba(255,165,0,.3)}
+  .b-green{background:rgba(0,135,81,.18);color:#5ddb9e;border:1px solid rgba(0,135,81,.38)}
+  .b-blue{background:rgba(0,100,200,.14);color:#7dd5f0;border:1px solid rgba(0,100,200,.3)}
+  .b-grey{background:rgba(255,255,255,.07);color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.12)}
+  .hero-meta{font-size:.72rem;color:rgba(255,255,255,.22);margin-top:4px}
+
+  .update-bar{background:rgba(0,135,81,.06);border-bottom:1px solid rgba(0,135,81,.18);padding:11px 0}
+  .update-bar-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+  .update-bar p{font-size:.78rem;color:rgba(0,0,0,.62);line-height:1.6}
+  .update-bar strong{color:#0a5c1e;font-weight:700}
+
+  .tool-main{padding:28px 0 72px}
+  .tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 360px;gap:22px;align-items:start}
+
+  .card{background:#fff;border:1px solid #dceee0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+  .card+.card{margin-top:18px}
+  .card-head{padding:15px 22px;border-bottom:1px solid #eaf5ec;display:flex;align-items:center;justify-content:space-between;background:#f7fdf8}
+  .card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#0a4018}
+  .card-sub{font-size:.72rem;color:#7dab87}
+
+  .field{margin-bottom:18px}
+  .field:last-child{margin-bottom:0}
+  .f-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+  .f-label-text{font-size:.75rem;font-weight:700;letter-spacing:.04em;color:#0d2813}
+  .f-hint{font-size:.7rem;color:#7dab87}
+  .f-wrap{position:relative}
+  .f-prefix{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:.78rem;font-weight:700;color:#7dab87;pointer-events:none}
+  .f-input{width:100%;padding:11px 13px 11px 60px;background:#f4fbf5;border:1.5px solid #c5deca;border-radius:7px;font-size:1rem;font-weight:600;color:#0d2813;outline:none;transition:border-color .18s,box-shadow .18s;font-family:'DM Sans',sans-serif;-moz-appearance:textfield}
+  .f-input::-webkit-inner-spin-button,.f-input::-webkit-outer-spin-button{-webkit-appearance:none}
+  .f-input:focus{border-color:var(--ng-green);background:#fff;box-shadow:0 0 0 3px rgba(0,135,81,.1)}
+  .f-note{font-size:.7rem;color:#7dab87;margin-top:5px;line-height:1.55}
+
+  .slider-wrap{margin-bottom:18px}
+  .slider-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .slider-label{font-size:.75rem;font-weight:700;color:#0d2813}
+  .slider-val{font-size:.92rem;font-weight:800;color:var(--ng-green)}
+  input[type=range]{-webkit-appearance:none;width:100%;height:5px;border-radius:3px;outline:none;cursor:pointer}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;background:var(--ng-green);border-radius:50%;border:2.5px solid #fff;box-shadow:0 1px 6px rgba(0,135,81,.35);cursor:pointer}
+  .slider-limits{display:flex;justify-content:space-between;margin-top:4px}
+  .slider-limits span{font-size:.65rem;font-weight:500;color:#7dab87}
+
+  .toggles{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .tog{display:flex;align-items:center;gap:9px;padding:10px 12px;background:#f4fbf5;border:1.5px solid #c5deca;border-radius:7px;cursor:pointer;transition:all .15s;user-select:none}
+  .tog:hover{border-color:var(--ng-green)}
+  .tog.on{border-color:var(--ng-green);background:#edfaf0}
+  .tog-box{width:17px;height:17px;flex-shrink:0;border:2px solid #aacfb5;border-radius:4px;background:#fff;display:flex;align-items:center;justify-content:center;transition:all .15s}
+  .tog.on .tog-box{background:var(--ng-green);border-color:var(--ng-green)}
+  .tog-box svg{display:none}
+  .tog.on .tog-box svg{display:block}
+  .tog-label{font-size:.72rem;font-weight:700;color:#0d2813;line-height:1.3}
+  .tog-rate{font-size:.65rem;color:#7dab87}
+
+  .rate-selector{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+  .rate-btn{padding:10px 12px;font-size:.72rem;font-weight:700;border:1.5px solid #c5deca;background:#f4fbf5;border-radius:6px;cursor:pointer;color:#7dab87;transition:all .15s;font-family:'DM Sans',sans-serif}
+  .rate-btn.on{background:var(--ng-green);border-color:var(--ng-green);color:#fff}
+
+  .calc-btn{width:100%;padding:14px;background:var(--ng-green);color:#fff;border:none;border-radius:8px;font-size:.9rem;font-weight:700;letter-spacing:.03em;cursor:pointer;transition:all .18s;margin-top:8px;font-family:'DM Sans',sans-serif}
+  .calc-btn:hover{background:#006a42;transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,135,81,.3)}
+
+  .results-card{display:none}
+  .results-card.on{display:block}
+  .res-hero{background:linear-gradient(135deg,var(--ng-dark) 0%,#0d2a13 100%);padding:26px 24px;text-align:center;border-radius:10px 10px 0 0}
+  .res-hero-label{font-size:.68rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.38);margin-bottom:6px}
+  .res-hero-amount{font-size:clamp(2.2rem,4.5vw,3.2rem);font-weight:800;color:var(--ng-gold);letter-spacing:-.02em;line-height:1}
+  .res-hero-period{font-size:.78rem;color:rgba(255,255,255,.3);margin-top:5px}
+
+  .res-body{padding:20px 22px}
+  .res-section{margin-bottom:16px}
+  .res-section-title{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7dab87;margin-bottom:8px;padding-bottom:7px;border-bottom:1px solid #eaf5ec}
+  .res-row{display:flex;align-items:center;justify-content:space-between;padding:5px 0;font-size:.85rem}
+  .res-row+.res-row{border-top:1px solid #f5fcf6}
+  .res-row-lbl{color:#244d2c;font-weight:400}
+  .res-row-val{font-weight:700;color:#0d2813;font-variant-numeric:tabular-nums}
+  .c-red{color:#c0392b}.c-grn{color:#008751}.c-gold{color:#9a7a00}.c-mut{color:#7dab87}
+  .res-row.total{border-top:2px solid #c5deca !important;margin-top:4px;padding-top:10px}
+  .res-row.total .res-row-lbl{font-weight:700;color:#0d2813}
+  .res-row.total .res-row-val{font-size:1.05rem;font-weight:800}
+
+  .chart-section{padding:0 22px 22px}
+  .chart-tabs{display:flex;gap:6px;margin-bottom:14px}
+  .chart-tab{padding:6px 14px;font-size:.7rem;font-weight:700;border:1.5px solid #c5deca;background:transparent;border-radius:5px;cursor:pointer;color:#7dab87;transition:all .15s;font-family:'DM Sans',sans-serif}
+  .chart-tab.on{background:var(--ng-green);border-color:var(--ng-green);color:#fff}
+  .chart-canvas-wrap{position:relative;height:200px}
+
+  .action-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 22px 22px}
+  .act-btn{padding:10px;font-size:.72rem;font-weight:700;border-radius:6px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px;font-family:'DM Sans',sans-serif}
+  .act-pdf{background:rgba(255,165,0,.1);border:1.5px solid rgba(255,165,0,.35);color:#7a6200}
+  .act-pdf:hover{background:rgba(255,165,0,.22)}
+  .act-share{background:#f4fbf5;border:1.5px solid #c5deca;color:#244d2c}
+  .act-share:hover{background:#e8f5eb}
+
+  .sidebar{display:flex;flex-direction:column;gap:16px}
+
+  .exempt-card{background:linear-gradient(160deg,var(--ng-dark) 0%,#0d2a13 100%);border-radius:10px;border:1px solid rgba(255,165,0,.1);overflow:hidden;padding:16px 18px}
+  .exempt-card h4{font-size:.72rem;font-weight:700;letter-spacing:.06em;color:#fff;margin-bottom:10px}
+  .exempt-item{font-size:.78rem;color:rgba(255,255,255,.7);line-height:1.6;margin-bottom:6px}
+
+  .bands-card .card-head{cursor:pointer;user-select:none}
+  .tog-arrow{font-size:.8rem;color:#7dab87;transition:transform .2s}
+  .tog-arrow.open{transform:rotate(180deg)}
+  .bands-body{display:none;padding:14px 18px}
+  .bands-body.open{display:block}
+  .band-row{display:flex;justify-content:space-between;padding:5px 0;font-size:.8rem}
+  .band-row+.band-row{border-top:1px solid #f5fcf6}
+  .band-range{color:#244d2c}
+  .band-rate{font-weight:700;color:var(--ng-green)}
+  .band-note{font-size:.7rem;color:#7dab87;margin-top:10px;line-height:1.55}
+
+  .disclaimer{font-size:.71rem;color:#7dab87;line-height:1.6;padding:13px 16px;background:#f7fdf8;border:1px solid #c5deca;border-radius:8px}
+  .disclaimer strong{font-weight:600;color:#244d2c}
+
+  .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;display:none;align-items:center;justify-content:center;padding:20px}
+  .modal-bg.on{display:flex}
+  .modal{background:#fff;border-radius:12px;padding:32px;max-width:420px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,.22);position:relative}
+  .modal h3{font-size:1.1rem;font-weight:800;color:#0d2813;margin-bottom:6px}
+  .modal p{font-size:.83rem;color:#244d2c;line-height:1.6;margin-bottom:20px}
+  .modal-input{width:100%;padding:12px 14px;border:1.5px solid #c5deca;border-radius:7px;font-size:.9rem;color:#0d2813;outline:none;margin-bottom:10px;background:#f4fbf5;transition:border-color .15s;font-family:'DM Sans',sans-serif;box-sizing:border-box}
+  .modal-input:focus{border-color:var(--ng-green);background:#fff}
+  .modal-submit{width:100%;padding:13px;background:var(--ng-green);color:#fff;border:none;border-radius:7px;font-size:.88rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif}
+  .modal-submit:hover{background:#006a42}
+  .modal-cancel{width:100%;padding:10px;background:transparent;border:none;font-size:.78rem;color:#7dab87;cursor:pointer;margin-top:6px;font-family:'DM Sans',sans-serif}
+
+  .faq-sec{padding:52px 0;background:#fff;border-top:1px solid #e4f0e6}
+  .faq-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+  .faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:28px}
+  .faq-item{padding:18px 20px;background:#f7fdf8;border:1px solid #dceee0;border-radius:8px}
+  .faq-q{font-size:.85rem;font-weight:700;color:#0d2813;margin-bottom:7px;line-height:1.4}
+  .faq-a{font-size:.82rem;color:#244d2c;line-height:1.7}
+  .eyebrow{display:block;font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ng-green);margin-bottom:6px}
+  .sec-title{font-size:clamp(1.3rem,2.5vw,1.7rem);font-weight:800;color:#0d2813;letter-spacing:-.02em}
+
+  @media(max-width:900px){.tool-main-inner{grid-template-columns:1fr}.faq-grid{grid-template-columns:1fr}}
+  @media(max-width:480px){.card-body{padding:16px}.res-body{padding:16px}}
+</style>
+</head>
+<body class="tool-page">
+<afro-navbar active="tools"></afro-navbar>
+
+<!-- HERO -->
+<section class="tool-hero">
+  <div class="tool-hero-inner">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a> / <a href="/nigeria">🇳🇬 Nigeria</a> / <span>VAT Calculator</span>
+    </nav>
+    <h1>Nigeria VAT<br><em>Calculator 2026</em></h1>
+    <p class="hero-sub">Standard 7.5%, zero-rated food from Jan 2026, exempt healthcare, education, transport. Calculate VAT-inclusive price, VAT-exclusive price, VAT amount, and reverse VAT extraction.</p>
+    <div class="hero-badges">
+      <span class="badge b-green">Standard 7.5%</span>
+      <span class="badge b-gold">Zero-Rated Food (Jan 2026)</span>
+      <span class="badge b-blue">NGN · Nigerian Naira</span>
+      <span class="badge b-grey">Exempt: Healthcare, Education, Transport</span>
+    </div>
+    <p class="hero-meta">Last verified: March 2026 · Source: Federal Inland Revenue Service (FIRS) · VAT Act (VATA) 2021</p>
+  </div>
+</section>
+
+<!-- UPDATE BAR -->
+<div class="update-bar">
+  <div class="update-bar-inner">
+    <p><strong>2026 Key Facts:</strong> Standard VAT rate <strong>7.5%</strong> applies to most goods and services. From <strong>January 2026</strong>, certain food items are <strong>zero-rated</strong>. <strong>Exempt:</strong> healthcare services, medicines, education, domestic transport, financial services, and agricultural inputs. FIRS reviews rates quarterly.</p>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="tool-main">
+  <div class="tool-main-inner">
+
+    <!-- LEFT COLUMN -->
+    <div>
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Enter Amount</span>
+          <span class="card-sub">Nigerian Naira · ₦</span>
+        </div>
+        <div class="card-body">
+
+          <!-- MODE TOGGLE -->
+          <div class="field">
+            <div class="f-label"><span class="f-label-text">Calculation Mode</span><span class="f-hint">Choose your input type</span></div>
+            <div class="toggles">
+              <div class="tog on" data-tog="add-vat" onclick="togMode(this)">
+                <div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div><div class="tog-label">Add VAT</div><div class="tog-rate">Price + VAT</div></div>
+              </div>
+              <div class="tog" data-tog="remove-vat" onclick="togMode(this)">
+                <div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div><div class="tog-label">Remove VAT</div><div class="tog-rate">Extract VAT from total</div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- AMOUNT SLIDER -->
+          <div class="slider-wrap">
+            <div class="slider-row">
+              <span class="slider-label">Amount (NGN)</span>
+              <span class="slider-val" id="sliderVal">₦100,000</span>
+            </div>
+            <input type="range" id="amountSlider" min="1000" max="50000000" step="1000" value="100000" oninput="onSlider(this)">
+            <div class="slider-limits"><span>₦1,000</span><span>₦50,000,000</span></div>
+          </div>
+
+          <!-- INPUT -->
+          <div class="field">
+            <div class="f-label"><span class="f-label-text">Amount</span><span class="f-hint">Enter exact value</span></div>
+            <div class="f-wrap">
+              <span class="f-prefix">₦</span>
+              <input type="number" class="f-input" id="amount" placeholder="100,000" min="0" step="1000" value="100000" oninput="onInput(this)">
+            </div>
+          </div>
+
+          <!-- VAT RATE SELECTOR -->
+          <div class="field">
+            <div class="f-label"><span class="f-label-text">VAT Rate</span><span class="f-hint">Select applicable rate</span></div>
+            <div class="rate-selector">
+              <button class="rate-btn on" id="rateStd" onclick="setRate(0.075,'Standard',this)">Standard<br>7.5%</button>
+              <button class="rate-btn" id="rateZero" onclick="setRate(0,'Zero-Rated',this)">Zero-Rated<br>0%</button>
+            </div>
+          </div>
+
+          <button class="calc-btn" onclick="calculate()">Calculate VAT →</button>
+        </div>
+      </div>
+
+      <!-- RESULTS -->
+      <div class="card results-card" id="resultsCard">
+        <div class="res-hero">
+          <div class="res-hero-label" id="resLabel">Total (Inclusive)</div>
+          <div class="res-hero-amount" id="resAmount">₦0</div>
+        </div>
+        <div class="res-body">
+          <div class="res-section">
+            <div class="res-section-title">Breakdown</div>
+            <div id="resContent"></div>
+          </div>
+          <div class="chart-section">
+            <div class="chart-tabs">
+              <button class="chart-tab on" onclick="setChart('pie',this)">Pie Chart</button>
+              <button class="chart-tab" onclick="setChart('bar',this)">Bar Chart</button>
+            </div>
+            <div class="chart-canvas-wrap"><canvas id="mainChart"></canvas></div>
+          </div>
+        </div>
+
+        <div class="action-row">
+          <button class="act-btn act-pdf" onclick="openPdfModal()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Download PDF
+          </button>
+          <button class="act-btn act-share" onclick="shareResult()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            Share Result
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+
+      <!-- EXEMPT ITEMS -->
+      <div class="exempt-card">
+        <h4>Exempt from VAT</h4>
+        <div class="exempt-item">✓ Healthcare services & medicines</div>
+        <div class="exempt-item">✓ Education & textbooks</div>
+        <div class="exempt-item">✓ Domestic transport</div>
+        <div class="exempt-item">✓ Financial services (banking, insurance)</div>
+        <div class="exempt-item">✓ Agricultural inputs & unprocessed food (from Jan 2026)</div>
+      </div>
+
+      <!-- VAT INFORMATION -->
+      <div class="card bands-card">
+        <div class="card-head" onclick="toggleBands(this)">
+          <span class="card-title">Nigeria VAT Rates</span>
+          <span class="tog-arrow">▾</span>
+        </div>
+        <div class="bands-body">
+          <div class="band-row"><span class="band-range">Standard Rate</span><span class="band-rate">7.5% on most goods & services</span></div>
+          <div class="band-row"><span class="band-range">Zero-Rated (from Jan 2026)</span><span class="band-zero">0% on food items</span></div>
+          <div class="band-row"><span class="band-range">Exempt</span><span class="band-zero">Healthcare, education, transport, finance</span></div>
+          <p class="band-note">VAT is charged on the supply of goods and services in Nigeria. FIRS administers VAT collection. Registered businesses must file returns monthly or quarterly depending on turnover.</p>
+        </div>
+      </div>
+
+      <div class="disclaimer">
+        <strong>Disclaimer:</strong> For informational purposes only. Not professional tax or legal advice. Rates based on VAT Act (VATA) 2021 and FIRS guidelines. Verify with FIRS (firs.gov.ng) or a qualified tax advisor.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<section class="faq-sec">
+  <div class="faq-inner">
+    <span class="eyebrow">Nigeria VAT FAQ</span>
+    <h2 class="sec-title">Common VAT Questions</h2>
+    <div class="faq-grid">
+      <div class="faq-item">
+        <div class="faq-q">What is the standard VAT rate in Nigeria?</div>
+        <p class="faq-a">The standard VAT rate in Nigeria is 7.5%. This applies to most goods and services. From January 2026, certain food items including grains, vegetables, fruits, meat, and eggs are zero-rated.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Which items are zero-rated for VAT?</div>
+        <p class="faq-a">Zero-rated items (0% VAT, effective Jan 2026) include unprocessed food: grains, vegetables, fruits, meat, poultry, fish, eggs, and dairy. Processed foods remain subject to 7.5% VAT.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What services are exempt from VAT?</div>
+        <p class="faq-a">Exempt services include: healthcare and medical services, education and training, domestic passenger transport, financial services (banking, insurance), and agricultural services. These do not charge VAT.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">How do I calculate reverse VAT?</div>
+        <p class="faq-a">To extract VAT from a total amount (reverse VAT): Divide the total by 1.075 to get the net, then subtract net from total to get VAT amount. This calculator does this automatically when you select "Remove VAT" mode.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Who collects and remits VAT in Nigeria?</div>
+        <p class="faq-a">VAT-registered businesses collect VAT from customers and remit to FIRS. Filing frequency depends on annual turnover: large businesses file monthly, smaller businesses file quarterly. Non-registered businesses cannot charge VAT.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What is the VAT registration threshold in Nigeria?</div>
+        <p class="faq-a">Businesses with annual turnover of ₦25 million or more are required to register for VAT with FIRS. Those below the threshold can voluntarily register. Registration is done through the FIRS portal (taxes.firs.gov.ng).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PDF MODAL -->
+<div class="modal-bg" id="pdfModal">
+  <div class="modal">
+    <h3>📄 Download Your VAT Summary</h3>
+    <p>Enter your email to get a detailed PDF — we'll notify you when Nigeria tax rates change.</p>
+    <form name="pdf-leads" data-netlify="true" netlify-honeypot="bot-field" id="leadForm" onsubmit="submitPdf(event)">
+      <input type="hidden" name="form-name"   value="pdf-leads">
+      <input type="hidden" name="country"      value="Nigeria">
+      <input type="hidden" name="country_code" value="NG">
+      <input type="hidden" name="tool"         value="vat">
+      <input type="hidden" name="tool_id"      value="ng-vat">
+      <input type="hidden" name="currency"     value="NGN">
+      <input type="hidden" name="amount"       id="hiddenAmount" value="">
+      <input class="modal-input" type="text"  name="name"  placeholder="Your name (optional)" autocomplete="name">
+      <input class="modal-input" type="email" name="email" placeholder="Your email address" autocomplete="email" required>
+      <button class="modal-submit" type="submit">Get My PDF →</button>
+      <button class="modal-cancel" type="button" onclick="closePdfModal()">No thanks</button>
+    </form>
+  </div>
+</div>
+
+<afro-footer></afro-footer>
+
+<script>
+// ══════════════════════════════════════════════════════════════════
+//  NIGERIA VAT CALCULATOR 2026
+//  Standard 7.5% · Zero-Rated Food (Jan 2026) · Exempt Services
+//  Source: VAT Act (VATA) 2021 · FIRS Guidelines
+// ══════════════════════════════════════════════════════════════════
+
+let RESULT       = null;
+let CHART        = null;
+let CHART_TYPE   = 'pie';
+let MODE         = 'add-vat'; // 'add-vat' or 'remove-vat'
+let RATE         = 0.075;
+let RATE_LABEL   = 'Standard';
+
+const fmt = n => '₦' + Math.round(Math.abs(n)).toLocaleString('en-NG');
+const pct = r => { const v = r * 100; return (v % 1 === 0 ? v.toFixed(0) : parseFloat(v.toFixed(2)).toString()) + '%'; };
+
+// ── MODE TOGGLE ───────────────────────────────────────────────────
+function togMode(el) {
+  MODE = el.getAttribute('data-tog');
+  document.querySelectorAll('[data-tog="add-vat"], [data-tog="remove-vat"]').forEach(e => e.classList.remove('on'));
+  el.classList.add('on');
+}
+
+function setRate(rate, label, btn) {
+  RATE = rate;
+  RATE_LABEL = label;
+  document.querySelectorAll('.rate-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+}
+
+// ── SLIDER ────────────────────────────────────────────────────
+function onSlider(el) {
+  const v = parseInt(el.value);
+  document.getElementById('amount').value = v;
+  document.getElementById('sliderVal').textContent = fmt(v);
+  updateSliderFill(el);
+}
+
+function onInput(el) {
+  const v = Math.min(Math.max(parseInt(el.value) || 0, 1000), 50000000);
+  const s = document.getElementById('amountSlider');
+  s.value = v;
+  document.getElementById('sliderVal').textContent = fmt(parseInt(el.value) || 0);
+  updateSliderFill(s);
+}
+
+function updateSliderFill(el) {
+  const p = ((parseInt(el.value) - parseInt(el.min)) / (parseInt(el.max) - parseInt(el.min))) * 100;
+  el.style.background = `linear-gradient(to right, #008751 0%, #008751 ${p}%, #c5deca ${p}%, #c5deca 100%)`;
+}
+updateSliderFill(document.getElementById('amountSlider'));
+
+// ── MAIN CALCULATE ────────────────────────────────────────────────
+function calculate() {
+  const amount = parseFloat(document.getElementById('amount').value) || 0;
+  if (!amount || amount <= 0) {
+    const el = document.getElementById('amount');
+    el.focus();
+    el.style.borderColor = '#e53e3e';
+    setTimeout(() => el.style.borderColor = '', 2000);
+    return;
+  }
+
+  let netAmount, vatAmount, totalInclusive;
+
+  if (MODE === 'add-vat') {
+    netAmount = amount;
+    vatAmount = amount * RATE;
+    totalInclusive = amount + vatAmount;
+  } else {
+    totalInclusive = amount;
+    netAmount = amount / (1 + RATE);
+    vatAmount = totalInclusive - netAmount;
+  }
+
+  RESULT = {
+    amount, netAmount, vatAmount, totalInclusive, rate: RATE, rateLabel: RATE_LABEL, mode: MODE
+  };
+
+  document.getElementById('resLabel').textContent = MODE === 'add-vat' ? 'Total (Inclusive)' : 'Total (Inclusive)';
+  document.getElementById('resAmount').textContent = fmt(totalInclusive);
+
+  const row = (l, v, cls='') => `<div class="res-row"><span class="res-row-lbl">${l}</span><span class="res-row-val ${cls}">${v}</span></div>`;
+
+  let content = `
+    <div class="res-section">
+      <div class="res-section-title">VAT Breakdown</div>
+      ${row(`Net Amount (Exclusive)`, fmt(netAmount))}
+      ${row(`VAT (${pct(RATE)})`, fmt(vatAmount), 'c-red')}
+      <div class="res-row total"><span class="res-row-lbl">Total (Inclusive)</span><span class="res-row-val c-grn">${fmt(totalInclusive)}</span></div>
+    </div>
+  `;
+
+  document.getElementById('resContent').innerHTML = content;
+  document.getElementById('hiddenAmount').value = amount;
+  document.getElementById('resultsCard').classList.add('on');
+  renderChart(CHART_TYPE);
+  document.getElementById('resultsCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// ── BANDS TOGGLE ──────────────────────────────────────────────
+function toggleBands(header) {
+  const body = header.nextElementSibling;
+  const arr  = header.querySelector('.tog-arrow');
+  body.classList.toggle('open');
+  arr.classList.toggle('open');
+}
+
+// ── CHARTS ────────────────────────────────────────────────────
+function setChart(type, btn) {
+  CHART_TYPE = type;
+  document.querySelectorAll('.chart-tab').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  renderChart(type);
+}
+
+function renderChart(type) {
+  if (!RESULT) return;
+  const R = RESULT;
+  const canvas = document.getElementById('mainChart');
+  if (CHART) { CHART.destroy(); CHART = null; }
+
+  if (type === 'pie') {
+    CHART = new Chart(canvas, {
+      type: 'doughnut',
+      data: {
+        labels: ['Net Amount', 'VAT'],
+        datasets: [{ data: [R.netAmount, R.vatAmount], backgroundColor: ['#FCD116','#008751'], borderWidth: 2, borderColor: '#fff' }]
+      },
+      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{size:11,weight:'600'}, padding:12 } } } }
+    });
+  } else if (type === 'bar') {
+    CHART = new Chart(canvas, {
+      type: 'bar',
+      data: {
+        labels: ['Net Amount', 'VAT Amount'],
+        datasets: [{ label:'NGN', data: [R.netAmount, R.vatAmount], backgroundColor:['#FCD116','#008751'], borderRadius:5 }]
+      },
+      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'₦'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid:{color:'#eaf5ec'} }, x:{ticks:{font:{size:10,weight:'600'}}} } }
+    });
+  }
+}
+
+// ── PDF MODAL ─────────────────────────────────────────────────
+function openPdfModal()  { if(!RESULT) return; document.getElementById('pdfModal').style.display='flex'; }
+function closePdfModal() { document.getElementById('pdfModal').style.display='none'; }
+document.getElementById('pdfModal').addEventListener('click', e => { if(e.target===document.getElementById('pdfModal')) closePdfModal(); });
+
+async function submitPdf(e) {
+  e.preventDefault();
+  const email = document.querySelector('input[type="email"]').value;
+  if (!email) return;
+  try {
+    await fetch('/', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body: new URLSearchParams({'form-name':'pdf-leads',email,country:'Nigeria',country_code:'NG',tool:'vat',tool_id:'ng-vat',currency:'NGN',amount:RESULT.amount}).toString() });
+  } catch(e){}
+  closePdfModal();
+  const link = document.createElement('a');
+  link.href = '#';
+  link.click();
+}
+
+function shareResult() {
+  if (!RESULT) return;
+  const text = `Nigeria VAT: ${fmt(RESULT.totalInclusive)} (Inclusive) | Net: ${fmt(RESULT.netAmount)} | VAT: ${fmt(RESULT.vatAmount)} (${pct(RESULT.rate)})`;
+  if (navigator.share) {
+    navigator.share({ title: 'Nigeria VAT Calculation', text });
+  } else {
+    alert(text);
+  }
+}
+</script>
+</body>
+</html>

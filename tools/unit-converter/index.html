@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit Converter | Convert Units Instantly | AfroTools</title>
+<meta name="description" content="Convert units: length, weight, temperature, area, volume, speed, data. Real-time conversion with African units support.">
+<link rel="canonical" href="https://afrotools.com/tools/unit-converter">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Unit Converter | AfroTools">
+<meta property="og:description" content="Convert between different units instantly.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/unit-converter">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-converter.png">
+<meta property="og:site_name" content="AfroTools">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.css">
+<link rel="stylesheet" href="/assets/css/global.css">
+<script src="/assets/js/components/navbar.js" defer></script>
+<script src="/assets/js/components/footer.js" defer></script>
+<style>
+  :root {
+    --afro-green: #008751;
+    --afro-dark: #0f1419;
+  }
+
+  .tool-hero {
+    background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
+    padding: 44px 0 36px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tool-hero::after {
+    content: '📏';
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 8rem;
+    opacity: 0.06;
+    pointer-events: none;
+  }
+
+  .tool-hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+  }
+
+  .breadcrumb {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .breadcrumb a {
+    color: rgba(255, 255, 255, 0.3);
+    text-decoration: none;
+  }
+
+  .breadcrumb span {
+    color: var(--afro-green);
+  }
+
+  h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+
+  h1 em {
+    color: var(--afro-green);
+    font-style: normal;
+  }
+
+  .hero-sub {
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 1.6;
+    max-width: 560px;
+    margin-bottom: 14px;
+  }
+
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 11px;
+    border-radius: 4px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .b-green {
+    background: rgba(0, 135, 81, 0.18);
+    color: #5ddb9e;
+    border: 1px solid rgba(0, 135, 81, 0.38);
+  }
+
+  .tool-main {
+    padding: 28px 0 72px;
+  }
+
+  .tool-main-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 22px;
+    align-items: start;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid #dceee0;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .card + .card {
+    margin-top: 18px;
+  }
+
+  .card-head {
+    padding: 15px 22px;
+    border-bottom: 1px solid #eaf5ec;
+    background: #f7fdf8;
+  }
+
+  .card-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #0a4018;
+  }
+
+  .card-body {
+    padding: 22px;
+  }
+
+  .field {
+    margin-bottom: 18px;
+  }
+
+  .field:last-child {
+    margin-bottom: 0;
+  }
+
+  .f-label-text {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #0d2813;
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  .f-input {
+    width: 100%;
+    padding: 11px 13px;
+    background: #f4fbf5;
+    border: 1.5px solid #c5deca;
+    border-radius: 7px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0d2813;
+    outline: none;
+    transition: border-color 0.18s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .f-input:focus {
+    border-color: var(--afro-green);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(0, 135, 81, 0.1);
+  }
+
+  .input-group {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+
+  .input-group input {
+    flex: 1;
+  }
+
+  .input-group select {
+    flex: 1;
+  }
+
+  .result-box {
+    background: rgba(0, 135, 81, 0.05);
+    border: 1.5px solid rgba(0, 135, 81, 0.2);
+    border-radius: 8px;
+    padding: 14px;
+    margin-top: 12px;
+    text-align: center;
+  }
+
+  .result-value {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--afro-green);
+  }
+
+  .result-label {
+    font-size: 0.7rem;
+    color: #7dab87;
+    margin-top: 4px;
+  }
+
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .info-card {
+    background: #f7fdf8;
+    border: 1px solid #dceee0;
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  .info-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #0a4018;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .info-text {
+    font-size: 0.8rem;
+    color: #244d2c;
+    line-height: 1.6;
+  }
+
+  .info-text li {
+    margin-bottom: 6px;
+  }
+
+  @media (max-width: 768px) {
+    .tool-main-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .input-group {
+      flex-direction: column;
+    }
+  }
+</style>
+</head>
+<body>
+<afro-navbar active="tools"></afro-navbar>
+
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb">
+      <a href="/">AfroTools</a> / <span>Tools</span>
+    </div>
+    <h1>Unit <em>Converter</em></h1>
+    <p class="hero-sub">Convert between different units instantly. Length, weight, temperature, area, volume, speed, and data conversions.</p>
+    <div class="hero-badges">
+      <span class="badge b-green">7 Categories</span>
+      <span class="badge b-green">Real-time</span>
+      <span class="badge b-green">African Units</span>
+    </div>
+  </div>
+</div>
+
+<div class="tool-main">
+  <div class="tool-main-inner">
+    <div>
+      <!-- Category Selection -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Category</span>
+        </div>
+        <div class="card-body">
+          <label class="f-label-text">Select Category</label>
+          <select class="f-input" id="categorySelect">
+            <option value="length">Length (m, ft, km, miles...)</option>
+            <option value="weight">Weight (kg, lbs, tons, g...)</option>
+            <option value="temperature">Temperature (°C, °F, K)</option>
+            <option value="area">Area (m², km², acres, hectares)</option>
+            <option value="volume">Volume (liters, gallons, ml)</option>
+            <option value="speed">Speed (km/h, m/s, mph)</option>
+            <option value="data">Data (KB, MB, GB, TB)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Converter -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Convert</span>
+        </div>
+        <div class="card-body">
+          <div class="input-group">
+            <input type="number" class="f-input" id="inputValue" placeholder="Enter value" value="1">
+            <select class="f-input" id="fromUnit">
+              <option value="m">Meters</option>
+              <option value="ft">Feet</option>
+              <option value="km">Kilometers</option>
+              <option value="mi">Miles</option>
+            </select>
+          </div>
+
+          <div style="text-align:center;font-size:0.9rem;color:#7dab87;margin-bottom:12px;">⇅</div>
+
+          <div class="input-group">
+            <input type="number" class="f-input" id="outputValue" placeholder="Result" readonly>
+            <select class="f-input" id="toUnit">
+              <option value="ft">Feet</option>
+              <option value="m">Meters</option>
+              <option value="mi">Miles</option>
+              <option value="km">Kilometers</option>
+            </select>
+          </div>
+
+          <div class="result-box">
+            <div class="result-value" id="resultValue">3.28</div>
+            <div class="result-label" id="resultLabel">feet</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="info-card">
+        <div class="info-title">Quick Reference</div>
+        <div class="info-text" id="referenceText">
+          <ul style="margin:0;padding-left:16px;">
+            <li>1 meter = 3.28 feet</li>
+            <li>1 km = 0.62 miles</li>
+            <li>1 hectare = 2.47 acres</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-title">Features</div>
+        <div class="info-text">
+          <ul style="margin:0;padding-left:16px;">
+            <li>✓ 7 categories</li>
+            <li>✓ Real-time</li>
+            <li>✓ African units</li>
+            <li>✓ Instant results</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<afro-footer></afro-footer>
+
+<script>
+  const conversions = {
+    length: {
+      m: 1,
+      ft: 3.28084,
+      km: 0.001,
+      mi: 0.000621371,
+      cm: 100,
+      mm: 1000
+    },
+    weight: {
+      kg: 1,
+      lbs: 2.20462,
+      g: 1000,
+      oz: 35.274,
+      ton: 0.001
+    },
+    temperature: {
+      C: 'special',
+      F: 'special',
+      K: 'special'
+    },
+    area: {
+      'm²': 1,
+      km: 0.000001,
+      acres: 0.000247105,
+      hectares: 0.0001,
+      'ft²': 10.764
+    },
+    volume: {
+      l: 1,
+      ml: 1000,
+      gal: 0.264172,
+      'ft³': 0.0353147
+    },
+    speed: {
+      'km/h': 1,
+      'm/s': 0.277778,
+      mph: 0.621371,
+      knot: 0.539957
+    },
+    data: {
+      KB: 1,
+      MB: 0.001,
+      GB: 0.000001,
+      TB: 0.000000001,
+      B: 1024
+    }
+  };
+
+  const categorySelect = document.getElementById('categorySelect');
+  const inputValue = document.getElementById('inputValue');
+  const fromUnit = document.getElementById('fromUnit');
+  const toUnit = document.getElementById('toUnit');
+  const outputValue = document.getElementById('outputValue');
+  const resultValue = document.getElementById('resultValue');
+  const resultLabel = document.getElementById('resultLabel');
+  const referenceText = document.getElementById('referenceText');
+
+  function updateUnits() {
+    const category = categorySelect.value;
+    const units = Object.keys(conversions[category]);
+
+    fromUnit.innerHTML = '';
+    toUnit.innerHTML = '';
+
+    units.forEach(unit => {
+      const option1 = document.createElement('option');
+      option1.value = unit;
+      option1.textContent = unit;
+      fromUnit.appendChild(option1);
+
+      const option2 = document.createElement('option');
+      option2.value = unit;
+      option2.textContent = unit;
+      toUnit.appendChild(option2);
+    });
+
+    if (units.length > 1) {
+      toUnit.value = units[1];
+    }
+
+    convert();
+  }
+
+  function convert() {
+    const category = categorySelect.value;
+    const from = fromUnit.value;
+    const to = toUnit.value;
+    const input = parseFloat(inputValue.value) || 0;
+
+    if (category === 'temperature') {
+      let celsius;
+      if (from === 'C') celsius = input;
+      else if (from === 'F') celsius = (input - 32) * 5/9;
+      else if (from === 'K') celsius = input - 273.15;
+
+      let result;
+      if (to === 'C') result = celsius;
+      else if (to === 'F') result = celsius * 9/5 + 32;
+      else if (to === 'K') result = celsius + 273.15;
+
+      outputValue.value = result.toFixed(6);
+      resultValue.textContent = result.toFixed(2);
+    } else {
+      const baseValue = input / conversions[category][from];
+      const result = baseValue * conversions[category][to];
+      outputValue.value = result.toFixed(6);
+      resultValue.textContent = result.toFixed(4);
+    }
+
+    resultLabel.textContent = to;
+  }
+
+  categorySelect.addEventListener('change', updateUnits);
+  inputValue.addEventListener('input', convert);
+  fromUnit.addEventListener('change', updateUnits);
+  toUnit.addEventListener('change', convert);
+
+  updateUnits();
+</script>
+</body>
+</html>

@@ -201,7 +201,7 @@ function run(){
   dz.ondragleave=function(){dz.classList.remove("over")};
   dz.ondrop=function(e){e.preventDefault();e.stopPropagation();dz.classList.remove("over");if(e.dataTransfer.files.length)openPDF(e.dataTransfer.files[0])};
   fi.onchange=function(){if(fi.files.length)openPDF(fi.files[0]);fi.value=""};
-  $("tbAdd").onclick=function(){$("mergeIn").click()};
+  $("tbAdd").onclick=function(){var mi=$("mergeIn");mi.value="";mi.click()};
   $("mergeIn").onchange=function(){addPDFs(this.files);this.value=""};
   $("tbSplit").onclick=openSplit;$("tbRearr").onclick=openRearr;
   $("tbRotate").onclick=rotCur;$("tbPN").onclick=openPN;$("tbComp").onclick=openComp;$("tbDL").onclick=dlPDF;

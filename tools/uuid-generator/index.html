@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UUID Generator — Generate UUIDs Online | AfroTools</title>
+<meta name="description" content="Free UUID generator. Generate v4 UUIDs instantly. Bulk generate up to 100 UUIDs. Copy to clipboard. UUID validation tool included.">
+<link rel="canonical" href="https://afrotools.com/tools/uuid-generator">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="UUID Generator | AfroTools">
+<meta property="og:description" content="Generate random UUIDs v4. Bulk generation and validation.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/uuid-generator">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-image.png">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="UUID Generator | AfroTools">
+<meta name="twitter:description" content="Free UUID v4 generator with bulk generation.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.css">
+<link rel="stylesheet" href="/assets/css/global.css">
+<script src="/assets/js/components/navbar.js" defer></script>
+<script src="/assets/js/components/footer.js" defer></script>
+<style>
+  :root {
+    --afro-green: #008751;
+    --afro-dark: #0f1419;
+    --afro-light: #f5f7fa;
+  }
+
+  .tool-hero {
+    background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
+    padding: 44px 0 36px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tool-hero::after {
+    content: '🆔';
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 8rem;
+    opacity: 0.06;
+    pointer-events: none;
+  }
+
+  .tool-hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+  }
+
+  .breadcrumb {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .breadcrumb a {
+    color: rgba(255, 255, 255, 0.3);
+    text-decoration: none;
+  }
+
+  .breadcrumb span {
+    color: var(--afro-green);
+  }
+
+  h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+
+  h1 em {
+    color: var(--afro-green);
+    font-style: normal;
+  }
+
+  .hero-sub {
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 1.6;
+    max-width: 560px;
+    margin-bottom: 14px;
+  }
+
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 6px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 11px;
+    border-radius: 4px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .b-green {
+    background: rgba(0, 135, 81, 0.18);
+    color: #5ddb9e;
+    border: 1px solid rgba(0, 135, 81, 0.38);
+  }
+
+  .tool-main {
+    padding: 28px 0 72px;
+  }
+
+  .tool-main-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 22px;
+    align-items: start;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid #dceee0;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .card + .card {
+    margin-top: 18px;
+  }
+
+  .card-head {
+    padding: 15px 22px;
+    border-bottom: 1px solid #eaf5ec;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f7fdf8;
+  }
+
+  .card-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #0a4018;
+  }
+
+  .card-body {
+    padding: 22px;
+  }
+
+  .field {
+    margin-bottom: 18px;
+  }
+
+  .field:last-child {
+    margin-bottom: 0;
+  }
+
+  .f-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+
+  .f-label-text {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #0d2813;
+  }
+
+  .f-input {
+    width: 100%;
+    padding: 11px 13px;
+    background: #f4fbf5;
+    border: 1.5px solid #c5deca;
+    border-radius: 7px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0d2813;
+    outline: none;
+    transition: border-color 0.18s, box-shadow 0.18s;
+    font-family: monospace;
+  }
+
+  .f-input:focus {
+    border-color: var(--afro-green);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(0, 135, 81, 0.1);
+  }
+
+  .calc-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--afro-green);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: all 0.18s;
+    margin-top: 8px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .calc-btn:hover {
+    background: #006d42;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 135, 81, 0.3);
+  }
+
+  .uuid-list {
+    background: #f4fbf5;
+    border: 1.5px solid #c5deca;
+    border-radius: 8px;
+    padding: 12px;
+    font-family: monospace;
+    font-size: 0.85rem;
+    color: #0d2813;
+    max-height: 300px;
+    overflow-y: auto;
+    line-height: 1.8;
+  }
+
+  .uuid-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px;
+    border-bottom: 1px solid #eaf5ec;
+  }
+
+  .uuid-item:last-child {
+    border-bottom: none;
+  }
+
+  .uuid-value {
+    flex: 1;
+    word-break: break-all;
+    margin-right: 8px;
+  }
+
+  .uuid-copy-btn {
+    padding: 4px 8px;
+    background: rgba(0, 135, 81, 0.1);
+    border: 1px solid rgba(0, 135, 81, 0.35);
+    color: #1a5c3a;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.65rem;
+    font-weight: 700;
+    white-space: nowrap;
+    transition: all 0.15s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .uuid-copy-btn:hover {
+    background: rgba(0, 135, 81, 0.2);
+  }
+
+  .validation-result {
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-top: 8px;
+    text-align: center;
+  }
+
+  .validation-result.valid {
+    background: rgba(0, 135, 81, 0.1);
+    color: #1a5c3a;
+    border: 1px solid rgba(0, 135, 81, 0.3);
+  }
+
+  .validation-result.invalid {
+    background: rgba(220, 53, 69, 0.1);
+    color: #800000;
+    border: 1px solid rgba(220, 53, 69, 0.3);
+  }
+
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .info-card {
+    background: #f7fdf8;
+    border: 1px solid #dceee0;
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  .info-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #0a4018;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .info-text {
+    font-size: 0.8rem;
+    color: #244d2c;
+    line-height: 1.6;
+  }
+
+  .info-text li {
+    margin-bottom: 8px;
+  }
+
+  @media (max-width: 768px) {
+    .tool-main-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .uuid-item {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .uuid-value {
+      margin-right: 0;
+      margin-bottom: 6px;
+    }
+
+    .uuid-copy-btn {
+      width: 100%;
+    }
+  }
+</style>
+</head>
+<body>
+<afro-navbar active="tools"></afro-navbar>
+
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb">
+      <a href="/">AfroTools</a> / <span>Tools</span>
+    </div>
+    <h1>UUID <em>Generator</em></h1>
+    <p class="hero-sub">Generate random UUIDs v4 instantly. Bulk generate up to 100 UUIDs and copy to clipboard. UUID validation tool included.</p>
+    <div class="hero-badges">
+      <span class="badge b-green">v4 UUIDs</span>
+      <span class="badge b-green">Bulk Generation</span>
+      <span class="badge b-green">Instant</span>
+    </div>
+  </div>
+</div>
+
+<div class="tool-main">
+  <div class="tool-main-inner">
+    <div>
+      <!-- Generator Card -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Generate UUIDs</span>
+        </div>
+        <div class="card-body">
+          <div class="field">
+            <label class="f-label">
+              <span class="f-label-text">Number of UUIDs (1-100)</span>
+            </label>
+            <input type="number" class="f-input" id="countInput" value="1" min="1" max="100">
+          </div>
+
+          <button class="calc-btn" id="generateBtn">Generate UUIDs</button>
+
+          <div class="uuid-list" id="uuidList"></div>
+        </div>
+      </div>
+
+      <!-- Validator Card -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">UUID Validator</span>
+        </div>
+        <div class="card-body">
+          <div class="field">
+            <label class="f-label">
+              <span class="f-label-text">UUID to Validate</span>
+            </label>
+            <input type="text" class="f-input" id="validateInput" placeholder="Paste UUID to validate...">
+          </div>
+
+          <div id="validationResult"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Info Card -->
+      <div class="info-card">
+        <div class="info-title">UUID v4 Format</div>
+        <div class="info-text">
+          128-bit identifier with format:
+          <div style="font-family: monospace; font-size: 0.7rem; margin-top: 8px; background: rgba(0, 135, 81, 0.05); padding: 8px; border-radius: 4px;">
+            xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx
+          </div>
+          <ul style="margin-top:10px;">
+            <li>✓ Randomly generated</li>
+            <li>✓ Universally unique</li>
+            <li>✓ 36 characters</li>
+            <li>✓ No server needed</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Info Card 2 -->
+      <div class="info-card">
+        <div class="info-title">Use Cases</div>
+        <div class="info-text" style="font-size: 0.75rem;">
+          <div>• Database IDs</div>
+          <div style="margin-top: 6px;">• API tokens</div>
+          <div style="margin-top: 6px;">• Request tracking</div>
+          <div style="margin-top: 6px;">• Device identifiers</div>
+          <div style="margin-top: 6px;">• Unique sessions</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<afro-footer></afro-footer>
+
+<script>
+  const countInput = document.getElementById('countInput');
+  const generateBtn = document.getElementById('generateBtn');
+  const uuidList = document.getElementById('uuidList');
+  const validateInput = document.getElementById('validateInput');
+  const validationResult = document.getElementById('validationResult');
+
+  function generateUUID() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      const r = Math.random() * 16 | 0;
+      const v = c === 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+  }
+
+  function isValidUUID(uuid) {
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    return uuidRegex.test(uuid);
+  }
+
+  generateBtn.addEventListener('click', () => {
+    const count = parseInt(countInput.value);
+    if (count < 1 || count > 100 || isNaN(count)) {
+      alert('Enter a number between 1 and 100');
+      return;
+    }
+
+    const uuids = Array.from({ length: count }, generateUUID);
+    uuidList.innerHTML = uuids.map((uuid, i) => `
+      <div class="uuid-item">
+        <span class="uuid-value">${uuid}</span>
+        <button class="uuid-copy-btn" data-uuid="${uuid}">Copy</button>
+      </div>
+    `).join('');
+
+    document.querySelectorAll('.uuid-copy-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        navigator.clipboard.writeText(btn.dataset.uuid);
+        btn.textContent = '✓';
+        setTimeout(() => btn.textContent = 'Copy', 2000);
+      });
+    });
+  });
+
+  validateInput.addEventListener('input', () => {
+    const uuid = validateInput.value.trim();
+    if (!uuid) {
+      validationResult.innerHTML = '';
+      return;
+    }
+
+    const isValid = isValidUUID(uuid);
+    validationResult.innerHTML = `<div class="validation-result ${isValid ? 'valid' : 'invalid'}">${isValid ? '✓ Valid UUID' : '✗ Invalid UUID'}</div>`;
+  });
+
+  // Generate one UUID on load
+  generateBtn.click();
+</script>
+</body>
+</html>

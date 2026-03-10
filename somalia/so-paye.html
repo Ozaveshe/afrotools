@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Somalia PAYE Calculator 2025/26 — Income Tax 5% Flat | AfroTools</title>
+<meta name="description" content="Somalia PAYE calculator 2025/26. Flat 5% employment income tax, no formal social security. Free PDF download.">
+<link rel="canonical" href="https://afrotools.com/somalia/so-paye">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Somalia PAYE Calculator 2025/26 | AfroTools">
+<meta property="og:description" content="Somalia PAYE: Flat 5% income tax, no formal social security system. Simple calculation.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/somalia/so-paye">
+<meta property="og:locale" content="en_SO">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Somalia PAYE Calculator 2025/26 | AfroTools">
+<meta name="twitter:description" content="Flat 5% employment income tax on gross salary.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.css">
+<link rel="stylesheet" href="/assets/css/global.css">
+<script src="/assets/js/components/navbar.js" defer></script>
+<script src="/assets/js/components/footer.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --so-blue:   #4189DD;   /* Somalia flag blue  */
+    --so-white:  #FFFFFF;   /* Somalia flag white */
+    --so-black:  #111827;
+    --so-dark:   #0a3b6f;
+  }
+  .tool-hero{background:var(--so-dark);padding:44px 0 36px;position:relative;overflow:hidden}
+  .tool-hero::after{content:'🇸🇴';position:absolute;right:5%;top:50%;transform:translateY(-50%);font-size:8rem;opacity:.06;pointer-events:none}
+  .tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px;position:relative}
+  .breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+  .breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}
+  .breadcrumb span{color:#FFD700}
+  h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+  h1 em{color:#FFD700;font-style:normal}
+  .hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+  .hero-badges{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:6px}
+  .badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+  .b-gold{background:rgba(255,215,0,.14);color:#d4aa00;border:1px solid rgba(255,215,0,.3)}
+  .b-blue{background:rgba(65,137,221,.18);color:#8fc1e8;border:1px solid rgba(65,137,221,.38)}
+  .b-grey{background:rgba(255,255,255,.07);color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.12)}
+  .hero-meta{font-size:.72rem;color:rgba(255,255,255,.22);margin-top:4px}
+  .tool-main{padding:28px 0 72px}
+  .tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 360px;gap:22px;align-items:start}
+  .card{background:#fff;border:1px solid #dceee0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+  .card+.card{margin-top:18px}
+  .card-head{padding:15px 22px;border-bottom:1px solid #eaf5ec;display:flex;align-items:center;justify-content:space-between;background:#f7fdf8}
+  .card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#0a4018}
+  .card-sub{font-size:.72rem;color:#7dab87}
+  .field{margin-bottom:18px}
+  .f-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+  .f-label-text{font-size:.75rem;font-weight:700;letter-spacing:.04em;color:#0d2813}
+  .f-hint{font-size:.7rem;color:#7dab87}
+  .f-wrap{position:relative}
+  .f-prefix{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:.78rem;font-weight:700;color:#7dab87;pointer-events:none}
+  .f-input{width:100%;padding:11px 13px 11px 60px;background:#f4fbf5;border:1.5px solid #c5deca;border-radius:7px;font-size:1rem;font-weight:600;color:#0d2813;outline:none;transition:border-color .18s;font-family:'DM Sans',sans-serif;-moz-appearance:textfield}
+  .f-input::-webkit-inner-spin-button,.f-input::-webkit-outer-spin-button{-webkit-appearance:none}
+  .f-input:focus{border-color:var(--so-blue);background:#fff;box-shadow:0 0 0 3px rgba(65,137,221,.1)}
+  .f-note{font-size:.7rem;color:#7dab87;margin-top:5px;line-height:1.55}
+  .slider-wrap{margin-bottom:18px}
+  .slider-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .slider-label{font-size:.75rem;font-weight:700;color:#0d2813}
+  .slider-val{font-size:.92rem;font-weight:800;color:var(--so-blue)}
+  input[type=range]{-webkit-appearance:none;width:100%;height:5px;border-radius:3px;outline:none;cursor:pointer}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;background:var(--so-blue);border-radius:50%;border:2.5px solid #fff;box-shadow:0 1px 6px rgba(65,137,221,.35);cursor:pointer}
+  .slider-limits{display:flex;justify-content:space-between;margin-top:4px;font-size:.65rem;color:#7dab87}
+  .calc-btn{background:linear-gradient(135deg, var(--so-blue), #2368c4);color:#fff;border:none;padding:13px 20px;border-radius:7px;font-size:.85rem;font-weight:700;cursor:pointer;transition:all .2s;width:100%;margin-top:4px}
+  .calc-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(65,137,221,.3)}
+  .results-card{display:none}
+  .results-card.on{display:block}
+  .res-hero{background:linear-gradient(135deg, #0a3b6f, #1a5a9f);padding:20px 22px;color:#fff}
+  .res-hero-label{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:6px}
+  .res-hero-amount{font-size:2rem;font-weight:800;line-height:1;color:#FFD700;margin-bottom:4px}
+  .res-hero-period{font-size:.78rem;color:rgba(255,255,255,.5);margin-bottom:10px}
+  .res-hero-gross{font-size:.75rem;color:rgba(255,255,255,.35)}
+  .res-body{padding:18px 22px}
+  .period-row{display:flex;gap:8px;margin-bottom:16px}
+  .per-btn{background:transparent;border:1.5px solid #d1d5db;color:#6b7280;padding:8px 16px;border-radius:6px;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .15s}
+  .per-btn.on{border-color:var(--so-blue);background:rgba(65,137,221,.08);color:var(--so-blue)}
+  .res-section{margin-bottom:16px}
+  .res-section-title{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6b7280;margin-bottom:8px}
+  .res-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #f3f4f6;font-size:.85rem}
+  .res-row.total{border:none;padding:10px 0;border-top:2px solid #e5e7eb;font-weight:700;color:#111827}
+  .res-row-lbl{color:#4b5563;font-weight:500}
+  .res-row-val{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+  .c-red{color:#c0392b}
+  .c-grn{color:#1EB53A}
+  .c-mut{color:#9ca3af}
+  .rate-bar-wrap{margin-top:18px;margin-bottom:16px}
+  .rate-bar-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .rate-bar-lbl{font-size:.75rem;font-weight:700;color:#4b5563}
+  .rate-bar-pct{font-size:.92rem;font-weight:800;color:var(--so-blue)}
+  .rate-track{height:8px;background:#f3f4f6;border-radius:4px;overflow:hidden}
+  .rate-fill{height:100%;background:var(--so-blue);width:5%;transition:width .4s ease}
+  .chart-section{margin-top:24px;padding-top:20px;border-top:1px solid #e5e7eb}
+  .chart-tabs{display:flex;gap:8px;margin-bottom:16px}
+  .chart-tab{background:transparent;border:none;color:#6b7280;font-size:.75rem;font-weight:600;padding:8px 12px;cursor:pointer;transition:all .15s;border-bottom:2px solid transparent}
+  .chart-tab.on{color:var(--so-blue);border-bottom-color:var(--so-blue)}
+  .chart-canvas-wrap{position:relative;height:260px;margin-bottom:16px}
+  .action-row{display:flex;gap:10px;margin-top:16px}
+  .act-btn{display:flex;align-items:center;gap:8px;flex:1;padding:11px 14px;border:1.5px solid #e5e7eb;background:#fff;border-radius:6px;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .15s;color:#4b5563}
+  .act-btn:hover{border-color:var(--so-blue);color:var(--so-blue);background:#f9fdfb}
+  .disclaimer{background:#fff3cd;border:1px solid #ffc107;border-radius:6px;padding:12px 14px;font-size:.7rem;color:#856404;line-height:1.55;margin-top:18px}
+  .disclaimer strong{font-weight:700}
+  .faq-sec{padding:60px 0;background:#f9fafb}
+  .faq-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+  .eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#9ca3af}
+  .sec-title{font-size:2rem;font-weight:800;color:#111827;margin:8px 0 32px;letter-spacing:-.02em}
+  .faq-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px}
+  .faq-item{background:#fff;padding:24px;border-radius:10px;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+  .faq-q{font-size:.92rem;font-weight:700;color:#111827;margin-bottom:10px;line-height:1.4}
+  .faq-a{font-size:.8rem;color:#6b7280;line-height:1.6}
+  .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);align-items:center;justify-content:center;z-index:1000}
+  .modal-bg.on{display:flex}
+  .modal{background:#fff;border-radius:10px;padding:32px;max-width:420px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+  .modal h3{font-size:1.1rem;font-weight:800;color:#111827;margin-bottom:8px}
+  .modal p{font-size:.85rem;color:#6b7280;line-height:1.6;margin-bottom:16px}
+  .modal-input{width:100%;padding:11px 13px;border:1.5px solid #e5e7eb;border-radius:7px;font-size:.85rem;outline:none;margin-bottom:12px;font-family:'DM Sans',sans-serif}
+  .modal-input:focus{border-color:var(--so-blue);box-shadow:0 0 0 3px rgba(65,137,221,.1)}
+  .modal-submit{width:100%;padding:11px 16px;background:var(--so-blue);color:#fff;border:none;border-radius:7px;font-size:.85rem;font-weight:700;cursor:pointer;margin-bottom:8px;transition:all .2s}
+  .modal-submit:hover{opacity:.9;transform:translateY(-1px)}
+  .modal-cancel{width:100%;padding:10px 16px;background:transparent;border:1.5px solid #e5e7eb;border-radius:7px;color:#6b7280;font-size:.85rem;font-weight:600;cursor:pointer}
+  .modal-success{display:none;text-align:center}
+  .big-check{font-size:3rem;margin-bottom:12px}
+  .modal-success h4{font-size:1.1rem;font-weight:800;color:#111827;margin-bottom:8px}
+  .modal-success p{font-size:.8rem;color:#6b7280}
+  @media(max-width:768px){
+    .tool-main-inner{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb"><a href="https://afrotools.com">AfroTools</a> / <a href="https://afrotools.com/somalia">Somalia</a> / <span>PAYE Calculator</span></div>
+    <h1>Somalia PAYE Calculator <em>2025/26</em></h1>
+    <p class="hero-sub">Calculate your monthly take-home pay using Somalia's flat 5% employment income tax. Simple calculation, no formal social security system. Accurate, free, instant.</p>
+    <div class="hero-badges">
+      <div class="badge b-gold">Flat 5% Tax</div>
+      <div class="badge b-blue">No Social Security</div>
+      <div class="badge b-grey">MoF 2025/26</div>
+    </div>
+    <div class="hero-meta">Updated 10 March 2026 · Informational only.</div>
+  </div>
+</div>
+
+<div class="tool-main">
+  <div class="tool-main-inner">
+    <div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Salary Input</span><span class="card-sub">Monthly gross</span></div>
+        <div style="padding:18px 22px">
+          <div class="field">
+            <div class="f-label"><span class="f-label-text">Monthly Gross Salary</span><span class="f-hint">SOS per month</span></div>
+            <div class="f-wrap"><span class="f-prefix">SOS</span><input type="number" id="grossSalary" class="f-input" placeholder="1000000" min="10000" max="100000000" value="1000000" onchange="onInput(this)" oninput="onInput(this)"></div>
+            <p class="f-note">Enter your monthly gross salary in Somali Shillings.</p>
+          </div>
+          <div class="slider-wrap">
+            <div class="slider-row"><span class="slider-label">Adjust</span><span class="slider-val" id="sliderVal">SOS 1,000,000</span></div>
+            <input type="range" id="salarySlider" class="f-input" min="10000" max="100000000" value="1000000" step="100000" oninput="onSlider(this)">
+            <div class="slider-limits"><span>SOS 10k</span><span>SOS 100M</span></div>
+          </div>
+          <button class="calc-btn" onclick="calculate()">Calculate →</button>
+        </div>
+      </div>
+
+      <div class="card results-card" id="resultsCard">
+        <div class="res-hero">
+          <div class="res-hero-label">Monthly Take-Home</div>
+          <div class="res-hero-amount" id="resAmount">SOS 0</div>
+          <div class="res-hero-period">After 5% employment income tax</div>
+          <div class="res-hero-gross" id="resGross"></div>
+        </div>
+        <div class="res-body">
+          <div class="period-row">
+            <button class="per-btn on" onclick="setPeriod('monthly',this)">Monthly</button>
+            <button class="per-btn" onclick="setPeriod('annual',this)">Annual</button>
+          </div>
+          <div id="resContent"></div>
+          <div class="rate-bar-wrap">
+            <div class="rate-bar-hdr"><span class="rate-bar-lbl">Effective Tax Rate</span><span class="rate-bar-pct" id="effRateDisplay">5%</span></div>
+            <div class="rate-track"><div class="rate-fill" id="rateFill" style="width:5%"></div></div>
+          </div>
+        </div>
+
+        <div class="chart-section">
+          <div class="chart-tabs">
+            <button class="chart-tab on" onclick="setChart('donut',this)">Breakdown</button>
+            <button class="chart-tab" onclick="setChart('bar',this)">Tax Distribution</button>
+          </div>
+          <div class="chart-canvas-wrap"><canvas id="mainChart"></canvas></div>
+        </div>
+
+        <div class="action-row">
+          <button class="act-btn" style="color:#2563eb" onclick="openPdfModal()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Download PDF</button>
+          <button class="act-btn" style="color:#4189dd" id="soShareBtn" onclick="shareResult()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Share</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar">
+      <div class="card" style="background:#fffacd;border:1px solid #ffeaa7;margin-top:0">
+        <div style="padding:16px 18px">
+          <div style="font-size:.78rem;color:#856404;line-height:1.6">
+            <strong>Somalia Tax Note:</strong> Somalia uses a simple flat 5% employment income tax system with no formal social security or other mandatory deductions. This makes tax calculation straightforward for employees.
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span class="card-title">Tax Rate</span></div>
+        <div style="padding:16px 22px;font-size:.78rem;color:#4b5563;line-height:1.6">
+          <div style="margin-bottom:12px"><strong>Employment Income Tax:</strong> 5% flat on gross salary</div>
+          <div><strong>Social Security:</strong> No formal mandatory system</div>
+          <p style="margin-top:12px;font-size:.7rem;color:#9ca3af">Somalia's simplified tax structure makes payroll calculation uncomplicated. The flat 5% rate applies to all employment income with no progressive bands.</p>
+        </div>
+      </div>
+
+      <div class="disclaimer">
+        <strong>Disclaimer:</strong> For informational purposes. Not professional tax advice. Verify with Ministry of Finance or qualified Somalia tax advisor.
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="faq-sec">
+  <div class="faq-inner">
+    <span class="eyebrow">Somalia Tax FAQ</span>
+    <h2 class="sec-title">Common PAYE Questions</h2>
+    <div class="faq-grid">
+      <div class="faq-item">
+        <div class="faq-q">What is the Somalia employment income tax rate?</div>
+        <p class="faq-a">Somalia applies a flat 5% tax on all employment income with no progressive bands or additional deductions.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Is there a social security system in Somalia?</div>
+        <p class="faq-a">Somalia does not have a formal mandatory social security or pension contribution system. The 5% employment income tax is the primary tax obligation.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Are there any other deductions from Somalia employment income?</div>
+        <p class="faq-a">Beyond the 5% employment income tax, specific deductions depend on individual employment contracts and employer policies. Personal voluntary contributions or insurance may apply in specific cases.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">How is Somalia income tax calculated?</div>
+        <p class="faq-a">The tax is calculated simply: 5% of gross monthly salary. No tax-free allowance or progressive calculation is applied.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">When is Somalia income tax paid?</div>
+        <p class="faq-a">Employers withhold the 5% tax from each payroll and remit to the Ministry of Finance. Timing and procedures follow Somali tax administration guidelines.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">How does multiple employment affect Somalia income tax?</div>
+        <p class="faq-a">If you have multiple employment sources, the 5% flat tax applies to income from each employer. Total tax liability depends on aggregate employment income across all sources.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="modal-bg" id="pdfModal">
+  <div class="modal">
+    <div id="modalForm">
+      <h3>📄 Download Your PAYE Summary</h3>
+      <p>Enter email for PDF.</p>
+      <form name="pdf-leads" data-netlify="true" netlify-honeypot="bot-field" id="leadForm" onsubmit="submitPdf(event)">
+        <input type="hidden" name="form-name" value="pdf-leads">
+        <input type="hidden" name="country" value="Somalia">
+        <input type="hidden" name="country_code" value="SO">
+        <input type="hidden" name="tool" value="paye">
+        <input type="hidden" name="tool_id" value="so-paye">
+        <input type="hidden" name="currency" value="SOS">
+        <input type="hidden" name="gross_salary" id="hiddenGross" value="">
+        <input class="modal-input" type="text" name="name" id="pdfName" placeholder="Name (optional)" autocomplete="name">
+        <input class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Email" autocomplete="email" required>
+        <button class="modal-submit" type="submit">Get PDF →</button>
+      </form>
+      <button class="modal-cancel" onclick="closePdfModal()">No thanks</button>
+    </div>
+    <div class="modal-success" id="modalSuccess">
+      <button onclick="closePdfModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#9ca3af;line-height:1;">✕</button>
+      <div class="big-check">✅</div>
+      <h4>PDF ready</h4>
+      <button class="modal-submit" onclick="closePdfModal()">Done</button>
+    </div>
+  </div>
+</div>
+
+<afro-footer></afro-footer>
+
+<script>
+let RESULT=null,PERIOD='monthly',CHART=null;
+const fmt=n=>'SOS\u00A0'+Math.round(Math.abs(n)).toLocaleString('en-SO');
+const pct=r=>{const v=r*100;return(v%1===0?v.toFixed(0):v.toFixed(1))+'%'};
+
+function onSlider(el){const v=parseInt(el.value);document.getElementById('grossSalary').value=v;document.getElementById('sliderVal').textContent=fmt(v);updateSliderFill(el);}
+function onInput(el){const v=Math.min(Math.max(parseInt(el.value)||0,10000),100000000);const s=document.getElementById('salarySlider');s.value=v;document.getElementById('sliderVal').textContent=fmt(v);updateSliderFill(s);}
+function updateSliderFill(el){const p=((parseInt(el.value)-parseInt(el.min))/(parseInt(el.max)-parseInt(el.min)))*100;el.style.background=`linear-gradient(to right, #4189DD 0%, #4189DD ${p}%, #c5deca ${p}%, #c5deca 100%)`;}
+updateSliderFill(document.getElementById('salarySlider'));
+
+function calculate(){
+  const gross=parseFloat(document.getElementById('grossSalary').value)||0;
+  if(!gross||gross<=0){const el=document.getElementById('grossSalary');el.focus();el.style.borderColor='#e53e3e';setTimeout(()=>el.style.borderColor='',2000);return;}
+  const tax=gross*0.05;const net=gross-tax;RESULT={gross,monthly:gross,tax,net,annualGross:gross*12,annualNet:net*12,annualTax:tax*12};
+  document.getElementById('resAmount').textContent=fmt(net);document.getElementById('resGross').textContent=`Gross: ${fmt(gross)}/mo · ${fmt(gross*12)}/yr`;document.getElementById('resContent').innerHTML=renderRows(RESULT,PERIOD);document.getElementById('hiddenGross').value=gross;document.getElementById('resultsCard').classList.add('on');renderChart('donut');document.getElementById('resultsCard').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function renderRows(R,period){
+  const isAnnual=period==='annual';const gross=isAnnual?R.annualGross:R.gross;const tax=isAnnual?R.annualTax:R.tax;const net=isAnnual?R.annualNet:R.net;const lbl=isAnnual?'/year':'/month';const row=(l,v,cls='')=>`<div class="res-row"><span class="res-row-lbl">${l}</span><span class="res-row-val ${cls}">${v}</span></div>`;return `<div class="res-section"><div class="res-section-title">Gross Income</div>${row(`Salary${lbl}`,fmt(gross))}</div><div class="res-section"><div class="res-section-title">Tax</div>${row(`Employment tax (5%)${lbl}`,fmt(tax),'c-red')}</div><div class="res-section"><div class="res-row total"><span class="res-row-lbl">Take-Home Pay</span><span class="res-row-val c-grn">${fmt(net)}</span></div></div>`;
+}
+
+function setPeriod(period,btn){PERIOD=period;document.querySelectorAll('.per-btn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');if(RESULT)document.getElementById('resContent').innerHTML=renderRows(RESULT,period);}
+
+function setChart(type,btn){document.querySelectorAll('.chart-tab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderChart(type);}
+
+function renderChart(type){
+  if(!RESULT)return;const R=RESULT;const canvas=document.getElementById('mainChart');if(CHART){CHART.destroy();CHART=null;}
+  if(type==='donut'){CHART=new Chart(canvas,{type:'doughnut',data:{labels:['Take-Home','Income Tax'],datasets:[{data:[R.net,R.tax],backgroundColor:['#FFD700','#4189DD'],borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11,weight:'600'},padding:12}}}}});}
+  else{CHART=new Chart(canvas,{type:'bar',data:{labels:['Monthly Tax'],datasets:[{label:'SOS',data:[R.tax],backgroundColor:'#4189DD',borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{ticks:{callback:v=>'SOS'+(v/1000000).toFixed(1)+'M',font:{size:10,weight:'600'}}}}}})}
+}
+
+function openPdfModal(){if(!RESULT)return;document.getElementById('pdfModal').classList.add('on');document.getElementById('modalForm').style.display='block';document.getElementById('modalSuccess').style.display='none';}
+function closePdfModal(){document.getElementById('pdfModal').classList.remove('on');}
+document.getElementById('pdfModal').addEventListener('click',e=>{if(e.target===document.getElementById('pdfModal'))closePdfModal();});
+
+async function submitPdf(e){e.preventDefault();const email=document.getElementById('pdfEmail').value;if(!email)return;try{await fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({'form-name':'pdf-leads',email,country:'Somalia',country_code:'SO',tool:'paye',tool_id:'so-paye',currency:'SOS',gross_salary:RESULT.gross}).toString()});}catch(e){}document.getElementById('modalForm').style.display='none';document.getElementById('modalSuccess').style.display='block';}
+
+function shareResult(){if(!RESULT)return;const text=`My Somalia PAYE: Gross SOS ${Math.round(RESULT.gross).toLocaleString()}/mo → Take-home SOS ${Math.round(RESULT.net).toLocaleString()}/mo (5% flat tax). Calculated at afrotools.com/somalia/so-paye`;if(navigator.share){navigator.share({title:'My Somalia PAYE',text,url:'https://afrotools.com/somalia/so-paye'});}else if(navigator.clipboard){navigator.clipboard.writeText(text);const btn=document.getElementById('soShareBtn');btn.textContent='✓ Copied!';setTimeout(()=>btn.innerHTML=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share`,2500);}}
+
+document.getElementById('grossSalary').addEventListener('keydown',e=>{if(e.key==='Enter')calculate();});
+</script>
+</body>
+</html>

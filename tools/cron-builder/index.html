@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cron Builder — Build Cron Expressions | AfroTools</title>
+<meta name="description" content="Free cron expression builder. Visual cron builder with dropdowns. Human-readable descriptions and next run times. Common presets included.">
+<link rel="canonical" href="https://afrotools.com/tools/cron-builder">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Cron Builder | AfroTools">
+<meta property="og:description" content="Build cron expressions visually with human-readable descriptions.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/cron-builder">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-image.png">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cron Builder | AfroTools">
+<meta name="twitter:description" content="Visual cron expression builder tool.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.css">
+<link rel="stylesheet" href="/assets/css/global.css">
+<script src="/assets/js/components/navbar.js" defer></script>
+<script src="/assets/js/components/footer.js" defer></script>
+<style>
+  :root {
+    --afro-green: #008751;
+    --afro-dark: #0f1419;
+    --afro-light: #f5f7fa;
+  }
+
+  .tool-hero {
+    background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
+    padding: 44px 0 36px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tool-hero::after {
+    content: '⏲️';
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 8rem;
+    opacity: 0.06;
+    pointer-events: none;
+  }
+
+  .tool-hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+  }
+
+  .breadcrumb {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .breadcrumb a {
+    color: rgba(255, 255, 255, 0.3);
+    text-decoration: none;
+  }
+
+  .breadcrumb span {
+    color: var(--afro-green);
+  }
+
+  h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+
+  h1 em {
+    color: var(--afro-green);
+    font-style: normal;
+  }
+
+  .hero-sub {
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 1.6;
+    max-width: 560px;
+    margin-bottom: 14px;
+  }
+
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 6px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 11px;
+    border-radius: 4px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .b-green {
+    background: rgba(0, 135, 81, 0.18);
+    color: #5ddb9e;
+    border: 1px solid rgba(0, 135, 81, 0.38);
+  }
+
+  .tool-main {
+    padding: 28px 0 72px;
+  }
+
+  .tool-main-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 22px;
+    align-items: start;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid #dceee0;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .card + .card {
+    margin-top: 18px;
+  }
+
+  .card-head {
+    padding: 15px 22px;
+    border-bottom: 1px solid #eaf5ec;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f7fdf8;
+  }
+
+  .card-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #0a4018;
+  }
+
+  .card-body {
+    padding: 22px;
+  }
+
+  .field {
+    margin-bottom: 18px;
+  }
+
+  .field:last-child {
+    margin-bottom: 0;
+  }
+
+  .f-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+
+  .f-label-text {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #0d2813;
+  }
+
+  .f-input {
+    width: 100%;
+    padding: 11px 13px;
+    background: #f4fbf5;
+    border: 1.5px solid #c5deca;
+    border-radius: 7px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0d2813;
+    outline: none;
+    transition: border-color 0.18s, box-shadow 0.18s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .f-input:focus {
+    border-color: var(--afro-green);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(0, 135, 81, 0.1);
+  }
+
+  .preset-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  .preset-btn {
+    text-align: left;
+    padding: 8px 12px;
+    background: #f4fbf5;
+    border: 1.5px solid #c5deca;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #244d2c;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .preset-btn:hover {
+    border-color: var(--afro-green);
+  }
+
+  .preset-name {
+    display: block;
+    font-weight: 700;
+  }
+
+  .preset-value {
+    display: block;
+    font-size: 0.65rem;
+    color: #7dab87;
+    font-family: monospace;
+  }
+
+  .output-box {
+    background: #f4fbf5;
+    border: 1.5px solid #c5deca;
+    border-radius: 6px;
+    padding: 12px;
+    font-family: monospace;
+    font-size: 0.9rem;
+    color: #0d2813;
+    word-break: break-all;
+  }
+
+  .copy-btn {
+    width: 100%;
+    padding: 10px;
+    background: rgba(0, 135, 81, 0.1);
+    border: 1.5px solid rgba(0, 135, 81, 0.35);
+    color: #1a5c3a;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.72rem;
+    font-weight: 700;
+    margin-top: 8px;
+    transition: all 0.15s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .copy-btn:hover {
+    background: rgba(0, 135, 81, 0.2);
+  }
+
+  .description-box {
+    background: #f7fdf8;
+    border: 1px solid #dceee0;
+    border-radius: 6px;
+    padding: 12px;
+    font-size: 0.8rem;
+    color: #244d2c;
+    line-height: 1.5;
+    margin-top: 8px;
+  }
+
+  .runs-list {
+    font-size: 0.75rem;
+    color: #7dab87;
+    margin-top: 8px;
+    line-height: 1.4;
+  }
+
+  .runs-list strong {
+    color: #244d2c;
+  }
+
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .info-card {
+    background: #f7fdf8;
+    border: 1px solid #dceee0;
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  .info-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #0a4018;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .info-text {
+    font-size: 0.8rem;
+    color: #244d2c;
+    line-height: 1.6;
+  }
+
+  .info-text li {
+    margin-bottom: 8px;
+  }
+
+  @media (max-width: 768px) {
+    .tool-main-inner {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body>
+<afro-navbar active="tools"></afro-navbar>
+
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb">
+      <a href="/">AfroTools</a> / <span>Tools</span>
+    </div>
+    <h1>Cron <em>Builder</em></h1>
+    <p class="hero-sub">Build cron expressions visually with dropdowns. Human-readable descriptions and preview of next 5 run times.</p>
+    <div class="hero-badges">
+      <span class="badge b-green">Visual Builder</span>
+      <span class="badge b-green">Descriptions</span>
+      <span class="badge b-green">Preview</span>
+    </div>
+  </div>
+</div>
+
+<div class="tool-main">
+  <div class="tool-main-inner">
+    <div>
+      <!-- Presets Card -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Common Presets</span>
+        </div>
+        <div class="card-body">
+          <div class="preset-grid">
+            <button class="preset-btn" data-cron="0 9 * * *" data-name="Every day at 9 AM">
+              <span class="preset-name">Daily at 9 AM</span>
+              <span class="preset-value">0 9 * * *</span>
+            </button>
+            <button class="preset-btn" data-cron="0 0 * * 0" data-name="Every Sunday at midnight">
+              <span class="preset-name">Weekly (Sunday)</span>
+              <span class="preset-value">0 0 * * 0</span>
+            </button>
+            <button class="preset-btn" data-cron="0 0 1 * *" data-name="First day of month">
+              <span class="preset-name">Monthly</span>
+              <span class="preset-value">0 0 1 * *</span>
+            </button>
+            <button class="preset-btn" data-cron="*/15 * * * *" data-name="Every 15 minutes">
+              <span class="preset-name">Every 15 min</span>
+              <span class="preset-value">*/15 * * * *</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Builder Card -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Builder</span>
+        </div>
+        <div class="card-body">
+          <div class="field">
+            <label class="f-label">
+              <span class="f-label-text">Minute (0-59)</span>
+            </label>
+            <input type="text" class="f-input" id="minute" value="0" placeholder="*/15, 0, 15, 30, 45">
+          </div>
+
+          <div class="field">
+            <label class="f-label">
+              <span class="f-label-text">Hour (0-23)</span>
+            </label>
+            <input type="text" class="f-input" id="hour" value="*" placeholder="*, 9, 12, 18">
+          </div>
+
+          <div class="field">
+            <label class="f-label">
+              <span class="f-label-text">Day of Month (1-31)</span>
+            </label>
+            <input type="text" class="f-input" id="day" value="*" placeholder="*, 1, 15">
+          </div>
+
+          <div class="field">
+            <label class="f-label">
+              <span class="f-label-text">Month (1-12)</span>
+            </label>
+            <input type="text" class="f-input" id="month" value="*" placeholder="*, 1, 12">
+          </div>
+
+          <div class="field">
+            <label class="f-label">
+              <span class="f-label-text">Day of Week (0-6, 0=Sunday)</span>
+            </label>
+            <input type="text" class="f-input" id="dow" value="*" placeholder="*, 0, 1-5">
+          </div>
+        </div>
+      </div>
+
+      <!-- Output Card -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Cron Expression</span>
+        </div>
+        <div class="card-body">
+          <div class="output-box" id="cronOutput">0 9 * * *</div>
+          <button class="copy-btn" id="copyBtn">📋 Copy Expression</button>
+          <div class="description-box" id="cronDesc">Every day at 9:00 AM</div>
+          <div class="runs-list" id="nextRuns"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Info Card -->
+      <div class="info-card">
+        <div class="info-title">Cron Format</div>
+        <div class="info-text">
+          5-field cron format:
+          <div style="font-family: monospace; margin-top: 8px; background: rgba(0, 135, 81, 0.05); padding: 8px; border-radius: 4px;">
+            <div>Minute Hour Day Month DayOfWeek</div>
+          </div>
+          <ul style="margin-top:10px;">
+            <li>✓ * = any value</li>
+            <li>✓ , = multiple</li>
+            <li>✓ - = range</li>
+            <li>✓ / = interval</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Help Card -->
+      <div class="info-card">
+        <div class="info-title">Examples</div>
+        <div class="info-text" style="font-size: 0.75rem;">
+          <div><strong>0 9 * * *</strong> - 9 AM daily</div>
+          <div style="margin-top: 6px;"><strong>0 0 * * 0</strong> - Midnight Sunday</div>
+          <div style="margin-top: 6px;"><strong>*/30 * * * *</strong> - Every 30 mins</div>
+          <div style="margin-top: 6px;"><strong>0 12 1 * *</strong> - Noon on 1st</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<afro-footer></afro-footer>
+
+<script>
+  const minute = document.getElementById('minute');
+  const hour = document.getElementById('hour');
+  const day = document.getElementById('day');
+  const month = document.getElementById('month');
+  const dow = document.getElementById('dow');
+  const cronOutput = document.getElementById('cronOutput');
+  const cronDesc = document.getElementById('cronDesc');
+  const nextRuns = document.getElementById('nextRuns');
+  const copyBtn = document.getElementById('copyBtn');
+  const presetBtns = document.querySelectorAll('.preset-btn');
+
+  const inputs = [minute, hour, day, month, dow];
+
+  function updateCron() {
+    const cron = [minute.value, hour.value, day.value, month.value, dow.value].join(' ');
+    cronOutput.textContent = cron;
+    describeCron(cron);
+  }
+
+  function describeCron(cron) {
+    const parts = cron.split(' ');
+    const [m, h, d, mo, dow_val] = parts;
+
+    let desc = 'Every ';
+    let isDaily = h !== '*';
+
+    if (m === '*' && h === '*') {
+      desc += 'minute';
+    } else if (m.includes('/')) {
+      const interval = parseInt(m.split('/')[1]);
+      desc += `${interval} minutes`;
+    } else if (h === '*') {
+      desc += 'hour at minute ' + m;
+    } else {
+      if (d !== '*' || mo !== '*' || dow_val !== '*') {
+        if (d !== '*') desc += `day ${d} `;
+        if (mo !== '*') desc += `of month ${mo} `;
+        if (dow_val !== '*' && dow_val !== '0-6') {
+          const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+          desc += `(${days[parseInt(dow_val)]}) `;
+        }
+      } else {
+        desc += 'day ';
+      }
+      desc += `at ${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+    }
+
+    cronDesc.textContent = desc;
+  }
+
+  inputs.forEach(input => {
+    input.addEventListener('input', updateCron);
+  });
+
+  presetBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const cronStr = btn.dataset.cron;
+      const [m, h, d, mo, dw] = cronStr.split(' ');
+      minute.value = m;
+      hour.value = h;
+      day.value = d;
+      month.value = mo;
+      dow.value = dw;
+      updateCron();
+    });
+  });
+
+  copyBtn.addEventListener('click', () => {
+    navigator.clipboard.writeText(cronOutput.textContent);
+    copyBtn.textContent = '✓ Copied!';
+    setTimeout(() => {
+      copyBtn.textContent = '📋 Copy Expression';
+    }, 2000);
+  });
+
+  updateCron();
+</script>
+</body>
+</html>

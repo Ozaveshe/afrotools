@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Algeria PAYE Calculator 2025 — DGI Income Tax, CNAS | AfroTools</title>
+<meta name="description" content="Algeria PAYE calculator 2025. DGI progressive tax 0%–35%, CNAS social security 9% employee + 26% employer. Annual computation. Free PDF.">
+<link rel="canonical" href="https://afrotools.com/algeria/dz-paye">
+<meta property="og:title" content="Algeria PAYE Calculator 2025 | AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.css">
+<link rel="stylesheet" href="/assets/css/global.css">
+<script src="/assets/js/components/navbar.js" defer></script>
+<script src="/assets/js/components/footer.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root { --dz-green: #007A5E; --dz-gold: #FCD116; --dz-dark: #0a2419; }
+  .tool-hero { background: var(--dz-dark); padding: 44px 0 36px; position: relative; overflow: hidden; }
+  .tool-hero::after { content: '🇩🇿'; position: absolute; right: 5%; top: 50%; transform: translateY(-50%); font-size: 8rem; opacity: .06; pointer-events: none; }
+  .tool-hero-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; }
+  .breadcrumb { font-size: .72rem; font-weight: 500; color: rgba(255,255,255,.3); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 14px; }
+  .breadcrumb a { color: rgba(255,255,255,.3); text-decoration: none; }
+  .breadcrumb span { color: var(--dz-gold); }
+  h1 { font-size: clamp(1.6rem,4vw,2.4rem); font-weight: 800; color: #fff; letter-spacing: -.02em; line-height: 1.1; margin-bottom: 10px; }
+  h1 em { color: var(--dz-gold); font-style: normal; }
+  .hero-sub { font-size: .88rem; color: rgba(255,255,255,.45); line-height: 1.6; max-width: 560px; margin-bottom: 14px; }
+  .hero-badges { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 6px; }
+  .badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 11px; border-radius: 4px; font-size: .68rem; font-weight: 700; letter-spacing: .05em; }
+  .b-gold { background: rgba(252,209,22,.14); color: #e6c200; border: 1px solid rgba(252,209,22,.3); }
+  .b-green { background: rgba(0,122,94,.18); color: #5ddb9e; border: 1px solid rgba(0,122,94,.38); }
+  .b-grey { background: rgba(255,255,255,.07); color: rgba(255,255,255,.4); border: 1px solid rgba(255,255,255,.12); }
+  .update-bar { background: rgba(0,122,94,.06); border-bottom: 1px solid rgba(0,122,94,.18); padding: 11px 0; }
+  .update-bar-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+  .update-bar p { font-size: .78rem; color: rgba(0,0,0,.62); line-height: 1.6; }
+  .update-bar strong { color: #0a5c1e; font-weight: 700; }
+  .tool-main { padding: 28px 0 72px; }
+  .tool-main-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; display: grid; grid-template-columns: 1fr 360px; gap: 22px; align-items: start; }
+  .card { background: #fff; border: 1px solid #dceee0; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 8px rgba(0,0,0,.05); }
+  .card+.card { margin-top: 18px; }
+  .card-head { padding: 15px 22px; border-bottom: 1px solid #eaf5ec; display: flex; align-items: center; justify-content: space-between; background: #f7fdf8; }
+  .card-title { font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #0a4018; }
+  .card-sub { font-size: .72rem; color: #7dab87; }
+  .field { margin-bottom: 18px; }
+  .f-label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .f-label-text { font-size: .75rem; font-weight: 700; letter-spacing: .04em; color: #0d2813; }
+  .f-hint { font-size: .7rem; color: #7dab87; }
+  .f-wrap { position: relative; }
+  .f-prefix { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: .78rem; font-weight: 700; color: #7dab87; pointer-events: none; }
+  .f-input { width: 100%; padding: 11px 13px 11px 60px; background: #f4fbf5; border: 1.5px solid #c5deca; border-radius: 7px; font-size: 1rem; font-weight: 600; color: #0d2813; outline: none; transition: border-color .18s; font-family: 'DM Sans',sans-serif; -moz-appearance: textfield; }
+  .f-input:focus { border-color: var(--dz-green); background: #fff; box-shadow: 0 0 0 3px rgba(0,122,94,.1); }
+  .slider-wrap { margin-bottom: 18px; }
+  .slider-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .slider-label { font-size: .75rem; font-weight: 700; color: #0d2813; }
+  .slider-val { font-size: .92rem; font-weight: 800; color: var(--dz-green); }
+  input[type=range] { -webkit-appearance: none; width: 100%; height: 5px; border-radius: 3px; outline: none; cursor: pointer; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; background: var(--dz-green); border-radius: 50%; border: 2.5px solid #fff; box-shadow: 0 1px 6px rgba(0,122,94,.35); cursor: pointer; }
+  .slider-limits { display: flex; justify-content: space-between; margin-top: 4px; }
+  .slider-limits span { font-size: .65rem; font-weight: 500; color: #7dab87; }
+  .toggles { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .tog { display: flex; align-items: center; gap: 9px; padding: 10px 12px; background: #f4fbf5; border: 1.5px solid #c5deca; border-radius: 7px; cursor: pointer; transition: all .15s; user-select: none; }
+  .tog:hover { border-color: var(--dz-green); }
+  .tog.on { border-color: var(--dz-green); background: #edfaf0; }
+  .tog-box { width: 17px; height: 17px; flex-shrink: 0; border: 2px solid #aacfb5; border-radius: 4px; background: #fff; display: flex; align-items: center; justify-content: center; transition: all .15s; }
+  .tog.on .tog-box { background: var(--dz-green); border-color: var(--dz-green); }
+  .tog-box svg { display: none; }
+  .tog.on .tog-box svg { display: block; }
+  .tog-label { font-size: .72rem; font-weight: 700; color: #0d2813; line-height: 1.3; }
+  .tog-rate { font-size: .65rem; color: #7dab87; }
+  .calc-btn { width: 100%; padding: 14px; background: var(--dz-green); color: #fff; border: none; border-radius: 8px; font-size: .9rem; font-weight: 700; cursor: pointer; transition: all .18s; margin-top: 8px; }
+  .calc-btn:hover { background: #005c48; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,122,94,.3); }
+  .results-card { display: none; }
+  .results-card.on { display: block; }
+  .res-hero { background: linear-gradient(135deg,var(--dz-dark) 0%,#0d2a13 100%); padding: 26px 24px; text-align: center; border-radius: 10px 10px 0 0; }
+  .res-hero-label { font-size: .68rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.38); margin-bottom: 6px; }
+  .res-hero-amount { font-size: clamp(2.2rem,4.5vw,3.2rem); font-weight: 800; color: var(--dz-gold); letter-spacing: -.02em; line-height: 1; }
+  .res-hero-period { font-size: .78rem; color: rgba(255,255,255,.3); margin-top: 5px; }
+  .res-hero-gross { font-size: .75rem; color: rgba(255,255,255,.22); margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,.07); }
+  .res-body { padding: 20px 22px; }
+  .res-section { margin-bottom: 16px; }
+  .res-section-title { font-size: .65rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #7dab87; margin-bottom: 8px; padding-bottom: 7px; border-bottom: 1px solid #eaf5ec; }
+  .res-row { display: flex; align-items: center; justify-content: space-between; padding: 5px 0; font-size: .85rem; }
+  .res-row+.res-row { border-top: 1px solid #f5fcf6; }
+  .res-row-lbl { color: #244d2c; font-weight: 400; }
+  .res-row-val { font-weight: 700; color: #0d2813; font-variant-numeric: tabular-nums; }
+  .c-red { color: #c0392b; }
+  .c-grn { color: #007A5E; }
+  .c-gold { color: #9a7a00; }
+  .c-mut { color: #7dab87; }
+  .res-row.total { border-top: 2px solid #c5deca !important; margin-top: 4px; padding-top: 10px; }
+  .res-row.total .res-row-lbl { font-weight: 700; color: #0d2813; }
+  .res-row.total .res-row-val { font-size: 1.05rem; font-weight: 800; }
+  .rate-bar-wrap { margin: 16px 0; }
+  .rate-bar-hdr { display: flex; justify-content: space-between; margin-bottom: 7px; }
+  .rate-bar-lbl { font-size: .7rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #244d2c; }
+  .rate-bar-pct { font-size: .9rem; font-weight: 800; color: #0d2813; }
+  .rate-track { height: 7px; background: #eaf5ec; border-radius: 4px; overflow: hidden; }
+  .rate-fill { height: 100%; background: var(--dz-green); border-radius: 4px; transition: width .6s cubic-bezier(.34,1.56,.64,1); width: 0; }
+  .chart-section { padding: 0 22px 22px; }
+  .chart-tabs { display: flex; gap: 6px; margin-bottom: 14px; }
+  .chart-tab { padding: 6px 14px; font-size: .7rem; font-weight: 700; border: 1.5px solid #c5deca; background: transparent; border-radius: 5px; cursor: pointer; color: #7dab87; transition: all .15s; }
+  .chart-tab.on { background: var(--dz-green); border-color: var(--dz-green); color: #fff; }
+  .chart-canvas-wrap { position: relative; height: 200px; }
+  .action-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 0 22px 22px; }
+  .act-btn { padding: 10px; font-size: .72rem; font-weight: 700; border-radius: 6px; cursor: pointer; transition: all .15s; display: flex; align-items: center; justify-content: center; gap: 6px; }
+  .act-pdf { background: rgba(252,209,22,.1); border: 1.5px solid rgba(252,209,22,.35); color: #7a6200; }
+  .act-pdf:hover { background: rgba(252,209,22,.22); }
+  .act-share { background: #f4fbf5; border: 1.5px solid #c5deca; color: #244d2c; }
+  .act-share:hover { background: #e8f5eb; }
+  .sidebar { display: flex; flex-direction: column; gap: 16px; }
+  .ai-card { background: linear-gradient(160deg,var(--dz-dark) 0%,#0d2a13 100%); border-radius: 10px; border: 1px solid rgba(252,209,22,.1); overflow: hidden; }
+  .ai-head { padding: 14px 18px; border-bottom: 1px solid rgba(255,255,255,.07); display: flex; align-items: center; gap: 9px; }
+  .ai-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--dz-gold); animation: pulse 2s infinite; flex-shrink: 0; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+  .ai-head-title { font-size: .72rem; font-weight: 700; letter-spacing: .06em; color: #fff; }
+  .ai-head-by { font-size: .65rem; color: rgba(255,255,255,.28); margin-left: auto; }
+  .ai-body { padding: 16px 18px; }
+  .ai-status { font-size: .8rem; color: rgba(255,255,255,.48); line-height: 1.65; margin-bottom: 12px; }
+  .ai-response { font-size: .82rem; color: rgba(255,255,255,.78); line-height: 1.7; display: none; }
+  .ai-btn { width: 100%; padding: 11px; background: rgba(0,122,94,.18); border: 1px solid rgba(0,122,94,.38); border-radius: 6px; color: #a3f0b5; font-size: .72rem; font-weight: 700; cursor: pointer; transition: all .18s; margin-top: 12px; }
+  .ai-btn:disabled { opacity: .45; cursor: not-allowed; }
+  .bands-card .card-head { cursor: pointer; user-select: none; }
+  .tog-arrow { font-size: .8rem; color: #7dab87; transition: transform .2s; }
+  .tog-arrow.open { transform: rotate(180deg); }
+  .bands-body { display: none; padding: 14px 18px; }
+  .bands-body.open { display: block; }
+  .band-row { display: flex; justify-content: space-between; padding: 5px 0; font-size: .8rem; }
+  .band-row+.band-row { border-top: 1px solid #f5fcf6; }
+  .band-range { color: #244d2c; }
+  .band-rate { font-weight: 700; color: var(--dz-green); }
+  .band-zero { font-weight: 700; color: #7dab87; }
+  .band-note { font-size: .7rem; color: #7dab87; margin-top: 10px; line-height: 1.55; }
+  .disclaimer { font-size: .71rem; color: #7dab87; line-height: 1.6; padding: 13px 16px; background: #f7fdf8; border: 1px solid #c5deca; border-radius: 8px; }
+  .disclaimer strong { font-weight: 600; color: #244d2c; }
+  .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 9999; display: none; align-items: center; justify-content: center; padding: 20px; }
+  .modal-bg.on { display: flex; }
+  .modal { background: #fff; border-radius: 12px; padding: 32px; max-width: 420px; width: 100%; box-shadow: 0 24px 60px rgba(0,0,0,.22); }
+  .modal h3 { font-size: 1.1rem; font-weight: 800; color: #0d2813; margin-bottom: 6px; }
+  .modal p { font-size: .83rem; color: #244d2c; line-height: 1.6; margin-bottom: 20px; }
+  .modal-input { width: 100%; padding: 12px 14px; border: 1.5px solid #c5deca; border-radius: 7px; font-size: .9rem; color: #0d2813; outline: none; margin-bottom: 10px; background: #f4fbf5; font-family: 'DM Sans',sans-serif; }
+  .modal-input:focus { border-color: var(--dz-green); background: #fff; }
+  .modal-submit { width: 100%; padding: 13px; background: var(--dz-green); color: #fff; border: none; border-radius: 7px; font-size: .88rem; font-weight: 700; cursor: pointer; }
+  .modal-submit:hover { background: #005c48; }
+  .modal-cancel { width: 100%; padding: 10px; background: transparent; border: none; font-size: .78rem; color: #7dab87; cursor: pointer; margin-top: 6px; }
+  .faq-sec { padding: 52px 0; background: #fff; border-top: 1px solid #e4f0e6; }
+  .faq-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+  .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 28px; }
+  .faq-item { padding: 18px 20px; background: #f7fdf8; border: 1px solid #dceee0; border-radius: 8px; }
+  .faq-q { font-size: .85rem; font-weight: 700; color: #0d2813; margin-bottom: 7px; }
+  .faq-a { font-size: .82rem; color: #244d2c; line-height: 1.7; }
+  .eyebrow { display: block; font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--dz-green); margin-bottom: 6px; }
+  .sec-title { font-size: clamp(1.3rem,2.5vw,1.7rem); font-weight: 800; color: #0d2813; letter-spacing: -.02em; }
+  @media(max-width:900px) { .tool-main-inner { grid-template-columns: 1fr; } .faq-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body class="tool-page">
+<afro-navbar active="tools"></afro-navbar>
+<section class="tool-hero">
+  <div class="tool-hero-inner">
+    <nav class="breadcrumb"><a href="/">Home</a> / <a href="/algeria">🇩🇿 Algeria</a> / <span>PAYE Calculator</span></nav>
+    <h1>Algeria PAYE<br><em>Calculator 2025</em></h1>
+    <p class="hero-sub">DGI progressive tax (0%–35%), CNAS social security (9% employee + 26% employer). Annual computation.</p>
+    <div class="hero-badges">
+      <span class="badge b-gold">✦ AI Advisor</span>
+      <span class="badge b-green">DGI 2025</span>
+      <span class="badge b-grey">DZD · Algerian Dinar</span>
+    </div>
+  </div>
+</section>
+<div class="update-bar">
+  <div class="update-bar-inner">
+    <p><strong>2025:</strong> DGI bands: DZD 0–240,000 at 0%; DZD 240,001–480,000 at 20%; DZD 480,001–960,000 at 30%; above DZD 960,000 at 35%. CNAS employee <strong>9%, employer 26%</strong>.</p>
+  </div>
+</div>
+<div class="tool-main">
+  <div class="tool-main-inner">
+    <div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Enter Details</span><span class="card-sub">Algerian Dinar · DZD</span></div>
+        <div class="card-body">
+          <div class="slider-wrap">
+            <div class="slider-row"><span class="slider-label">Annual Gross</span><span class="slider-val" id="sliderVal">DZD 3,600,000</span></div>
+            <input type="range" id="salarySlider" min="500000" max="100000000" step="100000" value="3600000" oninput="onSlider(this)">
+            <div class="slider-limits"><span>DZD 500K</span><span>DZD 100M</span></div>
+          </div>
+          <div class="field">
+            <div class="f-label"><span class="f-label-text">Or type exact annual</span></div>
+            <div class="f-wrap"><span class="f-prefix">DZD</span><input type="number" class="f-input" id="grossSalary" placeholder="3,600,000" min="0" value="3600000" oninput="onInput(this)"></div>
+          </div>
+          <div class="field">
+            <div class="toggles">
+              <div class="tog on" data-tog="cnas" onclick="togItem(this)">
+                <div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div><div class="tog-label">CNAS</div><div class="tog-rate">9% — tax-deductible</div></div>
+              </div>
+            </div>
+          </div>
+          <button class="calc-btn" onclick="calculate()">Calculate →</button>
+        </div>
+      </div>
+      <div class="card results-card" id="resultsCard">
+        <div class="res-hero">
+          <div class="res-hero-label">Annual Take-Home</div>
+          <div class="res-hero-amount" id="resAmount">DZD 0</div>
+          <div class="res-hero-gross" id="resGross"></div>
+        </div>
+        <div class="res-body" id="resContent"></div>
+        <div class="res-body">
+          <div class="rate-bar-wrap">
+            <div class="rate-bar-hdr"><span class="rate-bar-lbl">Effective Rate</span><span class="rate-bar-pct" id="effRateDisplay">0%</span></div>
+            <div class="rate-track"><div class="rate-fill" id="rateFill"></div></div>
+          </div>
+        </div>
+        <div class="action-row">
+          <button class="act-btn act-pdf" onclick="openPdfModal()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>PDF</button>
+          <button class="act-btn act-share" onclick="shareResult()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Share</button>
+        </div>
+      </div>
+    </div>
+    <div class="sidebar">
+      <div class="ai-card">
+        <div class="ai-head"><div class="ai-dot"></div><span class="ai-head-title">AI Advisor</span></div>
+        <div class="ai-body"><p class="ai-status" id="aiStatus">Calculate to unlock tax analysis.</p><div class="ai-response" id="aiResp"></div><button class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Unlock →</button></div>
+      </div>
+      <div class="card bands-card">
+        <div class="card-head" onclick="toggleBands(this)"><span class="card-title">DGI Bands</span><span class="tog-arrow">▾</span></div>
+        <div class="bands-body">
+          <div class="band-row"><span class="band-range">DZD 0 – 240,000</span><span class="band-zero">0%</span></div>
+          <div class="band-row"><span class="band-range">DZD 240,001 – 480,000</span><span class="band-rate">20%</span></div>
+          <div class="band-row"><span class="band-range">DZD 480,001 – 960,000</span><span class="band-rate">30%</span></div>
+          <div class="band-row"><span class="band-range">Above DZD 960,000</span><span class="band-rate">35%</span></div>
+        </div>
+      </div>
+      <div class="disclaimer"><strong>Disclaimer:</strong> For informational use only. Verify with DGI (dgi.dz).</div>
+    </div>
+  </div>
+</div>
+<section class="faq-sec">
+  <div class="faq-inner"><span class="eyebrow">FAQ</span><h2 class="sec-title">Algeria Tax FAQs</h2></div>
+</section>
+<div class="modal-bg" id="pdfModal">
+  <div class="modal">
+    <div id="modalForm">
+      <h3>Download PDF</h3>
+      <form name="pdf-leads" data-netlify="true" onsubmit="submitPdf(event)">
+        <input type="hidden" name="form-name" value="pdf-leads">
+        <input type="hidden" name="country" value="Algeria">
+        <input type="hidden" name="country_code" value="DZ">
+        <input type="hidden" name="tool_id" value="dz-paye">
+        <input type="hidden" name="currency" value="DZD">
+        <input type="hidden" name="gross_salary" id="hiddenGross" value="">
+        <input class="modal-input" type="email" name="email" placeholder="Email" required>
+        <button class="modal-submit" type="submit">Get PDF</button>
+      </form>
+      <button class="modal-cancel" onclick="closePdfModal()">Close</button>
+    </div>
+  </div>
+</div>
+<afro-footer></afro-footer>
+<script>
+let RESULT=null,CHART=null;
+const fmt=n=>'DZD '+Math.round(Math.abs(n)).toLocaleString('ar-DZ');
+const pct=r=>((r*100)%1===0?(r*100).toFixed(0):(r*100).toFixed(2))+'%';
+function onSlider(el){document.getElementById('grossSalary').value=parseInt(el.value);document.getElementById('sliderVal').textContent=fmt(parseInt(el.value));updateFill(el);}
+function onInput(el){const v=Math.min(Math.max(parseInt(el.value)||0,500000),100000000);document.getElementById('salarySlider').value=v;updateFill(document.getElementById('salarySlider'));}
+function updateFill(el){const p=((parseInt(el.value)-parseInt(el.min))/(parseInt(el.max)-parseInt(el.min)))*100;el.style.background=`linear-gradient(to right,#007A5E 0%,#007A5E ${p}%,#c5deca ${p}%,#c5deca 100%)`;}
+function togItem(el){el.classList.toggle('on');}
+function isOn(tog){return!!document.querySelector(`[data-tog="${tog}"]`)?.classList.contains('on');}
+function calcDGI(income){let tax=0;if(income<=240000)return{tax:0};if(income<=480000)tax=(income-240000)*0.20;else if(income<=960000)tax=48000+(income-480000)*0.30;else tax=192000+(income-960000)*0.35;return{tax};}
+function calculate(){const gross=parseInt(document.getElementById('grossSalary').value)||0;if(!gross)return;const cnas=isOn('cnas')?gross*0.09:0;const empCNAS=gross*0.26;const taxable=gross-cnas;const{tax}=calcDGI(taxable);const net=gross-cnas-tax;const eff=gross>0?tax/gross:0;RESULT={gross,cnas,empCNAS,tax,net,effectiveRate:eff,empCost:gross+empCNAS};document.getElementById('resAmount').textContent=fmt(net);document.getElementById('resGross').textContent=`Gross: ${fmt(gross)}/year`;document.getElementById('resContent').innerHTML=`<div class="res-section"><div class="res-section-title">Income</div><div class="res-row"><span class="res-row-lbl">Gross</span><span class="res-row-val">${fmt(gross)}</span></div></div><div class="res-section"><div class="res-section-title">Deductions</div>${cnas?`<div class="res-row"><span class="res-row-lbl">CNAS (9%)</span><span class="res-row-val c-red">${fmt(cnas)}</span></div>`:''}
+<div class="res-row"><span class="res-row-lbl">Taxable</span><span class="res-row-val c-mut">${fmt(taxable)}</span></div><div class="res-row"><span class="res-row-lbl">DGI Tax</span><span class="res-row-val c-red">${fmt(tax)}</span></div></div><div class="res-section"><div class="res-row total"><span class="res-row-lbl">Take-Home</span><span class="res-row-val c-grn">${fmt(net)}</span></div></div>`;document.getElementById('effRateDisplay').textContent=pct(eff);document.getElementById('rateFill').style.width=Math.min(eff*200,100)+'%';document.getElementById('hiddenGross').value=gross;document.getElementById('resultsCard').classList.add('on');document.getElementById('aiBtn').disabled=false;}
+function toggleBands(h){const b=h.nextElementSibling;b.classList.toggle('open');h.querySelector('.tog-arrow').classList.toggle('open');}
+function openPdfModal(){if(!RESULT)return;document.getElementById('pdfModal').classList.add('on');}
+function closePdfModal(){document.getElementById('pdfModal').classList.remove('on');}
+function shareResult(){if(!RESULT)return;const text=`Algeria PAYE: Gross DZD ${Math.round(RESULT.gross).toLocaleString()}/yr → Take-home DZD ${Math.round(RESULT.net).toLocaleString()}/yr (${pct(RESULT.effectiveRate)}). afrotools.com/algeria/dz-paye`;if(navigator.share){navigator.share({text,url:'https://afrotools.com/algeria/dz-paye'});}else if(navigator.clipboard){navigator.clipboard.writeText(text);}}
+async function getAI(){if(!RESULT)return;document.getElementById('aiBtn').disabled=true;const prompt=`Algeria PAYE 2025: Gross DZD ${Math.round(RESULT.gross).toLocaleString()}, CNAS DZD ${Math.round(RESULT.cnas).toLocaleString()}, DGI DZD ${Math.round(RESULT.tax).toLocaleString()}, Take-home DZD ${Math.round(RESULT.net).toLocaleString()}, Rate ${pct(RESULT.effectiveRate)}. Summarize.`;try{const res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'Tax advisor.',messages:[{role:'user',content:prompt}]})});const data=await res.json();document.getElementById('aiResp').textContent=data.text||'Unable.';document.getElementById('aiResp').style.display='block';}catch(e){document.getElementById('aiBtn').disabled=false;}}
+async function submitPdf(e){e.preventDefault();try{await fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({'form-name':'pdf-leads',email:document.getElementById('pdfEmail').value||'',country:'Algeria',country_code:'DZ',tool_id:'dz-paye',currency:'DZD',gross_salary:RESULT.gross}).toString());}catch(e){}
+closePdfModal();}
+document.getElementById('grossSalary').addEventListener('keydown',e=>{if(e.key==='Enter')calculate();});
+updateFill(document.getElementById('salarySlider'));
+</script>
+</body>
+</html>

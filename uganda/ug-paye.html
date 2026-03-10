@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Uganda PAYE Calculator 2025/26 — URA Income Tax, NSSF, LST | AfroTools</title>
+<meta name="description" content="Uganda PAYE calculator 2025/26. URA progressive tax 0%–40%, NSSF 5% employee (not tax-deductible), Local Service Tax. Monthly & annual calculations per URA bands. Free PDF download.">
+<link rel="canonical" href="https://afrotools.com/uganda/ug-paye">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title"       content="Uganda PAYE Calculator 2025/26 | AfroTools">
+<meta property="og:description" content="Accurate Uganda PAYE: URA 0%–40% progressive tax, NSSF 5% (not deductible), Local Service Tax. 2025/26 rates.">
+<meta property="og:type"        content="website">
+<meta property="og:url"         content="https://afrotools.com/uganda/ug-paye">
+<meta property="og:image"       content="https://afrotools.com/assets/img/og-ug-paye.png">
+<meta property="og:locale"      content="en_UG">
+<meta property="og:site_name"   content="AfroTools">
+<meta name="twitter:card"       content="summary_large_image">
+<meta name="twitter:title"      content="Uganda PAYE Calculator 2025/26 | AfroTools">
+<meta name="twitter:description" content="URA progressive tax 0%–40%, NSSF 5% (employee, not deductible), Local Service Tax. 2025/26 rates.">
+<meta name="robots"             content="index, follow">
+<meta name="author"             content="AfroTools">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com"},{"@type":"ListItem","position":2,"name":"Uganda","item":"https://afrotools.com/uganda"},{"@type":"ListItem","position":3,"name":"Uganda PAYE Calculator","item":"https://afrotools.com/uganda/ug-paye"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Uganda PAYE Calculator 2025/26","url":"https://afrotools.com/uganda/ug-paye","description":"Calculate Uganda take-home pay using 2025/26 URA PAYE rates, NSSF contributions, and Local Service Tax.","applicationCategory":"FinanceApplication","operatingSystem":"Web","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"UGX"},"provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What are the Uganda PAYE tax bands for 2025/26?","acceptedAnswer":{"@type":"Answer","text":"Five monthly brackets (resident): UGX 0–235,000 at 0%; UGX 235,001–335,000 at 10%; UGX 335,001–410,000 at 20%; UGX 410,001–10,000,000 at 30%; above UGX 10,000,000 at 40%. Non-residents pay flat 30%. Monthly bands apply to gross salary; NSSF is not deductible. Annual tax-free threshold: UGX 2,820,000 for residents."}},{"@type":"Question","name":"Is NSSF contribution deductible in Uganda?","acceptedAnswer":{"@type":"Answer","text":"No — in Uganda, the employee NSSF contribution (5% of gross) is NOT deductible from taxable income. PAYE is calculated on the full gross salary before NSSF deduction. This differs from neighbouring countries where employee social security contributions reduce taxable income."}},{"@type":"Question","name":"What is Local Service Tax (LST) in Uganda?","acceptedAnswer":{"@type":"Answer","text":"Local Service Tax is an annual tax on employment income, deducted from salary in four equal installments in July, August, September, and October. The rate varies by income level, approximately 1% of annual income. LST is deducted alongside PAYE and NSSF."}}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.css">
+<link rel="stylesheet" href="/assets/css/global.css">
+<script src="/assets/js/components/navbar.js" defer></script>
+<script src="/assets/js/components/footer.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --ug-black:  #000000;   /* Uganda flag black  */
+    --ug-yellow: #FCDC04;   /* Uganda flag yellow */
+    --ug-red:    #D90000;   /* Uganda flag red    */
+    --ug-dark:   #0a0a0a;
+  }
+
+  .tool-hero{background:var(--ug-dark);padding:44px 0 36px;position:relative;overflow:hidden}
+  .tool-hero::after{content:'🇺🇬';position:absolute;right:5%;top:50%;transform:translateY(-50%);font-size:8rem;opacity:.06;pointer-events:none}
+  .tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px;position:relative}
+  .breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+  .breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}
+  .breadcrumb span{color:var(--ug-yellow)}
+  h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+  h1 em{color:var(--ug-yellow);font-style:normal}
+  .hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+  .hero-badges{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:6px}
+  .badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+  .b-yellow{background:rgba(252,220,4,.14);color:#d4a200;border:1px solid rgba(252,220,4,.3)}
+  .b-red{background:rgba(217,0,0,.14);color:#ff6b6b;border:1px solid rgba(217,0,0,.3)}
+  .b-grey{background:rgba(255,255,255,.07);color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.12)}
+  .hero-meta{font-size:.72rem;color:rgba(255,255,255,.22);margin-top:4px}
+
+  .update-bar{background:rgba(217,0,0,.06);border-bottom:1px solid rgba(217,0,0,.18);padding:11px 0}
+  .update-bar-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+  .update-bar p{font-size:.78rem;color:rgba(0,0,0,.62);line-height:1.6}
+  .update-bar strong{color:#7a0000;font-weight:700}
+
+  .tool-main{padding:28px 0 72px}
+  .tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 360px;gap:22px;align-items:start}
+
+  .card{background:#fff;border:1px solid #f0e5e0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+  .card+.card{margin-top:18px}
+  .card-head{padding:15px 22px;border-bottom:1px solid #f8f1ed;display:flex;align-items:center;justify-content:space-between;background:#fdfcfb}
+  .card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#3d2817}
+  .card-sub{font-size:.72rem;color:#9d8575}
+
+  .field{margin-bottom:18px}
+  .field:last-child{margin-bottom:0}
+  .f-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+  .f-label-text{font-size:.75rem;font-weight:700;letter-spacing:.04em;color:#3d2817}
+  .f-hint{font-size:.7rem;color:#9d8575}
+  .f-wrap{position:relative}
+  .f-prefix{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:.78rem;font-weight:700;color:#9d8575;pointer-events:none}
+  .f-input{width:100%;padding:11px 13px 11px 60px;background:#faf8f6;border:1.5px solid #e5d9cf;border-radius:7px;font-size:1rem;font-weight:600;color:#3d2817;outline:none;transition:border-color .18s,box-shadow .18s;font-family:'DM Sans',sans-serif;-moz-appearance:textfield}
+  .f-input::-webkit-inner-spin-button,.f-input::-webkit-outer-spin-button{-webkit-appearance:none}
+  .f-input:focus{border-color:var(--ug-red);background:#fff;box-shadow:0 0 0 3px rgba(217,0,0,.1)}
+  .f-note{font-size:.7rem;color:#9d8575;margin-top:5px;line-height:1.55}
+
+  .slider-wrap{margin-bottom:18px}
+  .slider-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .slider-label{font-size:.75rem;font-weight:700;color:#3d2817}
+  .slider-val{font-size:.92rem;font-weight:800;color:var(--ug-red)}
+  input[type=range]{-webkit-appearance:none;width:100%;height:5px;border-radius:3px;outline:none;cursor:pointer}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;background:var(--ug-red);border-radius:50%;border:2.5px solid #fff;box-shadow:0 1px 6px rgba(217,0,0,.35);cursor:pointer}
+  .slider-limits{display:flex;justify-content:space-between;margin-top:4px}
+  .slider-limits span{font-size:.65rem;font-weight:500;color:#9d8575}
+
+  .toggles{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .tog{display:flex;align-items:center;gap:9px;padding:10px 12px;background:#faf8f6;border:1.5px solid #e5d9cf;border-radius:7px;cursor:pointer;transition:all .15s;user-select:none}
+  .tog:hover{border-color:var(--ug-red)}
+  .tog.on{border-color:var(--ug-red);background:#fdf3f0}
+  .tog-box{width:17px;height:17px;flex-shrink:0;border:2px solid #c9b8ac;border-radius:4px;background:#fff;display:flex;align-items:center;justify-content:center;transition:all .15s}
+  .tog.on .tog-box{background:var(--ug-red);border-color:var(--ug-red)}
+  .tog-box svg{display:none}
+  .tog.on .tog-box svg{display:block}
+  .tog-label{font-size:.72rem;font-weight:700;color:#3d2817;line-height:1.3}
+  .tog-rate{font-size:.65rem;color:#9d8575}
+
+  .sector-row{display:flex;gap:6px;margin-bottom:16px}
+  .sec-btn{flex:1;padding:9px;font-size:.72rem;font-weight:700;border:1.5px solid #e5d9cf;background:#faf8f6;border-radius:6px;cursor:pointer;color:#9d8575;transition:all .15s;font-family:'DM Sans',sans-serif}
+  .sec-btn.on{background:var(--ug-red);border-color:var(--ug-red);color:#fff}
+
+  .calc-btn{width:100%;padding:14px;background:var(--ug-red);color:#fff;border:none;border-radius:8px;font-size:.9rem;font-weight:700;letter-spacing:.03em;cursor:pointer;transition:all .18s;margin-top:8px;font-family:'DM Sans',sans-serif}
+  .calc-btn:hover{background:#b30000;transform:translateY(-1px);box-shadow:0 6px 20px rgba(217,0,0,.3)}
+
+  .results-card{display:none}
+  .results-card.on{display:block}
+  .res-hero{background:linear-gradient(135deg,var(--ug-dark) 0%,#1a1a1a 100%);padding:26px 24px;text-align:center;border-radius:10px 10px 0 0}
+  .res-hero-label{font-size:.68rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.38);margin-bottom:6px}
+  .res-hero-amount{font-size:clamp(2.2rem,4.5vw,3.2rem);font-weight:800;color:var(--ug-yellow);letter-spacing:-.02em;line-height:1}
+  .res-hero-period{font-size:.78rem;color:rgba(255,255,255,.3);margin-top:5px}
+  .res-hero-gross{font-size:.75rem;color:rgba(255,255,255,.22);margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.07)}
+
+  .period-row{display:flex;gap:4px;background:#faf8f6;padding:4px;border-radius:7px;margin-bottom:18px}
+  .per-btn{flex:1;padding:8px;font-size:.72rem;font-weight:700;border:none;background:transparent;border-radius:5px;cursor:pointer;color:#9d8575;transition:all .15s;font-family:'DM Sans',sans-serif}
+  .per-btn.on{background:#fff;color:var(--ug-red);box-shadow:0 1px 5px rgba(0,0,0,.09)}
+
+  .res-body{padding:20px 22px}
+  .res-section{margin-bottom:16px}
+  .res-section-title{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#9d8575;margin-bottom:8px;padding-bottom:7px;border-bottom:1px solid #f8f1ed}
+  .res-row{display:flex;align-items:center;justify-content:space-between;padding:5px 0;font-size:.85rem}
+  .res-row+.res-row{border-top:1px solid #fcfbf9}
+  .res-row-lbl{color:#5c4033;font-weight:400}
+  .res-row-val{font-weight:700;color:#3d2817;font-variant-numeric:tabular-nums}
+  .c-red{color:#c0392b}.c-grn{color:#D90000}.c-gold{color:#9a7a00}.c-mut{color:#9d8575}.c-blue{color:#0077aa}
+  .res-row.total{border-top:2px solid #e5d9cf !important;margin-top:4px;padding-top:10px}
+  .res-row.total .res-row-lbl{font-weight:700;color:#3d2817}
+  .res-row.total .res-row-val{font-size:1.05rem;font-weight:800}
+
+  .rate-bar-wrap{margin:16px 0}
+  .rate-bar-hdr{display:flex;justify-content:space-between;margin-bottom:7px}
+  .rate-bar-lbl{font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#5c4033}
+  .rate-bar-pct{font-size:.9rem;font-weight:800;color:#3d2817}
+  .rate-track{height:7px;background:#f8f1ed;border-radius:4px;overflow:hidden}
+  .rate-fill{height:100%;background:var(--ug-red);border-radius:4px;transition:width .6s cubic-bezier(.34,1.56,.64,1);width:0}
+
+  .employer-strip{background:rgba(217,0,0,.07);border:1px solid rgba(217,0,0,.22);border-radius:7px;padding:11px 14px;font-size:.78rem;color:#5c2020;line-height:1.55;display:none;margin-top:10px}
+  .employer-strip.on{display:block}
+  .employer-strip strong{font-weight:700;color:#5c2020}
+
+  .chart-section{padding:0 22px 22px}
+  .chart-tabs{display:flex;gap:6px;margin-bottom:14px}
+  .chart-tab{padding:6px 14px;font-size:.7rem;font-weight:700;border:1.5px solid #e5d9cf;background:transparent;border-radius:5px;cursor:pointer;color:#9d8575;transition:all .15s;font-family:'DM Sans',sans-serif}
+  .chart-tab.on{background:var(--ug-red);border-color:var(--ug-red);color:#fff}
+  .chart-canvas-wrap{position:relative;height:200px}
+
+  .action-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 22px 22px}
+  .act-btn{padding:10px;font-size:.72rem;font-weight:700;border-radius:6px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px;font-family:'DM Sans',sans-serif}
+  .act-pdf{background:rgba(252,220,4,.1);border:1.5px solid rgba(252,220,4,.35);color:#7a6200}
+  .act-pdf:hover{background:rgba(252,220,4,.22)}
+  .act-share{background:#faf8f6;border:1.5px solid #e5d9cf;color:#5c4033}
+  .act-share:hover{background:#f4f0eb}
+
+  .sidebar{display:flex;flex-direction:column;gap:16px}
+
+  .ai-card{background:linear-gradient(160deg,var(--ug-dark) 0%,#1a1a1a 100%);border-radius:10px;border:1px solid rgba(252,220,4,.1);overflow:hidden}
+  .ai-head{padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:9px}
+  .ai-dot{width:8px;height:8px;border-radius:50%;background:var(--ug-yellow);animation:pulse 2s infinite;flex-shrink:0}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  .ai-head-title{font-size:.72rem;font-weight:700;letter-spacing:.06em;color:#fff}
+  .ai-head-by{font-size:.65rem;color:rgba(255,255,255,.28);margin-left:auto}
+  .ai-body{padding:16px 18px}
+  .ai-status{font-size:.8rem;color:rgba(255,255,255,.48);line-height:1.65;margin-bottom:12px}
+  .ai-response{font-size:.82rem;color:rgba(255,255,255,.78);line-height:1.7;display:none}
+  .ai-response.typing::after{content:'▋';animation:blink 1s infinite;color:var(--ug-yellow)}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+  .ai-btn{width:100%;padding:11px;background:rgba(217,0,0,.18);border:1px solid rgba(217,0,0,.38);border-radius:6px;color:#ff9999;font-size:.72rem;font-weight:700;letter-spacing:.04em;cursor:pointer;transition:all .18s;margin-top:12px;font-family:'DM Sans',sans-serif}
+  .ai-btn:hover{background:rgba(217,0,0,.32)}
+  .ai-btn:disabled{opacity:.45;cursor:not-allowed}
+  .ai-chat{display:none;margin-top:12px;border-top:1px solid rgba(255,255,255,.07);padding-top:12px}
+  .ai-chat.on{display:block}
+  .chat-msgs{max-height:180px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin-bottom:9px;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.1) transparent}
+  .msg{font-size:.78rem;line-height:1.6;padding:8px 11px;border-radius:6px}
+  .msg.u{background:rgba(217,0,0,.22);color:rgba(255,255,255,.85);align-self:flex-end;max-width:85%}
+  .msg.a{background:rgba(255,255,255,.06);color:rgba(255,255,255,.7);align-self:flex-start;max-width:95%}
+  .chat-row{display:flex;gap:6px}
+  .chat-in{flex:1;padding:8px 11px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:5px;font-size:.78rem;color:#fff;outline:none;font-family:'DM Sans',sans-serif}
+  .chat-in::placeholder{color:rgba(255,255,255,.28)}
+  .chat-in:focus{border-color:rgba(252,220,4,.4)}
+  .chat-send{padding:8px 13px;background:var(--ug-red);border:none;border-radius:5px;color:#fff;cursor:pointer;font-weight:700;font-family:'DM Sans',sans-serif}
+
+  .bands-card .card-head{cursor:pointer;user-select:none}
+  .tog-arrow{font-size:.8rem;color:#9d8575;transition:transform .2s}
+  .tog-arrow.open{transform:rotate(180deg)}
+  .bands-body{display:none;padding:14px 18px}
+  .bands-body.open{display:block}
+  .band-row{display:flex;justify-content:space-between;padding:5px 0;font-size:.8rem}
+  .band-row+.band-row{border-top:1px solid #fcfbf9}
+  .band-range{color:#5c4033}
+  .band-rate{font-weight:700;color:var(--ug-red)}
+  .band-zero{font-weight:700;color:#9d8575}
+  .band-note{font-size:.7rem;color:#9d8575;margin-top:10px;line-height:1.55}
+
+  .disclaimer{font-size:.71rem;color:#9d8575;line-height:1.6;padding:13px 16px;background:#fdfcfb;border:1px solid #e5d9cf;border-radius:8px}
+  .disclaimer strong{font-weight:600;color:#5c4033}
+
+  @media(max-width:900px){
+    .tool-main-inner{grid-template-columns:1fr}
+    .sidebar{flex-direction:row;gap:12px}
+    .ai-card,.bands-card{flex:1}
+  }
+
+  @media(max-width:640px){
+    h1{font-size:1.4rem}
+    .tool-main-inner{padding:0 12px;gap:12px}
+    .toggles{grid-template-columns:1fr}
+    .action-row{grid-template-columns:1fr}
+    .card-head,.card-head+div{padding:12px 14px}
+    .res-body,.chart-section,.action-row{padding:14px}
+    .sidebar{flex-direction:column;gap:14px}
+  }
+</style>
+</head>
+<body>
+
+<afro-navbar></afro-navbar>
+
+<!-- HERO -->
+<section class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb"><a href="https://afrotools.com">AfroTools</a> › <a href="https://afrotools.com/uganda">Uganda</a> › <span>PAYE Calculator</span></div>
+    <h1>Uganda PAYE Calculator <em>2025/26</em></h1>
+    <p class="hero-sub">Calculate your take-home pay in Uganda using URA progressive income tax bands (0%–40%), NSSF contributions (5%, not tax-deductible), and Local Service Tax. Accurate monthly and annual figures.</p>
+    <div class="hero-badges">
+      <span class="badge b-yellow">🇺🇬 URA 2025/26</span>
+      <span class="badge b-red">PAYE 0%–40%</span>
+      <span class="badge b-grey">Free PDF Export</span>
+    </div>
+    <div class="hero-meta">Updated 2025 · Based on Uganda Revenue Authority (URA) Income Tax Act</div>
+  </div>
+</section>
+
+<div class="update-bar">
+  <div class="update-bar-inner">
+    <p><strong>2025/26 Tax Year:</strong> Progressive PAYE bands updated. NSSF remains 5% employee contribution (NOT tax-deductible). Non-resident rate: 30% flat on employment income. Local Service Tax deducted July–October.</p>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="tool-main">
+  <div class="tool-main-inner">
+    <div>
+      <!-- INPUT CARD -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">💰 Your Salary</span>
+        </div>
+        <div style="padding:22px">
+          <div class="slider-wrap">
+            <div class="slider-row">
+              <span class="slider-label">Monthly Salary</span>
+              <span class="slider-val" id="sliderVal">UGX 1,500,000</span>
+            </div>
+            <input type="range" id="salarySlider" min="100000" max="20000000" value="1500000" step="50000" oninput="onSlider(this)">
+            <div class="slider-limits">
+              <span>UGX 100k</span>
+              <span>UGX 20M</span>
+            </div>
+          </div>
+          <div class="field">
+            <div class="f-label">
+              <span class="f-label-text">Or enter directly</span>
+              <span class="f-hint">UGX</span>
+            </div>
+            <div class="f-wrap">
+              <span class="f-prefix">UGX</span>
+              <input class="f-input" type="number" id="grossSalary" value="1500000" min="100000" max="20000000" step="50000" oninput="onInput(this)" placeholder="Monthly salary">
+            </div>
+            <div class="f-note">Net income in Uganda depends on your gross salary, NSSF (5%), PAYE tax bands, and Local Service Tax.</div>
+          </div>
+
+          <div class="field">
+            <div class="f-label">
+              <span class="f-label-text">Employment Status</span>
+            </div>
+            <div class="toggles">
+              <div class="tog on" data-tog="resident" onclick="togItem(this)">
+                <div class="tog-box"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z" fill="#fff"/></svg></div>
+                <div class="tog-label">Resident<div class="tog-rate">Progressive tax</div></div>
+              </div>
+              <div class="tog" data-tog="nonres" onclick="togItem(this)">
+                <div class="tog-box"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z" fill="#fff"/></svg></div>
+                <div class="tog-label">Non-Resident<div class="tog-rate">Flat 30%</div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="f-label">
+              <span class="f-label-text">Deductions & Levies</span>
+            </div>
+            <div class="toggles">
+              <div class="tog on" data-tog="nssf" onclick="togItem(this)">
+                <div class="tog-box"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z" fill="#fff"/></svg></div>
+                <div class="tog-label" id="nssfLabel">NSSF (5%)<div class="tog-rate">Not deductible from tax</div></div>
+              </div>
+              <div class="tog" data-tog="lst" onclick="togItem(this)">
+                <div class="tog-box"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z" fill="#fff"/></svg></div>
+                <div class="tog-label">LST<div class="tog-rate">July–October only (~1%)</div></div>
+              </div>
+            </div>
+          </div>
+
+          <button class="calc-btn" onclick="calculate()">Calculate Take-Home Pay →</button>
+        </div>
+      </div>
+
+      <!-- RESULTS CARD -->
+      <div class="card results-card" id="resultsCard">
+        <div class="res-hero">
+          <div class="res-hero-label">Monthly Take-Home Pay</div>
+          <div class="res-hero-amount" id="resAmount">UGX 0</div>
+          <div class="res-hero-period">Per month in Uganda</div>
+          <div class="res-hero-gross" id="resGross">Gross: UGX 0 · Annual: UGX 0</div>
+        </div>
+
+        <div class="res-body">
+          <div class="period-row">
+            <button class="per-btn on" onclick="setPeriod('monthly', this)">Monthly</button>
+            <button class="per-btn" onclick="setPeriod('annual', this)">Annual</button>
+          </div>
+
+          <div id="resContent"></div>
+
+          <div style="margin-top:18px;padding-top:12px;border-top:1px solid #f8f1ed">
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+              <span style="font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#9d8575">Effective Tax Rate</span>
+              <span style="font-size:.9rem;font-weight:800;color:#3d2817" id="effRateDisplay">0%</span>
+            </div>
+            <div class="rate-track">
+              <div class="rate-fill" id="rateFill"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-section">
+          <div class="chart-tabs">
+            <button class="chart-tab on" onclick="setChart('donut',this)">Breakdown</button>
+            <button class="chart-tab" onclick="setChart('bar',this)">Tax Bands</button>
+          </div>
+          <div class="chart-canvas-wrap">
+            <canvas id="mainChart"></canvas>
+          </div>
+        </div>
+
+        <div class="employer-strip" id="employerStrip"></div>
+
+        <div class="action-row">
+          <button class="act-btn act-pdf" onclick="openPdfModal()">📄 Get PDF</button>
+          <button class="act-btn act-share" id="ugShareBtn" onclick="shareResult()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share Result</button>
+        </div>
+      </div>
+
+      <!-- TAX BANDS CARD -->
+      <div class="card bands-card">
+        <div class="card-head" onclick="toggleBands(this)">
+          <span class="card-title">PAYE Tax Bands 2025/26</span>
+          <span class="tog-arrow">▾</span>
+        </div>
+        <div class="bands-body">
+          <div class="band-row"><span class="band-range">UGX 0 – UGX 235,000</span><span class="band-zero">0%</span></div>
+          <div class="band-row"><span class="band-range">UGX 235,001 – UGX 335,000</span><span class="band-rate">10%</span></div>
+          <div class="band-row"><span class="band-range">UGX 335,001 – UGX 410,000</span><span class="band-rate">20%</span></div>
+          <div class="band-row"><span class="band-range">UGX 410,001 – UGX 10,000,000</span><span class="band-rate">30%</span></div>
+          <div class="band-row"><span class="band-range">Above UGX 10,000,000</span><span class="band-rate">40%</span></div>
+          <p class="band-note">Calculated monthly on gross salary for residents. NSSF contribution (5% of gross) is NOT deductible from PAYE taxable income in Uganda — this is a key difference from neighbouring countries. Non-residents pay flat 30% on employment income.</p>
+        </div>
+      </div>
+
+      <!-- LEVIES CARD -->
+      <div class="card bands-card">
+        <div class="card-head" onclick="toggleBands(this)">
+          <span class="card-title">NSSF · LST Rates 2025</span>
+          <span class="tog-arrow">▾</span>
+        </div>
+        <div class="bands-body">
+          <div class="band-row"><span class="band-range">Employee NSSF contribution</span><span class="band-rate">5% of gross (no cap)</span></div>
+          <div class="band-row"><span class="band-range">Employer NSSF contribution</span><span class="band-rate">10% of gross (no cap)</span></div>
+          <div class="band-row"><span class="band-range">Local Service Tax (LST)</span><span class="band-rate">~1% deducted Jul–Oct</span></div>
+          <p class="band-note">NSSF employee contribution is NOT deductible from taxable income before PAYE calculation. This means you pay both NSSF and PAYE on the full gross salary. NSSF is paid to the National Social Security Fund (NSSF Uganda). Local Service Tax is deducted in 4 equal instalments from July to October each year. Both are withheld from salary alongside PAYE.</p>
+        </div>
+      </div>
+
+      <div class="disclaimer">
+        <strong>Disclaimer:</strong> For informational purposes only. Not professional tax or legal advice. Rates based on Uganda Revenue Authority (URA) Income Tax Act, 2000 (as amended), and 2025/26 statutory schedules. Verify with URA (ura.go.ug) or a qualified Ugandan tax advisor.
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <!-- AI CARD -->
+      <div class="ai-card">
+        <div class="ai-head">
+          <div class="ai-dot"></div>
+          <div class="ai-head-title">AI Tax Advisor</div>
+          <div class="ai-head-by">Tier 1</div>
+        </div>
+        <div class="ai-body">
+          <div class="ai-status" id="aiStatus">Enter your salary above and calculate to get a personalized tax analysis.</div>
+          <div class="ai-response" id="aiResp"></div>
+          <button class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Calculate First →</button>
+          <div class="ai-chat" id="aiChat">
+            <div class="chat-msgs" id="chatMsgs"></div>
+            <div class="chat-row">
+              <input class="chat-in" id="chatIn" type="text" placeholder="Ask a follow-up…" onkeydown="if(event.key==='Enter')sendChat()">
+              <button class="chat-send" onclick="sendChat()">Send</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<section class="faq-sec">
+  <div class="faq-inner">
+    <span class="eyebrow">Uganda Tax FAQ</span>
+    <h2 class="sec-title">Common PAYE Questions</h2>
+    <div class="faq-grid">
+      <div class="faq-item">
+        <div class="faq-q">What are the Uganda PAYE tax bands for 2025/26?</div>
+        <p class="faq-a">Five monthly bands for residents: 0% on first UGX 235,000; 10% on UGX 235,001–335,000; 20% on UGX 335,001–410,000; 30% on UGX 410,001–10,000,000; 40% above UGX 10,000,000. These apply to gross salary — NSSF is not deductible. Non-residents pay flat 30% with no allowances.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Is NSSF contribution deductible from PAYE taxable income in Uganda?</div>
+        <p class="faq-a">No — the 5% employee NSSF contribution is NOT deductible from your gross salary for PAYE purposes. This is a fundamental difference from countries like Tanzania and Kenya. In Uganda, PAYE is calculated on the full gross salary, then NSSF (5%) is deducted from your net pay separately. You pay both taxes in full.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What is Local Service Tax (LST) in Uganda?</div>
+        <p class="faq-a">Local Service Tax is an annual charge on employment income, deducted in four equal monthly instalments in July, August, September, and October. The rate is approximately 1% of annual earnings, though it varies slightly by income level. LST is withheld from your salary alongside PAYE and NSSF during those four months only.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">How is non-resident income taxed in Uganda?</div>
+        <p class="faq-a">Non-residents working in Uganda pay a flat rate of 30% on all employment income. No progressive bands apply, no deductions are allowed, and NSSF contribution is still required separately. This flat 30% withholding is a final tax — employers remit it to URA as tax-at-source. Non-residents cannot claim any personal allowances.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">When must employers remit PAYE to URA?</div>
+        <p class="faq-a">PAYE and LST (during LST months) must be remitted to Uganda Revenue Authority by the 15th of the month following the payroll month. NSSF contributions are remitted separately to the National Social Security Fund (NSSF Uganda) portal. Late payment attracts penalties of 5% interest per month. Employers must maintain accurate payroll records and PAYE registers.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Can I reduce my Uganda income tax?</div>
+        <p class="faq-a">Limited options exist in Uganda's PAYE system compared to other countries. NSSF is compulsory (5%) but not deductible. Life insurance premiums may qualify for relief under certain conditions. Chargeable equipment purchased for employment may attract capital allowances. Mortgage interest on a principal residence up to UGX 20M is deductible. Consult a Ugandan tax advisor (CPA) for individual circumstances.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PDF MODAL -->
+<div class="modal-bg" id="pdfModal">
+  <div class="modal">
+    <div id="modalForm">
+      <h3>📄 Download Your PAYE Summary</h3>
+      <p>Enter your email to get a detailed PDF — we'll notify you when Uganda tax rates change.</p>
+      <form name="pdf-leads" data-netlify="true" netlify-honeypot="bot-field" id="leadForm" onsubmit="submitPdf(event)">
+        <input type="hidden" name="form-name"   value="pdf-leads">
+        <input type="hidden" name="country"      value="Uganda">
+        <input type="hidden" name="country_code" value="UG">
+        <input type="hidden" name="tool"         value="paye">
+        <input type="hidden" name="tool_id"      value="ug-paye">
+        <input type="hidden" name="currency"     value="UGX">
+        <input type="hidden" name="gross_salary" id="hiddenGross" value="">
+        <input class="modal-input" type="text"  name="name"  id="pdfName"  placeholder="Your name (optional)" autocomplete="name">
+        <input class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Your email address" autocomplete="email" required>
+        <button class="modal-submit" type="submit">Get My PDF →</button>
+      </form>
+      <button class="modal-cancel" onclick="closePdfModal()">No thanks</button>
+    </div>
+    <div class="modal-success" id="modalSuccess">
+      <button onclick="closePdfModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#9ca3af;line-height:1;" aria-label="Close">✕</button>
+      <div class="big-check">✅</div>
+      <h4>PDF opening now</h4>
+      <p>Click <strong>Save as PDF</strong> in the print dialog.</p>
+      <button class="modal-submit" onclick="closePdfModal()" style="margin-top:14px">Done →</button>
+    </div>
+  </div>
+</div>
+
+<afro-footer></afro-footer>
+
+<script>
+// ══════════════════════════════════════════════════════════════════
+//  UGANDA PAYE CALCULATOR 2025/26
+//  URA Progressive Monthly Tax (0%–40%) · NSSF (5%, NOT deductible) · LST
+//  Source: Income Tax Act 2000 · 2025/26 URA Statutory Schedules
+//          NSSF Act · Local Service Tax Regulations
+// ══════════════════════════════════════════════════════════════════
+
+let RESULT       = null;
+let PERIOD       = 'monthly';
+let CHART        = null;
+let CHART_TYPE   = 'donut';
+let CHAT_HISTORY = [];
+
+const fmt = n => 'UGX\u00A0' + Math.round(Math.abs(n)).toLocaleString('en-UG');
+const pct = r => { const v = r * 100; return (v % 1 === 0 ? v.toFixed(0) : parseFloat(v.toFixed(2)).toString()) + '%'; };
+
+// ── SLIDER ────────────────────────────────────────────────────
+function onSlider(el) {
+  const v = parseInt(el.value);
+  document.getElementById('grossSalary').value = v;
+  document.getElementById('sliderVal').textContent = fmt(v);
+  updateSliderFill(el);
+}
+function onInput(el) {
+  const v = Math.min(Math.max(parseInt(el.value) || 0, 100000), 20000000);
+  const s = document.getElementById('salarySlider');
+  s.value = v;
+  document.getElementById('sliderVal').textContent = fmt(parseInt(el.value) || 0);
+  updateSliderFill(s);
+}
+function updateSliderFill(el) {
+  const p = ((parseInt(el.value) - parseInt(el.min)) / (parseInt(el.max) - parseInt(el.min))) * 100;
+  el.style.background = `linear-gradient(to right, #D90000 0%, #D90000 ${p}%, #e5d9cf ${p}%, #e5d9cf 100%)`;
+}
+updateSliderFill(document.getElementById('salarySlider'));
+
+// ── TOGGLES ───────────────────────────────────────────────────
+function togItem(el) { el.classList.toggle('on'); }
+function isOn(tog) { return !!document.querySelector(`[data-tog="${tog}"]`)?.classList.contains('on'); }
+
+// ══════════════════════════════════════════════════════════════
+//  URA PAYE TAX ENGINE (MONTHLY)
+//  Bands on MONTHLY GROSS INCOME (resident):
+//  0%    on first  UGX 235,000
+//  10%   on next   UGX 100,000  (235,001–335,000)
+//  20%   on next   UGX 75,000   (335,001–410,000)
+//  30%   on next   UGX 9,590,000 (410,001–10,000,000)
+//  40%   above     UGX 10,000,000
+//
+//  Non-resident: flat 30% on full gross (no bands)
+// ══════════════════════════════════════════════════════════════
+
+function calcMonthlyPAYE(monthlyGross, isNonRes) {
+  const income = Math.max(0, monthlyGross);
+  const bandBreakdown = [];
+
+  if (isNonRes) {
+    // Non-resident: flat 30%
+    const tax = income * 0.30;
+    return { tax, bandBreakdown: [{ rate: 0.30, income, tax, isFlat: true, label: 'Non-Resident Flat Rate' }] };
+  }
+
+  // Resident: progressive bands
+  if (income <= 235000) {
+    bandBreakdown.push({ rate: 0, income, tax: 0 });
+    return { tax: 0, bandBreakdown };
+  }
+
+  let tax = 0;
+
+  // Band 1: 0% on first 235,000
+  bandBreakdown.push({ rate: 0, income: 235000, tax: 0 });
+
+  // Band 2: 10% on 235,001–335,000
+  if (income > 235000) {
+    const chunk = Math.min(income - 235000, 100000);
+    const t = chunk * 0.10;
+    tax += t;
+    bandBreakdown.push({ rate: 0.10, income: chunk, tax: t });
+  }
+
+  // Band 3: 20% on 335,001–410,000
+  if (income > 335000) {
+    const chunk = Math.min(income - 335000, 75000);
+    const t = chunk * 0.20;
+    tax += t;
+    bandBreakdown.push({ rate: 0.20, income: chunk, tax: t });
+  }
+
+  // Band 4: 30% on 410,001–10,000,000
+  if (income > 410000) {
+    const chunk = Math.min(income - 410000, 9590000);
+    const t = chunk * 0.30;
+    tax += t;
+    bandBreakdown.push({ rate: 0.30, income: chunk, tax: t });
+  }
+
+  // Band 5: 40% above 10,000,000
+  if (income > 10000000) {
+    const chunk = income - 10000000;
+    const t = chunk * 0.40;
+    tax += t;
+    bandBreakdown.push({ rate: 0.40, income: chunk, tax: t });
+  }
+
+  return { tax, bandBreakdown: bandBreakdown.filter(b => b.income > 0) };
+}
+
+// ── MAIN CALCULATE ────────────────────────────────────────────
+function calculate() {
+  const gross = parseFloat(document.getElementById('grossSalary').value) || 0;
+  if (!gross || gross <= 0) {
+    const el = document.getElementById('grossSalary');
+    el.focus(); el.style.borderColor = '#c0392b';
+    setTimeout(() => el.style.borderColor = '', 2000);
+    return;
+  }
+
+  const isNonRes = isOn('nonres');
+  const hasNSSF  = isOn('nssf');
+  const hasLST   = isOn('lst');
+
+  // NSSF calculation (5%, NOT deductible in Uganda)
+  const nssf = hasNSSF ? gross * 0.05 : 0;
+  const empNSSF = gross * 0.10;  // Employer contribution (5% + 10% = 15% total)
+
+  // PAYE (on full gross, not reduced by NSSF)
+  const result = calcMonthlyPAYE(gross, isNonRes);
+  const monthlyPAYE = result.tax;
+  const bandBreakdown = result.bandBreakdown;
+
+  // LST (simplified: ~1% deducted July-October in 4 instalments)
+  // For monthly display, we show the 4-month total divided by 12
+  const lstAnnual = hasLST ? gross * 12 * 0.01 : 0;
+  const lstMonthly = lstAnnual / 12;  // average per month
+
+  // Total deductions
+  const totalEmployeeDeductions = nssf + monthlyPAYE + lstMonthly;
+  const netMonthly = gross - totalEmployeeDeductions;
+  const effectiveRate = gross > 0 ? monthlyPAYE / gross : 0;
+
+  // Annual figures
+  const annual = v => v * 12;
+
+  RESULT = {
+    gross, monthly: gross, nssf, empNSSF,
+    monthlyPAYE, bandBreakdown, isNonRes,
+    lstMonthly, lstAnnual, hasLST,
+    totalEmployeeDeductions, netMonthly, effectiveRate,
+    annualGross: annual(gross), annualNet: annual(netMonthly),
+    annualTax: annual(monthlyPAYE), annualNSSF: annual(nssf),
+    totalEmployerCostMonthly: gross + empNSSF,
+  };
+
+  document.getElementById('resAmount').textContent      = fmt(netMonthly);
+  document.getElementById('resGross').textContent       = `Gross: ${fmt(gross)}/month · ${fmt(annual(gross))}/year`;
+  document.getElementById('resContent').innerHTML       = renderRows(RESULT, PERIOD);
+  document.getElementById('effRateDisplay').textContent = pct(effectiveRate);
+  setTimeout(() => { document.getElementById('rateFill').style.width = Math.min(effectiveRate * 200, 100) + '%'; }, 80);
+  document.getElementById('hiddenGross').value = gross;
+
+  const strip = document.getElementById('employerStrip');
+  strip.innerHTML = `<strong>Total Employer Cost: ${fmt(RESULT.totalEmployerCostMonthly)}/month</strong> — gross salary + employer NSSF ${fmt(empNSSF)}/mo.`;
+  strip.classList.add('on');
+
+  document.getElementById('resultsCard').classList.add('on');
+  renderChart(CHART_TYPE);
+  document.getElementById('resultsCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  document.getElementById('aiBtn').disabled = false;
+  document.getElementById('aiBtn').textContent = 'Get AI Tax Analysis →';
+  document.getElementById('aiStatus').textContent = `Gross: ${fmt(gross)}/mo · Take-home: ${fmt(netMonthly)}/mo · PAYE: ${fmt(monthlyPAYE)}/mo · Effective: ${pct(effectiveRate)}`;
+}
+
+// ── RENDER ROWS ───────────────────────────────────────────────
+function renderRows(R, period) {
+  const isAnnual = period === 'annual';
+  const gross  = isAnnual ? R.annualGross   : R.gross;
+  const nssf   = isAnnual ? R.annualNSSF    : R.nssf;
+  const paye   = isAnnual ? R.annualTax     : R.monthlyPAYE;
+  const lst    = isAnnual ? R.lstAnnual     : R.lstMonthly;
+  const net    = isAnnual ? R.annualNet     : R.netMonthly;
+  const totalDeductions = isAnnual ? R.annualTax + R.annualNSSF + R.lstAnnual : R.totalEmployeeDeductions;
+  const lbl = isAnnual ? '/year' : '/month';
+
+  const row = (l, v, cls='') => `<div class="res-row"><span class="res-row-lbl">${l}</span><span class="res-row-val ${cls}">${v}</span></div>`;
+
+  return `
+    <div class="res-section">
+      <div class="res-section-title">Gross Income</div>
+      ${row(`Annual Gross Salary${lbl}`, fmt(gross))}
+    </div>
+    <div class="res-section">
+      <div class="res-section-title">Deductions</div>
+      ${R.nssf > 0 ? row(`NSSF (5%, not tax-deductible)`, fmt(nssf), 'c-red') : ''}
+      ${R.hasLST && R.lstMonthly > 0 ? row(`Local Service Tax (Jul–Oct)`, fmt(lst), 'c-red') : ''}
+      ${R.isNonRes ? `<div style="background:rgba(217,0,0,.06);border:1px solid rgba(217,0,0,.2);border-radius:5px;padding:8px 12px;font-size:.78rem;color:#7a3800;line-height:1.5;margin:6px 0">⚠ Non-resident: flat 30% applied to full gross. No progressive bands, no deductions allowed.</div>` : ''}
+    </div>
+    <div class="res-section">
+      <div class="res-section-title">PAYE (URA)</div>
+      ${row(`Income tax (PAYE)${lbl}`, fmt(paye), 'c-red')}
+    </div>
+    <div class="res-section">
+      ${row('Total Deductions', fmt(totalDeductions), 'c-red')}
+      <div class="res-row total"><span class="res-row-lbl">Take-Home Pay</span><span class="res-row-val c-grn">${fmt(net)}</span></div>
+    </div>`;
+}
+
+// ── PERIOD ────────────────────────────────────────────────────
+function setPeriod(period, btn) {
+  PERIOD = period;
+  document.querySelectorAll('.per-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  if (RESULT) document.getElementById('resContent').innerHTML = renderRows(RESULT, period);
+}
+
+// ── BANDS TOGGLE ──────────────────────────────────────────────
+function toggleBands(header) {
+  const body = header.nextElementSibling;
+  const arr  = header.querySelector('.tog-arrow');
+  body.classList.toggle('open');
+  arr.classList.toggle('open');
+}
+
+// ── CHARTS ────────────────────────────────────────────────────
+function setChart(type, btn) {
+  CHART_TYPE = type;
+  document.querySelectorAll('.chart-tab').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  renderChart(type);
+}
+
+function renderChart(type) {
+  if (!RESULT) return;
+  const R = RESULT;
+  const canvas = document.getElementById('mainChart');
+  if (CHART) { CHART.destroy(); CHART = null; }
+
+  if (type === 'donut') {
+    const data = [R.netMonthly, R.monthlyPAYE, R.nssf];
+    const labels = ['Take-Home', 'PAYE Tax', 'NSSF'];
+    if (R.hasLST && R.lstMonthly > 0) {
+      data.push(R.lstMonthly);
+      labels.push('LST');
+    }
+    CHART = new Chart(canvas, {
+      type: 'doughnut',
+      data: {
+        labels: labels,
+        datasets: [{ data: data, backgroundColor: ['#FCDC04','#D90000','#666','#999'], borderWidth: 2, borderColor: '#fff' }]
+      },
+      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{size:11,weight:'600'}, padding:12 } } } }
+    });
+  } else if (type === 'bar') {
+    const bands = R.bandBreakdown.filter(b => b.tax > 0);
+    if (!bands.length) return;
+    CHART = new Chart(canvas, {
+      type: 'bar',
+      data: {
+        labels: bands.map(b => b.isFlat ? '30% flat (non-res)' : (b.rate*100)+'%'),
+        datasets: [{ label:'Tax (UGX)', data: bands.map(b=>b.tax), backgroundColor:'#D90000', borderRadius:5 }]
+      },
+      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'UGX'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid:{color:'#f8f1ed'} }, x:{ticks:{font:{size:10,weight:'600'}}} } }
+    });
+  }
+}
+
+// ── PDF MODAL ─────────────────────────────────────────────────
+function openPdfModal()  { if(!RESULT) return; document.getElementById('pdfModal').classList.add('on'); document.getElementById('modalForm').style.display='block'; document.getElementById('modalSuccess').style.display='none'; }
+function closePdfModal() { document.getElementById('pdfModal').classList.remove('on'); }
+document.getElementById('pdfModal').addEventListener('click', e => { if(e.target===document.getElementById('pdfModal')) closePdfModal(); });
+
+async function submitPdf(e) {
+  e.preventDefault();
+  const email = document.getElementById('pdfEmail').value;
+  if (!email) return;
+  try {
+    await fetch('/', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body: new URLSearchParams({'form-name':'pdf-leads',email,country:'Uganda',country_code:'UG',tool:'paye',tool_id:'ug-paye',currency:'UGX',gross_salary:RESULT.gross}).toString() });
+  } catch(e){}
+  document.getElementById('modalForm').style.display  = 'none';
+  document.getElementById('modalSuccess').style.display = 'block';
+  generatePdf();
+}
+
+function generatePdf() {
+  if (!RESULT) return;
+  const R      = RESULT;
+  const dateStr= new Date().toLocaleDateString('en-UG',{day:'numeric',month:'long',year:'numeric'});
+  const refNo  = 'AFT-UG-PAYE-' + Date.now().toString(36).toUpperCase().slice(-6);
+
+  const bandRows = R.bandBreakdown.filter(b => b.tax > 0).map(b =>
+    `<tr><td style="padding-left:14px;color:#4b5563">${b.isFlat ? 'Non-Resident Flat 30%' : 'Rate ' + (b.rate*100) + '% on UGX ' + Math.round(b.income).toLocaleString()}</td><td class="num red">(UGX ${Math.round(b.tax).toLocaleString()})</td></tr>`
+  ).join('');
+
+  const html = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>AfroTools Uganda PAYE — ${refNo}</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'DM Sans',Arial,sans-serif;background:#fff;color:#111827;font-size:9pt;line-height:1.5}@page{size:A4;margin:0}
+.cover{background:linear-gradient(135deg,#0a0a0a 0%,#1a1a1a 100%);padding:28px 36px 22px;color:#fff}
+.cover-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.brand{font-size:13pt;font-weight:800;color:#fff}.brand b{color:#FCDC04}
+.brand-sub{font-size:6pt;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.32);margin-top:2px}
+.ref-label{font-size:6pt;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.32);text-align:right}
+.ref-val{font-size:8pt;font-weight:700;color:rgba(255,255,255,.65);margin-top:2px;text-align:right}
+.doc-title{font-size:18pt;font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1}
+.doc-title span{color:#FCDC04}.doc-meta{margin-top:8px;font-size:7.5pt;color:rgba(255,255,255,.4)}
+.badge{display:inline-block;margin-top:10px;padding:3px 10px;border-radius:3px;font-size:7pt;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:rgba(217,0,0,.22);color:#ff9999;border:1px solid rgba(217,0,0,.4)}
+.body{padding:24px 36px 28px}
+.sh{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.shi{text-align:center;flex:1}.sh-lbl{font-size:6pt;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#9ca3af;margin-bottom:3px}
+.sh-val{font-size:13pt;font-weight:800;color:#111827}.sh-val.gold{color:#9a7a00}.sh-val.red{color:#c0392b}
+.sh-div{width:1px;height:40px;background:#e5e7eb;flex-shrink:0}
+.sec-head{font-size:6.5pt;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#9ca3af;padding:0 0 5px;border-bottom:1.5px solid #e5e7eb;margin:16px 0 8px}
+table{width:100%;border-collapse:collapse}tr{border-bottom:1px solid #f3f4f6}td{padding:5.5px 4px;font-size:8.5pt;vertical-align:middle}
+td.num{text-align:right;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.red{color:#c0392b}.green{color:#D90000}.muted{color:#9ca3af}
+tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-size:9.5pt}
+.src{display:inline-block;padding:2px 7px;background:#f3f4f6;border-radius:3px;font-size:6.5pt;font-weight:600;color:#6b7280;margin-right:4px}
+</style></head><body>
+<div class="cover">
+  <div class="cover-top">
+    <div><div class="brand">AFRO<b>TOOLS</b></div><div class="brand-sub">Africa's Everything Platform</div></div>
+    <div><div class="ref-label">Reference</div><div class="ref-val">${refNo}</div></div>
+  </div>
+  <div class="doc-title">Uganda PAYE<br><span>Summary 2025/26</span></div>
+  <div class="doc-meta">Generated ${dateStr} · afrotools.com/uganda/ug-paye</div>
+  <div class="badge">URA 2025/26 · Income Tax Act 2000</div>
+</div>
+<div class="body">
+  <div class="sh">
+    <div class="shi"><div class="sh-lbl">Monthly Take-Home</div><div class="sh-val gold">UGX ${Math.round(R.netMonthly).toLocaleString()}</div></div>
+    <div class="sh-div"></div>
+    <div class="shi"><div class="sh-lbl">Monthly Gross</div><div class="sh-val">UGX ${Math.round(R.gross).toLocaleString()}</div></div>
+    <div class="sh-div"></div>
+    <div class="shi"><div class="sh-lbl">Monthly PAYE</div><div class="sh-val red">UGX ${Math.round(R.monthlyPAYE).toLocaleString()}</div></div>
+    <div class="sh-div"></div>
+    <div class="shi"><div class="sh-lbl">Effective Rate</div><div class="sh-val red">${pct(R.effectiveRate)}</div></div>
+  </div>
+
+  <div class="sec-head">Section 1 — Monthly Income &amp; Deductions</div>
+  <table>
+    <tr><td>Monthly Gross Salary (Resident)</td><td class="num">UGX ${Math.round(R.gross).toLocaleString()}</td></tr>
+    ${R.nssf > 0 ? `<tr><td style="padding-left:14px;color:#4b5563">NSSF employee contribution (5%, not tax-deductible)</td><td class="num red">(UGX ${Math.round(R.nssf).toLocaleString()})</td></tr>` : ''}
+    ${R.hasLST && R.lstMonthly > 0 ? `<tr><td style="padding-left:14px;color:#4b5563">Local Service Tax (Jul–Oct, ~1% annual)</td><td class="num red">(UGX ${Math.round(R.lstMonthly).toLocaleString()})</td></tr>` : ''}
+  </table>
+
+  <div class="sec-head">Section 2 — PAYE Computation (URA 2025/26)</div>
+  <table>
+    ${R.isNonRes ? `<tr><td colspan="2" style="color:#7a3800;padding:8px 4px">⚠ Non-resident — flat 30% applied to gross UGX ${Math.round(R.gross).toLocaleString()}</td></tr>` : `<tr><td colspan="2" style="color:#7a3800;padding:8px 4px">Resident taxpayer — progressive bands apply to gross salary</td></tr>`}
+    ${bandRows || '<tr><td colspan="2" style="color:#94a3a0;padding-left:14px">Income in 0% band — no PAYE due</td></tr>'}
+    <tr class="total"><td>Monthly PAYE</td><td class="num red">UGX ${Math.round(R.monthlyPAYE).toLocaleString()}</td></tr>
+  </table>
+
+  <div class="sec-head">Section 3 — Monthly Net Pay Summary</div>
+  <table>
+    ${R.nssf > 0 ? `<tr><td>NSSF (5%, employee)</td><td class="num red">(UGX ${Math.round(R.nssf).toLocaleString()})</td></tr>` : ''}
+    <tr><td>PAYE income tax</td><td class="num red">(UGX ${Math.round(R.monthlyPAYE).toLocaleString()})</td></tr>
+    ${R.hasLST && R.lstMonthly > 0 ? `<tr><td>Local Service Tax</td><td class="num red">(UGX ${Math.round(R.lstMonthly).toLocaleString()})</td></tr>` : ''}
+    <tr><td style="font-weight:700">Total Monthly Deductions</td><td class="num red">(UGX ${Math.round(R.totalEmployeeDeductions).toLocaleString()})</td></tr>
+    <tr class="total"><td style="color:#D90000;font-weight:800">Monthly Take-Home Pay</td><td class="num green">UGX ${Math.round(R.netMonthly).toLocaleString()}</td></tr>
+    <tr class="total"><td style="color:#D90000;font-weight:800">Annual Take-Home Pay</td><td class="num green">UGX ${Math.round(R.annualNet).toLocaleString()}</td></tr>
+  </table>
+
+  <div class="sec-head">Section 4 — Employer Cost (Monthly)</div>
+  <table>
+    <tr><td>Employee gross salary</td><td class="num">UGX ${Math.round(R.gross).toLocaleString()}</td></tr>
+    <tr><td>Employer NSSF (10%, no cap)</td><td class="num red">UGX ${Math.round(R.empNSSF).toLocaleString()}</td></tr>
+    <tr class="total"><td style="font-weight:800">Total Employer Monthly Cost</td><td class="num red">UGX ${Math.round(R.totalEmployerCostMonthly).toLocaleString()}</td></tr>
+  </table>
+
+  <div class="sec-head">Section 5 — Legal Basis &amp; Sources</div>
+  <table>
+    <tr><td style="width:30%"><span class="src">ITA 2000</span>Income Tax Act</td><td style="color:#6b7280;font-size:8pt">Progressive PAYE on employment income. 2025/26 bands: 0% (UGX 0–235k), 10% (235k–335k), 20% (335k–410k), 30% (410k–10M), 40% (above 10M). NSSF NOT deductible from taxable income.</td></tr>
+    <tr><td><span class="src">NSSF UG</span>NSSF</td><td style="color:#6b7280;font-size:8pt">National Social Security Fund: 5% employee + 10% employer = 15% total. No upper cap. Paid to NSSF Uganda. Not tax-deductible.</td></tr>
+    <tr><td><span class="src">LST Act</span>Local Service Tax</td><td style="color:#6b7280;font-size:8pt">Annual tax on employment income, deducted July–October in four equal instalments. Approximately 1% of annual earnings. Varies slightly by income level.</td></tr>
+  </table>
+</div>
+<div style="background:#f9fafb;border-top:1px solid #e5e7eb;padding:14px 36px">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start">
+    <div>
+      <div style="font-size:7pt;font-weight:700;color:#111827">AFRO<b style="color:#D90000">TOOLS</b>.COM — Africa's Financial Calculator Platform</div>
+      <div style="font-size:6.5pt;color:#9ca3af;max-width:440px;line-height:1.4;margin-top:4px">Informational only. Not professional tax advice. Verify with URA (ura.go.ug) or a qualified Ugandan tax advisor (CPA).</div>
+    </div>
+    <div style="text-align:right;font-size:7pt;color:#9ca3af;white-space:nowrap;margin-left:20px">
+      <div>Ref: ${refNo}</div><div style="margin-top:2px">${dateStr}</div><div style="margin-top:2px">afrotools.com</div>
+    </div>
+  </div>
+</div>
+</body></html>`;
+
+  const w = window.open();
+  w.document.write(html);
+  w.document.close();
+  setTimeout(() => w.print(), 250);
+}
+
+// ── SHARE ─────────────────────────────────────────────────────
+function shareResult() {
+  if (!RESULT) return;
+  const text = `My Uganda PAYE breakdown: Gross UGX ${Math.round(RESULT.gross).toLocaleString()}/mo → Take-home UGX ${Math.round(RESULT.netMonthly).toLocaleString()}/mo (${pct(RESULT.effectiveRate)} effective rate). Calculated at afrotools.com/uganda/ug-paye`;
+  if (navigator.share) {
+    navigator.share({title:'My Uganda PAYE',text,url:'https://afrotools.com/uganda/ug-paye'});
+  } else if (navigator.clipboard) {
+    navigator.clipboard.writeText(text);
+    const btn = document.getElementById('ugShareBtn');
+    btn.textContent = '✓ Copied!';
+    setTimeout(()=>btn.innerHTML=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share Result`,2500);
+  }
+}
+
+// ── AI ADVISOR ────────────────────────────────────────────────
+async function getAI() {
+  if (!RESULT) return;
+  const R   = RESULT;
+  const btn = document.getElementById('aiBtn');
+  const respEl = document.getElementById('aiResp');
+
+  btn.disabled = true; btn.textContent = 'Analysing…';
+  respEl.style.display = 'block'; respEl.className = 'ai-response typing'; respEl.textContent = '';
+  document.getElementById('aiStatus').style.display = 'none';
+
+  const prompt = `Uganda PAYE analysis (2025/26, URA):
+- Monthly gross: UGX ${Math.round(R.gross).toLocaleString()}
+- Status: ${R.isNonRes ? 'Non-Resident (30% flat)' : 'Resident (progressive)'}
+- NSSF employee (5%, NOT deductible): UGX ${Math.round(R.nssf).toLocaleString()}/mo
+- Monthly PAYE: UGX ${Math.round(R.monthlyPAYE).toLocaleString()}
+- Monthly take-home: UGX ${Math.round(R.netMonthly).toLocaleString()}
+- Effective tax rate: ${pct(R.effectiveRate)}
+- Local Service Tax: ${R.hasLST ? 'Included (Jul–Oct)' : 'Excluded'}
+- Employer NSSF (10%): UGX ${Math.round(R.empNSSF).toLocaleString()}/mo
+- Total employer cost: UGX ${Math.round(R.totalEmployerCostMonthly).toLocaleString()}/mo
+
+Give: 1) Plain English summary of Uganda PAYE position 2) Two specific legal ways to reduce Uganda tax liability (life insurance relief, capital allowances, mortgage interest deduction) 3) One URA compliance point to know 4) One thing most Ugandan employees get wrong about NSSF deductibility. Under 200 words. No markdown, no asterisks, no bullet symbols.`;
+
+  try {
+    const res = await fetch('/.netlify/functions/ai-advisor', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        system:'You are AfroTools AI Tax Advisor specialising in Uganda PAYE — URA progressive tax, NSSF, Local Service Tax, Income Tax Act 2000. Be concise, specific, practical. No markdown, no asterisks.',
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const data = await res.json();
+    const text = data.text || 'Unable to generate analysis.';
+    respEl.className = 'ai-response'; respEl.textContent = '';
+    let i = 0;
+    const type = () => {
+      if(i<text.length){respEl.textContent+=text[i++];setTimeout(type,12);}
+      else{document.getElementById('aiChat').classList.add('on');CHAT_HISTORY=[{role:'user',content:prompt},{role:'assistant',content:text}];}
+    };
+    type();
+    btn.textContent = 'Ask a follow-up below ↓';
+  } catch(err) {
+    respEl.className='ai-response';respEl.textContent='AI analysis temporarily unavailable.';
+    btn.disabled=false;btn.textContent='Try Again';
+  }
+}
+
+async function sendChat() {
+  const input = document.getElementById('chatIn');
+  const msg   = input.value.trim();
+  if(!msg||!RESULT) return;
+  input.value = '';
+  const R = RESULT;
+  const msgs = document.getElementById('chatMsgs');
+  msgs.innerHTML += `<div class="msg u">${msg}</div>`;
+  const aiEl = document.createElement('div');
+  aiEl.className = 'msg a'; aiEl.textContent = '…';
+  msgs.appendChild(aiEl); msgs.scrollTop = msgs.scrollHeight;
+  CHAT_HISTORY.push({role:'user',content:msg});
+  try {
+    const res = await fetch('/.netlify/functions/ai-advisor',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        system:`AfroTools AI Tax Advisor, Uganda. User: ${R.isNonRes?'Non-resident':'Resident'}, gross UGX ${Math.round(R.gross).toLocaleString()}/mo, take-home UGX ${Math.round(R.netMonthly).toLocaleString()}/mo, effective rate ${pct(R.effectiveRate)}. Concise. No markdown.`,
+        messages:CHAT_HISTORY
+      })
+    });
+    const data = await res.json();
+    const text = data.text || 'Unable to respond.';
+    aiEl.textContent = text;
+    CHAT_HISTORY.push({role:'assistant',content:text});
+    msgs.scrollTop = msgs.scrollHeight;
+  } catch { aiEl.textContent='Network error. Please try again.'; }
+}
+
+document.getElementById('grossSalary').addEventListener('keydown',e=>{if(e.key==='Enter')calculate();});
+</script>
+</body>
+</html>

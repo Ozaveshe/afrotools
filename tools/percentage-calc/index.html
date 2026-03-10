@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Percentage Calculator — Three Modes | AfroTools</title>
+<meta name="description" content="Free percentage calculator. Calculate X% of Y, what % is X of Y, percentage change. Instant results.">
+<link rel="canonical" href="https://afrotools.com/tools/percentage-calc">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Percentage Calculator | AfroTools">
+<meta property="og:description" content="Percentage calculator with 3 modes: X% of Y, X is what %, percentage change.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/percentage-calc">
+<meta property="og:site_name" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.css">
+<link rel="stylesheet" href="/assets/css/global.css">
+<script src="/assets/js/components/navbar.js" defer></script>
+<script src="/assets/js/components/footer.js" defer></script>
+<style>
+  :root { --afro-green: #008751; --afro-dark: #0f1419; }
+  .tool-hero { background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%); padding: 44px 0 36px; position: relative; overflow: hidden; }
+  .tool-hero::after { content: '%'; position: absolute; right: 5%; top: 50%; transform: translateY(-50%); font-size: 8rem; opacity: 0.06; pointer-events: none; }
+  .tool-hero-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; }
+  .breadcrumb { font-size: 0.72rem; font-weight: 500; color: rgba(255, 255, 255, 0.3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
+  .breadcrumb a { color: rgba(255, 255, 255, 0.3); text-decoration: none; }
+  .breadcrumb span { color: var(--afro-green); }
+  h1 { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; color: #fff; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 10px; }
+  h1 em { color: var(--afro-green); font-style: normal; }
+  .hero-sub { font-size: 0.88rem; color: rgba(255, 255, 255, 0.45); line-height: 1.6; max-width: 560px; margin-bottom: 14px; }
+  .hero-badges { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 6px; }
+  .badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 11px; border-radius: 4px; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.05em; }
+  .b-green { background: rgba(0, 135, 81, 0.18); color: #5ddb9e; border: 1px solid rgba(0, 135, 81, 0.38); }
+  .tool-main { padding: 28px 0 72px; }
+  .tool-main-inner { max-width: 800px; margin: 0 auto; padding: 0 24px; }
+  .card { background: #fff; border: 1px solid #dceee0; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05); }
+  .card + .card { margin-top: 18px; }
+  .card-head { padding: 15px 22px; border-bottom: 1px solid #eaf5ec; background: #f7fdf8; }
+  .card-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #0a4018; }
+  .card-body { padding: 22px; }
+  .mode-tabs { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 18px; }
+  .mode-tab { padding: 10px; background: #f4fbf5; border: 1.5px solid #c5deca; border-radius: 7px; cursor: pointer; font-size: 0.72rem; font-weight: 700; color: #244d2c; transition: all 0.15s; }
+  .mode-tab.on { background: var(--afro-green); color: #fff; border-color: var(--afro-green); }
+  .field { margin-bottom: 18px; }
+  .field:last-child { margin-bottom: 0; }
+  .f-label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .f-label-text { font-size: 0.75rem; font-weight: 700; color: #0d2813; }
+  .f-input { width: 100%; padding: 11px 13px; background: #f4fbf5; border: 1.5px solid #c5deca; border-radius: 7px; font-size: 1rem; font-weight: 600; color: #0d2813; outline: none; font-family: 'DM Sans', sans-serif; }
+  .f-input:focus { border-color: var(--afro-green); box-shadow: 0 0 0 3px rgba(0, 135, 81, 0.1); }
+  .result-box { background: #f7fdf8; border: 1.5px solid #c5deca; border-radius: 8px; padding: 18px; margin-top: 18px; }
+  .result-label { font-size: 0.68rem; font-weight: 700; color: #0a4018; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 8px; }
+  .result-amount { font-size: 2.2rem; font-weight: 800; color: var(--afro-green); line-height: 1; }
+</style>
+</head>
+<body>
+<afro-navbar active="tools"></afro-navbar>
+
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb"><a href="/">AfroTools</a> / <span>Tools</span></div>
+    <h1>Percentage <em>Calculator</em></h1>
+    <p class="hero-sub">Calculate percentages instantly. Three modes: X% of Y, X is what %, percentage change.</p>
+    <div class="hero-badges">
+      <span class="badge b-green">3 Modes</span>
+      <span class="badge b-green">Instant</span>
+    </div>
+  </div>
+</div>
+
+<div class="tool-main">
+  <div class="tool-main-inner">
+    <div class="card">
+      <div class="card-head"><span class="card-title">Percentage Calculator</span></div>
+      <div class="card-body">
+        <div class="mode-tabs">
+          <button class="mode-tab on" data-mode="1">X% of Y</button>
+          <button class="mode-tab" data-mode="2">X is Y%</button>
+          <button class="mode-tab" data-mode="3">% Change</button>
+        </div>
+
+        <div id="mode-1" class="mode-content">
+          <div class="field">
+            <label class="f-label"><span class="f-label-text">Percentage (%)</span></label>
+            <input type="number" id="percent1" class="f-input" value="20" min="0" max="100" step="0.01">
+          </div>
+          <div class="field">
+            <label class="f-label"><span class="f-label-text">Of Value</span></label>
+            <input type="number" id="value1" class="f-input" value="100" min="0" step="0.01">
+          </div>
+          <div class="result-box">
+            <div class="result-label">Result</div>
+            <div class="result-amount" id="result1">20</div>
+          </div>
+        </div>
+
+        <div id="mode-2" class="mode-content" style="display:none;">
+          <div class="field">
+            <label class="f-label"><span class="f-label-text">Value (X)</span></label>
+            <input type="number" id="value2a" class="f-input" value="50" min="0" step="0.01">
+          </div>
+          <div class="field">
+            <label class="f-label"><span class="f-label-text">Total (Y)</span></label>
+            <input type="number" id="value2b" class="f-input" value="200" min="0.01" step="0.01">
+          </div>
+          <div class="result-box">
+            <div class="result-label">X is Y% of Total</div>
+            <div class="result-amount" id="result2">25%</div>
+          </div>
+        </div>
+
+        <div id="mode-3" class="mode-content" style="display:none;">
+          <div class="field">
+            <label class="f-label"><span class="f-label-text">Original Value</span></label>
+            <input type="number" id="original" class="f-input" value="100" min="0" step="0.01">
+          </div>
+          <div class="field">
+            <label class="f-label"><span class="f-label-text">New Value</span></label>
+            <input type="number" id="newval" class="f-input" value="150" min="0" step="0.01">
+          </div>
+          <div class="result-box">
+            <div class="result-label">Percentage Change</div>
+            <div class="result-amount" id="result3">50%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<afro-footer></afro-footer>
+
+<script>
+  const tabs = document.querySelectorAll('.mode-tab');
+  const contents = document.querySelectorAll('.mode-content');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const mode = tab.dataset.mode;
+      tabs.forEach(t => t.classList.remove('on'));
+      contents.forEach(c => c.style.display = 'none');
+      tab.classList.add('on');
+      document.getElementById(`mode-${mode}`).style.display = 'block';
+    });
+  });
+
+  function calc1() {
+    const p = parseFloat(document.getElementById('percent1').value) || 0;
+    const v = parseFloat(document.getElementById('value1').value) || 0;
+    document.getElementById('result1').textContent = (p * v / 100).toFixed(2);
+  }
+
+  function calc2() {
+    const x = parseFloat(document.getElementById('value2a').value) || 0;
+    const y = parseFloat(document.getElementById('value2b').value) || 1;
+    const pct = (x / y * 100).toFixed(2);
+    document.getElementById('result2').textContent = pct + '%';
+  }
+
+  function calc3() {
+    const orig = parseFloat(document.getElementById('original').value) || 0;
+    const neu = parseFloat(document.getElementById('newval').value) || 0;
+    const change = orig === 0 ? 0 : ((neu - orig) / orig * 100).toFixed(2);
+    document.getElementById('result3').textContent = change + '%';
+  }
+
+  document.getElementById('percent1').addEventListener('input', calc1);
+  document.getElementById('value1').addEventListener('input', calc1);
+  document.getElementById('value2a').addEventListener('input', calc2);
+  document.getElementById('value2b').addEventListener('input', calc2);
+  document.getElementById('original').addEventListener('input', calc3);
+  document.getElementById('newval').addEventListener('input', calc3);
+
+  calc1();
+  calc2();
+  calc3();
+</script>
+</body>
+</html>

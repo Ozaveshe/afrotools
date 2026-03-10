@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Logo Maker | Create Text Logos | AfroTools</title>
+<meta name="description" content="Create text-based logos with custom fonts, icons, and colors. Download as SVG and PNG instantly.">
+<link rel="canonical" href="https://afrotools.com/tools/logo-maker">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Logo Maker | AfroTools">
+<meta property="og:description" content="Create custom text logos with icons and colors.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/logo-maker">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-logo.png">
+<meta property="og:site_name" content="AfroTools">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Montserrat:wght@700;800&family=Poppins:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.css">
+<link rel="stylesheet" href="/assets/css/global.css">
+<script src="/assets/js/components/navbar.js" defer></script>
+<script src="/assets/js/components/footer.js" defer></script>
+<style>
+  :root {
+    --afro-green: #008751;
+    --afro-dark: #0f1419;
+  }
+
+  .tool-hero {
+    background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
+    padding: 44px 0 36px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tool-hero::after {
+    content: '🎨';
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 8rem;
+    opacity: 0.06;
+    pointer-events: none;
+  }
+
+  .tool-hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+  }
+
+  .breadcrumb {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .breadcrumb a {
+    color: rgba(255, 255, 255, 0.3);
+    text-decoration: none;
+  }
+
+  .breadcrumb span {
+    color: var(--afro-green);
+  }
+
+  h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+
+  h1 em {
+    color: var(--afro-green);
+    font-style: normal;
+  }
+
+  .hero-sub {
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 1.6;
+    max-width: 560px;
+    margin-bottom: 14px;
+  }
+
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 11px;
+    border-radius: 4px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .b-green {
+    background: rgba(0, 135, 81, 0.18);
+    color: #5ddb9e;
+    border: 1px solid rgba(0, 135, 81, 0.38);
+  }
+
+  .tool-main {
+    padding: 28px 0 72px;
+  }
+
+  .tool-main-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 22px;
+    align-items: start;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid #dceee0;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .card + .card {
+    margin-top: 18px;
+  }
+
+  .card-head {
+    padding: 15px 22px;
+    border-bottom: 1px solid #eaf5ec;
+    background: #f7fdf8;
+  }
+
+  .card-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #0a4018;
+  }
+
+  .card-body {
+    padding: 22px;
+  }
+
+  .field {
+    margin-bottom: 18px;
+  }
+
+  .field:last-child {
+    margin-bottom: 0;
+  }
+
+  .f-label-text {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #0d2813;
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  .f-input {
+    width: 100%;
+    padding: 11px 13px;
+    background: #f4fbf5;
+    border: 1.5px solid #c5deca;
+    border-radius: 7px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0d2813;
+    outline: none;
+    transition: border-color 0.18s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .f-input:focus {
+    border-color: var(--afro-green);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(0, 135, 81, 0.1);
+  }
+
+  .color-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .color-input {
+    width: 60px;
+    height: 40px;
+    border: 1.5px solid #c5deca;
+    border-radius: 7px;
+    cursor: pointer;
+  }
+
+  .color-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #0d2813;
+    flex: 1;
+  }
+
+  .preview-card {
+    background: #f7fdf8;
+    border: 1.5px solid #c5deca;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .preview-content {
+    max-width: 100%;
+  }
+
+  .action-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .act-btn {
+    padding: 10px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border: 1.5px solid rgba(0, 135, 81, 0.35);
+    background: rgba(0, 135, 81, 0.1);
+    color: #1a5c3a;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .act-btn:hover {
+    background: rgba(0, 135, 81, 0.2);
+  }
+
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .info-card {
+    background: #f7fdf8;
+    border: 1px solid #dceee0;
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  .info-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #0a4018;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .info-text {
+    font-size: 0.8rem;
+    color: #244d2c;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 768px) {
+    .tool-main-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .action-row {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body>
+<afro-navbar active="tools"></afro-navbar>
+
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb">
+      <a href="/">AfroTools</a> / <span>Tools</span>
+    </div>
+    <h1>Logo <em>Maker</em></h1>
+    <p class="hero-sub">Create text-based logos with custom fonts, icons, colors, and layouts. Download as SVG and PNG instantly.</p>
+    <div class="hero-badges">
+      <span class="badge b-green">10+ Fonts</span>
+      <span class="badge b-green">Icons</span>
+      <span class="badge b-green">SVG & PNG</span>
+    </div>
+  </div>
+</div>
+
+<div class="tool-main">
+  <div class="tool-main-inner">
+    <div>
+      <!-- Logo Settings -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Logo Settings</span>
+        </div>
+        <div class="card-body">
+          <div class="field">
+            <label class="f-label-text">Logo Text</label>
+            <input type="text" class="f-input" id="logoText" placeholder="Your Business" value="AfroTools">
+          </div>
+
+          <div class="field">
+            <label class="f-label-text">Font</label>
+            <select class="f-input" id="fontSelect">
+              <option value="Playfair Display">Playfair Display</option>
+              <option value="Montserrat">Montserrat</option>
+              <option value="Poppins">Poppins</option>
+              <option value="DM Sans">DM Sans</option>
+              <option value="Georgia">Georgia</option>
+              <option value="Impact">Impact</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label class="f-label-text">Text Color</label>
+            <div class="color-row">
+              <input type="color" class="color-input" id="textColor" value="#008751">
+              <span id="textColorHex" class="color-label">#008751</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="f-label-text">Background Color</label>
+            <div class="color-row">
+              <input type="color" class="color-input" id="bgColor" value="#ffffff">
+              <span id="bgColorHex" class="color-label">#ffffff</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="f-label-text">Layout</label>
+            <select class="f-input" id="layout">
+              <option value="text-only">Text Only</option>
+              <option value="icon-left">Icon + Text (Left)</option>
+              <option value="icon-top">Icon + Text (Top)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Preview</span>
+        </div>
+        <div class="card-body">
+          <div class="preview-card">
+            <svg id="logoPreview" width="200" height="150" viewBox="0 0 200 150">
+              <rect width="200" height="150" fill="white"/>
+              <text x="100" y="80" font-family="Playfair Display" font-size="36" font-weight="bold" text-anchor="middle" fill="#008751">Logo</text>
+            </svg>
+          </div>
+          <div class="action-row">
+            <button class="act-btn" id="downloadSvgBtn">📥 SVG</button>
+            <button class="act-btn" id="downloadPngBtn">📥 PNG</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-title">Tips</div>
+        <div class="info-text">
+          <ul style="margin:0;padding-left:16px;">
+            <li>✓ Real-time preview</li>
+            <li>✓ Custom fonts</li>
+            <li>✓ Download SVG/PNG</li>
+            <li>✓ Professional quality</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<afro-footer></afro-footer>
+
+<script>
+  const logoText = document.getElementById('logoText');
+  const fontSelect = document.getElementById('fontSelect');
+  const textColor = document.getElementById('textColor');
+  const textColorHex = document.getElementById('textColorHex');
+  const bgColor = document.getElementById('bgColor');
+  const bgColorHex = document.getElementById('bgColorHex');
+  const layout = document.getElementById('layout');
+  const logoPreview = document.getElementById('logoPreview');
+  const downloadSvgBtn = document.getElementById('downloadSvgBtn');
+  const downloadPngBtn = document.getElementById('downloadPngBtn');
+
+  function updatePreview() {
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('width', '200');
+    svg.setAttribute('height', '150');
+    svg.setAttribute('viewBox', '0 0 200 150');
+
+    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    rect.setAttribute('width', '200');
+    rect.setAttribute('height', '150');
+    rect.setAttribute('fill', bgColor.value);
+
+    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    text.setAttribute('x', '100');
+    text.setAttribute('y', '80');
+    text.setAttribute('font-family', fontSelect.value);
+    text.setAttribute('font-size', '36');
+    text.setAttribute('font-weight', 'bold');
+    text.setAttribute('text-anchor', 'middle');
+    text.setAttribute('fill', textColor.value);
+    text.textContent = logoText.value || 'Logo';
+
+    svg.appendChild(rect);
+    svg.appendChild(text);
+
+    logoPreview.replaceWith(svg);
+    logoPreview = svg;
+    document.querySelector('.preview-card').querySelector('svg')?.replaceWith(svg.cloneNode(true));
+  }
+
+  function updateColorDisplay() {
+    textColorHex.textContent = textColor.value.toUpperCase();
+    bgColorHex.textContent = bgColor.value.toUpperCase();
+  }
+
+  logoText.addEventListener('input', updatePreview);
+  fontSelect.addEventListener('change', updatePreview);
+  textColor.addEventListener('change', () => {
+    updateColorDisplay();
+    updatePreview();
+  });
+  bgColor.addEventListener('change', () => {
+    updateColorDisplay();
+    updatePreview();
+  });
+  layout.addEventListener('change', updatePreview);
+
+  downloadSvgBtn.addEventListener('click', () => {
+    const svg = document.querySelector('.preview-card svg');
+    const svgData = new XMLSerializer().serializeToString(svg);
+    const link = document.createElement('a');
+    link.href = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgData);
+    link.download = 'logo.svg';
+    link.click();
+  });
+
+  downloadPngBtn.addEventListener('click', () => {
+    const svg = document.querySelector('.preview-card svg');
+    const canvas = document.createElement('canvas');
+    canvas.width = 400;
+    canvas.height = 300;
+    const ctx = canvas.getContext('2d');
+    const img = new Image();
+    const svgData = new XMLSerializer().serializeToString(svg);
+    img.onload = () => {
+      ctx.fillStyle = bgColor.value;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(img, 50, 50, 300, 200);
+      const link = document.createElement('a');
+      link.href = canvas.toDataURL('image/png');
+      link.download = 'logo.png';
+      link.click();
+    };
+    img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgData);
+  });
+</script>
+</body>
+</html>

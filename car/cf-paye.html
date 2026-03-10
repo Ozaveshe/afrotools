@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Central African Republic PAYE Calculator 2025/26 | AfroTools</title>
+<meta name="description" content="CAR PAYE 2025/26. DGI IRPP 0%–50%, CNSS 3% employee + 18% employer. XAF currency. Free calculator and PDF.">
+<link rel="canonical" href="https://afrotools.com/car/cf-paye">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Central African Republic PAYE Calculator | AfroTools">
+<style>
+:root{--primary:#289611;--accent:#003082;--dark:#0a0a0a}
+body{font-family:'DM Sans',Arial,sans-serif;color:#333}
+.tool-hero{background:var(--dark);padding:44px 0 36px}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;margin-bottom:10px}
+h1 em{color:#FFCE00}
+.card{background:#fff;border:1px solid #ddd;border-radius:10px;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.calc-btn{background:var(--primary);color:#fff;border:none;padding:14px;border-radius:8px;cursor:pointer;font-weight:700}
+.calc-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(40,150,17,.3)}
+.res-hero-amount{color:#FFCE00;font-weight:800;font-size:clamp(2.2rem,4.5vw,3.2rem)}
+.c-grn{color:var(--primary)}
+.rate-fill{background:var(--primary)}
+input[type=range]{width:100%;cursor:pointer}
+input[type="range"]::-webkit-slider-thumb{background:var(--primary)}
+.f-input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(40,150,17,.1)}
+@media(max-width:900px){.grid{grid-template-columns:1fr !important}}
+</style>
+<link rel="stylesheet" href="/assets/css/global.css">
+<script src="/assets/js/components/navbar.js" defer></script>
+<script src="/assets/js/components/footer.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body class="tool-page">
+<afro-navbar active="tools"></afro-navbar>
+
+<section class="tool-hero">
+  <div style="max-width:1200px;margin:0 auto;padding:0 24px">
+    <nav style="font-size:.72rem;color:rgba(255,255,255,.3);margin-bottom:14px">
+      <a href="/" style="color:rgba(255,255,255,.3);text-decoration:none">Home</a> / <a href="/car" style="color:rgba(255,255,255,.3);text-decoration:none">🇨🇫 CAR</a> / <span style="color:#FFCE00">PAYE</span>
+    </nav>
+    <h1 style="color:#fff">Central African Republic PAYE<br><em>Calculator 2025/26</em></h1>
+    <p style="font-size:.88rem;color:rgba(255,255,255,.45);max-width:560px">DGI IRPP progressive (0%–50%), CNSS 3% + 18%. XAF CFA franc. Monthly and annual calculations for CAR employment.</p>
+  </div>
+</section>
+
+<div style="background:rgba(40,150,17,.06);border-bottom:1px solid rgba(40,150,17,.18);padding:11px 0">
+  <div style="max-width:1200px;margin:0 auto;padding:0 24px">
+    <p style="font-size:.78rem;color:#333"><strong>2025/26:</strong> DGI IRPP: 0% on XAF 0–200k/yr, 10% on 200k–500k, 15% on 500k–1M, 25% on 1M–3M, 40% on 3M–8M, 50% above 8M. CNSS 21% total (3% employee + 18% employer), no cap. Employee contribution is tax-deductible.</p>
+  </div>
+</div>
+
+<div style="padding:28px 0 72px">
+  <div style="max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 360px;gap:22px" class="grid">
+    <div>
+      <div class="card">
+        <div style="padding:15px 22px;border-bottom:1px solid #eee;background:#f9f9f9;display:flex;justify-content:space-between">
+          <span style="font-size:.72rem;font-weight:700;text-transform:uppercase">Details</span>
+          <span style="font-size:.72rem;color:#666">XAF · CFA Franc</span>
+        </div>
+        <div style="padding:20px">
+          <div style="margin-bottom:18px">
+            <label style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:.75rem;font-weight:700">
+              <span>Monthly Gross</span>
+              <span style="color:var(--primary);font-weight:800" id="sliderVal">XAF 200,000</span>
+            </label>
+            <input type="range" id="salarySlider" min="50000" max="10000000" step="50000" value="200000" oninput="onSlider(this)" style="accent-color:var(--primary)">
+            <div style="display:flex;justify-content:space-between;margin-top:4px;font-size:.65rem;color:#666">
+              <span>XAF 50k</span><span>XAF 10M</span>
+            </div>
+          </div>
+
+          <div style="margin-bottom:18px">
+            <label style="font-size:.75rem;font-weight:700;margin-bottom:6px;display:block">Monthly amount</label>
+            <div style="position:relative">
+              <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#666;font-weight:700;pointer-events:none">XAF</span>
+              <input type="number" id="grossSalary" value="200000" oninput="onInput(this)" min="0" style="width:100%;padding:11px 13px 11px 60px;background:#f5f5f5;border:1.5px solid #ddd;border-radius:7px;font-size:1rem;font-weight:600;outline:none">
+            </div>
+          </div>
+
+          <div style="margin-bottom:18px">
+            <label style="font-size:.75rem;font-weight:700;margin-bottom:6px;display:block">Deductions</label>
+            <div class="tog on" data-tog="cnss" onclick="togItem(this)" style="display:flex;align-items:center;gap:9px;padding:10px 12px;background:#f5f5f5;border:1.5px solid #ddd;border-radius:7px;cursor:pointer">
+              <div style="width:17px;height:17px;border:2px solid #999;border-radius:4px;background:var(--primary);display:flex;align-items:center;justify-content:center">
+                <svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8"/></svg>
+              </div>
+              <div><div style="font-size:.72rem;font-weight:700;color:#333">CNSS</div><div style="font-size:.65rem;color:#666">3% employee — tax-deductible</div></div>
+            </div>
+          </div>
+
+          <button class="calc-btn" onclick="calculate()" style="width:100%;margin-top:8px">Calculate →</button>
+        </div>
+      </div>
+
+      <div class="card results-card" id="resultsCard" style="display:none;margin-top:18px">
+        <div style="background:linear-gradient(135deg,var(--dark) 0%,#1a1a1a 100%);padding:26px 24px;text-align:center;border-radius:10px 10px 0 0;color:#fff">
+          <div style="font-size:.68rem;text-transform:uppercase;color:rgba(255,255,255,.38);margin-bottom:6px">Take-Home</div>
+          <div class="res-hero-amount" id="resAmount">XAF 0</div>
+          <div style="font-size:.75rem;color:rgba(255,255,255,.22);margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.07)" id="resGross"></div>
+        </div>
+        <div style="padding:20px">
+          <div style="display:flex;gap:4px;background:#f5f5f5;padding:4px;border-radius:7px;margin-bottom:18px">
+            <button class="per-btn on" onclick="setPeriod('monthly',this)" style="flex:1;padding:8px;font-size:.72rem;font-weight:700;border:none;background:#fff;border-radius:5px;cursor:pointer;color:var(--primary)">Monthly</button>
+            <button class="per-btn" onclick="setPeriod('annual',this)" style="flex:1;padding:8px;font-size:.72rem;font-weight:700;border:none;background:transparent;border-radius:5px;cursor:pointer;color:#666">Annual</button>
+          </div>
+          <div id="resContent"></div>
+          <div style="margin:16px 0">
+            <div style="display:flex;justify-content:space-between;margin-bottom:7px;font-size:.7rem;font-weight:700;text-transform:uppercase">
+              <span>Effective Tax Rate</span>
+              <span id="effRateDisplay" style="color:#333">0%</span>
+            </div>
+            <div style="height:7px;background:#eee;border-radius:4px;overflow:hidden">
+              <div class="rate-fill" id="rateFill" style="height:100%;border-radius:4px;transition:width .6s;width:0"></div>
+            </div>
+          </div>
+          <div id="employerStrip" style="display:none;background:rgba(40,150,17,.07);border:1px solid rgba(40,150,17,.22);border-radius:7px;padding:11px 14px;font-size:.78rem;color:#1a4d0a;line-height:1.55;margin-top:10px"></div>
+        </div>
+
+        <div style="padding:0 22px 22px">
+          <div style="display:flex;gap:6px;margin-bottom:14px">
+            <button onclick="setChart('donut',this)" style="padding:6px 14px;font-size:.7rem;font-weight:700;border:1.5px solid #ddd;background:#fff;border-radius:5px;cursor:pointer;color:var(--primary)">Breakdown</button>
+            <button onclick="setChart('bar',this)" style="padding:6px 14px;font-size:.7rem;font-weight:700;border:1.5px solid #ddd;background:transparent;border-radius:5px;cursor:pointer;color:#666">Tax Bands</button>
+            <button onclick="setChart('employer',this)" style="padding:6px 14px;font-size:.7rem;font-weight:700;border:1.5px solid #ddd;background:transparent;border-radius:5px;cursor:pointer;color:#666">Employer</button>
+          </div>
+          <div style="position:relative;height:200px"><canvas id="mainChart"></canvas></div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 22px 22px">
+          <button onclick="window.print()" style="padding:10px;font-size:.72rem;font-weight:700;border-radius:6px;cursor:pointer;background:rgba(255,206,0,.1);border:1.5px solid rgba(255,206,0,.35);color:#7a6200">📄 PDF</button>
+          <button id="cfShareBtn" onclick="shareResult()" style="padding:10px;font-size:.72rem;font-weight:700;border-radius:6px;cursor:pointer;background:#f5f5f5;border:1.5px solid #ddd;color:#333">Share</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div style="background:linear-gradient(160deg,var(--dark) 0%,#1a1a1a 100%);border-radius:10px;border:1px solid rgba(255,206,0,.1);overflow:hidden;color:#fff">
+        <div style="padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:9px">
+          <div style="width:8px;height:8px;border-radius:50%;background:#FFCE00;animation:pulse 2s infinite"></div>
+          <span style="font-size:.72rem;font-weight:700">AI Advisor</span>
+          <span style="font-size:.65rem;color:rgba(255,255,255,.28);margin-left:auto">Claude</span>
+        </div>
+        <div style="padding:16px 18px">
+          <p id="aiStatus" style="font-size:.8rem;color:rgba(255,255,255,.48);margin-bottom:12px">Calculate first to unlock AI analysis.</p>
+          <div id="aiResp" style="font-size:.82rem;color:rgba(255,255,255,.78);display:none"></div>
+          <button id="aiBtn" onclick="getAI()" disabled style="width:100%;padding:11px;background:rgba(40,150,17,.18);border:1px solid rgba(40,150,17,.38);border-radius:6px;color:#a3f0b5;font-size:.72rem;font-weight:700;cursor:pointer;margin-top:12px">Calculate first →</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="padding:15px 22px;border-bottom:1px solid #eee;background:#f9f9f9;cursor:pointer" onclick="toggleBands(this)">
+          <span style="font-size:.72rem;font-weight:700;text-transform:uppercase">DGI IRPP Bands</span>
+        </div>
+        <div style="display:none;padding:14px 18px;font-size:.8rem" class="bands-body">
+          <div style="display:flex;justify-content:space-between;padding:5px 0;border-top:1px solid #f5f5f5"><span>XAF 0–200,000</span><span style="font-weight:700;color:#666">0%</span></div>
+          <div style="display:flex;justify-content:space-between;padding:5px 0;border-top:1px solid #f5f5f5"><span>200k–500k</span><span style="font-weight:700;color:var(--primary)">10%</span></div>
+          <div style="display:flex;justify-content:space-between;padding:5px 0;border-top:1px solid #f5f5f5"><span>500k–1M</span><span style="font-weight:700;color:var(--primary)">15%</span></div>
+          <div style="display:flex;justify-content:space-between;padding:5px 0;border-top:1px solid #f5f5f5"><span>1M–3M</span><span style="font-weight:700;color:var(--primary)">25%</span></div>
+          <div style="display:flex;justify-content:space-between;padding:5px 0;border-top:1px solid #f5f5f5"><span>3M–8M</span><span style="font-weight:700;color:var(--primary)">40%</span></div>
+          <div style="display:flex;justify-content:space-between;padding:5px 0;border-top:1px solid #f5f5f5"><span>Above 8M</span><span style="font-weight:700;color:var(--primary)">50%</span></div>
+        </div>
+      </div>
+
+      <div style="font-size:.71rem;color:#666;line-height:1.6;padding:13px 16px;background:#f9f9f9;border:1px solid #ddd;border-radius:8px">
+        <strong>Disclaimer:</strong> Informational only. Not tax advice. Verify with DGI.
+      </div>
+    </div>
+  </div>
+</div>
+
+<section style="padding:52px 0;background:#fff;border-top:1px solid #e4f0e6">
+  <div style="max-width:1200px;margin:0 auto;padding:0 24px">
+    <span style="font-size:.68rem;color:var(--primary);font-weight:700;text-transform:uppercase">FAQ</span>
+    <h2 style="font-size:1.5rem;font-weight:800;color:#333">PAYE Questions</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:28px">
+      <div style="padding:18px 20px;background:#f9f9f9;border:1px solid #ddd;border-radius:8px">
+        <div style="font-size:.85rem;font-weight:700;color:#333;margin-bottom:7px">What are the DGI tax bands?</div>
+        <p style="font-size:.82rem;color:#555;line-height:1.7">Six annual bands: 0% on XAF 0–200k; 10% on 200k–500k; 15% on 500k–1M; 25% on 1M–3M; 40% on 3M–8M; 50% above 8M annually. Applied to taxable income after CNSS deduction.</p>
+      </div>
+      <div style="padding:18px 20px;background:#f9f9f9;border:1px solid #ddd;border-radius:8px">
+        <div style="font-size:.85rem;font-weight:700;color:#333;margin-bottom:7px">Is CNSS deductible?</div>
+        <p style="font-size:.82rem;color:#555;line-height:1.7">Yes — employee's 3% CNSS is fully deductible from gross before tax. Reduces taxable income. Employer's 18% is a separate cost.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<afro-footer></afro-footer>
+
+<script>
+let RESULT=null,PERIOD='monthly',CHART=null;
+const fmt=n=>'XAF '+Math.round(Math.abs(n)).toLocaleString('en-CF');
+const pct=r=>{const v=r*100;return(v%1===0?v.toFixed(0):v.toFixed(2))+'%'};
+function onSlider(e){const v=parseInt(e.value);document.getElementById('grossSalary').value=v;document.getElementById('sliderVal').textContent=fmt(v);updateSliderFill(e)}
+function onInput(e){const v=Math.min(Math.max(parseInt(e.value)||0,50000),1e7),s=document.getElementById('salarySlider');s.value=v;document.getElementById('sliderVal').textContent=fmt(parseInt(e.value)||0);updateSliderFill(s)}
+function updateSliderFill(e){const p=((parseInt(e.value)-parseInt(e.min))/(parseInt(e.max)-parseInt(e.min)))*100;e.style.background=`linear-gradient(to right, var(--primary) 0%, var(--primary) ${p}%, #ddd ${p}%, #ddd 100%)`}
+updateSliderFill(document.getElementById('salarySlider'));
+function togItem(e){e.classList.toggle('on')}
+function isOn(t){return!!document.querySelector(`[data-tog="${t}"]`)?.classList.contains('on')}
+function calcAnnualDGI(i){const n=Math.max(0,i),d=[];if(n<=200000)return d.push({rate:0,income:n,tax:0}),{tax:0,bandBreakdown:d};let a=0;d.push({rate:0,income:200000,tax:0});if(n>200000){const s=Math.min(n-200000,300000);a+=s*0.1,d.push({rate:0.1,income:s,tax:s*0.1})}if(n>500000){const s=Math.min(n-500000,500000);a+=s*0.15,d.push({rate:0.15,income:s,tax:s*0.15})}if(n>1e6){const s=Math.min(n-1e6,2e6);a+=s*0.25,d.push({rate:0.25,income:s,tax:s*0.25})}if(n>3e6){const s=Math.min(n-3e6,5e6);a+=s*0.4,d.push({rate:0.4,income:s,tax:s*0.4})}if(n>8e6){const s=n-8e6;a+=s*0.5,d.push({rate:0.5,income:s,tax:s*0.5})}return{tax:a,bandBreakdown:d.filter(e=>e.income>0)}}
+function calculate(){const e=parseFloat(document.getElementById('grossSalary').value)||0;if(!e||e<=0)return;const n=isOn('cnss'),s=n?0.03:0,r=0.18,o=e*s,a=e*r,l=e*12,d=o*12,c=Math.max(0,l-d),t=calcAnnualDGI(c),u=t.tax/12,i=t.bandBreakdown,m=o+u,h=e-m,b=e>0?u/e:0;RESULT={gross:e,cnss:o,empCNSS:a,monthlyPAYE:u,bandBreakdown:i,annualPAYE:t.tax,totalEmployeeDeductions:m,netMonthly:h,effectiveRate:b,annualGross:l,annualNet:h*12,annualTax:t.tax,annualCNSS:d,totalEmployerCostMonthly:e+a},document.getElementById('resAmount').textContent=fmt(h),document.getElementById('resGross').textContent=`Gross: ${fmt(e)}/mo · ${fmt(l)}/yr`,document.getElementById('resContent').innerHTML=renderRows(RESULT,PERIOD),document.getElementById('effRateDisplay').textContent=pct(b),setTimeout(()=>{document.getElementById('rateFill').style.width=Math.min(b*200,100)+'%'},80),document.getElementById('employerStrip').innerHTML=`<strong>Employer Cost: ${fmt(RESULT.totalEmployerCostMonthly)}/mo</strong> — gross + CNSS ${fmt(a)}/mo`,document.getElementById('employerStrip').style.display='block',document.getElementById('resultsCard').style.display='block',renderChart('donut'),document.getElementById('aiBtn').disabled=!1}
+function renderRows(e,n){const s='annual'===n,r=s?e.annualGross:e.gross,o=s?e.annualCNSS:e.cnss,a=s?e.annualTax:e.monthlyPAYE,l=s?e.annualNet:e.netMonthly;return`<div style="margin-bottom:16px"><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;color:#666;margin-bottom:8px;border-bottom:1px solid #f5f5f5;padding-bottom:7px">Gross</div><div style="display:flex;justify-content:space-between;padding:5px 0"><span>Salary${s?'/yr':'/mo'}</span><span style="font-weight:700">${fmt(r)}</span></div></div><div style="margin-bottom:16px"><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;color:#666;margin-bottom:8px;border-bottom:1px solid #f5f5f5;padding-bottom:7px">Deductions</div>${e.cnss>0?`<div style="display:flex;justify-content:space-between;padding:5px 0"><span>CNSS (3%)</span><span style="color:#c0392b;font-weight:700">${fmt(o)}</span></div>`:''}<div style="display:flex;justify-content:space-between;padding:5px 0;border-top:1px solid #f5f5f5"><span>Tax</span><span style="color:#c0392b;font-weight:700">${fmt(a)}</span></div></div><div style="display:flex;justify-content:space-between;padding:5px 0;border-top:2px solid #ddd;margin-top:4px;padding-top:10px"><span style="font-weight:700">Take-Home</span><span style="font-size:1.05rem;font-weight:800;color:var(--primary)">${fmt(l)}</span></div>`}
+function setPeriod(e,n){PERIOD=e,document.querySelectorAll('.per-btn').forEach(e=>e.style.background='transparent'),n.style.background='#fff',n.style.color='var(--primary)',RESULT&&(document.getElementById('resContent').innerHTML=renderRows(RESULT,e))}
+function toggleBands(e){const n=e.nextElementSibling;n.style.display='none'===n.style.display?'block':'none'}
+function setChart(e){const n=document.getElementById('mainChart');if(CHART){CHART.destroy();CHART=null}if(!RESULT)return;'donut'===e?CHART=new Chart(n,{type:'doughnut',data:{labels:['Take-Home','Tax','CNSS'],datasets:[{data:[RESULT.netMonthly,RESULT.monthlyPAYE,RESULT.cnss],backgroundColor:['#FFCE00','var(--primary)','#E32118'],borderWidth:2,borderColor:'#fff'}]},options:{responsive:!0,maintainAspectRatio:!1,plugins:{legend:{position:'bottom'}}}}):'bar'===e&&RESULT.bandBreakdown.filter(e=>e.tax>0).length>0&&(CHART=new Chart(n,{type:'bar',data:{labels:RESULT.bandBreakdown.map(e=>(100*e.rate)+'%'),datasets:[{label:'Tax (XAF)',data:RESULT.bandBreakdown.map(e=>e.tax),backgroundColor:'var(--primary)',borderRadius:5}]},options:{responsive:!0,maintainAspectRatio:!1,scales:{y:{ticks:{callback:e=>'XAF'+(e/1e6).toFixed(1)+'M'}}}}})):'employer'===e&&(CHART=new Chart(n,{type:'bar',data:{labels:['Take-Home','Tax','CNSS','Emp CNSS'],datasets:[{data:[RESULT.netMonthly,RESULT.monthlyPAYE,RESULT.cnss,RESULT.empCNSS],backgroundColor:['#FFCE00','var(--primary)','#E32118','#FF9500'],borderRadius:5}]},options:{responsive:!0,maintainAspectRatio:!1}}))}
+function shareResult(){if(!RESULT)return;const e=`CAR PAYE: ${Math.round(RESULT.gross).toLocaleString()} XAF gross → ${Math.round(RESULT.netMonthly).toLocaleString()} take-home (${pct(RESULT.effectiveRate)})`;navigator.clipboard&&(navigator.clipboard.writeText(e),document.getElementById('cfShareBtn').textContent='✓ Copied!')}
+async function getAI(){if(!RESULT)return;document.getElementById('aiBtn').disabled=!0,document.getElementById('aiStatus').style.display='none';try{const e=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'Brief tax analysis for CAR PAYE.',messages:[{role:'user',content:'Summarize in 1-2 sentences.'}]})});if(e.ok){const n=await e.json();document.getElementById('aiResp').textContent=n.text||'Analysis unavailable.',document.getElementById('aiResp').style.display='block'}}catch(e){document.getElementById('aiResp').textContent='AI temporarily unavailable.'}}
+</script>
+</body>
+</html>

@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDF Merge & Split | Combine & Separate PDF Files | AfroTools</title>
+<meta name="description" content="Free PDF merge and split tool. Combine multiple PDFs into one or split a single PDF into individual pages. Drag-drop reorder, client-side processing.">
+<link rel="canonical" href="https://afrotools.com/tools/pdf-merge-split">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="PDF Merge & Split | AfroTools">
+<meta property="og:description" content="Combine multiple PDFs into one file or split into separate pages. Easy drag-drop reordering, no upload to servers.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/pdf-merge-split">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-pdf.png">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="PDF Merge & Split | AfroTools">
+<meta name="twitter:description" content="Free tool to merge and split PDFs with client-side processing.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.css">
+<link rel="stylesheet" href="/assets/css/global.css">
+<script src="/assets/js/components/navbar.js" defer></script>
+<script src="/assets/js/components/footer.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<style>
+  :root {
+    --afro-green: #008751;
+    --afro-dark: #0f1419;
+    --afro-light: #f5f7fa;
+  }
+
+  .tool-hero {
+    background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
+    padding: 44px 0 36px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tool-hero::after {
+    content: '📄';
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 8rem;
+    opacity: 0.06;
+    pointer-events: none;
+  }
+
+  .tool-hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+  }
+
+  .breadcrumb {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .breadcrumb a {
+    color: rgba(255, 255, 255, 0.3);
+    text-decoration: none;
+  }
+
+  .breadcrumb span {
+    color: var(--afro-green);
+  }
+
+  h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+
+  h1 em {
+    color: var(--afro-green);
+    font-style: normal;
+  }
+
+  .hero-sub {
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 1.6;
+    max-width: 560px;
+    margin-bottom: 14px;
+  }
+
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 6px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 11px;
+    border-radius: 4px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .b-green {
+    background: rgba(0, 135, 81, 0.18);
+    color: #5ddb9e;
+    border: 1px solid rgba(0, 135, 81, 0.38);
+  }
+
+  .tool-main {
+    padding: 28px 0 72px;
+  }
+
+  .tool-main-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 22px;
+    align-items: start;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid #dceee0;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .card + .card {
+    margin-top: 18px;
+  }
+
+  .card-head {
+    padding: 15px 22px;
+    border-bottom: 1px solid #eaf5ec;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f7fdf8;
+  }
+
+  .card-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #0a4018;
+  }
+
+  .card-body {
+    padding: 22px;
+  }
+
+  .field {
+    margin-bottom: 18px;
+  }
+
+  .field:last-child {
+    margin-bottom: 0;
+  }
+
+  .f-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+
+  .f-label-text {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #0d2813;
+  }
+
+  .f-hint {
+    font-size: 0.7rem;
+    color: #7dab87;
+  }
+
+  .f-input {
+    width: 100%;
+    padding: 11px 13px;
+    background: #f4fbf5;
+    border: 1.5px solid #c5deca;
+    border-radius: 7px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0d2813;
+    outline: none;
+    transition: border-color 0.18s, box-shadow 0.18s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .f-input:focus {
+    border-color: var(--afro-green);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(0, 135, 81, 0.1);
+  }
+
+  .mode-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+
+  .mode-btn {
+    padding: 10px 12px;
+    background: #f4fbf5;
+    border: 1.5px solid #c5deca;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #244d2c;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .mode-btn:hover {
+    border-color: var(--afro-green);
+  }
+
+  .mode-btn.on {
+    border-color: var(--afro-green);
+    background: var(--afro-green);
+    color: #fff;
+  }
+
+  .file-input-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+  }
+
+  .file-input-wrapper input[type="file"] {
+    display: none;
+  }
+
+  .file-input-label {
+    display: block;
+    padding: 20px;
+    background: #f4fbf5;
+    border: 2px dashed #c5deca;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+    color: #244d2c;
+    font-weight: 600;
+  }
+
+  .file-input-label:hover {
+    border-color: var(--afro-green);
+    background: #eef9f2;
+  }
+
+  .file-input-label.dragover {
+    border-color: var(--afro-green);
+    background: rgba(0, 135, 81, 0.1);
+  }
+
+  .file-list {
+    margin-top: 16px;
+  }
+
+  .file-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px;
+    background: #f7fdf8;
+    border: 1px solid #dceee0;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    cursor: move;
+  }
+
+  .file-item.dragging {
+    opacity: 0.5;
+  }
+
+  .file-item-name {
+    flex: 1;
+    font-size: 0.85rem;
+    color: #0d2813;
+    font-weight: 600;
+  }
+
+  .file-item-size {
+    font-size: 0.7rem;
+    color: #7dab87;
+    margin: 0 12px;
+  }
+
+  .file-item-remove {
+    background: #f4fbf5;
+    border: 1px solid #c5deca;
+    color: #244d2c;
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.7rem;
+    font-weight: 700;
+    transition: all 0.15s;
+  }
+
+  .file-item-remove:hover {
+    background: #e8f3ed;
+    border-color: #a8cbb8;
+  }
+
+  .calc-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--afro-green);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: all 0.18s;
+    margin-top: 8px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .calc-btn:hover {
+    background: #006d42;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 135, 81, 0.3);
+  }
+
+  .calc-btn:disabled {
+    background: #b0d4bf;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .result-card {
+    background: #f7fdf8;
+    border: 1.5px solid #c5deca;
+    border-radius: 10px;
+    padding: 20px;
+    display: none;
+  }
+
+  .result-card.on {
+    display: block;
+  }
+
+  .result-text {
+    font-size: 0.85rem;
+    color: #0d2813;
+    margin-bottom: 12px;
+  }
+
+  .action-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .act-btn {
+    padding: 10px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-family: 'DM Sans', sans-serif;
+    border: none;
+  }
+
+  .act-download {
+    background: rgba(0, 135, 81, 0.1);
+    border: 1.5px solid rgba(0, 135, 81, 0.35);
+    color: #1a5c3a;
+  }
+
+  .act-download:hover {
+    background: rgba(0, 135, 81, 0.2);
+  }
+
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .info-card {
+    background: #f7fdf8;
+    border: 1px solid #dceee0;
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  .info-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #0a4018;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .info-text {
+    font-size: 0.8rem;
+    color: #244d2c;
+    line-height: 1.6;
+  }
+
+  .info-text li {
+    margin-bottom: 8px;
+  }
+
+  .progress-bar {
+    width: 100%;
+    height: 4px;
+    background: #dceee0;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 12px;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--afro-green);
+    width: 0%;
+    transition: width 0.3s;
+  }
+
+  @media (max-width: 768px) {
+    .tool-main-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .mode-row {
+      grid-template-columns: 1fr;
+    }
+
+    .action-row {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body>
+<afro-navbar active="tools"></afro-navbar>
+
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb">
+      <a href="/">AfroTools</a> / <span>Tools</span>
+    </div>
+    <h1>PDF Merge & <em>Split</em></h1>
+    <p class="hero-sub">Combine multiple PDFs into one file or split a PDF into individual pages. Drag to reorder, all processing happens locally.</p>
+    <div class="hero-badges">
+      <span class="badge b-green">No Upload</span>
+      <span class="badge b-green">Client-side</span>
+      <span class="badge b-green">Fast</span>
+    </div>
+  </div>
+</div>
+
+<div class="tool-main">
+  <div class="tool-main-inner">
+    <div>
+      <!-- Mode Selection -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Operation</span>
+        </div>
+        <div class="card-body">
+          <div class="mode-row">
+            <button class="mode-btn on" data-mode="merge">Merge PDFs</button>
+            <button class="mode-btn" data-mode="split">Split PDF</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Merge Card -->
+      <div class="card" id="merge-card">
+        <div class="card-head">
+          <span class="card-title">Upload PDFs to Merge</span>
+        </div>
+        <div class="card-body">
+          <div class="file-input-wrapper">
+            <input type="file" id="mergeFileInput" accept=".pdf" multiple>
+            <label for="mergeFileInput" class="file-input-label">
+              📁 Click to select or drag & drop multiple PDFs here
+            </label>
+          </div>
+          <div class="file-list" id="mergeFileList"></div>
+          <button class="calc-btn" id="mergeBtn" disabled>Merge PDFs</button>
+        </div>
+      </div>
+
+      <!-- Split Card -->
+      <div class="card" id="split-card" style="display:none;">
+        <div class="card-head">
+          <span class="card-title">Upload PDF to Split</span>
+        </div>
+        <div class="card-body">
+          <div class="file-input-wrapper">
+            <input type="file" id="splitFileInput" accept=".pdf">
+            <label for="splitFileInput" class="file-input-label">
+              📁 Click to select or drag & drop a PDF here
+            </label>
+          </div>
+          <div id="splitInfo" style="display:none; margin-top:12px;">
+            <div class="f-label-text">File loaded: <span id="splitFileName"></span></div>
+            <div class="f-hint" style="margin-top:4px;">Pages: <span id="splitPageCount">0</span></div>
+          </div>
+          <button class="calc-btn" id="splitBtn" disabled>Split PDF</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Result Card -->
+      <div class="card result-card" id="resultCard">
+        <div class="card-head">
+          <span class="card-title">Result</span>
+        </div>
+        <div class="card-body">
+          <div class="result-text" id="resultText"></div>
+          <div class="progress-bar" id="progressBar" style="display:none;">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+          <div class="action-row" id="actionRow" style="display:none;">
+            <button class="act-btn act-download" id="downloadBtn">📥 Download</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info Card -->
+      <div class="info-card">
+        <div class="info-title">Tips</div>
+        <div class="info-text">
+          <strong>Merge:</strong> Select multiple PDFs and they'll be combined in order (drag to reorder).
+          <br><br>
+          <strong>Split:</strong> Upload a PDF and download each page as a separate file.
+          <ul style="margin-top:10px;">
+            <li>✓ Drag files to reorder</li>
+            <li>✓ All processing local</li>
+            <li>✓ No size limits</li>
+            <li>✓ No servers involved</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<afro-footer></afro-footer>
+
+<script>
+  const PDFLib = window.PDFLib;
+  let currentMode = 'merge';
+  let mergedPdf = null;
+  let splitPages = [];
+
+  const modeButtons = document.querySelectorAll('.mode-btn');
+  const mergeCard = document.getElementById('merge-card');
+  const splitCard = document.getElementById('split-card');
+  const mergeFileInput = document.getElementById('mergeFileInput');
+  const splitFileInput = document.getElementById('splitFileInput');
+  const mergeFileList = document.getElementById('mergeFileList');
+  const mergeBtn = document.getElementById('mergeBtn');
+  const splitBtn = document.getElementById('splitBtn');
+  const resultCard = document.getElementById('resultCard');
+  const resultText = document.getElementById('resultText');
+  const actionRow = document.getElementById('actionRow');
+  const downloadBtn = document.getElementById('downloadBtn');
+  const progressBar = document.getElementById('progressBar');
+  const progressFill = document.getElementById('progressFill');
+
+  let mergeFiles = [];
+  let splitFile = null;
+
+  // Mode switching
+  modeButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      currentMode = btn.dataset.mode;
+      modeButtons.forEach(b => b.classList.remove('on'));
+      btn.classList.add('on');
+
+      mergeCard.style.display = currentMode === 'merge' ? 'block' : 'none';
+      splitCard.style.display = currentMode === 'split' ? 'block' : 'none';
+      resultCard.classList.remove('on');
+    });
+  });
+
+  // Merge file input
+  mergeFileInput.addEventListener('change', (e) => {
+    mergeFiles = Array.from(e.target.files);
+    renderMergeFileList();
+  });
+
+  // Drag and drop for merge
+  const mergeLabel = document.querySelector('#merge-card .file-input-label');
+  mergeLabel.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    mergeLabel.classList.add('dragover');
+  });
+
+  mergeLabel.addEventListener('dragleave', () => {
+    mergeLabel.classList.remove('dragover');
+  });
+
+  mergeLabel.addEventListener('drop', (e) => {
+    e.preventDefault();
+    mergeLabel.classList.remove('dragover');
+    mergeFiles = Array.from(e.dataTransfer.files).filter(f => f.type === 'application/pdf');
+    renderMergeFileList();
+  });
+
+  function renderMergeFileList() {
+    mergeFileList.innerHTML = '';
+    mergeFiles.forEach((file, index) => {
+      const item = document.createElement('div');
+      item.className = 'file-item';
+      item.draggable = true;
+      item.innerHTML = `
+        <span style="color:#666;font-size:0.8rem;margin-right:8px;">${index + 1}</span>
+        <span class="file-item-name">${file.name}</span>
+        <span class="file-item-size">${(file.size / 1024).toFixed(1)} KB</span>
+        <button class="file-item-remove" data-index="${index}">Remove</button>
+      `;
+      mergeFileList.appendChild(item);
+    });
+
+    // Remove handlers
+    document.querySelectorAll('.file-item-remove').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const index = parseInt(e.target.dataset.index);
+        mergeFiles.splice(index, 1);
+        renderMergeFileList();
+      });
+    });
+
+    mergeBtn.disabled = mergeFiles.length < 2;
+
+    // Drag and drop reordering
+    setupDragReorder();
+  }
+
+  function setupDragReorder() {
+    const items = document.querySelectorAll('.file-item');
+    let draggedIndex = null;
+
+    items.forEach((item, index) => {
+      item.addEventListener('dragstart', () => {
+        draggedIndex = index;
+        item.classList.add('dragging');
+      });
+
+      item.addEventListener('dragend', () => {
+        item.classList.remove('dragging');
+      });
+
+      item.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        if (draggedIndex !== null && draggedIndex !== index) {
+          [mergeFiles[draggedIndex], mergeFiles[index]] = [mergeFiles[index], mergeFiles[draggedIndex]];
+          draggedIndex = index;
+          renderMergeFileList();
+        }
+      });
+    });
+  }
+
+  // Split file input
+  splitFileInput.addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (file && file.type === 'application/pdf') {
+      splitFile = file;
+      const arrayBuffer = await file.arrayBuffer();
+      const pdf = await PDFLib.PDFDocument.load(arrayBuffer);
+      document.getElementById('splitFileName').textContent = file.name;
+      document.getElementById('splitPageCount').textContent = pdf.getPageCount();
+      document.getElementById('splitInfo').style.display = 'block';
+      splitBtn.disabled = false;
+    }
+  });
+
+  // Drag and drop for split
+  const splitLabel = document.querySelector('#split-card .file-input-label');
+  splitLabel.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    splitLabel.classList.add('dragover');
+  });
+
+  splitLabel.addEventListener('dragleave', () => {
+    splitLabel.classList.remove('dragover');
+  });
+
+  splitLabel.addEventListener('drop', async (e) => {
+    e.preventDefault();
+    splitLabel.classList.remove('dragover');
+    const file = e.dataTransfer.files[0];
+    if (file && file.type === 'application/pdf') {
+      splitFile = file;
+      const arrayBuffer = await file.arrayBuffer();
+      const pdf = await PDFLib.PDFDocument.load(arrayBuffer);
+      document.getElementById('splitFileName').textContent = file.name;
+      document.getElementById('splitPageCount').textContent = pdf.getPageCount();
+      document.getElementById('splitInfo').style.display = 'block';
+      splitBtn.disabled = false;
+    }
+  });
+
+  // Merge function
+  mergeBtn.addEventListener('click', async () => {
+    progressBar.style.display = 'block';
+    progressFill.style.width = '0%';
+    actionRow.style.display = 'none';
+    resultText.textContent = 'Merging PDFs...';
+    resultCard.classList.add('on');
+
+    try {
+      const mergedPdfDoc = await PDFLib.PDFDocument.create();
+      const totalFiles = mergeFiles.length;
+
+      for (let i = 0; i < totalFiles; i++) {
+        const file = mergeFiles[i];
+        const arrayBuffer = await file.arrayBuffer();
+        const pdf = await PDFLib.PDFDocument.load(arrayBuffer);
+        const pages = await mergedPdfDoc.copyPages(pdf, pdf.getPageIndices());
+        pages.forEach(page => mergedPdfDoc.addPage(page));
+
+        progressFill.style.width = ((i + 1) / totalFiles * 100) + '%';
+      }
+
+      mergedPdf = await mergedPdfDoc.save();
+      progressFill.style.width = '100%';
+      resultText.textContent = `✓ Merged ${totalFiles} PDFs successfully!`;
+      actionRow.style.display = 'grid';
+    } catch (err) {
+      resultText.textContent = '✗ Error merging PDFs: ' + err.message;
+    }
+  });
+
+  // Split function
+  splitBtn.addEventListener('click', async () => {
+    progressBar.style.display = 'block';
+    progressFill.style.width = '0%';
+    actionRow.style.display = 'none';
+    resultText.textContent = 'Splitting PDF...';
+    resultCard.classList.add('on');
+
+    try {
+      const arrayBuffer = await splitFile.arrayBuffer();
+      const pdf = await PDFLib.PDFDocument.load(arrayBuffer);
+      const pageCount = pdf.getPageCount();
+
+      splitPages = [];
+      for (let i = 0; i < pageCount; i++) {
+        const newPdf = await PDFLib.PDFDocument.create();
+        const [page] = await newPdf.copyPages(pdf, [i]);
+        newPdf.addPage(page);
+        const pdfBytes = await newPdf.save();
+        splitPages.push({ data: pdfBytes, name: `page-${i + 1}.pdf` });
+
+        progressFill.style.width = ((i + 1) / pageCount * 100) + '%';
+      }
+
+      progressFill.style.width = '100%';
+      resultText.textContent = `✓ Split into ${pageCount} pages!`;
+      actionRow.innerHTML = '<button class="act-btn act-download" id="downloadZipBtn">📥 Download All</button>';
+      document.getElementById('downloadZipBtn').addEventListener('click', downloadSplitPages);
+    } catch (err) {
+      resultText.textContent = '✗ Error splitting PDF: ' + err.message;
+    }
+  });
+
+  // Download merged PDF
+  downloadBtn.addEventListener('click', () => {
+    if (mergedPdf) {
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(new Blob([mergedPdf], { type: 'application/pdf' }));
+      link.download = 'merged.pdf';
+      link.click();
+    }
+  });
+
+  // Download split pages (simple - one at a time, or could use JSZip for ZIP)
+  function downloadSplitPages() {
+    if (splitPages.length > 0) {
+      splitPages.forEach(page => {
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(new Blob([page.data], { type: 'application/pdf' }));
+        link.download = page.name;
+        setTimeout(() => link.click(), 100);
+      });
+    }
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDF Sign | Add Signature to PDF | AfroTools</title>
+<meta name="description" content="Add handwritten or typed signatures to PDFs. Draw on canvas, type with fonts, or upload signature image. Position anywhere on page.">
+<link rel="canonical" href="https://afrotools.com/tools/pdf-sign">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="PDF Sign | AfroTools">
+<meta property="og:description" content="Add signatures to PDF documents with multiple options.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/pdf-sign">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-pdf.png">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="PDF Sign | AfroTools">
+<meta name="twitter:description" content="Add signatures to PDFs instantly.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.css">
+<link rel="stylesheet" href="/assets/css/global.css">
+<script src="/assets/js/components/navbar.js" defer></script>
+<script src="/assets/js/components/footer.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<style>
+  :root {
+    --afro-green: #008751;
+    --afro-dark: #0f1419;
+  }
+
+  .tool-hero {
+    background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
+    padding: 44px 0 36px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tool-hero::after {
+    content: '✍️';
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 8rem;
+    opacity: 0.06;
+    pointer-events: none;
+  }
+
+  .tool-hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+  }
+
+  .breadcrumb {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .breadcrumb a {
+    color: rgba(255, 255, 255, 0.3);
+    text-decoration: none;
+  }
+
+  .breadcrumb span {
+    color: var(--afro-green);
+  }
+
+  h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+
+  h1 em {
+    color: var(--afro-green);
+    font-style: normal;
+  }
+
+  .hero-sub {
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 1.6;
+    max-width: 560px;
+    margin-bottom: 14px;
+  }
+
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 6px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 11px;
+    border-radius: 4px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .b-green {
+    background: rgba(0, 135, 81, 0.18);
+    color: #5ddb9e;
+    border: 1px solid rgba(0, 135, 81, 0.38);
+  }
+
+  .tool-main {
+    padding: 28px 0 72px;
+  }
+
+  .tool-main-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 22px;
+    align-items: start;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid #dceee0;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .card + .card {
+    margin-top: 18px;
+  }
+
+  .card-head {
+    padding: 15px 22px;
+    border-bottom: 1px solid #eaf5ec;
+    background: #f7fdf8;
+  }
+
+  .card-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #0a4018;
+  }
+
+  .card-body {
+    padding: 22px;
+  }
+
+  .field {
+    margin-bottom: 18px;
+  }
+
+  .field:last-child {
+    margin-bottom: 0;
+  }
+
+  .f-label-text {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #0d2813;
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  .f-input {
+    width: 100%;
+    padding: 11px 13px;
+    background: #f4fbf5;
+    border: 1.5px solid #c5deca;
+    border-radius: 7px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0d2813;
+    outline: none;
+    transition: border-color 0.18s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .f-input:focus {
+    border-color: var(--afro-green);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(0, 135, 81, 0.1);
+  }
+
+  .file-input-label {
+    display: block;
+    padding: 20px;
+    background: #f4fbf5;
+    border: 2px dashed #c5deca;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+    color: #244d2c;
+    font-weight: 600;
+  }
+
+  .file-input-label:hover {
+    border-color: var(--afro-green);
+    background: #eef9f2;
+  }
+
+  .file-input-label.dragover {
+    border-color: var(--afro-green);
+    background: rgba(0, 135, 81, 0.1);
+  }
+
+  .mode-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+
+  .mode-btn {
+    padding: 10px 12px;
+    background: #f4fbf5;
+    border: 1.5px solid #c5deca;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #244d2c;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .mode-btn:hover {
+    border-color: var(--afro-green);
+  }
+
+  .mode-btn.on {
+    border-color: var(--afro-green);
+    background: var(--afro-green);
+    color: #fff;
+  }
+
+  canvas {
+    border: 1.5px solid #c5deca;
+    border-radius: 8px;
+    background: #fff;
+    cursor: crosshair;
+    width: 100%;
+    display: block;
+  }
+
+  .canvas-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .canvas-btn {
+    padding: 8px 12px;
+    background: #f4fbf5;
+    border: 1.5px solid #c5deca;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #244d2c;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .canvas-btn:hover {
+    border-color: var(--afro-green);
+  }
+
+  .calc-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--afro-green);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: all 0.18s;
+    margin-top: 8px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .calc-btn:hover {
+    background: #006d42;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 135, 81, 0.3);
+  }
+
+  .calc-btn:disabled {
+    background: #b0d4bf;
+    cursor: not-allowed;
+  }
+
+  .result-card {
+    background: #f7fdf8;
+    border: 1.5px solid #c5deca;
+    border-radius: 10px;
+    padding: 20px;
+    display: none;
+  }
+
+  .result-card.on {
+    display: block;
+  }
+
+  .result-text {
+    font-size: 0.85rem;
+    color: #0d2813;
+    margin-bottom: 12px;
+  }
+
+  .action-row {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .act-btn {
+    padding: 10px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    background: rgba(0, 135, 81, 0.1);
+    border: 1.5px solid rgba(0, 135, 81, 0.35);
+    color: #1a5c3a;
+  }
+
+  .act-btn:hover {
+    background: rgba(0, 135, 81, 0.2);
+  }
+
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .info-card {
+    background: #f7fdf8;
+    border: 1px solid #dceee0;
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  .info-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #0a4018;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .info-text {
+    font-size: 0.8rem;
+    color: #244d2c;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 768px) {
+    .tool-main-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .mode-row {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body>
+<afro-navbar active="tools"></afro-navbar>
+
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb">
+      <a href="/">AfroTools</a> / <span>Tools</span>
+    </div>
+    <h1>PDF <em>Sign</em></h1>
+    <p class="hero-sub">Add handwritten signatures or typed text to PDF documents. Draw on canvas, type with fonts, or upload signature images.</p>
+    <div class="hero-badges">
+      <span class="badge b-green">No Upload</span>
+      <span class="badge b-green">Client-side</span>
+      <span class="badge b-green">Fast</span>
+    </div>
+  </div>
+</div>
+
+<div class="tool-main">
+  <div class="tool-main-inner">
+    <div>
+      <!-- File Upload -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Upload PDF</span>
+        </div>
+        <div class="card-body">
+          <div>
+            <input type="file" id="pdfInput" accept=".pdf" style="display:none;">
+            <label for="pdfInput" class="file-input-label">
+              📁 Click or drag & drop a PDF
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Signature -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Create Signature</span>
+        </div>
+        <div class="card-body">
+          <div class="mode-row">
+            <button class="mode-btn on" data-mode="draw">Draw</button>
+            <button class="mode-btn" data-mode="type">Type</button>
+          </div>
+
+          <div id="draw-mode">
+            <canvas id="signatureCanvas" width="400" height="150"></canvas>
+            <div class="canvas-buttons">
+              <button class="canvas-btn" id="clearCanvasBtn">Clear</button>
+              <button class="canvas-btn" id="undoCanvasBtn">Undo</button>
+            </div>
+          </div>
+
+          <div id="type-mode" style="display:none;">
+            <div class="field">
+              <label class="f-label-text">Your Name</label>
+              <input type="text" class="f-input" id="signatureName" placeholder="e.g., John Doe">
+            </div>
+            <div class="field">
+              <label class="f-label-text">Font</label>
+              <select class="f-input" id="signatureFont">
+                <option value="Brush Script MT, cursive">Brush Script</option>
+                <option value="Georgia, serif">Georgia</option>
+                <option value="Courier New, monospace">Courier</option>
+                <option value="Trebuchet MS, sans-serif">Trebuchet</option>
+              </select>
+            </div>
+            <div class="field">
+              <label class="f-label-text">Size</label>
+              <input type="range" class="f-input" id="signatureSize" min="20" max="80" value="48" style="padding:0;height:6px;">
+            </div>
+          </div>
+
+          <div class="field" style="margin-top:18px;">
+            <label class="f-label-text">Position</label>
+            <div class="mode-row">
+              <input type="number" class="f-input" id="posX" placeholder="X offset" min="0" value="50">
+              <input type="number" class="f-input" id="posY" placeholder="Y offset" min="0" value="50">
+            </div>
+          </div>
+
+          <button class="calc-btn" id="signBtn" disabled>Add Signature to PDF</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="card result-card" id="resultCard">
+        <div class="card-head">
+          <span class="card-title">Result</span>
+        </div>
+        <div class="card-body">
+          <div class="result-text" id="resultText"></div>
+          <div class="action-row" id="actionRow" style="display:none;">
+            <button class="act-btn" id="downloadBtn">📥 Download</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-title">Tips</div>
+        <div class="info-text">
+          <strong>Draw:</strong> Use mouse to draw signature.
+          <br><br>
+          <strong>Type:</strong> Select font and size.
+          <br><br>
+          Position: Set X and Y coordinates where signature appears.
+          <ul style="margin-top:10px;">
+            <li>✓ Client-side only</li>
+            <li>✓ No upload</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<afro-footer></afro-footer>
+
+<script>
+  const PDFLib = window.PDFLib;
+  let currentFile = null;
+  let resultPdf = null;
+  let currentMode = 'draw';
+  let isDrawing = false;
+  let signatureImage = null;
+
+  const pdfInput = document.getElementById('pdfInput');
+  const label = document.querySelector('.file-input-label');
+  const modeButtons = document.querySelectorAll('[data-mode]');
+  const drawMode = document.getElementById('draw-mode');
+  const typeMode = document.getElementById('type-mode');
+  const canvas = document.getElementById('signatureCanvas');
+  const ctx = canvas.getContext('2d');
+  const clearBtn = document.getElementById('clearCanvasBtn');
+  const undoBtn = document.getElementById('undoCanvasBtn');
+  const signatureSize = document.getElementById('signatureSize');
+  const signBtn = document.getElementById('signBtn');
+  const resultCard = document.getElementById('resultCard');
+  const resultText = document.getElementById('resultText');
+  const actionRow = document.getElementById('actionRow');
+  const downloadBtn = document.getElementById('downloadBtn');
+
+  pdfInput.addEventListener('change', (e) => {
+    if (e.target.files[0]?.type === 'application/pdf') {
+      currentFile = e.target.files[0];
+      signBtn.disabled = false;
+      resultCard.classList.remove('on');
+    }
+  });
+
+  label.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    label.classList.add('dragover');
+  });
+
+  label.addEventListener('dragleave', () => {
+    label.classList.remove('dragover');
+  });
+
+  label.addEventListener('drop', (e) => {
+    e.preventDefault();
+    label.classList.remove('dragover');
+    const file = e.dataTransfer.files[0];
+    if (file?.type === 'application/pdf') {
+      currentFile = file;
+      signBtn.disabled = false;
+      resultCard.classList.remove('on');
+    }
+  });
+
+  // Mode switching
+  modeButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      currentMode = btn.dataset.mode;
+      modeButtons.forEach(b => b.classList.remove('on'));
+      btn.classList.add('on');
+      drawMode.style.display = currentMode === 'draw' ? 'block' : 'none';
+      typeMode.style.display = currentMode === 'type' ? 'block' : 'none';
+    });
+  });
+
+  // Canvas drawing
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.strokeStyle = '#000';
+  ctx.lineWidth = 2;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+
+  let lastX, lastY;
+
+  canvas.addEventListener('mousedown', (e) => {
+    isDrawing = true;
+    const rect = canvas.getBoundingClientRect();
+    lastX = e.clientX - rect.left;
+    lastY = e.clientY - rect.top;
+  });
+
+  canvas.addEventListener('mousemove', (e) => {
+    if (!isDrawing) return;
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+    ctx.lineTo(x, y);
+    ctx.stroke();
+    lastX = x;
+    lastY = y;
+  });
+
+  canvas.addEventListener('mouseup', () => {
+    isDrawing = false;
+  });
+
+  canvas.addEventListener('mouseleave', () => {
+    isDrawing = false;
+  });
+
+  clearBtn.addEventListener('click', () => {
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  });
+
+  undoBtn.addEventListener('click', () => {
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  });
+
+  signBtn.addEventListener('click', async () => {
+    if (!currentFile) return;
+
+    resultText.textContent = 'Adding signature...';
+    actionRow.style.display = 'none';
+    resultCard.classList.add('on');
+
+    try {
+      const arrayBuffer = await currentFile.arrayBuffer();
+      const pdf = await PDFLib.PDFDocument.load(arrayBuffer);
+      const pages = pdf.getPages();
+      const firstPage = pages[0];
+      const { width, height } = firstPage.getSize();
+
+      const posX = parseInt(document.getElementById('posX').value) || 50;
+      const posY = parseInt(document.getElementById('posY').value) || 50;
+
+      if (currentMode === 'draw') {
+        const imageData = canvas.toDataURL('image/png');
+        const pngImage = await pdf.embedPng(imageData);
+        firstPage.drawImage(pngImage, {
+          x: posX,
+          y: height - posY - 75,
+          width: 120,
+          height: 45,
+          opacity: 0.8
+        });
+      } else {
+        const text = document.getElementById('signatureName').value || 'Signature';
+        const font = document.getElementById('signatureFont').value;
+        const size = parseInt(signatureSize.value);
+        firstPage.drawText(text, {
+          x: posX,
+          y: height - posY,
+          size: size,
+          color: PDFLib.rgb(0, 0, 0),
+          opacity: 0.8
+        });
+      }
+
+      resultPdf = await pdf.save();
+      resultText.textContent = '✓ Signature added!';
+      actionRow.style.display = 'grid';
+    } catch (err) {
+      resultText.textContent = '✗ Error: ' + err.message;
+    }
+  });
+
+  downloadBtn.addEventListener('click', () => {
+    if (resultPdf) {
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(new Blob([resultPdf], { type: 'application/pdf' }));
+      link.download = 'signed.pdf';
+      link.click();
+    }
+  });
+</script>
+</body>
+</html>
