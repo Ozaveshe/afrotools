@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>All Tool Categories | AfroTools</title>
+<meta name="description" content="Browse all AfroTools categories: Tax, PDF, Image, Developer, Education, Health, Business — 120+ free tools across 12 categories.">
+<link rel="canonical" href="https://afrotools.com/categories">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="apple-touch-icon" href="/assets/img/logo-mark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.css">
+<link rel="stylesheet" href="/assets/css/global.css">
+<script src="/assets/js/components/tool-registry.js"></script>
+<script src="/assets/js/components/navbar.js" defer></script>
+<script src="/assets/js/components/footer.js" defer></script>
+<style>
+  body{font-family:'DM Sans',sans-serif;background:#fafaf8;color:#0f172a;margin:0;-webkit-font-smoothing:antialiased}
+  a{text-decoration:none;color:inherit}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 24px}
+  .hero{background:linear-gradient(145deg,#0d2517,#0a2a18,#071a0f);padding:64px 0 48px}
+  .hero-ey{display:inline-flex;align-items:center;gap:8px;font-size:.68rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#5ddb9e;margin-bottom:14px}
+  .hero-ey::before{content:'';width:18px;height:2px;background:#5ddb9e;border-radius:2px}
+  .hero h1{font-size:clamp(2rem,4vw,3rem);font-weight:800;color:#fff;letter-spacing:-.025em;line-height:1.08;margin-bottom:14px}
+  .hero h1 em{color:#5ddb9e;font-style:normal}
+  .hero p{font-size:1rem;color:rgba(255,255,255,.45);max-width:520px;line-height:1.65}
+  .sec{padding:48px 0}
+  .cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+  .cc{padding:24px;background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;display:flex;flex-direction:column;gap:10px;transition:border-color .15s,box-shadow .15s,transform .15s}
+  .cc:hover{border-color:#008751;box-shadow:0 6px 20px rgba(0,135,81,.08);transform:translateY(-2px)}
+  .cc-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.5rem}
+  .cc-name{font-size:1rem;font-weight:800;color:#111827}
+  .cc-desc{font-size:.82rem;color:#6b7280;line-height:1.6;flex:1}
+  .cc-count{font-size:.65rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#9ca3af;margin-top:4px}
+  .cc-count.live{color:#008751}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<section class="hero"><div class="wrap">
+  <div class="hero-ey">12 Categories</div>
+  <h1>All Tool <em>Categories</em></h1>
+  <p>Tax, PDF, image, developer, education, health and more — 120+ tools across 12 categories, all free.</p>
+</div></section>
+<section class="sec"><div class="wrap"><div class="cat-grid" id="cg"></div></div></section>
+<afro-footer></afro-footer>
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  if(typeof AFRO_CATEGORIES==='undefined'||typeof AFRO_TOOLS==='undefined')return;
+  var map={'financial':'salary-tax','document-pdf':'image-design','image-design':'image-design','developer':'developer-tools','education':'education','health':'health-insurance','ecommerce':'ecommerce','legal':'legal','data-productivity':'data-productivity','language':'language','african':'african','engineering':'engineering'};
+  var descs={'financial':'PAYE for all 54 countries. Real tax tables from FIRS, KRA, GRA, SARS.','document-pdf':'PDF workspace: merge, split, compress, watermark, convert.','image-design':'Compress, resize, convert. QR generator. Passport photos.','developer':'JSON/CSV/XML converter, color picker, hash generator, Base64, regex.','education':'GPA/CGPA (WAEC, KCSE, Matric), student loans, university fees.','health':'SHIF/NHIS calculators, BMI, pregnancy due date, crop planner.','ecommerce':'VAT rates for all 54 countries. Corporate tax. Import duty.','legal':'Mortgage repayment, stamp duty, property transfer tax, tenancy.','data-productivity':'Investment return, break-even, profit margin, CAGR projections.','language':'Yoruba, Swahili, Hausa, Amharic translators and phrasebooks.','african':'Japa calculator, generator fuel, ajo/chama, mobile money fees.','engineering':'Solar sizing, structural load, borehole cost, construction estimator.'};
+  var icons={'financial':'💰','document-pdf':'📄','image-design':'🖼️','developer':'⌨️','education':'🎓','health':'🏥','ecommerce':'🧾','legal':'🏠','data-productivity':'📊','language':'🗣️','african':'🌍','engineering':'🔧'};
+  var g=document.getElementById('cg');if(!g)return;
+  var html='';
+  Object.keys(AFRO_CATEGORIES).forEach(function(k){
+    var c=AFRO_CATEGORIES[k];
+    var tools=AFRO_TOOLS.filter(function(t){return t.category===k;});
+    var live=tools.filter(function(t){return t.status==='live'||t.status==='new';});
+    var slug=map[k]||k;
+    var ct=live.length>0?'<span class="cc-count live">● '+live.length+' tools available</span>':'<span class="cc-count">'+tools.length+' tools planned</span>';
+    html+='<a href="/'+slug+'" class="cc"><div class="cc-icon" style="background:'+c.bg+'">'+(icons[k]||'🔧')+'</div><div class="cc-name">'+c.name+'</div><div class="cc-desc">'+(descs[k]||tools.length+' tools.')+'</div>'+ct+'</a>';
+  });
+  g.innerHTML=html;
+});
+</script>
+</body>
+</html>
