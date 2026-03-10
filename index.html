@@ -12,11 +12,11 @@
   <meta property="og:url" content="https://afrotools.com/">
   <meta property="og:title" content="AfroTools — Africa's Everything Platform">
   <meta property="og:description" content="120+ free tools built for Africa. PAYE tax, PDF editing, image tools, dev tools, QR codes and more. All 54 countries. Always free.">
-  <meta property="og:image" content="https://afrotools.com/assets/img/og-home.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
+  <meta property="og:image" content="https://afrotools.com/assets/img/logo-mark.svg">
+  <meta property="og:image:width" content="512">
+  <meta property="og:image:height" content="512">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="https://afrotools.com/assets/img/og-home.png">
+  <meta name="twitter:image" content="https://afrotools.com/assets/img/logo-mark.svg">
   <meta property="og:locale" content="en_US">
   <meta property="og:site_name" content="AfroTools">
   <meta name="twitter:card" content="summary_large_image">
@@ -100,9 +100,14 @@
       display: flex; align-items: center;
       background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
       border-radius: 8px; max-width: 480px; overflow: hidden;
-      transition: border-color 0.2s;
+      transition: border-color 0.2s, box-shadow 0.3s;
+      animation: search-glow 3s ease-in-out 1.5s 3;
     }
-    .hero-search:focus-within { border-color: #008751; }
+    .hero-search:focus-within { border-color: #008751; box-shadow: 0 0 20px rgba(0,135,81,0.25); }
+    @keyframes search-glow {
+      0%, 100% { border-color: rgba(255,255,255,0.12); box-shadow: none; }
+      50% { border-color: rgba(0,135,81,0.5); box-shadow: 0 0 24px rgba(0,135,81,0.18); }
+    }
     .hero-search svg { margin-left: 13px; flex-shrink: 0; color: rgba(255,255,255,0.28); }
     .hero-search input {
       flex: 1; padding: 13px 10px; background: transparent; border: none; outline: none;
@@ -232,7 +237,7 @@
     }
     .tc:hover { border-color: #008751; box-shadow: 0 10px 36px rgba(0,135,81,0.16); transform: translateY(-4px); }
     .tc-thumb {
-      height: 155px; overflow: hidden; flex-shrink: 0;
+      aspect-ratio: 3/2; overflow: hidden; flex-shrink: 0;
       position: relative;
       background: linear-gradient(145deg, #0d2517 0%, #0a2a18 55%, #071a0f 100%);
       display: flex; align-items: center; justify-content: center;
@@ -271,7 +276,7 @@
       cursor: pointer; box-shadow: 0 1px 5px rgba(0,0,0,0.06);
     }
     .ut-thumb {
-      height: 110px; overflow: hidden; flex-shrink: 0;
+      aspect-ratio: 3/2; overflow: hidden; flex-shrink: 0;
       background: linear-gradient(145deg, #0d2517 0%, #0a2a18 55%, #071a0f 100%);
       position: relative; display: flex; align-items: center; justify-content: center;
     }
@@ -470,7 +475,7 @@
       .sec--dark { padding: 48px 16px; }
       .sec--dark2 { padding: 48px 16px; }
       .tools-grid { grid-template-columns: 1fr; gap: 10px; }
-      .tc-thumb { height: 200px; }
+      .tc-thumb { aspect-ratio: 3/2; }
       .util-grid { grid-template-columns: repeat(2,1fr); gap: 8px; }
       .tools-sub-grid { grid-template-columns: repeat(2,1fr); gap: 10px; }
       .cats-grid { grid-template-columns: repeat(2,1fr); gap: 9px; }
@@ -482,7 +487,7 @@
     @media (max-width: 420px) {
       .tools-sub-grid { grid-template-columns: 1fr; }
       .util-grid { grid-template-columns: 1fr; }
-      .tc-thumb { height: 180px; }
+      .tc-thumb { aspect-ratio: 3/2; }
     }
   </style>
 </head>
@@ -1029,7 +1034,7 @@
         <p class="nl-sub">Get notified when we launch tools for your country. One email per major release. No spam, no marketing. Cancel anytime.</p>
       </div>
       <div>
-        <form class="nl-form" name="newsletter" data-netlify="true" id="nl-form">
+        <form class='nl-form' id='nl-form' method='post' name='newsletter'>
           <input type="hidden" name="form-name" value="newsletter">
           <div class="nl-row">
             <input class="nl-inp" type="email" name="email" placeholder="your@email.com" required aria-label="Email address">
@@ -1174,8 +1179,10 @@
 
     function doSearch() {
       var q = input.value.trim();
-      if (q) window.location.href = '/search?q=' + encodeURIComponent(q);
-      else window.location.href = '/search';
+      if (q) {
+        renderDropdown(q);
+        input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
     }
 
     // Keyboard nav
