@@ -93,11 +93,22 @@
     .btn-ghost:hover { background: rgba(255,255,255,0.1); }
     .hero-search {
       display: flex; align-items: center;
-      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 8px; max-width: 480px; overflow: hidden;
-      transition: border-color 0.2s;
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 8px; width: 100%; max-width: 480px; overflow: hidden;
+      transition: border-color 0.25s, box-shadow 0.25s;
+      animation: search-glow 3s ease-in-out 1.2s 3;
     }
-    .hero-search:focus-within { border-color: #008751; }
+    .hero-search:focus-within {
+      border-color: #008751;
+      box-shadow: 0 0 0 3px rgba(0,135,81,0.25);
+      animation: none;
+    }
+    @keyframes search-glow {
+      0%   { box-shadow: 0 0 0 0 rgba(0,200,120,0); border-color: rgba(255,255,255,0.18); }
+      40%  { box-shadow: 0 0 0 5px rgba(0,200,120,0.22), 0 0 22px 4px rgba(0,200,120,0.14); border-color: rgba(0,200,120,0.7); }
+      70%  { box-shadow: 0 0 0 3px rgba(0,200,120,0.12); border-color: rgba(0,200,120,0.4); }
+      100% { box-shadow: 0 0 0 0 rgba(0,200,120,0); border-color: rgba(255,255,255,0.18); }
+    }
     .hero-search svg { margin-left: 13px; flex-shrink: 0; color: rgba(255,255,255,0.28); }
     .hero-search input {
       flex: 1; padding: 13px 10px; background: transparent; border: none; outline: none;
@@ -189,6 +200,10 @@
     .badge-t3   { background: #F3F4F6; color: #6B7280; border: 1px solid #E5E7EB; }
     .badge-soon { background: #F3F4F6; color: #9CA3AF; border: 1px solid #E5E7EB; }
     .badge-new  { background: #FEF2F2; color: #991B1B; border: 1px solid #FECACA; }
+    /* Live utility card highlight */
+    .ut--live { border-color: rgba(0,135,81,0.35) !important; }
+    .ut--live .ut-badge { background: #DCFCE7 !important; color: #166534 !important; border-color: #A8DCBA !important; }
+    .ut--live:hover { border-color: #008751 !important; box-shadow: 0 6px 24px rgba(0,135,81,0.18) !important; }
     .tc-name { font-size: 0.95rem; font-weight: 800; color: #0f172a; letter-spacing: -0.01em; line-height: 1.2; margin-bottom: 6px; }
     .tc-desc { font-size: 0.78rem; color: #4b5563; line-height: 1.6; flex: 1; margin-bottom: 11px; }
     .tc-foot { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #F3F4F6; padding-top: 9px; }
@@ -441,7 +456,7 @@
       </div>
       <div class="hero-ticker">
         <span class="ticker-dot"></span>
-        <span class="ticker-text"><strong>New:</strong> PDF Workspace, Currency Converter, VAT Calculator, CV Builder &amp; Remittance Comparator coming soon</span>
+        <span class="ticker-text" id="hero-ticker-text"><strong>New:</strong> Japa Cost Calculator is live — plan your relocation costs →</span>
       </div>
     </div>
     <div class="hero-stats">
@@ -597,8 +612,8 @@
         </div>
       </a>
 
-      <!-- ETHIOPIA -->
-      <a href="/ethiopia/et-paye" class="tc rv d6" data-tier="tier1" data-status="live">
+      <!-- ETHIOPIA — hidden until expanded -->
+      <a href="/ethiopia/et-paye" class="tc rv d6 paye-extra" data-tier="tier1" data-status="live" style="display:none">
         <div class="tc-thumb">
           <img src="/assets/img/tools/et-paye.webp" alt="" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block">
         </div>
@@ -616,8 +631,8 @@
         </div>
       </a>
 
-      <!-- RWANDA -->
-      <a href="/rwanda/rw-paye" class="tc rv d7" data-tier="tier1" data-status="live">
+      <!-- RWANDA — hidden until expanded -->
+      <a href="/rwanda/rw-paye" class="tc rv d7 paye-extra" data-tier="tier1" data-status="live" style="display:none">
         <div class="tc-thumb">
           <img src="/assets/img/tools/rw-paye.webp" alt="" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block">
         </div>
@@ -638,8 +653,11 @@
     </div><!-- /tools-grid -->
 
     <div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-      <a href="/salary-tax" class="btn-green" style="font-size:0.82rem;padding:10px 18px">View All PAYE Calculators →</a>
-      <span style="font-size:0.78rem;color:#6B7280">More countries added every week</span>
+      <button id="paye-show-more" onclick="togglePayeExtra(this)" style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1.5px solid #008751;color:#008751;padding:10px 18px;border-radius:8px;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s">
+        <span class="paye-more-lbl">+ 2 More Countries</span>
+      </button>
+      <a href="/salary-tax" class="btn-green" style="font-size:0.82rem;padding:10px 18px">View All 54 Countries →</a>
+      <span style="font-size:0.78rem;color:#6B7280">Updated weekly</span>
     </div>
 
   </div>
@@ -762,7 +780,7 @@
           </div>
         </a>
 
-        <a href="/tools/japa-calculator" class="ut rv d2">
+        <a href="/tools/japa-calculator" class="ut rv d2 ut--live">
           <div class="ut-thumb">
             <img src="/assets/img/tools/japa-calculator.webp" alt="" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block">
           </div>
@@ -770,8 +788,8 @@
           <div class="ut-name">Japa Cost Calculator</div>
           <div class="ut-desc">Total cost of relocating abroad: visa fees, flights, first-month rent, registration, and more.</div>
           <div class="ut-foot">
-            <span class="ut-badge badge-soon">Coming Soon</span>
-            <span class="ut-cta">Notify Me</span>
+            <span class="ut-badge badge-new">● Live Now</span>
+            <span class="ut-cta">Try it →</span>
           </div>
         </a>
 
@@ -1121,6 +1139,45 @@
 
 
 <script>
+  // ── RANDOMISED HERO TICKER ──
+  const TICKERS = [
+    { label: 'New', text: 'Japa Cost Calculator is live — plan your full relocation budget →', href: '/tools/japa-calculator' },
+    { label: 'Live', text: 'Nigeria PAYE updated for FIRS 2025 + NTA 2026 dual-regime comparison →', href: '/nigeria/ng-salary-tax' },
+    { label: 'Live', text: 'Kenya PAYE: Finance Act 2024 fully implemented. SHIF 2.75%, AHL 1.5% →', href: '/kenya/ke-paye' },
+    { label: 'New', text: 'PDF Workspace is live — merge, split, compress, watermark & more →', href: '/tools/pdf-workspace' },
+    { label: 'Live', text: 'South Africa PAYE: 2025/26 SARS rates, Medical Tax Credits, UIF & SDL →', href: '/south-africa/za-paye' },
+    { label: 'Coming', text: 'VAT calculators for all 54 countries — Nigeria 7.5%, Kenya 16%, SA 15% →', href: '/vat-business-tax' },
+    { label: 'Coming', text: 'CV Builder with Africa-ready templates (WAEC, KCSE, Matric-aware) →', href: '/tools/cv-builder' },
+    { label: 'Live', text: 'Ghana PAYE: GRA 7-band tax, SSNIT Tier I+II & Tier III. 2025 rates →', href: '/ghana/gh-paye' },
+    { label: 'Coming', text: 'Remittance Comparator — Wise vs Western Union vs M-Pesa vs Remitly →', href: '/tools/remittance-compare' },
+    { label: 'Live', text: 'Rwanda PAYE: RSSB pension doubled to 12% from Jan 2025. Now live →', href: '/rwanda/rw-paye' },
+  ];
+
+  (function initTicker() {
+    const el = document.getElementById('hero-ticker-text');
+    if (!el) return;
+    // Pick random, then rotate every 5s
+    let idx = Math.floor(Math.random() * TICKERS.length);
+    function render() {
+      const t = TICKERS[idx];
+      el.innerHTML = `<strong>${t.label}:</strong> <a href="${t.href}" style="color:inherit;text-decoration:underline;text-underline-offset:2px">${t.text}</a>`;
+    }
+    render();
+    setInterval(() => { idx = (idx + 1) % TICKERS.length; render(); }, 5500);
+  })();
+
+  // ── PAYE SHOW MORE / LESS ──
+  function togglePayeExtra(btn) {
+    const extras = document.querySelectorAll('.paye-extra');
+    const lbl = btn.querySelector('.paye-more-lbl');
+    const isHidden = extras[0].style.display === 'none';
+    extras.forEach(el => {
+      el.style.display = isHidden ? '' : 'none';
+      if (isHidden) el.classList.add('in');
+    });
+    lbl.textContent = isHidden ? '− Show Fewer' : '+ 2 More Countries';
+  }
+
   // Newsletter
   document.getElementById('nl-form')?.addEventListener('submit', async function(e) {
     e.preventDefault();
@@ -1144,13 +1201,15 @@
   document.querySelector('.hero-search-btn')?.addEventListener('click', doSearch);
   document.querySelector('.hero-search input')?.addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
 
-  // PAYE filter
+  // PAYE filter — aware of hidden extras
   document.querySelectorAll('.f-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.f-btn').forEach(b => b.classList.remove('on'));
       btn.classList.add('on');
       const f = btn.dataset.f;
-      document.querySelectorAll('.tc').forEach(card => {
+      document.querySelectorAll('#tgrid .tc').forEach(card => {
+        // Skip cards that are manually hidden (paye-extra collapsed)
+        if (card.classList.contains('paye-extra') && card.style.display === 'none') return;
         const show = f === 'all'
           || (f === 'live' && card.dataset.status === 'live')
           || card.dataset.tier === f;
