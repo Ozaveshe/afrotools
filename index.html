@@ -502,7 +502,7 @@
   <div class="hero-inner">
     <div>
       <div class="hero-eyebrow">Africa's Everything Platform</div>
-      <h1 class="hero-h1">120+ Free Tools.<br>Built for <span class="acc">Africa.</span></h1>
+      <h1 class="hero-h1" id="hero-h1">120+ Free Tools.<br>Built for <span class="acc">Africa.</span></h1>
       <p class="hero-sub">PAYE calculators. PDF workspace. Currency tools. CV builder. Remittance comparator. All built for Africa — 54 countries, always free.</p>
       <div class="hero-btns">
         <a href="#tools" class="btn-green">Explore Tools →</a>
@@ -527,11 +527,11 @@
         <div class="hs-lbl">African countries covered</div>
       </div>
       <div class="hs-item">
-        <div class="hs-num">12</div>
+        <div class="hs-num" id="stat-categories">—</div>
         <div class="hs-lbl">Tool categories</div>
       </div>
       <div class="hs-item">
-        <div class="hs-num">120+</div>
+        <div class="hs-num" id="stat-tools">—</div>
         <div class="hs-lbl">Tools in pipeline</div>
       </div>
       <div class="hs-item">
@@ -1265,6 +1265,20 @@
   document.querySelectorAll('.rv').forEach(el => obs.observe(el));
 
   // ══════════════════════════════════════════════════════
+  // DYNAMIC HERO STATS — from registry
+  // ══════════════════════════════════════════════════════
+  (function() {
+    if (typeof AFRO_TOOLS === 'undefined' || typeof AFRO_CATEGORIES === 'undefined') return;
+    var total = AFRO_TOOLS.length;
+    var catCount = Object.keys(AFRO_CATEGORIES).length;
+    var catEl = document.getElementById('stat-categories');
+    var toolEl = document.getElementById('stat-tools');
+    var h1 = document.getElementById('hero-h1');
+    if (catEl) catEl.textContent = catCount;
+    if (toolEl) toolEl.textContent = total + '+';
+    if (h1) h1.innerHTML = total + '+ Free Tools.<br>Built for <span class="acc">Africa.</span>';
+  })();
+
   // DYNAMIC CATEGORIES — rendered from AFRO_CATEGORIES + AFRO_TOOLS
   // ══════════════════════════════════════════════════════
   (function renderCategories() {
