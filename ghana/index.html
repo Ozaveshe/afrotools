@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ghana Tax Calculators 2026 — PAYE, SSNIT, VAT | AfroTools</title>
-<meta name="description" content="Free Ghana tax calculators for 2026. GRA progressive PAYE bands (0%–35%), SSNIT Tier I/II/III, VAT 15% + NHIL + GETFund. Updated for 2026 fiscal year.">
+<title>Ghana Tools 2026 — Tax, PDF, Currency & More | AfroTools</title>
+<meta name="description" content="Free Ghana tools for 2026. GRA PAYE calculator, SSNIT, PDF workspace, currency tools and more. Country-accurate for Ghana.">
 <link rel="canonical" href="https://afrotools.com/ghana">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <link rel="apple-touch-icon" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="Ghana Tax Calculators 2026 | AfroTools">
-<meta property="og:description" content="Ghana's most accurate tax calculators. GRA PAYE, SSNIT, VAT — updated for 2026.">
+<meta property="og:title" content="Ghana Tools 2026 — Tax, PDF, Currency & More | AfroTools">
+<meta property="og:description" content="120+ tools built for Ghana. Tax calculators, PDF workspace, currency tools — all free, all accurate.">
 <meta property="og:url" content="https://afrotools.com/ghana">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
@@ -17,67 +17,61 @@
 <link rel="stylesheet" href="/assets/css/global.css">
 <script src="/assets/js/components/navbar.js" defer></script>
 <script src="/assets/js/components/footer.js" defer></script>
-<script src="/assets/js/tool-registry.js" defer></script>
+<script src="/assets/js/components/tool-registry.js" defer></script>
 <style>
-  .gh-hero { background: var(--color-bg-dark); padding: 64px 0 48px; border-bottom: 1px solid rgba(255,255,255,0.06); }
-  .gh-hero-inner { max-width: 900px; margin: 0 auto; padding: 0 24px; }
-  .gh-flag-row { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
-  .gh-flag { font-size: 2rem; }
-  .gh-breadcrumb { font-size: 0.75rem; font-weight: 500; color: rgba(255,255,255,0.35); letter-spacing: 0.08em; text-transform: uppercase; }
-  .gh-breadcrumb a { color: rgba(255,255,255,0.35); text-decoration: none; }
-  .gh-breadcrumb span { color: var(--color-brand-light); }
-  .gh-hero h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; color: #fff; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 12px; }
-  .gh-hero h1 em { color: var(--color-brand-light); font-style: normal; }
-  .gh-hero-sub { font-size: 1rem; color: rgba(255,255,255,0.5); max-width: 560px; line-height: 1.6; margin-bottom: 24px; }
-  .gh-meta-row { display: flex; flex-wrap: wrap; gap: 20px; }
-  .gh-meta-item { display: flex; align-items: center; gap: 6px; font-size: 0.78rem; font-weight: 600; color: rgba(255,255,255,0.4); }
-  .gh-meta-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--color-brand); }
-  .gh-body { max-width: 900px; margin: 0 auto; padding: 48px 24px 80px; }
-  .gh-alert { background: #f0fdf4; border: 1px solid #bbf7d0; border-left: 4px solid var(--color-brand); border-radius: 8px; padding: 16px 20px; margin-bottom: 40px; display: flex; gap: 12px; align-items: flex-start; }
-  .gh-alert-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
-  .gh-alert-text { font-size: 0.85rem; line-height: 1.6; color: #166534; }
-  .gh-alert-text strong { font-weight: 700; }
-    .gh-section-eyebrow { display:inline-flex;align-items:center;gap:7px;font-size:0.65rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#008751;margin-bottom:8px; }
-  .gh-section-eyebrow::before { content:'';width:14px;height:2px;background:#008751;border-radius:2px; }
-  .gh-section-heading { font-size:clamp(1.3rem,2.5vw,1.65rem);font-weight:800;color:#111827;letter-spacing:-0.025em;line-height:1.1;margin-bottom:20px; }
-  #tool-grid { margin-bottom:56px; }
-  .gh-rate-table { background: #fff; border: 1px solid var(--color-border); border-radius: 10px; overflow: hidden; margin-bottom: 48px; }
-  .gh-rate-table table { width: 100%; border-collapse: collapse; font-size: 0.83rem; }
-  .gh-rate-table thead { background: var(--color-bg-dark); }
-  .gh-rate-table thead th { padding: 12px 16px; text-align: left; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.45); }
-  .gh-rate-table thead th:last-child { text-align: right; }
-  .gh-rate-table tbody tr { border-bottom: 1px solid #f3f4f6; }
-  .gh-rate-table tbody tr:last-child { border: none; }
-  .gh-rate-table td { padding: 10px 16px; color: var(--color-text); }
-  .gh-rate-table td:last-child { text-align: right; font-weight: 700; }
-  .gh-rate-table td.rate-0 { color: #16a34a; }
-  .gh-rate-table td.rate-low { color: #0369a1; }
-  .gh-rate-table td.rate-mid { color: #d97706; }
-  .gh-rate-table td.rate-high { color: #c0392b; }
-  .rate-tabs { display: flex; border-bottom: 1px solid var(--color-border); }
-  .rate-tab { padding: 12px 20px; font-size: 0.78rem; font-weight: 600; cursor: pointer; color: var(--color-muted); border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.15s; }
-  .rate-tab.active { color: var(--color-brand); border-bottom-color: var(--color-brand); }
-  .rate-table-body { display: none; }
-  .rate-table-body.active { display: block; }
-  .gh-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 48px; }
-  .gh-info-card { background: #fff; border: 1px solid var(--color-border); border-radius: 10px; padding: 20px; }
-  .gh-info-card h4 { font-size: 0.85rem; font-weight: 700; color: var(--color-text); margin-bottom: 10px; }
-  .gh-info-card ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
-  .gh-info-card li { font-size: 0.8rem; color: var(--color-muted); display: flex; gap: 8px; line-height: 1.4; }
-  .gh-info-card li::before { content: '→'; color: var(--color-brand); flex-shrink: 0; font-weight: 700; }
-  @media (max-width: 600px) {
-    .gh-info-grid { grid-template-columns: 1fr; }
-  }
+  .gh-hero { background:var(--color-bg-dark);padding:64px 0 48px;border-bottom:1px solid rgba(255,255,255,0.06); }
+  .gh-hero-inner { max-width:900px;margin:0 auto;padding:0 24px; }
+  .gh-flag-row { display:flex;align-items:center;gap:12px;margin-bottom:16px; }
+  .gh-flag { font-size:2rem; }
+  .gh-breadcrumb { font-size:0.75rem;font-weight:500;color:rgba(255,255,255,0.35);letter-spacing:0.08em;text-transform:uppercase; }
+  .gh-breadcrumb a { color:rgba(255,255,255,0.35);text-decoration:none; }
+  .gh-breadcrumb span { color:var(--color-brand-light); }
+  .gh-hero h1 { font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;color:#fff;line-height:1.1;letter-spacing:-0.02em;margin-bottom:12px; }
+  .gh-hero h1 em { color:var(--color-brand-light);font-style:normal; }
+  .gh-hero-sub { font-size:1rem;color:rgba(255,255,255,0.5);max-width:560px;line-height:1.6;margin-bottom:24px; }
+  .gh-meta-row { display:flex;flex-wrap:wrap;gap:20px; }
+  .gh-meta-item { display:flex;align-items:center;gap:6px;font-size:0.78rem;font-weight:600;color:rgba(255,255,255,0.4); }
+  .gh-meta-dot { width:6px;height:6px;border-radius:50%;background:var(--color-brand); }
+  .gh-sec { padding:48px 0; }
+  .gh-sec--grey { background:#f3f4f6; }
+  .gh-wrap { max-width:900px;margin:0 auto;padding:0 24px; }
+  .gh-eyebrow { display:inline-flex;align-items:center;gap:7px;font-size:0.65rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#008751;margin-bottom:8px; }
+  .gh-eyebrow::before { content:'';width:14px;height:2px;background:#008751;border-radius:2px; }
+  .gh-sec-title { font-size:clamp(1.4rem,2.5vw,1.75rem);font-weight:800;color:#111827;letter-spacing:-0.025em;line-height:1.15;margin-bottom:6px; }
+  .gh-sec-sub { font-size:0.88rem;color:#6b7280;line-height:1.7;max-width:520px;margin-bottom:28px; }
+  .gh-alert { background:#f0fdf4;border:1px solid #bbf7d0;border-left:4px solid var(--color-brand);border-radius:8px;padding:16px 20px;margin-bottom:32px;display:flex;gap:12px;align-items:flex-start; }
+  .gh-alert-icon { font-size:1.1rem;flex-shrink:0;margin-top:1px; }
+  .gh-alert-text { font-size:0.85rem;line-height:1.6;color:#166534; }
+  .gh-alert-text strong { font-weight:700; }
+  #tool-grid { min-height:120px; }
+  .gh-rate-table { background:#fff;border:1px solid var(--color-border);border-radius:10px;overflow:hidden; }
+  .gh-rate-table table { width:100%;border-collapse:collapse;font-size:0.83rem; }
+  .gh-rate-table thead { background:var(--color-bg-dark); }
+  .gh-rate-table thead th { padding:12px 16px;text-align:left;font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.45); }
+  .gh-rate-table thead th:last-child { text-align:right; }
+  .gh-rate-table tbody tr { border-bottom:1px solid #f3f4f6; }
+  .gh-rate-table tbody tr:last-child { border:none; }
+  .gh-rate-table td { padding:10px 16px;color:var(--color-text); }
+  .gh-rate-table td:last-child { text-align:right;font-weight:700; }
+  .gh-rate-table td.rate-0 { color:#16a34a; }
+  .gh-rate-table td.rate-low { color:#0369a1; }
+  .gh-rate-table td.rate-mid { color:#d97706; }
+  .gh-rate-table td.rate-high { color:#c0392b; }
+  .rate-tabs { display:flex;border-bottom:1px solid var(--color-border);overflow-x:auto; }
+  .rate-tab { padding:12px 20px;font-size:0.78rem;font-weight:600;cursor:pointer;color:var(--color-muted);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 0.15s;white-space:nowrap; }
+  .rate-tab.active { color:var(--color-brand);border-bottom-color:var(--color-brand); }
+  .rate-table-body { display:none; }
+  .rate-table-body.active { display:block; }
+  .gh-info-grid { display:grid;grid-template-columns:1fr 1fr;gap:20px; }
+  .gh-info-card { background:#fff;border:1px solid var(--color-border);border-radius:10px;padding:20px; }
+  .gh-info-card h4 { font-size:0.85rem;font-weight:700;color:var(--color-text);margin-bottom:10px; }
+  .gh-info-card ul { list-style:none;display:flex;flex-direction:column;gap:6px; }
+  .gh-info-card li { font-size:0.8rem;color:var(--color-muted);display:flex;gap:8px;line-height:1.4; }
+  .gh-info-card li::before { content:'→';color:var(--color-brand);flex-shrink:0;font-weight:700; }
+  @media(max-width:600px) { .gh-info-grid{grid-template-columns:1fr;} }
 </style>
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "CollectionPage",
-  "name": "Ghana Tax Calculators 2026",
-  "description": "Free Ghana tax calculators for 2026. GRA progressive PAYE bands (0%–35%), SSNIT Tier I/II/III, VAT 15% + NHIL + GETFund. Updated for 2026 fiscal year.",
-  "url": "https://afrotools.com/ghana",
-  "publisher": { "@type": "Organization", "name": "AfroTools", "url": "https://afrotools.com" }
-}
+{"@context":"https://schema.org","@type":"CollectionPage","name":"Ghana Tools | AfroTools","description":"Free Ghana tools for 2026. GRA PAYE calculator, SSNIT, PDF workspace, currency tools and more. Country-accurate for Ghana.","url":"https://afrotools.com/ghana","publisher":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
 </script>
 </head>
 <body>
@@ -91,149 +85,153 @@
         <a href="/">AfroTools</a> / <span>Ghana</span>
       </nav>
     </div>
-    <h1>Ghana Tax<br><em>Calculators 2026</em></h1>
-    <p class="gh-hero-sub">All calculators updated for the 2026 fiscal year — GRA progressive PAYE bands from 0% to 35%, mandatory SSNIT contributions, and the unified VAT/levy structure under Act 1151.</p>
+    <h1>Ghana<br><em>Tools 2026</em></h1>
+    <p class="gh-hero-sub">Tax calculators, PDF workspace, currency tools, education calculators and more — all built for Ghana. Tax tools updated for the 2026 fiscal year.</p>
     <div class="gh-meta-row">
       <span class="gh-meta-item"><span class="gh-meta-dot"></span>GRA 2026 rates</span>
       <span class="gh-meta-item"><span class="gh-meta-dot"></span>SSNIT Tier I/II/III</span>
-      <span class="gh-meta-item"><span class="gh-meta-dot"></span>Act 1151 VAT</span>
       <span class="gh-meta-item" id="tool-count"><span class="gh-meta-dot"></span>Loading…</span>
       <span class="gh-meta-item"><span class="gh-meta-dot"></span>Free forever</span>
     </div>
   </div>
 </section>
 
-<div class="gh-body">
-
-  <div class="gh-alert">
-    <span class="gh-alert-icon">⚡</span>
-    <p class="gh-alert-text"><strong>2026 Fiscal Reset (Act 1151) in effect.</strong> Ghana's VAT structure has been unified under the new fiscal framework. PAYE bands remain progressive from 0% to 35%. SSNIT employer contribution is 13%, employee contribution is 5.5% of basic salary. Minimum wage increased to GH₵ 18.15/day for 2025.</p>
+<section class="gh-sec">
+  <div class="gh-wrap">
+    <div class="gh-alert">
+      <span class="gh-alert-icon">⚡</span>
+      <p class="gh-alert-text"><strong>2026 Fiscal Reset (Act 1151) in effect.</strong> Ghana's VAT structure has been unified. PAYE bands remain progressive from 0% to 35%. SSNIT employer contribution is 13%, employee 5.5% of basic salary. Minimum wage: GH₵ 18.15/day.</p>
+    </div>
+    <div class="gh-eyebrow">Tools</div>
+    <h2 class="gh-sec-title">All Ghana Tools</h2>
+    <p class="gh-sec-sub">Tax calculators, document tools, and more — built specifically for Ghana or available across all 54 African countries.</p>
+    <div id="tool-grid"></div>
   </div>
+</section>
 
-  <!-- ═══ TOOLS — rendered from tool-registry.js ═══ -->
-  <div class="gh-section-eyebrow">Tools</div>
-  <div class="gh-section-heading">Calculators &amp; Tools</div>
-  <div id="tool-grid"></div>
-
-  <div class="gh-section-eyebrow">Reference</div>
-  <div class="gh-section-heading">Quick Reference — Current Rates</div>
-  <div class="gh-rate-table">
-    <div class="rate-tabs">
-      <div class="rate-tab active" onclick="showTab('paye')">PAYE Bands</div>
-      <div class="rate-tab" onclick="showTab('ssnit')">SSNIT</div>
-      <div class="rate-tab" onclick="showTab('vat')">VAT / Levies</div>
-    </div>
-    <div class="rate-table-body active" id="tab-paye">
-      <table>
-        <thead><tr><th>Monthly Chargeable Income (GH₵)</th><th>Annual Equivalent</th><th>Rate</th></tr></thead>
-        <tbody>
-          <tr><td>First GH₵ 490</td><td>First GH₵ 5,880/yr</td><td class="rate-0">0%</td></tr>
-          <tr><td>Next GH₵ 110</td><td>Next GH₵ 1,320/yr</td><td class="rate-low">5%</td></tr>
-          <tr><td>Next GH₵ 130</td><td>Next GH₵ 1,560/yr</td><td class="rate-low">10%</td></tr>
-          <tr><td>Next GH₵ 3,166.67</td><td>Next GH₵ 38,000/yr</td><td class="rate-mid">17.5%</td></tr>
-          <tr><td>Next GH₵ 16,000</td><td>Next GH₵ 192,000/yr</td><td class="rate-mid">25%</td></tr>
-          <tr><td>Next GH₵ 30,103.33</td><td>Next GH₵ 361,240/yr</td><td class="rate-high">30%</td></tr>
-          <tr><td>Above GH₵ 50,000</td><td>Above GH₵ 600,000/yr</td><td class="rate-high">35%</td></tr>
-        </tbody>
-      </table>
-      <div style="padding:10px 16px;font-size:0.75rem;color:var(--color-muted);border-top:1px solid #f3f4f6">Chargeable income = gross income minus SSNIT (5.5% of basic) and approved reliefs. Non-residents: flat 25%.</div>
-    </div>
-    <div class="rate-table-body" id="tab-ssnit">
-      <table>
-        <thead><tr><th>Tier</th><th>Contribution</th><th>Rate</th></tr></thead>
-        <tbody>
-          <tr><td>Tier 1 — Employee</td><td>Mandatory (basic salary)</td><td class="rate-low">5.5%</td></tr>
-          <tr><td>Tier 1 — Employer</td><td>Mandatory (basic salary)</td><td class="rate-mid">13%</td></tr>
-          <tr><td>Tier 2 — Employer</td><td>Occupational pension (managed privately)</td><td class="rate-low">5% (of 13%)</td></tr>
-          <tr><td>Tier 3 — Voluntary</td><td>Provident fund / personal pension</td><td class="rate-0">Up to 16.5%</td></tr>
-          <tr><td>Max insurable earnings</td><td>2025–26 cap</td><td class="rate-mid">GH₵ 61,000</td></tr>
-        </tbody>
-      </table>
-      <div style="padding:10px 16px;font-size:0.75rem;color:var(--color-muted);border-top:1px solid #f3f4f6">Tier 1: SSNIT managed. Tier 2: privately managed, mandatory. Tier 3: voluntary, tax-exempt up to 16.5% of basic.</div>
-    </div>
-    <div class="rate-table-body" id="tab-vat">
-      <table>
-        <thead><tr><th>Component</th><th>Rate</th><th>Notes</th></tr></thead>
-        <tbody>
-          <tr><td>Standard VAT</td><td>15%</td><td class="rate-high">Most goods and services</td></tr>
-          <tr><td>NHIL (National Health Insurance)</td><td>2.5%</td><td class="rate-mid">Non-refundable levy</td></tr>
-          <tr><td>GETFund Levy</td><td>2.5%</td><td class="rate-mid">Non-refundable levy</td></tr>
-          <tr><td>Effective total</td><td>20%</td><td class="rate-high">VAT + NHIL + GETFund combined</td></tr>
-          <tr><td>Zero-rated / Exempt</td><td>0%</td><td class="rate-0">Basic food, medical, education</td></tr>
-        </tbody>
-      </table>
-      <div style="padding:10px 16px;font-size:0.75rem;color:var(--color-muted);border-top:1px solid #f3f4f6">Under Act 1151 (2026 Fiscal Reset), the VAT structure has been unified. NHIL and GETFund are separate levies.</div>
-    </div>
-  </div>
-
-  <div class="gh-section-eyebrow">What Changed</div>
-  <div class="gh-section-heading">Key 2026 Facts</div>
-  <div class="gh-info-grid">
-    <div class="gh-info-card">
-      <h4>📋 For Employees</h4>
-      <ul>
-        <li>SSNIT Tier 1 (5.5%) deducted before calculating PAYE</li>
-        <li>First GH₵ 490/month is tax-free (0% band)</li>
-        <li>Top rate of 35% above GH₵ 50,000/month</li>
-        <li>Bonus tax: 5% on first 15% of annual basic, rest at PAYE rates</li>
-        <li>Overtime (junior staff ≤ GH₵ 18,000/yr): 5% up to 50% of basic</li>
-        <li>Spouse relief: GH₵ 1,200. Child relief: GH₵ 1,200 × 2 max</li>
-      </ul>
-    </div>
-    <div class="gh-info-card">
-      <h4>🏢 For Employers</h4>
-      <ul>
-        <li>Employer SSNIT: 13% of basic (Tier 1: 8%, Tier 2: 5%)</li>
-        <li>PAYE filing deadline: 15th of following month</li>
-        <li>Annual reconciliation: by 30 April of following year</li>
-        <li>Minimum wage: GH₵ 18.15/day (GH₵ 544.50/month)</li>
-        <li>Cash allowances (transport, rent, risk) are fully taxable</li>
-        <li>Non-compliance: penalties + interest from GRA</li>
-      </ul>
-    </div>
-    <div class="gh-info-card">
-      <h4>⚠️ Compliance Deadlines</h4>
-      <ul>
-        <li>Monthly PAYE returns: 15th of following month</li>
-        <li>SSNIT remittance: 14th of following month</li>
-        <li>VAT returns: last working day of following month</li>
-        <li>Annual tax reconciliation: 30 April</li>
-        <li>CIT returns: within 4 months of year-end</li>
-        <li>Late filing attracts penalties and accrued interest</li>
-      </ul>
-    </div>
-    <div class="gh-info-card">
-      <h4>📚 Legal Sources</h4>
-      <ul>
-        <li>Income Tax Act, 2015 (Act 896, as amended)</li>
-        <li>Revenue Administration Act, 2016 (Act 915)</li>
-        <li>National Pensions Act, 2008 (Act 766)</li>
-        <li>Value Added Tax Act, 2013 (Act 870)</li>
-        <li>Finance Act 2025</li>
-        <li>Act 1151 — 2026 Fiscal Reset</li>
-      </ul>
+<section class="gh-sec gh-sec--grey">
+  <div class="gh-wrap">
+    <div class="gh-eyebrow">Reference</div>
+    <h2 class="gh-sec-title">Quick Reference — GRA 2026 Rates</h2>
+    <p class="gh-sec-sub">Official GRA tax bands, SSNIT rates, and VAT/levy structure for the 2026 fiscal year.</p>
+    <div class="gh-rate-table">
+      <div class="rate-tabs">
+        <div class="rate-tab active" onclick="showTab('paye')">PAYE Bands</div>
+        <div class="rate-tab" onclick="showTab('ssnit')">SSNIT</div>
+        <div class="rate-tab" onclick="showTab('vat')">VAT / Levies</div>
+      </div>
+      <div class="rate-table-body active" id="tab-paye">
+        <table>
+          <thead><tr><th>Monthly Chargeable Income (GH₵)</th><th>Annual Equivalent</th><th>Rate</th></tr></thead>
+          <tbody>
+            <tr><td>First GH₵ 490</td><td>First GH₵ 5,880/yr</td><td class="rate-0">0%</td></tr>
+            <tr><td>Next GH₵ 110</td><td>Next GH₵ 1,320/yr</td><td class="rate-low">5%</td></tr>
+            <tr><td>Next GH₵ 130</td><td>Next GH₵ 1,560/yr</td><td class="rate-low">10%</td></tr>
+            <tr><td>Next GH₵ 3,166.67</td><td>Next GH₵ 38,000/yr</td><td class="rate-mid">17.5%</td></tr>
+            <tr><td>Next GH₵ 16,000</td><td>Next GH₵ 192,000/yr</td><td class="rate-mid">25%</td></tr>
+            <tr><td>Next GH₵ 30,103.33</td><td>Next GH₵ 361,240/yr</td><td class="rate-high">30%</td></tr>
+            <tr><td>Above GH₵ 50,000</td><td>Above GH₵ 600,000/yr</td><td class="rate-high">35%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="rate-table-body" id="tab-ssnit">
+        <table>
+          <thead><tr><th>Tier</th><th>Contribution</th><th>Rate</th></tr></thead>
+          <tbody>
+            <tr><td>Tier 1 — Employee</td><td>Mandatory (basic salary)</td><td class="rate-low">5.5%</td></tr>
+            <tr><td>Tier 1 — Employer</td><td>Mandatory (basic salary)</td><td class="rate-mid">13%</td></tr>
+            <tr><td>Tier 2 — Employer</td><td>Occupational pension</td><td class="rate-low">5% (of 13%)</td></tr>
+            <tr><td>Tier 3 — Voluntary</td><td>Provident fund</td><td class="rate-0">Up to 16.5%</td></tr>
+            <tr><td>Max insurable earnings</td><td>2025–26 cap</td><td class="rate-mid">GH₵ 61,000</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="rate-table-body" id="tab-vat">
+        <table>
+          <thead><tr><th>Component</th><th>Rate</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td>Standard VAT</td><td>15%</td><td class="rate-high">Most goods and services</td></tr>
+            <tr><td>NHIL</td><td>2.5%</td><td class="rate-mid">Non-refundable levy</td></tr>
+            <tr><td>GETFund Levy</td><td>2.5%</td><td class="rate-mid">Non-refundable levy</td></tr>
+            <tr><td>Effective total</td><td>20%</td><td class="rate-high">VAT + NHIL + GETFund</td></tr>
+            <tr><td>Zero-rated / Exempt</td><td>0%</td><td class="rate-0">Basic food, medical, education</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
+</section>
 
-</div>
+<section class="gh-sec">
+  <div class="gh-wrap">
+    <div class="gh-eyebrow">What Changed</div>
+    <h2 class="gh-sec-title">Key 2026 Facts</h2>
+    <p class="gh-sec-sub">Important changes under the 2026 Fiscal Reset and Act 1151.</p>
+    <div class="gh-info-grid">
+      <div class="gh-info-card">
+        <h4>📋 For Employees</h4>
+        <ul>
+          <li>SSNIT Tier 1 (5.5%) deducted before PAYE</li>
+          <li>First GH₵ 490/month is tax-free (0% band)</li>
+          <li>Top rate 35% above GH₵ 50,000/month</li>
+          <li>Bonus tax: 5% on first 15% of annual basic</li>
+          <li>Spouse relief: GH₵ 1,200. Child: GH₵ 1,200 × 2</li>
+          <li>Overtime (junior ≤ GH₵ 18,000/yr): 5%</li>
+        </ul>
+      </div>
+      <div class="gh-info-card">
+        <h4>🏢 For Employers</h4>
+        <ul>
+          <li>Employer SSNIT: 13% of basic (Tier 1: 8%, Tier 2: 5%)</li>
+          <li>PAYE filing: 15th of following month</li>
+          <li>Annual reconciliation: 30 April</li>
+          <li>Minimum wage: GH₵ 18.15/day</li>
+          <li>Cash allowances are fully taxable</li>
+          <li>Non-compliance: penalties + interest from GRA</li>
+        </ul>
+      </div>
+      <div class="gh-info-card">
+        <h4>⚠️ Compliance Deadlines</h4>
+        <ul>
+          <li>Monthly PAYE returns: 15th of following month</li>
+          <li>SSNIT remittance: 14th of following month</li>
+          <li>VAT returns: last working day of following month</li>
+          <li>Annual tax reconciliation: 30 April</li>
+          <li>CIT returns: within 4 months of year-end</li>
+          <li>Late filing: penalties + accrued interest</li>
+        </ul>
+      </div>
+      <div class="gh-info-card">
+        <h4>📚 Legal Sources</h4>
+        <ul>
+          <li>Income Tax Act, 2015 (Act 896)</li>
+          <li>Revenue Administration Act, 2016 (Act 915)</li>
+          <li>National Pensions Act, 2008 (Act 766)</li>
+          <li>Value Added Tax Act, 2013 (Act 870)</li>
+          <li>Finance Act 2025</li>
+          <li>Act 1151 — 2026 Fiscal Reset</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
 
 <afro-footer></afro-footer>
 
 <script>
 function showTab(id) {
-  document.querySelectorAll('.rate-table-body').forEach(function(el) { el.classList.remove('active'); });
-  document.querySelectorAll('.rate-tab').forEach(function(el) { el.classList.remove('active'); });
-  document.getElementById('tab-' + id).classList.add('active');
+  document.querySelectorAll('.rate-table-body').forEach(function(el){el.classList.remove('active');});
+  document.querySelectorAll('.rate-tab').forEach(function(el){el.classList.remove('active');});
+  document.getElementById('tab-'+id).classList.add('active');
   event.target.classList.add('active');
 }
 document.addEventListener('DOMContentLoaded', function() {
-  if (typeof renderToolGrid === 'function') {
-    renderToolGrid('tool-grid', 'GH');
-  }
-  if (typeof getToolsFor === 'function') {
-    var all = getToolsFor('GH');
-    var el = document.getElementById('tool-count');
-    if (el) el.innerHTML = '<span class="gh-meta-dot"></span>' + all.length + ' tools';
+  if (typeof renderToolGrid==='function') renderToolGrid('tool-grid','GH');
+  if (typeof getToolsFor==='function') {
+    var live=getToolsFor('GH','live');
+    var fresh=getToolsFor('GH','new');
+    var el=document.getElementById('tool-count');
+    if(el) el.innerHTML='<span class="gh-meta-dot"><\/span>'+(live.length+fresh.length)+' live tools';
   }
 });
 </script>
