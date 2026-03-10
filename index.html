@@ -266,9 +266,10 @@
     .util-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
     .ut {
       background: #fff; border: 1.5px solid #D1D5DB; border-radius: 14px;
-      overflow: hidden; display: flex; flex-direction: column; gap: 0;
+      overflow: hidden; display: flex; flex-direction: column;
       transition: border-color 0.18s, box-shadow 0.18s, transform 0.18s;
       cursor: pointer; box-shadow: 0 1px 5px rgba(0,0,0,0.06);
+      text-decoration: none; color: inherit;
     }
     .ut-thumb {
       aspect-ratio: 3/2; overflow: hidden; flex-shrink: 0;
@@ -277,9 +278,7 @@
     }
     .ut-thumb-ph { font-size: 2.5rem; opacity: 0.16; user-select:none; pointer-events:none; }
     .ut-thumb img { width:100%; height:100%; object-fit:cover; display:block; position:absolute; inset:0; z-index:1; }
-    .ut-icon, .ut-name, .ut-desc, .ut-foot { padding-left: 14px; padding-right: 14px; }
-    .ut-icon { padding-top: 14px; padding-bottom: 0; }
-    .ut-foot { padding-bottom: 14px; }
+    .ut-body { padding: 13px 14px 14px; display: flex; flex-direction: column; flex: 1; }
 
     /* ── TOOLS MAIN LAYOUT ── */
     .tools-main-grid { display: flex; flex-direction: column; gap: 20px; }
@@ -332,27 +331,32 @@
       .tc-body { padding: 20px; }
     }
     .ut:hover { border-color: #008751; box-shadow: 0 4px 16px rgba(0,135,81,0.1); transform: translateY(-2px); }
-    .ut-icon { font-size: 1.6rem; line-height: 1; }
-    .ut-name { font-size: 0.83rem; font-weight: 800; color: #111827; letter-spacing: -0.01em; line-height: 1.2; }
-    .ut-desc { font-size: 0.78rem; color: #4b5563; line-height: 1.62; flex: 1; }
+    .ut-name { font-size: 0.83rem; font-weight: 800; color: #111827; letter-spacing: -0.01em; line-height: 1.2; margin-bottom: 5px; }
+    .ut-desc { font-size: 0.75rem; color: #4b5563; line-height: 1.58; flex: 1; margin-bottom: 10px; }
     .ut-foot { display: flex; align-items: center; justify-content: space-between; }
     .ut-badge { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; padding: 2px 6px; border-radius: 3px; }
     .ut-cta { font-size: 0.7rem; font-weight: 700; color: #008751; }
     .ut:hover .ut-cta { text-decoration: underline; }
 
     /* ── CATEGORY CARDS ── */
-    .cats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 11px; }
+    .cats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
     .cat-card {
-      padding: 18px 16px; background: #fff; border: 1.5px solid #E9EAEC;
-      border-radius: 12px; display: flex; flex-direction: column; gap: 7px;
-      transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+      padding: 20px 18px 18px; background: #fff; border: 1.5px solid #E9EAEC;
+      border-radius: 14px; display: flex; flex-direction: column; gap: 0;
+      transition: border-color 0.18s, box-shadow 0.18s, transform 0.18s;
+      text-decoration: none; color: inherit;
     }
-    .cat-card:hover { border-color: #008751; box-shadow: 0 4px 16px rgba(0,135,81,0.09); transform: translateY(-2px); }
-    .cat-icon { font-size: 1.5rem; line-height: 1; }
-    .cat-name { font-size: 0.83rem; font-weight: 800; color: #111827; letter-spacing: -0.01em; line-height: 1.2; }
-    .cat-desc { font-size: 0.74rem; color: #6B7280; line-height: 1.5; flex: 1; }
-    .cat-count { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #9CA3AF; }
+    .cat-card:hover { border-color: #008751; box-shadow: 0 6px 20px rgba(0,135,81,0.11); transform: translateY(-3px); }
+    .cat-icon-wrap {
+      width: 44px; height: 44px; border-radius: 11px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.35rem; margin-bottom: 14px; flex-shrink: 0;
+    }
+    .cat-name { font-size: 0.88rem; font-weight: 800; color: #111827; letter-spacing: -0.01em; line-height: 1.2; margin-bottom: 6px; }
+    .cat-desc { font-size: 0.73rem; color: #6B7280; line-height: 1.55; flex: 1; margin-bottom: 12px; }
+    .cat-count { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #9CA3AF; display: flex; align-items: center; gap: 5px; }
     .cat-count.live { color: #008751; }
+    .cat-count.live::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #008751; display: inline-block; animation: pd 2s infinite; }
 
     /* ── PHASE TIMELINE ── */
     .phase-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 0; }
@@ -549,7 +553,6 @@
   window._afroStats={total:total,live:live,cats:cats,liveF:liveF};
 })();
 </script>
-═══════════════════════════════════════════════════════════ -->
 <section class="sec" id="tools" aria-label="Salary and tax tools">
   <div class="wrap">
     <div class="eyebrow">Salary &amp; Tax</div>
@@ -738,12 +741,13 @@
             <div class="ut-thumb-ph">💱</div>
             <img src="/assets/img/tools/currency-converter.webp" alt="" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block">
           </div>
-          <div class="ut-icon">💱</div>
+          <div class="ut-body">
           <div class="ut-name">Currency Converter</div>
           <div class="ut-desc">Live rates for all 54 African currencies. M-Pesa, mobile money and remittance corridor rates.</div>
           <div class="ut-foot">
             <span class="ut-badge badge-soon">Coming Soon</span>
             <span class="ut-cta">Notify Me</span>
+          </div>
           </div>
         </a>
 
@@ -752,12 +756,13 @@
             <div class="ut-thumb-ph">🧾</div>
             <img src="/assets/img/tools/vat-calculator.webp" alt="" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block">
           </div>
-          <div class="ut-icon">🧾</div>
+          <div class="ut-body">
           <div class="ut-name">VAT Calculator</div>
           <div class="ut-desc">Pan-African VAT rates: Nigeria 7.5%, Kenya 16%, South Africa 15%, Egypt 14% and all 54 countries.</div>
           <div class="ut-foot">
             <span class="ut-badge badge-soon">Coming Soon</span>
             <span class="ut-cta">Notify Me</span>
+          </div>
           </div>
         </a>
 
@@ -766,12 +771,13 @@
             <div class="ut-thumb-ph">📄</div>
             <img src="/assets/img/tools/cv-builder.webp" alt="" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block">
           </div>
-          <div class="ut-icon">📄</div>
+          <div class="ut-body">
           <div class="ut-name">CV / Résumé Builder</div>
           <div class="ut-desc">Africa-ready CV templates. WAEC, KCSE, Matric-aware. Download as a polished PDF instantly.</div>
           <div class="ut-foot">
             <span class="ut-badge badge-soon">Coming Soon</span>
             <span class="ut-cta">Notify Me</span>
+          </div>
           </div>
         </a>
 
@@ -780,12 +786,13 @@
             <div class="ut-thumb-ph">🧾 </div>
             <img src="/assets/img/tools/invoice-generator.webp" alt="" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block">
           </div>
-          <div class="ut-icon">🧾</div>
+          <div class="ut-body">
           <div class="ut-name">Invoice Generator</div>
           <div class="ut-desc">Create professional invoices in any African currency. VAT-aware. Download PDF or send by email.</div>
           <div class="ut-foot">
             <span class="ut-badge badge-soon">Coming Soon</span>
             <span class="ut-cta">Notify Me</span>
+          </div>
           </div>
         </a>
 
@@ -794,12 +801,13 @@
             <div class="ut-thumb-ph">✈️</div>
             <img src="/assets/img/tools/remittance-compare.webp" alt="" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block">
           </div>
-          <div class="ut-icon">✈️</div>
+          <div class="ut-body">
           <div class="ut-name">Remittance Comparator</div>
           <div class="ut-desc">Compare fees and exchange rates across Western Union, Wise, Remitly, M-Pesa Global and more.</div>
           <div class="ut-foot">
             <span class="ut-badge badge-soon">Coming Soon</span>
             <span class="ut-cta">Notify Me</span>
+          </div>
           </div>
         </a>
 
@@ -808,12 +816,13 @@
             <div class="ut-thumb-ph">📦</div>
             <img src="/assets/img/tools/import-duty.webp" alt="" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block">
           </div>
-          <div class="ut-icon">📦</div>
+          <div class="ut-body">
           <div class="ut-name">Import Duty Calculator</div>
           <div class="ut-desc">Estimate customs duties and import taxes for goods entering Nigeria, Kenya, South Africa and more.</div>
           <div class="ut-foot">
             <span class="ut-badge badge-soon">Coming Soon</span>
             <span class="ut-cta">Notify Me</span>
+          </div>
           </div>
         </a>
 
@@ -822,12 +831,13 @@
             <div class="ut-thumb-ph">🌍</div>
             <img src="/assets/img/tools/japa-calculator.webp" alt="" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block">
           </div>
-          <div class="ut-icon">🌍</div>
+          <div class="ut-body">
           <div class="ut-name">Japa Cost Calculator</div>
           <div class="ut-desc">Total cost of relocating abroad: visa fees, flights, first-month rent, registration, and more.</div>
           <div class="ut-foot">
             <span class="ut-badge badge-soon">Coming Soon</span>
             <span class="ut-cta">Notify Me</span>
+          </div>
           </div>
         </a>
 
@@ -836,12 +846,13 @@
             <div class="ut-thumb-ph">🎓</div>
             <img src="/assets/img/tools/waec-calculator.webp" alt="" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block">
           </div>
-          <div class="ut-icon">🎓</div>
+          <div class="ut-body">
           <div class="ut-name">WAEC / NECO Grade Calc</div>
           <div class="ut-desc">Calculate your WAEC/NECO aggregate, UTME eligibility, and university admission points.</div>
           <div class="ut-foot">
             <span class="ut-badge badge-soon">Coming Soon</span>
             <span class="ut-cta">Notify Me</span>
+          </div>
           </div>
         </a>
 
@@ -850,12 +861,13 @@
             <div class="ut-thumb-ph">📱</div>
             <img src="/assets/img/tools/mobile-money-fees.webp" alt="" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block">
           </div>
-          <div class="ut-icon">📱</div>
+          <div class="ut-body">
           <div class="ut-name">Mobile Money Fee Checker</div>
           <div class="ut-desc">M-Pesa, MTN MoMo, Airtel Money — see exact send/withdraw fees before you transact.</div>
           <div class="ut-foot">
             <span class="ut-badge badge-soon">Coming Soon</span>
             <span class="ut-cta">Notify Me</span>
+          </div>
           </div>
         </a>
 
@@ -1327,11 +1339,11 @@ document.addEventListener('DOMContentLoaded', function() {
       var count = liveCounts[key] || 0;
       var delay = i > 0 ? ' d' + (i % 8) : '';
       var countHtml = count > 0
-        ? '<div class="cat-count live">● ' + count + ' Tool' + (count === 1 ? '' : 's') + ' Available</div>'
+        ? '<div class="cat-count live">' + count + ' Tool' + (count === 1 ? '' : 's') + ' Available</div>'
         : '<div class="cat-count">Coming Soon</div>';
       var href = cat.href || '#';
       html += '<a href="' + href + '" class="cat-card rv' + delay + '">'
-            + '<div class="cat-icon">' + cat.icon + '</div>'
+            + '<div class="cat-icon-wrap" style="background:' + (cat.bg || '#f3f4f6') + '">' + cat.icon + '</div>'
             + '<div class="cat-name">' + cat.name + '</div>'
             + '<div class="cat-desc">' + cat.desc + '</div>'
             + countHtml
