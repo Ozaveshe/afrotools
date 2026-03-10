@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PDF Workspace — Edit, Split, Merge, Rearrange | AfroTools</title>
-  <meta name="description" content="Upload a PDF and do everything: split, merge, rearrange, rotate, compress, add page numbers. Free, private, in your browser.">
+  <meta name="description" content="Upload a PDF and do everything: split, merge, rearrange, rotate, compress. Free, private, browser-based.">
   <link rel="canonical" href="https://afrotools.com/tools/pdf-workspace">
   <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,20 +14,18 @@
   <link rel="stylesheet" href="/assets/css/global.css">
   <script src="/assets/js/components/navbar.js" defer></script>
   <script src="/assets/js/components/footer.js" defer></script>
-  <style>
-    /* ═══ GLOBAL OVERRIDES ═══ */
+<style>
     .ws-page h1,.ws-page h2,.ws-page h3,.ws-page h4,.ws-page h5{text-transform:none!important;letter-spacing:normal!important;font-family:'DM Sans',sans-serif!important}
     .ws-page svg{display:inline-block!important;max-width:none!important}
     .ws-page img{display:block}
-    .ws-page .ws-body p{color:#374151}
 
-    /* ═══ CHROME ═══ */
+    /* CHROME */
     .priv-bar{background:#0a1a10;padding:8px 20px;text-align:center;font-size:13px;color:rgba(255,255,255,.6)}
     .priv-bar strong{color:#fff}
     .crumb{max-width:1400px;margin:0 auto;padding:12px 24px 0;font-size:12px;font-weight:500;color:#9ca3af}
     .crumb a{color:#9ca3af;text-decoration:none}.crumb a:hover{color:#008751}.crumb span{margin:0 5px}
 
-    /* ═══ UPLOAD SCREEN ═══ */
+    /* UPLOAD SCREEN */
     .up-screen{max-width:680px;margin:0 auto;padding:80px 24px 100px;text-align:center}
     .up-screen h1{font-family:'Bricolage Grotesque','DM Sans',sans-serif!important;font-size:clamp(28px,5vw,44px);font-weight:800;color:#111;margin-bottom:14px;line-height:1.08;letter-spacing:-.03em}
     .up-screen h1 b{background:linear-gradient(135deg,#008751,#00c873);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
@@ -41,47 +39,50 @@
     .up-feats{display:flex;justify-content:center;gap:28px;margin-top:28px;flex-wrap:wrap}
     .uf{font-size:13px;color:#6b7280;font-weight:600;display:flex;align-items:center;gap:6px}
 
-    /* ═══ WORKSPACE SHELL ═══ */
-    .ws{display:none;height:calc(100vh - 130px);min-height:500px;flex-direction:column}
+    /* WORKSPACE - full viewport, navbar hidden */
+    .ws{display:none;height:100vh;flex-direction:column;position:fixed;inset:0;z-index:600;background:#fff}
     .ws.on{display:flex}
 
-    /* ═══ TOOLBAR ═══ */
-    .toolbar{background:#fff;border-bottom:1px solid #e5e7eb;padding:0 16px;display:flex;align-items:center;height:48px;gap:2px;overflow-x:auto;flex-shrink:0}
+    /* TOOLBAR */
+    .toolbar{background:#fff;border-bottom:1px solid #e5e7eb;padding:0 16px;display:flex;align-items:center;height:50px;gap:2px;overflow-x:auto;flex-shrink:0}
     .toolbar::-webkit-scrollbar{height:0}
+    .tb-logo{display:flex;align-items:center;gap:8px;margin-right:12px;text-decoration:none;flex-shrink:0}
+    .tb-logo-mark{width:28px;height:28px;background:#008751;border-radius:7px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:9px}
+    .tb-logo-name{font-weight:800;font-size:14px;color:#111}.tb-logo-name em{font-style:normal;color:#008751}
+    .tb-fname{font-size:12px;color:#6b7280;font-weight:500;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-right:8px;padding:4px 10px;background:#f3f4f6;border-radius:5px;flex-shrink:0}
     .tb-btn{height:36px;padding:0 14px;border:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:#4b5563;border-radius:7px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;transition:.15s;text-transform:none;letter-spacing:0}
     .tb-btn svg{width:17px;height:17px;flex-shrink:0}
     .tb-btn:hover{background:#f3f4f6;color:#111}
-    .tb-btn.active{background:#008751;color:#fff}
     .tb-sep{width:1px;height:26px;background:#e5e7eb;margin:0 6px;flex-shrink:0}
-    .tb-zoom{display:flex;align-items:center;gap:4px;margin:0 8px}
+    .tb-zoom{display:flex;align-items:center;gap:4px;margin:0 4px}
     .tb-zoom button{width:30px;height:30px;border:1px solid #e5e7eb;background:#fff;border-radius:6px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#374151;transition:.15s}
     .tb-zoom button:hover{background:#f3f4f6}
-    .tb-zoom span{font-size:12px;font-weight:700;color:#374151;min-width:40px;text-align:center}
+    .tb-zoom span{font-size:12px;font-weight:700;color:#374151;min-width:42px;text-align:center}
     .tb-dl{background:#008751!important;color:#fff!important;padding:0 18px!important;border-radius:7px;margin-left:auto;font-weight:700}
     .tb-dl:hover{background:#006b40!important}
+    .tb-close{width:36px;height:36px;border:1px solid #e5e7eb;background:#fff;border-radius:7px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#6b7280;font-size:18px;margin-left:8px;flex-shrink:0;transition:.15s}
+    .tb-close:hover{background:#fef2f2;color:#dc2626;border-color:#fca5a5}
 
-    /* ═══ BODY: SIDEBAR + MAIN ═══ */
+    /* BODY */
     .ws-body{display:flex;flex:1;overflow:hidden}
-
-    /* ═══ SIDEBAR ═══ */
     .sidebar{width:160px;background:#f9fafb;border-right:1px solid #e5e7eb;overflow-y:auto;flex-shrink:0;padding:10px}
     .sidebar::-webkit-scrollbar{width:5px}.sidebar::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:3px}
     .sd-thumb{position:relative;margin-bottom:8px;cursor:pointer;border-radius:5px;overflow:hidden;border:2.5px solid transparent;transition:.2s;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.06)}
     .sd-thumb.sel{border-color:#008751;box-shadow:0 0 0 2px rgba(0,135,81,.15)}
     .sd-thumb:hover:not(.sel){border-color:#d1d5db}
-    .sd-thumb canvas{width:100%;display:block;background:#fff}
+    .sd-thumb canvas,.sd-thumb img{width:100%;display:block;background:#fff}
     .sd-thumb .sd-ph{width:100%;aspect-ratio:8.5/11;display:flex;align-items:center;justify-content:center;font-size:13px;color:#9ca3af;font-weight:700;background:#f3f4f6}
     .sd-num{position:absolute;bottom:3px;right:5px;font-size:10px;font-weight:800;color:#fff;background:rgba(0,0,0,.5);padding:1px 6px;border-radius:4px}
     .sd-del{position:absolute;top:3px;right:3px;width:20px;height:20px;background:rgba(220,38,38,.85);color:#fff;border:none;border-radius:50%;font-size:11px;cursor:pointer;display:none;align-items:center;justify-content:center;line-height:1;font-weight:700}
     .sd-thumb:hover .sd-del{display:flex}
 
-    /* ═══ MAIN VIEWER ═══ */
-    .main-view{flex:1;overflow:auto;background:#525659;padding:24px;display:flex;flex-direction:column;align-items:center;gap:12px}
-    .main-view canvas{background:#fff;box-shadow:0 2px 20px rgba(0,0,0,.25);border-radius:2px;display:block}
+    /* MAIN VIEW */
+    .main-view{flex:1;overflow:auto;background:#525659;padding:24px;display:flex;flex-direction:column;align-items:center;gap:16px}
+    .main-view canvas{background:#fff;box-shadow:0 2px 20px rgba(0,0,0,.25);border-radius:2px;display:block;cursor:pointer}
     .main-view .mv-ph{width:700px;max-width:90%;aspect-ratio:8.5/11;background:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;color:#9ca3af;font-weight:700;border-radius:2px;box-shadow:0 2px 20px rgba(0,0,0,.25)}
 
-    /* ═══ MODAL ═══ */
-    .m-ov{position:fixed;inset:0;background:rgba(10,15,10,.7);backdrop-filter:blur(4px);z-index:900;display:none;align-items:center;justify-content:center;padding:20px}
+    /* MODAL */
+    .m-ov{position:fixed;inset:0;background:rgba(10,15,10,.7);backdrop-filter:blur(4px);z-index:950;display:none;align-items:center;justify-content:center;padding:20px}
     .m-ov.on{display:flex}
     .m-box{background:#fff;border-radius:16px;max-width:960px;width:100%;max-height:88vh;display:flex;flex-direction:column;box-shadow:0 24px 48px rgba(0,0,0,.25)}
     .m-head{padding:20px 24px;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
@@ -91,35 +92,52 @@
     .m-close:hover{background:#e5e7eb;color:#111}
     .m-body{flex:1;overflow-y:auto;padding:20px 24px}
     .m-foot{padding:16px 24px;border-top:1px solid #e5e7eb;display:flex;align-items:center;justify-content:flex-end;gap:10px;flex-shrink:0}
-    .wb{padding:9px 20px;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:7px;text-transform:none;letter-spacing:0;transition:.15s}
+    .wb{padding:10px 22px;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:7px;text-transform:none;letter-spacing:0;transition:.15s}
     .wb svg{width:16px;height:16px}
     .wb-p{background:#008751;color:#fff}.wb-p:hover{background:#006b40}
     .wb-s{background:#f3f4f6;color:#374151}.wb-s:hover{background:#e5e7eb}
-    .wb-d{background:#fef2f2;color:#dc2626}.wb-d:hover{background:#fee2e2}
 
-    /* ═══ PAGE GRID (Split / Rearrange) ═══ */
+    /* SPLIT GRID — like pdf.net */
+    .sp-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
+    .sp-cell{position:relative}
+    .sp-cell-thumb{border-radius:6px;overflow:hidden;border:2px solid #e5e7eb;background:#fff;transition:.2s}
+    .sp-cell-thumb:hover{border-color:#d1d5db}
+    .sp-cell-thumb img,.sp-cell-thumb .sp-ph{width:100%;aspect-ratio:8.5/11;display:block;object-fit:contain;background:#f9fafb}
+    .sp-ph{display:flex;align-items:center;justify-content:center;font-size:12px;color:#9ca3af;font-weight:700}
+    .sp-cell-label{text-align:center;font-size:11px;font-weight:700;color:#6b7280;padding:4px 0}
+    .sp-cut-right{position:absolute;top:0;right:-6px;width:12px;height:100%;cursor:pointer;z-index:5;display:flex;align-items:center;justify-content:center}
+    .sp-cut-right::before{content:'';position:absolute;top:4px;bottom:20px;width:3px;background:#e5e7eb;border-radius:2px;transition:.2s}
+    .sp-cut-right:hover::before{background:#fca5a5;width:4px}
+    .sp-cut-right.cut::before{background:#dc2626;width:4px}
+    .sp-cut-right .sp-scissors{position:absolute;top:50%;transform:translateY(-50%);width:20px;height:20px;border-radius:50%;background:#f3f4f6;display:flex;align-items:center;justify-content:center;font-size:10px;transition:.2s;opacity:0}
+    .sp-cut-right:hover .sp-scissors{opacity:1;background:#fef2f2}
+    .sp-cut-right.cut .sp-scissors{opacity:1;background:#dc2626;color:#fff}
+    /* Cut between rows - horizontal line */
+    .sp-cut-bottom{height:14px;cursor:pointer;display:flex;align-items:center;grid-column:1/-1;padding:0 4px}
+    .sp-cut-bottom .sp-hbar{height:3px;flex:1;background:#e5e7eb;border-radius:2px;transition:.2s}
+    .sp-cut-bottom .sp-hscis{width:22px;height:22px;border-radius:50%;background:#f3f4f6;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;margin:0 4px;transition:.2s}
+    .sp-cut-bottom:hover .sp-hbar{background:#fca5a5}
+    .sp-cut-bottom:hover .sp-hscis{background:#fef2f2}
+    .sp-cut-bottom.cut .sp-hbar{background:#dc2626;height:4px}
+    .sp-cut-bottom.cut .sp-hscis{background:#dc2626;color:#fff}
+
+    /* REARRANGE GRID */
     .pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px}
     .pgrid-item{position:relative;border-radius:8px;overflow:hidden;border:2px solid #e5e7eb;cursor:grab;transition:.2s;background:#fff}
     .pgrid-item:hover{border-color:#008751;box-shadow:0 4px 14px rgba(0,0,0,.1)}
     .pgrid-item.dragging{opacity:.3;transform:scale(.93)}
     .pgrid-item.drag-over{border-color:#008751;box-shadow:0 0 0 3px rgba(0,135,81,.25)}
-    .pgrid-item canvas{width:100%;display:block}
-    .pgrid-item .pi-ph{width:100%;aspect-ratio:8.5/11;display:flex;align-items:center;justify-content:center;font-size:14px;color:#9ca3af;font-weight:700;background:#f9fafb}
+    .pgrid-item img,.pgrid-item .pi-ph{width:100%;aspect-ratio:8.5/11;display:block;object-fit:contain;background:#f9fafb}
+    .pi-ph{display:flex;align-items:center;justify-content:center;font-size:14px;color:#9ca3af;font-weight:700}
     .pgrid-item .pi-label{text-align:center;padding:6px;font-size:12px;font-weight:700;color:#4b5563;background:#f9fafb;border-top:1px solid #e5e7eb}
-    .pgrid-item .pi-x{position:absolute;top:5px;right:5px;width:24px;height:24px;background:rgba(220,38,38,.9);color:#fff;border:none;border-radius:50%;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s;opacity:0}
+    .pgrid-item .pi-x{position:absolute;top:5px;right:5px;width:24px;height:24px;background:rgba(220,38,38,.9);color:#fff;border:none;border-radius:50%;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;transition:.15s}
     .pgrid-item:hover .pi-x{opacity:1}
 
-    /* ═══ SPLIT LINES ═══ */
-    .sp-line{display:flex;align-items:center;padding:3px 0;cursor:pointer;border-radius:6px;margin:2px 0;transition:.15s}
-    .sp-line:hover{background:#fef2f2}
-    .sp-line .sp-bar{height:3px;flex:1;background:#e5e7eb;border-radius:2px;transition:.15s}
-    .sp-line.cut .sp-bar{background:#dc2626;height:4px}
-    .sp-line .sp-icon{width:26px;height:26px;border-radius:50%;background:#f3f4f6;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin:0 8px;transition:.15s}
-    .sp-line .sp-icon svg{width:14px;height:14px;color:#9ca3af}
-    .sp-line.cut .sp-icon{background:#dc2626}.sp-line.cut .sp-icon svg{color:#fff}
-    .sp-line:hover .sp-icon{background:#fca5a5}.sp-line:hover .sp-icon svg{color:#dc2626}
+    /* INSERT POSITION PICKER */
+    .ins-info{background:#f0faf5;border:1px solid rgba(0,135,81,.2);border-radius:10px;padding:14px 18px;margin-bottom:16px;font-size:13px;color:#374151;display:flex;align-items:center;gap:8px}
+    .ins-info strong{color:#008751}
 
-    /* ═══ COMPRESS ═══ */
+    /* COMPRESS */
     .comp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
     .comp-card{padding:20px;border:2px solid #e5e7eb;border-radius:12px;cursor:pointer;text-align:center;transition:.2s}
     .comp-card:hover{border-color:#d1d5db}
@@ -129,60 +147,56 @@
     .comp-card .cc-name{font-size:14px;font-weight:700;color:#111;margin-top:6px}
     .comp-card .cc-desc{font-size:12px;color:#9ca3af;margin-top:3px}
 
-    /* ═══ PAGE NUMBERS ═══ */
+    /* PAGE NUMBERS */
     .pn-positions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px}
     .pn-pos{padding:14px;border:2px solid #e5e7eb;border-radius:8px;cursor:pointer;text-align:center;font-size:12px;font-weight:700;color:#6b7280;transition:.15s}
     .pn-pos:hover{border-color:#d1d5db}.pn-pos.sel{border-color:#008751;background:#f0faf5;color:#008751}
-    .pn-field{display:flex;gap:12px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
+    .pn-field{display:flex;gap:12px;align-items:center;margin-bottom:14px}
     .pn-field label{font-size:13px;font-weight:700;color:#374151;min-width:90px}
-    .pn-field input,.pn-field select{padding:8px 12px;border:1.5px solid #e5e7eb;border-radius:7px;font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:.15s}
-    .pn-field input:focus,.pn-field select:focus{border-color:#008751}
+    .pn-field input{padding:8px 12px;border:1.5px solid #e5e7eb;border-radius:7px;font-family:'DM Sans',sans-serif;font-size:14px;outline:none;width:90px}
+    .pn-field input:focus{border-color:#008751}
 
-    /* ═══ PROGRESS ═══ */
+    /* PROGRESS */
     .p-ov{position:fixed;inset:0;background:rgba(10,15,10,.6);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:1000}
     .p-ov.on{display:flex}
-    .p-card{background:#fff;border-radius:14px;padding:40px;text-align:center;max-width:340px;width:90%;box-shadow:0 20px 40px rgba(0,0,0,.2)}
-    .p-spin{width:40px;height:40px;border:4px solid #e5e7eb;border-top-color:#008751;border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 16px}
+    .p-card{background:#fff;border-radius:16px;padding:44px 36px;text-align:center;max-width:360px;width:90%;box-shadow:0 20px 40px rgba(0,0,0,.2)}
+    .p-spin{width:40px;height:40px;border:4px solid #e5e7eb;border-top-color:#008751;border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 18px}
     @keyframes spin{to{transform:rotate(360deg)}}
-    .p-card h3{font-size:16px;font-weight:700;color:#111}.p-card p{font-size:13px;color:#9ca3af;margin-top:3px}
-    .p-bar{width:100%;height:5px;background:#e5e7eb;border-radius:100px;margin-top:18px;overflow:hidden}
+    .p-card h3{font-size:16px;font-weight:700;color:#111;margin:0 0 4px;text-align:center}
+    .p-card p{font-size:13px;color:#9ca3af;text-align:center;margin:0}
+    .p-bar{width:100%;height:5px;background:#e5e7eb;border-radius:100px;margin-top:20px;overflow:hidden}
     .p-fill{height:100%;background:#008751;border-radius:100px;width:0%;transition:width .3s}
 
-    /* ═══ TOAST ═══ */
+    /* TOAST */
     .toast{position:fixed;bottom:20px;right:20px;background:#111;color:#fff;padding:12px 20px;border-radius:10px;font-size:14px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.2);transform:translateY(80px);opacity:0;transition:.3s;z-index:2000;max-width:350px}
     .toast.on{transform:translateY(0);opacity:1}.toast.err{background:#dc2626}
 
-    /* ═══ RESPONSIVE ═══ */
     @media(max-width:768px){
       .sidebar{width:90px;padding:6px}
       .toolbar{height:44px;padding:0 8px}
       .tb-btn{padding:0 8px;font-size:11px;height:32px}.tb-btn span{display:none}
-      .tb-zoom span{font-size:11px}
+      .tb-fname{display:none}
       .main-view{padding:12px}
+      .sp-grid{grid-template-columns:repeat(3,1fr)}
       .pgrid{grid-template-columns:repeat(auto-fill,minmax(100px,1fr))}
       .comp-grid{grid-template-columns:1fr}
     }
-    @media(max-width:480px){
-      .sidebar{width:60px;padding:4px}
-      .up-screen{padding:40px 16px 60px}
-    }
-  </style>
+    @media(max-width:480px){.sidebar{width:60px;padding:4px}.up-screen{padding:40px 16px 60px}.sp-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
 </head>
 <body>
 <div class="priv-bar">&#128274; Your files <strong>never leave your browser</strong> &mdash; zero server uploads</div>
 <afro-navbar></afro-navbar>
-<nav class="crumb"><a href="/">Home</a><span>/</span><a href="/tools">Tools</a><span>/</span><a href="/tools/pdf">PDF Tools</a><span>/</span>PDF Workspace</nav>
+<nav class="crumb"><a href="/">Home</a><span>/</span><a href="/tools">Tools</a><span>/</span>PDF Workspace</nav>
 
 <div class="ws-page">
-
-<!-- UPLOAD SCREEN -->
 <div class="up-screen" id="upScreen">
   <h1>Your <b>PDF Workspace</b></h1>
   <p>Upload a PDF, then split, merge, rearrange, rotate, compress, and download &mdash; all from one place.</p>
   <div class="dz" id="dz">
     <div class="dz-emoji">&#128196;</div>
     <h3>Drop a PDF here to get started</h3>
-    <p>or <span class="gr">click to browse</span> &mdash; we accept any PDF file</p>
+    <p>or <span class="gr">click to browse</span> &mdash; accepts any PDF</p>
     <input type="file" id="fileIn" accept=".pdf,application/pdf">
   </div>
   <div class="up-feats">
@@ -193,25 +207,27 @@
   </div>
 </div>
 
-<!-- WORKSPACE -->
 <div class="ws" id="ws">
   <div class="toolbar">
-    <button class="tb-btn" id="tbAdd" title="Add more PDFs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span>Add PDF</span></button>
+    <a href="/" class="tb-logo"><div class="tb-logo-mark">AT</div><div class="tb-logo-name">Afro<em>Tools</em></div></a>
+    <div class="tb-fname" id="tbFname">document.pdf</div>
+    <div class="tb-sep"></div>
+    <button class="tb-btn" id="tbAdd" title="Add pages from another PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span>Add PDF</span></button>
     <input type="file" id="mergeIn" accept=".pdf,application/pdf" style="display:none" multiple>
     <div class="tb-sep"></div>
     <button class="tb-btn" id="tbSplit" title="Split into multiple files"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="18" rx="2"/><line x1="12" y1="3" x2="12" y2="21"/></svg><span>Split</span></button>
     <button class="tb-btn" id="tbRearr" title="Rearrange pages"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Rearrange</span></button>
-    <button class="tb-btn" id="tbRotate" title="Rotate selected page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 100-6.68L1 10"/></svg><span>Rotate</span></button>
+    <button class="tb-btn" id="tbRotate" title="Rotate selected page 90 degrees"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 100-6.68L1 10"/></svg><span>Rotate</span></button>
     <button class="tb-btn" id="tbPageNum" title="Add page numbers"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg><span>Page #</span></button>
     <button class="tb-btn" id="tbCompress" title="Compress PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="14" y1="10" x2="21" y2="3"/><line x1="3" y1="21" x2="10" y2="14"/></svg><span>Compress</span></button>
     <div class="tb-sep"></div>
     <div class="tb-zoom">
-      <button id="zoomOut" title="Zoom out">&minus;</button>
+      <button id="zoomOut">&minus;</button>
       <span id="zoomLvl">100%</span>
-      <button id="zoomIn" title="Zoom in">+</button>
+      <button id="zoomIn">+</button>
     </div>
-    <div class="tb-sep"></div>
     <button class="tb-btn tb-dl" id="tbDL"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>Download</span></button>
+    <button class="tb-close" id="tbClose" title="Close workspace">&times;</button>
   </div>
   <div class="ws-body">
     <div class="sidebar" id="sidebar"></div>
@@ -220,30 +236,26 @@
 </div>
 </div>
 
-<!-- MODAL -->
-<div class="m-ov" id="mOv">
-  <div class="m-box"><div class="m-head"><div><h2 id="mTitle"></h2><p id="mSub"></p></div><button class="m-close" id="mClose">&times;</button></div><div class="m-body" id="mBody"></div><div class="m-foot" id="mFoot"></div></div>
-</div>
+<div class="m-ov" id="mOv"><div class="m-box"><div class="m-head"><div><h2 id="mTitle"></h2><p id="mSub"></p></div><button class="m-close" id="mClose">&times;</button></div><div class="m-body" id="mBody"></div><div class="m-foot" id="mFoot"></div></div></div>
 <afro-footer></afro-footer>
 <div class="p-ov" id="pOv"><div class="p-card"><div class="p-spin"></div><h3 id="pT">Processing...</h3><p id="pS"></p><div class="p-bar"><div class="p-fill" id="pF"></div></div></div></div>
 <div class="toast" id="toast"></div>
 <script>
-function loadJS(u){return new Promise(function(r,j){var s=document.createElement("script");s.src=u;s.onload=r;s.onerror=j;document.head.appendChild(s);})}
-var hasPdfJs=false;
-
+function loadJS(u){return new Promise(function(r,j){var s=document.createElement("script");s.src=u;s.onload=r;s.onerror=j;document.head.appendChild(s)})}
+var hasPJ=false;
 async function init(){
   try{await loadJS("https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js")}
   catch(e){try{await loadJS("https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js")}catch(e2){toast("Cannot load PDF library",1);return}}
-  try{await loadJS("https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js");pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";hasPdfJs=true}
-  catch(e){try{await loadJS("https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js");pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";hasPdfJs=true}catch(e2){}}
-  go();
+  try{await loadJS("https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js");pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";hasPJ=true}
+  catch(e){try{await loadJS("https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js");pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";hasPJ=true}catch(e2){}}
+  run();
 }
 init();
 
-var pdfBytes=null,pageOrder=[],pageRot={},selPage=0,thumbs={},fname="document.pdf",zoomScale=1.5;
+var pdfB=null,pgOrd=[],pgRot={},sel=0,thumbs={},fn="document.pdf",zoom=1.5;
 var $=function(id){return document.getElementById(id)};
 
-function go(){
+function run(){
   var dz=$("dz"),fi=$("fileIn");
   dz.ondragover=function(e){e.preventDefault();e.stopPropagation();dz.classList.add("over")};
   dz.ondragleave=function(){dz.classList.remove("over")};
@@ -253,321 +265,226 @@ function go(){
   $("mergeIn").onchange=function(){addPDFs(this.files);this.value=""};
   $("tbSplit").onclick=openSplit;
   $("tbRearr").onclick=openRearr;
-  $("tbRotate").onclick=rotCurrent;
+  $("tbRotate").onclick=function(){if(!pgOrd.length)return;var pi=pgOrd[sel];pgRot[pi]=((pgRot[pi]||0)+90)%360;toast("Page "+(sel+1)+" rotated "+pgRot[pi]+"\u00B0")};
   $("tbPageNum").onclick=openPN;
   $("tbCompress").onclick=openComp;
   $("tbDL").onclick=dlPDF;
-  $("mClose").onclick=closeM;
-  $("mOv").onclick=function(e){if(e.target===$("mOv"))closeM()};
-  $("zoomIn").onclick=function(){zoomScale=Math.min(zoomScale+0.25,3);$("zoomLvl").textContent=Math.round(zoomScale/1.5*100)+"%";renderMain()};
-  $("zoomOut").onclick=function(){zoomScale=Math.max(zoomScale-0.25,0.5);$("zoomLvl").textContent=Math.round(zoomScale/1.5*100)+"%";renderMain()};
+  $("mClose").onclick=closeM;$("mOv").onclick=function(e){if(e.target===$("mOv"))closeM()};
+  $("zoomIn").onclick=function(){zoom=Math.min(zoom+.25,3);$("zoomLvl").textContent=Math.round(zoom/1.5*100)+"%";renderMain()};
+  $("zoomOut").onclick=function(){zoom=Math.max(zoom-.25,.5);$("zoomLvl").textContent=Math.round(zoom/1.5*100)+"%";renderMain()};
+  $("tbClose").onclick=function(){$("ws").classList.remove("on");$("upScreen").style.display=""};
 }
 
 async function openPDF(file){
   showP("Loading PDF...","Reading "+file.name);
   try{
-    var ab=await file.arrayBuffer();pdfBytes=new Uint8Array(ab);fname=file.name;
-    var doc=await PDFLib.PDFDocument.load(pdfBytes.slice(),{ignoreEncryption:true});
-    var n=doc.getPageCount();pageOrder=[];for(var i=0;i<n;i++)pageOrder.push(i);
-    pageRot={};selPage=0;thumbs={};
+    var ab=await file.arrayBuffer();pdfB=new Uint8Array(ab);fn=file.name;
+    var doc=await PDFLib.PDFDocument.load(pdfB.slice(),{ignoreEncryption:true});
+    var n=doc.getPageCount();pgOrd=[];for(var i=0;i<n;i++)pgOrd.push(i);
+    pgRot={};sel=0;thumbs={};
     await genThumbs();
-    $("upScreen").style.display="none";$("ws").classList.add("on");
+    $("upScreen").style.display="none";$("ws").classList.add("on");$("tbFname").textContent=fn;
     renderSB();renderMain();hideP();
   }catch(e){hideP();toast("Cannot read: "+e.message,1)}
 }
 
 async function genThumbs(){
-  if(!hasPdfJs)return;
-  try{
-    var pdf=await pdfjsLib.getDocument({data:pdfBytes.slice()}).promise;
-    for(var i=0;i<pdf.numPages;i++){
-      pProg((i/pdf.numPages)*100);
-      var pg=await pdf.getPage(i+1);var vp=pg.getViewport({scale:0.5});
-      var c=document.createElement("canvas");c.width=vp.width;c.height=vp.height;
-      await pg.render({canvasContext:c.getContext("2d"),viewport:vp}).promise;
-      thumbs[i]=c.toDataURL("image/jpeg",0.65);
-    }
+  if(!hasPJ)return;
+  try{var pdf=await pdfjsLib.getDocument({data:pdfB.slice()}).promise;
+    for(var i=0;i<pdf.numPages;i++){pProg((i/pdf.numPages)*100);var pg=await pdf.getPage(i+1);var vp=pg.getViewport({scale:.5});var c=document.createElement("canvas");c.width=vp.width;c.height=vp.height;await pg.render({canvasContext:c.getContext("2d"),viewport:vp}).promise;thumbs[i]=c.toDataURL("image/jpeg",.65)}
   }catch(e){}
 }
 
-function thumbHTML(pi){
-  if(thumbs[pi])return '<img src="'+thumbs[pi]+'" style="width:100%;display:block;background:#fff">';
-  return '<div class="sd-ph">'+String(pi+1)+'</div>';
-}
-function gridThumbHTML(pi){
-  if(thumbs[pi])return '<img src="'+thumbs[pi]+'" style="width:100%;display:block;background:#fff">';
-  return '<div class="pi-ph">Page '+String(pi+1)+'</div>';
-}
+function thHTML(pi){return thumbs[pi]?'<img src="'+thumbs[pi]+'" alt="Page '+(pi+1)+'">':'<div class="sd-ph">'+(pi+1)+"</div>"}
+function gThHTML(pi){return thumbs[pi]?'<img src="'+thumbs[pi]+'" alt="Page '+(pi+1)+'" style="width:100%;aspect-ratio:8.5/11;display:block;object-fit:contain;background:#f9fafb">':'<div class="sp-ph" style="width:100%;aspect-ratio:8.5/11">Page '+(pi+1)+"</div>"}
 
 function renderSB(){
   var sb=$("sidebar");sb.innerHTML="";
-  for(var i=0;i<pageOrder.length;i++){
-    (function(idx){
-      var pi=pageOrder[idx];
-      var d=document.createElement("div");d.className="sd-thumb"+(idx===selPage?" sel":"");
-      d.innerHTML=thumbHTML(pi)+'<span class="sd-num">'+(idx+1)+"</span>"+'<button class="sd-del">&times;</button>';
-      d.onclick=function(){selPage=idx;renderSB();scrollToPage(idx)};
-      d.querySelector(".sd-del").onclick=function(e){e.stopPropagation();delPage(idx)};
-      sb.appendChild(d);
-    })(i);
-  }
+  for(var i=0;i<pgOrd.length;i++){(function(idx){
+    var pi=pgOrd[idx];var d=document.createElement("div");d.className="sd-thumb"+(idx===sel?" sel":"");
+    d.innerHTML=thHTML(pi)+'<span class="sd-num">'+(idx+1)+"</span>"+'<button class="sd-del">\u00D7</button>';
+    d.onclick=function(){sel=idx;renderSB();scrollTo(idx)};
+    d.querySelector(".sd-del").onclick=function(e){e.stopPropagation();delPg(idx)};
+    sb.appendChild(d);
+  })(i)}
 }
 
 function renderMain(){
   var mv=$("mainView");mv.innerHTML="";
-  if(!pageOrder.length){mv.innerHTML='<div class="mv-ph">No pages</div>';return}
-  if(!hasPdfJs){
-    for(var i=0;i<pageOrder.length;i++){
-      var ph=document.createElement("div");ph.className="mv-ph";ph.textContent="Page "+(pageOrder[i]+1);
-      ph.id="mvpg"+i;mv.appendChild(ph);
-    }
-    return;
-  }
-  showP("Rendering...","");
-  pdfjsLib.getDocument({data:pdfBytes.slice()}).promise.then(function(pdf){
+  if(!pgOrd.length){mv.innerHTML='<div class="mv-ph">No pages</div>';return}
+  if(!hasPJ){for(var i=0;i<pgOrd.length;i++){var ph=document.createElement("div");ph.className="mv-ph";ph.textContent="Page "+(pgOrd[i]+1);ph.id="mvp"+i;mv.appendChild(ph)}return}
+  showP("Rendering pages...","");
+  pdfjsLib.getDocument({data:pdfB.slice()}).promise.then(function(pdf){
     var done=0;
-    function renderNext(){
-      if(done>=pageOrder.length){hideP();return}
-      var pi=pageOrder[done];var idx=done;
+    function next(){
+      if(done>=pgOrd.length){hideP();return}
+      var pi=pgOrd[done];var idx=done;
       pdf.getPage(pi+1).then(function(pg){
-        var vp=pg.getViewport({scale:zoomScale});
-        var c=document.createElement("canvas");c.width=vp.width;c.height=vp.height;c.id="mvpg"+idx;
-        c.style.cssText="cursor:pointer";
-        c.onclick=function(){selPage=idx;renderSB()};
+        var vp=pg.getViewport({scale:zoom});var c=document.createElement("canvas");c.width=vp.width;c.height=vp.height;c.id="mvp"+idx;
+        c.onclick=function(){sel=idx;renderSB()};
         mv.appendChild(c);
-        pg.render({canvasContext:c.getContext("2d"),viewport:vp}).promise.then(function(){
-          pProg((done/pageOrder.length)*100);done++;renderNext();
-        });
+        pg.render({canvasContext:c.getContext("2d"),viewport:vp}).promise.then(function(){pProg((done/pgOrd.length)*100);done++;next()});
       });
     }
-    renderNext();
+    next();
   }).catch(function(e){hideP();toast("Render error: "+e.message,1)});
 }
 
-function scrollToPage(idx){
-  var el=$("mvpg"+idx);if(el)el.scrollIntoView({behavior:"smooth",block:"center"});
-}
+function scrollTo(idx){var el=$("mvp"+idx);if(el)el.scrollIntoView({behavior:"smooth",block:"center"})}
+function delPg(idx){if(pgOrd.length<=1){toast("Cannot delete last page",1);return}pgOrd.splice(idx,1);if(sel>=pgOrd.length)sel=pgOrd.length-1;renderSB();renderMain()}
 
-function delPage(idx){
-  if(pageOrder.length<=1){toast("Cannot delete the last page",1);return}
-  pageOrder.splice(idx,1);if(selPage>=pageOrder.length)selPage=pageOrder.length-1;
-  renderSB();renderMain();
-}
-
-function rotCurrent(){
-  if(!pageOrder.length)return;var pi=pageOrder[selPage];
-  pageRot[pi]=((pageRot[pi]||0)+90)%360;
-  toast("Page "+(selPage+1)+" rotated to "+pageRot[pi]+"\u00B0");
-}
-
+/* ADD PDF — inserts AFTER selected page */
 async function addPDFs(fl){
-  if(!fl||!fl.length)return;showP("Merging...","Adding pages");
+  if(!fl||!fl.length)return;showP("Adding pages...","");
   try{
-    var doc=await PDFLib.PDFDocument.load(pdfBytes.slice(),{ignoreEncryption:true});
+    var doc=await PDFLib.PDFDocument.load(pdfB.slice(),{ignoreEncryption:true});
+    var insertAfter=sel;var addedCount=0;
     for(var f=0;f<fl.length;f++){
       pProg((f/fl.length)*80);
-      var ab=await fl[f].arrayBuffer();
-      var src=await PDFLib.PDFDocument.load(new Uint8Array(ab),{ignoreEncryption:true});
+      var ab=await fl[f].arrayBuffer();var src=await PDFLib.PDFDocument.load(new Uint8Array(ab),{ignoreEncryption:true});
       var pp=await doc.copyPages(src,src.getPageIndices());
-      for(var p=0;p<pp.length;p++)doc.addPage(pp[p]);
+      for(var p=0;p<pp.length;p++){
+        doc.insertPage(insertAfter+addedCount+1,pp[p]);addedCount++;
+      }
     }
-    pdfBytes=new Uint8Array(await doc.save());
-    var nc=doc.getPageCount();var ol=pageOrder.length;
-    for(var i=ol;i<nc;i++)pageOrder.push(i);
-    thumbs={};await genThumbs();renderSB();renderMain();hideP();
-    toast(fl.length+" file(s) added");
-  }catch(e){hideP();toast("Merge error: "+e.message,1)}
+    pdfB=new Uint8Array(await doc.save());
+    var nc=doc.getPageCount();pgOrd=[];for(var i=0;i<nc;i++)pgOrd.push(i);
+    sel=insertAfter+1;thumbs={};await genThumbs();renderSB();renderMain();hideP();
+    toast(addedCount+" page(s) inserted after page "+(insertAfter+1));
+  }catch(e){hideP();toast("Error: "+e.message,1)}
 }
 
-/* ═══ SPLIT ═══ */
-var splitPts={};
+/* SPLIT — thumbnail grid like pdf.net */
+var spPts={};
 function openSplit(){
-  splitPts={};
-  $("mTitle").textContent="Split PDF";$("mSub").textContent="Click the scissors between pages to set split points";
+  spPts={};$("mTitle").textContent="Split PDF";$("mSub").textContent="Click between pages to set split points";
   var bd=$("mBody");bd.innerHTML="";
-  var grid=document.createElement("div");
-  for(var i=0;i<pageOrder.length;i++){
-    var pi=pageOrder[i];
-    var item=document.createElement("div");item.style.cssText="margin-bottom:2px";
-    item.innerHTML='<div class="pgrid-item" style="display:inline-block;width:100%;cursor:default">'+gridThumbHTML(pi)+'<div class="pi-label">Page '+(i+1)+"</div></div>";
-    grid.appendChild(item);
-    if(i<pageOrder.length-1){
+  var grid=document.createElement("div");grid.className="sp-grid";
+  for(var i=0;i<pgOrd.length;i++){
+    var pi=pgOrd[i];
+    var cell=document.createElement("div");cell.className="sp-cell";
+    cell.innerHTML='<div class="sp-cell-thumb">'+gThHTML(pi)+'</div><div class="sp-cell-label">'+(i+1)+"</div>";
+    /* Cut line to the right of each cell (except last) */
+    if(i<pgOrd.length-1){
       (function(idx){
-        var line=document.createElement("div");line.className="sp-line";
-        line.innerHTML='<div class="sp-bar"></div><div class="sp-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg></div><div class="sp-bar"></div>';
-        line.onclick=function(){
-          if(splitPts[idx]){delete splitPts[idx];line.classList.remove("cut")}
-          else{splitPts[idx]=true;line.classList.add("cut")}
-          updSplitBtn();
-        };
-        grid.appendChild(line);
+        var cut=document.createElement("div");cut.className="sp-cut-right";
+        cut.innerHTML='<div class="sp-scissors">\u2702</div>';
+        cut.onclick=function(e){e.stopPropagation();if(spPts[idx]){delete spPts[idx];cut.classList.remove("cut")}else{spPts[idx]=true;cut.classList.add("cut")}updSpBtn()};
+        cell.appendChild(cut);
       })(i);
     }
+    grid.appendChild(cell);
   }
   bd.appendChild(grid);
   var ft=$("mFoot");ft.innerHTML="";
-  var btn=document.createElement("button");btn.className="wb wb-p";btn.id="splitBtn";btn.textContent="Select split points first";btn.onclick=doSplit;
+  var info=document.createElement("span");info.style.cssText="font-size:13px;color:#6b7280;margin-right:auto";info.textContent=pgOrd.length+" pages total";
+  var btn=document.createElement("button");btn.className="wb wb-p";btn.id="spBtn";btn.textContent="Select split points";btn.onclick=doSplit;
   var cancel=document.createElement("button");cancel.className="wb wb-s";cancel.textContent="Cancel";cancel.onclick=closeM;
-  ft.appendChild(cancel);ft.appendChild(btn);
+  ft.appendChild(info);ft.appendChild(cancel);ft.appendChild(btn);
   openM();
 }
 
-function updSplitBtn(){var n=Object.keys(splitPts).length;var b=$("splitBtn");if(b)b.textContent=n?("Split into "+(n+1)+" files"):"Select split points first"}
+function updSpBtn(){var n=Object.keys(spPts).length;var b=$("spBtn");if(b)b.textContent=n?"Split into "+(n+1)+" files":"Select split points"}
 
 async function doSplit(){
-  var pts=Object.keys(splitPts).map(Number).sort(function(a,b){return a-b});
+  var pts=Object.keys(spPts).map(Number).sort(function(a,b){return a-b});
   if(!pts.length){toast("Click between pages to set split points",1);return}
   closeM();showP("Splitting...","");
   try{
-    var doc=await buildPDF();var total=doc.getPageCount();
-    var ranges=[];var s=0;
+    var doc=await buildPDF();var tot=doc.getPageCount();var ranges=[];var s=0;
     for(var i=0;i<pts.length;i++){ranges.push([s,pts[i]]);s=pts[i]+1}
-    ranges.push([s,total-1]);
+    ranges.push([s,tot-1]);
     for(var r=0;r<ranges.length;r++){
-      pProg((r/ranges.length)*90);
-      var nd=await PDFLib.PDFDocument.create();
+      pProg((r/ranges.length)*90);var nd=await PDFLib.PDFDocument.create();
       var idx=[];for(var p=ranges[r][0];p<=ranges[r][1];p++)idx.push(p);
       var cp=await nd.copyPages(doc,idx);for(var c=0;c<cp.length;c++)nd.addPage(cp[c]);
-      var bytes=await nd.save();
-      dlBlob(fname.replace(".pdf","")+"_part"+(r+1)+".pdf",new Uint8Array(bytes));
+      dlBlob(fn.replace(".pdf","")+"_part"+(r+1)+".pdf",new Uint8Array(await nd.save()));
     }
     hideP();toast("Split into "+ranges.length+" files!");
   }catch(e){hideP();toast("Split error: "+e.message,1)}
 }
 
-/* ═══ REARRANGE ═══ */
-var tmpOrder=[];
+/* REARRANGE */
+var tmp=[];
 function openRearr(){
-  tmpOrder=pageOrder.slice();
-  $("mTitle").textContent="Rearrange Pages";$("mSub").textContent="Drag and drop to reorder. Click \u00D7 to remove pages.";
-  drawRearrGrid();
+  tmp=pgOrd.slice();$("mTitle").textContent="Rearrange Pages";$("mSub").textContent="Drag and drop to reorder. Click \u00D7 to remove.";
+  drawRG();
   var ft=$("mFoot");ft.innerHTML="";
+  var info=document.createElement("span");info.style.cssText="font-size:13px;color:#6b7280;margin-right:auto";info.id="rrInfo";info.textContent=tmp.length+" pages";
   var save=document.createElement("button");save.className="wb wb-p";save.textContent="Save Order";
-  save.onclick=function(){pageOrder=tmpOrder.slice();closeM();selPage=0;renderSB();renderMain();toast("Pages reordered!")};
+  save.onclick=function(){pgOrd=tmp.slice();closeM();sel=0;renderSB();renderMain();toast("Pages reordered!")};
   var cancel=document.createElement("button");cancel.className="wb wb-s";cancel.textContent="Cancel";cancel.onclick=closeM;
-  ft.appendChild(cancel);ft.appendChild(save);
+  ft.appendChild(info);ft.appendChild(cancel);ft.appendChild(save);
   openM();
 }
 
-function drawRearrGrid(){
-  var bd=$("mBody");bd.innerHTML="";
-  var grid=document.createElement("div");grid.className="pgrid";grid.id="rearrGrid";
-  for(var i=0;i<tmpOrder.length;i++){
-    (function(idx){
-      var pi=tmpOrder[idx];
-      var item=document.createElement("div");item.className="pgrid-item";item.draggable=true;item.dataset.idx=String(idx);
-      item.innerHTML=gridThumbHTML(pi)+'<div class="pi-label">Page '+(idx+1)+'</div><button class="pi-x">&times;</button>';
-      item.querySelector(".pi-x").onclick=function(e){e.stopPropagation();if(tmpOrder.length<=1){toast("Cannot remove last page",1);return}tmpOrder.splice(idx,1);drawRearrGrid()};
-      item.ondragstart=function(e){e.dataTransfer.setData("text/plain",String(idx));item.classList.add("dragging")};
-      item.ondragend=function(){item.classList.remove("dragging")};
-      item.ondragover=function(e){e.preventDefault();item.classList.add("drag-over")};
-      item.ondragleave=function(){item.classList.remove("drag-over")};
-      item.ondrop=function(e){
-        e.preventDefault();item.classList.remove("drag-over");
-        var from=parseInt(e.dataTransfer.getData("text/plain"));
-        if(isNaN(from)||from===idx)return;
-        var moved=tmpOrder.splice(from,1)[0];tmpOrder.splice(idx,0,moved);drawRearrGrid();
-      };
-      grid.appendChild(item);
-    })(i);
-  }
+function drawRG(){
+  var bd=$("mBody");bd.innerHTML="";var grid=document.createElement("div");grid.className="pgrid";
+  for(var i=0;i<tmp.length;i++){(function(idx){
+    var pi=tmp[idx];var item=document.createElement("div");item.className="pgrid-item";item.draggable=true;
+    item.innerHTML=gThHTML(pi)+'<div class="pi-label">Page '+(idx+1)+'</div><button class="pi-x">\u00D7</button>';
+    item.querySelector(".pi-x").onclick=function(e){e.stopPropagation();if(tmp.length<=1){toast("Cannot remove last page",1);return}tmp.splice(idx,1);drawRG();var ri=$("rrInfo");if(ri)ri.textContent=tmp.length+" pages"};
+    item.ondragstart=function(e){e.dataTransfer.setData("text/plain",String(idx));item.classList.add("dragging")};
+    item.ondragend=function(){item.classList.remove("dragging")};
+    item.ondragover=function(e){e.preventDefault();item.classList.add("drag-over")};
+    item.ondragleave=function(){item.classList.remove("drag-over")};
+    item.ondrop=function(e){e.preventDefault();item.classList.remove("drag-over");var from=parseInt(e.dataTransfer.getData("text/plain"));if(isNaN(from)||from===idx)return;var moved=tmp.splice(from,1)[0];tmp.splice(idx,0,moved);drawRG()};
+    grid.appendChild(item);
+  })(i)}
   bd.appendChild(grid);
 }
 
-/* ═══ COMPRESS ═══ */
+/* COMPRESS */
 function openComp(){
   $("mTitle").textContent="Compress PDF";$("mSub").textContent="Choose compression level";
-  var bd=$("mBody");
-  bd.innerHTML='<div class="comp-grid">'
-    +'<div class="comp-card" data-lv="max"><div class="cc-em">&#128230;</div><div class="cc-pct">~60%</div><div class="cc-name">Maximum</div><div class="cc-desc">Smallest file size</div></div>'
-    +'<div class="comp-card sel" data-lv="bal"><div class="cc-em">&#9878;</div><div class="cc-pct">~40%</div><div class="cc-name">Balanced</div><div class="cc-desc">Quality + compression</div></div>'
-    +'<div class="comp-card" data-lv="lt"><div class="cc-em">&#128142;</div><div class="cc-pct">~20%</div><div class="cc-name">Light</div><div class="cc-desc">Best quality</div></div>'
-  +'</div>';
-  bd.querySelectorAll(".comp-card").forEach(function(c){c.onclick=function(){bd.querySelectorAll(".comp-card").forEach(function(x){x.classList.remove("sel")});c.classList.add("sel")}});
+  $("mBody").innerHTML='<div class="comp-grid"><div class="comp-card" data-lv="max"><div class="cc-em">&#128230;</div><div class="cc-pct">~60%</div><div class="cc-name">Maximum</div><div class="cc-desc">Smallest file size</div></div><div class="comp-card sel" data-lv="bal"><div class="cc-em">&#9878;</div><div class="cc-pct">~40%</div><div class="cc-name">Balanced</div><div class="cc-desc">Quality + compression</div></div><div class="comp-card" data-lv="lt"><div class="cc-em">&#128142;</div><div class="cc-pct">~20%</div><div class="cc-name">Light</div><div class="cc-desc">Best quality</div></div></div>';
+  $("mBody").querySelectorAll(".comp-card").forEach(function(c){c.onclick=function(){$("mBody").querySelectorAll(".comp-card").forEach(function(x){x.classList.remove("sel")});c.classList.add("sel")}});
   var ft=$("mFoot");ft.innerHTML="";
-  var btn=document.createElement("button");btn.className="wb wb-p";btn.textContent="Compress & Download";btn.onclick=doComp;
+  var btn=document.createElement("button");btn.className="wb wb-p";btn.textContent="Compress & Download";btn.onclick=function(){closeM();showP("Compressing...","");buildPDF().then(function(doc){return doc.save({useObjectStreams:true})}).then(function(bytes){hideP();dlBlob(fn.replace(".pdf","")+"_compressed.pdf",new Uint8Array(bytes));toast("Compressed!")}).catch(function(e){hideP();toast("Error: "+e.message,1)})};
   var cancel=document.createElement("button");cancel.className="wb wb-s";cancel.textContent="Cancel";cancel.onclick=closeM;
-  ft.appendChild(cancel);ft.appendChild(btn);
-  openM();
+  ft.appendChild(cancel);ft.appendChild(btn);openM();
 }
 
-async function doComp(){
-  closeM();showP("Compressing...","");
-  try{var doc=await buildPDF();var bytes=await doc.save({useObjectStreams:true});hideP();dlBlob(fname.replace(".pdf","")+"_compressed.pdf",new Uint8Array(bytes));toast("Compressed! Check downloads.")}
-  catch(e){hideP();toast("Error: "+e.message,1)}
-}
-
-/* ═══ PAGE NUMBERS ═══ */
-var pnPos="bottom-center";
+/* PAGE NUMBERS */
+var pnP="bottom-center";
 function openPN(){
   $("mTitle").textContent="Add Page Numbers";$("mSub").textContent="Choose position and format";
-  var bd=$("mBody");
-  bd.innerHTML='<div class="pn-positions">'
-    +'<div class="pn-pos" data-p="top-left">Top Left</div><div class="pn-pos" data-p="top-center">Top Center</div><div class="pn-pos" data-p="top-right">Top Right</div>'
-    +'<div class="pn-pos" data-p="bottom-left">Bottom Left</div><div class="pn-pos sel" data-p="bottom-center">Bottom Center</div><div class="pn-pos" data-p="bottom-right">Bottom Right</div>'
-  +'</div>'
-  +'<div class="pn-field"><label>Start at</label><input type="number" id="pnStart" value="1" min="1" style="width:90px"></div>'
-  +'<div class="pn-field"><label>Font size</label><input type="number" id="pnSize" value="11" min="6" max="30" style="width:90px"></div>';
-  bd.querySelectorAll(".pn-pos").forEach(function(p){p.onclick=function(){bd.querySelectorAll(".pn-pos").forEach(function(x){x.classList.remove("sel")});p.classList.add("sel");pnPos=p.dataset.p}});
+  $("mBody").innerHTML='<div class="pn-positions"><div class="pn-pos" data-p="top-left">Top Left</div><div class="pn-pos" data-p="top-center">Top Center</div><div class="pn-pos" data-p="top-right">Top Right</div><div class="pn-pos" data-p="bottom-left">Bottom Left</div><div class="pn-pos sel" data-p="bottom-center">Bottom Center</div><div class="pn-pos" data-p="bottom-right">Bottom Right</div></div><div class="pn-field"><label>Start at</label><input type="number" id="pnS" value="1" min="1"></div><div class="pn-field"><label>Font size</label><input type="number" id="pnSz" value="11" min="6" max="30"></div>';
+  $("mBody").querySelectorAll(".pn-pos").forEach(function(p){p.onclick=function(){$("mBody").querySelectorAll(".pn-pos").forEach(function(x){x.classList.remove("sel")});p.classList.add("sel");pnP=p.dataset.p}});
   var ft=$("mFoot");ft.innerHTML="";
   var btn=document.createElement("button");btn.className="wb wb-p";btn.textContent="Apply";btn.onclick=doPN;
   var cancel=document.createElement("button");cancel.className="wb wb-s";cancel.textContent="Cancel";cancel.onclick=closeM;
-  ft.appendChild(cancel);ft.appendChild(btn);
-  openM();
+  ft.appendChild(cancel);ft.appendChild(btn);openM();
 }
-
 async function doPN(){
-  var start=parseInt($("pnStart").value)||1;var sz=parseInt($("pnSize").value)||11;
+  var st=parseInt($("pnS").value)||1,sz=parseInt($("pnSz").value)||11;
   closeM();showP("Adding numbers...","");
   try{
-    var doc=await buildPDF();var font=await doc.embedFont(PDFLib.StandardFonts.Helvetica);
-    var pages=doc.getPages();
-    for(var i=0;i<pages.length;i++){
-      pProg((i/pages.length)*90);var pg=pages[i];var s=pg.getSize();
-      var num=String(start+i);var tw=font.widthOfTextAtSize(num,sz);
-      var x,y;
-      if(pnPos.indexOf("left")>-1)x=40;else if(pnPos.indexOf("right")>-1)x=s.width-40-tw;else x=(s.width-tw)/2;
-      y=pnPos.indexOf("top")>-1?s.height-30:20;
-      pg.drawText(num,{x:x,y:y,size:sz,font:font,color:PDFLib.rgb(0.3,0.3,0.3)});
-    }
-    pdfBytes=new Uint8Array(await doc.save());
-    pageOrder=[];for(var j=0;j<pages.length;j++)pageOrder.push(j);
-    pageRot={};selPage=0;thumbs={};await genThumbs();
-    renderSB();renderMain();hideP();toast("Page numbers added!");
+    var doc=await buildPDF();var font=await doc.embedFont(PDFLib.StandardFonts.Helvetica);var pages=doc.getPages();
+    for(var i=0;i<pages.length;i++){pProg((i/pages.length)*90);var pg=pages[i];var s=pg.getSize();var num=String(st+i);var tw=font.widthOfTextAtSize(num,sz);
+      var x,y;if(pnP.indexOf("left")>-1)x=40;else if(pnP.indexOf("right")>-1)x=s.width-40-tw;else x=(s.width-tw)/2;
+      y=pnP.indexOf("top")>-1?s.height-30:20;
+      pg.drawText(num,{x:x,y:y,size:sz,font:font,color:PDFLib.rgb(.3,.3,.3)})}
+    pdfB=new Uint8Array(await doc.save());pgOrd=[];for(var j=0;j<pages.length;j++)pgOrd.push(j);pgRot={};sel=0;thumbs={};await genThumbs();renderSB();renderMain();hideP();toast("Page numbers added!")
   }catch(e){hideP();toast("Error: "+e.message,1)}
 }
 
-/* ═══ BUILD CURRENT PDF ═══ */
+/* BUILD PDF */
 async function buildPDF(){
-  var src=await PDFLib.PDFDocument.load(pdfBytes.slice(),{ignoreEncryption:true});
-  var doc=await PDFLib.PDFDocument.create();
-  var cp=await doc.copyPages(src,pageOrder);
-  for(var i=0;i<cp.length;i++){
-    var pg=cp[i];var oi=pageOrder[i];
-    if(pageRot[oi])pg.setRotation(PDFLib.degrees((pg.getRotation().angle||0)+pageRot[oi]));
-    doc.addPage(pg);
-  }
+  var src=await PDFLib.PDFDocument.load(pdfB.slice(),{ignoreEncryption:true});
+  var doc=await PDFLib.PDFDocument.create();var cp=await doc.copyPages(src,pgOrd);
+  for(var i=0;i<cp.length;i++){var pg=cp[i];var oi=pgOrd[i];if(pgRot[oi])pg.setRotation(PDFLib.degrees((pg.getRotation().angle||0)+pgRot[oi]));doc.addPage(pg)}
   return doc;
 }
 
-/* ═══ DOWNLOAD ═══ */
-async function dlPDF(){
-  showP("Building PDF...","");
-  try{var doc=await buildPDF();var bytes=await doc.save();hideP();dlBlob(fname.replace(".pdf","")+"_edited.pdf",new Uint8Array(bytes));toast("Downloaded!")}
-  catch(e){hideP();toast("Error: "+e.message,1)}
-}
-
+/* DOWNLOAD */
+async function dlPDF(){showP("Building PDF...","");try{var doc=await buildPDF();var bytes=await doc.save();hideP();dlBlob(fn.replace(".pdf","")+"_edited.pdf",new Uint8Array(bytes));toast("Downloaded!")}catch(e){hideP();toast("Error: "+e.message,1)}}
 function dlBlob(n,b){var bl=new Blob([b],{type:"application/pdf"});var u=URL.createObjectURL(bl);var a=document.createElement("a");a.href=u;a.download=n;document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(function(){URL.revokeObjectURL(u)},2000)}
 
-/* ═══ MODAL ═══ */
 function openM(){$("mOv").classList.add("on")}
 function closeM(){$("mOv").classList.remove("on")}
-
-/* ═══ PROGRESS ═══ */
 function showP(t,s){$("pT").textContent=t;$("pS").textContent=s;$("pF").style.width="0%";$("pOv").classList.add("on")}
 function pProg(p){$("pF").style.width=p+"%"}
 function hideP(){$("pOv").classList.remove("on")}
 function toast(m,e){var t=$("toast");t.textContent=m;t.className="toast"+(e?" err":"")+" on";setTimeout(function(){t.classList.remove("on")},3500)}
-</script>
-</body>
-</html>
+</script></body></html>
