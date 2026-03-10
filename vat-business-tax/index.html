@@ -1,394 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>African VAT Calculators — Nigeria 7.5%, Kenya 16%, South Africa 15% | AfroTools</title>
-  <meta name="description" content="Free VAT calculators for all 54 African countries. Nigeria 7.5%, Kenya 16%, South Africa 15%, Egypt 14%, Ghana 15%. Business tax, markup, and selling price tools.">
-  <meta name="robots" content="index, follow">
-  <meta name="keywords" content="AfroTools, VAT & Business Tax, African tools, free calculator, Africa">
-
-  <!-- OG:START -->
-  <meta property="og:title" content="African VAT Calculators — Nigeria 7.5%, Kenya 16%, South Africa 15% | AfroTools">
-  <meta property="og:description" content="Free VAT calculators for all 54 African countries. Nigeria 7.5%, Kenya 16%, South Africa 15%, Egypt 14%, Ghana 15%. Business tax, markup, and selling price tools.">
-  <meta property="og:url" content="https://afrotools.com/vat-business-tax">
-  <meta property="og:type" content="website">
-  <meta property="og:image" content="https://afrotools.com/assets/img/og/cat-ecommerce.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:site_name" content="AfroTools">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="African VAT Calculators — Nigeria 7.5%, Kenya 16%, South Africa 15% | AfroTools">
-  <meta name="twitter:description" content="Free VAT calculators for all 54 African countries. Nigeria 7.5%, Kenya 16%, South Africa 15%, Egypt 14%, Ghana 15%. Business tax, markup, and selling price tools.">
-  <meta name="twitter:image" content="https://afrotools.com/assets/img/og/cat-ecommerce.png">
-  <!-- OG:END -->
-
-  <!-- JSON-LD -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    "name": "VAT & Business Tax — AfroTools",
-    "description": "Free VAT calculators for all 54 African countries. Nigeria 7.5%, Kenya 16%, South Africa 15%, Egypt 14%, Ghana 15%. Business tax, markup, and selling price tools.",
-    "url": "https://afrotools.com/vat-business-tax",
-    "isPartOf": {"@type": "WebSite", "name": "AfroTools", "url": "https://afrotools.com"},
-    "numberOfItems": 7,
-    "breadcrumb": {
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://afrotools.com"},
-        {"@type": "ListItem", "position": 2, "name": "VAT & Business Tax", "item": "https://afrotools.com/vat-business-tax"}
-      ]
-    }
-  }
-  </script>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-  <link rel="apple-touch-icon" href="/assets/img/logo-mark.svg"><rect width='32' height='32' rx='8' fill='%23008751'/><text y='24' x='4' font-size='22'>🌍</text></svg>">
-  <script src="/assets/js/components/tool-registry.js"></script>
-  <script src="/assets/js/components/navbar.js" defer></script>
-  <script src="/assets/js/components/footer.js" defer></script>
-
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --green: #008751;
-      --green-d: #006940;
-      --accent: #ea580c;
-      --dark: #0a1628;
-      --text: #0f172a;
-      --muted: #64748b;
-      --border: #e2e8f0;
-      --radius: 12px;
-    }
-    body { font-family: 'DM Sans', sans-serif; color: var(--text); background: #fff; line-height: 1.6; }
-    a { text-decoration: none; color: inherit; }
-    .wrap { max-width: 1160px; margin: 0 auto; padding: 0 24px; }
-
-    /* ── BREADCRUMB ── */
-    .breadcrumb { padding: 14px 0; font-size: 0.78rem; color: var(--muted); display: flex; align-items: center; gap: 6px; }
-    .breadcrumb a { color: var(--green); } .breadcrumb a:hover { text-decoration: underline; }
-
-    /* ── HERO ── */
-    .cat-hero {
-      background: linear-gradient(135deg, #0a1f12 0%, #0d2b18 50%, #081a0e 100%);
-      padding: 64px 0 56px; position: relative; overflow: hidden;
-    }
-    .cat-hero::before {
-      content: '';
-      position: absolute; right: 6%; top: 50%; transform: translateY(-50%);
-      font-size: 180px; opacity: 0.06; user-select: none; line-height: 1;
-    }
-    .cat-hero-inner { position: relative; z-index: 1; }
-    .cat-eyebrow {
-      display: inline-flex; align-items: center; gap: 7px;
-      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em;
-      text-transform: uppercase; color: #ea580c;
-      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
-      padding: 5px 12px; border-radius: 99px; margin-bottom: 20px;
-    }
-    .cat-hero h1 { font-size: clamp(2rem,5vw,3rem); font-weight: 900; color: #fff; line-height: 1.1; margin-bottom: 14px; }
-    .cat-hero h1 span { color: #ea580c; }
-    .cat-tagline { font-size: 1.05rem; color: rgba(255,255,255,0.6); margin-bottom: 28px; max-width: 560px; }
-    .hero-stats {
-      display: flex; gap: 32px; flex-wrap: wrap; margin-top: 8px;
-    }
-    .hs { display: flex; flex-direction: column; }
-    .hs-num { font-size: 1.9rem; font-weight: 800; color: #ea580c; line-height: 1; }
-    .hs-lbl { font-size: 0.72rem; color: rgba(255,255,255,0.45); margin-top: 3px; text-transform: uppercase; letter-spacing: 0.08em; }
-
-    /* ── TOOLS GRID ── */
-    .sec { padding: 56px 0; }
-    .sec--alt { background: #f8fafb; }
-    .sec-head { margin-bottom: 28px; }
-    .sec-eyebrow { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green); margin-bottom: 8px; }
-    .sec-title { font-size: 1.5rem; font-weight: 800; color: var(--text); }
-    .sec-sub { font-size: 0.9rem; color: var(--muted); margin-top: 6px; }
-
-    .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
-
-    .tool-card {
-      display: flex; align-items: flex-start; gap: 14px;
-      padding: 18px; border-radius: var(--radius);
-      border: 1.5px solid var(--border);
-      background: #fff; transition: all 0.18s; cursor: pointer;
-    }
-    .tool-card.live { cursor: pointer; }
-    .tool-card.live:hover {
-      border-color: var(--accent);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-      transform: translateY(-2px);
-    }
-    .tool-card.coming { opacity: 0.72; cursor: default; }
-    .tool-card.coming:hover { border-color: #cbd5e1; }
-    .tc-icon {
-      width: 44px; height: 44px; border-radius: 10px; flex-shrink: 0;
-      background: linear-gradient(135deg, #0d2517, #0a2a18);
-      display: flex; align-items: center; justify-content: center; font-size: 1.3rem;
-    }
-    .tc-body { flex: 1; min-width: 0; }
-    .tc-name { font-size: 0.88rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
-    .tc-desc { font-size: 0.76rem; color: var(--muted); line-height: 1.5; margin-bottom: 10px; }
-    .tc-foot { display: flex; align-items: center; justify-content: space-between; }
-    .tool-badge { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; }
-    .tool-badge.live { background: #dcfce7; color: #166534; }
-    .tool-badge.queued { background: #f1f5f9; color: #64748b; }
-    .tool-badge.planned { background: #faf5ff; color: #7c3aed; }
-    .tc-tier { font-size: 0.65rem; color: var(--muted); font-weight: 500; }
-
-    /* ── COMING SOON TOAST ── */
-    #toast {
-      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px);
-      background: #0f172a; color: #fff; padding: 12px 22px; border-radius: 99px;
-      font-size: 0.82rem; font-weight: 600; opacity: 0; transition: all 0.25s; z-index: 999;
-      pointer-events: none; white-space: nowrap;
-    }
-    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-    /* ── FAQ ── */
-    .faq-section { padding: 56px 0; }
-    .faq-item {
-      border: 1.5px solid var(--border); border-radius: var(--radius);
-      margin-bottom: 10px; overflow: hidden; transition: border-color 0.2s;
-    }
-    .faq-item[open] { border-color: #ea580c; }
-    .faq-q {
-      padding: 16px 20px; font-size: 0.92rem; font-weight: 700;
-      cursor: pointer; display: flex; align-items: center; justify-content: space-between;
-      list-style: none; user-select: none;
-    }
-    .faq-q::-webkit-details-marker { display: none; }
-    .faq-chevron { font-size: 0.8rem; color: var(--muted); transition: transform 0.2s; }
-    details[open] .faq-chevron { transform: rotate(180deg); }
-    .faq-a { padding: 0 20px 16px; font-size: 0.87rem; color: var(--muted); line-height: 1.7; border-top: 1px solid var(--border); padding-top: 14px; }
-
-    /* ── RELATED ── */
-    .related-bar { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
-    .rel-link {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 7px 14px; border-radius: 99px; font-size: 0.78rem; font-weight: 600;
-      border: 1.5px solid var(--border); color: var(--text); transition: all 0.15s;
-    }
-    .rel-link:hover { border-color: var(--green); color: var(--green); background: #f0fdf4; }
-
-    /* ── CTA BANNER ── */
-    .cta-band {
-      background: linear-gradient(135deg, #0a1f12, #0d2b18);
-      padding: 48px 0; text-align: center;
-    }
-    .cta-band h2 { font-size: 1.6rem; font-weight: 800; color: #fff; margin-bottom: 10px; }
-    .cta-band p { color: rgba(255,255,255,0.55); font-size: 0.9rem; margin-bottom: 24px; }
-    .btn-g { display: inline-flex; align-items: center; gap: 8px; background: #ea580c; color: #fff; padding: 13px 26px; border-radius: 8px; font-weight: 700; font-size: 0.9rem; transition: background 0.15s; }
-    .btn-g:hover { background: var(--green-d); }
-    .btn-outline { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: rgba(255,255,255,0.7); padding: 13px 26px; border-radius: 8px; font-weight: 600; font-size: 0.9rem; border: 1.5px solid rgba(255,255,255,0.15); margin-left: 12px; transition: all 0.15s; }
-    .btn-outline:hover { background: rgba(255,255,255,0.06); color: #fff; }
-
-    /* ── REVEAL ── */
-    .rv { opacity: 0; transform: translateY(18px); transition: opacity 0.45s, transform 0.45s; }
-    .rv.visible { opacity: 1; transform: none; }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 640px) {
-      .cat-hero { padding: 44px 0 40px; }
-      .cat-hero h1 { font-size: 1.8rem; }
-      .hero-stats { gap: 20px; }
-      .tools-grid { grid-template-columns: 1fr; }
-      .cat-hero::before { font-size: 100px; opacity: 0.04; }
-      .btn-outline { margin-left: 0; margin-top: 10px; }
-    }
-  
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VAT & Business Tax — Free Tools | AfroTools</title>
+<meta name="description" content="Profit margin calculator, markup pricing, break-even analysis, inventory tracking — for African businesses.">
+<link rel="canonical" href="https://afrotools.com/vat-business-tax">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="apple-touch-icon" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="VAT & Business Tax | AfroTools">
+<meta property="og:description" content="Profit margin calculator, markup pricing, break-even analysis, inventory tracking — for African businesses.">
+<meta property="og:url" content="https://afrotools.com/vat-business-tax">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"CollectionPage","name":"VAT & Business Tax — AfroTools","description":"Profit margin calculator, markup pricing, break-even analysis, inventory tracking — for African businesses.","url":"https://afrotools.com/vat-business-tax","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com"}}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.css">
+<link rel="stylesheet" href="/assets/css/global.css">
+<script src="/assets/js/components/tool-registry.js"></script>
+<script src="/assets/js/components/navbar.js" defer></script>
+<script src="/assets/js/components/footer.js" defer></script>
+<style>
+  body{font-family:'DM Sans',sans-serif;background:#fafaf8;color:#0f172a;margin:0;-webkit-font-smoothing:antialiased}
+  a{text-decoration:none;color:inherit}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 24px}
+  .bc{font-size:.72rem;font-weight:500;color:#9ca3af;letter-spacing:.06em;padding:14px 0}
+  .bc a{color:#9ca3af;transition:color .15s}
+  .bc a:hover{color:#008751}
+  .bc .cur{color:#374151}
+  .hero{background:linear-gradient(145deg,#0d2517,#0a2a18,#071a0f);padding:56px 0 48px;position:relative;overflow:hidden}
+  .hero-img{position:absolute;right:0;top:0;bottom:0;width:45%;overflow:hidden}
+  .hero-img img{width:100%;height:100%;object-fit:cover;display:block}
+  .hero-z{position:relative;z-index:1}
+  .hero-ey{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:6px;font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:16px}
+  .hero h1{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;color:#fff;line-height:1.08;letter-spacing:-.025em;margin-bottom:12px}
+  .hero h1 b{color:#f59e0b}
+  .hero-sub{font-size:.95rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:480px;margin-bottom:24px}
+  .hero-stats{display:flex;gap:32px}
+  .hs-n{font-size:2.2rem;font-weight:800;color:#5ddb9e;line-height:1}
+  .hs-l{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-top:4px}
+  .quote{font-size:1rem;color:#334155;line-height:1.8;max-width:720px;border-left:3px solid #f59e0b;padding-left:18px;margin:32px 0}
+  .sec{padding:48px 0}
+  .sec-alt{background:#f3f4f6}
+  .ey{display:inline-flex;align-items:center;gap:7px;font-size:.65rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#008751;margin-bottom:8px}
+  .ey::before{content:'';width:14px;height:2px;background:#008751;border-radius:2px}
+  .st{font-size:clamp(1.4rem,2.5vw,1.75rem);font-weight:800;color:#111827;letter-spacing:-.025em;line-height:1.15;margin-bottom:6px}
+  .ss{font-size:.88rem;color:#6b7280;line-height:1.7;max-width:520px;margin-bottom:28px}
+  #tool-grid{min-height:120px}
   #tool-grid a[style*="border:1.5px"],#tool-grid a[style*="border: 1.5px"]{transition:border-color .2s,box-shadow .2s,transform .2s}
-  #tool-grid a[style*="border:1.5px"]:hover,#tool-grid a[style*="border: 1.5px"]:hover{border-color:#008751 !important;box-shadow:0 8px 24px rgba(0,135,81,.1);transform:translateY(-2px)}
+  #tool-grid a[style*="border:1.5px"]:hover,#tool-grid a[style*="border: 1.5px"]:hover{border-color:#008751!important;box-shadow:0 8px 24px rgba(0,135,81,.1);transform:translateY(-2px)}
+  .cta{background:#f59e0b;border-radius:14px;padding:36px 32px;color:#fff;text-align:center;margin-top:32px}
+  .cta h3{font-size:1.15rem;font-weight:800;margin-bottom:8px}
+  .cta p{font-size:.88rem;color:rgba(255,255,255,.8);margin-bottom:16px}
+  .cta a{display:inline-block;padding:11px 24px;background:#fff;color:#f59e0b;border-radius:8px;font-weight:700;font-size:.88rem;transition:transform .15s}
+  .cta a:hover{transform:translateY(-2px)}
+  @media(max-width:640px){.hero-img{display:none}.hero-stats{gap:20px}.hs-n{font-size:1.6rem}}
 </style>
 </head>
 <body>
-
 <afro-navbar></afro-navbar>
+<div class="wrap"><nav class="bc"><a href="/">AfroTools</a> › <a href="/categories">Categories</a> › <span class="cur">VAT & Business Tax</span></nav></div>
 
-<div class="wrap">
-  <nav class="breadcrumb">
-    <a href="/">AfroTools</a> ›
-    <a href="/categories">Categories</a> ›
-    <span>VAT & Business Tax</span>
-  </nav>
-</div>
-
-<!-- ── HERO ── -->
-<section class="cat-hero">
-  <div style="position:absolute;right:0;top:0;bottom:0;width:45%;overflow:hidden"><img src="/assets/img/categories/vat-business-tax-hero.webp" alt="" loading="eager" onerror="this.parentElement.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block"></div>
-  <div class="wrap cat-hero-inner">
-    <div class="cat-eyebrow">
-      <span>🧾</span> VAT & Business Tax
-    </div>
-    <h1><span>VAT & Business Tax</span></h1>
-    <p class="cat-tagline">VAT for every African market. Correct every time.</p>
+<section class="hero">
+  <div class="hero-img"><img src="/assets/img/categories/vat-business-tax-hero.webp" alt="" loading="eager" onerror="this.parentElement.style.display='none'"></div>
+  <div class="wrap hero-z">
+    <div class="hero-ey"><span>🧾</span> VAT & BUSINESS TAX</div>
+    <h1><b>VAT & Business Tax</b></h1>
+    <p class="hero-sub">Profit margin calculator, markup pricing, break-even analysis, inventory tracking — for African businesses.</p>
     <div class="hero-stats">
-      <div class="hs"><div class="hs-num">7</div><div class="hs-lbl">Tools planned</div></div>
-      <div class="hs"><div class="hs-num">0</div><div class="hs-lbl">Live now</div></div>
-      <div class="hs"><div class="hs-num">7</div><div class="hs-lbl">In pipeline</div></div>
+      <div><div class="hs-n" id="s-total">—</div><div class="hs-l">Tools planned</div></div>
+      <div><div class="hs-n" id="s-live">—</div><div class="hs-l">Live now</div></div>
+      <div><div class="hs-n" id="s-pipe">—</div><div class="hs-l">In pipeline</div></div>
     </div>
   </div>
 </section>
 
-<!-- ── INTRO ── -->
-<div class="wrap" style="padding-top:40px;padding-bottom:0">
-  <p style="font-size:1rem;color:#334155;line-height:1.8;max-width:720px;border-left:3px solid #ea580c;padding-left:18px">VAT rates across 54 African countries — not copy-pasted from Wikipedia, but verified against each country's tax authority. Nigeria's 7.5%, Kenya's 16%, Egypt's 14%. Calculate inclusive and exclusive VAT instantly.</p>
-</div>
+<div class="wrap"><p class="quote">Every African VAT rate, every exemption. Nigeria 7.5%, Kenya 16%, South Africa 15%, Ghana 15% + NHIL + GETFund. Plus profit margin, markup, and break-even calculators.</p></div>
 
-<!-- ── LIVE TOOLS ── -->
+<section class="sec"><div class="wrap">
+  <div class="ey">All Tools</div>
+  <h2 class="st">VAT & Business Tax Tools</h2>
+  <p class="ss">Live tools, queued builds, and planned additions — all from the tool registry.</p>
+  <div id="tool-grid"></div>
+</div></section>
 
-
-<!-- ── COMING SOON ── -->
-<section class="sec sec--alt"><div class="wrap"><div class="sec-head rv"><div class="sec-eyebrow">Coming Soon</div><h2 class="sec-title">In the Build Queue</h2><p class="sec-sub">These tools are built or in active development. Get notified when they launch.</p></div><div class="tools-grid">
-        <div class="tool-card coming rv" onclick="showComingSoon(this)">
-          <div class="tc-icon">💹</div>
-          <div class="tc-body">
-            <div class="tc-name">Profit Margin Calculator</div>
-            <div class="tc-desc">Gross, operating, and net margin. Multi-currency with import duty.</div>
-            <div class="tc-foot">
-              <span class="tool-badge queued">Coming Soon</span>
-              <span class="tc-tier">Free Tool</span>
-            </div>
-          </div>
-        </div>
-        <div class="tool-card coming rv" onclick="showComingSoon(this)">
-          <div class="tc-icon">🏷️</div>
-          <div class="tc-body">
-            <div class="tc-name">Markup & Selling Price Calculator</div>
-            <div class="tc-desc">Calculate selling price from cost and desired markup. Market trader essential.</div>
-            <div class="tc-foot">
-              <span class="tool-badge queued">Coming Soon</span>
-              <span class="tc-tier">Free Tool</span>
-            </div>
-          </div>
-        </div>
-        <div class="tool-card coming rv" onclick="showComingSoon(this)">
-          <div class="tc-icon">⚖️</div>
-          <div class="tc-body">
-            <div class="tc-name">Break-Even Calculator</div>
-            <div class="tc-desc">Fixed costs, variable costs, selling price — find your break-even point.</div>
-            <div class="tc-foot">
-              <span class="tool-badge queued">Coming Soon</span>
-              <span class="tc-tier">Free Tool</span>
-            </div>
-          </div>
-        </div></div></div></section>
-
-<!-- ── PLANNED ── -->
-<section class="sec"><div class="wrap"><div class="sec-head rv"><div class="sec-eyebrow">On the Horizon</div><h2 class="sec-title">Full Roadmap</h2><p class="sec-sub">Every tool we're building in this category — in order of priority.</p></div><div class="tools-grid">
-        <div class="tool-card coming rv" onclick="showComingSoon(this)">
-          <div class="tc-icon">📦</div>
-          <div class="tc-body">
-            <div class="tc-name">Inventory Tracker</div>
-            <div class="tc-desc">Barcode scanning, low-stock alerts, SKU management. Freemium.</div>
-            <div class="tc-foot">
-              <span class="tool-badge planned">Planned</span>
-              <span class="tc-tier">AI Advisor</span>
-            </div>
-          </div>
-        </div>
-        <div class="tool-card coming rv" onclick="showComingSoon(this)">
-          <div class="tc-icon">📦</div>
-          <div class="tc-body">
-            <div class="tc-name">Shipping Cost Calculator</div>
-            <div class="tc-desc">DHL, FedEx, EMS, local courier costs across African corridors.</div>
-            <div class="tc-foot">
-              <span class="tool-badge planned">Planned</span>
-              <span class="tc-tier">AI Insights</span>
-            </div>
-          </div>
-        </div>
-        <div class="tool-card coming rv" onclick="showComingSoon(this)">
-          <div class="tc-icon">🏷️</div>
-          <div class="tc-body">
-            <div class="tc-name">Discount Calculator</div>
-            <div class="tc-desc">Calculate sale price, savings, and percentage off. Bulk pricing.</div>
-            <div class="tc-foot">
-              <span class="tool-badge planned">Planned</span>
-              <span class="tc-tier">Free Tool</span>
-            </div>
-          </div>
-        </div>
-        <div class="tool-card coming rv" onclick="showComingSoon(this)">
-          <div class="tc-icon">💡</div>
-          <div class="tc-body">
-            <div class="tc-name">Business Name Generator</div>
-            <div class="tc-desc">AI-powered business name ideas with CAC/CIPC/RBA availability check.</div>
-            <div class="tc-foot">
-              <span class="tool-badge planned">Planned</span>
-              <span class="tc-tier">AI Advisor</span>
-            </div>
-          </div>
-        </div></div></div></section>
-
-<!-- ── FAQ ── -->
-<section class="faq-section sec--alt">
-  <div class="wrap">
-    <div class="sec-head rv">
-      <div class="sec-eyebrow">Common Questions</div>
-      <h2 class="sec-title">VAT & Business Tax — FAQ</h2>
-    </div>
-    
-        <details class="faq-item rv" open>
-          <summary class="faq-q">What is the VAT rate in Nigeria?<span class="faq-chevron">↓</span></summary>
-          <div class="faq-a">Nigeria's VAT rate is 7.5%, as set by the Finance Act 2020 (increased from 5%). Some goods are zero-rated or exempt under the VAT Act.</div>
-        </details>
-        <details class="faq-item rv" >
-          <summary class="faq-q">How do you handle VAT-exempt goods?<span class="faq-chevron">↓</span></summary>
-          <div class="faq-a">Our calculators flag exempt categories per country — basic food items, medical supplies, educational materials — and exclude them from VAT.</div>
-        </details>
-        <details class="faq-item rv" >
-          <summary class="faq-q">Can I calculate VAT for cross-border African trade?<span class="faq-chevron">↓</span></summary>
-          <div class="faq-a">Yes. Destination-based VAT for AfCFTA trade is in our pipeline — the only calculator on the continent to handle this.</div>
-        </details>
-  </div>
-</section>
-
-<!-- ── RELATED ── -->
-<section class="sec">
-  <div class="wrap">
-    <div class="sec-eyebrow" style="margin-bottom:10px">Also explore</div>
-    <h2 class="sec-title rv" style="margin-bottom:16px">Related Categories</h2>
-    <div class="related-bar">
-      <a href="/" class="rel-link">🏠 All Tools</a>
-      <a href="/salary-tax" class="rel-link">💰 Salary & Tax</a><a href="/business-roi" class="rel-link">📈 Business & ROI Tools</a><a href="/mortgage-property" class="rel-link">🏠 Mortgage & Property</a>
-    </div>
-  </div>
-</section>
-
-<!-- ── CTA ── -->
-<section class="cta-band">
-  <div class="wrap">
-    <h2>New tools drop every week.</h2>
-    <p>Get notified the moment your tool goes live — no spam, one email per launch.</p>
-    <a href="/#newsletter" class="btn-g">Get notified →</a>
-    <a href="/" class="btn-outline">← All categories</a>
-  </div>
-</section>
+<section class="sec sec-alt"><div class="wrap">
+  <div class="cta"><h3>Want a tool we haven't built yet?</h3><p>Tell us what you need — we prioritise based on demand.</p><a href="/contact">Request a Tool →</a></div>
+</div></section>
 
 <afro-footer></afro-footer>
 
-<!-- Toast -->
-<div id="toast">🔔 Coming soon — get notified when it launches</div>
-
 <script>
-  // Coming soon toast
-  var toastTimer;
-  function showComingSoon(el) {
-    clearTimeout(toastTimer);
-    var toast = document.getElementById('toast');
-    toast.textContent = '🔔 ' + (el.querySelector('.tc-name')?.textContent || 'Tool') + ' — launching soon';
-    toast.classList.add('show');
-    toastTimer = setTimeout(function() { toast.classList.remove('show'); }, 2800);
-  }
+document.addEventListener('DOMContentLoaded',function(){
+  if(typeof AFRO_TOOLS==='undefined')return;
+  var key='ecommerce';
+  var tools=AFRO_TOOLS.filter(function(t){return t.category===key;});
+  var live=tools.filter(function(t){return t.status==='live'||t.status==='new';});
+  var pipe=tools.filter(function(t){return t.status==='queued'||t.status==='planned';});
+  var e;
+  e=document.getElementById('s-total');if(e)e.textContent=tools.length;
+  e=document.getElementById('s-live');if(e)e.textContent=live.length;
+  e=document.getElementById('s-pipe');if(e)e.textContent=pipe.length;
 
-  // Scroll reveal
-  var obs = new IntersectionObserver(function(entries) {
-    entries.forEach(function(e) { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
-  }, { threshold: 0.06 });
-  document.querySelectorAll('.rv').forEach(function(el) { obs.observe(el); });
+  var container=document.getElementById('tool-grid');if(!container)return;
+  var CAT=(typeof AFRO_CATEGORIES!=='undefined')?AFRO_CATEGORIES:{};
+  var html='';
+  function card(t,ok){
+    var c=CAT[t.category]||{bg:'#f0f0f0'};
+    var badge=ok?(t.status==='new'?'<span style="position:absolute;top:14px;right:14px;padding:3px 10px;background:#fef3cd;border:1px solid #fde68a;border-radius:100px;font-size:10px;font-weight:700;color:#92400e;text-transform:uppercase">New</span>':'<span style="position:absolute;top:14px;right:14px;padding:3px 10px;background:#eaf5ef;border:1px solid rgba(0,135,81,.2);border-radius:100px;font-size:10px;font-weight:700;color:#008751;text-transform:uppercase;display:flex;align-items:center;gap:4px"><span style="width:6px;height:6px;background:#008751;border-radius:50%;animation:pulse 2s infinite"></span>Live</span>'):'<span style="position:absolute;top:14px;right:14px;padding:3px 10px;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:100px;font-size:10px;font-weight:700;color:#6b7280;text-transform:uppercase">Coming Soon</span>';
+    var tag=ok?'a':'div';var href=ok?' href="'+t.href+'"':'';var op=ok?'':'opacity:.6;';
+    return '<'+tag+href+' style="background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;text-decoration:none;color:inherit;display:block;position:relative;overflow:hidden;padding:24px 22px;'+op+'transition:.25s">'+badge+'<div style="width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px;background:'+c.bg+'">'+t.icon+'</div><h3 style="font-size:16px;font-weight:700;margin-bottom:6px;color:'+(ok?'#111':'#374151')+';font-family:DM Sans,sans-serif">'+t.name+'</h3><p style="font-size:14px;color:'+(ok?'#374151':'#6b7280')+';line-height:1.6">'+t.desc+'</p></'+tag+'>';
+  }
+  if(live.length){
+    html+='<h2 style="font-size:20px;font-weight:800;color:#111;margin:0 0 16px;display:flex;align-items:center;gap:10px;font-family:DM Sans,sans-serif"><span style="width:8px;height:8px;border-radius:50%;background:#008751"></span> Available Now</h2>';
+    html+='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:32px">';
+    live.forEach(function(t){html+=card(t,true);});html+='</div>';
+  }
+  if(pipe.length){
+    html+='<h2 style="font-size:20px;font-weight:800;color:#111;margin:0 0 16px;display:flex;align-items:center;gap:10px;font-family:DM Sans,sans-serif"><span style="width:8px;height:8px;border-radius:50%;background:#d1d5db"></span> Coming Soon</h2>';
+    html+='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px">';
+    pipe.forEach(function(t){html+=card(t,false);});html+='</div>';
+  }
+  container.innerHTML=html||'<p style="color:#9ca3af">No tools yet.</p>';
+  if(!document.getElementById('p-s')){var s=document.createElement('style');s.id='p-s';s.textContent='@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}';document.head.appendChild(s);}
+});
 </script>
 </body>
 </html>
