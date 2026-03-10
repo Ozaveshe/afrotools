@@ -76,10 +76,18 @@
       background: linear-gradient(135deg, #0a1f12 0%, #0d2b18 50%, #081a0e 100%);
       padding: 64px 0 56px; position: relative; overflow: hidden;
     }
-    .cat-hero::before {
-      content: '💰';
-      position: absolute; right: 6%; top: 50%; transform: translateY(-50%);
-      font-size: 180px; opacity: 0.06; user-select: none; line-height: 1;
+    .cat-hero-img {
+      position: absolute; right: 0; top: 0; bottom: 0; width: 45%;
+      background: rgba(0,135,81,0.06);
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .cat-hero-img img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    .cat-hero-img-ph {
+      font-size: 0.7rem; font-weight: 600; color: rgba(255,255,255,0.15);
+      letter-spacing: 0.1em; text-transform: uppercase;
     }
     .cat-hero-inner { position: relative; z-index: 1; }
     .cat-eyebrow {
@@ -195,7 +203,7 @@
       .cat-hero h1 { font-size: 1.8rem; }
       .hero-stats { gap: 20px; }
       .tools-grid { grid-template-columns: 1fr; }
-      .cat-hero::before { font-size: 100px; opacity: 0.04; }
+      .cat-hero-img { display: none; }
       .btn-outline { margin-left: 0; margin-top: 10px; }
     }
   
@@ -217,6 +225,10 @@
 
 <!-- ── HERO ── -->
 <section class="cat-hero">
+  <div class="cat-hero-img">
+    <img src="/assets/img/categories/salary-tax-hero.webp" alt="Salary & Tax Calculators" loading="eager" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+    <span class="cat-hero-img-ph" style="display:none">Hero image placeholder — 800×500 .webp</span>
+  </div>
   <div class="wrap cat-hero-inner">
     <div class="cat-eyebrow">
       <span>💰</span> Salary & Tax
