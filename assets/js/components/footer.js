@@ -12,11 +12,11 @@
   const LINKS = {
     tools: [
       { en: 'Salary & Tax',        fr: 'Salaire & Impôts',   href: '/salary-tax' },
-      { en: 'VAT & Business Tax',  fr: 'TVA & Fiscalité',    href: '/vat-business-tax' },
-      { en: 'Mortgage & Property', fr: 'Immobilier',          href: '/mortgage' },
-      { en: 'Business & ROI',      fr: 'Entreprise & ROI',   href: '/business-roi' },
-      { en: 'Education',           fr: 'Éducation',           href: '/education' },
-      { en: 'Health & Insurance',  fr: 'Santé & Assurance',  href: '/health-insurance' },
+      { en: 'PDF Workspace',       fr: 'Espace PDF',          href: '/tools/pdf-workspace' },
+      { en: 'Currency Converter',  fr: 'Convertisseur',       href: '/tools/currency-converter' },
+      { en: 'CV Builder',          fr: 'Créer un CV',         href: '/tools/cv-builder' },
+      { en: 'Invoice Generator',   fr: 'Facture',             href: '/tools/invoice-generator' },
+      { en: 'VAT Calculator',      fr: 'Calculateur TVA',     href: '/tools/vat-calculator' },
     ],
     countries: [
       { en: '🇳🇬 Nigeria',      href: '/nigeria' },
@@ -30,7 +30,7 @@
       { en: 'About',      fr: 'À propos',  href: '/about' },
       { en: 'Contact',    fr: 'Contact',   href: '/contact' },
       { en: 'Advertise',  fr: 'Publicité', href: '/advertise' },
-      { en: 'API Access', fr: 'Accès API', href: '/api' },
+
     ],
   };
 
@@ -256,11 +256,11 @@
       const btnLbl    = fr ? "M'inscrire →"               : 'Notify Me →';
       const note      = fr ? 'Pas de spam. Désinscription facile.' : 'No spam. Unsubscribe anytime.';
       const tagline   = fr
-        ? 'Calculateurs financiers pour les 54 nations africaines. Gratuit à jamais.'
-        : 'Country-accurate financial calculators for all 54 African nations. Free forever.';
+        ? 'Calculateurs, outils PDF, CV, devises — pour les 54 nations africaines. Gratuit à jamais.'
+        : 'Tax calculators, PDF tools, CV builder, currency tools and more — built for all 54 African nations. Free forever.';
       const disc = fr
         ? "AfroTools est à titre informatif uniquement. Vérifiez auprès d'un professionnel qualifié avant toute décision financière."
-        : 'AfroTools calculators are for informational purposes only and do not constitute financial, tax, or legal advice. Always verify with a qualified professional or the relevant tax authority.';
+        : 'AfroTools tools are for informational purposes only and do not constitute financial, tax, or legal advice. Always verify with a qualified professional or your country\'s revenue authority before making financial decisions.';
 
       this.shadowRoot.innerHTML = `
         <style>${CSS}</style>
@@ -273,7 +273,7 @@
                   ${MARK}
                   <div>
                     <span class="logo-name">AFRO<b>TOOLS</b></span>
-                    <span class="logo-tagline">Africa's Financial Platform</span>
+                    <span class="logo-tagline">Africa's Everything Platform</span>
                   </div>
                 </a>
                 <p class="tagline">${tagline}</p>
@@ -296,10 +296,10 @@
             </div>
 
             <div class="stats">
-              <div><div class="stat-n">1,600+</div><div class="stat-l">${fr ? 'Outils planifiés' : 'Tools planned'}</div></div>
               <div><div class="stat-n">54</div><div class="stat-l">${fr ? 'Pays africains' : 'African countries'}</div></div>
-              <div><div class="stat-n">6</div><div class="stat-l">${fr ? 'Catégories' : 'Tool categories'}</div></div>
-              <div><div class="stat-n">Free</div><div class="stat-l">${fr ? 'Toujours gratuit' : 'Always, for everyone'}</div></div>
+              <div><div class="stat-n">12</div><div class="stat-l">${fr ? 'Catégories' : 'Tool categories'}</div></div>
+              <div><div class="stat-n">8</div><div class="stat-l">${fr ? 'Calculateurs PAYE' : 'PAYE calculators'}</div></div>
+              <div><div class="stat-n">Free</div><div class="stat-l">${fr ? 'Toujours gratuit' : 'Always, forever'}</div></div>
             </div>
 
             <div class="bottom">

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kenya Tax Calculators 2025/26 — PAYE, KRA, NSSF, SHIF | AfroTools</title>
+<meta name="description" content="Free Kenya tax calculators for 2025/26. KRA PAYE, NSSF, SHIF (replaced NHIF), and Affordable Housing Levy. Finance Act 2024 updated.">
+<link rel="canonical" href="https://afrotools.com/kenya">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.css">
+<link rel="stylesheet" href="/assets/css/global.css">
+<script src="/assets/js/components/navbar.js" defer></script>
+<script src="/assets/js/components/footer.js" defer></script>
+<style>
+  .ke-hero { background: var(--color-bg-dark); padding: 64px 0 48px; border-bottom: 1px solid rgba(255,255,255,0.06); position: relative; overflow: hidden; }
+  .ke-hero::after { content: '🇰🇪'; position: absolute; right: 4%; bottom: -10px; font-size: 10rem; opacity: 0.05; pointer-events: none; }
+  .ke-hero-inner { max-width: 900px; margin: 0 auto; padding: 0 24px; position: relative; }
+  .ke-breadcrumb { font-size: 0.72rem; font-weight: 500; color: rgba(255,255,255,0.3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
+  .ke-breadcrumb a { color: rgba(255,255,255,0.3); text-decoration: none; }
+  .ke-breadcrumb span { color: #fc8181; }
+  .ke-hero h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; color: #fff; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 12px; }
+  .ke-hero h1 em { color: #fc8181; font-style: normal; }
+  .ke-hero-sub { font-size: 1rem; color: rgba(255,255,255,0.45); max-width: 520px; line-height: 1.6; margin-bottom: 20px; }
+  .ke-meta-row { display: flex; flex-wrap: wrap; gap: 20px; }
+  .ke-meta-item { display: flex; align-items: center; gap: 6px; font-size: 0.78rem; font-weight: 600; color: rgba(255,255,255,0.4); }
+  .ke-meta-dot { width: 6px; height: 6px; border-radius: 50%; background: #fc8181; }
+
+  .ke-body { max-width: 900px; margin: 0 auto; padding: 48px 24px 80px; }
+
+  .update-alert { background: #eff6ff; border: 1px solid #bfdbfe; border-left: 4px solid #3b82f6; border-radius: 8px; padding: 16px 20px; margin-bottom: 40px; font-size: 0.83rem; color: #1e40af; line-height: 1.6; }
+  .update-alert strong { font-weight: 700; }
+
+  .ke-section-title { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-muted); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--color-border); }
+
+  .ke-tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; margin-bottom: 48px; }
+  .ke-tool-card { background: #fff; border: 1px solid var(--color-border); border-radius: 10px; padding: 22px; text-decoration: none; display: flex; flex-direction: column; gap: 8px; transition: all 0.18s; position: relative; overflow: hidden; }
+  .ke-tool-card:hover { border-color: #BB0000; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(187,0,0,0.1); }
+  .ke-tool-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: #BB0000; opacity: 0; transition: opacity 0.18s; }
+  .ke-tool-card:hover::before { opacity: 1; }
+  .ke-tool-card.featured { border-color: #BB0000; background: linear-gradient(135deg, #fef2f2 0%, #fff 60%); }
+  .ke-tool-card.featured::before { opacity: 1; }
+  .ke-tool-tier { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 2px 8px; border-radius: 3px; display: inline-block; width: fit-content; }
+  .tier-1 { background: #fef3c7; color: #92400e; }
+  .tier-coming { background: #f3f4f6; color: #9ca3af; }
+  .ke-tool-icon { font-size: 1.6rem; }
+  .ke-tool-name { font-size: 1rem; font-weight: 700; color: var(--color-text); }
+  .ke-tool-desc { font-size: 0.8rem; color: var(--color-muted); line-height: 1.5; flex: 1; }
+  .ke-tool-tag { font-size: 0.7rem; font-weight: 600; color: #BB0000; margin-top: 4px; }
+  .ke-tool-arrow { align-self: flex-end; font-size: 1rem; color: var(--color-border); transition: color 0.18s, transform 0.18s; margin-top: 4px; }
+  .ke-tool-card:hover .ke-tool-arrow { color: #BB0000; transform: translateX(3px); }
+
+  .ke-rate-table { background: #fff; border: 1px solid var(--color-border); border-radius: 10px; overflow: hidden; margin-bottom: 48px; }
+  .ke-rate-table table { width: 100%; border-collapse: collapse; font-size: 0.83rem; }
+  .ke-rate-table thead { background: var(--color-bg-dark); }
+  .ke-rate-table thead th { padding: 12px 16px; text-align: left; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.45); }
+  .ke-rate-table thead th:last-child { text-align: right; }
+  .ke-rate-table tbody tr { border-bottom: 1px solid #f3f4f6; }
+  .ke-rate-table tbody tr:last-child { border: none; }
+  .ke-rate-table td { padding: 10px 16px; color: var(--color-text); }
+  .ke-rate-table td:last-child { text-align: right; font-weight: 700; }
+  .rate-10 { color: #16a34a; }
+  .rate-25 { color: #0369a1; }
+  .rate-30 { color: #d97706; }
+  .rate-32 { color: #ea580c; }
+  .rate-35 { color: #c0392b; }
+
+  .ke-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 48px; }
+  .ke-info-card { background: #fff; border: 1px solid var(--color-border); border-radius: 10px; padding: 20px; }
+  .ke-info-card h4 { font-size: 0.85rem; font-weight: 700; color: var(--color-text); margin-bottom: 10px; }
+  .ke-info-card ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .ke-info-card li { font-size: 0.8rem; color: var(--color-muted); display: flex; gap: 8px; line-height: 1.4; }
+  .ke-info-card li::before { content: '→'; color: #BB0000; flex-shrink: 0; font-weight: 700; }
+
+  @media (max-width: 600px) { .ke-info-grid { grid-template-columns: 1fr; } .ke-tools-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<section class="ke-hero">
+  <div class="ke-hero-inner">
+    <nav class="ke-breadcrumb"><a href="/">AfroTools</a> / <span>Kenya</span></nav>
+    <h1>Kenya Tax<br><em>Calculators 2025/26</em></h1>
+    <p class="ke-hero-sub">KRA PAYE, NSSF, SHIF & Housing Levy calculators. Updated for Finance Act 2024, SHIF (Oct 2024), and NSSF Feb 2025 rates.</p>
+    <div class="ke-meta-row">
+      <span class="ke-meta-item"><span class="ke-meta-dot"></span>KRA 2025/26 current</span>
+      <span class="ke-meta-item"><span class="ke-meta-dot"></span>SHIF replaces NHIF</span>
+      <span class="ke-meta-item"><span class="ke-meta-dot"></span>iTax compliant</span>
+      <span class="ke-meta-item"><span class="ke-meta-dot"></span>Free</span>
+    </div>
+  </div>
+</section>
+
+<div class="ke-body">
+
+  <div class="update-alert">
+    <strong>Recent changes:</strong> NSSF Tier II UEL increased from KES 72k to KES 108k effective February 2026. SHIF replaced NHIF on 1 October 2024 at 2.75% of gross. Affordable Housing Levy (1.5%) deductible for PAYE since Tax Laws (Amendment) Act 2024. SHIF contributions also now deductible.
+  </div>
+
+  <div class="ke-section-title">Tax Calculators</div>
+  <div class="ke-tools-grid">
+    <a href="/kenya/ke-paye" class="ke-tool-card featured">
+      <span class="ke-tool-tier tier-1">✦ AI Advisor Included</span>
+      <span class="ke-tool-icon">💼</span>
+      <span class="ke-tool-name">PAYE Income Tax</span>
+      <p class="ke-tool-desc">KRA PAYE with all deductions: NSSF (Feb 2025 tiers), SHIF 2.75%, AHL 1.5%, personal relief, insurance relief, pension. Charts + breakdown.</p>
+      <span class="ke-tool-tag">✦ Live now</span>
+      <span class="ke-tool-arrow">→</span>
+    </a>
+    <a href="#" class="ke-tool-card" style="opacity:0.6;pointer-events:none;">
+      <span class="ke-tool-tier tier-coming">Coming soon</span>
+      <span class="ke-tool-icon">🏢</span>
+      <span class="ke-tool-name">Corporation Tax</span>
+      <p class="ke-tool-desc">30% corporate tax rate, resident/non-resident rules, minimum tax provisions.</p>
+      <span class="ke-tool-tag">Scheduled</span>
+    </a>
+    <a href="#" class="ke-tool-card" style="opacity:0.6;pointer-events:none;">
+      <span class="ke-tool-tier tier-coming">Coming soon</span>
+      <span class="ke-tool-icon">🧾</span>
+      <span class="ke-tool-name">VAT Calculator</span>
+      <p class="ke-tool-desc">Kenya VAT at 16%. Zero-rated exports, VAT groups, reverse charge mechanism.</p>
+      <span class="ke-tool-tag">Scheduled</span>
+    </a>
+  </div>
+
+  <div class="ke-section-title">Quick Reference — Kenya Tax Rates 2025/26</div>
+  <div class="ke-rate-table">
+    <table>
+      <thead><tr><th>Monthly Taxable Income (KES)</th><th>Annual Equivalent</th><th>Tax Rate</th></tr></thead>
+      <tbody>
+        <tr><td>First KES 24,000</td><td>Up to KES 288,000</td><td class="rate-10">10%</td></tr>
+        <tr><td>KES 24,001 – 32,333</td><td>KES 288,001 – 388,000</td><td class="rate-25">25%</td></tr>
+        <tr><td>KES 32,334 – 500,000</td><td>KES 388,001 – 6,000,000</td><td class="rate-30">30%</td></tr>
+        <tr><td>KES 500,001 – 800,000</td><td>KES 6,000,001 – 9,600,000</td><td class="rate-32">32.5%</td></tr>
+        <tr><td>Above KES 800,000</td><td>Above KES 9,600,000</td><td class="rate-35">35%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="ke-section-title">Statutory Deductions Summary</div>
+  <div class="ke-info-grid">
+    <div class="ke-info-card">
+      <h4>📊 NSSF (Feb 2025 rates)</h4>
+      <ul>
+        <li>Tier I: 6% on first KES 8,000 = KES 480/month employee</li>
+        <li>Tier II: 6% on KES 8,001–72,000 = max KES 3,840/month</li>
+        <li>Total max employee contribution: KES 4,320/month</li>
+        <li>Employer matches employee contribution exactly</li>
+        <li>Deducted before PAYE taxable income calculation</li>
+        <li>Remit by 9th of following month via NSSF i-portal</li>
+      </ul>
+    </div>
+    <div class="ke-info-card">
+      <h4>🏥 SHIF (replaced NHIF Oct 2024)</h4>
+      <ul>
+        <li>2.75% of gross monthly salary — no upper cap</li>
+        <li>Minimum KES 300/month contribution</li>
+        <li>Replaced NHIF flat-rate bands from 1 October 2024</li>
+        <li>Managed by Social Health Authority (SHA)</li>
+        <li>Deductible against PAYE (Tax Laws Amendment Act 2024)</li>
+        <li>Remit by 9th of following month — late: 2%/month penalty</li>
+      </ul>
+    </div>
+    <div class="ke-info-card">
+      <h4>🏠 Affordable Housing Levy</h4>
+      <ul>
+        <li>1.5% of gross monthly salary (employee)</li>
+        <li>1.5% matched by employer (total 3%)</li>
+        <li>Effective March 2024 — Affordable Housing Act 2024</li>
+        <li>Deductible against PAYE since Tax Laws Amendment Act 2024</li>
+        <li>Declared on Form P10 Sheet M via KRA iTax</li>
+        <li>Late penalty: 3% per month on outstanding amount</li>
+      </ul>
+    </div>
+    <div class="ke-info-card">
+      <h4>✅ Reliefs Available</h4>
+      <ul>
+        <li>Personal Relief: KES 2,400/month (KES 28,800/year) — automatic</li>
+        <li>Insurance Relief: 15% of premium paid, max KES 5,000/month</li>
+        <li>Pension deduction: actual contrib, max KES 30,000/month</li>
+        <li>Post-Retirement Medical Fund: max KES 15,000/month</li>
+        <li>Home Ownership Savings Plan (HOSP) contributions</li>
+        <li>SHIF deductible (new) — Housing Levy deductible (new)</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<afro-footer></afro-footer>
+</body>
+</html>

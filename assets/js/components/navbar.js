@@ -416,11 +416,11 @@
                   </svg>
                 </button>
               </li>
-              <li><a href="/finance" class="lnk">Finance &amp; Tax</a></li>
-              <li><a href="/jobs" class="lnk">Jobs</a></li>
-              <li><a href="/travel" class="lnk">Travel</a></li>
-              <li><a href="/property" class="lnk">Property</a></li>
-              <li><a href="/business" class="lnk">Business</a></li>
+              <li><a href="/salary-tax" class="lnk">Salary &amp; Tax</a></li>
+              <li><a href="/tools/pdf-workspace" class="lnk">PDF Tools</a></li>
+              <li><a href="/tools/currency-converter" class="lnk">Currency</a></li>
+              <li><a href="/tools/cv-builder" class="lnk">CV Builder</a></li>
+              <li><a href="/tools/vat-calculator" class="lnk">VAT</a></li>
             </ul>
 
             <div class="right">
@@ -439,7 +439,7 @@
             ${this._megaContent()}
           </div>
           <div class="mega-footer">
-            <span class="mega-footer-note">🌍 54 African countries · 8 categories · Always free</span>
+            <span class="mega-footer-note">🌍 54 African countries · free forever · no sign-up required</span>
             <a href="/all-tools" class="mega-footer-lnk">Browse all tools →</a>
           </div>
         </div>
@@ -450,7 +450,7 @@
           <div class="mob-footer">
             <a href="/#newsletter" class="mob-cta">Get Updates →</a>
             <a href="/login" class="mob-login">Sign In</a>
-            <p class="mob-note">🌍 54 countries · Africa's everything platform</p>
+            <p class="mob-note">🌍 54 countries · always free · no sign-up required</p>
           </div>
         </div>`;
     }
