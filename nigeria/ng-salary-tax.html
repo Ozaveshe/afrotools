@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nigeria PAYE Tax Calculator 2025/2026 — NTA & PITA | AfroTools</title>
+  <title>Nigeria PAYE Calculator 2026 | NTA vs PITA Comparison — Free | AfroTools</title>
   <meta name="description" content="Calculate your exact Nigeria take-home pay under both the old PITA system (2025) and the new Nigeria Tax Act 2026. Real FIRS bands, pension, NHF, rent relief. Free and accurate.">
   <link rel="canonical" href="https://afrotools.com/nigeria/ng-salary-tax">
   <!-- Favicon -->
@@ -217,7 +217,7 @@ input[type=range]::-webkit-slider-thumb {
 .modal-submit { width: 100%; padding: 13px; background: #008751; color: #fff; border: none; border-radius: 7px; font-size: 0.88rem; font-weight: 700; cursor: pointer; transition: background 0.15s; }
 .modal-submit:hover { background: #006b40; }
 .modal-cancel { width: 100%; padding: 10px; background: transparent; border: none; font-size: 0.78rem; font-weight: 500; color: #8aaa95; cursor: pointer; margin-top: 6px; }
-.modal-success { text-align: center; display: none; padding: 10px 0; }
+.modal-success { text-align: center; display: none; padding: 10px 0; position: relative; }
 .modal-success .big-check { font-size: 2.5rem; margin-bottom: 10px; }
 .modal-success h4 { font-size: 1rem; font-weight: 700; color: #1a2e22; margin-bottom: 6px; }
 .modal-success p { font-size: 0.8rem; color: #4a6a55; margin-bottom: 0; }
@@ -600,8 +600,8 @@ input[type=range]::-webkit-slider-thumb {
     <div class="modal-success" id="modalSuccess">
       <button onclick="closePdfModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#9ca3af;line-height:1;" aria-label="Close">✕</button>
       <div class="big-check">✅</div>
-      <h4>Downloading now!</h4>
-      <p>Your PDF is saving to your device. We'll notify you whenever Nigerian tax law changes.</p>
+      <h4>PDF opening now</h4>
+      <p>Click <strong>Save as PDF</strong> in the print dialog. We'll notify you when Nigerian tax law changes.</p>
       <button class="modal-submit" onclick="closePdfModal()" style="margin-top:14px">Done →</button>
     </div>
   </div>
@@ -1236,9 +1236,8 @@ function generatePdf() {
     setTimeout(() => { try { w.print(); } catch(e){} }, 1200);
   }
 
-  // Update modal success state to reflect PDF behaviour
-  const doneBtn = document.querySelector('.modal-done-btn');
-  if (doneBtn) doneBtn.textContent = 'Done ✓';
+  // Auto-close modal after 4s — user is now in print dialog
+  setTimeout(() => closePdfModal(), 4000);
 }
 
 // ── SHARE ─────────────────────────────────────
