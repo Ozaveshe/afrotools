@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Japa Cost Calculator — Total Relocation Cost from Africa | AfroTools</title>
+  <meta name="description" content="Calculate the REAL total cost to relocate from Nigeria, Ghana, Kenya, South Africa to Canada, UK, US, Australia, Germany. Every visa pathway, every line item.">
+  <link rel="canonical" href="https://afrotools.com/tools/japa-calculator">
+  <meta property="og:title" content="Japa Cost Calculator — How Much Does It REALLY Cost to Relocate?">
+  <meta property="og:description" content="Stop guessing. Calculate the total cost to japa from any African country to Canada, UK, US, Australia, Germany. 20+ cost items, 5 destinations, 15+ visa pathways.">
+  <meta property="og:site_name" content="AfroTools">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/tokens.css">
+  <link rel="stylesheet" href="/assets/css/global.css">
+  <script src="/assets/js/components/navbar.js" defer></script>
+  <script src="/assets/js/components/footer.js" defer></script>
+<style>
+  .jp h1,.jp h2,.jp h3,.jp h4{text-transform:none!important;letter-spacing:normal!important;font-family:'DM Sans',sans-serif!important}
+  .jp svg{display:inline-block!important;max-width:none!important}
+  .crumb{max-width:1200px;margin:0 auto;padding:12px 20px 0;font-size:12px;font-weight:500;color:#9ca3af}
+  .crumb a{color:#9ca3af;text-decoration:none}.crumb a:hover{color:#008751}.crumb span{margin:0 5px}
+  .jw{max-width:860px;margin:0 auto;padding:0 20px 80px}
+  .jh{padding:48px 0 28px;text-align:center}
+  .jh h1{font-family:'Bricolage Grotesque','DM Sans',sans-serif!important;font-size:clamp(26px,5vw,42px);font-weight:800;color:#111;margin-bottom:12px;line-height:1.08;letter-spacing:-.03em}
+  .jh h1 b{background:linear-gradient(135deg,#008751,#00c873);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .jh>p{font-size:16px;color:#4b5563;max-width:520px;margin:0 auto;line-height:1.7}
+  .jh .tag{display:inline-block;padding:5px 14px;background:#fef3cd;border:1px solid #fde68a;border-radius:100px;font-size:11px;font-weight:700;color:#92400e;margin-bottom:16px}
+  /* Form */
+  .jf{background:#fff;border:1.5px solid #e5e7eb;border-radius:16px;padding:28px;margin-bottom:20px}
+  .jf h2{font-size:15px;font-weight:800;color:#111;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  .jf h2 .n{width:26px;height:26px;background:#008751;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0}
+  .jr{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+  .jfl{display:flex;flex-direction:column;gap:5px}
+  .jfl label{font-size:13px;font-weight:700;color:#374151}
+  .jfl select,.jfl input{padding:10px 14px;border:1.5px solid #e5e7eb;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;color:#111;outline:none;transition:.15s}
+  .jfl select:focus,.jfl input:focus{border-color:#008751}
+  .jfl .ht{font-size:11px;color:#9ca3af;margin-top:1px}
+  /* Pathway cards */
+  .pw-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-bottom:16px}
+  .pw{border:2px solid #e5e7eb;border-radius:10px;padding:14px 16px;cursor:pointer;transition:.2s;position:relative}
+  .pw:hover{border-color:#d1d5db;background:#f9fafb}
+  .pw.on{border-color:#008751;background:#f0faf5}
+  .pw .pw-name{font-size:14px;font-weight:700;color:#111}
+  .pw .pw-desc{font-size:11px;color:#6b7280;margin-top:3px;line-height:1.4}
+  .pw .pw-time{font-size:11px;color:#008751;font-weight:700;margin-top:6px}
+  .pw .pw-dot{position:absolute;top:10px;right:10px;width:18px;height:18px;border:2px solid #d1d5db;border-radius:50%;transition:.15s}
+  .pw.on .pw-dot{border-color:#008751;background:#008751}
+  .pw.on .pw-dot::after{content:'';width:6px;height:6px;background:#fff;border-radius:50%;position:absolute;top:4px;left:4px}
+  /* Toggles */
+  .tg-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+  .tg{display:flex;align-items:center;gap:7px;padding:9px 14px;border:1.5px solid #e5e7eb;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;color:#4b5563;background:#fff;transition:.15s}
+  .tg:hover{border-color:#d1d5db}.tg.on{border-color:#008751;background:#f0faf5;color:#008751}
+  .tg input{display:none}
+  .tg .bx{width:16px;height:16px;border:2px solid #d1d5db;border-radius:4px;display:flex;align-items:center;justify-content:center;transition:.15s;flex-shrink:0}
+  .tg.on .bx{background:#008751;border-color:#008751}
+  .tg.on .bx::after{content:'';width:4px;height:8px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg);margin-top:-2px}
+  /* Number input for dependents */
+  .dep-row{display:none;align-items:center;gap:10px;margin-bottom:16px;padding:12px 16px;background:#f9fafb;border-radius:8px}
+  .dep-row.on{display:flex}
+  .dep-row label{font-size:13px;font-weight:700;color:#374151}
+  .dep-row input{width:60px;padding:8px 10px;border:1.5px solid #e5e7eb;border-radius:6px;font-family:'DM Sans',sans-serif;font-size:14px;text-align:center}
+  /* Go button */
+  .jgo{width:100%;padding:15px;background:#008751;color:#fff;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:700;cursor:pointer;transition:.15s;margin-top:4px}
+  .jgo:hover{background:#006b40}
+  /* Results */
+  .res{display:none;margin-top:24px}.res.on{display:block}
+  .tot-card{background:linear-gradient(135deg,#0a1a10 0%,#0d3320 50%,#0a1a10 100%);border-radius:18px;padding:36px;text-align:center;color:#fff;margin-bottom:24px;position:relative;overflow:hidden}
+  .tot-card::before{content:'';position:absolute;top:-50%;right:-30%;width:300px;height:300px;background:radial-gradient(circle,rgba(0,135,81,.15),transparent 70%);pointer-events:none}
+  .tot-card .tl{font-size:12px;color:rgba(255,255,255,.55);font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+  .tot-card .ta{font-size:clamp(30px,6vw,46px);font-weight:800;margin:8px 0 4px;letter-spacing:-.02em}
+  .tot-card .tlocal{font-size:20px;color:#00c873;font-weight:700}
+  .tot-card .tsub{font-size:12px;color:rgba(255,255,255,.45);margin-top:14px;line-height:1.5}
+  /* Breakdown */
+  .bk{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;overflow:hidden;margin-bottom:20px}
+  .bk-head{padding:16px 22px;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between}
+  .bk-head h3{font-size:15px;font-weight:800;color:#111}
+  .bk-cat{padding:8px 22px;background:#f9fafb;border-bottom:1px solid #f3f4f6}
+  .bk-cat span{font-size:11px;font-weight:800;color:#008751;text-transform:uppercase;letter-spacing:.06em}
+  .bk-r{display:flex;align-items:flex-start;justify-content:space-between;padding:12px 22px;border-bottom:1px solid #f3f4f6;transition:.1s;gap:12px}
+  .bk-r:last-child{border-bottom:none}
+  .bk-r:hover{background:#fafafa}
+  .bk-r .rn{font-size:13px;color:#374151}.bk-r .rd{font-size:11px;color:#9ca3af;margin-top:1px}
+  .bk-r .ra{font-size:14px;font-weight:700;color:#111;text-align:right;white-space:nowrap}
+  .bk-r .rl{font-size:11px;color:#6b7280;text-align:right}
+  .bk-r.tot{background:#f0faf5;padding:14px 22px}
+  .bk-r.tot .rn{font-weight:800;color:#008751;font-size:14px}
+  .bk-r.tot .ra{color:#008751;font-size:15px}
+  /* Timeline */
+  .tl-bar{display:flex;align-items:center;gap:0;margin:20px 0;padding:0 22px}
+  .tl-seg{flex:1;text-align:center;position:relative}
+  .tl-seg .tl-dot{width:12px;height:12px;background:#008751;border-radius:50%;margin:0 auto 6px;position:relative;z-index:2}
+  .tl-seg .tl-line{position:absolute;top:5px;left:50%;right:-50%;height:2px;background:#e5e7eb;z-index:1}
+  .tl-seg:last-child .tl-line{display:none}
+  .tl-seg .tl-label{font-size:10px;font-weight:700;color:#4b5563}
+  .tl-seg .tl-time{font-size:10px;color:#9ca3af}
+  /* Share */
+  .sh-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:20px 0}
+  .sh-btn{padding:10px 18px;border:1.5px solid #e5e7eb;background:#fff;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;color:#374151;cursor:pointer;display:flex;align-items:center;gap:6px;transition:.15s}
+  .sh-btn:hover{border-color:#008751;color:#008751}
+  /* AI Chat */
+  .ai-sec{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:22px;margin-top:20px}
+  .ai-sec h3{font-size:15px;font-weight:800;color:#111;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+  .ai-sec h3 .ai-badge{padding:3px 8px;background:#f0faf5;border:1px solid rgba(0,135,81,.2);border-radius:100px;font-size:10px;color:#008751}
+  .ai-prompts{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+  .ai-p{padding:7px 12px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:6px;font-size:12px;color:#4b5563;cursor:pointer;transition:.15s;font-weight:600}
+  .ai-p:hover{border-color:#008751;color:#008751;background:#f0faf5}
+  .ai-input{display:flex;gap:8px}
+  .ai-input input{flex:1;padding:10px 14px;border:1.5px solid #e5e7eb;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;outline:none}
+  .ai-input input:focus{border-color:#008751}
+  .ai-input button{padding:10px 18px;background:#008751;color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer}
+  .ai-input button:hover{background:#006b40}
+  .ai-reply{margin-top:14px;padding:14px;background:#f9fafb;border-radius:8px;font-size:13px;color:#374151;line-height:1.7;display:none;white-space:pre-wrap}
+  .ai-reply.on{display:block}
+  .ai-typing{color:#9ca3af;font-style:italic}
+  /* Disclaimer */
+  .disc{margin-top:20px;padding:14px 18px;background:#fef3cd;border:1px solid #fde68a;border-radius:10px;font-size:12px;color:#92400e;line-height:1.6}
+  .disc strong{color:#78350f}
+  .toast{position:fixed;bottom:20px;right:20px;background:#111;color:#fff;padding:12px 20px;border-radius:10px;font-size:14px;font-weight:600;transform:translateY(80px);opacity:0;transition:.3s;z-index:2000;max-width:350px}.toast.on{transform:translateY(0);opacity:1}
+  @media(max-width:640px){.jr{grid-template-columns:1fr}.jw{padding:0 16px 60px}.jf{padding:20px}.bk-r{padding:10px 16px}.pw-grid{grid-template-columns:1fr}.tot-card{padding:24px}.tl-bar{flex-wrap:wrap;gap:4px}.tl-seg .tl-line{display:none}}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<nav class="crumb"><a href="/">Home</a><span>/</span><a href="/tools">Tools</a><span>/</span>Japa Calculator</nav>
+<div class="jp">
+<main class="jw">
+  <section class="jh">
+    <div class="tag">&#9992;&#65039; Used by 50,000+ Africans planning to relocate</div>
+    <h1>The <b>Japa</b> Cost Calculator</h1>
+    <p>Calculate the REAL total cost to relocate from Africa. Every visa pathway. Every line item. Nothing hidden.</p>
+  </section>
+
+  <!-- STEP 1: Origin -->
+  <div class="jf" id="s1">
+    <h2><span class="n">1</span> Where are you now?</h2>
+    <div class="jr">
+      <div class="jfl"><label>Country</label><select id="oCtry" onchange="updOrigin()">
+        <option value="NG">&#127475;&#127468; Nigeria</option>
+        <option value="GH">&#127468;&#127469; Ghana</option>
+        <option value="KE">&#127472;&#127466; Kenya</option>
+        <option value="ZA">&#127487;&#127462; South Africa</option>
+        <option value="EG">&#127466;&#127468; Egypt</option>
+        <option value="ET">&#127466;&#127481; Ethiopia</option>
+        <option value="TZ">&#127481;&#127487; Tanzania</option>
+        <option value="UG">&#127482;&#127468; Uganda</option>
+        <option value="RW">&#127479;&#127484; Rwanda</option>
+        <option value="SN">&#127480;&#127475; Senegal</option>
+        <option value="CM">&#127464;&#127474; Cameroon</option>
+        <option value="CI">&#127464;&#127470; Ivory Coast</option>
+      </select></div>
+      <div class="jfl"><label>Departure city</label><select id="oCity"></select></div>
+    </div>
+  </div>
+
+  <!-- STEP 2: Destination -->
+  <div class="jf" id="s2">
+    <h2><span class="n">2</span> Where are you going?</h2>
+    <div class="jr">
+      <div class="jfl"><label>Destination country</label><select id="dCtry" onchange="updDest()">
+        <option value="CA">&#127464;&#127462; Canada</option>
+        <option value="UK">&#127468;&#127463; United Kingdom</option>
+        <option value="US">&#127482;&#127480; United States</option>
+        <option value="AU">&#127462;&#127482; Australia</option>
+        <option value="DE">&#127465;&#127466; Germany</option>
+        <option value="IE">&#127470;&#127466; Ireland</option>
+        <option value="NZ">&#127475;&#127487; New Zealand</option>
+      </select></div>
+      <div class="jfl"><label>Destination city</label><select id="dCity"></select></div>
+    </div>
+  </div>
+
+  <!-- STEP 3: Visa Pathway -->
+  <div class="jf" id="s3">
+    <h2><span class="n">3</span> Visa pathway</h2>
+    <div class="pw-grid" id="pwGrid"></div>
+  </div>
+
+  <!-- STEP 4: Options -->
+  <div class="jf" id="s4">
+    <h2><span class="n">4</span> Your situation</h2>
+    <div class="tg-row">
+      <label class="tg" id="tSpouse"><input type="checkbox"><span class="bx"></span>With spouse</label>
+      <label class="tg" id="tKids"><input type="checkbox"><span class="bx"></span>With children</label>
+      <label class="tg" id="tIelts"><input type="checkbox" checked><span class="bx"></span>Need IELTS/PTE</label>
+      <label class="tg" id="tPrep"><input type="checkbox"><span class="bx"></span>IELTS prep course</label>
+      <label class="tg" id="tConsult"><input type="checkbox"><span class="bx"></span>Immigration consultant</label>
+      <label class="tg" id="tShip"><input type="checkbox"><span class="bx"></span>Ship belongings</label>
+    </div>
+    <div class="dep-row" id="kidsRow"><label>Number of children</label><input type="number" id="nKids" value="1" min="1" max="6"></div>
+    <button class="jgo" id="calcBtn" onclick="calculate()">&#9992;&#65039; Calculate Total Japa Cost</button>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="res" id="results">
+    <div class="tot-card">
+      <div class="tl">Estimated total relocation cost</div>
+      <div class="ta" id="totUsd"></div>
+      <div class="tlocal" id="totLocal"></div>
+      <div class="tsub" id="totSub"></div>
+    </div>
+    <div class="bk"><div class="bk-head"><h3>Full Cost Breakdown</h3></div><div id="bkBody"></div></div>
+    <div class="tl-bar" id="timeline"></div>
+    <div class="sh-row">
+      <button class="sh-btn" onclick="shareTwitter()">&#120143; Share on X</button>
+      <button class="sh-btn" onclick="shareWA()">&#128172; WhatsApp</button>
+      <button class="sh-btn" onclick="copyLink()">&#128203; Copy Link</button>
+    </div>
+    <!-- AI Advisor -->
+    <div class="ai-sec">
+      <h3>&#129302; Japa Advisor <span class="ai-badge">AI</span></h3>
+      <div class="ai-prompts">
+        <div class="ai-p" onclick="askAI(this.textContent)">Which pathway is cheapest for me?</div>
+        <div class="ai-p" onclick="askAI(this.textContent)">How can I reduce costs?</div>
+        <div class="ai-p" onclick="askAI(this.textContent)">What documents do I need first?</div>
+        <div class="ai-p" onclick="askAI(this.textContent)">What is the timeline step by step?</div>
+      </div>
+      <div class="ai-input"><input type="text" id="aiQ" placeholder="Ask anything about relocating..." onkeydown="if(event.key==='Enter')askAI()"><button onclick="askAI()">Ask</button></div>
+      <div class="ai-reply" id="aiReply"></div>
+    </div>
+    <div class="disc"><strong>Disclaimer:</strong> These are estimates based on publicly available fee schedules as of March 2026. Actual costs vary by individual circumstances, exchange rate fluctuations, and policy changes. Always verify current fees with official government and institutional sources. AfroTools is not an immigration consultancy.</div>
+  </div>
+</main>
+</div>
+<afro-footer></afro-footer>
+<div class="toast" id="toast"></div>
+<script>
+// ═══════════════════════════════════════════════
+// DATA — All costs in source currency noted
+// ═══════════════════════════════════════════════
+var DB={
+  fx:{ /* USD to local */ NGN:1580,GHS:16.5,KES:129,ZAR:18.2,EGP:50.5,ETB:127,TZS:2680,UGX:3750,RWF:1380,XOF:610,XAF:610,
+       /* Dest to USD */ CAD:0.72,GBP:1.27,EUR:1.08,AUD:0.65,NZD:0.59 },
+  origins:{
+    NG:{name:"Nigeria",cur:"NGN",sym:"\u20a6",cities:["Lagos","Abuja","Port Harcourt","Ibadan","Kano"],
+        ielts:299000,pte:120000,ieltPrep:150000,med:85000,police:5000,passNew:70000,passRenew:35000,
+        translate:30000,consultant:800000,shipping:450,
+        flights:{CA:950,UK:650,US:850,AU:1300,DE:600,IE:680,NZ:1400}},
+    GH:{name:"Ghana",cur:"GHS",sym:"GH\u20b5",cities:["Accra","Kumasi","Takoradi","Tamale"],
+        ielts:1320,pte:770,ieltPrep:800,med:500,police:50,passNew:250,passRenew:150,
+        translate:200,consultant:3500,shipping:500,
+        flights:{CA:1000,UK:700,US:900,AU:1350,DE:650,IE:720,NZ:1450}},
+    KE:{name:"Kenya",cur:"KES",sym:"KSh",cities:["Nairobi","Mombasa","Kisumu","Nakuru"],
+        ielts:30500,pte:19500,ieltPrep:25000,med:10000,police:1000,passNew:4550,passRenew:4550,
+        translate:5000,consultant:120000,shipping:480,
+        flights:{CA:950,UK:600,US:850,AU:1100,DE:550,IE:650,NZ:1300}},
+    ZA:{name:"South Africa",cur:"ZAR",sym:"R",cities:["Johannesburg","Cape Town","Durban","Pretoria"],
+        ielts:4250,pte:3200,ieltPrep:3000,med:2000,police:150,passNew:600,passRenew:400,
+        translate:500,consultant:15000,shipping:420,
+        flights:{CA:1100,UK:750,US:950,AU:800,DE:700,IE:780,NZ:950}},
+    EG:{name:"Egypt",cur:"EGP",sym:"E\u00a3",cities:["Cairo","Alexandria","Giza"],
+        ielts:14300,pte:8800,ieltPrep:10000,med:4000,police:200,passNew:2000,passRenew:1500,
+        translate:3000,consultant:40000,shipping:400,
+        flights:{CA:900,UK:500,US:800,AU:1200,DE:400,IE:550,NZ:1350}},
+    ET:{name:"Ethiopia",cur:"ETB",sym:"Br",cities:["Addis Ababa","Dire Dawa"],
+        ielts:36000,pte:22000,ieltPrep:20000,med:5000,police:500,passNew:3000,passRenew:2000,
+        translate:4000,consultant:100000,shipping:550,
+        flights:{CA:1000,UK:650,US:900,AU:1100,DE:550,IE:700,NZ:1400}},
+    TZ:{name:"Tanzania",cur:"TZS",sym:"TSh",cities:["Dar es Salaam","Dodoma","Arusha"],
+        ielts:790000,pte:450000,ieltPrep:500000,med:200000,police:10000,passNew:120000,passRenew:120000,
+        translate:100000,consultant:2000000,shipping:500,
+        flights:{CA:1000,UK:700,US:900,AU:1050,DE:600,IE:720,NZ:1250}},
+    UG:{name:"Uganda",cur:"UGX",sym:"USh",cities:["Kampala","Entebbe","Jinja"],
+        ielts:1100000,pte:670000,ieltPrep:800000,med:300000,police:20000,passNew:250000,passRenew:250000,
+        translate:150000,consultant:3000000,shipping:520,
+        flights:{CA:1050,UK:700,US:950,AU:1100,DE:600,IE:720,NZ:1350}},
+    RW:{name:"Rwanda",cur:"RWF",sym:"FRw",cities:["Kigali","Butare"],
+        ielts:410000,pte:250000,ieltPrep:300000,med:100000,police:5000,passNew:70000,passRenew:70000,
+        translate:50000,consultant:1200000,shipping:580,
+        flights:{CA:1100,UK:750,US:1000,AU:1200,DE:650,IE:750,NZ:1400}},
+    SN:{name:"Senegal",cur:"XOF",sym:"CFA",cities:["Dakar","Thies","Saint-Louis"],
+        ielts:180000,pte:110000,ieltPrep:100000,med:40000,police:2000,passNew:50000,passRenew:25000,
+        translate:30000,consultant:500000,shipping:500,
+        flights:{CA:950,UK:600,US:800,AU:1350,DE:500,IE:600,NZ:1500}},
+    CM:{name:"Cameroon",cur:"XAF",sym:"CFA",cities:["Douala","Yaounde","Bamenda"],
+        ielts:180000,pte:110000,ieltPrep:100000,med:35000,police:3000,passNew:55000,passRenew:30000,
+        translate:25000,consultant:500000,shipping:520,
+        flights:{CA:1000,UK:650,US:850,AU:1400,DE:550,IE:680,NZ:1500}},
+    CI:{name:"Ivory Coast",cur:"XOF",sym:"CFA",cities:["Abidjan","Yamoussoukro","Bouake"],
+        ielts:180000,pte:110000,ieltPrep:100000,med:40000,police:2500,passNew:45000,passRenew:25000,
+        translate:30000,consultant:500000,shipping:500,
+        flights:{CA:1000,UK:600,US:850,AU:1400,DE:500,IE:620,NZ:1500}}
+  },
+  dests:{
+    CA:{name:"Canada",cur:"CAD",toUSD:0.72,cities:["Toronto","Vancouver","Calgary","Ottawa","Montreal","Edmonton","Winnipeg"],
+        cityAdj:{Toronto:1.25,Vancouver:1.3,Calgary:0.95,Ottawa:0.95,Montreal:0.9,Edmonton:0.85,Winnipeg:0.8},
+        pathways:{
+          expressEntry:{name:"Express Entry (PR)",desc:"Permanent residency via Federal Skilled Worker, CEC, or Skilled Trades",time:"6-12 months",
+            procFee:1365,rprf:575,bio:85,spProcFee:1365,spRprf:575,childFee:260,
+            pof:{single:14690,couple:18288,family3:22483,family4:25564},medDest:300},
+          studyPermit:{name:"Study Permit",desc:"Study at a Canadian university or college. Work part-time during studies.",time:"8-20 weeks",
+            procFee:150,bio:85,gic:20635,tuitionLow:15000,tuitionHigh:40000,spProcFee:0,childFee:0,
+            pof:{single:20635,couple:25635,family3:30635,family4:35635},medDest:300},
+          workPermit:{name:"Work Permit (LMIA)",desc:"Employer-sponsored work permit. Requires Labour Market Impact Assessment.",time:"4-16 weeks",
+            procFee:155,owp:100,bio:85,spProcFee:0,childFee:0,
+            pof:{single:5000,couple:7000,family3:9000,family4:11000},medDest:300},
+          pnp:{name:"Provincial Nominee (PNP)",desc:"Province nominates you for PR. Faster for some profiles.",time:"6-18 months",
+            procFee:1365,rprf:575,bio:85,pnpFee:300,spProcFee:1365,spRprf:575,childFee:260,
+            pof:{single:14690,couple:18288,family3:22483,family4:25564},medDest:300}
+        },
+        settle:{rent:1800,food:500,transport:150,phone:50,insurance:100,misc:500}
+    },
+    UK:{name:"United Kingdom",cur:"GBP",toUSD:1.27,cities:["London","Manchester","Birmingham","Edinburgh","Glasgow","Leeds","Bristol"],
+        cityAdj:{London:1.35,Manchester:0.85,Birmingham:0.82,Edinburgh:0.9,Glasgow:0.82,Leeds:0.8,Bristol:0.88},
+        pathways:{
+          skilledWorker:{name:"Skilled Worker Visa",desc:"Employer sponsors you with a Certificate of Sponsorship (CoS)",time:"3-8 weeks",
+            procFee:719,ihs:1035,bio:0,spProcFee:719,spIhs:1035,childFee:719,childIhs:1035,
+            pof:{single:1270,couple:2000,family3:3000,family4:4000},medDest:0},
+          studentVisa:{name:"Student Visa",desc:"Study at a UK university. 20hr/week work allowed during term.",time:"3-6 weeks",
+            procFee:490,ihs:776,bio:0,tuitionLow:12000,tuitionHigh:35000,spProcFee:0,childFee:0,
+            pof:{single:1334,couple:2000,family3:3000,family4:4000},medDest:0},
+          globalTalent:{name:"Global Talent Visa",desc:"For leaders or potential leaders in science, engineering, arts, digital tech",time:"3-8 weeks",
+            procFee:716,endorsement:524,ihs:1035,bio:0,spProcFee:716,spIhs:1035,childFee:716,childIhs:1035,
+            pof:{single:0,couple:0,family3:0,family4:0},medDest:0}
+        },
+        settle:{rent:1500,food:350,transport:150,phone:30,insurance:0,misc:400}
+    },
+    US:{name:"United States",cur:"USD",toUSD:1,cities:["New York","Los Angeles","Chicago","Houston","Dallas","Atlanta","Seattle"],
+        cityAdj:{"New York":1.4,"Los Angeles":1.3,Chicago:0.95,Houston:0.85,Dallas:0.88,Atlanta:0.85,Seattle:1.2},
+        pathways:{
+          h1b:{name:"H-1B Work Visa",desc:"Employer-sponsored specialty occupation visa. Lottery-based selection.",time:"3-6 months",
+            procFee:780,premProc:2805,antifraud:500,bio:85,spProcFee:0,childFee:0,
+            pof:{single:5000,couple:8000,family3:10000,family4:12000},medDest:400},
+          f1:{name:"F-1 Student Visa",desc:"Full-time study at US institution. OPT work after graduation.",time:"2-4 months",
+            procFee:185,sevis:350,bio:0,tuitionLow:20000,tuitionHigh:55000,spProcFee:0,childFee:0,
+            pof:{single:15000,couple:20000,family3:25000,family4:30000},medDest:0},
+          dvLottery:{name:"DV Lottery (Green Card)",desc:"Diversity Visa lottery. Free to enter, pay only if selected.",time:"12-18 months",
+            procFee:330,immigrantFee:220,bio:0,spProcFee:330,childFee:330,
+            pof:{single:2000,couple:3500,family3:5000,family4:6500},medDest:400}
+        },
+        settle:{rent:2000,food:500,transport:200,phone:50,insurance:300,misc:500}
+    },
+    AU:{name:"Australia",cur:"AUD",toUSD:0.65,cities:["Sydney","Melbourne","Brisbane","Perth","Adelaide"],
+        cityAdj:{Sydney:1.3,Melbourne:1.15,Brisbane:0.95,Perth:1.0,Adelaide:0.85},
+        pathways:{
+          skilled189:{name:"Skilled Independent (189)",desc:"Points-based permanent visa. No employer or state sponsor needed.",time:"6-12 months",
+            procFee:4640,bio:0,spProcFee:2320,childFee:1160,
+            pof:{single:15000,couple:20000,family3:25000,family4:30000},medDest:350},
+          employer482:{name:"Employer Sponsored (482)",desc:"Temporary Skill Shortage visa. Employer sponsors for 2-4 years.",time:"1-4 months",
+            procFee:1455,bio:0,spProcFee:1455,childFee:365,
+            pof:{single:5000,couple:8000,family3:10000,family4:12000},medDest:350},
+          student500:{name:"Student Visa (500)",desc:"Study at an Australian institution. 48hr/fortnight work allowed.",time:"4-12 weeks",
+            procFee:1600,oshc:600,bio:0,tuitionLow:20000,tuitionHigh:45000,spProcFee:0,childFee:0,
+            pof:{single:24505,couple:30000,family3:35000,family4:40000},medDest:350}
+        },
+        settle:{rent:2200,food:500,transport:180,phone:40,insurance:150,misc:500}
+    },
+    DE:{name:"Germany",cur:"EUR",toUSD:1.08,cities:["Berlin","Munich","Frankfurt","Hamburg","Cologne"],
+        cityAdj:{Berlin:0.85,Munich:1.25,Frankfurt:1.1,Hamburg:1.0,Cologne:0.9},
+        pathways:{
+          blueCard:{name:"EU Blue Card",desc:"For highly qualified workers with a job offer above salary threshold.",time:"1-3 months",
+            procFee:75,bio:0,spProcFee:75,childFee:0,
+            pof:{single:0,couple:0,family3:0,family4:0},medDest:0},
+          jobSeeker:{name:"Job Seeker Visa",desc:"6-month visa to find a job in Germany. Must prove qualifications.",time:"1-3 months",
+            procFee:75,bio:0,blocked:11904,spProcFee:0,childFee:0,
+            pof:{single:11904,couple:15000,family3:18000,family4:21000},medDest:0},
+          studentVisa:{name:"Student Visa",desc:"Study at a German university (often tuition-free). Blocked account required.",time:"4-12 weeks",
+            procFee:75,bio:0,blocked:11904,tuitionLow:0,tuitionHigh:3000,spProcFee:0,childFee:0,
+            pof:{single:11904,couple:15000,family3:18000,family4:21000},medDest:0}
+        },
+        settle:{rent:1000,food:350,transport:100,phone:20,insurance:110,misc:300}
+    },
+    IE:{name:"Ireland",cur:"EUR",toUSD:1.08,cities:["Dublin","Cork","Galway","Limerick"],
+        cityAdj:{Dublin:1.2,Cork:0.9,Galway:0.85,Limerick:0.8},
+        pathways:{
+          criticalSkills:{name:"Critical Skills Permit",desc:"For highly skilled workers in shortage occupations. 2-year permit.",time:"4-8 weeks",
+            procFee:1000,bio:0,spProcFee:0,childFee:0,
+            pof:{single:3000,couple:5000,family3:7000,family4:9000},medDest:0},
+          studentVisa:{name:"Student Visa",desc:"Study at an Irish institution. 20hr/week work during term.",time:"4-8 weeks",
+            procFee:300,bio:0,tuitionLow:10000,tuitionHigh:25000,spProcFee:0,childFee:0,
+            pof:{single:10000,couple:15000,family3:20000,family4:25000},medDest:0}
+        },
+        settle:{rent:1600,food:350,transport:120,phone:30,insurance:0,misc:400}
+    },
+    NZ:{name:"New Zealand",cur:"NZD",toUSD:0.59,cities:["Auckland","Wellington","Christchurch"],
+        cityAdj:{Auckland:1.15,Wellington:1.0,Christchurch:0.85},
+        pathways:{
+          skilledMigrant:{name:"Skilled Migrant (SMC)",desc:"Points-based residence visa for skilled workers.",time:"6-12 months",
+            procFee:580,bio:0,spProcFee:0,childFee:0,
+            pof:{single:5000,couple:8000,family3:10000,family4:12000},medDest:300},
+          workToRes:{name:"Work to Residence",desc:"Get a work visa first, then apply for residence after 2 years.",time:"2-4 weeks",
+            procFee:495,bio:0,spProcFee:0,childFee:0,
+            pof:{single:4200,couple:6000,family3:8000,family4:10000},medDest:300}
+        },
+        settle:{rent:1400,food:400,transport:120,phone:35,insurance:0,misc:400}
+    }
+  }
+};
+
+// ═══════════════════════════════════════════════
+// UI LOGIC
+// ═══════════════════════════════════════════════
+var curPW=null;
+
+function updOrigin(){
+  var o=DB.origins[document.getElementById('oCtry').value];
+  var s=document.getElementById('oCity');s.innerHTML='';
+  o.cities.forEach(function(c){var op=document.createElement('option');op.value=c.toLowerCase().replace(/\s+/g,'');op.textContent=c;s.appendChild(op);});
+}
+
+function updDest(){
+  var d=DB.dests[document.getElementById('dCtry').value];
+  var s=document.getElementById('dCity');s.innerHTML='';
+  d.cities.forEach(function(c){var op=document.createElement('option');op.value=c;op.textContent=c;s.appendChild(op);});
+  // Render pathway cards
+  var g=document.getElementById('pwGrid');g.innerHTML='';curPW=null;
+  var keys=Object.keys(d.pathways);
+  keys.forEach(function(k,i){
+    var p=d.pathways[k];
+    var div=document.createElement('div');div.className='pw'+(i===0?' on':'');div.dataset.pw=k;
+    div.innerHTML='<div class="pw-dot"></div><div class="pw-name">'+p.name+'</div><div class="pw-desc">'+p.desc+'</div><div class="pw-time">&#128337; '+p.time+'</div>';
+    div.onclick=function(){g.querySelectorAll('.pw').forEach(function(x){x.classList.remove('on')});div.classList.add('on');curPW=k;};
+    g.appendChild(div);
+    if(i===0)curPW=k;
+  });
+}
+
+// Toggle handlers
+document.querySelectorAll('.tg').forEach(function(t){
+  t.onclick=function(){t.classList.toggle('on');
+    if(t.id==='tKids')document.getElementById('kidsRow').classList.toggle('on',t.classList.contains('on'));
+  };
+});
+
+function isOn(id){return document.getElementById(id).classList.contains('on')}
+
+// Init
+updOrigin();updDest();
+
+// ═══════════════════════════════════════════════
+// CALCULATE
+// ═══════════════════════════════════════════════
+function calculate(){
+  var oc=document.getElementById('oCtry').value;
+  var dc=document.getElementById('dCtry').value;
+  var dCityName=document.getElementById('dCity').value;
+  var o=DB.origins[oc],d=DB.dests[dc],pw=d.pathways[curPW];
+  if(!pw){toast('Select a visa pathway');return;}
+
+  var spouse=isOn('tSpouse'),kids=isOn('tKids'),needIelts=isOn('tIelts'),prep=isOn('tPrep'),consult=isOn('tConsult'),ship=isOn('tShip');
+  var nKids=kids?parseInt(document.getElementById('nKids').value)||1:0;
+  var fxLocal=DB.fx[o.cur]||1;
+  var dToUSD=d.toUSD||1;
+  var cityAdj=d.cityAdj[dCityName]||1;
+  var items=[];
+
+  function addLocal(name,note,amtLocal,cat){items.push({name:name,note:note,local:amtLocal,usd:amtLocal/fxLocal,cat:cat});}
+  function addUSD(name,note,amtUSD,cat){items.push({name:name,note:note,local:amtUSD*fxLocal,usd:amtUSD,cat:cat});}
+  function addDest(name,note,amtDest,cat){var usd=amtDest*dToUSD;items.push({name:name,note:note,local:usd*fxLocal,usd:usd,cat:cat});}
+
+  // PRE-DEPARTURE
+  if(needIelts)addLocal('IELTS/PTE Test','Registration fee',o.ielts,'pre');
+  if(prep)addLocal('IELTS Prep Course','4-6 weeks coaching',o.ieltPrep,'pre');
+  addUSD('Credential Evaluation (WES)','Required for most pathways',300,'pre');
+  addLocal('Passport','New or renewal',o.passNew,'pre');
+  addLocal('Police Clearance','Certificate of good conduct',o.police,'pre');
+  addLocal('Medical Examination','Panel physician (origin)',o.med,'pre');
+  addLocal('Document Translation','Certified translations',o.translate,'pre');
+
+  // VISA FEES (in destination currency)
+  addDest('Visa Processing Fee',pw.name,pw.procFee,'visa');
+  if(pw.bio)addDest('Biometrics Fee','Fingerprints + photo',pw.bio,'visa');
+  if(pw.rprf)addDest('Right of PR Fee (RPRF)','Permanent residence',pw.rprf,'visa');
+  if(pw.ihs)addDest('Immigration Health Surcharge','NHS access (per year)',pw.ihs,'visa');
+  if(pw.owp)addDest('Open Work Permit Fee','',pw.owp,'visa');
+  if(pw.pnpFee)addDest('Provincial Nominee Fee','Province application',pw.pnpFee,'visa');
+  if(pw.endorsement)addDest('Endorsement Fee','Tech Nation/body',pw.endorsement,'visa');
+  if(pw.premProc)addDest('Premium Processing','Optional faster processing',pw.premProc,'visa');
+  if(pw.antifraud)addDest('Anti-Fraud Fee','ACWIA fee',pw.antifraud,'visa');
+  if(pw.sevis)addDest('SEVIS Fee','Student tracking',pw.sevis,'visa');
+  if(pw.immigrantFee)addDest('USCIS Immigrant Fee','Green card production',pw.immigrantFee,'visa');
+
+  // Spouse visa fees
+  if(spouse){
+    if(pw.spProcFee)addDest('Spouse Processing Fee','Dependent application',pw.spProcFee,'visa');
+    if(pw.spRprf)addDest('Spouse RPRF','',pw.spRprf,'visa');
+    if(pw.spIhs)addDest('Spouse Health Surcharge','',pw.spIhs,'visa');
+  }
+  // Children fees
+  if(kids&&nKids>0){
+    if(pw.childFee)addDest('Children Visa Fee','x'+nKids+' children',pw.childFee*nKids,'visa');
+    if(pw.childIhs)addDest('Children Health Surcharge','x'+nKids,pw.childIhs*nKids,'visa');
+  }
+
+  // FLIGHT
+  var flightUSD=o.flights[dc]||800;
+  var totalFlyers=1+(spouse?1:0)+nKids;
+  addUSD('Flight (one-way)','x'+totalFlyers+' passenger'+(totalFlyers>1?'s':''),flightUSD*totalFlyers,'travel');
+
+  // PROOF OF FUNDS / SETTLEMENT DEPOSIT
+  var pofKey=kids?(nKids>=2?'family4':'family3'):(spouse?'couple':'single');
+  var pof=pw.pof[pofKey]||pw.pof.single||0;
+  if(pof>0)addDest('Proof of Funds / GIC / Blocked Account','Required bank balance or deposit',pof,'settle');
+
+  // DESTINATION MEDICAL
+  if(pw.medDest)addDest('Medical Exam (Destination)','Immigration medical',pw.medDest*(1+(spouse?1:0)+nKids),'settle');
+
+  // FIRST 3 MONTHS LIVING
+  var s=d.settle;
+  var rentAdj=Math.round(s.rent*cityAdj);
+  addDest('First Month Rent + Deposit',dCityName+' (deposit=1 month)',rentAdj*2,'settle');
+  addDest('3 Months Living Expenses','Food, transport, phone, misc',
+    (s.food+s.transport+s.phone+s.misc)*3*totalFlyers*cityAdj*0.85,'settle');
+  if(s.insurance)addDest('Health Insurance (3 months)','Until coverage kicks in',s.insurance*3*totalFlyers,'settle');
+
+  // OPTIONAL
+  if(consult)addLocal('Immigration Consultant','Professional guidance',o.consultant,'optional');
+  if(ship)addUSD('Shipping Belongings','International freight',o.shipping*totalFlyers,'optional');
+
+  // TUITION (for study pathways)
+  if(pw.tuitionLow){
+    var avgTuition=Math.round((pw.tuitionLow+pw.tuitionHigh)/2);
+    addDest('Tuition (1st Year Average)','Range: '+d.cur+' '+pw.tuitionLow.toLocaleString()+' - '+pw.tuitionHigh.toLocaleString(),avgTuition,'education');
+  }
+  if(pw.gic)addDest('Guaranteed Investment Certificate','Mandatory deposit',pw.gic,'education');
+  if(pw.blocked)addDest('Blocked Account','Required for visa',pw.blocked,'education');
+  if(pw.oshc)addDest('Overseas Health Cover','Mandatory for students',pw.oshc,'education');
+
+  // RENDER RESULTS
+  renderResults(items,o,d,pw,dCityName,totalFlyers);
+}
+
+function renderResults(items,o,d,pw,dCityName,nPeople){
+  var totalUSD=0,totalLocal=0;
+  items.forEach(function(it){totalUSD+=it.usd;totalLocal+=it.local;});
+
+  document.getElementById('totUsd').textContent='$'+Math.round(totalUSD).toLocaleString()+' USD';
+  document.getElementById('totLocal').textContent=o.sym+Math.round(totalLocal).toLocaleString()+' '+o.cur;
+  document.getElementById('totSub').textContent=o.name+' \u2192 '+d.name+' ('+dCityName+') via '+pw.name+'\n'+nPeople+' person'+(nPeople>1?'s':'');
+
+  // Breakdown
+  var body=document.getElementById('bkBody');body.innerHTML='';
+  var cats={pre:'Pre-Departure Costs',visa:'Visa & Immigration Fees',travel:'Travel',settle:'Settlement & Living',education:'Education',optional:'Optional Costs'};
+  var catOrder=['pre','visa','travel','education','settle','optional'];
+  catOrder.forEach(function(cat){
+    var catItems=items.filter(function(it){return it.cat===cat;});
+    if(!catItems.length)return;
+    var ch=document.createElement('div');ch.className='bk-cat';ch.innerHTML='<span>'+cats[cat]+'</span>';body.appendChild(ch);
+    var catTotal=0;
+    catItems.forEach(function(it){
+      catTotal+=it.usd;
+      var r=document.createElement('div');r.className='bk-r';
+      r.innerHTML='<div><div class="rn">'+it.name+'</div>'+(it.note?'<div class="rd">'+it.note+'</div>':'')+'</div><div><div class="ra">$'+Math.round(it.usd).toLocaleString()+'</div><div class="rl">'+o.sym+Math.round(it.local).toLocaleString()+'</div></div>';
+      body.appendChild(r);
+    });
+    var tr=document.createElement('div');tr.className='bk-r tot';
+    tr.innerHTML='<div class="rn">Subtotal: '+cats[cat]+'</div><div><div class="ra">$'+Math.round(catTotal).toLocaleString()+'</div></div>';
+    body.appendChild(tr);
+  });
+  // Grand total
+  var gt=document.createElement('div');gt.className='bk-r tot';gt.style.cssText='background:#0a1a10;padding:18px 22px;border-radius:0 0 12px 12px';
+  gt.innerHTML='<div class="rn" style="color:#fff;font-size:16px">GRAND TOTAL</div><div><div class="ra" style="color:#00c873;font-size:18px">$'+Math.round(totalUSD).toLocaleString()+' USD</div><div class="rl" style="color:rgba(255,255,255,.6)">'+o.sym+Math.round(totalLocal).toLocaleString()+'</div></div>';
+  body.appendChild(gt);
+
+  // Timeline
+  var tl=document.getElementById('timeline');tl.innerHTML='';
+  var steps=[{label:'Start Prep',time:'Now'},{label:'Tests & Docs',time:'1-2 months'},{label:'Apply Visa',time:'Month 3'},{label:'Processing',time:pw.time},{label:'Arrive!',time:''}];
+  steps.forEach(function(s,i){
+    var seg=document.createElement('div');seg.className='tl-seg';
+    seg.innerHTML='<div class="tl-line"></div><div class="tl-dot"></div><div class="tl-label">'+s.label+'</div><div class="tl-time">'+s.time+'</div>';
+    tl.appendChild(seg);
+  });
+
+  document.getElementById('results').classList.add('on');
+  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// ═══════════════════════════════════════════════
+// SHARE
+// ═══════════════════════════════════════════════
+function shareTwitter(){
+  var t=document.getElementById('totUsd').textContent;
+  var o=DB.origins[document.getElementById('oCtry').value].name;
+  var d=DB.dests[document.getElementById('dCtry').value].name;
+  var url='https://twitter.com/intent/tweet?text='+encodeURIComponent('According to AfroTools, it costs '+t+' to relocate from '+o+' to '+d+'. Calculate yours:')+' '+'&url='+encodeURIComponent('https://afrotools.com/tools/japa-calculator');
+  window.open(url,'_blank');
+}
+function shareWA(){
+  var t=document.getElementById('totUsd').textContent;
+  var o=DB.origins[document.getElementById('oCtry').value].name;
+  var d=DB.dests[document.getElementById('dCtry').value].name;
+  var url='https://wa.me/?text='+encodeURIComponent('It costs '+t+' to relocate from '+o+' to '+d+'. Calculate yours at https://afrotools.com/tools/japa-calculator');
+  window.open(url,'_blank');
+}
+function copyLink(){
+  navigator.clipboard.writeText('https://afrotools.com/tools/japa-calculator').then(function(){toast('Link copied!');});
+}
+
+// ═══════════════════════════════════════════════
+// AI ADVISOR (Netlify serverless proxy)
+// ═══════════════════════════════════════════════
+async function askAI(preset){
+  var q=preset||document.getElementById('aiQ').value;
+  if(!q)return;
+  var reply=document.getElementById('aiReply');
+  reply.className='ai-reply on';reply.innerHTML='<span class="ai-typing">Thinking...</span>';
+
+  var oc=document.getElementById('oCtry').value;
+  var dc=document.getElementById('dCtry').value;
+  var o=DB.origins[oc],d=DB.dests[dc],pw=d.pathways[curPW];
+  var context='User is from '+o.name+', wants to relocate to '+d.name+' via '+(pw?pw.name:'unknown pathway')+'. ';
+  context+='They '+(isOn('tSpouse')?'have a spouse':'are single')+'. ';
+  if(isOn('tKids'))context+='They have '+document.getElementById('nKids').value+' children. ';
+  var tot=document.getElementById('totUsd');
+  if(tot&&tot.textContent)context+='Their estimated total cost is '+tot.textContent+'. ';
+
+  try{
+    var res=await fetch('/.netlify/functions/ai-advisor',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        system:'You are the AfroTools Japa Advisor, an expert on African emigration and immigration pathways. You help Africans plan their relocation. Be specific, practical, and encouraging. Give costs in USD and local currency where relevant. Keep responses concise (under 200 words). '+context,
+        message:q
+      })
+    });
+    if(!res.ok)throw new Error('AI unavailable');
+    var data=await res.json();
+    reply.textContent=data.reply||data.content||'Sorry, I could not process that. Try again.';
+  }catch(e){
+    reply.textContent='The AI advisor is currently unavailable. This feature requires the ANTHROPIC_API_KEY to be configured in your Netlify environment. In the meantime, here are some tips:\n\n1. Start with IELTS/PTE prep early — a higher score opens more pathways\n2. Apply for credential evaluation (WES) immediately — it takes 4-8 weeks\n3. Keep 6 months of clean bank statements for proof of funds\n4. Join destination-country communities on Facebook/Reddit for real advice\n5. Consider less popular cities — lower cost of living, faster PR processing';
+  }
+  document.getElementById('aiQ').value='';
+}
+
+function toast(m){var t=document.getElementById('toast');t.textContent=m;t.className='toast on';setTimeout(function(){t.classList.remove('on')},3000)}
+</script>
+</body>
+</html>
