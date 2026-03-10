@@ -1,654 +1,227 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Free PDF Tools — Merge, Split, Compress, Convert | AfroTools</title>
-<meta name="description" content="Every PDF tool you need, 100% free, no limits. Merge, split, compress, convert, edit, protect, watermark PDFs. Files never leave your browser.">
-<meta name="keywords" content="free pdf tools, merge pdf, split pdf, compress pdf, convert pdf, pdf editor, Africa, online pdf">
-<link rel="canonical" href="https://afrotools.com/tools/pdf">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
-<style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free PDF Tools — Merge, Split, Compress, Convert | AfroTools</title>
+  <meta name="description" content="Every PDF tool you need, 100% free, no limits. Merge, split, compress, convert, edit, protect, watermark PDFs. Files never leave your browser.">
+  <link rel="canonical" href="https://afrotools.com/tools/pdf">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://afrotools.com/tools/pdf">
+  <meta property="og:title" content="Free PDF Tools — Merge, Split, Compress, Convert | AfroTools">
+  <meta property="og:description" content="Every PDF tool you need, 100% free, no limits. Files never leave your browser.">
+  <meta property="og:site_name" content="AfroTools">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"AfroTools PDF Tools","url":"https://afrotools.com/tools/pdf","description":"Free online PDF tools. Merge, split, compress, convert PDFs in your browser.","applicationCategory":"UtilityApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
+  </script>
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="apple-touch-icon" href="/assets/img/logo-mark.svg">
 
-:root {
-  --green: #008751;
-  --green-l: #00a863;
-  --green-d: #006b40;
-  --green-bg: #eefbf3;
-  --dark: #0c1117;
-  --dark2: #161b22;
-  --dark3: #21262d;
-  --text: #1f2937;
-  --text2: #4b5563;
-  --text3: #9ca3af;
-  --border: #e5e7eb;
-  --bg: #f8fafb;
-  --white: #ffffff;
-  --red: #ef4444;
-  --orange: #f59e0b;
-  --blue: #3b82f6;
-  --purple: #8b5cf6;
-  --pink: #ec4899;
-  --teal: #14b8a6;
-  --radius: 14px;
-  --radius-sm: 10px;
-}
+  <!-- ═══ SHARED SITE ASSETS ═══ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/tokens.css">
+  <link rel="stylesheet" href="/assets/css/global.css">
+  <script src="/assets/js/components/navbar.js" defer></script>
+  <script src="/assets/js/components/footer.js" defer></script>
 
-body {
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-}
+  <style>
+    /* ── PRIVACY BAR ── */
+    .privacy-bar{background:var(--_dark-800,#0a1a10);padding:9px 20px;text-align:center}
+    .privacy-bar p{max-width:var(--max-width-content,1200px);margin:0 auto;font-size:var(--text-sm,0.75rem);font-weight:500;color:rgba(255,255,255,.6);display:flex;align-items:center;justify-content:center;gap:8px}
+    .privacy-bar strong{color:#fff}
+    .privacy-bar .sh{width:18px;height:18px;background:var(--color-brand,#008751);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+    .privacy-bar .sh svg{width:10px;height:10px}
 
-/* ===== SUBTLE GRAIN TEXTURE ===== */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  opacity: 0.015;
-  pointer-events: none;
-  z-index: 9999;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-}
+    /* ── BREADCRUMB ── */
+    .crumb{max-width:var(--max-width-content,1200px);margin:0 auto;padding:14px 20px 0;font-size:var(--text-sm,0.75rem);font-weight:500;color:var(--color-text-subtle,#9ca3af)}
+    .crumb a{color:var(--color-text-subtle,#9ca3af);text-decoration:none}
+    .crumb a:hover{color:var(--color-brand,#008751)}
+    .crumb span{margin:0 4px}
 
-/* ===== HEADER ===== */
-.header {
-  background: var(--white);
-  border-bottom: 1px solid var(--border);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  backdrop-filter: blur(12px);
-  background: rgba(255,255,255,0.92);
-}
+    /* ── HERO ── */
+    .pdf-hero{padding:56px 20px 40px;text-align:center;position:relative;overflow:hidden}
+    .pdf-hero::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(0,135,81,.05) 0%,transparent 65%);pointer-events:none}
+    .pdf-hero .badge{display:inline-flex;align-items:center;gap:6px;padding:6px 16px 6px 12px;background:var(--color-success-pale,#eaf5ef);border:1px solid rgba(0,135,81,.15);border-radius:100px;font-size:0.62rem;font-weight:700;color:var(--color-brand,#008751);margin-bottom:20px;letter-spacing:.12em;text-transform:uppercase;animation:fadeD .6s ease}
+    @keyframes fadeD{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+    .pdf-hero h1{font-family:'Bricolage Grotesque','DM Sans',sans-serif;font-size:clamp(2rem,5.5vw,3.6rem);font-weight:800;letter-spacing:-.04em;line-height:1.05;color:var(--color-text,#111827);margin-bottom:16px;text-transform:none;animation:fadeD .6s ease .1s both;position:relative}
+    .pdf-hero h1 .acc{background:linear-gradient(135deg,#008751 0%,#00c873 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .pdf-hero>p{font-size:1.05rem;color:var(--color-text-muted,#4b5563);max-width:520px;margin:0 auto;font-weight:400;line-height:1.7;animation:fadeD .6s ease .2s both}
+    .pdf-hero .sub-stat{display:flex;justify-content:center;gap:28px;margin-top:22px;animation:fadeD .6s ease .3s both}
+    .pdf-hero .sub-stat .ss{display:flex;align-items:center;gap:6px;font-size:.78rem;font-weight:600;color:var(--color-text-subtle,#9ca3af)}
+    .pdf-hero .sub-stat .ss strong{color:var(--color-text,#111827);font-weight:800}
 
-.header-inner {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 28px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 62px;
-}
+    /* ── FILTER ── */
+    .filter-bar{max-width:var(--max-width-content,1200px);margin:0 auto;padding:0 20px 24px;display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;animation:fadeD .6s ease .3s both}
+    .f-btn{padding:7px 16px;border-radius:20px;border:1.5px solid var(--color-border-strong,#e5e7eb);background:#fff;color:var(--color-text-muted,#6b7280);font-size:0.78rem;font-weight:600;cursor:pointer;transition:all .14s;font-family:var(--font-body)}
+    .f-btn:hover{border-color:var(--color-brand);color:var(--color-brand)}
+    .f-btn.on{background:var(--_dark-800,#0a1a10);border-color:var(--_dark-800);color:#fff}
 
-.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    /* ── GRID ── */
+    .grid-wrap{max-width:var(--max-width-content,1200px);margin:0 auto;padding:0 20px 64px}
+    .tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(225px,1fr));gap:12px}
+    .tc-link{background:#fff;border:1.5px solid var(--color-border-strong,#e5e7eb);border-radius:12px;padding:24px 20px 20px;text-decoration:none;color:inherit;transition:all .22s;position:relative;overflow:hidden;display:block;animation:cardUp .5s ease both}
+    .tc-link::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:var(--card-accent,var(--color-brand));opacity:0;transition:opacity .22s}
+    .tc-link:hover{border-color:var(--card-accent,var(--color-brand));box-shadow:0 8px 24px -4px rgba(0,0,0,.08),0 0 0 1px var(--card-accent,var(--color-brand));transform:translateY(-3px)}
+    .tc-link:hover::before{opacity:1}
+    @keyframes cardUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+    .tc-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;font-size:20px}
+    .tc-link h3{font-family:'Bricolage Grotesque','DM Sans',sans-serif;font-size:0.92rem;font-weight:700;margin-bottom:6px;letter-spacing:-.02em;text-transform:none;color:var(--color-text);line-height:1.2}
+    .tc-link p{font-size:0.78rem;color:var(--color-text-muted,#6b7280);line-height:1.55;font-weight:400}
+    .tc-link .arrow{position:absolute;top:20px;right:18px;width:22px;height:22px;border-radius:5px;background:var(--color-bg,#fafaf8);display:flex;align-items:center;justify-content:center;opacity:0;transform:translateX(-4px);transition:all .22s}
+    .tc-link:hover .arrow{opacity:1;transform:translateX(0)}
+    .arrow svg{width:12px;height:12px;color:var(--color-text-muted)}
+    .badge-live{position:absolute;top:12px;right:12px;padding:3px 9px;background:var(--color-success-pale,#eaf5ef);border:1px solid rgba(0,135,81,.2);border-radius:100px;font-size:0.56rem;font-weight:700;color:var(--color-brand,#008751);text-transform:uppercase;letter-spacing:.05em;display:flex;align-items:center;gap:4px}
+    .badge-live::before{content:'';width:5px;height:5px;background:var(--color-brand);border-radius:50%;animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+    .tc-link.soon{opacity:.6;pointer-events:none}
+    .tc-link.soon::after{content:'Coming Soon';position:absolute;top:12px;right:12px;padding:3px 9px;background:var(--color-bg-subtle,#f3f4f6);border:1px solid var(--color-border-strong);border-radius:100px;font-size:0.56rem;font-weight:700;color:var(--color-text-subtle);text-transform:uppercase;letter-spacing:.05em}
 
-.logo-mark {
-  width: 34px; height: 34px;
-  background: var(--green);
-  border-radius: 9px;
-  display: flex; align-items: center; justify-content: center;
-  color: white; font-weight: 800; font-size: 12px; letter-spacing: -0.5px;
-  box-shadow: 0 2px 8px rgba(0,135,81,0.3);
-}
+    /* ── CTA ── */
+    .cta-sec{max-width:var(--max-width-content,1200px);margin:0 auto 64px;padding:0 20px}
+    .cta-card{background:var(--_dark-800,#0a1a10);border-radius:16px;padding:44px 36px;display:flex;align-items:center;justify-content:space-between;gap:36px;position:relative;overflow:hidden}
+    .cta-card::before{content:'';position:absolute;top:-60%;right:-10%;width:380px;height:380px;background:radial-gradient(circle,rgba(0,135,81,.22),transparent 60%);border-radius:50%}
+    .cta-text{position:relative;z-index:1}
+    .cta-text h2{font-family:'Bricolage Grotesque','DM Sans',sans-serif;font-size:1.65rem;font-weight:800;color:#fff;letter-spacing:-.03em;margin-bottom:10px;text-transform:none;line-height:1.15}
+    .cta-text p{font-size:0.92rem;color:rgba(255,255,255,.55);max-width:420px;font-weight:400;line-height:1.7}
+    .cta-stats{display:flex;gap:28px;position:relative;z-index:1}
+    .cta-stat{text-align:center}
+    .cta-stat .n{font-size:2rem;font-weight:800;color:var(--_green-300,#5ddb9e);line-height:1;letter-spacing:-.02em}
+    .cta-stat .l{font-size:0.6rem;color:rgba(255,255,255,.4);margin-top:4px;font-weight:600;text-transform:uppercase;letter-spacing:.08em}
 
-.logo-wordmark {
-  font-weight: 800; font-size: 19px; color: var(--dark); letter-spacing: -0.5px;
-}
-
-.logo-wordmark span { color: var(--green); }
-
-.header-nav {
-  display: flex; align-items: center; gap: 6px;
-}
-
-.header-nav a {
-  padding: 7px 14px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text2);
-  text-decoration: none;
-  border-radius: 8px;
-  transition: all 0.2s;
-}
-
-.header-nav a:hover { background: var(--green-bg); color: var(--green); }
-
-.header-nav a.active { background: var(--green); color: white; }
-
-/* ===== PRIVACY RIBBON ===== */
-.privacy-ribbon {
-  background: var(--dark);
-  padding: 9px 24px;
-}
-
-.privacy-ribbon p {
-  max-width: 1280px;
-  margin: 0 auto;
-  font-size: 12.5px;
-  color: rgba(255,255,255,0.7);
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-.privacy-ribbon strong { color: white; }
-
-.privacy-ribbon .shield {
-  width: 18px; height: 18px;
-  background: var(--green);
-  border-radius: 50%;
-  display: inline-flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-}
-
-.privacy-ribbon .shield svg { width: 10px; height: 10px; }
-
-/* ===== HERO ===== */
-.hero {
-  padding: 56px 28px 40px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-
-.hero::before {
-  content: '';
-  position: absolute;
-  top: -120px; right: -120px;
-  width: 400px; height: 400px;
-  background: radial-gradient(circle, rgba(0,135,81,0.06) 0%, transparent 70%);
-  border-radius: 50%;
-  pointer-events: none;
-}
-
-.hero::after {
-  content: '';
-  position: absolute;
-  bottom: -80px; left: -80px;
-  width: 300px; height: 300px;
-  background: radial-gradient(circle, rgba(0,135,81,0.04) 0%, transparent 70%);
-  border-radius: 50%;
-  pointer-events: none;
-}
-
-.hero-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 16px;
-  background: var(--green-bg);
-  border: 1px solid rgba(0,135,81,0.15);
-  border-radius: 100px;
-  font-size: 12.5px;
-  font-weight: 700;
-  color: var(--green);
-  margin-bottom: 20px;
-  letter-spacing: 0.3px;
-  text-transform: uppercase;
-  animation: fadeDown 0.6s ease;
-}
-
-@keyframes fadeDown {
-  from { opacity: 0; transform: translateY(-12px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.hero h1 {
-  font-size: clamp(30px, 5vw, 48px);
-  font-weight: 800;
-  letter-spacing: -1.5px;
-  line-height: 1.15;
-  color: var(--dark);
-  margin-bottom: 14px;
-  animation: fadeDown 0.6s ease 0.1s both;
-}
-
-.hero h1 .accent {
-  background: linear-gradient(135deg, var(--green) 0%, var(--green-l) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.hero p {
-  font-size: 17px;
-  color: var(--text2);
-  max-width: 580px;
-  margin: 0 auto;
-  animation: fadeDown 0.6s ease 0.2s both;
-}
-
-/* ===== FILTER TABS ===== */
-.filter-bar {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 28px 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  flex-wrap: wrap;
-  animation: fadeDown 0.6s ease 0.3s both;
-}
-
-.filter-btn {
-  padding: 8px 18px;
-  border: 1.5px solid var(--border);
-  background: var(--white);
-  border-radius: 100px;
-  font-family: inherit;
-  font-size: 13.5px;
-  font-weight: 600;
-  color: var(--text2);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-
-.filter-btn:hover { border-color: var(--green); color: var(--green); }
-
-.filter-btn.active {
-  background: var(--dark);
-  color: white;
-  border-color: var(--dark);
-}
-
-/* ===== TOOL GRID ===== */
-.grid-wrapper {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 28px 80px;
-}
-
-.tool-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-  gap: 14px;
-}
-
-.tool-card {
-  background: var(--white);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius);
-  padding: 26px 22px 22px;
-  text-decoration: none;
-  color: inherit;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
-  display: block;
-  animation: cardIn 0.5s ease both;
-}
-
-.tool-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 3px;
-  background: var(--card-accent, var(--green));
-  opacity: 0;
-  transition: opacity 0.25s;
-}
-
-.tool-card:hover {
-  border-color: var(--card-accent, var(--green));
-  box-shadow: 0 8px 24px -4px rgba(0,0,0,0.08), 0 0 0 1px var(--card-accent, var(--green));
-  transform: translateY(-3px);
-}
-
-.tool-card:hover::before { opacity: 1; }
-
-@keyframes cardIn {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.tool-card-icon {
-  width: 48px; height: 48px;
-  border-radius: 12px;
-  display: flex; align-items: center; justify-content: center;
-  margin-bottom: 16px;
-  font-size: 22px;
-  position: relative;
-}
-
-.tool-card h3 {
-  font-size: 15px;
-  font-weight: 700;
-  margin-bottom: 6px;
-  letter-spacing: -0.3px;
-}
-
-.tool-card p {
-  font-size: 13px;
-  color: var(--text3);
-  line-height: 1.5;
-}
-
-.tool-card .arrow {
-  position: absolute;
-  top: 22px; right: 20px;
-  width: 24px; height: 24px;
-  border-radius: 6px;
-  background: var(--bg);
-  display: flex; align-items: center; justify-content: center;
-  opacity: 0;
-  transform: translateX(-4px);
-  transition: all 0.25s;
-}
-
-.tool-card:hover .arrow {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.arrow svg { width: 14px; height: 14px; color: var(--text2); }
-
-/* ===== COMING SOON BADGE ===== */
-.tool-card.coming-soon { opacity: 0.65; pointer-events: none; }
-
-.tool-card.coming-soon::after {
-  content: 'Coming Soon';
-  position: absolute;
-  top: 12px; right: 12px;
-  padding: 3px 10px;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 100px;
-  font-size: 10px;
-  font-weight: 700;
-  color: var(--text3);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-/* ===== LIVE BADGE ===== */
-.badge-live {
-  position: absolute;
-  top: 12px; right: 12px;
-  padding: 3px 10px;
-  background: var(--green-bg);
-  border: 1px solid rgba(0,135,81,0.2);
-  border-radius: 100px;
-  font-size: 10px;
-  font-weight: 700;
-  color: var(--green);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  display: flex; align-items: center; gap: 4px;
-}
-
-.badge-live::before {
-  content: '';
-  width: 6px; height: 6px;
-  background: var(--green);
-  border-radius: 50%;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
-}
-
-/* ===== CTA SECTION ===== */
-.cta-section {
-  max-width: 1280px;
-  margin: 0 auto 80px;
-  padding: 0 28px;
-}
-
-.cta-card {
-  background: var(--dark);
-  border-radius: 20px;
-  padding: 48px 40px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 40px;
-  position: relative;
-  overflow: hidden;
-}
-
-.cta-card::before {
-  content: '';
-  position: absolute;
-  top: -60%; right: -10%;
-  width: 400px; height: 400px;
-  background: radial-gradient(circle, rgba(0,135,81,0.25) 0%, transparent 60%);
-  border-radius: 50%;
-}
-
-.cta-text { position: relative; z-index: 1; }
-
-.cta-text h2 {
-  font-size: 28px;
-  font-weight: 800;
-  color: white;
-  letter-spacing: -0.8px;
-  margin-bottom: 8px;
-}
-
-.cta-text p {
-  font-size: 15px;
-  color: rgba(255,255,255,0.65);
-  max-width: 420px;
-}
-
-.cta-stats {
-  display: flex;
-  gap: 32px;
-  position: relative;
-  z-index: 1;
-}
-
-.cta-stat {
-  text-align: center;
-}
-
-.cta-stat .num {
-  font-size: 36px;
-  font-weight: 800;
-  color: var(--green-l);
-  letter-spacing: -1px;
-  line-height: 1;
-}
-
-.cta-stat .label {
-  font-size: 12px;
-  color: rgba(255,255,255,0.5);
-  margin-top: 4px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-/* ===== FOOTER ===== */
-.footer {
-  text-align: center;
-  padding: 28px;
-  border-top: 1px solid var(--border);
-  background: var(--white);
-  font-size: 13px;
-  color: var(--text3);
-}
-
-.footer a { color: var(--green); text-decoration: none; font-weight: 700; }
-
-/* ===== RESPONSIVE ===== */
-@media (max-width: 768px) {
-  .hero { padding: 36px 20px 28px; }
-  .tool-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; }
-  .tool-card { padding: 20px 16px 18px; }
-  .tool-card-icon { width: 40px; height: 40px; font-size: 18px; margin-bottom: 12px; }
-  .tool-card h3 { font-size: 14px; }
-  .tool-card p { font-size: 12px; }
-  .filter-bar { gap: 4px; padding: 0 16px 20px; }
-  .filter-btn { padding: 6px 14px; font-size: 12.5px; }
-  .header-nav { display: none; }
-  .cta-card { flex-direction: column; padding: 32px 24px; text-align: center; }
-  .cta-text p { max-width: 100%; }
-  .grid-wrapper { padding: 0 16px 60px; }
-}
-
-@media (max-width: 480px) {
-  .tool-grid { grid-template-columns: repeat(2, 1fr); }
-}
-</style>
+    @media(max-width:768px){
+      .tool-grid{grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:10px}
+      .tc-link{padding:18px 14px 16px}
+      .tc-icon{width:38px;height:38px;font-size:18px;margin-bottom:10px}
+      .tc-link h3{font-size:0.82rem}
+      .tc-link p{font-size:0.72rem}
+      .filter-bar{gap:4px;padding:0 16px 20px}
+      .f-btn{padding:5px 12px;font-size:0.72rem}
+      .cta-card{flex-direction:column;padding:28px 22px;text-align:center}
+      .cta-text p{max-width:100%}
+      .grid-wrap{padding:0 16px 48px}
+    }
+    @media(max-width:480px){.tool-grid{grid-template-columns:repeat(2,1fr)}}
+  </style>
 </head>
 <body>
 
-<!-- PRIVACY RIBBON -->
-<div class="privacy-ribbon">
-  <p>
-    <span class="shield"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
-    Your files <strong>never leave your browser</strong> — 100% client-side processing, zero server uploads
-  </p>
-</div>
-
-<!-- HEADER -->
-<header class="header">
-  <div class="header-inner">
-    <a href="/" class="logo">
-      <div class="logo-mark">AT</div>
-      <div class="logo-wordmark">Afro<span>Tools</span></div>
-    </a>
-    <nav class="header-nav">
-      <a href="/tools/pdf" class="active">PDF Tools</a>
-      <a href="/nigeria/ng-paye">PAYE Calculators</a>
-      <a href="/tools">All Tools</a>
-    </nav>
+  <!-- PRIVACY BAR -->
+  <div class="privacy-bar">
+    <p><span class="sh"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>Your files <strong>never leave your browser</strong> — 100% client-side processing, zero server uploads</p>
   </div>
-</header>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-badge">✦ Free Forever — No Limits</div>
-  <h1>Every <span class="accent">PDF Tool</span> You Need</h1>
-  <p>Merge, split, compress, convert, edit, and protect your PDFs. All free, all private, all in your browser. What iLovePDF charges $60/year for — we do for free.</p>
-</section>
+  <!-- NAVBAR -->
+  <afro-navbar></afro-navbar>
 
-<!-- FILTER TABS -->
-<div class="filter-bar">
-  <button class="filter-btn active" data-cat="all" onclick="filterTools('all')">All Tools</button>
-  <button class="filter-btn" data-cat="organize" onclick="filterTools('organize')">Organize</button>
-  <button class="filter-btn" data-cat="optimize" onclick="filterTools('optimize')">Optimize</button>
-  <button class="filter-btn" data-cat="convert" onclick="filterTools('convert')">Convert</button>
-  <button class="filter-btn" data-cat="edit" onclick="filterTools('edit')">Edit</button>
-  <button class="filter-btn" data-cat="security" onclick="filterTools('security')">Security</button>
-</div>
+  <!-- BREADCRUMB -->
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href="/">Home</a><span>/</span>
+    PDF Tools
+  </nav>
 
-<!-- TOOL GRID -->
-<div class="grid-wrapper">
-  <div class="tool-grid" id="toolGrid"></div>
-</div>
-
-<!-- CTA -->
-<section class="cta-section">
-  <div class="cta-card">
-    <div class="cta-text">
-      <h2>Built for Africa. Free for everyone.</h2>
-      <p>No server uploads. No file size limits. No premium tiers. Just fast, private PDF tools that work on any device — even on slow connections.</p>
+  <!-- HERO -->
+  <section class="pdf-hero">
+    <div class="badge">🔒 100% Private · No Sign-up · No Limits</div>
+    <h1>Stop Paying for <span class="acc">PDF Tools</span></h1>
+    <p>Everything iLovePDF, Smallpdf, and Adobe charge you $60–$240/year for — we do for free. Your files stay on your device. Always.</p>
+    <div class="sub-stat">
+      <div class="ss"><strong>27</strong> tools</div>
+      <div class="ss"><strong>0</strong> uploads</div>
+      <div class="ss"><strong>∞</strong> file limit</div>
     </div>
-    <div class="cta-stats">
-      <div class="cta-stat">
-        <div class="num">25+</div>
-        <div class="label">PDF Tools</div>
+  </section>
+
+  <!-- FILTER -->
+  <div class="filter-bar">
+    <button class="f-btn on" data-cat="all" onclick="filterTools('all')">All Tools</button>
+    <button class="f-btn" data-cat="organize" onclick="filterTools('organize')">Organize</button>
+    <button class="f-btn" data-cat="optimize" onclick="filterTools('optimize')">Optimize</button>
+    <button class="f-btn" data-cat="convert" onclick="filterTools('convert')">Convert</button>
+    <button class="f-btn" data-cat="edit" onclick="filterTools('edit')">Edit</button>
+    <button class="f-btn" data-cat="security" onclick="filterTools('security')">Security</button>
+  </div>
+
+  <!-- GRID -->
+  <div class="grid-wrap">
+    <div class="tool-grid" id="toolGrid"></div>
+  </div>
+
+  <!-- CTA -->
+  <section class="cta-sec">
+    <div class="cta-card">
+      <div class="cta-text">
+        <h2>Your files. Your device. Nobody else.</h2>
+        <p>While iLovePDF uploads your contracts to their servers in Spain, AfroTools processes everything right in your browser. No cloud. No risk. Works perfectly on 3G.</p>
       </div>
-      <div class="cta-stat">
-        <div class="num">0</div>
-        <div class="label">Server Uploads</div>
-      </div>
-      <div class="cta-stat">
-        <div class="num">∞</div>
-        <div class="label">File Limit</div>
+      <div class="cta-stats">
+        <div class="cta-stat"><div class="n">25+</div><div class="l">PDF Tools</div></div>
+        <div class="cta-stat"><div class="n">0</div><div class="l">Server Uploads</div></div>
+        <div class="cta-stat"><div class="n">∞</div><div class="l">File Limit</div></div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- FOOTER -->
-<footer class="footer">
-  <p>&copy; 2026 <a href="/">AfroTools.com</a> — Africa's #1 Digital Tools Platform</p>
-</footer>
+  <!-- FOOTER -->
+  <afro-footer></afro-footer>
 
 <script>
-const tools = [
-  // ===== ORGANIZE =====
-  { name: "Merge PDF", desc: "Combine multiple PDFs into one. Drag-and-drop reorder. Unlimited files.", cat: "organize", icon: "📎", accent: "#008751", href: "/tools/pdf-merge-split", live: true },
-  { name: "Split PDF", desc: "Extract pages or split into chunks. By range, by page, or every N pages.", cat: "organize", icon: "✂️", accent: "#008751", href: "/tools/pdf-merge-split", live: true },
-  { name: "Rotate PDF", desc: "Rotate pages 90°, 180°, or 270°. Apply to one page or all at once.", cat: "organize", icon: "🔄", accent: "#3b82f6", href: "/tools/pdf-rotate" },
-  { name: "Remove Pages", desc: "Delete specific pages from your PDF. Preview thumbnails before removing.", cat: "organize", icon: "🗑️", accent: "#ef4444", href: "/tools/pdf-remove-pages" },
-  { name: "Organize PDF", desc: "Rearrange pages with drag-and-drop. Visual thumbnail layout.", cat: "organize", icon: "📑", accent: "#8b5cf6", href: "/tools/pdf-organize" },
-  { name: "Extract Pages", desc: "Pull specific pages out of a PDF into a new file. Custom range support.", cat: "organize", icon: "📤", accent: "#f59e0b", href: "/tools/pdf-extract" },
-
-  // ===== OPTIMIZE =====
-  { name: "Compress PDF", desc: "Reduce file size by up to 80%. Three quality presets. Batch support.", cat: "optimize", icon: "🗜️", accent: "#008751", href: "/tools/pdf-compress", live: true },
-  { name: "Repair PDF", desc: "Fix damaged or corrupted PDFs. Recover content from broken files.", cat: "optimize", icon: "🔧", accent: "#f59e0b", href: "/tools/pdf-repair" },
-  { name: "OCR PDF", desc: "Make scanned PDFs searchable. Extract text from images. AI-powered.", cat: "optimize", icon: "👁️", accent: "#8b5cf6", href: "/tools/pdf-ocr" },
-  { name: "PDF to PDF/A", desc: "Convert to archival standard. Long-term document preservation.", cat: "optimize", icon: "🏛️", accent: "#14b8a6", href: "/tools/pdf-pdfa" },
-
-  // ===== CONVERT =====
-  { name: "PDF to Word", desc: "Convert to editable DOCX. Preserves layout, fonts, and images.", cat: "convert", icon: "📝", accent: "#3b82f6", href: "/tools/pdf-to-word" },
-  { name: "PDF to Excel", desc: "Extract tables from PDFs into spreadsheets. Clean, structured data.", cat: "convert", icon: "📊", accent: "#008751", href: "/tools/pdf-to-excel" },
-  { name: "PDF to PowerPoint", desc: "Turn PDF pages into editable slides. Layout preservation.", cat: "convert", icon: "📽️", accent: "#ef4444", href: "/tools/pdf-to-ppt" },
-  { name: "PDF to JPG", desc: "Convert each page to a high-quality image. Batch export.", cat: "convert", icon: "🖼️", accent: "#f59e0b", href: "/tools/pdf-to-jpg" },
-  { name: "Word to PDF", desc: "Convert DOC/DOCX to PDF. Perfect formatting preservation.", cat: "convert", icon: "📄", accent: "#3b82f6", href: "/tools/word-to-pdf" },
-  { name: "JPG to PDF", desc: "Convert images to PDF. Multiple images, custom orientation, margins.", cat: "convert", icon: "🎨", accent: "#ec4899", href: "/tools/jpg-to-pdf" },
-  { name: "Excel to PDF", desc: "Spreadsheets to PDF with all formatting intact. Multi-sheet support.", cat: "convert", icon: "📈", accent: "#008751", href: "/tools/excel-to-pdf" },
-  { name: "PowerPoint to PDF", desc: "Slides to PDF. Preserves animations, transitions as static pages.", cat: "convert", icon: "🎬", accent: "#ef4444", href: "/tools/ppt-to-pdf" },
-  { name: "HTML to PDF", desc: "Convert any webpage to PDF. Just paste the URL. Full rendering.", cat: "convert", icon: "🌐", accent: "#14b8a6", href: "/tools/html-to-pdf" },
-
-  // ===== EDIT =====
-  { name: "Edit PDF", desc: "Add text, images, shapes. Change font, size, color. Full editor.", cat: "edit", icon: "✏️", accent: "#8b5cf6", href: "/tools/pdf-edit" },
-  { name: "Add Watermark", desc: "Text or image watermarks. Control opacity, rotation, position.", cat: "edit", icon: "💧", accent: "#3b82f6", href: "/tools/pdf-watermark", live: true },
-  { name: "Page Numbers", desc: "Add page numbers with custom position, format, font, and starting number.", cat: "edit", icon: "🔢", accent: "#f59e0b", href: "/tools/pdf-page-numbers", live: true },
-  { name: "Sign PDF", desc: "Draw, type, or upload your signature. Legally valid e-signatures.", cat: "edit", icon: "🖊️", accent: "#008751", href: "/tools/pdf-sign" },
-  { name: "Annotate PDF", desc: "Highlight, underline, comment, draw. Full annotation toolkit.", cat: "edit", icon: "📌", accent: "#ef4444", href: "/tools/pdf-annotate" },
-  { name: "Crop PDF", desc: "Trim margins or select specific areas. Apply to one or all pages.", cat: "edit", icon: "✂️", accent: "#14b8a6", href: "/tools/pdf-crop" },
-  { name: "Redact PDF", desc: "Permanently remove sensitive text and images. GDPR compliance.", cat: "edit", icon: "██", accent: "#0c1117", href: "/tools/pdf-redact" },
-
-  // ===== SECURITY =====
-  { name: "Protect PDF", desc: "Add password encryption. Set permissions — no print, no copy, no edit.", cat: "security", icon: "🔒", accent: "#008751", href: "/tools/pdf-password", live: true },
-  { name: "Unlock PDF", desc: "Remove passwords from PDFs you own. Instant decryption.", cat: "security", icon: "🔓", accent: "#f59e0b", href: "/tools/pdf-unlock" },
-  { name: "Compare PDF", desc: "Side-by-side comparison. Spot every change between two versions.", cat: "security", icon: "🔍", accent: "#3b82f6", href: "/tools/pdf-compare" },
+const tools=[
+  {name:"Merge PDF",desc:"Got 12 PDFs that should be one? Drop them in, drag to reorder, download a single file. Takes seconds.",cat:"organize",icon:"📎",accent:"#008751",href:"/tools/pdf-merge-split",live:true},
+  {name:"Split PDF",desc:"Pull out the 3 pages you actually need. Split by range, by individual page, or into equal chunks.",cat:"organize",icon:"✂️",accent:"#008751",href:"/tools/pdf-merge-split",live:true},
+  {name:"Compress PDF",desc:"That 48 MB PDF won't email itself. Shrink it up to 80% — choose between quality and file size.",cat:"optimize",icon:"🗜️",accent:"#008751",href:"/tools/pdf-compress",live:true},
+  {name:"PDF to Image",desc:"Need your PDF pages as images? Pick JPG, PNG, or WebP. Choose your DPI. Download a ZIP.",cat:"convert",icon:"🖼️",accent:"#f59e0b",href:"/tools/pdf-image-convert",live:true},
+  {name:"Rotate PDF",desc:"Scanned something sideways? Fix it. Rotate any page 90°, 180°, or 270° — one page or all of them.",cat:"organize",icon:"🔄",accent:"#3b82f6",href:"/tools/pdf-rotate"},
+  {name:"Remove Pages",desc:"Page 7 has your salary and page 13 is blank. Delete them. See thumbnails before you commit.",cat:"organize",icon:"🗑️",accent:"#ef4444",href:"/tools/pdf-remove-pages"},
+  {name:"Organize PDF",desc:"Drag pages around like sticky notes. Move page 12 to the front, page 3 to the back. Visual and fast.",cat:"organize",icon:"📑",accent:"#8b5cf6",href:"/tools/pdf-organize"},
+  {name:"Extract Pages",desc:"Just need pages 4, 7, and 11–15? Pull them into a clean new PDF without touching the rest.",cat:"organize",icon:"📤",accent:"#f59e0b",href:"/tools/pdf-extract"},
+  {name:"Repair PDF",desc:"PDF won't open? Corrupted in transit? Our repair tool recovers what it can from damaged files.",cat:"optimize",icon:"🔧",accent:"#f59e0b",href:"/tools/pdf-repair"},
+  {name:"OCR PDF",desc:"Turn scanned documents into searchable, selectable text. Copy that paragraph instead of retyping it.",cat:"optimize",icon:"👁️",accent:"#8b5cf6",href:"/tools/pdf-ocr"},
+  {name:"PDF to Word",desc:"Need to edit a PDF like a Word doc? Convert it. Layout, fonts, and images come through clean.",cat:"convert",icon:"📝",accent:"#3b82f6",href:"/tools/pdf-to-word"},
+  {name:"PDF to Excel",desc:"That table buried in a PDF report? Extract it straight into a spreadsheet. No more manual retyping.",cat:"convert",icon:"📊",accent:"#008751",href:"/tools/pdf-to-excel"},
+  {name:"PDF to PowerPoint",desc:"Boss sent the deck as a PDF? Convert it back to editable slides in seconds.",cat:"convert",icon:"📽️",accent:"#ef4444",href:"/tools/pdf-to-ppt"},
+  {name:"Word to PDF",desc:"Your .docx looks different on their computer. Convert to PDF — it looks identical everywhere.",cat:"convert",icon:"📄",accent:"#3b82f6",href:"/tools/word-to-pdf"},
+  {name:"Image to PDF",desc:"Combine photos, receipts, or scans into one clean PDF. Set page size, orientation, and margins.",cat:"convert",icon:"🎨",accent:"#ec4899",href:"/tools/pdf-image-convert",live:true},
+  {name:"Excel to PDF",desc:"Spreadsheet needs to be a PDF for the board? Convert it with all formatting and formulas intact.",cat:"convert",icon:"📈",accent:"#008751",href:"/tools/excel-to-pdf"},
+  {name:"HTML to PDF",desc:"Save any webpage as a PDF. Paste the URL, get a perfectly rendered document. Great for receipts.",cat:"convert",icon:"🌐",accent:"#14b8a6",href:"/tools/html-to-pdf"},
+  {name:"Edit PDF",desc:"Add text directly on the page. Drop in images. Draw shapes. Change fonts and colors. Full editor.",cat:"edit",icon:"✏️",accent:"#8b5cf6",href:"/tools/pdf-edit"},
+  {name:"Add Watermark",desc:"Stamp 'CONFIDENTIAL' across every page, or add your logo. Control opacity, angle, and position.",cat:"edit",icon:"💧",accent:"#3b82f6",href:"/tools/pdf-watermark"},
+  {name:"Page Numbers",desc:"Report has 47 pages and no numbers? Add them. Pick the format, position, font, and starting number.",cat:"edit",icon:"🔢",accent:"#f59e0b",href:"/tools/pdf-page-numbers"},
+  {name:"Sign PDF",desc:"Draw your signature with your finger, type it, or upload an image. Looks professional. Legally valid.",cat:"edit",icon:"🖊️",accent:"#008751",href:"/tools/pdf-sign"},
+  {name:"Annotate PDF",desc:"Highlight the important parts, underline what needs attention, draw circles around problems. Comment freely.",cat:"edit",icon:"📌",accent:"#ef4444",href:"/tools/pdf-annotate"},
+  {name:"Crop PDF",desc:"Too much white space? Trim the margins. Or select just the area you need. Apply to one page or all.",cat:"edit",icon:"✂️",accent:"#14b8a6",href:"/tools/pdf-crop"},
+  {name:"Redact PDF",desc:"Permanently black out sensitive info — names, account numbers, addresses. Gone for good, not just hidden.",cat:"edit",icon:"██",accent:"#0c1117",href:"/tools/pdf-redact"},
+  {name:"Protect PDF",desc:"Lock your PDF with a password. Block printing, copying, or editing. You decide who can do what.",cat:"security",icon:"🔒",accent:"#008751",href:"/tools/pdf-password"},
+  {name:"Unlock PDF",desc:"Forgot the password on your own PDF? Remove it. Works instantly on files you have the right to unlock.",cat:"security",icon:"🔓",accent:"#f59e0b",href:"/tools/pdf-unlock"},
+  {name:"Compare PDF",desc:"Two versions of the same contract? See exactly what changed, side by side, word by word.",cat:"security",icon:"🔍",accent:"#3b82f6",href:"/tools/pdf-compare"},
 ];
 
-const grid = document.getElementById('toolGrid');
-
-function renderTools(filter = 'all') {
-  grid.innerHTML = '';
-  const filtered = filter === 'all' ? tools : tools.filter(t => t.cat === filter);
-
-  filtered.forEach((tool, i) => {
-    const card = document.createElement('a');
-    card.href = tool.href || '#';
-    card.className = 'tool-card' + (tool.live ? '' : ' coming-soon');
-    card.style.setProperty('--card-accent', tool.accent);
-    card.style.animationDelay = (i * 0.04) + 's';
-
-    card.innerHTML = `
-      <div class="tool-card-icon" style="background:${tool.accent}12; color:${tool.accent}">
-        ${tool.icon}
-      </div>
-      ${tool.live ? '<div class="badge-live">Live</div>' : ''}
+const grid=document.getElementById('toolGrid');
+function renderTools(f='all'){
+  grid.innerHTML='';
+  const list=f==='all'?tools:tools.filter(t=>t.cat===f);
+  list.forEach((t,i)=>{
+    const a=document.createElement('a');
+    a.href=t.href||'#';
+    a.className='tc-link'+(t.live?'':' soon');
+    a.style.setProperty('--card-accent',t.accent);
+    a.style.animationDelay=(i*0.035)+'s';
+    a.innerHTML=`
+      <div class="tc-icon" style="background:${t.accent}12;color:${t.accent}">${t.icon}</div>
+      ${t.live?'<div class="badge-live">Live</div>':''}
       <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
-      <h3>${tool.name}</h3>
-      <p>${tool.desc}</p>
-    `;
-
-    grid.appendChild(card);
+      <h3>${t.name}</h3>
+      <p>${t.desc}</p>`;
+    grid.appendChild(a);
   });
 }
-
-function filterTools(cat) {
-  document.querySelectorAll('.filter-btn').forEach(b => {
-    b.classList.toggle('active', b.dataset.cat === cat);
-  });
-  renderTools(cat);
+function filterTools(c){
+  document.querySelectorAll('.f-btn').forEach(b=>b.classList.toggle('on',b.dataset.cat===c));
+  renderTools(c);
 }
-
-// Initial render
 renderTools();
 </script>
-
 </body>
 </html>

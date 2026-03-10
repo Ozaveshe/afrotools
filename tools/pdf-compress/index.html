@@ -1,16 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Compress PDF — Reduce File Size Free, No Limits | AfroTools</title>
-<meta name="description" content="Compress PDF files and reduce size by up to 80%. 100% free, no limits, no signup. Files never leave your browser.">
-<link rel="canonical" href="https://afrotools.com/tools/pdf-compress">
-<script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compress PDF — Reduce File Size Free | AfroTools</title>
+  <meta name="description" content="Compress PDF files by up to 80%%. Free, no limits, no signup. Files never leave your browser.">
+  <link rel="canonical" href="https://afrotools.com/tools/pdf-compress">
+  <meta property="og:site_name" content="AfroTools">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/tokens.css">
+  <link rel="stylesheet" href="/assets/css/global.css">
+  <script src="/assets/js/components/navbar.js" defer></script>
+  <script src="/assets/js/components/footer.js" defer></script>
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <style>
+    .privacy-bar{background:var(--_dark-800,#0a1a10);padding:9px 20px;text-align:center}
+    .privacy-bar p{max-width:1200px;margin:0 auto;font-size:.75rem;font-weight:500;color:rgba(255,255,255,.6);display:flex;align-items:center;justify-content:center;gap:8px}
+    .privacy-bar strong{color:#fff}
+    .privacy-bar .sh{width:18px;height:18px;background:#008751;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+    .privacy-bar .sh svg{width:10px;height:10px}
+    .crumb{max-width:1200px;margin:0 auto;padding:14px 20px 0;font-size:.75rem;font-weight:500;color:#9ca3af}
+    .crumb a{color:#9ca3af;text-decoration:none}.crumb a:hover{color:#008751}
+    .crumb span{margin:0 4px}
+    h1,h2,h3,h4{text-transform:none;letter-spacing:normal}
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
@@ -560,31 +577,15 @@ body {
   .comp-arrow { margin: 0 auto; transform: rotate(90deg); }
   .features { grid-template-columns: 1fr 1fr; }
 }
-</style>
+
+  </style>
 </head>
 <body>
+  <div class="privacy-bar"><p><span class="sh"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>Your files <strong>never leave your browser</strong> — zero server uploads</p></div>
+  <afro-navbar></afro-navbar>
+  <nav class="crumb"><a href="/">Home</a><span>/</span><a href="/tools/pdf">PDF Tools</a><span>/</span>Compress PDF</nav>
+  <main class="main" style="max-width:740px;margin:0 auto;padding:48px 24px 80px">
 
-<!-- PRIVACY -->
-<div class="privacy-bar">
-  🔒 Your files <strong>never leave your browser</strong> — 100% client-side compression, zero server uploads
-</div>
-
-<!-- HEADER -->
-<header class="header">
-  <div class="header-inner">
-    <a href="/" class="logo">
-      <div class="logo-mark">AT</div>
-      <div class="logo-wordmark">Afro<span>Tools</span></div>
-    </a>
-    <a href="/tools/pdf" class="back-link">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
-      All PDF Tools
-    </a>
-  </div>
-</header>
-
-<!-- MAIN -->
-<main class="main">
   <div class="page-title">
     <h1><span class="accent">Compress</span> PDF</h1>
     <p>Reduce PDF file size by up to 80% while preserving quality. Free, unlimited, private.</p>
@@ -701,22 +702,18 @@ body {
       <p>Works on desktop, tablet, and mobile. Optimized for low-bandwidth Africa.</p>
     </div>
   </div>
-</main>
 
-<!-- PROGRESS -->
-<div class="progress-overlay" id="progressOverlay">
+  </main>
+  <afro-footer></afro-footer>
+  <div class="progress-overlay" id="progressOverlay">
   <div class="progress-card">
     <div class="spinner"></div>
     <h3 id="progressTitle">Compressing...</h3>
     <p id="progressSub">This may take a moment</p>
     <div class="pbar-track"><div class="pbar-fill" id="pbar"></div></div>
   </div>
-</div>
-
-<!-- TOAST -->
-<div class="toast" id="toast"></div>
-
-<script>
+  <div class="toast" id="toast"></div>
+  <script>
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
 let pdfFiles = [];
@@ -987,7 +984,7 @@ function showToast(msg, err = false) {
   t.classList.add('active');
   setTimeout(() => t.classList.remove('active'), 4000);
 }
-</script>
 
+  </script>
 </body>
 </html>

@@ -1,16 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PDF to Image & Image to PDF — Free, No Limits | AfroTools</title>
-<meta name="description" content="Convert PDF pages to JPG/PNG images or combine images into a PDF. 100% free, no limits, no signup. Files never leave your browser.">
-<link rel="canonical" href="https://afrotools.com/tools/pdf-image-convert">
-<script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF to Image & Image to PDF — Free | AfroTools</title>
+  <meta name="description" content="Convert PDF pages to JPG/PNG/WebP or combine images into a PDF. Free, no limits. Files never leave your browser.">
+  <link rel="canonical" href="https://afrotools.com/tools/pdf-image-convert">
+  <meta property="og:site_name" content="AfroTools">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/tokens.css">
+  <link rel="stylesheet" href="/assets/css/global.css">
+  <script src="/assets/js/components/navbar.js" defer></script>
+  <script src="/assets/js/components/footer.js" defer></script>
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <style>
+    .privacy-bar{background:var(--_dark-800,#0a1a10);padding:9px 20px;text-align:center}
+    .privacy-bar p{max-width:1200px;margin:0 auto;font-size:.75rem;font-weight:500;color:rgba(255,255,255,.6);display:flex;align-items:center;justify-content:center;gap:8px}
+    .privacy-bar strong{color:#fff}
+    .privacy-bar .sh{width:18px;height:18px;background:#008751;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+    .privacy-bar .sh svg{width:10px;height:10px}
+    .crumb{max-width:1200px;margin:0 auto;padding:14px 20px 0;font-size:.75rem;font-weight:500;color:#9ca3af}
+    .crumb a{color:#9ca3af;text-decoration:none}.crumb a:hover{color:#008751}
+    .crumb span{margin:0 4px}
+    h1,h2,h3,h4{text-transform:none;letter-spacing:normal}
+
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --green:#008751;--green-l:#00a863;--green-d:#006b40;--green-bg:#eefbf3;
@@ -20,21 +37,21 @@
   --red:#ef4444;--orange:#f59e0b;--blue:#3b82f6;--purple:#8b5cf6;
   --radius:14px;--radius-sm:10px;
 }
-body{font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased}
+
 
 /* HEADER */
-.header{background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
-.header-inner{max-width:1000px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:60px}
-.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
-.logo-mark{width:34px;height:34px;background:var(--green);border-radius:9px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:12px;box-shadow:0 2px 8px rgba(0,135,81,.3)}
-.logo-wm{font-weight:800;font-size:19px;color:var(--dark)}.logo-wm span{color:var(--green)}
-.back-link{font-size:13px;font-weight:600;color:var(--text2);text-decoration:none;display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;transition:.2s}
-.back-link:hover{background:var(--green-bg);color:var(--green)}
-.back-link svg{width:16px;height:16px}
+
+
+
+
+
+
+
+
 
 /* PRIVACY */
-.priv{background:var(--dark);padding:8px 24px;text-align:center;font-size:12.5px;color:rgba(255,255,255,.7)}
-.priv strong{color:#fff}
+
+
 
 /* MAIN */
 .main{max-width:800px;margin:0 auto;padding:48px 24px 80px}
@@ -161,20 +178,15 @@ input.opt-num:focus{border-color:var(--green)}
   .mode-btn{padding:8px 18px;font-size:13px}
   .feats{grid-template-columns:1fr 1fr}
 }
-</style>
+
+  </style>
 </head>
 <body>
+  <div class="privacy-bar"><p><span class="sh"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>Your files <strong>never leave your browser</strong> — zero server uploads</p></div>
+  <afro-navbar></afro-navbar>
+  <nav class="crumb"><a href="/">Home</a><span>/</span><a href="/tools/pdf">PDF Tools</a><span>/</span>PDF ↔ Image</nav>
+  <main class="main" style="max-width:800px;margin:0 auto;padding:48px 24px 80px">
 
-<div class="priv">🔒 Your files <strong>never leave your browser</strong> — 100% client-side processing, zero server uploads</div>
-
-<header class="header">
-  <div class="header-inner">
-    <a href="/" class="logo"><div class="logo-mark">AT</div><div class="logo-wm">Afro<span>Tools</span></div></a>
-    <a href="/tools/pdf" class="back-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>All PDF Tools</a>
-  </div>
-</header>
-
-<main class="main">
   <div class="title">
     <h1>PDF <span class="a">⇄</span> Image Converter</h1>
     <p>Convert PDF pages to images or combine images into a PDF. Free, unlimited, private.</p>
@@ -318,21 +330,18 @@ input.opt-num:focus{border-color:var(--green)}
     <div class="feat"><div class="ic">⚡</div><h4>High DPI</h4><p>Up to 300 DPI output for print-quality images.</p></div>
     <div class="feat"><div class="ic">📱</div><h4>Any Device</h4><p>Desktop, tablet, mobile. Optimized for Africa.</p></div>
   </div>
-</main>
 
-<!-- PROGRESS -->
-<div class="prog-ov" id="progOv">
+  </main>
+  <afro-footer></afro-footer>
+  <div class="prog-ov" id="progOv">
   <div class="prog-card">
     <div class="spin"></div>
     <h3 id="progTitle">Converting...</h3>
     <p id="progSub">This may take a moment</p>
     <div class="pbt"><div class="pbf" id="pbf"></div></div>
   </div>
-</div>
-
-<div class="toast" id="toast"></div>
-
-<script>
+  <div class="toast" id="toast"></div>
+  <script>
 pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
 let mode='pdf2img';
@@ -722,7 +731,7 @@ function showProg(t,s){document.getElementById('progTitle').textContent=t;docume
 function updProg(p){document.getElementById('pbf').style.width=p+'%'}
 function hideProg(){document.getElementById('progOv').classList.remove('active')}
 function showToast(m,e){const t=document.getElementById('toast');t.textContent=m;t.className='toast'+(e?' error':'');t.classList.add('active');setTimeout(()=>t.classList.remove('active'),4000)}
-</script>
 
+  </script>
 </body>
 </html>
