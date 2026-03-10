@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — AfroTools</title>
+  <meta name="description" content="Get in touch with AfroTools. Report errors, request tools, or explore advertising and partnership opportunities.">
+  <meta property="og:title" content="Contact — AfroTools">
+  <meta property="og:description" content="Get in touch with AfroTools. Report errors, request tools, or explore advertising and partnership opportunities.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://afrotools.com/contact">
+  <meta property="og:site_name" content="AfroTools">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://afrotools.com/contact">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      color: #1a1a1a;
+      background: #f8faf9;
+      line-height: 1.6;
+    }
+    a { color: inherit; }
+    .page-wrap { max-width: 1080px; margin: 0 auto; padding: 0 28px; }
+
+    /* ─── Hero banner reusable ─── */
+    .page-hero {
+      background: linear-gradient(135deg, #0d1f16 0%, #143826 100%);
+      padding: 72px 0 56px;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 80% 20%, rgba(0,135,81,.18) 0%, transparent 60%),
+                  radial-gradient(ellipse at 20% 80%, rgba(0,200,115,.1) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .page-hero .page-wrap { position: relative; z-index: 1; }
+    .hero-eyebrow {
+      font-size: .65rem; font-weight: 700;
+      letter-spacing: .18em; text-transform: uppercase;
+      color: #34d399; margin-bottom: 10px;
+    }
+    .hero-title {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 800; letter-spacing: -.02em;
+      line-height: 1.15; margin-bottom: 14px;
+    }
+    .hero-sub {
+      font-size: 1rem; color: #a7c4b5;
+      max-width: 540px; line-height: 1.7;
+    }
+
+    /* ─── Section defaults ─── */
+    .page-section { padding: 56px 0; }
+    .page-section + .page-section { border-top: 1px solid #e5e7eb; }
+    .section-title {
+      font-size: 1.35rem; font-weight: 800;
+      color: #111; margin-bottom: 8px;
+      letter-spacing: -.01em;
+    }
+    .section-sub {
+      font-size: .92rem; color: #6b7280;
+      margin-bottom: 28px; max-width: 520px;
+    }
+
+    /* ─── Tool grid placeholder (rendered by tool-registry.js) ─── */
+    #tool-grid { min-height: 200px; }
+
+    /* ─── CTA banner ─── */
+    .cta-banner {
+      background: linear-gradient(135deg, #008751 0%, #00a863 100%);
+      border-radius: 16px; padding: 40px 36px;
+      color: #fff; text-align: center;
+      margin: 48px 0;
+    }
+    .cta-banner h2 {
+      font-size: 1.4rem; font-weight: 800; margin-bottom: 10px;
+    }
+    .cta-banner p {
+      font-size: .92rem; color: rgba(255,255,255,.85); margin-bottom: 20px;
+    }
+    .cta-btn {
+      display: inline-block; padding: 12px 28px;
+      background: #fff; color: #008751;
+      border-radius: 8px; font-weight: 700;
+      font-size: .9rem; text-decoration: none;
+      transition: transform .15s, box-shadow .15s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,.15); }
+
+    /* ─── Info / text pages ─── */
+    .text-content { padding: 48px 0 64px; }
+    .text-content h2 {
+      font-size: 1.15rem; font-weight: 700;
+      color: #111; margin: 32px 0 10px;
+    }
+    .text-content h2:first-child { margin-top: 0; }
+    .text-content p, .text-content li {
+      font-size: .92rem; color: #374151;
+      line-height: 1.75; margin-bottom: 12px;
+    }
+    .text-content ul { padding-left: 20px; margin-bottom: 16px; }
+    .text-content a { color: #008751; text-decoration: underline; }
+
+    /* ─── Contact form ─── */
+    .contact-form { max-width: 520px; }
+    .form-group { margin-bottom: 18px; }
+    .form-group label {
+      display: block; font-size: .82rem;
+      font-weight: 600; color: #374151; margin-bottom: 6px;
+    }
+    .form-group input, .form-group textarea, .form-group select {
+      width: 100%; padding: 11px 14px;
+      border: 1.5px solid #d1d5db; border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .9rem; color: #1a1a1a;
+      background: #fff; outline: none;
+      transition: border-color .15s;
+    }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+      border-color: #008751;
+    }
+    .form-group textarea { resize: vertical; min-height: 120px; }
+    .form-submit {
+      padding: 12px 28px; background: #008751;
+      color: #fff; border: none; border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .9rem; font-weight: 700;
+      cursor: pointer; transition: background .15s;
+    }
+    .form-submit:hover { background: #00a863; }
+
+    /* ─── Country quick-links grid ─── */
+    .country-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px; margin-bottom: 32px;
+    }
+    .country-card {
+      display: flex; align-items: center; gap: 12px;
+      padding: 16px 18px; background: #fff;
+      border: 1.5px solid #e5e7eb; border-radius: 12px;
+      text-decoration: none; color: #111;
+      font-weight: 600; font-size: .92rem;
+      transition: border-color .15s, transform .15s;
+    }
+    .country-card:hover { border-color: #008751; transform: translateY(-2px); }
+    .country-flag { font-size: 1.5rem; }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 640px) {
+      .page-hero { padding: 52px 0 40px; }
+      .page-wrap { padding: 0 18px; }
+      .cta-banner { padding: 28px 20px; }
+    }
+  </style>
+  
+</head>
+<body>
+  <afro-navbar></afro-navbar>
+
+  
+  <div class="page-hero">
+    <div class="page-wrap">
+      <div class="hero-eyebrow">Contact</div>
+      <h1 class="hero-title">Get in Touch</h1>
+      <p class="hero-sub">Found an error in a calculator? Want to request a tool for your country? Have a business enquiry? We'd love to hear from you.</p>
+    </div>
+  </div>
+
+  <div class="page-section">
+    <div class="page-wrap">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start">
+        <div class="contact-form">
+          <form name="contact" method="POST" data-netlify="true">
+            <input type="hidden" name="form-name" value="contact">
+            <div class="form-group">
+              <label for="name">Your Name</label>
+              <input type="text" id="name" name="name" placeholder="Full name" required>
+            </div>
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" name="email" placeholder="your@email.com" required>
+            </div>
+            <div class="form-group">
+              <label for="subject">Subject</label>
+              <select id="subject" name="subject" required>
+                <option value="">Choose a topic...</option>
+                <option value="error">Report a Calculation Error</option>
+                <option value="request">Request a Tool / Country</option>
+                <option value="advertise">Advertising Enquiry</option>
+                <option value="partnership">Partnership / Collaboration</option>
+                <option value="other">Something Else</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" placeholder="Tell us what's on your mind..." required></textarea>
+            </div>
+            <button type="submit" class="form-submit">Send Message →</button>
+          </form>
+        </div>
+        <div>
+          <div style="background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:28px 24px;margin-bottom:20px">
+            <h3 style="font-size:1rem;font-weight:700;color:#111;margin-bottom:8px">📧 Email</h3>
+            <p style="font-size:.9rem;color:#374151"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2048454c4c4f604146524f544f4f4c530e434f4d">[email&#160;protected]</a></p>
+          </div>
+          <div style="background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:28px 24px;margin-bottom:20px">
+            <h3 style="font-size:1rem;font-weight:700;color:#111;margin-bottom:8px">🐛 Found a Bug?</h3>
+            <p style="font-size:.9rem;color:#374151;line-height:1.6">If a calculator gives wrong results, tell us the inputs you used and what the correct result should be. We'll fix it fast.</p>
+          </div>
+          <div style="background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:28px 24px">
+            <h3 style="font-size:1rem;font-weight:700;color:#111;margin-bottom:8px">🌍 Country Request</h3>
+            <p style="font-size:.9rem;color:#374151;line-height:1.6">We're building tools for all 54 African nations. Let us know which country and tool type you need most.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <afro-footer></afro-footer>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/
