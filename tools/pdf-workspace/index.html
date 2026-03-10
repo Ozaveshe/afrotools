@@ -337,34 +337,34 @@ function rotCur(){
 async function addPDFs(fl){
   if(!fl||!fl.length)return;showP("Adding pages...","");
   try{
-    /* Step 1: Build the current PDF state (applies reorder, deletions, rotations) */
     var curDoc=await buildPDF();
     var curBytes=await curDoc.save();
     var doc=await PDFLib.PDFDocument.load(curBytes,{ignoreEncryption:true});
     var insertAt=Math.min(sel+1,doc.getPageCount());
     var added=0;
-    /* Step 2: Copy pages from each new file and insert after selected page */
     for(var f=0;f<fl.length;f++){
-      if(!fl[f].name.toLowerCase().endsWith('.pdf')&&fl[f].type!=='application/pdf')continue;
-      pPr((f/fl.length)*80);
-      var ab=await fl[f].arrayBuffer();
-      var src=await PDFLib.PDFDocument.load(new Uint8Array(ab),{ignoreEncryption:true});
-      var pp=await doc.copyPages(src,src.getPageIndices());
-      for(var p=0;p<pp.length;p++){
-        doc.insertPage(insertAt+added,pp[p]);
-        added++;
+      try{
+        pPr((f/fl.length)*80);
+        var ab=await fl[f].arrayBuffer();
+        var src=await PDFLib.PDFDocument.load(new Uint8Array(ab),{ignoreEncryption:true});
+        var pp=await doc.copyPages(src,src.getPageIndices());
+        for(var p=0;p<pp.length;p++){
+          doc.insertPage(insertAt+added,pp[p]);
+          added++;
+        }
+      }catch(fe){
+        toast("Skipped: "+fl[f].name+" — not a valid PDF",1);
       }
     }
-    if(!added){hideP();toast("No valid PDF files found",1);return;}
-    /* Step 3: Save as new base PDF and reset state cleanly */
+    if(!added){hideP();toast("Could not add any pages",1);return;}
     pB=new Uint8Array(await doc.save());
     var nc=doc.getPageCount();
     po=[];for(var i=0;i<nc;i++)po.push(i);
-    pr={};/* rotations already baked into buildPDF output */
+    pr={};
     sel=Math.min(insertAt,nc-1);
     th={};await genTh();rSB();rMain();hideP();
-    toast(added+" page(s) inserted after page "+insertAt);
-  }catch(e){hideP();toast("Add PDF error: "+e.message,1);console.error("addPDFs error:",e)}
+    toast(added+" page(s) added after page "+insertAt);
+  }catch(e){hideP();toast("Add PDF error: "+e.message,1)}
 }
 
 var spP={};
