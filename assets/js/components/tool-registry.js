@@ -201,7 +201,7 @@ var AFRO_TOOLS = [
   { id: 'za-dividend-tax', name: 'SA Dividends Tax Calculator', icon: '🇿🇦', desc: 'SARS dividends tax 20% with treaty exemptions and STC credits.', href: '/south-africa/za-dividends', category: 'financial', tier: 'T2', status: 'planned', phase: 'Phase 2', countries: ['ZA'], revenue: 'Freemium', estTraffic: 2500, estRevenue: 75, priority: 76 },
   { id: 'ng-wht', name: 'Nigeria WHT Calculator', icon: '🇳🇬', desc: 'NTA 2026 Withholding Tax rates on dividends, rents, professional fees.', href: '/nigeria/ng-wht', category: 'financial', tier: 'T2', status: 'planned', phase: 'Phase 2', countries: ['NG'], revenue: 'Freemium', estTraffic: 3000, estRevenue: 90, priority: 78 },
   { id: 'ke-wht', name: 'Kenya WHT Calculator', icon: '🇰🇪', desc: 'KRA withholding tax rates on various income types.', href: '/kenya/ke-wht', category: 'financial', tier: 'T2', status: 'planned', phase: 'Phase 2', countries: ['KE'], revenue: 'Freemium', estTraffic: 2500, estRevenue: 75, priority: 76 },
-  { id: 'transfer-pricing', name: 'Transfer Pricing Tool', icon: '🏢', desc: 'Arms-length pricing checker for African multinationals. Premium audit report.', href: '/tools/transfer-pricing', category: 'financial', tier: 'T1', status: 'planned', phase: 'Phase 2', countries: ['ALL'], revenue: 'Premium report', estTraffic: 2000, estRevenue: 400, priority: 80 },
+  { id: 'transfer-pricing', name: 'Transfer Pricing Tool', icon: '🏢', desc: 'Arm's length pricing checker for African multinationals. Premium audit report.', href: '/tools/transfer-pricing', category: 'financial', tier: 'T1', status: 'planned', phase: 'Phase 2', countries: ['ALL'], revenue: 'Premium report', estTraffic: 2000, estRevenue: 400, priority: 80 },
   { id: 'za-uif', name: 'SA UIF Benefits Calculator', icon: '🇿🇦', desc: 'Calculate UIF payout for retrenchment, illness, maternity. SARS 2026.', href: '/south-africa/za-uif', category: 'financial', tier: 'T2', status: 'planned', phase: 'Phase 2', countries: ['ZA'], revenue: 'Freemium', estTraffic: 5000, estRevenue: 150, priority: 82 },
   { id: 'investment-return', name: 'Investment Return Calculator', icon: '📈', desc: 'Simple/compound interest, CAGR. African market returns benchmark.', href: '/tools/investment-return', category: 'financial', tier: 'T2', status: 'planned', phase: 'Phase 2', countries: ['ALL'], revenue: 'Freemium', estTraffic: 6000, estRevenue: 150, priority: 80 },
   { id: 'crypto-tax', name: 'Crypto Tax Calculator', icon: '₿', desc: 'CGT on crypto for NG, KE, ZA, GH. NTA 2026 digital asset rules.', href: '/tools/crypto-tax', category: 'financial', tier: 'T1', status: 'planned', phase: 'Phase 2', countries: ['NG', 'KE', 'ZA', 'GH'], revenue: 'Premium PDF', estTraffic: 8000, estRevenue: 400, priority: 86 },
@@ -338,18 +338,18 @@ var AFRO_TOOLS = [
 // CATEGORY DEFINITIONS
 // ═══════════════════════════════════════════════════════════
 var AFRO_CATEGORIES = {
-  'financial':        { name: 'Financial & Tax',          color: '#008751', bg: '#eaf5ef' },
-  'document-pdf':     { name: 'Document & PDF',           color: '#3b82f6', bg: '#eff6ff' },
-  'developer':        { name: 'Developer Tools',          color: '#8b5cf6', bg: '#ede9fe' },
-  'image-design':     { name: 'Image & Design',           color: '#ec4899', bg: '#fdf2f8' },
-  'education':        { name: 'Education',                color: '#f59e0b', bg: '#fef3c7' },
-  'health':           { name: 'Agriculture & Health',     color: '#0f766e', bg: '#ccfbf1' },
-  'african':          { name: 'Uniquely African',         color: '#dc2626', bg: '#fef2f2' },
-  'data-productivity':{ name: 'Data & Productivity',      color: '#6366f1', bg: '#eef2ff' },
-  'language':         { name: 'Language & Translation',   color: '#a855f7', bg: '#faf5ff' },
-  'engineering':      { name: 'Engineering & CAD',        color: '#78716c', bg: '#f5f5f4' },
-  'ecommerce':        { name: 'E-Commerce & Business',    color: '#ea580c', bg: '#fff7ed' },
-  'legal':            { name: 'Legal & Government',       color: '#0369a1', bg: '#e0f2fe' },
+  'financial':         { name: 'Salary & Tax',            icon: '💰', color: '#008751', bg: '#eaf5ef', href: '/salary-tax',        desc: 'PAYE for all 54 countries. Real tax tables from FIRS, KRA, GRA, SARS, ERCA.' },
+  'document-pdf':      { name: 'Document & PDF',          icon: '📄', color: '#3b82f6', bg: '#eff6ff', href: '/tools/pdf-workspace',desc: 'Complete PDF workspace: merge, split, compress, watermark, password-protect and more.' },
+  'image-design':      { name: 'Image & Design',          icon: '🖼️', color: '#ec4899', bg: '#fdf2f8', href: '/tools/image-tools',  desc: 'Compress, resize, convert. QR generator. Passport photos. African templates.' },
+  'developer':         { name: 'Developer Tools',         icon: '⌨️', color: '#8b5cf6', bg: '#ede9fe', href: '/tools/dev-tools',    desc: 'Color picker, JSON/CSV converter, hash generator, Base64, regex tester, JWT decoder.' },
+  'education':         { name: 'Education',               icon: '🎓', color: '#f59e0b', bg: '#fef3c7', href: '/education',          desc: 'GPA/CGPA (WAEC, KCSE, Matric), student loans, university fees. African curricula.' },
+  'health':            { name: 'Health & Agriculture',    icon: '🏥', color: '#0f766e', bg: '#ccfbf1', href: '/health',             desc: 'SHIF/NHIS calculators, BMI, pregnancy due date, crop planner, market prices.' },
+  'ecommerce':         { name: 'VAT & Business Tax',      icon: '🧾', color: '#ea580c', bg: '#fff7ed', href: '/vat-business-tax',   desc: 'VAT calculators for all 54 countries. Nigeria 7.5%, Kenya 16%, SA 15%, Egypt 14%.' },
+  'legal':             { name: 'Mortgage & Property',     icon: '🏠', color: '#0369a1', bg: '#e0f2fe', href: '/mortgage',           desc: 'Mortgage repayment, stamp duty, transfer fees. Real rates per country.' },
+  'data-productivity': { name: 'Business & ROI',          icon: '📈', color: '#6366f1', bg: '#eef2ff', href: '/business-roi',       desc: 'Break-even, profit margin, invoice builder, payroll cost, startup estimator.' },
+  'language':          { name: 'Language & Translation',  icon: '🌍', color: '#a855f7', bg: '#faf5ff', href: '/language',           desc: 'AfroTranslate — 10+ African languages. Yoruba, Swahili, Amharic, Zulu, Hausa.' },
+  'african':           { name: 'Uniquely African',        icon: '⚡', color: '#dc2626', bg: '#fef2f2', href: '/uniquely-african',   desc: 'Generator fuel calc, Japa cost calc, Ajo/Chama/Tontine, mobile money fees.' },
+  'engineering':       { name: 'Engineering & CAD',       icon: '🏗️', color: '#78716c', bg: '#f5f5f4', href: '/engineering',        desc: 'Solar panel sizing, structural calculator, floor plan designer. KEBS/SABS standards.' },
 };
 
 // ═══════════════════════════════════════════════════════════

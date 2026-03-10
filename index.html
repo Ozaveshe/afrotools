@@ -13,6 +13,10 @@
   <meta property="og:title" content="AfroTools — Africa's Everything Platform">
   <meta property="og:description" content="120+ free tools built for Africa. PAYE tax, PDF editing, image tools, dev tools, QR codes and more. All 54 countries. Always free.">
   <meta property="og:image" content="https://afrotools.com/assets/img/og-home.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://afrotools.com/assets/img/og-home.png">
   <meta property="og:locale" content="en_US">
   <meta property="og:site_name" content="AfroTools">
   <meta name="twitter:card" content="summary_large_image">
@@ -30,6 +34,7 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/tokens.css">
   <link rel="stylesheet" href="/assets/css/global.css">
+  <script src="/assets/js/components/tool-registry.js"></script>
   <script src="/assets/js/components/navbar.js" defer></script>
   <script src="/assets/js/components/footer.js" defer></script>
 
@@ -110,6 +115,58 @@
       cursor: pointer; white-space: nowrap; transition: background 0.15s;
     }
     .hero-search-btn:hover { background: #006940; }
+
+    /* ── SEARCH DROPDOWN ── */
+    .hero-search-wrap {
+      position: relative; max-width: 480px;
+    }
+    .hero-search {
+      max-width: 100%;
+    }
+    .search-dropdown {
+      display: none;
+      position: absolute; top: calc(100% + 6px); left: 0; right: 0;
+      background: #fff; border-radius: 10px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.22), 0 2px 8px rgba(0,0,0,0.12);
+      overflow: hidden; z-index: 200;
+      border: 1px solid #E5E7EB;
+    }
+    .search-dropdown.open { display: block; }
+    .sd-item {
+      display: flex; align-items: center; gap: 11px;
+      padding: 11px 14px; cursor: pointer;
+      transition: background 0.1s; text-decoration: none; color: inherit;
+    }
+    .sd-item:hover, .sd-item.sd-focused { background: #F0FDF4; }
+    .sd-icon {
+      width: 34px; height: 34px; border-radius: 8px; flex-shrink: 0;
+      background: linear-gradient(135deg,#0d2517,#0a2a18);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+    }
+    .sd-body { flex: 1; min-width: 0; }
+    .sd-name {
+      font-size: 0.83rem; font-weight: 700; color: #0f172a;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .sd-name mark { background: rgba(0,135,81,0.15); color: #008751; border-radius: 2px; font-weight: 800; }
+    .sd-meta { font-size: 0.68rem; color: #9CA3AF; margin-top: 1px; }
+    .sd-badge {
+      font-size: 0.58rem; font-weight: 700; letter-spacing: 0.05em;
+      text-transform: uppercase; padding: 2px 6px; border-radius: 3px;
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .sd-badge-live { background: #DCFCE7; color: #166534; }
+    .sd-badge-soon { background: #F3F4F6; color: #9CA3AF; }
+    .sd-footer {
+      padding: 9px 14px; border-top: 1px solid #F3F4F6;
+      font-size: 0.76rem; font-weight: 600; color: #008751;
+      cursor: pointer; display: flex; align-items: center; gap: 5px;
+    }
+    .sd-footer:hover { background: #F0FDF4; }
+    .sd-empty {
+      padding: 18px 14px; font-size: 0.82rem; color: #9CA3AF; text-align: center;
+    }
     /* Stats panel */
     .hero-stats {
       display: flex; flex-direction: column; gap: 0;
@@ -446,10 +503,13 @@
         <a href="#tools" class="btn-green">Explore Tools →</a>
         <a href="#countries" class="btn-ghost">Browse 54 Countries</a>
       </div>
-      <div class="hero-search" role="search">
-        <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.4"/><line x1="9.5" y1="9.5" x2="13" y2="13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
-        <input type="search" placeholder="e.g. Nigeria PAYE calculator, PDF merge, QR code…" aria-label="Search tools">
-        <button class="hero-search-btn" type="button">Search</button>
+      <div class="hero-search-wrap">
+        <div class="hero-search" role="search">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.4"/><line x1="9.5" y1="9.5" x2="13" y2="13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          <input type="text" id="hero-search-input" placeholder="e.g. Nigeria PAYE, PDF merge, currency…" aria-label="Search tools" autocomplete="off" spellcheck="false">
+          <button class="hero-search-btn" type="button" id="hero-search-btn">Search</button>
+        </div>
+        <div class="search-dropdown" id="search-dropdown" role="listbox"></div>
       </div>
       <div class="hero-ticker">
         <span class="ticker-dot"></span>
@@ -808,82 +868,10 @@
 <section class="sec" id="categories" aria-label="All tool categories">
   <div class="wrap">
     <div class="eyebrow">What We Build</div>
-    <h2 class="sec-title">12 Categories. 54 Countries. 120+ Tools.</h2>
+    <h2 class="sec-title" id="cats-heading">12 Categories. 54 Countries. 120+ Tools.</h2>
     <p class="sec-sub">AfroTools is not a financial calculator site. It's Africa's digital workspace — every tool you reach for, built for African context, free forever.</p>
 
-    <div class="cats-grid">
-      <a href="/salary-tax" class="cat-card rv">
-        <div class="cat-icon">💰</div>
-        <div class="cat-name">Salary &amp; Tax</div>
-        <div class="cat-desc">PAYE for all 54 countries. Real tax tables from FIRS, KRA, GRA, SARS, ERCA.</div>
-        <div class="cat-count live">● 8 Countries Available</div>
-      </a>
-      <a href="/tools/pdf-workspace" class="cat-card rv d1">
-        <div class="cat-icon">📄</div>
-        <div class="cat-name">Document &amp; PDF</div>
-        <div class="cat-desc">Complete PDF workspace: merge, split, compress, watermark, password-protect and more.</div>
-        <div class="cat-count live">● PDF Workspace Live</div>
-      </a>
-      <a href="/tools/image-compress" class="cat-card rv d2">
-        <div class="cat-icon">🖼️</div>
-        <div class="cat-name">Image &amp; Design</div>
-        <div class="cat-desc">Compress, resize, convert. QR generator. Passport photos. African templates.</div>
-        <div class="cat-count live">● New — Just Added</div>
-      </a>
-      <a href="/tools/color-picker" class="cat-card rv d3">
-        <div class="cat-icon">⌨️</div>
-        <div class="cat-name">Developer Tools</div>
-        <div class="cat-desc">Color picker, JSON/CSV converter, hash generator, Base64, regex tester, JWT decoder.</div>
-        <div class="cat-count" style="color:#9CA3AF">Coming Soon</div>
-      </a>
-      <a href="/education" class="cat-card rv d4">
-        <div class="cat-icon">🎓</div>
-        <div class="cat-name">Education</div>
-        <div class="cat-desc">GPA/CGPA (WAEC, KCSE, Matric), student loans, university fees. African curricula.</div>
-        <div class="cat-count">Coming Soon</div>
-      </a>
-      <a href="/health-insurance" class="cat-card rv d5">
-        <div class="cat-icon">🏥</div>
-        <div class="cat-name">Health &amp; Agriculture</div>
-        <div class="cat-desc">SHIF/NHIS calculators, BMI, pregnancy due date, crop planner, market prices.</div>
-        <div class="cat-count">Coming Soon</div>
-      </a>
-      <a href="/vat-business-tax" class="cat-card rv d6">
-        <div class="cat-icon">🧾</div>
-        <div class="cat-name">VAT &amp; Business Tax</div>
-        <div class="cat-desc">VAT calculators for all 54 countries. Nigeria 7.5%, Kenya 16%, SA 15%, Egypt 14%.</div>
-        <div class="cat-count">Coming Soon</div>
-      </a>
-      <a href="/mortgage" class="cat-card rv d7">
-        <div class="cat-icon">🏠</div>
-        <div class="cat-name">Mortgage &amp; Property</div>
-        <div class="cat-desc">Mortgage repayment, stamp duty, transfer fees. Real rates per country.</div>
-        <div class="cat-count">Coming Soon</div>
-      </a>
-      <a href="/business-roi" class="cat-card rv">
-        <div class="cat-icon">📈</div>
-        <div class="cat-name">Business &amp; ROI</div>
-        <div class="cat-desc">Break-even, profit margin, invoice builder, payroll cost, startup estimator.</div>
-        <div class="cat-count">Coming Soon</div>
-      </a>
-      <a href="#" class="cat-card rv d1">
-        <div class="cat-icon">🌍</div>
-        <div class="cat-name">Language &amp; Translation</div>
-        <div class="cat-desc">AfroTranslate — 10+ African languages. Yoruba, Swahili, Amharic, Zulu, Hausa.</div>
-        <div class="cat-count">Coming Soon</div>
-      </a>
-      <a href="#" class="cat-card rv d2">
-        <div class="cat-icon">⚡</div>
-        <div class="cat-name">Uniquely African</div>
-        <div class="cat-desc">Generator fuel calc, Japa cost calc, Ajo/Chama/Tontine, mobile money fees.</div>
-        <div class="cat-count">Coming Soon</div>
-      </a>
-      <a href="#" class="cat-card rv d3">
-        <div class="cat-icon">🏗️</div>
-        <div class="cat-name">Engineering &amp; CAD</div>
-        <div class="cat-desc">Solar panel sizing, structural calculator, floor plan designer. KEBS/SABS standards.</div>
-        <div class="cat-count">Coming Soon</div>
-      </a>
+    <div class="cats-grid" id="cats-grid"></div>
     </div>
   </div>
 </section>
@@ -895,61 +883,10 @@
 <section class="sec--dark2 sec" id="coming-soon" aria-label="Coming soon">
   <div class="wrap">
     <div class="eyebrow eyebrow--lt">What's Next</div>
-    <h2 class="sec-title sec-title--lt">We're Just Getting Started.</h2>
+    <h2 class="sec-title sec-title--lt" id="pipeline-heading">We're Just Getting Started.</h2>
     <p class="sec-sub sec-sub--lt" style="margin-bottom:36px">New tools drop every week. Here's what's coming — get on the list to be first to know.</p>
 
-    <div class="phase-grid">
-      <div class="phase-card active rv">
-        <div class="phase-label active-lbl">● Available Now</div>
-        <div class="phase-title">Salary &amp; Tax</div>
-        <div class="phase-items" style="margin-top:10px">
-          <div class="phase-item done">Nigeria PAYE — FIRS 2025</div>
-          <div class="phase-item done">Kenya PAYE — Finance Act 2024</div>
-          <div class="phase-item done">Ghana, South Africa, Egypt</div>
-          <div class="phase-item done">Tanzania, Ethiopia, Rwanda</div>
-          <div class="phase-item done">PDF Workspace — 6 tools in one</div>
-          <div class="phase-item done">8 PAYE calculators live</div>
-          <div class="phase-item done">QR Code Generator</div>
-        </div>
-      </div>
-      <div class="phase-card rv d1">
-        <div class="phase-label">Coming Soon</div>
-        <div class="phase-title">More Countries &amp; Tools</div>
-        <div class="phase-items" style="margin-top:10px">
-          <div class="phase-item">Morocco, Uganda, Senegal PAYE</div>
-          <div class="phase-item">CV Builder — Africa-ready templates</div>
-          <div class="phase-item">Invoice Generator</div>
-          <div class="phase-item">Remittance fee comparator</div>
-          <div class="phase-item">Import duty calculator</div>
-          <div class="phase-item">Mobile money fee checker</div>
-          <div class="phase-item">VAT calculators — all 54 countries</div>
-        </div>
-      </div>
-      <div class="phase-card rv d2">
-        <div class="phase-label">Coming Later</div>
-        <div class="phase-title">Language &amp; Documents</div>
-        <div class="phase-items" style="margin-top:10px">
-          <div class="phase-item">AfroTranslate — Yoruba, Swahili, Amharic &amp; more</div>
-          <div class="phase-item">Legal document templates</div>
-          <div class="phase-item">AfroEditor — browser image editor</div>
-          <div class="phase-item">Mortgage calculators — all 54</div>
-          <div class="phase-item">Generator fuel vs solar ROI</div>
-          <div class="phase-item">USSD simulator</div>
-        </div>
-      </div>
-      <div class="phase-card rv d3">
-        <div class="phase-label">On the Horizon</div>
-        <div class="phase-title">The Full Platform</div>
-        <div class="phase-items" style="margin-top:10px">
-          <div class="phase-item">Payroll processor for employers</div>
-          <div class="phase-item">AfroDraw — browser CAD tool</div>
-          <div class="phase-item">Spreadsheet editor</div>
-          <div class="phase-item">Developer SQL playground</div>
-          <div class="phase-item">African language keyboard tools</div>
-          <div class="phase-item">Public API access</div>
-        </div>
-      </div>
-    </div>
+    <div class="phase-grid" id="phase-grid"></div>
 
     <div style="margin-top:32px;text-align:center">
       <a href="#newsletter" class="btn-green" style="display:inline-flex">Get notified when your tool launches →</a>
@@ -1125,13 +1062,178 @@
     setTimeout(() => { btn.textContent = 'Notify Me →'; btn.style.background = ''; }, 5000);
   });
 
-  // Search
-  function doSearch() {
-    const q = document.querySelector('.hero-search input')?.value?.trim();
-    if (q) window.location.href = '/search?q=' + encodeURIComponent(q);
-  }
-  document.querySelector('.hero-search-btn')?.addEventListener('click', doSearch);
-  document.querySelector('.hero-search input')?.addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
+  // ── HERO SEARCH WITH LIVE DROPDOWN ──
+  (function() {
+    var input    = document.getElementById('hero-search-input');
+    var dropdown = document.getElementById('search-dropdown');
+    var btn      = document.getElementById('hero-search-btn');
+    if (!input || !dropdown) return;
+
+    var CATEGORY_LABELS = {
+      'financial':'Salary & Tax','document-pdf':'PDF & Docs',
+      'image-design':'Image & Design','developer':'Dev Tools',
+      'education':'Education','health':'Health & Agri',
+      'african':'Uniquely African','data-productivity':'Data & Productivity',
+      'language':'Language','engineering':'Engineering',
+      'ecommerce':'VAT & Business','legal':'Mortgage & Property'
+    };
+
+    function esc(s) {
+      return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+    function escRe(s) { return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'); }
+
+    function highlight(text, tokens) {
+      var out = esc(text);
+      tokens.forEach(function(t) {
+        if (t.length < 2) return;
+        out = out.replace(new RegExp('(' + escRe(t) + ')', 'gi'), '<mark>$1</mark>');
+      });
+      return out;
+    }
+
+    function score(tool, tokens) {
+      var name = (tool.name||'').toLowerCase();
+      var blob = [tool.name, tool.desc, tool.category,
+        (tool.countries||[]).join(' '), CATEGORY_LABELS[tool.category]||''].join(' ').toLowerCase();
+      var s = 0;
+      tokens.forEach(function(t) {
+        if (name.split(' ').some(function(w){return w===t;})) s += 40;
+        else if (name.startsWith(t)) s += 30;
+        else if (name.includes(t)) s += 20;
+        else if (blob.includes(t)) s += 5;
+      });
+      return s;
+    }
+
+    function tokenise(q) {
+      return q.toLowerCase().split(/\s+/).filter(function(t){return t.length>0;});
+    }
+
+    function navigate(href) { window.location.href = href; }
+
+    function renderDropdown(q) {
+      if (!q || !window.AFRO_TOOLS) { closeDropdown(); return; }
+      var tokens = tokenise(q);
+      if (!tokens.length) { closeDropdown(); return; }
+
+      var results = AFRO_TOOLS
+        .map(function(t){ return {t:t, s:score(t,tokens)}; })
+        .filter(function(r){ return r.s > 0; })
+        .sort(function(a,b){
+          if (b.s !== a.s) return b.s - a.s;
+          var al = (a.t.status==='live'||a.t.status==='new') ? 1 : 0;
+          var bl = (b.t.status==='live'||b.t.status==='new') ? 1 : 0;
+          return bl - al;
+        })
+        .slice(0, 7);
+
+      if (!results.length) {
+        dropdown.innerHTML = '<div class="sd-empty">No tools found for "' + esc(q) + '"</div>';
+        dropdown.classList.add('open');
+        return;
+      }
+
+      var html = '';
+      results.forEach(function(r, i) {
+        var tool = r.t;
+        var isLive = tool.status === 'live' || tool.status === 'new';
+        var cat = CATEGORY_LABELS[tool.category] || tool.category;
+        var badge = isLive
+          ? '<span class="sd-badge sd-badge-live">● Live</span>'
+          : '<span class="sd-badge sd-badge-soon">Coming Soon</span>';
+        var tag = isLive ? 'a' : 'div';
+        var href = isLive ? ' href="' + tool.href + '"' : '';
+        html += '<' + tag + class_attr(i) + href + ' data-href="' + (tool.href||'') + '" data-live="' + isLive + '">'
+          + '<div class="sd-icon">' + esc(tool.icon||'🔧') + '</div>'
+          + '<div class="sd-body">'
+            + '<div class="sd-name">' + highlight(tool.name, tokens) + '</div>'
+            + '<div class="sd-meta">' + esc(cat) + '</div>'
+          + '</div>'
+          + badge
+          + '</' + tag + '>';
+      });
+
+      // "See all results" footer
+      html += '<div class="sd-footer" id="sd-see-all">See all results for "' + esc(q) + '" →</div>';
+
+      dropdown.innerHTML = html;
+      dropdown.classList.add('open');
+      focusIdx = -1;
+    }
+
+    function class_attr(i) {
+      return ' class="sd-item" role="option" tabindex="-1" data-idx="' + i + '"';
+    }
+
+    function closeDropdown() {
+      dropdown.classList.remove('open');
+      dropdown.innerHTML = '';
+      focusIdx = -1;
+    }
+
+    function doSearch() {
+      var q = input.value.trim();
+      if (q) window.location.href = '/search?q=' + encodeURIComponent(q);
+      else window.location.href = '/search';
+    }
+
+    // Keyboard nav
+    var focusIdx = -1;
+    input.addEventListener('keydown', function(e) {
+      var items = dropdown.querySelectorAll('.sd-item, #sd-see-all');
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        focusIdx = Math.min(focusIdx + 1, items.length - 1);
+        items.forEach(function(el,i){ el.classList.toggle('sd-focused', i===focusIdx); });
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        focusIdx = Math.max(focusIdx - 1, -1);
+        items.forEach(function(el,i){ el.classList.toggle('sd-focused', i===focusIdx); });
+        if (focusIdx === -1) input.focus();
+      } else if (e.key === 'Enter') {
+        if (focusIdx >= 0 && items[focusIdx]) {
+          var el = items[focusIdx];
+          if (el.id === 'sd-see-all') { doSearch(); }
+          else {
+            var href = el.getAttribute('href') || el.dataset.href;
+            if (href && el.dataset.live === 'true') navigate(href);
+            else doSearch();
+          }
+        } else { doSearch(); }
+      } else if (e.key === 'Escape') {
+        closeDropdown();
+      }
+    });
+
+    // Live input
+    var debounce;
+    input.addEventListener('input', function() {
+      clearTimeout(debounce);
+      var q = this.value.trim();
+      debounce = setTimeout(function(){ renderDropdown(q); }, 100);
+    });
+
+    // Click search btn
+    btn.addEventListener('click', doSearch);
+
+    // Click dropdown items
+    dropdown.addEventListener('click', function(e) {
+      var item = e.target.closest('.sd-item');
+      var footer = e.target.closest('#sd-see-all');
+      if (footer) { doSearch(); return; }
+      if (item) {
+        var href = item.getAttribute('href') || item.dataset.href;
+        if (href && item.dataset.live === 'true') navigate(href);
+        else doSearch();
+      }
+    });
+
+    // Close on outside click
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.hero-search-wrap')) closeDropdown();
+    });
+  })();
 
   // PAYE filter
   document.querySelectorAll('.f-btn').forEach(btn => {
@@ -1152,7 +1254,91 @@
   const obs = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); }});
   }, { threshold: 0.06 });
+  window._afroObs = obs;
   document.querySelectorAll('.rv').forEach(el => obs.observe(el));
+
+  // ══════════════════════════════════════════════════════
+  // DYNAMIC CATEGORIES — rendered from AFRO_CATEGORIES + AFRO_TOOLS
+  // ══════════════════════════════════════════════════════
+  (function renderCategories() {
+    var grid = document.getElementById('cats-grid');
+    if (!grid || typeof AFRO_CATEGORIES === 'undefined' || typeof AFRO_TOOLS === 'undefined') return;
+
+    // Update heading
+    var h = document.getElementById('cats-heading');
+    if (h) {
+      var total = AFRO_TOOLS.length;
+      var catCount = Object.keys(AFRO_CATEGORIES).length;
+      h.textContent = catCount + ' Categories. 54 Countries. ' + total + '+ Tools.';
+    }
+
+    // Count live/new tools per category
+    var liveCounts = {};
+    AFRO_TOOLS.forEach(function(t) {
+      if (t.status === 'live' || t.status === 'new') {
+        liveCounts[t.category] = (liveCounts[t.category] || 0) + 1;
+      }
+    });
+
+    var keys = Object.keys(AFRO_CATEGORIES);
+    var html = '';
+    keys.forEach(function(key, i) {
+      var cat = AFRO_CATEGORIES[key];
+      var count = liveCounts[key] || 0;
+      var delay = i > 0 ? ' d' + (i % 8) : '';
+      var countHtml = count > 0
+        ? '<div class="cat-count live">● ' + count + ' Tool' + (count === 1 ? '' : 's') + ' Available</div>'
+        : '<div class="cat-count">Coming Soon</div>';
+      var href = cat.href || '#';
+      html += '<a href="' + href + '" class="cat-card rv' + delay + '">'
+            + '<div class="cat-icon">' + cat.icon + '</div>'
+            + '<div class="cat-name">' + cat.name + '</div>'
+            + '<div class="cat-desc">' + cat.desc + '</div>'
+            + countHtml
+            + '</a>';
+    });
+    grid.innerHTML = html;
+
+    // Re-observe new cards for reveal animation
+    if (window._afroObs) grid.querySelectorAll('.rv').forEach(function(el) { window._afroObs.observe(el); });
+  })();
+
+  // ══════════════════════════════════════════════════════
+  // DYNAMIC PIPELINE — grouped by phase from AFRO_TOOLS
+  // ══════════════════════════════════════════════════════
+  (function renderPipeline() {
+    var grid = document.getElementById('phase-grid');
+    if (!grid || typeof AFRO_TOOLS === 'undefined') return;
+
+    var PHASES = [
+      { key: 'LIVE',    label: '● Available Now', title: 'Live Now',              cardClass: 'phase-card active rv', labelClass: 'phase-label active-lbl', done: true },
+      { key: 'Phase 1', label: 'Coming Soon',      title: 'All 54 PAYEs & VAT',   cardClass: 'phase-card rv d1',     labelClass: 'phase-label', done: false },
+      { key: 'Phase 2', label: 'Coming Later',     title: 'Documents & Finance',  cardClass: 'phase-card rv d2',     labelClass: 'phase-label', done: false },
+      { key: 'Phase 3', label: 'On the Horizon',   title: 'The Full Platform',    cardClass: 'phase-card rv d3',     labelClass: 'phase-label', done: false },
+    ];
+
+    // Group tools by phase, max 7 per card
+    var byPhase = {};
+    AFRO_TOOLS.forEach(function(t) { (byPhase[t.phase] = byPhase[t.phase] || []).push(t); });
+
+    var html = '';
+    PHASES.forEach(function(p) {
+      var tools = (byPhase[p.key] || []).slice(0, 7);
+      if (!tools.length && p.key !== 'LIVE') return;
+      var itemsHtml = tools.map(function(t) {
+        return '<div class="phase-item' + (p.done ? ' done' : '') + '">' + t.name + '</div>';
+      }).join('');
+      if (tools.length === 7) itemsHtml += '<div class="phase-item" style="color:#9CA3AF;font-style:italic">+ more tools…</div>';
+      html += '<div class="' + p.cardClass + '">'
+            + '<div class="' + p.labelClass + '">' + p.label + '</div>'
+            + '<div class="phase-title">' + p.title + '</div>'
+            + '<div class="phase-items" style="margin-top:10px">' + itemsHtml + '</div>'
+            + '</div>';
+    });
+    grid.innerHTML = html;
+
+    if (window._afroObs) grid.querySelectorAll('.rv').forEach(function(el) { window._afroObs.observe(el); });
+  })();
 </script>
 
 </body>
