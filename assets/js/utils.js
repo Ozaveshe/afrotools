@@ -160,7 +160,7 @@
   // ── AI API HELPER ──────────────────────────────────────────
   const ai = {
     /**
-     * Call Claude for AI analysis.
+     * Call Claude for AI analysis via Netlify serverless proxy.
      * Returns response text or throws.
      *
      * @param {string} prompt - The full prompt
@@ -172,17 +172,13 @@
         ? [...history, { role: 'user', content: prompt }]
         : [{ role: 'user', content: prompt }];
 
-      const body = {
-        model: 'claude-sonnet-4-6',
-        max_tokens: 1000,
-        messages,
-      };
+      const body = { messages };
 
       if (systemPrompt) {
         body.system = systemPrompt;
       }
 
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
+      const res = await fetch('/.netlify/functions/ai-advisor', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
@@ -190,7 +186,7 @@
 
       if (!res.ok) throw new Error(`API error: ${res.status}`);
       const data = await res.json();
-      return data.content?.[0]?.text || '';
+      return data.reply || '';
     },
   };
 
