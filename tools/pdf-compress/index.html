@@ -20,10 +20,10 @@
 <meta name="author" content="AfroTools">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/tokens.css">
-<link rel="stylesheet" href="/assets/css/global.css">
-<script src="/assets/js/components/navbar.js" defer></script>
-<script src="/assets/js/components/footer.js" defer></script>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 <style>
   :root {
@@ -504,7 +504,7 @@
           <span class="card-title">Result</span>
         </div>
         <div class="card-body">
-          <div id="resultContent" style="position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;">
+          <div id="resultContent" style="display:none;">
             <div class="size-info">
               <div><span class="size-label">Original:</span> <span id="originalSize"></span></div>
               <div><span class="size-label">Compressed:</span> <span id="compressedSize"></span></div>
@@ -527,15 +527,14 @@
       <div class="info-card">
         <div class="info-title">Quality Guide</div>
         <div class="info-text">
-          <strong>Screen:</strong> Best for email, web. 72 DPI.
+          Compresses PDF structure using object streams, strips metadata, and removes unused data.
           <br><br>
-          <strong>Ebook:</strong> Good balance. 150 DPI.
-          <br><br>
-          <strong>Print:</strong> Professional quality. 300 DPI.
+          <strong>Best results on:</strong> PDFs exported from Word, PowerPoint, or design tools with unoptimized internal structure.
           <ul style="margin-top:10px;">
-            <li>✓ Client-side compression</li>
+            <li>✓ Client-side processing</li>
             <li>✓ Instant results</li>
             <li>✓ No upload needed</li>
+            <li>✓ Lossless — no quality reduction</li>
           </ul>
         </div>
       </div>
@@ -626,40 +625,61 @@
     processingText.style.display = 'block';
     progressFill.style.width = '0%';
     resultCard.classList.add('on');
+    compressBtn.disabled = true;
 
     try {
       const arrayBuffer = await currentFile.arrayBuffer();
-      const pdf = await PDFLib.PDFDocument.load(arrayBuffer);
+      progressFill.style.width = '20%';
 
-      progressFill.style.width = '30%';
+      const pdf = await PDFLib.PDFDocument.load(arrayBuffer, { updateMetadata: false });
+      progressFill.style.width = '40%';
 
-      // Basic compression: remove metadata
-      pdf.setProducer('AfroTools Compressor');
-      pdf.setCreator('AfroTools');
+      // Strip all metadata for smaller file
+      pdf.setTitle('');
+      pdf.setAuthor('');
+      pdf.setSubject('');
+      pdf.setKeywords([]);
+      pdf.setProducer('');
+      pdf.setCreator('');
 
-      // Remove unused resources (simplified - pdf-lib doesn't have full compression)
-      // In production, would need more advanced compression techniques
-      const pdfBytes = await pdf.save();
+      progressFill.style.width = '60%';
+
+      // Save with object streams enabled (real structural compression)
+      const pdfBytes = await pdf.save({
+        useObjectStreams: true,
+        addDefaultPage: false,
+        objectsPerTick: 50,
+      });
 
       progressFill.style.width = '100%';
 
-      // Simulate additional compression by removing metadata
       compressedPdf = pdfBytes;
       const originalSize = currentFile.size;
       const compressedSize = compressedPdf.length;
       const savings = originalSize - compressedSize;
-      const savingsPercent = Math.round((savings / originalSize) * 100);
+      const savingsPercent = Math.max(0, Math.round((savings / originalSize) * 100));
 
       processingText.style.display = 'none';
       resultContent.style.display = 'block';
 
       document.getElementById('originalSize').textContent = formatFileSize(originalSize);
       document.getElementById('compressedSize').textContent = formatFileSize(compressedSize);
-      document.getElementById('savingsBadge').textContent = `Saved ${savingsPercent}% (${formatFileSize(savings)})`;
+
+      if (savings > 0) {
+        document.getElementById('savingsBadge').textContent = `Saved ${savingsPercent}% (${formatFileSize(savings)})`;
+        document.getElementById('savingsBadge').style.background = 'rgba(0, 135, 81, 0.15)';
+        document.getElementById('savingsBadge').style.color = '#1a5c3a';
+      } else {
+        document.getElementById('savingsBadge').textContent = 'File is already well-optimized — no further reduction possible';
+        document.getElementById('savingsBadge').style.background = 'rgba(245, 166, 35, 0.15)';
+        document.getElementById('savingsBadge').style.color = '#92400e';
+      }
 
     } catch (err) {
       processingText.innerHTML = '<div style="color:red;">✗ Error: ' + err.message + '</div>';
     }
+
+    compressBtn.disabled = false;
   });
 
   // Download function

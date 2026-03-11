@@ -20,10 +20,10 @@
 <meta name="author" content="AfroTools">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/tokens.css">
-<link rel="stylesheet" href="/assets/css/global.css">
-<script src="/assets/js/components/navbar.js" defer></script>
-<script src="/assets/js/components/footer.js" defer></script>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 <style>
   :root {
@@ -435,7 +435,7 @@
         </div>
         <div class="card-body">
           <div class="result-text" id="resultText"></div>
-          <div class="action-row" id="actionRow" style="position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;">
+          <div class="action-row" id="actionRow" style="display:none;">
             <button class="act-btn" id="downloadBtn">📥 Download</button>
           </div>
         </div>
@@ -543,9 +543,11 @@
       const margin = parseInt(document.getElementById('margin').value);
       const pageCount = pages.length;
 
+      // Embed font for proper text width calculation
+      const font = await pdf.embedFont(PDFLib.StandardFonts.Helvetica);
+
       pages.forEach((page, index) => {
         const { width, height } = page.getSize();
-        let x, y;
         const pageNum = startNum + index;
 
         let text;
@@ -559,33 +561,28 @@
           text = toRoman(pageNum).toUpperCase();
         }
 
-        if (position === 'bottom-center') {
-          x = width / 2;
-          y = margin;
-        } else if (position === 'bottom-left') {
+        const textWidth = font.widthOfTextAtSize(text, fontSize);
+        let x, y;
+
+        // Vertical position
+        y = position.startsWith('top') ? height - margin : margin;
+
+        // Horizontal position — manually center/right-align since pdf-lib has no align
+        if (position.includes('center')) {
+          x = (width - textWidth) / 2;
+        } else if (position.includes('right')) {
+          x = width - margin - textWidth;
+        } else {
           x = margin;
-          y = margin;
-        } else if (position === 'bottom-right') {
-          x = width - margin;
-          y = margin;
-        } else if (position === 'top-center') {
-          x = width / 2;
-          y = height - margin;
-        } else if (position === 'top-left') {
-          x = margin;
-          y = height - margin;
-        } else if (position === 'top-right') {
-          x = width - margin;
-          y = height - margin;
         }
 
         page.drawText(text, {
           x: x,
           y: y,
           size: fontSize,
+          font: font,
           color: PDFLib.rgb(0, 0, 0),
-          opacity: 0.7,
-          align: position.includes('center') ? 'center' : (position.includes('right') ? 'right' : 'left')
+          opacity: 0.7
         });
       });
 

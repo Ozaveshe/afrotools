@@ -20,10 +20,10 @@
 <meta name="author" content="AfroTools">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/tokens.css">
-<link rel="stylesheet" href="/assets/css/global.css">
-<script src="/assets/js/components/navbar.js" defer></script>
-<script src="/assets/js/components/footer.js" defer></script>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 <style>
   :root {
@@ -455,7 +455,7 @@
             </div>
           </div>
 
-          <div id="type-mode" style="position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;">
+          <div id="type-mode" style="display:none;">
             <div class="field">
               <label class="f-label-text">Your Name</label>
               <input type="text" class="f-input" id="signatureName" placeholder="e.g., John Doe">
@@ -496,7 +496,7 @@
         </div>
         <div class="card-body">
           <div class="result-text" id="resultText"></div>
-          <div class="action-row" id="actionRow" style="position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;">
+          <div class="action-row" id="actionRow" style="display:none;">
             <button class="act-btn" id="downloadBtn">📥 Download</button>
           </div>
         </div>
@@ -580,12 +580,13 @@
       currentMode = btn.dataset.mode;
       modeButtons.forEach(b => b.classList.remove('on'));
       btn.classList.add('on');
-      drawMode.style.display = currentMode === 'draw' ? 'block' : 'none';
-      typeMode.style.display = currentMode === 'type' ? 'block' : 'none';
+      drawMode.style.display = currentMode === 'draw' ? '' : 'none';
+      typeMode.style.display = currentMode === 'type' ? '' : 'none';
     });
   });
 
-  // Canvas drawing
+  // Canvas drawing with undo support
+  const canvasHistory = [];
   ctx.fillStyle = '#fff';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   ctx.strokeStyle = '#000';
@@ -593,44 +594,79 @@
   ctx.lineCap = 'round';
   ctx.lineJoin = 'round';
 
+  // Save initial blank state
+  canvasHistory.push(canvas.toDataURL());
+
   let lastX, lastY;
 
-  canvas.addEventListener('mousedown', (e) => {
-    isDrawing = true;
+  function getCanvasCoords(e) {
     const rect = canvas.getBoundingClientRect();
-    lastX = e.clientX - rect.left;
-    lastY = e.clientY - rect.top;
-  });
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    return {
+      x: (e.clientX - rect.left) * scaleX,
+      y: (e.clientY - rect.top) * scaleY
+    };
+  }
 
-  canvas.addEventListener('mousemove', (e) => {
+  function startDraw(e) {
+    isDrawing = true;
+    const pos = getCanvasCoords(e);
+    lastX = pos.x;
+    lastY = pos.y;
+  }
+
+  function moveDraw(e) {
     if (!isDrawing) return;
-    const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+    const pos = getCanvasCoords(e);
     ctx.beginPath();
     ctx.moveTo(lastX, lastY);
-    ctx.lineTo(x, y);
+    ctx.lineTo(pos.x, pos.y);
     ctx.stroke();
-    lastX = x;
-    lastY = y;
-  });
+    lastX = pos.x;
+    lastY = pos.y;
+  }
 
-  canvas.addEventListener('mouseup', () => {
-    isDrawing = false;
-  });
+  function endDraw() {
+    if (isDrawing) {
+      isDrawing = false;
+      canvasHistory.push(canvas.toDataURL());
+    }
+  }
 
-  canvas.addEventListener('mouseleave', () => {
-    isDrawing = false;
+  canvas.addEventListener('mousedown', startDraw);
+  canvas.addEventListener('mousemove', moveDraw);
+  canvas.addEventListener('mouseup', endDraw);
+  canvas.addEventListener('mouseleave', endDraw);
+
+  // Touch support for mobile
+  canvas.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    startDraw(e.touches[0]);
+  });
+  canvas.addEventListener('touchmove', (e) => {
+    e.preventDefault();
+    moveDraw(e.touches[0]);
+  });
+  canvas.addEventListener('touchend', (e) => {
+    e.preventDefault();
+    endDraw();
   });
 
   clearBtn.addEventListener('click', () => {
     ctx.fillStyle = '#fff';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+    canvasHistory.length = 0;
+    canvasHistory.push(canvas.toDataURL());
   });
 
   undoBtn.addEventListener('click', () => {
-    ctx.fillStyle = '#fff';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    if (canvasHistory.length > 1) {
+      canvasHistory.pop();
+      const img = new Image();
+      img.onload = () => { ctx.clearRect(0, 0, canvas.width, canvas.height); ctx.drawImage(img, 0, 0); };
+      img.src = canvasHistory[canvasHistory.length - 1];
+    }
   });
 
   signBtn.addEventListener('click', async () => {
@@ -651,25 +687,34 @@
       const posY = parseInt(document.getElementById('posY').value) || 50;
 
       if (currentMode === 'draw') {
-        const imageData = canvas.toDataURL('image/png');
-        const pngImage = await pdf.embedPng(imageData);
+        // Convert data URL to Uint8Array for pdf-lib
+        const dataUrl = canvas.toDataURL('image/png');
+        const base64 = dataUrl.split(',')[1];
+        const binaryStr = atob(base64);
+        const pngBytes = new Uint8Array(binaryStr.length);
+        for (let i = 0; i < binaryStr.length; i++) pngBytes[i] = binaryStr.charCodeAt(i);
+
+        const pngImage = await pdf.embedPng(pngBytes);
+        const sigWidth = 150;
+        const sigHeight = sigWidth * (canvas.height / canvas.width);
         firstPage.drawImage(pngImage, {
           x: posX,
-          y: height - posY - 75,
-          width: 120,
-          height: 45,
-          opacity: 0.8
+          y: height - posY - sigHeight,
+          width: sigWidth,
+          height: sigHeight,
+          opacity: 0.9
         });
       } else {
         const text = document.getElementById('signatureName').value || 'Signature';
-        const font = document.getElementById('signatureFont').value;
         const size = parseInt(signatureSize.value);
+        const font = await pdf.embedFont(PDFLib.StandardFonts.Helvetica);
         firstPage.drawText(text, {
           x: posX,
           y: height - posY,
           size: size,
+          font: font,
           color: PDFLib.rgb(0, 0, 0),
-          opacity: 0.8
+          opacity: 0.9
         });
       }
 

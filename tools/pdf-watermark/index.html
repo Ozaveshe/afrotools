@@ -20,12 +20,11 @@
 <meta name="author" content="AfroTools">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/tokens.css">
-<link rel="stylesheet" href="/assets/css/global.css">
-<script src="/assets/js/components/navbar.js" defer></script>
-<script src="/assets/js/components/footer.js" defer></script>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/all.min.js"></script>
 <style>
   :root {
     --afro-green: #008751;
@@ -578,10 +577,10 @@
         </div>
         <div class="card-body">
           <div class="result-text" id="resultText"></div>
-          <div class="progress-bar" id="progressBar" style="position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;">
+          <div class="progress-bar" id="progressBar" style="display:none;">
             <div class="progress-fill" id="progressFill"></div>
           </div>
-          <div class="action-row" id="actionRow" style="position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;">
+          <div class="action-row" id="actionRow" style="display:none;">
             <button class="act-btn act-download" id="downloadBtn">📥 Download</button>
           </div>
         </div>
@@ -718,27 +717,36 @@
       const opacity = parseInt(opacitySlider.value) / 100;
       const rotation = parseInt(rotationSlider.value);
 
+      // Embed font for proper text width calculation
+      const font = await pdf.embedFont(PDFLib.StandardFonts.Helvetica);
+      const textWidth = font.widthOfTextAtSize(text, fontSize);
+
       for (let i = 0; i < totalPages; i++) {
         const page = pages[i];
         const { width, height } = page.getSize();
 
-        let x, y;
+        let x, y, rot;
         switch (currentPosition) {
           case 'center':
-            x = width / 2;
+            x = (width - textWidth) / 2;
             y = height / 2;
+            rot = rotation;
             break;
           case 'diagonal':
-            x = width / 2;
-            y = height / 2;
+            // Diagonal forces -45 degrees across the page
+            x = width * 0.15;
+            y = height * 0.35;
+            rot = -45;
             break;
           case 'top':
-            x = width / 2;
+            x = (width - textWidth) / 2;
             y = height - 60;
+            rot = 0;
             break;
           case 'bottom':
-            x = width / 2;
+            x = (width - textWidth) / 2;
             y = 40;
+            rot = 0;
             break;
         }
 
@@ -746,10 +754,10 @@
           x: x,
           y: y,
           size: fontSize,
+          font: font,
           color: PDFLib.rgb(r, g, b),
           opacity: opacity,
-          rotate: PDFLib.degrees(rotation),
-          align: 'center',
+          rotate: PDFLib.degrees(rot),
         });
 
         progressFill.style.width = ((i + 1) / totalPages * 100) + '%';
