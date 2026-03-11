@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Scientific Calculator — Trigonometry, Powers, Memory | AfroTools</title>
-<meta name="description" content="Free scientific calculator. Trigonometry, exponentials, logarithms, memory functions. Full keyboard support.">
+<title>Scientific Calculator — Trig, Memory, Parentheses, Constants | AfroTools</title>
+<meta name="description" content="Free scientific calculator with trigonometry, logarithms, parentheses, memory (M+/M-/MR/MC), constants (π, e), factorial, powers, and full keyboard support.">
 <link rel="canonical" href="https://afrotools.com/tools/scientific-calc">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Scientific Calculator | AfroTools">
-<meta property="og:description" content="Scientific calculator with trigonometry, powers, roots, logarithms, and memory functions.">
+<meta property="og:description" content="Scientific calculator with trig, memory, parentheses, constants. Full keyboard support.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/scientific-calc">
 <meta property="og:site_name" content="AfroTools">
@@ -33,19 +33,57 @@
   .badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 11px; border-radius: 4px; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.05em; }
   .b-green { background: rgba(0, 135, 81, 0.18); color: #5ddb9e; border: 1px solid rgba(0, 135, 81, 0.38); }
   .tool-main { padding: 28px 0 72px; }
-  .tool-main-inner { max-width: 600px; margin: 0 auto; padding: 0 24px; }
-  .calc-container { background: #fff; border: 1px solid #dceee0; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05); }
-  .display { background: linear-gradient(135deg, #1a1f2e 0%, var(--afro-dark) 100%); color: var(--afro-green); font-size: 2rem; font-weight: 800; padding: 20px; text-align: right; word-wrap: break-word; word-break: break-all; font-family: 'Courier New', monospace; min-height: 60px; }
-  .history { background: #f7fdf8; padding: 10px 15px; font-size: 0.75rem; color: #7dab87; max-height: 60px; overflow-y: auto; border-bottom: 1px solid #eaf5ec; }
-  .buttons { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; padding: 12px; background: #f7fdf8; }
-  .btn { padding: 12px 4px; font-size: 0.8rem; font-weight: 700; border: 1.5px solid #c5deca; background: #fff; border-radius: 6px; cursor: pointer; transition: all 0.15s; color: #0d2813; font-family: 'DM Sans', sans-serif; }
+  .tool-main-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; display: grid; grid-template-columns: 1fr 340px; gap: 22px; align-items: start; }
+  .calc-wrap { background: #fff; border: 1px solid #dceee0; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06); }
+  /* Display */
+  .calc-display { background: linear-gradient(135deg, #1a1f2e 0%, var(--afro-dark) 100%); padding: 16px 20px 12px; }
+  .calc-expr { font-size: 0.78rem; color: #7dab87; min-height: 20px; font-family: 'Courier New', monospace; text-align: right; word-break: break-all; }
+  .calc-result { font-size: 2.2rem; font-weight: 800; color: var(--afro-green); text-align: right; font-family: 'Courier New', monospace; word-break: break-all; min-height: 44px; line-height: 1.2; }
+  .calc-status { display: flex; justify-content: space-between; margin-top: 6px; }
+  .calc-mode { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.06em; padding: 2px 8px; border-radius: 3px; }
+  .mode-deg { background: rgba(0, 135, 81, 0.2); color: #5ddb9e; }
+  .mode-rad { background: rgba(52, 152, 219, 0.2); color: #5dade2; }
+  .mem-indicator { font-size: 0.62rem; font-weight: 700; color: #f39c12; letter-spacing: 0.06em; }
+  /* Buttons */
+  .calc-buttons { padding: 8px; background: #f7fdf8; display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; }
+  .btn { padding: 11px 4px; font-size: 0.75rem; font-weight: 700; border: 1.5px solid #c5deca; background: #fff; border-radius: 6px; cursor: pointer; transition: all 0.12s; color: #0d2813; font-family: 'DM Sans', sans-serif; text-align: center; line-height: 1.2; min-height: 40px; display: flex; align-items: center; justify-content: center; }
   .btn:hover { border-color: var(--afro-green); background: #edfaf0; }
-  .btn-op { background: rgba(0, 135, 81, 0.08); }
-  .btn-op:hover { background: rgba(0, 135, 81, 0.15); }
-  .btn-eq { background: var(--afro-green); color: #fff; border-color: var(--afro-green); grid-column: span 2; }
+  .btn:active { transform: scale(0.95); }
+  .btn-num { font-size: 0.9rem; }
+  .btn-op { background: rgba(0, 135, 81, 0.06); color: #0a4018; }
+  .btn-func { background: rgba(52, 152, 219, 0.06); color: #1a5276; font-size: 0.68rem; }
+  .btn-mem { background: rgba(243, 156, 18, 0.08); color: #8a6d20; font-size: 0.65rem; }
+  .btn-eq { background: var(--afro-green); color: #fff; border-color: var(--afro-green); font-size: 1rem; }
   .btn-eq:hover { background: #006d42; }
-  .btn-clear { background: rgba(192, 57, 43, 0.1); color: #8b2e1f; border-color: rgba(192, 57, 43, 0.35); }
-  .btn-clear:hover { background: rgba(192, 57, 43, 0.2); }
+  .btn-clear { background: rgba(192, 57, 43, 0.08); color: #8b2e1f; }
+  .btn-span2 { grid-column: span 2; }
+  /* History */
+  .history-section { border-top: 1px solid #eaf5ec; padding: 12px; background: #fff; max-height: 180px; overflow-y: auto; }
+  .hist-item { display: flex; justify-content: space-between; padding: 6px 8px; font-size: 0.72rem; border-radius: 4px; cursor: pointer; transition: background 0.1s; }
+  .hist-item:hover { background: #f4fbf5; }
+  .hist-expr { color: #7dab87; }
+  .hist-result { font-weight: 800; color: #0d2813; }
+  .hist-header { display: flex; justify-content: space-between; align-items: center; padding: 0 8px 6px; }
+  .hist-title { font-size: 0.65rem; font-weight: 700; color: #7dab87; text-transform: uppercase; letter-spacing: 0.06em; }
+  .hist-clear { background: none; border: none; font-size: 0.62rem; font-weight: 700; color: #c0392b; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+  .empty-hist { text-align: center; color: #c5deca; font-size: 0.72rem; padding: 8px; }
+  /* Sidebar */
+  .sidebar { display: flex; flex-direction: column; gap: 16px; }
+  .info-card { background: #f7fdf8; border: 1px solid #dceee0; border-radius: 10px; padding: 16px; }
+  .info-title { font-size: 0.72rem; font-weight: 700; color: #0a4018; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+  .info-text { font-size: 0.78rem; color: #244d2c; line-height: 1.7; }
+  .shortcut-row { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #eaf5ec; font-size: 0.72rem; }
+  .shortcut-row:last-child { border-bottom: none; }
+  .shortcut-key { background: #fff; border: 1px solid #dceee0; border-radius: 3px; padding: 1px 6px; font-family: monospace; font-size: 0.68rem; font-weight: 700; }
+  @media (max-width: 900px) {
+    .tool-main-inner { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 480px) {
+    .calc-buttons { grid-template-columns: repeat(5, 1fr); }
+    .btn { padding: 10px 2px; font-size: 0.7rem; min-height: 38px; }
+    .btn-num { font-size: 0.85rem; }
+    .calc-result { font-size: 1.8rem; }
+  }
 </style>
 </head>
 <body>
@@ -55,53 +93,140 @@
   <div class="tool-hero-inner">
     <div class="breadcrumb"><a href="/">AfroTools</a> / <span>Tools</span></div>
     <h1>Scientific <em>Calculator</em></h1>
-    <p class="hero-sub">Full-featured scientific calculator with trigonometry, powers, roots, logarithms, and memory functions.</p>
+    <p class="hero-sub">Full-featured scientific calculator with trigonometry, parentheses, memory functions, constants, and calculation history.</p>
     <div class="hero-badges">
-      <span class="badge b-green">Scientific</span>
-      <span class="badge b-green">Keyboard Support</span>
+      <span class="badge b-green">Parentheses</span>
+      <span class="badge b-green">Memory (M+/MR)</span>
+      <span class="badge b-green">DEG / RAD</span>
+      <span class="badge b-green">History</span>
     </div>
   </div>
 </div>
 
 <div class="tool-main">
   <div class="tool-main-inner">
-    <div class="calc-container">
-      <div class="display" id="display">0</div>
-      <div class="history" id="history"></div>
-      <div class="buttons">
-        <button class="btn btn-clear" onclick="clearDisplay()">C</button>
-        <button class="btn btn-clear" onclick="deleteLast()">DEL</button>
-        <button class="btn btn-op" onclick="appendOp('/')">/</button>
-        <button class="btn btn-op" onclick="appendOp('*')">×</button>
-        <button class="btn btn-op" onclick="appendOp('sqrt')">√</button>
-        
-        <button class="btn" onclick="appendNum('7')">7</button>
-        <button class="btn" onclick="appendNum('8')">8</button>
-        <button class="btn" onclick="appendNum('9')">9</button>
-        <button class="btn btn-op" onclick="appendOp('-')">−</button>
-        <button class="btn btn-op" onclick="appendOp('sin')">sin</button>
-        
-        <button class="btn" onclick="appendNum('4')">4</button>
-        <button class="btn" onclick="appendNum('5')">5</button>
-        <button class="btn" onclick="appendNum('6')">6</button>
-        <button class="btn btn-op" onclick="appendOp('+')">+</button>
-        <button class="btn btn-op" onclick="appendOp('cos')">cos</button>
-        
-        <button class="btn" onclick="appendNum('1')">1</button>
-        <button class="btn" onclick="appendNum('2')">2</button>
-        <button class="btn" onclick="appendNum('3')">3</button>
-        <button class="btn btn-op" onclick="appendOp('^')">^</button>
-        <button class="btn btn-op" onclick="appendOp('tan')">tan</button>
-        
-        <button class="btn" onclick="appendNum('0')" style="grid-column: span 2;">0</button>
-        <button class="btn" onclick="appendNum('.')">.</button>
-        <button class="btn btn-op" onclick="appendOp('log')">log</button>
-        <button class="btn btn-op" onclick="appendOp('ln')">ln</button>
-        
-        <button class="btn btn-op" onclick="toggleSign()">+/−</button>
-        <button class="btn btn-op" onclick="appendOp('!')" title="factorial">n!</button>
-        <button class="btn btn-op" onclick="appendOp('%')">%</button>
-        <button class="btn btn-eq" onclick="calculate()">=</button>
+    <div>
+      <div class="calc-wrap">
+        <div class="calc-display">
+          <div class="calc-expr" id="exprDisplay"></div>
+          <div class="calc-result" id="resultDisplay">0</div>
+          <div class="calc-status">
+            <span class="calc-mode mode-deg" id="modeBtn" style="cursor:pointer;" title="Click to toggle DEG/RAD">DEG</span>
+            <span class="mem-indicator" id="memIndicator"></span>
+          </div>
+        </div>
+
+        <div class="calc-buttons">
+          <!-- Row 1: Memory + Clear -->
+          <button class="btn btn-mem" onclick="memClear()">MC</button>
+          <button class="btn btn-mem" onclick="memRecall()">MR</button>
+          <button class="btn btn-mem" onclick="memAdd()">M+</button>
+          <button class="btn btn-mem" onclick="memSub()">M−</button>
+          <button class="btn btn-clear" onclick="clearAll()">AC</button>
+          <button class="btn btn-clear" onclick="deleteLast()">DEL</button>
+
+          <!-- Row 2: Functions -->
+          <button class="btn btn-func" onclick="addFunc('sin(')">sin</button>
+          <button class="btn btn-func" onclick="addFunc('cos(')">cos</button>
+          <button class="btn btn-func" onclick="addFunc('tan(')">tan</button>
+          <button class="btn btn-func" onclick="addFunc('log(')">log</button>
+          <button class="btn btn-func" onclick="addFunc('ln(')">ln</button>
+          <button class="btn btn-func" onclick="addFunc('√(')">√</button>
+
+          <!-- Row 3: More functions -->
+          <button class="btn btn-func" onclick="addFunc('asin(')">sin⁻¹</button>
+          <button class="btn btn-func" onclick="addFunc('acos(')">cos⁻¹</button>
+          <button class="btn btn-func" onclick="addFunc('atan(')">tan⁻¹</button>
+          <button class="btn btn-func" onclick="addText('!')">n!</button>
+          <button class="btn btn-func" onclick="addText('π')">π</button>
+          <button class="btn btn-func" onclick="addText('e')">e</button>
+
+          <!-- Row 4: Parens, power, mod -->
+          <button class="btn btn-op" onclick="addText('(')">(</button>
+          <button class="btn btn-op" onclick="addText(')')">)</button>
+          <button class="btn btn-op" onclick="addText('^')">x^y</button>
+          <button class="btn btn-op" onclick="addText('%')">mod</button>
+          <button class="btn btn-op" onclick="addText('÷')">÷</button>
+          <button class="btn btn-op" onclick="addText('×')">×</button>
+
+          <!-- Row 5: Numbers 7-9, minus -->
+          <button class="btn btn-num" onclick="addText('7')">7</button>
+          <button class="btn btn-num" onclick="addText('8')">8</button>
+          <button class="btn btn-num" onclick="addText('9')">9</button>
+          <button class="btn btn-op" onclick="addText('−')">−</button>
+          <button class="btn btn-func" onclick="addFunc('abs(')">|x|</button>
+          <button class="btn btn-func" onclick="squareVal()">x²</button>
+
+          <!-- Row 6: Numbers 4-6, plus -->
+          <button class="btn btn-num" onclick="addText('4')">4</button>
+          <button class="btn btn-num" onclick="addText('5')">5</button>
+          <button class="btn btn-num" onclick="addText('6')">6</button>
+          <button class="btn btn-op" onclick="addText('+')">+</button>
+          <button class="btn btn-func" onclick="addFunc('10^(')">10^x</button>
+          <button class="btn btn-func" onclick="addFunc('exp(')">e^x</button>
+
+          <!-- Row 7: Numbers 1-3 -->
+          <button class="btn btn-num" onclick="addText('1')">1</button>
+          <button class="btn btn-num" onclick="addText('2')">2</button>
+          <button class="btn btn-num" onclick="addText('3')">3</button>
+          <button class="btn btn-op" onclick="toggleSign()">+/−</button>
+          <button class="btn btn-eq btn-span2" onclick="evaluate()">=</button>
+
+          <!-- Row 8: 0, dot -->
+          <button class="btn btn-num btn-span2" onclick="addText('0')">0</button>
+          <button class="btn btn-num" onclick="addText('.')">.</button>
+          <button class="btn btn-func" onclick="addText('²')">x²</button>
+          <button class="btn btn-func" onclick="addFunc('cbrt(')">∛</button>
+          <button class="btn btn-func" onclick="addFunc('1/(')">1/x</button>
+        </div>
+
+        <!-- History -->
+        <div class="history-section" id="historySection">
+          <div class="hist-header">
+            <span class="hist-title">History</span>
+            <button class="hist-clear" onclick="clearHistory()">Clear</button>
+          </div>
+          <div id="historyList"><div class="empty-hist">No history yet</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="info-card">
+        <div class="info-title">Keyboard Shortcuts</div>
+        <div class="info-text">
+          <div class="shortcut-row"><span>Numbers</span><span class="shortcut-key">0-9</span></div>
+          <div class="shortcut-row"><span>Operators</span><span class="shortcut-key">+ - * /</span></div>
+          <div class="shortcut-row"><span>Parentheses</span><span class="shortcut-key">( )</span></div>
+          <div class="shortcut-row"><span>Calculate</span><span class="shortcut-key">Enter</span></div>
+          <div class="shortcut-row"><span>Clear</span><span class="shortcut-key">Escape</span></div>
+          <div class="shortcut-row"><span>Delete</span><span class="shortcut-key">Backspace</span></div>
+          <div class="shortcut-row"><span>Pi</span><span class="shortcut-key">p</span></div>
+          <div class="shortcut-row"><span>Power</span><span class="shortcut-key">^</span></div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-title">Functions</div>
+        <div class="info-text">
+          <strong>Trigonometry:</strong> sin, cos, tan and their inverses (asin, acos, atan). Toggle between DEG and RAD mode.<br><br>
+          <strong>Logarithms:</strong> log (base 10), ln (natural log)<br><br>
+          <strong>Powers:</strong> x^y (any power), x² (square), √ (square root), ∛ (cube root)<br><br>
+          <strong>Constants:</strong> π = 3.14159..., e = 2.71828...<br><br>
+          <strong>Memory:</strong> MC (clear), MR (recall), M+ (add to memory), M− (subtract from memory)
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-title">Tips</div>
+        <div class="info-text">
+          &bull; Use parentheses for complex expressions<br>
+          &bull; Type expressions naturally: 2+3×(4−1)<br>
+          &bull; Click history items to reuse values<br>
+          &bull; Memory persists until you clear it<br>
+          &bull; Toggle DEG/RAD for angle mode
+        </div>
       </div>
     </div>
   </div>
@@ -110,91 +235,284 @@
 <afro-footer></afro-footer>
 
 <script>
-  let display = document.getElementById('display');
-  let history = document.getElementById('history');
-  let currentValue = '0';
-  let previousValue = '';
-  let operator = null;
-  let shouldClear = false;
+  let expression = '';
+  let isDeg = true;
+  let memory = 0;
+  let history = [];
+  let lastResult = '0';
+
+  const exprDisplay = document.getElementById('exprDisplay');
+  const resultDisplay = document.getElementById('resultDisplay');
+  const modeBtn = document.getElementById('modeBtn');
+  const memIndicator = document.getElementById('memIndicator');
 
   function updateDisplay() {
-    display.textContent = currentValue.length > 20 ? currentValue.substring(0, 20) + '...' : currentValue;
+    exprDisplay.textContent = expression || '';
+    resultDisplay.textContent = lastResult;
   }
 
-  function appendNum(num) {
-    if (shouldClear) { currentValue = num; shouldClear = false; } else { currentValue = currentValue === '0' && num !== '.' ? num : currentValue + num; }
-    updateDisplay();
-  }
-
-  function appendOp(op) {
-    if (operator && !shouldClear) calculate();
-    previousValue = currentValue;
-    operator = op;
-    shouldClear = true;
-    history.textContent = previousValue + ' ' + op;
-  }
-
-  function calculate() {
-    let result = currentValue;
-    if (operator) {
-      const prev = parseFloat(previousValue);
-      const curr = parseFloat(currentValue);
-      switch(operator) {
-        case '+': result = prev + curr; break;
-        case '-': result = prev - curr; break;
-        case '*': result = prev * curr; break;
-        case '/': result = curr !== 0 ? prev / curr : 'Error'; break;
-        case '^': result = Math.pow(prev, curr); break;
-        case 'sqrt': result = Math.sqrt(curr); break;
-        case 'sin': result = Math.sin((curr * Math.PI) / 180); break;
-        case 'cos': result = Math.cos((curr * Math.PI) / 180); break;
-        case 'tan': result = Math.tan((curr * Math.PI) / 180); break;
-        case 'log': result = Math.log10(curr); break;
-        case 'ln': result = Math.log(curr); break;
-        case '!': result = factorial(curr); break;
-        case '%': result = prev % curr; break;
-      }
-      operator = null;
+  function addText(t) {
+    // If we just evaluated and user types a number, start fresh
+    if (lastResult !== '0' && lastResult !== 'Error' && expression === '' && /[0-9π e]/.test(t) && !/[+\−×÷^%]/.test(t)) {
+      expression = '';
+      lastResult = '0';
     }
-    currentValue = String(result).substring(0, 15);
-    shouldClear = true;
+    expression += t;
+    // Live preview
+    try {
+      const val = evalExpression(expression);
+      if (!isNaN(val) && isFinite(val)) {
+        lastResult = formatResult(val);
+      }
+    } catch(e) {}
     updateDisplay();
   }
 
-  function factorial(n) {
-    if (n < 0) return 'Error';
-    if (n === 0 || n === 1) return 1;
-    let result = 1;
-    for (let i = 2; i <= n; i++) result *= i;
-    return result;
+  function addFunc(f) {
+    expression += f;
+    updateDisplay();
   }
 
-  function clearDisplay() {
-    currentValue = '0';
-    previousValue = '';
-    operator = null;
-    shouldClear = false;
-    history.textContent = '';
+  function squareVal() {
+    expression += '²';
+    try {
+      const val = evalExpression(expression);
+      if (!isNaN(val) && isFinite(val)) lastResult = formatResult(val);
+    } catch(e) {}
     updateDisplay();
   }
 
   function deleteLast() {
-    currentValue = currentValue.length > 1 ? currentValue.slice(0, -1) : '0';
+    // Remove last character or function name
+    if (expression.endsWith('sin(') || expression.endsWith('cos(') || expression.endsWith('tan(') ||
+        expression.endsWith('log(') || expression.endsWith('abs(') || expression.endsWith('exp(')) {
+      expression = expression.slice(0, -4);
+    } else if (expression.endsWith('asin(') || expression.endsWith('acos(') || expression.endsWith('atan(') ||
+               expression.endsWith('cbrt(') || expression.endsWith('10^(')) {
+      expression = expression.slice(0, -5);
+    } else if (expression.endsWith('ln(') || expression.endsWith('√(') || expression.endsWith('1/(')) {
+      expression = expression.slice(0, -3);
+    } else {
+      expression = expression.slice(0, -1);
+    }
+    // Update preview
+    if (expression) {
+      try {
+        const val = evalExpression(expression);
+        if (!isNaN(val) && isFinite(val)) lastResult = formatResult(val);
+      } catch(e) {}
+    } else {
+      lastResult = '0';
+    }
+    updateDisplay();
+  }
+
+  function clearAll() {
+    expression = '';
+    lastResult = '0';
     updateDisplay();
   }
 
   function toggleSign() {
-    currentValue = String(parseFloat(currentValue) * -1);
+    if (expression === '' && lastResult !== '0') {
+      expression = '(−' + lastResult + ')';
+    } else {
+      expression = '(−(' + expression + '))';
+    }
+    try {
+      const val = evalExpression(expression);
+      if (!isNaN(val) && isFinite(val)) lastResult = formatResult(val);
+    } catch(e) {}
     updateDisplay();
   }
 
+  function evaluate() {
+    if (!expression) return;
+    try {
+      const val = evalExpression(expression);
+      if (isNaN(val) || !isFinite(val)) {
+        lastResult = 'Error';
+      } else {
+        lastResult = formatResult(val);
+        addHistory(expression, lastResult);
+      }
+    } catch(e) {
+      lastResult = 'Error';
+    }
+    expression = '';
+    updateDisplay();
+  }
+
+  function evalExpression(expr) {
+    // Replace display symbols with JS
+    let e = expr
+      .replace(/×/g, '*')
+      .replace(/÷/g, '/')
+      .replace(/−/g, '-')
+      .replace(/π/g, `(${Math.PI})`)
+      .replace(/(?<![a-z])e(?![a-z(^])/gi, `(${Math.E})`)
+      .replace(/²/g, '**2')
+      .replace(/\^/g, '**');
+
+    // Handle factorial
+    e = e.replace(/(\d+)!/g, (_, n) => factorial(parseInt(n)));
+
+    // Handle functions
+    const toRad = isDeg ? `*(${Math.PI}/180)` : '';
+    const fromRad = isDeg ? `*(180/${Math.PI})` : '';
+    e = e.replace(/sin\(/g, `Math.sin(${isDeg ? '' : ''}`)
+    e = e.replace(/cos\(/g, `Math.cos(`)
+    e = e.replace(/tan\(/g, `Math.tan(`)
+
+    // For trig, wrap args in degree conversion if needed
+    if (isDeg) {
+      e = e.replace(/Math\.sin\(([^)]+)\)/g, `Math.sin(($1)*Math.PI/180)`);
+      e = e.replace(/Math\.cos\(([^)]+)\)/g, `Math.cos(($1)*Math.PI/180)`);
+      e = e.replace(/Math\.tan\(([^)]+)\)/g, `Math.tan(($1)*Math.PI/180)`);
+    }
+
+    // Revert trig calls we already handled
+    e = e.replace(/Math\.sin\(Math\.sin/g, 'Math.sin(');
+    e = e.replace(/Math\.cos\(Math\.cos/g, 'Math.cos(');
+    e = e.replace(/Math\.tan\(Math\.tan/g, 'Math.tan(');
+
+    // Simpler approach: custom eval
+    e = expr
+      .replace(/×/g, '*')
+      .replace(/÷/g, '/')
+      .replace(/−/g, '-')
+      .replace(/π/g, `(${Math.PI})`)
+      .replace(/²/g, '**2')
+      .replace(/\^/g, '**');
+
+    // Replace standalone 'e' not part of exp/etc
+    e = e.replace(/(?<![a-z])e(?![a-z(^x])/g, `(${Math.E})`);
+
+    // Factorial
+    e = e.replace(/(\d+(?:\.\d+)?)!/g, (_, n) => String(factorial(parseFloat(n))));
+
+    // Functions
+    e = e.replace(/√\(/g, 'Math.sqrt(');
+    e = e.replace(/cbrt\(/g, 'Math.cbrt(');
+    e = e.replace(/abs\(/g, 'Math.abs(');
+    e = e.replace(/10\^\(/g, 'Math.pow(10,');
+    e = e.replace(/exp\(/g, 'Math.exp(');
+    e = e.replace(/1\/\(/g, '(1/(');
+
+    if (isDeg) {
+      e = e.replace(/sin\(([^)]+)\)/g, (_, a) => `Math.sin((${a})*Math.PI/180)`);
+      e = e.replace(/cos\(([^)]+)\)/g, (_, a) => `Math.cos((${a})*Math.PI/180)`);
+      e = e.replace(/tan\(([^)]+)\)/g, (_, a) => `Math.tan((${a})*Math.PI/180)`);
+      e = e.replace(/asin\(([^)]+)\)/g, (_, a) => `(Math.asin(${a})*180/Math.PI)`);
+      e = e.replace(/acos\(([^)]+)\)/g, (_, a) => `(Math.acos(${a})*180/Math.PI)`);
+      e = e.replace(/atan\(([^)]+)\)/g, (_, a) => `(Math.atan(${a})*180/Math.PI)`);
+    } else {
+      e = e.replace(/sin\(/g, 'Math.sin(');
+      e = e.replace(/cos\(/g, 'Math.cos(');
+      e = e.replace(/tan\(/g, 'Math.tan(');
+      e = e.replace(/asin\(/g, 'Math.asin(');
+      e = e.replace(/acos\(/g, 'Math.acos(');
+      e = e.replace(/atan\(/g, 'Math.atan(');
+    }
+
+    e = e.replace(/log\(/g, 'Math.log10(');
+    e = e.replace(/ln\(/g, 'Math.log(');
+
+    // Auto-close parens
+    const opens = (e.match(/\(/g) || []).length;
+    const closes = (e.match(/\)/g) || []).length;
+    for (let i = 0; i < opens - closes; i++) e += ')';
+
+    // Validate - only allow safe chars
+    if (!/^[0-9+\-*/().,%eE \tMathsincotaqrblgpw^]*$/.test(e)) {
+      throw new Error('Invalid');
+    }
+
+    return Function('"use strict"; return (' + e + ')')();
+  }
+
+  function factorial(n) {
+    if (n < 0 || n !== Math.floor(n)) return NaN;
+    if (n > 170) return Infinity;
+    if (n === 0 || n === 1) return 1;
+    let r = 1;
+    for (let i = 2; i <= n; i++) r *= i;
+    return r;
+  }
+
+  function formatResult(n) {
+    if (Number.isInteger(n) && Math.abs(n) < 1e15) return n.toString();
+    const s = n.toPrecision(10);
+    return parseFloat(s).toString();
+  }
+
+  // DEG/RAD toggle
+  modeBtn.addEventListener('click', () => {
+    isDeg = !isDeg;
+    modeBtn.textContent = isDeg ? 'DEG' : 'RAD';
+    modeBtn.className = 'calc-mode ' + (isDeg ? 'mode-deg' : 'mode-rad');
+  });
+
+  // Memory
+  function memClear() { memory = 0; memIndicator.textContent = ''; }
+  function memRecall() { addText(String(memory)); }
+  function memAdd() {
+    const val = parseFloat(lastResult) || 0;
+    memory += val;
+    memIndicator.textContent = 'M: ' + formatResult(memory);
+  }
+  function memSub() {
+    const val = parseFloat(lastResult) || 0;
+    memory -= val;
+    memIndicator.textContent = 'M: ' + formatResult(memory);
+  }
+
+  // History
+  function addHistory(expr, result) {
+    history.unshift({ expr, result });
+    if (history.length > 20) history.pop();
+    renderHistory();
+  }
+
+  function renderHistory() {
+    const el = document.getElementById('historyList');
+    if (history.length === 0) { el.innerHTML = '<div class="empty-hist">No history yet</div>'; return; }
+    el.innerHTML = history.map(h =>
+      `<div class="hist-item" onclick="useHistoryResult('${h.result}')">
+        <span class="hist-expr">${escapeHtml(h.expr)}</span>
+        <span class="hist-result">= ${h.result}</span>
+      </div>`
+    ).join('');
+  }
+
+  function useHistoryResult(val) {
+    expression += val;
+    updateDisplay();
+  }
+
+  function clearHistory() { history = []; renderHistory(); }
+
+  function escapeHtml(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  // Keyboard
   document.addEventListener('keydown', e => {
-    if (e.key >= '0' && e.key <= '9') appendNum(e.key);
-    else if (e.key === '.') appendNum('.');
-    else if (e.key === '+' || e.key === '-' || e.key === '*' || e.key === '/') appendOp(e.key);
-    else if (e.key === 'Enter' || e.key === '=') calculate();
-    else if (e.key === 'Escape') clearDisplay();
-    else if (e.key === 'Backspace') deleteLast();
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    const key = e.key;
+    if (/^[0-9.]$/.test(key)) { addText(key); e.preventDefault(); }
+    else if (key === '+') { addText('+'); e.preventDefault(); }
+    else if (key === '-') { addText('−'); e.preventDefault(); }
+    else if (key === '*') { addText('×'); e.preventDefault(); }
+    else if (key === '/') { addText('÷'); e.preventDefault(); }
+    else if (key === '^') { addText('^'); e.preventDefault(); }
+    else if (key === '(' || key === ')') { addText(key); e.preventDefault(); }
+    else if (key === 'Enter' || key === '=') { evaluate(); e.preventDefault(); }
+    else if (key === 'Escape') { clearAll(); e.preventDefault(); }
+    else if (key === 'Backspace') { deleteLast(); e.preventDefault(); }
+    else if (key === 'p' || key === 'P') { addText('π'); e.preventDefault(); }
+    else if (key === '!') { addText('!'); e.preventDefault(); }
+    else if (key === '%') { addText('%'); e.preventDefault(); }
   });
 
   updateDisplay();

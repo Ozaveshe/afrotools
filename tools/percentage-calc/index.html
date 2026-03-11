@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Percentage Calculator — Three Modes | AfroTools</title>
-<meta name="description" content="Free percentage calculator. Calculate X% of Y, what % is X of Y, percentage change. Instant results.">
+<title>Percentage Calculator — 6 Modes: X% of Y, Discount, Tip, Margin & More | AfroTools</title>
+<meta name="description" content="Free percentage calculator with 6 modes: X% of Y, what % is X of Y, % change, discount, tip, and margin/markup. Instant results with history.">
 <link rel="canonical" href="https://afrotools.com/tools/percentage-calc">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Percentage Calculator | AfroTools">
-<meta property="og:description" content="Percentage calculator with 3 modes: X% of Y, X is what %, percentage change.">
+<meta property="og:description" content="Percentage calculator with 6 modes: basic, change, discount, tip, margin. Instant.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/percentage-calc">
 <meta property="og:site_name" content="AfroTools">
@@ -21,7 +21,7 @@
 <style>
   :root { --afro-green: #008751; --afro-dark: #0f1419; }
   .tool-hero { background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%); padding: 44px 0 36px; position: relative; overflow: hidden; }
-  .tool-hero::after { content: '%'; position: absolute; right: 5%; top: 50%; transform: translateY(-50%); font-size: 8rem; opacity: 0.06; pointer-events: none; }
+  .tool-hero::after { content: '%'; position: absolute; right: 5%; top: 50%; transform: translateY(-50%); font-size: 8rem; opacity: 0.06; pointer-events: none; font-weight: 800; color: #fff; }
   .tool-hero-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; }
   .breadcrumb { font-size: 0.72rem; font-weight: 500; color: rgba(255, 255, 255, 0.3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
   .breadcrumb a { color: rgba(255, 255, 255, 0.3); text-decoration: none; }
@@ -33,24 +33,55 @@
   .badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 11px; border-radius: 4px; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.05em; }
   .b-green { background: rgba(0, 135, 81, 0.18); color: #5ddb9e; border: 1px solid rgba(0, 135, 81, 0.38); }
   .tool-main { padding: 28px 0 72px; }
-  .tool-main-inner { max-width: 800px; margin: 0 auto; padding: 0 24px; }
+  .tool-main-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; display: grid; grid-template-columns: 1fr 340px; gap: 22px; align-items: start; }
   .card { background: #fff; border: 1px solid #dceee0; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05); }
   .card + .card { margin-top: 18px; }
-  .card-head { padding: 15px 22px; border-bottom: 1px solid #eaf5ec; background: #f7fdf8; }
+  .card-head { padding: 15px 22px; border-bottom: 1px solid #eaf5ec; background: #f7fdf8; display: flex; justify-content: space-between; align-items: center; }
   .card-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #0a4018; }
   .card-body { padding: 22px; }
-  .mode-tabs { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 18px; }
-  .mode-tab { padding: 10px; background: #f4fbf5; border: 1.5px solid #c5deca; border-radius: 7px; cursor: pointer; font-size: 0.72rem; font-weight: 700; color: #244d2c; transition: all 0.15s; }
+  .mode-tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 18px; }
+  .mode-tab { padding: 9px 4px; background: #f4fbf5; border: 1.5px solid #c5deca; border-radius: 7px; cursor: pointer; font-size: 0.68rem; font-weight: 700; color: #244d2c; transition: all 0.15s; font-family: 'DM Sans', sans-serif; text-align: center; }
   .mode-tab.on { background: var(--afro-green); color: #fff; border-color: var(--afro-green); }
-  .field { margin-bottom: 18px; }
-  .field:last-child { margin-bottom: 0; }
+  .field { margin-bottom: 16px; }
   .f-label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
   .f-label-text { font-size: 0.75rem; font-weight: 700; color: #0d2813; }
   .f-input { width: 100%; padding: 11px 13px; background: #f4fbf5; border: 1.5px solid #c5deca; border-radius: 7px; font-size: 1rem; font-weight: 600; color: #0d2813; outline: none; font-family: 'DM Sans', sans-serif; }
   .f-input:focus { border-color: var(--afro-green); box-shadow: 0 0 0 3px rgba(0, 135, 81, 0.1); }
-  .result-box { background: #f7fdf8; border: 1.5px solid #c5deca; border-radius: 8px; padding: 18px; margin-top: 18px; }
-  .result-label { font-size: 0.68rem; font-weight: 700; color: #0a4018; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 8px; }
-  .result-amount { font-size: 2.2rem; font-weight: 800; color: var(--afro-green); line-height: 1; }
+  .result-box { background: #f7fdf8; border: 1.5px solid #c5deca; border-radius: 8px; padding: 16px; margin-top: 14px; }
+  .result-label { font-size: 0.62rem; font-weight: 700; color: #7dab87; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 4px; }
+  .result-amount { font-size: 2rem; font-weight: 800; color: var(--afro-green); line-height: 1; }
+  .result-sub { font-size: 0.75rem; color: #7dab87; margin-top: 6px; }
+  .result-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+  .result-mini { background: #fff; border: 1px solid #dceee0; border-radius: 6px; padding: 10px; }
+  .result-mini .result-label { font-size: 0.6rem; }
+  .result-mini .result-amount { font-size: 1.1rem; }
+  .copy-btn { position: absolute; top: 12px; right: 12px; background: none; border: 1px solid #c5deca; border-radius: 5px; padding: 4px 10px; font-size: 0.65rem; font-weight: 700; color: #244d2c; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.15s; }
+  .copy-btn:hover { border-color: var(--afro-green); }
+  .copy-btn.copied { background: var(--afro-green); color: #fff; border-color: var(--afro-green); }
+  .mode-content { position: relative; }
+  .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  /* Tip split */
+  .tip-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 14px; }
+  .tip-btn { padding: 8px; background: #f4fbf5; border: 1.5px solid #c5deca; border-radius: 6px; cursor: pointer; font-size: 0.72rem; font-weight: 700; color: #244d2c; text-align: center; transition: all 0.15s; font-family: 'DM Sans', sans-serif; }
+  .tip-btn.on { background: var(--afro-green); color: #fff; border-color: var(--afro-green); }
+  /* History */
+  .history-list { max-height: 200px; overflow-y: auto; }
+  .hist-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eaf5ec; font-size: 0.75rem; }
+  .hist-item:last-child { border-bottom: none; }
+  .hist-expr { color: #0d2813; font-weight: 600; }
+  .hist-result { color: var(--afro-green); font-weight: 800; }
+  .empty-hist { text-align: center; color: #7dab87; font-size: 0.75rem; padding: 16px; }
+  /* Sidebar */
+  .sidebar { display: flex; flex-direction: column; gap: 16px; }
+  .info-card { background: #f7fdf8; border: 1px solid #dceee0; border-radius: 10px; padding: 16px; }
+  .info-title { font-size: 0.72rem; font-weight: 700; color: #0a4018; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+  .info-text { font-size: 0.8rem; color: #244d2c; line-height: 1.6; }
+  .formula { background: #fff; border: 1px solid #dceee0; border-radius: 6px; padding: 10px; font-family: monospace; font-size: 0.78rem; color: #0d2813; margin: 6px 0; }
+  @media (max-width: 768px) {
+    .tool-main-inner { grid-template-columns: 1fr; }
+    .mode-tabs { grid-template-columns: repeat(2, 1fr); }
+    .row-2 { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>
@@ -60,68 +91,225 @@
   <div class="tool-hero-inner">
     <div class="breadcrumb"><a href="/">AfroTools</a> / <span>Tools</span></div>
     <h1>Percentage <em>Calculator</em></h1>
-    <p class="hero-sub">Calculate percentages instantly. Three modes: X% of Y, X is what %, percentage change.</p>
+    <p class="hero-sub">Calculate percentages with 6 modes: basic percentage, what %, percentage change, discount, tip calculator, and profit margin.</p>
     <div class="hero-badges">
-      <span class="badge b-green">3 Modes</span>
+      <span class="badge b-green">6 Modes</span>
       <span class="badge b-green">Instant</span>
+      <span class="badge b-green">Copy Results</span>
     </div>
   </div>
 </div>
 
 <div class="tool-main">
   <div class="tool-main-inner">
-    <div class="card">
-      <div class="card-head"><span class="card-title">Percentage Calculator</span></div>
-      <div class="card-body">
-        <div class="mode-tabs">
-          <button class="mode-tab on" data-mode="1">X% of Y</button>
-          <button class="mode-tab" data-mode="2">X is Y%</button>
-          <button class="mode-tab" data-mode="3">% Change</button>
-        </div>
+    <div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Percentage Calculator</span></div>
+        <div class="card-body">
+          <div class="mode-tabs">
+            <button class="mode-tab on" data-mode="1">X% of Y</button>
+            <button class="mode-tab" data-mode="2">X is Y%</button>
+            <button class="mode-tab" data-mode="3">% Change</button>
+            <button class="mode-tab" data-mode="4">Discount</button>
+            <button class="mode-tab" data-mode="5">Tip Split</button>
+            <button class="mode-tab" data-mode="6">Margin</button>
+          </div>
 
-        <div id="mode-1" class="mode-content">
-          <div class="field">
-            <label class="f-label"><span class="f-label-text">Percentage (%)</span></label>
-            <input type="number" id="percent1" class="f-input" value="20" min="0" max="100" step="0.01">
+          <!-- Mode 1: X% of Y -->
+          <div id="mode-1" class="mode-content">
+            <button class="copy-btn" onclick="copyResult(1)">Copy</button>
+            <div class="field">
+              <label class="f-label"><span class="f-label-text">Percentage (%)</span></label>
+              <input type="number" id="p1_pct" class="f-input" value="20" step="any">
+            </div>
+            <div class="field">
+              <label class="f-label"><span class="f-label-text">Of Value</span></label>
+              <input type="number" id="p1_val" class="f-input" value="500" step="any">
+            </div>
+            <div class="result-box">
+              <div class="result-label">Result</div>
+              <div class="result-amount" id="r1">100</div>
+              <div class="result-sub" id="r1_sub">20% of 500 = 100</div>
+            </div>
           </div>
-          <div class="field">
-            <label class="f-label"><span class="f-label-text">Of Value</span></label>
-            <input type="number" id="value1" class="f-input" value="100" min="0" step="0.01">
+
+          <!-- Mode 2: X is what % of Y -->
+          <div id="mode-2" class="mode-content" style="display:none;">
+            <button class="copy-btn" onclick="copyResult(2)">Copy</button>
+            <div class="field">
+              <label class="f-label"><span class="f-label-text">Value (X)</span></label>
+              <input type="number" id="p2_x" class="f-input" value="50" step="any">
+            </div>
+            <div class="field">
+              <label class="f-label"><span class="f-label-text">Total (Y)</span></label>
+              <input type="number" id="p2_y" class="f-input" value="200" step="any">
+            </div>
+            <div class="result-box">
+              <div class="result-label">X is what % of Y</div>
+              <div class="result-amount" id="r2">25%</div>
+              <div class="result-sub" id="r2_sub">50 is 25% of 200</div>
+            </div>
           </div>
-          <div class="result-box">
-            <div class="result-label">Result</div>
-            <div class="result-amount" id="result1">20</div>
+
+          <!-- Mode 3: % Change -->
+          <div id="mode-3" class="mode-content" style="display:none;">
+            <button class="copy-btn" onclick="copyResult(3)">Copy</button>
+            <div class="field">
+              <label class="f-label"><span class="f-label-text">Original Value</span></label>
+              <input type="number" id="p3_orig" class="f-input" value="100" step="any">
+            </div>
+            <div class="field">
+              <label class="f-label"><span class="f-label-text">New Value</span></label>
+              <input type="number" id="p3_new" class="f-input" value="150" step="any">
+            </div>
+            <div class="result-box">
+              <div class="result-label">Percentage Change</div>
+              <div class="result-amount" id="r3">+50%</div>
+              <div class="result-sub" id="r3_sub">Increased by 50 (50%)</div>
+            </div>
+          </div>
+
+          <!-- Mode 4: Discount -->
+          <div id="mode-4" class="mode-content" style="display:none;">
+            <button class="copy-btn" onclick="copyResult(4)">Copy</button>
+            <div class="field">
+              <label class="f-label"><span class="f-label-text">Original Price</span></label>
+              <input type="number" id="p4_price" class="f-input" value="1000" step="any">
+            </div>
+            <div class="field">
+              <label class="f-label"><span class="f-label-text">Discount (%)</span></label>
+              <input type="number" id="p4_disc" class="f-input" value="25" step="any">
+            </div>
+            <div class="result-box">
+              <div class="result-label">Final Price</div>
+              <div class="result-amount" id="r4">750</div>
+              <div class="result-row">
+                <div class="result-mini">
+                  <div class="result-label">You Save</div>
+                  <div class="result-amount" id="r4_save" style="color:#e74c3c;">250</div>
+                </div>
+                <div class="result-mini">
+                  <div class="result-label">Discount</div>
+                  <div class="result-amount" id="r4_pct">25%</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mode 5: Tip Split -->
+          <div id="mode-5" class="mode-content" style="display:none;">
+            <button class="copy-btn" onclick="copyResult(5)">Copy</button>
+            <div class="field">
+              <label class="f-label"><span class="f-label-text">Bill Amount</span></label>
+              <input type="number" id="p5_bill" class="f-input" value="5000" step="any">
+            </div>
+            <div class="f-label"><span class="f-label-text">Tip %</span></div>
+            <div class="tip-grid">
+              <button class="tip-btn" data-tip="5">5%</button>
+              <button class="tip-btn on" data-tip="10">10%</button>
+              <button class="tip-btn" data-tip="15">15%</button>
+              <button class="tip-btn" data-tip="20">20%</button>
+            </div>
+            <div class="field">
+              <label class="f-label"><span class="f-label-text">Custom Tip %</span></label>
+              <input type="number" id="p5_tip" class="f-input" value="10" step="any">
+            </div>
+            <div class="field">
+              <label class="f-label"><span class="f-label-text">Split Between</span></label>
+              <input type="number" id="p5_split" class="f-input" value="1" min="1" step="1">
+            </div>
+            <div class="result-box">
+              <div class="result-label">Total with Tip</div>
+              <div class="result-amount" id="r5">5,500</div>
+              <div class="result-row">
+                <div class="result-mini">
+                  <div class="result-label">Tip Amount</div>
+                  <div class="result-amount" id="r5_tip">500</div>
+                </div>
+                <div class="result-mini">
+                  <div class="result-label">Per Person</div>
+                  <div class="result-amount" id="r5_per">5,500</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mode 6: Margin / Markup -->
+          <div id="mode-6" class="mode-content" style="display:none;">
+            <button class="copy-btn" onclick="copyResult(6)">Copy</button>
+            <div class="field">
+              <label class="f-label"><span class="f-label-text">Cost Price</span></label>
+              <input type="number" id="p6_cost" class="f-input" value="600" step="any">
+            </div>
+            <div class="field">
+              <label class="f-label"><span class="f-label-text">Selling Price</span></label>
+              <input type="number" id="p6_sell" class="f-input" value="1000" step="any">
+            </div>
+            <div class="result-box">
+              <div class="result-row" style="margin-top:0;">
+                <div class="result-mini">
+                  <div class="result-label">Profit Margin</div>
+                  <div class="result-amount" id="r6_margin">40%</div>
+                </div>
+                <div class="result-mini">
+                  <div class="result-label">Markup</div>
+                  <div class="result-amount" id="r6_markup">66.67%</div>
+                </div>
+              </div>
+              <div class="result-row">
+                <div class="result-mini">
+                  <div class="result-label">Profit</div>
+                  <div class="result-amount" id="r6_profit" style="color:#27ae60;">400</div>
+                </div>
+                <div class="result-mini">
+                  <div class="result-label">Gross Margin</div>
+                  <div class="result-amount" id="r6_gm">0.40</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+      </div>
 
-        <div id="mode-2" class="mode-content" style="display:none;">
-          <div class="field">
-            <label class="f-label"><span class="f-label-text">Value (X)</span></label>
-            <input type="number" id="value2a" class="f-input" value="50" min="0" step="0.01">
-          </div>
-          <div class="field">
-            <label class="f-label"><span class="f-label-text">Total (Y)</span></label>
-            <input type="number" id="value2b" class="f-input" value="200" min="0.01" step="0.01">
-          </div>
-          <div class="result-box">
-            <div class="result-label">X is Y% of Total</div>
-            <div class="result-amount" id="result2">25%</div>
+      <!-- History -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Recent Calculations</span>
+          <button class="copy-btn" onclick="clearHist()" style="position:static;">Clear</button>
+        </div>
+        <div class="card-body">
+          <div class="history-list" id="histList">
+            <div class="empty-hist">Calculations will appear here automatically.</div>
           </div>
         </div>
+      </div>
+    </div>
 
-        <div id="mode-3" class="mode-content" style="display:none;">
-          <div class="field">
-            <label class="f-label"><span class="f-label-text">Original Value</span></label>
-            <input type="number" id="original" class="f-input" value="100" min="0" step="0.01">
-          </div>
-          <div class="field">
-            <label class="f-label"><span class="f-label-text">New Value</span></label>
-            <input type="number" id="newval" class="f-input" value="150" min="0" step="0.01">
-          </div>
-          <div class="result-box">
-            <div class="result-label">Percentage Change</div>
-            <div class="result-amount" id="result3">50%</div>
-          </div>
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="info-card">
+        <div class="info-title">Formulas</div>
+        <div class="info-text">
+          <strong>X% of Y</strong>
+          <div class="formula">result = (X / 100) &times; Y</div>
+          <strong>% Change</strong>
+          <div class="formula">change = ((new - old) / old) &times; 100</div>
+          <strong>Profit Margin</strong>
+          <div class="formula">margin = ((sell - cost) / sell) &times; 100</div>
+          <strong>Markup</strong>
+          <div class="formula">markup = ((sell - cost) / cost) &times; 100</div>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-title">Quick Reference</div>
+        <div class="info-text">
+          &bull; 1/4 = 25%<br>
+          &bull; 1/3 = 33.33%<br>
+          &bull; 1/2 = 50%<br>
+          &bull; 2/3 = 66.67%<br>
+          &bull; 3/4 = 75%<br>
+          &bull; To convert decimal to %: multiply by 100<br>
+          &bull; To convert % to decimal: divide by 100
         </div>
       </div>
     </div>
@@ -133,6 +321,7 @@
 <script>
   const tabs = document.querySelectorAll('.mode-tab');
   const contents = document.querySelectorAll('.mode-content');
+  let historyArr = [];
 
   tabs.forEach(tab => {
     tab.addEventListener('click', () => {
@@ -140,40 +329,132 @@
       tabs.forEach(t => t.classList.remove('on'));
       contents.forEach(c => c.style.display = 'none');
       tab.classList.add('on');
-      document.getElementById(`mode-${mode}`).style.display = 'block';
+      document.getElementById('mode-' + mode).style.display = 'block';
     });
   });
 
+  // Tip quick buttons
+  document.querySelectorAll('.tip-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tip-btn').forEach(b => b.classList.remove('on'));
+      btn.classList.add('on');
+      document.getElementById('p5_tip').value = btn.dataset.tip;
+      calc5();
+    });
+  });
+
+  function fmt(n) { return n % 1 === 0 ? n.toLocaleString() : n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+
   function calc1() {
-    const p = parseFloat(document.getElementById('percent1').value) || 0;
-    const v = parseFloat(document.getElementById('value1').value) || 0;
-    document.getElementById('result1').textContent = (p * v / 100).toFixed(2);
+    const p = parseFloat(document.getElementById('p1_pct').value) || 0;
+    const v = parseFloat(document.getElementById('p1_val').value) || 0;
+    const r = p * v / 100;
+    document.getElementById('r1').textContent = fmt(r);
+    document.getElementById('r1_sub').textContent = `${p}% of ${fmt(v)} = ${fmt(r)}`;
+    addHist(`${p}% of ${fmt(v)}`, fmt(r));
   }
 
   function calc2() {
-    const x = parseFloat(document.getElementById('value2a').value) || 0;
-    const y = parseFloat(document.getElementById('value2b').value) || 1;
-    const pct = (x / y * 100).toFixed(2);
-    document.getElementById('result2').textContent = pct + '%';
+    const x = parseFloat(document.getElementById('p2_x').value) || 0;
+    const y = parseFloat(document.getElementById('p2_y').value) || 1;
+    const r = (x / y * 100);
+    document.getElementById('r2').textContent = r.toFixed(2) + '%';
+    document.getElementById('r2_sub').textContent = `${fmt(x)} is ${r.toFixed(2)}% of ${fmt(y)}`;
+    addHist(`${fmt(x)} of ${fmt(y)}`, r.toFixed(2) + '%');
   }
 
   function calc3() {
-    const orig = parseFloat(document.getElementById('original').value) || 0;
-    const neu = parseFloat(document.getElementById('newval').value) || 0;
-    const change = orig === 0 ? 0 : ((neu - orig) / orig * 100).toFixed(2);
-    document.getElementById('result3').textContent = change + '%';
+    const o = parseFloat(document.getElementById('p3_orig').value) || 0;
+    const n = parseFloat(document.getElementById('p3_new').value) || 0;
+    if (o === 0) { document.getElementById('r3').textContent = '—'; return; }
+    const diff = n - o;
+    const pct = (diff / o * 100);
+    const sign = pct >= 0 ? '+' : '';
+    document.getElementById('r3').textContent = sign + pct.toFixed(2) + '%';
+    document.getElementById('r3_sub').textContent = `${pct >= 0 ? 'Increased' : 'Decreased'} by ${fmt(Math.abs(diff))} (${Math.abs(pct).toFixed(2)}%)`;
+    addHist(`${fmt(o)} → ${fmt(n)}`, sign + pct.toFixed(2) + '%');
   }
 
-  document.getElementById('percent1').addEventListener('input', calc1);
-  document.getElementById('value1').addEventListener('input', calc1);
-  document.getElementById('value2a').addEventListener('input', calc2);
-  document.getElementById('value2b').addEventListener('input', calc2);
-  document.getElementById('original').addEventListener('input', calc3);
-  document.getElementById('newval').addEventListener('input', calc3);
+  function calc4() {
+    const price = parseFloat(document.getElementById('p4_price').value) || 0;
+    const disc = parseFloat(document.getElementById('p4_disc').value) || 0;
+    const saved = price * disc / 100;
+    const final_ = price - saved;
+    document.getElementById('r4').textContent = fmt(final_);
+    document.getElementById('r4_save').textContent = fmt(saved);
+    document.getElementById('r4_pct').textContent = disc + '%';
+    addHist(`${fmt(price)} - ${disc}%`, fmt(final_));
+  }
 
-  calc1();
-  calc2();
-  calc3();
+  function calc5() {
+    const bill = parseFloat(document.getElementById('p5_bill').value) || 0;
+    const tipPct = parseFloat(document.getElementById('p5_tip').value) || 0;
+    const split = parseInt(document.getElementById('p5_split').value) || 1;
+    const tip = bill * tipPct / 100;
+    const total = bill + tip;
+    const per = total / split;
+    document.getElementById('r5').textContent = fmt(total);
+    document.getElementById('r5_tip').textContent = fmt(tip);
+    document.getElementById('r5_per').textContent = fmt(per);
+    addHist(`${fmt(bill)} + ${tipPct}% tip`, fmt(total));
+  }
+
+  function calc6() {
+    const cost = parseFloat(document.getElementById('p6_cost').value) || 0;
+    const sell = parseFloat(document.getElementById('p6_sell').value) || 0;
+    const profit = sell - cost;
+    const margin = sell !== 0 ? (profit / sell * 100) : 0;
+    const markup = cost !== 0 ? (profit / cost * 100) : 0;
+    const gm = sell !== 0 ? (profit / sell) : 0;
+    document.getElementById('r6_margin').textContent = margin.toFixed(2) + '%';
+    document.getElementById('r6_markup').textContent = markup.toFixed(2) + '%';
+    document.getElementById('r6_profit').textContent = fmt(profit);
+    document.getElementById('r6_gm').textContent = gm.toFixed(4);
+    addHist(`Cost ${fmt(cost)} → Sell ${fmt(sell)}`, margin.toFixed(2) + '% margin');
+  }
+
+  // Bind inputs
+  const bindings = [
+    ['p1_pct', calc1], ['p1_val', calc1],
+    ['p2_x', calc2], ['p2_y', calc2],
+    ['p3_orig', calc3], ['p3_new', calc3],
+    ['p4_price', calc4], ['p4_disc', calc4],
+    ['p5_bill', calc5], ['p5_tip', calc5], ['p5_split', calc5],
+    ['p6_cost', calc6], ['p6_sell', calc6]
+  ];
+  bindings.forEach(([id, fn]) => document.getElementById(id).addEventListener('input', fn));
+
+  // History
+  function addHist(expr, result) {
+    historyArr.unshift({ expr, result });
+    if (historyArr.length > 15) historyArr.pop();
+    renderHist();
+  }
+
+  function renderHist() {
+    const el = document.getElementById('histList');
+    if (historyArr.length === 0) { el.innerHTML = '<div class="empty-hist">Calculations will appear here automatically.</div>'; return; }
+    el.innerHTML = historyArr.map(h => `<div class="hist-item"><span class="hist-expr">${h.expr}</span><span class="hist-result">${h.result}</span></div>`).join('');
+  }
+
+  function clearHist() { historyArr = []; renderHist(); }
+
+  // Copy
+  function copyResult(mode) {
+    const resultEls = { 1: 'r1', 2: 'r2', 3: 'r3', 4: 'r4', 5: 'r5', 6: 'r6_margin' };
+    const text = document.getElementById(resultEls[mode]).textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.querySelector('#mode-' + mode + ' .copy-btn');
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1500);
+    });
+  }
+
+  // Init
+  calc1(); calc2(); calc3(); calc4(); calc5(); calc6();
+  historyArr = [];
+  renderHist();
 </script>
 </body>
 </html>
