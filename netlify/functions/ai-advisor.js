@@ -5,9 +5,16 @@
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 
 exports.handler = async function(event) {
-  // CORS headers
+  // CORS headers — restrict to our domain to prevent abuse
+  const allowedOrigins = [
+    "https://afrotools.com",
+    "https://www.afrotools.com",
+  ];
+  const origin = event.headers?.origin || event.headers?.Origin || "";
+  const corsOrigin = allowedOrigins.includes(origin) ? origin : allowedOrigins[0];
+
   const headers = {
-    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Origin": corsOrigin,
     "Access-Control-Allow-Headers": "Content-Type",
     "Access-Control-Allow-Methods": "POST, OPTIONS",
     "Content-Type": "application/json"

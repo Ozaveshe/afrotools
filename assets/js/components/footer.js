@@ -318,13 +318,26 @@
     }
 
     _bind() {
-      this.shadowRoot.querySelector('form')?.addEventListener('submit', e => {
+      this.shadowRoot.querySelector('form')?.addEventListener('submit', async e => {
         e.preventDefault();
         const btn = e.target.querySelector('button');
         const inp = e.target.querySelector('input');
         if (inp.value && inp.checkValidity()) {
-          btn.textContent = '✓ Done';
-          inp.value = '';
+          btn.disabled = true;
+          btn.textContent = '…';
+          try {
+            // Submit to Netlify Forms via POST (Shadow DOM forms are invisible to Netlify's build-time parser)
+            const formData = new URLSearchParams();
+            formData.append('form-name', 'newsletter');
+            formData.append('email', inp.value);
+            await fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: formData.toString() });
+            btn.textContent = '✓ Done';
+            inp.value = '';
+          } catch {
+            btn.textContent = '✓ Done';
+            inp.value = '';
+          }
+          btn.disabled = false;
           setTimeout(() => { btn.textContent = this.fr ? "M'inscrire →" : 'Notify Me →'; }, 3000);
         }
       });
