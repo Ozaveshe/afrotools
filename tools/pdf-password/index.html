@@ -513,7 +513,7 @@
       </div>
 
       <!-- Decrypt Card -->
-      <div class="card" id="decrypt-card" style="position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;">
+      <div class="card" id="decrypt-card" style="display:none;">
         <div class="card-head">
           <span class="card-title">Upload Password-Protected PDF</span>
         </div>
@@ -544,10 +544,10 @@
         </div>
         <div class="card-body">
           <div class="result-text" id="resultText"></div>
-          <div class="progress-bar" id="progressBar" style="position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;">
+          <div class="progress-bar" id="progressBar" style="display:none;">
             <div class="progress-fill" id="progressFill"></div>
           </div>
-          <div class="action-row" id="actionRow" style="position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;">
+          <div class="action-row" id="actionRow" style="display:none;">
             <button class="act-btn act-download" id="downloadBtn">📥 Download</button>
           </div>
         </div>
@@ -557,14 +557,13 @@
       <div class="info-card">
         <div class="info-title">Security Notes</div>
         <div class="info-text">
-          <strong>User Password:</strong> Required to open PDF.
+          <strong>Decrypt:</strong> Remove password protection from PDFs you own. Enter the correct password and download an unprotected copy.
           <br><br>
-          <strong>Owner Password:</strong> Allows full access and permission changes.
-          <br><br>
-          Note: This provides basic PDF encryption. For high-security needs, use professional tools.
+          <strong>Encrypt:</strong> Not yet available in-browser. Use Adobe Acrobat or LibreOffice to add passwords.
           <ul style="margin-top:10px;">
-            <li>✓ Client-side encryption</li>
-            <li>✓ No data sent</li>
+            <li>✓ Client-side processing</li>
+            <li>✓ No data sent to servers</li>
+            <li>✓ Original file unchanged</li>
           </ul>
         </div>
       </div>
@@ -607,8 +606,8 @@
       modeButtons.forEach(b => b.classList.remove('on'));
       btn.classList.add('on');
 
-      encryptCard.style.display = currentMode === 'encrypt' ? 'block' : 'none';
-      decryptCard.style.display = currentMode === 'decrypt' ? 'block' : 'none';
+      encryptCard.style.display = currentMode === 'encrypt' ? '' : 'none';
+      decryptCard.style.display = currentMode === 'decrypt' ? '' : 'none';
       resultCard.classList.remove('on');
     });
   });
@@ -677,33 +676,16 @@
     }
   });
 
-  // Encrypt function
+  // Encrypt function — pdf-lib cannot add password encryption
   encryptBtn.addEventListener('click', async () => {
     if (!currentFile || !userPassword.value) {
       alert('Please select a file and enter a password');
       return;
     }
 
-    progressBar.style.display = 'block';
-    progressFill.style.width = '100%';
+    resultText.innerHTML = '<div style="color:#92400e;font-weight:600;">PDF encryption is not yet available in the browser-only version.</div><div style="margin-top:8px;font-size:0.8rem;color:#6b7280;">Client-side PDF libraries cannot add password protection. Use the <strong>Decrypt</strong> mode to remove passwords from existing PDFs, or use Adobe Acrobat / LibreOffice for encryption.</div>';
     actionRow.style.display = 'none';
-    resultText.textContent = 'Encrypting PDF...';
     resultCard.classList.add('on');
-
-    try {
-      const arrayBuffer = await currentFile.arrayBuffer();
-      const pdf = await PDFLib.PDFDocument.load(arrayBuffer);
-
-      // Note: pdf-lib has limited encryption support
-      // For full AES encryption, would need additional library
-      const encrypted = await pdf.save();
-      processedPdf = encrypted;
-
-      resultText.textContent = '✓ PDF encrypted successfully!';
-      actionRow.style.display = 'grid';
-    } catch (err) {
-      resultText.textContent = '✗ Error: ' + err.message;
-    }
   });
 
   // Decrypt function
@@ -714,7 +696,7 @@
     }
 
     progressBar.style.display = 'block';
-    progressFill.style.width = '100%';
+    progressFill.style.width = '50%';
     actionRow.style.display = 'none';
     resultText.textContent = 'Attempting to decrypt...';
     resultCard.classList.add('on');
@@ -722,14 +704,25 @@
     try {
       const arrayBuffer = await currentFile.arrayBuffer();
       const pdf = await PDFLib.PDFDocument.load(arrayBuffer, {
-        password: decryptPassword.value
+        password: decryptPassword.value,
+        updateMetadata: false
       });
 
-      processedPdf = await pdf.save();
-      resultText.textContent = '✓ PDF decrypted successfully!';
+      progressFill.style.width = '80%';
+
+      // Save without encryption — produces an unprotected copy
+      processedPdf = await pdf.save({ useObjectStreams: false });
+      progressFill.style.width = '100%';
+      resultText.textContent = '✓ PDF decrypted successfully! Password protection removed.';
       actionRow.style.display = 'grid';
+      progressBar.style.display = 'none';
     } catch (err) {
-      resultText.textContent = '✗ Error: Password incorrect or file not encrypted';
+      progressBar.style.display = 'none';
+      if (err.message && err.message.includes('password')) {
+        resultText.textContent = '✗ Incorrect password. Please try again.';
+      } else {
+        resultText.textContent = '✗ Could not decrypt. The file may not be password-protected, or the encryption type is unsupported.';
+      }
     }
   });
 
