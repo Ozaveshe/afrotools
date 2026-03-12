@@ -232,7 +232,7 @@ function updateSliderFill(el) {
   var c = getComputedStyle(document.documentElement).getPropertyValue('--calc-accent');
   c = c ? c.trim() : '#008751';
   el.style.background = 'linear-gradient(to right, ' + c + ' 0%, ' + c + ' ' + p + '%, #e2e8f0 ' + p + '%, #e2e8f0 100%)';
-}%,#c5deca ${p}%,#c5deca 100%)`;}
+}
 updateSliderFill(document.getElementById('salarySlider'));
 function togItem(el){el.classList.toggle('on');}
 function isOn(tog){return!!document.querySelector(`[data-tog="${tog}"]`)?.classList.contains('on');}
@@ -255,7 +255,7 @@ else if(type==='bar'){const bands=R.bandBreakdown.filter(b=>b.tax>0);if(bands.le
 function openPdfModal(){if(!RESULT)return;document.getElementById('pdfModal').classList.add('on');document.getElementById('modalForm').style.display='block';}
 function closePdfModal(){document.getElementById('pdfModal').classList.remove('on');}
 document.getElementById('pdfModal').addEventListener('click',e=>{if(e.target===document.getElementById('pdfModal'))closePdfModal();});
-async function submitPdf(e){e.preventDefault();try{await fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({'form-name':'pdf-leads',email:document.getElementById('pdfEmail').value,country:'Morocco',country_code:'MA',tool:'paye',tool_id:'ma-paye',currency:'MAD',gross_salary:RESULT.gross}).toString());}catch(e){}
+async function submitPdf(e){e.preventDefault();try{await fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({'form-name':'pdf-leads',email:document.getElementById('pdfEmail').value,country:'Morocco',country_code:'MA',tool:'paye',tool_id:'ma-paye',currency:'MAD',gross_salary:RESULT.gross}).toString()});}catch(e){}
 document.getElementById('modalForm').style.display='none';document.getElementById('modalSuccess').style.display='block';}
 function shareResult(){if(!RESULT)return;const text=`Morocco PAYE: Gross MAD ${Math.round(RESULT.gross).toLocaleString()}/yr → Take-home MAD ${Math.round(RESULT.net).toLocaleString()}/yr. afrotools.com/morocco/ma-paye`;if(navigator.share){navigator.share({title:'My Morocco PAYE',text,url:'https://afrotools.com/morocco/ma-paye'});}else if(navigator.clipboard){navigator.clipboard.writeText(text);const btn=document.getElementById('maShareBtn');btn.textContent='✓ Copied!';setTimeout(()=>btn.textContent='Share Result',2500);}}
 async function getAI(){if(!RESULT)return;const R=RESULT;const btn=document.getElementById('aiBtn');btn.disabled=true;btn.textContent='Analysing…';const prompt=`Morocco PAYE 2025: Gross MAD ${Math.round(R.gross).toLocaleString()}, CNSS MAD ${Math.round(R.cnss).toLocaleString()}, DGI MAD ${Math.round(R.annualDGI).toLocaleString()}, Take-home MAD ${Math.round(R.net).toLocaleString()}, Rate ${pct(R.effectiveRate)}. Summarize in 150 words.`;try{const res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'Morocco tax advisor. Concise.',messages:[{role:'user',content:prompt}]})});const data=await res.json();const text=data.text||'Unable.';document.getElementById('aiResp').textContent=text;document.getElementById('aiResp').style.display='block';document.getElementById('aiChat').classList.add('on');CHAT_HISTORY=[{role:'user',content:prompt},{role:'assistant',content:text}];btn.textContent='Ask below ↓';}catch(e){btn.disabled=false;btn.textContent='Try Again';}}
