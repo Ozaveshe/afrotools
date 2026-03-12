@@ -1,7 +1,15 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-D859CGF391');
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Algeria PAYE Calculator 2025 — DGI Income Tax, CNAS | AfroTools</title>
 <meta name="description" content="Algeria PAYE calculator 2025. DGI progressive tax 0%–35%, CNAS social security 9% employee + 26% employer. Annual computation. Free PDF.">
@@ -143,10 +151,8 @@ function updateSliderFill(el) {
 let RESULT=null,CHART=null;
 const fmt=n=>'DZD '+Math.round(Math.abs(n)).toLocaleString('ar-DZ');
 const pct=r=>((r*100)%1===0?(r*100).toFixed(0):(r*100).toFixed(2))+'%';
-function onSlider(el){
-  updateSliderFill(el || document.getElementById(\'salarySlider\'));document.getElementById('grossSalary').value=parseInt(el.value);document.getElementById('sliderVal').textContent=fmt(parseInt(el.value));updateFill(el);}
-function onInput(el){const v=Math.min(Math.max(parseInt(el.value)||0,500000),100000000);document.getElementById('salarySlider').value=v;updateFill(document.getElementById('salarySlider'));}
-function updateFill(el){const p=((parseInt(el.value)-parseInt(el.min))/(parseInt(el.max)-parseInt(el.min)))*100;el.style.background=`linear-gradient(to right,#007A5E 0%,#007A5E ${p}%,#c5deca ${p}%,#c5deca 100%)`;}
+function onSlider(el){const v=parseInt(el.value);document.getElementById('grossSalary').value=v;document.getElementById('sliderVal').textContent=fmt(v);updateSliderFill(el);}
+function onInput(el){const v=Math.min(Math.max(parseInt(el.value)||0,500000),100000000);const s=document.getElementById('salarySlider');s.value=v;document.getElementById('sliderVal').textContent=fmt(parseInt(el.value)||0);updateSliderFill(s);}
 function togItem(el){el.classList.toggle('on');}
 function isOn(tog){return!!document.querySelector(`[data-tog="${tog}"]`)?.classList.contains('on');}
 function calcDGI(income){let tax=0;if(income<=240000)return{tax:0};if(income<=480000)tax=(income-240000)*0.20;else if(income<=960000)tax=48000+(income-480000)*0.30;else tax=192000+(income-960000)*0.35;return{tax};}
@@ -160,7 +166,7 @@ async function getAI(){if(!RESULT)return;document.getElementById('aiBtn').disabl
 async function submitPdf(e){e.preventDefault();try{await fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({'form-name':'pdf-leads',email:document.getElementById('pdfEmail').value||'',country:'Algeria',country_code:'DZ',tool_id:'dz-paye',currency:'DZD',gross_salary:RESULT.gross}).toString());}catch(e){}
 closePdfModal();}
 document.getElementById('grossSalary').addEventListener('keydown',e=>{if(e.key==='Enter')calculate();});
-updateFill(document.getElementById('salarySlider'));
+updateSliderFill(document.getElementById('salarySlider'));
 </script>
 </body>
 </html>

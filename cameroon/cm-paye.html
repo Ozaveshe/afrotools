@@ -2,6 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-D859CGF391');
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cameroon PAYE Calculator 2025 — DGI Income Tax, CNPS | AfroTools</title>
 <meta name="description" content="Cameroon PAYE calculator 2025. DGI progressive tax 10%–35%, CNPS social security 4.2% employee + 11.2% employer. Annual computation. Free PDF download.">
@@ -226,7 +234,7 @@ function updateSliderFill(el) {
   var c = getComputedStyle(document.documentElement).getPropertyValue('--calc-accent');
   c = c ? c.trim() : '#008751';
   el.style.background = 'linear-gradient(to right, ' + c + ' 0%, ' + c + ' ' + p + '%, #e2e8f0 ' + p + '%, #e2e8f0 100%)';
-}%,#c5deca ${p}%,#c5deca 100%)`;}
+}
 updateSliderFill(document.getElementById('salarySlider'));
 function togItem(el){el.classList.toggle('on');}
 function isOn(tog){return!!document.querySelector(`[data-tog="${tog}"]`)?.classList.contains('on');}
@@ -249,7 +257,15 @@ function closePdfModal(){document.getElementById('pdfModal').classList.remove('o
 document.getElementById('pdfModal').addEventListener('click',e=>{if(e.target===document.getElementById('pdfModal'))closePdfModal();});
 async function submitPdf(e){e.preventDefault();const email=document.getElementById('pdfEmail').value;if(!email)return;try{await fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({'form-name':'pdf-leads',email,country:'Cameroon',country_code:'CM',tool:'paye',tool_id:'cm-paye',currency:'XAF',gross_salary:RESULT.gross}).toString());}catch(e){}
 document.getElementById('modalForm').style.display='none';document.getElementById('modalSuccess').style.display='block';}
-function generatePdf(){if(!RESULT)return;const R=RESULT;const dateStr=new Date().toLocaleDateString('en-CM',{day:'numeric',month:'long',year:'numeric'});const refNo='AFT-CM-PAYE-'+Date.now().toString(36).toUpperCase().slice(-6);const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>AfroTools Cameroon PAYE — ${refNo}</title></head><body style="font-family:Arial;padding:20px;"><h2>Cameroon PAYE Summary</h2><p>Generated ${dateStr}</p><p><strong>Gross Annual:</strong> XAF ${Math.round(R.gross).toLocaleString()}</p><p><strong>CNPS:</strong> XAF ${Math.round(R.cnps).toLocaleString()}</p><p><strong>DGI Tax:</strong> XAF ${Math.round(R.annualDGI).toLocaleString()}</p><p><strong>Take-Home:</strong> XAF ${Math.round(R.net).toLocaleString()}</p><p><strong>Effective Rate:</strong> ${pct(R.effectiveRate)}</p><p>Reference: ${refNo}</p></body></html>`;const blob=new Blob([html],{type:'text/html'});const url=URL.createObjectURL(blob);const w=window.open(url,'_blank');if(w){w.addEventListener('load',()=>{setTimeout(()=>{w.print();setTimeout(()=>URL.revokeObjectURL(url),3000)},600);});};}
+function generatePdf(){if(!RESULT)return;const R=RESULT;const dateStr=new Date().toLocaleDateString('en-CM',{day:'numeric',month:'long',year:'numeric'});const refNo='AFT-CM-PAYE-'+Date.now().toString(36).toUpperCase().slice(-6);const html=`<!DOCTYPE html><html><head><meta charset="UTF-8">
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-D859CGF391');
+</script><title>AfroTools Cameroon PAYE — ${refNo}</title></head><body style="font-family:Arial;padding:20px;"><h2>Cameroon PAYE Summary</h2><p>Generated ${dateStr}</p><p><strong>Gross Annual:</strong> XAF ${Math.round(R.gross).toLocaleString()}</p><p><strong>CNPS:</strong> XAF ${Math.round(R.cnps).toLocaleString()}</p><p><strong>DGI Tax:</strong> XAF ${Math.round(R.annualDGI).toLocaleString()}</p><p><strong>Take-Home:</strong> XAF ${Math.round(R.net).toLocaleString()}</p><p><strong>Effective Rate:</strong> ${pct(R.effectiveRate)}</p><p>Reference: ${refNo}</p></body></html>`;const blob=new Blob([html],{type:'text/html'});const url=URL.createObjectURL(blob);const w=window.open(url,'_blank');if(w){w.addEventListener('load',()=>{setTimeout(()=>{w.print();setTimeout(()=>URL.revokeObjectURL(url),3000)},600);});};}
 function shareResult(){if(!RESULT)return;const text=`Cameroon PAYE: Gross XAF ${Math.round(RESULT.gross).toLocaleString()}/yr → Take-home XAF ${Math.round(RESULT.net).toLocaleString()}/yr (${pct(RESULT.effectiveRate)} rate). afrotools.com/cameroon/cm-paye`;if(navigator.share){navigator.share({title:'My Cameroon PAYE',text,url:'https://afrotools.com/cameroon/cm-paye'});}else if(navigator.clipboard){navigator.clipboard.writeText(text);const btn=document.getElementById('cmShareBtn');btn.textContent='✓ Copied!';setTimeout(()=>btn.innerHTML=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share Result`,2500);}}
 async function getAI(){if(!RESULT)return;const R=RESULT;const btn=document.getElementById('aiBtn');const respEl=document.getElementById('aiResp');btn.disabled=true;btn.textContent='Analysing…';respEl.style.display='block';respEl.className='ai-response typing';respEl.textContent='';document.getElementById('aiStatus').style.display='none';const prompt=`Cameroon PAYE 2025: Gross XAF ${Math.round(R.gross).toLocaleString()}/yr, CNPS XAF ${Math.round(R.cnps).toLocaleString()}, DGI XAF ${Math.round(R.annualDGI).toLocaleString()}, Take-home XAF ${Math.round(R.net).toLocaleString()}, Rate ${pct(R.effectiveRate)}. Summarize position in 150 words.`;try{const res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'AfroTools Tax Advisor - Cameroon DGI. Concise, practical, no markdown.',messages:[{role:'user',content:prompt}]})});if(!res.ok)throw new Error('HTTP');const data=await res.json();const text=data.text||'Unable to generate.';respEl.className='ai-response';respEl.textContent='';let i=0;const type=()=>{if(i<text.length){respEl.textContent+=text[i++];setTimeout(type,12);}else{document.getElementById('aiChat').classList.add('on');CHAT_HISTORY=[{role:'user',content:prompt},{role:'assistant',content:text}];btn.textContent='Ask below ↓';}};type();}catch(err){respEl.textContent='AI unavailable.';btn.disabled=false;btn.textContent='Try Again';}}
 async function sendChat(){const input=document.getElementById('chatIn');const msg=input.value.trim();if(!msg||!RESULT)return;input.value='';const msgs=document.getElementById('chatMsgs');msgs.innerHTML+=`<div class="msg u">${msg}</div>`;const aiEl=document.createElement('div');aiEl.className='msg a';aiEl.textContent='…';msgs.appendChild(aiEl);msgs.scrollTop=msgs.scrollHeight;CHAT_HISTORY.push({role:'user',content:msg});try{const res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'Cameroon tax advisor. Concise.',messages:CHAT_HISTORY})});const data=await res.json();aiEl.textContent=data.text||'Error';CHAT_HISTORY.push({role:'assistant',content:data.text||'Error'});msgs.scrollTop=msgs.scrollHeight;}catch(e){aiEl.textContent='Network error.';}}
