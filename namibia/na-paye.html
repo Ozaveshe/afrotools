@@ -68,8 +68,10 @@ const pct=r=>{const v=r*100;return(v%1===0?v.toFixed(0):parseFloat(v.toFixed(2))
 function onSlider(el){const v=parseInt(el.value);document.getElementById('grossSalary').value=v;document.getElementById('sliderVal').textContent=fmt(v);updateSliderFill(el);}
 function onInput(el){const v=Math.min(Math.max(parseInt(el.value)||0,60000),3000000);const s=document.getElementById('salarySlider');s.value=v;document.getElementById('sliderVal').textContent=fmt(parseInt(el.value)||0);updateSliderFill(s);}
 function updateSliderFill(el) {
-  const p = ((parseInt(el.value) - parseInt(el.min)) / (parseInt(el.max) - parseInt(el.min))) * 100;
-  el.style.background = `linear-gradient(to right, var(--calc-accent,#008751) 0%, var(--calc-accent,#008751) ${p}%, #e2e8f0 ${p}%, #e2e8f0 100%)`;
+  var p = ((parseInt(el.value) - parseInt(el.min)) / (parseInt(el.max) - parseInt(el.min))) * 100;
+  var c = getComputedStyle(document.documentElement).getPropertyValue('--calc-accent');
+  c = c ? c.trim() : '#008751';
+  el.style.background = 'linear-gradient(to right, ' + c + ' 0%, ' + c + ' ' + p + '%, #e2e8f0 ' + p + '%, #e2e8f0 100%)';
 }%,#c5deca ${p}%,#c5deca 100%)`;}
 updateSliderFill(document.getElementById('salarySlider'));
 function calcAnnualPAYE(income){const bands=[];let tax=0;if(income<=100000)return{tax:0,bandBreakdown:[{rate:0,income,tax:0}]};bands.push({rate:0,income:100000,tax:0});if(income>100000){const chunk=Math.min(income-100000,50000);const t=chunk*0.18;tax+=t;bands.push({rate:0.18,income:chunk,tax:t});}

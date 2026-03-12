@@ -325,8 +325,10 @@ function onInput(el) {
   updateSliderFill(s);
 }
 function updateSliderFill(el) {
-  const p = ((parseInt(el.value) - parseInt(el.min)) / (parseInt(el.max) - parseInt(el.min))) * 100;
-  el.style.background = `linear-gradient(to right, var(--calc-accent,#008751) 0%, var(--calc-accent,#008751) ${p}%, #e2e8f0 ${p}%, #e2e8f0 100%)`;
+  var p = ((parseInt(el.value) - parseInt(el.min)) / (parseInt(el.max) - parseInt(el.min))) * 100;
+  var c = getComputedStyle(document.documentElement).getPropertyValue('--calc-accent');
+  c = c ? c.trim() : '#008751';
+  el.style.background = 'linear-gradient(to right, ' + c + ' 0%, ' + c + ' ' + p + '%, #e2e8f0 ' + p + '%, #e2e8f0 100%)';
 }
 updateSliderFill(document.getElementById('salarySlider'));
 
