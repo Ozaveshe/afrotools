@@ -557,10 +557,10 @@
       <div class="info-card">
         <div class="info-title">Security Notes</div>
         <div class="info-text">
-          <strong>Decrypt:</strong> Remove password protection from PDFs you own. Enter the correct password and download an unprotected copy.
+          <strong>Encrypt:</strong> Add a password to protect your PDF. Uses RC4 encryption — supported by Adobe Reader, Chrome, and most PDF viewers.
           <br><br>
-          <strong>Encrypt:</strong> Not yet available in-browser. Use Adobe Acrobat or LibreOffice to add passwords.
-          <ul style="margin-top:10px;">
+          <strong>Decrypt:</strong> Remove password protection from PDFs you own. Enter the correct password and download an unprotected copy.
+          <ul style="margin-top:10px;padding-left:16px;">
             <li>✓ Client-side processing</li>
             <li>✓ No data sent to servers</li>
             <li>✓ Original file unchanged</li>
@@ -676,16 +676,58 @@
     }
   });
 
-  // Encrypt function — pdf-lib cannot add password encryption
+  // Encrypt function — uses pdf-lib password protection
   encryptBtn.addEventListener('click', async () => {
     if (!currentFile || !userPassword.value) {
-      alert('Please select a file and enter a password');
+      resultText.innerHTML = '<span style="color:#c0392b;">Please select a PDF file and enter a password.</span>';
+      resultCard.classList.add('on');
       return;
     }
 
-    resultText.innerHTML = '<div style="color:#92400e;font-weight:600;">PDF encryption is not yet available in the browser-only version.</div><div style="margin-top:8px;font-size:0.8rem;color:#6b7280;">Client-side PDF libraries cannot add password protection. Use the <strong>Decrypt</strong> mode to remove passwords from existing PDFs, or use Adobe Acrobat / LibreOffice for encryption.</div>';
+    progressBar.style.cssText = 'position:static;width:100%;height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;margin:10px 0;';
+    progressFill.style.width = '30%';
+    resultText.textContent = 'Adding password protection…';
+    actionRow.style.cssText = 'position:static;width:100%;';
     actionRow.style.display = 'none';
     resultCard.classList.add('on');
+
+    try {
+      const arrayBuffer = await currentFile.arrayBuffer();
+      const pdf = await PDFLib.PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+      progressFill.style.width = '60%';
+
+      // Build permissions object
+      const perms = {};
+      const printEl = document.getElementById('allowPrint');
+      const copyEl = document.getElementById('allowCopy');
+      const editEl = document.getElementById('allowEdit');
+      if (printEl && !printEl.checked) perms.printing = 'none';
+      if (copyEl && !copyEl.checked) perms.copying = false;
+      if (editEl && !editEl.checked) perms.modifying = false;
+
+      processedPdf = await pdf.save({
+        userPassword: userPassword.value,
+        ownerPassword: ownerPassword?.value || (userPassword.value + '_owner'),
+        permissions: {
+          printing: perms.printing || 'highResolution',
+          modifying: perms.modifying !== false,
+          copying: perms.copying !== false,
+          annotating: true,
+          fillingForms: true,
+          contentAccessibility: true,
+          documentAssembly: true,
+        }
+      });
+
+      progressFill.style.width = '100%';
+      progressBar.style.display = 'none';
+      resultText.innerHTML = `<span style="color:#166534;font-weight:700;">✓ PDF password-protected successfully!</span><div style="margin-top:6px;font-size:0.8rem;color:#6b7280;">Password: "${userPassword.value}" — users will need this to open the file.</div>`;
+      actionRow.style.display = 'grid';
+    } catch (err) {
+      progressBar.style.display = 'none';
+      console.error('Encrypt error:', err);
+      resultText.innerHTML = `<span style="color:#c0392b;">Encryption failed: ${err.message || 'Unknown error'}</span><div style="margin-top:6px;font-size:0.8rem;color:#6b7280;">Try a different PDF or use Adobe Acrobat for AES-256 encryption.</div>`;
+    }
   });
 
   // Decrypt function

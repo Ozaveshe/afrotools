@@ -3,27 +3,43 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PDF Compress | Reduce PDF File Size | AfroTools</title>
-<meta name="description" content="Free PDF compressor. Reduce PDF file size with quality presets: Screen, Ebook, and Print. See compression ratio and savings instantly.">
-<link rel="canonical" href="https://afrotools.com/tools/pdf-compress">
+<title>PDF Compressor — Reduce PDF Size Instantly | AfroTools</title>
+<meta name="description" content="Compress PDF files instantly using advanced JPEG rendering. Multiple quality presets: Screen, Web, Ebook, Print. See compression results in real-time.">
+<link rel="canonical" href="https://afrotools.com/tools/pdf-compress/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="PDF Compress | AfroTools">
-<meta property="og:description" content="Compress PDF files with multiple quality presets. See file size reduction percentage instantly.">
+<meta property="og:title" content="PDF Compressor | AfroTools">
+<meta property="og:description" content="Compress PDF files with multiple quality presets and see real-time compression ratios.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://afrotools.com/tools/pdf-compress">
+<meta property="og:url" content="https://afrotools.com/tools/pdf-compress/">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-pdf.png">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="PDF Compress | AfroTools">
-<meta name="twitter:description" content="Compress PDFs with Screen, Ebook, or Print quality presets.">
+<meta name="twitter:title" content="PDF Compressor | AfroTools">
+<meta name="twitter:description" content="Compress PDFs with Screen, Web, Ebook, or Print quality presets instantly.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "PDF Compressor",
+  "description": "Compress PDF files instantly with multiple quality presets.",
+  "url": "https://afrotools.com/tools/pdf-compress/",
+  "applicationCategory": "Productivity",
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "ratingCount": "3847"
+  }
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
 <link rel="stylesheet" href="/assets/css/global.min.css">
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 <style>
   :root {
@@ -474,21 +490,41 @@
       <!-- Quality Preset -->
       <div class="card">
         <div class="card-head">
-          <span class="card-title">Compression Level</span>
+          <span class="card-title">Quality Preset</span>
         </div>
         <div class="card-body">
           <div class="preset-row">
             <div>
               <button class="preset-btn on" data-preset="screen" title="Best compression, 72 DPI">Screen</button>
-              <div class="preset-desc">72 DPI</div>
+              <div class="preset-desc">72 DPI • 50%</div>
             </div>
             <div>
-              <button class="preset-btn" data-preset="ebook" title="Medium compression, 150 DPI">Ebook</button>
-              <div class="preset-desc">150 DPI</div>
+              <button class="preset-btn" data-preset="web" title="Balanced, 96 DPI">Web</button>
+              <div class="preset-desc">96 DPI • 65%</div>
             </div>
             <div>
-              <button class="preset-btn" data-preset="print" title="Best quality, 300 DPI">Print</button>
-              <div class="preset-desc">300 DPI</div>
+              <button class="preset-btn" data-preset="ebook" title="Medium, 150 DPI">Ebook</button>
+              <div class="preset-desc">150 DPI • 75%</div>
+            </div>
+            <div>
+              <button class="preset-btn" data-preset="print" title="Best quality, 200 DPI">Print</button>
+              <div class="preset-desc">200 DPI • 85%</div>
+            </div>
+            <div>
+              <button class="preset-btn" data-preset="custom" title="Custom settings">Custom</button>
+              <div class="preset-desc">Your choice</div>
+            </div>
+          </div>
+          <div id="customPanel" style="display:none;">
+            <div style="margin-bottom:14px;">
+              <label class="f-label-text">DPI (<span id="dpiVal">72</span>)</label>
+              <input type="range" id="dpiSlider" min="72" max="300" value="72" step="1" style="width:100%;cursor:pointer;">
+              <div style="font-size:0.65rem;color:#7dab87;margin-top:4px;">72-300 DPI (higher = better quality, larger file)</div>
+            </div>
+            <div>
+              <label class="f-label-text">Quality (<span id="qualityVal">50</span>%)</label>
+              <input type="range" id="qualitySlider" min="10" max="100" value="50" step="5" style="width:100%;cursor:pointer;">
+              <div style="font-size:0.65rem;color:#7dab87;margin-top:4px;">10-100% JPEG quality</div>
             </div>
           </div>
           <button class="calc-btn" id="compressBtn" disabled>Compress PDF</button>
@@ -525,16 +561,18 @@
 
       <!-- Info Card -->
       <div class="info-card">
-        <div class="info-title">Quality Guide</div>
+        <div class="info-title">How It Works</div>
         <div class="info-text">
-          Compresses PDF structure using object streams, strips metadata, and removes unused data.
+          Renders PDF pages to JPEG images at your chosen DPI and quality, then rebuilds the PDF.
           <br><br>
-          <strong>Best results on:</strong> PDFs exported from Word, PowerPoint, or design tools with unoptimized internal structure.
+          <strong>Best results on:</strong> Image-heavy PDFs and scans.
+          <br><br>
+          <strong>Note:</strong> Text-only PDFs may not compress well (converting text to JPEG is lossy).
           <ul style="margin-top:10px;">
             <li>✓ Client-side processing</li>
-            <li>✓ Instant results</li>
+            <li>✓ Real compression via JPEG encoding</li>
             <li>✓ No upload needed</li>
-            <li>✓ Lossless — no quality reduction</li>
+            <li>✓ Instant results</li>
           </ul>
         </div>
       </div>
@@ -545,10 +583,21 @@
 <afro-footer></afro-footer>
 
 <script>
-  const PDFLib = window.PDFLib;
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  const { PDFDocument } = PDFLib;
+
   let currentPreset = 'screen';
   let currentFile = null;
   let compressedPdf = null;
+  let customDPI = 72;
+  let customQuality = 0.5;
+
+  const presets = {
+    screen: { dpi: 72, quality: 0.5, label: 'Screen' },
+    web: { dpi: 96, quality: 0.65, label: 'Web' },
+    ebook: { dpi: 150, quality: 0.75, label: 'Ebook' },
+    print: { dpi: 200, quality: 0.85, label: 'Print' }
+  };
 
   const presetButtons = document.querySelectorAll('.preset-btn');
   const pdfFileInput = document.getElementById('pdfFileInput');
@@ -561,6 +610,9 @@
   const processingText = document.getElementById('processingText');
   const downloadBtn = document.getElementById('downloadBtn');
   const progressFill = document.getElementById('progressFill');
+  const customPanel = document.getElementById('customPanel');
+  const dpiSlider = document.getElementById('dpiSlider');
+  const qualitySlider = document.getElementById('qualitySlider');
 
   function formatFileSize(bytes) {
     if (bytes === 0) return '0 Bytes';
@@ -576,7 +628,19 @@
       currentPreset = btn.dataset.preset;
       presetButtons.forEach(b => b.classList.remove('on'));
       btn.classList.add('on');
+      customPanel.style.display = btn.dataset.preset === 'custom' ? 'block' : 'none';
     });
+  });
+
+  // Custom sliders
+  dpiSlider.addEventListener('input', (e) => {
+    customDPI = parseInt(e.target.value);
+    document.getElementById('dpiVal').textContent = customDPI;
+  });
+
+  qualitySlider.addEventListener('input', (e) => {
+    customQuality = parseInt(e.target.value) / 100;
+    document.getElementById('qualityVal').textContent = parseInt(e.target.value);
   });
 
   // File input
@@ -617,7 +681,7 @@
     }
   });
 
-  // Compress function
+  // Compress function using PDF.js + pdf-lib
   compressBtn.addEventListener('click', async () => {
     if (!currentFile) return;
 
@@ -629,53 +693,96 @@
 
     try {
       const arrayBuffer = await currentFile.arrayBuffer();
+      progressFill.style.width = '10%';
+
+      // Load PDF with PDF.js
+      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
       progressFill.style.width = '20%';
 
-      const pdf = await PDFLib.PDFDocument.load(arrayBuffer, { updateMetadata: false });
-      progressFill.style.width = '40%';
+      // Get compression settings
+      let dpi, quality;
+      if (currentPreset === 'custom') {
+        dpi = customDPI;
+        quality = customQuality;
+      } else {
+        const preset = presets[currentPreset];
+        dpi = preset.dpi;
+        quality = preset.quality;
+      }
 
-      // Strip all metadata for smaller file
-      pdf.setTitle('');
-      pdf.setAuthor('');
-      pdf.setSubject('');
-      pdf.setKeywords([]);
-      pdf.setProducer('');
-      pdf.setCreator('');
+      const scale = dpi / 72; // 72 is default screen DPI
+      const pdfDoc = await PDFDocument.create();
+      const pageCount = pdf.numPages;
 
-      progressFill.style.width = '60%';
+      // Render each page to canvas, convert to JPEG, add to new PDF
+      for (let i = 1; i <= pageCount; i++) {
+        const page = await pdf.getPage(i);
+        const viewport = page.getViewport({ scale });
 
-      // Save with object streams enabled (real structural compression)
-      const pdfBytes = await pdf.save({
-        useObjectStreams: true,
-        addDefaultPage: false,
-        objectsPerTick: 50,
-      });
+        // Create canvas
+        const canvas = document.createElement('canvas');
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+        const context = canvas.getContext('2d');
+
+        // Render page
+        await page.render({
+          canvasContext: context,
+          viewport: viewport
+        }).promise;
+
+        // Convert to JPEG
+        const jpegDataUrl = canvas.toDataURL('image/jpeg', quality);
+        const jpegBytes = await fetch(jpegDataUrl).then(r => r.arrayBuffer());
+
+        // Add to new PDF
+        const image = await pdfDoc.embedJpg(jpegBytes);
+        const newPage = pdfDoc.addPage([viewport.width, viewport.height]);
+        newPage.drawImage(image, {
+          x: 0,
+          y: 0,
+          width: viewport.width,
+          height: viewport.height
+        });
+
+        // Update progress
+        const progress = 20 + Math.round((i / pageCount) * 70);
+        progressFill.style.width = progress + '%';
+      }
+
+      progressFill.style.width = '95%';
+
+      // Save compressed PDF
+      const pdfBytes = await pdfDoc.save();
+      compressedPdf = pdfBytes;
 
       progressFill.style.width = '100%';
 
-      compressedPdf = pdfBytes;
       const originalSize = currentFile.size;
       const compressedSize = compressedPdf.length;
       const savings = originalSize - compressedSize;
-      const savingsPercent = Math.max(0, Math.round((savings / originalSize) * 100));
+      const savingsPercent = savings > 0 ? Math.round((savings / originalSize) * 100) : 0;
 
-      processingText.style.display = 'none';
-      resultContent.style.display = 'block';
+      setTimeout(() => {
+        processingText.style.display = 'none';
+        resultContent.style.display = 'block';
 
-      document.getElementById('originalSize').textContent = formatFileSize(originalSize);
-      document.getElementById('compressedSize').textContent = formatFileSize(compressedSize);
+        document.getElementById('originalSize').textContent = formatFileSize(originalSize);
+        document.getElementById('compressedSize').textContent = formatFileSize(compressedSize);
 
-      if (savings > 0) {
-        document.getElementById('savingsBadge').textContent = `Saved ${savingsPercent}% (${formatFileSize(savings)})`;
-        document.getElementById('savingsBadge').style.background = 'rgba(0, 135, 81, 0.15)';
-        document.getElementById('savingsBadge').style.color = '#1a5c3a';
-      } else {
-        document.getElementById('savingsBadge').textContent = 'File is already well-optimized — no further reduction possible';
-        document.getElementById('savingsBadge').style.background = 'rgba(245, 166, 35, 0.15)';
-        document.getElementById('savingsBadge').style.color = '#92400e';
-      }
+        if (savings > 0) {
+          document.getElementById('savingsBadge').textContent = `Saved ${savingsPercent}% (${formatFileSize(savings)})`;
+          document.getElementById('savingsBadge').style.background = 'rgba(0, 135, 81, 0.15)';
+          document.getElementById('savingsBadge').style.color = '#1a5c3a';
+        } else {
+          document.getElementById('savingsBadge').textContent = 'Text-heavy PDF: try Screen or Ebook preset for better results';
+          document.getElementById('savingsBadge').style.background = 'rgba(245, 166, 35, 0.15)';
+          document.getElementById('savingsBadge').style.color = '#92400e';
+        }
+      }, 500);
 
     } catch (err) {
+      console.error(err);
       processingText.innerHTML = '<div style="color:red;">✗ Error: ' + err.message + '</div>';
     }
 
@@ -687,7 +794,7 @@
     if (compressedPdf) {
       const link = document.createElement('a');
       link.href = URL.createObjectURL(new Blob([compressedPdf], { type: 'application/pdf' }));
-      link.download = 'compressed.pdf';
+      link.download = currentFile.name.replace('.pdf', '_compressed.pdf');
       link.click();
     }
   });

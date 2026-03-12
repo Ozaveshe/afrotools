@@ -513,7 +513,8 @@
           <div class="file-input-wrapper">
             <input type="file" id="mergeFileInput" accept=".pdf" multiple>
             <label for="mergeFileInput" class="file-input-label">
-              📁 Click to select or drag & drop multiple PDFs here
+              📁 Click to add PDFs — click again to add more files
+              <div style="font-size:0.72rem;margin-top:4px;opacity:.65">Each click adds to your list. Drag & drop also supported.</div>
             </label>
           </div>
           <div class="file-list" id="mergeFileList"></div>
@@ -522,7 +523,7 @@
       </div>
 
       <!-- Split Card -->
-      <div class="card" id="split-card" style="position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;">
+      <div class="card" id="split-card" style="display:none;">
         <div class="card-head">
           <span class="card-title">Upload PDF to Split</span>
         </div>
@@ -618,13 +619,17 @@
     });
   });
 
-  // Merge file input
+  // Merge file input — ACCUMULATE files, don't replace
   mergeFileInput.addEventListener('change', (e) => {
-    mergeFiles = Array.from(e.target.files);
+    const newFiles = Array.from(e.target.files).filter(f => f.type === 'application/pdf');
+    // Deduplicate by name+size
+    const existing = new Set(mergeFiles.map(f => f.name + f.size));
+    newFiles.forEach(f => { if (!existing.has(f.name + f.size)) mergeFiles.push(f); });
+    e.target.value = ''; // reset so same file can be re-added if needed
     renderMergeFileList();
   });
 
-  // Drag and drop for merge
+  // Drag and drop for merge — also accumulate
   const mergeLabel = document.querySelector('#merge-card .file-input-label');
   mergeLabel.addEventListener('dragover', (e) => {
     e.preventDefault();
@@ -638,7 +643,9 @@
   mergeLabel.addEventListener('drop', (e) => {
     e.preventDefault();
     mergeLabel.classList.remove('dragover');
-    mergeFiles = Array.from(e.dataTransfer.files).filter(f => f.type === 'application/pdf');
+    const dropped = Array.from(e.dataTransfer.files).filter(f => f.type === 'application/pdf');
+    const existing = new Set(mergeFiles.map(f => f.name + f.size));
+    dropped.forEach(f => { if (!existing.has(f.name + f.size)) mergeFiles.push(f); });
     renderMergeFileList();
   });
 
