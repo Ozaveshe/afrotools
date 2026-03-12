@@ -17,6 +17,10 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Free African CV Builder — AfroTools.com">
 <meta name="twitter:description" content="AI-powered CV builder for African job markets. 6 templates, 54 country formats, instant PDF.">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Fraunces:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"AfroTools CV Builder","url":"https://afrotools.com/tools/cv-builder/","description":"Free AI-powered CV builder for African job markets","applicationCategory":"BusinessApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}</script>
@@ -27,7 +31,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#0d1117;font-family:'Outfit',system-ui,sans-serif;color:#e2e8f0}
+body{background:#f8fafc;font-family:'Outfit',system-ui,sans-serif;color:#1e293b}
 #root{min-height:100vh}
 input,textarea,select{font-family:'Outfit',system-ui,sans-serif}
 </style>
@@ -38,7 +42,9 @@ input,textarea,select{font-family:'Outfit',system-ui,sans-serif}
 </form>
 </head>
 <body>
+<afro-navbar active="tools"></afro-navbar>
 <div id="root"></div>
+<afro-footer></afro-footer>
 <script type="text/babel">
 const { useState, useRef, useCallback, useEffect } = React;
 
@@ -187,32 +193,36 @@ function CVBuilder() {
   };
 
   return (
-    <div style={{background:'#0d1117',minHeight:'100vh',display:'flex',flexDirection:'column'}}>
-      {/* NAV */}
-      <nav style={{background:'#161b22',borderBottom:'1px solid #30363d',padding:'12px 24px',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-        <div style={{fontSize:16,fontWeight:700,color:'#e2e8f0',display:'flex',alignItems:'center',gap:8}}>
-          <span style={{fontSize:20,fontWeight:900}}>🌍</span> AfroTools CV Builder
+    <div style={{background:'#f8fafc',minHeight:'60vh',display:'flex',flexDirection:'column'}}>
+      {/* COUNTRY SELECTOR BAR */}
+      <div style={{background:'#fff',borderBottom:'1px solid #e2e8f0',padding:'10px 24px',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+        <div style={{fontSize:14,fontWeight:700,color:'#1e293b',display:'flex',alignItems:'center',gap:8}}>
+          <span style={{fontSize:16}}>📄</span> CV Builder
+          <span style={{fontSize:12,fontWeight:400,color:'#64748b',marginLeft:4}}>— tailored for African job markets</span>
         </div>
-        <select value={country} onChange={e => setCountry(e.target.value)} style={{background:'#0d1117',border:'1px solid #30363d',color:'#e2e8f0',padding:'6px 12px',borderRadius:4,fontSize:13,cursor:'pointer'}}>
-          {Object.entries(COUNTRY_NORMS).map(([k, v]) => <option key={k} value={k}>{v.f} {v.n}</option>)}
-        </select>
-      </nav>
+        <div style={{display:'flex',alignItems:'center',gap:8}}>
+          <span style={{fontSize:12,color:'#64748b'}}>Format for:</span>
+          <select value={country} onChange={e => setCountry(e.target.value)} style={{background:'#f8fafc',border:'1.5px solid #e2e8f0',color:'#1e293b',padding:'6px 12px',borderRadius:6,fontSize:13,cursor:'pointer',fontFamily:'Outfit,sans-serif'}}>
+            {Object.entries(COUNTRY_NORMS).map(([k, v]) => <option key={k} value={k}>{v.f} {v.n}</option>)}
+          </select>
+        </div>
+      </div>
 
       <div style={{display:'flex',flex:1,overflow:'hidden'}}>
         {/* FORM PANEL — LEFT */}
-        <div style={{flex:'0 0 45%',background:'#0d1117',overflowY:'auto',borderRight:'1px solid #30363d',padding:'24px',color:'#e2e8f0'}}>
-          <h2 style={{fontSize:18,fontWeight:700,marginBottom:20}}>Build Your CV</h2>
+        <div style={{flex:'0 0 45%',background:'#fff',overflowY:'auto',borderRight:'1px solid #e2e8f0',padding:'24px',color:'#1e293b'}}>
+          <h2 style={{fontSize:18,fontWeight:800,marginBottom:20,color:'#0f172a'}}>Build Your CV</h2>
 
           {/* SECTION: Personal Info */}
-          <div style={{background:'#161b22',padding:16,borderRadius:8,marginBottom:16,border:'1px solid #30363d'}}>
-            <h3 style={{fontSize:13,fontWeight:600,marginBottom:12,color:'#79c0ff'}}>Personal Information</h3>
-            <input type="text" placeholder="First Name" value={data.fn} onChange={e => upData('fn', e.target.value)} style={{width:'100%',padding:8,marginBottom:10,background:'#0d1117',border:'1px solid #30363d',borderRadius:4,color:'#e2e8f0'}}/>
-            <input type="text" placeholder="Last Name" value={data.ln} onChange={e => upData('ln', e.target.value)} style={{width:'100%',padding:8,marginBottom:10,background:'#0d1117',border:'1px solid #30363d',borderRadius:4,color:'#e2e8f0'}}/>
-            <input type="text" placeholder="Professional Title" value={data.title} onChange={e => upData('title', e.target.value)} style={{width:'100%',padding:8,marginBottom:10,background:'#0d1117',border:'1px solid #30363d',borderRadius:4,color:'#e2e8f0'}}/>
-            <input type="email" placeholder="Email" value={data.email} onChange={e => upData('email', e.target.value)} style={{width:'100%',padding:8,marginBottom:10,background:'#0d1117',border:'1px solid #30363d',borderRadius:4,color:'#e2e8f0'}}/>
-            <input type="tel" placeholder="Phone" value={data.phone} onChange={e => upData('phone', e.target.value)} style={{width:'100%',padding:8,marginBottom:10,background:'#0d1117',border:'1px solid #30363d',borderRadius:4,color:'#e2e8f0'}}/>
-            <input type="text" placeholder="Location" value={data.loc} onChange={e => upData('loc', e.target.value)} style={{width:'100%',padding:8,marginBottom:10,background:'#0d1117',border:'1px solid #30363d',borderRadius:4,color:'#e2e8f0'}}/>
-            <input type="url" placeholder="Website / Portfolio" value={data.web} onChange={e => upData('web', e.target.value)} style={{width:'100%',padding:8,marginBottom:10,background:'#0d1117',border:'1px solid #30363d',borderRadius:4,color:'#e2e8f0'}}/>
+          <div style={{background:'#f8fafc',padding:16,borderRadius:8,marginBottom:16,border:'1px solid #e2e8f0'}}>
+            <h3 style={{fontSize:13,fontWeight:600,marginBottom:12,color:'#008751'}}>Personal Information</h3>
+            <input type="text" placeholder="First Name" value={data.fn} onChange={e => upData('fn', e.target.value)} style={{width:'100%',padding:8,marginBottom:10,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
+            <input type="text" placeholder="Last Name" value={data.ln} onChange={e => upData('ln', e.target.value)} style={{width:'100%',padding:8,marginBottom:10,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
+            <input type="text" placeholder="Professional Title" value={data.title} onChange={e => upData('title', e.target.value)} style={{width:'100%',padding:8,marginBottom:10,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
+            <input type="email" placeholder="Email" value={data.email} onChange={e => upData('email', e.target.value)} style={{width:'100%',padding:8,marginBottom:10,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
+            <input type="tel" placeholder="Phone" value={data.phone} onChange={e => upData('phone', e.target.value)} style={{width:'100%',padding:8,marginBottom:10,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
+            <input type="text" placeholder="Location" value={data.loc} onChange={e => upData('loc', e.target.value)} style={{width:'100%',padding:8,marginBottom:10,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
+            <input type="url" placeholder="Website / Portfolio" value={data.web} onChange={e => upData('web', e.target.value)} style={{width:'100%',padding:8,marginBottom:10,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
 
             {/* Photo Upload */}
             <label style={{display:'flex',alignItems:'center',gap:8,marginBottom:12,cursor:'pointer'}}>
@@ -232,11 +242,11 @@ function CVBuilder() {
                 </label>
                 {data.sp && (
                   <>
-                    {norms.dob && <input type="date" value={data.dob} onChange={e => upData('dob', e.target.value)} style={{width:'100%',padding:8,marginBottom:10,background:'#0d1117',border:'1px solid #30363d',borderRadius:4,color:'#e2e8f0'}}/>}
-                    {norms.gen && <input type="text" placeholder="Gender" value={data.gen} onChange={e => upData('gen', e.target.value)} style={{width:'100%',padding:8,marginBottom:10,background:'#0d1117',border:'1px solid #30363d',borderRadius:4,color:'#e2e8f0'}}/>}
-                    {norms.mar && <input type="text" placeholder="Marital Status" value={data.mar} onChange={e => upData('mar', e.target.value)} style={{width:'100%',padding:8,marginBottom:10,background:'#0d1117',border:'1px solid #30363d',borderRadius:4,color:'#e2e8f0'}}/>}
-                    {norms.nat && <input type="text" placeholder="Nationality" value={data.nat} onChange={e => upData('nat', e.target.value)} style={{width:'100%',padding:8,marginBottom:10,background:'#0d1117',border:'1px solid #30363d',borderRadius:4,color:'#e2e8f0'}}/>}
-                    {norms.so && <input type="text" placeholder={norms.soL || 'State of Origin'} defaultValue={norms.soP} value={data.so} onChange={e => upData('so', e.target.value)} style={{width:'100%',padding:8,marginBottom:10,background:'#0d1117',border:'1px solid #30363d',borderRadius:4,color:'#e2e8f0'}}/>}
+                    {norms.dob && <input type="date" value={data.dob} onChange={e => upData('dob', e.target.value)} style={{width:'100%',padding:8,marginBottom:10,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>}
+                    {norms.gen && <input type="text" placeholder="Gender" value={data.gen} onChange={e => upData('gen', e.target.value)} style={{width:'100%',padding:8,marginBottom:10,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>}
+                    {norms.mar && <input type="text" placeholder="Marital Status" value={data.mar} onChange={e => upData('mar', e.target.value)} style={{width:'100%',padding:8,marginBottom:10,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>}
+                    {norms.nat && <input type="text" placeholder="Nationality" value={data.nat} onChange={e => upData('nat', e.target.value)} style={{width:'100%',padding:8,marginBottom:10,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>}
+                    {norms.so && <input type="text" placeholder={norms.soL || 'State of Origin'} defaultValue={norms.soP} value={data.so} onChange={e => upData('so', e.target.value)} style={{width:'100%',padding:8,marginBottom:10,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>}
                   </>
                 )}
               </>
@@ -244,114 +254,114 @@ function CVBuilder() {
           </div>
 
           {/* SECTION: Summary */}
-          <div style={{background:'#161b22',padding:16,borderRadius:8,marginBottom:16,border:'1px solid #30363d'}}>
-            <h3 style={{fontSize:13,fontWeight:600,marginBottom:12,color:'#79c0ff'}}>Professional Summary</h3>
-            <textarea placeholder="Write a brief summary of your professional background" value={data.summary} onChange={e => upData('summary', e.target.value)} style={{width:'100%',minHeight:80,padding:8,background:'#0d1117',border:'1px solid #30363d',borderRadius:4,color:'#e2e8f0',fontFamily:'inherit',fontSize:12}}/>
+          <div style={{background:'#f8fafc',padding:16,borderRadius:8,marginBottom:16,border:'1px solid #e2e8f0'}}>
+            <h3 style={{fontSize:13,fontWeight:600,marginBottom:12,color:'#008751'}}>Professional Summary</h3>
+            <textarea placeholder="Write a brief summary of your professional background" value={data.summary} onChange={e => upData('summary', e.target.value)} style={{width:'100%',minHeight:80,padding:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a',fontFamily:'inherit',fontSize:12}}/>
           </div>
 
           {/* SECTION: Experience */}
-          <div style={{background:'#161b22',padding:16,borderRadius:8,marginBottom:16,border:'1px solid #30363d'}}>
-            <h3 style={{fontSize:13,fontWeight:600,marginBottom:12,color:'#79c0ff'}}>Work Experience</h3>
+          <div style={{background:'#f8fafc',padding:16,borderRadius:8,marginBottom:16,border:'1px solid #e2e8f0'}}>
+            <h3 style={{fontSize:13,fontWeight:600,marginBottom:12,color:'#008751'}}>Work Experience</h3>
             {data.exps.map((e, i) => (
-              <div key={i} style={{marginBottom:16,paddingBottom:16,borderBottom:i < data.exps.length - 1 ? '1px solid #30363d' : 'none'}}>
-                <input type="text" placeholder="Job Title" value={e.t} onChange={ev => upData(`exps.${i}.t`, ev.target.value)} style={{width:'100%',padding:8,marginBottom:8,background:'#0d1117',border:'1px solid #30363d',borderRadius:4,color:'#e2e8f0'}}/>
-                <input type="text" placeholder="Company" value={e.c} onChange={ev => upData(`exps.${i}.c`, ev.target.value)} style={{width:'100%',padding:8,marginBottom:8,background:'#0d1117',border:'1px solid #30363d',borderRadius:4,color:'#e2e8f0'}}/>
-                <input type="text" placeholder="Location" value={e.l} onChange={ev => upData(`exps.${i}.l`, ev.target.value)} style={{width:'100%',padding:8,marginBottom:8,background:'#0d1117',border:'1px solid #30363d',borderRadius:4,color:'#e2e8f0'}}/>
+              <div key={i} style={{marginBottom:16,paddingBottom:16,borderBottom:i < data.exps.length - 1 ? '1px solid #e2e8f0' : 'none'}}>
+                <input type="text" placeholder="Job Title" value={e.t} onChange={ev => upData(`exps.${i}.t`, ev.target.value)} style={{width:'100%',padding:8,marginBottom:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
+                <input type="text" placeholder="Company" value={e.c} onChange={ev => upData(`exps.${i}.c`, ev.target.value)} style={{width:'100%',padding:8,marginBottom:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
+                <input type="text" placeholder="Location" value={e.l} onChange={ev => upData(`exps.${i}.l`, ev.target.value)} style={{width:'100%',padding:8,marginBottom:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
                 <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8,marginBottom:8}}>
-                  <input type="month" value={e.s} onChange={ev => upData(`exps.${i}.s`, ev.target.value)} style={{padding:8,background:'#0d1117',border:'1px solid #30363d',borderRadius:4,color:'#e2e8f0'}}/>
-                  <input type="month" value={e.e} onChange={ev => upData(`exps.${i}.e`, ev.target.value)} style={{padding:8,background:'#0d1117',border:'1px solid #30363d',borderRadius:4,color:'#e2e8f0'}}/>
+                  <input type="month" value={e.s} onChange={ev => upData(`exps.${i}.s`, ev.target.value)} style={{padding:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
+                  <input type="month" value={e.e} onChange={ev => upData(`exps.${i}.e`, ev.target.value)} style={{padding:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
                 </div>
-                <textarea placeholder="Description (bullet points)" value={e.d} onChange={ev => upData(`exps.${i}.d`, ev.target.value)} style={{width:'100%',minHeight:60,padding:8,background:'#0d1117',border:'1px solid #30363d',borderRadius:4,color:'#e2e8f0',fontFamily:'inherit',fontSize:12}}/>
+                <textarea placeholder="Description (bullet points)" value={e.d} onChange={ev => upData(`exps.${i}.d`, ev.target.value)} style={{width:'100%',minHeight:60,padding:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a',fontFamily:'inherit',fontSize:12}}/>
               </div>
             ))}
-            <button onClick={() => upData('exps', [...data.exps, {t:'',c:'',l:'',s:'',e:'',d:''}])} style={{width:'100%',padding:8,background:'#238636',color:'#fff',border:'none',borderRadius:4,cursor:'pointer',fontWeight:600,fontSize:12}}>+ Add Experience</button>
+            <button onClick={() => upData('exps', [...data.exps, {t:'',c:'',l:'',s:'',e:'',d:''}])} style={{width:'100%',padding:8,background:'#008751',color:'#fff',border:'none',borderRadius:4,cursor:'pointer',fontWeight:600,fontSize:12}}>+ Add Experience</button>
           </div>
 
           {/* SECTION: Education */}
-          <div style={{background:'#161b22',padding:16,borderRadius:8,marginBottom:16,border:'1px solid #30363d'}}>
-            <h3 style={{fontSize:13,fontWeight:600,marginBottom:12,color:'#79c0ff'}}>Education</h3>
+          <div style={{background:'#f8fafc',padding:16,borderRadius:8,marginBottom:16,border:'1px solid #e2e8f0'}}>
+            <h3 style={{fontSize:13,fontWeight:600,marginBottom:12,color:'#008751'}}>Education</h3>
             {data.edus.map((e, i) => (
-              <div key={i} style={{marginBottom:16,paddingBottom:16,borderBottom:i < data.edus.length - 1 ? '1px solid #30363d' : 'none'}}>
-                <input type="text" placeholder="Degree / Qualification" value={e.deg} onChange={ev => upData(`edus.${i}.deg`, ev.target.value)} style={{width:'100%',padding:8,marginBottom:8,background:'#0d1117',border:'1px solid #30363d',borderRadius:4,color:'#e2e8f0'}}/>
-                <input type="text" placeholder="School / University" value={e.sch} onChange={ev => upData(`edus.${i}.sch`, ev.target.value)} style={{width:'100%',padding:8,marginBottom:8,background:'#0d1117',border:'1px solid #30363d',borderRadius:4,color:'#e2e8f0'}}/>
-                <input type="text" placeholder="Location" value={e.loc} onChange={ev => upData(`edus.${i}.loc`, ev.target.value)} style={{width:'100%',padding:8,marginBottom:8,background:'#0d1117',border:'1px solid #30363d',borderRadius:4,color:'#e2e8f0'}}/>
+              <div key={i} style={{marginBottom:16,paddingBottom:16,borderBottom:i < data.edus.length - 1 ? '1px solid #e2e8f0' : 'none'}}>
+                <input type="text" placeholder="Degree / Qualification" value={e.deg} onChange={ev => upData(`edus.${i}.deg`, ev.target.value)} style={{width:'100%',padding:8,marginBottom:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
+                <input type="text" placeholder="School / University" value={e.sch} onChange={ev => upData(`edus.${i}.sch`, ev.target.value)} style={{width:'100%',padding:8,marginBottom:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
+                <input type="text" placeholder="Location" value={e.loc} onChange={ev => upData(`edus.${i}.loc`, ev.target.value)} style={{width:'100%',padding:8,marginBottom:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
                 <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8,marginBottom:8}}>
-                  <input type="text" placeholder="Start Year" value={e.y1} onChange={ev => upData(`edus.${i}.y1`, ev.target.value)} style={{padding:8,background:'#0d1117',border:'1px solid #30363d',borderRadius:4,color:'#e2e8f0'}}/>
-                  <input type="text" placeholder="End Year" value={e.y2} onChange={ev => upData(`edus.${i}.y2`, ev.target.value)} style={{padding:8,background:'#0d1117',border:'1px solid #30363d',borderRadius:4,color:'#e2e8f0'}}/>
+                  <input type="text" placeholder="Start Year" value={e.y1} onChange={ev => upData(`edus.${i}.y1`, ev.target.value)} style={{padding:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
+                  <input type="text" placeholder="End Year" value={e.y2} onChange={ev => upData(`edus.${i}.y2`, ev.target.value)} style={{padding:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
                 </div>
-                <input type="text" placeholder="Grade / GPA" value={e.g} onChange={ev => upData(`edus.${i}.g`, ev.target.value)} style={{width:'100%',padding:8,background:'#0d1117',border:'1px solid #30363d',borderRadius:4,color:'#e2e8f0',marginBottom:8}}/>
+                <input type="text" placeholder="Grade / GPA" value={e.g} onChange={ev => upData(`edus.${i}.g`, ev.target.value)} style={{width:'100%',padding:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a',marginBottom:8}}/>
               </div>
             ))}
-            <button onClick={() => upData('edus', [...data.edus, {deg:'',sch:'',loc:'',y1:'',y2:'',g:''}])} style={{width:'100%',padding:8,background:'#238636',color:'#fff',border:'none',borderRadius:4,cursor:'pointer',fontWeight:600,fontSize:12}}>+ Add Education</button>
+            <button onClick={() => upData('edus', [...data.edus, {deg:'',sch:'',loc:'',y1:'',y2:'',g:''}])} style={{width:'100%',padding:8,background:'#008751',color:'#fff',border:'none',borderRadius:4,cursor:'pointer',fontWeight:600,fontSize:12}}>+ Add Education</button>
           </div>
 
           {/* SECTION: Skills */}
-          <div style={{background:'#161b22',padding:16,borderRadius:8,marginBottom:16,border:'1px solid #30363d'}}>
-            <h3 style={{fontSize:13,fontWeight:600,marginBottom:12,color:'#79c0ff'}}>Skills</h3>
-            <textarea placeholder="Technical skills (comma-separated)" value={data.skills.h} onChange={e => upData('skills.h', e.target.value)} style={{width:'100%',minHeight:50,padding:8,marginBottom:10,background:'#0d1117',border:'1px solid #30363d',borderRadius:4,color:'#e2e8f0',fontFamily:'inherit',fontSize:12}}/>
-            <textarea placeholder="Soft skills (comma-separated)" value={data.skills.s} onChange={e => upData('skills.s', e.target.value)} style={{width:'100%',minHeight:50,padding:8,marginBottom:10,background:'#0d1117',border:'1px solid #30363d',borderRadius:4,color:'#e2e8f0',fontFamily:'inherit',fontSize:12}}/>
-            <textarea placeholder="Tools / Software (comma-separated)" value={data.skills.t} onChange={e => upData('skills.t', e.target.value)} style={{width:'100%',minHeight:50,padding:8,background:'#0d1117',border:'1px solid #30363d',borderRadius:4,color:'#e2e8f0',fontFamily:'inherit',fontSize:12}}/>
+          <div style={{background:'#f8fafc',padding:16,borderRadius:8,marginBottom:16,border:'1px solid #e2e8f0'}}>
+            <h3 style={{fontSize:13,fontWeight:600,marginBottom:12,color:'#008751'}}>Skills</h3>
+            <textarea placeholder="Technical skills (comma-separated)" value={data.skills.h} onChange={e => upData('skills.h', e.target.value)} style={{width:'100%',minHeight:50,padding:8,marginBottom:10,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a',fontFamily:'inherit',fontSize:12}}/>
+            <textarea placeholder="Soft skills (comma-separated)" value={data.skills.s} onChange={e => upData('skills.s', e.target.value)} style={{width:'100%',minHeight:50,padding:8,marginBottom:10,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a',fontFamily:'inherit',fontSize:12}}/>
+            <textarea placeholder="Tools / Software (comma-separated)" value={data.skills.t} onChange={e => upData('skills.t', e.target.value)} style={{width:'100%',minHeight:50,padding:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a',fontFamily:'inherit',fontSize:12}}/>
           </div>
 
           {/* SECTION: Certifications */}
-          <div style={{background:'#161b22',padding:16,borderRadius:8,marginBottom:16,border:'1px solid #30363d'}}>
-            <h3 style={{fontSize:13,fontWeight:600,marginBottom:12,color:'#79c0ff'}}>Certifications</h3>
+          <div style={{background:'#f8fafc',padding:16,borderRadius:8,marginBottom:16,border:'1px solid #e2e8f0'}}>
+            <h3 style={{fontSize:13,fontWeight:600,marginBottom:12,color:'#008751'}}>Certifications</h3>
             {data.certs.map((c, i) => (
-              <div key={i} style={{marginBottom:12,paddingBottom:12,borderBottom:i < data.certs.length - 1 ? '1px solid #30363d' : 'none'}}>
-                <input type="text" placeholder="Certification Name" value={c.n} onChange={ev => upData(`certs.${i}.n`, ev.target.value)} style={{width:'100%',padding:8,marginBottom:8,background:'#0d1117',border:'1px solid #30363d',borderRadius:4,color:'#e2e8f0'}}/>
-                <input type="text" placeholder="Issuer" value={c.i} onChange={ev => upData(`certs.${i}.i`, ev.target.value)} style={{width:'100%',padding:8,marginBottom:8,background:'#0d1117',border:'1px solid #30363d',borderRadius:4,color:'#e2e8f0'}}/>
-                <input type="text" placeholder="Year" value={c.y} onChange={ev => upData(`certs.${i}.y`, ev.target.value)} style={{width:'100%',padding:8,background:'#0d1117',border:'1px solid #30363d',borderRadius:4,color:'#e2e8f0'}}/>
+              <div key={i} style={{marginBottom:12,paddingBottom:12,borderBottom:i < data.certs.length - 1 ? '1px solid #e2e8f0' : 'none'}}>
+                <input type="text" placeholder="Certification Name" value={c.n} onChange={ev => upData(`certs.${i}.n`, ev.target.value)} style={{width:'100%',padding:8,marginBottom:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
+                <input type="text" placeholder="Issuer" value={c.i} onChange={ev => upData(`certs.${i}.i`, ev.target.value)} style={{width:'100%',padding:8,marginBottom:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
+                <input type="text" placeholder="Year" value={c.y} onChange={ev => upData(`certs.${i}.y`, ev.target.value)} style={{width:'100%',padding:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
               </div>
             ))}
-            <button onClick={() => upData('certs', [...data.certs, {n:'',i:'',y:''}])} style={{width:'100%',padding:8,background:'#238636',color:'#fff',border:'none',borderRadius:4,cursor:'pointer',fontWeight:600,fontSize:12}}>+ Add Certification</button>
+            <button onClick={() => upData('certs', [...data.certs, {n:'',i:'',y:''}])} style={{width:'100%',padding:8,background:'#008751',color:'#fff',border:'none',borderRadius:4,cursor:'pointer',fontWeight:600,fontSize:12}}>+ Add Certification</button>
           </div>
 
           {/* SECTION: Languages & References */}
-          <div style={{background:'#161b22',padding:16,borderRadius:8,marginBottom:16,border:'1px solid #30363d'}}>
-            <h3 style={{fontSize:13,fontWeight:600,marginBottom:12,color:'#79c0ff'}}>Languages</h3>
-            <input type="text" placeholder="Languages (comma-separated)" value={data.langs} onChange={e => upData('langs', e.target.value)} style={{width:'100%',padding:8,background:'#0d1117',border:'1px solid #30363d',borderRadius:4,color:'#e2e8f0',marginBottom:16}}/>
+          <div style={{background:'#f8fafc',padding:16,borderRadius:8,marginBottom:16,border:'1px solid #e2e8f0'}}>
+            <h3 style={{fontSize:13,fontWeight:600,marginBottom:12,color:'#008751'}}>Languages</h3>
+            <input type="text" placeholder="Languages (comma-separated)" value={data.langs} onChange={e => upData('langs', e.target.value)} style={{width:'100%',padding:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a',marginBottom:16}}/>
 
-            <h3 style={{fontSize:13,fontWeight:600,marginBottom:12,color:'#79c0ff'}}>References</h3>
+            <h3 style={{fontSize:13,fontWeight:600,marginBottom:12,color:'#008751'}}>References</h3>
             <label style={{display:'flex',alignItems:'center',gap:8,marginBottom:12,cursor:'pointer'}}>
               <input type="checkbox" checked={data.showRefs} onChange={e => upData('showRefs', e.target.checked)} style={{cursor:'pointer'}}/>
               <span style={{fontSize:12}}>Include references</span>
             </label>
             {data.showRefs && data.refs.map((r, i) => (
-              <div key={i} style={{marginBottom:12,paddingBottom:12,borderBottom:i < data.refs.length - 1 ? '1px solid #30363d' : 'none'}}>
-                <input type="text" placeholder="Name" value={r.n} onChange={ev => upData(`refs.${i}.n`, ev.target.value)} style={{width:'100%',padding:8,marginBottom:8,background:'#0d1117',border:'1px solid #30363d',borderRadius:4,color:'#e2e8f0'}}/>
-                <input type="text" placeholder="Position" value={r.p} onChange={ev => upData(`refs.${i}.p`, ev.target.value)} style={{width:'100%',padding:8,marginBottom:8,background:'#0d1117',border:'1px solid #30363d',borderRadius:4,color:'#e2e8f0'}}/>
-                <input type="email" placeholder="Email" value={r.e} onChange={ev => upData(`refs.${i}.e`, ev.target.value)} style={{width:'100%',padding:8,marginBottom:8,background:'#0d1117',border:'1px solid #30363d',borderRadius:4,color:'#e2e8f0'}}/>
-                <input type="tel" placeholder="Phone" value={r.f} onChange={ev => upData(`refs.${i}.f`, ev.target.value)} style={{width:'100%',padding:8,background:'#0d1117',border:'1px solid #30363d',borderRadius:4,color:'#e2e8f0'}}/>
+              <div key={i} style={{marginBottom:12,paddingBottom:12,borderBottom:i < data.refs.length - 1 ? '1px solid #e2e8f0' : 'none'}}>
+                <input type="text" placeholder="Name" value={r.n} onChange={ev => upData(`refs.${i}.n`, ev.target.value)} style={{width:'100%',padding:8,marginBottom:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
+                <input type="text" placeholder="Position" value={r.p} onChange={ev => upData(`refs.${i}.p`, ev.target.value)} style={{width:'100%',padding:8,marginBottom:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
+                <input type="email" placeholder="Email" value={r.e} onChange={ev => upData(`refs.${i}.e`, ev.target.value)} style={{width:'100%',padding:8,marginBottom:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
+                <input type="tel" placeholder="Phone" value={r.f} onChange={ev => upData(`refs.${i}.f`, ev.target.value)} style={{width:'100%',padding:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
               </div>
             ))}
-            {data.showRefs && <button onClick={() => upData('refs', [...data.refs, {n:'',p:'',e:'',f:''}])} style={{width:'100%',padding:8,background:'#238636',color:'#fff',border:'none',borderRadius:4,cursor:'pointer',fontWeight:600,fontSize:12}}>+ Add Reference</button>}
+            {data.showRefs && <button onClick={() => upData('refs', [...data.refs, {n:'',p:'',e:'',f:''}])} style={{width:'100%',padding:8,background:'#008751',color:'#fff',border:'none',borderRadius:4,cursor:'pointer',fontWeight:600,fontSize:12}}>+ Add Reference</button>}
           </div>
 
           {/* SECTION: Extras */}
-          <div style={{background:'#161b22',padding:16,borderRadius:8,marginBottom:24,border:'1px solid #30363d'}}>
-            <h3 style={{fontSize:13,fontWeight:600,marginBottom:12,color:'#79c0ff'}}>Extras</h3>
-            <textarea placeholder="Awards & Honors" value={data.extras.awards} onChange={e => upData('extras.awards', e.target.value)} style={{width:'100%',minHeight:50,padding:8,marginBottom:10,background:'#0d1117',border:'1px solid #30363d',borderRadius:4,color:'#e2e8f0',fontFamily:'inherit',fontSize:12}}/>
-            <textarea placeholder="Interests & Hobbies" value={data.extras.hobbies} onChange={e => upData('extras.hobbies', e.target.value)} style={{width:'100%',minHeight:50,padding:8,background:'#0d1117',border:'1px solid #30363d',borderRadius:4,color:'#e2e8f0',fontFamily:'inherit',fontSize:12}}/>
+          <div style={{background:'#f8fafc',padding:16,borderRadius:8,marginBottom:24,border:'1px solid #e2e8f0'}}>
+            <h3 style={{fontSize:13,fontWeight:600,marginBottom:12,color:'#008751'}}>Extras</h3>
+            <textarea placeholder="Awards & Honors" value={data.extras.awards} onChange={e => upData('extras.awards', e.target.value)} style={{width:'100%',minHeight:50,padding:8,marginBottom:10,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a',fontFamily:'inherit',fontSize:12}}/>
+            <textarea placeholder="Interests & Hobbies" value={data.extras.hobbies} onChange={e => upData('extras.hobbies', e.target.value)} style={{width:'100%',minHeight:50,padding:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a',fontFamily:'inherit',fontSize:12}}/>
           </div>
 
           {/* ACTION BUTTONS */}
           <div style={{display:'flex',gap:10}}>
-            <button onClick={downloadPDF} style={{flex:1,padding:10,background:'#238636',color:'#fff',border:'none',borderRadius:6,cursor:'pointer',fontWeight:600,fontSize:13}}>📥 Download PDF</button>
+            <button onClick={downloadPDF} style={{flex:1,padding:10,background:'#008751',color:'#fff',border:'none',borderRadius:6,cursor:'pointer',fontWeight:600,fontSize:13}}>📥 Download PDF</button>
             <button onClick={copyResults} style={{flex:1,padding:10,background:'#0969da',color:'#fff',border:'none',borderRadius:6,cursor:'pointer',fontWeight:600,fontSize:13}}>📋 Copy CV</button>
           </div>
         </div>
 
         {/* PREVIEW PANEL — RIGHT */}
-        <div style={{flex:'0 0 55%',background:'#161b22',display:'flex',flexDirection:'column',borderLeft:'1px solid #30363d'}}>
+        <div style={{flex:'0 0 55%',background:'#f8fafc',display:'flex',flexDirection:'column',borderLeft:'1px solid #e2e8f0'}}>
           {/* Template Switcher */}
-          <div style={{padding:16,borderBottom:'1px solid #30363d',overflowX:'auto',display:'flex',gap:8}}>
+          <div style={{padding:16,borderBottom:'1px solid #e2e8f0',overflowX:'auto',display:'flex',gap:8}}>
             {TEMPLATES.map(t => (
               <button key={t.id} onClick={() => setTemplate(t.id)} style={{
                 padding:'6px 12px',
                 borderRadius:6,
-                border:template === t.id ? '2px solid #79c0ff' : '1px solid #30363d',
-                background:template === t.id ? '#0d1117' : 'transparent',
-                color:template === t.id ? '#79c0ff' : '#8b949e',
+                border:template === t.id ? '2px solid #79c0ff' : '1px solid #e2e8f0',
+                background:template === t.id ? '#ffffff' : 'transparent',
+                color:template === t.id ? '#79c0ff' : '#64748b',
                 cursor:'pointer',
                 fontSize:12,
                 fontWeight:600,
