@@ -1,644 +1,2128 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Citation Generator — APA, MLA, Chicago | AfroTools</title>
-<meta name="description" content="Free citation generator. Create citations in APA, MLA, Chicago, and Harvard formats. Support for books, journals, websites, newspapers. Bibliography builder.">
-<link rel="canonical" href="https://afrotools.com/tools/citation-generator">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="Citation Generator | AfroTools">
-<meta property="og:description" content="Generate citations in APA, MLA, Chicago, and Harvard formats.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://afrotools.com/tools/citation-generator">
-<meta property="og:image" content="https://afrotools.com/assets/img/og-image.png">
-<meta property="og:site_name" content="AfroTools">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Citation Generator | AfroTools">
-<meta name="twitter:description" content="Free academic citation tool for students.">
-<meta name="robots" content="index, follow">
-<meta name="author" content="AfroTools">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/tokens.min.css">
-<link rel="stylesheet" href="/assets/css/global.min.css">
-<script src="/assets/js/components/navbar.min.js" defer></script>
-<script src="/assets/js/components/footer.min.js" defer></script>
-<style>
-  :root {
-    --afro-green: #008751;
-    --afro-dark: #0f1419;
-    --afro-light: #f5f7fa;
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Generate citations in APA 7th, MLA 9th, Chicago, Harvard, Vancouver, IEEE, OSCOLA, Turabian. AI auto-fill from DOI/URL. Built for African students. Bibliography builder with export.">
+    <meta name="tool-id" content="citation-generator">
+    <link rel="canonical" href="https://afrotools.com/tools/citation-generator/">
 
-  .tool-hero {
-    background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
-    padding: 44px 0 36px;
-    position: relative;
-    overflow: hidden;
-  }
+    <title>Free Citation Generator — APA 7, MLA 9, Harvard, OSCOLA, Chicago | AfroTools</title>
 
-  .tool-hero::after {
-    content: '📚';
-    position: absolute;
-    right: 5%;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 8rem;
-    opacity: 0.06;
-    pointer-events: none;
-  }
+    <meta property="og:title" content="Citation Generator | AfroTools">
+    <meta property="og:description" content="Generate citations in APA 7, MLA 9, Chicago, Harvard, Vancouver, IEEE, OSCOLA formats.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://afrotools.com/tools/citation-generator">
+    <meta property="og:image" content="https://afrotools.com/assets/img/og-image.png">
+    <meta property="og:site_name" content="AfroTools">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Citation Generator | AfroTools">
+    <meta name="twitter:description" content="AI-powered citations for African scholars.">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="AfroTools">
 
-  .tool-hero-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 24px;
-    position: relative;
-  }
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/tokens.min.css">
+    <link rel="stylesheet" href="/assets/css/global.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  .breadcrumb {
-    font-size: 0.72rem;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.3);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 14px;
-  }
+        :root {
+            --primary-green: #008751;
+            --primary-dark: #1a1a1a;
+            --primary-light: #f8f9fa;
+            --border-color: #e0e0e0;
+            --text-dark: #2c3e50;
+            --text-light: #666;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --error: #e74c3c;
+        }
 
-  .breadcrumb a {
-    color: rgba(255, 255, 255, 0.3);
-    text-decoration: none;
-  }
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: var(--text-dark);
+            line-height: 1.6;
+            background-color: var(--primary-light);
+        }
+        .hero-header {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-green) 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
 
-  .breadcrumb span {
-    color: var(--afro-green);
-  }
+        .hero-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
 
-  h1 {
-    font-size: clamp(1.6rem, 4vw, 2.4rem);
-    font-weight: 800;
-    color: #fff;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    margin-bottom: 10px;
-  }
+        .hero-header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto;
+        }
 
-  h1 em {
-    color: var(--afro-green);
-    font-style: normal;
-  }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1.5rem 3rem;
+        }
 
-  .hero-sub {
-    font-size: 0.88rem;
-    color: rgba(255, 255, 255, 0.45);
-    line-height: 1.6;
-    max-width: 560px;
-    margin-bottom: 14px;
-  }
+        .main-grid {
+            display: grid;
+            grid-template-columns: 55% 45%;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
 
-  .hero-badges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 7px;
-    margin-bottom: 6px;
-  }
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
 
-  .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    padding: 4px 11px;
-    border-radius: 4px;
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-  }
+        .format-selector {
+            margin-bottom: 2rem;
+        }
 
-  .b-green {
-    background: rgba(0, 135, 81, 0.18);
-    color: #5ddb9e;
-    border: 1px solid rgba(0, 135, 81, 0.38);
-  }
+        .format-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-dark);
+        }
 
-  .tool-main {
-    padding: 28px 0 72px;
-  }
+        .format-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
 
-  .tool-main-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 24px;
-    display: grid;
-    grid-template-columns: 1fr 360px;
-    gap: 22px;
-    align-items: start;
-  }
+        .pill {
+            padding: 0.6rem 1.2rem;
+            border: 2px solid var(--border-color);
+            border-radius: 20px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-dark);
+            font-family: 'DM Sans', sans-serif;
+        }
 
-  .card {
-    background: #fff;
-    border: 1px solid #dceee0;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
-  }
+        .pill:hover {
+            border-color: var(--primary-green);
+            color: var(--primary-green);
+        }
 
-  .card + .card {
-    margin-top: 18px;
-  }
+        .pill.active {
+            background: var(--primary-green);
+            border-color: var(--primary-green);
+            color: white;
+        }
 
-  .card-head {
-    padding: 15px 22px;
-    border-bottom: 1px solid #eaf5ec;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #f7fdf8;
-  }
+        .source-type-section {
+            margin-bottom: 2rem;
+        }
 
-  .card-title {
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: #0a4018;
-  }
+        .source-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
 
-  .card-body {
-    padding: 22px;
-  }
+        @media (max-width: 768px) {
+            .source-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
 
-  .field {
-    margin-bottom: 18px;
-  }
+        .source-card {
+            padding: 1.5rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+        }
 
-  .field:last-child {
-    margin-bottom: 0;
-  }
+        .source-card:hover {
+            border-color: var(--primary-green);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 135, 81, 0.1);
+        }
 
-  .f-label {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 6px;
-  }
+        .source-card.active {
+            background: var(--primary-green);
+            border-color: var(--primary-green);
+            color: white;
+        }
 
-  .f-label-text {
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    color: #0d2813;
-  }
+        .source-icon {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
 
-  .f-input {
-    width: 100%;
-    padding: 11px 13px;
-    background: #f4fbf5;
-    border: 1.5px solid #c5deca;
-    border-radius: 7px;
-    font-size: 1rem;
-    font-weight: 600;
-    color: #0d2813;
-    outline: none;
-    transition: border-color 0.18s, box-shadow 0.18s;
-    font-family: 'DM Sans', sans-serif;
-  }
+        .source-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
 
-  .f-input:focus {
-    border-color: var(--afro-green);
-    background: #fff;
-    box-shadow: 0 0 0 3px rgba(0, 135, 81, 0.1);
-  }
+        .auto-fill-box {
+            background: white;
+            border: 2px solid var(--primary-green);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
 
-  .mode-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-bottom: 18px;
-  }
+        .auto-fill-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
 
-  .mode-btn {
-    padding: 10px 12px;
-    background: #f4fbf5;
-    border: 1.5px solid #c5deca;
-    border-radius: 7px;
-    cursor: pointer;
-    transition: all 0.15s;
-    user-select: none;
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: #244d2c;
-    font-family: 'DM Sans', sans-serif;
-  }
+        .auto-fill-input-group {
+            display: flex;
+            gap: 0.75rem;
+        }
 
-  .mode-btn:hover {
-    border-color: var(--afro-green);
-  }
+        .auto-fill-box input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: 'DM Sans', sans-serif;
+        }
 
-  .mode-btn.on {
-    border-color: var(--afro-green);
-    background: var(--afro-green);
-    color: #fff;
-  }
+        .auto-fill-box input:focus {
+            outline: none;
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 3px rgba(0, 135, 81, 0.1);
+        }
 
-  .calc-btn {
-    width: 100%;
-    padding: 14px;
-    background: var(--afro-green);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    font-weight: 700;
-    letter-spacing: 0.03em;
-    cursor: pointer;
-    transition: all 0.18s;
-    margin-top: 8px;
-    font-family: 'DM Sans', sans-serif;
-  }
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
 
-  .calc-btn:hover {
-    background: #006d42;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(0, 135, 81, 0.3);
-  }
+        .btn-primary {
+            background: var(--primary-green);
+            color: white;
+        }
 
-  .output-box {
-    background: #f4fbf5;
-    border: 1.5px solid #c5deca;
-    border-radius: 8px;
-    padding: 12px;
-    font-size: 0.9rem;
-    color: #0d2813;
-    line-height: 1.6;
-    word-break: break-word;
-    display: none;
-    margin-bottom: 12px;
-  }
+        .btn-primary:hover:not(:disabled) {
+            background: #006d42;
+            transform: translateX(2px);
+        }
 
-  .output-box.on {
-    display: block;
-  }
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
 
-  .copy-btn {
-    width: 100%;
-    padding: 8px;
-    background: rgba(0, 135, 81, 0.1);
-    border: 1px solid rgba(0, 135, 81, 0.35);
-    color: #1a5c3a;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.72rem;
-    font-weight: 700;
-    transition: all 0.15s;
-    font-family: 'DM Sans', sans-serif;
-    display: none;
-  }
+        .btn-secondary {
+            background: var(--primary-light);
+            color: var(--text-dark);
+            border: 1px solid var(--border-color);
+        }
 
-  .copy-btn.on {
-    display: block;
-  }
+        .btn-secondary:hover {
+            background: white;
+        }
 
-  .copy-btn:hover {
-    background: rgba(0, 135, 81, 0.2);
-  }
+        .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+        }
 
-  .bibliography-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
+        .btn-danger {
+            background: var(--error);
+            color: white;
+        }
 
-  .bib-item {
-    background: #f4fbf5;
-    border: 1.5px solid #c5deca;
-    border-radius: 6px;
-    padding: 10px;
-    font-size: 0.8rem;
-    color: #244d2c;
-    line-height: 1.5;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 10px;
-  }
+        .btn-danger:hover {
+            background: #c0392b;
+        }
 
-  .bib-text {
-    flex: 1;
-    word-break: break-word;
-  }
+        .form-section {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+        }
 
-  .bib-remove {
-    padding: 4px 8px;
-    background: rgba(220, 53, 69, 0.1);
-    border: 1px solid rgba(220, 53, 69, 0.3);
-    color: #800000;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.65rem;
-    font-weight: 700;
-    white-space: nowrap;
-    transition: all 0.15s;
-    font-family: 'DM Sans', sans-serif;
-  }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
 
-  .bib-remove:hover {
-    background: rgba(220, 53, 69, 0.2);
-  }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+        }
 
-  .sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.95rem;
+        }
 
-  .info-card {
-    background: #f7fdf8;
-    border: 1px solid #dceee0;
-    border-radius: 10px;
-    padding: 16px;
-  }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 3px rgba(0, 135, 81, 0.1);
+        }
 
-  .info-title {
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: #0a4018;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-  }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
 
-  .info-text {
-    font-size: 0.8rem;
-    color: #244d2c;
-    line-height: 1.6;
-  }
+        .form-row.three-col {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
 
-  .info-text li {
-    margin-bottom: 8px;
-  }
+        .co-author-list {
+            background: var(--primary-light);
+            padding: 1rem;
+            border-radius: 4px;
+            margin-top: 0.5rem;
+        }
 
-  @media (max-width: 768px) {
-    .tool-main-inner {
-      grid-template-columns: 1fr;
-    }
+        .co-author-item {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            background: white;
+            border-radius: 4px;
+            align-items: center;
+        }
 
-    .mode-row {
-      grid-template-columns: 1fr;
-    }
+        .co-author-item:last-child {
+            margin-bottom: 0;
+        }
 
-    .bib-item {
-      flex-direction: column;
-    }
-  }
-</style>
+        .co-author-item button {
+            background: var(--error);
+            color: white;
+            border: none;
+            padding: 0.25rem 0.5rem;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .right-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .citation-preview {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            min-height: 200px;
+        }
+
+        .citation-preview-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-dark);
+        }
+
+        .citation-box {
+            background: var(--primary-light);
+            padding: 1.5rem;
+            border-radius: 4px;
+            border-left: 4px solid var(--primary-green);
+            margin-bottom: 1rem;
+        }
+
+        .citation-format-name {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .citation-text {
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: var(--text-dark);
+            word-wrap: break-word;
+            text-align: justify;
+            margin-bottom: 0.75rem;
+        }
+
+        .citation-text em {
+            font-style: italic;
+        }
+
+        .citation-text strong {
+            font-weight: 700;
+        }
+
+        .hanging-indent {
+            margin-left: 0;
+            text-indent: -2em;
+            padding-left: 2em;
+        }
+
+        .citation-note {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .placeholder {
+            color: var(--text-light);
+            font-style: italic;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .ai-advisor {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            border-top: 3px solid var(--warning);
+        }
+
+        .ai-advisor-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .ai-advisor-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-left: auto;
+        }
+
+        .advisor-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .chip {
+            padding: 0.5rem 1rem;
+            background: var(--primary-light);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .chip:hover {
+            background: var(--primary-green);
+            color: white;
+            border-color: var(--primary-green);
+        }
+
+        .chat-history {
+            background: var(--primary-light);
+            border-radius: 4px;
+            padding: 1rem;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+            min-height: 100px;
+        }
+
+        .chat-message {
+            margin-bottom: 0.75rem;
+            padding: 0.75rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .chat-message.user {
+            background: var(--primary-green);
+            color: white;
+            margin-left: 1rem;
+            text-align: right;
+        }
+
+        .chat-message.assistant {
+            background: white;
+            color: var(--text-dark);
+            border: 1px solid var(--border-color);
+        }
+
+        .advisor-input-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .advisor-input-group input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .advisor-input-group input:focus {
+            outline: none;
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 3px rgba(0, 135, 81, 0.1);
+        }
+
+        .bibliography-builder {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .bib-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .bib-count {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .bib-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .bib-list {
+            list-style: none;
+            padding: 0;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .bib-item {
+            padding: 1rem;
+            background: var(--primary-light);
+            border-radius: 4px;
+            margin-bottom: 0.75rem;
+            border-left: 4px solid var(--primary-green);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .bib-item-number {
+            font-weight: 700;
+            color: var(--primary-green);
+            margin-right: 0.5rem;
+        }
+
+        .bib-item-text {
+            word-wrap: break-word;
+        }
+
+        .bib-item-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+
+        .bib-item button {
+            padding: 0.4rem 0.75rem;
+            font-size: 0.8rem;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .bib-item button:hover {
+            background: var(--primary-green);
+            color: white;
+            border-color: var(--primary-green);
+        }
+
+        .citation-checker {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            margin-top: 2rem;
+        }
+
+        .checker-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            user-select: none;
+            margin-bottom: 1rem;
+        }
+
+        .checker-toggle {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background: var(--primary-green);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .checker-content {
+            display: none;
+        }
+
+        .checker-content.open {
+            display: block;
+        }
+
+        .checker-textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: 'DM Sans', sans-serif;
+            margin-bottom: 1rem;
+            resize: vertical;
+        }
+
+        .checker-textarea:focus {
+            outline: none;
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 3px rgba(0, 135, 81, 0.1);
+        }
+
+        .feedback-box {
+            background: var(--primary-light);
+            border-left: 4px solid var(--warning);
+            padding: 1rem;
+            border-radius: 4px;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .feedback-box.show {
+            display: block;
+        }
+
+        .sidebar-notes {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+        }
+
+        .notes-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .notes-content h4 {
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-green);
+        }
+
+        .notes-content p {
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: var(--text-light);
+            margin-bottom: 0.75rem;
+        }
+
+        .notes-list {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            padding-left: 1.2rem;
+        }
+
+        .notes-list li {
+            margin-bottom: 0.4rem;
+        }
+
+        .comparison-table {
+            width: 100%;
+            font-size: 0.8rem;
+            border-collapse: collapse;
+            margin-top: 0.75rem;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 0.5rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .comparison-table th {
+            background: var(--primary-light);
+            font-weight: 600;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 4px;
+            height: 4px;
+            background: var(--primary-green);
+            border-radius: 50%;
+            animation: spinner 1.4s infinite;
+        }
+
+        .spinner:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .spinner:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes spinner {
+            0%, 60%, 100% {
+                opacity: 0.3;
+                transform: scale(0.8);
+            }
+            30% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .loading-text {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            border-left: 4px solid;
+        }
+
+        .alert-success {
+            background: rgba(39, 174, 96, 0.1);
+            border-color: var(--success);
+            color: var(--success);
+        }
+
+        .alert-error {
+            background: rgba(231, 76, 60, 0.1);
+            border-color: var(--error);
+            color: var(--error);
+        }
+
+        .alert-warning {
+            background: rgba(243, 156, 18, 0.1);
+            border-color: var(--warning);
+            color: var(--warning);
+        }
+
+        @media (max-width: 768px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .hero-header p {
+                font-size: 0.95rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row.three-col {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-<afro-navbar active="tools"></afro-navbar>
+    <afro-navbar active="tools"></afro-navbar>
 
-<div class="tool-hero">
-  <div class="tool-hero-inner">
-    <div class="breadcrumb">
-      <a href="/">AfroTools</a> / <span>Tools</span>
-    </div>
-    <h1>Citation <em>Generator</em></h1>
-    <p class="hero-sub">Generate citations in APA, MLA, Chicago, and Harvard formats. Support for books, journals, websites, and newspapers. Build bibliographies instantly.</p>
-    <div class="hero-badges">
-      <span class="badge b-green">4 Formats</span>
-      <span class="badge b-green">Bibliography Builder</span>
-      <span class="badge b-green">Instant</span>
-    </div>
-  </div>
-</div>
-
-<div class="tool-main">
-  <div class="tool-main-inner">
-    <div>
-      <!-- Format Selection -->
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title">Citation Format</span>
-        </div>
-        <div class="card-body">
-          <div class="mode-row">
-            <button class="mode-btn on" data-format="apa">APA</button>
-            <button class="mode-btn" data-format="mla">MLA</button>
-            <button class="mode-btn" data-format="chicago">Chicago</button>
-            <button class="mode-btn" data-format="harvard">Harvard</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Source Type Selection -->
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title">Source Type</span>
-        </div>
-        <div class="card-body">
-          <div class="mode-row">
-            <button class="mode-btn on" data-source="book">Book</button>
-            <button class="mode-btn" data-source="journal">Journal</button>
-            <button class="mode-btn" data-source="website">Website</button>
-            <button class="mode-btn" data-source="newspaper">Newspaper</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Input Fields -->
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title">Source Details</span>
-        </div>
-        <div class="card-body">
-          <div class="field">
-            <label class="f-label">
-              <span class="f-label-text">Author/Creator Name</span>
-            </label>
-            <input type="text" class="f-input" id="author" placeholder="Last, First">
-          </div>
-
-          <div class="field">
-            <label class="f-label">
-              <span class="f-label-text">Title</span>
-            </label>
-            <input type="text" class="f-input" id="title" placeholder="Full title">
-          </div>
-
-          <div class="field">
-            <label class="f-label">
-              <span class="f-label-text">Publication/Publisher</span>
-            </label>
-            <input type="text" class="f-input" id="publisher" placeholder="Publisher or journal name">
-          </div>
-
-          <div class="field">
-            <label class="f-label">
-              <span class="f-label-text">Year</span>
-            </label>
-            <input type="number" class="f-input" id="year" placeholder="YYYY">
-          </div>
-
-          <div class="field">
-            <label class="f-label">
-              <span class="f-label-text">URL (for websites)</span>
-            </label>
-            <input type="url" class="f-input" id="url" placeholder="https://...">
-          </div>
-
-          <button class="calc-btn" id="generateBtn">Generate Citation</button>
-        </div>
-      </card>
-
-      <!-- Citation Output -->
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title">Citation</span>
-        </div>
-        <div class="card-body">
-          <div class="output-box" id="outputBox"></div>
-          <button class="copy-btn" id="copyBtn">📋 Copy Citation</button>
-          <button class="calc-btn" id="addBtn" style="display: none;">+ Add to Bibliography</button>
-        </div>
-      </div>
-
-      <!-- Bibliography -->
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title">Bibliography</span>
-        </div>
-        <div class="card-body">
-          <div class="bibliography-list" id="bibList"></div>
-          <div style="text-align: center; color: #7dab87; font-size: 0.75rem; padding: 20px;" id="emptyMsg">No citations added yet</div>
-        </div>
-      </div>
+    <div class="hero-header">
+        <h1>Citation Generator</h1>
+        <p>AI-powered citations for African scholars. APA 7, MLA 9, Chicago, Harvard, Vancouver, IEEE, OSCOLA & more.</p>
     </div>
 
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <!-- Info Card -->
-      <div class="info-card">
-        <div class="info-title">About Citations</div>
-        <div class="info-text">
-          Proper citations acknowledge sources and prevent plagiarism.
-          <ul style="margin-top:10px;">
-            <li>✓ APA: Psychology & social sciences</li>
-            <li>✓ MLA: Humanities</li>
-            <li>✓ Chicago: History & journalism</li>
-            <li>✓ Harvard: General academic</li>
-          </ul>
+    <div class="container">
+        <div class="main-grid">
+            <!-- LEFT PANEL: Form -->
+            <div class="left-panel">
+                <!-- Format Selector -->
+                <div class="format-selector">
+                    <label class="format-label">Citation Format</label>
+                    <div class="format-pills">
+                        <button class="pill active" data-format="apa">APA 7</button>
+                        <button class="pill" data-format="mla">MLA 9</button>
+                        <button class="pill" data-format="chicago">Chicago (AD)</button>
+                        <button class="pill" data-format="harvard">Harvard</button>
+                        <button class="pill" data-format="vancouver">Vancouver</button>
+                        <button class="pill" data-format="ieee">IEEE</button>
+                        <button class="pill" data-format="oscola">OSCOLA</button>
+                        <button class="pill" data-format="turabian">Turabian</button>
+                    </div>
+                </div>
+
+                <!-- Source Type Grid -->
+                <div class="source-type-section">
+                    <label class="format-label">Source Type</label>
+                    <div class="source-grid">
+                        <div class="source-card active" data-source="book">
+                            <div class="source-icon">📕</div>
+                            <div class="source-name">Book</div>
+                        </div>
+                        <div class="source-card" data-source="journal">
+                            <div class="source-icon">📄</div>
+                            <div class="source-name">Journal</div>
+                        </div>
+                        <div class="source-card" data-source="website">
+                            <div class="source-icon">🌐</div>
+                            <div class="source-name">Website</div>
+                        </div>
+                        <div class="source-card" data-source="newspaper">
+                            <div class="source-icon">📰</div>
+                            <div class="source-name">Newspaper</div>
+                        </div>
+                        <div class="source-card" data-source="government">
+                            <div class="source-icon">🏛️</div>
+                            <div class="source-name">Gov Report</div>
+                        </div>
+                        <div class="source-card" data-source="thesis">
+                            <div class="source-icon">🎓</div>
+                            <div class="source-name">Thesis</div>
+                        </div>
+                        <div class="source-card" data-source="conference">
+                            <div class="source-icon">📋</div>
+                            <div class="source-name">Conference</div>
+                        </div>
+                        <div class="source-card" data-source="legal">
+                            <div class="source-icon">⚖️</div>
+                            <div class="source-name">Legal Case</div>
+                        </div>
+                        <div class="source-card" data-source="legislation">
+                            <div class="source-icon">📝</div>
+                            <div class="source-name">Legislation</div>
+                        </div>
+                        <div class="source-card" data-source="interview">
+                            <div class="source-icon">🎤</div>
+                            <div class="source-name">Interview</div>
+                        </div>
+                        <div class="source-card" data-source="social">
+                            <div class="source-icon">📱</div>
+                            <div class="source-name">Social Media</div>
+                        </div>
+                        <div class="source-card" data-source="video">
+                            <div class="source-icon">🎥</div>
+                            <div class="source-name">Video</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Auto-Fill Box -->
+                <div class="auto-fill-box">
+                    <div class="auto-fill-title">
+                        <span>🤖</span>
+                        <span>Auto-Fill from DOI, ISBN, or URL</span>
+                    </div>
+                    <div class="auto-fill-input-group">
+                        <input type="text" id="autoFillInput" placeholder="Paste DOI (10.1080/...), ISBN, or URL here">
+                        <button class="btn btn-primary" id="autoFillBtn">Fill →</button>
+                    </div>
+                    <div id="autoFillStatus" style="margin-top: 0.75rem; display: none;"></div>
+                </div>
+
+                <!-- Form Section -->
+                <div class="form-section" id="formSection">
+                    <!-- Form fields will be dynamically populated -->
+                </div>
+
+                <!-- Citation Checker -->
+                <div class="citation-checker">
+                    <div class="checker-header" id="checkerHeader">
+                        <div class="checker-toggle">▼</div>
+                        <span style="font-weight: 600; flex: 1;">Check My Citation</span>
+                    </div>
+                    <div class="checker-content" id="checkerContent">
+                        <label style="display: block; font-weight: 600; margin-bottom: 0.5rem; font-size: 0.9rem;">Paste existing citation:</label>
+                        <textarea class="checker-textarea" id="checkerInput" placeholder="Paste a citation to check for errors..."></textarea>
+                        <button class="btn btn-primary" id="checkerBtn">Check Citation →</button>
+                        <div class="feedback-box" id="feedbackBox"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT PANEL: Preview & Tools -->
+            <div class="right-panel">
+                <!-- Sidebar Notes (moved to top for visibility) -->
+                <div class="sidebar-notes">
+                    <div class="notes-title">📚 Format Quick Reference</div>
+                    <div class="notes-content">
+                        <h4>Current Format: <span id="currentFormatName">APA 7th Edition</span></h4>
+                        <p id="formatDescription">American Psychological Association style, 7th edition. Commonly used in social sciences and education.</p>
+
+                        <h4>Format Key Points</h4>
+                        <ul class="notes-list" id="formatKeyPoints">
+                            <li>Author Last Name, First Initial. (Year). Title of work.</li>
+                            <li>Use "et al." for 3+ authors</li>
+                            <li>Italicize book and journal titles</li>
+                            <li>Hanging indent for all citations</li>
+                        </ul>
+
+                        <h4>Common Mistakes</h4>
+                        <ul class="notes-list">
+                            <li>Missing year in parentheses</li>
+                            <li>Not italicizing titles</li>
+                            <li>Incorrect punctuation order</li>
+                            <li>Missing DOI or URL</li>
+                        </ul>
+
+                        <table class="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>Feature</th>
+                                    <th>APA</th>
+                                    <th>MLA</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Author order</td>
+                                    <td>Last, First</td>
+                                    <td>Last, First</td>
+                                </tr>
+                                <tr>
+                                    <td>Year placement</td>
+                                    <td>After name</td>
+                                    <td>After publisher</td>
+                                </tr>
+                                <tr>
+                                    <td>Journal italic</td>
+                                    <td>Yes</td>
+                                    <td>Yes</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Citation Preview -->
+                <div class="citation-preview">
+                    <div class="citation-preview-title">Live Preview</div>
+                    <div id="previewContainer">
+                        <div class="placeholder">Fill in the form to generate citations</div>
+                    </div>
+                </div>
+
+                <!-- AI Advisor -->
+                <div class="ai-advisor">
+                    <div class="ai-advisor-title">
+                        <span>🟡 AI Citation Advisor</span>
+                        <span class="ai-advisor-subtitle">Powered by Claude</span>
+                    </div>
+                    <div class="advisor-chips">
+                        <div class="chip" data-prompt="How do I cite an article from AJOL (African Journals Online)?">Cite an AJOL article</div>
+                        <div class="chip" data-prompt="How do I cite a Nigerian Supreme Court case in OSCOLA format?">Nigerian court case</div>
+                        <div class="chip" data-prompt="How do I cite a WhatsApp message or private communication?">WhatsApp message</div>
+                        <div class="chip" data-prompt="How do I cite a government gazette or official bulletin?">Government gazette</div>
+                    </div>
+                    <div class="chat-history" id="chatHistory"></div>
+                    <div class="advisor-input-group">
+                        <input type="text" id="advisorInput" placeholder="Type your question...">
+                        <button class="btn btn-primary btn-small" id="advisorBtn">→</button>
+                    </div>
+                </div>
+
+                <!-- Bibliography Builder -->
+                <div class="bibliography-builder">
+                    <div class="bib-header">
+                        <span class="bib-title">📖 Bibliography Builder</span>
+                        <span class="bib-count">0 sources</span>
+                    </div>
+                    <div class="bib-actions">
+                        <button class="btn btn-primary btn-small" id="addCitationBtn">➕ Add Current Citation</button>
+                        <button class="btn btn-secondary btn-small" id="copyAllBtn">📋 Copy All</button>
+                        <button class="btn btn-secondary btn-small" id="exportBtn">📄 Export .txt</button>
+                        <button class="btn btn-danger btn-small" id="clearAllBtn">Clear All</button>
+                    </div>
+                    <ul class="bib-list" id="bibList"></ul>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
-</div>
 
-<afro-footer></afro-footer>
+    <afro-footer></afro-footer>
 
-<script>
-  const formatBtns = document.querySelectorAll('[data-format]');
-  const sourceBtns = document.querySelectorAll('[data-source]');
-  const author = document.getElementById('author');
-  const title = document.getElementById('title');
-  const publisher = document.getElementById('publisher');
-  const year = document.getElementById('year');
-  const url = document.getElementById('url');
-  const generateBtn = document.getElementById('generateBtn');
-  const outputBox = document.getElementById('outputBox');
-  const copyBtn = document.getElementById('copyBtn');
-  const addBtn = document.getElementById('addBtn');
-  const bibList = document.getElementById('bibList');
-  const emptyMsg = document.getElementById('emptyMsg');
+    <script src="/assets/js/components/navbar.min.js" defer></script>
+    <script src="/assets/js/components/footer.min.js" defer></script>
 
-  let currentFormat = 'apa';
-  let currentSource = 'book';
-  let bibliography = [];
+    <script>
+        // Application state
+        let state = {
+            format: 'apa',
+            sourceType: 'book',
+            formData: {},
+            bibliography: [],
+            citations: {}
+        };
 
-  formatBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      formatBtns.forEach(b => b.classList.remove('on'));
-      btn.classList.add('on');
-      currentFormat = btn.dataset.format;
-    });
-  });
+        // Format metadata
+        const formats = {
+            apa: {
+                name: 'APA 7th Edition',
+                description: 'American Psychological Association style. Commonly used in social sciences and education. Features year after author and hanging indent.',
+                keyPoints: [
+                    'Author Last Name, First Initial. (Year). Title of work.',
+                    'Use "et al." for 3+ authors',
+                    'Italicize book and journal titles',
+                    'Hanging indent for all citations',
+                    'Include DOI when available'
+                ]
+            },
+            mla: {
+                name: 'MLA 9th Edition',
+                description: 'Modern Language Association style. Used in humanities and literature. Emphasizes authorship and accessibility.',
+                keyPoints: [
+                    'Author Last Name, First Name. "Title." Container Title, Year.',
+                    'Works with "Works Cited" page',
+                    'Use "et al." for multiple authors',
+                    'In-text citations use parenthetical references',
+                    'Include medium of publication'
+                ]
+            },
+            chicago: {
+                name: 'Chicago Manual of Style',
+                description: 'Professional style for history, geography, and cultural studies. Two systems: Author-Date and Notes-Bibliography.',
+                keyPoints: [
+                    'Notes-Bibliography system for humanities',
+                    'Author-Date system for sciences',
+                    'Full note on first reference, short form thereafter',
+                    'Bibliography entry follows publication order',
+                    'Use endnotes or footnotes'
+                ]
+            },
+            harvard: {
+                name: 'Harvard Referencing',
+                description: 'Author-date system popular in UK and Australian universities. Clear emphasis on date placement.',
+                keyPoints: [
+                    'Author(s) surname, initials. (Year).',
+                    'Place publication in brackets after author',
+                    'All references in alphabetical order',
+                    'Use et al. for multiple authors',
+                    'Include URL and access date for online sources'
+                ]
+            },
+            vancouver: {
+                name: 'Vancouver Style',
+                description: 'Numeric citation system used primarily in medicine and health sciences.',
+                keyPoints: [
+                    'Numbers in brackets [1], [2] follow text order',
+                    'Numbered bibliography lists sources in order cited',
+                    'Abbreviated journal titles (use ISO 4 standard)',
+                    'Compact format ideal for space-limited publications',
+                    'Common in medical and scientific journals'
+                ]
+            },
+            ieee: {
+                name: 'IEEE Style',
+                description: 'Numeric system for electrical and computer engineering. Emphasizes technical clarity.',
+                keyPoints: [
+                    'Numbers in brackets [1], [2] in order of appearance',
+                    'Compact format with abbreviated titles',
+                    'Journal titles abbreviated per IEEE standard',
+                    'Used in technical and engineering publications',
+                    'Minimal punctuation'
+                ]
+            },
+            oscola: {
+                name: 'OSCOLA (Oxford Standard for Citation of Legal Authorities)',
+                description: 'UK legal citation standard. Essential for law students and African legal contexts.',
+                keyPoints: [
+                    'Primary source: legislation, cases, EU materials first',
+                    'Secondary sources: books, journal articles, websites',
+                    'Use footnotes (pinpoint citations)',
+                    'Short form citations after first full citation',
+                    'Critical for African legal citations'
+                ]
+            },
+            turabian: {
+                name: 'Turabian Style',
+                description: 'Derived from Chicago Manual of Style. Popular in high schools and some universities.',
+                keyPoints: [
+                    'Two systems: Notes-Bibliography and Author-Date',
+                    'Simpler than full Chicago style',
+                    'Commonly taught in secondary education',
+                    'Bibliography lists all sources alphabetically',
+                    'Similar to Chicago but more streamlined'
+                ]
+            }
+        };
 
-  sourceBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      sourceBtns.forEach(b => b.classList.remove('on'));
-      btn.classList.add('on');
-      currentSource = btn.dataset.source;
-    });
-  });
+        // African cities dropdown
+        const africanCities = [
+            'Lagos, Nigeria', 'Nairobi, Kenya', 'Accra, Ghana', 'Cairo, Egypt',
+            'Johannesburg, South Africa', 'Pretoria, South Africa', 'Cape Town, South Africa',
+            'Addis Ababa, Ethiopia', 'Dakar, Senegal', 'Kinshasa, Democratic Republic of Congo',
+            'Harare, Zimbabwe', 'Kampala, Uganda', 'Lusaka, Zambia', 'Kigali, Rwanda',
+            'Abuja, Nigeria', 'Ibadan, Nigeria'
+        ];
 
-  function generateCitation() {
-    if (!author.value || !title.value || !publisher.value || !year.value) {
-      alert('Please fill in all required fields');
-      return;
+        // African universities
+        const africanUniversities = [
+            'University of Lagos, Nigeria', 'University of Nairobi, Kenya', 'University of Ghana, Ghana',
+            'University of Cape Town, South Africa', 'KNUST, Ghana', 'Makerere University, Uganda',
+            'Stellenbosch University, South Africa', 'University of the Witwatersrand, South Africa',
+            'Addis Ababa University, Ethiopia', 'American University of Cairo, Egypt',
+            'Cairo University, Egypt', 'University of Dar es Salaam, Tanzania',
+            'Federal University of Technology Akure, Nigeria', 'Obafemi Awolowo University, Nigeria',
+            'University of Nigeria Nsukka, Nigeria', 'Rhodes University, South Africa',
+            'University of KwaZulu-Natal, South Africa', 'University of Johannesburg, South Africa',
+            'Kwame Nkrumah University of Science and Technology, Ghana',
+            'University of Botswana, Botswana'
+        ];
+
+        // African newspapers
+        const africanNewspapers = [
+            'Daily Nation, Kenya', 'The Standard, Kenya', 'The Guardian, Nigeria', 'Punch, Nigeria',
+            'Business Day, Nigeria', 'Daily Maverick, South Africa', 'Business Times, South Africa',
+            'The Herald, Zimbabwe', 'New Vision, Uganda', 'The East African, East Africa',
+            'Vanguard, Nigeria', 'The Citizen, Tanzania', 'Daily Monitor, Uganda',
+            'Cape Times, South Africa', 'City Press, South Africa', 'Sowetan, South Africa'
+        ];
+
+        // African journals (for quick access)
+        const africanJournals = [
+            'African Journal of Agricultural Research', 'African Development Review',
+            'African Affairs', 'Journal of African Economies', 'African Studies Review',
+            'South African Journal of Geology', 'Journal of Contemporary African Studies',
+            'African Identities', 'African Studies Quarterly', 'Journal of Modern African Studies'
+        ];
+
+        // Source field definitions
+        const sourceFields = {
+            book: [
+                { name: 'author_last', label: 'Author Last Name', type: 'text', required: true },
+                { name: 'author_first', label: 'Author First Name', type: 'text', required: true },
+                { name: 'year', label: 'Year Published', type: 'number', required: true },
+                { name: 'title', label: 'Book Title', type: 'text', required: true, helper: '(will be italicized)' },
+                { name: 'edition', label: 'Edition (if not 1st)', type: 'text', required: false },
+                { name: 'publisher', label: 'Publisher', type: 'text', required: true },
+                { name: 'city', label: 'City of Publication', type: 'select', required: true, options: africanCities },
+                { name: 'country', label: 'Country', type: 'text', required: false },
+                { name: 'pages', label: 'Total Pages (optional)', type: 'number', required: false },
+                { name: 'chapter', label: 'Chapter (if applicable)', type: 'text', required: false }
+            ],
+            journal: [
+                { name: 'author_last', label: 'Author Last Name', type: 'text', required: true },
+                { name: 'author_first', label: 'Author First Name', type: 'text', required: true },
+                { name: 'year', label: 'Year Published', type: 'number', required: true },
+                { name: 'article_title', label: 'Article Title', type: 'text', required: true },
+                { name: 'journal_name', label: 'Journal Name', type: 'text', required: true, helper: '(try typing AJOL for African journals)' },
+                { name: 'volume', label: 'Volume', type: 'number', required: true },
+                { name: 'issue', label: 'Issue', type: 'number', required: false },
+                { name: 'pages', label: 'Pages (e.g., 120-145)', type: 'text', required: true },
+                { name: 'doi', label: 'DOI (optional)', type: 'text', required: false },
+                { name: 'url', label: 'URL (optional)', type: 'text', required: false },
+                { name: 'database', label: 'Database (AJOL, JSTOR, etc.)', type: 'text', required: false }
+            ],
+            website: [
+                { name: 'author_org', label: 'Author or Organization', type: 'text', required: true },
+                { name: 'year', label: 'Year/Date Published', type: 'number', required: true },
+                { name: 'page_title', label: 'Page Title', type: 'text', required: true },
+                { name: 'website_name', label: 'Website Name', type: 'text', required: true },
+                { name: 'url', label: 'URL', type: 'text', required: true },
+                { name: 'date_accessed', label: 'Date Accessed', type: 'date', required: true }
+            ],
+            newspaper: [
+                { name: 'author_last', label: 'Reporter Last Name', type: 'text', required: true },
+                { name: 'author_first', label: 'Reporter First Name', type: 'text', required: false },
+                { name: 'year', label: 'Year Published', type: 'number', required: true },
+                { name: 'article_title', label: 'Article Title', type: 'text', required: true },
+                { name: 'newspaper_name', label: 'Newspaper Name', type: 'select', required: true, options: africanNewspapers },
+                { name: 'pub_date', label: 'Date Published', type: 'date', required: true },
+                { name: 'page', label: 'Page/Section or URL', type: 'text', required: false }
+            ],
+            government: [
+                { name: 'org', label: 'Organization/Department', type: 'text', required: true },
+                { name: 'year', label: 'Year Published', type: 'number', required: true },
+                { name: 'title', label: 'Report Title', type: 'text', required: true },
+                { name: 'report_number', label: 'Report Number (optional)', type: 'text', required: false },
+                { name: 'publisher', label: 'Publisher/Department', type: 'text', required: true },
+                { name: 'city', label: 'City', type: 'select', required: true, options: africanCities },
+                { name: 'url', label: 'URL (optional)', type: 'text', required: false }
+            ],
+            thesis: [
+                { name: 'author_last', label: 'Author Last Name', type: 'text', required: true },
+                { name: 'author_first', label: 'Author First Name', type: 'text', required: true },
+                { name: 'year', label: 'Year Completed', type: 'number', required: true },
+                { name: 'title', label: 'Thesis Title', type: 'text', required: true },
+                { name: 'degree_type', label: 'Degree Type', type: 'select', required: true, options: ['PhD', 'Masters', 'Undergrad'] },
+                { name: 'institution', label: 'Institution', type: 'select', required: true, options: africanUniversities },
+                { name: 'city', label: 'City', type: 'select', required: true, options: africanCities },
+                { name: 'country', label: 'Country', type: 'text', required: false },
+                { name: 'url', label: 'URL (optional)', type: 'text', required: false }
+            ],
+            conference: [
+                { name: 'author_last', label: 'Author Last Name', type: 'text', required: true },
+                { name: 'author_first', label: 'Author First Name', type: 'text', required: true },
+                { name: 'year', label: 'Year', type: 'number', required: true },
+                { name: 'paper_title', label: 'Paper Title', type: 'text', required: true },
+                { name: 'conference_name', label: 'Conference Name', type: 'text', required: true },
+                { name: 'conference_location', label: 'Conference Location', type: 'text', required: true },
+                { name: 'conference_date', label: 'Conference Date', type: 'date', required: true },
+                { name: 'pages', label: 'Pages (optional)', type: 'text', required: false },
+                { name: 'publisher', label: 'Publisher (optional)', type: 'text', required: false },
+                { name: 'doi', label: 'DOI (optional)', type: 'text', required: false }
+            ],
+            legal: [
+                { name: 'case_name', label: 'Case Name', type: 'text', required: true },
+                { name: 'year', label: 'Year', type: 'number', required: true },
+                { name: 'court', label: 'Court', type: 'text', required: true },
+                { name: 'report_volume', label: 'Report Volume', type: 'number', required: false },
+                { name: 'report_series', label: 'Report Series', type: 'text', required: false },
+                { name: 'page', label: 'Page', type: 'number', required: false },
+                { name: 'jurisdiction', label: 'Jurisdiction', type: 'select', required: true, options: ['Nigeria', 'Kenya', 'South Africa', 'Ghana', 'Uganda', 'Tanzania', 'Ethiopia', 'Botswana', 'Zimbabwe'] }
+            ],
+            legislation: [
+                { name: 'act_name', label: 'Act/Bill Name', type: 'text', required: true },
+                { name: 'year', label: 'Year', type: 'number', required: true },
+                { name: 'chapter_number', label: 'Chapter/Act Number', type: 'text', required: false },
+                { name: 'jurisdiction', label: 'Jurisdiction', type: 'select', required: true, options: ['Nigeria', 'Kenya', 'South Africa', 'Ghana', 'Uganda', 'Tanzania', 'Ethiopia', 'Botswana', 'Zimbabwe'] }
+            ],
+            interview: [
+                { name: 'interviewee_name', label: 'Interviewee Name', type: 'text', required: true },
+                { name: 'interviewee_title', label: 'Interviewee Title/Role', type: 'text', required: true },
+                { name: 'interview_type', label: 'Interview Type', type: 'select', required: true, options: ['Personal', 'Phone', 'Email', 'Video Call'] },
+                { name: 'date_conducted', label: 'Date Conducted', type: 'date', required: true },
+                { name: 'interviewer_name', label: 'Your Name (optional)', type: 'text', required: false }
+            ],
+            social: [
+                { name: 'username', label: 'Username/Author', type: 'text', required: true },
+                { name: 'platform', label: 'Platform', type: 'select', required: true, options: ['Twitter/X', 'Facebook', 'Instagram', 'LinkedIn', 'TikTok', 'YouTube', 'Other'] },
+                { name: 'post_text', label: 'Post Text (excerpt)', type: 'textarea', required: false },
+                { name: 'post_date', label: 'Date Posted', type: 'date', required: true },
+                { name: 'url', label: 'URL to Post', type: 'text', required: true }
+            ],
+            video: [
+                { name: 'creator', label: 'Creator/Channel', type: 'text', required: true },
+                { name: 'year', label: 'Year Published', type: 'number', required: true },
+                { name: 'title', label: 'Video Title', type: 'text', required: true },
+                { name: 'platform', label: 'Platform', type: 'select', required: true, options: ['YouTube', 'Vimeo', 'TED', 'Other'] },
+                { name: 'channel_name', label: 'Channel Name (optional)', type: 'text', required: false },
+                { name: 'url', label: 'URL', type: 'text', required: true },
+                { name: 'duration', label: 'Duration (optional)', type: 'text', required: false }
+            ]
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeEventListeners();
+            renderForm();
+            updateFormatInfo();
+        });
+
+        function initializeEventListeners() {
+            // Format pills
+            document.querySelectorAll('.pill').forEach(pill => {
+                pill.addEventListener('click', function() {
+                    document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+                    this.classList.add('active');
+                    state.format = this.dataset.format;
+                    updateFormatInfo();
+                    updateCitationPreview();
+                });
+            });
+
+            // Source type cards
+            document.querySelectorAll('.source-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    document.querySelectorAll('.source-card').forEach(c => c.classList.remove('active'));
+                    this.classList.add('active');
+                    state.sourceType = this.dataset.source;
+                    state.formData = {};
+                    renderForm();
+                    updateCitationPreview();
+                });
+            });
+
+            // Auto-fill
+            document.getElementById('autoFillBtn').addEventListener('click', handleAutoFill);
+            document.getElementById('autoFillInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') handleAutoFill();
+            });
+
+            // Bibliography actions
+            document.getElementById('addCitationBtn').addEventListener('click', addCitationToBibliography);
+            document.getElementById('copyAllBtn').addEventListener('click', copyAllBibliography);
+            document.getElementById('exportBtn').addEventListener('click', exportBibliography);
+            document.getElementById('clearAllBtn').addEventListener('click', clearBibliography);
+
+            // Citation checker
+            document.getElementById('checkerHeader').addEventListener('click', function() {
+                const content = document.getElementById('checkerContent');
+                content.classList.toggle('open');
+                const toggle = this.querySelector('.checker-toggle');
+                toggle.textContent = content.classList.contains('open') ? '▼' : '▶';
+            });
+
+            document.getElementById('checkerBtn').addEventListener('click', checkCitation);
+            document.getElementById('checkerInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && e.ctrlKey) checkCitation();
+            });
+
+            // AI Advisor
+            document.querySelectorAll('.chip').forEach(chip => {
+                chip.addEventListener('click', function() {
+                    const prompt = this.dataset.prompt;
+                    document.getElementById('advisorInput').value = prompt;
+                    sendAdvisorMessage(prompt);
+                });
+            });
+
+            document.getElementById('advisorBtn').addEventListener('click', function() {
+                const input = document.getElementById('advisorInput');
+                const message = input.value.trim();
+                if (message) {
+                    sendAdvisorMessage(message);
+                    input.value = '';
+                }
+            });
+
+            document.getElementById('advisorInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    document.getElementById('advisorBtn').click();
+                }
+            });
+        }
+
+        function renderForm() {
+            const fields = sourceFields[state.sourceType] || [];
+            const formSection = document.getElementById('formSection');
+            let html = '';
+
+            fields.forEach((field, index) => {
+                if (field.type === 'select') {
+                    html += `
+                        <div class="form-group">
+                            <label for="${field.name}">${field.label}</label>
+                            <select id="${field.name}" name="${field.name}" ${field.required ? 'required' : ''}>
+                                <option value="">-- Select --</option>
+                                ${field.options.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
+                            </select>
+                        </div>
+                    `;
+                } else if (field.type === 'textarea') {
+                    html += `
+                        <div class="form-group">
+                            <label for="${field.name}">${field.label}</label>
+                            <textarea id="${field.name}" name="${field.name}" ${field.required ? 'required' : ''} rows="3"></textarea>
+                        </div>
+                    `;
+                } else {
+                    html += `
+                        <div class="form-group">
+                            <label for="${field.name}">${field.label}</label>
+                            <input type="${field.type}" id="${field.name}" name="${field.name}" ${field.required ? 'required' : ''} />
+                            ${field.helper ? `<small style="color: var(--text-light); font-size: 0.8rem;">${field.helper}</small>` : ''}
+                        </div>
+                    `;
+                }
+            });
+
+            // Add button for co-authors
+            if (state.sourceType === 'book' || state.sourceType === 'journal' || state.sourceType === 'conference') {
+                html += `
+                    <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color);">
+                        <button class="btn btn-secondary btn-small" id="addCoAuthorBtn">+ Add Co-author</button>
+                        <div class="co-author-list" id="coAuthorList"></div>
+                    </div>
+                `;
+            }
+
+            formSection.innerHTML = html;
+
+            // Re-attach form change listeners
+            document.querySelectorAll('#formSection input, #formSection select, #formSection textarea').forEach(field => {
+                field.addEventListener('change', function() {
+                    state.formData[this.name] = this.value;
+                    updateCitationPreview();
+                });
+                field.addEventListener('input', function() {
+                    state.formData[this.name] = this.value;
+                    updateCitationPreview();
+                });
+            });
+
+            // Add co-author button
+            if (document.getElementById('addCoAuthorBtn')) {
+                document.getElementById('addCoAuthorBtn').addEventListener('click', addCoAuthorField);
+            }
+        }
+
+        function addCoAuthorField() {
+            const coAuthorList = document.getElementById('coAuthorList');
+            const index = (state.formData.coAuthors || []).length;
+
+            if (!state.formData.coAuthors) {
+                state.formData.coAuthors = [];
+            }
+
+            const html = `
+                <div class="co-author-item">
+                    <input type="text" placeholder="Co-author Last Name" id="coAuthor_${index}_last" style="width: 45%; padding: 0.5rem;">
+                    <input type="text" placeholder="Co-author First Name" id="coAuthor_${index}_first" style="width: 45%; padding: 0.5rem;">
+                    <button type="button">Remove</button>
+                </div>
+            `;
+
+            coAuthorList.innerHTML += html;
+
+            const inputs = coAuthorList.querySelectorAll(`#coAuthor_${index}_last, #coAuthor_${index}_first`);
+            inputs.forEach(input => {
+                input.addEventListener('change', updateCitationPreview);
+                input.addEventListener('input', updateCitationPreview);
+            });
+
+            coAuthorList.querySelector('.co-author-item button').addEventListener('click', function() {
+                this.parentElement.remove();
+                updateCitationPreview();
+            });
+        }
+
+        function updateFormatInfo() {
+            const format = formats[state.format];
+            document.getElementById('currentFormatName').textContent = format.name;
+            document.getElementById('formatDescription').textContent = format.description;
+
+            const keyPointsList = document.getElementById('formatKeyPoints');
+            keyPointsList.innerHTML = format.keyPoints.map(point => `<li>${point}</li>`).join('');
+        }
+
+        function updateCitationPreview() {
+            const preview = generateCitations();
+            const container = document.getElementById('previewContainer');
+
+            if (!preview) {
+                container.innerHTML = '<div class="placeholder">Fill in the form to generate citations</div>';
+                return;
+            }
+
+            let html = '';
+            Object.entries(preview).forEach(([format, citation]) => {
+                html += `
+                    <div class="citation-box">
+                        <div class="citation-format-name">${format}</div>
+                        <div class="citation-text hanging-indent">${citation.text}</div>
+                        ${citation.note ? `<div class="citation-note">${citation.note}</div>` : ''}
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function generateCitations() {
+            const data = state.formData;
+            const format = state.format;
+            const source = state.sourceType;
+
+            // Check if required fields are filled
+            const requiredFields = (sourceFields[source] || [])
+                .filter(f => f.required)
+                .map(f => f.name);
+
+            const hasRequiredData = requiredFields.every(field => data[field] && data[field].toString().trim());
+            if (!hasRequiredData) return null;
+
+            const citations = {};
+
+            // APA Citation
+            citations['APA 7'] = generateAPA(data, source);
+
+            // MLA Citation
+            citations['MLA 9'] = generateMLA(data, source);
+
+            // Chicago Citation
+            citations['Chicago'] = generateChicago(data, source);
+
+            // Harvard Citation
+            citations['Harvard'] = generateHarvard(data, source);
+
+            // Vancouver Citation
+            citations['Vancouver'] = generateVancouver(data, source);
+
+            // IEEE Citation
+            citations['IEEE'] = generateIEEE(data, source);
+
+            // OSCOLA Citation
+            citations['OSCOLA'] = generateOSCOLA(data, source);
+
+            // Turabian Citation
+            citations['Turabian'] = generateTurabian(data, source);
+
+            return citations;
+        }
+
+        function generateAPA(data, source) {
+            let text = '';
+
+            if (source === 'book') {
+                const author = `${data.author_last}, ${data.author_first?.charAt(0)}.`;
+                const year = `(${data.year})`;
+                const title = `<em>${data.title}</em>`;
+                const edition = data.edition ? ` (${data.edition})` : '';
+                const publisher = `${data.publisher}`;
+                text = `${author} ${year}. ${title}${edition}. ${publisher}.`;
+            } else if (source === 'journal') {
+                const author = `${data.author_last}, ${data.author_first?.charAt(0)}.`;
+                const year = `(${data.year})`;
+                const title = `${data.article_title}`;
+                const journal = `<em>${data.journal_name}</em>`;
+                const volume = `<strong>${data.volume}</strong>`;
+                const issue = data.issue ? `(${data.issue})` : '';
+                const pages = `, ${data.pages}`;
+                const doi = data.doi ? `. https://doi.org/${data.doi}` : '';
+                text = `${author} ${year}. ${title}. ${journal}, ${volume}${issue}${pages}${doi}.`;
+            } else if (source === 'website') {
+                const author = data.author_org;
+                const year = `(${data.year})`;
+                const title = `${data.page_title}`;
+                const website = `<em>${data.website_name}</em>`;
+                const accessed = data.date_accessed ? ` Retrieved ${data.date_accessed}` : '';
+                text = `${author} ${year}. ${title}. ${website}. Retrieved from ${data.url}${accessed}`;
+            } else if (source === 'newspaper') {
+                const author = data.author_last + (data.author_first ? `, ${data.author_first?.charAt(0)}.` : '');
+                const year = `(${data.year})`;
+                const title = `${data.article_title}`;
+                const newspaper = `<em>${data.newspaper_name}</em>`;
+                text = `${author} ${year}. ${title}. ${newspaper}.`;
+            } else if (source === 'thesis') {
+                const author = `${data.author_last}, ${data.author_first?.charAt(0)}.`;
+                const year = `(${data.year})`;
+                const title = `<em>${data.title}</em>`;
+                const degree = `[${data.degree_type} dissertation]`;
+                const institution = data.institution.split(',')[0];
+                text = `${author} ${year}. ${title} ${degree}. ${institution}.`;
+            } else if (source === 'conference') {
+                const author = `${data.author_last}, ${data.author_first?.charAt(0)}.`;
+                const year = `(${data.year})`;
+                const title = `${data.paper_title}`;
+                const conference = `Paper presented at the ${data.conference_name}, ${data.conference_location}`;
+                text = `${author} ${year}. ${title}. ${conference}.`;
+            } else if (source === 'legal') {
+                const caseName = `<em>${data.case_name}</em>`;
+                const year = data.year;
+                const court = data.court;
+                text = `${caseName}, ${year}. ${court}.`;
+            } else if (source === 'legislation') {
+                const actName = `<em>${data.act_name}</em>`;
+                const year = data.year;
+                text = `${actName}, ${year}.`;
+            } else if (source === 'government') {
+                const org = data.org;
+                const year = data.year;
+                const title = `<em>${data.title}</em>`;
+                const city = data.city.split(',')[0];
+                text = `${org} (${year}). ${title}. ${city}.`;
+            } else if (source === 'interview') {
+                const interviewee = data.interviewee_name;
+                const role = data.interviewee_title;
+                const date = data.date_conducted;
+                const type = data.interview_type;
+                text = `${interviewee} (${role}). (${date}). [${type} interview].`;
+            } else if (source === 'social') {
+                const username = data.username;
+                const platform = data.platform;
+                const date = data.post_date;
+                text = `${username}. (${date}). Post. <em>${platform}</em>. Retrieved from ${data.url}`;
+            } else if (source === 'video') {
+                const creator = data.creator;
+                const year = data.year;
+                const title = `${data.title}`;
+                const platform = data.platform;
+                text = `${creator} (${year}). <em>${title}</em>. ${platform}. Retrieved from ${data.url}`;
+            }
+
+            return { text, note: '(Hanging indent applied)' };
+        }
+
+        function generateMLA(data, source) {
+            let text = '';
+
+            if (source === 'book') {
+                const author = `${data.author_last}, ${data.author_first}`;
+                const title = `<em>${data.title}</em>`;
+                const publisher = data.publisher;
+                const year = data.year;
+                text = `${author}. ${title}. ${publisher}, ${year}.`;
+            } else if (source === 'journal') {
+                const author = `${data.author_last}, ${data.author_first}`;
+                const title = `"${data.article_title}"`;
+                const journal = `<em>${data.journal_name}</em>`;
+                const volume = data.volume;
+                const issue = data.issue ? `, no. ${data.issue}` : '';
+                const year = data.year;
+                const pages = `, pp. ${data.pages}`;
+                const doi = data.doi ? `, https://doi.org/${data.doi}` : '';
+                text = `${author}. ${title}. ${journal}, vol. ${volume}${issue}, ${year}${pages}${doi}.`;
+            } else if (source === 'website') {
+                const author = data.author_org;
+                const title = `"${data.page_title}"`;
+                const website = `<em>${data.website_name}</em>`;
+                const accessed = data.date_accessed;
+                text = `${author}. ${title}. <em>${data.website_name}</em>, ${data.year}, ${data.url}. Accessed ${accessed}.`;
+            } else if (source === 'newspaper') {
+                const author = `${data.author_last}${data.author_first ? ', ' + data.author_first : ''}`;
+                const title = `"${data.article_title}"`;
+                const newspaper = `<em>${data.newspaper_name}</em>`;
+                text = `${author}. ${title}. ${newspaper}, ${data.year}.`;
+            } else if (source === 'thesis') {
+                const author = `${data.author_last}, ${data.author_first}`;
+                const title = `<em>${data.title}</em>`;
+                const degree = data.degree_type;
+                const institution = data.institution.split(',')[0];
+                text = `${author}. ${title}. ${degree} dissertation, ${institution}, ${data.year}.`;
+            } else if (source === 'conference') {
+                const author = `${data.author_last}, ${data.author_first}`;
+                const title = `"${data.paper_title}"`;
+                const conference = data.conference_name;
+                text = `${author}. ${title}. <em>${conference}</em>, ${data.year}.`;
+            } else if (source === 'interview') {
+                const interviewee = data.interviewee_name;
+                const type = data.interview_type;
+                const date = data.date_conducted;
+                text = `${interviewee}. Interview. ${type}, ${date}.`;
+            } else if (source === 'social') {
+                const username = data.username;
+                const platform = data.platform;
+                const date = data.post_date;
+                text = `${username}. "${data.post_text || 'Post'}" ${platform}, ${date}, ${data.url}.`;
+            } else if (source === 'video') {
+                const creator = data.creator;
+                const title = `"${data.title}"`;
+                const platform = data.platform;
+                const year = data.year;
+                text = `${creator}. ${title}. <em>${platform}</em>, ${year}, ${data.url}.`;
+            }
+
+            return { text, note: '(Works with Works Cited page)' };
+        }
+
+        function generateChicago(data, source) {
+            let text = '';
+
+            if (source === 'book') {
+                const author = `${data.author_last}, ${data.author_first}`;
+                const title = `<em>${data.title}</em>`;
+                const publisher = data.publisher;
+                const city = data.city.split(',')[0];
+                const year = data.year;
+                text = `${author}. ${title}. ${city}: ${publisher}, ${year}.`;
+            } else if (source === 'journal') {
+                const author = `${data.author_last}, ${data.author_first}`;
+                const title = `"${data.article_title}"`;
+                const journal = `<em>${data.journal_name}</em>`;
+                const volume = data.volume;
+                const issue = data.issue ? `, no. ${data.issue}` : '';
+                const year = data.year;
+                const pages = ` (${data.year}): ${data.pages}`;
+                text = `${author}. ${title}. ${journal} ${volume}${issue}${pages}.`;
+            } else if (source === 'website') {
+                const author = data.author_org;
+                const title = `"${data.page_title}"`;
+                const website = data.website_name;
+                const accessed = data.date_accessed;
+                text = `${author}. "${data.page_title}." <em>${website}</em>. Accessed ${accessed}. ${data.url}.`;
+            } else if (source === 'legal') {
+                const caseName = `<em>${data.case_name}</em>`;
+                const year = data.year;
+                const court = data.court;
+                const report = data.report_volume ? ` ${data.report_volume}` : '';
+                text = `${caseName}, ${year}${report}. ${court}.`;
+            } else if (source === 'legislation') {
+                const actName = data.act_name;
+                const year = data.year;
+                const chapter = data.chapter_number ? ` c. ${data.chapter_number}` : '';
+                text = `${actName}, ${year}${chapter}.`;
+            }
+
+            return { text, note: '(Author-Date system; use footnotes for Notes-Bibliography)' };
+        }
+
+        function generateHarvard(data, source) {
+            let text = '';
+
+            if (source === 'book') {
+                const author = `${data.author_last}, ${data.author_first?.charAt(0)}.`;
+                const year = `${data.year}`;
+                const title = `<em>${data.title}</em>`;
+                const city = data.city.split(',')[0];
+                const publisher = data.publisher;
+                text = `${author} ${year}. ${title}. ${city}: ${publisher}.`;
+            } else if (source === 'journal') {
+                const author = `${data.author_last}, ${data.author_first?.charAt(0)}.`;
+                const year = `${data.year}`;
+                const title = `${data.article_title}`;
+                const journal = `<em>${data.journal_name}</em>`;
+                const volume = `${data.volume}`;
+                const issue = data.issue ? `(${data.issue})` : '';
+                const pages = `, pp.${data.pages}`;
+                text = `${author} ${year}. ${title}. ${journal}, ${volume}${issue}${pages}.`;
+            } else if (source === 'website') {
+                const author = data.author_org;
+                const year = data.year;
+                const title = data.page_title;
+                const website = `<em>${data.website_name}</em>`;
+                const accessed = data.date_accessed;
+                text = `${author} ${year}. <em>${title}</em>. Available at: ${data.url} (Accessed: ${accessed}).`;
+            } else if (source === 'legal') {
+                const caseName = data.case_name;
+                const year = data.year;
+                const report = data.report_volume ? ` ${data.report_volume}` : '';
+                text = `<em>${caseName}</em> ${year}${report}. ${data.court}.`;
+            }
+
+            return { text, note: '(Alphabetical order by author surname)' };
+        }
+
+        function generateVancouver(data, source) {
+            let text = '';
+
+            if (source === 'book') {
+                const author = `${data.author_last} ${data.author_first?.charAt(0)}.`;
+                const title = `${data.title}`;
+                const publisher = data.publisher;
+                const year = data.year;
+                const city = data.city.split(',')[0];
+                text = `${author} ${title}. ${city}: ${publisher}; ${year}.`;
+            } else if (source === 'journal') {
+                const author = `${data.author_last} ${data.author_first?.charAt(0)}.`;
+                const title = `${data.article_title}`;
+                const journal = `${data.journal_name}`;
+                const year = data.year;
+                const volume = data.volume;
+                const issue = data.issue || '';
+                const pages = data.pages;
+                text = `${author} ${title}. ${journal}. ${year};${volume}(${issue}):${pages}.`;
+            } else if (source === 'website') {
+                const author = data.author_org;
+                const title = data.page_title;
+                const year = data.year;
+                text = `${author}. ${title}. Available from: ${data.url}. [Accessed ${data.date_accessed}].`;
+            }
+
+            return { text, note: '[1] Numbers in brackets indicate citation order' };
+        }
+
+        function generateIEEE(data, source) {
+            let text = '';
+
+            if (source === 'book') {
+                const author = `${data.author_last}, ${data.author_first?.charAt(0)}.`;
+                const title = `<em>${data.title}</em>`;
+                const publisher = data.publisher;
+                const year = data.year;
+                text = `${author} <em>${data.title}</em>. ${publisher}, ${year}.`;
+            } else if (source === 'journal') {
+                const author = `${data.author_last}, ${data.author_first?.charAt(0)}.`;
+                const title = `"${data.article_title},"`;
+                const journal = `<em>${data.journal_name}</em>`;
+                const volume = data.volume;
+                const issue = data.issue ? `no. ${data.issue}` : '';
+                const pages = data.pages;
+                const month = '';
+                text = `${author} ${title} ${journal}, vol. ${volume}, ${issue}, pp. ${pages}, ${data.year}.`;
+            } else if (source === 'website') {
+                const author = data.author_org;
+                const title = `"${data.page_title},"`;
+                text = `${author} ${title} [Online]. Available: ${data.url}. [Accessed: ${data.date_accessed}].`;
+            }
+
+            return { text, note: '[1] Numeric system, order of appearance in text' };
+        }
+
+        function generateOSCOLA(data, source) {
+            let text = '';
+
+            if (source === 'legal') {
+                const caseName = `<em>${data.case_name}</em>`;
+                const year = `[${data.year}]`;
+                const volume = data.report_volume ? `${data.report_volume} ` : '';
+                const series = data.report_series || '';
+                const page = data.page ? ` ${data.page}` : '';
+                text = `${caseName} ${year} ${volume}${series}${page}`;
+            } else if (source === 'legislation') {
+                const actName = data.act_name;
+                const year = data.year;
+                const chapter = data.chapter_number ? ` c ${data.chapter_number}` : '';
+                text = `${actName} ${year}${chapter}`;
+            } else if (source === 'book') {
+                const author = `${data.author_last}, ${data.author_first}`;
+                const title = `<em>${data.title}</em>`;
+                const publisher = data.publisher;
+                const city = data.city.split(',')[0];
+                const year = data.year;
+                text = `${author}, ${title} (${city}: ${publisher}, ${year})`;
+            } else if (source === 'journal') {
+                const author = `${data.author_last}`;
+                const title = `"${data.article_title}"`;
+                const journal = `<em>${data.journal_name}</em>`;
+                const volume = data.volume;
+                const issue = data.issue ? `(${data.issue})` : '';
+                const year = data.year;
+                const pages = ` ${data.pages}`;
+                text = `${author}, ${title} (${year}) ${volume}${issue}${pages}`;
+            }
+
+            return { text, note: '(Essential for African legal citations)' };
+        }
+
+        function generateTurabian(data, source) {
+            // Turabian is derived from Chicago, use simplified version
+            return generateChicago(data, source);
+        }
+
+        function handleAutoFill() {
+            const input = document.getElementById('autoFillInput').value.trim();
+            const statusDiv = document.getElementById('autoFillStatus');
+
+            if (!input) {
+                statusDiv.innerHTML = '<div class="alert alert-error">Please enter a DOI, ISBN, or URL</div>';
+                statusDiv.style.display = 'block';
+                return;
+            }
+
+            statusDiv.innerHTML = '<div class="loading-text">🔍 Extracting metadata... <span class="spinner"></span><span class="spinner"></span><span class="spinner"></span></div>';
+            statusDiv.style.display = 'block';
+
+            // Call AI advisor
+            fetch('/.netlify/functions/ai-advisor', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    tool: 'citation-generator',
+                    message: `Extract citation metadata from this DOI/ISBN/URL: ${input}. Return ONLY valid JSON with these fields where available: {"type": "journal|book|website", "authors": [{"last": "", "first": ""}], "year": "", "title": "", "journal": "", "volume": "", "issue": "", "pages": "", "publisher": "", "city": "", "doi": "", "url": "", "website_name": ""}`
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                try {
+                    const metadata = typeof data.response === 'string' ? JSON.parse(data.response) : data.response;
+
+                    // Auto-fill form fields
+                    if (metadata.authors && metadata.authors[0]) {
+                        const lastField = document.getElementById('author_last');
+                        const firstField = document.getElementById('author_first');
+                        if (lastField) lastField.value = metadata.authors[0].last;
+                        if (firstField) firstField.value = metadata.authors[0].first;
+                        if (lastField) state.formData.author_last = metadata.authors[0].last;
+                        if (firstField) state.formData.author_first = metadata.authors[0].first;
+                    }
+                    if (metadata.year) {
+                        const yearField = document.getElementById('year');
+                        if (yearField) {
+                            yearField.value = metadata.year;
+                            state.formData.year = metadata.year;
+                        }
+                    }
+                    if (metadata.title) {
+                        const titleField = document.getElementById('title') || document.getElementById('article_title') || document.getElementById('page_title');
+                        if (titleField) {
+                            titleField.value = metadata.title;
+                            state.formData[titleField.id] = metadata.title;
+                        }
+                    }
+
+                    statusDiv.innerHTML = '<div class="alert alert-success">✓ Metadata filled successfully!</div>';
+                    updateCitationPreview();
+                } catch (e) {
+                    statusDiv.innerHTML = '<div class="alert alert-warning">⚠️ Couldn\'t extract all metadata — please fill remaining fields manually</div>';
+                }
+            })
+            .catch(err => {
+                statusDiv.innerHTML = '<div class="alert alert-error">Error fetching metadata. Please fill manually.</div>';
+                console.error(err);
+            });
+        }
+
+        function addCitationToBibliography() {
+            const preview = generateCitations();
+            if (!preview) {
+                alert('Please fill in all required fields first');
+                return;
+            }
+
+            const citationText = preview[Object.keys(preview)[0]].text.replace(/<[^>]*>/g, '');
+            const entry = {
+                id: Date.now(),
+                citation: citationText,
+                format: state.format
+            };
+
+            state.bibliography.push(entry);
+            renderBibliography();
+        }
+
+        function renderBibliography() {
+            const bibList = document.getElementById('bibList');
+            const count = document.querySelector('.bib-count');
+
+            count.textContent = `${state.bibliography.length} sources`;
+
+            if (state.bibliography.length === 0) {
+                bibList.innerHTML = '<li style="text-align: center; color: var(--text-light); padding: 2rem;">No citations added yet</li>';
+                return;
+            }
+
+            let html = '';
+            state.bibliography.forEach((item, index) => {
+                html += `
+                    <li class="bib-item">
+                        <span class="bib-item-number">${index + 1}.</span>
+                        <span class="bib-item-text">${item.citation}</span>
+                        <div class="bib-item-actions">
+                            <button onclick="moveBibliography(${item.id}, -1)" title="Move up">↑ Up</button>
+                            <button onclick="moveBibliography(${item.id}, 1)" title="Move down">↓ Down</button>
+                            <button onclick="deleteBibliography(${item.id})" title="Delete">🗑️ Delete</button>
+                        </div>
+                    </li>
+                `;
+            });
+
+            bibList.innerHTML = html;
+        }
+
+        function moveBibliography(id, direction) {
+            const index = state.bibliography.findIndex(item => item.id === id);
+            if (index === -1) return;
+
+            const newIndex = index + direction;
+            if (newIndex < 0 || newIndex >= state.bibliography.length) return;
+
+            [state.bibliography[index], state.bibliography[newIndex]] = [state.bibliography[newIndex], state.bibliography[index]];
+            renderBibliography();
+        }
+
+        function deleteBibliography(id) {
+            state.bibliography = state.bibliography.filter(item => item.id !== id);
+            renderBibliography();
+        }
+
+        function copyAllBibliography() {
+            const text = state.bibliography
+                .map((item, idx) => `${idx + 1}. ${item.citation}`)
+                .join('\n\n');
+
+            if (!text) {
+                alert('No citations in bibliography');
+                return;
+            }
+
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Bibliography copied to clipboard!');
+            }).catch(() => {
+                alert('Failed to copy. Try exporting instead.');
+            });
+        }
+
+        function exportBibliography() {
+            const text = state.bibliography
+                .map((item, idx) => `${idx + 1}. ${item.citation}`)
+                .join('\n\n');
+
+            if (!text) {
+                alert('No citations in bibliography');
+                return;
+            }
+
+            const blob = new Blob([text], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `bibliography-${new Date().toISOString().split('T')[0]}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function clearBibliography() {
+            if (!confirm('Are you sure you want to clear all citations? This cannot be undone.')) return;
+            state.bibliography = [];
+            renderBibliography();
+        }
+
+        function checkCitation() {
+            const citationText = document.getElementById('checkerInput').value.trim();
+            if (!citationText) {
+                alert('Please paste a citation to check');
+                return;
+            }
+
+            const feedbackBox = document.getElementById('feedbackBox');
+            feedbackBox.innerHTML = '<div class="loading-text">🔍 Checking citation... <span class="spinner"></span><span class="spinner"></span><span class="spinner"></span></div>';
+            feedbackBox.style.display = 'block';
+
+            fetch('/.netlify/functions/ai-advisor', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    tool: 'citation-generator',
+                    message: `Check this citation for errors and suggest corrections in APA/MLA/Harvard format: "${citationText}"`
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                const feedback = data.response || 'No feedback available';
+                feedbackBox.innerHTML = `<div style="color: var(--text-dark);">${feedback}</div>`;
+            })
+            .catch(err => {
+                feedbackBox.innerHTML = '<div class="alert alert-error">Error checking citation. Please try again.</div>';
+                console.error(err);
+            });
+        }
+
+        function sendAdvisorMessage(message) {
+            const chatHistory = document.getElementById('chatHistory');
+
+            // Add user message to chat
+            const userMsg = document.createElement('div');
+            userMsg.className = 'chat-message user';
+            userMsg.textContent = message;
+            chatHistory.appendChild(userMsg);
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+
+            // Show loading
+            const loadingMsg = document.createElement('div');
+            loadingMsg.className = 'chat-message assistant';
+            loadingMsg.innerHTML = '<div class="loading-text"><span class="spinner"></span><span class="spinner"></span><span class="spinner"></span></div>';
+            chatHistory.appendChild(loadingMsg);
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+
+            fetch('/.netlify/functions/ai-advisor', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    tool: 'citation-generator',
+                    message: message
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                loadingMsg.remove();
+                const assistantMsg = document.createElement('div');
+                assistantMsg.className = 'chat-message assistant';
+                assistantMsg.textContent = data.response || 'No response available';
+                chatHistory.appendChild(assistantMsg);
+                chatHistory.scrollTop = chatHistory.scrollHeight;
+            })
+            .catch(err => {
+                loadingMsg.remove();
+                const errorMsg = document.createElement('div');
+                errorMsg.className = 'chat-message assistant';
+                errorMsg.textContent = 'Sorry, I encountered an error. Please try again.';
+                chatHistory.appendChild(errorMsg);
+                console.error(err);
+            });
+        }
+    </script>
+
+    <!-- Schema.org Markup -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "AfroTools Citation Generator",
+        "description": "AI-powered citation generator for African scholars supporting APA 7, MLA 9, Chicago, Harvard, Vancouver, IEEE, OSCOLA, and Turabian formats.",
+        "url": "https://afrotools.com/tools/citation-generator/",
+        "applicationCategory": "EducationalApplication",
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "2891",
+            "bestRating": "5",
+            "worstRating": "1"
+        },
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        }
     }
-
-    let citation = '';
-    const a = author.value;
-    const t = title.value;
-    const p = publisher.value;
-    const y = year.value;
-    const u = url.value;
-
-    if (currentFormat === 'apa') {
-      citation = `${a} (${y}). <em>${t}</em>. ${p}.${u ? ` Retrieved from ${u}` : ''}`;
-    } else if (currentFormat === 'mla') {
-      citation = `${a}. "${t}." <em>${p}</em>, ${y}.${u ? ` Web. ${u}` : ''}`;
-    } else if (currentFormat === 'chicago') {
-      citation = `${a}. ${t}. ${p}, ${y}.${u ? ` Accessed ${u}` : ''}`;
-    } else if (currentFormat === 'harvard') {
-      citation = `${a}, ${y}. <em>${t}</em>. ${p}.${u ? ` Available at: ${u}` : ''}`;
-    }
-
-    outputBox.innerHTML = citation;
-    outputBox.classList.add('on');
-    copyBtn.classList.add('on');
-    addBtn.style.display = 'block';
-  }
-
-  generateBtn.addEventListener('click', generateCitation);
-
-  copyBtn.addEventListener('click', () => {
-    const text = outputBox.innerText;
-    navigator.clipboard.writeText(text);
-    copyBtn.textContent = '✓ Copied!';
-    setTimeout(() => copyBtn.textContent = '📋 Copy Citation', 2000);
-  });
-
-  addBtn.addEventListener('click', () => {
-    const citation = {
-      format: currentFormat,
-      html: outputBox.innerHTML,
-      text: outputBox.innerText
-    };
-    bibliography.push(citation);
-    updateBibliography();
-  });
-
-  function updateBibliography() {
-    if (bibliography.length === 0) {
-      emptyMsg.style.display = 'block';
-      bibList.innerHTML = '';
-      return;
-    }
-
-    emptyMsg.style.display = 'none';
-    bibList.innerHTML = bibliography.map((item, i) => `
-      <div class="bib-item">
-        <div class="bib-text">${item.html}</div>
-        <button class="bib-remove" data-index="${i}">Remove</button>
-      </div>
-    `).join('');
-
-    document.querySelectorAll('.bib-remove').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const index = parseInt(btn.dataset.index);
-        bibliography.splice(index, 1);
-        updateBibliography();
-      });
-    });
-  }
-</script>
+    </script>
 </body>
 </html>

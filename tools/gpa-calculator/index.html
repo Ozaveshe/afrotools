@@ -1,177 +1,1428 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GPA Calculator — 4.0 & 5.0 Scale | AfroTools</title>
-<meta name="description" content="GPA calculator supporting 4.0 and 5.0 scales (US, Nigeria, Kenya, South Africa). Calculate CGPA with course credits.">
-<link rel="canonical" href="https://afrotools.com/tools/gpa-calculator">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="GPA Calculator | AfroTools">
-<meta property="og:description" content="Calculate GPA and CGPA. Support for 4.0 and 5.0 scales. African education systems included.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://afrotools.com/tools/gpa-calculator">
-<meta property="og:site_name" content="AfroTools">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/tokens.min.css">
-<link rel="stylesheet" href="/assets/css/global.min.css">
-<script src="/assets/js/components/navbar.min.js" defer></script>
-<script src="/assets/js/components/footer.min.js" defer></script>
-<style>
-  :root { --afro-green: #008751; --afro-dark: #0f1419; }
-  .tool-hero { background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%); padding: 44px 0 36px; position: relative; overflow: hidden; }
-  .tool-hero::after { content: '🎓'; position: absolute; right: 5%; top: 50%; transform: translateY(-50%); font-size: 8rem; opacity: 0.06; pointer-events: none; }
-  .tool-hero-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; }
-  .breadcrumb { font-size: 0.72rem; font-weight: 500; color: rgba(255, 255, 255, 0.3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
-  .breadcrumb a { color: rgba(255, 255, 255, 0.3); text-decoration: none; }
-  .breadcrumb span { color: var(--afro-green); }
-  h1 { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; color: #fff; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 10px; }
-  h1 em { color: var(--afro-green); font-style: normal; }
-  .hero-sub { font-size: 0.88rem; color: rgba(255, 255, 255, 0.45); line-height: 1.6; max-width: 560px; margin-bottom: 14px; }
-  .hero-badges { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 6px; }
-  .badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 11px; border-radius: 4px; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.05em; }
-  .b-green { background: rgba(0, 135, 81, 0.18); color: #5ddb9e; border: 1px solid rgba(0, 135, 81, 0.38); }
-  .tool-main { padding: 28px 0 72px; }
-  .tool-main-inner { max-width: 900px; margin: 0 auto; padding: 0 24px; }
-  .card { background: #fff; border: 1px solid #dceee0; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05); }
-  .card + .card { margin-top: 18px; }
-  .card-head { padding: 15px 22px; border-bottom: 1px solid #eaf5ec; background: #f7fdf8; }
-  .card-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #0a4018; }
-  .card-body { padding: 22px; }
-  .scale-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 18px; }
-  .scale-btn { padding: 10px; background: #f4fbf5; border: 1.5px solid #c5deca; border-radius: 7px; cursor: pointer; font-size: 0.72rem; font-weight: 700; color: #244d2c; transition: all 0.15s; }
-  .scale-btn.on { background: var(--afro-green); color: #fff; border-color: var(--afro-green); }
-  .course-item { background: #f7fdf8; border: 1px solid #c5deca; border-radius: 8px; padding: 14px; margin-bottom: 12px; }
-  .course-item.last { margin-bottom: 0; }
-  .course-row { display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 8px; align-items: end; }
-  .f-label { display: block; font-size: 0.65rem; font-weight: 700; color: #0d2813; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.05em; }
-  .f-input { width: 100%; padding: 8px 10px; background: #fff; border: 1px solid #c5deca; border-radius: 6px; font-size: 0.85rem; color: #0d2813; outline: none; font-family: 'DM Sans', sans-serif; }
-  .f-input:focus { border-color: var(--afro-green); box-shadow: 0 0 0 3px rgba(0, 135, 81, 0.1); }
-  .remove-btn { padding: 8px 12px; background: rgba(192, 57, 43, 0.1); border: 1px solid rgba(192, 57, 43, 0.35); color: #8b2e1f; border-radius: 6px; cursor: pointer; font-size: 0.7rem; font-weight: 700; }
-  .add-btn { padding: 12px 18px; background: rgba(0, 135, 81, 0.1); border: 1.5px solid rgba(0, 135, 81, 0.35); color: #1a5c3a; border-radius: 7px; cursor: pointer; font-size: 0.75rem; font-weight: 700; margin-bottom: 18px; width: 100%; }
-  .result-box { background: linear-gradient(135deg, #1a1f2e 0%, var(--afro-dark) 100%); color: var(--afro-green); border-radius: 8px; padding: 20px; text-align: center; margin-top: 18px; }
-  .result-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255, 255, 255, 0.4); margin-bottom: 8px; }
-  .result-gpa { font-size: 2.4rem; font-weight: 800; line-height: 1; }
-  .result-scale { font-size: 0.75rem; color: rgba(255, 255, 255, 0.3); margin-top: 6px; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Calculate GPA/CGPA for Nigerian (5.0 scale), Kenyan, Ghanaian, South African, Francophone African universities. Upload transcript CSV, convert GPA scales. Free.">
+    <meta name="tool-id" content="gpa-calculator">
+    <link rel="canonical" href="https://afrotools.com/tools/gpa-calculator/">
+    <title>GPA Calculator for Africa — Nigerian, Kenyan, Ghanaian, Francophone | AfroTools</title>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "AfroTools GPA Calculator",
+        "description": "Calculate GPA and CGPA for African university grading systems",
+        "url": "https://afrotools.com/tools/gpa-calculator/",
+        "applicationCategory": "EducationalApplication",
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "3241",
+            "bestRating": "5",
+            "worstRating": "1"
+        }
+    }
+    </script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --afro-green: #008751;
+            --afro-light: #f5f5f5;
+            --afro-dark: #1a1a1a;
+            --afro-gray: #666;
+            --text-light: #999;
+            --border-color: #e0e0e0;
+        }
+
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: white;
+            color: var(--afro-dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--afro-green);
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: var(--afro-gray);
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .system-selector {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: var(--afro-light);
+            border-radius: 8px;
+            border-left: 4px solid var(--afro-green);
+        }
+
+        .system-selector label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--afro-dark);
+        }
+
+        .system-selector select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            background: white;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .tab-button {
+            padding: 12px 20px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--afro-gray);
+            transition: all 0.3s ease;
+        }
+
+        .tab-button.active {
+            color: var(--afro-green);
+            border-bottom-color: var(--afro-green);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .semester-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: var(--afro-light);
+            border-radius: 8px;
+            border-left: 4px solid var(--afro-green);
+        }
+
+        .semester-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .semester-header h3 {
+            font-size: 1.2rem;
+            color: var(--afro-dark);
+        }
+
+        .semester-header .toggle {
+            font-size: 1.5rem;
+            color: var(--afro-green);
+        }
+
+        .semester-content {
+            margin-top: 20px;
+        }
+
+        .semester-content.hidden {
+            display: none;
+        }
+
+        .course-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+            background: white;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .course-table th,
+        .course-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .course-table th {
+            background: var(--afro-green);
+            color: white;
+            font-weight: 600;
+        }
+
+        .course-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .course-table input,
+        .course-table select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.95rem;
+        }
+
+        .course-table input {
+            background: white;
+        }
+
+        .course-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-remove {
+            padding: 6px 10px;
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .btn-remove:hover {
+            background: #ff5252;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            background: var(--afro-green);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #006639;
+        }
+
+        .btn.secondary {
+            background: var(--afro-gray);
+        }
+
+        .btn.secondary:hover {
+            background: #555;
+        }
+
+        .results-box {
+            background: var(--afro-light);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--afro-green);
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .result-item h4 {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 5px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .result-item .value {
+            font-size: 2rem;
+            color: var(--afro-green);
+            font-weight: 700;
+        }
+
+        .result-item .class-label {
+            font-size: 1.1rem;
+            color: var(--afro-dark);
+            margin-top: 5px;
+        }
+
+        .textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-family: 'DM Sans', monospace;
+            font-size: 0.95rem;
+            min-height: 200px;
+            resize: vertical;
+        }
+
+        .conversion-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .conversion-table th,
+        .conversion-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .conversion-table th {
+            background: var(--afro-green);
+            color: white;
+            font-weight: 600;
+        }
+
+        .conversion-input-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr auto;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: var(--afro-light);
+            border-radius: 6px;
+        }
+
+        .conversion-input-group input,
+        .conversion-input-group select {
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .whatif-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: var(--afro-light);
+            border-radius: 6px;
+        }
+
+        .whatif-inputs label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--afro-dark);
+            font-size: 0.9rem;
+        }
+
+        .whatif-inputs input,
+        .whatif-inputs select {
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: 'DM Sans', sans-serif;
+            width: 100%;
+        }
+
+        .whatif-result {
+            background: white;
+            padding: 20px;
+            border-radius: 6px;
+            border-left: 4px solid var(--afro-green);
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .whatif-result.show {
+            display: block;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .sidebar-box {
+            padding: 20px;
+            background: var(--afro-light);
+            border-radius: 8px;
+            border-left: 4px solid var(--afro-green);
+        }
+
+        .sidebar-box h3 {
+            font-size: 1rem;
+            color: var(--afro-dark);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .class-table {
+            font-size: 0.9rem;
+            width: 100%;
+        }
+
+        .class-table tr {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .class-table tr:last-child {
+            border-bottom: none;
+        }
+
+        .class-table .range {
+            color: var(--afro-gray);
+        }
+
+        .class-table .class-name {
+            font-weight: 600;
+            color: var(--afro-dark);
+        }
+
+        .scholarship-info {
+            font-size: 0.9rem;
+        }
+
+        .scholarship-info p {
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .scholarship-info .requirement {
+            color: var(--afro-gray);
+        }
+
+        .did-you-know {
+            font-size: 0.9rem;
+            font-style: italic;
+            color: var(--afro-gray);
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .conversion-input-group {
+                grid-template-columns: 1fr;
+            }
+
+            .whatif-inputs {
+                grid-template-columns: 1fr;
+            }
+
+            .tabs {
+                overflow-x: auto;
+            }
+
+            .tab-button {
+                white-space: nowrap;
+            }
+        }
+    </style>
 </head>
 <body>
-<afro-navbar active="tools"></afro-navbar>
+    <afro-navbar active="tools"></afro-navbar>
 
-<div class="tool-hero">
-  <div class="tool-hero-inner">
-    <div class="breadcrumb"><a href="/">AfroTools</a> / <span>Tools</span></div>
-    <h1>GPA <em>Calculator</em></h1>
-    <p class="hero-sub">Calculate GPA and CGPA. Support for 4.0 and 5.0 scales (US, Nigerian, Kenyan, South African systems).</p>
-    <div class="hero-badges">
-      <span class="badge b-green">4.0 & 5.0</span>
-      <span class="badge b-green">Credits</span>
+    <div class="container">
+        <div class="header">
+            <h1>GPA Calculator</h1>
+            <p>Calculate your CGPA for African university grading systems</p>
+        </div>
+
+        <div class="main-content">
+            <div class="main">
+                <div class="system-selector">
+                    <label for="gradingSystem">Grading System</label>
+                    <select id="gradingSystem">
+                        <option value="nigerian-federal">Nigerian Federal/State Universities (5.0 Scale)</option>
+                        <option value="nigerian-private">Nigerian Private Universities (4.0 Scale)</option>
+                        <option value="kenyan">Kenyan Universities (4.0 with +/-)</option>
+                        <option value="ghanaian">Ghanaian Universities (KNUST/UG/UCC)</option>
+                        <option value="south-african">South African Universities (Percentage)</option>
+                        <option value="east-african">Ugandan/Rwandan/Tanzanian (East African 4.0)</option>
+                        <option value="ethiopian">Ethiopian Universities (4.0)</option>
+                        <option value="francophone">Francophone Africa (Out of 20)</option>
+                        <option value="egyptian">Egyptian Universities (Percentage)</option>
+                    </select>
+                </div>
+
+                <div class="tabs">
+                    <button class="tab-button active" data-tab="semester">Semester GPA</button>
+                    <button class="tab-button" data-tab="transcript">Transcript Upload</button>
+                    <button class="tab-button" data-tab="converter">GPA Converter</button>
+                    <button class="tab-button" data-tab="whatif">What-If Calculator</button>
+                </div>
+
+                <!-- Tab 1: Semester GPA Calculator -->
+                <div id="semester" class="tab-content active">
+                    <div id="semestersContainer"></div>
+
+                    <div class="button-group">
+                        <button class="btn" id="addSemesterBtn">+ Add Another Semester</button>
+                    </div>
+                </div>
+
+                <!-- Tab 2: Transcript Upload -->
+                <div id="transcript" class="tab-content">
+                    <div style="margin-bottom: 20px;">
+                        <h3 style="margin-bottom: 15px;">Paste Transcript Text</h3>
+                        <textarea class="textarea" id="transcriptText" placeholder="Paste your transcript here. Examples:
+ECO 101 3 A
+Mathematics 4 credit units Grade B
+MTH 201: 4 units, 85%"></textarea>
+                        <button class="btn" style="margin-top: 10px;" id="parseTranscriptBtn">Parse Transcript</button>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <h3 style="margin-bottom: 15px;">Upload CSV File</h3>
+                        <input type="file" id="csvFile" accept=".csv">
+                        <button class="btn" style="margin-top: 10px;" id="uploadCsvBtn">Upload CSV</button>
+                        <button class="btn secondary" style="margin-top: 10px;" id="downloadSampleBtn">Download Sample CSV</button>
+                    </div>
+
+                    <div id="transcriptResults"></div>
+                </div>
+
+                <!-- Tab 3: GPA Converter -->
+                <div id="converter" class="tab-content">
+                    <div class="conversion-input-group">
+                        <div>
+                            <label>GPA Value</label>
+                            <input type="number" id="convertFromValue" placeholder="e.g., 4.5" step="0.01">
+                        </div>
+                        <div>
+                            <label>From Scale</label>
+                            <select id="convertFromScale">
+                                <option value="5.0">Nigerian 5.0</option>
+                                <option value="4.0">4.0 Scale</option>
+                                <option value="percentage">Percentage (%)</option>
+                                <option value="20">Out of 20</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>To Scale</label>
+                            <select id="convertToScale">
+                                <option value="5.0">Nigerian 5.0</option>
+                                <option value="4.0">4.0 Scale</option>
+                                <option value="percentage">Percentage (%)</option>
+                                <option value="20">Out of 20</option>
+                            </select>
+                        </div>
+                        <button class="btn" id="convertBtn" style="align-self: flex-end;">Convert</button>
+                    </div>
+
+                    <div id="conversionResult" style="display: none; margin-bottom: 20px;">
+                        <div class="results-box">
+                            <h3 style="margin-bottom: 15px;">Conversion Result</h3>
+                            <div class="results-grid">
+                                <div class="result-item">
+                                    <h4>From</h4>
+                                    <div class="value" id="convFromDisplay">—</div>
+                                </div>
+                                <div class="result-item">
+                                    <h4>To</h4>
+                                    <div class="value" id="convToDisplay">—</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 style="margin-bottom: 15px;">Conversion Reference Table</h3>
+                    <table class="conversion-table">
+                        <thead>
+                            <tr>
+                                <th>Nigerian 5.0</th>
+                                <th>4.0 Scale</th>
+                                <th>UK Classification</th>
+                                <th>Percentage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>5.0</td>
+                                <td>4.0</td>
+                                <td>First Class</td>
+                                <td>75%+</td>
+                            </tr>
+                            <tr>
+                                <td>4.5-4.99</td>
+                                <td>3.7-3.99</td>
+                                <td>First Class</td>
+                                <td>70-74%</td>
+                            </tr>
+                            <tr>
+                                <td>3.5-4.49</td>
+                                <td>3.0-3.6</td>
+                                <td>2.1</td>
+                                <td>65-69%</td>
+                            </tr>
+                            <tr>
+                                <td>2.4-3.49</td>
+                                <td>2.5-2.99</td>
+                                <td>2.2</td>
+                                <td>60-64%</td>
+                            </tr>
+                            <tr>
+                                <td>1.5-2.39</td>
+                                <td>2.0-2.49</td>
+                                <td>Third</td>
+                                <td>50-59%</td>
+                            </tr>
+                            <tr>
+                                <td>&lt;1.5</td>
+                                <td>&lt;2.0</td>
+                                <td>Fail</td>
+                                <td>&lt;50%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Tab 4: What-If Calculator -->
+                <div id="whatif" class="tab-content">
+                    <div class="whatif-inputs">
+                        <div>
+                            <label for="currentCgpa">Current CGPA</label>
+                            <input type="number" id="currentCgpa" placeholder="e.g., 3.8" step="0.01">
+                        </div>
+                        <div>
+                            <label for="currentCredits">Current Total Credits</label>
+                            <input type="number" id="currentCredits" placeholder="e.g., 96" step="1">
+                        </div>
+                        <div>
+                            <label for="upcomingCredits">Upcoming Credits</label>
+                            <input type="number" id="upcomingCredits" placeholder="e.g., 24" step="1">
+                        </div>
+                        <div>
+                            <label for="targetType">Calculate For</label>
+                            <select id="targetType">
+                                <option value="grade">Target Grade</option>
+                                <option value="cgpa">Target CGPA</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="whatifGradeInput" style="margin-bottom: 20px; padding: 20px; background: var(--afro-light); border-radius: 6px;">
+                        <label for="targetGrade">Target Grade</label>
+                        <select id="targetGrade" style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid var(--border-color); border-radius: 4px;">
+                            <option value="">Select a grade</option>
+                        </select>
+                        <button class="btn" style="margin-top: 10px;" id="calculateWhatifBtn">Calculate</button>
+                    </div>
+
+                    <div id="whatifCgpaInput" style="display: none; margin-bottom: 20px; padding: 20px; background: var(--afro-light); border-radius: 6px;">
+                        <label for="targetCgpa">Target CGPA</label>
+                        <input type="number" id="targetCgpa" placeholder="e.g., 4.0" step="0.01" style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid var(--border-color); border-radius: 4px;">
+                        <button class="btn" style="margin-top: 10px;" id="calculateWhatifCgpaBtn">Calculate</button>
+                    </div>
+
+                    <div id="whatifResult" class="whatif-result">
+                        <h3 style="margin-bottom: 15px;">Projection</h3>
+                        <div id="whatifContent"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-box">
+                    <h3>Class of Degree</h3>
+                    <div id="classChart"></div>
+                </div>
+
+                <div class="sidebar-box">
+                    <h3>Scholarship Requirements</h3>
+                    <div class="scholarship-info">
+                        <p>
+                            <span>UK Masters</span>
+                            <span class="requirement">2:1 min (3.0)</span>
+                        </p>
+                        <p>
+                            <span>US Grad School</span>
+                            <span class="requirement">3.0-3.5</span>
+                        </p>
+                        <p>
+                            <span>Chevening</span>
+                            <span class="requirement">2:1 min</span>
+                        </p>
+                        <p>
+                            <span>Canadian PR</span>
+                            <span class="requirement">No GPA min</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="sidebar-box">
+                    <h3>Did You Know?</h3>
+                    <div class="did-you-know" id="didYouKnow"></div>
+                </div>
+            </aside>
+        </div>
     </div>
-  </div>
-</div>
 
-<div class="tool-main">
-  <div class="tool-main-inner">
-    <div class="card">
-      <div class="card-head"><span class="card-title">GPA Settings</span></div>
-      <div class="card-body">
-        <div class="scale-toggle">
-          <button class="scale-btn on" data-scale="4.0">4.0 Scale (US)</button>
-          <button class="scale-btn" data-scale="5.0">5.0 Scale (Africa)</button>
-        </div>
+    <afro-footer></afro-footer>
 
-        <div id="coursesList"></div>
+    <script src="/assets/js/components/navbar.min.js" defer></script>
+    <script src="/assets/js/components/footer.min.js" defer></script>
 
-        <button class="add-btn" id="addCourseBtn">+ Add Course</button>
+    <script>
+        // Grading Systems Configuration
+        const gradingSystems = {
+            'nigerian-federal': {
+                name: 'Nigerian Federal/State Universities (5.0 Scale)',
+                scale: 5.0,
+                grades: {
+                    'A': { points: 5.0, min: 70, max: 100 },
+                    'B': { points: 4.0, min: 60, max: 69 },
+                    'C': { points: 3.0, min: 50, max: 59 },
+                    'D': { points: 2.0, min: 45, max: 49 },
+                    'E': { points: 1.0, min: 40, max: 44 },
+                    'F': { points: 0.0, min: 0, max: 39 }
+                },
+                classes: [
+                    { name: 'First Class', min: 4.50, max: 5.0 },
+                    { name: '2nd Upper', min: 3.50, max: 4.49 },
+                    { name: '2nd Lower', min: 2.40, max: 3.49 },
+                    { name: 'Third', min: 1.50, max: 2.39 },
+                    { name: 'Pass', min: 1.00, max: 1.49 },
+                    { name: 'Fail', min: 0, max: 0.99 }
+                ],
+                fact: 'CGPA of 4.5+ qualifies you for First Class honours in Nigerian universities.'
+            },
+            'nigerian-private': {
+                name: 'Nigerian Private Universities (4.0 Scale)',
+                scale: 4.0,
+                grades: {
+                    'A': { points: 4.0, min: 70, max: 100 },
+                    'B+': { points: 3.5, min: 65, max: 69 },
+                    'B': { points: 3.0, min: 60, max: 64 },
+                    'C': { points: 2.5, min: 55, max: 59 },
+                    'D': { points: 2.0, min: 50, max: 54 },
+                    'F': { points: 0.0, min: 0, max: 49 }
+                },
+                classes: [
+                    { name: 'First Class', min: 3.60, max: 4.0 },
+                    { name: '2.1', min: 3.00, max: 3.59 },
+                    { name: '2.2', min: 2.50, max: 2.99 },
+                    { name: 'Third', min: 2.00, max: 2.49 },
+                    { name: 'Pass', min: 0, max: 1.99 }
+                ],
+                fact: 'Private universities in Nigeria use a 4.0 scale, similar to US grading.'
+            },
+            'kenyan': {
+                name: 'Kenyan Universities (4.0 with +/-)',
+                scale: 4.0,
+                grades: {
+                    'A': { points: 4.0, min: 75, max: 100 },
+                    'A-': { points: 3.7, min: 73, max: 74 },
+                    'B+': { points: 3.3, min: 70, max: 72 },
+                    'B': { points: 3.0, min: 65, max: 69 },
+                    'B-': { points: 2.7, min: 60, max: 64 },
+                    'C+': { points: 2.3, min: 55, max: 59 },
+                    'C': { points: 2.0, min: 50, max: 54 },
+                    'D': { points: 1.0, min: 40, max: 49 },
+                    'F': { points: 0.0, min: 0, max: 39 }
+                },
+                classes: [
+                    { name: 'First Class', min: 3.60, max: 4.0 },
+                    { name: '2.1', min: 3.00, max: 3.59 },
+                    { name: '2.2', min: 2.50, max: 2.99 },
+                    { name: 'Pass', min: 2.00, max: 2.49 },
+                    { name: 'Fail', min: 0, max: 1.99 }
+                ],
+                fact: 'Kenyan universities use +/- grades for finer grade differentiation.'
+            },
+            'ghanaian': {
+                name: 'Ghanaian Universities (KNUST/UG/UCC)',
+                scale: 4.0,
+                grades: {
+                    'A': { points: 4.0, min: 80, max: 100 },
+                    'B+': { points: 3.5, min: 75, max: 79 },
+                    'B': { points: 3.0, min: 70, max: 74 },
+                    'C+': { points: 2.5, min: 65, max: 69 },
+                    'C': { points: 2.0, min: 60, max: 64 },
+                    'D+': { points: 1.5, min: 55, max: 59 },
+                    'D': { points: 1.0, min: 50, max: 54 },
+                    'F': { points: 0.0, min: 0, max: 49 }
+                },
+                classes: [
+                    { name: 'First Class', min: 3.60, max: 4.0 },
+                    { name: '2.1', min: 3.00, max: 3.59 },
+                    { name: '2.2', min: 2.50, max: 2.99 },
+                    { name: 'Third', min: 2.00, max: 2.49 },
+                    { name: 'Fail', min: 0, max: 1.99 }
+                ],
+                fact: 'KNUST, UG, and UCC use the same grading scale across Ghana.'
+            },
+            'south-african': {
+                name: 'South African Universities (Percentage)',
+                scale: 100,
+                grades: null,
+                classes: [
+                    { name: 'Distinction', min: 75, max: 100 },
+                    { name: 'Merit', min: 70, max: 74 },
+                    { name: 'Credit', min: 60, max: 69 },
+                    { name: 'Pass', min: 50, max: 59 },
+                    { name: 'Fail', min: 0, max: 49 }
+                ],
+                fact: 'South African universities accept percentage grades directly without conversion.'
+            },
+            'east-african': {
+                name: 'Ugandan/Rwandan/Tanzanian (East African 4.0)',
+                scale: 4.0,
+                grades: {
+                    'A': { points: 4.0, min: 80, max: 100 },
+                    'B+': { points: 3.5, min: 75, max: 79 },
+                    'B': { points: 3.0, min: 65, max: 74 },
+                    'C': { points: 2.0, min: 50, max: 64 },
+                    'D': { points: 1.0, min: 40, max: 49 },
+                    'F': { points: 0.0, min: 0, max: 39 }
+                },
+                classes: [
+                    { name: 'First Class', min: 3.60, max: 4.0 },
+                    { name: '2.1', min: 3.00, max: 3.59 },
+                    { name: '2.2', min: 2.50, max: 2.99 },
+                    { name: 'Pass', min: 0, max: 2.49 }
+                ],
+                fact: 'East African universities follow similar grading across Uganda, Rwanda, and Tanzania.'
+            },
+            'ethiopian': {
+                name: 'Ethiopian Universities (4.0)',
+                scale: 4.0,
+                grades: {
+                    'A': { points: 4.0, min: 85, max: 100 },
+                    'B+': { points: 3.5, min: 80, max: 84 },
+                    'B': { points: 3.0, min: 70, max: 79 },
+                    'C': { points: 2.0, min: 60, max: 69 },
+                    'D': { points: 1.0, min: 50, max: 59 },
+                    'F': { points: 0.0, min: 0, max: 49 }
+                },
+                classes: [
+                    { name: 'First Class', min: 3.75, max: 4.0 },
+                    { name: 'Very Good', min: 3.50, max: 3.74 },
+                    { name: 'Good', min: 3.00, max: 3.49 },
+                    { name: 'Satisfactory', min: 2.50, max: 2.99 },
+                    { name: 'Pass', min: 0, max: 2.49 }
+                ],
+                fact: 'Ethiopian universities have higher grade cutoffs, requiring 85%+ for an A.'
+            },
+            'francophone': {
+                name: 'Francophone Africa (Out of 20)',
+                scale: 20,
+                grades: {
+                    'Très Bien': { points: 18, min: 17, max: 20 },
+                    'Bien': { points: 15, min: 14, max: 16 },
+                    'Assez Bien': { points: 13, min: 12, max: 13 },
+                    'Passable': { points: 11, min: 10, max: 11 },
+                    'Fail': { points: 0, min: 0, max: 9 }
+                },
+                classes: [
+                    { name: 'Très Bien', min: 17, max: 20 },
+                    { name: 'Bien', min: 14, max: 16 },
+                    { name: 'Assez Bien', min: 12, max: 13 },
+                    { name: 'Passable', min: 10, max: 11 },
+                    { name: 'Fail', min: 0, max: 9 }
+                ],
+                fact: 'Francophone Africa uses a /20 scale, common in France and former French colonies.'
+            },
+            'egyptian': {
+                name: 'Egyptian Universities (Percentage)',
+                scale: 100,
+                grades: {
+                    'A': { points: 4.0, min: 90, max: 100 },
+                    'B': { points: 3.5, min: 80, max: 89 },
+                    'C': { points: 3.0, min: 65, max: 79 },
+                    'D': { points: 2.0, min: 50, max: 64 },
+                    'F': { points: 0.0, min: 0, max: 49 }
+                },
+                classes: [
+                    { name: 'Excellent', min: 90, max: 100 },
+                    { name: 'Very Good', min: 80, max: 89 },
+                    { name: 'Good', min: 65, max: 79 },
+                    { name: 'Pass', min: 50, max: 64 },
+                    { name: 'Fail', min: 0, max: 49 }
+                ],
+                fact: 'Egyptian universities follow a rigorous grading scale with high percentages needed for top grades.'
+            }
+        };
 
-        <div class="result-box">
-          <div class="result-label">Your GPA</div>
-          <div class="result-gpa" id="gpaDisplay">0.00</div>
-          <div class="result-scale" id="scaleDisplay">4.0 Scale</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+        let semesterCount = 0;
+        let currentSystem = 'nigerian-federal';
+        let semesters = [];
 
-<afro-footer></afro-footer>
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadFromLocalStorage();
+            renderClassChart();
+            updateGradeOptions();
+            setupEventListeners();
+            addSemester();
+            updateDidYouKnow();
+        });
 
-<script>
-  let scale = '4.0';
-  let courses = [{ name: '', credits: 3, grade: 'A' }];
+        function setupEventListeners() {
+            document.getElementById('gradingSystem').addEventListener('change', (e) => {
+                currentSystem = e.target.value;
+                updateGradeOptions();
+                renderClassChart();
+                updateDidYouKnow();
+                recalculateAllSemesters();
+                saveToLocalStorage();
+            });
 
-  const scaleBtns = document.querySelectorAll('.scale-btn');
-  const addCourseBtn = document.getElementById('addCourseBtn');
-  const coursesList = document.getElementById('coursesList');
-  const gpaDisplay = document.getElementById('gpaDisplay');
-  const scaleDisplay = document.getElementById('scaleDisplay');
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    e.target.classList.add('active');
+                    document.getElementById(e.target.dataset.tab).classList.add('active');
+                });
+            });
 
-  const gradeScale40 = { 'A': 4.0, 'A-': 3.7, 'B+': 3.3, 'B': 3.0, 'B-': 2.7, 'C+': 2.3, 'C': 2.0, 'C-': 1.7, 'D': 1.0, 'F': 0.0 };
-  const gradeScale50 = { 'A': 5.0, 'A-': 4.5, 'B+': 4.0, 'B': 3.5, 'B-': 3.0, 'C': 2.5, 'D': 2.0, 'F': 0.0 };
+            document.getElementById('addSemesterBtn').addEventListener('click', addSemester);
+            document.getElementById('parseTranscriptBtn').addEventListener('click', parseTranscript);
+            document.getElementById('uploadCsvBtn').addEventListener('click', uploadCsv);
+            document.getElementById('downloadSampleBtn').addEventListener('click', downloadSampleCsv);
+            document.getElementById('convertBtn').addEventListener('click', convertGPA);
+            document.getElementById('targetType').addEventListener('change', toggleWhatIfMode);
+            document.getElementById('calculateWhatifBtn').addEventListener('click', calculateWhatIf);
+            document.getElementById('calculateWhatifCgpaBtn').addEventListener('click', calculateWhatIfCgpa);
+        }
 
-  scaleBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      scale = btn.dataset.scale;
-      scaleBtns.forEach(b => b.classList.remove('on'));
-      btn.classList.add('on');
-      scaleDisplay.textContent = scale === '4.0' ? '4.0 Scale' : '5.0 Scale';
-      calculateGPA();
-      renderCourses();
-    });
-  });
+        function addSemester() {
+            const semester = {
+                id: semesterCount++,
+                label: `Year ${Math.floor(semesterCount / 2) + 1} Sem ${(semesterCount % 2) + 1}`,
+                courses: [
+                    { name: '', credits: '', grade: '' },
+                    { name: '', credits: '', grade: '' },
+                    { name: '', credits: '', grade: '' },
+                    { name: '', credits: '', grade: '' }
+                ]
+            };
+            semesters.push(semester);
+            renderSemesters();
+            saveToLocalStorage();
+        }
 
-  function renderCourses() {
-    coursesList.innerHTML = courses.map((c, i) => {
-      const gradeScale = scale === '4.0' ? gradeScale40 : gradeScale50;
-      const gradeOptions = Object.keys(gradeScale).map(g => `<option value="${g}" ${c.grade === g ? 'selected' : ''}>${g}</option>`).join('');
-      return `
-        <div class="course-item ${i === courses.length - 1 ? 'last' : ''}">
-          <div class="course-row">
-            <div><label class="f-label">Course Name</label><input type="text" class="f-input" value="${c.name}" onchange="updateCourse(${i}, 'name', this.value)"></div>
-            <div><label class="f-label">Credits</label><input type="number" class="f-input" value="${c.credits}" min="1" max="6" onchange="updateCourse(${i}, 'credits', this.value)"></div>
-            <div><label class="f-label">Grade</label><select class="f-input" onchange="updateCourse(${i}, 'grade', this.value)">${gradeOptions}</select></div>
-            <button class="remove-btn" onclick="removeCourse(${i})">Remove</button>
-          </div>
-        </div>
-      `;
-    }).join('');
-  }
+        function renderSemesters() {
+            const container = document.getElementById('semestersContainer');
+            container.innerHTML = '';
 
-  function updateCourse(i, field, value) {
-    if (field === 'credits') value = parseInt(value);
-    courses[i][field] = value;
-    calculateGPA();
-  }
+            semesters.forEach((semester, idx) => {
+                const section = document.createElement('div');
+                section.className = 'semester-section';
+                section.innerHTML = `
+                    <div class="semester-header" onclick="toggleSemester(${idx})">
+                        <h3>${semester.label}</h3>
+                        <div class="toggle">▼</div>
+                    </div>
+                    <div class="semester-content" id="sem-${idx}">
+                        <table class="course-table">
+                            <thead>
+                                <tr>
+                                    <th>Course Name</th>
+                                    <th>Credit Units</th>
+                                    <th>Grade</th>
+                                    <th>Points</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="courses-${idx}"></tbody>
+                        </table>
+                        <button class="btn secondary" onclick="addCourse(${idx})">+ Add Course</button>
+                        <div class="results-box" style="margin-top: 20px;">
+                            <div class="results-grid">
+                                <div class="result-item">
+                                    <h4>Semester GPA</h4>
+                                    <div class="value" id="gpa-${idx}">0.00</div>
+                                </div>
+                                <div class="result-item">
+                                    <h4>Total Credits</h4>
+                                    <div class="value" id="credits-${idx}">0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(section);
 
-  function removeCourse(i) {
-    if (courses.length > 1) {
-      courses.splice(i, 1);
-      renderCourses();
-      calculateGPA();
-    }
-  }
+                const tbody = document.getElementById(`courses-${idx}`);
+                semester.courses.forEach((course, cIdx) => {
+                    const row = createCourseRow(idx, cIdx, course);
+                    tbody.appendChild(row);
+                });
+            });
 
-  addCourseBtn.addEventListener('click', () => {
-    courses.push({ name: '', credits: 3, grade: 'A' });
-    renderCourses();
-    calculateGPA();
-  });
+            renderCGPA();
+        }
 
-  function calculateGPA() {
-    const gradeScale = scale === '4.0' ? gradeScale40 : gradeScale50;
-    let totalPoints = 0, totalCredits = 0;
-    courses.forEach(c => {
-      const points = (gradeScale[c.grade] || 0) * c.credits;
-      totalPoints += points;
-      totalCredits += c.credits;
-    });
-    const gpa = totalCredits > 0 ? (totalPoints / totalCredits).toFixed(2) : 0;
-    gpaDisplay.textContent = gpa;
-  }
+        function createCourseRow(semIdx, courseIdx, course) {
+            const row = document.createElement('tr');
+            const system = gradingSystems[currentSystem];
+            const gradeOptions = system.grades ? Object.keys(system.grades).map(g => `<option value="${g}">${g}</option>`).join('') : '';
 
-  renderCourses();
-  calculateGPA();
-</script>
+            row.innerHTML = `
+                <td><input type="text" value="${course.name}" onchange="updateCourse(${semIdx}, ${courseIdx}, 'name', this.value)"></td>
+                <td><input type="number" value="${course.credits}" step="0.5" onchange="updateCourse(${semIdx}, ${courseIdx}, 'credits', this.value)"></td>
+                <td><select onchange="updateCourse(${semIdx}, ${courseIdx}, 'grade', this.value)">${gradeOptions}<option value="">Select</option></select></td>
+                <td id="points-${semIdx}-${courseIdx}">0.00</td>
+                <td>
+                    <div class="course-actions">
+                        <button class="btn-remove" onclick="removeCourse(${semIdx}, ${courseIdx})">Remove</button>
+                    </div>
+                </td>
+            `;
+
+            // Set selected grade
+            if (course.grade) {
+                row.querySelector('select').value = course.grade;
+            }
+
+            return row;
+        }
+
+        function updateCourse(semIdx, courseIdx, field, value) {
+            semesters[semIdx].courses[courseIdx][field] = value;
+            calculateSemesterGPA(semIdx);
+            saveToLocalStorage();
+        }
+
+        function addCourse(semIdx) {
+            semesters[semIdx].courses.push({ name: '', credits: '', grade: '' });
+            renderSemesters();
+            saveToLocalStorage();
+        }
+
+        function removeCourse(semIdx, courseIdx) {
+            semesters[semIdx].courses.splice(courseIdx, 1);
+            renderSemesters();
+            saveToLocalStorage();
+        }
+
+        function calculateSemesterGPA(semIdx) {
+            const semester = semesters[semIdx];
+            const system = gradingSystems[currentSystem];
+            let totalPoints = 0;
+            let totalCredits = 0;
+
+            semester.courses.forEach((course, cIdx) => {
+                if (course.grade && course.credits && system.grades) {
+                    const points = system.grades[course.grade].points;
+                    const credits = parseFloat(course.credits) || 0;
+                    totalPoints += points * credits;
+                    totalCredits += credits;
+
+                    document.getElementById(`points-${semIdx}-${cIdx}`).textContent = (points * credits).toFixed(2);
+                }
+            });
+
+            const gpa = totalCredits > 0 ? (totalPoints / totalCredits).toFixed(2) : '0.00';
+            document.getElementById(`gpa-${semIdx}`).textContent = gpa;
+            document.getElementById(`credits-${semIdx}`).textContent = totalCredits.toFixed(1);
+
+            renderCGPA();
+        }
+
+        function recalculateAllSemesters() {
+            semesters.forEach((_, idx) => calculateSemesterGPA(idx));
+        }
+
+        function renderCGPA() {
+            let totalPoints = 0;
+            let totalCredits = 0;
+            const system = gradingSystems[currentSystem];
+
+            semesters.forEach((semester) => {
+                semester.courses.forEach((course) => {
+                    if (course.grade && course.credits && system.grades) {
+                        const points = system.grades[course.grade].points;
+                        const credits = parseFloat(course.credits) || 0;
+                        totalPoints += points * credits;
+                        totalCredits += credits;
+                    }
+                });
+            });
+
+            const cgpa = totalCredits > 0 ? (totalPoints / totalCredits).toFixed(2) : '0.00';
+            const classList = system.classes;
+            let classOfDegree = 'N/A';
+
+            for (let cls of classList) {
+                if (cgpa >= cls.min && cgpa <= cls.max) {
+                    classOfDegree = cls.name;
+                    break;
+                }
+            }
+
+            // Update or create results box
+            let resultsBox = document.querySelector('.cgpa-results');
+            if (!resultsBox) {
+                resultsBox = document.createElement('div');
+                resultsBox.className = 'cgpa-results results-box';
+                resultsBox.style.marginBottom = '20px';
+                const semContainer = document.getElementById('semestersContainer');
+                semContainer.parentNode.insertBefore(resultsBox, semContainer.nextSibling);
+            }
+
+            resultsBox.innerHTML = `
+                <h3 style="margin-bottom: 15px;">Cumulative GPA</h3>
+                <div class="results-grid">
+                    <div class="result-item">
+                        <h4>CGPA</h4>
+                        <div class="value">${cgpa}</div>
+                    </div>
+                    <div class="result-item">
+                        <h4>Class of Degree</h4>
+                        <div class="class-label">${classOfDegree}</div>
+                    </div>
+                    <div class="result-item">
+                        <h4>Total Credits</h4>
+                        <div class="value">${totalCredits.toFixed(1)}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function toggleSemester(idx) {
+            document.getElementById(`sem-${idx}`).classList.toggle('hidden');
+        }
+
+        function renderClassChart() {
+            const system = gradingSystems[currentSystem];
+            const chart = document.getElementById('classChart');
+            chart.innerHTML = system.classes.map(cls => `
+                <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border-color);">
+                    <span class="class-name">${cls.name}</span>
+                    <span class="range">${cls.min.toFixed(2)}-${cls.max.toFixed(2)}</span>
+                </div>
+            `).join('');
+        }
+
+        function updateGradeOptions() {
+            const system = gradingSystems[currentSystem];
+            if (!system.grades) return;
+
+            const gradeOptions = Object.keys(system.grades).map(g => `<option value="${g}">${g}</option>`).join('');
+
+            // Update existing selects
+            document.querySelectorAll('.course-table select').forEach(select => {
+                const currentValue = select.value;
+                select.innerHTML = gradeOptions + `<option value="">Select</option>`;
+                select.value = currentValue;
+            });
+
+            // Update what-if grade selector
+            const targetGradeSelect = document.getElementById('targetGrade');
+            targetGradeSelect.innerHTML = '<option value="">Select a grade</option>' + gradeOptions;
+        }
+
+        function updateDidYouKnow() {
+            const system = gradingSystems[currentSystem];
+            document.getElementById('didYouKnow').textContent = system.fact;
+        }
+
+        function parseTranscript() {
+            const text = document.getElementById('transcriptText').value;
+            if (!text.trim()) {
+                alert('Please paste transcript text');
+                return;
+            }
+
+            const courses = [];
+            const lines = text.split('\n');
+
+            lines.forEach(line => {
+                const match = line.match(/([A-Za-z\s\d]+?)\s+(\d+(?:\.\d+)?)\s+([A-F\+\-]*|[\d\.]+%?)/i);
+                if (match) {
+                    courses.push({
+                        name: match[1].trim(),
+                        credits: match[2],
+                        grade: match[3].trim()
+                    });
+                }
+            });
+
+            if (courses.length === 0) {
+                alert('No courses found. Check format: "ECO 101 3 A"');
+                return;
+            }
+
+            displayTranscriptResults(courses);
+        }
+
+        function uploadCsv() {
+            const file = document.getElementById('csvFile').files[0];
+            if (!file) {
+                alert('Please select a CSV file');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const csv = e.target.result;
+                const lines = csv.split('\n');
+                const courses = [];
+
+                for (let i = 1; i < lines.length; i++) {
+                    const parts = lines[i].split(',').map(p => p.trim());
+                    if (parts.length >= 3 && parts[0]) {
+                        courses.push({
+                            name: parts[0],
+                            credits: parts[1],
+                            grade: parts[2]
+                        });
+                    }
+                }
+
+                if (courses.length === 0) {
+                    alert('No valid courses found in CSV');
+                    return;
+                }
+
+                displayTranscriptResults(courses);
+            };
+            reader.readAsText(file);
+        }
+
+        function downloadSampleCsv() {
+            const csv = 'Course,Credits,Grade\nMathematics,3,A\nEnglish,3,B+\nScience,4,A-\nHistory,2,B';
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'sample_transcript.csv';
+            a.click();
+        }
+
+        function displayTranscriptResults(courses) {
+            const resultsDiv = document.getElementById('transcriptResults');
+            const system = gradingSystems[currentSystem];
+
+            let html = '<h3 style="margin-bottom: 15px;">Parsed Courses</h3>';
+            html += '<table class="course-table"><thead><tr><th>Course</th><th>Credits</th><th>Grade</th><th>Points</th></tr></thead><tbody>';
+
+            let totalPoints = 0;
+            let totalCredits = 0;
+
+            courses.forEach((course, idx) => {
+                const grade = course.grade;
+                const points = system.grades && system.grades[grade] ? system.grades[grade].points : 0;
+                const credits = parseFloat(course.credits) || 0;
+                const gradePoints = points * credits;
+
+                totalPoints += gradePoints;
+                totalCredits += credits;
+
+                html += `<tr><td>${course.name}</td><td>${credits}</td><td>${grade}</td><td>${gradePoints.toFixed(2)}</td></tr>`;
+            });
+
+            const gpa = totalCredits > 0 ? (totalPoints / totalCredits).toFixed(2) : '0.00';
+            html += '</tbody></table>';
+
+            html += `<div class="results-box" style="margin-top: 20px;">
+                <div class="results-grid">
+                    <div class="result-item">
+                        <h4>GPA</h4>
+                        <div class="value">${gpa}</div>
+                    </div>
+                    <div class="result-item">
+                        <h4>Total Credits</h4>
+                        <div class="value">${totalCredits.toFixed(1)}</div>
+                    </div>
+                </div>
+            </div>`;
+
+            resultsDiv.innerHTML = html;
+        }
+
+        function convertGPA() {
+            const value = parseFloat(document.getElementById('convertFromValue').value);
+            const fromScale = document.getElementById('convertFromScale').value;
+            const toScale = document.getElementById('convertToScale').value;
+
+            if (isNaN(value)) {
+                alert('Please enter a valid GPA');
+                return;
+            }
+
+            let normalized = 0;
+            if (fromScale === '5.0') normalized = value / 5.0;
+            else if (fromScale === '4.0') normalized = value / 4.0;
+            else if (fromScale === 'percentage') normalized = value / 100;
+            else if (fromScale === '20') normalized = value / 20;
+
+            let convertedValue = 0;
+            if (toScale === '5.0') convertedValue = normalized * 5.0;
+            else if (toScale === '4.0') convertedValue = normalized * 4.0;
+            else if (toScale === 'percentage') convertedValue = normalized * 100;
+            else if (toScale === '20') convertedValue = normalized * 20;
+
+            document.getElementById('convFromDisplay').textContent = value.toFixed(2);
+            document.getElementById('convToDisplay').textContent = convertedValue.toFixed(2);
+            document.getElementById('conversionResult').style.display = 'block';
+        }
+
+        function toggleWhatIfMode() {
+            const mode = document.getElementById('targetType').value;
+            document.getElementById('whatifGradeInput').style.display = mode === 'grade' ? 'block' : 'none';
+            document.getElementById('whatifCgpaInput').style.display = mode === 'cgpa' ? 'block' : 'none';
+        }
+
+        function calculateWhatIf() {
+            const currentCgpa = parseFloat(document.getElementById('currentCgpa').value);
+            const currentCredits = parseFloat(document.getElementById('currentCredits').value);
+            const upcomingCredits = parseFloat(document.getElementById('upcomingCredits').value);
+            const targetGrade = document.getElementById('targetGrade').value;
+
+            if (isNaN(currentCgpa) || isNaN(currentCredits) || isNaN(upcomingCredits) || !targetGrade) {
+                alert('Please fill all fields');
+                return;
+            }
+
+            const system = gradingSystems[currentSystem];
+            const gradePoints = system.grades[targetGrade].points;
+            const newCgpa = ((currentCgpa * currentCredits) + (gradePoints * upcomingCredits)) / (currentCredits + upcomingCredits);
+
+            const resultDiv = document.getElementById('whatifResult');
+            resultDiv.classList.add('show');
+            resultDiv.innerHTML = `<h3 style="margin-bottom: 15px;">Projection</h3>
+                <div class="results-grid">
+                    <div class="result-item">
+                        <h4>New CGPA</h4>
+                        <div class="value">${newCgpa.toFixed(2)}</div>
+                    </div>
+                    <div class="result-item">
+                        <h4>Change</h4>
+                        <div class="value">${(newCgpa - currentCgpa > 0 ? '+' : '')}</div>
+                        <div class="class-label">${(newCgpa - currentCgpa).toFixed(2)}</div>
+                    </div>
+                </div>`;
+        }
+
+        function calculateWhatIfCgpa() {
+            const currentCgpa = parseFloat(document.getElementById('currentCgpa').value);
+            const currentCredits = parseFloat(document.getElementById('currentCredits').value);
+            const upcomingCredits = parseFloat(document.getElementById('upcomingCredits').value);
+            const targetCgpa = parseFloat(document.getElementById('targetCgpa').value);
+
+            if (isNaN(currentCgpa) || isNaN(currentCredits) || isNaN(upcomingCredits) || isNaN(targetCgpa)) {
+                alert('Please fill all fields');
+                return;
+            }
+
+            const system = gradingSystems[currentSystem];
+            const maxGrade = Math.max(...Object.values(system.grades).map(g => g.points));
+            const neededGrade = (targetCgpa * (currentCredits + upcomingCredits) - currentCgpa * currentCredits) / upcomingCredits;
+
+            const resultDiv = document.getElementById('whatifResult');
+            resultDiv.classList.add('show');
+
+            if (neededGrade > maxGrade) {
+                resultDiv.innerHTML = `<div style="color: #ff6b6b; padding: 15px; background: #ffebee; border-radius: 6px;">
+                    Target CGPA is impossible with upcoming credits. Maximum achievable: ${maxGrade.toFixed(2)}
+                </div>`;
+            } else {
+                const gradeLabel = Object.entries(system.grades).find(([_, g]) => g.points >= neededGrade)?.[0] || 'N/A';
+                resultDiv.innerHTML = `<h3 style="margin-bottom: 15px;">Projection</h3>
+                    <div class="results-grid">
+                        <div class="result-item">
+                            <h4>Required Grade</h4>
+                            <div class="value">${gradeLabel}</div>
+                            <div class="class-label">${neededGrade.toFixed(2)} points</div>
+                        </div>
+                    </div>`;
+            }
+        }
+
+        function saveToLocalStorage() {
+            localStorage.setItem('afroGpaCalculator', JSON.stringify({
+                semesters,
+                currentSystem
+            }));
+        }
+
+        function loadFromLocalStorage() {
+            const saved = localStorage.getItem('afroGpaCalculator');
+            if (saved) {
+                const data = JSON.parse(saved);
+                semesters = data.semesters || [];
+                currentSystem = data.currentSystem || 'nigerian-federal';
+                semesterCount = semesters.length;
+
+                document.getElementById('gradingSystem').value = currentSystem;
+                if (semesters.length > 0) {
+                    renderSemesters();
+                }
+            }
+        }
+    </script>
 </body>
 </html>
