@@ -4,18 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>JWT Decoder — Decode JSON Web Tokens | AfroTools</title>
-<meta name="description" content="Free JWT decoder. Paste JWT token and decode header and payload. Syntax-highlighted JSON output. Check expiration. Client-side processing.">
+<meta name="description" content="Free JWT decoder. Paste JWT token and auto-decode header, payload, and signature. Expiration check with countdown timer. Syntax-highlighted JSON. Client-side only, no server uploads.">
 <link rel="canonical" href="https://afrotools.com/tools/jwt-decoder">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="JWT Decoder | AfroTools">
-<meta property="og:description" content="Decode and inspect JWT tokens with syntax highlighting.">
+<meta property="og:description" content="Decode and inspect JWT tokens with expiration checking and full claim details.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/jwt-decoder">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-image.png">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="JWT Decoder | AfroTools">
-<meta name="twitter:description" content="Free JWT token decoder tool.">
+<meta name="twitter:description" content="Free JWT token decoder with expiration checking.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -200,7 +200,7 @@
     color: #0d2813;
     outline: none;
     transition: border-color 0.18s, box-shadow 0.18s;
-    font-family: monospace;
+    font-family: 'Courier New', monospace;
   }
 
   .f-input:focus {
@@ -212,15 +212,16 @@
   .f-textarea {
     resize: vertical;
     min-height: 120px;
+    padding: 12px;
   }
 
   .status-badge {
     display: inline-block;
-    padding: 4px 10px;
+    padding: 6px 12px;
     border-radius: 4px;
     font-size: 0.65rem;
     font-weight: 700;
-    margin-top: 8px;
+    margin: 4px 4px 4px 0;
   }
 
   .status-badge.valid {
@@ -233,6 +234,12 @@
     background: rgba(220, 53, 69, 0.1);
     color: #800000;
     border: 1px solid rgba(220, 53, 69, 0.3);
+  }
+
+  .status-badge.warning {
+    background: rgba(255, 193, 7, 0.1);
+    color: #856404;
+    border: 1px solid rgba(255, 193, 7, 0.3);
   }
 
   .output-section {
@@ -262,12 +269,13 @@
     border: 1px solid #dceee0;
     border-radius: 4px;
     padding: 10px;
-    font-family: monospace;
+    font-family: 'Courier New', monospace;
     font-size: 0.75rem;
     color: #0d2813;
-    max-height: 200px;
+    max-height: 250px;
     overflow-y: auto;
     word-break: break-all;
+    line-height: 1.4;
   }
 
   .json-key {
@@ -316,6 +324,7 @@
   }
 
   .copy-btn {
+    width: 100%;
     padding: 8px;
     background: rgba(0, 135, 81, 0.1);
     border: 1px solid rgba(0, 135, 81, 0.35);
@@ -327,15 +336,46 @@
     margin-top: 6px;
     transition: all 0.15s;
     font-family: 'DM Sans', sans-serif;
-    width: 100%;
   }
 
   .copy-btn:hover {
     background: rgba(0, 135, 81, 0.2);
   }
 
+  .claims-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    font-size: 0.7rem;
+    margin-top: 8px;
+  }
+
+  .claim-item {
+    background: #fff;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #eaf5ec;
+  }
+
+  .claim-label {
+    font-weight: 700;
+    color: #0a4018;
+    display: block;
+  }
+
+  .claim-value {
+    font-family: 'Courier New', monospace;
+    color: #244d2c;
+    margin-top: 2px;
+    word-break: break-all;
+  }
+
   @media (max-width: 768px) {
     .tool-main-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .claims-grid {
       grid-template-columns: 1fr;
     }
   }
@@ -350,11 +390,11 @@
       <a href="/">AfroTools</a> / <span>Tools</span>
     </div>
     <h1>JWT <em>Decoder</em></h1>
-    <p class="hero-sub">Decode JSON Web Tokens instantly. View header and payload with syntax highlighting. Check expiration dates. Client-side only, no data sent to servers.</p>
+    <p class="hero-sub">Decode JSON Web Tokens instantly. Auto-decode on paste. View header, payload, and expiration status. Check token validity and time-to-expiry. Client-side only, no data sent.</p>
     <div class="hero-badges">
       <span class="badge b-green">Client-side</span>
-      <span class="badge b-green">No Upload</span>
-      <span class="badge b-green">Instant</span>
+      <span class="badge b-green">Auto-Decode</span>
+      <span class="badge b-green">Expiration Check</span>
     </div>
   </div>
 </div>
@@ -370,9 +410,9 @@
         <div class="card-body">
           <div class="field">
             <label class="f-label">
-              <span class="f-label-text">JWT Token</span>
+              <span class="f-label-text">JWT Token (auto-decodes on paste)</span>
             </label>
-            <textarea class="f-input f-textarea" id="jwtInput" placeholder="Paste your JWT token here..."></textarea>
+            <textarea class="f-input f-textarea" id="jwtInput" placeholder="Paste your JWT token here (header.payload.signature)..."></textarea>
           </div>
           <div id="validStatus"></div>
         </div>
@@ -385,8 +425,9 @@
         </div>
         <div class="card-body">
           <div class="output-section" id="headerSection">
+            <div class="output-label">Algorithm & Type</div>
             <div class="output-content" id="headerContent"></div>
-            <button class="copy-btn" data-copy="header">📋 Copy</button>
+            <button class="copy-btn" data-copy="header">📋 Copy Header</button>
           </div>
           <div style="text-align: center; color: #7dab87; font-size: 0.75rem; padding: 20px;">Paste JWT above to decode</div>
         </div>
@@ -395,12 +436,30 @@
       <!-- Payload Output -->
       <div class="card">
         <div class="card-head">
-          <span class="card-title">Payload</span>
+          <span class="card-title">Payload (Claims)</span>
         </div>
         <div class="card-body">
           <div class="output-section" id="payloadSection">
+            <div class="output-label">Claims & Data</div>
             <div class="output-content" id="payloadContent"></div>
-            <button class="copy-btn" data-copy="payload">📋 Copy</button>
+            <button class="copy-btn" data-copy="payload">📋 Copy Payload</button>
+          </div>
+          <div style="text-align: center; color: #7dab87; font-size: 0.75rem; padding: 20px;">Paste JWT above to decode</div>
+        </div>
+      </div>
+
+      <!-- Signature Info -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Signature</span>
+        </div>
+        <div class="card-body">
+          <div class="output-section" id="signatureSection">
+            <div style="padding: 12px; background: #fff7e6; border-radius: 4px; font-size: 0.75rem; color: #856404; border: 1px solid rgba(255, 193, 7, 0.3);">
+              ⚠️ Cannot verify signature without secret key. Signature validity cannot be checked client-side.
+            </div>
+            <div class="output-label" style="margin-top: 12px;">Signature (base64url)</div>
+            <div class="output-content" id="signatureContent" style="max-height: 100px;"></div>
           </div>
           <div style="text-align: center; color: #7dab87; font-size: 0.75rem; padding: 20px;">Paste JWT above to decode</div>
         </div>
@@ -409,26 +468,40 @@
 
     <!-- Sidebar -->
     <div class="sidebar">
+      <!-- Token Status -->
+      <div class="info-card" id="tokenStatusCard" style="display: none;">
+        <div class="info-title">Token Status</div>
+        <div id="tokenStatusContent"></div>
+      </div>
+
       <!-- Info Card -->
       <div class="info-card">
         <div class="info-title">JWT Structure</div>
         <div class="info-text">
           JWT tokens have 3 parts separated by dots:
-          <div style="font-family: monospace; font-size: 0.7rem; margin-top: 8px; background: rgba(0, 135, 81, 0.05); padding: 8px; border-radius: 4px; word-break: break-all;">
+          <div style="font-family: 'Courier New', monospace; font-size: 0.7rem; margin-top: 8px; background: rgba(0, 135, 81, 0.05); padding: 8px; border-radius: 4px; word-break: break-all;">
             header.payload.signature
           </div>
           <ul style="margin-top:10px;">
             <li>✓ Header: Algorithm & type</li>
             <li>✓ Payload: Claims & data</li>
-            <li>✓ Signature: Verification</li>
+            <li>✓ Signature: Verification (server-side only)</li>
           </ul>
+        </div>
+      </div>
+
+      <!-- Security Info -->
+      <div class="info-card">
+        <div class="info-title">Security Note</div>
+        <div class="info-text" style="font-size: 0.75rem;">
+          This tool decodes JWTs client-side without sending data to servers. You can safely decode any token here. Never paste sensitive secrets in this tool.
         </div>
       </div>
 
       <!-- Sample Card -->
       <div class="info-card">
         <div class="info-title">Sample JWT</div>
-        <div class="info-text" style="font-size: 0.65rem; word-break: break-all;">
+        <div class="info-text" style="font-size: 0.65rem; word-break: break-all; font-family: 'Courier New', monospace;">
           eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
         </div>
       </div>
@@ -443,9 +516,13 @@
   const validStatus = document.getElementById('validStatus');
   const headerSection = document.getElementById('headerSection');
   const payloadSection = document.getElementById('payloadSection');
+  const signatureSection = document.getElementById('signatureSection');
   const headerContent = document.getElementById('headerContent');
   const payloadContent = document.getElementById('payloadContent');
+  const signatureContent = document.getElementById('signatureContent');
   const copyBtns = document.querySelectorAll('.copy-btn');
+  const tokenStatusCard = document.getElementById('tokenStatusCard');
+  const tokenStatusContent = document.getElementById('tokenStatusContent');
 
   let decodedData = {};
 
@@ -454,13 +531,15 @@
     validStatus.innerHTML = '';
     headerSection.classList.remove('on');
     payloadSection.classList.remove('on');
+    signatureSection.classList.remove('on');
+    tokenStatusCard.style.display = 'none';
 
     if (!token) return;
 
     try {
       const parts = token.split('.');
       if (parts.length !== 3) {
-        throw new Error('Invalid JWT format');
+        throw new Error('Invalid JWT format - must have 3 parts separated by dots');
       }
 
       const header = JSON.parse(atob(parts[0]));
@@ -470,20 +549,54 @@
 
       headerContent.innerHTML = formatJSON(header);
       payloadContent.innerHTML = formatJSON(payload);
+      signatureContent.textContent = parts[2];
 
       headerSection.classList.add('on');
       payloadSection.classList.add('on');
+      signatureSection.classList.add('on');
 
-      validStatus.innerHTML = '<div class="status-badge valid">✓ Valid JWT</div>';
+      validStatus.innerHTML = '<div class="status-badge valid">✓ Valid JWT Format</div>';
 
       // Check expiration
+      let expirationStatus = '';
       if (payload.exp) {
         const expDate = new Date(payload.exp * 1000);
         const now = new Date();
         const isExpired = expDate < now;
-        const statusText = isExpired ? `Expired on ${expDate.toLocaleString()}` : `Expires on ${expDate.toLocaleString()}`;
+        const timeDiff = isExpired ? now - expDate : expDate - now;
+        const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const mins = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+
+        const timeTxt = `${days}d ${hours}h ${mins}m`;
         const className = isExpired ? 'invalid' : 'valid';
-        validStatus.innerHTML += `<div class="status-badge ${className}"><strong>Expiration:</strong> ${statusText}</div>`;
+        const statusTxt = isExpired ? `Expired ${timeTxt} ago` : `Expires in ${timeTxt}`;
+        validStatus.innerHTML += `<div class="status-badge ${className}">Expiration: ${statusTxt}</div>`;
+
+        if (isExpired) {
+          expirationStatus += `<div class="claim-item" style="border-color: #dc3545; background: rgba(220, 53, 69, 0.05);">
+            <span class="claim-label" style="color: #800000;">Expired</span>
+            <span class="claim-value">${expDate.toLocaleString()}</span>
+          </div>`;
+        } else {
+          expirationStatus += `<div class="claim-item">
+            <span class="claim-label">Expires At</span>
+            <span class="claim-value">${expDate.toLocaleString()}</span>
+          </div>`;
+        }
+      }
+
+      if (payload.iat) {
+        const iatDate = new Date(payload.iat * 1000);
+        expirationStatus += `<div class="claim-item">
+          <span class="claim-label">Issued At</span>
+          <span class="claim-value">${iatDate.toLocaleString()}</span>
+        </div>`;
+      }
+
+      if (expirationStatus) {
+        tokenStatusCard.style.display = 'block';
+        tokenStatusContent.innerHTML = expirationStatus;
       }
     } catch (e) {
       validStatus.innerHTML = `<div class="status-badge invalid">✗ Invalid JWT: ${e.message}</div>`;
@@ -506,11 +619,14 @@
   copyBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       const type = btn.dataset.copy;
-      const data = JSON.stringify(decodedData[type], null, 2);
+      let data = '';
+      if (type === 'header') data = JSON.stringify(decodedData.header, null, 2);
+      else if (type === 'payload') data = JSON.stringify(decodedData.payload, null, 2);
+
       navigator.clipboard.writeText(data);
       btn.textContent = '✓ Copied!';
       setTimeout(() => {
-        btn.textContent = '📋 Copy';
+        btn.textContent = `📋 Copy ${type.charAt(0).toUpperCase() + type.slice(1)}`;
       }, 2000);
     });
   });

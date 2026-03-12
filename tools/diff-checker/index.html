@@ -4,18 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Diff Checker — Compare Text Online | AfroTools</title>
-<meta name="description" content="Free diff checker. Compare two texts side-by-side with line-by-line diff highlighting. Character-level diff option. Copy diff output.">
+<meta name="description" content="Free diff checker. Compare two texts side-by-side with line-by-line highlighting and word-level diffs. Real-time comparison with statistics (added, removed, unchanged lines). Ignore whitespace and case options.">
 <link rel="canonical" href="https://afrotools.com/tools/diff-checker">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Diff Checker | AfroTools">
-<meta property="og:description" content="Compare two texts and see differences highlighted.">
+<meta property="og:description" content="Compare two texts and see differences highlighted with stats.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/diff-checker">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-image.png">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Diff Checker | AfroTools">
-<meta name="twitter:description" content="Free text diff comparison tool.">
+<meta name="twitter:description" content="Free text diff comparison tool with word-level highlighting.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -199,7 +199,7 @@
     color: #0d2813;
     outline: none;
     transition: border-color 0.18s, box-shadow 0.18s;
-    font-family: monospace;
+    font-family: 'Courier New', monospace;
     resize: vertical;
     min-height: 150px;
   }
@@ -214,6 +214,27 @@
     display: flex;
     gap: 12px;
     margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+
+  .checkbox-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .checkbox-option input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+  }
+
+  .checkbox-option label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #244d2c;
+    cursor: pointer;
+    margin: 0;
   }
 
   .diff-btn {
@@ -265,7 +286,7 @@
     border: 1.5px solid #c5deca;
     border-radius: 8px;
     padding: 12px;
-    font-family: monospace;
+    font-family: 'Courier New', monospace;
     font-size: 0.85rem;
     max-height: 400px;
     overflow-y: auto;
@@ -317,6 +338,32 @@
     background: rgba(0, 135, 81, 0.2);
   }
 
+  .diff-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .stat-box {
+    background: #fff;
+    border: 1px solid #dceee0;
+    border-radius: 6px;
+    padding: 12px;
+    text-align: center;
+    font-size: 0.75rem;
+  }
+
+  .stat-number {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .stat-added { color: #008751; }
+  .stat-removed { color: #dc3545; }
+  .stat-neutral { color: #244d2c; }
+
   .info-card {
     background: #f7fdf8;
     border: 1px solid #dceee0;
@@ -356,6 +403,10 @@
     .diff-btn {
       width: 100%;
     }
+
+    .diff-stats {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
 </head>
@@ -368,11 +419,11 @@
       <a href="/">AfroTools</a> / <span>Tools</span>
     </div>
     <h1>Diff <em>Checker</em></h1>
-    <p class="hero-sub">Compare two texts side-by-side with line-by-line diff highlighting. Green for additions, red for removals. Character-level diff option available.</p>
+    <p class="hero-sub">Compare two texts side-by-side with line-by-line and word-level diff highlighting. Real-time statistics: lines added (green), removed (red), unchanged. Ignore whitespace and case options.</p>
     <div class="hero-badges">
-      <span class="badge b-green">Line Diff</span>
-      <span class="badge b-green">Character Diff</span>
-      <span class="badge b-green">Instant</span>
+      <span class="badge b-green">Word Diff</span>
+      <span class="badge b-green">Statistics</span>
+      <span class="badge b-green">Real-time</span>
     </div>
   </div>
 </div>
@@ -382,7 +433,7 @@
     <!-- Input Card -->
     <div class="card">
       <div class="card-head">
-        <span class="card-title">Compare Texts</span>
+        <span class="card-title">Compare Texts (Updated Live)</span>
       </div>
       <div class="card-body">
         <div class="comparison-grid">
@@ -402,10 +453,16 @@
 
         <div class="diff-options">
           <button class="diff-btn on" data-mode="line">Line Diff</button>
-          <button class="diff-btn" data-mode="char">Character Diff</button>
+          <button class="diff-btn" data-mode="char">Word Diff</button>
+          <div class="checkbox-option">
+            <input type="checkbox" id="ignoreWhitespace">
+            <label for="ignoreWhitespace">Ignore Whitespace</label>
+          </div>
+          <div class="checkbox-option">
+            <input type="checkbox" id="ignoreCase">
+            <label for="ignoreCase">Ignore Case</label>
+          </div>
         </div>
-
-        <button class="calc-btn" id="compareBtn">Compare Texts</button>
       </div>
     </div>
 
@@ -415,8 +472,22 @@
         <span class="card-title">Diff Result</span>
       </div>
       <div class="card-body">
+        <div class="diff-stats" id="diffStats" style="display: none;">
+          <div class="stat-box">
+            <div class="stat-number stat-added" id="statAdded">0</div>
+            <div>Added Lines</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-number stat-removed" id="statRemoved">0</div>
+            <div>Removed Lines</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-number stat-neutral" id="statUnchanged">0</div>
+            <div>Unchanged Lines</div>
+          </div>
+        </div>
         <div class="diff-output" id="diffOutput"></div>
-        <div style="text-align: center; color: #7dab87; font-size: 0.75rem; padding: 20px;">Click "Compare Texts" to see differences</div>
+        <div style="text-align: center; color: #7dab87; font-size: 0.75rem; padding: 20px;">Paste texts above to see differences</div>
         <button class="copy-btn" id="copyBtn" style="display: none;">📋 Copy Diff Output</button>
       </div>
     </div>
@@ -426,11 +497,12 @@
       <div class="info-title">How It Works</div>
       <div class="info-text">
         <strong>Line Diff:</strong> Shows entire lines added or removed
-        <div style="margin-top: 8px;"><strong>Character Diff:</strong> Highlights character-level changes within lines</div>
+        <div style="margin-top: 8px;"><strong>Word Diff:</strong> Highlights word-level changes within lines for more precise comparison</div>
         <ul style="margin-top:10px;">
           <li>✓ Green = Added text</li>
           <li>✓ Red = Removed text</li>
           <li>✓ Gray = Unchanged</li>
+          <li>✓ Real-time updates</li>
         </ul>
       </div>
     </div>
@@ -442,10 +514,15 @@
 <script>
   const text1 = document.getElementById('text1');
   const text2 = document.getElementById('text2');
-  const compareBtn = document.getElementById('compareBtn');
   const diffOutput = document.getElementById('diffOutput');
   const copyBtn = document.getElementById('copyBtn');
   const diffModeBtns = document.querySelectorAll('[data-mode]');
+  const ignoreWhitespace = document.getElementById('ignoreWhitespace');
+  const ignoreCase = document.getElementById('ignoreCase');
+  const diffStats = document.getElementById('diffStats');
+  const statAdded = document.getElementById('statAdded');
+  const statRemoved = document.getElementById('statRemoved');
+  const statUnchanged = document.getElementById('statUnchanged');
 
   let currentMode = 'line';
   let lastDiffOutput = '';
@@ -455,49 +532,84 @@
       diffModeBtns.forEach(b => b.classList.remove('on'));
       btn.classList.add('on');
       currentMode = btn.dataset.mode;
-      if (text1.value && text2.value) compareTexts();
+      if (text1.value || text2.value) compareTexts();
     });
   });
+
+  ignoreWhitespace.addEventListener('change', compareTexts);
+  ignoreCase.addEventListener('change', compareTexts);
+
+  function normalizeText(text) {
+    let normalized = text;
+    if (ignoreCase.checked) normalized = normalized.toLowerCase();
+    if (ignoreWhitespace.checked) normalized = normalized.replace(/\s+/g, ' ');
+    return normalized;
+  }
 
   function simpleDiff(original, modified) {
     const origLines = original.split('\n');
     const modLines = modified.split('\n');
     const diff = [];
+    let added = 0, removed = 0, unchanged = 0;
 
     for (let i = 0; i < Math.max(origLines.length, modLines.length); i++) {
       const origLine = origLines[i] || '';
       const modLine = modLines[i] || '';
+      const origNorm = normalizeText(origLine);
+      const modNorm = normalizeText(modLine);
 
-      if (origLine === modLine) {
+      if (origNorm === modNorm) {
         diff.push({ type: 'neutral', text: origLine });
+        unchanged++;
       } else {
-        if (origLine) diff.push({ type: 'removed', text: origLine });
-        if (modLine) diff.push({ type: 'added', text: modLine });
+        if (origLine) {
+          diff.push({ type: 'removed', text: origLine });
+          removed++;
+        }
+        if (modLine) {
+          diff.push({ type: 'added', text: modLine });
+          added++;
+        }
       }
     }
-    return diff;
+    return { diff, stats: { added, removed, unchanged } };
   }
 
-  function charDiff(original, modified) {
+  function wordDiff(original, modified) {
+    const origWords = original.split(/(\s+)/);
+    const modWords = modified.split(/(\s+)/);
     const diff = [];
-    const origChars = original.split('');
-    const modChars = modified.split('');
-    let i = 0, j = 0;
+    let added = 0, removed = 0;
 
-    while (i < origChars.length || j < modChars.length) {
-      if (i < origChars.length && j < modChars.length && origChars[i] === modChars[j]) {
-        diff.push({ type: 'neutral', text: origChars[i] });
+    let i = 0, j = 0;
+    while (i < origWords.length || j < modWords.length) {
+      const origWord = origWords[i] || '';
+      const modWord = modWords[j] || '';
+      const origNorm = normalizeText(origWord);
+      const modNorm = normalizeText(modWord);
+
+      if (origNorm && modNorm && origNorm === modNorm) {
+        diff.push({ type: 'neutral', text: origWord });
         i++;
         j++;
-      } else if (i < origChars.length) {
-        diff.push({ type: 'removed', text: origChars[i] });
+      } else if (!origWord) {
+        diff.push({ type: 'added', text: modWord });
+        added++;
+        j++;
+      } else if (!modWord) {
+        diff.push({ type: 'removed', text: origWord });
+        removed++;
         i++;
       } else {
-        diff.push({ type: 'added', text: modChars[j] });
+        diff.push({ type: 'removed', text: origWord });
+        diff.push({ type: 'added', text: modWord });
+        removed++;
+        added++;
+        i++;
         j++;
       }
     }
-    return diff;
+    return { diff, stats: { added, removed, unchanged: 0 } };
   }
 
   function compareTexts() {
@@ -506,30 +618,39 @@
 
     if (!t1 && !t2) {
       diffOutput.classList.remove('on');
+      diffStats.style.display = 'none';
       copyBtn.style.display = 'none';
       return;
     }
 
-    let diffs;
+    let result;
     if (currentMode === 'line') {
-      diffs = simpleDiff(t1, t2);
+      result = simpleDiff(t1, t2);
     } else {
-      diffs = charDiff(t1, t2);
+      result = wordDiff(t1, t2);
     }
 
-    const html = diffs.map(d => {
+    const { diff, stats } = result;
+
+    const html = diff.map(d => {
       const escapedText = d.text.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-      return `<div class="diff-line diff-${d.type}">${escapedText || '(empty line)'}</div>`;
+      return `<div class="diff-line diff-${d.type}">${escapedText || '(empty)'}</div>`;
     }).join('');
 
     diffOutput.innerHTML = html;
-    lastDiffOutput = diffs.map(d => `${d.type === 'added' ? '+ ' : d.type === 'removed' ? '- ' : '  '}${d.text}`).join('\n');
+    lastDiffOutput = diff.map(d => `${d.type === 'added' ? '+ ' : d.type === 'removed' ? '- ' : '  '}${d.text}`).join('\n');
+
+    statAdded.textContent = stats.added;
+    statRemoved.textContent = stats.removed;
+    statUnchanged.textContent = stats.unchanged || 0;
 
     diffOutput.classList.add('on');
+    diffStats.style.display = 'grid';
     copyBtn.style.display = 'block';
   }
 
-  compareBtn.addEventListener('click', compareTexts);
+  text1.addEventListener('input', compareTexts);
+  text2.addEventListener('input', compareTexts);
 
   copyBtn.addEventListener('click', () => {
     navigator.clipboard.writeText(lastDiffOutput);

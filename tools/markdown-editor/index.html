@@ -4,18 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Markdown Editor — Live Preview | AfroTools</title>
-<meta name="description" content="Free markdown editor with live preview. Write markdown on the left, see rendered HTML on the right. Formatting toolbar included. Export to HTML.">
+<meta name="description" content="Free markdown editor with live split preview. Write markdown on left, see rendered HTML on right. Formatting toolbar, word count, export to HTML/MD, auto-save to localStorage.">
 <link rel="canonical" href="https://afrotools.com/tools/markdown-editor">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Markdown Editor | AfroTools">
-<meta property="og:description" content="Edit markdown with live preview. Export to HTML instantly.">
+<meta property="og:description" content="Edit markdown with live preview, toolbar, and export options. Auto-save included.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/markdown-editor">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-image.png">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Markdown Editor | AfroTools">
-<meta name="twitter:description" content="Free markdown editor with live preview.">
+<meta name="twitter:description" content="Free markdown editor with live preview and export.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -146,6 +146,7 @@
     display: flex;
     flex-direction: column;
     box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+    min-height: 500px;
   }
 
   .panel-head {
@@ -176,7 +177,7 @@
     font-size: 0.7rem;
     font-weight: 700;
     color: #244d2c;
-    font-family: monospace;
+    font-family: 'DM Sans', sans-serif;
     transition: all 0.15s;
   }
 
@@ -203,7 +204,7 @@
     font-weight: 600;
     color: #0d2813;
     outline: none;
-    font-family: monospace;
+    font-family: 'Courier New', monospace;
     resize: none;
   }
 
@@ -212,9 +213,17 @@
     box-shadow: 0 0 0 3px rgba(0, 135, 81, 0.1);
   }
 
+  .preview-area {
+    flex: 1;
+    padding: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
   #preview {
     width: 100%;
-    padding: 12px;
+    flex: 1;
     overflow-y: auto;
     font-size: 1rem;
     color: #244d2c;
@@ -240,7 +249,7 @@
     background: rgba(0, 135, 81, 0.05);
     padding: 2px 6px;
     border-radius: 3px;
-    font-family: monospace;
+    font-family: 'Courier New', monospace;
     font-size: 0.9rem;
     color: #005c3d;
   }
@@ -281,6 +290,34 @@
     color: #7dab87;
   }
 
+  #preview table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 12px 0;
+  }
+
+  #preview th, #preview td {
+    border: 1px solid #dceee0;
+    padding: 8px 12px;
+    text-align: left;
+  }
+
+  #preview th {
+    background: #f7fdf8;
+    font-weight: 700;
+  }
+
+  .stats-section {
+    padding: 8px 12px;
+    border-top: 1px solid #eaf5ec;
+    background: #f7fdf8;
+    font-size: 0.75rem;
+    color: #244d2c;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
   .export-section {
     display: flex;
     gap: 12px;
@@ -315,10 +352,6 @@
     #editor {
       height: 400px;
     }
-
-    #preview {
-      height: 400px;
-    }
   }
 </style>
 </head>
@@ -331,11 +364,11 @@
       <a href="/">AfroTools</a> / <span>Tools</span>
     </div>
     <h1>Markdown <em>Editor</em></h1>
-    <p class="hero-sub">Write markdown with live preview. Formatting toolbar included. Export to HTML with a single click.</p>
+    <p class="hero-sub">Write markdown with live split-view preview. Formatting toolbar, word count, read-time estimate. Export to HTML or download .md/.html files. Auto-save with localStorage.</p>
     <div class="hero-badges">
       <span class="badge b-green">Live Preview</span>
-      <span class="badge b-green">Export HTML</span>
-      <span class="badge b-green">Instant</span>
+      <span class="badge b-green">Export Options</span>
+      <span class="badge b-green">Auto-Save</span>
     </div>
   </div>
 </div>
@@ -354,26 +387,35 @@
           <button class="toolbar-btn" data-insert="*italic*">Italic</button>
           <button class="toolbar-btn" data-insert="`code`">Code</button>
           <button class="toolbar-btn" data-insert="- ">List</button>
+          <button class="toolbar-btn" data-insert="1. ">Num List</button>
           <button class="toolbar-btn" data-insert="[link](url)">Link</button>
           <button class="toolbar-btn" data-insert="> ">Quote</button>
-          <button class="toolbar-btn" data-insert="|  |  |\n|--|--|\n|  |  |">Table</button>
+          <button class="toolbar-btn" data-insert="```\n\n```">Code Block</button>
+          <button class="toolbar-btn" data-insert="| col | col |\n|--|--|\n| | |">Table</button>
         </div>
         <div class="editor-area">
-          <textarea id="editor" placeholder="# Write markdown here...&#10;&#10;This is a **markdown** editor with live preview.&#10;&#10;- Bullet points&#10;- And lists&#10;&#10;[Links](https://example.com) work too!"></textarea>
+          <textarea id="editor" placeholder="# Write markdown here...&#10;&#10;This is a **markdown** editor with live preview.&#10;&#10;## Features&#10;- Formatting toolbar&#10;- Real-time preview&#10;- Auto-save&#10;- Export options&#10;&#10;[Visit AfroTools](https://afrotools.com)"></textarea>
+        </div>
+        <div class="stats-section">
+          <span id="wordCount">Words: 0</span>
+          <span id="readTime">Read: ~0 min</span>
         </div>
       </div>
 
       <!-- Preview Panel -->
       <div class="editor-panel">
         <div class="panel-head">Preview</div>
-        <div id="preview"></div>
+        <div class="preview-area">
+          <div id="preview"></div>
+        </div>
       </div>
     </div>
 
     <!-- Export Section -->
     <div class="export-section">
-      <button class="export-btn" id="exportHTMLBtn">📥 Export as HTML</button>
-      <button class="export-btn" id="copyHTMLBtn">📋 Copy HTML</button>
+      <button class="export-btn" id="downloadMdBtn">📥 Download .md</button>
+      <button class="export-btn" id="downloadHtmlBtn">📥 Download .html</button>
+      <button class="export-btn" id="copyHtmlBtn">📋 Copy HTML</button>
     </div>
   </div>
 </div>
@@ -383,14 +425,41 @@
 <script>
   const editor = document.getElementById('editor');
   const preview = document.getElementById('preview');
-  const exportHTMLBtn = document.getElementById('exportHTMLBtn');
-  const copyHTMLBtn = document.getElementById('copyHTMLBtn');
+  const downloadMdBtn = document.getElementById('downloadMdBtn');
+  const downloadHtmlBtn = document.getElementById('downloadHtmlBtn');
+  const copyHtmlBtn = document.getElementById('copyHtmlBtn');
   const toolbarBtns = document.querySelectorAll('.toolbar-btn');
+  const wordCountEl = document.getElementById('wordCount');
+  const readTimeEl = document.getElementById('readTime');
+
+  const STORAGE_KEY = 'md-editor-content';
 
   function updatePreview() {
     const markdown = editor.value;
     const html = marked.parse(markdown);
     preview.innerHTML = html;
+    updateStats();
+    saveToLocalStorage();
+  }
+
+  function updateStats() {
+    const text = editor.value;
+    const words = text.trim().split(/\s+/).filter(w => w.length > 0).length;
+    const readTimeMinutes = Math.ceil(words / 200);
+    wordCountEl.textContent = `Words: ${words}`;
+    readTimeEl.textContent = `Read: ~${readTimeMinutes} min`;
+  }
+
+  function saveToLocalStorage() {
+    localStorage.setItem(STORAGE_KEY, editor.value);
+  }
+
+  function loadFromLocalStorage() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      editor.value = saved;
+      updatePreview();
+    }
   }
 
   editor.addEventListener('input', updatePreview);
@@ -409,11 +478,22 @@
     });
   });
 
-  exportHTMLBtn.addEventListener('click', () => {
+  downloadMdBtn.addEventListener('click', () => {
+    const blob = new Blob([editor.value], { type: 'text/markdown' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'document.md';
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  downloadHtmlBtn.addEventListener('click', () => {
     const html = `<!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <style>
     body {
@@ -425,9 +505,13 @@
       padding: 20px;
     }
     h1, h2, h3 { color: #008751; }
-    code { background: #f0f0f0; padding: 2px 6px; border-radius: 3px; }
+    code { background: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-family: 'Courier New', monospace; }
     pre { background: #f0f0f0; padding: 12px; border-radius: 6px; overflow-x: auto; }
+    pre code { background: none; padding: 0; }
     blockquote { border-left: 3px solid #008751; margin: 12px 0; padding-left: 12px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background: #f0f0f0; }
   </style>
 </head>
 <body>
@@ -443,13 +527,13 @@ ${preview.innerHTML}
     URL.revokeObjectURL(url);
   });
 
-  copyHTMLBtn.addEventListener('click', () => {
+  copyHtmlBtn.addEventListener('click', () => {
     navigator.clipboard.writeText(preview.innerHTML);
-    copyHTMLBtn.textContent = '✓ Copied!';
-    setTimeout(() => copyHTMLBtn.textContent = '📋 Copy HTML', 2000);
+    copyHtmlBtn.textContent = '✓ Copied!';
+    setTimeout(() => copyHtmlBtn.textContent = '📋 Copy HTML', 2000);
   });
 
-  // Initial preview
+  loadFromLocalStorage();
   updatePreview();
 </script>
 </body>

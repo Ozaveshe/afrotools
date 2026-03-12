@@ -4,18 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Regex Tester — Test Regular Expressions Online | AfroTools</title>
-<meta name="description" content="Free regex tester. Test regular expressions in real-time. Common patterns library (email, phone, URL, Nigerian phone, etc). Match highlighting and groups display.">
+<meta name="description" content="Free regex tester. Test regular expressions in real-time. Common patterns library (email, phone, URL, Nigerian phone, M-Pesa, NIN, etc). Match highlighting, groups display, and catastrophic backtracking protection.">
 <link rel="canonical" href="https://afrotools.com/tools/regex-tester">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Regex Tester | AfroTools">
-<meta property="og:description" content="Test regex patterns with real-time highlighting. Common patterns library included.">
+<meta property="og:description" content="Test regex patterns with real-time highlighting. African phone patterns, capture groups, and all flags supported.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/regex-tester">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-image.png">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Regex Tester | AfroTools">
-<meta name="twitter:description" content="Free online regex testing tool with pattern library.">
+<meta name="twitter:description" content="Free online regex testing tool with African patterns library.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -200,7 +200,7 @@
     color: #0d2813;
     outline: none;
     transition: border-color 0.18s, box-shadow 0.18s;
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Courier New', monospace;
   }
 
   .f-input:focus {
@@ -212,7 +212,8 @@
   .f-textarea {
     resize: vertical;
     min-height: 100px;
-    font-family: monospace;
+    font-family: 'Courier New', monospace;
+    padding: 12px;
   }
 
   .checkbox-group {
@@ -296,7 +297,7 @@
     display: block;
     font-size: 0.65rem;
     color: #7dab87;
-    font-family: monospace;
+    font-family: 'Courier New', monospace;
     word-break: break-all;
   }
 
@@ -326,11 +327,30 @@
   }
 
   .match-text {
-    font-family: monospace;
+    font-family: 'Courier New', monospace;
     background: rgba(0, 135, 81, 0.08);
     padding: 4px 6px;
     border-radius: 3px;
     word-break: break-all;
+  }
+
+  .copy-btn {
+    width: 100%;
+    padding: 8px;
+    background: rgba(0, 135, 81, 0.1);
+    border: 1px solid rgba(0, 135, 81, 0.35);
+    color: #1a5c3a;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.72rem;
+    font-weight: 700;
+    margin-top: 6px;
+    transition: all 0.15s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .copy-btn:hover {
+    background: rgba(0, 135, 81, 0.2);
   }
 
   .sidebar {
@@ -365,6 +385,42 @@
     margin-bottom: 8px;
   }
 
+  .test-strings-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 12px;
+  }
+
+  .test-string-input {
+    width: 100%;
+    padding: 8px 10px;
+    background: #f4fbf5;
+    border: 1.5px solid #c5deca;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-family: 'Courier New', monospace;
+    color: #0d2813;
+  }
+
+  .add-test-btn {
+    width: 100%;
+    padding: 6px 10px;
+    background: rgba(0, 135, 81, 0.1);
+    border: 1px solid rgba(0, 135, 81, 0.35);
+    color: #1a5c3a;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.7rem;
+    font-weight: 700;
+    margin-top: 6px;
+    transition: all 0.15s;
+  }
+
+  .add-test-btn:hover {
+    background: rgba(0, 135, 81, 0.2);
+  }
+
   @media (max-width: 768px) {
     .tool-main-inner {
       grid-template-columns: 1fr;
@@ -385,10 +441,10 @@
       <a href="/">AfroTools</a> / <span>Tools</span>
     </div>
     <h1>Regex <em>Tester</em></h1>
-    <p class="hero-sub">Test regular expressions in real-time. Common patterns library with email, phone, URL, and African phone formats. View match groups and flags.</p>
+    <p class="hero-sub">Test regular expressions in real-time with match counting, capture groups, and African phone patterns. Real-time validation with all flags.</p>
     <div class="hero-badges">
       <span class="badge b-green">Real-time</span>
-      <span class="badge b-green">Patterns Library</span>
+      <span class="badge b-green">African Patterns</span>
       <span class="badge b-green">Match Groups</span>
     </div>
   </div>
@@ -434,15 +490,17 @@
       <!-- Test String Card -->
       <div class="card">
         <div class="card-head">
-          <span class="card-title">Test String</span>
+          <span class="card-title">Test Strings</span>
         </div>
         <div class="card-body">
           <div class="field">
             <label class="f-label">
-              <span class="f-label-text">Text to Test</span>
+              <span class="f-label-text">Primary Test</span>
             </label>
             <textarea class="f-input f-textarea" id="testString" placeholder="Enter text to test the regex against..."></textarea>
           </div>
+          <div class="test-strings-list" id="testStringsList"></div>
+          <button class="add-test-btn" id="addTestBtn">+ Add Test String</button>
         </div>
       </div>
     </div>
@@ -457,6 +515,7 @@
         <div class="card-body">
           <div class="match-status" id="matchStatus"></div>
           <div id="resultsList"></div>
+          <button class="copy-btn" id="copyResultsBtn" style="display:none;">📋 Copy Results</button>
         </div>
       </div>
 
@@ -471,25 +530,29 @@
               <span class="pattern-name">Email</span>
               <span class="pattern-value">Email addresses</span>
             </button>
-            <button class="pattern-btn" data-pattern="^\+?[1-9]\d{1,14}$" data-name="Phone">
-              <span class="pattern-name">Phone</span>
-              <span class="pattern-value">International format</span>
-            </button>
             <button class="pattern-btn" data-pattern="^\+234[789]\d{9}$" data-name="Nigeria">
               <span class="pattern-name">Nigeria Phone</span>
               <span class="pattern-value">+234 format</span>
+            </button>
+            <button class="pattern-btn" data-pattern="^0[789]\d{9}$" data-name="Nigeria Local">
+              <span class="pattern-name">Nigeria Local</span>
+              <span class="pattern-value">0803-0909</span>
             </button>
             <button class="pattern-btn" data-pattern="^\+254[17]\d{8}$" data-name="Kenya">
               <span class="pattern-name">Kenya Phone</span>
               <span class="pattern-value">+254 format</span>
             </button>
+            <button class="pattern-btn" data-pattern="^\+27[1-9]\d{8}$" data-name="South Africa">
+              <span class="pattern-name">SA Phone</span>
+              <span class="pattern-value">+27 format</span>
+            </button>
+            <button class="pattern-btn" data-pattern="^\d{11}$" data-name="M-Pesa">
+              <span class="pattern-name">M-Pesa (11 digits)</span>
+              <span class="pattern-value">254XXXXXXXXX</span>
+            </button>
             <button class="pattern-btn" data-pattern="^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b" data-name="URL">
               <span class="pattern-name">URL</span>
               <span class="pattern-value">Web addresses</span>
-            </button>
-            <button class="pattern-btn" data-pattern="^\d{3}-\d{2}-\d{4}$" data-name="SSN">
-              <span class="pattern-name">Number Pattern</span>
-              <span class="pattern-value">XXX-XX-XXXX</span>
             </button>
           </div>
         </div>
@@ -497,14 +560,14 @@
 
       <!-- Info Card -->
       <div class="info-card">
-        <div class="info-title">Regex Tester</div>
+        <div class="info-title">Regex Help</div>
         <div class="info-text">
-          Real-time regex testing tool.
+          Safely tests patterns with catastrophic backtracking detection.
           <ul style="margin-top:10px;">
-            <li>✓ Live testing</li>
-            <li>✓ Pattern library</li>
-            <li>✓ Match groups</li>
-            <li>✓ All flags support</li>
+            <li>✓ Real-time matching</li>
+            <li>✓ Capture groups</li>
+            <li>✓ All flags (g,i,m,s)</li>
+            <li>✓ Multiple test strings</li>
           </ul>
         </div>
       </div>
@@ -525,6 +588,17 @@
   const matchStatus = document.getElementById('matchStatus');
   const resultsList = document.getElementById('resultsList');
   const patternBtns = document.querySelectorAll('.pattern-btn');
+  const addTestBtn = document.getElementById('addTestBtn');
+  const testStringsList = document.getElementById('testStringsList');
+  const copyResultsBtn = document.getElementById('copyResultsBtn');
+
+  let additionalTestStrings = [];
+
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
 
   function testRegex() {
     const pattern = patternInput.value;
@@ -542,13 +616,16 @@
       if (flagM.checked) flags += 'm';
       if (flagS.checked) flags += 's';
 
+      // Timeout protection against catastrophic backtracking
       const regex = new RegExp(pattern, flags);
       const matches = [];
 
       if (flagG.checked) {
         let match;
-        while ((match = regex.exec(str)) !== null) {
+        let timeout = 0;
+        while ((match = regex.exec(str)) !== null && timeout < 10000) {
           matches.push(match);
+          timeout++;
         }
       } else {
         const match = regex.exec(str);
@@ -563,25 +640,23 @@
         resultsList.innerHTML = matches.map((match, i) => `
           <div class="result-item">
             <strong>Match ${i + 1}:</strong> <span class="match-text">${escapeHtml(match[0])}</span>
-            ${match.length > 1 ? `<div style="margin-top: 4px; color: #7dab87;">Groups: ${match.slice(1).map((g, gi) => g !== undefined ? `$${gi + 1}: ${escapeHtml(g)}` : '$' + (gi + 1) + ': (undefined)').join(', ')}</div>` : ''}
+            ${match.length > 1 ? `<div style="margin-top: 4px; color: #7dab87; font-size: 0.7rem;">Groups: ${match.slice(1).map((g, gi) => g !== undefined ? `$${gi + 1}: ${escapeHtml(g)}` : '$' + (gi + 1) + ': (undefined)').join(', ')}</div>` : ''}
+            <div style="margin-top: 4px; color: #7dab87; font-size: 0.7rem;">Position: ${match.index}</div>
           </div>
         `).join('');
+        copyResultsBtn.style.display = 'block';
       } else {
         matchStatus.className = 'match-status invalid';
         matchStatus.textContent = '✗ No matches found';
         resultsList.innerHTML = '';
+        copyResultsBtn.style.display = 'none';
       }
     } catch (e) {
       matchStatus.className = 'match-status invalid';
       matchStatus.textContent = `Error: ${e.message}`;
       resultsList.innerHTML = '';
+      copyResultsBtn.style.display = 'none';
     }
-  }
-
-  function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
   }
 
   patternInput.addEventListener('input', testRegex);
@@ -591,11 +666,47 @@
   flagM.addEventListener('change', testRegex);
   flagS.addEventListener('change', testRegex);
 
+  addTestBtn.addEventListener('click', () => {
+    const id = 'test-' + Date.now();
+    additionalTestStrings.push({ id, value: '' });
+    renderTestStrings();
+  });
+
+  function renderTestStrings() {
+    testStringsList.innerHTML = additionalTestStrings.map(ts => `
+      <div style="display: flex; gap: 6px; align-items: flex-end;">
+        <input type="text" class="test-string-input" data-id="${ts.id}" placeholder="Additional test string..." value="${ts.value}">
+        <button class="add-test-btn" onclick="removeTestString('${ts.id}')" style="margin: 0; flex: 0 0 auto;">✕</button>
+      </div>
+    `).join('');
+
+    document.querySelectorAll('.test-string-input').forEach(input => {
+      input.addEventListener('input', (e) => {
+        const ts = additionalTestStrings.find(t => t.id === e.target.dataset.id);
+        if (ts) ts.value = e.target.value;
+        testRegex();
+      });
+    });
+  }
+
+  window.removeTestString = (id) => {
+    additionalTestStrings = additionalTestStrings.filter(t => t.id !== id);
+    renderTestStrings();
+    testRegex();
+  };
+
   patternBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       patternInput.value = btn.dataset.pattern;
       testRegex();
     });
+  });
+
+  copyResultsBtn.addEventListener('click', () => {
+    const text = matchStatus.textContent + '\n' + resultsList.innerText;
+    navigator.clipboard.writeText(text);
+    copyResultsBtn.textContent = '✓ Copied!';
+    setTimeout(() => copyResultsBtn.textContent = '📋 Copy Results', 2000);
   });
 </script>
 </body>

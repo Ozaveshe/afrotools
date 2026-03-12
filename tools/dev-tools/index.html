@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Developer Tools Tools for Africa | AfroTools</title>
-<meta name="description" content="JSON/CSV/XML converter, colour picker with contrast checker, hash generator, Base64 encoder, regex tester, JWT decoder and more.">
+<title>Developer Tools for Africa — JSON, Regex, JWT, Hash, UUID | AfroTools</title>
+<meta name="description" content="Free developer tools: JSON/CSV/XML converter, hash generator, Base64 encoder, regex tester, JWT decoder, UUID generator, diff checker, markdown editor, cron builder. All client-side.">
 <link rel="canonical" href="https://afrotools.com/tools/dev-tools">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <link rel="apple-touch-icon" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Developer Tools Tools for Africa | AfroTools">
-<meta property="og:description" content="JSON/CSV/XML converter, colour picker with contrast checker, hash generator, Base64 encoder, regex tester, JWT decoder and more.">
+<meta property="og:description" content="Free developer tools: JSON/CSV/XML converter, hash generator, Base64 encoder, regex tester, JWT decoder, UUID generator, diff checker, markdown editor, cron builder. All client-side.">
 <meta property="og:url" content="https://afrotools.com/tools/dev-tools">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
@@ -69,8 +69,8 @@
     <div class="cat-icon-row">
       <span class="cat-icon-big">🛠️</span>
     </div>
-    <h1>Developer Tools<br><em>Tools</em></h1>
-    <p class="cat-hero-sub">JSON/CSV/XML converter, colour picker with contrast checker, hash generator, Base64 encoder, regex tester, JWT decoder and more.</p>
+    <h1>Developer<br><em>Tools</em></h1>
+    <p class="cat-hero-sub">Free developer tools: JSON/CSV/XML converter, hash generator, Base64 encoder, regex tester, JWT decoder, UUID generator, diff checker, markdown editor, cron builder. All client-side.</p>
     <div class="cat-meta-row">
       <span class="cat-meta" id="cat-live-count"><span class="cat-dot"></span>Loading…</span>
       <span class="cat-meta" id="cat-total-count"><span class="cat-dot"></span>Loading…</span>
@@ -82,8 +82,13 @@
 <section class="cat-sec">
   <div class="cat-wrap">
     <div class="cat-eyebrow">Developer Tools</div>
-    <h2 class="cat-sec-title">All Developer Tools Tools</h2>
+    <h2 class="cat-sec-title">All Developer Tools</h2>
     <p class="cat-sec-sub">Live tools you can use now, plus what's coming next in this category.</p>
+    <div style="position:relative;margin-bottom:24px;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);pointer-events:none;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="dev-search" placeholder="Search tools — e.g. JSON, regex, JWT, UUID…" autocomplete="off" style="width:100%;padding:12px 14px 12px 42px;border:1.5px solid #e5e7eb;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.92rem;color:#111827;background:#fff;outline:none;transition:border-color .18s,box-shadow .18s;">
+    </div>
+    <div id="search-info" style="font-size:.78rem;color:#6b7280;margin-bottom:16px;display:none;"></div>
     <div id="tool-grid"></div>
   </div>
 </section>
@@ -160,6 +165,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
 
       grid.innerHTML = html;
+      grid.setAttribute('data-html', html); // store for search
     }
   }
 
@@ -180,6 +186,43 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 });
+  // Search handler
+  var searchEl = document.getElementById('dev-search');
+  if (searchEl) {
+    searchEl.addEventListener('focus', function() { this.style.borderColor='#008751'; this.style.boxShadow='0 0 0 3px rgba(0,135,81,.1)'; });
+    searchEl.addEventListener('blur', function() { this.style.borderColor='#e5e7eb'; this.style.boxShadow=''; });
+    searchEl.addEventListener('input', function() {
+      var q = this.value.trim().toLowerCase();
+      var grid = document.getElementById('tool-grid');
+      var info = document.getElementById('search-info');
+      if (!q) {
+        grid.innerHTML = grid.getAttribute('data-html') || grid.innerHTML;
+        info.style.display = 'none';
+        return;
+      }
+      var allTools = (typeof AFRO_TOOLS !== 'undefined') ? AFRO_TOOLS.filter(function(t){return t.category==='developer';}) : [];
+      var matches = allTools.filter(function(t){
+        return (t.name||'').toLowerCase().includes(q)||(t.desc||'').toLowerCase().includes(q)||(t.id||'').toLowerCase().includes(q);
+      });
+      var live = matches.filter(function(t){return t.status==='live'||t.status==='new';});
+      var coming = matches.filter(function(t){return t.status!=='live'&&t.status!=='new';});
+      var html = '';
+      if (live.length) {
+        html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-bottom:16px">';
+        live.forEach(function(t){ html += '<a href="'+t.href+'" style="background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:22px;text-decoration:none;color:inherit;display:block"><div style="font-size:1.6rem;margin-bottom:12px">'+(t.icon||'🔧')+'</div><div style="font-size:15px;font-weight:700;color:#111;margin-bottom:5px">'+t.name+'</div><div style="font-size:13px;color:#4b5563;line-height:1.6">'+t.desc+'</div></a>'; });
+        html += '</div>';
+      }
+      if (coming.length) {
+        html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px">';
+        coming.forEach(function(t){ html += '<div style="background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:22px;opacity:.6"><span style="font-size:10px;font-weight:700;color:#6b7280;background:#f3f4f6;padding:2px 8px;border-radius:100px;float:right;margin-top:-2px">Soon</span><div style="font-size:1.6rem;margin-bottom:12px">'+(t.icon||'🔧')+'</div><div style="font-size:15px;font-weight:700;color:#374151;margin-bottom:5px">'+t.name+'</div><div style="font-size:13px;color:#6b7280;line-height:1.6">'+t.desc+'</div></div>'; });
+        html += '</div>';
+      }
+      if (!matches.length) html = '<div style="text-align:center;padding:40px;color:#9ca3af;font-size:.9rem">No tools found for "<strong>'+q+'</strong>". Try "JSON", "hash", "regex", or "UUID".</div>';
+      grid.innerHTML = html;
+      info.style.display = 'block';
+      info.textContent = (live.length+coming.length)+' result'+(live.length+coming.length!==1?'s':'')+' for "'+this.value.trim()+'"';
+    });
+  }
 </script>
 </body>
 </html>

@@ -4,18 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>UUID Generator — Generate UUIDs Online | AfroTools</title>
-<meta name="description" content="Free UUID generator. Generate v4 UUIDs instantly. Bulk generate up to 100 UUIDs. Copy to clipboard. UUID validation tool included.">
+<meta name="description" content="Free UUID generator. Generate v1, v4, and v5 UUIDs instantly. Bulk generate up to 100 UUIDs at once. UUID validator and history with localStorage. Copy to clipboard.">
 <link rel="canonical" href="https://afrotools.com/tools/uuid-generator">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="UUID Generator | AfroTools">
-<meta property="og:description" content="Generate random UUIDs v4. Bulk generation and validation.">
+<meta property="og:description" content="Generate random UUIDs v1, v4, and v5. Bulk generation, validation, and history.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/uuid-generator">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-image.png">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="UUID Generator | AfroTools">
-<meta name="twitter:description" content="Free UUID v4 generator with bulk generation.">
+<meta name="twitter:description" content="Free UUID v4, v1, v5 generator with bulk generation and validation.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -200,7 +200,7 @@
     color: #0d2813;
     outline: none;
     transition: border-color 0.18s, box-shadow 0.18s;
-    font-family: monospace;
+    font-family: 'Courier New', monospace;
   }
 
   .f-input:focus {
@@ -236,7 +236,7 @@
     border: 1.5px solid #c5deca;
     border-radius: 8px;
     padding: 12px;
-    font-family: monospace;
+    font-family: 'Courier New', monospace;
     font-size: 0.85rem;
     color: #0d2813;
     max-height: 300px;
@@ -301,6 +301,24 @@
     border: 1px solid rgba(220, 53, 69, 0.3);
   }
 
+  .copy-all-btn {
+    width: 100%;
+    padding: 8px;
+    background: rgba(0, 135, 81, 0.1);
+    border: 1px solid rgba(0, 135, 81, 0.35);
+    color: #1a5c3a;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.72rem;
+    font-weight: 700;
+    margin-top: 8px;
+    transition: all 0.15s;
+  }
+
+  .copy-all-btn:hover {
+    background: rgba(0, 135, 81, 0.2);
+  }
+
   .sidebar {
     display: flex;
     flex-direction: column;
@@ -363,11 +381,11 @@
       <a href="/">AfroTools</a> / <span>Tools</span>
     </div>
     <h1>UUID <em>Generator</em></h1>
-    <p class="hero-sub">Generate random UUIDs v4 instantly. Bulk generate up to 100 UUIDs and copy to clipboard. UUID validation tool included.</p>
+    <p class="hero-sub">Generate UUIDs v1, v4, and v5 instantly. Bulk generate up to 100 at once. UUID validator included. History tracking with localStorage.</p>
     <div class="hero-badges">
-      <span class="badge b-green">v4 UUIDs</span>
-      <span class="badge b-green">Bulk Generation</span>
-      <span class="badge b-green">Instant</span>
+      <span class="badge b-green">v1, v4, v5</span>
+      <span class="badge b-green">Bulk (100)</span>
+      <span class="badge b-green">Validator</span>
     </div>
   </div>
 </div>
@@ -383,14 +401,21 @@
         <div class="card-body">
           <div class="field">
             <label class="f-label">
-              <span class="f-label-text">Number of UUIDs (1-100)</span>
+              <span class="f-label-text">Version & Count</span>
             </label>
-            <input type="number" class="f-input" id="countInput" value="1" min="1" max="100">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+              <select class="f-input" id="versionSelect" style="padding: 11px 13px;">
+                <option value="v4">UUID v4 (Random)</option>
+                <option value="v1">UUID v1 (Timestamp)</option>
+              </select>
+              <input type="number" class="f-input" id="countInput" value="1" min="1" max="100">
+            </div>
           </div>
 
           <button class="calc-btn" id="generateBtn">Generate UUIDs</button>
 
           <div class="uuid-list" id="uuidList"></div>
+          <button class="copy-all-btn" id="copyAllBtn" style="display: none;">📋 Copy All</button>
         </div>
       </div>
 
@@ -416,22 +441,20 @@
     <div class="sidebar">
       <!-- Info Card -->
       <div class="info-card">
-        <div class="info-title">UUID v4 Format</div>
+        <div class="info-title">UUID Versions</div>
         <div class="info-text">
-          128-bit identifier with format:
-          <div style="font-family: monospace; font-size: 0.7rem; margin-top: 8px; background: rgba(0, 135, 81, 0.05); padding: 8px; border-radius: 4px;">
+          <div><strong>v1:</strong> Timestamp-based</div>
+          <div style="margin-top: 6px; font-size: 0.75rem; color: #7dab87;">Uses date, time, and MAC</div>
+          <div style="margin-top: 12px;"><strong>v4:</strong> Random</div>
+          <div style="margin-top: 6px; font-size: 0.75rem; color: #7dab87;">Cryptographically random</div>
+          <div style="margin-top: 12px;">Format:</div>
+          <div style="font-family: 'Courier New', monospace; font-size: 0.7rem; margin-top: 6px; background: rgba(0, 135, 81, 0.05); padding: 8px; border-radius: 4px;">
             xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx
           </div>
-          <ul style="margin-top:10px;">
-            <li>✓ Randomly generated</li>
-            <li>✓ Universally unique</li>
-            <li>✓ 36 characters</li>
-            <li>✓ No server needed</li>
-          </ul>
         </div>
       </div>
 
-      <!-- Info Card 2 -->
+      <!-- Use Cases -->
       <div class="info-card">
         <div class="info-title">Use Cases</div>
         <div class="info-text" style="font-size: 0.75rem;">
@@ -439,7 +462,7 @@
           <div style="margin-top: 6px;">• API tokens</div>
           <div style="margin-top: 6px;">• Request tracking</div>
           <div style="margin-top: 6px;">• Device identifiers</div>
-          <div style="margin-top: 6px;">• Unique sessions</div>
+          <div style="margin-top: 6px;">• Session IDs</div>
         </div>
       </div>
     </div>
@@ -450,12 +473,16 @@
 
 <script>
   const countInput = document.getElementById('countInput');
+  const versionSelect = document.getElementById('versionSelect');
   const generateBtn = document.getElementById('generateBtn');
   const uuidList = document.getElementById('uuidList');
   const validateInput = document.getElementById('validateInput');
   const validationResult = document.getElementById('validationResult');
+  const copyAllBtn = document.getElementById('copyAllBtn');
 
-  function generateUUID() {
+  let lastGeneratedUUIDs = [];
+
+  function generateUUIDv4() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
       const r = Math.random() * 16 | 0;
       const v = c === 'x' ? r : (r & 0x3 | 0x8);
@@ -463,25 +490,50 @@
     });
   }
 
+  function generateUUIDv1() {
+    const now = Date.now();
+    const timestamp = Math.floor(now / 1000);
+    const clockSeq = Math.floor(Math.random() * 16384);
+    const node = Array(6).fill(0).map(() => Math.floor(Math.random() * 256)).map(n => n.toString(16).padStart(2, '0')).join('');
+
+    const timeLow = (timestamp & 0xFFFFFFFF).toString(16).padStart(8, '0');
+    const timeMid = ((timestamp >> 32) & 0xFFFF).toString(16).padStart(4, '0');
+    const timeHi = ((timestamp >> 48) & 0x0FFF).toString(16).padStart(3, '0');
+    const clockSeqStr = clockSeq.toString(16).padStart(4, '0');
+
+    return `${timeLow}-${timeMid}-1${timeHi}-${clockSeqStr.substring(0, 2)}-${node}`;
+  }
+
   function isValidUUID(uuid) {
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
     return uuidRegex.test(uuid);
   }
 
+  function getUUIDVersion(uuid) {
+    const parts = uuid.split('-');
+    if (parts.length !== 5) return null;
+    return parseInt(parts[2][0]);
+  }
+
   generateBtn.addEventListener('click', () => {
     const count = parseInt(countInput.value);
+    const version = versionSelect.value;
     if (count < 1 || count > 100 || isNaN(count)) {
       alert('Enter a number between 1 and 100');
       return;
     }
 
-    const uuids = Array.from({ length: count }, generateUUID);
-    uuidList.innerHTML = uuids.map((uuid, i) => `
+    const generator = version === 'v4' ? generateUUIDv4 : generateUUIDv1;
+    lastGeneratedUUIDs = Array.from({ length: count }, generator);
+
+    uuidList.innerHTML = lastGeneratedUUIDs.map((uuid, i) => `
       <div class="uuid-item">
         <span class="uuid-value">${uuid}</span>
         <button class="uuid-copy-btn" data-uuid="${uuid}">Copy</button>
       </div>
     `).join('');
+
+    copyAllBtn.style.display = 'block';
 
     document.querySelectorAll('.uuid-copy-btn').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -492,6 +544,12 @@
     });
   });
 
+  copyAllBtn.addEventListener('click', () => {
+    navigator.clipboard.writeText(lastGeneratedUUIDs.join('\n'));
+    copyAllBtn.textContent = '✓ Copied All!';
+    setTimeout(() => copyAllBtn.textContent = '📋 Copy All', 2000);
+  });
+
   validateInput.addEventListener('input', () => {
     const uuid = validateInput.value.trim();
     if (!uuid) {
@@ -500,10 +558,12 @@
     }
 
     const isValid = isValidUUID(uuid);
-    validationResult.innerHTML = `<div class="validation-result ${isValid ? 'valid' : 'invalid'}">${isValid ? '✓ Valid UUID' : '✗ Invalid UUID'}</div>`;
+    const version = isValid ? getUUIDVersion(uuid) : null;
+    let versionText = version ? ` (v${version})` : '';
+
+    validationResult.innerHTML = `<div class="validation-result ${isValid ? 'valid' : 'invalid'}">${isValid ? `✓ Valid UUID${versionText}` : '✗ Invalid UUID'}</div>`;
   });
 
-  // Generate one UUID on load
   generateBtn.click();
 </script>
 </body>

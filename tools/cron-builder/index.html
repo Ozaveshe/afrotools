@@ -4,18 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cron Builder — Build Cron Expressions | AfroTools</title>
-<meta name="description" content="Free cron expression builder. Visual cron builder with dropdowns. Human-readable descriptions and next run times. Common presets included.">
+<meta name="description" content="Free cron expression builder. Visual cron builder with dropdowns. Human-readable descriptions and next 5 run times. Common presets for every minute, hourly, daily, weekly, monthly.">
 <link rel="canonical" href="https://afrotools.com/tools/cron-builder">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Cron Builder | AfroTools">
-<meta property="og:description" content="Build cron expressions visually with human-readable descriptions.">
+<meta property="og:description" content="Build cron expressions visually with human-readable descriptions and upcoming run times.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/cron-builder">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-image.png">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Cron Builder | AfroTools">
-<meta name="twitter:description" content="Visual cron expression builder tool.">
+<meta name="twitter:description" content="Visual cron expression builder with preview times.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -200,7 +200,7 @@
     color: #0d2813;
     outline: none;
     transition: border-color 0.18s, box-shadow 0.18s;
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Courier New', monospace;
   }
 
   .f-input:focus {
@@ -243,7 +243,7 @@
     display: block;
     font-size: 0.65rem;
     color: #7dab87;
-    font-family: monospace;
+    font-family: 'Courier New', monospace;
   }
 
   .output-box {
@@ -251,7 +251,7 @@
     border: 1.5px solid #c5deca;
     border-radius: 6px;
     padding: 12px;
-    font-family: monospace;
+    font-family: 'Courier New', monospace;
     font-size: 0.9rem;
     color: #0d2813;
     word-break: break-all;
@@ -296,6 +296,15 @@
 
   .runs-list strong {
     color: #244d2c;
+  }
+
+  .runs-item {
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(0, 135, 81, 0.1);
+  }
+
+  .runs-item:last-child {
+    border-bottom: none;
   }
 
   .sidebar {
@@ -346,11 +355,11 @@
       <a href="/">AfroTools</a> / <span>Tools</span>
     </div>
     <h1>Cron <em>Builder</em></h1>
-    <p class="hero-sub">Build cron expressions visually with dropdowns. Human-readable descriptions and preview of next 5 run times.</p>
+    <p class="hero-sub">Build cron expressions visually with dropdowns. Human-readable descriptions and preview of next 5 run times. Common presets included.</p>
     <div class="hero-badges">
       <span class="badge b-green">Visual Builder</span>
       <span class="badge b-green">Descriptions</span>
-      <span class="badge b-green">Preview</span>
+      <span class="badge b-green">Next 5 Runs</span>
     </div>
   </div>
 </div>
@@ -361,25 +370,29 @@
       <!-- Presets Card -->
       <div class="card">
         <div class="card-head">
-          <span class="card-title">Common Presets</span>
+          <span class="card-title">Quick Presets</span>
         </div>
         <div class="card-body">
           <div class="preset-grid">
-            <button class="preset-btn" data-cron="0 9 * * *" data-name="Every day at 9 AM">
-              <span class="preset-name">Daily at 9 AM</span>
-              <span class="preset-value">0 9 * * *</span>
+            <button class="preset-btn" data-cron="* * * * *" data-name="Every minute">
+              <span class="preset-name">Every Minute</span>
+              <span class="preset-value">* * * * *</span>
             </button>
-            <button class="preset-btn" data-cron="0 0 * * 0" data-name="Every Sunday at midnight">
-              <span class="preset-name">Weekly (Sunday)</span>
-              <span class="preset-value">0 0 * * 0</span>
+            <button class="preset-btn" data-cron="0 * * * *" data-name="Every hour">
+              <span class="preset-name">Every Hour</span>
+              <span class="preset-value">0 * * * *</span>
+            </button>
+            <button class="preset-btn" data-cron="0 0 * * *" data-name="Daily at midnight">
+              <span class="preset-name">Daily at Midnight</span>
+              <span class="preset-value">0 0 * * *</span>
+            </button>
+            <button class="preset-btn" data-cron="0 0 * * 1" data-name="Every Monday">
+              <span class="preset-name">Weekly (Monday)</span>
+              <span class="preset-value">0 0 * * 1</span>
             </button>
             <button class="preset-btn" data-cron="0 0 1 * *" data-name="First day of month">
-              <span class="preset-name">Monthly</span>
+              <span class="preset-name">Monthly (1st)</span>
               <span class="preset-value">0 0 1 * *</span>
-            </button>
-            <button class="preset-btn" data-cron="*/15 * * * *" data-name="Every 15 minutes">
-              <span class="preset-name">Every 15 min</span>
-              <span class="preset-value">*/15 * * * *</span>
             </button>
           </div>
         </div>
@@ -402,7 +415,7 @@
             <label class="f-label">
               <span class="f-label-text">Hour (0-23)</span>
             </label>
-            <input type="text" class="f-input" id="hour" value="*" placeholder="*, 9, 12, 18">
+            <input type="text" class="f-input" id="hour" value="0" placeholder="*, 9, 12, 18">
           </div>
 
           <div class="field">
@@ -434,10 +447,13 @@
           <span class="card-title">Cron Expression</span>
         </div>
         <div class="card-body">
-          <div class="output-box" id="cronOutput">0 9 * * *</div>
+          <div class="output-box" id="cronOutput">0 0 * * *</div>
           <button class="copy-btn" id="copyBtn">📋 Copy Expression</button>
-          <div class="description-box" id="cronDesc">Every day at 9:00 AM</div>
-          <div class="runs-list" id="nextRuns"></div>
+          <div class="description-box" id="cronDesc">Daily at midnight</div>
+          <div class="runs-list" id="nextRuns">
+            <strong style="display: block; margin-bottom: 6px;">Next 5 runs:</strong>
+            <div id="runsList"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -449,7 +465,7 @@
         <div class="info-title">Cron Format</div>
         <div class="info-text">
           5-field cron format:
-          <div style="font-family: monospace; margin-top: 8px; background: rgba(0, 135, 81, 0.05); padding: 8px; border-radius: 4px;">
+          <div style="font-family: 'Courier New', monospace; margin-top: 8px; background: rgba(0, 135, 81, 0.05); padding: 8px; border-radius: 4px; font-size: 0.75rem;">
             <div>Minute Hour Day Month DayOfWeek</div>
           </div>
           <ul style="margin-top:10px;">
@@ -485,7 +501,7 @@
   const dow = document.getElementById('dow');
   const cronOutput = document.getElementById('cronOutput');
   const cronDesc = document.getElementById('cronDesc');
-  const nextRuns = document.getElementById('nextRuns');
+  const nextRuns = document.getElementById('runsList');
   const copyBtn = document.getElementById('copyBtn');
   const presetBtns = document.querySelectorAll('.preset-btn');
 
@@ -495,37 +511,122 @@
     const cron = [minute.value, hour.value, day.value, month.value, dow.value].join(' ');
     cronOutput.textContent = cron;
     describeCron(cron);
+    calculateNextRuns(cron);
   }
 
   function describeCron(cron) {
     const parts = cron.split(' ');
     const [m, h, d, mo, dow_val] = parts;
 
-    let desc = 'Every ';
-    let isDaily = h !== '*';
+    let desc = '';
 
     if (m === '*' && h === '*') {
-      desc += 'minute';
+      desc = 'Every minute';
     } else if (m.includes('/')) {
       const interval = parseInt(m.split('/')[1]);
-      desc += `${interval} minutes`;
-    } else if (h === '*') {
-      desc += 'hour at minute ' + m;
-    } else {
-      if (d !== '*' || mo !== '*' || dow_val !== '*') {
-        if (d !== '*') desc += `day ${d} `;
-        if (mo !== '*') desc += `of month ${mo} `;
-        if (dow_val !== '*' && dow_val !== '0-6') {
-          const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-          desc += `(${days[parseInt(dow_val)]}) `;
-        }
+      if (h === '*') {
+        desc = `Every ${interval} minutes`;
       } else {
-        desc += 'day ';
+        desc = `Every ${interval} minutes, every hour`;
       }
-      desc += `at ${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+    } else if (h === '*') {
+      desc = `Every hour at minute ${m}`;
+    } else if (h === '0' && m === '0') {
+      if (d !== '*' && d !== '1') {
+        desc = `Daily at midnight on day ${d}`;
+      } else if (dow_val !== '*') {
+        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const dayNames = [];
+        if (dow_val.includes(',')) {
+          dow_val.split(',').forEach(dv => {
+            if (!isNaN(dv)) dayNames.push(days[parseInt(dv)]);
+          });
+          desc = `${dayNames.join(', ')} at midnight`;
+        } else if (!isNaN(dow_val)) {
+          desc = `${days[parseInt(dow_val)]} at midnight`;
+        } else {
+          desc = 'Daily at midnight';
+        }
+      } else if (mo !== '*') {
+        desc = `Daily at midnight in month ${mo}`;
+      } else {
+        desc = 'Daily at midnight';
+      }
+    } else {
+      const hour_padded = String(h).padStart(2, '0');
+      const min_padded = String(m).padStart(2, '0');
+      desc = `At ${hour_padded}:${min_padded}`;
+
+      if (dow_val !== '*' && dow_val !== '0-6') {
+        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        if (!isNaN(dow_val)) {
+          desc += ` on ${days[parseInt(dow_val)]}`;
+        }
+      }
+      if (d !== '*') {
+        desc += ` on day ${d}`;
+      }
     }
 
     cronDesc.textContent = desc;
+  }
+
+  function calculateNextRuns(cron) {
+    const parts = cron.split(' ');
+    const [cron_m, cron_h, cron_d, cron_mo, cron_dow] = parts;
+
+    const nextRunsList = [];
+    let current = new Date();
+
+    for (let i = 0; i < 5 && nextRunsList.length < 5; i++) {
+      current = new Date(current.getTime() + 60000);
+
+      const cm = current.getMinutes();
+      const ch = current.getHours();
+      const cd = current.getDate();
+      const cmon = current.getMonth() + 1;
+      const cdow = current.getDay();
+
+      let matches = true;
+
+      if (cron_m !== '*' && !matchesCronField(cm, cron_m)) matches = false;
+      if (cron_h !== '*' && !matchesCronField(ch, cron_h)) matches = false;
+      if (cron_d !== '*' && !matchesCronField(cd, cron_d)) matches = false;
+      if (cron_mo !== '*' && !matchesCronField(cmon, cron_mo)) matches = false;
+      if (cron_dow !== '*' && !matchesCronField(cdow, cron_dow)) matches = false;
+
+      if (matches) {
+        nextRunsList.push(current.toLocaleString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        }));
+      }
+    }
+
+    nextRuns.innerHTML = nextRunsList.map((run, i) => `
+      <div class="runs-item">${i + 1}. ${run}</div>
+    `).join('');
+  }
+
+  function matchesCronField(value, field) {
+    if (field === '*') return true;
+    if (field.includes(',')) {
+      return field.split(',').some(f => matchesCronField(value, f.trim()));
+    }
+    if (field.includes('/')) {
+      const [range, step] = field.split('/');
+      const stepNum = parseInt(step);
+      if (range === '*') return value % stepNum === 0;
+      const [start, end] = range.split('-').map(Number);
+      return value >= start && value <= end && (value - start) % stepNum === 0;
+    }
+    if (field.includes('-')) {
+      const [start, end] = field.split('-').map(Number);
+      return value >= start && value <= end;
+    }
+    return parseInt(field) === value;
   }
 
   inputs.forEach(input => {

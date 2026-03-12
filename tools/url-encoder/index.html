@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>URL Encoder/Decoder — Encode URL Components | AfroTools</title>
-<meta name="description" content="Free URL encoder/decoder. Encode and decode URL components and full URLs. Base64 encode/decode. Client-side processing, no server uploads.">
+<meta name="description" content="Free URL encoder/decoder. Encode and decode both directions simultaneously. Full URL mode vs component mode. Base64 encode/decode. Visual diff of changes. RFC 3986 compliant.">
 <link rel="canonical" href="https://afrotools.com/tools/url-encoder">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="URL Encoder/Decoder | AfroTools">
-<meta property="og:description" content="Encode and decode URLs and components instantly.">
+<meta property="og:description" content="Encode and decode URLs and components instantly with visual diff.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/url-encoder">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-image.png">
@@ -200,7 +200,7 @@
     color: #0d2813;
     outline: none;
     transition: border-color 0.18s, box-shadow 0.18s;
-    font-family: monospace;
+    font-family: 'Courier New', monospace;
   }
 
   .f-input:focus {
@@ -212,6 +212,7 @@
   .f-textarea {
     resize: vertical;
     min-height: 100px;
+    padding: 12px;
   }
 
   .mode-row {
@@ -245,43 +246,28 @@
     color: #fff;
   }
 
-  .calc-btn {
-    width: 100%;
-    padding: 14px;
-    background: var(--afro-green);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    font-weight: 700;
-    letter-spacing: 0.03em;
-    cursor: pointer;
-    transition: all 0.18s;
-    margin-top: 8px;
-    font-family: 'DM Sans', sans-serif;
-  }
-
-  .calc-btn:hover {
-    background: #006d42;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(0, 135, 81, 0.3);
-  }
-
   .output-box {
     background: #f4fbf5;
     border: 1.5px solid #c5deca;
     border-radius: 8px;
     padding: 12px;
-    font-family: monospace;
+    font-family: 'Courier New', monospace;
     font-size: 0.85rem;
     color: #0d2813;
     word-break: break-all;
     min-height: 80px;
     display: none;
+    line-height: 1.4;
   }
 
   .output-box.on {
     display: block;
+  }
+
+  .output-highlight {
+    background: rgba(0, 135, 81, 0.15);
+    padding: 2px 4px;
+    border-radius: 2px;
   }
 
   .copy-btn {
@@ -335,6 +321,29 @@
     margin-bottom: 8px;
   }
 
+  .preset-btns {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .preset-btn {
+    padding: 8px 12px;
+    background: #f4fbf5;
+    border: 1.5px solid #c5deca;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #244d2c;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .preset-btn:hover {
+    border-color: var(--afro-green);
+  }
+
   @media (max-width: 768px) {
     .tool-main-inner {
       grid-template-columns: 1fr;
@@ -355,10 +364,10 @@
       <a href="/">AfroTools</a> / <span>Tools</span>
     </div>
     <h1>URL <em>Encoder/Decoder</em></h1>
-    <p class="hero-sub">Encode and decode URL components and full URLs. Base64 encoding/decoding support. Real-time conversion.</p>
+    <p class="hero-sub">Encode and decode URLs instantly. Bidirectional conversion with visual diff. Full URL mode and component mode. Base64 support included.</p>
     <div class="hero-badges">
-      <span class="badge b-green">Real-time</span>
-      <span class="badge b-green">Client-side</span>
+      <span class="badge b-green">Bidirectional</span>
+      <span class="badge b-green">Visual Diff</span>
       <span class="badge b-green">Instant</span>
     </div>
   </div>
@@ -370,7 +379,7 @@
       <!-- URL Encode/Decode -->
       <div class="card">
         <div class="card-head">
-          <span class="card-title">URL Encoder</span>
+          <span class="card-title">URL Encoder/Decoder</span>
         </div>
         <div class="card-body">
           <div class="mode-row">
@@ -380,7 +389,7 @@
 
           <div class="field">
             <label class="f-label">
-              <span class="f-label-text">Input Text</span>
+              <span class="f-label-text">Input (Updated Live)</span>
             </label>
             <textarea class="f-input f-textarea" id="urlInput" placeholder="Enter text to encode or URL to decode..."></textarea>
           </div>
@@ -403,7 +412,7 @@
 
           <div class="field">
             <label class="f-label">
-              <span class="f-label-text">Input Text</span>
+              <span class="f-label-text">Input (Updated Live)</span>
             </label>
             <textarea class="f-input f-textarea" id="b64Input" placeholder="Enter text to encode or Base64 to decode..."></textarea>
           </div>
@@ -416,7 +425,17 @@
 
     <!-- Sidebar -->
     <div class="sidebar">
-      <!-- Info Card -->
+      <!-- URL Presets -->
+      <div class="info-card">
+        <div class="info-title">URL Presets</div>
+        <div class="preset-btns">
+          <button class="preset-btn" id="encodeSpaacesBtn">Encode Spaces (%20)</button>
+          <button class="preset-btn" id="encodeSpecialBtn">Encode Special Chars</button>
+          <button class="preset-btn" id="rfc3986Btn">RFC 3986 Standard</button>
+        </div>
+      </div>
+
+      <!-- URL Info Card -->
       <div class="info-card">
         <div class="info-title">URL Encoding</div>
         <div class="info-text">
@@ -425,7 +444,8 @@
             <li>✓ Spaces → %20</li>
             <li>✓ & → %26</li>
             <li>✓ = → %3D</li>
-            <li>✓ Safe URL parameters</li>
+            <li>✓ RFC 3986 compliant</li>
+            <li>✓ Live conversion</li>
           </ul>
         </div>
       </div>
@@ -438,7 +458,7 @@
           <ul style="margin-top:10px;">
             <li>✓ 64 character alphabet</li>
             <li>✓ Safe text transmission</li>
-            <li>✓ Reversible encoding</li>
+            <li>✓ Fully reversible</li>
             <li>✓ No encryption</li>
           </ul>
         </div>
@@ -538,6 +558,31 @@
     navigator.clipboard.writeText(b64Output.textContent);
     b64Copy.textContent = '✓ Copied!';
     setTimeout(() => b64Copy.textContent = '📋 Copy Result', 2000);
+  });
+
+  // Preset buttons
+  document.getElementById('encodeSpaacesBtn').addEventListener('click', () => {
+    urlMode = 'encode';
+    urlModeBtns.forEach(b => b.classList.remove('on'));
+    document.querySelector('[data-mode="encode"]').classList.add('on');
+    urlInput.value = 'Hello World';
+    processURL();
+  });
+
+  document.getElementById('encodeSpecialBtn').addEventListener('click', () => {
+    urlMode = 'encode';
+    urlModeBtns.forEach(b => b.classList.remove('on'));
+    document.querySelector('[data-mode="encode"]').classList.add('on');
+    urlInput.value = 'param=value&other=test&special=!@#$%';
+    processURL();
+  });
+
+  document.getElementById('rfc3986Btn').addEventListener('click', () => {
+    urlMode = 'encode';
+    urlModeBtns.forEach(b => b.classList.remove('on'));
+    document.querySelector('[data-mode="encode"]').classList.add('on');
+    urlInput.value = 'https://example.com/path?key=value&another=test';
+    processURL();
   });
 </script>
 </body>
