@@ -223,8 +223,7 @@ function onSlider(el) {const v=parseInt(el.value);document.getElementById('gross
 function onInput(el) {const v=Math.min(Math.max(parseInt(el.value)||0,1000000),200000000);document.getElementById('salarySlider').value=v;document.getElementById('sliderVal').textContent=fmt(parseInt(el.value)||0);updateSliderFill(document.getElementById('salarySlider'));}
 function updateSliderFill(el) {
   const p = ((parseInt(el.value) - parseInt(el.min)) / (parseInt(el.max) - parseInt(el.min))) * 100;
-  const accent = getComputedStyle(document.documentElement).getPropertyValue('--calc-accent').trim() || '#008751';
-  el.style.background = `linear-gradient(to right, ${accent} 0%, ${accent} ${p}%, #d1e8d5 ${p}%, #d1e8d5 100%)`;
+  el.style.background = `linear-gradient(to right, var(--calc-accent,#008751) 0%, var(--calc-accent,#008751) ${p}%, #e2e8f0 ${p}%, #e2e8f0 100%)`;
 }%,#c5deca ${p}%,#c5deca 100%)`;}
 updateSliderFill(document.getElementById('salarySlider'));
 function togItem(el){el.classList.toggle('on');}

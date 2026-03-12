@@ -287,7 +287,10 @@ const fmt=n=>'XAF '+Math.round(Math.abs(n)).toLocaleString('en-CG');
 const pct=r=>{const v=r*100;return(v%1===0?v.toFixed(0):parseFloat(v.toFixed(2)).toString())+'%'};
 function onSlider(e){const v=parseInt(e.value);document.getElementById('grossSalary').value=v;document.getElementById('sliderVal').textContent=fmt(v);updateSliderFill(e)}
 function onInput(e){const v=Math.min(Math.max(parseInt(e.value)||0,50000),10000000),s=document.getElementById('salarySlider');s.value=v;document.getElementById('sliderVal').textContent=fmt(parseInt(e.value)||0);updateSliderFill(s)}
-function updateSliderFill(e){const p=((parseInt(e.value)-parseInt(e.min))/(parseInt(e.max)-parseInt(e.min)))*100;e.style.background=`linear-gradient(to right, #009543 0%, #009543 ${p}%, #c5deca ${p}%, #c5deca 100%)`}
+function updateSliderFill(el) {
+  const p = ((parseInt(el.value) - parseInt(el.min)) / (parseInt(el.max) - parseInt(el.min))) * 100;
+  el.style.background = `linear-gradient(to right, var(--calc-accent,#008751) 0%, var(--calc-accent,#008751) ${p}%, #e2e8f0 ${p}%, #e2e8f0 100%)`;
+}
 updateSliderFill(document.getElementById('salarySlider'));
 function togItem(e){e.classList.toggle('on')}
 function isOn(t){return!!document.querySelector(`[data-tog="${t}"]`)?.classList.contains('on')}

@@ -18,15 +18,295 @@
 <meta name="twitter:description" content="Sudan VAT 17% standard rate. Instant calculator with multi-item invoice mode.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com"},{"@type":"ListItem","position":2,"name":"Sudan","item":"https://afrotools.com/sd"},{"@type":"ListItem","position":3,"name":"Sudan VAT Calculator","item":"https://afrotools.com/sudan/sd-vat"}]}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Sudan VAT Calculator 2026","url":"https://afrotools.com/sudan/sd-vat","description":"Calculate Sudan VAT: standard 17%. Zero-rated exports. Exempt: Basic food, Medical services, Agricultural inputs. Multi-item invoice mode.","applicationCategory":"FinanceApplication","operatingSystem":"Web","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"SDG"},"provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com"},{"@type":"ListItem","position":2,"name":"Sudan","item":"https://afrotools.com/sd"},{"@type":"ListItem","position":3,"name":"Sudan VAT Calculator","item":"https://afrotools.com/sudan/sd-vat"}]}
+// AI ADVISOR
+const AI_MSGS = [];
+async function sendAI() {
+  const input = document.getElementById('aiInput');
+  const msgsEl = document.getElementById('aiMsgs');
+  const sendBtn = document.getElementById('aiSend');
+  const q = input.value.trim();
+  if (!q) return;
+  
+  // Append user message
+  AI_MSGS.push({ role: 'user', content: q });
+  msgsEl.innerHTML += `<div class="ai-msg-u">${q}</div>`;
+  input.value = '';
+  sendBtn.disabled = true;
+  
+  // Show thinking
+  const thinkEl = document.createElement('div');
+  thinkEl.className = 'ai-thinking';
+  thinkEl.textContent = 'Thinking…';
+  msgsEl.appendChild(thinkEl);
+  msgsEl.scrollTop = msgsEl.scrollHeight;
+  
+  // Get context from current calculation
+  const vatAmountEl = document.getElementById('resVat') || document.getElementById('vatAmount');
+  const rateEl = document.getElementById('resRate') || document.getElementById('vatRate');
+  const context = vatAmountEl ? `Current VAT calc: rate=${rateEl?.textContent||''}, VAT amount=${vatAmountEl?.textContent||''}` : '';
+  
+  try {
+    const res = await fetch('/.netlify/functions/ai-advisor', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        messages: AI_MSGS,
+        tool: 'sd-vat',
+        context
+      })
+    });
+    const data = await res.json();
+    thinkEl.remove();
+    const reply = data.reply || 'Could not get a response.';
+    AI_MSGS.push({ role: 'assistant', content: reply });
+    msgsEl.innerHTML += `<div class="ai-msg-a">${reply}</div>`;
+  } catch {
+    thinkEl.remove();
+    msgsEl.innerHTML += `<div class="ai-msg-a" style="color:rgba(255,100,100,.7)">Connection error. Please try again.</div>`;
+  }
+  
+  sendBtn.disabled = false;
+  msgsEl.scrollTop = msgsEl.scrollHeight;
+  document.getElementById('aiStatus').style.display = 'none';
+}
+
+document.getElementById('aiInput')?.addEventListener('keypress', e => {
+  if (e.key === 'Enter') sendAI();
+});
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Sudan VAT Calculator 2026","url":"https://afrotools.com/sudan/sd-vat","description":"Calculate Sudan VAT: standard 17%. Zero-rated exports. Exempt: Basic food, Medical services, Agricultural inputs. Multi-item invoice mode.","applicationCategory":"FinanceApplication","operatingSystem":"Web","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"SDG"},"provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
+// AI ADVISOR
+const AI_MSGS = [];
+async function sendAI() {
+  const input = document.getElementById('aiInput');
+  const msgsEl = document.getElementById('aiMsgs');
+  const sendBtn = document.getElementById('aiSend');
+  const q = input.value.trim();
+  if (!q) return;
+  
+  // Append user message
+  AI_MSGS.push({ role: 'user', content: q });
+  msgsEl.innerHTML += `<div class="ai-msg-u">${q}</div>`;
+  input.value = '';
+  sendBtn.disabled = true;
+  
+  // Show thinking
+  const thinkEl = document.createElement('div');
+  thinkEl.className = 'ai-thinking';
+  thinkEl.textContent = 'Thinking…';
+  msgsEl.appendChild(thinkEl);
+  msgsEl.scrollTop = msgsEl.scrollHeight;
+  
+  // Get context from current calculation
+  const vatAmountEl = document.getElementById('resVat') || document.getElementById('vatAmount');
+  const rateEl = document.getElementById('resRate') || document.getElementById('vatRate');
+  const context = vatAmountEl ? `Current VAT calc: rate=${rateEl?.textContent||''}, VAT amount=${vatAmountEl?.textContent||''}` : '';
+  
+  try {
+    const res = await fetch('/.netlify/functions/ai-advisor', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        messages: AI_MSGS,
+        tool: 'sd-vat',
+        context
+      })
+    });
+    const data = await res.json();
+    thinkEl.remove();
+    const reply = data.reply || 'Could not get a response.';
+    AI_MSGS.push({ role: 'assistant', content: reply });
+    msgsEl.innerHTML += `<div class="ai-msg-a">${reply}</div>`;
+  } catch {
+    thinkEl.remove();
+    msgsEl.innerHTML += `<div class="ai-msg-a" style="color:rgba(255,100,100,.7)">Connection error. Please try again.</div>`;
+  }
+  
+  sendBtn.disabled = false;
+  msgsEl.scrollTop = msgsEl.scrollHeight;
+  document.getElementById('aiStatus').style.display = 'none';
+}
+
+document.getElementById('aiInput')?.addEventListener('keypress', e => {
+  if (e.key === 'Enter') sendAI();
+});
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
 <link rel="stylesheet" href="/assets/css/global.min.css">
-<script src="/assets/js/components/navbar.min.js" defer></script>
-<script src="/assets/js/components/footer.min.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="/assets/js/components/navbar.min.js" defer>
+// AI ADVISOR
+const AI_MSGS = [];
+async function sendAI() {
+  const input = document.getElementById('aiInput');
+  const msgsEl = document.getElementById('aiMsgs');
+  const sendBtn = document.getElementById('aiSend');
+  const q = input.value.trim();
+  if (!q) return;
+  
+  // Append user message
+  AI_MSGS.push({ role: 'user', content: q });
+  msgsEl.innerHTML += `<div class="ai-msg-u">${q}</div>`;
+  input.value = '';
+  sendBtn.disabled = true;
+  
+  // Show thinking
+  const thinkEl = document.createElement('div');
+  thinkEl.className = 'ai-thinking';
+  thinkEl.textContent = 'Thinking…';
+  msgsEl.appendChild(thinkEl);
+  msgsEl.scrollTop = msgsEl.scrollHeight;
+  
+  // Get context from current calculation
+  const vatAmountEl = document.getElementById('resVat') || document.getElementById('vatAmount');
+  const rateEl = document.getElementById('resRate') || document.getElementById('vatRate');
+  const context = vatAmountEl ? `Current VAT calc: rate=${rateEl?.textContent||''}, VAT amount=${vatAmountEl?.textContent||''}` : '';
+  
+  try {
+    const res = await fetch('/.netlify/functions/ai-advisor', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        messages: AI_MSGS,
+        tool: 'sd-vat',
+        context
+      })
+    });
+    const data = await res.json();
+    thinkEl.remove();
+    const reply = data.reply || 'Could not get a response.';
+    AI_MSGS.push({ role: 'assistant', content: reply });
+    msgsEl.innerHTML += `<div class="ai-msg-a">${reply}</div>`;
+  } catch {
+    thinkEl.remove();
+    msgsEl.innerHTML += `<div class="ai-msg-a" style="color:rgba(255,100,100,.7)">Connection error. Please try again.</div>`;
+  }
+  
+  sendBtn.disabled = false;
+  msgsEl.scrollTop = msgsEl.scrollHeight;
+  document.getElementById('aiStatus').style.display = 'none';
+}
+
+document.getElementById('aiInput')?.addEventListener('keypress', e => {
+  if (e.key === 'Enter') sendAI();
+});
+</script>
+<script src="/assets/js/components/footer.min.js" defer>
+// AI ADVISOR
+const AI_MSGS = [];
+async function sendAI() {
+  const input = document.getElementById('aiInput');
+  const msgsEl = document.getElementById('aiMsgs');
+  const sendBtn = document.getElementById('aiSend');
+  const q = input.value.trim();
+  if (!q) return;
+  
+  // Append user message
+  AI_MSGS.push({ role: 'user', content: q });
+  msgsEl.innerHTML += `<div class="ai-msg-u">${q}</div>`;
+  input.value = '';
+  sendBtn.disabled = true;
+  
+  // Show thinking
+  const thinkEl = document.createElement('div');
+  thinkEl.className = 'ai-thinking';
+  thinkEl.textContent = 'Thinking…';
+  msgsEl.appendChild(thinkEl);
+  msgsEl.scrollTop = msgsEl.scrollHeight;
+  
+  // Get context from current calculation
+  const vatAmountEl = document.getElementById('resVat') || document.getElementById('vatAmount');
+  const rateEl = document.getElementById('resRate') || document.getElementById('vatRate');
+  const context = vatAmountEl ? `Current VAT calc: rate=${rateEl?.textContent||''}, VAT amount=${vatAmountEl?.textContent||''}` : '';
+  
+  try {
+    const res = await fetch('/.netlify/functions/ai-advisor', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        messages: AI_MSGS,
+        tool: 'sd-vat',
+        context
+      })
+    });
+    const data = await res.json();
+    thinkEl.remove();
+    const reply = data.reply || 'Could not get a response.';
+    AI_MSGS.push({ role: 'assistant', content: reply });
+    msgsEl.innerHTML += `<div class="ai-msg-a">${reply}</div>`;
+  } catch {
+    thinkEl.remove();
+    msgsEl.innerHTML += `<div class="ai-msg-a" style="color:rgba(255,100,100,.7)">Connection error. Please try again.</div>`;
+  }
+  
+  sendBtn.disabled = false;
+  msgsEl.scrollTop = msgsEl.scrollHeight;
+  document.getElementById('aiStatus').style.display = 'none';
+}
+
+document.getElementById('aiInput')?.addEventListener('keypress', e => {
+  if (e.key === 'Enter') sendAI();
+});
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js">
+// AI ADVISOR
+const AI_MSGS = [];
+async function sendAI() {
+  const input = document.getElementById('aiInput');
+  const msgsEl = document.getElementById('aiMsgs');
+  const sendBtn = document.getElementById('aiSend');
+  const q = input.value.trim();
+  if (!q) return;
+  
+  // Append user message
+  AI_MSGS.push({ role: 'user', content: q });
+  msgsEl.innerHTML += `<div class="ai-msg-u">${q}</div>`;
+  input.value = '';
+  sendBtn.disabled = true;
+  
+  // Show thinking
+  const thinkEl = document.createElement('div');
+  thinkEl.className = 'ai-thinking';
+  thinkEl.textContent = 'Thinking…';
+  msgsEl.appendChild(thinkEl);
+  msgsEl.scrollTop = msgsEl.scrollHeight;
+  
+  // Get context from current calculation
+  const vatAmountEl = document.getElementById('resVat') || document.getElementById('vatAmount');
+  const rateEl = document.getElementById('resRate') || document.getElementById('vatRate');
+  const context = vatAmountEl ? `Current VAT calc: rate=${rateEl?.textContent||''}, VAT amount=${vatAmountEl?.textContent||''}` : '';
+  
+  try {
+    const res = await fetch('/.netlify/functions/ai-advisor', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        messages: AI_MSGS,
+        tool: 'sd-vat',
+        context
+      })
+    });
+    const data = await res.json();
+    thinkEl.remove();
+    const reply = data.reply || 'Could not get a response.';
+    AI_MSGS.push({ role: 'assistant', content: reply });
+    msgsEl.innerHTML += `<div class="ai-msg-a">${reply}</div>`;
+  } catch {
+    thinkEl.remove();
+    msgsEl.innerHTML += `<div class="ai-msg-a" style="color:rgba(255,100,100,.7)">Connection error. Please try again.</div>`;
+  }
+  
+  sendBtn.disabled = false;
+  msgsEl.scrollTop = msgsEl.scrollHeight;
+  document.getElementById('aiStatus').style.display = 'none';
+}
+
+document.getElementById('aiInput')?.addEventListener('keypress', e => {
+  if (e.key === 'Enter') sendAI();
+});
+</script>
 <style>
   :root {
     --acc: #CC0000;
@@ -175,6 +455,26 @@
   .sec-title{font-size:clamp(1.3rem,2.5vw,1.7rem);font-weight:800;color:#1a2e22;letter-spacing:-.02em;margin-bottom:20px}
 
   @media(max-width:900px){.tool-main-inner{grid-template-columns:1fr}.faq-grid{grid-template-columns:1fr}}
+  .ai-advisor-card{background:linear-gradient(160deg,#0a1f0e 0%,#0f2818 100%);border-radius:10px;border:1px solid rgba(245,215,110,.12);overflow:hidden}
+.ai-advisor-head{padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:9px}
+.ai-dot{width:8px;height:8px;border-radius:50%;background:#f5d76e;animation:aiPulse 2s infinite;flex-shrink:0}
+@keyframes aiPulse{0%,100%{opacity:1}50%{opacity:.3}}
+.ai-title{font-size:.72rem;font-weight:700;letter-spacing:.06em;color:#fff}
+.ai-by{font-size:.62rem;color:rgba(255,255,255,.28);margin-left:auto}
+.ai-advisor-body{padding:14px 18px}
+.ai-status{font-size:.78rem;color:rgba(255,255,255,.5);line-height:1.6;margin-bottom:10px}
+.ai-chat{margin-top:8px}
+.ai-msgs{max-height:200px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
+.ai-msg-u{font-size:.76rem;padding:7px 10px;background:rgba(0,135,81,.22);color:rgba(255,255,255,.85);border-radius:6px;align-self:flex-end;max-width:90%}
+.ai-msg-a{font-size:.76rem;padding:7px 10px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.72);border-radius:6px;align-self:flex-start;line-height:1.55}
+.ai-input-row{display:flex;gap:6px}
+.ai-input{flex:1;padding:8px 11px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:5px;font-size:.76rem;color:#fff;outline:none;font-family:'DM Sans',sans-serif}
+.ai-input::placeholder{color:rgba(255,255,255,.28)}
+.ai-input:focus{border-color:rgba(245,215,110,.4)}
+.ai-send{padding:8px 13px;background:#008751;border:none;border-radius:5px;color:#fff;cursor:pointer;font-weight:700;font-size:.82rem;font-family:'DM Sans',sans-serif;transition:background .15s}
+.ai-send:hover{background:#006940}
+.ai-send:disabled{opacity:.4;cursor:not-allowed}
+.ai-thinking{font-size:.74rem;color:rgba(245,215,110,.6);padding:6px 0}
   @media(max-width:480px){.card-body{padding:16px}.rate-selector{grid-template-columns:1fr}}
 </style>
 </head>
@@ -334,7 +634,27 @@
     <!-- SIDEBAR -->
     <div class="sidebar">
 
-      <!-- REGISTRATION THRESHOLD -->
+      
+      <!-- AI ADVISOR -->
+<div class="ai-advisor-card" id="aiCard">
+  <div class="ai-advisor-head">
+    <span class="ai-dot"></span>
+    <span class="ai-title">AI VAT Advisor</span>
+    <span class="ai-by">Powered by Claude</span>
+  </div>
+  <div class="ai-advisor-body">
+    <div class="ai-status" id="aiStatus">Ask me anything about VAT in Sudan — registration thresholds, exempt categories, filing deadlines, how to calculate VAT on mixed supplies.</div>
+    <div class="ai-chat" id="aiChat">
+      <div class="ai-msgs" id="aiMsgs"></div>
+      <div class="ai-input-row">
+        <input type="text" class="ai-input" id="aiInput" placeholder="Ask about VAT…" maxlength="300">
+        <button class="ai-send" id="aiSend" onclick="sendAI()">→</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- REGISTRATION THRESHOLD -->
       <div class="side-card">
         <div class="side-card-head"><span class="side-card-title">VAT Registration</span></div>
         <div class="side-card-body">
@@ -576,6 +896,62 @@
   const slider = document.getElementById('amountSlider');
   updateSliderFill(slider);
   calculate();
+
+// AI ADVISOR
+const AI_MSGS = [];
+async function sendAI() {
+  const input = document.getElementById('aiInput');
+  const msgsEl = document.getElementById('aiMsgs');
+  const sendBtn = document.getElementById('aiSend');
+  const q = input.value.trim();
+  if (!q) return;
+  
+  // Append user message
+  AI_MSGS.push({ role: 'user', content: q });
+  msgsEl.innerHTML += `<div class="ai-msg-u">${q}</div>`;
+  input.value = '';
+  sendBtn.disabled = true;
+  
+  // Show thinking
+  const thinkEl = document.createElement('div');
+  thinkEl.className = 'ai-thinking';
+  thinkEl.textContent = 'Thinking…';
+  msgsEl.appendChild(thinkEl);
+  msgsEl.scrollTop = msgsEl.scrollHeight;
+  
+  // Get context from current calculation
+  const vatAmountEl = document.getElementById('resVat') || document.getElementById('vatAmount');
+  const rateEl = document.getElementById('resRate') || document.getElementById('vatRate');
+  const context = vatAmountEl ? `Current VAT calc: rate=${rateEl?.textContent||''}, VAT amount=${vatAmountEl?.textContent||''}` : '';
+  
+  try {
+    const res = await fetch('/.netlify/functions/ai-advisor', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        messages: AI_MSGS,
+        tool: 'sd-vat',
+        context
+      })
+    });
+    const data = await res.json();
+    thinkEl.remove();
+    const reply = data.reply || 'Could not get a response.';
+    AI_MSGS.push({ role: 'assistant', content: reply });
+    msgsEl.innerHTML += `<div class="ai-msg-a">${reply}</div>`;
+  } catch {
+    thinkEl.remove();
+    msgsEl.innerHTML += `<div class="ai-msg-a" style="color:rgba(255,100,100,.7)">Connection error. Please try again.</div>`;
+  }
+  
+  sendBtn.disabled = false;
+  msgsEl.scrollTop = msgsEl.scrollHeight;
+  document.getElementById('aiStatus').style.display = 'none';
+}
+
+document.getElementById('aiInput')?.addEventListener('keypress', e => {
+  if (e.key === 'Enter') sendAI();
+});
 </script>
 </body>
 </html>

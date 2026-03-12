@@ -485,7 +485,24 @@
       .tools-sub-grid { grid-template-columns: 1fr; }
       .util-grid { grid-template-columns: 1fr; }
     }
+
+    /* MY TOOLS */
+    .my-tools-section{padding:28px 0 0;display:none}
+    .my-tools-section.has-favs{display:block}
+    .my-tools-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+    .my-tools-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+    .my-tools-title{font-size:1.1rem;font-weight:800;color:#111827;display:flex;align-items:center;gap:8px}
+    .my-tools-clear{font-size:.72rem;color:#9ca3af;background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;padding:4px 8px;border-radius:4px;transition:color .15s}
+    .my-tools-clear:hover{color:#dc2626}
+    .my-tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+    .my-tool-card{background:#fff;border:1.5px solid #e5e7eb;border-radius:12px;padding:16px;text-decoration:none;color:inherit;display:flex;align-items:center;gap:12px;transition:all .18s;position:relative}
+    .my-tool-card:hover{border-color:#008751;box-shadow:0 4px 16px rgba(0,135,81,.1);transform:translateY(-1px)}
+    .my-tool-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;background:#f0fdf4;flex-shrink:0}
+    .my-tool-name{font-size:.85rem;font-weight:700;color:#111827;line-height:1.3}
+    .my-tool-unfav{position:absolute;top:8px;right:8px;background:none;border:none;cursor:pointer;color:#d1d5db;font-size:.9rem;padding:2px;transition:color .15s}
+    .my-tool-unfav:hover{color:#dc2626}
   </style>
+  <script src="/assets/js/favorites.js"></script>
 </head>
 <body>
 
@@ -537,6 +554,19 @@
     </div>
   </div>
 </section>
+<!-- MY TOOLS (shown for returning users with saved favorites) -->
+<div class="my-tools-section" id="myToolsSection">
+  <div class="my-tools-inner">
+    <div class="my-tools-header">
+      <div class="my-tools-title">
+        <span>⭐</span> My Tools
+        <span style="font-size:.72rem;font-weight:400;color:#6b7280" id="myToolsCount"></span>
+      </div>
+      <button class="my-tools-clear" onclick="clearAllFavs()">Clear all</button>
+    </div>
+    <div class="my-tools-grid" id="myToolsGrid"></div>
+  </div>
+</div>
 <!-- STAT INJECTION: runs sync, tool-registry.js already executed above -->
 <script>
 (function(){
@@ -1389,6 +1419,43 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (window._afroObs) grid.querySelectorAll('.rv').forEach(function(el) { window._afroObs.observe(el); });
   })();
+
+  // MY TOOLS — Favorites system
+  function renderMyTools() {
+    if (typeof afroFavs === 'undefined' || typeof AFRO_TOOLS === 'undefined') return;
+    const favIds = afroFavs.getAll();
+    const section = document.getElementById('myToolsSection');
+    const grid = document.getElementById('myToolsGrid');
+    const countEl = document.getElementById('myToolsCount');
+    if (!section || !grid) return;
+    if (favIds.length === 0) { section.classList.remove('has-favs'); return; }
+
+    const favTools = favIds.map(id => AFRO_TOOLS.find(t => t.id === id)).filter(Boolean);
+    if (favTools.length === 0) { section.classList.remove('has-favs'); return; }
+
+    section.classList.add('has-favs');
+    countEl.textContent = `(${favTools.length})`;
+    grid.innerHTML = favTools.map(t => `
+      <a href="${t.href}" class="my-tool-card">
+        <div class="my-tool-icon">${t.icon}</div>
+        <div class="my-tool-name">${t.name}</div>
+        <button class="my-tool-unfav" onclick="unfavTool(event,'${t.id}')" title="Remove">✕</button>
+      </a>`).join('');
+  }
+
+  function unfavTool(e, id) {
+    e.preventDefault();
+    e.stopPropagation();
+    afroFavs.toggle(id);
+    renderMyTools();
+  }
+
+  function clearAllFavs() {
+    localStorage.removeItem('afro_favs_v1');
+    document.getElementById('myToolsSection')?.classList.remove('has-favs');
+  }
+
+  renderMyTools();
 
 }); // end DOMContentLoaded
 </script>

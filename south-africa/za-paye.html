@@ -48,6 +48,7 @@
   }
   .tool-hero::after { content: '🇿🇦'; position: absolute; right: 5%; top: 50%; transform: translateY(-50%); font-size: 8rem; opacity: .06; pointer-events: none; }
 </style>
+<meta name="tool-id" content="za-paye">
 </head>
 <body class="tool-page">
 
@@ -390,9 +391,7 @@ function onInput(el) {
 }
 function updateSliderFill(el) {
   const p = ((parseInt(el.value) - parseInt(el.min)) / (parseInt(el.max) - parseInt(el.min))) * 100;
-  const accent = getComputedStyle(document.documentElement).getPropertyValue('--calc-accent').trim() || '#008751';
-  el.style.background = `linear-gradient(to right, ${accent} 0%, ${accent} ${p}%, #d1e8d5 ${p}%, #d1e8d5 100%)`;
-}%, #c8dfd6 ${p}%, #c8dfd6 100%)`;
+  el.style.background = `linear-gradient(to right, var(--calc-accent,#008751) 0%, var(--calc-accent,#008751) ${p}%, #e2e8f0 ${p}%, #e2e8f0 100%)`;
 }
 updateSliderFill(document.getElementById('salarySlider'));
 
@@ -688,6 +687,7 @@ td.num{text-align:right;font-weight:600;font-variant-numeric:tabular-nums;white-
 tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-size:9.5pt}
 .footer{background:#f9fafb;border-top:1px solid #e5e7eb;padding:14px 36px}
 .src{display:inline-block;padding:2px 7px;background:#f3f4f6;border-radius:3px;font-size:6.5pt;font-weight:600;color:#6b7280;margin-right:4px}
+<script src="/assets/js/favorites.js"></script>
 </style></head><body>
 <div class="cover">
   <div class="cover-top">
@@ -764,6 +764,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
     </div>
   </div>
 </div>
+<script src="/assets/js/favorites-widget.js" defer></script>
 </body></html>`;
 
   const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
@@ -881,5 +882,6 @@ async function sendChat() {
 // Enter key shortcut
 document.getElementById('grossSalary').addEventListener('keydown', e => { if (e.key === 'Enter') calculate(); });
 </script>
+<script src="/assets/js/favorites-widget.js" defer></script>
 </body>
 </html>
