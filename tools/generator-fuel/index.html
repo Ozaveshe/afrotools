@@ -1,180 +1,515 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Generator Fuel Calculator — Africa | AfroTools</title>
-<meta name="description" content="Generator fuel consumption calculator for Africa. Calculate diesel/petrol consumption, total liters, and cost based on kVA and usage hours.">
-<link rel="canonical" href="https://afrotools.com/tools/generator-fuel">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="Generator Fuel Calculator | AfroTools">
-<meta property="og:description" content="Calculate generator fuel consumption. Plan your fuel costs for Africa. Diesel and petrol calculators.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://afrotools.com/tools/generator-fuel">
-<meta property="og:site_name" content="AfroTools">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/tokens.min.css">
-<link rel="stylesheet" href="/assets/css/global.min.css">
-<script src="/assets/js/components/navbar.min.js" defer></script>
-<script src="/assets/js/components/footer.min.js" defer></script>
-<style>
-  :root { --afro-green: #008751; --afro-dark: #0f1419; }
-  .tool-hero { background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%); padding: 44px 0 36px; position: relative; overflow: hidden; }
-  .tool-hero::after { content: '⚡'; position: absolute; right: 5%; top: 50%; transform: translateY(-50%); font-size: 8rem; opacity: 0.06; pointer-events: none; }
-  .tool-hero-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; }
-  .breadcrumb { font-size: 0.72rem; font-weight: 500; color: rgba(255, 255, 255, 0.3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
-  .breadcrumb a { color: rgba(255, 255, 255, 0.3); text-decoration: none; }
-  .breadcrumb span { color: var(--afro-green); }
-  h1 { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; color: #fff; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 10px; }
-  h1 em { color: var(--afro-green); font-style: normal; }
-  .hero-sub { font-size: 0.88rem; color: rgba(255, 255, 255, 0.45); line-height: 1.6; max-width: 560px; margin-bottom: 14px; }
-  .hero-badges { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 6px; }
-  .badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 11px; border-radius: 4px; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.05em; }
-  .b-green { background: rgba(0, 135, 81, 0.18); color: #5ddb9e; border: 1px solid rgba(0, 135, 81, 0.38); }
-  .tool-main { padding: 28px 0 72px; }
-  .tool-main-inner { max-width: 900px; margin: 0 auto; padding: 0 24px; }
-  .card { background: #fff; border: 1px solid #dceee0; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05); }
-  .card + .card { margin-top: 18px; }
-  .card-head { padding: 15px 22px; border-bottom: 1px solid #eaf5ec; background: #f7fdf8; }
-  .card-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #0a4018; }
-  .card-body { padding: 22px; }
-  .field { margin-bottom: 18px; }
-  .f-label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-  .f-label-text { font-size: 0.75rem; font-weight: 700; color: #0d2813; }
-  .f-input { width: 100%; padding: 11px 13px; background: #f4fbf5; border: 1.5px solid #c5deca; border-radius: 7px; font-size: 1rem; font-weight: 600; color: #0d2813; outline: none; font-family: 'DM Sans', sans-serif; }
-  .f-input:focus { border-color: var(--afro-green); box-shadow: 0 0 0 3px rgba(0, 135, 81, 0.1); }
-  .preset-btns { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 12px; }
-  .preset-btn { padding: 8px; font-size: 0.65rem; font-weight: 700; background: #f4fbf5; border: 1.5px solid #c5deca; border-radius: 6px; cursor: pointer; color: #244d2c; transition: all 0.15s; }
-  .preset-btn:hover { border-color: var(--afro-green); background: #edfaf0; }
-  .preset-btn.on { background: var(--afro-green); color: #fff; border-color: var(--afro-green); }
-  .calc-btn { width: 100%; padding: 14px; background: var(--afro-green); color: #fff; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: all 0.18s; font-family: 'DM Sans', sans-serif; }
-  .calc-btn:hover { background: #006d42; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0, 135, 81, 0.3); }
-  .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px; }
-  .result-box { background: #f7fdf8; border: 1px solid #c5deca; border-radius: 8px; padding: 14px; text-align: center; }
-  .result-label { font-size: 0.65rem; font-weight: 700; color: #0a4018; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 6px; }
-  .result-value { font-size: 1.6rem; font-weight: 800; color: var(--afro-green); }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Generator fuel consumption calculator for diesel and petrol. Compare costs, track expenses, African fuel prices.">
+    <meta name="theme-color" content="#f59e0b">
+    <link rel="canonical" href="https://afrotools.com/tools/generator-fuel">
+    <title>Generator Fuel Calculator — Diesel & Petrol Cost Tracking | AfroTools</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+
+    <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+    <link rel="stylesheet" href="/assets/css/tokens.min.css">
+    <link rel="stylesheet" href="/assets/css/global.min.css">
+    <script src="/assets/js/components/navbar.min.js" defer></script>
+    <script src="/assets/js/components/footer.min.js" defer></script>
+
+    <style>
+        *, *::before, *::after { box-sizing: border-box; }
+
+        :root {
+            --color-accent: #f59e0b;
+            --color-accent-light: #fef3c7;
+            --color-accent-lighter: #fffbeb;
+            --color-dark: #1e293b;
+            --color-bg: #f8fafc;
+            --color-text: #1f2937;
+            --color-text-light: #6b7280;
+            --color-white: #fff;
+            --color-border: #e5e7eb;
+        }
+
+        body {
+            background: var(--color-bg);
+            color: var(--color-text);
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .gf-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .gf-hero {
+            background: linear-gradient(135deg, var(--color-dark) 0%, #2d3748 100%);
+            border-radius: 16px;
+            padding: 40px 32px;
+            text-align: center;
+            margin-bottom: 32px;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            color: var(--color-white);
+        }
+
+        .gf-hero h1 {
+            font-size: clamp(28px, 5vw, 40px);
+            font-weight: 700;
+            color: var(--color-white);
+            margin: 0 0 12px 0;
+            line-height: 1.2;
+        }
+
+        .gf-hero h1 span {
+            color: var(--color-accent);
+        }
+
+        .gf-hero p {
+            font-size: 16px;
+            color: #cbd5e1;
+            margin: 0;
+        }
+
+        .gf-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .gf-card {
+            background: var(--color-white);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .gf-card h2 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--color-text);
+            margin: 0 0 16px 0;
+        }
+
+        .gf-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+
+        .gf-input-group label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .gf-input-group input,
+        .gf-input-group select {
+            padding: 11px 12px;
+            border: 1.5px solid var(--color-border);
+            border-radius: 8px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            color: var(--color-text);
+            transition: all 0.2s;
+        }
+
+        .gf-input-group input:focus,
+        .gf-input-group select:focus {
+            outline: none;
+            border-color: var(--color-accent);
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+        }
+
+        .gf-presets {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .gf-preset-btn {
+            padding: 8px 10px;
+            background: transparent;
+            border: 1.5px solid var(--color-border);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            color: var(--color-text);
+            font-weight: 600;
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .gf-preset-btn:hover {
+            border-color: var(--color-accent);
+            background: var(--color-accent-lighter);
+        }
+
+        .gf-preset-btn.active {
+            background: var(--color-accent);
+            color: var(--color-white);
+            border-color: var(--color-accent);
+        }
+
+        .gf-btn {
+            padding: 14px 28px;
+            background: linear-gradient(135deg, var(--color-accent) 0%, #d97706 100%);
+            color: var(--color-white);
+            border: none;
+            border-radius: 8px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+        }
+
+        .gf-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(245, 158, 11, 0.3);
+        }
+
+        .gf-results {
+            display: none;
+            background: var(--color-accent-lighter);
+            border: 2px solid rgba(245, 158, 11, 0.3);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .gf-results.show {
+            display: block;
+        }
+
+        .gf-result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .gf-result-item {
+            background: var(--color-white);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .gf-result-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+
+        .gf-result-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--color-accent);
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+
+        .gf-result-sub {
+            font-size: 12px;
+            color: var(--color-text-light);
+        }
+
+        .gf-comparison {
+            background: var(--color-white);
+            border: 1.5px solid var(--color-border);
+            border-radius: 10px;
+            padding: 16px;
+        }
+
+        .gf-comparison h3 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--color-text);
+            margin: 0 0 12px 0;
+        }
+
+        .gf-comparison-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--color-border);
+            font-size: 13px;
+        }
+
+        .gf-comparison-row:last-child {
+            border-bottom: none;
+        }
+
+        .gf-comparison-label {
+            color: var(--color-text-light);
+        }
+
+        .gf-comparison-value {
+            font-weight: 700;
+            color: var(--color-accent);
+        }
+
+        .gf-tips {
+            background: var(--color-accent-lighter);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 20px;
+        }
+
+        .gf-tips h3 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--color-text);
+            margin: 0 0 12px 0;
+        }
+
+        .gf-tips ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .gf-tips li {
+            font-size: 13px;
+            color: var(--color-text-light);
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .gf-tips li:before {
+            content: '⚡';
+            position: absolute;
+            left: 0;
+        }
+
+        @media (max-width: 768px) {
+            .gf-grid { grid-template-columns: 1fr; }
+            .gf-result-grid { grid-template-columns: 1fr 1fr; }
+            .gf-presets { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        @media (max-width: 600px) {
+            .gf-hero { padding: 24px 16px; }
+            .gf-result-grid { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
+    <div class="gf-container">
+        <div class="gf-hero">
+            <h1>Generator Fuel <span>Calculator</span></h1>
+            <p>Calculate fuel consumption, costs, and compare with grid electricity</p>
+        </div>
 
-<div class="tool-hero">
-  <div class="tool-hero-inner">
-    <div class="breadcrumb"><a href="/">AfroTools</a> / <span>Tools</span></div>
-    <h1>Generator Fuel <em>Calculator</em></h1>
-    <p class="hero-sub">Calculate fuel consumption for generators in Africa. Plan diesel costs based on kVA and hours of operation.</p>
-    <div class="hero-badges">
-      <span class="badge b-green">Africa-Specific</span>
-      <span class="badge b-green">Instant</span>
+        <div class="gf-grid">
+            <div class="gf-card">
+                <h2>Generator Settings</h2>
+                
+                <div class="gf-input-group">
+                    <label>Generator Capacity (kVA)</label>
+                    <div class="gf-presets">
+                        <button class="gf-preset-btn" onclick="setKVA(2.5)">2.5</button>
+                        <button class="gf-preset-btn" onclick="setKVA(5)">5</button>
+                        <button class="gf-preset-btn" onclick="setKVA(7.5)">7.5</button>
+                        <button class="gf-preset-btn" onclick="setKVA(10)">10</button>
+                        <button class="gf-preset-btn" onclick="setKVA(15)">15</button>
+                        <button class="gf-preset-btn" onclick="setKVA(20)">20</button>
+                        <button class="gf-preset-btn" onclick="setKVA(50)">50</button>
+                        <button class="gf-preset-btn" onclick="setKVA(100)">100</button>
+                    </div>
+                    <input type="number" id="kva" value="5.0" min="1" max="500" step="0.5" placeholder="Custom kVA">
+                </div>
+
+                <div class="gf-input-group">
+                    <label>Fuel Type</label>
+                    <select id="fuelType" onchange="updateCalc()">
+                        <option value="diesel" selected>Diesel</option>
+                        <option value="petrol">Petrol</option>
+                    </select>
+                </div>
+
+                <div class="gf-input-group">
+                    <label>Load Percentage</label>
+                    <select id="loadPercent" onchange="updateCalc()">
+                        <option value="25">25% Light Load</option>
+                        <option value="50" selected>50% Moderate Load</option>
+                        <option value="75">75% Heavy Load</option>
+                        <option value="100">100% Full Load</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="gf-card">
+                <h2>Usage Parameters</h2>
+                
+                <div class="gf-input-group">
+                    <label>Hours Per Day</label>
+                    <input type="number" id="hoursDay" value="6" min="1" max="24" onchange="updateCalc()">
+                </div>
+
+                <div class="gf-input-group">
+                    <label>Days Per Month</label>
+                    <input type="number" id="daysMonth" value="25" min="1" max="31" onchange="updateCalc()">
+                </div>
+
+                <div class="gf-input-group">
+                    <label>Fuel Price (per liter)</label>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                        <button class="gf-preset-btn" onclick="setPrice('NGN', 1100)">NG: ₦1,100</button>
+                        <button class="gf-preset-btn" onclick="setPrice('KES', 193)">KE: 193</button>
+                        <button class="gf-preset-btn" onclick="setPrice('ZAR', 24.5)">ZA: R24.50</button>
+                        <button class="gf-preset-btn" onclick="setPrice('GHS', 16.8)">GH: 16.80</button>
+                    </div>
+                    <input type="number" id="fuelPrice" value="1100" min="0" step="1" placeholder="Custom price" onchange="updateCalc()">
+                    <input type="text" id="currencyCode" value="NGN" placeholder="Currency" maxlength="3" style="margin-top: 6px;">
+                </div>
+            </div>
+        </div>
+
+        <div class="gf-results" id="results">
+            <div class="gf-result-grid">
+                <div class="gf-result-item">
+                    <div class="gf-result-label">Liters Per Hour</div>
+                    <div class="gf-result-value" id="literHour">0</div>
+                </div>
+                <div class="gf-result-item">
+                    <div class="gf-result-label">Liters Per Day</div>
+                    <div class="gf-result-value" id="literDay">0</div>
+                </div>
+                <div class="gf-result-item">
+                    <div class="gf-result-label">Liters Per Month</div>
+                    <div class="gf-result-value" id="literMonth">0</div>
+                </div>
+                <div class="gf-result-item">
+                    <div class="gf-result-label">Monthly Cost</div>
+                    <div class="gf-result-value" id="monthlyCost">0</div>
+                    <div class="gf-result-sub" id="costCurrency">NGN</div>
+                </div>
+                <div class="gf-result-item">
+                    <div class="gf-result-label">Annual Cost</div>
+                    <div class="gf-result-value" id="annualCost">0</div>
+                </div>
+                <div class="gf-result-item">
+                    <div class="gf-result-label">Cost Per kWh</div>
+                    <div class="gf-result-value" id="costKwh">0</div>
+                </div>
+            </div>
+
+            <div class="gf-comparison">
+                <h3>Generator vs Grid Power Comparison</h3>
+                <div class="gf-input-group" style="margin-bottom: 12px;">
+                    <label>Grid Electricity Rate (per kWh)</label>
+                    <input type="number" id="gridRate" value="68" min="0" step="0.1" onchange="updateComparison()">
+                </div>
+                
+                <div class="gf-comparison-row">
+                    <span class="gf-comparison-label">Generator Monthly Cost</span>
+                    <span class="gf-comparison-value" id="genMonthlyCost">0</span>
+                </div>
+                <div class="gf-comparison-row">
+                    <span class="gf-comparison-label">Grid Monthly Cost</span>
+                    <span class="gf-comparison-value" id="gridMonthlyCost">0</span>
+                </div>
+                <div class="gf-comparison-row" style="background: rgba(245, 158, 11, 0.1); margin: 8px -16px; padding: 10px 16px;">
+                    <span class="gf-comparison-label" style="font-weight: 700;">Monthly Difference</span>
+                    <span class="gf-comparison-value" id="difference" style="font-size: 20px;">0</span>
+                </div>
+            </div>
+
+            <div class="gf-tips">
+                <h3>Generator Fuel Efficiency Tips</h3>
+                <ul>
+                    <li>Avoid running at 100% load; 50-75% is optimal for fuel efficiency</li>
+                    <li>Regular maintenance (oil changes, filter cleaning) improves efficiency by 5-15%</li>
+                    <li>Quality fuel extends engine life and reduces consumption</li>
+                    <li>Modern inverter generators consume 20-30% less fuel than conventional models</li>
+                    <li>Right-sizing your generator prevents wasted fuel on oversized units</li>
+                </ul>
+            </div>
+        </div>
+
+        <button class="gf-btn" onclick="calculateFuel()">Calculate Fuel Costs</button>
     </div>
-  </div>
-</div>
 
-<div class="tool-main">
-  <div class="tool-main-inner">
-    <div class="card">
-      <div class="card-head"><span class="card-title">Generator Specifications</span></div>
-      <div class="card-body">
-        <div class="field">
-          <label class="f-label"><span class="f-label-text">Generator Size (kVA)</span></label>
-          <div class="preset-btns">
-            <button class="preset-btn" data-kva="2.5">2.5 kVA</button>
-            <button class="preset-btn" data-kva="5">5 kVA</button>
-            <button class="preset-btn" data-kva="10">10 kVA</button>
-            <button class="preset-btn" data-kva="15">15 kVA</button>
-            <button class="preset-btn" data-kva="25">25 kVA</button>
-            <button class="preset-btn" data-kva="100">100 kVA</button>
-          </div>
-          <input type="number" id="kvaSizeInput" class="f-input" value="10" min="1" step="0.5">
-        </div>
+    <script src="/assets/js/afro-auth.js" defer></script>
 
-        <div class="field">
-          <label class="f-label"><span class="f-label-text">Fuel Type</span></label>
-          <select id="fuelType" class="f-input">
-            <option value="diesel">Diesel</option>
-            <option value="petrol">Petrol</option>
-          </select>
-        </div>
+    <script>
+        function setKVA(val) {
+            document.getElementById('kva').value = val;
+            document.querySelectorAll('.gf-preset-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
 
-        <div class="field">
-          <label class="f-label"><span class="f-label-text">Hours Per Day</span></label>
-          <input type="number" id="hoursPerDay" class="f-input" value="8" min="1" max="24" step="0.5">
-        </div>
+        function setPrice(curr, price) {
+            document.getElementById('fuelPrice').value = price;
+            document.getElementById('currencyCode').value = curr;
+            updateCalc();
+        }
 
-        <div class="field">
-          <label class="f-label"><span class="f-label-text">Days of Operation</span></label>
-          <input type="number" id="days" class="f-input" value="30" min="1" step="1">
-        </div>
+        function calculateFuel() {
+            const kva = parseFloat(document.getElementById('kva').value) || 5;
+            const fuelType = document.getElementById('fuelType').value;
+            const loadPercent = parseFloat(document.getElementById('loadPercent').value) / 100;
+            const hoursDay = parseFloat(document.getElementById('hoursDay').value) || 6;
+            const daysMonth = parseFloat(document.getElementById('daysMonth').value) || 25;
+            const fuelPrice = parseFloat(document.getElementById('fuelPrice').value) || 1100;
+            const currency = document.getElementById('currencyCode').value || 'NGN';
 
-        <div class="field">
-          <label class="f-label"><span class="f-label-text">Fuel Price per Liter</span></label>
-          <input type="number" id="fuelPrice" class="f-input" value="1200" min="0" step="10">
-        </div>
+            const consumptionRate = fuelType === 'diesel' ? 0.21 : 0.30;
+            const literHour = kva * consumptionRate * loadPercent;
+            const literDay = literHour * hoursDay;
+            const literMonth = literDay * daysMonth;
+            const monthlyCost = literMonth * fuelPrice;
+            const annualCost = monthlyCost * 12;
+            const kwhMonth = kva * 0.8 * hoursDay * daysMonth;
+            const costKwh = monthlyCost / kwhMonth;
 
-        <button class="calc-btn" id="calcBtn">Calculate Fuel Consumption</button>
+            document.getElementById('literHour').textContent = literHour.toFixed(2);
+            document.getElementById('literDay').textContent = literDay.toFixed(2);
+            document.getElementById('literMonth').textContent = literMonth.toFixed(1);
+            document.getElementById('monthlyCost').textContent = monthlyCost.toLocaleString('en-US', { maximumFractionDigits: 0 });
+            document.getElementById('annualCost').textContent = annualCost.toLocaleString('en-US', { maximumFractionDigits: 0 });
+            document.getElementById('costKwh').textContent = costKwh.toFixed(2);
+            document.getElementById('costCurrency').textContent = currency;
+            document.getElementById('genMonthlyCost').textContent = monthlyCost.toLocaleString('en-US', { maximumFractionDigits: 0 });
 
-        <div class="result-grid" id="results" style="display:none;margin-top:18px;">
-          <div class="result-box">
-            <div class="result-label">Daily Consumption</div>
-            <div class="result-value" id="dailyFuel">0 L</div>
-          </div>
-          <div class="result-box">
-            <div class="result-label">Total Fuel Needed</div>
-            <div class="result-value" id="totalFuel">0 L</div>
-          </div>
-          <div class="result-box" style="grid-column:1/-1;">
-            <div class="result-label">Total Cost</div>
-            <div class="result-value" id="totalCost">0</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+            updateComparison();
+            document.getElementById('results').classList.add('show');
+        }
 
+        function updateComparison() {
+            const monthlyCost = parseFloat(document.getElementById('monthlyCost').textContent.replace(/,/g, '')) || 0;
+            const gridRate = parseFloat(document.getElementById('gridRate').value) || 68;
+            const kva = parseFloat(document.getElementById('kva').value) || 5;
+            const hoursDay = parseFloat(document.getElementById('hoursDay').value) || 6;
+            const daysMonth = parseFloat(document.getElementById('daysMonth').value) || 25;
+            const kwhMonth = kva * 0.8 * hoursDay * daysMonth;
+            const gridCost = kwhMonth * gridRate;
+            const diff = gridCost - monthlyCost;
+
+            document.getElementById('gridMonthlyCost').textContent = gridCost.toLocaleString('en-US', { maximumFractionDigits: 0 });
+            document.getElementById('difference').textContent = (diff > 0 ? '+' : '') + diff.toLocaleString('en-US', { maximumFractionDigits: 0 });
+            document.getElementById('difference').style.color = diff > 0 ? '#059669' : '#dc2626';
+        }
+
+        function updateCalc() { if (document.getElementById('results').classList.contains('show')) calculateFuel(); }
+    </script>
 <afro-footer></afro-footer>
-
-<script>
-  const presetBtns = document.querySelectorAll('.preset-btn');
-  const kvaSizeInput = document.getElementById('kvaSizeInput');
-  const calcBtn = document.getElementById('calcBtn');
-  const fuelType = document.getElementById('fuelType');
-
-  presetBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const kva = btn.dataset.kva;
-      kvaSizeInput.value = kva;
-      presetBtns.forEach(b => b.classList.remove('on'));
-      btn.classList.add('on');
-    });
-  });
-
-  kvaSizeInput.addEventListener('change', () => {
-    presetBtns.forEach(b => {
-      b.classList.toggle('on', b.dataset.kva === kvaSizeInput.value);
-    });
-  });
-
-  calcBtn.addEventListener('click', () => {
-    const kva = parseFloat(kvaSizeInput.value) || 10;
-    const hours = parseFloat(document.getElementById('hoursPerDay').value) || 8;
-    const days = parseFloat(document.getElementById('days').value) || 30;
-    const price = parseFloat(document.getElementById('fuelPrice').value) || 1200;
-    const fuel = fuelType.value;
-
-    const consumption = fuel === 'diesel' ? kva * 0.205 : kva * 0.25;
-    const dailyFuel = consumption * hours;
-    const totalFuel = dailyFuel * days;
-    const totalCost = totalFuel * price;
-
-    document.getElementById('dailyFuel').textContent = dailyFuel.toFixed(2) + ' L';
-    document.getElementById('totalFuel').textContent = totalFuel.toFixed(2) + ' L';
-    document.getElementById('totalCost').textContent = totalCost.toFixed(0);
-    document.getElementById('results').style.display = 'grid';
-  });
-
-  calcBtn.click();
-</script>
 </body>
 </html>

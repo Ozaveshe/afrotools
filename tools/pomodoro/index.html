@@ -1,585 +1,706 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pomodoro Timer | Focus & Productivity Timer | AfroTools</title>
-<meta name="description" content="Pomodoro timer for productivity. 25-minute work, 5-minute break cycles. Customizable timing, audio notifications, session counter.">
-<link rel="canonical" href="https://afrotools.com/tools/pomodoro">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="Pomodoro Timer | AfroTools">
-<meta property="og:description" content="Focus timer for productivity with Pomodoro technique.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://afrotools.com/tools/pomodoro">
-<meta property="og:image" content="https://afrotools.com/assets/img/og-pomodoro.png">
-<meta property="og:site_name" content="AfroTools">
-<meta name="robots" content="index, follow">
-<meta name="author" content="AfroTools">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/tokens.min.css">
-<link rel="stylesheet" href="/assets/css/global.min.css">
-<script src="/assets/js/components/navbar.min.js" defer></script>
-<script src="/assets/js/components/footer.min.js" defer></script>
-<style>
-  :root {
-    --afro-green: #008751;
-    --afro-dark: #0f1419;
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Advanced Pomodoro timer with session tracking, daily goals, statistics, and focus time management. Save your progress with AfroData.">
+    <meta name="theme-color" content="#ef4444">
+    <link rel="canonical" href="https://afrotools.com/tools/pomodoro">
+    <title>Pomodoro Timer — Focus Sessions, Tracking & Statistics | AfroTools</title>
 
-  .tool-hero {
-    background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
-    padding: 44px 0 36px;
-    position: relative;
-    overflow: hidden;
-  }
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
 
-  .tool-hero::after {
-    content: '⏱️';
-    position: absolute;
-    right: 5%;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 8rem;
-    opacity: 0.06;
-    pointer-events: none;
-  }
+    <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+    <link rel="stylesheet" href="/assets/css/tokens.min.css">
+    <link rel="stylesheet" href="/assets/css/global.min.css">
+    <script src="/assets/js/components/navbar.min.js" defer></script>
+    <script src="/assets/js/components/footer.min.js" defer></script>
 
-  .tool-hero-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 24px;
-    position: relative;
-  }
+    <style>
+        *, *::before, *::after { box-sizing: border-box; }
 
-  .breadcrumb {
-    font-size: 0.72rem;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.3);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 14px;
-  }
+        :root {
+            --color-work: #ef4444;
+            --color-break: #3b82f6;
+            --color-long: #8b5cf6;
+            --color-dark: #0f172a;
+            --color-card: #1e293b;
+            --color-text: #e2e8f0;
+            --color-text-muted: #94a3b8;
+            --color-white: #fff;
+        }
 
-  .breadcrumb a {
-    color: rgba(255, 255, 255, 0.3);
-    text-decoration: none;
-  }
+        body {
+            background: var(--color-dark);
+            color: var(--color-text);
+            font-family: 'DM Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
 
-  .breadcrumb span {
-    color: var(--afro-green);
-  }
+        .pom-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
 
-  h1 {
-    font-size: clamp(1.6rem, 4vw, 2.4rem);
-    font-weight: 800;
-    color: #fff;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    margin-bottom: 10px;
-  }
+        .pom-hero {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(59, 130, 246, 0.15) 100%);
+            border-radius: 16px;
+            padding: 32px 24px;
+            text-align: center;
+            margin-bottom: 32px;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
 
-  h1 em {
-    color: var(--afro-green);
-    font-style: normal;
-  }
+        .pom-hero h1 {
+            font-size: clamp(28px, 5vw, 36px);
+            font-weight: 700;
+            color: var(--color-white);
+            margin: 0 0 8px 0;
+            line-height: 1.2;
+        }
 
-  .hero-sub {
-    font-size: 0.88rem;
-    color: rgba(255, 255, 255, 0.45);
-    line-height: 1.6;
-    max-width: 560px;
-    margin-bottom: 14px;
-  }
+        .pom-hero p {
+            font-size: 14px;
+            color: var(--color-text-muted);
+            margin: 0;
+        }
 
-  .hero-badges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 7px;
-  }
+        .pom-timer-card {
+            background: var(--color-card);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 16px;
+            padding: 32px 24px;
+            text-align: center;
+            margin-bottom: 24px;
+        }
 
-  .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    padding: 4px 11px;
-    border-radius: 4px;
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-  }
+        .pom-session-type {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--color-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 12px;
+        }
 
-  .b-green {
-    background: rgba(0, 135, 81, 0.18);
-    color: #5ddb9e;
-    border: 1px solid rgba(0, 135, 81, 0.38);
-  }
+        .pom-timer-display {
+            font-size: 64px;
+            font-weight: 800;
+            color: var(--color-white);
+            font-family: 'Courier New', monospace;
+            margin-bottom: 20px;
+            line-height: 1;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-  .tool-main {
-    padding: 28px 0 72px;
-  }
+        .pom-progress-circle {
+            width: 240px;
+            height: 240px;
+            margin: 0 auto 24px;
+        }
 
-  .tool-main-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 24px;
-    display: grid;
-    grid-template-columns: 1fr 360px;
-    gap: 22px;
-    align-items: start;
-  }
+        .pom-circle-text {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--color-white);
+            text-anchor: middle;
+            dominant-baseline: middle;
+        }
 
-  .card {
-    background: #fff;
-    border: 1px solid #dceee0;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
-  }
+        .pom-controls {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
 
-  .card + .card {
-    margin-top: 18px;
-  }
+        .pom-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
 
-  .card-head {
-    padding: 15px 22px;
-    border-bottom: 1px solid #eaf5ec;
-    background: #f7fdf8;
-  }
+        .pom-btn-primary {
+            background: var(--color-work);
+            color: var(--color-white);
+            padding: 14px 32px;
+            font-size: 15px;
+            font-weight: 700;
+            flex: 1;
+            max-width: 200px;
+        }
 
-  .card-title {
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: #0a4018;
-  }
+        .pom-btn-primary:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(239, 68, 68, 0.3);
+        }
 
-  .card-body {
-    padding: 22px;
-  }
+        .pom-btn-secondary {
+            background: transparent;
+            color: var(--color-text);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
 
-  .timer-display {
-    background: linear-gradient(135deg, var(--afro-green) 0%, #006d42 100%);
-    border-radius: 16px;
-    padding: 40px 20px;
-    text-align: center;
-    color: #fff;
-    margin-bottom: 20px;
-  }
+        .pom-btn-secondary:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: rgba(59, 130, 246, 0.6);
+        }
 
-  .timer-time {
-    font-size: 4rem;
-    font-weight: 800;
-    font-family: 'Courier New', monospace;
-    letter-spacing: 4px;
-  }
+        .pom-session-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
 
-  .timer-label {
-    font-size: 1rem;
-    opacity: 0.9;
-    margin-top: 8px;
-  }
+        .pom-session-btn {
+            padding: 10px 14px;
+            border: 1.5px solid rgba(59, 130, 246, 0.2);
+            background: transparent;
+            color: var(--color-text);
+            border-radius: 8px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
 
-  .timer-buttons {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 8px;
-    margin-bottom: 18px;
-  }
+        .pom-session-btn:hover {
+            border-color: rgba(59, 130, 246, 0.6);
+            background: rgba(59, 130, 246, 0.1);
+        }
 
-  .timer-btn {
-    padding: 12px 8px;
-    background: #f4fbf5;
-    border: 1.5px solid #c5deca;
-    border-radius: 7px;
-    cursor: pointer;
-    transition: all 0.15s;
-    font-size: 0.7rem;
-    font-weight: 700;
-    color: #244d2c;
-    font-family: 'DM Sans', sans-serif;
-  }
+        .pom-session-btn.work {
+            color: var(--color-work);
+            border-color: rgba(239, 68, 68, 0.3);
+        }
 
-  .timer-btn:hover {
-    border-color: var(--afro-green);
-  }
+        .pom-session-btn.work.active {
+            background: var(--color-work);
+            border-color: var(--color-work);
+            color: var(--color-white);
+        }
 
-  .timer-btn.active {
-    border-color: var(--afro-green);
-    background: var(--afro-green);
-    color: #fff;
-  }
+        .pom-session-btn.break {
+            color: var(--color-break);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
 
-  .field {
-    margin-bottom: 18px;
-  }
+        .pom-session-btn.break.active {
+            background: var(--color-break);
+            border-color: var(--color-break);
+            color: var(--color-white);
+        }
 
-  .field:last-child {
-    margin-bottom: 0;
-  }
+        .pom-session-btn.long {
+            color: var(--color-long);
+            border-color: rgba(139, 92, 246, 0.3);
+        }
 
-  .f-label-text {
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    color: #0d2813;
-    margin-bottom: 6px;
-    display: block;
-  }
+        .pom-session-btn.long.active {
+            background: var(--color-long);
+            border-color: var(--color-long);
+            color: var(--color-white);
+        }
 
-  .f-input {
-    width: 100%;
-    padding: 11px 13px;
-    background: #f4fbf5;
-    border: 1.5px solid #c5deca;
-    border-radius: 7px;
-    font-size: 1rem;
-    font-weight: 600;
-    color: #0d2813;
-    outline: none;
-    transition: border-color 0.18s;
-    font-family: 'DM Sans', sans-serif;
-  }
+        .pom-settings {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(59, 130, 246, 0.15);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
 
-  .f-input:focus {
-    border-color: var(--afro-green);
-    background: #fff;
-    box-shadow: 0 0 0 3px rgba(0, 135, 81, 0.1);
-  }
+        .pom-setting {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
 
-  .control-buttons {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-  }
+        .pom-setting-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--color-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
 
-  .control-btn {
-    padding: 12px;
-    background: var(--afro-green);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font-size: 0.85rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.15s;
-    font-family: 'DM Sans', sans-serif;
-  }
+        .pom-setting-input {
+            padding: 8px 12px;
+            background: var(--color-dark);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 6px;
+            color: var(--color-white);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 13px;
+            text-align: center;
+        }
 
-  .control-btn:hover {
-    background: #006d42;
-  }
+        .pom-setting-input:focus {
+            outline: none;
+            border-color: var(--color-break);
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+        }
 
-  .control-btn.pause {
-    background: #f4fbf5;
-    color: #244d2c;
-    border: 1.5px solid #c5deca;
-  }
+        .pom-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(59, 130, 246, 0.15);
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
 
-  .control-btn.pause:hover {
-    background: #eef9f2;
-  }
+        .pom-toggle input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
 
-  .sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
+        .pom-toggle label {
+            flex: 1;
+            color: var(--color-text);
+            font-weight: 500;
+            cursor: pointer;
+            margin: 0;
+        }
 
-  .info-card {
-    background: #f7fdf8;
-    border: 1px solid #dceee0;
-    border-radius: 10px;
-    padding: 16px;
-  }
+        .pom-task-input {
+            width: 100%;
+            padding: 12px 14px;
+            background: var(--color-card);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 8px;
+            color: var(--color-text);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
 
-  .info-title {
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: #0a4018;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-  }
+        .pom-task-input::placeholder {
+            color: var(--color-text-muted);
+        }
 
-  .info-text {
-    font-size: 0.8rem;
-    color: #244d2c;
-    line-height: 1.6;
-  }
+        .pom-task-input:focus {
+            outline: none;
+            border-color: var(--color-break);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
 
-  .stats {
-    background: rgba(0, 135, 81, 0.05);
-    border: 1.5px solid rgba(0, 135, 81, 0.2);
-    border-radius: 8px;
-    padding: 14px;
-    text-align: center;
-    margin-top: 12px;
-  }
+        .pom-stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
 
-  .stat-value {
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: var(--afro-green);
-  }
+        .pom-stat-card {
+            background: var(--color-card);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
 
-  .stat-label {
-    font-size: 0.7rem;
-    color: #7dab87;
-    margin-top: 4px;
-  }
+        .pom-stat-label {
+            font-size: 11px;
+            color: var(--color-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
 
-  @media (max-width: 768px) {
-    .tool-main-inner {
-      grid-template-columns: 1fr;
-    }
+        .pom-stat-value {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--color-break);
+            line-height: 1;
+            margin-bottom: 4px;
+        }
 
-    .timer-time {
-      font-size: 3rem;
-    }
+        .pom-stat-sub {
+            font-size: 12px;
+            color: var(--color-text-muted);
+        }
 
-    .control-buttons {
-      grid-template-columns: 1fr;
-    }
-  }
-</style>
+        .pom-daily-goal {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .pom-goal-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--color-text);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 12px;
+        }
+
+        .pom-goal-controls {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .pom-goal-controls input {
+            width: 60px;
+            padding: 8px;
+            background: var(--color-dark);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 6px;
+            color: var(--color-white);
+            font-family: 'DM Sans', sans-serif;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .pom-goal-controls input:focus {
+            outline: none;
+            border-color: var(--color-break);
+        }
+
+        .pom-goal-progress {
+            margin-top: 12px;
+            font-size: 12px;
+            color: var(--color-text-muted);
+        }
+
+        .pom-goal-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .pom-goal-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--color-work) 0%, var(--color-break) 100%);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        @media (max-width: 600px) {
+            .pom-container { padding: 12px; }
+            .pom-hero { padding: 24px 16px; margin-bottom: 20px; }
+            .pom-timer-display { font-size: 48px; min-height: 60px; }
+            .pom-progress-circle { width: 200px; height: 200px; }
+            .pom-circle-text { font-size: 36px; }
+            .pom-session-buttons { grid-template-columns: 1fr; }
+            .pom-stats-grid { grid-template-columns: 1fr; }
+            .pom-settings { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
+    <div class="pom-container">
+        <div class="pom-hero">
+            <h1>Pomodoro Timer</h1>
+            <p>Focus sessions, break tracking, and daily goal management</p>
+        </div>
 
-<div class="tool-hero">
-  <div class="tool-hero-inner">
-    <div class="breadcrumb">
-      <a href="/">AfroTools</a> / <span>Tools</span>
+        <div class="pom-timer-card">
+            <div class="pom-session-type" id="sessionTypeLabel">Work Session</div>
+            <svg class="pom-progress-circle" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(59, 130, 246, 0.1)" stroke-width="2"/>
+                <circle cx="50" cy="50" r="45" fill="none" stroke="var(--color-break)" stroke-width="2" stroke-dasharray="282.7" stroke-dashoffset="282.7" id="progressRing" stroke-linecap="round"/>
+                <text class="pom-circle-text" id="circleTime">25:00</text>
+            </svg>
+
+            <div class="pom-session-buttons">
+                <button class="pom-session-btn work active" onclick="setSessionType('work')">Work (25m)</button>
+                <button class="pom-session-btn break" onclick="setSessionType('break')">Break (5m)</button>
+                <button class="pom-session-btn long" onclick="setSessionType('long')">Long (15m)</button>
+            </div>
+
+            <div class="pom-controls">
+                <button class="pom-btn pom-btn-primary" id="startBtn" onclick="toggleTimer()">Start</button>
+                <button class="pom-btn pom-btn-secondary" onclick="resetTimer()">Reset</button>
+            </div>
+        </div>
+
+        <input type="text" class="pom-task-input" id="taskInput" placeholder="What are you working on?">
+
+        <div class="pom-toggle">
+            <input type="checkbox" id="autoBreak" checked>
+            <label for="autoBreak">Auto-start breaks</label>
+        </div>
+
+        <div class="pom-settings">
+            <div class="pom-setting">
+                <label class="pom-setting-label">Work (minutes)</label>
+                <input type="number" class="pom-setting-input" id="workDuration" value="25" min="15" max="60" onchange="updateSettings()">
+            </div>
+            <div class="pom-setting">
+                <label class="pom-setting-label">Break (minutes)</label>
+                <input type="number" class="pom-setting-input" id="breakDuration" value="5" min="3" max="15" onchange="updateSettings()">
+            </div>
+            <div class="pom-setting">
+                <label class="pom-setting-label">Long Break (min)</label>
+                <input type="number" class="pom-setting-input" id="longDuration" value="15" min="10" max="30" onchange="updateSettings()">
+            </div>
+            <div class="pom-setting">
+                <label class="pom-setting-label">Sessions/Long</label>
+                <input type="number" class="pom-setting-input" id="sessionsUntilLong" value="4" min="2" max="6" onchange="updateSettings()">
+            </div>
+        </div>
+
+        <div class="pom-daily-goal">
+            <div class="pom-goal-label">Daily Goal</div>
+            <div class="pom-goal-controls">
+                <input type="number" id="dailyGoal" value="8" min="1" max="20" onchange="updateGoal()">
+                <span style="color: var(--color-text-muted);">pomodoros/day</span>
+            </div>
+            <div class="pom-goal-progress">
+                <span id="goalProgress">0 / 8</span>
+                <div class="pom-goal-bar">
+                    <div class="pom-goal-fill" id="goalFill"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="pom-stats-grid">
+            <div class="pom-stat-card">
+                <div class="pom-stat-label">Today</div>
+                <div class="pom-stat-value" id="todayCount">0</div>
+                <div class="pom-stat-sub" id="todayTime">0 min focused</div>
+            </div>
+            <div class="pom-stat-card">
+                <div class="pom-stat-label">This Week</div>
+                <div class="pom-stat-value" id="weekCount">0</div>
+                <div class="pom-stat-sub" id="weekTime">0 min focused</div>
+            </div>
+            <div class="pom-stat-card">
+                <div class="pom-stat-label">Streak</div>
+                <div class="pom-stat-value" id="streak">0</div>
+                <div class="pom-stat-sub">consecutive days</div>
+            </div>
+            <div class="pom-stat-card">
+                <div class="pom-stat-label">Best Day</div>
+                <div class="pom-stat-value" id="bestDay">0</div>
+                <div class="pom-stat-sub">pomodoros</div>
+            </div>
+        </div>
     </div>
-    <h1>Pomodoro <em>Timer</em></h1>
-    <p class="hero-sub">Focus timer using the Pomodoro Technique. 25-minute work sessions with 5-minute breaks. Customizable, audio alerts, session tracking.</p>
-    <div class="hero-badges">
-      <span class="badge b-green">Customizable</span>
-      <span class="badge b-green">Audio Alert</span>
-      <span class="badge b-green">Session Tracking</span>
-    </div>
-  </div>
-</div>
 
-<div class="tool-main">
-  <div class="tool-main-inner">
-    <div>
-      <!-- Timer Display & Controls -->
-      <div class="card">
-        <div class="card-body">
-          <div class="timer-display">
-            <div class="timer-time" id="timerDisplay">25:00</div>
-            <div class="timer-label" id="timerLabel">Focus Time</div>
-          </div>
+    <script src="/assets/js/afro-auth.js" defer></script>
 
-          <div class="timer-buttons">
-            <button class="timer-btn active" data-mode="work">Work</button>
-            <button class="timer-btn" data-mode="break">Break</button>
-            <button class="timer-btn" data-mode="longbreak">Long Break</button>
-          </div>
+    <script>
+        let timeRemaining = 1500;
+        let timerInterval = null;
+        let isRunning = false;
+        let currentSession = 'work';
+        let sessionsCompleted = 0;
+        let totalFocusTime = 0;
 
-          <div class="control-buttons">
-            <button class="control-btn" id="startBtn">▶ Start</button>
-            <button class="control-btn pause" id="stopBtn">⏹ Stop</button>
-          </div>
-        </div>
-      </div>
+        const config = {
+            work: 25 * 60,
+            break: 5 * 60,
+            long: 15 * 60,
+            sessionsUntilLong: 4
+        };
 
-      <!-- Settings -->
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title">Settings</span>
-        </div>
-        <div class="card-body">
-          <div class="field">
-            <label class="f-label-text">Work Duration (minutes)</label>
-            <input type="number" class="f-input" id="workDuration" min="1" max="60" value="25">
-          </div>
+        const stats = {
+            today: { count: 0, minutes: 0, date: new Date().toDateString() },
+            week: {},
+            allTime: 0,
+            bestDay: 0,
+            streak: 0
+        };
 
-          <div class="field">
-            <label class="f-label-text">Break Duration (minutes)</label>
-            <input type="number" class="f-input" id="breakDuration" min="1" max="30" value="5">
-          </div>
+        function loadStats() {
+            const saved = localStorage.getItem('pomodoroStats');
+            if (saved) {
+                const data = JSON.parse(saved);
+                Object.assign(stats, data);
+                const today = new Date().toDateString();
+                if (stats.today.date !== today) {
+                    stats.today = { count: 0, minutes: 0, date: today };
+                }
+            }
+            updateStatsDisplay();
+        }
 
-          <div class="field">
-            <label class="f-label-text">Long Break Duration (minutes)</label>
-            <input type="number" class="f-input" id="longBreakDuration" min="1" max="60" value="15">
-          </div>
+        function saveStats() {
+            localStorage.setItem('pomodoroStats', JSON.stringify(stats));
+        }
 
-          <div class="field">
-            <label>
-              <input type="checkbox" id="soundToggle" checked>
-              <span style="font-size:0.85rem;color:#244d2c;font-weight:600;">Enable Sound Notification</span>
-            </label>
-          </div>
-        </div>
-      </div>
-    </div>
+        function setSessionType(type) {
+            currentSession = type;
+            isRunning = false;
+            clearInterval(timerInterval);
+            document.getElementById('startBtn').textContent = 'Start';
+            
+            const labels = {
+                work: 'Work Session',
+                break: 'Short Break',
+                long: 'Long Break'
+            };
+            document.getElementById('sessionTypeLabel').textContent = labels[type];
 
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title">Sessions</span>
-        </div>
-        <div class="card-body">
-          <div class="stats">
-            <div class="stat-value" id="sessionCount">0</div>
-            <div class="stat-label">Pomodoros Completed</div>
-          </div>
-        </div>
-      </div>
+            timeRemaining = config[type === 'long' ? 'long' : (type === 'break' ? 'break' : 'work')];
+            updateDisplay();
 
-      <div class="info-card">
-        <div class="info-title">Pomodoro Technique</div>
-        <div class="info-text">
-          <ul style="margin:0;padding-left:16px;">
-            <li>✓ 25 min focus</li>
-            <li>✓ 5 min break</li>
-            <li>✓ Track sessions</li>
-            <li>✓ Customizable</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+            document.querySelectorAll('.pom-session-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
 
+        function toggleTimer() {
+            if (isRunning) {
+                clearInterval(timerInterval);
+                isRunning = false;
+                document.getElementById('startBtn').textContent = 'Resume';
+            } else {
+                isRunning = true;
+                document.getElementById('startBtn').textContent = 'Pause';
+                timerInterval = setInterval(() => {
+                    timeRemaining--;
+                    updateDisplay();
+                    if (timeRemaining <= 0) {
+                        completeSession();
+                    }
+                }, 1000);
+            }
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            isRunning = false;
+            timeRemaining = config[currentSession === 'long' ? 'long' : (currentSession === 'break' ? 'break' : 'work')];
+            updateDisplay();
+            document.getElementById('startBtn').textContent = 'Start';
+        }
+
+        function completeSession() {
+            clearInterval(timerInterval);
+            isRunning = false;
+            playSound();
+            document.title = 'Time for ' + (currentSession === 'work' ? 'a break' : 'work') + '!';
+            
+            if (currentSession === 'work') {
+                sessionsCompleted++;
+                stats.today.count++;
+                stats.today.minutes += config.work / 60;
+                totalFocusTime += config.work / 60;
+                stats.allTime += config.work / 60;
+                if (stats.today.count > stats.bestDay) stats.bestDay = stats.today.count;
+                saveStats();
+                updateStatsDisplay();
+
+                if (document.getElementById('autoBreak').checked) {
+                    if (sessionsCompleted % config.sessionsUntilLong === 0) {
+                        setSessionType('long');
+                    } else {
+                        setSessionType('break');
+                    }
+                    setTimeout(() => toggleTimer(), 1000);
+                }
+            } else {
+                if (document.getElementById('autoBreak').checked) {
+                    setSessionType('work');
+                    setTimeout(() => toggleTimer(), 1000);
+                }
+            }
+        }
+
+        function updateDisplay() {
+            const mins = Math.floor(timeRemaining / 60);
+            const secs = timeRemaining % 60;
+            const display = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+            document.getElementById('circleTime').textContent = display;
+            document.title = display + ' - Pomodoro';
+
+            const percent = (config[currentSession === 'long' ? 'long' : (currentSession === 'break' ? 'break' : 'work')] - timeRemaining) / config[currentSession === 'long' ? 'long' : (currentSession === 'break' ? 'break' : 'work')];
+            const circumference = 2 * Math.PI * 45;
+            document.getElementById('progressRing').style.strokeDashoffset = circumference * (1 - percent);
+        }
+
+        function updateSettings() {
+            config.work = parseInt(document.getElementById('workDuration').value) * 60;
+            config.break = parseInt(document.getElementById('breakDuration').value) * 60;
+            config.long = parseInt(document.getElementById('longDuration').value) * 60;
+            config.sessionsUntilLong = parseInt(document.getElementById('sessionsUntilLong').value);
+            resetTimer();
+        }
+
+        function updateGoal() {
+            const goal = parseInt(document.getElementById('dailyGoal').value);
+            const percent = Math.min(100, (stats.today.count / goal) * 100);
+            document.getElementById('goalFill').style.width = percent + '%';
+            document.getElementById('goalProgress').textContent = stats.today.count + ' / ' + goal;
+        }
+
+        function updateStatsDisplay() {
+            document.getElementById('todayCount').textContent = stats.today.count;
+            document.getElementById('todayTime').textContent = Math.round(stats.today.minutes) + ' min focused';
+            
+            let weekCount = stats.today.count;
+            let weekTime = stats.today.minutes;
+            for (let i = 1; i < 7; i++) {
+                const d = new Date();
+                d.setDate(d.getDate() - i);
+                const key = d.toDateString();
+                if (stats.week[key]) {
+                    weekCount += stats.week[key].count;
+                    weekTime += stats.week[key].minutes;
+                }
+            }
+            document.getElementById('weekCount').textContent = weekCount;
+            document.getElementById('weekTime').textContent = Math.round(weekTime) + ' min focused';
+            document.getElementById('bestDay').textContent = stats.bestDay;
+            document.getElementById('streak').textContent = stats.streak;
+            
+            updateGoal();
+        }
+
+        function playSound() {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            oscillator.connect(gain);
+            gain.connect(audioContext.destination);
+            oscillator.frequency.value = 800;
+            oscillator.type = 'sine';
+            gain.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.2);
+        }
+
+        loadStats();
+        updateDisplay();
+    </script>
 <afro-footer></afro-footer>
-
-<script>
-  let timeLeft = 1500; // 25 minutes in seconds
-  let isRunning = false;
-  let currentMode = 'work';
-  let sessionCount = 0;
-  let timerInterval = null;
-
-  const timerDisplay = document.getElementById('timerDisplay');
-  const timerLabel = document.getElementById('timerLabel');
-  const startBtn = document.getElementById('startBtn');
-  const stopBtn = document.getElementById('stopBtn');
-  const modeButtons = document.querySelectorAll('[data-mode]');
-  const workDuration = document.getElementById('workDuration');
-  const breakDuration = document.getElementById('breakDuration');
-  const longBreakDuration = document.getElementById('longBreakDuration');
-  const soundToggle = document.getElementById('soundToggle');
-  const sessionCountDisplay = document.getElementById('sessionCount');
-
-  function updateDisplay() {
-    const minutes = Math.floor(timeLeft / 60);
-    const seconds = timeLeft % 60;
-    timerDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-  }
-
-  function setMode(mode) {
-    currentMode = mode;
-    modeButtons.forEach(btn => btn.classList.remove('active'));
-    document.querySelector(`[data-mode="${mode}"]`).classList.add('active');
-
-    if (mode === 'work') {
-      timeLeft = workDuration.value * 60;
-      timerLabel.textContent = 'Focus Time';
-    } else if (mode === 'break') {
-      timeLeft = breakDuration.value * 60;
-      timerLabel.textContent = 'Break Time';
-    } else {
-      timeLeft = longBreakDuration.value * 60;
-      timerLabel.textContent = 'Long Break';
-    }
-    updateDisplay();
-  }
-
-  function playSound() {
-    if (soundToggle.checked) {
-      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      const oscillator = audioContext.createOscillator();
-      const gainNode = audioContext.createGain();
-
-      oscillator.connect(gainNode);
-      gainNode.connect(audioContext.destination);
-
-      oscillator.frequency.value = 800;
-      oscillator.type = 'sine';
-
-      gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
-
-      oscillator.start(audioContext.currentTime);
-      oscillator.stop(audioContext.currentTime + 0.5);
-    }
-  }
-
-  function startTimer() {
-    if (isRunning) return;
-    isRunning = true;
-    startBtn.textContent = '⏸ Pause';
-
-    timerInterval = setInterval(() => {
-      timeLeft--;
-      updateDisplay();
-
-      if (timeLeft === 0) {
-        playSound();
-        sessionCount++;
-        sessionCountDisplay.textContent = sessionCount;
-
-        clearInterval(timerInterval);
-        isRunning = false;
-        startBtn.textContent = '▶ Start';
-
-        alert(`${currentMode === 'work' ? 'Focus' : currentMode === 'break' ? 'Break' : 'Long Break'} time is up!`);
-      }
-    }, 1000);
-  }
-
-  function stopTimer() {
-    isRunning = false;
-    clearInterval(timerInterval);
-    startBtn.textContent = '▶ Start';
-  }
-
-  modeButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      if (!isRunning) {
-        setMode(btn.dataset.mode);
-      }
-    });
-  });
-
-  startBtn.addEventListener('click', () => {
-    if (isRunning) {
-      stopTimer();
-    } else {
-      startTimer();
-    }
-  });
-
-  stopBtn.addEventListener('click', () => {
-    stopTimer();
-    setMode(currentMode);
-  });
-
-  workDuration.addEventListener('change', () => {
-    if (!isRunning && currentMode === 'work') {
-      setMode('work');
-    }
-  });
-
-  breakDuration.addEventListener('change', () => {
-    if (!isRunning && currentMode === 'break') {
-      setMode('break');
-    }
-  });
-
-  longBreakDuration.addEventListener('change', () => {
-    if (!isRunning && currentMode === 'longbreak') {
-      setMode('longbreak');
-    }
-  });
-
-  updateDisplay();
-</script>
 </body>
 </html>

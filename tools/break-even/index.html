@@ -3,39 +3,39 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Break Even Calculator | Find Break Even Point | AfroTools</title>
-<meta name="description" content="Calculate break-even point for your business. Enter fixed costs, variable costs, and selling price. Visualize profit zones.">
+<title>Break Even Calculator | Charts, Sensitivity Analysis, PDF Report | AfroTools</title>
+<meta name="description" content="Professional break-even calculator with interactive charts, sensitivity analysis, margin of safety, PDF report download. For African entrepreneurs.">
 <link rel="canonical" href="https://afrotools.com/tools/break-even">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Break Even Calculator | AfroTools">
-<meta property="og:description" content="Find break-even point and visualize profit zones.">
+<meta property="og:description" content="Calculate break-even point with charts, sensitivity analysis, profit zone visualization, and PDF reports.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/break-even">
-<meta property="og:image" content="https://afrotools.com/assets/img/og-calc.png">
 <meta property="og:site_name" content="AfroTools">
-<meta name="robots" content="index, follow">
-<meta name="author" content="AfroTools">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
 <link rel="stylesheet" href="/assets/css/global.min.css">
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js"></script>
 <style>
   :root {
     --afro-green: #008751;
-    --afro-dark: #0f1419;
+    --afro-red: #ef4444;
+    --afro-dark: #1e293b;
+    --afro-slate: #0f1419;
   }
 
   .tool-hero {
-    background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
+    background: linear-gradient(135deg, var(--afro-dark) 0%, #2d3748 100%);
     padding: 44px 0 36px;
     position: relative;
     overflow: hidden;
   }
 
   .tool-hero::after {
-    content: '💹';
+    content: '📈';
     position: absolute;
     right: 5%;
     top: 50%;
@@ -86,9 +86,9 @@
 
   .hero-sub {
     font-size: 0.88rem;
-    color: rgba(255, 255, 255, 0.45);
+    color: rgba(255, 255, 255, 0.5);
     line-height: 1.6;
-    max-width: 560px;
+    max-width: 700px;
     margin-bottom: 14px;
   }
 
@@ -124,14 +124,14 @@
     margin: 0 auto;
     padding: 0 24px;
     display: grid;
-    grid-template-columns: 1fr 360px;
+    grid-template-columns: 1fr 340px;
     gap: 22px;
     align-items: start;
   }
 
   .card {
     background: #fff;
-    border: 1px solid #dceee0;
+    border: 1px solid #e2e8f0;
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
@@ -143,8 +143,8 @@
 
   .card-head {
     padding: 15px 22px;
-    border-bottom: 1px solid #eaf5ec;
-    background: #f7fdf8;
+    border-bottom: 1px solid #f1f5f9;
+    background: #f8fafc;
   }
 
   .card-title {
@@ -152,7 +152,7 @@
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: #0a4018;
+    color: var(--afro-dark);
   }
 
   .card-body {
@@ -160,82 +160,213 @@
   }
 
   .field {
-    margin-bottom: 18px;
+    margin-bottom: 16px;
   }
 
-  .field:last-child {
-    margin-bottom: 0;
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
   }
 
-  .f-label-text {
+  .f-label {
     font-size: 0.75rem;
     font-weight: 700;
-    letter-spacing: 0.04em;
-    color: #0d2813;
+    color: var(--afro-dark);
     margin-bottom: 6px;
     display: block;
   }
 
-  .f-input {
+  .f-input, .f-select {
     width: 100%;
-    padding: 11px 13px;
-    background: #f4fbf5;
-    border: 1.5px solid #c5deca;
+    padding: 10px 12px;
+    background: #f8fafc;
+    border: 1.5px solid #cbd5e1;
     border-radius: 7px;
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 600;
-    color: #0d2813;
+    color: var(--afro-dark);
     outline: none;
-    transition: border-color 0.18s;
     font-family: 'DM Sans', sans-serif;
+    transition: all 0.18s;
   }
 
-  .f-input:focus {
+  .f-input:focus, .f-select:focus {
     border-color: var(--afro-green);
-    background: #fff;
     box-shadow: 0 0 0 3px rgba(0, 135, 81, 0.1);
   }
 
-  .result-box {
-    background: rgba(0, 135, 81, 0.05);
-    border: 1.5px solid rgba(0, 135, 81, 0.2);
+  .calc-btn {
+    width: 100%;
+    padding: 12px;
+    background: var(--afro-green);
+    color: #fff;
+    border: none;
     border-radius: 8px;
-    padding: 14px;
-    margin-top: 12px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.18s;
+    font-family: 'DM Sans', sans-serif;
   }
 
-  .result-row {
+  .calc-btn:hover {
+    background: #006d42;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 135, 81, 0.3);
+  }
+
+  .calc-btn.secondary {
+    background: #0284c7;
+    margin-top: 8px;
+  }
+
+  .calc-btn.secondary:hover {
+    background: #0369a1;
+  }
+
+  .fixed-costs-list {
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 12px;
+    font-size: 0.8rem;
+  }
+
+  .cost-item {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding: 8px 0;
-    border-bottom: 1px solid rgba(0, 135, 81, 0.1);
+    padding: 6px 0;
+    border-bottom: 1px solid #e2e8f0;
   }
 
-  .result-row:last-child {
+  .cost-item:last-child {
     border-bottom: none;
   }
 
-  .result-label {
-    font-size: 0.8rem;
-    color: #244d2c;
-    font-weight: 600;
+  .cost-item-label {
+    color: #475569;
   }
 
-  .result-value {
-    font-size: 0.95rem;
+  .cost-item-value {
+    font-weight: 700;
+    color: var(--afro-dark);
+  }
+
+  .cost-total {
+    border-top: 1.5px solid #cbd5e1;
+    padding-top: 8px;
+    margin-top: 8px;
+    font-weight: 700;
+    color: var(--afro-dark);
+  }
+
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .kpi-card {
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 14px;
+    text-align: center;
+  }
+
+  .kpi-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #475569;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .kpi-value {
+    font-size: 1.8rem;
+    font-weight: 800;
     color: var(--afro-green);
+  }
+
+  .kpi-subtext {
+    font-size: 0.7rem;
+    color: #64748b;
+    margin-top: 4px;
+  }
+
+  .chart-container {
+    position: relative;
+    height: 280px;
+    margin: 16px 0;
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 12px;
+  }
+
+  .table-wrapper {
+    overflow-x: auto;
+    margin-top: 12px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+  }
+
+  th {
+    background: #f8fafc;
+    padding: 10px;
+    text-align: left;
+    font-weight: 700;
+    color: var(--afro-dark);
+    border-bottom: 2px solid #cbd5e1;
+  }
+
+  td {
+    padding: 10px;
+    border-bottom: 1px solid #e2e8f0;
+    color: #475569;
+  }
+
+  tr.be-row td {
+    background: #f0fdf4;
     font-weight: 700;
   }
 
-  .chart {
-    margin-top: 16px;
-    height: 200px;
-    background: #f7fdf8;
-    border: 1px solid #dceee0;
-    border-radius: 8px;
-    position: relative;
-    overflow: hidden;
+  .action-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .action-btn {
+    padding: 10px 12px;
+    background: var(--afro-green);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+
+  .action-btn:hover {
+    background: #006d42;
+  }
+
+  .action-btn.alt {
+    background: #0284c7;
+  }
+
+  .action-btn.alt:hover {
+    background: #0369a1;
   }
 
   .sidebar {
@@ -245,8 +376,8 @@
   }
 
   .info-card {
-    background: #f7fdf8;
-    border: 1px solid #dceee0;
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
     border-radius: 10px;
     padding: 16px;
   }
@@ -254,7 +385,7 @@
   .info-title {
     font-size: 0.72rem;
     font-weight: 700;
-    color: #0a4018;
+    color: var(--afro-dark);
     letter-spacing: 0.08em;
     text-transform: uppercase;
     margin-bottom: 10px;
@@ -262,12 +393,38 @@
 
   .info-text {
     font-size: 0.8rem;
-    color: #244d2c;
+    color: #475569;
     line-height: 1.6;
+  }
+
+  .info-text strong {
+    color: var(--afro-dark);
+  }
+
+  .insight-box {
+    background: #f0fdf4;
+    border: 1px solid #86efac;
+    border-radius: 6px;
+    padding: 12px;
+    font-size: 0.8rem;
+    color: #166534;
+    margin-top: 12px;
   }
 
   @media (max-width: 768px) {
     .tool-main-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .field-row {
+      grid-template-columns: 1fr;
+    }
+
+    .kpi-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .action-buttons {
       grid-template-columns: 1fr;
     }
   }
@@ -278,15 +435,13 @@
 
 <div class="tool-hero">
   <div class="tool-hero-inner">
-    <div class="breadcrumb">
-      <a href="/">AfroTools</a> / <span>Tools</span>
-    </div>
+    <div class="breadcrumb"><a href="/">AfroTools</a> / <span>Tools</span></div>
     <h1>Break Even <em>Calculator</em></h1>
-    <p class="hero-sub">Calculate break-even point for your business. Enter fixed costs, variable costs, and selling price to visualize profit zones.</p>
+    <p class="hero-sub">Find your break-even point with interactive charts. Analyze profit zones, sensitivity to price changes, margin of safety, and download professional PDF reports.</p>
     <div class="hero-badges">
-      <span class="badge b-green">Instant Results</span>
-      <span class="badge b-green">Visualization</span>
-      <span class="badge b-green">African Currencies</span>
+      <span class="badge b-green">Interactive Charts</span>
+      <span class="badge b-green">Sensitivity Analysis</span>
+      <span class="badge b-green">PDF Report</span>
     </div>
   </div>
 </div>
@@ -294,67 +449,172 @@
 <div class="tool-main">
   <div class="tool-main-inner">
     <div>
-      <!-- Input -->
+      <!-- Input Section -->
       <div class="card">
-        <div class="card-head">
-          <span class="card-title">Cost Information</span>
-        </div>
+        <div class="card-head"><span class="card-title">Business Cost Information</span></div>
         <div class="card-body">
           <div class="field">
-            <label class="f-label-text">Fixed Costs</label>
-            <input type="number" class="f-input" id="fixedCosts" placeholder="Rent, salaries, etc." value="10000" step="100">
+            <label class="f-label">Business Name (for report)</label>
+            <input type="text" class="f-input" id="businessName" placeholder="e.g., My Tailoring Shop">
+          </div>
+
+          <div style="border-bottom: 2px solid #e2e8f0; padding-bottom: 14px; margin-bottom: 14px;">
+            <div style="font-size: 0.75rem; font-weight: 700; color: var(--afro-dark); margin-bottom: 10px;">FIXED MONTHLY COSTS</div>
+
+            <div class="field-row">
+              <div class="field">
+                <label class="f-label">Rent</label>
+                <input type="number" class="f-input cost-input" data-label="Rent" value="5000" step="100">
+              </div>
+              <div class="field">
+                <label class="f-label">Salaries/Labour</label>
+                <input type="number" class="f-input cost-input" data-label="Salaries" value="3000" step="100">
+              </div>
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label class="f-label">Utilities (electricity, water)</label>
+                <input type="number" class="f-input cost-input" data-label="Utilities" value="1000" step="100">
+              </div>
+              <div class="field">
+                <label class="f-label">Insurance</label>
+                <input type="number" class="f-input cost-input" data-label="Insurance" value="500" step="100">
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="f-label">Other Fixed Costs</label>
+              <input type="number" class="f-input cost-input" data-label="Other" value="500" step="100">
+            </div>
+
+            <div class="fixed-costs-list" id="costsList"></div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label class="f-label">Variable Cost per Unit</label>
+              <input type="number" class="f-input" id="varCost" placeholder="Cost to produce 1 unit" value="50" step="0.01">
+            </div>
+            <div class="field">
+              <label class="f-label">Selling Price per Unit</label>
+              <input type="number" class="f-input" id="sellingPrice" placeholder="Price per unit" value="150" step="0.01">
+            </div>
           </div>
 
           <div class="field">
-            <label class="f-label-text">Variable Cost per Unit</label>
-            <input type="number" class="f-input" id="variableCost" placeholder="Cost to produce 1 unit" value="50" step="1">
-          </div>
-
-          <div class="field">
-            <label class="f-label-text">Selling Price per Unit</label>
-            <input type="number" class="f-input" id="sellingPrice" placeholder="Price per unit" value="150" step="1">
-          </div>
-
-          <div class="field">
-            <label class="f-label-text">Currency</label>
-            <select class="f-input" id="currency">
+            <label class="f-label">Currency</label>
+            <select class="f-select" id="currency">
               <option value="$">USD ($)</option>
+              <option value="₦">NGN (₦)</option>
+              <option value="KSh">KES (KSh)</option>
+              <option value="R">ZAR (R)</option>
+              <option value="GH₵">GHS (GH₵)</option>
+              <option value="£">GBP (£)</option>
               <option value="€">EUR (€)</option>
-              <option value="₦">Nigerian Naira (₦)</option>
-              <option value="R$">Brazilian Real (R$)</option>
-              <option value="ZAR">South African Rand (ZAR)</option>
-              <option value="KES">Kenyan Shilling (KES)</option>
             </select>
+          </div>
+
+          <div class="field">
+            <label class="f-label">Current/Expected Monthly Sales Volume</label>
+            <input type="number" class="f-input" id="currentSales" placeholder="Units sold per month" value="200" step="1">
+          </div>
+
+          <button class="calc-btn" onclick="calculateBreakEven()">Calculate Break-Even</button>
+        </div>
+      </div>
+
+      <!-- KPI Cards -->
+      <div class="kpi-grid" id="kpiSection" style="display: none;">
+        <div class="kpi-card">
+          <div class="kpi-label">Break-Even Units</div>
+          <div class="kpi-value" id="beUnits">0</div>
+          <div class="kpi-subtext">per month</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Break-Even Revenue</div>
+          <div class="kpi-value" id="beRevenue">0</div>
+          <div class="kpi-subtext" id="beRevenueNote"></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Contribution Margin</div>
+          <div class="kpi-value" id="contribMargin">0</div>
+          <div class="kpi-subtext">per unit</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Margin of Safety</div>
+          <div class="kpi-value" id="marginSafety">0%</div>
+          <div class="kpi-subtext" id="safetyText"></div>
+        </div>
+      </div>
+
+      <!-- Charts -->
+      <div class="card" id="chartCard" style="display: none;">
+        <div class="card-head"><span class="card-title">Break-Even Analysis Chart</span></div>
+        <div class="card-body">
+          <div class="chart-container">
+            <canvas id="breakEvenChart"></canvas>
+          </div>
+          <div style="font-size: 0.75rem; color: #475569; text-align: center; margin-top: 8px;">
+            Green zone = Profit area | Red zone = Loss area
           </div>
         </div>
       </div>
 
-      <!-- Results -->
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title">Results</span>
-        </div>
+      <!-- Profit Zone Analysis -->
+      <div class="card" id="profitZoneCard" style="display: none;">
+        <div class="card-head"><span class="card-title">Profit Zone at Different Sales Levels</span></div>
         <div class="card-body">
-          <div class="result-box">
-            <div class="result-row">
-              <span class="result-label">Break-even Units:</span>
-              <span class="result-value" id="beUnits">200</span>
-            </div>
-            <div class="result-row">
-              <span class="result-label">Break-even Revenue:</span>
-              <span class="result-value" id="beRevenue">$30,000</span>
-            </div>
-            <div class="result-row">
-              <span class="result-label">Margin of Safety:</span>
-              <span class="result-value" id="marginSafety">80%</span>
-            </div>
-            <div class="result-row">
-              <span class="result-label">Profit per Unit:</span>
-              <span class="result-value" id="profitUnit">$100</span>
-            </div>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>% of Break-Even</th>
+                  <th>Units</th>
+                  <th>Revenue</th>
+                  <th>Profit/Loss</th>
+                </tr>
+              </thead>
+              <tbody id="profitZoneTable">
+              </tbody>
+            </table>
           </div>
+        </div>
+      </div>
 
-          <div class="chart" id="chart"></div>
+      <!-- Sensitivity Analysis -->
+      <div class="card" id="sensitivityCard" style="display: none;">
+        <div class="card-head"><span class="card-title">Sensitivity Analysis</span></div>
+        <div class="card-body">
+          <div style="font-size: 0.8rem; color: #475569; margin-bottom: 12px;">
+            How does break-even change if key factors shift?
+          </div>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Scenario</th>
+                  <th>Change</th>
+                  <th>New Break-Even</th>
+                  <th>Impact</th>
+                </tr>
+              </thead>
+              <tbody id="sensitivityTable">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="card" id="actionsCard" style="display: none;">
+        <div class="card-head"><span class="card-title">Actions</span></div>
+        <div class="card-body">
+          <div class="action-buttons">
+            <button class="action-btn" onclick="downloadPDF()">📄 Download PDF Report</button>
+            <button class="action-btn alt" onclick="printChart()">🖨 Print</button>
+          </div>
+          <button class="action-btn" style="width: 100%;" onclick="saveBreakEven()" style="margin-top: 8px;">💾 Save Calculation</button>
         </div>
       </div>
     </div>
@@ -362,130 +622,345 @@
     <!-- Sidebar -->
     <div class="sidebar">
       <div class="info-card">
-        <div class="info-title">How It Works</div>
+        <div class="info-title">What is Break-Even?</div>
         <div class="info-text">
-          <strong>Break-even point:</strong> Where revenue = total costs.
-          <br><br>
-          Formula: Fixed Costs ÷ (Selling Price - Variable Cost)
-          <br><br>
-          Green zone = profit area above break-even.
+          Break-even is the point where your total revenue equals your total costs. At this point, you make zero profit or loss.<br><br>
+          <strong>Formula:</strong> Fixed Costs ÷ (Selling Price - Variable Cost)
         </div>
       </div>
 
       <div class="info-card">
-        <div class="info-title">Tips</div>
+        <div class="info-title">Key Metrics</div>
         <div class="info-text">
-          <ul style="margin:0;padding-left:16px;">
-            <li>✓ Real-time updates</li>
-            <li>✓ Multiple currencies</li>
-            <li>✓ Visual chart</li>
-            <li>✓ Instant results</li>
-          </ul>
+          <strong>Contribution Margin:</strong> Selling Price minus Variable Cost. The portion of each sale that covers fixed costs.<br><br>
+          <strong>Margin of Safety:</strong> How much sales can drop before you hit break-even.
         </div>
       </div>
+
+      <div class="info-card">
+        <div class="info-title">Why It Matters</div>
+        <div class="info-text">
+          Most Nigerian SMEs don't calculate break-even. Knowing your break-even gives you:<br><br>
+          ✓ Pricing confidence<br>
+          ✓ Sales targets<br>
+          ✓ Risk awareness<br>
+          ✓ Growth strategy clarity
+        </div>
+      </div>
+
+      <div class="insight-box" id="insightBox" style="display: none;"></div>
     </div>
   </div>
 </div>
 
 <afro-footer></afro-footer>
 
+<script src="/assets/js/afro-auth.js"></script>
 <script>
-  const fixedCosts = document.getElementById('fixedCosts');
-  const variableCost = document.getElementById('variableCost');
-  const sellingPrice = document.getElementById('sellingPrice');
-  const currency = document.getElementById('currency');
-  const beUnits = document.getElementById('beUnits');
-  const beRevenue = document.getElementById('beRevenue');
-  const marginSafety = document.getElementById('marginSafety');
-  const profitUnit = document.getElementById('profitUnit');
-  const chart = document.getElementById('chart');
+  let beChart = null;
 
-  function calculate() {
-    const fc = parseFloat(fixedCosts.value) || 0;
-    const vc = parseFloat(variableCost.value) || 0;
-    const sp = parseFloat(sellingPrice.value) || 0;
-    const curr = currency.value;
+  // Update costs list
+  function updateCostsList() {
+    const inputs = document.querySelectorAll('.cost-input');
+    const list = document.getElementById('costsList');
+    let total = 0;
 
-    if (sp <= vc) {
-      beUnits.textContent = 'Invalid';
-      beRevenue.textContent = 'Invalid';
-      marginSafety.textContent = 'Invalid';
-      profitUnit.textContent = 'Invalid';
+    let html = '';
+    inputs.forEach(input => {
+      const label = input.dataset.label;
+      const value = parseFloat(input.value) || 0;
+      total += value;
+      if (value > 0) {
+        html += `<div class="cost-item"><span class="cost-item-label">${label}</span><span class="cost-item-value">${value.toLocaleString()}</span></div>`;
+      }
+    });
+
+    html += `<div class="cost-total">Total: <span style="color: var(--afro-green);">${total.toLocaleString()}</span></div>`;
+    list.innerHTML = html;
+    return total;
+  }
+
+  document.querySelectorAll('.cost-input').forEach(input => {
+    input.addEventListener('input', updateCostsList);
+  });
+
+  function calculateBreakEven() {
+    const fixedCosts = updateCostsList();
+    const varCost = parseFloat(document.getElementById('varCost').value) || 0;
+    const sellingPrice = parseFloat(document.getElementById('sellingPrice').value) || 0;
+    const currentSales = parseFloat(document.getElementById('currentSales').value) || 0;
+    const currency = document.getElementById('currency').value;
+
+    if (sellingPrice <= varCost) {
+      alert('Selling price must be higher than variable cost per unit');
       return;
     }
 
-    const breakEvenUnits = Math.ceil(fc / (sp - vc));
-    const breakEvenRevenue = breakEvenUnits * sp;
-    const contributionMargin = sp - vc;
-    const profitPerUnit = sp - vc;
+    const contribMargin = sellingPrice - varCost;
+    const breakEvenUnits = Math.ceil(fixedCosts / contribMargin);
+    const breakEvenRevenue = breakEvenUnits * sellingPrice;
+    const marginOfSafety = currentSales > 0 ? ((currentSales - breakEvenUnits) / currentSales * 100).toFixed(1) : 0;
 
-    beUnits.textContent = breakEvenUnits.toLocaleString();
-    beRevenue.textContent = `${curr}${breakEvenRevenue.toLocaleString('en-US', { maximumFractionDigits: 0 })}`;
-    profitUnit.textContent = `${curr}${profitPerUnit.toLocaleString('en-US', { maximumFractionDigits: 2 })}`;
+    // Update KPIs
+    document.getElementById('beUnits').textContent = breakEvenUnits.toLocaleString();
+    document.getElementById('beRevenue').textContent = `${currency}${breakEvenRevenue.toLocaleString('en', {maximumFractionDigits: 0})}`;
+    document.getElementById('contribMargin').textContent = `${currency}${contribMargin.toFixed(2)}`;
+    document.getElementById('marginSafety').textContent = marginOfSafety > 0 ? marginOfSafety + '%' : 'N/A';
 
-    // Draw chart
-    drawChart(breakEvenUnits, fc, vc, sp);
+    if (currentSales > breakEvenUnits) {
+      document.getElementById('safetyText').textContent = `You can drop ${marginOfSafety}% before breaking even`;
+    } else {
+      document.getElementById('safetyText').textContent = `Current sales below break-even`;
+    }
+
+    document.getElementById('kpiSection').style.display = 'grid';
+    document.getElementById('chartCard').style.display = 'block';
+    document.getElementById('profitZoneCard').style.display = 'block';
+    document.getElementById('sensitivityCard').style.display = 'block';
+    document.getElementById('actionsCard').style.display = 'block';
+
+    // Chart
+    drawBreakEvenChart(breakEvenUnits, fixedCosts, varCost, sellingPrice, contribMargin);
+
+    // Profit Zone
+    generateProfitZone(breakEvenUnits, fixedCosts, varCost, sellingPrice, currency);
+
+    // Sensitivity
+    generateSensitivity(breakEvenUnits, fixedCosts, varCost, sellingPrice, currency);
+
+    // Insight
+    generateInsight(currentSales, breakEvenUnits, marginOfSafety);
+
+    // Store for export
+    window.beData = {
+      businessName: document.getElementById('businessName').value || 'My Business',
+      fixedCosts, varCost, sellingPrice, currentSales,
+      breakEvenUnits, breakEvenRevenue, marginOfSafety, contribMargin,
+      currency, date: new Date().toLocaleDateString()
+    };
   }
 
-  function drawChart(beUnits, fc, vc, sp) {
-    const canvas = document.createElement('canvas');
-    canvas.width = chart.offsetWidth;
-    canvas.height = 200;
-    const ctx = canvas.getContext('2d');
-
-    const padding = 40;
-    const graphWidth = canvas.width - padding * 2;
-    const graphHeight = canvas.height - padding * 2;
+  function drawBreakEvenChart(beUnits, fc, vc, sp, cm) {
     const maxUnits = beUnits * 1.5;
+    const ctx = document.getElementById('breakEvenChart').getContext('2d');
 
-    // Draw axes
-    ctx.strokeStyle = '#dceee0';
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.moveTo(padding, canvas.height - padding);
-    ctx.lineTo(canvas.width - padding, canvas.height - padding);
-    ctx.moveTo(padding, padding);
-    ctx.lineTo(padding, canvas.height - padding);
-    ctx.stroke();
+    const labels = [];
+    const totalCostData = [];
+    const revenueData = [];
 
-    // Draw break-even point
-    const beX = padding + (beUnits / maxUnits) * graphWidth;
-    const beY = canvas.height - padding - (beUnits * (sp - vc)) / (maxUnits * (sp - vc)) * graphHeight;
+    for (let i = 0; i <= maxUnits; i += Math.ceil(maxUnits / 20)) {
+      labels.push(i);
+      totalCostData.push(fc + (vc * i));
+      revenueData.push(sp * i);
+    }
 
-    // Draw profit zone (green)
-    ctx.fillStyle = 'rgba(0, 135, 81, 0.1)';
-    ctx.fillRect(beX, padding, canvas.width - padding - beX, graphHeight);
+    if (beChart) {
+      beChart.destroy();
+    }
 
-    // Draw loss zone (red)
-    ctx.fillStyle = 'rgba(200, 0, 0, 0.05)';
-    ctx.fillRect(padding, beY, beX - padding, canvas.height - padding - beY);
-
-    // Draw break-even line
-    ctx.strokeStyle = '#008751';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(beX, padding);
-    ctx.lineTo(beX, canvas.height - padding);
-    ctx.stroke();
-
-    // Labels
-    ctx.fillStyle = '#244d2c';
-    ctx.font = '10px DM Sans';
-    ctx.textAlign = 'center';
-    ctx.fillText('PROFIT', canvas.width - padding - 20, padding + 15);
-    ctx.fillStyle = '#a00000';
-    ctx.fillText('LOSS', padding + 20, beY - 5);
-
-    chart.innerHTML = '';
-    chart.appendChild(canvas);
+    beChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: 'Total Revenue',
+            data: revenueData,
+            borderColor: '#008751',
+            backgroundColor: 'rgba(0, 135, 81, 0.1)',
+            borderWidth: 3,
+            fill: true,
+            tension: 0.4
+          },
+          {
+            label: 'Total Cost',
+            data: totalCostData,
+            borderColor: '#ef4444',
+            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+            borderWidth: 3,
+            fill: true,
+            tension: 0.4
+          },
+          {
+            label: 'Fixed Cost',
+            data: Array(labels.length).fill(fc),
+            borderColor: '#94a3b8',
+            borderDash: [5, 5],
+            borderWidth: 2,
+            fill: false,
+            tension: 0
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'top',
+            labels: { font: { family: "'DM Sans', sans-serif" } }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: { display: true, text: 'Amount' }
+          },
+          x: {
+            title: { display: true, text: 'Units Sold' }
+          }
+        }
+      }
+    });
   }
 
-  fixedCosts.addEventListener('input', calculate);
-  variableCost.addEventListener('input', calculate);
-  sellingPrice.addEventListener('input', calculate);
-  currency.addEventListener('change', calculate);
+  function generateProfitZone(beUnits, fc, vc, sp, currency) {
+    const levels = [50, 100, 150, 200, 250];
+    const tbody = document.getElementById('profitZoneTable');
+    tbody.innerHTML = '';
 
-  calculate();
+    levels.forEach(pct => {
+      const units = Math.ceil(beUnits * (pct / 100));
+      const revenue = units * sp;
+      const totalCost = fc + (units * vc);
+      const profit = revenue - totalCost;
+
+      const tr = document.createElement('tr');
+      if (pct === 100) tr.className = 'be-row';
+
+      const profitClass = profit >= 0 ? 'color: var(--afro-green);' : 'color: var(--afro-red);';
+      tr.innerHTML = `
+        <td>${pct}%</td>
+        <td>${units.toLocaleString()}</td>
+        <td>${currency}${revenue.toLocaleString('en', {maximumFractionDigits: 0})}</td>
+        <td style="${profitClass} font-weight: 700;">${profit >= 0 ? '+' : ''}${currency}${profit.toLocaleString('en', {maximumFractionDigits: 0})}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  function generateSensitivity(baseBeUnits, fc, vc, sp, currency) {
+    const scenarios = [
+      { label: 'Price -20%', change: 'selling', amount: -20 },
+      { label: 'Price -10%', change: 'selling', amount: -10 },
+      { label: 'Price +10%', change: 'selling', amount: 10 },
+      { label: 'Price +20%', change: 'selling', amount: 20 },
+      { label: 'Costs +10%', change: 'fixed', amount: 10 },
+      { label: 'Costs +20%', change: 'fixed', amount: 20 }
+    ];
+
+    const tbody = document.getElementById('sensitivityTable');
+    tbody.innerHTML = '';
+
+    scenarios.forEach(s => {
+      let newBe;
+      let newPrice = sp;
+      let newFixed = fc;
+
+      if (s.change === 'selling') {
+        newPrice = sp * (1 + (s.amount / 100));
+        newBe = Math.ceil(fc / (newPrice - vc));
+      } else {
+        newFixed = fc * (1 + (s.amount / 100));
+        newBe = Math.ceil(newFixed / (sp - vc));
+      }
+
+      const change = newBe - baseBeUnits;
+      const changeClass = change >= 0 ? 'color: var(--afro-red);' : 'color: var(--afro-green);';
+
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${s.label}</td>
+        <td>${s.amount > 0 ? '+' : ''}${s.amount}%</td>
+        <td><strong>${newBe.toLocaleString()}</strong> units</td>
+        <td style="${changeClass} font-weight: 700;">${change >= 0 ? '+' : ''}${change.toLocaleString()} units</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  function generateInsight(currentSales, beUnits, marginOfSafety) {
+    const box = document.getElementById('insightBox');
+    let insight = '';
+
+    if (currentSales >= beUnits * 1.2) {
+      insight = `✓ <strong>Strong Position:</strong> Your current sales are ${((currentSales - beUnits) / beUnits * 100).toFixed(0)}% above break-even. You have ${marginOfSafety}% margin of safety.`;
+    } else if (currentSales >= beUnits) {
+      insight = `✓ <strong>At Break-Even:</strong> You're at or near break-even. Focus on increasing sales to build profit.`;
+    } else {
+      insight = `⚠ <strong>Below Break-Even:</strong> Current sales don't cover costs. You need ${beUnits - currentSales} more units per month.`;
+    }
+
+    box.innerHTML = insight;
+    box.style.display = 'block';
+  }
+
+  function downloadPDF() {
+    const data = window.beData;
+    if (!data) {
+      alert('Please calculate break-even first');
+      return;
+    }
+
+    const pdf = `
+BREAK-EVEN ANALYSIS REPORT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Business: ${data.businessName}
+Date: ${data.date}
+
+COST STRUCTURE
+Fixed Costs (Monthly): ${data.currency}${data.fixedCosts.toLocaleString()}
+Variable Cost per Unit: ${data.currency}${data.varCost.toFixed(2)}
+Selling Price per Unit: ${data.currency}${data.sellingPrice.toFixed(2)}
+Contribution Margin: ${data.currency}${data.contribMargin.toFixed(2)}
+
+KEY RESULTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Break-Even Point: ${data.breakEvenUnits.toLocaleString()} units
+Break-Even Revenue: ${data.currency}${data.breakEvenRevenue.toLocaleString()}
+Current Sales: ${data.currentSales.toLocaleString()} units
+Margin of Safety: ${data.marginOfSafety}%
+
+INTERPRETATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+You must sell at least ${data.breakEvenUnits.toLocaleString()} units per month to break even.
+At your current sales of ${data.currentSales.toLocaleString()} units, your margin of safety is ${data.marginOfSafety}%.
+
+Generated by AfroTools Break-Even Calculator
+https://afrotools.com/tools/break-even
+    `;
+
+    const blob = new Blob([pdf], { type: 'text/plain' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'break-even-report.txt';
+    a.click();
+  }
+
+  function printChart() {
+    window.print();
+  }
+
+  function saveBreakEven() {
+    const data = window.beData;
+    if (!data) {
+      alert('Please calculate break-even first');
+      return;
+    }
+
+    const saved = JSON.parse(localStorage.getItem('breakEvenSaved') || '[]');
+    saved.unshift(data);
+    saved.splice(5);
+    localStorage.setItem('breakEvenSaved', JSON.stringify(saved));
+    alert('Calculation saved!');
+  }
+
+  // Initial update
+  updateCostsList();
 </script>
 </body>
 </html>

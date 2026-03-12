@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>My Dashboard | AfroTools</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            flex: 1;
+            padding: 2rem 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            font-size: 0.875rem;
+            color: #64748b;
+            margin-bottom: 2rem;
+        }
+
+        .breadcrumb a {
+            color: #008751;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        /* Auth Container */
+        .auth-container {
+            max-width: 480px;
+            margin: 2rem auto;
+            background: white;
+            border-radius: 0.875rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .auth-header h1 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+
+        .auth-header p {
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+
+        /* Tabs */
+        .auth-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .auth-tab-btn {
+            flex: 1;
+            padding: 1rem;
+            background: none;
+            border: none;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #64748b;
+            cursor: pointer;
+            position: relative;
+            transition: color 0.2s;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+        }
+
+        .auth-tab-btn:hover {
+            color: #475569;
+        }
+
+        .auth-tab-btn.active {
+            color: #1e293b;
+            border-bottom-color: #1e293b;
+        }
+
+        .auth-content {
+            display: none;
+        }
+
+        .auth-content.active {
+            display: block;
+        }
+
+        /* Form */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.95rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            background: white;
+            color: #1e293b;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #1e293b;
+        }
+
+        .form-error {
+            display: none;
+            color: #dc2626;
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+        }
+
+        .form-error.show {
+            display: block;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 500;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            width: 100%;
+            background-color: #008751;
+            color: white;
+            margin-top: 1rem;
+        }
+
+        .btn-primary:hover {
+            background-color: #006a3f;
+        }
+
+        .btn-primary:disabled {
+            background-color: #cbd5e1;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background-color: #e2e8f0;
+            color: #1e293b;
+        }
+
+        .btn-secondary:hover {
+            background-color: #cbd5e1;
+        }
+
+        .btn-danger {
+            background-color: #dc2626;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #b91c1c;
+        }
+
+        .btn-text {
+            background: none;
+            color: #008751;
+            padding: 0;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        .btn-text:hover {
+            text-decoration: underline;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: none;
+        }
+
+        .dashboard.active {
+            display: block;
+        }
+
+        /* Dashboard Header */
+        .dashboard-header {
+            background: white;
+            padding: 2rem;
+            border-radius: 0.875rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-header h1 {
+            font-size: 1.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .profile-item {
+            color: #64748b;
+        }
+
+        .profile-item strong {
+            color: #1e293b;
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+        }
+
+        /* Card Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 0.875rem;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.2s;
+        }
+
+        .card:hover {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .card-subtitle {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-top: 0.25rem;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .section-title:first-child {
+            margin-top: 0;
+        }
+
+        /* Quick Access */
+        .quick-access-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .quick-access-card {
+            background: white;
+            border-radius: 0.875rem;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid #e2e8f0;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .quick-access-card:hover {
+            border-color: #1e293b;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .tool-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .quick-access-name {
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .quick-access-date {
+            font-size: 0.75rem;
+            color: #94a3b8;
+        }
+
+        /* Saved Calculations */
+        .saved-items {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .saved-item {
+            background: white;
+            border-radius: 0.875rem;
+            padding: 1.5rem;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .saved-content h3 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+
+        .saved-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #008751;
+            margin-bottom: 0.25rem;
+        }
+
+        .saved-meta {
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+
+        .saved-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-icon {
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8rem;
+            width: auto;
+        }
+
+        /* Favorites */
+        .favorites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .favorite-card {
+            background: white;
+            border-radius: 0.875rem;
+            padding: 1.5rem;
+            text-align: center;
+            text-decoration: none;
+            color: inherit;
+            border: 2px solid #e2e8f0;
+            transition: all 0.2s;
+        }
+
+        .favorite-card:hover {
+            border-color: #008751;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .favorite-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .favorite-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #94a3b8;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 0.875rem;
+            padding: 2rem;
+            max-width: 480px;
+            width: 90%;
+            box-shadow: 0 20px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .modal-header {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .modal-body {
+            color: #64748b;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            main {
+                padding: 1rem;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-header {
+                padding: 1.5rem;
+            }
+
+            .quick-access-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            }
+
+            .favorites-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+
+            .saved-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .saved-actions {
+                width: 100%;
+                margin-top: 1rem;
+            }
+
+            .header-actions {
+                flex-direction: column;
+            }
+
+            .header-actions .btn {
+                width: 100%;
+            }
+        }
+
+        /* Loading state */
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        /* Message */
+        .message {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        .message.success {
+            background-color: #dcfce7;
+            color: #166534;
+            border: 1px solid #86efac;
+        }
+
+        .message.error {
+            background-color: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+        }
+
+        /* Edit Profile */
+        .edit-profile-form {
+            display: none;
+        }
+
+        .edit-profile-form.active {
+            display: block;
+        }
+
+        .edit-profile-view {
+            display: block;
+        }
+
+        .edit-profile-view.hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <afro-navbar></afro-navbar>
+
+    <main>
+        <div class="breadcrumb">
+            <a href="/">Home</a> / Dashboard
+        </div>
+
+        <!-- Auth Section -->
+        <div id="authSection" class="auth-container">
+            <div class="auth-header">
+                <h1>Welcome to AfroTools</h1>
+                <p>Sign up or log in to save your calculations</p>
+            </div>
+
+            <div class="message" id="authMessage"></div>
+
+            <div class="auth-tabs">
+                <button class="auth-tab-btn active" data-tab="login">Log In</button>
+                <button class="auth-tab-btn" data-tab="signup">Sign Up</button>
+            </div>
+
+            <!-- Log In Form -->
+            <div class="auth-content active" id="loginContent">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" placeholder="you@example.com" required>
+                        <div class="form-error" id="loginEmailError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" placeholder="••••••••" required>
+                        <div class="form-error" id="loginPasswordError"></div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Log In</button>
+                </form>
+            </div>
+
+            <!-- Sign Up Form -->
+            <div class="auth-content" id="signupContent">
+                <form id="signupForm">
+                    <div class="form-group">
+                        <label for="signupName">Full Name</label>
+                        <input type="text" id="signupName" placeholder="Your full name" required>
+                        <div class="form-error" id="signupNameError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="signupEmail">Email</label>
+                        <input type="email" id="signupEmail" placeholder="you@example.com" required>
+                        <div class="form-error" id="signupEmailError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="signupPassword">Password</label>
+                        <input type="password" id="signupPassword" placeholder="Min 4 characters" minlength="4" required>
+                        <div class="form-error" id="signupPasswordError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="signupCountry">Country</label>
+                        <select id="signupCountry" required>
+                            <option value="">Select a country</option>
+                            <option value="Nigeria">Nigeria</option>
+                            <option value="Kenya">Kenya</option>
+                            <option value="Ghana">Ghana</option>
+                            <option value="South Africa">South Africa</option>
+                            <option value="Egypt">Egypt</option>
+                            <option value="Tanzania">Tanzania</option>
+                            <option value="Uganda">Uganda</option>
+                            <option value="Rwanda">Rwanda</option>
+                            <option value="Ethiopia">Ethiopia</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <div class="form-error" id="signupCountryError"></div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Sign Up</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div id="dashboardSection" class="dashboard">
+            <!-- Header -->
+            <div class="dashboard-header">
+                <h1 id="welcomeMessage">Welcome back!</h1>
+                <div class="profile-summary">
+                    <div class="profile-item">
+                        <strong>Email</strong>
+                        <span id="profileEmail">-</span>
+                    </div>
+                    <div class="profile-item">
+                        <strong>Member Since</strong>
+                        <span id="profileMemberSince">-</span>
+                    </div>
+                    <div class="profile-item">
+                        <strong>Country</strong>
+                        <span id="profileCountry">-</span>
+                    </div>
+                </div>
+
+                <div class="header-actions">
+                    <button class="btn btn-secondary btn-sm" id="editProfileBtn">Edit Profile</button>
+                    <button class="btn btn-secondary btn-sm" id="deleteAccountBtn">Delete Account</button>
+                    <button class="btn btn-secondary btn-sm" id="logoutBtn">Log Out</button>
+                </div>
+            </div>
+
+            <!-- Edit Profile Modal -->
+            <div class="modal" id="editProfileModal">
+                <div class="modal-content">
+                    <div class="modal-header">Edit Profile</div>
+                    <div class="message" id="editMessage"></div>
+
+                    <form id="editProfileForm" class="edit-profile-form active">
+                        <div class="form-group">
+                            <label for="editName">Full Name</label>
+                            <input type="text" id="editName" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editCountry">Country</label>
+                            <select id="editCountry" required>
+                                <option value="">Select a country</option>
+                                <option value="Nigeria">Nigeria</option>
+                                <option value="Kenya">Kenya</option>
+                                <option value="Ghana">Ghana</option>
+                                <option value="South Africa">South Africa</option>
+                                <option value="Egypt">Egypt</option>
+                                <option value="Tanzania">Tanzania</option>
+                                <option value="Uganda">Uganda</option>
+                                <option value="Rwanda">Rwanda</option>
+                                <option value="Ethiopia">Ethiopia</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="modal-actions">
+                            <button type="button" class="btn btn-secondary" id="cancelEditBtn">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Delete Account Modal -->
+            <div class="modal" id="deleteModal">
+                <div class="modal-content">
+                    <div class="modal-header">Delete Account</div>
+                    <div class="modal-body">
+                        Are you sure you want to delete your account? This action cannot be undone and all your saved data will be lost.
+                    </div>
+                    <div class="modal-actions">
+                        <button class="btn btn-secondary" id="cancelDeleteBtn">Cancel</button>
+                        <button class="btn btn-danger" id="confirmDeleteBtn">Delete Account</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Access -->
+            <h2 class="section-title">Recently Used Tools</h2>
+            <div id="quickAccessContainer" class="quick-access-grid"></div>
+
+            <!-- Saved Calculations -->
+            <h2 class="section-title">Saved Calculations</h2>
+            <div id="savedContainer" class="saved-items"></div>
+
+            <!-- Favorite Tools -->
+            <h2 class="section-title">Favorite Tools</h2>
+            <div id="favoritesContainer" class="favorites-grid"></div>
+        </div>
+    </main>
+
+    <afro-footer></afro-footer>
+
+    <script src="/assets/js/afro-auth.js"></script>
+    <script src="/assets/js/navbar.min.js" defer></script>
+    <script src="/assets/js/footer.min.js" defer></script>
+
+    <script>
+        // State management
+        let currentUser = null;
+        let isLoggedIn = false;
+
+        // Tool metadata for display
+        const toolMetadata = {
+            'bmi-calculator': { name: 'BMI Calculator', icon: '⚖️' },
+            'paye-calculator': { name: 'PAYE Calculator', icon: '💷' },
+            'profit-margin': { name: 'Profit Margin', icon: '📊' },
+            'currency-converter': { name: 'Currency Converter', icon: '💱' },
+            'inflation-calculator': { name: 'Inflation Calculator', icon: '📈' },
+            'savings-calculator': { name: 'Savings Calculator', icon: '🏦' },
+            'loan-calculator': { name: 'Loan Calculator', icon: '🏡' },
+            'investment-calculator': { name: 'Investment Calculator', icon: '📈' }
+        };
+
+        // Initialize
+        function init() {
+            isLoggedIn = AfroAuth.isLoggedIn();
+
+            if (isLoggedIn) {
+                currentUser = AfroAuth.getUser();
+                showDashboard();
+            } else {
+                showAuth();
+            }
+
+            setupEventListeners();
+        }
+
+        // UI State Management
+        function showAuth() {
+            document.getElementById('authSection').style.display = 'block';
+            document.getElementById('dashboardSection').classList.remove('active');
+        }
+
+        function showDashboard() {
+            document.getElementById('authSection').style.display = 'none';
+            document.getElementById('dashboardSection').classList.add('active');
+            loadDashboardData();
+        }
+
+        // Tab switching
+        function setupEventListeners() {
+            // Auth tabs
+            document.querySelectorAll('.auth-tab-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const tab = e.target.dataset.tab;
+                    switchAuthTab(tab);
+                });
+            });
+
+            // Auth forms
+            document.getElementById('loginForm').addEventListener('submit', handleLogin);
+            document.getElementById('signupForm').addEventListener('submit', handleSignup);
+
+            // Dashboard buttons
+            document.getElementById('editProfileBtn').addEventListener('click', openEditProfileModal);
+            document.getElementById('deleteAccountBtn').addEventListener('click', openDeleteModal);
+            document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+
+            // Modal controls
+            document.getElementById('cancelEditBtn').addEventListener('click', closeEditProfileModal);
+            document.getElementById('editProfileForm').addEventListener('submit', handleEditProfile);
+
+            document.getElementById('cancelDeleteBtn').addEventListener('click', closeDeleteModal);
+            document.getElementById('confirmDeleteBtn').addEventListener('click', handleDeleteAccount);
+
+            // Click outside modal to close
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        modal.classList.remove('active');
+                    }
+                });
+            });
+        }
+
+        function switchAuthTab(tab) {
+            document.querySelectorAll('.auth-tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelectorAll('.auth-content').forEach(content => {
+                content.classList.remove('active');
+            });
+
+            event.target.classList.add('active');
+            document.getElementById(tab + 'Content').classList.add('active');
+            clearAuthMessages();
+        }
+
+        // Auth handlers
+        async function handleLogin(e) {
+            e.preventDefault();
+            clearAuthErrors();
+
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            if (!email || !password) {
+                showAuthMessage('Please fill in all fields', 'error');
+                return;
+            }
+
+            const btn = event.target.querySelector('[type="submit"]');
+            btn.disabled = true;
+
+            const result = await AfroAuth.login(email, password);
+
+            if (result.ok) {
+                currentUser = result.user;
+                isLoggedIn = true;
+                showDashboard();
+            } else {
+                showAuthMessage(result.error || 'Login failed', 'error');
+                btn.disabled = false;
+            }
+        }
+
+        async function handleSignup(e) {
+            e.preventDefault();
+            clearAuthErrors();
+
+            const name = document.getElementById('signupName').value.trim();
+            const email = document.getElementById('signupEmail').value.trim();
+            const password = document.getElementById('signupPassword').value;
+            const country = document.getElementById('signupCountry').value;
+
+            if (!name || !email || !password || !country) {
+                showAuthMessage('Please fill in all fields', 'error');
+                return;
+            }
+
+            if (password.length < 4) {
+                showAuthMessage('Password must be at least 4 characters', 'error');
+                return;
+            }
+
+            const btn = event.target.querySelector('[type="submit"]');
+            btn.disabled = true;
+
+            const result = await AfroAuth.signup(email, name, password, country);
+
+            if (result.ok) {
+                currentUser = result.user;
+                isLoggedIn = true;
+                showDashboard();
+            } else {
+                showAuthMessage(result.error || 'Signup failed', 'error');
+                btn.disabled = false;
+            }
+        }
+
+        function handleLogout() {
+            AfroAuth.logout();
+            isLoggedIn = false;
+            currentUser = null;
+            document.getElementById('loginForm').reset();
+            document.getElementById('signupForm').reset();
+            clearAuthMessages();
+            showAuth();
+        }
+
+        // Profile edit
+        function openEditProfileModal() {
+            document.getElementById('editName').value = currentUser.name;
+            document.getElementById('editCountry').value = currentUser.country;
+            document.getElementById('editProfileModal').classList.add('active');
+        }
+
+        function closeEditProfileModal() {
+            document.getElementById('editProfileModal').classList.remove('active');
+        }
+
+        async function handleEditProfile(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('editName').value.trim();
+            const country = document.getElementById('editCountry').value;
+
+            if (!name || !country) {
+                showEditMessage('Please fill in all fields', 'error');
+                return;
+            }
+
+            const result = await AfroAuth.updateProfile({ name, country });
+
+            if (result.ok) {
+                currentUser = result.user;
+                loadDashboardData();
+                closeEditProfileModal();
+                showEditMessage('Profile updated successfully', 'success');
+                setTimeout(() => {
+                    document.getElementById('editMessage').classList.remove('show');
+                }, 3000);
+            } else {
+                showEditMessage(result.error || 'Update failed', 'error');
+            }
+        }
+
+        // Account deletion
+        function openDeleteModal() {
+            document.getElementById('deleteModal').classList.add('active');
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').classList.remove('active');
+        }
+
+        async function handleDeleteAccount() {
+            const btn = event.target;
+            btn.disabled = true;
+
+            // In a real app, call AfroAuth.deleteAccount() or similar
+            // For now, we'll just log out
+            AfroAuth.logout();
+            isLoggedIn = false;
+            currentUser = null;
+            showAuth();
+        }
+
+        // Dashboard data loading
+        function loadDashboardData() {
+            loadProfileData();
+            loadQuickAccess();
+            loadSavedCalculations();
+            loadFavorites();
+        }
+
+        function loadProfileData() {
+            document.getElementById('welcomeMessage').textContent = `Welcome back, ${currentUser.name}!`;
+            document.getElementById('profileEmail').textContent = currentUser.email;
+            document.getElementById('profileCountry').textContent = currentUser.country;
+
+            const createdDate = new Date(currentUser.createdAt);
+            const formatted = createdDate.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            document.getElementById('profileMemberSince').textContent = formatted;
+        }
+
+        function loadQuickAccess() {
+            const container = document.getElementById('quickAccessContainer');
+            const recentTools = AfroData.getRecentTools();
+
+            if (recentTools.length === 0) {
+                container.innerHTML = '<p style="color: #94a3b8; grid-column: 1 / -1;">Start using tools to see them here</p>';
+                return;
+            }
+
+            container.innerHTML = recentTools.slice(0, 6).map(tool => {
+                const meta = toolMetadata[tool.toolId] || { name: tool.name, icon: '🔧' };
+                const daysAgo = Math.floor((Date.now() - new Date(tool.date)) / (1000 * 60 * 60 * 24));
+                const timeStr = daysAgo === 0 ? 'Today' : `${daysAgo} days ago`;
+
+                return `
+                    <a href="/tools/${tool.toolId}/" class="quick-access-card">
+                        <div class="tool-icon">${meta.icon}</div>
+                        <div class="quick-access-name">${meta.name}</div>
+                        <div class="quick-access-date">${timeStr}</div>
+                    </a>
+                `;
+            }).join('');
+        }
+
+        function loadSavedCalculations() {
+            const container = document.getElementById('savedContainer');
+            const allSaved = AfroData.getAllSaved();
+
+            if (Object.keys(allSaved).length === 0) {
+                container.innerHTML = '<div class="empty-state">No saved calculations yet. Try a tool and save your results!</div>';
+                return;
+            }
+
+            container.innerHTML = Object.entries(allSaved).map(([toolId, data]) => {
+                const meta = toolMetadata[toolId] || { name: toolId, icon: '🔧' };
+                const lastDate = new Date(data.latest.date);
+                const formatted = lastDate.toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric'
+                });
+
+                let displayValue = '';
+                if (toolId === 'bmi-calculator' && data.latest.data.bmi) {
+                    displayValue = `${Math.round(data.latest.data.bmi)} (${data.latest.data.category})`;
+                } else if (toolId === 'paye-calculator' && data.latest.data.netPay) {
+                    displayValue = `₦${Number(data.latest.data.netPay).toLocaleString()}`;
+                } else if (toolId === 'profit-margin' && data.latest.data.margin) {
+                    displayValue = `${Math.round(data.latest.data.margin)}%`;
+                } else {
+                    displayValue = `${data.count} saved item${data.count !== 1 ? 's' : ''}`;
+                }
+
+                return `
+                    <div class="saved-item">
+                        <div class="saved-content">
+                            <h3>${meta.name}</h3>
+                            <div class="saved-value">${displayValue}</div>
+                            <div class="saved-meta">Last used: ${formatted}</div>
+                        </div>
+                        <div class="saved-actions">
+                            <a href="/tools/${toolId}/" class="btn btn-secondary btn-icon">View</a>
+                            <button class="btn btn-secondary btn-icon" onclick="clearSaved('${toolId}')">Clear</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function loadFavorites() {
+            const container = document.getElementById('favoritesContainer');
+            const favorites = AfroData.getFavorites();
+
+            if (favorites.length === 0) {
+                container.innerHTML = '<div class="empty-state" style="grid-column: 1 / -1;">Star your favorite tools to see them here</div>';
+                return;
+            }
+
+            container.innerHTML = favorites.map(toolId => {
+                const meta = toolMetadata[toolId] || { name: toolId, icon: '🔧' };
+                return `
+                    <a href="/tools/${toolId}/" class="favorite-card">
+                        <div class="favorite-icon">${meta.icon}</div>
+                        <div class="favorite-name">${meta.name}</div>
+                    </a>
+                `;
+            }).join('');
+        }
+
+        function clearSaved(toolId) {
+            if (confirm(`Clear all saved data for ${toolMetadata[toolId]?.name || toolId}?`)) {
+                // In a real app, call AfroData.clear(toolId) or similar
+                loadSavedCalculations();
+            }
+        }
+
+        // Message helpers
+        function showAuthMessage(msg, type) {
+            const el = document.getElementById('authMessage');
+            el.textContent = msg;
+            el.className = `message show ${type}`;
+        }
+
+        function showEditMessage(msg, type) {
+            const el = document.getElementById('editMessage');
+            el.textContent = msg;
+            el.className = `message show ${type}`;
+        }
+
+        function clearAuthMessages() {
+            document.getElementById('authMessage').classList.remove('show');
+        }
+
+        function clearAuthErrors() {
+            document.querySelectorAll('.form-error').forEach(el => {
+                el.classList.remove('show');
+                el.textContent = '';
+            });
+        }
+
+        // Start
+        init();
+    </script>
+</body>
+</html>

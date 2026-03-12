@@ -16,11 +16,11 @@
     <!-- AfroTools Design System -->
     <link rel="stylesheet" href="/assets/css/tokens.min.css">
     <link rel="stylesheet" href="/assets/css/global.min.css">
+    <script src="/assets/js/components/navbar.min.js" defer></script>
+    <script src="/assets/js/components/footer.min.js" defer></script>
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
+        *, *::before, *::after {
             box-sizing: border-box;
         }
 
@@ -560,27 +560,75 @@
 
         @media (max-width: 768px) {
             .hero {
-                padding: var(--spacing-lg) var(--spacing-md);
+                padding: var(--spacing-md) var(--spacing-sm);
+                border-radius: 0;
+                margin-left: -1rem;
+                margin-right: -1rem;
             }
 
             .hero h1 {
-                font-size: 1.5rem;
+                font-size: 1.4rem;
+            }
+
+            .hero p {
+                font-size: 0.95rem;
             }
 
             .results-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: 1fr 1fr;
             }
 
             .button-group {
                 gap: var(--spacing-xs);
             }
 
+            button {
+                padding: 0.6rem 1rem;
+                font-size: 0.85rem;
+            }
+
             .container {
-                padding: var(--spacing-md);
+                padding: var(--spacing-sm);
             }
 
             .card {
-                padding: var(--spacing-md);
+                padding: var(--spacing-sm);
+            }
+
+            .toggle-group {
+                flex-wrap: wrap;
+            }
+
+            .toggle-btn {
+                font-size: 0.8rem;
+                padding: 0.6rem;
+            }
+
+            .result-value {
+                font-size: 1.4rem;
+            }
+
+            .input-group {
+                flex-direction: column;
+                gap: 0.25rem;
+            }
+
+            .input-unit {
+                text-align: left;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-badges {
+                justify-content: flex-start;
+            }
+
+            .badge {
+                font-size: 0.75rem;
             }
         }
 
@@ -1122,8 +1170,6 @@
     <afro-footer></afro-footer>
 
     <!-- Component Scripts -->
-    <script src="/assets/js/components/navbar.min.js" defer></script>
-    <script src="/assets/js/components/footer.min.js" defer></script>
 
     <!-- Main Calculator Script -->
     <script>
