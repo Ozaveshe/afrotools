@@ -33,6 +33,8 @@
     --calc-accent: #CE1126;
     --calc-accent-rgb: 206,17,38;
     --calc-accent-subtle: #CE112612;
+    --calc-gold: #f5d76e;
+    --calc-gold-rgb: 245,215,110;
     --ao-red:    #CE1126;   /* Angola flag red */
     --ao-black:  #000000;   /* Angola flag black */
     --ao-yellow: #FFD700;   /* Angola flag yellow */
@@ -64,8 +66,8 @@
 </section>
 
 <!-- UPDATE BAR -->
-<div class="update-bar">
-  <div class="update-bar-inner">
+<div class="amendment-bar">
+  <div class="amendment-bar-inner">
     <p><strong>2026 Key Facts:</strong> PAYE bands (monthly): AOA 0–100,000 at 0%; 10% AOA 100,001–150,000; 15% AOA 150,001–200,000; 20% AOA 200,001–300,000; 21.5% AOA 300,001–500,000; 22.5% AOA 500,001–1,000,000; 23.5% AOA 1,000,001–1,500,000; 24.5% AOA 1,500,001–2,000,000; 25% above AOA 2,000,000. INSS total 11% (employee 3% + employer 8%). Employee INSS contribution is fully deductible from taxable income.</p>
   </div>
 </div>
@@ -326,7 +328,9 @@ function onInput(el) {
 }
 function updateSliderFill(el) {
   const p = ((parseInt(el.value) - parseInt(el.min)) / (parseInt(el.max) - parseInt(el.min))) * 100;
-  el.style.background = `linear-gradient(to right, #CE1126 0%, #CE1126 ${p}%, #e8dcc8 ${p}%, #e8dcc8 100%)`;
+  const accent = getComputedStyle(document.documentElement).getPropertyValue('--calc-accent').trim() || '#008751';
+  el.style.background = `linear-gradient(to right, ${accent} 0%, ${accent} ${p}%, #d1e8d5 ${p}%, #d1e8d5 100%)`;
+}%, #e8dcc8 ${p}%, #e8dcc8 100%)`;
 }
 updateSliderFill(document.getElementById('salarySlider'));
 

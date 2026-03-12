@@ -35,6 +35,8 @@
     --calc-accent: #00A3E4;
     --calc-accent-rgb: 0,163,228;
     --calc-accent-subtle: #00A3E412;
+    --calc-gold: #f5d76e;
+    --calc-gold-rgb: 245,215,110;
     --bw-blue:   #00A3E4;   /* Botswana flag blue  */
     --bw-white:  #FFFFFF;   /* Botswana flag white */
     --bw-black:  #111827;
@@ -66,8 +68,8 @@
 </section>
 
 <!-- UPDATE BAR -->
-<div class="update-bar">
-  <div class="update-bar-inner">
+<div class="amendment-bar">
+  <div class="amendment-bar-inner">
     <p><strong>2025/26 Key Facts:</strong> PAYE bands on annual income: <strong>0% up to P48,000; 5% on P48,001–72,000; 12.5% on P72,001–96,000; 18.75% on P96,001–120,000; 25% above P120,000</strong>. No mandatory employee pension or social security. Citizens may choose voluntary pension schemes.</p>
   </div>
 </div>
@@ -273,7 +275,11 @@ const pct = r => { const v = r * 100; return (v % 1 === 0 ? v.toFixed(0) : parse
 
 function onSlider(el) { const v = parseInt(el.value); document.getElementById('grossSalary').value = v; document.getElementById('sliderVal').textContent = fmt(v); updateSliderFill(el); }
 function onInput(el) { const v = Math.min(Math.max(parseInt(el.value) || 0, 30000), 2000000); const s = document.getElementById('salarySlider'); s.value = v; document.getElementById('sliderVal').textContent = fmt(parseInt(el.value) || 0); updateSliderFill(s); }
-function updateSliderFill(el) { const p = ((parseInt(el.value) - parseInt(el.min)) / (parseInt(el.max) - parseInt(el.min))) * 100; el.style.background = `linear-gradient(to right, #00A3E4 0%, #00A3E4 ${p}%, #c5deca ${p}%, #c5deca 100%)`; }
+function updateSliderFill(el) {
+  const p = ((parseInt(el.value) - parseInt(el.min)) / (parseInt(el.max) - parseInt(el.min))) * 100;
+  const accent = getComputedStyle(document.documentElement).getPropertyValue('--calc-accent').trim() || '#008751';
+  el.style.background = `linear-gradient(to right, ${accent} 0%, ${accent} ${p}%, #d1e8d5 ${p}%, #d1e8d5 100%)`;
+}%, #c5deca ${p}%, #c5deca 100%)`; }
 updateSliderFill(document.getElementById('salarySlider'));
 
 function calcAnnualPAYE(annualIncome) {

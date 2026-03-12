@@ -35,6 +35,8 @@
     --calc-accent: #078930;
     --calc-accent-rgb: 7,137,48;
     --calc-accent-subtle: #07893012;
+    --calc-gold: #f5d76e;
+    --calc-gold-rgb: 245,215,110;
     --et-green:  #078930;   /* Ethiopia flag green  */
     --et-yellow: #FCDD09;   /* Ethiopia flag yellow */
     --et-red:    #DA121A;   /* Ethiopia flag red    */
@@ -68,8 +70,8 @@
 </section>
 
 <!-- UPDATE BAR -->
-<div class="update-bar">
-  <div class="update-bar-inner">
+<div class="amendment-bar">
+  <div class="amendment-bar-inner">
     <p><strong>2025/26 Key Facts:</strong> PAYE bands: <strong>0% on first ETB 600/month</strong>, then 10%–35% across seven brackets. Top rate <strong>35% above ETB 10,900/month</strong>. Employee Pension <strong>7% of gross (fully tax-deductible), capped at ETB 1,050/month</strong> on salary ceiling of <strong>ETB 15,000/month</strong>. Employer Pension <strong>11%</strong> (separate cost). Total: <strong>18%</strong>. Remit by <strong>10th of following month</strong>. Proclamation No. 1395/2025 pending implementation July 2025 with minimum taxable threshold ETB 2,000/month.</p>
   </div>
 </div>
@@ -353,7 +355,9 @@ function onInput(el) {
 }
 function updateSliderFill(el) {
   const p = ((parseInt(el.value) - parseInt(el.min)) / (parseInt(el.max) - parseInt(el.min))) * 100;
-  el.style.background = `linear-gradient(to right, #078930 0%, #078930 ${p}%, #c5deca ${p}%, #c5deca 100%)`;
+  const accent = getComputedStyle(document.documentElement).getPropertyValue('--calc-accent').trim() || '#008751';
+  el.style.background = `linear-gradient(to right, ${accent} 0%, ${accent} ${p}%, #d1e8d5 ${p}%, #d1e8d5 100%)`;
+}%, #c5deca ${p}%, #c5deca 100%)`;
 }
 updateSliderFill(document.getElementById('salarySlider'));
 

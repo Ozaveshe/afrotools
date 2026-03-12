@@ -39,6 +39,8 @@
     --calc-accent: #006B3F;
     --calc-accent-rgb: 0,107,63;
     --calc-accent-subtle: #006B3F12;
+    --calc-gold: #f5d76e;
+    --calc-gold-rgb: 245,215,110;
     --gh-green: #006B3F;  /* Ghana flag green */
     --gh-gold:  #FCD116;  /* Ghana flag gold  */
     --gh-red:   #CE1126;  /* Ghana flag red   */
@@ -402,7 +404,9 @@ function onInput(el) {
 }
 function updateSliderFill(el) {
   const p = ((parseInt(el.value) - parseInt(el.min)) / (parseInt(el.max) - parseInt(el.min))) * 100;
-  el.style.background = `linear-gradient(to right, #006B3F 0%, #006B3F ${p}%, #cfe0d8 ${p}%, #cfe0d8 100%)`;
+  const accent = getComputedStyle(document.documentElement).getPropertyValue('--calc-accent').trim() || '#008751';
+  el.style.background = `linear-gradient(to right, ${accent} 0%, ${accent} ${p}%, #d1e8d5 ${p}%, #d1e8d5 100%)`;
+}%, #cfe0d8 ${p}%, #cfe0d8 100%)`;
 }
 updateSliderFill(document.getElementById('salarySlider'));
 

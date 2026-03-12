@@ -21,6 +21,8 @@
     --calc-accent: #007A5E;
     --calc-accent-rgb: 0,122,94;
     --calc-accent-subtle: #007A5E12;
+    --calc-gold: #f5d76e;
+    --calc-gold-rgb: 245,215,110;
     --ma-red:    #C60C30;
     --ma-green:  #007A5E;
     --ma-gold:   #FCD116;
@@ -48,8 +50,8 @@
     <p class="hero-meta">Last verified: January 2025 · Source: DGI (dgi.gov.ma)</p>
   </div>
 </section>
-<div class="update-bar">
-  <div class="update-bar-inner">
+<div class="amendment-bar">
+  <div class="amendment-bar-inner">
     <p><strong>2025 Key Facts:</strong> DGI bands (annual): MAD 0–30,000 at 0%; MAD 30,001–50,000 at 10%; MAD 50,001–60,000 at 20%; MAD 60,001–80,000 at 30%; MAD 80,001–180,000 at 34%; above MAD 180,000 at 38%. CNSS <strong>4.48%, capped MAD 6,000/month</strong>.</p>
   </div>
 </div>
@@ -217,7 +219,11 @@ const fmt=n=>'MAD\u00A0'+Math.round(Math.abs(n)).toLocaleString('fr-MA');
 const pct=r=>((r*100)%1===0?(r*100).toFixed(0):(r*100).toFixed(2))+'%';
 function onSlider(el){const v=parseInt(el.value);document.getElementById('grossSalary').value=v;document.getElementById('sliderVal').textContent=fmt(v);updateSliderFill(el);}
 function onInput(el){const v=Math.min(Math.max(parseInt(el.value)||0,50000),5000000);document.getElementById('salarySlider').value=v;document.getElementById('sliderVal').textContent=fmt(parseInt(el.value)||0);updateSliderFill(document.getElementById('salarySlider'));}
-function updateSliderFill(el){const p=((parseInt(el.value)-parseInt(el.min))/(parseInt(el.max)-parseInt(el.min)))*100;el.style.background=`linear-gradient(to right,#007A5E 0%,#007A5E ${p}%,#c5deca ${p}%,#c5deca 100%)`;}
+function updateSliderFill(el) {
+  const p = ((parseInt(el.value) - parseInt(el.min)) / (parseInt(el.max) - parseInt(el.min))) * 100;
+  const accent = getComputedStyle(document.documentElement).getPropertyValue('--calc-accent').trim() || '#008751';
+  el.style.background = `linear-gradient(to right, ${accent} 0%, ${accent} ${p}%, #d1e8d5 ${p}%, #d1e8d5 100%)`;
+}%,#c5deca ${p}%,#c5deca 100%)`;}
 updateSliderFill(document.getElementById('salarySlider'));
 function togItem(el){el.classList.toggle('on');}
 function isOn(tog){return!!document.querySelector(`[data-tog="${tog}"]`)?.classList.contains('on');}

@@ -34,6 +34,8 @@
     --calc-accent: #007FFF;
     --calc-accent-rgb: 0,127,255;
     --calc-accent-subtle: #007FFF12;
+    --calc-gold: #f5d76e;
+    --calc-gold-rgb: 245,215,110;
     --cd-blue:   #007FFF;   /* DR Congo flag blue */
     --cd-gold:   #FFB81C;   /* DR Congo flag gold */
     --cd-red:    #CE1126;   /* DR Congo flag red */
@@ -66,8 +68,8 @@
 </section>
 
 <!-- UPDATE BAR -->
-<div class="update-bar">
-  <div class="update-bar-inner">
+<div class="amendment-bar">
+  <div class="amendment-bar-inner">
     <p><strong>2026 Key Facts:</strong> PAYE bands: CDF 0–524,160 at 0%; 3%–5% bands CDF 524,161–2,700,000; 10%–15% bands CDF 2,700,001–7,260,000; 20%–25% bands CDF 7,260,001–13,908,000; 30%–35% bands CDF 13,908,001–21,168,000; 40% above CDF 21,168,000. INSS total 10% (employee 5% + employer 5%), capped on base salary component. Employee INSS contribution is fully deductible from taxable income.</p>
   </div>
 </div>
@@ -324,7 +326,9 @@ function onInput(el) {
 }
 function updateSliderFill(el) {
   const p = ((parseInt(el.value) - parseInt(el.min)) / (parseInt(el.max) - parseInt(el.min))) * 100;
-  el.style.background = `linear-gradient(to right, #007FFF 0%, #007FFF ${p}%, #c5d9eb ${p}%, #c5d9eb 100%)`;
+  const accent = getComputedStyle(document.documentElement).getPropertyValue('--calc-accent').trim() || '#008751';
+  el.style.background = `linear-gradient(to right, ${accent} 0%, ${accent} ${p}%, #d1e8d5 ${p}%, #d1e8d5 100%)`;
+}%, #c5d9eb ${p}%, #c5d9eb 100%)`;
 }
 updateSliderFill(document.getElementById('salarySlider'));
 

@@ -35,6 +35,8 @@
     --calc-accent: #20603D;
     --calc-accent-rgb: 32,96,61;
     --calc-accent-subtle: #20603D12;
+    --calc-gold: #f5d76e;
+    --calc-gold-rgb: 245,215,110;
     --rw-blue:   #00A1DE;   /* Rwanda flag blue     */
     --rw-gold:   #FAD201;   /* Rwanda flag yellow   */
     --rw-green:  #20603D;   /* Rwanda flag green    */
@@ -67,8 +69,8 @@
 </section>
 
 <!-- UPDATE BAR -->
-<div class="update-bar">
-  <div class="update-bar-inner">
+<div class="amendment-bar">
+  <div class="amendment-bar-inner">
     <p><strong>2025/26 Key Facts:</strong> PAYE monthly bands: <strong>RWF 0–30,000 at 0%</strong>, <strong>RWF 30,001–100,000 at 20%</strong> on excess, <strong>above RWF 100,000 at 30%</strong>. RSSB employee contribution <strong>6% (deductible)</strong>. Employer matches 6%. Total: 12% (increments of 2% annually until 2030). Maternity leave contribution <strong>0.3% employer only</strong>. Law No. 016/2024 effective January 2025.</p>
   </div>
 </div>
@@ -328,7 +330,9 @@ function onInput(el) {
 }
 function updateSliderFill(el) {
   const p = ((parseInt(el.value) - parseInt(el.min)) / (parseInt(el.max) - parseInt(el.min))) * 100;
-  el.style.background = `linear-gradient(to right, #20603D 0%, #20603D ${p}%, #c5deca ${p}%, #c5deca 100%)`;
+  const accent = getComputedStyle(document.documentElement).getPropertyValue('--calc-accent').trim() || '#008751';
+  el.style.background = `linear-gradient(to right, ${accent} 0%, ${accent} ${p}%, #d1e8d5 ${p}%, #d1e8d5 100%)`;
+}%, #c5deca ${p}%, #c5deca 100%)`;
 }
 updateSliderFill(document.getElementById('salarySlider'));
 

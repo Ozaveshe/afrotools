@@ -31,6 +31,8 @@
     --calc-accent: #FF6B35;
     --calc-accent-rgb: 255,107,53;
     --calc-accent-subtle: #FF6B3512;
+    --calc-gold: #f5d76e;
+    --calc-gold-rgb: 245,215,110;
     --sd-white:  #FFFFFF;
     --sd-red:    #CE1126;
     --sd-dark:   #1a1a1a;
@@ -62,8 +64,8 @@
 </section>
 
 <!-- UPDATE BAR -->
-<div class="update-bar">
-  <div class="update-bar-inner">
+<div class="amendment-bar">
+  <div class="amendment-bar-inner">
     <p><strong>2026 Key Facts:</strong> PAYE bands (monthly): SDG 0–10,000 at 0%; 5% SDG 10,001–40,000; 10% SDG 40,001–70,000; 15% above SDG 70,000. NSIF total 25% (employee 8% + employer 17%). Employee NSIF contribution is fully deductible from taxable income.</p>
   </div>
 </div>
@@ -312,7 +314,9 @@ function onInput(el) {
 }
 function updateSliderFill(el) {
   const p = ((parseInt(el.value) - parseInt(el.min)) / (parseInt(el.max) - parseInt(el.min))) * 100;
-  el.style.background = `linear-gradient(to right, #FF6B35 0%, #FF6B35 ${p}%, #e8dcc8 ${p}%, #e8dcc8 100%)`;
+  const accent = getComputedStyle(document.documentElement).getPropertyValue('--calc-accent').trim() || '#008751';
+  el.style.background = `linear-gradient(to right, ${accent} 0%, ${accent} ${p}%, #d1e8d5 ${p}%, #d1e8d5 100%)`;
+}%, #e8dcc8 ${p}%, #e8dcc8 100%)`;
 }
 updateSliderFill(document.getElementById('salarySlider'));
 

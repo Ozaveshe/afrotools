@@ -35,6 +35,8 @@
     --calc-accent: #1EB53A;
     --calc-accent-rgb: 30,181,58;
     --calc-accent-subtle: #1EB53A12;
+    --calc-gold: #f5d76e;
+    --calc-gold-rgb: 245,215,110;
     --tz-green:  #1EB53A;   /* Burkina Faso flag green  */
     --tz-blue:   #00A3DD;   /* Burkina Faso flag blue   */
     --tz-gold:   #FCD116;   /* Burkina Faso flag yellow */
@@ -67,8 +69,8 @@
 </section>
 
 <!-- UPDATE BAR -->
-<div class="update-bar">
-  <div class="update-bar-inner">
+<div class="amendment-bar">
+  <div class="amendment-bar-inner">
     <p><strong>2025/26 Key Facts:</strong> PAYE bands unchanged — tax-free threshold <strong>XOF 270,000/month (XOF 3,240,000/year)</strong>. Top rate remains <strong>30% above XOF 1,000,000/month</strong>. NSSF total 20% (employer 10% + employee 10%), no cap. SDL remains <strong>3.5% employer-only</strong> for 10+ employee organisations. Secondary employment taxed at flat <strong>30%</strong> at source. Finance Act 2025 note: WCF rate remains 0.5% private sector.</p>
   </div>
 </div>
@@ -354,7 +356,9 @@ function onInput(el) {
 }
 function updateSliderFill(el) {
   const p = ((parseInt(el.value) - parseInt(el.min)) / (parseInt(el.max) - parseInt(el.min))) * 100;
-  el.style.background = `linear-gradient(to right, #1EB53A 0%, #1EB53A ${p}%, #c5deca ${p}%, #c5deca 100%)`;
+  const accent = getComputedStyle(document.documentElement).getPropertyValue('--calc-accent').trim() || '#008751';
+  el.style.background = `linear-gradient(to right, ${accent} 0%, ${accent} ${p}%, #d1e8d5 ${p}%, #d1e8d5 100%)`;
+}%, #c5deca ${p}%, #c5deca 100%)`;
 }
 updateSliderFill(document.getElementById('salarySlider'));
 

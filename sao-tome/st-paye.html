@@ -35,6 +35,8 @@
     --calc-accent: #12AD2B;
     --calc-accent-rgb: 18,173,43;
     --calc-accent-subtle: #12AD2B12;
+    --calc-gold: #f5d76e;
+    --calc-gold-rgb: 245,215,110;
     --st-green:   #12AD2B;   /* São Tomé flag green  */
     --st-gold:    #FFCE00;   /* São Tomé flag gold   */
     --st-red:     #D21034;   /* São Tomé flag red    */
@@ -67,8 +69,8 @@
 </section>
 
 <!-- UPDATE BAR -->
-<div class="update-bar">
-  <div class="update-bar-inner">
+<div class="amendment-bar">
+  <div class="amendment-bar-inner">
     <p><strong>2025/26 Key Facts:</strong> DGTF IRS progressive tax bands: 0% on first <strong>STN 2,500,000/year</strong>, 10% on STN 2.5M–5M, 15% on STN 5M–10M, 20% on STN 10M–20M, 25% above STN 20M. INSS total 12% (employee 6% + employer 6%), no cap. Employee INSS contribution is fully deductible from taxable income.</p>
   </div>
 </div>
@@ -325,7 +327,9 @@ function onInput(el) {
 }
 function updateSliderFill(el) {
   const p = ((parseInt(el.value) - parseInt(el.min)) / (parseInt(el.max) - parseInt(el.min))) * 100;
-  el.style.background = `linear-gradient(to right, #12AD2B 0%, #12AD2B ${p}%, #c5deca ${p}%, #c5deca 100%)`;
+  const accent = getComputedStyle(document.documentElement).getPropertyValue('--calc-accent').trim() || '#008751';
+  el.style.background = `linear-gradient(to right, ${accent} 0%, ${accent} ${p}%, #d1e8d5 ${p}%, #d1e8d5 100%)`;
+}%, #c5deca ${p}%, #c5deca 100%)`;
 }
 updateSliderFill(document.getElementById('salarySlider'));
 

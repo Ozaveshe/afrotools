@@ -35,6 +35,8 @@
     --calc-accent: #D90000;
     --calc-accent-rgb: 217,0,0;
     --calc-accent-subtle: #D9000012;
+    --calc-gold: #f5d76e;
+    --calc-gold-rgb: 245,215,110;
     --ug-black:  #000000;   /* Uganda flag black  */
     --ug-yellow: #FCDC04;   /* Uganda flag yellow */
     --ug-red:    #D90000;   /* Uganda flag red    */
@@ -63,8 +65,8 @@
   </div>
 </section>
 
-<div class="update-bar">
-  <div class="update-bar-inner">
+<div class="amendment-bar">
+  <div class="amendment-bar-inner">
     <p><strong>2025/26 Tax Year:</strong> Progressive PAYE bands updated. NSSF remains 5% employee contribution (NOT tax-deductible). Non-resident rate: 30% flat on employment income. Local Service Tax deducted July–October.</p>
   </div>
 </div>
@@ -344,7 +346,9 @@ function onInput(el) {
 }
 function updateSliderFill(el) {
   const p = ((parseInt(el.value) - parseInt(el.min)) / (parseInt(el.max) - parseInt(el.min))) * 100;
-  el.style.background = `linear-gradient(to right, #D90000 0%, #D90000 ${p}%, #e5d9cf ${p}%, #e5d9cf 100%)`;
+  const accent = getComputedStyle(document.documentElement).getPropertyValue('--calc-accent').trim() || '#008751';
+  el.style.background = `linear-gradient(to right, ${accent} 0%, ${accent} ${p}%, #d1e8d5 ${p}%, #d1e8d5 100%)`;
+}%, #e5d9cf ${p}%, #e5d9cf 100%)`;
 }
 updateSliderFill(document.getElementById('salarySlider'));
 

@@ -35,6 +35,8 @@
     --calc-accent: #3A9B3D;
     --calc-accent-rgb: 58,155,61;
     --calc-accent-subtle: #3A9B3D12;
+    --calc-gold: #f5d76e;
+    --calc-gold-rgb: 245,215,110;
     --km-green:  #3A9B3D;   /* Togo flag green  */
     --km-blue:   #3A75C4;   /* Togo flag blue   */
     --km-red:    #CE1126;   /* Togo flag red    */
@@ -315,7 +317,9 @@ function onInput(el) {
 }
 function updateSliderFill(el) {
   const p = ((parseInt(el.value) - parseInt(el.min)) / (parseInt(el.max) - parseInt(el.min))) * 100;
-  el.style.background = `linear-gradient(to right, #3A9B3D 0%, #3A9B3D ${p}%, #c5deca ${p}%, #c5deca 100%)`;
+  const accent = getComputedStyle(document.documentElement).getPropertyValue('--calc-accent').trim() || '#008751';
+  el.style.background = `linear-gradient(to right, ${accent} 0%, ${accent} ${p}%, #d1e8d5 ${p}%, #d1e8d5 100%)`;
+}%, #c5deca ${p}%, #c5deca 100%)`;
 }
 updateSliderFill(document.getElementById('salarySlider'));
 

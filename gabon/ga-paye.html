@@ -35,6 +35,8 @@
     --calc-accent: #009E60;
     --calc-accent-rgb: 30,181,58;
     --calc-accent-subtle: #009E6012;
+    --calc-gold: #f5d76e;
+    --calc-gold-rgb: 245,215,110;
     --ga-green: #009E60;
     --ga-gold: #FCD116;
     --ga-blue: #3A75C4;
@@ -67,8 +69,8 @@
 </section>
 
 <!-- UPDATE BAR -->
-<div class="update-bar">
-  <div class="update-bar-inner">
+<div class="amendment-bar">
+  <div class="amendment-bar-inner">
     <p><strong>2025 Key Facts: Progressive IRPP 0%–35% on annual income bands. CNSS: employee 2.5%, employer 16.6%. Annual cycle: January–December.</strong></p>
   </div>
 </div>
@@ -354,7 +356,9 @@ function onInput(el) {
 }
 function updateSliderFill(el) {
   const p = ((parseInt(el.value) - parseInt(el.min)) / (parseInt(el.max) - parseInt(el.min))) * 100;
-  el.style.background = `linear-gradient(to right, #1EB53A 0%, #1EB53A ${p}%, #c5deca ${p}%, #c5deca 100%)`;
+  const accent = getComputedStyle(document.documentElement).getPropertyValue('--calc-accent').trim() || '#008751';
+  el.style.background = `linear-gradient(to right, ${accent} 0%, ${accent} ${p}%, #d1e8d5 ${p}%, #d1e8d5 100%)`;
+}%, #c5deca ${p}%, #c5deca 100%)`;
 }
 updateSliderFill(document.getElementById('salarySlider'));
 

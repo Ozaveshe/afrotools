@@ -26,6 +26,8 @@
     --calc-accent: #00A551;
     --calc-accent-rgb: 0,165,81;
     --calc-accent-subtle: #00A55112;
+    --calc-gold: #f5d76e;
+    --calc-gold-rgb: 245,215,110;
     --ls-white:  #FFFFFF;   /* Lesotho flag */
     --ls-blue:   #007FDF;   /* Lesotho flag */
     --ls-green:  #00A551;   /* Lesotho flag */
@@ -53,8 +55,8 @@
   </div>
 </section>
 
-<div class="update-bar">
-  <div class="update-bar-inner">
+<div class="amendment-bar">
+  <div class="amendment-bar-inner">
     <p><strong>2025/26 Key Facts:</strong> LRA annual tax bands: <strong>20% first M72,000/yr</strong>; <strong>30% above M72,000</strong>. Tax credit: <strong>M10,560/yr</strong>. No mandatory pension. Calculated annually on gross salary.</p>
   </div>
 </div>
@@ -264,7 +266,9 @@ function onInput(el) {
 }
 function updateSliderFill(el) {
   const p = ((parseInt(el.value) - parseInt(el.min)) / (parseInt(el.max) - parseInt(el.min))) * 100;
-  el.style.background = `linear-gradient(to right, #00A551 0%, #00A551 ${p}%, #c5deca ${p}%, #c5deca 100%)`;
+  const accent = getComputedStyle(document.documentElement).getPropertyValue('--calc-accent').trim() || '#008751';
+  el.style.background = `linear-gradient(to right, ${accent} 0%, ${accent} ${p}%, #d1e8d5 ${p}%, #d1e8d5 100%)`;
+}%, #c5deca ${p}%, #c5deca 100%)`;
 }
 updateSliderFill(document.getElementById('salarySlider'));
 

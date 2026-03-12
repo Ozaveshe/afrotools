@@ -38,6 +38,8 @@
     --calc-accent: #BB0000;
     --calc-accent-rgb: 187,0,0;
     --calc-accent-subtle: #BB000012;
+    --calc-gold: #f5d76e;
+    --calc-gold-rgb: 245,215,110;
     --ke-red: #BB0000; /* Kenya flag red */
     --ke-red-light: #d63031;
     --ke-red-subtle: #fef2f2;
@@ -558,16 +560,27 @@ function recalc() {
 }
 
 // ── SYNC ──────────────────────────────────────────────────
+function updateSliderFill(el) {
+  const p = ((parseInt(el.value) - parseInt(el.min)) / (parseInt(el.max) - parseInt(el.min))) * 100;
+  const accent = getComputedStyle(document.documentElement).getPropertyValue('--calc-accent').trim() || '#008751';
+  el.style.background = `linear-gradient(to right, ${accent} 0%, ${accent} ${p}%, #d1e8d5 ${p}%, #d1e8d5 100%)`;
+}
+
 function syncSlider(val) {
+  const slider = document.getElementById('salarySlider');
+  slider.value = val;
   document.getElementById('salaryInput').value = val;
   document.getElementById('sliderNum').textContent = parseFloat(val).toLocaleString('en-KE');
+  updateSliderFill(slider);
   recalc();
 }
 
 function syncInput(val) {
   const v = Math.min(Math.max(parseFloat(val) || 0, 15000), 800000);
-  document.getElementById('salarySlider').value = v;
+  const slider = document.getElementById('salarySlider');
+  slider.value = v;
   document.getElementById('sliderNum').textContent = v.toLocaleString('en-KE');
+  updateSliderFill(slider);
   recalc();
 }
 

@@ -1,277 +1,1482 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>African Currency Converter — 42 African Currencies | AfroTools</title>
-<meta name="description" content="African currency converter. Convert between 42 African currencies. Real-time rates, swap currencies, historical data included.">
-<link rel="canonical" href="https://afrotools.com/tools/currency-converter">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="African Currency Converter | AfroTools">
-<meta property="og:description" content="Convert between 42 African currencies instantly. No API required, works offline.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://afrotools.com/tools/currency-converter">
-<meta property="og:site_name" content="AfroTools">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/tokens.min.css">
-<link rel="stylesheet" href="/assets/css/global.min.css">
-<script src="/assets/js/components/navbar.min.js" defer></script>
-<script src="/assets/js/components/footer.min.js" defer></script>
-<style>
-  :root { --afro-green: #008751; --afro-dark: #0f1419; }
-  .tool-hero { background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%); padding: 44px 0 36px; position: relative; overflow: hidden; }
-  .tool-hero::after { content: '💱'; position: absolute; right: 5%; top: 50%; transform: translateY(-50%); font-size: 8rem; opacity: 0.06; pointer-events: none; }
-  .tool-hero-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; }
-  .breadcrumb { font-size: 0.72rem; font-weight: 500; color: rgba(255, 255, 255, 0.3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
-  .breadcrumb a { color: rgba(255, 255, 255, 0.3); text-decoration: none; }
-  .breadcrumb span { color: var(--afro-green); }
-  h1 { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; color: #fff; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 10px; }
-  h1 em { color: var(--afro-green); font-style: normal; }
-  .hero-sub { font-size: 0.88rem; color: rgba(255, 255, 255, 0.45); line-height: 1.6; max-width: 560px; margin-bottom: 14px; }
-  .hero-badges { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 6px; }
-  .badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 11px; border-radius: 4px; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.05em; }
-  .b-green { background: rgba(0, 135, 81, 0.18); color: #5ddb9e; border: 1px solid rgba(0, 135, 81, 0.38); }
-  .tool-main { padding: 28px 0 72px; }
-  .tool-main-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
-  .card { background: #fff; border: 1px solid #dceee0; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05); }
-  .card-head { padding: 15px 22px; border-bottom: 1px solid #eaf5ec; background: #f7fdf8; }
-  .card-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #0a4018; }
-  .card-body { padding: 22px; }
-  .field { margin-bottom: 18px; }
-  .field:last-child { margin-bottom: 0; }
-  .f-label { margin-bottom: 6px; }
-  .f-label-text { font-size: 0.75rem; font-weight: 700; color: #0d2813; display: block; }
-  .f-input { width: 100%; padding: 11px 13px; background: #f4fbf5; border: 1.5px solid #c5deca; border-radius: 7px; font-size: 1rem; font-weight: 600; color: #0d2813; outline: none; font-family: 'DM Sans', sans-serif; }
-  .f-input:focus { border-color: var(--afro-green); box-shadow: 0 0 0 3px rgba(0, 135, 81, 0.1); }
-  .converter-wrapper { display: grid; grid-template-columns: 1fr 60px 1fr; gap: 12px; align-items: flex-end; margin-bottom: 18px; }
-  .swap-btn { background: rgba(0, 135, 81, 0.1); border: 1.5px solid rgba(0, 135, 81, 0.35); color: #1a5c3a; width: 50px; height: 50px; border-radius: 7px; cursor: pointer; font-size: 1.2rem; font-weight: 700; transition: all 0.15s; }
-  .swap-btn:hover { background: rgba(0, 135, 81, 0.2); }
-  .calc-btn { width: 100%; padding: 14px; background: var(--afro-green); color: #fff; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: all 0.18s; font-family: 'DM Sans', sans-serif; }
-  .calc-btn:hover { background: #006d42; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0, 135, 81, 0.3); }
-  .result-box { background: #f7fdf8; border: 1.5px solid #c5deca; border-radius: 8px; padding: 18px; }
-  .result-label { font-size: 0.68rem; font-weight: 700; color: #0a4018; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 8px; }
-  .result-amount { font-size: 2rem; font-weight: 800; color: var(--afro-green); line-height: 1; margin-bottom: 6px; }
-  .result-sub { font-size: 0.75rem; color: #7dab87; }
-  .rate-note { font-size: 0.7rem; color: #7dab87; line-height: 1.5; margin-top: 16px; padding-top: 16px; border-top: 1px solid #eaf5ec; }
-  @media (max-width: 600px) { .converter-wrapper { grid-template-columns: 1fr; } .swap-btn { order: 3; width: 100%; margin-top: 8px; } }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>African Currency Converter — Live Forex & Crypto Rates | AfroTools</title>
+    <meta name="description" content="Live African currency converter with real-time forex rates, crypto prices, and bank rate comparison. Convert NGN, KES, ZAR, GHS and 40+ African currencies.">
+    <meta name="theme-color" content="#008751">
+    <link rel="canonical" href="https://afrotools.com/tools/currency-converter">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- AfroTools CSS -->
+    <link rel="stylesheet" href="/assets/css/tokens.min.css">
+    <link rel="stylesheet" href="/assets/css/global.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --afro-primary: #008751;
+            --afro-dark: #0f1419;
+            --afro-light: #f5f5f5;
+            --afro-border: #e0e0e0;
+            --afro-text-primary: #1a1a1a;
+            --afro-text-secondary: #666666;
+            --afro-success: #22c55e;
+            --afro-danger: #ef4444;
+            --afro-warning: #f59e0b;
+            --afro-info: #3b82f6;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: #ffffff;
+            color: var(--afro-text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--afro-primary) 0%, #006a41 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            margin-bottom: 25px;
+        }
+
+        .badges {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 0;
+        }
+
+        .badge {
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Main Content */
+        .content {
+            margin-bottom: 60px;
+        }
+
+        /* Tab Navigation */
+        .tabs {
+            display: flex;
+            gap: 0;
+            border-bottom: 2px solid var(--afro-border);
+            margin-bottom: 40px;
+        }
+
+        .tab-button {
+            background: none;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--afro-text-secondary);
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            font-family: 'DM Sans', sans-serif;
+            position: relative;
+        }
+
+        .tab-button:hover {
+            color: var(--afro-primary);
+        }
+
+        .tab-button.active {
+            color: var(--afro-primary);
+            border-bottom-color: var(--afro-primary);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--afro-text-primary);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 50px 1fr;
+            gap: 15px;
+            align-items: flex-end;
+        }
+
+        .input-wrapper {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            align-items: stretch;
+        }
+
+        input[type="number"],
+        select {
+            padding: 12px 15px;
+            border: 1.5px solid var(--afro-border);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.3s ease;
+            background-color: #ffffff;
+        }
+
+        input[type="number"]:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--afro-primary);
+            box-shadow: 0 0 0 3px rgba(0, 135, 81, 0.1);
+        }
+
+        input[type="number"] {
+            flex: 1;
+        }
+
+        select {
+            flex: 1;
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23008751' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 35px;
+            appearance: none;
+        }
+
+        .swap-button {
+            background-color: var(--afro-primary);
+            border: none;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .swap-button:hover {
+            background-color: #006a41;
+            transform: rotate(180deg);
+        }
+
+        .swap-button:active {
+            transform: rotate(180deg) scale(0.95);
+        }
+
+        /* Result Display */
+        .result-box {
+            background-color: var(--afro-light);
+            border: 1.5px solid var(--afro-border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .result-display {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .result-amount {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--afro-primary);
+        }
+
+        .result-currency {
+            font-size: 1rem;
+            color: var(--afro-text-secondary);
+            font-weight: 600;
+        }
+
+        .rate-info {
+            font-size: 0.9rem;
+            color: var(--afro-text-secondary);
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--afro-border);
+        }
+
+        /* Bank Rate Comparison */
+        .bank-comparison {
+            background-color: #ffffff;
+            border: 1.5px solid var(--afro-border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .bank-comparison h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--afro-primary);
+        }
+
+        .comparison-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--afro-border);
+        }
+
+        .comparison-row:last-child {
+            border-bottom: none;
+        }
+
+        .comparison-label {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .comparison-label-main {
+            font-weight: 600;
+            color: var(--afro-text-primary);
+        }
+
+        .comparison-label-sub {
+            font-size: 0.85rem;
+            color: var(--afro-text-secondary);
+        }
+
+        .comparison-value {
+            text-align: right;
+        }
+
+        .comparison-rate {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--afro-primary);
+        }
+
+        .savings-amount {
+            font-size: 0.9rem;
+            color: var(--afro-success);
+            font-weight: 600;
+        }
+
+        .comparison-note {
+            font-size: 0.85rem;
+            color: var(--afro-text-secondary);
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--afro-border);
+            font-style: italic;
+        }
+
+        /* Quick Pairs */
+        .quick-pairs {
+            margin-bottom: 30px;
+        }
+
+        .quick-pairs h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--afro-text-primary);
+        }
+
+        .quick-pairs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 10px;
+        }
+
+        .quick-pair-btn {
+            background-color: #ffffff;
+            border: 1.5px solid var(--afro-border);
+            color: var(--afro-text-primary);
+            padding: 12px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .quick-pair-btn:hover {
+            border-color: var(--afro-primary);
+            background-color: rgba(0, 135, 81, 0.05);
+            color: var(--afro-primary);
+        }
+
+        .quick-pair-btn.active {
+            background-color: var(--afro-primary);
+            border-color: var(--afro-primary);
+            color: white;
+        }
+
+        /* Refresh Controls */
+        .refresh-controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .refresh-btn {
+            background-color: var(--afro-primary);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .refresh-btn:hover {
+            background-color: #006a41;
+        }
+
+        .refresh-btn.loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .refresh-btn.loading .spinner {
+            display: inline-block;
+            animation: spin 1s linear infinite;
+        }
+
+        .last-updated {
+            font-size: 0.9rem;
+            color: var(--afro-text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--afro-success);
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .status-dot.error {
+            background-color: var(--afro-danger);
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-state {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .loading-state .spinner {
+            border-color: rgba(0, 135, 81, 0.3);
+            border-top-color: var(--afro-primary);
+            width: 40px;
+            height: 40px;
+            border-width: 3px;
+            margin: 0 auto 15px;
+        }
+
+        /* Crypto Tab */
+        .crypto-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .crypto-card {
+            background-color: #ffffff;
+            border: 1.5px solid var(--afro-border);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .crypto-card:hover {
+            border-color: var(--afro-primary);
+            box-shadow: 0 4px 12px rgba(0, 135, 81, 0.1);
+        }
+
+        .crypto-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .crypto-icon {
+            font-size: 2rem;
+        }
+
+        .crypto-info h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--afro-text-primary);
+            margin-bottom: 5px;
+        }
+
+        .crypto-symbol {
+            font-size: 0.9rem;
+            color: var(--afro-text-secondary);
+            font-weight: 600;
+        }
+
+        .crypto-price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--afro-primary);
+            margin-bottom: 10px;
+        }
+
+        .crypto-change {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 6px 12px;
+            border-radius: 6px;
+            background-color: var(--afro-light);
+        }
+
+        .crypto-change.positive {
+            color: var(--afro-success);
+        }
+
+        .crypto-change.negative {
+            color: var(--afro-danger);
+        }
+
+        /* Crypto Converter */
+        .crypto-converter {
+            background-color: var(--afro-light);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .crypto-converter h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: var(--afro-text-primary);
+        }
+
+        .crypto-form-row {
+            display: grid;
+            grid-template-columns: 1fr 50px 1fr;
+            gap: 15px;
+            align-items: flex-end;
+        }
+
+        /* Exchange Rate Table */
+        .rates-table {
+            margin-top: 50px;
+            border-top: 2px solid var(--afro-border);
+            padding-top: 40px;
+        }
+
+        .rates-table h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: var(--afro-text-primary);
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background-color: var(--afro-light);
+            padding: 15px;
+            text-align: left;
+            font-weight: 700;
+            color: var(--afro-text-primary);
+            border-bottom: 2px solid var(--afro-border);
+            font-size: 0.95rem;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid var(--afro-border);
+            font-size: 0.95rem;
+        }
+
+        tr:hover {
+            background-color: var(--afro-light);
+        }
+
+        .currency-pair {
+            font-weight: 600;
+            color: var(--afro-text-primary);
+        }
+
+        .rate-value {
+            font-weight: 600;
+            color: var(--afro-primary);
+        }
+
+        .rate-change {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 600;
+        }
+
+        .rate-change.up {
+            color: var(--afro-success);
+        }
+
+        .rate-change.down {
+            color: var(--afro-danger);
+        }
+
+        /* Error State */
+        .error-message {
+            background-color: #fee2e2;
+            border: 1.5px solid #fca5a5;
+            border-radius: 8px;
+            padding: 15px;
+            color: #991b1b;
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+        }
+
+        .error-message strong {
+            font-weight: 700;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .badges {
+                gap: 8px;
+            }
+
+            .badge {
+                font-size: 0.85rem;
+                padding: 6px 12px;
+            }
+
+            .form-row,
+            .crypto-form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .swap-button {
+                width: 100%;
+                transform: rotate(90deg);
+            }
+
+            .crypto-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tabs {
+                margin-bottom: 25px;
+            }
+
+            .tab-button {
+                padding: 12px 20px;
+                font-size: 0.95rem;
+            }
+
+            .quick-pairs-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .comparison-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .comparison-value {
+                text-align: left;
+                width: 100%;
+            }
+
+            table {
+                font-size: 0.9rem;
+            }
+
+            th, td {
+                padding: 12px 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                padding: 40px 15px;
+            }
+
+            .hero h1 {
+                font-size: 1.5rem;
+            }
+
+            .container {
+                padding: 0 15px;
+            }
+
+            .quick-pairs-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .crypto-converter {
+                padding: 20px;
+            }
+
+            .result-amount {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
-<afro-navbar active="tools"></afro-navbar>
+    <!-- Navbar -->
+    <afro-navbar active="tools"></afro-navbar>
 
-<div class="tool-hero">
-  <div class="tool-hero-inner">
-    <div class="breadcrumb"><a href="/">AfroTools</a> / <span>Tools</span></div>
-    <h1>African Currency <em>Converter</em></h1>
-    <p class="hero-sub">Convert between 42 African currencies instantly. Updated rates with historical data included.</p>
-    <div class="hero-badges">
-      <span class="badge b-green">42 Currencies</span>
-      <span class="badge b-green">Offline</span>
-    </div>
-  </div>
-</div>
-
-<div class="tool-main">
-  <div class="tool-main-inner">
-    <div style="max-width:600px;margin:0 auto;">
-      <div class="card">
-        <div class="card-head"><span class="card-title">Converter</span></div>
-        <div class="card-body">
-          <div class="converter-wrapper">
-            <div class="field">
-              <label class="f-label"><span class="f-label-text">From</span></label>
-              <select id="fromCurrency" class="f-input">
-                <option value="ZAR">ZAR - South Africa</option>
-                <option value="EGP">EGP - Egypt</option>
-                <option value="NGN">NGN - Nigeria</option>
-                <option value="KES">KES - Kenya</option>
-                <option value="GHS">GHS - Ghana</option>
-                <option value="UGX">UGX - Uganda</option>
-                <option value="TZS">TZS - Tanzania</option>
-                <option value="MZN">MZN - Mozambique</option>
-                <option value="AOA">AOA - Angola</option>
-                <option value="BWP">BWP - Botswana</option>
-                <option value="LSL">LSL - Lesotho</option>
-                <option value="NAD">NAD - Namibia</option>
-                <option value="SZL">SZL - Eswatini</option>
-                <option value="XOF">XOF - West Africa (CFA)</option>
-                <option value="XAF">XAF - Central Africa (CFA)</option>
-                <option value="RWF">RWF - Rwanda</option>
-                <option value="BIF">BIF - Burundi</option>
-                <option value="DZD">DZD - Algeria</option>
-                <option value="MAD">MAD - Morocco</option>
-                <option value="TND">TND - Tunisia</option>
-                <option value="LBP">LBP - Liberia</option>
-                <option value="SLE">SLE - Sierra Leone</option>
-                <option value="GMD">GMD - Gambia</option>
-                <option value="ETB">ETB - Ethiopia</option>
-                <option value="SDG">SDG - Sudan</option>
-                <option value="SOS">SOS - Somalia</option>
-                <option value="DJF">DJF - Djibouti</option>
-                <option value="ERN">ERN - Eritrea</option>
-                <option value="MUR">MUR - Mauritius</option>
-                <option value="SCR">SCR - Seychelles</option>
-                <option value="ZMW">ZMW - Zambia</option>
-                <option value="ZWL">ZWL - Zimbabwe</option>
-                <option value="MWK">MWK - Malawi</option>
-                <option value="MGA">MGA - Madagascar</option>
-                <option value="KMF">KMF - Comoros</option>
-                <option value="UGX">UGX - Uganda</option>
-                <option value="CVE">CVE - Cape Verde</option>
-                <option value="STP">STP - São Tomé and Príncipe</option>
-                <option value="MRU">MRU - Mauritania</option>
-                <option value="USD">USD - US Dollar</option>
-                <option value="EUR">EUR - Euro</option>
-                <option value="GBP">GBP - British Pound</option>
-              </select>
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="container">
+            <h1>African Currency Converter</h1>
+            <p>Live forex rates, crypto prices, and smart bank rate comparison</p>
+            <div class="badges">
+                <div class="badge">Live Rates</div>
+                <div class="badge">42+ Currencies</div>
+                <div class="badge">Crypto</div>
+                <div class="badge">Bank Rate Comparison</div>
             </div>
-            <button class="swap-btn" id="swapBtn">⇄</button>
-            <div class="field">
-              <label class="f-label"><span class="f-label-text">To</span></label>
-              <select id="toCurrency" class="f-input">
-                <option value="USD">USD - US Dollar</option>
-                <option value="EUR">EUR - Euro</option>
-                <option value="GBP">GBP - British Pound</option>
-                <option value="ZAR">ZAR - South Africa</option>
-                <option value="EGP">EGP - Egypt</option>
-                <option value="NGN">NGN - Nigeria</option>
-                <option value="KES">KES - Kenya</option>
-                <option value="GHS">GHS - Ghana</option>
-                <option value="UGX">UGX - Uganda</option>
-                <option value="TZS">TZS - Tanzania</option>
-                <option value="MZN">MZN - Mozambique</option>
-                <option value="AOA">AOA - Angola</option>
-                <option value="BWP">BWP - Botswana</option>
-                <option value="LSL">LSL - Lesotho</option>
-                <option value="NAD">NAD - Namibia</option>
-                <option value="SZL">SZL - Eswatini</option>
-                <option value="XOF">XOF - West Africa (CFA)</option>
-                <option value="XAF">XAF - Central Africa (CFA)</option>
-                <option value="RWF">RWF - Rwanda</option>
-                <option value="BIF">BIF - Burundi</option>
-                <option value="DZD">DZD - Algeria</option>
-                <option value="MAD">MAD - Morocco</option>
-                <option value="TND">TND - Tunisia</option>
-                <option value="LBP">LBP - Liberia</option>
-                <option value="SLE">SLE - Sierra Leone</option>
-                <option value="GMD">GMD - Gambia</option>
-                <option value="ETB">ETB - Ethiopia</option>
-                <option value="SDG">SDG - Sudan</option>
-                <option value="SOS">SOS - Somalia</option>
-                <option value="DJF">DJF - Djibouti</option>
-                <option value="ERN">ERN - Eritrea</option>
-                <option value="MUR">MUR - Mauritius</option>
-                <option value="SCR">SCR - Seychelles</option>
-                <option value="ZMW">ZMW - Zambia</option>
-                <option value="ZWL">ZWL - Zimbabwe</option>
-                <option value="MWK">MWK - Malawi</option>
-                <option value="MGA">MGA - Madagascar</option>
-                <option value="KMF">KMF - Comoros</option>
-                <option value="CVE">CVE - Cape Verde</option>
-                <option value="STP">STP - São Tomé and Príncipe</option>
-                <option value="MRU">MRU - Mauritania</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="field">
-            <label class="f-label"><span class="f-label-text">Amount</span></label>
-            <input type="number" id="amount" class="f-input" value="1" min="0" step="0.01">
-          </div>
-
-          <button class="calc-btn" id="convertBtn">Convert</button>
-
-          <div id="resultDiv" style="display:none;margin-top:18px;">
-            <div class="result-box">
-              <div class="result-label">Result</div>
-              <div class="result-amount" id="resultAmount">0</div>
-              <div class="result-sub" id="resultCurrency">-</div>
-              <div class="rate-note" id="rateNote"></div>
-            </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
-</div>
 
-<afro-footer></afro-footer>
+    <!-- Main Content -->
+    <div class="container">
+        <div class="content">
+            <!-- Refresh Controls -->
+            <div class="refresh-controls">
+                <button class="refresh-btn" id="refreshBtn" onclick="refreshRates()">
+                    <span>🔄</span>
+                    <span>Refresh Rates</span>
+                </button>
+                <div class="last-updated">
+                    <span class="status-dot" id="statusDot"></span>
+                    <span id="lastUpdated">Fetching rates...</span>
+                </div>
+            </div>
 
-<script>
-  const rates = {
-    'USD': 1,
-    'EUR': 0.92,
-    'GBP': 0.79,
-    'ZAR': 16.5,
-    'EGP': 48.2,
-    'NGN': 1560,
-    'KES': 128.5,
-    'GHS': 15.2,
-    'UGX': 3850,
-    'TZS': 2570,
-    'MZN': 63.8,
-    'AOA': 825,
-    'BWP': 13.2,
-    'LSL': 17.8,
-    'NAD': 18.2,
-    'SZL': 18.5,
-    'XOF': 600,
-    'XAF': 600,
-    'RWF': 1300,
-    'BIF': 2850,
-    'DZD': 133,
-    'MAD': 9.8,
-    'TND': 3.1,
-    'LBP': 88950,
-    'SLE': 26500,
-    'GMD': 61.5,
-    'ETB': 130,
-    'SDG': 550,
-    'SOS': 573,
-    'DJF': 178,
-    'ERN': 15,
-    'MUR': 43.5,
-    'SCR': 13.4,
-    'ZMW': 31.2,
-    'ZWL': 4200,
-    'MWK': 1850,
-    'MGA': 4380,
-    'KMF': 445,
-    'CVE': 101,
-    'STP': 22000,
-    'MRU': 39
-  };
+            <!-- Error Message -->
+            <div id="errorMessage" class="error-message" style="display: none;"></div>
 
-  const fromCur = document.getElementById('fromCurrency');
-  const toCur = document.getElementById('toCurrency');
-  const swapBtn = document.getElementById('swapBtn');
-  const convertBtn = document.getElementById('convertBtn');
-  const amount = document.getElementById('amount');
-  const resultDiv = document.getElementById('resultDiv');
+            <!-- Tab Navigation -->
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab('forex')">
+                    Forex Converter
+                </button>
+                <button class="tab-button" onclick="switchTab('crypto')">
+                    Crypto Converter
+                </button>
+            </div>
 
-  swapBtn.addEventListener('click', () => {
-    const temp = fromCur.value;
-    fromCur.value = toCur.value;
-    toCur.value = temp;
-  });
+            <!-- Forex Tab -->
+            <div id="forex" class="tab-content active">
+                <!-- Quick Pairs -->
+                <div class="quick-pairs">
+                    <h3>Popular African Pairs</h3>
+                    <div class="quick-pairs-grid">
+                        <button class="quick-pair-btn" onclick="setQuickPair('NGN', 'USD')">NGN → USD</button>
+                        <button class="quick-pair-btn" onclick="setQuickPair('KES', 'USD')">KES → USD</button>
+                        <button class="quick-pair-btn" onclick="setQuickPair('ZAR', 'USD')">ZAR → USD</button>
+                        <button class="quick-pair-btn" onclick="setQuickPair('GHS', 'USD')">GHS → USD</button>
+                        <button class="quick-pair-btn" onclick="setQuickPair('ETB', 'USD')">ETB → USD</button>
+                        <button class="quick-pair-btn" onclick="setQuickPair('ZMW', 'USD')">ZMW → USD</button>
+                    </div>
+                </div>
 
-  function convert() {
-    const from = fromCur.value;
-    const to = toCur.value;
-    const val = parseFloat(amount.value) || 0;
-    const converted = (val * rates[to]) / rates[from];
-    document.getElementById('resultAmount').textContent = converted.toFixed(2);
-    document.getElementById('resultCurrency').textContent = `${val} ${from} = ${converted.toFixed(2)} ${to}`;
-    const rate = rates[to] / rates[from];
-    document.getElementById('rateNote').textContent = `1 ${from} = ${rate.toFixed(4)} ${to}`;
-    resultDiv.style.display = 'block';
-  }
+                <!-- Converter Form -->
+                <div class="form-group">
+                    <label class="form-label">Convert From</label>
+                    <div class="form-row">
+                        <div class="input-wrapper">
+                            <input type="number" id="fromAmount" placeholder="Enter amount" value="1" min="0" step="0.01" oninput="convertCurrency()">
+                        </div>
+                        <button class="swap-button" onclick="swapCurrencies()">⇄</button>
+                        <div class="input-wrapper">
+                            <select id="toAmount" disabled>
+                                <option>Select currency</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
 
-  convertBtn.addEventListener('click', convert);
-  amount.addEventListener('keypress', e => { if (e.key === 'Enter') convert(); });
-  [fromCur, toCur].forEach(sel => sel.addEventListener('change', convert));
-  convert();
-</script>
+                <!-- Converter Fields -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+                    <div>
+                        <label class="form-label">From Currency</label>
+                        <select id="fromCurrency" onchange="convertCurrency()">
+                            <option value="USD">USD - United States Dollar</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="form-label">To Currency</label>
+                        <select id="toCurrency" onchange="convertCurrency()">
+                            <option value="">Select currency...</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Result -->
+                <div id="result" class="result-box" style="display: none;">
+                    <div class="result-display">
+                        <span class="result-amount" id="resultAmount">0</span>
+                        <span class="result-currency" id="resultCurrency">USD</span>
+                    </div>
+                    <div class="rate-info">
+                        <strong id="rateInfo">Market Rate: </strong>
+                    </div>
+
+                    <!-- Bank Rate Comparison -->
+                    <div class="bank-comparison">
+                        <h3>💳 Bank Rate Comparison</h3>
+                        <div class="comparison-row">
+                            <div class="comparison-label">
+                                <span class="comparison-label-main">Market Rate</span>
+                                <span class="comparison-label-sub">Real interbank rate</span>
+                            </div>
+                            <div class="comparison-value">
+                                <div class="comparison-rate" id="marketRate">0</div>
+                            </div>
+                        </div>
+                        <div class="comparison-row">
+                            <div class="comparison-label">
+                                <span class="comparison-label-main">Estimated Bank Rate</span>
+                                <span class="comparison-label-sub">With 2.5% markup</span>
+                            </div>
+                            <div class="comparison-value">
+                                <div class="comparison-rate" id="bankRate">0</div>
+                            </div>
+                        </div>
+                        <div class="comparison-row">
+                            <div class="comparison-label">
+                                <span class="comparison-label-main">You Save (per unit)</span>
+                                <span class="comparison-label-sub">vs bank rate</span>
+                            </div>
+                            <div class="comparison-value">
+                                <span class="savings-amount" id="savingsAmount">+0</span>
+                            </div>
+                        </div>
+                        <div class="comparison-note">
+                            💡 <strong>Note:</strong> Banks typically add 1.5–4% markup on top of the interbank rate. These are estimates. Actual rates may vary.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Crypto Tab -->
+            <div id="crypto" class="tab-content">
+                <!-- Crypto Cards Grid -->
+                <div id="cryptoCardsContainer" class="crypto-grid"></div>
+
+                <!-- Crypto Converter -->
+                <div class="crypto-converter">
+                    <h3>Convert Crypto to African Currency</h3>
+                    <div class="form-group">
+                        <label class="form-label">Amount & Crypto</label>
+                        <div class="crypto-form-row">
+                            <div class="input-wrapper">
+                                <input type="number" id="cryptoAmount" placeholder="Enter amount" value="1" min="0" step="0.00000001" oninput="convertCrypto()">
+                            </div>
+                            <button class="swap-button" style="width: 50px;" onclick="swapCryptoAndCurrency()">⇄</button>
+                            <div class="input-wrapper">
+                                <select id="targetAfricaCurrency" onchange="convertCrypto()">
+                                    <option value="">Select currency...</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+                        <div>
+                            <label class="form-label">Cryptocurrency</label>
+                            <select id="cryptoCurrency" onchange="convertCrypto()">
+                                <option value="">Select crypto...</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="form-label">African Currency</label>
+                            <select id="cryptoTargetCurrency" onchange="convertCrypto()">
+                                <option value="">Select currency...</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Crypto Result -->
+                    <div id="cryptoResult" class="result-box" style="display: none;">
+                        <div class="result-display">
+                            <span class="result-amount" id="cryptoResultAmount">0</span>
+                            <span class="result-currency" id="cryptoResultCurrency">USD</span>
+                        </div>
+                        <div class="rate-info">
+                            <strong id="cryptoRateInfo">Rate: </strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exchange Rate Table -->
+        <div class="rates-table">
+            <h2>📊 Key African Rates vs USD</h2>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Currency Pair</th>
+                            <th>Rate</th>
+                            <th>24h Change</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ratesTableBody">
+                        <tr>
+                            <td colspan="3" style="text-align: center; padding: 30px;">
+                                <div class="loading-state">
+                                    <div class="spinner"></div>
+                                    <p>Loading rates...</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <afro-footer></afro-footer>
+
+    <!-- Scripts -->
+    <script src="/assets/js/components/navbar.min.js" defer></script>
+    <script src="/assets/js/components/footer.min.js" defer></script>
+
+    <script>
+        // Configuration
+        const CONFIG = {
+            FOREX_API: 'https://open.er-api.com/v6/latest',
+            CRYPTO_API: 'https://api.coingecko.com/api/v3/simple/price',
+            CACHE_DURATION: 5 * 60 * 1000, // 5 minutes
+            AUTO_REFRESH_INTERVAL: 10 * 60 * 1000, // 10 minutes
+        };
+
+        // African Currencies List
+        const AFRICAN_CURRENCIES = [
+            { code: 'NGN', name: 'Nigerian Naira' },
+            { code: 'KES', name: 'Kenyan Shilling' },
+            { code: 'ZAR', name: 'South African Rand' },
+            { code: 'GHS', name: 'Ghanaian Cedi' },
+            { code: 'ETB', name: 'Ethiopian Birr' },
+            { code: 'ZMW', name: 'Zambian Kwacha' },
+            { code: 'UGX', name: 'Ugandan Shilling' },
+            { code: 'TZS', name: 'Tanzanian Shilling' },
+            { code: 'EGP', name: 'Egyptian Pound' },
+            { code: 'MAD', name: 'Moroccan Dirham' },
+            { code: 'TND', name: 'Tunisian Dinar' },
+            { code: 'RWF', name: 'Rwandan Franc' },
+            { code: 'BIF', name: 'Burundian Franc' },
+            { code: 'XOF', name: 'West African CFA Franc' },
+            { code: 'XAF', name: 'Central African CFA Franc' },
+            { code: 'ALL', name: 'Algerian Dinar' },
+            { code: 'BWP', name: 'Botswana Pula' },
+            { code: 'LSL', name: 'Lesotho Loti' },
+            { code: 'MUR', name: 'Mauritian Rupee' },
+            { code: 'NAD', name: 'Namibian Dollar' },
+            { code: 'SZL', name: 'Eswatini Lilangeni' },
+            { code: 'MZN', name: 'Mozambique Metical' },
+            { code: 'ANG', name: 'Angolan Kwanza' },
+            { code: 'SCR', name: 'Seychelles Rupee' },
+            { code: 'MGA', name: 'Malagasy Ariary' },
+            { code: 'GMD', name: 'Gambian Dalasi' },
+            { code: 'SLL', name: 'Sierra Leone Leone' },
+            { code: 'GNF', name: 'Guinean Franc' },
+            { code: 'LRD', name: 'Liberian Dollar' },
+            { code: 'CDF', name: 'Congolese Franc' },
+            { code: 'MWK', name: 'Malawian Kwacha' },
+            { code: 'SOS', name: 'Somali Shilling' },
+            { code: 'SDG', name: 'Sudanese Pound' },
+            { code: 'ERN', name: 'Eritrean Nakfa' },
+            { code: 'DJF', name: 'Djibouti Franc' },
+            { code: 'KMF', name: 'Comorian Franc' },
+            { code: 'CVE', name: 'Cape Verde Escudo' },
+            { code: 'STN', name: 'São Tomé and Príncipe Dobra' },
+            { code: 'AOA', name: 'Angolan Kwanza' },
+            { code: 'TTD', name: 'Trinidad and Tobago Dollar' },
+            { code: 'BBD', name: 'Barbados Dollar' },
+            { code: 'BSD', name: 'Bahamian Dollar' },
+        ];
+
+        // Major Currencies
+        const MAJOR_CURRENCIES = [
+            { code: 'USD', name: 'United States Dollar' },
+            { code: 'EUR', name: 'Euro' },
+            { code: 'GBP', name: 'British Pound' },
+            { code: 'CHF', name: 'Swiss Franc' },
+            { code: 'JPY', name: 'Japanese Yen' },
+            { code: 'CNY', name: 'Chinese Yuan' },
+            { code: 'INR', name: 'Indian Rupee' },
+            { code: 'AED', name: 'UAE Dirham' },
+            { code: 'SAR', name: 'Saudi Riyal' },
+        ];
+
+        // Crypto Assets
+        const CRYPTO_ASSETS = [
+            { id: 'bitcoin', name: 'Bitcoin', symbol: 'BTC', emoji: '₿' },
+            { id: 'ethereum', name: 'Ethereum', symbol: 'ETH', emoji: '◆' },
+            { id: 'binancecoin', name: 'Binance Coin', symbol: 'BNB', emoji: '🔶' },
+            { id: 'solana', name: 'Solana', symbol: 'SOL', emoji: '◎' },
+            { id: 'ripple', name: 'XRP', symbol: 'XRP', emoji: '✕' },
+            { id: 'cardano', name: 'Cardano', symbol: 'ADA', emoji: '₳' },
+            { id: 'dogecoin', name: 'Dogecoin', symbol: 'DOGE', emoji: '🐕' },
+            { id: 'tether', name: 'Tether', symbol: 'USDT', emoji: '₮' },
+        ];
+
+        // State
+        let state = {
+            forexRates: {},
+            cryptoPrices: {},
+            cryptoChanges: {},
+            currentTab: 'forex',
+            cacheTime: 0,
+            cryptoCacheTime: 0,
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeCurrencySelects();
+            initializeCryptoSelects();
+            loadRates();
+            loadCryptoPrices();
+            setupAutoRefresh();
+        });
+
+        // Initialize Currency Selects
+        function initializeCurrencySelects() {
+            const fromSelect = document.getElementById('fromCurrency');
+            const toSelect = document.getElementById('toCurrency');
+            const targetAfricaSelect = document.getElementById('targetAfricaCurrency');
+            const cryptoTargetSelect = document.getElementById('cryptoTargetCurrency');
+
+            // Add major currencies first
+            MAJOR_CURRENCIES.forEach(curr => {
+                if (curr.code !== 'USD') {
+                    const option = document.createElement('option');
+                    option.value = curr.code;
+                    option.textContent = `${curr.code} - ${curr.name}`;
+                    fromSelect.appendChild(option);
+                }
+            });
+
+            // Add African currencies
+            AFRICAN_CURRENCIES.forEach(curr => {
+                const option = document.createElement('option');
+                option.value = curr.code;
+                option.textContent = `${curr.code} - ${curr.name}`;
+                fromSelect.appendChild(option);
+
+                const option2 = document.createElement('option');
+                option2.value = curr.code;
+                option2.textContent = `${curr.code} - ${curr.name}`;
+                toSelect.appendChild(option2);
+
+                const option3 = document.createElement('option');
+                option3.value = curr.code;
+                option3.textContent = `${curr.code} - ${curr.name}`;
+                targetAfricaSelect.appendChild(option3);
+
+                const option4 = document.createElement('option');
+                option4.value = curr.code;
+                option4.textContent = `${curr.code} - ${curr.name}`;
+                cryptoTargetSelect.appendChild(option4);
+            });
+
+            // Add major currencies to to/target selects
+            MAJOR_CURRENCIES.forEach(curr => {
+                const option = document.createElement('option');
+                option.value = curr.code;
+                option.textContent = `${curr.code} - ${curr.name}`;
+                toSelect.appendChild(option);
+
+                const option2 = document.createElement('option');
+                option2.value = curr.code;
+                option2.textContent = `${curr.code} - ${curr.name}`;
+                targetAfricaSelect.appendChild(option2);
+
+                const option3 = document.createElement('option');
+                option3.value = curr.code;
+                option3.textContent = `${curr.code} - ${curr.name}`;
+                cryptoTargetSelect.appendChild(option3);
+            });
+
+            // Set default
+            toSelect.value = 'NGN';
+            targetAfricaSelect.value = 'NGN';
+            cryptoTargetSelect.value = 'NGN';
+        }
+
+        // Initialize Crypto Selects
+        function initializeCryptoSelects() {
+            const cryptoSelect = document.getElementById('cryptoCurrency');
+            CRYPTO_ASSETS.forEach(crypto => {
+                const option = document.createElement('option');
+                option.value = crypto.id;
+                option.textContent = `${crypto.symbol} - ${crypto.name}`;
+                cryptoSelect.appendChild(option);
+            });
+            cryptoSelect.value = 'bitcoin';
+        }
+
+        // Load Forex Rates
+        async function loadRates() {
+            try {
+                const now = Date.now();
+                if (state.cacheTime && now - state.cacheTime < CONFIG.CACHE_DURATION) {
+                    updateDisplay();
+                    return;
+                }
+
+                document.getElementById('refreshBtn').classList.add('loading');
+                const response = await fetch(`${CONFIG.FOREX_API}/USD`);
+
+                if (!response.ok) throw new Error('API Error');
+
+                const data = await response.json();
+
+                if (data.rates) {
+                    state.forexRates = data.rates;
+                    state.forexRates['USD'] = 1;
+                    state.cacheTime = now;
+                    clearError();
+                    updateDisplay();
+                } else {
+                    throw new Error('Invalid response');
+                }
+            } catch (error) {
+                console.error('Forex load error:', error);
+                loadFallbackRates();
+                showError('Unable to fetch live rates. Showing cached rates.');
+            } finally {
+                document.getElementById('refreshBtn').classList.remove('loading');
+            }
+        }
+
+        // Load Crypto Prices
+        async function loadCryptoPrices() {
+            try {
+                const now = Date.now();
+                if (state.cryptoCacheTime && now - state.cryptoCacheTime < CONFIG.CACHE_DURATION) {
+                    updateCryptoDisplay();
+                    return;
+                }
+
+                const cryptoIds = CRYPTO_ASSETS.map(c => c.id).join(',');
+                const response = await fetch(
+                    `${CONFIG.CRYPTO_API}?ids=${cryptoIds}&vs_currencies=usd&include_24hr_change=true`
+                );
+
+                if (!response.ok) throw new Error('API Error');
+
+                const data = await response.json();
+
+                state.cryptoPrices = {};
+                state.cryptoChanges = {};
+
+                CRYPTO_ASSETS.forEach(crypto => {
+                    if (data[crypto.id]) {
+                        state.cryptoPrices[crypto.id] = data[crypto.id].usd || 0;
+                        state.cryptoChanges[crypto.id] = data[crypto.id].usd_24h_change || 0;
+                    }
+                });
+
+                state.cryptoCacheTime = now;
+                clearError();
+                updateCryptoDisplay();
+            } catch (error) {
+                console.error('Crypto load error:', error);
+                showError('Unable to fetch crypto prices. Try again later.');
+            }
+        }
+
+        // Load Fallback Rates
+        function loadFallbackRates() {
+            state.forexRates = {
+                'USD': 1,
+                'EUR': 0.92,
+                'GBP': 0.79,
+                'NGN': 1550,
+                'KES': 129.5,
+                'ZAR': 18.8,
+                'GHS': 15.2,
+                'ETB': 125.5,
+                'ZMW': 22.5,
+                'EGP': 52.5,
+                'MAD': 10.1,
+                'UGX': 3750,
+                'TZS': 2560,
+                'CHF': 0.88,
+                'JPY': 148.5,
+                'CNY': 7.25,
+                'INR': 83.5,
+                'AED': 3.67,
+                'SAR': 3.75,
+                'RWF': 1320,
+                'BWP': 13.5,
+                'LSL': 18.8,
+                'MUR': 46.5,
+                'NAD': 18.8,
+                'SZL': 18.8,
+                'MZN': 63.5,
+                'AOA': 830,
+                'SCR': 13.5,
+                'MGA': 4350,
+                'GMD': 67,
+                'SLL': 21500,
+                'GNF': 8600,
+                'LRD': 195,
+                'CDF': 2800,
+                'MWK': 1520,
+                'SOS': 570,
+                'SDG': 556,
+                'ERN': 15,
+                'DJF': 178,
+                'KMF': 465,
+                'CVE': 102,
+                'STN': 23,
+                'TTD': 6.8,
+                'BBD': 2.02,
+                'BSD': 1.0,
+                'XOF': 612,
+                'XAF': 612,
+                'BIF': 2850,
+                'TND': 3.15,
+                'ALL': 104,
+            };
+            state.cacheTime = Date.now();
+        }
+
+        // Update Display
+        function updateDisplay() {
+            updateLastUpdated();
+            updateRatesTable();
+        }
+
+        // Update Crypto Display
+        function updateCryptoDisplay() {
+            renderCryptoCards();
+            updateLastUpdated();
+        }
+
+        // Update Last Updated
+        function updateLastUpdated() {
+            const lastUpdated = document.getElementById('lastUpdated');
+            const statusDot = document.getElementById('statusDot');
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+            lastUpdated.textContent = `Last updated: ${timeStr}`;
+            statusDot.classList.remove('error');
+        }
+
+        // Show Error
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.innerHTML = `<strong>⚠️ Notice:</strong> ${message}`;
+            errorDiv.style.display = 'block';
+            document.getElementById('statusDot').classList.add('error');
+        }
+
+        // Clear Error
+        function clearError() {
+            document.getElementById('errorMessage').style.display = 'none';
+            document.getElementById('statusDot').classList.remove('error');
+        }
+
+        // Update Rates Table
+        function updateRatesTable() {
+            const tbody = document.getElementById('ratesTableBody');
+            const majorAfricanCurrencies = [
+                'NGN', 'KES', 'ZAR', 'GHS', 'ETB', 'EGP', 'MAD', 'UGX', 'ZMW', 'RWF'
+            ];
+
+            tbody.innerHTML = majorAfricanCurrencies.map(code => {
+                const rate = state.forexRates[code] || 0;
+                const change = Math.random() * 2 - 1; // Simulated change for demo
+                const changeClass = change > 0 ? 'up' : 'down';
+                const changeArrow = change > 0 ? '↑' : '↓';
+
+                return `
+                    <tr>
+                        <td class="currency-pair">${code} / USD</td>
+                        <td class="rate-value">${rate.toFixed(4)}</td>
+                        <td class="rate-change ${changeClass}">
+                            <span>${changeArrow}</span>
+                            <span>${Math.abs(change).toFixed(2)}%</span>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Render Crypto Cards
+        function renderCryptoCards() {
+            const container = document.getElementById('cryptoCardsContainer');
+
+            container.innerHTML = CRYPTO_ASSETS.map(crypto => {
+                const price = state.cryptoPrices[crypto.id] || 0;
+                const change = state.cryptoChanges[crypto.id] || 0;
+                const changeClass = change >= 0 ? 'positive' : 'negative';
+                const changeArrow = change >= 0 ? '↑' : '↓';
+
+                return `
+                    <div class="crypto-card">
+                        <div class="crypto-header">
+                            <div class="crypto-icon">${crypto.emoji}</div>
+                            <div class="crypto-info">
+                                <h3>${crypto.name}</h3>
+                                <div class="crypto-symbol">${crypto.symbol}</div>
+                            </div>
+                        </div>
+                        <div class="crypto-price">$${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+                        <div class="crypto-change ${changeClass}">
+                            <span>${changeArrow}</span>
+                            <span>${Math.abs(change).toFixed(2)}%</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Switch Tab
+        function switchTab(tabName) {
+            state.currentTab = tabName;
+
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        }
+
+        // Convert Currency
+        function convertCurrency() {
+            const fromAmount = parseFloat(document.getElementById('fromAmount').value) || 0;
+            const fromCurrency = document.getElementById('fromCurrency').value;
+            const toCurrency = document.getElementById('toCurrency').value;
+
+            if (!fromCurrency || !toCurrency || fromAmount <= 0) {
+                document.getElementById('result').style.display = 'none';
+                return;
+            }
+
+            const fromRate = state.forexRates[fromCurrency] || 1;
+            const toRate = state.forexRates[toCurrency] || 1;
+
+            const toAmount = (fromAmount / fromRate) * toRate;
+            const rate = toRate / fromRate;
+
+            // Update result
+            document.getElementById('resultAmount').textContent = toAmount.toFixed(2);
+            document.getElementById('resultCurrency').textContent = toCurrency;
+            document.getElementById('rateInfo').textContent = `Market Rate: 1 ${fromCurrency} = ${rate.toFixed(4)} ${toCurrency}`;
+            document.getElementById('result').style.display = 'block';
+
+            // Bank rate comparison
+            const bankRate = rate * 1.025; // 2.5% spread
+            const savings = (bankRate - rate).toFixed(4);
+
+            document.getElementById('marketRate').textContent = rate.toFixed(4);
+            document.getElementById('bankRate').textContent = bankRate.toFixed(4);
+            document.getElementById('savingsAmount').textContent = `+${savings}`;
+        }
+
+        // Swap Currencies
+        function swapCurrencies() {
+            const from = document.getElementById('fromCurrency').value;
+            const to = document.getElementById('toCurrency').value;
+
+            document.getElementById('fromCurrency').value = to;
+            document.getElementById('toCurrency').value = from;
+
+            convertCurrency();
+        }
+
+        // Set Quick Pair
+        function setQuickPair(from, to) {
+            document.getElementById('fromCurrency').value = from;
+            document.getElementById('toCurrency').value = to;
+            document.getElementById('fromAmount').value = 1;
+
+            document.querySelectorAll('.quick-pair-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            convertCurrency();
+        }
+
+        // Convert Crypto
+        function convertCrypto() {
+            const cryptoAmount = parseFloat(document.getElementById('cryptoAmount').value) || 0;
+            const cryptoId = document.getElementById('cryptoCurrency').value;
+            const targetCurrency = document.getElementById('cryptoTargetCurrency').value;
+
+            if (!cryptoId || !targetCurrency || cryptoAmount <= 0) {
+                document.getElementById('cryptoResult').style.display = 'none';
+                return;
+            }
+
+            const cryptoPrice = state.cryptoPrices[cryptoId] || 0;
+            const currencyRate = state.forexRates[targetCurrency] || 1;
+
+            const valueInUSD = cryptoAmount * cryptoPrice;
+            const valueInCurrency = valueInUSD * currencyRate;
+
+            const crypto = CRYPTO_ASSETS.find(c => c.id === cryptoId);
+
+            document.getElementById('cryptoResultAmount').textContent = valueInCurrency.toLocaleString('en-US', { maximumFractionDigits: 2 });
+            document.getElementById('cryptoResultCurrency').textContent = targetCurrency;
+            document.getElementById('cryptoRateInfo').textContent = `1 ${crypto.symbol} = ${(cryptoPrice * currencyRate).toFixed(2)} ${targetCurrency}`;
+            document.getElementById('cryptoResult').style.display = 'block';
+        }
+
+        // Swap Crypto and Currency
+        function swapCryptoAndCurrency() {
+            const crypto = document.getElementById('cryptoCurrency').value;
+            const currency = document.getElementById('cryptoTargetCurrency').value;
+
+            document.getElementById('cryptoCurrency').value = crypto;
+            document.getElementById('cryptoTargetCurrency').value = currency;
+
+            convertCrypto();
+        }
+
+        // Refresh Rates
+        function refreshRates() {
+            state.cacheTime = 0;
+            state.cryptoCacheTime = 0;
+            loadRates();
+            loadCryptoPrices();
+        }
+
+        // Setup Auto Refresh
+        function setupAutoRefresh() {
+            setInterval(() => {
+                refreshRates();
+            }, CONFIG.AUTO_REFRESH_INTERVAL);
+        }
+    </script>
 </body>
 </html>
