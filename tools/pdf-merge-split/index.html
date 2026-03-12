@@ -552,10 +552,10 @@
         </div>
         <div class="card-body">
           <div class="result-text" id="resultText"></div>
-          <div class="progress-bar" id="progressBar" style="position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;">
+          <div class="progress-bar" id="progressBar" style="display:none;">
             <div class="progress-fill" id="progressFill"></div>
           </div>
-          <div class="action-row" id="actionRow" style="position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;">
+          <div class="action-row" id="actionRow" style="display:none;">
             <button class="act-btn act-download" id="downloadBtn">📥 Download</button>
           </div>
         </div>
@@ -746,9 +746,12 @@
 
   // Merge function
   mergeBtn.addEventListener('click', async () => {
+    mergeBtn.disabled = true;
+    mergeBtn.textContent = 'Merging...';
     progressBar.style.display = 'block';
     progressFill.style.width = '0%';
     actionRow.style.display = 'none';
+    actionRow.innerHTML = '<button class="act-btn act-download" id="downloadBtn">📥 Download Merged PDF</button>';
     resultText.textContent = 'Merging PDFs...';
     resultCard.classList.add('on');
 
@@ -759,7 +762,7 @@
       for (let i = 0; i < totalFiles; i++) {
         const file = mergeFiles[i];
         const arrayBuffer = await file.arrayBuffer();
-        const pdf = await PDFLib.PDFDocument.load(arrayBuffer);
+        const pdf = await PDFLib.PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
         const pages = await mergedPdfDoc.copyPages(pdf, pdf.getPageIndices());
         pages.forEach(page => mergedPdfDoc.addPage(page));
 
@@ -768,15 +771,29 @@
 
       mergedPdf = await mergedPdfDoc.save();
       progressFill.style.width = '100%';
-      resultText.textContent = `✓ Merged ${totalFiles} PDFs successfully!`;
+      resultText.textContent = `✓ Merged ${totalFiles} PDFs (${mergedPdfDoc.getPageCount()} pages) successfully!`;
       actionRow.style.display = 'grid';
+      document.getElementById('downloadBtn').addEventListener('click', () => {
+        if (mergedPdf) {
+          const link = document.createElement('a');
+          link.href = URL.createObjectURL(new Blob([mergedPdf], { type: 'application/pdf' }));
+          link.download = 'merged.pdf';
+          link.click();
+          setTimeout(() => URL.revokeObjectURL(link.href), 5000);
+        }
+      });
     } catch (err) {
       resultText.textContent = '✗ Error merging PDFs: ' + err.message;
+      progressBar.style.display = 'none';
     }
+    mergeBtn.disabled = false;
+    mergeBtn.textContent = 'Merge PDFs';
   });
 
   // Split function
   splitBtn.addEventListener('click', async () => {
+    splitBtn.disabled = true;
+    splitBtn.textContent = 'Splitting...';
     progressBar.style.display = 'block';
     progressFill.style.width = '0%';
     actionRow.style.display = 'none';
@@ -785,7 +802,7 @@
 
     try {
       const arrayBuffer = await splitFile.arrayBuffer();
-      const pdf = await PDFLib.PDFDocument.load(arrayBuffer);
+      const pdf = await PDFLib.PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
       const pageCount = pdf.getPageCount();
 
       splitPages = [];
@@ -794,40 +811,42 @@
         const [page] = await newPdf.copyPages(pdf, [i]);
         newPdf.addPage(page);
         const pdfBytes = await newPdf.save();
-        splitPages.push({ data: pdfBytes, name: `page-${i + 1}.pdf` });
+        const baseName = splitFile.name.replace(/\.pdf$/i, '');
+        splitPages.push({ data: pdfBytes, name: `${baseName}-page-${i + 1}.pdf` });
 
         progressFill.style.width = ((i + 1) / pageCount * 100) + '%';
       }
 
       progressFill.style.width = '100%';
       resultText.textContent = `✓ Split into ${pageCount} pages!`;
-      actionRow.innerHTML = '<button class="act-btn act-download" id="downloadZipBtn">📥 Download All</button>';
+      actionRow.innerHTML = '<button class="act-btn act-download" id="downloadZipBtn">📥 Download All Pages</button>';
+      actionRow.style.display = 'grid';
       document.getElementById('downloadZipBtn').addEventListener('click', downloadSplitPages);
     } catch (err) {
       resultText.textContent = '✗ Error splitting PDF: ' + err.message;
+      progressBar.style.display = 'none';
     }
+    splitBtn.disabled = false;
+    splitBtn.textContent = 'Split PDF';
   });
 
-  // Download merged PDF
-  downloadBtn.addEventListener('click', () => {
-    if (mergedPdf) {
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(new Blob([mergedPdf], { type: 'application/pdf' }));
-      link.download = 'merged.pdf';
-      link.click();
-    }
-  });
-
-  // Download split pages (simple - one at a time, or could use JSZip for ZIP)
+  // Download split pages — stagger to avoid browser blocking
   function downloadSplitPages() {
-    if (splitPages.length > 0) {
-      splitPages.forEach(page => {
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(new Blob([page.data], { type: 'application/pdf' }));
-        link.download = page.name;
-        setTimeout(() => link.click(), 100);
-      });
+    if (splitPages.length === 0) return;
+    let i = 0;
+    function next() {
+      if (i >= splitPages.length) return;
+      const page = splitPages[i];
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(new Blob([page.data], { type: 'application/pdf' }));
+      link.href = url;
+      link.download = page.name;
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 5000);
+      i++;
+      if (i < splitPages.length) setTimeout(next, 400);
     }
+    next();
   }
 </script>
 </body>
