@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-D859CGF391');
+</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Roman Numeral Converter | AfroTools</title>
+  <meta name="description" content="Convert between Roman numerals and decimal numbers. Bidirectional auto-detect, batch converter, quiz mode, and conversion rules reference table.">
+  <link rel="canonical" href="https://afrotools.com/tools/roman-numerals">
+  <meta property="og:title" content="Roman Numeral Converter | AfroTools">
+  <meta property="og:description" content="Convert between Roman numerals and decimal numbers. Bidirectional auto-detect, batch converter, and quiz mode.">
+  <meta property="og:site_name" content="AfroTools">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css">
+  <link rel="stylesheet" href="/assets/css/global.min.css">
+  <script src="/assets/js/components/navbar.min.js" defer></script>
+  <script src="/assets/js/components/footer.min.js" defer></script>
+  <meta name="tool-id" content="roman-numerals">
+  <script src="/assets/js/favorites.js"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Roman Numeral Converter",
+    "url": "https://afrotools.com/tools/roman-numerals",
+    "description": "Bidirectional Roman numeral and decimal number converter with quiz mode and batch conversion.",
+    "applicationCategory": "EducationalApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    :root { --green: #008751; --dark: #0f1419; --border: #e5e7eb; --light-bg: #f9fafb; --radius: 14px; }
+    body { font-family: 'DM Sans', sans-serif; background: #fff; color: var(--dark); line-height: 1.6; }
+    .container { max-width: 860px; margin: 0 auto; padding: 1.5rem; }
+    .hero { background: linear-gradient(135deg, var(--green) 0%, #006b42 100%); color: #fff; padding: 3rem 1.5rem; text-align: center; border-radius: var(--radius); margin-bottom: 2rem; }
+    .hero h1 { font-size: 2.2rem; font-weight: 700; margin: 0 0 .5rem; }
+    .hero p { font-size: 1.05rem; opacity: .93; margin: 0; }
+    .card { background: #fff; border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .card h2 { font-size: 1.25rem; font-weight: 700; margin: 0 0 1rem; }
+    label { display: block; font-weight: 600; margin-bottom: .35rem; font-size: .95rem; }
+    input[type="text"], textarea {
+      width: 100%; padding: .65rem .85rem; border: 1.5px solid var(--border); border-radius: 10px;
+      font-family: inherit; font-size: 1.1rem; transition: border .2s;
+    }
+    input:focus, textarea:focus { outline: none; border-color: var(--green); }
+    textarea { resize: vertical; min-height: 80px; font-size: .95rem; }
+    .btn { display: inline-flex; align-items: center; gap: .5rem; padding: .7rem 1.4rem; border: none; border-radius: 10px; font-family: inherit; font-size: .95rem; font-weight: 600; cursor: pointer; transition: all .2s; }
+    .btn-primary { background: var(--green); color: #fff; }
+    .btn-primary:hover { background: #006b42; }
+    .btn-outline { background: transparent; border: 1.5px solid var(--border); color: var(--dark); }
+    .btn-outline:hover { border-color: var(--green); color: var(--green); }
+    .btn-sm { padding: .45rem .9rem; font-size: .85rem; }
+    .tabs { display: flex; gap: 0; margin-bottom: 1.5rem; border: 1.5px solid var(--border); border-radius: 10px; overflow: hidden; }
+    .tab { flex: 1; padding: .65rem; text-align: center; font-weight: 600; font-size: .9rem; cursor: pointer; background: var(--light-bg); border: none; transition: all .2s; }
+    .tab.active { background: var(--green); color: #fff; }
+    .result-box { background: var(--light-bg); border: 1.5px solid var(--border); border-radius: 10px; padding: 1.25rem; text-align: center; margin: 1rem 0; }
+    .result-box .big { font-size: 2rem; font-weight: 700; color: var(--green); }
+    .result-box .sub { font-size: .9rem; color: #888; margin-top: .25rem; }
+    .detect-label { display: inline-block; background: var(--green); color: #fff; padding: .2rem .6rem; border-radius: 6px; font-size: .75rem; font-weight: 600; margin-bottom: .5rem; }
+    .ref-table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+    .ref-table th { background: var(--light-bg); font-weight: 600; text-align: left; padding: .6rem .8rem; border-bottom: 1.5px solid var(--border); }
+    .ref-table td { padding: .5rem .8rem; border-bottom: 1px solid var(--border); }
+    .ref-table tr:last-child td { border-bottom: none; }
+    .quiz-box { text-align: center; padding: 1rem 0; }
+    .quiz-box .prompt { font-size: 1.8rem; font-weight: 700; margin-bottom: 1rem; color: var(--dark); }
+    .quiz-box input { max-width: 250px; text-align: center; font-size: 1.2rem; margin-bottom: 1rem; }
+    .quiz-feedback { font-weight: 600; font-size: 1rem; margin-top: .5rem; min-height: 1.5em; }
+    .quiz-feedback.correct { color: #10b981; }
+    .quiz-feedback.wrong { color: #ef4444; }
+    .quiz-stats { display: flex; gap: 1.5rem; justify-content: center; margin-top: 1rem; font-size: .9rem; color: #666; }
+    .batch-results { max-height: 350px; overflow-y: auto; }
+    .batch-row { display: flex; justify-content: space-between; padding: .5rem .8rem; border-bottom: 1px solid var(--border); font-size: .9rem; }
+    .batch-row:last-child { border-bottom: none; }
+    .actions-row { display: flex; gap: .75rem; flex-wrap: wrap; margin-top: 1rem; }
+    .copy-toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background: var(--dark); color: #fff; padding: .65rem 1.5rem; border-radius: 10px; font-weight: 600; font-size: .9rem; opacity: 0; transition: opacity .3s; z-index: 999; }
+    .copy-toast.show { opacity: 1; }
+    .faq-section { margin-top: 2rem; }
+    .faq-item { border: 1.5px solid var(--border); border-radius: var(--radius); margin-bottom: .75rem; overflow: hidden; }
+    .faq-q { padding: 1rem 1.25rem; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: var(--light-bg); }
+    .faq-q::after { content: '+'; font-size: 1.3rem; font-weight: 700; color: var(--green); }
+    .faq-item.open .faq-q::after { content: '\2212'; }
+    .faq-a { padding: 0 1.25rem; max-height: 0; overflow: hidden; transition: max-height .3s, padding .3s; font-size: .93rem; color: #555; }
+    .faq-item.open .faq-a { max-height: 300px; padding: .75rem 1.25rem 1rem; }
+    @media (max-width: 680px) {
+      .hero h1 { font-size: 1.6rem; }
+      .hero { padding: 2rem 1rem; }
+      .container { padding: 1rem; }
+    }
+  </style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<div class="container">
+  <div class="hero">
+    <h1>Roman Numeral Converter</h1>
+    <p>Convert between Roman numerals and decimal numbers instantly</p>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('convert')">Converter</button>
+    <button class="tab" onclick="switchTab('batch')">Batch</button>
+    <button class="tab" onclick="switchTab('quiz')">Quiz</button>
+  </div>
+
+  <!-- Converter -->
+  <div id="convertTab" class="card">
+    <h2>Enter a Number or Roman Numeral</h2>
+    <div id="detectLabel" class="detect-label" style="display:none;"></div>
+    <input type="text" id="input" placeholder="e.g. 2024 or MMXXIV" oninput="autoConvert()">
+    <div id="resultBox" class="result-box" style="display:none;">
+      <div class="big" id="resultValue"></div>
+      <div class="sub" id="resultSub"></div>
+    </div>
+    <div class="actions-row">
+      <button class="btn btn-outline btn-sm" onclick="copyResult()">Copy Result</button>
+      <button class="btn btn-outline btn-sm" onclick="swapResult()">Swap</button>
+    </div>
+  </div>
+
+  <!-- Batch -->
+  <div id="batchTab" class="card" style="display:none;">
+    <h2>Batch Converter</h2>
+    <label>Enter numbers or Roman numerals (one per line)</label>
+    <textarea id="batchInput" placeholder="1&#10;42&#10;MCMXCIX&#10;2024"></textarea>
+    <div class="actions-row">
+      <button class="btn btn-primary" onclick="batchConvert()">Convert All</button>
+      <button class="btn btn-outline btn-sm" onclick="copyBatch()">Copy Results</button>
+    </div>
+    <div id="batchResults" class="batch-results" style="margin-top:1rem;"></div>
+  </div>
+
+  <!-- Quiz -->
+  <div id="quizTab" class="card" style="display:none;">
+    <h2>Quiz Mode</h2>
+    <div class="quiz-box">
+      <div id="quizDirection" class="detect-label">Convert to Roman</div>
+      <div class="prompt" id="quizPrompt">42</div>
+      <input type="text" id="quizAnswer" placeholder="Your answer" onkeydown="if(event.key==='Enter')checkQuiz()">
+      <br>
+      <button class="btn btn-primary" onclick="checkQuiz()">Check Answer</button>
+      <button class="btn btn-outline btn-sm" onclick="newQuiz()">Skip</button>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+      <div class="quiz-stats">
+        <span>Score: <strong id="quizScore">0</strong></span>
+        <span>Total: <strong id="quizTotal">0</strong></span>
+        <span>Streak: <strong id="quizStreak">0</strong></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reference Table -->
+  <div class="card">
+    <h2>Roman Numeral Reference</h2>
+    <table class="ref-table">
+      <thead><tr><th>Roman</th><th>Value</th><th>Rule</th></tr></thead>
+      <tbody>
+        <tr><td>I</td><td>1</td><td>Base unit</td></tr>
+        <tr><td>IV</td><td>4</td><td>Subtractive: 5 - 1</td></tr>
+        <tr><td>V</td><td>5</td><td>Base symbol</td></tr>
+        <tr><td>IX</td><td>9</td><td>Subtractive: 10 - 1</td></tr>
+        <tr><td>X</td><td>10</td><td>Base symbol</td></tr>
+        <tr><td>XL</td><td>40</td><td>Subtractive: 50 - 10</td></tr>
+        <tr><td>L</td><td>50</td><td>Base symbol</td></tr>
+        <tr><td>XC</td><td>90</td><td>Subtractive: 100 - 10</td></tr>
+        <tr><td>C</td><td>100</td><td>Base symbol</td></tr>
+        <tr><td>CD</td><td>400</td><td>Subtractive: 500 - 100</td></tr>
+        <tr><td>D</td><td>500</td><td>Base symbol</td></tr>
+        <tr><td>CM</td><td>900</td><td>Subtractive: 1000 - 100</td></tr>
+        <tr><td>M</td><td>1000</td><td>Base symbol</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="faq-section">
+    <h2 style="font-size:1.3rem; margin-bottom:1rem;">Frequently Asked Questions</h2>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">What is the range for Roman numerals?</div>
+      <div class="faq-a">Standard Roman numerals represent numbers from 1 to 3999. The number 4000 and above would require a bar notation (vinculum) which is not part of the standard system.</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">How does subtractive notation work?</div>
+      <div class="faq-a">When a smaller numeral appears before a larger one, it is subtracted. For example, IV = 5 - 1 = 4, and XC = 100 - 10 = 90. Only I, X, and C can be used subtractively.</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Can Roman numerals represent zero?</div>
+      <div class="faq-a">No. The Roman numeral system has no symbol for zero. It was developed before the concept of zero was widely adopted in European mathematics.</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Where are Roman numerals still used today?</div>
+      <div class="faq-a">Roman numerals are commonly used in clock faces, book chapters, movie sequels, Super Bowl numbering, copyright dates, outlines, and formal document numbering.</div>
+    </div>
+  </div>
+</div>
+
+<div class="copy-toast" id="toast">Copied!</div>
+
+<afro-related-tools category="education"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+const romanMap = [
+  [1000,'M'],[900,'CM'],[500,'D'],[400,'CD'],[100,'C'],[90,'XC'],
+  [50,'L'],[40,'XL'],[10,'X'],[9,'IX'],[5,'V'],[4,'IV'],[1,'I']
+];
+const romanVals = {I:1,V:5,X:10,L:50,C:100,D:500,M:1000};
+
+function toRoman(n) {
+  if (n < 1 || n > 3999) return null;
+  let result = '';
+  for (const [val, sym] of romanMap) {
+    while (n >= val) { result += sym; n -= val; }
+  }
+  return result;
+}
+
+function fromRoman(s) {
+  s = s.toUpperCase().trim();
+  if (!s || !/^[IVXLCDM]+$/.test(s)) return null;
+  let total = 0;
+  for (let i = 0; i < s.length; i++) {
+    const curr = romanVals[s[i]];
+    const next = romanVals[s[i + 1]] || 0;
+    if (curr < next) { total -= curr; } else { total += curr; }
+  }
+  if (total < 1 || total > 3999) return null;
+  // Validate by re-encoding
+  if (toRoman(total) !== s.toUpperCase()) return null;
+  return total;
+}
+
+function isRoman(s) { return /^[IVXLCDMivxlcdm]+$/.test(s.trim()); }
+
+function autoConvert() {
+  const raw = document.getElementById('input').value.trim();
+  const box = document.getElementById('resultBox');
+  const lbl = document.getElementById('detectLabel');
+  if (!raw) { box.style.display = 'none'; lbl.style.display = 'none'; return; }
+
+  if (isRoman(raw)) {
+    const val = fromRoman(raw);
+    if (val === null) { showResult('Invalid Roman numeral', '', 'Roman Numeral Detected'); return; }
+    showResult(val.toLocaleString(), raw.toUpperCase() + ' = ' + val, 'Roman Numeral Detected');
+  } else {
+    const num = parseInt(raw, 10);
+    if (isNaN(num) || num < 1 || num > 3999) {
+      showResult(num > 3999 ? 'Max is 3999' : 'Enter 1-3999', '', 'Number Detected');
+      return;
+    }
+    const roman = toRoman(num);
+    showResult(roman, num + ' = ' + roman, 'Decimal Number Detected');
+  }
+}
+
+function showResult(big, sub, label) {
+  document.getElementById('resultValue').textContent = big;
+  document.getElementById('resultSub').textContent = sub;
+  document.getElementById('resultBox').style.display = '';
+  const lbl = document.getElementById('detectLabel');
+  lbl.textContent = label;
+  lbl.style.display = '';
+}
+
+function copyResult() {
+  const t = document.getElementById('resultValue').textContent;
+  if (t) navigator.clipboard.writeText(t).then(() => showToast('Copied!'));
+}
+
+function swapResult() {
+  const v = document.getElementById('resultValue').textContent;
+  if (v) { document.getElementById('input').value = v; autoConvert(); }
+}
+
+// Tabs
+function switchTab(tab) {
+  const tabs = ['convert', 'batch', 'quiz'];
+  document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', tabs[i] === tab));
+  tabs.forEach(t => {
+    const el = document.getElementById(t + 'Tab');
+    if (el) el.style.display = t === tab ? '' : 'none';
+  });
+  if (tab === 'quiz' && !quizActive) newQuiz();
+}
+
+// Batch
+function batchConvert() {
+  const lines = document.getElementById('batchInput').value.trim().split('\n').filter(Boolean);
+  const container = document.getElementById('batchResults');
+  container.innerHTML = '';
+  lines.forEach(line => {
+    const s = line.trim();
+    let result = '';
+    if (isRoman(s)) {
+      const v = fromRoman(s);
+      result = v !== null ? v.toString() : 'Invalid';
+    } else {
+      const n = parseInt(s, 10);
+      result = (!isNaN(n) && n >= 1 && n <= 3999) ? toRoman(n) : 'Invalid (1-3999)';
+    }
+    const div = document.createElement('div');
+    div.className = 'batch-row';
+    div.innerHTML = '<span>' + s + '</span><strong>' + result + '</strong>';
+    container.appendChild(div);
+  });
+}
+
+function copyBatch() {
+  const rows = [...document.querySelectorAll('#batchResults .batch-row')];
+  if (!rows.length) { showToast('Convert first'); return; }
+  const text = rows.map(r => r.children[0].textContent + ' = ' + r.children[1].textContent).join('\n');
+  navigator.clipboard.writeText(text).then(() => showToast('Copied!'));
+}
+
+// Quiz
+let quizActive = false, quizNum = 0, quizDir = 'toRoman', score = 0, total = 0, streak = 0;
+
+function newQuiz() {
+  quizActive = true;
+  quizNum = Math.floor(Math.random() * 3999) + 1;
+  quizDir = Math.random() > 0.5 ? 'toRoman' : 'toDecimal';
+  const prompt = quizDir === 'toRoman' ? quizNum.toString() : toRoman(quizNum);
+  document.getElementById('quizDirection').textContent = quizDir === 'toRoman' ? 'Convert to Roman' : 'Convert to Decimal';
+  document.getElementById('quizPrompt').textContent = prompt;
+  document.getElementById('quizAnswer').value = '';
+  document.getElementById('quizFeedback').textContent = '';
+  document.getElementById('quizFeedback').className = 'quiz-feedback';
+  document.getElementById('quizAnswer').focus();
+}
+
+function checkQuiz() {
+  const answer = document.getElementById('quizAnswer').value.trim();
+  if (!answer) return;
+  total++;
+  const fb = document.getElementById('quizFeedback');
+  let correct = false;
+  if (quizDir === 'toRoman') {
+    correct = answer.toUpperCase() === toRoman(quizNum);
+    if (!correct) fb.textContent = 'Incorrect. Answer: ' + toRoman(quizNum);
+  } else {
+    correct = parseInt(answer, 10) === quizNum;
+    if (!correct) fb.textContent = 'Incorrect. Answer: ' + quizNum;
+  }
+  if (correct) { score++; streak++; fb.textContent = 'Correct!'; fb.className = 'quiz-feedback correct'; }
+  else { streak = 0; fb.className = 'quiz-feedback wrong'; }
+  document.getElementById('quizScore').textContent = score;
+  document.getElementById('quizTotal').textContent = total;
+  document.getElementById('quizStreak').textContent = streak;
+  setTimeout(newQuiz, 1500);
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+</script>
+</body>
+</html>

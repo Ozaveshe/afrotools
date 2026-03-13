@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-D859CGF391');
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fraction Calculator — Add, Subtract, Multiply & Divide Fractions | AfroTools</title>
+<meta name="description" content="Free fraction calculator with step-by-step solutions. Add, subtract, multiply, and divide fractions and mixed numbers. Shows LCD, simplification, and decimal conversion.">
+<link rel="canonical" href="https://afrotools.com/tools/fraction-calc">
+<meta property="og:title" content="Fraction Calculator | AfroTools">
+<meta property="og:description" content="Add, subtract, multiply, and divide fractions with step-by-step solutions. Supports mixed numbers.">
+<meta property="og:site_name" content="AfroTools">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<meta name="tool-id" content="fraction-calc">
+<script src="/assets/js/favorites.js"></script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebApplication",
+  "name":"Fraction Calculator",
+  "url":"https://afrotools.com/tools/fraction-calc",
+  "applicationCategory":"EducationalApplication",
+  "operatingSystem":"All",
+  "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},
+  "description":"Free fraction calculator with step-by-step solutions. Add, subtract, multiply, and divide fractions and mixed numbers."
+}
+</script>
+<style>
+  :root { --afro-green: #008751; --afro-dark: #0f1419; }
+  *, *::before, *::after { box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: #fafaf8; color: #111; }
+  .tool-hero { background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%); padding: 44px 0 36px; position: relative; overflow: hidden; }
+  .tool-hero::after { content: '\00BD'; position: absolute; right: 5%; top: 50%; transform: translateY(-50%); font-size: 8rem; opacity: 0.06; pointer-events: none; font-weight: 800; color: #fff; }
+  .tool-hero-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; }
+  .breadcrumb { font-size: 0.72rem; font-weight: 500; color: rgba(255,255,255,0.3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
+  .breadcrumb a { color: rgba(255,255,255,0.3); text-decoration: none; }
+  .breadcrumb span { color: var(--afro-green); }
+  h1 { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; color: #fff; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 10px; }
+  h1 em { color: var(--afro-green); font-style: normal; }
+  .hero-sub { font-size: 0.88rem; color: rgba(255,255,255,0.45); line-height: 1.6; max-width: 560px; margin-bottom: 14px; }
+  .hero-badges { display: flex; flex-wrap: wrap; gap: 7px; }
+  .badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 11px; border-radius: 4px; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.05em; }
+  .b-green { background: rgba(0,135,81,0.18); color: #5ddb9e; border: 1px solid rgba(0,135,81,0.38); }
+  .tool-main { padding: 28px 0 72px; }
+  .tool-main-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; display: grid; grid-template-columns: 1fr 340px; gap: 22px; align-items: start; }
+  .card { background: #fff; border: 1.5px solid #e5e7eb; border-radius: 14px; overflow: hidden; box-shadow: 0 1px 8px rgba(0,0,0,0.05); }
+  .card + .card { margin-top: 18px; }
+  .card-head { padding: 15px 22px; border-bottom: 1px solid #eaf5ec; background: #f7fdf8; display: flex; justify-content: space-between; align-items: center; }
+  .card-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #0a4018; }
+  .card-body { padding: 22px; }
+  .fraction-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: center; }
+  .frac-group { display: flex; align-items: center; gap: 8px; }
+  .frac-input { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .frac-input input { width: 64px; padding: 9px 6px; background: #f4fbf5; border: 1.5px solid #c5deca; border-radius: 7px; font-size: 1rem; font-weight: 600; color: #0d2813; text-align: center; outline: none; font-family: 'DM Sans', sans-serif; }
+  .frac-input input:focus { border-color: var(--afro-green); box-shadow: 0 0 0 3px rgba(0,135,81,0.1); }
+  .frac-line { width: 56px; height: 2px; background: #0d2813; margin: 2px 0; }
+  .frac-label { font-size: 0.6rem; color: #7dab87; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+  .whole-input input { width: 52px; }
+  .op-select { padding: 10px 14px; background: var(--afro-green); color: #fff; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; appearance: none; text-align: center; }
+  .calc-btn { width: 100%; padding: 13px; background: var(--afro-green); color: #fff; border: none; border-radius: 10px; font-size: 0.92rem; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; margin-top: 18px; transition: background 0.15s; }
+  .calc-btn:hover { background: #006b3f; }
+  .result-box { background: #f7fdf8; border: 1.5px solid #c5deca; border-radius: 12px; padding: 18px; margin-top: 18px; display: none; }
+  .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .result-item { background: #fff; border: 1px solid #dceee0; border-radius: 8px; padding: 12px; }
+  .result-label { font-size: 0.6rem; font-weight: 700; color: #7dab87; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 4px; }
+  .result-value { font-size: 1.3rem; font-weight: 800; color: var(--afro-green); }
+  .steps-box { background: #fff; border: 1.5px solid #e5e7eb; border-radius: 12px; padding: 18px; margin-top: 14px; display: none; }
+  .steps-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #0a4018; margin-bottom: 12px; }
+  .step { padding: 8px 0; border-bottom: 1px solid #eaf5ec; font-size: 0.84rem; color: #333; line-height: 1.6; }
+  .step:last-child { border-bottom: none; }
+  .step-num { display: inline-block; width: 22px; height: 22px; background: var(--afro-green); color: #fff; border-radius: 50%; text-align: center; line-height: 22px; font-size: 0.68rem; font-weight: 700; margin-right: 8px; }
+  .step strong { color: var(--afro-green); }
+  .history-list { max-height: 240px; overflow-y: auto; }
+  .hist-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eaf5ec; font-size: 0.75rem; }
+  .hist-item:last-child { border-bottom: none; }
+  .hist-expr { color: #0d2813; font-weight: 600; }
+  .hist-result { color: var(--afro-green); font-weight: 800; }
+  .empty-hist { font-size: 0.8rem; color: #9ca3af; text-align: center; padding: 20px; }
+  .clear-btn { background: none; border: 1px solid #c5deca; border-radius: 5px; padding: 4px 10px; font-size: 0.65rem; font-weight: 700; color: #244d2c; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+  .sidebar .info-card { background: #fff; border: 1.5px solid #e5e7eb; border-radius: 14px; padding: 20px; margin-bottom: 16px; }
+  .sidebar .info-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #0a4018; margin-bottom: 10px; }
+  .sidebar .info-text { font-size: 0.8rem; color: #4b5563; line-height: 1.7; }
+  .sidebar .formula { background: #f4fbf5; border: 1px solid #c5deca; border-radius: 6px; padding: 6px 10px; font-size: 0.78rem; font-weight: 600; color: var(--afro-green); margin: 4px 0 10px; font-family: monospace; }
+  @media(max-width:680px) {
+    .tool-main-inner { grid-template-columns: 1fr; }
+    .fraction-row { gap: 8px; }
+    .frac-input input { width: 50px; padding: 8px 4px; font-size: 0.9rem; }
+    .whole-input input { width: 42px; }
+    .result-grid { grid-template-columns: 1fr; }
+    .tool-hero { padding: 32px 0 28px; }
+  }
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb"><a href="/">Home</a> / <a href="/tools">Tools</a> / <span>Fraction Calculator</span></div>
+    <h1><em>Fraction</em> Calculator</h1>
+    <p class="hero-sub">Add, subtract, multiply, and divide fractions and mixed numbers with step-by-step solutions.</p>
+    <div class="hero-badges">
+      <span class="badge b-green">Step-by-Step</span>
+      <span class="badge b-green">Mixed Numbers</span>
+      <span class="badge b-green">Free</span>
+    </div>
+  </div>
+</div>
+
+<div class="tool-main">
+  <div class="tool-main-inner">
+    <div>
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Enter Fractions</span>
+        </div>
+        <div class="card-body">
+          <div class="fraction-row">
+            <div class="frac-group">
+              <div class="frac-input whole-input">
+                <input type="number" id="w1" placeholder="0" aria-label="Whole number 1">
+                <span class="frac-label">Whole</span>
+              </div>
+              <div class="frac-input">
+                <input type="number" id="n1" placeholder="1" aria-label="Numerator 1">
+                <div class="frac-line"></div>
+                <input type="number" id="d1" placeholder="2" aria-label="Denominator 1">
+              </div>
+            </div>
+            <select id="op" class="op-select" aria-label="Operation">
+              <option value="add">+</option>
+              <option value="sub">&minus;</option>
+              <option value="mul">&times;</option>
+              <option value="div">&divide;</option>
+            </select>
+            <div class="frac-group">
+              <div class="frac-input whole-input">
+                <input type="number" id="w2" placeholder="0" aria-label="Whole number 2">
+                <span class="frac-label">Whole</span>
+              </div>
+              <div class="frac-input">
+                <input type="number" id="n2" placeholder="1" aria-label="Numerator 2">
+                <div class="frac-line"></div>
+                <input type="number" id="d2" placeholder="3" aria-label="Denominator 2">
+              </div>
+            </div>
+          </div>
+          <button class="calc-btn" onclick="calculate()">Calculate</button>
+          <div class="result-box" id="resultBox">
+            <div class="result-grid">
+              <div class="result-item">
+                <div class="result-label">Fraction</div>
+                <div class="result-value" id="resFrac"></div>
+              </div>
+              <div class="result-item">
+                <div class="result-label">Simplified</div>
+                <div class="result-value" id="resSimp"></div>
+              </div>
+              <div class="result-item">
+                <div class="result-label">Mixed Number</div>
+                <div class="result-value" id="resMixed"></div>
+              </div>
+              <div class="result-item">
+                <div class="result-label">Decimal</div>
+                <div class="result-value" id="resDec"></div>
+              </div>
+            </div>
+          </div>
+          <div class="steps-box" id="stepsBox">
+            <div class="steps-title">Step-by-Step Solution</div>
+            <div id="stepsContent"></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">History</span>
+          <button class="clear-btn" onclick="clearHist()">Clear</button>
+        </div>
+        <div class="card-body">
+          <div class="history-list" id="histList">
+            <div class="empty-hist">Calculations will appear here.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="sidebar">
+      <div class="info-card">
+        <div class="info-title">How It Works</div>
+        <div class="info-text">
+          <strong>Addition / Subtraction</strong>
+          <div class="formula">a/b &plusmn; c/d = (ad &plusmn; bc) / bd</div>
+          <strong>Multiplication</strong>
+          <div class="formula">a/b &times; c/d = ac / bd</div>
+          <strong>Division</strong>
+          <div class="formula">a/b &divide; c/d = ad / bc</div>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-title">Tips</div>
+        <div class="info-text">
+          &bull; Leave whole number empty or 0 for simple fractions<br>
+          &bull; Use negative numbers for subtraction<br>
+          &bull; Results are automatically simplified using GCD<br>
+          &bull; Denominators cannot be zero
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<afro-related-tools category="education" current="fraction-calc"></afro-related-tools>
+<section class="faq-section" style="max-width:800px;margin:40px auto;padding:0 20px">
+  <h2 style="font-size:1.3rem;font-weight:800;color:#111;margin-bottom:20px;font-family:'DM Sans',sans-serif">Frequently Asked Questions</h2>
+  <div class="faq-list">
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        What operations does the fraction calculator support?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        The calculator supports addition, subtraction, multiplication, and division of fractions and mixed numbers. Each result shows the answer as a fraction, simplified fraction, mixed number, and decimal.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        Can I use mixed numbers like 2 1/3?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        Yes. Enter the whole number in the "Whole" field and the fraction part in the numerator and denominator fields. For example, for 2 1/3, enter 2 as the whole, 1 as numerator, and 3 as denominator.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        How does the step-by-step solution work?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        After each calculation, the tool shows every step: converting mixed numbers to improper fractions, finding the LCD for addition/subtraction, performing the operation, and simplifying the result using the GCD.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        Are fractions automatically simplified?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        Yes. Every result is automatically reduced to its simplest form using the GCD algorithm. The unsimplified result is also shown so you can see both forms.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        Is the fraction calculator free?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        Yes, completely free with no sign-up required. All features including step-by-step solutions, mixed number support, and calculation history are available at no cost.
+      </div>
+    </details>
+  </div>
+</section>
+
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+  let historyArr = [];
+
+  function gcd(a, b) { a = Math.abs(a); b = Math.abs(b); while (b) { [a, b] = [b, a % b]; } return a; }
+  function lcm(a, b) { return Math.abs(a * b) / gcd(a, b); }
+
+  function toImproper(w, n, d) {
+    w = parseInt(w) || 0;
+    n = parseInt(n) || 0;
+    d = parseInt(d) || 1;
+    if (d === 0) return null;
+    if (d < 0) { d = -d; n = -n; }
+    const sign = w < 0 ? -1 : 1;
+    const num = Math.abs(w) * d + Math.abs(n);
+    return { n: sign * num, d: d };
+  }
+
+  function simplify(n, d) {
+    if (d === 0) return { n: 0, d: 1 };
+    if (n === 0) return { n: 0, d: 1 };
+    const g = gcd(Math.abs(n), Math.abs(d));
+    let sn = n / g, sd = d / g;
+    if (sd < 0) { sn = -sn; sd = -sd; }
+    return { n: sn, d: sd };
+  }
+
+  function toMixed(n, d) {
+    if (d === 0) return '\u2014';
+    const s = simplify(n, d);
+    n = s.n; d = s.d;
+    if (d === 1) return String(n);
+    if (Math.abs(n) < d) return fmtFrac(n, d);
+    const whole = Math.trunc(n / d);
+    const rem = Math.abs(n % d);
+    if (rem === 0) return String(whole);
+    return whole + ' ' + rem + '/' + d;
+  }
+
+  function fmtFrac(n, d) {
+    if (d === 1) return String(n);
+    return n + '/' + d;
+  }
+
+  function calculate() {
+    const w1 = document.getElementById('w1').value;
+    const n1 = document.getElementById('n1').value;
+    const d1 = document.getElementById('d1').value;
+    const w2 = document.getElementById('w2').value;
+    const n2 = document.getElementById('n2').value;
+    const d2 = document.getElementById('d2').value;
+    const op = document.getElementById('op').value;
+
+    const f1 = toImproper(w1, n1, d1);
+    const f2 = toImproper(w2, n2, d2);
+
+    if (!f1 || !f2 || f1.d === 0 || f2.d === 0) {
+      alert('Denominators cannot be zero.');
+      return;
+    }
+
+    const steps = [];
+    const opSymbol = { add: '+', sub: '\u2212', mul: '\u00d7', div: '\u00f7' }[op];
+    const origExpr = fmtFrac(f1.n, f1.d) + ' ' + opSymbol + ' ' + fmtFrac(f2.n, f2.d);
+
+    const hasWhole = (parseInt(w1) || 0) !== 0 || (parseInt(w2) || 0) !== 0;
+    if (hasWhole) {
+      steps.push('Convert mixed numbers to improper fractions: <strong>' + fmtFrac(f1.n, f1.d) + '</strong> and <strong>' + fmtFrac(f2.n, f2.d) + '</strong>');
+    }
+
+    let rn, rd;
+
+    if (op === 'add' || op === 'sub') {
+      const l = lcm(f1.d, f2.d);
+      const m1 = l / f1.d;
+      const m2 = l / f2.d;
+      const adj1 = f1.n * m1;
+      const adj2 = f2.n * m2;
+      steps.push('Find LCD of ' + f1.d + ' and ' + f2.d + ': <strong>LCD = ' + l + '</strong>');
+      steps.push('Convert fractions: <strong>' + fmtFrac(adj1, l) + '</strong> and <strong>' + fmtFrac(adj2, l) + '</strong>');
+      if (op === 'add') {
+        rn = adj1 + adj2;
+        steps.push('Add numerators: ' + adj1 + ' + ' + adj2 + ' = <strong>' + rn + '</strong>');
+      } else {
+        rn = adj1 - adj2;
+        steps.push('Subtract numerators: ' + adj1 + ' \u2212 ' + adj2 + ' = <strong>' + rn + '</strong>');
+      }
+      rd = l;
+      steps.push('Result: <strong>' + fmtFrac(rn, rd) + '</strong>');
+    } else if (op === 'mul') {
+      rn = f1.n * f2.n;
+      rd = f1.d * f2.d;
+      steps.push('Multiply numerators: ' + f1.n + ' \u00d7 ' + f2.n + ' = <strong>' + rn + '</strong>');
+      steps.push('Multiply denominators: ' + f1.d + ' \u00d7 ' + f2.d + ' = <strong>' + rd + '</strong>');
+      steps.push('Result: <strong>' + fmtFrac(rn, rd) + '</strong>');
+    } else {
+      if (f2.n === 0) { alert('Cannot divide by zero.'); return; }
+      rn = f1.n * f2.d;
+      rd = f1.d * f2.n;
+      steps.push('Flip the second fraction: <strong>' + fmtFrac(f2.d, f2.n) + '</strong>');
+      steps.push('Multiply: ' + fmtFrac(f1.n, f1.d) + ' \u00d7 ' + fmtFrac(f2.d, f2.n) + ' = <strong>' + fmtFrac(rn, rd) + '</strong>');
+    }
+
+    const s = simplify(rn, rd);
+    const g = gcd(Math.abs(rn), Math.abs(rd));
+    if (g > 1) {
+      steps.push('Simplify by dividing by GCD(' + Math.abs(rn) + ', ' + Math.abs(rd) + ') = ' + g + ': <strong>' + fmtFrac(s.n, s.d) + '</strong>');
+    }
+
+    document.getElementById('resFrac').textContent = fmtFrac(rn, rd);
+    document.getElementById('resSimp').textContent = fmtFrac(s.n, s.d);
+    document.getElementById('resMixed').textContent = toMixed(s.n, s.d);
+    document.getElementById('resDec').textContent = s.d !== 0 ? (s.n / s.d).toFixed(6).replace(/\.?0+$/, '') : '\u2014';
+
+    document.getElementById('resultBox').style.display = 'block';
+    document.getElementById('stepsBox').style.display = 'block';
+    document.getElementById('stepsContent').innerHTML = steps.map(function(st, i) {
+      return '<div class="step"><span class="step-num">' + (i + 1) + '</span>' + st + '</div>';
+    }).join('');
+
+    addHist(origExpr, fmtFrac(s.n, s.d));
+  }
+
+  function addHist(expr, result) {
+    historyArr.unshift({ expr: expr, result: result });
+    if (historyArr.length > 20) historyArr.pop();
+    renderHist();
+  }
+
+  function renderHist() {
+    var el = document.getElementById('histList');
+    if (historyArr.length === 0) { el.innerHTML = '<div class="empty-hist">Calculations will appear here.</div>'; return; }
+    var esc = function(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); };
+    el.innerHTML = historyArr.map(function(h) {
+      return '<div class="hist-item"><span class="hist-expr">' + esc(h.expr) + '</span><span class="hist-result">' + esc(h.result) + '</span></div>';
+    }).join('');
+  }
+
+  function clearHist() { historyArr = []; renderHist(); }
+
+  document.querySelectorAll('input[type="number"]').forEach(function(inp) {
+    inp.addEventListener('keydown', function(e) { if (e.key === 'Enter') calculate(); });
+  });
+</script>
+<script src="/assets/js/components/tool-registry.js" defer></script>
+<script src="/assets/js/components/related-tools.min.js" defer></script>
+</body>
+</html>

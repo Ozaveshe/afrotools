@@ -161,33 +161,98 @@
   const ai = {
     /**
      * Call Claude for AI analysis via Netlify serverless proxy.
-     * Returns response text or throws.
+     * Returns response text or throws. Handles rate limiting gracefully.
      *
      * @param {string} prompt - The full prompt
      * @param {string} systemPrompt - Optional system context
      * @param {Array}  history - Optional message history for follow-up
+     * @param {Object} opts - Optional: { tool, context }
      */
-    async ask(prompt, systemPrompt = '', history = []) {
+    async ask(prompt, systemPrompt = '', history = [], opts = {}) {
       const messages = history.length > 0
         ? [...history, { role: 'user', content: prompt }]
         : [{ role: 'user', content: prompt }];
 
       const body = { messages };
+      if (systemPrompt) body.system = systemPrompt;
+      if (opts.tool) body.tool = opts.tool;
+      if (opts.context) body.context = opts.context;
 
-      if (systemPrompt) {
-        body.system = systemPrompt;
+      // Include auth token for higher rate limits
+      const reqHeaders = { 'Content-Type': 'application/json' };
+      if (window.AfroAuth) {
+        const token = AfroAuth.getSessionToken();
+        if (token) reqHeaders['Authorization'] = 'Bearer ' + token;
       }
 
       const res = await fetch('/.netlify/functions/ai-advisor', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: reqHeaders,
         body: JSON.stringify(body),
       });
 
+      // Handle rate limiting
+      if (res.status === 429) {
+        const data = await res.json();
+        if (window.gtag) window.gtag('event', 'ai_rate_limited', { tool_id: opts.tool || 'unknown' });
+        throw new Error(data.reply || 'Daily AI limit reached. Sign up for more questions.');
+      }
+
       if (!res.ok) throw new Error(`API error: ${res.status}`);
       const data = await res.json();
+
+      // Track AI chat message
+      if (window.gtag && opts.tool) {
+        window.gtag('event', 'ai_chat_message', { tool_id: opts.tool, turn_number: messages.length });
+      }
+
       return data.reply || '';
     },
+  };
+
+  // ── SHARE HELPER ─────────────────────────────────────────
+  const share = {
+    /**
+     * Share content via Web Share API or fallback to clipboard
+     * @param {Object} opts - { title, text, url, imageBlob, toolId }
+     */
+    async shareResult(opts = {}) {
+      const url = opts.url || window.location.href;
+      const utm = url.includes('?') ? '&' : '?';
+      const shareUrl = url + utm + 'utm_source=share&utm_medium=result_card&utm_campaign=' + (opts.toolId || 'unknown');
+
+      // Try native share with image
+      if (navigator.share && opts.imageBlob) {
+        try {
+          const file = new File([opts.imageBlob], 'afrotools-result.png', { type: 'image/png' });
+          if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            await navigator.share({ title: opts.title || 'AfroTools Result', text: opts.text || '', url: shareUrl, files: [file] });
+            if (window.gtag) window.gtag('event', 'share_result_card', { tool_id: opts.toolId, method: 'native_image' });
+            return 'shared';
+          }
+        } catch (e) { if (e.name === 'AbortError') return 'cancelled'; }
+      }
+
+      // Try native share without image
+      if (navigator.share) {
+        try {
+          await navigator.share({ title: opts.title || 'AfroTools Result', text: opts.text || '', url: shareUrl });
+          if (window.gtag) window.gtag('event', 'share_result_card', { tool_id: opts.toolId, method: 'native' });
+          return 'shared';
+        } catch (e) { if (e.name === 'AbortError') return 'cancelled'; }
+      }
+
+      // Fallback: copy link to clipboard
+      try {
+        await navigator.clipboard.writeText((opts.text || '') + ' ' + shareUrl);
+        if (window.gtag) window.gtag('event', 'share_result_card', { tool_id: opts.toolId, method: 'clipboard' });
+        window.AfroTools.toast.show('Link copied to clipboard!', 'success');
+        return 'copied';
+      } catch {
+        window.AfroTools.toast.show('Could not share. Try copying the URL manually.', 'error');
+        return 'failed';
+      }
+    }
   };
 
   // ── ANALYTICS WRAPPER ──────────────────────────────────────
@@ -254,7 +319,7 @@
   };
 
   // ── EXPOSE GLOBALLY ────────────────────────────────────────
-  window.AfroTools = { fmt, i18n, reveal, ai, analytics, toast };
+  window.AfroTools = { fmt, i18n, reveal, ai, analytics, toast, share };
 
   // Auto-apply translations on load
   document.addEventListener('DOMContentLoaded', () => {

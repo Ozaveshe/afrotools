@@ -1,15 +1,18 @@
 /**
  * AfroTools Auth & User Data System
  * Phase 1: localStorage-based (works offline, no server needed)
- * Phase 2: Upgrade to Netlify Identity for cross-device sync
+ * Phase 2a: PBKDF2 password hashing via Web Crypto API (March 2026)
+ * Phase 2b: Server-side auth via Netlify Functions + Blobs
  *
  * Usage:
  *   AfroAuth.isLoggedIn()         → boolean
- *   AfroAuth.getUser()            → {email, name, id, country, createdAt}
- *   AfroAuth.signup(email, name, password, country)  → {ok, user?, error?}
- *   AfroAuth.login(email, password)                  → {ok, user?, error?}
+ *   AfroAuth.getUser()            → {email, name, id, country, tier, createdAt}
+ *   AfroAuth.signup(email, name, password, country)  → Promise<{ok, user?, error?}>
+ *   AfroAuth.login(email, password)                  → Promise<{ok, user?, error?}>
  *   AfroAuth.logout()
  *   AfroAuth.updateProfile({name?, country?})
+ *   AfroAuth.isPro()              → boolean
+ *   AfroAuth.getSessionToken()    → string|null
  *
  *   AfroData.save(toolId, data)         → saves calculation result
  *   AfroData.load(toolId, limit=10)     → [{data, date}]
@@ -18,6 +21,7 @@
  *   AfroData.toggleFavorite(toolId)     → boolean (new state)
  *   AfroData.getRecentTools()           → [{toolId, name, date}]
  *   AfroData.logToolUse(toolId, name)
+ *   AfroData.getUsageStats()            → {topCategory, toolCounts, totalUses}
  */
 
 (function(window) {
@@ -25,11 +29,14 @@
 
   const AUTH_KEY = 'afro_auth_v2';
   const USERS_KEY = 'afro_users_v2';
+  const SESSION_KEY = 'afro_session_v3';
   const DATA_PREFIX = 'afro_data_';
   const FAVS_KEY = 'afro_favs_v2';
   const RECENT_KEY = 'afro_recent_v2';
 
-  // Simple hash for passwords (NOT cryptographically secure — Phase 2 uses Netlify Identity)
+  const SERVER_AUTH = '/.netlify/functions/auth';
+
+  // ── Legacy simple hash (for migrating old accounts) ──
   function simpleHash(str) {
     let hash = 0;
     for (let i = 0; i < str.length; i++) {
@@ -38,6 +45,19 @@
       hash |= 0;
     }
     return 'h_' + Math.abs(hash).toString(36) + '_' + str.length;
+  }
+
+  // ── PBKDF2 password hashing via Web Crypto API ──
+  async function secureHash(password, salt) {
+    const enc = new TextEncoder();
+    const keyMaterial = await crypto.subtle.importKey(
+      'raw', enc.encode(password), 'PBKDF2', false, ['deriveBits']
+    );
+    const bits = await crypto.subtle.deriveBits(
+      { name: 'PBKDF2', salt: enc.encode(salt), iterations: 100000, hash: 'SHA-256' },
+      keyMaterial, 256
+    );
+    return 'p2_' + Array.from(new Uint8Array(bits)).map(b => b.toString(16).padStart(2, '0')).join('');
   }
 
   function generateId() {
@@ -50,6 +70,26 @@
 
   function saveUsers(users) {
     localStorage.setItem(USERS_KEY, JSON.stringify(users));
+  }
+
+  function setSession(session) {
+    localStorage.setItem(AUTH_KEY, JSON.stringify(session));
+    window.dispatchEvent(new CustomEvent('afro-auth-change', { detail: { user: session } }));
+  }
+
+  // ── Try server auth, fall back to local ──
+  async function serverRequest(action, body) {
+    try {
+      const resp = await fetch(SERVER_AUTH, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action, ...body })
+      });
+      if (!resp.ok) throw new Error('Server error');
+      return await resp.json();
+    } catch {
+      return null; // server unavailable, use localStorage
+    }
   }
 
   // ── AUTH ────────────────────────────────────────────────────────────────
@@ -65,37 +105,65 @@
       try {
         const session = JSON.parse(localStorage.getItem(AUTH_KEY));
         if (!session || !session.id) return null;
-        return { id: session.id, email: session.email, name: session.name, country: session.country || '', createdAt: session.createdAt };
+        return {
+          id: session.id,
+          email: session.email,
+          name: session.name,
+          country: session.country || '',
+          tier: session.tier || 'free',
+          createdAt: session.createdAt
+        };
       } catch { return null; }
     },
 
-    signup(email, name, password, country) {
+    isPro() {
+      const user = this.getUser();
+      return user && user.tier === 'pro';
+    },
+
+    getSessionToken() {
+      try { return localStorage.getItem(SESSION_KEY) || null; } catch { return null; }
+    },
+
+    async signup(email, name, password, country) {
       if (!email || !password || password.length < 4) {
         return { ok: false, error: 'Email and password (min 4 chars) required' };
       }
       email = email.trim().toLowerCase();
       name = (name || '').trim() || email.split('@')[0];
 
+      // Try server auth first
+      const serverResult = await serverRequest('signup', { email, name, password, country });
+      if (serverResult) {
+        if (!serverResult.ok) return serverResult;
+        if (serverResult.token) localStorage.setItem(SESSION_KEY, serverResult.token);
+        const session = { id: serverResult.user.id, email, name, country: country || '', tier: 'free', createdAt: serverResult.user.createdAt };
+        setSession(session);
+        return { ok: true, user: session };
+      }
+
+      // Fallback: localStorage auth with PBKDF2
       const users = getUsers();
       if (users[email]) {
         return { ok: false, error: 'An account with this email already exists. Try logging in.' };
       }
 
+      const passwordHash = await secureHash(password, email);
       const user = {
         id: generateId(),
         email,
         name,
-        passwordHash: simpleHash(password),
+        passwordHash,
         country: country || '',
+        tier: 'free',
         createdAt: new Date().toISOString()
       };
 
       users[email] = user;
       saveUsers(users);
 
-      // Auto-login
-      const session = { id: user.id, email: user.email, name: user.name, country: user.country, createdAt: user.createdAt };
-      localStorage.setItem(AUTH_KEY, JSON.stringify(session));
+      const session = { id: user.id, email: user.email, name: user.name, country: user.country, tier: 'free', createdAt: user.createdAt };
+      setSession(session);
 
       // Migrate any existing favorites
       const oldFavs = localStorage.getItem('afro_favs_v1');
@@ -103,29 +171,57 @@
         localStorage.setItem(FAVS_KEY + '_' + user.id, oldFavs);
       }
 
-      window.dispatchEvent(new CustomEvent('afro-auth-change', { detail: { user: session } }));
       return { ok: true, user: session };
     },
 
-    login(email, password) {
+    async login(email, password) {
       if (!email || !password) return { ok: false, error: 'Email and password required' };
       email = email.trim().toLowerCase();
 
+      // Try server auth first
+      const serverResult = await serverRequest('login', { email, password });
+      if (serverResult) {
+        if (!serverResult.ok) return serverResult;
+        if (serverResult.token) localStorage.setItem(SESSION_KEY, serverResult.token);
+        const session = { id: serverResult.user.id, email, name: serverResult.user.name, country: serverResult.user.country || '', tier: serverResult.user.tier || 'free', createdAt: serverResult.user.createdAt };
+        setSession(session);
+        return { ok: true, user: session };
+      }
+
+      // Fallback: localStorage auth
       const users = getUsers();
       const user = users[email];
-
       if (!user) return { ok: false, error: 'No account found. Please sign up first.' };
-      if (user.passwordHash !== simpleHash(password)) return { ok: false, error: 'Incorrect password.' };
 
-      const session = { id: user.id, email: user.email, name: user.name, country: user.country, createdAt: user.createdAt };
-      localStorage.setItem(AUTH_KEY, JSON.stringify(session));
+      // Check password — support both old simple hash and new PBKDF2
+      if (user.passwordHash.startsWith('h_')) {
+        // Legacy hash — verify with old method then migrate
+        if (user.passwordHash !== simpleHash(password)) {
+          return { ok: false, error: 'Incorrect password.' };
+        }
+        // Migrate to PBKDF2
+        user.passwordHash = await secureHash(password, email);
+        if (!user.tier) user.tier = 'free';
+        users[email] = user;
+        saveUsers(users);
+      } else if (user.passwordHash.startsWith('p2_')) {
+        // PBKDF2 hash — verify
+        const check = await secureHash(password, email);
+        if (user.passwordHash !== check) {
+          return { ok: false, error: 'Incorrect password.' };
+        }
+      } else {
+        return { ok: false, error: 'Incorrect password.' };
+      }
 
-      window.dispatchEvent(new CustomEvent('afro-auth-change', { detail: { user: session } }));
+      const session = { id: user.id, email: user.email, name: user.name, country: user.country, tier: user.tier || 'free', createdAt: user.createdAt };
+      setSession(session);
       return { ok: true, user: session };
     },
 
     logout() {
       localStorage.removeItem(AUTH_KEY);
+      localStorage.removeItem(SESSION_KEY);
       window.dispatchEvent(new CustomEvent('afro-auth-change', { detail: { user: null } }));
     },
 
@@ -165,7 +261,6 @@
         toolId
       });
 
-      // Keep max 50 entries per tool
       if (history.length > 50) history = history.slice(0, 50);
       localStorage.setItem(key, JSON.stringify(history));
     },
@@ -200,7 +295,7 @@
         if (favs.length > 30) favs.shift();
       }
       localStorage.setItem(key, JSON.stringify(favs));
-      return idx < 0; // true if newly favorited
+      return idx < 0;
     },
 
     logToolUse(toolId, name) {
@@ -208,7 +303,6 @@
       let recent = [];
       try { recent = JSON.parse(localStorage.getItem(key)) || []; } catch {}
 
-      // Remove existing entry for this tool
       recent = recent.filter(r => r.toolId !== toolId);
       recent.unshift({ toolId, name: name || toolId, date: new Date().toISOString() });
       if (recent.length > 20) recent = recent.slice(0, 20);
@@ -220,7 +314,6 @@
       try { return JSON.parse(localStorage.getItem(key)) || []; } catch { return []; }
     },
 
-    // Get all saved data across tools (for dashboard)
     getAllSaved() {
       const prefix = DATA_PREFIX + this._userId() + '_';
       const result = {};
@@ -237,13 +330,53 @@
         }
       }
       return result;
+    },
+
+    /**
+     * Get usage statistics for dashboard recommendations
+     * Returns: { topCategory, toolCounts: {toolId: count}, totalUses, categoryCounts: {cat: count} }
+     */
+    getUsageStats() {
+      const recent = this.getRecentTools();
+      const toolCounts = {};
+      const categoryCounts = {};
+      let totalUses = 0;
+
+      // Count tool usage from recent history
+      recent.forEach(r => {
+        toolCounts[r.toolId] = (toolCounts[r.toolId] || 0) + 1;
+        totalUses++;
+      });
+
+      // Map tools to categories using the registry
+      if (typeof AFRO_TOOLS !== 'undefined') {
+        const toolMap = {};
+        AFRO_TOOLS.forEach(t => { toolMap[t.id] = t.category; });
+
+        Object.keys(toolCounts).forEach(toolId => {
+          const cat = toolMap[toolId];
+          if (cat) {
+            categoryCounts[cat] = (categoryCounts[cat] || 0) + toolCounts[toolId];
+          }
+        });
+      }
+
+      // Find top category
+      let topCategory = '';
+      let topCount = 0;
+      Object.keys(categoryCounts).forEach(cat => {
+        if (categoryCounts[cat] > topCount) {
+          topCategory = cat;
+          topCount = categoryCounts[cat];
+        }
+      });
+
+      return { topCategory, toolCounts, totalUses, categoryCounts };
     }
   };
 
   // ── AUTH UI INJECTION ───────────────────────────────────────────────────
-  // Adds login/signup button to the page (call on DOMContentLoaded)
   function injectAuthUI() {
-    // Find navbar or create auth bar
     const nav = document.querySelector('afro-navbar');
     if (!nav) return;
 
@@ -254,10 +387,11 @@
     function render() {
       const user = AfroAuth.getUser();
       if (user) {
+        const proBadge = user.tier === 'pro' ? '<span style="background:linear-gradient(135deg,#F5A623,#e8960e);color:#fff;font-size:9px;font-weight:800;padding:1px 5px;border-radius:100px;margin-left:4px;letter-spacing:.06em">PRO</span>' : '';
         authBar.innerHTML = `
           <a href="/dashboard/" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:rgba(0,135,81,.1);border:1px solid rgba(0,135,81,.3);border-radius:6px;font-size:12px;font-weight:700;color:#008751;text-decoration:none;font-family:'DM Sans',sans-serif;">
             <span style="width:20px;height:20px;background:#008751;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;">${(user.name || 'U')[0].toUpperCase()}</span>
-            ${user.name || 'Dashboard'}
+            ${user.name || 'Dashboard'}${proBadge}
           </a>`;
       } else {
         authBar.innerHTML = `
@@ -272,14 +406,12 @@
     window.addEventListener('afro-auth-change', render);
   }
 
-  // Auto-inject on DOM ready
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', injectAuthUI);
   } else {
     injectAuthUI();
   }
 
-  // Export
   window.AfroAuth = AfroAuth;
   window.AfroData = AfroData;
 

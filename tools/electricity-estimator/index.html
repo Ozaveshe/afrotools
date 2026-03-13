@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-D859CGF391');
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Electricity Bill Estimator — Nigeria, Kenya, South Africa, Ghana Tariffs | AfroTools</title>
+<meta name="description" content="Estimate your monthly electricity bill for Nigeria (NEPA bands), Kenya (KPLC), South Africa (Eskom), and Ghana (ECG). Add appliances, compare solar savings.">
+<link rel="canonical" href="https://afrotools.com/tools/electricity-estimator">
+<meta property="og:title" content="Electricity Bill Estimator | AfroTools">
+<meta property="og:description" content="Calculate your electricity costs across African countries. Supports NEPA bands, KPLC, Eskom, ECG tariffs with appliance calculator.">
+<meta property="og:site_name" content="AfroTools">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<meta name="tool-id" content="electricity-estimator">
+<script src="/assets/js/favorites.js"></script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebApplication",
+  "name":"Electricity Bill Estimator",
+  "url":"https://afrotools.com/tools/electricity-estimator",
+  "applicationCategory":"UtilitiesApplication",
+  "operatingSystem":"All",
+  "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},
+  "description":"Estimate monthly electricity bills for Nigeria, Kenya, South Africa, and Ghana with real tariff data and appliance calculator."
+}
+</script>
+<style>
+  :root { --afro-green: #008751; --afro-dark: #0f1419; }
+  *, *::before, *::after { box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: #fafaf8; color: #111; }
+  .tool-hero { background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%); padding: 44px 0 36px; position: relative; overflow: hidden; }
+  .tool-hero::after { content: '\26A1'; position: absolute; right: 5%; top: 50%; transform: translateY(-50%); font-size: 6rem; opacity: 0.08; pointer-events: none; }
+  .tool-hero-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; }
+  .breadcrumb { font-size: 0.72rem; font-weight: 500; color: rgba(255,255,255,0.3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
+  .breadcrumb a { color: rgba(255,255,255,0.3); text-decoration: none; }
+  .breadcrumb span { color: var(--afro-green); }
+  h1 { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; color: #fff; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 10px; }
+  h1 em { color: var(--afro-green); font-style: normal; }
+  .hero-sub { font-size: 0.88rem; color: rgba(255,255,255,0.45); line-height: 1.6; max-width: 560px; margin-bottom: 14px; }
+  .hero-badges { display: flex; flex-wrap: wrap; gap: 7px; }
+  .badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 11px; border-radius: 4px; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.05em; }
+  .b-green { background: rgba(0,135,81,0.18); color: #5ddb9e; border: 1px solid rgba(0,135,81,0.38); }
+  .tool-main { padding: 28px 0 72px; }
+  .tool-main-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; display: grid; grid-template-columns: 1fr 380px; gap: 22px; align-items: start; }
+  .card { background: #fff; border: 1.5px solid #e5e7eb; border-radius: 14px; overflow: hidden; box-shadow: 0 1px 8px rgba(0,0,0,0.05); }
+  .card + .card { margin-top: 18px; }
+  .card-head { padding: 15px 22px; border-bottom: 1px solid #eaf5ec; background: #f7fdf8; display: flex; justify-content: space-between; align-items: center; }
+  .card-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #0a4018; }
+  .card-body { padding: 22px; }
+  .field { margin-bottom: 16px; }
+  .f-label { font-size: 0.75rem; font-weight: 700; color: #0d2813; margin-bottom: 6px; display: block; }
+  .f-input, .f-select { width: 100%; padding: 11px 13px; background: #f4fbf5; border: 1.5px solid #c5deca; border-radius: 7px; font-size: 0.92rem; font-weight: 600; color: #0d2813; outline: none; font-family: 'DM Sans', sans-serif; }
+  .f-select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23008751' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; cursor: pointer; }
+  .f-input:focus, .f-select:focus { border-color: var(--afro-green); box-shadow: 0 0 0 3px rgba(0,135,81,0.1); }
+  .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .appliance-list { max-height: 320px; overflow-y: auto; }
+  .app-item { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-bottom: 1px solid #eaf5ec; font-size: 0.8rem; }
+  .app-item:last-child { border-bottom: none; }
+  .app-name { flex: 1; font-weight: 600; color: #0d2813; }
+  .app-watts { color: #7dab87; font-size: 0.72rem; min-width: 60px; }
+  .app-hrs { width: 50px; padding: 5px 6px; border: 1.5px solid #c5deca; border-radius: 5px; font-size: 0.8rem; text-align: center; font-family: 'DM Sans', sans-serif; background: #f4fbf5; outline: none; }
+  .app-hrs:focus { border-color: var(--afro-green); }
+  .app-qty { width: 40px; padding: 5px 4px; border: 1.5px solid #c5deca; border-radius: 5px; font-size: 0.8rem; text-align: center; font-family: 'DM Sans', sans-serif; background: #f4fbf5; outline: none; }
+  .app-remove { background: none; border: none; color: #ccc; cursor: pointer; font-size: 1rem; padding: 0 4px; }
+  .app-remove:hover { color: #ff6b6b; }
+  .add-row { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+  .add-row .f-select, .add-row .f-input { flex: 1; min-width: 80px; }
+  .add-btn { padding: 10px 16px; background: var(--afro-green); color: #fff; border: none; border-radius: 7px; font-size: 0.78rem; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; white-space: nowrap; }
+  .calc-btn { width: 100%; padding: 13px; background: var(--afro-green); color: #fff; border: none; border-radius: 10px; font-size: 0.92rem; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; margin-top: 10px; transition: background 0.15s; }
+  .calc-btn:hover { background: #006b3f; }
+  .result-box { background: #f7fdf8; border: 1.5px solid #c5deca; border-radius: 12px; padding: 18px; margin-top: 18px; display: none; }
+  .result-big { font-size: 2.2rem; font-weight: 800; color: var(--afro-green); text-align: center; }
+  .result-sub { font-size: 0.82rem; color: #7dab87; text-align: center; margin-top: 4px; }
+  .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .result-item { background: #fff; border: 1px solid #dceee0; border-radius: 8px; padding: 12px; }
+  .result-label { font-size: 0.6rem; font-weight: 700; color: #7dab87; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 4px; }
+  .result-value { font-size: 1.1rem; font-weight: 800; color: var(--afro-green); }
+  .solar-box { background: linear-gradient(135deg, #fffbeb, #fef3c7); border: 1.5px solid #f59e0b; border-radius: 12px; padding: 18px; margin-top: 14px; display: none; }
+  .solar-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #92400e; margin-bottom: 8px; }
+  .solar-text { font-size: 0.82rem; color: #78350f; line-height: 1.6; }
+  .solar-savings { font-size: 1.4rem; font-weight: 800; color: #b45309; }
+  .sidebar .info-card { background: #fff; border: 1.5px solid #e5e7eb; border-radius: 14px; padding: 20px; margin-bottom: 16px; }
+  .sidebar .info-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #0a4018; margin-bottom: 10px; }
+  .sidebar .info-text { font-size: 0.78rem; color: #4b5563; line-height: 1.7; }
+  .tariff-table { width: 100%; border-collapse: collapse; font-size: 0.72rem; margin-top: 8px; }
+  .tariff-table th { text-align: left; padding: 6px 8px; background: #f7fdf8; color: #0a4018; font-weight: 700; border-bottom: 1px solid #c5deca; }
+  .tariff-table td { padding: 5px 8px; border-bottom: 1px solid #eaf5ec; color: #333; }
+  @media(max-width:680px) {
+    .tool-main-inner { grid-template-columns: 1fr; }
+    .row-2 { grid-template-columns: 1fr; }
+    .result-grid { grid-template-columns: 1fr; }
+    .add-row { flex-direction: column; }
+    .tool-hero { padding: 32px 0 28px; }
+  }
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb"><a href="/">Home</a> / <a href="/tools">Tools</a> / <span>Electricity Estimator</span></div>
+    <h1><em>Electricity</em> Bill Estimator</h1>
+    <p class="hero-sub">Estimate your monthly electricity bill with real tariffs for Nigeria, Kenya, South Africa, and Ghana. Add your appliances to calculate.</p>
+    <div class="hero-badges">
+      <span class="badge b-green">4 Countries</span>
+      <span class="badge b-green">Real Tariffs</span>
+      <span class="badge b-green">Solar Savings</span>
+    </div>
+  </div>
+</div>
+
+<div class="tool-main">
+  <div class="tool-main-inner">
+    <div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Country &amp; Tariff</span></div>
+        <div class="card-body">
+          <div class="row-2">
+            <div class="field">
+              <label class="f-label">Country</label>
+              <select class="f-select" id="country" onchange="onCountryChange()">
+                <option value="ng">Nigeria</option>
+                <option value="ke">Kenya</option>
+                <option value="za">South Africa</option>
+                <option value="gh">Ghana</option>
+              </select>
+            </div>
+            <div class="field" id="bandField">
+              <label class="f-label">Tariff Band</label>
+              <select class="f-select" id="band">
+                <option value="A">Band A &mdash; NGN 225/kWh</option>
+                <option value="B">Band B &mdash; NGN 63.36/kWh</option>
+                <option value="C">Band C &mdash; NGN 50.45/kWh</option>
+                <option value="D">Band D &mdash; NGN 40.98/kWh</option>
+                <option value="E">Band E &mdash; NGN 31.59/kWh</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span class="card-title">Appliances</span></div>
+        <div class="card-body">
+          <div class="appliance-list" id="appList"></div>
+          <div class="add-row">
+            <select class="f-select" id="addAppSelect" style="min-width:140px">
+              <option value="">Add appliance...</option>
+            </select>
+            <input type="number" class="f-input" id="addWatts" placeholder="Watts" style="max-width:80px" min="1">
+            <input type="number" class="f-input" id="addHrs" placeholder="Hrs/day" style="max-width:80px" min="0" max="24" step="0.5">
+            <input type="number" class="f-input" id="addQty" placeholder="Qty" style="max-width:60px" min="1" value="1">
+            <button class="add-btn" onclick="addAppliance()">Add</button>
+          </div>
+          <button class="calc-btn" onclick="calculateBill()">Calculate Bill</button>
+
+          <div class="result-box" id="resultBox">
+            <div class="result-big" id="resBill"></div>
+            <div class="result-sub" id="resSub"></div>
+            <div class="result-grid">
+              <div class="result-item">
+                <div class="result-label">Monthly Usage</div>
+                <div class="result-value" id="resKwh"></div>
+              </div>
+              <div class="result-item">
+                <div class="result-label">Daily Usage</div>
+                <div class="result-value" id="resDailyKwh"></div>
+              </div>
+              <div class="result-item">
+                <div class="result-label">Daily Cost</div>
+                <div class="result-value" id="resDailyCost"></div>
+              </div>
+              <div class="result-item">
+                <div class="result-label">Annual Cost</div>
+                <div class="result-value" id="resAnnual"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="solar-box" id="solarBox">
+            <div class="solar-title">Solar Savings Potential</div>
+            <div class="solar-text">
+              If you switched to a solar system covering 80% of your usage, you could save approximately:
+              <div class="solar-savings" id="solarSavings"></div>
+              <div style="margin-top:6px;font-size:0.75rem;color:#92400e">per month on electricity. A typical payback period for residential solar in Africa is 3-5 years.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar">
+      <div class="info-card">
+        <div class="info-title" id="tariffTitle">Nigeria Tariff Bands</div>
+        <div class="info-text" id="tariffInfo"></div>
+      </div>
+      <div class="info-card">
+        <div class="info-title">Tips to Save</div>
+        <div class="info-text">
+          &bull; Use energy-efficient LED bulbs<br>
+          &bull; Unplug devices when not in use<br>
+          &bull; Use fans instead of AC when possible<br>
+          &bull; Run heavy appliances during off-peak hours<br>
+          &bull; Consider solar for daytime loads
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<afro-related-tools category="african" current="electricity-estimator"></afro-related-tools>
+<section class="faq-section" style="max-width:800px;margin:40px auto;padding:0 20px">
+  <h2 style="font-size:1.3rem;font-weight:800;color:#111;margin-bottom:20px;font-family:'DM Sans',sans-serif">Frequently Asked Questions</h2>
+  <div class="faq-list">
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        Which countries are supported?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        Currently Nigeria (NEPA/DISCO bands A-E), Kenya (KPLC domestic tiers), South Africa (Eskom Homepower blocks), and Ghana (ECG lifeline tiers). Each uses the official published tariff structure.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        How accurate are the tariff rates?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        The rates reflect publicly available tariff schedules. Actual bills may include fixed charges, taxes, levies, and VAT not captured here. Use results as estimates only.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        What are Nigeria's electricity bands?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        Nigerian electricity customers are classified into bands A through E based on hours of supply. Band A gets 20+ hours and pays the highest rate, while Band E gets minimal hours and pays the lowest rate.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        How does the solar savings comparison work?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        After calculating your bill, the tool estimates savings if 80% of your electricity came from solar panels. This gives a rough idea of potential monthly savings to help evaluate whether solar investment makes sense for your household.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        Can I add custom appliances?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        Yes. Select an appliance from the pre-loaded list or modify the wattage to match your specific device. You can adjust the hours of daily use and quantity for each appliance.
+      </div>
+    </details>
+  </div>
+</section>
+
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+  var appliances = [
+    { name: 'Air Conditioner (1.5HP)', watts: 1200 },
+    { name: 'Air Conditioner (1HP)', watts: 900 },
+    { name: 'Refrigerator', watts: 150 },
+    { name: 'Deep Freezer', watts: 200 },
+    { name: 'Ceiling Fan', watts: 75 },
+    { name: 'Standing Fan', watts: 55 },
+    { name: 'LED TV (43")', watts: 80 },
+    { name: 'LED TV (55")', watts: 120 },
+    { name: 'Flat Iron', watts: 1000 },
+    { name: 'Electric Iron', watts: 1200 },
+    { name: 'Microwave Oven', watts: 1100 },
+    { name: 'Electric Kettle', watts: 1500 },
+    { name: 'Washing Machine', watts: 500 },
+    { name: 'Water Heater (Geyser)', watts: 3000 },
+    { name: 'Water Pump', watts: 750 },
+    { name: 'LED Bulb', watts: 10 },
+    { name: 'CFL Bulb', watts: 25 },
+    { name: 'Desktop Computer', watts: 200 },
+    { name: 'Laptop', watts: 65 },
+    { name: 'Wi-Fi Router', watts: 12 },
+    { name: 'Phone Charger', watts: 10 },
+    { name: 'Hair Dryer', watts: 1500 },
+    { name: 'Blender', watts: 400 },
+    { name: 'Electric Cooker', watts: 2000 },
+    { name: 'Security Lights', watts: 30 }
+  ];
+
+  var tariffs = {
+    ng: {
+      name: 'Nigeria', currency: 'NGN', symbol: '\u20A6',
+      bands: {
+        A: { rate: 225, label: 'Band A (20+ hrs)' },
+        B: { rate: 63.36, label: 'Band B (16-20 hrs)' },
+        C: { rate: 50.45, label: 'Band C (12-16 hrs)' },
+        D: { rate: 40.98, label: 'Band D (8-12 hrs)' },
+        E: { rate: 31.59, label: 'Band E (4-8 hrs)' }
+      },
+      calc: function(kwh, band) { return kwh * this.bands[band].rate; }
+    },
+    ke: {
+      name: 'Kenya', currency: 'KES', symbol: 'KES ',
+      calc: function(kwh) {
+        if (kwh <= 10) return 0;
+        var cost = 0;
+        var rem = kwh;
+        if (rem > 200) { cost += (rem - 200) * 20.1; rem = 200; }
+        if (rem > 100) { cost += (rem - 100) * 15.8; rem = 100; }
+        if (rem > 10) { cost += (rem - 10) * 12; }
+        return cost;
+      }
+    },
+    za: {
+      name: 'South Africa', currency: 'ZAR', symbol: 'R',
+      calc: function(kwh) {
+        if (kwh <= 600) return kwh * 2.85;
+        return 600 * 2.85 + (kwh - 600) * 3.50;
+      }
+    },
+    gh: {
+      name: 'Ghana', currency: 'GHS', symbol: 'GHS ',
+      calc: function(kwh) {
+        var cost = 0; var rem = kwh;
+        var tiers = [
+          { limit: 30, rate: 0.44 },
+          { limit: 70, rate: 0.66 },
+          { limit: 200, rate: 0.92 },
+          { limit: 300, rate: 1.02 }
+        ];
+        for (var i = 0; i < tiers.length && rem > 0; i++) {
+          var chunk = Math.min(rem, tiers[i].limit);
+          cost += chunk * tiers[i].rate;
+          rem -= chunk;
+        }
+        if (rem > 0) cost += rem * 1.18;
+        return cost;
+      }
+    }
+  };
+
+  var userAppliances = [];
+
+  function populateAppSelect() {
+    var sel = document.getElementById('addAppSelect');
+    sel.innerHTML = '<option value="">Add appliance...</option>';
+    appliances.forEach(function(a, i) {
+      sel.innerHTML += '<option value="' + i + '">' + a.name + ' (' + a.watts + 'W)</option>';
+    });
+  }
+
+  document.getElementById('addAppSelect').addEventListener('change', function() {
+    var idx = parseInt(this.value);
+    if (!isNaN(idx)) {
+      document.getElementById('addWatts').value = appliances[idx].watts;
+    }
+  });
+
+  function addAppliance() {
+    var sel = document.getElementById('addAppSelect');
+    var idx = parseInt(sel.value);
+    var watts = parseInt(document.getElementById('addWatts').value);
+    var hrs = parseFloat(document.getElementById('addHrs').value);
+    var qty = parseInt(document.getElementById('addQty').value) || 1;
+
+    if (isNaN(idx) && !watts) { alert('Select an appliance or enter watts.'); return; }
+    if (!watts || watts <= 0) { alert('Enter valid wattage.'); return; }
+    if (isNaN(hrs) || hrs < 0 || hrs > 24) { alert('Enter hours per day (0-24).'); return; }
+
+    var name = !isNaN(idx) ? appliances[idx].name : 'Custom (' + watts + 'W)';
+    userAppliances.push({ name: name, watts: watts, hrs: hrs, qty: qty });
+    renderAppliances();
+    sel.value = '';
+    document.getElementById('addWatts').value = '';
+    document.getElementById('addHrs').value = '';
+    document.getElementById('addQty').value = '1';
+  }
+
+  function removeAppliance(i) {
+    userAppliances.splice(i, 1);
+    renderAppliances();
+  }
+
+  function renderAppliances() {
+    var el = document.getElementById('appList');
+    if (userAppliances.length === 0) {
+      el.innerHTML = '<div style="text-align:center;padding:16px;color:#9ca3af;font-size:0.8rem">Add appliances to estimate your bill.</div>';
+      return;
+    }
+    el.innerHTML = userAppliances.map(function(a, i) {
+      return '<div class="app-item">' +
+        '<span class="app-name">' + esc(a.name) + (a.qty > 1 ? ' x' + a.qty : '') + '</span>' +
+        '<span class="app-watts">' + a.watts + 'W</span>' +
+        '<span style="font-size:0.72rem;color:#7dab87">' + a.hrs + 'h/day</span>' +
+        '<button class="app-remove" onclick="removeAppliance(' + i + ')">&times;</button>' +
+        '</div>';
+    }).join('');
+  }
+
+  function onCountryChange() {
+    var country = document.getElementById('country').value;
+    var bandField = document.getElementById('bandField');
+    bandField.style.display = country === 'ng' ? 'block' : 'none';
+    updateTariffInfo();
+  }
+
+  function updateTariffInfo() {
+    var country = document.getElementById('country').value;
+    var title = document.getElementById('tariffTitle');
+    var info = document.getElementById('tariffInfo');
+    if (country === 'ng') {
+      title.textContent = 'Nigeria Tariff Bands';
+      info.innerHTML = '<table class="tariff-table"><tr><th>Band</th><th>Rate</th><th>Supply</th></tr>' +
+        '<tr><td>A</td><td>\u20A6225/kWh</td><td>20+ hrs</td></tr>' +
+        '<tr><td>B</td><td>\u20A663.36/kWh</td><td>16-20 hrs</td></tr>' +
+        '<tr><td>C</td><td>\u20A650.45/kWh</td><td>12-16 hrs</td></tr>' +
+        '<tr><td>D</td><td>\u20A640.98/kWh</td><td>8-12 hrs</td></tr>' +
+        '<tr><td>E</td><td>\u20A631.59/kWh</td><td>4-8 hrs</td></tr></table>';
+    } else if (country === 'ke') {
+      title.textContent = 'Kenya KPLC Tariff';
+      info.innerHTML = '<table class="tariff-table"><tr><th>Tier</th><th>Rate</th></tr>' +
+        '<tr><td>0-10 kWh</td><td>Free</td></tr>' +
+        '<tr><td>11-100 kWh</td><td>KES 12/kWh</td></tr>' +
+        '<tr><td>101-200 kWh</td><td>KES 15.8/kWh</td></tr>' +
+        '<tr><td>201+ kWh</td><td>KES 20.1/kWh</td></tr></table>';
+    } else if (country === 'za') {
+      title.textContent = 'South Africa Eskom';
+      info.innerHTML = '<table class="tariff-table"><tr><th>Block</th><th>Rate</th></tr>' +
+        '<tr><td>0-600 kWh</td><td>R2.85/kWh</td></tr>' +
+        '<tr><td>601+ kWh</td><td>R3.50/kWh</td></tr></table>';
+    } else {
+      title.textContent = 'Ghana ECG Tariff';
+      info.innerHTML = '<table class="tariff-table"><tr><th>Tier</th><th>Rate</th></tr>' +
+        '<tr><td>0-30 kWh</td><td>GHS 0.44</td></tr>' +
+        '<tr><td>31-100 kWh</td><td>GHS 0.66</td></tr>' +
+        '<tr><td>101-300 kWh</td><td>GHS 0.92</td></tr>' +
+        '<tr><td>301-600 kWh</td><td>GHS 1.02</td></tr>' +
+        '<tr><td>601+ kWh</td><td>GHS 1.18</td></tr></table>';
+    }
+  }
+
+  function calculateBill() {
+    if (userAppliances.length === 0) { alert('Add at least one appliance.'); return; }
+
+    var dailyKwh = 0;
+    userAppliances.forEach(function(a) {
+      dailyKwh += (a.watts * a.hrs * a.qty) / 1000;
+    });
+    var monthlyKwh = dailyKwh * 30;
+
+    var country = document.getElementById('country').value;
+    var t = tariffs[country];
+    var monthlyCost;
+    if (country === 'ng') {
+      var band = document.getElementById('band').value;
+      monthlyCost = t.calc(monthlyKwh, band);
+    } else {
+      monthlyCost = t.calc(monthlyKwh);
+    }
+    var dailyCost = monthlyCost / 30;
+    var annualCost = monthlyCost * 12;
+
+    var sym = t.symbol || '';
+    var fmt = function(n) { return sym + n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }); };
+
+    document.getElementById('resBill').textContent = fmt(monthlyCost);
+    document.getElementById('resSub').textContent = 'Estimated monthly electricity bill';
+    document.getElementById('resKwh').textContent = monthlyKwh.toFixed(1) + ' kWh';
+    document.getElementById('resDailyKwh').textContent = dailyKwh.toFixed(2) + ' kWh';
+    document.getElementById('resDailyCost').textContent = fmt(dailyCost);
+    document.getElementById('resAnnual').textContent = fmt(annualCost);
+    document.getElementById('resultBox').style.display = 'block';
+
+    var solarSavings = monthlyCost * 0.8;
+    document.getElementById('solarSavings').textContent = fmt(solarSavings) + '/month';
+    document.getElementById('solarBox').style.display = 'block';
+  }
+
+  function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  // Init
+  populateAppSelect();
+  renderAppliances();
+  onCountryChange();
+</script>
+<script src="/assets/js/components/tool-registry.js" defer></script>
+<script src="/assets/js/components/related-tools.min.js" defer></script>
+</body>
+</html>

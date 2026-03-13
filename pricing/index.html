@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-D859CGF391');
+</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pricing — Free & Pro Plans | AfroTools</title>
+  <meta name="description" content="Free tools for everyone. Pro tools for professionals planning their future. Unlock unlimited AI advisor, visa predictions, medical report analysis, and more.">
+  <link rel="canonical" href="https://afrotools.com/pricing/">
+  <meta property="og:title" content="AfroTools Pricing — Free & Pro Plans">
+  <meta property="og:description" content="Free tools for everyone. Pro tools for professionals. $15/mo or $99/yr.">
+  <meta property="og:site_name" content="AfroTools">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css">
+  <link rel="stylesheet" href="/assets/css/global.min.css">
+  <script src="/assets/js/components/navbar.min.js" defer></script>
+  <script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
+
+/* Hero */
+.pricing-hero{background:#0c1a10;padding:80px 24px 64px;text-align:center}
+.pricing-hero h1{font-size:clamp(28px,5vw,48px);font-weight:800;color:#fff;margin:0 0 16px;line-height:1.1;letter-spacing:-.03em}
+.pricing-hero h1 span{background:linear-gradient(135deg,#00c873,#008751);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.pricing-hero p{font-size:clamp(15px,2vw,18px);color:#9ca3af;max-width:560px;margin:0 auto;line-height:1.7}
+
+/* Toggle */
+.billing-toggle{display:flex;align-items:center;justify-content:center;gap:12px;margin:48px auto 0;font-size:14px;font-weight:600;color:#d1d5db}
+.billing-toggle .active{color:#fff}
+.toggle-switch{position:relative;width:52px;height:28px;background:#374151;border-radius:100px;cursor:pointer;transition:background .2s}
+.toggle-switch.yearly{background:#008751}
+.toggle-switch::after{content:'';position:absolute;top:3px;left:3px;width:22px;height:22px;background:#fff;border-radius:50%;transition:transform .2s}
+.toggle-switch.yearly::after{transform:translateX(24px)}
+.save-badge{display:inline-block;background:linear-gradient(135deg,#F5A623,#e8960e);color:#fff;font-size:11px;font-weight:800;padding:3px 10px;border-radius:100px;letter-spacing:.05em;margin-left:4px}
+
+/* Cards */
+.pricing-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:28px;max-width:880px;margin:-40px auto 0;padding:0 24px;position:relative;z-index:2}
+.card{background:#fff;border-radius:16px;padding:40px 32px;border:1.5px solid #E5E7EB;position:relative}
+.card.pro{border-color:#008751;box-shadow:0 8px 40px rgba(0,135,81,.15)}
+.card-badge{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.08em;padding:4px 12px;border-radius:100px;margin-bottom:16px}
+.card-badge.free-badge{background:#F3F4F6;color:#6B7280}
+.card-badge.pro-badge{background:linear-gradient(135deg,#F5A623,#e8960e);color:#fff}
+.card h2{font-size:22px;font-weight:800;margin:0 0 8px;color:#111827}
+.card .card-desc{font-size:14px;color:#6B7280;line-height:1.6;margin-bottom:24px}
+.card .price{font-size:48px;font-weight:800;color:#111827;margin-bottom:4px;line-height:1}
+.card .price span{font-size:16px;font-weight:500;color:#9CA3AF}
+.card .price-sub{font-size:13px;color:#9CA3AF;margin-bottom:24px}
+.card ul{list-style:none;padding:0;margin:0 0 32px}
+.card li{font-size:14px;color:#374151;padding:8px 0;display:flex;align-items:flex-start;gap:10px;line-height:1.5}
+.card li::before{content:'';flex-shrink:0;width:20px;height:20px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Ccircle cx='10' cy='10' r='10' fill='%23ECFDF5'/%3E%3Cpath d='M6 10l3 3 5-5' stroke='%23008751' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat}
+.card.pro li.highlight{font-weight:700;color:#008751}
+.card .cta-btn{display:block;width:100%;padding:14px;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;text-align:center;text-decoration:none;transition:transform .15s,box-shadow .15s}
+.card .cta-btn:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,0,0,.1)}
+.free-cta{background:#F3F4F6;color:#374151}
+.pro-cta{background:#008751;color:#fff}
+
+/* Recommended ribbon */
+.card.pro::before{content:'RECOMMENDED';position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#008751,#00c873);color:#fff;font-size:11px;font-weight:800;letter-spacing:.08em;padding:5px 20px;border-radius:100px}
+
+/* Feature comparison */
+.compare-section{max-width:880px;margin:80px auto;padding:0 24px}
+.compare-section h2{font-size:28px;font-weight:800;text-align:center;margin-bottom:40px;color:#111827}
+.compare-table{width:100%;border-collapse:collapse}
+.compare-table th,.compare-table td{padding:14px 20px;text-align:left;border-bottom:1px solid #F3F4F6;font-size:14px}
+.compare-table th{font-weight:600;color:#6B7280;background:#F9FAFB}
+.compare-table th:not(:first-child),.compare-table td:not(:first-child){text-align:center;width:140px}
+.compare-table td.feature-name{font-weight:500;color:#374151}
+.check{color:#008751;font-weight:700;font-size:18px}
+.cross{color:#D1D5DB;font-size:18px}
+
+/* FAQ */
+.faq-section{max-width:720px;margin:80px auto;padding:0 24px}
+.faq-section h2{font-size:28px;font-weight:800;text-align:center;margin-bottom:40px;color:#111827}
+.faq-item{border:1px solid #E5E7EB;border-radius:12px;margin-bottom:12px;overflow:hidden}
+.faq-q{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;cursor:pointer;font-size:15px;font-weight:600;color:#111827;background:#fff;border:none;width:100%;text-align:left;font-family:inherit}
+.faq-q:hover{background:#F9FAFB}
+.faq-q .arrow{transition:transform .2s;font-size:18px;color:#9CA3AF}
+.faq-item.open .faq-q .arrow{transform:rotate(180deg)}
+.faq-a{padding:0 20px 18px;font-size:14px;color:#6B7280;line-height:1.7;display:none}
+.faq-item.open .faq-a{display:block}
+
+/* CTA */
+.bottom-cta{background:#0c1a10;padding:80px 24px;text-align:center}
+.bottom-cta h2{font-size:clamp(24px,4vw,36px);font-weight:800;color:#fff;margin:0 0 12px}
+.bottom-cta p{font-size:16px;color:#9ca3af;margin:0 0 32px;line-height:1.6}
+.bottom-cta a{display:inline-block;background:#008751;color:#fff;padding:14px 36px;border-radius:10px;font-weight:700;font-size:16px;text-decoration:none;transition:transform .15s}
+.bottom-cta a:hover{transform:translateY(-2px)}
+
+/* Responsive */
+@media(max-width:768px){
+  .pricing-hero{padding:64px 20px 48px}
+  .pricing-cards{grid-template-columns:1fr;margin-top:-24px;gap:20px}
+  .card{padding:32px 24px}
+  .compare-table th,.compare-table td{padding:10px 12px;font-size:13px}
+  .compare-table th:not(:first-child),.compare-table td:not(:first-child){width:80px}
+}
+@media(max-width:480px){
+  .pricing-hero h1{font-size:26px}
+  .card .price{font-size:36px}
+  .compare-section h2,.faq-section h2{font-size:22px}
+}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<!-- Hero -->
+<section class="pricing-hero">
+  <h1>Unlock the Full <span>AfroTools</span> Experience</h1>
+  <p>Free tools for everyone. Pro tools for professionals planning their future.</p>
+  <div class="billing-toggle">
+    <span class="monthly-label active">Monthly</span>
+    <div class="toggle-switch" id="billingToggle" role="switch" aria-checked="false" tabindex="0"></div>
+    <span class="yearly-label">Yearly</span>
+    <span class="save-badge">SAVE 45%</span>
+  </div>
+</section>
+
+<!-- Pricing Cards -->
+<section class="pricing-cards">
+  <!-- FREE -->
+  <div class="card">
+    <span class="card-badge free-badge">FREE</span>
+    <h2>Free</h2>
+    <p class="card-desc">Essential African tools — no account needed.</p>
+    <div class="price">$0 <span>/forever</span></div>
+    <p class="price-sub">No credit card required</p>
+    <ul>
+      <li>Basic tax calculators (54 countries)</li>
+      <li>PDF Workspace (merge, split, compress)</li>
+      <li>5 AI advisor questions per day</li>
+      <li>Community tools (currency, unit, QR)</li>
+      <li>All image & developer tools</li>
+    </ul>
+    <a href="/tools/" class="cta-btn free-cta">Browse Free Tools</a>
+  </div>
+
+  <!-- PRO -->
+  <div class="card pro">
+    <span class="card-badge pro-badge">PRO</span>
+    <h2>Pro</h2>
+    <p class="card-desc">For professionals planning moves, health, and careers.</p>
+    <div class="price" id="proPrice">$15 <span>/month</span></div>
+    <p class="price-sub" id="proPriceSub">Billed monthly. Cancel anytime.</p>
+    <ul>
+      <li>Everything in Free</li>
+      <li class="highlight">Unlimited AI Advisor (no daily cap)</li>
+      <li class="highlight">Japa Visa Predictor (eligibility scores)</li>
+      <li class="highlight">Medical Report Interpreter (unlimited)</li>
+      <li class="highlight">Document Checklist Generator</li>
+      <li>Priority support</li>
+      <li>Pro badge on profile</li>
+    </ul>
+    <a href="/dashboard/" class="cta-btn pro-cta">Start Pro — Free Trial</a>
+  </div>
+</section>
+
+<!-- Feature Comparison -->
+<section class="compare-section">
+  <h2>Compare Plans</h2>
+  <table class="compare-table">
+    <thead>
+      <tr><th>Feature</th><th>Free</th><th>Pro</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="feature-name">PAYE Tax Calculators (54 countries)</td><td><span class="check">&#10003;</span></td><td><span class="check">&#10003;</span></td></tr>
+      <tr><td class="feature-name">PDF Workspace</td><td><span class="check">&#10003;</span></td><td><span class="check">&#10003;</span></td></tr>
+      <tr><td class="feature-name">Image & Design Tools</td><td><span class="check">&#10003;</span></td><td><span class="check">&#10003;</span></td></tr>
+      <tr><td class="feature-name">Developer Tools</td><td><span class="check">&#10003;</span></td><td><span class="check">&#10003;</span></td></tr>
+      <tr><td class="feature-name">Community Tools</td><td><span class="check">&#10003;</span></td><td><span class="check">&#10003;</span></td></tr>
+      <tr><td class="feature-name">AI Advisor Questions</td><td>5 / day</td><td><strong>Unlimited</strong></td></tr>
+      <tr><td class="feature-name">Japa Visa Predictor</td><td><span class="cross">&#10007;</span></td><td><span class="check">&#10003;</span></td></tr>
+      <tr><td class="feature-name">Medical Report Interpreter</td><td>3 / day</td><td><strong>Unlimited</strong></td></tr>
+      <tr><td class="feature-name">Document Checklist Generator</td><td><span class="cross">&#10007;</span></td><td><span class="check">&#10003;</span></td></tr>
+      <tr><td class="feature-name">Priority Support</td><td><span class="cross">&#10007;</span></td><td><span class="check">&#10003;</span></td></tr>
+      <tr><td class="feature-name">Pro Badge</td><td><span class="cross">&#10007;</span></td><td><span class="check">&#10003;</span></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <h2>Frequently Asked Questions</h2>
+
+  <div class="faq-item">
+    <button class="faq-q">What's included in AfroTools Pro?<span class="arrow">&#9660;</span></button>
+    <div class="faq-a">Pro gives you unlimited access to the AI Advisor, Japa Visa Predictor, Medical Report Interpreter, and Document Checklist Generator. You also get priority support and a Pro badge on your profile. All free tools remain free forever.</div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q">How does billing work?<span class="arrow">&#9660;</span></button>
+    <div class="faq-a">Choose monthly at $15/mo or yearly at $99/yr (save 45%). You can switch between plans at any time. Payment is processed securely through Stripe. Your subscription renews automatically unless you cancel.</div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q">Can I cancel anytime?<span class="arrow">&#9660;</span></button>
+    <div class="faq-a">Yes, cancel anytime from your dashboard with one click. You keep Pro access until the end of your current billing period. No questions asked, no hidden fees.</div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q">Is my data safe?<span class="arrow">&#9660;</span></button>
+    <div class="faq-a">Absolutely. All calculations run in your browser. Medical reports are processed with end-to-end encryption and never stored. We do not sell your data. See our Privacy Policy for full details.</div>
+  </div>
+</section>
+
+<!-- Bottom CTA -->
+<section class="bottom-cta">
+  <h2>Start Free, Upgrade When Ready</h2>
+  <p>Every tool works without an account. Go Pro when you need more.</p>
+  <a href="/dashboard/">Get Started</a>
+</section>
+
+<afro-footer></afro-footer>
+
+<script>
+(function(){
+  const toggle = document.getElementById('billingToggle');
+  const price = document.getElementById('proPrice');
+  const sub = document.getElementById('proPriceSub');
+  const mLabel = document.querySelector('.monthly-label');
+  const yLabel = document.querySelector('.yearly-label');
+  let yearly = false;
+
+  function update(){
+    if(yearly){
+      toggle.classList.add('yearly');
+      toggle.setAttribute('aria-checked','true');
+      price.innerHTML = '$99 <span>/year</span>';
+      sub.textContent = 'That\u2019s $8.25/mo. Billed annually.';
+      mLabel.classList.remove('active');
+      yLabel.classList.add('active');
+    } else {
+      toggle.classList.remove('yearly');
+      toggle.setAttribute('aria-checked','false');
+      price.innerHTML = '$15 <span>/month</span>';
+      sub.textContent = 'Billed monthly. Cancel anytime.';
+      mLabel.classList.add('active');
+      yLabel.classList.remove('active');
+    }
+  }
+
+  toggle.addEventListener('click', function(){ yearly = !yearly; update(); });
+  toggle.addEventListener('keydown', function(e){
+    if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); yearly = !yearly; update(); }
+  });
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-q').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      const item = btn.parentElement;
+      const wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(function(i){ i.classList.remove('open'); });
+      if(!wasOpen) item.classList.add('open');
+    });
+  });
+})();
+</script>
+
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "AfroTools Pricing",
+  "description": "Free tools for everyone. Pro tools for professionals planning their future.",
+  "url": "https://afrotools.com/pricing/",
+  "mainEntity": {
+    "@type": "Product",
+    "name": "AfroTools Pro",
+    "description": "Unlimited AI advisor, visa predictions, medical report analysis, and more.",
+    "offers": [
+      {
+        "@type": "Offer",
+        "price": "15.00",
+        "priceCurrency": "USD",
+        "priceValidUntil": "2027-12-31",
+        "availability": "https://schema.org/InStock",
+        "description": "Monthly plan"
+      },
+      {
+        "@type": "Offer",
+        "price": "99.00",
+        "priceCurrency": "USD",
+        "priceValidUntil": "2027-12-31",
+        "availability": "https://schema.org/InStock",
+        "description": "Yearly plan — save 45%"
+      }
+    ]
+  }
+}
+</script>
+</body>
+</html>

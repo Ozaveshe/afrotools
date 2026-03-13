@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-D859CGF391');
+</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JAMB Aggregate Score Calculator | AfroTools</title>
+    <meta name="description" content="Calculate your JAMB aggregate score for Nigerian university admissions. Supports UNILAG, UI, OAU, UNN formulas. Compare with cutoff marks for top universities.">
+    <link rel="canonical" href="https://afrotools.com/tools/jamb-aggregate">
+    <meta property="og:title" content="JAMB Aggregate Score Calculator | AfroTools">
+    <meta property="og:description" content="Calculate your JAMB aggregate score for Nigerian university admissions. Supports UNILAG, UI, OAU, UNN formulas. Compare with cutoff marks for top universities.">
+    <meta property="og:site_name" content="AfroTools">
+    <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/tokens.min.css">
+    <link rel="stylesheet" href="/assets/css/global.min.css">
+    <script src="/assets/js/components/navbar.min.js" defer></script>
+    <script src="/assets/js/components/footer.min.js" defer></script>
+    <meta name="tool-id" content="jamb-aggregate">
+    <script src="/assets/js/favorites.js"></script>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        :root {
+            --green: #008751; --green-dark: #006b42; --dark: #0f1419;
+            --border: #e5e7eb; --light: #f9fafb; --radius: 14px;
+            --shadow: 0 1px 3px rgba(0,0,0,0.08); --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        body { font-family: 'DM Sans', sans-serif; background: #fff; color: var(--dark); line-height: 1.6; }
+        .container { max-width: 960px; margin: 0 auto; padding: 1.5rem; }
+        .hero { background: linear-gradient(135deg, var(--green), var(--green-dark)); color: #fff; padding: 3rem 1.5rem; text-align: center; border-radius: var(--radius); margin-bottom: 2rem; }
+        .hero h1 { font-size: 2.2rem; font-weight: 700; margin: 0 0 .5rem; }
+        .hero p { font-size: 1.05rem; opacity: .95; margin: 0; }
+        .card { background: #fff; border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: var(--shadow); }
+        .card h2 { font-size: 1.25rem; font-weight: 700; margin: 0 0 1rem; }
+        .card h3 { font-size: 1.1rem; font-weight: 600; margin: 0 0 .75rem; }
+        label { display: block; font-weight: 500; margin-bottom: .35rem; font-size: .95rem; }
+        input[type="number"], select {
+            width: 100%; padding: .65rem .85rem; border: 1.5px solid var(--border);
+            border-radius: 10px; font-family: inherit; font-size: .95rem; background: #fff;
+            transition: border-color .2s;
+        }
+        input:focus, select:focus { outline: none; border-color: var(--green); }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+        .form-group { margin-bottom: 1rem; }
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; padding: .75rem 1.5rem;
+            background: var(--green); color: #fff; border: none; border-radius: 10px; font-family: inherit;
+            font-size: 1rem; font-weight: 600; cursor: pointer; transition: background .2s; }
+        .btn:hover { background: var(--green-dark); }
+        .btn-outline { background: transparent; color: var(--green); border: 1.5px solid var(--green); }
+        .btn-outline:hover { background: var(--green); color: #fff; }
+        .btn-group { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1rem; }
+        .tabs { display: flex; gap: .25rem; background: var(--light); border-radius: 10px; padding: 4px; margin-bottom: 1.25rem; }
+        .tab { flex: 1; padding: .6rem .5rem; text-align: center; border-radius: 8px; cursor: pointer;
+            font-weight: 500; font-size: .85rem; border: none; background: transparent; font-family: inherit; transition: all .2s; }
+        .tab.active { background: var(--green); color: #fff; }
+        .subjects-grid { display: grid; grid-template-columns: 1fr auto; gap: .5rem; align-items: center; }
+        .subjects-grid label { margin: 0; font-size: .9rem; }
+        .subjects-grid select { width: 120px; }
+        .result-box { background: var(--light); border-radius: 12px; padding: 1.25rem; margin-top: 1rem; }
+        .result-big { font-size: 2.5rem; font-weight: 700; color: var(--green); }
+        .result-label { font-size: .85rem; color: #666; }
+        .pass { color: #10b981; } .fail { color: #ef4444; }
+        .cutoff-table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+        .cutoff-table th, .cutoff-table td { padding: .6rem .75rem; text-align: left; border-bottom: 1px solid var(--border); }
+        .cutoff-table th { background: var(--light); font-weight: 600; position: sticky; top: 0; }
+        .cutoff-table tr:hover { background: #f0fdf4; }
+        .table-wrap { max-height: 400px; overflow-y: auto; border: 1.5px solid var(--border); border-radius: 10px; }
+        .faq-section { margin-top: 2rem; }
+        .faq-item { border-bottom: 1px solid var(--border); }
+        .faq-q { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; cursor: pointer; font-weight: 600; }
+        .faq-q::after { content: '+'; font-size: 1.3rem; transition: transform .2s; }
+        .faq-item.open .faq-q::after { transform: rotate(45deg); }
+        .faq-a { max-height: 0; overflow: hidden; transition: max-height .3s; font-size: .95rem; color: #555; }
+        .faq-item.open .faq-a { max-height: 300px; }
+        .faq-a p { margin: 0 0 1rem; }
+        .hidden { display: none; }
+        @media (max-width: 640px) {
+            .hero h1 { font-size: 1.6rem; }
+            .form-row { grid-template-columns: 1fr; }
+            .tabs { flex-wrap: wrap; }
+            .tab { font-size: .78rem; }
+        }
+    </style>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "JAMB Aggregate Score Calculator",
+        "url": "https://afrotools.com/tools/jamb-aggregate",
+        "description": "Calculate your JAMB aggregate score for Nigerian university admissions with multiple university formulas.",
+        "applicationCategory": "EducationalApplication",
+        "operatingSystem": "Any",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "NGN" },
+        "author": { "@type": "Organization", "name": "AfroTools", "url": "https://afrotools.com" }
+    }
+    </script>
+</head>
+<body>
+    <afro-navbar></afro-navbar>
+    <main class="container">
+        <div class="hero">
+            <h1>JAMB Aggregate Score Calculator</h1>
+            <p>Calculate your aggregate score using formulas from top Nigerian universities</p>
+        </div>
+
+        <div class="card">
+            <h2>Select University Formula</h2>
+            <div class="tabs" id="formulaTabs">
+                <button class="tab active" data-formula="standard">Standard</button>
+                <button class="tab" data-formula="unilag">UNILAG</button>
+                <button class="tab" data-formula="ui">UI</button>
+                <button class="tab" data-formula="oau">OAU</button>
+                <button class="tab" data-formula="unn">UNN</button>
+            </div>
+            <div id="formulaDesc" style="font-size:.9rem;color:#555;margin-bottom:1rem;">
+                Standard: (UTME/8) + (Post-UTME/2) = Aggregate out of 100
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Enter Your Scores</h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="utme">UTME Score (0 - 400)</label>
+                    <input type="number" id="utme" min="0" max="400" placeholder="e.g. 280">
+                </div>
+                <div class="form-group">
+                    <label for="postUtme">Post-UTME Score (0 - 100)</label>
+                    <input type="number" id="postUtme" min="0" max="100" placeholder="e.g. 65">
+                </div>
+            </div>
+        </div>
+
+        <div class="card" id="olevelCard">
+            <h2>O'Level Grades (5 Relevant Subjects)</h2>
+            <p style="font-size:.88rem;color:#666;margin:0 0 1rem;">Required for UI formula. Grading: A1=6, B2=5, B3=4, C4=3, C5=2, C6=1, D7/E8/F9=0</p>
+            <div class="subjects-grid" id="subjectsGrid"></div>
+        </div>
+
+        <div class="card">
+            <h2>Compare with University</h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="uniSelect">University</label>
+                    <select id="uniSelect"><option value="">-- Select --</option></select>
+                </div>
+                <div class="form-group">
+                    <label for="courseSelect">Course</label>
+                    <select id="courseSelect"><option value="">-- Select University First --</option></select>
+                </div>
+            </div>
+            <div class="btn-group">
+                <button class="btn" onclick="calculate()">Calculate Aggregate</button>
+                <button class="btn btn-outline" onclick="resetForm()">Reset</button>
+            </div>
+        </div>
+
+        <div class="card hidden" id="resultCard">
+            <h2>Your Result</h2>
+            <div class="result-box" style="text-align:center;">
+                <div class="result-label">Your Aggregate Score</div>
+                <div class="result-big" id="aggregateScore">--</div>
+                <div id="formulaUsed" style="font-size:.88rem;color:#666;"></div>
+            </div>
+            <div class="result-box" id="cutoffResult" style="margin-top:.75rem;display:none;">
+                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;">
+                    <div>
+                        <div style="font-weight:600;" id="cutoffUni"></div>
+                        <div style="font-size:.88rem;color:#666;" id="cutoffCourse"></div>
+                    </div>
+                    <div>
+                        <span style="font-size:.85rem;color:#666;">Cutoff: </span>
+                        <strong id="cutoffVal"></strong>
+                    </div>
+                    <div id="passStatus" style="font-weight:700;font-size:1.1rem;"></div>
+                </div>
+            </div>
+            <div id="breakdownBox" class="result-box" style="margin-top:.75rem;">
+                <h3 style="margin:0 0 .5rem;">Calculation Breakdown</h3>
+                <div id="breakdown" style="font-size:.9rem;color:#555;"></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Cutoff Marks for Top Nigerian Universities</h2>
+            <div class="form-group">
+                <label for="cutoffFilter">Filter by Course</label>
+                <select id="cutoffFilter" onchange="renderCutoffTable()">
+                    <option value="">All Courses</option>
+                </select>
+            </div>
+            <div class="table-wrap">
+                <table class="cutoff-table" id="cutoffTable">
+                    <thead><tr><th>University</th><th>Course</th><th>Cutoff</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card faq-section">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item" onclick="this.classList.toggle('open')">
+                <div class="faq-q">What is a JAMB aggregate score?</div>
+                <div class="faq-a"><p>The JAMB aggregate score combines your UTME score, Post-UTME score, and sometimes O'Level grades into a single number used by Nigerian universities for admission screening.</p></div>
+            </div>
+            <div class="faq-item" onclick="this.classList.toggle('open')">
+                <div class="faq-q">Why do different universities use different formulas?</div>
+                <div class="faq-a"><p>Each university has autonomy in deciding how to weigh different components for admission. Some prioritize UTME scores while others give more weight to Post-UTME or O'Level performance.</p></div>
+            </div>
+            <div class="faq-item" onclick="this.classList.toggle('open')">
+                <div class="faq-q">What O'Level grades are used in the UI formula?</div>
+                <div class="faq-a"><p>The University of Ibadan considers your 5 best relevant O'Level subject grades. The grading is: A1=6 points, B2=5, B3=4, C4=3, C5=2, C6=1, and D7/E8/F9=0 points. The maximum O'Level score is 30 points.</p></div>
+            </div>
+            <div class="faq-item" onclick="this.classList.toggle('open')">
+                <div class="faq-q">What is a good aggregate score?</div>
+                <div class="faq-a"><p>This depends on the university and course. Competitive courses like Medicine and Law typically require aggregates above 70, while others may admit from 50-60. Always check the specific cutoff for your chosen university and course.</p></div>
+            </div>
+            <div class="faq-item" onclick="this.classList.toggle('open')">
+                <div class="faq-q">How accurate are the cutoff marks shown?</div>
+                <div class="faq-a"><p>Cutoff marks are based on recent admission cycles and serve as estimates. Actual cutoffs may vary each year depending on the number of applicants and available spaces. Always verify with the university directly.</p></div>
+            </div>
+        </div>
+    </main>
+
+    <afro-related-tools category="education" current="jamb-aggregate"></afro-related-tools>
+    <afro-newsletter-cta></afro-newsletter-cta>
+    <afro-footer></afro-footer>
+
+    <script>
+        const FORMULAS = {
+            standard: { name: 'Standard', desc: 'Standard: (UTME/8) + (Post-UTME/2) = Aggregate out of 100', needsOlevel: false },
+            unilag: { name: 'UNILAG', desc: 'UNILAG: (UTME/4 x 0.5) + (Post-UTME x 0.5)', needsOlevel: false },
+            ui: { name: 'UI', desc: 'UI: (UTME/4 x 0.375) + (Post-UTME x 0.25) + (O\'Level x 0.375)', needsOlevel: true },
+            oau: { name: 'OAU', desc: 'OAU: (UTME/8) + (Post-UTME/20 x 50)', needsOlevel: false },
+            unn: { name: 'UNN', desc: 'UNN: (UTME/400 x 50) + (Post-UTME/100 x 50)', needsOlevel: false }
+        };
+
+        const GRADES = [
+            { label: 'A1', value: 6 }, { label: 'B2', value: 5 }, { label: 'B3', value: 4 },
+            { label: 'C4', value: 3 }, { label: 'C5', value: 2 }, { label: 'C6', value: 1 },
+            { label: 'D7', value: 0 }, { label: 'E8', value: 0 }, { label: 'F9', value: 0 }
+        ];
+
+        const SUBJECTS = ['English Language', 'Mathematics', 'Physics', 'Chemistry', 'Biology',
+            'Economics', 'Government', 'Literature', 'Geography', 'Accounting',
+            'Commerce', 'CRS/IRS', 'Civic Education', 'Agricultural Science', 'Further Mathematics'];
+
+        const CUTOFFS = [
+            { uni: 'University of Lagos (UNILAG)', course: 'Medicine', cutoff: 75 },
+            { uni: 'University of Lagos (UNILAG)', course: 'Law', cutoff: 72 },
+            { uni: 'University of Lagos (UNILAG)', course: 'Engineering', cutoff: 65 },
+            { uni: 'University of Lagos (UNILAG)', course: 'Computer Science', cutoff: 62 },
+            { uni: 'University of Lagos (UNILAG)', course: 'Accounting', cutoff: 60 },
+            { uni: 'University of Ibadan (UI)', course: 'Medicine', cutoff: 78 },
+            { uni: 'University of Ibadan (UI)', course: 'Law', cutoff: 73 },
+            { uni: 'University of Ibadan (UI)', course: 'Engineering', cutoff: 65 },
+            { uni: 'University of Ibadan (UI)', course: 'Computer Science', cutoff: 60 },
+            { uni: 'University of Ibadan (UI)', course: 'Economics', cutoff: 58 },
+            { uni: 'Obafemi Awolowo University (OAU)', course: 'Medicine', cutoff: 70 },
+            { uni: 'Obafemi Awolowo University (OAU)', course: 'Law', cutoff: 68 },
+            { uni: 'Obafemi Awolowo University (OAU)', course: 'Engineering', cutoff: 60 },
+            { uni: 'Obafemi Awolowo University (OAU)', course: 'Computer Science', cutoff: 55 },
+            { uni: 'Obafemi Awolowo University (OAU)', course: 'Accounting', cutoff: 55 },
+            { uni: 'University of Nigeria Nsukka (UNN)', course: 'Medicine', cutoff: 72 },
+            { uni: 'University of Nigeria Nsukka (UNN)', course: 'Law', cutoff: 68 },
+            { uni: 'University of Nigeria Nsukka (UNN)', course: 'Engineering', cutoff: 60 },
+            { uni: 'University of Nigeria Nsukka (UNN)', course: 'Computer Science', cutoff: 58 },
+            { uni: 'University of Nigeria Nsukka (UNN)', course: 'Pharmacy', cutoff: 65 },
+            { uni: 'Ahmadu Bello University (ABU)', course: 'Medicine', cutoff: 70 },
+            { uni: 'Ahmadu Bello University (ABU)', course: 'Law', cutoff: 65 },
+            { uni: 'Ahmadu Bello University (ABU)', course: 'Engineering', cutoff: 58 },
+            { uni: 'Ahmadu Bello University (ABU)', course: 'Computer Science', cutoff: 55 },
+            { uni: 'University of Benin (UNIBEN)', course: 'Medicine', cutoff: 68 },
+            { uni: 'University of Benin (UNIBEN)', course: 'Law', cutoff: 65 },
+            { uni: 'University of Benin (UNIBEN)', course: 'Engineering', cutoff: 58 },
+            { uni: 'University of Benin (UNIBEN)', course: 'Pharmacy', cutoff: 62 },
+            { uni: 'University of Ilorin (UNILORIN)', course: 'Medicine', cutoff: 70 },
+            { uni: 'University of Ilorin (UNILORIN)', course: 'Law', cutoff: 65 },
+            { uni: 'University of Ilorin (UNILORIN)', course: 'Engineering', cutoff: 58 },
+            { uni: 'University of Ilorin (UNILORIN)', course: 'Computer Science', cutoff: 55 },
+            { uni: 'Federal University of Technology Akure (FUTA)', course: 'Engineering', cutoff: 58 },
+            { uni: 'Federal University of Technology Akure (FUTA)', course: 'Computer Science', cutoff: 55 },
+            { uni: 'Federal University of Technology Akure (FUTA)', course: 'Architecture', cutoff: 55 },
+            { uni: 'University of Port Harcourt (UNIPORT)', course: 'Medicine', cutoff: 68 },
+            { uni: 'University of Port Harcourt (UNIPORT)', course: 'Law', cutoff: 65 },
+            { uni: 'University of Port Harcourt (UNIPORT)', course: 'Engineering', cutoff: 58 },
+            { uni: 'Covenant University', course: 'Medicine', cutoff: 65 },
+            { uni: 'Covenant University', course: 'Engineering', cutoff: 58 },
+            { uni: 'Covenant University', course: 'Computer Science', cutoff: 55 },
+            { uni: 'Lagos State University (LASU)', course: 'Medicine', cutoff: 65 },
+            { uni: 'Lagos State University (LASU)', course: 'Law', cutoff: 62 },
+            { uni: 'Lagos State University (LASU)', course: 'Engineering', cutoff: 55 },
+            { uni: 'Federal University of Technology Minna', course: 'Engineering', cutoff: 55 },
+            { uni: 'Federal University of Technology Minna', course: 'Computer Science', cutoff: 50 },
+            { uni: 'Bayero University Kano (BUK)', course: 'Medicine', cutoff: 65 },
+            { uni: 'Bayero University Kano (BUK)', course: 'Law', cutoff: 60 },
+            { uni: 'Bayero University Kano (BUK)', course: 'Engineering', cutoff: 55 },
+            { uni: 'University of Calabar (UNICAL)', course: 'Medicine', cutoff: 65 },
+            { uni: 'University of Calabar (UNICAL)', course: 'Law', cutoff: 60 },
+            { uni: 'University of Calabar (UNICAL)', course: 'Computer Science', cutoff: 50 },
+            { uni: 'Nnamdi Azikiwe University (UNIZIK)', course: 'Medicine', cutoff: 68 },
+            { uni: 'Nnamdi Azikiwe University (UNIZIK)', course: 'Law', cutoff: 62 },
+            { uni: 'Nnamdi Azikiwe University (UNIZIK)', course: 'Engineering', cutoff: 55 },
+            { uni: 'Federal University Oye-Ekiti (FUOYE)', course: 'Medicine', cutoff: 62 },
+            { uni: 'Federal University Oye-Ekiti (FUOYE)', course: 'Engineering', cutoff: 52 },
+            { uni: 'Federal University Oye-Ekiti (FUOYE)', course: 'Computer Science', cutoff: 48 },
+            { uni: 'University of Jos (UNIJOS)', course: 'Medicine', cutoff: 65 },
+            { uni: 'University of Jos (UNIJOS)', course: 'Law', cutoff: 60 },
+            { uni: 'University of Jos (UNIJOS)', course: 'Engineering', cutoff: 55 },
+            { uni: 'Babcock University', course: 'Medicine', cutoff: 62 },
+            { uni: 'Babcock University', course: 'Law', cutoff: 58 },
+            { uni: 'Babcock University', course: 'Computer Science', cutoff: 50 }
+        ];
+
+        let selectedFormula = 'standard';
+
+        function init() {
+            // Build subject grade selectors
+            const grid = document.getElementById('subjectsGrid');
+            for (let i = 0; i < 5; i++) {
+                const lbl = document.createElement('label');
+                lbl.textContent = `Subject ${i + 1}`;
+                const sel = document.createElement('select');
+                sel.id = `subj${i}`;
+                const optDef = document.createElement('option');
+                optDef.value = ''; optDef.textContent = '-- Grade --';
+                sel.appendChild(optDef);
+                GRADES.forEach(g => {
+                    const o = document.createElement('option');
+                    o.value = g.value; o.textContent = `${g.label} (${g.value} pts)`;
+                    sel.appendChild(o);
+                });
+                grid.appendChild(lbl);
+                grid.appendChild(sel);
+            }
+
+            // Build university selector
+            const unis = [...new Set(CUTOFFS.map(c => c.uni))];
+            const uniSel = document.getElementById('uniSelect');
+            unis.forEach(u => {
+                const o = document.createElement('option');
+                o.value = u; o.textContent = u;
+                uniSel.appendChild(o);
+            });
+            uniSel.addEventListener('change', () => {
+                const courseSel = document.getElementById('courseSelect');
+                courseSel.innerHTML = '<option value="">-- Select Course --</option>';
+                const courses = CUTOFFS.filter(c => c.uni === uniSel.value).map(c => c.course);
+                courses.forEach(c => {
+                    const o = document.createElement('option');
+                    o.value = c; o.textContent = c;
+                    courseSel.appendChild(o);
+                });
+            });
+
+            // Build cutoff filter
+            const courses = [...new Set(CUTOFFS.map(c => c.course))].sort();
+            const filter = document.getElementById('cutoffFilter');
+            courses.forEach(c => {
+                const o = document.createElement('option');
+                o.value = c; o.textContent = c;
+                filter.appendChild(o);
+            });
+
+            // Tab clicks
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    selectedFormula = tab.dataset.formula;
+                    document.getElementById('formulaDesc').textContent = FORMULAS[selectedFormula].desc;
+                    document.getElementById('olevelCard').classList.toggle('hidden', !FORMULAS[selectedFormula].needsOlevel);
+                });
+            });
+
+            document.getElementById('olevelCard').classList.add('hidden');
+            renderCutoffTable();
+        }
+
+        function getOlevelTotal() {
+            let total = 0;
+            for (let i = 0; i < 5; i++) {
+                const v = document.getElementById(`subj${i}`).value;
+                if (v !== '') total += parseInt(v);
+            }
+            return total;
+        }
+
+        function calculate() {
+            const utme = parseFloat(document.getElementById('utme').value);
+            const postUtme = parseFloat(document.getElementById('postUtme').value);
+            if (isNaN(utme) || isNaN(postUtme)) { alert('Please enter both UTME and Post-UTME scores.'); return; }
+            if (utme < 0 || utme > 400) { alert('UTME score must be between 0 and 400.'); return; }
+            if (postUtme < 0 || postUtme > 100) { alert('Post-UTME score must be between 0 and 100.'); return; }
+
+            let aggregate = 0, steps = '';
+            const olevel = getOlevelTotal();
+
+            switch (selectedFormula) {
+                case 'standard':
+                    aggregate = (utme / 8) + (postUtme / 2);
+                    steps = `UTME component: ${utme} / 8 = ${(utme/8).toFixed(2)}\nPost-UTME component: ${postUtme} / 2 = ${(postUtme/2).toFixed(2)}\nAggregate: ${(utme/8).toFixed(2)} + ${(postUtme/2).toFixed(2)} = ${aggregate.toFixed(2)}`;
+                    break;
+                case 'unilag':
+                    aggregate = ((utme / 4) * 0.5) + (postUtme * 0.5);
+                    steps = `UTME component: (${utme} / 4) x 0.5 = ${((utme/4)*0.5).toFixed(2)}\nPost-UTME component: ${postUtme} x 0.5 = ${(postUtme*0.5).toFixed(2)}\nAggregate: ${((utme/4)*0.5).toFixed(2)} + ${(postUtme*0.5).toFixed(2)} = ${aggregate.toFixed(2)}`;
+                    break;
+                case 'ui':
+                    if (olevel === 0) { alert('Please enter O\'Level grades for the UI formula.'); return; }
+                    aggregate = ((utme / 4) * 0.375) + (postUtme * 0.25) + (olevel * 0.375);
+                    steps = `UTME component: (${utme} / 4) x 0.375 = ${((utme/4)*0.375).toFixed(2)}\nPost-UTME component: ${postUtme} x 0.25 = ${(postUtme*0.25).toFixed(2)}\nO'Level component: ${olevel} x 0.375 = ${(olevel*0.375).toFixed(2)}\nAggregate: ${((utme/4)*0.375).toFixed(2)} + ${(postUtme*0.25).toFixed(2)} + ${(olevel*0.375).toFixed(2)} = ${aggregate.toFixed(2)}`;
+                    break;
+                case 'oau':
+                    aggregate = (utme / 8) + ((postUtme / 20) * 50);
+                    steps = `UTME component: ${utme} / 8 = ${(utme/8).toFixed(2)}\nPost-UTME component: (${postUtme} / 20) x 50 = ${((postUtme/20)*50).toFixed(2)}\nAggregate: ${(utme/8).toFixed(2)} + ${((postUtme/20)*50).toFixed(2)} = ${aggregate.toFixed(2)}`;
+                    break;
+                case 'unn':
+                    aggregate = ((utme / 400) * 50) + ((postUtme / 100) * 50);
+                    steps = `UTME component: (${utme} / 400) x 50 = ${((utme/400)*50).toFixed(2)}\nPost-UTME component: (${postUtme} / 100) x 50 = ${((postUtme/100)*50).toFixed(2)}\nAggregate: ${((utme/400)*50).toFixed(2)} + ${((postUtme/100)*50).toFixed(2)} = ${aggregate.toFixed(2)}`;
+                    break;
+            }
+
+            document.getElementById('resultCard').classList.remove('hidden');
+            document.getElementById('aggregateScore').textContent = aggregate.toFixed(2);
+            document.getElementById('formulaUsed').textContent = `Formula: ${FORMULAS[selectedFormula].name}`;
+            document.getElementById('breakdown').innerHTML = steps.replace(/\n/g, '<br>');
+
+            // Cutoff comparison
+            const uni = document.getElementById('uniSelect').value;
+            const course = document.getElementById('courseSelect').value;
+            const cutoffDiv = document.getElementById('cutoffResult');
+            if (uni && course) {
+                const match = CUTOFFS.find(c => c.uni === uni && c.course === course);
+                if (match) {
+                    cutoffDiv.style.display = 'block';
+                    document.getElementById('cutoffUni').textContent = match.uni;
+                    document.getElementById('cutoffCourse').textContent = match.course;
+                    document.getElementById('cutoffVal').textContent = match.cutoff;
+                    const passed = aggregate >= match.cutoff;
+                    const ps = document.getElementById('passStatus');
+                    ps.textContent = passed ? 'LIKELY QUALIFIES' : 'BELOW CUTOFF';
+                    ps.className = passed ? 'pass' : 'fail';
+                } else { cutoffDiv.style.display = 'none'; }
+            } else { cutoffDiv.style.display = 'none'; }
+
+            document.getElementById('resultCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function renderCutoffTable() {
+            const filter = document.getElementById('cutoffFilter').value;
+            const data = filter ? CUTOFFS.filter(c => c.course === filter) : CUTOFFS;
+            const tbody = document.querySelector('#cutoffTable tbody');
+            tbody.innerHTML = data.map(c => `<tr><td>${c.uni}</td><td>${c.course}</td><td><strong>${c.cutoff}</strong></td></tr>`).join('');
+        }
+
+        function resetForm() {
+            document.getElementById('utme').value = '';
+            document.getElementById('postUtme').value = '';
+            for (let i = 0; i < 5; i++) document.getElementById(`subj${i}`).value = '';
+            document.getElementById('uniSelect').value = '';
+            document.getElementById('courseSelect').innerHTML = '<option value="">-- Select University First --</option>';
+            document.getElementById('resultCard').classList.add('hidden');
+        }
+
+        init();
+    </script>
+    <script src="/assets/js/favorites-widget.js" defer></script>
+    <script src="/assets/js/components/tool-registry.js" defer></script>
+    <script src="/assets/js/components/related-tools.min.js" defer></script>
+</body>
+</html>

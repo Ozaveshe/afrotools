@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-D859CGF391');
+</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amount to Words Converter | AfroTools</title>
+  <meta name="description" content="Convert currency amounts to words for cheque writing. Supports Naira, Shilling, Cedi, Rand, and more. Handles kobo, cents, up to billions.">
+  <link rel="canonical" href="https://afrotools.com/tools/naira-to-words">
+  <meta property="og:title" content="Amount to Words Converter | AfroTools">
+  <meta property="og:description" content="Convert currency amounts to words for cheque writing. Supports Naira, Shilling, Cedi, Rand, and more.">
+  <meta property="og:site_name" content="AfroTools">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css">
+  <link rel="stylesheet" href="/assets/css/global.min.css">
+  <script src="/assets/js/components/navbar.min.js" defer></script>
+  <script src="/assets/js/components/footer.min.js" defer></script>
+  <meta name="tool-id" content="naira-to-words">
+  <script src="/assets/js/favorites.js"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Amount to Words Converter",
+    "url": "https://afrotools.com/tools/naira-to-words",
+    "description": "Convert currency amounts to words for cheque writing. Supports multiple African and international currencies.",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    :root { --green: #008751; --dark: #0f1419; --border: #e5e7eb; --light-bg: #f9fafb; --radius: 14px; }
+    body { font-family: 'DM Sans', sans-serif; background: #fff; color: var(--dark); line-height: 1.6; }
+    .container { max-width: 800px; margin: 0 auto; padding: 1.5rem; }
+    .hero { background: linear-gradient(135deg, var(--green) 0%, #006b42 100%); color: #fff; padding: 3rem 1.5rem; text-align: center; border-radius: var(--radius); margin-bottom: 2rem; }
+    .hero h1 { font-size: 2.2rem; font-weight: 700; margin: 0 0 .5rem; }
+    .hero p { font-size: 1.05rem; opacity: .93; margin: 0; }
+    .card { background: #fff; border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .card h2 { font-size: 1.25rem; font-weight: 700; margin: 0 0 1rem; }
+    label { display: block; font-weight: 600; margin-bottom: .35rem; font-size: .95rem; }
+    .input-row { display: flex; gap: .75rem; margin-bottom: 1rem; }
+    select, input[type="text"], input[type="number"] {
+      width: 100%; padding: .65rem .85rem; border: 1.5px solid var(--border); border-radius: 10px;
+      font-family: inherit; font-size: .95rem; transition: border .2s;
+    }
+    select:focus, input:focus { outline: none; border-color: var(--green); }
+    .btn { display: inline-flex; align-items: center; gap: .5rem; padding: .7rem 1.4rem; border: none; border-radius: 10px; font-family: inherit; font-size: .95rem; font-weight: 600; cursor: pointer; transition: all .2s; }
+    .btn-primary { background: var(--green); color: #fff; }
+    .btn-primary:hover { background: #006b42; }
+    .btn-outline { background: transparent; border: 1.5px solid var(--border); color: var(--dark); }
+    .btn-outline:hover { border-color: var(--green); color: var(--green); }
+    .result-box { background: var(--light-bg); border: 1.5px solid var(--border); border-radius: 10px; padding: 1.25rem; font-size: 1.15rem; font-weight: 600; color: var(--dark); line-height: 1.5; min-height: 60px; margin-bottom: 1rem; }
+    .result-box .currency-label { display: block; font-size: .8rem; font-weight: 500; color: #888; margin-bottom: .35rem; text-transform: uppercase; letter-spacing: .5px; }
+    .format-display { font-size: .95rem; color: #666; margin-bottom: 1rem; }
+    .actions-row { display: flex; gap: .75rem; flex-wrap: wrap; }
+    .copy-toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background: var(--dark); color: #fff; padding: .65rem 1.5rem; border-radius: 10px; font-weight: 600; font-size: .9rem; opacity: 0; transition: opacity .3s; z-index: 999; }
+    .copy-toast.show { opacity: 1; }
+    .faq-section { margin-top: 2rem; }
+    .faq-item { border: 1.5px solid var(--border); border-radius: var(--radius); margin-bottom: .75rem; overflow: hidden; }
+    .faq-q { padding: 1rem 1.25rem; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: var(--light-bg); }
+    .faq-q::after { content: '+'; font-size: 1.3rem; font-weight: 700; color: var(--green); }
+    .faq-item.open .faq-q::after { content: '\2212'; }
+    .faq-a { padding: 0 1.25rem; max-height: 0; overflow: hidden; transition: max-height .3s, padding .3s; font-size: .93rem; color: #555; }
+    .faq-item.open .faq-a { max-height: 300px; padding: .75rem 1.25rem 1rem; }
+    @media (max-width: 680px) {
+      .hero h1 { font-size: 1.6rem; }
+      .hero { padding: 2rem 1rem; }
+      .container { padding: 1rem; }
+      .input-row { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<div class="container">
+  <div class="hero">
+    <h1>Amount to Words Converter</h1>
+    <p>Convert currency amounts to words for cheque writing and formal documents</p>
+  </div>
+
+  <div class="card">
+    <h2>Enter Amount</h2>
+    <div class="input-row">
+      <select id="currency" style="max-width:200px;" onchange="convert()">
+        <option value="NGN" data-main="Naira" data-sub="Kobo">NGN - Naira</option>
+        <option value="KES" data-main="Shillings" data-sub="Cents">KES - Shilling</option>
+        <option value="GHS" data-main="Cedis" data-sub="Pesewas">GHS - Cedi</option>
+        <option value="ZAR" data-main="Rand" data-sub="Cents">ZAR - Rand</option>
+        <option value="EGP" data-main="Pounds" data-sub="Piastres">EGP - Pound</option>
+        <option value="USD" data-main="Dollars" data-sub="Cents">USD - Dollar</option>
+        <option value="GBP" data-main="Pounds" data-sub="Pence">GBP - Pound</option>
+        <option value="EUR" data-main="Euros" data-sub="Cents">EUR - Euro</option>
+      </select>
+      <input type="text" id="amount" placeholder="e.g. 250000.50" oninput="convert()" inputmode="decimal">
+    </div>
+    <div class="format-display" id="formatted"></div>
+  </div>
+
+  <div class="card" id="resultCard" style="display:none;">
+    <h2>Amount in Words</h2>
+    <div class="result-box" id="result"></div>
+    <div class="actions-row">
+      <button class="btn btn-primary" onclick="copyResult()">Copy to Clipboard</button>
+      <button class="btn btn-outline" onclick="clearAll()">Clear</button>
+    </div>
+  </div>
+
+  <div class="faq-section">
+    <h2 style="font-size:1.3rem; margin-bottom:1rem;">Frequently Asked Questions</h2>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Why do I need to write amounts in words?</div>
+      <div class="faq-a">Banks require amounts written in words on cheques as a security measure. It prevents alteration of the numeric amount and is legally binding in case of discrepancy.</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">What currencies are supported?</div>
+      <div class="faq-a">We support Nigerian Naira (NGN), Kenyan Shilling (KES), Ghanaian Cedi (GHS), South African Rand (ZAR), Egyptian Pound (EGP), US Dollar (USD), British Pound (GBP), and Euro (EUR).</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">How does it handle decimal amounts?</div>
+      <div class="faq-a">Decimals are automatically converted to the appropriate sub-unit. For example, 250,000.50 in Naira becomes "Two Hundred and Fifty Thousand Naira, Fifty Kobo Only".</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">What is the maximum amount?</div>
+      <div class="faq-a">The converter handles amounts up to 999,999,999,999.99 (nearly one trillion), which covers virtually all practical cheque-writing needs.</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Is the word "Only" added automatically?</div>
+      <div class="faq-a">Yes. The word "Only" is appended at the end, following standard cheque-writing conventions used across African and international banks.</div>
+    </div>
+  </div>
+</div>
+
+<div class="copy-toast" id="toast">Copied to clipboard!</div>
+
+<afro-related-tools category="financial"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+const ones = ['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten',
+  'Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen'];
+const tens = ['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];
+const scales = ['','Thousand','Million','Billion'];
+
+function numToWords(n) {
+  if (n === 0) return 'Zero';
+  if (n < 0) return 'Negative ' + numToWords(-n);
+  let parts = [];
+  let scaleIdx = 0;
+  while (n > 0) {
+    const chunk = n % 1000;
+    if (chunk > 0) {
+      let w = chunkToWords(chunk);
+      if (scales[scaleIdx]) w += ' ' + scales[scaleIdx];
+      parts.unshift(w);
+    }
+    n = Math.floor(n / 1000);
+    scaleIdx++;
+  }
+  return parts.join(', ');
+}
+
+function chunkToWords(n) {
+  if (n === 0) return '';
+  if (n < 20) return ones[n];
+  if (n < 100) return tens[Math.floor(n / 10)] + (n % 10 ? '-' + ones[n % 10] : '');
+  const h = ones[Math.floor(n / 100)] + ' Hundred';
+  const rem = n % 100;
+  return rem ? h + ' and ' + chunkToWords(rem) : h;
+}
+
+function amountToWords(amount, currOpt) {
+  const mainUnit = currOpt.dataset.main;
+  const subUnit = currOpt.dataset.sub;
+  const parts = amount.toFixed(2).split('.');
+  const main = parseInt(parts[0], 10);
+  const sub = parseInt(parts[1], 10);
+  let result = '';
+  if (main === 0 && sub === 0) return 'Zero ' + mainUnit + ' Only';
+  if (main > 0) result = numToWords(main) + ' ' + mainUnit;
+  if (sub > 0) {
+    if (main > 0) result += ', ';
+    result += numToWords(sub) + ' ' + subUnit;
+  }
+  return result + ' Only';
+}
+
+function convert() {
+  const raw = document.getElementById('amount').value.replace(/,/g, '').trim();
+  const card = document.getElementById('resultCard');
+  const formatted = document.getElementById('formatted');
+  if (!raw || isNaN(raw) || parseFloat(raw) < 0) {
+    card.style.display = 'none';
+    formatted.textContent = '';
+    return;
+  }
+  const amount = parseFloat(raw);
+  if (amount > 999999999999.99) {
+    document.getElementById('result').innerHTML = '<span style="color:#ef4444;">Amount too large. Maximum is 999,999,999,999.99</span>';
+    card.style.display = '';
+    return;
+  }
+  const sel = document.getElementById('currency');
+  const opt = sel.options[sel.selectedIndex];
+  const code = sel.value;
+  formatted.textContent = code + ' ' + amount.toLocaleString('en', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const words = amountToWords(amount, opt);
+  document.getElementById('result').innerHTML = '<span class="currency-label">' + code + ' Amount in Words</span>' + words;
+  card.style.display = '';
+}
+
+function copyResult() {
+  const el = document.getElementById('result');
+  const text = el.textContent.replace(/^[A-Z]{3} Amount in Words/i, '').trim();
+  navigator.clipboard.writeText(text).then(() => showToast('Copied!'));
+}
+
+function clearAll() {
+  document.getElementById('amount').value = '';
+  document.getElementById('formatted').textContent = '';
+  document.getElementById('resultCard').style.display = 'none';
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+</script>
+</body>
+</html>

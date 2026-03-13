@@ -1,8 +1,63 @@
 // netlify/functions/ai-advisor.js
 // Universal AI advisor for all AfroTools calculators
 // Proxies requests to Anthropic API using server-side ANTHROPIC_API_KEY
+// Rate limiting: 5 calls/day (anonymous), 50/day (authenticated)
 
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
+const AUTH_SECRET = process.env.AUTH_SECRET;
+
+// In-memory rate limit store (per instance — Netlify Blobs for persistence)
+let _rateStore;
+async function getRateStore() {
+  if (_rateStore) return _rateStore;
+  try {
+    const { getStore } = await import("@netlify/blobs");
+    _rateStore = getStore("rate-limits");
+    return _rateStore;
+  } catch {
+    return null; // Blobs not available, skip rate limiting
+  }
+}
+
+async function checkRateLimit(event) {
+  const store = await getRateStore();
+  if (!store) return { allowed: true, remaining: 999 };
+
+  const ip = (event.headers['x-forwarded-for'] || event.headers['client-ip'] || 'unknown').split(',')[0].trim();
+  const today = new Date().toISOString().slice(0, 10);
+  const key = `ai_rate_${ip}_${today}`;
+
+  // Check if user is authenticated (higher limit)
+  let limit = 5; // anonymous
+  const authHeader = event.headers.authorization || '';
+  if (authHeader.startsWith('Bearer ') && AUTH_SECRET) {
+    try {
+      const { createHmac } = await import("crypto");
+      const token = authHeader.replace('Bearer ', '');
+      const [b64, sig] = token.split('.');
+      const expected = createHmac('sha256', AUTH_SECRET).update(b64).digest('base64url');
+      if (sig === expected) {
+        const payload = JSON.parse(Buffer.from(b64, 'base64url').toString());
+        if (payload.exp > Date.now()) limit = 50; // authenticated user
+      }
+    } catch {}
+  }
+
+  let count = 0;
+  try {
+    const stored = await store.get(key, { type: 'text' });
+    if (stored) count = parseInt(stored, 10) || 0;
+  } catch {}
+
+  if (count >= limit) {
+    return { allowed: false, remaining: 0, limit, resetAt: today + 'T23:59:59Z' };
+  }
+
+  // Increment
+  try { await store.set(key, String(count + 1), { metadata: { ttl: 86400 } }); } catch {}
+
+  return { allowed: true, remaining: limit - count - 1, limit };
+}
 
 // Per-country/tool context injected into system prompt
 const TOOL_CONTEXT = {
@@ -42,6 +97,13 @@ const TOOL_CONTEXT = {
   "ug-vat": "Uganda VAT expert. URA 18% standard. Zero-rated: exports, water supply. Exempt: unprocessed food, education, medical services, agricultural inputs, financial services. Threshold UGX 150M/year.",
   "tz-vat": "Tanzania VAT expert. TRA 18% standard. Zero-rated: exports, safari/tourism. Exempt: unprocessed food, educational services, financial services, medical. Threshold TZS 200M/year.",
   "et-vat": "Ethiopia VAT expert. ERCA 15% standard. Zero-rated: exports, international transport. Exempt: agricultural inputs, medical, education, financial services, water. Threshold ETB 1M/year.",
+
+  // ── MEDICAL ────────────────────────────────────────────────────────
+  "medical-report": "Medical lab report interpreter. You help non-medical people understand their blood test and lab results in plain, simple language. When given lab values, explain what each test measures, whether the result is normal/high/low based on standard reference ranges, what abnormal values might indicate, and what questions to ask their doctor. Be reassuring but honest. Always remind them this is educational, not a diagnosis. Use everyday language — avoid jargon. If a value is critically abnormal (e.g., very high glucose, very low hemoglobin), flag it clearly and urge them to see a doctor promptly. Cover CBC, lipid panel, liver function (ALT, AST, ALP, bilirubin), kidney function (creatinine, BUN, eGFR), thyroid (TSH, T3, T4), diabetes (glucose, HbA1c), iron studies, vitamins, cardiac markers, and urinalysis.",
+
+  // ── JAPA ───────────────────────────────────────────────────────────
+  "japa-calculator": "African relocation/migration (Japa) expert. You help people planning to relocate from African countries understand visa pathways, costs, timelines, and requirements for destinations including Canada, UK, US, Germany, Netherlands, Australia, UAE, and others. Reference specific visa fees, processing times, and proof-of-funds requirements. Be practical and specific with numbers.",
+  "japa-visa-predict": "Visa success prediction expert for African migrants. Assess visa application strength based on education, work experience, English proficiency, finances, job offers, and personal factors. Give a realistic success percentage and specific recommendations to improve chances. Be honest about challenges while remaining encouraging.",
 };
 
 exports.handler = async function(event) {
@@ -58,7 +120,7 @@ exports.handler = async function(event) {
 
   const headers = {
     "Access-Control-Allow-Origin": corsOrigin,
-    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
     "Access-Control-Allow-Methods": "POST, OPTIONS",
     "Content-Type": "application/json",
     "Vary": "Origin"
@@ -81,6 +143,24 @@ exports.handler = async function(event) {
     };
   }
 
+  // ── Rate limiting ──
+  const rateResult = await checkRateLimit(event);
+  if (!rateResult.allowed) {
+    return {
+      statusCode: 429, headers,
+      body: JSON.stringify({
+        error: "rate_limited",
+        reply: "You've reached your daily AI advisor limit. Sign up or log in for more questions, or try again tomorrow.",
+        remaining: 0,
+        limit: rateResult.limit,
+        resetAt: rateResult.resetAt
+      })
+    };
+  }
+  // Include rate limit info in response headers
+  headers['X-RateLimit-Remaining'] = String(rateResult.remaining);
+  headers['X-RateLimit-Limit'] = String(rateResult.limit);
+
   let body;
   try { body = JSON.parse(event.body); }
   catch { return { statusCode: 400, headers, body: JSON.stringify({ error: "Invalid JSON body" }) }; }
@@ -88,7 +168,13 @@ exports.handler = async function(event) {
   const { message, messages, tool, context } = body;
 
   // System prompt construction
-  let systemPrompt = "You are the AfroTools AI Advisor — an expert in African tax, payroll, VAT, and financial regulations across all 54 African countries. ";
+  const isMedical = tool === "medical-report";
+  const isJapa = tool && tool.startsWith("japa");
+  let systemPrompt = isMedical
+    ? "You are the AfroTools Medical Report Interpreter — you help everyday people understand their lab results in simple, clear language. "
+    : isJapa
+    ? "You are the AfroTools Japa Advisor — an expert on African emigration, visa pathways, and relocation planning. "
+    : "You are the AfroTools AI Advisor — an expert in African tax, payroll, VAT, and financial regulations across all 54 African countries. ";
 
   if (tool && TOOL_CONTEXT[tool]) {
     systemPrompt += TOOL_CONTEXT[tool] + " ";
@@ -98,7 +184,11 @@ exports.handler = async function(event) {
     systemPrompt += `Live calculation data from the page: ${context}. Reference these exact figures in your answer. `;
   }
 
-  systemPrompt += "Rules: Under 220 words. Specific with numbers and percentages. Use the user's local currency. Be direct and practical — give exact figures, not vague guidance. No markdown: no asterisks, no bullet dashes, no bold. Write in plain conversational sentences. If you don't know the exact current rate, say so and suggest the user verify with the official tax authority.";
+  if (isMedical) {
+    systemPrompt += "Rules: Be thorough but use plain language a non-medical person can understand. Explain each test result clearly. Flag anything abnormal. Always end with a reminder that this is educational, not a diagnosis, and they should discuss results with their doctor. No markdown formatting. Write in warm, reassuring conversational sentences.";
+  } else {
+    systemPrompt += "Rules: Under 220 words. Specific with numbers and percentages. Use the user's local currency. Be direct and practical — give exact figures, not vague guidance. No markdown: no asterisks, no bullet dashes, no bold. Write in plain conversational sentences. If you don't know the exact current rate, say so and suggest the user verify with the official tax authority.";
+  }
 
   // Messages
   let apiMessages;
@@ -120,7 +210,7 @@ exports.handler = async function(event) {
       },
       body: JSON.stringify({
         model: "claude-haiku-4-5-20251001",
-        max_tokens: 400,
+        max_tokens: isMedical ? 1200 : isJapa ? 600 : 400,
         system: systemPrompt,
         messages: apiMessages
       })
@@ -137,7 +227,10 @@ exports.handler = async function(event) {
 
     const data = await response.json();
     const reply = data?.content?.[0]?.text ?? "Sorry, I could not generate a response. Please try again.";
-    return { statusCode: 200, headers, body: JSON.stringify({ reply }) };
+    return {
+      statusCode: 200, headers,
+      body: JSON.stringify({ reply, remaining: rateResult.remaining })
+    };
 
   } catch (err) {
     console.error("Function error:", err.message);

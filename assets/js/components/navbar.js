@@ -852,4 +852,37 @@
   if (!customElements.get('afro-navbar')) {
     customElements.define('afro-navbar', AfroNavbar);
   }
+
+  /* ── PRO GATE: inject on tool pages for upsell banners ── */
+  (function _proGate() {
+    const s = document.createElement('script'); s.src = '/assets/js/pro-gate.js'; s.defer = true;
+    document.head.appendChild(s);
+  })();
+
+  /* ── SHARE IMAGE: auto-inject on tool pages with .action-row ── */
+  (function _shareImage() {
+    function tryInject() {
+      if (document.querySelector('.action-row') && !document.getElementById('afro-share-img-js')) {
+        const s = document.createElement('script'); s.id = 'afro-share-img-js';
+        s.src = '/assets/js/share-image-inject.js'; s.defer = true;
+        document.head.appendChild(s);
+      }
+    }
+    if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', tryInject); }
+    else { tryInject(); }
+  })();
+
+  /* ── PWA: inject manifest, theme-color & service worker from navbar (every page) ── */
+  (function _pwa() {
+    if (!document.querySelector('link[rel="manifest"]')) {
+      const l = document.createElement('link'); l.rel = 'manifest'; l.href = '/manifest.json';
+      document.head.appendChild(l);
+    }
+    if (!document.querySelector('meta[name="theme-color"]')) {
+      const m = document.createElement('meta'); m.name = 'theme-color'; m.content = '#0c1a10';
+      document.head.appendChild(m);
+    }
+    const s = document.createElement('script'); s.src = '/assets/js/pwa-install.js'; s.defer = true;
+    document.head.appendChild(s);
+  })();
 })();

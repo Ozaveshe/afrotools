@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-D859CGF391');
+</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fuel Cost Calculator | AfroTools</title>
+  <meta name="description" content="Calculate fuel costs for trips and generators in Africa. Pre-filled fuel prices for Nigeria, Kenya, Ghana, South Africa, Egypt. Supports PMS, AGO, DPK.">
+  <link rel="canonical" href="https://afrotools.com/tools/fuel-cost">
+  <meta property="og:title" content="Fuel Cost Calculator | AfroTools">
+  <meta property="og:description" content="Calculate fuel costs for trips and generators in Africa. Pre-filled fuel prices for Nigeria, Kenya, Ghana, South Africa.">
+  <meta property="og:site_name" content="AfroTools">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css">
+  <link rel="stylesheet" href="/assets/css/global.min.css">
+  <script src="/assets/js/components/navbar.min.js" defer></script>
+  <script src="/assets/js/components/footer.min.js" defer></script>
+  <meta name="tool-id" content="fuel-cost">
+  <script src="/assets/js/favorites.js"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Fuel Cost Calculator",
+    "url": "https://afrotools.com/tools/fuel-cost",
+    "description": "Calculate fuel costs for trips and generators across African countries with pre-filled local fuel prices.",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    :root { --green: #008751; --dark: #0f1419; --border: #e5e7eb; --light-bg: #f9fafb; --radius: 14px; }
+    body { font-family: 'DM Sans', sans-serif; background: #fff; color: var(--dark); line-height: 1.6; }
+    .container { max-width: 900px; margin: 0 auto; padding: 1.5rem; }
+    .hero { background: linear-gradient(135deg, var(--green) 0%, #006b42 100%); color: #fff; padding: 3rem 1.5rem; text-align: center; border-radius: var(--radius); margin-bottom: 2rem; }
+    .hero h1 { font-size: 2.2rem; font-weight: 700; margin: 0 0 .5rem; }
+    .hero p { font-size: 1.05rem; opacity: .93; margin: 0; }
+    .card { background: #fff; border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .card h2 { font-size: 1.25rem; font-weight: 700; margin: 0 0 1rem; }
+    label { display: block; font-weight: 600; margin-bottom: .35rem; font-size: .95rem; }
+    .help-text { font-size: .8rem; color: #888; margin-bottom: .75rem; }
+    .input-row { display: flex; gap: .75rem; margin-bottom: 1rem; align-items: end; }
+    .input-group { flex: 1; }
+    select, input[type="text"], input[type="number"] {
+      width: 100%; padding: .65rem .85rem; border: 1.5px solid var(--border); border-radius: 10px;
+      font-family: inherit; font-size: .95rem; transition: border .2s;
+    }
+    select:focus, input:focus { outline: none; border-color: var(--green); }
+    .btn { display: inline-flex; align-items: center; gap: .5rem; padding: .7rem 1.4rem; border: none; border-radius: 10px; font-family: inherit; font-size: .95rem; font-weight: 600; cursor: pointer; transition: all .2s; }
+    .btn-primary { background: var(--green); color: #fff; }
+    .btn-primary:hover { background: #006b42; }
+    .btn-outline { background: transparent; border: 1.5px solid var(--border); color: var(--dark); }
+    .btn-outline:hover { border-color: var(--green); color: var(--green); }
+    .tabs { display: flex; gap: 0; margin-bottom: 1.5rem; border: 1.5px solid var(--border); border-radius: 10px; overflow: hidden; }
+    .tab { flex: 1; padding: .65rem; text-align: center; font-weight: 600; font-size: .9rem; cursor: pointer; background: var(--light-bg); border: none; transition: all .2s; }
+    .tab.active { background: var(--green); color: #fff; }
+    .check-row { display: flex; align-items: center; gap: .5rem; margin-bottom: 1rem; font-size: .95rem; }
+    .check-row input[type="checkbox"] { accent-color: var(--green); width: 18px; height: 18px; }
+    .result-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 1rem; }
+    .result-stat { background: var(--light-bg); border: 1.5px solid var(--border); border-radius: 10px; padding: 1rem; text-align: center; }
+    .result-stat .label { font-size: .8rem; color: #888; text-transform: uppercase; letter-spacing: .5px; margin-bottom: .25rem; }
+    .result-stat .value { font-size: 1.4rem; font-weight: 700; color: var(--green); }
+    .result-stat .sub { font-size: .85rem; color: #666; margin-top: .15rem; }
+    .actions-row { display: flex; gap: .75rem; flex-wrap: wrap; margin-top: 1rem; }
+    .copy-toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background: var(--dark); color: #fff; padding: .65rem 1.5rem; border-radius: 10px; font-weight: 600; font-size: .9rem; opacity: 0; transition: opacity .3s; z-index: 999; }
+    .copy-toast.show { opacity: 1; }
+    .faq-section { margin-top: 2rem; }
+    .faq-item { border: 1.5px solid var(--border); border-radius: var(--radius); margin-bottom: .75rem; overflow: hidden; }
+    .faq-q { padding: 1rem 1.25rem; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: var(--light-bg); }
+    .faq-q::after { content: '+'; font-size: 1.3rem; font-weight: 700; color: var(--green); }
+    .faq-item.open .faq-q::after { content: '\2212'; }
+    .faq-a { padding: 0 1.25rem; max-height: 0; overflow: hidden; transition: max-height .3s, padding .3s; font-size: .93rem; color: #555; }
+    .faq-item.open .faq-a { max-height: 300px; padding: .75rem 1.25rem 1rem; }
+    @media (max-width: 680px) {
+      .hero h1 { font-size: 1.6rem; }
+      .hero { padding: 2rem 1rem; }
+      .container { padding: 1rem; }
+      .input-row { flex-direction: column; }
+      .result-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<div class="container">
+  <div class="hero">
+    <h1>Fuel Cost Calculator</h1>
+    <p>Calculate trip fuel costs and generator running costs with African fuel prices</p>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchMode('trip')">Trip Calculator</button>
+    <button class="tab" onclick="switchMode('generator')">Generator Mode</button>
+  </div>
+
+  <!-- Trip Mode -->
+  <div id="tripMode" class="card">
+    <h2>Trip Fuel Cost</h2>
+    <label>Country (auto-fills fuel price)</label>
+    <select id="country" onchange="updateFuelPrice()" style="margin-bottom:1rem;">
+      <option value="NG" data-currency="NGN" data-symbol="₦" data-pms="710" data-ago="1050" data-dpk="1100">Nigeria</option>
+      <option value="KE" data-currency="KES" data-symbol="KSh" data-pms="217" data-ago="204" data-dpk="195">Kenya</option>
+      <option value="GH" data-currency="GHS" data-symbol="GH₵" data-pms="15.50" data-ago="15.80" data-dpk="14.00">Ghana</option>
+      <option value="ZA" data-currency="ZAR" data-symbol="R" data-pms="24.50" data-ago="22.80" data-dpk="19.50">South Africa</option>
+      <option value="EG" data-currency="EGP" data-symbol="E£" data-pms="12.50" data-ago="10.25" data-dpk="10.00">Egypt</option>
+      <option value="TZ" data-currency="TZS" data-symbol="TSh" data-pms="3377" data-ago="3315" data-dpk="3200">Tanzania</option>
+      <option value="UG" data-currency="UGX" data-symbol="USh" data-pms="5300" data-ago="5100" data-dpk="4800">Uganda</option>
+      <option value="CM" data-currency="XAF" data-symbol="FCFA" data-pms="730" data-ago="720" data-dpk="600">Cameroon</option>
+      <option value="RW" data-currency="RWF" data-symbol="FRw" data-pms="1549" data-ago="1524" data-dpk="1400">Rwanda</option>
+      <option value="custom" data-currency="" data-symbol="" data-pms="" data-ago="" data-dpk="">Custom</option>
+    </select>
+
+    <label>Fuel Type</label>
+    <select id="fuelType" onchange="updateFuelPrice()" style="margin-bottom:1rem;">
+      <option value="pms">PMS (Petrol/Gasoline)</option>
+      <option value="ago">AGO (Diesel)</option>
+      <option value="dpk">DPK (Kerosene)</option>
+    </select>
+
+    <div class="input-row">
+      <div class="input-group">
+        <label>Distance</label>
+        <input type="number" id="distance" placeholder="e.g. 350" min="0" step="any">
+      </div>
+      <div class="input-group">
+        <label>Unit</label>
+        <select id="distUnit">
+          <option value="km">Kilometers</option>
+          <option value="mi">Miles</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="input-row">
+      <div class="input-group">
+        <label>Fuel Consumption</label>
+        <input type="number" id="consumption" placeholder="e.g. 12" min="0" step="any">
+      </div>
+      <div class="input-group">
+        <label>Unit</label>
+        <select id="consUnit">
+          <option value="l100">L/100km</option>
+          <option value="mpg">MPG (US)</option>
+          <option value="kml">km/L</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="input-row">
+      <div class="input-group">
+        <label>Fuel Price (per litre)</label>
+        <input type="number" id="fuelPrice" placeholder="e.g. 710" min="0" step="any">
+      </div>
+      <div class="input-group">
+        <label>Currency</label>
+        <input type="text" id="currLabel" value="NGN" readonly style="background:var(--light-bg);">
+      </div>
+    </div>
+
+    <div class="check-row">
+      <input type="checkbox" id="roundTrip">
+      <label for="roundTrip" style="margin:0; font-weight:500;">Round trip (double distance)</label>
+    </div>
+
+    <button class="btn btn-primary" onclick="calcTrip()">Calculate Cost</button>
+  </div>
+
+  <!-- Generator Mode -->
+  <div id="genMode" class="card" style="display:none;">
+    <h2>Generator Fuel Cost</h2>
+    <label>Country</label>
+    <select id="genCountry" onchange="updateGenPrice()" style="margin-bottom:1rem;">
+      <option value="NG" data-currency="NGN" data-symbol="₦" data-pms="710" data-ago="1050">Nigeria</option>
+      <option value="KE" data-currency="KES" data-symbol="KSh" data-pms="217" data-ago="204">Kenya</option>
+      <option value="GH" data-currency="GHS" data-symbol="GH₵" data-pms="15.50" data-ago="15.80">Ghana</option>
+      <option value="ZA" data-currency="ZAR" data-symbol="R" data-pms="24.50" data-ago="22.80">South Africa</option>
+      <option value="custom" data-currency="" data-symbol="" data-pms="" data-ago="">Custom</option>
+    </select>
+
+    <label>Fuel Type</label>
+    <select id="genFuelType" onchange="updateGenPrice()" style="margin-bottom:1rem;">
+      <option value="pms">PMS (Petrol)</option>
+      <option value="ago">AGO (Diesel)</option>
+    </select>
+
+    <div class="input-row">
+      <div class="input-group">
+        <label>Generator Rating (kVA)</label>
+        <input type="number" id="genKva" placeholder="e.g. 3.5" min="0" step="any">
+        <div class="help-text">Common: 2.5, 3.5, 5, 7.5, 10, 20 kVA</div>
+      </div>
+      <div class="input-group">
+        <label>Hours of Use</label>
+        <input type="number" id="genHours" placeholder="e.g. 8" min="0" step="any">
+      </div>
+    </div>
+
+    <div class="input-row">
+      <div class="input-group">
+        <label>Burn Rate (L/hr)</label>
+        <input type="number" id="burnRate" placeholder="Auto-estimated" min="0" step="any">
+        <div class="help-text">Leave blank for auto estimate based on kVA</div>
+      </div>
+      <div class="input-group">
+        <label>Fuel Price (per litre)</label>
+        <input type="number" id="genFuelPrice" placeholder="e.g. 710" min="0" step="any">
+      </div>
+    </div>
+
+    <button class="btn btn-primary" onclick="calcGen()">Calculate Cost</button>
+  </div>
+
+  <!-- Results -->
+  <div id="resultCard" class="card" style="display:none;">
+    <h2>Results</h2>
+    <div class="result-grid" id="resultGrid"></div>
+  </div>
+
+  <div class="faq-section">
+    <h2 style="font-size:1.3rem; margin-bottom:1rem;">Frequently Asked Questions</h2>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">How are fuel prices determined?</div>
+      <div class="faq-a">We pre-fill approximate current pump prices for each country. Prices vary by region and station. You can always edit the price field to match your local fuel cost.</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">What do PMS, AGO, and DPK mean?</div>
+      <div class="faq-a">PMS is Premium Motor Spirit (petrol/gasoline), AGO is Automotive Gas Oil (diesel), and DPK is Dual Purpose Kerosene. These are the standard Nigerian fuel classifications used across West Africa.</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">How is generator fuel consumption estimated?</div>
+      <div class="faq-a">We estimate burn rate at roughly 0.3 litres per hour per kVA at 75% load for petrol generators, and 0.22 L/hr/kVA for diesel. Actual consumption depends on load, age, and maintenance of the generator.</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">What is a typical fuel consumption for cars?</div>
+      <div class="faq-a">Small cars: 6-8 L/100km. Sedans: 8-12 L/100km. SUVs: 10-15 L/100km. Trucks: 15-25 L/100km. You can also enter consumption as km/L or MPG.</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Does this account for traffic and driving conditions?</div>
+      <div class="faq-a">No. This is an estimate based on average rated fuel consumption. City driving with traffic typically uses 20-30% more fuel than highway driving. Adjust your consumption figure accordingly.</div>
+    </div>
+  </div>
+</div>
+
+<div class="copy-toast" id="toast">Copied!</div>
+
+<afro-related-tools category="african"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+function switchMode(mode) {
+  document.querySelectorAll('.tab').forEach((t, i) => {
+    t.classList.toggle('active', (mode === 'trip' && i === 0) || (mode === 'generator' && i === 1));
+  });
+  document.getElementById('tripMode').style.display = mode === 'trip' ? '' : 'none';
+  document.getElementById('genMode').style.display = mode === 'generator' ? '' : 'none';
+  document.getElementById('resultCard').style.display = 'none';
+}
+
+function getOpt(sel) { return sel.options[sel.selectedIndex]; }
+
+function updateFuelPrice() {
+  const opt = getOpt(document.getElementById('country'));
+  const type = document.getElementById('fuelType').value;
+  const price = opt.dataset[type];
+  if (price) document.getElementById('fuelPrice').value = price;
+  document.getElementById('currLabel').value = opt.dataset.currency || 'Custom';
+}
+
+function updateGenPrice() {
+  const opt = getOpt(document.getElementById('genCountry'));
+  const type = document.getElementById('genFuelType').value;
+  const price = opt.dataset[type];
+  if (price) document.getElementById('genFuelPrice').value = price;
+}
+
+function calcTrip() {
+  const dist = parseFloat(document.getElementById('distance').value);
+  const cons = parseFloat(document.getElementById('consumption').value);
+  const price = parseFloat(document.getElementById('fuelPrice').value);
+  const unit = document.getElementById('distUnit').value;
+  const consUnit = document.getElementById('consUnit').value;
+  const rt = document.getElementById('roundTrip').checked;
+  if (!dist || !cons || !price) { showToast('Fill in all fields'); return; }
+
+  let distKm = unit === 'mi' ? dist * 1.60934 : dist;
+  if (rt) distKm *= 2;
+
+  let litresPerKm;
+  if (consUnit === 'l100') litresPerKm = cons / 100;
+  else if (consUnit === 'kml') litresPerKm = 1 / cons;
+  else litresPerKm = 1 / (cons * 1.60934 / 3.78541); // MPG to L/km
+
+  const totalLitres = distKm * litresPerKm;
+  const totalCost = totalLitres * price;
+  const opt = getOpt(document.getElementById('country'));
+  const sym = opt.dataset.symbol || '';
+  const curr = opt.dataset.currency || '';
+
+  showResults([
+    { label: 'Total Distance', value: (rt ? distKm : distKm).toFixed(1) + ' km', sub: rt ? '(round trip)' : '' },
+    { label: 'Fuel Needed', value: totalLitres.toFixed(1) + ' L', sub: '' },
+    { label: 'Total Cost', value: sym + totalCost.toLocaleString('en', {minimumFractionDigits:0, maximumFractionDigits:0}), sub: curr },
+    { label: 'Cost per km', value: sym + (totalCost / distKm).toFixed(1), sub: '' }
+  ]);
+}
+
+function calcGen() {
+  const kva = parseFloat(document.getElementById('genKva').value);
+  const hours = parseFloat(document.getElementById('genHours').value);
+  const price = parseFloat(document.getElementById('genFuelPrice').value);
+  const fuelType = document.getElementById('genFuelType').value;
+  let burnRate = parseFloat(document.getElementById('burnRate').value);
+
+  if (!kva || !hours || !price) { showToast('Fill in all fields'); return; }
+  if (!burnRate || isNaN(burnRate)) {
+    burnRate = fuelType === 'ago' ? kva * 0.22 : kva * 0.3;
+  }
+
+  const totalLitres = burnRate * hours;
+  const totalCost = totalLitres * price;
+  const opt = getOpt(document.getElementById('genCountry'));
+  const sym = opt.dataset.symbol || '';
+  const curr = opt.dataset.currency || '';
+
+  showResults([
+    { label: 'Generator', value: kva + ' kVA', sub: fuelType.toUpperCase() },
+    { label: 'Run Time', value: hours + ' hours', sub: '' },
+    { label: 'Burn Rate', value: burnRate.toFixed(2) + ' L/hr', sub: '' },
+    { label: 'Fuel Needed', value: totalLitres.toFixed(1) + ' L', sub: '' },
+    { label: 'Total Cost', value: sym + totalCost.toLocaleString('en', {minimumFractionDigits:0, maximumFractionDigits:0}), sub: curr },
+    { label: 'Cost per Hour', value: sym + (totalCost / hours).toFixed(0), sub: '' }
+  ]);
+}
+
+function showResults(stats) {
+  const grid = document.getElementById('resultGrid');
+  grid.innerHTML = stats.map(s =>
+    '<div class="result-stat"><div class="label">' + s.label + '</div><div class="value">' + s.value + '</div>' +
+    (s.sub ? '<div class="sub">' + s.sub + '</div>' : '') + '</div>'
+  ).join('');
+  document.getElementById('resultCard').style.display = '';
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+// Init
+updateFuelPrice();
+updateGenPrice();
+</script>
+</body>
+</html>

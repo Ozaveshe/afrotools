@@ -475,6 +475,14 @@
       .cats-grid { grid-template-columns: repeat(2,1fr); }
       .phase-grid { grid-template-columns: repeat(2,1fr); }
     }
+    /* Use case cards */
+    .use-case-card:hover { background: rgba(255,255,255,.1) !important; border-color: rgba(0,200,115,.3) !important; transform: translateY(-2px); }
+    @media (max-width: 768px) {
+      #use-case-grid { grid-template-columns: repeat(2,1fr) !important; }
+    }
+    @media (max-width: 480px) {
+      #use-case-grid { grid-template-columns: 1fr !important; }
+    }
     @media (max-width: 640px) {
       .hero { padding: 52px 16px 44px; }
       .sec { padding: 48px 16px; }
@@ -520,44 +528,65 @@
   HERO
 ═══════════════════════════════════════════════════════════ -->
 <section class="hero" aria-label="Hero">
-  <div class="hero-inner">
+  <div class="hero-inner" style="grid-template-columns:1fr;text-align:center;max-width:800px;">
     <div>
-      <div class="hero-eyebrow">Africa's Everything Platform</div>
-      <h1 class="hero-h1" id="hero-h1">120+ Free Tools.<br>Built for <span class="acc">Africa.</span></h1>
-      <p class="hero-sub">PAYE calculators. PDF workspace. Currency tools. CV builder. Remittance comparator. All built for Africa — 54 countries, always free.</p>
-      <div class="hero-btns">
-        <a href="#tools" class="btn-green">Explore Tools →</a>
-        <a href="#countries" class="btn-ghost">Browse 54 Countries</a>
-      </div>
-      <div class="hero-search-wrap">
-        <div class="hero-search" role="search">
+      <div class="hero-eyebrow" style="justify-content:center;">Africa's Everything Platform</div>
+      <h1 class="hero-h1" id="hero-h1" style="margin-left:auto;margin-right:auto;">Know Your Numbers.<br>Plan Your <span class="acc">Future.</span></h1>
+      <p class="hero-sub" style="margin-left:auto;margin-right:auto;max-width:600px;">Free tax calculators, PDF tools, and AI-powered financial guidance for all 54 African countries.</p>
+      <div class="hero-search-wrap" style="max-width:520px;margin:0 auto 32px;">
+        <div class="hero-search" role="search" style="max-width:100%;">
           <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.4"/><line x1="9.5" y1="9.5" x2="13" y2="13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
           <input type="text" id="hero-search-input" placeholder="e.g. Nigeria PAYE, PDF merge, currency…" aria-label="Search tools" autocomplete="off" spellcheck="false">
           <button class="hero-search-btn" type="button" id="hero-search-btn">Search</button>
         </div>
         <div class="search-dropdown" id="search-dropdown" role="listbox"></div>
       </div>
-      <div class="hero-ticker">
-        <span class="ticker-dot"></span>
-        <span class="ticker-text"><strong>Now Live:</strong> Currency Converter (live forex + crypto), VAT Calculator (54 countries), CV Builder (6 modern templates), Japa Calculator — all free</span>
-      </div>
     </div>
-    <div class="hero-stats">
-      <div class="hs-item">
-        <div class="hs-num">54</div>
-        <div class="hs-lbl">African countries covered</div>
+  </div>
+
+  <!-- USE CASE CARDS -->
+  <div id="use-case-grid" style="max-width:900px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:0 20px;position:relative;z-index:1;">
+    <a href="/nigeria/ng-salary-tax" class="use-case-card" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:20px 16px;text-decoration:none;text-align:center;transition:all .2s;">
+      <div style="font-size:1.8rem;margin-bottom:8px;">💰</div>
+      <div style="font-size:.82rem;font-weight:700;color:#fff;margin-bottom:4px;">Calculate PAYE Tax</div>
+      <div style="font-size:.72rem;color:rgba(255,255,255,.5);line-height:1.5;">See your exact take-home pay in 30 seconds</div>
+    </a>
+    <a href="/tools/pdf-workspace" class="use-case-card" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:20px 16px;text-decoration:none;text-align:center;transition:all .2s;">
+      <div style="font-size:1.8rem;margin-bottom:8px;">📄</div>
+      <div style="font-size:.82rem;font-weight:700;color:#fff;margin-bottom:4px;">Generate PDF Reports</div>
+      <div style="font-size:.72rem;color:rgba(255,255,255,.5);line-height:1.5;">Merge, split, and organize documents privately</div>
+    </a>
+    <a href="/dashboard/" class="use-case-card" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:20px 16px;text-decoration:none;text-align:center;transition:all .2s;">
+      <div style="font-size:1.8rem;margin-bottom:8px;">🤖</div>
+      <div style="font-size:.82rem;font-weight:700;color:#fff;margin-bottom:4px;">AI Financial Advisor</div>
+      <div style="font-size:.72rem;color:rgba(255,255,255,.5);line-height:1.5;">Get personalized tax guidance powered by AI</div>
+    </a>
+    <a href="/tools/japa-calculator" class="use-case-card" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:20px 16px;text-decoration:none;text-align:center;transition:all .2s;">
+      <div style="font-size:1.8rem;margin-bottom:8px;">✈️</div>
+      <div style="font-size:.82rem;font-weight:700;color:#fff;margin-bottom:4px;">Plan Your Relocation</div>
+      <div style="font-size:.72rem;color:rgba(255,255,255,.5);line-height:1.5;">Know the true cost of moving abroad</div>
+    </a>
+  </div>
+
+  <!-- SOCIAL PROOF -->
+  <div style="max-width:700px;margin:32px auto 0;text-align:center;position:relative;z-index:1;padding:0 20px;">
+    <p style="font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:14px;">Trusted by professionals across Africa</p>
+    <div style="display:flex;justify-content:center;gap:32px;flex-wrap:wrap;">
+      <div style="text-align:center;">
+        <div style="font-size:1.6rem;font-weight:800;color:#5ddb9e;">54</div>
+        <div style="font-size:.68rem;color:rgba(255,255,255,.4);">Countries</div>
       </div>
-      <div class="hs-item">
-        <div class="hs-num" id="stat-categories">12</div>
-        <div class="hs-lbl">Tool categories</div>
+      <div style="text-align:center;">
+        <div style="font-size:1.6rem;font-weight:800;color:#5ddb9e;" id="stat-total">175+</div>
+        <div style="font-size:.68rem;color:rgba(255,255,255,.4);">Live Tools</div>
       </div>
-      <div class="hs-item">
-        <div class="hs-num" id="stat-total">120+</div>
-        <div class="hs-lbl">Tools in pipeline</div>
+      <div style="text-align:center;">
+        <div style="font-size:1.6rem;font-weight:800;color:#5ddb9e;" id="stat-categories">12</div>
+        <div style="font-size:.68rem;color:rgba(255,255,255,.4);">Categories</div>
       </div>
-      <div class="hs-item">
-        <div class="hs-num" id="stat-live">4</div>
-        <div class="hs-lbl">Live now</div>
+      <div style="text-align:center;">
+        <div style="font-size:1.6rem;font-weight:800;color:#F5A623;">AI</div>
+        <div style="font-size:.68rem;color:rgba(255,255,255,.4);">Powered Advisors</div>
       </div>
     </div>
   </div>
@@ -584,10 +613,8 @@
   var cats=Object.keys(AFRO_CATEGORIES).length;
   var liveF=AFRO_TOOLS.filter(function(t){return(t.status==='live'||t.status==='new')&&t.category==='financial'&&t.countries[0]!=='ALL';}).length;
   var e;
-  e=document.getElementById('stat-total');      if(e) e.textContent=total+'+';
-  e=document.getElementById('stat-live');       if(e) e.textContent=live;
+  e=document.getElementById('stat-total');      if(e) e.textContent=live+'+';
   e=document.getElementById('stat-categories'); if(e) e.textContent=cats;
-  e=document.getElementById('hero-h1');         if(e) e.innerHTML=total+'+ Free Tools.<br>Built for <span class="acc">Africa.</span>';
   window._afroStats={total:total,live:live,cats:cats,liveF:liveF};
 })();
 </script>

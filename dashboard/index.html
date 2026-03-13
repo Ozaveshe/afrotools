@@ -13,6 +13,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
     <title>My Dashboard | AfroTools</title>
+    <link rel="stylesheet" href="/assets/css/tokens.min.css">
+    <link rel="stylesheet" href="/assets/css/global.min.css">
+    <link rel="stylesheet" href="/assets/css/dashboard.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
@@ -754,6 +757,29 @@
                 </div>
             </div>
 
+            <!-- NEW: Dashboard Widgets -->
+            <div class="dash-widgets-grid">
+              <div class="dash-widget">
+                <div class="dash-widget-title"><span class="widget-icon">📅</span> Tax Calendar</div>
+                <div id="taxCalendar"></div>
+              </div>
+              <div class="dash-widget">
+                <div class="dash-widget-title"><span class="widget-icon">🔔</span> Regulatory Alerts</div>
+                <div id="taxAlerts"></div>
+              </div>
+            </div>
+
+            <div class="dash-widgets-grid">
+              <div class="dash-widget">
+                <div class="dash-widget-title"><span class="widget-icon">💡</span> Recommended For You</div>
+                <div id="recommendations"></div>
+              </div>
+              <div class="dash-widget">
+                <div class="dash-widget-title"><span class="widget-icon">📊</span> PAYE Comparison</div>
+                <div id="yoyComparison"></div>
+              </div>
+            </div>
+
             <!-- Quick Access -->
             <h2 class="section-title">Recently Used Tools</h2>
             <div id="quickAccessContainer" class="quick-access-grid"></div>
@@ -770,9 +796,12 @@
 
     <afro-footer></afro-footer>
 
+    <script src="/assets/js/components/tool-registry.js"></script>
     <script src="/assets/js/afro-auth.js"></script>
-    <script src="/assets/js/navbar.min.js" defer></script>
-    <script src="/assets/js/footer.min.js" defer></script>
+    <script src="/assets/js/tax-calendar.js"></script>
+    <script src="/assets/js/dashboard.js"></script>
+    <script src="/assets/js/components/navbar.min.js" defer></script>
+    <script src="/assets/js/components/footer.min.js" defer></script>
 
     <script>
         // State management
@@ -815,6 +844,10 @@
             document.getElementById('authSection').style.display = 'none';
             document.getElementById('dashboardSection').classList.add('active');
             loadDashboardData();
+            // Initialize enhanced widgets
+            if (window.AfroDashboard) {
+              try { AfroDashboard.initDashboard(); } catch(e) { console.warn('Dashboard widgets:', e); }
+            }
         }
 
         // Tab switching
