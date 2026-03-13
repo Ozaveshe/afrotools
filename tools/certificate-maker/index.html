@@ -491,21 +491,38 @@
   });
 
   downloadPngBtn.addEventListener('click', async () => {
-    const preview = document.querySelector('.preview');
-    const canvas = await html2canvas(preview, { scale: 2 });
-    const link = document.createElement('a');
-    link.href = canvas.toDataURL('image/png');
-    link.download = 'certificate.png';
-    link.click();
+    try {
+      const preview = document.querySelector('.preview');
+      const canvas = await html2canvas(preview, { scale: 2 });
+      const link = document.createElement('a');
+      link.href = canvas.toDataURL('image/png');
+      link.download = 'certificate.png';
+      link.click();
+    } catch (err) {
+      alert('Error generating PNG: ' + err.message);
+    }
   });
 
   downloadPdfBtn.addEventListener('click', async () => {
-    const preview = document.querySelector('.preview');
-    const canvas = await html2canvas(preview, { scale: 2 });
-    const link = document.createElement('a');
-    link.href = canvas.toDataURL('image/png');
-    link.download = 'certificate.pdf';
-    link.click();
+    try {
+      const preview = document.querySelector('.preview');
+      const canvas = await html2canvas(preview, { scale: 2 });
+      const imgData = canvas.toDataURL('image/png');
+      const imgBytes = await fetch(imgData).then(r => r.arrayBuffer());
+      const pdfDoc = await PDFLib.PDFDocument.create();
+      const image = await pdfDoc.embedPng(imgBytes);
+      const page = pdfDoc.addPage([canvas.width, canvas.height]);
+      page.drawImage(image, { x: 0, y: 0, width: canvas.width, height: canvas.height });
+      const pdfBytes = await pdfDoc.save();
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(new Blob([pdfBytes], { type: 'application/pdf' }));
+      link.href = url;
+      link.download = 'certificate.pdf';
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 5000);
+    } catch (err) {
+      alert('Error generating PDF: ' + err.message);
+    }
   });
 </script>
 </body>

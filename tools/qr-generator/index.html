@@ -408,7 +408,78 @@
       height: 50px;
     }
   }
+  details[open] summary svg { transform: rotate(180deg); }
+  details summary::-webkit-details-marker { display: none; }
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "QR Code Generator",
+  "description": "Free QR code generator. Create QR codes from text, URLs, WiFi credentials, and vCards. Customize colors, add logo, download as PNG or SVG.",
+  "url": "https://afrotools.com/tools/qr-generator/",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "provider": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is the QR code free to use commercially?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. QR codes generated with AfroTools are completely free for both personal and commercial use. There are no watermarks, usage limits, or licensing fees. You own the QR codes you create."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What formats can I download QR codes in?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You can download your QR codes as PNG (raster image, great for web and print) or SVG (vector format, scales to any size without quality loss). SVG is recommended for large-format printing."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does the QR code generator work offline?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The QR code generation happens entirely in your browser using client-side JavaScript. Once the page has loaded, you can generate QR codes without an internet connection. No data is sent to any server."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I customize the colors of my QR code?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. You can customize both the dark (foreground) and light (background) colors of your QR code using the color pickers. Make sure there is enough contrast between the two colors for scanners to read the code reliably."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What types of data can I encode in a QR code?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "AfroTools QR Code Generator supports four types: plain text, URLs (website links), WiFi credentials (network name, password, and security type), and vCards (contact information including name, phone, email, and organization)."
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
@@ -438,10 +509,10 @@
         </div>
         <div class="card-body">
           <div class="mode-row">
-            <button class="mode-btn on" data-mode="text">Text</button>
-            <button class="mode-btn" data-mode="url">URL</button>
-            <button class="mode-btn" data-mode="wifi">WiFi</button>
-            <button class="mode-btn" data-mode="vcard">vCard</button>
+            <button class="mode-btn on" data-mode="text" role="button">Text</button>
+            <button class="mode-btn" data-mode="url" role="button">URL</button>
+            <button class="mode-btn" data-mode="wifi" role="button">WiFi</button>
+            <button class="mode-btn" data-mode="vcard" role="button">vCard</button>
           </div>
         </div>
       </div>
@@ -531,7 +602,7 @@
               <span class="f-label-text">Dark Color</span>
             </label>
             <div class="color-row">
-              <input type="color" class="color-input" id="darkColor" value="#000000">
+              <input type="color" class="color-input" id="darkColor" value="#000000" aria-label="QR code dark color">
               <span id="darkColorHex" class="color-label">#000000</span>
             </div>
           </div>
@@ -541,7 +612,7 @@
               <span class="f-label-text">Light Color</span>
             </label>
             <div class="color-row">
-              <input type="color" class="color-input" id="lightColor" value="#ffffff">
+              <input type="color" class="color-input" id="lightColor" value="#ffffff" aria-label="QR code light color">
               <span id="lightColorHex" class="color-label">#ffffff</span>
             </div>
           </div>
@@ -560,8 +631,8 @@
         </div>
         <div id="qrcode" style="padding:20px 0;"></div>
         <div class="action-row">
-          <button class="act-btn act-png" id="downloadPNG">📥 PNG</button>
-          <button class="act-btn act-png" id="downloadSVG">📥 SVG</button>
+          <button class="act-btn act-png" id="downloadPNG" aria-label="Download QR code as PNG">📥 PNG</button>
+          <button class="act-btn act-png" id="downloadSVG" aria-label="Download QR code as SVG">📥 SVG</button>
         </div>
       </div>
 
@@ -581,6 +652,58 @@
     </div>
   </div>
 </div>
+
+<afro-related-tools category="image-design" current="qr-generator"></afro-related-tools>
+<section class="faq-section" style="max-width:800px;margin:40px auto;padding:0 20px">
+  <h2 style="font-size:1.3rem;font-weight:800;color:#111;margin-bottom:20px;font-family:'DM Sans',sans-serif">Frequently Asked Questions</h2>
+  <div class="faq-list">
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        Is the QR code free to use commercially?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        Yes. QR codes generated with AfroTools are completely free for both personal and commercial use. There are no watermarks, usage limits, or licensing fees. You own the QR codes you create.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        What formats can I download QR codes in?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        You can download your QR codes as PNG (raster image, great for web and print) or SVG (vector format, scales to any size without quality loss). SVG is recommended for large-format printing.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        Does the QR code generator work offline?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        Yes. The QR code generation happens entirely in your browser using client-side JavaScript. Once the page has loaded, you can generate QR codes without an internet connection. No data is sent to any server.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        Can I customize the colors of my QR code?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        Yes. You can customize both the dark (foreground) and light (background) colors of your QR code using the color pickers. Make sure there is enough contrast between the two colors for scanners to read the code reliably.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        What types of data can I encode in a QR code?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        AfroTools QR Code Generator supports four types: plain text, URLs (website links), WiFi credentials (network name, password, and security type), and vCards (contact information including name, phone, email, and organization).
+      </div>
+    </details>
+  </div>
+</section>
 
 <afro-footer></afro-footer>
 
@@ -622,6 +745,14 @@
     lightColorHex.textContent = e.target.value.toUpperCase();
   });
 
+  function escapeVCard(str) {
+    return str.replace(/\\/g, '\\\\').replace(/,/g, '\\,').replace(/;/g, '\\;').replace(/\r\n/g, '\\n').replace(/\r/g, '\\n').replace(/\n/g, '\\n');
+  }
+
+  function escapeWifi(str) {
+    return str.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/;/g, '\\;').replace(/:/g, '\\:');
+  }
+
   function getQRData() {
     switch(currentMode) {
       case 'text':
@@ -633,14 +764,22 @@
         const password = document.getElementById('wifiPassword').value;
         const security = document.getElementById('wifiSecurity').value;
         if (!ssid) return null;
-        return `WIFI:T:${security};S:${ssid};P:${password};;`;
+        if ((security === 'WPA' || security === 'WEP') && !password) {
+          alert('Password is required for WPA/WPA2 and WEP networks');
+          return null;
+        }
+        if (security === 'WPA' && password && (password.length < 8 || password.length > 63)) {
+          alert('WPA/WPA2 passwords must be between 8 and 63 characters');
+          return null;
+        }
+        return `WIFI:T:${security};S:${escapeWifi(ssid)};P:${escapeWifi(password)};;`;
       case 'vcard':
         const name = document.getElementById('vcardName').value;
         const phone = document.getElementById('vcardPhone').value;
         const email = document.getElementById('vcardEmail').value;
         const org = document.getElementById('vcardOrg').value;
         if (!name) return null;
-        return `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\n${phone ? 'TEL:' + phone + '\n' : ''}${email ? 'EMAIL:' + email + '\n' : ''}${org ? 'ORG:' + org + '\n' : ''}END:VCARD`;
+        return `BEGIN:VCARD\nVERSION:3.0\nFN:${escapeVCard(name)}\n${phone ? 'TEL:' + escapeVCard(phone) + '\n' : ''}${email ? 'EMAIL:' + escapeVCard(email) + '\n' : ''}${org ? 'ORG:' + escapeVCard(org) + '\n' : ''}END:VCARD`;
     }
   }
 
@@ -690,5 +829,7 @@
     }
   });
 </script>
+<script src="/assets/js/components/tool-registry.js" defer></script>
+<script src="/assets/js/components/related-tools.min.js" defer></script>
 </body>
 </html>

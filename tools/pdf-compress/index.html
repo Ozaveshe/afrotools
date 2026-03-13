@@ -732,6 +732,7 @@
         canvas.width = viewport.width;
         canvas.height = viewport.height;
         const context = canvas.getContext('2d');
+        if (!context) throw new Error('Could not create canvas context for page ' + i);
 
         // Render page
         await page.render({
@@ -791,7 +792,11 @@
 
     } catch (err) {
       console.error(err);
-      processingText.innerHTML = '<div style="color:red;">✗ Error: ' + err.message + '</div>';
+      processingText.textContent = '';
+      const errDiv = document.createElement('div');
+      errDiv.style.color = 'red';
+      errDiv.textContent = '✗ Error: ' + err.message;
+      processingText.appendChild(errDiv);
     }
 
     compressBtn.disabled = false;
@@ -801,9 +806,11 @@
   downloadBtn.addEventListener('click', () => {
     if (compressedPdf) {
       const link = document.createElement('a');
-      link.href = URL.createObjectURL(new Blob([compressedPdf], { type: 'application/pdf' }));
+      const url = URL.createObjectURL(new Blob([compressedPdf], { type: 'application/pdf' }));
+      link.href = url;
       link.download = currentFile.name.replace('.pdf', '_compressed.pdf');
       link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 5000);
     }
   });
 </script>

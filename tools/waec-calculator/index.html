@@ -15,6 +15,12 @@
     <meta name="tool-id" content="waec-calculator">
     <title>WAEC/NECO Grade Calculator 2026 — Aggregate, JAMB Combination, GPA | AfroTools</title>
     <link rel="canonical" href="https://afrotools.com/tools/waec-calculator/">
+    <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="AfroTools">
+    <meta property="og:title" content="WAEC/NECO Grade Calculator 2026 — Aggregate, JAMB Combination, GPA | AfroTools">
+    <meta property="og:description" content="Calculate your WAEC/NECO aggregate score, check JAMB + O'Level eligibility for Nigerian universities, and convert grades to GPA. Free tool for Nigeria and Ghana.">
+    <meta property="og:url" content="https://afrotools.com/tools/waec-calculator/">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -50,12 +56,14 @@
             font-family: 'DM Sans', sans-serif;
             background: #f8f9fa;
             color: #333;
+            overflow-x: hidden;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
+            overflow-x: hidden;
         }
 
         .header {
@@ -389,12 +397,14 @@
             display: flex;
             gap: 10px;
             margin-top: 20px;
+            flex-wrap: wrap;
         }
 
         .toggle-group {
             display: flex;
             gap: 10px;
             margin-bottom: 20px;
+            flex-wrap: wrap;
         }
 
         .toggle-btn {
@@ -448,6 +458,30 @@
             color: #ef4444;
         }
 
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #008751;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 9999;
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
         @media (max-width: 768px) {
             .main-wrapper {
                 grid-template-columns: 1fr;
@@ -469,6 +503,7 @@
 
             .tab-content {
                 padding: 20px;
+                overflow-x: hidden;
             }
         }
     </style>
@@ -496,8 +531,8 @@
                     <div class="form-group">
                         <label>Select Examination Board</label>
                         <div class="toggle-group">
-                            <button class="toggle-btn active" onclick="setExamBoard('waec')">WAEC</button>
-                            <button class="toggle-btn" onclick="setExamBoard('neco')">NECO</button>
+                            <button class="toggle-btn active" onclick="setExamBoard('waec', event)">WAEC</button>
+                            <button class="toggle-btn" onclick="setExamBoard('neco', event)">NECO</button>
                         </div>
                     </div>
 
@@ -568,8 +603,8 @@
                     <div class="form-group">
                         <label>GPA Scale</label>
                         <div class="toggle-group">
-                            <button class="toggle-btn active" onclick="setGpaScale('nigerian')">Nigerian (4.0)</button>
-                            <button class="toggle-btn" onclick="setGpaScale('international')">International (4.0)</button>
+                            <button class="toggle-btn active" onclick="setGpaScale('nigerian', event)">Nigerian (4.0)</button>
+                            <button class="toggle-btn" onclick="setGpaScale('international', event)">International (4.0)</button>
                         </div>
                     </div>
 
@@ -699,16 +734,18 @@
             else if (index === 3) initGhanaTab();
         }
 
-        function setExamBoard(board) {
+        function setExamBoard(board, event) {
             currentExamBoard = board;
-            document.querySelectorAll('.toggle-btn').forEach(el => el.classList.remove('active'));
-            event.target.classList.add('active');
+            const btn = event.currentTarget;
+            btn.parentElement.querySelectorAll('.toggle-btn').forEach(el => el.classList.remove('active'));
+            btn.classList.add('active');
         }
 
-        function setGpaScale(scale) {
+        function setGpaScale(scale, event) {
             currentGpaScale = scale;
-            document.querySelectorAll('.toggle-btn').forEach(el => el.classList.remove('active'));
-            event.target.classList.add('active');
+            const btn = event.currentTarget;
+            btn.parentElement.querySelectorAll('.toggle-btn').forEach(el => el.classList.remove('active'));
+            btn.classList.add('active');
         }
 
         function initAggregateTab() {
@@ -761,11 +798,11 @@
 
         function calculateAggregate() {
             const subjects = Array.from(document.querySelectorAll('#subjectsContainer .subject-row'))
-                .filter(row => row.dataset.grade && row.dataset.grade !== '')
+                .filter(row => row.dataset.subject && row.dataset.subject !== '' && row.dataset.grade && row.dataset.grade !== '')
                 .map(row => ({ subject: row.dataset.subject, grade: row.dataset.grade }));
 
             if (subjects.length === 0) {
-                alert('Please select at least one subject with a grade');
+                alert('Please select at least one subject and its grade');
                 return;
             }
 
@@ -821,6 +858,11 @@
                 return;
             }
 
+            if (isNaN(oLevelAgg) || oLevelAgg < 5 || oLevelAgg > 45) {
+                alert('Please enter a valid O\'Level aggregate (5-45)');
+                return;
+            }
+
             const cutoff = CUTOFF_DATA[university]?.[course] || 0;
             if (cutoff === 0) {
                 alert('This course is not offered at the selected university');
@@ -858,11 +900,11 @@
 
         function calculateGPA() {
             const subjects = Array.from(document.querySelectorAll('#gpaSubjectsContainer .subject-row'))
-                .filter(row => row.dataset.grade && row.dataset.grade !== '')
+                .filter(row => row.dataset.subject && row.dataset.subject !== '' && row.dataset.grade && row.dataset.grade !== '')
                 .map(row => GRADE_POINTS[row.dataset.grade]);
 
             if (subjects.length === 0) {
-                alert('Please select at least one subject with a grade');
+                alert('Please select at least one subject and its grade');
                 return;
             }
 
@@ -908,11 +950,11 @@
 
         function calculateGhanaAggregate() {
             const subjects = Array.from(document.querySelectorAll('#ghanSubjectsContainer .subject-row'))
-                .filter(row => row.dataset.grade && row.dataset.grade !== '')
+                .filter(row => row.dataset.subject && row.dataset.subject !== '' && row.dataset.grade && row.dataset.grade !== '')
                 .map(row => ({ subject: row.dataset.subject, grade: row.dataset.grade }));
 
             if (subjects.length === 0) {
-                alert('Please select at least one subject with a grade');
+                alert('Please select at least one subject and its grade');
                 return;
             }
 
@@ -971,9 +1013,25 @@
             item.classList.toggle('open');
         }
 
+        function showToast(message) {
+            let toast = document.getElementById('toast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'toast';
+                toast.className = 'toast';
+                document.body.appendChild(toast);
+            }
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+
         function copyToClipboard(text) {
-            navigator.clipboard.writeText(text);
-            alert('Copied to clipboard!');
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('Copied to clipboard!');
+            }).catch(() => {
+                showToast('Failed to copy');
+            });
         }
 
         function printResults() {
@@ -983,5 +1041,7 @@
         // Initialize on load
         window.addEventListener('load', initAggregateTab);
     </script>
+<script src="/assets/js/components/newsletter-cta.min.js" defer></script>
+<afro-newsletter-cta></afro-newsletter-cta>
 </body>
 </html>

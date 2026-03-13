@@ -657,29 +657,29 @@
     const canvas = previewCanvas;
     const ctx = canvas.getContext('2d');
 
-    let width = originalImage.width;
-    let height = originalImage.height;
+    const isRotated = (rotation === 90 || rotation === 270);
+    let rotatedW = isRotated ? originalImage.height : originalImage.width;
+    let rotatedH = isRotated ? originalImage.width : originalImage.height;
 
-    if (rotation === 90 || rotation === 270) {
-      [width, height] = [height, width];
-    }
+    let cropW = rotatedW;
+    let cropH = rotatedH;
 
     if (currentRatio !== 'freeform') {
       const [rw, rh] = currentRatio.split(':').map(Number);
-      const ratio = rw / rh;
-      const imgRatio = width / height;
+      const ratio = isRotated ? rh / rw : rw / rh;
+      const imgRatio = rotatedW / rotatedH;
       if (imgRatio > ratio) {
-        width = height * ratio;
+        cropW = rotatedH * ratio;
       } else {
-        height = width / ratio;
+        cropH = rotatedW / ratio;
       }
     }
 
-    canvas.width = width;
-    canvas.height = height;
+    canvas.width = cropW;
+    canvas.height = cropH;
 
     ctx.save();
-    ctx.translate(width / 2, height / 2);
+    ctx.translate(cropW / 2, cropH / 2);
     ctx.scale(flipH ? -1 : 1, flipV ? -1 : 1);
     ctx.rotate((rotation * Math.PI) / 180);
     ctx.drawImage(originalImage, -originalImage.width / 2, -originalImage.height / 2);
@@ -703,5 +703,7 @@
     };
   });
 </script>
+<script src="/assets/js/components/newsletter-cta.min.js" defer></script>
+<afro-newsletter-cta></afro-newsletter-cta>
 </body>
 </html>

@@ -627,13 +627,20 @@
       // Timeout protection against catastrophic backtracking
       const regex = new RegExp(pattern, flags);
       const matches = [];
+      const startTime = performance.now();
+      const MAX_TIME_MS = 3000;
+      const MAX_MATCHES = 10000;
 
       if (flagG.checked) {
         let match;
-        let timeout = 0;
-        while ((match = regex.exec(str)) !== null && timeout < 10000) {
+        while ((match = regex.exec(str)) !== null && matches.length < MAX_MATCHES) {
           matches.push(match);
-          timeout++;
+          if (match[0].length === 0) { regex.lastIndex++; }
+          if (performance.now() - startTime > MAX_TIME_MS) {
+            matchStatus.className = 'match-status invalid';
+            matchStatus.textContent = '⚠ Regex took too long — possible catastrophic backtracking. Showing partial results.';
+            break;
+          }
         }
       } else {
         const match = regex.exec(str);
@@ -661,7 +668,8 @@
       }
     } catch (e) {
       matchStatus.className = 'match-status invalid';
-      matchStatus.textContent = `Error: ${e.message}`;
+      const msg = e.message.replace(/Invalid regular expression: /, '');
+      matchStatus.textContent = `Invalid pattern: ${msg}`;
       resultsList.innerHTML = '';
       copyResultsBtn.style.display = 'none';
     }
@@ -712,10 +720,16 @@
 
   copyResultsBtn.addEventListener('click', () => {
     const text = matchStatus.textContent + '\n' + resultsList.innerText;
-    navigator.clipboard.writeText(text);
-    copyResultsBtn.textContent = '✓ Copied!';
-    setTimeout(() => copyResultsBtn.textContent = '📋 Copy Results', 2000);
+    navigator.clipboard.writeText(text).then(() => {
+      copyResultsBtn.textContent = '✓ Copied!';
+      setTimeout(() => copyResultsBtn.textContent = '📋 Copy Results', 2000);
+    }).catch(() => {
+      copyResultsBtn.textContent = '✗ Copy failed';
+      setTimeout(() => copyResultsBtn.textContent = '📋 Copy Results', 2000);
+    });
   });
 </script>
+<script src="/assets/js/components/newsletter-cta.min.js" defer></script>
+<afro-newsletter-cta></afro-newsletter-cta>
 </body>
 </html>

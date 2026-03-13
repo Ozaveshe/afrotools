@@ -437,7 +437,7 @@
       <div class="info-card">
         <div class="info-title">URL Presets</div>
         <div class="preset-btns">
-          <button class="preset-btn" id="encodeSpaacesBtn">Encode Spaces (%20)</button>
+          <button class="preset-btn" id="encodeSpacesBtn">Encode Spaces (%20)</button>
           <button class="preset-btn" id="encodeSpecialBtn">Encode Special Chars</button>
           <button class="preset-btn" id="rfc3986Btn">RFC 3986 Standard</button>
         </div>
@@ -523,9 +523,13 @@
 
   urlInput.addEventListener('input', processURL);
   urlCopy.addEventListener('click', () => {
-    navigator.clipboard.writeText(urlOutput.textContent);
-    urlCopy.textContent = '✓ Copied!';
-    setTimeout(() => urlCopy.textContent = '📋 Copy Result', 2000);
+    navigator.clipboard.writeText(urlOutput.textContent).then(() => {
+      urlCopy.textContent = '✓ Copied!';
+      setTimeout(() => urlCopy.textContent = '📋 Copy Result', 2000);
+    }).catch(() => {
+      urlCopy.textContent = '✗ Copy failed';
+      setTimeout(() => urlCopy.textContent = '📋 Copy Result', 2000);
+    });
   });
 
   // Base64 Encode/Decode
@@ -551,9 +555,14 @@
     try {
       let result;
       if (b64Mode === 'b64encode') {
-        result = btoa(unescape(encodeURIComponent(text)));
+        const bytes = new TextEncoder().encode(text);
+        let binary = '';
+        bytes.forEach(b => binary += String.fromCharCode(b));
+        result = btoa(binary);
       } else {
-        result = decodeURIComponent(escape(atob(text)));
+        const binary = atob(text);
+        const bytes = Uint8Array.from(binary, c => c.charCodeAt(0));
+        result = new TextDecoder().decode(bytes);
       }
       b64Output.textContent = result;
     } catch (e) {
@@ -563,13 +572,17 @@
 
   b64Input.addEventListener('input', processBase64);
   b64Copy.addEventListener('click', () => {
-    navigator.clipboard.writeText(b64Output.textContent);
-    b64Copy.textContent = '✓ Copied!';
-    setTimeout(() => b64Copy.textContent = '📋 Copy Result', 2000);
+    navigator.clipboard.writeText(b64Output.textContent).then(() => {
+      b64Copy.textContent = '✓ Copied!';
+      setTimeout(() => b64Copy.textContent = '📋 Copy Result', 2000);
+    }).catch(() => {
+      b64Copy.textContent = '✗ Copy failed';
+      setTimeout(() => b64Copy.textContent = '📋 Copy Result', 2000);
+    });
   });
 
   // Preset buttons
-  document.getElementById('encodeSpaacesBtn').addEventListener('click', () => {
+  document.getElementById('encodeSpacesBtn').addEventListener('click', () => {
     urlMode = 'encode';
     urlModeBtns.forEach(b => b.classList.remove('on'));
     document.querySelector('[data-mode="encode"]').classList.add('on');
@@ -593,5 +606,7 @@
     processURL();
   });
 </script>
+<script src="/assets/js/components/newsletter-cta.min.js" defer></script>
+<afro-newsletter-cta></afro-newsletter-cta>
 </body>
 </html>

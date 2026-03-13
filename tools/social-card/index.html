@@ -516,17 +516,21 @@
 
   downloadBtn.addEventListener('click', async () => {
     const size = templateSizes[currentTemplate];
-    const canvas = await html2canvas(cardPreview, {
-      width: size.width,
-      height: size.height,
-      scale: 2,
-      backgroundColor: bgColor.value
-    });
+    try {
+      const canvas = await html2canvas(cardPreview, {
+        width: size.width,
+        height: size.height,
+        scale: 2,
+        backgroundColor: bgColor.value
+      });
 
-    const link = document.createElement('a');
-    link.href = canvas.toDataURL('image/png');
-    link.download = `social-card-${currentTemplate}.png`;
-    link.click();
+      const link = document.createElement('a');
+      link.href = canvas.toDataURL('image/png');
+      link.download = `social-card-${currentTemplate}.png`;
+      link.click();
+    } catch (e) {
+      alert('Failed to generate the card image. Please try again.');
+    }
   });
 </script>
 </body>

@@ -92,7 +92,78 @@
     .btn-num { font-size: 0.85rem; }
     .calc-result { font-size: 1.8rem; }
   }
+  details[open] summary svg { transform: rotate(180deg); }
+  details summary::-webkit-details-marker { display: none; }
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Scientific Calculator",
+  "description": "Free scientific calculator with trigonometry, logarithms, parentheses, memory (M+/M-/MR/MC), constants, factorial, powers, and full keyboard support.",
+  "url": "https://afrotools.com/tools/scientific-calc/",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "provider": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is the AfroTools Scientific Calculator free to use?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, the AfroTools Scientific Calculator is completely free with no sign-up required. It includes trigonometry, logarithms, memory functions, constants, and full keyboard support at no cost."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does the scientific calculator work offline?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. All calculations run directly in your browser using client-side JavaScript. Once the page loads, you can perform calculations without an internet connection."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What modes does the scientific calculator support?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The calculator supports DEG (degrees) and RAD (radians) modes for trigonometric functions. It also includes memory functions (M+, M-, MR, MC), parentheses for complex expressions, and a calculation history."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my calculation data stored or sent to a server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. All calculations happen locally in your browser. Nothing is sent to any server or stored remotely. Your calculation history exists only in your current browser session and is cleared when you close the tab."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What functions are available in this scientific calculator?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The calculator supports sin, cos, tan and their inverses, log (base 10), ln (natural log), square root, cube root, powers (x^y), factorial (n!), absolute value, constants (pi and e), and modulo operations. Full keyboard input is also supported."
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
@@ -116,10 +187,10 @@
     <div>
       <div class="calc-wrap">
         <div class="calc-display">
-          <div class="calc-expr" id="exprDisplay"></div>
-          <div class="calc-result" id="resultDisplay">0</div>
+          <div class="calc-expr" id="exprDisplay" aria-label="Expression" aria-live="polite"></div>
+          <div class="calc-result" id="resultDisplay" aria-label="Result" aria-live="polite">0</div>
           <div class="calc-status">
-            <span class="calc-mode mode-deg" id="modeBtn" style="cursor:pointer;" title="Click to toggle DEG/RAD">DEG</span>
+            <span class="calc-mode mode-deg" id="modeBtn" style="cursor:pointer;" title="Click to toggle DEG/RAD" role="button" aria-pressed="true" aria-label="Angle mode: Degrees">DEG</span>
             <span class="mem-indicator" id="memIndicator"></span>
           </div>
         </div>
@@ -240,6 +311,58 @@
   </div>
 </div>
 
+<afro-related-tools category="education" current="scientific-calc"></afro-related-tools>
+<section class="faq-section" style="max-width:800px;margin:40px auto;padding:0 20px">
+  <h2 style="font-size:1.3rem;font-weight:800;color:#111;margin-bottom:20px;font-family:'DM Sans',sans-serif">Frequently Asked Questions</h2>
+  <div class="faq-list">
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        Is the AfroTools Scientific Calculator free to use?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        Yes, the AfroTools Scientific Calculator is completely free with no sign-up required. It includes trigonometry, logarithms, memory functions, constants, and full keyboard support at no cost.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        Does the scientific calculator work offline?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        Yes. All calculations run directly in your browser using client-side JavaScript. Once the page loads, you can perform calculations without an internet connection.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        What modes does the scientific calculator support?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        The calculator supports DEG (degrees) and RAD (radians) modes for trigonometric functions. It also includes memory functions (M+, M-, MR, MC), parentheses for complex expressions, and a calculation history.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        Is my calculation data stored or sent to a server?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        No. All calculations happen locally in your browser. Nothing is sent to any server or stored remotely. Your calculation history exists only in your current browser session and is cleared when you close the tab.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        What functions are available in this scientific calculator?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        The calculator supports sin, cos, tan and their inverses, log (base 10), ln (natural log), square root, cube root, powers (x^y), factorial (n!), absolute value, constants (pi and e), and modulo operations. Full keyboard input is also supported.
+      </div>
+    </details>
+  </div>
+</section>
+
 <afro-footer></afro-footer>
 
 <script>
@@ -352,54 +475,21 @@
   }
 
   function evalExpression(expr) {
-    // Replace display symbols with JS
     let e = expr
       .replace(/×/g, '*')
       .replace(/÷/g, '/')
       .replace(/−/g, '-')
       .replace(/π/g, `(${Math.PI})`)
-      .replace(/(?<![a-z])e(?![a-z(^])/gi, `(${Math.E})`)
       .replace(/²/g, '**2')
       .replace(/\^/g, '**');
 
-    // Handle factorial
-    e = e.replace(/(\d+)!/g, (_, n) => factorial(parseInt(n)));
-
-    // Handle functions
-    const toRad = isDeg ? `*(${Math.PI}/180)` : '';
-    const fromRad = isDeg ? `*(180/${Math.PI})` : '';
-    e = e.replace(/sin\(/g, `Math.sin(${isDeg ? '' : ''}`)
-    e = e.replace(/cos\(/g, `Math.cos(`)
-    e = e.replace(/tan\(/g, `Math.tan(`)
-
-    // For trig, wrap args in degree conversion if needed
-    if (isDeg) {
-      e = e.replace(/Math\.sin\(([^)]+)\)/g, `Math.sin(($1)*Math.PI/180)`);
-      e = e.replace(/Math\.cos\(([^)]+)\)/g, `Math.cos(($1)*Math.PI/180)`);
-      e = e.replace(/Math\.tan\(([^)]+)\)/g, `Math.tan(($1)*Math.PI/180)`);
-    }
-
-    // Revert trig calls we already handled
-    e = e.replace(/Math\.sin\(Math\.sin/g, 'Math.sin(');
-    e = e.replace(/Math\.cos\(Math\.cos/g, 'Math.cos(');
-    e = e.replace(/Math\.tan\(Math\.tan/g, 'Math.tan(');
-
-    // Simpler approach: custom eval
-    e = expr
-      .replace(/×/g, '*')
-      .replace(/÷/g, '/')
-      .replace(/−/g, '-')
-      .replace(/π/g, `(${Math.PI})`)
-      .replace(/²/g, '**2')
-      .replace(/\^/g, '**');
-
-    // Replace standalone 'e' not part of exp/etc
+    // Replace standalone 'e' (Euler's number) not part of function names
     e = e.replace(/(?<![a-z])e(?![a-z(^x])/g, `(${Math.E})`);
 
     // Factorial
     e = e.replace(/(\d+(?:\.\d+)?)!/g, (_, n) => String(factorial(parseFloat(n))));
 
-    // Functions
+    // Math functions
     e = e.replace(/√\(/g, 'Math.sqrt(');
     e = e.replace(/cbrt\(/g, 'Math.cbrt(');
     e = e.replace(/abs\(/g, 'Math.abs(');
@@ -407,20 +497,21 @@
     e = e.replace(/exp\(/g, 'Math.exp(');
     e = e.replace(/1\/\(/g, '(1/(');
 
+    // Trig functions with degree/radian conversion
     if (isDeg) {
-      e = e.replace(/sin\(([^)]+)\)/g, (_, a) => `Math.sin((${a})*Math.PI/180)`);
-      e = e.replace(/cos\(([^)]+)\)/g, (_, a) => `Math.cos((${a})*Math.PI/180)`);
-      e = e.replace(/tan\(([^)]+)\)/g, (_, a) => `Math.tan((${a})*Math.PI/180)`);
       e = e.replace(/asin\(([^)]+)\)/g, (_, a) => `(Math.asin(${a})*180/Math.PI)`);
       e = e.replace(/acos\(([^)]+)\)/g, (_, a) => `(Math.acos(${a})*180/Math.PI)`);
       e = e.replace(/atan\(([^)]+)\)/g, (_, a) => `(Math.atan(${a})*180/Math.PI)`);
+      e = e.replace(/sin\(([^)]+)\)/g, (_, a) => `Math.sin((${a})*Math.PI/180)`);
+      e = e.replace(/cos\(([^)]+)\)/g, (_, a) => `Math.cos((${a})*Math.PI/180)`);
+      e = e.replace(/tan\(([^)]+)\)/g, (_, a) => `Math.tan((${a})*Math.PI/180)`);
     } else {
-      e = e.replace(/sin\(/g, 'Math.sin(');
-      e = e.replace(/cos\(/g, 'Math.cos(');
-      e = e.replace(/tan\(/g, 'Math.tan(');
       e = e.replace(/asin\(/g, 'Math.asin(');
       e = e.replace(/acos\(/g, 'Math.acos(');
       e = e.replace(/atan\(/g, 'Math.atan(');
+      e = e.replace(/sin\(/g, 'Math.sin(');
+      e = e.replace(/cos\(/g, 'Math.cos(');
+      e = e.replace(/tan\(/g, 'Math.tan(');
     }
 
     e = e.replace(/log\(/g, 'Math.log10(');
@@ -459,6 +550,8 @@
     isDeg = !isDeg;
     modeBtn.textContent = isDeg ? 'DEG' : 'RAD';
     modeBtn.className = 'calc-mode ' + (isDeg ? 'mode-deg' : 'mode-rad');
+    modeBtn.setAttribute('aria-pressed', String(isDeg));
+    modeBtn.setAttribute('aria-label', isDeg ? 'Angle mode: Degrees' : 'Angle mode: Radians');
   });
 
   // Memory
@@ -525,5 +618,7 @@
 
   updateDisplay();
 </script>
+<script src="/assets/js/components/tool-registry.js" defer></script>
+<script src="/assets/js/components/related-tools.min.js" defer></script>
 </body>
 </html>

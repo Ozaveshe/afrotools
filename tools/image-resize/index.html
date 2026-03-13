@@ -522,6 +522,14 @@
             </select>
           </div>
 
+          <div class="field" id="qualityField" style="display:none;">
+            <label class="f-label">
+              <span class="f-label-text">Quality</span>
+              <span style="font-size:0.85rem;font-weight:800;color:var(--afro-green);"><span id="qualityValue">90</span>%</span>
+            </label>
+            <input type="range" id="qualitySlider" min="10" max="100" value="90" style="-webkit-appearance:none;width:100%;height:5px;border-radius:3px;outline:none;cursor:pointer;background:#c5deca;">
+          </div>
+
           <button class="calc-btn" id="resizeBtn" disabled>Resize Image</button>
         </div>
       </div>
@@ -577,6 +585,9 @@
   const previewDims = document.getElementById('previewDims');
   const downloadBtn = document.getElementById('downloadBtn');
   const presetBtns = document.querySelectorAll('.preset-btn');
+  const qualitySlider = document.getElementById('qualitySlider');
+  const qualityValue = document.getElementById('qualityValue');
+  const qualityField = document.getElementById('qualityField');
 
   let originalImage = null;
   let originalWidth = 0;
@@ -628,11 +639,13 @@
       btn.classList.add('on');
       widthInput.value = btn.dataset.w;
       heightInput.value = btn.dataset.h;
+      aspectRatioCheck.checked = false;
       if (originalImage) updatePreview();
     });
   });
 
   widthInput.addEventListener('input', () => {
+    presetBtns.forEach(b => b.classList.remove('on'));
     if (aspectRatioCheck.checked && originalImage) {
       const ratio = originalHeight / originalWidth;
       heightInput.value = Math.round(widthInput.value * ratio);
@@ -641,11 +654,20 @@
   });
 
   heightInput.addEventListener('input', () => {
+    presetBtns.forEach(b => b.classList.remove('on'));
     if (aspectRatioCheck.checked && originalImage) {
       const ratio = originalWidth / originalHeight;
       widthInput.value = Math.round(heightInput.value * ratio);
     }
     if (originalImage) updatePreview();
+  });
+
+  formatSelect.addEventListener('change', () => {
+    qualityField.style.display = (formatSelect.value === 'jpg' || formatSelect.value === 'webp') ? 'block' : 'none';
+  });
+
+  qualitySlider.addEventListener('input', () => {
+    qualityValue.textContent = qualitySlider.value;
   });
 
   function updatePreview() {
@@ -673,6 +695,7 @@
 
     downloadBtn.onclick = () => {
       const mimeType = format === 'jpg' ? 'image/jpeg' : `image/${format}`;
+      const quality = (format === 'jpg' || format === 'webp') ? parseInt(qualitySlider.value) / 100 : undefined;
       canvas.toBlob((blob) => {
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -680,9 +703,11 @@
         a.download = `resized.${format}`;
         a.click();
         URL.revokeObjectURL(url);
-      }, mimeType, format === 'jpg' ? 0.9 : undefined);
+      }, mimeType, quality);
     };
   });
 </script>
+<script src="/assets/js/components/newsletter-cta.min.js" defer></script>
+<afro-newsletter-cta></afro-newsletter-cta>
 </body>
 </html>

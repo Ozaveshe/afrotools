@@ -832,6 +832,15 @@
       tabContents.forEach(c => c.classList.remove('active'));
       btn.classList.add('active');
       document.getElementById(tabName).classList.add('active');
+
+      // Reset batch state when leaving the batch tab to prevent stale data
+      if (tabName !== 'batch') {
+        batchData = [];
+        const csvFile = document.getElementById('csvFile');
+        if (csvFile) csvFile.value = '';
+        const batchResults = document.getElementById('batchResults');
+        if (batchResults) batchResults.style.display = 'none';
+      }
     });
   });
 
@@ -843,11 +852,23 @@
     const currency = document.getElementById('simpleCurrency').value;
 
     let selling;
-    if (!isNaN(margin)) {
+    if (!isNaN(margin) && document.getElementById('simpleMargin').value.trim() !== '') {
+      if (margin >= 100) {
+        alert('Margin must be less than 100%');
+        return;
+      }
       selling = cost / (1 - (margin / 100));
-      document.getElementById('simpleMarkup').value = (((selling - cost) / cost) * 100).toFixed(1);
+      if (isNaN(selling) || !isFinite(selling)) {
+        alert('Invalid margin value');
+        return;
+      }
+      if (cost > 0) {
+        document.getElementById('simpleMarkup').value = (((selling - cost) / cost) * 100).toFixed(1);
+      } else {
+        document.getElementById('simpleMarkup').value = '';
+      }
     } else {
-      selling = cost * (1 + (markup / 100));
+      selling = cost * (1 + ((markup || 0) / 100));
     }
 
     const profit = selling - cost;
@@ -890,19 +911,77 @@
   // Batch CSV Processing
   let batchData = [];
 
+  // Parse a CSV line, handling quoted fields with commas inside
+  function parseCSVLine(line) {
+    const fields = [];
+    let current = '';
+    let inQuotes = false;
+    for (let i = 0; i < line.length; i++) {
+      const ch = line[i];
+      if (inQuotes) {
+        if (ch === '"' && i + 1 < line.length && line[i + 1] === '"') {
+          current += '"';
+          i++; // skip escaped quote
+        } else if (ch === '"') {
+          inQuotes = false;
+        } else {
+          current += ch;
+        }
+      } else {
+        if (ch === '"') {
+          inQuotes = true;
+        } else if (ch === ',') {
+          fields.push(current.trim());
+          current = '';
+        } else {
+          current += ch;
+        }
+      }
+    }
+    fields.push(current.trim());
+    return fields;
+  }
+
   document.getElementById('csvFile').addEventListener('change', function(e) {
     const file = e.target.files[0];
+    if (!file) return;
     const reader = new FileReader();
     reader.onload = function(event) {
-      const csv = event.target.result;
-      const lines = csv.trim().split('\n');
-      batchData = lines.slice(1).map(line => {
-        const [name, cost] = line.split(',');
-        return { name: name.trim(), cost: parseFloat(cost) };
-      }).filter(item => item.cost > 0);
-      alert(`Loaded ${batchData.length} products`);
+      try {
+        const csv = event.target.result;
+        const lines = csv.trim().split(/\r?\n/);
+        if (lines.length < 2) {
+          alert('CSV file must have a header row and at least one data row.');
+          batchData = [];
+          return;
+        }
+        let skipped = 0;
+        batchData = [];
+        lines.slice(1).forEach((line) => {
+          if (!line.trim()) { return; } // skip blank lines
+          const parts = parseCSVLine(line);
+          if (parts.length < 2) { skipped++; return; }
+          const name = (parts[0] || '').trim();
+          const cost = parseFloat(parts[1]);
+          if (!name || isNaN(cost) || cost <= 0) { skipped++; return; }
+          batchData.push({ name, cost });
+        });
+        let msg = `Loaded ${batchData.length} products.`;
+        if (skipped > 0) msg += ` ${skipped} row(s) skipped due to invalid data.`;
+        if (batchData.length === 0) msg += ' No valid products found. Ensure CSV has columns: Name, Cost';
+        alert(msg);
+      } catch (err) {
+        alert('Error reading CSV file. Please ensure it is a valid CSV with columns: Name, Cost');
+        batchData = [];
+      }
+    };
+    reader.onerror = function() {
+      alert('Error reading file. Please try again.');
+      batchData = [];
     };
     reader.readAsText(file);
+    // Reset file input so re-selecting the same file triggers change event
+    this.value = '';
   });
 
   function processBatchCSV() {

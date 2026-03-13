@@ -39,9 +39,16 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#f8fafc;font-family:'Outfit',system-ui,sans-serif;color:#1e293b}
+body{background:#f8fafc;font-family:'Outfit',system-ui,sans-serif;color:#1e293b;overflow-x:hidden}
 #root{min-height:100vh}
 input,textarea,select{font-family:'Outfit',system-ui,sans-serif}
+@media(max-width:768px){
+  #root>div>div:first-child{flex-wrap:wrap !important;padding:10px 12px !important}
+  #root>div>div:first-child>div{flex-wrap:wrap !important}
+  #root>div>div:nth-child(2){flex-direction:column !important;overflow:visible !important}
+  #root>div>div:nth-child(2)>div:first-child{flex:1 1 100% !important;border-right:none !important;border-bottom:1px solid #e2e8f0;padding:16px !important;max-height:none !important;overflow:visible !important}
+  #root>div>div:nth-child(2)>div:last-child{flex:1 1 100% !important;padding:16px !important;overflow:visible !important}
+}
 </style>
 <!-- DESIGN NOTE: HTML is NOT restrictive — this page runs React 18 via CDN, and any JS framework (Vue, Svelte, etc.) can be loaded the same way. -->
 <!-- Netlify Forms -->

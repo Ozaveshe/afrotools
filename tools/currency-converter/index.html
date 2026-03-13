@@ -15,6 +15,11 @@
     <meta name="description" content="Live African currency converter with real-time forex rates, crypto prices, and bank rate comparison. Convert NGN, KES, ZAR, GHS and 40+ African currencies.">
     <meta name="theme-color" content="#008751">
     <link rel="canonical" href="https://afrotools.com/tools/currency-converter">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="AfroTools">
+    <meta property="og:title" content="African Currency Converter — Live Forex & Crypto Rates | AfroTools">
+    <meta property="og:description" content="Live African currency converter with real-time forex rates, crypto prices, and bank rate comparison. Convert NGN, KES, ZAR, GHS and 40+ African currencies.">
+    <meta property="og:url" content="https://afrotools.com/tools/currency-converter/">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -573,6 +578,13 @@
             align-items: flex-end;
         }
 
+        .currency-pair-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
         /* Exchange Rate Table */
         .rates-table {
             margin-top: 50px;
@@ -680,6 +692,10 @@
                 grid-template-columns: 1fr;
             }
 
+            .currency-pair-grid {
+                grid-template-columns: 1fr;
+            }
+
             .swap-button {
                 width: 100%;
                 transform: rotate(90deg);
@@ -747,9 +763,72 @@
                 font-size: 1.5rem;
             }
         }
+        details[open] summary svg { transform: rotate(180deg); }
+        details summary::-webkit-details-marker { display: none; }
     </style>
 <meta name="tool-id" content="currency-converter">
 <script src="/assets/js/favorites.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "African Currency Converter",
+  "description": "Live African currency converter with real-time forex rates, crypto prices, and bank rate comparison. Convert NGN, KES, ZAR, GHS and 40+ African currencies.",
+  "url": "https://afrotools.com/tools/currency-converter/",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "provider": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Are the exchange rates live and up to date?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The AfroTools Currency Converter fetches rates from open forex APIs and updates them regularly. Rates are cached for performance and may have a short delay. These are indicative mid-market rates and may differ from actual bank or bureau de change rates."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How many African currencies are supported?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The converter supports 40+ African currencies including NGN (Nigerian Naira), KES (Kenyan Shilling), ZAR (South African Rand), GHS (Ghanaian Cedi), EGP (Egyptian Pound), and many more, along with major global currencies like USD, EUR, and GBP."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is the currency converter free to use?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, the AfroTools Currency Converter is completely free with no sign-up required. You can convert between any supported currencies as many times as you want."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I compare multiple currencies at once?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The converter allows you to view exchange rates for multiple currencies simultaneously, making it easy to compare values across different African and international currencies in a single view."
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
     <!-- Navbar -->
@@ -829,7 +908,7 @@
                 </div>
 
                 <!-- Converter Fields -->
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+                <div class="currency-pair-grid">
                     <div>
                         <label class="form-label">From Currency</label>
                         <select id="fromCurrency" onchange="convertCurrency()">
@@ -914,7 +993,7 @@
                         </div>
                     </div>
 
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+                    <div class="currency-pair-grid">
                         <div>
                             <label class="form-label">Cryptocurrency</label>
                             <select id="cryptoCurrency" onchange="convertCrypto()">
@@ -969,6 +1048,58 @@
             </div>
         </div>
     </div>
+
+    <!-- Rate Disclaimer -->
+    <div style="max-width: 1200px; margin: 0 auto; padding: 16px 20px;">
+      <p style="font-size: 0.75rem; color: #999; text-align: center; line-height: 1.6;">
+        <strong>Disclaimer:</strong> Exchange rates shown are indicative mid-market rates sourced from open APIs and may differ from actual bank or bureau de change rates. Rates are cached and may be delayed. AfroTools does not guarantee rate accuracy. Always confirm rates with your financial provider before making transactions.
+      </p>
+    </div>
+
+    <section class="faq-section" style="max-width:800px;margin:40px auto;padding:0 20px">
+      <h2 style="font-size:1.3rem;font-weight:800;color:#111;margin-bottom:20px;font-family:'DM Sans',sans-serif">Frequently Asked Questions</h2>
+      <div class="faq-list">
+        <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+          <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+            Are the exchange rates live and up to date?
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </summary>
+          <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+            The AfroTools Currency Converter fetches rates from open forex APIs and updates them regularly. Rates are cached for performance and may have a short delay. These are indicative mid-market rates and may differ from actual bank or bureau de change rates.
+          </div>
+        </details>
+        <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+          <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+            How many African currencies are supported?
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </summary>
+          <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+            The converter supports 40+ African currencies including NGN (Nigerian Naira), KES (Kenyan Shilling), ZAR (South African Rand), GHS (Ghanaian Cedi), EGP (Egyptian Pound), and many more, along with major global currencies like USD, EUR, and GBP.
+          </div>
+        </details>
+        <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+          <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+            Is the currency converter free to use?
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </summary>
+          <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+            Yes, the AfroTools Currency Converter is completely free with no sign-up required. You can convert between any supported currencies as many times as you want.
+          </div>
+        </details>
+        <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+          <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+            Can I compare multiple currencies at once?
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </summary>
+          <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+            Yes. The converter allows you to view exchange rates for multiple currencies simultaneously, making it easy to compare values across different African and international currencies in a single view.
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- Related Tools -->
+    <afro-related-tools category="financial" current="currency-converter"></afro-related-tools>
 
     <!-- Footer -->
     <afro-footer></afro-footer>
@@ -1489,5 +1620,7 @@
         }
     </script>
 <script src="/assets/js/favorites-widget.js" defer></script>
+<script src="/assets/js/components/tool-registry.js" defer></script>
+<script src="/assets/js/components/related-tools.min.js" defer></script>
 </body>
 </html>

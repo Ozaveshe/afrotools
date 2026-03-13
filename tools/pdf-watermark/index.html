@@ -703,6 +703,7 @@
   watermarkBtn.addEventListener('click', async () => {
     if (!currentFile) return;
 
+    watermarkBtn.disabled = true;
     progressBar.style.display = 'block';
     progressFill.style.width = '0%';
     actionRow.style.display = 'none';
@@ -778,15 +779,18 @@
     } catch (err) {
       resultText.textContent = '✗ Error: ' + err.message;
     }
+    watermarkBtn.disabled = false;
   });
 
   // Download
   downloadBtn.addEventListener('click', () => {
     if (watermarkedPdf) {
       const link = document.createElement('a');
-      link.href = URL.createObjectURL(new Blob([watermarkedPdf], { type: 'application/pdf' }));
+      const url = URL.createObjectURL(new Blob([watermarkedPdf], { type: 'application/pdf' }));
+      link.href = url;
       link.download = 'watermarked.pdf';
       link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 5000);
     }
   });
 </script>

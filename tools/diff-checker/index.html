@@ -417,6 +417,27 @@
     }
   }
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Diff Checker",
+  "description": "Free diff checker. Compare two texts side-by-side with line-by-line highlighting and word-level diffs. Real-time comparison with statistics.",
+  "url": "https://afrotools.com/tools/diff-checker/",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "provider": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com"
+  }
+}
+</script>
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
@@ -462,6 +483,7 @@
         <div class="diff-options">
           <button class="diff-btn on" data-mode="line">Line Diff</button>
           <button class="diff-btn" data-mode="char">Word Diff</button>
+          <button class="diff-btn" id="swapBtn" aria-label="Swap texts">Swap Texts</button>
           <div class="checkbox-option">
             <input type="checkbox" id="ignoreWhitespace">
             <label for="ignoreWhitespace">Ignore Whitespace</label>
@@ -584,30 +606,36 @@
   }
 
   function wordDiff(original, modified) {
-    const origWords = original.split(/(\s+)/);
-    const modWords = modified.split(/(\s+)/);
+    // Split by word boundaries, keeping delimiters (whitespace and punctuation)
+    const origWords = original.match(/\w+|[^\w\s]+|\s+/g) || [];
+    const modWords = modified.match(/\w+|[^\w\s]+|\s+/g) || [];
     const diff = [];
-    let added = 0, removed = 0;
+    let added = 0, removed = 0, unchanged = 0;
 
     let i = 0, j = 0;
     while (i < origWords.length || j < modWords.length) {
-      const origWord = origWords[i] || '';
-      const modWord = modWords[j] || '';
+      const origWord = i < origWords.length ? origWords[i] : '';
+      const modWord = j < modWords.length ? modWords[j] : '';
+
+      if (origWord === '' && i < origWords.length) { i++; continue; }
+      if (modWord === '' && j < modWords.length) { j++; continue; }
+
       const origNorm = normalizeText(origWord);
       const modNorm = normalizeText(modWord);
 
-      if (origNorm && modNorm && origNorm === modNorm) {
-        diff.push({ type: 'neutral', text: origWord });
-        i++;
-        j++;
-      } else if (!origWord) {
+      if (i >= origWords.length) {
         diff.push({ type: 'added', text: modWord });
         added++;
         j++;
-      } else if (!modWord) {
+      } else if (j >= modWords.length) {
         diff.push({ type: 'removed', text: origWord });
         removed++;
         i++;
+      } else if (origNorm === modNorm) {
+        diff.push({ type: 'neutral', text: origWord });
+        unchanged++;
+        i++;
+        j++;
       } else {
         diff.push({ type: 'removed', text: origWord });
         diff.push({ type: 'added', text: modWord });
@@ -617,7 +645,7 @@
         j++;
       }
     }
-    return { diff, stats: { added, removed, unchanged: 0 } };
+    return { diff, stats: { added, removed, unchanged } };
   }
 
   function compareTexts() {
@@ -661,10 +689,23 @@
   text2.addEventListener('input', compareTexts);
 
   copyBtn.addEventListener('click', () => {
-    navigator.clipboard.writeText(lastDiffOutput);
-    copyBtn.textContent = '✓ Copied!';
-    setTimeout(() => copyBtn.textContent = '📋 Copy Diff Output', 2000);
+    navigator.clipboard.writeText(lastDiffOutput).then(() => {
+      copyBtn.textContent = '✓ Copied!';
+      setTimeout(() => copyBtn.textContent = '📋 Copy Diff Output', 2000);
+    }).catch(() => {
+      copyBtn.textContent = '✗ Copy failed';
+      setTimeout(() => copyBtn.textContent = '📋 Copy Diff Output', 2000);
+    });
+  });
+
+  document.getElementById('swapBtn').addEventListener('click', () => {
+    const tmp = text1.value;
+    text1.value = text2.value;
+    text2.value = tmp;
+    if (text1.value || text2.value) compareTexts();
   });
 </script>
+<script src="/assets/js/components/newsletter-cta.min.js" defer></script>
+<afro-newsletter-cta></afro-newsletter-cta>
 </body>
 </html>

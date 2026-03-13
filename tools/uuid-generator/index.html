@@ -378,7 +378,70 @@
       width: 100%;
     }
   }
+  details[open] summary svg { transform: rotate(180deg); }
+  details summary::-webkit-details-marker { display: none; }
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "UUID Generator",
+  "description": "Free UUID generator. Generate v1, v4, and v5 UUIDs instantly. Bulk generate up to 100 UUIDs at once. UUID validator and history.",
+  "url": "https://afrotools.com/tools/uuid-generator/",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "provider": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What UUID versions are supported?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "AfroTools UUID Generator supports UUID v1 (timestamp-based, using the current date/time and a random node ID) and UUID v4 (randomly generated using cryptographic randomness). UUID v4 is the most commonly used version for general purposes."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are the generated UUIDs truly random?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "UUID v4 values are generated using Math.random() in your browser. For most use cases like database IDs, testing, and prototyping, this provides sufficient randomness. For cryptographic security requirements, use a dedicated library with crypto.getRandomValues()."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I generate UUIDs in bulk?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. You can generate up to 100 UUIDs at once by setting the count field. All generated UUIDs are displayed in a list with individual copy buttons, plus a Copy All button to grab them all at once separated by newlines."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is the UUID generator free to use?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, completely free with no limits, no sign-up, and no ads. You can generate as many UUIDs as you need. The tool also includes a UUID validator to check if a string is a valid UUID and identify its version."
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
@@ -477,6 +540,48 @@
   </div>
 </div>
 
+<section class="faq-section" style="max-width:800px;margin:40px auto;padding:0 20px">
+  <h2 style="font-size:1.3rem;font-weight:800;color:#111;margin-bottom:20px;font-family:'DM Sans',sans-serif">Frequently Asked Questions</h2>
+  <div class="faq-list">
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        What UUID versions are supported?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        AfroTools UUID Generator supports UUID v1 (timestamp-based, using the current date/time and a random node ID) and UUID v4 (randomly generated using cryptographic randomness). UUID v4 is the most commonly used version for general purposes.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        Are the generated UUIDs truly random?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        UUID v4 values are generated using Math.random() in your browser. For most use cases like database IDs, testing, and prototyping, this provides sufficient randomness. For cryptographic security requirements, use a dedicated library with crypto.getRandomValues().
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        Can I generate UUIDs in bulk?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        Yes. You can generate up to 100 UUIDs at once by setting the count field. All generated UUIDs are displayed in a list with individual copy buttons, plus a Copy All button to grab them all at once separated by newlines.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        Is the UUID generator free to use?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        Yes, completely free with no limits, no sign-up, and no ads. You can generate as many UUIDs as you need. The tool also includes a UUID validator to check if a string is a valid UUID and identify its version.
+      </div>
+    </details>
+  </div>
+</section>
+
 <afro-footer></afro-footer>
 
 <script>
@@ -499,17 +604,20 @@
   }
 
   function generateUUIDv1() {
+    // Use high-resolution timestamp in 100ns intervals since UUID epoch (Oct 15, 1582)
     const now = Date.now();
-    const timestamp = Math.floor(now / 1000);
+    const uuidEpochOffset = 122192928000000000n; // offset between UUID epoch and Unix epoch in 100ns
+    const timestamp = BigInt(now) * 10000n + uuidEpochOffset;
     const clockSeq = Math.floor(Math.random() * 16384);
     const node = Array(6).fill(0).map(() => Math.floor(Math.random() * 256)).map(n => n.toString(16).padStart(2, '0')).join('');
 
-    const timeLow = (timestamp & 0xFFFFFFFF).toString(16).padStart(8, '0');
-    const timeMid = ((timestamp >> 32) & 0xFFFF).toString(16).padStart(4, '0');
-    const timeHi = ((timestamp >> 48) & 0x0FFF).toString(16).padStart(3, '0');
-    const clockSeqStr = clockSeq.toString(16).padStart(4, '0');
+    const timeLow = (timestamp & 0xFFFFFFFFn).toString(16).padStart(8, '0');
+    const timeMid = ((timestamp >> 32n) & 0xFFFFn).toString(16).padStart(4, '0');
+    const timeHi = ((timestamp >> 48n) & 0x0FFFn).toString(16).padStart(3, '0');
+    const clockSeqHi = ((clockSeq >> 8) & 0x3F | 0x80).toString(16).padStart(2, '0');
+    const clockSeqLo = (clockSeq & 0xFF).toString(16).padStart(2, '0');
 
-    return `${timeLow}-${timeMid}-1${timeHi}-${clockSeqStr.substring(0, 2)}-${node}`;
+    return `${timeLow}-${timeMid}-1${timeHi}-${clockSeqHi}${clockSeqLo}-${node}`;
   }
 
   function isValidUUID(uuid) {
@@ -534,12 +642,10 @@
     const generator = version === 'v4' ? generateUUIDv4 : generateUUIDv1;
     lastGeneratedUUIDs = Array.from({ length: count }, generator);
 
-    uuidList.innerHTML = lastGeneratedUUIDs.map((uuid, i) => `
-      <div class="uuid-item">
-        <span class="uuid-value">${uuid}</span>
-        <button class="uuid-copy-btn" data-uuid="${uuid}">Copy</button>
-      </div>
-    `).join('');
+    uuidList.innerHTML = lastGeneratedUUIDs.map((uuid) => {
+      const escaped = uuid.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+      return `<div class="uuid-item"><span class="uuid-value">${escaped}</span><button class="uuid-copy-btn" data-uuid="${escaped}" aria-label="Copy UUID">Copy</button></div>`;
+    }).join('');
 
     copyAllBtn.style.display = 'block';
 

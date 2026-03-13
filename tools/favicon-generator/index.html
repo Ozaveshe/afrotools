@@ -644,39 +644,49 @@
 
   generateBtn.addEventListener('click', () => {
     faviconGrid.innerHTML = '';
-    canvases.clear = () => Object.keys(canvases).forEach(k => delete canvases[k]);
     Object.keys(canvases).forEach(k => delete canvases[k]);
 
     sizes.forEach(size => {
-      const canvas = document.createElement('canvas');
-      canvas.width = size;
-      canvas.height = size;
-      const ctx = canvas.getContext('2d');
+      try {
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
 
-      if (currentMode === 'image' && sourceImage) {
-        ctx.drawImage(sourceImage, 0, 0, size, size);
-      } else {
-        ctx.fillStyle = bgColor.value;
-        ctx.fillRect(0, 0, size, size);
-        ctx.fillStyle = textColor.value;
-        ctx.font = `bold ${size * 0.6}px Arial`;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(textInput.value, size / 2, size / 2);
+        if (!ctx) {
+          console.error(`Failed to get 2D context for ${size}x${size} canvas`);
+          return;
+        }
+
+        if (currentMode === 'image' && sourceImage) {
+          ctx.drawImage(sourceImage, 0, 0, size, size);
+        } else {
+          ctx.fillStyle = bgColor.value;
+          ctx.fillRect(0, 0, size, size);
+          ctx.fillStyle = textColor.value;
+          ctx.font = `bold ${size * 0.6}px Arial`;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(textInput.value, size / 2, size / 2);
+        }
+
+        canvases[size] = canvas;
+
+        const item = document.createElement('div');
+        item.className = 'favicon-item';
+        const clonedCanvas = canvas.cloneNode();
+        clonedCanvas.width = 80;
+        clonedCanvas.height = 80;
+        const clonedCtx = clonedCanvas.getContext('2d');
+        if (clonedCtx) {
+          clonedCtx.drawImage(canvas, 0, 0, 80, 80);
+        }
+        item.appendChild(clonedCanvas);
+        item.innerHTML += `<div class="favicon-size">${size}x${size}</div>`;
+        faviconGrid.appendChild(item);
+      } catch (err) {
+        console.error(`Error generating ${size}x${size} favicon:`, err);
       }
-
-      canvases[size] = canvas;
-
-      const item = document.createElement('div');
-      item.className = 'favicon-item';
-      const clonedCanvas = canvas.cloneNode();
-      clonedCanvas.width = 80;
-      clonedCanvas.height = 80;
-      const clonedCtx = clonedCanvas.getContext('2d');
-      clonedCtx.drawImage(canvas, 0, 0, 80, 80);
-      item.appendChild(clonedCanvas);
-      item.innerHTML += `<div class="favicon-size">${size}x${size}</div>`;
-      faviconGrid.appendChild(item);
     });
 
     previewCard.classList.add('on');
@@ -685,23 +695,32 @@
   downloadBtn.addEventListener('click', async () => {
     const zip = new JSZip();
 
-    Object.entries(canvases).forEach(([size, canvas]) => {
-      if (size !== 'clear') {
-        canvas.toBlob(blob => {
-          zip.file(`favicon-${size}x${size}.png`, blob);
-          if (Object.keys(canvases).length === 5) {
-            zip.generateAsync({ type: 'blob' }).then(blob => {
-              const url = URL.createObjectURL(blob);
-              const a = document.createElement('a');
-              a.href = url;
-              a.download = 'favicons.zip';
-              a.click();
-              URL.revokeObjectURL(url);
-            });
-          }
+    try {
+      const blobPromises = Object.entries(canvases).map(([size, canvas]) => {
+        return new Promise((resolve, reject) => {
+          canvas.toBlob(blob => {
+            if (!blob) {
+              reject(new Error(`Failed to create blob for ${size}x${size}`));
+              return;
+            }
+            zip.file(`favicon-${size}x${size}.png`, blob);
+            resolve();
+          }, 'image/png');
         });
-      }
-    });
+      });
+
+      await Promise.all(blobPromises);
+      const zipBlob = await zip.generateAsync({ type: 'blob' });
+      const url = URL.createObjectURL(zipBlob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'favicons.zip';
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('Error creating favicon ZIP:', err);
+      alert('Failed to generate favicon ZIP. Please try again.');
+    }
   });
 </script>
 </body>

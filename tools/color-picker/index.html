@@ -56,12 +56,34 @@
   .palette-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 12px; }
   .palette-color { height: 40px; border-radius: 6px; border: 1px solid #dceee0; cursor: pointer; transition: all 0.2s; }
   .palette-color:hover { transform: scale(1.1); }
+  .palette-color.selected { outline: 3px solid var(--afro-green); outline-offset: 2px; transform: scale(1.1); box-shadow: 0 2px 8px rgba(0, 135, 81, 0.35); }
   .sidebar { display: flex; flex-direction: column; gap: 16px; }
   .info-card { background: #f7fdf8; border: 1px solid #dceee0; border-radius: 10px; padding: 16px; }
   .info-title { font-size: 0.72rem; font-weight: 700; color: #0a4018; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
   .info-text { font-size: 0.8rem; color: #244d2c; line-height: 1.6; }
   @media (max-width: 768px) { .tool-main-inner { grid-template-columns: 1fr; } }
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Color Picker",
+  "description": "Free color picker tool. Convert between HEX, RGB, HSL. Palette generator, contrast checker, color harmony.",
+  "url": "https://afrotools.com/tools/color-picker/",
+  "applicationCategory": "DesignApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "provider": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com"
+  }
+}
+</script>
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
@@ -185,11 +207,20 @@
       { h: hsl.h, s: hsl.s, l: Math.min(90, hsl.l + 15) },
       { h: hsl.h, s: hsl.s, l: Math.min(95, hsl.l + 30) },
     ];
-    variations.forEach(v => {
+    variations.forEach((v, i) => {
       const div = document.createElement('div');
       div.className = 'palette-color';
+      const swatchHex = hslToHex(v.h, v.s, v.l);
       div.style.backgroundColor = `hsl(${v.h}, ${v.s}%, ${v.l}%)`;
-      div.addEventListener('click', () => updateColor(hslToHex(v.h, v.s, v.l)));
+      if (swatchHex.toLowerCase() === hex.toLowerCase()) {
+        div.classList.add('selected');
+      }
+      div.title = swatchHex.toUpperCase();
+      div.addEventListener('click', () => {
+        document.querySelectorAll('.palette-color').forEach(c => c.classList.remove('selected'));
+        div.classList.add('selected');
+        updateColor(swatchHex);
+      });
       paletteGrid.appendChild(div);
     });
   }
@@ -215,5 +246,7 @@
 
   updateColor('#008751');
 </script>
+<script src="/assets/js/components/newsletter-cta.min.js" defer></script>
+<afro-newsletter-cta></afro-newsletter-cta>
 </body>
 </html>

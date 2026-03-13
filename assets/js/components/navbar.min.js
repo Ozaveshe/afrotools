@@ -284,6 +284,167 @@
       nav { height: 56px; }
       .mob { top: 56px; }
     }
+
+    /* SEARCH BUTTON */
+    .search-btn {
+      display: flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px; border-radius: 8px;
+      border: 1.5px solid #e5e7eb; background: #fff;
+      cursor: pointer; color: #6b7280;
+      transition: all 0.13s; flex-shrink: 0;
+    }
+    .search-btn:hover { border-color: #008751; color: #008751; background: #f0f9f4; }
+    .search-btn svg { width: 16px; height: 16px; }
+    .search-kbd {
+      font-size: 0.55rem; font-weight: 600; color: #9ca3af;
+      margin-left: 4px; background: #f3f4f6; border-radius: 4px;
+      padding: 1px 5px; border: 1px solid #e5e7eb;
+      display: none;
+    }
+    @media (min-width: 941px) {
+      .search-btn { width: auto; padding: 0 10px; gap: 6px; }
+      .search-kbd { display: inline; }
+    }
+
+    /* SEARCH OVERLAY */
+    .search-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(4px);
+      display: flex; align-items: flex-start; justify-content: center;
+      padding-top: 12vh;
+      opacity: 0; visibility: hidden;
+      transition: opacity 0.16s, visibility 0.16s;
+    }
+    .search-overlay.open { opacity: 1; visibility: visible; }
+
+    .search-modal {
+      width: 100%; max-width: 560px;
+      background: #fff; border-radius: 14px;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.2), 0 4px 16px rgba(0,0,0,0.08);
+      overflow: hidden;
+      transform: translateY(-12px) scale(0.97);
+      transition: transform 0.18s ease;
+      margin: 0 16px;
+    }
+    .search-overlay.open .search-modal {
+      transform: translateY(0) scale(1);
+    }
+
+    .search-input-wrap {
+      display: flex; align-items: center; gap: 10px;
+      padding: 14px 18px;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    .search-input-wrap svg { width: 18px; height: 18px; color: #9ca3af; flex-shrink: 0; }
+    .search-input {
+      flex: 1; border: none; outline: none;
+      font-size: 1rem; font-weight: 500; color: #111827;
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: transparent;
+    }
+    .search-input::placeholder { color: #c4c8cc; }
+    .search-esc {
+      font-size: 0.6rem; font-weight: 600; color: #9ca3af;
+      background: #f3f4f6; border-radius: 4px;
+      padding: 2px 7px; border: 1px solid #e5e7eb;
+      cursor: pointer; flex-shrink: 0;
+    }
+
+    .search-results {
+      max-height: 400px; overflow-y: auto;
+      padding: 6px;
+    }
+    .search-results::-webkit-scrollbar { width: 6px; }
+    .search-results::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+
+    .search-result {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 12px; border-radius: 10px;
+      text-decoration: none; color: inherit;
+      transition: background 0.1s;
+      cursor: pointer;
+    }
+    .search-result:hover, .search-result.active {
+      background: #f0f9f4;
+    }
+    .search-result-icon {
+      width: 38px; height: 38px; border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.15rem; flex-shrink: 0;
+      background: #f3f4f6;
+    }
+    .search-result-name {
+      font-size: 0.85rem; font-weight: 700; color: #111827;
+      line-height: 1.2;
+    }
+    .search-result-name mark {
+      background: #d1fae5; color: #065f46;
+      border-radius: 2px; padding: 0 1px;
+    }
+    .search-result-desc {
+      font-size: 0.7rem; font-weight: 400; color: #6b7280;
+      margin-top: 2px;
+      display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .search-result-cat {
+      font-size: 0.55rem; font-weight: 600; color: #9ca3af;
+      text-transform: uppercase; letter-spacing: 0.06em;
+      margin-top: 2px;
+    }
+
+    .search-empty {
+      padding: 32px 16px; text-align: center;
+    }
+    .search-empty-icon { font-size: 2rem; margin-bottom: 8px; }
+    .search-empty-text { font-size: 0.85rem; font-weight: 600; color: #6b7280; }
+    .search-empty-hint { font-size: 0.72rem; color: #9ca3af; margin-top: 4px; }
+
+    .search-footer {
+      padding: 10px 18px;
+      border-top: 1px solid #f3f4f6;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .search-footer-hint {
+      font-size: 0.62rem; color: #9ca3af; font-weight: 500;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .search-footer-hint kbd {
+      background: #f3f4f6; border: 1px solid #e5e7eb;
+      border-radius: 3px; padding: 1px 5px;
+      font-size: 0.58rem; font-weight: 600; font-family: inherit;
+    }
+
+    /* MOBILE SEARCH in drawer */
+    .mob-search-bar {
+      display: flex; align-items: center; gap: 10px;
+      margin: 12px 16px 4px; padding: 11px 14px;
+      border-radius: 10px; border: 1.5px solid #e5e7eb;
+      background: #f9fafb;
+      transition: border-color 0.13s;
+    }
+    .mob-search-bar:focus-within { border-color: #008751; background: #fff; }
+    .mob-search-bar svg { width: 16px; height: 16px; color: #9ca3af; flex-shrink: 0; }
+    .mob-search-input {
+      flex: 1; border: none; outline: none;
+      font-size: 0.9rem; font-weight: 500; color: #111827;
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: transparent;
+    }
+    .mob-search-input::placeholder { color: #c4c8cc; }
+    .mob-search-results {
+      padding: 0 8px 8px;
+    }
+    .mob-search-results .search-result {
+      padding: 12px 12px;
+    }
+    .mob-search-results .search-result-icon {
+      width: 36px; height: 36px;
+    }
+    .mob-search-empty {
+      padding: 20px 16px; text-align: center;
+      font-size: 0.8rem; color: #9ca3af; font-weight: 500;
+    }
   `;
 
   class AfroNavbar extends HTMLElement {
@@ -350,6 +511,12 @@
             </ul>
 
             <div class="right">
+              <button class="search-btn" id="searchBtn" type="button" aria-label="Search tools">
+                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="8.5" cy="8.5" r="5.5"/><line x1="13" y1="13" x2="18" y2="18"/>
+                </svg>
+                <span class="search-kbd">Ctrl K</span>
+              </button>
               <span class="pill-54">🌍 54 countries</span>
               <a href="/login" class="btn-login">Sign in</a>
               <a href="/#newsletter" class="cta">Get Updates →</a>
@@ -371,12 +538,47 @@
         </div>
 
         <div class="mob" role="dialog" aria-modal="true" aria-label="Navigation menu">
-          <div class="mob-section-label">All Categories</div>
-          ${this._mobileContent()}
+          <div class="mob-search-bar">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="8.5" cy="8.5" r="5.5"/><line x1="13" y1="13" x2="18" y2="18"/>
+            </svg>
+            <input class="mob-search-input" type="text" placeholder="Search tools..." aria-label="Search tools" autocomplete="off"/>
+          </div>
+          <div class="mob-search-results" id="mobSearchResults"></div>
+          <div id="mobCategoriesWrap">
+            <div class="mob-section-label">All Categories</div>
+            ${this._mobileContent()}
+          </div>
           <div class="mob-footer">
             <a href="/#newsletter" class="mob-cta">Get Updates →</a>
             <a href="/login" class="mob-login">Sign In</a>
             <p class="mob-note">🌍 54 countries · always free · no sign-up required</p>
+          </div>
+        </div>
+
+        <div class="search-overlay" id="searchOverlay" role="dialog" aria-modal="true" aria-label="Search tools">
+          <div class="search-modal">
+            <div class="search-input-wrap">
+              <svg viewBox="0 0 20 20" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="8.5" cy="8.5" r="5.5"/><line x1="13" y1="13" x2="18" y2="18"/>
+              </svg>
+              <input class="search-input" id="searchInput" type="text" placeholder="Search tools…" aria-label="Search tools" autocomplete="off"/>
+              <span class="search-esc" id="searchEsc">ESC</span>
+            </div>
+            <div class="search-results" id="searchResults">
+              <div class="search-empty">
+                <div class="search-empty-icon">🔍</div>
+                <div class="search-empty-text">Search 100+ African tools</div>
+                <div class="search-empty-hint">Try "PAYE", "PDF", "japa", "BMI"…</div>
+              </div>
+            </div>
+            <div class="search-footer">
+              <div class="search-footer-hint">
+                <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+                <span><kbd>↵</kbd> open</span>
+                <span><kbd>esc</kbd> close</span>
+              </div>
+            </div>
           </div>
         </div>`;
     }
@@ -435,6 +637,215 @@
         mob.classList.remove('open');
         document.body.style.overflow = '';
       }));
+
+      // ── SEARCH ──
+      const searchBtn     = sr.querySelector('#searchBtn');
+      const searchOverlay = sr.querySelector('#searchOverlay');
+      const searchInput   = sr.querySelector('#searchInput');
+      const searchResults = sr.querySelector('#searchResults');
+      const searchEsc     = sr.querySelector('#searchEsc');
+      const mobSearchInput   = sr.querySelector('.mob-search-input');
+      const mobSearchResults = sr.querySelector('#mobSearchResults');
+      const mobCategoriesWrap = sr.querySelector('#mobCategoriesWrap');
+
+      // Mac detection for shortcut label
+      const isMac = /Mac|iPod|iPhone|iPad/.test(navigator.platform || navigator.userAgent || '');
+      const kbdEl = sr.querySelector('.search-kbd');
+      if (kbdEl) kbdEl.textContent = isMac ? '⌘ K' : 'Ctrl K';
+
+      let _activeIdx = -1;
+
+      const getTools = () => {
+        if (typeof AFRO_TOOLS !== 'undefined' && Array.isArray(AFRO_TOOLS)) {
+          return AFRO_TOOLS.filter(t => t.status === 'live');
+        }
+        return null;
+      };
+
+      const escapeHtml = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+      const highlightMatch = (text, query) => {
+        if (!query) return escapeHtml(text);
+        const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        return escapeHtml(text).replace(new RegExp('(' + escaped + ')', 'gi'), '<mark>$1</mark>');
+      };
+
+      const getCategoryLabel = (catId) => {
+        const cat = NAV_ITEMS.find(c => c.id === catId);
+        return cat ? cat.label : catId;
+      };
+
+      const searchTools = (query) => {
+        const tools = getTools();
+        if (!tools) return null;
+        if (!query || query.length < 1) return [];
+        const q = query.toLowerCase().trim();
+        const scored = [];
+        for (const t of tools) {
+          const nameL = t.name.toLowerCase();
+          const descL = t.desc.toLowerCase();
+          let score = 0;
+          if (nameL === q) score = 100;
+          else if (nameL.startsWith(q)) score = 80;
+          else if (nameL.includes(q)) score = 60;
+          else if (descL.includes(q)) score = 30;
+          else {
+            const words = q.split(/\s+/);
+            const allMatch = words.every(w => nameL.includes(w) || descL.includes(w));
+            if (allMatch) score = 20;
+          }
+          if (score > 0) scored.push({ tool: t, score });
+        }
+        scored.sort((a, b) => b.score - a.score);
+        return scored.slice(0, 8).map(s => s.tool);
+      };
+
+      const renderResults = (tools, query, container) => {
+        if (tools === null) {
+          container.innerHTML = '<div class="search-empty"><div class="search-empty-icon">⏳</div><div class="search-empty-text">Loading tools…</div><div class="search-empty-hint">Tool registry not loaded yet</div></div>';
+          return;
+        }
+        if (!query || query.length < 1) {
+          container.innerHTML = '<div class="search-empty"><div class="search-empty-icon">🔍</div><div class="search-empty-text">Search 100+ African tools</div><div class="search-empty-hint">Try "PAYE", "PDF", "japa", "BMI"…</div></div>';
+          return;
+        }
+        if (tools.length === 0) {
+          container.innerHTML = '<div class="search-empty"><div class="search-empty-icon">😔</div><div class="search-empty-text">No tools found</div><div class="search-empty-hint">Try a different search term</div></div>';
+          return;
+        }
+        _activeIdx = 0;
+        container.innerHTML = tools.map((t, i) => `
+          <a href="${t.href}" class="search-result${i === 0 ? ' active' : ''}" data-idx="${i}">
+            <div class="search-result-icon">${t.icon}</div>
+            <div>
+              <div class="search-result-name">${highlightMatch(t.name, query)}</div>
+              <div class="search-result-desc">${escapeHtml(t.desc)}</div>
+              <div class="search-result-cat">${escapeHtml(getCategoryLabel(t.category))}</div>
+            </div>
+          </a>`).join('');
+      };
+
+      const openSearch = () => {
+        searchOverlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        _activeIdx = -1;
+        setTimeout(() => searchInput.focus(), 60);
+      };
+
+      const closeSearch = () => {
+        searchOverlay.classList.remove('open');
+        document.body.style.overflow = this._menuOpen ? 'hidden' : '';
+        searchInput.value = '';
+        searchResults.innerHTML = '<div class="search-empty"><div class="search-empty-icon">🔍</div><div class="search-empty-text">Search 100+ African tools</div><div class="search-empty-hint">Try "PAYE", "PDF", "japa", "BMI"…</div></div>';
+        _activeIdx = -1;
+      };
+
+      // Open search
+      searchBtn?.addEventListener('click', e => { e.stopPropagation(); openSearch(); });
+      searchEsc?.addEventListener('click', closeSearch);
+
+      // Click overlay to close
+      searchOverlay?.addEventListener('click', e => { if (e.target === searchOverlay) closeSearch(); });
+
+      // Search input handler
+      let _debounce;
+      searchInput?.addEventListener('input', () => {
+        clearTimeout(_debounce);
+        _debounce = setTimeout(() => {
+          const q = searchInput.value.trim();
+          const results = searchTools(q);
+          renderResults(results, q, searchResults);
+        }, 80);
+      });
+
+      // Keyboard nav in search
+      searchInput?.addEventListener('keydown', e => {
+        const items = searchResults.querySelectorAll('.search-result');
+        if (!items.length) return;
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          _activeIdx = Math.min(_activeIdx + 1, items.length - 1);
+          items.forEach((el, i) => el.classList.toggle('active', i === _activeIdx));
+          items[_activeIdx]?.scrollIntoView({ block: 'nearest' });
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          _activeIdx = Math.max(_activeIdx - 1, 0);
+          items.forEach((el, i) => el.classList.toggle('active', i === _activeIdx));
+          items[_activeIdx]?.scrollIntoView({ block: 'nearest' });
+        } else if (e.key === 'Enter') {
+          e.preventDefault();
+          if (_activeIdx >= 0 && items[_activeIdx]) {
+            const href = items[_activeIdx].getAttribute('href');
+            if (href) window.location.href = href;
+          }
+        }
+      });
+
+      // Click on result
+      searchResults?.addEventListener('click', e => {
+        const result = e.target.closest('.search-result');
+        if (result) {
+          closeSearch();
+        }
+      });
+
+      // Global keyboard shortcuts (Ctrl+K / Cmd+K and Escape)
+      if (this._searchKeyFn) document.removeEventListener('keydown', this._searchKeyFn);
+      this._searchKeyFn = e => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+          e.preventDefault();
+          if (searchOverlay.classList.contains('open')) closeSearch();
+          else openSearch();
+        }
+        if (e.key === 'Escape' && searchOverlay.classList.contains('open')) {
+          closeSearch();
+        }
+      };
+      document.addEventListener('keydown', this._searchKeyFn);
+
+      // ── MOBILE SEARCH ──
+      let _mobDebounce;
+      mobSearchInput?.addEventListener('input', () => {
+        clearTimeout(_mobDebounce);
+        _mobDebounce = setTimeout(() => {
+          const q = mobSearchInput.value.trim();
+          if (!q) {
+            mobSearchResults.innerHTML = '';
+            mobCategoriesWrap.style.display = '';
+            return;
+          }
+          const results = searchTools(q);
+          if (results === null) {
+            mobSearchResults.innerHTML = '<div class="mob-search-empty">Loading tools…</div>';
+            mobCategoriesWrap.style.display = 'none';
+            return;
+          }
+          if (results.length === 0) {
+            mobSearchResults.innerHTML = '<div class="mob-search-empty">No tools found</div>';
+            mobCategoriesWrap.style.display = 'none';
+            return;
+          }
+          mobCategoriesWrap.style.display = 'none';
+          mobSearchResults.innerHTML = results.map(t => `
+            <a href="${t.href}" class="search-result">
+              <div class="search-result-icon">${t.icon}</div>
+              <div>
+                <div class="search-result-name">${highlightMatch(t.name, q)}</div>
+                <div class="search-result-desc">${escapeHtml(t.desc)}</div>
+              </div>
+            </a>`).join('');
+        }, 100);
+      });
+
+      // Clear mobile search when closing drawer
+      const origBurgerClick = () => {
+        if (!this._menuOpen && mobSearchInput) {
+          mobSearchInput.value = '';
+          mobSearchResults.innerHTML = '';
+          if (mobCategoriesWrap) mobCategoriesWrap.style.display = '';
+        }
+      };
+      burger?.addEventListener('click', origBurgerClick);
     }
   }
 

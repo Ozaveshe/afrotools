@@ -14,6 +14,12 @@
     <title>JSON CSV XML YAML Converter — Data Format Converter | AfroTools</title>
     <meta name="description" content="Convert between JSON, CSV, XML, YAML, and TSV formats. Validate data, pretty print, minify, and download converted files.">
     <link rel="canonical" href="https://afrotools.com/tools/data-converter/">
+    <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="AfroTools">
+    <meta property="og:title" content="JSON CSV XML YAML Converter — Data Format Converter | AfroTools">
+    <meta property="og:description" content="Convert between JSON, CSV, XML, YAML, and TSV formats. Validate data, pretty print, minify, and download converted files.">
+    <meta property="og:url" content="https://afrotools.com/tools/data-converter/">
 
     <script type="application/ld+json">
     {
@@ -433,12 +439,20 @@
         });
 
         document.getElementById('copy-output').addEventListener('click', () => {
-            navigator.clipboard.writeText(document.getElementById('output-data').value);
-            showToast('Output copied!');
+            try {
+                navigator.clipboard.writeText(document.getElementById('output-data').value).then(() => {
+                    showToast('Output copied!');
+                }).catch(() => {
+                    showToast('Failed to copy');
+                });
+            } catch (e) {
+                showToast('Failed to copy');
+            }
         });
 
         document.getElementById('download-output').addEventListener('click', () => {
             const data = document.getElementById('output-data').value;
+            if (!data) { showToast('Nothing to download'); return; }
             const fmt = document.getElementById('output-format').value;
             const ext = { json: 'json', csv: 'csv', tsv: 'tsv', xml: 'xml', yaml: 'yml' }[fmt];
             const blob = new Blob([data], { type: 'text/plain' });
@@ -453,12 +467,12 @@
         const fileUploadArea = document.getElementById('file-upload-area');
         const fileInput = document.getElementById('file-input');
 
-        ['dragenter', 'dragover'].forEach(e => {
-            fileUploadArea.addEventListener(e, () => fileUploadArea.style.background = '#dff1e8');
+        ['dragenter', 'dragover'].forEach(evt => {
+            fileUploadArea.addEventListener(evt, (e) => { e.preventDefault(); fileUploadArea.style.background = '#dff1e8'; });
         });
 
-        ['dragleave', 'drop'].forEach(e => {
-            fileUploadArea.addEventListener(e, () => fileUploadArea.style.background = '#f0faf6');
+        ['dragleave', 'drop'].forEach(evt => {
+            fileUploadArea.addEventListener(evt, (e) => { e.preventDefault(); fileUploadArea.style.background = '#f0faf6'; });
         });
 
         fileUploadArea.addEventListener('drop', (e) => {
@@ -494,5 +508,7 @@
 
         updateHint();
     </script>
+<script src="/assets/js/components/newsletter-cta.min.js" defer></script>
+<afro-newsletter-cta></afro-newsletter-cta>
 </body>
 </html>

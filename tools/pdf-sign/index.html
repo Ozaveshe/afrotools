@@ -944,6 +944,8 @@
 
     document.getElementById('step1').classList.toggle('done', stepNum > 1);
     document.getElementById('step2').classList.toggle('done', stepNum > 2);
+
+    if (stepNum === 3 && typeof initStep3 === 'function') initStep3();
   }
 
   function formatBytes(bytes) {
@@ -1014,14 +1016,16 @@
   drawCtx.fillRect(0, 0, drawCanvas.width, drawCanvas.height);
   drawHistory.push(drawCanvas.toDataURL());
 
-  // Tab switching
+  // Tab switching - only for buttons with data-tab attribute
   tabButtons.forEach(btn => {
+    if (!btn.dataset.tab) return;
     btn.addEventListener('click', () => {
       const tab = btn.dataset.tab;
-      tabButtons.forEach(b => b.classList.remove('active'));
-      tabContents.forEach(c => c.classList.remove('active'));
+      tabButtons.forEach(b => { if (b.dataset.tab) b.classList.remove('active'); });
+      tabContents.forEach(c => { c.style.display = 'none'; c.classList.remove('active'); });
       btn.classList.add('active');
-      document.getElementById(tab).classList.add('active');
+      const tabEl = document.getElementById(tab);
+      if (tabEl) { tabEl.style.display = ''; tabEl.classList.add('active'); }
     });
   });
 
@@ -1232,6 +1236,7 @@
   let isDraggingOverlay = false;
 
   function renderPdfPage(pageNum) {
+    if (!currentPdfDoc) return;
     currentPageNum = pageNum;
     currentPageSpan.textContent = pageNum;
     totalPagesSpan.textContent = totalPages;
@@ -1241,6 +1246,7 @@
       pdfRenderCanvas.width = viewport.width;
       pdfRenderCanvas.height = viewport.height;
 
+      if (!renderCtx) return;
       page.render({
         canvasContext: renderCtx,
         viewport: viewport
@@ -1251,6 +1257,8 @@
         overlayY = viewport.height / 2;
         updateOverlayPosition();
       });
+    }).catch(err => {
+      console.error('Page render error:', err);
     });
   }
 
@@ -1331,8 +1339,13 @@
     if (currentPageNum < totalPages) renderPdfPage(currentPageNum + 1);
   });
 
-  renderPdfPage(1);
-  sigOverlay.style.display = 'block';
+  // renderPdfPage is called when showStep(3) is triggered and a PDF is loaded
+  function initStep3() {
+    if (currentPdfDoc) {
+      renderPdfPage(1);
+      sigOverlay.style.display = 'block';
+    }
+  }
 
   // Download
   document.getElementById('downloadPdfBtn').addEventListener('click', async () => {
@@ -1371,8 +1384,8 @@
           });
         } else if (signatureType === 'type') {
           const data = JSON.parse(signatureData);
-          const rgbColor = data.color === '#001f3f' ? rgb(0, 31, 63) :
-                          data.color === '#008751' ? rgb(0, 135, 81) : rgb(0, 0, 0);
+          const rgbColor = data.color === '#001f3f' ? rgb(0, 31/255, 63/255) :
+                          data.color === '#008751' ? rgb(0, 135/255, 81/255) : rgb(0, 0, 0);
           page.drawText(data.text, {
             x: overlayX,
             y: height - overlayY - 20,
@@ -1387,7 +1400,7 @@
             x: overlayX,
             y: height - overlayY - 50,
             size: 10,
-            color: rgb(100, 100, 100)
+            color: rgb(100/255, 100/255, 100/255)
           });
         }
       }
@@ -1404,9 +1417,11 @@
   document.getElementById('finalDownloadBtn').addEventListener('click', () => {
     if (finalPdfBytes) {
       const link = document.createElement('a');
-      link.href = URL.createObjectURL(new Blob([finalPdfBytes], { type: 'application/pdf' }));
+      const url = URL.createObjectURL(new Blob([finalPdfBytes], { type: 'application/pdf' }));
+      link.href = url;
       link.download = currentPdfFile.name.replace('.pdf', '_signed.pdf');
       link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 5000);
     }
   });
 </script>

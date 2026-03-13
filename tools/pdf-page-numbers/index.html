@@ -536,6 +536,7 @@
   addBtn.addEventListener('click', async () => {
     if (!currentFile) return;
 
+    addBtn.disabled = true;
     resultText.textContent = 'Adding page numbers...';
     actionRow.style.display = 'none';
     resultCard.classList.add('on');
@@ -600,14 +601,17 @@
     } catch (err) {
       resultText.textContent = '✗ Error: ' + err.message;
     }
+    addBtn.disabled = false;
   });
 
   downloadBtn.addEventListener('click', () => {
     if (resultPdf) {
       const link = document.createElement('a');
-      link.href = URL.createObjectURL(new Blob([resultPdf], { type: 'application/pdf' }));
+      const url = URL.createObjectURL(new Blob([resultPdf], { type: 'application/pdf' }));
+      link.href = url;
       link.download = 'numbered.pdf';
       link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 5000);
     }
   });
 </script>

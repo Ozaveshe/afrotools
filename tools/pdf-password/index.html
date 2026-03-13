@@ -687,7 +687,11 @@
   // Encrypt function — uses pdf-lib password protection
   encryptBtn.addEventListener('click', async () => {
     if (!currentFile || !userPassword.value) {
-      resultText.innerHTML = '<span style="color:#c0392b;">Please select a PDF file and enter a password.</span>';
+      resultText.textContent = '';
+      const warnSpan = document.createElement('span');
+      warnSpan.style.color = '#c0392b';
+      warnSpan.textContent = 'Please select a PDF file and enter a password.';
+      resultText.appendChild(warnSpan);
       resultCard.classList.add('on');
       return;
     }
@@ -729,12 +733,28 @@
 
       progressFill.style.width = '100%';
       progressBar.style.display = 'none';
-      resultText.innerHTML = `<span style="color:#166534;font-weight:700;">✓ PDF password-protected successfully!</span><div style="margin-top:6px;font-size:0.8rem;color:#6b7280;">Password: "${userPassword.value}" — users will need this to open the file.</div>`;
+      resultText.textContent = '';
+      const successSpan = document.createElement('span');
+      successSpan.style.cssText = 'color:#166534;font-weight:700;';
+      successSpan.textContent = '✓ PDF password-protected successfully!';
+      const infoDiv = document.createElement('div');
+      infoDiv.style.cssText = 'margin-top:6px;font-size:0.8rem;color:#6b7280;';
+      infoDiv.textContent = 'Password: "' + userPassword.value + '" — users will need this to open the file.';
+      resultText.appendChild(successSpan);
+      resultText.appendChild(infoDiv);
       actionRow.style.display = 'grid';
     } catch (err) {
       progressBar.style.display = 'none';
       console.error('Encrypt error:', err);
-      resultText.innerHTML = `<span style="color:#c0392b;">Encryption failed: ${err.message || 'Unknown error'}</span><div style="margin-top:6px;font-size:0.8rem;color:#6b7280;">Try a different PDF or use Adobe Acrobat for AES-256 encryption.</div>`;
+      resultText.textContent = '';
+      const errSpan = document.createElement('span');
+      errSpan.style.color = '#c0392b';
+      errSpan.textContent = 'Encryption failed: ' + (err.message || 'Unknown error');
+      const helpDiv = document.createElement('div');
+      helpDiv.style.cssText = 'margin-top:6px;font-size:0.8rem;color:#6b7280;';
+      helpDiv.textContent = 'Try a different PDF or use Adobe Acrobat for AES-256 encryption.';
+      resultText.appendChild(errSpan);
+      resultText.appendChild(helpDiv);
     }
   });
 
@@ -781,9 +801,11 @@
     if (processedPdf) {
       const link = document.createElement('a');
       const filename = currentMode === 'encrypt' ? 'encrypted.pdf' : 'decrypted.pdf';
-      link.href = URL.createObjectURL(new Blob([processedPdf], { type: 'application/pdf' }));
+      const url = URL.createObjectURL(new Blob([processedPdf], { type: 'application/pdf' }));
+      link.href = url;
       link.download = filename;
       link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 5000);
     }
   });
 </script>

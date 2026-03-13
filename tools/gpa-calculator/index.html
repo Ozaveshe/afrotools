@@ -15,6 +15,12 @@
     <meta name="tool-id" content="gpa-calculator">
     <link rel="canonical" href="https://afrotools.com/tools/gpa-calculator/">
     <title>GPA Calculator for Africa — Nigerian, Kenyan, Ghanaian, Francophone | AfroTools</title>
+    <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="AfroTools">
+    <meta property="og:title" content="GPA Calculator for Africa — Nigerian, Kenyan, Ghanaian, Francophone | AfroTools">
+    <meta property="og:description" content="Calculate GPA/CGPA for Nigerian (5.0 scale), Kenyan, Ghanaian, South African, Francophone African universities. Upload transcript CSV, convert GPA scales. Free.">
+    <meta property="og:url" content="https://afrotools.com/tools/gpa-calculator/">
 
     <script type="application/ld+json">
     {
@@ -55,6 +61,7 @@
             background: white;
             color: var(--afro-dark);
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
         .container {
@@ -491,6 +498,36 @@
 
             .tab-button {
                 white-space: nowrap;
+            }
+
+            .main-content > .main {
+                min-width: 0;
+                overflow-x: hidden;
+            }
+
+            .semester-section {
+                padding: 12px;
+            }
+
+            .semester-content {
+                overflow-x: auto;
+            }
+
+            .course-table {
+                min-width: 500px;
+            }
+
+            .course-table th,
+            .course-table td {
+                padding: 8px 6px;
+                font-size: 0.85rem;
+            }
+
+            .course-table input,
+            .course-table select {
+                padding: 6px;
+                font-size: 0.85rem;
+                min-width: 60px;
             }
         }
     </style>
@@ -1058,6 +1095,13 @@ MTH 201: 4 units, 85%"></textarea>
         }
 
         function updateCourse(semIdx, courseIdx, field, value) {
+            if (field === 'credits') {
+                const num = parseFloat(value);
+                if (value !== '' && (isNaN(num) || num < 0 || num > 30)) {
+                    alert('Credit units must be a number between 0 and 30');
+                    return;
+                }
+            }
             semesters[semIdx].courses[courseIdx][field] = value;
             calculateSemesterGPA(semIdx);
             saveToLocalStorage();
@@ -1082,13 +1126,26 @@ MTH 201: 4 units, 85%"></textarea>
             let totalCredits = 0;
 
             semester.courses.forEach((course, cIdx) => {
+                const pointsCell = document.getElementById(`points-${semIdx}-${cIdx}`);
                 if (course.grade && course.credits && system.grades) {
-                    const points = system.grades[course.grade].points;
-                    const credits = parseFloat(course.credits) || 0;
+                    const gradeInfo = system.grades[course.grade];
+                    if (!gradeInfo) {
+                        // Grade from a different system; skip and show 0
+                        if (pointsCell) pointsCell.textContent = '0.00';
+                        return;
+                    }
+                    const credits = parseFloat(course.credits);
+                    if (isNaN(credits) || credits <= 0) {
+                        if (pointsCell) pointsCell.textContent = '0.00';
+                        return;
+                    }
+                    const points = gradeInfo.points;
                     totalPoints += points * credits;
                     totalCredits += credits;
 
-                    document.getElementById(`points-${semIdx}-${cIdx}`).textContent = (points * credits).toFixed(2);
+                    if (pointsCell) pointsCell.textContent = (points * credits).toFixed(2);
+                } else {
+                    if (pointsCell) pointsCell.textContent = '0.00';
                 }
             });
 
@@ -1111,9 +1168,11 @@ MTH 201: 4 units, 85%"></textarea>
             semesters.forEach((semester) => {
                 semester.courses.forEach((course) => {
                     if (course.grade && course.credits && system.grades) {
-                        const points = system.grades[course.grade].points;
-                        const credits = parseFloat(course.credits) || 0;
-                        totalPoints += points * credits;
+                        const gradeInfo = system.grades[course.grade];
+                        if (!gradeInfo) return;
+                        const credits = parseFloat(course.credits);
+                        if (isNaN(credits) || credits <= 0) return;
+                        totalPoints += gradeInfo.points * credits;
                         totalCredits += credits;
                     }
                 });
@@ -1356,7 +1415,12 @@ MTH 201: 4 units, 85%"></textarea>
             }
 
             const system = gradingSystems[currentSystem];
-            const gradePoints = system.grades[targetGrade].points;
+            const gradeInfo = system.grades[targetGrade];
+            if (!gradeInfo) {
+                alert('Invalid grade selected for current grading system');
+                return;
+            }
+            const gradePoints = gradeInfo.points;
             const newCgpa = ((currentCgpa * currentCredits) + (gradePoints * upcomingCredits)) / (currentCredits + upcomingCredits);
 
             const resultDiv = document.getElementById('whatifResult');
@@ -1418,19 +1482,28 @@ MTH 201: 4 units, 85%"></textarea>
         }
 
         function loadFromLocalStorage() {
-            const saved = localStorage.getItem('afroGpaCalculator');
-            if (saved) {
-                const data = JSON.parse(saved);
-                semesters = data.semesters || [];
-                currentSystem = data.currentSystem || 'nigerian-federal';
-                semesterCount = semesters.length;
+            try {
+                const saved = localStorage.getItem('afroGpaCalculator');
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    semesters = Array.isArray(data.semesters) ? data.semesters : [];
+                    currentSystem = data.currentSystem && gradingSystems[data.currentSystem] ? data.currentSystem : 'nigerian-federal';
+                    semesterCount = semesters.length;
 
-                document.getElementById('gradingSystem').value = currentSystem;
-                if (semesters.length > 0) {
-                    renderSemesters();
+                    document.getElementById('gradingSystem').value = currentSystem;
+                    if (semesters.length > 0) {
+                        renderSemesters();
+                    }
                 }
+            } catch (e) {
+                console.error('Failed to load saved data:', e);
+                semesters = [];
+                currentSystem = 'nigerian-federal';
+                semesterCount = 0;
             }
         }
     </script>
+<script src="/assets/js/components/newsletter-cta.min.js" defer></script>
+<afro-newsletter-cta></afro-newsletter-cta>
 </body>
 </html>

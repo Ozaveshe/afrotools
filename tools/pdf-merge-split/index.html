@@ -272,11 +272,20 @@ function renderMergeFileList() {
   mergeFiles.forEach((file, index) => {
     const item = document.createElement('div');
     item.className = 'file-item'; item.draggable = true;
-    item.innerHTML = `
-      <span style="color:#666;font-size:0.8rem;margin-right:8px;">${index + 1}</span>
-      <span class="file-item-name">${file.name}</span>
-      <span class="file-item-size">${(file.size / 1024).toFixed(1)} KB</span>
-      <button class="file-item-remove" data-index="${index}">Remove</button>`;
+    const numSpan = document.createElement('span');
+    numSpan.style.cssText = 'color:#666;font-size:0.8rem;margin-right:8px;';
+    numSpan.textContent = index + 1;
+    const nameSpan = document.createElement('span');
+    nameSpan.className = 'file-item-name';
+    nameSpan.textContent = file.name;
+    const sizeSpan = document.createElement('span');
+    sizeSpan.className = 'file-item-size';
+    sizeSpan.textContent = (file.size / 1024).toFixed(1) + ' KB';
+    const removeBtn = document.createElement('button');
+    removeBtn.className = 'file-item-remove';
+    removeBtn.dataset.index = index;
+    removeBtn.textContent = 'Remove';
+    item.append(numSpan, nameSpan, sizeSpan, removeBtn);
     mergeFileList.appendChild(item);
   });
   document.querySelectorAll('.file-item-remove').forEach(btn => {
@@ -340,8 +349,21 @@ async function loadSplitFile(file) {
   splitFile = file;
   splitCuts = {};
   splitThumbnails = {};
-  const arrayBuffer = await file.arrayBuffer();
-  splitPdfDoc = await PDFLib.PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+  let arrayBuffer;
+  try {
+    arrayBuffer = await file.arrayBuffer();
+  } catch (err) {
+    resultText.textContent = '✗ Error reading file: ' + err.message;
+    resultCard.classList.add('on');
+    return;
+  }
+  try {
+    splitPdfDoc = await PDFLib.PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+  } catch (err) {
+    resultText.textContent = '✗ Error loading PDF: ' + err.message;
+    resultCard.classList.add('on');
+    return;
+  }
   const pageCount = splitPdfDoc.getPageCount();
   document.getElementById('splitFileName').textContent = file.name;
   document.getElementById('splitPageCount').textContent = pageCount;
@@ -352,12 +374,16 @@ async function loadSplitFile(file) {
     try {
       const pdf = await pdfjsLib.getDocument({ data: new Uint8Array(arrayBuffer) }).promise;
       for (let i = 0; i < pdf.numPages; i++) {
-        const pg = await pdf.getPage(i + 1);
-        const vp = pg.getViewport({ scale: 0.4 });
-        const c = document.createElement('canvas');
-        c.width = vp.width; c.height = vp.height;
-        await pg.render({ canvasContext: c.getContext('2d'), viewport: vp }).promise;
-        splitThumbnails[i] = c.toDataURL('image/jpeg', 0.6);
+        try {
+          const pg = await pdf.getPage(i + 1);
+          const vp = pg.getViewport({ scale: 0.4 });
+          const c = document.createElement('canvas');
+          c.width = vp.width; c.height = vp.height;
+          const ctx = c.getContext('2d');
+          if (!ctx) continue;
+          await pg.render({ canvasContext: ctx, viewport: vp }).promise;
+          splitThumbnails[i] = c.toDataURL('image/jpeg', 0.6);
+        } catch (e) { /* skip failed thumbnail */ }
       }
     } catch (e) { /* thumbnails optional */ }
   }

@@ -90,7 +90,70 @@
     .mode-tabs { grid-template-columns: repeat(2, 1fr); }
     .row-2 { grid-template-columns: 1fr; }
   }
+  details[open] summary svg { transform: rotate(180deg); }
+  details summary::-webkit-details-marker { display: none; }
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Percentage Calculator",
+  "description": "Free percentage calculator with 6 modes: X% of Y, what % is X of Y, % change, discount, tip, and margin/markup. Instant results with history.",
+  "url": "https://afrotools.com/tools/percentage-calc/",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "provider": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What percentage calculations are supported?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "AfroTools Percentage Calculator supports six modes: X% of Y (basic percentage), X is what % of Y, percentage change between two values, discount calculator, tip calculator with bill splitting, and profit margin/markup calculator."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is the percentage calculator free to use?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, completely free with no sign-up, no ads, and no limits. All six calculation modes are available to everyone at no cost."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does the calculator save my calculations?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The calculator keeps a session history of your recent calculations for easy reference. This history is only stored in your current browser session and is cleared when you close the tab. Nothing is saved to any server."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I use the percentage calculator for business calculations?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The tool includes a dedicated profit margin and markup calculator that computes margin percentage, markup percentage, gross profit, and gross margin from cost and selling prices. The discount and tip modes are also useful for business scenarios."
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
@@ -114,13 +177,13 @@
       <div class="card">
         <div class="card-head"><span class="card-title">Percentage Calculator</span></div>
         <div class="card-body">
-          <div class="mode-tabs">
-            <button class="mode-tab on" data-mode="1">X% of Y</button>
-            <button class="mode-tab" data-mode="2">X is Y%</button>
-            <button class="mode-tab" data-mode="3">% Change</button>
-            <button class="mode-tab" data-mode="4">Discount</button>
-            <button class="mode-tab" data-mode="5">Tip Split</button>
-            <button class="mode-tab" data-mode="6">Margin</button>
+          <div class="mode-tabs" role="tablist">
+            <button class="mode-tab on" data-mode="1" role="tab" aria-selected="true">X% of Y</button>
+            <button class="mode-tab" data-mode="2" role="tab" aria-selected="false">X is Y%</button>
+            <button class="mode-tab" data-mode="3" role="tab" aria-selected="false">% Change</button>
+            <button class="mode-tab" data-mode="4" role="tab" aria-selected="false">Discount</button>
+            <button class="mode-tab" data-mode="5" role="tab" aria-selected="false">Tip Split</button>
+            <button class="mode-tab" data-mode="6" role="tab" aria-selected="false">Margin</button>
           </div>
 
           <!-- Mode 1: X% of Y -->
@@ -324,6 +387,49 @@
   </div>
 </div>
 
+<afro-related-tools category="education" current="percentage-calc"></afro-related-tools>
+<section class="faq-section" style="max-width:800px;margin:40px auto;padding:0 20px">
+  <h2 style="font-size:1.3rem;font-weight:800;color:#111;margin-bottom:20px;font-family:'DM Sans',sans-serif">Frequently Asked Questions</h2>
+  <div class="faq-list">
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        What percentage calculations are supported?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        AfroTools Percentage Calculator supports six modes: X% of Y (basic percentage), X is what % of Y, percentage change between two values, discount calculator, tip calculator with bill splitting, and profit margin/markup calculator.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        Is the percentage calculator free to use?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        Yes, completely free with no sign-up, no ads, and no limits. All six calculation modes are available to everyone at no cost.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        Does the calculator save my calculations?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        The calculator keeps a session history of your recent calculations for easy reference. This history is only stored in your current browser session and is cleared when you close the tab. Nothing is saved to any server.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        Can I use the percentage calculator for business calculations?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        Yes. The tool includes a dedicated profit margin and markup calculator that computes margin percentage, markup percentage, gross profit, and gross margin from cost and selling prices. The discount and tip modes are also useful for business scenarios.
+      </div>
+    </details>
+  </div>
+</section>
+
 <afro-footer></afro-footer>
 
 <script>
@@ -334,9 +440,10 @@
   tabs.forEach(tab => {
     tab.addEventListener('click', () => {
       const mode = tab.dataset.mode;
-      tabs.forEach(t => t.classList.remove('on'));
+      tabs.forEach(t => { t.classList.remove('on'); t.setAttribute('aria-selected', 'false'); });
       contents.forEach(c => c.style.display = 'none');
       tab.classList.add('on');
+      tab.setAttribute('aria-selected', 'true');
       document.getElementById('mode-' + mode).style.display = 'block';
     });
   });
@@ -374,7 +481,7 @@
   function calc3() {
     const o = parseFloat(document.getElementById('p3_orig').value) || 0;
     const n = parseFloat(document.getElementById('p3_new').value) || 0;
-    if (o === 0) { document.getElementById('r3').textContent = '—'; return; }
+    if (o === 0) { document.getElementById('r3').textContent = '—'; document.getElementById('r3_sub').textContent = 'Original value cannot be zero'; return; }
     const diff = n - o;
     const pct = (diff / o * 100);
     const sign = pct >= 0 ? '+' : '';
@@ -442,7 +549,8 @@
   function renderHist() {
     const el = document.getElementById('histList');
     if (historyArr.length === 0) { el.innerHTML = '<div class="empty-hist">Calculations will appear here automatically.</div>'; return; }
-    el.innerHTML = historyArr.map(h => `<div class="hist-item"><span class="hist-expr">${h.expr}</span><span class="hist-result">${h.result}</span></div>`).join('');
+    const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    el.innerHTML = historyArr.map(h => `<div class="hist-item"><span class="hist-expr">${esc(h.expr)}</span><span class="hist-result">${esc(h.result)}</span></div>`).join('');
   }
 
   function clearHist() { historyArr = []; renderHist(); }
@@ -464,5 +572,7 @@
   historyArr = [];
   renderHist();
 </script>
+<script src="/assets/js/components/tool-registry.js" defer></script>
+<script src="/assets/js/components/related-tools.min.js" defer></script>
 </body>
 </html>

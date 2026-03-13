@@ -518,6 +518,8 @@
       currentFilter = btn.dataset.filter;
       filterSlider.value = filterValues[currentFilter];
       updateSliderLabel();
+      const val = filterValues[currentFilter];
+      sliderValue.textContent = val + (currentFilter === 'blur' ? 'px' : currentFilter === 'huerotate' ? '\u00B0' : '%');
       updatePreview();
     });
   });
@@ -571,26 +573,40 @@
     filterButtons[0].classList.add('active');
     currentFilter = 'grayscale';
     filterSlider.value = 0;
+    sliderValue.textContent = '0%';
     updateSliderLabel();
     updatePreview();
   });
 
   downloadBtn.addEventListener('click', () => {
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    const img = new Image();
-    img.onload = () => {
-      canvas.width = img.width;
-      canvas.height = img.height;
-      ctx.filter = previewImage.style.filter;
-      ctx.drawImage(img, 0, 0);
-      const link = document.createElement('a');
-      link.href = canvas.toDataURL('image/png');
-      link.download = 'filtered-photo.png';
-      link.click();
-    };
-    img.src = currentImage;
+    if (!currentImage) { alert('No image loaded.'); return; }
+    try {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      if (!ctx) { alert('Could not initialize canvas.'); return; }
+      const img = new Image();
+      img.onload = () => {
+        try {
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx.filter = previewImage.style.filter;
+          ctx.drawImage(img, 0, 0);
+          const link = document.createElement('a');
+          link.href = canvas.toDataURL('image/png');
+          link.download = 'filtered-photo.png';
+          link.click();
+        } catch (e) {
+          alert('Error applying filters for download: ' + e.message);
+        }
+      };
+      img.onerror = () => { alert('Failed to load image for download.'); };
+      img.src = currentImage;
+    } catch (e) {
+      alert('Error preparing download: ' + e.message);
+    }
   });
 </script>
+<script src="/assets/js/components/newsletter-cta.min.js" defer></script>
+<afro-newsletter-cta></afro-newsletter-cta>
 </body>
 </html>

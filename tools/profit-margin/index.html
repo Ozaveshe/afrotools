@@ -672,12 +672,12 @@
                 </thead>
                 <tbody id="multiProductRows">
                   <tr>
-                    <td><input type="text" class="f-input" placeholder="Product name" value="Product 1" style="font-size: 0.8rem;"></td>
-                    <td><input type="number" class="f-input" value="50" step="0.01" style="font-size: 0.8rem;"></td>
-                    <td><input type="number" class="f-input" value="100" step="0.01" style="font-size: 0.8rem;"></td>
-                    <td><input type="number" class="f-input" value="10" step="1" style="font-size: 0.8rem;"></td>
-                    <td class="currency">50%</td>
-                    <td class="currency">500</td>
+                    <td><input type="text" class="f-input" data-field="name" placeholder="Product name" value="Product 1" style="font-size: 0.8rem;"></td>
+                    <td><input type="number" class="f-input" data-field="cost" value="50" step="0.01" style="font-size: 0.8rem;"></td>
+                    <td><input type="number" class="f-input" data-field="selling" value="100" step="0.01" style="font-size: 0.8rem;"></td>
+                    <td><input type="number" class="f-input" data-field="qty" value="10" step="1" style="font-size: 0.8rem;"></td>
+                    <td class="currency" data-col="margin">50%</td>
+                    <td class="currency" data-col="profit">500</td>
                     <td><button class="remove-btn" onclick="removeMultiRow(this)">Delete</button></td>
                   </tr>
                 </tbody>
@@ -900,13 +900,23 @@
 
   // Single Product Calculation
   function calculateSingle() {
-    const cost = parseFloat(document.getElementById('singleCost').value) || 0;
+    const costRaw = parseFloat(document.getElementById('singleCost').value);
+    const cost = isNaN(costRaw) ? 0 : costRaw;
     const currency = document.getElementById('singleCurrency').value;
     const targetMargin = parseFloat(document.getElementById('singleTargetMargin').value);
-    let selling = parseFloat(document.getElementById('singleSelling').value) || 0;
+    const sellingRaw = parseFloat(document.getElementById('singleSelling').value);
+    let selling = isNaN(sellingRaw) ? 0 : sellingRaw;
 
     if (targetMargin && !isNaN(targetMargin)) {
+      if (targetMargin >= 100) {
+        alert('Target margin must be less than 100%');
+        return;
+      }
       selling = cost / (1 - (targetMargin / 100));
+      if (isNaN(selling) || !isFinite(selling)) {
+        alert('Invalid margin value');
+        return;
+      }
       document.getElementById('singleSelling').value = selling.toFixed(2);
     }
 
@@ -925,6 +935,7 @@
     setupPriceSlider(cost, selling);
   }
 
+  let _sliderHandler = null;
   function setupPriceSlider(cost, selling) {
     const slider = document.getElementById('singlePriceSlider');
     slider.min = cost * 0.5;
@@ -932,23 +943,32 @@
     slider.value = selling;
     document.getElementById('singleSliderContainer').style.display = 'block';
 
-    slider.addEventListener('input', () => {
+    // Remove old listener before adding new one to prevent memory leak
+    if (_sliderHandler) slider.removeEventListener('input', _sliderHandler);
+    _sliderHandler = () => {
       const newPrice = parseFloat(slider.value);
+      if (isNaN(newPrice)) return;
       document.getElementById('sliderValue').textContent = newPrice.toFixed(2);
       const profit = newPrice - cost;
       const margin = newPrice > 0 ? ((profit / newPrice) * 100).toFixed(2) : 0;
       const markup = cost > 0 ? ((profit / cost) * 100).toFixed(2) : 0;
+      const roi = cost > 0 ? ((profit / cost) * 100).toFixed(2) : 0;
 
       document.getElementById('singleProfit').textContent = `${document.getElementById('singleCurrency').value}${profit.toFixed(2)}`;
       document.getElementById('singleMargin').textContent = margin + '%';
       document.getElementById('singleMarkup').textContent = markup + '%';
-    });
+      document.getElementById('singleROI').textContent = roi + '%';
+    };
+    slider.addEventListener('input', _sliderHandler);
   }
 
   function calculateBreakeven() {
-    const selling = parseFloat(document.getElementById('singleSelling').value) || 0;
-    const cost = parseFloat(document.getElementById('singleCost').value) || 0;
-    const fixed = parseFloat(document.getElementById('singleFixedCosts').value) || 0;
+    const sellingRaw = parseFloat(document.getElementById('singleSelling').value);
+    const selling = isNaN(sellingRaw) ? 0 : sellingRaw;
+    const costRaw = parseFloat(document.getElementById('singleCost').value);
+    const cost = isNaN(costRaw) ? 0 : costRaw;
+    const fixedRaw = parseFloat(document.getElementById('singleFixedCosts').value);
+    const fixed = isNaN(fixedRaw) ? 0 : fixedRaw;
 
     if (selling <= cost || fixed === 0) {
       alert('Please ensure selling price > cost and set fixed costs');
@@ -972,12 +992,12 @@
     }
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td><input type="text" class="f-input" placeholder="Product name" style="font-size: 0.8rem;"></td>
-      <td><input type="number" class="f-input" value="0" step="0.01" style="font-size: 0.8rem;"></td>
-      <td><input type="number" class="f-input" value="0" step="0.01" style="font-size: 0.8rem;"></td>
-      <td><input type="number" class="f-input" value="1" step="1" style="font-size: 0.8rem;"></td>
-      <td class="currency">0%</td>
-      <td class="currency">0</td>
+      <td><input type="text" class="f-input" data-field="name" placeholder="Product name" style="font-size: 0.8rem;"></td>
+      <td><input type="number" class="f-input" data-field="cost" value="0" step="0.01" style="font-size: 0.8rem;"></td>
+      <td><input type="number" class="f-input" data-field="selling" value="0" step="0.01" style="font-size: 0.8rem;"></td>
+      <td><input type="number" class="f-input" data-field="qty" value="1" step="1" style="font-size: 0.8rem;"></td>
+      <td class="currency" data-col="margin">0%</td>
+      <td class="currency" data-col="profit">0</td>
       <td><button class="remove-btn" onclick="removeMultiRow(this)">Delete</button></td>
     `;
     tbody.appendChild(tr);
@@ -998,10 +1018,13 @@
     let idx = 0;
 
     rows.forEach((row, i) => {
-      const inputs = row.querySelectorAll('input, select');
-      const cost = parseFloat(inputs[1].value) || 0;
-      const selling = parseFloat(inputs[2].value) || 0;
-      const qty = parseFloat(inputs[3].value) || 0;
+      const costRaw = parseFloat(row.querySelector('[data-field="cost"]').value);
+      const sellingRaw = parseFloat(row.querySelector('[data-field="selling"]').value);
+      const qtyRaw = parseFloat(row.querySelector('[data-field="qty"]').value);
+
+      const cost = isNaN(costRaw) ? 0 : costRaw;
+      const selling = isNaN(sellingRaw) ? 0 : sellingRaw;
+      const qty = isNaN(qtyRaw) ? 0 : qtyRaw;
 
       const profit = (selling - cost) * qty;
       const margin = selling > 0 ? ((selling - cost) / selling) * 100 : 0;
@@ -1010,8 +1033,8 @@
       totalCost += cost * qty;
       totalProfit += profit;
 
-      row.querySelectorAll('td')[4].textContent = margin.toFixed(1) + '%';
-      row.querySelectorAll('td')[5].textContent = profit.toFixed(0);
+      row.querySelector('[data-col="margin"]').textContent = margin.toFixed(1) + '%';
+      row.querySelector('[data-col="profit"]').textContent = profit.toFixed(0);
 
       if (margin > bestMargin) {
         bestMargin = margin;
@@ -1048,13 +1071,20 @@
   });
 
   function calculateImport() {
-    const cost = parseFloat(document.getElementById('importCost').value) || 0;
-    const shipping = parseFloat(document.getElementById('importShipping').value) || 0;
-    const duty = parseFloat(document.getElementById('importDuty').value) || 0;
-    const agent = parseFloat(document.getElementById('importAgent').value) || 0;
-    const rate = parseFloat(document.getElementById('importRate').value) || 1;
-    const spread = parseFloat(document.getElementById('importSpread').value) || 0;
+    const costRaw = parseFloat(document.getElementById('importCost').value);
+    const shippingRaw = parseFloat(document.getElementById('importShipping').value);
+    const dutyRaw = parseFloat(document.getElementById('importDuty').value);
+    const agentRaw = parseFloat(document.getElementById('importAgent').value);
+    const rateRaw = parseFloat(document.getElementById('importRate').value);
+    const spreadRaw = parseFloat(document.getElementById('importSpread').value);
     const destCurrency = document.getElementById('importDestCurrency').value;
+
+    const cost = isNaN(costRaw) ? 0 : costRaw;
+    const shipping = isNaN(shippingRaw) ? 0 : shippingRaw;
+    const duty = isNaN(dutyRaw) ? 0 : dutyRaw;
+    const agent = isNaN(agentRaw) ? 0 : agentRaw;
+    const rate = isNaN(rateRaw) || rateRaw <= 0 ? 1 : rateRaw;
+    const spread = isNaN(spreadRaw) ? 0 : spreadRaw;
 
     if (rate <= 0) {
       document.getElementById('importAlert').textContent = 'Please enter a valid FOREX rate';
@@ -1095,12 +1125,11 @@
       singleCost: document.getElementById('singleCost').value,
       singleSelling: document.getElementById('singleSelling').value,
       multiProducts: Array.from(document.querySelectorAll('#multiProductRows tr')).map(row => {
-        const inputs = row.querySelectorAll('input');
         return {
-          name: inputs[0].value,
-          cost: inputs[1].value,
-          selling: inputs[2].value,
-          qty: inputs[3].value
+          name: (row.querySelector('[data-field="name"]') || {}).value || '',
+          cost: (row.querySelector('[data-field="cost"]') || {}).value || '0',
+          selling: (row.querySelector('[data-field="selling"]') || {}).value || '0',
+          qty: (row.querySelector('[data-field="qty"]') || {}).value || '0'
         };
       })
     };
@@ -1139,5 +1168,7 @@
   // Initial calculation
   calculateSingle();
 </script>
+<script src="/assets/js/components/newsletter-cta.min.js" defer></script>
+<afro-newsletter-cta></afro-newsletter-cta>
 </body>
 </html>

@@ -15,6 +15,11 @@
     <meta name="theme-color" content="#be185d">
     <link rel="canonical" href="https://afrotools.com/tools/due-date">
     <title>Pregnancy Due Date Calculator — Gestational Weeks & Trimester Guide | AfroTools</title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="AfroTools">
+    <meta property="og:title" content="Pregnancy Due Date Calculator — Gestational Weeks & Trimester Guide | AfroTools">
+    <meta property="og:description" content="Pregnancy due date calculator with gestational weeks, trimester tips, development milestones, and African health guidelines.">
+    <meta property="og:url" content="https://afrotools.com/tools/due-date/">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -459,31 +464,40 @@
             40: { title: 'Full Term', size: 'Watermelon', info: 'Baby fully developed and ready to meet the world.' }
         };
 
-        function toggleTab(tabName) {
+        function toggleTab(tabName, clickedTab) {
             document.querySelectorAll('.dd-tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.dd-tab').forEach(el => el.classList.remove('active'));
             document.getElementById(tabName).classList.add('active');
-            event.target.classList.add('active');
+            clickedTab.classList.add('active');
+
+            // Reset previous results when switching tabs
+            document.getElementById('results').classList.remove('show');
         }
 
         document.querySelectorAll('.dd-tab').forEach(tab => {
-            tab.addEventListener('click', function() { toggleTab(this.dataset.tab); });
+            tab.addEventListener('click', function() { toggleTab(this.dataset.tab, this); });
         });
+
+        function parseLocalDate(dateStr) {
+            const [y, m, d] = dateStr.split('-').map(Number);
+            return new Date(y, m - 1, d);
+        }
 
         function calculateDueDateLMP() {
             const lmpDate = document.getElementById('lmp-date').value;
             if (!lmpDate) { alert('Please select a date'); return; }
-            const date = new Date(lmpDate);
+            const date = parseLocalDate(lmpDate);
+            const lmp = parseLocalDate(lmpDate);
             date.setDate(date.getDate() + 280);
-            displayResults(date, new Date(lmpDate));
+            displayResults(date, lmp);
         }
 
         function calculateDueDateConception() {
             const conceptionDate = document.getElementById('conception-date').value;
             if (!conceptionDate) { alert('Please select a date'); return; }
-            const date = new Date(conceptionDate);
+            const date = parseLocalDate(conceptionDate);
             date.setDate(date.getDate() + 266);
-            const lmpDate = new Date(conceptionDate);
+            const lmpDate = parseLocalDate(conceptionDate);
             lmpDate.setDate(lmpDate.getDate() - 14);
             displayResults(date, lmpDate);
         }
@@ -492,10 +506,10 @@
             const ivfDate = document.getElementById('ivf-date').value;
             const stage = parseInt(document.getElementById('ivf-stage').value);
             if (!ivfDate) { alert('Please select a date'); return; }
-            const date = new Date(ivfDate);
-            const daysToAdd = 266 - (stage - 0);
+            const date = parseLocalDate(ivfDate);
+            const daysToAdd = 266 - stage;
             date.setDate(date.getDate() + daysToAdd);
-            const lmpDate = new Date(ivfDate);
+            const lmpDate = parseLocalDate(ivfDate);
             lmpDate.setDate(lmpDate.getDate() - (14 + stage));
             displayResults(date, lmpDate);
         }

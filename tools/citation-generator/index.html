@@ -1878,15 +1878,23 @@
             statusDiv.style.display = 'block';
 
             // Call AI advisor
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 15000);
+
             fetch('/.netlify/functions/ai-advisor', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     tool: 'citation-generator',
                     message: `Extract citation metadata from this DOI/ISBN/URL: ${input}. Return ONLY valid JSON with these fields where available: {"type": "journal|book|website", "authors": [{"last": "", "first": ""}], "year": "", "title": "", "journal": "", "volume": "", "issue": "", "pages": "", "publisher": "", "city": "", "doi": "", "url": "", "website_name": ""}`
-                })
+                }),
+                signal: controller.signal
             })
-            .then(res => res.json())
+            .then(res => {
+                clearTimeout(timeoutId);
+                if (!res.ok) throw new Error(`Server error: ${res.status}`);
+                return res.json();
+            })
             .then(data => {
                 try {
                     const metadata = typeof data.response === 'string' ? JSON.parse(data.response) : data.response;
@@ -1922,12 +1930,27 @@
                 }
             })
             .catch(err => {
-                statusDiv.innerHTML = '<div class="alert alert-error">Error fetching metadata. Please fill manually.</div>';
+                clearTimeout(timeoutId);
+                if (err.name === 'AbortError') {
+                    statusDiv.innerHTML = '<div class="alert alert-error">Request timed out. Please fill fields manually.</div>';
+                } else {
+                    statusDiv.innerHTML = '<div class="alert alert-error">Error fetching metadata. Please fill manually.</div>';
+                }
                 console.error(err);
             });
         }
 
         function addCitationToBibliography() {
+            const fields = sourceFields[state.sourceType] || [];
+            const missingFields = fields
+                .filter(f => f.required && (!state.formData[f.name] || !state.formData[f.name].toString().trim()))
+                .map(f => f.label);
+
+            if (missingFields.length > 0) {
+                alert('Please fill in required fields: ' + missingFields.join(', '));
+                return;
+            }
+
             const preview = generateCitations();
             if (!preview) {
                 alert('Please fill in all required fields first');
@@ -2053,7 +2076,10 @@
                     message: `Check this citation for errors and suggest corrections in APA/MLA/Harvard format: "${citationText}"`
                 })
             })
-            .then(res => res.json())
+            .then(res => {
+                if (!res.ok) throw new Error(`Server error: ${res.status}`);
+                return res.json();
+            })
             .then(data => {
                 const feedback = data.response || 'No feedback available';
                 feedbackBox.innerHTML = `<div style="color: var(--text-dark);">${feedback}</div>`;
@@ -2089,7 +2115,10 @@
                     message: message
                 })
             })
-            .then(res => res.json())
+            .then(res => {
+                if (!res.ok) throw new Error(`Server error: ${res.status}`);
+                return res.json();
+            })
             .then(data => {
                 loadingMsg.remove();
                 const assistantMsg = document.createElement('div');

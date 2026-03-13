@@ -15,6 +15,11 @@
     <meta name="theme-color" content="#ef4444">
     <link rel="canonical" href="https://afrotools.com/tools/pomodoro">
     <title>Pomodoro Timer — Focus Sessions, Tracking & Statistics | AfroTools</title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="AfroTools">
+    <meta property="og:title" content="Pomodoro Timer — Focus Sessions, Tracking & Statistics | AfroTools">
+    <meta property="og:description" content="Advanced Pomodoro timer with session tracking, daily goals, statistics, and focus time management. Save your progress with AfroData.">
+    <meta property="og:url" content="https://afrotools.com/tools/pomodoro/">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -561,6 +566,28 @@
         }
 
         function saveStats() {
+            // Store today's data in weekly history for streak/week calculations
+            const todayKey = new Date().toDateString();
+            stats.week[todayKey] = { count: stats.today.count, minutes: stats.today.minutes };
+
+            // Calculate streak: count consecutive days with at least 1 pomodoro
+            let streak = 0;
+            const d = new Date();
+            // Start from today and go backwards
+            for (let i = 0; i < 365; i++) {
+                const key = d.toDateString();
+                if (stats.week[key] && stats.week[key].count > 0) {
+                    streak++;
+                } else if (i === 0) {
+                    // Allow today to have 0 (hasn't finished yet), skip without breaking
+                } else {
+                    // Past day with 0: streak is broken
+                    break;
+                }
+                d.setDate(d.getDate() - 1);
+            }
+            stats.streak = streak;
+
             localStorage.setItem('pomodoroStats', JSON.stringify(stats));
         }
 
@@ -577,11 +604,13 @@
             };
             document.getElementById('sessionTypeLabel').textContent = labels[type];
 
-            timeRemaining = config[type === 'long' ? 'long' : (type === 'break' ? 'break' : 'work')];
+            timeRemaining = config[type];
             updateDisplay();
 
-            document.querySelectorAll('.pom-session-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            document.querySelectorAll('.pom-session-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.classList.contains(type)) btn.classList.add('active');
+            });
         }
 
         function toggleTimer() {
@@ -693,17 +722,21 @@
         }
 
         function playSound() {
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const oscillator = audioContext.createOscillator();
-            const gain = audioContext.createGain();
-            oscillator.connect(gain);
-            gain.connect(audioContext.destination);
-            oscillator.frequency.value = 800;
-            oscillator.type = 'sine';
-            gain.gain.setValueAtTime(0.3, audioContext.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + 0.2);
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gain = audioContext.createGain();
+                oscillator.connect(gain);
+                gain.connect(audioContext.destination);
+                oscillator.frequency.value = 800;
+                oscillator.type = 'sine';
+                gain.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.2);
+            } catch (e) {
+                // Web Audio API not available or blocked by browser policy
+            }
         }
 
         loadStats();

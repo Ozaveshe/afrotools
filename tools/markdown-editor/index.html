@@ -33,6 +33,7 @@
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
 <style>
   :root {
     --afro-green: #008751;
@@ -361,7 +362,70 @@
       height: 400px;
     }
   }
+  details[open] summary svg { transform: rotate(180deg); }
+  details summary::-webkit-details-marker { display: none; }
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Markdown Editor",
+  "description": "Free markdown editor with live split preview. Write markdown on left, see rendered HTML on right. Formatting toolbar, word count, export to HTML/MD, auto-save.",
+  "url": "https://afrotools.com/tools/markdown-editor/",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "provider": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Does the AfroTools Markdown Editor support GitHub Flavored Markdown?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The editor uses the marked.js library which supports GitHub Flavored Markdown (GFM) including tables, fenced code blocks, strikethrough, task lists, and autolinks."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I export my markdown to HTML?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. AfroTools Markdown Editor offers three export options: download as a .md file, download as a styled .html file, or copy the raw HTML to your clipboard for pasting into other applications."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my content stored or saved?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Your content is auto-saved to your browser's localStorage, so it persists between sessions on the same device. Nothing is sent to any server. You can clear the saved content at any time by clearing your text."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does the markdown editor work offline?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Once the page loads, all editing, preview rendering, and export features work without an internet connection. The live preview updates instantly as you type, with no server requests required."
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
@@ -428,6 +492,49 @@
   </div>
 </div>
 
+<afro-related-tools category="developer" current="markdown-editor"></afro-related-tools>
+<section class="faq-section" style="max-width:800px;margin:40px auto;padding:0 20px">
+  <h2 style="font-size:1.3rem;font-weight:800;color:#111;margin-bottom:20px;font-family:'DM Sans',sans-serif">Frequently Asked Questions</h2>
+  <div class="faq-list">
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        Does the AfroTools Markdown Editor support GitHub Flavored Markdown?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        Yes. The editor uses the marked.js library which supports GitHub Flavored Markdown (GFM) including tables, fenced code blocks, strikethrough, task lists, and autolinks.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        Can I export my markdown to HTML?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        Yes. AfroTools Markdown Editor offers three export options: download as a .md file, download as a styled .html file, or copy the raw HTML to your clipboard for pasting into other applications.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        Is my content stored or saved?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        Your content is auto-saved to your browser's localStorage, so it persists between sessions on the same device. Nothing is sent to any server. You can clear the saved content at any time by clearing your text.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        Does the markdown editor work offline?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        Yes. Once the page loads, all editing, preview rendering, and export features work without an internet connection. The live preview updates instantly as you type, with no server requests required.
+      </div>
+    </details>
+  </div>
+</section>
+
 <afro-footer></afro-footer>
 
 <script>
@@ -445,7 +552,7 @@
   function updatePreview() {
     const markdown = editor.value;
     const html = marked.parse(markdown);
-    preview.innerHTML = html;
+    preview.innerHTML = DOMPurify.sanitize(html);
     updateStats();
     saveToLocalStorage();
   }
@@ -497,18 +604,11 @@
   });
 
   downloadHtmlBtn.addEventListener('click', () => {
+    const exportBody = DOMPurify.sanitize(marked.parse(editor.value));
     const html = `<!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
-<!-- Google Analytics 4 -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-D859CGF391');
-</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <style>
@@ -531,7 +631,7 @@
   </style>
 </head>
 <body>
-${preview.innerHTML}
+${exportBody}
 </body>
 </html>`;
     const blob = new Blob([html], { type: 'text/html' });
@@ -544,7 +644,8 @@ ${preview.innerHTML}
   });
 
   copyHtmlBtn.addEventListener('click', () => {
-    navigator.clipboard.writeText(preview.innerHTML);
+    const cleanHtml = DOMPurify.sanitize(marked.parse(editor.value));
+    navigator.clipboard.writeText(cleanHtml);
     copyHtmlBtn.textContent = '✓ Copied!';
     setTimeout(() => copyHtmlBtn.textContent = '📋 Copy HTML', 2000);
   });
@@ -552,5 +653,7 @@ ${preview.innerHTML}
   loadFromLocalStorage();
   updatePreview();
 </script>
+<script src="/assets/js/components/tool-registry.js" defer></script>
+<script src="/assets/js/components/related-tools.min.js" defer></script>
 </body>
 </html>

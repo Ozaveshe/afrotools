@@ -459,8 +459,9 @@
           <button class="copy-btn" id="copyBtn">📋 Copy Expression</button>
           <div class="description-box" id="cronDesc">Daily at midnight</div>
           <div class="runs-list" id="nextRuns">
-            <strong style="display: block; margin-bottom: 6px;">Next 5 runs:</strong>
+            <strong style="display: block; margin-bottom: 6px;">Next 5 runs (local time):</strong>
             <div id="runsList"></div>
+            <div style="font-size: 0.65rem; color: #7dab87; margin-top: 6px;" id="tzNote"></div>
           </div>
         </div>
       </div>
@@ -585,8 +586,8 @@
 
     const nextRunsList = [];
     let current = new Date();
-
-    for (let i = 0; i < 5 && nextRunsList.length < 5; i++) {
+    // Search up to 525600 minutes (1 year) to find 5 matching runs
+    for (let i = 0; i < 525600 && nextRunsList.length < 5; i++) {
       current = new Date(current.getTime() + 60000);
 
       const cm = current.getMinutes();
@@ -616,6 +617,8 @@
     nextRuns.innerHTML = nextRunsList.map((run, i) => `
       <div class="runs-item">${i + 1}. ${run}</div>
     `).join('');
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    document.getElementById('tzNote').innerHTML = 'Times shown in your local timezone: <strong>' + tz + '</strong>.<br>Note: Cron expressions are typically evaluated in UTC or your server\u2019s configured timezone, which may differ from your local time.';
   }
 
   function matchesCronField(value, field) {
@@ -627,8 +630,16 @@
       const [range, step] = field.split('/');
       const stepNum = parseInt(step);
       if (range === '*') return value % stepNum === 0;
-      const [start, end] = range.split('-').map(Number);
-      return value >= start && value <= end && (value - start) % stepNum === 0;
+      if (range.includes('-')) {
+        const [start, end] = range.split('-').map(Number);
+        for (let v = start; v <= end; v += stepNum) {
+          if (v === value) return true;
+        }
+        return false;
+      }
+      // e.g. "5/10" means starting at 5, every 10
+      const start = parseInt(range);
+      return value >= start && (value - start) % stepNum === 0;
     }
     if (field.includes('-')) {
       const [start, end] = field.split('-').map(Number);
@@ -664,5 +675,7 @@
 
   updateCron();
 </script>
+<script src="/assets/js/components/newsletter-cta.min.js" defer></script>
+<afro-newsletter-cta></afro-newsletter-cta>
 </body>
 </html>

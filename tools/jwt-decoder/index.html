@@ -426,6 +426,11 @@
         </div>
       </div>
 
+      <!-- Decode-only warning -->
+      <div style="padding: 10px 16px; background: #fff7e6; border: 1px solid rgba(255, 193, 7, 0.35); border-radius: 8px; font-size: 0.78rem; color: #856404; margin-bottom: 18px; line-height: 1.5;">
+        <strong>Note:</strong> This tool only <em>decodes</em> JWTs — it does not verify signatures. A token shown as "Valid JWT Format" means it is correctly structured, not that it is cryptographically verified or trustworthy.
+      </div>
+
       <!-- Header Output -->
       <div class="card">
         <div class="card-head">
@@ -550,8 +555,13 @@
         throw new Error('Invalid JWT format - must have 3 parts separated by dots');
       }
 
-      const header = JSON.parse(atob(parts[0]));
-      const payload = JSON.parse(atob(parts[1]));
+      let header, payload;
+      try {
+        header = JSON.parse(atob(parts[0].replace(/-/g, '+').replace(/_/g, '/')));
+      } catch { throw new Error('Invalid header - not valid Base64/JSON'); }
+      try {
+        payload = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')));
+      } catch { throw new Error('Invalid payload - not valid Base64/JSON'); }
 
       decodedData = { header, payload };
 
@@ -613,13 +623,11 @@
 
   function formatJSON(obj) {
     const json = JSON.stringify(obj, null, 2);
-    return json.replace(/("([^"]*)":|: ("[^"]*"|[^,\}]*)|: ([0-9]+)|: (true|false|null))/g, (match, p1, p2, p3, p4, p5) => {
-      if (p2) return `<span class="json-key">"${p2}":</span>`;
-      if (p3) return `: <span class="json-string">${p3}</span>`;
-      if (p4) return `: <span class="json-number">${p4}</span>`;
-      if (p5) return `: <span class="json-number">${p5}</span>`;
-      return match;
-    });
+    const escaped = json.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    return escaped.replace(/"((?:[^"\\]|\\.)*)"\s*:/g, '"<span class="json-key">$1</span>":')
+      .replace(/:\s*("(?:[^"\\]|\\.)*")/g, ': <span class="json-string">$1</span>')
+      .replace(/:\s*(\d+(?:\.\d+)?)\b/g, ': <span class="json-number">$1</span>')
+      .replace(/:\s*(true|false|null)\b/g, ': <span class="json-number">$1</span>');
   }
 
   jwtInput.addEventListener('input', decodeJWT);
@@ -631,13 +639,21 @@
       if (type === 'header') data = JSON.stringify(decodedData.header, null, 2);
       else if (type === 'payload') data = JSON.stringify(decodedData.payload, null, 2);
 
-      navigator.clipboard.writeText(data);
-      btn.textContent = '✓ Copied!';
-      setTimeout(() => {
-        btn.textContent = `📋 Copy ${type.charAt(0).toUpperCase() + type.slice(1)}`;
-      }, 2000);
+      navigator.clipboard.writeText(data).then(() => {
+        btn.textContent = '✓ Copied!';
+        setTimeout(() => {
+          btn.textContent = `📋 Copy ${type.charAt(0).toUpperCase() + type.slice(1)}`;
+        }, 2000);
+      }).catch(() => {
+        btn.textContent = '✗ Copy failed';
+        setTimeout(() => {
+          btn.textContent = `📋 Copy ${type.charAt(0).toUpperCase() + type.slice(1)}`;
+        }, 2000);
+      });
     });
   });
 </script>
+<script src="/assets/js/components/newsletter-cta.min.js" defer></script>
+<afro-newsletter-cta></afro-newsletter-cta>
 </body>
 </html>

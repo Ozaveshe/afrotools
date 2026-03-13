@@ -530,6 +530,17 @@
     const file = imageInput.files[0];
     if (!file) return;
 
+    const maxSize = 10 * 1024 * 1024; // 10MB
+    if (file.size > maxSize) {
+      alert('File is too large. Please upload an image under 10MB.');
+      return;
+    }
+
+    if (!file.type.startsWith('image/')) {
+      alert('Please upload a valid image file.');
+      return;
+    }
+
     const reader = new FileReader();
     reader.onload = (e) => {
       const img = new Image();
@@ -537,7 +548,13 @@
         originalImage = img;
         generateBtn.disabled = false;
       };
+      img.onerror = () => {
+        alert('Failed to load the image. The file may be corrupted.');
+      };
       img.src = e.target.result;
+    };
+    reader.onerror = () => {
+      alert('Failed to read the file. Please try again.');
     };
     reader.readAsDataURL(file);
   }
@@ -567,51 +584,68 @@
     canvas.height = originalImage.height;
     const ctx = canvas.getContext('2d');
 
-    // Draw image
-    ctx.drawImage(originalImage, 0, 0);
-
-    // Draw text
-    const size = (canvas.height / 100) * fontSize.value;
-    ctx.font = `bold ${size}px Impact, Arial Black, sans-serif`;
-    ctx.fillStyle = '#fff';
-    ctx.strokeStyle = '#000';
-    ctx.lineWidth = size / 8;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'top';
-
-    // Draw top text
-    if (topText.value) {
-      const words = topText.value.split(' ');
-      let y = size * 0.5;
-      words.forEach((word, i) => {
-        ctx.strokeText(word, canvas.width / 2, y);
-        ctx.fillText(word, canvas.width / 2, y);
-        y += size;
-      });
+    if (!ctx) {
+      alert('Canvas is not supported in your browser.');
+      return;
     }
 
-    // Draw bottom text
-    ctx.textBaseline = 'bottom';
-    if (bottomText.value) {
-      const words = bottomText.value.split(' ');
-      let y = canvas.height - size * 0.5;
-      for (let i = words.length - 1; i >= 0; i--) {
-        ctx.strokeText(words[i], canvas.width / 2, y);
-        ctx.fillText(words[i], canvas.width / 2, y);
-        y -= size;
+    try {
+      // Draw image
+      ctx.drawImage(originalImage, 0, 0);
+
+      // Draw text
+      const size = (canvas.height / 100) * fontSize.value;
+      ctx.font = `bold ${size}px Impact, Arial Black, sans-serif`;
+      ctx.fillStyle = '#fff';
+      ctx.strokeStyle = '#000';
+      ctx.lineWidth = size / 8;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+
+      // Draw top text
+      if (topText.value) {
+        const words = topText.value.split(' ');
+        let y = size * 0.5;
+        words.forEach((word, i) => {
+          ctx.strokeText(word, canvas.width / 2, y);
+          ctx.fillText(word, canvas.width / 2, y);
+          y += size;
+        });
       }
+
+      // Draw bottom text
+      ctx.textBaseline = 'bottom';
+      if (bottomText.value) {
+        const words = bottomText.value.split(' ');
+        let y = canvas.height - size * 0.5;
+        for (let i = words.length - 1; i >= 0; i--) {
+          ctx.strokeText(words[i], canvas.width / 2, y);
+          ctx.fillText(words[i], canvas.width / 2, y);
+          y -= size;
+        }
+      }
+    } catch (e) {
+      alert('Error generating meme. Please try a different image.');
     }
   }
 
   downloadBtn.addEventListener('click', () => {
-    memeCanvas.toBlob((blob) => {
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'meme.png';
-      a.click();
-      URL.revokeObjectURL(url);
-    });
+    try {
+      memeCanvas.toBlob((blob) => {
+        if (!blob) {
+          alert('Failed to generate the download. Please try again.');
+          return;
+        }
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'meme.png';
+        a.click();
+        URL.revokeObjectURL(url);
+      });
+    } catch (e) {
+      alert('Failed to download. Please try again.');
+    }
   });
 </script>
 </body>

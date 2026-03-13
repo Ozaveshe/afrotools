@@ -426,37 +426,41 @@
   const bgColor = document.getElementById('bgColor');
   const bgColorHex = document.getElementById('bgColorHex');
   const layout = document.getElementById('layout');
-  const logoPreview = document.getElementById('logoPreview');
+  let logoPreview = document.getElementById('logoPreview');
   const downloadSvgBtn = document.getElementById('downloadSvgBtn');
   const downloadPngBtn = document.getElementById('downloadPngBtn');
 
   function updatePreview() {
-    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    svg.setAttribute('width', '200');
-    svg.setAttribute('height', '150');
-    svg.setAttribute('viewBox', '0 0 200 150');
+    try {
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.setAttribute('id', 'logoPreview');
+      svg.setAttribute('width', '200');
+      svg.setAttribute('height', '150');
+      svg.setAttribute('viewBox', '0 0 200 150');
 
-    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-    rect.setAttribute('width', '200');
-    rect.setAttribute('height', '150');
-    rect.setAttribute('fill', bgColor.value);
+      const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      rect.setAttribute('width', '200');
+      rect.setAttribute('height', '150');
+      rect.setAttribute('fill', bgColor.value);
 
-    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    text.setAttribute('x', '100');
-    text.setAttribute('y', '80');
-    text.setAttribute('font-family', fontSelect.value);
-    text.setAttribute('font-size', '36');
-    text.setAttribute('font-weight', 'bold');
-    text.setAttribute('text-anchor', 'middle');
-    text.setAttribute('fill', textColor.value);
-    text.textContent = logoText.value || 'Logo';
+      const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      text.setAttribute('x', '100');
+      text.setAttribute('y', '80');
+      text.setAttribute('font-family', fontSelect.value);
+      text.setAttribute('font-size', '36');
+      text.setAttribute('font-weight', 'bold');
+      text.setAttribute('text-anchor', 'middle');
+      text.setAttribute('fill', textColor.value);
+      text.textContent = logoText.value || 'Logo';
 
-    svg.appendChild(rect);
-    svg.appendChild(text);
+      svg.appendChild(rect);
+      svg.appendChild(text);
 
-    logoPreview.replaceWith(svg);
-    logoPreview = svg;
-    document.querySelector('.preview-card').querySelector('svg')?.replaceWith(svg.cloneNode(true));
+      logoPreview.replaceWith(svg);
+      logoPreview = svg;
+    } catch (e) {
+      console.error('Error updating logo preview:', e);
+    }
   }
 
   function updateColorDisplay() {
@@ -477,32 +481,50 @@
   layout.addEventListener('change', updatePreview);
 
   downloadSvgBtn.addEventListener('click', () => {
-    const svg = document.querySelector('.preview-card svg');
-    const svgData = new XMLSerializer().serializeToString(svg);
-    const link = document.createElement('a');
-    link.href = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgData);
-    link.download = 'logo.svg';
-    link.click();
+    try {
+      const svg = document.querySelector('.preview-card svg');
+      if (!svg) { alert('No logo to download. Please create a logo first.'); return; }
+      const svgData = new XMLSerializer().serializeToString(svg);
+      const link = document.createElement('a');
+      link.href = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgData);
+      link.download = 'logo.svg';
+      link.click();
+    } catch (e) {
+      alert('Failed to download SVG. Please try again.');
+    }
   });
 
   downloadPngBtn.addEventListener('click', () => {
-    const svg = document.querySelector('.preview-card svg');
-    const canvas = document.createElement('canvas');
-    canvas.width = 400;
-    canvas.height = 300;
-    const ctx = canvas.getContext('2d');
-    const img = new Image();
-    const svgData = new XMLSerializer().serializeToString(svg);
-    img.onload = () => {
-      ctx.fillStyle = bgColor.value;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(img, 50, 50, 300, 200);
-      const link = document.createElement('a');
-      link.href = canvas.toDataURL('image/png');
-      link.download = 'logo.png';
-      link.click();
-    };
-    img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgData);
+    try {
+      const svg = document.querySelector('.preview-card svg');
+      if (!svg) { alert('No logo to download. Please create a logo first.'); return; }
+      const canvas = document.createElement('canvas');
+      canvas.width = 400;
+      canvas.height = 300;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) { alert('Canvas is not supported in your browser.'); return; }
+      const img = new Image();
+      const svgData = new XMLSerializer().serializeToString(svg);
+      img.onload = () => {
+        try {
+          ctx.fillStyle = bgColor.value;
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.drawImage(img, 50, 50, 300, 200);
+          const link = document.createElement('a');
+          link.href = canvas.toDataURL('image/png');
+          link.download = 'logo.png';
+          link.click();
+        } catch (e) {
+          alert('Failed to render PNG. Please try again.');
+        }
+      };
+      img.onerror = () => {
+        alert('Failed to render the logo as PNG. Please try again.');
+      };
+      img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgData);
+    } catch (e) {
+      alert('Failed to download PNG. Please try again.');
+    }
   });
 </script>
 </body>

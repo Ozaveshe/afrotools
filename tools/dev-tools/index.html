@@ -193,7 +193,6 @@ document.addEventListener('DOMContentLoaded', function() {
       catsGrid.innerHTML = html;
     }
   }
-});
   // Search handler
   var searchEl = document.getElementById('dev-search');
   if (searchEl) {
@@ -225,12 +224,20 @@ document.addEventListener('DOMContentLoaded', function() {
         coming.forEach(function(t){ html += '<div style="background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:22px;opacity:.6"><span style="font-size:10px;font-weight:700;color:#6b7280;background:#f3f4f6;padding:2px 8px;border-radius:100px;float:right;margin-top:-2px">Soon</span><div style="font-size:1.6rem;margin-bottom:12px">'+(t.icon||'🔧')+'</div><div style="font-size:15px;font-weight:700;color:#374151;margin-bottom:5px">'+t.name+'</div><div style="font-size:13px;color:#6b7280;line-height:1.6">'+t.desc+'</div></div>'; });
         html += '</div>';
       }
-      if (!matches.length) html = '<div style="text-align:center;padding:40px;color:#9ca3af;font-size:.9rem">No tools found for "<strong>'+q+'</strong>". Try "JSON", "hash", "regex", or "UUID".</div>';
-      grid.innerHTML = html;
+      if (!matches.length) {
+        var noResultEl = document.createElement('div');
+        noResultEl.style.cssText = 'text-align:center;padding:40px;color:#9ca3af;font-size:.9rem';
+        noResultEl.textContent = 'No tools found for "' + this.value.trim() + '". Try "JSON", "hash", "regex", or "UUID".';
+        grid.innerHTML = '';
+        grid.appendChild(noResultEl);
+      } else {
+        grid.innerHTML = html;
+      }
       info.style.display = 'block';
       info.textContent = (live.length+coming.length)+' result'+(live.length+coming.length!==1?'s':'')+' for "'+this.value.trim()+'"';
     });
   }
+});
 </script>
 </body>
 </html>

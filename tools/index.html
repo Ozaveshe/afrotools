@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -11,118 +11,312 @@
   gtag('config', 'G-D859CGF391');
 </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Free Tools for Africa — PDF, Tax, Relocation | AfroTools</title>
-  <meta name="description" content="Africa's digital toolbox. PDF workspace, PAYE calculators, Japa relocation calculator, and 100+ tools coming. Free, private, built for Africa.">
-  <link rel="canonical" href="https://afrotools.com/tools">
+  <title>All Tools — Free Online Tools for Africa | AfroTools</title>
+  <meta name="description" content="Browse all AfroTools: PAYE calculators, PDF tools, image editors, developer tools, currency converters and more. Free, private, built for all 54 African nations.">
+  <link rel="canonical" href="https://afrotools.com/tools/">
+  <meta name="robots" content="index, follow">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://afrotools.com/tools/">
+  <meta property="og:title" content="All Tools — Free Online Tools for Africa | AfroTools">
+  <meta property="og:description" content="Browse all AfroTools: PAYE calculators, PDF tools, image editors, developer tools, currency converters and more. Free forever.">
+  <meta property="og:site_name" content="AfroTools">
+  <meta property="og:image" content="https://afrotools.com/assets/img/og-home.png">
   <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/tokens.min.css">
   <link rel="stylesheet" href="/assets/css/global.min.css">
+  <script src="/assets/js/components/tool-registry.js"></script>
   <script src="/assets/js/components/navbar.min.js" defer></script>
   <script src="/assets/js/components/footer.min.js" defer></script>
   <style>
-    .tp h1,.tp h2,.tp h3,.tp h4{text-transform:none!important;letter-spacing:normal!important;font-family:'Bricolage Grotesque','DM Sans',sans-serif!important}
-    .tp svg{display:inline-block!important;max-width:none!important}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'DM Sans',sans-serif;background:#FAFAF8;color:#0f172a;-webkit-font-smoothing:antialiased}
+    a{text-decoration:none;color:inherit}
+    .wrap{max-width:1200px;margin:0 auto;padding:0 20px}
     .crumb{max-width:1200px;margin:0 auto;padding:14px 20px 0;font-size:12px;font-weight:500;color:#9ca3af}
     .crumb a{color:#9ca3af;text-decoration:none}.crumb a:hover{color:#008751}.crumb span{margin:0 5px}
-    .hero{padding:56px 24px 40px;text-align:center}
-    .hero-badge{display:inline-block;padding:6px 16px;background:#eaf5ef;border:1px solid rgba(0,135,81,.15);border-radius:100px;font-size:11px;font-weight:700;color:#008751;letter-spacing:.1em;text-transform:uppercase;margin-bottom:20px}
-    .hero h1{font-size:clamp(28px,5vw,46px);font-weight:800;color:#111;margin-bottom:14px;line-height:1.08;letter-spacing:-.03em}
+
+    /* Hero */
+    .hero{padding:48px 20px 32px;text-align:center}
+    .hero-badge{display:inline-block;padding:6px 16px;background:#eaf5ef;border:1px solid rgba(0,135,81,.15);border-radius:100px;font-size:11px;font-weight:700;color:#008751;letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px}
+    .hero h1{font-size:clamp(26px,4.5vw,42px);font-weight:800;color:#111;margin-bottom:10px;line-height:1.1;letter-spacing:-.03em}
     .hero h1 b{background:linear-gradient(135deg,#008751,#00c873);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-    .hero>p{font-size:17px;color:#374151;max-width:520px;margin:0 auto;line-height:1.7}
-    .tg{max-width:1200px;margin:0 auto;padding:0 24px 80px}
-    .tg h2{font-size:20px;font-weight:800;color:#111;margin:44px 0 16px;display:flex;align-items:center;gap:10px}
-    .tg h2 .dot{width:8px;height:8px;border-radius:50%;background:#008751;flex-shrink:0}
-    .tg h2 .soon-dot{background:#d1d5db}
-    .tg-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
-    .tc{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:24px 22px;text-decoration:none;color:inherit;transition:.25s;display:block;position:relative;overflow:hidden}
-    .tc::before{content:"";position:absolute;top:0;left:0;width:100%;height:3px;background:var(--accent,#008751);opacity:0;transition:.25s}
-    .tc:hover{border-color:var(--accent,#008751);box-shadow:0 8px 24px rgba(0,0,0,.06);transform:translateY(-2px)}
+    .hero>p{font-size:16px;color:#374151;max-width:560px;margin:0 auto 24px;line-height:1.7}
+
+    /* Search */
+    .search-wrap{max-width:480px;margin:0 auto 32px;position:relative}
+    .search-bar{display:flex;align-items:center;background:#fff;border:1.5px solid #e5e7eb;border-radius:10px;overflow:hidden;transition:border-color .2s}
+    .search-bar:focus-within{border-color:#008751;box-shadow:0 0 0 3px rgba(0,135,81,.08)}
+    .search-bar svg{margin-left:14px;flex-shrink:0;color:#9ca3af}
+    .search-bar input{flex:1;padding:13px 10px;background:transparent;border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:.9rem;color:#111}
+    .search-bar input::placeholder{color:#9ca3af}
+    .search-bar kbd{margin-right:10px;padding:3px 7px;border:1px solid #e5e7eb;border-radius:4px;font-size:11px;font-weight:600;color:#9ca3af;background:#f9fafb;white-space:nowrap}
+    .search-results{display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border-radius:10px;box-shadow:0 8px 40px rgba(0,0,0,.18);border:1px solid #e5e7eb;z-index:200;max-height:400px;overflow-y:auto}
+    .search-results.open{display:block}
+    .sr-item{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;transition:background .1s;text-decoration:none;color:inherit}
+    .sr-item:hover,.sr-item.focused{background:#f0fdf4}
+    .sr-icon{width:32px;height:32px;border-radius:8px;background:#f3f4f6;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
+    .sr-name{font-size:.82rem;font-weight:700;color:#111}
+    .sr-name mark{background:rgba(0,135,81,.15);color:#008751;border-radius:2px}
+    .sr-cat{font-size:.68rem;color:#9ca3af}
+    .sr-badge{font-size:.58rem;font-weight:700;padding:2px 6px;border-radius:3px;text-transform:uppercase;flex-shrink:0}
+    .sr-badge-live{background:#dcfce7;color:#166534}
+    .sr-empty{padding:16px;text-align:center;font-size:.82rem;color:#9ca3af}
+
+    /* Filter tabs */
+    .filter-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:24px;padding:0 20px}
+    .f-tab{padding:7px 14px;border-radius:20px;border:1.5px solid #e5e7eb;background:#fff;color:#6b7280;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .14s;font-family:'DM Sans',sans-serif;white-space:nowrap}
+    .f-tab:hover{border-color:#008751;color:#008751}
+    .f-tab.on{background:#008751;border-color:#008751;color:#fff}
+
+    /* Stats bar */
+    .stats-bar{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin-bottom:32px;padding:16px 20px;background:#f9fafb;border-radius:10px}
+    .stat{text-align:center}
+    .stat-n{font-size:1.4rem;font-weight:800;color:#008751}
+    .stat-l{font-size:.68rem;color:#6b7280;font-weight:500}
+
+    /* Tool grid */
+    .tools-section{margin-bottom:40px}
+    .section-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding:0 20px}
+    .section-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+    .section-title{font-size:1.05rem;font-weight:800;color:#111;letter-spacing:-.01em}
+    .section-count{font-size:.7rem;font-weight:600;color:#9ca3af;margin-left:auto}
+    .tg-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;padding:0 20px}
+    .tc{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:20px 18px;text-decoration:none;color:inherit;transition:all .22s;display:block;position:relative;overflow:hidden}
+    .tc::before{content:"";position:absolute;top:0;left:0;width:100%;height:3px;background:var(--accent,#008751);opacity:0;transition:opacity .22s}
+    .tc:hover{border-color:var(--accent,#008751);box-shadow:0 6px 20px rgba(0,0,0,.06);transform:translateY(-2px)}
     .tc:hover::before{opacity:1}
-    .tc-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px}
-    .tc h3{font-size:16px;font-weight:700;margin-bottom:6px;color:#111}
-    .tc p{font-size:14px;color:#374151;line-height:1.6}
-    .tc .live-badge{position:absolute;top:14px;right:14px;padding:3px 10px;background:#eaf5ef;border:1px solid rgba(0,135,81,.2);border-radius:100px;font-size:10px;font-weight:700;color:#008751;text-transform:uppercase;display:flex;align-items:center;gap:4px}
-    .tc .live-badge::before{content:"";width:6px;height:6px;background:#008751;border-radius:50%;animation:pulse 2s infinite}
+    .tc-top{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
+    .tc-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+    .tc h3{font-size:.88rem;font-weight:700;color:#111;line-height:1.3;flex:1}
+    .tc p{font-size:.78rem;color:#4b5563;line-height:1.6;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .tc-foot{display:flex;align-items:center;justify-content:space-between}
+    .tc-badge{font-size:.58rem;font-weight:700;padding:2px 8px;border-radius:100px;text-transform:uppercase;display:inline-flex;align-items:center;gap:4px}
+    .tc-badge-live{background:#dcfce7;color:#166534;border:1px solid rgba(0,135,81,.2)}
+    .tc-badge-live::before{content:"";width:5px;height:5px;background:#008751;border-radius:50%;animation:pulse 2s infinite}
+    .tc-badge-soon{background:#f3f4f6;color:#9ca3af;border:1px solid #e5e7eb}
+    .tc-cta{font-size:.72rem;font-weight:700;color:#008751}
+    .tc:hover .tc-cta{text-decoration:underline}
     @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-    .tc .new-badge{position:absolute;top:14px;right:14px;padding:3px 10px;background:#fef3cd;border:1px solid #fde68a;border-radius:100px;font-size:10px;font-weight:700;color:#92400e;text-transform:uppercase}
-    .tc.soon{opacity:.6;pointer-events:none}
-    .tc.soon h3{color:#374151}
-    .tc.soon p{color:#6b7280}
-    .tc.soon::after{content:"Coming Soon";position:absolute;top:14px;right:14px;padding:3px 10px;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:100px;font-size:10px;font-weight:700;color:#6b7280;text-transform:uppercase}
-    @media(max-width:640px){.tg-grid{grid-template-columns:1fr}.hero{padding:40px 16px 28px}}
+
+    /* No results */
+    .no-results{text-align:center;padding:48px 20px;display:none}
+    .no-results h3{font-size:1.1rem;font-weight:700;color:#374151;margin-bottom:8px}
+    .no-results p{font-size:.85rem;color:#6b7280}
+
+    @media(max-width:640px){
+      .hero{padding:32px 16px 20px}
+      .tg-grid{grid-template-columns:1fr;padding:0 16px}
+      .filter-bar{padding:0 16px}
+      .section-header{padding:0 16px}
+      .stats-bar{gap:16px;padding:12px 16px}
+      .search-bar kbd{display:none}
+    }
   </style>
 </head>
 <body>
 <afro-navbar></afro-navbar>
 <nav class="crumb"><a href="/">Home</a><span>/</span>Tools</nav>
-<div class="tp">
+
 <section class="hero">
-  <div class="hero-badge">Africa&#8217;s Digital Toolbox</div>
-  <h1>Every <b>Tool</b> Africa Needs</h1>
-  <p>PDF editing, tax calculators, relocation planning, and 100+ tools coming. All free, all private, all built for the continent.</p>
+  <div class="hero-badge">Africa's Digital Toolbox</div>
+  <h1>All <b>Tools</b></h1>
+  <p>Browse every tool on AfroTools. PAYE calculators, PDF editors, image tools, developer utilities and more — all free, all private.</p>
 </section>
-<div class="tg">
-  <h2><span class="dot"></span> Live Now</h2>
-  <div class="tg-grid">
-    <a href="/tools/pdf-workspace/" class="tc" style="--accent:#008751">
-      <div class="tc-icon" style="background:#eaf5ef">&#128196;</div>
-      <div class="live-badge">Live</div>
-      <h3>PDF Workspace</h3>
-      <p>Split, merge, rearrange, rotate, compress, add page numbers. All from one upload. Files never leave your browser.</p>
-    </a>
-    <a href="/tools/japa-calculator/" class="tc" style="--accent:#dc2626">
-      <div class="tc-icon" style="background:#fef2f2">&#9992;&#65039;</div>
-      <div class="new-badge">&#10024; New</div>
-      <h3>Japa Cost Calculator</h3>
-      <p>Calculate the REAL total cost to relocate from any African country. 12 origins, 7 destinations, 17 visa pathways, 20+ line items.</p>
-    </a>
-    <a href="/nigeria/ng-salary-tax" class="tc" style="--accent:#008751">
-      <div class="tc-icon" style="background:#eaf5ef">&#127475;&#127468;</div>
-      <div class="live-badge">Live</div>
-      <h3>Nigeria PAYE Calculator</h3>
-      <p>FIRS tax bands, CRA relief, NHF, pension. PITA 2025 and NTA 2026 compared side by side. AI tax advisor included.</p>
-    </a>
-    <a href="/kenya/ke-paye" class="tc" style="--accent:#008751">
-      <div class="tc-icon" style="background:#eaf5ef">&#127472;&#127466;</div>
-      <div class="live-badge">Live</div>
-      <h3>Kenya PAYE Calculator</h3>
-      <p>KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, Affordable Housing Levy. Tax Laws Amendment Act 2024 included.</p>
-    </a>
+
+<div class="wrap">
+  <div class="search-wrap">
+    <div class="search-bar" role="search">
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.4"/><line x1="9.5" y1="9.5" x2="13" y2="13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      <input type="text" id="tool-search" placeholder="Search tools..." aria-label="Search tools" autocomplete="off">
+      <kbd>Ctrl+K</kbd>
+    </div>
+    <div class="search-results" id="search-results"></div>
   </div>
 
-  <h2><span class="dot soon-dot"></span> Coming Soon &#8212; Financial Tools</h2>
-  <div class="tg-grid">
-    <div class="tc soon" style="--accent:#008751"><div class="tc-icon" style="background:#eaf5ef">&#127468;&#127469;</div><h3>Ghana PAYE + SSNIT</h3><p>GRA 2025 bands, SSNIT Tier I/II/III, all personal reliefs and deductions calculated.</p></div>
-    <div class="tc soon" style="--accent:#008751"><div class="tc-icon" style="background:#eaf5ef">&#127487;&#127462;</div><h3>South Africa SARS Tax</h3><p>2025/26 SARS tables, UIF contributions, medical credits, age rebates. Biggest economy on the continent.</p></div>
-    <div class="tc soon" style="--accent:#3b82f6"><div class="tc-icon" style="background:#eff6ff">&#128177;</div><h3>VAT Calculator</h3><p>All 54 African countries. Multiple rates, exempt items, reverse VAT calculations for businesses.</p></div>
-    <div class="tc soon" style="--accent:#f59e0b"><div class="tc-icon" style="background:#fef3c7">&#128176;</div><h3>Currency Converter</h3><p>42 African currencies plus USDT. Real-time rates and historical charts for forex planning.</p></div>
-  </div>
-
-  <h2><span class="dot soon-dot"></span> Coming Soon &#8212; PDF &amp; Documents</h2>
-  <div class="tg-grid">
-    <div class="tc soon" style="--accent:#3b82f6"><div class="tc-icon" style="background:#eff6ff">&#128221;</div><h3>CV / Resume Builder</h3><p>Africa-ready templates. Understands NYSC, National Service, WASSCE grading. Multiple formats, PDF export.</p></div>
-    <div class="tc soon" style="--accent:#f59e0b"><div class="tc-icon" style="background:#fef3c7">&#129534;</div><h3>Invoice Generator</h3><p>African tax lines (VAT, WHT), multi-currency, mobile money refs, company logos. Professional PDF export.</p></div>
-    <div class="tc soon" style="--accent:#8b5cf6"><div class="tc-icon" style="background:#ede9fe">&#127915;</div><h3>Certificate Generator</h3><p>Training, awards, academic certificates. Batch from CSV. QR verification codes for authenticity.</p></div>
-  </div>
-
-  <h2><span class="dot soon-dot"></span> Coming Soon &#8212; Image &amp; Design</h2>
-  <div class="tg-grid">
-    <div class="tc soon" style="--accent:#ec4899"><div class="tc-icon" style="background:#fce7f3">&#127912;</div><h3>Photo Editor</h3><p>Browser-based Photoshop alternative. Layers, filters, crop, resize, text. African design templates included.</p></div>
-    <div class="tc soon" style="--accent:#14b8a6"><div class="tc-icon" style="background:#ccfbf1">&#9986;</div><h3>Background Remover</h3><p>AI-powered background removal. One click, runs in your browser. No upload needed, total privacy.</p></div>
-    <div class="tc soon" style="--accent:#f59e0b"><div class="tc-icon" style="background:#fef3c7">&#128247;</div><h3>Passport Photo Tool</h3><p>Exact specs for all 54 African countries plus international destinations. Background whitening included.</p></div>
-  </div>
-
-  <h2><span class="dot soon-dot"></span> Coming Soon &#8212; Uniquely African</h2>
-  <div class="tg-grid">
-    <div class="tc soon" style="--accent:#f59e0b"><div class="tc-icon" style="background:#fef3c7">&#128241;</div><h3>Mobile Money Fee Checker</h3><p>Compare M-Pesa, MTN MoMo, Airtel Money, OPay fees for any transaction amount. Find the cheapest route.</p></div>
-    <div class="tc soon" style="--accent:#8b5cf6"><div class="tc-icon" style="background:#ede9fe">&#127760;</div><h3>Remittance Comparator</h3><p>Compare costs across 50+ corridors and providers. Find the cheapest way to send money home.</p></div>
-    <div class="tc soon" style="--accent:#dc2626"><div class="tc-icon" style="background:#fef2f2">&#9889;</div><h3>Generator Fuel Calculator</h3><p>Calculate running costs per hour. Size generators for load. Compare generator vs solar over time.</p></div>
-    <div class="tc soon" style="--accent:#008751"><div class="tc-icon" style="background:#eaf5ef">&#128178;</div><h3>Ajo / Chama / Tontine Calculator</h3><p>Rotating savings group contributions, payout schedules, and fair ordering. Works for all African savings groups.</p></div>
+  <div class="stats-bar" id="stats-bar">
+    <div class="stat"><div class="stat-n" id="s-total">—</div><div class="stat-l">Total tools</div></div>
+    <div class="stat"><div class="stat-n" id="s-live">—</div><div class="stat-l">Live now</div></div>
+    <div class="stat"><div class="stat-n" id="s-cats">—</div><div class="stat-l">Categories</div></div>
+    <div class="stat"><div class="stat-n">54</div><div class="stat-l">Countries</div></div>
   </div>
 </div>
+
+<div class="filter-bar" id="filter-bar"></div>
+
+<div class="wrap">
+  <div id="tools-container"></div>
+  <div class="no-results" id="no-results">
+    <h3>No tools found</h3>
+    <p>Try a different search or filter.</p>
+  </div>
 </div>
+
 <afro-footer></afro-footer>
-</body></html>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof AFRO_TOOLS === 'undefined' || typeof AFRO_CATEGORIES === 'undefined') return;
+
+  var container = document.getElementById('tools-container');
+  var filterBar = document.getElementById('filter-bar');
+  var searchInput = document.getElementById('tool-search');
+  var searchResults = document.getElementById('search-results');
+  var noResults = document.getElementById('no-results');
+  var activeFilter = 'all';
+
+  // Category metadata
+  var CAT_META = {};
+  Object.keys(AFRO_CATEGORIES).forEach(function(k) {
+    CAT_META[k] = AFRO_CATEGORIES[k];
+  });
+
+  var ACCENT_MAP = {
+    'financial': '#008751', 'document-pdf': '#3b82f6', 'image-design': '#ec4899',
+    'developer': '#8b5cf6', 'education': '#059669', 'health': '#dc2626',
+    'ecommerce': '#f59e0b', 'legal': '#0ea5e9', 'data-productivity': '#6366f1',
+    'language': '#a855f7', 'african': '#dc2626', 'engineering': '#78716c'
+  };
+
+  var BG_MAP = {
+    'financial': '#eaf5ef', 'document-pdf': '#eff6ff', 'image-design': '#fdf2f8',
+    'developer': '#ede9fe', 'education': '#e8fef6', 'health': '#fce8e8',
+    'ecommerce': '#fff7ed', 'legal': '#e0f2fe', 'data-productivity': '#eef2ff',
+    'language': '#faf5ff', 'african': '#fef2f2', 'engineering': '#f5f5f4'
+  };
+
+  // Stats
+  var total = AFRO_TOOLS.length;
+  var live = AFRO_TOOLS.filter(function(t) { return t.status === 'live' || t.status === 'new'; }).length;
+  var cats = Object.keys(AFRO_CATEGORIES).length;
+  document.getElementById('s-total').textContent = total;
+  document.getElementById('s-live').textContent = live;
+  document.getElementById('s-cats').textContent = cats;
+
+  // Build filter buttons
+  var filterHtml = '<button class="f-tab on" data-cat="all">All Tools</button>';
+  filterHtml += '<button class="f-tab" data-cat="live">Live Only</button>';
+  Object.keys(AFRO_CATEGORIES).forEach(function(k) {
+    var cat = AFRO_CATEGORIES[k];
+    filterHtml += '<button class="f-tab" data-cat="' + k + '">' + cat.icon + ' ' + cat.name + '</button>';
+  });
+  filterBar.innerHTML = filterHtml;
+
+  // Filter click
+  filterBar.addEventListener('click', function(e) {
+    var btn = e.target.closest('.f-tab');
+    if (!btn) return;
+    filterBar.querySelectorAll('.f-tab').forEach(function(b) { b.classList.remove('on'); });
+    btn.classList.add('on');
+    activeFilter = btn.dataset.cat;
+    render();
+  });
+
+  function esc(s) { return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+  function render() {
+    var query = (searchInput.value || '').trim().toLowerCase();
+    var tokens = query.split(/\s+/).filter(function(t) { return t.length > 0; });
+
+    // Group tools by category
+    var grouped = {};
+    AFRO_TOOLS.forEach(function(t) {
+      // Filter by category
+      if (activeFilter === 'live') {
+        if (t.status !== 'live' && t.status !== 'new') return;
+      } else if (activeFilter !== 'all') {
+        if (t.category !== activeFilter) return;
+      }
+
+      // Filter by search
+      if (tokens.length > 0) {
+        var blob = [t.name, t.desc, t.category].join(' ').toLowerCase();
+        var match = tokens.every(function(tok) { return blob.indexOf(tok) !== -1; });
+        if (!match) return;
+      }
+
+      if (!grouped[t.category]) grouped[t.category] = [];
+      grouped[t.category].push(t);
+    });
+
+    // Sort: live first within each category
+    Object.keys(grouped).forEach(function(k) {
+      grouped[k].sort(function(a, b) {
+        var aLive = (a.status === 'live' || a.status === 'new') ? 1 : 0;
+        var bLive = (b.status === 'live' || b.status === 'new') ? 1 : 0;
+        if (bLive !== aLive) return bLive - aLive;
+        return (b.priority || 0) - (a.priority || 0);
+      });
+    });
+
+    // Render
+    var catKeys = Object.keys(AFRO_CATEGORIES);
+    var html = '';
+    var totalShown = 0;
+
+    catKeys.forEach(function(k) {
+      var tools = grouped[k];
+      if (!tools || tools.length === 0) return;
+      totalShown += tools.length;
+      var cat = AFRO_CATEGORIES[k];
+      var liveCount = tools.filter(function(t) { return t.status === 'live' || t.status === 'new'; }).length;
+
+      html += '<div class="tools-section">';
+      html += '<div class="section-header">';
+      html += '<div class="section-icon" style="background:' + (BG_MAP[k] || '#f3f4f6') + '">' + cat.icon + '</div>';
+      html += '<div class="section-title">' + esc(cat.name) + '</div>';
+      html += '<div class="section-count">' + liveCount + ' live · ' + tools.length + ' total</div>';
+      html += '</div>';
+      html += '<div class="tg-grid">';
+
+      tools.forEach(function(t) {
+        var isLive = t.status === 'live' || t.status === 'new';
+        var tag = isLive ? 'a' : 'div';
+        var href = isLive ? ' href="' + t.href + '"' : '';
+        var accent = ACCENT_MAP[t.category] || '#008751';
+        var badge = isLive
+          ? '<span class="tc-badge tc-badge-live">Live</span>'
+          : '<span class="tc-badge tc-badge-soon">Coming Soon</span>';
+        var cta = isLive ? 'Open Tool →' : 'Coming Soon';
+
+        html += '<' + tag + ' class="tc" style="--accent:' + accent + '"' + href + '>';
+        html += '<div class="tc-top">';
+        html += '<div class="tc-icon" style="background:' + (BG_MAP[t.category] || '#f3f4f6') + '">' + esc(t.icon) + '</div>';
+        html += '<h3>' + esc(t.name) + '</h3>';
+        html += '</div>';
+        html += '<p>' + esc(t.desc) + '</p>';
+        html += '<div class="tc-foot">' + badge + '<span class="tc-cta">' + cta + '</span></div>';
+        html += '</' + tag + '>';
+      });
+
+      html += '</div></div>';
+    });
+
+    container.innerHTML = html;
+    noResults.style.display = totalShown === 0 ? 'block' : 'none';
+  }
+
+  // Search input
+  var debounce;
+  searchInput.addEventListener('input', function() {
+    clearTimeout(debounce);
+    debounce = setTimeout(render, 120);
+  });
+
+  // Ctrl+K shortcut
+  document.addEventListener('keydown', function(e) {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+      e.preventDefault();
+      searchInput.focus();
+      searchInput.select();
+    }
+  });
+
+  // Initial render
+  render();
+});
+</script>
+</body>
+</html>

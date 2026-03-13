@@ -15,6 +15,12 @@
     <meta name="description" content="Calculate import duties, VAT, and customs fees for goods entering Nigeria, Kenya, South Africa, Ghana, and 15+ African countries. Real 2025/2026 rates from NCS, KRA, SARS, GRA.">
     <meta name="tool-id" content="import-duty">
     <meta name="canonical" content="https://afrotools.com/tools/import-duty/">
+    <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="AfroTools">
+    <meta property="og:title" content="Import Duty Calculator for Africa 2026 — Nigeria, Kenya, South Africa, Ghana | AfroTools">
+    <meta property="og:description" content="Calculate import duties, VAT, and customs fees for goods entering Nigeria, Kenya, South Africa, Ghana, and 15+ African countries. Real 2025/2026 rates from NCS, KRA, SARS, GRA.">
+    <meta property="og:url" content="https://afrotools.com/tools/import-duty/">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -1333,7 +1339,8 @@
             }
 
             const totalUSD = cifTotal + duty + additionalFees;
-            const exchangeRate = exchangeRates[destCountry] || 1;
+            let exchangeRate = exchangeRates[destCountry] || 1;
+            if (exchangeRate <= 0 || isNaN(exchangeRate)) exchangeRate = 1;
             const totalLocal = totalUSD * exchangeRate;
             const perUnit = quantity > 1 ? totalLocal / quantity : totalLocal;
 
@@ -1402,7 +1409,8 @@
                 const vat = vatRates[country] || 15;
                 const vatAmount = ((cifTotal + duty) * vat) / 100;
                 const total = cifTotal + duty + vatAmount;
-                const exchangeRate = exchangeRates[country] || 1;
+                let exchangeRate = exchangeRates[country] || 1;
+                if (exchangeRate <= 0 || isNaN(exchangeRate)) exchangeRate = 1;
                 const localTotal = total * exchangeRate;
                 const symbol = { Nigeria: '₦', Kenya: 'KES', 'South Africa': 'R', Ghana: 'GHS', Tanzania: 'TZS' }[country];
 

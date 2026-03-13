@@ -553,6 +553,17 @@
     const file = imageInput.files[0];
     if (!file) return;
 
+    const maxSize = 10 * 1024 * 1024; // 10MB
+    if (file.size > maxSize) {
+      alert('File is too large. Please upload an image under 10MB.');
+      return;
+    }
+
+    if (!file.type.startsWith('image/')) {
+      alert('Please upload a valid image file.');
+      return;
+    }
+
     const reader = new FileReader();
     reader.onload = (e) => {
       const img = new Image();
@@ -561,7 +572,13 @@
         removeBtn.disabled = !net;
         previewCard.classList.add('on');
       };
+      img.onerror = () => {
+        alert('Failed to load the image. The file may be corrupted.');
+      };
       img.src = e.target.result;
+    };
+    reader.onerror = () => {
+      alert('Failed to read the file. Please try again.');
     };
     reader.readAsDataURL(file);
   }
@@ -587,6 +604,10 @@
       canvas.width = originalImage.width;
       canvas.height = originalImage.height;
       const ctx = canvas.getContext('2d');
+
+      if (!ctx) {
+        throw new Error('Canvas is not supported in your browser.');
+      }
 
       // Draw image
       ctx.drawImage(originalImage, 0, 0);
@@ -614,14 +635,22 @@
 
       // Set download handler
       downloadBtn.onclick = () => {
-        canvas.toBlob((blob) => {
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = 'no-background.png';
-          a.click();
-          URL.revokeObjectURL(url);
-        });
+        try {
+          canvas.toBlob((blob) => {
+            if (!blob) {
+              alert('Failed to generate the download. Please try again.');
+              return;
+            }
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'no-background.png';
+            a.click();
+            URL.revokeObjectURL(url);
+          });
+        } catch (e) {
+          alert('Failed to download. Please try again.');
+        }
       };
     } catch (e) {
       statusText.textContent = 'Error processing image.';

@@ -92,7 +92,78 @@
   .info-title { font-size: 0.72rem; font-weight: 700; color: #0a4018; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
   .info-text { font-size: 0.8rem; color: #244d2c; line-height: 1.6; }
   @media (max-width: 768px) { .tool-main-inner { grid-template-columns: 1fr; } .comparison { grid-template-columns: 1fr; } }
+  details[open] summary svg { transform: rotate(180deg); }
+  details summary::-webkit-details-marker { display: none; }
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Image Compressor",
+  "description": "Free image compressor. Compress JPG, PNG, WebP files. Drag-drop upload, quality slider, before/after comparison. Client-side processing.",
+  "url": "https://afrotools.com/tools/image-compress/",
+  "applicationCategory": "DesignApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "provider": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Are my images uploaded to a server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. AfroTools Image Compressor processes everything directly in your browser using the HTML5 Canvas API. Your images never leave your device and are never uploaded to any server, ensuring complete privacy."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What image formats are supported?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You can upload JPG, PNG, and WebP images. For output, you can choose between JPEG, PNG, or WebP format. WebP typically provides 25-35% better compression than JPEG at similar quality levels."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much can the image compressor reduce file size?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Compression results vary by image, but you can typically achieve 50-80% file size reduction at quality settings of 70-85%. The tool shows a real-time before/after comparison so you can see exactly how much space you save."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is there a file size limit?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, the maximum file size is 50MB per image. Since compression runs in your browser, very large images may take longer to process depending on your device's capabilities."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does compressing an image reduce its dimensions?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The AfroTools compressor reduces file size by adjusting encoding quality, not by resizing. Your image dimensions (width and height in pixels) remain exactly the same after compression."
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
@@ -183,6 +254,58 @@
   </div>
 </div>
 
+<afro-related-tools category="image-design" current="image-compress"></afro-related-tools>
+<section class="faq-section" style="max-width:800px;margin:40px auto;padding:0 20px">
+  <h2 style="font-size:1.3rem;font-weight:800;color:#111;margin-bottom:20px;font-family:'DM Sans',sans-serif">Frequently Asked Questions</h2>
+  <div class="faq-list">
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        Are my images uploaded to a server?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        No. AfroTools Image Compressor processes everything directly in your browser using the HTML5 Canvas API. Your images never leave your device and are never uploaded to any server, ensuring complete privacy.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        What image formats are supported?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        You can upload JPG, PNG, and WebP images. For output, you can choose between JPEG, PNG, or WebP format. WebP typically provides 25-35% better compression than JPEG at similar quality levels.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        How much can the image compressor reduce file size?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        Compression results vary by image, but you can typically achieve 50-80% file size reduction at quality settings of 70-85%. The tool shows a real-time before/after comparison so you can see exactly how much space you save.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        Is there a file size limit?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        Yes, the maximum file size is 50MB per image. Since compression runs in your browser, very large images may take longer to process depending on your device's capabilities.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        Does compressing an image reduce its dimensions?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        No. The AfroTools compressor reduces file size by adjusting encoding quality, not by resizing. Your image dimensions (width and height in pixels) remain exactly the same after compression.
+      </div>
+    </details>
+  </div>
+</section>
+
 <afro-footer></afro-footer>
 
 <script>
@@ -204,6 +327,8 @@
 
   function handleFile(file) {
     if (!file.type.startsWith('image/')) { alert('Please select an image file'); return; }
+    const maxSize = 50 * 1024 * 1024; // 50MB
+    if (file.size > maxSize) { alert('File too large. Maximum size is 50MB. Your file is ' + (file.size / (1024 * 1024)).toFixed(1) + 'MB.'); return; }
     originalFile = file;
     originalFileName = file.name.split('.')[0];
     settingsCard.style.display = 'block';
@@ -218,24 +343,30 @@
     const format = document.getElementById('formatSelect').value;
     const img = new Image();
     img.onload = () => {
-      const canvas = document.createElement('canvas');
-      canvas.width = img.width;
-      canvas.height = img.height;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0);
-      const mimeType = format === 'webp' ? 'image/webp' : `image/${format}`;
-      canvas.toBlob(blob => {
-        compressedBlob = blob;
-        const originalSize = originalFile.size / 1024;
-        const compressedSize = blob.size / 1024;
-        const saving = ((1 - blob.size / originalFile.size) * 100).toFixed(1);
-        document.getElementById('originalSize').textContent = originalSize.toFixed(1) + ' KB';
-        document.getElementById('compressedSize').textContent = compressedSize.toFixed(1) + ' KB';
-        document.getElementById('savingPercent').textContent = saving + '% saved';
-        document.getElementById('originalDim').textContent = img.width + '×' + img.height + 'px';
-        document.getElementById('compressedImage').src = URL.createObjectURL(blob);
-        resultsCard.style.display = 'block';
-      }, mimeType, quality);
+      try {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) { alert('Could not initialize canvas. Your browser may not support this feature.'); return; }
+        ctx.drawImage(img, 0, 0);
+        const mimeType = format === 'webp' ? 'image/webp' : `image/${format}`;
+        canvas.toBlob(blob => {
+          if (!blob) { alert('Compression failed. Try a different format or smaller image.'); return; }
+          compressedBlob = blob;
+          const originalSize = originalFile.size / 1024;
+          const compressedSize = blob.size / 1024;
+          const saving = ((1 - blob.size / originalFile.size) * 100).toFixed(1);
+          document.getElementById('originalSize').textContent = originalSize.toFixed(1) + ' KB';
+          document.getElementById('compressedSize').textContent = compressedSize.toFixed(1) + ' KB';
+          document.getElementById('savingPercent').textContent = saving + '% saved';
+          document.getElementById('originalDim').textContent = img.width + '×' + img.height + 'px';
+          document.getElementById('compressedImage').src = URL.createObjectURL(blob);
+          resultsCard.style.display = 'block';
+        }, mimeType, quality);
+      } catch (e) {
+        alert('Error processing image: ' + e.message);
+      }
     };
     const reader = new FileReader();
     reader.onload = e => img.src = e.target.result;
@@ -252,5 +383,7 @@
     }
   });
 </script>
+<script src="/assets/js/components/tool-registry.js" defer></script>
+<script src="/assets/js/components/related-tools.min.js" defer></script>
 </body>
 </html>

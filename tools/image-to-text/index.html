@@ -489,11 +489,22 @@
 
   imageInput.addEventListener('change', (e) => {
     const file = e.target.files[0];
-    if (file && file.type.startsWith('image/')) {
-      currentImage = file;
-      extractBtn.disabled = false;
-      resultCard.classList.remove('on');
+    if (!file) return;
+
+    const maxSize = 10 * 1024 * 1024; // 10MB
+    if (file.size > maxSize) {
+      alert('File is too large. Please upload an image under 10MB.');
+      return;
     }
+
+    if (!file.type.startsWith('image/')) {
+      alert('Please upload a valid image file.');
+      return;
+    }
+
+    currentImage = file;
+    extractBtn.disabled = false;
+    resultCard.classList.remove('on');
   });
 
   label.addEventListener('dragover', (e) => {
@@ -524,9 +535,9 @@
     progressFill.style.width = '20%';
     extractBtn.disabled = true;
 
-    try {
-      const reader = new FileReader();
-      reader.onload = async (e) => {
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      try {
         const img = e.target.result;
         const language = languageSelect.value;
 
@@ -553,12 +564,16 @@
         }, 500);
 
         await worker.terminate();
-      };
-      reader.readAsDataURL(currentImage);
-    } catch (err) {
-      progressText.textContent = 'Error: ' + err.message;
+      } catch (err) {
+        progressText.textContent = 'Error: ' + (err.message || 'OCR processing failed');
+        extractBtn.disabled = false;
+      }
+    };
+    reader.onerror = () => {
+      progressText.textContent = 'Error: Failed to read the image file.';
       extractBtn.disabled = false;
-    }
+    };
+    reader.readAsDataURL(currentImage);
   });
 
   copyBtn.addEventListener('click', () => {
@@ -567,6 +582,8 @@
       setTimeout(() => {
         copyBtn.textContent = '📋 Copy Text';
       }, 2000);
+    }).catch(() => {
+      alert('Failed to copy to clipboard. Please select and copy the text manually.');
     });
   });
 </script>
