@@ -443,6 +443,32 @@
             }
         }
 
+        /* ── Mobile 768px ── */
+        @media (max-width: 768px) {
+            body { padding: 0; }
+            .page-container, .container { padding: 12px !important; }
+            .card { padding: 16px !important; }
+            .hero { padding: 36px 16px 28px !important; }
+            .hero h1 { font-size: 1.6rem !important; }
+            .hero p { font-size: 0.9rem !important; }
+            .button-group {
+                flex-direction: column !important;
+                gap: 10px !important;
+            }
+            .button-group button { width: 100% !important; }
+            .chart-labels { grid-template-columns: 1fr 1fr !important; }
+            .comparison-grid { grid-template-columns: 1fr !important; }
+            .input-grid, .form-grid { grid-template-columns: 1fr !important; }
+            .rate-breakdown { font-size: 13px !important; }
+            .result-item { flex-wrap: wrap !important; }
+            .result-label, .result-value { font-size: 13px !important; }
+            .hs-table { font-size: 12px !important; }
+            .hs-table th, .hs-table td { padding: 6px 8px !important; }
+            .compare-table th, .compare-table td { padding: 6px 8px !important; font-size: 12px !important; }
+            .compare-table { font-size: 12px !important; }
+            overflow-x: auto;
+        }
+
         .helper-card {
             background: linear-gradient(135deg, #f5f5f5 0%, #fff 100%);
             padding: 20px;
@@ -530,6 +556,13 @@
         <div class="page-header">
             <h1>Import Duty & Customs Calculator</h1>
             <p>Calculate accurate import duties, VAT, and fees for goods entering African countries using 2025/2026 rates</p>
+            <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;">
+              <span style="background:#0071E3;color:#fff;padding:7px 15px;border-radius:20px;font-size:13px;font-weight:600;">17 African Countries</span>
+              <span style="background:#0071E3;color:#fff;padding:7px 15px;border-radius:20px;font-size:13px;font-weight:600;">Full Duty Breakdown</span>
+              <span style="background:#0071E3;color:#fff;padding:7px 15px;border-radius:20px;font-size:13px;font-weight:600;">All Levies & Taxes</span>
+              <span style="background:#0071E3;color:#fff;padding:7px 15px;border-radius:20px;font-size:13px;font-weight:600;">Landed Cost in Local Currency</span>
+              <span style="background:#EFF6FF;color:#0071E3;border:1.5px solid #BFDBFE;padding:7px 15px;border-radius:20px;font-size:13px;font-weight:600;">Free Forever</span>
+            </div>
         </div>
 
         <div class="calculator-wrapper">
@@ -646,7 +679,6 @@
                 <div class="button-group">
                     <button class="btn-primary" id="calculateBtn">Calculate Duties</button>
                     <button class="btn-secondary" id="compareBtn">Compare Countries</button>
-                    <button class="save-button" id="saveBtn" title="Save to favorites">♥</button>
                 </div>
             </div>
 
@@ -856,7 +888,9 @@
         </div>
     </div>
 
-    <afro-footer></afro-footer>
+    
+<afro-related-tools category="financial" current="import-duty"></afro-related-tools>
+<afro-footer></afro-footer>
 
     <script src="/assets/js/components/navbar.min.js"></script>
     <script src="/assets/js/components/footer.min.js"></script>
@@ -1198,7 +1232,7 @@
         const actionButtons = document.getElementById('actionButtons');
         const printBtn = document.getElementById('printBtn');
         const copyBtn = document.getElementById('copyBtn');
-        const saveBtn = document.getElementById('saveBtn');
+        // saveBtn removed - using standard favorites-widget instead
         const hsSearchEl = document.getElementById('hsSearch');
         const estimateBtn = document.getElementById('estimateBtn');
         const cheapestBtn = document.getElementById('cheapestBtn');
@@ -1526,22 +1560,6 @@
             document.getElementById('cheapestResult').style.display = 'block';
         });
 
-        // Save to favorites
-        saveBtn.addEventListener('click', () => {
-            saveBtn.classList.toggle('saved');
-            if (saveBtn.classList.contains('saved')) {
-                localStorage.setItem('import-duty-saved', JSON.stringify({
-                    dest: destCountryEl.value,
-                    origin: originCountryEl.value,
-                    category: categoryEl.value,
-                    goods: goodsValueEl.value,
-                    cif: cifValueEl.value
-                }));
-            } else {
-                localStorage.removeItem('import-duty-saved');
-            }
-        });
-
         // Load saved settings
         window.addEventListener('load', () => {
             const saved = localStorage.getItem('import-duty-saved');
@@ -1552,7 +1570,6 @@
                 categoryEl.value = data.category;
                 goodsValueEl.value = data.goods;
                 cifValueEl.value = data.cif;
-                saveBtn.classList.add('saved');
             }
         });
     </script>

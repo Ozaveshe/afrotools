@@ -27,10 +27,10 @@
       { en: '🇹🇿 Tanzania',     href: '/tanzania' },
     ],
     company: [
-      { en: 'About',      fr: 'À propos',  href: '/about' },
-      { en: 'Contact',    fr: 'Contact',   href: '/contact' },
-      { en: 'Advertise',  fr: 'Publicité', href: '/advertise' },
-
+      { en: 'About',       fr: 'À propos',   href: '/about' },
+      { en: 'Contact',     fr: 'Contact',    href: '/contact' },
+      { en: 'Changelog',   fr: 'Mises à jour', href: '/changelog' },
+      { en: 'Advertise',   fr: 'Publicité',  href: '/advertise' },
     ],
   };
 
@@ -345,4 +345,14 @@
   }
 
   if (!customElements.get('afro-footer')) customElements.define('afro-footer', AfroFooter);
+
+  /* ── Auto-load site-wide AI advisor ── */
+  (function loadSiteAssistant() {
+    if (document.querySelector('script[src*="site-assistant"]')) return;
+    const s = document.createElement('script');
+    s.src   = '/assets/js/components/site-assistant.min.js';
+    s.defer = true;
+    document.head.appendChild(s);
+  })();
+
 })();

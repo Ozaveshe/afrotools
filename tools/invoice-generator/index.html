@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="tool-id" content="invoice-generator">
     <meta name="theme-color" content="#0071E3">
@@ -778,47 +779,63 @@
 
         /* Responsive */
         @media (max-width: 768px) {
-            .header h1 {
-                font-size: 32px;
+            .container { padding: 12px; }
+
+            .header {
+                padding: 28px 16px 24px;
+                margin-bottom: 16px;
             }
+            .header h1 { font-size: 28px; }
+            .header p { font-size: 15px; }
+            .tag-group { gap: 8px; }
+            .tag { padding: 6px 12px; font-size: 12px; }
+
+            .form-section { padding: 16px; }
+
+            .logo-upload-wrapper {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .logo-preview { width: 80px; height: 80px; }
 
             .invoice-preview {
-                padding: 24px;
-                font-size: 12px;
+                padding: 18px;
+                font-size: 11px;
+                overflow-x: auto;
             }
-
-            .invoice-title h1 {
-                font-size: 24px;
-            }
-
+            .invoice-title h1 { font-size: 20px; }
             .invoice-header {
                 flex-direction: column;
-                margin-bottom: 24px;
+                margin-bottom: 20px;
             }
+            .invoice-title { text-align: left; margin-top: 12px; }
+            .invoice-info { grid-template-columns: 1fr; gap: 16px; }
 
-            .invoice-title {
-                text-align: left;
-                margin-top: 16px;
+            table { font-size: 11px; min-width: auto; }
+            table th, table td { padding: 6px; white-space: normal; }
+            .table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+            .btn-group {
+                flex-wrap: wrap;
+                gap: 8px;
             }
-
-            .invoice-info {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-
-            table {
-                font-size: 12px;
-            }
-
-            table th,
-            table td {
-                padding: 8px;
-            }
-
             .btn {
-                flex: 1;
+                flex: 1 1 calc(50% - 4px);
                 min-width: 120px;
+                font-size: 13px;
+                padding: 10px 14px;
+                text-align: center;
             }
+
+            .totals-row { flex-direction: column; gap: 4px; }
+            .grand-total { font-size: 16px !important; }
+        }
+
+        @media (max-width: 420px) {
+            .btn { flex: 1 1 100%; min-width: 0; }
+            .header h1 { font-size: 24px; }
+            table th:nth-child(3),
+            table td:nth-child(3) { display: none; } /* hide unit price col */
         }
 
         /* Utility */
@@ -1188,7 +1205,9 @@
         </div>
     </div>
 
-    <afro-footer></afro-footer>
+    
+<afro-related-tools category="document-pdf" current="invoice-generator"></afro-related-tools>
+<afro-footer></afro-footer>
 
     <!-- Required Scripts -->
     <script src="/assets/js/components/navbar.min.js" defer></script>

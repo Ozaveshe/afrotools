@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Floor Plan Designer – AfroTools</title>
+<meta name="description" content="Design your floor plan online. African housing standards: NBS (Nigeria), SABS (South Africa), KEBS (Kenya). Draw rooms, add doors & windows, get material estimates.">
+<link rel="icon" href="/assets/img/favicon.ico">
+<link rel="stylesheet" href="/assets/css/tokens.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/tool-registry.min.js"></script>
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/related-tools.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+/* ── FULL APP LAYOUT ── */
+html,body{height:100%;overflow-x:hidden;}
+.fp-app{display:flex;flex-direction:column;height:calc(100vh - 62px);background:#f1f5f9;}
+
+/* ── TOP BAR ── */
+.fp-topbar{background:#0d1117;border-bottom:1px solid rgba(255,255,255,.08);padding:0 16px;display:flex;align-items:center;gap:16px;height:52px;flex-shrink:0;}
+.fp-logo{font-size:.75rem;font-weight:900;text-transform:uppercase;letter-spacing:.1em;color:#fff;white-space:nowrap;}
+.fp-logo span{color:#ffc800;}
+.fp-topbar-sep{width:1px;height:24px;background:rgba(255,255,255,.1);}
+.fp-topbar-btn{padding:6px 14px;border:1.5px solid rgba(255,255,255,.15);border-radius:7px;background:none;color:rgba(255,255,255,.75);font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;cursor:pointer;transition:all .15s;white-space:nowrap;}
+.fp-topbar-btn:hover{border-color:rgba(255,255,255,.4);color:#fff;}
+.fp-topbar-btn.primary{background:#ffc800;border-color:#ffc800;color:#000;}
+.fp-topbar-btn.primary:hover{background:#f59e0b;border-color:#f59e0b;}
+.fp-topbar-btn.danger{border-color:rgba(239,68,68,.4);color:#f87171;}
+.fp-topbar-btn.danger:hover{border-color:#ef4444;color:#ef4444;}
+.fp-scale-info{font-size:.7rem;color:rgba(255,255,255,.5);white-space:nowrap;}
+.fp-topbar-right{margin-left:auto;display:flex;align-items:center;gap:8px;}
+.fp-country-sel{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.8);border-radius:6px;padding:5px 8px;font-size:.72rem;cursor:pointer;}
+
+/* ── MAIN AREA ── */
+.fp-body{display:flex;flex:1;overflow:hidden;}
+
+/* ── SIDEBAR ── */
+.fp-sidebar{width:240px;background:#fff;border-right:1.5px solid #e5e7eb;overflow-y:auto;flex-shrink:0;display:flex;flex-direction:column;}
+.fp-sidebar-section{padding:14px 14px 10px;border-bottom:1px solid #f3f4f6;}
+.fp-sidebar-title{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#9ca3af;margin-bottom:10px;}
+
+/* ── TOOL PALETTE ── */
+.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.tool-btn{padding:8px 6px;border:1.5px solid #e5e7eb;border-radius:8px;background:#fafafa;cursor:pointer;text-align:center;font-size:.68rem;font-weight:700;color:#374151;transition:all .15s;line-height:1.4;}
+.tool-btn .t-icon{font-size:1.2rem;display:block;margin-bottom:2px;}
+.tool-btn:hover{border-color:#0071E3;color:#0071E3;background:#eff6ff;}
+.tool-btn.active{border-color:#0071E3;background:#0071E3;color:#fff;}
+
+/* ── ROOM PRESETS ── */
+.room-preset{padding:8px 10px;border:1.5px solid #e5e7eb;border-radius:8px;background:#fafafa;cursor:pointer;display:flex;align-items:center;gap:8px;font-size:.75rem;font-weight:600;color:#374151;transition:all .15s;margin-bottom:6px;width:100%;}
+.room-preset:hover{border-color:#0071E3;color:#0071E3;background:#eff6ff;}
+.room-preset .rp-icon{font-size:1.1rem;flex-shrink:0;}
+.room-preset .rp-size{font-size:.65rem;color:#9ca3af;margin-left:auto;}
+
+/* ── PROPS PANEL ── */
+.prop-group{margin-bottom:12px;}
+.prop-label{font-size:.68rem;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px;}
+.prop-input{width:100%;padding:7px 10px;border:1.5px solid #e5e7eb;border-radius:7px;font-size:.8rem;color:#111;background:#fafafa;}
+.prop-input:focus{outline:none;border-color:#0071E3;background:#fff;}
+.prop-row{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.prop-color-row{display:flex;gap:6px;flex-wrap:wrap;}
+.prop-color-swatch{width:24px;height:24px;border-radius:4px;border:2px solid #e5e7eb;cursor:pointer;transition:transform .1s;}
+.prop-color-swatch.active{border-color:#0071E3;transform:scale(1.1);}
+.prop-del-btn{width:100%;padding:7px;background:#fff5f5;border:1.5px solid #fecaca;border-radius:7px;color:#dc2626;font-size:.72rem;font-weight:700;cursor:pointer;margin-top:8px;}
+.prop-del-btn:hover{background:#fef2f2;border-color:#ef4444;}
+
+/* ── CANVAS AREA ── */
+.fp-canvas-wrap{flex:1;overflow:hidden;position:relative;background:#e8edf2;background-image:radial-gradient(circle,#cbd5e1 1px,transparent 1px);background-size:20px 20px;}
+canvas{display:block;cursor:crosshair;}
+
+/* ── ZOOM CONTROLS ── */
+.fp-zoom{position:absolute;bottom:16px;right:16px;display:flex;flex-direction:column;gap:4px;}
+.fp-zoom-btn{width:34px;height:34px;border:1.5px solid #e5e7eb;border-radius:8px;background:#fff;cursor:pointer;font-size:1rem;font-weight:700;color:#374151;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.1);}
+.fp-zoom-btn:hover{border-color:#0071E3;color:#0071E3;}
+.fp-zoom-label{text-align:center;font-size:.65rem;font-weight:700;color:#6b7280;}
+
+/* ── STATUS BAR ── */
+.fp-statusbar{height:28px;background:#0d1117;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;padding:0 16px;gap:20px;flex-shrink:0;}
+.fp-status-item{font-size:.67rem;color:rgba(255,255,255,.5);white-space:nowrap;}
+.fp-status-item span{color:rgba(255,255,255,.85);font-weight:700;}
+
+/* ── MATERIALS PANEL (right) ── */
+.fp-right{width:220px;background:#fff;border-left:1.5px solid #e5e7eb;overflow-y:auto;flex-shrink:0;}
+.fp-right-section{padding:14px;}
+.fp-right-title{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#9ca3af;margin-bottom:10px;}
+.mat-item{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #f9fafb;font-size:.75rem;}
+.mat-item .mat-name{color:#374151;font-weight:600;}
+.mat-item .mat-val{color:#0071E3;font-weight:700;}
+.area-badge{background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:12px;text-align:center;margin-bottom:10px;}
+.area-badge .area-num{font-size:1.6rem;font-weight:900;color:#1d4ed8;line-height:1;}
+.area-badge .area-lbl{font-size:.68rem;color:#6b7280;text-transform:uppercase;letter-spacing:.06em;margin-top:2px;}
+.export-btn{width:100%;padding:9px;background:linear-gradient(135deg,#0071E3,#0059B3);border:none;border-radius:8px;color:#fff;font-size:.75rem;font-weight:700;cursor:pointer;margin-top:8px;text-transform:uppercase;letter-spacing:.05em;}
+.export-btn:hover{opacity:.9;}
+
+/* ── TOOLTIP ── */
+.fp-tooltip{position:absolute;background:#0d1117;color:#fff;font-size:.7rem;padding:4px 8px;border-radius:5px;pointer-events:none;display:none;z-index:100;white-space:nowrap;}
+
+/* ── MOBILE HIDE ── */
+@media(max-width:768px){.fp-right{display:none;}.fp-sidebar{width:60px;}.fp-sidebar .fp-sidebar-title,.fp-sidebar .room-preset .rp-size,.fp-sidebar .room-preset .rp-icon+*{display:none;}.fp-topbar-btn span{display:none;}}
+
+/* ── MODAL ── */
+.fp-modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;display:flex;align-items:center;justify-content:center;display:none;}
+.fp-modal{background:#fff;border-radius:16px;padding:32px;width:90%;max-width:480px;}
+.fp-modal h3{font-size:1.1rem;font-weight:900;margin-bottom:16px;text-transform:uppercase;letter-spacing:.04em;}
+.fp-modal-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+.fp-modal input,.fp-modal select{width:100%;padding:9px 12px;border:1.5px solid #e5e7eb;border-radius:8px;font-size:.85rem;}
+.fp-modal input:focus,.fp-modal select:focus{outline:none;border-color:#0071E3;}
+.fp-modal-btns{display:flex;gap:10px;margin-top:20px;}
+.fp-modal-btn{flex:1;padding:10px;border-radius:8px;font-size:.8rem;font-weight:700;cursor:pointer;border:none;text-transform:uppercase;}
+.fp-modal-btn.confirm{background:#0071E3;color:#fff;}
+.fp-modal-btn.cancel{background:#f3f4f6;color:#374151;}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<div class="fp-app">
+  <!-- TOP BAR -->
+  <div class="fp-topbar">
+    <div class="fp-logo">AfroTools <span>Floor Plan</span></div>
+    <div class="fp-topbar-sep"></div>
+    <button class="fp-topbar-btn" onclick="newPlan()">📄 New</button>
+    <button class="fp-topbar-btn" onclick="exportPNG()">💾 Export PNG</button>
+    <button class="fp-topbar-btn" onclick="exportJSON()">📤 Save</button>
+    <button class="fp-topbar-btn" onclick="document.getElementById('loadFile').click()">📂 Load</button>
+    <input type="file" id="loadFile" accept=".json" style="display:none" onchange="loadJSON(event)">
+    <button class="fp-topbar-btn danger" onclick="clearAll()">🗑 Clear</button>
+    <div class="fp-topbar-sep"></div>
+    <div class="fp-scale-info">Scale: <strong id="scaleLabel">1 grid = 0.5m</strong></div>
+    <div class="fp-topbar-right">
+      <select class="fp-country-sel" id="countryStd" onchange="updateStandard()">
+        <option value="NG">🇳🇬 Nigeria (NBS)</option>
+        <option value="KE">🇰🇪 Kenya (KEBS)</option>
+        <option value="ZA">🇿🇦 South Africa (SABS)</option>
+        <option value="GH">🇬🇭 Ghana (GSA)</option>
+        <option value="TZ">🇹🇿 Tanzania (TBS)</option>
+        <option value="UG">🇺🇬 Uganda (UNBS)</option>
+        <option value="EG">🇪🇬 Egypt (EOS)</option>
+        <option value="GEN">🌍 General (ISO)</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="fp-body">
+    <!-- LEFT SIDEBAR -->
+    <div class="fp-sidebar">
+      <!-- TOOLS -->
+      <div class="fp-sidebar-section">
+        <div class="fp-sidebar-title">Tools</div>
+        <div class="tool-grid">
+          <button class="tool-btn active" data-tool="select" onclick="setTool('select',this)">
+            <span class="t-icon">🖱️</span>Select
+          </button>
+          <button class="tool-btn" data-tool="room" onclick="setTool('room',this)">
+            <span class="t-icon">⬜</span>Draw Room
+          </button>
+          <button class="tool-btn" data-tool="door" onclick="setTool('door',this)">
+            <span class="t-icon">🚪</span>Door
+          </button>
+          <button class="tool-btn" data-tool="window" onclick="setTool('window',this)">
+            <span class="t-icon">🪟</span>Window
+          </button>
+          <button class="tool-btn" data-tool="stairs" onclick="setTool('stairs',this)">
+            <span class="t-icon">🪜</span>Stairs
+          </button>
+          <button class="tool-btn" data-tool="wall" onclick="setTool('wall',this)">
+            <span class="t-icon">🧱</span>Wall
+          </button>
+          <button class="tool-btn" data-tool="text" onclick="setTool('text',this)">
+            <span class="t-icon">✏️</span>Label
+          </button>
+          <button class="tool-btn" data-tool="measure" onclick="setTool('measure',this)">
+            <span class="t-icon">📏</span>Measure
+          </button>
+        </div>
+      </div>
+
+      <!-- ROOM PRESETS -->
+      <div class="fp-sidebar-section">
+        <div class="fp-sidebar-title">Room Presets</div>
+        <button class="room-preset" onclick="addPreset('master')"><span class="rp-icon">🛏️</span>Master Bed<span class="rp-size">4×5m</span></button>
+        <button class="room-preset" onclick="addPreset('bedroom')"><span class="rp-icon">🛏️</span>Bedroom<span class="rp-size">3×4m</span></button>
+        <button class="room-preset" onclick="addPreset('living')"><span class="rp-icon">🛋️</span>Living Room<span class="rp-size">5×6m</span></button>
+        <button class="room-preset" onclick="addPreset('kitchen')"><span class="rp-icon">🍳</span>Kitchen<span class="rp-size">3×4m</span></button>
+        <button class="room-preset" onclick="addPreset('bathroom')"><span class="rp-icon">🚿</span>Bathroom<span class="rp-size">2×3m</span></button>
+        <button class="room-preset" onclick="addPreset('toilet')"><span class="rp-icon">🚽</span>Toilet<span class="rp-size">1.5×2m</span></button>
+        <button class="room-preset" onclick="addPreset('dining')"><span class="rp-icon">🍽️</span>Dining<span class="rp-size">3×4m</span></button>
+        <button class="room-preset" onclick="addPreset('store')"><span class="rp-icon">📦</span>Store<span class="rp-size">2×2m</span></button>
+        <button class="room-preset" onclick="addPreset('garage')"><span class="rp-icon">🚗</span>Garage<span class="rp-size">6×6m</span></button>
+        <button class="room-preset" onclick="addPreset('verandah')"><span class="rp-icon">🏡</span>Verandah<span class="rp-size">2×6m</span></button>
+      </div>
+
+      <!-- PROPERTIES -->
+      <div class="fp-sidebar-section" id="propsSection" style="display:none;">
+        <div class="fp-sidebar-title">Properties</div>
+        <div id="propsContent"></div>
+      </div>
+    </div>
+
+    <!-- CANVAS -->
+    <div class="fp-canvas-wrap" id="canvasWrap">
+      <canvas id="fpCanvas"></canvas>
+      <div class="fp-tooltip" id="tooltip"></div>
+      <div class="fp-zoom">
+        <button class="fp-zoom-btn" onclick="zoom(1.2)">+</button>
+        <div class="fp-zoom-label" id="zoomPct">100%</div>
+        <button class="fp-zoom-btn" onclick="zoom(0.8)">−</button>
+        <button class="fp-zoom-btn" title="Fit to screen" onclick="fitToScreen()">⊡</button>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="fp-right">
+      <div class="fp-right-section">
+        <div class="fp-right-title">Floor Plan Stats</div>
+        <div class="area-badge">
+          <div class="area-num" id="totalArea">0</div>
+          <div class="area-lbl">Total m² (rooms)</div>
+        </div>
+        <div class="mat-item"><span class="mat-name">Rooms</span><span class="mat-val" id="statRooms">0</span></div>
+        <div class="mat-item"><span class="mat-name">Doors</span><span class="mat-val" id="statDoors">0</span></div>
+        <div class="mat-item"><span class="mat-name">Windows</span><span class="mat-val" id="statWindows">0</span></div>
+
+        <div class="fp-right-title" style="margin-top:16px;">Material Estimate</div>
+        <div id="matEstimates">
+          <div class="mat-item"><span class="mat-name">Blocks (9″)</span><span class="mat-val" id="matBlocks">—</span></div>
+          <div class="mat-item"><span class="mat-name">Cement Bags</span><span class="mat-val" id="matCement">—</span></div>
+          <div class="mat-item"><span class="mat-name">Roof Sheets</span><span class="mat-val" id="matRoof">—</span></div>
+          <div class="mat-item"><span class="mat-name">Floor Tiles (0.6m)</span><span class="mat-val" id="matTiles">—</span></div>
+          <div class="mat-item"><span class="mat-name">Paint (5L tin)</span><span class="mat-val" id="matPaint">—</span></div>
+        </div>
+
+        <button class="export-btn" onclick="showBOQ()">📋 Full Material List</button>
+        <button class="export-btn" style="background:linear-gradient(135deg,#16a34a,#15803d);margin-top:6px;" onclick="exportPNG()">🖼️ Export PNG</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATUS BAR -->
+  <div class="fp-statusbar">
+    <div class="fp-status-item">Tool: <span id="statusTool">Select</span></div>
+    <div class="fp-status-item">Cursor: <span id="statusPos">—</span></div>
+    <div class="fp-status-item">Selected: <span id="statusSel">None</span></div>
+    <div class="fp-status-item">Standard: <span id="statusStd">NBS Nigeria</span></div>
+    <div class="fp-status-item" style="margin-left:auto;">Grid: <span>0.5m per cell</span></div>
+  </div>
+</div>
+
+<!-- BOQ MODAL -->
+<div class="fp-modal-bg" id="boqModal" onclick="if(event.target===this)this.style.display='none'">
+  <div class="fp-modal">
+    <h3>📋 Bill of Quantities</h3>
+    <div id="boqContent"></div>
+    <div class="fp-modal-btns">
+      <button class="fp-modal-btn confirm" onclick="document.getElementById('boqModal').style.display='none'">Done</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// AFROTOOLS FLOOR PLAN DESIGNER
+// Canvas-based 2D floor plan tool with African building standards
+// ═══════════════════════════════════════════════════════════════
+
+const canvas = document.getElementById('fpCanvas');
+const ctx = canvas.getContext('2d');
+const wrap = document.getElementById('canvasWrap');
+
+// ── STATE ──
+const GRID = 20; // pixels per grid cell = 0.5m
+const SCALE = 0.5; // metres per grid cell
+let zoom = 1;
+let panX = 0, panY = 0;
+let tool = 'select';
+let rooms = [];
+let doors = [];
+let windows = [];
+let walls = [];
+let labels = [];
+let measures = [];
+let selected = null;
+let hovered = null;
+let dragging = false;
+let dragOffX = 0, dragOffY = 0;
+let drawing = false;
+let drawStart = null;
+let drawCurrent = null;
+let isPanning = false;
+let panStart = null;
+let showDimensions = true;
+
+// Room colors
+const ROOM_COLORS = {
+  master:{fill:'#dbeafe',stroke:'#3b82f6',label:'Master Bedroom'},
+  bedroom:{fill:'#ede9fe',stroke:'#7c3aed',label:'Bedroom'},
+  living:{fill:'#fef9c3',stroke:'#ca8a04',label:'Living Room'},
+  kitchen:{fill:'#dcfce7',stroke:'#16a34a',label:'Kitchen'},
+  bathroom:{fill:'#cffafe',stroke:'#0891b2',label:'Bathroom'},
+  toilet:{fill:'#f0f9ff',stroke:'#0284c7',label:'Toilet'},
+  dining:{fill:'#fce7f3',stroke:'#be185d',label:'Dining Room'},
+  store:{fill:'#f3f4f6',stroke:'#6b7280',label:'Store'},
+  garage:{fill:'#e5e7eb',stroke:'#374151',label:'Garage'},
+  verandah:{fill:'#fef3c7',stroke:'#d97706',label:'Verandah'},
+  custom:{fill:'#f9fafb',stroke:'#9ca3af',label:'Room'},
+};
+
+// Country standards (min room sizes in m²)
+const STANDARDS = {
+  NG:{name:'NBS Nigeria',minBed:9,minLiving:16,minKitchen:8,minBath:3,wallThick:0.225},
+  KE:{name:'KEBS Kenya',minBed:9,minLiving:15,minKitchen:7.5,minBath:2.5,wallThick:0.2},
+  ZA:{name:'SABS South Africa',minBed:8,minLiving:14,minKitchen:7,minBath:2.5,wallThick:0.23},
+  GH:{name:'GSA Ghana',minBed:9,minLiving:16,minKitchen:8,minBath:3,wallThick:0.225},
+  TZ:{name:'TBS Tanzania',minBed:9,minLiving:15,minKitchen:8,minBath:3,wallThick:0.2},
+  UG:{name:'UNBS Uganda',minBed:9,minLiving:15,minKitchen:7.5,minBath:2.5,wallThick:0.2},
+  EG:{name:'EOS Egypt',minBed:9,minLiving:15,minKitchen:7,minBath:2.5,wallThick:0.2},
+  GEN:{name:'General ISO',minBed:9,minLiving:14,minKitchen:7,minBath:2.5,wallThick:0.2},
+};
+
+let currentStd = STANDARDS.NG;
+
+// ── CANVAS SETUP ──
+function resize(){
+  const rect = wrap.getBoundingClientRect();
+  canvas.width = rect.width;
+  canvas.height = rect.height;
+  render();
+}
+window.addEventListener('resize', resize);
+
+// ── COORDINATE HELPERS ──
+function screenToWorld(sx, sy){
+  return {
+    x: (sx - panX) / zoom,
+    y: (sy - panY) / zoom
+  };
+}
+function snapToGrid(x){return Math.round(x/GRID)*GRID;}
+function snapPt(sx,sy){
+  const w = screenToWorld(sx,sy);
+  return {x:snapToGrid(w.x), y:snapToGrid(w.y)};
+}
+function worldToScreen(wx,wy){
+  return {x:wx*zoom+panX, y:wy*zoom+panY};
+}
+function gridToM(px){return (px/GRID)*SCALE;}
+function mToLabel(m){return m>=1?m.toFixed(1)+'m':(m*100).toFixed(0)+'cm';}
+
+// ── RENDER ──
+function render(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.save();
+  ctx.translate(panX,panY);
+  ctx.scale(zoom,zoom);
+
+  drawGrid();
+  drawRooms();
+  drawWalls();
+  drawDoors();
+  drawWindows();
+  drawLabels();
+  drawMeasures();
+  drawDrawing();
+
+  ctx.restore();
+  updateStats();
+}
+
+function drawGrid(){
+  ctx.strokeStyle = 'rgba(148,163,184,.3)';
+  ctx.lineWidth = 0.5/zoom;
+  const W = canvas.width/zoom, H = canvas.height/zoom;
+  const ox = -panX/zoom, oy = -panY/zoom;
+  const startX = Math.floor(ox/GRID)*GRID;
+  const startY = Math.floor(oy/GRID)*GRID;
+  for(let x=startX;x<ox+W;x+=GRID){
+    ctx.beginPath();ctx.moveTo(x,oy);ctx.lineTo(x,oy+H);ctx.stroke();
+  }
+  for(let y=startY;y<oy+H;y+=GRID){
+    ctx.beginPath();ctx.moveTo(ox,y);ctx.lineTo(ox+W,y);ctx.stroke();
+  }
+  // Major grid every 2m (4 cells)
+  ctx.strokeStyle = 'rgba(148,163,184,.6)';
+  ctx.lineWidth = 1/zoom;
+  for(let x=startX;x<ox+W;x+=GRID*4){
+    ctx.beginPath();ctx.moveTo(x,oy);ctx.lineTo(x,oy+H);ctx.stroke();
+  }
+  for(let y=startY;y<oy+H;y+=GRID*4){
+    ctx.beginPath();ctx.moveTo(ox,y);ctx.lineTo(ox+W,y);ctx.stroke();
+  }
+  // Origin cross
+  ctx.strokeStyle='rgba(59,130,246,.5)';ctx.lineWidth=1/zoom;
+  ctx.beginPath();ctx.moveTo(-10,0);ctx.lineTo(10,0);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(0,-10);ctx.lineTo(0,10);ctx.stroke();
+}
+
+function drawRooms(){
+  rooms.forEach(r => {
+    const isSelected = selected===r;
+    const isHovered = hovered===r;
+    const c = ROOM_COLORS[r.type]||ROOM_COLORS.custom;
+    const wallT = Math.round(currentStd.wallThick/SCALE*GRID);
+
+    // Wall (outer)
+    ctx.fillStyle = '#6b7280';
+    ctx.fillRect(r.x-wallT,r.y-wallT,r.w+wallT*2,r.h+wallT*2);
+
+    // Room fill
+    ctx.fillStyle = isSelected?lighten(c.fill,10):isHovered?lighten(c.fill,5):c.fill;
+    ctx.fillRect(r.x,r.y,r.w,r.h);
+
+    // Border
+    ctx.strokeStyle = isSelected?'#0071E3':c.stroke;
+    ctx.lineWidth = isSelected?2/zoom:1.5/zoom;
+    ctx.strokeRect(r.x,r.y,r.w,r.h);
+
+    // Selection handles
+    if(isSelected){
+      drawHandles(r);
+    }
+
+    // Label
+    const wm = gridToM(r.w), hm = gridToM(r.h);
+    const area = (wm*hm).toFixed(1);
+    ctx.fillStyle = '#1f2937';
+    ctx.font = `bold ${Math.max(8,11/zoom)}px Inter,system-ui,sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(r.label||c.label, r.x+r.w/2, r.y+r.h/2 - 7/zoom);
+    ctx.font = `${Math.max(6,9/zoom)}px Inter,system-ui,sans-serif`;
+    ctx.fillStyle = '#6b7280';
+    ctx.fillText(`${wm.toFixed(1)}×${hm.toFixed(1)}m (${area}m²)`, r.x+r.w/2, r.y+r.h/2+7/zoom);
+
+    // Dimensions
+    if(showDimensions){
+      drawDimLine(r.x,r.y-wallT-6/zoom,r.x+r.w,r.y-wallT-6/zoom,wm.toFixed(2)+'m');
+      drawDimLine(r.x+r.w+wallT+6/zoom,r.y,r.x+r.w+wallT+6/zoom,r.y+r.h,hm.toFixed(2)+'m',true);
+    }
+
+    // Standard warning
+    const minArea = r.type==='living'?currentStd.minLiving:r.type==='kitchen'?currentStd.minKitchen:r.type.includes('bath')||r.type==='toilet'?currentStd.minBath:currentStd.minBed;
+    if((wm*hm) < minArea && r.type!=='custom'&&r.type!=='store'&&r.type!=='verandah'&&r.type!=='garage'){
+      ctx.fillStyle='rgba(239,68,68,.08)';
+      ctx.fillRect(r.x,r.y,r.w,r.h);
+      ctx.fillStyle='#dc2626';
+      ctx.font=`bold ${Math.max(6,8/zoom)}px Inter,system-ui,sans-serif`;
+      ctx.textAlign='center';
+      ctx.textBaseline='middle';
+      ctx.fillText(`⚠ Below ${minArea}m² min`, r.x+r.w/2, r.y+r.h/2+18/zoom);
+    }
+  });
+}
+
+function drawHandles(r){
+  const s=6/zoom;
+  [[r.x,r.y],[r.x+r.w/2,r.y],[r.x+r.w,r.y],
+   [r.x,r.y+r.h/2],[r.x+r.w,r.y+r.h/2],
+   [r.x,r.y+r.h],[r.x+r.w/2,r.y+r.h],[r.x+r.w,r.y+r.h]].forEach(([hx,hy])=>{
+    ctx.fillStyle='#0071E3';
+    ctx.fillRect(hx-s/2,hy-s/2,s,s);
+    ctx.strokeStyle='#fff';ctx.lineWidth=1/zoom;
+    ctx.strokeRect(hx-s/2,hy-s/2,s,s);
+  });
+}
+
+function drawDimLine(x1,y1,x2,y2,text,vertical=false){
+  ctx.strokeStyle='rgba(59,130,246,.7)';
+  ctx.lineWidth=0.5/zoom;
+  const tick=4/zoom;
+  ctx.beginPath();
+  if(vertical){
+    ctx.moveTo(x1-tick,y1);ctx.lineTo(x1+tick,y1);
+    ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);
+    ctx.moveTo(x2-tick,y2);ctx.lineTo(x2+tick,y2);
+  } else {
+    ctx.moveTo(x1,y1-tick);ctx.lineTo(x1,y1+tick);
+    ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);
+    ctx.moveTo(x2,y2-tick);ctx.lineTo(x2,y2+tick);
+  }
+  ctx.stroke();
+  ctx.fillStyle='#2563eb';
+  ctx.font=`${Math.max(6,8/zoom)}px Inter,system-ui,sans-serif`;
+  ctx.textAlign='center';ctx.textBaseline='middle';
+  if(vertical){
+    ctx.save();ctx.translate(x1-8/zoom,(y1+y2)/2);ctx.rotate(-Math.PI/2);
+    ctx.fillText(text,0,0);ctx.restore();
+  } else {
+    ctx.fillText(text,(x1+x2)/2,y1-6/zoom);
+  }
+}
+
+function drawWalls(){
+  walls.forEach(w=>{
+    ctx.strokeStyle=selected===w?'#0071E3':'#374151';
+    ctx.lineWidth=(selected===w?3:2.5)/zoom;
+    ctx.beginPath();ctx.moveTo(w.x1,w.y1);ctx.lineTo(w.x2,w.y2);ctx.stroke();
+  });
+}
+
+function drawDoors(){
+  doors.forEach(d=>{
+    const isSelected=selected===d;
+    ctx.save();
+    ctx.translate(d.x,d.y);
+    ctx.rotate(d.angle||0);
+    const s=d.size||GRID*2;
+    // Door opening
+    ctx.strokeStyle=isSelected?'#0071E3':'#374151';
+    ctx.lineWidth=(isSelected?2:1.5)/zoom;
+    ctx.fillStyle='rgba(255,255,255,.9)';
+    ctx.fillRect(0,0,s,4/zoom);
+    ctx.strokeRect(0,0,s,4/zoom);
+    // Swing arc
+    ctx.strokeStyle=isSelected?'rgba(0,113,227,.5)':'rgba(100,116,139,.4)';
+    ctx.lineWidth=1/zoom;
+    ctx.setLineDash([4/zoom,3/zoom]);
+    ctx.beginPath();ctx.arc(0,0,s,0,Math.PI/2);ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.restore();
+  });
+}
+
+function drawWindows(){
+  windows.forEach(w=>{
+    const isSelected=selected===w;
+    ctx.save();
+    ctx.translate(w.x,w.y);
+    ctx.rotate(w.angle||0);
+    const s=w.size||GRID*3;
+    // Window outline
+    ctx.fillStyle='rgba(186,230,253,.6)';
+    ctx.strokeStyle=isSelected?'#0071E3':'#0891b2';
+    ctx.lineWidth=(isSelected?2:1.5)/zoom;
+    ctx.fillRect(0,-3/zoom,s,6/zoom);
+    ctx.strokeRect(0,-3/zoom,s,6/zoom);
+    // Glass lines
+    ctx.strokeStyle='rgba(14,165,233,.5)';ctx.lineWidth=0.5/zoom;
+    ctx.beginPath();ctx.moveTo(s/3,-3/zoom);ctx.lineTo(s/3,3/zoom);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(2*s/3,-3/zoom);ctx.lineTo(2*s/3,3/zoom);ctx.stroke();
+    ctx.restore();
+  });
+}
+
+function drawLabels(){
+  labels.forEach(l=>{
+    const isSelected=selected===l;
+    ctx.fillStyle=isSelected?'#0071E3':'#374151';
+    ctx.font=`${isSelected?'bold ':''} ${Math.max(8,(l.size||11)/zoom)}px Inter,system-ui,sans-serif`;
+    ctx.textAlign='left';ctx.textBaseline='top';
+    ctx.fillText(l.text||'Label',l.x,l.y);
+  });
+}
+
+function drawMeasures(){
+  measures.forEach(m=>{
+    const dx=m.x2-m.x1,dy=m.y2-m.y1;
+    const dist=Math.sqrt(dx*dx+dy*dy);
+    const distM=gridToM(dist);
+    ctx.strokeStyle='#f59e0b';ctx.lineWidth=1.5/zoom;
+    ctx.beginPath();ctx.moveTo(m.x1,m.y1);ctx.lineTo(m.x2,m.y2);ctx.stroke();
+    // Endpoints
+    ctx.fillStyle='#f59e0b';
+    ctx.beginPath();ctx.arc(m.x1,m.y1,3/zoom,0,Math.PI*2);ctx.fill();
+    ctx.beginPath();ctx.arc(m.x2,m.y2,3/zoom,0,Math.PI*2);ctx.fill();
+    // Label
+    ctx.fillStyle='#92400e';
+    ctx.font=`bold ${Math.max(7,9/zoom)}px Inter,system-ui,sans-serif`;
+    ctx.textAlign='center';ctx.textBaseline='bottom';
+    ctx.fillText(mToLabel(distM),(m.x1+m.x2)/2,(m.y1+m.y2)/2-3/zoom);
+  });
+}
+
+function drawDrawing(){
+  if(!drawing||!drawStart||!drawCurrent) return;
+  const x=Math.min(drawStart.x,drawCurrent.x);
+  const y=Math.min(drawStart.y,drawCurrent.y);
+  const w=Math.abs(drawCurrent.x-drawStart.x);
+  const h=Math.abs(drawCurrent.y-drawStart.y);
+  if(tool==='room'||tool==='wall'){
+    ctx.strokeStyle='#0071E3';ctx.lineWidth=1.5/zoom;
+    ctx.setLineDash([4/zoom,3/zoom]);
+    ctx.strokeRect(x,y,w,h);
+    ctx.setLineDash([]);
+    ctx.fillStyle='rgba(0,113,227,.05)';
+    ctx.fillRect(x,y,w,h);
+    // Live dimensions
+    const wm=gridToM(w), hm=gridToM(h);
+    ctx.fillStyle='#0071E3';
+    ctx.font=`bold ${10/zoom}px Inter,system-ui,sans-serif`;
+    ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(`${wm.toFixed(1)}×${hm.toFixed(1)}m`,x+w/2,y+h/2);
+  } else if(tool==='measure'||tool==='wall'){
+    ctx.strokeStyle='#f59e0b';ctx.lineWidth=1.5/zoom;
+    ctx.setLineDash([4/zoom,3/zoom]);
+    ctx.beginPath();ctx.moveTo(drawStart.x,drawStart.y);ctx.lineTo(drawCurrent.x,drawCurrent.y);ctx.stroke();
+    ctx.setLineDash([]);
+  }
+}
+
+// ── MOUSE / TOUCH EVENTS ──
+function getCanvasPos(e){
+  const r = canvas.getBoundingClientRect();
+  const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+  const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+  return {x: clientX-r.left, y: clientY-r.top};
+}
+
+canvas.addEventListener('mousedown', onDown);
+canvas.addEventListener('mousemove', onMove);
+canvas.addEventListener('mouseup', onUp);
+canvas.addEventListener('dblclick', onDblClick);
+canvas.addEventListener('wheel', onWheel, {passive:false});
+canvas.addEventListener('touchstart', e=>onDown(e.touches[0] ? {clientX:e.touches[0].clientX,clientY:e.touches[0].clientY,button:0} : e), {passive:false});
+canvas.addEventListener('touchmove', e=>{e.preventDefault();onMove({clientX:e.touches[0].clientX,clientY:e.touches[0].clientY});}, {passive:false});
+canvas.addEventListener('touchend', e=>onUp({}));
+
+function onDown(e){
+  const pos = getCanvasPos(e);
+  const wp = screenToWorld(pos.x, pos.y);
+  const sg = snapToGrid;
+
+  if(e.button===1 || e.button===2 || (e.button===0 && e.altKey)){
+    isPanning=true; panStart={x:pos.x-panX, y:pos.y-panY}; return;
+  }
+
+  if(tool==='select'){
+    const hit = hitTest(wp.x, wp.y);
+    if(hit){
+      selected=hit;
+      dragging=true;
+      if(hit._type==='room'){
+        dragOffX=wp.x-hit.x; dragOffY=wp.y-hit.y;
+      } else {
+        dragOffX=wp.x-hit.x; dragOffY=wp.y-hit.y;
+      }
+      showProps(hit);
+    } else {
+      selected=null;
+      document.getElementById('propsSection').style.display='none';
+    }
+    render();
+    return;
+  }
+
+  if(tool==='room'){
+    drawing=true;
+    drawStart={x:sg(wp.x),y:sg(wp.y)};
+    drawCurrent={...drawStart};
+    return;
+  }
+  if(tool==='wall'){
+    drawing=true;
+    drawStart={x:sg(wp.x),y:sg(wp.y)};
+    drawCurrent={...drawStart};
+    return;
+  }
+  if(tool==='measure'){
+    drawing=true;
+    drawStart={x:sg(wp.x),y:sg(wp.y)};
+    drawCurrent={...drawStart};
+    return;
+  }
+  if(tool==='door'){
+    const r = hitTestRoom(wp.x,wp.y);
+    const d={_type:'door',x:sg(wp.x),y:sg(wp.y),angle:0,size:GRID*2,room:r?r.id:null};
+    doors.push(d); selected=d; showProps(d); render(); return;
+  }
+  if(tool==='window'){
+    const r = hitTestRoom(wp.x,wp.y);
+    const w={_type:'window',x:sg(wp.x),y:sg(wp.y),angle:0,size:GRID*3,room:r?r.id:null};
+    windows.push(w); selected=w; showProps(w); render(); return;
+  }
+  if(tool==='stairs'){
+    const stairRoom={_type:'room',id:uid(),x:sg(wp.x),y:sg(wp.y),w:GRID*4,h:GRID*6,type:'stairs',label:'Stairs',color:'#e5e7eb'};
+    rooms.push(stairRoom); selected=stairRoom; showProps(stairRoom); render(); return;
+  }
+  if(tool==='text'){
+    const txt=prompt('Enter label text:','Label');
+    if(txt){
+      const l={_type:'label',id:uid(),x:sg(wp.x),y:sg(wp.y),text:txt,size:11};
+      labels.push(l); selected=l; showProps(l);
+    }
+    render(); return;
+  }
+}
+
+function onMove(e){
+  const pos = getCanvasPos(e);
+  if(isPanning){
+    panX=pos.x-panStart.x; panY=pos.y-panStart.y; render(); return;
+  }
+  const wp=screenToWorld(pos.x,pos.y);
+  document.getElementById('statusPos').textContent=`(${gridToM(snapToGrid(wp.x)).toFixed(1)}m, ${gridToM(snapToGrid(wp.y)).toFixed(1)}m)`;
+
+  if(dragging && selected){
+    const sg=snapToGrid;
+    if(selected._type==='room'){
+      selected.x=sg(wp.x-dragOffX);
+      selected.y=sg(wp.y-dragOffY);
+    } else {
+      selected.x=sg(wp.x-dragOffX);
+      selected.y=sg(wp.y-dragOffY);
+    }
+    render();
+    return;
+  }
+  if(drawing){
+    drawCurrent={x:snapToGrid(wp.x),y:snapToGrid(wp.y)};
+    render();
+    return;
+  }
+  // Hover
+  const h=hitTest(wp.x,wp.y);
+  if(h!==hovered){hovered=h;render();}
+}
+
+function onUp(e){
+  if(isPanning){isPanning=false;return;}
+  if(drawing && drawStart && drawCurrent){
+    const x=Math.min(drawStart.x,drawCurrent.x);
+    const y=Math.min(drawStart.y,drawCurrent.y);
+    const w=Math.abs(drawCurrent.x-drawStart.x);
+    const h=Math.abs(drawCurrent.y-drawStart.y);
+    if(tool==='room' && w>=GRID && h>=GRID){
+      const r={_type:'room',id:uid(),x,y,w,h,type:'custom',label:'Room'};
+      rooms.push(r); selected=r; showProps(r);
+      render();
+    } else if(tool==='wall' && (w>=GRID||h>=GRID)){
+      // Snap to horizontal/vertical
+      if(w>h){walls.push({_type:'wall',id:uid(),x1:x,y1:drawStart.y,x2:x+w,y2:drawStart.y});}
+      else{walls.push({_type:'wall',id:uid(),x1:drawStart.x,y1:y,x2:drawStart.x,y2:y+h});}
+      render();
+    } else if(tool==='measure'){
+      measures.push({_type:'measure',id:uid(),x1:drawStart.x,y1:drawStart.y,x2:drawCurrent.x,y2:drawCurrent.y});
+      render();
+    }
+    drawing=false; drawStart=null; drawCurrent=null;
+  }
+  dragging=false;
+}
+
+function onDblClick(e){
+  const pos=getCanvasPos(e);
+  const wp=screenToWorld(pos.x,pos.y);
+  const hit=hitTest(wp.x,wp.y);
+  if(hit && hit._type==='room'){
+    const newLabel=prompt('Room name:',hit.label);
+    if(newLabel!==null){hit.label=newLabel;render();}
+  }
+}
+
+function onWheel(e){
+  e.preventDefault();
+  const pos=getCanvasPos(e);
+  const factor=e.deltaY<0?1.1:0.9;
+  const wx=(pos.x-panX)/zoom, wy=(pos.y-panY)/zoom;
+  zoom*=factor;
+  zoom=Math.max(0.2,Math.min(5,zoom));
+  panX=pos.x-wx*zoom;
+  panY=pos.y-wy*zoom;
+  document.getElementById('zoomPct').textContent=Math.round(zoom*100)+'%';
+  render();
+}
+
+// ── HIT TEST ──
+function hitTest(wx,wy){
+  // Test doors first, then windows, then rooms
+  for(let i=doors.length-1;i>=0;i--){
+    const d=doors[i];
+    if(wx>=d.x-5&&wx<=d.x+d.size+5&&wy>=d.y-5&&wy<=d.y+d.size+5) return d;
+  }
+  for(let i=windows.length-1;i>=0;i--){
+    const w=windows[i];
+    if(wx>=w.x-5&&wx<=w.x+w.size+5&&wy>=w.y-10&&wy<=w.y+10) return w;
+  }
+  for(let i=labels.length-1;i>=0;i--){
+    const l=labels[i];
+    if(wx>=l.x&&wx<=l.x+100&&wy>=l.y&&wy<=l.y+20) return l;
+  }
+  for(let i=rooms.length-1;i>=0;i--){
+    const r=rooms[i];
+    if(wx>=r.x&&wx<=r.x+r.w&&wy>=r.y&&wy<=r.y+r.h) return r;
+  }
+  return null;
+}
+function hitTestRoom(wx,wy){
+  for(let i=rooms.length-1;i>=0;i--){
+    const r=rooms[i];
+    if(wx>=r.x&&wx<=r.x+r.w&&wy>=r.y&&wy<=r.y+r.h) return r;
+  }
+  return null;
+}
+
+// ── TOOL MANAGEMENT ──
+function setTool(t, btn){
+  tool=t;
+  document.querySelectorAll('.tool-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('statusTool').textContent=btn.textContent.trim();
+  canvas.style.cursor=t==='select'?'default':t==='measure'?'crosshair':'crosshair';
+}
+
+// ── PRESETS ──
+function addPreset(type){
+  const sizes={
+    master:{w:GRID*8,h:GRID*10},
+    bedroom:{w:GRID*6,h:GRID*8},
+    living:{w:GRID*10,h:GRID*12},
+    kitchen:{w:GRID*6,h:GRID*8},
+    bathroom:{w:GRID*4,h:GRID*6},
+    toilet:{w:GRID*3,h:GRID*4},
+    dining:{w:GRID*6,h:GRID*8},
+    store:{w:GRID*4,h:GRID*4},
+    garage:{w:GRID*12,h:GRID*12},
+    verandah:{w:GRID*4,h:GRID*12},
+  };
+  const s=sizes[type]||{w:GRID*6,h:GRID*8};
+  const c=ROOM_COLORS[type]||ROOM_COLORS.custom;
+  // Place at a sensible position
+  const offset = rooms.length * GRID * 2;
+  const r={_type:'room',id:uid(),x:snapToGrid(40+offset%200),y:snapToGrid(40+Math.floor(offset/200)*GRID*3),w:s.w,h:s.h,type,label:c.label};
+  rooms.push(r);
+  selected=r;
+  showProps(r);
+  render();
+}
+
+// ── PROPERTIES PANEL ──
+function showProps(item){
+  const sec=document.getElementById('propsSection');
+  const cont=document.getElementById('propsContent');
+  sec.style.display='block';
+
+  if(item._type==='room'){
+    const wm=gridToM(item.w).toFixed(2), hm=gridToM(item.h).toFixed(2);
+    cont.innerHTML=`
+      <div class="prop-group">
+        <div class="prop-label">Room Name</div>
+        <input class="prop-input" type="text" value="${item.label||''}" onchange="selected.label=this.value;render()">
+      </div>
+      <div class="prop-group">
+        <div class="prop-label">Room Type</div>
+        <select class="prop-input" onchange="selected.type=this.value;render()">
+          ${Object.entries(ROOM_COLORS).map(([k,v])=>`<option value="${k}"${item.type===k?' selected':''}>${v.label}</option>`).join('')}
+        </select>
+      </div>
+      <div class="prop-row">
+        <div class="prop-group">
+          <div class="prop-label">Width (m)</div>
+          <input class="prop-input" type="number" value="${wm}" step="0.5" min="0.5" onchange="selected.w=Math.round(+this.value/0.5)*0.5/SCALE*GRID;render()">
+        </div>
+        <div class="prop-group">
+          <div class="prop-label">Length (m)</div>
+          <input class="prop-input" type="number" value="${hm}" step="0.5" min="0.5" onchange="selected.h=Math.round(+this.value/0.5)*0.5/SCALE*GRID;render()">
+        </div>
+      </div>
+      <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:7px;padding:8px;font-size:.72rem;color:#166534;margin-bottom:8px;">
+        Area: <strong>${(wm*hm).toFixed(2)} m²</strong>
+      </div>
+      <button class="prop-del-btn" onclick="deleteSelected()">🗑 Delete Room</button>
+    `;
+    document.getElementById('statusSel').textContent=item.label||'Room';
+  } else if(item._type==='door'){
+    cont.innerHTML=`
+      <div class="prop-group">
+        <div class="prop-label">Door Width</div>
+        <select class="prop-input" onchange="selected.size=+this.value;render()">
+          <option value="${GRID*1.5}" ${item.size===GRID*1.5?'selected':''}>0.75m (Toilet)</option>
+          <option value="${GRID*2}" ${item.size===GRID*2?'selected':''}>1.0m (Standard)</option>
+          <option value="${GRID*2.5}" ${item.size===GRID*2.5?'selected':''}>1.2m (Wide)</option>
+          <option value="${GRID*4}" ${item.size===GRID*4?'selected':''}>2.0m (Double)</option>
+        </select>
+      </div>
+      <div class="prop-group">
+        <div class="prop-label">Swing Direction (°)</div>
+        <select class="prop-input" onchange="selected.angle=+this.value*(Math.PI/180);render()">
+          <option value="0">0° (Right)</option>
+          <option value="90">90° (Up)</option>
+          <option value="180">180° (Left)</option>
+          <option value="270">270° (Down)</option>
+        </select>
+      </div>
+      <button class="prop-del-btn" onclick="deleteSelected()">🗑 Delete Door</button>
+    `;
+    document.getElementById('statusSel').textContent='Door';
+  } else if(item._type==='window'){
+    cont.innerHTML=`
+      <div class="prop-group">
+        <div class="prop-label">Window Width</div>
+        <select class="prop-input" onchange="selected.size=+this.value;render()">
+          <option value="${GRID*2}" ${item.size===GRID*2?'selected':''}>1.0m (Small)</option>
+          <option value="${GRID*3}" ${item.size===GRID*3?'selected':''}>1.5m (Standard)</option>
+          <option value="${GRID*4}" ${item.size===GRID*4?'selected':''}>2.0m (Wide)</option>
+          <option value="${GRID*5}" ${item.size===GRID*5?'selected':''}>2.5m (Large)</option>
+        </select>
+      </div>
+      <div class="prop-group">
+        <div class="prop-label">Orientation (°)</div>
+        <select class="prop-input" onchange="selected.angle=+this.value*(Math.PI/180);render()">
+          <option value="0">Horizontal</option>
+          <option value="90">Vertical</option>
+        </select>
+      </div>
+      <button class="prop-del-btn" onclick="deleteSelected()">🗑 Delete Window</button>
+    `;
+    document.getElementById('statusSel').textContent='Window';
+  } else if(item._type==='label'){
+    cont.innerHTML=`
+      <div class="prop-group">
+        <div class="prop-label">Text</div>
+        <input class="prop-input" type="text" value="${item.text||''}" onchange="selected.text=this.value;render()">
+      </div>
+      <div class="prop-group">
+        <div class="prop-label">Size (px)</div>
+        <input class="prop-input" type="number" value="${item.size||11}" min="8" max="24" onchange="selected.size=+this.value;render()">
+      </div>
+      <button class="prop-del-btn" onclick="deleteSelected()">🗑 Delete Label</button>
+    `;
+    document.getElementById('statusSel').textContent='Label';
+  }
+}
+
+function deleteSelected(){
+  if(!selected) return;
+  rooms=rooms.filter(r=>r!==selected);
+  doors=doors.filter(d=>d!==selected);
+  windows=windows.filter(w=>w!==selected);
+  walls=walls.filter(w=>w!==selected);
+  labels=labels.filter(l=>l!==selected);
+  measures=measures.filter(m=>m!==selected);
+  selected=null;
+  document.getElementById('propsSection').style.display='none';
+  document.getElementById('statusSel').textContent='None';
+  render();
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='Delete'||e.key==='Backspace'){
+    if(selected && document.activeElement.tagName!=='INPUT' && document.activeElement.tagName!=='SELECT'){
+      deleteSelected();
+    }
+  }
+  if(e.key==='Escape'){selected=null;drawing=false;document.getElementById('propsSection').style.display='none';render();}
+});
+
+// ── STATS ──
+function updateStats(){
+  const totalAreaM2=rooms.reduce((s,r)=>s+(gridToM(r.w)*gridToM(r.h)),0);
+  document.getElementById('totalArea').textContent=totalAreaM2.toFixed(1);
+  document.getElementById('statRooms').textContent=rooms.length;
+  document.getElementById('statDoors').textContent=doors.length;
+  document.getElementById('statWindows').textContent=windows.length;
+
+  if(rooms.length>0){
+    const perimeter=totalAreaM2*0.4;
+    const wallHeight=3; // typical 3m wall height
+    const wallArea=perimeter*wallHeight;
+    document.getElementById('matBlocks').textContent=Math.round(totalAreaM2*13)+'';
+    document.getElementById('matCement').textContent=Math.round(totalAreaM2*0.7)+' bags';
+    document.getElementById('matRoof').textContent=Math.round(totalAreaM2*1.15)+' sheets';
+    document.getElementById('matTiles').textContent=Math.round(totalAreaM2*2.78)+' pcs';
+    document.getElementById('matPaint').textContent=Math.round(wallArea/25)+' tins';
+  }
+}
+
+// ── BOQ ──
+function showBOQ(){
+  const totalAreaM2=rooms.reduce((s,r)=>s+(gridToM(r.w)*gridToM(r.h)),0);
+  if(totalAreaM2===0){alert('Please draw some rooms first.');return;}
+  const perimeter=Math.sqrt(totalAreaM2)*4;
+  const wallH=3;
+  const wallArea=perimeter*wallH;
+
+  const items=[
+    ['Foundation',`${(totalAreaM2*0.1).toFixed(1)} m³`,'Concrete 1:2:4'],
+    ['9″ Blocks (225×225×450mm)',`${Math.round(totalAreaM2*13)} blocks`,'Wall construction'],
+    ['Portland Cement 50kg',`${Math.round(totalAreaM2*0.7)} bags`,'Mortar + plaster'],
+    ['Sharp Sand',`${(totalAreaM2*0.25).toFixed(1)} m³`,'Mortar + floor'],
+    ['Granite 3/4"',`${(totalAreaM2*0.15).toFixed(1)} m³`,'Concrete works'],
+    ['Iron Roof Sheets',`${Math.round(totalAreaM2*1.15)} sheets`,'Long-span aluminium'],
+    ['Floor Tiles 600×600mm',`${Math.round(totalAreaM2*2.78)} pcs`,'Including 10% wastage'],
+    ['Wall Tiles (wet areas)',`${Math.round((totalAreaM2*0.15)*12)} pcs`,'Bathrooms + kitchen'],
+    ['Emulsion Paint 5L',`${Math.round(wallArea/25)} tins`,'Interior + exterior'],
+    ['Plumbing Pipes',`${Math.round(perimeter*0.8)} m`,'PVC 32mm + 110mm'],
+    ['Electrical Wire',`${Math.round(totalAreaM2*3.5)} m`,'2.5mm² + 1.5mm²'],
+    ['Doors (wooden)',`${Math.max(1,Math.round(rooms.length*0.8))} units`,'Standard 900×2100mm'],
+    ['Windows (aluminium)',`${Math.max(2,Math.round(rooms.length*1.2))} units`,'1500×1200mm standard'],
+    ['Rafters (50×100mm)',`${Math.round(totalAreaM2*0.5)} pcs`,'Hardwood timber'],
+  ];
+
+  document.getElementById('boqContent').innerHTML=`
+    <div style="font-size:.75rem;color:#6b7280;margin-bottom:12px;">Floor plan: <strong>${totalAreaM2.toFixed(1)} m²</strong> total area | ${rooms.length} rooms | Standard: ${currentStd.name}</div>
+    <table style="width:100%;border-collapse:collapse;font-size:.78rem;">
+      <thead><tr style="border-bottom:2px solid #e5e7eb;">
+        <th style="text-align:left;padding:6px;color:#9ca3af;font-weight:700;text-transform:uppercase;font-size:.65rem;letter-spacing:.06em;">Item</th>
+        <th style="text-align:right;padding:6px;color:#9ca3af;font-weight:700;text-transform:uppercase;font-size:.65rem;">Qty</th>
+        <th style="text-align:left;padding:6px;color:#9ca3af;font-weight:700;text-transform:uppercase;font-size:.65rem;">Notes</th>
+      </tr></thead>
+      <tbody>${items.map(([n,q,r])=>`<tr style="border-bottom:1px solid #f9fafb;"><td style="padding:6px;font-weight:600;">${n}</td><td style="padding:6px;text-align:right;color:#0071E3;font-weight:700;">${q}</td><td style="padding:6px;color:#6b7280;">${r}</td></tr>`).join('')}</tbody>
+    </table>
+    <div style="margin-top:12px;padding:10px;background:#fffbeb;border:1px solid #fbbf24;border-radius:8px;font-size:.72rem;color:#92400e;">
+      ⚠️ These are estimates based on standard African residential construction. Get a professional QS for accurate quotation. Country: ${currentStd.name}
+    </div>
+  `;
+  document.getElementById('boqModal').style.display='flex';
+}
+
+// ── ZOOM / FIT ──
+function zoom_fn(factor){
+  zoom*=factor;
+  zoom=Math.max(0.2,Math.min(5,zoom));
+  document.getElementById('zoomPct').textContent=Math.round(zoom*100)+'%';
+  render();
+}
+window.zoom=zoom_fn;
+
+function fitToScreen(){
+  if(rooms.length===0){panX=canvas.width/2;panY=canvas.height/2;zoom=1;render();return;}
+  let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
+  rooms.forEach(r=>{
+    minX=Math.min(minX,r.x);minY=Math.min(minY,r.y);
+    maxX=Math.max(maxX,r.x+r.w);maxY=Math.max(maxY,r.y+r.h);
+  });
+  const pad=60;
+  const zoomX=(canvas.width-pad*2)/(maxX-minX||1);
+  const zoomY=(canvas.height-pad*2)/(maxY-minY||1);
+  zoom=Math.min(zoomX,zoomY,3);
+  panX=canvas.width/2-((minX+maxX)/2)*zoom;
+  panY=canvas.height/2-((minY+maxY)/2)*zoom;
+  document.getElementById('zoomPct').textContent=Math.round(zoom*100)+'%';
+  render();
+}
+
+// ── FILE OPS ──
+function newPlan(){
+  if(rooms.length>0&&!confirm('Start new plan? Current work will be lost.')) return;
+  rooms=[];doors=[];windows=[];walls=[];labels=[];measures=[];selected=null;
+  document.getElementById('propsSection').style.display='none';
+  render();
+}
+
+function clearAll(){
+  if(!confirm('Clear everything?')) return;
+  rooms=[];doors=[];windows=[];walls=[];labels=[];measures=[];selected=null;
+  render();
+}
+
+function exportPNG(){
+  // Render clean version
+  const tmpCanvas=document.createElement('canvas');
+  const scale=2; // Retina
+  tmpCanvas.width=canvas.width*scale;
+  tmpCanvas.height=canvas.height*scale;
+  const tCtx=tmpCanvas.getContext('2d');
+  tCtx.scale(scale,scale);
+  // White background
+  tCtx.fillStyle='#f1f5f9';
+  tCtx.fillRect(0,0,canvas.width,canvas.height);
+  // Copy
+  tCtx.drawImage(canvas,0,0);
+  // Watermark
+  tCtx.fillStyle='rgba(0,0,0,.15)';
+  tCtx.font='bold 11px Inter,sans-serif';
+  tCtx.textAlign='right';
+  tCtx.fillText('AfroTools.com – Floor Plan Designer',canvas.width-8,canvas.height-8);
+
+  const a=document.createElement('a');
+  a.download='floor-plan.png';
+  a.href=tmpCanvas.toDataURL('image/png');
+  a.click();
+}
+
+function exportJSON(){
+  const data=JSON.stringify({rooms,doors,windows,walls,labels,measures,standard:document.getElementById('countryStd').value},null,2);
+  const a=document.createElement('a');
+  a.download='floor-plan.json';
+  a.href='data:application/json;charset=utf-8,'+encodeURIComponent(data);
+  a.click();
+}
+
+function loadJSON(e){
+  const file=e.target.files[0];
+  if(!file) return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    try{
+      const data=JSON.parse(ev.target.result);
+      rooms=data.rooms||[];doors=data.doors||[];windows=data.windows||[];
+      walls=data.walls||[];labels=data.labels||[];measures=data.measures||[];
+      // Restore _type if missing
+      rooms.forEach(r=>r._type='room');doors.forEach(d=>d._type='door');
+      windows.forEach(w=>w._type='window');walls.forEach(w=>w._type='wall');
+      labels.forEach(l=>l._type='label');measures.forEach(m=>m._type='measure');
+      if(data.standard) document.getElementById('countryStd').value=data.standard;
+      updateStandard();
+      fitToScreen();
+    } catch(err){ alert('Invalid floor plan file.'); }
+  };
+  reader.readAsText(file);
+}
+
+function updateStandard(){
+  const code=document.getElementById('countryStd').value;
+  currentStd=STANDARDS[code]||STANDARDS.GEN;
+  document.getElementById('statusStd').textContent=currentStd.name;
+  render();
+}
+
+// ── UTILS ──
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function lighten(hex,amt){
+  const n=parseInt(hex.slice(1),16);
+  const r=Math.min(255,(n>>16)+amt);
+  const g=Math.min(255,((n>>8)&0xff)+amt);
+  const b=Math.min(255,(n&0xff)+amt);
+  return '#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join('');
+}
+
+// ── START ──
+resize();
+// Add a default living room to get started
+addPreset('living');
+addPreset('master');
+fitToScreen();
+</script>
+<afro-related-tools category="engineering" current="floor-plan"></afro-related-tools>
+<afro-footer></afro-footer>
+</body>
+</html>

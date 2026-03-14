@@ -1,17 +1,32 @@
-## Security headers — all pages
-/*
-  X-Frame-Options: SAMEORIGIN
-  X-Content-Type-Options: nosniff
-  Referrer-Policy: strict-origin-when-cross-origin
-  Permissions-Policy: camera=(self), microphone=(), geolocation=(), payment=()
-  X-XSS-Protection: 1; mode=block
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://www.google-analytics.com https://www.googletagmanager.com; connect-src 'self' https://*.netlify.app https://api.anthropic.com https://www.google-analytics.com https://region1.google-analytics.com; worker-src 'self' blob:; frame-src 'none'
+## ═══════════════════════════════════════════════════
+## AFROTOOLS — Netlify HTTP Headers
+## Security · Caching · CORS
+## Last updated: March 2026
+## ═══════════════════════════════════════════════════
 
-## Cache static assets aggressively
+## ── Security headers — all pages ──
+/*
+  # Prevent clickjacking
+  X-Frame-Options: SAMEORIGIN
+  # Prevent MIME-type sniffing
+  X-Content-Type-Options: nosniff
+  # Control referrer information
+  Referrer-Policy: strict-origin-when-cross-origin
+  # HSTS — force HTTPS for 1 year (includeSubDomains, preload-ready)
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  # Permissions policy — restrict sensitive APIs
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), bluetooth=()
+  # Content Security Policy — updated for all CDN dependencies
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://unpkg.com https://www.googletagmanager.com https://www.google-analytics.com https://tagmanager.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https://www.google-analytics.com https://www.googletagmanager.com https://lh3.googleusercontent.com; connect-src 'self' https://*.netlify.app https://*.netlify.com https://api.anthropic.com https://www.google-analytics.com https://region1.google-analytics.com https://analytics.google.com https://fonts.googleapis.com https://fonts.gstatic.com; worker-src 'self' blob:; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self' https://formspree.io; upgrade-insecure-requests
+
+## ── Cache static assets aggressively (1 year, immutable) ──
 /assets/css/*
   Cache-Control: public, max-age=31536000, immutable
 
 /assets/js/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/img/*
   Cache-Control: public, max-age=31536000, immutable
 
 /assets/images/*
@@ -20,22 +35,48 @@
 /assets/fonts/*
   Cache-Control: public, max-age=31536000, immutable
 
-## Cache manifest & service worker
+## ── Service worker & manifest ──
 /manifest.json
   Cache-Control: public, max-age=86400
+
 /service-worker.js
   Cache-Control: public, max-age=0, must-revalidate
 
-## Cache tool pages for 1 hour (they change occasionally)
+## ── Tool pages — 1 hour browser, 24 hours CDN ──
 /tools/*
   Cache-Control: public, max-age=3600, s-maxage=86400
 
-## HTML pages — short cache, always revalidate
+/engineering/*
+  Cache-Control: public, max-age=3600, s-maxage=86400
+
+## ── Country pages — 1 hour browser, 24 hours CDN ──
+/nigeria/*
+  Cache-Control: public, max-age=3600, s-maxage=86400
+
+/kenya/*
+  Cache-Control: public, max-age=3600, s-maxage=86400
+
+/ghana/*
+  Cache-Control: public, max-age=3600, s-maxage=86400
+
+/south-africa/*
+  Cache-Control: public, max-age=3600, s-maxage=86400
+
+## ── HTML pages — always revalidate ──
 /*.html
   Cache-Control: public, max-age=0, must-revalidate
 
-## CORS for API
+## ── Netlify functions — no cache ──
+/.netlify/functions/*
+  Cache-Control: no-store, no-cache, must-revalidate
+  # Prevent CORS issues on AI advisor function
+  Access-Control-Allow-Origin: https://afrotools.com
+  Access-Control-Allow-Methods: POST, OPTIONS
+  Access-Control-Allow-Headers: Content-Type, Authorization
+
+## ── CORS for public API ──
 /api/v1/*
   Access-Control-Allow-Origin: *
-  Access-Control-Allow-Methods: POST, OPTIONS
+  Access-Control-Allow-Methods: POST, GET, OPTIONS
   Access-Control-Allow-Headers: Content-Type, x-api-key
+  Access-Control-Max-Age: 86400

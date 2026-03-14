@@ -1,706 +1,1068 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <!-- Google Analytics 4 -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-D859CGF391');
-</script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Advanced unit converter for length, weight, temperature, area, volume, speed, data, and African currency conversion. Real-time conversion.">
-    <meta name="theme-color" content="#2563eb">
-    <link rel="canonical" href="https://afrotools.com/tools/unit-converter">
-    <title>Unit Converter — Length, Weight, Temperature, Currency & More | AfroTools</title>
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="AfroTools">
-    <meta property="og:title" content="Unit Converter — Length, Weight, Temperature, Currency & More | AfroTools">
-    <meta property="og:description" content="Advanced unit converter for length, weight, temperature, area, volume, speed, data, and African currency conversion. Real-time conversion.">
-    <meta property="og:url" content="https://afrotools.com/tools/unit-converter/">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
-
-    <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-    <link rel="stylesheet" href="/assets/css/tokens.min.css">
-    <link rel="stylesheet" href="/assets/css/global.min.css">
-    <script src="/assets/js/components/navbar.min.js" defer></script>
-    <script src="/assets/js/components/footer.min.js" defer></script>
-
-    <style>
-        *, *::before, *::after { box-sizing: border-box; }
-
-        :root {
-            --color-accent: #2563eb;
-            --color-accent-light: #dbeafe;
-            --color-accent-lighter: #f0f9ff;
-            --color-bg: #f8fafc;
-            --color-text: #1f2937;
-            --color-text-light: #6b7280;
-            --color-white: #fff;
-            --color-border: #e5e7eb;
-        }
-
-        body {
-            background: var(--color-bg);
-            color: var(--color-text);
-            font-family: 'DM Sans', sans-serif;
-        }
-
-        .uc-container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .uc-hero {
-            background: linear-gradient(135deg, var(--color-accent-lighter) 0%, var(--color-accent-light) 100%);
-            border-radius: 16px;
-            padding: 40px 32px;
-            text-align: center;
-            margin-bottom: 32px;
-            border: 1px solid rgba(37, 99, 235, 0.2);
-        }
-
-        .uc-hero h1 {
-            font-size: clamp(28px, 5vw, 40px);
-            font-weight: 700;
-            color: #1e40af;
-            margin: 0 0 12px 0;
-            line-height: 1.2;
-        }
-
-        .uc-hero p {
-            font-size: 16px;
-            color: #1e3a8a;
-            margin: 0;
-            line-height: 1.6;
-        }
-
-        .uc-tabs {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 24px;
-            border-bottom: 2px solid rgba(37, 99, 235, 0.1);
-            overflow-x: auto;
-            padding-bottom: 12px;
-        }
-
-        .uc-tab {
-            padding: 10px 16px;
-            border: none;
-            background: none;
-            color: var(--color-text-light);
-            font-family: 'DM Sans', sans-serif;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            white-space: nowrap;
-            border-bottom: 3px solid transparent;
-        }
-
-        .uc-tab:hover { color: var(--color-text); }
-        .uc-tab.active { color: var(--color-accent); border-bottom-color: var(--color-accent); }
-
-        .uc-tab-content { display: none; }
-        .uc-tab-content.active { display: block; animation: fadeIn 0.3s; }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        .uc-card {
-            background: var(--color-white);
-            border: 1px solid var(--color-border);
-            border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 16px;
-        }
-
-        .uc-input-row {
-            display: grid;
-            grid-template-columns: 1fr auto 1fr;
-            gap: 16px;
-            align-items: flex-end;
-            margin-bottom: 16px;
-        }
-
-        .uc-input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .uc-input-group label {
-            font-size: 12px;
-            font-weight: 700;
-            color: #6b7280;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .uc-input-group input,
-        .uc-input-group select {
-            padding: 11px 12px;
-            border: 1.5px solid var(--color-border);
-            border-radius: 8px;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 14px;
-            color: var(--color-text);
-            transition: all 0.2s;
-        }
-
-        .uc-input-group input:focus,
-        .uc-input-group select:focus {
-            outline: none;
-            border-color: var(--color-accent);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-        }
-
-        .uc-swap-btn {
-            width: 44px;
-            height: 44px;
-            background: var(--color-accent);
-            color: var(--color-white);
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 20px;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .uc-swap-btn:hover {
-            background: #1d4ed8;
-            transform: scale(1.05);
-        }
-
-        .uc-formula {
-            background: rgba(37, 99, 235, 0.05);
-            border: 1px solid rgba(37, 99, 235, 0.2);
-            border-radius: 8px;
-            padding: 12px;
-            font-size: 12px;
-            color: var(--color-text-light);
-            margin-bottom: 16px;
-            font-family: 'Courier New', monospace;
-        }
-
-        .uc-presets {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 10px;
-            margin-bottom: 16px;
-        }
-
-        .uc-preset-btn {
-            padding: 10px 14px;
-            background: transparent;
-            border: 1.5px solid var(--color-border);
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 12px;
-            color: var(--color-text);
-            font-family: 'DM Sans', sans-serif;
-            font-weight: 600;
-            transition: all 0.2s;
-        }
-
-        .uc-preset-btn:hover {
-            border-color: var(--color-accent);
-            background: var(--color-accent-lighter);
-            color: var(--color-accent);
-        }
-
-        .uc-history {
-            background: var(--color-accent-lighter);
-            border: 1px solid rgba(37, 99, 235, 0.2);
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 16px;
-        }
-
-        .uc-history-title {
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--color-text);
-            text-transform: uppercase;
-            margin-bottom: 12px;
-        }
-
-        .uc-history-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(37, 99, 235, 0.1);
-            font-size: 13px;
-            color: var(--color-text);
-            cursor: pointer;
-        }
-
-        .uc-history-item:last-child { border-bottom: none; }
-
-        .uc-history-item:hover { color: var(--color-accent); }
-
-        @media (max-width: 600px) {
-            .uc-hero { padding: 24px 16px; }
-            .uc-input-row { grid-template-columns: 1fr; }
-            .uc-swap-btn { width: 40px; height: 40px; }
-            .uc-presets { grid-template-columns: 1fr; }
-        }
-    </style>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Unit Converter",
-  "description": "Advanced unit converter for length, weight, temperature, area, volume, speed, data, and African currency conversion. Real-time conversion.",
-  "url": "https://afrotools.com/tools/unit-converter/",
-  "applicationCategory": "UtilitiesApplication",
-  "operatingSystem": "Any",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "provider": {
-    "@type": "Organization",
-    "name": "AfroTools",
-    "url": "https://afrotools.com"
-  }
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="Comprehensive unit converter for Africa: length, weight, temperature, area (acres/plots/morgen), volume, speed, fuel, cooking, data, energy, pressure, time. Free.">
+<link rel="canonical" href="https://afrotools.com/tools/unit-converter/">
+<title>Unit Converter — 15 Categories · African Units · Free | AfroTools</title>
+<meta property="og:title" content="Unit Converter — 15 Categories | AfroTools">
+<meta property="og:description" content="Convert length, weight, area (Nigerian plots, SA morgen), temperature, cooking, fuel, data and more. Built for Africa.">
+<meta property="og:url" content="https://afrotools.com/tools/unit-converter/">
+<script src="/assets/js/components/tool-registry.min.js"></script>
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<script src="/assets/js/components/related-tools.min.js" defer></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f5f5f7;--card:#fff;--border:#e5e7eb;
+  --text:#1d1d1f;--muted:#6e6e73;--blue:#0071E3;
+  --blue-dark:#0059B3;--blue-light:#dbeafe;
 }
-</script>
+body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+
+/* ── HERO ── */
+.hero{
+  background:linear-gradient(160deg,#0d1117 0%,#0a1628 60%,#111827 100%);
+  padding:56px 24px 0; text-align:center; position:relative; overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 120%,rgba(0,113,227,.18),transparent);
+  pointer-events:none;
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:7px;
+  background:rgba(0,113,227,.15);border:1px solid rgba(0,113,227,.3);
+  color:#93c5fd;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  padding:4px 14px;border-radius:100px;margin-bottom:20px;
+}
+.hero h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;color:#fff;letter-spacing:-.03em;line-height:1.1;margin-bottom:12px}
+.hero h1 em{color:#60b5ff;font-style:normal}
+.hero-sub{font-size:.95rem;color:rgba(255,255,255,.55);max-width:560px;margin:0 auto 32px}
+
+/* Category pill selector */
+.cat-strip{
+  display:flex;flex-wrap:wrap;justify-content:center;gap:8px;
+  max-width:900px;margin:0 auto;padding-bottom:0;
+}
+.cat-pill{
+  display:flex;align-items:center;gap:6px;
+  padding:8px 16px;border-radius:100px;font-size:.78rem;font-weight:600;
+  border:1.5px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);
+  color:rgba(255,255,255,.65);cursor:pointer;transition:all .18s;white-space:nowrap;
+}
+.cat-pill:hover{background:rgba(255,255,255,.12);color:#fff}
+.cat-pill.active{background:#0071E3;border-color:#0071E3;color:#fff}
+.cat-pill .cp-icon{font-size:1rem}
+
+/* Tab content scroller (the pill row becomes sticky) */
+.cat-bar{
+  position:sticky;top:62px;z-index:90;
+  background:rgba(13,17,23,.96);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(255,255,255,.08);
+  padding:12px 20px;
+  overflow-x:auto;
+  white-space:nowrap;
+  scrollbar-width:none;
+}
+.cat-bar::-webkit-scrollbar{display:none}
+.cat-bar .cat-strip{flex-wrap:nowrap;justify-content:flex-start;margin:0;padding:0}
+
+/* ── PAGE CONTENT ── */
+.page{max-width:900px;margin:0 auto;padding:32px 20px 48px}
+
+/* ── Converter card ── */
+.conv-card{
+  background:var(--card);border-radius:20px;
+  box-shadow:0 2px 8px rgba(0,0,0,.07),0 0 0 .5px rgba(0,0,0,.05);
+  overflow:hidden;margin-bottom:0;
+}
+.conv-header{
+  padding:20px 24px 0;display:flex;align-items:center;gap:12px;
+}
+.conv-title-icon{font-size:1.5rem}
+.conv-title{font-size:1.1rem;font-weight:750;color:var(--text);letter-spacing:-.02em}
+.conv-subtitle{font-size:.78rem;color:var(--muted);margin-top:1px}
+
+/* The main converter UI */
+.conv-body{padding:20px 24px 24px}
+.conv-row{
+  display:grid;grid-template-columns:1fr 48px 1fr;
+  gap:12px;align-items:end;margin-bottom:14px;
+}
+.field-wrap label{
+  display:block;font-size:.72rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:6px;
+}
+.field-wrap input{
+  width:100%;padding:14px 16px;
+  border:1.5px solid var(--border);border-radius:12px;
+  font-family:inherit;font-size:1.2rem;font-weight:700;color:var(--text);
+  background:#fff;outline:none;transition:border-color .18s;
+}
+.field-wrap input:focus{border-color:var(--blue)}
+.field-wrap input.result{background:#f0f6ff;color:var(--blue);border-color:#bfdbfe}
+.field-wrap select{
+  width:100%;padding:10px 12px;
+  border:1.5px solid var(--border);border-radius:10px;
+  font-family:inherit;font-size:.85rem;font-weight:600;color:var(--text);
+  background:#fff;outline:none;cursor:pointer;
+  -webkit-appearance:none;appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M3 5l3 3 3-3' stroke='%236b7280' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 10px center;padding-right:28px;
+  transition:border-color .18s;
+}
+.field-wrap select:focus{border-color:var(--blue)}
+.swap-btn{
+  width:48px;height:48px;border-radius:12px;
+  border:1.5px solid var(--border);background:var(--bg);
+  font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:all .18s;margin-bottom:2px;
+}
+.swap-btn:hover{background:var(--blue);border-color:var(--blue);color:#fff;transform:rotate(180deg)}
+.conv-formula{
+  font-size:.78rem;color:var(--muted);background:var(--bg);
+  border-radius:8px;padding:8px 14px;margin-top:4px;
+  display:flex;align-items:center;gap:6px;
+}
+
+/* Quick presets */
+.presets{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+.preset{
+  padding:5px 12px;border-radius:100px;font-size:.72rem;font-weight:600;
+  background:var(--bg);border:1.5px solid var(--border);color:var(--muted);
+  cursor:pointer;transition:all .15s;
+}
+.preset:hover{background:var(--blue-light);border-color:#93c5fd;color:var(--blue)}
+
+/* African units callout */
+.african-callout{
+  background:linear-gradient(135deg,rgba(0,113,227,.08),rgba(0,113,227,.04));
+  border:1px solid rgba(0,113,227,.2);border-radius:14px;
+  padding:14px 18px;margin-top:16px;
+  display:flex;align-items:flex-start;gap:12px;
+  font-size:.8rem;color:#374151;line-height:1.55;
+}
+.african-callout .ac-icon{font-size:1.3rem;flex-shrink:0;margin-top:1px}
+.african-callout strong{color:var(--blue)}
+
+/* All-conversions table */
+.all-table{width:100%;border-collapse:collapse;font-size:.82rem;margin-top:16px}
+.all-table th{background:var(--bg);padding:9px 12px;text-align:left;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);border-bottom:2px solid var(--border)}
+.all-table td{padding:9px 12px;border-bottom:1px solid var(--border)}
+.all-table tr:last-child td{border-bottom:none}
+
+/* Empty / hidden categories */
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+/* ── Responsive ── */
+@media(max-width:600px){
+  .conv-row{grid-template-columns:1fr auto 1fr;gap:8px}
+  .field-wrap input{font-size:1rem;padding:12px}
+  .page{padding:24px 16px 40px}
+}
+</style>
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
-    <div class="uc-container">
-        <div class="uc-hero">
-            <h1>Unit Converter</h1>
-            <p>Convert between 150+ units: length, weight, temperature, volume, speed, area, data, and African currencies.</p>
-        </div>
 
-        <div class="uc-tabs">
-            <button class="uc-tab active" data-tab="length">Length</button>
-            <button class="uc-tab" data-tab="weight">Weight</button>
-            <button class="uc-tab" data-tab="temperature">Temperature</button>
-            <button class="uc-tab" data-tab="area">Area</button>
-            <button class="uc-tab" data-tab="volume">Volume</button>
-            <button class="uc-tab" data-tab="speed">Speed</button>
-            <button class="uc-tab" data-tab="data">Data</button>
-            <button class="uc-tab" data-tab="currency">Currency</button>
-        </div>
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">15 Categories · African Units Included</div>
+  <h1>Unit Converter<br><em>for Africa</em></h1>
+  <p class="hero-sub">Convert anything — length, weight, area, cooking, fuel, data, energy and more. Includes Nigerian plots, SA morgen, and African land measurements.</p>
+  <div class="cat-strip" id="heroStrip">
+    <button class="cat-pill active" data-tab="length"><span class="cp-icon">📏</span> Length</button>
+    <button class="cat-pill" data-tab="weight"><span class="cp-icon">⚖️</span> Weight</button>
+    <button class="cat-pill" data-tab="temp"><span class="cp-icon">🌡️</span> Temperature</button>
+    <button class="cat-pill" data-tab="area"><span class="cp-icon">🗺️</span> Area & Land</button>
+    <button class="cat-pill" data-tab="volume"><span class="cp-icon">🧪</span> Volume</button>
+    <button class="cat-pill" data-tab="speed"><span class="cp-icon">🚀</span> Speed</button>
+    <button class="cat-pill" data-tab="fuel"><span class="cp-icon">⛽</span> Fuel</button>
+    <button class="cat-pill" data-tab="cooking"><span class="cp-icon">🍳</span> Cooking</button>
+    <button class="cat-pill" data-tab="data"><span class="cp-icon">💾</span> Data</button>
+    <button class="cat-pill" data-tab="energy"><span class="cp-icon">⚡</span> Energy</button>
+    <button class="cat-pill" data-tab="power"><span class="cp-icon">🔌</span> Power</button>
+    <button class="cat-pill" data-tab="pressure"><span class="cp-icon">🌬️</span> Pressure</button>
+    <button class="cat-pill" data-tab="time"><span class="cp-icon">⏱️</span> Time</button>
+    <button class="cat-pill" data-tab="angle"><span class="cp-icon">📐</span> Angle</button>
+    <button class="cat-pill" data-tab="frequency"><span class="cp-icon">📡</span> Frequency</button>
+  </div>
+</div>
 
-        <!-- Length -->
-        <div id="length" class="uc-tab-content active">
-            <div class="uc-card">
-                <div class="uc-input-row">
-                    <div class="uc-input-group">
-                        <label>From</label>
-                        <input type="number" id="lengthFrom" placeholder="0" oninput="convertLength()">
-                        <select id="lengthFromUnit" onchange="convertLength()">
-                            <option value="mm">Millimeter (mm)</option>
-                            <option value="cm">Centimeter (cm)</option>
-                            <option value="m" selected>Meter (m)</option>
-                            <option value="km">Kilometer (km)</option>
-                            <option value="in">Inch (in)</option>
-                            <option value="ft">Foot (ft)</option>
-                            <option value="yd">Yard (yd)</option>
-                            <option value="mi">Mile (mi)</option>
-                        </select>
-                    </div>
-                    <button class="uc-swap-btn" aria-label="Swap units" onclick="swapLength()">⇄</button>
-                    <div class="uc-input-group">
-                        <label>To</label>
-                        <input type="number" id="lengthTo" placeholder="0" readonly>
-                        <select id="lengthToUnit" onchange="convertLength()">
-                            <option value="mm">Millimeter (mm)</option>
-                            <option value="cm">Centimeter (cm)</option>
-                            <option value="m" selected>Meter (m)</option>
-                            <option value="km">Kilometer (km)</option>
-                            <option value="in">Inch (in)</option>
-                            <option value="ft">Foot (ft)</option>
-                            <option value="yd">Yard (yd)</option>
-                            <option value="mi">Mile (mi)</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="uc-formula" id="lengthFormula"></div>
-                <div class="uc-presets">
-                    <button class="uc-preset-btn" onclick="presetLength('5', 'km', 'mi')">5 km to miles</button>
-                    <button class="uc-preset-btn" onclick="presetLength('100', 'ft', 'm')">100 ft to meters</button>
-                    <button class="uc-preset-btn" onclick="presetLength('1', 'in', 'cm')">1 inch to cm</button>
-                </div>
-            </div>
-        </div>
+<!-- STICKY CAT BAR (shows after scroll) -->
+<div class="cat-bar" id="catBar" style="display:none">
+  <div class="cat-strip" id="barStrip"></div>
+</div>
 
-        <!-- Weight -->
-        <div id="weight" class="uc-tab-content">
-            <div class="uc-card">
-                <div class="uc-input-row">
-                    <div class="uc-input-group">
-                        <label>From</label>
-                        <input type="number" id="weightFrom" placeholder="0" oninput="convertWeight()">
-                        <select id="weightFromUnit" onchange="convertWeight()">
-                            <option value="mg">Milligram (mg)</option>
-                            <option value="g" selected>Gram (g)</option>
-                            <option value="kg">Kilogram (kg)</option>
-                            <option value="oz">Ounce (oz)</option>
-                            <option value="lb">Pound (lb)</option>
-                            <option value="stone">Stone (st)</option>
-                            <option value="tonne">Metric Tonne (t)</option>
-                        </select>
-                    </div>
-                    <button class="uc-swap-btn" aria-label="Swap units" onclick="swapWeight()">⇄</button>
-                    <div class="uc-input-group">
-                        <label>To</label>
-                        <input type="number" id="weightTo" placeholder="0" readonly>
-                        <select id="weightToUnit" onchange="convertWeight()">
-                            <option value="mg">Milligram (mg)</option>
-                            <option value="g" selected>Gram (g)</option>
-                            <option value="kg">Kilogram (kg)</option>
-                            <option value="oz">Ounce (oz)</option>
-                            <option value="lb">Pound (lb)</option>
-                            <option value="stone">Stone (st)</option>
-                            <option value="tonne">Metric Tonne (t)</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="uc-formula" id="weightFormula"></div>
-            </div>
-        </div>
+<div class="page">
 
-        <!-- Temperature -->
-        <div id="temperature" class="uc-tab-content">
-            <div class="uc-card">
-                <div class="uc-input-row">
-                    <div class="uc-input-group">
-                        <label>From</label>
-                        <input type="number" id="tempFrom" placeholder="0" oninput="convertTemp()">
-                        <select id="tempFromUnit" onchange="convertTemp()">
-                            <option value="c" selected>Celsius (°C)</option>
-                            <option value="f">Fahrenheit (°F)</option>
-                            <option value="k">Kelvin (K)</option>
-                        </select>
-                    </div>
-                    <button class="uc-swap-btn" aria-label="Swap units" onclick="swapTemp()">⇄</button>
-                    <div class="uc-input-group">
-                        <label>To</label>
-                        <input type="number" id="tempTo" placeholder="0" readonly>
-                        <select id="tempToUnit" onchange="convertTemp()">
-                            <option value="c" selected>Celsius (°C)</option>
-                            <option value="f">Fahrenheit (°F)</option>
-                            <option value="k">Kelvin (K)</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="uc-presets">
-                    <button class="uc-preset-btn" onclick="presetTemp('37', 'c', 'f')">37°C to °F</button>
-                    <button class="uc-preset-btn" onclick="presetTemp('98.6', 'f', 'c')">98.6°F to °C</button>
-                    <button class="uc-preset-btn" onclick="presetTemp('273.15', 'k', 'c')">0K to °C</button>
-                </div>
-            </div>
+  <!-- ══ LENGTH ══ -->
+  <div class="tab-panel active" id="tab-length">
+    <div class="conv-card">
+      <div class="conv-header"><span class="conv-title-icon">📏</span>
+        <div><div class="conv-title">Length & Distance</div><div class="conv-subtitle">Metric · Imperial · African land measures</div></div>
+      </div>
+      <div class="conv-body">
+        <div class="conv-row">
+          <div class="field-wrap">
+            <label>From</label>
+            <input type="number" id="lenFrom" value="1" oninput="cvt('len')">
+            <select id="lenFromU" onchange="cvt('len')">
+              <optgroup label="Metric"><option value="1000">Kilometre (km)</option><option value="1" selected>Metre (m)</option><option value="0.1">Decimetre (dm)</option><option value="0.01">Centimetre (cm)</option><option value="0.001">Millimetre (mm)</option><option value="0.000001">Micrometre (μm)</option><option value="0.000000001">Nanometre (nm)</option></optgroup>
+              <optgroup label="Imperial"><option value="1609.344">Mile (mi)</option><option value="914.4">Yard (yd)</option><option value="0.3048">Foot (ft)</option><option value="0.0254">Inch (in)</option><option value="1852">Nautical Mile</option></optgroup>
+              <optgroup label="African / Other"><option value="6.096">Fathom</option><option value="5029.2">League</option><option value="0.9144">Nigerian Yard</option></optgroup>
+            </select>
+          </div>
+          <button class="swap-btn" onclick="swp('len')">⇄</button>
+          <div class="field-wrap">
+            <label>To</label>
+            <input type="number" id="lenTo" class="result" readonly>
+            <select id="lenToU" onchange="cvt('len')">
+              <optgroup label="Metric"><option value="1000">Kilometre (km)</option><option value="1">Metre (m)</option><option value="0.01">Centimetre (cm)</option><option value="0.001">Millimetre (mm)</option></optgroup>
+              <optgroup label="Imperial"><option value="1609.344">Mile (mi)</option><option value="914.4">Yard (yd)</option><option value="0.3048" selected>Foot (ft)</option><option value="0.0254">Inch (in)</option><option value="1852">Nautical Mile</option></optgroup>
+            </select>
+          </div>
         </div>
-
-        <!-- Area -->
-        <div id="area" class="uc-tab-content">
-            <div class="uc-card">
-                <div class="uc-input-row">
-                    <div class="uc-input-group">
-                        <label>From</label>
-                        <input type="number" id="areaFrom" placeholder="0" oninput="convertArea()">
-                        <select id="areaFromUnit" onchange="convertArea()">
-                            <option value="mm2">mm²</option>
-                            <option value="cm2">cm²</option>
-                            <option value="m2" selected>m²</option>
-                            <option value="km2">km²</option>
-                            <option value="ha">Hectare (ha)</option>
-                            <option value="acre">Acre</option>
-                            <option value="sqft">sq ft</option>
-                            <option value="sqmi">sq mile</option>
-                        </select>
-                    </div>
-                    <button class="uc-swap-btn" aria-label="Swap units" onclick="swapArea()">⇄</button>
-                    <div class="uc-input-group">
-                        <label>To</label>
-                        <input type="number" id="areaTo" placeholder="0" readonly>
-                        <select id="areaToUnit" onchange="convertArea()">
-                            <option value="mm2">mm²</option>
-                            <option value="cm2">cm²</option>
-                            <option value="m2" selected>m²</option>
-                            <option value="km2">km²</option>
-                            <option value="ha">Hectare (ha)</option>
-                            <option value="acre">Acre</option>
-                            <option value="sqft">sq ft</option>
-                            <option value="sqmi">sq mile</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
+        <div class="conv-formula" id="lenFormula">1 m = 3.280840 ft</div>
+        <div class="presets">
+          <button class="preset" onclick="pre('len',100,'m','km','lenFrom')">100m → km</button>
+          <button class="preset" onclick="pre('len',1,'mi','km','lenFrom')">1 mile → km</button>
+          <button class="preset" onclick="pre('len',5,'ft','m','lenFrom')">5 ft → m</button>
+          <button class="preset" onclick="pre('len',42.195,'km','mi','lenFrom')">Marathon in miles</button>
+          <button class="preset" onclick="pre('len',100,'m','ft','lenFrom')">100m sprint → ft</button>
         </div>
-
-        <!-- Volume -->
-        <div id="volume" class="uc-tab-content">
-            <div class="uc-card">
-                <div class="uc-input-row">
-                    <div class="uc-input-group">
-                        <label>From</label>
-                        <input type="number" id="volFrom" placeholder="0" oninput="convertVolume()">
-                        <select id="volFromUnit" onchange="convertVolume()">
-                            <option value="ml">mL</option>
-                            <option value="l" selected>Liter (L)</option>
-                            <option value="galus">US Gallon</option>
-                            <option value="galuk">UK Gallon</option>
-                            <option value="cup">Cup</option>
-                            <option value="tbsp">Tablespoon</option>
-                            <option value="tsp">Teaspoon</option>
-                            <option value="bbl">Barrel</option>
-                        </select>
-                    </div>
-                    <button class="uc-swap-btn" aria-label="Swap units" onclick="swapVolume()">⇄</button>
-                    <div class="uc-input-group">
-                        <label>To</label>
-                        <input type="number" id="volTo" placeholder="0" readonly>
-                        <select id="volToUnit" onchange="convertVolume()">
-                            <option value="ml">mL</option>
-                            <option value="l" selected>Liter (L)</option>
-                            <option value="galus">US Gallon</option>
-                            <option value="galuk">UK Gallon</option>
-                            <option value="cup">Cup</option>
-                            <option value="tbsp">Tablespoon</option>
-                            <option value="tsp">Teaspoon</option>
-                            <option value="bbl">Barrel</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="uc-presets">
-                    <button class="uc-preset-btn" onclick="presetVol('1', 'l', 'cup')">1 liter to cups</button>
-                    <button class="uc-preset-btn" onclick="presetVol('8', 'cup', 'l')">8 cups to liters</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Speed -->
-        <div id="speed" class="uc-tab-content">
-            <div class="uc-card">
-                <div class="uc-input-row">
-                    <div class="uc-input-group">
-                        <label>From</label>
-                        <input type="number" id="speedFrom" placeholder="0" oninput="convertSpeed()">
-                        <select id="speedFromUnit" onchange="convertSpeed()">
-                            <option value="ms">m/s</option>
-                            <option value="kmh" selected>km/h</option>
-                            <option value="mph">mph</option>
-                            <option value="knot">Knots</option>
-                        </select>
-                    </div>
-                    <button class="uc-swap-btn" aria-label="Swap units" onclick="swapSpeed()">⇄</button>
-                    <div class="uc-input-group">
-                        <label>To</label>
-                        <input type="number" id="speedTo" placeholder="0" readonly>
-                        <select id="speedToUnit" onchange="convertSpeed()">
-                            <option value="ms">m/s</option>
-                            <option value="kmh" selected>km/h</option>
-                            <option value="mph">mph</option>
-                            <option value="knot">Knots</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Data -->
-        <div id="data" class="uc-tab-content">
-            <div class="uc-card">
-                <div class="uc-input-row">
-                    <div class="uc-input-group">
-                        <label>From</label>
-                        <input type="number" id="dataFrom" placeholder="0" oninput="convertData()">
-                        <select id="dataFromUnit" onchange="convertData()">
-                            <option value="b">Byte (B)</option>
-                            <option value="kb" selected>Kilobyte (KB)</option>
-                            <option value="mb">Megabyte (MB)</option>
-                            <option value="gb">Gigabyte (GB)</option>
-                            <option value="tb">Terabyte (TB)</option>
-                            <option value="pb">Petabyte (PB)</option>
-                        </select>
-                    </div>
-                    <button class="uc-swap-btn" aria-label="Swap units" onclick="swapData()">⇄</button>
-                    <div class="uc-input-group">
-                        <label>To</label>
-                        <input type="number" id="dataTo" placeholder="0" readonly>
-                        <select id="dataToUnit" onchange="convertData()">
-                            <option value="b">Byte (B)</option>
-                            <option value="kb" selected>Kilobyte (KB)</option>
-                            <option value="mb">Megabyte (MB)</option>
-                            <option value="gb">Gigabyte (GB)</option>
-                            <option value="tb">Terabyte (TB)</option>
-                            <option value="pb">Petabyte (PB)</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Currency -->
-        <div id="currency" class="uc-tab-content">
-            <div class="uc-card">
-                <div class="uc-input-row">
-                    <div class="uc-input-group">
-                        <label>From</label>
-                        <input type="number" id="currFrom" placeholder="0" oninput="convertCurrency()">
-                        <select id="currFromUnit" onchange="convertCurrency()">
-                            <option value="ngn" selected>NGN (Nigeria)</option>
-                            <option value="ken">KES (Kenya)</option>
-                            <option value="zar">ZAR (South Africa)</option>
-                            <option value="ghs">GHS (Ghana)</option>
-                            <option value="tzs">TZS (Tanzania)</option>
-                            <option value="ugx">UGX (Uganda)</option>
-                            <option value="etb">ETB (Ethiopia)</option>
-                            <option value="usd">USD</option>
-                            <option value="eur">EUR</option>
-                            <option value="gbp">GBP</option>
-                        </select>
-                    </div>
-                    <button class="uc-swap-btn" aria-label="Swap units" onclick="swapCurrency()">⇄</button>
-                    <div class="uc-input-group">
-                        <label>To</label>
-                        <input type="number" id="currTo" placeholder="0" readonly>
-                        <select id="currToUnit" onchange="convertCurrency()">
-                            <option value="ngn">NGN (Nigeria)</option>
-                            <option value="ken" selected>KES (Kenya)</option>
-                            <option value="zar">ZAR (South Africa)</option>
-                            <option value="ghs">GHS (Ghana)</option>
-                            <option value="tzs">TZS (Tanzania)</option>
-                            <option value="ugx">UGX (Uganda)</option>
-                            <option value="etb">ETB (Ethiopia)</option>
-                            <option value="usd">USD</option>
-                            <option value="eur">EUR</option>
-                            <option value="gbp">GBP</option>
-                        </select>
-                    </div>
-                </div>
-                <div style="font-size: 11px; color: #6b7280; margin-top: 12px;">⚠ These are static, approximate exchange rates and may not reflect current market values. Not suitable for financial decisions.</div>
-            </div>
-        </div>
-
-        <div class="uc-history">
-            <div class="uc-history-title">Recent Conversions</div>
-            <div id="historyList"></div>
-        </div>
+      </div>
     </div>
+  </div>
 
-    <script src="/assets/js/afro-auth.js" defer></script>
+  <!-- ══ WEIGHT ══ -->
+  <div class="tab-panel" id="tab-weight">
+    <div class="conv-card">
+      <div class="conv-header"><span class="conv-title-icon">⚖️</span>
+        <div><div class="conv-title">Weight & Mass</div><div class="conv-subtitle">Metric · Imperial · Gold weight units</div></div>
+      </div>
+      <div class="conv-body">
+        <div class="conv-row">
+          <div class="field-wrap">
+            <label>From</label>
+            <input type="number" id="wgtFrom" value="1" oninput="cvt('wgt')">
+            <select id="wgtFromU" onchange="cvt('wgt')">
+              <optgroup label="Metric"><option value="1000">Tonne (t)</option><option value="1" selected>Kilogram (kg)</option><option value="0.001">Gram (g)</option><option value="0.000001">Milligram (mg)</option><option value="0.000000001">Microgram (μg)</option></optgroup>
+              <optgroup label="Imperial"><option value="1016.047">Long Ton (UK)</option><option value="907.185">Short Ton (US)</option><option value="6.35029">Stone (st)</option><option value="0.453592">Pound (lb)</option><option value="0.0283495">Ounce (oz)</option></optgroup>
+              <optgroup label="Precious Metals"><option value="0.0311035">Troy Ounce (ozt)</option><option value="0.001555">Pennyweight (dwt)</option><option value="0.0000648">Grain (gr)</option></optgroup>
+            </select>
+          </div>
+          <button class="swap-btn" onclick="swp('wgt')">⇄</button>
+          <div class="field-wrap">
+            <label>To</label>
+            <input type="number" id="wgtTo" class="result" readonly>
+            <select id="wgtToU" onchange="cvt('wgt')">
+              <optgroup label="Metric"><option value="1000">Tonne</option><option value="1">Kilogram (kg)</option><option value="0.001">Gram (g)</option><option value="0.000001">Milligram (mg)</option></optgroup>
+              <optgroup label="Imperial"><option value="0.453592" selected>Pound (lb)</option><option value="0.0283495">Ounce (oz)</option><option value="6.35029">Stone (st)</option></optgroup>
+              <optgroup label="Precious Metals"><option value="0.0311035">Troy Ounce</option></optgroup>
+            </select>
+          </div>
+        </div>
+        <div class="conv-formula" id="wgtFormula"></div>
+        <div class="presets">
+          <button class="preset" onclick="pre('wgt',70,'kg','lb','wgtFrom')">70kg → lb</button>
+          <button class="preset" onclick="pre('wgt',100,'lb','kg','wgtFrom')">100lb → kg</button>
+          <button class="preset" onclick="pre('wgt',1,'ozt','g','wgtFrom')">1 troy oz → g</button>
+          <button class="preset" onclick="pre('wgt',1,'t','kg','wgtFrom')">1 tonne → kg</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <script>
-        const rates = { ngn: 1500, ken: 150, zar: 18.5, ghs: 13.5, tzs: 2500, ugx: 3800, etb: 55, usd: 1, eur: 0.92, gbp: 0.79 };
-        let history = JSON.parse(localStorage.getItem('converterHistory')) || [];
+  <!-- ══ TEMPERATURE ══ -->
+  <div class="tab-panel" id="tab-temp">
+    <div class="conv-card">
+      <div class="conv-header"><span class="conv-title-icon">🌡️</span>
+        <div><div class="conv-title">Temperature</div><div class="conv-subtitle">Celsius · Fahrenheit · Kelvin · Rankine</div></div>
+      </div>
+      <div class="conv-body">
+        <div class="conv-row">
+          <div class="field-wrap">
+            <label>From</label>
+            <input type="number" id="tmpFrom" value="37" oninput="cvtTemp()">
+            <select id="tmpFromU" onchange="cvtTemp()">
+              <option value="C" selected>Celsius (°C)</option>
+              <option value="F">Fahrenheit (°F)</option>
+              <option value="K">Kelvin (K)</option>
+              <option value="R">Rankine (°R)</option>
+            </select>
+          </div>
+          <button class="swap-btn" onclick="swpTemp()">⇄</button>
+          <div class="field-wrap">
+            <label>To</label>
+            <input type="number" id="tmpTo" class="result" readonly>
+            <select id="tmpToU" onchange="cvtTemp()">
+              <option value="C">Celsius (°C)</option>
+              <option value="F" selected>Fahrenheit (°F)</option>
+              <option value="K">Kelvin (K)</option>
+              <option value="R">Rankine (°R)</option>
+            </select>
+          </div>
+        </div>
+        <div class="conv-formula" id="tmpFormula"></div>
+        <div class="presets">
+          <button class="preset" onclick="preTmp(100,'C','F')">Boiling water °C → °F</button>
+          <button class="preset" onclick="preTmp(37,'C','F')">Body temp (37°C)</button>
+          <button class="preset" onclick="preTmp(0,'C','F')">Freezing 0°C → °F</button>
+          <button class="preset" onclick="preTmp(37,'C','K')">Body temp in Kelvin</button>
+          <button class="preset" onclick="preTmp(-40,'C','F')">-40°C = -40°F</button>
+        </div>
+        <div class="african-callout">
+          <span class="ac-icon">☀️</span>
+          <div>African average temperatures: <strong>Lagos 26–32°C</strong> (79–90°F), <strong>Nairobi 14–26°C</strong> (57–79°F), <strong>Cairo 20–40°C</strong> (68–104°F), <strong>Jo'burg 6–25°C</strong> (43–77°F)</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        function convertLength() { convert('length', { mm: 0.001, cm: 0.01, m: 1, km: 1000, in: 0.0254, ft: 0.3048, yd: 0.9144, mi: 1609.34 }); }
-        function convertWeight() { convert('weight', { mg: 0.001, g: 1, kg: 1000, oz: 28.3495, lb: 453.592, stone: 6350.29, tonne: 1000000 }); }
-        function convertArea() { convert('area', { mm2: 0.000001, cm2: 0.0001, m2: 1, km2: 1000000, ha: 10000, acre: 4046.86, sqft: 0.092903, sqmi: 2589988 }); }
-        function convertVolume() { convert('vol', { ml: 0.001, l: 1, galus: 3.785, galuk: 4.54609, cup: 0.236588, tbsp: 0.0147868, tsp: 0.00492892, bbl: 158.987 }); }
-        function convertSpeed() { convert('speed', { ms: 1, kmh: 0.277778, mph: 0.44704, knot: 0.51444 }); }
-        function convertData() { convert('data', { b: 1, kb: 1024, mb: 1048576, gb: 1073741824, tb: 1099511627776, pb: 1125899906842624 }); }
+  <!-- ══ AREA ══ -->
+  <div class="tab-panel" id="tab-area">
+    <div class="conv-card">
+      <div class="conv-header"><span class="conv-title-icon">🗺️</span>
+        <div><div class="conv-title">Area & Land Size</div><div class="conv-subtitle">Includes Nigerian plots, SA morgen, acres</div></div>
+      </div>
+      <div class="conv-body">
+        <div class="conv-row">
+          <div class="field-wrap">
+            <label>From</label>
+            <input type="number" id="areaFrom" value="1" oninput="cvt('area')">
+            <select id="areaFromU" onchange="cvt('area')">
+              <optgroup label="Metric"><option value="1000000">Square Kilometre (km²)</option><option value="10000">Hectare (ha)</option><option value="1" selected>Square Metre (m²)</option><option value="0.0001">Square Centimetre</option></optgroup>
+              <optgroup label="Imperial"><option value="4046.86">Acre</option><option value="0.836127">Square Yard</option><option value="0.092903">Square Foot</option><option value="0.00064516">Square Inch</option><option value="2589988.1">Square Mile</option></optgroup>
+              <optgroup label="🌍 African / Traditional"><option value="648">Nigerian Plot (648m²)</option><option value="1296">Double Plot (1296m²)</option><option value="8564.7">SA Morgen</option><option value="2023.43">Ghana Acra Plot</option><option value="4046.86">East African Acre</option><option value="2000">Half Acre (2000m²)</option></optgroup>
+            </select>
+          </div>
+          <button class="swap-btn" onclick="swp('area')">⇄</button>
+          <div class="field-wrap">
+            <label>To</label>
+            <input type="number" id="areaTo" class="result" readonly>
+            <select id="areaToU" onchange="cvt('area')">
+              <optgroup label="Metric"><option value="1000000">Square Kilometre</option><option value="10000">Hectare (ha)</option><option value="1">Square Metre (m²)</option></optgroup>
+              <optgroup label="Imperial"><option value="4046.86" selected>Acre</option><option value="0.092903">Square Foot</option></optgroup>
+              <optgroup label="🌍 African"><option value="648">Nigerian Plot</option><option value="8564.7">SA Morgen</option><option value="2023.43">Ghana Acra Plot</option></optgroup>
+            </select>
+          </div>
+        </div>
+        <div class="conv-formula" id="areaFormula"></div>
+        <div class="presets">
+          <button class="preset" onclick="pre('area',1,'Acre','Nigerian Plot (648m²)','areaFrom')">1 Acre → Plots</button>
+          <button class="preset" onclick="pre('area',1,'Hectare (ha)','Acre','areaFrom')">1 Ha → Acres</button>
+          <button class="preset" onclick="pre('area',1,'SA Morgen','Hectare (ha)','areaFrom')">1 Morgen → Ha</button>
+          <button class="preset" onclick="pre('area',5000,'Square Metre (m²)','Nigerian Plot (648m²)','areaFrom')">5000m² → Plots</button>
+        </div>
+        <div class="african-callout">
+          <span class="ac-icon">🏘️</span>
+          <div><strong>Nigerian plot standard:</strong> 648m² (18×36m = 60×120ft). A standard acre = 6.25 plots. In Ghana, a plot ≈ 100ft × 100ft = 2023m². SA morgen ≈ 0.856 ha. Always verify with local survey documents.</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        function convertTemp() {
-            const from = parseFloat(document.getElementById('tempFrom').value) || 0;
-            const fromUnit = document.getElementById('tempFromUnit').value;
-            const toUnit = document.getElementById('tempToUnit').value;
-            let result = from;
-            if (fromUnit === 'c' && toUnit === 'f') result = from * 9/5 + 32;
-            else if (fromUnit === 'c' && toUnit === 'k') result = from + 273.15;
-            else if (fromUnit === 'f' && toUnit === 'c') result = (from - 32) * 5/9;
-            else if (fromUnit === 'f' && toUnit === 'k') result = (from - 32) * 5/9 + 273.15;
-            else if (fromUnit === 'k' && toUnit === 'c') result = from - 273.15;
-            else if (fromUnit === 'k' && toUnit === 'f') result = (from - 273.15) * 9/5 + 32;
-            document.getElementById('tempTo').value = result.toFixed(4);
-        }
+  <!-- ══ VOLUME ══ -->
+  <div class="tab-panel" id="tab-volume">
+    <div class="conv-card">
+      <div class="conv-header"><span class="conv-title-icon">🧪</span>
+        <div><div class="conv-title">Volume & Capacity</div><div class="conv-subtitle">Metric · Imperial · Fluid measures</div></div>
+      </div>
+      <div class="conv-body">
+        <div class="conv-row">
+          <div class="field-wrap">
+            <label>From</label>
+            <input type="number" id="volFrom" value="1" oninput="cvt('vol')">
+            <select id="volFromU" onchange="cvt('vol')">
+              <optgroup label="Metric"><option value="1000">Cubic Metre (m³)</option><option value="1" selected>Litre (L)</option><option value="0.1">Decilitre (dL)</option><option value="0.01">Centilitre (cL)</option><option value="0.001">Millilitre (mL)</option><option value="0.000001">Microlitre (μL)</option></optgroup>
+              <optgroup label="US Imperial"><option value="3785.41">US Gallon</option><option value="946.353">US Quart</option><option value="473.176">US Pint</option><option value="236.588">US Cup</option><option value="29.5735">US Fluid Oz</option></optgroup>
+              <optgroup label="UK Imperial"><option value="4546.09">UK Gallon</option><option value="1136.52">UK Quart</option><option value="568.261">UK Pint</option><option value="28.4131">UK Fluid Oz</option></optgroup>
+              <optgroup label="Other"><option value="1000">Cubic Decimetre</option><option value="0.001">Cubic Centimetre (cc)</option></optgroup>
+            </select>
+          </div>
+          <button class="swap-btn" onclick="swp('vol')">⇄</button>
+          <div class="field-wrap">
+            <label>To</label>
+            <input type="number" id="volTo" class="result" readonly>
+            <select id="volToU" onchange="cvt('vol')">
+              <optgroup label="Metric"><option value="1000">Cubic Metre</option><option value="1">Litre (L)</option><option value="0.001">Millilitre (mL)</option></optgroup>
+              <optgroup label="US Imperial"><option value="3785.41">US Gallon</option><option value="946.353" selected>US Quart</option><option value="29.5735">US Fluid Oz</option></optgroup>
+              <optgroup label="UK Imperial"><option value="4546.09">UK Gallon</option><option value="568.261">UK Pint</option></optgroup>
+            </select>
+          </div>
+        </div>
+        <div class="conv-formula" id="volFormula"></div>
+        <div class="presets">
+          <button class="preset" onclick="pre('vol',1,'US Gallon','Litre (L)','volFrom')">1 US Gallon → L</button>
+          <button class="preset" onclick="pre('vol',1,'UK Gallon','Litre (L)','volFrom')">1 UK Gallon → L</button>
+          <button class="preset" onclick="pre('vol',500,'Millilitre (mL)','US Fluid Oz','volFrom')">500mL → fl oz</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        function convertCurrency() {
-            const from = parseFloat(document.getElementById('currFrom').value) || 0;
-            const fromUnit = document.getElementById('currFromUnit').value;
-            const toUnit = document.getElementById('currToUnit').value;
-            const fromRate = rates[fromUnit];
-            const toRate = rates[toUnit];
-            if (!fromRate || fromRate === 0 || !toRate) { document.getElementById('currTo').value = '0'; return; }
-            const result = (from / fromRate) * toRate;
-            document.getElementById('currTo').value = result.toFixed(2);
-        }
+  <!-- ══ SPEED ══ -->
+  <div class="tab-panel" id="tab-speed">
+    <div class="conv-card">
+      <div class="conv-header"><span class="conv-title-icon">🚀</span>
+        <div><div class="conv-title">Speed & Velocity</div></div>
+      </div>
+      <div class="conv-body">
+        <div class="conv-row">
+          <div class="field-wrap">
+            <label>From</label>
+            <input type="number" id="spdFrom" value="100" oninput="cvt('spd')">
+            <select id="spdFromU" onchange="cvt('spd')">
+              <option value="1" selected>km/h</option>
+              <option value="0.277778">m/s</option>
+              <option value="1.60934">mph (miles/hr)</option>
+              <option value="1.852">Knot (nmi/h)</option>
+              <option value="299792.458">Speed of Light (c)</option>
+            </select>
+          </div>
+          <button class="swap-btn" onclick="swp('spd')">⇄</button>
+          <div class="field-wrap">
+            <label>To</label>
+            <input type="number" id="spdTo" class="result" readonly>
+            <select id="spdToU" onchange="cvt('spd')">
+              <option value="1">km/h</option>
+              <option value="0.277778">m/s</option>
+              <option value="1.60934" selected>mph</option>
+              <option value="1.852">Knot</option>
+            </select>
+          </div>
+        </div>
+        <div class="conv-formula" id="spdFormula"></div>
+        <div class="presets">
+          <button class="preset" onclick="pre('spd',100,'km/h','mph (miles/hr)','spdFrom')">100 km/h → mph</button>
+          <button class="preset" onclick="pre('spd',60,'mph (miles/hr)','km/h','spdFrom')">60 mph → km/h</button>
+          <button class="preset" onclick="pre('spd',1,'Knot (nmi/h)','km/h','spdFrom')">1 knot → km/h</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        function convert(type, factors) {
-            const fromInput = document.getElementById(type + 'From');
-            const toInput = document.getElementById(type + 'To');
-            const fromUnit = document.getElementById(type + 'FromUnit').value;
-            const toUnit = document.getElementById(type + 'ToUnit').value;
-            const from = parseFloat(fromInput.value) || 0;
-            const result = (from * factors[fromUnit]) / factors[toUnit];
-            toInput.value = result.toFixed(6);
-            if (document.getElementById(type + 'Formula')) {
-                document.getElementById(type + 'Formula').textContent = `1 ${fromUnit} = ${(factors[fromUnit] / factors[toUnit]).toFixed(6)} ${toUnit}`;
-            }
-        }
+  <!-- ══ FUEL ══ -->
+  <div class="tab-panel" id="tab-fuel">
+    <div class="conv-card">
+      <div class="conv-header"><span class="conv-title-icon">⛽</span>
+        <div><div class="conv-title">Fuel Efficiency</div><div class="conv-subtitle">km/L · L/100km · MPG</div></div>
+      </div>
+      <div class="conv-body">
+        <div class="conv-row">
+          <div class="field-wrap">
+            <label>From</label>
+            <input type="number" id="fuelFrom" value="12" oninput="cvtFuel()">
+            <select id="fuelFromU" onchange="cvtFuel()">
+              <option value="kml" selected>km/L (Africa standard)</option>
+              <option value="l100">L/100km (EU)</option>
+              <option value="mpg_us">MPG — US</option>
+              <option value="mpg_uk">MPG — UK</option>
+            </select>
+          </div>
+          <button class="swap-btn" onclick="swpFuel()">⇄</button>
+          <div class="field-wrap">
+            <label>To</label>
+            <input type="number" id="fuelTo" class="result" readonly>
+            <select id="fuelToU" onchange="cvtFuel()">
+              <option value="kml">km/L</option>
+              <option value="l100" selected>L/100km</option>
+              <option value="mpg_us">MPG — US</option>
+              <option value="mpg_uk">MPG — UK</option>
+            </select>
+          </div>
+        </div>
+        <div class="conv-formula" id="fuelFormula"></div>
+        <div class="presets">
+          <button class="preset" onclick="preFuel(12,'kml','l100')">12 km/L → L/100km</button>
+          <button class="preset" onclick="preFuel(30,'mpg_us','kml')">30 MPG → km/L</button>
+          <button class="preset" onclick="preFuel(8,'l100','kml')">8 L/100km → km/L</button>
+        </div>
+        <div class="african-callout">
+          <span class="ac-icon">🚗</span>
+          <div>Typical African fuel efficiency: <strong>Kia Picanto: 14–16 km/L</strong>, Toyota Corolla: <strong>12–14 km/L</strong>, Toyota HiLux: <strong>8–10 km/L</strong>. With petrol at ₦850–₦900/L in Nigeria, tracking km/L saves money.</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        function swap(type) {
-            const fromUnit = document.getElementById(type + 'FromUnit');
-            const toUnit = document.getElementById(type + 'ToUnit');
-            const fromInput = document.getElementById(type + 'From');
-            const toInput = document.getElementById(type + 'To');
-            const tmpUnit = fromUnit.value;
-            fromUnit.value = toUnit.value;
-            toUnit.value = tmpUnit;
-            const tmpVal = fromInput.value;
-            fromInput.value = toInput.value || '';
-            toInput.value = '';
-        }
+  <!-- ══ COOKING ══ -->
+  <div class="tab-panel" id="tab-cooking">
+    <div class="conv-card">
+      <div class="conv-header"><span class="conv-title-icon">🍳</span>
+        <div><div class="conv-title">Cooking Measurements</div><div class="conv-subtitle">Cups · Tablespoons · Teaspoons · mL</div></div>
+      </div>
+      <div class="conv-body">
+        <div class="conv-row">
+          <div class="field-wrap">
+            <label>From</label>
+            <input type="number" id="cookFrom" value="1" oninput="cvt('cook')">
+            <select id="cookFromU" onchange="cvt('cook')">
+              <optgroup label="US Measures (standard)">
+                <option value="236.588" selected>Cup (US)</option>
+                <option value="14.7868">Tablespoon (tbsp)</option>
+                <option value="4.92892">Teaspoon (tsp)</option>
+                <option value="473.176">Pint (US)</option>
+                <option value="946.353">Quart (US)</option>
+                <option value="3785.41">Gallon (US)</option>
+              </optgroup>
+              <optgroup label="Metric">
+                <option value="1">Millilitre (mL)</option>
+                <option value="1000">Litre (L)</option>
+                <option value="15">Metric Tbsp (15mL)</option>
+                <option value="5">Metric Tsp (5mL)</option>
+              </optgroup>
+              <optgroup label="Weight Cooking">
+                <option value="28.3495">Ounce (oz)</option>
+                <option value="453.592">Pound (lb)</option>
+              </optgroup>
+            </select>
+          </div>
+          <button class="swap-btn" onclick="swp('cook')">⇄</button>
+          <div class="field-wrap">
+            <label>To</label>
+            <input type="number" id="cookTo" class="result" readonly>
+            <select id="cookToU" onchange="cvt('cook')">
+              <option value="1" selected>Millilitre (mL)</option>
+              <option value="236.588">Cup (US)</option>
+              <option value="14.7868">Tablespoon (tbsp)</option>
+              <option value="4.92892">Teaspoon (tsp)</option>
+              <option value="1000">Litre (L)</option>
+              <option value="15">Metric Tbsp</option>
+            </select>
+          </div>
+        </div>
+        <div class="conv-formula" id="cookFormula"></div>
+        <div class="presets">
+          <button class="preset" onclick="pre('cook',1,'Cup (US)','Millilitre (mL)','cookFrom')">1 cup → mL</button>
+          <button class="preset" onclick="pre('cook',3,'Tablespoon (tbsp)','Millilitre (mL)','cookFrom')">3 tbsp → mL</button>
+          <button class="preset" onclick="pre('cook',250,'Millilitre (mL)','Cup (US)','cookFrom')">250mL → cups</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        function presetLength(val, fromUnit, toUnit) {
-            document.getElementById('lengthFrom').value = val;
-            document.getElementById('lengthFromUnit').value = fromUnit;
-            document.getElementById('lengthToUnit').value = toUnit;
-            convertLength();
-        }
+  <!-- ══ DATA ══ -->
+  <div class="tab-panel" id="tab-data">
+    <div class="conv-card">
+      <div class="conv-header"><span class="conv-title-icon">💾</span>
+        <div><div class="conv-title">Digital Storage & Data</div></div>
+      </div>
+      <div class="conv-body">
+        <div class="conv-row">
+          <div class="field-wrap">
+            <label>From</label>
+            <input type="number" id="dataFrom" value="1" oninput="cvt('data')">
+            <select id="dataFromU" onchange="cvt('data')">
+              <optgroup label="SI (decimal)"><option value="1e12">Terabyte (TB)</option><option value="1e9" selected>Gigabyte (GB)</option><option value="1e6">Megabyte (MB)</option><option value="1000">Kilobyte (KB)</option><option value="1">Byte (B)</option><option value="0.125">Bit (b)</option></optgroup>
+              <optgroup label="IEC (binary)"><option value="1.0995e12">Tebibyte (TiB)</option><option value="1.0737e9">Gibibyte (GiB)</option><option value="1.0486e6">Mebibyte (MiB)</option><option value="1024">Kibibyte (KiB)</option></optgroup>
+              <optgroup label="Speed"><option value="125000">Megabit/s (Mbps)</option><option value="125">Kilobit/s (Kbps)</option></optgroup>
+            </select>
+          </div>
+          <button class="swap-btn" onclick="swp('data')">⇄</button>
+          <div class="field-wrap">
+            <label>To</label>
+            <input type="number" id="dataTo" class="result" readonly>
+            <select id="dataToU" onchange="cvt('data')">
+              <option value="1e12">Terabyte (TB)</option>
+              <option value="1e9">Gigabyte (GB)</option>
+              <option value="1e6" selected>Megabyte (MB)</option>
+              <option value="1000">Kilobyte (KB)</option>
+              <option value="1">Byte (B)</option>
+              <option value="0.125">Bit (b)</option>
+            </select>
+          </div>
+        </div>
+        <div class="conv-formula" id="dataFormula"></div>
+        <div class="presets">
+          <button class="preset" onclick="pre('data',1,'Gigabyte (GB)','Megabyte (MB)','dataFrom')">1 GB → MB</button>
+          <button class="preset" onclick="pre('data',500,'Megabyte (MB)','Gigabyte (GB)','dataFrom')">500 MB → GB</button>
+          <button class="preset" onclick="pre('data',1,'Terabyte (TB)','Gigabyte (GB)','dataFrom')">1 TB → GB</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        function presetTemp(val, fromUnit, toUnit) {
-            document.getElementById('tempFrom').value = val;
-            document.getElementById('tempFromUnit').value = fromUnit;
-            document.getElementById('tempToUnit').value = toUnit;
-            convertTemp();
-        }
+  <!-- ══ ENERGY ══ -->
+  <div class="tab-panel" id="tab-energy">
+    <div class="conv-card">
+      <div class="conv-header"><span class="conv-title-icon">⚡</span>
+        <div><div class="conv-title">Energy</div><div class="conv-subtitle">Joules · kWh · Calories · BTU</div></div>
+      </div>
+      <div class="conv-body">
+        <div class="conv-row">
+          <div class="field-wrap">
+            <label>From</label>
+            <input type="number" id="engyFrom" value="1" oninput="cvt('engy')">
+            <select id="engyFromU" onchange="cvt('engy')">
+              <option value="3600000" selected>Kilowatt-hour (kWh)</option>
+              <option value="1000000">Megajoule (MJ)</option>
+              <option value="1000">Kilojoule (kJ)</option>
+              <option value="1">Joule (J)</option>
+              <option value="4184">Kilocalorie (kcal)</option>
+              <option value="4.184">Calorie (cal)</option>
+              <option value="1055.06">BTU</option>
+              <option value="1055060">Therm (100,000 BTU)</option>
+            </select>
+          </div>
+          <button class="swap-btn" onclick="swp('engy')">⇄</button>
+          <div class="field-wrap">
+            <label>To</label>
+            <input type="number" id="engyTo" class="result" readonly>
+            <select id="engyToU" onchange="cvt('engy')">
+              <option value="3600000">kWh</option>
+              <option value="1000">Kilojoule (kJ)</option>
+              <option value="1">Joule (J)</option>
+              <option value="4184" selected>Kilocalorie (kcal)</option>
+              <option value="1055.06">BTU</option>
+            </select>
+          </div>
+        </div>
+        <div class="conv-formula" id="engyFormula"></div>
+        <div class="presets">
+          <button class="preset" onclick="pre('engy',1,'Kilowatt-hour (kWh)','Kilocalorie (kcal)','engyFrom')">1 kWh → kcal</button>
+          <button class="preset" onclick="pre('engy',2000,'Kilocalorie (kcal)','Kilowatt-hour (kWh)','engyFrom')">2000 kcal diet → kWh</button>
+        </div>
+        <div class="african-callout">
+          <span class="ac-icon">🔋</span>
+          <div>Useful for solar: <strong>1 kWh = 3,600,000 J</strong>. A 200Wh solar battery stores 720,000 J = 172 kcal. Average Nigerian home uses <strong>3–8 kWh/day</strong>.</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        function presetVol(val, fromUnit, toUnit) {
-            document.getElementById('volFrom').value = val;
-            document.getElementById('volFromUnit').value = fromUnit;
-            document.getElementById('volToUnit').value = toUnit;
-            convertVolume();
-        }
+  <!-- ══ POWER ══ -->
+  <div class="tab-panel" id="tab-power">
+    <div class="conv-card">
+      <div class="conv-header"><span class="conv-title-icon">🔌</span>
+        <div><div class="conv-title">Power</div><div class="conv-subtitle">Watts · Kilowatts · Horsepower</div></div>
+      </div>
+      <div class="conv-body">
+        <div class="conv-row">
+          <div class="field-wrap">
+            <label>From</label>
+            <input type="number" id="pwrFrom" value="2" oninput="cvt('pwr')">
+            <select id="pwrFromU" onchange="cvt('pwr')">
+              <option value="1000000">Megawatt (MW)</option>
+              <option value="1000" selected>Kilowatt (kW)</option>
+              <option value="1">Watt (W)</option>
+              <option value="745.7">Horsepower (HP)</option>
+              <option value="735.5">Metric Horsepower (PS)</option>
+              <option value="1055.06">BTU/hour</option>
+            </select>
+          </div>
+          <button class="swap-btn" onclick="swp('pwr')">⇄</button>
+          <div class="field-wrap">
+            <label>To</label>
+            <input type="number" id="pwrTo" class="result" readonly>
+            <select id="pwrToU" onchange="cvt('pwr')">
+              <option value="1000">Kilowatt (kW)</option>
+              <option value="1">Watt (W)</option>
+              <option value="745.7" selected>Horsepower (HP)</option>
+              <option value="735.5">Metric HP (PS)</option>
+              <option value="1055.06">BTU/hour</option>
+            </select>
+          </div>
+        </div>
+        <div class="conv-formula" id="pwrFormula"></div>
+        <div class="presets">
+          <button class="preset" onclick="pre('pwr',1,'Kilowatt (kW)','Horsepower (HP)','pwrFrom')">1 kW → HP</button>
+          <button class="preset" onclick="pre('pwr',100,'Horsepower (HP)','Kilowatt (kW)','pwrFrom')">100 HP → kW</button>
+          <button class="preset" onclick="pre('pwr',3.5,'Kilowatt (kW)','Watt (W)','pwrFrom')">3.5 kW generator → W</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        function swapLength() { swap('length'); convertLength(); }
-        function swapWeight() { swap('weight'); convertWeight(); }
-        function swapTemp() { swap('temp'); convertTemp(); }
-        function swapArea() { swap('area'); convertArea(); }
-        function swapVolume() { swap('vol'); convertVolume(); }
-        function swapSpeed() { swap('speed'); convertSpeed(); }
-        function swapData() { swap('data'); convertData(); }
-        function swapCurrency() { swap('curr'); convertCurrency(); }
+  <!-- ══ PRESSURE ══ -->
+  <div class="tab-panel" id="tab-pressure">
+    <div class="conv-card">
+      <div class="conv-header"><span class="conv-title-icon">🌬️</span>
+        <div><div class="conv-title">Pressure</div><div class="conv-subtitle">Pa · bar · PSI · atm · mmHg</div></div>
+      </div>
+      <div class="conv-body">
+        <div class="conv-row">
+          <div class="field-wrap">
+            <label>From</label>
+            <input type="number" id="presFrom" value="1" oninput="cvt('pres')">
+            <select id="presFromU" onchange="cvt('pres')">
+              <option value="1">Pascal (Pa)</option>
+              <option value="1000">Kilopascal (kPa)</option>
+              <option value="100000" selected>Bar</option>
+              <option value="101325">Atmosphere (atm)</option>
+              <option value="6894.76">PSI (lb/in²)</option>
+              <option value="133.322">mmHg (Torr)</option>
+              <option value="98066.5">kgf/cm²</option>
+            </select>
+          </div>
+          <button class="swap-btn" onclick="swp('pres')">⇄</button>
+          <div class="field-wrap">
+            <label>To</label>
+            <input type="number" id="presTo" class="result" readonly>
+            <select id="presFromU2" id="presFromU2" onchange="cvt('pres')">
+              <option value="1">Pascal (Pa)</option>
+              <option value="1000">Kilopascal (kPa)</option>
+              <option value="100000">Bar</option>
+              <option value="101325">Atmosphere (atm)</option>
+              <option value="6894.76" selected>PSI</option>
+              <option value="133.322">mmHg</option>
+            </select>
+          </div>
+        </div>
+        <div class="conv-formula" id="presFormula"></div>
+        <div class="presets">
+          <button class="preset" onclick="pre('pres',2.5,'Bar','PSI (lb/in²)','presFrom')">2.5 bar tyre → PSI</button>
+          <button class="preset" onclick="pre('pres',35,'PSI (lb/in²)','Bar','presFrom')">35 PSI → bar</button>
+          <button class="preset" onclick="pre('pres',120,'mmHg (Torr)','Kilopascal (kPa)','presFrom')">120 mmHg BP → kPa</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        document.querySelectorAll('.uc-tab').forEach(tab => {
-            tab.addEventListener('click', function() {
-                document.querySelectorAll('.uc-tab-content').forEach(el => el.classList.remove('active'));
-                document.querySelectorAll('.uc-tab').forEach(el => el.classList.remove('active'));
-                document.getElementById(this.dataset.tab).classList.add('active');
-                this.classList.add('active');
-            });
-        });
-    </script>
+  <!-- ══ TIME ══ -->
+  <div class="tab-panel" id="tab-time">
+    <div class="conv-card">
+      <div class="conv-header"><span class="conv-title-icon">⏱️</span>
+        <div><div class="conv-title">Time</div></div>
+      </div>
+      <div class="conv-body">
+        <div class="conv-row">
+          <div class="field-wrap">
+            <label>From</label>
+            <input type="number" id="timeFrom" value="1" oninput="cvt('time')">
+            <select id="timeFromU" onchange="cvt('time')">
+              <option value="31557600">Year (Julian)</option>
+              <option value="2629800">Month (avg)</option>
+              <option value="604800">Week</option>
+              <option value="86400" selected>Day</option>
+              <option value="3600">Hour</option>
+              <option value="60">Minute</option>
+              <option value="1">Second</option>
+              <option value="0.001">Millisecond</option>
+              <option value="0.000001">Microsecond</option>
+            </select>
+          </div>
+          <button class="swap-btn" onclick="swp('time')">⇄</button>
+          <div class="field-wrap">
+            <label>To</label>
+            <input type="number" id="timeTo" class="result" readonly>
+            <select id="timeToU" onchange="cvt('time')">
+              <option value="31557600">Year</option>
+              <option value="2629800">Month</option>
+              <option value="604800">Week</option>
+              <option value="86400">Day</option>
+              <option value="3600" selected>Hour</option>
+              <option value="60">Minute</option>
+              <option value="1">Second</option>
+              <option value="0.001">Millisecond</option>
+            </select>
+          </div>
+        </div>
+        <div class="conv-formula" id="timeFormula"></div>
+        <div class="presets">
+          <button class="preset" onclick="pre('time',1,'Year (Julian)','Day','timeFrom')">1 year → days</button>
+          <button class="preset" onclick="pre('time',8,'Hour','Minute','timeFrom')">8 hours → minutes</button>
+          <button class="preset" onclick="pre('time',10000,'Hour','Year (Julian)','timeFrom')">10,000 hours → years</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ANGLE ══ -->
+  <div class="tab-panel" id="tab-angle">
+    <div class="conv-card">
+      <div class="conv-header"><span class="conv-title-icon">📐</span>
+        <div><div class="conv-title">Angle</div><div class="conv-subtitle">Degrees · Radians · Gradians · Turns</div></div>
+      </div>
+      <div class="conv-body">
+        <div class="conv-row">
+          <div class="field-wrap">
+            <label>From</label>
+            <input type="number" id="angFrom" value="180" oninput="cvt('ang')">
+            <select id="angFromU" onchange="cvt('ang')">
+              <option value="1" selected>Degree (°)</option>
+              <option value="57.2958">Radian (rad)</option>
+              <option value="0.9">Gradian (gon)</option>
+              <option value="360">Turn (revolution)</option>
+              <option value="0.0166667">Arcminute (')</option>
+              <option value="0.000277778">Arcsecond (")</option>
+            </select>
+          </div>
+          <button class="swap-btn" onclick="swp('ang')">⇄</button>
+          <div class="field-wrap">
+            <label>To</label>
+            <input type="number" id="angTo" class="result" readonly>
+            <select id="angToU" onchange="cvt('ang')">
+              <option value="1">Degree (°)</option>
+              <option value="57.2958" selected>Radian (rad)</option>
+              <option value="0.9">Gradian (gon)</option>
+              <option value="360">Turn</option>
+              <option value="0.0166667">Arcminute</option>
+              <option value="0.000277778">Arcsecond</option>
+            </select>
+          </div>
+        </div>
+        <div class="conv-formula" id="angFormula"></div>
+        <div class="presets">
+          <button class="preset" onclick="pre('ang',180,'Degree (°)','Radian (rad)','angFrom')">180° → π rad</button>
+          <button class="preset" onclick="pre('ang',1,'Turn (revolution)','Degree (°)','angFrom')">1 turn → degrees</button>
+          <button class="preset" onclick="pre('ang',90,'Degree (°)','Gradian (gon)','angFrom')">90° → gradians</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ FREQUENCY ══ -->
+  <div class="tab-panel" id="tab-frequency">
+    <div class="conv-card">
+      <div class="conv-header"><span class="conv-title-icon">📡</span>
+        <div><div class="conv-title">Frequency</div><div class="conv-subtitle">Hz · kHz · MHz · GHz · RPM</div></div>
+      </div>
+      <div class="conv-body">
+        <div class="conv-row">
+          <div class="field-wrap">
+            <label>From</label>
+            <input type="number" id="freqFrom" value="100" oninput="cvt('freq')">
+            <select id="freqFromU" onchange="cvt('freq')">
+              <option value="1000000000">GHz</option>
+              <option value="1000000" selected>MHz</option>
+              <option value="1000">kHz</option>
+              <option value="1">Hz</option>
+              <option value="0.016667">RPM (rev/min)</option>
+            </select>
+          </div>
+          <button class="swap-btn" onclick="swp('freq')">⇄</button>
+          <div class="field-wrap">
+            <label>To</label>
+            <input type="number" id="freqTo" class="result" readonly>
+            <select id="freqToU" onchange="cvt('freq')">
+              <option value="1000000000">GHz</option>
+              <option value="1000000">MHz</option>
+              <option value="1000" selected>kHz</option>
+              <option value="1">Hz</option>
+              <option value="0.016667">RPM</option>
+            </select>
+          </div>
+        </div>
+        <div class="conv-formula" id="freqFormula"></div>
+        <div class="presets">
+          <button class="preset" onclick="pre('freq',2.4,'GHz','MHz','freqFrom')">2.4 GHz WiFi → MHz</button>
+          <button class="preset" onclick="pre('freq',100,'MHz','kHz','freqFrom')">100 MHz FM → kHz</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /page -->
+
 <afro-related-tools category="data-productivity" current="unit-converter"></afro-related-tools>
 <afro-footer></afro-footer>
-<script src="/assets/js/components/tool-registry.js" defer></script>
-<script src="/assets/js/components/related-tools.min.js" defer></script>
+
+<script>
+// ═══════════════════════════════════════════
+// CATEGORY TABS
+// ═══════════════════════════════════════════
+let activeTab = 'length';
+
+function activateTab(tab) {
+  activeTab = tab;
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + tab)?.classList.add('active');
+  // Sync all pill rows
+  document.querySelectorAll('.cat-pill').forEach(p => {
+    p.classList.toggle('active', p.dataset.tab === tab);
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  // Trigger initial conversion
+  cvtAll();
+}
+
+// Wire up hero pills
+document.querySelectorAll('#heroStrip .cat-pill').forEach(btn => {
+  btn.addEventListener('click', () => activateTab(btn.dataset.tab));
+});
+
+// Clone pills to sticky bar
+const barStrip = document.getElementById('barStrip');
+document.querySelectorAll('#heroStrip .cat-pill').forEach(btn => {
+  const clone = btn.cloneNode(true);
+  clone.addEventListener('click', () => activateTab(clone.dataset.tab));
+  barStrip.appendChild(clone);
+});
+
+// Sticky bar show/hide
+const catBar = document.getElementById('catBar');
+const hero   = document.querySelector('.hero');
+const obs = new IntersectionObserver(([e]) => {
+  catBar.style.display = e.isIntersecting ? 'none' : 'block';
+}, { threshold: 0.2 });
+obs.observe(hero);
+
+// ═══════════════════════════════════════════
+// CONVERSION LOGIC
+// ═══════════════════════════════════════════
+function getVals(prefix) {
+  const from  = parseFloat(document.getElementById(prefix + 'From').value);
+  const fromU = parseFloat(document.getElementById(prefix + 'FromU').value);
+  const toU   = parseFloat(document.getElementById(prefix + 'ToU').value);
+  return { from, fromU, toU };
+}
+
+function setResult(prefix, result, label) {
+  const el = document.getElementById(prefix + 'To');
+  if (el) el.value = isNaN(result) ? '' : +result.toPrecision(8);
+  const fEl = document.getElementById(prefix + 'Formula');
+  if (fEl && label) fEl.textContent = label;
+}
+
+// Generic linear conversion
+function cvt(prefix) {
+  const { from, fromU, toU } = getVals(prefix);
+  const result = (from * fromU) / toU;
+  const ratio  = (fromU / toU);
+  const fromName = document.getElementById(prefix + 'FromU').options[document.getElementById(prefix + 'FromU').selectedIndex].text;
+  const toName   = document.getElementById(prefix + 'ToU').options[document.getElementById(prefix + 'ToU').selectedIndex].text;
+  setResult(prefix + '', result, `1 ${fromName} = ${+ratio.toPrecision(7)} ${toName}`);
+}
+// Alias with proper IDs
+function cvtAll() {
+  // Trigger current tab conversion
+  const triggers = {
+    length:'len', weight:'wgt', area:'area', volume:'vol',
+    speed:'spd', data:'data', energy:'engy', power:'pwr',
+    pressure:'pres', time:'time', angle:'ang', frequency:'freq',
+    cooking:'cook',
+  };
+  const t = triggers[activeTab];
+  if (t) cvt(t);
+  else if (activeTab === 'temp') cvtTemp();
+  else if (activeTab === 'fuel') cvtFuel();
+}
+
+// Swap
+function swp(prefix) {
+  const fU  = document.getElementById(prefix + 'FromU');
+  const tU  = document.getElementById(prefix + 'ToU');
+  const fV  = document.getElementById(prefix + 'From');
+  const tV  = document.getElementById(prefix + 'To');
+  const tmpU = fU.value; fU.value = tU.value; tU.value = tmpU;
+  fV.value = tV.value || '';
+  cvt(prefix);
+}
+
+// Preset helper
+function pre(prefix, val, fromLabel, toLabel, inputId) {
+  const fromSel = document.getElementById(prefix + 'FromU');
+  const toSel   = document.getElementById(prefix + 'ToU');
+  [...fromSel.options].forEach(o => { if (o.text.includes(fromLabel) || fromLabel.includes(o.text.slice(0,8))) fromSel.value = o.value; });
+  [...toSel.options].forEach(o => { if (o.text.includes(toLabel) || toLabel.includes(o.text.slice(0,8))) toSel.value = o.value; });
+  document.getElementById(inputId).value = val;
+  cvt(prefix);
+}
+
+// ─── Temperature (special non-linear) ───
+function toKelvin(val, unit) {
+  if (unit === 'C') return val + 273.15;
+  if (unit === 'F') return (val - 32) * 5/9 + 273.15;
+  if (unit === 'K') return val;
+  if (unit === 'R') return val * 5/9;
+}
+function fromKelvin(k, unit) {
+  if (unit === 'C') return k - 273.15;
+  if (unit === 'F') return (k - 273.15) * 9/5 + 32;
+  if (unit === 'K') return k;
+  if (unit === 'R') return k * 9/5;
+}
+function cvtTemp() {
+  const v = parseFloat(document.getElementById('tmpFrom').value);
+  const fu = document.getElementById('tmpFromU').value;
+  const tu = document.getElementById('tmpToU').value;
+  const result = fromKelvin(toKelvin(v, fu), tu);
+  document.getElementById('tmpTo').value = +result.toPrecision(8);
+  document.getElementById('tmpFormula').textContent = `${v}°${fu} = ${+result.toPrecision(7)}°${tu}`;
+}
+function swpTemp() {
+  const fU = document.getElementById('tmpFromU'), tU = document.getElementById('tmpToU');
+  const fV = document.getElementById('tmpFrom'), tV = document.getElementById('tmpTo');
+  const t = fU.value; fU.value = tU.value; tU.value = t;
+  fV.value = tV.value || '';
+  cvtTemp();
+}
+function preTmp(val, from, to) {
+  document.getElementById('tmpFrom').value = val;
+  document.getElementById('tmpFromU').value = from;
+  document.getElementById('tmpToU').value = to;
+  cvtTemp();
+}
+
+// ─── Fuel efficiency (non-linear: reciprocal) ───
+function cvtFuel() {
+  const v = parseFloat(document.getElementById('fuelFrom').value);
+  const fu = document.getElementById('fuelFromU').value;
+  const tu = document.getElementById('fuelToU').value;
+  if (!v) return;
+
+  // Convert everything to km/L as base
+  let kml;
+  if (fu === 'kml') kml = v;
+  else if (fu === 'l100') kml = 100 / v;
+  else if (fu === 'mpg_us') kml = v * 0.425144;
+  else if (fu === 'mpg_uk') kml = v * 0.354006;
+
+  let result;
+  if (tu === 'kml') result = kml;
+  else if (tu === 'l100') result = 100 / kml;
+  else if (tu === 'mpg_us') result = kml / 0.425144;
+  else if (tu === 'mpg_uk') result = kml / 0.354006;
+
+  document.getElementById('fuelTo').value = +result.toPrecision(6);
+  const labels = {kml:'km/L', l100:'L/100km', mpg_us:'MPG (US)', mpg_uk:'MPG (UK)'};
+  document.getElementById('fuelFormula').textContent = `${v} ${labels[fu]} = ${+result.toPrecision(6)} ${labels[tu]}`;
+}
+function swpFuel() {
+  const fU = document.getElementById('fuelFromU'), tU = document.getElementById('fuelToU');
+  const fV = document.getElementById('fuelFrom'), tV = document.getElementById('fuelTo');
+  const t = fU.value; fU.value = tU.value; tU.value = t;
+  fV.value = tV.value || '';
+  cvtFuel();
+}
+function preFuel(val, from, to) {
+  document.getElementById('fuelFrom').value = val;
+  document.getElementById('fuelFromU').value = from;
+  document.getElementById('fuelToU').value = to;
+  cvtFuel();
+}
+
+// Fix pressure select ID issue
+document.getElementById('tab-pressure').querySelectorAll('select')[1]?.setAttribute('id','presFromU2');
+document.addEventListener('change', e => {
+  if (e.target.id === 'presFromU2') {
+    const from = parseFloat(document.getElementById('presFrom').value);
+    const fromU = parseFloat(document.getElementById('presFromU').value);
+    const toU = parseFloat(e.target.value);
+    const result = (from * fromU) / toU;
+    document.getElementById('presTo').value = +result.toPrecision(8);
+    const toName = e.target.options[e.target.selectedIndex].text;
+    document.getElementById('presFormula').textContent = `Result: ${+result.toPrecision(7)} ${toName}`;
+  }
+});
+
+// Init
+cvtTemp();
+cvtFuel();
+['len','wgt','area','vol','spd','data','engy','pwr','pres','time','ang','freq','cook'].forEach(cvt);
+</script>
 </body>
 </html>

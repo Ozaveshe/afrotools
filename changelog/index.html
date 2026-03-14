@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Changelog — AfroTools Updates & Release Notes</title>
+<meta name="description" content="AfroTools changelog — see every update, new tool launch, bug fix, and improvement. Updated daily as we ship new features.">
+<link rel="canonical" href="https://afrotools.com/changelog">
+<meta property="og:title" content="AfroTools Changelog — Every Update, Live">
+<meta property="og:description" content="Every new tool, feature, fix, and improvement to AfroTools — updated as we ship.">
+<meta property="og:url" content="https://afrotools.com/changelog">
+<meta property="og:site_name" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, 'SF Pro Text', 'DM Sans', system-ui, sans-serif;
+    background: #f5f5f7;
+    color: #1d1d1f;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    background: linear-gradient(160deg, #0d1117 0%, #0a1628 55%, #111827 100%);
+    padding: 64px 0 52px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -60px;
+    width: 380px; height: 380px;
+    background: radial-gradient(circle, rgba(0,113,227,.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-inner { max-width: 1000px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.67rem;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: #60b5ff;
+    margin-bottom: 14px;
+    padding: 4px 12px;
+    background: rgba(0,113,227,.14);
+    border: 1px solid rgba(0,113,227,.25);
+    border-radius: 100px;
+  }
+  .hero h1 {
+    font-size: clamp(1.7rem, 4vw, 2.6rem);
+    font-weight: 800;
+    color: #f0f6fc;
+    letter-spacing: -0.03em;
+    margin-bottom: 12px;
+  }
+  .hero-sub {
+    font-size: 0.95rem;
+    color: rgba(255,255,255,.5);
+    line-height: 1.6;
+    max-width: 500px;
+    margin-bottom: 28px;
+  }
+  .hero-stats {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .hero-stat {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    color: rgba(255,255,255,.5);
+    font-weight: 500;
+  }
+  .hero-stat strong { color: #fff; font-weight: 700; }
+
+  /* ── Filter bar ── */
+  .filter-bar {
+    background: #fff;
+    border-bottom: 1px solid #e5e7eb;
+    position: sticky;
+    top: 62px;
+    z-index: 100;
+  }
+  .filter-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 12px 24px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .filter-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #9ca3af;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    margin-right: 4px;
+  }
+  .filter-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 13px;
+    border-radius: 100px;
+    font-size: 0.74rem;
+    font-weight: 600;
+    border: 1.5px solid #e5e7eb;
+    background: #f9fafb;
+    color: #6e6e73;
+    cursor: pointer;
+    transition: all .18s;
+    font-family: inherit;
+  }
+  .filter-btn:hover, .filter-btn.active {
+    border-color: #0071E3;
+    background: #f0f7ff;
+    color: #0071E3;
+  }
+  .filter-btn.all.active { background: #0071E3; color: #fff; border-color: #0071E3; }
+
+  /* ── Content layout ── */
+  .content {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+
+  /* Version list sidebar */
+  .version-nav {
+    background: #fff;
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.05), 0 0 0 1px rgba(0,0,0,.04);
+    position: sticky;
+    top: 110px;
+  }
+  .version-nav-title {
+    font-size: 0.67rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: #9ca3af;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #f3f4f6;
+  }
+  .version-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 7px 8px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #6e6e73;
+    transition: background .15s, color .15s;
+    margin-bottom: 2px;
+  }
+  .version-link:hover, .version-link.active {
+    background: #f0f7ff;
+    color: #0071E3;
+  }
+  .version-date {
+    font-size: 0.64rem;
+    color: #d1d5db;
+    font-weight: 500;
+  }
+
+  /* ── Changelog entries ── */
+  .entries { }
+
+  .entry {
+    background: #fff;
+    border-radius: 20px;
+    padding: 28px 28px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.05), 0 0 0 1px rgba(0,0,0,.04);
+    margin-bottom: 16px;
+    scroll-margin-top: 120px;
+  }
+  .entry-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 18px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #f3f4f6;
+  }
+  .entry-version-num {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #1d1d1f;
+    letter-spacing: -0.02em;
+  }
+  .entry-date-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #6e6e73;
+    background: #f3f4f6;
+    padding: 4px 11px;
+    border-radius: 100px;
+    white-space: nowrap;
+  }
+  .entry-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 6px;
+  }
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.64rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 100px;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+  }
+  .tag-new { background: #dcfce7; color: #16a34a; }
+  .tag-fix { background: #fef3c7; color: #d97706; }
+  .tag-improve { background: #dbeafe; color: #1d4ed8; }
+  .tag-security { background: #fee2e2; color: #dc2626; }
+  .tag-design { background: #ede9fe; color: #7c3aed; }
+  .tag-perf { background: #e0f2fe; color: #0369a1; }
+
+  /* Change items */
+  .changes { display: flex; flex-direction: column; gap: 8px; }
+  .change-item {
+    display: flex;
+    gap: 12px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: #f9fafb;
+    font-size: 0.84rem;
+    transition: background .15s;
+  }
+  .change-item:hover { background: #f3f4f6; }
+  .change-icon { font-size: 1rem; flex-shrink: 0; }
+  .change-body { flex: 1; }
+  .change-title { font-weight: 600; color: #1d1d1f; line-height: 1.4; }
+  .change-desc { font-size: 0.78rem; color: #6e6e73; line-height: 1.5; margin-top: 2px; }
+
+  /* Entry type label */
+  .change-type {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 100px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .ct-new { background: #dcfce7; color: #16a34a; }
+  .ct-fix { background: #fef3c7; color: #d97706; }
+  .ct-improve { background: #dbeafe; color: #1d4ed8; }
+  .ct-security { background: #fee2e2; color: #dc2626; }
+  .ct-design { background: #ede9fe; color: #7c3aed; }
+
+  /* Hidden filter state */
+  .entry.hidden { display: none; }
+
+  @media (max-width: 760px) {
+    .content { grid-template-columns: 1fr; }
+    .version-nav { position: static; }
+    .filter-inner { gap: 6px; }
+  }
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<!-- ── Hero ── -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">Product Updates</div>
+    <h1>AfroTools Changelog</h1>
+    <p class="hero-sub">Every tool launch, feature update, bug fix, and improvement — tracked here as we ship. Updated daily.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><strong>300+</strong> tools shipped</div>
+      <div class="hero-stat">·</div>
+      <div class="hero-stat"><strong>2–4</strong> updates per week</div>
+      <div class="hero-stat">·</div>
+      <div class="hero-stat">Since <strong>2024</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Filter bar ── -->
+<div class="filter-bar">
+  <div class="filter-inner">
+    <span class="filter-label">Filter:</span>
+    <button class="filter-btn all active" onclick="filterEntries('all')">All updates</button>
+    <button class="filter-btn" onclick="filterEntries('new')">🆕 New Tools</button>
+    <button class="filter-btn" onclick="filterEntries('improve')">✨ Improvements</button>
+    <button class="filter-btn" onclick="filterEntries('fix')">🐛 Bug Fixes</button>
+    <button class="filter-btn" onclick="filterEntries('design')">🎨 Design</button>
+    <button class="filter-btn" onclick="filterEntries('security')">🔒 Security</button>
+  </div>
+</div>
+
+<!-- ── Content ── -->
+<div class="content">
+
+  <!-- Version nav sidebar -->
+  <aside>
+    <nav class="version-nav">
+      <div class="version-nav-title">Versions</div>
+      <a class="version-link active" href="#v0-7-0">v0.7.0 <span class="version-date">Mar 2026</span></a>
+      <a class="version-link" href="#v0-6-0">v0.6.0 <span class="version-date">Feb 2026</span></a>
+      <a class="version-link" href="#v0-5-0">v0.5.0 <span class="version-date">Jan 2026</span></a>
+      <a class="version-link" href="#v0-4-0">v0.4.0 <span class="version-date">Dec 2025</span></a>
+      <a class="version-link" href="#v0-3-0">v0.3.0 <span class="version-date">Nov 2025</span></a>
+    </nav>
+  </aside>
+
+  <!-- Changelog entries -->
+  <div class="entries" id="entries">
+
+    <!-- ── v0.7.0 ── -->
+    <div class="entry" id="v0-7-0" data-tags="new,improve,design,security,fix">
+      <div class="entry-header">
+        <div>
+          <div class="entry-version-num">v0.7.0 — Platform Upgrade</div>
+          <div class="entry-tags">
+            <span class="tag tag-new">🆕 New</span>
+            <span class="tag tag-improve">✨ Improved</span>
+            <span class="tag tag-design">🎨 Design</span>
+            <span class="tag tag-security">🔒 Security</span>
+          </div>
+        </div>
+        <div class="entry-date-badge">📅 March 14, 2026</div>
+      </div>
+      <div class="changes">
+        <div class="change-item">
+          <span class="change-icon">🤖</span>
+          <div class="change-body">
+            <div class="change-title">Site-wide AfroBot AI Advisor</div>
+            <div class="change-desc">Floating AI assistant (bottom-right corner) that explains tools, recommends calculators, and answers financial questions — available on every page.</div>
+          </div>
+          <span class="change-type ct-new">NEW</span>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">📐</span>
+          <div class="change-body">
+            <div class="change-title">AfroDraft 2D CAD — Featured on Homepage</div>
+            <div class="change-desc">AfroDraft is now prominently showcased as a flagship engineering tool. Spotlight banner added to homepage with live CAD preview.</div>
+          </div>
+          <span class="change-type ct-improve">IMPROVE</span>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">🎨</span>
+          <div class="change-body">
+            <div class="change-title">About, Contact & Privacy Pages — Full Redesign</div>
+            <div class="change-desc">All three pages rebuilt with Apple-quality UI — dark navy hero, professional card layouts, proper typography, table of contents on privacy page.</div>
+          </div>
+          <span class="change-type ct-design">DESIGN</span>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">🔒</span>
+          <div class="change-body">
+            <div class="change-title">Security Headers — Hardened</div>
+            <div class="change-desc">Updated CSP to include all CDN sources (unpkg, tagmanager), added HSTS preload, removed deprecated X-XSS-Protection, added upgrade-insecure-requests.</div>
+          </div>
+          <span class="change-type ct-security">SECURITY</span>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">🐛</span>
+          <div class="change-body">
+            <div class="change-title">VAT Calculator & Floor Plan — Missing Components Fixed</div>
+            <div class="change-desc">Added missing afro-related-tools component and proper script loading order to vat-calc.html and floor-plan/index.html.</div>
+          </div>
+          <span class="change-type ct-fix">FIX</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── v0.6.0 ── -->
+    <div class="entry" id="v0-6-0" data-tags="new,improve,fix,design">
+      <div class="entry-header">
+        <div>
+          <div class="entry-version-num">v0.6.0 — Site-Wide Improvements</div>
+          <div class="entry-tags">
+            <span class="tag tag-new">🆕 New</span>
+            <span class="tag tag-improve">✨ Improved</span>
+            <span class="tag tag-fix">🐛 Fix</span>
+          </div>
+        </div>
+        <div class="entry-date-badge">📅 February–March 2026</div>
+      </div>
+      <div class="changes">
+        <div class="change-item">
+          <span class="change-icon">🦟</span>
+          <div class="change-body">
+            <div class="change-title">Malaria Risk by Region Tool</div>
+            <div class="change-desc">New health tool with WHO/CDC validated data for 11+ African countries, monthly risk calendars, prevention guides, medication tables, and symptom checker.</div>
+          </div>
+          <span class="change-type ct-new">NEW</span>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">📏</span>
+          <div class="change-body">
+            <div class="change-title">Unit Converter — Complete Rebuild</div>
+            <div class="change-desc">15 categories including African-specific area units (Nigerian Plot, SA Morgen, Ghana Plot), special fuel & temperature converters, dark navy hero, sticky category bar.</div>
+          </div>
+          <span class="change-type ct-improve">IMPROVE</span>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">🎨</span>
+          <div class="change-body">
+            <div class="change-title">Site-Wide Green → Blue Color Migration</div>
+            <div class="change-desc">Replaced all green UI elements (#10b981, #22c55e) with blue design tokens (#0071E3) across 26+ tool pages. Logo/brand greens (#008751) preserved.</div>
+          </div>
+          <span class="change-type ct-design">DESIGN</span>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">🤖</span>
+          <div class="change-body">
+            <div class="change-title">AI Advisor Chat Panel — Redesign</div>
+            <div class="change-desc">New AfroBot robot mascot SVG, ROYGBIV animated rainbow glow border, dark navy interior. Replaced green background with professional dark theme.</div>
+          </div>
+          <span class="change-type ct-design">DESIGN</span>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">🔗</span>
+          <div class="change-body">
+            <div class="change-title">"You Might Also Like" — Apple-Quality Redesign</div>
+            <div class="change-desc">Related tools section rebuilt as Web Component with gradient category headers, custom tool icon images, hover animations, mobile horizontal scroll.</div>
+          </div>
+          <span class="change-type ct-design">DESIGN</span>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">⭐</span>
+          <div class="change-body">
+            <div class="change-title">Tool Registry Expanded to 366 Tools</div>
+            <div class="change-desc">Added 72 planned tools across health, education, finance, developer, language, African-specific, engineering, and legal categories. New agriculture category added.</div>
+          </div>
+          <span class="change-type ct-improve">IMPROVE</span>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">🌍</span>
+          <div class="change-body">
+            <div class="change-title">Homepage — Country Flags Fix & Roadmap Update</div>
+            <div class="change-desc">Fixed intermittent IntersectionObserver issue preventing country flag pills from appearing. Updated "We're Just Getting Started" section with 2026 quarterly roadmap.</div>
+          </div>
+          <span class="change-type ct-fix">FIX</span>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">🖼️</span>
+          <div class="change-body">
+            <div class="change-title">Favicon Added to 59 Pages</div>
+            <div class="change-desc">Added AfroTools favicon to all pages that were missing it including 404, privacy, terms, about, and all country/category index pages.</div>
+          </div>
+          <span class="change-type ct-fix">FIX</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── v0.5.0 ── -->
+    <div class="entry" id="v0-5-0" data-tags="new,improve">
+      <div class="entry-header">
+        <div>
+          <div class="entry-version-num">v0.5.0 — Health & Engineering Wave</div>
+          <div class="entry-tags">
+            <span class="tag tag-new">🆕 New</span>
+            <span class="tag tag-improve">✨ Improved</span>
+          </div>
+        </div>
+        <div class="entry-date-badge">📅 January 2026</div>
+      </div>
+      <div class="changes">
+        <div class="change-item">
+          <span class="change-icon">📐</span>
+          <div class="change-body">
+            <div class="change-title">AfroDraft 2D CAD Tool — Launch</div>
+            <div class="change-desc">Africa's first browser-based CAD tool. 60+ AutoCAD-style commands, layers, blocks, DXF/SVG/PNG export, touch-enabled for mobile use.</div>
+          </div>
+          <span class="change-type ct-new">NEW</span>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">⚖️</span>
+          <div class="change-body">
+            <div class="change-title">Lobola Calculator</div>
+            <div class="change-desc">Culturally-aware bridewealth calculator for Zimbabwe, South Africa, and other southern African nations with customisable family discussions.</div>
+          </div>
+          <span class="change-type ct-new">NEW</span>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">🌙</span>
+          <div class="change-body">
+            <div class="change-title">Tithe & Offering Calculator</div>
+            <div class="change-desc">Calculate tithes, first fruits, and giving amounts across denominations with a faith-based financial planning tool.</div>
+          </div>
+          <span class="change-type ct-new">NEW</span>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">🏥</span>
+          <div class="change-body">
+            <div class="change-title">BMI Calculator — Major Upgrade</div>
+            <div class="change-desc">Added body fat estimation, macro targets, goal timeline projection, waist-to-hip ratio, health risk assessment, and AI advisor integration.</div>
+          </div>
+          <span class="change-type ct-improve">IMPROVE</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── v0.4.0 ── -->
+    <div class="entry" id="v0-4-0" data-tags="new,improve">
+      <div class="entry-header">
+        <div>
+          <div class="entry-version-num">v0.4.0 — PDF & Documents</div>
+          <div class="entry-tags">
+            <span class="tag tag-new">🆕 New</span>
+            <span class="tag tag-improve">✨ Improved</span>
+          </div>
+        </div>
+        <div class="entry-date-badge">📅 December 2025</div>
+      </div>
+      <div class="changes">
+        <div class="change-item">
+          <span class="change-icon">📄</span>
+          <div class="change-body">
+            <div class="change-title">PDF Workspace — 8-in-1 PDF Suite</div>
+            <div class="change-desc">Unified workspace: merge, split, compress, add page numbers, watermarks, password protect, sign PDFs — all in one app without page reloads.</div>
+          </div>
+          <span class="change-type ct-new">NEW</span>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">📱</span>
+          <div class="change-body">
+            <div class="change-title">Mobile Money Fees Calculator</div>
+            <div class="change-desc">Compare M-Pesa, Airtel Money, MTN MoMo, and Orange Money transaction fees across East and West Africa.</div>
+          </div>
+          <span class="change-type ct-new">NEW</span>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">☀️</span>
+          <div class="change-body">
+            <div class="change-title">Solar Energy Calculator</div>
+            <div class="change-desc">Calculate solar panel requirements, battery sizing, and payback period for all 54 African countries with country-specific solar irradiance data.</div>
+          </div>
+          <span class="change-type ct-new">NEW</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── v0.3.0 ── -->
+    <div class="entry" id="v0-3-0" data-tags="new">
+      <div class="entry-header">
+        <div>
+          <div class="entry-version-num">v0.3.0 — Tax Tools Expansion</div>
+          <div class="entry-tags">
+            <span class="tag tag-new">🆕 New</span>
+          </div>
+        </div>
+        <div class="entry-date-badge">📅 November 2025</div>
+      </div>
+      <div class="changes">
+        <div class="change-item">
+          <span class="change-icon">🌍</span>
+          <div class="change-body">
+            <div class="change-title">PAYE Calculators — All 54 Nations</div>
+            <div class="change-desc">Launched country-specific PAYE salary tax calculators for all 54 African nations with current 2025 tax rates, allowances, and deductions.</div>
+          </div>
+          <span class="change-type ct-new">NEW</span>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">🧾</span>
+          <div class="change-body">
+            <div class="change-title">VAT Calculators — Pan-African</div>
+            <div class="change-desc">VAT calculation for all 54 African countries with correct rates, multi-item invoice mode, and reverse VAT calculation.</div>
+          </div>
+          <span class="change-type ct-new">NEW</span>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">📦</span>
+          <div class="change-body">
+            <div class="change-title">Import Duty Calculator — 17 Countries</div>
+            <div class="change-desc">Full customs duty + levy calculation for Nigeria (NCS), Kenya (KRA), South Africa (SARS), Ghana (GRA), and 13 more African nations.</div>
+          </div>
+          <span class="change-type ct-new">NEW</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<afro-footer></afro-footer>
+
+<script>
+  // Filter functionality
+  let activeFilter = 'all';
+
+  function filterEntries(type) {
+    activeFilter = type;
+    const entries = document.querySelectorAll('.entry');
+    const btns    = document.querySelectorAll('.filter-btn');
+
+    btns.forEach(b => b.classList.remove('active'));
+    document.querySelector(`.filter-btn[onclick="filterEntries('${type}')"]`).classList.add('active');
+
+    entries.forEach(entry => {
+      if (type === 'all') {
+        entry.classList.remove('hidden');
+      } else {
+        const tags = (entry.dataset.tags || '').split(',');
+        entry.classList.toggle('hidden', !tags.includes(type));
+      }
+    });
+  }
+
+  // Active version link on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        document.querySelectorAll('.version-link').forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { rootMargin: '-60px 0px -60% 0px', threshold: 0 });
+
+  document.querySelectorAll('.entry').forEach(e => observer.observe(e));
+</script>
+</body>
+</html>

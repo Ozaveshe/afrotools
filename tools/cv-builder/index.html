@@ -1,37 +1,20 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta charset="UTF-8">
-<!-- Google Analytics 4 -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-D859CGF391');
-</script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Free African CV Builder — AI-Powered, ATS-Compliant | AfroTools.com</title>
-<meta name="description" content="Build a professional CV tailored for African job markets. AI auto-build, 6 modern templates, country-specific formats for all 54 African nations. Free PDF download.">
-<meta name="keywords" content="CV builder Africa, resume builder Nigeria, CV template Kenya, South Africa CV, Ghana CV builder, free CV maker, ATS compliant CV, professional CV builder">
-<meta name="author" content="AfroTools.com">
-<meta name="robots" content="index, follow">
+<title>Free African CV Builder — AI-Powered, 10 Templates | AfroTools.com</title>
+<meta name="description" content="Build a professional CV tailored for African job markets. AI auto-build, 10 modern templates, fixed A4 preview, country-specific formats for all 54 African nations. Free PDF download.">
 <link rel="canonical" href="https://afrotools.com/tools/cv-builder/">
-<meta property="og:title" content="Free African CV Builder — AI-Powered | AfroTools.com">
-<meta property="og:description" content="Build a job-winning CV in minutes. AI auto-build, 6 professional templates, 54 country formats. 100% free.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://afrotools.com/tools/cv-builder/">
-<meta property="og:site_name" content="AfroTools">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Free African CV Builder — AfroTools.com">
-<meta name="twitter:description" content="AI-powered CV builder for African job markets. 6 templates, 54 country formats, instant PDF.">
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
 <link rel="stylesheet" href="/assets/css/global.min.css">
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Fraunces:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"AfroTools CV Builder","url":"https://afrotools.com/tools/cv-builder/","description":"Free AI-powered CV builder for African job markets","applicationCategory":"BusinessApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","ratingCount":"2147","bestRating":"5","worstRating":"1"}}</script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Fraunces:wght@400;500;600;700;800&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
@@ -39,19 +22,83 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#f8fafc;font-family:'Outfit',system-ui,sans-serif;color:#1e293b;overflow-x:hidden}
-#root{min-height:100vh}
+html,body{height:100%;overflow-x:hidden}
+body{background:#f1f5f9;font-family:'Outfit',system-ui,sans-serif;color:#1e293b;-webkit-font-smoothing:antialiased}
+#root{display:flex;flex-direction:column;min-height:100vh}
 input,textarea,select{font-family:'Outfit',system-ui,sans-serif}
-@media(max-width:768px){
-  #root>div>div:first-child{flex-wrap:wrap !important;padding:10px 12px !important}
-  #root>div>div:first-child>div{flex-wrap:wrap !important}
-  #root>div>div:nth-child(2){flex-direction:column !important;overflow:visible !important}
-  #root>div>div:nth-child(2)>div:first-child{flex:1 1 100% !important;border-right:none !important;border-bottom:1px solid #e2e8f0;padding:16px !important;max-height:none !important;overflow:visible !important}
-  #root>div>div:nth-child(2)>div:last-child{flex:1 1 100% !important;padding:16px !important;overflow:visible !important}
+/* Toolbar */
+.cv-toolbar{background:#0f172a;border-bottom:1px solid rgba(255,255,255,0.08);padding:0 20px;display:flex;align-items:center;justify-content:space-between;height:52px;flex-shrink:0;gap:12px}
+.cv-toolbar-left{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.cv-tool-brand{font-size:13px;font-weight:700;color:#fff;display:flex;align-items:center;gap:7px}
+.cv-tool-brand span{font-size:15px}
+.cv-tool-sub{font-size:11px;color:rgba(255,255,255,0.4);font-weight:400}
+.cv-toolbar-right{display:flex;align-items:center;gap:8px}
+.cv-country-sel{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#fff;padding:6px 10px;border-radius:6px;font-size:12px;cursor:pointer;font-family:'Outfit',sans-serif;outline:none}
+.cv-country-sel option{background:#1e293b;color:#fff}
+.cv-btn{padding:7px 14px;border-radius:7px;font-size:12px;font-weight:700;border:none;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;gap:5px;font-family:'Outfit',sans-serif;white-space:nowrap}
+.cv-btn-pdf{background:#0071E3;color:#fff}
+.cv-btn-pdf:hover{background:#005BBF}
+.cv-btn-ghost{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.8);border:1px solid rgba(255,255,255,0.12)}
+.cv-btn-ghost:hover{background:rgba(255,255,255,0.14)}
+/* Completeness */
+.cv-complete-bar{height:3px;background:#0071E3;transition:width 0.4s cubic-bezier(0.22,1,0.36,1);border-radius:0 2px 2px 0;flex-shrink:0}
+/* Main layout */
+.cv-main{display:flex;flex:1;overflow:hidden;height:calc(100vh - 62px - 52px)}
+/* Form panel */
+.cv-form-panel{flex:0 0 420px;min-width:320px;background:#fff;overflow-y:auto;border-right:1px solid #e2e8f0;display:flex;flex-direction:column}
+.cv-form-inner{padding:20px;flex:1}
+.cv-sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;cursor:pointer;user-select:none}
+.cv-sec-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#0071E3}
+.cv-sec-toggle{font-size:10px;color:#94a3b8;transition:transform 0.2s}
+.cv-section{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;margin-bottom:12px;overflow:hidden}
+.cv-section-body{padding:14px}
+.cv-inp{width:100%;padding:8px 10px;background:#fff;border:1.5px solid #e2e8f0;border-radius:7px;font-size:12px;color:#0f172a;font-family:'Outfit',sans-serif;outline:none;transition:border-color 0.15s;margin-bottom:8px}
+.cv-inp:focus{border-color:#0071E3;box-shadow:0 0 0 3px rgba(0,113,227,0.08)}
+.cv-inp::placeholder{color:#94a3b8}
+.cv-textarea{width:100%;min-height:70px;padding:8px 10px;background:#fff;border:1.5px solid #e2e8f0;border-radius:7px;font-size:12px;color:#0f172a;font-family:'Outfit',sans-serif;outline:none;transition:border-color 0.15s;resize:vertical;margin-bottom:8px}
+.cv-textarea:focus{border-color:#0071E3;box-shadow:0 0 0 3px rgba(0,113,227,0.08)}
+.cv-row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.cv-label{font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px;display:block}
+.cv-check-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;cursor:pointer}
+.cv-check-row input[type=checkbox]{accent-color:#0071E3;width:14px;height:14px;cursor:pointer}
+.cv-check-row span{font-size:12px;color:#475569}
+.cv-add-btn{width:100%;padding:8px;background:transparent;border:1.5px dashed #0071E3;border-radius:7px;color:#0071E3;font-weight:600;font-size:12px;cursor:pointer;transition:all 0.15s;font-family:'Outfit',sans-serif}
+.cv-add-btn:hover{background:#EFF6FF}
+.cv-remove-btn{background:none;border:none;color:#dc2626;font-size:11px;cursor:pointer;font-family:'Outfit',sans-serif;padding:2px 6px;border-radius:4px}
+.cv-remove-btn:hover{background:#fee2e2}
+.cv-item-divider{border:none;border-top:1px solid #e2e8f0;margin:12px 0}
+.cv-score{padding:12px 16px;background:linear-gradient(135deg,#0a1929,#0d2040);border-bottom:1px solid #e2e8f0;flex-shrink:0}
+.cv-score-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.cv-score-label{font-size:11px;font-weight:600;color:rgba(255,255,255,0.7)}
+.cv-score-pct{font-size:13px;font-weight:800;color:#60B5FF}
+.cv-score-track{height:4px;background:rgba(255,255,255,0.1);border-radius:4px;overflow:hidden}
+.cv-select{width:100%;padding:7px 10px;background:#fff;border:1.5px solid #e2e8f0;border-radius:7px;font-size:12px;color:#0f172a;font-family:'Outfit',sans-serif;cursor:pointer;outline:none;margin-bottom:8px}
+/* Preview panel */
+.cv-preview-panel{flex:1;background:#e2e8f0;display:flex;flex-direction:column;overflow:hidden}
+.cv-preview-top{background:#fff;border-bottom:1px solid #e2e8f0;padding:10px 14px;display:flex;align-items:center;gap:6px;overflow-x:auto;flex-shrink:0}
+.cv-tmpl-btn{padding:6px 12px;border-radius:6px;font-size:11.5px;font-weight:600;border:1.5px solid #e2e8f0;background:transparent;color:#64748b;cursor:pointer;transition:all 0.15s;white-space:nowrap;font-family:'Outfit',sans-serif;flex-shrink:0}
+.cv-tmpl-btn.active{border-color:#0071E3;background:#EFF6FF;color:#0071E3}
+.cv-tmpl-sep{width:1px;height:20px;background:#e2e8f0;flex-shrink:0;margin:0 4px}
+.cv-preview-scroll{flex:1;overflow-y:auto;padding:24px;display:flex;justify-content:center;align-items:flex-start}
+#cvpreview{width:595px;min-height:841px;background:#fff;box-shadow:0 8px 40px rgba(0,0,0,0.18);border-radius:2px;overflow:hidden;flex-shrink:0}
+/* Color picker */
+.cv-colors{display:flex;gap:6px;padding:10px 14px;background:#f8fafc;border-bottom:1px solid #e2e8f0;align-items:center;flex-shrink:0}
+.cv-color-dot{width:18px;height:18px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:transform 0.15s;flex-shrink:0}
+.cv-color-dot.active{border-color:#0f172a;transform:scale(1.2)}
+.cv-color-label{font-size:11px;color:#64748b;margin-right:4px;font-weight:600}
+/* Mobile tweaks */
+@media(max-width:900px){
+  .cv-main{flex-direction:column;height:auto;overflow:visible}
+  .cv-form-panel{flex:none;width:100%;max-height:none;overflow-y:visible}
+  .cv-preview-panel{min-height:700px}
+  #cvpreview{width:100%;max-width:595px}
+}
+@media(max-width:600px){
+  .cv-toolbar{padding:0 12px}
+  .cv-tool-sub{display:none}
+  .cv-form-inner{padding:12px}
 }
 </style>
-<!-- DESIGN NOTE: HTML is NOT restrictive — this page runs React 18 via CDN, and any JS framework (Vue, Svelte, etc.) can be loaded the same way. -->
-<!-- Netlify Forms -->
 <form name="cv-leads" netlify netlify-honeypot="bot-field" hidden>
   <input name="bot-field"><input name="email"><input name="fullName"><input name="country">
 </form>
@@ -61,344 +108,484 @@ input,textarea,select{font-family:'Outfit',system-ui,sans-serif}
 <body>
 <afro-navbar active="tools"></afro-navbar>
 <div id="root"></div>
+
+<afro-related-tools category="document-pdf" current="cv-builder"></afro-related-tools>
 <afro-footer></afro-footer>
 <script type="text/babel">
-const { useState, useRef, useCallback, useEffect } = React;
+const { useState, useRef, useCallback, useEffect, useMemo } = React;
 
-// COUNTRY NORMS — 20+ African countries with format requirements
 const COUNTRY_NORMS = {
-  NG:{n:'Nigeria',f:'🇳🇬',photo:1,dob:1,mar:1,gen:1,so:1,nat:1,soL:'State of Origin',soP:'Anambra State',h:'Nigerian employers expect personal details, state of origin, and references.'},
+  NG:{n:'Nigeria',f:'🇳🇬',photo:1,dob:1,mar:1,gen:1,so:1,nat:1,soL:'State of Origin',soP:'Anambra State',h:'Nigerian employers expect personal details, state of origin, and references. Two pages standard.'},
   KE:{n:'Kenya',f:'🇰🇪',photo:1,dob:1,mar:1,gen:1,so:0,nat:1,h:'Kenyan CVs include photo, DOB, and ID number. Keep to 2–3 pages.'},
-  ZA:{n:'South Africa',f:'🇿🇦',photo:0,dob:0,mar:0,gen:0,so:0,nat:0,h:'No personal details — Employment Equity Act. Focus on achievements.'},
+  ZA:{n:'South Africa',f:'🇿🇦',photo:0,dob:0,mar:0,gen:0,so:0,nat:0,h:'No personal details — Employment Equity Act. Focus on achievements and metrics.'},
   GH:{n:'Ghana',f:'🇬🇭',photo:1,dob:1,mar:1,gen:1,so:1,nat:1,soL:'Region / Hometown',soP:'Ashanti Region',h:'Include personal details and hometown.'},
   EG:{n:'Egypt',f:'🇪🇬',photo:1,dob:1,mar:1,gen:1,so:0,nat:1,h:'Include personal details. Military status for males.'},
   ET:{n:'Ethiopia',f:'🇪🇹',photo:1,dob:1,mar:1,gen:1,so:0,nat:1,h:'Include personal details.'},
   TZ:{n:'Tanzania',f:'🇹🇿',photo:1,dob:1,mar:1,gen:1,so:0,nat:1,h:'Include personal details. Swahili proficiency valued.'},
   RW:{n:'Rwanda',f:'🇷🇼',photo:1,dob:1,mar:0,gen:1,so:0,nat:1,h:'Concise 2-page CVs. English, French, Kinyarwanda valued.'},
-  UG:{n:'Uganda',f:'🇺🇬',photo:1,dob:1,mar:1,gen:1,so:1,nat:1,soL:'District of Origin',soP:'Wakiso District',h:'Include personal details and district of origin.'},
+  UG:{n:'Uganda',f:'🇺🇬',photo:1,dob:1,mar:1,gen:1,so:1,nat:1,soL:'District of Origin',soP:'Wakiso District',h:'Include personal details and district.'},
   SN:{n:'Senegal',f:'🇸🇳',photo:1,dob:1,mar:1,gen:1,so:0,nat:1,h:'French CV format. Photo and personal details required.'},
   CI:{n:"Côte d'Ivoire",f:'🇨🇮',photo:1,dob:1,mar:1,gen:1,so:0,nat:1,h:'French CV format with photo and personal details.'},
   CM:{n:'Cameroon',f:'🇨🇲',photo:1,dob:1,mar:1,gen:1,so:1,nat:1,soL:'Region of Origin',soP:'Centre Region',h:'Bilingual French/English CVs valued.'},
   MA:{n:'Morocco',f:'🇲🇦',photo:1,dob:1,mar:1,gen:1,so:0,nat:1,h:'French format. French and Arabic essential.'},
   TN:{n:'Tunisia',f:'🇹🇳',photo:1,dob:1,mar:1,gen:1,so:0,nat:1,h:'French conventions. Military status for males.'},
   AO:{n:'Angola',f:'🇦🇴',photo:1,dob:1,mar:1,gen:1,so:0,nat:1,h:'Portuguese language. Personal details included.'},
-  MZ:{n:'Mozambique',f:'🇲🇿',photo:1,dob:1,mar:1,gen:1,so:0,nat:1,h:'Portuguese CVs with personal details.'},
   BW:{n:'Botswana',f:'🇧🇼',photo:1,dob:1,mar:0,gen:0,so:0,nat:1,h:'Modern format. Photo optional.'},
   ZW:{n:'Zimbabwe',f:'🇿🇼',photo:1,dob:1,mar:1,gen:1,so:0,nat:1,h:'Personal details included. English standard.'},
   OTHER:{n:'Other African',f:'🌍',photo:1,dob:1,mar:1,gen:1,so:0,nat:1,h:'Most African countries expect personal details.'},
   INTL:{n:'International',f:'🌐',photo:0,dob:0,mar:0,gen:0,so:0,nat:0,h:'No personal details. Focus on quantified achievements.'},
 };
 
-// TEMPLATE DEFINITIONS — 6 distinct modern designs
 const TEMPLATES = [
-  {
-    id:'slate',name:'Slate',desc:'Corporate modern',
-    preview:{bg:'#1e293b',text:'#fff',accentDark:'#0f172a',accentLight:'#dbeafe',line:'#3b82f6'}
-  },
-  {
-    id:'ember',name:'Ember',desc:'Warm editorial',
-    preview:{bg:'#fff',text:'#1c1917',accentDark:'#c2410c',accentLight:'#fff7ed',line:'#c2410c'}
-  },
-  {
-    id:'phantom',name:'Phantom',desc:'Black & white editorial',
-    preview:{bg:'#fff',text:'#000',accentDark:'#000',accentLight:'#f5f5f5',line:'#000'}
-  },
-  {
-    id:'indigo',name:'Indigo',desc:'Tech startup',
-    preview:{bg:'#312e81',text:'#fff',accentDark:'#4338ca',accentLight:'#eef2ff',line:'#4338ca'}
-  },
-  {
-    id:'noir',name:'Noir',desc:'Bold split design',
-    preview:{bg:'#0f172a',text:'#fff',accentDark:'#fff',accentLight:'#64748b',line:'#64748b'}
-  },
-  {
-    id:'stone',name:'Stone',desc:'Warm premium',
-    preview:{bg:'#fefce8',text:'#292524',accentDark:'#78716c',accentLight:'#fef3c7',line:'#78716c'}
-  },
+  {id:'slate',   name:'Slate',   group:'Classic', colors:['#1e293b','#3b82f6','#0f172a']},
+  {id:'ember',   name:'Ember',   group:'Classic', colors:['#c2410c','#ea580c','#9a3412']},
+  {id:'phantom', name:'Phantom', group:'Classic', colors:['#000','#374151','#6b7280']},
+  {id:'indigo',  name:'Indigo',  group:'Classic', colors:['#4338ca','#312e81','#6366f1']},
+  {id:'noir',    name:'Noir',    group:'Classic', colors:['#0f172a','#334155','#64748b']},
+  {id:'stone',   name:'Stone',   group:'Classic', colors:['#78716c','#57534e','#a8a29e']},
+  {id:'lagos',   name:'Lagos',   group:'African', colors:['#006B3C','#D4A017','#004d2b']},
+  {id:'nairobi', name:'Nairobi', group:'African', colors:['#0d7377','#14a085','#323232']},
+  {id:'accra',   name:'Accra',   group:'African', colors:['#b45309','#d97706','#78350f']},
+  {id:'cape',    name:'Cape',    group:'African', colors:['#ea580c','#f97316','#c2410c']},
 ];
 
-// Helpers
-const esc = s => {const d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML;};
-const fmtMonth = v => {if (!v) return ''; if (!v.includes('-')) return v; const [y, m] = v.split('-'); const ms = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']; return ms[+m - 1] + ' ' + y;};
-const fmtDOB = v => {if (!v) return ''; const d = new Date(v); const ms = ['January','February','March','April','May','June','July','August','September','October','November','December']; return d.getDate() + ' ' + ms[d.getMonth()] + ' ' + d.getFullYear();};
-const toArr = s => s ? s.split(/[,;\n]/).map(x => x.trim()).filter(Boolean) : [];
+const LANG_LEVELS = ['Beginner','Elementary','Intermediate','Upper Intermediate','Fluent','Native'];
+const ACCENT_COLORS = ['#0071E3','#16a34a','#dc2626','#9333ea','#0891b2','#d97706','#374151'];
+
+const esc = s => {const d=document.createElement('div');d.textContent=s||'';return d.innerHTML;};
+const fmtMonth = v => {if(!v)return '';if(!v.includes('-'))return v;const[y,m]=v.split('-');const ms=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];return ms[+m-1]+' '+y;};
+const fmtDOB = v => {if(!v)return '';const d=new Date(v);const ms=['January','February','March','April','May','June','July','August','September','October','November','December'];return d.getDate()+' '+ms[d.getMonth()]+' '+d.getFullYear();};
+const toArr = s => s?s.split(/[,;\n]/).map(x=>x.trim()).filter(Boolean):[];
 const descToHTML = t => {
-  if (!t) return '';
-  const ls = t.split('\n').filter(l => l.trim());
-  if (ls.length <= 1) return '<p>' + esc(t) + '</p>';
-  const hasBul = ls.some(l => /^[•\-\*\d+\.]/.test(l.trim()));
-  if (hasBul) return '<ul>' + ls.map(l => '<li>' + esc(l.replace(/^[•\-\*]\s*/, '').replace(/^\d+\.\s*/, '')) + '</li>').join('') + '</ul>';
-  return '<p>' + ls.map(l => esc(l)).join('<br/>') + '</p>';
+  if(!t)return '';
+  const ls=t.split('\n').filter(l=>l.trim());
+  if(ls.length<=1)return '<p>'+esc(t)+'</p>';
+  const hasBul=ls.some(l=>/^[•\-\*\d+\.]/.test(l.trim()));
+  if(hasBul)return '<ul>'+ls.map(l=>'<li>'+esc(l.replace(/^[•\-\*]\s*/,'').replace(/^\d+\.\s*/,''))+'</li>').join('')+'</ul>';
+  return '<p>'+ls.map(l=>esc(l)).join('<br/>')+'</p>';
 };
 
-// AI & Netlify Functions
-const callAI = async ({context, question, tool, systemPrompt}) => {
-  try {
-    const r = await fetch('/.netlify/functions/ai-advisor', {
-      method: 'POST',
-      body: JSON.stringify({context, question, tool, systemPrompt}),
-    });
-    const j = await r.json();
-    return j.answer || '';
-  } catch (e) {
-    return '';
-  }
-};
+function calcScore(d) {
+  const checks = [
+    !!d.fn, !!d.ln, !!d.title, !!d.email, !!d.phone, !!d.loc,
+    !!d.summary && d.summary.length > 30,
+    d.exps.some(e=>e.t&&e.c),
+    d.exps.some(e=>e.d&&e.d.length>20),
+    d.edus.some(e=>e.deg&&e.sch),
+    !!(d.skills.h||d.skills.s||d.skills.t),
+    !!d.langs,
+  ];
+  return Math.round((checks.filter(Boolean).length / checks.length) * 100);
+}
 
-// MAIN APP
 function CVBuilder() {
-  const [step, setStep] = useState(0);
   const [country, setCountry] = useState('NG');
   const [template, setTemplate] = useState('slate');
+  const [accentColor, setAccentColor] = useState('#0071E3');
   const [data, setData] = useState({
-    fn:'', ln:'', title:'', email:'', phone:'', loc:'', web:'', dob:'', nat:'', gen:'', mar:'', so:'', sp:false, showPhoto:false, photo:null,
+    fn:'',ln:'',title:'',email:'',phone:'',loc:'',web:'',linkedin:'',
+    dob:'',nat:'',gen:'',mar:'',so:'',sp:false,showPhoto:false,photo:null,
     summary:'',
-    exps:[{t:'',c:'',l:'',s:'',e:'',d:''}],
+    exps:[{t:'',c:'',l:'',s:'',e:'',cur:false,d:''}],
     edus:[{deg:'',sch:'',loc:'',y1:'',y2:'',g:''}],
+    projs:[{n:'',url:'',d:''}],
+    showProjs:false,
     skills:{h:'',s:'',t:''},
     certs:[{n:'',i:'',y:''}],
-    langs:'',
+    langs:[{l:'',lv:'Fluent'}],
     refs:[{n:'',p:'',e:'',f:''}],
     showRefs:false,
     extras:{awards:'',hobbies:''},
   });
+  const [saving, setSaving] = useState(false);
+  const [colOpen, setColOpen] = useState({personal:true,summary:true,exp:true,edu:true,projs:false,skills:true,certs:false,langs:true,refs:false,extras:false});
 
   const norms = COUNTRY_NORMS[country] || COUNTRY_NORMS.OTHER;
+  const score = useMemo(() => calcScore(data), [data]);
+
+  // Auto-save
+  useEffect(() => {
+    try { localStorage.setItem('afro_cv_data', JSON.stringify({data, country, template})); } catch(e){}
+  }, [data, country, template]);
+
+  // Load saved
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('afro_cv_data');
+      if (saved) { const p = JSON.parse(saved); if(p.data)setData(p.data); if(p.country)setCountry(p.country); if(p.template)setTemplate(p.template); }
+    } catch(e){}
+  }, []);
+
   const upData = (path, val) => {
-    const [k, ...rest] = path.split('.');
-    const newData = {...data};
-    if (rest.length === 0) newData[k] = val;
-    else if (rest.length === 1) newData[k][rest[0]] = val;
-    else if (rest.length === 2) {
-      const idx = parseInt(rest[0]);
-      if (!newData[k][idx]) newData[k][idx] = {};
-      newData[k][idx][rest[1]] = val;
-    }
-    setData(newData);
+    const parts = path.split('.');
+    setData(prev => {
+      const next = {...prev};
+      if (parts.length === 1) { next[parts[0]] = val; }
+      else if (parts.length === 2) {
+        next[parts[0]] = {...(next[parts[0]]||{}), [parts[1]]: val};
+      } else if (parts.length === 3) {
+        const idx = parseInt(parts[1]);
+        const arr = [...(next[parts[0]]||[])];
+        arr[idx] = {...(arr[idx]||{}), [parts[2]]: val};
+        next[parts[0]] = arr;
+      }
+      return next;
+    });
   };
 
-  // PDF Download
   const downloadPDF = async () => {
     const el = document.getElementById('cvpreview');
     if (!el) return;
-    const canvas = await html2canvas(el, {scale: 2, useCORS: true, logging: false});
-    const imgData = canvas.toDataURL('image/png');
-    const pdf = new window.jspdf.jsPDF({orientation: 'portrait', unit: 'mm', format: 'a4'});
-    const w = pdf.internal.pageSize.getWidth();
-    const h = (canvas.height * w) / canvas.width;
-    pdf.addImage(imgData, 'PNG', 0, 0, w, h);
-    while (h > pdf.internal.pageSize.getHeight()) {
-      pdf.addPage();
-      pdf.addImage(imgData, 'PNG', 0, -pdf.internal.pageSize.getHeight(), w, h);
-    }
-    pdf.save(data.fn + '_' + data.ln + '_CV.pdf');
+    try {
+      const canvas = await html2canvas(el, {scale:2,useCORS:true,logging:false,backgroundColor:'#fff'});
+      const imgData = canvas.toDataURL('image/jpeg',0.95);
+      const pdf = new window.jspdf.jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+      const pgW = pdf.internal.pageSize.getWidth();
+      const pgH = pdf.internal.pageSize.getHeight();
+      const ratio = canvas.height / canvas.width;
+      const imgH = pgW * ratio;
+      let y = 0;
+      pdf.addImage(imgData,'JPEG',0,y,pgW,imgH);
+      while (y + imgH > pgH) {
+        y -= pgH;
+        pdf.addPage();
+        pdf.addImage(imgData,'JPEG',0,y,pgW,imgH);
+      }
+      const fn = (data.fn||'CV') + '_' + (data.ln||'') + '_AfroTools.pdf';
+      pdf.save(fn.trim().replace(/\s+/g,'_'));
+    } catch(e) { alert('Download failed. Please try again.'); }
   };
 
-  // Copy to clipboard
-  const copyResults = () => {
+  const printCV = () => {
     const el = document.getElementById('cvpreview');
     if (!el) return;
-    const canvas = document.createElement('canvas');
-    canvas.innerHTML = el.innerHTML;
-    const range = document.createRange();
-    range.selectNodeContents(el);
-    const sel = window.getSelection();
-    sel.removeAllRanges();
-    sel.addRange(range);
-    document.execCommand('copy');
-    alert('CV copied to clipboard!');
+    const w = window.open('','_blank');
+    w.document.write('<html><head><title>CV</title><style>body{margin:0}@page{margin:0;size:A4}</style></head><body>');
+    w.document.write(el.outerHTML);
+    w.document.write('</body></html>');
+    w.document.close();
+    w.onload = () => { w.print(); };
   };
 
+  const toggle = key => setColOpen(p => ({...p,[key]:!p[key]}));
+
+  const SectionHead = ({k, label, icon}) => (
+    <div className="cv-sec-head" onClick={() => toggle(k)}>
+      <span className="cv-sec-label">{icon} {label}</span>
+      <span className="cv-sec-toggle" style={{transform: colOpen[k] ? 'rotate(0deg)':'rotate(-90deg)'}}>{colOpen[k]?'▾':'▾'}</span>
+    </div>
+  );
+
+  const tmplGroups = [
+    {label:'Classic', items: TEMPLATES.filter(t=>t.group==='Classic')},
+    {label:'African', items: TEMPLATES.filter(t=>t.group==='African')},
+  ];
+
+  const scoreColor = score >= 80 ? '#22c55e' : score >= 50 ? '#f59e0b' : '#ef4444';
+
   return (
-    <div style={{background:'#f8fafc',minHeight:'60vh',display:'flex',flexDirection:'column'}}>
-      {/* COUNTRY SELECTOR BAR */}
-      <div style={{background:'#fff',borderBottom:'1px solid #e2e8f0',padding:'10px 24px',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-        <div style={{fontSize:14,fontWeight:700,color:'#1e293b',display:'flex',alignItems:'center',gap:8}}>
-          <span style={{fontSize:16}}>📄</span> CV Builder
-          <span style={{fontSize:12,fontWeight:400,color:'#64748b',marginLeft:4}}>— tailored for African job markets</span>
+    <div style={{display:'flex',flexDirection:'column',flex:1}}>
+      {/* TOOLBAR */}
+      <div className="cv-toolbar">
+        <div className="cv-toolbar-left">
+          <div className="cv-tool-brand"><span>📄</span>CV Builder<span className="cv-tool-sub">tailored for African job markets</span></div>
         </div>
-        <div style={{display:'flex',alignItems:'center',gap:8}}>
-          <span style={{fontSize:12,color:'#64748b'}}>Format for:</span>
-          <select value={country} onChange={e => setCountry(e.target.value)} style={{background:'#f8fafc',border:'1.5px solid #e2e8f0',color:'#1e293b',padding:'6px 12px',borderRadius:6,fontSize:13,cursor:'pointer',fontFamily:'Outfit,sans-serif'}}>
-            {Object.entries(COUNTRY_NORMS).map(([k, v]) => <option key={k} value={k}>{v.f} {v.n}</option>)}
+        <div className="cv-toolbar-right">
+          <select className="cv-country-sel" value={country} onChange={e=>setCountry(e.target.value)}>
+            {Object.entries(COUNTRY_NORMS).map(([k,v]) => <option key={k} value={k}>{v.f} {v.n}</option>)}
           </select>
+          <button className="cv-btn cv-btn-ghost" onClick={printCV}>🖨️ Print</button>
+          <button className="cv-btn cv-btn-pdf" onClick={downloadPDF}>📥 PDF</button>
         </div>
       </div>
 
-      <div style={{display:'flex',flex:1,overflow:'hidden'}}>
-        {/* FORM PANEL — LEFT */}
-        <div style={{flex:'0 0 45%',background:'#fff',overflowY:'auto',borderRight:'1px solid #e2e8f0',padding:'24px',color:'#1e293b'}}>
-          <h2 style={{fontSize:18,fontWeight:800,marginBottom:20,color:'#0f172a'}}>Build Your CV</h2>
+      {/* SCORE BAR */}
+      <div style={{height:'3px',background:'#1e293b',flexShrink:0}}>
+        <div className="cv-complete-bar" style={{width:score+'%',background:scoreColor}}/>
+      </div>
 
-          {/* SECTION: Personal Info */}
-          <div style={{background:'#f8fafc',padding:16,borderRadius:8,marginBottom:16,border:'1px solid #e2e8f0'}}>
-            <h3 style={{fontSize:13,fontWeight:600,marginBottom:12,color:'#0071E3'}}>Personal Information</h3>
-            <input type="text" placeholder="First Name" value={data.fn} onChange={e => upData('fn', e.target.value)} style={{width:'100%',padding:8,marginBottom:10,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
-            <input type="text" placeholder="Last Name" value={data.ln} onChange={e => upData('ln', e.target.value)} style={{width:'100%',padding:8,marginBottom:10,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
-            <input type="text" placeholder="Professional Title" value={data.title} onChange={e => upData('title', e.target.value)} style={{width:'100%',padding:8,marginBottom:10,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
-            <input type="email" placeholder="Email" value={data.email} onChange={e => upData('email', e.target.value)} style={{width:'100%',padding:8,marginBottom:10,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
-            <input type="tel" placeholder="Phone" value={data.phone} onChange={e => upData('phone', e.target.value)} style={{width:'100%',padding:8,marginBottom:10,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
-            <input type="text" placeholder="Location" value={data.loc} onChange={e => upData('loc', e.target.value)} style={{width:'100%',padding:8,marginBottom:10,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
-            <input type="url" placeholder="Website / Portfolio" value={data.web} onChange={e => upData('web', e.target.value)} style={{width:'100%',padding:8,marginBottom:10,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
+      <div className="cv-main">
+        {/* FORM PANEL */}
+        <div className="cv-form-panel">
+          <div className="cv-score">
+            <div className="cv-score-row">
+              <span className="cv-score-label">CV Completeness</span>
+              <span className="cv-score-pct" style={{color:scoreColor}}>{score}%</span>
+            </div>
+            <div className="cv-score-track">
+              <div style={{height:'100%',width:score+'%',background:scoreColor,borderRadius:4,transition:'width 0.4s'}}/>
+            </div>
+            {norms.h && <div style={{fontSize:10,color:'rgba(255,255,255,0.5)',marginTop:6,lineHeight:1.5}}>💡 {norms.h}</div>}
+          </div>
 
-            {/* Photo Upload */}
-            <label style={{display:'flex',alignItems:'center',gap:8,marginBottom:12,cursor:'pointer'}}>
-              <input type="checkbox" checked={data.showPhoto} onChange={e => upData('showPhoto', e.target.checked)} style={{cursor:'pointer'}}/>
-              <span style={{fontSize:12}}>Include photo</span>
-            </label>
-            {data.showPhoto && (
-              <input type="file" accept="image/*" onChange={e => {const f = e.target.files?.[0]; if (f) {const r = new FileReader(); r.onload = (ev) => upData('photo', ev.target.result); r.readAsDataURL(f);}}} style={{width:'100%',marginBottom:10,fontSize:12}}/>
-            )}
+          <div className="cv-form-inner">
+            {/* PERSONAL */}
+            <div className="cv-section">
+              <div style={{padding:'10px 14px 0'}}><SectionHead k="personal" label="Personal Information" icon="👤"/></div>
+              {colOpen.personal && <div className="cv-section-body">
+                <div className="cv-row2">
+                  <input className="cv-inp" placeholder="First Name" value={data.fn} onChange={e=>upData('fn',e.target.value)}/>
+                  <input className="cv-inp" placeholder="Last Name" value={data.ln} onChange={e=>upData('ln',e.target.value)}/>
+                </div>
+                <input className="cv-inp" placeholder="Professional Title" value={data.title} onChange={e=>upData('title',e.target.value)}/>
+                <input className="cv-inp" type="email" placeholder="Email address" value={data.email} onChange={e=>upData('email',e.target.value)}/>
+                <div className="cv-row2">
+                  <input className="cv-inp" type="tel" placeholder="Phone number" value={data.phone} onChange={e=>upData('phone',e.target.value)}/>
+                  <input className="cv-inp" placeholder="City, Country" value={data.loc} onChange={e=>upData('loc',e.target.value)}/>
+                </div>
+                <input className="cv-inp" placeholder="LinkedIn URL (optional)" value={data.linkedin} onChange={e=>upData('linkedin',e.target.value)}/>
+                <input className="cv-inp" placeholder="Website / Portfolio (optional)" value={data.web} onChange={e=>upData('web',e.target.value)}/>
 
-            {/* Personal Details (country-specific) */}
-            {(norms.dob || norms.gen || norms.mar || norms.nat) && (
-              <>
-                <label style={{display:'flex',alignItems:'center',gap:8,marginBottom:12,cursor:'pointer'}}>
-                  <input type="checkbox" checked={data.sp} onChange={e => upData('sp', e.target.checked)} style={{cursor:'pointer'}}/>
-                  <span style={{fontSize:12}}>Include personal details</span>
+                <label className="cv-check-row">
+                  <input type="checkbox" checked={data.showPhoto} onChange={e=>upData('showPhoto',e.target.checked)}/>
+                  <span>Include photo</span>
                 </label>
-                {data.sp && (
-                  <>
-                    {norms.dob && <input type="date" value={data.dob} onChange={e => upData('dob', e.target.value)} style={{width:'100%',padding:8,marginBottom:10,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>}
-                    {norms.gen && <input type="text" placeholder="Gender" value={data.gen} onChange={e => upData('gen', e.target.value)} style={{width:'100%',padding:8,marginBottom:10,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>}
-                    {norms.mar && <input type="text" placeholder="Marital Status" value={data.mar} onChange={e => upData('mar', e.target.value)} style={{width:'100%',padding:8,marginBottom:10,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>}
-                    {norms.nat && <input type="text" placeholder="Nationality" value={data.nat} onChange={e => upData('nat', e.target.value)} style={{width:'100%',padding:8,marginBottom:10,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>}
-                    {norms.so && <input type="text" placeholder={norms.soL || 'State of Origin'} defaultValue={norms.soP} value={data.so} onChange={e => upData('so', e.target.value)} style={{width:'100%',padding:8,marginBottom:10,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>}
-                  </>
+                {data.showPhoto && (
+                  <input type="file" accept="image/*" style={{width:'100%',fontSize:11,marginBottom:8}} onChange={e=>{const f=e.target.files?.[0];if(f){const r=new FileReader();r.onload=ev=>upData('photo',ev.target.result);r.readAsDataURL(f);}}}/>
                 )}
-              </>
-            )}
-          </div>
 
-          {/* SECTION: Summary */}
-          <div style={{background:'#f8fafc',padding:16,borderRadius:8,marginBottom:16,border:'1px solid #e2e8f0'}}>
-            <h3 style={{fontSize:13,fontWeight:600,marginBottom:12,color:'#0071E3'}}>Professional Summary</h3>
-            <textarea placeholder="Write a brief summary of your professional background" value={data.summary} onChange={e => upData('summary', e.target.value)} style={{width:'100%',minHeight:80,padding:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a',fontFamily:'inherit',fontSize:12}}/>
-          </div>
+                {(norms.dob||norms.gen||norms.mar||norms.nat) && <>
+                  <label className="cv-check-row">
+                    <input type="checkbox" checked={data.sp} onChange={e=>upData('sp',e.target.checked)}/>
+                    <span>Include personal details</span>
+                  </label>
+                  {data.sp && <>
+                    {norms.dob && <input className="cv-inp" type="date" value={data.dob} onChange={e=>upData('dob',e.target.value)}/>}
+                    <div className="cv-row2">
+                      {norms.gen && <input className="cv-inp" placeholder="Gender" value={data.gen} onChange={e=>upData('gen',e.target.value)}/>}
+                      {norms.mar && <input className="cv-inp" placeholder="Marital Status" value={data.mar} onChange={e=>upData('mar',e.target.value)}/>}
+                    </div>
+                    {norms.nat && <input className="cv-inp" placeholder="Nationality" value={data.nat} onChange={e=>upData('nat',e.target.value)}/>}
+                    {norms.so && <input className="cv-inp" placeholder={norms.soL||'State of Origin'} value={data.so} onChange={e=>upData('so',e.target.value)}/>}
+                  </>}
+                </>}
+              </div>}
+            </div>
 
-          {/* SECTION: Experience */}
-          <div style={{background:'#f8fafc',padding:16,borderRadius:8,marginBottom:16,border:'1px solid #e2e8f0'}}>
-            <h3 style={{fontSize:13,fontWeight:600,marginBottom:12,color:'#0071E3'}}>Work Experience</h3>
-            {data.exps.map((e, i) => (
-              <div key={i} style={{marginBottom:16,paddingBottom:16,borderBottom:i < data.exps.length - 1 ? '1px solid #e2e8f0' : 'none'}}>
-                <input type="text" placeholder="Job Title" value={e.t} onChange={ev => upData(`exps.${i}.t`, ev.target.value)} style={{width:'100%',padding:8,marginBottom:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
-                <input type="text" placeholder="Company" value={e.c} onChange={ev => upData(`exps.${i}.c`, ev.target.value)} style={{width:'100%',padding:8,marginBottom:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
-                <input type="text" placeholder="Location" value={e.l} onChange={ev => upData(`exps.${i}.l`, ev.target.value)} style={{width:'100%',padding:8,marginBottom:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
-                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8,marginBottom:8}}>
-                  <input type="month" value={e.s} onChange={ev => upData(`exps.${i}.s`, ev.target.value)} style={{padding:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
-                  <input type="month" value={e.e} onChange={ev => upData(`exps.${i}.e`, ev.target.value)} style={{padding:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
-                </div>
-                <textarea placeholder="Description (bullet points)" value={e.d} onChange={ev => upData(`exps.${i}.d`, ev.target.value)} style={{width:'100%',minHeight:60,padding:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a',fontFamily:'inherit',fontSize:12}}/>
-              </div>
-            ))}
-            <button onClick={() => upData('exps', [...data.exps, {t:'',c:'',l:'',s:'',e:'',d:''}])} style={{width:'100%',padding:8,background:'#0071E3',color:'#fff',border:'none',borderRadius:4,cursor:'pointer',fontWeight:600,fontSize:12}}>+ Add Experience</button>
-          </div>
+            {/* SUMMARY */}
+            <div className="cv-section">
+              <div style={{padding:'10px 14px 0'}}><SectionHead k="summary" label="Professional Summary" icon="✍️"/></div>
+              {colOpen.summary && <div className="cv-section-body">
+                <textarea className="cv-textarea" placeholder="Write 2–4 sentences summarising your experience, top skills, and career goal. Example: Results-driven software engineer with 5 years of experience building fintech products across West Africa..." value={data.summary} onChange={e=>upData('summary',e.target.value)} style={{minHeight:90}}/>
+              </div>}
+            </div>
 
-          {/* SECTION: Education */}
-          <div style={{background:'#f8fafc',padding:16,borderRadius:8,marginBottom:16,border:'1px solid #e2e8f0'}}>
-            <h3 style={{fontSize:13,fontWeight:600,marginBottom:12,color:'#0071E3'}}>Education</h3>
-            {data.edus.map((e, i) => (
-              <div key={i} style={{marginBottom:16,paddingBottom:16,borderBottom:i < data.edus.length - 1 ? '1px solid #e2e8f0' : 'none'}}>
-                <input type="text" placeholder="Degree / Qualification" value={e.deg} onChange={ev => upData(`edus.${i}.deg`, ev.target.value)} style={{width:'100%',padding:8,marginBottom:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
-                <input type="text" placeholder="School / University" value={e.sch} onChange={ev => upData(`edus.${i}.sch`, ev.target.value)} style={{width:'100%',padding:8,marginBottom:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
-                <input type="text" placeholder="Location" value={e.loc} onChange={ev => upData(`edus.${i}.loc`, ev.target.value)} style={{width:'100%',padding:8,marginBottom:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
-                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8,marginBottom:8}}>
-                  <input type="text" placeholder="Start Year" value={e.y1} onChange={ev => upData(`edus.${i}.y1`, ev.target.value)} style={{padding:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
-                  <input type="text" placeholder="End Year" value={e.y2} onChange={ev => upData(`edus.${i}.y2`, ev.target.value)} style={{padding:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
-                </div>
-                <input type="text" placeholder="Grade / GPA" value={e.g} onChange={ev => upData(`edus.${i}.g`, ev.target.value)} style={{width:'100%',padding:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a',marginBottom:8}}/>
-              </div>
-            ))}
-            <button onClick={() => upData('edus', [...data.edus, {deg:'',sch:'',loc:'',y1:'',y2:'',g:''}])} style={{width:'100%',padding:8,background:'#0071E3',color:'#fff',border:'none',borderRadius:4,cursor:'pointer',fontWeight:600,fontSize:12}}>+ Add Education</button>
-          </div>
+            {/* EXPERIENCE */}
+            <div className="cv-section">
+              <div style={{padding:'10px 14px 0'}}><SectionHead k="exp" label="Work Experience" icon="💼"/></div>
+              {colOpen.exp && <div className="cv-section-body">
+                {data.exps.map((e,i) => (
+                  <div key={i}>
+                    {i>0 && <hr className="cv-item-divider"/>}
+                    <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:6}}>
+                      <span style={{fontSize:11,fontWeight:600,color:'#94a3b8'}}>Role {i+1}</span>
+                      {data.exps.length>1 && <button className="cv-remove-btn" onClick={()=>upData('exps',data.exps.filter((_,j)=>j!==i))}>✕ Remove</button>}
+                    </div>
+                    <input className="cv-inp" placeholder="Job Title" value={e.t} onChange={ev=>upData(`exps.${i}.t`,ev.target.value)}/>
+                    <input className="cv-inp" placeholder="Company / Organisation" value={e.c} onChange={ev=>upData(`exps.${i}.c`,ev.target.value)}/>
+                    <input className="cv-inp" placeholder="Location (e.g. Lagos, Nigeria)" value={e.l} onChange={ev=>upData(`exps.${i}.l`,ev.target.value)}/>
+                    <div className="cv-row2">
+                      <div>
+                        <label className="cv-label">Start</label>
+                        <input className="cv-inp" type="month" value={e.s} onChange={ev=>upData(`exps.${i}.s`,ev.target.value)} style={{marginBottom:0}}/>
+                      </div>
+                      <div>
+                        <label className="cv-label">{e.cur?'Present':'End'}</label>
+                        <input className="cv-inp" type="month" value={e.e} disabled={e.cur} onChange={ev=>upData(`exps.${i}.e`,ev.target.value)} style={{marginBottom:0,opacity:e.cur?0.5:1}}/>
+                      </div>
+                    </div>
+                    <label className="cv-check-row" style={{marginTop:6}}>
+                      <input type="checkbox" checked={e.cur||false} onChange={ev=>upData(`exps.${i}.cur`,ev.target.checked)}/>
+                      <span>I currently work here</span>
+                    </label>
+                    <textarea className="cv-textarea" placeholder="• Describe key achievements using bullet points&#10;• Use numbers where possible (e.g. Increased revenue by 30%)&#10;• Start each bullet with an action verb (Led, Built, Managed, Reduced...)" value={e.d} onChange={ev=>upData(`exps.${i}.d`,ev.target.value)}/>
+                  </div>
+                ))}
+                <button className="cv-add-btn" onClick={()=>upData('exps',[...data.exps,{t:'',c:'',l:'',s:'',e:'',cur:false,d:''}])}>+ Add Another Role</button>
+              </div>}
+            </div>
 
-          {/* SECTION: Skills */}
-          <div style={{background:'#f8fafc',padding:16,borderRadius:8,marginBottom:16,border:'1px solid #e2e8f0'}}>
-            <h3 style={{fontSize:13,fontWeight:600,marginBottom:12,color:'#0071E3'}}>Skills</h3>
-            <textarea placeholder="Technical skills (comma-separated)" value={data.skills.h} onChange={e => upData('skills.h', e.target.value)} style={{width:'100%',minHeight:50,padding:8,marginBottom:10,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a',fontFamily:'inherit',fontSize:12}}/>
-            <textarea placeholder="Soft skills (comma-separated)" value={data.skills.s} onChange={e => upData('skills.s', e.target.value)} style={{width:'100%',minHeight:50,padding:8,marginBottom:10,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a',fontFamily:'inherit',fontSize:12}}/>
-            <textarea placeholder="Tools / Software (comma-separated)" value={data.skills.t} onChange={e => upData('skills.t', e.target.value)} style={{width:'100%',minHeight:50,padding:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a',fontFamily:'inherit',fontSize:12}}/>
-          </div>
+            {/* EDUCATION */}
+            <div className="cv-section">
+              <div style={{padding:'10px 14px 0'}}><SectionHead k="edu" label="Education" icon="🎓"/></div>
+              {colOpen.edu && <div className="cv-section-body">
+                {data.edus.map((e,i) => (
+                  <div key={i}>
+                    {i>0 && <hr className="cv-item-divider"/>}
+                    <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:6}}>
+                      <span style={{fontSize:11,fontWeight:600,color:'#94a3b8'}}>Qualification {i+1}</span>
+                      {data.edus.length>1 && <button className="cv-remove-btn" onClick={()=>upData('edus',data.edus.filter((_,j)=>j!==i))}>✕ Remove</button>}
+                    </div>
+                    <input className="cv-inp" placeholder="Degree / Qualification" value={e.deg} onChange={ev=>upData(`edus.${i}.deg`,ev.target.value)}/>
+                    <input className="cv-inp" placeholder="University / School" value={e.sch} onChange={ev=>upData(`edus.${i}.sch`,ev.target.value)}/>
+                    <input className="cv-inp" placeholder="Location" value={e.loc} onChange={ev=>upData(`edus.${i}.loc`,ev.target.value)}/>
+                    <div className="cv-row2">
+                      <input className="cv-inp" placeholder="Start year" value={e.y1} onChange={ev=>upData(`edus.${i}.y1`,ev.target.value)} style={{marginBottom:0}}/>
+                      <input className="cv-inp" placeholder="End year" value={e.y2} onChange={ev=>upData(`edus.${i}.y2`,ev.target.value)} style={{marginBottom:0}}/>
+                    </div>
+                    <input className="cv-inp" placeholder="Grade / GPA (optional)" value={e.g} onChange={ev=>upData(`edus.${i}.g`,ev.target.value)} style={{marginTop:8}}/>
+                  </div>
+                ))}
+                <button className="cv-add-btn" onClick={()=>upData('edus',[...data.edus,{deg:'',sch:'',loc:'',y1:'',y2:'',g:''}])}>+ Add Qualification</button>
+              </div>}
+            </div>
 
-          {/* SECTION: Certifications */}
-          <div style={{background:'#f8fafc',padding:16,borderRadius:8,marginBottom:16,border:'1px solid #e2e8f0'}}>
-            <h3 style={{fontSize:13,fontWeight:600,marginBottom:12,color:'#0071E3'}}>Certifications</h3>
-            {data.certs.map((c, i) => (
-              <div key={i} style={{marginBottom:12,paddingBottom:12,borderBottom:i < data.certs.length - 1 ? '1px solid #e2e8f0' : 'none'}}>
-                <input type="text" placeholder="Certification Name" value={c.n} onChange={ev => upData(`certs.${i}.n`, ev.target.value)} style={{width:'100%',padding:8,marginBottom:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
-                <input type="text" placeholder="Issuer" value={c.i} onChange={ev => upData(`certs.${i}.i`, ev.target.value)} style={{width:'100%',padding:8,marginBottom:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
-                <input type="text" placeholder="Year" value={c.y} onChange={ev => upData(`certs.${i}.y`, ev.target.value)} style={{width:'100%',padding:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
-              </div>
-            ))}
-            <button onClick={() => upData('certs', [...data.certs, {n:'',i:'',y:''}])} style={{width:'100%',padding:8,background:'#0071E3',color:'#fff',border:'none',borderRadius:4,cursor:'pointer',fontWeight:600,fontSize:12}}>+ Add Certification</button>
-          </div>
+            {/* SKILLS */}
+            <div className="cv-section">
+              <div style={{padding:'10px 14px 0'}}><SectionHead k="skills" label="Skills" icon="⚡"/></div>
+              {colOpen.skills && <div className="cv-section-body">
+                <label className="cv-label">Technical Skills</label>
+                <textarea className="cv-textarea" placeholder="Python, React, SQL, Data Analysis, Financial Modelling..." value={data.skills.h} onChange={e=>upData('skills.h',e.target.value)} style={{minHeight:52}}/>
+                <label className="cv-label">Soft Skills</label>
+                <textarea className="cv-textarea" placeholder="Leadership, Communication, Problem Solving, Teamwork..." value={data.skills.s} onChange={e=>upData('skills.s',e.target.value)} style={{minHeight:52}}/>
+                <label className="cv-label">Tools & Software</label>
+                <textarea className="cv-textarea" placeholder="Microsoft Office, Figma, Salesforce, QuickBooks..." value={data.skills.t} onChange={e=>upData('skills.t',e.target.value)} style={{minHeight:52}}/>
+              </div>}
+            </div>
 
-          {/* SECTION: Languages & References */}
-          <div style={{background:'#f8fafc',padding:16,borderRadius:8,marginBottom:16,border:'1px solid #e2e8f0'}}>
-            <h3 style={{fontSize:13,fontWeight:600,marginBottom:12,color:'#0071E3'}}>Languages</h3>
-            <input type="text" placeholder="Languages (comma-separated)" value={data.langs} onChange={e => upData('langs', e.target.value)} style={{width:'100%',padding:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a',marginBottom:16}}/>
+            {/* LANGUAGES */}
+            <div className="cv-section">
+              <div style={{padding:'10px 14px 0'}}><SectionHead k="langs" label="Languages" icon="🌐"/></div>
+              {colOpen.langs && <div className="cv-section-body">
+                {data.langs.map((lg,i) => (
+                  <div key={i} style={{display:'flex',gap:7,marginBottom:8,alignItems:'center'}}>
+                    <input className="cv-inp" placeholder="Language" value={lg.l} onChange={ev=>upData(`langs.${i}.l`,ev.target.value)} style={{flex:1,marginBottom:0}}/>
+                    <select className="cv-select" value={lg.lv} onChange={ev=>upData(`langs.${i}.lv`,ev.target.value)} style={{flex:'0 0 130px',marginBottom:0}}>
+                      {LANG_LEVELS.map(lv=><option key={lv} value={lv}>{lv}</option>)}
+                    </select>
+                    {data.langs.length>1 && <button className="cv-remove-btn" onClick={()=>upData('langs',data.langs.filter((_,j)=>j!==i))}>✕</button>}
+                  </div>
+                ))}
+                <button className="cv-add-btn" onClick={()=>upData('langs',[...data.langs,{l:'',lv:'Fluent'}])}>+ Add Language</button>
+              </div>}
+            </div>
 
-            <h3 style={{fontSize:13,fontWeight:600,marginBottom:12,color:'#0071E3'}}>References</h3>
-            <label style={{display:'flex',alignItems:'center',gap:8,marginBottom:12,cursor:'pointer'}}>
-              <input type="checkbox" checked={data.showRefs} onChange={e => upData('showRefs', e.target.checked)} style={{cursor:'pointer'}}/>
-              <span style={{fontSize:12}}>Include references</span>
-            </label>
-            {data.showRefs && data.refs.map((r, i) => (
-              <div key={i} style={{marginBottom:12,paddingBottom:12,borderBottom:i < data.refs.length - 1 ? '1px solid #e2e8f0' : 'none'}}>
-                <input type="text" placeholder="Name" value={r.n} onChange={ev => upData(`refs.${i}.n`, ev.target.value)} style={{width:'100%',padding:8,marginBottom:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
-                <input type="text" placeholder="Position" value={r.p} onChange={ev => upData(`refs.${i}.p`, ev.target.value)} style={{width:'100%',padding:8,marginBottom:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
-                <input type="email" placeholder="Email" value={r.e} onChange={ev => upData(`refs.${i}.e`, ev.target.value)} style={{width:'100%',padding:8,marginBottom:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
-                <input type="tel" placeholder="Phone" value={r.f} onChange={ev => upData(`refs.${i}.f`, ev.target.value)} style={{width:'100%',padding:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a'}}/>
-              </div>
-            ))}
-            {data.showRefs && <button onClick={() => upData('refs', [...data.refs, {n:'',p:'',e:'',f:''}])} style={{width:'100%',padding:8,background:'#0071E3',color:'#fff',border:'none',borderRadius:4,cursor:'pointer',fontWeight:600,fontSize:12}}>+ Add Reference</button>}
-          </div>
+            {/* PROJECTS */}
+            <div className="cv-section">
+              <div style={{padding:'10px 14px 0'}}><SectionHead k="projs" label="Projects" icon="🚀"/></div>
+              {colOpen.projs && <div className="cv-section-body">
+                <label className="cv-check-row">
+                  <input type="checkbox" checked={data.showProjs} onChange={e=>upData('showProjs',e.target.checked)}/>
+                  <span>Include projects section</span>
+                </label>
+                {data.showProjs && <>
+                  {data.projs.map((p,i) => (
+                    <div key={i}>
+                      {i>0 && <hr className="cv-item-divider"/>}
+                      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:6}}>
+                        <span style={{fontSize:11,fontWeight:600,color:'#94a3b8'}}>Project {i+1}</span>
+                        {data.projs.length>1 && <button className="cv-remove-btn" onClick={()=>upData('projs',data.projs.filter((_,j)=>j!==i))}>✕</button>}
+                      </div>
+                      <input className="cv-inp" placeholder="Project Name" value={p.n} onChange={ev=>upData(`projs.${i}.n`,ev.target.value)}/>
+                      <input className="cv-inp" placeholder="URL / GitHub (optional)" value={p.url} onChange={ev=>upData(`projs.${i}.url`,ev.target.value)}/>
+                      <textarea className="cv-textarea" placeholder="Brief description of the project and your role..." value={p.d} onChange={ev=>upData(`projs.${i}.d`,ev.target.value)} style={{minHeight:52}}/>
+                    </div>
+                  ))}
+                  <button className="cv-add-btn" onClick={()=>upData('projs',[...data.projs,{n:'',url:'',d:''}])}>+ Add Project</button>
+                </>}
+              </div>}
+            </div>
 
-          {/* SECTION: Extras */}
-          <div style={{background:'#f8fafc',padding:16,borderRadius:8,marginBottom:24,border:'1px solid #e2e8f0'}}>
-            <h3 style={{fontSize:13,fontWeight:600,marginBottom:12,color:'#0071E3'}}>Extras</h3>
-            <textarea placeholder="Awards & Honors" value={data.extras.awards} onChange={e => upData('extras.awards', e.target.value)} style={{width:'100%',minHeight:50,padding:8,marginBottom:10,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a',fontFamily:'inherit',fontSize:12}}/>
-            <textarea placeholder="Interests & Hobbies" value={data.extras.hobbies} onChange={e => upData('extras.hobbies', e.target.value)} style={{width:'100%',minHeight:50,padding:8,background:'#fff',border:'1.5px solid #e2e8f0',borderRadius:6,color:'#0f172a',fontFamily:'inherit',fontSize:12}}/>
-          </div>
+            {/* CERTIFICATIONS */}
+            <div className="cv-section">
+              <div style={{padding:'10px 14px 0'}}><SectionHead k="certs" label="Certifications" icon="🏅"/></div>
+              {colOpen.certs && <div className="cv-section-body">
+                {data.certs.map((c,i) => (
+                  <div key={i}>
+                    {i>0 && <hr className="cv-item-divider"/>}
+                    <input className="cv-inp" placeholder="Certification Name" value={c.n} onChange={ev=>upData(`certs.${i}.n`,ev.target.value)}/>
+                    <div className="cv-row2">
+                      <input className="cv-inp" placeholder="Issued by" value={c.i} onChange={ev=>upData(`certs.${i}.i`,ev.target.value)} style={{marginBottom:0}}/>
+                      <input className="cv-inp" placeholder="Year" value={c.y} onChange={ev=>upData(`certs.${i}.y`,ev.target.value)} style={{marginBottom:0}}/>
+                    </div>
+                    {data.certs.length>1 && <button className="cv-remove-btn" style={{marginTop:6}} onClick={()=>upData('certs',data.certs.filter((_,j)=>j!==i))}>✕ Remove</button>}
+                  </div>
+                ))}
+                <button className="cv-add-btn" style={{marginTop:8}} onClick={()=>upData('certs',[...data.certs,{n:'',i:'',y:''}])}>+ Add Certification</button>
+              </div>}
+            </div>
 
-          {/* ACTION BUTTONS */}
-          <div style={{display:'flex',gap:10}}>
-            <button onClick={downloadPDF} style={{flex:1,padding:10,background:'#0071E3',color:'#fff',border:'none',borderRadius:6,cursor:'pointer',fontWeight:600,fontSize:13}}>📥 Download PDF</button>
-            <button onClick={copyResults} style={{flex:1,padding:10,background:'#0969da',color:'#fff',border:'none',borderRadius:6,cursor:'pointer',fontWeight:600,fontSize:13}}>📋 Copy CV</button>
+            {/* REFERENCES */}
+            <div className="cv-section">
+              <div style={{padding:'10px 14px 0'}}><SectionHead k="refs" label="References" icon="👥"/></div>
+              {colOpen.refs && <div className="cv-section-body">
+                <label className="cv-check-row">
+                  <input type="checkbox" checked={data.showRefs} onChange={e=>upData('showRefs',e.target.checked)}/>
+                  <span>Include references</span>
+                </label>
+                {data.showRefs && <>
+                  {data.refs.map((r,i) => (
+                    <div key={i}>
+                      {i>0 && <hr className="cv-item-divider"/>}
+                      <input className="cv-inp" placeholder="Full Name" value={r.n} onChange={ev=>upData(`refs.${i}.n`,ev.target.value)}/>
+                      <input className="cv-inp" placeholder="Position / Title" value={r.p} onChange={ev=>upData(`refs.${i}.p`,ev.target.value)}/>
+                      <div className="cv-row2">
+                        <input className="cv-inp" type="email" placeholder="Email" value={r.e} onChange={ev=>upData(`refs.${i}.e`,ev.target.value)} style={{marginBottom:0}}/>
+                        <input className="cv-inp" type="tel" placeholder="Phone" value={r.f} onChange={ev=>upData(`refs.${i}.f`,ev.target.value)} style={{marginBottom:0}}/>
+                      </div>
+                      {data.refs.length>1 && <button className="cv-remove-btn" style={{marginTop:6}} onClick={()=>upData('refs',data.refs.filter((_,j)=>j!==i))}>✕ Remove</button>}
+                    </div>
+                  ))}
+                  <button className="cv-add-btn" style={{marginTop:8}} onClick={()=>upData('refs',[...data.refs,{n:'',p:'',e:'',f:''}])}>+ Add Reference</button>
+                </>}
+              </div>}
+            </div>
+
+            {/* EXTRAS */}
+            <div className="cv-section">
+              <div style={{padding:'10px 14px 0'}}><SectionHead k="extras" label="Awards & Interests" icon="🏆"/></div>
+              {colOpen.extras && <div className="cv-section-body">
+                <label className="cv-label">Awards & Honours</label>
+                <textarea className="cv-textarea" placeholder="Best Student Award, Regional Sales Champion..." value={data.extras.awards} onChange={e=>upData('extras.awards',e.target.value)} style={{minHeight:52}}/>
+                <label className="cv-label">Interests & Hobbies</label>
+                <textarea className="cv-textarea" placeholder="Football, Photography, Travelling, Open Source..." value={data.extras.hobbies} onChange={e=>upData('extras.hobbies',e.target.value)} style={{minHeight:52}}/>
+              </div>}
+            </div>
+
+            <div style={{height:20}}/>
           </div>
         </div>
 
-        {/* PREVIEW PANEL — RIGHT */}
-        <div style={{flex:'0 0 55%',background:'#f8fafc',display:'flex',flexDirection:'column',borderLeft:'1px solid #e2e8f0'}}>
-          {/* Template Switcher */}
-          <div style={{padding:16,borderBottom:'1px solid #e2e8f0',overflowX:'auto',display:'flex',gap:8}}>
-            {TEMPLATES.map(t => (
-              <button key={t.id} onClick={() => setTemplate(t.id)} style={{
-                padding:'6px 12px',
-                borderRadius:6,
-                border:template === t.id ? '2px solid #79c0ff' : '1px solid #e2e8f0',
-                background:template === t.id ? '#ffffff' : 'transparent',
-                color:template === t.id ? '#79c0ff' : '#64748b',
-                cursor:'pointer',
-                fontSize:12,
-                fontWeight:600,
-                whiteSpace:'nowrap',
-                flexShrink:0
-              }}>
-                {t.name}
-              </button>
+        {/* PREVIEW PANEL */}
+        <div className="cv-preview-panel">
+          {/* Template switcher */}
+          <div className="cv-preview-top">
+            {tmplGroups.map((grp,gi) => (
+              <React.Fragment key={grp.label}>
+                {gi>0 && <div className="cv-tmpl-sep"/>}
+                <span style={{fontSize:10,fontWeight:700,color:'#94a3b8',letterSpacing:'0.06em',textTransform:'uppercase',flexShrink:0,alignSelf:'center'}}>{grp.label}</span>
+                {grp.items.map(t => (
+                  <button key={t.id} className={'cv-tmpl-btn'+(template===t.id?' active':'')} onClick={()=>setTemplate(t.id)}>
+                    <span style={{width:8,height:8,borderRadius:'50%',background:t.colors[0],display:'inline-block',marginRight:4,flexShrink:0,verticalAlign:'middle'}}/>
+                    {t.name}
+                  </button>
+                ))}
+              </React.Fragment>
             ))}
           </div>
 
-          {/* CV Preview */}
-          <div style={{flex:1,overflowY:'auto',padding:20,display:'flex',justifyContent:'center'}}>
-            <div id="cvpreview" style={{width:'595px',aspectRatio:'210/297',background:'#fff',boxShadow:'0 10px 40px rgba(0,0,0,.3)',borderRadius:2}}>
-              {template === 'slate' && <SlateTemplate data={data} norms={norms}/>}
-              {template === 'ember' && <EmberTemplate data={data} norms={norms}/>}
-              {template === 'phantom' && <PhantomTemplate data={data} norms={norms}/>}
-              {template === 'indigo' && <IndigoTemplate data={data} norms={norms}/>}
-              {template === 'noir' && <NoirTemplate data={data} norms={norms}/>}
-              {template === 'stone' && <StoneTemplate data={data} norms={norms}/>}
+          {/* Color accent picker */}
+          <div className="cv-colors">
+            <span className="cv-color-label">Accent:</span>
+            {ACCENT_COLORS.map(c => (
+              <div key={c} className={'cv-color-dot'+(accentColor===c?' active':'')} style={{background:c}} onClick={()=>setAccentColor(c)} title={c}/>
+            ))}
+            <span style={{marginLeft:'auto',fontSize:10,color:'#94a3b8'}}>Auto-saved ✓</span>
+          </div>
+
+          {/* A4 Preview — fixed container, scrollable inside */}
+          <div className="cv-preview-scroll">
+            <div id="cvpreview">
+              {template==='slate'   && <SlateTemplate   data={data} norms={norms} accent={accentColor}/>}
+              {template==='ember'   && <EmberTemplate   data={data} norms={norms} accent={accentColor}/>}
+              {template==='phantom' && <PhantomTemplate data={data} norms={norms} accent={accentColor}/>}
+              {template==='indigo'  && <IndigoTemplate  data={data} norms={norms} accent={accentColor}/>}
+              {template==='noir'    && <NoirTemplate    data={data} norms={norms} accent={accentColor}/>}
+              {template==='stone'   && <StoneTemplate   data={data} norms={norms} accent={accentColor}/>}
+              {template==='lagos'   && <LagosTemplate   data={data} norms={norms} accent={accentColor}/>}
+              {template==='nairobi' && <NairobiTemplate data={data} norms={norms} accent={accentColor}/>}
+              {template==='accra'   && <AccraTemplate   data={data} norms={norms} accent={accentColor}/>}
+              {template==='cape'    && <CapeTemplate    data={data} norms={norms} accent={accentColor}/>}
             </div>
           </div>
         </div>
@@ -407,363 +594,484 @@ function CVBuilder() {
   );
 }
 
-// TEMPLATE COMPONENTS
-function SlateTemplate({data: d, norms}) {
-  const name = esc(d.fn + ' ' + d.ln) || 'Your Name';
-  const title = esc(d.title) || 'Professional Title';
-  const contact = [d.email && ('✉ ' + esc(d.email)), d.phone && ('📱 ' + esc(d.phone)), d.loc && ('📍 ' + esc(d.loc)), d.web && ('🔗 ' + esc(d.web))].filter(Boolean);
-  const personal = d.sp ? [d.dob && ('DOB: ' + fmtDOB(d.dob)), d.nat && esc(d.nat), d.gen && esc(d.gen), d.mar && esc(d.mar), d.so && esc(d.so)].filter(Boolean) : [];
-  const allSkills = toArr(d.skills.h).concat(toArr(d.skills.s));
-  const tools = toArr(d.skills.t);
-  const hasExp = d.exps.some(e => e.t || e.c);
-  const hasEdu = d.edus.some(e => e.deg || e.sch);
-  const hasCerts = d.certs.some(c => c.n);
-  const hasRef = d.showRefs && d.refs.some(r => r.n);
+// ─── SHARED HELPERS ────────────────────────────────────────────
+function getCommonProps(d, accent) {
+  const name = (d.fn+' '+d.ln).trim() || 'Your Name';
+  const title = d.title || 'Professional Title';
+  const contact = [
+    d.email   && '✉ '+esc(d.email),
+    d.phone   && '📱 '+esc(d.phone),
+    d.loc     && '📍 '+esc(d.loc),
+    d.linkedin && '🔗 '+esc(d.linkedin),
+    d.web     && '🌐 '+esc(d.web),
+  ].filter(Boolean);
+  const personal = d.sp ? [
+    d.dob && ('DOB: '+fmtDOB(d.dob)),
+    d.nat && esc(d.nat),
+    d.gen && esc(d.gen),
+    d.mar && esc(d.mar),
+    d.so  && esc(d.so),
+  ].filter(Boolean) : [];
+  const techSkills = toArr(d.skills.h);
+  const softSkills = toArr(d.skills.s);
+  const toolSkills = toArr(d.skills.t);
+  const allSkills = [...techSkills,...softSkills];
+  const hasExp  = d.exps.some(e=>e.t||e.c);
+  const hasEdu  = d.edus.some(e=>e.deg||e.sch);
+  const hasProj = d.showProjs && d.projs.some(p=>p.n);
+  const hasCert = d.certs.some(c=>c.n);
+  const hasRef  = d.showRefs && d.refs.some(r=>r.n);
+  const hasLang = d.langs.some(l=>l.l);
+  return {name,title,contact,personal,techSkills,softSkills,toolSkills,allSkills,hasExp,hasEdu,hasProj,hasCert,hasRef,hasLang};
+}
 
-  const Photo = () => {
-    if (d.showPhoto && d.photo) return <img style={{width:60,height:60,borderRadius:4,objectFit:'cover',marginBottom:8}} src={d.photo} alt=""/>;
-    if (d.showPhoto) return <div style={{width:60,height:60,borderRadius:4,background:'#e0e0e0',display:'flex',alignItems:'center',justifyContent:'center',fontSize:24,opacity:.3,marginBottom:8}}>👤</div>;
-    return null;
-  };
-  const Pills = ({items,bg,color}) => items.map((s,i) => <span key={i} style={{display:'inline-block',padding:'2px 6px',borderRadius:3,fontSize:7,fontWeight:600,margin:'1.5px',background:bg,color:color}}>{esc(s)}</span>);
-  const ExpEntries = () => d.exps.map((e,i) => {if (!e.t && !e.c) return null; return (
-    <div key={i} style={{marginBottom:8}}>
-      <div style={{fontWeight:700,fontSize:9.5}}>{esc(e.t || 'Position')}</div>
-      <div style={{fontSize:9,fontWeight:600,color:'#666'}}>{esc(e.c)}{e.l ? ' · ' + esc(e.l) : ''}</div>
-      {(e.s || e.e) && <div style={{fontSize:8,color:'#999'}}>{e.s}{e.e ? ' – ' + e.e : ''}</div>}
-      {e.d && <div style={{fontSize:8.5,color:'#555',lineHeight:1.4}} dangerouslySetInnerHTML={{__html: descToHTML(e.d)}}/>}
-    </div>);});
-  const EduEntries = () => d.edus.map((e,i) => {if (!e.deg && !e.sch) return null; return (
-    <div key={i} style={{marginBottom:8}}>
-      <div style={{fontWeight:700,fontSize:9.5}}>{esc(e.deg || 'Qualification')}</div>
-      <div style={{fontSize:9,fontWeight:600,color:'#666'}}>{esc(e.sch)}{e.loc ? ' · ' + esc(e.loc) : ''}</div>
-      {(e.y1 || e.y2) && <div style={{fontSize:8,color:'#999'}}>{e.y1}{e.y2 ? ' – ' + e.y2 : ''}</div>}
-      {e.g && <div style={{fontSize:8.5,color:'#555'}}>{esc(e.g)}</div>}
-    </div>);});
-  const CertEntries = () => d.certs.map((c,i) => {if (!c.n) return null; return <div key={i} style={{fontSize:8.5,marginBottom:6}}><span style={{fontWeight:700}}>{esc(c.n)}</span>{c.i && <span style={{color:'#999',marginLeft:4}}>· {esc(c.i)}</span>}{c.y && <span style={{color:'#999',marginLeft:4}}>· {c.y}</span>}</div>;});
-  const RefEntries = () => d.refs.map((r,i) => {if (!r.n) return null; return <div key={i} style={{marginBottom:6}}><div style={{fontWeight:700,fontSize:8.5}}>{esc(r.n)}</div>{r.p && <div style={{fontSize:8,color:'#666'}}>{esc(r.p)}</div>}<div style={{fontSize:7.5,color:'#999'}}>{[r.e, r.f].filter(Boolean).join(' · ')}</div></div>;});
-  const Sec = ({label, children}) => children ? <div style={{marginBottom:12}}><div style={{fontSize:8,fontWeight:700,textTransform:'uppercase',letterSpacing:.5,color:'#1e293b',marginBottom:6,paddingBottom:4,borderBottom:'2px solid #3b82f6'}}>{label}</div>{children}</div> : null;
+const ExpRows = ({exps}) => exps.map((e,i)=>{if(!e.t&&!e.c)return null;return(
+  <div key={i} style={{marginBottom:9}}>
+    <div style={{fontWeight:700,fontSize:9.5,color:'inherit'}}>{esc(e.t||'Position')}</div>
+    <div style={{fontSize:9,color:'#777'}}>{esc(e.c)}{e.l?' · '+esc(e.l):''}{e.cur?' · Present':(e.s||e.e)?' · '+fmtMonth(e.s)+(e.e?' – '+fmtMonth(e.e):''):''}</div>
+    {e.d&&<div style={{fontSize:8.5,lineHeight:1.4,marginTop:2}} dangerouslySetInnerHTML={{__html:descToHTML(e.d)}}/>}
+  </div>
+);});
 
+const EduRows = ({edus}) => edus.map((e,i)=>{if(!e.deg&&!e.sch)return null;return(
+  <div key={i} style={{marginBottom:8}}>
+    <div style={{fontWeight:700,fontSize:9.5}}>{esc(e.deg||'Qualification')}</div>
+    <div style={{fontSize:9,color:'#777'}}>{esc(e.sch)}{e.loc?' · '+esc(e.loc):''}</div>
+    {(e.y1||e.y2)&&<div style={{fontSize:8.5,color:'#999'}}>{e.y1}{e.y2?' – '+e.y2:''}{e.g?' · '+esc(e.g):''}</div>}
+  </div>
+);});
+
+const ProjRows = ({projs}) => projs.map((p,i)=>{if(!p.n)return null;return(
+  <div key={i} style={{marginBottom:8}}>
+    <div style={{fontWeight:700,fontSize:9.5}}>{esc(p.n)}{p.url&&<span style={{fontWeight:400,color:'#0071E3',marginLeft:5,fontSize:8}}>🔗 {esc(p.url)}</span>}</div>
+    {p.d&&<div style={{fontSize:8.5,color:'#666',lineHeight:1.4,marginTop:2}}>{esc(p.d)}</div>}
+  </div>
+);});
+
+const CertRows = ({certs}) => certs.map((c,i)=>{if(!c.n)return null;return(
+  <div key={i} style={{fontSize:8.5,marginBottom:5}}>
+    <span style={{fontWeight:700}}>{esc(c.n)}</span>
+    {c.i&&<span style={{color:'#999',marginLeft:4}}>· {esc(c.i)}</span>}
+    {c.y&&<span style={{color:'#bbb',marginLeft:4}}>· {c.y}</span>}
+  </div>
+);});
+
+const LangRows = ({langs}) => langs.filter(l=>l.l).map((l,i)=>(
+  <div key={i} style={{display:'flex',justifyContent:'space-between',fontSize:8.5,marginBottom:4}}>
+    <span>{esc(l.l)}</span><span style={{color:'#999',fontSize:8}}>{l.lv}</span>
+  </div>
+));
+
+const RefRows = ({refs}) => refs.map((r,i)=>{if(!r.n)return null;return(
+  <div key={i} style={{marginBottom:6}}>
+    <div style={{fontWeight:700,fontSize:8.5}}>{esc(r.n)}</div>
+    {r.p&&<div style={{fontSize:8,color:'#777'}}>{esc(r.p)}</div>}
+    <div style={{fontSize:7.5,color:'#bbb'}}>{[r.e,r.f].filter(Boolean).join(' · ')}</div>
+  </div>
+);});
+
+const Pills = ({items,bg,color}) => items.length===0?null:<>{items.map((s,i)=><span key={i} style={{display:'inline-block',padding:'2px 6px',borderRadius:3,fontSize:7.5,fontWeight:600,margin:'2px',background:bg,color:color}}>{esc(s)}</span>)}</>;
+
+// ─── TEMPLATE 1: SLATE ─────────────────────────────────────────
+function SlateTemplate({data:d, accent}) {
+  const {name,title,contact,personal,allSkills,toolSkills,hasExp,hasEdu,hasProj,hasCert,hasRef,hasLang} = getCommonProps(d,accent);
+  const ac = accent||'#3b82f6';
+  const Sec = ({label,children}) => !children?null:(
+    <div style={{marginBottom:11}}>
+      <div style={{fontSize:7.5,fontWeight:700,textTransform:'uppercase',letterSpacing:0.6,color:'#dbeafe',marginBottom:5,paddingBottom:3,borderBottom:'1px solid rgba(255,255,255,0.15)'}}>{label}</div>
+      {children}
+    </div>
+  );
+  const SecR = ({label,children}) => !children?null:(
+    <div style={{marginBottom:11}}>
+      <div style={{fontSize:7.5,fontWeight:700,textTransform:'uppercase',letterSpacing:0.6,color:'#0f172a',marginBottom:5,paddingBottom:3,borderBottom:'2px solid '+ac}}>{label}</div>
+      {children}
+    </div>
+  );
   return (
-    <div style={{fontFamily:"'Outfit',sans-serif",fontSize:8.5,lineHeight:1.45,color:'#222',height:'100%',display:'flex'}}>
-      {/* LEFT SIDEBAR — 38% */}
-      <div style={{flex:'0 0 38%',background:'#1e293b',color:'#fff',padding:20,display:'flex',flexDirection:'column'}}>
-        <Photo/>
-        <div style={{fontFamily:"'Fraunces',serif",fontSize:18,fontWeight:600,marginBottom:1}}>{name}</div>
-        <div style={{fontSize:9,color:'#94a3b8',marginBottom:14}}>{title}</div>
-
-        {personal.length > 0 && <Sec label="Personal" style={{color:'#64748b'}}><div>{personal.map((p,i) => <div key={i} style={{fontSize:8,marginBottom:3}}>{p}</div>)}</div></Sec>}
-        {allSkills.length > 0 && <Sec label="Skills"><Pills items={allSkills} bg="#dbeafe" color="#1e40af"/></Sec>}
-        {tools.length > 0 && <Sec label="Tools"><div>{tools.map((t,i) => <div key={i} style={{fontSize:8,marginBottom:3}}>{esc(t)}</div>)}</div></Sec>}
-        {d.langs && <Sec label="Languages"><div>{d.langs.split(',').map((l,i) => <div key={i} style={{fontSize:8,marginBottom:3}}>{l.trim()}</div>)}</div></Sec>}
-        {d.extras.hobbies && <Sec label="Interests"><div style={{fontSize:8}}>{esc(d.extras.hobbies)}</div></Sec>}
+    <div style={{fontFamily:"'Outfit',sans-serif",fontSize:8.5,lineHeight:1.5,color:'#222',minHeight:'100%',display:'flex'}}>
+      <div style={{flex:'0 0 37%',background:'#1e293b',color:'#e2e8f0',padding:'22px 16px',display:'flex',flexDirection:'column',minHeight:'100%'}}>
+        {d.showPhoto&&d.photo&&<img style={{width:64,height:64,borderRadius:6,objectFit:'cover',marginBottom:12,border:'2px solid rgba(255,255,255,0.15)'}} src={d.photo} alt=""/>}
+        <div style={{fontFamily:"'Fraunces',serif",fontSize:17,fontWeight:600,marginBottom:2,color:'#fff',lineHeight:1.2}}>{name}</div>
+        <div style={{fontSize:8.5,color:ac,fontWeight:600,marginBottom:14,letterSpacing:0.5}}>{title}</div>
+        {contact.length>0&&<Sec label="Contact"><div>{contact.map((c,i)=><div key={i} style={{fontSize:8,marginBottom:3,color:'#94a3b8'}}>{c}</div>)}</div></Sec>}
+        {personal.length>0&&<Sec label="Personal"><div>{personal.map((p,i)=><div key={i} style={{fontSize:8,marginBottom:3}}>{p}</div>)}</div></Sec>}
+        {allSkills.length>0&&<Sec label="Skills"><Pills items={allSkills} bg="rgba(59,130,246,0.2)" color="#93c5fd"/></Sec>}
+        {toolSkills.length>0&&<Sec label="Tools"><div>{toolSkills.map((t,i)=><div key={i} style={{fontSize:8,marginBottom:2,color:'#94a3b8'}}>· {esc(t)}</div>)}</div></Sec>}
+        {hasLang&&<Sec label="Languages"><LangRows langs={d.langs}/></Sec>}
+        {d.extras.hobbies&&<Sec label="Interests"><div style={{fontSize:8,color:'#94a3b8'}}>{esc(d.extras.hobbies)}</div></Sec>}
       </div>
-
-      {/* RIGHT BODY — 62% */}
-      <div style={{flex:'0 0 62%',padding:18,overflowY:'auto'}}>
-        {d.summary && <Sec label="Professional Summary"><div style={{fontSize:8.5,color:'#555'}}><p>{esc(d.summary)}</p></div></Sec>}
-        {hasExp && <Sec label="Work Experience"><ExpEntries/></Sec>}
-        {hasEdu && <Sec label="Education"><EduEntries/></Sec>}
-        {hasCerts && <Sec label="Certifications"><CertEntries/></Sec>}
-        {d.extras.awards && <Sec label="Awards"><div style={{fontSize:8.5,color:'#555'}} dangerouslySetInnerHTML={{__html: descToHTML(d.extras.awards)}}/>< /Sec>}
-        {hasRef && <Sec label="References"><RefEntries/></Sec>}
+      <div style={{flex:1,padding:'22px 18px',background:'#fff',minHeight:'100%'}}>
+        {d.summary&&<SecR label="Summary"><div style={{fontSize:8.5,color:'#555',lineHeight:1.6}}>{esc(d.summary)}</div></SecR>}
+        {hasExp&&<SecR label="Work Experience"><ExpRows exps={d.exps}/></SecR>}
+        {hasEdu&&<SecR label="Education"><EduRows edus={d.edus}/></SecR>}
+        {hasProj&&<SecR label="Projects"><ProjRows projs={d.projs}/></SecR>}
+        {hasCert&&<SecR label="Certifications"><CertRows certs={d.certs}/></SecR>}
+        {d.extras.awards&&<SecR label="Awards"><div style={{fontSize:8.5,color:'#555'}} dangerouslySetInnerHTML={{__html:descToHTML(d.extras.awards)}}/></SecR>}
+        {hasRef&&<SecR label="References"><RefRows refs={d.refs}/></SecR>}
       </div>
     </div>
   );
 }
 
-function EmberTemplate({data: d, norms}) {
-  const name = esc(d.fn + ' ' + d.ln) || 'Your Name';
-  const title = esc(d.title) || 'Professional Title';
-  const contact = [d.email && ('✉ ' + esc(d.email)), d.phone && ('📱 ' + esc(d.phone)), d.loc && ('📍 ' + esc(d.loc)), d.web && ('🔗 ' + esc(d.web))].filter(Boolean);
-  const personal = d.sp ? [d.dob && ('DOB: ' + fmtDOB(d.dob)), d.nat && esc(d.nat), d.gen && esc(d.gen), d.mar && esc(d.mar), d.so && esc(d.so)].filter(Boolean) : [];
-  const allSkills = toArr(d.skills.h).concat(toArr(d.skills.s));
-  const tools = toArr(d.skills.t);
-  const hasExp = d.exps.some(e => e.t || e.c);
-  const hasEdu = d.edus.some(e => e.deg || e.sch);
-  const hasCerts = d.certs.some(c => c.n);
-  const hasRef = d.showRefs && d.refs.some(r => r.n);
-
-  const Photo = () => {
-    if (d.showPhoto && d.photo) return <img style={{width:56,height:56,borderRadius:3,objectFit:'cover',marginRight:12}} src={d.photo} alt=""/>;
-    return null;
-  };
-  const Pills = ({items,bg,color}) => items.map((s,i) => <span key={i} style={{display:'inline-block',padding:'2px 5px',borderRadius:2,fontSize:7.5,fontWeight:600,margin:'1px',background:bg,color:color}}>{esc(s)}</span>);
-  const ExpEntries = () => d.exps.map((e,i) => {if (!e.t && !e.c) return null; return (
-    <div key={i} style={{marginBottom:8}}>
-      <div style={{fontWeight:700,fontSize:9.5}}>{esc(e.t || 'Position')}</div>
-      <div style={{fontSize:9,color:'#666'}}>{esc(e.c)}{e.l ? ' · ' + esc(e.l) : ''}</div>
-      {(e.s || e.e) && <div style={{fontSize:8,color:'#999'}}>{e.s}{e.e ? ' – ' + e.e : ''}</div>}
-      {e.d && <div style={{fontSize:8.5,color:'#555',lineHeight:1.4}} dangerouslySetInnerHTML={{__html: descToHTML(e.d)}}/>}
-    </div>);});
-  const EduEntries = () => d.edus.map((e,i) => {if (!e.deg && !e.sch) return null; return (
-    <div key={i} style={{marginBottom:8}}>
-      <div style={{fontWeight:700,fontSize:9.5}}>{esc(e.deg || 'Qualification')}</div>
-      <div style={{fontSize:9,color:'#666'}}>{esc(e.sch)}{e.loc ? ' · ' + esc(e.loc) : ''}</div>
-      {(e.y1 || e.y2) && <div style={{fontSize:8,color:'#999'}}>{e.y1}{e.y2 ? ' – ' + e.y2 : ''}</div>}
-      {e.g && <div style={{fontSize:8.5,color:'#555'}}>{esc(e.g)}</div>}
-    </div>);});
-  const CertEntries = () => d.certs.map((c,i) => {if (!c.n) return null; return <div key={i} style={{fontSize:8.5,marginBottom:5}}><span style={{fontWeight:700}}>{esc(c.n)}</span>{c.i && <span style={{color:'#999',marginLeft:4}}>· {esc(c.i)}</span>}{c.y && <span style={{color:'#999',marginLeft:4}}>· {c.y}</span>}</div>;});
-  const RefEntries = () => d.refs.map((r,i) => {if (!r.n) return null; return <div key={i} style={{marginBottom:6}}><div style={{fontWeight:700,fontSize:8.5}}>{esc(r.n)}</div>{r.p && <div style={{fontSize:8.5,color:'#666'}}>{esc(r.p)}</div>}<div style={{fontSize:8,color:'#999'}}>{[r.e, r.f].filter(Boolean).join(' · ')}</div></div>;});
-  const Sec = ({label, children}) => children ? <div style={{marginBottom:12}}><div style={{fontSize:8.5,fontWeight:700,textTransform:'uppercase',letterSpacing:1,color:'#c2410c',paddingBottom:4,borderBottom:'1px solid #c2410c',marginBottom:8}}>{label}</div>{children}</div> : null;
-
+// ─── TEMPLATE 2: EMBER ─────────────────────────────────────────
+function EmberTemplate({data:d, accent}) {
+  const {name,title,contact,personal,allSkills,toolSkills,hasExp,hasEdu,hasProj,hasCert,hasRef,hasLang} = getCommonProps(d,accent);
+  const ac = accent||'#c2410c';
+  const Sec = ({label,children}) => !children?null:(
+    <div style={{marginBottom:12}}>
+      <div style={{fontSize:8.5,fontWeight:700,textTransform:'uppercase',letterSpacing:1,color:ac,paddingBottom:4,borderBottom:'1px solid '+ac,marginBottom:7}}>{label}</div>
+      {children}
+    </div>
+  );
   return (
-    <div style={{fontFamily:"'Outfit',sans-serif",fontSize:8.5,lineHeight:1.45,color:'#1c1917',height:'100%',padding:20}}>
-      {/* HEADER */}
-      <div style={{display:'flex',alignItems:'flex-start',marginBottom:16,paddingBottom:12,borderBottom:'4px solid #c2410c'}}>
-        <Photo/>
-        <div>
-          <div style={{fontFamily:"'Fraunces',serif",fontSize:19,fontWeight:700,marginBottom:2}}>{name}</div>
-          <div style={{fontSize:9,fontWeight:600,textTransform:'uppercase',letterSpacing:1.5,color:'#c2410c',marginBottom:8}}>{title}</div>
-          <div style={{display:'flex',flexWrap:'wrap',gap:12,fontSize:8,color:'#999'}}>{contact.map((c,i) => <span key={i}>{c}</span>)}</div>
+    <div style={{fontFamily:"'Outfit',sans-serif",fontSize:8.5,lineHeight:1.5,color:'#1c1917',minHeight:'100%',padding:22}}>
+      <div style={{display:'flex',alignItems:'flex-start',marginBottom:16,paddingBottom:14,borderBottom:'3px solid '+ac}}>
+        {d.showPhoto&&d.photo&&<img style={{width:58,height:58,borderRadius:4,objectFit:'cover',marginRight:14,border:'2px solid '+ac}} src={d.photo} alt=""/>}
+        <div style={{flex:1}}>
+          <div style={{fontFamily:"'Fraunces',serif",fontSize:20,fontWeight:700,marginBottom:2,lineHeight:1.1}}>{name}</div>
+          <div style={{fontSize:9,fontWeight:600,textTransform:'uppercase',letterSpacing:1.5,color:ac,marginBottom:8}}>{title}</div>
+          <div style={{display:'flex',flexWrap:'wrap',gap:10,fontSize:8,color:'#888'}}>{contact.map((c,i)=><span key={i}>{c}</span>)}</div>
         </div>
       </div>
-
-      {/* BODY */}
-      {d.summary && <Sec label="Summary"><div style={{fontSize:8.5,color:'#555'}}><p>{esc(d.summary)}</p></div></Sec>}
-      {personal.length > 0 && <Sec label="Personal"><div>{personal.map((p,i) => <div key={i} style={{fontSize:8.5,marginBottom:2}}>{p}</div>)}</div></Sec>}
-      {hasExp && <Sec label="Experience"><ExpEntries/></Sec>}
-      {hasEdu && <Sec label="Education"><EduEntries/></Sec>}
-      {(allSkills.length > 0 || tools.length > 0) && <Sec label="Skills"><Pills items={allSkills.concat(tools)} bg="#fff7ed" color="#c2410c"/></Sec>}
-      {hasCerts && <Sec label="Certifications"><CertEntries/></Sec>}
-      {hasRef && <Sec label="References"><RefEntries/></Sec>}
+      {d.summary&&<Sec label="Summary"><div style={{fontSize:8.5,color:'#555',lineHeight:1.65}}>{esc(d.summary)}</div></Sec>}
+      {personal.length>0&&<Sec label="Personal"><div style={{display:'flex',flexWrap:'wrap',gap:'4px 16px'}}>{personal.map((p,i)=><span key={i} style={{fontSize:8.5}}>{p}</span>)}</div></Sec>}
+      {hasExp&&<Sec label="Work Experience"><ExpRows exps={d.exps}/></Sec>}
+      {hasEdu&&<Sec label="Education"><EduRows edus={d.edus}/></Sec>}
+      {(allSkills.length>0||toolSkills.length>0)&&<Sec label="Skills"><Pills items={[...allSkills,...toolSkills]} bg="#fff7ed" color={ac}/></Sec>}
+      {hasLang&&<Sec label="Languages"><LangRows langs={d.langs}/></Sec>}
+      {hasProj&&<Sec label="Projects"><ProjRows projs={d.projs}/></Sec>}
+      {hasCert&&<Sec label="Certifications"><CertRows certs={d.certs}/></Sec>}
+      {hasRef&&<Sec label="References"><RefRows refs={d.refs}/></Sec>}
     </div>
   );
 }
 
-function PhantomTemplate({data: d, norms}) {
-  const name = esc(d.fn + ' ' + d.ln) || 'Your Name';
-  const title = esc(d.title) || 'Professional Title';
-  const contact = [d.email && ('✉ ' + esc(d.email)), d.phone && ('📱 ' + esc(d.phone)), d.loc && ('📍 ' + esc(d.loc)), d.web && ('🔗 ' + esc(d.web))].filter(Boolean);
-  const personal = d.sp ? [d.dob && ('DOB: ' + fmtDOB(d.dob)), d.nat && esc(d.nat), d.gen && esc(d.gen), d.mar && esc(d.mar), d.so && esc(d.so)].filter(Boolean) : [];
-  const allSkills = toArr(d.skills.h).concat(toArr(d.skills.s));
-  const tools = toArr(d.skills.t);
-  const hasExp = d.exps.some(e => e.t || e.c);
-  const hasEdu = d.edus.some(e => e.deg || e.sch);
-  const hasCerts = d.certs.some(c => c.n);
-  const hasRef = d.showRefs && d.refs.some(r => r.n);
-
-  const Photo = () => {
-    if (d.showPhoto && d.photo) return <img style={{width:50,height:50,borderRadius:'50%',objectFit:'cover',display:'block',margin:'0 auto 8px'}} src={d.photo} alt=""/>;
-    return null;
-  };
-  const ExpEntries = () => d.exps.map((e,i) => {if (!e.t && !e.c) return null; return (
-    <div key={i} style={{marginBottom:8}}>
-      <div style={{fontWeight:700,fontSize:9.5}}>{esc(e.t || 'Position')}</div>
-      <div style={{fontSize:9,color:'#666'}}>{esc(e.c)}{e.l ? ' · ' + esc(e.l) : ''}</div>
-      {(e.s || e.e) && <div style={{fontSize:8,color:'#999'}}>{e.s}{e.e ? ' – ' + e.e : ''}</div>}
-      {e.d && <div style={{fontSize:8.5,color:'#555',lineHeight:1.4}} dangerouslySetInnerHTML={{__html: descToHTML(e.d)}}/>}
-    </div>);});
-  const EduEntries = () => d.edus.map((e,i) => {if (!e.deg && !e.sch) return null; return (
-    <div key={i} style={{marginBottom:8}}>
-      <div style={{fontWeight:700,fontSize:9.5}}>{esc(e.deg || 'Qualification')}</div>
-      <div style={{fontSize:9,color:'#666'}}>{esc(e.sch)}{e.loc ? ' · ' + esc(e.loc) : ''}</div>
-      {(e.y1 || e.y2) && <div style={{fontSize:8,color:'#999'}}>{e.y1}{e.y2 ? ' – ' + e.y2 : ''}</div>}
-      {e.g && <div style={{fontSize:8.5,color:'#555'}}>{esc(e.g)}</div>}
-    </div>);});
-  const CertEntries = () => d.certs.map((c,i) => {if (!c.n) return null; return <div key={i} style={{fontSize:8.5,marginBottom:5}}><span style={{fontWeight:700}}>{esc(c.n)}</span>{c.i && <span style={{color:'#999',marginLeft:4}}>· {esc(c.i)}</span>}{c.y && <span style={{color:'#999',marginLeft:4}}>· {c.y}</span>}</div>;});
-  const Sec = ({label, children}) => children ? <div style={{marginBottom:12}}><div style={{fontSize:8,fontWeight:700,textTransform:'uppercase',letterSpacing:2,color:'#999',marginBottom:6,paddingBottom:4,borderBottom:'1px solid #eee'}}>{label}</div>{children}</div> : null;
-
+// ─── TEMPLATE 3: PHANTOM ───────────────────────────────────────
+function PhantomTemplate({data:d, accent}) {
+  const {name,title,contact,allSkills,toolSkills,hasExp,hasEdu,hasProj,hasCert,hasRef,hasLang} = getCommonProps(d,accent);
+  const Sec = ({label,children}) => !children?null:(
+    <div style={{marginBottom:12}}>
+      <div style={{fontSize:7.5,fontWeight:700,textTransform:'uppercase',letterSpacing:2,color:'#aaa',marginBottom:6,paddingBottom:3,borderBottom:'1px solid #eee'}}>{label}</div>
+      {children}
+    </div>
+  );
   return (
-    <div style={{fontFamily:"'Outfit',sans-serif",fontSize:8.5,lineHeight:1.5,color:'#000',height:'100%',padding:20,textAlign:'center'}}>
-      {/* HEADER */}
-      <Photo/>
-      <div style={{fontFamily:"'Fraunces',serif",fontSize:20,fontWeight:600,marginBottom:2,letterSpacing:-.5}}>{name}</div>
-      <div style={{fontSize:9,color:'#999',marginBottom:1,textTransform:'uppercase',letterSpacing:2}}>{title}</div>
-      <div style={{display:'flex',justifyContent:'center',flexWrap:'wrap',gap:12,fontSize:8,color:'#bbb',marginBottom:16,paddingBottom:12,borderBottom:'1px solid #eee'}}>{contact.map((c,i) => <span key={i}>{c}</span>)}</div>
-
-      {/* BODY */}
-      <div style={{textAlign:'left'}}>
-        {d.summary && <Sec label="Summary"><div style={{fontSize:8.5,color:'#555'}}><p>{esc(d.summary)}</p></div></Sec>}
-        {personal.length > 0 && <Sec label="Personal"><div>{personal.map((p,i) => <div key={i} style={{fontSize:8.5,marginBottom:2}}>{p}</div>)}</div></Sec>}
-        {hasExp && <Sec label="Experience"><ExpEntries/></Sec>}
-        {hasEdu && <Sec label="Education"><EduEntries/></Sec>}
-        {(allSkills.length > 0 || tools.length > 0) && <Sec label="Skills"><div style={{fontSize:8.5,color:'#555'}}>{allSkills.concat(tools).map(s => esc(s)).join(' · ')}</div></Sec>}
-        {hasCerts && <Sec label="Certifications"><CertEntries/></Sec>}
+    <div style={{fontFamily:"'Outfit',sans-serif",fontSize:8.5,lineHeight:1.5,color:'#000',minHeight:'100%',padding:24}}>
+      <div style={{textAlign:'center',paddingBottom:16,marginBottom:16,borderBottom:'1px solid #000'}}>
+        {d.showPhoto&&d.photo&&<img style={{width:56,height:56,borderRadius:'50%',objectFit:'cover',margin:'0 auto 10px'}} src={d.photo} alt=""/>}
+        <div style={{fontFamily:"'Playfair Display',serif",fontSize:22,fontWeight:700,letterSpacing:-0.5,marginBottom:3}}>{name}</div>
+        <div style={{fontSize:9,color:'#555',textTransform:'uppercase',letterSpacing:2.5,marginBottom:8}}>{title}</div>
+        <div style={{display:'flex',justifyContent:'center',flexWrap:'wrap',gap:12,fontSize:8,color:'#bbb'}}>{contact.map((c,i)=><span key={i}>{c}</span>)}</div>
       </div>
-    </div>
-  );
-}
-
-function IndigoTemplate({data: d, norms}) {
-  const name = esc(d.fn + ' ' + d.ln) || 'Your Name';
-  const title = esc(d.title) || 'Professional Title';
-  const contact = [d.email && ('✉ ' + esc(d.email)), d.phone && ('📱 ' + esc(d.phone)), d.loc && ('📍 ' + esc(d.loc)), d.web && ('🔗 ' + esc(d.web))].filter(Boolean);
-  const personal = d.sp ? [d.dob && ('DOB: ' + fmtDOB(d.dob)), d.nat && esc(d.nat), d.gen && esc(d.gen), d.mar && esc(d.mar), d.so && esc(d.so)].filter(Boolean) : [];
-  const allSkills = toArr(d.skills.h).concat(toArr(d.skills.s));
-  const tools = toArr(d.skills.t);
-  const hasExp = d.exps.some(e => e.t || e.c);
-  const hasEdu = d.edus.some(e => e.deg || e.sch);
-  const hasCerts = d.certs.some(c => c.n);
-  const hasRef = d.showRefs && d.refs.some(r => r.n);
-
-  const Photo = () => {
-    if (d.showPhoto && d.photo) return <img style={{width:56,height:56,borderRadius:4,objectFit:'cover',marginRight:12}} src={d.photo} alt=""/>;
-    return null;
-  };
-  const Pills = ({items,bg,color}) => items.map((s,i) => <span key={i} style={{display:'inline-block',padding:'2px 5px',borderRadius:2,fontSize:7.5,fontWeight:600,margin:'1px',background:bg,color:color}}>{esc(s)}</span>);
-  const ExpEntries = () => d.exps.map((e,i) => {if (!e.t && !e.c) return null; return (
-    <div key={i} style={{marginBottom:8}}>
-      <div style={{fontWeight:700,fontSize:9.5}}>{esc(e.t || 'Position')}</div>
-      <div style={{fontSize:9,color:'#666'}}>{esc(e.c)}{e.l ? ' · ' + esc(e.l) : ''}</div>
-      {(e.s || e.e) && <div style={{fontSize:8,color:'#999'}}>{e.s}{e.e ? ' – ' + e.e : ''}</div>}
-      {e.d && <div style={{fontSize:8.5,color:'#555',lineHeight:1.4}} dangerouslySetInnerHTML={{__html: descToHTML(e.d)}}/>}
-    </div>);});
-  const EduEntries = () => d.edus.map((e,i) => {if (!e.deg && !e.sch) return null; return (
-    <div key={i} style={{marginBottom:8}}>
-      <div style={{fontWeight:700,fontSize:9.5}}>{esc(e.deg || 'Qualification')}</div>
-      <div style={{fontSize:9,color:'#666'}}>{esc(e.sch)}{e.loc ? ' · ' + esc(e.loc) : ''}</div>
-      {(e.y1 || e.y2) && <div style={{fontSize:8,color:'#999'}}>{e.y1}{e.y2 ? ' – ' + e.y2 : ''}</div>}
-      {e.g && <div style={{fontSize:8.5,color:'#555'}}>{esc(e.g)}</div>}
-    </div>);});
-  const CertEntries = () => d.certs.map((c,i) => {if (!c.n) return null; return <div key={i} style={{fontSize:8.5,marginBottom:5}}><span style={{fontWeight:700}}>{esc(c.n)}</span>{c.i && <span style={{color:'#999',marginLeft:4}}>· {esc(c.i)}</span>}{c.y && <span style={{color:'#999',marginLeft:4}}>· {c.y}</span>}</div>;});
-  const RefEntries = () => d.refs.map((r,i) => {if (!r.n) return null; return <div key={i} style={{marginBottom:6}}><div style={{fontWeight:700,fontSize:8.5}}>{esc(r.n)}</div>{r.p && <div style={{fontSize:8.5,color:'#666'}}>{esc(r.p)}</div>}<div style={{fontSize:8,color:'#999'}}>{[r.e, r.f].filter(Boolean).join(' · ')}</div></div>;});
-  const Sec = ({label, children}) => children ? <div style={{marginBottom:12}}><div style={{fontSize:8,fontWeight:700,textTransform:'uppercase',letterSpacing:.5,color:'#4338ca',paddingLeft:8,borderLeft:'3px solid #4338ca',marginBottom:6}}>{label}</div>{children}</div> : null;
-
-  return (
-    <div style={{fontFamily:"'Outfit',sans-serif",fontSize:8.5,lineHeight:1.45,color:'#222',height:'100%'}}>
-      {/* GRADIENT HEADER */}
-      <div style={{background:'linear-gradient(135deg, #312e81, #4338ca)',color:'#fff',padding:16,display:'flex',alignItems:'center'}}>
-        <Photo/>
-        <div>
-          <div style={{fontFamily:"'Fraunces',serif",fontSize:18,fontWeight:600,marginBottom:2}}>{name}</div>
-          <div style={{fontSize:9,opacity:.85,marginBottom:6}}>{title}</div>
-          <div style={{display:'flex',flexWrap:'wrap',gap:10,fontSize:8}}>{contact.map((c,i) => <span key={i}>{c}</span>)}</div>
+      <div style={{columns:2,columnGap:20}}>
+        <div style={{breakInside:'avoid'}}>
+          {d.summary&&<Sec label="Summary"><div style={{fontSize:8.5,color:'#444',lineHeight:1.65}}>{esc(d.summary)}</div></Sec>}
+          {hasExp&&<Sec label="Experience"><ExpRows exps={d.exps}/></Sec>}
+          {hasProj&&<Sec label="Projects"><ProjRows projs={d.projs}/></Sec>}
+        </div>
+        <div style={{breakInside:'avoid'}}>
+          {hasEdu&&<Sec label="Education"><EduRows edus={d.edus}/></Sec>}
+          {(allSkills.length>0||toolSkills.length>0)&&<Sec label="Skills"><div style={{fontSize:8.5,color:'#444',lineHeight:1.7}}>{[...allSkills,...toolSkills].map(s=>esc(s)).join(' · ')}</div></Sec>}
+          {hasLang&&<Sec label="Languages"><LangRows langs={d.langs}/></Sec>}
+          {hasCert&&<Sec label="Certifications"><CertRows certs={d.certs}/></Sec>}
+          {hasRef&&<Sec label="References"><RefRows refs={d.refs}/></Sec>}
         </div>
       </div>
-
-      {/* BODY */}
-      <div style={{padding:16}}>
-        {d.summary && <Sec label="Summary"><div style={{fontSize:8.5,color:'#555'}}><p>{esc(d.summary)}</p></div></Sec>}
-        {personal.length > 0 && <Sec label="Personal"><div>{personal.map((p,i) => <div key={i} style={{fontSize:8.5,marginBottom:2}}>{p}</div>)}</div></Sec>}
-        {hasExp && <Sec label="Experience"><ExpEntries/></Sec>}
-        {hasEdu && <Sec label="Education"><EduEntries/></Sec>}
-        {(allSkills.length > 0 || tools.length > 0) && <Sec label="Skills"><Pills items={allSkills.concat(tools)} bg="#eef2ff" color="#4338ca"/></Sec>}
-        {hasCerts && <Sec label="Certifications"><CertEntries/></Sec>}
-        {hasRef && <Sec label="References"><RefEntries/></Sec>}
-      </div>
     </div>
   );
 }
 
-function NoirTemplate({data: d, norms}) {
-  const name = esc(d.fn + ' ' + d.ln) || 'Your Name';
-  const title = esc(d.title) || 'Professional Title';
-  const contact = [d.email && ('✉ ' + esc(d.email)), d.phone && ('📱 ' + esc(d.phone)), d.loc && ('📍 ' + esc(d.loc)), d.web && ('🔗 ' + esc(d.web))].filter(Boolean);
-  const personal = d.sp ? [d.dob && ('DOB: ' + fmtDOB(d.dob)), d.nat && esc(d.nat), d.gen && esc(d.gen), d.mar && esc(d.mar), d.so && esc(d.so)].filter(Boolean) : [];
-  const allSkills = toArr(d.skills.h).concat(toArr(d.skills.s));
-  const tools = toArr(d.skills.t);
-  const hasExp = d.exps.some(e => e.t || e.c);
-  const hasEdu = d.edus.some(e => e.deg || e.sch);
-  const hasCerts = d.certs.some(c => c.n);
-  const hasRef = d.showRefs && d.refs.some(r => r.n);
-
-  const Photo = () => {
-    if (d.showPhoto && d.photo) return <img style={{width:50,height:50,borderRadius:3,objectFit:'cover',marginBottom:12}} src={d.photo} alt=""/>;
-    return null;
-  };
-  const Pills = ({items,bg,color}) => items.map((s,i) => <span key={i} style={{display:'inline-block',padding:'1.5px 5px',borderRadius:2,fontSize:7,fontWeight:600,margin:'1px',background:bg,color:color}}>{esc(s)}</span>);
-  const ExpEntries = () => d.exps.map((e,i) => {if (!e.t && !e.c) return null; return (
-    <div key={i} style={{marginBottom:8}}>
-      <div style={{fontWeight:700,fontSize:9.5}}>{esc(e.t || 'Position')}</div>
-      <div style={{fontSize:9,color:'#bbb'}}>{esc(e.c)}{e.l ? ' · ' + esc(e.l) : ''}</div>
-      {(e.s || e.e) && <div style={{fontSize:8,color:'#888'}}>{e.s}{e.e ? ' – ' + e.e : ''}</div>}
-      {e.d && <div style={{fontSize:8.5,color:'#aaa',lineHeight:1.4}} dangerouslySetInnerHTML={{__html: descToHTML(e.d)}}/>}
-    </div>);});
-  const EduEntries = () => d.edus.map((e,i) => {if (!e.deg && !e.sch) return null; return (
-    <div key={i} style={{marginBottom:8}}>
-      <div style={{fontWeight:700,fontSize:9.5}}>{esc(e.deg || 'Qualification')}</div>
-      <div style={{fontSize:9,color:'#bbb'}}>{esc(e.sch)}{e.loc ? ' · ' + esc(e.loc) : ''}</div>
-      {(e.y1 || e.y2) && <div style={{fontSize:8,color:'#888'}}>{e.y1}{e.y2 ? ' – ' + e.y2 : ''}</div>}
-      {e.g && <div style={{fontSize:8.5,color:'#aaa'}}>{esc(e.g)}</div>}
-    </div>);});
-  const CertEntries = () => d.certs.map((c,i) => {if (!c.n) return null; return <div key={i} style={{fontSize:8.5,marginBottom:5,color:'#fff'}}><span style={{fontWeight:700}}>{esc(c.n)}</span>{c.i && <span style={{color:'#888',marginLeft:4}}>· {esc(c.i)}</span>}{c.y && <span style={{color:'#888',marginLeft:4}}>· {c.y}</span>}</div>;});
-  const RefEntries = () => d.refs.map((r,i) => {if (!r.n) return null; return <div key={i} style={{marginBottom:6,color:'#fff'}}><div style={{fontWeight:700,fontSize:8.5}}>{esc(r.n)}</div>{r.p && <div style={{fontSize:8.5,color:'#bbb'}}>{esc(r.p)}</div>}<div style={{fontSize:8,color:'#888'}}>{[r.e, r.f].filter(Boolean).join(' · ')}</div></div>;});
-  const Sec = ({label, children}) => children ? <div style={{marginBottom:10}}><div style={{fontSize:7.5,fontWeight:700,textTransform:'uppercase',letterSpacing:1,color:'#64748b',marginBottom:6}}>{label}</div>{children}</div> : null;
-
-  return (
-    <div style={{fontFamily:"'Outfit',sans-serif",fontSize:8.5,lineHeight:1.45,color:'#fff',height:'100%',display:'flex'}}>
-      {/* LEFT PANEL — 42% */}
-      <div style={{flex:'0 0 42%',background:'#0f172a',padding:16,display:'flex',flexDirection:'column',overflowY:'auto'}}>
-        <Photo/>
-        <div style={{fontFamily:"'Fraunces',serif",fontSize:16,fontWeight:700,textTransform:'uppercase',letterSpacing:1,marginBottom:8}}>{name}</div>
-        <div style={{fontSize:8.5,opacity:.7,marginBottom:14}}>{title}</div>
-
-        {personal.length > 0 && <Sec label="Personal"><div>{personal.map((p,i) => <div key={i} style={{fontSize:8,marginBottom:3,color:'#fff'}}>{p}</div>)}</div></Sec>}
-        {allSkills.length > 0 && <Sec label="Skills"><Pills items={allSkills} bg="rgba(255,255,255,0.1)" color="#fff"/></Sec>}
-        {tools.length > 0 && <Sec label="Tools"><div>{tools.map((t,i) => <div key={i} style={{fontSize:8,marginBottom:2}}>{esc(t)}</div>)}</div></Sec>}
-        {d.langs && <Sec label="Languages"><div>{d.langs.split(',').map((l,i) => <div key={i} style={{fontSize:8,marginBottom:2}}>{l.trim()}</div>)}</div></Sec>}
-        {d.extras.hobbies && <Sec label="Interests"><div style={{fontSize:8}}>{esc(d.extras.hobbies)}</div></Sec>}
-      </div>
-
-      {/* RIGHT PANEL — 58% */}
-      <div style={{flex:'0 0 58%',padding:16,overflowY:'auto',background:'#fff',color:'#222'}}>
-        {d.summary && <Sec label="Summary"><div style={{fontSize:8.5,color:'#555'}}><p>{esc(d.summary)}</p></div></Sec>}
-        {hasExp && <Sec label="Experience"><ExpEntries/></Sec>}
-        {hasEdu && <Sec label="Education"><EduEntries/></Sec>}
-        {hasCerts && <Sec label="Certifications"><CertEntries/></Sec>}
-        {d.extras.awards && <Sec label="Awards"><div style={{fontSize:8.5,color:'#555'}} dangerouslySetInnerHTML={{__html: descToHTML(d.extras.awards)}}/>< /Sec>}
-        {hasRef && <Sec label="References"><RefEntries/></Sec>}
-      </div>
+// ─── TEMPLATE 4: INDIGO ────────────────────────────────────────
+function IndigoTemplate({data:d, accent}) {
+  const {name,title,contact,personal,allSkills,toolSkills,hasExp,hasEdu,hasProj,hasCert,hasRef,hasLang} = getCommonProps(d,accent);
+  const ac = accent||'#4338ca';
+  const Sec = ({label,children}) => !children?null:(
+    <div style={{marginBottom:11}}>
+      <div style={{fontSize:7.5,fontWeight:700,textTransform:'uppercase',letterSpacing:0.5,color:ac,paddingLeft:7,borderLeft:'3px solid '+ac,marginBottom:6}}>{label}</div>
+      {children}
     </div>
   );
-}
-
-function StoneTemplate({data: d, norms}) {
-  const name = esc(d.fn + ' ' + d.ln) || 'Your Name';
-  const title = esc(d.title) || 'Professional Title';
-  const contact = [d.email && ('✉ ' + esc(d.email)), d.phone && ('📱 ' + esc(d.phone)), d.loc && ('📍 ' + esc(d.loc)), d.web && ('🔗 ' + esc(d.web))].filter(Boolean);
-  const personal = d.sp ? [d.dob && ('DOB: ' + fmtDOB(d.dob)), d.nat && esc(d.nat), d.gen && esc(d.gen), d.mar && esc(d.mar), d.so && esc(d.so)].filter(Boolean) : [];
-  const allSkills = toArr(d.skills.h).concat(toArr(d.skills.s));
-  const tools = toArr(d.skills.t);
-  const hasExp = d.exps.some(e => e.t || e.c);
-  const hasEdu = d.edus.some(e => e.deg || e.sch);
-  const hasCerts = d.certs.some(c => c.n);
-  const hasRef = d.showRefs && d.refs.some(r => r.n);
-
-  const Photo = () => {
-    if (d.showPhoto && d.photo) return <img style={{width:56,height:56,borderRadius:3,objectFit:'cover',marginRight:12}} src={d.photo} alt=""/>;
-    return null;
-  };
-  const Pills = ({items,bg,color}) => items.map((s,i) => <span key={i} style={{display:'inline-block',padding:'2px 5px',borderRadius:2,fontSize:7.5,fontWeight:600,margin:'1px',background:bg,color:color}}>{esc(s)}</span>);
-  const ExpEntries = () => d.exps.map((e,i) => {if (!e.t && !e.c) return null; return (
-    <div key={i} style={{marginBottom:8}}>
-      <div style={{fontWeight:700,fontSize:9.5}}>{esc(e.t || 'Position')}</div>
-      <div style={{fontSize:9,color:'#666'}}>{esc(e.c)}{e.l ? ' · ' + esc(e.l) : ''}</div>
-      {(e.s || e.e) && <div style={{fontSize:8,color:'#999'}}>{e.s}{e.e ? ' – ' + e.e : ''}</div>}
-      {e.d && <div style={{fontSize:8.5,color:'#555',lineHeight:1.4}} dangerouslySetInnerHTML={{__html: descToHTML(e.d)}}/>}
-    </div>);});
-  const EduEntries = () => d.edus.map((e,i) => {if (!e.deg && !e.sch) return null; return (
-    <div key={i} style={{marginBottom:8}}>
-      <div style={{fontWeight:700,fontSize:9.5}}>{esc(e.deg || 'Qualification')}</div>
-      <div style={{fontSize:9,color:'#666'}}>{esc(e.sch)}{e.loc ? ' · ' + esc(e.loc) : ''}</div>
-      {(e.y1 || e.y2) && <div style={{fontSize:8,color:'#999'}}>{e.y1}{e.y2 ? ' – ' + e.y2 : ''}</div>}
-      {e.g && <div style={{fontSize:8.5,color:'#555'}}>{esc(e.g)}</div>}
-    </div>);});
-  const CertEntries = () => d.certs.map((c,i) => {if (!c.n) return null; return <div key={i} style={{fontSize:8.5,marginBottom:5}}><span style={{fontWeight:700}}>{esc(c.n)}</span>{c.i && <span style={{color:'#999',marginLeft:4}}>· {esc(c.i)}</span>}{c.y && <span style={{color:'#999',marginLeft:4}}>· {c.y}</span>}</div>;});
-  const RefEntries = () => d.refs.map((r,i) => {if (!r.n) return null; return <div key={i} style={{marginBottom:6}}><div style={{fontWeight:700,fontSize:8.5}}>{esc(r.n)}</div>{r.p && <div style={{fontSize:8.5,color:'#666'}}>{esc(r.p)}</div>}<div style={{fontSize:8,color:'#999'}}>{[r.e, r.f].filter(Boolean).join(' · ')}</div></div>;});
-  const Sec = ({label, children}) => children ? <div style={{marginBottom:12}}><div style={{fontSize:8,fontWeight:600,textTransform:'uppercase',letterSpacing:.5,color:'#44403c',paddingBottom:4,borderBottom:'3px solid #78716c',marginBottom:8}}>{label}</div>{children}</div> : null;
-
   return (
-    <div style={{fontFamily:"'Outfit',sans-serif",fontSize:8.5,lineHeight:1.45,color:'#292524',height:'100%',padding:18,background:'#fefce8'}}>
-      {/* HEADER */}
-      <div style={{display:'flex',alignItems:'flex-start',marginBottom:14,paddingBottom:12,borderTop:'3px solid #78716c'}}>
-        <Photo/>
-        <div>
-          <div style={{fontFamily:"'Fraunces',serif",fontSize:19,fontWeight:700,marginBottom:2}}>{name}</div>
-          <div style={{fontSize:9,color:'#78716c',marginBottom:8}}>{title}</div>
-          <div style={{display:'flex',flexWrap:'wrap',gap:10,fontSize:8,color:'#999'}}>{contact.map((c,i) => <span key={i}>{c}</span>)}</div>
+    <div style={{fontFamily:"'Outfit',sans-serif",fontSize:8.5,lineHeight:1.5,color:'#222',minHeight:'100%'}}>
+      <div style={{background:'linear-gradient(135deg,'+ac+','+ac+'cc)',color:'#fff',padding:'18px 20px'}}>
+        <div style={{display:'flex',alignItems:'center',gap:14}}>
+          {d.showPhoto&&d.photo&&<img style={{width:60,height:60,borderRadius:6,objectFit:'cover',border:'2px solid rgba(255,255,255,0.3)',flexShrink:0}} src={d.photo} alt=""/>}
+          <div>
+            <div style={{fontFamily:"'Fraunces',serif",fontSize:19,fontWeight:600,marginBottom:2}}>{name}</div>
+            <div style={{fontSize:9,opacity:0.85,marginBottom:7}}>{title}</div>
+            <div style={{display:'flex',flexWrap:'wrap',gap:10,fontSize:8}}>{contact.map((c,i)=><span key={i}>{c}</span>)}</div>
+          </div>
         </div>
       </div>
+      <div style={{padding:'16px 20px'}}>
+        {d.summary&&<Sec label="Summary"><div style={{fontSize:8.5,color:'#555',lineHeight:1.65}}>{esc(d.summary)}</div></Sec>}
+        {personal.length>0&&<Sec label="Personal"><div style={{display:'flex',flexWrap:'wrap',gap:'3px 14px'}}>{personal.map((p,i)=><span key={i} style={{fontSize:8.5}}>{p}</span>)}</div></Sec>}
+        {hasExp&&<Sec label="Work Experience"><ExpRows exps={d.exps}/></Sec>}
+        {hasEdu&&<Sec label="Education"><EduRows edus={d.edus}/></Sec>}
+        {(allSkills.length>0||toolSkills.length>0)&&<Sec label="Skills"><Pills items={[...allSkills,...toolSkills]} bg="#eef2ff" color={ac}/></Sec>}
+        {hasLang&&<Sec label="Languages"><LangRows langs={d.langs}/></Sec>}
+        {hasProj&&<Sec label="Projects"><ProjRows projs={d.projs}/></Sec>}
+        {hasCert&&<Sec label="Certifications"><CertRows certs={d.certs}/></Sec>}
+        {hasRef&&<Sec label="References"><RefRows refs={d.refs}/></Sec>}
+      </div>
+    </div>
+  );
+}
 
-      {/* BODY */}
-      {d.summary && <Sec label="Summary"><div style={{fontSize:8.5,color:'#555'}}><p>{esc(d.summary)}</p></div></Sec>}
-      {personal.length > 0 && <Sec label="Personal"><div>{personal.map((p,i) => <div key={i} style={{fontSize:8.5,marginBottom:2}}>{p}</div>)}</div></Sec>}
-      {hasExp && <Sec label="Experience"><ExpEntries/></Sec>}
-      {hasEdu && <Sec label="Education"><EduEntries/></Sec>}
-      {(allSkills.length > 0 || tools.length > 0) && <Sec label="Skills"><Pills items={allSkills.concat(tools)} bg="#fef3c7" color="#92400e"/></Sec>}
-      {hasCerts && <Sec label="Certifications"><CertEntries/></Sec>}
-      {hasRef && <Sec label="References"><RefEntries/></Sec>}
+// ─── TEMPLATE 5: NOIR ──────────────────────────────────────────
+function NoirTemplate({data:d, accent}) {
+  const {name,title,contact,personal,allSkills,toolSkills,hasExp,hasEdu,hasProj,hasCert,hasRef,hasLang} = getCommonProps(d,accent);
+  const Sec = ({label,children,light}) => !children?null:(
+    <div style={{marginBottom:10}}>
+      <div style={{fontSize:7.5,fontWeight:700,textTransform:'uppercase',letterSpacing:1,color:light?'#64748b':'#888',marginBottom:5}}>{label}</div>
+      {children}
+    </div>
+  );
+  return (
+    <div style={{fontFamily:"'Outfit',sans-serif",fontSize:8.5,lineHeight:1.5,color:'#222',minHeight:'100%',display:'flex'}}>
+      <div style={{flex:'0 0 42%',background:'#0f172a',color:'#e2e8f0',padding:'20px 15px',display:'flex',flexDirection:'column',minHeight:'100%'}}>
+        {d.showPhoto&&d.photo&&<img style={{width:60,height:60,borderRadius:'50%',objectFit:'cover',border:'2px solid rgba(255,255,255,0.2)',marginBottom:12}} src={d.photo} alt=""/>}
+        <div style={{fontFamily:"'Fraunces',serif",fontSize:16,fontWeight:700,letterSpacing:0.5,marginBottom:6,color:'#fff',lineHeight:1.2}}>{name}</div>
+        <div style={{fontSize:8.5,color:'#94a3b8',marginBottom:14,lineHeight:1.4}}>{title}</div>
+        <Sec label="Contact" light><div>{contact.map((c,i)=><div key={i} style={{fontSize:7.5,marginBottom:3,color:'#94a3b8'}}>{c}</div>)}</div></Sec>
+        {personal.length>0&&<Sec label="Personal" light><div>{personal.map((p,i)=><div key={i} style={{fontSize:8,marginBottom:3}}>{p}</div>)}</div></Sec>}
+        {allSkills.length>0&&<Sec label="Skills" light><Pills items={allSkills} bg="rgba(255,255,255,0.08)" color="#e2e8f0"/></Sec>}
+        {toolSkills.length>0&&<Sec label="Tools" light><div>{toolSkills.map((t,i)=><div key={i} style={{fontSize:8,marginBottom:2,color:'#94a3b8'}}>· {esc(t)}</div>)}</div></Sec>}
+        {hasLang&&<Sec label="Languages" light><LangRows langs={d.langs}/></Sec>}
+        {d.extras.hobbies&&<Sec label="Interests" light><div style={{fontSize:8,color:'#94a3b8'}}>{esc(d.extras.hobbies)}</div></Sec>}
+      </div>
+      <div style={{flex:1,padding:'20px 16px',background:'#fff',minHeight:'100%'}}>
+        {d.summary&&<Sec label="Summary"><div style={{fontSize:8.5,color:'#555',lineHeight:1.65}}>{esc(d.summary)}</div></Sec>}
+        {hasExp&&<Sec label="Work Experience"><ExpRows exps={d.exps}/></Sec>}
+        {hasEdu&&<Sec label="Education"><EduRows edus={d.edus}/></Sec>}
+        {hasProj&&<Sec label="Projects"><ProjRows projs={d.projs}/></Sec>}
+        {hasCert&&<Sec label="Certifications"><CertRows certs={d.certs}/></Sec>}
+        {d.extras.awards&&<Sec label="Awards"><div style={{fontSize:8.5,color:'#555'}} dangerouslySetInnerHTML={{__html:descToHTML(d.extras.awards)}}/></Sec>}
+        {hasRef&&<Sec label="References"><RefRows refs={d.refs}/></Sec>}
+      </div>
+    </div>
+  );
+}
+
+// ─── TEMPLATE 6: STONE ─────────────────────────────────────────
+function StoneTemplate({data:d, accent}) {
+  const {name,title,contact,personal,allSkills,toolSkills,hasExp,hasEdu,hasProj,hasCert,hasRef,hasLang} = getCommonProps(d,accent);
+  const ac = accent||'#78716c';
+  const Sec = ({label,children}) => !children?null:(
+    <div style={{marginBottom:12}}>
+      <div style={{fontSize:7.5,fontWeight:600,textTransform:'uppercase',letterSpacing:0.5,color:'#44403c',paddingBottom:3,borderBottom:'2px solid '+ac,marginBottom:7}}>{label}</div>
+      {children}
+    </div>
+  );
+  return (
+    <div style={{fontFamily:"'Outfit',sans-serif",fontSize:8.5,lineHeight:1.5,color:'#292524',minHeight:'100%',padding:20,background:'#fefce8'}}>
+      <div style={{display:'flex',alignItems:'flex-start',marginBottom:14,paddingBottom:12,borderTop:'3px solid '+ac,paddingTop:8}}>
+        {d.showPhoto&&d.photo&&<img style={{width:54,height:54,borderRadius:4,objectFit:'cover',marginRight:12}} src={d.photo} alt=""/>}
+        <div style={{flex:1}}>
+          <div style={{fontFamily:"'Fraunces',serif",fontSize:19,fontWeight:700,marginBottom:2,lineHeight:1.1}}>{name}</div>
+          <div style={{fontSize:9,color:ac,marginBottom:7}}>{title}</div>
+          <div style={{display:'flex',flexWrap:'wrap',gap:10,fontSize:8,color:'#999'}}>{contact.map((c,i)=><span key={i}>{c}</span>)}</div>
+        </div>
+      </div>
+      {d.summary&&<Sec label="Summary"><div style={{fontSize:8.5,color:'#555',lineHeight:1.65}}>{esc(d.summary)}</div></Sec>}
+      {personal.length>0&&<Sec label="Personal"><div style={{display:'flex',flexWrap:'wrap',gap:'3px 14px'}}>{personal.map((p,i)=><span key={i} style={{fontSize:8.5}}>{p}</span>)}</div></Sec>}
+      {hasExp&&<Sec label="Work Experience"><ExpRows exps={d.exps}/></Sec>}
+      {hasEdu&&<Sec label="Education"><EduRows edus={d.edus}/></Sec>}
+      {(allSkills.length>0||toolSkills.length>0)&&<Sec label="Skills"><Pills items={[...allSkills,...toolSkills]} bg="#fef3c7" color="#92400e"/></Sec>}
+      {hasLang&&<Sec label="Languages"><LangRows langs={d.langs}/></Sec>}
+      {hasProj&&<Sec label="Projects"><ProjRows projs={d.projs}/></Sec>}
+      {hasCert&&<Sec label="Certifications"><CertRows certs={d.certs}/></Sec>}
+      {hasRef&&<Sec label="References"><RefRows refs={d.refs}/></Sec>}
+    </div>
+  );
+}
+
+// ─── TEMPLATE 7: LAGOS (African corporate green/gold) ─────────
+function LagosTemplate({data:d, accent}) {
+  const {name,title,contact,personal,allSkills,toolSkills,hasExp,hasEdu,hasProj,hasCert,hasRef,hasLang} = getCommonProps(d,accent);
+  const green = '#006B3C'; const gold = '#D4A017';
+  const Sec = ({label,children}) => !children?null:(
+    <div style={{marginBottom:11}}>
+      <div style={{fontSize:7.5,fontWeight:700,textTransform:'uppercase',letterSpacing:0.7,color:green,paddingBottom:3,marginBottom:6,display:'flex',alignItems:'center',gap:6}}>
+        <span style={{flex:1,height:1,background:green+'33'}}/>
+        {label}
+        <span style={{flex:1,height:1,background:green+'33'}}/>
+      </div>
+      {children}
+    </div>
+  );
+  return (
+    <div style={{fontFamily:"'Outfit',sans-serif",fontSize:8.5,lineHeight:1.5,color:'#111',minHeight:'100%'}}>
+      {/* Header */}
+      <div style={{background:'linear-gradient(135deg,'+green+',#004d2b)',color:'#fff',padding:'20px 22px',position:'relative',overflow:'hidden'}}>
+        <div style={{position:'absolute',top:-20,right:-20,width:120,height:120,borderRadius:'50%',background:'rgba(212,160,23,0.15)'}}/>
+        <div style={{display:'flex',alignItems:'center',gap:14,position:'relative',zIndex:1}}>
+          {d.showPhoto&&d.photo&&<img style={{width:62,height:62,borderRadius:'50%',objectFit:'cover',border:'2px solid '+gold,flexShrink:0}} src={d.photo} alt=""/>}
+          <div>
+            <div style={{fontFamily:"'Fraunces',serif",fontSize:20,fontWeight:700,marginBottom:2,lineHeight:1.1}}>{name}</div>
+            <div style={{fontSize:9,color:gold,fontWeight:600,marginBottom:8,letterSpacing:0.3}}>{title}</div>
+            <div style={{display:'flex',flexWrap:'wrap',gap:10,fontSize:8,color:'rgba(255,255,255,0.75)'}}>{contact.map((c,i)=><span key={i}>{c}</span>)}</div>
+          </div>
+        </div>
+      </div>
+      <div style={{display:'flex',minHeight:'100%'}}>
+        {/* Sidebar */}
+        <div style={{flex:'0 0 33%',background:'#f0f7f4',padding:'16px 14px',borderRight:'1px solid #d1fae5'}}>
+          {personal.length>0&&<Sec label="Personal"><div>{personal.map((p,i)=><div key={i} style={{fontSize:8,marginBottom:3,color:'#333'}}>{p}</div>)}</div></Sec>}
+          {allSkills.length>0&&<Sec label="Skills"><Pills items={allSkills} bg="#d1fae5" color={green}/></Sec>}
+          {toolSkills.length>0&&<Sec label="Tools"><div>{toolSkills.map((t,i)=><div key={i} style={{fontSize:8,marginBottom:2,color:'#555'}}>· {esc(t)}</div>)}</div></Sec>}
+          {hasLang&&<Sec label="Languages"><LangRows langs={d.langs}/></Sec>}
+          {d.extras.hobbies&&<Sec label="Interests"><div style={{fontSize:8,color:'#555'}}>{esc(d.extras.hobbies)}</div></Sec>}
+        </div>
+        {/* Main */}
+        <div style={{flex:1,padding:'16px 18px',background:'#fff'}}>
+          {d.summary&&<Sec label="Profile"><div style={{fontSize:8.5,color:'#444',lineHeight:1.65}}>{esc(d.summary)}</div></Sec>}
+          {hasExp&&<Sec label="Work Experience"><ExpRows exps={d.exps}/></Sec>}
+          {hasEdu&&<Sec label="Education"><EduRows edus={d.edus}/></Sec>}
+          {hasProj&&<Sec label="Projects"><ProjRows projs={d.projs}/></Sec>}
+          {hasCert&&<Sec label="Certifications"><CertRows certs={d.certs}/></Sec>}
+          {d.extras.awards&&<Sec label="Awards"><div style={{fontSize:8.5,color:'#444'}} dangerouslySetInnerHTML={{__html:descToHTML(d.extras.awards)}}/></Sec>}
+          {hasRef&&<Sec label="References"><RefRows refs={d.refs}/></Sec>}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── TEMPLATE 8: NAIROBI (teal modern) ────────────────────────
+function NairobiTemplate({data:d, accent}) {
+  const {name,title,contact,personal,allSkills,toolSkills,hasExp,hasEdu,hasProj,hasCert,hasRef,hasLang} = getCommonProps(d,accent);
+  const teal = '#0d7377'; const tealLight = '#e0f2f1';
+  const Sec = ({label,children}) => !children?null:(
+    <div style={{marginBottom:12}}>
+      <div style={{display:'flex',alignItems:'center',gap:7,marginBottom:6}}>
+        <span style={{width:3,height:14,background:teal,borderRadius:2,flexShrink:0}}/>
+        <span style={{fontSize:8,fontWeight:700,textTransform:'uppercase',letterSpacing:0.8,color:teal}}>{label}</span>
+      </div>
+      {children}
+    </div>
+  );
+  return (
+    <div style={{fontFamily:"'Outfit',sans-serif",fontSize:8.5,lineHeight:1.5,color:'#1a1a1a',minHeight:'100%',padding:22}}>
+      {/* Header */}
+      <div style={{display:'flex',gap:14,marginBottom:18,paddingBottom:14,borderBottom:'2px solid '+teal,alignItems:'flex-start'}}>
+        {d.showPhoto&&d.photo&&<img style={{width:62,height:62,borderRadius:'50%',objectFit:'cover',border:'2px solid '+teal,flexShrink:0}} src={d.photo} alt=""/>}
+        <div style={{flex:1}}>
+          <div style={{fontFamily:"'Playfair Display',serif",fontSize:21,fontWeight:700,marginBottom:2,lineHeight:1.1}}>{name}</div>
+          <div style={{fontSize:9,color:teal,fontWeight:600,textTransform:'uppercase',letterSpacing:1,marginBottom:7}}>{title}</div>
+          <div style={{display:'flex',flexWrap:'wrap',gap:'3px 14px'}}>{contact.map((c,i)=><span key={i} style={{fontSize:8,color:'#666'}}>{c}</span>)}</div>
+        </div>
+        {/* Skills chip sidebar */}
+        {allSkills.length>0&&<div style={{flex:'0 0 160px',background:tealLight,borderRadius:8,padding:'10px 10px'}}>
+          <div style={{fontSize:7.5,fontWeight:700,color:teal,textTransform:'uppercase',letterSpacing:0.5,marginBottom:6}}>Key Skills</div>
+          <Pills items={allSkills.slice(0,8)} bg={teal} color='#fff'/>
+        </div>}
+      </div>
+      {d.summary&&<Sec label="Professional Summary"><div style={{fontSize:8.5,color:'#444',lineHeight:1.65}}>{esc(d.summary)}</div></Sec>}
+      {personal.length>0&&<Sec label="Personal"><div style={{display:'flex',flexWrap:'wrap',gap:'3px 14px'}}>{personal.map((p,i)=><span key={i} style={{fontSize:8.5}}>{p}</span>)}</div></Sec>}
+      {hasExp&&<Sec label="Work Experience"><ExpRows exps={d.exps}/></Sec>}
+      {hasEdu&&<Sec label="Education"><EduRows edus={d.edus}/></Sec>}
+      <div style={{display:'flex',gap:16}}>
+        <div style={{flex:1}}>
+          {toolSkills.length>0&&<Sec label="Tools & Software"><Pills items={toolSkills} bg='#f0f9ff' color='#0369a1'/></Sec>}
+          {hasLang&&<Sec label="Languages"><LangRows langs={d.langs}/></Sec>}
+        </div>
+        <div style={{flex:1}}>
+          {hasCert&&<Sec label="Certifications"><CertRows certs={d.certs}/></Sec>}
+          {hasProj&&<Sec label="Projects"><ProjRows projs={d.projs}/></Sec>}
+        </div>
+      </div>
+      {hasRef&&<Sec label="References"><div style={{display:'flex',flexWrap:'wrap',gap:12}}>{d.refs.filter(r=>r.n).map((r,i)=><div key={i} style={{fontSize:8.5,flex:'0 0 45%'}}><div style={{fontWeight:700}}>{esc(r.n)}</div>{r.p&&<div style={{color:'#777'}}>{esc(r.p)}</div>}<div style={{color:'#bbb',fontSize:8}}>{[r.e,r.f].filter(Boolean).join(' · ')}</div></div>)}</div></Sec>}
+    </div>
+  );
+}
+
+// ─── TEMPLATE 9: ACCRA (warm amber African) ───────────────────
+function AccraTemplate({data:d, accent}) {
+  const {name,title,contact,personal,allSkills,toolSkills,hasExp,hasEdu,hasProj,hasCert,hasRef,hasLang} = getCommonProps(d,accent);
+  const amber = '#b45309'; const amberLight = '#fffbeb';
+  const Sec = ({label,children}) => !children?null:(
+    <div style={{marginBottom:11}}>
+      <div style={{fontSize:8,fontWeight:700,textTransform:'uppercase',letterSpacing:0.8,color:amber,marginBottom:6,paddingBottom:3,borderBottom:'1.5px solid '+amber+'44'}}>{label}</div>
+      {children}
+    </div>
+  );
+  return (
+    <div style={{fontFamily:"'Outfit',sans-serif",fontSize:8.5,lineHeight:1.5,color:'#1c1007',minHeight:'100%'}}>
+      {/* Warm amber header */}
+      <div style={{background:'linear-gradient(135deg, #78350f, #b45309, #d97706)',padding:'20px 22px',color:'#fff',position:'relative',overflow:'hidden'}}>
+        <div style={{position:'absolute',top:0,left:0,right:0,bottom:0,background:'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M0 0 L30 30 L60 0\' fill=\'none\' stroke=\'rgba(255,255,255,0.05)\' stroke-width=\'1\'/%3E%3C/svg%3E")'}}/>
+        <div style={{display:'flex',alignItems:'center',gap:14,position:'relative'}}>
+          {d.showPhoto&&d.photo&&<img style={{width:62,height:62,borderRadius:4,objectFit:'cover',border:'2px solid rgba(255,255,255,0.4)',flexShrink:0}} src={d.photo} alt=""/>}
+          <div>
+            <div style={{fontFamily:"'Fraunces',serif",fontSize:20,fontWeight:700,marginBottom:2,lineHeight:1.1}}>{name}</div>
+            <div style={{fontSize:9,color:'rgba(255,255,255,0.85)',marginBottom:7,fontWeight:500}}>{title}</div>
+            <div style={{display:'flex',flexWrap:'wrap',gap:10,fontSize:8,color:'rgba(255,255,255,0.7)'}}>{contact.map((c,i)=><span key={i}>{c}</span>)}</div>
+          </div>
+        </div>
+      </div>
+      <div style={{display:'flex',minHeight:'100%'}}>
+        <div style={{flex:'0 0 35%',background:amberLight,padding:'16px 14px',borderRight:'1px solid #fde68a'}}>
+          {personal.length>0&&<Sec label="Personal"><div>{personal.map((p,i)=><div key={i} style={{fontSize:8,marginBottom:3}}>{p}</div>)}</div></Sec>}
+          {allSkills.length>0&&<Sec label="Skills"><Pills items={allSkills} bg="#fef3c7" color={amber}/></Sec>}
+          {toolSkills.length>0&&<Sec label="Tools"><div>{toolSkills.map((t,i)=><div key={i} style={{fontSize:8,marginBottom:2,color:'#78350f'}}>· {esc(t)}</div>)}</div></Sec>}
+          {hasLang&&<Sec label="Languages"><LangRows langs={d.langs}/></Sec>}
+          {d.extras.hobbies&&<Sec label="Interests"><div style={{fontSize:8,color:'#78350f'}}>{esc(d.extras.hobbies)}</div></Sec>}
+        </div>
+        <div style={{flex:1,padding:'16px 18px',background:'#fff'}}>
+          {d.summary&&<Sec label="About Me"><div style={{fontSize:8.5,color:'#44403c',lineHeight:1.65}}>{esc(d.summary)}</div></Sec>}
+          {hasExp&&<Sec label="Work Experience"><ExpRows exps={d.exps}/></Sec>}
+          {hasEdu&&<Sec label="Education"><EduRows edus={d.edus}/></Sec>}
+          {hasProj&&<Sec label="Projects"><ProjRows projs={d.projs}/></Sec>}
+          {hasCert&&<Sec label="Certifications"><CertRows certs={d.certs}/></Sec>}
+          {d.extras.awards&&<Sec label="Awards"><div style={{fontSize:8.5,color:'#44403c'}} dangerouslySetInnerHTML={{__html:descToHTML(d.extras.awards)}}/></Sec>}
+          {hasRef&&<Sec label="References"><RefRows refs={d.refs}/></Sec>}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── TEMPLATE 10: CAPE (orange minimalist South African) ───────
+function CapeTemplate({data:d, accent}) {
+  const {name,title,contact,personal,allSkills,toolSkills,hasExp,hasEdu,hasProj,hasCert,hasRef,hasLang} = getCommonProps(d,accent);
+  const orange = '#ea580c'; const orangeLight = '#fff7ed';
+  const Sec = ({label,children}) => !children?null:(
+    <div style={{marginBottom:12}}>
+      <div style={{fontSize:8,fontWeight:800,textTransform:'uppercase',letterSpacing:1.2,color:orange,marginBottom:7,paddingBottom:4,borderBottom:'2px solid #fed7aa'}}>{label}</div>
+      {children}
+    </div>
+  );
+  return (
+    <div style={{fontFamily:"'Outfit',sans-serif",fontSize:8.5,lineHeight:1.55,color:'#111',minHeight:'100%',padding:24,background:'#fff'}}>
+      {/* Clean centred header */}
+      <div style={{textAlign:'center',marginBottom:18,paddingBottom:16,borderBottom:'3px solid '+orange}}>
+        {d.showPhoto&&d.photo&&<img style={{width:64,height:64,borderRadius:'50%',objectFit:'cover',border:'3px solid '+orange,margin:'0 auto 10px'}} src={d.photo} alt=""/>}
+        <div style={{fontFamily:"'Playfair Display',serif",fontSize:24,fontWeight:700,letterSpacing:-0.5,marginBottom:3,color:'#111'}}>{name}</div>
+        <div style={{fontSize:10,color:orange,fontWeight:600,textTransform:'uppercase',letterSpacing:1.5,marginBottom:8}}>{title}</div>
+        <div style={{display:'flex',justifyContent:'center',flexWrap:'wrap',gap:12,fontSize:8.5,color:'#888'}}>{contact.map((c,i)=><span key={i}>{c}</span>)}</div>
+      </div>
+
+      {d.summary&&<div style={{background:orangeLight,borderLeft:'3px solid '+orange,padding:'10px 14px',borderRadius:'0 6px 6px 0',marginBottom:14,fontSize:8.5,color:'#44403c',lineHeight:1.65}}>{esc(d.summary)}</div>}
+
+      <div style={{display:'grid',gridTemplateColumns:'1fr 180px',gap:18}}>
+        <div>
+          {personal.length>0&&<Sec label="Personal"><div style={{display:'flex',flexWrap:'wrap',gap:'3px 14px'}}>{personal.map((p,i)=><span key={i} style={{fontSize:8.5}}>{p}</span>)}</div></Sec>}
+          {hasExp&&<Sec label="Experience"><ExpRows exps={d.exps}/></Sec>}
+          {hasEdu&&<Sec label="Education"><EduRows edus={d.edus}/></Sec>}
+          {hasProj&&<Sec label="Projects"><ProjRows projs={d.projs}/></Sec>}
+          {d.extras.awards&&<Sec label="Awards"><div style={{fontSize:8.5,color:'#444'}} dangerouslySetInnerHTML={{__html:descToHTML(d.extras.awards)}}/></Sec>}
+          {hasRef&&<Sec label="References"><RefRows refs={d.refs}/></Sec>}
+        </div>
+        <div>
+          {allSkills.length>0&&<Sec label="Skills"><div style={{display:'flex',flexDirection:'column',gap:4}}>{allSkills.map((s,i)=><div key={i} style={{fontSize:8,background:'#f1f5f9',borderRadius:4,padding:'2px 6px',color:'#374151'}}>{esc(s)}</div>)}</div></Sec>}
+          {toolSkills.length>0&&<Sec label="Tools"><div>{toolSkills.map((t,i)=><div key={i} style={{fontSize:8,marginBottom:2,color:'#555'}}>· {esc(t)}</div>)}</div></Sec>}
+          {hasLang&&<Sec label="Languages"><LangRows langs={d.langs}/></Sec>}
+          {hasCert&&<Sec label="Certs"><CertRows certs={d.certs}/></Sec>}
+          {d.extras.hobbies&&<Sec label="Interests"><div style={{fontSize:8,color:'#555'}}>{esc(d.extras.hobbies)}</div></Sec>}
+        </div>
+      </div>
     </div>
   );
 }

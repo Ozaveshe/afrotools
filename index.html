@@ -122,7 +122,7 @@
       box-shadow: 0 2px 20px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.06);
       backdrop-filter: blur(12px);
     }
-    .hero-search:focus-within { border-color: rgba(96,181,255,0.5); background: rgba(255,255,255,0.12); }
+    .hero-search:focus-within { border-color: rgba(96,181,255,0.6); background: rgba(255,255,255,0.12); box-shadow: 0 0 0 3px rgba(96,181,255,0.12), 0 2px 20px rgba(0,0,0,0.2); }
     .hero-search svg { margin-left: 16px; flex-shrink: 0; color: rgba(255,255,255,0.45); }
     .hero-search input {
       flex: 1; padding: 14px 12px; background: transparent; border: none; outline: none;
@@ -338,11 +338,13 @@
       background: radial-gradient(ellipse at center, rgba(0,113,227,0.25) 0%, transparent 70%);
     }
     .fb-flags { display: flex; flex-wrap: wrap; gap: 8px; position: relative; z-index: 1; max-width: 220px; }
-    .fb-flag { font-size: 2.4rem; width: 56px; height: 56px; border-radius: 14px; 
+    .fb-flag { font-size: 2.4rem; width: 56px; height: 56px; border-radius: 14px;
       background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
       display: flex; align-items: center; justify-content: center;
-      backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px); color: #fff;
+      transition: transform 0.2s, background 0.2s;
     }
+    .fb-flag:hover { background: rgba(255,255,255,0.14); transform: scale(1.06); }
     @media (max-width: 680px) {
       .feature-banner { grid-template-columns: 1fr; }
       .fb-visual { display: none; }
@@ -527,16 +529,74 @@
     .nl-btn:hover { background: #0d2b55; }
     .nl-note { font-size: 0.7rem; color: rgba(255,255,255,0.4); }
 
+    /* ── ANIMATIONS ── */
+    @keyframes heroSlideUp {
+      from { opacity: 0; transform: translateY(28px); filter: blur(4px); }
+      to   { opacity: 1; transform: translateY(0);   filter: blur(0); }
+    }
+    @keyframes heroFadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes scalePop {
+      0%   { opacity: 0; transform: scale(0.88); }
+      60%  { transform: scale(1.03); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    @keyframes shimmer {
+      0%   { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+    @keyframes livePulse {
+      0%,100% { box-shadow: 0 0 0 0 rgba(0,113,227,0.4); }
+      50%     { box-shadow: 0 0 0 5px rgba(0,113,227,0); }
+    }
+    @keyframes floatUp {
+      0%,100% { transform: translateY(0); }
+      50%     { transform: translateY(-6px); }
+    }
+
+    /* Hero entrance */
+    .hero-eyebrow { animation: heroSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) both; animation-delay: 0.05s; }
+    #hero-h1 { animation: heroSlideUp 0.8s cubic-bezier(0.22,1,0.36,1) both; animation-delay: 0.15s; }
+    .hero-sub { animation: heroSlideUp 0.8s cubic-bezier(0.22,1,0.36,1) both; animation-delay: 0.25s; }
+    .hero-search-wrap { animation: heroSlideUp 0.8s cubic-bezier(0.22,1,0.36,1) both; animation-delay: 0.32s; }
+    #use-case-grid { animation: heroFadeIn 0.9s ease both; animation-delay: 0.45s; }
+
+    /* Live tool cards get pulse glow */
+    .tc[data-status="live"] { animation: livePulse 3s ease-in-out infinite; animation-delay: calc(var(--di, 0) * 0.4s); }
+    .tc[data-status="live"]:hover { animation: none; }
+
+    /* Feature banner float */
+    .feature-banner { animation: floatUp 6s ease-in-out infinite; }
+    .feature-banner:hover { animation: none; }
+
+    /* Category card pop */
+    .cat-card:nth-child(1) { animation: scalePop 0.55s cubic-bezier(0.22,1,0.36,1) both; animation-delay: 0.0s; }
+    .cat-card:nth-child(2) { animation: scalePop 0.55s cubic-bezier(0.22,1,0.36,1) both; animation-delay: 0.06s; }
+    .cat-card:nth-child(3) { animation: scalePop 0.55s cubic-bezier(0.22,1,0.36,1) both; animation-delay: 0.12s; }
+    .cat-card:nth-child(4) { animation: scalePop 0.55s cubic-bezier(0.22,1,0.36,1) both; animation-delay: 0.18s; }
+
+    /* Badge-live shimmer */
+    .badge-live, .badge-ai {
+      background-size: 200% auto;
+    }
+
+    /* Smooth transition for all interactive elements */
+    .tc, .ut, .cat-card, .btn-green, .btn-ghost, .f-btn {
+      will-change: transform;
+    }
+
     /* ── SCROLL REVEAL ── */
-    .rv { opacity: 0; transform: translateY(14px); transition: opacity 0.45s ease, transform 0.45s ease; }
+    .rv { opacity: 0; transform: translateY(14px); transition: opacity 0.5s cubic-bezier(0.22,1,0.36,1), transform 0.5s cubic-bezier(0.22,1,0.36,1); }
     .rv.in { opacity: 1; transform: none; }
-    .rv.d1 { transition-delay: 0.06s; }
-    .rv.d2 { transition-delay: 0.12s; }
-    .rv.d3 { transition-delay: 0.18s; }
-    .rv.d4 { transition-delay: 0.24s; }
-    .rv.d5 { transition-delay: 0.30s; }
-    .rv.d6 { transition-delay: 0.36s; }
-    .rv.d7 { transition-delay: 0.42s; }
+    .rv.d1 { transition-delay: 0.07s; }
+    .rv.d2 { transition-delay: 0.14s; }
+    .rv.d3 { transition-delay: 0.21s; }
+    .rv.d4 { transition-delay: 0.28s; }
+    .rv.d5 { transition-delay: 0.35s; }
+    .rv.d6 { transition-delay: 0.42s; }
+    .rv.d7 { transition-delay: 0.49s; }
 
     /* ── RESPONSIVE ── */
     @media (max-width: 1024px) {
@@ -1059,6 +1119,88 @@
 
 
 <!-- ═══════════════════════════════════════════════════════════
+  AFRODRAFT FEATURED SPOTLIGHT
+═══════════════════════════════════════════════════════════ -->
+<section class="sec" style="background:#f5f5f7;padding:60px 0" aria-label="AfroDraft CAD Tool">
+  <div class="wrap">
+    <div style="background:linear-gradient(135deg,#0d1117 0%,#0a1628 50%,#111827 100%);border-radius:28px;overflow:hidden;position:relative;display:grid;grid-template-columns:1fr 1fr;align-items:center;min-height:280px;box-shadow:0 16px 48px rgba(0,0,0,.2)">
+      <!-- Glow effect -->
+      <div style="position:absolute;top:-80px;right:100px;width:400px;height:400px;background:radial-gradient(circle,rgba(0,113,227,.2) 0%,transparent 70%);pointer-events:none"></div>
+      <div style="position:absolute;bottom:-60px;left:30%;width:300px;height:300px;background:radial-gradient(circle,rgba(96,181,255,.1) 0%,transparent 70%);pointer-events:none"></div>
+
+      <!-- Left: Content -->
+      <div style="padding:44px 44px;position:relative;z-index:1">
+        <div style="display:inline-flex;align-items:center;gap:8px;font-size:.64rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#60b5ff;background:rgba(0,113,227,.15);border:1px solid rgba(0,113,227,.3);border-radius:100px;padding:5px 13px;margin-bottom:18px">
+          <svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="3" fill="#0071E3"/><circle cx="4" cy="4" r="1.5" fill="#60b5ff"/></svg>
+          Featured Tool · Engineering
+        </div>
+        <h2 style="font-size:clamp(1.5rem,3vw,2.2rem);font-weight:800;color:#fff;letter-spacing:-0.025em;line-height:1.1;margin-bottom:12px">AfroDraft <span style="color:#60b5ff">2D CAD</span></h2>
+        <p style="font-size:.9rem;color:rgba(255,255,255,.55);line-height:1.65;margin-bottom:24px;max-width:380px">Africa's first browser-based CAD tool. 60+ AutoCAD-style features — draw, dimension, annotate, layers, blocks, snap modes. Export to SVG, DXF, PNG. Works on mobile.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px">
+          <span style="display:inline-flex;align-items:center;gap:5px;font-size:.72rem;font-weight:600;color:#c9d1d9;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:100px;padding:5px 12px">📐 60+ CAD Commands</span>
+          <span style="display:inline-flex;align-items:center;gap:5px;font-size:.72rem;font-weight:600;color:#c9d1d9;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:100px;padding:5px 12px">📱 Touch Enabled</span>
+          <span style="display:inline-flex;align-items:center;gap:5px;font-size:.72rem;font-weight:600;color:#c9d1d9;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:100px;padding:5px 12px">💾 SVG / DXF Export</span>
+        </div>
+        <a href="/engineering/afrodraft" style="display:inline-flex;align-items:center;gap:8px;background:#0071E3;color:#fff;padding:13px 26px;border-radius:100px;font-weight:700;font-size:.88rem;text-decoration:none;transition:background .18s" onmouseover="this.style.background='#0059B3'" onmouseout="this.style.background='#0071E3'">
+          Launch AfroDraft →
+        </a>
+      </div>
+
+      <!-- Right: Visual preview -->
+      <div style="position:relative;height:100%;min-height:280px;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:24px">
+        <!-- CAD preview mockup -->
+        <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;width:100%;max-width:320px;padding:20px;position:relative;z-index:1">
+          <!-- Toolbar strip -->
+          <div style="display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap">
+            <div style="background:rgba(0,113,227,.2);border:1px solid rgba(0,113,227,.3);border-radius:6px;padding:5px 9px;font-size:.68rem;font-weight:600;color:#60b5ff">📐 Line</div>
+            <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:5px 9px;font-size:.68rem;font-weight:600;color:#8b949e">⬜ Rect</div>
+            <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:5px 9px;font-size:.68rem;font-weight:600;color:#8b949e">⭕ Circle</div>
+            <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:5px 9px;font-size:.68rem;font-weight:600;color:#8b949e">✂️ Trim</div>
+            <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:5px 9px;font-size:.68rem;font-weight:600;color:#8b949e">📏 Dim</div>
+          </div>
+          <!-- Canvas area -->
+          <div style="background:rgba(13,17,23,.8);border:1px solid rgba(255,255,255,.1);border-radius:10px;height:140px;position:relative;overflow:hidden">
+            <svg viewBox="0 0 300 140" width="100%" height="100%" style="position:absolute;inset:0">
+              <!-- Grid lines -->
+              <defs><pattern id="cgrid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,.05)" stroke-width=".5"/></pattern></defs>
+              <rect width="300" height="140" fill="url(#cgrid)"/>
+              <!-- Floor plan shapes -->
+              <rect x="30" y="20" width="100" height="80" fill="none" stroke="#0071E3" stroke-width="1.5"/>
+              <rect x="140" y="20" width="120" height="80" fill="none" stroke="#0071E3" stroke-width="1.5"/>
+              <line x1="130" y1="40" x2="140" y2="40" stroke="#60b5ff" stroke-width="1.5"/>
+              <line x1="130" y1="70" x2="140" y2="70" stroke="#60b5ff" stroke-width="1.5"/>
+              <!-- Dimension lines -->
+              <line x1="30" y1="110" x2="130" y2="110" stroke="#f59e0b" stroke-width=".8"/>
+              <line x1="30" y1="108" x2="30" y2="112" stroke="#f59e0b" stroke-width=".8"/>
+              <line x1="130" y1="108" x2="130" y2="112" stroke="#f59e0b" stroke-width=".8"/>
+              <text x="80" y="122" font-size="7" fill="#f59e0b" text-anchor="middle">5000mm</text>
+              <!-- Cursor dot -->
+              <circle cx="185" cy="55" r="3" fill="#0071E3" opacity=".8"/>
+              <line x1="175" y1="55" x2="195" y2="55" stroke="#0071E3" stroke-width=".8" opacity=".6"/>
+              <line x1="185" y1="45" x2="185" y2="65" stroke="#0071E3" stroke-width=".8" opacity=".6"/>
+            </svg>
+          </div>
+          <!-- Status bar -->
+          <div style="display:flex;justify-content:space-between;margin-top:10px;font-size:.65rem;color:rgba(255,255,255,.3);font-weight:600">
+            <span>Layers: 3</span>
+            <span>Scale: 1:100</span>
+            <span>● Snap On</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Responsive: stack on mobile -->
+      <style>
+        @media(max-width:700px){
+          #afrodraft-spotlight{grid-template-columns:1fr!important}
+          #afrodraft-spotlight > div:last-child{display:none}
+        }
+      </style>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
   12 TOOL CATEGORIES
 ═══════════════════════════════════════════════════════════ -->
 <section class="sec sec--white" id="categories" aria-label="All tool categories">
@@ -1082,11 +1224,35 @@
   <div class="wrap">
     <div class="eyebrow eyebrow--lt">What's Next</div>
     <h2 class="sec-title sec-title--lt" id="pipeline-heading">We're Just Getting Started.</h2>
-    <p class="sec-sub sec-sub--lt" style="margin-bottom:36px">New tools drop every week. Here's what's coming — get on the list to be first to know.</p>
+    <p class="sec-sub sec-sub--lt" style="margin-bottom:36px">366 tools planned. New ones ship every week. Here's the roadmap — get on the list to be first.</p>
 
     <div class="phase-grid" id="phase-grid"></div>
 
-    <div style="margin-top:32px;text-align:center">
+    <!-- Roadmap milestones -->
+    <div style="margin-top:32px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px">
+      <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:20px">
+        <div style="font-size:.68rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#60b5ff;margin-bottom:8px">Now Live — Q1 2026</div>
+        <div style="font-size:1rem;font-weight:700;color:#fff;margin-bottom:8px">181 Tools Across 54 Countries</div>
+        <div style="font-size:.78rem;color:rgba(255,255,255,.55);line-height:1.6">PAYE calculators, PDF tools, currency, mobile money, GPA, solar, floor plan, BOQ, and more — all free.</div>
+      </div>
+      <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:20px">
+        <div style="font-size:.68rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#34d399;margin-bottom:8px">Q2 2026 — Health Wave</div>
+        <div style="font-size:1rem;font-weight:700;color:#fff;margin-bottom:8px">Health, Fertility & Food Tools</div>
+        <div style="font-size:.78rem;color:rgba(255,255,255,.55);line-height:1.6">Malaria risk checker ✓, ovulation tracker, African food calorie counter, sickle cell advisor, vaccine schedule, diabetes risk.</div>
+      </div>
+      <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:20px">
+        <div style="font-size:.68rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#f59e0b;margin-bottom:8px">Q3 2026 — Business & Law</div>
+        <div style="font-size:1rem;font-weight:700;color:#fff;margin-bottom:8px">Startup, Legal & Finance Tools</div>
+        <div style="font-size:.78rem;color:rgba(255,255,255,.55);line-height:1.6">Tenancy agreement generator, CAC checker, crypto tax Africa, startup valuation, African stock screener, salary benchmark.</div>
+      </div>
+      <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:20px">
+        <div style="font-size:.68rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#e879f9;margin-bottom:8px">Q4 2026 — The Platform</div>
+        <div style="font-size:1rem;font-weight:700;color:#fff;margin-bottom:8px">Community, API & Pro Features</div>
+        <div style="font-size:.78rem;color:rgba(255,255,255,.55);line-height:1.6">AfroTools Pro, community forum, developer API, African language tools, personalised dashboard, team accounts.</div>
+      </div>
+    </div>
+
+    <div style="margin-top:28px;text-align:center">
       <a href="#newsletter" class="btn-green" style="display:inline-flex">Get notified when your tool launches →</a>
     </div>
   </div>
@@ -1452,12 +1618,14 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // Scroll reveal
+  // Scroll reveal — robust observer with fallback
   const obs = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); }});
-  }, { threshold: 0.06 });
+  }, { threshold: 0.01, rootMargin: '0px 0px -40px 0px' });
   window._afroObs = obs;
   document.querySelectorAll('.rv').forEach(el => obs.observe(el));
+  // Fallback: reveal everything after 3s in case observer misses elements
+  setTimeout(() => { document.querySelectorAll('.rv:not(.in)').forEach(el => el.classList.add('in')); }, 3000);
 
   // ══════════════════════════════════════════════════════
   // DYNAMIC STATS — sync script above handles hero stats
