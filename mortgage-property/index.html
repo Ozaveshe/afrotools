@@ -207,8 +207,10 @@
     .btn-outline:hover { background: rgba(255,255,255,0.06); color: #fff; }
 
     /* ── REVEAL ── */
-    .rv { opacity: 0; transform: translateY(18px); transition: opacity 0.45s, transform 0.45s; }
-    .rv.visible { opacity: 1; transform: none; }
+    /* Elements are visible by default; JS adds .rv-hidden for the animation effect */
+    .rv { transition: opacity 0.45s, transform 0.45s; }
+    .rv.rv-hidden { opacity: 0; transform: translateY(18px); }
+    .rv.rv-hidden.visible { opacity: 1; transform: none; }
 
     /* ── RESPONSIVE ── */
     @media (max-width: 640px) {
@@ -442,11 +444,18 @@
     toastTimer = setTimeout(function() { toast.classList.remove('show'); }, 2800);
   }
 
-  // Scroll reveal
+  // Scroll reveal — apply hidden state via JS so elements are visible if JS fails
   var obs = new IntersectionObserver(function(entries) {
     entries.forEach(function(e) { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
   }, { threshold: 0.06 });
-  document.querySelectorAll('.rv').forEach(function(el) { obs.observe(el); });
+  document.querySelectorAll('.rv').forEach(function(el) {
+    el.classList.add('rv-hidden');
+    obs.observe(el);
+  });
+  // Safety fallback: force-reveal any elements still hidden after 800ms
+  setTimeout(function() {
+    document.querySelectorAll('.rv.rv-hidden:not(.visible)').forEach(function(el) { el.classList.add('visible'); });
+  }, 800);
 </script>
 </body>
 </html>

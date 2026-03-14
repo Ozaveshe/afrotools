@@ -18,6 +18,7 @@
 <link rel="apple-touch-icon" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Engineering & CAD | AfroTools">
 <meta property="og:description" content="Solar panel sizing, 2D CAD drawing, floor plan designer, bill of quantities, structural load calculator.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:url" content="https://afrotools.com/engineering">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
@@ -103,8 +104,11 @@
 <afro-footer></afro-footer>
 
 <script>
-document.addEventListener('DOMContentLoaded',function(){
-  if(typeof AFRO_TOOLS==='undefined')return;
+function _renderEngineering(){
+  if(typeof AFRO_TOOLS==='undefined'){
+    // tool-registry.js might not have loaded yet — retry once
+    setTimeout(_renderEngineering,300);return;
+  }
   var key='engineering';
   var tools=AFRO_TOOLS.filter(function(t){return t.category===key;});
   var live=tools.filter(function(t){return t.status==='live'||t.status==='new';});
@@ -135,7 +139,8 @@ document.addEventListener('DOMContentLoaded',function(){
   }
   container.innerHTML=html||'<p style="color:#9ca3af">No tools yet.</p>';
   if(!document.getElementById('p-s')){var s=document.createElement('style');s.id='p-s';s.textContent='@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}';document.head.appendChild(s);}
-});
+}
+document.addEventListener('DOMContentLoaded',_renderEngineering);
 </script>
 </body>
 </html>

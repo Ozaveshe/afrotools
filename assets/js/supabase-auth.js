@@ -126,6 +126,16 @@
             } else {
               console.log('[AfroAuth] Hash session set successfully');
             }
+          } else if (accessToken) {
+            // Only access_token present (some OAuth/email flows) — validate via getUser
+            console.log('[AfroAuth] Only access_token in hash, validating via getUser...');
+            var userResult = await _sb.auth.getUser(accessToken);
+            if (!userResult.error && userResult.data && userResult.data.user) {
+              console.log('[AfroAuth] User validated from access_token');
+              _user = userResult.data.user;
+            } else {
+              console.warn('[AfroAuth] getUser from access_token failed:', userResult.error);
+            }
           }
         } catch (e) {
           console.warn('[AfroAuth] Hash session error:', e);
@@ -482,11 +492,10 @@
           refreshNavbar();
           fire('afro-auth-change', { user: _user, profile: _profile, event: 'SIGNED_IN' });
 
-          // Reload if on dashboard, otherwise go to homepage
-          if (window.location.pathname.indexOf('/dashboard') === 0) {
-            window.location.reload();
-          } else {
-            window.location.href = '/';
+          // On dashboard: afro-auth-change event above already triggers showDashboard() — no reload needed.
+          // On any other page: redirect to dashboard.
+          if (window.location.pathname.indexOf('/dashboard') !== 0) {
+            window.location.href = '/dashboard/';
           }
           return;
         }
