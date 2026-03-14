@@ -44,12 +44,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root {
-    --calc-accent: #006B3F;
+    --calc-accent: #004EA8;
     --calc-accent-rgb: 0,107,63;
-    --calc-accent-subtle: #006B3F12;
+    --calc-accent-subtle: #004EA812;
     --calc-gold: #f5d76e;
     --calc-gold-rgb: 245,215,110;
-    --gh-green: #006B3F;  /* Ghana flag green */
+    --gh-green: #004EA8;  /* Ghana flag green */
     --gh-gold:  #FCD116;  /* Ghana flag gold  */
     --gh-red:   #CE1126;  /* Ghana flag red   */
   }
@@ -426,7 +426,7 @@ function onInput(el) {
 function updateSliderFill(el) {
   var p = ((parseInt(el.value) - parseInt(el.min)) / (parseInt(el.max) - parseInt(el.min))) * 100;
   var c = getComputedStyle(document.documentElement).getPropertyValue('--calc-accent');
-  c = c ? c.trim() : '#008751';
+  c = c ? c.trim() : '#0071E3';
   el.style.background = 'linear-gradient(to right, ' + c + ' 0%, ' + c + ' ' + p + '%, #e2e8f0 ' + p + '%, #e2e8f0 100%)';
 }
 updateSliderFill(document.getElementById('salarySlider'));
@@ -625,7 +625,7 @@ function renderChart(type) {
       type: 'bar',
       data: {
         labels: bands.map(b => (b.rate * 100) + '%'),
-        datasets: [{ label: 'Tax Paid (GHS)', data: bands.map(b => b.amount), backgroundColor: '#006B3F', borderRadius: 5 }]
+        datasets: [{ label: 'Tax Paid (GHS)', data: bands.map(b => b.amount), backgroundColor: '#004EA8', borderRadius: 5 }]
       },
       options: {
         responsive: true, maintainAspectRatio: false,
@@ -638,7 +638,7 @@ function renderChart(type) {
       type: 'bar',
       data: {
         labels: ['Take-Home', 'PAYE Tax', 'Employee SSNIT', 'Employer SSNIT'],
-        datasets: [{ label: 'GHS', data: [RESULT.netAnnual, RESULT.tax, RESULT.ssnit, RESULT.employerSSNIT], backgroundColor: ['#FCD116', '#CE1126', '#8aaa95', '#006B3F'], borderRadius: 5 }]
+        datasets: [{ label: 'GHS', data: [RESULT.netAnnual, RESULT.tax, RESULT.ssnit, RESULT.employerSSNIT], backgroundColor: ['#FCD116', '#CE1126', '#8aaa95', '#004EA8'], borderRadius: 5 }]
       },
       options: {
         responsive: true, maintainAspectRatio: false,
@@ -674,7 +674,7 @@ function generatePdf() {
 
   const bandRows = R.bandBreakdown.length
     ? R.bandBreakdown.map(b => `<tr><td style="padding-left:14px;color:#4b5563">@ ${(b.rate*100)}% on GHS ${Math.round(b.income).toLocaleString()}</td><td class="num red">(GHS ${Math.round(b.amount).toLocaleString()})</td></tr>`).join('')
-    : '<tr><td style="padding-left:14px;color:#4b5563">Below GHS 5,880 threshold</td><td class="num" style="color:#006B3F">Exempt</td></tr>';
+    : '<tr><td style="padding-left:14px;color:#4b5563">Below GHS 5,880 threshold</td><td class="num" style="color:#004EA8">Exempt</td></tr>';
 
   const html = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 <title>AfroTools Ghana PAYE — ${refNo}</title>
@@ -696,10 +696,10 @@ function generatePdf() {
 .sec-head{font-size:6.5pt;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#9ca3af;padding:0 0 5px;border-bottom:1.5px solid #e5e7eb;margin:16px 0 8px}
 table{width:100%;border-collapse:collapse}tr{border-bottom:1px solid #f3f4f6}td{padding:5.5px 4px;font-size:8.5pt;vertical-align:middle}
 td.num{text-align:right;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
-.red{color:#c0392b}.green{color:#006B3F}.muted{color:#9ca3af}
+.red{color:#c0392b}.green{color:#004EA8}.muted{color:#9ca3af}
 tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-size:9.5pt}
 .footer{background:#f9fafb;border-top:1px solid #e5e7eb;padding:14px 36px}
-.footer-brand{font-size:7pt;font-weight:700;color:#111827}.footer-brand b{color:#006B3F}
+.footer-brand{font-size:7pt;font-weight:700;color:#111827}.footer-brand b{color:#004EA8}
 .footer-legal{font-size:6.5pt;color:#9ca3af;max-width:440px;line-height:1.4;margin-top:4px}
 .src{display:inline-block;padding:2px 7px;background:#f3f4f6;border-radius:3px;font-size:6.5pt;font-weight:600;color:#6b7280;margin-right:4px}
 .notice{background:#fffbeb;border:1px solid #fcd116;border-radius:5px;padding:8px 12px;font-size:7.5pt;color:#78500a;line-height:1.5;margin:12px 0}
@@ -749,8 +749,8 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
     ${R.tier3>0?`<tr><td style="color:#374151">SSNIT Tier III</td><td class="num red">(GHS ${Math.round(R.tier3).toLocaleString()})</td></tr>`:''}
     <tr><td style="color:#374151">PAYE Income Tax</td><td class="num red">(GHS ${Math.round(R.tax).toLocaleString()})</td></tr>
     <tr><td style="font-weight:700">Total Deductions</td><td class="num red">(GHS ${Math.round(R.totalDeductions).toLocaleString()})</td></tr>
-    <tr class="total"><td style="color:#006B3F;font-weight:800">Annual Take-Home Pay</td><td class="num green">GHS ${Math.round(R.netAnnual).toLocaleString()}</td></tr>
-    <tr class="total"><td style="color:#006B3F;font-weight:800">Monthly Take-Home Pay</td><td class="num green">GHS ${Math.round(R.netMonthly).toLocaleString()}</td></tr>
+    <tr class="total"><td style="color:#004EA8;font-weight:800">Annual Take-Home Pay</td><td class="num green">GHS ${Math.round(R.netAnnual).toLocaleString()}</td></tr>
+    <tr class="total"><td style="color:#004EA8;font-weight:800">Monthly Take-Home Pay</td><td class="num green">GHS ${Math.round(R.netMonthly).toLocaleString()}</td></tr>
     <tr><td style="color:#9ca3af">Daily equivalent (÷ 365)</td><td class="num muted">GHS ${Math.round(R.netAnnual/365).toLocaleString()}</td></tr>
   </table>
 

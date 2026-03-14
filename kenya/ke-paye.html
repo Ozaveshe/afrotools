@@ -349,7 +349,7 @@
   <div style="background:#fff;border-radius:14px;padding:32px;max-width:420px;width:90%;position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.25);">
     <button onclick="closePdfModal()" style="position:absolute;top:14px;right:16px;border:none;background:none;font-size:1.3rem;color:#9ca3af;cursor:pointer;line-height:1;">✕</button>
     <div id="modalForm">
-      <div style="font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#008751;margin-bottom:6px;">Kenya PAYE Report</div>
+      <div style="font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#0071E3;margin-bottom:6px;">Kenya PAYE Report</div>
       <h3 style="font-size:1.15rem;font-weight:800;color:#111827;margin-bottom:6px;letter-spacing:-0.02em;">Download Your Tax Report</h3>
       <p style="font-size:0.82rem;color:#6b7280;margin-bottom:20px;line-height:1.5;">A full PDF breakdown — KRA bands, all deductions, employer cost. Enter your email to receive future law change alerts.</p>
       <form id="keLeadForm" name="pdf-leads" data-netlify="true" onsubmit="submitKePdf(event)">
@@ -363,7 +363,7 @@
         <input type="email" name="email" id="kePdfEmail" placeholder="your@email.com" required
           style="width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:8px;font-size:0.9rem;font-family:inherit;margin-bottom:12px;outline:none;">
         <button type="submit"
-          style="width:100%;padding:13px;background:#008751;color:#fff;border:none;border-radius:8px;font-size:0.9rem;font-weight:700;cursor:pointer;font-family:inherit;">
+          style="width:100%;padding:13px;background:#0071E3;color:#fff;border:none;border-radius:8px;font-size:0.9rem;font-weight:700;cursor:pointer;font-family:inherit;">
           Download PDF Report →
         </button>
       </form>
@@ -374,7 +374,7 @@
       <div style="font-size:1rem;font-weight:700;color:#111827;margin-bottom:6px;">Opening your PDF</div>
       <p style="font-size:0.82rem;color:#6b7280;margin-bottom:20px;line-height:1.5;">Click <strong>Save as PDF</strong> in the print dialog that opens.</p>
       <button onclick="closePdfModal()" class="modal-done-btn"
-        style="padding:11px 28px;background:#008751;color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-family:inherit;">
+        style="padding:11px 28px;background:#0071E3;color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-family:inherit;">
         Done ✓
       </button>
     </div>
@@ -509,7 +509,7 @@ function recalc() {
   document.getElementById('bInsRelief').textContent = insRelief > 0 ? fmt(insRelief) : '—';
   document.getElementById('bPAYE').textContent  = paye > 0 ? `(${fmt(paye)})` : '—';
   document.getElementById('bNet').textContent   = fmt(net);
-  document.getElementById('bNet').style.color   = '#008751';
+  document.getElementById('bNet').style.color   = '#0071E3';
 
   // Effective rate bar
   document.getElementById('effRateBar').style.width = Math.min(effectiveRate / 0.35 * 100, 100) + '%';
@@ -536,7 +536,7 @@ function recalc() {
 
   // Donut chart
   const chartData = [
-    { label: 'Take-Home', val: Math.max(0,net), color: '#008751' },
+    { label: 'Take-Home', val: Math.max(0,net), color: '#0071E3' },
     { label: 'PAYE Tax', val: paye, color: '#c0392b' },
     { label: 'NSSF', val: nssf, color: '#3b82f6' },
     { label: 'SHIF', val: shif, color: '#f59e0b' },
@@ -584,7 +584,7 @@ function recalc() {
 function updateSliderFill(el) {
   var p = ((parseInt(el.value) - parseInt(el.min)) / (parseInt(el.max) - parseInt(el.min))) * 100;
   var c = getComputedStyle(document.documentElement).getPropertyValue('--calc-accent');
-  c = c ? c.trim() : '#008751';
+  c = c ? c.trim() : '#0071E3';
   el.style.background = 'linear-gradient(to right, ' + c + ' 0%, ' + c + ' ' + p + '%, #e2e8f0 ' + p + '%, #e2e8f0 100%)';
 }
 
@@ -693,13 +693,13 @@ function generateKePdf() {
   .cover{background:#1a2420;padding:28px 36px 22px;color:#fff}
   .cover-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
   .brand-name{font-size:13pt;font-weight:800;letter-spacing:0.02em}
-  .brand-name b{color:#00c873}
+  .brand-name b{color:#0071E3}
   .brand-sub{font-size:6pt;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-top:2px}
   .ref-block{text-align:right}
   .ref-label{font-size:6pt;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35)}
   .ref-val{font-size:8pt;font-weight:700;color:rgba(255,255,255,0.7);margin-top:2px}
   .doc-title{font-size:18pt;font-weight:800;color:#fff;letter-spacing:-0.02em;line-height:1.1}
-  .doc-title span{color:#00c873}
+  .doc-title span{color:#0071E3}
   .doc-meta{margin-top:8px;font-size:7.5pt;color:rgba(255,255,255,0.45)}
   .amendment-badge{display:inline-block;margin-top:10px;padding:3px 10px;border-radius:3px;font-size:7pt;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;background:rgba(252,129,129,0.15);color:#fc8181;border:1px solid rgba(252,129,129,0.3)}
   .body{padding:22px 36px 28px}
@@ -707,7 +707,7 @@ function generateKePdf() {
   .sh-item{text-align:center;flex:1}
   .sh-label{font-size:6pt;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#9ca3af;margin-bottom:3px}
   .sh-val{font-size:12pt;font-weight:800;color:#111827}
-  .sh-val.green{color:#008751}.sh-val.red{color:#c0392b}
+  .sh-val.green{color:#0071E3}.sh-val.red{color:#c0392b}
   .sh-divider{width:1px;height:36px;background:#e5e7eb;flex-shrink:0}
   .sec-head{font-size:6.5pt;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#9ca3af;padding:0 0 5px;border-bottom:1.5px solid #e5e7eb;margin:14px 0 8px}
   table{width:100%;border-collapse:collapse;margin-bottom:4px}
@@ -715,17 +715,17 @@ function generateKePdf() {
   td{padding:5px 4px;font-size:8.5pt;vertical-align:middle}
   td.num{text-align:right;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
   td.label{color:#374151}.td.label-bold{color:#111827;font-weight:700}
-  .red{color:#c0392b}.green{color:#008751}.muted{color:#9ca3af}
+  .red{color:#c0392b}.green{color:#0071E3}.muted{color:#9ca3af}
   tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-size:9.5pt}
   tr.subtotal td{background:#f9fafb;font-weight:600}
   .notice{background:#fff7ed;border:1px solid #fed7aa;border-radius:6px;padding:10px 14px;margin:12px 0;font-size:7.5pt;color:#92400e;line-height:1.5}
   .notice strong{font-weight:700}
   .source-tag{display:inline-block;padding:2px 7px;background:#f3f4f6;border-radius:3px;font-size:6.5pt;font-weight:600;color:#6b7280;margin-right:4px}
   .rate-track{height:6px;background:#e5e7eb;border-radius:3px;margin:6px 0 3px;overflow:hidden}
-  .rate-fill{height:100%;background:#008751;border-radius:3px}
+  .rate-fill{height:100%;background:#0071E3;border-radius:3px}
   .footer{background:#f9fafb;border-top:1px solid #e5e7eb;padding:12px 36px}
   .footer-brand{font-size:7pt;font-weight:700;color:#111827}
-  .footer-brand b{color:#008751}
+  .footer-brand b{color:#0071E3}
   .footer-legal{font-size:6.5pt;color:#9ca3af;max-width:420px;line-height:1.4;margin-top:3px}
   .footer-row{display:flex;justify-content:space-between;align-items:flex-start}
   .footer-page{font-size:6.5pt;color:#9ca3af;text-align:right;flex-shrink:0}
@@ -796,8 +796,8 @@ function generateKePdf() {
     <tr><td style="color:#374151">Affordable Housing Levy — AHL (1.5%)<br><span style="font-size:7pt;color:#9ca3af">Deducted from net pay — relief repealed Dec 2024</span></td><td class="num red">(${fmt(R.ahl)})</td></tr>
     <tr><td style="color:#374151">PAYE Income Tax</td><td class="num red">(${fmt(R.paye)})</td></tr>
     <tr class="subtotal"><td style="font-weight:700">Total Deductions</td><td class="num red">(${fmt(R.totalDeductions)})</td></tr>
-    <tr class="total"><td style="color:#008751;font-weight:800">Monthly Take-Home Pay</td><td class="num green">${fmt(R.net)}</td></tr>
-    <tr class="total"><td style="color:#008751;font-weight:800">Annual Take-Home Pay</td><td class="num green">${fmt(R.net*12)}</td></tr>
+    <tr class="total"><td style="color:#0071E3;font-weight:800">Monthly Take-Home Pay</td><td class="num green">${fmt(R.net)}</td></tr>
+    <tr class="total"><td style="color:#0071E3;font-weight:800">Annual Take-Home Pay</td><td class="num green">${fmt(R.net*12)}</td></tr>
     <tr><td style="color:#9ca3af">Daily equivalent (÷ 365)</td><td class="num muted">${fmt(R.net*12/365)}</td></tr>
   </table>
 
