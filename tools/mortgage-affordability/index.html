@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mortgage Affordability Calculator Africa — How Much Can You Borrow? | AfroTools</title>
+<meta name="description" content="Find out how much mortgage you can afford in Nigeria, Kenya, South Africa, Ghana and more. Uses African bank affordability rules, income-to-loan ratios and debt service limits.">
+<link rel="canonical" href="https://afrotools.com/tools/mortgage-affordability/">
+<meta property="og:title" content="Mortgage Affordability Calculator Africa | AfroTools">
+<meta property="og:description" content="How much mortgage can you afford? Built for African banks and salary structures. Covers Nigeria, Kenya, South Africa, Ghana and more.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:url" content="https://afrotools.com/tools/mortgage-affordability/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Mortgage Affordability Calculator Africa",
+  "url": "https://afrotools.com/tools/mortgage-affordability/",
+  "description": "How much mortgage can you afford in Africa? Built for African banks and salary structures.",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<script src="/assets/js/components/tool-registry.min.js"></script>
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<script src="/assets/js/components/related-tools.min.js" defer></script>
+<script src="/assets/js/components/afro-chat.min.js" defer></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7;color:#1d1d1f;-webkit-font-smoothing:antialiased}
+.hero{background:linear-gradient(160deg,#0d1117 0%,#0a1628 55%,#111827 100%);padding:64px 0 52px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-80px;right:-60px;width:400px;height:400px;background:radial-gradient(circle,rgba(0,113,227,.15) 0%,transparent 70%);pointer-events:none}
+.hero-inner{max-width:1160px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+.breadcrumb{display:flex;align-items:center;gap:6px;font-size:0.72rem;color:rgba(255,255,255,.4);margin-bottom:16px}
+.breadcrumb a{color:rgba(255,255,255,.4);text-decoration:none}.breadcrumb a:hover{color:rgba(255,255,255,.7)}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;font-size:0.67rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#60b5ff;margin-bottom:14px;padding:4px 12px;background:rgba(0,113,227,.14);border:1px solid rgba(0,113,227,.25);border-radius:100px}
+.hero h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;color:#f0f6fc;line-height:1.1;letter-spacing:-0.03em;margin-bottom:12px}
+.hero-sub{font-size:0.95rem;color:rgba(255,255,255,.5);max-width:540px;line-height:1.6}
+.layout{max-width:1160px;margin:0 auto;padding:40px 24px 80px;display:grid;grid-template-columns:1fr 360px;gap:32px;align-items:start}
+.card{background:#fff;border-radius:20px;padding:32px;box-shadow:0 2px 12px rgba(0,0,0,.06),0 0 0 1px rgba(0,0,0,.05);margin-bottom:24px}
+.card-title{font-size:1rem;font-weight:700;color:#1d1d1f;letter-spacing:-0.02em;margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.card-title span{font-size:1.2rem}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.field{margin-bottom:0}
+.field label{display:block;font-size:0.7rem;font-weight:700;color:#6e6e73;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+.field input,.field select{width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:12px;font-family:inherit;font-size:0.88rem;color:#1d1d1f;background:#fafafa;outline:none;transition:border-color .18s,box-shadow .18s;appearance:none}
+.field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236e6e73' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:36px}
+.field input:focus,.field select:focus{border-color:#0071E3;background:#fff;box-shadow:0 0 0 4px rgba(0,113,227,.08)}
+.field input::placeholder{color:#c0c0c6}
+.hint{font-size:0.7rem;color:#9ca3af;margin-top:5px}
+.section-divider{height:1px;background:#f0f0f0;margin:20px 0}
+.calc-btn{width:100%;padding:14px 24px;background:#0071E3;color:#fff;border:none;border-radius:100px;font-family:inherit;font-size:0.9rem;font-weight:700;cursor:pointer;transition:background .18s,transform .18s;margin-top:8px}
+.calc-btn:hover{background:#0059B3;transform:translateY(-1px)}
+/* Results */
+.results-hero{background:linear-gradient(135deg,#0071E3 0%,#0059B3 100%);border-radius:16px;padding:28px;text-align:center;margin-bottom:24px;color:#fff}
+.results-hero-sub{font-size:0.82rem;opacity:.75;margin-bottom:8px;text-transform:uppercase;letter-spacing:.08em;font-weight:700}
+.results-hero-amount{font-size:2.8rem;font-weight:800;letter-spacing:-0.04em;line-height:1;margin-bottom:8px}
+.results-hero-note{font-size:0.84rem;opacity:.8}
+.result-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:24px}
+.res-card{background:#f8f9fa;border-radius:12px;padding:16px;text-align:center;border:1px solid #e5e7eb}
+.res-label{font-size:0.65rem;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.res-val{font-size:1.1rem;font-weight:700;color:#1d1d1f}
+/* Dsr gauge */
+.dsr-wrap{margin-bottom:24px}
+.dsr-label{display:flex;justify-content:space-between;font-size:0.75rem;font-weight:700;color:#6e6e73;margin-bottom:8px}
+.dsr-bar-bg{height:12px;background:#e5e7eb;border-radius:100px;overflow:hidden;position:relative}
+.dsr-bar-fill{height:100%;border-radius:100px;transition:width .6s ease}
+.dsr-safe{background:linear-gradient(90deg,#10b981,#059669)}
+.dsr-warn{background:linear-gradient(90deg,#f59e0b,#d97706)}
+.dsr-danger{background:linear-gradient(90deg,#ef4444,#dc2626)}
+.dsr-zones{display:flex;justify-content:space-between;font-size:0.62rem;color:#9ca3af;margin-top:4px}
+.dsr-verdict{padding:10px 16px;border-radius:10px;font-size:0.82rem;font-weight:600;text-align:center;margin-top:8px}
+.verdict-safe{background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0}
+.verdict-warn{background:#fffbeb;color:#d97706;border:1px solid #fde68a}
+.verdict-danger{background:#fef2f2;color:#dc2626;border:1px solid #fecaca}
+/* Scenarios */
+.scenario-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:24px}
+.scenario-card{background:#f8f9fa;border-radius:12px;padding:16px;border:1.5px solid #e5e7eb;text-align:center}
+.scenario-card.active{border-color:#0071E3;background:#f0f7ff}
+.scenario-rate{font-size:0.7rem;font-weight:700;color:#6e6e73;text-transform:uppercase;margin-bottom:4px}
+.scenario-amount{font-size:1.1rem;font-weight:700;color:#1d1d1f;margin-bottom:2px}
+.scenario-pay{font-size:0.72rem;color:#6e6e73}
+.breakdown-table{width:100%;border-collapse:collapse;font-size:0.82rem}
+.breakdown-table th{text-align:left;font-size:0.67rem;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.06em;padding:0 0 8px}
+.breakdown-table td{padding:8px 0;border-top:1px solid #f0f0f0;color:#374151}
+.breakdown-table td:last-child{text-align:right;font-weight:600;color:#1d1d1f}
+.breakdown-table .total-row td{border-top:2px solid #e5e7eb;font-weight:700;color:#1d1d1f;padding-top:12px}
+.ai-insight{background:linear-gradient(135deg,#f0f7ff,#e8f4fd);border:1px solid #bfdbfe;border-radius:14px;padding:18px;font-size:0.84rem;color:#1e40af;line-height:1.6;display:none}
+.ai-insight strong{display:block;margin-bottom:6px;font-size:0.75rem;text-transform:uppercase;letter-spacing:.06em;opacity:.7}
+#results-section{display:none}
+.sidebar{}
+.info-block{background:#fff;border-radius:16px;padding:22px;box-shadow:0 2px 8px rgba(0,0,0,.05),0 0 0 1px rgba(0,0,0,.04);margin-bottom:16px;font-size:0.82rem}
+.info-block h3{font-size:0.85rem;font-weight:700;color:#1d1d1f;margin-bottom:12px}
+.rule-item{padding:8px 0;border-bottom:1px solid #f5f5f7;font-size:0.8rem}
+.rule-item:last-child{border-bottom:none}
+.rule-country{font-weight:600;color:#1d1d1f}
+.rule-val{color:#6e6e73;font-size:0.75rem}
+.faq{background:#fff;border-radius:16px;padding:22px;box-shadow:0 2px 8px rgba(0,0,0,.05),0 0 0 1px rgba(0,0,0,.04);margin-bottom:16px}
+.faq h3{font-size:0.85rem;font-weight:700;color:#1d1d1f;margin-bottom:14px}
+.faq-item{border-bottom:1px solid #f5f5f7;padding:10px 0}
+.faq-item:last-child{border-bottom:none}
+.faq-q{font-size:0.8rem;font-weight:600;color:#1d1d1f;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.faq-a{font-size:0.78rem;color:#6e6e73;line-height:1.6;margin-top:6px;display:none}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.result-cards{grid-template-columns:1fr 1fr}.scenario-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.grid-2{grid-template-columns:1fr}.result-cards{grid-template-columns:1fr 1fr}.scenario-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<section class="hero">
+  <div class="hero-inner">
+    <nav class="breadcrumb">
+      <a href="/">Home</a><span style="opacity:.4"> › </span>
+      <a href="/mortgage-property/">Mortgage &amp; Property</a><span style="opacity:.4"> › </span>
+      <span>Mortgage Affordability</span>
+    </nav>
+    <div class="hero-badge">🏦 Mortgage Tool</div>
+    <h1>Mortgage Affordability Calculator</h1>
+    <p class="hero-sub">Find out exactly how much home loan you can qualify for based on your income, debts, and your African bank's affordability rules.</p>
+  </div>
+</section>
+
+<div class="layout">
+  <div class="main-col">
+    <div class="card">
+      <div class="card-title"><span>💰</span> Your Income &amp; Expenses</div>
+      <div class="grid-2">
+        <div class="field">
+          <label>Country</label>
+          <select id="country" onchange="onCountryChange()">
+            <option value="NG">🇳🇬 Nigeria</option>
+            <option value="KE">🇰🇪 Kenya</option>
+            <option value="ZA" selected>🇿🇦 South Africa</option>
+            <option value="GH">🇬🇭 Ghana</option>
+            <option value="TZ">🇹🇿 Tanzania</option>
+            <option value="UG">🇺🇬 Uganda</option>
+            <option value="EG">🇪🇬 Egypt</option>
+            <option value="MA">🇲🇦 Morocco</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Employment Type</label>
+          <select id="empType">
+            <option value="employed">Permanently Employed</option>
+            <option value="contract">Contract / Fixed Term</option>
+            <option value="self">Self-Employed / Business Owner</option>
+            <option value="informal">Informal / Irregular Income</option>
+          </select>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="field">
+          <label>Gross Monthly Income</label>
+          <input type="number" id="grossIncome" placeholder="e.g. 85000" min="0">
+          <div class="hint">Before tax deductions</div>
+        </div>
+        <div class="field">
+          <label>Net Monthly Income</label>
+          <input type="number" id="netIncome" placeholder="e.g. 62000" min="0">
+          <div class="hint">After-tax take-home pay</div>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="field">
+          <label>Co-Applicant Monthly Income (Net)</label>
+          <input type="number" id="coIncome" placeholder="0" min="0">
+          <div class="hint">Spouse / joint applicant income</div>
+        </div>
+        <div class="field">
+          <label>Other Monthly Income</label>
+          <input type="number" id="otherIncome" placeholder="0" min="0">
+          <div class="hint">Rental, business, investments</div>
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+      <div class="card-title" style="margin-bottom:16px"><span>💳</span> Existing Monthly Obligations</div>
+      <div class="grid-2">
+        <div class="field">
+          <label>Car / Vehicle Loan</label>
+          <input type="number" id="carLoan" placeholder="0" min="0">
+        </div>
+        <div class="field">
+          <label>Credit Card Min. Payment</label>
+          <input type="number" id="creditCard" placeholder="0" min="0">
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="field">
+          <label>Student / Personal Loan</label>
+          <input type="number" id="personalLoan" placeholder="0" min="0">
+        </div>
+        <div class="field">
+          <label>Other Monthly Debts</label>
+          <input type="number" id="otherDebts" placeholder="0" min="0">
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+      <div class="card-title" style="margin-bottom:16px"><span>🏦</span> Loan Parameters</div>
+      <div class="grid-2">
+        <div class="field">
+          <label>Mortgage Interest Rate (%)</label>
+          <input type="number" id="mortRate" placeholder="11.75" step="0.25" value="11.75">
+          <div class="hint" id="rate-hint">South Africa prime + 1% avg ~11.75%</div>
+        </div>
+        <div class="field">
+          <label>Loan Term (Years)</label>
+          <select id="loanTerm">
+            <option value="10">10 years</option>
+            <option value="15">15 years</option>
+            <option value="20" selected>20 years</option>
+            <option value="25">25 years</option>
+            <option value="30">30 years</option>
+          </select>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="field">
+          <label>Available Down Payment</label>
+          <input type="number" id="downPayment" placeholder="0" min="0">
+          <div class="hint">Cash available for deposit</div>
+        </div>
+        <div class="field">
+          <label>Debt Service Ratio Limit (%)</label>
+          <input type="number" id="dsrLimit" placeholder="30" value="30">
+          <div class="hint" id="dsr-hint">SA banks typically allow max 30% of net income</div>
+        </div>
+      </div>
+
+      <button class="calc-btn" onclick="calculate()">Calculate My Affordability →</button>
+    </div>
+
+    <!-- Results -->
+    <div id="results-section">
+      <div class="card">
+        <div class="results-hero">
+          <div class="results-hero-sub">Maximum Affordable Loan</div>
+          <div class="results-hero-amount" id="res-maxloan">—</div>
+          <div class="results-hero-note" id="res-loanNote">Based on your income and bank affordability rules</div>
+        </div>
+
+        <div class="result-cards">
+          <div class="res-card">
+            <div class="res-label">Max Home Price</div>
+            <div class="res-val" id="res-maxprice">—</div>
+          </div>
+          <div class="res-card">
+            <div class="res-label">Monthly Payment</div>
+            <div class="res-val" id="res-monthly">—</div>
+          </div>
+          <div class="res-card">
+            <div class="res-label">Debt Service Ratio</div>
+            <div class="res-val" id="res-dsr">—</div>
+          </div>
+        </div>
+
+        <div class="dsr-wrap">
+          <div class="dsr-label">
+            <span>Debt Service Ratio (DSR)</span>
+            <span id="dsr-pct-label">0% of net income</span>
+          </div>
+          <div class="dsr-bar-bg">
+            <div class="dsr-bar-fill" id="dsr-bar" style="width:0%"></div>
+          </div>
+          <div class="dsr-zones"><span>0%</span><span>Safe ≤30%</span><span>Caution 30–40%</span><span>High Risk &gt;40%</span></div>
+          <div class="dsr-verdict" id="dsr-verdict"></div>
+        </div>
+
+        <div class="section-divider"></div>
+        <div class="card-title" style="margin-bottom:16px"><span>📊</span> Rate Scenarios</div>
+        <div class="scenario-grid" id="scenario-grid"></div>
+
+        <div class="section-divider"></div>
+        <table class="breakdown-table">
+          <thead><tr><th>Affordability Summary</th><th>Amount</th></tr></thead>
+          <tbody id="breakdown-body"></tbody>
+        </table>
+
+        <div class="section-divider"></div>
+        <div class="ai-insight" id="ai-insight">
+          <strong>🤖 AfroTools AI Insight</strong>
+          <span id="ai-text"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sidebar">
+    <div class="info-block">
+      <h3>🏦 African Bank DSR Rules</h3>
+      <div class="rule-item">
+        <div class="rule-country">🇿🇦 South Africa</div>
+        <div class="rule-val">Max 30% of net income (NCA rules). NHF loans allow up to 33%.</div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-country">🇰🇪 Kenya</div>
+        <div class="rule-val">Max 40% of gross income. Stima Sacco allows up to 50% for members.</div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-country">🇳🇬 Nigeria</div>
+        <div class="rule-val">Max 33% of net income (CBN guidelines). NHF loans: 30% of net.</div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-country">🇬🇭 Ghana</div>
+        <div class="rule-val">Max 40% of gross income. HFC Bank, GHL use 30–35%.</div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-country">🇪🇬 Egypt</div>
+        <div class="rule-val">Max 40% of net income (CBE guidelines for social housing).</div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-country">🇲🇦 Morocco</div>
+        <div class="rule-val">Max 33% of gross income. CIH and Attijariwafa use this limit.</div>
+      </div>
+    </div>
+
+    <div class="faq">
+      <h3>❓ Common Questions</h3>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">What is a Debt Service Ratio? <span>+</span></div>
+        <div class="faq-a">DSR (Debt Service Ratio) is the percentage of your monthly income that goes toward debt repayments. Banks use this to decide if you can afford the loan. In South Africa, the limit is ~30% of net income. In Kenya and Ghana, banks use ~40% of gross income.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Can I use rental income in my application? <span>+</span></div>
+        <div class="faq-a">Yes, most African banks will accept 70–80% of rental income as qualifying income. You'll need lease agreements and bank statements showing deposits. Some banks require 2 years of rental history.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">How does a joint application help? <span>+</span></div>
+        <div class="faq-a">A joint application (spouse or co-buyer) combines both incomes, which can significantly increase the loan amount you qualify for. Both applicants' credit histories are assessed, so both need good credit.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">What if I'm self-employed? <span>+</span></div>
+        <div class="faq-a">Self-employed borrowers typically need 2–3 years of audited financial statements, 6–12 months of bank statements, and a letter from an accountant. Banks often apply a 10–20% "haircut" on declared income for self-employed applicants.</div>
+      </div>
+    </div>
+
+    <afro-related-tools category="mortgage-property"></afro-related-tools>
+  </div>
+</div>
+
+<afro-chat
+  tool-name="Mortgage Affordability Calculator"
+  system-prompt="You are an expert African mortgage and home loan advisor. Help users understand how much they can borrow, how African banks calculate affordability, what documents are needed, and how to improve their borrowing power. Provide specific advice for Nigerian, Kenyan, South African, Ghanaian and other African banking systems. Be practical and accurate.">
+</afro-chat>
+
+<afro-footer></afro-footer>
+
+<script>
+const COUNTRIES = {
+  NG:{sym:'₦',rate:22,dsr:33,dsrBase:'net',hint:'Nigeria CBN guidelines: max 33% of net income. Commercial rate ~22%.'},
+  KE:{sym:'KSh',rate:13,dsr:40,dsrBase:'gross',hint:'Kenya banks: max 40% of gross income. Avg mortgage rate ~13%.'},
+  ZA:{sym:'R',rate:11.75,dsr:30,dsrBase:'net',hint:'South Africa NCA: max 30% of net income. Prime + 1% avg ~11.75%.'},
+  GH:{sym:'GH₵',rate:28,dsr:35,dsrBase:'gross',hint:'Ghana HFC/GHL: max 35% of gross income. Rate ~28%.'},
+  TZ:{sym:'TSh',rate:17,dsr:33,dsrBase:'net',hint:'Tanzania banks: max 33% of net income. Rate ~17%.'},
+  UG:{sym:'USh',rate:20,dsr:33,dsrBase:'net',hint:'Uganda banks: max 33% of net income. Rate ~20%.'},
+  EG:{sym:'E£',rate:20,dsr:40,dsrBase:'net',hint:'Egypt CBE: max 40% of net income. Rate ~20%.'},
+  MA:{sym:'MAD',rate:4.5,dsr:33,dsrBase:'gross',hint:'Morocco: max 33% of gross income. Rate ~4.5%.'}
+};
+
+function onCountryChange(){
+  const c=COUNTRIES[document.getElementById('country').value];
+  if(!c)return;
+  document.getElementById('mortRate').value=c.rate;
+  document.getElementById('dsrLimit').value=c.dsr;
+  document.getElementById('rate-hint').textContent=c.hint;
+  document.getElementById('dsr-hint').textContent=c.hint;
+}
+
+function fmt(n){
+  const c=COUNTRIES[document.getElementById('country').value]||COUNTRIES['ZA'];
+  return c.sym+' '+Math.round(n).toLocaleString();
+}
+
+function calcMonthlyPayment(P,annualRate,years){
+  const r=annualRate/100/12;
+  const n=years*12;
+  if(r===0)return P/n;
+  return P*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1);
+}
+
+function calcMaxLoan(monthlyBudget,annualRate,years){
+  const r=annualRate/100/12;
+  const n=years*12;
+  if(r===0)return monthlyBudget*n;
+  return monthlyBudget*(Math.pow(1+r,n)-1)/(r*Math.pow(1+r,n));
+}
+
+function calculate(){
+  const country=document.getElementById('country').value;
+  const C=COUNTRIES[country]||COUNTRIES['ZA'];
+  const grossIncome=parseFloat(document.getElementById('grossIncome').value)||0;
+  const netIncome=parseFloat(document.getElementById('netIncome').value)||0;
+  const coIncome=parseFloat(document.getElementById('coIncome').value)||0;
+  const otherIncome=parseFloat(document.getElementById('otherIncome').value)||0;
+  const carLoan=parseFloat(document.getElementById('carLoan').value)||0;
+  const creditCard=parseFloat(document.getElementById('creditCard').value)||0;
+  const personalLoan=parseFloat(document.getElementById('personalLoan').value)||0;
+  const otherDebts=parseFloat(document.getElementById('otherDebts').value)||0;
+  const mortRate=parseFloat(document.getElementById('mortRate').value)||C.rate;
+  const loanTerm=parseInt(document.getElementById('loanTerm').value)||20;
+  const downPayment=parseFloat(document.getElementById('downPayment').value)||0;
+  const dsrLimit=parseFloat(document.getElementById('dsrLimit').value)||C.dsr;
+
+  if(!grossIncome&&!netIncome){alert('Please enter your income.');return;}
+
+  const baseIncome=C.dsrBase==='net'?(netIncome||grossIncome*0.7):grossIncome;
+  const totalIncome=baseIncome+coIncome+otherIncome*0.8;
+  const existingDebts=carLoan+creditCard+personalLoan+otherDebts;
+  const maxDebtService=totalIncome*(dsrLimit/100);
+  const availableForMortgage=Math.max(0,maxDebtService-existingDebts);
+
+  const maxLoan=calcMaxLoan(availableForMortgage,mortRate,loanTerm);
+  const maxPrice=maxLoan+downPayment;
+  const monthlyPayment=calcMonthlyPayment(maxLoan,mortRate,loanTerm);
+
+  const actualDsr=(existingDebts+monthlyPayment)/totalIncome*100;
+
+  document.getElementById('res-maxloan').textContent=fmt(maxLoan);
+  document.getElementById('res-loanNote').textContent=`Based on ${dsrLimit}% DSR limit | ${loanTerm}-year term | ${mortRate}% rate`;
+  document.getElementById('res-maxprice').textContent=fmt(maxPrice);
+  document.getElementById('res-monthly').textContent=fmt(monthlyPayment)+'/mo';
+  document.getElementById('res-dsr').textContent=actualDsr.toFixed(1)+'%';
+
+  // DSR bar
+  const barPct=Math.min(actualDsr/50*100,100);
+  const barEl=document.getElementById('dsr-bar');
+  barEl.style.width=barPct+'%';
+  barEl.className='dsr-bar-fill '+(actualDsr<=30?'dsr-safe':actualDsr<=40?'dsr-warn':'dsr-danger');
+  document.getElementById('dsr-pct-label').textContent=actualDsr.toFixed(1)+'% of '+C.dsrBase+' income';
+
+  const vEl=document.getElementById('dsr-verdict');
+  if(actualDsr<=30){vEl.className='dsr-verdict verdict-safe';vEl.textContent='✅ Healthy DSR — you are well within most African banks\' affordability limits.';}
+  else if(actualDsr<=40){vEl.className='dsr-verdict verdict-warn';vEl.textContent='⚠️ Moderate DSR — some banks may approve, but terms may be stricter. Reduce existing debts first.';}
+  else{vEl.className='dsr-verdict verdict-danger';vEl.textContent='❌ High DSR — most banks will decline at this ratio. Pay down debts or increase income before applying.';}
+
+  // Scenarios
+  const rates=[{r:mortRate-2,label:'Low'},{r:mortRate,label:'Current'},{r:mortRate+2,label:'High'}].filter(s=>s.r>0);
+  document.getElementById('scenario-grid').innerHTML=rates.map(s=>`
+    <div class="scenario-card ${s.r===mortRate?'active':''}">
+      <div class="scenario-rate">Rate ${s.r}% — ${s.label}</div>
+      <div class="scenario-amount">${fmt(calcMaxLoan(availableForMortgage,s.r,loanTerm))}</div>
+      <div class="scenario-pay">${fmt(calcMonthlyPayment(calcMaxLoan(availableForMortgage,s.r,loanTerm),s.r,loanTerm))}/mo</div>
+    </div>`).join('');
+
+  // Breakdown
+  const rows=[
+    ['Total qualifying income ('+C.dsrBase+')',fmt(totalIncome)],
+    ['DSR limit ('+dsrLimit+'%)',fmt(maxDebtService)],
+    ['Existing monthly debts','-'+fmt(existingDebts)],
+    ['Available for mortgage',fmt(availableForMortgage),'total-row'],
+    ['',''],
+    ['Maximum loan amount',fmt(maxLoan)],
+    ['Down payment available',fmt(downPayment)],
+    ['Maximum home price',fmt(maxPrice),'total-row'],
+    ['Monthly mortgage payment',fmt(monthlyPayment)],
+  ];
+  document.getElementById('breakdown-body').innerHTML=rows.filter(r=>r[0]).map(r=>`<tr class="${r[2]||''}"><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('');
+
+  // AI insight
+  let insight='';
+  if(existingDebts>0)insight+=`Your existing debts of ${fmt(existingDebts)}/month reduce your borrowing power. If you cleared these debts, your max loan could increase to ${fmt(calcMaxLoan(maxDebtService,mortRate,loanTerm))}. `;
+  if(actualDsr>35)insight+=`Your DSR of ${actualDsr.toFixed(1)}% is above the 30–33% "comfort zone" for most African banks. Consider a longer loan term (${loanTerm+5} years) or a co-applicant to reduce monthly payments. `;
+  if(downPayment<maxPrice*0.1)insight+=`A larger down payment would reduce your required loan and monthly payments. Aim for at least 10–20% deposit. `;
+  document.getElementById('ai-text').textContent=insight||`You qualify for a loan of ${fmt(maxLoan)} at current rates. This would buy a home worth up to ${fmt(maxPrice)} with your available down payment. Shop around — a 0.5% rate difference could change your maximum loan by ${fmt(calcMaxLoan(availableForMortgage,mortRate,loanTerm)-calcMaxLoan(availableForMortgage,mortRate+0.5,loanTerm))}.`;
+  document.getElementById('ai-insight').style.display='block';
+
+  document.getElementById('results-section').style.display='block';
+  document.getElementById('results-section').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function toggleFaq(el){
+  const a=el.nextElementSibling;
+  const open=a.style.display==='block';
+  a.style.display=open?'none':'block';
+  el.querySelector('span').textContent=open?'+':'−';
+}
+
+onCountryChange();
+</script>
+</body>
+</html>

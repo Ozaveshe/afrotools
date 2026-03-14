@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rental Yield Calculator Africa — Gross & Net Yield by Country | AfroTools</title>
+<meta name="description" content="Calculate rental yield for properties in Nigeria, Kenya, South Africa, Ghana and 6 more African countries. Get gross yield, net yield, and cash-on-cash return.">
+<link rel="canonical" href="https://afrotools.com/tools/rental-yield/">
+<meta property="og:title" content="Rental Yield Calculator Africa — Gross & Net Yield | AfroTools">
+<meta property="og:description" content="Calculate rental yield for properties across Africa. Gross yield, net yield, cash-on-cash return with country-specific expense benchmarks.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:url" content="https://afrotools.com/tools/rental-yield/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Rental Yield Calculator Africa",
+  "url": "https://afrotools.com/tools/rental-yield/",
+  "description": "Calculate rental yield for properties in Nigeria, Kenya, South Africa, Ghana and more African countries.",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://afrotools.com/" },
+      { "@type": "ListItem", "position": 2, "name": "Mortgage & Property", "item": "https://afrotools.com/mortgage-property/" },
+      { "@type": "ListItem", "position": 3, "name": "Rental Yield Calculator", "item": "https://afrotools.com/tools/rental-yield/" }
+    ]
+  }
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<script src="/assets/js/components/tool-registry.min.js"></script>
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<script src="/assets/js/components/related-tools.min.js" defer></script>
+<script src="/assets/js/components/afro-chat.min.js" defer></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7;color:#1d1d1f;-webkit-font-smoothing:antialiased}
+.hero{background:linear-gradient(160deg,#0d1117 0%,#0a1628 55%,#111827 100%);padding:64px 0 52px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-80px;right:-60px;width:400px;height:400px;background:radial-gradient(circle,rgba(0,135,81,.18) 0%,transparent 70%);pointer-events:none}
+.hero-inner{max-width:1160px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+.breadcrumb{display:flex;align-items:center;gap:6px;font-size:0.72rem;color:rgba(255,255,255,.4);margin-bottom:16px}
+.breadcrumb a{color:rgba(255,255,255,.4);text-decoration:none}.breadcrumb a:hover{color:rgba(255,255,255,.7)}
+.breadcrumb-sep{opacity:.4}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;font-size:0.67rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#4ade80;margin-bottom:14px;padding:4px 12px;background:rgba(0,135,81,.15);border:1px solid rgba(0,135,81,.3);border-radius:100px}
+.hero h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;color:#f0f6fc;line-height:1.1;letter-spacing:-0.03em;margin-bottom:12px}
+.hero-sub{font-size:0.95rem;color:rgba(255,255,255,.5);max-width:540px;line-height:1.6}
+.layout{max-width:1160px;margin:0 auto;padding:40px 24px 80px;display:grid;grid-template-columns:1fr 360px;gap:32px;align-items:start}
+.card{background:#fff;border-radius:20px;padding:32px;box-shadow:0 2px 12px rgba(0,0,0,.06),0 0 0 1px rgba(0,0,0,.05);margin-bottom:24px}
+.card-title{font-size:1rem;font-weight:700;color:#1d1d1f;letter-spacing:-0.02em;margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.card-title span{font-size:1.2rem}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.field{margin-bottom:0}
+.field label{display:block;font-size:0.7rem;font-weight:700;color:#6e6e73;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+.field input,.field select{width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:12px;font-family:inherit;font-size:0.88rem;color:#1d1d1f;background:#fafafa;outline:none;transition:border-color .18s,box-shadow .18s;appearance:none}
+.field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236e6e73' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:36px}
+.field input:focus,.field select:focus{border-color:#0071E3;background:#fff;box-shadow:0 0 0 4px rgba(0,113,227,.08)}
+.field input::placeholder{color:#c0c0c6}
+.hint{font-size:0.7rem;color:#9ca3af;margin-top:5px}
+.section-divider{height:1px;background:#f0f0f0;margin:24px 0}
+.calc-btn{width:100%;padding:14px 24px;background:#0071E3;color:#fff;border:none;border-radius:100px;font-family:inherit;font-size:0.9rem;font-weight:700;cursor:pointer;transition:background .18s,transform .18s;margin-top:8px}
+.calc-btn:hover{background:#0059B3;transform:translateY(-1px)}
+/* Results */
+.results-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px}
+.result-card{background:#f8f9fa;border-radius:14px;padding:18px 16px;text-align:center;border:1.5px solid #e5e7eb}
+.result-card.highlight{background:linear-gradient(135deg,#008751 0%,#00a865 100%);border-color:transparent}
+.result-card.highlight .result-label,.result-card.highlight .result-value,.result-card.highlight .result-sub{color:#fff!important}
+.result-label{font-size:0.67rem;font-weight:700;color:#6e6e73;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+.result-value{font-size:1.7rem;font-weight:800;color:#1d1d1f;letter-spacing:-0.03em;line-height:1}
+.result-sub{font-size:0.72rem;color:#9ca3af;margin-top:4px}
+/* Yield meter */
+.yield-meter{margin-bottom:24px}
+.yield-meter-label{display:flex;justify-content:space-between;font-size:0.72rem;font-weight:600;color:#6e6e73;margin-bottom:8px}
+.yield-bar-wrap{height:10px;background:#e5e7eb;border-radius:100px;overflow:hidden;position:relative}
+.yield-bar-fill{height:100%;border-radius:100px;transition:width .6s ease;background:linear-gradient(90deg,#f59e0b,#10b981)}
+.yield-zones{display:flex;justify-content:space-between;font-size:0.62rem;color:#9ca3af;margin-top:4px}
+.yield-verdict{padding:12px 16px;border-radius:10px;font-size:0.82rem;font-weight:600;text-align:center;margin-bottom:16px}
+.verdict-poor{background:#fef2f2;color:#dc2626;border:1px solid #fecaca}
+.verdict-fair{background:#fffbeb;color:#d97706;border:1px solid #fde68a}
+.verdict-good{background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0}
+.verdict-excellent{background:#ecfdf5;color:#059669;border:1px solid #a7f3d0}
+/* Breakdown */
+.breakdown-table{width:100%;border-collapse:collapse;font-size:0.82rem}
+.breakdown-table th{text-align:left;font-size:0.67rem;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.06em;padding:0 0 8px}
+.breakdown-table td{padding:8px 0;border-top:1px solid #f0f0f0;color:#374151}
+.breakdown-table td:last-child{text-align:right;font-weight:600;color:#1d1d1f}
+.breakdown-table .total-row td{border-top:2px solid #e5e7eb;font-weight:700;color:#1d1d1f;padding-top:12px}
+/* AI */
+.ai-insight{background:linear-gradient(135deg,#f0f7ff 0%,#e8f4fd 100%);border:1px solid #bfdbfe;border-radius:14px;padding:18px;font-size:0.84rem;color:#1e40af;line-height:1.6;display:none}
+.ai-insight strong{display:block;margin-bottom:6px;font-size:0.75rem;text-transform:uppercase;letter-spacing:.06em;opacity:.7}
+/* Sidebar */
+.sidebar{}
+.info-block{background:#fff;border-radius:16px;padding:22px;box-shadow:0 2px 8px rgba(0,0,0,.05),0 0 0 1px rgba(0,0,0,.04);margin-bottom:16px;font-size:0.82rem}
+.info-block h3{font-size:0.85rem;font-weight:700;color:#1d1d1f;margin-bottom:12px}
+.rate-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #f5f5f7}
+.rate-row:last-child{border-bottom:none}
+.rate-country{color:#374151;font-weight:500}
+.rate-val{font-weight:700;color:#008751}
+.faq{background:#fff;border-radius:16px;padding:22px;box-shadow:0 2px 8px rgba(0,0,0,.05),0 0 0 1px rgba(0,0,0,.04);margin-bottom:16px}
+.faq h3{font-size:0.85rem;font-weight:700;color:#1d1d1f;margin-bottom:14px}
+.faq-item{border-bottom:1px solid #f5f5f7;padding:10px 0}
+.faq-item:last-child{border-bottom:none}
+.faq-q{font-size:0.8rem;font-weight:600;color:#1d1d1f;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.faq-a{font-size:0.78rem;color:#6e6e73;line-height:1.6;margin-top:6px;display:none}
+#results-section{display:none}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.sidebar{order:-1}}
+@media(max-width:600px){.grid-2{grid-template-columns:1fr}.results-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:420px){.results-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<section class="hero">
+  <div class="hero-inner">
+    <nav class="breadcrumb">
+      <a href="/">Home</a><span class="breadcrumb-sep">›</span>
+      <a href="/mortgage-property/">Mortgage &amp; Property</a><span class="breadcrumb-sep">›</span>
+      <span>Rental Yield Calculator</span>
+    </nav>
+    <div class="hero-badge">🏠 Property Tool</div>
+    <h1>Rental Yield Calculator</h1>
+    <p class="hero-sub">Calculate gross yield, net yield, and cash-on-cash return for rental properties across Africa. Built for African property markets.</p>
+  </div>
+</section>
+
+<div class="layout">
+  <div class="main-col">
+    <!-- Inputs -->
+    <div class="card">
+      <div class="card-title"><span>🏡</span> Property Details</div>
+      <div class="grid-2" style="margin-bottom:16px">
+        <div class="field">
+          <label>Country</label>
+          <select id="country" onchange="updateCurrency()">
+            <option value="NG">🇳🇬 Nigeria (₦)</option>
+            <option value="KE">🇰🇪 Kenya (KSh)</option>
+            <option value="ZA" selected>🇿🇦 South Africa (R)</option>
+            <option value="GH">🇬🇭 Ghana (GH₵)</option>
+            <option value="TZ">🇹🇿 Tanzania (TSh)</option>
+            <option value="UG">🇺🇬 Uganda (USh)</option>
+            <option value="EG">🇪🇬 Egypt (E£)</option>
+            <option value="MA">🇲🇦 Morocco (MAD)</option>
+            <option value="ET">🇪🇹 Ethiopia (Birr)</option>
+            <option value="CI">🇨🇮 Côte d'Ivoire (XOF)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Property Type</label>
+          <select id="propType">
+            <option value="apartment">Apartment / Flat</option>
+            <option value="house">House / Townhouse</option>
+            <option value="commercial">Commercial Space</option>
+            <option value="land">Serviced Land / Plot</option>
+          </select>
+        </div>
+      </div>
+      <div class="grid-2" style="margin-bottom:16px">
+        <div class="field">
+          <label>Property Purchase Price</label>
+          <input type="number" id="propValue" placeholder="e.g. 1500000" min="0">
+          <div class="hint" id="hint-value"></div>
+        </div>
+        <div class="field">
+          <label>Monthly Rental Income</label>
+          <input type="number" id="monthlyRent" placeholder="e.g. 12000" min="0">
+          <div class="hint" id="hint-rent"></div>
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+      <div class="card-title" style="margin-bottom:16px"><span>💸</span> Annual Expenses</div>
+      <div class="grid-2" style="margin-bottom:16px">
+        <div class="field">
+          <label>Property Rates / Taxes (Annual)</label>
+          <input type="number" id="propTax" placeholder="0" min="0">
+          <div class="hint">Council rates, land tax, etc.</div>
+        </div>
+        <div class="field">
+          <label>Insurance (Annual)</label>
+          <input type="number" id="insurance" placeholder="0" min="0">
+        </div>
+      </div>
+      <div class="grid-2" style="margin-bottom:16px">
+        <div class="field">
+          <label>Maintenance &amp; Repairs (Annual)</label>
+          <input type="number" id="maintenance" placeholder="0" min="0">
+          <div class="hint">Budget ~1–2% of property value</div>
+        </div>
+        <div class="field">
+          <label>Management Fee (Annual)</label>
+          <input type="number" id="managementFee" placeholder="0" min="0">
+          <div class="hint">Agent fees, typically 8–12% of rent</div>
+        </div>
+      </div>
+      <div class="grid-2" style="margin-bottom:16px">
+        <div class="field">
+          <label>Vacancy Rate (%)</label>
+          <input type="number" id="vacancyRate" placeholder="5" min="0" max="100" value="5">
+          <div class="hint">% of year property is vacant</div>
+        </div>
+        <div class="field">
+          <label>Other Expenses (Annual)</label>
+          <input type="number" id="otherExp" placeholder="0" min="0">
+          <div class="hint">Utilities, levies, admin, etc.</div>
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+      <div class="card-title" style="margin-bottom:16px"><span>💳</span> Financing (Optional)</div>
+      <div class="grid-2">
+        <div class="field">
+          <label>Down Payment Paid</label>
+          <input type="number" id="downPayment" placeholder="0" min="0">
+          <div class="hint">Leave 0 if bought cash</div>
+        </div>
+        <div class="field">
+          <label>Annual Mortgage Payment</label>
+          <input type="number" id="mortgageAnnual" placeholder="0" min="0">
+          <div class="hint">Total annual bond repayments</div>
+        </div>
+      </div>
+
+      <button class="calc-btn" onclick="calculate()">Calculate Rental Yield →</button>
+    </div>
+
+    <!-- Results -->
+    <div class="card" id="results-section">
+      <div class="card-title"><span>📊</span> Your Rental Yield Results</div>
+
+      <div class="results-grid">
+        <div class="result-card highlight">
+          <div class="result-label">Gross Yield</div>
+          <div class="result-value" id="res-gross">—</div>
+          <div class="result-sub">Before expenses</div>
+        </div>
+        <div class="result-card">
+          <div class="result-label">Net Yield</div>
+          <div class="result-value" id="res-net">—</div>
+          <div class="result-sub">After all expenses</div>
+        </div>
+        <div class="result-card">
+          <div class="result-label">Annual Net Income</div>
+          <div class="result-value" id="res-income">—</div>
+          <div class="result-sub">After expenses &amp; vacancy</div>
+        </div>
+        <div class="result-card">
+          <div class="result-label">Cash-on-Cash Return</div>
+          <div class="result-value" id="res-coc">—</div>
+          <div class="result-sub">On cash invested</div>
+        </div>
+      </div>
+
+      <div class="yield-meter">
+        <div class="yield-meter-label">
+          <span>Yield Quality</span>
+          <span id="yield-pct-label">0%</span>
+        </div>
+        <div class="yield-bar-wrap">
+          <div class="yield-bar-fill" id="yield-bar" style="width:0%"></div>
+        </div>
+        <div class="yield-zones">
+          <span>0%</span><span>Poor &lt;4%</span><span>Fair 4–6%</span><span>Good 6–8%</span><span>Excellent 8%+</span>
+        </div>
+      </div>
+
+      <div class="yield-verdict" id="yield-verdict"></div>
+
+      <div class="section-divider"></div>
+      <table class="breakdown-table">
+        <thead><tr><th>Item</th><th>Amount</th></tr></thead>
+        <tbody id="breakdown-body"></tbody>
+      </table>
+
+      <div class="section-divider"></div>
+      <div class="ai-insight" id="ai-insight">
+        <strong>🤖 AfroTools AI Insight</strong>
+        <span id="ai-text"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="sidebar">
+    <div class="info-block">
+      <h3>📍 Typical Gross Yields by Market</h3>
+      <div class="rate-row"><span class="rate-country">🇳🇬 Lagos, Nigeria</span><span class="rate-val">5–8%</span></div>
+      <div class="rate-row"><span class="rate-country">🇰🇪 Nairobi, Kenya</span><span class="rate-val">5–7%</span></div>
+      <div class="rate-row"><span class="rate-country">🇿🇦 Cape Town, SA</span><span class="rate-val">4–6%</span></div>
+      <div class="rate-row"><span class="rate-country">🇿🇦 Johannesburg, SA</span><span class="rate-val">5–7%</span></div>
+      <div class="rate-row"><span class="rate-country">🇬🇭 Accra, Ghana</span><span class="rate-val">6–9%</span></div>
+      <div class="rate-row"><span class="rate-country">🇪🇬 Cairo, Egypt</span><span class="rate-val">4–6%</span></div>
+      <div class="rate-row"><span class="rate-country">🇲🇦 Casablanca, Morocco</span><span class="rate-val">5–7%</span></div>
+    </div>
+
+    <div class="info-block">
+      <h3>💡 Understanding Yield</h3>
+      <p style="color:#6e6e73;line-height:1.6;font-size:0.8rem;margin-bottom:10px"><strong>Gross Yield</strong> = (Annual Rent ÷ Property Value) × 100. Simple but ignores costs.</p>
+      <p style="color:#6e6e73;line-height:1.6;font-size:0.8rem;margin-bottom:10px"><strong>Net Yield</strong> = ((Annual Rent − All Expenses) ÷ Property Value) × 100. More realistic.</p>
+      <p style="color:#6e6e73;line-height:1.6;font-size:0.8rem"><strong>Cash-on-Cash Return</strong> = Net Income ÷ Cash Invested. Best for leveraged purchases.</p>
+    </div>
+
+    <div class="faq">
+      <h3>❓ Common Questions</h3>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">What's a good rental yield in Africa? <span>+</span></div>
+        <div class="faq-a">Generally, 6–8% gross yield is considered good in most African cities. Net yields above 5% are strong given local mortgage rates. Lagos and Accra often deliver higher yields than Cape Town or Cairo due to higher rental demand relative to property prices.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Should I use gross or net yield? <span>+</span></div>
+        <div class="faq-a">Always use net yield for real investment decisions. Gross yield is a quick filter — if gross yield is below 5%, net yield will likely be negative or very low. Use net yield to compare properties properly.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">What vacancy rate should I use? <span>+</span></div>
+        <div class="faq-a">5–10% is standard in most African cities. Use 5% for high-demand areas (Nairobi CBD, Victoria Island Lagos), 10–15% for lower-demand areas or new developments still filling up.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">How do I improve my rental yield? <span>+</span></div>
+        <div class="faq-a">Negotiate a lower purchase price, increase rent (furnished vs unfurnished), reduce vacancy through better tenant screening, self-manage to save agent fees (8–12%), or convert to short-term Airbnb rental in tourist areas.</div>
+      </div>
+    </div>
+
+    <afro-related-tools category="mortgage-property"></afro-related-tools>
+  </div>
+</div>
+
+<afro-chat
+  tool-name="Rental Yield Calculator"
+  system-prompt="You are an expert African property investment advisor. Help users understand rental yields, property investment strategy, and how to compare investments across African markets. Provide specific insights for Nigerian, Kenyan, South African, Ghanaian and other African property markets. Be concise, practical, and use real African market data.">
+</afro-chat>
+
+<afro-footer></afro-footer>
+
+<script>
+const CURRENCY = {
+  NG:{sym:'₦',locale:'en-NG',mult:1},
+  KE:{sym:'KSh',locale:'en-KE',mult:1},
+  ZA:{sym:'R',locale:'en-ZA',mult:1},
+  GH:{sym:'GH₵',locale:'en-GH',mult:1},
+  TZ:{sym:'TSh',locale:'sw-TZ',mult:1},
+  UG:{sym:'USh',locale:'en-UG',mult:1},
+  EG:{sym:'E£',locale:'ar-EG',mult:1},
+  MA:{sym:'MAD',locale:'fr-MA',mult:1},
+  ET:{sym:'Birr',locale:'am-ET',mult:1},
+  CI:{sym:'XOF',locale:'fr-CI',mult:1}
+};
+
+function getCurrency(){return CURRENCY[document.getElementById('country').value]||CURRENCY['ZA'];}
+function fmt(n){const c=getCurrency();return c.sym+' '+Math.round(n).toLocaleString();}
+function fmtPct(n){return n.toFixed(2)+'%';}
+
+function updateCurrency(){
+  const c=getCurrency();
+  document.getElementById('hint-value').textContent='In '+c.sym;
+  document.getElementById('hint-rent').textContent='In '+c.sym+' per month';
+}
+
+function calculate(){
+  const propVal=parseFloat(document.getElementById('propValue').value)||0;
+  const monthlyRent=parseFloat(document.getElementById('monthlyRent').value)||0;
+  const propTax=parseFloat(document.getElementById('propTax').value)||0;
+  const insurance=parseFloat(document.getElementById('insurance').value)||0;
+  const maintenance=parseFloat(document.getElementById('maintenance').value)||0;
+  const mgmt=parseFloat(document.getElementById('managementFee').value)||0;
+  const vacancyPct=parseFloat(document.getElementById('vacancyRate').value)||0;
+  const otherExp=parseFloat(document.getElementById('otherExp').value)||0;
+  const downPayment=parseFloat(document.getElementById('downPayment').value)||0;
+  const mortgageAnnual=parseFloat(document.getElementById('mortgageAnnual').value)||0;
+
+  if(!propVal||!monthlyRent){alert('Please enter property value and monthly rent.');return;}
+
+  const annualGrossRent=monthlyRent*12;
+  const vacancyLoss=annualGrossRent*(vacancyPct/100);
+  const effectiveRent=annualGrossRent-vacancyLoss;
+  const totalExpenses=propTax+insurance+maintenance+mgmt+otherExp;
+  const netIncome=effectiveRent-totalExpenses;
+  const grossYield=(annualGrossRent/propVal)*100;
+  const netYield=(netIncome/propVal)*100;
+  const cashInvested=downPayment>0?downPayment:propVal;
+  const cashFlow=netIncome-mortgageAnnual;
+  const coc=(cashFlow/cashInvested)*100;
+
+  document.getElementById('res-gross').textContent=fmtPct(grossYield);
+  document.getElementById('res-net').textContent=fmtPct(netYield);
+  document.getElementById('res-income').textContent=fmt(netIncome);
+  document.getElementById('res-coc').textContent=downPayment>0||mortgageAnnual>0?fmtPct(coc):'N/A';
+
+  // Yield bar (cap at 12%)
+  const barPct=Math.min(netYield/12*100,100);
+  document.getElementById('yield-bar').style.width=Math.max(barPct,2)+'%';
+  document.getElementById('yield-pct-label').textContent=fmtPct(netYield)+' net';
+
+  // Verdict
+  const vEl=document.getElementById('yield-verdict');
+  if(netYield<3){vEl.className='yield-verdict verdict-poor';vEl.textContent='⚠️ Poor yield — net yield below 3%. Consider negotiating a lower purchase price or higher rent.';}
+  else if(netYield<5){vEl.className='yield-verdict verdict-fair';vEl.textContent='🟡 Fair yield — '+ fmtPct(netYield)+' net yield. Acceptable but room to improve.';}
+  else if(netYield<7){vEl.className='yield-verdict verdict-good';vEl.textContent='✅ Good yield — '+fmtPct(netYield)+' net yield. Solid investment for the African market.';}
+  else{vEl.className='yield-verdict verdict-excellent';vEl.textContent='🌟 Excellent yield — '+fmtPct(netYield)+' net yield. Strong performing investment.';}
+
+  // Breakdown
+  const rows=[
+    ['Annual Gross Rent',fmt(annualGrossRent)],
+    ['Vacancy Loss ('+vacancyPct+'%)','-'+fmt(vacancyLoss)],
+    ['Effective Rent',fmt(effectiveRent)],
+    ['',''],
+    ['Property Rates / Tax','-'+fmt(propTax)],
+    ['Insurance','-'+fmt(insurance)],
+    ['Maintenance','-'+fmt(maintenance)],
+    ['Management Fee','-'+fmt(mgmt)],
+    ['Other Expenses','-'+fmt(otherExp)],
+    ['TOTAL EXPENSES','-'+fmt(totalExpenses),'total-row'],
+    ['NET ANNUAL INCOME',fmt(netIncome),'total-row'],
+  ];
+  if(mortgageAnnual>0){
+    rows.push(['Annual Mortgage Payment','-'+fmt(mortgageAnnual),'']);
+    rows.push(['NET CASH FLOW',fmt(cashFlow),'total-row']);
+  }
+  const tbody=document.getElementById('breakdown-body');
+  tbody.innerHTML=rows.filter(r=>r[0]).map(r=>`<tr class="${r[2]||''}"><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('');
+
+  // AI Insight
+  let insight='';
+  if(grossYield>0){
+    insight=`Your gross yield of ${fmtPct(grossYield)} ${netYield<grossYield-2?'drops significantly to '+fmtPct(netYield)+' after expenses':'remains strong at '+fmtPct(netYield)+' net'}. `;
+    if(vacancyPct>10)insight+='Your vacancy rate of '+vacancyPct+'% is high — improving tenant retention could add '+fmt((vacancyPct-5)/100*annualGrossRent)+' per year. ';
+    if(mgmt>annualGrossRent*0.12)insight+='Your management fees exceed 12% of rent — consider self-management or negotiating a lower rate. ';
+    if(netYield>6)insight+='This property compares favourably to African fixed deposit rates (typically 8–14% pre-inflation). ';
+  }
+  document.getElementById('ai-text').textContent=insight;
+  document.getElementById('ai-insight').style.display='block';
+  document.getElementById('results-section').style.display='block';
+  document.getElementById('results-section').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function toggleFaq(el){
+  const a=el.nextElementSibling;
+  const open=a.style.display==='block';
+  a.style.display=open?'none':'block';
+  el.querySelector('span').textContent=open?'+':'−';
+}
+
+updateCurrency();
+</script>
+</body>
+</html>
