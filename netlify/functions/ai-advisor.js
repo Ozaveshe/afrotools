@@ -229,7 +229,8 @@ exports.handler = async function(event) {
     const reply = data?.content?.[0]?.text ?? "Sorry, I could not generate a response. Please try again.";
     return {
       statusCode: 200, headers,
-      body: JSON.stringify({ reply, remaining: rateResult.remaining })
+      // Return both 'reply' and 'text' — some pages read data.reply, others data.text
+      body: JSON.stringify({ reply, text: reply, remaining: rateResult.remaining })
     };
 
   } catch (err) {
