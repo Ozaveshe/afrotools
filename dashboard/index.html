@@ -707,17 +707,50 @@
               </div>
             </div>
 
+            <!-- Quick Stats Bar -->
+            <div id="quickStatsBar" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px;">
+              <div style="background:#fff;border:1.5px solid #E5E7EB;border-radius:14px;padding:18px 20px;text-align:center;">
+                <div style="font-size:1.8rem;font-weight:800;color:#0071E3;line-height:1;" id="stat-favs">0</div>
+                <div style="font-size:.7rem;color:#6B7280;margin-top:4px;font-weight:600;">Saved Tools</div>
+              </div>
+              <div style="background:#fff;border:1.5px solid #E5E7EB;border-radius:14px;padding:18px 20px;text-align:center;">
+                <div style="font-size:1.8rem;font-weight:800;color:#0071E3;line-height:1;" id="stat-docs">0</div>
+                <div style="font-size:.7rem;color:#6B7280;margin-top:4px;font-weight:600;">My Documents</div>
+              </div>
+              <div style="background:#fff;border:1.5px solid #E5E7EB;border-radius:14px;padding:18px 20px;text-align:center;">
+                <div style="font-size:1.8rem;font-weight:800;color:#0071E3;line-height:1;" id="stat-calcs">0</div>
+                <div style="font-size:.7rem;color:#6B7280;margin-top:4px;font-weight:600;">Saved Calcs</div>
+              </div>
+              <div style="background:#fff;border:1.5px solid #E5E7EB;border-radius:14px;padding:18px 20px;text-align:center;">
+                <div style="font-size:1.8rem;font-weight:800;color:#F5A623;line-height:1;" id="stat-plan">Free</div>
+                <div style="font-size:.7rem;color:#6B7280;margin-top:4px;font-weight:600;">Current Plan</div>
+              </div>
+            </div>
+
+            <!-- Favorite Tools — iOS App Grid style -->
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+              <h2 class="section-title" style="margin-bottom:0;">⭐ My Tools</h2>
+              <a href="/" style="font-size:.8rem;font-weight:700;color:#0071E3;text-decoration:none;">Browse All →</a>
+            </div>
+            <div id="favoritesContainer" class="favorites-grid" style="margin-bottom:28px;"></div>
+
+            <!-- My Documents -->
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+              <h2 class="section-title" style="margin-bottom:0;">📁 My Documents</h2>
+            </div>
+            <div id="myDocumentsContainer" style="margin-bottom:28px;"></div>
+
             <!-- Quick Access -->
-            <h2 class="section-title">Recently Used Tools</h2>
-            <div id="quickAccessContainer" class="quick-access-grid"></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+              <h2 class="section-title" style="margin-bottom:0;">🕐 Recently Used</h2>
+            </div>
+            <div id="quickAccessContainer" class="quick-access-grid" style="margin-bottom:28px;"></div>
 
             <!-- Saved Calculations -->
-            <h2 class="section-title">Saved Calculations</h2>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+              <h2 class="section-title" style="margin-bottom:0;">💾 Saved Calculations</h2>
+            </div>
             <div id="savedContainer" class="saved-items"></div>
-
-            <!-- Favorite Tools -->
-            <h2 class="section-title">Favorite Tools</h2>
-            <div id="favoritesContainer" class="favorites-grid"></div>
         </div>
     </main>
 
@@ -853,9 +886,11 @@
 
         function loadDashboardData() {
             loadProfileData();
+            loadFavorites();
+            loadMyDocuments();
             loadQuickAccess();
             loadSavedCalculations();
-            loadFavorites();
+            updateQuickStats();
         }
 
         function loadProfileData() {
@@ -910,18 +945,130 @@
 
         function loadFavorites() {
             const container = document.getElementById('favoritesContainer');
-            const favorites = AfroData.getFavorites();
+            const favorites = AfroData.getFavorites ? AfroData.getFavorites() : (JSON.parse(localStorage.getItem('afro_favs_v2') || '[]'));
             if (favorites.length === 0) {
-                container.innerHTML = '<div class="empty-state" style="grid-column:1/-1;">Star your favorite tools to see them here</div>';
+                container.innerHTML = '<div style="background:#F9FAFB;border:1.5px dashed #D1D5DB;border-radius:12px;padding:24px;text-align:center;color:#9CA3AF;font-size:.85rem;grid-column:1/-1;"><div style="font-size:2rem;margin-bottom:8px;">⭐</div>No saved tools yet.<br><span style="font-size:.78rem;">Click the ★ button on any tool page to save it here.</span></div>';
                 return;
             }
             // Look up tool registry for names/icons
             const registry = typeof AFRO_TOOLS !== 'undefined' ? AFRO_TOOLS : [];
-            container.innerHTML = favorites.map(toolId => {
+            container.innerHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;">' + favorites.map(toolId => {
                 const regTool = registry.find(t => t.id === toolId);
-                const meta = toolMetadata[toolId] || (regTool ? { name: regTool.name, icon: regTool.icon || '🔧' } : { name: toolId, icon: '🔧' });
-                return '<a href="/tools/' + toolId + '/" class="favorite-card"><div class="favorite-icon">' + meta.icon + '</div><div class="favorite-name">' + meta.name + '</div></a>';
-            }).join('');
+                const meta = toolMetadata[toolId] || (regTool ? { name: regTool.name, icon: regTool.icon || '🔧' } : { name: toolId.replace(/-/g,' '), icon: '🔧' });
+                const href = regTool ? regTool.href : '/tools/' + toolId + '/';
+                return `<a href="${href}" style="background:#fff;border:1.5px solid #E5E7EB;border-radius:14px;padding:14px 12px;text-decoration:none;color:inherit;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;transition:all .18s;" onmouseover="this.style.borderColor='#0071E3';this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 20px rgba(0,113,227,.12)'" onmouseout="this.style.borderColor='#E5E7EB';this.style.transform='none';this.style.boxShadow='none'">
+                    <div style="width:48px;height:48px;border-radius:12px;background:#EFF6FF;display:flex;align-items:center;justify-content:center;font-size:1.4rem;">${meta.icon}</div>
+                    <div style="font-size:.78rem;font-weight:700;color:#111827;line-height:1.3;">${meta.name}</div>
+                </a>`;
+            }).join('') + '</div>';
+        }
+
+        function loadMyDocuments() {
+            const container = document.getElementById('myDocumentsContainer');
+            if (!container) return;
+            const docs = [];
+
+            // Check invoice generator drafts
+            try {
+                const inv = localStorage.getItem('afro_invoice_draft');
+                if (inv) {
+                    const d = JSON.parse(inv);
+                    docs.push({
+                        type: 'Invoice',
+                        icon: '🧾',
+                        name: d.invoiceNumber ? 'Invoice #' + d.invoiceNumber : 'Invoice Draft',
+                        detail: d.client || 'Client draft',
+                        href: '/tools/invoice-generator/',
+                        color: '#EFF6FF',
+                        saved: d.savedAt ? new Date(d.savedAt).toLocaleDateString('en-US', {month:'short',day:'numeric'}) : 'Recent'
+                    });
+                }
+            } catch(e) {}
+
+            // Check CV builder data
+            try {
+                const cv = localStorage.getItem('afro_cv_data') || localStorage.getItem('cv_builder_data');
+                if (cv) {
+                    const d = JSON.parse(cv);
+                    docs.push({
+                        type: 'CV / Résumé',
+                        icon: '📄',
+                        name: (d.name || d.fullName || 'My CV'),
+                        detail: d.title || d.jobTitle || 'Professional CV',
+                        href: '/tools/cv-builder/',
+                        color: '#F0FDF4',
+                        saved: d.savedAt ? new Date(d.savedAt).toLocaleDateString('en-US', {month:'short',day:'numeric'}) : 'Recent'
+                    });
+                }
+            } catch(e) {}
+
+            // Check PAYE calculations saved
+            try {
+                const paye = localStorage.getItem('afro_paye_saved');
+                if (paye) {
+                    const d = JSON.parse(paye);
+                    docs.push({
+                        type: 'Tax Calculation',
+                        icon: '💰',
+                        name: 'PAYE Result',
+                        detail: d.country ? d.country + ' — ' + (d.gross || '') : 'Saved calculation',
+                        href: '/salary-tax/',
+                        color: '#FFF8E8',
+                        saved: d.date ? new Date(d.date).toLocaleDateString('en-US', {month:'short',day:'numeric'}) : 'Recent'
+                    });
+                }
+            } catch(e) {}
+
+            // Check markdown editor drafts
+            try {
+                const md = localStorage.getItem('afro_markdown_draft') || localStorage.getItem('markdown_content');
+                if (md && md.length > 20) {
+                    docs.push({
+                        type: 'Document',
+                        icon: '📝',
+                        name: 'Markdown Draft',
+                        detail: md.substring(0, 60).replace(/[#*\[\]]/g, '') + '...',
+                        href: '/tools/markdown-editor/',
+                        color: '#F5F3FF',
+                        saved: 'Recent'
+                    });
+                }
+            } catch(e) {}
+
+            // Update stats
+            const statDocs = document.getElementById('stat-docs');
+            if (statDocs) statDocs.textContent = docs.length;
+
+            if (docs.length === 0) {
+                container.innerHTML = '<div style="background:#fff;border:1.5px solid #E5E7EB;border-radius:12px;padding:24px;text-align:center;color:#9CA3AF;font-size:.85rem;"><div style="font-size:2rem;margin-bottom:8px;">📂</div>No saved documents yet.<br><span style="font-size:.78rem;">Use tools like Invoice Generator, CV Builder, or PAYE Calculator and your work appears here.</span></div>';
+                return;
+            }
+
+            container.innerHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;">' +
+                docs.map(doc => `
+                    <a href="${doc.href}" style="background:${doc.color};border:1.5px solid #E5E7EB;border-radius:14px;padding:18px 18px 16px;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:8px;transition:all .18s;" onmouseover="this.style.borderColor='#0071E3';this.style.boxShadow='0 4px 16px rgba(0,113,227,.1)'" onmouseout="this.style.borderColor='#E5E7EB';this.style.boxShadow='none'">
+                        <div style="display:flex;align-items:center;justify-content:space-between;">
+                            <span style="font-size:1.6rem;">${doc.icon}</span>
+                            <span style="font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#0071E3;background:rgba(0,113,227,.08);padding:3px 8px;border-radius:100px;">${doc.type}</span>
+                        </div>
+                        <div style="font-size:.9rem;font-weight:700;color:#111827;line-height:1.3;">${doc.name}</div>
+                        <div style="font-size:.75rem;color:#6B7280;line-height:1.5;">${doc.detail}</div>
+                        <div style="font-size:.68rem;color:#9CA3AF;margin-top:2px;">Saved: ${doc.saved} · Click to continue →</div>
+                    </a>
+                `).join('') + '</div>';
+        }
+
+        function updateQuickStats() {
+            try {
+                const favs = AfroData.getFavorites ? AfroData.getFavorites() : [];
+                const calcs = AfroData.getAllSaved ? Object.keys(AfroData.getAllSaved()).length : 0;
+                const statFavs = document.getElementById('stat-favs');
+                const statCalcs = document.getElementById('stat-calcs');
+                const statPlan = document.getElementById('stat-plan');
+                if (statFavs) statFavs.textContent = favs.length;
+                if (statCalcs) statCalcs.textContent = calcs;
+                if (statPlan && currentUser) statPlan.textContent = currentUser.tier === 'pro' ? 'Pro' : 'Free';
+            } catch(e) {}
         }
 
         function clearSaved(toolId) {
