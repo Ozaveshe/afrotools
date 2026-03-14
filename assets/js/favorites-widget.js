@@ -22,9 +22,9 @@
       bottom: 24px;
       right: 24px;
       z-index: 9990;
-      background: ${isFav ? '#008751' : '#fff'};
+      background: ${isFav ? '#0071E3' : '#fff'};
       color: ${isFav ? '#fff' : '#1e293b'};
-      border: 1.5px solid ${isFav ? '#008751' : '#e2e8f0'};
+      border: 1.5px solid ${isFav ? '#0071E3' : '#e2e8f0'};
       border-radius: 100px;
       padding: 10px 18px;
       font-family: 'DM Sans', system-ui, sans-serif;
@@ -41,9 +41,9 @@
     btn.addEventListener('click', function() {
       const nowFav = afroFavs.toggle(toolId);
       btn.innerHTML = nowFav ? '★ Saved' : '☆ Save Tool';
-      btn.style.background = nowFav ? '#008751' : '#fff';
+      btn.style.background = nowFav ? '#0071E3' : '#fff';
       btn.style.color = nowFav ? '#fff' : '#1e293b';
-      btn.style.borderColor = nowFav ? '#008751' : '#e2e8f0';
+      btn.style.borderColor = nowFav ? '#0071E3' : '#e2e8f0';
 
       // Pulse animation
       btn.style.transform = 'scale(1.1)';
@@ -51,7 +51,7 @@
     });
 
     btn.addEventListener('mouseenter', function() {
-      btn.style.boxShadow = '0 6px 20px rgba(0,135,81,0.25)';
+      btn.style.boxShadow = '0 6px 20px rgba(0,113,227,0.25)';
     });
     btn.addEventListener('mouseleave', function() {
       btn.style.boxShadow = '0 4px 16px rgba(0,0,0,0.12)';

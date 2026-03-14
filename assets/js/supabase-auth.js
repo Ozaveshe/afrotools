@@ -266,8 +266,8 @@
     '.afro-auth-card{text-transform:none!important}' +
     '.afro-auth-title{text-transform:none!important;font-family:"DM Sans",system-ui,sans-serif!important;color:#0f172a!important;font-size:1.5rem!important;font-weight:700!important}' +
     '.afro-auth-subtitle{text-transform:none!important;font-family:"DM Sans",system-ui,sans-serif!important}' +
-    '.afro-auth-submit{background:#0f172a!important;color:#fff!important;border:none!important;border-radius:12px!important;padding:0.8rem 1rem!important;font-family:"DM Sans",system-ui,sans-serif!important;font-size:0.95rem!important;font-weight:600!important;cursor:pointer!important;text-transform:none!important}' +
-    '.afro-auth-submit:hover{background:#1e293b!important}' +
+    '.afro-auth-submit{background:#0071E3!important;color:#fff!important;border:none!important;border-radius:12px!important;padding:0.8rem 1rem!important;font-family:"DM Sans",system-ui,sans-serif!important;font-size:0.95rem!important;font-weight:600!important;cursor:pointer!important;text-transform:none!important}' +
+    '.afro-auth-submit:hover{background:#005BBF!important}' +
     '.afro-auth-submit:disabled{background:#94a3b8!important;cursor:not-allowed!important}' +
     '.afro-auth-social-btn{text-transform:none!important;background:#fff!important;border:1px solid #dadce0!important;color:#3c4043!important;font-family:"DM Sans",system-ui,sans-serif!important}' +
     '.afro-auth-social-btn:hover{background:#f8f9fa!important}' +
@@ -452,8 +452,11 @@
             closeModal();
             refreshNavbar();
             fire('afro-auth-change', { user: _user, profile: _profile, event: 'SIGNED_IN' });
+            // After signup: redirect to homepage so user sees personalised experience
             if (window.location.pathname.indexOf('/dashboard') === 0) {
               window.location.reload();
+            } else {
+              window.location.href = '/';
             }
             return;
           }
@@ -477,9 +480,11 @@
           refreshNavbar();
           fire('afro-auth-change', { user: _user, profile: _profile, event: 'SIGNED_IN' });
 
-          // Refresh dashboard to show logged-in state
+          // Reload if on dashboard, otherwise go to homepage
           if (window.location.pathname.indexOf('/dashboard') === 0) {
             window.location.reload();
+          } else {
+            window.location.href = '/';
           }
           return;
         }

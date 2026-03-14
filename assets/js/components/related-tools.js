@@ -117,7 +117,7 @@ class AfroRelatedTools extends HTMLElement {
         }
         .rt-card:hover {
           transform: translateY(-3px);
-          border-color: #008751;
+          border-color: #0071E3;
           box-shadow: 0 4px 12px rgba(0, 135, 81, 0.1);
         }
         .rt-icon {
@@ -154,15 +154,15 @@ class AfroRelatedTools extends HTMLElement {
           display: inline-block;
           font-size: 0.95rem;
           font-weight: 600;
-          color: #008751;
+          color: #0071E3;
           text-decoration: none;
           padding: 10px 24px;
-          border: 2px solid #008751;
+          border: 2px solid #0071E3;
           border-radius: 8px;
           transition: background 0.2s ease, color 0.2s ease;
         }
         .rt-browse a:hover {
-          background: #008751;
+          background: #0071E3;
           color: #fff;
         }
         @media (max-width: 900px) {
