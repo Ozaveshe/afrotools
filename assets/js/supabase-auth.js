@@ -1,5 +1,5 @@
 /**
- * AfroTools Auth — Supabase Edition
+ * AfroTools Auth — Supabase Edition v3
  *
  * Replaces localStorage auth with Supabase Auth + PostgreSQL.
  * Google OAuth, email/password, session management, auth modal.
@@ -27,17 +27,44 @@
   var _isSignupMode = false;
 
   // ───────────────────────────────────────────────
-  // 1. Load Supabase SDK from CDN
+  // 1. Load Supabase SDK from CDN (with retry)
   // ───────────────────────────────────────────────
-  function loadSDK() {
+  function loadSDK(attempt) {
+    attempt = attempt || 1;
     return new Promise(function (resolve, reject) {
       if (window.supabase && window.supabase.createClient) { resolve(); return; }
       var s = document.createElement('script');
       s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
-      s.onload = resolve;
-      s.onerror = function () { reject(new Error('Supabase SDK failed to load')); };
+      s.onload = function () {
+        if (window.supabase && window.supabase.createClient) resolve();
+        else reject(new Error('Supabase SDK loaded but createClient not found'));
+      };
+      s.onerror = function () {
+        if (attempt < 3) {
+          console.warn('[AfroAuth] SDK load failed, retry ' + attempt + '/3...');
+          setTimeout(function () { loadSDK(attempt + 1).then(resolve, reject); }, 1000);
+        } else {
+          reject(new Error('Supabase SDK failed to load after 3 attempts'));
+        }
+      };
       document.head.appendChild(s);
     });
+  }
+
+  // ───────────────────────────────────────────────
+  // Helper: user-friendly error messages
+  // ───────────────────────────────────────────────
+  function friendlyError(msg) {
+    if (!msg) return 'Something went wrong. Please try again.';
+    if (msg === 'Failed to fetch' || msg.indexOf('fetch') > -1 || msg.indexOf('NetworkError') > -1) {
+      return 'Unable to connect to the server. Please check your internet connection and try again.';
+    }
+    if (msg.indexOf('Invalid login') > -1) return 'Incorrect email or password.';
+    if (msg.indexOf('Email not confirmed') > -1) return 'Please check your email for a confirmation link before signing in.';
+    if (msg.indexOf('User already registered') > -1) return 'An account with this email already exists. Try signing in instead.';
+    if (msg.indexOf('Password should be') > -1) return 'Password must be at least 6 characters.';
+    if (msg.indexOf('rate limit') > -1 || msg.indexOf('429') > -1) return 'Too many attempts. Please wait a moment and try again.';
+    return msg;
   }
 
   // ───────────────────────────────────────────────
@@ -47,85 +74,54 @@
     try {
       await loadSDK();
 
-      // Disable SDK auto-detection to avoid race condition with manual exchange
+      // Let the SDK handle URL detection (PKCE code + hash tokens) automatically.
+      // No manual exchangeCodeForSession — avoids race conditions.
       _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
         auth: {
           autoRefreshToken: true,
           persistSession: true,
-          detectSessionInUrl: false,
+          detectSessionInUrl: true,
           flowType: 'pkce',
           storage: window.localStorage
         }
       });
 
-      // 1. Handle OAuth redirect — PKCE code exchange (manual, no race)
-      // Also handle hash fragment for implicit flow fallback
-      var urlParams = new URLSearchParams(window.location.search);
-      var code = urlParams.get('code');
-      var hashParams = new URLSearchParams(window.location.hash.substring(1));
-      var accessToken = hashParams.get('access_token');
-
-      if (accessToken) {
-        // Implicit flow fallback — session from hash fragment
-        console.log('[AfroAuth] Hash fragment session detected');
-        try {
-          var res = await _sb.auth.getSession();
-          if (res.data.session && res.data.session.user) {
-            _user = res.data.session.user;
-            await fetchProfile();
-          }
-        } catch (e) { console.warn('[AfroAuth] Hash session error:', e); }
-        window.history.replaceState({}, '', window.location.pathname);
-      } else if (code) {
-        console.log('[AfroAuth] PKCE code found, exchanging...');
-        try {
-          var exchange = await _sb.auth.exchangeCodeForSession(code);
-          if (exchange.error) {
-            console.warn('[AfroAuth] Code exchange error:', exchange.error.message);
-          } else if (exchange.data && exchange.data.session) {
-            console.log('[AfroAuth] Code exchange OK — user:', exchange.data.session.user.email);
-            _user = exchange.data.session.user;
-            await fetchProfile();
-          }
-        } catch (e) {
-          console.warn('[AfroAuth] Code exchange exception:', e);
-        }
-        // Clean URL regardless
-        window.history.replaceState({}, '', window.location.pathname);
-      }
-
-      // 2. Check existing session (returning users with stored token)
-      if (!_user) {
-        var res = await _sb.auth.getSession();
-        if (res.data.session && res.data.session.user) {
-          _user = res.data.session.user;
-          await fetchProfile();
-          console.log('[AfroAuth] Existing session:', _user.email);
-        }
-      }
-
-      // 3. Listen for future auth changes (sign-out, token refresh, etc.)
+      // onAuthStateChange is the single source of truth.
+      // INITIAL_SESSION fires after the SDK finishes processing URL params
+      // (PKCE code exchange or hash token extraction).
       _sb.auth.onAuthStateChange(async function (event, session) {
-        console.log('[AfroAuth] Event:', event);
+        console.log('[AfroAuth] Event:', event, session ? '(session found)' : '(no session)');
+
         if (session && session.user) {
           _user = session.user;
           await fetchProfile();
+          // Clean auth params from URL after successful session
+          if (window.location.search.indexOf('code=') > -1 || window.location.hash.indexOf('access_token') > -1) {
+            window.history.replaceState({}, '', window.location.pathname);
+          }
         } else if (event === 'SIGNED_OUT') {
           _user = null;
           _profile = null;
         }
+
         refreshNavbar();
         fire('afro-auth-change', { user: _user, profile: _profile, event: event });
+
+        // Mark ready after initial session resolution
+        if (!_ready) {
+          _ready = true;
+          _readyCbs.forEach(function (fn) { try { fn(); } catch (e) {} });
+          _readyCbs = [];
+        }
       });
 
-      refreshNavbar();
     } catch (err) {
       console.warn('[AfroAuth] Boot error:', err);
+      // Still mark ready so the dashboard doesn't hang
+      _ready = true;
+      _readyCbs.forEach(function (fn) { try { fn(); } catch (e) {} });
+      _readyCbs = [];
     }
-
-    _ready = true;
-    _readyCbs.forEach(function (fn) { fn(); });
-    _readyCbs = [];
   }
 
   async function fetchProfile() {
@@ -133,7 +129,7 @@
     try {
       var r = await _sb.from('profiles').select('*').eq('id', _user.id).single();
       if (!r.error && r.data) _profile = r.data;
-    } catch (e) { /* silent */ }
+    } catch (e) { console.warn('[AfroAuth] Profile fetch error:', e); }
   }
 
   function fire(name, detail) {
@@ -219,19 +215,46 @@
   setTimeout(function () { clearInterval(_navPoll); }, 8000);
 
   // ───────────────────────────────────────────────
-  // 4. Auth Modal
+  // 4. Auth Modal — CSS + HTML injection
   // ───────────────────────────────────────────────
+
+  // Critical inline styles to override global.css (text-transform: uppercase on h1-h6, etc.)
+  var MODAL_CRITICAL_CSS =
+    '.afro-auth-overlay *{text-transform:none!important;letter-spacing:normal!important}' +
+    '.afro-auth-card{text-transform:none!important}' +
+    '.afro-auth-title{text-transform:none!important;font-family:"DM Sans",system-ui,sans-serif!important;color:#0f172a!important;font-size:1.5rem!important;font-weight:700!important}' +
+    '.afro-auth-subtitle{text-transform:none!important;font-family:"DM Sans",system-ui,sans-serif!important}' +
+    '.afro-auth-submit{background:#0f172a!important;color:#fff!important;border:none!important;border-radius:12px!important;padding:0.8rem 1rem!important;font-family:"DM Sans",system-ui,sans-serif!important;font-size:0.95rem!important;font-weight:600!important;cursor:pointer!important;text-transform:none!important}' +
+    '.afro-auth-submit:hover{background:#1e293b!important}' +
+    '.afro-auth-submit:disabled{background:#94a3b8!important;cursor:not-allowed!important}' +
+    '.afro-auth-social-btn{text-transform:none!important;background:#fff!important;border:1px solid #dadce0!important;color:#3c4043!important;font-family:"DM Sans",system-ui,sans-serif!important}' +
+    '.afro-auth-social-btn:hover{background:#f8f9fa!important}' +
+    '.afro-auth-footer{text-transform:none!important}' +
+    '.afro-auth-footer button{text-transform:none!important;color:#0f172a!important;background:none!important;border:none!important;font-weight:600!important;text-decoration:underline!important}' +
+    '.afro-auth-field label{text-transform:none!important}' +
+    '.afro-auth-divider{text-transform:none!important}' +
+    '.afro-auth-brand-text{font-family:"DM Sans",system-ui,sans-serif!important;font-weight:700!important;font-size:1.1rem!important;color:#0f172a!important;text-transform:none!important;letter-spacing:-0.02em!important}' +
+    '.afro-auth-msg{text-transform:none!important}';
+
   function injectModal() {
     if (_modalInjected) return;
     _modalInjected = true;
 
-    // CSS
+    // External CSS (nice-to-have, but critical styles are inline above)
     if (!document.getElementById('afro-auth-css')) {
       var link = document.createElement('link');
       link.id = 'afro-auth-css';
       link.rel = 'stylesheet';
-      link.href = '/assets/css/auth-modal.css?v=2';
+      link.href = '/assets/css/auth-modal.css?v=' + Date.now();
       document.head.appendChild(link);
+    }
+
+    // Critical inline styles (override global.css text-transform/colors)
+    if (!document.getElementById('afro-auth-critical')) {
+      var style = document.createElement('style');
+      style.id = 'afro-auth-critical';
+      style.textContent = MODAL_CRITICAL_CSS;
+      document.head.appendChild(style);
     }
 
     // HTML
@@ -239,12 +262,12 @@
     wrap.innerHTML =
       '<div class="afro-auth-overlay" id="afroAuthOverlay">' +
         '<div class="afro-auth-card">' +
-          '<button class="afro-auth-close" id="afroAuthClose" aria-label="Close">&times;</button>' +
+          '<button class="afro-auth-close" id="afroAuthClose" aria-label="Close" style="position:absolute;top:14px;right:14px;background:none;border:none;cursor:pointer;padding:6px;color:#94a3b8;font-size:1.4rem;line-height:1;border-radius:8px;">&times;</button>' +
 
-          '<div class="afro-auth-brand">' +
+          '<div class="afro-auth-brand" style="text-align:center;margin-bottom:1.75rem;">' +
             '<div style="display:inline-flex;align-items:center;gap:8px;margin-bottom:1rem;">' +
               '<img src="/assets/img/logo-mark.svg" alt="" style="height:28px;width:28px;">' +
-              '<span style="font-family:DM Sans,system-ui,sans-serif;font-weight:700;font-size:1.1rem;color:#0f172a;letter-spacing:-0.02em;">AfroTools</span>' +
+              '<span class="afro-auth-brand-text">AfroTools</span>' +
             '</div>' +
             '<h2 class="afro-auth-title" id="afroAuthTitle">Welcome back</h2>' +
             '<p class="afro-auth-subtitle" id="afroAuthSubtitle">Sign in to save your tools and calculations</p>' +
@@ -252,16 +275,16 @@
 
           '<div class="afro-auth-msg" id="afroAuthMsg"></div>' +
 
-          '<div class="afro-auth-social">' +
-            '<button class="afro-auth-social-btn" id="afroGoogleBtn" type="button">' +
-              '<svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>' +
+          '<div class="afro-auth-social" style="display:flex;flex-direction:column;gap:0.625rem;margin-bottom:1.5rem;">' +
+            '<button class="afro-auth-social-btn" id="afroGoogleBtn" type="button" style="display:flex;align-items:center;justify-content:center;gap:0.75rem;width:100%;padding:0.8rem 1rem;border-radius:12px;font-size:0.95rem;font-weight:500;cursor:pointer;transition:all 0.15s ease;box-shadow:0 1px 3px rgba(0,0,0,0.08);">' +
+              '<svg viewBox="0 0 24 24" style="width:20px;height:20px;flex-shrink:0;"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>' +
               'Continue with Google' +
             '</button>' +
           '</div>' +
 
-          '<div class="afro-auth-divider">or continue with email</div>' +
+          '<div class="afro-auth-divider" style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;color:#94a3b8;font-size:0.8rem;">or continue with email</div>' +
 
-          '<form class="afro-auth-form" id="afroAuthForm">' +
+          '<form class="afro-auth-form" id="afroAuthForm" style="display:flex;flex-direction:column;gap:0.875rem;">' +
             '<div class="afro-auth-field afro-signup-field" style="display:none">' +
               '<label for="afroAuthName">Full name</label>' +
               '<input type="text" id="afroAuthName" placeholder="Your full name" autocomplete="name">' +
@@ -297,7 +320,7 @@
             '<button type="submit" class="afro-auth-submit" id="afroAuthSubmit">Sign in</button>' +
           '</form>' +
 
-          '<div class="afro-auth-footer" id="afroAuthFooter">' +
+          '<div class="afro-auth-footer" id="afroAuthFooter" style="text-align:center;margin-top:1.5rem;font-size:0.875rem;color:#64748b;">' +
             'Don\'t have an account? <button id="afroAuthToggle">Sign up</button>' +
           '</div>' +
         '</div>' +
@@ -319,9 +342,10 @@
 
     // Google OAuth
     googleBtn.addEventListener('click', async function () {
-      if (!_sb) { showMsg('Auth service loading... try again.', 'error'); return; }
+      if (!_sb) { showMsg('Auth service is loading. Please wait a moment and try again.', 'error'); return; }
       googleBtn.disabled = true;
       googleBtn.style.opacity = '0.6';
+      hideMsg();
       try {
         console.log('[AfroAuth] Starting Google OAuth...');
         var result = await _sb.auth.signInWithOAuth({
@@ -333,14 +357,14 @@
         });
         if (result.error) {
           console.warn('[AfroAuth] OAuth error:', result.error);
-          showMsg(result.error.message, 'error');
+          showMsg(friendlyError(result.error.message), 'error');
           googleBtn.disabled = false;
           googleBtn.style.opacity = '';
         }
-        // If no error, browser redirects — button stays disabled
+        // If no error, browser redirects to Google — button stays disabled
       } catch (err) {
         console.warn('[AfroAuth] OAuth exception:', err);
-        showMsg(err.message || 'Google sign-in failed', 'error');
+        showMsg(friendlyError(err.message), 'error');
         googleBtn.disabled = false;
         googleBtn.style.opacity = '';
       }
@@ -349,11 +373,13 @@
     // Email form submit
     form.addEventListener('submit', async function (e) {
       e.preventDefault();
-      if (!_sb) { showMsg('Auth service loading... try again.', 'error'); return; }
+      if (!_sb) { showMsg('Auth service is loading. Please wait a moment and try again.', 'error'); return; }
 
       var email = document.getElementById('afroAuthEmail').value.trim();
       var password = document.getElementById('afroAuthPassword').value;
       var submitBtn = document.getElementById('afroAuthSubmit');
+
+      if (!email || !password) { showMsg('Please enter your email and password.', 'error'); return; }
 
       submitBtn.disabled = true;
       hideMsg();
@@ -364,6 +390,7 @@
           var country = document.getElementById('afroAuthCountry').value;
           if (!name) { showMsg('Please enter your name.', 'error'); submitBtn.disabled = false; return; }
 
+          console.log('[AfroAuth] Signing up:', email);
           var res = await _sb.auth.signUp({
             email: email,
             password: password,
@@ -375,26 +402,48 @@
 
           if (res.error) throw res.error;
 
-          // Supabase may require email confirmation
+          // Auto-confirm disabled? Session returned immediately
+          if (res.data.session) {
+            console.log('[AfroAuth] Signup success, session active');
+            _user = res.data.session.user;
+            await fetchProfile();
+            closeModal();
+            refreshNavbar();
+            fire('afro-auth-change', { user: _user, profile: _profile, event: 'SIGNED_IN' });
+            if (window.location.pathname.indexOf('/dashboard') === 0) {
+              window.location.reload();
+            }
+            return;
+          }
+
+          // Email confirmation required
           if (res.data.user && !res.data.session) {
-            showMsg('Check your email for a confirmation link!', 'success');
+            showMsg('Account created! Check your email for a confirmation link.', 'success');
             submitBtn.disabled = false;
             return;
           }
 
-          closeModal();
-          window.location.href = '/dashboard/';
         } else {
+          console.log('[AfroAuth] Signing in:', email);
           var res2 = await _sb.auth.signInWithPassword({ email: email, password: password });
           if (res2.error) throw res2.error;
+
+          console.log('[AfroAuth] Sign-in success');
+          _user = res2.data.session.user;
+          await fetchProfile();
           closeModal();
-          // Refresh page if on dashboard, otherwise stay
+          refreshNavbar();
+          fire('afro-auth-change', { user: _user, profile: _profile, event: 'SIGNED_IN' });
+
+          // Refresh dashboard to show logged-in state
           if (window.location.pathname.indexOf('/dashboard') === 0) {
             window.location.reload();
           }
+          return;
         }
       } catch (err) {
-        showMsg(err.message || 'Authentication failed', 'error');
+        console.warn('[AfroAuth] Auth error:', err);
+        showMsg(friendlyError(err.message), 'error');
       }
 
       submitBtn.disabled = false;
@@ -493,38 +542,53 @@
 
     async login(email, password) {
       if (!_sb) return { ok: false, error: 'Auth not ready' };
-      var res = await _sb.auth.signInWithPassword({ email: email, password: password });
-      if (res.error) return { ok: false, error: res.error.message };
-      _user = res.data.user;
-      await fetchProfile();
-      return { ok: true, user: this.getUser() };
+      try {
+        var res = await _sb.auth.signInWithPassword({ email: email, password: password });
+        if (res.error) return { ok: false, error: friendlyError(res.error.message) };
+        _user = res.data.user;
+        await fetchProfile();
+        return { ok: true, user: this.getUser() };
+      } catch (e) {
+        return { ok: false, error: friendlyError(e.message) };
+      }
     },
 
     async signup(email, name, password, country) {
       if (!_sb) return { ok: false, error: 'Auth not ready' };
-      var res = await _sb.auth.signUp({
-        email: email,
-        password: password,
-        options: { data: { full_name: name, country: country } }
-      });
-      if (res.error) return { ok: false, error: res.error.message };
-      if (res.data.user) { _user = res.data.user; await fetchProfile(); }
-      return { ok: true, user: this.getUser() };
+      try {
+        var res = await _sb.auth.signUp({
+          email: email,
+          password: password,
+          options: { data: { full_name: name, country: country } }
+        });
+        if (res.error) return { ok: false, error: friendlyError(res.error.message) };
+        if (res.data.user) { _user = res.data.user; await fetchProfile(); }
+        return { ok: true, user: this.getUser() };
+      } catch (e) {
+        return { ok: false, error: friendlyError(e.message) };
+      }
     },
 
     async logout() {
-      if (_sb) await _sb.auth.signOut();
+      if (_sb) {
+        try { await _sb.auth.signOut(); } catch (e) {}
+      }
       _user = null;
       _profile = null;
       refreshNavbar();
+      fire('afro-auth-change', { user: null, profile: null, event: 'SIGNED_OUT' });
     },
 
     async updateProfile(updates) {
       if (!_user || !_sb) return { ok: false, error: 'Not logged in' };
-      var res = await _sb.from('profiles').update(updates).eq('id', _user.id);
-      if (res.error) return { ok: false, error: res.error.message };
-      await fetchProfile();
-      return { ok: true, user: this.getUser() };
+      try {
+        var res = await _sb.from('profiles').update(updates).eq('id', _user.id);
+        if (res.error) return { ok: false, error: friendlyError(res.error.message) };
+        await fetchProfile();
+        return { ok: true, user: this.getUser() };
+      } catch (e) {
+        return { ok: false, error: friendlyError(e.message) };
+      }
     },
 
     openModal: function (mode) { openModal(mode); },
