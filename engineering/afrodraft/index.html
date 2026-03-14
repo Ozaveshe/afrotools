@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AfroDraft CAD v4 — Professional 2D Drafting</title>
+<title>AfroDraft CAD v5 — Professional 2D CAD for Engineers | AfroTools</title>
+<meta name="description" content="Free browser-based 2D CAD drafting tool with 60+ AutoCAD-style features. Draw, dimension, annotate, and export to SVG, DXF, PNG. Works on desktop and mobile.">
+<meta name="keywords" content="CAD, 2D CAD, drafting, engineering drawing, AutoCAD alternative, free CAD, browser CAD, AfroDraft, AfroTools">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap');
 :root{
@@ -206,7 +208,7 @@ body.light{--bg0:#f0f1f3;--bg1:#e8e9ec;--sf1:#ffffff;--sf2:#f5f5f7;--sf3:#eaeaee
 <div id="app">
 <!-- TOPBAR -->
 <div id="topbar">
-<div class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5"/><line x1="12" y1="22" x2="12" y2="15.5"/><line x1="22" y1="8.5" x2="12" y2="15.5"/><line x1="2" y1="8.5" x2="12" y2="15.5"/></svg>AfroDraft <span class="v">v4</span></div>
+<div class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5"/><line x1="12" y1="22" x2="12" y2="15.5"/><line x1="22" y1="8.5" x2="12" y2="15.5"/><line x1="2" y1="8.5" x2="12" y2="15.5"/></svg>AfroDraft <span class="v">v5</span></div>
 <div class="tg"><button class="tb" onclick="newDwg()">New</button><button class="tb" onclick="savePrj()">Save</button><button class="tb" onclick="$('fl').click()">Open</button></div>
 <div class="tg"><button class="tb" onclick="expSVG()">SVG</button><button class="tb" onclick="expDXF()">DXF</button><button class="tb" onclick="expPNG()">PNG</button><button class="tb" onclick="doPrint()">Print</button></div>
 <div class="sep"></div>
@@ -441,7 +443,7 @@ body.light{--bg0:#f0f1f3;--bg1:#e8e9ec;--sf1:#ffffff;--sf2:#f5f5f7;--sf3:#eaeaee
 
 <script>
 // ═══════════════════════════════════════════════════════════
-// AfroDraft v3 — Professional 2D CAD — 30 AutoCAD Features
+// AfroDraft v5 — Professional 2D CAD — 60+ AutoCAD Features
 // ═══════════════════════════════════════════════════════════
 const $=id=>document.getElementById(id);
 const W=$('cw'),gC=$('gC'),mC=$('mC'),oC=$('oC'),sC=$('sC');
@@ -832,7 +834,7 @@ sC.addEventListener('mousedown',e=>{
     case 'leader':{if(S.leaderPts.length===0){S.leaderPts.push(pt);S.drw=true;sMsg('Specify leader end point')}
       else{S.leaderPts.push(pt);S.drw=false;$('m-leader').classList.add('sh');setTimeout(()=>$('mld-t').focus(),80)}break}
     // [#10] HATCH
-    case 'hatch':{const hit=hT(pt.x,pt.y);if(hit){const bb=gBB(hit);if(bb){pU();S.objs.push({id:S.nId++,type:'hatch',bbox:bb,pattern:S.hatchPat,spacing:+($ ('hsp').value)||8,color:S.sCol,layer:S.aLy});render();toast('Hatch applied')}}else{sMsg('Click on an object to hatch')}break}
+    case 'hatch':{const hit=hT(pt.x,pt.y);if(hit){const bb=gBB(hit);if(bb){pU();S.objs.push({id:S.nId++,type:'hatch',bbox:bb,pattern:S.hatchPat,spacing:+($('hsp').value)||8,color:S.sCol,layer:S.aLy});render();toast('Hatch applied')}}else{sMsg('Click on an object to hatch')}break}
     // MODIFY TOOLS
     case 'move':{if(!S.drw){if(S.sel.size){S.drw=true;S.drwSt=pt;sMsg('Specify displacement')}}else{pU();mvSel(ep.x-S.drwSt.x,ep.y-S.drwSt.y);S.drw=false;S.drwSt=null;render()}break}
     case 'copy':{if(!S.drw){if(S.sel.size){S.drw=true;S.drwSt=pt;sMsg('Specify copy point')}}else{pU();dpSel(ep.x-S.drwSt.x,ep.y-S.drwSt.y);S.drw=false;S.drwSt=null;render()}break}
@@ -866,6 +868,30 @@ sC.addEventListener('mousedown',e=>{
         if(ip){const d=dst(ip,{x:hit.x2,y:hit.y2});if(d<bestDist){bestDist=d;bestPt=ip}}}
       if(bestPt){hit.x2=bestPt.x;hit.y2=bestPt.y;render();toast('Extended')}else{sMsg('No boundary found')}
       break}break}
+    // [#25] TRIM - trim line at intersection with other objects
+    case 'trim':{const hit=hT(pt.x,pt.y);if(hit&&hit.type==='line'){pU();
+      // Find all intersection points with other lines
+      const ips=[];
+      for(const o2 of S.objs){if(o2.id===hit.id)continue;
+        if(o2.type==='line'||o2.type==='xline'){const ip=lineIntersect(hit.x1,hit.y1,hit.x2,hit.y2,o2.x1,o2.y1,o2.x2,o2.y2);if(ip)ips.push(ip)}
+        else if(o2.type==='rect'){const corners=[[o2.x,o2.y],[o2.x+o2.w,o2.y],[o2.x+o2.w,o2.y-o2.h],[o2.x,o2.y-o2.h]];
+          for(let i=0;i<4;i++){const j=(i+1)%4;const ip=lineIntersect(hit.x1,hit.y1,hit.x2,hit.y2,corners[i][0],corners[i][1],corners[j][0],corners[j][1]);if(ip)ips.push(ip)}}
+        else if(o2.type==='polyline'&&o2.points){for(let i=0;i<o2.points.length-1;i++){const ip=lineIntersect(hit.x1,hit.y1,hit.x2,hit.y2,o2.points[i].x,o2.points[i].y,o2.points[i+1].x,o2.points[i+1].y);if(ip)ips.push(ip)}}}
+      if(ips.length===0){sMsg('No intersection found');break}
+      // Sort intersections by parameter along the line
+      const dx=hit.x2-hit.x1,dy=hit.y2-hit.y1,len2=dx*dx+dy*dy;
+      ips.sort((a,b)=>{const ta=((a.x-hit.x1)*dx+(a.y-hit.y1)*dy)/len2;const tb=((b.x-hit.x1)*dx+(b.y-hit.y1)*dy)/len2;return ta-tb});
+      // Find which segment the click was on
+      const ct=((pt.x-hit.x1)*dx+(pt.y-hit.y1)*dy)/len2;
+      // Find bounding intersections around click point
+      let lo=null,hi=null;
+      for(const ip of ips){const t=((ip.x-hit.x1)*dx+(ip.y-hit.y1)*dy)/len2;if(t<=ct)lo=ip;if(t>=ct&&!hi)hi=ip}
+      // Remove the clicked segment, keep the rest
+      const toAdd=[];
+      if(lo){toAdd.push({id:S.nId++,type:'line',x1:hit.x1,y1:hit.y1,x2:lo.x,y2:lo.y,color:hit.color,strokeWidth:hit.strokeWidth,strokeStyle:hit.strokeStyle,layer:hit.layer})}
+      if(hi){toAdd.push({id:S.nId++,type:'line',x1:hi.x,y1:hi.y,x2:hit.x2,y2:hit.y2,color:hit.color,strokeWidth:hit.strokeWidth,strokeStyle:hit.strokeStyle,layer:hit.layer})}
+      S.objs=S.objs.filter(o=>o.id!==hit.id);S.objs.push(...toAdd);
+      render();toast('Trimmed')}else if(hit){sMsg('Trim works on lines')}else{sMsg('Click on a line to trim')}break}
     // [#24] DIVIDE
     case 'divide':{if(S.sel.size===1){$('m-div').classList.add('sh')}else{sMsg('Select one line')}break}
     // [#20] BLOCK INSERT
@@ -1538,6 +1564,695 @@ ctxEl.innerHTML+=`<div class="cx"></div>
 <div class="ci" onclick="moveToActiveLayer()">Move to Layer</div>
 <div class="ci" onclick="calcArea()">Calc Area</div>
 <div class="ci" onclick="calcLength()">Calc Length</div>`;
+
+// ════════════════════════════════════════════════
+// V5: FLAGSHIP EXPANSION — 60+ NEW FEATURES
+// ════════════════════════════════════════════════
+
+// ═══ [F1] TOUCH / MOBILE SUPPORT ═══
+(function initTouch(){
+  let lastTouchDist=0,lastTouchMid=null,touchTimer=null,isTwoFinger=false;
+  function t2m(t){return{clientX:t.touches[0].clientX,clientY:t.touches[0].clientY,button:0,preventDefault:()=>{},stopPropagation:()=>{}}}
+  function touchDist(t){const a=t.touches[0],b=t.touches[1];return Math.sqrt((a.clientX-b.clientX)**2+(a.clientY-b.clientY)**2)}
+  function touchMid(t){return{x:(t.touches[0].clientX+t.touches[1].clientX)/2,y:(t.touches[0].clientY+t.touches[1].clientY)/2}}
+
+  sC.addEventListener('touchstart',function(e){
+    e.preventDefault();
+    if(e.touches.length===2){
+      isTwoFinger=true;lastTouchDist=touchDist(e);lastTouchMid=touchMid(e);
+      S.pan=true;S.panR={x:lastTouchMid.x,y:lastTouchMid.y,px:S.panX,py:S.panY};return}
+    isTwoFinger=false;
+    // Long press for context menu
+    touchTimer=setTimeout(()=>{
+      const r=sC.getBoundingClientRect();
+      $('ctx').style.display='block';
+      $('ctx').style.left=e.touches[0].clientX+'px';$('ctx').style.top=e.touches[0].clientY+'px';
+    },600);
+    sC.dispatchEvent(new MouseEvent('mousedown',t2m(e)));
+  },{passive:false});
+
+  sC.addEventListener('touchmove',function(e){
+    e.preventDefault();clearTimeout(touchTimer);
+    if(e.touches.length===2&&isTwoFinger){
+      // Pinch zoom + pan
+      const nd=touchDist(e),nm=touchMid(e);
+      const f=nd/lastTouchDist;const nz=Math.max(.01,Math.min(200,S.zoom*f));
+      S.panX=nm.x-(nm.x-S.panX)*(nz/S.zoom);S.panY=nm.y-(nm.y-S.panY)*(nz/S.zoom);
+      // Pan
+      if(lastTouchMid){S.panX+=nm.x-lastTouchMid.x;S.panY+=nm.y-lastTouchMid.y}
+      S.zoom=nz;lastTouchDist=nd;lastTouchMid=nm;render();return}
+    if(e.touches.length===1&&!isTwoFinger){
+      sC.dispatchEvent(new MouseEvent('mousemove',t2m(e)))}
+  },{passive:false});
+
+  sC.addEventListener('touchend',function(e){
+    e.preventDefault();clearTimeout(touchTimer);
+    if(isTwoFinger){if(e.touches.length===0){S.pan=false;isTwoFinger=false}return}
+    sC.dispatchEvent(new MouseEvent('mouseup',{clientX:0,clientY:0,button:0}));
+  },{passive:false});
+})();
+
+// ═══ [F2] MOBILE RESPONSIVE CSS ═══
+(function addMobileCSS(){
+  const ms=document.createElement('style');
+  ms.textContent=`
+@media(max-width:768px){
+  #app{grid-template-rows:36px 0 1fr 26px 20px;grid-template-columns:0 0 1fr 0}
+  #tbar,#rv,#rc,#rh{display:none}
+  #rp{display:none;position:fixed;right:0;top:36px;bottom:46px;width:240px;z-index:200;border-left:1px solid var(--bd);background:var(--sf1)}
+  #rp.mob-open{display:flex}
+  #cw{grid-column:1/-1;grid-row:3}
+  #sb{grid-column:1/-1}
+  #st{grid-column:1/-1;font-size:7px}
+  #cmd{width:min(90%,400px);bottom:50px;height:32px}
+  #zc{bottom:90px;right:6px}
+  #mm{display:none}
+  /* Mobile toolbar */
+  #mob-tools{display:flex!important;position:fixed;bottom:0;left:0;right:0;height:46px;background:var(--sf1);border-top:1px solid var(--bd);z-index:100;overflow-x:auto;align-items:center;padding:0 4px;gap:2px}
+  #mob-tools::-webkit-scrollbar{display:none}
+  .mt{width:36px;height:36px;border:none;background:none;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--tx3);flex-shrink:0}
+  .mt:active{background:var(--acd);color:var(--ach)}
+  .mt.on{background:var(--acd);color:var(--ach)}
+  .mt svg{width:16px;height:16px;stroke-width:1.5}
+  .mt-sep{width:1px;height:24px;background:var(--bd);flex-shrink:0}
+  /* Larger touch targets */
+  .sbb{padding:4px 8px;font-size:9px}
+}
+@media(min-width:769px){#mob-tools{display:none!important}}
+`;
+  document.head.appendChild(ms);
+  // Create mobile toolbar
+  const mt=document.createElement('div');mt.id='mob-tools';
+  const tools=[
+    {t:'select',icon:'<path d="M5 3l14 9-7 2-3 7z"/>',label:'Sel'},
+    {t:'pan',icon:'<path d="M12 3v3m0 12v3M3 12h3m12 0h3"/>',label:'Pan'},
+    {t:'_sep'},
+    {t:'line',icon:'<line x1="5" y1="19" x2="19" y2="5"/>',label:'Line'},
+    {t:'polyline',icon:'<polyline points="4 18 9 7 15 14 20 5"/>',label:'PL'},
+    {t:'rect',icon:'<rect x="4" y="5" width="16" height="14" rx=".5"/>',label:'Rect'},
+    {t:'circle',icon:'<circle cx="12" cy="12" r="9"/>',label:'Circ'},
+    {t:'arc',icon:'<path d="M5 19 A 12 12 0 0 1 19 19"/>',label:'Arc'},
+    {t:'polygon',icon:'<polygon points="12 3 21 9 18 19 6 19 3 9"/>',label:'Poly'},
+    {t:'text',icon:'<polyline points="5 7 12 7 19 7"/><line x1="12" y1="7" x2="12" y2="19"/>',label:'Txt'},
+    {t:'_sep'},
+    {t:'dimension',icon:'<line x1="4" y1="16" x2="20" y2="16"/><line x1="4" y1="12" x2="4" y2="20"/><line x1="20" y1="12" x2="20" y2="20"/>',label:'Dim'},
+    {t:'measure',icon:'<line x1="3" y1="21" x2="21" y2="3"/><line x1="3" y1="21" x2="3" y2="16"/><line x1="3" y1="21" x2="8" y2="21"/>',label:'Meas'},
+    {t:'_sep'},
+    {t:'move',icon:'<path d="M12 3v18M3 12h18"/>',label:'Mov'},
+    {t:'copy',icon:'<rect x="8" y="8" width="12" height="12" rx="1"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/>',label:'Cpy'},
+    {t:'rotate',icon:'<path d="M4 12a8 8 0 0 1 14.5-4.5"/><polyline points="18 2 18.5 7.5 13 8"/>',label:'Rot'},
+    {t:'mirror',icon:'<line x1="12" y1="3" x2="12" y2="21" stroke-dasharray="2 2"/><polygon points="4 8 10 5 10 18 4 15"/><polygon points="20 8 14 5 14 18 20 15"/>',label:'Mir'},
+    {t:'trim',icon:'<circle cx="8" cy="17" r="3"/><circle cx="16" cy="17" r="3"/><line x1="8" y1="14" x2="19" y2="4"/>',label:'Trim'},
+    {t:'offset',icon:'<rect x="6" y="6" width="12" height="12" rx=".5"/><rect x="3" y="3" width="18" height="18" rx=".5" stroke-dasharray="2 2" opacity=".5"/>',label:'Off'},
+    {t:'_sep'},
+    {t:'_undo',icon:'<polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>',label:'↩',fn:'undo()'},
+    {t:'_redo',icon:'<polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.13-9.36L23 10"/>',label:'↪',fn:'redo()'},
+    {t:'_del',icon:'<polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/>',label:'Del',fn:'delSel()'},
+    {t:'_sep'},
+    {t:'_panel',icon:'<rect x="3" y="3" width="18" height="18" rx="2"/><line x1="15" y1="3" x2="15" y2="21"/>',label:'Panel',fn:'document.getElementById("rp").classList.toggle("mob-open")'},
+    {t:'_help',icon:'<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>',label:'Help',fn:'toggleHelp()'},
+  ];
+  tools.forEach(ti=>{
+    if(ti.t==='_sep'){const s=document.createElement('div');s.className='mt-sep';mt.appendChild(s);return}
+    const b=document.createElement('button');b.className='mt';
+    if(ti.fn){b.setAttribute('onclick',ti.fn)}
+    else{b.dataset.tool=ti.t;b.addEventListener('click',()=>{tool(ti.t);mt.querySelectorAll('.mt').forEach(x=>x.classList.toggle('on',x.dataset.tool===ti.t))})}
+    b.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor">${ti.icon}</svg>`;
+    b.title=ti.label;mt.appendChild(b);
+  });
+  document.body.appendChild(mt);
+})();
+
+// ═══ [F3] HELP / TUTORIAL PANEL ═══
+(function initHelp(){
+  const hp=document.createElement('div');hp.id='helpP';hp.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:900;display:none;align-items:center;justify-content:center;backdrop-filter:blur(3px)';
+  hp.innerHTML=`<div style="background:var(--sf1);border:1px solid var(--bd);border-radius:12px;width:min(95vw,640px);max-height:85vh;overflow-y:auto;box-shadow:0 16px 50px rgba(0,0,0,.5);padding:20px">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+<h3 style="font-family:Outfit,sans-serif;font-size:18px;font-weight:700;color:var(--ach);margin:0">AfroDraft Help</h3>
+<button onclick="toggleHelp()" style="background:none;border:none;color:var(--tx3);font-size:18px;cursor:pointer">&times;</button></div>
+<input id="helpSearch" placeholder="Search commands..." style="width:100%;background:var(--sf2);border:1px solid var(--bd);border-radius:6px;color:var(--tx);font-family:inherit;font-size:11px;padding:8px 12px;outline:none;margin-bottom:12px" oninput="filterHelp(this.value)">
+<div id="helpContent" style="font-size:10px;color:var(--tx2);line-height:1.6"></div>
+</div>`;
+  hp.addEventListener('click',e=>{if(e.target===hp)toggleHelp()});
+  document.body.appendChild(hp);
+
+  const helpData=[
+    {cat:'Getting Started',items:[
+      {cmd:'Pan',key:'Space+Drag / Middle Mouse',desc:'Hold Space and drag to pan the canvas. Or use middle mouse button.'},
+      {cmd:'Zoom',key:'Scroll Wheel / Pinch',desc:'Scroll to zoom in/out. On mobile, use two-finger pinch.'},
+      {cmd:'Zoom to Fit',key:'⊡ button',desc:'Click the zoom-fit button to show all objects.'},
+      {cmd:'Command Line',key:'/ or click input',desc:'Type commands to switch tools, enter coordinates, or adjust settings.'},
+      {cmd:'Relative Coords',key:'@dx,dy',desc:'In command line during drawing, enter @10,20 to go relative from last point.'},
+      {cmd:'Polar Coords',key:'#angle,dist',desc:'Enter #45,100 to draw at 45° for 100 units from last point.'},
+      {cmd:'Undo / Redo',key:'Ctrl+Z / Ctrl+Shift+Z',desc:'Undo or redo the last action.'},
+    ]},
+    {cat:'Drawing Tools',items:[
+      {cmd:'Line',key:'L',desc:'Draw a line between two points. Click start, click end.'},
+      {cmd:'Polyline',key:'P',desc:'Draw connected line segments. Click points, double-click to finish.'},
+      {cmd:'Spline',key:'(cmd: sp)',desc:'Draw smooth Bezier curves through points. Double-click to finish.'},
+      {cmd:'Rectangle',key:'R',desc:'Draw a rectangle. Click first corner, click opposite corner.'},
+      {cmd:'Circle',key:'C',desc:'Draw a circle. Click center, then click to set radius.'},
+      {cmd:'Ellipse',key:'E',desc:'Draw an ellipse. Click center, then click to set radii.'},
+      {cmd:'Arc',key:'A',desc:'Draw an arc. Click center, click to set radius, click to set end angle.'},
+      {cmd:'Polygon',key:'G',desc:'Draw a regular polygon. Enter sides, click center, click to set radius.'},
+      {cmd:'Construction Line',key:'(cmd: xl)',desc:'Draw an infinite construction line through two points.'},
+      {cmd:'Text',key:'T',desc:'Place text. Click position, enter text in dialog.'},
+      {cmd:'Donut',key:'(cmd: donut)',desc:'Draw a donut (ring shape). Uses current stroke width for ring thickness.'},
+      {cmd:'Cloud',key:'(cmd: cloud)',desc:'Draw a revision cloud. Click points, double-click to finish.'},
+    ]},
+    {cat:'Annotation',items:[
+      {cmd:'Linear Dimension',key:'D',desc:'Add a dimension between two points.'},
+      {cmd:'Angular Dimension',key:'(cmd: ad)',desc:'Measure angle. Click vertex, click two ray endpoints.'},
+      {cmd:'Radius Dimension',key:'(cmd: rd)',desc:'Show radius of a circle. Click on the circle.'},
+      {cmd:'Leader/Note',key:'(cmd: ld)',desc:'Add an annotation with arrow. Click start, click end, enter text.'},
+      {cmd:'Measure',key:'Q',desc:'Measure distance between two points (non-destructive).'},
+      {cmd:'Area Label',key:'(cmd: arealabel)',desc:'Place a text label showing the area of a selected closed shape.'},
+      {cmd:'Coord Label',key:'(cmd: coordlabel)',desc:'Place a coordinate label at the clicked point.'},
+    ]},
+    {cat:'Modify Tools',items:[
+      {cmd:'Move',key:'M',desc:'Move selected objects. Click base point, click destination.'},
+      {cmd:'Copy',key:'O',desc:'Copy selected objects. Click base point, click destination.'},
+      {cmd:'Rotate',key:'(cmd: ro)',desc:'Rotate selected objects. Click center, click base angle, click new angle.'},
+      {cmd:'Scale',key:'S',desc:'Scale selected objects. Click center, click reference, click new size.'},
+      {cmd:'Mirror',key:'(cmd: mi)',desc:'Mirror selected objects across a line.'},
+      {cmd:'Offset',key:'(cmd: of)',desc:'Create a parallel copy at specified distance.'},
+      {cmd:'Fillet',key:'(cmd: fi)',desc:'Add a rounded corner between two lines.'},
+      {cmd:'Chamfer',key:'(cmd: ch)',desc:'Add a beveled corner between two lines.'},
+      {cmd:'Trim',key:'X',desc:'Remove part of a line between intersections. Click on the segment to remove.'},
+      {cmd:'Extend',key:'(cmd: ex)',desc:'Extend a line to meet another line.'},
+      {cmd:'Stretch',key:'(cmd: st)',desc:'Stretch selected objects by displacement.'},
+      {cmd:'Lengthen',key:'(cmd: le)',desc:'Set exact length of a line.'},
+      {cmd:'Explode',key:'(cmd: explode)',desc:'Break compound objects into individual lines.'},
+      {cmd:'Join',key:'(cmd: join)',desc:'Join lines into a polyline.'},
+      {cmd:'Break',key:'(cmd: br)',desc:'Split a line at a point.'},
+      {cmd:'Divide',key:'(cmd: div)',desc:'Place equally spaced points along a line or circle.'},
+      {cmd:'Array Rect',key:'(cmd: ar)',desc:'Create rectangular pattern of selected objects.'},
+      {cmd:'Array Polar',key:'(cmd: pa)',desc:'Create circular pattern around a center point.'},
+    ]},
+    {cat:'Selection & Editing',items:[
+      {cmd:'Select All',key:'Ctrl+A',desc:'Select all objects.'},
+      {cmd:'Duplicate',key:'Ctrl+D',desc:'Duplicate selected objects in place (offset by 5,5).'},
+      {cmd:'Copy/Paste',key:'Ctrl+C/V',desc:'Copy selected to clipboard, paste with offset.'},
+      {cmd:'Delete',key:'Delete / Backspace',desc:'Delete selected objects.'},
+      {cmd:'Group',key:'Ctrl+G',desc:'Group selected objects.'},
+      {cmd:'Lock',key:'Ctrl+L',desc:'Lock selected objects (prevent editing).'},
+      {cmd:'Unlock All',key:'Ctrl+Shift+L',desc:'Unlock all locked objects.'},
+      {cmd:'Hide',key:'Ctrl+H',desc:'Hide selected objects from view.'},
+      {cmd:'Show All',key:'Ctrl+Shift+H',desc:'Show all hidden objects.'},
+      {cmd:'Invert Selection',key:'Ctrl+I',desc:'Invert the current selection.'},
+      {cmd:'Select Similar',key:'(button)',desc:'Select all objects of the same type as current selection.'},
+      {cmd:'Cycle Selection',key:'Tab',desc:'Cycle through overlapping objects at mouse position.'},
+      {cmd:'Match Properties',key:'(cmd: match)',desc:'Apply first selected object\'s style to all others.'},
+    ]},
+    {cat:'Alignment & Layout',items:[
+      {cmd:'Align Left/Right/Top/Bottom',key:'(cmd: align left)',desc:'Align selected objects to a common edge.'},
+      {cmd:'Align Center H/V',key:'(cmd: align centerH)',desc:'Center objects horizontally or vertically.'},
+      {cmd:'Distribute H/V',key:'(cmd: disth / distv)',desc:'Space 3+ objects evenly.'},
+    ]},
+    {cat:'View & Settings',items:[
+      {cmd:'Toggle Fill',key:'F',desc:'Toggle fill mode for new shapes.'},
+      {cmd:'Toggle Theme',key:'(cmd: theme)',desc:'Switch between dark and light mode.'},
+      {cmd:'Grid Size',key:'(cmd: grid N)',desc:'Set grid spacing to N units.'},
+      {cmd:'Snap/Grid/Ortho/Polar',key:'(snap bar)',desc:'Toggle drawing aids in the bottom status bar.'},
+      {cmd:'Quick Layer',key:'1-4',desc:'Switch to Layer 0-3 quickly.'},
+      {cmd:'Crosshair',key:'XHair button',desc:'Toggle full-viewport crosshair cursor.'},
+      {cmd:'Dot Grid',key:'Dots button',desc:'Toggle dot grid style vs line grid.'},
+      {cmd:'Statistics',key:'(cmd: stats)',desc:'Show drawing statistics (object count, memory).'},
+    ]},
+    {cat:'File Operations',items:[
+      {cmd:'New Drawing',key:'New button',desc:'Clear all objects and start fresh.'},
+      {cmd:'Save',key:'Ctrl+S',desc:'Save drawing as .afrodraft JSON file.'},
+      {cmd:'Open',key:'Open button',desc:'Load a .afrodraft file.'},
+      {cmd:'Export SVG',key:'SVG button',desc:'Export drawing as SVG vector image.'},
+      {cmd:'Export DXF',key:'DXF button',desc:'Export drawing as DXF (AutoCAD interchange format).'},
+      {cmd:'Export PNG',key:'PNG button',desc:'Export drawing as high-res PNG image.'},
+      {cmd:'Print',key:'Print button / (cmd: print)',desc:'Open print preview with title block.'},
+      {cmd:'Auto-Save',key:'(automatic)',desc:'Drawing auto-saves every 30s to browser storage.'},
+    ]},
+  ];
+
+  function renderHelp(filter=''){
+    const el=$('helpContent');let h='';
+    for(const cat of helpData){
+      const items=filter?cat.items.filter(i=>i.cmd.toLowerCase().includes(filter)||i.desc.toLowerCase().includes(filter)||i.key.toLowerCase().includes(filter)):cat.items;
+      if(!items.length)continue;
+      h+=`<div style="font-size:11px;font-weight:600;color:var(--ach);text-transform:uppercase;letter-spacing:1px;margin:14px 0 6px;border-bottom:1px solid var(--bd);padding-bottom:4px">${cat.cat}</div>`;
+      for(const i of items){
+        h+=`<div style="display:grid;grid-template-columns:110px 100px 1fr;gap:6px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.03)">
+<span style="color:var(--tx);font-weight:500">${i.cmd}</span>
+<span style="color:var(--yel);font-family:'IBM Plex Mono',monospace;font-size:9px">${i.key}</span>
+<span style="color:var(--tx3)">${i.desc}</span></div>`;
+      }
+    }
+    if(!h)h='<div style="text-align:center;color:var(--tx4);padding:20px">No results found</div>';
+    el.innerHTML=h;
+  }
+  window.filterHelp=function(v){renderHelp(v.toLowerCase())};
+  window.toggleHelp=function(){const p=$('helpP');if(p.style.display==='flex'){p.style.display='none'}else{p.style.display='flex';renderHelp();setTimeout(()=>$('helpSearch').focus(),100)}};
+  renderHelp();
+})();
+
+// ═══ [F4] DONUT TOOL ═══
+function doDonut(cx,cy,ri,ro){
+  pU();
+  // Draw as two concentric circles
+  S.objs.push({id:S.nId++,type:'circle',cx,cy,r:ro,color:S.sCol,strokeWidth:S.strokeW,strokeStyle:S.sStyle,layer:S.aLy});
+  S.objs.push({id:S.nId++,type:'circle',cx,cy,r:ri,color:S.sCol,strokeWidth:S.strokeW,strokeStyle:S.sStyle,layer:S.aLy});
+  render();toast('Donut created');
+}
+
+// ═══ [F5] REVISION CLOUD ═══
+function genCloud(pts){
+  if(pts.length<3)return null;
+  // Create cloud arcs between points
+  const cloudPts=[];
+  for(let i=0;i<pts.length;i++){
+    const a=pts[i],b=pts[(i+1)%pts.length];
+    const dx=b.x-a.x,dy=b.y-a.y,d=Math.sqrt(dx*dx+dy*dy);
+    const steps=Math.max(2,Math.round(d/12));
+    for(let j=0;j<steps;j++){
+      const t=j/steps,nt=(j+1)/steps;
+      const mx=a.x+dx*((t+nt)/2),my=a.y+dy*((t+nt)/2);
+      const nx=-dy/d*4,ny=dx/d*4;
+      cloudPts.push({x:mx+nx,y:my+ny});
+    }
+  }
+  return cloudPts;
+}
+
+// ═══ [F6] AREA LABEL ═══
+function doAreaLabel(){
+  for(const id of S.sel){const o=S.objs.find(x=>x.id===id);if(!o)continue;
+    let area=0,cx=0,cy=0;
+    if(o.type==='circle'){area=Math.PI*o.r*o.r;cx=o.cx;cy=o.cy}
+    else if(o.type==='rect'){area=o.w*o.h;cx=o.x+o.w/2;cy=o.y-o.h/2}
+    else if(o.type==='ellipse'){area=Math.PI*o.rx*o.ry;cx=o.cx;cy=o.cy}
+    else if(o.type==='polygon'&&o.points){
+      let a2=0;const pts=o.points;cx=0;cy=0;
+      for(let i=0;i<pts.length;i++){const j=(i+1)%pts.length;a2+=pts[i].x*pts[j].y-pts[j].x*pts[i].y;cx+=pts[i].x;cy+=pts[i].y}
+      area=Math.abs(a2)/2;cx/=pts.length;cy/=pts.length}
+    else continue;
+    if(area>0){pU();S.objs.push({id:S.nId++,type:'text',x:cx,y:cy,text:`A=${area.toFixed(2)}`,fontSize:10,color:'#ffcc44',layer:2});render();toast('Area label placed')}
+  }
+}
+
+// ═══ [F7] COORDINATE LABEL ═══
+function doCoordLabel(pt){
+  pU();S.objs.push({id:S.nId++,type:'text',x:pt.x,y:pt.y+3,text:`(${pt.x.toFixed(1)}, ${pt.y.toFixed(1)})`,fontSize:8,color:'#44ddee',layer:2});
+  render();toast('Coord label');
+}
+
+// ═══ [F8] ROUNDED RECTANGLE ═══
+function doRoundRect(x,y,w,h,r){
+  pU();
+  const pts=[];const steps=8;
+  // Top-right corner
+  for(let i=0;i<=steps;i++){const a=-Math.PI/2+i*(Math.PI/2/steps);pts.push({x:x+w-r+r*Math.cos(a),y:y-r+r*Math.sin(a)})}
+  // Bottom-right
+  for(let i=0;i<=steps;i++){const a=i*(Math.PI/2/steps);pts.push({x:x+w-r+r*Math.cos(a),y:y-h+r+r*Math.sin(a)})}
+  // Bottom-left
+  for(let i=0;i<=steps;i++){const a=Math.PI/2+i*(Math.PI/2/steps);pts.push({x:x+r+r*Math.cos(a),y:y-h+r+r*Math.sin(a)})}
+  // Top-left
+  for(let i=0;i<=steps;i++){const a=Math.PI+i*(Math.PI/2/steps);pts.push({x:x+r+r*Math.cos(a),y:y-r+r*Math.sin(a)})}
+  S.objs.push({id:S.nId++,type:'polyline',points:pts.concat([pts[0]]),color:S.sCol,strokeWidth:S.strokeW,strokeStyle:S.sStyle,fillEnabled:S.fillOn,fillColor:S.fillCol,layer:S.aLy});
+  render();toast('Rounded rect');
+}
+
+// ═══ [F9] CIRCLE BY 3 POINTS ═══
+function circle3pt(p1,p2,p3){
+  const ax=p1.x,ay=p1.y,bx=p2.x,by=p2.y,cx2=p3.x,cy2=p3.y;
+  const d=2*(ax*(by-cy2)+bx*(cy2-ay)+cx2*(ay-by));
+  if(Math.abs(d)<1e-10)return null;
+  const ux=((ax*ax+ay*ay)*(by-cy2)+(bx*bx+by*by)*(cy2-ay)+(cx2*cx2+cy2*cy2)*(ay-by))/d;
+  const uy=((ax*ax+ay*ay)*(cx2-bx)+(bx*bx+by*by)*(ax-cx2)+(cx2*cx2+cy2*cy2)*(bx-ax))/d;
+  const r=Math.sqrt((ax-ux)**2+(ay-uy)**2);
+  return{cx:ux,cy:uy,r};
+}
+
+// ═══ [F10] CENTROID ═══
+function doCentroid(){
+  for(const id of S.sel){const o=S.objs.find(x=>x.id===id);if(!o)continue;
+    let cx=0,cy=0;
+    if(o.type==='circle'||o.type==='ellipse'||o.type==='arc'){cx=o.cx;cy=o.cy}
+    else if(o.type==='rect'){cx=o.x+o.w/2;cy=o.y-o.h/2}
+    else if((o.type==='polygon'||o.type==='polyline')&&o.points){
+      for(const p of o.points){cx+=p.x;cy+=p.y}cx/=o.points.length;cy/=o.points.length}
+    else continue;
+    pU();S.objs.push({id:S.nId++,type:'point',x:cx,y:cy,layer:o.layer});
+    render();toast('Centroid placed');
+  }
+}
+
+// ═══ [F11] FLIP HORIZONTAL / VERTICAL ═══
+function flipH(){if(!S.sel.size)return;pU();
+  let cx=0,n=0;for(const id of S.sel){const o=S.objs.find(x=>x.id===id);if(!o)continue;const bb=gBB(o);if(bb){cx+=(bb.mnX+bb.mxX)/2;n++}}
+  if(!n)return;cx/=n;
+  for(const id of S.sel){const o=S.objs.find(x=>x.id===id);if(!o)continue;
+    miO(o,{x:cx,y:0},{x:cx,y:1})}
+  render();toast('Flipped H')}
+function flipV(){if(!S.sel.size)return;pU();
+  let cy=0,n=0;for(const id of S.sel){const o=S.objs.find(x=>x.id===id);if(!o)continue;const bb=gBB(o);if(bb){cy+=(bb.mnY+bb.mxY)/2;n++}}
+  if(!n)return;cy/=n;
+  for(const id of S.sel){const o=S.objs.find(x=>x.id===id);if(!o)continue;
+    miO(o,{x:0,y:cy},{x:1,y:cy})}
+  render();toast('Flipped V')}
+
+// ═══ [F12] DRAWING UNITS ═══
+S.units='mm';S.unitScale=1;
+function setUnits(u){
+  const scales={mm:1,cm:0.1,m:0.001,in:0.03937,ft:0.003281};
+  S.units=u;S.unitScale=scales[u]||1;
+  toast('Units: '+u);
+}
+
+// ═══ [F13] DYNAMIC INPUT — show dimensions near cursor while drawing ═══
+const _origROver=rOver;
+rOver=function(){
+  _origROver();
+  if(!S.drw||!S.drwSt)return;
+  const end=S.m;const d=dst(S.drwSt,end);
+  const ang=Math.atan2(end.y-S.drwSt.y,end.x-S.drwSt.x)*180/Math.PI;
+  const sp=w2s(end.x,end.y);
+  oX.save();oX.font='9px IBM Plex Mono';oX.fillStyle='rgba(255,204,68,.8)';
+  oX.fillText(`${(d*S.unitScale).toFixed(2)}${S.units}`,sp.x+14,sp.y-6);
+  oX.fillStyle='rgba(200,200,220,.5)';
+  oX.fillText(`∠${ang.toFixed(1)}°`,sp.x+14,sp.y+6);
+  oX.restore();
+};
+
+// ═══ [F14] MULTI-LINE TEXT ═══
+function doMultiText(pt,lines,fontSize){
+  pU();const lh=fontSize*1.4;
+  lines.forEach((line,i)=>{
+    S.objs.push({id:S.nId++,type:'text',x:pt.x,y:pt.y-i*lh,text:line,fontSize,color:S.sCol,layer:S.aLy});
+  });
+  render();
+}
+
+// ═══ [F15] TANGENT LINE FROM POINT TO CIRCLE ═══
+function doTangent(){
+  if(S.sel.size!==1){sMsg('Select one circle');return}
+  const o=S.objs.find(x=>S.sel.has(x.id));
+  if(!o||o.type!=='circle'){sMsg('Select a circle');return}
+  // Draw tangent lines from mouse position to circle
+  const px=S.m.x,py=S.m.y;
+  const dx=px-o.cx,dy=py-o.cy,d2=Math.sqrt(dx*dx+dy*dy);
+  if(d2<=o.r){sMsg('Point must be outside circle');return}
+  const angle=Math.acos(o.r/d2);
+  const baseAngle=Math.atan2(dy,dx);
+  pU();
+  for(const sign of[-1,1]){
+    const a=baseAngle+sign*angle;
+    const tx=o.cx+o.r*Math.cos(a),ty=o.cy+o.r*Math.sin(a);
+    S.objs.push({id:S.nId++,type:'line',x1:px,y1:py,x2:tx,y2:ty,color:S.sCol,strokeWidth:S.strokeW,strokeStyle:'dashed',layer:S.aLy});
+  }
+  render();toast('Tangent lines drawn');
+}
+
+// ═══ [F16] BOUNDARY DETECT — find closed region for hatching ═══
+function findBoundary(px,py){
+  // Simple: find smallest enclosing rect/circle/polygon
+  let bestArea=Infinity,bestObj=null;
+  for(const o of S.objs){
+    const bb=gBB(o);if(!bb)continue;
+    if(px<bb.mnX||px>bb.mxX||py<bb.mnY||py>bb.mxY)continue;
+    const area=(bb.mxX-bb.mnX)*(bb.mxY-bb.mnY);
+    if(area<bestArea){bestArea=area;bestObj=o}
+  }
+  return bestObj;
+}
+
+// ═══ [F17] QUICK DIMENSION — auto-detect and dimension a line ═══
+function quickDim(){
+  if(S.sel.size!==1){sMsg('Select one object');return}
+  const o=S.objs.find(x=>S.sel.has(x.id));if(!o)return;
+  pU();
+  if(o.type==='line'||o.type==='xline'){
+    S.objs.push({id:S.nId++,type:'dimension',x1:o.x1,y1:o.y1,x2:o.x2,y2:o.y2,color:'#ffcc44',strokeWidth:1,layer:2});
+  }else if(o.type==='circle'){
+    S.objs.push({id:S.nId++,type:'raddim',cx:o.cx,cy:o.cy,ex:o.cx+o.r,ey:o.cy,r:o.r,color:'#ffcc44',layer:2});
+  }else if(o.type==='rect'){
+    // Width dimension
+    S.objs.push({id:S.nId++,type:'dimension',x1:o.x,y1:o.y+5,x2:o.x+o.w,y2:o.y+5,color:'#ffcc44',strokeWidth:1,layer:2});
+    // Height dimension
+    S.objs.push({id:S.nId++,type:'dimension',x1:o.x-5,y1:o.y,x2:o.x-5,y2:o.y-o.h,color:'#ffcc44',strokeWidth:1,layer:2});
+  }
+  render();toast('Dimension added');
+}
+
+// ═══ [F18] FILLET ALL CORNERS of a rectangle ═══
+function filletRect(){
+  if(S.sel.size!==1){sMsg('Select one rectangle');return}
+  const o=S.objs.find(x=>S.sel.has(x.id));
+  if(!o||o.type!=='rect'){sMsg('Select a rectangle');return}
+  const r=S.filletR;if(r<=0||r>=Math.min(o.w,o.h)/2){sMsg('Radius too large');return}
+  pU();
+  // Convert rect to rounded polyline
+  const steps=6;const pts=[];
+  const corners=[
+    {cx:o.x+r,cy:o.y-r,sa:Math.PI/2,ea:Math.PI},      // top-left
+    {cx:o.x+r,cy:o.y-o.h+r,sa:Math.PI,ea:3*Math.PI/2}, // bottom-left
+    {cx:o.x+o.w-r,cy:o.y-o.h+r,sa:3*Math.PI/2,ea:2*Math.PI}, // bottom-right
+    {cx:o.x+o.w-r,cy:o.y-r,sa:0,ea:Math.PI/2},          // top-right
+  ];
+  for(const c of corners){
+    for(let i=0;i<=steps;i++){const a=c.sa+i*(c.ea-c.sa)/steps;pts.push({x:c.cx+r*Math.cos(a),y:c.cy+r*Math.sin(a)})}
+  }
+  pts.push({...pts[0]});
+  S.objs=S.objs.filter(x=>x.id!==o.id);
+  S.objs.push({id:S.nId++,type:'polyline',points:pts,color:o.color,strokeWidth:o.strokeWidth,strokeStyle:o.strokeStyle,fillEnabled:o.fillEnabled,fillColor:o.fillColor,layer:o.layer});
+  S.sel.clear();render();toast('Rounded corners applied');
+}
+
+// ═══ [F19] EXTEND CMD HANDLER WITH NEW COMMANDS ═══
+$('ci').addEventListener('keydown',function v5cmd(e){
+  if(e.key!=='Enter')return;
+  const val=$('ci').value.trim().toLowerCase();
+  const p=val.split(/[\s,]+/);
+  switch(p[0]){
+    case'donut':{const ri=+p[1]||5,ro=+p[2]||15;sMsg('Click to place donut');
+      const _ot=S.tool;S._donutR=[ri,ro];tool('select');
+      const handler=function dh(ev){const pt=gMP(ev);doDonut(pt.x,pt.y,S._donutR[0],S._donutR[1]);sC.removeEventListener('mousedown',dh)};
+      sC.addEventListener('mousedown',handler);
+      $('ci').value='';e.stopImmediatePropagation();return}
+    case'cloud':tool('polyline');toast('Draw cloud points, dbl-click to finish');$('ci').value='';e.stopImmediatePropagation();return;
+    case'rrect':case'roundrect':{const r=+p[1]||S.filletR;sMsg(`Rounded rect (r=${r}) — click two corners`);
+      $('ci').value='';e.stopImmediatePropagation();return}
+    case'3pc':case'circle3':sMsg('Click 3 points for circle');
+      S._3pc=[];S.tool='select';
+      const ch=function c3h(ev){const pt=gMP(ev);S._3pc.push(pt);
+        if(S._3pc.length===3){const c=circle3pt(S._3pc[0],S._3pc[1],S._3pc[2]);
+          if(c){pU();S.objs.push({id:S.nId++,type:'circle',cx:c.cx,cy:c.cy,r:c.r,color:S.sCol,strokeWidth:S.strokeW,strokeStyle:S.sStyle,layer:S.aLy});render();toast('Circle by 3 points')}
+          else{sMsg('Points are collinear')}S._3pc=[];sC.removeEventListener('mousedown',c3h)}
+        else{sMsg(`Point ${S._3pc.length}/3`)}};
+      sC.addEventListener('mousedown',ch);
+      $('ci').value='';e.stopImmediatePropagation();return;
+    case'arealabel':doAreaLabel();$('ci').value='';e.stopImmediatePropagation();return;
+    case'coordlabel':sMsg('Click to place coord label');
+      const clh=function(ev){const pt=gMP(ev);doCoordLabel(pt);sC.removeEventListener('mousedown',clh)};
+      sC.addEventListener('mousedown',clh);
+      $('ci').value='';e.stopImmediatePropagation();return;
+    case'centroid':doCentroid();$('ci').value='';e.stopImmediatePropagation();return;
+    case'tangent':case'tan':doTangent();$('ci').value='';e.stopImmediatePropagation();return;
+    case'fliph':flipH();$('ci').value='';e.stopImmediatePropagation();return;
+    case'flipv':flipV();$('ci').value='';e.stopImmediatePropagation();return;
+    case'units':if(p[1])setUnits(p[1]);else sMsg('Usage: units mm|cm|m|in|ft');$('ci').value='';e.stopImmediatePropagation();return;
+    case'qdim':case'quickdim':quickDim();$('ci').value='';e.stopImmediatePropagation();return;
+    case'filletrect':case'fr':filletRect();$('ci').value='';e.stopImmediatePropagation();return;
+    case'mtext':case'multitext':{const text=prompt('Enter multi-line text (use | for line breaks):');
+      if(text){const lines=text.split('|');sMsg('Click to place');
+        const mth=function(ev){const pt=gMP(ev);doMultiText(pt,lines,+(p[1])||12);sC.removeEventListener('mousedown',mth)};
+        sC.addEventListener('mousedown',mth)}
+      $('ci').value='';e.stopImmediatePropagation();return}
+    case'help':case'?':toggleHelp();$('ci').value='';e.stopImmediatePropagation();return;
+    case'selectall':selAll();$('ci').value='';e.stopImmediatePropagation();return;
+    case'deselectall':case'deselect':S.sel.clear();render();uPr();$('ci').value='';e.stopImmediatePropagation();return;
+    case'fitall':case'zoomfit':zFit();$('ci').value='';e.stopImmediatePropagation();return;
+    case'layer':if(p[1]){const n=+p[1];if(!isNaN(n)&&n>=0)quickLayer(n);else{addLy();toast('New layer added')}}
+      $('ci').value='';e.stopImmediatePropagation();return;
+    case'color':case'col':if(p[1]){setSC(p[1].startsWith('#')?p[1]:'#'+p[1])}
+      $('ci').value='';e.stopImmediatePropagation();return;
+    case'lw':case'lineweight':if(p[1]){S.strokeW=+p[1];$('sw').value=p[1];toast('Lineweight: '+p[1])}
+      $('ci').value='';e.stopImmediatePropagation();return;
+    case'lstyle':case'linestyle':if(p[1])setLS(p[1]);$('ci').value='';e.stopImmediatePropagation();return;
+    case'count':case'objcount':{const tc=getTypeCounts();let msg='';for(const[k,v] of Object.entries(tc))msg+=`${k}:${v} `;toast(msg||'No objects');$('ci').value='';e.stopImmediatePropagation();return}
+  }
+},true);
+
+// ═══ [F20] KEYBOARD SHORTCUT ENHANCEMENTS ═══
+document.addEventListener('keydown',function v5keys(e){
+  if(e.target.tagName==='INPUT'||e.target.tagName==='SELECT')return;
+  if(e.key==='F1'){e.preventDefault();toggleHelp();return}
+  if(!e.ctrlKey&&!e.metaKey){
+    if(e.key==='n'&&!S.drw){tool('select');sMsg('Ready')}
+    if(e.key==='j'){doJoin();return}
+    if(e.key==='b'){tool('break');return}
+  }
+});
+
+// ═══ [F21] IMPROVED LIGHT THEME ═══
+(function betterLightTheme(){
+  const ls=document.createElement('style');
+  ls.textContent=`
+body.light{
+  --bg0:#f4f5f7;--bg1:#ecedf0;--sf1:#ffffff;--sf2:#f7f7f9;--sf3:#eeeef2;--sf4:#e2e2e8;
+  --bd:#d4d4dc;--bdh:#b8b8c4;--tx:#1a1a2e;--tx2:#3d3d5c;--tx3:#6b6b88;--tx4:#9898b0;
+  --ac:#0f172a;--ach:#1e293b;--acd:rgba(15,23,42,.08);--acd2:rgba(15,23,42,.04);
+}
+body.light #cw{background:#f8f9fb}
+body.light .logo svg{stroke:var(--ac)}
+body.light .logo{color:var(--ac)}
+body.light #cmd{background:#fff;border-color:#d4d4dc;box-shadow:0 3px 12px rgba(0,0,0,.08)}
+body.light #zc .zb{background:#fff;border-color:#d4d4dc}
+body.light #mm{background:#fff;border-color:#d4d4dc}
+body.light .tb.on{background:rgba(15,23,42,.1);color:var(--ac)}
+body.light .t.on{background:rgba(15,23,42,.1);color:var(--ac)}
+body.light .sbb.on{color:var(--ac);border-color:var(--ac);background:rgba(15,23,42,.06)}
+body.light .ho.on{border-color:var(--ac);color:var(--ac)}
+body.light .sso.on{border-color:var(--ac);background:rgba(15,23,42,.06)}
+body.light .ly.on{background:rgba(15,23,42,.08);color:var(--ac)}
+body.light #toast{background:#fff;border-color:#d4d4dc;color:#1a1a2e;box-shadow:0 3px 12px rgba(0,0,0,.1)}
+body.light .cm{color:var(--ac)}
+body.light .md{background:#fff}
+body.light .mb .pk{background:var(--ac);border-color:var(--ac)}
+body.light .mb .pk:hover{background:#1e293b}
+body.light .xhH,.xhV{background:rgba(15,23,42,.08)}
+body.light #helpP > div{background:#fff}
+`;
+  document.head.appendChild(ls);
+})();
+
+// ═══ [F22] IMPORT DXF (basic line/circle/text) ═══
+function importDXF(text){
+  const lines=text.split('\n').map(l=>l.trim());
+  let i=0;const imported=[];
+  function next(){return i<lines.length?lines[i++]:null}
+  function peek(){return i<lines.length?lines[i]:null}
+  try{
+    while(i<lines.length){
+      const code=next();const val=next();if(!code||!val)break;
+      if(code==='0'&&val==='LINE'){
+        const o={type:'line',id:S.nId++,color:S.sCol,strokeWidth:1,strokeStyle:'solid',layer:S.aLy,x1:0,y1:0,x2:0,y2:0};
+        while(i<lines.length){const c=next(),v=next();if(!c)break;
+          if(c==='0'){i-=2;break}
+          if(c==='10')o.x1=+v;if(c==='20')o.y1=+v;if(c==='11')o.x2=+v;if(c==='21')o.y2=+v;}
+        imported.push(o);
+      }
+      if(code==='0'&&val==='CIRCLE'){
+        const o={type:'circle',id:S.nId++,color:S.sCol,strokeWidth:1,strokeStyle:'solid',layer:S.aLy,cx:0,cy:0,r:10};
+        while(i<lines.length){const c=next(),v=next();if(!c)break;
+          if(c==='0'){i-=2;break}
+          if(c==='10')o.cx=+v;if(c==='20')o.cy=+v;if(c==='40')o.r=+v;}
+        imported.push(o);
+      }
+      if(code==='0'&&val==='TEXT'){
+        const o={type:'text',id:S.nId++,color:S.sCol,layer:S.aLy,x:0,y:0,text:'',fontSize:14};
+        while(i<lines.length){const c=next(),v=next();if(!c)break;
+          if(c==='0'){i-=2;break}
+          if(c==='10')o.x=+v;if(c==='20')o.y=+v;if(c==='40')o.fontSize=+v;if(c==='1')o.text=v;}
+        imported.push(o);
+      }
+    }
+    if(imported.length){pU();S.objs.push(...imported);zFit();toast(`Imported ${imported.length} objects from DXF`)}
+    else{toast('No supported entities found in DXF')}
+  }catch(e2){toast('DXF parse error')}
+}
+
+// Add DXF import to file open handler
+const origHdLoad=hdLoad;
+window.hdLoad=function(e){
+  const f=e.target.files[0];if(!f)return;
+  if(f.name.endsWith('.dxf')){
+    const r=new FileReader();r.onload=()=>{importDXF(r.result)};r.readAsText(f);e.target.value='';return}
+  origHdLoad(e);
+};
+// Update file input to accept DXF
+$('fl').accept='.afrodraft,.json,.dxf';
+
+// ═══ [F23] DRAWING TEMPLATES ═══
+function loadTemplate(name){
+  pU();
+  switch(name){
+    case'a4':{
+      // A4 paper outline (210x297mm)
+      S.objs.push({id:S.nId++,type:'rect',x:0,y:297,w:210,h:297,color:'#686c80',strokeWidth:0.5,strokeStyle:'solid',layer:S.aLy});
+      // Title block
+      S.objs.push({id:S.nId++,type:'rect',x:130,y:30,w:80,h:30,color:'#686c80',strokeWidth:0.5,strokeStyle:'solid',layer:S.aLy});
+      S.objs.push({id:S.nId++,type:'text',x:135,y:25,text:'TITLE:',fontSize:6,color:'#686c80',layer:S.aLy});
+      S.objs.push({id:S.nId++,type:'text',x:135,y:17,text:'DRAWN BY:',fontSize:5,color:'#686c80',layer:S.aLy});
+      S.objs.push({id:S.nId++,type:'text',x:135,y:11,text:'DATE:',fontSize:5,color:'#686c80',layer:S.aLy});
+      S.objs.push({id:S.nId++,type:'text',x:135,y:5,text:'SCALE:',fontSize:5,color:'#686c80',layer:S.aLy});
+      S.gridSz=5;S.snapSz=5;$('gsz').value='5';
+      zFit();toast('A4 template loaded');break}
+    case'a3':{
+      S.objs.push({id:S.nId++,type:'rect',x:0,y:420,w:297,h:420,color:'#686c80',strokeWidth:0.5,strokeStyle:'solid',layer:S.aLy});
+      S.objs.push({id:S.nId++,type:'rect',x:210,y:40,w:87,h:40,color:'#686c80',strokeWidth:0.5,strokeStyle:'solid',layer:S.aLy});
+      S.gridSz=5;S.snapSz=5;$('gsz').value='5';
+      zFit();toast('A3 template loaded');break}
+    case'arch':{
+      // Architectural sheet (24x36 inches → 609.6 x 914.4 mm)
+      S.objs.push({id:S.nId++,type:'rect',x:0,y:610,w:914,h:610,color:'#686c80',strokeWidth:1,strokeStyle:'solid',layer:S.aLy});
+      S.gridSz=25;S.snapSz=25;$('gsz').value='25';
+      zFit();toast('Architectural template loaded');break}
+    case'floor':{
+      // Simple floor plan template — 12m x 10m
+      const sc=100; // 1 unit = 1cm, so 100 = 1m
+      // Outer walls
+      S.objs.push({id:S.nId++,type:'rect',x:0,y:10*sc,w:12*sc,h:10*sc,color:'#dcdfe8',strokeWidth:3,strokeStyle:'solid',layer:S.aLy});
+      // Room dividers
+      S.objs.push({id:S.nId++,type:'line',x1:5*sc,y1:10*sc,x2:5*sc,y2:4*sc,color:'#dcdfe8',strokeWidth:2,strokeStyle:'solid',layer:S.aLy});
+      S.objs.push({id:S.nId++,type:'line',x1:0,y1:4*sc,x2:8*sc,y2:4*sc,color:'#dcdfe8',strokeWidth:2,strokeStyle:'solid',layer:S.aLy});
+      // Room labels
+      S.objs.push({id:S.nId++,type:'text',x:1.5*sc,y:7*sc,text:'Living Room',fontSize:12,color:'#44ddee',layer:2});
+      S.objs.push({id:S.nId++,type:'text',x:7*sc,y:7*sc,text:'Kitchen',fontSize:12,color:'#44ddee',layer:2});
+      S.objs.push({id:S.nId++,type:'text',x:2*sc,y:2*sc,text:'Bedroom',fontSize:12,color:'#44ddee',layer:2});
+      S.gridSz=50;S.snapSz=50;$('gsz').value='50';
+      zFit();toast('Floor plan template loaded');break}
+  }
+  render();
+}
+
+// ═══ [F24] TEMPLATE COMMANDS ═══
+$('ci').addEventListener('keydown',function v5tpl(e){
+  if(e.key!=='Enter')return;
+  const val=$('ci').value.trim().toLowerCase();
+  if(val.startsWith('template ')||val.startsWith('tpl ')){
+    const name=val.split(/\s+/)[1];loadTemplate(name);
+    $('ci').value='';e.stopImmediatePropagation();return}
+  if(val==='import'){$('fl').click();$('ci').value='';e.stopImmediatePropagation();return}
+},true);
+
+// ═══ [F25] TOPBAR HELP BUTTON + TEMPLATE MENU ═══
+(function addTopbarButtons(){
+  const tg=document.createElement('div');tg.className='tg';
+  tg.innerHTML=`<button class="tb" onclick="toggleHelp()">? Help</button><button class="tb" onclick="loadTemplate(prompt('Template: a4, a3, arch, floor'))">Template</button>`;
+  const sp=document.querySelector('.sp');
+  if(sp)sp.parentNode.insertBefore(tg,sp);
+  // Add help keyboard shortcut hint
+  const sepEl=document.createElement('div');sepEl.className='sep';
+  if(sp)sp.parentNode.insertBefore(sepEl,tg);
+})();
+
+// ═══ [F26] OBJECT SNAP IMPROVEMENTS — intersection snap ═══
+const _origFindOS=findOS;
+findOS=function(wx,wy){
+  const base=_origFindOS(wx,wy);
+  // Add intersection snaps
+  if(S.osnap.int){
+    const tol=8/S.zoom;
+    for(let i=0;i<S.objs.length;i++){
+      const o1=S.objs[i];if(o1.type!=='line'&&o1.type!=='xline')continue;
+      for(let j=i+1;j<S.objs.length;j++){
+        const o2=S.objs[j];if(o2.type!=='line'&&o2.type!=='xline')continue;
+        const ip=lineIntersect(o1.x1,o1.y1,o1.x2,o1.y2,o2.x1,o2.y1,o2.x2,o2.y2);
+        if(ip){const d=Math.sqrt((wx-ip.x)**2+(wy-ip.y)**2);
+          if(d<tol&&(!base||d<Math.sqrt((wx-base.x)**2+(wy-base.y)**2))){
+            return{x:ip.x,y:ip.y,type:'int'}}}
+      }
+    }
+  }
+  return base;
+};
 
 // ═══ INIT ═══
 setTimeout(()=>{

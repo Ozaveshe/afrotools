@@ -74,31 +74,45 @@
     try {
       await loadSDK();
 
-      // Let the SDK handle URL detection (PKCE code + hash tokens) automatically.
-      // No manual exchangeCodeForSession — avoids race conditions.
+      // Disable detectSessionInUrl to avoid race condition where INITIAL_SESSION
+      // fires before the PKCE code exchange completes. We handle it manually below.
       _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
         auth: {
           autoRefreshToken: true,
           persistSession: true,
-          detectSessionInUrl: true,
+          detectSessionInUrl: false,
           flowType: 'pkce',
           storage: window.localStorage
         }
       });
 
-      // onAuthStateChange is the single source of truth.
-      // INITIAL_SESSION fires after the SDK finishes processing URL params
-      // (PKCE code exchange or hash token extraction).
+      // Manually exchange PKCE code if present in URL — do this BEFORE setting
+      // up onAuthStateChange so the session exists when INITIAL_SESSION fires.
+      var urlParams = new URLSearchParams(window.location.search);
+      var code = urlParams.get('code');
+      if (code) {
+        console.log('[AfroAuth] PKCE code detected, exchanging...');
+        try {
+          var exchangeResult = await _sb.auth.exchangeCodeForSession(code);
+          if (exchangeResult.error) {
+            console.warn('[AfroAuth] Code exchange failed:', exchangeResult.error.message);
+          } else {
+            console.log('[AfroAuth] Code exchange succeeded');
+          }
+        } catch (e) {
+          console.warn('[AfroAuth] Code exchange error:', e);
+        }
+        // Clean auth params from URL regardless of outcome
+        window.history.replaceState({}, '', window.location.pathname);
+      }
+
+      // Now set up the auth state listener — session is already available if code exchange worked
       _sb.auth.onAuthStateChange(async function (event, session) {
         console.log('[AfroAuth] Event:', event, session ? '(session found)' : '(no session)');
 
         if (session && session.user) {
           _user = session.user;
           await fetchProfile();
-          // Clean auth params from URL after successful session
-          if (window.location.search.indexOf('code=') > -1 || window.location.hash.indexOf('access_token') > -1) {
-            window.history.replaceState({}, '', window.location.pathname);
-          }
         } else if (event === 'SIGNED_OUT') {
           _user = null;
           _profile = null;

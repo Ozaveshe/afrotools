@@ -80,30 +80,43 @@
 
     /* ── HERO ── */
     .cat-hero {
-      background: linear-gradient(135deg, #0a1f12 0%, #0d2b18 50%, #081a0e 100%);
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
       padding: 64px 0 56px; position: relative; overflow: hidden;
     }
     .cat-hero::before {
-      content: '⚡';
-      position: absolute; right: 6%; top: 50%; transform: translateY(-50%);
-      font-size: 180px; opacity: 0.06; user-select: none; line-height: 1;
+      content: '';
+      position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+      background: radial-gradient(circle at 30% 50%, rgba(99,102,241,.08) 0%, transparent 50%),
+                  radial-gradient(circle at 70% 30%, rgba(168,85,247,.06) 0%, transparent 40%);
+      animation: heroGlow 8s ease-in-out infinite alternate; pointer-events: none;
     }
+    .cat-hero::after {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      background-image: radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,.08), transparent),
+                        radial-gradient(2px 2px at 60% 70%, rgba(255,255,255,.05), transparent),
+                        radial-gradient(1px 1px at 80% 20%, rgba(255,255,255,.06), transparent),
+                        radial-gradient(1px 1px at 40% 80%, rgba(255,255,255,.04), transparent);
+      animation: heroDots 12s linear infinite; pointer-events: none;
+    }
+    @keyframes heroGlow { 0% { transform: translate(0,0) rotate(0deg); } 100% { transform: translate(2%,-2%) rotate(3deg); } }
+    @keyframes heroDots { 0% { transform: translateY(0); } 100% { transform: translateY(-20px); } }
     .cat-hero-inner { position: relative; z-index: 1; }
     .cat-eyebrow {
       display: inline-flex; align-items: center; gap: 7px;
       font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em;
-      text-transform: uppercase; color: #dc2626;
+      text-transform: uppercase; color: #818cf8;
       background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
       padding: 5px 12px; border-radius: 99px; margin-bottom: 20px;
     }
     .cat-hero h1 { font-size: clamp(2rem,5vw,3rem); font-weight: 900; color: #fff; line-height: 1.1; margin-bottom: 14px; }
-    .cat-hero h1 span { color: #dc2626; }
-    .cat-tagline { font-size: 1.05rem; color: rgba(255,255,255,0.6); margin-bottom: 28px; max-width: 560px; }
+    .cat-hero h1 span { color: #c7d2fe; }
+    .cat-tagline { font-size: 1.05rem; color: rgba(255,255,255,0.55); margin-bottom: 28px; max-width: 560px; }
     .hero-stats {
       display: flex; gap: 32px; flex-wrap: wrap; margin-top: 8px;
     }
     .hs { display: flex; flex-direction: column; }
-    .hs-num { font-size: 1.9rem; font-weight: 800; color: #dc2626; line-height: 1; }
+    .hs-num { font-size: 1.9rem; font-weight: 800; color: #818cf8; line-height: 1; }
     .hs-lbl { font-size: 0.72rem; color: rgba(255,255,255,0.45); margin-top: 3px; text-transform: uppercase; letter-spacing: 0.08em; }
 
     /* ── TOOLS GRID ── */
@@ -132,7 +145,7 @@
     .tool-card.coming:hover { border-color: #cbd5e1; }
     .tc-icon {
       width: 44px; height: 44px; border-radius: 10px; flex-shrink: 0;
-      background: linear-gradient(135deg, #0d2517, #0a2a18);
+      background: linear-gradient(135deg, #1e293b, #334155);
       display: flex; align-items: center; justify-content: center; font-size: 1.3rem;
     }
     .tc-body { flex: 1; min-width: 0; }
@@ -160,7 +173,7 @@
       border: 1.5px solid var(--border); border-radius: var(--radius);
       margin-bottom: 10px; overflow: hidden; transition: border-color 0.2s;
     }
-    .faq-item[open] { border-color: #dc2626; }
+    .faq-item[open] { border-color: #818cf8; }
     .faq-q {
       padding: 16px 20px; font-size: 0.92rem; font-weight: 700;
       cursor: pointer; display: flex; align-items: center; justify-content: space-between;
@@ -182,13 +195,13 @@
 
     /* ── CTA BANNER ── */
     .cta-band {
-      background: linear-gradient(135deg, #0a1f12, #0d2b18);
+      background: linear-gradient(135deg, #0f172a, #1e293b);
       padding: 48px 0; text-align: center;
     }
     .cta-band h2 { font-size: 1.6rem; font-weight: 800; color: #fff; margin-bottom: 10px; }
     .cta-band p { color: rgba(255,255,255,0.55); font-size: 0.9rem; margin-bottom: 24px; }
-    .btn-g { display: inline-flex; align-items: center; gap: 8px; background: #dc2626; color: #fff; padding: 13px 26px; border-radius: 8px; font-weight: 700; font-size: 0.9rem; transition: background 0.15s; }
-    .btn-g:hover { background: var(--green-d); }
+    .btn-g { display: inline-flex; align-items: center; gap: 8px; background: #818cf8; color: #fff; padding: 13px 26px; border-radius: 8px; font-weight: 700; font-size: 0.9rem; transition: background 0.15s; }
+    .btn-g:hover { background: #6366f1; }
     .btn-outline { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: rgba(255,255,255,0.7); padding: 13px 26px; border-radius: 8px; font-weight: 600; font-size: 0.9rem; border: 1.5px solid rgba(255,255,255,0.15); margin-left: 12px; transition: all 0.15s; }
     .btn-outline:hover { background: rgba(255,255,255,0.06); color: #fff; }
 
@@ -238,7 +251,7 @@
 
 <!-- ── INTRO ── -->
 <div class="wrap" style="padding-top:40px;padding-bottom:0">
-  <p style="font-size:1rem;color:#334155;line-height:1.8;max-width:720px;border-left:3px solid #dc2626;padding-left:18px">No other tool platform has these. Generator fuel cost vs solar ROI. Japa relocation budgeter. Ajo and Chama savings group tracker. Lobola calculator. Mobile money fee comparator. Built for problems the rest of the world doesn't have.</p>
+  <p style="font-size:1rem;color:#334155;line-height:1.8;max-width:720px;border-left:3px solid #818cf8;padding-left:18px">No other tool platform has these. Generator fuel cost vs solar ROI. Japa relocation budgeter. Ajo and Chama savings group tracker. Lobola calculator. Mobile money fee comparator. Built for problems the rest of the world doesn't have.</p>
 </div>
 
 <!-- ── LIVE TOOLS ── -->

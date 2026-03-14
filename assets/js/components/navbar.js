@@ -853,6 +853,20 @@
     customElements.define('afro-navbar', AfroNavbar);
   }
 
+  /* ── ANIMATIONS: inject CSS + JS on every page for modern UI ── */
+  (function _animations() {
+    if (!document.getElementById('afro-animations-css')) {
+      var l = document.createElement('link'); l.id = 'afro-animations-css';
+      l.rel = 'stylesheet'; l.href = '/assets/css/animations.css';
+      document.head.appendChild(l);
+    }
+    if (!document.getElementById('afro-animations-js')) {
+      var s = document.createElement('script'); s.id = 'afro-animations-js';
+      s.src = '/assets/js/animations.js'; s.defer = true;
+      document.head.appendChild(s);
+    }
+  })();
+
   /* ── PRO GATE: inject on tool pages for upsell banners ── */
   (function _proGate() {
     const s = document.createElement('script'); s.src = '/assets/js/pro-gate.js'; s.defer = true;
