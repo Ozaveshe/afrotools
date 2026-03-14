@@ -46,14 +46,71 @@
   async function boot() {
     try {
       await loadSDK();
-      _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-      // Auth state listener
+      // Disable SDK auto-detection to avoid race condition with manual exchange
+      _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+        auth: {
+          autoRefreshToken: true,
+          persistSession: true,
+          detectSessionInUrl: false,
+          flowType: 'pkce',
+          storage: window.localStorage
+        }
+      });
+
+      // 1. Handle OAuth redirect — PKCE code exchange (manual, no race)
+      // Also handle hash fragment for implicit flow fallback
+      var urlParams = new URLSearchParams(window.location.search);
+      var code = urlParams.get('code');
+      var hashParams = new URLSearchParams(window.location.hash.substring(1));
+      var accessToken = hashParams.get('access_token');
+
+      if (accessToken) {
+        // Implicit flow fallback — session from hash fragment
+        console.log('[AfroAuth] Hash fragment session detected');
+        try {
+          var res = await _sb.auth.getSession();
+          if (res.data.session && res.data.session.user) {
+            _user = res.data.session.user;
+            await fetchProfile();
+          }
+        } catch (e) { console.warn('[AfroAuth] Hash session error:', e); }
+        window.history.replaceState({}, '', window.location.pathname);
+      } else if (code) {
+        console.log('[AfroAuth] PKCE code found, exchanging...');
+        try {
+          var exchange = await _sb.auth.exchangeCodeForSession(code);
+          if (exchange.error) {
+            console.warn('[AfroAuth] Code exchange error:', exchange.error.message);
+          } else if (exchange.data && exchange.data.session) {
+            console.log('[AfroAuth] Code exchange OK — user:', exchange.data.session.user.email);
+            _user = exchange.data.session.user;
+            await fetchProfile();
+          }
+        } catch (e) {
+          console.warn('[AfroAuth] Code exchange exception:', e);
+        }
+        // Clean URL regardless
+        window.history.replaceState({}, '', window.location.pathname);
+      }
+
+      // 2. Check existing session (returning users with stored token)
+      if (!_user) {
+        var res = await _sb.auth.getSession();
+        if (res.data.session && res.data.session.user) {
+          _user = res.data.session.user;
+          await fetchProfile();
+          console.log('[AfroAuth] Existing session:', _user.email);
+        }
+      }
+
+      // 3. Listen for future auth changes (sign-out, token refresh, etc.)
       _sb.auth.onAuthStateChange(async function (event, session) {
+        console.log('[AfroAuth] Event:', event);
         if (session && session.user) {
           _user = session.user;
           await fetchProfile();
-        } else {
+        } else if (event === 'SIGNED_OUT') {
           _user = null;
           _profile = null;
         }
@@ -61,29 +118,6 @@
         fire('afro-auth-change', { user: _user, profile: _profile, event: event });
       });
 
-      // Handle OAuth callback — exchange code for session if present in URL
-      var urlParams = new URLSearchParams(window.location.search);
-      var code = urlParams.get('code');
-      if (code) {
-        try {
-          var exchange = await _sb.auth.exchangeCodeForSession(code);
-          if (exchange.data.session) {
-            _user = exchange.data.session.user;
-            await fetchProfile();
-            // Clean up URL
-            window.history.replaceState({}, '', window.location.pathname);
-          }
-        } catch (e) {
-          console.warn('[AfroAuth] Code exchange failed:', e);
-        }
-      }
-
-      // Check existing session on load
-      var res = await _sb.auth.getSession();
-      if (res.data.session && res.data.session.user) {
-        _user = res.data.session.user;
-        await fetchProfile();
-      }
       refreshNavbar();
     } catch (err) {
       console.warn('[AfroAuth] Boot error:', err);
@@ -289,16 +323,27 @@
       googleBtn.disabled = true;
       googleBtn.style.opacity = '0.6';
       try {
+        console.log('[AfroAuth] Starting Google OAuth...');
         var result = await _sb.auth.signInWithOAuth({
           provider: 'google',
-          options: { redirectTo: window.location.origin + '/dashboard/' }
+          options: {
+            redirectTo: window.location.origin + '/dashboard/',
+            queryParams: { prompt: 'select_account' }
+          }
         });
-        if (result.error) showMsg(result.error.message, 'error');
+        if (result.error) {
+          console.warn('[AfroAuth] OAuth error:', result.error);
+          showMsg(result.error.message, 'error');
+          googleBtn.disabled = false;
+          googleBtn.style.opacity = '';
+        }
+        // If no error, browser redirects — button stays disabled
       } catch (err) {
+        console.warn('[AfroAuth] OAuth exception:', err);
         showMsg(err.message || 'Google sign-in failed', 'error');
+        googleBtn.disabled = false;
+        googleBtn.style.opacity = '';
       }
-      googleBtn.disabled = false;
-      googleBtn.style.opacity = '';
     });
 
     // Email form submit
