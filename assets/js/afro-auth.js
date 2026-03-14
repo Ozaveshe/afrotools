@@ -165,10 +165,17 @@
       const session = { id: user.id, email: user.email, name: user.name, country: user.country, tier: 'free', createdAt: user.createdAt };
       setSession(session);
 
-      // Migrate any existing favorites
+      // Migrate any v1 favorites to v2 global key
       const oldFavs = localStorage.getItem('afro_favs_v1');
       if (oldFavs) {
-        localStorage.setItem(FAVS_KEY + '_' + user.id, oldFavs);
+        try {
+          const existing = JSON.parse(localStorage.getItem(FAVS_KEY) || '[]');
+          const old = JSON.parse(oldFavs);
+          const merged = [...existing];
+          old.forEach(function(id) { if (!merged.includes(id)) merged.push(id); });
+          localStorage.setItem(FAVS_KEY, JSON.stringify(merged));
+        } catch(e) {}
+        localStorage.removeItem('afro_favs_v1');
       }
 
       return { ok: true, user: session };
@@ -280,12 +287,12 @@
     },
 
     getFavorites() {
-      const key = FAVS_KEY + '_' + this._userId();
-      try { return JSON.parse(localStorage.getItem(key)) || []; } catch { return []; }
+      // Read from global key (shared with favorites.js widget)
+      try { return JSON.parse(localStorage.getItem(FAVS_KEY)) || []; } catch { return []; }
     },
 
     toggleFavorite(toolId) {
-      const key = FAVS_KEY + '_' + this._userId();
+      const key = FAVS_KEY;
       let favs = this.getFavorites();
       const idx = favs.indexOf(toolId);
       if (idx >= 0) {

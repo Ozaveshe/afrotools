@@ -518,7 +518,7 @@
                 <span class="search-kbd">Ctrl K</span>
               </button>
               <span class="pill-54">🌍 54 countries</span>
-              <a href="/login" class="btn-login">Sign in</a>
+              <a href="/dashboard/" class="btn-login">Sign in</a>
               <a href="/#newsletter" class="cta">Get Updates →</a>
               <button class="burger" type="button" aria-label="Open menu" aria-expanded="false">
                 <span></span><span></span><span></span>
@@ -551,7 +551,7 @@
           </div>
           <div class="mob-footer">
             <a href="/#newsletter" class="mob-cta">Get Updates →</a>
-            <a href="/login" class="mob-login">Sign In</a>
+            <a href="/dashboard/" class="mob-login">Sign In</a>
             <p class="mob-note">🌍 54 countries · always free · no sign-up required</p>
           </div>
         </div>
