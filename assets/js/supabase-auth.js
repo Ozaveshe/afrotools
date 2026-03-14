@@ -16,7 +16,7 @@
   window._afroSupaAuthLoaded = true;
 
   var SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
-  var SUPABASE_KEY = 'sb_publishable_rI-EzUY_FO0mYkESNf6G5g_n2_IEOYG';
+  var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpwY2xhZ3RnY3pzeWdyZ3p0bHRzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0NTg4MzIsImV4cCI6MjA4OTAzNDgzMn0._G-677vi2UTAhcU3t0aquvmd8lnQUBil53ok_Z623F0';
 
   var _sb = null;       // Supabase client
   var _user = null;      // auth.users row
