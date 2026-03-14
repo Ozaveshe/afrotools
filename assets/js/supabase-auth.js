@@ -106,6 +106,34 @@
         window.history.replaceState({}, '', window.location.pathname);
       }
 
+      // Also handle implicit-flow hash fragments (#access_token=...) which
+      // arrive from Google OAuth or email-confirmation redirects when the
+      // Supabase project uses the implicit grant type.
+      var hash = window.location.hash;
+      if (hash && hash.indexOf('access_token=') > -1) {
+        console.log('[AfroAuth] Hash fragment token detected, setting session...');
+        try {
+          var hashParams = new URLSearchParams(hash.substring(1));
+          var accessToken = hashParams.get('access_token');
+          var refreshToken = hashParams.get('refresh_token');
+          if (accessToken && refreshToken) {
+            var sessionResult = await _sb.auth.setSession({
+              access_token: accessToken,
+              refresh_token: refreshToken
+            });
+            if (sessionResult.error) {
+              console.warn('[AfroAuth] Hash session failed:', sessionResult.error.message);
+            } else {
+              console.log('[AfroAuth] Hash session set successfully');
+            }
+          }
+        } catch (e) {
+          console.warn('[AfroAuth] Hash session error:', e);
+        }
+        // Clean hash from URL to prevent token exposure
+        window.history.replaceState({}, '', window.location.pathname);
+      }
+
       // Now set up the auth state listener — session is already available if code exchange worked
       _sb.auth.onAuthStateChange(async function (event, session) {
         console.log('[AfroAuth] Event:', event, session ? '(session found)' : '(no session)');
