@@ -36,11 +36,11 @@
 
   const MARK = `
     <svg viewBox="0 0 68 68" fill="none" xmlns="http://www.w3.org/2000/svg" style="height:34px;width:34px;flex-shrink:0">
-      <polygon points="34,20 48,34 34,48 20,34" fill="#00c873"/>
+      <polygon points="34,20 48,34 34,48 20,34" fill="#0071E3"/>
       <polygon points="34,2  44,14 34,20 24,14" fill="#F5A623"/>
-      <polygon points="34,48 44,60 34,68 24,60" fill="#008751"/>
-      <polygon points="2,24  14,34 2,44  -10,34" fill="#5ddb9e" opacity="0.6"/>
-      <polygon points="52,24 64,34 52,44 40,34"  fill="#5ddb9e" opacity="0.48"/>
+      <polygon points="34,48 44,60 34,68 24,60" fill="#0047AB"/>
+      <polygon points="2,24  14,34 2,44  -10,34" fill="#60B5FF" opacity="0.6"/>
+      <polygon points="52,24 64,34 52,44 40,34"  fill="#60B5FF" opacity="0.48"/>
     </svg>`;
 
   const CSS = `
@@ -84,7 +84,7 @@
       font-size: 1.1rem; font-weight: 800;
       letter-spacing: 0.02em; color: #ffffff;
     }
-    .logo-name b { color: #00c873; }
+    .logo-name b { color: #60B5FF; }
     .logo-tagline {
       font-size: 0.46rem; font-weight: 600;
       letter-spacing: 0.2em; text-transform: uppercase;
@@ -102,7 +102,7 @@
     .nl-eyebrow {
       font-size: 0.6rem; font-weight: 700;
       letter-spacing: 0.18em; text-transform: uppercase;
-      color: #34d399; margin-bottom: 6px;
+      color: #60B5FF; margin-bottom: 6px;
     }
     .nl-title {
       font-size: 1.25rem; font-weight: 800;
@@ -121,16 +121,16 @@
       transition: border-color 0.18s;
     }
     .nl-input::placeholder { color: #6b7280; }
-    .nl-input:focus { border-color: #008751; background: rgba(255,255,255,0.09); }
+    .nl-input:focus { border-color: #0071E3; background: rgba(255,255,255,0.09); }
     .nl-btn {
       padding: 11px 18px; flex-shrink: 0;
-      background: #008751; color: white; border: none;
+      background: #0071E3; color: white; border: none;
       border-radius: 6px;
       font-family: 'DM Sans', sans-serif;
       font-size: 0.82rem; font-weight: 700;
       cursor: pointer; transition: background 0.15s; white-space: nowrap;
     }
-    .nl-btn:hover { background: #00a863; }
+    .nl-btn:hover { background: #005BBF; }
     .nl-note {
       margin-top: 10px; font-size: 0.72rem;
       font-weight: 500; color: #6b7280;
@@ -149,7 +149,7 @@
     .col-title {
       font-size: 0.6rem; font-weight: 700;
       letter-spacing: 0.16em; text-transform: uppercase;
-      color: #34d399; margin-bottom: 14px;
+      color: #60B5FF; margin-bottom: 14px;
     }
     .col-link {
       display: block; padding: 4px 0;
@@ -171,7 +171,7 @@
     }
     .stat-n {
       font-size: 1.8rem; font-weight: 800;
-      color: #34d399; line-height: 1;
+      color: #60B5FF; line-height: 1;
       letter-spacing: -0.02em;
     }
     .stat-l {

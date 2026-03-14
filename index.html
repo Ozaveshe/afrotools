@@ -47,7 +47,7 @@
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'DM Sans', sans-serif; background: #F8FAFD; color: #0f172a; -webkit-font-smoothing: antialiased; font-size: 16px; }
+    body { background: #F5F5F7; font-family: 'DM Sans', sans-serif; background: #F8FAFD; color: #0f172a; -webkit-font-smoothing: antialiased; font-size: 16px; }
     a { text-decoration: none; color: inherit; }
 
     /* ── CONTAINER ── */
@@ -57,15 +57,15 @@
     .hero {
       background: #0f172a;
       background-image:
-        linear-gradient(rgba(0,113,227,0.06) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,113,227,0.06) 1px, transparent 1px);
+        linear-gradient(rgba(0,113,227,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,113,227,0.05) 1px, transparent 1px);
       background-size: 44px 44px;
       padding: 80px 20px 72px;
       position: relative; overflow: hidden;
     }
     .hero::after {
       content: ''; position: absolute; inset: 0; pointer-events: none;
-      background: radial-gradient(ellipse 70% 55% at 50% 0%, rgba(0,113,227,0.15) 0%, transparent 68%);
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,113,227,0.22) 0%, transparent 70%), radial-gradient(ellipse 40% 40% at 75% 10%, rgba(96,181,255,0.12) 0%, transparent 55%);
     }
     .hero-inner {
       max-width: 1200px; margin: 0 auto;
@@ -73,11 +73,12 @@
       position: relative; z-index: 1;
     }
     .hero-eyebrow {
+      background: rgba(0,113,227,0.12); border: 1px solid rgba(0,113,227,0.2); border-radius: 100px; padding: 4px 12px;
       display: inline-flex; align-items: center; gap: 8px;
       font-size: 0.68rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase;
       color: #93C5FD; margin-bottom: 18px;
     }
-    .hero-eyebrow::before { content: ''; width: 18px; height: 2px; background: #60A5FA; border-radius: 2px; }
+    .hero-eyebrow::before { content: ''; width: 6px; height: 6px; background: #60A5FA; border-radius: 50%; }
     .hero-h1 {
       font-size: clamp(2.2rem, 4.5vw, 3.6rem); font-weight: 800;
       color: #fff; letter-spacing: -0.03em; line-height: 1.06; margin-bottom: 18px;
@@ -89,11 +90,14 @@
     }
     .hero-btns { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 32px; }
     .btn-green {
-      display: inline-flex; align-items: center; gap: 5px;
-      background: #0071E3; color: #fff; padding: 12px 22px;
-      border-radius: 8px; font-size: 0.87rem; font-weight: 700;
-      transition: background 0.15s;
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #0071E3; color: #fff; padding: 13px 24px;
+      border-radius: 980px; font-size: 0.87rem; font-weight: 700;
+      letter-spacing: -0.01em;
+      transition: background 0.18s, transform 0.18s;
+      box-shadow: 0 2px 10px rgba(0,113,227,0.3);
     }
+    .btn-green:active { transform: scale(0.97); }
     .btn-green:hover { background: #005BBF; }
     .btn-ghost {
       display: inline-flex; align-items: center;
@@ -199,8 +203,9 @@
 
     /* ── SECTION SHELL ── */
     .sec { padding: 64px 20px; }
-    .sec--grey { background: #F3F4F6; }
+    .sec--grey { background: #F5F5F7; }
     .sec--dark { background: #0f172a; padding: 64px 20px; }
+    .sec--countries { background: #fff; padding: 64px 20px; border-top: 1px solid #f3f4f6; border-bottom: 1px solid #f3f4f6; }
     .sec--dark2 { background: #111827; padding: 64px 20px; }
     .eyebrow {
       display: inline-flex; align-items: center; gap: 7px;
@@ -212,7 +217,7 @@
     .eyebrow--lt::before { background: #64B5FF; }
     .sec-title {
       font-size: clamp(1.65rem, 2.8vw, 2.3rem); font-weight: 800;
-      color: #111827; letter-spacing: -0.025em; line-height: 1.1; margin-bottom: 8px;
+      color: #111827; letter-spacing: -0.03em; line-height: 1.08; margin-bottom: 10px;
     }
     .sec-title--lt { color: #fff; }
     .sec-sub { font-size: 0.9rem; color: #6B7280; line-height: 1.72; max-width: 520px; margin-bottom: 32px; }
@@ -231,13 +236,13 @@
     /* ── TOOL CARDS (PAYE style — with visual thumb) ── */
     .tools-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
     .tc {
-      background: #fff; border: 1.5px solid #D1D5DB; border-radius: 18px;
+      background: #fff; border: 1.5px solid #E5E7EB; border-radius: 18px;
       overflow: hidden; display: flex; flex-direction: column;
-      transition: border-color 0.18s, box-shadow 0.18s, transform 0.18s;
-      cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+      cursor: pointer; box-shadow: 0 2px 12px rgba(0,0,0,0.06);
       position: relative;
     }
-    .tc:hover { border-color: #0071E3; box-shadow: 0 12px 40px rgba(0,113,227,0.2), 0 2px 8px rgba(0,113,227,0.1); transform: translateY(-5px); }
+    .tc:hover { border-color: #0071E3; box-shadow: 0 16px 48px rgba(0,113,227,0.18), 0 2px 8px rgba(0,0,0,0.06); transform: translateY(-6px) scale(1.01); }
     .tc-thumb {
       aspect-ratio: 3/2; overflow: hidden; flex-shrink: 0;
       position: relative;
@@ -263,7 +268,7 @@
     .badge-soon { background: #F3F4F6; color: #9CA3AF; border: 1px solid #E5E7EB; }
     .badge-new  { background: #FEF2F2; color: #991B1B; border: 1px solid #FECACA; }
     .badge-live { background: #DBEAFE; color: #1a4fa0; border: 1px solid #93C5FD; }
-    .tc-name { font-size: 0.95rem; font-weight: 800; color: #0f172a; letter-spacing: -0.01em; line-height: 1.2; margin-bottom: 6px; }
+    .tc-name { font-size: 0.95rem; font-weight: 800; color: #0f172a; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 6px; }
     .tc-desc { font-size: 0.78rem; color: #4b5563; line-height: 1.6; flex: 1; margin-bottom: 11px; }
     .tc-foot { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #F3F4F6; padding-top: 9px; }
     .tc-tags { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #9CA3AF; }
@@ -400,17 +405,17 @@
       transition: all 0.14s;
     }
     .pill:hover { color: rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.22); }
-    .pill.live { border-color: rgba(0,162,255,0.4); color: #64B5FF; background: rgba(0,113,227,0.08); }
-    .pill.live:hover { background: rgba(0,113,227,0.14); }
+    .pill.live { border-color: rgba(0,113,227,0.35); color: #0071E3; background: rgba(0,113,227,0.06); }
+    .pill.live:hover { background: rgba(0,113,227,0.12); color: #005BBF; }
     .pill.built { border-color: rgba(255,200,50,0.3); color: rgba(255,200,50,0.7); background: rgba(255,200,50,0.05); }
-    .live-dot { width: 6px; height: 6px; border-radius: 50%; background: #64B5FF; flex-shrink: 0; animation: pd 2s infinite; }
+    .live-dot { width: 6px; height: 6px; border-radius: 50%; background: #0071E3; flex-shrink: 0; animation: pd 2s infinite; }
     @keyframes pd { 0%,100%{opacity:1}50%{opacity:.35} }
 
     /* ── LEGEND ── */
     .legend { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 28px; }
-    .legend-item { display: flex; align-items: center; gap: 7px; font-size: 0.72rem; color: rgba(255,255,255,0.55); }
+    .legend-item { display: flex; align-items: center; gap: 7px; font-size: 0.72rem; color: #6B7280; }
     .legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-    .legend-dot.green { background: #64B5FF; }
+    .legend-dot.green { background: #0071E3; }
     .legend-dot.yellow { background: rgba(255,200,50,0.7); }
     .legend-dot.grey { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.15); }
 
@@ -983,13 +988,13 @@
 <!-- ═══════════════════════════════════════════════════════════
   54 COUNTRIES
 ═══════════════════════════════════════════════════════════ -->
-<section class="sec sec--dark" id="countries" aria-label="All 54 African countries">
+<section class="sec sec--countries" id="countries" aria-label="All 54 African countries">
   <div class="wrap">
-    <div class="eyebrow eyebrow--lt">54 Countries</div>
-    <h2 class="sec-title sec-title--lt">Every Nation. One Platform.</h2>
-    <p class="sec-sub sec-sub--lt" style="margin-bottom:20px">All 54 African countries now have live PAYE calculators with country-specific tax bands, social security, and AI advisor.</p>
+    <div class="eyebrow">54 Countries</div>
+    <h2 class="sec-title">Every Nation. One Platform.</h2>
+    <p class="sec-sub" style="margin-bottom:20px">All 54 African countries now have live PAYE calculators with country-specific tax bands, social security, and AI advisor.</p>
 
-    <div class="legend rv" style="margin-bottom:28px">
+    <div class="legend rv" style="margin-bottom:28px;color:#374151">
       <div class="legend-item"><span class="legend-dot green"></span>Live — PAYE calculator + tools available</div>
     </div>
 
