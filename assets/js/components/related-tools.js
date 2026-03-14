@@ -118,7 +118,7 @@ class AfroRelatedTools extends HTMLElement {
         .rt-card:hover {
           transform: translateY(-3px);
           border-color: #0071E3;
-          box-shadow: 0 4px 12px rgba(0, 135, 81, 0.1);
+          box-shadow: 0 4px 12px rgba(0, 113, 227, 0.1);
         }
         .rt-icon {
           font-size: 1.75rem;

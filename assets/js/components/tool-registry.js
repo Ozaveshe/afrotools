@@ -386,7 +386,7 @@ var AFRO_TOOLS = [
 // CATEGORY DEFINITIONS
 // ═══════════════════════════════════════════════════════════
 var AFRO_CATEGORIES = {
-  'financial':         { name: 'Salary & Tax',            icon: '💰', color: '#008751', bg: '#eaf5ef', href: '/salary-tax',          desc: 'PAYE for all 54 countries. Real tax tables from FIRS, KRA, GRA, SARS, ERCA.' },
+  'financial':         { name: 'Salary & Tax',            icon: '💰', color: '#0071E3', bg: '#eaf5ef', href: '/salary-tax',          desc: 'PAYE for all 54 countries. Real tax tables from FIRS, KRA, GRA, SARS, ERCA.' },
   'document-pdf':      { name: 'Document & PDF',          icon: '📄', color: '#3b82f6', bg: '#eff6ff', href: '/document-pdf',         desc: 'Complete PDF workspace: merge, split, compress, watermark, password-protect and more.' },
   'image-design':      { name: 'Image & Design',          icon: '🖼️', color: '#ec4899', bg: '#fdf2f8', href: '/image-design',         desc: 'Compress, resize, convert. QR generator. Passport photos. African templates.' },
   'developer':         { name: 'Developer Tools',         icon: '⌨️', color: '#8b5cf6', bg: '#ede9fe', href: '/developer-tools',      desc: 'Color picker, JSON/CSV converter, hash generator, Base64, regex tester, JWT decoder.' },
@@ -431,13 +431,13 @@ function renderToolGrid(containerId, countryCode, opts) {
 
   if (allLive.length) {
     html += '<h2 style="font-size:20px;font-weight:800;color:#111;margin:0 0 16px;display:flex;align-items:center;gap:10px;font-family:\'DM Sans\',sans-serif">'
-          + '<span style="width:8px;height:8px;border-radius:50%;background:#008751;flex-shrink:0"></span> Available Now</h2>';
+          + '<span style="width:8px;height:8px;border-radius:50%;background:#0071E3;flex-shrink:0"></span> Available Now</h2>';
     html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:32px">';
     allLive.forEach(function(t) {
       var cat = AFRO_CATEGORIES[t.category] || { color: '#888', bg: '#f0f0f0' };
       var badge = t.status === 'new'
         ? '<span style="position:absolute;top:14px;right:14px;padding:3px 10px;background:#fef3cd;border:1px solid #fde68a;border-radius:100px;font-size:10px;font-weight:700;color:#92400e;text-transform:uppercase">✨ New</span>'
-        : '<span style="position:absolute;top:14px;right:14px;padding:3px 10px;background:#eaf5ef;border:1px solid rgba(0,135,81,.2);border-radius:100px;font-size:10px;font-weight:700;color:#008751;text-transform:uppercase;display:flex;align-items:center;gap:4px"><span style="width:6px;height:6px;background:#008751;border-radius:50%;animation:pulse 2s infinite"></span>Live</span>';
+        : '<span style="position:absolute;top:14px;right:14px;padding:3px 10px;background:#eaf5ef;border:1px solid rgba(0,113,227,.2);border-radius:100px;font-size:10px;font-weight:700;color:#0071E3;text-transform:uppercase;display:flex;align-items:center;gap:4px"><span style="width:6px;height:6px;background:#0071E3;border-radius:50%;animation:pulse 2s infinite"></span>Live</span>';
       html += '<a href="'+t.href+'" style="background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;text-decoration:none;color:inherit;transition:.25s;display:block;position:relative;overflow:hidden;padding:24px 22px">'
             + badge
             + '<div style="width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px;background:'+cat.bg+'">'+t.icon+'</div>'

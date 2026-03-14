@@ -48,28 +48,28 @@
           :host { display: block; font-family: 'DM Sans', system-ui, -apple-system, sans-serif; }
           .chat-wrap { background: #0f1a12; border-radius: 12px; overflow: hidden; border: 1px solid #1a2e1f; }
           .chat-header { padding: 14px 16px; background: linear-gradient(135deg, #0a1a10 0%, #132818 100%); display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #1a2e1f; }
-          .chat-dot { width: 8px; height: 8px; border-radius: 50%; background: #00c873; animation: pulse 2s infinite; flex-shrink: 0; }
+          .chat-dot { width: 8px; height: 8px; border-radius: 50%; background: #0071E3; animation: pulse 2s infinite; flex-shrink: 0; }
           @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .4; } }
           .chat-title { color: #e5e7eb; font-size: 0.85rem; font-weight: 600; flex: 1; }
-          .chat-badge { font-size: 0.6rem; font-weight: 800; color: #00c873; background: rgba(0,200,115,.12); padding: 2px 8px; border-radius: 100px; letter-spacing: .05em; }
+          .chat-badge { font-size: 0.6rem; font-weight: 800; color: #0071E3; background: rgba(0,200,115,.12); padding: 2px 8px; border-radius: 100px; letter-spacing: .05em; }
           .chat-messages { max-height: 360px; overflow-y: auto; padding: 12px 16px; display: flex; flex-direction: column; gap: 10px; scrollbar-width: thin; scrollbar-color: #1a2e1f transparent; }
           .chat-messages::-webkit-scrollbar { width: 4px; }
           .chat-messages::-webkit-scrollbar-thumb { background: #1a2e1f; border-radius: 4px; }
           .msg { padding: 10px 14px; border-radius: 10px; font-size: 0.84rem; line-height: 1.6; max-width: 92%; word-break: break-word; }
-          .msg-user { background: #008751; color: #fff; align-self: flex-end; border-bottom-right-radius: 2px; }
+          .msg-user { background: #0071E3; color: #fff; align-self: flex-end; border-bottom-right-radius: 2px; }
           .msg-ai { background: #162419; color: #d1d5db; align-self: flex-start; border-bottom-left-radius: 2px; }
           .msg-system { background: transparent; color: #6b7280; align-self: center; text-align: center; font-size: 0.78rem; font-style: italic; }
           .msg-error { background: rgba(220,53,69,.15); color: #f87171; align-self: flex-start; border-left: 3px solid #dc3545; }
           .chat-loading { display: flex; gap: 4px; padding: 10px 14px; align-self: flex-start; }
-          .chat-loading span { width: 6px; height: 6px; background: #00c873; border-radius: 50%; animation: bounce .6s infinite alternate; }
+          .chat-loading span { width: 6px; height: 6px; background: #0071E3; border-radius: 50%; animation: bounce .6s infinite alternate; }
           .chat-loading span:nth-child(2) { animation-delay: .15s; }
           .chat-loading span:nth-child(3) { animation-delay: .3s; }
           @keyframes bounce { to { transform: translateY(-6px); opacity: .4; } }
           .chat-input-wrap { display: flex; gap: 8px; padding: 12px 16px; border-top: 1px solid #1a2e1f; background: #0a1a10; }
           .chat-input { flex: 1; background: #162419; border: 1px solid #1a2e1f; border-radius: 8px; padding: 10px 14px; color: #e5e7eb; font-size: 0.84rem; font-family: inherit; outline: none; resize: none; }
           .chat-input::placeholder { color: #4b5563; }
-          .chat-input:focus { border-color: #008751; }
-          .chat-send { background: #008751; color: #fff; border: none; border-radius: 8px; padding: 10px 16px; font-size: 0.8rem; font-weight: 700; cursor: pointer; font-family: inherit; white-space: nowrap; transition: background .2s; }
+          .chat-input:focus { border-color: #0071E3; }
+          .chat-send { background: #0071E3; color: #fff; border: none; border-radius: 8px; padding: 10px 16px; font-size: 0.8rem; font-weight: 700; cursor: pointer; font-family: inherit; white-space: nowrap; transition: background .2s; }
           .chat-send:hover { background: #00a863; }
           .chat-send:disabled { opacity: .5; cursor: not-allowed; }
           .rate-limit { padding: 8px 16px; background: rgba(245,166,35,.1); border-top: 1px solid rgba(245,166,35,.2); }

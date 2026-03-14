@@ -14,7 +14,7 @@
     :host{display:block}
     .bar{
       position:fixed;bottom:0;left:0;right:0;z-index:400;
-      background:#111827;border-top:2px solid #008751;
+      background:#111827;border-top:2px solid #1f2937;
       padding:14px 20px;
       transform:translateY(100%);opacity:0;
       transition:transform .35s ease,opacity .35s ease;
@@ -36,9 +36,9 @@
       transition:border-color .15s;
     }
     .inp::placeholder{color:#6b7280}
-    .inp:focus{border-color:#008751}
+    .inp:focus{border-color:#0071E3}
     .btn{
-      padding:10px 16px;background:#008751;color:#fff;border:none;border-radius:6px;
+      padding:10px 16px;background:#0071E3;color:#fff;border:none;border-radius:6px;
       font-size:.78rem;font-weight:700;cursor:pointer;white-space:nowrap;
       transition:background .15s;
     }
