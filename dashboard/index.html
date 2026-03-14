@@ -602,93 +602,29 @@
             <a href="/">Home</a> / Dashboard
         </div>
 
-        <!-- Auth Section -->
-        <div id="authSection" class="auth-container">
-            <div class="auth-header">
-                <h1>Welcome to AfroTools</h1>
-                <p>Sign up or log in to save your calculations</p>
-            </div>
-
-            <div class="message" id="authMessage"></div>
-
-            <div class="auth-tabs">
-                <button class="auth-tab-btn active" data-tab="login">Log In</button>
-                <button class="auth-tab-btn" data-tab="signup">Sign Up</button>
-            </div>
-
-            <!-- Log In Form -->
-            <div class="auth-content active" id="loginContent">
-                <form id="loginForm">
-                    <div class="form-group">
-                        <label for="loginEmail">Email</label>
-                        <input type="email" id="loginEmail" placeholder="you@example.com" required>
-                        <div class="form-error" id="loginEmailError"></div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="loginPassword">Password</label>
-                        <input type="password" id="loginPassword" placeholder="••••••••" required>
-                        <div class="form-error" id="loginPasswordError"></div>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">Log In</button>
-                </form>
-            </div>
-
-            <!-- Sign Up Form -->
-            <div class="auth-content" id="signupContent">
-                <form id="signupForm">
-                    <div class="form-group">
-                        <label for="signupName">Full Name</label>
-                        <input type="text" id="signupName" placeholder="Your full name" required>
-                        <div class="form-error" id="signupNameError"></div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="signupEmail">Email</label>
-                        <input type="email" id="signupEmail" placeholder="you@example.com" required>
-                        <div class="form-error" id="signupEmailError"></div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="signupPassword">Password</label>
-                        <input type="password" id="signupPassword" placeholder="Min 4 characters" minlength="4" required>
-                        <div class="form-error" id="signupPasswordError"></div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="signupCountry">Country</label>
-                        <select id="signupCountry" required>
-                            <option value="">Select a country</option>
-                            <option value="Nigeria">Nigeria</option>
-                            <option value="Kenya">Kenya</option>
-                            <option value="Ghana">Ghana</option>
-                            <option value="South Africa">South Africa</option>
-                            <option value="Egypt">Egypt</option>
-                            <option value="Tanzania">Tanzania</option>
-                            <option value="Uganda">Uganda</option>
-                            <option value="Rwanda">Rwanda</option>
-                            <option value="Ethiopia">Ethiopia</option>
-                            <option value="Other">Other</option>
-                        </select>
-                        <div class="form-error" id="signupCountryError"></div>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">Sign Up</button>
-                </form>
-            </div>
+        <!-- Auth Section — shown when not logged in -->
+        <div id="authSection" class="auth-container" style="text-align:center;">
+            <div style="font-size:3rem;margin-bottom:1rem;">🔐</div>
+            <h1 style="font-size:1.75rem;font-weight:700;margin-bottom:0.5rem;color:#0c1a10;">Sign in to your dashboard</h1>
+            <p style="color:#64748b;margin-bottom:2rem;font-size:0.95rem;">Access your saved calculations, favorite tools, and personalized recommendations.</p>
+            <button class="btn btn-primary" onclick="AfroAuth.openModal()" style="max-width:300px;margin:0 auto;display:block;font-size:1rem;padding:0.875rem 2rem;border-radius:12px;">
+                Sign in with Google or Email
+            </button>
+            <p style="margin-top:1.5rem;font-size:0.85rem;color:#94a3b8;">Free forever. No credit card required.</p>
         </div>
 
         <!-- Dashboard Section -->
         <div id="dashboardSection" class="dashboard">
             <!-- Header -->
             <div class="dashboard-header">
-                <h1 id="welcomeMessage">Welcome back!</h1>
-                <div class="profile-summary">
-                    <div class="profile-item">
-                        <strong>Email</strong>
-                        <span id="profileEmail">-</span>
+                <div style="display:flex;align-items:center;gap:1rem;margin-bottom:0.5rem;">
+                    <img id="profileAvatar" src="" alt="" style="width:52px;height:52px;border-radius:50%;object-fit:cover;display:none;border:2px solid #e2e8f0;">
+                    <div>
+                        <h1 id="welcomeMessage" style="margin:0;">Welcome back!</h1>
+                        <p id="profileEmail" style="color:#64748b;font-size:0.9rem;margin:0.125rem 0 0;">-</p>
                     </div>
+                </div>
+                <div class="profile-summary">
                     <div class="profile-item">
                         <strong>Member Since</strong>
                         <span id="profileMemberSince">-</span>
@@ -697,11 +633,14 @@
                         <strong>Country</strong>
                         <span id="profileCountry">-</span>
                     </div>
+                    <div class="profile-item">
+                        <strong>Plan</strong>
+                        <span id="profileTier">Free</span>
+                    </div>
                 </div>
 
                 <div class="header-actions">
                     <button class="btn btn-secondary btn-sm" id="editProfileBtn">Edit Profile</button>
-                    <button class="btn btn-secondary btn-sm" id="deleteAccountBtn">Delete Account</button>
                     <button class="btn btn-secondary btn-sm" id="logoutBtn">Log Out</button>
                 </div>
             </div>
@@ -743,19 +682,7 @@
                 </div>
             </div>
 
-            <!-- Delete Account Modal -->
-            <div class="modal" id="deleteModal">
-                <div class="modal-content">
-                    <div class="modal-header">Delete Account</div>
-                    <div class="modal-body">
-                        Are you sure you want to delete your account? This action cannot be undone and all your saved data will be lost.
-                    </div>
-                    <div class="modal-actions">
-                        <button class="btn btn-secondary" id="cancelDeleteBtn">Cancel</button>
-                        <button class="btn btn-danger" id="confirmDeleteBtn">Delete Account</button>
-                    </div>
-                </div>
-            </div>
+            <!-- Delete Account removed — handled via Supabase dashboard -->
 
             <!-- NEW: Dashboard Widgets -->
             <div class="dash-widgets-grid">
@@ -797,20 +724,19 @@
     <afro-footer></afro-footer>
 
     <script src="/assets/js/components/tool-registry.js"></script>
-    <script src="/assets/js/afro-auth.js"></script>
+    <script src="/assets/js/supabase-auth.js"></script>
     <script src="/assets/js/tax-calendar.js"></script>
     <script src="/assets/js/dashboard.js"></script>
     <script src="/assets/js/components/navbar.min.js" defer></script>
     <script src="/assets/js/components/footer.min.js" defer></script>
 
     <script>
-        // State management
         let currentUser = null;
         let isLoggedIn = false;
 
         // Tool metadata for display
         const toolMetadata = {
-            'bmi-calculator': { name: 'BMI Calculator', icon: '⚖️' },
+            'bmi-calculator': { name: 'BMI Calculator', icon: '⚖' },
             'paye-calculator': { name: 'PAYE Calculator', icon: '💷' },
             'profit-margin': { name: 'Profit Margin', icon: '📊' },
             'currency-converter': { name: 'Currency Converter', icon: '💱' },
@@ -820,21 +746,36 @@
             'investment-calculator': { name: 'Investment Calculator', icon: '📈' }
         };
 
-        // Initialize
+        // Wait for Supabase auth to be ready before initializing
+        function waitForAuth() {
+            if (window.AfroAuth) {
+                AfroAuth.onReady(init);
+            } else {
+                var attempts = 0;
+                var check = setInterval(function() {
+                    attempts++;
+                    if (window.AfroAuth) {
+                        clearInterval(check);
+                        AfroAuth.onReady(init);
+                    } else if (attempts > 50) {
+                        clearInterval(check);
+                        showAuth();
+                    }
+                }, 100);
+            }
+        }
+
         function init() {
             isLoggedIn = AfroAuth.isLoggedIn();
-
             if (isLoggedIn) {
                 currentUser = AfroAuth.getUser();
                 showDashboard();
             } else {
                 showAuth();
             }
-
             setupEventListeners();
         }
 
-        // UI State Management
         function showAuth() {
             document.getElementById('authSection').style.display = 'block';
             document.getElementById('dashboardSection').classList.remove('active');
@@ -844,137 +785,49 @@
             document.getElementById('authSection').style.display = 'none';
             document.getElementById('dashboardSection').classList.add('active');
             loadDashboardData();
-            // Initialize enhanced widgets
             if (window.AfroDashboard) {
-              try { AfroDashboard.initDashboard(); } catch(e) { console.warn('Dashboard widgets:', e); }
+                try { AfroDashboard.initDashboard(); } catch(e) { console.warn('Dashboard widgets:', e); }
             }
         }
 
-        // Tab switching
         function setupEventListeners() {
-            // Auth tabs
-            document.querySelectorAll('.auth-tab-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const tab = e.target.dataset.tab;
-                    switchAuthTab(tab);
-                });
-            });
+            document.getElementById('editProfileBtn')?.addEventListener('click', openEditProfileModal);
+            document.getElementById('logoutBtn')?.addEventListener('click', handleLogout);
 
-            // Auth forms
-            document.getElementById('loginForm').addEventListener('submit', handleLogin);
-            document.getElementById('signupForm').addEventListener('submit', handleSignup);
-
-            // Dashboard buttons
-            document.getElementById('editProfileBtn').addEventListener('click', openEditProfileModal);
-            document.getElementById('deleteAccountBtn').addEventListener('click', openDeleteModal);
-            document.getElementById('logoutBtn').addEventListener('click', handleLogout);
-
-            // Modal controls
-            document.getElementById('cancelEditBtn').addEventListener('click', closeEditProfileModal);
-            document.getElementById('editProfileForm').addEventListener('submit', handleEditProfile);
-
-            document.getElementById('cancelDeleteBtn').addEventListener('click', closeDeleteModal);
-            document.getElementById('confirmDeleteBtn').addEventListener('click', handleDeleteAccount);
+            document.getElementById('cancelEditBtn')?.addEventListener('click', closeEditProfileModal);
+            document.getElementById('editProfileForm')?.addEventListener('submit', handleEditProfile);
 
             // Click outside modal to close
             document.querySelectorAll('.modal').forEach(modal => {
                 modal.addEventListener('click', (e) => {
-                    if (e.target === modal) {
-                        modal.classList.remove('active');
-                    }
+                    if (e.target === modal) modal.classList.remove('active');
                 });
             });
-        }
 
-        function switchAuthTab(tab) {
-            document.querySelectorAll('.auth-tab-btn').forEach(btn => {
-                btn.classList.remove('active');
+            // Listen for auth changes (e.g. user signs in via modal)
+            window.addEventListener('afro-auth-change', function() {
+                var wasLoggedIn = isLoggedIn;
+                isLoggedIn = AfroAuth.isLoggedIn();
+                if (isLoggedIn && !wasLoggedIn) {
+                    currentUser = AfroAuth.getUser();
+                    showDashboard();
+                } else if (!isLoggedIn && wasLoggedIn) {
+                    showAuth();
+                }
             });
-            document.querySelectorAll('.auth-content').forEach(content => {
-                content.classList.remove('active');
-            });
-
-            event.target.classList.add('active');
-            document.getElementById(tab + 'Content').classList.add('active');
-            clearAuthMessages();
-        }
-
-        // Auth handlers
-        async function handleLogin(e) {
-            e.preventDefault();
-            clearAuthErrors();
-
-            const email = document.getElementById('loginEmail').value.trim();
-            const password = document.getElementById('loginPassword').value;
-
-            if (!email || !password) {
-                showAuthMessage('Please fill in all fields', 'error');
-                return;
-            }
-
-            const btn = e.target.querySelector('[type="submit"]');
-            btn.disabled = true;
-
-            const result = await AfroAuth.login(email, password);
-
-            if (result.ok) {
-                currentUser = result.user;
-                isLoggedIn = true;
-                showDashboard();
-            } else {
-                showAuthMessage(result.error || 'Login failed', 'error');
-                btn.disabled = false;
-            }
-        }
-
-        async function handleSignup(e) {
-            e.preventDefault();
-            clearAuthErrors();
-
-            const name = document.getElementById('signupName').value.trim();
-            const email = document.getElementById('signupEmail').value.trim();
-            const password = document.getElementById('signupPassword').value;
-            const country = document.getElementById('signupCountry').value;
-
-            if (!name || !email || !password || !country) {
-                showAuthMessage('Please fill in all fields', 'error');
-                return;
-            }
-
-            if (password.length < 4) {
-                showAuthMessage('Password must be at least 4 characters', 'error');
-                return;
-            }
-
-            const btn = e.target.querySelector('[type="submit"]');
-            btn.disabled = true;
-
-            const result = await AfroAuth.signup(email, name, password, country);
-
-            if (result.ok) {
-                currentUser = result.user;
-                isLoggedIn = true;
-                showDashboard();
-            } else {
-                showAuthMessage(result.error || 'Signup failed', 'error');
-                btn.disabled = false;
-            }
         }
 
         function handleLogout() {
             AfroAuth.logout();
             isLoggedIn = false;
             currentUser = null;
-            document.getElementById('loginForm').reset();
-            document.getElementById('signupForm').reset();
-            clearAuthMessages();
             showAuth();
         }
 
-        // Profile edit
         function openEditProfileModal() {
-            document.getElementById('editName').value = currentUser.name;
-            document.getElementById('editCountry').value = currentUser.country;
+            if (!currentUser) return;
+            document.getElementById('editName').value = currentUser.name || '';
+            document.getElementById('editCountry').value = currentUser.country || '';
             document.getElementById('editProfileModal').classList.add('active');
         }
 
@@ -984,52 +837,20 @@
 
         async function handleEditProfile(e) {
             e.preventDefault();
-
             const name = document.getElementById('editName').value.trim();
             const country = document.getElementById('editCountry').value;
-
-            if (!name || !country) {
-                showEditMessage('Please fill in all fields', 'error');
-                return;
-            }
+            if (!name || !country) { showEditMessage('Please fill in all fields', 'error'); return; }
 
             const result = await AfroAuth.updateProfile({ name, country });
-
             if (result.ok) {
                 currentUser = result.user;
                 loadDashboardData();
                 closeEditProfileModal();
-                showEditMessage('Profile updated successfully', 'success');
-                setTimeout(() => {
-                    document.getElementById('editMessage').classList.remove('show');
-                }, 3000);
             } else {
                 showEditMessage(result.error || 'Update failed', 'error');
             }
         }
 
-        // Account deletion
-        function openDeleteModal() {
-            document.getElementById('deleteModal').classList.add('active');
-        }
-
-        function closeDeleteModal() {
-            document.getElementById('deleteModal').classList.remove('active');
-        }
-
-        async function handleDeleteAccount() {
-            const btn = event.target;
-            btn.disabled = true;
-
-            // In a real app, call AfroAuth.deleteAccount() or similar
-            // For now, we'll just log out
-            AfroAuth.logout();
-            isLoggedIn = false;
-            currentUser = null;
-            showAuth();
-        }
-
-        // Dashboard data loading
         function loadDashboardData() {
             loadProfileData();
             loadQuickAccess();
@@ -1038,141 +859,85 @@
         }
 
         function loadProfileData() {
-            document.getElementById('welcomeMessage').textContent = `Welcome back, ${currentUser.name}!`;
+            if (!currentUser) return;
+            document.getElementById('welcomeMessage').textContent = 'Welcome back, ' + (currentUser.name || 'there') + '!';
             document.getElementById('profileEmail').textContent = currentUser.email;
-            document.getElementById('profileCountry').textContent = currentUser.country;
+            document.getElementById('profileCountry').textContent = currentUser.country || '-';
+            document.getElementById('profileTier').textContent = currentUser.tier === 'pro' ? 'Pro' : 'Free';
 
-            const createdDate = new Date(currentUser.createdAt);
-            const formatted = createdDate.toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
+            // Avatar
+            var avatarEl = document.getElementById('profileAvatar');
+            if (currentUser.avatar_url && avatarEl) {
+                avatarEl.src = currentUser.avatar_url;
+                avatarEl.style.display = 'block';
+            }
+
+            var createdDate = new Date(currentUser.createdAt);
+            document.getElementById('profileMemberSince').textContent = createdDate.toLocaleDateString('en-US', {
+                year: 'numeric', month: 'long', day: 'numeric'
             });
-            document.getElementById('profileMemberSince').textContent = formatted;
         }
 
         function loadQuickAccess() {
             const container = document.getElementById('quickAccessContainer');
             const recentTools = AfroData.getRecentTools();
-
             if (recentTools.length === 0) {
-                container.innerHTML = '<p style="color: #94a3b8; grid-column: 1 / -1;">Start using tools to see them here</p>';
+                container.innerHTML = '<p style="color:#94a3b8;grid-column:1/-1;">Start using tools to see them here</p>';
                 return;
             }
-
             container.innerHTML = recentTools.slice(0, 6).map(tool => {
-                const meta = toolMetadata[tool.toolId] || { name: tool.name, icon: '🔧' };
-                const daysAgo = Math.floor((Date.now() - new Date(tool.date)) / (1000 * 60 * 60 * 24));
-                const timeStr = daysAgo === 0 ? 'Today' : `${daysAgo} days ago`;
-
-                return `
-                    <a href="/tools/${tool.toolId}/" class="quick-access-card">
-                        <div class="tool-icon">${meta.icon}</div>
-                        <div class="quick-access-name">${meta.name}</div>
-                        <div class="quick-access-date">${timeStr}</div>
-                    </a>
-                `;
+                const meta = toolMetadata[tool.toolId] || { name: tool.name || tool.toolId, icon: '🔧' };
+                const daysAgo = Math.floor((Date.now() - new Date(tool.date)) / 86400000);
+                const timeStr = daysAgo === 0 ? 'Today' : daysAgo + ' days ago';
+                return '<a href="/tools/' + tool.toolId + '/" class="quick-access-card"><div class="tool-icon">' + meta.icon + '</div><div class="quick-access-name">' + meta.name + '</div><div class="quick-access-date">' + timeStr + '</div></a>';
             }).join('');
         }
 
         function loadSavedCalculations() {
             const container = document.getElementById('savedContainer');
             const allSaved = AfroData.getAllSaved();
-
             if (Object.keys(allSaved).length === 0) {
                 container.innerHTML = '<div class="empty-state">No saved calculations yet. Try a tool and save your results!</div>';
                 return;
             }
-
             container.innerHTML = Object.entries(allSaved).map(([toolId, data]) => {
                 const meta = toolMetadata[toolId] || { name: toolId, icon: '🔧' };
-                const lastDate = new Date(data.latest.date);
-                const formatted = lastDate.toLocaleDateString('en-US', {
-                    month: 'short',
-                    day: 'numeric',
-                    year: 'numeric'
-                });
-
-                let displayValue = '';
-                if (toolId === 'bmi-calculator' && data.latest.data.bmi) {
-                    displayValue = `${Math.round(data.latest.data.bmi)} (${data.latest.data.category})`;
-                } else if (toolId === 'paye-calculator' && data.latest.data.netPay) {
-                    displayValue = `₦${Number(data.latest.data.netPay).toLocaleString()}`;
-                } else if (toolId === 'profit-margin' && data.latest.data.margin) {
-                    displayValue = `${Math.round(data.latest.data.margin)}%`;
-                } else {
-                    displayValue = `${data.count} saved item${data.count !== 1 ? 's' : ''}`;
-                }
-
-                return `
-                    <div class="saved-item">
-                        <div class="saved-content">
-                            <h3>${meta.name}</h3>
-                            <div class="saved-value">${displayValue}</div>
-                            <div class="saved-meta">Last used: ${formatted}</div>
-                        </div>
-                        <div class="saved-actions">
-                            <a href="/tools/${toolId}/" class="btn btn-secondary btn-icon">View</a>
-                            <button class="btn btn-secondary btn-icon" onclick="clearSaved('${toolId}')">Clear</button>
-                        </div>
-                    </div>
-                `;
+                const formatted = new Date(data.latest.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                let displayValue = data.count + ' saved item' + (data.count !== 1 ? 's' : '');
+                return '<div class="saved-item"><div class="saved-content"><h3>' + meta.name + '</h3><div class="saved-value">' + displayValue + '</div><div class="saved-meta">Last used: ' + formatted + '</div></div><div class="saved-actions"><a href="/tools/' + toolId + '/" class="btn btn-secondary btn-icon">View</a><button class="btn btn-secondary btn-icon" onclick="clearSaved(\'' + toolId + '\')">Clear</button></div></div>';
             }).join('');
         }
 
         function loadFavorites() {
             const container = document.getElementById('favoritesContainer');
             const favorites = AfroData.getFavorites();
-
             if (favorites.length === 0) {
-                container.innerHTML = '<div class="empty-state" style="grid-column: 1 / -1;">Star your favorite tools to see them here</div>';
+                container.innerHTML = '<div class="empty-state" style="grid-column:1/-1;">Star your favorite tools to see them here</div>';
                 return;
             }
-
+            // Look up tool registry for names/icons
+            const registry = typeof AFRO_TOOLS !== 'undefined' ? AFRO_TOOLS : [];
             container.innerHTML = favorites.map(toolId => {
-                const meta = toolMetadata[toolId] || { name: toolId, icon: '🔧' };
-                return `
-                    <a href="/tools/${toolId}/" class="favorite-card">
-                        <div class="favorite-icon">${meta.icon}</div>
-                        <div class="favorite-name">${meta.name}</div>
-                    </a>
-                `;
+                const regTool = registry.find(t => t.id === toolId);
+                const meta = toolMetadata[toolId] || (regTool ? { name: regTool.name, icon: regTool.icon || '🔧' } : { name: toolId, icon: '🔧' });
+                return '<a href="/tools/' + toolId + '/" class="favorite-card"><div class="favorite-icon">' + meta.icon + '</div><div class="favorite-name">' + meta.name + '</div></a>';
             }).join('');
         }
 
         function clearSaved(toolId) {
-            if (confirm(`Clear all saved data for ${toolMetadata[toolId]?.name || toolId}?`)) {
-                // In a real app, call AfroData.clear(toolId) or similar
+            if (confirm('Clear all saved data for ' + (toolMetadata[toolId]?.name || toolId) + '?')) {
+                AfroData.clearTool(toolId);
                 loadSavedCalculations();
             }
         }
 
-        // Message helpers
-        function showAuthMessage(msg, type) {
-            const el = document.getElementById('authMessage');
-            el.textContent = msg;
-            el.className = `message show ${type}`;
-        }
-
         function showEditMessage(msg, type) {
             const el = document.getElementById('editMessage');
-            el.textContent = msg;
-            el.className = `message show ${type}`;
-        }
-
-        function clearAuthMessages() {
-            document.getElementById('authMessage').classList.remove('show');
-        }
-
-        function clearAuthErrors() {
-            document.querySelectorAll('.form-error').forEach(el => {
-                el.classList.remove('show');
-                el.textContent = '';
-            });
+            if (el) { el.textContent = msg; el.className = 'message show ' + type; }
         }
 
         // Start
-        init();
+        waitForAuth();
     </script>
 </body>
 </html>

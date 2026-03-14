@@ -885,4 +885,13 @@
     const s = document.createElement('script'); s.src = '/assets/js/pwa-install.js'; s.defer = true;
     document.head.appendChild(s);
   })();
+
+  /* ── SUPABASE AUTH: inject on every page for auth modal + session ── */
+  (function _auth() {
+    if (window._afroSupaAuthLoaded) return;
+    if (!document.getElementById('afro-supabase-auth-js')) {
+      const s = document.createElement('script'); s.id = 'afro-supabase-auth-js';
+      s.src = '/assets/js/supabase-auth.js'; document.head.appendChild(s);
+    }
+  })();
 })();
