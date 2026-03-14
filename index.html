@@ -55,17 +55,16 @@
 
     /* ── HERO ── */
     .hero {
-      background: #0f172a;
+      background: #fff;
       background-image:
-        linear-gradient(rgba(0,113,227,0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,113,227,0.05) 1px, transparent 1px);
-      background-size: 44px 44px;
-      padding: 80px 20px 72px;
+        radial-gradient(circle at 20% 50%, rgba(0,113,227,0.06) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(96,181,255,0.08) 0%, transparent 45%);
+      padding: 96px 20px 80px;
       position: relative; overflow: hidden;
     }
     .hero::after {
-      content: ''; position: absolute; inset: 0; pointer-events: none;
-      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,113,227,0.22) 0%, transparent 70%), radial-gradient(ellipse 40% 40% at 75% 10%, rgba(96,181,255,0.12) 0%, transparent 55%);
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0,113,227,0.15), transparent);
     }
     .hero-inner {
       max-width: 1200px; margin: 0 auto;
@@ -73,20 +72,20 @@
       position: relative; z-index: 1;
     }
     .hero-eyebrow {
-      background: rgba(0,113,227,0.12); border: 1px solid rgba(0,113,227,0.2); border-radius: 100px; padding: 4px 12px;
-      display: inline-flex; align-items: center; gap: 8px;
-      font-size: 0.68rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase;
-      color: #93C5FD; margin-bottom: 18px;
+      background: rgba(0,113,227,0.08); border: 1px solid rgba(0,113,227,0.18); border-radius: 100px; padding: 5px 14px;
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: 0.67rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      color: #0071E3; margin-bottom: 20px;
     }
-    .hero-eyebrow::before { content: ''; width: 6px; height: 6px; background: #60A5FA; border-radius: 50%; }
+    .hero-eyebrow::before { content: ''; width: 6px; height: 6px; background: #0071E3; border-radius: 50%; }
     .hero-h1 {
-      font-size: clamp(2.2rem, 4.5vw, 3.6rem); font-weight: 800;
-      color: #fff; letter-spacing: -0.03em; line-height: 1.06; margin-bottom: 18px;
+      font-size: clamp(2.4rem, 5vw, 4.2rem); font-weight: 800;
+      color: #1D1D1F; letter-spacing: -0.04em; line-height: 1.04; margin-bottom: 18px;
     }
-    .hero-h1 .acc { color: #60B5FF; }
+    .hero-h1 .acc { color: #0071E3; }
     .hero-sub {
-      font-size: 1.05rem; font-weight: 400; color: rgba(255,255,255,0.72);
-      line-height: 1.75; max-width: 520px; margin-bottom: 32px;
+      font-size: 1.1rem; font-weight: 400; color: #515154;
+      line-height: 1.72; max-width: 540px; margin-bottom: 36px;
     }
     .hero-btns { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 32px; }
     .btn-green {
@@ -101,29 +100,31 @@
     .btn-green:hover { background: #005BBF; }
     .btn-ghost {
       display: inline-flex; align-items: center;
-      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14);
-      color: rgba(255,255,255,0.65); padding: 12px 22px;
-      border-radius: 8px; font-size: 0.87rem; font-weight: 600;
+      background: rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.1);
+      color: #374151; padding: 13px 22px;
+      border-radius: 980px; font-size: 0.87rem; font-weight: 600;
       transition: all 0.15s;
     }
-    .btn-ghost:hover { background: rgba(255,255,255,0.1); }
+    .btn-ghost:hover { background: rgba(0,0,0,0.08); }
     .hero-search {
       display: flex; align-items: center;
-      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 8px; max-width: 480px; overflow: hidden;
-      transition: border-color 0.2s;
+      background: #F5F5F7; border: 1.5px solid transparent;
+      border-radius: 980px; max-width: 480px; overflow: hidden;
+      transition: border-color 0.2s, background 0.2s;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
     }
-    .hero-search:focus-within { border-color: #0071E3; }
-    .hero-search svg { margin-left: 13px; flex-shrink: 0; color: rgba(255,255,255,0.28); }
+    .hero-search:focus-within { border-color: #0071E3; background: #fff; }
+    .hero-search svg { margin-left: 16px; flex-shrink: 0; color: #9CA3AF; }
     .hero-search input {
-      flex: 1; padding: 13px 10px; background: transparent; border: none; outline: none;
-      font-family: 'DM Sans', sans-serif; font-size: 0.9rem; color: #fff;
+      flex: 1; padding: 14px 12px; background: transparent; border: none; outline: none;
+      font-family: 'DM Sans', sans-serif; font-size: 0.92rem; color: #1D1D1F;
     }
-    .hero-search input::placeholder { color: rgba(255,255,255,0.28); }
+    .hero-search input::placeholder { color: #9CA3AF; }
     .hero-search-btn {
-      padding: 13px 16px; background: #0071E3; color: #fff; border: none;
-      font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 700;
+      padding: 10px 20px; background: #0071E3; color: #fff; border: none;
+      font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 700;
       cursor: pointer; white-space: nowrap; transition: background 0.15s;
+      border-radius: 980px; margin: 4px 4px 4px 0;
     }
     .hero-search-btn:hover { background: #005BBF; }
 
@@ -181,29 +182,31 @@
     /* Stats panel */
     .hero-stats {
       display: flex; flex-direction: column; gap: 0;
-      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 16px; overflow: hidden;
+      background: #fff; border: 1.5px solid #E5E7EB;
+      border-radius: 20px; overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);
     }
     .hs-item {
-      padding: 18px 22px; border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 18px 22px; border-bottom: 1px solid #F3F4F6;
     }
     .hs-item:last-child { border-bottom: none; }
-    .hs-num { font-size: 2.2rem; font-weight: 800; color: #93C5FD; line-height: 1; }
-    .hs-lbl { font-size: 0.72rem; color: rgba(255,255,255,0.5); margin-top: 3px; }
+    .hs-num { font-size: 2.2rem; font-weight: 800; color: #0071E3; line-height: 1; }
+    .hs-lbl { font-size: 0.72rem; color: #6B7280; margin-top: 3px; }
     /* Live ticker */
     .hero-ticker {
       display: flex; align-items: center; gap: 8px; margin-top: 24px;
-      padding: 9px 14px;
-      background: rgba(0,113,227,0.1); border: 1px solid rgba(96,165,250,0.2);
-      border-radius: 8px; max-width: 480px;
+      padding: 10px 16px;
+      background: #F0F7FF; border: 1px solid rgba(0,113,227,0.15);
+      border-radius: 980px; max-width: 480px;
     }
-    .ticker-dot { width: 6px; height: 6px; border-radius: 50%; background: #60A5FA; flex-shrink: 0; animation: pd 2s infinite; }
-    .ticker-text { font-size: 0.73rem; color: rgba(255,255,255,0.65); line-height: 1.4; }
-    .ticker-text strong { color: #93C5FD; font-weight: 700; }
+    .ticker-dot { width: 6px; height: 6px; border-radius: 50%; background: #0071E3; flex-shrink: 0; animation: pd 2s infinite; }
+    .ticker-text { font-size: 0.73rem; color: #374151; line-height: 1.4; }
+    .ticker-text strong { color: #0071E3; font-weight: 700; }
 
     /* ── SECTION SHELL ── */
-    .sec { padding: 64px 20px; }
+    .sec { padding: 80px 20px; }
     .sec--grey { background: #F5F5F7; }
+    .sec--white { background: #ffffff; }
     .sec--dark { background: #0f172a; padding: 64px 20px; }
     .sec--countries { background: #fff; padding: 64px 20px; border-top: 1px solid #f3f4f6; border-bottom: 1px solid #f3f4f6; }
     .sec--dark2 { background: #111827; padding: 64px 20px; }
@@ -246,9 +249,20 @@
     .tc-thumb {
       aspect-ratio: 3/2; overflow: hidden; flex-shrink: 0;
       position: relative;
-      background: linear-gradient(145deg, #0a1929 0%, #0d2b5e 60%, #0a1929 100%);
+      background: var(--tc-bg, linear-gradient(145deg, #0a1929 0%, #0d2b5e 60%, #0a1929 100%));
       display: flex; align-items: center; justify-content: center;
     }
+    /* Country-specific card colours — like App Store app icon backgrounds */
+    [data-country="ng"] .tc-thumb { --tc-bg: linear-gradient(135deg, #006B3C 0%, #009E4F 50%, #00C060 100%); }
+    [data-country="ke"] .tc-thumb { --tc-bg: linear-gradient(135deg, #B30000 0%, #006600 60%, #B30000 100%); }
+    [data-country="gh"] .tc-thumb { --tc-bg: linear-gradient(135deg, #C8102E 0%, #FCD116 50%, #006B3F 100%); }
+    [data-country="za"] .tc-thumb { --tc-bg: linear-gradient(135deg, #007A4D 0%, #001489 40%, #E03C31 100%); }
+    [data-country="eg"] .tc-thumb { --tc-bg: linear-gradient(135deg, #CE1126 0%, #C09300 50%, #000000 100%); }
+    [data-country="tz"] .tc-thumb { --tc-bg: linear-gradient(135deg, #1EB53A 0%, #FCD116 40%, #00A3DD 100%); }
+    [data-country="rw"] .tc-thumb { --tc-bg: linear-gradient(135deg, #20603D 0%, #FAD201 40%, #00A1DE 100%); }
+    [data-country="ma"] .tc-thumb { --tc-bg: linear-gradient(135deg, #C1272D 0%, #006233 100%); }
+    /* Utility gradient */
+    [data-country="all"] .tc-thumb { --tc-bg: linear-gradient(135deg, #0071E3 0%, #005BBF 100%); }
     .tc-thumb-ph {
       font-size: 4.5rem; opacity: 0.14; position: absolute; inset: 0;
       display: flex; align-items: center; justify-content: center;
@@ -274,6 +288,57 @@
     .tc-tags { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #9CA3AF; }
     .tc-cta { font-size: 0.73rem; font-weight: 700; color: #0071E3; }
     .tc:hover .tc-cta { text-decoration: underline; }
+    /* ── APP OF THE DAY / FEATURE BANNER ── */
+    .feature-banner {
+      display: grid; grid-template-columns: 1fr 1fr;
+      border-radius: 22px; overflow: hidden;
+      background: linear-gradient(135deg, #0a1929 0%, #0d2b5e 55%, #1a3a6b 100%);
+      margin-bottom: 40px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.16), 0 2px 8px rgba(0,0,0,0.08);
+      text-decoration: none; color: inherit;
+      transition: transform 0.22s, box-shadow 0.22s;
+      min-height: 220px;
+    }
+    .feature-banner:hover { transform: translateY(-4px); box-shadow: 0 16px 56px rgba(0,0,0,0.2), 0 4px 16px rgba(0,0,0,0.1); }
+    .fb-body { padding: 36px 40px; display: flex; flex-direction: column; justify-content: center; gap: 12px; }
+    .fb-eyebrow {
+      font-size: 0.6rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase;
+      color: #60B5FF; display: flex; align-items: center; gap: 7px;
+    }
+    .fb-eyebrow::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #60B5FF; animation: pd 2s infinite; }
+    .fb-title { font-size: 1.6rem; font-weight: 800; color: #fff; letter-spacing: -0.03em; line-height: 1.15; }
+    .fb-sub { font-size: 0.84rem; color: rgba(255,255,255,0.65); line-height: 1.65; max-width: 320px; }
+    .fb-cta {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,0.15); backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #fff; padding: 9px 18px; border-radius: 980px;
+      font-size: 0.8rem; font-weight: 700;
+      width: fit-content; transition: background 0.18s;
+    }
+    .fb-cta:hover { background: rgba(255,255,255,0.22); }
+    .fb-visual {
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+      background: linear-gradient(135deg, rgba(0,113,227,0.15) 0%, rgba(96,181,255,0.08) 100%);
+      padding: 32px;
+    }
+    .fb-visual::before {
+      content: ''; position: absolute; inset: -20px;
+      background: radial-gradient(ellipse at center, rgba(0,113,227,0.25) 0%, transparent 70%);
+    }
+    .fb-flags { display: flex; flex-wrap: wrap; gap: 8px; position: relative; z-index: 1; max-width: 220px; }
+    .fb-flag { font-size: 2.4rem; width: 56px; height: 56px; border-radius: 14px; 
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
+      display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(8px);
+    }
+    @media (max-width: 680px) {
+      .feature-banner { grid-template-columns: 1fr; }
+      .fb-visual { display: none; }
+      .fb-body { padding: 28px 24px; }
+      .fb-title { font-size: 1.3rem; }
+    }
 
     /* ── SIMPLE TOOL CARDS (utility tools) ── */
     .util-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
@@ -354,14 +419,15 @@
     /* ── CATEGORY CARDS ── */
     .cats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
     .cat-card {
-      padding: 20px 18px 18px; background: #fff; border: 1.5px solid #E9EAEC;
-      border-radius: 16px; display: flex; flex-direction: column; gap: 0;
-      transition: border-color 0.18s, box-shadow 0.18s, transform 0.18s;
+      padding: 20px 16px 18px; background: #fff; border: 1px solid #E9EAEC;
+      border-radius: 20px; display: flex; flex-direction: column; gap: 0;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
       text-decoration: none; color: inherit;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
     }
-    .cat-card:hover { border-color: #0071E3; box-shadow: 0 6px 20px rgba(0,113,227,0.11); transform: translateY(-3px); }
+    .cat-card:hover { border-color: rgba(0,113,227,0.3); box-shadow: 0 8px 32px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.06); transform: translateY(-4px) scale(1.01); }
     .cat-icon-wrap {
-      width: 44px; height: 44px; border-radius: 11px;
+      width: 52px; height: 52px; border-radius: 14px;
       display: flex; align-items: center; justify-content: center;
       font-size: 1.35rem; margin-bottom: 14px; flex-shrink: 0;
     }
@@ -623,9 +689,12 @@
   window._afroStats={total:total,live:live,cats:cats,liveF:liveF};
 })();
 </script>
-<section class="sec" id="tools" aria-label="Salary and tax tools">
+<section class="sec sec--white" id="tools" aria-label="Salary and tax tools">
   <div class="wrap">
-    <div class="eyebrow">Salary &amp; Tax</div>
+    <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:4px">
+      <div class="eyebrow" style="margin-bottom:0">Salary &amp; Tax</div>
+      <a href="/salary-tax/" style="font-size:0.82rem;font-weight:600;color:#0071E3;text-decoration:none;white-space:nowrap">See All →</a>
+    </div>
     <h2 class="sec-title" id="paye-heading">PAYE Calculators — Loading...</h2>
     <p class="sec-sub">Country-accurate income tax with real bands, real deductions, real take-home pay — sourced directly from each country's revenue authority. Select tools include an AI Advisor that explains your results.</p>
 
@@ -635,10 +704,33 @@
       <button class="f-btn" data-f="tier1">AI Advisor Included</button>
     </div>
 
+
+    <!-- Feature Banner (App of the Day style) -->
+    <a href="/salary-tax/" class="feature-banner">
+      <div class="fb-body">
+        <div class="fb-eyebrow">Most Used Tool</div>
+        <div class="fb-title">PAYE Tax Calculators<br>for Africa</div>
+        <p class="fb-sub">Country-accurate take-home pay for 54 nations. Real tax bands, real deductions, AI-powered explanations.</p>
+        <span class="fb-cta">Calculate Your Tax →</span>
+      </div>
+      <div class="fb-visual">
+        <div class="fb-flags">
+          <div class="fb-flag">🇳🇬</div>
+          <div class="fb-flag">🇰🇪</div>
+          <div class="fb-flag">🇬🇭</div>
+          <div class="fb-flag">🇿🇦</div>
+          <div class="fb-flag">🇪🇬</div>
+          <div class="fb-flag">🇹🇿</div>
+          <div class="fb-flag">🇷🇼</div>
+          <div class="fb-flag">🇲🇦</div>
+        </div>
+      </div>
+    </a>
+
     <div class="tools-grid" id="tgrid">
 
       <!-- NIGERIA -->
-      <a href="/nigeria/ng-salary-tax" class="tc rv" data-tier="tier1" data-status="live">
+      <a href="/nigeria/ng-salary-tax" class="tc rv" data-country="ng" data-tier="tier1" data-status="live">
         <div class="tc-thumb">
           <div class="tc-thumb-ph">🇳🇬</div>
           <img src="/assets/img/tools/ng-paye.webp" alt="" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block">
@@ -658,7 +750,7 @@
       </a>
 
       <!-- KENYA -->
-      <a href="/kenya/ke-paye" class="tc rv d1" data-tier="tier1" data-status="live">
+      <a href="/kenya/ke-paye" class="tc rv d1" data-country="ke" data-tier="tier1" data-status="live">
         <div class="tc-thumb">
           <div class="tc-thumb-ph">🇰🇪</div>
           <img src="/assets/img/tools/ke-paye.webp" alt="" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block">
@@ -678,7 +770,7 @@
       </a>
 
       <!-- GHANA -->
-      <a href="/ghana/gh-paye" class="tc rv d2" data-tier="tier1" data-status="live">
+      <a href="/ghana/gh-paye" class="tc rv d2" data-country="gh" data-tier="tier1" data-status="live">
         <div class="tc-thumb">
           <div class="tc-thumb-ph">🇬🇭</div>
           <img src="/assets/img/tools/gh-paye.webp" alt="" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block">
@@ -698,7 +790,7 @@
       </a>
 
       <!-- SOUTH AFRICA -->
-      <a href="/south-africa/za-paye" class="tc rv d3" data-tier="tier1" data-status="live">
+      <a href="/south-africa/za-paye" class="tc rv d3" data-country="za" data-tier="tier1" data-status="live">
         <div class="tc-thumb">
           <div class="tc-thumb-ph">🇿🇦</div>
           <img src="/assets/img/tools/za-paye.webp" alt="" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block">
@@ -718,7 +810,7 @@
       </a>
 
       <!-- EGYPT -->
-      <a href="/egypt/eg-paye" class="tc rv d4" data-tier="tier1" data-status="live">
+      <a href="/egypt/eg-paye" class="tc rv d4" data-country="eg" data-tier="tier1" data-status="live">
         <div class="tc-thumb">
           <div class="tc-thumb-ph">🇪🇬</div>
           <img src="/assets/img/tools/eg-paye.webp" alt="" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block">
@@ -738,7 +830,7 @@
       </a>
 
       <!-- TANZANIA -->
-      <a href="/tanzania/tz-paye" class="tc rv d5" data-tier="tier1" data-status="live">
+      <a href="/tanzania/tz-paye" class="tc rv d5" data-country="tz" data-tier="tier1" data-status="live">
         <div class="tc-thumb">
           <div class="tc-thumb-ph">🇹🇿</div>
           <img src="/assets/img/tools/tz-paye.webp" alt="" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block">
@@ -776,7 +868,10 @@
 ═══════════════════════════════════════════════════════════ -->
 <section class="sec sec--grey" id="new-tools" aria-label="Tools">
   <div class="wrap">
-    <div class="eyebrow">Tools</div>
+    <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:4px">
+      <div class="eyebrow" style="margin-bottom:0">Tools</div>
+      <a href="/all-tools" style="font-size:0.82rem;font-weight:600;color:#0071E3;text-decoration:none;white-space:nowrap">See All →</a>
+    </div>
     <h2 class="sec-title">Built for Africa's Everyday Needs</h2>
     <p class="sec-sub">One PDF workspace. Currency tools. Career docs. Financial calculators built for African realities — not Western defaults.</p>
 
@@ -956,9 +1051,12 @@
 <!-- ═══════════════════════════════════════════════════════════
   12 TOOL CATEGORIES
 ═══════════════════════════════════════════════════════════ -->
-<section class="sec" id="categories" aria-label="All tool categories">
+<section class="sec sec--white" id="categories" aria-label="All tool categories">
   <div class="wrap">
-    <div class="eyebrow">What We Build</div>
+    <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:4px">
+      <div class="eyebrow" style="margin-bottom:0">Categories</div>
+      <a href="/all-tools" style="font-size:0.82rem;font-weight:600;color:#0071E3;text-decoration:none;white-space:nowrap">Explore All →</a>
+    </div>
     <h2 class="sec-title" id="cats-heading">12 Categories. 54 Countries. 120+ Tools.</h2>
     <p class="sec-sub">AfroTools is not a financial calculator site. It's Africa's digital workspace — every tool you reach for, built for African context, free forever.</p>
 
@@ -1093,7 +1191,7 @@
 <!-- ═══════════════════════════════════════════════════════════
   WHY AFROTOOLS
 ═══════════════════════════════════════════════════════════ -->
-<section class="sec" aria-label="Why AfroTools">
+<section class="sec sec--white" aria-label="Why AfroTools">
   <div class="wrap">
     <div class="eyebrow">Our Standards</div>
     <h2 class="sec-title">Not Generic Tools<br>With African Flags.</h2>

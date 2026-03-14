@@ -95,13 +95,16 @@
 
     nav {
       position: sticky; top: 0; z-index: 500;
-      height: 60px; background: #fff;
-      border-bottom: 1px solid #e5e7eb;
+      height: 60px;
+      background: rgba(255,255,255,0.72);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 1px solid rgba(0,0,0,0.08);
       display: flex; align-items: center;
       padding: 0 20px;
       transition: box-shadow 0.2s;
     }
-    nav.scrolled { box-shadow: 0 2px 16px rgba(0,0,0,0.08); }
+    nav.scrolled { box-shadow: 0 1px 0 rgba(0,0,0,0.06), 0 4px 24px rgba(0,0,0,0.04); }
 
     .inner {
       max-width: 1200px; margin: 0 auto; width: 100%;
@@ -123,7 +126,7 @@
 
     .lnk {
       display: flex; align-items: center; gap: 4px;
-      padding: 7px 10px; border-radius: 6px;
+      padding: 7px 12px; border-radius: 980px;
       font-size: 0.81rem; font-weight: 600; color: #374151;
       text-decoration: none; border: none; background: transparent;
       cursor: pointer; white-space: nowrap;
@@ -138,8 +141,10 @@
     .mega {
       position: fixed;
       top: 60px; left: 0; right: 0;
-      background: #fff;
-      border-bottom: 1px solid #e5e7eb;
+      background: rgba(255,255,255,0.85);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 1px solid rgba(0,0,0,0.07);
       box-shadow: 0 16px 48px rgba(0,71,227,0.07), 0 2px 8px rgba(0,0,0,0.04);
       opacity: 0; visibility: hidden;
       transform: translateY(-6px);
@@ -194,8 +199,8 @@
 
     .btn-login {
       font-size: 0.79rem; font-weight: 600; color: #374151;
-      padding: 7px 14px; border-radius: 6px;
-      border: 1.5px solid #e5e7eb; background: #fff;
+      padding: 7px 14px; border-radius: 980px;
+      border: 1.5px solid rgba(0,0,0,0.12); background: rgba(0,0,0,0.03);
       text-decoration: none; white-space: nowrap;
       transition: all 0.13s; cursor: pointer;
     }
@@ -203,7 +208,7 @@
 
     .cta {
       display: inline-flex; align-items: center; gap: 5px;
-      padding: 8px 15px; border-radius: 6px;
+      padding: 8px 16px; border-radius: 980px;
       font-size: 0.79rem; font-weight: 700;
       text-decoration: none; background: #0071E3; color: #fff;
       border: none; cursor: pointer; white-space: nowrap;
@@ -262,7 +267,7 @@
     }
     .mob-cta {
       display: flex; align-items: center; justify-content: center;
-      padding: 15px; border-radius: 8px; font-size: 0.95rem; font-weight: 700;
+      padding: 15px; border-radius: 980px; font-size: 0.95rem; font-weight: 700;
       text-decoration: none; background: #0071E3; color: white; min-height: 52px;
     }
     .mob-login {
@@ -288,8 +293,8 @@
     /* SEARCH BUTTON */
     .search-btn {
       display: flex; align-items: center; justify-content: center;
-      width: 36px; height: 36px; border-radius: 8px;
-      border: 1.5px solid #e5e7eb; background: #fff;
+      width: 36px; height: 36px; border-radius: 980px;
+      border: 1px solid rgba(0,0,0,0.1); background: rgba(0,0,0,0.04);
       cursor: pointer; color: #6b7280;
       transition: all 0.13s; flex-shrink: 0;
     }
