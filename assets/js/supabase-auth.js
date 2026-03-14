@@ -61,6 +61,23 @@
         fire('afro-auth-change', { user: _user, profile: _profile, event: event });
       });
 
+      // Handle OAuth callback — exchange code for session if present in URL
+      var urlParams = new URLSearchParams(window.location.search);
+      var code = urlParams.get('code');
+      if (code) {
+        try {
+          var exchange = await _sb.auth.exchangeCodeForSession(code);
+          if (exchange.data.session) {
+            _user = exchange.data.session.user;
+            await fetchProfile();
+            // Clean up URL
+            window.history.replaceState({}, '', window.location.pathname);
+          }
+        } catch (e) {
+          console.warn('[AfroAuth] Code exchange failed:', e);
+        }
+      }
+
       // Check existing session on load
       var res = await _sb.auth.getSession();
       if (res.data.session && res.data.session.user) {
@@ -179,7 +196,7 @@
       var link = document.createElement('link');
       link.id = 'afro-auth-css';
       link.rel = 'stylesheet';
-      link.href = '/assets/css/auth-modal.css';
+      link.href = '/assets/css/auth-modal.css?v=2';
       document.head.appendChild(link);
     }
 
@@ -191,7 +208,10 @@
           '<button class="afro-auth-close" id="afroAuthClose" aria-label="Close">&times;</button>' +
 
           '<div class="afro-auth-brand">' +
-            '<img src="/assets/img/logo-dark.svg" alt="AfroTools" onerror="this.style.display=\'none\'">' +
+            '<div style="display:inline-flex;align-items:center;gap:8px;margin-bottom:1rem;">' +
+              '<img src="/assets/img/logo-mark.svg" alt="" style="height:28px;width:28px;">' +
+              '<span style="font-family:DM Sans,system-ui,sans-serif;font-weight:700;font-size:1.1rem;color:#0f172a;letter-spacing:-0.02em;">AfroTools</span>' +
+            '</div>' +
             '<h2 class="afro-auth-title" id="afroAuthTitle">Welcome back</h2>' +
             '<p class="afro-auth-subtitle" id="afroAuthSubtitle">Sign in to save your tools and calculations</p>' +
           '</div>' +
