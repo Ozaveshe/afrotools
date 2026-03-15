@@ -1,0 +1,147 @@
+/**
+ * AFROTOOLS — Skeleton Loading States
+ * ===================================================================
+ * Pure CSS skeleton screens. No JS required.
+ *
+ * Usage:
+ *   <div class="skeleton skeleton-text"></div>
+ *   <div class="skeleton skeleton-heading"></div>
+ *   <div class="skeleton skeleton-input"></div>
+ *   <div class="skeleton skeleton-card"></div>
+ *   <div class="skeleton skeleton-chart"></div>
+ *   <div class="skeleton skeleton-button"></div>
+ *
+ * Auto-hide: Add data-skeleton to elements. They hide when JS adds
+ *   the [data-loaded] attribute to any parent:
+ *   <div data-skeleton>...</div>  (shown until JS hydrates)
+ *
+ * ===================================================================
+ */
+
+/* ── Base skeleton ────────────────────────────────────────── */
+
+.skeleton {
+  background: linear-gradient(90deg, #e8ede9 25%, #f0f4f1 50%, #e8ede9 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+  border-radius: 6px;
+}
+
+@keyframes skeleton-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── Skeleton variants ──────────────────────────────────────── */
+
+.skeleton-text {
+  height: 14px;
+  width: 80%;
+  margin-bottom: 10px;
+}
+
+.skeleton-text.short { width: 40%; }
+.skeleton-text.medium { width: 60%; }
+.skeleton-text.full { width: 100%; }
+
+.skeleton-heading {
+  height: 24px;
+  width: 50%;
+  margin-bottom: 16px;
+  border-radius: 4px;
+}
+
+.skeleton-input {
+  height: 48px;
+  width: 100%;
+  margin-bottom: 12px;
+  border-radius: 8px;
+}
+
+.skeleton-button {
+  height: 44px;
+  width: 160px;
+  border-radius: 8px;
+}
+
+.skeleton-card {
+  height: 180px;
+  width: 100%;
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
+.skeleton-card.small { height: 100px; }
+.skeleton-card.tall { height: 260px; }
+
+.skeleton-chart {
+  height: 200px;
+  width: 100%;
+  border-radius: 12px;
+}
+
+.skeleton-avatar {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+}
+
+.skeleton-badge {
+  height: 24px;
+  width: 72px;
+  border-radius: 12px;
+  display: inline-block;
+}
+
+/* ── Grid helpers ──────────────────────────────────────────── */
+
+.skeleton-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.skeleton-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+.skeleton-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+@media (max-width: 700px) {
+  .skeleton-grid.cols-2,
+  .skeleton-grid.cols-3 { grid-template-columns: 1fr; }
+}
+
+/* ── Auto-hide on hydration ────────────────────────────────── */
+
+[data-loaded] [data-skeleton] {
+  display: none !important;
+}
+
+/* ── Inline skeleton rows (for result tables) ─────────────── */
+
+.skeleton-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+}
+
+.skeleton-row .skeleton-text { margin-bottom: 0; }
+
+/* ── Dark mode ──────────────────────────────────────────── */
+
+@media (prefers-color-scheme: dark) {
+  .skeleton {
+    background: linear-gradient(90deg, #1a2a1f 25%, #243028 50%, #1a2a1f 75%);
+    background-size: 200% 100%;
+  }
+}
+
+/* ── Reduced motion ──────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+    background: #e8ede9;
+  }
+  @media (prefers-color-scheme: dark) {
+    .skeleton { background: #1a2a1f; }
+  }
+}

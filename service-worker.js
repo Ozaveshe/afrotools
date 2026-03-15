@@ -2,16 +2,19 @@
  * AFROTOOLS SERVICE WORKER
  * Cache-first for static assets, network-first for pages, network-only for API
  */
-const CACHE_NAME = 'afrotools-v1';
+const CACHE_NAME = 'afrotools-v6';
 const OFFLINE_URL = '/offline.html';
 
 const PRECACHE = [
   '/',
   '/offline.html',
-  '/assets/css/tokens.min.css',
-  '/assets/css/global.min.css',
+  '/assets/css/design-system.css',
+  '/assets/css/skeleton.css',
+  '/assets/js/components/tool-registry.js',
   '/assets/js/components/navbar.min.js',
   '/assets/js/components/footer.min.js',
+  '/assets/js/utils.js',
+  '/assets/js/lib/error-boundary.js',
   '/assets/img/logo-mark.svg',
   '/assets/img/icon-192.png',
   '/assets/img/icon-512.png'
@@ -40,10 +43,16 @@ self.addEventListener('fetch', e => {
   const { request } = e;
   const url = new URL(request.url);
 
-  // Network-only: API calls & serverless functions
-  if (url.pathname.startsWith('/.netlify/') || url.pathname.startsWith('/api/')) {
+  // Skip non-GET requests
+  if (request.method !== 'GET') return;
+
+  // Network-only: API calls, serverless functions, auth proxy
+  if (url.pathname.startsWith('/.netlify/') || url.pathname.startsWith('/api/') || url.pathname.startsWith('/supabase-proxy/')) {
     return; // let browser handle normally
   }
+
+  // Skip cross-origin requests
+  if (url.origin !== self.location.origin) return;
 
   // Cache-first: static assets (CSS, JS, images, fonts)
   if (/^\/(assets)\//i.test(url.pathname) || /\.(css|js|woff2?|svg|png|jpg|webp|ico)$/i.test(url.pathname)) {

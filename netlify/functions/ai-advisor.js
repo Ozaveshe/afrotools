@@ -210,8 +210,13 @@ exports.handler = async function(event) {
   }
 
   try {
+    // 15s timeout for Anthropic API call
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15000);
+
     const response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
+      signal: controller.signal,
       headers: {
         "Content-Type": "application/json",
         "x-api-key": ANTHROPIC_API_KEY,
@@ -224,6 +229,8 @@ exports.handler = async function(event) {
         messages: apiMessages
       })
     });
+
+    clearTimeout(timeout);
 
     if (!response.ok) {
       const errText = await response.text();
@@ -244,9 +251,15 @@ exports.handler = async function(event) {
 
   } catch (err) {
     console.error("Function error:", err.message);
+    const isTimeout = err.name === 'AbortError';
     return {
       statusCode: 200, headers,
-      body: JSON.stringify({ reply: "Network error connecting to AI service. Please check your connection and try again.", error: "network_error" })
+      body: JSON.stringify({
+        reply: isTimeout
+          ? "The AI advisor took too long to respond. Please try a shorter question or try again in a moment."
+          : "Network error connecting to AI service. Please check your connection and try again.",
+        error: isTimeout ? "timeout" : "network_error"
+      })
     };
   }
 };
