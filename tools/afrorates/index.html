@@ -146,7 +146,7 @@
 <link rel="stylesheet" href="/assets/css/global.min.css">
 
 <!-- Chart.js CDN -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 
 <!-- AfroTools shared JS -->
 <script src="/assets/js/components/tool-registry.min.js"></script>
@@ -2030,7 +2030,7 @@ body {
      RATE COMPARISON CHART — Bar chart comparing up to 5 countries
      Uses Chart.js for rendering.
      ════════════════════════════════════════════════════════════════ */
-  var CHART_COLORS = ['#007AFF', '#FF6B35', '#16a34a', '#9333ea', '#f59e0b'];
+  var CHART_COLORS = ['#007AFF', '#5AC8FA', '#34C759', '#FF9500', '#FF3B30', '#AF52DE'];
 
   /**
    * Build clickable country chips for the comparison chart.
@@ -2080,6 +2080,7 @@ body {
    * Render (or re-render) the comparison bar chart.
    */
   function renderComparisonChart() {
+    if (typeof Chart === 'undefined') return;
     var ctx = document.getElementById('comparison-chart');
 
     // Destroy previous chart instance if it exists
@@ -2142,7 +2143,7 @@ body {
               callback: function (v) { return v + '%'; },
               font: { family: 'DM Sans', size: 11 }
             },
-            grid: { color: '#f3f4f6' }
+            grid: { color: 'rgba(0,0,0,0.05)' }
           },
           x: {
             ticks: {
@@ -2239,6 +2240,7 @@ body {
      Sorted from most positive to most negative.
      ════════════════════════════════════════════════════════════════ */
   function renderRealRateChart(data) {
+    if (typeof Chart === 'undefined') return;
     var ctx = document.getElementById('realrate-chart');
 
     // Destroy previous chart instance
@@ -2318,7 +2320,7 @@ body {
               callback: function (v) { return (v >= 0 ? '+' : '') + v + '%'; },
               font: { family: 'DM Sans', size: 10 }
             },
-            grid: { color: '#f3f4f6' }
+            grid: { color: 'rgba(0,0,0,0.05)' }
           },
           y: {
             ticks: {

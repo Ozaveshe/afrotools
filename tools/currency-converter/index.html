@@ -38,7 +38,7 @@ gtag('config', 'G-D859CGF391');
 <link rel="stylesheet" href="/assets/css/design-system.css">
 
 <!-- Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 
 <!-- Web Components -->
 <script src="/assets/js/components/navbar.js" defer></script>
@@ -1373,6 +1373,7 @@ body {
     }
 
     if (!data || data.length === 0) return;
+    if (typeof Chart === 'undefined') return;
 
     const ctx = document.getElementById('rateChart').getContext('2d');
     const labels = data.map(d => d.date);
@@ -1434,7 +1435,7 @@ body {
             }
           },
           y: {
-            grid: { color: 'rgba(0,0,0,0.04)' },
+            grid: { color: 'rgba(0,0,0,0.05)' },
             ticks: {
               font: { family: "'DM Sans', sans-serif", size: 11 },
               color: '#94a3b8',
