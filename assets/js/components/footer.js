@@ -28,13 +28,15 @@
     ],
     company: [
       { en: 'About',       fr: '\u00C0 propos',   href: '/about/' },
+      { en: 'Blog',        fr: 'Blog',        href: '/blog/' },
       { en: 'Contact',     fr: 'Contact',    href: '/contact/' },
       { en: 'Changelog',   fr: 'Mises \u00e0 jour', href: '/changelog/' },
       { en: 'All Tools',   fr: 'Tous les outils', href: '/all-tools/' },
+      { en: 'API Docs',    fr: 'API Docs',    href: '/api/' },
     ],
     legal: [
-      { en: 'Privacy Policy', fr: 'Confidentialit\u00e9', href: '/privacy-policy' },
-      { en: 'Terms of Use',   fr: 'Conditions',           href: '/terms-of-use' },
+      { en: 'Privacy Policy', fr: 'Confidentialit\u00e9', href: '/privacy/' },
+      { en: 'Terms of Use',   fr: 'Conditions',           href: '/terms/' },
       { en: 'Sitemap',        fr: 'Plan du site',         href: '/sitemap.xml' },
     ],
   };

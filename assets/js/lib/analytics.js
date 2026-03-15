@@ -198,6 +198,42 @@
     },
 
     /**
+     * Track an article read
+     * @param {string} slug - e.g., 'how-to-calculate-paye-nigeria-2026'
+     * @param {string} category - e.g., 'tax', 'finance', 'guide'
+     */
+    trackArticleRead(slug, category) {
+      send('article_read', {
+        article_slug: slug || 'unknown',
+        article_category: category || 'uncategorized',
+      });
+    },
+
+    /**
+     * Track a Pro upsell impression or click
+     * @param {string} trigger - e.g., 'save_limit', 'ai_limit', 'pdf_watermark'
+     * @param {string} tool - tool where the upsell was shown
+     */
+    trackProUpsell(trigger, tool) {
+      send('pro_upsell', {
+        trigger: trigger || 'unknown',
+        tool_name: tool || 'unknown',
+      });
+    },
+
+    /**
+     * Track an affiliate link click
+     * @param {string} partner - e.g., 'paystack', 'cowrywise', 'piggyvest'
+     * @param {string} tool - tool where the affiliate link appeared
+     */
+    trackAffiliateClick(partner, tool) {
+      send('affiliate_click', {
+        partner: partner || 'unknown',
+        tool_name: tool || 'unknown',
+      });
+    },
+
+    /**
      * Generic event tracking
      * @param {string} eventName
      * @param {Object} params

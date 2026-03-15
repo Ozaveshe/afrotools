@@ -533,6 +533,7 @@
               <li><a href="/developer-tools/" class="lnk">Dev Tools</a></li>
               <li><a href="/african/" class="lnk">African</a></li>
               <li><a href="/education/" class="lnk">Education</a></li>
+              <li><a href="/blog/" class="lnk">Blog</a></li>
             </ul>
 
             <div class="right">
