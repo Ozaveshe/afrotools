@@ -20,6 +20,7 @@
 <script src="/assets/js/components/tool-registry.js"></script>
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'DM Sans',sans-serif;background:var(--color-bg);color:var(--color-text);-webkit-font-smoothing:antialiased;}
@@ -64,11 +65,12 @@ a{text-decoration:none;color:inherit;}
 .hero-stat .s-val.green{color:#60A5FA;}
 .hero-stat .s-lbl{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-top:3px;}
 
-/* ── MANIFESTO STRIP ── */
-.manifesto{background:#dc2626;padding:18px 24px;}
-.manifesto-inner{max-width:1000px;margin:0 auto;display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
-.manifesto-text{font-size:.9rem;font-weight:600;color:#fff;line-height:1.5;font-style:italic;font-family:'Fraunces',Georgia,serif;}
-.manifesto-text strong{font-weight:900;font-style:normal;}
+/* ── MANIFESTO / QUOTE SECTION ── */
+.manifesto{position:relative;padding:60px 24px;margin:0;overflow:hidden;background:linear-gradient(135deg,#1a0f00 0%,#2d1800 50%,#0A1628 100%);}
+.manifesto::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(60deg,transparent,transparent 30px,rgba(255,170,0,0.04) 30px,rgba(255,170,0,0.04) 32px);pointer-events:none;}
+.manifesto-inner{max-width:700px;margin:0 auto;position:relative;z-index:1;}
+.manifesto-text{font-family:'Fraunces',Georgia,serif;font-size:clamp(1.2rem,3vw,1.8rem);color:rgba(255,255,255,.9);text-align:center;line-height:1.5;font-style:italic;}
+.manifesto-text strong{color:#FFAA00;font-style:normal;font-weight:900;}
 
 /* ── MAIN ── */
 .page-main{max-width:1000px;margin:0 auto;padding:40px 24px 80px;}
@@ -127,7 +129,8 @@ a{text-decoration:none;color:inherit;}
   .hero-content{padding:52px 20px 44px;}
   .hero-stats{width:100%;}
   .hero-stat{padding:12px 16px;flex:1;}
-  .manifesto-text{font-size:.82rem;}
+  .manifesto{padding:36px 20px;}
+  .manifesto-text{font-size:1rem;}
   .page-main{padding:28px 16px 60px;}
   .feat-banner{height:80px;}
   .cta-block{padding:32px 24px;}
@@ -163,6 +166,16 @@ a{text-decoration:none;color:inherit;}
     <div class="hero-h1">Built for Africa.</div>
     <div class="hero-h1-sub">Tools the world doesn't need. But Africa does.</div>
     <p class="hero-desc">Generator fuel calculator. Japa relocation cost planner. Ajo and chama savings trackers. Lobola advisor. Mobile money fee comparison. These tools exist because Africa exists.</p>
+
+    <!-- Hero banner placeholder — Oza will create /assets/img/banners/african-hero.webp (1200x400) -->
+    <div class="african-hero-banner-placeholder" id="african-hero-banner" style="margin:28px 0 0;max-width:1000px;border-radius:20px;overflow:hidden;">
+      <img src="/assets/img/banners/african-hero.webp"
+           alt="AfroTools — Built for Africa"
+           width="1200" height="400"
+           class="african-banner-img"
+           style="width:100%;height:auto;display:block;object-fit:cover;"
+           onerror="this.parentElement.style.display='none'">
+    </div>
 
     <div class="hero-stats">
       <div class="hero-stat"><div class="s-val gold" id="stat-total">—</div><div class="s-lbl">Total Tools</div></div>
@@ -261,7 +274,8 @@ document.addEventListener('DOMContentLoaded', function(){
     featHtml += '<a href="'+(isLive ? t.href : '#')+'" class="feat-card'+(isLive?' live':'')+'">'
       + '<div class="feat-banner" style="background:'+fc.bg+';">'
       + '<div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 100%,rgba(255,255,255,.04),transparent)"></div>'
-      + '<div class="feat-icon">'+t.icon+'</div>'
+      + '<img src="/assets/img/tools/'+id+'.webp" alt="'+t.name+'" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;" onerror="this.onerror=null;this.src=\'/assets/img/tools/cards/'+id+'.svg\';this.onerror=function(){this.style.display=\'none\'}">'
+      + '<div class="feat-icon" style="position:relative;z-index:2;">'+t.icon+'</div>'
       + '</div>'
       + '<div class="feat-body">'
       + '<div class="feat-name">'+t.name+'</div>'
@@ -304,6 +318,11 @@ document.addEventListener('DOMContentLoaded', function(){
     });
   }
   if(allGrid) allGrid.innerHTML = allHtml || '<p style="color:#9ca3af;padding:20px 0;">No tools registered yet.</p>';
+
+  // Parse Twemoji for consistent flag/emoji rendering on Windows
+  if (typeof twemoji !== 'undefined') {
+    twemoji.parse(document.body, { folder: 'svg', ext: '.svg', base: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/' });
+  }
 });
 </script>
 </body>

@@ -19,7 +19,7 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://afrotools.com/">
   <meta property="og:title" content="AfroTools — Africa's Everything Platform">
-  <meta property="og:description" content="185+ free tools built for Africa. PAYE tax, PDF editing, image tools, dev tools, QR codes and more. All 54 countries. Always free.">
+  <meta property="og:description" content="380+ free tools built for Africa. PAYE tax, PDF editing, image tools, dev tools, QR codes and more. All 54 countries. Always free.">
   <meta property="og:image" content="https://afrotools.com/assets/img/og-home.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -29,10 +29,10 @@
   <meta property="og:locale" content="en_US">
   <meta property="og:site_name" content="AfroTools">
   <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"WebSite","name":"AfroTools","url":"https://afrotools.com","description":"Africa's Everything Platform — 185+ free tools across 12 categories for all 54 African nations.","potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://afrotools.com/search?q={search_term_string}"},"query-input":"required name=search_term_string"}}
+  {"@context":"https://schema.org","@type":"WebSite","name":"AfroTools","url":"https://afrotools.com","description":"Africa's Everything Platform — 380+ free tools across 12 categories for all 54 African nations.","potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://afrotools.com/search?q={search_term_string}"},"query-input":"required name=search_term_string"}}
   </script>
   <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"Organization","name":"AfroTools","url":"https://afrotools.com","logo":"https://afrotools.com/assets/img/logo-mark.svg","description":"Africa's Everything Platform. 185+ free tools for all 54 African nations.","foundingDate":"2025","sameAs":["https://twitter.com/afrotools","https://github.com/Ozaveshe/afrotools"]}
+  {"@context":"https://schema.org","@type":"Organization","name":"AfroTools","url":"https://afrotools.com","logo":"https://afrotools.com/assets/img/logo-mark.svg","description":"Africa's Everything Platform. 380+ free tools for all 54 African nations.","foundingDate":"2025","sameAs":["https://twitter.com/afrotools","https://github.com/Ozaveshe/afrotools"]}
   </script>
   <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
   <link rel="apple-touch-icon" href="/assets/img/logo-mark.svg">
@@ -45,6 +45,9 @@
   <script src="/assets/js/components/navbar.min.js" defer></script>
   <script src="/assets/js/components/footer.min.js" defer></script>
   <script src="/assets/js/components/cookie-consent.js" defer></script>
+  <script src="/assets/js/lib/recent-tools.js" defer></script>
+  <!-- Twemoji: consistent flag rendering on Windows -->
+  <script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js" defer></script>
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -660,15 +663,33 @@
       .util-grid { grid-template-columns: 1fr; }
     }
 
+    /* ── ROADMAP GRID: clean 2×2 ── */
+    .roadmap-grid { grid-template-columns: repeat(2, 1fr) !important; }
+    @media (max-width: 640px) { .roadmap-grid { grid-template-columns: 1fr !important; } }
+
+    /* ── AFRO-CHAT / AFROBOT — white by default ── */
+    afro-chat { --afrobot-bg: #fff; --afrobot-color: #1E293B; --afrobot-border: #E2E8F0; }
+    @media (prefers-color-scheme: dark) {
+      afro-chat { --afrobot-bg: #1E293B; --afrobot-color: #fff; --afrobot-border: #334155; }
+    }
+
+    /* Twemoji flag images inline sizing */
+    img.emoji { height: 1em; width: 1em; margin: 0 .05em 0 .1em; vertical-align: -0.1em; }
+    .fb-flag img.emoji { height: 1.6em; width: 1.6em; }
+    .tc-flag img.emoji { height: 1.2em; width: 1.2em; }
+    .pill img.emoji { height: 1em; width: 1em; }
+
     /* MY TOOLS */
-    .my-tools-section{padding:28px 0 0;display:none}
+    .my-tools-section{padding:28px 0 0;display:none;margin-bottom:48px;padding-bottom:24px;border-bottom:1px solid var(--color-border,#E2E8F0);}
     .my-tools-section.has-favs{display:block}
-    .my-tools-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+    .my-tools-inner{max-width:1200px;margin:0 auto;padding:0 24px;background:var(--color-bg-subtle,#F1F5F9);border-radius:16px;padding:20px 24px;}
     .my-tools-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
     .my-tools-title{font-size:1.1rem;font-weight:800;color:#111827;display:flex;align-items:center;gap:8px}
     .my-tools-clear{font-size:.72rem;color:#9ca3af;background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;padding:4px 8px;border-radius:4px;transition:color .15s}
     .my-tools-clear:hover{color:#dc2626}
     .my-tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+    .my-tools-empty{font-size:.85rem;color:#6B7280;padding:12px 0;}
+    .my-tools-empty a{color:var(--color-primary);font-weight:600;}
     .my-tool-card{background:#fff;border:1.5px solid #e5e7eb;border-radius:12px;padding:16px;text-decoration:none;color:inherit;display:flex;align-items:center;gap:12px;transition:all .18s;position:relative}
     .my-tool-card:hover{border-color:var(--color-primary);box-shadow:0 4px 16px rgba(0,122,255,.1);transform:translateY(-1px)}
     .my-tool-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;background:#EFF6FF;flex-shrink:0}
@@ -705,22 +726,22 @@
   <!-- USE CASE CARDS -->
   <div id="use-case-grid" style="max-width:900px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:0 20px;position:relative;z-index:1;">
     <a href="/salary-tax/" class="use-case-card" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:20px 16px;text-decoration:none;text-align:center;transition:all .2s;">
-      <div style="font-size:1.8rem;margin-bottom:8px;">💰</div>
+      <img src="/assets/img/icons/hero/icon-paye.svg" alt="" class="hero-card-icon" width="48" height="48" style="margin:0 auto 8px;display:block;" onerror="this.outerHTML='<div style=&quot;font-size:1.8rem;margin-bottom:8px;&quot;>&#x1F4B0;</div>'">
       <div style="font-size:.82rem;font-weight:700;color:#fff;margin-bottom:4px;">Calculate PAYE Tax</div>
       <div style="font-size:.72rem;color:rgba(255,255,255,.5);line-height:1.5;">See your exact take-home pay in 30 seconds</div>
     </a>
     <a href="/tools/pdf-workspace/" class="use-case-card" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:20px 16px;text-decoration:none;text-align:center;transition:all .2s;">
-      <div style="font-size:1.8rem;margin-bottom:8px;">📄</div>
+      <img src="/assets/img/icons/hero/icon-pdf.svg" alt="" class="hero-card-icon" width="48" height="48" style="margin:0 auto 8px;display:block;" onerror="this.outerHTML='<div style=&quot;font-size:1.8rem;margin-bottom:8px;&quot;>&#x1F4C4;</div>'">
       <div style="font-size:.82rem;font-weight:700;color:#fff;margin-bottom:4px;">Generate PDF Reports</div>
       <div style="font-size:.72rem;color:rgba(255,255,255,.5);line-height:1.5;">Merge, split, and organize documents privately</div>
     </a>
     <a href="/salary-tax/" class="use-case-card" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:20px 16px;text-decoration:none;text-align:center;transition:all .2s;">
-      <div style="font-size:1.8rem;margin-bottom:8px;">🤖</div>
+      <img src="/assets/img/icons/hero/icon-ai-advisor.svg" alt="" class="hero-card-icon" width="48" height="48" style="margin:0 auto 8px;display:block;" onerror="this.outerHTML='<div style=&quot;font-size:1.8rem;margin-bottom:8px;&quot;>&#x1F916;</div>'">
       <div style="font-size:.82rem;font-weight:700;color:#fff;margin-bottom:4px;">AI Financial Advisor</div>
       <div style="font-size:.72rem;color:rgba(255,255,255,.5);line-height:1.5;">Get personalized tax guidance powered by AI</div>
     </a>
     <a href="/tools/japa-calculator/" class="use-case-card" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:20px 16px;text-decoration:none;text-align:center;transition:all .2s;">
-      <div style="font-size:1.8rem;margin-bottom:8px;">✈️</div>
+      <img src="/assets/img/icons/hero/icon-relocation.svg" alt="" class="hero-card-icon" width="48" height="48" style="margin:0 auto 8px;display:block;" onerror="this.outerHTML='<div style=&quot;font-size:1.8rem;margin-bottom:8px;&quot;>&#x2708;&#xFE0F;</div>'">
       <div style="font-size:.82rem;font-weight:700;color:#fff;margin-bottom:4px;">Plan Your Relocation</div>
       <div style="font-size:.72rem;color:rgba(255,255,255,.5);line-height:1.5;">Know the true cost of moving abroad</div>
     </a>
@@ -782,7 +803,7 @@
       <div class="eyebrow" style="margin-bottom:0">Salary &amp; Tax</div>
       <a href="/salary-tax/" style="font-size:0.82rem;font-weight:600;color:var(--color-primary);text-decoration:none;white-space:nowrap">See All →</a>
     </div>
-    <h2 class="sec-title" id="paye-heading">PAYE Calculators</h2>
+    <h2 class="sec-title" id="paye-heading">PAYE Calculators — 54 Countries</h2>
     <p class="sec-sub">Country-accurate income tax with real bands, real deductions, real take-home pay — sourced directly from each country's revenue authority. Select tools include an AI Advisor that explains your results.</p>
 
     <div class="filter-row">
@@ -797,7 +818,7 @@
       <a href="/salary-tax/" class="fb-body" style="text-decoration:none;color:inherit;">
         <div class="fb-eyebrow">Most Used Tool</div>
         <div class="fb-title">PAYE Tax Calculators<br>for Africa</div>
-        <p class="fb-sub">Country-accurate take-home pay — 104 PAYE tools across 54 countries. Real tax bands, real deductions, AI-powered explanations.</p>
+        <p class="fb-sub">Country-accurate take-home pay across all 54 African countries. Real tax bands, real deductions, AI-powered explanations.</p>
         <span class="fb-cta">Calculate Your Tax →</span>
       </a>
       <div class="fb-visual">
@@ -1226,7 +1247,7 @@
       <div class="eyebrow" style="margin-bottom:0">Categories</div>
       <a href="/all-tools/" style="font-size:0.82rem;font-weight:600;color:var(--color-primary);text-decoration:none;white-space:nowrap">Explore All →</a>
     </div>
-    <h2 class="sec-title" id="cats-heading">12 Categories. 54 Countries. 185+ Tools.</h2>
+    <h2 class="sec-title" id="cats-heading">12 Categories. 54 Countries. <span id="cats-tool-count">380+</span> Tools.</h2>
     <p class="sec-sub">AfroTools is not a financial calculator site. It's Africa's digital workspace — every tool you reach for, built for African context, free forever.</p>
 
     <div class="cats-grid" id="cats-grid"></div>
@@ -1241,15 +1262,15 @@
   <div class="wrap">
     <div class="eyebrow eyebrow--lt">What's Next</div>
     <h2 class="sec-title sec-title--lt" id="pipeline-heading">We're Just Getting Started.</h2>
-    <p class="sec-sub sec-sub--lt" style="margin-bottom:36px">366 tools planned. New ones ship every week. Here's the roadmap — get on the list to be first.</p>
+    <p class="sec-sub sec-sub--lt" style="margin-bottom:36px">380+ tools live, hundreds more planned. New ones ship every week. Here's the roadmap — get on the list to be first.</p>
 
     <div class="phase-grid" id="phase-grid"></div>
 
     <!-- Roadmap milestones -->
-    <div style="margin-top:32px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px">
+    <div class="roadmap-grid" style="margin-top:32px;display:grid;grid-template-columns:repeat(2,1fr);gap:14px">
       <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:20px">
         <div style="font-size:.68rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#60b5ff;margin-bottom:8px">Now Live — Q1 2026</div>
-        <div style="font-size:1rem;font-weight:700;color:#fff;margin-bottom:8px">185+ Tools Across 54 Countries</div>
+        <div style="font-size:1rem;font-weight:700;color:#fff;margin-bottom:8px">380+ Tools Across 54 Countries</div>
         <div style="font-size:.78rem;color:rgba(255,255,255,.55);line-height:1.6">PAYE calculators, PDF tools, currency, mobile money, GPA, solar, floor plan, BOQ, and more — all free.</div>
       </div>
       <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:20px">
@@ -1512,6 +1533,60 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+
+  // ── TWEMOJI: parse flags so they render on Windows ──
+  if (typeof twemoji !== 'undefined') {
+    twemoji.parse(document.body, { folder: 'svg', ext: '.svg', base: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/' });
+  }
+
+  // ── MY TOOLS: populate from localStorage ──
+  (function(){
+    var section = document.getElementById('myToolsSection');
+    var grid = document.getElementById('myToolsGrid');
+    var countEl = document.getElementById('myToolsCount');
+    if (!section || !grid) return;
+    var recents = [];
+    try { recents = JSON.parse(localStorage.getItem('afrotools-recent-tools')) || []; } catch(e){}
+    if (recents.length === 0) {
+      section.classList.add('has-favs');
+      grid.innerHTML = '<div class="my-tools-empty">You haven\'t used any tools yet. Start with our most popular: <a href="/nigeria/ng-salary-tax/">Nigeria PAYE</a>, <a href="/tools/pdf-workspace/">PDF Workspace</a>, or <a href="/tools/currency-converter/">Currency Converter</a></div>';
+      return;
+    }
+    section.classList.add('has-favs');
+    if (countEl) countEl.textContent = '(' + recents.length + ')';
+    recents.forEach(function(t){
+      var card = document.createElement('a');
+      card.href = t.url || '#';
+      card.className = 'my-tools-card';
+      card.style.cssText = 'display:flex;align-items:center;gap:10px;background:#fff;border:1.5px solid #E5E7EB;border-radius:12px;padding:12px 14px;transition:border-color .15s,box-shadow .15s;text-decoration:none;color:inherit;';
+      card.innerHTML = '<span style="font-size:1.3rem;">' + (t.icon||'🔧') + '</span><span style="font-size:.85rem;font-weight:700;color:#111827;">' + (t.name||t.slug) + '</span>';
+      card.onmouseover = function(){ card.style.borderColor='var(--color-primary)'; };
+      card.onmouseout = function(){ card.style.borderColor='#E5E7EB'; };
+      grid.appendChild(card);
+    });
+    // Re-parse Twemoji for any emoji in My Tools cards
+    if (typeof twemoji !== 'undefined') twemoji.parse(grid, { folder: 'svg', ext: '.svg', base: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/' });
+  })();
+
+  // ── CLEAR ALL FAVS ──
+  window.clearAllFavs = function() {
+    try { localStorage.removeItem('afrotools-recent-tools'); } catch(e){}
+    var grid = document.getElementById('myToolsGrid');
+    var section = document.getElementById('myToolsSection');
+    var countEl = document.getElementById('myToolsCount');
+    if (grid) grid.innerHTML = '<div class="my-tools-empty">Cleared! Start exploring: <a href="/all-tools/">Browse All Tools</a></div>';
+    if (countEl) countEl.textContent = '';
+  };
+
+  // ── DYNAMIC STAT UPDATES for categories heading ──
+  (function(){
+    if (typeof AFRO_TOOLS === 'undefined') return;
+    var ct = document.getElementById('cats-tool-count');
+    if (ct) ct.textContent = AFRO_TOOLS.length + '+';
+    var ph = document.getElementById('paye-heading');
+    var liveF = AFRO_TOOLS.filter(function(t){return (t.status==='live'||t.status==='new') && t.category==='financial';}).length;
+    if (ph && liveF > 0) ph.textContent = 'PAYE Calculators — ' + liveF + ' Tools Live';
+  })();
 
   // Newsletter
   document.getElementById('nl-form')?.addEventListener('submit', async function(e) {
