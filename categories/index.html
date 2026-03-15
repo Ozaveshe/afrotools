@@ -45,9 +45,9 @@
   .cc-i{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.5rem}
   .cc-n{font-size:1rem;font-weight:800;color:#111827}
   .cc-d{font-size:.82rem;color:#6b7280;line-height:1.6;flex:1}
-  .cc-c{font-size:.65rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-top:4px}
-  .cc-c.live{color:var(--color-primary)}
-  .cc-c.soon{color:#9ca3af}
+  .cc-c{display:inline-flex;align-items:center;gap:5px;font-size:.7rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-top:8px;padding:5px 12px;border-radius:100px}
+  .cc-c.live{color:var(--color-primary);background:#EFF6FF;border:1px solid rgba(0,122,255,.15)}
+  .cc-c.soon{color:#9ca3af;background:#f9fafb;border:1px solid #e5e7eb}
 </style>
 </head>
 <body>
@@ -55,7 +55,7 @@
 <section class="hero"><div class="wrap">
   <div class="hero-ey">12 Categories</div>
   <h1>All Tool <em>Categories</em></h1>
-  <p>Salary & Tax, PDF, Image, Developer, Education, Health, VAT, Property, Business, Language, African, Engineering — 258 tools across 12 categories.</p>
+  <p>Salary & Tax, PDF, Image, Developer, Education, Health, VAT, Property, Business, Language, African, Engineering — <span id="heroToolCount">368</span> tools across 12 categories.</p>
 </div></section>
 <section class="sec"><div class="wrap"><div class="cg" id="cg"></div></div></section>
 <afro-footer></afro-footer>
@@ -76,6 +76,7 @@ var CATS_META = [
 ];
 function _initCategories(){
   if(typeof AFRO_TOOLS==='undefined'||typeof AFRO_CATEGORIES==='undefined')return;
+  var h=document.getElementById('heroToolCount');if(h)h.textContent=AFRO_TOOLS.length;
   var g=document.getElementById('cg');if(!g)return;
   var html='';
   CATS_META.forEach(function(cm){
