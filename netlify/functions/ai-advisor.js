@@ -165,29 +165,38 @@ exports.handler = async function(event) {
   try { body = JSON.parse(event.body); }
   catch { return { statusCode: 400, headers, body: JSON.stringify({ error: "Invalid JSON body" }) }; }
 
-  const { message, messages, tool, context } = body;
+  const { message, messages, tool, context, system: clientSystem } = body;
 
   // System prompt construction
   const isMedical = tool === "medical-report";
   const isJapa = tool && tool.startsWith("japa");
-  let systemPrompt = isMedical
-    ? "You are the AfroTools Medical Report Interpreter — you help everyday people understand their lab results in simple, clear language. "
-    : isJapa
-    ? "You are the AfroTools Japa Advisor — an expert on African emigration, visa pathways, and relocation planning. "
-    : "You are the AfroTools AI Advisor — an expert in African tax, payroll, VAT, and financial regulations across all 54 African countries. ";
+  const isSiteAssistant = !tool || tool === "site-assistant";
 
-  if (tool && TOOL_CONTEXT[tool]) {
-    systemPrompt += TOOL_CONTEXT[tool] + " ";
-  }
+  let systemPrompt;
 
-  if (context) {
-    systemPrompt += `Live calculation data from the page: ${context}. Reference these exact figures in your answer. `;
-  }
-
-  if (isMedical) {
-    systemPrompt += "Rules: Be thorough but use plain language a non-medical person can understand. Explain each test result clearly. Flag anything abnormal. Always end with a reminder that this is educational, not a diagnosis, and they should discuss results with their doctor. No markdown formatting. Write in warm, reassuring conversational sentences.";
+  // If the client (site-assistant) sends its own system prompt with tool directory, use it
+  if (clientSystem && isSiteAssistant) {
+    systemPrompt = clientSystem;
   } else {
-    systemPrompt += "Rules: Under 220 words. Specific with numbers and percentages. Use the user's local currency. Be direct and practical — give exact figures, not vague guidance. No markdown: no asterisks, no bullet dashes, no bold. Write in plain conversational sentences. If you don't know the exact current rate, say so and suggest the user verify with the official tax authority.";
+    systemPrompt = isMedical
+      ? "You are the AfroTools Medical Report Interpreter — you help everyday people understand their lab results in simple, clear language. "
+      : isJapa
+      ? "You are the AfroTools Japa Advisor — an expert on African emigration, visa pathways, and relocation planning. "
+      : "You are the AfroTools AI Advisor — an expert in African tax, payroll, VAT, and financial regulations across all 54 African countries. ";
+
+    if (tool && TOOL_CONTEXT[tool]) {
+      systemPrompt += TOOL_CONTEXT[tool] + " ";
+    }
+
+    if (context) {
+      systemPrompt += `Live calculation data from the page: ${context}. Reference these exact figures in your answer. `;
+    }
+
+    if (isMedical) {
+      systemPrompt += "Rules: Be thorough but use plain language a non-medical person can understand. Explain each test result clearly. Flag anything abnormal. Always end with a reminder that this is educational, not a diagnosis, and they should discuss results with their doctor. No markdown formatting. Write in warm, reassuring conversational sentences.";
+    } else {
+      systemPrompt += "Rules: Under 220 words. Specific with numbers and percentages. Use the user's local currency. Be direct and practical — give exact figures, not vague guidance. No markdown: no asterisks, no bullet dashes, no bold. Write in plain conversational sentences. If you don't know the exact current rate, say so and suggest the user verify with the official tax authority.";
+    }
   }
 
   // Messages
@@ -210,7 +219,7 @@ exports.handler = async function(event) {
       },
       body: JSON.stringify({
         model: "claude-haiku-4-5-20251001",
-        max_tokens: isMedical ? 1200 : isJapa ? 600 : 400,
+        max_tokens: isMedical ? 1200 : isJapa ? 600 : isSiteAssistant ? 500 : 400,
         system: systemPrompt,
         messages: apiMessages
       })

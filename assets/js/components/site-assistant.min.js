@@ -1,7 +1,7 @@
 /**
- * AFROTOOLS SITE ASSISTANT — Floating AI Advisor
- * Explains tools · Navigates site · Recommends features
- * Persistent bottom-right floating panel · ROYGBIV glow · AfroBot mascot
+ * AFROTOOLS SITE ASSISTANT v2 — Floating AI Advisor
+ * Explains tools · Navigates site · Recommends features · Gives direct links
+ * Light/Dark theme toggle · Markdown links · Copy messages · Clear chat
  *
  * Drop <afro-site-assistant></afro-site-assistant> once in <body> (footer injects it automatically).
  * Or embed the script and it self-injects.
@@ -43,9 +43,19 @@
   ];
 
   /* ═══════════════════════════════════════════════════
+     BUILD TOOL DIRECTORY from registry (for AI context)
+  ═══════════════════════════════════════════════════ */
+  function buildToolDirectory() {
+    if (typeof AFRO_TOOLS === 'undefined' || !Array.isArray(AFRO_TOOLS)) return '';
+    const liveTools = AFRO_TOOLS.filter(t => t.status === 'live');
+    const lines = liveTools.map(t => `- ${t.name} (${t.icon}): ${t.href}`);
+    return '\n\nTool directory with direct links (ALWAYS use these exact hrefs when recommending tools):\n' + lines.join('\n');
+  }
+
+  /* ═══════════════════════════════════════════════════
      SYSTEM PROMPT — tells the AI who it is
   ═══════════════════════════════════════════════════ */
-  const SYSTEM_PROMPT = `You are AfroBot, the AI advisor for AfroTools.com — Africa's #1 financial tools platform. You help users:
+  const BASE_SYSTEM_PROMPT = `You are AfroBot, the AI advisor for AfroTools.com — Africa's #1 financial tools platform. You help users:
 - Understand and use AfroTools' calculators and tools (tax, salary, PDF, health, image, education, developer tools, etc.)
 - Navigate the site to find the right tool for their need
 - Get quick answers on financial, health, education, and productivity questions relevant to Africa
@@ -53,21 +63,62 @@
 
 AfroTools has 300+ tools across categories: Salary & Tax, PDF & Documents, Image & Design, Health & Agriculture, Education, Developer Tools, VAT & Business, Currency & Finance, African-specific tools, Legal, Engineering, and more.
 
-Key tools include: PAYE calculators for Nigeria/Kenya/South Africa/Ghana, PDF merge/compress/sign, BMI calculator, pregnancy due date, currency converter, CV builder, invoice generator, unit converter, QR generator, and many more.
-
-The site is free to use with AI advisors on premium tools. Keep responses concise (2–4 sentences unless more detail is needed), friendly, and Africa-focused. If asked about a specific country's tax/finance rules, be accurate. Always guide users toward the right tool on AfroTools.`;
+IMPORTANT RULES:
+1. When a user asks about a tool or asks for a link, ALWAYS provide the direct link from the tool directory below. Format links as: [Tool Name](https://afrotools.com/path)
+2. Never say "I can't provide links" — you have the full directory.
+3. Keep responses concise (2-4 sentences unless more detail is needed), friendly, and Africa-focused.
+4. If asked about a specific country's tax/finance rules, be accurate.
+5. Always guide users toward the right tool on AfroTools.
+6. You can use **bold** for emphasis and [text](url) for links. Do NOT use markdown headers (#) or bullet lists with dashes.
+7. When listing multiple tools, put each on its own line.`;
 
   /* ═══════════════════════════════════════════════════
      SUGGESTED QUESTIONS
   ═══════════════════════════════════════════════════ */
   const SUGGESTIONS = [
-    'How do I calculate my PAYE tax in Nigeria?',
-    'What tools do you have for PDFs?',
-    'Can you help me track my BMI?',
-    'What\'s the best tool for my CV?',
+    'Give me the link to the Nigeria PAYE calculator',
+    'What PDF tools do you have?',
+    'I need to calculate my BMI',
+    'Help me build my CV',
     'How do I calculate import duty?',
     'What mortgage tools do you have?',
   ];
+
+  /* ═══════════════════════════════════════════════════
+     THEME STYLES
+  ═══════════════════════════════════════════════════ */
+  const DARK_VARS = {
+    panelBg: '#0d1117', headerBg: 'linear-gradient(135deg,#0d1117 0%,#111827 100%)',
+    title: '#f0f6fc', sub: '#6e7681', border: 'rgba(255,255,255,.07)',
+    msgAiBg: '#161b22', msgAiColor: '#c9d1d9', msgAiBorder: 'rgba(255,255,255,.07)',
+    inputBg: '#161b22', inputBorder: 'rgba(255,255,255,.1)', inputColor: '#e6edf3',
+    inputPlaceholder: '#30363d', qnBg: 'rgba(255,255,255,.04)', qnColor: '#8b949e',
+    sysMsgColor: '#484f58', scrollThumb: '#21262d', fabBg: 'linear-gradient(135deg, #0d1b2e 0%, #0a1628 100%)',
+  };
+  const LIGHT_VARS = {
+    panelBg: '#ffffff', headerBg: 'linear-gradient(135deg,#f8fafc 0%,#f1f5f9 100%)',
+    title: '#0f172a', sub: '#64748b', border: 'rgba(0,0,0,.08)',
+    msgAiBg: '#f1f5f9', msgAiColor: '#1e293b', msgAiBorder: 'rgba(0,0,0,.06)',
+    inputBg: '#f1f5f9', inputBorder: 'rgba(0,0,0,.12)', inputColor: '#0f172a',
+    inputPlaceholder: '#94a3b8', qnBg: 'rgba(0,0,0,.03)', qnColor: '#475569',
+    sysMsgColor: '#94a3b8', scrollThumb: '#cbd5e1', fabBg: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
+  };
+
+  /* ═══════════════════════════════════════════════════
+     PARSE MARKDOWN-LITE (bold + links, no XSS)
+  ═══════════════════════════════════════════════════ */
+  function parseMd(text) {
+    // Escape HTML
+    let s = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    // Links: [text](url) — only allow http/https/relative paths
+    s = s.replace(/\[([^\]]+)\]\(((?:https?:\/\/[^\s)]+|\/[^\s)]+))\)/g,
+      '<a href="$2" target="_blank" rel="noopener" style="color:#60b5ff;text-decoration:underline;font-weight:600">$1</a>');
+    // Bold: **text**
+    s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+    // Newlines
+    s = s.replace(/\n/g, '<br>');
+    return s;
+  }
 
   /* ═══════════════════════════════════════════════════
      WEB COMPONENT
@@ -80,12 +131,13 @@ The site is free to use with AI advisors on premium tools. Keep responses concis
       this._messages = [];
       this._loading  = false;
       this._welcomed = false;
+      this._theme    = localStorage.getItem('afrobot_theme') || 'dark';
     }
 
     connectedCallback() {
       this._render();
       this._bind();
-      // Pulse hint after 4s on first visit
+      this._applyTheme();
       setTimeout(() => this._showPulse(), 4000);
     }
 
@@ -107,7 +159,7 @@ The site is free to use with AI advisors on premium tools. Keep responses concis
             width: 56px;
             height: 56px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #0d1b2e 0%, #0a1628 100%);
+            background: var(--fab-bg, linear-gradient(135deg, #0d1b2e 0%, #0a1628 100%));
             border: none;
             cursor: pointer;
             display: flex;
@@ -137,7 +189,6 @@ The site is free to use with AI advisors on premium tools. Keep responses concis
             background-size: 400% 400%;
             animation: rainbow-shift 4s linear infinite;
             z-index: -1;
-            border-radius: 50%;
           }
           @keyframes rainbow-shift {
             0%   { background-position: 0% 50%; }
@@ -157,11 +208,10 @@ The site is free to use with AI advisors on premium tools. Keep responses concis
             font-size: 0.6rem;
             font-weight: 800;
             color: #fff;
-            display: flex;
+            display: none;
             align-items: center;
             justify-content: center;
             border: 2px solid #fff;
-            display: none;
           }
           .badge.show { display: flex; }
 
@@ -200,7 +250,7 @@ The site is free to use with AI advisors on premium tools. Keep responses concis
             position: absolute;
             bottom: 68px;
             right: 0;
-            width: 360px;
+            width: 380px;
             max-width: calc(100vw - 32px);
             border-radius: 20px;
             padding: 2.5px;
@@ -225,35 +275,39 @@ The site is free to use with AI advisors on premium tools. Keep responses concis
           }
 
           .panel {
-            background: #0d1117;
+            background: var(--panel-bg, #0d1117);
             border-radius: 18px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
             max-height: min(560px, calc(100vh - 120px));
+            transition: background .25s ease;
           }
 
           /* Header */
           .p-head {
             padding: 14px 16px;
-            background: linear-gradient(135deg,#0d1117 0%,#111827 100%);
+            background: var(--header-bg, linear-gradient(135deg,#0d1117 0%,#111827 100%));
             display: flex;
             align-items: center;
             gap: 10px;
-            border-bottom: 1px solid rgba(255,255,255,.07);
+            border-bottom: 1px solid var(--border, rgba(255,255,255,.07));
             flex-shrink: 0;
+            transition: background .25s, border-color .25s;
           }
           .p-head-text { flex:1; min-width:0; }
           .p-title {
             font-size: 0.88rem;
             font-weight: 700;
-            color: #f0f6fc;
+            color: var(--title, #f0f6fc);
             letter-spacing: -.01em;
+            transition: color .25s;
           }
           .p-sub {
             font-size: 0.68rem;
-            color: #6e7681;
+            color: var(--sub, #6e7681);
             margin-top: 1px;
+            transition: color .25s;
           }
           .live-dot {
             width: 7px;
@@ -275,16 +329,29 @@ The site is free to use with AI advisors on premium tools. Keep responses concis
             text-transform: uppercase;
             border: 1px solid rgba(96,181,255,.2);
           }
-          .close-btn {
+
+          /* Header action buttons */
+          .head-actions {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+          }
+          .head-btn {
             background: none;
             border: none;
-            color: #484f58;
+            color: var(--sub, #484f58);
             cursor: pointer;
-            padding: 4px;
-            line-height:1;
-            transition: color .18s;
+            padding: 5px;
+            line-height: 1;
+            border-radius: 6px;
+            transition: color .18s, background .18s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
           }
-          .close-btn:hover { color: #c9d1d9; }
+          .head-btn:hover { color: var(--title, #c9d1d9); background: var(--qn-bg, rgba(255,255,255,.06)); }
+          .head-btn svg { width: 15px; height: 15px; }
+          .head-btn.active { color: #f5a623; }
 
           /* Quick nav links */
           .quick-nav {
@@ -292,8 +359,9 @@ The site is free to use with AI advisors on premium tools. Keep responses concis
             display: grid;
             grid-template-columns: repeat(4,1fr);
             gap: 6px;
-            border-bottom: 1px solid rgba(255,255,255,.06);
+            border-bottom: 1px solid var(--border, rgba(255,255,255,.06));
             flex-shrink: 0;
+            transition: border-color .25s;
           }
           .qn-item {
             display: flex;
@@ -302,9 +370,9 @@ The site is free to use with AI advisors on premium tools. Keep responses concis
             gap: 3px;
             padding: 7px 4px;
             border-radius: 10px;
-            background: rgba(255,255,255,.04);
+            background: var(--qn-bg, rgba(255,255,255,.04));
             text-decoration: none;
-            color: #8b949e;
+            color: var(--qn-color, #8b949e);
             font-size: 0.6rem;
             font-weight: 600;
             text-align: center;
@@ -322,12 +390,13 @@ The site is free to use with AI advisors on premium tools. Keep responses concis
             display: flex;
             flex-direction: column;
             gap: 9px;
-            min-height: 120px;
+            min-height: 140px;
             scrollbar-width: thin;
-            scrollbar-color: #21262d transparent;
+            scrollbar-color: var(--scroll-thumb, #21262d) transparent;
+            transition: scrollbar-color .25s;
           }
           .msgs::-webkit-scrollbar { width: 4px; }
-          .msgs::-webkit-scrollbar-thumb { background: #21262d; border-radius:4px; }
+          .msgs::-webkit-scrollbar-thumb { background: var(--scroll-thumb, #21262d); border-radius:4px; }
 
           .msg {
             padding: 9px 12px;
@@ -336,28 +405,34 @@ The site is free to use with AI advisors on premium tools. Keep responses concis
             line-height: 1.65;
             max-width: 88%;
             word-break: break-word;
+            position: relative;
           }
+          .msg a { color: #0071E3; text-decoration: underline; font-weight: 600; }
           .msg-user {
             background: #0071E3;
             color: #fff;
             align-self: flex-end;
             border-bottom-right-radius: 2px;
           }
+          .msg-user a { color: #fff; }
           .msg-ai {
-            background: #161b22;
-            color: #c9d1d9;
+            background: var(--msg-ai-bg, #161b22);
+            color: var(--msg-ai-color, #c9d1d9);
             align-self: flex-start;
             border-bottom-left-radius: 2px;
-            border: 1px solid rgba(255,255,255,.07);
+            border: 1px solid var(--msg-ai-border, rgba(255,255,255,.07));
+            transition: background .25s, color .25s, border-color .25s;
           }
+          .msg-ai a { color: #0071E3; }
           .msg-sys {
             background: transparent;
-            color: #484f58;
+            color: var(--sys-msg-color, #484f58);
             align-self: center;
             text-align: center;
             font-size: 0.72rem;
             font-style: italic;
             max-width: 100%;
+            transition: color .25s;
           }
           .msg-err {
             background: rgba(220,53,69,.1);
@@ -366,16 +441,56 @@ The site is free to use with AI advisors on premium tools. Keep responses concis
             border-left: 3px solid #dc3545;
           }
 
+          /* Copy button on messages */
+          .msg-copy {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: rgba(0,0,0,.2);
+            border: none;
+            border-radius: 4px;
+            color: inherit;
+            font-size: 0.6rem;
+            padding: 2px 5px;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity .18s;
+            font-family: inherit;
+          }
+          .msg:hover .msg-copy { opacity: .7; }
+          .msg-copy:hover { opacity: 1 !important; }
+
+          /* Tool cards injected by AI */
+          .tool-card {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            background: var(--qn-bg, rgba(255,255,255,.04));
+            border: 1px solid var(--border, rgba(255,255,255,.07));
+            border-radius: 10px;
+            text-decoration: none;
+            color: inherit;
+            transition: background .18s, transform .1s;
+            margin-top: 6px;
+          }
+          .tool-card:hover { background: rgba(0,113,227,.12); transform: translateY(-1px); }
+          .tool-card-icon { font-size: 1.4rem; flex-shrink: 0; }
+          .tool-card-info { flex: 1; min-width: 0; }
+          .tool-card-name { font-weight: 700; font-size: 0.8rem; color: var(--title, #f0f6fc); }
+          .tool-card-desc { font-size: 0.68rem; color: var(--sub, #6e7681); margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+          .tool-card-arrow { color: #0071E3; font-weight: 700; font-size: 0.9rem; }
+
           /* Typing indicator */
           .typing {
             display: flex;
             gap: 4px;
             padding: 9px 12px;
             align-self: flex-start;
-            background: #161b22;
+            background: var(--msg-ai-bg, #161b22);
             border-radius: 10px;
             border-bottom-left-radius: 2px;
-            border: 1px solid rgba(255,255,255,.07);
+            border: 1px solid var(--msg-ai-border, rgba(255,255,255,.07));
           }
           .typing span {
             width: 5px;
@@ -416,24 +531,25 @@ The site is free to use with AI advisors on premium tools. Keep responses concis
             display: flex;
             gap: 8px;
             padding: 10px 12px 12px;
-            border-top: 1px solid rgba(255,255,255,.06);
-            background: #0d1117;
+            border-top: 1px solid var(--border, rgba(255,255,255,.06));
+            background: var(--panel-bg, #0d1117);
             flex-shrink: 0;
+            transition: background .25s, border-color .25s;
           }
           .chat-input {
             flex: 1;
-            background: #161b22;
-            border: 1px solid rgba(255,255,255,.1);
+            background: var(--input-bg, #161b22);
+            border: 1px solid var(--input-border, rgba(255,255,255,.1));
             border-radius: 9px;
             padding: 8px 12px;
-            color: #e6edf3;
+            color: var(--input-color, #e6edf3);
             font-size: 0.8rem;
             font-family: inherit;
             outline: none;
             resize: none;
-            transition: border-color .18s;
+            transition: border-color .18s, background .25s, color .25s;
           }
-          .chat-input::placeholder { color: #30363d; }
+          .chat-input::placeholder { color: var(--input-placeholder, #30363d); }
           .chat-input:focus { border-color: rgba(0,113,227,.6); }
           .send-btn {
             background: #0071E3;
@@ -456,7 +572,6 @@ The site is free to use with AI advisors on premium tools. Keep responses concis
           @media (max-width: 480px) {
             :host { bottom: 16px; right: 14px; }
             .panel-wrap { width: calc(100vw - 28px); right: -14px; }
-            .quick-nav { grid-template-columns: repeat(4,1fr); }
           }
         </style>
 
@@ -466,11 +581,11 @@ The site is free to use with AI advisors on premium tools. Keep responses concis
           ${BOT_SVG}
           <div class="badge" id="badge">1</div>
         </button>
-        <div class="hint" id="hint">Ask AfroBot anything ✨</div>
+        <div class="hint" id="hint">Ask AfroBot anything</div>
 
         <!-- Expandable panel -->
         <div class="panel-wrap" id="panel">
-          <div class="panel">
+          <div class="panel" id="panelInner">
 
             <!-- Header -->
             <div class="p-head">
@@ -489,15 +604,21 @@ The site is free to use with AI advisors on premium tools. Keep responses concis
               </svg>
               <div class="p-head-text">
                 <div class="p-title">AfroBot</div>
-                <div class="p-sub">AI Site Advisor · AfroTools.com</div>
+                <div class="p-sub">AI Site Advisor</div>
               </div>
               <div class="live-dot"></div>
               <span class="p-badge">AI</span>
-              <button class="close-btn" id="close" aria-label="Close">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                </svg>
-              </button>
+              <div class="head-actions">
+                <button class="head-btn" id="themeBtn" aria-label="Toggle theme" title="Switch light/dark">
+                  <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="3.5" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.5v1.5M8 13v1.5M1.5 8H3M13 8h1.5M3.4 3.4l1.1 1.1M11.5 11.5l1.1 1.1M3.4 12.6l1.1-1.1M11.5 4.5l1.1-1.1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+                </button>
+                <button class="head-btn" id="clearBtn" aria-label="Clear chat" title="Clear conversation">
+                  <svg viewBox="0 0 16 16" fill="none"><path d="M4 5h8M6 5V4a1 1 0 011-1h2a1 1 0 011 1v1M5 5v7a1 1 0 001 1h4a1 1 0 001-1V5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <button class="head-btn" id="close" aria-label="Close">
+                  <svg viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                </button>
+              </div>
             </div>
 
             <!-- Quick category navigation -->
@@ -511,18 +632,18 @@ The site is free to use with AI advisors on premium tools. Keep responses concis
 
             <!-- Messages -->
             <div class="msgs" id="msgs">
-              <div class="msg msg-sys">👋 Hi! I'm AfroBot. Ask me about any tool, or click a category above to explore.</div>
+              <div class="msg msg-sys">Hi! I'm AfroBot. Ask me about any tool, or click a category above to explore. I can give you direct links!</div>
             </div>
 
-            <!-- Suggestion chips (shown when no messages yet) -->
+            <!-- Suggestion chips -->
             <div class="suggestions" id="sugs">
               ${SUGGESTIONS.map(s => `<button class="sug-btn" data-q="${s}">${s}</button>`).join('')}
             </div>
 
             <!-- Input -->
             <div class="input-row">
-              <input class="chat-input" id="inp" type="text" placeholder="Ask about any tool…" autocomplete="off">
-              <button class="send-btn" id="send">Send →</button>
+              <input class="chat-input" id="inp" type="text" placeholder="Ask about any tool..." autocomplete="off">
+              <button class="send-btn" id="send">Send</button>
             </div>
 
           </div>
@@ -531,14 +652,14 @@ The site is free to use with AI advisors on premium tools. Keep responses concis
     }
 
     _bind() {
-      const fab   = this.shadowRoot.getElementById('fab');
-      const panel = this.shadowRoot.getElementById('panel');
-      const close = this.shadowRoot.getElementById('close');
-      const inp   = this.shadowRoot.getElementById('inp');
-      const send  = this.shadowRoot.getElementById('send');
-      const hint  = this.shadowRoot.getElementById('hint');
-      const badge = this.shadowRoot.getElementById('badge');
-      const sugs  = this.shadowRoot.getElementById('sugs');
+      const sr    = this.shadowRoot;
+      const fab   = sr.getElementById('fab');
+      const close = sr.getElementById('close');
+      const inp   = sr.getElementById('inp');
+      const send  = sr.getElementById('send');
+      const sugs  = sr.getElementById('sugs');
+      const themeBtn = sr.getElementById('themeBtn');
+      const clearBtn = sr.getElementById('clearBtn');
 
       fab.addEventListener('click', () => this._toggle());
       close.addEventListener('click', () => this._close());
@@ -555,14 +676,74 @@ The site is free to use with AI advisors on premium tools. Keep responses concis
         this._send();
       });
 
-      // Close on backdrop click (outside panel)
+      // Theme toggle
+      themeBtn.addEventListener('click', () => {
+        this._theme = this._theme === 'dark' ? 'light' : 'dark';
+        localStorage.setItem('afrobot_theme', this._theme);
+        this._applyTheme();
+      });
+
+      // Clear chat
+      clearBtn.addEventListener('click', () => {
+        this._messages = [];
+        const msgs = sr.getElementById('msgs');
+        msgs.innerHTML = '<div class="msg msg-sys">Chat cleared. Ask me anything!</div>';
+        sr.getElementById('sugs').style.display = '';
+      });
+
+      // Copy on message click
+      sr.getElementById('msgs').addEventListener('click', e => {
+        const copyBtn = e.target.closest('.msg-copy');
+        if (!copyBtn) return;
+        const msg = copyBtn.closest('.msg');
+        if (!msg) return;
+        const text = msg.innerText.replace(/Copy$/, '').trim();
+        navigator.clipboard.writeText(text).then(() => {
+          copyBtn.textContent = 'Copied!';
+          setTimeout(() => { copyBtn.textContent = 'Copy'; }, 1500);
+        });
+      });
+
+      // Close on outside click
       document.addEventListener('click', (e) => {
         if (!this._open) return;
         if (!this.contains(e.target) && !this.shadowRoot.contains(e.target)) this._close();
       });
 
-      // Show badge initially to draw attention
-      badge.classList.add('show');
+      // Show badge
+      sr.getElementById('badge').classList.add('show');
+    }
+
+    _applyTheme() {
+      const vars = this._theme === 'light' ? LIGHT_VARS : DARK_VARS;
+      const panel = this.shadowRoot.getElementById('panelInner');
+      if (!panel) return;
+      panel.style.setProperty('--panel-bg', vars.panelBg);
+      panel.style.setProperty('--header-bg', vars.headerBg);
+      panel.style.setProperty('--title', vars.title);
+      panel.style.setProperty('--sub', vars.sub);
+      panel.style.setProperty('--border', vars.border);
+      panel.style.setProperty('--msg-ai-bg', vars.msgAiBg);
+      panel.style.setProperty('--msg-ai-color', vars.msgAiColor);
+      panel.style.setProperty('--msg-ai-border', vars.msgAiBorder);
+      panel.style.setProperty('--input-bg', vars.inputBg);
+      panel.style.setProperty('--input-border', vars.inputBorder);
+      panel.style.setProperty('--input-color', vars.inputColor);
+      panel.style.setProperty('--input-placeholder', vars.inputPlaceholder);
+      panel.style.setProperty('--qn-bg', vars.qnBg);
+      panel.style.setProperty('--qn-color', vars.qnColor);
+      panel.style.setProperty('--sys-msg-color', vars.sysMsgColor);
+      panel.style.setProperty('--scroll-thumb', vars.scrollThumb);
+
+      // Update theme button icon
+      const btn = this.shadowRoot.getElementById('themeBtn');
+      if (this._theme === 'light') {
+        btn.innerHTML = '<svg viewBox="0 0 16 16" fill="none"><path d="M13.5 8.5a5.5 5.5 0 01-6-6C4 3.5 1.5 6.5 1.5 10a5.5 5.5 0 0011 0c0-.5 0-1-.5-1.5z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        btn.title = 'Switch to dark mode';
+      } else {
+        btn.innerHTML = '<svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="3.5" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.5v1.5M8 13v1.5M1.5 8H3M13 8h1.5M3.4 3.4l1.1 1.1M11.5 11.5l1.1 1.1M3.4 12.6l1.1-1.1M11.5 4.5l1.1-1.1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>';
+        btn.title = 'Switch to light mode';
+      }
     }
 
     _showPulse() {
@@ -584,7 +765,6 @@ The site is free to use with AI advisors on premium tools. Keep responses concis
       panel.classList.add('open');
       badge.classList.remove('show');
       hint.classList.remove('show');
-      // Welcome message with page context
       if (!this._welcomed) {
         this._welcomed = true;
         this._injectPageContext();
@@ -598,13 +778,12 @@ The site is free to use with AI advisors on premium tools. Keep responses concis
     }
 
     _injectPageContext() {
-      // Detect current page/tool for context
       const path  = window.location.pathname;
       const title = document.title || '';
       const toolH1 = document.querySelector('h1')?.textContent?.trim() || '';
       if (path !== '/' && path !== '/index.html') {
         const ctx = toolH1 || title.split('—')[0].trim();
-        this._addMsg('sys', `📍 You're viewing: ${ctx}`);
+        this._addMsg('sys', '\uD83D\uDCCD You\'re viewing: ' + ctx);
       }
     }
 
@@ -628,24 +807,28 @@ The site is free to use with AI advisors on premium tools. Keep responses concis
       send.disabled = true;
       this._showTyping();
 
-      // Build context from current page
-      const pageCtx = `User is on page: ${window.location.pathname}. Page title: ${document.title}`;
+      // Build context
+      const pageCtx = 'User is on page: ' + window.location.pathname + '. Page title: ' + document.title;
+      const toolDir = buildToolDirectory();
+      const systemPrompt = BASE_SYSTEM_PROMPT + toolDir + '\n\nPage context: ' + pageCtx;
 
       try {
         let reply;
         if (typeof window.AfroTools !== 'undefined' && window.AfroTools.ai) {
           reply = await window.AfroTools.ai.ask(
             this._messages[this._messages.length - 1].content,
-            SYSTEM_PROMPT + '\n\nPage context: ' + pageCtx,
+            systemPrompt,
             this._messages.slice(0, -1)
           );
         } else {
-          // Fallback: smart offline responses
           reply = this._offlineReply(this._messages[this._messages.length - 1].content);
         }
         this._hideTyping();
         this._addMsg('ai', reply);
         this._messages.push({ role: 'assistant', content: reply });
+
+        // Check if reply mentions any tools — inject tool cards
+        this._injectToolCards(reply);
       } catch (err) {
         this._hideTyping();
         const msg = err.message || 'Something went wrong. Please try again.';
@@ -657,17 +840,58 @@ The site is free to use with AI advisors on premium tools. Keep responses concis
 
     _offlineReply(q) {
       q = q.toLowerCase();
+      // Try to find matching tools from registry
+      if (typeof AFRO_TOOLS !== 'undefined') {
+        const matches = AFRO_TOOLS.filter(t => t.status === 'live' && (
+          q.includes(t.name.toLowerCase()) ||
+          t.name.toLowerCase().split(/\s+/).some(w => w.length > 3 && q.includes(w.toLowerCase()))
+        )).slice(0, 3);
+        if (matches.length > 0) {
+          return matches.map(t => t.name + ': https://afrotools.com' + t.href).join('\n') + '\n\nClick any link above to open the tool!';
+        }
+      }
+
       if (q.includes('paye') || q.includes('tax') || q.includes('salary'))
-        return 'We have PAYE calculators for Nigeria, Kenya, South Africa, Ghana, and more. Head to the Salary & Tax category to find your country\'s calculator!';
+        return 'We have PAYE calculators for 54 African countries! Here are the most popular:\n\n[Nigeria PAYE Calculator](https://afrotools.com/nigeria/ng-salary-tax)\n[Kenya PAYE Calculator](https://afrotools.com/kenya/ke-paye)\n[South Africa SARS Tax](https://afrotools.com/south-africa/za-paye)\n[Ghana PAYE + SSNIT](https://afrotools.com/ghana/gh-paye)\n\nHead to [Salary & Tax](https://afrotools.com/salary-tax) to find your country!';
       if (q.includes('pdf'))
-        return 'AfroTools has 8+ PDF tools: merge, split, compress, add page numbers, add watermarks, password protect, sign, and workspace. Visit the Document & PDF section.';
+        return 'AfroTools has 8+ PDF tools:\n\n[PDF Workspace](https://afrotools.com/tools/pdf-workspace) — Split, merge, rotate, compress\n[PDF Sign](https://afrotools.com/tools/pdf-sign) — Add digital signatures\n[PDF Compress](https://afrotools.com/tools/pdf-compress) — Reduce file size\n[PDF Password](https://afrotools.com/tools/pdf-password) — Protect with password\n\nAll files stay in your browser — never uploaded!';
       if (q.includes('bmi') || q.includes('weight') || q.includes('health'))
-        return 'Our BMI Calculator gives you BMI, body fat estimate, macros, goal timeline, and health risk assessment. Find it in the Health category.';
+        return 'Our BMI Calculator gives you BMI, body fat estimate, macros, and health risk assessment. Find it in the [Health category](https://afrotools.com/health).';
       if (q.includes('cv') || q.includes('resume'))
-        return 'Our CV Builder lets you create a professional resume with multiple templates, live preview, and PDF download. It\'s completely free!';
+        return 'Our [CV Builder](https://afrotools.com/tools/cv-builder) lets you create a professional resume with multiple templates, live preview, and PDF download. Completely free!';
       if (q.includes('currency') || q.includes('exchange'))
-        return 'The Currency Converter supports 160+ currencies with real-time rates. Also check the Remittance Compare tool to find the best rates for sending money across Africa.';
-      return 'I\'m AfroBot! I can help you find the right tool on AfroTools. Try asking about salary calculators, PDF tools, health tools, or any specific need you have.';
+        return 'The [Currency Converter](https://afrotools.com/tools/currency-converter) supports 160+ currencies with real-time rates.';
+      if (q.includes('link') || q.includes('url'))
+        return 'I can give you direct links to any tool! Just tell me which tool you need. For example: "Give me the link to the Nigeria PAYE calculator" or "Where is the PDF merger?"';
+      return 'I\'m AfroBot! I can help you find the right tool and give you **direct links**. Try asking:\n\n"Give me the link to Nigeria PAYE"\n"What PDF tools do you have?"\n"I need a CV builder"';
+    }
+
+    /** Inject clickable tool cards if the AI response mentions known tools */
+    _injectToolCards(reply) {
+      if (typeof AFRO_TOOLS === 'undefined') return;
+      const lower = reply.toLowerCase();
+      const mentioned = AFRO_TOOLS.filter(t => t.status === 'live' && (
+        lower.includes(t.href) || lower.includes(t.name.toLowerCase())
+      )).slice(0, 3); // max 3 cards
+
+      if (mentioned.length === 0) return;
+
+      const msgs = this.shadowRoot.getElementById('msgs');
+      mentioned.forEach(t => {
+        const card = document.createElement('a');
+        card.className = 'tool-card';
+        card.href = t.href;
+        card.innerHTML = `
+          <span class="tool-card-icon">${t.icon}</span>
+          <div class="tool-card-info">
+            <div class="tool-card-name">${t.name}</div>
+            <div class="tool-card-desc">${t.desc}</div>
+          </div>
+          <span class="tool-card-arrow">&rsaquo;</span>
+        `;
+        msgs.appendChild(card);
+      });
+      msgs.scrollTop = msgs.scrollHeight;
     }
 
     _addMsg(type, text) {
@@ -675,7 +899,21 @@ The site is free to use with AI advisors on premium tools. Keep responses concis
       const cls  = { user:'msg-user', ai:'msg-ai', sys:'msg-sys', err:'msg-err' }[type] || 'msg-ai';
       const div  = document.createElement('div');
       div.className = 'msg ' + cls;
-      div.textContent = text;
+
+      if (type === 'ai') {
+        // Parse markdown links and bold
+        div.innerHTML = parseMd(text);
+        // Add copy button
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'msg-copy';
+        copyBtn.textContent = 'Copy';
+        div.appendChild(copyBtn);
+      } else if (type === 'sys') {
+        div.innerHTML = parseMd(text);
+      } else {
+        div.textContent = text;
+      }
+
       msgs.appendChild(div);
       msgs.scrollTop = msgs.scrollHeight;
     }
@@ -701,7 +939,6 @@ The site is free to use with AI advisors on premium tools. Keep responses concis
 
   /* ═══════════════════════════════════════════════════
      AUTO-INJECT — add <afro-site-assistant> to body
-     if not already present (script self-bootstrap)
   ═══════════════════════════════════════════════════ */
   function inject() {
     if (!document.querySelector('afro-site-assistant')) {
