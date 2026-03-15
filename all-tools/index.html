@@ -291,6 +291,9 @@ function renderTools(){
     tools = tools.filter(t => t.status === 'live' || t.status === 'new');
   } else if(activeFilter === 'ai'){
     tools = tools.filter(t => AI_TOOLS.includes(t.id));
+  } else if(activeFilter === 'salary-tax'){
+    // PAYE tools have category='financial' in the registry
+    tools = tools.filter(t => t.category === 'financial' && (t.id||'').includes('paye'));
   } else if(activeFilter !== 'all'){
     tools = tools.filter(t => t.category === activeFilter || t.href?.includes(activeFilter));
   }
@@ -346,7 +349,7 @@ function renderTools(){
     const safeIcon = (t.icon||'🛠️').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/'/g,'&#39;').replace(/"/g,'&quot;');
     const safeName = (t.name||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
     const iconContent = TOOL_ICONS[t.id]
-      ? `<img src="${TOOL_ICONS[t.id]}" alt="${safeName}" onerror="this.parentElement.textContent='${safeIcon}';">`
+      ? `<img src="${TOOL_ICONS[t.id]}" alt="${safeName}" onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,${cat.color},#e5e7eb)';this.parentElement.innerHTML='<span style=&quot;font-size:.7rem;font-weight:800;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.2);text-align:center;line-height:1.1;padding:4px&quot;>${safeName.substring(0,12)}</span>';">`
       : safeIcon;
 
     return `<a href="${t.href||'#'}" class="${cardClass}">

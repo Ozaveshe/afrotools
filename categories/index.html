@@ -69,12 +69,12 @@ var CATS_META = [
     { key:'health', slug:'health', name:'Health & Agriculture', icon:'🏥', bg:'#fce8e8' },
     { key:'ecommerce', slug:'vat-business-tax', name:'VAT & Business Tax', icon:'🧾', bg:'#fff7ed' },
     { key:'legal', slug:'mortgage-property', name:'Mortgage & Property', icon:'🏠', bg:'#e0f2fe' },
-    { key:'data-productivity', slug:'data-productivity', name:'Business & ROI', icon:'📊', bg:'#eef2ff' },
+    { key:'data-productivity', slug:'business-roi', name:'Business & ROI', icon:'📊', bg:'#eef2ff' },
     { key:'language', slug:'language', name:'Language & Translation', icon:'🗣️', bg:'#faf5ff' },
-    { key:'african', slug:'african', name:'Uniquely African', icon:'🌍', bg:'#fef2f2' },
+    { key:'african', slug:'uniquely-african', name:'Uniquely African', icon:'🌍', bg:'#fef2f2' },
     { key:'engineering', slug:'engineering', name:'Engineering & CAD', icon:'🔧', bg:'#f5f5f4' }
 ];
-document.addEventListener('DOMContentLoaded',function(){
+function _initCategories(){
   if(typeof AFRO_TOOLS==='undefined'||typeof AFRO_CATEGORIES==='undefined')return;
   var g=document.getElementById('cg');if(!g)return;
   var html='';
@@ -85,10 +85,12 @@ document.addEventListener('DOMContentLoaded',function(){
     var ct=live.length>0
       ? '<span class="cc-c live">● '+live.length+' tools available</span>'
       : '<span class="cc-c soon">'+tools.length+' tools planned</span>';
-    html+='<a href="/'+cm.slug+'" class="cc"><div class="cc-i" style="background:'+cm.bg+'">'+cm.icon+'</div><div class="cc-n">'+cm.name+'</div><div class="cc-d">'+(c.desc||tools.length+' tools.')+'</div>'+ct+'</a>';
+    html+='<a href="/'+cm.slug+'/" class="cc"><div class="cc-i" style="background:'+cm.bg+'">'+cm.icon+'</div><div class="cc-n">'+cm.name+'</div><div class="cc-d">'+(c.desc||tools.length+' tools.')+'</div>'+ct+'</a>';
   });
   g.innerHTML=html;
-});
+}
+if (typeof onRegistryReady === 'function') { onRegistryReady(_initCategories); }
+else { document.addEventListener('DOMContentLoaded', function(){ if(typeof AFRO_TOOLS!=='undefined') _initCategories(); else document.addEventListener('afrotools:registry-ready', _initCategories); }); }
 </script>
 </body>
 </html>
