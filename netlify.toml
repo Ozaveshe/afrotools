@@ -4,3 +4,31 @@
 
 [functions]
   node_bundler = "esbuild"
+
+# --- Live Monitoring Scheduled Functions ---
+
+[functions."scheduled-fetch-forex-rates"]
+  schedule = "*/15 * * * *"
+
+[functions."scheduled-fetch-fuel-prices"]
+  schedule = "0 */6 * * *"
+
+[functions."scheduled-fetch-central-bank-rates"]
+  schedule = "0 */12 * * *"
+
+# --- Live Monitoring API Redirects ---
+
+[[redirects]]
+  from = "/api/forex"
+  to = "/.netlify/functions/api-forex"
+  status = 200
+
+[[redirects]]
+  from = "/api/fuel"
+  to = "/.netlify/functions/api-fuel"
+  status = 200
+
+[[redirects]]
+  from = "/api/rates"
+  to = "/.netlify/functions/api-rates"
+  status = 200
