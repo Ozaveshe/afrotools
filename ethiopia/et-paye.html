@@ -40,12 +40,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root {
-    --calc-accent: #078930;
+    --calc-accent: #0063D1;
     --calc-accent-rgb: 7,137,48;
-    --calc-accent-subtle: #07893012;
+    --calc-accent-subtle: #0063D112;
     --calc-gold: #f5d76e;
     --calc-gold-rgb: 245,215,110;
-    --et-green:  #078930;   /* Ethiopia flag green  */
+    --et-green:  #0063D1;   /* Ethiopia flag green  */
     --et-yellow: #FCDD09;   /* Ethiopia flag yellow */
     --et-red:    #DA121A;   /* Ethiopia flag red    */
     --et-blue:   #0F47AF;   /* Ethiopia flag blue   */
@@ -592,7 +592,7 @@ function renderChart(type) {
       type: 'doughnut',
       data: {
         labels: ['Take-Home', 'PAYE Tax', 'Pension Fund'],
-        datasets: [{ data: [R.netMonthly, R.monthlyPAYE, R.pension], backgroundColor: ['#FCDD09','#078930','#0F47AF'], borderWidth: 2, borderColor: '#fff' }]
+        datasets: [{ data: [R.netMonthly, R.monthlyPAYE, R.pension], backgroundColor: ['#FCDD09','#0063D1','#0F47AF'], borderWidth: 2, borderColor: '#fff' }]
       },
       options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{size:11,weight:'600'}, padding:12 } } } }
     });
@@ -603,18 +603,18 @@ function renderChart(type) {
       type: 'bar',
       data: {
         labels: bands.map(b => (b.rate*100)+'%'),
-        datasets: [{ label:'Tax (ETB)', data: bands.map(b=>b.tax), backgroundColor:'#078930', borderRadius:5 }]
+        datasets: [{ label:'Tax (ETB)', data: bands.map(b=>b.tax), backgroundColor:'#0063D1', borderRadius:5 }]
       },
-      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'ETB'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid:{color:'#eaf5ec'} }, x:{ticks:{font:{size:10,weight:'600'}}} } }
+      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'ETB'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid:{color:'#EFF6FF'} }, x:{ticks:{font:{size:10,weight:'600'}}} } }
     });
   } else if (type === 'employer') {
     CHART = new Chart(canvas, {
       type: 'bar',
       data: {
         labels: ['Take-Home', 'PAYE', 'Emp Pension', 'Employee Pension'],
-        datasets: [{ label:'ETB', data:[R.netMonthly, R.monthlyPAYE, R.empPension, R.pension], backgroundColor:['#FCDD09','#078930','#0F47AF','#DA121A'], borderRadius:5 }]
+        datasets: [{ label:'ETB', data:[R.netMonthly, R.monthlyPAYE, R.empPension, R.pension], backgroundColor:['#FCDD09','#0063D1','#0F47AF','#DA121A'], borderRadius:5 }]
       },
-      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'ETB'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid:{color:'#eaf5ec'} }, x:{ticks:{font:{size:9,weight:'600'}}} } }
+      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'ETB'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid:{color:'#EFF6FF'} }, x:{ticks:{font:{size:9,weight:'600'}}} } }
     });
   }
 }
@@ -658,7 +658,7 @@ function generatePdf() {
 .ref-val{font-size:8pt;font-weight:700;color:rgba(255,255,255,.65);margin-top:2px;text-align:right}
 .doc-title{font-size:18pt;font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1}
 .doc-title span{color:#FCDD09}.doc-meta{margin-top:8px;font-size:7.5pt;color:rgba(255,255,255,.4)}
-.badge{display:inline-block;margin-top:10px;padding:3px 10px;border-radius:3px;font-size:7pt;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:rgba(7,137,48,.22);color:#a3f0b5;border:1px solid rgba(7,137,48,.4)}
+.badge{display:inline-block;margin-top:10px;padding:3px 10px;border-radius:3px;font-size:7pt;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:rgba(0,99,209,.22);color:#93C5FD;border:1px solid rgba(0,99,209,.4)}
 .body{padding:24px 36px 28px}
 .sh{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .shi{text-align:center;flex:1}.sh-lbl{font-size:6pt;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#9ca3af;margin-bottom:3px}
@@ -667,7 +667,7 @@ function generatePdf() {
 .sec-head{font-size:6.5pt;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#9ca3af;padding:0 0 5px;border-bottom:1.5px solid #e5e7eb;margin:16px 0 8px}
 table{width:100%;border-collapse:collapse}tr{border-bottom:1px solid #f3f4f6}td{padding:5.5px 4px;font-size:8.5pt;vertical-align:middle}
 td.num{text-align:right;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
-.red{color:#c0392b}.green{color:#078930}.muted{color:#9ca3af}
+.red{color:#c0392b}.green{color:#0063D1}.muted{color:#9ca3af}
 tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-size:9.5pt}
 .src{display:inline-block;padding:2px 7px;background:#f3f4f6;border-radius:3px;font-size:6.5pt;font-weight:600;color:#6b7280;margin-right:4px}
 </style></head><body>
@@ -700,7 +700,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 
   <div class="sec-head">Section 2 — PAYE Computation (ERCA 2025/26)</div>
   <table>
-    ${bandRows || '<tr><td colspan="2" style="color:#94a3a0;padding-left:14px">Income in 0% band — no PAYE due</td></tr>'}
+    ${bandRows || '<tr><td colspan="2" style="color:#94A3B8;padding-left:14px">Income in 0% band — no PAYE due</td></tr>'}
     <tr class="total"><td>Monthly PAYE</td><td class="num red">ETB ${Math.round(R.monthlyPAYE).toLocaleString()}</td></tr>
   </table>
 
@@ -709,8 +709,8 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
     ${R.pension > 0 ? `<tr><td>Pension Fund (employee)</td><td class="num red">(ETB ${Math.round(R.pension).toLocaleString()})</td></tr>` : ''}
     <tr><td>PAYE income tax</td><td class="num red">(ETB ${Math.round(R.monthlyPAYE).toLocaleString()})</td></tr>
     <tr><td style="font-weight:700">Total Monthly Deductions</td><td class="num red">(ETB ${Math.round(R.totalEmployeeDeductions).toLocaleString()})</td></tr>
-    <tr class="total"><td style="color:#078930;font-weight:800">Monthly Take-Home Pay</td><td class="num green">ETB ${Math.round(R.netMonthly).toLocaleString()}</td></tr>
-    <tr class="total"><td style="color:#078930;font-weight:800">Annual Take-Home Pay</td><td class="num green">ETB ${Math.round(R.annualNet).toLocaleString()}</td></tr>
+    <tr class="total"><td style="color:#0063D1;font-weight:800">Monthly Take-Home Pay</td><td class="num green">ETB ${Math.round(R.netMonthly).toLocaleString()}</td></tr>
+    <tr class="total"><td style="color:#0063D1;font-weight:800">Annual Take-Home Pay</td><td class="num green">ETB ${Math.round(R.annualNet).toLocaleString()}</td></tr>
   </table>
 
   <div class="sec-head">Section 4 — Employer Cost (Monthly)</div>
@@ -730,7 +730,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 <div style="background:#f9fafb;border-top:1px solid #e5e7eb;padding:14px 36px">
   <div style="display:flex;justify-content:space-between;align-items:flex-start">
     <div>
-      <div style="font-size:7pt;font-weight:700;color:#111827">AFRO<b style="color:#078930">TOOLS</b>.COM — Africa's Financial Calculator Platform</div>
+      <div style="font-size:7pt;font-weight:700;color:#111827">AFRO<b style="color:#0063D1">TOOLS</b>.COM — Africa's Financial Calculator Platform</div>
       <div style="font-size:6.5pt;color:#9ca3af;max-width:440px;line-height:1.4;margin-top:4px">Informational only. Not professional tax advice. Verify with ERCA (erca.gov.et) or a qualified Ethiopian tax advisor. Proclamation 1395/2025 status pending.</div>
     </div>
     <div style="text-align:right;font-size:7pt;color:#9ca3af;white-space:nowrap;margin-left:20px">

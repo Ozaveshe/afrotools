@@ -41,11 +41,11 @@
 
   const MARK = `
     <svg viewBox="0 0 68 68" fill="none" xmlns="http://www.w3.org/2000/svg" style="height:34px;width:34px;flex-shrink:0">
-      <polygon points="34,20 48,34 34,48 20,34" fill="#5ddb9e"/>
+      <polygon points="34,20 48,34 34,48 20,34" fill="#007AFF"/>
       <polygon points="34,2  44,14 34,20 24,14" fill="#F5A623"/>
       <polygon points="34,48 44,60 34,68 24,60" fill="#0047AB"/>
-      <polygon points="2,24  14,34 2,44  -10,34" fill="#5ddb9e" opacity="0.6"/>
-      <polygon points="52,24 64,34 52,44 40,34"  fill="#5ddb9e" opacity="0.48"/>
+      <polygon points="2,24  14,34 2,44  -10,34" fill="#007AFF" opacity="0.6"/>
+      <polygon points="52,24 64,34 52,44 40,34"  fill="#007AFF" opacity="0.48"/>
     </svg>`;
 
   const CSS = `

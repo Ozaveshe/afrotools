@@ -48,14 +48,14 @@
     const grid = document.createElement('div');
     grid.style.cssText = `
       position:absolute;inset:0;pointer-events:none;
-      background-image:linear-gradient(rgba(93,219,158,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(93,219,158,.06) 1px,transparent 1px);
+      background-image:linear-gradient(rgba(0,122,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(0,122,255,.06) 1px,transparent 1px);
       background-size:44px 44px;
     `;
     card.appendChild(grid);
 
     // Radial glow
     const glow = document.createElement('div');
-    glow.style.cssText = `position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 60% 50% at 50% 30%,rgba(93,219,158,.15) 0%,transparent 70%);`;
+    glow.style.cssText = `position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 60% 50% at 50% 30%,rgba(0,122,255,.15) 0%,transparent 70%);`;
     card.appendChild(glow);
 
     // Content wrapper

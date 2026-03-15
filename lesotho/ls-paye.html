@@ -32,14 +32,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root {
-    --calc-accent: #00A551;
+    --calc-accent: #007AFF;
     --calc-accent-rgb: 0,165,81;
-    --calc-accent-subtle: #00A55112;
+    --calc-accent-subtle: #007AFF12;
     --calc-gold: #f5d76e;
     --calc-gold-rgb: 245,215,110;
     --ls-white:  #FFFFFF;   /* Lesotho flag */
     --ls-blue:   #007FDF;   /* Lesotho flag */
-    --ls-green:  #00A551;   /* Lesotho flag */
+    --ls-green:  #007AFF;   /* Lesotho flag */
   }
   .tool-hero::after { content: '🇱🇸'; position: absolute; right: 5%; top: 50%; transform: translateY(-50%); font-size: 8rem; opacity: .06; pointer-events: none; }
   .tool-hero { background: #333; }
@@ -433,7 +433,7 @@ function renderChart(type) {
       type: 'doughnut',
       data: {
         labels: ['Take-Home', 'PAYE Tax'],
-        datasets: [{ data: [R.netAnnual, R.annualTax], backgroundColor: ['#00A551','#007FDF'], borderWidth: 2, borderColor: '#fff' }]
+        datasets: [{ data: [R.netAnnual, R.annualTax], backgroundColor: ['#007AFF','#007FDF'], borderWidth: 2, borderColor: '#fff' }]
       },
       options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{size:11,weight:'600'}, padding:12 } } } }
     });
@@ -444,9 +444,9 @@ function renderChart(type) {
       type: 'bar',
       data: {
         labels: bands.map(b => (b.rate*100)+'%'),
-        datasets: [{ label:'Tax (M)', data: bands.map(b=>b.tax), backgroundColor:'#00A551', borderRadius:5 }]
+        datasets: [{ label:'Tax (M)', data: bands.map(b=>b.tax), backgroundColor:'#007AFF', borderRadius:5 }]
       },
-      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'M'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid:{color:'#eaf5ec'} }, x:{ticks:{font:{size:10,weight:'600'}}} } }
+      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'M'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid:{color:'#EFF6FF'} }, x:{ticks:{font:{size:10,weight:'600'}}} } }
     });
   }
 }
@@ -479,13 +479,13 @@ function generatePdf() {
 <style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'DM Sans',Arial,sans-serif;background:#fff;color:#111827;font-size:9pt;line-height:1.5}@page{size:A4;margin:0}
 .cover{background:linear-gradient(135deg,#333 0%,#1a1a1a 100%);padding:28px 36px 22px;color:#fff}
 .cover-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
-.brand{font-size:13pt;font-weight:800;color:#fff}.brand b{color:#00A551}
+.brand{font-size:13pt;font-weight:800;color:#fff}.brand b{color:#007AFF}
 .brand-sub{font-size:6pt;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.32);margin-top:2px}
 .ref-label{font-size:6pt;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.32);text-align:right}
 .ref-val{font-size:8pt;font-weight:700;color:rgba(255,255,255,.65);margin-top:2px;text-align:right}
 .doc-title{font-size:18pt;font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1}
-.doc-title span{color:#00A551}.doc-meta{margin-top:8px;font-size:7.5pt;color:rgba(255,255,255,.4)}
-.badge{display:inline-block;margin-top:10px;padding:3px 10px;border-radius:3px;font-size:7pt;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:rgba(0,165,81,.22);color:#a3f0b5;border:1px solid rgba(0,165,81,.4)}
+.doc-title span{color:#007AFF}.doc-meta{margin-top:8px;font-size:7.5pt;color:rgba(255,255,255,.4)}
+.badge{display:inline-block;margin-top:10px;padding:3px 10px;border-radius:3px;font-size:7pt;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:rgba(0,122,255,.22);color:#93C5FD;border:1px solid rgba(0,122,255,.4)}
 .body{padding:24px 36px 28px}
 .sh{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .shi{text-align:center;flex:1}.sh-lbl{font-size:6pt;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#9ca3af;margin-bottom:3px}
@@ -494,7 +494,7 @@ function generatePdf() {
 .sec-head{font-size:6.5pt;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#9ca3af;padding:0 0 5px;border-bottom:1.5px solid #e5e7eb;margin:16px 0 8px}
 table{width:100%;border-collapse:collapse}tr{border-bottom:1px solid #f3f4f6}td{padding:5.5px 4px;font-size:8.5pt;vertical-align:middle}
 td.num{text-align:right;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
-.red{color:#c0392b}.green{color:#1EB53A}.muted{color:#9ca3af}
+.red{color:#c0392b}.green{color:#2563EB}.muted{color:#9ca3af}
 tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-size:9.5pt}
 .src{display:inline-block;padding:2px 7px;background:#f3f4f6;border-radius:3px;font-size:6.5pt;font-weight:600;color:#6b7280;margin-right:4px}
 </style></head><body>
@@ -533,8 +533,8 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
   <div class="sec-head">Section 3 — Annual Net Pay Summary</div>
   <table>
     <tr><td>PAYE income tax</td><td class="num red">(M${Math.round(R.annualTax).toLocaleString()})</td></tr>
-    <tr class="total"><td style="color:#00A551;font-weight:800">Annual Take-Home Pay</td><td class="num green">M${Math.round(R.netAnnual).toLocaleString()}</td></tr>
-    <tr class="total"><td style="color:#00A551;font-weight:800">Monthly Take-Home Pay</td><td class="num green">M${Math.round(R.netAnnual/12).toLocaleString()}</td></tr>
+    <tr class="total"><td style="color:#007AFF;font-weight:800">Annual Take-Home Pay</td><td class="num green">M${Math.round(R.netAnnual).toLocaleString()}</td></tr>
+    <tr class="total"><td style="color:#007AFF;font-weight:800">Monthly Take-Home Pay</td><td class="num green">M${Math.round(R.netAnnual/12).toLocaleString()}</td></tr>
   </table>
 
   <div class="sec-head">Section 4 — Legal Basis</div>
@@ -545,7 +545,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 <div style="background:#f9fafb;border-top:1px solid #e5e7eb;padding:14px 36px">
   <div style="display:flex;justify-content:space-between;align-items:flex-start">
     <div>
-      <div style="font-size:7pt;font-weight:700;color:#111827">AFRO<b style="color:#00A551">TOOLS</b>.COM — Africa's Financial Calculator Platform</div>
+      <div style="font-size:7pt;font-weight:700;color:#111827">AFRO<b style="color:#007AFF">TOOLS</b>.COM — Africa's Financial Calculator Platform</div>
       <div style="font-size:6.5pt;color:#9ca3af;max-width:440px;line-height:1.4;margin-top:4px">Informational only. Not professional tax advice. Verify with LRA (lra.org.ls) or a qualified Lesotho tax advisor.</div>
     </div>
     <div style="text-align:right;font-size:7pt;color:#9ca3af;white-space:nowrap;margin-left:20px">

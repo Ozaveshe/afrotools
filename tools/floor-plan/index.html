@@ -282,7 +282,7 @@ canvas{display:block;cursor:crosshair;}
         </div>
 
         <button class="export-btn" onclick="showBOQ()">📋 Full Material List</button>
-        <button class="export-btn" style="background:linear-gradient(135deg,#16a34a,#15803d);margin-top:6px;" onclick="exportPNG()">🖼️ Export PNG</button>
+        <button class="export-btn" style="background:linear-gradient(135deg,#2563EB,#1D4ED8);margin-top:6px;" onclick="exportPNG()">🖼️ Export PNG</button>
       </div>
     </div>
   </div>
@@ -346,7 +346,7 @@ const ROOM_COLORS = {
   master:{fill:'#dbeafe',stroke:'#3b82f6',label:'Master Bedroom'},
   bedroom:{fill:'#ede9fe',stroke:'#7c3aed',label:'Bedroom'},
   living:{fill:'#fef9c3',stroke:'#ca8a04',label:'Living Room'},
-  kitchen:{fill:'#dcfce7',stroke:'#16a34a',label:'Kitchen'},
+  kitchen:{fill:'#DBEAFE',stroke:'#2563EB',label:'Kitchen'},
   bathroom:{fill:'#cffafe',stroke:'#0891b2',label:'Bathroom'},
   toilet:{fill:'#f0f9ff',stroke:'#0284c7',label:'Toilet'},
   dining:{fill:'#fce7f3',stroke:'#be185d',label:'Dining Room'},
@@ -562,7 +562,7 @@ function drawDoors(){
     ctx.fillRect(0,0,s,4/zoom);
     ctx.strokeRect(0,0,s,4/zoom);
     // Swing arc
-    ctx.strokeStyle=isSelected?'rgba(93,219,158,.5)':'rgba(100,116,139,.4)';
+    ctx.strokeStyle=isSelected?'rgba(0,122,255,.5)':'rgba(100,116,139,.4)';
     ctx.lineWidth=1/zoom;
     ctx.setLineDash([4/zoom,3/zoom]);
     ctx.beginPath();ctx.arc(0,0,s,0,Math.PI/2);ctx.stroke();
@@ -632,7 +632,7 @@ function drawDrawing(){
     ctx.setLineDash([4/zoom,3/zoom]);
     ctx.strokeRect(x,y,w,h);
     ctx.setLineDash([]);
-    ctx.fillStyle='rgba(93,219,158,.05)';
+    ctx.fillStyle='rgba(0,122,255,.05)';
     ctx.fillRect(x,y,w,h);
     // Live dimensions
     const wm=gridToM(w), hm=gridToM(h);
@@ -905,7 +905,7 @@ function showProps(item){
           <input class="prop-input" type="number" value="${hm}" step="0.5" min="0.5" onchange="selected.h=Math.round(+this.value/0.5)*0.5/SCALE*GRID;render()">
         </div>
       </div>
-      <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:7px;padding:8px;font-size:.72rem;color:#166534;margin-bottom:8px;">
+      <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:7px;padding:8px;font-size:.72rem;color:#1E3A5F;margin-bottom:8px;">
         Area: <strong>${(wm*hm).toFixed(2)} m²</strong>
       </div>
       <button class="prop-del-btn" onclick="deleteSelected()">🗑 Delete Room</button>

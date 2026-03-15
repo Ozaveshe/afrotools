@@ -62,7 +62,7 @@
   .ss{font-size:.88rem;color:#6b7280;line-height:1.7;max-width:520px;margin-bottom:28px}
   #tool-grid{min-height:120px}
   #tool-grid a[style*="border:1.5px"],#tool-grid a[style*="border: 1.5px"]{transition:border-color .2s,box-shadow .2s,transform .2s}
-  #tool-grid a[style*="border:1.5px"]:hover,#tool-grid a[style*="border: 1.5px"]:hover{border-color:var(--color-primary)!important;box-shadow:0 8px 24px rgba(93,219,158,.1);transform:translateY(-2px)}
+  #tool-grid a[style*="border:1.5px"]:hover,#tool-grid a[style*="border: 1.5px"]:hover{border-color:var(--color-primary)!important;box-shadow:0 8px 24px rgba(0,122,255,.1);transform:translateY(-2px)}
   .cta{background:#dc2626;border-radius:14px;padding:36px 32px;color:#fff;text-align:center;margin-top:32px}
   .cta h3{font-size:1.15rem;font-weight:800;margin-bottom:8px}
   .cta p{font-size:.88rem;color:rgba(255,255,255,.8);margin-bottom:16px}
@@ -119,7 +119,7 @@ function _initHealth(){
   var html='';
   function card(t,ok){
     var c=CAT[t.category]||{bg:'#f0f0f0'};
-    var badge=ok?(t.status==='new'?'<span style="position:absolute;top:14px;right:14px;padding:3px 10px;background:#fef3cd;border:1px solid #fde68a;border-radius:100px;font-size:10px;font-weight:700;color:#92400e;text-transform:uppercase">New</span>':'<span style="position:absolute;top:14px;right:14px;padding:3px 10px;background:#eaf5ef;border:1px solid rgba(93,219,158,.2);border-radius:100px;font-size:10px;font-weight:700;color:var(--color-primary);text-transform:uppercase;display:flex;align-items:center;gap:4px"><span style="width:6px;height:6px;background:var(--color-primary);border-radius:50%;animation:pulse 2s infinite"></span>Live</span>'):'<span style="position:absolute;top:14px;right:14px;padding:3px 10px;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:100px;font-size:10px;font-weight:700;color:#6b7280;text-transform:uppercase">Coming Soon</span>';
+    var badge=ok?(t.status==='new'?'<span style="position:absolute;top:14px;right:14px;padding:3px 10px;background:#fef3cd;border:1px solid #fde68a;border-radius:100px;font-size:10px;font-weight:700;color:#92400e;text-transform:uppercase">New</span>':'<span style="position:absolute;top:14px;right:14px;padding:3px 10px;background:#EFF6FF;border:1px solid rgba(0,122,255,.2);border-radius:100px;font-size:10px;font-weight:700;color:var(--color-primary);text-transform:uppercase;display:flex;align-items:center;gap:4px"><span style="width:6px;height:6px;background:var(--color-primary);border-radius:50%;animation:pulse 2s infinite"></span>Live</span>'):'<span style="position:absolute;top:14px;right:14px;padding:3px 10px;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:100px;font-size:10px;font-weight:700;color:#6b7280;text-transform:uppercase">Coming Soon</span>';
     var tag=ok?'a':'div';var href=ok?' href="'+t.href+'"':'';var op=ok?'':'opacity:.6;';
     return '<'+tag+href+' style="background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;text-decoration:none;color:inherit;display:block;position:relative;overflow:hidden;padding:24px 22px;'+op+'transition:.25s">'+badge+'<div style="width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px;background:'+c.bg+'">'+t.icon+'</div><h3 style="font-size:16px;font-weight:700;margin-bottom:6px;color:'+(ok?'#111':'#374151')+';font-family:DM Sans,sans-serif">'+t.name+'</h3><p style="font-size:14px;color:'+(ok?'#374151':'#6b7280')+';line-height:1.6">'+t.desc+'</p></'+tag+'>';
   }

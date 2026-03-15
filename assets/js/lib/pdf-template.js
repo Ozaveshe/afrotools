@@ -59,8 +59,8 @@
   // Brand colors
   const COLORS = {
     dark: [15, 23, 42],       // #0f172a
-    brand: [93, 219, 158],    // #5ddb9e
-    green: [93, 219, 158],    // #5ddb9e
+    brand: [0, 122, 255],     // #007AFF
+    blue:  [0, 122, 255],     // #007AFF
     red: [192, 57, 43],       // #c0392b
     text: [17, 24, 39],       // #111827
     muted: [107, 114, 128],   // #6b7280
@@ -118,7 +118,7 @@
     // Subtitle
     if (config.subtitle) {
       doc.setFontSize(9);
-      doc.setTextColor(...COLORS.green);
+      doc.setTextColor(...COLORS.blue);
       doc.text(config.subtitle, margin, 38);
     }
 
@@ -205,7 +205,7 @@
           if (isDeduction) doc.setTextColor(...COLORS.red);
           else if (isTotal && row.highlight !== false) doc.setTextColor(...COLORS.brand);
           else if (row.color === 'red') doc.setTextColor(...COLORS.red);
-          else if (row.color === 'green') doc.setTextColor(...COLORS.brand);
+          else if (row.color === 'green' || row.color === 'blue') doc.setTextColor(...COLORS.brand);
           else if (row.color === 'muted') doc.setTextColor(...COLORS.muted);
           else doc.setTextColor(...COLORS.text);
           doc.text(row.value, margin + contentW, y, { align: 'right' });

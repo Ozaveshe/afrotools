@@ -387,7 +387,7 @@
       if (user) {
         const proBadge = user.tier === 'pro' ? '<span style="background:linear-gradient(135deg,#F5A623,#e8960e);color:#fff;font-size:9px;font-weight:800;padding:1px 5px;border-radius:100px;margin-left:4px;letter-spacing:.06em">PRO</span>' : '';
         authBar.innerHTML = `
-          <a href="/dashboard/" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:rgba(93,219,158,.1);border:1px solid rgba(93,219,158,.3);border-radius:6px;font-size:12px;font-weight:700;color:var(--color-primary);text-decoration:none;font-family:'DM Sans',sans-serif;">
+          <a href="/dashboard/" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:rgba(0,122,255,.1);border:1px solid rgba(0,122,255,.3);border-radius:6px;font-size:12px;font-weight:700;color:var(--color-primary);text-decoration:none;font-family:'DM Sans',sans-serif;">
             <span style="width:20px;height:20px;background:var(--color-primary);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;">${(user.name || 'U')[0].toUpperCase()}</span>
             ${user.name || 'Dashboard'}${proBadge}
           </a>`;

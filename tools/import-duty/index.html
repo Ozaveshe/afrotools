@@ -259,9 +259,9 @@ gtag('config', 'G-D859CGF391');
           <span class="card-sub">Same product, different destinations</span>
         </div>
         <div class="card-body">
-          <p style="font-size:0.82rem;color:#8aaa95;margin-bottom:14px;">Enter product details in the Calculate tab first, then switch here to compare all 17 countries side by side.</p>
+          <p style="font-size:0.82rem;color:#93A3B8;margin-bottom:14px;">Enter product details in the Calculate tab first, then switch here to compare all 17 countries side by side.</p>
           <div id="compareBody">
-            <p style="color:#8aaa95;text-align:center;padding:20px;">Select a category and goods value first.</p>
+            <p style="color:#93A3B8;text-align:center;padding:20px;">Select a category and goods value first.</p>
           </div>
         </div>
       </div>
@@ -297,7 +297,7 @@ gtag('config', 'G-D859CGF391');
         </div>
         <div class="card-body">
           <div class="saved-list" id="savedList">
-            <p style="color:#8aaa95;text-align:center;padding:20px;">No saved calculations yet.</p>
+            <p style="color:#93A3B8;text-align:center;padding:20px;">No saved calculations yet.</p>
           </div>
         </div>
       </div>
@@ -648,7 +648,7 @@ async function renderDutyChart(R) {
     type: 'doughnut',
     data: {
       labels: ['Goods + Shipping', 'Customs Duty', 'Other Levies', 'VAT'],
-      datasets: [{ data: [R.cif, R.duty, R.totalLevies, R.vat], backgroundColor: ['var(--color-primary)', '#DE3831', '#F5A623', '#4ecdc4'], borderWidth: 2, borderColor: '#fff' }]
+      datasets: [{ data: [R.cif, R.duty, R.totalLevies, R.vat], backgroundColor: ['var(--color-primary)', '#DE3831', '#F5A623', '#38BDF8'], borderWidth: 2, borderColor: '#fff' }]
     },
     options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { font: { size: 11, weight: '600' }, padding: 12 } } } }
   });
@@ -659,7 +659,7 @@ function buildCompare() {
   const cat = document.getElementById('category').value;
   const fob = parseNum(document.getElementById('goodsValue').value);
   const ship = parseNum(document.getElementById('shippingValue').value);
-  if (!cat || fob <= 0) { document.getElementById('compareBody').innerHTML = '<p style="color:#8aaa95;text-align:center;padding:20px;">Enter product details in Calculate tab first.</p>'; return; }
+  if (!cat || fob <= 0) { document.getElementById('compareBody').innerHTML = '<p style="color:#93A3B8;text-align:center;padding:20px;">Enter product details in Calculate tab first.</p>'; return; }
 
   let rows = [];
   for (const name of Object.keys(COUNTRIES)) {
@@ -719,7 +719,7 @@ function saveCalc() {
 function renderSaved() {
   const saved = getSaved();
   const el = document.getElementById('savedList');
-  if (!saved.length) { el.innerHTML = '<p style="color:#8aaa95;text-align:center;padding:20px;">No saved calculations yet.</p>'; return; }
+  if (!saved.length) { el.innerHTML = '<p style="color:#93A3B8;text-align:center;padding:20px;">No saved calculations yet.</p>'; return; }
   el.innerHTML = saved.map((s, i) =>
     '<div class="saved-item" onclick="loadSaved(' + i + ')"><div class="saved-item-info">' + s.flag + ' ' + s.dest + ' &mdash; ' + s.cat + ' &mdash; ' + fmtUSD(s.fob) + ' FOB</div><div class="saved-item-total">' + fmtLocal(s.totalLocal, s.symbol) + '</div><button class="saved-item-del" onclick="event.stopPropagation();delSaved(' + i + ')">&times;</button></div>'
   ).join('');

@@ -15,7 +15,7 @@
     --calc-accent-subtle: #E31C2312;
     --calc-gold: #f5d76e;
     --calc-gold-rgb: 245,215,110;
-    --mg-red:#E31C23;--mg-white:#FFF;--mg-green:#00AB5E
+    --mg-red:#E31C23;--mg-white:#FFF;--mg-green:#007AFF
   }
   .tool-hero::after { content: '🇲🇬'; position: absolute; right: 5%; top: 50%; transform: translateY(-50%); font-size: 8rem; opacity: .06; pointer-events: none; }
   .tool-hero { background: #E31C23; }
@@ -118,7 +118,7 @@ function renderChart(type) {
   const canvas = document.getElementById('mainChart');
   if (CHART) { CHART.destroy(); CHART = null; }
   if (type === 'donut') {
-    CHART = new Chart(canvas, { type: 'doughnut', data: { labels: ['Take-Home', 'PAYE Tax', 'CNAPS'], datasets: [{ data: [R.net, R.tax, R.cnaps], backgroundColor: ['#FFF','#E31C23','#00AB5E'], borderWidth: 2, borderColor: '#333' }] }, options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{size:11,weight:'600'}, padding:12 } } } } });
+    CHART = new Chart(canvas, { type: 'doughnut', data: { labels: ['Take-Home', 'PAYE Tax', 'CNAPS'], datasets: [{ data: [R.net, R.tax, R.cnaps], backgroundColor: ['#FFF','#E31C23','#007AFF'], borderWidth: 2, borderColor: '#333' }] }, options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{size:11,weight:'600'}, padding:12 } } } } });
   }
 }
 function openPdfModal()  { if(!RESULT) return; document.getElementById('pdfModal').classList.add('on'); document.getElementById('modalForm').style.display='block'; document.getElementById('modalSuccess').style.display='none'; }

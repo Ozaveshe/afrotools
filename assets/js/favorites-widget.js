@@ -51,7 +51,7 @@
     });
 
     btn.addEventListener('mouseenter', function() {
-      btn.style.boxShadow = '0 6px 20px rgba(93,219,158,0.25)';
+      btn.style.boxShadow = '0 6px 20px rgba(0,122,255,0.25)';
     });
     btn.addEventListener('mouseleave', function() {
       btn.style.boxShadow = '0 4px 16px rgba(0,0,0,0.12)';

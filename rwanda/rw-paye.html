@@ -561,7 +561,7 @@ function renderChart(type) {
         labels: bands.map(b => b.isFlat ? '30% flat' : (b.rate*100)+'%'),
         datasets: [{ label:'Tax (RWF)', data: bands.map(b=>b.tax), backgroundColor:'#20603D', borderRadius:5 }]
       },
-      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'RWF'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid:{color:'#eaf5ec'} }, x:{ticks:{font:{size:10,weight:'600'}}} } }
+      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'RWF'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid:{color:'#EFF6FF'} }, x:{ticks:{font:{size:10,weight:'600'}}} } }
     });
   } else if (type === 'employer') {
     CHART = new Chart(canvas, {
@@ -570,7 +570,7 @@ function renderChart(type) {
         labels: ['Take-Home', 'PAYE', 'Emp RSSB', 'Maternity'],
         datasets: [{ label:'RWF', data:[R.netMonthly, R.monthlyPAYE, R.empRssb, R.maternity], backgroundColor:['#FAD201','#20603D','#00A1DE','#666'], borderRadius:5 }]
       },
-      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'RWF'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid:{color:'#eaf5ec'} }, x:{ticks:{font:{size:9,weight:'600'}}} } }
+      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'RWF'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid:{color:'#EFF6FF'} }, x:{ticks:{font:{size:9,weight:'600'}}} } }
     });
   }
 }
@@ -614,7 +614,7 @@ function generatePdf() {
 .ref-val{font-size:8pt;font-weight:700;color:rgba(255,255,255,.65);margin-top:2px;text-align:right}
 .doc-title{font-size:18pt;font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1}
 .doc-title span{color:#FAD201}.doc-meta{margin-top:8px;font-size:7.5pt;color:rgba(255,255,255,.4)}
-.badge{display:inline-block;margin-top:10px;padding:3px 10px;border-radius:3px;font-size:7pt;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:rgba(32,96,61,.22);color:#a3f0b5;border:1px solid rgba(32,96,61,.4)}
+.badge{display:inline-block;margin-top:10px;padding:3px 10px;border-radius:3px;font-size:7pt;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:rgba(32,96,61,.22);color:#93C5FD;border:1px solid rgba(32,96,61,.4)}
 .body{padding:24px 36px 28px}
 .sh{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .shi{text-align:center;flex:1}.sh-lbl{font-size:6pt;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#9ca3af;margin-bottom:3px}
@@ -657,7 +657,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
   <div class="sec-head">Section 2 — PAYE Computation (RRA 2025/26)</div>
   <table>
     ${R.isSecondary ? `<tr><td colspan="2" style="color:#7a3800;padding:8px 4px">⚠ Secondary employment — flat 30% applied to gross RWF ${Math.round(R.gross).toLocaleString()}</td></tr>` : ''}
-    ${bandRows || '<tr><td colspan="2" style="color:#94a3a0;padding-left:14px">Income in 0% band — no PAYE due</td></tr>'}
+    ${bandRows || '<tr><td colspan="2" style="color:#94A3B8;padding-left:14px">Income in 0% band — no PAYE due</td></tr>'}
     <tr class="total"><td>Monthly PAYE</td><td class="num red">RWF ${Math.round(R.monthlyPAYE).toLocaleString()}</td></tr>
   </table>
 

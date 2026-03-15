@@ -544,7 +544,7 @@ function generatePdf() {
 .sec-head{font-size:6.5pt;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#9ca3af;padding:0 0 5px;border-bottom:1.5px solid #e5e7eb;margin:16px 0 8px}
 table{width:100%;border-collapse:collapse}tr{border-bottom:1px solid #f3f4f6}td{padding:5.5px 4px;font-size:8.5pt;vertical-align:middle}
 td.num{text-align:right;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
-.red{color:#c0392b}.green{color:#1EB53A}.muted{color:#9ca3af}
+.red{color:#c0392b}.green{color:#2563EB}.muted{color:#9ca3af}
 tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-size:9.5pt}
 .src{display:inline-block;padding:2px 7px;background:#f3f4f6;border-radius:3px;font-size:6.5pt;font-weight:600;color:#6b7280;margin-right:4px}
 </style></head><body>
@@ -577,7 +577,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 
   <div class="sec-head">Section 2 — SRA PAYE Computation (2025/26)</div>
   <table>
-    ${bandRows || '<tr><td colspan="2" style="color:#94a3a0;padding-left:14px">Income in 0% band — no PAYE due</td></tr>'}
+    ${bandRows || '<tr><td colspan="2" style="color:#94A3B8;padding-left:14px">Income in 0% band — no PAYE due</td></tr>'}
     <tr><td style="padding-left:14px;color:#4b5563">Tax Before Rebate</td><td class="num red">E${Math.round(R.annualTax + R.taxRebate).toLocaleString()}</td></tr>
     <tr><td style="padding-left:14px;color:#4b5563">Less: Tax Rebate (E8,200)</td><td class="num green">E${Math.round(R.taxRebate).toLocaleString()}</td></tr>
     <tr class="total"><td>Annual PAYE</td><td class="num red">E${Math.round(R.annualTax).toLocaleString()}</td></tr>
@@ -587,8 +587,8 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
   <table>
     ${R.snpf > 0 ? `<tr><td>SNPF Pension (employee)</td><td class="num red">(E${Math.round(R.snpf).toLocaleString()})</td></tr>` : ''}
     <tr><td>SRA PAYE tax</td><td class="num red">(E${Math.round(R.annualTax).toLocaleString()})</td></tr>
-    <tr class="total"><td style="color:#2c7a3e;font-weight:800">Annual Take-Home Pay</td><td class="num green">E${Math.round(R.netAnnual).toLocaleString()}</td></tr>
-    <tr class="total"><td style="color:#2c7a3e;font-weight:800">Monthly Take-Home Pay</td><td class="num green">E${Math.round(R.netAnnual/12).toLocaleString()}</td></tr>
+    <tr class="total"><td style="color:#1D4ED8;font-weight:800">Annual Take-Home Pay</td><td class="num green">E${Math.round(R.netAnnual).toLocaleString()}</td></tr>
+    <tr class="total"><td style="color:#1D4ED8;font-weight:800">Monthly Take-Home Pay</td><td class="num green">E${Math.round(R.netAnnual/12).toLocaleString()}</td></tr>
   </table>
 
   <div class="sec-head">Section 4 — Legal Basis</div>

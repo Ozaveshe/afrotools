@@ -14,18 +14,18 @@
   ═══════════════════════════════════════════════════ */
   const BOT_SVG = `<svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <line x1="16" y1="2" x2="16" y2="6" stroke="#60b5ff" stroke-width="1.5" stroke-linecap="round"/>
-    <circle cx="16" cy="1.5" r="1.5" fill="#5ddb9e"/>
+    <circle cx="16" cy="1.5" r="1.5" fill="#007AFF"/>
     <rect x="5" y="6" width="22" height="18" rx="5" fill="#1a2e4a"/>
     <rect x="5" y="6" width="22" height="18" rx="5" stroke="#2a4a6e" stroke-width="1"/>
-    <rect x="8.5" y="11" width="5" height="5" rx="1.5" fill="#5ddb9e" opacity=".9"/>
+    <rect x="8.5" y="11" width="5" height="5" rx="1.5" fill="#007AFF" opacity=".9"/>
     <rect x="9.5" y="12" width="2" height="2" rx=".5" fill="#60b5ff"/>
-    <rect x="18.5" y="11" width="5" height="5" rx="1.5" fill="#5ddb9e" opacity=".9"/>
+    <rect x="18.5" y="11" width="5" height="5" rx="1.5" fill="#007AFF" opacity=".9"/>
     <rect x="19.5" y="12" width="2" height="2" rx=".5" fill="#60b5ff"/>
     <rect x="10" y="19.5" width="12" height="1.5" rx=".75" fill="#60b5ff" opacity=".6"/>
     <rect x="2" y="12" width="3" height="4" rx="1" fill="#1a2e4a" stroke="#2a4a6e" stroke-width=".8"/>
     <rect x="27" y="12" width="3" height="4" rx="1" fill="#1a2e4a" stroke="#2a4a6e" stroke-width=".8"/>
-    <circle cx="9" cy="9" r=".8" fill="#5ddb9e" opacity=".4"/>
-    <circle cx="23" cy="9" r=".8" fill="#5ddb9e" opacity=".4"/>
+    <circle cx="9" cy="9" r=".8" fill="#007AFF" opacity=".4"/>
+    <circle cx="23" cy="9" r=".8" fill="#007AFF" opacity=".4"/>
   </svg>`;
 
   /* ═══════════════════════════════════════════════════
@@ -166,8 +166,8 @@ IMPORTANT RULES:
             align-items: center;
             justify-content: center;
             box-shadow:
-              0 4px 20px rgba(93,219,158,.5),
-              0 0 0 2px rgba(93,219,158,.3);
+              0 4px 20px rgba(0,122,255,.5),
+              0 0 0 2px rgba(0,122,255,.3);
             transition: transform .22s cubic-bezier(.34,1.56,.64,1), box-shadow .22s ease;
             position: relative;
             padding: 0;
@@ -175,8 +175,8 @@ IMPORTANT RULES:
           .fab:hover {
             transform: scale(1.1);
             box-shadow:
-              0 8px 30px rgba(93,219,158,.6),
-              0 0 0 3px rgba(93,219,158,.25);
+              0 8px 30px rgba(0,122,255,.6),
+              0 0 0 3px rgba(0,122,255,.25);
           }
           .fab:active { transform: scale(.96); }
 
@@ -185,7 +185,7 @@ IMPORTANT RULES:
             position: absolute;
             inset: -3px;
             border-radius: 50%;
-            background: linear-gradient(135deg,#ff0000,#ff7700,#ffee00,#00cc44,#0077ff,#6600cc,#cc00ff,#ff0000);
+            background: linear-gradient(135deg,#ff0000,#ff7700,#ffee00,#0077ff,#0077ff,#6600cc,#cc00ff,#ff0000);
             background-size: 400% 400%;
             animation: rainbow-shift 4s linear infinite;
             z-index: -1;
@@ -254,7 +254,7 @@ IMPORTANT RULES:
             max-width: calc(100vw - 32px);
             border-radius: 20px;
             padding: 2.5px;
-            background: linear-gradient(135deg,#ff0000,#ff7700,#ffee00,#00cc44,#0077ff,#6600cc,#cc00ff,#ff0000);
+            background: linear-gradient(135deg,#ff0000,#ff7700,#ffee00,#0077ff,#0077ff,#6600cc,#cc00ff,#ff0000);
             background-size: 400% 400%;
             animation: rainbow-shift 5s linear infinite;
             box-shadow:
@@ -313,8 +313,8 @@ IMPORTANT RULES:
             width: 7px;
             height: 7px;
             border-radius: 50%;
-            background: #22c55e;
-            box-shadow: 0 0 6px #22c55e;
+            background: #3B82F6;
+            box-shadow: 0 0 6px #3B82F6;
             animation: pulse 2.2s ease-in-out infinite;
           }
           @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.45;transform:scale(.8)} }
@@ -322,7 +322,7 @@ IMPORTANT RULES:
             font-size: 0.56rem;
             font-weight: 800;
             color: #60b5ff;
-            background: rgba(93,219,158,.18);
+            background: rgba(0,122,255,.18);
             padding: 2px 7px;
             border-radius: 100px;
             letter-spacing: .07em;
@@ -379,7 +379,7 @@ IMPORTANT RULES:
             transition: background .18s, color .18s;
             cursor: pointer;
           }
-          .qn-item:hover { background: rgba(93,219,158,.15); color: #60b5ff; }
+          .qn-item:hover { background: rgba(0,122,255,.15); color: #60b5ff; }
           .qn-icon { font-size: 1rem; line-height:1; }
 
           /* Messages */
@@ -474,7 +474,7 @@ IMPORTANT RULES:
             transition: background .18s, transform .1s;
             margin-top: 6px;
           }
-          .tool-card:hover { background: rgba(93,219,158,.12); transform: translateY(-1px); }
+          .tool-card:hover { background: rgba(0,122,255,.12); transform: translateY(-1px); }
           .tool-card-icon { font-size: 1.4rem; flex-shrink: 0; }
           .tool-card-info { flex: 1; min-width: 0; }
           .tool-card-name { font-weight: 700; font-size: 0.8rem; color: var(--title, #f0f6fc); }
@@ -512,8 +512,8 @@ IMPORTANT RULES:
             flex-shrink: 0;
           }
           .sug-btn {
-            background: rgba(93,219,158,.1);
-            border: 1px solid rgba(93,219,158,.25);
+            background: rgba(0,122,255,.1);
+            border: 1px solid rgba(0,122,255,.25);
             color: #60b5ff;
             font-size: 0.68rem;
             font-weight: 600;
@@ -524,7 +524,7 @@ IMPORTANT RULES:
             transition: background .18s;
             text-align: left;
           }
-          .sug-btn:hover { background: rgba(93,219,158,.2); }
+          .sug-btn:hover { background: rgba(0,122,255,.2); }
 
           /* Input row */
           .input-row {
@@ -550,7 +550,7 @@ IMPORTANT RULES:
             transition: border-color .18s, background .25s, color .25s;
           }
           .chat-input::placeholder { color: var(--input-placeholder, #30363d); }
-          .chat-input:focus { border-color: rgba(93,219,158,.6); }
+          .chat-input:focus { border-color: rgba(0,122,255,.6); }
           .send-btn {
             background: var(--color-primary);
             color: #fff;
@@ -591,12 +591,12 @@ IMPORTANT RULES:
             <div class="p-head">
               <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
                 <line x1="16" y1="2" x2="16" y2="6" stroke="#60b5ff" stroke-width="1.5" stroke-linecap="round"/>
-                <circle cx="16" cy="1.5" r="1.5" fill="#5ddb9e"/>
+                <circle cx="16" cy="1.5" r="1.5" fill="#007AFF"/>
                 <rect x="5" y="6" width="22" height="18" rx="5" fill="#1a2e4a"/>
                 <rect x="5" y="6" width="22" height="18" rx="5" stroke="#2a4a6e" stroke-width="1"/>
-                <rect x="8.5" y="11" width="5" height="5" rx="1.5" fill="#5ddb9e" opacity=".9"/>
+                <rect x="8.5" y="11" width="5" height="5" rx="1.5" fill="#007AFF" opacity=".9"/>
                 <rect x="9.5" y="12" width="2" height="2" rx=".5" fill="#60b5ff"/>
-                <rect x="18.5" y="11" width="5" height="5" rx="1.5" fill="#5ddb9e" opacity=".9"/>
+                <rect x="18.5" y="11" width="5" height="5" rx="1.5" fill="#007AFF" opacity=".9"/>
                 <rect x="19.5" y="12" width="2" height="2" rx=".5" fill="#60b5ff"/>
                 <rect x="10" y="19.5" width="12" height="1.5" rx=".75" fill="#60b5ff" opacity=".6"/>
                 <rect x="2" y="12" width="3" height="4" rx="1" fill="#1a2e4a" stroke="#2a4a6e" stroke-width=".8"/>

@@ -97,7 +97,7 @@
         <label class="f-label">Business Logo</label>
         <div style="display:flex;gap:12px;align-items:flex-start;">
           <input class="f-input" id="logoInput" type="file" accept="image/*" style="flex:1;">
-          <div id="logoPreview" style="width:60px;height:60px;border:1.5px dashed #cfe0d8;border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:0.65rem;color:#8aaa95;flex-shrink:0;">Logo</div>
+          <div id="logoPreview" style="width:60px;height:60px;border:1.5px dashed #DBEAFE;border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:0.65rem;color:#93A3B8;flex-shrink:0;">Logo</div>
         </div>
       </div>
       <div class="field">
@@ -280,7 +280,7 @@
         <div class="totals-row"><span>Subtotal</span><span id="sumSubtotal">0.00</span></div>
         <div class="totals-row">
           <span>Discount
-            <input type="number" id="discountPercent" value="0" min="0" max="100" step="0.01" style="width:50px;padding:3px 6px;border:1px solid #cfe0d8;border-radius:4px;font-size:0.78rem;margin-left:4px;">%
+            <input type="number" id="discountPercent" value="0" min="0" max="100" step="0.01" style="width:50px;padding:3px 6px;border:1px solid #DBEAFE;border-radius:4px;font-size:0.78rem;margin-left:4px;">%
           </span>
           <span id="sumDiscount">0.00</span>
         </div>
@@ -315,7 +315,7 @@
     </div>
     <div class="card-body">
       <div id="templatesContainer">
-        <p style="text-align:center;color:#8aaa95;font-size:0.82rem;padding:16px 0;">No saved templates yet.</p>
+        <p style="text-align:center;color:#93A3B8;font-size:0.82rem;padding:16px 0;">No saved templates yet.</p>
       </div>
     </div>
   </div>
@@ -395,7 +395,7 @@
             </tr>
           </thead>
           <tbody id="pItems">
-            <tr><td colspan="5" style="text-align:center;color:#8aaa95;padding:20px;">Add line items to see them here</td></tr>
+            <tr><td colspan="5" style="text-align:center;color:#93A3B8;padding:20px;">Add line items to see them here</td></tr>
           </tbody>
         </table>
 
@@ -565,7 +565,7 @@ function renderClients() {
   $('clientCount').textContent = clients.length + ' saved client' + (clients.length !== 1 ? 's' : '');
   const list = $('clientList');
   if (clients.length === 0) {
-    list.innerHTML = '<p style="text-align:center;color:#8aaa95;font-size:0.78rem;padding:10px;">No saved clients. Fill in details and click "Save Client".</p>';
+    list.innerHTML = '<p style="text-align:center;color:#93A3B8;font-size:0.78rem;padding:10px;">No saved clients. Fill in details and click "Save Client".</p>';
     return;
   }
   list.innerHTML = clients.map((c, i) => `
@@ -683,13 +683,13 @@ function applyTemplate(tpl) {
       prev.style.borderTop = '4px solid var(--color-brand)';
       break;
     case 'creative':
-      prev.style.background = 'linear-gradient(135deg, #f8fffe 0%, #f0f7ff 100%)';
+      prev.style.background = 'linear-gradient(135deg, #F5F9FF 0%, #f0f7ff 100%)';
       prev.style.borderColor = '#b8d4e3';
       $('previewTplTitle').textContent = 'INVOICE';
       break;
     case 'dark':
       prev.style.background = '#1a2420';
-      prev.style.color = '#e2f0e8';
+      prev.style.color = '#EFF6FF';
       prev.style.borderColor = '#2a3a30';
       break;
     default: // modern
@@ -778,7 +778,7 @@ function updatePreview() {
   // Preview — items table
   const tbody = $('pItems');
   if (items.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#8aaa95;padding:20px;">Add line items to see them here</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#93A3B8;padding:20px;">Add line items to see them here</td></tr>';
   } else {
     tbody.innerHTML = items.map(it => `<tr>
       <td>${escapeHtml(it.desc)}</td>
@@ -809,7 +809,7 @@ function updatePreview() {
   const paid = $('markPaid').checked;
   $('paidStamp').style.display = paid ? '' : 'none';
   $('previewStatus').textContent = paid ? 'Paid' : 'Draft';
-  $('previewStatus').style.color = paid ? '#007A4D' : '';
+  $('previewStatus').style.color = paid ? '#0063D1' : '';
 
   // Overdue check
   const dueVal = $('dueDate').value;
@@ -1042,14 +1042,14 @@ function renderTemplates() {
   $('tplCountLabel').textContent = templates.length + ' saved';
   const container = $('templatesContainer');
   if (templates.length === 0) {
-    container.innerHTML = '<p style="text-align:center;color:#8aaa95;font-size:0.82rem;padding:16px 0;">No saved templates yet.</p>';
+    container.innerHTML = '<p style="text-align:center;color:#93A3B8;font-size:0.82rem;padding:16px 0;">No saved templates yet.</p>';
     return;
   }
   container.innerHTML = templates.map(t => `
-    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f2f7f4;font-size:0.82rem;">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #EFF6FF;font-size:0.82rem;">
       <div>
         <strong style="color:#2d4a38;">${escapeHtml(t.name)}</strong>
-        <span style="color:#8aaa95;margin-left:8px;">${new Date(t.date).toLocaleDateString()}</span>
+        <span style="color:#93A3B8;margin-left:8px;">${new Date(t.date).toLocaleDateString()}</span>
       </div>
       <div style="display:flex;gap:6px;">
         <button class="btn" style="font-size:0.68rem;padding:4px 10px;" onclick="loadTemplate(${t.id})">Load</button>

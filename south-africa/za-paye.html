@@ -35,7 +35,7 @@ gtag('config', 'G-D859CGF391');
 <link rel="stylesheet" href="/assets/css/global.min.css">
 <link rel="stylesheet" href="/assets/css/paye-tool.css">
 
-<style>:root { --color-brand: #007A4D; }</style>
+<style>:root { --color-brand: #0063D1; }</style>
 <meta name="tool-id" content="za-paye">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebApplication","name":"South Africa PAYE Tax Calculator 2025/26","url":"https://afrotools.com/south-africa/za-paye","description":"Calculate your South Africa take-home pay using 2025/26 SARS tax tables, UIF, retirement deductions and medical tax credits.","applicationCategory":"FinanceApplication","operatingSystem":"Any","inLanguage":"en","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"ZAR"},"provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
@@ -102,7 +102,7 @@ gtag('config', 'G-D859CGF391');
                 <span class="slider-val" id="sliderVal">R 300,000</span>
               </div>
               <input type="range" id="salarySlider" min="50000" max="3000000" step="1000" value="300000" aria-label="Salary slider">
-              <div style="display:flex;justify-content:space-between;font-size:0.68rem;color:#8aaa95;margin-top:4px;">
+              <div style="display:flex;justify-content:space-between;font-size:0.68rem;color:#93A3B8;margin-top:4px;">
                 <span>R 50,000</span><span>R 3,000,000</span>
               </div>
             </div>
@@ -151,7 +151,7 @@ gtag('config', 'G-D859CGF391');
                 <span class="f-prefix">R</span>
                 <input type="text" class="f-input" id="retirementAmt" placeholder="e.g. 50,000" inputmode="numeric" autocomplete="off">
               </div>
-              <p class="f-note" style="color:#007A4D;">Pension, provident &amp; RA contributions deductible up to 27.5% of remuneration, capped at R350,000/year. Your most powerful legal tax reduction tool.</p>
+              <p class="f-note" style="color:#0063D1;">Pension, provident &amp; RA contributions deductible up to 27.5% of remuneration, capped at R350,000/year. Your most powerful legal tax reduction tool.</p>
             </div>
 
             <!-- TOGGLES -->
@@ -603,7 +603,7 @@ slider.addEventListener('input', function () {
 function updateSliderFill() {
   const el = slider;
   const p = ((parseInt(el.value) - parseInt(el.min)) / (parseInt(el.max) - parseInt(el.min))) * 100;
-  el.style.background = `linear-gradient(to right, var(--color-brand) 0%, var(--color-brand) ${p}%, #cfe0d8 ${p}%, #cfe0d8 100%)`;
+  el.style.background = `linear-gradient(to right, var(--color-brand) 0%, var(--color-brand) ${p}%, #DBEAFE ${p}%, #DBEAFE 100%)`;
 }
 
 function syncSlider(v) {
@@ -797,7 +797,7 @@ function renderRows(r, period) {
 function renderBandTable(r) {
   const tbody = document.getElementById('bandTableBody');
   const bands = r.bandBreakdown.filter(b => b.taxInBand > 0);
-  if (!bands.length) { tbody.innerHTML = '<tr><td colspan="4" style="color:#8aaa95">Income below first band</td></tr>'; return; }
+  if (!bands.length) { tbody.innerHTML = '<tr><td colspan="4" style="color:#93A3B8">Income below first band</td></tr>'; return; }
   tbody.innerHTML = bands.map(b => {
     const upper = isFinite(b.to) ? fmt(b.to) : 'and above';
     return `<tr>
@@ -806,7 +806,7 @@ function renderBandTable(r) {
       <td>${fmt(b.incomeInBand)}</td>
       <td style="text-align:right;font-weight:600;color:#c0392b">${fmt(b.taxInBand)}</td>
     </tr>`;
-  }).join('') + `<tr style="border-top:2px solid #cfe0d8;font-weight:700">
+  }).join('') + `<tr style="border-top:2px solid #DBEAFE;font-weight:700">
     <td colspan="3">Total Gross Tax</td>
     <td style="text-align:right;color:#c0392b">${fmt(r.grossTax)}</td>
   </tr>`;
@@ -857,8 +857,8 @@ async function renderChart(type) {
   if (type === 'donut') {
     const data = [R.netAnnual, R.paye, R.uif];
     const labels = ['Take-Home', 'PAYE Tax', 'UIF'];
-    const colors = ['#FFB612', '#DE3831', '#8aaaa0'];
-    if (R.retirement > 0) { data.push(R.retirement); labels.push('Retirement'); colors.push('#007A4D'); }
+    const colors = ['#FFB612', '#DE3831', '#93A3B8'];
+    if (R.retirement > 0) { data.push(R.retirement); labels.push('Retirement'); colors.push('#0063D1'); }
     CHART = new Chart(canvas, {
       type: 'doughnut',
       data: { labels, datasets: [{ data, backgroundColor: colors, borderWidth: 2, borderColor: '#fff' }] },
@@ -871,18 +871,18 @@ async function renderChart(type) {
       type: 'bar',
       data: {
         labels: bands.map(b => (b.rate * 100) + '%'),
-        datasets: [{ label: 'Tax Paid (R)', data: bands.map(b => b.taxInBand), backgroundColor: '#007A4D', borderRadius: 5 }]
+        datasets: [{ label: 'Tax Paid (R)', data: bands.map(b => b.taxInBand), backgroundColor: '#0063D1', borderRadius: 5 }]
       },
-      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { ticks: { callback: v => 'R' + (v / 1000).toFixed(0) + 'k', font: { size: 10, weight: '600' } }, grid: { color: '#f0f7f3' } }, x: { ticks: { font: { size: 10, weight: '600' } } } } }
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { ticks: { callback: v => 'R' + (v / 1000).toFixed(0) + 'k', font: { size: 10, weight: '600' } }, grid: { color: '#EFF6FF' } }, x: { ticks: { font: { size: 10, weight: '600' } } } } }
     });
   } else if (type === 'employer') {
     CHART = new Chart(canvas, {
       type: 'bar',
       data: {
         labels: ['Take-Home', 'PAYE', 'UIF (emp)', 'Empl UIF', 'Empl SDL'],
-        datasets: [{ label: 'R', data: [R.netAnnual, R.paye, R.uif, R.employerUIF, R.employerSDL], backgroundColor: ['#FFB612', '#DE3831', '#8aaaa0', '#007A4D', '#002395'], borderRadius: 5 }]
+        datasets: [{ label: 'R', data: [R.netAnnual, R.paye, R.uif, R.employerUIF, R.employerSDL], backgroundColor: ['#FFB612', '#DE3831', '#93A3B8', '#0063D1', '#002395'], borderRadius: 5 }]
       },
-      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { ticks: { callback: v => 'R' + (v / 1000).toFixed(0) + 'k', font: { size: 10, weight: '600' } }, grid: { color: '#f0f7f3' } }, x: { ticks: { font: { size: 9, weight: '600' } } } } }
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { ticks: { callback: v => 'R' + (v / 1000).toFixed(0) + 'k', font: { size: 10, weight: '600' } }, grid: { color: '#EFF6FF' } }, x: { ticks: { font: { size: 9, weight: '600' } } } } }
     });
   }
 }

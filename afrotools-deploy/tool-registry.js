@@ -384,12 +384,12 @@ var AFRO_TOOLS = [
 // CATEGORY DEFINITIONS
 // ═══════════════════════════════════════════════════════════
 var AFRO_CATEGORIES = {
-  'financial':         { name: 'Salary & Tax',            icon: '💰', color: '#0071E3', bg: '#eaf5ef', href: '/salary-tax',          desc: 'PAYE for all 54 countries. Real tax tables from FIRS, KRA, GRA, SARS, ERCA.' },
+  'financial':         { name: 'Salary & Tax',            icon: '💰', color: '#0071E3', bg: '#EFF6FF', href: '/salary-tax',          desc: 'PAYE for all 54 countries. Real tax tables from FIRS, KRA, GRA, SARS, ERCA.' },
   'document-pdf':      { name: 'Document & PDF',          icon: '📄', color: '#3b82f6', bg: '#eff6ff', href: '/document-pdf',         desc: 'Complete PDF workspace: merge, split, compress, watermark, password-protect and more.' },
   'image-design':      { name: 'Image & Design',          icon: '🖼️', color: '#ec4899', bg: '#fdf2f8', href: '/image-design',         desc: 'Compress, resize, convert. QR generator. Passport photos. African templates.' },
   'developer':         { name: 'Developer Tools',         icon: '⌨️', color: '#8b5cf6', bg: '#ede9fe', href: '/developer-tools',      desc: 'Color picker, JSON/CSV converter, hash generator, Base64, regex tester, JWT decoder.' },
   'education':         { name: 'Education',               icon: '🎓', color: '#f59e0b', bg: '#fef3c7', href: '/education',            desc: 'GPA/CGPA (WAEC, KCSE, Matric), student loans, university fees. African curricula.' },
-  'health':            { name: 'Health & Agriculture',    icon: '🏥', color: '#0f766e', bg: '#ccfbf1', href: '/health',               desc: 'SHIF/NHIS calculators, BMI, pregnancy due date, crop planner, market prices.' },
+  'health':            { name: 'Health & Agriculture',    icon: '🏥', color: '#0C4A6E', bg: '#CFFAFE', href: '/health',               desc: 'SHIF/NHIS calculators, BMI, pregnancy due date, crop planner, market prices.' },
   'ecommerce':         { name: 'VAT & Business Tax',      icon: '🧾', color: '#ea580c', bg: '#fff7ed', href: '/vat-business-tax',     desc: 'VAT calculators for all 54 countries. Nigeria 7.5%, Kenya 16%, SA 15%, Egypt 14%.' },
   'legal':             { name: 'Mortgage & Property',     icon: '🏠', color: '#0369a1', bg: '#e0f2fe', href: '/mortgage-property',    desc: 'Mortgage repayment, stamp duty, transfer fees. Real rates per country.' },
   'data-productivity': { name: 'Business & ROI',          icon: '📈', color: '#6366f1', bg: '#eef2ff', href: '/business-roi',         desc: 'Break-even, profit margin, invoice builder, payroll cost, startup estimator.' },
@@ -435,7 +435,7 @@ function renderToolGrid(containerId, countryCode, opts) {
       var cat = AFRO_CATEGORIES[t.category] || { color: '#888', bg: '#f0f0f0' };
       var badge = t.status === 'new'
         ? '<span style="position:absolute;top:14px;right:14px;padding:3px 10px;background:#fef3cd;border:1px solid #fde68a;border-radius:100px;font-size:10px;font-weight:700;color:#92400e;text-transform:uppercase">✨ New</span>'
-        : '<span style="position:absolute;top:14px;right:14px;padding:3px 10px;background:#eaf5ef;border:1px solid rgba(0,113,227,.2);border-radius:100px;font-size:10px;font-weight:700;color:#0071E3;text-transform:uppercase;display:flex;align-items:center;gap:4px"><span style="width:6px;height:6px;background:#0071E3;border-radius:50%;animation:pulse 2s infinite"></span>Live</span>';
+        : '<span style="position:absolute;top:14px;right:14px;padding:3px 10px;background:#EFF6FF;border:1px solid rgba(0,113,227,.2);border-radius:100px;font-size:10px;font-weight:700;color:#0071E3;text-transform:uppercase;display:flex;align-items:center;gap:4px"><span style="width:6px;height:6px;background:#0071E3;border-radius:50%;animation:pulse 2s infinite"></span>Live</span>';
       html += '<a href="'+t.href+'" style="background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;text-decoration:none;color:inherit;transition:.25s;display:block;position:relative;overflow:hidden;padding:24px 22px">'
             + badge
             + '<div style="width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px;background:'+cat.bg+'">'+t.icon+'</div>'

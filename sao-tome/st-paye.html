@@ -40,12 +40,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root {
-    --calc-accent: #12AD2B;
+    --calc-accent: #2563EB;
     --calc-accent-rgb: 18,173,43;
-    --calc-accent-subtle: #12AD2B12;
+    --calc-accent-subtle: #2563EB12;
     --calc-gold: #f5d76e;
     --calc-gold-rgb: 245,215,110;
-    --st-green:   #12AD2B;   /* São Tomé flag green  */
+    --st-green:   #2563EB;   /* São Tomé flag green  */
     --st-gold:    #FFCE00;   /* São Tomé flag gold   */
     --st-red:     #D21034;   /* São Tomé flag red    */
     --st-black:   #000;      /* Black */
@@ -545,7 +545,7 @@ function renderChart(type) {
       type: 'doughnut',
       data: {
         labels: ['Take-Home', 'DGTF Tax', 'INSS'],
-        datasets: [{ data: [R.netMonthly, R.monthlyPAYE, R.inss], backgroundColor: ['#FFCE00','#12AD2B','#D21034'], borderWidth: 2, borderColor: '#fff' }]
+        datasets: [{ data: [R.netMonthly, R.monthlyPAYE, R.inss], backgroundColor: ['#FFCE00','#2563EB','#D21034'], borderWidth: 2, borderColor: '#fff' }]
       },
       options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{size:11,weight:'600'}, padding:12 } } } }
     });
@@ -556,18 +556,18 @@ function renderChart(type) {
       type: 'bar',
       data: {
         labels: bands.map(b => (b.rate*100)+'%'),
-        datasets: [{ label:'Annual Tax (STN)', data: bands.map(b=>b.tax), backgroundColor:'#12AD2B', borderRadius:5 }]
+        datasets: [{ label:'Annual Tax (STN)', data: bands.map(b=>b.tax), backgroundColor:'#2563EB', borderRadius:5 }]
       },
-      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'STN'+(v/1000000).toFixed(1)+'M',font:{size:10,weight:'600'}},grid:{color:'#eaf5ec'} }, x:{ticks:{font:{size:10,weight:'600'}}} } }
+      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'STN'+(v/1000000).toFixed(1)+'M',font:{size:10,weight:'600'}},grid:{color:'#EFF6FF'} }, x:{ticks:{font:{size:10,weight:'600'}}} } }
     });
   } else if (type === 'employer') {
     CHART = new Chart(canvas, {
       type: 'bar',
       data: {
         labels: ['Take-Home', 'DGTF Tax', 'INSS Employee', 'Emp INSS'],
-        datasets: [{ label:'STN', data:[R.netMonthly, R.monthlyPAYE, R.inss, R.empINSS], backgroundColor:['#FFCE00','#12AD2B','#D21034','#FF9500'], borderRadius:5 }]
+        datasets: [{ label:'STN', data:[R.netMonthly, R.monthlyPAYE, R.inss, R.empINSS], backgroundColor:['#FFCE00','#2563EB','#D21034','#FF9500'], borderRadius:5 }]
       },
-      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'STN'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid:{color:'#eaf5ec'} }, x:{ticks:{font:{size:9,weight:'600'}}} } }
+      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'STN'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid:{color:'#EFF6FF'} }, x:{ticks:{font:{size:9,weight:'600'}}} } }
     });
   }
 }
@@ -605,13 +605,13 @@ function generatePdf() {
 <style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'DM Sans',Arial,sans-serif;background:#fff;color:#111827;font-size:9pt;line-height:1.5}@page{size:A4;margin:0}
 .cover{background:linear-gradient(135deg,#0a0a0a 0%,#1a1a1a 100%);padding:28px 36px 22px;color:#fff}
 .cover-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
-.brand{font-size:13pt;font-weight:800;color:#fff}.brand b{color:#12AD2B}
+.brand{font-size:13pt;font-weight:800;color:#fff}.brand b{color:#2563EB}
 .brand-sub{font-size:6pt;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.32);margin-top:2px}
 .ref-label{font-size:6pt;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.32);text-align:right}
 .ref-val{font-size:8pt;font-weight:700;color:rgba(255,255,255,.65);margin-top:2px;text-align:right}
 .doc-title{font-size:18pt;font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1}
 .doc-title span{color:#FFCE00}.doc-meta{margin-top:8px;font-size:7.5pt;color:rgba(255,255,255,.4)}
-.badge{display:inline-block;margin-top:10px;padding:3px 10px;border-radius:3px;font-size:7pt;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:rgba(18,173,43,.22);color:#a3f0b5;border:1px solid rgba(18,173,43,.4)}
+.badge{display:inline-block;margin-top:10px;padding:3px 10px;border-radius:3px;font-size:7pt;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:rgba(37,99,235,.22);color:#93C5FD;border:1px solid rgba(37,99,235,.4)}
 .body{padding:24px 36px 28px}
 .sh{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .shi{text-align:center;flex:1}.sh-lbl{font-size:6pt;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#9ca3af;margin-bottom:3px}
@@ -620,7 +620,7 @@ function generatePdf() {
 .sec-head{font-size:6.5pt;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#9ca3af;padding:0 0 5px;border-bottom:1.5px solid #e5e7eb;margin:16px 0 8px}
 table{width:100%;border-collapse:collapse}tr{border-bottom:1px solid #f3f4f6}td{padding:5.5px 4px;font-size:8.5pt;vertical-align:middle}
 td.num{text-align:right;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
-.red{color:#c0392b}.green{color:#12AD2B}.muted{color:#9ca3af}
+.red{color:#c0392b}.green{color:#2563EB}.muted{color:#9ca3af}
 tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-size:9.5pt}
 .src{display:inline-block;padding:2px 7px;background:#f3f4f6;border-radius:3px;font-size:6.5pt;font-weight:600;color:#6b7280;margin-right:4px}
 </style></head><body>
@@ -653,7 +653,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 
   <div class="sec-head">Section 2 — DGTF Income Tax Computation (2025/26)</div>
   <table>
-    ${bandRows || '<tr><td colspan="2" style="color:#94a3a0;padding-left:14px">Income in 0% band — no tax due</td></tr>'}
+    ${bandRows || '<tr><td colspan="2" style="color:#94A3B8;padding-left:14px">Income in 0% band — no tax due</td></tr>'}
     <tr class="total"><td>Monthly DGTF Tax (annual ÷ 12)</td><td class="num red">STN ${Math.round(R.monthlyPAYE).toLocaleString()}</td></tr>
   </table>
 
@@ -662,8 +662,8 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
     ${R.inss > 0 ? `<tr><td>INSS (employee)</td><td class="num red">(STN ${Math.round(R.inss).toLocaleString()})</td></tr>` : ''}
     <tr><td>DGTF income tax</td><td class="num red">(STN ${Math.round(R.monthlyPAYE).toLocaleString()})</td></tr>
     <tr><td style="font-weight:700">Total Monthly Deductions</td><td class="num red">(STN ${Math.round(R.totalEmployeeDeductions).toLocaleString()})</td></tr>
-    <tr class="total"><td style="color:#12AD2B;font-weight:800">Monthly Take-Home Pay</td><td class="num green">STN ${Math.round(R.netMonthly).toLocaleString()}</td></tr>
-    <tr class="total"><td style="color:#12AD2B;font-weight:800">Annual Take-Home Pay</td><td class="num green">STN ${Math.round(R.annualNet).toLocaleString()}</td></tr>
+    <tr class="total"><td style="color:#2563EB;font-weight:800">Monthly Take-Home Pay</td><td class="num green">STN ${Math.round(R.netMonthly).toLocaleString()}</td></tr>
+    <tr class="total"><td style="color:#2563EB;font-weight:800">Annual Take-Home Pay</td><td class="num green">STN ${Math.round(R.annualNet).toLocaleString()}</td></tr>
   </table>
 
   <div class="sec-head">Section 4 — Employer Cost (Monthly)</div>
@@ -682,7 +682,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 <div style="background:#f9fafb;border-top:1px solid #e5e7eb;padding:14px 36px">
   <div style="display:flex;justify-content:space-between;align-items:flex-start">
     <div>
-      <div style="font-size:7pt;font-weight:700;color:#111827">AFRO<b style="color:#12AD2B">TOOLS</b>.COM — Africa's Financial Calculator Platform</div>
+      <div style="font-size:7pt;font-weight:700;color:#111827">AFRO<b style="color:#2563EB">TOOLS</b>.COM — Africa's Financial Calculator Platform</div>
       <div style="font-size:6.5pt;color:#9ca3af;max-width:440px;line-height:1.4;margin-top:4px">Informational only. Not professional tax advice. Verify with DGTF or a qualified São Tomé & Príncipe tax advisor.</div>
     </div>
     <div style="text-align:right;font-size:7pt;color:#9ca3af;white-space:nowrap;margin-left:20px">

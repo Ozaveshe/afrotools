@@ -66,10 +66,10 @@ input,textarea,select{font-family:'Outfit',system-ui,sans-serif}
 .cv-section{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;margin-bottom:12px;overflow:hidden}
 .cv-section-body{padding:14px}
 .cv-inp{width:100%;padding:8px 10px;background:#fff;border:1.5px solid #e2e8f0;border-radius:7px;font-size:12px;color:var(--color-text);font-family:'Outfit',sans-serif;outline:none;transition:border-color 0.15s;margin-bottom:8px}
-.cv-inp:focus{border-color:var(--color-primary);box-shadow:0 0 0 3px rgba(93,219,158,0.08)}
+.cv-inp:focus{border-color:var(--color-primary);box-shadow:0 0 0 3px rgba(0,122,255,0.08)}
 .cv-inp::placeholder{color:#94a3b8}
 .cv-textarea{width:100%;min-height:70px;padding:8px 10px;background:#fff;border:1.5px solid #e2e8f0;border-radius:7px;font-size:12px;color:var(--color-text);font-family:'Outfit',sans-serif;outline:none;transition:border-color 0.15s;resize:vertical;margin-bottom:8px}
-.cv-textarea:focus{border-color:var(--color-primary);box-shadow:0 0 0 3px rgba(93,219,158,0.08)}
+.cv-textarea:focus{border-color:var(--color-primary);box-shadow:0 0 0 3px rgba(0,122,255,0.08)}
 .cv-row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .cv-label{font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px;display:block}
 .cv-check-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;cursor:pointer}
@@ -258,14 +258,14 @@ const TEMPLATES = [
   {id:'indigo',  name:'Indigo',  group:'Classic', colors:['#4338ca','#312e81','#6366f1']},
   {id:'noir',    name:'Noir',    group:'Classic', colors:['#0f172a','#334155','#64748b']},
   {id:'stone',   name:'Stone',   group:'Classic', colors:['#78716c','#57534e','#a8a29e']},
-  {id:'lagos',   name:'Lagos',   group:'African', colors:['#006B3C','#D4A017','#004d2b']},
-  {id:'nairobi', name:'Nairobi', group:'African', colors:['#0d7377','#14a085','#323232']},
+  {id:'lagos',   name:'Lagos',   group:'African', colors:['#0047AB','#D4A017','#004d2b']},
+  {id:'nairobi', name:'Nairobi', group:'African', colors:['#0d7377','#0EA5E9','#323232']},
   {id:'accra',   name:'Accra',   group:'African', colors:['#b45309','#d97706','#78350f']},
   {id:'cape',    name:'Cape',    group:'African', colors:['#ea580c','#f97316','#c2410c']},
 ];
 
 const LANG_LEVELS = ['Beginner','Elementary','Intermediate','Upper Intermediate','Fluent','Native'];
-const ACCENT_COLORS = ['var(--color-primary)','#16a34a','#dc2626','#9333ea','#0891b2','#d97706','#374151'];
+const ACCENT_COLORS = ['var(--color-primary)','#2563EB','#dc2626','#9333ea','#0891b2','#d97706','#374151'];
 
 const esc = s => {const d=document.createElement('div');d.textContent=s||'';return d.innerHTML;};
 const fmtMonth = v => {if(!v)return '';if(!v.includes('-'))return v;const[y,m]=v.split('-');const ms=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];return ms[+m-1]+' '+y;};
@@ -397,7 +397,7 @@ function CVBuilder() {
     {label:'African', items: TEMPLATES.filter(t=>t.group==='African')},
   ];
 
-  const scoreColor = score >= 80 ? '#22c55e' : score >= 50 ? '#f59e0b' : '#ef4444';
+  const scoreColor = score >= 80 ? '#3B82F6' : score >= 50 ? '#f59e0b' : '#ef4444';
 
   return (
     <div style={{display:'flex',flexDirection:'column',flex:1}}>
@@ -1006,7 +1006,7 @@ function StoneTemplate({data:d, accent}) {
 // ─── TEMPLATE 7: LAGOS (African corporate green/gold) ─────────
 function LagosTemplate({data:d, accent}) {
   const {name,title,contact,personal,allSkills,toolSkills,hasExp,hasEdu,hasProj,hasCert,hasRef,hasLang} = getCommonProps(d,accent);
-  const green = '#006B3C'; const gold = '#D4A017';
+  const green = '#0047AB'; const gold = '#D4A017';
   const Sec = ({label,children}) => !children?null:(
     <div style={{marginBottom:11}}>
       <div style={{fontSize:7.5,fontWeight:700,textTransform:'uppercase',letterSpacing:0.7,color:green,paddingBottom:3,marginBottom:6,display:'flex',alignItems:'center',gap:6}}>
@@ -1033,9 +1033,9 @@ function LagosTemplate({data:d, accent}) {
       </div>
       <div style={{display:'flex',minHeight:'100%'}}>
         {/* Sidebar */}
-        <div style={{flex:'0 0 33%',background:'#f0f7f4',padding:'16px 14px',borderRight:'1px solid #d1fae5'}}>
+        <div style={{flex:'0 0 33%',background:'#EFF6FF',padding:'16px 14px',borderRight:'1px solid #DBEAFE'}}>
           {personal.length>0&&<Sec label="Personal"><div>{personal.map((p,i)=><div key={i} style={{fontSize:8,marginBottom:3,color:'#333'}}>{p}</div>)}</div></Sec>}
-          {allSkills.length>0&&<Sec label="Skills"><Pills items={allSkills} bg="#d1fae5" color={green}/></Sec>}
+          {allSkills.length>0&&<Sec label="Skills"><Pills items={allSkills} bg="#DBEAFE" color={green}/></Sec>}
           {toolSkills.length>0&&<Sec label="Tools"><div>{toolSkills.map((t,i)=><div key={i} style={{fontSize:8,marginBottom:2,color:'#555'}}>· {esc(t)}</div>)}</div></Sec>}
           {hasLang&&<Sec label="Languages"><LangRows langs={d.langs}/></Sec>}
           {d.extras.hobbies&&<Sec label="Interests"><div style={{fontSize:8,color:'#555'}}>{esc(d.extras.hobbies)}</div></Sec>}
@@ -1058,7 +1058,7 @@ function LagosTemplate({data:d, accent}) {
 // ─── TEMPLATE 8: NAIROBI (teal modern) ────────────────────────
 function NairobiTemplate({data:d, accent}) {
   const {name,title,contact,personal,allSkills,toolSkills,hasExp,hasEdu,hasProj,hasCert,hasRef,hasLang} = getCommonProps(d,accent);
-  const teal = '#0d7377'; const tealLight = '#e0f2f1';
+  const teal = '#0d7377'; const tealLight = '#EFF6FF';
   const Sec = ({label,children}) => !children?null:(
     <div style={{marginBottom:12}}>
       <div style={{display:'flex',alignItems:'center',gap:7,marginBottom:6}}>

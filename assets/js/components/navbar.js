@@ -33,7 +33,7 @@
     {
       id: 'education', label: 'Education', icon: '🎓',
       desc: 'GPA, WAEC, loans, fees',
-      href: '/education/', color: '#e8fef6', accent: '#059669',
+      href: '/education/', color: '#EEF4FF', accent: '#3B82F6',
       tools: []
     },
     {

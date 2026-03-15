@@ -51,7 +51,7 @@
     :host([cols="1"]) .faq-grid { grid-template-columns: 1fr; }
 
     .faq-item {
-      border: 1px solid var(--color-border, #e2e8e4);
+      border: 1px solid var(--color-border, #E8F0FE);
       border-radius: 10px;
       overflow: hidden;
       transition: border-color 0.15s;
@@ -71,7 +71,7 @@
       gap: 12px;
       transition: background 0.15s;
     }
-    .faq-q:hover { background: var(--color-bg, #f4f8f5); }
+    .faq-q:hover { background: var(--color-bg, #EFF6FF); }
     .faq-q:focus-visible {
       outline: 2px solid var(--color-primary);
       outline-offset: -2px;
@@ -103,11 +103,11 @@
 
     /* Dark mode */
     @media (prefers-color-scheme: dark) {
-      .faq-title { color: #e2f0e8; }
+      .faq-title { color: #EFF6FF; }
       .faq-item { border-color: #2a3a30; }
-      .faq-q { color: #e2f0e8; }
+      .faq-q { color: #EFF6FF; }
       .faq-q:hover { background: #1a2420; }
-      .faq-a { color: #9cb8a8; }
+      .faq-a { color: #93A3B8; }
     }
   `;
 

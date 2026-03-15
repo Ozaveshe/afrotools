@@ -188,7 +188,7 @@
 
     navigator.clipboard.writeText(text).then(function() {
       var originalHTML = button.innerHTML;
-      button.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#5ddb9e" stroke-width="2" stroke-linecap="round"><path d="M3 8l3.5 3.5L13 5"/></svg>';
+      button.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#007AFF" stroke-width="2" stroke-linecap="round"><path d="M3 8l3.5 3.5L13 5"/></svg>';
       button.style.color = 'var(--color-primary)';
 
       setTimeout(function() {

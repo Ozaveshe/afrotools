@@ -39,11 +39,11 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7;color:#1d1d1f;-webkit-font-smoothing:antialiased}
 .hero{background:linear-gradient(160deg,#0d1117 0%,#0a1628 55%,#111827 100%);padding:64px 0 52px;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;top:-80px;right:-60px;width:400px;height:400px;background:radial-gradient(circle,rgba(93,219,158,.15) 0%,transparent 70%);pointer-events:none}
+.hero::before{content:'';position:absolute;top:-80px;right:-60px;width:400px;height:400px;background:radial-gradient(circle,rgba(0,122,255,.15) 0%,transparent 70%);pointer-events:none}
 .hero-inner{max-width:1160px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
 .breadcrumb{display:flex;align-items:center;gap:6px;font-size:0.72rem;color:rgba(255,255,255,.4);margin-bottom:16px}
 .breadcrumb a{color:rgba(255,255,255,.4);text-decoration:none}
-.hero-badge{display:inline-flex;align-items:center;gap:7px;font-size:0.67rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#60b5ff;margin-bottom:14px;padding:4px 12px;background:rgba(93,219,158,.14);border:1px solid rgba(93,219,158,.25);border-radius:100px}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;font-size:0.67rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#60b5ff;margin-bottom:14px;padding:4px 12px;background:rgba(0,122,255,.14);border:1px solid rgba(0,122,255,.25);border-radius:100px}
 .hero h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;color:#f0f6fc;line-height:1.1;letter-spacing:-0.03em;margin-bottom:12px}
 .hero-sub{font-size:0.95rem;color:rgba(255,255,255,.5);max-width:540px;line-height:1.6}
 .layout{max-width:1160px;margin:0 auto;padding:40px 24px 80px;display:grid;grid-template-columns:1fr 360px;gap:32px;align-items:start}
@@ -55,7 +55,7 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
 .field label{display:block;font-size:0.7rem;font-weight:700;color:#6e6e73;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
 .field input,.field select{width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:12px;font-family:inherit;font-size:0.88rem;color:#1d1d1f;background:#fafafa;outline:none;transition:border-color .18s,box-shadow .18s;appearance:none}
 .field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236e6e73' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:36px}
-.field input:focus,.field select:focus{border-color:var(--color-primary);background:#fff;box-shadow:0 0 0 4px rgba(93,219,158,.08)}
+.field input:focus,.field select:focus{border-color:var(--color-primary);background:#fff;box-shadow:0 0 0 4px rgba(0,122,255,.08)}
 .field input::placeholder{color:#c0c0c6}
 .hint{font-size:0.7rem;color:#9ca3af;margin-top:5px}
 .section-divider{height:1px;background:#f0f0f0;margin:20px 0}
@@ -64,7 +64,7 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
 /* ROI results */
 .roi-headline{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
 .roi-big{border-radius:16px;padding:24px;text-align:center;color:#fff}
-.roi-big.positive{background:linear-gradient(135deg,#065f46,#047857)}
+.roi-big.positive{background:linear-gradient(135deg,#1E40AF,#1E40AF)}
 .roi-big.negative{background:linear-gradient(135deg,#7f1d1d,#991b1b)}
 .roi-big-label{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;opacity:.7;margin-bottom:4px}
 .roi-big-val{font-size:2.2rem;font-weight:800;letter-spacing:-0.04em;line-height:1;margin-bottom:4px}
@@ -79,7 +79,7 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
 .year-table td{padding:8px;border-bottom:1px solid #f5f5f7;color:#374151}
 .year-table td:not(:first-child){text-align:right}
 .year-table tr:last-child td{border-bottom:none;font-weight:700;color:#1d1d1f}
-.year-table tr.highlight td{background:#f0fdf4;font-weight:600}
+.year-table tr.highlight td{background:#EFF6FF;font-weight:600}
 /* Comparison */
 .compare-bar-wrap{margin-bottom:24px}
 .compare-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:0.8rem}
@@ -453,7 +453,7 @@ function calculate(){
       <td>${monthlyRent>0?fmt(d.yearRentalNet):'—'}</td>
       <td>${monthlyRent>0?fmt(d.cumulNetIncome):'—'}</td>
       <td>${fmt(d.totalReturnSoFar)}</td>
-      <td style="color:${d.roiSoFar>=0?'#059669':'#dc2626'}">${d.roiSoFar.toFixed(1)}%</td>
+      <td style="color:${d.roiSoFar>=0?'#2563EB':'#dc2626'}">${d.roiSoFar.toFixed(1)}%</td>
     </tr>`).join('');
 
   // Comparison
@@ -469,7 +469,7 @@ function calculate(){
     <div class="compare-bar-row">
       <div class="compare-label">${c.name}</div>
       <div class="compare-bar-bg"><div class="compare-bar-fill" style="width:${Math.max(c.pct/maxPct*100,2)}%;background:${c.color}"></div></div>
-      <div class="compare-val" style="color:${c.pct>=annualisedROI&&c.name!=='This Property'?'#374151':'#059669'}">${c.pct.toFixed(1)}%</div>
+      <div class="compare-val" style="color:${c.pct>=annualisedROI&&c.name!=='This Property'?'#374151':'#2563EB'}">${c.pct.toFixed(1)}%</div>
     </div>`).join('');
 
   // AI insight

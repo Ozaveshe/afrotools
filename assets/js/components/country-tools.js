@@ -99,7 +99,7 @@
     .ct-pill {
       padding: 6px 14px; border-radius: 20px;
       font-size: 0.75rem; font-weight: 600;
-      border: 1px solid var(--color-border, #e2e8e4);
+      border: 1px solid var(--color-border, #E8F0FE);
       background: none; color: var(--color-text, #1a2e22);
       cursor: pointer; font-family: inherit;
       transition: all 0.15s;
@@ -125,7 +125,7 @@
 
     /* Tool card */
     .ct-card {
-      border: 1px solid var(--color-border, #e2e8e4);
+      border: 1px solid var(--color-border, #E8F0FE);
       border-radius: 12px;
       padding: 20px;
       text-decoration: none;
@@ -166,7 +166,7 @@
     .ct-card-meta {
       display: flex; align-items: center; gap: 8px;
       margin-top: 12px; padding-top: 12px;
-      border-top: 1px solid var(--color-border, #e2e8e4);
+      border-top: 1px solid var(--color-border, #E8F0FE);
     }
 
     .ct-badge {
@@ -176,7 +176,7 @@
     }
     .ct-badge.live {
       background: rgba(93, 219, 158, 0.12);
-      color: #2a8a5a;
+      color: #2563EB;
     }
     .ct-badge.new {
       background: rgba(93, 150, 219, 0.12);
@@ -184,7 +184,7 @@
     }
     .ct-badge.coming {
       background: rgba(180, 180, 180, 0.12);
-      color: #6a7a6a;
+      color: #6B7280;
     }
     .ct-badge.pan {
       background: rgba(219, 180, 93, 0.10);
@@ -218,13 +218,13 @@
 
     /* Dark mode */
     @media (prefers-color-scheme: dark) {
-      .ct-title { color: #e2f0e8; }
+      .ct-title { color: #EFF6FF; }
       .ct-card { border-color: #2a3a30; background: #111a14; }
       .ct-card:hover { border-color: var(--color-primary); box-shadow: 0 4px 20px rgba(93, 219, 158, 0.06); }
-      .ct-card-name { color: #e2f0e8; }
-      .ct-card-desc { color: #9cb8a8; }
+      .ct-card-name { color: #EFF6FF; }
+      .ct-card-desc { color: #93A3B8; }
       .ct-card-meta { border-color: #2a3a30; }
-      .ct-pill { color: #c8dccf; border-color: #2a3a30; }
+      .ct-pill { color: #C4D5E8; border-color: #2a3a30; }
       .ct-pill:hover { background: rgba(93, 219, 158, 0.08); }
       .ct-pill.active { color: var(--color-bg-dark); }
     }

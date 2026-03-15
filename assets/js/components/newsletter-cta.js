@@ -27,7 +27,7 @@
       display:flex;align-items:center;gap:14px;flex-wrap:wrap;
     }
     .text{flex:1;min-width:200px;color:#fff;font-size:.85rem;font-weight:600;line-height:1.4}
-    .text span{color:#34d399}
+    .text span{color:#60b5ff}
     .form{display:flex;gap:8px;flex:1;min-width:260px;max-width:400px}
     .inp{
       flex:1;min-width:0;padding:10px 12px;
@@ -42,7 +42,7 @@
       font-size:.78rem;font-weight:700;cursor:pointer;white-space:nowrap;
       transition:background .15s;
     }
-    .btn:hover{background:#00a863}
+    .btn:hover{background:#007AFF}
     .close{
       background:none;border:none;color:#6b7280;cursor:pointer;padding:6px;
       font-size:1.1rem;line-height:1;transition:color .15s;flex-shrink:0;

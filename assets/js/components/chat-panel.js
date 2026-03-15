@@ -13,15 +13,15 @@
     <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <!-- Antenna -->
       <line x1="16" y1="2" x2="16" y2="6" stroke="#60b5ff" stroke-width="1.5" stroke-linecap="round"/>
-      <circle cx="16" cy="1.5" r="1.5" fill="#5ddb9e"/>
+      <circle cx="16" cy="1.5" r="1.5" fill="#007AFF"/>
       <!-- Head -->
       <rect x="5" y="6" width="22" height="18" rx="5" fill="#1a2e4a"/>
       <rect x="5" y="6" width="22" height="18" rx="5" stroke="#2a4a6e" stroke-width="1"/>
       <!-- Left eye -->
-      <rect x="8.5" y="11" width="5" height="5" rx="1.5" fill="#5ddb9e" opacity=".9"/>
+      <rect x="8.5" y="11" width="5" height="5" rx="1.5" fill="#007AFF" opacity=".9"/>
       <rect x="9.5" y="12" width="2" height="2" rx=".5" fill="#60b5ff"/>
       <!-- Right eye -->
-      <rect x="18.5" y="11" width="5" height="5" rx="1.5" fill="#5ddb9e" opacity=".9"/>
+      <rect x="18.5" y="11" width="5" height="5" rx="1.5" fill="#007AFF" opacity=".9"/>
       <rect x="19.5" y="12" width="2" height="2" rx=".5" fill="#60b5ff"/>
       <!-- Mouth / signal indicator -->
       <rect x="10" y="19.5" width="12" height="1.5" rx=".75" fill="#60b5ff" opacity=".6"/>
@@ -29,8 +29,8 @@
       <rect x="2" y="12" width="3" height="4" rx="1" fill="#1a2e4a" stroke="#2a4a6e" stroke-width=".8"/>
       <rect x="27" y="12" width="3" height="4" rx="1" fill="#1a2e4a" stroke="#2a4a6e" stroke-width=".8"/>
       <!-- Circuit dots -->
-      <circle cx="9" cy="9" r=".8" fill="#5ddb9e" opacity=".4"/>
-      <circle cx="23" cy="9" r=".8" fill="#5ddb9e" opacity=".4"/>
+      <circle cx="9" cy="9" r=".8" fill="#007AFF" opacity=".4"/>
+      <circle cx="23" cy="9" r=".8" fill="#007AFF" opacity=".4"/>
     </svg>`;
 
   class AfroChat extends HTMLElement {
@@ -70,7 +70,7 @@
             padding: 2px;
             background: linear-gradient(
               135deg,
-              #ff0000, #ff7700, #ffee00, #00cc44, #0077ff, #6600cc, #cc00ff, #ff0000
+              #ff0000, #ff7700, #ffee00, #0077ff, #0077ff, #6600cc, #cc00ff, #ff0000
             );
             background-size: 400% 400%;
             animation: rainbow-shift 5s linear infinite;
@@ -123,7 +123,7 @@
             font-size: 0.58rem;
             font-weight: 800;
             color: #60b5ff;
-            background: rgba(93,219,158,.18);
+            background: rgba(0,122,255,.18);
             padding: 2px 8px;
             border-radius: 100px;
             letter-spacing: .06em;
@@ -135,8 +135,8 @@
             width: 7px;
             height: 7px;
             border-radius: 50%;
-            background: #22c55e;
-            box-shadow: 0 0 6px #22c55e;
+            background: #3B82F6;
+            box-shadow: 0 0 6px #3B82F6;
             animation: pulse 2.2s ease-in-out infinite;
             flex-shrink: 0;
           }
@@ -238,7 +238,7 @@
             transition: border-color .18s;
           }
           .chat-input::placeholder { color: #30363d; }
-          .chat-input:focus { border-color: rgba(93,219,158,.6); }
+          .chat-input:focus { border-color: rgba(0,122,255,.6); }
           .chat-send {
             background: var(--color-primary);
             color: #fff;

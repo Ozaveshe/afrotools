@@ -16,7 +16,7 @@ class AfroRelatedTools extends HTMLElement {
   // Per-category visual identity (matches tool-registry.js category values)
   _cat(c) {
     return ({
-      'african':           { gradient:'linear-gradient(145deg,#005731 0%,var(--color-accent) 100%)', pill:'#d1fae5', pillTxt:'#064e3b', label:'Uniquely African'  },
+      'african':           { gradient:'linear-gradient(145deg,#1E3A5F 0%,var(--color-accent) 100%)', pill:'#DBEAFE', pillTxt:'#1E40AF', label:'Uniquely African'  },
       'education':         { gradient:'linear-gradient(145deg,#b45309 0%,#f59e0b 100%)', pill:'#fef3c7', pillTxt:'#92400e', label:'Education'         },
       'financial':         { gradient:'linear-gradient(145deg,#1d4ed8 0%,#3b82f6 100%)', pill:'#dbeafe', pillTxt:'#1e40af', label:'Finance'           },
       'document-pdf':      { gradient:'linear-gradient(145deg,#6d28d9 0%,#8b5cf6 100%)', pill:'#ede9fe', pillTxt:'#5b21b6', label:'PDF & Docs'        },
@@ -24,10 +24,10 @@ class AfroRelatedTools extends HTMLElement {
       'data-productivity': { gradient:'linear-gradient(145deg,#0369a1 0%,#0ea5e9 100%)', pill:'#e0f2fe', pillTxt:'#0c4a6e', label:'Productivity'     },
       'health':            { gradient:'linear-gradient(145deg,#9d174d 0%,#ec4899 100%)', pill:'#fce7f3', pillTxt:'#831843', label:'Health'            },
       'legal':             { gradient:'linear-gradient(145deg,#92400e 0%,#d97706 100%)', pill:'#fef3c7', pillTxt:'#78350f', label:'Legal'             },
-      'ecommerce':         { gradient:'linear-gradient(145deg,#047857 0%,#10b981 100%)', pill:'#d1fae5', pillTxt:'#065f46', label:'E-Commerce'        },
+      'ecommerce':         { gradient:'linear-gradient(145deg,#1E40AF 0%,#3B82F6 100%)', pill:'#DBEAFE', pillTxt:'#1E40AF', label:'E-Commerce'        },
       'image-design':      { gradient:'linear-gradient(145deg,#312e81 0%,#6366f1 100%)', pill:'#e0e7ff', pillTxt:'#3730a3', label:'Design'            },
       'developer':         { gradient:'linear-gradient(145deg,#164e63 0%,#0ea5e9 100%)', pill:'#cffafe', pillTxt:'#155e75', label:'Developer Tools'   },
-      'language':          { gradient:'linear-gradient(145deg,#14532d 0%,#22c55e 100%)', pill:'#dcfce7', pillTxt:'#15803d', label:'Language'          },
+      'language':          { gradient:'linear-gradient(145deg,#1E3A5F 0%,#3B82F6 100%)', pill:'#DBEAFE', pillTxt:'#1E40AF', label:'Language'          },
       // legacy keys kept for backwards compat
       'salary-tax':        { gradient:'linear-gradient(145deg,#1d4ed8 0%,#3b82f6 100%)', pill:'#dbeafe', pillTxt:'#1e40af', label:'Salary & Tax'     },
       'pdf-docs':          { gradient:'linear-gradient(145deg,#6d28d9 0%,#8b5cf6 100%)', pill:'#ede9fe', pillTxt:'#5b21b6', label:'PDF & Docs'        },
@@ -132,10 +132,10 @@ class AfroRelatedTools extends HTMLElement {
           white-space: nowrap;
           padding: 8px 18px;
           border-radius: 980px;
-          background: rgba(93,219,158,.08);
+          background: rgba(0,122,255,.08);
           transition: background .18s;
         }
-        .all-link:hover { background: rgba(93,219,158,.16); }
+        .all-link:hover { background: rgba(0,122,255,.16); }
 
         /* ── Card grid ── */
         .grid {

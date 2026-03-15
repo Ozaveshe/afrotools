@@ -46,13 +46,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root {
-    --calc-accent: #12AD2B;
+    --calc-accent: #2563EB;
     --calc-accent-rgb: 18,173,43;
-    --calc-accent-subtle: #12AD2B12;
+    --calc-accent-subtle: #2563EB12;
     --calc-gold: #f5d76e;
     --calc-gold-rgb: 245,215,110;
     --dj-blue:   #6AB2E7;   /* Djibouti flag blue  */
-    --dj-green:  #12AD2B;   /* Djibouti flag green */
+    --dj-green:  #2563EB;   /* Djibouti flag green */
     --dj-red:    #D7141A;   /* Djibouti flag red   */
     --dj-black:  #111827;
     --dj-dark:   #0a2c50;
@@ -354,9 +354,9 @@ function setChart(type,btn){CHART_TYPE=type;document.querySelectorAll('.chart-ta
 
 function renderChart(type){
   if(!RESULT)return;const R=RESULT;const canvas=document.getElementById('mainChart');if(CHART){CHART.destroy();CHART=null;}
-  if(type==='donut'){CHART=new Chart(canvas,{type:'doughnut',data:{labels:['Take-Home','IRPP','Social'],datasets:[{data:[R.net,R.irpp,R.social],backgroundColor:['#FFD700','#12AD2B','#6AB2E7'],borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11,weight:'600'},padding:12}}}}});}
-  else if(type==='bar'){const bands=R.bands.filter(b=>b.tax>0);if(!bands.length)return;CHART=new Chart(canvas,{type:'bar',data:{labels:bands.map(b=>(b.rate*100)+'%'),datasets:[{label:'Tax',data:bands.map(b=>b.tax),backgroundColor:'#12AD2B',borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'DJF'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid:{color:'#eaf5ec'}},x:{ticks:{font:{size:10,weight:'600'}}}}}});}
-  else if(type==='employer'){CHART=new Chart(canvas,{type:'bar',data:{labels:['Take-Home','IRPP','Social','Emp Social'],datasets:[{label:'DJF',data:[R.net,R.irpp,R.social,R.empSocial],backgroundColor:['#FFD700','#12AD2B','#6AB2E7','#0077aa'],borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'DJF'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid:{color:'#eaf5ec'}},x:{ticks:{font:{size:9,weight:'600'}}}}}});}
+  if(type==='donut'){CHART=new Chart(canvas,{type:'doughnut',data:{labels:['Take-Home','IRPP','Social'],datasets:[{data:[R.net,R.irpp,R.social],backgroundColor:['#FFD700','#2563EB','#6AB2E7'],borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11,weight:'600'},padding:12}}}}});}
+  else if(type==='bar'){const bands=R.bands.filter(b=>b.tax>0);if(!bands.length)return;CHART=new Chart(canvas,{type:'bar',data:{labels:bands.map(b=>(b.rate*100)+'%'),datasets:[{label:'Tax',data:bands.map(b=>b.tax),backgroundColor:'#2563EB',borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'DJF'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid:{color:'#EFF6FF'}},x:{ticks:{font:{size:10,weight:'600'}}}}}});}
+  else if(type==='employer'){CHART=new Chart(canvas,{type:'bar',data:{labels:['Take-Home','IRPP','Social','Emp Social'],datasets:[{label:'DJF',data:[R.net,R.irpp,R.social,R.empSocial],backgroundColor:['#FFD700','#2563EB','#6AB2E7','#0077aa'],borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'DJF'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid:{color:'#EFF6FF'}},x:{ticks:{font:{size:9,weight:'600'}}}}}});}
 }
 
 function openPdfModal(){if(!RESULT)return;document.getElementById('pdfModal').classList.add('on');document.getElementById('modalForm').style.display='block';document.getElementById('modalSuccess').style.display='none';}
