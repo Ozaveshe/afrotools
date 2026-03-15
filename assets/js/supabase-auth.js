@@ -74,77 +74,19 @@
     try {
       await loadSDK();
 
-      // Disable detectSessionInUrl to avoid race condition where INITIAL_SESSION
-      // fires before the PKCE code exchange completes. We handle it manually below.
+      // detectSessionInUrl: true — Supabase v2 automatically handles both
+      // PKCE (?code=) and implicit (#access_token=) redirects before firing
+      // INITIAL_SESSION, so no manual URL processing is needed.
       _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
         auth: {
           autoRefreshToken: true,
           persistSession: true,
-          detectSessionInUrl: false,
+          detectSessionInUrl: true,
           flowType: 'pkce',
           storage: window.localStorage
         }
       });
 
-      // Manually exchange PKCE code if present in URL — do this BEFORE setting
-      // up onAuthStateChange so the session exists when INITIAL_SESSION fires.
-      var urlParams = new URLSearchParams(window.location.search);
-      var code = urlParams.get('code');
-      if (code) {
-        console.log('[AfroAuth] PKCE code detected, exchanging...');
-        try {
-          var exchangeResult = await _sb.auth.exchangeCodeForSession(code);
-          if (exchangeResult.error) {
-            console.warn('[AfroAuth] Code exchange failed:', exchangeResult.error.message);
-          } else {
-            console.log('[AfroAuth] Code exchange succeeded');
-          }
-        } catch (e) {
-          console.warn('[AfroAuth] Code exchange error:', e);
-        }
-        // Clean auth params from URL regardless of outcome
-        window.history.replaceState({}, '', window.location.pathname);
-      }
-
-      // Also handle implicit-flow hash fragments (#access_token=...) which
-      // arrive from Google OAuth or email-confirmation redirects when the
-      // Supabase project uses the implicit grant type.
-      var hash = window.location.hash;
-      if (hash && hash.indexOf('access_token=') > -1) {
-        console.log('[AfroAuth] Hash fragment token detected, setting session...');
-        try {
-          var hashParams = new URLSearchParams(hash.substring(1));
-          var accessToken = hashParams.get('access_token');
-          var refreshToken = hashParams.get('refresh_token');
-          if (accessToken && refreshToken) {
-            var sessionResult = await _sb.auth.setSession({
-              access_token: accessToken,
-              refresh_token: refreshToken
-            });
-            if (sessionResult.error) {
-              console.warn('[AfroAuth] Hash session failed:', sessionResult.error.message);
-            } else {
-              console.log('[AfroAuth] Hash session set successfully');
-            }
-          } else if (accessToken) {
-            // Only access_token present (some OAuth/email flows) — validate via getUser
-            console.log('[AfroAuth] Only access_token in hash, validating via getUser...');
-            var userResult = await _sb.auth.getUser(accessToken);
-            if (!userResult.error && userResult.data && userResult.data.user) {
-              console.log('[AfroAuth] User validated from access_token');
-              _user = userResult.data.user;
-            } else {
-              console.warn('[AfroAuth] getUser from access_token failed:', userResult.error);
-            }
-          }
-        } catch (e) {
-          console.warn('[AfroAuth] Hash session error:', e);
-        }
-        // Clean hash from URL to prevent token exposure
-        window.history.replaceState({}, '', window.location.pathname);
-      }
-
-      // Now set up the auth state listener — session is already available if code exchange worked
       _sb.auth.onAuthStateChange(async function (event, session) {
         console.log('[AfroAuth] Event:', event, session ? '(session found)' : '(no session)');
 
