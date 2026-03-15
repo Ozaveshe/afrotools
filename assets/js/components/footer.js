@@ -309,7 +309,10 @@
               <div>
                 <div class="nl-eyebrow">${nlEyebrow}</div>
                 <div class="nl-title">${nlTitle}</div>
-                <form class="nl-form" name="newsletter" data-netlify="true">
+                <form class="nl-form" name="newsletter" data-netlify="true" netlify-honeypot="bot-field" action="/thank-you/">
+                  <input type="hidden" name="form-name" value="newsletter">
+                  <p style="display:none"><input name="bot-field"></p>
+                  <input type="hidden" name="source" value="footer">
                   <input class="nl-input" type="email" name="email" placeholder="${ph}" required aria-label="Email address">
                   <button class="nl-btn" type="submit">${btnLbl}</button>
                 </form>
@@ -334,8 +337,8 @@
             <div class="bottom">
               <p class="copy">© ${YEAR} AfroTools.com</p>
               <div class="legal">
-                <a href="/privacy-policy">${fr ? 'Confidentialité' : 'Privacy'}</a>
-                <a href="/terms-of-use">${fr ? 'Conditions' : 'Terms'}</a>
+                <a href="/privacy/">${fr ? 'Confidentialité' : 'Privacy'}</a>
+                <a href="/terms/">${fr ? 'Conditions' : 'Terms'}</a>
                 <a href="/sitemap.xml">Sitemap</a>
                 <a href="/contact/">Contact</a>
               </div>

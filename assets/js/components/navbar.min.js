@@ -534,6 +534,7 @@
               <li><a href="/african/" class="lnk">African</a></li>
               <li><a href="/education/" class="lnk">Education</a></li>
               <li><a href="/blog/" class="lnk">Blog</a></li>
+              <li><a href="/pro/" class="lnk" style="color:#F5A623;font-weight:700">Pro</a></li>
             </ul>
 
             <div class="right">
