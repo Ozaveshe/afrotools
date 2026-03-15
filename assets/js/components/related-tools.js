@@ -111,7 +111,7 @@ class AfroRelatedTools extends HTMLElement {
           font-weight: 700;
           letter-spacing: .1em;
           text-transform: uppercase;
-          color: #0071E3;
+          color: #5ddb9e;
           margin-bottom: 6px;
         }
         .title {
@@ -127,15 +127,15 @@ class AfroRelatedTools extends HTMLElement {
           gap: 5px;
           font-size: 0.85rem;
           font-weight: 600;
-          color: #0071E3;
+          color: #5ddb9e;
           text-decoration: none;
           white-space: nowrap;
           padding: 8px 18px;
           border-radius: 980px;
-          background: rgba(0,113,227,.08);
+          background: rgba(93,219,158,.08);
           transition: background .18s;
         }
-        .all-link:hover { background: rgba(0,113,227,.16); }
+        .all-link:hover { background: rgba(93,219,158,.16); }
 
         /* ── Card grid ── */
         .grid {
@@ -246,10 +246,10 @@ class AfroRelatedTools extends HTMLElement {
         .cta-btn {
           font-size: 0.78rem;
           font-weight: 600;
-          color: #0071E3;
+          color: #5ddb9e;
         }
         .cta-arrow {
-          color: #0071E3;
+          color: #5ddb9e;
           transition: transform .2s;
         }
         .card:hover .cta-arrow { transform: translateX(4px); }

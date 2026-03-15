@@ -509,7 +509,7 @@ slider.addEventListener('input', function() {
 function updateSliderFill(el) {
   const min = parseInt(el.min), max = parseInt(el.max), val = parseInt(el.value);
   const pctFill = ((val - min) / (max - min)) * 100;
-  el.style.background = `linear-gradient(to right, var(--color-brand,#0071E3) 0%, var(--color-brand,#0071E3) ${pctFill}%, #cfe0d8 ${pctFill}%, #cfe0d8 100%)`;
+  el.style.background = `linear-gradient(to right, var(--color-brand,#5ddb9e) 0%, var(--color-brand,#5ddb9e) ${pctFill}%, #cfe0d8 ${pctFill}%, #cfe0d8 100%)`;
 }
 updateSliderFill(slider);
 
@@ -954,7 +954,7 @@ function setChart(type, btn) {
   renderChart(type);
 }
 
-const CHART_COLORS = ['#0071E3', '#c0392b', '#7ec8e3', '#F5A623', '#5ddb9e', '#9b59b6'];
+const CHART_COLORS = ['#5ddb9e', '#c0392b', '#7ec8e3', '#F5A623', '#5ddb9e', '#9b59b6'];
 
 function renderChart(type) {
   if (!RESULT || !window.Chart) return;
@@ -976,7 +976,7 @@ function renderChart(type) {
       type: 'bar',
       data: {
         labels: bands.map(b => pct(b.rate)),
-        datasets: [{ label: 'Tax (₦)', data: bands.map(b => b.amount), backgroundColor: '#0071E3', borderRadius: 5 }]
+        datasets: [{ label: 'Tax (₦)', data: bands.map(b => b.amount), backgroundColor: '#5ddb9e', borderRadius: 5 }]
       },
       options: {
         responsive: true, maintainAspectRatio: false,
@@ -994,7 +994,7 @@ function renderChart(type) {
         labels: ['Take-Home', 'Income Tax', 'Statutory'],
         datasets: [
           { label: 'PITA 2025', data: [pitaR.netAnnual, pitaR.tax, pitaR.statutory], backgroundColor: '#F5A623', borderRadius: 4 },
-          { label: 'NTA 2026', data: [ntaR.netAnnual, ntaR.tax, ntaR.statutory], backgroundColor: '#0071E3', borderRadius: 4 }
+          { label: 'NTA 2026', data: [ntaR.netAnnual, ntaR.tax, ntaR.statutory], backgroundColor: '#5ddb9e', borderRadius: 4 }
         ]
       },
       options: {
@@ -1006,7 +1006,7 @@ function renderChart(type) {
   } else if (type === 'waterfall') {
     // Stacked horizontal bar showing income flowing through bands
     const bands = RESULT.bandBreakdown.filter(b => b.income > 0);
-    const bandColors = ['#5ddb9e', '#0071E3', '#7ec8e3', '#F5A623', '#e67e22', '#c0392b'];
+    const bandColors = ['#5ddb9e', '#5ddb9e', '#7ec8e3', '#F5A623', '#e67e22', '#c0392b'];
     CHART = new Chart(canvas, {
       type: 'bar',
       data: {

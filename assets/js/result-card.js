@@ -48,14 +48,14 @@
     const grid = document.createElement('div');
     grid.style.cssText = `
       position:absolute;inset:0;pointer-events:none;
-      background-image:linear-gradient(rgba(0,113,227,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(0,113,227,.06) 1px,transparent 1px);
+      background-image:linear-gradient(rgba(93,219,158,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(93,219,158,.06) 1px,transparent 1px);
       background-size:44px 44px;
     `;
     card.appendChild(grid);
 
     // Radial glow
     const glow = document.createElement('div');
-    glow.style.cssText = `position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 60% 50% at 50% 30%,rgba(0,113,227,.15) 0%,transparent 70%);`;
+    glow.style.cssText = `position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 60% 50% at 50% 30%,rgba(93,219,158,.15) 0%,transparent 70%);`;
     card.appendChild(glow);
 
     // Content wrapper
@@ -68,7 +68,7 @@
     logoRow.innerHTML = `
       <div style="display:flex;align-items:center;gap:10px;">
         <div style="width:36px;height:36px;background:#0a1a10;border:2px solid rgba(0,200,115,.3);border-radius:8px;display:flex;align-items:center;justify-content:center;">
-          <div style="width:12px;height:12px;background:#0071E3;transform:rotate(45deg);"></div>
+          <div style="width:12px;height:12px;background:#5ddb9e;transform:rotate(45deg);"></div>
         </div>
         <span style="font-size:18px;font-weight:800;letter-spacing:-0.02em;color:#fff;">AfroTools</span>
       </div>
@@ -84,7 +84,7 @@
 
     // Value
     const value = document.createElement('div');
-    value.style.cssText = 'font-size:72px;font-weight:800;color:#60B5FF;letter-spacing:-0.03em;line-height:1;margin-bottom:16px;';
+    value.style.cssText = 'font-size:72px;font-weight:800;color:#5ddb9e;letter-spacing:-0.03em;line-height:1;margin-bottom:16px;';
     value.textContent = opts.value || '—';
     content.appendChild(value);
 

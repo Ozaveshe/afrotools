@@ -59,7 +59,7 @@
   // Brand colors
   const COLORS = {
     dark: [15, 23, 42],       // #0f172a
-    brand: [0, 113, 227],     // #0071E3
+    brand: [93, 219, 158],    // #5ddb9e
     green: [93, 219, 158],    // #5ddb9e
     red: [192, 57, 43],       // #c0392b
     text: [17, 24, 39],       // #111827

@@ -56,7 +56,7 @@
         #afro-pwa-banner .pwa-text{flex:1;color:#d1d5db;font-size:.85rem;line-height:1.4}
         #afro-pwa-banner .pwa-text strong{color:#fff;display:block;font-size:.9rem}
         #afro-pwa-banner .pwa-btn{padding:.5rem 1rem;border-radius:8px;border:none;font-weight:600;font-size:.8rem;cursor:pointer;font-family:inherit}
-        #afro-pwa-banner .pwa-install{background:#0071E3;color:#fff}
+        #afro-pwa-banner .pwa-install{background:#5ddb9e;color:#fff}
         #afro-pwa-banner .pwa-install:hover{background:#00a863}
         #afro-pwa-banner .pwa-close{background:transparent;color:#6b7280;font-size:1.1rem;padding:.25rem .5rem}
       </style>

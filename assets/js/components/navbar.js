@@ -9,7 +9,7 @@
     {
       id: 'financial', label: 'Salary & Tax', icon: '💰',
       desc: 'PAYE, income tax, take-home pay',
-      href: '/salary-tax/', color: '#e8f0fd', accent: '#0071E3',
+      href: '/salary-tax/', color: '#e8f0fd', accent: '#5ddb9e',
       tools: []
     },
     {
@@ -86,11 +86,11 @@
   ];
 
   const MARK = `<svg viewBox="0 0 68 68" fill="none" xmlns="http://www.w3.org/2000/svg" style="height:30px;width:30px;flex-shrink:0">
-    <polygon points="34,20 48,34 34,48 20,34" fill="#0071E3"/>
+    <polygon points="34,20 48,34 34,48 20,34" fill="#5ddb9e"/>
     <polygon points="34,2  44,14 34,20 24,14" fill="#F5A623"/>
     <polygon points="34,48 44,60 34,68 24,60" fill="#0047AB"/>
-    <polygon points="2,24  14,34 2,44  -10,34" fill="#60B5FF" opacity="0.7"/>
-    <polygon points="52,24 64,34 52,44 40,34"  fill="#60B5FF" opacity="0.55"/>
+    <polygon points="2,24  14,34 2,44  -10,34" fill="#5ddb9e" opacity="0.7"/>
+    <polygon points="52,24 64,34 52,44 40,34"  fill="#5ddb9e" opacity="0.55"/>
   </svg>`;
 
   const CSS = `
@@ -122,7 +122,7 @@
       text-decoration: none; flex-shrink: 0; margin-right: 12px;
     }
     .logo-name { font-size: 1rem; font-weight: 800; letter-spacing: 0.02em; color: #111827; }
-    .logo-name b { color: #0071E3; }
+    .logo-name b { color: #5ddb9e; }
     .logo-tag { font-size: 0.44rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #9ca3af; display: block; margin-top: 2px; }
 
     /* NAV LINKS */
@@ -138,9 +138,9 @@
       transition: color 0.13s, background 0.13s;
       min-height: 40px;
     }
-    .lnk:hover, .lnk.open { color: #0071E3; background: #EEF4FF; }
+    .lnk:hover, .lnk.open { color: #5ddb9e; background: #EEF4FF; }
     .chev { width: 7px; height: 4px; flex-shrink: 0; opacity: 0.4; transition: transform 0.18s, opacity 0.13s; }
-    .lnk.open .chev { transform: rotate(180deg); opacity: 1; color: #0071E3; }
+    .lnk.open .chev { transform: rotate(180deg); opacity: 1; color: #5ddb9e; }
 
     /* MEGA MENU */
     .mega {
@@ -178,7 +178,7 @@
       display: flex; align-items: center; gap: 9px;
       text-decoration: none; cursor: pointer;
     }
-    .mega-col:hover { border-color: var(--col-accent, #0071E3); background: #f0f7ff; }
+    .mega-col:hover { border-color: var(--col-accent, #5ddb9e); background: #f0f7ff; }
 
     .mega-col-icon {
       width: 34px; height: 34px; border-radius: 8px;
@@ -195,7 +195,7 @@
       display: flex; align-items: center; justify-content: space-between;
     }
     .mega-footer-note { font-size: 0.68rem; color: #9ca3af; font-weight: 500; }
-    .mega-footer-lnk { font-size: 0.72rem; font-weight: 700; color: #0071E3; text-decoration: none; }
+    .mega-footer-lnk { font-size: 0.72rem; font-weight: 700; color: #5ddb9e; text-decoration: none; }
     .mega-footer-lnk:hover { text-decoration: underline; }
 
     /* RIGHT */
@@ -209,16 +209,16 @@
       text-decoration: none; white-space: nowrap;
       transition: all 0.13s; cursor: pointer;
     }
-    .btn-login:hover { border-color: #0071E3; color: #0071E3; }
+    .btn-login:hover { border-color: #5ddb9e; color: #5ddb9e; }
 
     .cta {
       display: inline-flex; align-items: center; gap: 5px;
       padding: 8px 16px; border-radius: 980px;
       font-size: 0.79rem; font-weight: 700;
-      text-decoration: none; background: #0071E3; color: #fff;
+      text-decoration: none; background: #5ddb9e; color: #fff;
       border: none; cursor: pointer; white-space: nowrap;
       transition: background 0.13s, transform 0.1s;
-      box-shadow: 0 1px 4px rgba(0,113,227,0.28);
+      box-shadow: 0 1px 4px rgba(93,219,158,0.28);
     }
     .cta:hover  { background: #005BBF; transform: translateY(-1px); }
     .cta:active { transform: translateY(0); }
@@ -273,7 +273,7 @@
     .mob-cta {
       display: flex; align-items: center; justify-content: center;
       padding: 15px; border-radius: 980px; font-size: 0.95rem; font-weight: 700;
-      text-decoration: none; background: #0071E3; color: white; min-height: 52px;
+      text-decoration: none; background: #5ddb9e; color: white; min-height: 52px;
     }
     .mob-login {
       display: flex; align-items: center; justify-content: center;
@@ -303,7 +303,7 @@
       cursor: pointer; color: #6b7280;
       transition: all 0.13s; flex-shrink: 0;
     }
-    .search-btn:hover { border-color: #0071E3; color: #0071E3; background: #EEF4FF; }
+    .search-btn:hover { border-color: #5ddb9e; color: #5ddb9e; background: #EEF4FF; }
     .search-btn svg { width: 16px; height: 16px; }
     .search-kbd {
       font-size: 0.55rem; font-weight: 600; color: #9ca3af;
@@ -433,7 +433,7 @@
       background: #f9fafb;
       transition: border-color 0.13s;
     }
-    .mob-search-bar:focus-within { border-color: #0071E3; background: #fff; }
+    .mob-search-bar:focus-within { border-color: #5ddb9e; background: #fff; }
     .mob-search-bar svg { width: 16px; height: 16px; color: #9ca3af; flex-shrink: 0; }
     .mob-search-input {
       flex: 1; border: none; outline: none;
@@ -903,7 +903,7 @@
       document.head.appendChild(l);
     }
     if (!document.querySelector('meta[name="theme-color"]')) {
-      const m = document.createElement('meta'); m.name = 'theme-color'; m.content = '#0071E3';
+      const m = document.createElement('meta'); m.name = 'theme-color'; m.content = '#5ddb9e';
       document.head.appendChild(m);
     }
     const s = document.createElement('script'); s.src = '/assets/js/pwa-install.js'; s.defer = true;

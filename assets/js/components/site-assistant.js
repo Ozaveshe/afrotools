@@ -14,18 +14,18 @@
   ═══════════════════════════════════════════════════ */
   const BOT_SVG = `<svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <line x1="16" y1="2" x2="16" y2="6" stroke="#60b5ff" stroke-width="1.5" stroke-linecap="round"/>
-    <circle cx="16" cy="1.5" r="1.5" fill="#0071E3"/>
+    <circle cx="16" cy="1.5" r="1.5" fill="#5ddb9e"/>
     <rect x="5" y="6" width="22" height="18" rx="5" fill="#1a2e4a"/>
     <rect x="5" y="6" width="22" height="18" rx="5" stroke="#2a4a6e" stroke-width="1"/>
-    <rect x="8.5" y="11" width="5" height="5" rx="1.5" fill="#0071E3" opacity=".9"/>
+    <rect x="8.5" y="11" width="5" height="5" rx="1.5" fill="#5ddb9e" opacity=".9"/>
     <rect x="9.5" y="12" width="2" height="2" rx=".5" fill="#60b5ff"/>
-    <rect x="18.5" y="11" width="5" height="5" rx="1.5" fill="#0071E3" opacity=".9"/>
+    <rect x="18.5" y="11" width="5" height="5" rx="1.5" fill="#5ddb9e" opacity=".9"/>
     <rect x="19.5" y="12" width="2" height="2" rx=".5" fill="#60b5ff"/>
     <rect x="10" y="19.5" width="12" height="1.5" rx=".75" fill="#60b5ff" opacity=".6"/>
     <rect x="2" y="12" width="3" height="4" rx="1" fill="#1a2e4a" stroke="#2a4a6e" stroke-width=".8"/>
     <rect x="27" y="12" width="3" height="4" rx="1" fill="#1a2e4a" stroke="#2a4a6e" stroke-width=".8"/>
-    <circle cx="9" cy="9" r=".8" fill="#0071E3" opacity=".4"/>
-    <circle cx="23" cy="9" r=".8" fill="#0071E3" opacity=".4"/>
+    <circle cx="9" cy="9" r=".8" fill="#5ddb9e" opacity=".4"/>
+    <circle cx="23" cy="9" r=".8" fill="#5ddb9e" opacity=".4"/>
   </svg>`;
 
   /* ═══════════════════════════════════════════════════
@@ -166,8 +166,8 @@ IMPORTANT RULES:
             align-items: center;
             justify-content: center;
             box-shadow:
-              0 4px 20px rgba(0,113,227,.5),
-              0 0 0 2px rgba(0,113,227,.3);
+              0 4px 20px rgba(93,219,158,.5),
+              0 0 0 2px rgba(93,219,158,.3);
             transition: transform .22s cubic-bezier(.34,1.56,.64,1), box-shadow .22s ease;
             position: relative;
             padding: 0;
@@ -175,8 +175,8 @@ IMPORTANT RULES:
           .fab:hover {
             transform: scale(1.1);
             box-shadow:
-              0 8px 30px rgba(0,113,227,.6),
-              0 0 0 3px rgba(0,113,227,.25);
+              0 8px 30px rgba(93,219,158,.6),
+              0 0 0 3px rgba(93,219,158,.25);
           }
           .fab:active { transform: scale(.96); }
 
@@ -322,7 +322,7 @@ IMPORTANT RULES:
             font-size: 0.56rem;
             font-weight: 800;
             color: #60b5ff;
-            background: rgba(0,113,227,.18);
+            background: rgba(93,219,158,.18);
             padding: 2px 7px;
             border-radius: 100px;
             letter-spacing: .07em;
@@ -379,7 +379,7 @@ IMPORTANT RULES:
             transition: background .18s, color .18s;
             cursor: pointer;
           }
-          .qn-item:hover { background: rgba(0,113,227,.15); color: #60b5ff; }
+          .qn-item:hover { background: rgba(93,219,158,.15); color: #60b5ff; }
           .qn-icon { font-size: 1rem; line-height:1; }
 
           /* Messages */
@@ -407,9 +407,9 @@ IMPORTANT RULES:
             word-break: break-word;
             position: relative;
           }
-          .msg a { color: #0071E3; text-decoration: underline; font-weight: 600; }
+          .msg a { color: #5ddb9e; text-decoration: underline; font-weight: 600; }
           .msg-user {
-            background: #0071E3;
+            background: #5ddb9e;
             color: #fff;
             align-self: flex-end;
             border-bottom-right-radius: 2px;
@@ -423,7 +423,7 @@ IMPORTANT RULES:
             border: 1px solid var(--msg-ai-border, rgba(255,255,255,.07));
             transition: background .25s, color .25s, border-color .25s;
           }
-          .msg-ai a { color: #0071E3; }
+          .msg-ai a { color: #5ddb9e; }
           .msg-sys {
             background: transparent;
             color: var(--sys-msg-color, #484f58);
@@ -474,12 +474,12 @@ IMPORTANT RULES:
             transition: background .18s, transform .1s;
             margin-top: 6px;
           }
-          .tool-card:hover { background: rgba(0,113,227,.12); transform: translateY(-1px); }
+          .tool-card:hover { background: rgba(93,219,158,.12); transform: translateY(-1px); }
           .tool-card-icon { font-size: 1.4rem; flex-shrink: 0; }
           .tool-card-info { flex: 1; min-width: 0; }
           .tool-card-name { font-weight: 700; font-size: 0.8rem; color: var(--title, #f0f6fc); }
           .tool-card-desc { font-size: 0.68rem; color: var(--sub, #6e7681); margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-          .tool-card-arrow { color: #0071E3; font-weight: 700; font-size: 0.9rem; }
+          .tool-card-arrow { color: #5ddb9e; font-weight: 700; font-size: 0.9rem; }
 
           /* Typing indicator */
           .typing {
@@ -495,7 +495,7 @@ IMPORTANT RULES:
           .typing span {
             width: 5px;
             height: 5px;
-            background: #0071E3;
+            background: #5ddb9e;
             border-radius: 50%;
             animation: dot-bounce .65s infinite alternate;
           }
@@ -512,8 +512,8 @@ IMPORTANT RULES:
             flex-shrink: 0;
           }
           .sug-btn {
-            background: rgba(0,113,227,.1);
-            border: 1px solid rgba(0,113,227,.25);
+            background: rgba(93,219,158,.1);
+            border: 1px solid rgba(93,219,158,.25);
             color: #60b5ff;
             font-size: 0.68rem;
             font-weight: 600;
@@ -524,7 +524,7 @@ IMPORTANT RULES:
             transition: background .18s;
             text-align: left;
           }
-          .sug-btn:hover { background: rgba(0,113,227,.2); }
+          .sug-btn:hover { background: rgba(93,219,158,.2); }
 
           /* Input row */
           .input-row {
@@ -550,9 +550,9 @@ IMPORTANT RULES:
             transition: border-color .18s, background .25s, color .25s;
           }
           .chat-input::placeholder { color: var(--input-placeholder, #30363d); }
-          .chat-input:focus { border-color: rgba(0,113,227,.6); }
+          .chat-input:focus { border-color: rgba(93,219,158,.6); }
           .send-btn {
-            background: #0071E3;
+            background: #5ddb9e;
             color: #fff;
             border: none;
             border-radius: 9px;
@@ -591,12 +591,12 @@ IMPORTANT RULES:
             <div class="p-head">
               <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
                 <line x1="16" y1="2" x2="16" y2="6" stroke="#60b5ff" stroke-width="1.5" stroke-linecap="round"/>
-                <circle cx="16" cy="1.5" r="1.5" fill="#0071E3"/>
+                <circle cx="16" cy="1.5" r="1.5" fill="#5ddb9e"/>
                 <rect x="5" y="6" width="22" height="18" rx="5" fill="#1a2e4a"/>
                 <rect x="5" y="6" width="22" height="18" rx="5" stroke="#2a4a6e" stroke-width="1"/>
-                <rect x="8.5" y="11" width="5" height="5" rx="1.5" fill="#0071E3" opacity=".9"/>
+                <rect x="8.5" y="11" width="5" height="5" rx="1.5" fill="#5ddb9e" opacity=".9"/>
                 <rect x="9.5" y="12" width="2" height="2" rx=".5" fill="#60b5ff"/>
-                <rect x="18.5" y="11" width="5" height="5" rx="1.5" fill="#0071E3" opacity=".9"/>
+                <rect x="18.5" y="11" width="5" height="5" rx="1.5" fill="#5ddb9e" opacity=".9"/>
                 <rect x="19.5" y="12" width="2" height="2" rx=".5" fill="#60b5ff"/>
                 <rect x="10" y="19.5" width="12" height="1.5" rx=".75" fill="#60b5ff" opacity=".6"/>
                 <rect x="2" y="12" width="3" height="4" rx="1" fill="#1a2e4a" stroke="#2a4a6e" stroke-width=".8"/>

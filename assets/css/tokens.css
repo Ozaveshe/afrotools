@@ -1,8 +1,8 @@
 /**
  * AFROTOOLS DESIGN TOKENS
- * ═══════════════════════════════════════════════════════════
+ * =====================================================================
  * The single source of truth for every visual decision.
- * Change a token here → it updates across ALL 1,600+ pages.
+ * Change a token here -> it updates across ALL pages.
  *
  * RULES:
  * 1. Never hardcode a colour in any page CSS. Always use tokens.
@@ -10,39 +10,39 @@
  * 3. Never hardcode spacing values. Use the scale.
  * 4. This file loads first, before any other stylesheet.
  *
- * Architecture: Semantic tokens (--color-brand) reference
- * primitive tokens (--_green-600) so redesigns only need
- * one layer changed, not the entire codebase.
- * ═══════════════════════════════════════════════════════════
+ * NOTE: This file is kept for backward compatibility with 250+ pages.
+ * New pages should import /assets/css/design-system.css instead,
+ * which contains these same tokens plus utilities and components.
+ * =====================================================================
  */
 
 /* ── PRIMITIVE COLOUR PALETTE ─────────────────────────────── */
 :root {
-  /* Green scale */
+  /* Green scale — AfroTools brand is GREEN */
   --_green-900: #002e1c;
   --_green-800: #005f39;
-  --_green-700: #007340;
-  --_green-600: #0071E3;   /* ← AfroTools brand green */
-  --_green-500: #00a863;
-  --_green-400: #0071E3;
-  --_green-300: #60B5FF;
+  --_green-700: #008751;
+  --_green-600: #5ddb9e;   /* AfroTools primary green */
+  --_green-500: #7ee8b5;
+  --_green-400: #a8f0cc;
+  --_green-300: #5ddb9e;
   --_green-200: #a8f0cc;
   --_green-100: #d4f7e8;
   --_green-50:  #eaf5ef;
 
   /* Dark scale */
   --_dark-900: #020d06;
-  --_dark-800: #0a1a10;   /* ← primary dark */
+  --_dark-800: #0c1a10;   /* primary dark bg */
   --_dark-700: #162219;
   --_dark-600: #253028;
   --_dark-500: #324038;
 
   /* Neutral scale */
-  --_neutral-800: #111827;
-  --_neutral-600: #4b5563;
-  --_neutral-400: #9ca3af;
+  --_neutral-800: #0f172a;
+  --_neutral-600: #64748b;
+  --_neutral-400: #94a3af;
   --_neutral-300: #9ab5a4;
-  --_neutral-200: #e5e7eb;
+  --_neutral-200: #e2e8f0;
   --_neutral-100: #f3f4f6;
   --_neutral-50:  #f5f9f6;
   --_neutral-0:   #ffffff;
@@ -54,23 +54,34 @@
   --_gold-100: #fff3cd;
 
   /* Semantic — functional use */
-  --_red-500: #dc3545;
-  --_red-100: #f8d7da;
-  --_blue-500: #0066cc;
+  --_red-500: #ef4444;
+  --_red-100: rgba(239, 68, 68, 0.08);
+  --_blue-500: #3b82f6;
 
   /* ── SEMANTIC COLOUR TOKENS ─────────────────────────────── */
 
-  /* Brand */
+  /* Brand — primary is green */
   --color-brand:          var(--_green-600);
-  --color-brand-dark:     var(--_green-800);
+  --color-brand-dark:     var(--_green-700);
   --color-brand-light:    var(--_green-500);
   --color-brand-pale:     var(--_green-50);
-  --color-brand-subtle:   #c8e6d4;
+  --color-brand-subtle:   rgba(93, 219, 158, 0.15);
+
+  /* Design system aliases */
+  --color-primary:        var(--_green-600);
+  --color-primary-dark:   var(--_green-700);
+  --color-primary-light:  var(--_green-500);
+  --color-primary-pale:   rgba(93, 219, 158, 0.08);
+  --color-primary-rgb:    93, 219, 158;
+  --color-secondary:      var(--_green-700);
+  --color-secondary-rgb:  0, 135, 81;
 
   /* Background */
   --color-bg:             #FAFAF8;
   --color-bg-subtle:      #F3F4F6;
-  --color-bg-dark:        #1a2420;
+  --color-bg-dark:        #0c1a10;
+  --color-bg-dark-alt:    #141c18;
+  --color-bg-card:        #ffffff;
 
   /* Text */
   --color-text:           var(--_neutral-800);
@@ -79,21 +90,27 @@
   --color-text-inverse:   var(--_neutral-0);
 
   /* Border */
-  --color-border:         var(--_neutral-100);
-  --color-border-strong:  var(--_neutral-200);
+  --color-border:         #e2e8f0;
+  --color-border-strong:  #cbd5e1;
+  --color-border-subtle:  #f1f5f9;
 
   /* Accent */
   --color-gold:           var(--_gold-500);
   --color-gold-pale:      var(--_gold-100);
+  --color-gold-rgb:       245, 166, 35;
 
   /* Status */
   --color-error:          var(--_red-500);
   --color-error-pale:     var(--_red-100);
-  --color-success:        var(--_green-600);
-  --color-success-pale:   var(--_green-50);
+  --color-success:        #22c55e;
+  --color-success-pale:   rgba(34, 197, 94, 0.08);
+  --color-warning:        #f59e0b;
+  --color-warning-pale:   rgba(245, 158, 11, 0.08);
+  --color-info:           #3b82f6;
+  --color-info-pale:      rgba(59, 130, 246, 0.08);
 
   /* On-dark surfaces */
-  --color-ondark-primary:   var(--_green-300);    /* #60B5FF */
+  --color-ondark-primary:   var(--_green-300);
   --color-ondark-secondary: rgba(255,255,255,0.6);
   --color-ondark-muted:     rgba(255,255,255,0.35);
   --color-ondark-border:    rgba(255,255,255,0.1);
@@ -101,29 +118,31 @@
   /* ── TYPOGRAPHY TOKENS ──────────────────────────────────── */
 
   /* Font families */
+  --font-heading: 'Instrument Serif', Georgia, serif;
   --font-display: 'DM Sans', system-ui, sans-serif;
   --font-body:    'DM Sans', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', 'Fira Code', monospace;
 
   /* Font sizes — modular scale (1.25 ratio) */
-  --text-xs:   0.64rem;   /*  ~10px */
-  --text-sm:   0.75rem;   /*  12px  */
-  --text-base: 0.875rem;  /*  14px  */
-  --text-md:   1rem;      /*  16px  */
-  --text-lg:   1.125rem;  /*  18px  */
-  --text-xl:   1.25rem;   /*  20px  */
-  --text-2xl:  1.5rem;    /*  24px  */
-  --text-3xl:  1.875rem;  /*  30px  */
-  --text-4xl:  2.25rem;   /*  36px  */
-  --text-5xl:  3rem;      /*  48px  */
+  --text-xs:   0.75rem;    /* 12px */
+  --text-sm:   0.875rem;   /* 14px */
+  --text-base: 1rem;       /* 16px */
+  --text-md:   1rem;       /* 16px — alias */
+  --text-lg:   1.125rem;   /* 18px */
+  --text-xl:   1.25rem;    /* 20px */
+  --text-2xl:  1.5rem;     /* 24px */
+  --text-3xl:  1.875rem;   /* 30px */
+  --text-4xl:  2.25rem;    /* 36px */
+  --text-5xl:  3rem;       /* 48px */
 
-  /* Display sizes (Barlow Condensed) */
+  /* Display sizes */
   --display-sm:  1.75rem;
   --display-md:  2.25rem;
   --display-lg:  3rem;
   --display-xl:  4rem;
 
   /* Font weights */
-  --weight-light:   400;   /* 300 removed — minimum weight is 400 */
+  --weight-light:   400;
   --weight-regular: 400;
   --weight-medium:  500;
   --weight-semibold:600;
@@ -133,9 +152,9 @@
   /* Line heights */
   --leading-tight:   1.1;
   --leading-snug:    1.3;
-  --leading-normal:  1.6;
-  --leading-relaxed: 1.75;
-  --leading-loose:   1.9;
+  --leading-normal:  1.5;
+  --leading-relaxed: 1.65;
+  --leading-loose:   1.8;
 
   /* Letter spacing */
   --tracking-tight:  -0.02em;
@@ -145,54 +164,79 @@
   --tracking-widest: 0.15em;
 
   /* ── SPACING SCALE ──────────────────────────────────────── */
-  --space-1:  0.25rem;   /*  4px */
-  --space-2:  0.5rem;    /*  8px */
-  --space-3:  0.75rem;   /* 12px */
-  --space-4:  1rem;      /* 16px */
-  --space-5:  1.25rem;   /* 20px */
-  --space-6:  1.5rem;    /* 24px */
-  --space-8:  2rem;      /* 32px */
-  --space-10: 2.5rem;    /* 40px */
-  --space-12: 3rem;      /* 48px */
-  --space-16: 4rem;      /* 64px */
-  --space-20: 5rem;      /* 80px */
-  --space-24: 6rem;      /* 96px */
+  --space-xs:  4px;
+  --space-sm:  8px;
+  --space-md:  16px;
+  --space-lg:  24px;
+  --space-xl:  32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+
+  /* Numeric aliases */
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-5:  1.25rem;
+  --space-6:  1.5rem;
+  --space-8:  2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
 
   /* ── LAYOUT TOKENS ──────────────────────────────────────── */
+  --max-width:         1200px;
   --max-width-content: 1200px;
   --max-width-narrow:  800px;
+  --max-width-wide:    1400px;
   --max-width-tool:    1100px;
-
-  /* Nav */
   --nav-height: 62px;
 
   /* ── BORDER RADIUS ──────────────────────────────────────── */
-  --radius-sm:   3px;
-  --radius-md:   5px;
-  --radius-lg:   8px;
-  --radius-xl:   12px;
+  --radius-sm:   6px;
+  --radius-md:   10px;
+  --radius-lg:   16px;
+  --radius-xl:   24px;
   --radius-pill: 100px;
+  --radius-round: 50%;
 
   /* ── SHADOWS ────────────────────────────────────────────── */
-  --shadow-sm:  0 1px 4px rgba(0,0,0,0.06);
-  --shadow-md:  0 4px 16px rgba(0,0,0,0.08);
-  --shadow-lg:  0 8px 32px rgba(0,0,0,0.12);
-  --shadow-brand: 0 4px 20px rgba(0,113,227,0.15);
+  --shadow-sm:    0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md:    0 4px 6px -1px rgba(0,0,0,0.1);
+  --shadow-lg:    0 10px 25px -3px rgba(0,0,0,0.1);
+  --shadow-xl:    0 25px 50px -12px rgba(0,0,0,0.25);
+  --shadow-brand: 0 4px 20px rgba(93,219,158,0.2);
 
   /* ── TRANSITIONS ────────────────────────────────────────── */
-  --transition-fast:   all 0.15s ease;
-  --transition-normal: all 0.22s ease;
-  --transition-slow:   all 0.4s ease;
+  --transition-fast:   150ms ease;
+  --transition-normal: 250ms ease;
+  --transition-slow:   350ms ease;
+  --ease-out-expo:     cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring:       cubic-bezier(0.22, 0.61, 0.36, 1);
 
   /* ── Z-INDEX SCALE ──────────────────────────────────────── */
-  --z-base:    1;
-  --z-raised:  10;
-  --z-overlay: 100;
-  --z-nav:     200;
-  --z-modal:   300;
-  --z-toast:   400;
+  --z-base:     1;
+  --z-raised:   10;
+  --z-dropdown: 50;
+  --z-overlay:  100;
+  --z-nav:      200;
+  --z-modal:    300;
+  --z-toast:    400;
 }
 
 /* ── DARK MODE OVERRIDES ──────────────────────────────────── */
-/* (Future: media query for automatic dark mode) */
-/* @media (prefers-color-scheme: dark) { :root { ... } } */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg:           #0f1612;
+    --color-bg-subtle:    #1a2420;
+    --color-bg-card:      #1a2420;
+    --color-text:         #e2f0e8;
+    --color-text-muted:   #8aaa95;
+    --color-text-subtle:  #6a8a75;
+    --color-border:       #2a3a30;
+    --color-border-strong: #3a4a40;
+    --color-border-subtle: #223028;
+  }
+}
