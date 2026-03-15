@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BOQ Builder | AfroTools</title>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="/assets/js/lib/save-state.js"></script>
+<style>
+:root { --color-primary: #007AFF; --blue-light: #EFF6FF; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#f1f5f9;color:#1e293b;-webkit-font-smoothing:antialiased}
+
+/* Top bar */
+.topbar{background:#fff;border-bottom:1px solid #e5e7eb;padding:0 20px;display:flex;align-items:center;height:52px;gap:12px}
+.topbar-brand{font-size:14px;font-weight:800;color:#111;display:flex;align-items:center;gap:8px;text-decoration:none}
+.topbar-brand span{font-size:16px}
+.topbar-title{font-size:12px;color:#6b7280;font-weight:600;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.topbar-btn{padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:.15s;display:inline-flex;align-items:center;gap:5px}
+.topbar-btn-primary{background:var(--color-primary);color:#fff}.topbar-btn-primary:hover{background:#0059B3}
+.topbar-btn-ghost{background:#f3f4f6;color:#374151;border:1px solid #e5e7eb}.topbar-btn-ghost:hover{background:#e5e7eb}
+.topbar-back{font-size:12px;color:#6b7280;text-decoration:none;font-weight:600;display:flex;align-items:center;gap:4px}
+
+/* Main */
+.main{max-width:1000px;margin:0 auto;padding:24px 20px}
+
+/* Project header */
+.proj-header{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:20px;margin-bottom:20px}
+.proj-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px}
+.proj-field label{font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px}
+.proj-field input,.proj-field select{width:100%;padding:8px 10px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:13px;font-family:inherit;color:#1e293b;outline:none;transition:border-color .15s}
+.proj-field input:focus,.proj-field select:focus{border-color:var(--color-primary)}
+
+/* Category */
+.cat-block{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;margin-bottom:16px;overflow:hidden}
+.cat-header{padding:14px 20px;background:#f8fafc;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none}
+.cat-name{font-size:.9rem;font-weight:800;color:#111827;display:flex;align-items:center;gap:8px}
+.cat-total{font-size:.85rem;font-weight:800;color:var(--color-primary)}
+.cat-body{padding:16px 20px}
+
+/* Items table */
+.items-table{width:100%;border-collapse:collapse;font-size:12px}
+.items-table th{text-align:left;font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.05em;padding:6px 8px;border-bottom:1px solid #e5e7eb}
+.items-table td{padding:4px 8px;border-bottom:1px solid #f1f5f9}
+.items-table input{width:100%;padding:6px 8px;border:1.5px solid #e2e8f0;border-radius:6px;font-size:12px;font-family:inherit;outline:none}
+.items-table input:focus{border-color:var(--color-primary)}
+.items-table .num{text-align:right}
+.items-table .amount{font-weight:700;color:#111;text-align:right;font-size:12px;white-space:nowrap}
+.del-btn{background:none;border:none;color:#dc2626;cursor:pointer;font-size:14px;padding:2px 6px;border-radius:4px;transition:.15s}
+.del-btn:hover{background:#fef2f2}
+.add-item-btn{margin-top:10px;padding:8px 16px;background:transparent;border:1.5px dashed var(--color-primary);border-radius:8px;color:var(--color-primary);font-weight:700;font-size:12px;cursor:pointer;font-family:inherit;width:100%;transition:.15s}
+.add-item-btn:hover{background:var(--blue-light)}
+
+/* Summary */
+.summary{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:20px;margin-top:20px}
+.summary h3{font-size:.9rem;font-weight:800;color:#111;margin-bottom:14px}
+.sum-row{display:flex;justify-content:space-between;padding:8px 0;font-size:13px;border-bottom:1px solid #f1f5f9}
+.sum-row:last-child{border-bottom:none}
+.sum-label{color:#6b7280;font-weight:600}
+.sum-value{font-weight:700;color:#111}
+.sum-row.grand{border-top:2px solid #111;padding-top:12px;margin-top:8px}
+.sum-row.grand .sum-label{font-size:14px;font-weight:800;color:#111}
+.sum-row.grand .sum-value{font-size:16px;font-weight:900;color:var(--color-primary)}
+
+/* Contingency/VAT row */
+.adj-row{display:flex;align-items:center;gap:8px;margin-top:8px}
+.adj-row label{font-size:12px;font-weight:600;color:#6b7280;min-width:100px}
+.adj-row input{width:80px;padding:6px 8px;border:1.5px solid #e2e8f0;border-radius:6px;font-size:12px;font-family:inherit;text-align:right;outline:none}
+
+@media(max-width:768px){
+  .proj-row{grid-template-columns:1fr}
+  .items-table{font-size:11px}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="index.html" class="topbar-back">&larr; Back</a>
+  <a href="index.html" class="topbar-brand"><span>📋</span> BOQ Builder</a>
+  <span class="topbar-title" id="projTitle">Untitled BOQ</span>
+  <button class="topbar-btn topbar-btn-ghost" onclick="exportCSV()">Export CSV</button>
+  <button class="topbar-btn topbar-btn-ghost" onclick="importCSV()">Import CSV</button>
+  <button class="topbar-btn topbar-btn-primary" onclick="exportPDF()">Download PDF</button>
+  <button class="topbar-btn topbar-btn-ghost" onclick="saveBOQ()">Save</button>
+</div>
+
+<div class="main">
+
+  <!-- Project Details -->
+  <div class="proj-header">
+    <div class="proj-row">
+      <div class="proj-field"><label>Project Name</label><input type="text" id="projName" placeholder="e.g., Lekki Phase 2 Residential" oninput="updateTitle()"></div>
+      <div class="proj-field"><label>Client</label><input type="text" id="projClient" placeholder="Client name"></div>
+      <div class="proj-field"><label>Currency</label>
+        <select id="projCurrency" onchange="recalcAll()">
+          <option value="NGN">NGN - Nigerian Naira</option>
+          <option value="KES">KES - Kenyan Shilling</option>
+          <option value="ZAR">ZAR - South African Rand</option>
+          <option value="GHS">GHS - Ghanaian Cedi</option>
+          <option value="USD">USD - US Dollar</option>
+          <option value="GBP">GBP - British Pound</option>
+        </select>
+      </div>
+    </div>
+    <div class="proj-row">
+      <div class="proj-field"><label>Prepared By</label><input type="text" id="projPrepBy" placeholder="Your name / firm"></div>
+      <div class="proj-field"><label>Date</label><input type="date" id="projDate"></div>
+      <div class="proj-field"><label>Reference</label><input type="text" id="projRef" placeholder="BOQ-001"></div>
+    </div>
+  </div>
+
+  <!-- Categories -->
+  <div id="categories"></div>
+
+  <!-- Summary -->
+  <div class="summary">
+    <h3>Summary</h3>
+    <div id="summaryRows"></div>
+    <div class="adj-row">
+      <label>Contingency %</label>
+      <input type="number" id="contingencyPct" value="10" min="0" max="50" step="1" oninput="recalcSummary()">
+    </div>
+    <div class="adj-row">
+      <label>VAT %</label>
+      <input type="number" id="vatPct" value="7.5" min="0" max="50" step="0.5" oninput="recalcSummary()">
+    </div>
+    <div id="summaryTotals"></div>
+  </div>
+
+</div>
+
+<input type="file" id="csvFileInput" accept=".csv" style="display:none" onchange="handleCSVImport(event)">
+
+<script>
+var CATEGORIES = [
+  { id: 'substructure', name: 'Substructure', items: [] },
+  { id: 'superstructure', name: 'Superstructure', items: [] },
+  { id: 'roofing', name: 'Roofing', items: [] },
+  { id: 'finishes', name: 'Finishes', items: [] },
+  { id: 'me', name: 'Mechanical & Electrical', items: [] },
+  { id: 'external', name: 'External Works', items: [] }
+];
+
+var UNITS = ['m2','m3','kg','nr','lm','item','lot','ton','m','set','pair'];
+var CURR_SYMBOLS = {NGN:'\u20A6',KES:'KSh',ZAR:'R',GHS:'GH\u20B5',USD:'$',GBP:'\u00A3'};
+var ss = new SaveState('boq-builder');
+
+// Init
+(function(){
+  document.getElementById('projDate').value = new Date().toISOString().slice(0,10);
+  renderAll();
+
+  // Check for ?id= param
+  var params = new URLSearchParams(window.location.search);
+  var id = params.get('id');
+  if (id) loadBOQ(id);
+})();
+
+function getSymbol() {
+  return CURR_SYMBOLS[document.getElementById('projCurrency').value] || '';
+}
+
+function fmt(n) {
+  return n.toLocaleString('en', {minimumFractionDigits:2, maximumFractionDigits:2});
+}
+
+function updateTitle() {
+  var name = document.getElementById('projName').value || 'Untitled BOQ';
+  document.getElementById('projTitle').textContent = name;
+}
+
+function renderAll() {
+  var container = document.getElementById('categories');
+  container.innerHTML = '';
+  CATEGORIES.forEach(function(cat, ci) {
+    if (!cat.items.length) cat.items.push({desc:'',unit:'m2',qty:'',rate:''});
+    var html = '<div class="cat-block" id="cat-'+cat.id+'">' +
+      '<div class="cat-header" onclick="toggleCat(\''+cat.id+'\')">' +
+      '<div class="cat-name"><span>'+(ci+1)+'.</span> '+cat.name+'</div>' +
+      '<div class="cat-total" id="total-'+cat.id+'">'+getSymbol()+'0.00</div>' +
+      '</div>' +
+      '<div class="cat-body" id="body-'+cat.id+'">' +
+      '<table class="items-table"><thead><tr>' +
+      '<th style="width:40%">Description</th><th style="width:12%">Unit</th>' +
+      '<th style="width:14%" class="num">Quantity</th><th style="width:14%" class="num">Rate</th>' +
+      '<th style="width:16%" class="num">Amount</th><th style="width:4%"></th>' +
+      '</tr></thead><tbody id="items-'+cat.id+'">';
+
+    cat.items.forEach(function(item, ii) {
+      html += itemRow(cat.id, ii, item);
+    });
+
+    html += '</tbody></table>' +
+      '<button class="add-item-btn" onclick="addItem(\''+cat.id+'\')">+ Add Line Item</button>' +
+      '</div></div>';
+    container.innerHTML += html;
+  });
+  recalcAll();
+}
+
+function itemRow(catId, idx, item) {
+  var unitOpts = UNITS.map(function(u){return '<option'+(u===item.unit?' selected':'')+'>'+u+'</option>';}).join('');
+  return '<tr id="row-'+catId+'-'+idx+'">' +
+    '<td><input type="text" value="'+esc(item.desc)+'" placeholder="Item description" onchange="updItem(\''+catId+'\','+idx+',\'desc\',this.value)"></td>' +
+    '<td><select onchange="updItem(\''+catId+'\','+idx+',\'unit\',this.value)" style="width:100%;padding:6px;border:1.5px solid #e2e8f0;border-radius:6px;font-size:12px;font-family:inherit">'+unitOpts+'</select></td>' +
+    '<td><input type="number" class="num" value="'+esc(item.qty)+'" placeholder="0" min="0" step="any" onchange="updItem(\''+catId+'\','+idx+',\'qty\',this.value)"></td>' +
+    '<td><input type="number" class="num" value="'+esc(item.rate)+'" placeholder="0.00" min="0" step="any" onchange="updItem(\''+catId+'\','+idx+',\'rate\',this.value)"></td>' +
+    '<td class="amount" id="amt-'+catId+'-'+idx+'">'+getSymbol()+'0.00</td>' +
+    '<td><button class="del-btn" onclick="delItem(\''+catId+'\','+idx+')" title="Delete">&times;</button></td>' +
+    '</tr>';
+}
+
+function getCat(catId) { return CATEGORIES.find(function(c){return c.id===catId;}); }
+
+function addItem(catId) {
+  var cat = getCat(catId);
+  cat.items.push({desc:'',unit:'m2',qty:'',rate:''});
+  renderAll();
+}
+
+function delItem(catId, idx) {
+  var cat = getCat(catId);
+  if (cat.items.length <= 1) return;
+  cat.items.splice(idx, 1);
+  renderAll();
+}
+
+function updItem(catId, idx, field, val) {
+  var cat = getCat(catId);
+  cat.items[idx][field] = val;
+  recalcAll();
+}
+
+function toggleCat(catId) {
+  var body = document.getElementById('body-'+catId);
+  body.style.display = body.style.display === 'none' ? '' : 'none';
+}
+
+function recalcAll() {
+  CATEGORIES.forEach(function(cat) {
+    var catTotal = 0;
+    cat.items.forEach(function(item, i) {
+      var qty = parseFloat(item.qty) || 0;
+      var rate = parseFloat(item.rate) || 0;
+      var amt = qty * rate;
+      item._amount = amt;
+      var el = document.getElementById('amt-'+cat.id+'-'+i);
+      if (el) el.textContent = getSymbol() + fmt(amt);
+      catTotal += amt;
+    });
+    cat._total = catTotal;
+    var totalEl = document.getElementById('total-'+cat.id);
+    if (totalEl) totalEl.textContent = getSymbol() + fmt(catTotal);
+  });
+  recalcSummary();
+}
+
+function recalcSummary() {
+  var sym = getSymbol();
+  var rows = document.getElementById('summaryRows');
+  var totals = document.getElementById('summaryTotals');
+  var subtotal = 0;
+
+  var html = '';
+  CATEGORIES.forEach(function(cat) {
+    if (cat._total) {
+      html += '<div class="sum-row"><span class="sum-label">'+cat.name+'</span><span class="sum-value">'+sym+fmt(cat._total)+'</span></div>';
+    }
+    subtotal += (cat._total || 0);
+  });
+  rows.innerHTML = html;
+
+  var contPct = parseFloat(document.getElementById('contingencyPct').value) || 0;
+  var vatPct = parseFloat(document.getElementById('vatPct').value) || 0;
+  var contingency = subtotal * contPct / 100;
+  var subtotalPlusCont = subtotal + contingency;
+  var vat = subtotalPlusCont * vatPct / 100;
+  var grand = subtotalPlusCont + vat;
+
+  totals.innerHTML =
+    '<div class="sum-row"><span class="sum-label">Subtotal</span><span class="sum-value">'+sym+fmt(subtotal)+'</span></div>' +
+    (contPct ? '<div class="sum-row"><span class="sum-label">Contingency ('+contPct+'%)</span><span class="sum-value">'+sym+fmt(contingency)+'</span></div>' : '') +
+    (vatPct ? '<div class="sum-row"><span class="sum-label">VAT ('+vatPct+'%)</span><span class="sum-value">'+sym+fmt(vat)+'</span></div>' : '') +
+    '<div class="sum-row grand"><span class="sum-label">Grand Total</span><span class="sum-value">'+sym+fmt(grand)+'</span></div>';
+}
+
+// Save / Load
+var _currentId = null;
+
+function saveBOQ() {
+  var name = document.getElementById('projName').value || 'Untitled BOQ';
+  var entry = ss.save({
+    id: _currentId,
+    title: name,
+    data: {
+      projName: document.getElementById('projName').value,
+      projClient: document.getElementById('projClient').value,
+      projCurrency: document.getElementById('projCurrency').value,
+      projPrepBy: document.getElementById('projPrepBy').value,
+      projDate: document.getElementById('projDate').value,
+      projRef: document.getElementById('projRef').value,
+      contingencyPct: document.getElementById('contingencyPct').value,
+      vatPct: document.getElementById('vatPct').value,
+      categories: CATEGORIES.map(function(c){return {id:c.id,name:c.name,items:c.items.map(function(it){return {desc:it.desc,unit:it.unit,qty:it.qty,rate:it.rate};})};})
+    }
+  });
+  _currentId = entry.id;
+  alert('BOQ saved!');
+}
+
+function loadBOQ(id) {
+  var item = ss.load(id);
+  if (!item || !item.data) return;
+  _currentId = item.id;
+  var d = item.data;
+  document.getElementById('projName').value = d.projName || '';
+  document.getElementById('projClient').value = d.projClient || '';
+  document.getElementById('projCurrency').value = d.projCurrency || 'NGN';
+  document.getElementById('projPrepBy').value = d.projPrepBy || '';
+  document.getElementById('projDate').value = d.projDate || '';
+  document.getElementById('projRef').value = d.projRef || '';
+  document.getElementById('contingencyPct').value = d.contingencyPct || '10';
+  document.getElementById('vatPct').value = d.vatPct || '7.5';
+  if (d.categories) {
+    CATEGORIES = d.categories.map(function(c){return {id:c.id,name:c.name,items:c.items||[{desc:'',unit:'m2',qty:'',rate:''}]};});
+  }
+  updateTitle();
+  renderAll();
+}
+
+// CSV Export
+function exportCSV() {
+  var rows = [['Category','Description','Unit','Quantity','Rate','Amount']];
+  CATEGORIES.forEach(function(cat) {
+    cat.items.forEach(function(it) {
+      if (!it.desc && !it.qty && !it.rate) return;
+      rows.push([cat.name, it.desc, it.unit, it.qty||'0', it.rate||'0', (it._amount||0).toFixed(2)]);
+    });
+  });
+  var csv = rows.map(function(r){return r.map(function(c){return '"'+String(c).replace(/"/g,'""')+'"';}).join(',');}).join('\n');
+  var blob = new Blob([csv], {type:'text/csv'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (document.getElementById('projName').value||'boq')+'.csv';
+  a.click();
+}
+
+// CSV Import
+function importCSV() { document.getElementById('csvFileInput').click(); }
+
+function handleCSVImport(e) {
+  var file = e.target.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(ev) {
+    var lines = ev.target.result.split('\n').filter(function(l){return l.trim();});
+    // Skip header
+    for (var i = 1; i < lines.length; i++) {
+      var cols = lines[i].split(',').map(function(c){return c.replace(/^"|"$/g,'').trim();});
+      if (cols.length < 4) continue;
+      var catName = cols[0].toLowerCase();
+      var cat = CATEGORIES.find(function(c){return c.name.toLowerCase().includes(catName);});
+      if (!cat) cat = CATEGORIES[0];
+      // Remove empty placeholder
+      if (cat.items.length === 1 && !cat.items[0].desc) cat.items = [];
+      cat.items.push({desc:cols[1]||'',unit:cols[2]||'m2',qty:cols[3]||'',rate:cols[4]||''});
+    }
+    renderAll();
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+}
+
+// PDF Export (simple)
+function exportPDF() {
+  // Check email gate
+  if (window.afroEmailGate && !window.afroEmailGate.check()) return;
+
+  var w = window.open('','_blank');
+  var sym = getSymbol();
+  var name = document.getElementById('projName').value || 'BOQ';
+  var client = document.getElementById('projClient').value;
+  var date = document.getElementById('projDate').value;
+  var ref = document.getElementById('projRef').value;
+  var prepBy = document.getElementById('projPrepBy').value;
+
+  var html = '<html><head><title>'+esc(name)+'</title><style>'+
+    'body{font-family:Arial,sans-serif;font-size:11px;color:#333;margin:40px}'+
+    'h1{font-size:18px;margin-bottom:4px}'+
+    '.meta{color:#666;font-size:10px;margin-bottom:20px}'+
+    'table{width:100%;border-collapse:collapse;margin-bottom:16px}'+
+    'th{background:#f0f0f0;text-align:left;padding:6px 8px;border:1px solid #ddd;font-size:10px;text-transform:uppercase}'+
+    'td{padding:5px 8px;border:1px solid #eee}'+
+    '.cat-head{background:#007AFF;color:#fff;font-weight:700;font-size:11px}'+
+    '.num{text-align:right}'+
+    '.total-row{font-weight:700;background:#f9f9f9}'+
+    '.grand{font-size:14px;font-weight:700;border-top:2px solid #333}'+
+    '@media print{body{margin:20px}}'+
+    '</style></head><body>'+
+    '<h1>Bill of Quantities</h1>'+
+    '<div class="meta">'+esc(name)+(client?' | Client: '+esc(client):'')+(date?' | Date: '+date:'')+(ref?' | Ref: '+ref:'')+(prepBy?' | Prepared by: '+esc(prepBy):'')+'</div>'+
+    '<table><thead><tr><th>No.</th><th>Description</th><th>Unit</th><th class="num">Qty</th><th class="num">Rate</th><th class="num">Amount ('+esc(document.getElementById('projCurrency').value)+')</th></tr></thead><tbody>';
+
+  var n = 0, subtotal = 0;
+  CATEGORIES.forEach(function(cat){
+    var hasItems = cat.items.some(function(it){return it.desc||it.qty||it.rate;});
+    if (!hasItems) return;
+    html += '<tr><td class="cat-head" colspan="6">'+esc(cat.name)+'</td></tr>';
+    var catTotal = 0;
+    cat.items.forEach(function(it){
+      if (!it.desc && !it.qty && !it.rate) return;
+      n++;
+      var amt = (parseFloat(it.qty)||0)*(parseFloat(it.rate)||0);
+      catTotal += amt;
+      html += '<tr><td>'+n+'</td><td>'+esc(it.desc)+'</td><td>'+esc(it.unit)+'</td><td class="num">'+(it.qty||'')+'</td><td class="num">'+(it.rate?fmt(parseFloat(it.rate)):'')+'</td><td class="num">'+sym+fmt(amt)+'</td></tr>';
+    });
+    html += '<tr class="total-row"><td colspan="5" style="text-align:right">'+esc(cat.name)+' Subtotal</td><td class="num">'+sym+fmt(catTotal)+'</td></tr>';
+    subtotal += catTotal;
+  });
+
+  var contPct = parseFloat(document.getElementById('contingencyPct').value)||0;
+  var vatPct = parseFloat(document.getElementById('vatPct').value)||0;
+  var cont = subtotal*contPct/100;
+  var vat = (subtotal+cont)*vatPct/100;
+  var grand = subtotal+cont+vat;
+
+  html += '<tr class="total-row"><td colspan="5" style="text-align:right"><strong>Subtotal</strong></td><td class="num"><strong>'+sym+fmt(subtotal)+'</strong></td></tr>';
+  if (contPct) html += '<tr><td colspan="5" style="text-align:right">Contingency ('+contPct+'%)</td><td class="num">'+sym+fmt(cont)+'</td></tr>';
+  if (vatPct) html += '<tr><td colspan="5" style="text-align:right">VAT ('+vatPct+'%)</td><td class="num">'+sym+fmt(vat)+'</td></tr>';
+  html += '<tr class="grand"><td colspan="5" style="text-align:right">GRAND TOTAL</td><td class="num">'+sym+fmt(grand)+'</td></tr>';
+  html += '</tbody></table></body></html>';
+
+  w.document.write(html);
+  w.document.close();
+  setTimeout(function(){w.print();},500);
+}
+
+function esc(s){return s?String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'):'';}
+</script>
+<script src="/assets/js/lib/auto-email-gate.js" defer></script>
+</body>
+</html>
