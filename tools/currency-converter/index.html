@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
@@ -38,11 +38,7 @@
     <link rel="stylesheet" href="/assets/css/global.min.css">
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
             --afro-primary: #0071E3;
@@ -54,7 +50,7 @@
             --afro-success: #22c55e;
             --afro-danger: #ef4444;
             --afro-warning: #f59e0b;
-            --afro-info: #3b82f6;
+            --afro-green: #008751;
         }
 
         body {
@@ -64,21 +60,16 @@
             line-height: 1.6;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
-        /* Hero Section — Apple style */
+        /* Hero */
         .hero {
             background: linear-gradient(135deg, #0a1929 0%, #0d2040 50%, #0d2b5e 100%);
             background-image: radial-gradient(circle at 20% 50%, rgba(0,113,227,0.2) 0%, transparent 55%),
                               radial-gradient(circle at 80% 20%, rgba(96,181,255,0.12) 0%, transparent 45%);
             color: #fff;
-            padding: 64px 20px 56px;
+            padding: 56px 20px 48px;
             text-align: center;
-            margin-bottom: 0;
             position: relative;
             overflow: hidden;
         }
@@ -87,706 +78,270 @@
             background: linear-gradient(90deg, transparent, rgba(96,181,255,0.4), transparent);
         }
         .hero h1 {
-            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-size: clamp(1.6rem, 4vw, 2.6rem);
             font-weight: 800;
-            margin-bottom: 12px;
-            line-height: 1.08;
+            margin-bottom: 10px;
+            line-height: 1.1;
             letter-spacing: -0.03em;
-            color: #fff;
         }
         .hero p {
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: rgba(255,255,255,0.7);
-            margin-bottom: 24px;
-            max-width: 540px;
+            margin-bottom: 20px;
+            max-width: 520px;
             margin-left: auto;
             margin-right: auto;
-            line-height: 1.7;
+            line-height: 1.6;
         }
-
-        .badges {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 0;
-        }
-
+        .badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
         .badge {
-            background: #0071E3;
-            color: #fff;
-            padding: 7px 15px;
+            background: rgba(255,255,255,0.12);
+            color: rgba(255,255,255,0.9);
+            padding: 6px 14px;
             border-radius: 20px;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
-            display: inline-block;
-        }
-        .badge.badge-outline {
-            background: #EFF6FF;
-            color: #0071E3;
-            border: 1.5px solid #BFDBFE;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
-        /* Main Content */
-        .content {
-            margin-bottom: 60px;
-        }
+        /* Content */
+        .content { margin-bottom: 48px; }
 
-        /* Tab Navigation */
-        .tabs {
-            display: flex;
-            gap: 0;
-            border-bottom: 2px solid var(--afro-border);
-            margin-bottom: 40px;
-        }
-
-        .tab-button {
-            background: none;
-            border: none;
-            padding: 15px 30px;
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--afro-text-secondary);
-            cursor: pointer;
-            border-bottom: 3px solid transparent;
-            transition: all 0.3s ease;
-            font-family: 'DM Sans', sans-serif;
-            position: relative;
-        }
-
-        .tab-button:hover {
-            color: var(--afro-primary);
-        }
-
-        .tab-button.active {
-            color: var(--afro-primary);
-            border-bottom-color: var(--afro-primary);
-        }
-
-        .tab-content {
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Form Elements */
-        .form-group {
-            margin-bottom: 25px;
-        }
-
-        .form-label {
-            display: block;
-            font-size: 0.95rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--afro-text-primary);
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 50px 1fr;
-            gap: 15px;
-            align-items: flex-end;
-        }
-
-        .input-wrapper {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .input-group {
-            display: flex;
-            gap: 10px;
-            align-items: stretch;
-        }
-
-        input[type="number"],
-        select {
-            padding: 12px 15px;
-            border: 1.5px solid var(--afro-border);
-            border-radius: 8px;
-            font-size: 1rem;
-            font-family: 'DM Sans', sans-serif;
-            transition: all 0.3s ease;
-            background-color: #ffffff;
-        }
-
-        input[type="number"]:focus,
-        select:focus {
-            outline: none;
-            border-color: var(--afro-primary);
-            box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
-        }
-
-        input[type="number"] {
-            flex: 1;
-        }
-
-        select {
-            flex: 1;
-            cursor: pointer;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23008751' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 12px center;
-            padding-right: 35px;
-            appearance: none;
-        }
-
-        .swap-button {
-            background-color: var(--afro-primary);
-            border: none;
-            color: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            font-weight: 600;
-        }
-
-        .swap-button:hover {
-            background-color: #005BBF;
-            transform: rotate(180deg);
-        }
-
-        .swap-button:active {
-            transform: rotate(180deg) scale(0.95);
-        }
-
-        /* Result Display */
-        .result-box {
-            background-color: var(--afro-light);
-            border: 1.5px solid var(--afro-border);
-            border-radius: 12px;
-            padding: 20px;
-            margin-top: 20px;
-        }
-
-        .result-display {
-            display: flex;
-            align-items: baseline;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .result-amount {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--afro-primary);
-        }
-
-        .result-currency {
-            font-size: 1rem;
-            color: var(--afro-text-secondary);
-            font-weight: 600;
-        }
-
-        .rate-info {
-            font-size: 0.9rem;
-            color: var(--afro-text-secondary);
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid var(--afro-border);
-        }
-
-        /* Bank Rate Comparison */
-        .bank-comparison {
-            background-color: #ffffff;
-            border: 1.5px solid var(--afro-border);
-            border-radius: 12px;
-            padding: 20px;
-            margin-top: 20px;
-        }
-
-        .bank-comparison h3 {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: var(--afro-primary);
-        }
-
-        .comparison-row {
+        /* Status Bar */
+        .status-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 0;
+            padding: 14px 0;
+            margin-bottom: 24px;
             border-bottom: 1px solid var(--afro-border);
         }
-
-        .comparison-row:last-child {
-            border-bottom: none;
+        .status-left { display: flex; align-items: center; gap: 10px; }
+        .status-dot {
+            width: 8px; height: 8px;
+            background-color: var(--afro-success);
+            border-radius: 50%;
         }
-
-        .comparison-label {
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-        }
-
-        .comparison-label-main {
-            font-weight: 600;
-            color: var(--afro-text-primary);
-        }
-
-        .comparison-label-sub {
-            font-size: 0.85rem;
+        .status-dot.error { background-color: var(--afro-danger); }
+        .status-text { font-size: 0.85rem; color: var(--afro-text-secondary); }
+        .refresh-btn {
+            background: none; border: 1.5px solid var(--afro-border);
             color: var(--afro-text-secondary);
+            padding: 8px 16px; border-radius: 8px;
+            cursor: pointer; font-size: 0.85rem; font-weight: 600;
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.2s;
+            display: flex; align-items: center; gap: 6px;
         }
+        .refresh-btn:hover { border-color: var(--afro-primary); color: var(--afro-primary); }
+        .refresh-btn.loading { opacity: 0.5; pointer-events: none; }
 
-        .comparison-value {
-            text-align: right;
+        /* Tabs */
+        .tabs {
+            display: flex; gap: 0;
+            border-bottom: 2px solid var(--afro-border);
+            margin-bottom: 32px;
         }
-
-        .comparison-rate {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--afro-primary);
-        }
-
-        .savings-amount {
-            font-size: 0.9rem;
-            color: var(--afro-success);
-            font-weight: 600;
-        }
-
-        .comparison-note {
-            font-size: 0.85rem;
+        .tab-button {
+            background: none; border: none;
+            padding: 12px 24px;
+            font-size: 0.95rem; font-weight: 600;
             color: var(--afro-text-secondary);
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid var(--afro-border);
-            font-style: italic;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+            font-family: 'DM Sans', sans-serif;
+        }
+        .tab-button:hover { color: var(--afro-primary); }
+        .tab-button.active { color: var(--afro-primary); border-bottom-color: var(--afro-primary); }
+        .tab-content { display: none; animation: fadeIn 0.3s ease; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+        /* Converter Card */
+        .converter-card {
+            background: #fff;
+            border: 1.5px solid var(--afro-border);
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 28px;
         }
 
         /* Quick Pairs */
-        .quick-pairs {
-            margin-bottom: 30px;
-        }
-
-        .quick-pairs h3 {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 12px;
-            color: var(--afro-text-primary);
-        }
-
-        .quick-pairs-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-            gap: 10px;
-        }
-
+        .quick-pairs { margin-bottom: 24px; }
+        .quick-pairs h3 { font-size: 0.9rem; font-weight: 600; margin-bottom: 10px; color: var(--afro-text-secondary); text-transform: uppercase; letter-spacing: 0.05em; }
+        .quick-pairs-grid { display: flex; flex-wrap: wrap; gap: 8px; }
         .quick-pair-btn {
-            background-color: #ffffff;
-            border: 1.5px solid var(--afro-border);
+            background: var(--afro-light); border: 1.5px solid transparent;
             color: var(--afro-text-primary);
-            padding: 12px 15px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 600;
-            font-family: 'DM Sans', sans-serif;
-            transition: all 0.3s ease;
-            text-align: center;
+            padding: 8px 14px; border-radius: 8px;
+            cursor: pointer; font-size: 0.85rem; font-weight: 600;
+            font-family: 'DM Sans', sans-serif; transition: all 0.2s;
         }
+        .quick-pair-btn:hover { border-color: var(--afro-primary); color: var(--afro-primary); background: rgba(0,113,227,0.04); }
+        .quick-pair-btn.active { background: var(--afro-primary); color: #fff; border-color: var(--afro-primary); }
 
-        .quick-pair-btn:hover {
-            border-color: var(--afro-primary);
-            background-color: rgba(0, 113, 227, 0.05);
-            color: var(--afro-primary);
-        }
-
-        .quick-pair-btn.active {
-            background-color: var(--afro-primary);
-            border-color: var(--afro-primary);
-            color: white;
-        }
-
-        /* Refresh Controls */
-        .refresh-controls {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-
-        .refresh-btn {
-            background-color: var(--afro-primary);
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 600;
-            font-family: 'DM Sans', sans-serif;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .refresh-btn:hover {
-            background-color: #005BBF;
-        }
-
-        .refresh-btn.loading {
-            opacity: 0.6;
-            pointer-events: none;
-        }
-
-        .refresh-btn.loading .spinner {
-            display: inline-block;
-            animation: spin 1s linear infinite;
-        }
-
-        .last-updated {
-            font-size: 0.9rem;
-            color: var(--afro-text-secondary);
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background-color: var(--afro-success);
-            border-radius: 50%;
-            display: inline-block;
-        }
-
-        .status-dot.error {
-            background-color: var(--afro-danger);
-        }
-
-        /* Loading Spinner */
-        .spinner {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-top-color: white;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .loading-state {
-            text-align: center;
-            padding: 40px 20px;
-        }
-
-        .loading-state .spinner {
-            border-color: rgba(0, 113, 227, 0.3);
-            border-top-color: var(--afro-primary);
-            width: 40px;
-            height: 40px;
-            border-width: 3px;
-            margin: 0 auto 15px;
-        }
-
-        /* Crypto Tab */
-        .crypto-grid {
+        /* Form */
+        .converter-row {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
+            grid-template-columns: 1fr 48px 1fr;
+            gap: 12px;
+            align-items: end;
+            margin-bottom: 20px;
         }
-
-        .crypto-card {
-            background-color: #ffffff;
+        .field-group label {
+            display: block;
+            font-size: 0.82rem; font-weight: 600;
+            color: var(--afro-text-secondary);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .amount-input, .currency-select {
+            width: 100%;
+            padding: 12px 14px;
             border: 1.5px solid var(--afro-border);
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: 'DM Sans', sans-serif;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background: #fff;
+        }
+        .amount-input:focus, .currency-select:focus {
+            outline: none;
+            border-color: var(--afro-primary);
+            box-shadow: 0 0 0 3px rgba(0,113,227,0.08);
+        }
+        .currency-select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23666' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 32px;
+        }
+        .swap-btn {
+            width: 48px; height: 48px;
+            background: var(--afro-primary);
+            border: none; border-radius: 12px;
+            color: #fff; font-size: 1.2rem;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s;
+            align-self: end;
+        }
+        .swap-btn:hover { background: #005BBF; transform: rotate(180deg); }
+
+        /* Result */
+        .result-box {
+            background: linear-gradient(135deg, #f0f7ff 0%, #f5f5f7 100%);
+            border: 1.5px solid #d0e3f7;
             border-radius: 12px;
             padding: 20px;
-            transition: all 0.3s ease;
+            margin-top: 4px;
+        }
+        .result-main { display: flex; align-items: baseline; gap: 8px; margin-bottom: 8px; }
+        .result-amount { font-size: 1.8rem; font-weight: 800; color: var(--afro-primary); }
+        .result-currency { font-size: 0.95rem; color: var(--afro-text-secondary); font-weight: 600; }
+        .result-rate { font-size: 0.88rem; color: var(--afro-text-secondary); margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid #d0e3f7; }
+
+        /* Bank Comparison */
+        .bank-comparison { margin-top: 0; }
+        .bank-comparison h4 { font-size: 0.92rem; font-weight: 700; color: var(--afro-text-primary); margin-bottom: 14px; }
+        .comparison-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .comp-item {
+            background: #fff;
+            border: 1px solid var(--afro-border);
+            border-radius: 10px;
+            padding: 14px;
+            text-align: center;
+        }
+        .comp-item .comp-label { font-size: 0.75rem; font-weight: 600; color: var(--afro-text-secondary); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.04em; }
+        .comp-item .comp-value { font-size: 1.1rem; font-weight: 700; color: var(--afro-primary); }
+        .comp-item .comp-sub { font-size: 0.75rem; color: var(--afro-text-secondary); margin-top: 2px; }
+        .comp-item.savings .comp-value { color: var(--afro-success); }
+        .comparison-note {
+            font-size: 0.8rem; color: var(--afro-text-secondary); margin-top: 12px;
+            padding-top: 12px; border-top: 1px solid var(--afro-border);
+            font-style: italic; line-height: 1.5;
         }
 
-        .crypto-card:hover {
-            border-color: var(--afro-primary);
-            box-shadow: 0 4px 12px rgba(0, 113, 227, 0.1);
-        }
-
-        .crypto-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 15px;
-        }
-
-        .crypto-icon {
-            font-size: 2rem;
-        }
-
-        .crypto-info h3 {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--afro-text-primary);
-            margin-bottom: 5px;
-        }
-
-        .crypto-symbol {
-            font-size: 0.9rem;
-            color: var(--afro-text-secondary);
-            font-weight: 600;
-        }
-
-        .crypto-price {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--afro-primary);
-            margin-bottom: 10px;
-        }
-
-        .crypto-change {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            padding: 6px 12px;
-            border-radius: 6px;
-            background-color: var(--afro-light);
-        }
-
-        .crypto-change.positive {
-            color: var(--afro-success);
-        }
-
-        .crypto-change.negative {
-            color: var(--afro-danger);
-        }
-
-        /* Crypto Converter */
-        .crypto-converter {
-            background-color: var(--afro-light);
-            border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 40px;
-        }
-
-        .crypto-converter h3 {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 25px;
-            color: var(--afro-text-primary);
-        }
-
-        .crypto-form-row {
-            display: grid;
-            grid-template-columns: 1fr 50px 1fr;
-            gap: 15px;
-            align-items: flex-end;
-        }
-
-        .currency-pair-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 25px;
-        }
-
-        /* Exchange Rate Table */
-        .rates-table {
-            margin-top: 50px;
-            border-top: 2px solid var(--afro-border);
-            padding-top: 40px;
-        }
-
-        .rates-table h2 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 25px;
-            color: var(--afro-text-primary);
-        }
-
-        .table-wrapper {
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th {
-            background-color: var(--afro-light);
-            padding: 15px;
-            text-align: left;
-            font-weight: 700;
-            color: var(--afro-text-primary);
-            border-bottom: 2px solid var(--afro-border);
-            font-size: 0.95rem;
-        }
-
-        td {
-            padding: 15px;
-            border-bottom: 1px solid var(--afro-border);
-            font-size: 0.95rem;
-        }
-
-        tr:hover {
-            background-color: var(--afro-light);
-        }
-
-        .currency-pair {
-            font-weight: 600;
-            color: var(--afro-text-primary);
-        }
-
-        .rate-value {
-            font-weight: 600;
-            color: var(--afro-primary);
-        }
-
-        .rate-change {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-weight: 600;
-        }
-
-        .rate-change.up {
-            color: var(--afro-success);
-        }
-
-        .rate-change.down {
-            color: var(--afro-danger);
-        }
-
-        /* Error State */
+        /* Error */
         .error-message {
-            background-color: #fee2e2;
-            border: 1.5px solid #fca5a5;
-            border-radius: 8px;
-            padding: 15px;
-            color: #991b1b;
-            margin-bottom: 25px;
-            font-size: 0.95rem;
+            background: #fef2f2; border: 1.5px solid #fecaca; border-radius: 10px;
+            padding: 14px 16px; color: #991b1b; margin-bottom: 20px; font-size: 0.9rem;
+            display: none;
         }
 
-        .error-message strong {
-            font-weight: 700;
+        /* Crypto Cards */
+        .crypto-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 14px; margin-bottom: 32px;
         }
+        .crypto-card {
+            background: #fff; border: 1.5px solid var(--afro-border);
+            border-radius: 12px; padding: 18px; transition: all 0.2s;
+        }
+        .crypto-card:hover { border-color: var(--afro-primary); box-shadow: 0 4px 12px rgba(0,113,227,0.08); }
+        .crypto-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+        .crypto-icon { font-size: 1.8rem; }
+        .crypto-name { font-size: 0.95rem; font-weight: 700; }
+        .crypto-symbol { font-size: 0.8rem; color: var(--afro-text-secondary); font-weight: 600; }
+        .crypto-price { font-size: 1.5rem; font-weight: 800; color: var(--afro-text-primary); margin-bottom: 6px; }
+        .crypto-change {
+            display: inline-flex; align-items: center; gap: 4px;
+            font-weight: 600; font-size: 0.85rem;
+            padding: 4px 10px; border-radius: 6px;
+        }
+        .crypto-change.positive { color: var(--afro-success); background: #f0fdf4; }
+        .crypto-change.negative { color: var(--afro-danger); background: #fef2f2; }
+
+        /* Rates Table */
+        .rates-section {
+            margin-top: 40px; border-top: 2px solid var(--afro-border); padding-top: 32px;
+        }
+        .rates-section h2 { font-size: 1.3rem; font-weight: 700; margin-bottom: 20px; }
+        .table-wrapper { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; }
+        th {
+            background: var(--afro-light); padding: 12px 16px;
+            text-align: left; font-weight: 700; font-size: 0.85rem;
+            color: var(--afro-text-secondary); border-bottom: 2px solid var(--afro-border);
+            text-transform: uppercase; letter-spacing: 0.04em;
+        }
+        td { padding: 14px 16px; border-bottom: 1px solid var(--afro-border); font-size: 0.92rem; }
+        tr:hover { background: var(--afro-light); }
+        .currency-pair { font-weight: 600; }
+        .rate-value { font-weight: 700; color: var(--afro-primary); font-variant-numeric: tabular-nums; }
+        .rate-name { font-size: 0.82rem; color: var(--afro-text-secondary); }
+
+        /* Loading */
+        .spinner {
+            display: inline-block; width: 14px; height: 14px;
+            border: 2px solid rgba(0,0,0,0.1); border-top-color: var(--afro-primary);
+            border-radius: 50%; animation: spin 0.7s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loading-state { text-align: center; padding: 32px; }
+        .loading-state .spinner { width: 32px; height: 32px; border-width: 3px; margin: 0 auto 12px; }
 
         /* Responsive */
         @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 1.8rem;
-            }
-
-            .hero p {
-                font-size: 1rem;
-            }
-
-            .badges {
-                gap: 8px;
-            }
-
-            .badge {
-                font-size: 0.85rem;
-                padding: 6px 12px;
-            }
-
-            .form-row,
-            .crypto-form-row {
-                grid-template-columns: 1fr auto 1fr;
-            }
-
-            .currency-pair-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .swap-button {
-                width: 40px;
-                height: 40px;
-                border-radius: 50%;
-            }
-
-            .crypto-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .tabs {
-                margin-bottom: 25px;
-            }
-
-            .tab-button {
-                padding: 12px 20px;
-                font-size: 0.95rem;
-            }
-
-            .quick-pairs-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .comparison-row {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 8px;
-            }
-
-            .comparison-value {
-                text-align: left;
-                width: 100%;
-            }
-
-            table {
-                font-size: 0.9rem;
-            }
-
-            th, td {
-                padding: 12px 10px;
-            }
+            .converter-row { grid-template-columns: 1fr; gap: 10px; }
+            .swap-btn { width: 100%; height: 40px; border-radius: 10px; }
+            .swap-btn::after { content: ' Swap'; font-size: 0.85rem; margin-left: 6px; }
+            .comparison-grid { grid-template-columns: 1fr; }
+            .crypto-grid { grid-template-columns: 1fr 1fr; }
+            .status-bar { flex-direction: column; gap: 10px; align-items: flex-start; }
         }
-
         @media (max-width: 480px) {
-            .hero {
-                padding: 40px 15px;
-            }
-
-            .hero h1 {
-                font-size: 1.5rem;
-            }
-
-            .container {
-                padding: 0 15px;
-            }
-
-            .quick-pairs-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .crypto-converter {
-                padding: 20px;
-            }
-
-            .result-amount {
-                font-size: 1.5rem;
-            }
+            .hero { padding: 40px 15px; }
+            .converter-card { padding: 20px 16px; }
+            .crypto-grid { grid-template-columns: 1fr; }
+            .result-amount { font-size: 1.4rem; }
+            th, td { padding: 10px 12px; }
         }
         details[open] summary svg { transform: rotate(180deg); }
         details summary::-webkit-details-marker { display: none; }
@@ -802,16 +357,8 @@
   "url": "https://afrotools.com/tools/currency-converter/",
   "applicationCategory": "BusinessApplication",
   "operatingSystem": "Any",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "provider": {
-    "@type": "Organization",
-    "name": "AfroTools",
-    "url": "https://afrotools.com"
-  }
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "provider": { "@type": "Organization", "name": "AfroTools", "url": "https://afrotools.com" }
 }
 </script>
 <script type="application/ld+json">
@@ -819,78 +366,13 @@
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "Are the exchange rates live and up to date?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "The AfroTools Currency Converter fetches rates from open forex APIs and updates them regularly. Rates are cached for performance and may have a short delay. These are indicative mid-market rates and may differ from actual bank or bureau de change rates."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How many African currencies are supported?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "The converter supports 40+ African currencies including NGN (Nigerian Naira), KES (Kenyan Shilling), ZAR (South African Rand), GHS (Ghanaian Cedi), EGP (Egyptian Pound), and many more, along with major global currencies like USD, EUR, and GBP."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is the currency converter free to use?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes, the AfroTools Currency Converter is completely free with no sign-up required. You can convert between any supported currencies as many times as you want."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Can I compare multiple currencies at once?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes. The converter allows you to view exchange rates for multiple currencies simultaneously, making it easy to compare values across different African and international currencies in a single view."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How much is 500 dollars in naira today?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "At today's rate, 500 USD is approximately ₦767,500 NGN. The rate changes daily — use our converter above for the latest calculation. The CBN official rate and parallel market rate may differ."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What is the current dollar to naira exchange rate?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "The current USD to NGN mid-market rate is approximately ₦1,535 per dollar as of March 2026. This rate fluctuates based on forex market conditions. Banks typically charge 2–5% above the mid-market rate."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How much is 1 million dollars in naira?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "1 million US dollars equals approximately ₦1.535 billion Nigerian Naira at the current mid-market rate. For large conversions, contact your bank for specific wire transfer rates and applicable fees."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What is the pound to naira rate today?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "The current GBP to NGN rate is approximately ₦2,000 per British Pound. Use our converter above for the latest live rate for any amount."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What is the difference between CBN rate and black market rate?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "The Central Bank of Nigeria (CBN) publishes an official exchange rate, while the parallel market rate can be significantly different. Our converter shows the mid-market rate, which typically falls between the official and parallel rates. For the most accurate rate, compare multiple sources."
-      }
-    }
+    { "@type": "Question", "name": "Are the exchange rates live and up to date?", "acceptedAnswer": { "@type": "Answer", "text": "The AfroTools Currency Converter fetches rates from open forex APIs and updates them regularly. Rates are cached for performance and may have a short delay. These are indicative mid-market rates and may differ from actual bank or bureau de change rates." } },
+    { "@type": "Question", "name": "How many African currencies are supported?", "acceptedAnswer": { "@type": "Answer", "text": "The converter supports 40+ African currencies including NGN (Nigerian Naira), KES (Kenyan Shilling), ZAR (South African Rand), GHS (Ghanaian Cedi), EGP (Egyptian Pound), and many more, along with major global currencies like USD, EUR, and GBP." } },
+    { "@type": "Question", "name": "Is the currency converter free to use?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, the AfroTools Currency Converter is completely free with no sign-up required. You can convert between any supported currencies as many times as you want." } },
+    { "@type": "Question", "name": "How much is 500 dollars in naira today?", "acceptedAnswer": { "@type": "Answer", "text": "At today's rate, 500 USD is approximately 767,500 NGN. The rate changes daily. The CBN official rate and parallel market rate may differ." } },
+    { "@type": "Question", "name": "What is the current dollar to naira exchange rate?", "acceptedAnswer": { "@type": "Answer", "text": "The current USD to NGN mid-market rate is approximately 1,535 per dollar as of March 2026. This rate fluctuates based on forex market conditions. Banks typically charge 2-5% above the mid-market rate." } },
+    { "@type": "Question", "name": "What is the pound to naira rate today?", "acceptedAnswer": { "@type": "Answer", "text": "The current GBP to NGN rate is approximately 2,000 per British Pound. Use our converter above for the latest live rate for any amount." } },
+    { "@type": "Question", "name": "What is the difference between CBN rate and black market rate?", "acceptedAnswer": { "@type": "Answer", "text": "The Central Bank of Nigeria (CBN) publishes an official exchange rate, while the parallel market rate can be significantly different. Our converter shows the mid-market rate, which typically falls between the official and parallel rates." } }
   ]
 }
 </script>
@@ -902,16 +384,16 @@
     <!-- Navbar -->
     <afro-navbar active="tools"></afro-navbar>
 
-    <!-- Hero Section -->
+    <!-- Hero -->
     <div class="hero">
         <div class="container">
-            <h1>Dollar to Naira & African Currency Converter</h1>
-            <p>Live forex rates, crypto prices, and smart bank rate comparison</p>
+            <h1>African Currency Converter</h1>
+            <p>Live forex rates, crypto prices, and smart bank rate comparison for 42+ African currencies</p>
             <div class="badges">
                 <div class="badge">Live Rates</div>
                 <div class="badge">42+ Currencies</div>
                 <div class="badge">Crypto</div>
-                <div class="badge">Bank Rate Comparison</div>
+                <div class="badge">Bank Comparison</div>
             </div>
         </div>
     </div>
@@ -919,195 +401,159 @@
     <!-- Main Content -->
     <div class="container">
         <div class="content">
-            <!-- Refresh Controls -->
-            <div class="refresh-controls">
+            <!-- Status Bar -->
+            <div class="status-bar">
+                <div class="status-left">
+                    <span class="status-dot" id="statusDot"></span>
+                    <span class="status-text" id="lastUpdated">Fetching rates...</span>
+                </div>
                 <button class="refresh-btn" id="refreshBtn" onclick="refreshRates()">
-                    <span>🔄</span>
+                    <span class="spinner" style="display:none;" id="refreshSpinner"></span>
                     <span>Refresh Rates</span>
                 </button>
-                <div class="last-updated">
-                    <span class="status-dot" id="statusDot"></span>
-                    <span id="lastUpdated">Fetching rates...</span>
-                </div>
             </div>
 
             <!-- Error Message -->
-            <div id="errorMessage" class="error-message" style="display: none;"></div>
+            <div id="errorMessage" class="error-message"></div>
 
-            <!-- Tab Navigation -->
+            <!-- Tabs -->
             <div class="tabs">
-                <button class="tab-button active" onclick="switchTab('forex')">
-                    Forex Converter
-                </button>
-                <button class="tab-button" onclick="switchTab('crypto')">
-                    Crypto Converter
-                </button>
+                <button class="tab-button active" data-tab="forex" onclick="switchTab('forex', this)">Forex Converter</button>
+                <button class="tab-button" data-tab="crypto" onclick="switchTab('crypto', this)">Crypto Prices</button>
             </div>
 
             <!-- Forex Tab -->
             <div id="forex" class="tab-content active">
-                <!-- Quick Pairs -->
-                <div class="quick-pairs">
-                    <h3>Popular African Pairs</h3>
-                    <div class="quick-pairs-grid">
-                        <button class="quick-pair-btn" onclick="setQuickPair('NGN', 'USD')">NGN → USD</button>
-                        <button class="quick-pair-btn" onclick="setQuickPair('KES', 'USD')">KES → USD</button>
-                        <button class="quick-pair-btn" onclick="setQuickPair('ZAR', 'USD')">ZAR → USD</button>
-                        <button class="quick-pair-btn" onclick="setQuickPair('GHS', 'USD')">GHS → USD</button>
-                        <button class="quick-pair-btn" onclick="setQuickPair('ETB', 'USD')">ETB → USD</button>
-                        <button class="quick-pair-btn" onclick="setQuickPair('ZMW', 'USD')">ZMW → USD</button>
-                    </div>
-                </div>
-
-                <!-- Converter Form -->
-                <div class="form-group">
-                    <label class="form-label">Convert From</label>
-                    <div class="form-row">
-                        <div class="input-wrapper">
-                            <input type="number" id="fromAmount" placeholder="Enter amount" value="1" min="0" step="0.01" oninput="convertCurrency()">
-                        </div>
-                        <button class="swap-button" onclick="swapCurrencies()">⇄</button>
-                        <div class="input-wrapper">
-                            <select id="toAmount" disabled>
-                                <option>Select currency</option>
-                            </select>
+                <div class="converter-card">
+                    <!-- Quick Pairs -->
+                    <div class="quick-pairs">
+                        <h3>Popular Pairs</h3>
+                        <div class="quick-pairs-grid">
+                            <button class="quick-pair-btn active" onclick="setQuickPair('USD','NGN',this)">USD / NGN</button>
+                            <button class="quick-pair-btn" onclick="setQuickPair('USD','KES',this)">USD / KES</button>
+                            <button class="quick-pair-btn" onclick="setQuickPair('USD','ZAR',this)">USD / ZAR</button>
+                            <button class="quick-pair-btn" onclick="setQuickPair('USD','GHS',this)">USD / GHS</button>
+                            <button class="quick-pair-btn" onclick="setQuickPair('GBP','NGN',this)">GBP / NGN</button>
+                            <button class="quick-pair-btn" onclick="setQuickPair('EUR','NGN',this)">EUR / NGN</button>
                         </div>
                     </div>
-                </div>
 
-                <!-- Converter Fields -->
-                <div class="currency-pair-grid">
-                    <div>
-                        <label class="form-label">From Currency</label>
-                        <select id="fromCurrency" onchange="convertCurrency()">
-                            <option value="USD">USD - United States Dollar</option>
-                        </select>
+                    <!-- Converter -->
+                    <div class="converter-row">
+                        <div class="field-group">
+                            <label>You Send</label>
+                            <input type="number" class="amount-input" id="fromAmount" value="1" min="0" step="0.01" oninput="convertCurrency()">
+                        </div>
+                        <button class="swap-btn" onclick="swapCurrencies()">&#8644;</button>
+                        <div class="field-group">
+                            <label>They Receive</label>
+                            <input type="text" class="amount-input" id="toAmountDisplay" readonly placeholder="0.00" style="background:#f9f9fb;cursor:default;">
+                        </div>
                     </div>
-                    <div>
-                        <label class="form-label">To Currency</label>
-                        <select id="toCurrency" onchange="convertCurrency()">
-                            <option value="">Select currency...</option>
-                        </select>
+                    <div class="converter-row" style="margin-bottom:0;">
+                        <div class="field-group">
+                            <label>From Currency</label>
+                            <select class="currency-select" id="fromCurrency" onchange="convertCurrency()"></select>
+                        </div>
+                        <div></div>
+                        <div class="field-group">
+                            <label>To Currency</label>
+                            <select class="currency-select" id="toCurrency" onchange="convertCurrency()"></select>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Result -->
-                <div id="result" class="result-box" style="display: none;">
-                    <div class="result-display">
+                <div id="result" class="result-box" style="display:none;">
+                    <div class="result-main">
                         <span class="result-amount" id="resultAmount">0</span>
-                        <span class="result-currency" id="resultCurrency">USD</span>
+                        <span class="result-currency" id="resultCurrency">NGN</span>
                     </div>
-                    <div class="rate-info">
-                        <strong id="rateInfo">Market Rate: </strong>
-                    </div>
+                    <div class="result-rate" id="rateInfo">Market Rate: 1 USD = 1,535.00 NGN</div>
 
-                    <!-- Bank Rate Comparison -->
+                    <!-- Bank Comparison -->
                     <div class="bank-comparison">
-                        <h3>💳 Bank Rate Comparison</h3>
-                        <div class="comparison-row">
-                            <div class="comparison-label">
-                                <span class="comparison-label-main">Market Rate</span>
-                                <span class="comparison-label-sub">Real interbank rate</span>
+                        <h4>Bank Rate Comparison</h4>
+                        <div class="comparison-grid">
+                            <div class="comp-item">
+                                <div class="comp-label">Mid-Market</div>
+                                <div class="comp-value" id="marketRate">0</div>
+                                <div class="comp-sub">Real interbank rate</div>
                             </div>
-                            <div class="comparison-value">
-                                <div class="comparison-rate" id="marketRate">0</div>
+                            <div class="comp-item">
+                                <div class="comp-label">Est. Bank Rate</div>
+                                <div class="comp-value" id="bankRate">0</div>
+                                <div class="comp-sub">~2.5% markup</div>
                             </div>
-                        </div>
-                        <div class="comparison-row">
-                            <div class="comparison-label">
-                                <span class="comparison-label-main">Estimated Bank Rate</span>
-                                <span class="comparison-label-sub">With 2.5% markup</span>
-                            </div>
-                            <div class="comparison-value">
-                                <div class="comparison-rate" id="bankRate">0</div>
-                            </div>
-                        </div>
-                        <div class="comparison-row">
-                            <div class="comparison-label">
-                                <span class="comparison-label-main">You Save (per unit)</span>
-                                <span class="comparison-label-sub">vs bank rate</span>
-                            </div>
-                            <div class="comparison-value">
-                                <span class="savings-amount" id="savingsAmount">+0</span>
+                            <div class="comp-item savings">
+                                <div class="comp-label">You Save</div>
+                                <div class="comp-value" id="savingsAmount">+0</div>
+                                <div class="comp-sub">per unit</div>
                             </div>
                         </div>
-                        <div class="comparison-note">
-                            💡 <strong>Note:</strong> Banks typically add 1.5–4% markup on top of the interbank rate. These are estimates. Actual rates may vary.
-                        </div>
+                        <div class="comparison-note">Banks typically add 1.5 - 4% markup on the interbank rate. These are estimates only.</div>
                     </div>
                 </div>
             </div>
 
             <!-- Crypto Tab -->
             <div id="crypto" class="tab-content">
-                <!-- Crypto Cards Grid -->
                 <div id="cryptoCardsContainer" class="crypto-grid"></div>
 
                 <!-- Crypto Converter -->
-                <div class="crypto-converter">
-                    <h3>Convert Crypto to African Currency</h3>
-                    <div class="form-group">
-                        <label class="form-label">Amount & Crypto</label>
-                        <div class="crypto-form-row">
-                            <div class="input-wrapper">
-                                <input type="number" id="cryptoAmount" placeholder="Enter amount" value="1" min="0" step="0.00000001" oninput="convertCrypto()">
-                            </div>
-                            <button class="swap-button" style="width: 50px;" onclick="swapCryptoAndCurrency()">⇄</button>
-                            <div class="input-wrapper">
-                                <select id="targetAfricaCurrency" onchange="convertCrypto()">
-                                    <option value="">Select currency...</option>
-                                </select>
-                            </div>
+                <div class="converter-card">
+                    <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:20px;">Convert Crypto to African Currency</h3>
+                    <div class="converter-row">
+                        <div class="field-group">
+                            <label>Amount</label>
+                            <input type="number" class="amount-input" id="cryptoAmount" value="1" min="0" step="0.00000001" oninput="convertCrypto()">
+                        </div>
+                        <div></div>
+                        <div class="field-group">
+                            <label>Result</label>
+                            <input type="text" class="amount-input" id="cryptoResultDisplay" readonly placeholder="0.00" style="background:#f9f9fb;cursor:default;">
                         </div>
                     </div>
-
-                    <div class="currency-pair-grid">
-                        <div>
-                            <label class="form-label">Cryptocurrency</label>
-                            <select id="cryptoCurrency" onchange="convertCrypto()">
-                                <option value="">Select crypto...</option>
-                            </select>
+                    <div class="converter-row" style="margin-bottom:0;">
+                        <div class="field-group">
+                            <label>Cryptocurrency</label>
+                            <select class="currency-select" id="cryptoCurrency" onchange="convertCrypto()"></select>
                         </div>
-                        <div>
-                            <label class="form-label">African Currency</label>
-                            <select id="cryptoTargetCurrency" onchange="convertCrypto()">
-                                <option value="">Select currency...</option>
-                            </select>
+                        <div></div>
+                        <div class="field-group">
+                            <label>African Currency</label>
+                            <select class="currency-select" id="cryptoTargetCurrency" onchange="convertCrypto()"></select>
                         </div>
                     </div>
-
-                    <!-- Crypto Result -->
-                    <div id="cryptoResult" class="result-box" style="display: none;">
-                        <div class="result-display">
+                    <div id="cryptoResult" class="result-box" style="display:none;margin-top:20px;">
+                        <div class="result-main">
                             <span class="result-amount" id="cryptoResultAmount">0</span>
-                            <span class="result-currency" id="cryptoResultCurrency">USD</span>
+                            <span class="result-currency" id="cryptoResultCurrency">NGN</span>
                         </div>
-                        <div class="rate-info">
-                            <strong id="cryptoRateInfo">Rate: </strong>
-                        </div>
+                        <div class="result-rate" id="cryptoRateInfo" style="border:none;padding:0;margin:0;">Rate: </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Exchange Rate Table -->
-        <div class="rates-table">
-            <h2>📊 Key African Rates vs USD</h2>
+        <!-- Rates Table -->
+        <div class="rates-section">
+            <h2>Key African Rates vs USD</h2>
             <div class="table-wrapper">
                 <table>
                     <thead>
                         <tr>
-                            <th>Currency Pair</th>
-                            <th>Rate</th>
-                            <th>24h Change</th>
+                            <th>Currency</th>
+                            <th>Code</th>
+                            <th>Rate (per 1 USD)</th>
                         </tr>
                     </thead>
                     <tbody id="ratesTableBody">
                         <tr>
-                            <td colspan="3" style="text-align: center; padding: 30px;">
+                            <td colspan="3">
                                 <div class="loading-state">
                                     <div class="spinner"></div>
-                                    <p>Loading rates...</p>
+                                    <p style="font-size:0.9rem;color:var(--afro-text-secondary);">Loading rates...</p>
                                 </div>
                             </td>
                         </tr>
@@ -1117,25 +563,17 @@
         </div>
     </div>
 
-    <!-- Rate Disclaimer -->
-    <div style="max-width: 1200px; margin: 0 auto; padding: 16px 20px;">
-      <p style="font-size: 0.75rem; color: #999; text-align: center; line-height: 1.6;">
+    <!-- Disclaimer -->
+    <div style="max-width:1200px;margin:0 auto;padding:16px 20px;">
+      <p style="font-size:0.75rem;color:#999;text-align:center;line-height:1.6;">
         <strong>Disclaimer:</strong> Exchange rates shown are indicative mid-market rates sourced from open APIs and may differ from actual bank or bureau de change rates. Rates are cached and may be delayed. AfroTools does not guarantee rate accuracy. Always confirm rates with your financial provider before making transactions.
       </p>
     </div>
 
-    <!-- Popular Conversions (static for SEO) -->
+    <!-- Popular Conversions (SEO) -->
     <section style="max-width:1200px;margin:40px auto;padding:0 24px;">
-
-      <h2 style="font-size:1.5rem;font-weight:700;margin-bottom:16px;">
-        Popular Dollar to Naira Conversions
-      </h2>
-      <p style="color:#666;margin-bottom:20px;">
-        Quick reference for common USD to NGN conversions at today's indicative
-        mid-market rate. For live calculations, use the converter above. Rates
-        fluctuate daily — actual bank rates may differ by 2–5%.
-      </p>
-
+      <h2 style="font-size:1.5rem;font-weight:700;margin-bottom:16px;">Popular Dollar to Naira Conversions</h2>
+      <p style="color:#666;margin-bottom:20px;">Quick reference for common USD to NGN conversions at today's indicative mid-market rate. Rates fluctuate daily.</p>
       <table style="width:100%;border-collapse:collapse;margin-bottom:32px;">
         <thead>
           <tr style="background:#f5f5f5;text-align:left;">
@@ -1144,53 +582,24 @@
           </tr>
         </thead>
         <tbody>
-          <tr><td style="padding:10px 12px;border-bottom:1px solid #eee;">$1 USD</td><td style="padding:10px 12px;border-bottom:1px solid #eee;">₦1,535</td></tr>
-          <tr style="background:#fafafa;"><td style="padding:10px 12px;border-bottom:1px solid #eee;">$15 USD</td><td style="padding:10px 12px;border-bottom:1px solid #eee;">₦23,025</td></tr>
-          <tr><td style="padding:10px 12px;border-bottom:1px solid #eee;">$50 USD</td><td style="padding:10px 12px;border-bottom:1px solid #eee;">₦76,750</td></tr>
-          <tr style="background:#fafafa;"><td style="padding:10px 12px;border-bottom:1px solid #eee;">$100 USD</td><td style="padding:10px 12px;border-bottom:1px solid #eee;">₦153,500</td></tr>
-          <tr><td style="padding:10px 12px;border-bottom:1px solid #eee;">$500 USD</td><td style="padding:10px 12px;border-bottom:1px solid #eee;">₦767,500</td></tr>
-          <tr style="background:#fafafa;"><td style="padding:10px 12px;border-bottom:1px solid #eee;">$1,000 USD</td><td style="padding:10px 12px;border-bottom:1px solid #eee;">₦1,535,000</td></tr>
-          <tr><td style="padding:10px 12px;border-bottom:1px solid #eee;">$5,000 USD</td><td style="padding:10px 12px;border-bottom:1px solid #eee;">₦7,675,000</td></tr>
-          <tr style="background:#fafafa;"><td style="padding:10px 12px;border-bottom:1px solid #eee;">$9,000 USD</td><td style="padding:10px 12px;border-bottom:1px solid #eee;">₦13,815,000</td></tr>
-          <tr><td style="padding:10px 12px;border-bottom:1px solid #eee;">$10,000 USD</td><td style="padding:10px 12px;border-bottom:1px solid #eee;">₦15,350,000</td></tr>
-          <tr style="background:#fafafa;"><td style="padding:10px 12px;border-bottom:1px solid #eee;">$20,000 USD</td><td style="padding:10px 12px;border-bottom:1px solid #eee;">₦30,700,000</td></tr>
-          <tr><td style="padding:10px 12px;border-bottom:1px solid #eee;">$50,000 USD</td><td style="padding:10px 12px;border-bottom:1px solid #eee;">₦76,750,000</td></tr>
-          <tr style="background:#fafafa;"><td style="padding:10px 12px;border-bottom:1px solid #eee;font-weight:600;">$1,000,000 USD</td><td style="padding:10px 12px;border-bottom:1px solid #eee;font-weight:600;">₦1,535,000,000</td></tr>
+          <tr><td style="padding:10px 12px;border-bottom:1px solid #eee;">$1 USD</td><td style="padding:10px 12px;border-bottom:1px solid #eee;">&#8358;1,535</td></tr>
+          <tr style="background:#fafafa;"><td style="padding:10px 12px;border-bottom:1px solid #eee;">$50 USD</td><td style="padding:10px 12px;border-bottom:1px solid #eee;">&#8358;76,750</td></tr>
+          <tr><td style="padding:10px 12px;border-bottom:1px solid #eee;">$100 USD</td><td style="padding:10px 12px;border-bottom:1px solid #eee;">&#8358;153,500</td></tr>
+          <tr style="background:#fafafa;"><td style="padding:10px 12px;border-bottom:1px solid #eee;">$500 USD</td><td style="padding:10px 12px;border-bottom:1px solid #eee;">&#8358;767,500</td></tr>
+          <tr><td style="padding:10px 12px;border-bottom:1px solid #eee;">$1,000 USD</td><td style="padding:10px 12px;border-bottom:1px solid #eee;">&#8358;1,535,000</td></tr>
+          <tr style="background:#fafafa;"><td style="padding:10px 12px;border-bottom:1px solid #eee;">$5,000 USD</td><td style="padding:10px 12px;border-bottom:1px solid #eee;">&#8358;7,675,000</td></tr>
+          <tr><td style="padding:10px 12px;border-bottom:1px solid #eee;">$10,000 USD</td><td style="padding:10px 12px;border-bottom:1px solid #eee;">&#8358;15,350,000</td></tr>
+          <tr style="background:#fafafa;"><td style="padding:10px 12px;border-bottom:1px solid #eee;font-weight:600;">$1,000,000 USD</td><td style="padding:10px 12px;border-bottom:1px solid #eee;font-weight:600;">&#8358;1,535,000,000</td></tr>
         </tbody>
       </table>
 
-      <h3 style="font-size:1.1rem;font-weight:600;margin-bottom:8px;">
-        How much is 500 dollars in naira?
-      </h3>
-      <p style="color:#444;margin-bottom:20px;">
-        At today's indicative rate, 500 US dollars equals approximately ₦767,500
-        Nigerian Naira. The exchange rate changes daily based on forex market
-        conditions. The CBN official rate may differ from the parallel market rate.
-        Use our converter above for the latest live calculation.
-      </p>
+      <h3 style="font-size:1.1rem;font-weight:600;margin-bottom:8px;">How much is 500 dollars in naira?</h3>
+      <p style="color:#444;margin-bottom:20px;">At today's indicative rate, 500 US dollars equals approximately &#8358;767,500 Nigerian Naira. The exchange rate changes daily based on forex market conditions. The CBN official rate may differ from the parallel market rate. Use our converter above for the latest live calculation.</p>
 
-      <h3 style="font-size:1.1rem;font-weight:600;margin-bottom:8px;">
-        How much is 1 million dollars in naira?
-      </h3>
-      <p style="color:#444;margin-bottom:20px;">
-        1 million US dollars is approximately ₦1.535 billion Nigerian Naira at
-        the current mid-market rate. Large conversions are typically handled
-        through bank wire transfers which may apply additional fees and use
-        different rates than the mid-market rate shown here.
-      </p>
+      <h3 style="font-size:1.1rem;font-weight:600;margin-bottom:8px;">How much is 1 million dollars in naira?</h3>
+      <p style="color:#444;margin-bottom:20px;">1 million US dollars is approximately &#8358;1.535 billion Nigerian Naira at the current mid-market rate. Large conversions are typically handled through bank wire transfers which may apply additional fees.</p>
 
-      <h3 style="font-size:1.1rem;font-weight:600;margin-bottom:8px;">
-        How much is 1000 USD to naira today?
-      </h3>
-      <p style="color:#444;margin-bottom:20px;">
-        1,000 US dollars converts to approximately ₦1,535,000 Nigerian Naira.
-        Rates at banks or bureau de change may vary by 2–5% from the mid-market
-        rate. Use the bank rate comparison feature in our converter above.
-      </p>
-
-      <h2 style="font-size:1.5rem;font-weight:700;margin:32px 0 16px;">
-        Popular Pounds to Naira Conversions
-      </h2>
+      <h2 style="font-size:1.5rem;font-weight:700;margin:32px 0 16px;">Popular Pounds to Naira Conversions</h2>
       <table style="width:100%;border-collapse:collapse;margin-bottom:32px;">
         <thead>
           <tr style="background:#f5f5f5;text-align:left;">
@@ -1199,20 +608,16 @@
           </tr>
         </thead>
         <tbody>
-          <tr><td style="padding:10px 12px;border-bottom:1px solid #eee;">£100 GBP</td><td style="padding:10px 12px;border-bottom:1px solid #eee;">₦200,000</td></tr>
-          <tr style="background:#fafafa;"><td style="padding:10px 12px;border-bottom:1px solid #eee;">£500 GBP</td><td style="padding:10px 12px;border-bottom:1px solid #eee;">₦1,000,000</td></tr>
-          <tr><td style="padding:10px 12px;border-bottom:1px solid #eee;">£1,000 GBP</td><td style="padding:10px 12px;border-bottom:1px solid #eee;">₦2,000,000</td></tr>
-          <tr style="background:#fafafa;"><td style="padding:10px 12px;border-bottom:1px solid #eee;">£2,000 GBP</td><td style="padding:10px 12px;border-bottom:1px solid #eee;">₦4,000,000</td></tr>
+          <tr><td style="padding:10px 12px;border-bottom:1px solid #eee;">&pound;100 GBP</td><td style="padding:10px 12px;border-bottom:1px solid #eee;">&#8358;200,000</td></tr>
+          <tr style="background:#fafafa;"><td style="padding:10px 12px;border-bottom:1px solid #eee;">&pound;500 GBP</td><td style="padding:10px 12px;border-bottom:1px solid #eee;">&#8358;1,000,000</td></tr>
+          <tr><td style="padding:10px 12px;border-bottom:1px solid #eee;">&pound;1,000 GBP</td><td style="padding:10px 12px;border-bottom:1px solid #eee;">&#8358;2,000,000</td></tr>
+          <tr style="background:#fafafa;"><td style="padding:10px 12px;border-bottom:1px solid #eee;">&pound;2,000 GBP</td><td style="padding:10px 12px;border-bottom:1px solid #eee;">&#8358;4,000,000</td></tr>
         </tbody>
       </table>
-
-      <p style="font-size:0.85rem;color:#999;">
-        Rates are indicative mid-market rates for reference only. Last updated March 2026.
-        Actual rates at banks, bureau de change, or money transfer services will differ.
-      </p>
-
+      <p style="font-size:0.85rem;color:#999;">Rates are indicative mid-market rates for reference only. Last updated March 2026.</p>
     </section>
 
+    <!-- FAQ -->
     <section class="faq-section" style="max-width:1200px;margin:40px auto;padding:0 24px">
       <h2 style="font-size:1.3rem;font-weight:800;color:#111;margin-bottom:20px;font-family:'DM Sans',sans-serif">Frequently Asked Questions</h2>
       <div class="faq-list">
@@ -1231,7 +636,7 @@
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
           </summary>
           <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
-            The converter supports 40+ African currencies including NGN (Nigerian Naira), KES (Kenyan Shilling), ZAR (South African Rand), GHS (Ghanaian Cedi), EGP (Egyptian Pound), and many more, along with major global currencies like USD, EUR, and GBP.
+            The converter supports 40+ African currencies including NGN, KES, ZAR, GHS, EGP, and many more, along with major global currencies like USD, EUR, and GBP.
           </div>
         </details>
         <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
@@ -1240,52 +645,7 @@
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
           </summary>
           <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
-            Yes, the AfroTools Currency Converter is completely free with no sign-up required. You can convert between any supported currencies as many times as you want.
-          </div>
-        </details>
-        <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
-          <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
-            Can I compare multiple currencies at once?
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
-          </summary>
-          <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
-            Yes. The converter allows you to view exchange rates for multiple currencies simultaneously, making it easy to compare values across different African and international currencies in a single view.
-          </div>
-        </details>
-        <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
-          <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
-            How much is 500 dollars in naira today?
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
-          </summary>
-          <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
-            At today's rate, 500 USD is approximately ₦767,500 NGN. The rate changes daily — use our converter above for the latest calculation. The CBN official rate and parallel market rate may differ.
-          </div>
-        </details>
-        <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
-          <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
-            What is the current dollar to naira exchange rate?
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
-          </summary>
-          <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
-            The current USD to NGN mid-market rate is approximately ₦1,535 per dollar as of March 2026. This rate fluctuates based on forex market conditions. Banks typically charge 2–5% above the mid-market rate.
-          </div>
-        </details>
-        <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
-          <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
-            How much is 1 million dollars in naira?
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
-          </summary>
-          <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
-            1 million US dollars equals approximately ₦1.535 billion Nigerian Naira at the current mid-market rate. For large conversions, contact your bank for specific wire transfer rates and applicable fees.
-          </div>
-        </details>
-        <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
-          <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
-            What is the pound to naira rate today?
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
-          </summary>
-          <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
-            The current GBP to NGN rate is approximately ₦2,000 per British Pound. Use our converter above for the latest live rate for any amount.
+            Yes, completely free with no sign-up required. Convert between any supported currencies as many times as you want.
           </div>
         </details>
         <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
@@ -1294,7 +654,7 @@
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
           </summary>
           <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
-            The Central Bank of Nigeria (CBN) publishes an official exchange rate, while the parallel market rate can be significantly different. Our converter shows the mid-market rate, which typically falls between the official and parallel rates. For the most accurate rate, compare multiple sources.
+            The Central Bank of Nigeria (CBN) publishes an official exchange rate, while the parallel market rate can be significantly different. Our converter shows the mid-market rate, which typically falls between the official and parallel rates.
           </div>
         </details>
       </div>
@@ -1318,7 +678,7 @@
     <!-- AI Chat -->
     <afro-chat
       tool="currency-converter"
-      system="You are an expert African currency and forex advisor. Help users understand exchange rates, currency trends, remittance costs, and cross-border payments across Africa. Advise on best times to exchange, USD/EUR vs local currency strategies, and official vs black market rates in Nigeria, Kenya, Ghana, South Africa, and other African countries. Be practical and specific."
+      system="You are an expert African currency and forex advisor. Help users understand exchange rates, currency trends, remittance costs, and cross-border payments across Africa. Be practical and specific."
     ></afro-chat>
 
     <!-- Footer -->
@@ -1329,517 +689,472 @@
     <script src="/assets/js/components/footer.min.js" defer></script>
 
     <script>
-        // Configuration
-        const CONFIG = {
-            FOREX_API: 'https://open.er-api.com/v6/latest',
-            CRYPTO_API: 'https://api.coingecko.com/api/v3/simple/price',
-            CACHE_DURATION: 5 * 60 * 1000, // 5 minutes
-            AUTO_REFRESH_INTERVAL: 10 * 60 * 1000, // 10 minutes
+    (function() {
+        'use strict';
+
+        // === CONFIGURATION ===
+        var CACHE_MS = 5 * 60 * 1000;
+        var REFRESH_MS = 10 * 60 * 1000;
+
+        // Multiple forex API sources for resilience
+        var FOREX_APIS = [
+            function() { return fetch('https://open.er-api.com/v6/latest/USD').then(function(r){ return r.json(); }).then(function(d){ return d.rates; }); },
+            function() { return fetch('https://api.frankfurter.app/latest?from=USD').then(function(r){ return r.json(); }).then(function(d){ var rates = d.rates; rates['USD'] = 1; return rates; }); },
+            function() { return fetch('https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json').then(function(r){ return r.json(); }).then(function(d){
+                var raw = d.usd || {};
+                var rates = {};
+                Object.keys(raw).forEach(function(k){ rates[k.toUpperCase()] = raw[k]; });
+                rates['USD'] = 1;
+                return rates;
+            }); }
+        ];
+
+        // Crypto API sources
+        var CRYPTO_APIS = [
+            function(ids) { return fetch('https://api.coingecko.com/api/v3/simple/price?ids=' + ids + '&vs_currencies=usd&include_24hr_change=true').then(function(r){ return r.json(); }); },
+            function(ids) { return fetch('https://api.coincap.io/v2/assets?ids=' + ids.replace(/,/g, ',')).then(function(r){ return r.json(); }).then(function(d){
+                var result = {};
+                (d.data || []).forEach(function(a) {
+                    var mapped = CRYPTO_ID_MAP[a.id] || a.id;
+                    result[mapped] = { usd: parseFloat(a.priceUsd) || 0, usd_24h_change: parseFloat(a.changePercent24Hr) || 0 };
+                });
+                return result;
+            }); }
+        ];
+
+        // CoinCap uses different IDs
+        var CRYPTO_ID_MAP = { 'bitcoin': 'bitcoin', 'ethereum': 'ethereum', 'binance-coin': 'binancecoin', 'solana': 'solana', 'xrp': 'ripple', 'cardano': 'cardano', 'dogecoin': 'dogecoin', 'tether': 'tether' };
+
+        // === CURRENCY DATA ===
+        var AFRICAN_CURRENCIES = [
+            { code: 'NGN', name: 'Nigerian Naira', flag: '🇳🇬' },
+            { code: 'KES', name: 'Kenyan Shilling', flag: '🇰🇪' },
+            { code: 'ZAR', name: 'South African Rand', flag: '🇿🇦' },
+            { code: 'GHS', name: 'Ghanaian Cedi', flag: '🇬🇭' },
+            { code: 'ETB', name: 'Ethiopian Birr', flag: '🇪🇹' },
+            { code: 'ZMW', name: 'Zambian Kwacha', flag: '🇿🇲' },
+            { code: 'UGX', name: 'Ugandan Shilling', flag: '🇺🇬' },
+            { code: 'TZS', name: 'Tanzanian Shilling', flag: '🇹🇿' },
+            { code: 'EGP', name: 'Egyptian Pound', flag: '🇪🇬' },
+            { code: 'MAD', name: 'Moroccan Dirham', flag: '🇲🇦' },
+            { code: 'TND', name: 'Tunisian Dinar', flag: '🇹🇳' },
+            { code: 'DZD', name: 'Algerian Dinar', flag: '🇩🇿' },
+            { code: 'RWF', name: 'Rwandan Franc', flag: '🇷🇼' },
+            { code: 'BIF', name: 'Burundian Franc', flag: '🇧🇮' },
+            { code: 'XOF', name: 'West African CFA Franc', flag: '🌍' },
+            { code: 'XAF', name: 'Central African CFA Franc', flag: '🌍' },
+            { code: 'BWP', name: 'Botswana Pula', flag: '🇧🇼' },
+            { code: 'LSL', name: 'Lesotho Loti', flag: '🇱🇸' },
+            { code: 'MUR', name: 'Mauritian Rupee', flag: '🇲🇺' },
+            { code: 'NAD', name: 'Namibian Dollar', flag: '🇳🇦' },
+            { code: 'SZL', name: 'Eswatini Lilangeni', flag: '🇸🇿' },
+            { code: 'MZN', name: 'Mozambique Metical', flag: '🇲🇿' },
+            { code: 'AOA', name: 'Angolan Kwanza', flag: '🇦🇴' },
+            { code: 'SCR', name: 'Seychelles Rupee', flag: '🇸🇨' },
+            { code: 'MGA', name: 'Malagasy Ariary', flag: '🇲🇬' },
+            { code: 'GMD', name: 'Gambian Dalasi', flag: '🇬🇲' },
+            { code: 'SLL', name: 'Sierra Leone Leone', flag: '🇸🇱' },
+            { code: 'GNF', name: 'Guinean Franc', flag: '🇬🇳' },
+            { code: 'LRD', name: 'Liberian Dollar', flag: '🇱🇷' },
+            { code: 'CDF', name: 'Congolese Franc', flag: '🇨🇩' },
+            { code: 'MWK', name: 'Malawian Kwacha', flag: '🇲🇼' },
+            { code: 'SOS', name: 'Somali Shilling', flag: '🇸🇴' },
+            { code: 'SDG', name: 'Sudanese Pound', flag: '🇸🇩' },
+            { code: 'ERN', name: 'Eritrean Nakfa', flag: '🇪🇷' },
+            { code: 'DJF', name: 'Djibouti Franc', flag: '🇩🇯' },
+            { code: 'KMF', name: 'Comorian Franc', flag: '🇰🇲' },
+            { code: 'CVE', name: 'Cape Verde Escudo', flag: '🇨🇻' },
+            { code: 'STN', name: 'Sao Tome Dobra', flag: '🇸🇹' }
+        ];
+
+        var MAJOR_CURRENCIES = [
+            { code: 'USD', name: 'US Dollar', flag: '🇺🇸' },
+            { code: 'EUR', name: 'Euro', flag: '🇪🇺' },
+            { code: 'GBP', name: 'British Pound', flag: '🇬🇧' },
+            { code: 'CHF', name: 'Swiss Franc', flag: '🇨🇭' },
+            { code: 'JPY', name: 'Japanese Yen', flag: '🇯🇵' },
+            { code: 'CNY', name: 'Chinese Yuan', flag: '🇨🇳' },
+            { code: 'INR', name: 'Indian Rupee', flag: '🇮🇳' },
+            { code: 'AED', name: 'UAE Dirham', flag: '🇦🇪' },
+            { code: 'SAR', name: 'Saudi Riyal', flag: '🇸🇦' },
+            { code: 'CAD', name: 'Canadian Dollar', flag: '🇨🇦' },
+            { code: 'AUD', name: 'Australian Dollar', flag: '🇦🇺' }
+        ];
+
+        var CRYPTO_ASSETS = [
+            { id: 'bitcoin', name: 'Bitcoin', symbol: 'BTC', emoji: '&#8383;', fallbackPrice: 87000 },
+            { id: 'ethereum', name: 'Ethereum', symbol: 'ETH', emoji: '&#9670;', fallbackPrice: 3200 },
+            { id: 'binancecoin', name: 'BNB', symbol: 'BNB', emoji: '&#128310;', fallbackPrice: 580 },
+            { id: 'solana', name: 'Solana', symbol: 'SOL', emoji: '&#9678;', fallbackPrice: 145 },
+            { id: 'ripple', name: 'XRP', symbol: 'XRP', emoji: '&#10005;', fallbackPrice: 2.3 },
+            { id: 'cardano', name: 'Cardano', symbol: 'ADA', emoji: '&#8371;', fallbackPrice: 0.68 },
+            { id: 'dogecoin', name: 'Dogecoin', symbol: 'DOGE', emoji: '&#128021;', fallbackPrice: 0.17 },
+            { id: 'tether', name: 'Tether', symbol: 'USDT', emoji: '&#8366;', fallbackPrice: 1.0 }
+        ];
+
+        // Fallback forex rates (updated March 2026 estimates)
+        var FALLBACK_RATES = {
+            'USD':1,'EUR':0.92,'GBP':0.79,'NGN':1550,'KES':129.5,'ZAR':18.8,'GHS':15.2,
+            'ETB':125.5,'ZMW':22.5,'EGP':52.5,'MAD':10.1,'UGX':3750,'TZS':2560,
+            'CHF':0.88,'JPY':148.5,'CNY':7.25,'INR':83.5,'AED':3.67,'SAR':3.75,
+            'RWF':1320,'BIF':2850,'XOF':612,'XAF':612,'DZD':135,'BWP':13.5,
+            'LSL':18.8,'MUR':46.5,'NAD':18.8,'SZL':18.8,'MZN':63.5,'AOA':830,
+            'SCR':13.5,'MGA':4350,'GMD':67,'SLL':21500,'GNF':8600,'LRD':195,
+            'CDF':2800,'MWK':1520,'SOS':570,'SDG':556,'ERN':15,'DJF':178,
+            'KMF':465,'CVE':102,'STN':23,'TND':3.15,'CAD':1.36,'AUD':1.53
         };
 
-        // African Currencies List
-        const AFRICAN_CURRENCIES = [
-            { code: 'NGN', name: 'Nigerian Naira' },
-            { code: 'KES', name: 'Kenyan Shilling' },
-            { code: 'ZAR', name: 'South African Rand' },
-            { code: 'GHS', name: 'Ghanaian Cedi' },
-            { code: 'ETB', name: 'Ethiopian Birr' },
-            { code: 'ZMW', name: 'Zambian Kwacha' },
-            { code: 'UGX', name: 'Ugandan Shilling' },
-            { code: 'TZS', name: 'Tanzanian Shilling' },
-            { code: 'EGP', name: 'Egyptian Pound' },
-            { code: 'MAD', name: 'Moroccan Dirham' },
-            { code: 'TND', name: 'Tunisian Dinar' },
-            { code: 'RWF', name: 'Rwandan Franc' },
-            { code: 'BIF', name: 'Burundian Franc' },
-            { code: 'XOF', name: 'West African CFA Franc' },
-            { code: 'XAF', name: 'Central African CFA Franc' },
-            { code: 'ALL', name: 'Algerian Dinar' },
-            { code: 'BWP', name: 'Botswana Pula' },
-            { code: 'LSL', name: 'Lesotho Loti' },
-            { code: 'MUR', name: 'Mauritian Rupee' },
-            { code: 'NAD', name: 'Namibian Dollar' },
-            { code: 'SZL', name: 'Eswatini Lilangeni' },
-            { code: 'MZN', name: 'Mozambique Metical' },
-            { code: 'ANG', name: 'Angolan Kwanza' },
-            { code: 'SCR', name: 'Seychelles Rupee' },
-            { code: 'MGA', name: 'Malagasy Ariary' },
-            { code: 'GMD', name: 'Gambian Dalasi' },
-            { code: 'SLL', name: 'Sierra Leone Leone' },
-            { code: 'GNF', name: 'Guinean Franc' },
-            { code: 'LRD', name: 'Liberian Dollar' },
-            { code: 'CDF', name: 'Congolese Franc' },
-            { code: 'MWK', name: 'Malawian Kwacha' },
-            { code: 'SOS', name: 'Somali Shilling' },
-            { code: 'SDG', name: 'Sudanese Pound' },
-            { code: 'ERN', name: 'Eritrean Nakfa' },
-            { code: 'DJF', name: 'Djibouti Franc' },
-            { code: 'KMF', name: 'Comorian Franc' },
-            { code: 'CVE', name: 'Cape Verde Escudo' },
-            { code: 'STN', name: 'São Tomé and Príncipe Dobra' },
-            { code: 'AOA', name: 'Angolan Kwanza' },
-            { code: 'TTD', name: 'Trinidad and Tobago Dollar' },
-            { code: 'BBD', name: 'Barbados Dollar' },
-            { code: 'BSD', name: 'Bahamian Dollar' },
-        ];
-
-        // Major Currencies
-        const MAJOR_CURRENCIES = [
-            { code: 'USD', name: 'United States Dollar' },
-            { code: 'EUR', name: 'Euro' },
-            { code: 'GBP', name: 'British Pound' },
-            { code: 'CHF', name: 'Swiss Franc' },
-            { code: 'JPY', name: 'Japanese Yen' },
-            { code: 'CNY', name: 'Chinese Yuan' },
-            { code: 'INR', name: 'Indian Rupee' },
-            { code: 'AED', name: 'UAE Dirham' },
-            { code: 'SAR', name: 'Saudi Riyal' },
-        ];
-
-        // Crypto Assets
-        const CRYPTO_ASSETS = [
-            { id: 'bitcoin', name: 'Bitcoin', symbol: 'BTC', emoji: '₿' },
-            { id: 'ethereum', name: 'Ethereum', symbol: 'ETH', emoji: '◆' },
-            { id: 'binancecoin', name: 'Binance Coin', symbol: 'BNB', emoji: '🔶' },
-            { id: 'solana', name: 'Solana', symbol: 'SOL', emoji: '◎' },
-            { id: 'ripple', name: 'XRP', symbol: 'XRP', emoji: '✕' },
-            { id: 'cardano', name: 'Cardano', symbol: 'ADA', emoji: '₳' },
-            { id: 'dogecoin', name: 'Dogecoin', symbol: 'DOGE', emoji: '🐕' },
-            { id: 'tether', name: 'Tether', symbol: 'USDT', emoji: '₮' },
-        ];
-
-        // State
-        let state = {
+        // === STATE ===
+        var state = {
             forexRates: {},
             cryptoPrices: {},
             cryptoChanges: {},
-            currentTab: 'forex',
             cacheTime: 0,
             cryptoCacheTime: 0,
+            ratesSource: 'fallback',
+            cryptoSource: 'fallback'
         };
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            initializeCurrencySelects();
-            initializeCryptoSelects();
+        // === INITIALIZATION ===
+        document.addEventListener('DOMContentLoaded', function() {
+            buildSelects();
+            buildCryptoSelects();
             loadRates();
             loadCryptoPrices();
-            setupAutoRefresh();
+            setInterval(function() { state.cacheTime = 0; state.cryptoCacheTime = 0; loadRates(); loadCryptoPrices(); }, REFRESH_MS);
         });
 
-        // Initialize Currency Selects
-        function initializeCurrencySelects() {
-            const fromSelect = document.getElementById('fromCurrency');
-            const toSelect = document.getElementById('toCurrency');
-            const targetAfricaSelect = document.getElementById('targetAfricaCurrency');
-            const cryptoTargetSelect = document.getElementById('cryptoTargetCurrency');
+        // Build currency dropdowns
+        function buildSelects() {
+            var fromSel = document.getElementById('fromCurrency');
+            var toSel = document.getElementById('toCurrency');
 
-            // Add major currencies first
-            MAJOR_CURRENCIES.forEach(curr => {
-                if (curr.code !== 'USD') {
-                    const option = document.createElement('option');
-                    option.value = curr.code;
-                    option.textContent = `${curr.code} - ${curr.name}`;
-                    fromSelect.appendChild(option);
-                }
+            var allCurrencies = MAJOR_CURRENCIES.concat(AFRICAN_CURRENCIES);
+
+            // From: all currencies
+            fromSel.innerHTML = '';
+            allCurrencies.forEach(function(c) {
+                fromSel.appendChild(makeOption(c.code, c.flag + ' ' + c.code + ' - ' + c.name));
             });
 
-            // Add African currencies
-            AFRICAN_CURRENCIES.forEach(curr => {
-                const option = document.createElement('option');
-                option.value = curr.code;
-                option.textContent = `${curr.code} - ${curr.name}`;
-                fromSelect.appendChild(option);
-
-                const option2 = document.createElement('option');
-                option2.value = curr.code;
-                option2.textContent = `${curr.code} - ${curr.name}`;
-                toSelect.appendChild(option2);
-
-                const option3 = document.createElement('option');
-                option3.value = curr.code;
-                option3.textContent = `${curr.code} - ${curr.name}`;
-                targetAfricaSelect.appendChild(option3);
-
-                const option4 = document.createElement('option');
-                option4.value = curr.code;
-                option4.textContent = `${curr.code} - ${curr.name}`;
-                cryptoTargetSelect.appendChild(option4);
+            // To: African first, then major
+            toSel.innerHTML = '';
+            var toGroup1 = document.createElement('optgroup');
+            toGroup1.label = 'African Currencies';
+            AFRICAN_CURRENCIES.forEach(function(c) {
+                toGroup1.appendChild(makeOption(c.code, c.flag + ' ' + c.code + ' - ' + c.name));
             });
+            toSel.appendChild(toGroup1);
 
-            // Add major currencies to to/target selects
-            MAJOR_CURRENCIES.forEach(curr => {
-                const option = document.createElement('option');
-                option.value = curr.code;
-                option.textContent = `${curr.code} - ${curr.name}`;
-                toSelect.appendChild(option);
-
-                const option2 = document.createElement('option');
-                option2.value = curr.code;
-                option2.textContent = `${curr.code} - ${curr.name}`;
-                targetAfricaSelect.appendChild(option2);
-
-                const option3 = document.createElement('option');
-                option3.value = curr.code;
-                option3.textContent = `${curr.code} - ${curr.name}`;
-                cryptoTargetSelect.appendChild(option3);
+            var toGroup2 = document.createElement('optgroup');
+            toGroup2.label = 'Major Currencies';
+            MAJOR_CURRENCIES.forEach(function(c) {
+                toGroup2.appendChild(makeOption(c.code, c.flag + ' ' + c.code + ' - ' + c.name));
             });
+            toSel.appendChild(toGroup2);
 
-            // Set default
-            fromSelect.value = 'USD';
-            toSelect.value = 'NGN';
-            targetAfricaSelect.value = 'NGN';
-            cryptoTargetSelect.value = 'NGN';
+            fromSel.value = 'USD';
+            toSel.value = 'NGN';
+
+            // Also build crypto target selects
+            var cryptoTarget = document.getElementById('cryptoTargetCurrency');
+            cryptoTarget.innerHTML = '';
+            var cg1 = document.createElement('optgroup');
+            cg1.label = 'African Currencies';
+            AFRICAN_CURRENCIES.forEach(function(c) { cg1.appendChild(makeOption(c.code, c.flag + ' ' + c.code + ' - ' + c.name)); });
+            cryptoTarget.appendChild(cg1);
+            var cg2 = document.createElement('optgroup');
+            cg2.label = 'Major Currencies';
+            MAJOR_CURRENCIES.forEach(function(c) { cg2.appendChild(makeOption(c.code, c.flag + ' ' + c.code + ' - ' + c.name)); });
+            cryptoTarget.appendChild(cg2);
+            cryptoTarget.value = 'NGN';
         }
 
-        // Initialize Crypto Selects
-        function initializeCryptoSelects() {
-            const cryptoSelect = document.getElementById('cryptoCurrency');
-            CRYPTO_ASSETS.forEach(crypto => {
-                const option = document.createElement('option');
-                option.value = crypto.id;
-                option.textContent = `${crypto.symbol} - ${crypto.name}`;
-                cryptoSelect.appendChild(option);
+        function buildCryptoSelects() {
+            var sel = document.getElementById('cryptoCurrency');
+            sel.innerHTML = '';
+            CRYPTO_ASSETS.forEach(function(c) {
+                sel.appendChild(makeOption(c.id, c.symbol + ' - ' + c.name));
             });
-            cryptoSelect.value = 'bitcoin';
+            sel.value = 'bitcoin';
         }
 
-        // Load Forex Rates
+        function makeOption(value, text) {
+            var opt = document.createElement('option');
+            opt.value = value;
+            opt.textContent = text;
+            return opt;
+        }
+
+        // === FOREX LOADING ===
         async function loadRates() {
-            try {
-                const now = Date.now();
-                if (state.cacheTime && now - state.cacheTime < CONFIG.CACHE_DURATION) {
-                    updateDisplay();
-                    return;
-                }
-
-                document.getElementById('refreshBtn').classList.add('loading');
-                const response = await fetch(`${CONFIG.FOREX_API}/USD`);
-
-                if (!response.ok) throw new Error('API Error');
-
-                const data = await response.json();
-
-                if (data.rates) {
-                    state.forexRates = data.rates;
-                    state.forexRates['USD'] = 1;
-                    state.cacheTime = now;
-                    clearError();
-                    updateDisplay();
-                } else {
-                    throw new Error('Invalid response');
-                }
-            } catch (error) {
-                console.error('Forex load error:', error);
-                loadFallbackRates();
-                showError('Unable to fetch live rates. Showing cached rates.');
-            } finally {
-                document.getElementById('refreshBtn').classList.remove('loading');
+            var now = Date.now();
+            if (state.cacheTime && now - state.cacheTime < CACHE_MS && Object.keys(state.forexRates).length > 5) {
+                updateDisplay();
+                return;
             }
-        }
 
-        // Load Crypto Prices
-        async function loadCryptoPrices() {
-            try {
-                const now = Date.now();
-                if (state.cryptoCacheTime && now - state.cryptoCacheTime < CONFIG.CACHE_DURATION) {
-                    updateCryptoDisplay();
-                    return;
-                }
+            setRefreshLoading(true);
 
-                const cryptoIds = CRYPTO_ASSETS.map(c => c.id).join(',');
-                const response = await fetch(
-                    `${CONFIG.CRYPTO_API}?ids=${cryptoIds}&vs_currencies=usd&include_24hr_change=true`
-                );
-
-                if (!response.ok) throw new Error('API Error');
-
-                const data = await response.json();
-
-                state.cryptoPrices = {};
-                state.cryptoChanges = {};
-
-                CRYPTO_ASSETS.forEach(crypto => {
-                    if (data[crypto.id]) {
-                        state.cryptoPrices[crypto.id] = data[crypto.id].usd || 0;
-                        state.cryptoChanges[crypto.id] = data[crypto.id].usd_24h_change || 0;
+            for (var i = 0; i < FOREX_APIS.length; i++) {
+                try {
+                    var rates = await FOREX_APIS[i]();
+                    if (rates && Object.keys(rates).length > 10) {
+                        rates['USD'] = 1;
+                        state.forexRates = rates;
+                        state.cacheTime = Date.now();
+                        state.ratesSource = 'live';
+                        clearError();
+                        updateDisplay();
+                        setRefreshLoading(false);
+                        return;
                     }
-                });
-
-                state.cryptoCacheTime = now;
-                clearError();
-                updateCryptoDisplay();
-            } catch (error) {
-                console.error('Crypto load error:', error);
-                showError('Unable to fetch crypto prices. Try again later.');
+                } catch(e) {
+                    console.warn('Forex API ' + (i+1) + ' failed:', e.message);
+                }
             }
-        }
 
-        // Load Fallback Rates
-        function loadFallbackRates() {
-            state.forexRates = {
-                'USD': 1,
-                'EUR': 0.92,
-                'GBP': 0.79,
-                'NGN': 1550,
-                'KES': 129.5,
-                'ZAR': 18.8,
-                'GHS': 15.2,
-                'ETB': 125.5,
-                'ZMW': 22.5,
-                'EGP': 52.5,
-                'MAD': 10.1,
-                'UGX': 3750,
-                'TZS': 2560,
-                'CHF': 0.88,
-                'JPY': 148.5,
-                'CNY': 7.25,
-                'INR': 83.5,
-                'AED': 3.67,
-                'SAR': 3.75,
-                'RWF': 1320,
-                'BWP': 13.5,
-                'LSL': 18.8,
-                'MUR': 46.5,
-                'NAD': 18.8,
-                'SZL': 18.8,
-                'MZN': 63.5,
-                'AOA': 830,
-                'SCR': 13.5,
-                'MGA': 4350,
-                'GMD': 67,
-                'SLL': 21500,
-                'GNF': 8600,
-                'LRD': 195,
-                'CDF': 2800,
-                'MWK': 1520,
-                'SOS': 570,
-                'SDG': 556,
-                'ERN': 15,
-                'DJF': 178,
-                'KMF': 465,
-                'CVE': 102,
-                'STN': 23,
-                'TTD': 6.8,
-                'BBD': 2.02,
-                'BSD': 1.0,
-                'XOF': 612,
-                'XAF': 612,
-                'BIF': 2850,
-                'TND': 3.15,
-                'ALL': 104,
-            };
+            // All APIs failed — use fallback
+            console.warn('All forex APIs failed, using fallback rates');
+            state.forexRates = FALLBACK_RATES;
             state.cacheTime = Date.now();
+            state.ratesSource = 'fallback';
+            showError('Unable to fetch live rates. Showing estimated rates. Conversion results are approximate.');
+            updateDisplay();
+            setRefreshLoading(false);
         }
 
-        // Update Display
+        // === CRYPTO LOADING ===
+        async function loadCryptoPrices() {
+            var now = Date.now();
+            if (state.cryptoCacheTime && now - state.cryptoCacheTime < CACHE_MS && Object.keys(state.cryptoPrices).length > 0) {
+                updateCryptoDisplay();
+                return;
+            }
+
+            var ids = CRYPTO_ASSETS.map(function(c){ return c.id; }).join(',');
+
+            for (var i = 0; i < CRYPTO_APIS.length; i++) {
+                try {
+                    var data = await CRYPTO_APIS[i](ids);
+                    if (data && Object.keys(data).length > 0) {
+                        state.cryptoPrices = {};
+                        state.cryptoChanges = {};
+                        CRYPTO_ASSETS.forEach(function(c) {
+                            if (data[c.id]) {
+                                state.cryptoPrices[c.id] = data[c.id].usd || data[c.id];
+                                state.cryptoChanges[c.id] = data[c.id].usd_24h_change || 0;
+                            }
+                        });
+                        state.cryptoCacheTime = Date.now();
+                        state.cryptoSource = 'live';
+                        updateCryptoDisplay();
+                        return;
+                    }
+                } catch(e) {
+                    console.warn('Crypto API ' + (i+1) + ' failed:', e.message);
+                }
+            }
+
+            // Fallback to hardcoded prices
+            console.warn('All crypto APIs failed, using fallback prices');
+            CRYPTO_ASSETS.forEach(function(c) {
+                state.cryptoPrices[c.id] = c.fallbackPrice;
+                state.cryptoChanges[c.id] = 0;
+            });
+            state.cryptoCacheTime = Date.now();
+            state.cryptoSource = 'fallback';
+            updateCryptoDisplay();
+        }
+
+        // === DISPLAY UPDATES ===
         function updateDisplay() {
-            updateLastUpdated();
+            updateStatusBar();
             updateRatesTable();
-            convertCurrency(); // auto-show default conversion on load
+            convertCurrency();
         }
 
-        // Update Crypto Display
         function updateCryptoDisplay() {
             renderCryptoCards();
-            updateLastUpdated();
+            convertCrypto();
         }
 
-        // Update Last Updated
-        function updateLastUpdated() {
-            const lastUpdated = document.getElementById('lastUpdated');
-            const statusDot = document.getElementById('statusDot');
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-            lastUpdated.textContent = `Last updated: ${timeStr}`;
-            statusDot.classList.remove('error');
+        function updateStatusBar() {
+            var el = document.getElementById('lastUpdated');
+            var dot = document.getElementById('statusDot');
+            var now = new Date();
+            var time = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+            var src = state.ratesSource === 'live' ? 'Live' : 'Cached';
+            el.textContent = src + ' rates \u00b7 Updated ' + time;
+            dot.classList.toggle('error', state.ratesSource !== 'live');
         }
 
-        // Show Error
-        function showError(message) {
-            const errorDiv = document.getElementById('errorMessage');
-            errorDiv.innerHTML = `<strong>⚠️ Notice:</strong> ${message}`;
-            errorDiv.style.display = 'block';
-            document.getElementById('statusDot').classList.add('error');
-        }
-
-        // Clear Error
-        function clearError() {
-            document.getElementById('errorMessage').style.display = 'none';
-            document.getElementById('statusDot').classList.remove('error');
-        }
-
-        // Update Rates Table
         function updateRatesTable() {
-            const tbody = document.getElementById('ratesTableBody');
-            const majorAfricanCurrencies = [
-                'NGN', 'KES', 'ZAR', 'GHS', 'ETB', 'EGP', 'MAD', 'UGX', 'ZMW', 'RWF'
-            ];
+            var tbody = document.getElementById('ratesTableBody');
+            var display = ['NGN','KES','ZAR','GHS','ETB','EGP','MAD','UGX','ZMW','RWF','DZD','XOF'];
+            var nameMap = {};
+            AFRICAN_CURRENCIES.forEach(function(c){ nameMap[c.code] = c.name; });
 
-            tbody.innerHTML = majorAfricanCurrencies.map(code => {
-                const rate = state.forexRates[code] || 0;
-                const change = Math.random() * 2 - 1; // Simulated change for demo
-                const changeClass = change > 0 ? 'up' : 'down';
-                const changeArrow = change > 0 ? '↑' : '↓';
-
-                return `
-                    <tr>
-                        <td class="currency-pair">${code} / USD</td>
-                        <td class="rate-value">${rate.toFixed(4)}</td>
-                        <td class="rate-change ${changeClass}">
-                            <span>${changeArrow}</span>
-                            <span>${Math.abs(change).toFixed(2)}%</span>
-                        </td>
-                    </tr>
-                `;
+            tbody.innerHTML = display.map(function(code) {
+                var rate = state.forexRates[code];
+                if (!rate) return '';
+                var decimals = rate > 100 ? 2 : rate > 1 ? 4 : 6;
+                return '<tr>' +
+                    '<td class="currency-pair">' + (nameMap[code] || code) + '</td>' +
+                    '<td><span class="rate-name">' + code + '</span></td>' +
+                    '<td class="rate-value">' + rate.toFixed(decimals) + '</td>' +
+                '</tr>';
             }).join('');
         }
 
-        // Render Crypto Cards
         function renderCryptoCards() {
-            const container = document.getElementById('cryptoCardsContainer');
+            var container = document.getElementById('cryptoCardsContainer');
+            container.innerHTML = CRYPTO_ASSETS.map(function(c) {
+                var price = state.cryptoPrices[c.id] || 0;
+                var change = state.cryptoChanges[c.id] || 0;
+                var cls = change >= 0 ? 'positive' : 'negative';
+                var arrow = change >= 0 ? '\u2191' : '\u2193';
+                var priceStr = price >= 1
+                    ? '$' + price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+                    : '$' + price.toFixed(4);
 
-            container.innerHTML = CRYPTO_ASSETS.map(crypto => {
-                const price = state.cryptoPrices[crypto.id] || 0;
-                const change = state.cryptoChanges[crypto.id] || 0;
-                const changeClass = change >= 0 ? 'positive' : 'negative';
-                const changeArrow = change >= 0 ? '↑' : '↓';
-
-                return `
-                    <div class="crypto-card">
-                        <div class="crypto-header">
-                            <div class="crypto-icon">${crypto.emoji}</div>
-                            <div class="crypto-info">
-                                <h3>${crypto.name}</h3>
-                                <div class="crypto-symbol">${crypto.symbol}</div>
-                            </div>
-                        </div>
-                        <div class="crypto-price">$${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
-                        <div class="crypto-change ${changeClass}">
-                            <span>${changeArrow}</span>
-                            <span>${Math.abs(change).toFixed(2)}%</span>
-                        </div>
-                    </div>
-                `;
+                return '<div class="crypto-card">' +
+                    '<div class="crypto-header">' +
+                        '<div class="crypto-icon">' + c.emoji + '</div>' +
+                        '<div><div class="crypto-name">' + c.name + '</div><div class="crypto-symbol">' + c.symbol + '</div></div>' +
+                    '</div>' +
+                    '<div class="crypto-price">' + priceStr + '</div>' +
+                    (change !== 0 ? '<div class="crypto-change ' + cls + '">' + arrow + ' ' + Math.abs(change).toFixed(2) + '%</div>' : '<div class="crypto-change" style="color:var(--afro-text-secondary);">-</div>') +
+                '</div>';
             }).join('');
         }
 
-        // Switch Tab
-        function switchTab(tabName) {
-            state.currentTab = tabName;
+        // === CONVERSION ===
+        window.convertCurrency = function() {
+            var amount = parseFloat(document.getElementById('fromAmount').value) || 0;
+            var from = document.getElementById('fromCurrency').value;
+            var to = document.getElementById('toCurrency').value;
+            var display = document.getElementById('toAmountDisplay');
 
-            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-
-            event.target.classList.add('active');
-            document.getElementById(tabName).classList.add('active');
-        }
-
-        // Convert Currency
-        function convertCurrency() {
-            const fromAmount = parseFloat(document.getElementById('fromAmount').value) || 0;
-            const fromCurrency = document.getElementById('fromCurrency').value;
-            const toCurrency = document.getElementById('toCurrency').value;
-
-            if (!fromCurrency || !toCurrency || fromAmount <= 0) {
+            if (!from || !to || amount <= 0 || Object.keys(state.forexRates).length === 0) {
+                display.value = '';
                 document.getElementById('result').style.display = 'none';
                 return;
             }
 
-            const fromRate = state.forexRates[fromCurrency] || 1;
-            const toRate = state.forexRates[toCurrency] || 1;
+            var fromRate = state.forexRates[from] || 1;
+            var toRate = state.forexRates[to] || 1;
+            var converted = (amount / fromRate) * toRate;
+            var rate = toRate / fromRate;
 
-            const toAmount = (fromAmount / fromRate) * toRate;
-            const rate = toRate / fromRate;
+            // Format nicely
+            var formatted = converted >= 1
+                ? converted.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+                : converted.toFixed(6);
 
-            // Update result
-            document.getElementById('resultAmount').textContent = toAmount.toFixed(2);
-            document.getElementById('resultCurrency').textContent = toCurrency;
-            document.getElementById('rateInfo').textContent = `Market Rate: 1 ${fromCurrency} = ${rate.toFixed(4)} ${toCurrency}`;
+            display.value = formatted;
+
+            document.getElementById('resultAmount').textContent = formatted;
+            document.getElementById('resultCurrency').textContent = to;
+            document.getElementById('rateInfo').textContent = 'Market Rate: 1 ' + from + ' = ' + rate.toFixed(rate > 100 ? 2 : 4) + ' ' + to;
             document.getElementById('result').style.display = 'block';
 
-            // Bank rate comparison
-            const bankRate = rate * 1.025; // 2.5% spread
-            const savings = (bankRate - rate).toFixed(4);
+            // Bank comparison
+            var bankRate = rate * 1.025;
+            var savings = bankRate - rate;
+            document.getElementById('marketRate').textContent = rate.toFixed(rate > 100 ? 2 : 4);
+            document.getElementById('bankRate').textContent = bankRate.toFixed(bankRate > 100 ? 2 : 4);
+            document.getElementById('savingsAmount').textContent = '+' + savings.toFixed(savings > 1 ? 2 : 4);
+        };
 
-            document.getElementById('marketRate').textContent = rate.toFixed(4);
-            document.getElementById('bankRate').textContent = bankRate.toFixed(4);
-            document.getElementById('savingsAmount').textContent = `+${savings}`;
-        }
+        window.convertCrypto = function() {
+            var amount = parseFloat(document.getElementById('cryptoAmount').value) || 0;
+            var cryptoId = document.getElementById('cryptoCurrency').value;
+            var targetCode = document.getElementById('cryptoTargetCurrency').value;
+            var display = document.getElementById('cryptoResultDisplay');
 
-        // Swap Currencies
-        function swapCurrencies() {
-            const from = document.getElementById('fromCurrency').value;
-            const to = document.getElementById('toCurrency').value;
-
-            document.getElementById('fromCurrency').value = to;
-            document.getElementById('toCurrency').value = from;
-
-            convertCurrency();
-        }
-
-        // Set Quick Pair
-        function setQuickPair(from, to) {
-            document.getElementById('fromCurrency').value = from;
-            document.getElementById('toCurrency').value = to;
-            document.getElementById('fromAmount').value = 1;
-
-            document.querySelectorAll('.quick-pair-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-
-            convertCurrency();
-        }
-
-        // Convert Crypto
-        function convertCrypto() {
-            const cryptoAmount = parseFloat(document.getElementById('cryptoAmount').value) || 0;
-            const cryptoId = document.getElementById('cryptoCurrency').value;
-            const targetCurrency = document.getElementById('cryptoTargetCurrency').value;
-
-            if (!cryptoId || !targetCurrency || cryptoAmount <= 0) {
+            if (!cryptoId || !targetCode || amount <= 0) {
+                display.value = '';
                 document.getElementById('cryptoResult').style.display = 'none';
                 return;
             }
 
-            const cryptoPrice = state.cryptoPrices[cryptoId] || 0;
-            const currencyRate = state.forexRates[targetCurrency] || 1;
+            var cryptoPrice = state.cryptoPrices[cryptoId] || 0;
+            var currRate = state.forexRates[targetCode] || 1;
+            var usdValue = amount * cryptoPrice;
+            var localValue = usdValue * currRate;
 
-            const valueInUSD = cryptoAmount * cryptoPrice;
-            const valueInCurrency = valueInUSD * currencyRate;
+            var formatted = localValue >= 1
+                ? localValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+                : localValue.toFixed(6);
 
-            const crypto = CRYPTO_ASSETS.find(c => c.id === cryptoId);
+            display.value = formatted;
 
-            document.getElementById('cryptoResultAmount').textContent = valueInCurrency.toLocaleString('en-US', { maximumFractionDigits: 2 });
-            document.getElementById('cryptoResultCurrency').textContent = targetCurrency;
-            document.getElementById('cryptoRateInfo').textContent = `1 ${crypto.symbol} = ${(cryptoPrice * currencyRate).toFixed(2)} ${targetCurrency}`;
+            var crypto = CRYPTO_ASSETS.find(function(c){ return c.id === cryptoId; });
+            var perUnit = cryptoPrice * currRate;
+            var perUnitStr = perUnit >= 1
+                ? perUnit.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+                : perUnit.toFixed(4);
+
+            document.getElementById('cryptoResultAmount').textContent = formatted;
+            document.getElementById('cryptoResultCurrency').textContent = targetCode;
+            document.getElementById('cryptoRateInfo').textContent = '1 ' + crypto.symbol + ' = ' + perUnitStr + ' ' + targetCode;
             document.getElementById('cryptoResult').style.display = 'block';
-        }
+        };
 
-        // Swap Crypto and Currency
-        function swapCryptoAndCurrency() {
-            const crypto = document.getElementById('cryptoCurrency').value;
-            const currency = document.getElementById('cryptoTargetCurrency').value;
+        // === INTERACTIONS ===
+        window.swapCurrencies = function() {
+            var from = document.getElementById('fromCurrency');
+            var to = document.getElementById('toCurrency');
+            var tmp = from.value;
+            from.value = to.value;
+            to.value = tmp;
+            convertCurrency();
+        };
 
-            document.getElementById('cryptoCurrency').value = crypto;
-            document.getElementById('cryptoTargetCurrency').value = currency;
+        window.setQuickPair = function(fromCode, toCode, btn) {
+            document.getElementById('fromCurrency').value = fromCode;
+            document.getElementById('toCurrency').value = toCode;
+            document.getElementById('fromAmount').value = 1;
+            document.querySelectorAll('.quick-pair-btn').forEach(function(b){ b.classList.remove('active'); });
+            if (btn) btn.classList.add('active');
+            convertCurrency();
+        };
 
-            convertCrypto();
-        }
+        window.switchTab = function(tabName, btn) {
+            document.querySelectorAll('.tab-button').forEach(function(b){ b.classList.remove('active'); });
+            document.querySelectorAll('.tab-content').forEach(function(c){ c.classList.remove('active'); });
+            if (btn) btn.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        };
 
-        // Refresh Rates
-        function refreshRates() {
+        window.refreshRates = function() {
             state.cacheTime = 0;
             state.cryptoCacheTime = 0;
             loadRates();
             loadCryptoPrices();
+        };
+
+        // === HELPERS ===
+        function setRefreshLoading(loading) {
+            var btn = document.getElementById('refreshBtn');
+            var spinner = document.getElementById('refreshSpinner');
+            btn.classList.toggle('loading', loading);
+            spinner.style.display = loading ? 'inline-block' : 'none';
         }
 
-        // Setup Auto Refresh
-        function setupAutoRefresh() {
-            setInterval(() => {
-                refreshRates();
-            }, CONFIG.AUTO_REFRESH_INTERVAL);
+        function showError(msg) {
+            var el = document.getElementById('errorMessage');
+            el.innerHTML = '<strong>\u26a0\ufe0f Notice:</strong> ' + msg;
+            el.style.display = 'block';
+            document.getElementById('statusDot').classList.add('error');
         }
+
+        function clearError() {
+            document.getElementById('errorMessage').style.display = 'none';
+            document.getElementById('statusDot').classList.remove('error');
+        }
+    })();
     </script>
 <script src="/assets/js/favorites-widget.js" defer></script>
 <script src="/assets/js/components/tool-registry.js" defer></script>
