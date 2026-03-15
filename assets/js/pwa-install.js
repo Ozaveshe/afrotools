@@ -28,7 +28,7 @@
   if (!document.querySelector('meta[name="theme-color"]')) {
     const meta = document.createElement('meta');
     meta.name = 'theme-color';
-    meta.content = '#0c1a10';
+    meta.content = '#007AFF';
     document.head.appendChild(meta);
   }
 
