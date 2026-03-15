@@ -1,1580 +1,840 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <!-- Google Analytics 4 -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-D859CGF391');
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-D859CGF391');
 </script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Import Duty Calculator 2026 — Africa | AfroTools</title>
-    <meta name="description" content="Calculate import duties, VAT, and customs fees for goods entering Nigeria, Kenya, South Africa, Ghana, and 15+ African countries. Real 2025/2026 rates from NCS, KRA, SARS, GRA.">
-    <meta name="tool-id" content="import-duty">
-    <meta name="canonical" content="https://afrotools.com/tools/import-duty/">
-    <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="AfroTools">
-    <meta property="og:title" content="Import Duty Calculator for Africa 2026 — Nigeria, Kenya, South Africa, Ghana | AfroTools">
-    <meta property="og:description" content="Calculate import duties, VAT, and customs fees for goods entering Nigeria, Kenya, South Africa, Ghana, and 15+ African countries. Real 2025/2026 rates from NCS, KRA, SARS, GRA.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Import Duty Calculator 2026 — Africa | AfroTools</title>
+<meta name="description" content="Calculate import duties, VAT, and customs fees for 17+ African countries. Nigeria NCS, Kenya KRA, South Africa SARS rates. Full landed cost breakdown.">
+<link rel="canonical" href="https://afrotools.com/tools/import-duty/">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Import Duty Calculator for Africa 2026 | AfroTools">
+<meta property="og:description" content="Calculate import duties, VAT, and customs fees for goods entering 17+ African countries. Real 2025/2026 rates.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/import-duty/">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
-    <meta property="og:url" content="https://afrotools.com/tools/import-duty/">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'DM Sans', sans-serif;
-            background-color: #f8f9fa;
-            color: #333;
-            line-height: 1.6;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .page-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .page-header h1 {
-            font-size: 2.5em;
-            color: #0071E3;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-
-        .page-header p {
-            font-size: 1.1em;
-            color: #666;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .calculator-wrapper {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-
-        @media (max-width: 1024px) {
-            .calculator-wrapper {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .card {
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        }
-
-        .card h2 {
-            font-size: 1.3em;
-            color: #0071E3;
-            margin-bottom: 25px;
-            font-weight: 600;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #333;
-            font-size: 0.95em;
-        }
-
-        select, input[type="text"], input[type="number"] {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 1em;
-            transition: border-color 0.3s;
-        }
-
-        select:focus, input:focus {
-            outline: none;
-            border-color: #0071E3;
-        }
-
-        .input-group {
-            display: flex;
-            gap: 10px;
-        }
-
-        .input-group input {
-            flex: 1;
-        }
-
-        .input-group span {
-            display: flex;
-            align-items: center;
-            padding: 12px;
-            background: #f0f0f0;
-            border-radius: 8px;
-            font-weight: 600;
-        }
-
-        .slider-container {
-            margin-top: 8px;
-        }
-
-        input[type="range"] {
-            width: 100%;
-            height: 6px;
-            border-radius: 3px;
-            background: #ddd;
-            outline: none;
-            -webkit-appearance: none;
-        }
-
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #0071E3;
-            cursor: pointer;
-        }
-
-        input[type="range"]::-moz-range-thumb {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #0071E3;
-            cursor: pointer;
-            border: none;
-        }
-
-        .slider-value {
-            display: text-align: right;
-            font-size: 0.9em;
-            color: #666;
-            margin-top: 5px;
-        }
-
-        .button-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 30px;
-        }
-
-        button {
-            flex: 1;
-            padding: 14px;
-            font-size: 1em;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-            font-family: 'DM Sans', sans-serif;
-        }
-
-        .btn-primary {
-            background: #0071E3;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #005BBF;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
-        }
-
-        .btn-secondary {
-            background: #f0f0f0;
-            color: #333;
-        }
-
-        .btn-secondary:hover {
-            background: #e0e0e0;
-        }
-
-        .results-container {
-            min-height: 400px;
-        }
-
-        .country-result {
-            background: linear-gradient(135deg, #f5f5f5 0%, #fff 100%);
-            border-left: 4px solid #0071E3;
-            padding: 25px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-        }
-
-        .country-result h3 {
-            color: #0071E3;
-            font-size: 1.2em;
-            margin-bottom: 15px;
-        }
-
-        .breakdown-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
-            font-size: 0.95em;
-        }
-
-        .breakdown-row:last-child {
-            border-bottom: none;
-        }
-
-        .breakdown-label {
-            color: #666;
-        }
-
-        .breakdown-value {
-            font-weight: 600;
-            color: #333;
-        }
-
-        .total-row {
-            background: #f0f0f0;
-            padding: 12px;
-            border-radius: 6px;
-            margin-top: 15px;
-            display: flex;
-            justify-content: space-between;
-            font-size: 1.1em;
-            font-weight: 700;
-        }
-
-        .total-row .breakdown-label {
-            color: #333;
-        }
-
-        .total-row .breakdown-value {
-            color: #0071E3;
-        }
-
-        .chart-container {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .donut-chart {
-            width: 200px;
-            height: 200px;
-            margin: 0 auto;
-            border-radius: 50%;
-            background: conic-gradient(
-                #0071E3 0deg 90deg,
-                #ff6b6b 90deg 200deg,
-                #4ecdc4 200deg 360deg
-            );
-            box-shadow: inset 0 0 0 50px white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        .chart-labels {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-top: 20px;
-            font-size: 0.9em;
-        }
-
-        .chart-label {
-            text-align: center;
-        }
-
-        .chart-dot {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            margin-right: 6px;
-            vertical-align: middle;
-        }
-
-        .comparison-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            font-size: 0.9em;
-        }
-
-        .comparison-table th {
-            background: #0071E3;
-            color: white;
-            padding: 12px;
-            text-align: left;
-            font-weight: 600;
-        }
-
-        .comparison-table td {
-            padding: 12px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .comparison-table tr:hover {
-            background: #f9f9f9;
-        }
-
-        .hs-code-section {
-            margin-top: 40px;
-        }
-
-        .hs-lookup {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        @media (max-width: 1024px) {
-            .hs-lookup {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .hs-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.9em;
-        }
-
-        .hs-table th {
-            background: #f0f0f0;
-            padding: 12px;
-            text-align: left;
-            font-weight: 600;
-            border-bottom: 2px solid #ddd;
-        }
-
-        .hs-table td {
-            padding: 10px 12px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .hs-table tr:hover {
-            background: #f9f9f9;
-        }
-
-        .faq-section {
-            margin-top: 40px;
-        }
-
-        .faq-item {
-            margin-bottom: 20px;
-            border-left: 4px solid #0071E3;
-            padding: 20px;
-            background: white;
-            border-radius: 8px;
-        }
-
-        .faq-item h4 {
-            color: #0071E3;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-
-        .faq-item p {
-            color: #666;
-            line-height: 1.7;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-            flex-wrap: wrap;
-        }
-
-        .action-buttons button {
-            flex: 0 1 auto;
-            padding: 10px 16px;
-            font-size: 0.9em;
-        }
-
-        .no-results {
-            text-align: center;
-            padding: 40px;
-            color: #999;
-        }
-
-        .currency-select {
-            width: 100%;
-        }
-
-        .tooltip {
-            cursor: help;
-            border-bottom: 1px dotted #0071E3;
-            margin-left: 5px;
-            font-size: 0.8em;
-        }
-
-        .helpers-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        @media (max-width: 1024px) {
-            .helpers-section {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* ── Mobile 768px ── */
-        @media (max-width: 768px) {
-            body { padding: 0; }
-            .page-container, .container { padding: 12px !important; }
-            .card { padding: 16px !important; }
-            .hero { padding: 36px 16px 28px !important; }
-            .hero h1 { font-size: 1.6rem !important; }
-            .hero p { font-size: 0.9rem !important; }
-            .button-group {
-                flex-direction: column !important;
-                gap: 10px !important;
-            }
-            .button-group button { width: 100% !important; }
-            .chart-labels { grid-template-columns: 1fr 1fr !important; }
-            .comparison-grid { grid-template-columns: 1fr !important; }
-            .input-grid, .form-grid { grid-template-columns: 1fr !important; }
-            .rate-breakdown { font-size: 13px !important; }
-            .result-item { flex-wrap: wrap !important; }
-            .result-label, .result-value { font-size: 13px !important; }
-            .hs-table { font-size: 12px !important; }
-            .hs-table th, .hs-table td { padding: 6px 8px !important; }
-            .compare-table th, .compare-table td { padding: 6px 8px !important; font-size: 12px !important; }
-            .compare-table { font-size: 12px !important; }
-            overflow-x: auto;
-        }
-
-        .helper-card {
-            background: linear-gradient(135deg, #f5f5f5 0%, #fff 100%);
-            padding: 20px;
-            border-radius: 8px;
-            border: 1px solid #eee;
-        }
-
-        .helper-card h4 {
-            color: #0071E3;
-            margin-bottom: 12px;
-            font-weight: 600;
-        }
-
-        .weight-input {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .weight-input input {
-            flex: 1;
-        }
-
-        .weight-input select {
-            flex: 0 0 auto;
-            width: 80px;
-        }
-
-        .save-button {
-            width: 40px;
-            height: 40px;
-            padding: 0;
-            border-radius: 50%;
-            background: #f0f0f0;
-            border: 2px solid #ddd;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-        }
-
-        .save-button:hover {
-            background: #0071E3;
-            color: white;
-            border-color: #0071E3;
-        }
-
-        .save-button.saved {
-            background: #0071E3;
-            color: white;
-            border-color: #0071E3;
-        }
-
-        .highlight-row {
-            background: #f0f9f5;
-        }
-    </style>
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebApplication",
-        "name": "Import Duty Calculator for Africa",
-        "description": "Calculate import duties, VAT, and customs fees for goods entering African countries",
-        "url": "https://afrotools.com/tools/import-duty/",
-        "applicationCategory": "FinanceApplication",
-        "operatingSystem": "Any",
-        "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-        }
-        }
-    </script>
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Import Duty Calculator for Africa 2026 | AfroTools">
+<meta name="twitter:description" content="Full landed cost breakdown for 17+ African countries. Nigeria, Kenya, South Africa duty rates.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/assets/css/import-duty.css">
+
+<style>:root { --color-brand: #0071E3; }</style>
+<meta name="tool-id" content="import-duty">
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Import Duty Calculator for Africa","url":"https://afrotools.com/tools/import-duty/","description":"Calculate import duties, VAT, and customs fees for goods entering African countries.","applicationCategory":"FinanceApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://afrotools.com/tools"},{"@type":"ListItem","position":3,"name":"Import Duty Calculator","item":"https://afrotools.com/tools/import-duty/"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How is import duty calculated in Nigeria?","acceptedAnswer":{"@type":"Answer","text":"Nigeria NCS calculates duty on CIF value. Rates vary 5-50% by product. Additional levies: VAT 7.5%, CISS 1% on FOB, ETLS 0.5% on CIF. Surcharge 7% on duty for some items."}},{"@type":"Question","name":"What are Kenya import duty rates?","acceptedAnswer":{"@type":"Answer","text":"Kenya KRA applies EAC CET rates on CIF value. Additional: IDF 3.5%, RDL 2.5%, VAT 16% on duty-inclusive value. Excise duty on select goods."}},{"@type":"Question","name":"Which African country has the lowest import duties?","acceptedAnswer":{"@type":"Answer","text":"South Africa has 0% duty on electronics. Botswana and Namibia also have low rates. Actual cost depends on product category, VAT rates, and additional levies."}}]}
+</script>
+
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<script src="/assets/js/lib/toast.js" defer></script>
+<script src="/assets/js/lib/share-state.js" defer></script>
+<script src="/assets/js/lib/pdf-template.js" defer></script>
 </head>
-<body>
-    <afro-navbar active="tools"></afro-navbar>
+<body class="tool-page">
+<afro-navbar active="tools"></afro-navbar>
 
-    <div class="container">
-        <div class="page-header">
-            <h1>Import Duty & Customs Calculator</h1>
-            <p>Calculate accurate import duties, VAT, and fees for goods entering African countries using 2025/2026 rates</p>
-            <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;">
-              <span style="background:#0071E3;color:#fff;padding:7px 15px;border-radius:20px;font-size:13px;font-weight:600;">17 African Countries</span>
-              <span style="background:#0071E3;color:#fff;padding:7px 15px;border-radius:20px;font-size:13px;font-weight:600;">Full Duty Breakdown</span>
-              <span style="background:#0071E3;color:#fff;padding:7px 15px;border-radius:20px;font-size:13px;font-weight:600;">All Levies & Taxes</span>
-              <span style="background:#0071E3;color:#fff;padding:7px 15px;border-radius:20px;font-size:13px;font-weight:600;">Landed Cost in Local Currency</span>
-              <span style="background:#EFF6FF;color:#0071E3;border:1.5px solid #BFDBFE;padding:7px 15px;border-radius:20px;font-size:13px;font-weight:600;">Free Forever</span>
-            </div>
-        </div>
+<!-- HERO -->
+<section class="duty-hero">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a> <span>/</span> <a href="/tools/">Tools</a> <span>/</span> <span aria-current="page">Import Duty Calculator</span>
+    </nav>
+    <h1>Import Duty &amp; Customs<br><em>Calculator 2026</em></h1>
+    <p class="duty-hero-sub">Calculate accurate import duties, VAT, and all customs levies for goods entering 17 African countries. Full landed cost breakdown with every surcharge itemised separately.</p>
+    <div class="hero-badges">
+      <span class="badge badge-green">17 African Countries</span>
+      <span class="badge badge-blue">Full Levy Breakdown</span>
+      <span class="badge badge-grey">2025/2026 Rates</span>
+    </div>
+    <p class="hero-meta">Rates from NCS (Nigeria), KRA (Kenya), SARS (South Africa), GRA (Ghana), TRA (Tanzania) &middot; Updated March 2026</p>
+  </div>
+</section>
 
-        <div class="calculator-wrapper">
-            <!-- Left Panel: Inputs -->
-            <div class="card">
-                <h2>Calculate Duties</h2>
+<!-- MAIN -->
+<div class="duty-main">
+  <div class="container">
 
-                <div class="form-group">
-                    <label for="destCountry">Destination Country <span class="tooltip">Where goods arrive</span></label>
-                    <select id="destCountry">
-                        <option value="">Select destination...</option>
-                        <option value="Nigeria">Nigeria (NCS)</option>
-                        <option value="Kenya">Kenya (KRA)</option>
-                        <option value="South Africa">South Africa (SARS)</option>
-                        <option value="Ghana">Ghana (GRA)</option>
-                        <option value="Tanzania">Tanzania (TRA)</option>
-                        <option value="Uganda">Uganda</option>
-                        <option value="Rwanda">Rwanda</option>
-                        <option value="Ethiopia">Ethiopia (ERCA)</option>
-                        <option value="Egypt">Egypt</option>
-                        <option value="Morocco">Morocco</option>
-                        <option value="Cameroon">Cameroon</option>
-                        <option value="Ivory Coast">Ivory Coast</option>
-                        <option value="Senegal">Senegal</option>
-                        <option value="Zambia">Zambia</option>
-                        <option value="Zimbabwe">Zimbabwe</option>
-                        <option value="Botswana">Botswana</option>
-                        <option value="Namibia">Namibia</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="originCountry">Origin Country <span class="tooltip">Where goods are from</span></label>
-                    <select id="originCountry">
-                        <option value="">Select origin...</option>
-                        <optgroup label="International">
-                            <option value="China">China</option>
-                            <option value="USA">USA</option>
-                            <option value="UK">UK</option>
-                            <option value="UAE">UAE</option>
-                            <option value="India">India</option>
-                            <option value="Germany">Germany</option>
-                            <option value="Japan">Japan</option>
-                            <option value="France">France</option>
-                            <option value="Italy">Italy</option>
-                            <option value="Turkey">Turkey</option>
-                        </optgroup>
-                        <optgroup label="African Countries">
-                            <option value="Nigeria">Nigeria</option>
-                            <option value="Kenya">Kenya</option>
-                            <option value="South Africa">South Africa</option>
-                            <option value="Ghana">Ghana</option>
-                            <option value="Tanzania">Tanzania</option>
-                            <option value="Uganda">Uganda</option>
-                            <option value="Rwanda">Rwanda</option>
-                            <option value="Ethiopia">Ethiopia</option>
-                            <option value="Egypt">Egypt</option>
-                            <option value="Morocco">Morocco</option>
-                            <option value="Cameroon">Cameroon</option>
-                            <option value="Ivory Coast">Ivory Coast</option>
-                            <option value="Senegal">Senegal</option>
-                            <option value="Zambia">Zambia</option>
-                            <option value="Zimbabwe">Zimbabwe</option>
-                            <option value="Botswana">Botswana</option>
-                            <option value="Namibia">Namibia</option>
-                        </optgroup>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="category">Product Category <span class="tooltip">HS code classification</span></label>
-                    <select id="category">
-                        <option value="">Select category...</option>
-                        <option value="Electronics">Electronics (HS 84-85) - Phones, Laptops, TVs, Appliances</option>
-                        <option value="Clothing">Clothing & Textiles (HS 61-62) - Clothing, Fabrics, Footwear</option>
-                        <option value="Vehicles">Vehicles (HS 87) - Cars, Motorcycles, Trucks, Parts</option>
-                        <option value="Food">Food & Beverages (HS 01-24) - Processed food, Rice, Sugar</option>
-                        <option value="Building">Building Materials (HS 68-70) - Cement, Steel, Tiles, Glass</option>
-                        <option value="Machinery">Machinery & Equipment (HS 84) - Industrial machinery, generators</option>
-                        <option value="Cosmetics">Cosmetics & Personal Care (HS 33) - Skincare, haircare</option>
-                        <option value="Pharmaceuticals">Pharmaceuticals (HS 30) - Medicines, supplements</option>
-                        <option value="Agricultural">Agricultural Produce (HS 01-14) - Fresh food, seeds</option>
-                        <option value="Furniture">Furniture (HS 94) - Household furniture</option>
-                        <option value="Jewellery">Jewellery & Precious (HS 71) - Gold, silver items</option>
-                        <option value="Books">Books & Education (HS 49) - Books, stationery</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="goodsValue">Goods Value (USD) <span class="tooltip">FOB value</span></label>
-                    <div class="input-group">
-                        <input type="number" id="goodsValue" placeholder="0" min="0" step="100">
-                        <span>USD</span>
-                    </div>
-                    <div class="slider-container">
-                        <input type="range" id="goodsSlider" min="0" max="50000" value="0" step="100">
-                        <div class="slider-value" id="sliderValue">0 USD</div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="cifValue">Shipping & Insurance (CIF) (USD) <span class="tooltip">Additional to goods value</span></label>
-                    <div class="input-group">
-                        <input type="number" id="cifValue" placeholder="0" min="0" step="50">
-                        <span>USD</span>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="quantity">Quantity (Optional) <span class="tooltip">For per-unit breakdown</span></label>
-                    <input type="number" id="quantity" placeholder="1" min="1" value="1">
-                </div>
-
-                <div class="button-group">
-                    <button class="btn-primary" id="calculateBtn">Calculate Duties</button>
-                    <button class="btn-secondary" id="compareBtn">Compare Countries</button>
-                </div>
-            </div>
-
-            <!-- Right Panel: Results -->
-            <div class="card">
-                <h2>Duty Breakdown</h2>
-                <div class="results-container" id="resultsContainer">
-                    <div class="no-results">
-                        <p>Select your details and click "Calculate Duties" to see the breakdown</p>
-                    </div>
-                </div>
-                <div class="action-buttons" id="actionButtons" style="display: none;">
-                    <button class="btn-secondary" id="printBtn">🖨️ Print</button>
-                    <button class="btn-secondary" id="copyBtn">📋 Copy Results</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- HS Code Lookup -->
-        <div class="card hs-code-section">
-            <h2>HS Code Lookup</h2>
-            <div class="form-group">
-                <label for="hsSearch">Search Product (e.g., "iPhone", "women's clothing", "cement")</label>
-                <input type="text" id="hsSearch" placeholder="Type product name...">
-            </div>
-            <div class="hs-lookup">
-                <div>
-                    <h3 style="color: #0071E3; margin-bottom: 15px;">Common Items & HS Codes</h3>
-                    <table class="hs-table">
-                        <thead>
-                            <tr>
-                                <th>Product</th>
-                                <th>HS Code</th>
-                                <th>Category</th>
-                            </tr>
-                        </thead>
-                        <tbody id="hsTable">
-                            <tr>
-                                <td>Smartphone</td>
-                                <td>8517.12.00</td>
-                                <td>Electronics</td>
-                            </tr>
-                            <tr>
-                                <td>Laptop/Desktop</td>
-                                <td>8471.30.00</td>
-                                <td>Electronics</td>
-                            </tr>
-                            <tr>
-                                <td>Television</td>
-                                <td>8528.72.00</td>
-                                <td>Electronics</td>
-                            </tr>
-                            <tr>
-                                <td>Used Car</td>
-                                <td>8703.23.90</td>
-                                <td>Vehicles</td>
-                            </tr>
-                            <tr>
-                                <td>Motorcycle</td>
-                                <td>8711.40.00</td>
-                                <td>Vehicles</td>
-                            </tr>
-                            <tr>
-                                <td>Car Spare Parts</td>
-                                <td>8708.99.00</td>
-                                <td>Vehicles</td>
-                            </tr>
-                            <tr>
-                                <td>Rice</td>
-                                <td>1006.30.00</td>
-                                <td>Food</td>
-                            </tr>
-                            <tr>
-                                <td>Sugar</td>
-                                <td>1701.99.00</td>
-                                <td>Food</td>
-                            </tr>
-                            <tr>
-                                <td>Women's Clothing</td>
-                                <td>6204.59.90</td>
-                                <td>Textiles</td>
-                            </tr>
-                            <tr>
-                                <td>Men's Clothing</td>
-                                <td>6204.69.00</td>
-                                <td>Textiles</td>
-                            </tr>
-                            <tr>
-                                <td>Footwear</td>
-                                <td>6402.99.00</td>
-                                <td>Textiles</td>
-                            </tr>
-                            <tr>
-                                <td>Cement</td>
-                                <td>2523.29.00</td>
-                                <td>Building</td>
-                            </tr>
-                            <tr>
-                                <td>Steel Bars</td>
-                                <td>7213.91.00</td>
-                                <td>Building</td>
-                            </tr>
-                            <tr>
-                                <td>Glass Sheets</td>
-                                <td>7007.19.00</td>
-                                <td>Building</td>
-                            </tr>
-                            <tr>
-                                <td>Generator</td>
-                                <td>8502.20.00</td>
-                                <td>Machinery</td>
-                            </tr>
-                            <tr>
-                                <td>Solar Panel</td>
-                                <td>8541.40.00</td>
-                                <td>Machinery</td>
-                            </tr>
-                            <tr>
-                                <td>Skincare Products</td>
-                                <td>3304.99.00</td>
-                                <td>Cosmetics</td>
-                            </tr>
-                            <tr>
-                                <td>Medicine</td>
-                                <td>3004.90.00</td>
-                                <td>Pharmaceuticals</td>
-                            </tr>
-                            <tr>
-                                <td>Gold Jewellery</td>
-                                <td>7113.11.00</td>
-                                <td>Jewellery</td>
-                            </tr>
-                            <tr>
-                                <td>Furniture</td>
-                                <td>9403.40.00</td>
-                                <td>Furniture</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div>
-                    <h3 style="color: #0071E3; margin-bottom: 15px;">Helper Tools</h3>
-
-                    <div class="helpers-section">
-                        <div class="helper-card">
-                            <h4>Freight Cost Estimator</h4>
-                            <div class="form-group" style="margin-bottom: 10px;">
-                                <label>Weight</label>
-                                <div class="weight-input">
-                                    <input type="number" id="weight" placeholder="0" min="0" step="0.1">
-                                    <select id="weightUnit">
-                                        <option value="kg">KG</option>
-                                        <option value="ton">Tons</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="freightOrigin">Origin</label>
-                                <select id="freightOrigin">
-                                    <option value="China">China</option>
-                                    <option value="USA">USA</option>
-                                    <option value="India">India</option>
-                                    <option value="Europe">Europe</option>
-                                </select>
-                            </div>
-                            <button class="btn-secondary" id="estimateBtn" style="width: 100%; margin-top: 10px;">Estimate Freight</button>
-                            <div id="freightResult" style="margin-top: 15px; padding: 10px; background: #f0f0f0; border-radius: 6px; display: none;">
-                                <strong>Est. Freight Cost:</strong>
-                                <div id="freightCost" style="color: #0071E3; font-size: 1.2em; font-weight: 700; margin-top: 5px;"></div>
-                            </div>
-                        </div>
-
-                        <div class="helper-card">
-                            <h4>Cheapest Origin Finder</h4>
-                            <p style="color: #666; margin-bottom: 15px; font-size: 0.9em;">Find the cheapest country to import your goods from</p>
-                            <button class="btn-secondary" id="cheapestBtn" style="width: 100%;">Find Cheapest Origin</button>
-                            <div id="cheapestResult" style="margin-top: 15px; padding: 10px; background: #f0f0f0; border-radius: 6px; display: none;">
-                                <strong>Best Origin:</strong>
-                                <div id="cheapestOrigin" style="color: #0071E3; font-size: 1.1em; font-weight: 700; margin-top: 5px;"></div>
-                                <div id="savingsAmount" style="font-size: 0.9em; color: #666; margin-top: 5px;"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- FAQ Section -->
-        <div class="card faq-section">
-            <h2>Frequently Asked Questions</h2>
-            <div class="faq-item">
-                <h4>How is import duty calculated in Nigeria?</h4>
-                <p>Nigeria's National Customs Service (NCS) calculates duty on the Cost, Insurance, and Freight (CIF) value. The duty rate varies by product category (5-50% depending on classification). After duty is assessed, VAT of 7.5% is applied to the CIF value plus duty. Additional levies include CISS (1% on FOB) and ETLS (0.5% on CIF). The total landed cost includes all these components converted to NGN at the official exchange rate.</p>
-            </div>
-            <div class="faq-item">
-                <h4>What documents do I need to import goods to Kenya?</h4>
-                <p>The Kenya Revenue Authority (KRA) requires: (1) Bill of Lading or Airway Bill, (2) Commercial Invoice, (3) Packing List, (4) Certificate of Origin, (5) Import Declaration Form (IDF), (6) Company registration documents. Goods may be subject to inspection at the port. You can pay duty using various methods including bank transfer. Filing an Electronic Single Window (ESW) declaration is now mandatory for all imports.</p>
-            </div>
-            <div class="faq-item">
-                <h4>Which African countries have the lowest import duties?</h4>
-                <p>South Africa generally has low tariffs for many categories (particularly electronics at 0%), while countries like Kenya and Tanzania are part of the East African Community (EAC) with harmonized rates. WAEMU countries (including Senegal and Ghana) have fixed tariff bands. Botswana and Namibia also maintain competitive duty rates. The actual cost depends on your product category, so use the calculator to compare destinations for your specific goods.</p>
-            </div>
-            <div class="faq-item">
-                <h4>How do I use an HS code?</h4>
-                <p>HS codes (Harmonized System codes) are 6-10 digit numbers that classify products for customs purposes. Each digit level narrows the classification. For example: 8517 = Telephone equipment, 8517.12 = Smartphones, 8517.12.00 = Smartphones (most specific). Use the HS Code Lookup table above to find your product, or search the WCO HS database. Include the full code on your commercial invoice and customs declaration when importing.</p>
-            </div>
-        </div>
+    <!-- TABS -->
+    <div class="duty-tabs">
+      <button class="duty-tab on" onclick="setTab('calc',this)">Calculate Duties</button>
+      <button class="duty-tab" onclick="setTab('compare',this)">Compare Countries</button>
+      <button class="duty-tab" onclick="setTab('hs',this)">HS Code Lookup</button>
+      <button class="duty-tab" onclick="setTab('saved',this)">Saved (<span id="savedCount">0</span>)</button>
     </div>
 
-    
-<afro-related-tools category="financial" current="import-duty"></afro-related-tools>
-<afro-chat
-  tool="import-duty"
-  system="You are an expert African trade and customs advisor. Help users understand import duties, customs tariffs, HS codes, CIF calculations, and clearing costs across Nigeria, Kenya, South Africa, Ghana, and other African countries. Explain ECOWAS trade rules, COMESA, AfCFTA benefits, prohibited goods, and how to minimise legitimate import costs."
-></afro-chat>
+    <!-- TAB: CALCULATE -->
+    <div class="tab-panel on" id="tabCalc">
+      <div class="duty-grid">
+        <!-- INPUT CARD -->
+        <div class="card">
+          <div class="card-head">
+            <span class="card-title">Import Details</span>
+            <span class="card-sub">All values in USD</span>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <div class="f-label">
+                <label class="f-label-text" for="destCountry">Destination Country</label>
+                <span class="f-hint">Where goods arrive</span>
+              </div>
+              <select class="f-input" id="destCountry">
+                <option value="">Select destination...</option>
+                <option value="Nigeria">Nigeria (NCS)</option>
+                <option value="Kenya">Kenya (KRA)</option>
+                <option value="South Africa">South Africa (SARS)</option>
+                <option value="Ghana">Ghana (GRA)</option>
+                <option value="Tanzania">Tanzania (TRA)</option>
+                <option value="Uganda">Uganda</option>
+                <option value="Rwanda">Rwanda</option>
+                <option value="Ethiopia">Ethiopia (ERCA)</option>
+                <option value="Egypt">Egypt</option>
+                <option value="Morocco">Morocco</option>
+                <option value="Cameroon">Cameroon</option>
+                <option value="Ivory Coast">Ivory Coast</option>
+                <option value="Senegal">Senegal</option>
+                <option value="Zambia">Zambia</option>
+                <option value="Zimbabwe">Zimbabwe</option>
+                <option value="Botswana">Botswana</option>
+                <option value="Namibia">Namibia</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <div class="f-label">
+                <label class="f-label-text" for="originCountry">Origin Country</label>
+                <span class="f-hint">Where goods ship from</span>
+              </div>
+              <select class="f-input" id="originCountry">
+                <option value="">Select origin...</option>
+                <optgroup label="International">
+                  <option value="China">China</option>
+                  <option value="USA">USA</option>
+                  <option value="UK">UK</option>
+                  <option value="UAE">UAE</option>
+                  <option value="India">India</option>
+                  <option value="Germany">Germany</option>
+                  <option value="Japan">Japan</option>
+                  <option value="Turkey">Turkey</option>
+                </optgroup>
+                <optgroup label="African">
+                  <option value="Nigeria">Nigeria</option>
+                  <option value="Kenya">Kenya</option>
+                  <option value="South Africa">South Africa</option>
+                  <option value="Ghana">Ghana</option>
+                </optgroup>
+              </select>
+            </div>
+
+            <div class="field">
+              <div class="f-label">
+                <label class="f-label-text" for="category">Product Category</label>
+                <span class="f-hint">HS code classification</span>
+              </div>
+              <select class="f-input" id="category">
+                <option value="">Select category...</option>
+                <option value="Electronics">Electronics (HS 84-85)</option>
+                <option value="Clothing">Clothing &amp; Textiles (HS 61-62)</option>
+                <option value="Vehicles">Vehicles (HS 87)</option>
+                <option value="Food">Food &amp; Beverages (HS 01-24)</option>
+                <option value="Building">Building Materials (HS 68-70)</option>
+                <option value="Machinery">Machinery (HS 84)</option>
+                <option value="Cosmetics">Cosmetics (HS 33)</option>
+                <option value="Pharmaceuticals">Pharmaceuticals (HS 30)</option>
+                <option value="Agricultural">Agricultural (HS 01-14)</option>
+                <option value="Furniture">Furniture (HS 94)</option>
+                <option value="Jewellery">Jewellery (HS 71)</option>
+                <option value="Books">Books (HS 49)</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <div class="f-label">
+                <label class="f-label-text" for="goodsValue">Goods Value (FOB)</label>
+                <span class="f-hint">USD</span>
+              </div>
+              <div class="f-wrap">
+                <span class="f-prefix">$</span>
+                <input type="text" class="f-input has-prefix" id="goodsValue" placeholder="5,000" inputmode="numeric" autocomplete="off">
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="f-label">
+                <label class="f-label-text" for="shippingValue">Shipping &amp; Insurance</label>
+                <span class="f-hint">USD &middot; added to CIF</span>
+              </div>
+              <div class="f-wrap">
+                <span class="f-prefix">$</span>
+                <input type="text" class="f-input has-prefix" id="shippingValue" placeholder="500" inputmode="numeric" autocomplete="off">
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="f-label">
+                <label class="f-label-text" for="quantity">Quantity</label>
+                <span class="f-hint">For per-unit cost</span>
+              </div>
+              <input type="number" class="f-input" id="quantity" value="1" min="1">
+            </div>
+
+            <button class="calc-btn" onclick="calculateDuties()">Calculate Total Landed Cost &rarr;</button>
+            <button class="calc-btn secondary" onclick="saveCalc()" style="margin-top:8px;">Save This Calculation</button>
+          </div>
+        </div>
+
+        <!-- RESULTS -->
+        <div>
+          <div class="card results-card" id="resultsCard" aria-live="polite">
+            <div class="res-hero">
+              <div class="res-hero-label">Total Landed Cost</div>
+              <div class="res-hero-amount" id="resTotalLocal">$0</div>
+              <div class="res-hero-sub" id="resTotalUSD"></div>
+            </div>
+            <div class="res-body" id="resBody"></div>
+            <div class="chart-section">
+              <div class="chart-canvas-wrap"><canvas id="dutyChart" aria-label="Duty breakdown chart"></canvas></div>
+            </div>
+            <div class="action-row">
+              <button class="act-btn" onclick="downloadPdf()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                PDF
+              </button>
+              <button class="act-btn" onclick="shareResult()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                Share
+              </button>
+              <button class="act-btn" onclick="window.print()">Print</button>
+            </div>
+          </div>
+
+          <!-- FREIGHT HELPERS -->
+          <div class="helper-grid">
+            <div class="helper-card">
+              <h3>Freight Estimator</h3>
+              <div class="field" style="margin-bottom:8px;">
+                <input type="number" class="f-input" id="freightWeight" placeholder="Weight (kg)" min="0">
+              </div>
+              <div style="display:flex;gap:6px;">
+                <button class="calc-btn secondary" style="flex:1;margin:0;padding:8px;font-size:0.72rem;" onclick="estFreight('sea')">Sea</button>
+                <button class="calc-btn secondary" style="flex:1;margin:0;padding:8px;font-size:0.72rem;" onclick="estFreight('air')">Air</button>
+              </div>
+              <div class="helper-result" id="freightResult"></div>
+            </div>
+            <div class="helper-card">
+              <h3>Exchange Rate</h3>
+              <div id="rateDisplay" style="font-size:0.85rem;color:#3d6349;line-height:1.6;">Select a destination country to see the current exchange rate.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: COMPARE -->
+    <div class="tab-panel" id="tabCompare">
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Compare Duties Across Countries</span>
+          <span class="card-sub">Same product, different destinations</span>
+        </div>
+        <div class="card-body">
+          <p style="font-size:0.82rem;color:#8aaa95;margin-bottom:14px;">Enter product details in the Calculate tab first, then switch here to compare all 17 countries side by side.</p>
+          <div id="compareBody">
+            <p style="color:#8aaa95;text-align:center;padding:20px;">Select a category and goods value first.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: HS CODE -->
+    <div class="tab-panel" id="tabHs">
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">HS Code Lookup</span>
+          <span class="card-sub">Search by product name</span>
+        </div>
+        <div class="card-body">
+          <div class="field">
+            <div class="f-wrap">
+              <input type="text" class="f-input" id="hsSearch" placeholder="Search: iPhone, cement, rice, clothing..." autocomplete="off">
+            </div>
+          </div>
+          <table class="hs-table" id="hsTableEl">
+            <thead><tr><th>Product</th><th>HS Code</th><th>Category</th><th>Typical Duty</th></tr></thead>
+            <tbody id="hsTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: SAVED -->
+    <div class="tab-panel" id="tabSaved">
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Saved Calculations</span>
+          <span class="card-sub">Stored in your browser</span>
+        </div>
+        <div class="card-body">
+          <div class="saved-list" id="savedList">
+            <p style="color:#8aaa95;text-align:center;padding:20px;">No saved calculations yet.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FAQ -->
+<section class="faq-sec">
+  <div class="container">
+    <span class="eyebrow">Import Duty FAQ</span>
+    <h2 class="sec-title">Common Questions</h2>
+    <div class="faq-grid">
+      <div class="faq-item">
+        <div class="faq-q">How is import duty calculated in Nigeria?</div>
+        <p class="faq-a">Nigeria's NCS calculates duty on CIF value. The duty rate varies 5-50% by HS code classification. After duty, VAT of 7.5% is applied to (CIF + duty). Additional levies: CISS (1% of FOB value), ETLS (0.5% of CIF), and surcharge (7% of duty for applicable items). Total landed cost includes all these converted to NGN.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What are Kenya's import levies?</div>
+        <p class="faq-a">Kenya KRA applies EAC Common External Tariff (CET) rates on CIF value. Additional levies: Import Declaration Fee (IDF) 3.5% of CIF, Railway Development Levy (RDL) 2.5% of CIF, VAT 16% on (CIF + duty + IDF + RDL). Excise duty applies on select goods like vehicles and alcohol.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Which African country has the lowest import duties?</div>
+        <p class="faq-a">South Africa has 0% customs duty on many electronics and machinery categories. Botswana and Namibia (SACU members) also have competitive rates. However, total landed cost depends on VAT, additional levies, and the exchange rate. Use our Compare Countries tab to see the full picture for your specific product.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">How do I use an HS code?</div>
+        <p class="faq-a">HS codes (Harmonized System) are 6-10 digit numbers classifying products for customs. Example: 8517 = Telephone equipment, 8517.12 = Smartphones. Include the full code on your commercial invoice and customs declaration. Use our HS Code Lookup tab to search by product name.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What is the difference between FOB and CIF?</div>
+        <p class="faq-a">FOB (Free On Board) is the goods value at the port of origin. CIF (Cost, Insurance, Freight) includes the goods value plus shipping and insurance costs to the destination port. Import duties are typically calculated on the CIF value, which is why shipping costs directly affect your total import cost.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Does AfCFTA reduce import duties between African countries?</div>
+        <p class="faq-a">The African Continental Free Trade Area (AfCFTA) aims to eliminate tariffs on 90% of goods traded between member states. However, implementation is phased and varies by country. Some goods may still attract duties depending on rules of origin. Check your specific corridor for current AfCFTA preferences.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container"><div class="disclaimer"><strong>Disclaimer:</strong> Duty rates are indicative and based on publicly available tariff schedules. Actual duties may vary based on specific HS code classification, trade agreements, and customs valuation. Always verify with the relevant customs authority before importing. Exchange rates are approximate.</div></div>
+
 <afro-footer></afro-footer>
 
-    <script src="/assets/js/components/tool-registry.min.js"></script>
-<script src="/assets/js/components/navbar.min.js"></script>
-    <script src="/assets/js/components/footer.min.js"></script>
-    <script>
-        // Duty rates by country and category (2025/2026)
-        const dutyRates = {
-            Nigeria: {
-                Electronics: 15,
-                Clothing: 20,
-                Vehicles: 35,
-                Food: 20,
-                Building: 10,
-                Machinery: 10,
-                Cosmetics: 15,
-                Pharmaceuticals: 5,
-                Agricultural: 10,
-                Furniture: 10,
-                Jewellery: 10,
-                Books: 5
-            },
-            Kenya: {
-                Electronics: 12,
-                Clothing: 25,
-                Vehicles: 25,
-                Food: 15,
-                Building: 10,
-                Machinery: 10,
-                Cosmetics: 20,
-                Pharmaceuticals: 0,
-                Agricultural: 10,
-                Furniture: 15,
-                Jewellery: 15,
-                Books: 0
-            },
-            'South Africa': {
-                Electronics: 0,
-                Clothing: 45,
-                Vehicles: 25,
-                Food: 15,
-                Building: 5,
-                Machinery: 5,
-                Cosmetics: 20,
-                Pharmaceuticals: 0,
-                Agricultural: 20,
-                Furniture: 15,
-                Jewellery: 10,
-                Books: 0
-            },
-            Ghana: {
-                Electronics: 10,
-                Clothing: 20,
-                Vehicles: 30,
-                Food: 25,
-                Building: 10,
-                Machinery: 10,
-                Cosmetics: 20,
-                Pharmaceuticals: 5,
-                Agricultural: 20,
-                Furniture: 10,
-                Jewellery: 10,
-                Books: 5
-            },
-            Tanzania: {
-                Electronics: 10,
-                Clothing: 25,
-                Vehicles: 25,
-                Food: 15,
-                Building: 10,
-                Machinery: 10,
-                Cosmetics: 20,
-                Pharmaceuticals: 0,
-                Agricultural: 10,
-                Furniture: 15,
-                Jewellery: 15,
-                Books: 0
-            },
-            Uganda: {
-                Electronics: 10,
-                Clothing: 25,
-                Vehicles: 25,
-                Food: 15,
-                Building: 10,
-                Machinery: 10,
-                Cosmetics: 20,
-                Pharmaceuticals: 0,
-                Agricultural: 10,
-                Furniture: 15,
-                Jewellery: 15,
-                Books: 0
-            },
-            Rwanda: {
-                Electronics: 10,
-                Clothing: 25,
-                Vehicles: 25,
-                Food: 15,
-                Building: 10,
-                Machinery: 10,
-                Cosmetics: 20,
-                Pharmaceuticals: 0,
-                Agricultural: 10,
-                Furniture: 15,
-                Jewellery: 15,
-                Books: 0
-            },
-            Ethiopia: {
-                Electronics: 20,
-                Clothing: 35,
-                Vehicles: 40,
-                Food: 20,
-                Building: 15,
-                Machinery: 15,
-                Cosmetics: 25,
-                Pharmaceuticals: 5,
-                Agricultural: 20,
-                Furniture: 20,
-                Jewellery: 15,
-                Books: 5
-            },
-            Egypt: {
-                Electronics: 20,
-                Clothing: 30,
-                Vehicles: 40,
-                Food: 25,
-                Building: 15,
-                Machinery: 15,
-                Cosmetics: 25,
-                Pharmaceuticals: 5,
-                Agricultural: 25,
-                Furniture: 20,
-                Jewellery: 15,
-                Books: 5
-            },
-            Morocco: {
-                Electronics: 15,
-                Clothing: 25,
-                Vehicles: 30,
-                Food: 20,
-                Building: 10,
-                Machinery: 10,
-                Cosmetics: 20,
-                Pharmaceuticals: 5,
-                Agricultural: 20,
-                Furniture: 15,
-                Jewellery: 10,
-                Books: 5
-            },
-            Cameroon: {
-                Electronics: 15,
-                Clothing: 20,
-                Vehicles: 35,
-                Food: 25,
-                Building: 15,
-                Machinery: 15,
-                Cosmetics: 20,
-                Pharmaceuticals: 5,
-                Agricultural: 20,
-                Furniture: 15,
-                Jewellery: 10,
-                Books: 5
-            },
-            'Ivory Coast': {
-                Electronics: 10,
-                Clothing: 20,
-                Vehicles: 30,
-                Food: 25,
-                Building: 10,
-                Machinery: 10,
-                Cosmetics: 20,
-                Pharmaceuticals: 5,
-                Agricultural: 20,
-                Furniture: 10,
-                Jewellery: 10,
-                Books: 5
-            },
-            Senegal: {
-                Electronics: 10,
-                Clothing: 20,
-                Vehicles: 30,
-                Food: 25,
-                Building: 10,
-                Machinery: 10,
-                Cosmetics: 20,
-                Pharmaceuticals: 5,
-                Agricultural: 20,
-                Furniture: 10,
-                Jewellery: 10,
-                Books: 5
-            },
-            Zambia: {
-                Electronics: 15,
-                Clothing: 25,
-                Vehicles: 30,
-                Food: 20,
-                Building: 10,
-                Machinery: 10,
-                Cosmetics: 20,
-                Pharmaceuticals: 5,
-                Agricultural: 20,
-                Furniture: 15,
-                Jewellery: 10,
-                Books: 5
-            },
-            Zimbabwe: {
-                Electronics: 15,
-                Clothing: 25,
-                Vehicles: 30,
-                Food: 20,
-                Building: 10,
-                Machinery: 10,
-                Cosmetics: 20,
-                Pharmaceuticals: 5,
-                Agricultural: 20,
-                Furniture: 15,
-                Jewellery: 10,
-                Books: 5
-            },
-            Botswana: {
-                Electronics: 5,
-                Clothing: 15,
-                Vehicles: 20,
-                Food: 10,
-                Building: 5,
-                Machinery: 5,
-                Cosmetics: 15,
-                Pharmaceuticals: 0,
-                Agricultural: 10,
-                Furniture: 10,
-                Jewellery: 5,
-                Books: 0
-            },
-            Namibia: {
-                Electronics: 5,
-                Clothing: 15,
-                Vehicles: 20,
-                Food: 10,
-                Building: 5,
-                Machinery: 5,
-                Cosmetics: 15,
-                Pharmaceuticals: 0,
-                Agricultural: 10,
-                Furniture: 10,
-                Jewellery: 5,
-                Books: 0
-            }
-        };
+<script>
+// ================================================================
+//  IMPORT DUTY CALCULATOR 2026
+//  17 African Countries | Full Landed Cost | HS Code Lookup
+//  Country Comparison | Save Calculations | jsPDF Export
+// ================================================================
 
-        // VAT rates by country
-        const vatRates = {
-            Nigeria: 7.5,
-            Kenya: 16,
-            'South Africa': 15,
-            Ghana: 18.5,
-            Tanzania: 18,
-            Uganda: 18,
-            Rwanda: 18,
-            Ethiopia: 15,
-            Egypt: 14,
-            Morocco: 20,
-            Cameroon: 19.25,
-            'Ivory Coast': 18,
-            Senegal: 18,
-            Zambia: 16,
-            Zimbabwe: 14.5,
-            Botswana: 12,
-            Namibia: 15
-        };
+let RESULT = null;
+let CHART = null;
+let chartLoaded = false;
+let debounceTimer = null;
 
-        // Exchange rates (approximate)
-        const exchangeRates = {
-            Nigeria: 1600,
-            Kenya: 130,
-            'South Africa': 18.5,
-            Ghana: 16,
-            Tanzania: 2500,
-            Uganda: 3800,
-            Rwanda: 1300,
-            Ethiopia: 52,
-            Egypt: 30,
-            Morocco: 10,
-            Cameroon: 620,
-            'Ivory Coast': 620,
-            Senegal: 620,
-            Zambia: 25,
-            Zimbabwe: 80,
-            Botswana: 13.5,
-            Namibia: 18.5
-        };
+// ── DUTY RATES BY COUNTRY & CATEGORY (2025/2026) ────────────────
+const COUNTRIES = {
+  Nigeria: {
+    flag: '\uD83C\uDDF3\uD83C\uDDEC', currency: 'NGN', symbol: '\u20A6', rate: 1600,
+    vat: 7.5, authority: 'NCS',
+    duties: { Electronics:15, Clothing:20, Vehicles:35, Food:20, Building:10, Machinery:10, Cosmetics:15, Pharmaceuticals:5, Agricultural:10, Furniture:10, Jewellery:10, Books:5 },
+    levies: (cif, fob, duty) => [
+      { name: 'CISS (1% FOB)', amount: fob * 0.01 },
+      { name: 'ETLS (0.5% CIF)', amount: cif * 0.005 },
+      { name: 'Surcharge (7% duty)', amount: duty * 0.07 },
+    ],
+    vatBase: (cif, duty, levies) => cif + duty + levies,
+  },
+  Kenya: {
+    flag: '\uD83C\uDDF0\uD83C\uDDEA', currency: 'KES', symbol: 'KES', rate: 130,
+    vat: 16, authority: 'KRA',
+    duties: { Electronics:12, Clothing:25, Vehicles:25, Food:15, Building:10, Machinery:10, Cosmetics:20, Pharmaceuticals:0, Agricultural:10, Furniture:15, Jewellery:15, Books:0 },
+    levies: (cif) => [
+      { name: 'IDF (3.5% CIF)', amount: cif * 0.035 },
+      { name: 'RDL (2.5% CIF)', amount: cif * 0.025 },
+    ],
+    vatBase: (cif, duty, levies) => cif + duty + levies,
+  },
+  'South Africa': {
+    flag: '\uD83C\uDDFF\uD83C\uDDE6', currency: 'ZAR', symbol: 'R', rate: 18.5,
+    vat: 15, authority: 'SARS',
+    duties: { Electronics:0, Clothing:45, Vehicles:25, Food:15, Building:5, Machinery:5, Cosmetics:20, Pharmaceuticals:0, Agricultural:20, Furniture:15, Jewellery:10, Books:0 },
+    levies: (cif, fob, duty, cat) => {
+      const l = [];
+      if (cat === 'Vehicles' && (cif + duty) > 50000) l.push({ name: 'Ad Valorem (7%)', amount: (cif + duty) * 0.07 });
+      return l;
+    },
+    vatBase: (cif, duty, levies) => cif + duty + levies,
+  },
+  Ghana: {
+    flag: '\uD83C\uDDEC\uD83C\uDDED', currency: 'GHS', symbol: 'GHS', rate: 16,
+    vat: 18.5, authority: 'GRA',
+    duties: { Electronics:10, Clothing:20, Vehicles:30, Food:25, Building:10, Machinery:10, Cosmetics:20, Pharmaceuticals:5, Agricultural:20, Furniture:10, Jewellery:10, Books:5 },
+    levies: (cif, fob, duty) => [
+      { name: 'NHIL (2.5%)', amount: (cif + duty) * 0.025 },
+      { name: 'GETFund (1%)', amount: (cif + duty) * 0.01 },
+      { name: 'ECOWAS Levy (0.5%)', amount: cif * 0.005 },
+    ],
+    vatBase: (cif, duty) => cif + duty,
+  },
+  Tanzania: {
+    flag: '\uD83C\uDDF9\uD83C\uDDFF', currency: 'TZS', symbol: 'TZS', rate: 2500,
+    vat: 18, authority: 'TRA',
+    duties: { Electronics:10, Clothing:25, Vehicles:25, Food:15, Building:10, Machinery:10, Cosmetics:20, Pharmaceuticals:0, Agricultural:10, Furniture:15, Jewellery:15, Books:0 },
+    levies: (cif) => [{ name: 'RDL (1.5% CIF)', amount: cif * 0.015 }],
+    vatBase: (cif, duty, levies) => cif + duty + levies,
+  },
+  Uganda: {
+    flag: '\uD83C\uDDFA\uD83C\uDDEC', currency: 'UGX', symbol: 'UGX', rate: 3800,
+    vat: 18, authority: 'URA',
+    duties: { Electronics:10, Clothing:25, Vehicles:25, Food:15, Building:10, Machinery:10, Cosmetics:20, Pharmaceuticals:0, Agricultural:10, Furniture:15, Jewellery:15, Books:0 },
+    levies: () => [], vatBase: (cif, duty) => cif + duty,
+  },
+  Rwanda: {
+    flag: '\uD83C\uDDF7\uD83C\uDDFC', currency: 'RWF', symbol: 'RWF', rate: 1300,
+    vat: 18, authority: 'RRA',
+    duties: { Electronics:10, Clothing:25, Vehicles:25, Food:15, Building:10, Machinery:10, Cosmetics:20, Pharmaceuticals:0, Agricultural:10, Furniture:15, Jewellery:15, Books:0 },
+    levies: () => [], vatBase: (cif, duty) => cif + duty,
+  },
+  Ethiopia: {
+    flag: '\uD83C\uDDEA\uD83C\uDDF9', currency: 'ETB', symbol: 'ETB', rate: 52,
+    vat: 15, authority: 'ERCA',
+    duties: { Electronics:20, Clothing:35, Vehicles:40, Food:20, Building:15, Machinery:15, Cosmetics:25, Pharmaceuticals:5, Agricultural:20, Furniture:20, Jewellery:15, Books:5 },
+    levies: (cif) => [{ name: 'WHT (3% CIF)', amount: cif * 0.03 }],
+    vatBase: (cif, duty) => cif + duty,
+  },
+  Egypt: {
+    flag: '\uD83C\uDDEA\uD83C\uDDEC', currency: 'EGP', symbol: 'EGP', rate: 30,
+    vat: 14, authority: 'ECA',
+    duties: { Electronics:20, Clothing:30, Vehicles:40, Food:25, Building:15, Machinery:15, Cosmetics:25, Pharmaceuticals:5, Agricultural:25, Furniture:20, Jewellery:15, Books:5 },
+    levies: () => [], vatBase: (cif, duty) => cif + duty,
+  },
+  Morocco: {
+    flag: '\uD83C\uDDF2\uD83C\uDDE6', currency: 'MAD', symbol: 'MAD', rate: 10,
+    vat: 20, authority: 'ADII',
+    duties: { Electronics:15, Clothing:25, Vehicles:30, Food:20, Building:10, Machinery:10, Cosmetics:20, Pharmaceuticals:5, Agricultural:20, Furniture:15, Jewellery:10, Books:5 },
+    levies: () => [], vatBase: (cif, duty) => cif + duty,
+  },
+  Cameroon: {
+    flag: '\uD83C\uDDE8\uD83C\uDDF2', currency: 'XAF', symbol: 'CFA', rate: 620,
+    vat: 19.25, authority: 'DGD',
+    duties: { Electronics:15, Clothing:20, Vehicles:35, Food:25, Building:15, Machinery:15, Cosmetics:20, Pharmaceuticals:5, Agricultural:20, Furniture:15, Jewellery:10, Books:5 },
+    levies: () => [], vatBase: (cif, duty) => cif + duty,
+  },
+  'Ivory Coast': {
+    flag: '\uD83C\uDDE8\uD83C\uDDEE', currency: 'XOF', symbol: 'CFA', rate: 620,
+    vat: 18, authority: 'DGD',
+    duties: { Electronics:10, Clothing:20, Vehicles:30, Food:25, Building:10, Machinery:10, Cosmetics:20, Pharmaceuticals:5, Agricultural:20, Furniture:10, Jewellery:10, Books:5 },
+    levies: () => [], vatBase: (cif, duty) => cif + duty,
+  },
+  Senegal: {
+    flag: '\uD83C\uDDF8\uD83C\uDDF3', currency: 'XOF', symbol: 'CFA', rate: 620,
+    vat: 18, authority: 'DGD',
+    duties: { Electronics:10, Clothing:20, Vehicles:30, Food:25, Building:10, Machinery:10, Cosmetics:20, Pharmaceuticals:5, Agricultural:20, Furniture:10, Jewellery:10, Books:5 },
+    levies: () => [], vatBase: (cif, duty) => cif + duty,
+  },
+  Zambia: {
+    flag: '\uD83C\uDDFF\uD83C\uDDF2', currency: 'ZMW', symbol: 'ZMW', rate: 25,
+    vat: 16, authority: 'ZRA',
+    duties: { Electronics:15, Clothing:25, Vehicles:30, Food:20, Building:10, Machinery:10, Cosmetics:20, Pharmaceuticals:5, Agricultural:20, Furniture:15, Jewellery:10, Books:5 },
+    levies: () => [], vatBase: (cif, duty) => cif + duty,
+  },
+  Zimbabwe: {
+    flag: '\uD83C\uDDFF\uD83C\uDDFC', currency: 'ZWL', symbol: 'ZWL', rate: 80,
+    vat: 14.5, authority: 'ZIMRA',
+    duties: { Electronics:15, Clothing:25, Vehicles:30, Food:20, Building:10, Machinery:10, Cosmetics:20, Pharmaceuticals:5, Agricultural:20, Furniture:15, Jewellery:10, Books:5 },
+    levies: () => [], vatBase: (cif, duty) => cif + duty,
+  },
+  Botswana: {
+    flag: '\uD83C\uDDE7\uD83C\uDDFC', currency: 'BWP', symbol: 'BWP', rate: 13.5,
+    vat: 12, authority: 'BURS',
+    duties: { Electronics:5, Clothing:15, Vehicles:20, Food:10, Building:5, Machinery:5, Cosmetics:15, Pharmaceuticals:0, Agricultural:10, Furniture:10, Jewellery:5, Books:0 },
+    levies: () => [], vatBase: (cif, duty) => cif + duty,
+  },
+  Namibia: {
+    flag: '\uD83C\uDDF3\uD83C\uDDE6', currency: 'NAD', symbol: 'NAD', rate: 18.5,
+    vat: 15, authority: 'NamRA',
+    duties: { Electronics:5, Clothing:15, Vehicles:20, Food:10, Building:5, Machinery:5, Cosmetics:15, Pharmaceuticals:0, Agricultural:10, Furniture:10, Jewellery:5, Books:0 },
+    levies: () => [], vatBase: (cif, duty) => cif + duty,
+  },
+};
 
-        // Origin country adjustment factors (lower = cheaper)
-        const originFactors = {
-            China: 1.0,
-            USA: 1.2,
-            UK: 1.3,
-            UAE: 0.9,
-            India: 0.95,
-            Germany: 1.25,
-            Japan: 1.3,
-            France: 1.25,
-            Italy: 1.2,
-            Turkey: 1.0,
-            Nigeria: 1.1,
-            Kenya: 1.1,
-            'South Africa': 1.15,
-            Ghana: 1.1,
-            Tanzania: 1.1,
-            Uganda: 1.1,
-            Rwanda: 1.05,
-            Ethiopia: 1.0,
-            Egypt: 1.05,
-            Morocco: 1.1,
-            Cameroon: 1.1,
-            'Ivory Coast': 1.1,
-            Senegal: 1.1,
-            Zambia: 1.1,
-            Zimbabwe: 1.1,
-            Botswana: 1.15,
-            Namibia: 1.15
-        };
+// ── HS CODES DATABASE ────────────────────────────────────────────
+const HS_CODES = [
+  { product: 'Smartphone / iPhone', code: '8517.12.00', category: 'Electronics', duty: '0-20%' },
+  { product: 'Laptop / Desktop', code: '8471.30.00', category: 'Electronics', duty: '0-20%' },
+  { product: 'Television', code: '8528.72.00', category: 'Electronics', duty: '0-20%' },
+  { product: 'Tablet / iPad', code: '8471.41.00', category: 'Electronics', duty: '0-20%' },
+  { product: 'Headphones / Earbuds', code: '8518.30.00', category: 'Electronics', duty: '5-15%' },
+  { product: 'Refrigerator', code: '8418.10.00', category: 'Electronics', duty: '10-20%' },
+  { product: 'Air Conditioner', code: '8415.10.00', category: 'Electronics', duty: '10-20%' },
+  { product: 'Used Car', code: '8703.23.90', category: 'Vehicles', duty: '20-40%' },
+  { product: 'New Car', code: '8703.23.10', category: 'Vehicles', duty: '20-40%' },
+  { product: 'Motorcycle', code: '8711.40.00', category: 'Vehicles', duty: '20-35%' },
+  { product: 'Car Spare Parts', code: '8708.99.00', category: 'Vehicles', duty: '10-25%' },
+  { product: 'Tyres', code: '4011.10.00', category: 'Vehicles', duty: '10-25%' },
+  { product: 'Rice', code: '1006.30.00', category: 'Food', duty: '10-50%' },
+  { product: 'Sugar', code: '1701.99.00', category: 'Food', duty: '10-35%' },
+  { product: 'Cooking Oil', code: '1507.90.00', category: 'Food', duty: '10-35%' },
+  { product: 'Milk Powder', code: '0402.10.00', category: 'Food', duty: '5-25%' },
+  { product: "Women's Clothing", code: '6204.59.90', category: 'Clothing', duty: '20-45%' },
+  { product: "Men's Clothing", code: '6203.49.00', category: 'Clothing', duty: '20-45%' },
+  { product: 'Footwear / Shoes', code: '6402.99.00', category: 'Clothing', duty: '15-35%' },
+  { product: 'Fabric / Textiles', code: '5208.11.00', category: 'Clothing', duty: '10-25%' },
+  { product: 'Cement', code: '2523.29.00', category: 'Building', duty: '5-15%' },
+  { product: 'Steel Bars / Rebar', code: '7213.91.00', category: 'Building', duty: '5-15%' },
+  { product: 'Ceramic Tiles', code: '6908.90.00', category: 'Building', duty: '5-20%' },
+  { product: 'Glass Sheets', code: '7007.19.00', category: 'Building', duty: '5-15%' },
+  { product: 'Generator', code: '8502.20.00', category: 'Machinery', duty: '5-15%' },
+  { product: 'Solar Panel', code: '8541.40.00', category: 'Machinery', duty: '0-10%' },
+  { product: 'Inverter', code: '8504.40.00', category: 'Machinery', duty: '5-15%' },
+  { product: 'Skincare Products', code: '3304.99.00', category: 'Cosmetics', duty: '15-25%' },
+  { product: 'Hair Products', code: '3305.10.00', category: 'Cosmetics', duty: '15-25%' },
+  { product: 'Perfume', code: '3303.00.00', category: 'Cosmetics', duty: '15-25%' },
+  { product: 'Medicine / Drugs', code: '3004.90.00', category: 'Pharmaceuticals', duty: '0-5%' },
+  { product: 'Medical Equipment', code: '9018.90.00', category: 'Pharmaceuticals', duty: '0-10%' },
+  { product: 'Gold Jewellery', code: '7113.11.00', category: 'Jewellery', duty: '5-15%' },
+  { product: 'Silver Jewellery', code: '7113.19.00', category: 'Jewellery', duty: '5-15%' },
+  { product: 'Furniture (wooden)', code: '9403.40.00', category: 'Furniture', duty: '10-20%' },
+  { product: 'Mattress', code: '9404.21.00', category: 'Furniture', duty: '10-20%' },
+  { product: 'Books / Textbooks', code: '4901.99.00', category: 'Books', duty: '0-5%' },
+];
 
-        // Freight cost estimates per kg/ton
-        const freightRates = {
-            China: { kg: 2.5, ton: 1200 },
-            USA: { kg: 3.5, ton: 1800 },
-            India: { kg: 2.2, ton: 1000 },
-            Europe: { kg: 3.2, ton: 1600 }
-        };
+// ── HELPERS ──────────────────────────────────────────────────────
+function parseNum(v) { return parseFloat(String(v).replace(/[^0-9.-]/g, '')) || 0; }
+function fmtUSD(n) { return '$' + Math.round(n).toLocaleString(); }
+function fmtLocal(n, sym) { return sym + '\u00A0' + Math.round(n).toLocaleString(); }
 
-        // DOM Elements
-        const destCountryEl = document.getElementById('destCountry');
-        const originCountryEl = document.getElementById('originCountry');
-        const categoryEl = document.getElementById('category');
-        const goodsValueEl = document.getElementById('goodsValue');
-        const goodsSliderEl = document.getElementById('goodsSlider');
-        const cifValueEl = document.getElementById('cifValue');
-        const quantityEl = document.getElementById('quantity');
-        const calculateBtn = document.getElementById('calculateBtn');
-        const compareBtn = document.getElementById('compareBtn');
-        const resultsContainer = document.getElementById('resultsContainer');
-        const actionButtons = document.getElementById('actionButtons');
-        const printBtn = document.getElementById('printBtn');
-        const copyBtn = document.getElementById('copyBtn');
-        // saveBtn removed - using standard favorites-widget instead
-        const hsSearchEl = document.getElementById('hsSearch');
-        const estimateBtn = document.getElementById('estimateBtn');
-        const cheapestBtn = document.getElementById('cheapestBtn');
-        const sliderValue = document.getElementById('sliderValue');
+// Input formatting
+function setupInput(el) {
+  el.addEventListener('focus', function() { const n = parseNum(this.value); this.value = n > 0 ? n : ''; });
+  el.addEventListener('blur', function() { const n = Math.round(parseNum(this.value)); this.value = n > 0 ? n.toLocaleString() : ''; });
+  el.addEventListener('input', scheduleCalc);
+}
+setupInput(document.getElementById('goodsValue'));
+setupInput(document.getElementById('shippingValue'));
 
-        // Slider sync
-        goodsValueEl.addEventListener('input', (e) => {
-            goodsSliderEl.value = e.target.value;
-            updateSliderValue();
-        });
+// Debounce
+function scheduleCalc() { clearTimeout(debounceTimer); debounceTimer = setTimeout(calculateDuties, 300); }
+document.getElementById('destCountry').addEventListener('change', () => { scheduleCalc(); updateRateDisplay(); });
+document.getElementById('originCountry').addEventListener('change', scheduleCalc);
+document.getElementById('category').addEventListener('change', scheduleCalc);
+document.getElementById('quantity').addEventListener('input', scheduleCalc);
 
-        goodsSliderEl.addEventListener('input', (e) => {
-            goodsValueEl.value = e.target.value;
-            updateSliderValue();
-        });
+// ── TABS ─────────────────────────────────────────────────────────
+function setTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.duty-tab').forEach(b => b.classList.remove('on'));
+  document.getElementById('tab' + id.charAt(0).toUpperCase() + id.slice(1)).classList.add('on');
+  btn.classList.add('on');
+  if (id === 'compare') buildCompare();
+  if (id === 'hs') renderHS();
+  if (id === 'saved') renderSaved();
+}
 
-        function updateSliderValue() {
-            const value = parseInt(goodsValueEl.value) || 0;
-            sliderValue.textContent = '$' + value.toLocaleString() + ' USD';
-        }
+// ── COMPUTE LANDED COST ─────────────────────────────────────────
+function computeLandedCost(countryName, category, fob, shipping) {
+  const c = COUNTRIES[countryName];
+  if (!c) return null;
+  const cif = fob + shipping;
+  const dutyRate = (c.duties[category] || 15) / 100;
+  const duty = cif * dutyRate;
+  const levyItems = c.levies(cif, fob, duty, category);
+  const totalLevies = levyItems.reduce((s, l) => s + l.amount, 0);
+  const vatBase = c.vatBase(cif, duty, totalLevies);
+  const vat = vatBase * (c.vat / 100);
+  const totalUSD = cif + duty + totalLevies + vat;
+  const totalLocal = totalUSD * c.rate;
+  return {
+    countryName, category, fob, shipping, cif, dutyRate, duty,
+    levyItems, totalLevies, vat, vatRate: c.vat, totalUSD, totalLocal,
+    currency: c.currency, symbol: c.symbol, rate: c.rate, flag: c.flag, authority: c.authority
+  };
+}
 
-        // Auto-calculate on input change
-        [destCountryEl, originCountryEl, categoryEl, goodsValueEl, cifValueEl, quantityEl].forEach(el => {
-            el.addEventListener('change', calculateDuties);
-            el.addEventListener('input', calculateDuties);
-        });
+// ── MAIN CALCULATE ──────────────────────────────────────────────
+function calculateDuties() {
+  const dest = document.getElementById('destCountry').value;
+  const cat = document.getElementById('category').value;
+  const fob = parseNum(document.getElementById('goodsValue').value);
+  const ship = parseNum(document.getElementById('shippingValue').value);
+  const qty = parseInt(document.getElementById('quantity').value) || 1;
 
-        function calculateDuties() {
-            const destCountry = destCountryEl.value;
-            const category = categoryEl.value;
-            const goodsValue = parseFloat(goodsValueEl.value) || 0;
-            const cifValue = parseFloat(cifValueEl.value) || 0;
-            const quantity = parseInt(quantityEl.value) || 1;
+  if (!dest || !cat || fob <= 0) return;
 
-            if (!destCountry || !category || goodsValue === 0) {
-                resultsContainer.innerHTML = '<div class="no-results"><p>Select your details to see the breakdown</p></div>';
-                actionButtons.style.display = 'none';
-                return;
-            }
+  const R = computeLandedCost(dest, cat, fob, ship);
+  if (!R) return;
+  RESULT = R;
 
-            const cifTotal = goodsValue + cifValue;
-            const dutyRate = dutyRates[destCountry][category] || 15;
-            const duty = (cifTotal * dutyRate) / 100;
+  // Hero
+  document.getElementById('resTotalLocal').textContent = fmtLocal(R.totalLocal, R.symbol);
+  document.getElementById('resTotalUSD').textContent = fmtUSD(R.totalUSD) + ' USD at 1 USD = ' + R.symbol + ' ' + R.rate;
 
-            let additionalFees = 0;
-            let breakdown = [];
+  // Breakdown
+  let html = '<div class="brk-section"><div class="brk-title">Cost Breakdown (USD)</div>';
+  html += brkRow('Goods Value (FOB)', fmtUSD(R.fob));
+  html += brkRow('Shipping & Insurance', fmtUSD(R.shipping));
+  html += brkRow('CIF Total', fmtUSD(R.cif));
+  html += '</div>';
 
-            // Country-specific calculations
-            if (destCountry === 'Nigeria') {
-                const vatAmount = ((cifTotal + duty) * 7.5) / 100;
-                const ciss = (goodsValue * 1) / 100;
-                const etls = (cifTotal * 0.5) / 100;
-                additionalFees = vatAmount + ciss + etls;
-                breakdown = [
-                    { label: 'Goods Value (FOB)', value: goodsValue, currency: 'USD' },
-                    { label: 'Shipping & Insurance', value: cifValue, currency: 'USD' },
-                    { label: 'Customs Duty (' + dutyRate + '%)', value: duty, currency: 'USD' },
-                    { label: 'VAT (7.5%)', value: vatAmount, currency: 'USD' },
-                    { label: 'CISS Levy (1%)', value: ciss, currency: 'USD' },
-                    { label: 'ETLS Levy (0.5%)', value: etls, currency: 'USD' }
-                ];
-            } else if (destCountry === 'Kenya') {
-                const idf = (cifTotal * 2.5) / 100;
-                const rdl = (cifTotal * 2) / 100;
-                const vatAmount = ((cifTotal + duty + idf + rdl) * 16) / 100;
-                additionalFees = idf + rdl + vatAmount;
-                breakdown = [
-                    { label: 'Goods Value (FOB)', value: goodsValue, currency: 'USD' },
-                    { label: 'Shipping & Insurance', value: cifValue, currency: 'USD' },
-                    { label: 'Import Declaration Fee (2.5%)', value: idf, currency: 'USD' },
-                    { label: 'Railway Development Levy (2%)', value: rdl, currency: 'USD' },
-                    { label: 'Customs Duty (' + dutyRate + '%)', value: duty, currency: 'USD' },
-                    { label: 'VAT (16%)', value: vatAmount, currency: 'USD' }
-                ];
-            } else if (destCountry === 'South Africa') {
-                const vatAmount = ((cifTotal + duty) * 15) / 100;
-                let advaloremTax = 0;
-                if (category === 'Vehicles' && (cifTotal + duty) > 50000) {
-                    advaloremTax = ((cifTotal + duty) * 7) / 100;
-                }
-                additionalFees = vatAmount + advaloremTax;
-                breakdown = [
-                    { label: 'Goods Value (FOB)', value: goodsValue, currency: 'USD' },
-                    { label: 'Shipping & Insurance', value: cifValue, currency: 'USD' },
-                    { label: 'Customs Duty (' + dutyRate + '%)', value: duty, currency: 'USD' },
-                    { label: 'VAT (15%)', value: vatAmount, currency: 'USD' }
-                ];
-                if (advaloremTax > 0) {
-                    breakdown.push({ label: 'Ad Valorem Tax (7%)', value: advaloremTax, currency: 'USD' });
-                }
-            } else if (destCountry === 'Ghana') {
-                const vatAmount = ((cifTotal + duty) * 18.5) / 100;
-                const nhil = ((cifTotal + duty) * 2.5) / 100;
-                const getfund = ((cifTotal + duty) * 1) / 100;
-                const ecowas = (cifTotal * 0.5) / 100;
-                additionalFees = vatAmount + nhil + getfund + ecowas;
-                breakdown = [
-                    { label: 'Goods Value (FOB)', value: goodsValue, currency: 'USD' },
-                    { label: 'Shipping & Insurance', value: cifValue, currency: 'USD' },
-                    { label: 'Customs Duty (' + dutyRate + '%)', value: duty, currency: 'USD' },
-                    { label: 'VAT (18.5%)', value: vatAmount, currency: 'USD' },
-                    { label: 'NHIL (2.5%)', value: nhil, currency: 'USD' },
-                    { label: 'GetFund (1%)', value: getfund, currency: 'USD' },
-                    { label: 'ECOWAS Levy (0.5%)', value: ecowas, currency: 'USD' }
-                ];
-            } else if (destCountry === 'Tanzania') {
-                const vatAmount = ((cifTotal + duty) * 18) / 100;
-                const rdl = (cifTotal * 1.5) / 100;
-                additionalFees = vatAmount + rdl;
-                breakdown = [
-                    { label: 'Goods Value (FOB)', value: goodsValue, currency: 'USD' },
-                    { label: 'Shipping & Insurance', value: cifValue, currency: 'USD' },
-                    { label: 'Customs Duty (' + dutyRate + '%)', value: duty, currency: 'USD' },
-                    { label: 'Railway Development Levy (1.5%)', value: rdl, currency: 'USD' },
-                    { label: 'VAT (18%)', value: vatAmount, currency: 'USD' }
-                ];
-            } else if (destCountry === 'Ethiopia') {
-                const vatAmount = ((cifTotal + duty) * 15) / 100;
-                const wht = (cifTotal * 3) / 100;
-                additionalFees = vatAmount + wht;
-                breakdown = [
-                    { label: 'Goods Value (FOB)', value: goodsValue, currency: 'USD' },
-                    { label: 'Shipping & Insurance', value: cifValue, currency: 'USD' },
-                    { label: 'Customs Duty (' + dutyRate + '%)', value: duty, currency: 'USD' },
-                    { label: 'VAT (15%)', value: vatAmount, currency: 'USD' },
-                    { label: 'Withholding Tax (3%)', value: wht, currency: 'USD' }
-                ];
-            } else {
-                const vatPercent = vatRates[destCountry] || 15;
-                const vatAmount = ((cifTotal + duty) * vatPercent) / 100;
-                additionalFees = vatAmount;
-                breakdown = [
-                    { label: 'Goods Value (FOB)', value: goodsValue, currency: 'USD' },
-                    { label: 'Shipping & Insurance', value: cifValue, currency: 'USD' },
-                    { label: 'Customs Duty (' + dutyRate + '%)', value: duty, currency: 'USD' },
-                    { label: 'VAT (' + vatPercent + '%)', value: vatAmount, currency: 'USD' }
-                ];
-            }
+  html += '<div class="brk-section"><div class="brk-title">Duties &amp; Levies</div>';
+  html += brkRow('Customs Duty (' + (R.dutyRate*100).toFixed(0) + '%)', fmtUSD(R.duty), 'red');
+  R.levyItems.forEach(l => { html += brkRow(l.name, fmtUSD(l.amount), 'red'); });
+  html += brkRow('VAT (' + R.vatRate + '%)', fmtUSD(R.vat), 'red');
+  html += '</div>';
 
-            const totalUSD = cifTotal + duty + additionalFees;
-            let exchangeRate = exchangeRates[destCountry] || 1;
-            if (exchangeRate <= 0 || isNaN(exchangeRate)) exchangeRate = 1;
-            const totalLocal = totalUSD * exchangeRate;
-            const perUnit = quantity > 1 ? totalLocal / quantity : totalLocal;
+  html += '<div class="brk-section">';
+  html += '<div class="brk-row total"><span class="brk-lbl">Total Landed Cost (USD)</span><span class="brk-val">' + fmtUSD(R.totalUSD) + '</span></div>';
+  html += '<div class="brk-row total"><span class="brk-lbl">Total in ' + R.currency + '</span><span class="brk-val grn">' + fmtLocal(R.totalLocal, R.symbol) + '</span></div>';
+  if (qty > 1) html += '<div class="brk-row"><span class="brk-lbl">Per unit (' + qty + ' items)</span><span class="brk-val">' + fmtLocal(R.totalLocal / qty, R.symbol) + '</span></div>';
+  html += '</div>';
 
-            let html = '<div class="country-result">';
-            html += '<h3>' + destCountry + '</h3>';
+  document.getElementById('resBody').innerHTML = html;
+  document.getElementById('resultsCard').classList.add('on');
 
-            breakdown.forEach(item => {
-                html += '<div class="breakdown-row"><span class="breakdown-label">' + item.label + '</span><span class="breakdown-value">$' + item.value.toFixed(2) + ' USD</span></div>';
-            });
+  renderDutyChart(R);
 
-            const currencySymbols = {
-                Nigeria: '₦',
-                Kenya: 'KES',
-                'South Africa': 'R',
-                Ghana: 'GHS',
-                Tanzania: 'TZS',
-                Uganda: 'UGX',
-                Rwanda: 'RWF',
-                Ethiopia: 'ETB',
-                Egypt: 'EGP',
-                Morocco: 'MAD',
-                Cameroon: 'CFA',
-                'Ivory Coast': 'CFA',
-                Senegal: 'CFA',
-                Zambia: 'ZMW',
-                Zimbabwe: 'ZWL',
-                Botswana: 'BWP',
-                Namibia: 'NAD'
-            };
+  if (typeof gtag === 'function') {
+    gtag('event', 'calculation_complete', { tool_name: 'import-duty', country: dest, category: cat });
+  }
+}
 
-            const localSymbol = currencySymbols[destCountry] || destCountry;
+function brkRow(lbl, val, cls) {
+  return '<div class="brk-row"><span class="brk-lbl">' + lbl + '</span><span class="brk-val' + (cls ? ' ' + cls : '') + '">' + val + '</span></div>';
+}
 
-            html += '<div class="total-row"><span class="breakdown-label">Total Landed Cost</span><span class="breakdown-value">$' + totalUSD.toFixed(2) + ' USD / ' + localSymbol + ' ' + totalLocal.toFixed(2) + '</span></div>';
+// ── CHART (lazy) ────────────────────────────────────────────────
+function ensureChart() {
+  if (chartLoaded) return Promise.resolve();
+  return new Promise((resolve, reject) => {
+    if (typeof Chart !== 'undefined') { chartLoaded = true; resolve(); return; }
+    const s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js';
+    s.onload = () => { chartLoaded = true; resolve(); };
+    s.onerror = reject;
+    document.head.appendChild(s);
+  });
+}
 
-            if (quantity > 1) {
-                html += '<div style="background: #f9f9f9; padding: 12px; border-radius: 6px; margin-top: 10px; text-align: center;"><small>Per Unit: ' + localSymbol + ' ' + perUnit.toFixed(2) + '</small></div>';
-            }
+async function renderDutyChart(R) {
+  await ensureChart();
+  const canvas = document.getElementById('dutyChart');
+  if (CHART) { CHART.destroy(); CHART = null; }
+  CHART = new Chart(canvas, {
+    type: 'doughnut',
+    data: {
+      labels: ['Goods + Shipping', 'Customs Duty', 'Other Levies', 'VAT'],
+      datasets: [{ data: [R.cif, R.duty, R.totalLevies, R.vat], backgroundColor: ['#0071E3', '#DE3831', '#F5A623', '#4ecdc4'], borderWidth: 2, borderColor: '#fff' }]
+    },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { font: { size: 11, weight: '600' }, padding: 12 } } } }
+  });
+}
 
-            html += '<div class="chart-container"><div class="donut-chart"></div><div class="chart-labels"><div class="chart-label"><span class="chart-dot" style="background: #0071E3;"></span>Goods</div><div class="chart-label"><span class="chart-dot" style="background: #ff6b6b;"></span>Duties</div><div class="chart-label"><span class="chart-dot" style="background: #4ecdc4;"></span>Taxes</div></div></div>';
+// ── COMPARE ─────────────────────────────────────────────────────
+function buildCompare() {
+  const cat = document.getElementById('category').value;
+  const fob = parseNum(document.getElementById('goodsValue').value);
+  const ship = parseNum(document.getElementById('shippingValue').value);
+  if (!cat || fob <= 0) { document.getElementById('compareBody').innerHTML = '<p style="color:#8aaa95;text-align:center;padding:20px;">Enter product details in Calculate tab first.</p>'; return; }
 
-            html += '</div>';
-            resultsContainer.innerHTML = html;
-            actionButtons.style.display = 'flex';
-        }
+  let rows = [];
+  for (const name of Object.keys(COUNTRIES)) {
+    const r = computeLandedCost(name, cat, fob, ship);
+    if (r) rows.push(r);
+  }
+  rows.sort((a, b) => a.totalUSD - b.totalUSD);
 
-        calculateBtn.addEventListener('click', calculateDuties);
+  let html = '<table class="compare-table"><thead><tr><th>Country</th><th>Duty %</th><th>VAT %</th><th>Levies</th><th>Total (USD)</th><th style="text-align:right">Total (Local)</th></tr></thead><tbody>';
+  rows.forEach((r, i) => {
+    const cls = i === 0 ? ' class="highlight"' : '';
+    html += '<tr' + cls + '><td>' + r.flag + ' ' + r.countryName + '</td><td>' + (r.dutyRate*100).toFixed(0) + '%</td><td>' + r.vatRate + '%</td><td>' + fmtUSD(r.totalLevies) + '</td><td>' + fmtUSD(r.totalUSD) + '</td><td style="text-align:right">' + fmtLocal(r.totalLocal, r.symbol) + '</td></tr>';
+  });
+  html += '</tbody></table>';
+  if (rows.length > 1) {
+    const savings = rows[rows.length - 1].totalUSD - rows[0].totalUSD;
+    html += '<p style="font-size:0.82rem;color:#3d6349;margin-top:12px;"><strong>Cheapest:</strong> ' + rows[0].flag + ' ' + rows[0].countryName + ' at ' + fmtUSD(rows[0].totalUSD) + '. <strong>Savings vs most expensive:</strong> ' + fmtUSD(savings) + '.</p>';
+  }
+  document.getElementById('compareBody').innerHTML = html;
+}
 
-        compareBtn.addEventListener('click', () => {
-            const destCountry = destCountryEl.value;
-            const category = categoryEl.value;
-            const goodsValue = parseFloat(goodsValueEl.value) || 0;
-            const cifValue = parseFloat(cifValueEl.value) || 0;
+// ── HS CODE LOOKUP ──────────────────────────────────────────────
+function renderHS(filter) {
+  const q = (filter || '').toLowerCase();
+  const filtered = q ? HS_CODES.filter(h => h.product.toLowerCase().includes(q) || h.code.includes(q) || h.category.toLowerCase().includes(q)) : HS_CODES;
+  document.getElementById('hsTableBody').innerHTML = filtered.map(h =>
+    '<tr onclick="selectHS(\'' + h.category + '\')"><td>' + h.product + '</td><td class="code">' + h.code + '</td><td>' + h.category + '</td><td>' + h.duty + '</td></tr>'
+  ).join('');
+}
+document.getElementById('hsSearch').addEventListener('input', e => renderHS(e.target.value));
 
-            if (!category || goodsValue === 0) {
-                alert('Please select a product category and enter goods value');
-                return;
-            }
+function selectHS(category) {
+  document.getElementById('category').value = category;
+  setTab('calc', document.querySelector('.duty-tab'));
+  scheduleCalc();
+}
 
-            const cifTotal = goodsValue + cifValue;
-            const countries = ['Nigeria', 'Kenya', 'South Africa', 'Ghana', 'Tanzania'];
-            let tableHtml = '<table class="comparison-table"><thead><tr><th>Country</th><th>Duty %</th><th>VAT %</th><th>Total Duty & Fees (USD)</th><th>Total Landed Cost (Local)</th></tr></thead><tbody>';
+// ── SAVED CALCULATIONS ──────────────────────────────────────────
+function getSaved() { try { return JSON.parse(localStorage.getItem('afro-import-saved') || '[]'); } catch { return []; } }
+function setSaved(list) { localStorage.setItem('afro-import-saved', JSON.stringify(list)); document.getElementById('savedCount').textContent = list.length; }
 
-            countries.forEach(country => {
-                const dutyRate = dutyRates[country][category] || 15;
-                const duty = (cifTotal * dutyRate) / 100;
-                const vat = vatRates[country] || 15;
-                const vatAmount = ((cifTotal + duty) * vat) / 100;
-                const total = cifTotal + duty + vatAmount;
-                let exchangeRate = exchangeRates[country] || 1;
-                if (exchangeRate <= 0 || isNaN(exchangeRate)) exchangeRate = 1;
-                const localTotal = total * exchangeRate;
-                const symbol = { Nigeria: '₦', Kenya: 'KES', 'South Africa': 'R', Ghana: 'GHS', Tanzania: 'TZS' }[country];
+function saveCalc() {
+  if (!RESULT) return;
+  const saved = getSaved();
+  saved.unshift({
+    date: new Date().toISOString(),
+    dest: RESULT.countryName, cat: RESULT.category,
+    fob: RESULT.fob, ship: RESULT.shipping,
+    totalUSD: RESULT.totalUSD, totalLocal: RESULT.totalLocal,
+    symbol: RESULT.symbol, flag: RESULT.flag,
+  });
+  if (saved.length > 20) saved.pop();
+  setSaved(saved);
+  if (typeof AfroTools !== 'undefined' && AfroTools.toast) AfroTools.toast.success('Calculation saved');
+}
 
-                tableHtml += '<tr><td><strong>' + country + '</strong></td><td>' + dutyRate + '%</td><td>' + vat + '%</td><td>$' + (duty + vatAmount).toFixed(2) + '</td><td>' + symbol + ' ' + localTotal.toFixed(2) + '</td></tr>';
-            });
+function renderSaved() {
+  const saved = getSaved();
+  const el = document.getElementById('savedList');
+  if (!saved.length) { el.innerHTML = '<p style="color:#8aaa95;text-align:center;padding:20px;">No saved calculations yet.</p>'; return; }
+  el.innerHTML = saved.map((s, i) =>
+    '<div class="saved-item" onclick="loadSaved(' + i + ')"><div class="saved-item-info">' + s.flag + ' ' + s.dest + ' &mdash; ' + s.cat + ' &mdash; ' + fmtUSD(s.fob) + ' FOB</div><div class="saved-item-total">' + fmtLocal(s.totalLocal, s.symbol) + '</div><button class="saved-item-del" onclick="event.stopPropagation();delSaved(' + i + ')">&times;</button></div>'
+  ).join('');
+}
 
-            tableHtml += '</tbody></table>';
-            resultsContainer.innerHTML = tableHtml;
-            actionButtons.style.display = 'flex';
-        });
+function loadSaved(i) {
+  const s = getSaved()[i];
+  if (!s) return;
+  document.getElementById('destCountry').value = s.dest;
+  document.getElementById('category').value = s.cat;
+  document.getElementById('goodsValue').value = Math.round(s.fob).toLocaleString();
+  document.getElementById('shippingValue').value = Math.round(s.ship).toLocaleString();
+  setTab('calc', document.querySelector('.duty-tab'));
+  calculateDuties();
+}
 
-        printBtn.addEventListener('click', () => {
-            window.print();
-        });
+function delSaved(i) {
+  const saved = getSaved(); saved.splice(i, 1); setSaved(saved); renderSaved();
+}
 
-        copyBtn.addEventListener('click', () => {
-            const text = resultsContainer.innerText;
-            navigator.clipboard.writeText(text).then(() => {
-                alert('Results copied to clipboard!');
-            });
-        });
+// ── FREIGHT ESTIMATOR ────────────────────────────────────────────
+const FREIGHT = {
+  sea: { China:1.2, USA:1.8, UK:1.6, UAE:0.9, India:1.0, Germany:1.6, Japan:1.5, Turkey:1.3 },
+  air: { China:3.5, USA:4.5, UK:4.2, UAE:2.8, India:3.0, Germany:4.2, Japan:4.0, Turkey:3.5 },
+  transit: { sea:{ China:'35-45', USA:'40-55', UK:'25-35', UAE:'15-25', India:'20-30', Germany:'25-35', Japan:'35-45', Turkey:'20-30' }, air:{ China:'3-5', USA:'3-5', UK:'2-4', UAE:'2-3', India:'2-4', Germany:'2-4', Japan:'3-5', Turkey:'2-4' } }
+};
 
-        // HS Code search
-        const commonHS = {
-            'smartphone': { code: '8517.12.00', category: 'Electronics' },
-            'iphone': { code: '8517.12.00', category: 'Electronics' },
-            'android': { code: '8517.12.00', category: 'Electronics' },
-            'laptop': { code: '8471.30.00', category: 'Electronics' },
-            'computer': { code: '8471.30.00', category: 'Electronics' },
-            'television': { code: '8528.72.00', category: 'Electronics' },
-            'tv': { code: '8528.72.00', category: 'Electronics' },
-            'car': { code: '8703.23.90', category: 'Vehicles' },
-            'used car': { code: '8703.23.90', category: 'Vehicles' },
-            'motorcycle': { code: '8711.40.00', category: 'Vehicles' },
-            'bike': { code: '8711.40.00', category: 'Vehicles' },
-            'spare parts': { code: '8708.99.00', category: 'Vehicles' },
-            'rice': { code: '1006.30.00', category: 'Food' },
-            'sugar': { code: '1701.99.00', category: 'Food' },
-            'clothing': { code: '6204.59.90', category: 'Clothing' },
-            'shirt': { code: '6204.59.90', category: 'Clothing' },
-            'fabric': { code: '6204.59.90', category: 'Clothing' },
-            'footwear': { code: '6402.99.00', category: 'Clothing' },
-            'shoes': { code: '6402.99.00', category: 'Clothing' },
-            'cement': { code: '2523.29.00', category: 'Building' },
-            'steel': { code: '7213.91.00', category: 'Building' },
-            'glass': { code: '7007.19.00', category: 'Building' },
-            'tiles': { code: '6810.19.00', category: 'Building' },
-            'generator': { code: '8502.20.00', category: 'Machinery' },
-            'solar': { code: '8541.40.00', category: 'Machinery' },
-            'skincare': { code: '3304.99.00', category: 'Cosmetics' },
-            'cosmetics': { code: '3304.99.00', category: 'Cosmetics' },
-            'medicine': { code: '3004.90.00', category: 'Pharmaceuticals' },
-            'drug': { code: '3004.90.00', category: 'Pharmaceuticals' },
-            'gold': { code: '7113.11.00', category: 'Jewellery' },
-            'jewellery': { code: '7113.11.00', category: 'Jewellery' },
-            'furniture': { code: '9403.40.00', category: 'Furniture' }
-        };
+function estFreight(mode) {
+  const kg = parseFloat(document.getElementById('freightWeight').value) || 0;
+  const origin = document.getElementById('originCountry').value;
+  if (!kg || !origin) return;
+  const ratePerKg = (FREIGHT[mode] && FREIGHT[mode][origin]) || 2.5;
+  const cost = kg * ratePerKg;
+  const transit = (FREIGHT.transit[mode] && FREIGHT.transit[mode][origin]) || '?';
+  const el = document.getElementById('freightResult');
+  el.innerHTML = '<strong>' + (mode === 'sea' ? 'Sea' : 'Air') + ' Freight:</strong> ~' + fmtUSD(cost) + ' for ' + kg + 'kg from ' + origin + '<br><small>Transit: ~' + transit + ' days</small>';
+  el.classList.add('on');
+}
 
-        hsSearchEl.addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase();
-            if (query.length === 0) return;
+// ── EXCHANGE RATE DISPLAY ────────────────────────────────────────
+function updateRateDisplay() {
+  const dest = document.getElementById('destCountry').value;
+  const c = COUNTRIES[dest];
+  if (!c) return;
+  document.getElementById('rateDisplay').innerHTML = '<strong>1 USD = ' + c.symbol + ' ' + c.rate + '</strong><br><small>Approximate rate for ' + c.currency + '. Actual customs rate may differ.</small>';
+}
 
-            for (const [key, value] of Object.entries(commonHS)) {
-                if (key.includes(query)) {
-                    hsSearchEl.placeholder = value.code + ' - ' + value.category;
-                    break;
-                }
-            }
-        });
+// ── PDF EXPORT ──────────────────────────────────────────────────
+async function downloadPdf() {
+  if (!RESULT) return;
+  const R = RESULT;
+  try {
+    await AfroTools.pdf.generate({
+      title: 'Import Duty Report',
+      subtitle: R.flag + ' ' + R.countryName + ' \u2014 ' + R.category,
+      country: R.countryName, countryFlag: R.flag, toolId: 'import-duty',
+      heroStats: [
+        { label: 'Total (USD)', value: fmtUSD(R.totalUSD) },
+        { label: 'Total (Local)', value: fmtLocal(R.totalLocal, R.symbol), highlight: true },
+        { label: 'Duty Rate', value: (R.dutyRate*100).toFixed(0) + '%' },
+        { label: 'FOB Value', value: fmtUSD(R.fob) },
+      ],
+      sections: [{
+        title: 'Import Cost Breakdown',
+        rows: [
+          { label: 'Goods Value (FOB)', value: fmtUSD(R.fob) },
+          { label: 'Shipping & Insurance', value: fmtUSD(R.shipping) },
+          { label: 'CIF Total', value: fmtUSD(R.cif) },
+          { label: 'Customs Duty (' + (R.dutyRate*100).toFixed(0) + '%)', value: fmtUSD(R.duty), type: 'deduction' },
+          ...R.levyItems.map(l => ({ label: l.name, value: fmtUSD(l.amount), type: 'deduction' })),
+          { label: 'VAT (' + R.vatRate + '%)', value: fmtUSD(R.vat), type: 'deduction' },
+          { label: 'Total Landed Cost (USD)', value: fmtUSD(R.totalUSD), type: 'total' },
+          { label: 'Total in ' + R.currency, value: fmtLocal(R.totalLocal, R.symbol), type: 'total' },
+        ]
+      }],
+      chartImage: CHART ? document.getElementById('dutyChart') : null,
+      disclaimer: 'Rates from ' + R.authority + ' (' + R.countryName + '). Exchange rate: 1 USD = ' + R.symbol + ' ' + R.rate + '. Rates are indicative.',
+    });
+    if (typeof gtag === 'function') gtag('event', 'pdf_download', { tool_name: 'import-duty', country: R.countryName });
+  } catch (e) { console.error('PDF failed:', e); }
+}
 
-        // Freight estimator
-        estimateBtn.addEventListener('click', () => {
-            const weight = parseFloat(document.getElementById('weight').value) || 0;
-            const unit = document.getElementById('weightUnit').value;
-            const origin = document.getElementById('freightOrigin').value;
+// ── SHARE ───────────────────────────────────────────────────────
+function shareResult() {
+  if (!RESULT) return;
+  const R = RESULT;
+  if (typeof AfroTools !== 'undefined' && AfroTools.shareState) {
+    AfroTools.shareState.share({
+      title: 'Import Duty Calculation',
+      text: 'Import to ' + R.countryName + ': ' + fmtUSD(R.fob) + ' ' + R.category + ' = ' + fmtLocal(R.totalLocal, R.symbol) + ' landed cost',
+      state: { d: R.countryName, c: R.category, f: Math.round(R.fob), s: Math.round(R.shipping) },
+    });
+  }
+  if (typeof gtag === 'function') gtag('event', 'share_click', { tool_name: 'import-duty', method: 'copy_link' });
+}
 
-            if (weight === 0) {
-                alert('Please enter weight');
-                return;
-            }
+// ── RESTORE FROM URL ────────────────────────────────────────────
+function restoreFromURL() {
+  if (typeof AfroTools === 'undefined' || !AfroTools.shareState) return;
+  const s = AfroTools.shareState.decode();
+  if (!s || !s.d) return;
+  document.getElementById('destCountry').value = s.d;
+  if (s.c) document.getElementById('category').value = s.c;
+  if (s.f) document.getElementById('goodsValue').value = parseInt(s.f).toLocaleString();
+  if (s.s) document.getElementById('shippingValue').value = parseInt(s.s).toLocaleString();
+  setTimeout(calculateDuties, 100);
+}
 
-            const rates = freightRates[origin];
-            const cost = unit === 'kg' ? weight * rates.kg : weight * rates.ton;
-            document.getElementById('freightCost').textContent = '$' + cost.toFixed(2) + ' USD';
-            document.getElementById('freightResult').style.display = 'block';
-        });
-
-        // Cheapest origin finder
-        cheapestBtn.addEventListener('click', () => {
-            const category = categoryEl.value;
-            const goodsValue = parseFloat(goodsValueEl.value) || 0;
-
-            if (!category || goodsValue === 0) {
-                alert('Please select category and enter goods value');
-                return;
-            }
-
-            let cheapest = null;
-            let lowestCost = Infinity;
-            let baseCost = goodsValue;
-
-            for (const [origin, factor] of Object.entries(originFactors)) {
-                const adjustedCost = baseCost * factor;
-                if (adjustedCost < lowestCost) {
-                    lowestCost = adjustedCost;
-                    cheapest = origin;
-                }
-            }
-
-            const savings = baseCost - lowestCost;
-            document.getElementById('cheapestOrigin').textContent = cheapest;
-            document.getElementById('savingsAmount').textContent = 'Save ~$' + savings.toFixed(2) + ' USD';
-            document.getElementById('cheapestResult').style.display = 'block';
-        });
-
-        // Load saved settings
-        window.addEventListener('load', () => {
-            const saved = localStorage.getItem('import-duty-saved');
-            if (saved) {
-                const data = JSON.parse(saved);
-                destCountryEl.value = data.dest;
-                originCountryEl.value = data.origin;
-                categoryEl.value = data.category;
-                goodsValueEl.value = data.goods;
-                cifValueEl.value = data.cif;
-            }
-        });
-    </script>
-<script src="/assets/js/favorites.js"></script>
+// ── INIT ────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('savedCount').textContent = getSaved().length;
+  renderHS();
+  setTimeout(restoreFromURL, 200);
+});
+</script>
 <script src="/assets/js/favorites-widget.js" defer></script>
 </body>
 </html>
