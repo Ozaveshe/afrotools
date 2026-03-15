@@ -4,28 +4,19 @@
  * Phase 2a: PBKDF2 password hashing via Web Crypto API (March 2026)
  * Phase 2b: Server-side auth via Netlify Functions + Blobs
  *
- * Usage:
- *   AfroAuth.isLoggedIn()         → boolean
- *   AfroAuth.getUser()            → {email, name, id, country, tier, createdAt}
- *   AfroAuth.signup(email, name, password, country)  → Promise<{ok, user?, error?}>
- *   AfroAuth.login(email, password)                  → Promise<{ok, user?, error?}>
- *   AfroAuth.logout()
- *   AfroAuth.updateProfile({name?, country?})
- *   AfroAuth.isPro()              → boolean
- *   AfroAuth.getSessionToken()    → string|null
- *
- *   AfroData.save(toolId, data)         → saves calculation result
- *   AfroData.load(toolId, limit=10)     → [{data, date}]
- *   AfroData.clearTool(toolId)
- *   AfroData.getFavorites()             → [toolId]
- *   AfroData.toggleFavorite(toolId)     → boolean (new state)
- *   AfroData.getRecentTools()           → [{toolId, name, date}]
- *   AfroData.logToolUse(toolId, name)
- *   AfroData.getUsageStats()            → {topCategory, toolCounts, totalUses}
+ * NOTE: This file is the FALLBACK auth system. If supabase-auth.js has
+ * already loaded (indicated by window._afroSupaAuthLoaded), this file
+ * will NOT overwrite AfroAuth/AfroData to avoid conflicts.
  */
 
 (function(window) {
   'use strict';
+
+  // ── Guard: Don't overwrite Supabase auth if it's already loaded ──
+  if (window._afroSupaAuthLoaded) {
+    // Supabase auth is active — skip localStorage auth entirely
+    return;
+  }
 
   const AUTH_KEY = 'afro_auth_v2';
   const USERS_KEY = 'afro_users_v2';
@@ -126,8 +117,8 @@
     },
 
     async signup(email, name, password, country) {
-      if (!email || !password || password.length < 4) {
-        return { ok: false, error: 'Email and password (min 4 chars) required' };
+      if (!email || !password || password.length < 6) {
+        return { ok: false, error: 'Email and password (min 6 chars) required' };
       }
       email = email.trim().toLowerCase();
       name = (name || '').trim() || email.split('@')[0];

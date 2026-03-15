@@ -5,12 +5,41 @@
 (function(window) {
   'use strict';
 
+  // Country name → 2-letter code map for tax calendar compatibility
+  const COUNTRY_CODE_MAP = {
+    'nigeria': 'NG', 'kenya': 'KE', 'south africa': 'ZA', 'ghana': 'GH',
+    'egypt': 'EG', 'tanzania': 'TZ', 'rwanda': 'RW', 'uganda': 'UG',
+    'morocco': 'MA', 'ethiopia': 'ET', 'senegal': 'SN', 'cameroon': 'CM',
+    'côte d\'ivoire': 'CI', 'ivory coast': 'CI', 'algeria': 'DZ',
+    'tunisia': 'TN', 'zambia': 'ZM', 'zimbabwe': 'ZW', 'botswana': 'BW',
+    'mozambique': 'MZ', 'angola': 'AO', 'namibia': 'NA', 'mauritius': 'MU',
+    'malawi': 'MW', 'sudan': 'SD', 'libya': 'LY', 'dr congo': 'CD',
+    'congo': 'CG', 'gabon': 'GA', 'benin': 'BJ', 'togo': 'TG',
+    'burkina faso': 'BF', 'mali': 'ML', 'niger': 'NE', 'chad': 'TD',
+    'sierra leone': 'SL', 'liberia': 'LR', 'guinea': 'GN',
+    'south sudan': 'SS', 'madagascar': 'MG', 'eswatini': 'SZ',
+    'lesotho': 'LS', 'gambia': 'GM', 'cabo verde': 'CV',
+    'equatorial guinea': 'GQ', 'comoros': 'KM', 'djibouti': 'DJ',
+    'eritrea': 'ER', 'somalia': 'SO', 'seychelles': 'SC',
+    'são tomé and príncipe': 'ST', 'mauritania': 'MR', 'burundi': 'BI',
+    'central african republic': 'CF'
+  };
+
+  function resolveCountryCode(country) {
+    if (!country) return 'NG';
+    // Already a 2-letter code
+    if (country.length === 2 && country === country.toUpperCase()) return country;
+    // Look up by full name
+    const code = COUNTRY_CODE_MAP[country.toLowerCase()];
+    return code || 'NG';
+  }
+
   function renderTaxCalendar(containerId) {
     const container = document.getElementById(containerId);
     if (!container || !window.AfroTaxCalendar) return;
 
     const user = AfroAuth.getUser();
-    const country = user?.country || 'NG';
+    const country = resolveCountryCode(user?.country);
     const deadlines = AfroTaxCalendar.getUpcomingDeadlines(country, 60);
 
     if (deadlines.length === 0) {
@@ -39,7 +68,7 @@
     if (!container || !window.AfroTaxCalendar) return;
 
     const user = AfroAuth.getUser();
-    const country = user?.country || 'NG';
+    const country = resolveCountryCode(user?.country);
     const dismissed = JSON.parse(localStorage.getItem('afro_alerts_dismissed_' + (user?.id || 'guest')) || '[]');
     const alerts = AfroTaxCalendar.getAlerts(country).filter(a => !dismissed.includes(a.date + a.title));
 

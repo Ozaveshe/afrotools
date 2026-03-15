@@ -11,26 +11,26 @@
 
   const LINKS = {
     tools: [
-      { en: 'Salary & Tax',        fr: 'Salaire & Impôts',   href: '/salary-tax' },
-      { en: 'PDF Workspace',       fr: 'Espace PDF',          href: '/tools/pdf-workspace' },
-      { en: 'Currency Converter',  fr: 'Convertisseur',       href: '/tools/currency-converter' },
-      { en: 'CV Builder',          fr: 'Créer un CV',         href: '/tools/cv-builder' },
-      { en: 'Invoice Generator',   fr: 'Facture',             href: '/tools/invoice-generator' },
-      { en: 'VAT Calculator',      fr: 'Calculateur TVA',     href: '/tools/vat-calculator' },
+      { en: 'Salary & Tax',        fr: 'Salaire & Impôts',   href: '/salary-tax/' },
+      { en: 'PDF Workspace',       fr: 'Espace PDF',          href: '/tools/pdf-workspace/' },
+      { en: 'Currency Converter',  fr: 'Convertisseur',       href: '/tools/currency-converter/' },
+      { en: 'CV Builder',          fr: 'Créer un CV',         href: '/tools/cv-builder/' },
+      { en: 'Invoice Generator',   fr: 'Facture',             href: '/tools/invoice-generator/' },
+      { en: 'VAT Calculator',      fr: 'Calculateur TVA',     href: '/tools/vat-calculator/' },
     ],
     countries: [
-      { en: '🇳🇬 Nigeria',      href: '/nigeria' },
-      { en: '🇰🇪 Kenya',        href: '/kenya' },
-      { en: '🇬🇭 Ghana',        href: '/ghana' },
-      { en: '🇿🇦 South Africa', href: '/south-africa' },
-      { en: '🇪🇬 Egypt',        href: '/egypt' },
-      { en: '🇹🇿 Tanzania',     href: '/tanzania' },
+      { en: '🇳🇬 Nigeria',      href: '/nigeria/' },
+      { en: '🇰🇪 Kenya',        href: '/kenya/' },
+      { en: '🇬🇭 Ghana',        href: '/ghana/' },
+      { en: '🇿🇦 South Africa', href: '/south-africa/' },
+      { en: '🇪🇬 Egypt',        href: '/egypt/' },
+      { en: '🇹🇿 Tanzania',     href: '/tanzania/' },
     ],
     company: [
-      { en: 'About',       fr: 'À propos',   href: '/about' },
-      { en: 'Contact',     fr: 'Contact',    href: '/contact' },
-      { en: 'Changelog',   fr: 'Mises à jour', href: '/changelog' },
-      { en: 'Advertise',   fr: 'Publicité',  href: '/advertise' },
+      { en: 'About',       fr: 'À propos',   href: '/about/' },
+      { en: 'Contact',     fr: 'Contact',    href: '/contact/' },
+      { en: 'Changelog',   fr: 'Mises à jour', href: '/changelog/' },
+      { en: 'Advertise',   fr: 'Publicité',  href: '/advertise/' },
     ],
   };
 
@@ -308,7 +308,7 @@
                 <a href="/privacy-policy">${fr ? 'Confidentialité' : 'Privacy'}</a>
                 <a href="/terms-of-use">${fr ? 'Conditions' : 'Terms'}</a>
                 <a href="/sitemap.xml">Sitemap</a>
-                <a href="/contact">Contact</a>
+                <a href="/contact/">Contact</a>
               </div>
               <p class="disc">${disc}</p>
             </div>

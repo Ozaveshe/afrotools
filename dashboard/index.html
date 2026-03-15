@@ -677,6 +677,10 @@
                                 <option value="Uganda">Uganda</option>
                                 <option value="Rwanda">Rwanda</option>
                                 <option value="Ethiopia">Ethiopia</option>
+                                <option value="Morocco">Morocco</option>
+                                <option value="Senegal">Senegal</option>
+                                <option value="Cameroon">Cameroon</option>
+                                <option value="Côte d'Ivoire">Côte d'Ivoire</option>
                                 <option value="Other">Other</option>
                             </select>
                         </div>
@@ -774,8 +778,8 @@
         let currentUser = null;
         let isLoggedIn = false;
 
-        // Tool metadata for display
-        const toolMetadata = {
+        // Tool metadata for display — build from registry if available, with hardcoded fallbacks
+        const toolMetadataFallback = {
             'bmi-calculator': { name: 'BMI Calculator', icon: '⚖' },
             'paye-calculator': { name: 'PAYE Calculator', icon: '💷' },
             'profit-margin': { name: 'Profit Margin', icon: '📊' },
@@ -785,6 +789,17 @@
             'loan-calculator': { name: 'Loan Calculator', icon: '🏡' },
             'investment-calculator': { name: 'Investment Calculator', icon: '📈' }
         };
+        // Dynamically populate from tool registry for all tools
+        const toolMetadata = new Proxy(toolMetadataFallback, {
+            get(target, prop) {
+                if (prop in target) return target[prop];
+                if (typeof AFRO_TOOLS !== 'undefined') {
+                    const found = AFRO_TOOLS.find(t => t.id === prop);
+                    if (found) return { name: found.name, icon: found.icon || '🔧' };
+                }
+                return { name: prop.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()), icon: '🔧' };
+            }
+        });
 
         // Wait for Supabase auth to be ready before initializing
         function waitForAuth() {

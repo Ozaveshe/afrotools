@@ -9,78 +9,78 @@
     {
       id: 'financial', label: 'Salary & Tax', icon: '💰',
       desc: 'PAYE, income tax, take-home pay',
-      href: '/salary-tax', color: '#e8f0fd', accent: '#0071E3',
+      href: '/salary-tax/', color: '#e8f0fd', accent: '#0071E3',
       tools: []
     },
     {
       id: 'document-pdf', label: 'Document & PDF', icon: '📄',
       desc: 'Merge, split, compress, convert',
-      href: '/document-pdf', color: '#eff6ff', accent: '#3b82f6',
+      href: '/document-pdf/', color: '#eff6ff', accent: '#3b82f6',
       tools: []
     },
     {
       id: 'image-design', label: 'Image & Design', icon: '🖼️',
       desc: 'Compress, resize, QR codes',
-      href: '/image-design', color: '#fdf2f8', accent: '#ec4899',
+      href: '/image-design/', color: '#fdf2f8', accent: '#ec4899',
       tools: []
     },
     {
       id: 'developer', label: 'Developer Tools', icon: '⌨️',
       desc: 'JSON, Base64, hash, regex',
-      href: '/developer-tools', color: '#ede9fe', accent: '#8b5cf6',
+      href: '/developer-tools/', color: '#ede9fe', accent: '#8b5cf6',
       tools: []
     },
     {
       id: 'education', label: 'Education', icon: '🎓',
       desc: 'GPA, WAEC, loans, fees',
-      href: '/education', color: '#e8fef6', accent: '#059669',
+      href: '/education/', color: '#e8fef6', accent: '#059669',
       tools: []
     },
     {
       id: 'health', label: 'Health & Agriculture', icon: '🏥',
       desc: 'BMI, SHIF, pregnancy, crops',
-      href: '/health', color: '#fce8e8', accent: '#dc2626',
+      href: '/health/', color: '#fce8e8', accent: '#dc2626',
       tools: []
     },
     {
       id: 'ecommerce', label: 'VAT & Business Tax', icon: '🧾',
       desc: 'VAT, margins, break-even',
-      href: '/vat-business-tax', color: '#fff7ed', accent: '#f59e0b',
+      href: '/vat-business-tax/', color: '#fff7ed', accent: '#f59e0b',
       tools: []
     },
     {
       id: 'legal', label: 'Mortgage & Property', icon: '🏠',
       desc: 'Registration, compliance, property',
-      href: '/legal', color: '#e0f2fe', accent: '#0ea5e9',
+      href: '/legal/', color: '#e0f2fe', accent: '#0ea5e9',
       tools: []
     },
     {
       id: 'data-productivity', label: 'Business & ROI', icon: '📊',
       desc: 'Productivity, data, investment',
-      href: '/data-productivity', color: '#eef2ff', accent: '#6366f1',
+      href: '/data-productivity/', color: '#eef2ff', accent: '#6366f1',
       tools: []
     },
     {
       id: 'language', label: 'Language & Translation', icon: '🗣️',
       desc: 'Yoruba, Swahili, Hausa, Amharic',
-      href: '/language', color: '#faf5ff', accent: '#a855f7',
+      href: '/language/', color: '#faf5ff', accent: '#a855f7',
       tools: []
     },
     {
       id: 'african', label: 'Uniquely African', icon: '🌍',
       desc: 'Japa, generator, ajo, mobile money',
-      href: '/african', color: '#fef2f2', accent: '#dc2626',
+      href: '/african/', color: '#fef2f2', accent: '#dc2626',
       tools: []
     },
     {
       id: 'engineering', label: 'Engineering & CAD', icon: '🔧',
       desc: 'Solar, structural, borehole, CAD',
-      href: '/engineering', color: '#f5f5f4', accent: '#78716c',
+      href: '/engineering/', color: '#f5f5f4', accent: '#78716c',
       tools: [
-        { label: 'AfroDraft 2D CAD', href: '/engineering/afrodraft', emoji: '📐', badge: 'LIVE' },
-        { label: 'Solar Calculator', href: '/tools/solar-calculator', emoji: '☀️', badge: 'Soon' },
-        { label: 'Floor Plan Designer', href: '/tools/floor-plan', emoji: '🏗️', badge: 'Soon' },
-        { label: 'Bill of Quantities', href: '/tools/boq-generator', emoji: '📋', badge: 'Soon' },
+        { label: 'AfroDraft 2D CAD', href: '/engineering/afrodraft/', emoji: '📐', badge: 'LIVE' },
+        { label: 'Solar Calculator', href: '/tools/solar-calculator/', emoji: '☀️', badge: 'Soon' },
+        { label: 'Floor Plan Designer', href: '/tools/floor-plan/', emoji: '🏗️', badge: 'Soon' },
+        { label: 'Bill of Quantities', href: '/tools/boq-generator/', emoji: '📋', badge: 'Soon' },
       ]
     },
   ];
@@ -513,11 +513,11 @@
                   </svg>
                 </button>
               </li>
-              <li><a href="/salary-tax" class="lnk">Salary &amp; Tax</a></li>
-              <li><a href="/document-pdf" class="lnk">PDF Tools</a></li>
-              <li><a href="/developer-tools" class="lnk">Dev Tools</a></li>
-              <li><a href="/african" class="lnk">African</a></li>
-              <li><a href="/education" class="lnk">Education</a></li>
+              <li><a href="/salary-tax/" class="lnk">Salary &amp; Tax</a></li>
+              <li><a href="/document-pdf/" class="lnk">PDF Tools</a></li>
+              <li><a href="/developer-tools/" class="lnk">Dev Tools</a></li>
+              <li><a href="/african/" class="lnk">African</a></li>
+              <li><a href="/education/" class="lnk">Education</a></li>
             </ul>
 
             <div class="right">
@@ -543,7 +543,7 @@
           </div>
           <div class="mega-footer">
             <span class="mega-footer-note">🌍 54 African countries · free forever · no sign-up required</span>
-            <a href="/all-tools" class="mega-footer-lnk">Browse all tools →</a>
+            <a href="/all-tools/" class="mega-footer-lnk">Browse all tools →</a>
           </div>
         </div>
 
@@ -672,7 +672,7 @@
         return null;
       };
 
-      const escapeHtml = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      const escapeHtml = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 
       const highlightMatch = (text, query) => {
         if (!query) return escapeHtml(text);
@@ -726,7 +726,7 @@
         _activeIdx = 0;
         container.innerHTML = tools.map((t, i) => `
           <a href="${t.href}" class="search-result${i === 0 ? ' active' : ''}" data-idx="${i}">
-            <div class="search-result-icon">${t.icon}</div>
+            <div class="search-result-icon">${escapeHtml(t.icon || '🔧')}</div>
             <div>
               <div class="search-result-name">${highlightMatch(t.name, query)}</div>
               <div class="search-result-desc">${escapeHtml(t.desc)}</div>
@@ -838,7 +838,7 @@
           mobCategoriesWrap.style.display = 'none';
           mobSearchResults.innerHTML = results.map(t => `
             <a href="${t.href}" class="search-result">
-              <div class="search-result-icon">${t.icon}</div>
+              <div class="search-result-icon">${escapeHtml(t.icon || '🔧')}</div>
               <div>
                 <div class="search-result-name">${highlightMatch(t.name, q)}</div>
                 <div class="search-result-desc">${escapeHtml(t.desc)}</div>

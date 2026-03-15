@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>All Tools for Africa | AfroTools — 100+ Free Financial, AI & Productivity Tools</title>
+<title>All Tools for Africa — Free Financial & AI Tools | AfroTools</title>
 <meta name="description" content="Browse every AfroTools tool: PAYE calculators, PDF workspace, CV builder, currency converter, engineering tools, and more — built for all 54 African countries.">
-<link rel="canonical" href="https://afrotools.com/all-tools">
+<link rel="canonical" href="https://afrotools.com/all-tools/">
 <meta name="robots" content="index, follow">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/all-tools">
@@ -263,9 +263,11 @@ function setFilter(f, btn){
 function getIcon(tool){
   const customPath = TOOL_ICONS[tool.id];
   if(customPath){
-    return `<img src="${customPath}" alt="${tool.name}" onerror="this.parentElement.innerHTML='${tool.icon||'🛠️'}'">`;
+    const safeIcon = (tool.icon||'🛠️').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/'/g,'&#39;').replace(/"/g,'&quot;');
+    const safeName = (tool.name||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    return `<img src="${customPath}" alt="${safeName}" onerror="this.parentElement.textContent='${safeIcon}'">`;
   }
-  return tool.icon || '🛠️';
+  return (tool.icon || '🛠️').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
 function getCatMeta(cat){
@@ -341,9 +343,11 @@ function renderTools(){
     const cat = catMeta(t.category);
     const isAiTool = isAI(t.id);
     const cardClass = isAiTool ? 'tool-card ai-powered' : live && isNew(t) ? 'tool-card new' : 'tool-card';
+    const safeIcon = (t.icon||'🛠️').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/'/g,'&#39;').replace(/"/g,'&quot;');
+    const safeName = (t.name||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
     const iconContent = TOOL_ICONS[t.id]
-      ? `<img src="${TOOL_ICONS[t.id]}" alt="${t.name}" onerror="this.parentElement.innerHTML='${(t.icon||'🛠️').replace(/'/g,'&apos;')}';">`
-      : (t.icon || '🛠️');
+      ? `<img src="${TOOL_ICONS[t.id]}" alt="${safeName}" onerror="this.parentElement.textContent='${safeIcon}';">`
+      : safeIcon;
 
     return `<a href="${t.href||'#'}" class="${cardClass}">
       <div class="tc-icon" style="background:${cat.color}">${iconContent}</div>

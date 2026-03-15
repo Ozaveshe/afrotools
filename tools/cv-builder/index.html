@@ -19,9 +19,20 @@
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Fraunces:wght@400;500;600;700;800&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js" defer></script>
+<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" as="script">
+<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" as="script">
+<script>
+// Lazy-load html2canvas and jspdf when user first interacts with PDF download
+window._pdfLibsLoaded=false;
+window.loadPdfLibs=function(){
+  if(window._pdfLibsLoaded)return Promise.resolve();
+  return Promise.all([
+    new Promise(function(r){var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';s.onload=r;document.head.appendChild(s);}),
+    new Promise(function(r){var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';s.onload=r;document.head.appendChild(s);})
+  ]).then(function(){window._pdfLibsLoaded=true;});
+};
+</script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{height:100%;overflow-x:hidden}
@@ -158,7 +169,60 @@ input,textarea,select{font-family:'Outfit',system-ui,sans-serif}
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
+<h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0">Free CV & Resume Builder for Africa</h1>
 <div id="root"></div>
+
+<!-- SEO Content Section -->
+<section style="max-width:860px;margin:48px auto;padding:0 24px;font-family:'DM Sans',system-ui,sans-serif;color:#374151;line-height:1.8">
+  <h2 style="font-size:1.5rem;font-weight:800;color:#111827;margin-bottom:16px">Free CV & Resume Builder for Africa</h2>
+  <p>The AfroTools CV Builder helps professionals across all 54 African countries create polished, job-ready CVs in minutes. Unlike generic resume builders, every template and suggestion is tailored to African hiring norms, from Nigeria's expectation of personal details and state of origin to South Africa's Employment Equity Act requirements that omit demographic information entirely.</p>
+
+  <h3 style="font-size:1.15rem;font-weight:700;color:#111827;margin:28px 0 10px">How to Use the CV Builder</h3>
+  <ol style="padding-left:20px;margin-bottom:16px">
+    <li>Select your target country from the dropdown to apply the correct CV format and conventions.</li>
+    <li>Fill in your personal details, work experience, education, and skills in the guided form panel.</li>
+    <li>Choose from 10 professionally designed templates that suit your industry and career level.</li>
+    <li>Preview your CV in real time on the right panel with pixel-perfect A4 formatting.</li>
+    <li>Download as a high-quality PDF ready to submit to employers or upload to job portals.</li>
+  </ol>
+
+  <h3 style="font-size:1.15rem;font-weight:700;color:#111827;margin:28px 0 10px">Templates Available</h3>
+  <p>Choose from 10 modern templates designed for different industries and experience levels. Options range from clean minimalist layouts ideal for tech and finance roles, to creative designs suited for marketing and design professionals. Every template produces a properly formatted A4 document that prints perfectly.</p>
+
+  <h3 style="font-size:1.15rem;font-weight:700;color:#111827;margin:28px 0 10px">Country-Specific Formatting</h3>
+  <p>African job markets have distinct expectations. Nigerian employers typically expect to see your date of birth, marital status, state of origin, and a passport photograph. Kenyan CVs include national ID numbers and personal details. South African CVs, by contrast, omit all demographic information to comply with employment equity legislation. The AfroTools CV Builder automatically adjusts which fields appear based on your selected country.</p>
+
+  <h3 style="font-size:1.15rem;font-weight:700;color:#111827;margin:28px 0 10px">Tips for African Job Applications</h3>
+  <ul style="padding-left:20px;margin-bottom:16px">
+    <li>Keep your CV to 2 pages unless you have 10+ years of experience.</li>
+    <li>Include a professional summary at the top with your key achievements and career goals.</li>
+    <li>Quantify your accomplishments where possible: revenue generated, team sizes managed, projects delivered.</li>
+    <li>List your most recent experience first and work backwards chronologically.</li>
+    <li>Include references or state "Available upon request" as expected in most African markets.</li>
+  </ul>
+
+  <h3 style="font-size:1.15rem;font-weight:700;color:#111827;margin:28px 0 10px">Frequently Asked Questions</h3>
+  <details style="margin-bottom:12px;border:1px solid #e5e7eb;border-radius:8px;padding:14px 16px">
+    <summary style="font-weight:600;color:#111827;cursor:pointer">Is the CV Builder completely free?</summary>
+    <p style="margin-top:8px">Yes. The AfroTools CV Builder is 100% free with no sign-up required. You can create, preview, and download your CV as a PDF without any charges or watermarks.</p>
+  </details>
+  <details style="margin-bottom:12px;border:1px solid #e5e7eb;border-radius:8px;padding:14px 16px">
+    <summary style="font-weight:600;color:#111827;cursor:pointer">Which countries are supported?</summary>
+    <p style="margin-top:8px">All 54 African countries are supported. The builder adjusts its format recommendations based on the country you select, including which personal fields to show and local CV conventions.</p>
+  </details>
+  <details style="margin-bottom:12px;border:1px solid #e5e7eb;border-radius:8px;padding:14px 16px">
+    <summary style="font-weight:600;color:#111827;cursor:pointer">Can I save my CV and edit it later?</summary>
+    <p style="margin-top:8px">Your CV data is saved in your browser's local storage, so you can return and continue editing. For permanent storage, download the PDF or sign in to your AfroTools dashboard.</p>
+  </details>
+  <details style="margin-bottom:12px;border:1px solid #e5e7eb;border-radius:8px;padding:14px 16px">
+    <summary style="font-weight:600;color:#111827;cursor:pointer">What file format is the download?</summary>
+    <p style="margin-top:8px">CVs are downloaded as PDF files formatted to A4 paper size. The PDF is print-ready and compatible with all major job portals and applicant tracking systems (ATS).</p>
+  </details>
+  <details style="margin-bottom:12px;border:1px solid #e5e7eb;border-radius:8px;padding:14px 16px">
+    <summary style="font-weight:600;color:#111827;cursor:pointer">Should I include a photo on my CV?</summary>
+    <p style="margin-top:8px">It depends on the country. In Nigeria, Kenya, and most West and East African countries, a professional photo is expected. In South Africa, photos are discouraged due to employment equity regulations. The builder will guide you based on your selected country.</p>
+  </details>
+</section>
 
 <afro-related-tools category="document-pdf" current="cv-builder"></afro-related-tools>
 <afro-footer></afro-footer>
@@ -288,6 +352,7 @@ function CVBuilder() {
     const el = document.getElementById('cvpreview');
     if (!el) return;
     try {
+      await window.loadPdfLibs();
       const canvas = await html2canvas(el, {scale:2,useCORS:true,logging:false,backgroundColor:'#fff'});
       const imgData = canvas.toDataURL('image/jpeg',0.95);
       const pdf = new window.jspdf.jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
