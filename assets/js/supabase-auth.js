@@ -29,23 +29,30 @@
   // ───────────────────────────────────────────────
   // 1. Load Supabase SDK from CDN (with retry)
   // ───────────────────────────────────────────────
-  function loadSDK(attempt) {
-    attempt = attempt || 1;
+  // SDK sources — local first (always works), CDN as fallback
+  var SDK_SOURCES = [
+    '/assets/js/supabase.min.js',
+    'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js',
+    'https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.min.js'
+  ];
+
+  function loadSDK(sourceIndex) {
+    sourceIndex = sourceIndex || 0;
     return new Promise(function (resolve, reject) {
       if (window.supabase && window.supabase.createClient) { resolve(); return; }
+      if (sourceIndex >= SDK_SOURCES.length) {
+        reject(new Error('Supabase SDK failed to load from all sources'));
+        return;
+      }
       var s = document.createElement('script');
-      s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
+      s.src = SDK_SOURCES[sourceIndex];
       s.onload = function () {
         if (window.supabase && window.supabase.createClient) resolve();
-        else reject(new Error('Supabase SDK loaded but createClient not found'));
+        else loadSDK(sourceIndex + 1).then(resolve, reject);
       };
       s.onerror = function () {
-        if (attempt < 3) {
-          console.warn('[AfroAuth] SDK load failed, retry ' + attempt + '/3...');
-          setTimeout(function () { loadSDK(attempt + 1).then(resolve, reject); }, 1000);
-        } else {
-          reject(new Error('Supabase SDK failed to load after 3 attempts'));
-        }
+        console.warn('[AfroAuth] SDK failed from ' + SDK_SOURCES[sourceIndex] + ', trying next...');
+        loadSDK(sourceIndex + 1).then(resolve, reject);
       };
       document.head.appendChild(s);
     });
@@ -57,7 +64,7 @@
   function friendlyError(msg) {
     if (!msg) return 'Something went wrong. Please try again.';
     if (msg === 'Failed to fetch' || msg.indexOf('fetch') > -1 || msg.indexOf('NetworkError') > -1) {
-      return 'Unable to connect to the server. Please check your internet connection and try again.';
+      return 'Connection error — please try signing in with Google instead, or retry in a moment.';
     }
     if (msg.indexOf('Invalid login') > -1) return 'Incorrect email or password.';
     if (msg.indexOf('Email not confirmed') > -1) return 'Please check your email for a confirmation link before signing in.';
