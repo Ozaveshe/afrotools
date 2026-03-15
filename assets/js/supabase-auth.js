@@ -21,9 +21,13 @@
 
   // Custom fetch: route all Supabase API calls through our Netlify proxy so auth
   // works even when supabase.co is blocked by ad blockers or ISP restrictions.
-  // Falls back to direct if proxy fails.
+  // Netlify proxy strips custom headers, so we pass apikey as a URL param instead.
+  // Falls back to direct Supabase URL if proxy fails.
   var _proxyFetch = function (url, options) {
     var proxyUrl = url.replace(SUPABASE_URL, SUPABASE_PROXY);
+    // Netlify proxy may strip the 'apikey' header — add it as a URL param
+    var sep = proxyUrl.indexOf('?') > -1 ? '&' : '?';
+    proxyUrl += sep + 'apikey=' + encodeURIComponent(SUPABASE_KEY);
     return fetch(proxyUrl, options).catch(function () {
       return fetch(url, options);
     });
