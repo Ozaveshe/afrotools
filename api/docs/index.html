@@ -98,6 +98,9 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
     <h3>AfroRates</h3>
     <a href="#central-bank">Central Bank Rates</a>
     <h3>Resources</h3>
+    <a href="#try-it">Try it Live</a>
+    <a href="#pricing">Pricing</a>
+    <h3>Resources</h3>
     <a href="/api/pricing.html">Pricing</a>
     <a href="/dashboard/">Dashboard</a>
   </nav>
@@ -302,12 +305,90 @@ X-RateLimit-Reset: 1710547200</code></pre>
   "updated_at": "2026-03-15T00:00:00Z"
 }</code></pre>
 
+    <!-- Try it Live -->
+    <h2 id="try-it">Try the API &mdash; Live</h2>
+    <div style="background:#F9FAFB;border:1.5px solid #E5E7EB;border-radius:14px;padding:24px;margin-bottom:32px;">
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px;">
+        <select id="api-endpoint" style="flex:1;min-width:240px;padding:10px 14px;border:1.5px solid #E5E7EB;border-radius:10px;font-family:inherit;font-size:.88rem;">
+          <option value="forex?base=USD&symbols=NGN,KES,ZAR">GET /api-forex &mdash; USD to NGN, KES, ZAR</option>
+          <option value="fuel?country=NG">GET /api-fuel &mdash; Nigeria fuel prices</option>
+          <option value="rates?country=NG">GET /api-rates &mdash; Nigeria central bank rates</option>
+        </select>
+        <button id="try-api-btn" style="padding:10px 24px;background:#007AFF;color:#fff;border:none;border-radius:10px;font-weight:600;font-family:inherit;cursor:pointer;font-size:.88rem;">Send Request &rarr;</button>
+      </div>
+      <pre style="background:#111827;color:#e2e8f0;padding:20px;border-radius:10px;font-size:.82rem;line-height:1.6;overflow-x:auto;min-height:100px;margin:0;" id="api-response">// Click "Send Request" to try an endpoint</pre>
+    </div>
+
+    <h2 id="pricing">Pricing</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-bottom:32px;">
+      <div style="background:#F9FAFB;border:1px solid #E5E7EB;border-radius:12px;padding:24px;">
+        <h3 style="font-size:1rem;font-weight:700;margin:0 0 8px;">Free</h3>
+        <p style="font-size:2rem;font-weight:800;color:#007AFF;margin:0 0 12px;">$0</p>
+        <ul style="list-style:none;padding:0;margin:0;font-size:.82rem;color:#6B7280;line-height:2;">
+          <li>100 calls/day</li>
+          <li>Latest data only</li>
+          <li>All 4 APIs included</li>
+        </ul>
+      </div>
+      <div style="background:#F9FAFB;border:1px solid #E5E7EB;border-radius:12px;padding:24px;">
+        <h3 style="font-size:1rem;font-weight:700;margin:0 0 8px;">Starter</h3>
+        <p style="font-size:2rem;font-weight:800;color:#007AFF;margin:0 0 12px;">$29<span style="font-size:.7rem;font-weight:500;color:#6B7280">/mo</span></p>
+        <ul style="list-style:none;padding:0;margin:0;font-size:.82rem;color:#6B7280;line-height:2;">
+          <li>10,000 calls/day</li>
+          <li>30-day history</li>
+          <li>All 4 APIs included</li>
+        </ul>
+      </div>
+      <div style="background:#EFF6FF;border:2px solid #007AFF;border-radius:12px;padding:24px;">
+        <h3 style="font-size:1rem;font-weight:700;margin:0 0 8px;color:#007AFF;">Pro</h3>
+        <p style="font-size:2rem;font-weight:800;color:#007AFF;margin:0 0 12px;">$99<span style="font-size:.7rem;font-weight:500;color:#6B7280">/mo</span></p>
+        <ul style="list-style:none;padding:0;margin:0;font-size:.82rem;color:#6B7280;line-height:2;">
+          <li>100,000 calls/day</li>
+          <li>Full history</li>
+          <li>Webhooks</li>
+        </ul>
+      </div>
+      <div style="background:#F9FAFB;border:1px solid #E5E7EB;border-radius:12px;padding:24px;">
+        <h3 style="font-size:1rem;font-weight:700;margin:0 0 8px;">Enterprise</h3>
+        <p style="font-size:2rem;font-weight:800;color:#007AFF;margin:0 0 12px;">$299<span style="font-size:.7rem;font-weight:500;color:#6B7280">/mo</span></p>
+        <ul style="list-style:none;padding:0;margin:0;font-size:.82rem;color:#6B7280;line-height:2;">
+          <li>Unlimited calls</li>
+          <li>SLA guarantee</li>
+          <li>Custom endpoints</li>
+        </ul>
+      </div>
+    </div>
+    <p style="text-align:center;font-size:.82rem;color:#6B7280;">All plans include: AfroTax + AfroFX + AfroFuel + AfroRates APIs.</p>
+
   </main>
 </div>
 
 <afro-footer></afro-footer>
 
 <script>
+// API Tester
+document.getElementById('try-api-btn').addEventListener('click', async function(){
+  var endpoint = document.getElementById('api-endpoint').value;
+  var pre = document.getElementById('api-response');
+  pre.textContent = '// Loading...';
+  try {
+    var r = await fetch('/.netlify/functions/api-' + endpoint);
+    var data = await r.json();
+    pre.textContent = JSON.stringify(data, null, 2);
+  } catch(e) {
+    // Try fetching from static data as fallback
+    try {
+      var type = endpoint.split('?')[0];
+      var staticUrl = '/data/' + (type === 'forex' ? 'forex' : type === 'fuel' ? 'fuel' : 'rates') + '/latest.json';
+      var r2 = await fetch(staticUrl);
+      var data2 = await r2.json();
+      pre.textContent = '// Static data (API function not deployed yet)\n' + JSON.stringify(data2, null, 2).slice(0, 2000);
+    } catch(e2) {
+      pre.textContent = '// API endpoint not yet deployed.\n// When live, call: /.netlify/functions/api-' + endpoint;
+    }
+  }
+});
+
 // Highlight active nav item on scroll
 (function(){
   var links = document.querySelectorAll('.docs-nav a[href^="#"]');
