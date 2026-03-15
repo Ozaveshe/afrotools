@@ -1,0 +1,475 @@
+/**
+ * AFROTOOLS — VAT Calculator CSS
+ * ═══════════════════════════════════════════════════════════
+ * Extracted styles for /tools/vat-calculator/
+ * Light mode default, dark mode via prefers-color-scheme
+ * ═══════════════════════════════════════════════════════════
+ */
+
+/* ── LAYOUT ──────────────────────────────────────── */
+.vat-container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+.vat-main { margin-bottom: 48px; }
+.vat-layout { display: grid; grid-template-columns: 1fr 320px; gap: 2rem; }
+
+/* ── HERO ────────────────────────────────────────── */
+.vat-hero {
+  background: linear-gradient(135deg, #0a1929 0%, #0d2040 50%, #0d2b5e 100%);
+  color: #fff;
+  padding: 56px 20px 48px;
+  text-align: center;
+}
+.vat-hero h1 {
+  font-size: clamp(1.6rem, 4vw, 2.6rem);
+  font-weight: 800;
+  margin-bottom: 10px;
+  letter-spacing: -0.03em;
+}
+.vat-hero p {
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.7);
+  max-width: 600px;
+  margin: 0 auto 20px;
+  line-height: 1.6;
+}
+.vat-badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.vat-badge {
+  background: rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.9);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* ── TABS ────────────────────────────────────────── */
+.vat-tabs {
+  display: flex;
+  border-bottom: 2px solid #e5e7eb;
+  margin-bottom: 24px;
+  overflow-x: auto;
+}
+.vat-tab {
+  background: none;
+  border: none;
+  padding: 12px 24px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #6b7280;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+  font-family: 'DM Sans', sans-serif;
+  white-space: nowrap;
+}
+.vat-tab:hover { color: #0071E3; }
+.vat-tab.active { color: #0071E3; border-bottom-color: #0071E3; }
+.vat-panel { display: none; animation: vat-fadeIn 0.3s ease; }
+.vat-panel.active { display: block; }
+@keyframes vat-fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+
+/* ── CARD ────────────────────────────────────────── */
+.vat-card {
+  background: #fff;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 28px;
+  margin-bottom: 20px;
+}
+.vat-card-title { font-size: 1rem; font-weight: 700; margin-bottom: 12px; color: #111827; }
+
+/* ── FIELDS ──────────────────────────────────────── */
+.vat-field { margin-bottom: 16px; }
+.vat-field label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.vat-input, .vat-select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: 'DM Sans', sans-serif;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background: #fff;
+  color: #111827;
+}
+.vat-input:focus, .vat-select:focus {
+  outline: none;
+  border-color: #0071E3;
+  box-shadow: 0 0 0 3px rgba(0,113,227,0.08);
+}
+.vat-select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23666' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+}
+.vat-input-wrap {
+  display: flex;
+  align-items: center;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.vat-input-wrap:focus-within {
+  border-color: #0071E3;
+  box-shadow: 0 0 0 3px rgba(0,113,227,0.08);
+}
+.vat-input-wrap .vat-input { border: none; box-shadow: none; }
+.vat-prefix {
+  padding: 0 0 0 14px;
+  color: #6b7280;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ── MODE TOGGLE ─────────────────────────────────── */
+.vat-mode-toggle {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.vat-mode {
+  flex: 1;
+  padding: 10px 16px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 10px;
+  background: transparent;
+  color: #6b7280;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.2s;
+}
+.vat-mode:hover { border-color: #0071E3; color: #0071E3; }
+.vat-mode.active { background: #0071E3; color: #fff; border-color: #0071E3; }
+
+/* ── CALCULATE BUTTON ────────────────────────────── */
+.vat-calc-btn {
+  width: 100%;
+  padding: 14px;
+  background: #0071E3;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 8px;
+}
+.vat-calc-btn:hover { background: #005BBF; }
+
+/* ── BUTTONS ─────────────────────────────────────── */
+.vat-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+.vat-btn--outline { background: none; border: 1.5px solid #e5e7eb; color: #374151; }
+.vat-btn--outline:hover { border-color: #0071E3; color: #0071E3; }
+.vat-btn--primary { background: #0071E3; color: #fff; }
+.vat-btn--primary:hover { background: #005BBF; }
+.vat-btn--full { width: 100%; justify-content: center; }
+
+/* ── RESULTS ─────────────────────────────────────── */
+.vat-results {
+  background: #fff;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 16px;
+  overflow: hidden;
+  margin-top: 20px;
+}
+.vat-results-hero {
+  background: linear-gradient(135deg, #f0f7ff 0%, #f5f5f7 100%);
+  padding: 24px 28px;
+  border-bottom: 1px solid #e5e7eb;
+}
+.vat-results-label { font-size: 0.82rem; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+.vat-results-amount { font-size: clamp(1.8rem, 5vw, 2.4rem); font-weight: 800; color: #0071E3; }
+
+.vat-breakdown-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  padding: 24px 28px;
+}
+.vat-breakdown-item {
+  padding: 14px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  text-align: center;
+}
+.vat-breakdown-item--accent { background: #fef2f2; border-color: #fecaca; }
+.vat-breakdown-label { font-size: 0.78rem; color: #6b7280; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px; }
+.vat-breakdown-value { font-size: 1.2rem; font-weight: 700; color: #111827; word-break: break-word; }
+.vat-breakdown-rate { font-size: 0.78rem; color: #6b7280; margin-top: 4px; }
+
+/* ── EXEMPTIONS ──────────────────────────────────── */
+.vat-exemptions {
+  margin: 0 28px 16px;
+  padding: 12px 16px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  font-size: 0.84rem;
+  color: #1e40af;
+  line-height: 1.5;
+}
+
+/* ── CHART ───────────────────────────────────────── */
+.vat-chart-section { padding: 0 28px 16px; }
+.vat-chart-wrap { position: relative; height: 220px; }
+
+/* ── ACTIONS ─────────────────────────────────────── */
+.vat-actions {
+  display: flex;
+  gap: 10px;
+  padding: 0 28px 24px;
+  flex-wrap: wrap;
+}
+
+/* ── LINE ITEMS (Invoice) ────────────────────────── */
+.vat-line-item {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr auto;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.vat-line-desc, .vat-line-amount { font-size: 0.9rem; padding: 10px 12px; }
+.vat-line-type { font-size: 0.85rem; padding: 10px 8px; }
+.vat-line-rm {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  color: #ef4444;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.vat-line-rm:hover { background: #fef2f2; border-color: #fecaca; }
+
+/* ── INVOICE TOTALS ──────────────────────────────── */
+.vat-invoice-totals {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 2px solid #e5e7eb;
+}
+.vat-invoice-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  font-size: 0.95rem;
+  color: #374151;
+}
+.vat-invoice-row--total {
+  border-top: 2px solid #e5e7eb;
+  margin-top: 8px;
+  padding-top: 12px;
+  font-size: 1.1rem;
+  color: #0071E3;
+}
+
+/* ── COMPARE ─────────────────────────────────────── */
+.vat-compare-selects {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.vat-compare-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+.vat-compare-card {
+  background: #fff;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 24px;
+  text-align: center;
+}
+.vat-compare-flag { font-size: 2rem; margin-bottom: 8px; }
+.vat-compare-name { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+.vat-compare-rate {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #0071E3;
+  margin-bottom: 16px;
+}
+.vat-compare-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #f3f4f6;
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+.vat-compare-row--total {
+  border-bottom: none;
+  color: #0071E3;
+  font-size: 1rem;
+  padding-top: 12px;
+  border-top: 2px solid #e5e7eb;
+  margin-top: 4px;
+}
+.vat-compare-note {
+  font-size: 0.88rem;
+  color: #6b7280;
+  margin-top: 16px;
+  padding: 12px 16px;
+  background: #f0f7ff;
+  border-radius: 8px;
+  line-height: 1.5;
+}
+
+/* ── SIDEBAR ─────────────────────────────────────── */
+.vat-sidebar { display: flex; flex-direction: column; gap: 20px; }
+.vat-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.vat-stat {
+  text-align: center;
+  padding: 12px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+.vat-stat-value { display: block; font-size: 1.5rem; font-weight: 800; color: #0071E3; }
+.vat-stat-label { display: block; font-size: 0.78rem; color: #6b7280; margin-top: 2px; }
+
+.vat-rates-list { max-height: 500px; overflow-y: auto; }
+.vat-rate-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #f3f4f6;
+  font-size: 0.88rem;
+  color: #374151;
+}
+.vat-rate-row strong { color: #0071E3; }
+
+/* ── FAQ ─────────────────────────────────────────── */
+.vat-faq { margin-top: 48px; }
+.vat-faq h2 { font-size: 1.3rem; font-weight: 800; margin-bottom: 20px; }
+.vat-faq-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 10px; }
+.vat-faq-item {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #fff;
+}
+.vat-faq-item summary {
+  padding: 14px 18px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #111827;
+  cursor: pointer;
+  list-style: none;
+}
+.vat-faq-item summary::-webkit-details-marker { display: none; }
+.vat-faq-body {
+  padding: 0 18px 14px;
+  font-size: 0.84rem;
+  color: #4b5563;
+  line-height: 1.7;
+}
+
+/* ── SEO ─────────────────────────────────────────── */
+.vat-seo { margin: 40px auto; }
+.vat-seo h2 { font-size: 1.4rem; font-weight: 700; margin: 24px 0 12px; }
+.vat-seo h3 { font-size: 1.1rem; font-weight: 600; margin: 20px 0 8px; }
+.vat-seo p { color: #444; line-height: 1.7; margin-bottom: 16px; }
+
+/* ── UTILITY ─────────────────────────────────────── */
+.vat-muted { font-size: 0.88rem; color: #6b7280; line-height: 1.5; }
+
+/* ── RESPONSIVE ──────────────────────────────────── */
+@media (max-width: 1024px) {
+  .vat-layout { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+  .vat-breakdown-grid { grid-template-columns: 1fr; }
+  .vat-compare-selects { grid-template-columns: 1fr; }
+  .vat-line-item { grid-template-columns: 1fr; }
+  .vat-actions { flex-direction: column; }
+  .vat-actions .vat-btn { width: 100%; justify-content: center; }
+}
+@media (max-width: 480px) {
+  .vat-hero { padding: 40px 15px; }
+  .vat-card { padding: 20px 16px; }
+  .vat-results-hero { padding: 20px 16px; }
+  .vat-breakdown-grid, .vat-chart-section, .vat-actions, .vat-exemptions { padding-left: 16px; padding-right: 16px; }
+  .vat-faq-grid { grid-template-columns: 1fr; }
+}
+
+/* ── PRINT ───────────────────────────────────────── */
+@media print {
+  .vat-hero, .vat-tabs, .vat-sidebar, .vat-faq, .vat-seo,
+  .vat-actions, .vat-mode-toggle, .vat-calc-btn,
+  afro-navbar, afro-footer, afro-chat, afro-related-tools { display: none !important; }
+  .vat-layout { grid-template-columns: 1fr; }
+  .vat-results { border: 2px solid #000; box-shadow: none; }
+}
+
+/* ── DARK MODE ───────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  body { background-color: #0f172a; color: #e2e8f0; }
+  .vat-card { background: #1e293b; border-color: #334155; }
+  .vat-card-title { color: #e2e8f0; }
+  .vat-input, .vat-select { background: #1e293b; border-color: #334155; color: #e2e8f0; }
+  .vat-input-wrap { border-color: #334155; }
+  .vat-input:focus, .vat-select:focus { border-color: #60a5fa; box-shadow: 0 0 0 3px rgba(96,165,250,0.15); }
+  .vat-input-wrap:focus-within { border-color: #60a5fa; box-shadow: 0 0 0 3px rgba(96,165,250,0.15); }
+  .vat-mode { border-color: #334155; color: #94a3b8; }
+  .vat-mode:hover { color: #60a5fa; }
+  .vat-mode.active { background: #0071E3; color: #fff; border-color: #0071E3; }
+  .vat-tabs { border-bottom-color: #334155; }
+  .vat-tab { color: #94a3b8; }
+  .vat-tab.active { color: #60a5fa; border-bottom-color: #60a5fa; }
+  .vat-results { background: #1e293b; border-color: #334155; }
+  .vat-results-hero { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border-bottom-color: #334155; }
+  .vat-breakdown-item { background: #0f172a; border-color: #334155; }
+  .vat-breakdown-item--accent { background: #2d1515; border-color: #7f1d1d; }
+  .vat-breakdown-value { color: #e2e8f0; }
+  .vat-exemptions { background: #172554; border-color: #1e3a5f; color: #93c5fd; }
+  .vat-stat { background: #0f172a; border-color: #334155; }
+  .vat-rate-row { border-bottom-color: #334155; color: #94a3b8; }
+  .vat-btn--outline { border-color: #334155; color: #94a3b8; }
+  .vat-compare-card { background: #1e293b; border-color: #334155; }
+  .vat-compare-row { border-bottom-color: #334155; color: #94a3b8; }
+  .vat-compare-row--total { border-top-color: #334155; }
+  .vat-compare-note { background: #172554; color: #93c5fd; }
+  .vat-faq-item { background: #1e293b; border-color: #334155; }
+  .vat-faq-item summary { color: #e2e8f0; }
+  .vat-faq-body { color: #94a3b8; }
+  .vat-invoice-totals { border-top-color: #334155; }
+  .vat-invoice-row { color: #94a3b8; }
+  .vat-invoice-row--total { border-top-color: #334155; }
+  .vat-line-rm { border-color: #334155; }
+  .vat-seo h2, .vat-seo h3 { color: #e2e8f0; }
+  .vat-seo p { color: #94a3b8; }
+}
