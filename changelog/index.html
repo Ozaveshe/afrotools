@@ -152,7 +152,7 @@
     padding: 16px;
     box-shadow: 0 2px 8px rgba(0,0,0,.05), 0 0 0 1px rgba(0,0,0,.04);
     position: sticky;
-    top: 110px;
+    top: 80px;
   }
   .version-nav-title {
     font-size: 0.67rem;
@@ -188,8 +188,6 @@
   }
 
   /* ── Changelog entries ── */
-  .entries { }
-
   .entry {
     background: #fff;
     border-radius: 20px;
@@ -261,24 +259,29 @@
     background: #f9fafb;
     font-size: 0.84rem;
     transition: background .15s;
+    align-items: flex-start;
   }
   .change-item:hover { background: #f3f4f6; }
-  .change-icon { font-size: 1rem; flex-shrink: 0; }
+  .change-icon { font-size: 1rem; flex-shrink: 0; line-height: 1.4; }
   .change-body { flex: 1; min-width: 0; }
   .change-title { font-weight: 600; color: #1d1d1f; line-height: 1.4; overflow-wrap: break-word; }
   .change-desc { font-size: 0.78rem; color: #6e6e73; line-height: 1.5; margin-top: 2px; overflow-wrap: break-word; }
 
-  /* Entry type label */
+  /* Change type label — inline after title */
   .change-type {
-    font-size: 0.62rem;
-    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.58rem;
+    font-weight: 800;
     letter-spacing: .06em;
     text-transform: uppercase;
     padding: 2px 7px;
     border-radius: 100px;
     white-space: nowrap;
-    flex-shrink: 0;
-    margin-top: 2px;
+    vertical-align: middle;
+    margin-left: 8px;
+    position: relative;
+    top: -1px;
   }
   .ct-new { background: #DBEAFE; color: #2563EB; }
   .ct-fix { background: #fef3c7; color: #d97706; }
@@ -306,11 +309,11 @@
     <h1>AfroTools Changelog</h1>
     <p class="hero-sub">Every tool launch, feature update, bug fix, and improvement — tracked here as we ship. Updated daily.</p>
     <div class="hero-stats">
-      <div class="hero-stat"><strong>400+</strong> tools shipped</div>
+      <div class="hero-stat"><strong>368+</strong> tools shipped</div>
       <div class="hero-stat">·</div>
-      <div class="hero-stat"><strong>3–5</strong> updates per week</div>
+      <div class="hero-stat"><strong>Daily</strong> updates</div>
       <div class="hero-stat">·</div>
-      <div class="hero-stat">Since <strong>2024</strong></div>
+      <div class="hero-stat">Launched <strong>March 8, 2026</strong></div>
     </div>
   </div>
 </section>
@@ -320,11 +323,11 @@
   <div class="filter-inner">
     <span class="filter-label">Filter:</span>
     <button class="filter-btn all active" onclick="filterEntries('all')">All updates</button>
-    <button class="filter-btn" onclick="filterEntries('new')">🆕 New Tools</button>
-    <button class="filter-btn" onclick="filterEntries('improve')">✨ Improvements</button>
-    <button class="filter-btn" onclick="filterEntries('fix')">🐛 Bug Fixes</button>
-    <button class="filter-btn" onclick="filterEntries('design')">🎨 Design</button>
-    <button class="filter-btn" onclick="filterEntries('security')">🔒 Security</button>
+    <button class="filter-btn" onclick="filterEntries('new')">New Tools</button>
+    <button class="filter-btn" onclick="filterEntries('improve')">Improvements</button>
+    <button class="filter-btn" onclick="filterEntries('fix')">Bug Fixes</button>
+    <button class="filter-btn" onclick="filterEntries('design')">Design</button>
+    <button class="filter-btn" onclick="filterEntries('security')">Security</button>
   </div>
 </div>
 
@@ -335,13 +338,14 @@
   <aside>
     <nav class="version-nav">
       <div class="version-nav-title">Versions</div>
-      <a class="version-link active" href="#v0-8-0">v0.8.0 <span class="version-date">Mar 2026</span></a>
-      <a class="version-link" href="#v0-7-5">v0.7.5 <span class="version-date">Mar 2026</span></a>
-      <a class="version-link" href="#v0-7-0">v0.7.0 <span class="version-date">Mar 2026</span></a>
-      <a class="version-link" href="#v0-6-0">v0.6.0 <span class="version-date">Feb 2026</span></a>
-      <a class="version-link" href="#v0-5-0">v0.5.0 <span class="version-date">Jan 2026</span></a>
-      <a class="version-link" href="#v0-4-0">v0.4.0 <span class="version-date">Dec 2025</span></a>
-      <a class="version-link" href="#v0-3-0">v0.3.0 <span class="version-date">Nov 2025</span></a>
+      <a class="version-link active" href="#v0-8-0">v0.8.0 <span class="version-date">Mar 15</span></a>
+      <a class="version-link" href="#v0-7-5">v0.7.5 <span class="version-date">Mar 14</span></a>
+      <a class="version-link" href="#v0-7-0">v0.7.0 <span class="version-date">Mar 13</span></a>
+      <a class="version-link" href="#v0-6-0">v0.6.0 <span class="version-date">Mar 12</span></a>
+      <a class="version-link" href="#v0-5-0">v0.5.0 <span class="version-date">Mar 11</span></a>
+      <a class="version-link" href="#v0-4-0">v0.4.0 <span class="version-date">Mar 10</span></a>
+      <a class="version-link" href="#v0-3-0">v0.3.0 <span class="version-date">Mar 9</span></a>
+      <a class="version-link" href="#v0-2-0">v0.2.0 <span class="version-date">Mar 8</span></a>
     </nav>
   </aside>
 
@@ -349,326 +353,268 @@
   <div class="entries" id="entries">
 
     <!-- ── v0.8.0 ── -->
-    <div class="entry" id="v0-8-0" data-tags="new,improve,design,security">
+    <div class="entry" id="v0-8-0" data-tags="new,improve,design">
       <div class="entry-header">
         <div>
           <div class="entry-version-num">v0.8.0 — Live Monitoring & Data Platform</div>
           <div class="entry-tags">
-            <span class="tag tag-new">🆕 New</span>
-            <span class="tag tag-improve">✨ Improved</span>
-            <span class="tag tag-design">🎨 Design</span>
+            <span class="tag tag-new">New</span>
+            <span class="tag tag-improve">Improved</span>
+            <span class="tag tag-design">Design</span>
           </div>
         </div>
-        <div class="entry-date-badge">📅 March 15, 2026</div>
+        <div class="entry-date-badge">March 15, 2026</div>
       </div>
       <div class="changes">
         <div class="change-item">
           <span class="change-icon">💱</span>
           <div class="change-body">
-            <div class="change-title">AfroFX — Live African Currency Dashboard</div>
-            <div class="change-desc">Complete forex monitoring hub with 42 African currencies. Live rate ticker, currency heatmap, cross-rate matrix, crypto prices in local currency, Chart.js historical charts, CBN vs parallel rate section.</div>
+            <div class="change-title">AfroFX — Live African Currency Dashboard <span class="change-type ct-new">New</span></div>
+            <div class="change-desc">Complete forex monitoring hub with 42 African currencies. Live rate ticker, currency heatmap, cross-rate matrix, crypto prices, historical charts, CBN vs parallel rate section.</div>
           </div>
-          <span class="change-type ct-new">NEW</span>
         </div>
         <div class="change-item">
           <span class="change-icon">⛽</span>
           <div class="change-body">
-            <div class="change-title">AfroFuel — Pan-African Fuel Price Tracker</div>
-            <div class="change-desc">Live petrol, diesel, and LPG prices for all 54 African countries. Interactive SVG map of Africa, sortable comparison table, generator cost calculator with grid/solar comparison, regional filtering.</div>
+            <div class="change-title">AfroFuel — Pan-African Fuel Price Tracker <span class="change-type ct-new">New</span></div>
+            <div class="change-desc">Live petrol, diesel, and LPG prices for all 54 African countries. Interactive SVG map, sortable comparison table, generator cost calculator with grid/solar comparison.</div>
           </div>
-          <span class="change-type ct-new">NEW</span>
         </div>
         <div class="change-item">
           <span class="change-icon">🏦</span>
           <div class="change-body">
-            <div class="change-title">AfroRates — Central Bank Rate Tracker</div>
-            <div class="change-desc">Policy rates, inflation, T-bill yields, and MPC calendar for all 54 countries. Inflation heatmap, real interest rate ranking chart, hawk/dove/hold indicators, treasury bill &amp; bond yields for top 5 markets.</div>
+            <div class="change-title">AfroRates — Central Bank Rate Tracker <span class="change-type ct-new">New</span></div>
+            <div class="change-desc">Policy rates, inflation, T-bill yields, and MPC calendar for all 54 countries. Inflation heatmap, real interest rate ranking, hawk/dove indicators, treasury yields.</div>
           </div>
-          <span class="change-type ct-new">NEW</span>
         </div>
         <div class="change-item">
           <span class="change-icon">🔌</span>
           <div class="change-body">
-            <div class="change-title">AfroTools API — Developer Data Platform</div>
-            <div class="change-desc">REST API endpoints for forex, fuel, and rates data. Free tier (100 calls/day), tiered pricing, API documentation at /docs/api/. Three endpoints: /api/forex, /api/fuel, /api/rates.</div>
+            <div class="change-title">AfroTools API — Developer Data Platform <span class="change-type ct-new">New</span></div>
+            <div class="change-desc">REST API endpoints for forex, fuel, and rates data. Free tier (100 calls/day), API docs at /docs/api/. Three endpoints: /api/forex, /api/fuel, /api/rates.</div>
           </div>
-          <span class="change-type ct-new">NEW</span>
         </div>
         <div class="change-item">
           <span class="change-icon">🗺️</span>
           <div class="change-body">
-            <div class="change-title">Africa SVG Map Component</div>
-            <div class="change-desc">Reusable &lt;afro-map&gt; web component with all 54 country paths. Hover tooltips, click events, configurable color scales. Used by AfroFuel and AfroRates.</div>
+            <div class="change-title">Africa SVG Map Component <span class="change-type ct-new">New</span></div>
+            <div class="change-desc">Reusable &lt;afro-map&gt; web component with all 54 country paths. Hover tooltips, click events, configurable color scales.</div>
           </div>
-          <span class="change-type ct-new">NEW</span>
         </div>
         <div class="change-item">
           <span class="change-icon">⚙️</span>
           <div class="change-body">
-            <div class="change-title">Data Pipeline Infrastructure</div>
-            <div class="change-desc">Netlify Scheduled Functions for automated data fetching — forex every 15 minutes, fuel every 6 hours, rates every 12 hours. Multi-source fallback API chain with Netlify Blobs caching.</div>
+            <div class="change-title">Data Pipeline Infrastructure <span class="change-type ct-improve">Improved</span></div>
+            <div class="change-desc">Netlify Scheduled Functions for automated data fetching — forex every 15 min, fuel every 6 hrs, rates every 12 hrs. Multi-source fallback with Netlify Blobs caching.</div>
           </div>
-          <span class="change-type ct-improve">IMPROVE</span>
         </div>
         <div class="change-item">
-          <span class="change-icon">🧩</span>
+          <span class="change-icon">🖼️</span>
           <div class="change-body">
-            <div class="change-title">Shared Components Suite</div>
-            <div class="change-desc">New LiveData utility for auto-refreshing cached data, sparkline renderer for inline charts, rate ticker component, API CTA component.</div>
+            <div class="change-title">311 Tool Card Images Generated <span class="change-type ct-design">Design</span></div>
+            <div class="change-desc">Professional SVG card images for every tool in the registry. Category-themed gradients, emoji icons, tool names, and AfroTools branding.</div>
           </div>
-          <span class="change-type ct-improve">IMPROVE</span>
         </div>
         <div class="change-item">
-          <span class="change-icon">🎨</span>
+          <span class="change-icon">🛠️</span>
           <div class="change-body">
-            <div class="change-title">Apple Blue Design System — Final Green Purge</div>
-            <div class="change-desc">Renamed all --_green-* CSS tokens to --_blue-*, updated PWA manifest theme color to #007AFF, fixed background tokens from #FAFAF8 to #F8FAFD.</div>
+            <div class="change-title">Tool Card Audit — All Pages Fixed <span class="change-type ct-improve">Improved</span></div>
+            <div class="change-desc">Fixed all-tools page rendering, PAYE filter, categories page slugs, salary-tax page links, homepage card alt text and dimensions. Full audit logged.</div>
           </div>
-          <span class="change-type ct-design">DESIGN</span>
-        </div>
-        <div class="change-item">
-          <span class="change-icon">🔒</span>
-          <div class="change-body">
-            <div class="change-title">Supabase Auth Rebuild</div>
-            <div class="change-desc">4-provider OAuth (Google, Facebook, X, GitHub), password strength indicator, forgot password flow, improved error messages, loading states.</div>
-          </div>
-          <span class="change-type ct-security">SECURITY</span>
-        </div>
-        <div class="change-item">
-          <span class="change-icon">💡</span>
-          <div class="change-body">
-            <div class="change-title">Suggest a Tool Page</div>
-            <div class="change-desc">Dedicated tool/country request page with structured form — tool category, country, description, priority voting. Separate from general contact form.</div>
-          </div>
-          <span class="change-type ct-new">NEW</span>
         </div>
       </div>
     </div>
 
     <!-- ── v0.7.5 ── -->
-    <div class="entry" id="v0-7-5" data-tags="design,security,fix">
+    <div class="entry" id="v0-7-5" data-tags="fix,design,improve">
       <div class="entry-header">
         <div>
-          <div class="entry-version-num">v0.7.5 — Auth & Design Overhaul</div>
+          <div class="entry-version-num">v0.7.5 — UI/UX Fixes & Suggest a Tool</div>
           <div class="entry-tags">
-            <span class="tag tag-design">🎨 Design</span>
-            <span class="tag tag-security">🔒 Security</span>
-            <span class="tag tag-fix">🐛 Fix</span>
+            <span class="tag tag-fix">Fix</span>
+            <span class="tag tag-design">Design</span>
+            <span class="tag tag-improve">Improved</span>
           </div>
         </div>
-        <div class="entry-date-badge">📅 March 2026</div>
+        <div class="entry-date-badge">March 14, 2026</div>
       </div>
       <div class="changes">
         <div class="change-item">
-          <span class="change-icon">🎨</span>
+          <span class="change-icon">💡</span>
           <div class="change-body">
-            <div class="change-title">Apple Blue Design System Override</div>
-            <div class="change-desc">Complete shift from dark green (#0c1a10, #5ddb9e) to light blue (#007AFF, #F8FAFD). Glass morphism navbar, pill buttons, updated all 335+ files.</div>
+            <div class="change-title">Suggest a Tool Page <span class="change-type ct-new">New</span></div>
+            <div class="change-desc">Dedicated tool/country request page at /suggest-tool/ with structured form — tool category, country, description, priority voting.</div>
           </div>
-          <span class="change-type ct-design">DESIGN</span>
         </div>
         <div class="change-item">
-          <span class="change-icon">🔒</span>
+          <span class="change-icon">🧭</span>
           <div class="change-body">
-            <div class="change-title">Auth Modal Rebuild</div>
-            <div class="change-desc">Added Facebook, X/Twitter, GitHub OAuth. Password visibility toggle, strength meter, forgot password flow.</div>
+            <div class="change-title">Auth-Aware Navbar <span class="change-type ct-improve">Improved</span></div>
+            <div class="change-desc">Navbar now shows user's name linking to /dashboard/ when logged in, instead of showing the signup modal. Detects auth state on load and listens for changes.</div>
           </div>
-          <span class="change-type ct-security">SECURITY</span>
         </div>
         <div class="change-item">
-          <span class="change-icon">🐛</span>
+          <span class="change-icon">📬</span>
           <div class="change-body">
-            <div class="change-title">Site-Wide Green Purge</div>
-            <div class="change-desc">Eliminated every remaining green hex from tokens, SVG logos, JS components, homepage country flags. Only national flag colors in country tools preserved.</div>
+            <div class="change-title">Contact Page Fixes <span class="change-type ct-fix">Fix</span></div>
+            <div class="change-desc">Added missing tokens.min.css, fixed nested anchor tags, updated suggest-tool links, improved mobile form layout.</div>
           </div>
-          <span class="change-type ct-fix">FIX</span>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">📋</span>
+          <div class="change-body">
+            <div class="change-title">Changelog Text Overflow <span class="change-type ct-fix">Fix</span></div>
+            <div class="change-desc">Fixed text overflowing containers with min-width, overflow-wrap, and flex-wrap. Date badges and tags now wrap properly.</div>
+          </div>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">🏠</span>
+          <div class="change-body">
+            <div class="change-title">Homepage "104 PAYE tools" <span class="change-type ct-fix">Fix</span></div>
+            <div class="change-desc">Corrected hero text from "104 COUNTRIES" to "104 PAYE tools across 54 countries" — there are 54 African countries, not 104.</div>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- ── v0.7.0 ── -->
-    <div class="entry" id="v0-7-0" data-tags="new,improve,design,security,fix">
+    <div class="entry" id="v0-7-0" data-tags="design,security,fix">
       <div class="entry-header">
         <div>
-          <div class="entry-version-num">v0.7.0 — Platform Upgrade</div>
+          <div class="entry-version-num">v0.7.0 — Auth & Design Overhaul</div>
           <div class="entry-tags">
-            <span class="tag tag-new">🆕 New</span>
-            <span class="tag tag-improve">✨ Improved</span>
-            <span class="tag tag-design">🎨 Design</span>
-            <span class="tag tag-security">🔒 Security</span>
+            <span class="tag tag-design">Design</span>
+            <span class="tag tag-security">Security</span>
+            <span class="tag tag-fix">Fix</span>
           </div>
         </div>
-        <div class="entry-date-badge">📅 March 14, 2026</div>
+        <div class="entry-date-badge">March 13, 2026</div>
       </div>
       <div class="changes">
         <div class="change-item">
-          <span class="change-icon">🤖</span>
-          <div class="change-body">
-            <div class="change-title">Site-wide AfroBot AI Advisor</div>
-            <div class="change-desc">Floating AI assistant (bottom-right corner) that explains tools, recommends calculators, and answers financial questions — available on every page.</div>
-          </div>
-          <span class="change-type ct-new">NEW</span>
-        </div>
-        <div class="change-item">
-          <span class="change-icon">📐</span>
-          <div class="change-body">
-            <div class="change-title">AfroDraft 2D CAD — Featured on Homepage</div>
-            <div class="change-desc">AfroDraft is now prominently showcased as a flagship engineering tool. Spotlight banner added to homepage with live CAD preview.</div>
-          </div>
-          <span class="change-type ct-improve">IMPROVE</span>
-        </div>
-        <div class="change-item">
           <span class="change-icon">🎨</span>
           <div class="change-body">
-            <div class="change-title">About, Contact & Privacy Pages — Full Redesign</div>
-            <div class="change-desc">All three pages rebuilt with Apple-quality UI — dark navy hero, professional card layouts, proper typography, table of contents on privacy page.</div>
+            <div class="change-title">Apple Blue Design System Override <span class="change-type ct-design">Design</span></div>
+            <div class="change-desc">Complete shift from dark green to Apple Blue (#007AFF, #F8FAFD). Glass morphism navbar, pill buttons, updated all 335+ files.</div>
           </div>
-          <span class="change-type ct-design">DESIGN</span>
         </div>
         <div class="change-item">
           <span class="change-icon">🔒</span>
           <div class="change-body">
-            <div class="change-title">Security Headers — Hardened</div>
-            <div class="change-desc">Updated CSP to include all CDN sources (unpkg, tagmanager), added HSTS preload, removed deprecated X-XSS-Protection, added upgrade-insecure-requests.</div>
+            <div class="change-title">Auth Modal Rebuild — 4 OAuth Providers <span class="change-type ct-security">Security</span></div>
+            <div class="change-desc">Supabase Auth with Google, Facebook, X/Twitter, GitHub. Password strength indicator, forgot password flow, improved error handling.</div>
           </div>
-          <span class="change-type ct-security">SECURITY</span>
         </div>
         <div class="change-item">
-          <span class="change-icon">🐛</span>
+          <span class="change-icon">🧹</span>
           <div class="change-body">
-            <div class="change-title">VAT Calculator & Floor Plan — Missing Components Fixed</div>
-            <div class="change-desc">Added missing afro-related-tools component and proper script loading order to vat-calc.html and floor-plan/index.html.</div>
+            <div class="change-title">Site-Wide Green Purge <span class="change-type ct-fix">Fix</span></div>
+            <div class="change-desc">Eliminated every remaining green hex from tokens, SVG logos, JS components, homepage flags. Renamed --_green-* tokens to --_blue-*. Only national flag colors preserved.</div>
           </div>
-          <span class="change-type ct-fix">FIX</span>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">🔒</span>
+          <div class="change-body">
+            <div class="change-title">Security Headers Hardened <span class="change-type ct-security">Security</span></div>
+            <div class="change-desc">Updated CSP for CDN sources, added HSTS preload, removed deprecated X-XSS-Protection, added upgrade-insecure-requests.</div>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- ── v0.6.0 ── -->
-    <div class="entry" id="v0-6-0" data-tags="new,improve,fix,design">
+    <div class="entry" id="v0-6-0" data-tags="new,improve,design">
       <div class="entry-header">
         <div>
-          <div class="entry-version-num">v0.6.0 — Site-Wide Improvements</div>
+          <div class="entry-version-num">v0.6.0 — Platform Upgrade</div>
           <div class="entry-tags">
-            <span class="tag tag-new">🆕 New</span>
-            <span class="tag tag-improve">✨ Improved</span>
-            <span class="tag tag-fix">🐛 Fix</span>
+            <span class="tag tag-new">New</span>
+            <span class="tag tag-improve">Improved</span>
+            <span class="tag tag-design">Design</span>
           </div>
         </div>
-        <div class="entry-date-badge">📅 February–March 2026</div>
+        <div class="entry-date-badge">March 12, 2026</div>
       </div>
       <div class="changes">
         <div class="change-item">
-          <span class="change-icon">🦟</span>
+          <span class="change-icon">🤖</span>
           <div class="change-body">
-            <div class="change-title">Malaria Risk by Region Tool</div>
-            <div class="change-desc">New health tool with WHO/CDC validated data for 11+ African countries, monthly risk calendars, prevention guides, medication tables, and symptom checker.</div>
+            <div class="change-title">Site-wide AfroBot AI Advisor <span class="change-type ct-new">New</span></div>
+            <div class="change-desc">Floating AI assistant on every page — explains tools, recommends calculators, answers financial questions.</div>
           </div>
-          <span class="change-type ct-new">NEW</span>
         </div>
         <div class="change-item">
-          <span class="change-icon">📏</span>
+          <span class="change-icon">📐</span>
           <div class="change-body">
-            <div class="change-title">Unit Converter — Complete Rebuild</div>
-            <div class="change-desc">15 categories including African-specific area units (Nigerian Plot, SA Morgen, Ghana Plot), special fuel & temperature converters, dark navy hero, sticky category bar.</div>
+            <div class="change-title">AfroDraft 2D CAD — Homepage Spotlight <span class="change-type ct-improve">Improved</span></div>
+            <div class="change-desc">AfroDraft now prominently showcased as a flagship engineering tool with live CAD preview banner.</div>
           </div>
-          <span class="change-type ct-improve">IMPROVE</span>
         </div>
         <div class="change-item">
           <span class="change-icon">🎨</span>
           <div class="change-body">
-            <div class="change-title">Site-Wide Green → Blue Color Migration</div>
-            <div class="change-desc">Replaced all green UI elements (#3B82F6, #3B82F6) with blue design tokens (var(--color-primary)) across 26+ tool pages. Logo/brand greens (#007AFF) preserved.</div>
+            <div class="change-title">About, Contact & Privacy Redesign <span class="change-type ct-design">Design</span></div>
+            <div class="change-desc">All three pages rebuilt with dark navy hero, professional card layouts, proper typography, table of contents on privacy page.</div>
           </div>
-          <span class="change-type ct-design">DESIGN</span>
         </div>
         <div class="change-item">
-          <span class="change-icon">🤖</span>
+          <span class="change-icon">🐛</span>
           <div class="change-body">
-            <div class="change-title">AI Advisor Chat Panel — Redesign</div>
-            <div class="change-desc">New AfroBot robot mascot SVG, ROYGBIV animated rainbow glow border, dark navy interior. Replaced green background with professional dark theme.</div>
+            <div class="change-title">VAT Calculator & Floor Plan Fix <span class="change-type ct-fix">Fix</span></div>
+            <div class="change-desc">Added missing afro-related-tools component and proper script loading order to vat-calc and floor-plan pages.</div>
           </div>
-          <span class="change-type ct-design">DESIGN</span>
-        </div>
-        <div class="change-item">
-          <span class="change-icon">🔗</span>
-          <div class="change-body">
-            <div class="change-title">"You Might Also Like" — Apple-Quality Redesign</div>
-            <div class="change-desc">Related tools section rebuilt as Web Component with gradient category headers, custom tool icon images, hover animations, mobile horizontal scroll.</div>
-          </div>
-          <span class="change-type ct-design">DESIGN</span>
-        </div>
-        <div class="change-item">
-          <span class="change-icon">⭐</span>
-          <div class="change-body">
-            <div class="change-title">Tool Registry Expanded to 366 Tools</div>
-            <div class="change-desc">Added 72 planned tools across health, education, finance, developer, language, African-specific, engineering, and legal categories. New agriculture category added.</div>
-          </div>
-          <span class="change-type ct-improve">IMPROVE</span>
-        </div>
-        <div class="change-item">
-          <span class="change-icon">🌍</span>
-          <div class="change-body">
-            <div class="change-title">Homepage — Country Flags Fix & Roadmap Update</div>
-            <div class="change-desc">Fixed intermittent IntersectionObserver issue preventing country flag pills from appearing. Updated "We're Just Getting Started" section with 2026 quarterly roadmap.</div>
-          </div>
-          <span class="change-type ct-fix">FIX</span>
-        </div>
-        <div class="change-item">
-          <span class="change-icon">🖼️</span>
-          <div class="change-body">
-            <div class="change-title">Favicon Added to 59 Pages</div>
-            <div class="change-desc">Added AfroTools favicon to all pages that were missing it including 404, privacy, terms, about, and all country/category index pages.</div>
-          </div>
-          <span class="change-type ct-fix">FIX</span>
         </div>
       </div>
     </div>
 
     <!-- ── v0.5.0 ── -->
-    <div class="entry" id="v0-5-0" data-tags="new,improve">
+    <div class="entry" id="v0-5-0" data-tags="new,improve,fix,design">
       <div class="entry-header">
         <div>
-          <div class="entry-version-num">v0.5.0 — Health & Engineering Wave</div>
+          <div class="entry-version-num">v0.5.0 — Tools & Registry Expansion</div>
           <div class="entry-tags">
-            <span class="tag tag-new">🆕 New</span>
-            <span class="tag tag-improve">✨ Improved</span>
+            <span class="tag tag-new">New</span>
+            <span class="tag tag-improve">Improved</span>
+            <span class="tag tag-fix">Fix</span>
           </div>
         </div>
-        <div class="entry-date-badge">📅 January 2026</div>
+        <div class="entry-date-badge">March 11, 2026</div>
       </div>
       <div class="changes">
         <div class="change-item">
-          <span class="change-icon">📐</span>
+          <span class="change-icon">🦟</span>
           <div class="change-body">
-            <div class="change-title">AfroDraft 2D CAD Tool — Launch</div>
-            <div class="change-desc">Africa's first browser-based CAD tool. 60+ AutoCAD-style commands, layers, blocks, DXF/SVG/PNG export, touch-enabled for mobile use.</div>
+            <div class="change-title">Malaria Risk by Region Tool <span class="change-type ct-new">New</span></div>
+            <div class="change-desc">WHO/CDC validated data for 11+ African countries, monthly risk calendars, prevention guides, medication tables, symptom checker.</div>
           </div>
-          <span class="change-type ct-new">NEW</span>
         </div>
         <div class="change-item">
-          <span class="change-icon">⚖️</span>
+          <span class="change-icon">📏</span>
           <div class="change-body">
-            <div class="change-title">Lobola Calculator</div>
-            <div class="change-desc">Culturally-aware bridewealth calculator for Zimbabwe, South Africa, and other southern African nations with customisable family discussions.</div>
+            <div class="change-title">Unit Converter — Complete Rebuild <span class="change-type ct-improve">Improved</span></div>
+            <div class="change-desc">15 categories including African-specific area units (Nigerian Plot, SA Morgen, Ghana Plot), special fuel &amp; temperature converters.</div>
           </div>
-          <span class="change-type ct-new">NEW</span>
         </div>
         <div class="change-item">
-          <span class="change-icon">🌙</span>
+          <span class="change-icon">⭐</span>
           <div class="change-body">
-            <div class="change-title">Tithe & Offering Calculator</div>
-            <div class="change-desc">Calculate tithes, first fruits, and giving amounts across denominations with a faith-based financial planning tool.</div>
+            <div class="change-title">Tool Registry Expanded to 368 Tools <span class="change-type ct-improve">Improved</span></div>
+            <div class="change-desc">Added 72 planned tools across health, education, finance, developer, language, African-specific, engineering, and legal categories.</div>
           </div>
-          <span class="change-type ct-new">NEW</span>
         </div>
         <div class="change-item">
-          <span class="change-icon">🏥</span>
+          <span class="change-icon">🌍</span>
           <div class="change-body">
-            <div class="change-title">BMI Calculator — Major Upgrade</div>
-            <div class="change-desc">Added body fat estimation, macro targets, goal timeline projection, waist-to-hip ratio, health risk assessment, and AI advisor integration.</div>
+            <div class="change-title">Homepage Country Flags Fix <span class="change-type ct-fix">Fix</span></div>
+            <div class="change-desc">Fixed IntersectionObserver issue preventing country flag pills from appearing. Updated roadmap section.</div>
           </div>
-          <span class="change-type ct-improve">IMPROVE</span>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">🖼️</span>
+          <div class="change-body">
+            <div class="change-title">Favicon Added to 59 Pages <span class="change-type ct-fix">Fix</span></div>
+            <div class="change-desc">Added AfroTools favicon to all pages that were missing it — 404, privacy, terms, about, and all country/category index pages.</div>
+          </div>
         </div>
       </div>
     </div>
@@ -677,38 +623,35 @@
     <div class="entry" id="v0-4-0" data-tags="new,improve">
       <div class="entry-header">
         <div>
-          <div class="entry-version-num">v0.4.0 — PDF & Documents</div>
+          <div class="entry-version-num">v0.4.0 — Health, Engineering & Finance</div>
           <div class="entry-tags">
-            <span class="tag tag-new">🆕 New</span>
-            <span class="tag tag-improve">✨ Improved</span>
+            <span class="tag tag-new">New</span>
+            <span class="tag tag-improve">Improved</span>
           </div>
         </div>
-        <div class="entry-date-badge">📅 December 2025</div>
+        <div class="entry-date-badge">March 10, 2026</div>
       </div>
       <div class="changes">
         <div class="change-item">
-          <span class="change-icon">📄</span>
+          <span class="change-icon">📐</span>
           <div class="change-body">
-            <div class="change-title">PDF Workspace — 8-in-1 PDF Suite</div>
-            <div class="change-desc">Unified workspace: merge, split, compress, add page numbers, watermarks, password protect, sign PDFs — all in one app without page reloads.</div>
+            <div class="change-title">AfroDraft 2D CAD Tool <span class="change-type ct-new">New</span></div>
+            <div class="change-desc">Africa's first browser-based CAD tool. 60+ AutoCAD-style commands, layers, blocks, DXF/SVG/PNG export, touch-enabled for mobile.</div>
           </div>
-          <span class="change-type ct-new">NEW</span>
         </div>
         <div class="change-item">
-          <span class="change-icon">📱</span>
+          <span class="change-icon">⚖️</span>
           <div class="change-body">
-            <div class="change-title">Mobile Money Fees Calculator</div>
-            <div class="change-desc">Compare M-Pesa, Airtel Money, MTN MoMo, and Orange Money transaction fees across East and West Africa.</div>
+            <div class="change-title">Lobola Calculator <span class="change-type ct-new">New</span></div>
+            <div class="change-desc">Culturally-aware bridewealth calculator for Zimbabwe, South Africa, and other southern African nations.</div>
           </div>
-          <span class="change-type ct-new">NEW</span>
         </div>
         <div class="change-item">
-          <span class="change-icon">☀️</span>
+          <span class="change-icon">🏥</span>
           <div class="change-body">
-            <div class="change-title">Solar Energy Calculator</div>
-            <div class="change-desc">Calculate solar panel requirements, battery sizing, and payback period for all 54 African countries with country-specific solar irradiance data.</div>
+            <div class="change-title">BMI Calculator — Major Upgrade <span class="change-type ct-improve">Improved</span></div>
+            <div class="change-desc">Added body fat estimation, macro targets, goal timeline, waist-to-hip ratio, health risk assessment, AI advisor integration.</div>
           </div>
-          <span class="change-type ct-new">NEW</span>
         </div>
       </div>
     </div>
@@ -717,37 +660,84 @@
     <div class="entry" id="v0-3-0" data-tags="new">
       <div class="entry-header">
         <div>
-          <div class="entry-version-num">v0.3.0 — Tax Tools Expansion</div>
+          <div class="entry-version-num">v0.3.0 — PDF & Documents</div>
           <div class="entry-tags">
-            <span class="tag tag-new">🆕 New</span>
+            <span class="tag tag-new">New</span>
           </div>
         </div>
-        <div class="entry-date-badge">📅 November 2025</div>
+        <div class="entry-date-badge">March 9, 2026</div>
+      </div>
+      <div class="changes">
+        <div class="change-item">
+          <span class="change-icon">📄</span>
+          <div class="change-body">
+            <div class="change-title">PDF Workspace — 8-in-1 PDF Suite <span class="change-type ct-new">New</span></div>
+            <div class="change-desc">Merge, split, compress, add page numbers, watermarks, password protect, sign PDFs — all in one app without page reloads.</div>
+          </div>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">📱</span>
+          <div class="change-body">
+            <div class="change-title">Mobile Money Fees Calculator <span class="change-type ct-new">New</span></div>
+            <div class="change-desc">Compare M-Pesa, Airtel Money, MTN MoMo, and Orange Money transaction fees across East and West Africa.</div>
+          </div>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">☀️</span>
+          <div class="change-body">
+            <div class="change-title">Solar Energy Calculator <span class="change-type ct-new">New</span></div>
+            <div class="change-desc">Calculate solar panel requirements, battery sizing, and payback period for all 54 African countries with country-specific solar irradiance data.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── v0.2.0 ── -->
+    <div class="entry" id="v0-2-0" data-tags="new">
+      <div class="entry-header">
+        <div>
+          <div class="entry-version-num">v0.2.0 — Tax Tools for Africa</div>
+          <div class="entry-tags">
+            <span class="tag tag-new">New</span>
+          </div>
+        </div>
+        <div class="entry-date-badge">March 8, 2026 — Launch Day</div>
       </div>
       <div class="changes">
         <div class="change-item">
           <span class="change-icon">🌍</span>
           <div class="change-body">
-            <div class="change-title">PAYE Calculators — All 54 Nations</div>
-            <div class="change-desc">Launched country-specific PAYE salary tax calculators for all 54 African nations with current 2025 tax rates, allowances, and deductions.</div>
+            <div class="change-title">PAYE Calculators — All 54 Nations <span class="change-type ct-new">New</span></div>
+            <div class="change-desc">Country-specific PAYE salary tax calculators for all 54 African nations with current 2025/26 tax rates, allowances, and deductions. AI advisor + PDF export.</div>
           </div>
-          <span class="change-type ct-new">NEW</span>
         </div>
         <div class="change-item">
           <span class="change-icon">🧾</span>
           <div class="change-body">
-            <div class="change-title">VAT Calculators — Pan-African</div>
+            <div class="change-title">VAT Calculators — Pan-African <span class="change-type ct-new">New</span></div>
             <div class="change-desc">VAT calculation for all 54 African countries with correct rates, multi-item invoice mode, and reverse VAT calculation.</div>
           </div>
-          <span class="change-type ct-new">NEW</span>
         </div>
         <div class="change-item">
           <span class="change-icon">📦</span>
           <div class="change-body">
-            <div class="change-title">Import Duty Calculator — 17 Countries</div>
+            <div class="change-title">Import Duty Calculator — 17 Countries <span class="change-type ct-new">New</span></div>
             <div class="change-desc">Full customs duty + levy calculation for Nigeria (NCS), Kenya (KRA), South Africa (SARS), Ghana (GRA), and 13 more African nations.</div>
           </div>
-          <span class="change-type ct-new">NEW</span>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">💱</span>
+          <div class="change-body">
+            <div class="change-title">Currency Converter <span class="change-type ct-new">New</span></div>
+            <div class="change-desc">Convert between 42 African currencies and major world currencies. Live rates, historical comparison.</div>
+          </div>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">📝</span>
+          <div class="change-body">
+            <div class="change-title">CV Builder & Invoice Generator <span class="change-type ct-new">New</span></div>
+            <div class="change-desc">Professional CV/resume builder with African-optimised templates. Invoice generator with local currency support and tax calculations.</div>
+          </div>
         </div>
       </div>
     </div>
