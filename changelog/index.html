@@ -205,6 +205,7 @@
     align-items: flex-start;
     justify-content: space-between;
     gap: 16px;
+    flex-wrap: wrap;
     margin-bottom: 18px;
     padding-bottom: 16px;
     border-bottom: 1px solid #f3f4f6;
@@ -226,12 +227,13 @@
     padding: 4px 11px;
     border-radius: 100px;
     white-space: nowrap;
+    margin-left: auto;
   }
   .entry-tags {
     display: flex;
     gap: 6px;
     flex-wrap: wrap;
-    margin-top: 6px;
+    margin-top: 8px;
   }
   .tag {
     display: inline-flex;
@@ -264,9 +266,9 @@
   }
   .change-item:hover { background: #f3f4f6; }
   .change-icon { font-size: 1rem; flex-shrink: 0; }
-  .change-body { flex: 1; }
-  .change-title { font-weight: 600; color: #1d1d1f; line-height: 1.4; }
-  .change-desc { font-size: 0.78rem; color: #6e6e73; line-height: 1.5; margin-top: 2px; }
+  .change-body { flex: 1; min-width: 0; }
+  .change-title { font-weight: 600; color: #1d1d1f; line-height: 1.4; overflow-wrap: break-word; }
+  .change-desc { font-size: 0.78rem; color: #6e6e73; line-height: 1.5; margin-top: 2px; overflow-wrap: break-word; }
 
   /* Entry type label */
   .change-type {
@@ -306,9 +308,9 @@
     <h1>AfroTools Changelog</h1>
     <p class="hero-sub">Every tool launch, feature update, bug fix, and improvement — tracked here as we ship. Updated daily.</p>
     <div class="hero-stats">
-      <div class="hero-stat"><strong>300+</strong> tools shipped</div>
+      <div class="hero-stat"><strong>400+</strong> tools shipped</div>
       <div class="hero-stat">·</div>
-      <div class="hero-stat"><strong>2–4</strong> updates per week</div>
+      <div class="hero-stat"><strong>3–5</strong> updates per week</div>
       <div class="hero-stat">·</div>
       <div class="hero-stat">Since <strong>2024</strong></div>
     </div>
@@ -335,7 +337,9 @@
   <aside>
     <nav class="version-nav">
       <div class="version-nav-title">Versions</div>
-      <a class="version-link active" href="#v0-7-0">v0.7.0 <span class="version-date">Mar 2026</span></a>
+      <a class="version-link active" href="#v0-8-0">v0.8.0 <span class="version-date">Mar 2026</span></a>
+      <a class="version-link" href="#v0-7-5">v0.7.5 <span class="version-date">Mar 2026</span></a>
+      <a class="version-link" href="#v0-7-0">v0.7.0 <span class="version-date">Mar 2026</span></a>
       <a class="version-link" href="#v0-6-0">v0.6.0 <span class="version-date">Feb 2026</span></a>
       <a class="version-link" href="#v0-5-0">v0.5.0 <span class="version-date">Jan 2026</span></a>
       <a class="version-link" href="#v0-4-0">v0.4.0 <span class="version-date">Dec 2025</span></a>
@@ -345,6 +349,144 @@
 
   <!-- Changelog entries -->
   <div class="entries" id="entries">
+
+    <!-- ── v0.8.0 ── -->
+    <div class="entry" id="v0-8-0" data-tags="new,improve,design,security">
+      <div class="entry-header">
+        <div>
+          <div class="entry-version-num">v0.8.0 — Live Monitoring & Data Platform</div>
+          <div class="entry-tags">
+            <span class="tag tag-new">🆕 New</span>
+            <span class="tag tag-improve">✨ Improved</span>
+            <span class="tag tag-design">🎨 Design</span>
+          </div>
+        </div>
+        <div class="entry-date-badge">📅 March 15, 2026</div>
+      </div>
+      <div class="changes">
+        <div class="change-item">
+          <span class="change-icon">💱</span>
+          <div class="change-body">
+            <div class="change-title">AfroFX — Live African Currency Dashboard</div>
+            <div class="change-desc">Complete forex monitoring hub with 42 African currencies. Live rate ticker, currency heatmap, cross-rate matrix, crypto prices in local currency, Chart.js historical charts, CBN vs parallel rate section.</div>
+          </div>
+          <span class="change-type ct-new">NEW</span>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">⛽</span>
+          <div class="change-body">
+            <div class="change-title">AfroFuel — Pan-African Fuel Price Tracker</div>
+            <div class="change-desc">Live petrol, diesel, and LPG prices for all 54 African countries. Interactive SVG map of Africa, sortable comparison table, generator cost calculator with grid/solar comparison, regional filtering.</div>
+          </div>
+          <span class="change-type ct-new">NEW</span>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">🏦</span>
+          <div class="change-body">
+            <div class="change-title">AfroRates — Central Bank Rate Tracker</div>
+            <div class="change-desc">Policy rates, inflation, T-bill yields, and MPC calendar for all 54 countries. Inflation heatmap, real interest rate ranking chart, hawk/dove/hold indicators, treasury bill &amp; bond yields for top 5 markets.</div>
+          </div>
+          <span class="change-type ct-new">NEW</span>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">🔌</span>
+          <div class="change-body">
+            <div class="change-title">AfroTools API — Developer Data Platform</div>
+            <div class="change-desc">REST API endpoints for forex, fuel, and rates data. Free tier (100 calls/day), tiered pricing, API documentation at /docs/api/. Three endpoints: /api/forex, /api/fuel, /api/rates.</div>
+          </div>
+          <span class="change-type ct-new">NEW</span>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">🗺️</span>
+          <div class="change-body">
+            <div class="change-title">Africa SVG Map Component</div>
+            <div class="change-desc">Reusable &lt;afro-map&gt; web component with all 54 country paths. Hover tooltips, click events, configurable color scales. Used by AfroFuel and AfroRates.</div>
+          </div>
+          <span class="change-type ct-new">NEW</span>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">⚙️</span>
+          <div class="change-body">
+            <div class="change-title">Data Pipeline Infrastructure</div>
+            <div class="change-desc">Netlify Scheduled Functions for automated data fetching — forex every 15 minutes, fuel every 6 hours, rates every 12 hours. Multi-source fallback API chain with Netlify Blobs caching.</div>
+          </div>
+          <span class="change-type ct-improve">IMPROVE</span>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">🧩</span>
+          <div class="change-body">
+            <div class="change-title">Shared Components Suite</div>
+            <div class="change-desc">New LiveData utility for auto-refreshing cached data, sparkline renderer for inline charts, rate ticker component, API CTA component.</div>
+          </div>
+          <span class="change-type ct-improve">IMPROVE</span>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">🎨</span>
+          <div class="change-body">
+            <div class="change-title">Apple Blue Design System — Final Green Purge</div>
+            <div class="change-desc">Renamed all --_green-* CSS tokens to --_blue-*, updated PWA manifest theme color to #007AFF, fixed background tokens from #FAFAF8 to #F8FAFD.</div>
+          </div>
+          <span class="change-type ct-design">DESIGN</span>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">🔒</span>
+          <div class="change-body">
+            <div class="change-title">Supabase Auth Rebuild</div>
+            <div class="change-desc">4-provider OAuth (Google, Facebook, X, GitHub), password strength indicator, forgot password flow, improved error messages, loading states.</div>
+          </div>
+          <span class="change-type ct-security">SECURITY</span>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">💡</span>
+          <div class="change-body">
+            <div class="change-title">Suggest a Tool Page</div>
+            <div class="change-desc">Dedicated tool/country request page with structured form — tool category, country, description, priority voting. Separate from general contact form.</div>
+          </div>
+          <span class="change-type ct-new">NEW</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── v0.7.5 ── -->
+    <div class="entry" id="v0-7-5" data-tags="design,security,fix">
+      <div class="entry-header">
+        <div>
+          <div class="entry-version-num">v0.7.5 — Auth & Design Overhaul</div>
+          <div class="entry-tags">
+            <span class="tag tag-design">🎨 Design</span>
+            <span class="tag tag-security">🔒 Security</span>
+            <span class="tag tag-fix">🐛 Fix</span>
+          </div>
+        </div>
+        <div class="entry-date-badge">📅 March 2026</div>
+      </div>
+      <div class="changes">
+        <div class="change-item">
+          <span class="change-icon">🎨</span>
+          <div class="change-body">
+            <div class="change-title">Apple Blue Design System Override</div>
+            <div class="change-desc">Complete shift from dark green (#0c1a10, #5ddb9e) to light blue (#007AFF, #F8FAFD). Glass morphism navbar, pill buttons, updated all 335+ files.</div>
+          </div>
+          <span class="change-type ct-design">DESIGN</span>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">🔒</span>
+          <div class="change-body">
+            <div class="change-title">Auth Modal Rebuild</div>
+            <div class="change-desc">Added Facebook, X/Twitter, GitHub OAuth. Password visibility toggle, strength meter, forgot password flow.</div>
+          </div>
+          <span class="change-type ct-security">SECURITY</span>
+        </div>
+        <div class="change-item">
+          <span class="change-icon">🐛</span>
+          <div class="change-body">
+            <div class="change-title">Site-Wide Green Purge</div>
+            <div class="change-desc">Eliminated every remaining green hex from tokens, SVG logos, JS components, homepage country flags. Only national flag colors in country tools preserved.</div>
+          </div>
+          <span class="change-type ct-fix">FIX</span>
+        </div>
+      </div>
+    </div>
 
     <!-- ── v0.7.0 ── -->
     <div class="entry" id="v0-7-0" data-tags="new,improve,design,security,fix">

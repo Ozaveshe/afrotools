@@ -928,6 +928,46 @@
         }
       };
       burger?.addEventListener('click', origBurgerClick);
+
+      // ── AUTH STATE: update Sign-in button when user logs in/out ──
+      const loginBtn = sr.querySelector('.btn-login');
+      const mobLoginBtn = sr.querySelector('.mob-login');
+
+      const updateAuthUI = () => {
+        if (typeof AfroAuth === 'undefined' || !AfroAuth.isLoggedIn || !AfroAuth.isLoggedIn()) {
+          // Not logged in — show Sign in
+          if (loginBtn) { loginBtn.textContent = 'Sign in'; loginBtn.href = '/dashboard/'; }
+          if (mobLoginBtn) { mobLoginBtn.textContent = 'Sign In'; mobLoginBtn.href = '/dashboard/'; }
+          return;
+        }
+        const user = AfroAuth.getUser();
+        const name = (user && user.name) ? user.name.split(' ')[0] : 'Dashboard';
+        const initial = name[0].toUpperCase();
+        // Desktop: show avatar initial + first name
+        if (loginBtn) {
+          loginBtn.href = '/dashboard/';
+          loginBtn.innerHTML = '<span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:#007AFF;color:#fff;border-radius:50%;font-size:10px;font-weight:800;margin-right:5px;">' + initial + '</span>' + name;
+        }
+        // Mobile: show name
+        if (mobLoginBtn) {
+          mobLoginBtn.href = '/dashboard/';
+          mobLoginBtn.textContent = name + ' — Dashboard';
+        }
+      };
+
+      // Run on initial load (auth may already be ready)
+      const tryInitialAuth = () => {
+        if (typeof AfroAuth !== 'undefined' && AfroAuth.isLoggedIn) {
+          updateAuthUI();
+        }
+      };
+      // Check immediately and also after a short delay (auth script may not be loaded yet)
+      tryInitialAuth();
+      setTimeout(tryInitialAuth, 500);
+      setTimeout(tryInitialAuth, 1500);
+
+      // Listen for auth state changes
+      window.addEventListener('afro-auth-change', updateAuthUI);
     }
   }
 
