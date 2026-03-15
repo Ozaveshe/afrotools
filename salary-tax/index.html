@@ -117,8 +117,7 @@
 <afro-footer></afro-footer>
 
 <script>
-document.addEventListener('DOMContentLoaded',function(){
-  if(typeof AFRO_TOOLS==='undefined')return;
+function _initSalaryTax(){
   var key='financial';
   var allTools=AFRO_TOOLS.filter(function(t){return t.category===key;});
   var live=allTools.filter(function(t){return t.status==='live'||t.status==='new';});
@@ -184,7 +183,9 @@ document.addEventListener('DOMContentLoaded',function(){
       renderGrid(live.filter(match), pipe.filter(match), this.value.trim());
     });
   }
-});
+}
+if (typeof onRegistryReady === 'function') { onRegistryReady(_initSalaryTax); }
+else { document.addEventListener('DOMContentLoaded', function(){ if(typeof AFRO_TOOLS!=='undefined') _initSalaryTax(); else document.addEventListener('afrotools:registry-ready', _initSalaryTax); }); }
 </script>
 </body>
 </html>

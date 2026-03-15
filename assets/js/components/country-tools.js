@@ -241,6 +241,10 @@
 
     connectedCallback() {
       this._render();
+      // Re-render when registry becomes available (handles load-order race)
+      if (typeof AFRO_TOOLS === 'undefined') {
+        document.addEventListener('afrotools:registry-ready', () => this._render(), { once: true });
+      }
     }
 
     static get observedAttributes() { return ['country', 'category', 'max', 'show-pan', 'title', 'cols', 'status']; }

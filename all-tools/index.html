@@ -366,16 +366,16 @@ function renderTools(){
   }).join('');
 }
 
-// Init on DOM + registry load
-function initAllTools(){
-  if(typeof AFRO_TOOLS === 'undefined'){
-    setTimeout(initAllTools, 50);
-    return;
-  }
-  renderTools();
+// Init on registry ready (replaces fragile polling pattern)
+if (typeof onRegistryReady === 'function') {
+  onRegistryReady(function() { renderTools(); });
+} else {
+  // Fallback: DOMContentLoaded + retry
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof AFRO_TOOLS !== 'undefined') renderTools();
+    else document.addEventListener('afrotools:registry-ready', function() { renderTools(); });
+  });
 }
-
-document.addEventListener('DOMContentLoaded', initAllTools);
 </script>
 </body>
 </html>

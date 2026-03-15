@@ -26,7 +26,7 @@
 <link rel="stylesheet" href="/assets/css/global.min.css">
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
-<script src="/assets/js/components/tool-registry.js" defer></script>
+<script src="/assets/js/components/tool-registry.js"></script>
 <style>
   .tz-hero { background:var(--color-bg-dark);padding:64px 0 48px;border-bottom:1px solid rgba(255,255,255,0.06); }
   .tz-hero-inner { max-width:900px;margin:0 auto;padding:0 24px; }
@@ -262,7 +262,7 @@ function showTab(id) {
   document.getElementById('tab-'+id).classList.add('active');
   event.target.classList.add('active');
 }
-document.addEventListener('DOMContentLoaded', function() {
+function _initTzHub(){
   if (typeof renderToolGrid==='function') renderToolGrid('tool-grid','TZ');
   if (typeof getToolsFor==='function') {
     var live=getToolsFor('TZ','live');
@@ -270,7 +270,9 @@ document.addEventListener('DOMContentLoaded', function() {
     var el=document.getElementById('tool-count');
     if(el) el.innerHTML='<span class="tz-meta-dot"><\/span>'+(live.length+fresh.length)+' live tools';
   }
-});
+}
+if (typeof onRegistryReady === 'function') { onRegistryReady(_initTzHub); }
+else { document.addEventListener('DOMContentLoaded', function(){ if(typeof AFRO_TOOLS!=='undefined') _initTzHub(); else document.addEventListener('afrotools:registry-ready', _initTzHub); }); }
 </script>
 </body>
 </html>

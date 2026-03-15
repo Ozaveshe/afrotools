@@ -104,11 +104,7 @@
 <afro-footer></afro-footer>
 
 <script>
-function _renderEngineering(){
-  if(typeof AFRO_TOOLS==='undefined'){
-    // tool-registry.js might not have loaded yet — retry once
-    setTimeout(_renderEngineering,300);return;
-  }
+function _initEngineering(){
   var key='engineering';
   var tools=AFRO_TOOLS.filter(function(t){return t.category===key;});
   var live=tools.filter(function(t){return t.status==='live'||t.status==='new';});
@@ -140,7 +136,8 @@ function _renderEngineering(){
   container.innerHTML=html||'<p style="color:#9ca3af">No tools yet.</p>';
   if(!document.getElementById('p-s')){var s=document.createElement('style');s.id='p-s';s.textContent='@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}';document.head.appendChild(s);}
 }
-document.addEventListener('DOMContentLoaded',_renderEngineering);
+if (typeof onRegistryReady === 'function') { onRegistryReady(_initEngineering); }
+else { document.addEventListener('DOMContentLoaded', function(){ if(typeof AFRO_TOOLS!=='undefined') _initEngineering(); else document.addEventListener('afrotools:registry-ready', _initEngineering); }); }
 </script>
 </body>
 </html>

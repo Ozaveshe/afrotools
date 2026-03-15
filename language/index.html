@@ -104,8 +104,7 @@
 <afro-footer></afro-footer>
 
 <script>
-document.addEventListener('DOMContentLoaded',function(){
-  if(typeof AFRO_TOOLS==='undefined')return;
+function _initLanguage(){
   var key='language';
   var tools=AFRO_TOOLS.filter(function(t){return t.category===key;});
   var live=tools.filter(function(t){return t.status==='live'||t.status==='new';});
@@ -136,7 +135,9 @@ document.addEventListener('DOMContentLoaded',function(){
   }
   container.innerHTML=html||'<p style="color:#9ca3af">No tools yet.</p>';
   if(!document.getElementById('p-s')){var s=document.createElement('style');s.id='p-s';s.textContent='@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}';document.head.appendChild(s);}
-});
+}
+if (typeof onRegistryReady === 'function') { onRegistryReady(_initLanguage); }
+else { document.addEventListener('DOMContentLoaded', function(){ if(typeof AFRO_TOOLS!=='undefined') _initLanguage(); else document.addEventListener('afrotools:registry-ready', _initLanguage); }); }
 </script>
 </body>
 </html>

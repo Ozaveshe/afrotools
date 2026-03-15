@@ -26,7 +26,7 @@
 <link rel="stylesheet" href="/assets/css/global.min.css">
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
-<script src="/assets/js/components/tool-registry.js" defer></script>
+<script src="/assets/js/components/tool-registry.js"></script>
 <style>
   /* ── HERO ── */
   .ng-hero {
@@ -306,7 +306,7 @@ function showTab(id) {
   document.getElementById('tab-' + id).classList.add('active');
   event.target.classList.add('active');
 }
-document.addEventListener('DOMContentLoaded', function() {
+function _initNgHub(){
   if (typeof renderToolGrid === 'function') {
     renderToolGrid('tool-grid', 'NG');
   }
@@ -318,7 +318,9 @@ document.addEventListener('DOMContentLoaded', function() {
     var el = document.getElementById('tool-count');
     if (el) el.innerHTML = '<span class="ng-meta-dot"></span>' + count + ' live tools';
   }
-});
+}
+if (typeof onRegistryReady === 'function') { onRegistryReady(_initNgHub); }
+else { document.addEventListener('DOMContentLoaded', function(){ if(typeof AFRO_TOOLS!=='undefined') _initNgHub(); else document.addEventListener('afrotools:registry-ready', _initNgHub); }); }
 </script>
 </body>
 </html>

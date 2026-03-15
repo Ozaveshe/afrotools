@@ -591,3 +591,39 @@ if (typeof document !== 'undefined' && !document.getElementById('afro-tool-style
   style.textContent = '@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}';
   document.head.appendChild(style);
 }
+
+// ═══════════════════════════════════════════════════════════
+// REGISTRY READY — guaranteed rendering pattern
+// ═══════════════════════════════════════════════════════════
+// Usage:
+//   onRegistryReady(function(tools) { /* render tools */ });
+//
+// Works regardless of script load order:
+//   - If registry already loaded → callback fires immediately
+//   - If registry loads later → callback fires on 'afrotools:registry-ready' event
+//
+function onRegistryReady(callback) {
+  if (typeof AFRO_TOOLS !== 'undefined' && AFRO_TOOLS.length > 0) {
+    callback(AFRO_TOOLS);
+  } else {
+    document.addEventListener('afrotools:registry-ready', function handler(e) {
+      document.removeEventListener('afrotools:registry-ready', handler);
+      callback(e.detail.tools);
+    });
+  }
+}
+
+// Dispatch the ready event (safe for both sync and defer loading)
+if (typeof document !== 'undefined') {
+  var _dispatchRegistryReady = function() {
+    document.dispatchEvent(new CustomEvent('afrotools:registry-ready', {
+      detail: { tools: AFRO_TOOLS, categories: AFRO_CATEGORIES }
+    }));
+  };
+  // If DOM already parsed, dispatch now; otherwise wait for DOMContentLoaded
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', _dispatchRegistryReady);
+  } else {
+    _dispatchRegistryReady();
+  }
+}
