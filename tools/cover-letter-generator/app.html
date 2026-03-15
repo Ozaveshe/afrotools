@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cover Letter Generator | AfroTools</title>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="/assets/js/lib/save-state.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--pri:#007AFF;--bg:#f5f5f3;--card:#fff;--text:#111;--muted:#6b7280;--border:#e5e7eb;--radius:12px}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* Top bar */
+.topbar{background:#fff;border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:50}
+.topbar a{color:var(--muted);font-size:.82rem;text-decoration:none;display:flex;align-items:center;gap:4px}
+.topbar a:hover{color:var(--text)}
+.topbar-title{font-weight:700;font-size:.95rem;flex:1}
+.topbar-actions{display:flex;gap:8px}
+.btn{padding:8px 16px;border-radius:8px;font-size:.82rem;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:#fff;color:var(--text);font-family:inherit;transition:.15s}
+.btn:hover{border-color:var(--pri);color:var(--pri)}
+.btn-pri{background:var(--pri);color:#fff;border-color:var(--pri)}
+.btn-pri:hover{background:#0066d6}
+
+/* Layout */
+.app{max-width:1100px;margin:0 auto;padding:24px 20px;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media(max-width:800px){.app{grid-template-columns:1fr}}
+
+/* Form panel */
+.panel{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:24px;overflow-y:auto;max-height:calc(100vh - 100px)}
+.panel h2{font-size:1.1rem;font-weight:800;margin-bottom:16px}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:.78rem;font-weight:600;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.04em}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:.88rem;color:var(--text);background:#fff;transition:.15s}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 3px rgba(0,122,255,.1)}
+.form-group textarea{min-height:80px;resize:vertical}
+
+/* Template picker */
+.templates{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin-bottom:20px}
+.tpl{padding:12px;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;text-align:center;transition:.15s;background:#fff}
+.tpl:hover{border-color:var(--pri)}
+.tpl.active{border-color:var(--pri);background:rgba(0,122,255,.04)}
+.tpl-icon{font-size:1.5rem;margin-bottom:4px}
+.tpl-name{font-size:.75rem;font-weight:700}
+
+/* Style picker */
+.styles{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.style-opt{padding:8px 14px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;font-size:.78rem;font-weight:600;transition:.15s}
+.style-opt:hover{border-color:var(--pri)}
+.style-opt.active{border-color:var(--pri);background:rgba(0,122,255,.04);color:var(--pri)}
+
+/* Preview panel */
+.preview{background:#fff;border-radius:var(--radius);border:1px solid var(--border);padding:40px;min-height:500px;font-size:.9rem;line-height:1.8;color:#333;overflow-y:auto;max-height:calc(100vh - 100px)}
+.preview .sender{margin-bottom:24px}
+.preview .sender div{font-size:.85rem}
+.preview .date{color:var(--muted);font-size:.85rem;margin-bottom:24px}
+.preview .recipient{margin-bottom:24px}
+.preview .recipient div{font-size:.85rem}
+.preview .greeting{font-weight:600;margin-bottom:16px}
+.preview .body-para{margin-bottom:14px;text-align:justify}
+.preview .closing{margin-top:24px}
+.preview .closing .sign{font-weight:600;margin-top:16px}
+
+/* Editable state */
+.preview[contenteditable] .body-para:hover{background:rgba(0,122,255,.03);border-radius:4px}
+.preview[contenteditable]:focus{outline:2px solid rgba(0,122,255,.2);outline-offset:-2px}
+
+.section-divider{border:none;border-top:1px solid var(--border);margin:20px 0}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a href="index.html">&#8592; Cover Letter</a>
+  <div class="topbar-title">Cover Letter Generator</div>
+  <div class="topbar-actions">
+    <button class="btn" onclick="saveLetter()">Save</button>
+    <button class="btn btn-pri" onclick="exportPDF()">Export PDF</button>
+  </div>
+</div>
+
+<div class="app">
+  <!-- LEFT: Form -->
+  <div class="panel">
+    <h2>1. Choose Template</h2>
+    <div class="templates" id="templates"></div>
+
+    <h2>2. Letter Style</h2>
+    <div class="styles" id="styles"></div>
+
+    <hr class="section-divider">
+    <h2>3. Your Details</h2>
+    <div class="form-group"><label>Full Name</label><input type="text" id="fullName" placeholder="e.g. Adaeze Okonkwo" oninput="generate()"></div>
+    <div class="form-group"><label>Email</label><input type="email" id="email" placeholder="e.g. adaeze@email.com" oninput="generate()"></div>
+    <div class="form-group"><label>Phone</label><input type="tel" id="phone" placeholder="e.g. +234 801 234 5678" oninput="generate()"></div>
+    <div class="form-group"><label>City / Location</label><input type="text" id="city" placeholder="e.g. Lagos, Nigeria" oninput="generate()"></div>
+
+    <hr class="section-divider">
+    <h2>4. Target Role</h2>
+    <div class="form-group"><label>Job Title</label><input type="text" id="jobTitle" placeholder="e.g. Software Engineer" oninput="generate()"></div>
+    <div class="form-group"><label>Company Name</label><input type="text" id="company" placeholder="e.g. Paystack" oninput="generate()"></div>
+    <div class="form-group"><label>Hiring Manager (optional)</label><input type="text" id="hiringManager" placeholder="e.g. Ms. Funke Adeyemi" oninput="generate()"></div>
+
+    <hr class="section-divider">
+    <h2>5. Your Experience</h2>
+    <div class="form-group"><label>Years of Experience</label><input type="number" id="years" min="0" max="50" value="3" oninput="generate()"></div>
+    <div class="form-group"><label>Key Skills (comma-separated)</label><input type="text" id="skills" placeholder="e.g. Python, React, Project Management" oninput="generate()"></div>
+    <div class="form-group"><label>Relevant Achievement</label><textarea id="achievement" placeholder="e.g. Led a team of 5 to deliver a payment platform serving 50,000 users" oninput="generate()"></textarea></div>
+    <div class="form-group"><label>Why This Company?</label><textarea id="whyCompany" placeholder="e.g. Paystack's mission to expand financial access across Africa aligns with my passion for fintech" oninput="generate()"></textarea></div>
+  </div>
+
+  <!-- RIGHT: Preview -->
+  <div class="preview" id="preview" contenteditable="true">
+    <div style="color:var(--muted);text-align:center;padding:60px 20px">
+      <div style="font-size:2rem;margin-bottom:12px">&#9997;&#65039;</div>
+      <div style="font-size:1rem;font-weight:700;margin-bottom:8px">Fill in the form to generate your cover letter</div>
+      <div style="font-size:.85rem">Choose a template, enter your details, and watch your letter appear here in real-time.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const TEMPLATES = [
+  { id: 'tech', icon: '&#128187;', name: 'Technology', opening: 'As a passionate technologist with {years} years of experience in {skills}, I am excited to apply for the {jobTitle} position at {company}.', body: 'Throughout my career, I have developed strong expertise in {skills}. {achievement} This experience has equipped me with the technical depth and problem-solving skills that {company} values in its engineering team.', closing: 'I am particularly drawn to {company} because {whyCompany}. I am confident that my technical skills and collaborative approach would make me a valuable addition to your team.' },
+  { id: 'finance', icon: '&#127974;', name: 'Finance', opening: 'I am writing to express my strong interest in the {jobTitle} role at {company}. With {years} years of experience in {skills}, I bring a proven track record of delivering results in fast-paced financial environments.', body: 'My professional journey has given me deep expertise in {skills}. {achievement} I understand the rigorous standards and attention to detail that financial institutions like {company} demand, and I consistently exceed those expectations.', closing: 'What excites me about {company} is {whyCompany}. I would welcome the opportunity to bring my analytical skills and industry knowledge to your team.' },
+  { id: 'health', icon: '&#127973;', name: 'Healthcare', opening: 'I am writing to apply for the {jobTitle} position at {company}. With {years} years of experience in {skills}, I am passionate about improving healthcare outcomes and patient experiences.', body: 'My experience spans {skills}, and I have consistently focused on patient-centered solutions. {achievement} I understand the critical importance of compliance, empathy, and precision in healthcare settings.', closing: '{company} stands out because {whyCompany}. I would be honored to contribute my skills to your mission of improving health outcomes.' },
+  { id: 'education', icon: '&#127891;', name: 'Education', opening: 'I am excited to apply for the {jobTitle} position at {company}. As an educator with {years} years of experience in {skills}, I am committed to fostering learning environments that inspire growth and excellence.', body: 'Throughout my career in education, I have developed expertise in {skills}. {achievement} I believe that quality education is transformative, and I bring creativity and dedication to every role.', closing: 'I am drawn to {company} because {whyCompany}. I look forward to the opportunity to contribute to your educational mission.' },
+  { id: 'engineering', icon: '&#128736;&#65039;', name: 'Engineering', opening: 'I am writing to apply for the {jobTitle} role at {company}. With {years} years of hands-on experience in {skills}, I bring both technical depth and practical problem-solving ability to every project.', body: 'My engineering career has been defined by {skills}. {achievement} I thrive in environments where precision, innovation, and safety are paramount, which is exactly what I see at {company}.', closing: 'What draws me to {company} is {whyCompany}. I am eager to apply my engineering expertise to your team\'s challenging and impactful projects.' },
+  { id: 'general', icon: '&#128188;', name: 'General', opening: 'I am writing to express my interest in the {jobTitle} position at {company}. With {years} years of professional experience in {skills}, I am confident in my ability to make a meaningful contribution to your team.', body: 'Over the course of my career, I have built strong competencies in {skills}. {achievement} These experiences have shaped me into a versatile professional who adapts quickly and delivers consistently.', closing: 'I am particularly interested in {company} because {whyCompany}. I would be delighted to discuss how my background and skills align with your team\'s needs.' }
+];
+
+const STYLES = [
+  { id: 'professional', name: 'Professional' },
+  { id: 'modern', name: 'Modern' },
+  { id: 'minimal', name: 'Minimal' }
+];
+
+let selectedTemplate = TEMPLATES[0];
+let selectedStyle = STYLES[0];
+
+// Render template picker
+const tplEl = document.getElementById('templates');
+TEMPLATES.forEach((t, i) => {
+  const div = document.createElement('div');
+  div.className = 'tpl' + (i === 0 ? ' active' : '');
+  div.innerHTML = `<div class="tpl-icon">${t.icon}</div><div class="tpl-name">${t.name}</div>`;
+  div.onclick = () => {
+    document.querySelectorAll('.tpl').forEach(e => e.classList.remove('active'));
+    div.classList.add('active');
+    selectedTemplate = t;
+    generate();
+  };
+  tplEl.appendChild(div);
+});
+
+// Render style picker
+const styleEl = document.getElementById('styles');
+STYLES.forEach((s, i) => {
+  const div = document.createElement('div');
+  div.className = 'style-opt' + (i === 0 ? ' active' : '');
+  div.textContent = s.name;
+  div.onclick = () => {
+    document.querySelectorAll('.style-opt').forEach(e => e.classList.remove('active'));
+    div.classList.add('active');
+    selectedStyle = s;
+    generate();
+  };
+  styleEl.appendChild(div);
+});
+
+function getVal(id) { return document.getElementById(id).value.trim(); }
+
+function fillTemplate(template, data) {
+  return template.replace(/\{(\w+)\}/g, (_, key) => data[key] || `[${key}]`);
+}
+
+function generate() {
+  const data = {
+    fullName: getVal('fullName'),
+    email: getVal('email'),
+    phone: getVal('phone'),
+    city: getVal('city'),
+    jobTitle: getVal('jobTitle'),
+    company: getVal('company'),
+    hiringManager: getVal('hiringManager'),
+    years: getVal('years'),
+    skills: getVal('skills'),
+    achievement: getVal('achievement'),
+    whyCompany: getVal('whyCompany')
+  };
+
+  if (!data.fullName && !data.jobTitle && !data.company) return;
+
+  const greeting = data.hiringManager ? `Dear ${data.hiringManager},` : 'Dear Hiring Manager,';
+  const today = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  const opening = fillTemplate(selectedTemplate.opening, data);
+  const body = fillTemplate(selectedTemplate.body, data);
+  const closing = fillTemplate(selectedTemplate.closing, data);
+
+  const isMinimal = selectedStyle.id === 'minimal';
+  const isModern = selectedStyle.id === 'modern';
+
+  let html = '';
+
+  // Sender info
+  if (!isMinimal) {
+    html += `<div class="sender">`;
+    html += `<div style="font-weight:700;${isModern ? 'font-size:1.1rem;color:var(--pri);' : ''}">${data.fullName || '[Your Name]'}</div>`;
+    if (data.email) html += `<div>${data.email}</div>`;
+    if (data.phone) html += `<div>${data.phone}</div>`;
+    if (data.city) html += `<div>${data.city}</div>`;
+    html += `</div>`;
+  }
+
+  html += `<div class="date">${today}</div>`;
+
+  // Recipient
+  html += `<div class="recipient">`;
+  if (data.hiringManager) html += `<div style="font-weight:600">${data.hiringManager}</div>`;
+  if (data.company) html += `<div>${data.company}</div>`;
+  html += `</div>`;
+
+  // Body
+  html += `<div class="greeting">${greeting}</div>`;
+  html += `<div class="body-para">${opening}</div>`;
+  html += `<div class="body-para">${body}</div>`;
+  html += `<div class="body-para">${closing}</div>`;
+  html += `<div class="body-para">Thank you for considering my application. I look forward to the opportunity to discuss how I can contribute to ${data.company || '[Company]'}'s continued success.</div>`;
+
+  // Sign-off
+  html += `<div class="closing">`;
+  html += `<div>Yours sincerely,</div>`;
+  html += `<div class="sign">${data.fullName || '[Your Name]'}</div>`;
+  html += `</div>`;
+
+  document.getElementById('preview').innerHTML = html;
+}
+
+// Save
+const ss = new SaveState('cover-letter');
+
+function saveLetter() {
+  const data = {};
+  ['fullName','email','phone','city','jobTitle','company','hiringManager','years','skills','achievement','whyCompany'].forEach(id => {
+    data[id] = getVal(id);
+  });
+  data.template = selectedTemplate.id;
+  data.style = selectedStyle.id;
+  data.previewHTML = document.getElementById('preview').innerHTML;
+
+  const label = `${data.jobTitle || 'Untitled'} at ${data.company || 'Unknown'}`;
+
+  const params = new URLSearchParams(window.location.search);
+  const existingId = params.get('id');
+
+  ss.save({ id: existingId || undefined, label, data });
+  alert('Cover letter saved!');
+
+  if (!existingId) {
+    const all = ss.getAll();
+    if (all.length) {
+      const newId = all[all.length - 1].id;
+      history.replaceState(null, '', `?id=${newId}`);
+    }
+  }
+}
+
+// Load
+function loadFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id');
+  if (!id) return;
+  const item = ss.load(id);
+  if (!item || !item.data) return;
+  const d = item.data;
+
+  ['fullName','email','phone','city','jobTitle','company','hiringManager','years','skills','achievement','whyCompany'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el && d[id] !== undefined) el.value = d[id];
+  });
+
+  if (d.template) {
+    const t = TEMPLATES.find(t => t.id === d.template);
+    if (t) {
+      selectedTemplate = t;
+      document.querySelectorAll('.tpl').forEach(el => {
+        el.classList.toggle('active', el.querySelector('.tpl-name').textContent === t.name);
+      });
+    }
+  }
+  if (d.style) {
+    const s = STYLES.find(s => s.id === d.style);
+    if (s) {
+      selectedStyle = s;
+      document.querySelectorAll('.style-opt').forEach(el => {
+        el.classList.toggle('active', el.textContent === s.name);
+      });
+    }
+  }
+
+  generate();
+}
+
+// PDF export
+function exportPDF() {
+  const preview = document.getElementById('preview');
+  const w = window.open('', '_blank');
+  w.document.write(`<!DOCTYPE html><html><head><title>Cover Letter - ${getVal('fullName') || 'Cover Letter'}</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Georgia,'Times New Roman',serif;color:#333;padding:48px;line-height:1.8;font-size:14px}
+.sender{margin-bottom:24px}.sender div{font-size:14px}
+.date{color:#666;font-size:14px;margin-bottom:24px}
+.recipient{margin-bottom:24px}.recipient div{font-size:14px}
+.greeting{font-weight:600;margin-bottom:16px}
+.body-para{margin-bottom:14px;text-align:justify}
+.closing{margin-top:24px}.closing .sign{font-weight:600;margin-top:16px}
+@media print{body{padding:0}}
+</style></head><body>${preview.innerHTML}</body></html>`);
+  w.document.close();
+  setTimeout(() => { w.print(); }, 300);
+}
+
+loadFromUrl();
+</script>
+</body>
+</html>

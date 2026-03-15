@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meeting Minutes Generator | AfroTools</title>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="/assets/js/lib/save-state.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--pri:#007AFF;--bg:#f5f5f3;--card:#fff;--text:#111;--muted:#6b7280;--border:#e5e7eb;--radius:12px;--green:#059669;--red:#dc2626;--amber:#d97706}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+.topbar{background:#fff;border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:50}
+.topbar a{color:var(--muted);font-size:.82rem;text-decoration:none;display:flex;align-items:center;gap:4px}
+.topbar a:hover{color:var(--text)}
+.topbar-title{font-weight:700;font-size:.95rem;flex:1}
+.topbar-actions{display:flex;gap:8px}
+.btn{padding:8px 16px;border-radius:8px;font-size:.82rem;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:#fff;color:var(--text);font-family:inherit;transition:.15s}
+.btn:hover{border-color:var(--pri);color:var(--pri)}
+.btn-pri{background:var(--pri);color:#fff;border-color:var(--pri)}
+.btn-pri:hover{background:#0066d6}
+.btn-sm{padding:5px 10px;font-size:.75rem}
+.btn-danger{border-color:var(--red);color:var(--red)}
+.btn-danger:hover{background:#fef2f2}
+
+.app{max-width:800px;margin:0 auto;padding:24px 20px}
+
+.card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:24px;margin-bottom:16px}
+.card h2{font-size:1rem;font-weight:800;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.card h2 .num{width:24px;height:24px;border-radius:50%;background:var(--pri);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.7rem;flex-shrink:0}
+
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+@media(max-width:600px){.form-row{grid-template-columns:1fr}}
+.form-group{margin-bottom:12px}
+.form-group label{display:block;font-size:.75rem;font-weight:600;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.04em}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:.88rem;color:var(--text);background:#fff}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 3px rgba(0,122,255,.1)}
+.form-group textarea{min-height:60px;resize:vertical;line-height:1.6}
+
+/* Templates */
+.templates{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.tpl{padding:8px 14px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;font-size:.78rem;font-weight:600;transition:.15s}
+.tpl:hover{border-color:var(--pri)}
+.tpl.active{border-color:var(--pri);background:rgba(0,122,255,.04);color:var(--pri)}
+
+/* List items */
+.list-item{display:flex;gap:10px;padding:10px;background:#f9fafb;border-radius:8px;margin-bottom:8px;align-items:flex-start}
+.list-item-body{flex:1;min-width:0}
+.list-item-name{font-size:.85rem;font-weight:700}
+.list-item-meta{font-size:.72rem;color:var(--muted)}
+.list-item-actions{display:flex;gap:4px;flex-shrink:0}
+
+.add-row{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.add-row input,.add-row select{flex:1;min-width:120px;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:.82rem}
+.add-row input:focus{outline:none;border-color:var(--pri)}
+
+/* Agenda items */
+.agenda-item{border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:12px;background:#fff}
+.agenda-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.agenda-num{width:24px;height:24px;border-radius:50%;background:#f3f4f6;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;color:var(--muted);flex-shrink:0}
+.agenda-title-input{flex:1;font-weight:700;font-size:.9rem;border:none;background:transparent;font-family:inherit;color:var(--text)}
+.agenda-title-input:focus{outline:none}
+
+/* Action items */
+.action-item{display:flex;gap:8px;align-items:flex-start;padding:8px 10px;background:#f9fafb;border-radius:8px;margin-bottom:6px}
+.action-check{width:18px;height:18px;border-radius:4px;border:2px solid var(--border);cursor:pointer;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:.7rem;transition:.15s}
+.action-check.done{background:var(--green);border-color:var(--green);color:#fff}
+.action-body{flex:1}
+.action-text{font-size:.85rem;font-weight:600}
+.action-text.done{text-decoration:line-through;color:var(--muted)}
+.action-meta{font-size:.72rem;color:var(--muted)}
+.priority{display:inline-block;padding:1px 6px;border-radius:4px;font-size:.65rem;font-weight:700;text-transform:uppercase}
+.priority-high{background:#fef2f2;color:var(--red)}
+.priority-medium{background:#fffbeb;color:var(--amber)}
+.priority-low{background:#f0fdf4;color:var(--green)}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a href="index.html">&#8592; Meeting Minutes</a>
+  <div class="topbar-title">Meeting Minutes Generator</div>
+  <div class="topbar-actions">
+    <button class="btn" onclick="saveMinutes()">Save</button>
+    <button class="btn btn-pri" onclick="exportPDF()">Export PDF</button>
+  </div>
+</div>
+
+<div class="app">
+  <!-- Template -->
+  <div class="card">
+    <h2>Template</h2>
+    <div class="templates" id="templates"></div>
+  </div>
+
+  <!-- Meeting Info -->
+  <div class="card">
+    <h2><span class="num">1</span> Meeting Details</h2>
+    <div class="form-group"><label>Meeting Title</label><input type="text" id="meetingTitle" placeholder="e.g. Q1 Budget Review"></div>
+    <div class="form-row">
+      <div class="form-group"><label>Date</label><input type="date" id="meetingDate"></div>
+      <div class="form-group"><label>Time</label><input type="time" id="meetingTime"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Location / Platform</label><input type="text" id="location" placeholder="e.g. Conference Room A / Zoom"></div>
+      <div class="form-group"><label>Meeting Called By</label><input type="text" id="calledBy" placeholder="e.g. John Mensah"></div>
+    </div>
+  </div>
+
+  <!-- Attendees -->
+  <div class="card">
+    <h2><span class="num">2</span> Attendees</h2>
+    <div id="attendees-list"></div>
+    <div class="add-row">
+      <input type="text" id="newAttendeeName" placeholder="Name">
+      <input type="text" id="newAttendeeRole" placeholder="Role (optional)">
+      <select id="newAttendeeStatus">
+        <option value="present">Present</option>
+        <option value="remote">Remote</option>
+        <option value="absent">Absent</option>
+      </select>
+      <button class="btn btn-sm btn-pri" onclick="addAttendee()">Add</button>
+    </div>
+  </div>
+
+  <!-- Agenda -->
+  <div class="card">
+    <h2><span class="num">3</span> Agenda & Discussion</h2>
+    <div id="agenda-list"></div>
+    <button class="btn" onclick="addAgendaItem()" style="margin-top:8px">+ Add Agenda Item</button>
+  </div>
+
+  <!-- Action Items -->
+  <div class="card">
+    <h2><span class="num">4</span> Action Items</h2>
+    <div id="actions-list"></div>
+    <div class="add-row">
+      <input type="text" id="newActionText" placeholder="Action description" style="flex:2">
+      <input type="text" id="newActionOwner" placeholder="Assigned to">
+      <input type="date" id="newActionDue">
+      <select id="newActionPriority">
+        <option value="medium">Medium</option>
+        <option value="high">High</option>
+        <option value="low">Low</option>
+      </select>
+      <button class="btn btn-sm btn-pri" onclick="addAction()">Add</button>
+    </div>
+  </div>
+
+  <!-- Next Meeting -->
+  <div class="card">
+    <h2><span class="num">5</span> Next Meeting</h2>
+    <div class="form-row">
+      <div class="form-group"><label>Date</label><input type="date" id="nextDate"></div>
+      <div class="form-group"><label>Time</label><input type="time" id="nextTime"></div>
+    </div>
+    <div class="form-group"><label>Proposed Agenda</label><textarea id="nextAgenda" placeholder="Key topics for the next meeting..."></textarea></div>
+  </div>
+</div>
+
+<script>
+let attendees = [];
+let agendaItems = [];
+let actions = [];
+
+const TEMPLATES_DATA = [
+  { id: 'blank', name: 'Blank', agenda: [] },
+  { id: 'board', name: 'Board Meeting', agenda: ['Call to Order','Approval of Previous Minutes','Chairman\'s Report','Financial Report','Resolutions','Any Other Business','Adjournment'] },
+  { id: 'standup', name: 'Team Standup', agenda: ['What was done yesterday','What is planned today','Blockers & Issues'] },
+  { id: 'project', name: 'Project Review', agenda: ['Project Status Update','Deliverables Review','Timeline & Milestones','Risks & Issues','Resource Needs','Next Steps'] }
+];
+
+let selectedTemplate = TEMPLATES_DATA[0];
+
+// Render templates
+const tplEl = document.getElementById('templates');
+TEMPLATES_DATA.forEach((t, i) => {
+  const div = document.createElement('div');
+  div.className = 'tpl' + (i === 0 ? ' active' : '');
+  div.textContent = t.name;
+  div.onclick = () => {
+    document.querySelectorAll('.tpl').forEach(e => e.classList.remove('active'));
+    div.classList.add('active');
+    selectedTemplate = t;
+    if (t.agenda.length && agendaItems.length === 0) {
+      agendaItems = t.agenda.map(title => ({ title, discussion: '', decision: '' }));
+      renderAgenda();
+    }
+  };
+  tplEl.appendChild(div);
+});
+
+// Set default date/time
+document.getElementById('meetingDate').value = new Date().toISOString().split('T')[0];
+document.getElementById('meetingTime').value = new Date().toTimeString().slice(0, 5);
+
+// Attendees
+function addAttendee() {
+  const name = document.getElementById('newAttendeeName').value.trim();
+  if (!name) return;
+  const role = document.getElementById('newAttendeeRole').value.trim();
+  const status = document.getElementById('newAttendeeStatus').value;
+  attendees.push({ name, role, status });
+  document.getElementById('newAttendeeName').value = '';
+  document.getElementById('newAttendeeRole').value = '';
+  renderAttendees();
+}
+
+function removeAttendee(i) {
+  attendees.splice(i, 1);
+  renderAttendees();
+}
+
+function renderAttendees() {
+  const el = document.getElementById('attendees-list');
+  if (!attendees.length) { el.innerHTML = '<div style="color:var(--muted);font-size:.85rem;padding:8px 0">No attendees added yet.</div>'; return; }
+  el.innerHTML = attendees.map((a, i) => {
+    const statusIcon = a.status === 'present' ? '&#9989;' : a.status === 'remote' ? '&#128187;' : '&#10060;';
+    return `<div class="list-item">
+      <span style="font-size:1rem">${statusIcon}</span>
+      <div class="list-item-body">
+        <div class="list-item-name">${a.name}</div>
+        ${a.role ? `<div class="list-item-meta">${a.role}</div>` : ''}
+      </div>
+      <div class="list-item-actions"><button class="btn btn-sm btn-danger" onclick="removeAttendee(${i})">&times;</button></div>
+    </div>`;
+  }).join('');
+}
+
+// Agenda
+function addAgendaItem(title) {
+  agendaItems.push({ title: title || '', discussion: '', decision: '' });
+  renderAgenda();
+}
+
+function removeAgendaItem(i) {
+  agendaItems.splice(i, 1);
+  renderAgenda();
+}
+
+function updateAgenda(i, field, value) {
+  agendaItems[i][field] = value;
+}
+
+function renderAgenda() {
+  const el = document.getElementById('agenda-list');
+  if (!agendaItems.length) { el.innerHTML = '<div style="color:var(--muted);font-size:.85rem;padding:8px 0">No agenda items. Add items or choose a template.</div>'; return; }
+  el.innerHTML = agendaItems.map((item, i) => `
+    <div class="agenda-item">
+      <div class="agenda-header">
+        <div class="agenda-num">${i + 1}</div>
+        <input class="agenda-title-input" value="${item.title}" placeholder="Agenda item title" oninput="updateAgenda(${i},'title',this.value)">
+        <button class="btn btn-sm btn-danger" onclick="removeAgendaItem(${i})">&times;</button>
+      </div>
+      <div class="form-group" style="margin-bottom:8px">
+        <label>Discussion Notes</label>
+        <textarea placeholder="Key points discussed..." oninput="updateAgenda(${i},'discussion',this.value)">${item.discussion}</textarea>
+      </div>
+      <div class="form-group" style="margin-bottom:0">
+        <label>Decision / Outcome</label>
+        <input type="text" placeholder="What was decided?" value="${item.decision}" oninput="updateAgenda(${i},'decision',this.value)">
+      </div>
+    </div>
+  `).join('');
+}
+
+// Action Items
+function addAction() {
+  const text = document.getElementById('newActionText').value.trim();
+  if (!text) return;
+  const owner = document.getElementById('newActionOwner').value.trim();
+  const due = document.getElementById('newActionDue').value;
+  const priority = document.getElementById('newActionPriority').value;
+  actions.push({ text, owner, due, priority, done: false });
+  document.getElementById('newActionText').value = '';
+  document.getElementById('newActionOwner').value = '';
+  renderActions();
+}
+
+function removeAction(i) {
+  actions.splice(i, 1);
+  renderActions();
+}
+
+function toggleAction(i) {
+  actions[i].done = !actions[i].done;
+  renderActions();
+}
+
+function renderActions() {
+  const el = document.getElementById('actions-list');
+  if (!actions.length) { el.innerHTML = '<div style="color:var(--muted);font-size:.85rem;padding:8px 0">No action items yet.</div>'; return; }
+  el.innerHTML = actions.map((a, i) => `
+    <div class="action-item">
+      <div class="action-check ${a.done ? 'done' : ''}" onclick="toggleAction(${i})">${a.done ? '&#10003;' : ''}</div>
+      <div class="action-body">
+        <div class="action-text ${a.done ? 'done' : ''}">${a.text}</div>
+        <div class="action-meta">
+          ${a.owner ? `<strong>${a.owner}</strong>` : ''}
+          ${a.due ? ` | Due: ${new Date(a.due).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}` : ''}
+          ${a.priority ? ` <span class="priority priority-${a.priority}">${a.priority}</span>` : ''}
+        </div>
+      </div>
+      <button class="btn btn-sm btn-danger" onclick="removeAction(${i})">&times;</button>
+    </div>
+  `).join('');
+}
+
+// Save/Load
+const ss = new SaveState('meeting-minutes');
+
+function gv(id) { return document.getElementById(id).value.trim(); }
+
+function saveMinutes() {
+  const data = {
+    meetingTitle: gv('meetingTitle'),
+    meetingDate: gv('meetingDate'),
+    meetingTime: gv('meetingTime'),
+    location: gv('location'),
+    calledBy: gv('calledBy'),
+    attendees,
+    agendaItems,
+    actions,
+    nextDate: gv('nextDate'),
+    nextTime: gv('nextTime'),
+    nextAgenda: gv('nextAgenda'),
+    template: selectedTemplate.id
+  };
+  const label = data.meetingTitle || 'Untitled Meeting';
+
+  const params = new URLSearchParams(window.location.search);
+  const existingId = params.get('id');
+
+  ss.save({ id: existingId || undefined, label, data });
+  alert('Minutes saved!');
+
+  if (!existingId) {
+    const all = ss.getAll();
+    if (all.length) history.replaceState(null, '', `?id=${all[all.length - 1].id}`);
+  }
+}
+
+function loadFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id');
+  if (!id) return;
+  const item = ss.load(id);
+  if (!item || !item.data) return;
+  const d = item.data;
+
+  ['meetingTitle','meetingDate','meetingTime','location','calledBy','nextDate','nextTime','nextAgenda'].forEach(key => {
+    const el = document.getElementById(key);
+    if (el && d[key]) el.value = d[key];
+  });
+
+  if (d.attendees) attendees = d.attendees;
+  if (d.agendaItems) agendaItems = d.agendaItems;
+  if (d.actions) actions = d.actions;
+  if (d.template) {
+    const t = TEMPLATES_DATA.find(t => t.id === d.template);
+    if (t) {
+      selectedTemplate = t;
+      document.querySelectorAll('.tpl').forEach(el => el.classList.toggle('active', el.textContent === t.name));
+    }
+  }
+
+  renderAttendees();
+  renderAgenda();
+  renderActions();
+}
+
+function exportPDF() {
+  const title = gv('meetingTitle') || 'Meeting Minutes';
+  const date = gv('meetingDate') ? new Date(gv('meetingDate')).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
+  const time = gv('meetingTime');
+  const loc = gv('location');
+  const calledBy = gv('calledBy');
+
+  let html = `<h1>${title}</h1>`;
+  html += `<div class="meta">`;
+  if (date) html += `<strong>Date:</strong> ${date}`;
+  if (time) html += ` | <strong>Time:</strong> ${time}`;
+  if (loc) html += ` | <strong>Location:</strong> ${loc}`;
+  if (calledBy) html += ` | <strong>Called by:</strong> ${calledBy}`;
+  html += `</div>`;
+
+  // Attendees
+  if (attendees.length) {
+    html += `<h2>Attendees</h2><table><thead><tr><th>Name</th><th>Role</th><th>Status</th></tr></thead><tbody>`;
+    attendees.forEach(a => {
+      html += `<tr><td>${a.name}</td><td>${a.role || '--'}</td><td>${a.status}</td></tr>`;
+    });
+    html += `</tbody></table>`;
+  }
+
+  // Agenda
+  if (agendaItems.length) {
+    html += `<h2>Agenda & Discussion</h2>`;
+    agendaItems.forEach((item, i) => {
+      html += `<h3>${i + 1}. ${item.title || 'Untitled'}</h3>`;
+      if (item.discussion) html += `<p><strong>Discussion:</strong> ${item.discussion}</p>`;
+      if (item.decision) html += `<p><strong>Decision:</strong> ${item.decision}</p>`;
+    });
+  }
+
+  // Actions
+  if (actions.length) {
+    html += `<h2>Action Items</h2><table><thead><tr><th>Action</th><th>Owner</th><th>Due</th><th>Priority</th><th>Status</th></tr></thead><tbody>`;
+    actions.forEach(a => {
+      const due = a.due ? new Date(a.due).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : '--';
+      html += `<tr><td>${a.text}</td><td>${a.owner || '--'}</td><td>${due}</td><td>${a.priority}</td><td>${a.done ? 'Done' : 'Pending'}</td></tr>`;
+    });
+    html += `</tbody></table>`;
+  }
+
+  // Next meeting
+  const nextDate = gv('nextDate');
+  const nextTime = gv('nextTime');
+  const nextAgenda = gv('nextAgenda');
+  if (nextDate || nextAgenda) {
+    html += `<h2>Next Meeting</h2>`;
+    if (nextDate) html += `<p><strong>Date:</strong> ${new Date(nextDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}${nextTime ? ` at ${nextTime}` : ''}</p>`;
+    if (nextAgenda) html += `<p><strong>Proposed Agenda:</strong> ${nextAgenda}</p>`;
+  }
+
+  const w = window.open('', '_blank');
+  w.document.write(`<!DOCTYPE html><html><head><title>${title}</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;padding:40px;color:#333;font-size:13px;line-height:1.7}
+h1{font-size:22px;margin-bottom:8px}h2{font-size:16px;margin:20px 0 10px;padding-bottom:4px;border-bottom:2px solid #e5e7eb}
+h3{font-size:14px;margin:12px 0 6px;color:#374151}
+.meta{font-size:12px;color:#666;margin-bottom:20px}
+table{width:100%;border-collapse:collapse;margin:10px 0 16px}
+th{background:#f5f5f5;text-align:left;padding:6px 10px;font-size:11px;text-transform:uppercase;letter-spacing:.04em;border-bottom:2px solid #ddd}
+td{padding:6px 10px;border-bottom:1px solid #eee;font-size:12px}
+p{margin-bottom:8px}
+@media print{body{padding:20px}}
+</style></head><body>${html}</body></html>`);
+  w.document.close();
+  setTimeout(() => w.print(), 300);
+}
+
+// Init
+loadFromUrl();
+renderAttendees();
+renderAgenda();
+renderActions();
+</script>
+</body>
+</html>

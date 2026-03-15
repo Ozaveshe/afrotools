@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ajo/Chama Savings Tracker | AfroTools</title>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="/assets/js/lib/save-state.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--pri:#FFAA00;--bg:#f5f5f3;--card:#fff;--text:#111;--muted:#6b7280;--border:#e5e7eb;--radius:12px;--green:#059669;--red:#dc2626}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+.topbar{background:#fff;border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:50}
+.topbar a{color:var(--muted);font-size:.82rem;text-decoration:none;display:flex;align-items:center;gap:4px}
+.topbar a:hover{color:var(--text)}
+.topbar-title{font-weight:700;font-size:.95rem;flex:1}
+.topbar-actions{display:flex;gap:8px}
+.btn{padding:8px 16px;border-radius:8px;font-size:.82rem;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:#fff;color:var(--text);font-family:inherit;transition:.15s}
+.btn:hover{border-color:var(--pri);color:var(--pri)}
+.btn-pri{background:var(--pri);color:#fff;border-color:var(--pri)}
+.btn-pri:hover{background:#e69900}
+
+.app{max-width:900px;margin:0 auto;padding:24px 20px}
+
+.card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:24px;margin-bottom:20px}
+.card h2{font-size:1rem;font-weight:800;margin-bottom:16px}
+
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+@media(max-width:600px){.form-row{grid-template-columns:1fr}}
+.form-group{margin-bottom:12px}
+.form-group label{display:block;font-size:.75rem;font-weight:600;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.04em}
+.form-group input,.form-group select{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:.88rem;color:var(--text);background:#fff}
+.form-group input:focus,.form-group select:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 3px rgba(255,170,0,.15)}
+
+/* Summary cards */
+.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px}
+.sum-card{background:var(--card);border-radius:10px;border:1px solid var(--border);padding:16px;text-align:center}
+.sum-val{font-size:1.3rem;font-weight:800;color:var(--pri)}
+.sum-lbl{font-size:.7rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-top:2px}
+
+/* Members list */
+.member-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #f3f4f6}
+.member-row:last-child{border-bottom:none}
+.member-order{width:28px;height:28px;border-radius:50%;background:rgba(255,170,0,.1);color:var(--pri);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;flex-shrink:0}
+.member-info{flex:1;min-width:0}
+.member-name{font-size:.88rem;font-weight:700}
+.member-phone{font-size:.75rem;color:var(--muted)}
+.member-actions{display:flex;gap:6px}
+.member-actions button{padding:4px 8px;border:1px solid var(--border);border-radius:6px;font-size:.7rem;cursor:pointer;background:#fff;font-family:inherit}
+.member-actions button:hover{border-color:var(--red);color:var(--red)}
+
+/* Schedule table */
+.schedule-table{width:100%;border-collapse:collapse;font-size:.82rem}
+.schedule-table th{text-align:left;padding:10px 12px;background:#f9fafb;font-weight:700;font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);border-bottom:2px solid var(--border)}
+.schedule-table td{padding:10px 12px;border-bottom:1px solid #f3f4f6}
+.badge{display:inline-block;padding:2px 8px;border-radius:99px;font-size:.68rem;font-weight:700}
+.badge-paid{background:#d1fae5;color:#065f46}
+.badge-pending{background:#fef3c7;color:#92400e}
+.badge-current{background:#dbeafe;color:#1e40af}
+.pay-toggle{cursor:pointer;padding:4px 10px;border-radius:6px;border:1px solid var(--border);background:#fff;font-family:inherit;font-size:.72rem;font-weight:600}
+.pay-toggle:hover{border-color:var(--green);color:var(--green)}
+
+.add-member-row{display:flex;gap:8px;margin-top:12px}
+.add-member-row input{flex:1;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:.85rem}
+.add-member-row input:focus{outline:none;border-color:var(--pri)}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a href="index.html">&#8592; Ajo Tracker</a>
+  <div class="topbar-title">Ajo/Chama Savings Tracker</div>
+  <div class="topbar-actions">
+    <button class="btn" onclick="saveGroup()">Save</button>
+    <button class="btn btn-pri" onclick="exportPDF()">Export PDF</button>
+  </div>
+</div>
+
+<div class="app">
+  <!-- Setup -->
+  <div class="card" id="setup-card">
+    <h2>Group Setup</h2>
+    <div class="form-row">
+      <div class="form-group"><label>Group Name</label><input type="text" id="groupName" placeholder="e.g. Office Ajo Circle" oninput="updateSummary()"></div>
+      <div class="form-group"><label>Currency</label>
+        <select id="currency" onchange="updateSummary()">
+          <option value="NGN">NGN - Nigerian Naira</option>
+          <option value="KES">KES - Kenyan Shilling</option>
+          <option value="ZAR">ZAR - South African Rand</option>
+          <option value="GHS">GHS - Ghanaian Cedi</option>
+          <option value="TZS">TZS - Tanzanian Shilling</option>
+          <option value="UGX">UGX - Ugandan Shilling</option>
+          <option value="USD">USD - US Dollar</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Contribution Amount</label><input type="number" id="amount" placeholder="e.g. 50000" min="0" oninput="updateSummary()"></div>
+      <div class="form-group"><label>Frequency</label>
+        <select id="frequency" onchange="updateSummary()">
+          <option value="weekly">Weekly</option>
+          <option value="biweekly">Bi-weekly (Fortnightly)</option>
+          <option value="monthly" selected>Monthly</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group"><label>Start Date</label><input type="date" id="startDate" oninput="updateSummary()"></div>
+  </div>
+
+  <!-- Summary -->
+  <div class="summary" id="summary">
+    <div class="sum-card"><div class="sum-val" id="sum-members">0</div><div class="sum-lbl">Members</div></div>
+    <div class="sum-card"><div class="sum-val" id="sum-pool">--</div><div class="sum-lbl">Pool / Cycle</div></div>
+    <div class="sum-card"><div class="sum-val" id="sum-total">--</div><div class="sum-lbl">Total Program</div></div>
+    <div class="sum-card"><div class="sum-val" id="sum-paid">0%</div><div class="sum-lbl">Completion</div></div>
+  </div>
+
+  <!-- Members -->
+  <div class="card">
+    <h2>Members (Payout Order)</h2>
+    <div id="members-list"></div>
+    <div class="add-member-row">
+      <input type="text" id="newMemberName" placeholder="Member name">
+      <input type="tel" id="newMemberPhone" placeholder="Phone (optional)">
+      <button class="btn btn-pri" onclick="addMember()">Add</button>
+    </div>
+  </div>
+
+  <!-- Schedule -->
+  <div class="card">
+    <h2>Payout Schedule</h2>
+    <div style="overflow-x:auto">
+      <table class="schedule-table" id="schedule-table">
+        <thead><tr><th>#</th><th>Member</th><th>Payout Date</th><th>Amount</th><th>Status</th><th></th></tr></thead>
+        <tbody id="schedule-body"></tbody>
+      </table>
+    </div>
+    <div id="no-schedule" style="text-align:center;padding:32px;color:var(--muted);font-size:.88rem">Add at least 2 members to generate the payout schedule.</div>
+  </div>
+</div>
+
+<script>
+let members = [];
+let payments = {}; // { memberIndex: 'paid' | 'pending' }
+
+const SYMBOLS = { NGN: '\u20A6', KES: 'KSh', ZAR: 'R', GHS: 'GH\u20B5', TZS: 'TSh', UGX: 'USh', USD: '$' };
+
+function gv(id) { return document.getElementById(id).value.trim(); }
+function gn(id) { return parseFloat(document.getElementById(id).value) || 0; }
+
+function fmt(n) {
+  const sym = SYMBOLS[gv('currency')] || '';
+  return sym + ' ' + n.toLocaleString('en', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+}
+
+function addMember() {
+  const name = gv('newMemberName');
+  if (!name) return;
+  const phone = gv('newMemberPhone');
+  members.push({ name, phone });
+  document.getElementById('newMemberName').value = '';
+  document.getElementById('newMemberPhone').value = '';
+  renderMembers();
+  updateSummary();
+}
+
+function removeMember(i) {
+  members.splice(i, 1);
+  // Reindex payments
+  const newPayments = {};
+  Object.keys(payments).forEach(k => {
+    const idx = parseInt(k);
+    if (idx < i) newPayments[idx] = payments[idx];
+    else if (idx > i) newPayments[idx - 1] = payments[idx];
+  });
+  payments = newPayments;
+  renderMembers();
+  updateSummary();
+}
+
+function moveMember(i, dir) {
+  const j = i + dir;
+  if (j < 0 || j >= members.length) return;
+  [members[i], members[j]] = [members[j], members[i]];
+  // Swap payments too
+  const tmp = payments[i];
+  payments[i] = payments[j];
+  payments[j] = tmp;
+  renderMembers();
+  updateSummary();
+}
+
+function renderMembers() {
+  const el = document.getElementById('members-list');
+  if (!members.length) { el.innerHTML = '<div style="color:var(--muted);font-size:.85rem;padding:12px 0">No members yet. Add members below.</div>'; return; }
+  el.innerHTML = members.map((m, i) => `
+    <div class="member-row">
+      <div class="member-order">${i + 1}</div>
+      <div class="member-info">
+        <div class="member-name">${m.name}</div>
+        ${m.phone ? `<div class="member-phone">${m.phone}</div>` : ''}
+      </div>
+      <div class="member-actions">
+        ${i > 0 ? `<button onclick="moveMember(${i},-1)" title="Move up">&uarr;</button>` : ''}
+        ${i < members.length - 1 ? `<button onclick="moveMember(${i},1)" title="Move down">&darr;</button>` : ''}
+        <button onclick="removeMember(${i})" title="Remove">&times;</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function getPayoutDates() {
+  const start = document.getElementById('startDate').value;
+  if (!start || members.length < 2) return [];
+  const freq = gv('frequency');
+  const dates = [];
+  let d = new Date(start);
+  for (let i = 0; i < members.length; i++) {
+    dates.push(new Date(d));
+    if (freq === 'weekly') d.setDate(d.getDate() + 7);
+    else if (freq === 'biweekly') d.setDate(d.getDate() + 14);
+    else d.setMonth(d.getMonth() + 1);
+  }
+  return dates;
+}
+
+function togglePayment(i) {
+  payments[i] = payments[i] === 'paid' ? 'pending' : 'paid';
+  updateSummary();
+}
+
+function updateSummary() {
+  const amount = gn('amount');
+  const n = members.length;
+  const pool = amount * n;
+  const total = pool * n;
+
+  document.getElementById('sum-members').textContent = n;
+  document.getElementById('sum-pool').textContent = n > 0 && amount > 0 ? fmt(pool) : '--';
+  document.getElementById('sum-total').textContent = n > 0 && amount > 0 ? fmt(total) : '--';
+
+  // Completion
+  let paidCount = 0;
+  for (let i = 0; i < n; i++) {
+    if (payments[i] === 'paid') paidCount++;
+  }
+  const pct = n > 0 ? Math.round((paidCount / n) * 100) : 0;
+  document.getElementById('sum-paid').textContent = pct + '%';
+
+  renderSchedule();
+}
+
+function renderSchedule() {
+  const dates = getPayoutDates();
+  const body = document.getElementById('schedule-body');
+  const noSched = document.getElementById('no-schedule');
+  const amount = gn('amount');
+
+  if (dates.length < 2) {
+    body.innerHTML = '';
+    noSched.style.display = 'block';
+    return;
+  }
+  noSched.style.display = 'none';
+
+  const today = new Date();
+  today.setHours(0,0,0,0);
+
+  body.innerHTML = dates.map((date, i) => {
+    const status = payments[i] === 'paid' ? 'paid' :
+      (date <= today && payments[i] !== 'paid' ? 'current' : 'pending');
+    const badgeClass = status === 'paid' ? 'badge-paid' : status === 'current' ? 'badge-current' : 'badge-pending';
+    const badgeText = status === 'paid' ? 'Paid' : status === 'current' ? 'Due' : 'Upcoming';
+    const pool = amount * members.length;
+    return `<tr>
+      <td>${i + 1}</td>
+      <td style="font-weight:600">${members[i].name}</td>
+      <td>${date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</td>
+      <td>${amount > 0 ? fmt(pool) : '--'}</td>
+      <td><span class="badge ${badgeClass}">${badgeText}</span></td>
+      <td><button class="pay-toggle" onclick="togglePayment(${i})">${payments[i] === 'paid' ? 'Undo' : 'Mark Paid'}</button></td>
+    </tr>`;
+  }).join('');
+}
+
+// Save/Load
+const ss = new SaveState('ajo-tracker');
+
+function saveGroup() {
+  const data = {
+    groupName: gv('groupName'),
+    currency: gv('currency'),
+    amount: gn('amount'),
+    frequency: gv('frequency'),
+    startDate: gv('startDate'),
+    members: members,
+    payments: payments
+  };
+  const label = data.groupName || 'Unnamed Group';
+
+  const params = new URLSearchParams(window.location.search);
+  const existingId = params.get('id');
+
+  ss.save({ id: existingId || undefined, label, data });
+  alert('Group saved!');
+
+  if (!existingId) {
+    const all = ss.getAll();
+    if (all.length) {
+      history.replaceState(null, '', `?id=${all[all.length - 1].id}`);
+    }
+  }
+}
+
+function loadFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id');
+  if (!id) {
+    // Set default start date to today
+    document.getElementById('startDate').value = new Date().toISOString().split('T')[0];
+    return;
+  }
+  const item = ss.load(id);
+  if (!item || !item.data) return;
+  const d = item.data;
+
+  if (d.groupName) document.getElementById('groupName').value = d.groupName;
+  if (d.currency) document.getElementById('currency').value = d.currency;
+  if (d.amount) document.getElementById('amount').value = d.amount;
+  if (d.frequency) document.getElementById('frequency').value = d.frequency;
+  if (d.startDate) document.getElementById('startDate').value = d.startDate;
+  if (d.members) members = d.members;
+  if (d.payments) payments = d.payments;
+
+  renderMembers();
+  updateSummary();
+}
+
+function exportPDF() {
+  const groupName = gv('groupName') || 'Savings Group';
+  const amount = gn('amount');
+  const n = members.length;
+  const pool = amount * n;
+  const dates = getPayoutDates();
+  const sym = SYMBOLS[gv('currency')] || '';
+
+  let rows = dates.map((date, i) => {
+    const status = payments[i] === 'paid' ? 'Paid' : 'Pending';
+    return `<tr><td>${i+1}</td><td>${members[i].name}</td><td>${date.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}</td><td>${sym} ${pool.toLocaleString()}</td><td>${status}</td></tr>`;
+  }).join('');
+
+  const w = window.open('','_blank');
+  w.document.write(`<!DOCTYPE html><html><head><title>${groupName} - Report</title>
+<style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,sans-serif;padding:40px;color:#333;font-size:13px}
+h1{font-size:20px;margin-bottom:4px}h2{font-size:14px;color:#666;margin-bottom:24px}
+.meta{margin-bottom:20px;font-size:12px;color:#666}
+table{width:100%;border-collapse:collapse;margin-top:16px}
+th{background:#f5f5f5;text-align:left;padding:8px 12px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;border-bottom:2px solid #ddd}
+td{padding:8px 12px;border-bottom:1px solid #eee}
+.paid{color:#059669;font-weight:700}.pending{color:#d97706;font-weight:700}
+@media print{body{padding:20px}}
+</style></head><body>
+<h1>${groupName}</h1>
+<h2>Payout Schedule Report</h2>
+<div class="meta">
+  Contribution: ${sym} ${amount.toLocaleString()} per member | Pool: ${sym} ${pool.toLocaleString()} per cycle | ${n} members | ${gv('frequency')} | Generated: ${new Date().toLocaleDateString('en-GB')}
+</div>
+<table><thead><tr><th>#</th><th>Member</th><th>Payout Date</th><th>Pool Amount</th><th>Status</th></tr></thead>
+<tbody>${rows}</tbody></table>
+</body></html>`);
+  w.document.close();
+  setTimeout(() => w.print(), 300);
+}
+
+// Init
+loadFromUrl();
+renderMembers();
+updateSummary();
+</script>
+</body>
+</html>
