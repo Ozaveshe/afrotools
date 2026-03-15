@@ -33,7 +33,7 @@
     .faq-eyebrow {
       display: block; font-size: 0.68rem; font-weight: 700;
       letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--color-primary, #5ddb9e);
+      color: var(--color-primary);
       margin-bottom: 6px;
     }
 
@@ -56,8 +56,8 @@
       overflow: hidden;
       transition: border-color 0.15s;
     }
-    .faq-item:hover { border-color: var(--color-primary, #5ddb9e); }
-    .faq-item.open { border-color: var(--color-primary, #5ddb9e); }
+    .faq-item:hover { border-color: var(--color-primary); }
+    .faq-item.open { border-color: var(--color-primary); }
 
     .faq-q {
       display: flex; align-items: center; justify-content: space-between;
@@ -73,7 +73,7 @@
     }
     .faq-q:hover { background: var(--color-bg, #f4f8f5); }
     .faq-q:focus-visible {
-      outline: 2px solid var(--color-primary, #5ddb9e);
+      outline: 2px solid var(--color-primary);
       outline-offset: -2px;
     }
 
@@ -81,7 +81,7 @@
       flex-shrink: 0; width: 20px; height: 20px;
       display: flex; align-items: center; justify-content: center;
       transition: transform 0.25s ease;
-      color: var(--color-primary, #5ddb9e);
+      color: var(--color-primary);
     }
     .faq-item.open .faq-icon { transform: rotate(45deg); }
 

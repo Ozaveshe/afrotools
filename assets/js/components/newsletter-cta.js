@@ -36,9 +36,9 @@
       transition:border-color .15s;
     }
     .inp::placeholder{color:#6b7280}
-    .inp:focus{border-color:#5ddb9e}
+    .inp:focus{border-color:var(--color-primary)}
     .btn{
-      padding:10px 16px;background:#5ddb9e;color:#fff;border:none;border-radius:6px;
+      padding:10px 16px;background:var(--color-primary);color:#fff;border:none;border-radius:6px;
       font-size:.78rem;font-weight:700;cursor:pointer;white-space:nowrap;
       transition:background .15s;
     }

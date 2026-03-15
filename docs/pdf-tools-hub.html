@@ -23,7 +23,7 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --green: #5ddb9e;
+  --green: var(--color-primary);
   --green-l: #00a863;
   --green-d: #006b40;
   --green-bg: #eefbf3;
@@ -583,27 +583,27 @@ body::before {
 <script>
 const tools = [
   // ===== ORGANIZE =====
-  { name: "Merge PDF", desc: "Combine multiple PDFs into one. Drag-and-drop reorder. Unlimited files.", cat: "organize", icon: "📎", accent: "#5ddb9e", href: "/tools/pdf-merge-split", live: true },
-  { name: "Split PDF", desc: "Extract pages or split into chunks. By range, by page, or every N pages.", cat: "organize", icon: "✂️", accent: "#5ddb9e", href: "/tools/pdf-merge-split", live: true },
+  { name: "Merge PDF", desc: "Combine multiple PDFs into one. Drag-and-drop reorder. Unlimited files.", cat: "organize", icon: "📎", accent: "var(--color-primary)", href: "/tools/pdf-merge-split", live: true },
+  { name: "Split PDF", desc: "Extract pages or split into chunks. By range, by page, or every N pages.", cat: "organize", icon: "✂️", accent: "var(--color-primary)", href: "/tools/pdf-merge-split", live: true },
   { name: "Rotate PDF", desc: "Rotate pages 90°, 180°, or 270°. Apply to one page or all at once.", cat: "organize", icon: "🔄", accent: "#3b82f6", href: "/tools/pdf-rotate" },
   { name: "Remove Pages", desc: "Delete specific pages from your PDF. Preview thumbnails before removing.", cat: "organize", icon: "🗑️", accent: "#ef4444", href: "/tools/pdf-remove-pages" },
   { name: "Organize PDF", desc: "Rearrange pages with drag-and-drop. Visual thumbnail layout.", cat: "organize", icon: "📑", accent: "#8b5cf6", href: "/tools/pdf-organize" },
   { name: "Extract Pages", desc: "Pull specific pages out of a PDF into a new file. Custom range support.", cat: "organize", icon: "📤", accent: "#f59e0b", href: "/tools/pdf-extract" },
 
   // ===== OPTIMIZE =====
-  { name: "Compress PDF", desc: "Reduce file size by up to 80%. Three quality presets. Batch support.", cat: "optimize", icon: "🗜️", accent: "#5ddb9e", href: "/tools/pdf-compress", live: true },
+  { name: "Compress PDF", desc: "Reduce file size by up to 80%. Three quality presets. Batch support.", cat: "optimize", icon: "🗜️", accent: "var(--color-primary)", href: "/tools/pdf-compress", live: true },
   { name: "Repair PDF", desc: "Fix damaged or corrupted PDFs. Recover content from broken files.", cat: "optimize", icon: "🔧", accent: "#f59e0b", href: "/tools/pdf-repair" },
   { name: "OCR PDF", desc: "Make scanned PDFs searchable. Extract text from images. AI-powered.", cat: "optimize", icon: "👁️", accent: "#8b5cf6", href: "/tools/pdf-ocr" },
   { name: "PDF to PDF/A", desc: "Convert to archival standard. Long-term document preservation.", cat: "optimize", icon: "🏛️", accent: "#14b8a6", href: "/tools/pdf-pdfa" },
 
   // ===== CONVERT =====
   { name: "PDF to Word", desc: "Convert to editable DOCX. Preserves layout, fonts, and images.", cat: "convert", icon: "📝", accent: "#3b82f6", href: "/tools/pdf-to-word" },
-  { name: "PDF to Excel", desc: "Extract tables from PDFs into spreadsheets. Clean, structured data.", cat: "convert", icon: "📊", accent: "#5ddb9e", href: "/tools/pdf-to-excel" },
+  { name: "PDF to Excel", desc: "Extract tables from PDFs into spreadsheets. Clean, structured data.", cat: "convert", icon: "📊", accent: "var(--color-primary)", href: "/tools/pdf-to-excel" },
   { name: "PDF to PowerPoint", desc: "Turn PDF pages into editable slides. Layout preservation.", cat: "convert", icon: "📽️", accent: "#ef4444", href: "/tools/pdf-to-ppt" },
   { name: "PDF to JPG", desc: "Convert each page to a high-quality image. Batch export.", cat: "convert", icon: "🖼️", accent: "#f59e0b", href: "/tools/pdf-to-jpg" },
   { name: "Word to PDF", desc: "Convert DOC/DOCX to PDF. Perfect formatting preservation.", cat: "convert", icon: "📄", accent: "#3b82f6", href: "/tools/word-to-pdf" },
   { name: "JPG to PDF", desc: "Convert images to PDF. Multiple images, custom orientation, margins.", cat: "convert", icon: "🎨", accent: "#ec4899", href: "/tools/jpg-to-pdf" },
-  { name: "Excel to PDF", desc: "Spreadsheets to PDF with all formatting intact. Multi-sheet support.", cat: "convert", icon: "📈", accent: "#5ddb9e", href: "/tools/excel-to-pdf" },
+  { name: "Excel to PDF", desc: "Spreadsheets to PDF with all formatting intact. Multi-sheet support.", cat: "convert", icon: "📈", accent: "var(--color-primary)", href: "/tools/excel-to-pdf" },
   { name: "PowerPoint to PDF", desc: "Slides to PDF. Preserves animations, transitions as static pages.", cat: "convert", icon: "🎬", accent: "#ef4444", href: "/tools/ppt-to-pdf" },
   { name: "HTML to PDF", desc: "Convert any webpage to PDF. Just paste the URL. Full rendering.", cat: "convert", icon: "🌐", accent: "#14b8a6", href: "/tools/html-to-pdf" },
 
@@ -611,13 +611,13 @@ const tools = [
   { name: "Edit PDF", desc: "Add text, images, shapes. Change font, size, color. Full editor.", cat: "edit", icon: "✏️", accent: "#8b5cf6", href: "/tools/pdf-edit" },
   { name: "Add Watermark", desc: "Text or image watermarks. Control opacity, rotation, position.", cat: "edit", icon: "💧", accent: "#3b82f6", href: "/tools/pdf-watermark", live: true },
   { name: "Page Numbers", desc: "Add page numbers with custom position, format, font, and starting number.", cat: "edit", icon: "🔢", accent: "#f59e0b", href: "/tools/pdf-page-numbers", live: true },
-  { name: "Sign PDF", desc: "Draw, type, or upload your signature. Legally valid e-signatures.", cat: "edit", icon: "🖊️", accent: "#5ddb9e", href: "/tools/pdf-sign" },
+  { name: "Sign PDF", desc: "Draw, type, or upload your signature. Legally valid e-signatures.", cat: "edit", icon: "🖊️", accent: "var(--color-primary)", href: "/tools/pdf-sign" },
   { name: "Annotate PDF", desc: "Highlight, underline, comment, draw. Full annotation toolkit.", cat: "edit", icon: "📌", accent: "#ef4444", href: "/tools/pdf-annotate" },
   { name: "Crop PDF", desc: "Trim margins or select specific areas. Apply to one or all pages.", cat: "edit", icon: "✂️", accent: "#14b8a6", href: "/tools/pdf-crop" },
   { name: "Redact PDF", desc: "Permanently remove sensitive text and images. GDPR compliance.", cat: "edit", icon: "██", accent: "#0c1117", href: "/tools/pdf-redact" },
 
   // ===== SECURITY =====
-  { name: "Protect PDF", desc: "Add password encryption. Set permissions — no print, no copy, no edit.", cat: "security", icon: "🔒", accent: "#5ddb9e", href: "/tools/pdf-password", live: true },
+  { name: "Protect PDF", desc: "Add password encryption. Set permissions — no print, no copy, no edit.", cat: "security", icon: "🔒", accent: "var(--color-primary)", href: "/tools/pdf-password", live: true },
   { name: "Unlock PDF", desc: "Remove passwords from PDFs you own. Instant decryption.", cat: "security", icon: "🔓", accent: "#f59e0b", href: "/tools/pdf-unlock" },
   { name: "Compare PDF", desc: "Side-by-side comparison. Spot every change between two versions.", cat: "security", icon: "🔍", accent: "#3b82f6", href: "/tools/pdf-compare" },
 ];

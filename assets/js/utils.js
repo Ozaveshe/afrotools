@@ -359,7 +359,7 @@
       show(message, type = 'info', duration = 4000) {
         this._ensureContainer();
         const el = document.createElement('div');
-        const bg = type === 'success' ? '#5ddb9e' : type === 'error' ? '#dc3545' : '#0a1a10';
+        const bg = type === 'success' ? 'var(--color-primary)' : type === 'error' ? '#dc3545' : '#0a1a10';
         Object.assign(el.style, {
           background: bg, color: 'white', padding: '12px 18px',
           borderRadius: '5px', fontFamily: "'DM Sans', system-ui, sans-serif",

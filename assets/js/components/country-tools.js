@@ -76,7 +76,7 @@
     .ct-eyebrow {
       display: block; font-size: 0.68rem; font-weight: 700;
       letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--color-primary, #5ddb9e);
+      color: var(--color-primary);
       margin-bottom: 6px;
     }
 
@@ -105,13 +105,13 @@
       transition: all 0.15s;
     }
     .ct-pill:hover {
-      border-color: var(--color-primary, #5ddb9e);
+      border-color: var(--color-primary);
       background: rgba(93, 219, 158, 0.06);
     }
     .ct-pill.active {
-      background: var(--color-primary, #5ddb9e);
-      border-color: var(--color-primary, #5ddb9e);
-      color: #0c1a10;
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      color: var(--color-bg-dark);
     }
 
     /* Tool grid */
@@ -135,12 +135,12 @@
       overflow: hidden;
     }
     .ct-card:hover {
-      border-color: var(--color-primary, #5ddb9e);
+      border-color: var(--color-primary);
       box-shadow: 0 4px 20px rgba(93, 219, 158, 0.08);
       transform: translateY(-2px);
     }
     .ct-card:focus-visible {
-      outline: 2px solid var(--color-primary, #5ddb9e);
+      outline: 2px solid var(--color-primary);
       outline-offset: -2px;
     }
 
@@ -193,7 +193,7 @@
 
     .ct-card-arrow {
       margin-left: auto;
-      color: var(--color-primary, #5ddb9e);
+      color: var(--color-primary);
       opacity: 0; transition: opacity 0.15s, transform 0.15s;
     }
     .ct-card:hover .ct-card-arrow {
@@ -220,13 +220,13 @@
     @media (prefers-color-scheme: dark) {
       .ct-title { color: #e2f0e8; }
       .ct-card { border-color: #2a3a30; background: #111a14; }
-      .ct-card:hover { border-color: #5ddb9e; box-shadow: 0 4px 20px rgba(93, 219, 158, 0.06); }
+      .ct-card:hover { border-color: var(--color-primary); box-shadow: 0 4px 20px rgba(93, 219, 158, 0.06); }
       .ct-card-name { color: #e2f0e8; }
       .ct-card-desc { color: #9cb8a8; }
       .ct-card-meta { border-color: #2a3a30; }
       .ct-pill { color: #c8dccf; border-color: #2a3a30; }
       .ct-pill:hover { background: rgba(93, 219, 158, 0.08); }
-      .ct-pill.active { color: #0c1a10; }
+      .ct-pill.active { color: var(--color-bg-dark); }
     }
   `;
 

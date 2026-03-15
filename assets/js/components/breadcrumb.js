@@ -82,8 +82,8 @@
       color: inherit; text-decoration: none;
       transition: color 0.15s;
     }
-    a:hover { color: var(--bc-hover, #5ddb9e); }
-    :host([dark]) a:hover { color: #5ddb9e; }
+    a:hover { color: var(--color-primary); }
+    :host([dark]) a:hover { color: var(--color-primary); }
 
     .sep { color: var(--bc-sep, #d1d5db); user-select: none; }
     :host([dark]) .sep { color: rgba(255,255,255,0.15); }

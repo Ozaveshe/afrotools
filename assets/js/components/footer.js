@@ -1,6 +1,6 @@
 /**
  * AFROTOOLS FOOTER — Web Component
- * Colours: dark forest #0d1f16 (warmer than #080f0a, harmonises with sage navbar)
+ * Colours: dark navy #111827, accent Apple Blue via --color-primary (#007AFF)
  * Links: readable opacity — no more 0.18/0.25 ghost text
  * Font: DM Sans throughout (Barlow removed)
  */
@@ -60,9 +60,8 @@
 
     /* ─────────────────────────────────────────────
        SHELL
-       #0d1f16 — dark forest green, warm not cold.
-       Reads as intentional, not just "dark mode".
-       Harmonises with the sage #f0f5f2 navbar.
+       #111827 — dark navy, clean and modern.
+       Accent: Apple Blue #007AFF via --color-primary.
     ───────────────────────────────────────────── */
     footer {
       background: #111827;
@@ -89,7 +88,7 @@
       font-size: 1.1rem; font-weight: 800;
       letter-spacing: 0.02em; color: #ffffff;
     }
-    .logo-name b { color: #5ddb9e; }
+    .logo-name b { color: var(--color-primary); }
     .logo-tagline {
       font-size: 0.46rem; font-weight: 600;
       letter-spacing: 0.2em; text-transform: uppercase;
@@ -107,7 +106,7 @@
     .nl-eyebrow {
       font-size: 0.6rem; font-weight: 700;
       letter-spacing: 0.18em; text-transform: uppercase;
-      color: #5ddb9e; margin-bottom: 6px;
+      color: var(--color-primary); margin-bottom: 6px;
     }
     .nl-title {
       font-size: 1.25rem; font-weight: 800;
@@ -126,10 +125,10 @@
       transition: border-color 0.18s;
     }
     .nl-input::placeholder { color: #6b7280; }
-    .nl-input:focus { border-color: #5ddb9e; background: rgba(255,255,255,0.09); }
+    .nl-input:focus { border-color: var(--color-primary); background: rgba(255,255,255,0.09); }
     .nl-btn {
       padding: 11px 18px; flex-shrink: 0;
-      background: #5ddb9e; color: white; border: none;
+      background: var(--color-primary); color: white; border: none;
       border-radius: 6px;
       font-family: 'DM Sans', sans-serif;
       font-size: 0.82rem; font-weight: 700;
@@ -143,8 +142,8 @@
 
     /* ─────────────────────────────────────────────
        LINKS GRID
-       Col titles: visible sage. Links: #a8c8b8 —
-       comfortably readable, not straining to see.
+       Col titles: Apple Blue via --color-primary.
+       Links: #9ca3af — comfortably readable.
     ───────────────────────────────────────────── */
     .links {
       display: grid; grid-template-columns: repeat(4, 1fr);
@@ -154,7 +153,7 @@
     .col-title {
       font-size: 0.6rem; font-weight: 700;
       letter-spacing: 0.16em; text-transform: uppercase;
-      color: #5ddb9e; margin-bottom: 14px;
+      color: var(--color-primary); margin-bottom: 14px;
     }
     .col-link {
       display: block; padding: 4px 0;
@@ -176,7 +175,7 @@
     }
     .stat-n {
       font-size: 1.8rem; font-weight: 800;
-      color: #5ddb9e; line-height: 1;
+      color: var(--color-primary); line-height: 1;
       letter-spacing: -0.02em;
     }
     .stat-l {
@@ -224,7 +223,7 @@
       color: #9ca3af; text-decoration: none; font-size: 1rem;
       transition: all 0.15s;
     }
-    .social a:hover { background: #5ddb9e; color: #fff; border-color: #5ddb9e; }
+    .social a:hover { background: var(--color-primary); color: #fff; border-color: var(--color-primary); }
 
     .built-with {
       font-size: 0.78rem; font-weight: 500; color: #6b7280;

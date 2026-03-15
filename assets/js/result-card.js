@@ -68,7 +68,7 @@
     logoRow.innerHTML = `
       <div style="display:flex;align-items:center;gap:10px;">
         <div style="width:36px;height:36px;background:#0a1a10;border:2px solid rgba(0,200,115,.3);border-radius:8px;display:flex;align-items:center;justify-content:center;">
-          <div style="width:12px;height:12px;background:#5ddb9e;transform:rotate(45deg);"></div>
+          <div style="width:12px;height:12px;background:var(--color-primary);transform:rotate(45deg);"></div>
         </div>
         <span style="font-size:18px;font-weight:800;letter-spacing:-0.02em;color:#fff;">AfroTools</span>
       </div>
@@ -84,7 +84,7 @@
 
     // Value
     const value = document.createElement('div');
-    value.style.cssText = 'font-size:72px;font-weight:800;color:#5ddb9e;letter-spacing:-0.03em;line-height:1;margin-bottom:16px;';
+    value.style.cssText = 'font-size:72px;font-weight:800;color:var(--color-primary);letter-spacing:-0.03em;line-height:1;margin-bottom:16px;';
     value.textContent = opts.value || '—';
     content.appendChild(value);
 

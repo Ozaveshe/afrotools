@@ -407,9 +407,9 @@ IMPORTANT RULES:
             word-break: break-word;
             position: relative;
           }
-          .msg a { color: #5ddb9e; text-decoration: underline; font-weight: 600; }
+          .msg a { color: var(--color-primary); text-decoration: underline; font-weight: 600; }
           .msg-user {
-            background: #5ddb9e;
+            background: var(--color-primary);
             color: #fff;
             align-self: flex-end;
             border-bottom-right-radius: 2px;
@@ -423,7 +423,7 @@ IMPORTANT RULES:
             border: 1px solid var(--msg-ai-border, rgba(255,255,255,.07));
             transition: background .25s, color .25s, border-color .25s;
           }
-          .msg-ai a { color: #5ddb9e; }
+          .msg-ai a { color: var(--color-primary); }
           .msg-sys {
             background: transparent;
             color: var(--sys-msg-color, #484f58);
@@ -479,7 +479,7 @@ IMPORTANT RULES:
           .tool-card-info { flex: 1; min-width: 0; }
           .tool-card-name { font-weight: 700; font-size: 0.8rem; color: var(--title, #f0f6fc); }
           .tool-card-desc { font-size: 0.68rem; color: var(--sub, #6e7681); margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-          .tool-card-arrow { color: #5ddb9e; font-weight: 700; font-size: 0.9rem; }
+          .tool-card-arrow { color: var(--color-primary); font-weight: 700; font-size: 0.9rem; }
 
           /* Typing indicator */
           .typing {
@@ -495,7 +495,7 @@ IMPORTANT RULES:
           .typing span {
             width: 5px;
             height: 5px;
-            background: #5ddb9e;
+            background: var(--color-primary);
             border-radius: 50%;
             animation: dot-bounce .65s infinite alternate;
           }
@@ -552,7 +552,7 @@ IMPORTANT RULES:
           .chat-input::placeholder { color: var(--input-placeholder, #30363d); }
           .chat-input:focus { border-color: rgba(93,219,158,.6); }
           .send-btn {
-            background: #5ddb9e;
+            background: var(--color-primary);
             color: #fff;
             border: none;
             border-radius: 9px;

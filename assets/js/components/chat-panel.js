@@ -166,7 +166,7 @@
             word-break: break-word;
           }
           .msg-user {
-            background: #5ddb9e;
+            background: var(--color-primary);
             color: #fff;
             align-self: flex-end;
             border-bottom-right-radius: 2px;
@@ -208,7 +208,7 @@
           .chat-loading span {
             width: 6px;
             height: 6px;
-            background: #5ddb9e;
+            background: var(--color-primary);
             border-radius: 50%;
             animation: bounce .65s infinite alternate;
           }
@@ -240,7 +240,7 @@
           .chat-input::placeholder { color: #30363d; }
           .chat-input:focus { border-color: rgba(93,219,158,.6); }
           .chat-send {
-            background: #5ddb9e;
+            background: var(--color-primary);
             color: #fff;
             border: none;
             border-radius: 9px;

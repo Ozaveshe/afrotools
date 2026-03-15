@@ -16,7 +16,7 @@ class AfroRelatedTools extends HTMLElement {
   // Per-category visual identity (matches tool-registry.js category values)
   _cat(c) {
     return ({
-      'african':           { gradient:'linear-gradient(145deg,#005731 0%,#008751 100%)', pill:'#d1fae5', pillTxt:'#064e3b', label:'Uniquely African'  },
+      'african':           { gradient:'linear-gradient(145deg,#005731 0%,var(--color-accent) 100%)', pill:'#d1fae5', pillTxt:'#064e3b', label:'Uniquely African'  },
       'education':         { gradient:'linear-gradient(145deg,#b45309 0%,#f59e0b 100%)', pill:'#fef3c7', pillTxt:'#92400e', label:'Education'         },
       'financial':         { gradient:'linear-gradient(145deg,#1d4ed8 0%,#3b82f6 100%)', pill:'#dbeafe', pillTxt:'#1e40af', label:'Finance'           },
       'document-pdf':      { gradient:'linear-gradient(145deg,#6d28d9 0%,#8b5cf6 100%)', pill:'#ede9fe', pillTxt:'#5b21b6', label:'PDF & Docs'        },
@@ -111,7 +111,7 @@ class AfroRelatedTools extends HTMLElement {
           font-weight: 700;
           letter-spacing: .1em;
           text-transform: uppercase;
-          color: #5ddb9e;
+          color: var(--color-primary);
           margin-bottom: 6px;
         }
         .title {
@@ -127,7 +127,7 @@ class AfroRelatedTools extends HTMLElement {
           gap: 5px;
           font-size: 0.85rem;
           font-weight: 600;
-          color: #5ddb9e;
+          color: var(--color-primary);
           text-decoration: none;
           white-space: nowrap;
           padding: 8px 18px;
@@ -246,10 +246,10 @@ class AfroRelatedTools extends HTMLElement {
         .cta-btn {
           font-size: 0.78rem;
           font-weight: 600;
-          color: #5ddb9e;
+          color: var(--color-primary);
         }
         .cta-arrow {
-          color: #5ddb9e;
+          color: var(--color-primary);
           transition: transform .2s;
         }
         .card:hover .cta-arrow { transform: translateX(4px); }

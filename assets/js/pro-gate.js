@@ -30,7 +30,7 @@
           <span style="display:inline-block;background:linear-gradient(135deg,#F5A623,#e8960e);color:#fff;font-size:.6rem;font-weight:800;padding:3px 10px;border-radius:100px;letter-spacing:.08em;margin-bottom:12px;">PRO</span>
           <h3 style="font-size:1.2rem;font-weight:800;color:#111827;margin-bottom:8px;">Get more with AfroTools Pro</h3>
           <p style="font-size:.85rem;color:#6B7280;line-height:1.6;margin-bottom:16px;">Unlimited AI advisor, visa predictions, medical report analysis, and more.</p>
-          <a href="/pricing/" style="display:inline-block;background:#5ddb9e;color:#fff;padding:10px 24px;border-radius:8px;font-weight:700;font-size:.85rem;text-decoration:none;">See Plans & Pricing</a>
+          <a href="/pricing/" style="display:inline-block;background:var(--color-primary);color:#fff;padding:10px 24px;border-radius:8px;font-weight:700;font-size:.85rem;text-decoration:none;">See Plans & Pricing</a>
         </div>
       `;
       banner.style.cssText = 'background:#F9FAFB;border-top:1px solid #E5E7EB;border-bottom:1px solid #E5E7EB;margin:24px 0;';

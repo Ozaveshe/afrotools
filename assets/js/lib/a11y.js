@@ -236,7 +236,7 @@
       link.textContent = label;
       link.style.cssText = `
         position: fixed; top: -100%; left: 16px; z-index: 10000;
-        padding: 12px 24px; background: var(--color-primary, #5ddb9e);
+        padding: 12px 24px; background: var(--color-primary);
         color: #fff; border-radius: 0 0 8px 8px; font-weight: 700;
         font-size: 0.875rem; text-decoration: none; transition: top 0.2s;
       `;

@@ -22,9 +22,9 @@
       bottom: 24px;
       right: 24px;
       z-index: 9990;
-      background: ${isFav ? '#5ddb9e' : '#fff'};
+      background: ${isFav ? 'var(--color-primary)' : '#fff'};
       color: ${isFav ? '#fff' : '#1e293b'};
-      border: 1.5px solid ${isFav ? '#5ddb9e' : '#e2e8f0'};
+      border: 1.5px solid ${isFav ? 'var(--color-primary)' : '#e2e8f0'};
       border-radius: 100px;
       padding: 10px 18px;
       font-family: 'DM Sans', system-ui, sans-serif;
@@ -41,9 +41,9 @@
     btn.addEventListener('click', function() {
       const nowFav = afroFavs.toggle(toolId);
       btn.innerHTML = nowFav ? '★ Saved' : '☆ Save Tool';
-      btn.style.background = nowFav ? '#5ddb9e' : '#fff';
+      btn.style.background = nowFav ? 'var(--color-primary)' : '#fff';
       btn.style.color = nowFav ? '#fff' : '#1e293b';
-      btn.style.borderColor = nowFav ? '#5ddb9e' : '#e2e8f0';
+      btn.style.borderColor = nowFav ? 'var(--color-primary)' : '#e2e8f0';
 
       // Pulse animation
       btn.style.transform = 'scale(1.1)';

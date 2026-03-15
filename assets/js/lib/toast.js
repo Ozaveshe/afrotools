@@ -77,9 +77,9 @@
         transform: translateX(100%) scale(0.95);
         opacity: 0;
       }
-      .afro-toast--success { background: #0f172a; }
+      .afro-toast--success { background: var(--color-text); }
       .afro-toast--error   { background: #991b1b; }
-      .afro-toast--info    { background: #0f172a; }
+      .afro-toast--info    { background: var(--color-text); }
       .afro-toast--warning { background: #92400e; }
       .afro-toast-icon {
         flex-shrink: 0;
