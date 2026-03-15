@@ -57,6 +57,7 @@
   <script src="/assets/js/lib/pdf-template.js" defer></script>
 
   <meta name="tool-id" content="ng-paye">
+  <link rel="stylesheet" href="/assets/css/print.css" media="print">
 </head>
 <body class="tool-page">
 
@@ -1108,10 +1109,8 @@ async function downloadPdf() {
         : 'Nigeria Tax Act 2025, signed 26 June 2025, effective 1 January 2026. NTA bands: 0%-25%. Rent Relief replaces CRA. FIRS authority.',
     });
   } catch (err) {
-    console.error('[AfroTools] PDF generation failed:', err);
-    if (window.AfroTools && window.AfroTools.toast) {
-      AfroTools.toast.error('PDF generation failed. Please try again.');
-    }
+    console.error('[AfroTools] PDF generation failed, falling back to print:', err);
+    window.print();
   }
 }
 

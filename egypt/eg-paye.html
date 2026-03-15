@@ -56,6 +56,7 @@
   .tool-hero::after { content: '🇪🇬'; position: absolute; right: 5%; top: 50%; transform: translateY(-50%); font-size: 8rem; opacity: .06; pointer-events: none; }
 </style>
 <meta name="tool-id" content="eg-paye">
+  <link rel="stylesheet" href="/assets/css/print.css" media="print">
 </head>
 <body class="tool-page">
 
@@ -629,7 +630,7 @@ function renderChart(type) {
 }
 
 // ── PDF MODAL ─────────────────────────────────────────────────
-function openPdfModal()  { if (!RESULT) return; document.getElementById('pdfModal').classList.add('on'); document.getElementById('modalForm').style.display='block'; document.getElementById('modalSuccess').style.display='none'; }
+function openPdfModal()  { if (!RESULT) return; generatePdf(); }
 function closePdfModal() { document.getElementById('pdfModal').classList.remove('on'); }
 document.getElementById('pdfModal').addEventListener('click', e => { if (e.target === document.getElementById('pdfModal')) closePdfModal(); });
 
@@ -679,6 +680,7 @@ td.num{text-align:right;font-weight:600;font-variant-numeric:tabular-nums;white-
 tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-size:9.5pt}
 .notice{background:#fef2f2;border:1px solid #fecaca;border-radius:5px;padding:8px 12px;font-size:7.5pt;color:#7f1d1d;line-height:1.5;margin:10px 0}
 .src{display:inline-block;padding:2px 7px;background:#f3f4f6;border-radius:3px;font-size:6.5pt;font-weight:600;color:#6b7280;margin-right:4px}
+  <link rel="stylesheet" href="/assets/css/print.css" media="print">
 </style></head><body>
 <div class="cover">
   <div class="cover-top">
