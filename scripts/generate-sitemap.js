@@ -25,8 +25,9 @@ const registryCode = fs.readFileSync(registryPath, 'utf8');
 
 // Create a minimal DOM-free environment
 const sandbox = { document: { readyState: 'complete', getElementById: () => null, createElement: () => ({ textContent: '' }), head: { appendChild: () => {} }, addEventListener: () => {}, dispatchEvent: () => {}, querySelector: () => null } };
-const fn = new Function('document', registryCode + '\nreturn { AFRO_TOOLS, AFRO_CATEGORIES };');
-const { AFRO_TOOLS, AFRO_CATEGORIES } = fn(sandbox.document);
+function FakeEvent() {}
+const fn = new Function('document', 'CustomEvent', registryCode + '\nreturn { AFRO_TOOLS, AFRO_CATEGORIES };');
+const { AFRO_TOOLS, AFRO_CATEGORIES } = fn(sandbox.document, FakeEvent);
 
 console.log(`Loaded ${AFRO_TOOLS.length} tools from registry`);
 

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Admin Dashboard — AfroTools</title>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<script src="/assets/js/components/tool-registry.js"></script>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #f8faf8; color: #1a2e22; line-height: 1.6;
+  }
+  .dash { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
+  .dash-header {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 32px;
+  }
+  .dash-header h1 { font-size: 1.4rem; font-weight: 800; }
+  .dash-header .badge {
+    background: #fef3cd; color: #92400e; font-size: 0.65rem;
+    font-weight: 700; padding: 3px 10px; border-radius: 12px;
+    text-transform: uppercase;
+  }
+
+  /* Stats grid */
+  .stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin-bottom: 32px; }
+  .stat-card {
+    background: #fff; border: 1px solid #e2e8e4; border-radius: 12px;
+    padding: 20px; text-align: center;
+  }
+  .stat-value { font-size: 1.8rem; font-weight: 800; color: #5ddb9e; }
+  .stat-label { font-size: 0.78rem; color: #6b8a74; margin-top: 4px; }
+
+  /* Sections */
+  .section { background: #fff; border: 1px solid #e2e8e4; border-radius: 12px; padding: 24px; margin-bottom: 20px; }
+  .section h2 { font-size: 1rem; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .section h2 span { font-size: 1.1rem; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  th { text-align: left; font-weight: 600; color: #6b8a74; padding: 8px 12px; border-bottom: 2px solid #e2e8e4; }
+  td { padding: 8px 12px; border-bottom: 1px solid #f0f4f1; }
+  tr:hover td { background: #f8faf8; }
+
+  /* Links */
+  .link-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+  .link-card {
+    display: flex; align-items: center; gap: 10px; padding: 14px 16px;
+    background: #f8faf8; border-radius: 10px; text-decoration: none; color: inherit;
+    transition: background 0.15s;
+  }
+  .link-card:hover { background: #eaf5ef; }
+  .link-card .icon { font-size: 1.2rem; }
+  .link-card .label { font-size: 0.82rem; font-weight: 600; }
+
+  /* Audit */
+  .audit-btn {
+    background: #5ddb9e; color: #0c1a10; border: none; border-radius: 8px;
+    padding: 10px 24px; font-size: 0.82rem; font-weight: 700;
+    cursor: pointer; font-family: inherit; transition: background 0.15s;
+  }
+  .audit-btn:hover { background: #4cc78a; }
+  #audit-results { margin-top: 16px; font-size: 0.82rem; white-space: pre-wrap; }
+  .pass { color: #2a8a5a; }
+  .warn { color: #b45309; }
+  .fail { color: #dc2626; }
+
+  @media (max-width: 600px) {
+    .stats { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="dash">
+  <div class="dash-header">
+    <h1>🛠️ AfroTools Admin</h1>
+    <span class="badge">Internal</span>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat-card"><div class="stat-value" id="s-total">—</div><div class="stat-label">Total Tools</div></div>
+    <div class="stat-card"><div class="stat-value" id="s-live">—</div><div class="stat-label">Live Tools</div></div>
+    <div class="stat-card"><div class="stat-value" id="s-queued">—</div><div class="stat-label">In Pipeline</div></div>
+    <div class="stat-card"><div class="stat-value" id="s-cats">—</div><div class="stat-label">Categories</div></div>
+    <div class="stat-card"><div class="stat-value" id="s-rev">—</div><div class="stat-label">Est. Monthly Revenue</div></div>
+  </div>
+
+  <!-- Tools by Phase -->
+  <div class="section">
+    <h2><span>📊</span> Tools by Phase</h2>
+    <table><thead><tr><th>Phase</th><th>Count</th><th>%</th></tr></thead><tbody id="phase-table"></tbody></table>
+  </div>
+
+  <!-- Tools by Category -->
+  <div class="section">
+    <h2><span>🗂️</span> Tools by Category</h2>
+    <table><thead><tr><th>Category</th><th>Live</th><th>Pipeline</th><th>Total</th></tr></thead><tbody id="cat-table"></tbody></table>
+  </div>
+
+  <!-- Quick Links -->
+  <div class="section">
+    <h2><span>🔗</span> External Dashboards</h2>
+    <div class="link-grid">
+      <a class="link-card" href="https://analytics.google.com" target="_blank"><span class="icon">📈</span><span class="label">Google Analytics (GA4)</span></a>
+      <a class="link-card" href="https://search.google.com/search-console" target="_blank"><span class="icon">🔍</span><span class="label">Search Console</span></a>
+      <a class="link-card" href="https://app.netlify.com" target="_blank"><span class="icon">🚀</span><span class="label">Netlify Dashboard</span></a>
+      <a class="link-card" href="https://www.semrush.com" target="_blank"><span class="icon">📊</span><span class="label">Semrush</span></a>
+      <a class="link-card" href="https://github.com/Ozaveshe/afrotools" target="_blank"><span class="icon">🐙</span><span class="label">GitHub Repo</span></a>
+      <a class="link-card" href="/style-guide.html" target="_blank"><span class="icon">🎨</span><span class="label">Style Guide</span></a>
+    </div>
+  </div>
+
+  <!-- Audit -->
+  <div class="section">
+    <h2><span>🔎</span> Quick Audit</h2>
+    <button class="audit-btn" onclick="runAudit()">Run Audit</button>
+    <div id="audit-results"></div>
+  </div>
+</div>
+
+<script>
+function _initDashboard() {
+  if (typeof AFRO_TOOLS === 'undefined') return;
+  var stats = getRegistryStats();
+
+  document.getElementById('s-total').textContent = stats.total;
+  document.getElementById('s-live').textContent = stats.live;
+  document.getElementById('s-queued').textContent = stats.queued + stats.planned;
+  document.getElementById('s-cats').textContent = Object.keys(stats.byCategory).length;
+  document.getElementById('s-rev').textContent = '$' + stats.estMonthlyRevenue.toLocaleString();
+
+  // Phase table
+  var phases = Object.entries(stats.byPhase).sort(function(a, b) {
+    if (a[0] === 'LIVE') return -1;
+    if (b[0] === 'LIVE') return 1;
+    return a[0].localeCompare(b[0]);
+  });
+  document.getElementById('phase-table').innerHTML = phases.map(function(p) {
+    var pct = ((p[1] / stats.total) * 100).toFixed(1);
+    return '<tr><td>' + p[0] + '</td><td>' + p[1] + '</td><td>' + pct + '%</td></tr>';
+  }).join('');
+
+  // Category table
+  var cats = {};
+  AFRO_TOOLS.forEach(function(t) {
+    if (!cats[t.category]) cats[t.category] = { live: 0, pipe: 0, total: 0 };
+    cats[t.category].total++;
+    if (t.status === 'live' || t.status === 'new') cats[t.category].live++;
+    else cats[t.category].pipe++;
+  });
+  var catName = typeof AFRO_CATEGORIES !== 'undefined' ? AFRO_CATEGORIES : {};
+  document.getElementById('cat-table').innerHTML = Object.entries(cats)
+    .sort(function(a, b) { return b[1].total - a[1].total; })
+    .map(function(c) {
+      var name = catName[c[0]] ? catName[c[0]].name : c[0];
+      return '<tr><td>' + name + '</td><td>' + c[1].live + '</td><td>' + c[1].pipe + '</td><td>' + c[1].total + '</td></tr>';
+    }).join('');
+}
+
+if (typeof onRegistryReady === 'function') { onRegistryReady(_initDashboard); }
+else { document.addEventListener('DOMContentLoaded', function(){ if(typeof AFRO_TOOLS!=='undefined') _initDashboard(); else document.addEventListener('afrotools:registry-ready', _initDashboard); }); }
+
+function runAudit() {
+  var results = document.getElementById('audit-results');
+  var lines = [];
+
+  if (typeof AFRO_TOOLS === 'undefined') {
+    results.innerHTML = '<span class="fail">✗ AFRO_TOOLS registry not loaded</span>';
+    return;
+  }
+
+  // Check for duplicate IDs
+  var ids = {};
+  var dupes = [];
+  AFRO_TOOLS.forEach(function(t) {
+    if (ids[t.id]) dupes.push(t.id);
+    ids[t.id] = true;
+  });
+  if (dupes.length > 0) lines.push('<span class="fail">✗ Duplicate IDs: ' + dupes.join(', ') + '</span>');
+  else lines.push('<span class="pass">✓ No duplicate tool IDs</span>');
+
+  // Check for missing fields
+  var missingFields = [];
+  AFRO_TOOLS.forEach(function(t) {
+    if (!t.id || !t.name || !t.href || !t.category || !t.status) {
+      missingFields.push(t.id || t.name || '(unnamed)');
+    }
+  });
+  if (missingFields.length > 0) lines.push('<span class="warn">⚠ Missing required fields: ' + missingFields.slice(0, 5).join(', ') + (missingFields.length > 5 ? '...' : '') + '</span>');
+  else lines.push('<span class="pass">✓ All tools have required fields</span>');
+
+  // Check for empty hrefs
+  var emptyHrefs = AFRO_TOOLS.filter(function(t) { return !t.href || t.href === '#'; });
+  if (emptyHrefs.length > 0) lines.push('<span class="warn">⚠ ' + emptyHrefs.length + ' tools with empty/# hrefs</span>');
+  else lines.push('<span class="pass">✓ All tools have valid hrefs</span>');
+
+  // Check live tools have descriptions
+  var noDesc = AFRO_TOOLS.filter(function(t) { return (t.status === 'live' || t.status === 'new') && (!t.desc || t.desc.length < 20); });
+  if (noDesc.length > 0) lines.push('<span class="warn">⚠ ' + noDesc.length + ' live tools with short/missing descriptions</span>');
+  else lines.push('<span class="pass">✓ All live tools have descriptions (20+ chars)</span>');
+
+  // Check countries array
+  var noCountry = AFRO_TOOLS.filter(function(t) { return !t.countries || t.countries.length === 0; });
+  if (noCountry.length > 0) lines.push('<span class="warn">⚠ ' + noCountry.length + ' tools without country assignment</span>');
+  else lines.push('<span class="pass">✓ All tools have country assignments</span>');
+
+  // Stats summary
+  var stats = getRegistryStats();
+  lines.push('');
+  lines.push('Registry: ' + stats.total + ' tools, ' + stats.live + ' live, ' + stats.queued + ' queued, ' + stats.planned + ' planned');
+  lines.push('Audit complete at ' + new Date().toLocaleString());
+
+  results.innerHTML = lines.join('\n');
+}
+</script>
+</body>
+</html>
