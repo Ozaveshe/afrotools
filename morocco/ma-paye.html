@@ -291,5 +291,6 @@ async function getAI(){if(!RESULT)return;const R=RESULT;const btn=document.getEl
 async function sendChat(){const input=document.getElementById('chatIn');const msg=input.value.trim();if(!msg||!RESULT)return;input.value='';const msgs=document.getElementById('chatMsgs');msgs.innerHTML+=`<div class="msg u">${msg}</div>`;const aiEl=document.createElement('div');aiEl.className='msg a';aiEl.textContent='…';msgs.appendChild(aiEl);CHAT_HISTORY.push({role:'user',content:msg});try{const res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'Morocco tax advisor.',messages:CHAT_HISTORY})});const data=await res.json();aiEl.textContent=data.text||'Error';CHAT_HISTORY.push({role:'assistant',content:data.text||'Error'});}catch{aiEl.textContent='Error.';}}
 document.getElementById('grossSalary').addEventListener('keydown',e=>{if(e.key==='Enter')calculate();});
 </script>
+<script src="/assets/js/lib/auto-email-gate.js" defer></script>
 </body>
 </html>

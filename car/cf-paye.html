@@ -228,5 +228,6 @@ function setChart(e){const n=document.getElementById('mainChart');if(CHART){CHAR
 function shareResult(){if(!RESULT)return;const e=`CAR PAYE: ${Math.round(RESULT.gross).toLocaleString()} XAF gross → ${Math.round(RESULT.netMonthly).toLocaleString()} take-home (${pct(RESULT.effectiveRate)})`;navigator.clipboard&&(navigator.clipboard.writeText(e),document.getElementById('cfShareBtn').textContent='✓ Copied!')}
 async function getAI(){if(!RESULT)return;document.getElementById('aiBtn').disabled=!0,document.getElementById('aiStatus').style.display='none';try{const e=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'Brief tax analysis for CAR PAYE.',messages:[{role:'user',content:'Summarize in 1-2 sentences.'}]})});if(e.ok){const n=await e.json();document.getElementById('aiResp').textContent=n.text||'Analysis unavailable.',document.getElementById('aiResp').style.display='block'}}catch(e){document.getElementById('aiResp').textContent='AI temporarily unavailable.'}}
 </script>
+<script src="/assets/js/lib/auto-email-gate.js" defer></script>
 </body>
 </html>
