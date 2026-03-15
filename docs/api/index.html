@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AfroTools API — African Financial Data for Developers</title>
+<meta name="description" content="Access live African forex rates, fuel prices, and central bank data via REST API. Free tier available. 42 currencies, 54 countries.">
+<link rel="canonical" href="https://afrotools.com/docs/api/">
+<meta property="og:title" content="AfroTools API — African Financial Data for Developers">
+<meta property="og:description" content="REST API for African forex rates, fuel prices, and central bank data. Free tier: 100 calls/day.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:url" content="https://afrotools.com/docs/api/">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/design-system.css">
+<script src="/assets/js/components/navbar.js" defer></script>
+<script src="/assets/js/components/footer.js" defer></script>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;color:#1a1a2e;background:#F8FAFD;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+
+  /* Hero */
+  .api-hero{background:linear-gradient(135deg,#0A1628 0%,#1a2a4a 100%);color:#fff;padding:100px 20px 80px;text-align:center}
+  .api-hero h1{font-family:'Instrument Serif',serif;font-size:clamp(2rem,5vw,3.2rem);margin-bottom:16px;letter-spacing:-0.03em}
+  .api-hero p{font-size:1.1rem;color:rgba(255,255,255,.75);max-width:640px;margin:0 auto 32px;line-height:1.7}
+  .api-hero .badge{display:inline-flex;align-items:center;gap:6px;font-size:.75rem;font-weight:700;color:#007AFF;background:rgba(0,122,255,.15);padding:6px 14px;border-radius:100px;margin-bottom:20px}
+  .api-hero .badge span{width:7px;height:7px;background:#007AFF;border-radius:50%;display:inline-block;animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+  /* Section */
+  .api-sec{padding:72px 20px}
+  .api-sec h2{font-family:'Instrument Serif',serif;font-size:clamp(1.6rem,3vw,2.2rem);text-align:center;margin-bottom:12px;letter-spacing:-0.02em}
+  .api-sec .sub{text-align:center;color:#6B7280;margin-bottom:40px;font-size:.95rem}
+  .api-sec--alt{background:#fff}
+
+  /* Cards grid */
+  .api-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1100px;margin:0 auto}
+  .api-card{background:#fff;border:1.5px solid #E5E7EB;border-radius:16px;padding:28px 24px;transition:all .2s}
+  .api-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.06);border-color:#007AFF}
+  .api-card .icon{font-size:2rem;margin-bottom:12px}
+  .api-card h3{font-family:'DM Sans',sans-serif;font-size:1.1rem;font-weight:800;margin-bottom:8px;color:#111827}
+  .api-card p{font-size:.82rem;color:#6B7280;line-height:1.6}
+
+  /* Steps */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1100px;margin:0 auto}
+  .step{text-align:center;padding:24px}
+  .step-num{width:40px;height:40px;background:#007AFF;color:#fff;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:1rem;margin-bottom:16px}
+  .step h3{font-size:1rem;font-weight:700;margin-bottom:8px}
+  .step p{font-size:.85rem;color:#6B7280;line-height:1.6}
+
+  /* Code blocks */
+  .code-block{background:#0A1628;color:#e4e8f1;border-radius:12px;padding:20px 24px;font-family:'Fira Code','SF Mono',monospace;font-size:.82rem;line-height:1.7;overflow-x:auto;margin:16px 0;position:relative}
+  .code-block .label{position:absolute;top:10px;right:14px;font-size:.65rem;font-weight:700;color:#007AFF;background:rgba(0,122,255,.12);padding:3px 10px;border-radius:6px;font-family:'DM Sans',sans-serif}
+  .code-block .comment{color:#6B7280}
+  .code-block .string{color:#34d399}
+  .code-block .key{color:#60a5fa}
+
+  /* Endpoints */
+  .endpoint{background:#fff;border:1.5px solid #E5E7EB;border-radius:14px;padding:24px;margin-bottom:20px;max-width:1100px;margin-left:auto;margin-right:auto;margin-bottom:20px}
+  .endpoint .method{display:inline-block;font-size:.7rem;font-weight:800;color:#fff;background:#22c55e;padding:3px 10px;border-radius:6px;margin-right:10px;letter-spacing:.04em}
+  .endpoint .path{font-family:'Fira Code','SF Mono',monospace;font-size:.9rem;font-weight:600;color:#111827}
+  .endpoint .desc{font-size:.82rem;color:#6B7280;margin-top:8px;line-height:1.6}
+
+  /* Pricing */
+  .pricing-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:1100px;margin:0 auto}
+  .price-card{background:#fff;border:1.5px solid #E5E7EB;border-radius:16px;padding:28px 20px;text-align:center;transition:all .2s}
+  .price-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.06)}
+  .price-card.featured{border-color:#007AFF;position:relative}
+  .price-card.featured::before{content:'Popular';position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#007AFF;color:#fff;font-size:.65rem;font-weight:700;padding:4px 14px;border-radius:100px}
+  .price-card h3{font-size:1rem;font-weight:800;margin-bottom:4px;color:#111827}
+  .price-card .price{font-family:'Instrument Serif',serif;font-size:2rem;color:#007AFF;margin:12px 0 4px}
+  .price-card .price small{font-size:.8rem;color:#6B7280;font-family:'DM Sans',sans-serif}
+  .price-card .billing{font-size:.75rem;color:#9CA3AF;margin-bottom:16px}
+  .price-card ul{list-style:none;text-align:left;padding:0;margin:0}
+  .price-card li{font-size:.78rem;color:#4B5563;padding:6px 0;border-top:1px solid #f3f4f6;line-height:1.5}
+  .price-card li::before{content:'\2713';color:#007AFF;font-weight:700;margin-right:8px}
+
+  /* Form */
+  .signup-form{max-width:640px;margin:0 auto;background:#fff;border:1.5px solid #E5E7EB;border-radius:18px;padding:36px 32px}
+  .signup-form label{display:block;font-size:.8rem;font-weight:700;color:#374151;margin-bottom:6px}
+  .signup-form input,.signup-form select,.signup-form textarea{width:100%;padding:10px 14px;border:1.5px solid #E5E7EB;border-radius:10px;font-size:.88rem;font-family:'DM Sans',sans-serif;margin-bottom:18px;transition:border-color .2s}
+  .signup-form input:focus,.signup-form select:focus,.signup-form textarea:focus{outline:none;border-color:#007AFF}
+  .signup-form textarea{min-height:100px;resize:vertical}
+  .signup-form button{width:100%;padding:14px;background:#007AFF;color:#fff;border:none;border-radius:10px;font-size:.95rem;font-weight:700;cursor:pointer;transition:background .2s}
+  .signup-form button:hover{background:#0063D1}
+
+  /* Responsive */
+  @media(max-width:900px){
+    .api-cards,.steps,.pricing-grid{grid-template-columns:1fr}
+  }
+  @media(max-width:600px){
+    .api-hero{padding:72px 16px 56px}
+    .api-sec{padding:48px 16px}
+    .signup-form{padding:24px 18px}
+  }
+</style>
+</head>
+<body>
+
+<afro-navbar></afro-navbar>
+
+<!-- Hero -->
+<section class="api-hero">
+  <div class="badge"><span></span> API Available</div>
+  <h1>African Financial Data for Developers</h1>
+  <p>Live forex rates, fuel prices, and central bank data for all 54 African countries. One unified REST API with generous free tier.</p>
+</section>
+
+<!-- Available APIs -->
+<section class="api-sec" id="apis">
+  <h2>Available APIs</h2>
+  <p class="sub">Three endpoints covering the core financial data infrastructure for Africa.</p>
+  <div class="api-cards">
+    <div class="api-card">
+      <div class="icon">💱</div>
+      <h3>AfroFX API</h3>
+      <p>Real-time exchange rates for 42 African currencies against major pairs (USD, EUR, GBP). 15-minute updates, historical data back to 2020, and crypto rates.</p>
+    </div>
+    <div class="api-card">
+      <div class="icon">⛽</div>
+      <h3>AfroFuel API</h3>
+      <p>Fuel prices (petrol, diesel, LPG) for all 54 African countries. Weekly updates sourced from national petroleum regulators. Historical trends included.</p>
+    </div>
+    <div class="api-card">
+      <div class="icon">🏦</div>
+      <h3>AfroRates API</h3>
+      <p>Central bank policy rates, inflation figures, T-bill yields, and MPC meeting calendar for all 54 African countries. Updated within 24 hours of announcements.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Getting Started -->
+<section class="api-sec api-sec--alt" id="getting-started">
+  <h2>Getting Started</h2>
+  <p class="sub">Three steps to your first API call.</p>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <h3>Sign Up for Free API Key</h3>
+      <p>Create a free account and get an API key instantly. Free tier includes 100 API calls per day with access to latest data.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <h3>Make Your First Request</h3>
+      <p>Use your API key to fetch live data. All responses are JSON with consistent schema across endpoints.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <h3>Explore Endpoints</h3>
+      <p>Browse the full endpoint reference below. Filter by country, currency, date range, and more.</p>
+    </div>
+  </div>
+
+  <div class="wrap" style="margin-top:32px">
+    <div class="code-block">
+      <span class="label">cURL</span>
+<span class="comment"># Fetch USD to NGN exchange rate</span>
+curl -H "Authorization: Bearer YOUR_API_KEY" \
+  https://api.afrotools.com/v1/forex?from=USD&amp;to=NGN</div>
+  </div>
+</section>
+
+<!-- Endpoint Reference -->
+<section class="api-sec" id="endpoints">
+  <h2>Endpoint Reference</h2>
+  <p class="sub">All endpoints return JSON. Authenticated via Bearer token in the Authorization header.</p>
+
+  <div class="endpoint">
+    <span class="method">GET</span>
+    <span class="path">/api/forex?from=USD&amp;to=NGN</span>
+    <p class="desc">Returns the latest exchange rate between two currencies. Supports all 42 African currencies plus USD, EUR, GBP, and major crypto.</p>
+    <div class="code-block" style="margin-top:16px">
+      <span class="label">Response</span>
+{
+  <span class="key">"from"</span>: <span class="string">"USD"</span>,
+  <span class="key">"to"</span>: <span class="string">"NGN"</span>,
+  <span class="key">"rate"</span>: 1580.25,
+  <span class="key">"bid"</span>: 1578.50,
+  <span class="key">"ask"</span>: 1582.00,
+  <span class="key">"timestamp"</span>: <span class="string">"2026-03-15T10:30:00Z"</span>,
+  <span class="key">"source"</span>: <span class="string">"CBN"</span>
+}</div>
+  </div>
+
+  <div class="endpoint">
+    <span class="method">GET</span>
+    <span class="path">/api/fuel?country=NG</span>
+    <p class="desc">Returns current fuel prices for a given country. Includes petrol (PMS), diesel (AGO), kerosene (DPK), and LPG where available.</p>
+    <div class="code-block" style="margin-top:16px">
+      <span class="label">Response</span>
+{
+  <span class="key">"country"</span>: <span class="string">"NG"</span>,
+  <span class="key">"currency"</span>: <span class="string">"NGN"</span>,
+  <span class="key">"petrol"</span>: { <span class="key">"price"</span>: 897.00, <span class="key">"unit"</span>: <span class="string">"litre"</span> },
+  <span class="key">"diesel"</span>: { <span class="key">"price"</span>: 1420.00, <span class="key">"unit"</span>: <span class="string">"litre"</span> },
+  <span class="key">"lpg"</span>: { <span class="key">"price"</span>: 1150.00, <span class="key">"unit"</span>: <span class="string">"kg"</span> },
+  <span class="key">"updated"</span>: <span class="string">"2026-03-10"</span>
+}</div>
+  </div>
+
+  <div class="endpoint">
+    <span class="method">GET</span>
+    <span class="path">/api/rates?country=NG</span>
+    <p class="desc">Returns central bank policy rate, inflation, T-bill yields, and next MPC meeting date for a given country.</p>
+    <div class="code-block" style="margin-top:16px">
+      <span class="label">Response</span>
+{
+  <span class="key">"country"</span>: <span class="string">"NG"</span>,
+  <span class="key">"central_bank"</span>: <span class="string">"CBN"</span>,
+  <span class="key">"policy_rate"</span>: 27.50,
+  <span class="key">"inflation"</span>: 31.7,
+  <span class="key">"tbill_91d"</span>: 18.5,
+  <span class="key">"tbill_182d"</span>: 20.1,
+  <span class="key">"tbill_364d"</span>: 22.3,
+  <span class="key">"next_mpc"</span>: <span class="string">"2026-05-20"</span>,
+  <span class="key">"updated"</span>: <span class="string">"2026-03-01"</span>
+}</div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section class="api-sec api-sec--alt" id="pricing">
+  <h2>API Pricing</h2>
+  <p class="sub">Start free. Scale when you need to.</p>
+  <div class="pricing-grid">
+    <div class="price-card">
+      <h3>Free</h3>
+      <div class="price">$0</div>
+      <div class="billing">Forever free</div>
+      <ul>
+        <li>100 calls/day</li>
+        <li>Latest data only</li>
+        <li>All 3 endpoints</li>
+        <li>JSON responses</li>
+        <li>Community support</li>
+      </ul>
+    </div>
+    <div class="price-card featured">
+      <h3>Starter</h3>
+      <div class="price">$29<small>/mo</small></div>
+      <div class="billing">Billed monthly</div>
+      <ul>
+        <li>10,000 calls/day</li>
+        <li>30-day historical data</li>
+        <li>All 3 endpoints</li>
+        <li>CSV export</li>
+        <li>Email support</li>
+      </ul>
+    </div>
+    <div class="price-card">
+      <h3>Pro</h3>
+      <div class="price">$99<small>/mo</small></div>
+      <div class="billing">Billed monthly</div>
+      <ul>
+        <li>100,000 calls/day</li>
+        <li>Full historical data</li>
+        <li>Webhooks &amp; alerts</li>
+        <li>Batch requests</li>
+        <li>Priority support</li>
+      </ul>
+    </div>
+    <div class="price-card">
+      <h3>Enterprise</h3>
+      <div class="price">$299<small>/mo</small></div>
+      <div class="billing">Billed monthly</div>
+      <ul>
+        <li>Unlimited calls</li>
+        <li>Full historical data</li>
+        <li>99.9% SLA</li>
+        <li>Dedicated support</li>
+        <li>Custom integrations</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- Signup Form -->
+<section class="api-sec" id="signup">
+  <h2>Request API Access</h2>
+  <p class="sub">Sign up for your free API key. We will review and activate within 24 hours.</p>
+  <form class="signup-form" name="api-signup" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+    <input type="hidden" name="form-name" value="api-signup">
+    <p style="display:none"><label>Don't fill this out: <input name="bot-field"></label></p>
+
+    <label for="name">Full Name *</label>
+    <input type="text" id="name" name="name" required placeholder="Your full name">
+
+    <label for="email">Email Address *</label>
+    <input type="email" id="email" name="email" required placeholder="you@company.com">
+
+    <label for="company">Company <span style="font-weight:400;color:#9CA3AF">(optional)</span></label>
+    <input type="text" id="company" name="company" placeholder="Your company name">
+
+    <label for="use-case">Primary Use Case *</label>
+    <select id="use-case" name="use-case" required>
+      <option value="" disabled selected>Select a use case</option>
+      <option value="fintech">Fintech / Banking App</option>
+      <option value="trading">Trading / Investment</option>
+      <option value="remittance">Remittance / Payments</option>
+      <option value="media">News / Media</option>
+      <option value="research">Research / Academic</option>
+      <option value="saas">SaaS / Internal Tool</option>
+      <option value="other">Other</option>
+    </select>
+
+    <label for="message">Tell us about your project <span style="font-weight:400;color:#9CA3AF">(optional)</span></label>
+    <textarea id="message" name="message" placeholder="Briefly describe how you plan to use the API..."></textarea>
+
+    <button type="submit">Request Free API Key</button>
+  </form>
+</section>
+
+<afro-footer></afro-footer>
+
+</body>
+</html>
