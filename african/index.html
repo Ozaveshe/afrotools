@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Uniquely African Tools — Built for Africa | AfroTools</title>
-<meta name="description" content="Japa relocation calculator, generator fuel costs, ajo/chama savings groups, mobile money fee checker, lobola calculator, tithe calculator. Tools the rest of the world doesn't need.">
+<meta name="description" content="Japa relocation calculator, generator fuel costs, ajo/chama savings groups, mobile money fee checker, lobola calculator, tithe calculator. Tools the rest of the world doesn't need — but Africa does.">
 <link rel="canonical" href="https://afrotools.com/african">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Uniquely African Tools | AfroTools">
@@ -20,74 +20,95 @@
 <script src="/assets/js/components/tool-registry.js"></script>
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'DM Sans',sans-serif;background:var(--color-bg);color:var(--color-text);-webkit-font-smoothing:antialiased;}
 a{text-decoration:none;color:inherit;}
 
-/* ── HERO ── */
-.hero{position:relative;min-height:520px;display:flex;flex-direction:column;overflow:hidden;background:#0a0f0a;}
+/* ══════ AFRICAN HERO ══════ */
+.african-hero {
+  background: linear-gradient(135deg, #1a0f00 0%, #2d1800 40%, #0A1628 100%);
+  position: relative; overflow: hidden;
+  padding: 80px 24px 60px; text-align: center;
+  color: white; min-height: 420px;
+  display: flex; align-items: center; justify-content: center;
+}
+.african-hero::before {
+  content: ''; position: absolute; inset: 0;
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(255,170,0,0.03) 20px, rgba(255,170,0,0.03) 22px),
+    repeating-linear-gradient(-45deg, transparent, transparent 20px, rgba(255,170,0,0.03) 20px, rgba(255,170,0,0.03) 22px);
+}
+.african-hero::after {
+  content: ''; position: absolute; top: -40%; left: 30%;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(255,170,0,0.08), transparent 70%);
+  border-radius: 50%;
+}
+.african-hero__content { position: relative; z-index: 2; max-width: 740px; }
+.african-hero__badge {
+  display: inline-block; background: rgba(255,170,0,0.15);
+  border: 1px solid rgba(255,170,0,0.3); color: #FFAA00;
+  padding: 6px 16px; border-radius: 999px; font-size: 0.875rem; font-weight: 600;
+}
+.african-hero h1 {
+  font-family: 'DM Sans', sans-serif; font-size: clamp(2rem,5vw,3.5rem);
+  line-height: 1.15; margin: 20px 0 16px; position: relative; z-index: 1;
+  font-weight: 900; letter-spacing: -.03em; color: #fff;
+}
+.african-hero h1 em { color: #FFAA00; font-style: italic; }
+.african-hero__subtitle {
+  font-size: 1.05rem; color: rgba(255,255,255,0.7); max-width: 640px;
+  margin: 0 auto 32px; line-height: 1.65; position: relative; z-index: 1;
+}
+.african-hero__stats {
+  display: flex; gap: 40px; justify-content: center; margin-bottom: 32px;
+  position: relative; z-index: 1;
+}
+.african-hero .stat__number {
+  display: block; font-family: 'DM Sans', sans-serif;
+  font-size: 2rem; font-weight: 700; color: #FFAA00;
+}
+.african-hero .stat__label {
+  font-size: 0.85rem; color: rgba(255,255,255,0.5);
+  text-transform: uppercase; letter-spacing: 0.05em;
+}
+.african-hero .btn-primary {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 14px 28px; background: #FFAA00; color: #1a0f00;
+  border: none; border-radius: 12px; font-size: .9rem; font-weight: 800;
+  cursor: pointer; transition: background .15s, transform .15s;
+  position: relative; z-index: 1;
+}
+.african-hero .btn-primary:hover { background: #e69900; transform: translateY(-2px); }
 
-/* Custom banner image — replace /assets/img/african-banner.jpg with user's image */
-.hero-banner{position:absolute;inset:0;background-image:url('/assets/img/african-banner.jpg');background-size:cover;background-position:center top;background-repeat:no-repeat;}
-.hero-banner::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,15,10,.35) 0%,rgba(10,15,10,.65) 50%,rgba(10,15,10,.92) 100%);}
-/* Fallback if no image */
-.hero-banner-fallback{position:absolute;inset:0;background:linear-gradient(135deg,#0a0f0a 0%,#1a0d0d 25%,#0d1a0d 50%,#1a1000 75%,#0a0f0a 100%);}
-.hero-banner-fallback::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 30% 40%,rgba(220,38,38,.12),transparent),radial-gradient(ellipse 50% 50% at 80% 60%,rgba(249,115,22,.08),transparent),radial-gradient(ellipse 40% 40% at 50% 80%,rgba(59,130,246,.06),transparent);}
-/* Kente pattern overlay */
-.hero-pattern{position:absolute;inset:0;opacity:.05;background-image:repeating-linear-gradient(45deg,#dc2626 0,#dc2626 2px,transparent 0,transparent 50%),repeating-linear-gradient(-45deg,#f59e0b 0,#f59e0b 2px,transparent 0,transparent 50%);background-size:20px 20px;pointer-events:none;}
+/* Floating icons */
+.floating-icon {
+  position: absolute; font-size: 2rem; opacity: 0.15;
+  left: var(--x); top: var(--y);
+  animation: float-gentle 6s ease-in-out infinite;
+  animation-delay: var(--delay);
+}
+@keyframes float-gentle {
+  0%,100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(5deg); }
+}
 
-.hero-content{position:relative;z-index:2;padding:72px 24px 56px;max-width:1000px;margin:0 auto;width:100%;}
-.hero-breadcrumb{display:flex;align-items:center;gap:8px;font-size:.72rem;color:rgba(255,255,255,.5);margin-bottom:24px;}
-.hero-breadcrumb a{color:rgba(255,255,255,.5);transition:color .15s;}
-.hero-breadcrumb a:hover{color:rgba(255,255,255,.85);}
-.hero-breadcrumb-sep{color:rgba(255,255,255,.2);}
-
-.hero-eyebrow{display:inline-flex;align-items:center;gap:10px;margin-bottom:16px;}
-.hero-eyebrow-pill{display:inline-flex;align-items:center;gap:7px;background:rgba(220,38,38,.18);border:1px solid rgba(220,38,38,.3);border-radius:100px;padding:6px 16px;font-size:.7rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#fca5a5;}
-.hero-eyebrow-line{display:flex;gap:3px;}
-.hero-eyebrow-line span{display:block;width:4px;height:18px;border-radius:2px;background:#dc2626;}
-.hero-eyebrow-line span:nth-child(2){background:#f59e0b;height:14px;margin-top:2px;}
-.hero-eyebrow-line span:nth-child(3){background:#2563EB;height:20px;margin-top:-1px;}
-
-.hero-h1{font-size:clamp(2rem,6vw,3.8rem);font-weight:900;color:#fff;letter-spacing:-.03em;line-height:1.0;margin-bottom:6px;font-family:'DM Sans',sans-serif;}
-.hero-h1-sub{font-size:clamp(1.1rem,3vw,1.8rem);font-weight:400;color:rgba(255,255,255,.6);font-family:'Fraunces',Georgia,serif;font-style:italic;margin-bottom:20px;line-height:1.3;}
-
-.hero-desc{font-size:1rem;color:rgba(255,255,255,.78);max-width:520px;line-height:1.7;margin-bottom:28px;}
-
-.hero-stats{display:flex;gap:0;border:1px solid rgba(255,255,255,.1);border-radius:14px;overflow:hidden;background:rgba(255,255,255,.04);backdrop-filter:blur(8px);width:fit-content;}
-.hero-stat{padding:14px 24px;border-right:1px solid rgba(255,255,255,.08);}
-.hero-stat:last-child{border-right:none;}
-.hero-stat .s-val{font-size:1.6rem;font-weight:900;color:#fff;line-height:1;font-family:'DM Sans',sans-serif;}
-.hero-stat .s-val.red{color:#f87171;}
-.hero-stat .s-val.gold{color:#fbbf24;}
-.hero-stat .s-val.green{color:#60A5FA;}
-.hero-stat .s-lbl{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-top:3px;}
-
-/* ── MANIFESTO / QUOTE SECTION ── */
-.manifesto{position:relative;padding:60px 24px;margin:0;overflow:hidden;background:linear-gradient(135deg,#1a0f00 0%,#2d1800 50%,#0A1628 100%);}
-.manifesto::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(60deg,transparent,transparent 30px,rgba(255,170,0,0.04) 30px,rgba(255,170,0,0.04) 32px);pointer-events:none;}
-.manifesto-inner{max-width:700px;margin:0 auto;position:relative;z-index:1;}
-.manifesto-text{font-family:'Fraunces',Georgia,serif;font-size:clamp(1.2rem,3vw,1.8rem);color:rgba(255,255,255,.9);text-align:center;line-height:1.5;font-style:italic;}
-.manifesto-text strong{color:#FFAA00;font-style:normal;font-weight:900;}
-
-/* ── MAIN ── */
+/* ══════ FEATURED SECTION ══════ */
 .page-main{max-width:1000px;margin:0 auto;padding:40px 24px 80px;}
-
-/* FEATURED TOOLS */
-.featured-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:48px;}
+.featured-section{margin-bottom:48px;}
+.featured-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px;}
 @media(max-width:760px){.featured-grid{grid-template-columns:1fr 1fr;}}
 @media(max-width:480px){.featured-grid{grid-template-columns:1fr;}}
 
 .feat-card{background:#fff;border:1.5px solid #e5e7eb;border-radius:16px;overflow:hidden;transition:border-color .18s,box-shadow .18s,transform .18s;display:block;color:inherit;}
-.feat-card:hover{border-color:#dc2626;box-shadow:0 8px 28px rgba(220,38,38,.1);transform:translateY(-3px);}
+.feat-card:hover{border-color:#FFAA00;box-shadow:0 8px 28px rgba(255,170,0,.1);transform:translateY(-3px);}
 .feat-card.live:hover{border-color:var(--color-primary);box-shadow:0 8px 28px rgba(0,122,255,.1);}
 .feat-banner{height:100px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
 .feat-icon{font-size:2.8rem;position:relative;z-index:1;filter:drop-shadow(0 4px 8px rgba(0,0,0,.15));}
 .feat-body{padding:18px 18px 20px;}
 .feat-name{font-size:.95rem;font-weight:800;color:#111;margin-bottom:5px;line-height:1.2;}
 .feat-desc{font-size:.75rem;color:#6b7280;line-height:1.6;margin-bottom:10px;}
+.feat-stat{font-size:.7rem;font-weight:700;color:#FFAA00;margin-bottom:8px;}
 .feat-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
 .feat-badge-live{background:#eff6ff;border:1px solid #bfdbfe;color:#1d4ed8;font-size:.6rem;font-weight:800;padding:3px 8px;border-radius:8px;text-transform:uppercase;letter-spacing:.04em;}
 .feat-badge-soon{background:#f3f4f6;color:#9ca3af;font-size:.6rem;font-weight:800;padding:3px 8px;border-radius:8px;text-transform:uppercase;letter-spacing:.04em;}
@@ -95,13 +116,23 @@ a{text-decoration:none;color:inherit;}
 .feat-arrow{margin-left:auto;color:#9ca3af;font-size:.9rem;transition:color .15s,transform .15s;}
 .feat-card:hover .feat-arrow{color:var(--color-primary);transform:translateX(3px);}
 
-/* SECTION */
-.sec-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#dc2626;margin-bottom:8px;}
-.sec-eyebrow::before{content:'';width:14px;height:2px;background:#dc2626;border-radius:2px;}
+/* Section */
+.sec-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#FFAA00;margin-bottom:8px;}
+.sec-eyebrow::before{content:'';width:14px;height:2px;background:#FFAA00;border-radius:2px;}
 .sec-title{font-size:clamp(1.3rem,2.5vw,1.8rem);font-weight:900;color:#111;margin-bottom:6px;letter-spacing:-.025em;}
 .sec-sub{font-size:.88rem;color:#6b7280;line-height:1.7;max-width:480px;margin-bottom:24px;}
 
-/* ALL TOOLS GRID */
+/* Why section */
+.why-section{background:#fff;border:1.5px solid #e5e7eb;border-radius:16px;padding:36px 32px;margin-bottom:40px;}
+.why-section h2{font-size:1.3rem;font-weight:900;color:#111;margin-bottom:16px;letter-spacing:-.02em;}
+.why-section h3{font-size:1rem;font-weight:800;color:#1a0f00;margin:20px 0 8px;}
+.why-section p{font-size:.88rem;color:#4b5563;line-height:1.75;margin-bottom:12px;}
+.why-section .highlight{color:#FFAA00;font-weight:700;}
+
+/* Section divider */
+.sec-div{height:1px;background:linear-gradient(90deg,#FFAA00,#FF6B00,#007AFF);border-radius:2px;margin:40px 0;}
+
+/* All tools grid */
 .tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;}
 .tool-row{background:#fff;border:1.5px solid #e5e7eb;border-radius:12px;padding:16px;display:flex;align-items:center;gap:12px;transition:border-color .15s,box-shadow .15s,transform .15s;}
 .tool-row:hover{border-color:var(--color-primary);box-shadow:0 4px 16px rgba(0,122,255,.08);transform:translateY(-1px);}
@@ -114,25 +145,21 @@ a{text-decoration:none;color:inherit;}
 .tr-badge.live{background:#DBEAFE;color:#1D4ED8;}
 .tr-badge.soon{background:#f3f4f6;color:#9ca3af;}
 
-/* SECTION DIVIDER */
-.sec-div{height:1px;background:linear-gradient(90deg,#dc2626,#f59e0b,#2563EB);border-radius:2px;margin:40px 0;}
-
-/* CTA BLOCK */
-.cta-block{background:linear-gradient(135deg,#0a0f0a,#1a0d0d);border-radius:18px;padding:44px 40px;text-align:center;position:relative;overflow:hidden;margin-top:40px;}
-.cta-block::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 50%,rgba(220,38,38,.12),transparent 60%),radial-gradient(circle at 70% 30%,rgba(249,115,22,.08),transparent 50%);pointer-events:none;}
+/* CTA block */
+.cta-block{background:linear-gradient(135deg,#1a0f00,#2d1800,#0A1628);border-radius:18px;padding:44px 40px;text-align:center;position:relative;overflow:hidden;margin-top:40px;}
+.cta-block::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 50%,rgba(255,170,0,.12),transparent 60%),radial-gradient(circle at 70% 30%,rgba(255,170,0,.08),transparent 50%);pointer-events:none;}
 .cta-block h3{font-size:1.2rem;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:.03em;margin-bottom:10px;position:relative;}
 .cta-block p{font-size:.88rem;color:rgba(255,255,255,.65);line-height:1.7;margin-bottom:20px;max-width:400px;margin-left:auto;margin-right:auto;position:relative;}
-.cta-link{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;background:#dc2626;color:#fff;border-radius:10px;font-weight:800;font-size:.88rem;transition:background .15s,transform .15s;position:relative;text-transform:uppercase;letter-spacing:.05em;}
-.cta-link:hover{background:#b91c1c;transform:translateY(-2px);}
+.cta-link{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;background:#FFAA00;color:#1a0f00;border-radius:10px;font-weight:800;font-size:.88rem;transition:background .15s,transform .15s;position:relative;text-transform:uppercase;letter-spacing:.05em;}
+.cta-link:hover{background:#e69900;transform:translateY(-2px);}
 
 @media(max-width:640px){
-  .hero-content{padding:52px 20px 44px;}
-  .hero-stats{width:100%;}
-  .hero-stat{padding:12px 16px;flex:1;}
-  .manifesto{padding:36px 20px;}
-  .manifesto-text{font-size:1rem;}
+  .african-hero{padding:52px 20px 44px;min-height:auto;}
+  .african-hero__stats{gap:20px;}
+  .african-hero .stat__number{font-size:1.5rem;}
   .page-main{padding:28px 16px 60px;}
   .feat-banner{height:80px;}
+  .why-section{padding:24px 20px;}
   .cta-block{padding:32px 24px;}
 }
 </style>
@@ -140,69 +167,61 @@ a{text-decoration:none;color:inherit;}
 <body>
 <afro-navbar></afro-navbar>
 
-<!-- HERO -->
-<section class="hero">
-  <!-- Custom banner image (replace with your image) -->
-  <div class="hero-banner-fallback"></div>
-  <div class="hero-banner"></div>
-  <div class="hero-pattern"></div>
-
-  <div class="hero-content">
-    <nav class="hero-breadcrumb">
-      <a href="/">AfroTools</a>
-      <span class="hero-breadcrumb-sep">›</span>
-      <a href="/categories/">Categories</a>
-      <span class="hero-breadcrumb-sep">›</span>
-      <span>Uniquely African</span>
-    </nav>
-
-    <div class="hero-eyebrow">
-      <div class="hero-eyebrow-line">
-        <span></span><span></span><span></span>
-      </div>
-      <div class="hero-eyebrow-pill">🌍 Uniquely African</div>
+<!-- ══════ AFRICAN HERO ══════ -->
+<section class="african-hero">
+  <div class="african-hero__content">
+    <span class="african-hero__badge">🌍 Uniquely African</span>
+    <h1>Tools the World Doesn't Build.<br><em>But Africa Needs.</em></h1>
+    <p class="african-hero__subtitle">
+      Generator fuel calculators. Japa relocation planners. Ajo savings trackers.
+      Lobola advisors. M-Pesa fee comparisons. WAEC grade checkers.
+      These tools exist because 1.4 billion people deserve software built for their reality.
+    </p>
+    <div class="african-hero__stats">
+      <div class="stat"><span class="stat__number" id="african-count">--</span><span class="stat__label">African Tools</span></div>
+      <div class="stat"><span class="stat__number">54</span><span class="stat__label">Countries</span></div>
+      <div class="stat"><span class="stat__number">Free</span><span class="stat__label">Forever</span></div>
     </div>
-
-    <div class="hero-h1">Built for Africa.</div>
-    <div class="hero-h1-sub">Tools the world doesn't need. But Africa does.</div>
-    <p class="hero-desc">Generator fuel calculator. Japa relocation cost planner. Ajo and chama savings trackers. Lobola advisor. Mobile money fee comparison. These tools exist because Africa exists.</p>
-
-    <!-- Hero banner placeholder — Oza will create /assets/img/banners/african-hero.webp (1200x400) -->
-    <div class="african-hero-banner-placeholder" id="african-hero-banner" style="margin:28px 0 0;max-width:1000px;border-radius:20px;overflow:hidden;">
-      <img src="/assets/img/banners/african-hero.webp"
-           alt="AfroTools — Built for Africa"
-           width="1200" height="400"
-           class="african-banner-img"
-           style="width:100%;height:auto;display:block;object-fit:cover;"
-           onerror="this.parentElement.style.display='none'">
-    </div>
-
-    <div class="hero-stats">
-      <div class="hero-stat"><div class="s-val gold" id="stat-total">—</div><div class="s-lbl">Total Tools</div></div>
-      <div class="hero-stat"><div class="s-val green" id="stat-live">—</div><div class="s-lbl">Live Now</div></div>
-      <div class="hero-stat"><div class="s-val red" id="stat-soon">—</div><div class="s-lbl">Building Now</div></div>
-    </div>
+    <a href="#tools" class="btn-primary">Explore African Tools</a>
+  </div>
+  <div class="african-hero__icons" aria-hidden="true">
+    <span class="floating-icon" style="--delay:0s;--x:10%;--y:20%;">&#9981;</span>
+    <span class="floating-icon" style="--delay:1s;--x:80%;--y:15%;">&#9992;</span>
+    <span class="floating-icon" style="--delay:2s;--x:70%;--y:70%;">&#128241;</span>
+    <span class="floating-icon" style="--delay:3s;--x:20%;--y:75%;">&#127891;</span>
+    <span class="floating-icon" style="--delay:4s;--x:50%;--y:10%;">&#128176;</span>
+    <span class="floating-icon" style="--delay:5s;--x:90%;--y:50%;">&#127959;</span>
   </div>
 </section>
 
-<!-- MANIFESTO STRIP -->
-<div class="manifesto">
-  <div class="manifesto-inner">
-    <div class="manifesto-text">
-      "The world has tools for <strong>their</strong> problems. AfroTools builds tools for <strong>ours</strong> — 54 countries, 1.4 billion people, zero compromises."
-    </div>
-  </div>
-</div>
+<!-- ══════ MAIN CONTENT ══════ -->
+<main class="page-main" id="tools">
 
-<!-- MAIN CONTENT -->
-<main class="page-main">
-
-  <!-- FEATURED / FLAGSHIP TOOLS -->
-  <div style="margin-bottom:40px;">
+  <!-- FEATURED / FLAGSHIP AFRICAN TOOLS -->
+  <div class="featured-section">
     <div class="sec-eyebrow">Flagship African Tools</div>
     <h2 class="sec-title">Our Signature Builds</h2>
-    <p class="sec-sub">Our most uniquely African tools — calculators that solve real problems no one else is solving.</p>
+    <p class="sec-sub">The most uniquely African tools on the internet. Calculators that solve problems no one else is solving.</p>
     <div class="featured-grid" id="featuredGrid"></div>
+  </div>
+
+  <div class="sec-div"></div>
+
+  <!-- WHY THESE TOOLS MATTER -->
+  <div class="why-section">
+    <h2>Why These Tools Matter</h2>
+    <p>Most software is built in San Francisco, London, or Berlin — for people who live in San Francisco, London, or Berlin. When these tools cross the ocean, they arrive tone-deaf to African realities. Tax calculators assume one employer and a W-2. Mortgage tools assume 3% interest rates. Relocation planners have never heard of a Schengen appointment backlog in Lagos.</p>
+
+    <h3>Africa Is Not a Rounding Error</h3>
+    <p>Nigerian building plots are measured in plots and hectares, not acres. M-Pesa transaction fees vary by tier, amount, and whether you're registered or not. WAEC grading uses a system unique to West Africa. The concept of <span class="highlight">Ajo</span> (Nigeria), <span class="highlight">Chama</span> (Kenya), or <span class="highlight">Stokvel</span> (South Africa) — rotating savings groups that move billions of dollars yearly — doesn't exist in any Western fintech playbook.</p>
+
+    <h3>Built by Africans, for Africans</h3>
+    <p>AfroTools doesn't "localise" Western tools for Africa. We build from scratch, starting with the problem as Africans experience it. A generator fuel calculator doesn't exist because Americans need one — it exists because <span class="highlight">60% of Nigerian businesses</span> run generators daily and need to know their true energy costs. A Japa calculator exists because millions of Africans are planning international relocation and deserve honest, complete cost data instead of guesswork.</p>
+
+    <h3>Impact at Scale</h3>
+    <p>Africa has 1.4 billion people — 18% of humanity. The continent's internet population is growing faster than anywhere else. Yet the tools available to this population are overwhelmingly designed for someone else's context. Every tool on this page was built because we asked a simple question: <strong>"Does this problem affect millions of Africans, and does a good free tool already exist for it?"</strong> If the answer is yes and no, we build it.</p>
+
+    <p>This is not charity software. This is infrastructure. And we're just getting started.</p>
   </div>
 
   <div class="sec-div"></div>
@@ -211,7 +230,7 @@ a{text-decoration:none;color:inherit;}
   <div>
     <div class="sec-eyebrow">All Tools</div>
     <h2 class="sec-title">Every Uniquely African Tool</h2>
-    <p class="sec-sub">Live and coming soon — every tool in this category from the registry.</p>
+    <p class="sec-sub">Live and coming soon — every tool in this category.</p>
     <div class="tools-grid" id="allToolsGrid"></div>
   </div>
 
@@ -219,7 +238,7 @@ a{text-decoration:none;color:inherit;}
   <div class="cta-block">
     <h3>What Should We Build Next?</h3>
     <p>We build tools Africans actually need. Tell us what's missing — we prioritise based on demand.</p>
-    <a href="/contact/" class="cta-link">🛠️ Request a Tool →</a>
+    <a href="/contact/" class="cta-link">Request a Tool</a>
   </div>
 </main>
 
@@ -227,102 +246,80 @@ a{text-decoration:none;color:inherit;}
 
 <script>
 // ── FEATURED TOOLS (manually curated flagship African tools) ──
-const FEATURED_IDS = [
-  'japa-calculator',
-  'generator-fuel',
-  'ajo-chama',
-  'mobile-money-fees',
-  'lobola-calculator',
-  'burial-cost',
+var FEATURED = [
+  { id:'japa-calculator', stat:'36 African origins, 21 destinations, 55+ visa pathways' },
+  { id:'mobile-money-fees', stat:'M-Pesa, MTN MoMo, Airtel Money across 20+ countries' },
+  { id:'waec-calculator', stat:'Aggregate, JAMB, GPA, university cut-offs' },
+  { id:'generator-fuel', stat:'True monthly cost of running your generator' },
+  { id:'lobola-calculator', stat:'Navigate bride price customs across Southern Africa' },
+  { id:'ajo-chama', stat:'Track rotating savings contributions and payouts' },
 ];
 
-// Background gradients for each featured tool
-const FEAT_COLORS = {
-  'japa-calculator':    {bg:'linear-gradient(135deg,#1e3a5f,#0f2333)', color:'var(--color-primary)'},
-  'generator-fuel':     {bg:'linear-gradient(135deg,#3b1a00,#1a0f00)', color:'#fb923c'},
-  'ajo-chama':          {bg:'linear-gradient(135deg,#064e3b,#022c22)', color:'#60A5FA'},
-  'mobile-money-fees':  {bg:'linear-gradient(135deg,#1a1535,#0d0a28)', color:'#a78bfa'},
-  'lobola-calculator':  {bg:'linear-gradient(135deg,#3b1a1a,#1a0f0f)', color:'#f87171'},
-  'burial-cost':        {bg:'linear-gradient(135deg,#1a1535,#2d1f4a)', color:'#c4b5fd'},
+var FEAT_COLORS = {
+  'japa-calculator':   'linear-gradient(135deg,#1e3a5f,#0f2333)',
+  'mobile-money-fees': 'linear-gradient(135deg,#1a1535,#0d0a28)',
+  'waec-calculator':   'linear-gradient(135deg,#1a2e00,#0d1a00)',
+  'generator-fuel':    'linear-gradient(135deg,#3b1a00,#1a0f00)',
+  'lobola-calculator': 'linear-gradient(135deg,#3b1a1a,#1a0f0f)',
+  'ajo-chama':         'linear-gradient(135deg,#064e3b,#022c22)',
 };
 
-document.addEventListener('DOMContentLoaded', function(){
-  if(typeof AFRO_TOOLS === 'undefined'){
-    setTimeout(arguments.callee, 100);
-    return;
-  }
+document.addEventListener('DOMContentLoaded', function init(){
+  if(typeof AFRO_TOOLS === 'undefined'){ setTimeout(init, 100); return; }
 
   var key = 'african';
   var allTools = AFRO_TOOLS.filter(function(t){ return t.category === key; });
   var live = allTools.filter(function(t){ return t.status === 'live' || t.status === 'new'; });
   var soon = allTools.filter(function(t){ return t.status === 'planned' || t.status === 'queued'; });
 
-  // Stats
-  var e;
-  e=document.getElementById('stat-total'); if(e) e.textContent=allTools.length;
-  e=document.getElementById('stat-live');  if(e) e.textContent=live.length;
-  e=document.getElementById('stat-soon');  if(e) e.textContent=soon.length;
+  // Dynamic count
+  var countEl = document.getElementById('african-count');
+  if(countEl) countEl.textContent = allTools.length;
 
   // ── FEATURED GRID ──
   var featGrid = document.getElementById('featuredGrid');
   var featHtml = '';
-  FEATURED_IDS.forEach(function(id){
-    var t = allTools.find(function(x){ return x.id === id; });
+  FEATURED.forEach(function(f){
+    var t = allTools.find(function(x){ return x.id === f.id; });
+    if(!t) t = AFRO_TOOLS.find(function(x){ return x.id === f.id; });
     if(!t) return;
     var isLive = t.status === 'live' || t.status === 'new';
-    var fc = FEAT_COLORS[id] || {bg:'linear-gradient(135deg,#111,#222)',color:'#fff'};
+    var bg = FEAT_COLORS[f.id] || 'linear-gradient(135deg,#111,#222)';
     featHtml += '<a href="'+(isLive ? t.href : '#')+'" class="feat-card'+(isLive?' live':'')+'">'
-      + '<div class="feat-banner" style="background:'+fc.bg+';">'
-      + '<div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 100%,rgba(255,255,255,.04),transparent)"></div>'
-      + '<img src="/assets/img/tools/'+id+'.webp" alt="'+t.name+'" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;" onerror="this.onerror=null;this.src=\'/assets/img/tools/cards/'+id+'.svg\';this.onerror=function(){this.style.display=\'none\'}">'
-      + '<div class="feat-icon" style="position:relative;z-index:2;">'+t.icon+'</div>'
+      + '<div class="feat-banner" style="background:'+bg+';">'
+      + '<div class="feat-icon">'+t.icon+'</div>'
       + '</div>'
       + '<div class="feat-body">'
       + '<div class="feat-name">'+t.name+'</div>'
-      + '<div class="feat-desc">'+(t.desc||'').substring(0,80)+(t.desc&&t.desc.length>80?'…':'')+'</div>'
+      + '<div class="feat-stat">'+f.stat+'</div>'
+      + '<div class="feat-desc">'+(t.desc||'').substring(0,90)+(t.desc&&t.desc.length>90?'...':'')+'</div>'
       + '<div class="feat-meta">'
-      + (isLive ? '<span class="feat-badge-live">● Live</span>' : '<span class="feat-badge-soon">Coming Soon</span>')
-      + '<span class="feat-badge-africa">🌍 African</span>'
-      + '<span class="feat-arrow">→</span>'
-      + '</div>'
-      + '</div>'
-      + '</a>';
+      + (isLive ? '<span class="feat-badge-live">Live</span>' : '<span class="feat-badge-soon">Coming Soon</span>')
+      + '<span class="feat-badge-africa">African</span>'
+      + '<span class="feat-arrow">&rarr;</span>'
+      + '</div></div></a>';
   });
   if(featGrid) featGrid.innerHTML = featHtml || '<p style="color:#9ca3af;font-size:.85rem;">No featured tools yet.</p>';
 
   // ── ALL TOOLS GRID ──
   var allGrid = document.getElementById('allToolsGrid');
   var allHtml = '';
-
-  // Live first
-  if(live.length){
-    live.forEach(function(t){
-      allHtml += '<a href="'+t.href+'" class="tool-row">'
-        + '<div class="tr-icon">'+t.icon+'</div>'
-        + '<div class="tr-body">'
-        + '<div class="tr-name">'+t.name+'</div>'
-        + '<div class="tr-desc">'+(t.desc||'').substring(0,60)+(t.desc&&t.desc.length>60?'…':'')+'</div>'
-        + '<span class="tr-badge live">● Live</span>'
-        + '</div><span style="color:#9ca3af;font-size:.85rem;">→</span></a>';
-    });
-  }
-  if(soon.length){
-    soon.forEach(function(t){
-      allHtml += '<div class="tool-row coming">'
-        + '<div class="tr-icon" style="background:#f3f4f6;opacity:.7;">'+t.icon+'</div>'
-        + '<div class="tr-body">'
-        + '<div class="tr-name" style="color:#6b7280;">'+t.name+'</div>'
-        + '<div class="tr-desc">'+(t.desc||'').substring(0,60)+(t.desc&&t.desc.length>60?'…':'')+'</div>'
-        + '<span class="tr-badge soon">Coming Soon</span>'
-        + '</div></div>';
-    });
-  }
+  live.forEach(function(t){
+    allHtml += '<a href="'+t.href+'" class="tool-row">'
+      + '<div class="tr-icon">'+t.icon+'</div>'
+      + '<div class="tr-body"><div class="tr-name">'+t.name+'</div>'
+      + '<div class="tr-desc">'+(t.desc||'').substring(0,60)+(t.desc&&t.desc.length>60?'...':'')+'</div>'
+      + '<span class="tr-badge live">Live</span></div>'
+      + '<span style="color:#9ca3af;font-size:.85rem;">&rarr;</span></a>';
+  });
+  soon.forEach(function(t){
+    allHtml += '<div class="tool-row coming">'
+      + '<div class="tr-icon" style="background:#f3f4f6;opacity:.7;">'+t.icon+'</div>'
+      + '<div class="tr-body"><div class="tr-name" style="color:#6b7280;">'+t.name+'</div>'
+      + '<div class="tr-desc">'+(t.desc||'').substring(0,60)+(t.desc&&t.desc.length>60?'...':'')+'</div>'
+      + '<span class="tr-badge soon">Coming Soon</span></div></div>';
+  });
   if(allGrid) allGrid.innerHTML = allHtml || '<p style="color:#9ca3af;padding:20px 0;">No tools registered yet.</p>';
-
-  // Parse Twemoji for consistent flag/emoji rendering on Windows
-  if (typeof twemoji !== 'undefined') {
-    twemoji.parse(document.body, { folder: 'svg', ext: '.svg', base: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/' });
-  }
 });
 </script>
 </body>
