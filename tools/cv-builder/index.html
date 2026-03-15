@@ -166,10 +166,22 @@ input,textarea,select{font-family:'Outfit',system-ui,sans-serif}
   ]
 }
 </script>
+<script src="/assets/js/lib/save-state.js"></script>
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
 <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0">Free CV & Resume Builder for Africa</h1>
+
+<!-- Saved CVs Section -->
+<div id="cv-saved-section" style="display:none;max-width:860px;margin:12px auto 0;padding:0 24px;">
+  <div style="background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:20px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+      <h3 style="font-size:.95rem;font-weight:800;color:#111827;margin:0;font-family:'DM Sans',sans-serif;">Your Saved CVs</h3>
+    </div>
+    <div id="cv-saved-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;"></div>
+  </div>
+</div>
+
 <div id="root"></div>
 
 <!-- SEO Content Section -->
@@ -1198,5 +1210,42 @@ ReactDOM.createRoot(document.getElementById('root')).render(<CVBuilder/>);
 </script>
 <script src="/assets/js/favorites-widget.js" defer></script>
 <script src="/assets/js/lib/auto-email-gate.js" defer></script>
+<script>
+// CV Builder — saved CVs
+(function(){
+  if(typeof SaveState==='undefined')return;
+  var ss=new SaveState('cv-builder',{maxFree:10});
+  var section=document.getElementById('cv-saved-section');
+  var grid=document.getElementById('cv-saved-grid');
+  if(!section||!grid)return;
+
+  function esc(s){return s?String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'):'';}
+  function ago(ts){var s=Math.floor((Date.now()-ts)/1000);if(s<60)return'just now';if(s<3600)return Math.floor(s/60)+'m ago';if(s<86400)return Math.floor(s/3600)+'h ago';var d=Math.floor(s/86400);if(d<30)return d+'d ago';return new Date(ts).toLocaleDateString('en-GB',{day:'numeric',month:'short'});}
+
+  function render(){
+    var items=ss.getAll();
+    if(!items.length){section.style.display='none';return;}
+    section.style.display='';
+    grid.innerHTML=items.map(function(it){
+      var d=it.data||{};
+      return '<div style="background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:10px;padding:14px;transition:border-color .15s;" onmouseenter="this.style.borderColor=\'#007AFF\'" onmouseleave="this.style.borderColor=\'#e5e7eb\'">'+
+        '<div style="font-size:.82rem;font-weight:700;color:#111827;margin-bottom:3px;">'+esc(it.title)+'</div>'+
+        (d.name?'<div style="font-size:.72rem;color:#6b7280;">'+esc(d.name)+'</div>':'')+
+        '<div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px;">'+
+        '<span style="font-size:.6rem;color:#9ca3af;">'+ago(it.updatedAt)+'</span>'+
+        '<button onclick="cvDelSaved(\''+it.id+'\')" style="background:none;border:none;color:#ef4444;font-size:.65rem;font-weight:700;cursor:pointer;">Delete</button>'+
+        '</div></div>';
+    }).join('');
+  }
+
+  window.cvDelSaved=function(id){if(confirm('Delete this saved CV?')){ss.delete(id);render();}};
+  window.cvSaveCurrent=function(name,personalName){
+    if(!name)return;
+    ss.save({title:name,data:{name:personalName||''}});
+    render();
+  };
+  render();
+})();
+</script>
 </body>
 </html>

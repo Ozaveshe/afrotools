@@ -199,12 +199,24 @@
   ]
 }
 </script>
+<script src="/assets/js/lib/save-state.js"></script>
 </head>
 <body>
 <div class="priv-bar">&#1D4ED8; Your files <strong>never leave your browser</strong> &#8212; zero server uploads</div>
 <afro-navbar></afro-navbar>
 <nav class="crumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span>PDF Workspace</nav>
 <div class="ws-page">
+
+<!-- Saved Recent Operations -->
+<div id="pdf-saved-section" style="max-width:680px;margin:0 auto;padding:24px 24px 0;display:none;">
+  <div style="background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:20px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+      <h3 style="font-size:.95rem;font-weight:800;color:#111827;margin:0;">Recent PDF Operations</h3>
+    </div>
+    <div id="pdf-saved-grid" style="display:flex;flex-wrap:wrap;gap:10px;"></div>
+  </div>
+</div>
+
 <div class="up-screen" id="upScreen">
   <h1>Your <b>PDF Workspace</b></h1>
   <p>Upload a PDF, then split, merge, rearrange, rotate, compress, and download &#8212; all from one place.</p>
@@ -593,6 +605,44 @@ function showP(t,s){$("pT").textContent=t;$("pS").textContent=s;$("pF").style.wi
 function pPr(p){$("pF").style.width=p+"%"}
 function hideP(){$("pOv").classList.remove("on")}
 function toast(m,e){var t=$("toast");t.textContent=m;t.className="toast"+(e?" err":"")+" on";setTimeout(function(){t.classList.remove("on")},3500)}
+</script>
+<script>
+// PDF Workspace — saved recent operations
+(function(){
+  if(typeof SaveState==='undefined')return;
+  var ss=new SaveState('pdf-workspace',{maxFree:10});
+  var section=document.getElementById('pdf-saved-section');
+  var grid=document.getElementById('pdf-saved-grid');
+  if(!section||!grid)return;
+
+  function render(){
+    var items=ss.getAll();
+    if(!items.length){section.style.display='none';return;}
+    section.style.display='';
+    grid.innerHTML=items.map(function(it){
+      return '<div style="flex:1;min-width:180px;max-width:240px;background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:10px;padding:12px;position:relative;">'+
+        '<div style="font-size:.8rem;font-weight:700;color:#111827;margin-bottom:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+esc(it.title)+'</div>'+
+        '<div style="font-size:.68rem;color:#6b7280;">'+esc(it.data&&it.data.operation||'')+'</div>'+
+        '<div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px;">'+
+        '<span style="font-size:.6rem;color:#9ca3af;">'+ago(it.updatedAt)+'</span>'+
+        '<button onclick="pdfDelSaved(\''+it.id+'\')" style="background:none;border:none;color:#ef4444;font-size:.65rem;font-weight:700;cursor:pointer;">Delete</button>'+
+        '</div></div>';
+    }).join('');
+  }
+
+  function ago(ts){
+    var s=Math.floor((Date.now()-ts)/1000);
+    if(s<60)return'just now';if(s<3600)return Math.floor(s/60)+'m ago';
+    if(s<86400)return Math.floor(s/3600)+'h ago';var d=Math.floor(s/86400);
+    if(d<30)return d+'d ago';return new Date(ts).toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+  }
+  function esc(s){return s?String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'):'';}
+
+  window.pdfDelSaved=function(id){if(confirm('Delete this entry?')){ss.delete(id);render();}};
+  window.pdfSaveOp=function(name,operation){ss.save({title:name,data:{operation:operation}});render();};
+
+  render();
+})();
 </script>
 </body>
 </html>

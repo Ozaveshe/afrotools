@@ -31,6 +31,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800;1,9..40,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/invoice-generator.css">
+<script src="/assets/js/lib/save-state.js"></script>
 
 <style>
 :root { --color-brand: var(--color-primary); }
@@ -40,6 +41,16 @@
 <afro-navbar active="ecommerce"></afro-navbar>
 
 <div class="inv-page">
+
+<!-- ══════ SAVED INVOICES ══════ -->
+<div id="inv-saved-section" style="display:none;max-width:1140px;margin:0 auto;padding:20px 20px 0;">
+  <div style="background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:20px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+      <h3 style="font-size:.95rem;font-weight:800;color:#111827;margin:0;">Your Saved Invoices</h3>
+    </div>
+    <div id="inv-saved-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;"></div>
+  </div>
+</div>
 
 <!-- ══════ HERO ══════ -->
 <section class="inv-hero">
@@ -1153,5 +1164,47 @@ init();
 })();
 </script>
 <script src="/assets/js/lib/auto-email-gate.js" defer></script>
+<script>
+// Invoice Generator — saved invoices
+(function(){
+  if(typeof SaveState==='undefined')return;
+  var ss=new SaveState('invoice-generator',{maxFree:20});
+  var section=document.getElementById('inv-saved-section');
+  var grid=document.getElementById('inv-saved-grid');
+  if(!section||!grid)return;
+
+  function esc(s){return s?String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'):'';}
+  function ago(ts){var s=Math.floor((Date.now()-ts)/1000);if(s<60)return'just now';if(s<3600)return Math.floor(s/60)+'m ago';if(s<86400)return Math.floor(s/3600)+'h ago';var d=Math.floor(s/86400);if(d<30)return d+'d ago';return new Date(ts).toLocaleDateString('en-GB',{day:'numeric',month:'short'});}
+
+  function render(){
+    var items=ss.getAll();
+    if(!items.length){section.style.display='none';return;}
+    section.style.display='';
+    grid.innerHTML=items.map(function(it){
+      var d=it.data||{};
+      return '<div style="background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:10px;padding:14px;cursor:pointer;transition:border-color .15s;" onmouseenter="this.style.borderColor=\'#007AFF\'" onmouseleave="this.style.borderColor=\'#e5e7eb\'">'+
+        '<div style="font-size:.82rem;font-weight:700;color:#111827;margin-bottom:3px;">'+esc(it.title)+'</div>'+
+        (d.client?'<div style="font-size:.72rem;color:#6b7280;">Client: '+esc(d.client)+'</div>':'')+
+        (d.total?'<div style="font-size:.78rem;font-weight:800;color:#007AFF;margin-top:4px;">'+esc(d.total)+'</div>':'')+
+        '<div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px;">'+
+        '<span style="font-size:.6rem;color:#9ca3af;">'+ago(it.updatedAt)+'</span>'+
+        '<button onclick="event.stopPropagation();invDelSaved(\''+it.id+'\')" style="background:none;border:none;color:#ef4444;font-size:.65rem;font-weight:700;cursor:pointer;">Delete</button>'+
+        '</div></div>';
+    }).join('');
+  }
+
+  window.invDelSaved=function(id){if(confirm('Delete this saved invoice?')){ss.delete(id);render();}};
+  window.invSaveCurrentInvoice=function(){
+    var name=prompt('Name this invoice (e.g., "Invoice #001 - Acme Corp"):');
+    if(!name)return;
+    var clientEl=document.getElementById('clientName')||document.querySelector('[name="clientName"]');
+    var totalEl=document.querySelector('.total-amount,.inv-total');
+    ss.save({title:name,data:{client:clientEl?clientEl.value:'',total:totalEl?totalEl.textContent:''}});
+    render();
+    alert('Invoice saved!');
+  };
+  render();
+})();
+</script>
 </body>
 </html>
