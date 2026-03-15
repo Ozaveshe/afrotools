@@ -139,6 +139,8 @@
       min-height: 40px;
     }
     .lnk:hover, .lnk.open { color: #5ddb9e; background: #EEF4FF; }
+    .lnk.active { color: #5ddb9e; position: relative; }
+    .lnk.active::after { content: ''; position: absolute; bottom: 2px; left: 50%; transform: translateX(-50%); width: 16px; height: 2px; background: #5ddb9e; border-radius: 2px; }
     .chev { width: 7px; height: 4px; flex-shrink: 0; opacity: 0.4; transition: transform 0.18s, opacity 0.13s; }
     .lnk.open .chev { transform: rotate(180deg); opacity: 1; color: #5ddb9e; }
 
@@ -425,6 +427,19 @@
       font-size: 0.58rem; font-weight: 600; font-family: inherit;
     }
 
+    /* RECENT TOOLS in search */
+    .search-section-label {
+      font-size: 0.58rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: #9ca3af;
+      padding: 10px 12px 4px;
+    }
+    .recent-clear {
+      font-size: 0.58rem; font-weight: 600; color: #5ddb9e;
+      cursor: pointer; float: right; background: none; border: none;
+      font-family: inherit; padding: 0;
+    }
+    .recent-clear:hover { text-decoration: underline; }
+
     /* MOBILE SEARCH in drawer */
     .mob-search-bar {
       display: flex; align-items: center; gap: 10px;
@@ -648,6 +663,42 @@
         document.body.style.overflow = '';
       }));
 
+      // ── ACTIVE PAGE INDICATOR ──
+      const path = window.location.pathname;
+      sr.querySelectorAll('.nav-links .lnk[href]').forEach(link => {
+        const href = link.getAttribute('href');
+        if (href && href !== '/' && path.startsWith(href)) {
+          link.classList.add('active');
+        }
+      });
+
+      // ── RECENTLY USED TOOLS (localStorage) ──
+      const RECENT_KEY = 'aft_recent_tools';
+      const MAX_RECENT = 5;
+
+      const getRecent = () => {
+        try {
+          return JSON.parse(localStorage.getItem(RECENT_KEY)) || [];
+        } catch { return []; }
+      };
+
+      const saveRecent = (tool) => {
+        try {
+          let recent = getRecent().filter(t => t.href !== tool.href);
+          recent.unshift(tool);
+          if (recent.length > MAX_RECENT) recent = recent.slice(0, MAX_RECENT);
+          localStorage.setItem(RECENT_KEY, JSON.stringify(recent));
+        } catch {}
+      };
+
+      // Track page visit as recently used
+      if (typeof AFRO_TOOLS !== 'undefined' && Array.isArray(AFRO_TOOLS)) {
+        const currentTool = AFRO_TOOLS.find(t => t.status === 'live' && path.startsWith(t.href));
+        if (currentTool) {
+          saveRecent({ name: currentTool.name, href: currentTool.href, icon: currentTool.icon || '🔧' });
+        }
+      }
+
       // ── SEARCH ──
       const searchBtn     = sr.querySelector('#searchBtn');
       const searchOverlay = sr.querySelector('#searchOverlay');
@@ -716,6 +767,27 @@
           return;
         }
         if (!query || query.length < 1) {
+          // Show recently used tools if any
+          const recent = getRecent();
+          if (recent.length > 0) {
+            container.innerHTML = '<div class="search-section-label">Recently Used <button class="recent-clear" id="clearRecent">Clear</button></div>' +
+              recent.map((t, i) => `
+                <a href="${t.href}" class="search-result${i === 0 ? ' active' : ''}" data-idx="${i}">
+                  <div class="search-result-icon">${escapeHtml(t.icon || '🔧')}</div>
+                  <div>
+                    <div class="search-result-name">${escapeHtml(t.name)}</div>
+                  </div>
+                </a>`).join('') +
+              '<div class="search-section-label" style="padding-top:16px">All Tools</div>' +
+              '<div class="search-empty" style="padding:16px"><div class="search-empty-hint">Type to search 100+ tools</div></div>';
+            _activeIdx = 0;
+            container.querySelector('#clearRecent')?.addEventListener('click', e => {
+              e.preventDefault(); e.stopPropagation();
+              try { localStorage.removeItem(RECENT_KEY); } catch {}
+              container.innerHTML = '<div class="search-empty"><div class="search-empty-icon">🔍</div><div class="search-empty-text">Search 100+ African tools</div><div class="search-empty-hint">Try "PAYE", "PDF", "japa", "BMI"…</div></div>';
+            });
+            return;
+          }
           container.innerHTML = '<div class="search-empty"><div class="search-empty-icon">🔍</div><div class="search-empty-text">Search 100+ African tools</div><div class="search-empty-hint">Try "PAYE", "PDF", "japa", "BMI"…</div></div>';
           return;
         }

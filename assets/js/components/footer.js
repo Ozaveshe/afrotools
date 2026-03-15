@@ -27,10 +27,15 @@
       { en: '🇹🇿 Tanzania',     href: '/tanzania/' },
     ],
     company: [
-      { en: 'About',       fr: 'À propos',   href: '/about/' },
+      { en: 'About',       fr: '\u00C0 propos',   href: '/about/' },
       { en: 'Contact',     fr: 'Contact',    href: '/contact/' },
-      { en: 'Changelog',   fr: 'Mises à jour', href: '/changelog/' },
-      { en: 'Advertise',   fr: 'Publicité',  href: '/advertise/' },
+      { en: 'Changelog',   fr: 'Mises \u00e0 jour', href: '/changelog/' },
+      { en: 'All Tools',   fr: 'Tous les outils', href: '/all-tools/' },
+    ],
+    legal: [
+      { en: 'Privacy Policy', fr: 'Confidentialit\u00e9', href: '/privacy-policy' },
+      { en: 'Terms of Use',   fr: 'Conditions',           href: '/terms-of-use' },
+      { en: 'Sitemap',        fr: 'Plan du site',         href: '/sitemap.xml' },
     ],
   };
 
@@ -142,7 +147,7 @@
        comfortably readable, not straining to see.
     ───────────────────────────────────────────── */
     .links {
-      display: grid; grid-template-columns: repeat(3, 1fr);
+      display: grid; grid-template-columns: repeat(4, 1fr);
       gap: 32px; padding: 44px 0;
       border-bottom: 1px solid #1f2937;
     }
@@ -210,6 +215,22 @@
     /* ─────────────────────────────────────────────
        RESPONSIVE
     ───────────────────────────────────────────── */
+    /* Social links */
+    .social { display: flex; gap: 12px; margin-top: 16px; }
+    .social a {
+      width: 36px; height: 36px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(255,255,255,0.06); border: 1px solid #374151;
+      color: #9ca3af; text-decoration: none; font-size: 1rem;
+      transition: all 0.15s;
+    }
+    .social a:hover { background: #5ddb9e; color: #fff; border-color: #5ddb9e; }
+
+    .built-with {
+      font-size: 0.78rem; font-weight: 500; color: #6b7280;
+      margin-top: 18px;
+    }
+
     @media (max-width: 900px) {
       .top   { grid-template-columns: 1fr; gap: 36px; padding: 40px 0 36px; }
       .links { grid-template-columns: 1fr 1fr; }
@@ -277,6 +298,12 @@
                   </div>
                 </a>
                 <p class="tagline">${tagline}</p>
+                <div class="social">
+                  <a href="https://twitter.com/afrotools" target="_blank" rel="noopener" aria-label="Twitter / X">&#120143;</a>
+                  <a href="https://linkedin.com/company/afrotools" target="_blank" rel="noopener" aria-label="LinkedIn">in</a>
+                  <a href="https://github.com/Ozaveshe/afrotools" target="_blank" rel="noopener" aria-label="GitHub">GH</a>
+                </div>
+                <p class="built-with">Built with &#9829; for Africa</p>
               </div>
               <div>
                 <div class="nl-eyebrow">${nlEyebrow}</div>
@@ -293,6 +320,7 @@
               ${this._col('Tools', 'Outils', LINKS.tools)}
               ${this._col('Countries', 'Pays', LINKS.countries)}
               ${this._col('Company', 'Entreprise', LINKS.company)}
+              ${this._col('Legal', 'L\u00e9gal', LINKS.legal)}
             </div>
 
             <div class="stats">
