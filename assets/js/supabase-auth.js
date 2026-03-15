@@ -403,7 +403,7 @@
         var result = await _sb.auth.signInWithOAuth({
           provider: 'google',
           options: {
-            redirectTo: window.location.origin + '/',
+            redirectTo: window.location.origin + '/dashboard/',
             queryParams: { prompt: 'select_account' }
           }
         });
@@ -448,7 +448,7 @@
             password: password,
             options: {
               data: { full_name: name, country: country },
-              emailRedirectTo: window.location.origin + '/'
+              emailRedirectTo: window.location.origin + '/dashboard/'
             }
           });
 
@@ -462,13 +462,9 @@
             closeModal();
             refreshNavbar();
             fire('afro-auth-change', { user: _user, profile: _profile, event: 'SIGNED_IN' });
-            // After signup: redirect to homepage so user sees personalised experience
-            // Auth confirmed — stay on current page and refresh UI
-            if (window.location.pathname.indexOf('/dashboard') === 0) {
-              window.location.reload();
-            } else {
-              // Just refresh navbar state — don't redirect
-              window.dispatchEvent(new Event('afroauth:signedIn'));
+            // After signup: redirect to dashboard
+            if (window.location.pathname.indexOf('/dashboard') !== 0) {
+              window.location.href = '/dashboard/';
             }
             return;
           }
