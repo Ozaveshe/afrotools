@@ -16,7 +16,18 @@
   window._afroSupaAuthLoaded = true;
 
   var SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
+  var SUPABASE_PROXY = (window.location.origin || '') + '/supabase-proxy';
   var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpwY2xhZ3RnY3pzeWdyZ3p0bHRzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0NTg4MzIsImV4cCI6MjA4OTAzNDgzMn0._G-677vi2UTAhcU3t0aquvmd8lnQUBil53ok_Z623F0';
+
+  // Custom fetch: route all Supabase API calls through our Netlify proxy so auth
+  // works even when supabase.co is blocked by ad blockers or ISP restrictions.
+  // Falls back to direct if proxy fails.
+  var _proxyFetch = function (url, options) {
+    var proxyUrl = url.replace(SUPABASE_URL, SUPABASE_PROXY);
+    return fetch(proxyUrl, options).catch(function () {
+      return fetch(url, options);
+    });
+  };
 
   var _sb = null;       // Supabase client
   var _user = null;      // auth.users row
@@ -91,7 +102,8 @@
           detectSessionInUrl: true,
           flowType: 'pkce',
           storage: window.localStorage
-        }
+        },
+        global: { fetch: _proxyFetch }
       });
 
       _sb.auth.onAuthStateChange(async function (event, session) {
