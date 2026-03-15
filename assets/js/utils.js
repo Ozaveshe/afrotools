@@ -1,58 +1,108 @@
 /**
- * AFROTOOLS UTILITIES
- * ══════════════════════════════════════════════════════════════
- * Shared helpers used across all tools and pages.
- * Exposed on window.AfroTools so any page script can call them.
+ * AFROTOOLS UTILITIES — Compatibility Layer
+ * ===================================================================
+ * This file preserves the original AfroTools.fmt, AfroTools.i18n,
+ * AfroTools.reveal, AfroTools.ai, AfroTools.analytics,
+ * AfroTools.toast, and AfroTools.share APIs.
  *
- * Usage:
- *   AfroTools.fmt.ngn(500000)      → "₦500,000"
- *   AfroTools.fmt.kes(80000)       → "KES 80,000"
- *   AfroTools.fmt.pct(18.7)        → "18.7%"
- *   AfroTools.i18n.t('calculate')  → "Calculate" or "Calculer"
- *   AfroTools.reveal.init()        → activates scroll reveals
- * ══════════════════════════════════════════════════════════════
+ * New code should import the individual lib modules directly:
+ *   /assets/js/lib/currency.js    -> AfroTools.currency
+ *   /assets/js/lib/formatters.js  -> AfroTools.fmt
+ *   /assets/js/lib/validators.js  -> AfroTools.validate
+ *   /assets/js/lib/analytics.js   -> AfroTools.analytics
+ *   /assets/js/lib/storage.js     -> AfroTools.store
+ *   /assets/js/lib/a11y.js        -> AfroTools.a11y
+ *   /assets/js/lib/toast.js       -> AfroTools.toast (standalone)
+ *   /assets/js/lib/share-state.js -> AfroTools.shareState
+ *   /assets/js/lib/pdf-template.js-> AfroTools.pdf
+ *   /assets/js/lib/calculate-animation.js -> AfroTools.anim
+ *
+ * This file adds legacy aliases and features not yet in lib modules:
+ *   - AfroTools.fmt.ngn(), .kes(), .ghs(), .zar(), .egp(), .tzs()
+ *   - AfroTools.fmt.currency(), .pct(), .compact()
+ *   - AfroTools.i18n (translation system)
+ *   - AfroTools.reveal (scroll reveal)
+ *   - AfroTools.ai (AI advisor API helper)
+ *   - AfroTools.share.shareResult() (result card sharing)
+ * ===================================================================
  */
 
 (function (window) {
   'use strict';
 
-  // ── CURRENCY FORMATTERS ────────────────────────────────────
-  const fmt = {
+  // Ensure namespace exists (lib modules may have already created it)
+  window.AfroTools = window.AfroTools || {};
+
+  // ── LEGACY CURRENCY FORMATTERS ───────────────────────────────
+  // These delegate to AfroTools.currency.format() if available,
+  // otherwise use standalone implementations for backward compat.
+
+  const legacyFmt = {
     /** Nigeria Naira */
-    ngn: (n) => '₦' + Math.round(n).toLocaleString('en-NG'),
+    ngn: (n) => {
+      if (window.AfroTools.currency) return window.AfroTools.currency.format('NGN', n);
+      return '\u20A6' + Math.round(n).toLocaleString('en-NG');
+    },
 
     /** Kenya Shilling */
-    kes: (n) => 'KES ' + Math.round(n).toLocaleString('en-KE'),
+    kes: (n) => {
+      if (window.AfroTools.currency) return window.AfroTools.currency.format('KES', n);
+      return 'KES ' + Math.round(n).toLocaleString('en-KE');
+    },
 
     /** Ghana Cedi */
-    ghs: (n) => 'GHS ' + Math.round(n).toLocaleString('en-GH'),
+    ghs: (n) => {
+      if (window.AfroTools.currency) return window.AfroTools.currency.format('GHS', n);
+      return 'GHS ' + Math.round(n).toLocaleString('en-GH');
+    },
 
     /** South Africa Rand */
-    zar: (n) => 'R ' + Math.round(n).toLocaleString('en-ZA'),
+    zar: (n) => {
+      if (window.AfroTools.currency) return window.AfroTools.currency.format('ZAR', n);
+      return 'R ' + Math.round(n).toLocaleString('en-ZA');
+    },
 
     /** Egypt Pound */
-    egp: (n) => 'EGP ' + Math.round(n).toLocaleString('en-EG'),
+    egp: (n) => {
+      if (window.AfroTools.currency) return window.AfroTools.currency.format('EGP', n);
+      return 'EGP ' + Math.round(n).toLocaleString('en-EG');
+    },
 
     /** Tanzania Shilling */
-    tzs: (n) => 'TZS ' + Math.round(n).toLocaleString('en-TZ'),
+    tzs: (n) => {
+      if (window.AfroTools.currency) return window.AfroTools.currency.format('TZS', n);
+      return 'TZS ' + Math.round(n).toLocaleString('en-TZ');
+    },
 
     /** Generic — pass currency code */
     currency: (n, code) => {
-      const map = { NGN: '₦', KES: 'KES ', GHS: 'GHS ', ZAR: 'R ', EGP: 'EGP ', TZS: 'TZS ' };
+      if (window.AfroTools.currency) return window.AfroTools.currency.format(code, n);
+      const map = { NGN: '\u20A6', KES: 'KES ', GHS: 'GHS ', ZAR: 'R ', EGP: 'EGP ', TZS: 'TZS ' };
       return (map[code] || code + ' ') + Math.round(n).toLocaleString();
     },
 
     /** Percentage — always 1 decimal */
-    pct: (n) => n.toFixed(1) + '%',
+    pct: (n) => {
+      if (window.AfroTools.fmt && window.AfroTools.fmt.percent) {
+        return window.AfroTools.fmt.percent(n, 1, false);
+      }
+      return n.toFixed(1) + '%';
+    },
 
-    /** Compact number (1,200,000 → 1.2M) */
+    /** Compact number (1,200,000 -> 1.2M) */
     compact: (n) => {
+      if (window.AfroTools.fmt && window.AfroTools.fmt.compact) {
+        return window.AfroTools.fmt.compact(n);
+      }
       if (n >= 1_000_000_000) return (n / 1_000_000_000).toFixed(1) + 'B';
       if (n >= 1_000_000)     return (n / 1_000_000).toFixed(1) + 'M';
       if (n >= 1_000)         return (n / 1_000).toFixed(1) + 'K';
       return Math.round(n).toString();
     },
   };
+
+  // Merge: lib/formatters.js methods + legacy currency shortcuts
+  window.AfroTools.fmt = Object.assign(legacyFmt, window.AfroTools.fmt || {});
 
   // ── i18n ───────────────────────────────────────────────────
   const LANG_KEY = 'afrotools_lang';
@@ -74,16 +124,16 @@
       net_income:        'Net Income',
       ai_title:          'AI Financial Advisor',
       ai_idle:           'Calculate to get your personalised AI analysis.',
-      ai_thinking:       'Analysing your results…',
-      chat_placeholder:  'Ask a follow-up question…',
+      ai_thinking:       'Analysing your results\u2026',
+      chat_placeholder:  'Ask a follow-up question\u2026',
       send:              'Send',
       free_tool:         'Free Tool',
       no_signup:         'No sign-up required',
     },
     fr: {
       calculate:         'Calculer',
-      reset:             'Réinitialiser',
-      results:           'Vos Résultats',
+      reset:             'R\u00e9initialiser',
+      results:           'Vos R\u00e9sultats',
       monthly:           'Mensuel',
       annual:            'Annuel',
       monthly_takehome:  'Salaire Net Mensuel',
@@ -95,9 +145,9 @@
       gross_income:      'Revenu Brut',
       net_income:        'Revenu Net',
       ai_title:          'Conseiller Financier IA',
-      ai_idle:           'Calculez pour obtenir votre analyse IA personnalisée.',
-      ai_thinking:       'Analyse de vos résultats…',
-      chat_placeholder:  'Posez une question de suivi…',
+      ai_idle:           'Calculez pour obtenir votre analyse IA personnalis\u00e9e.',
+      ai_thinking:       'Analyse de vos r\u00e9sultats\u2026',
+      chat_placeholder:  'Posez une question de suivi\u2026',
       send:              'Envoyer',
       free_tool:         'Outil Gratuit',
       no_signup:         'Sans inscription',
@@ -139,7 +189,6 @@
   const reveal = {
     init() {
       if (!('IntersectionObserver' in window)) {
-        // Fallback: just show everything
         document.querySelectorAll('.reveal').forEach(el => el.classList.add('is-visible'));
         return;
       }
@@ -148,7 +197,7 @@
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             entry.target.classList.add('is-visible');
-            observer.unobserve(entry.target); // Fire once
+            observer.unobserve(entry.target);
           }
         });
       }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
@@ -161,12 +210,10 @@
   const ai = {
     /**
      * Call Claude for AI analysis via Netlify serverless proxy.
-     * Returns response text or throws. Handles rate limiting gracefully.
-     *
-     * @param {string} prompt - The full prompt
-     * @param {string} systemPrompt - Optional system context
-     * @param {Array}  history - Optional message history for follow-up
-     * @param {Object} opts - Optional: { tool, context }
+     * @param {string} prompt
+     * @param {string} systemPrompt
+     * @param {Array}  history
+     * @param {Object} opts - { tool, context }
      */
     async ask(prompt, systemPrompt = '', history = [], opts = {}) {
       const messages = history.length > 0
@@ -178,7 +225,6 @@
       if (opts.tool) body.tool = opts.tool;
       if (opts.context) body.context = opts.context;
 
-      // Include auth token for higher rate limits
       const reqHeaders = { 'Content-Type': 'application/json' };
       if (window.AfroAuth) {
         const token = AfroAuth.getSessionToken();
@@ -191,19 +237,19 @@
         body: JSON.stringify(body),
       });
 
-      // Handle rate limiting
       if (res.status === 429) {
         const data = await res.json();
-        if (window.gtag) window.gtag('event', 'ai_rate_limited', { tool_id: opts.tool || 'unknown' });
+        if (window.AfroTools.analytics) {
+          window.AfroTools.analytics.trackRateLimit(opts.tool);
+        }
         throw new Error(data.reply || 'Daily AI limit reached. Sign up for more questions.');
       }
 
       if (!res.ok) throw new Error(`API error: ${res.status}`);
       const data = await res.json();
 
-      // Track AI chat message
-      if (window.gtag && opts.tool) {
-        window.gtag('event', 'ai_chat_message', { tool_id: opts.tool, turn_number: messages.length });
+      if (window.AfroTools.analytics && opts.tool) {
+        window.AfroTools.analytics.trackAIQuery(opts.tool, prompt, messages.length);
       }
 
       return data.reply || '';
@@ -227,7 +273,7 @@
           const file = new File([opts.imageBlob], 'afrotools-result.png', { type: 'image/png' });
           if (navigator.canShare && navigator.canShare({ files: [file] })) {
             await navigator.share({ title: opts.title || 'AfroTools Result', text: opts.text || '', url: shareUrl, files: [file] });
-            if (window.gtag) window.gtag('event', 'share_result_card', { tool_id: opts.toolId, method: 'native_image' });
+            if (window.AfroTools.analytics) window.AfroTools.analytics.trackShare(opts.toolId, 'native_image');
             return 'shared';
           }
         } catch (e) { if (e.name === 'AbortError') return 'cancelled'; }
@@ -237,7 +283,7 @@
       if (navigator.share) {
         try {
           await navigator.share({ title: opts.title || 'AfroTools Result', text: opts.text || '', url: shareUrl });
-          if (window.gtag) window.gtag('event', 'share_result_card', { tool_id: opts.toolId, method: 'native' });
+          if (window.AfroTools.analytics) window.AfroTools.analytics.trackShare(opts.toolId, 'native');
           return 'shared';
         } catch (e) { if (e.name === 'AbortError') return 'cancelled'; }
       }
@@ -245,83 +291,97 @@
       // Fallback: copy link to clipboard
       try {
         await navigator.clipboard.writeText((opts.text || '') + ' ' + shareUrl);
-        if (window.gtag) window.gtag('event', 'share_result_card', { tool_id: opts.toolId, method: 'clipboard' });
-        window.AfroTools.toast.show('Link copied to clipboard!', 'success');
+        if (window.AfroTools.analytics) window.AfroTools.analytics.trackShare(opts.toolId, 'clipboard');
+        if (window.AfroTools.toast) window.AfroTools.toast.success('Link copied to clipboard!');
         return 'copied';
       } catch {
-        window.AfroTools.toast.show('Could not share. Try copying the URL manually.', 'error');
+        if (window.AfroTools.toast) window.AfroTools.toast.error('Could not share. Try copying the URL manually.');
         return 'failed';
       }
     }
   };
 
-  // ── ANALYTICS WRAPPER ──────────────────────────────────────
-  const analytics = {
-    /** Track a tool calculation */
+  // ── LEGACY ANALYTICS (delegates to new module) ─────────────
+  const legacyAnalytics = {
     trackCalc(toolId, country, value) {
-      if (window.gtag) {
+      if (window.AfroTools.analytics && window.AfroTools.analytics.trackCalculation) {
+        window.AfroTools.analytics.trackCalculation(toolId, country, value);
+      } else if (window.gtag) {
         window.gtag('event', 'calculate', {
-          tool_id:  toolId,
-          country:  country,
-          value:    Math.round(value),
+          tool_id: toolId, country: country, value: Math.round(value),
         });
       }
     },
-
-    /** Track an AI advisor trigger */
     trackAI(toolId) {
-      if (window.gtag) {
+      if (window.AfroTools.analytics && window.AfroTools.analytics.trackAITriggered) {
+        window.AfroTools.analytics.trackAITriggered(toolId);
+      } else if (window.gtag) {
         window.gtag('event', 'ai_advisor_triggered', { tool_id: toolId });
       }
     },
-
-    /** Track newsletter signup */
     trackNewsletter() {
-      if (window.gtag) {
+      if (window.AfroTools.analytics && window.AfroTools.analytics.trackNewsletter) {
+        window.AfroTools.analytics.trackNewsletter();
+      } else if (window.gtag) {
         window.gtag('event', 'newsletter_signup');
       }
     },
   };
 
-  // ── TOAST NOTIFICATIONS ────────────────────────────────────
-  const toast = {
-    _container: null,
+  // Only set analytics if the new module hasn't already claimed it
+  if (!window.AfroTools.analytics) {
+    window.AfroTools.analytics = legacyAnalytics;
+  } else {
+    // Merge legacy aliases onto the new analytics module
+    Object.assign(window.AfroTools.analytics, legacyAnalytics);
+  }
 
-    _ensureContainer() {
-      if (!this._container) {
-        this._container = document.createElement('div');
-        Object.assign(this._container.style, {
-          position: 'fixed', bottom: '24px', right: '24px',
-          zIndex: '400', display: 'flex', flexDirection: 'column', gap: '8px',
+  // ── ASSIGN REMAINING MODULES ───────────────────────────────
+  window.AfroTools.i18n = i18n;
+  window.AfroTools.reveal = reveal;
+  window.AfroTools.ai = ai;
+  window.AfroTools.share = share;
+
+  // Toast: only set if lib/toast.js hasn't loaded yet
+  if (!window.AfroTools.toast || !window.AfroTools.toast.success) {
+    window.AfroTools.toast = {
+      _container: null,
+      _ensureContainer() {
+        if (!this._container) {
+          this._container = document.createElement('div');
+          Object.assign(this._container.style, {
+            position: 'fixed', bottom: '24px', right: '24px',
+            zIndex: '400', display: 'flex', flexDirection: 'column', gap: '8px',
+          });
+          document.body.appendChild(this._container);
+        }
+      },
+      show(message, type = 'info', duration = 4000) {
+        this._ensureContainer();
+        const el = document.createElement('div');
+        const bg = type === 'success' ? '#5ddb9e' : type === 'error' ? '#dc3545' : '#0a1a10';
+        Object.assign(el.style, {
+          background: bg, color: 'white', padding: '12px 18px',
+          borderRadius: '5px', fontFamily: "'DM Sans', system-ui, sans-serif",
+          fontSize: '0.875rem', fontWeight: '500', boxShadow: '0 4px 16px rgba(0,0,0,0.2)',
+          maxWidth: '320px', lineHeight: '1.5',
         });
-        document.body.appendChild(this._container);
-      }
-    },
+        el.textContent = message;
+        this._container.appendChild(el);
+        setTimeout(() => {
+          el.style.opacity = '0';
+          el.style.transition = 'opacity 0.25s ease';
+          setTimeout(() => el.remove(), 300);
+        }, duration);
+      },
+      success(msg, d) { this.show(msg, 'success', d); },
+      error(msg, d)   { this.show(msg, 'error', d); },
+      info(msg, d)    { this.show(msg, 'info', d); },
+      warning(msg, d) { this.show(msg, 'warning', d); },
+    };
+  }
 
-    show(message, type = 'info', duration = 4000) {
-      this._ensureContainer();
-      const el = document.createElement('div');
-      const bg = type === 'success' ? '#5ddb9e' : type === 'error' ? '#dc3545' : '#0a1a10';
-      Object.assign(el.style, {
-        background: bg, color: 'white', padding: '12px 18px',
-        borderRadius: '5px', fontFamily: "'Barlow', Arial, sans-serif",
-        fontSize: '0.875rem', fontWeight: '400', boxShadow: '0 4px 16px rgba(0,0,0,0.2)',
-        animation: 'slideIn 0.25s ease', maxWidth: '320px', lineHeight: '1.5',
-      });
-      el.textContent = message;
-      this._container.appendChild(el);
-      setTimeout(() => {
-        el.style.opacity = '0';
-        el.style.transition = 'opacity 0.25s ease';
-        setTimeout(() => el.remove(), 300);
-      }, duration);
-    },
-  };
-
-  // ── EXPOSE GLOBALLY ────────────────────────────────────────
-  window.AfroTools = { fmt, i18n, reveal, ai, analytics, toast, share };
-
-  // Auto-apply translations on load
+  // ── AUTO-INIT ON DOM READY ─────────────────────────────────
   document.addEventListener('DOMContentLoaded', () => {
     i18n.apply();
     reveal.init();
