@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>AfroDraft CAD v6 — Professional 2D CAD | AfroTools</title>
+<meta name="description" content="Free browser-based 2D CAD drafting tool — an AutoCAD alternative for African engineers. Draw, dimension, annotate, and export to DXF/PDF/SVG.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="stylesheet" href="assets/css/app.css">
+<link rel="stylesheet" href="assets/css/themes/dark.css" id="theme-css">
+</head>
+<body class="theme-dark">
+  <!-- Loading screen -->
+  <div id="loading">
+    <div class="loading-logo">AfroDraft</div>
+    <div class="loading-bar"><div class="loading-bar-fill"></div></div>
+    <div class="loading-text">Starting CAD engine...</div>
+  </div>
+
+  <div id="app">
+    <!-- Tab bar (open drawings) -->
+    <div id="tab-bar">
+      <div id="tab-list"></div>
+      <button id="tab-new" title="New Drawing (Ctrl+N)">+</button>
+    </div>
+
+    <!-- Ribbon toolbar -->
+    <div id="ribbon"></div>
+
+    <!-- Main area: rulers + canvas + panels -->
+    <div id="main-area">
+      <!-- Corner square -->
+      <div id="ruler-corner"></div>
+      <!-- Top ruler -->
+      <canvas id="ruler-h" class="ruler"></canvas>
+      <!-- Left ruler -->
+      <canvas id="ruler-v" class="ruler"></canvas>
+      <!-- Canvas viewport -->
+      <div id="canvas-wrap">
+        <canvas id="cad-canvas"></canvas>
+        <!-- Minimap -->
+        <canvas id="minimap" width="160" height="120"></canvas>
+        <!-- Zoom controls -->
+        <div id="zoom-controls">
+          <button id="zoom-in" title="Zoom In (+)">
+            <svg width="14" height="14" viewBox="0 0 14 14"><line x1="7" y1="2" x2="7" y2="12" stroke="currentColor" stroke-width="1.5"/><line x1="2" y1="7" x2="12" y2="7" stroke="currentColor" stroke-width="1.5"/></svg>
+          </button>
+          <span id="zoom-pct">100%</span>
+          <button id="zoom-out" title="Zoom Out (-)">
+            <svg width="14" height="14" viewBox="0 0 14 14"><line x1="2" y1="7" x2="12" y2="7" stroke="currentColor" stroke-width="1.5"/></svg>
+          </button>
+          <button id="zoom-ext" title="Zoom Extents (Z+E)">
+            <svg width="14" height="14" viewBox="0 0 14 14"><rect x="2" y="2" width="10" height="10" rx="1" stroke="currentColor" stroke-width="1.2" fill="none"/><line x1="7" y1="4" x2="7" y2="10" stroke="currentColor" stroke-width="1"/><line x1="4" y1="7" x2="10" y2="7" stroke="currentColor" stroke-width="1"/></svg>
+          </button>
+        </div>
+      </div>
+      <!-- Properties Panel (right) -->
+      <div id="properties-panel" class="panel">
+        <div class="panel-header">
+          <span class="panel-title">Properties</span>
+          <button class="panel-toggle" title="Collapse Panel">&rsaquo;</button>
+        </div>
+        <div class="panel-body">
+          <div id="props-content"></div>
+          <div id="layer-panel"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Status bar -->
+    <div id="status-bar">
+      <div id="status-coords">
+        <span id="coord-x">X: 0.0000</span>
+        <span id="coord-y">Y: 0.0000</span>
+      </div>
+      <div id="status-toggles"></div>
+      <div id="status-units">mm</div>
+    </div>
+
+    <!-- Command line -->
+    <div id="command-area">
+      <div id="cmd-history"></div>
+      <div id="cmd-input-wrap">
+        <span id="cmd-prompt">Command:</span>
+        <input id="cmd-input" type="text" placeholder="Type a command..." autocomplete="off" spellcheck="false">
+      </div>
+    </div>
+  </div>
+
+  <!-- Context menu -->
+  <div id="context-menu" class="hidden"></div>
+
+  <!-- Modal container -->
+  <div id="modal-overlay" class="hidden"></div>
+
+  <!-- Toast -->
+  <div id="toast" class="hidden"></div>
+
+  <!-- Autocomplete dropdown -->
+  <div id="cmd-autocomplete" class="hidden"></div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
