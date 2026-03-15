@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AfroFuel — Pan-African Fuel Price Tracker | AfroTools</title>
+<meta name="description" content="Live petrol, diesel, and LPG prices for all 54 African countries. Compare fuel costs, view interactive maps, calculate generator running costs. Updated weekly.">
+<link rel="canonical" href="https://afrotools.com/tools/fuel-tracker/">
+<meta property="og:title" content="AfroFuel — Pan-African Fuel Price Tracker">
+<meta property="og:description" content="Live petrol, diesel, and LPG prices for all 54 African countries. Interactive map, comparison table, and generator cost calculator.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:url" content="https://afrotools.com/tools/fuel-tracker/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+  {"@type":"WebApplication","name":"AfroFuel — Pan-African Fuel Price Tracker","description":"Live petrol, diesel, and LPG prices for all 54 African countries with interactive map, comparison table, and generator cost calculator.","url":"https://afrotools.com/tools/fuel-tracker/","applicationCategory":"FinanceApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}},
+  {"@type":"FAQPage","mainEntity":[
+    {"@type":"Question","name":"How often are African fuel prices updated?","acceptedAnswer":{"@type":"Answer","text":"AfroFuel updates fuel prices weekly, sourced from national petroleum regulators and independent market data providers across all 54 African countries."}},
+    {"@type":"Question","name":"Why are fuel prices so different across African countries?","acceptedAnswer":{"@type":"Answer","text":"Fuel prices vary due to government subsidies, taxes, refining capacity, import logistics, and exchange rate fluctuations. Oil-producing nations like Libya and Algeria often have the cheapest fuel, while landlocked countries pay more due to transport costs."}},
+    {"@type":"Question","name":"Which African country has the cheapest petrol?","acceptedAnswer":{"@type":"Answer","text":"Libya and Algeria typically have the cheapest petrol in Africa due to heavy government subsidies and domestic oil production. Prices can be as low as $0.03 per litre in Libya."}},
+    {"@type":"Question","name":"How much does it cost to run a generator in Nigeria?","acceptedAnswer":{"@type":"Answer","text":"Running a 5 KVA generator in Nigeria for 8 hours daily costs approximately NGN 150,000-200,000 per month depending on current fuel prices. Our generator calculator provides precise estimates based on live prices."}},
+    {"@type":"Question","name":"What is the difference between PMS and AGO in Nigeria?","acceptedAnswer":{"@type":"Answer","text":"PMS (Premium Motor Spirit) is petrol used in cars and small generators. AGO (Automotive Gas Oil) is diesel used in heavy machinery, trucks, and large generators. PMS is typically cheaper than AGO in Nigeria."}},
+    {"@type":"Question","name":"Are African fuel prices regulated?","acceptedAnswer":{"@type":"Answer","text":"It varies by country. Nigeria, Egypt, and Algeria heavily regulate fuel prices. Kenya, South Africa, and Ghana use market-based pricing with periodic government adjustments. Some countries have fully deregulated fuel markets."}},
+    {"@type":"Question","name":"How does LPG cooking gas pricing work in Africa?","acceptedAnswer":{"@type":"Answer","text":"LPG prices vary significantly across Africa. Nigeria and South Africa have relatively affordable LPG, while East African nations tend to pay more. Prices are quoted per kilogram and influenced by global propane prices and local distribution costs."}},
+    {"@type":"Question","name":"Can I access AfroFuel data via API?","acceptedAnswer":{"@type":"Answer","text":"Yes, the AfroFuel API provides programmatic access to live and historical fuel price data for all 54 African countries. Visit the API documentation for endpoints, authentication, and rate limits."}}
+  ]},
+  {"@type":"BreadcrumbList","itemListElement":[
+    {"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com"},
+    {"@type":"ListItem","position":2,"name":"Tools","item":"https://afrotools.com/all-tools/"},
+    {"@type":"ListItem","position":3,"name":"AfroFuel Tracker","item":"https://afrotools.com/tools/fuel-tracker/"}
+  ]}
+]}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="/assets/js/components/tool-registry.min.js"></script>
+<script src="/assets/js/lib/live-data.js"></script>
+<script src="/assets/js/lib/sparkline.js"></script>
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<script src="/assets/js/components/related-tools.min.js" defer></script>
+<script src="/assets/js/components/africa-map.js" defer></script>
+<script src="/assets/js/components/api-cta.js" defer></script>
+<script src="/assets/js/components/chat-panel.min.js" defer></script>
+
+<style>
+/* ── Reset ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7;color:#1d1d1f;-webkit-font-smoothing:antialiased}
+
+/* ── Hero ── */
+.hero{background:linear-gradient(160deg,#0d1117 0%,#0a1628 55%,#111827 100%);padding:64px 0 56px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-80px;right:-60px;width:500px;height:500px;background:radial-gradient(circle,rgba(0,122,255,.15) 0%,transparent 70%);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:-120px;left:-80px;width:350px;height:350px;background:radial-gradient(circle,rgba(255,149,0,.08) 0%,transparent 70%);pointer-events:none}
+.hero-inner{max-width:1160px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+.breadcrumb{display:flex;align-items:center;gap:6px;font-size:.7rem;font-weight:600;color:rgba(255,255,255,.4);margin-bottom:14px;flex-wrap:wrap}
+.breadcrumb a{color:rgba(255,255,255,.5);text-decoration:none}.breadcrumb a:hover{color:#60b5ff}
+.breadcrumb span{color:rgba(255,255,255,.25)}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;font-size:.67rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#60b5ff;margin-bottom:14px;padding:5px 14px;background:rgba(0,122,255,.14);border:1px solid rgba(0,122,255,.25);border-radius:100px}
+.hero h1{font-family:'Instrument Serif',Georgia,serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:400;color:#f0f6fc;line-height:1.1;letter-spacing:-.02em;margin-bottom:14px}
+.hero h1 em{font-style:normal;color:#60b5ff}
+.hero-sub{font-size:.95rem;color:rgba(255,255,255,.5);max-width:600px;line-height:1.65;margin-bottom:24px}
+.hero-stats{display:flex;gap:28px;flex-wrap:wrap}
+.hero-stat{text-align:left}
+.hero-stat-val{font-size:1.4rem;font-weight:800;color:#f0f6fc;letter-spacing:-.02em}
+.hero-stat-label{font-size:.68rem;color:rgba(255,255,255,.4);font-weight:500;text-transform:uppercase;letter-spacing:.06em}
+.last-updated{font-size:.72rem;color:rgba(255,255,255,.35);margin-top:16px}
+
+/* ── Fuel Tabs ── */
+.fuel-tabs-wrap{max-width:1160px;margin:0 auto;padding:0 24px}
+.fuel-tabs{display:flex;gap:8px;margin-top:-22px;position:relative;z-index:2;flex-wrap:wrap}
+.fuel-tab{display:inline-flex;align-items:center;gap:7px;padding:10px 22px;border-radius:100px;font-size:.85rem;font-weight:700;border:2px solid transparent;cursor:pointer;transition:all .2s;background:#fff;color:#6e6e73;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.fuel-tab.active{background:var(--color-primary,#007AFF);color:#fff;border-color:var(--color-primary,#007AFF);box-shadow:0 4px 14px rgba(0,122,255,.3)}
+.fuel-tab:not(.active):hover{border-color:#d1d5db;color:#1d1d1f}
+
+/* ── Section ── */
+.section{max-width:1160px;margin:0 auto;padding:40px 24px}
+.section-header{margin-bottom:24px}
+.section-title{font-family:'Instrument Serif',Georgia,serif;font-size:1.6rem;color:#1d1d1f;margin-bottom:6px}
+.section-sub{font-size:.88rem;color:#6e6e73;line-height:1.5}
+
+/* ── Map Section ── */
+.map-section{background:linear-gradient(180deg,#f5f5f7 0%,#eef2f7 50%,#f5f5f7 100%);padding:48px 0}
+.map-section .section-inner{max-width:1160px;margin:0 auto;padding:0 24px}
+.map-container{background:#fff;border-radius:20px;padding:32px;box-shadow:0 2px 16px rgba(0,0,0,.06);border:1px solid #e5e7eb}
+.map-legend{display:flex;align-items:center;gap:12px;margin-top:16px;justify-content:center;font-size:.75rem;color:#6e6e73}
+.map-legend-bar{width:200px;height:10px;border-radius:5px;background:linear-gradient(90deg,#007AFF,#FFD60A,#FF3B30)}
+.map-legend-label{font-weight:600}
+
+/* ── Table ── */
+.table-section{padding-bottom:0}
+.table-controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:20px}
+.table-search{flex:1;min-width:200px;max-width:360px;height:42px;border:1.5px solid #e5e7eb;border-radius:10px;padding:0 14px 0 38px;font-size:.88rem;color:#1d1d1f;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%239ca3af' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 10-1.397 1.398h-.001l3.85 3.85a1 1 0 001.415-1.414l-3.85-3.85zm-5.44 1.1a5.1 5.1 0 110-10.2 5.1 5.1 0 010 10.2z'/%3E%3C/svg%3E") 12px center no-repeat;transition:border .2s}
+.table-search:focus{outline:none;border-color:var(--color-primary,#007AFF);box-shadow:0 0 0 3px rgba(0,122,255,.1)}
+.region-filters{display:flex;gap:6px;flex-wrap:wrap}
+.region-btn{padding:7px 14px;border-radius:100px;border:1.5px solid #e5e7eb;background:#fff;font-size:.75rem;font-weight:600;color:#6e6e73;cursor:pointer;transition:all .2s}
+.region-btn.active{background:var(--color-primary,#007AFF);color:#fff;border-color:var(--color-primary,#007AFF)}
+.region-btn:not(.active):hover{border-color:#c0c0c6;color:#1d1d1f}
+.sort-select{height:42px;border:1.5px solid #e5e7eb;border-radius:10px;padding:0 32px 0 12px;font-size:.82rem;font-weight:600;color:#374151;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239CA3AF' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") right 10px center no-repeat;appearance:none;cursor:pointer}
+
+.price-table-wrap{overflow-x:auto;border-radius:16px;border:1px solid #e5e7eb;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.05)}
+.price-table{width:100%;border-collapse:collapse;font-size:.84rem}
+.price-table thead{position:sticky;top:0;z-index:5}
+.price-table th{background:#f8f9fa;padding:12px 16px;text-align:left;font-size:.7rem;font-weight:700;color:#6e6e73;text-transform:uppercase;letter-spacing:.06em;border-bottom:2px solid #e5e7eb;cursor:pointer;user-select:none;white-space:nowrap}
+.price-table th:hover{color:#1d1d1f}
+.price-table th .sort-arrow{font-size:.6rem;margin-left:4px;opacity:.4}
+.price-table th.sorted .sort-arrow{opacity:1;color:var(--color-primary,#007AFF)}
+.price-table td{padding:11px 16px;border-bottom:1px solid #f0f0f0;vertical-align:middle}
+.price-table tbody tr:nth-child(even){background:#fafbfc}
+.price-table tbody tr:hover{background:#f0f6ff}
+.country-cell{display:flex;align-items:center;gap:8px;font-weight:600;white-space:nowrap}
+.country-flag{font-size:1.15rem}
+.trend-up{color:#34c759;font-weight:700;font-size:.78rem}
+.trend-down{color:#ff3b30;font-weight:700;font-size:.78rem}
+.trend-flat{color:#8e8e93;font-weight:600;font-size:.78rem}
+.badge-regulated{display:inline-block;padding:2px 8px;border-radius:100px;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.badge-yes{background:#dcfce7;color:#16a34a}
+.badge-partial{background:#fef3c7;color:#d97706}
+.badge-no{background:#f3f4f6;color:#9ca3af}
+.sparkline-cell{width:80px}
+.table-empty{padding:40px;text-align:center;color:#9ca3af;font-size:.9rem}
+.table-count{font-size:.78rem;color:#9ca3af;margin-top:12px}
+
+/* ── Chart Section ── */
+.chart-section{padding-top:48px}
+.chart-container{background:#fff;border-radius:20px;padding:32px;box-shadow:0 2px 12px rgba(0,0,0,.06);border:1px solid #e5e7eb}
+.chart-header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:24px;flex-wrap:wrap}
+.country-picker{display:flex;gap:8px;flex-wrap:wrap}
+.country-picker-btn{padding:6px 14px;border-radius:100px;border:1.5px solid #e5e7eb;background:#fff;font-size:.78rem;font-weight:600;color:#6e6e73;cursor:pointer;transition:all .2s}
+.country-picker-btn.active{border-color:var(--btn-color,#007AFF);background:var(--btn-color,#007AFF);color:#fff}
+.chart-canvas-wrap{position:relative;height:380px}
+.chart-canvas-wrap canvas{width:100%!important;height:100%!important}
+
+/* ── Generator Calculator ── */
+.calc-section{background:linear-gradient(160deg,#0a1628 0%,#0d2240 100%);padding:56px 0;margin-top:48px}
+.calc-section .section-inner{max-width:1160px;margin:0 auto;padding:0 24px}
+.calc-section .section-title{color:#f0f6fc}
+.calc-section .section-sub{color:rgba(255,255,255,.5)}
+.calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:28px}
+.calc-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:28px;backdrop-filter:blur(10px)}
+.calc-card-title{font-size:.9rem;font-weight:700;color:#f0f6fc;margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.calc-form-group{margin-bottom:18px}
+.calc-label{display:block;font-size:.72rem;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.calc-select,.calc-input{width:100%;height:44px;border:1.5px solid rgba(255,255,255,.15);border-radius:10px;padding:0 14px;font-size:.88rem;color:#f0f6fc;background:rgba(255,255,255,.06);font-family:inherit;transition:border .2s;appearance:none}
+.calc-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2360b5ff' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+.calc-select:focus,.calc-input:focus{outline:none;border-color:#60b5ff;box-shadow:0 0 0 3px rgba(96,181,255,.15)}
+.calc-select option{background:#0a1628;color:#f0f6fc}
+.range-group{margin-bottom:18px}
+.range-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.range-value{font-size:.95rem;font-weight:800;color:#60b5ff}
+.calc-range{width:100%;height:6px;-webkit-appearance:none;appearance:none;background:rgba(255,255,255,.12);border-radius:3px;outline:none}
+.calc-range::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:#007AFF;cursor:pointer;border:3px solid #f0f6fc;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.calc-range::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#007AFF;cursor:pointer;border:3px solid #f0f6fc;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+
+/* Results */
+.calc-results{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:28px;backdrop-filter:blur(10px)}
+.result-hero{text-align:center;padding:24px 0;border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:20px}
+.result-hero-label{font-size:.72rem;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
+.result-hero-val{font-size:2.4rem;font-weight:800;color:#60b5ff;letter-spacing:-.03em;line-height:1}
+.result-hero-sub{font-size:.82rem;color:rgba(255,255,255,.4);margin-top:6px}
+.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
+.result-item{background:rgba(255,255,255,.04);border-radius:12px;padding:14px;text-align:center}
+.result-item-label{font-size:.68rem;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+.result-item-val{font-size:1.1rem;font-weight:800;color:#f0f6fc}
+.comparison-title{font-size:.78rem;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px}
+.comparison-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:.84rem}
+.comparison-row:last-child{border-bottom:none}
+.comparison-label{color:rgba(255,255,255,.6);display:flex;align-items:center;gap:6px}
+.comparison-val{font-weight:700;color:#f0f6fc}
+.comparison-savings{font-size:.72rem;font-weight:700;padding:3px 8px;border-radius:100px}
+.savings-positive{background:rgba(52,199,89,.15);color:#34c759}
+.savings-negative{background:rgba(255,59,48,.15);color:#ff3b30}
+.calc-btn{width:100%;height:48px;background:var(--color-primary,#007AFF);color:#fff;border:none;border-radius:12px;font-size:.9rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;margin-top:16px;font-family:inherit}
+.calc-btn:hover{background:#0063D1;transform:translateY(-1px)}
+.calc-btn-outline{background:transparent;border:1.5px solid rgba(255,255,255,.2);color:#f0f6fc}
+.calc-btn-outline:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.3)}
+
+/* ── FAQ ── */
+.faq-section{padding:56px 0}
+.faq-section .section-inner{max-width:800px;margin:0 auto;padding:0 24px}
+.faq-list{margin-top:24px}
+.faq-item{border-bottom:1px solid #e5e7eb}
+.faq-question{width:100%;padding:18px 0;display:flex;justify-content:space-between;align-items:center;background:none;border:none;font-family:inherit;font-size:.95rem;font-weight:600;color:#1d1d1f;cursor:pointer;text-align:left;gap:16px}
+.faq-question::after{content:'+';font-size:1.3rem;font-weight:300;color:#9ca3af;transition:transform .2s;flex-shrink:0}
+.faq-item.open .faq-question::after{content:'\2212'}
+.faq-answer{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.faq-item.open .faq-answer{max-height:500px}
+.faq-answer-inner{padding:0 0 18px;font-size:.88rem;color:#6e6e73;line-height:1.7}
+
+/* ── Responsive ── */
+@media(max-width:768px){
+  .hero{padding:48px 0 44px}
+  .hero-stats{gap:20px}
+  .fuel-tabs{gap:6px;margin-top:-18px}
+  .fuel-tab{padding:8px 16px;font-size:.8rem}
+  .table-controls{flex-direction:column;align-items:stretch}
+  .table-search{max-width:100%}
+  .price-table{font-size:.78rem}
+  .price-table th,.price-table td{padding:8px 10px}
+  .calc-grid{grid-template-columns:1fr}
+  .chart-canvas-wrap{height:260px}
+  .result-hero-val{font-size:1.8rem}
+  .result-grid{grid-template-columns:1fr}
+  .map-container{padding:20px}
+  .section{padding:28px 16px}
+}
+
+/* ── Print ── */
+@media print{
+  .hero,.fuel-tabs-wrap,.map-section,.table-section,.chart-section,.faq-section,afro-navbar,afro-footer,afro-related-tools,afro-api-cta{display:none!important}
+  .calc-section{background:#fff!important;color:#000!important;padding:20px 0!important}
+  .calc-section *{color:#000!important}
+  .calc-card,.calc-results{background:#f9f9f9!important;border:1px solid #ccc!important}
+  .result-hero-val{color:#007AFF!important}
+}
+</style>
+</head>
+<body>
+
+<afro-navbar></afro-navbar>
+
+<!-- ── Hero ── -->
+<section class="hero">
+  <div class="hero-inner">
+    <nav class="breadcrumb">
+      <a href="/">AfroTools</a><span>/</span>
+      <a href="/all-tools/">Tools</a><span>/</span>
+      AfroFuel Tracker
+    </nav>
+    <div class="hero-badge">Live Data &bull; Updated Weekly</div>
+    <h1>AfroFuel &mdash; Pan-African <em>Fuel Price</em> Tracker</h1>
+    <p class="hero-sub">Live petrol, diesel, and LPG prices for all 54 African countries. Updated weekly from national petroleum regulators and market data providers.</p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-val">54</div>
+        <div class="hero-stat-label">Countries</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-val">3</div>
+        <div class="hero-stat-label">Fuel Types</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-val" id="avg-price">$1.14</div>
+        <div class="hero-stat-label">Avg USD/Litre</div>
+      </div>
+    </div>
+    <div class="last-updated" id="last-updated">Last updated: Loading...</div>
+  </div>
+</section>
+
+<!-- ── Fuel Type Tabs ── -->
+<div class="fuel-tabs-wrap">
+  <div class="fuel-tabs" id="fuel-tabs">
+    <button class="fuel-tab active" data-fuel="petrol">&#9981; Petrol</button>
+    <button class="fuel-tab" data-fuel="diesel">&#128738; Diesel</button>
+    <button class="fuel-tab" data-fuel="lpg">&#128293; LPG</button>
+  </div>
+</div>
+
+<!-- ── Interactive Map ── -->
+<section class="map-section">
+  <div class="section-inner">
+    <div class="section-header">
+      <h2 class="section-title">Fuel Price Map</h2>
+      <p class="section-sub">Colour indicates price level. Click any country to see details.</p>
+    </div>
+    <div class="map-container">
+      <afro-map id="afro-fuel-map" data-metric="fuel-petrol" data-colorscale="blue-red" data-unit="$/L"></afro-map>
+      <div class="map-legend">
+        <span class="map-legend-label">Cheap</span>
+        <div class="map-legend-bar"></div>
+        <span class="map-legend-label">Expensive</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Comparison Table ── -->
+<section class="section table-section">
+  <div class="section-header">
+    <h2 class="section-title">Price Comparison Table</h2>
+    <p class="section-sub">Compare fuel prices across all African countries. Click column headers to sort.</p>
+  </div>
+  <div class="table-controls">
+    <input type="text" class="table-search" id="table-search" placeholder="Search country...">
+    <div class="region-filters" id="region-filters">
+      <button class="region-btn active" data-region="all">All</button>
+      <button class="region-btn" data-region="west">West Africa</button>
+      <button class="region-btn" data-region="east">East Africa</button>
+      <button class="region-btn" data-region="south">Southern</button>
+      <button class="region-btn" data-region="north">North Africa</button>
+      <button class="region-btn" data-region="central">Central</button>
+    </div>
+    <select class="sort-select" id="sort-select">
+      <option value="price-asc">Price: Low to High</option>
+      <option value="price-desc">Price: High to Low</option>
+      <option value="name-asc">Country: A-Z</option>
+      <option value="name-desc">Country: Z-A</option>
+      <option value="change-desc">% Change: Highest</option>
+      <option value="change-asc">% Change: Lowest</option>
+    </select>
+  </div>
+  <div class="price-table-wrap">
+    <table class="price-table" id="price-table">
+      <thead>
+        <tr>
+          <th style="width:50px">#</th>
+          <th>Country</th>
+          <th>Petrol (local)</th>
+          <th>Diesel (local)</th>
+          <th>USD/Litre</th>
+          <th>Trend</th>
+          <th style="width:90px">Regulated</th>
+          <th style="width:80px">7d</th>
+        </tr>
+      </thead>
+      <tbody id="price-table-body">
+        <tr><td colspan="8" class="table-empty">Loading fuel prices...</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="table-count" id="table-count"></div>
+</section>
+
+<!-- ── Price Trend Chart ── -->
+<section class="section chart-section">
+  <div class="section-header">
+    <h2 class="section-title">Price Trends</h2>
+    <p class="section-sub">Select up to 5 countries to compare fuel price trends over 12 months.</p>
+  </div>
+  <div class="chart-container">
+    <div class="chart-header">
+      <div class="country-picker" id="chart-picker">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+    <div class="chart-canvas-wrap">
+      <canvas id="trend-chart"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- ── Generator Cost Calculator ── -->
+<section class="calc-section">
+  <div class="section-inner">
+    <div class="section-header">
+      <h2 class="section-title">Generator Cost Calculator</h2>
+      <p class="section-sub">Calculate the real cost of running your generator. Compare against grid electricity and solar alternatives.</p>
+    </div>
+    <div class="calc-grid">
+      <!-- Inputs -->
+      <div class="calc-card">
+        <div class="calc-card-title">&#9889; Generator Details</div>
+
+        <div class="calc-form-group">
+          <label class="calc-label">Country</label>
+          <select class="calc-select" id="calc-country">
+            <!-- Populated by JS -->
+          </select>
+        </div>
+
+        <div class="calc-form-group">
+          <label class="calc-label">Generator Size</label>
+          <select class="calc-select" id="calc-gen-size">
+            <option value="0.4">1 KVA (0.4 L/hr)</option>
+            <option value="0.8">2.5 KVA (0.8 L/hr)</option>
+            <option value="1.5" selected>5 KVA (1.5 L/hr)</option>
+            <option value="2.8">10 KVA (2.8 L/hr)</option>
+            <option value="5.0">20 KVA (5.0 L/hr)</option>
+            <option value="12.0">50 KVA (12.0 L/hr)</option>
+            <option value="custom">Custom</option>
+          </select>
+        </div>
+
+        <div class="calc-form-group" id="custom-consumption-group" style="display:none">
+          <label class="calc-label">Custom consumption (L/hr)</label>
+          <input type="number" class="calc-input" id="calc-custom-rate" placeholder="e.g. 3.5" min="0.1" max="100" step="0.1">
+        </div>
+
+        <div class="range-group">
+          <div class="range-header">
+            <label class="calc-label">Hours per day</label>
+            <span class="range-value" id="hours-val">8</span>
+          </div>
+          <input type="range" class="calc-range" id="calc-hours" min="1" max="24" value="8">
+        </div>
+
+        <div class="range-group">
+          <div class="range-header">
+            <label class="calc-label">Days per month</label>
+            <span class="range-value" id="days-val">26</span>
+          </div>
+          <input type="range" class="calc-range" id="calc-days" min="1" max="31" value="26">
+        </div>
+
+        <div class="calc-form-group">
+          <label class="calc-label">Current fuel price (per litre)</label>
+          <input type="number" class="calc-input" id="calc-price" placeholder="Auto-filled from data" step="0.01" min="0">
+        </div>
+
+        <button class="calc-btn calc-btn-outline" onclick="window.print()">&#128196; Download Report (PDF)</button>
+      </div>
+
+      <!-- Results -->
+      <div class="calc-results" id="calc-results">
+        <div class="result-hero">
+          <div class="result-hero-label">Monthly Fuel Cost</div>
+          <div class="result-hero-val" id="result-monthly">--</div>
+          <div class="result-hero-sub" id="result-litres">-- litres/month</div>
+        </div>
+
+        <div class="result-grid">
+          <div class="result-item">
+            <div class="result-item-label">Annual Cost</div>
+            <div class="result-item-val" id="result-annual">--</div>
+          </div>
+          <div class="result-item">
+            <div class="result-item-label">Cost per kWh</div>
+            <div class="result-item-val" id="result-kwh">--</div>
+          </div>
+          <div class="result-item">
+            <div class="result-item-label">Daily Cost</div>
+            <div class="result-item-val" id="result-daily">--</div>
+          </div>
+          <div class="result-item">
+            <div class="result-item-label">Litres/Month</div>
+            <div class="result-item-val" id="result-litres-num">--</div>
+          </div>
+        </div>
+
+        <div class="comparison-title">Compared to Alternatives</div>
+
+        <div class="comparison-row">
+          <span class="comparison-label">&#9889; Grid (Band A: &#8358;68/kWh)</span>
+          <span class="comparison-val" id="cmp-grid">--</span>
+        </div>
+        <div class="comparison-row">
+          <span class="comparison-label">&#9728;&#65039; Solar (amort. &#8358;45/kWh)</span>
+          <span class="comparison-val" id="cmp-solar">--</span>
+        </div>
+        <div class="comparison-row">
+          <span class="comparison-label">&#9201; Solar break-even</span>
+          <span class="comparison-val" id="cmp-breakeven">--</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── API CTA ── -->
+<afro-api-cta
+  data-api-name="AfroFuel API"
+  data-description="Live and historical fuel price data for all 54 African countries. Weekly updates, JSON format."
+  data-docs-url="/docs/api/"
+  data-signup-url="/docs/api/#signup">
+</afro-api-cta>
+
+<!-- ── FAQ ── -->
+<section class="faq-section">
+  <div class="section-inner">
+    <div class="section-header" style="text-align:center">
+      <h2 class="section-title">Frequently Asked Questions</h2>
+      <p class="section-sub">Everything you need to know about fuel prices in Africa.</p>
+    </div>
+    <div class="faq-list" id="faq-list">
+      <div class="faq-item">
+        <button class="faq-question">How often are African fuel prices updated on AfroFuel?</button>
+        <div class="faq-answer"><div class="faq-answer-inner">AfroFuel updates fuel prices on a weekly basis. Our data is sourced from national petroleum regulatory agencies, government energy ministries, and independent market data providers across all 54 African countries. For countries with regulated pricing, we update immediately when new government-mandated prices are announced. For deregulated markets, we aggregate pricing data from multiple fuel stations in major cities to provide an accurate national average.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">Why do fuel prices vary so much across African countries?</button>
+        <div class="faq-answer"><div class="faq-answer-inner">Fuel price differences across Africa are driven by several key factors. Government subsidies play the largest role &mdash; oil-producing nations like Libya, Algeria, and Angola often subsidise fuel heavily, keeping prices artificially low. Tax structures vary significantly: some countries levy over 40% in taxes and levies on fuel, while others keep taxes minimal. Refining capacity matters too; countries that refine domestically (South Africa, Egypt) avoid import premiums. Landlocked countries like Chad, Central African Republic, and Niger face higher logistics costs for transporting fuel from coastal ports. Exchange rate fluctuations also play a critical role, especially in countries with volatile currencies like Nigeria, Zimbabwe, and Sudan.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">Which African country has the cheapest and most expensive petrol?</button>
+        <div class="faq-answer"><div class="faq-answer-inner">Libya consistently has the cheapest petrol in Africa, with prices as low as $0.03 per litre due to massive government subsidies and domestic oil production. Algeria and Egypt also rank among the cheapest. On the expensive end, countries like the Central African Republic, Malawi, and Zimbabwe often have the highest fuel prices, sometimes exceeding $1.80 per litre. Island nations like Seychelles and Comoros also tend to have elevated prices due to import dependency and limited economies of scale.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">How much does it cost to run a generator in Nigeria?</button>
+        <div class="faq-answer"><div class="faq-answer-inner">The cost of running a generator in Nigeria depends on generator size, fuel consumption rate, hours of operation, and current petrol prices. A typical 5 KVA generator consumes approximately 1.5 litres per hour. Running it for 8 hours daily over 26 working days would consume about 312 litres of petrol per month. At current Nigerian fuel prices, this could cost between NGN 150,000 and NGN 250,000 monthly. Our generator cost calculator above provides precise estimates based on live fuel prices and lets you compare costs against grid electricity (Band A at &#8358;68/kWh) and solar alternatives.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">What is the difference between PMS, AGO, and LPG?</button>
+        <div class="faq-answer"><div class="faq-answer-inner">PMS (Premium Motor Spirit) is the standard petrol used in cars, motorcycles, and small generators. It is the most widely consumed fuel type across Africa. AGO (Automotive Gas Oil) is diesel fuel, primarily used in trucks, buses, heavy machinery, and large industrial generators. AGO is typically more expensive than PMS but offers better energy density. LPG (Liquefied Petroleum Gas) is cooking gas, increasingly used as a cleaner alternative to charcoal and firewood. LPG pricing is usually quoted per kilogram rather than per litre, and its adoption is being promoted across Africa as part of clean energy transitions.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">Are fuel prices regulated or deregulated in Africa?</button>
+        <div class="faq-answer"><div class="faq-answer-inner">Fuel pricing regulation varies significantly across the continent. Heavily regulated markets include Nigeria (through NNPC), Egypt, Algeria, Libya, and Angola, where government-set prices keep fuel affordable but create subsidy burdens on national budgets. Market-based pricing with periodic government adjustments exists in countries like Kenya (through ERC monthly reviews), South Africa (monthly adjustments by DMRE), and Ghana (bi-weekly pricing windows). Fully deregulated markets exist in a smaller number of countries where prices respond directly to international crude oil movements. Several countries are in various stages of subsidy reform, transitioning from regulated to market-based pricing &mdash; Nigeria's ongoing deregulation is a prominent example.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">How does LPG cooking gas pricing work in Africa?</button>
+        <div class="faq-answer"><div class="faq-answer-inner">LPG pricing in Africa is influenced by global propane and butane prices, local distribution infrastructure, cylinder exchange costs, and government policies. South Africa and Nigeria have relatively affordable LPG due to domestic production and government pricing interventions. East African nations like Kenya, Tanzania, and Uganda tend to have higher LPG costs, partly due to import dependency. LPG is sold in various cylinder sizes (3kg, 6kg, 12.5kg, and 50kg being most common), and per-kilogram prices often decrease with larger cylinder sizes. Many African governments are promoting LPG adoption through tax exemptions and distribution programs to reduce deforestation caused by charcoal and firewood use.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">Can I access AfroFuel data via API for my application?</button>
+        <div class="faq-answer"><div class="faq-answer-inner">Yes, the AfroFuel API provides programmatic access to both current and historical fuel price data for all 54 African countries. The API returns JSON-formatted data including petrol, diesel, and LPG prices in both local currencies and USD equivalents. Features include historical data going back 12 months, weekly price change percentages, regional aggregates, and regulatory status flags. The API supports filtering by country, region, fuel type, and date range. Visit our API documentation page for full endpoint details, authentication setup, rate limits, and code examples in Python, JavaScript, and cURL.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<afro-related-tools></afro-related-tools>
+<afro-footer></afro-footer>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ═══════════════════════════════════════════════════════════
+     COUNTRY DATA — 54 African countries
+     ═══════════════════════════════════════════════════════════ */
+  const COUNTRIES = {
+    NG:{name:'Nigeria',flag:'\u{1F1F3}\u{1F1EC}',region:'west',currency:'NGN',symbol:'\u20A6',regulated:'yes'},
+    GH:{name:'Ghana',flag:'\u{1F1EC}\u{1F1ED}',region:'west',currency:'GHS',symbol:'GH\u20B5',regulated:'partial'},
+    SN:{name:'Senegal',flag:'\u{1F1F8}\u{1F1F3}',region:'west',currency:'XOF',symbol:'CFA',regulated:'yes'},
+    CI:{name:"C\u00f4te d'Ivoire",flag:'\u{1F1E8}\u{1F1EE}',region:'west',currency:'XOF',symbol:'CFA',regulated:'yes'},
+    ML:{name:'Mali',flag:'\u{1F1F2}\u{1F1F1}',region:'west',currency:'XOF',symbol:'CFA',regulated:'yes'},
+    BF:{name:'Burkina Faso',flag:'\u{1F1E7}\u{1F1EB}',region:'west',currency:'XOF',symbol:'CFA',regulated:'yes'},
+    NE:{name:'Niger',flag:'\u{1F1F3}\u{1F1EA}',region:'west',currency:'XOF',symbol:'CFA',regulated:'yes'},
+    GN:{name:'Guinea',flag:'\u{1F1EC}\u{1F1F3}',region:'west',currency:'GNF',symbol:'GNF',regulated:'yes'},
+    SL:{name:'Sierra Leone',flag:'\u{1F1F8}\u{1F1F1}',region:'west',currency:'SLL',symbol:'Le',regulated:'no'},
+    LR:{name:'Liberia',flag:'\u{1F1F1}\u{1F1F7}',region:'west',currency:'LRD',symbol:'L$',regulated:'no'},
+    GM:{name:'Gambia',flag:'\u{1F1EC}\u{1F1F2}',region:'west',currency:'GMD',symbol:'D',regulated:'partial'},
+    GW:{name:'Guinea-Bissau',flag:'\u{1F1EC}\u{1F1FC}',region:'west',currency:'XOF',symbol:'CFA',regulated:'yes'},
+    TG:{name:'Togo',flag:'\u{1F1F9}\u{1F1EC}',region:'west',currency:'XOF',symbol:'CFA',regulated:'yes'},
+    BJ:{name:'Benin',flag:'\u{1F1E7}\u{1F1EF}',region:'west',currency:'XOF',symbol:'CFA',regulated:'yes'},
+    CV:{name:'Cabo Verde',flag:'\u{1F1E8}\u{1F1FB}',region:'west',currency:'CVE',symbol:'CVE',regulated:'partial'},
+    MR:{name:'Mauritania',flag:'\u{1F1F2}\u{1F1F7}',region:'west',currency:'MRU',symbol:'UM',regulated:'yes'},
+    KE:{name:'Kenya',flag:'\u{1F1F0}\u{1F1EA}',region:'east',currency:'KES',symbol:'KSh',regulated:'partial'},
+    TZ:{name:'Tanzania',flag:'\u{1F1F9}\u{1F1FF}',region:'east',currency:'TZS',symbol:'TSh',regulated:'partial'},
+    UG:{name:'Uganda',flag:'\u{1F1FA}\u{1F1EC}',region:'east',currency:'UGX',symbol:'USh',regulated:'no'},
+    RW:{name:'Rwanda',flag:'\u{1F1F7}\u{1F1FC}',region:'east',currency:'RWF',symbol:'RF',regulated:'partial'},
+    BI:{name:'Burundi',flag:'\u{1F1E7}\u{1F1EE}',region:'east',currency:'BIF',symbol:'FBu',regulated:'yes'},
+    ET:{name:'Ethiopia',flag:'\u{1F1EA}\u{1F1F9}',region:'east',currency:'ETB',symbol:'Br',regulated:'yes'},
+    ER:{name:'Eritrea',flag:'\u{1F1EA}\u{1F1F7}',region:'east',currency:'ERN',symbol:'Nfk',regulated:'yes'},
+    DJ:{name:'Djibouti',flag:'\u{1F1E9}\u{1F1EF}',region:'east',currency:'DJF',symbol:'Fdj',regulated:'yes'},
+    SO:{name:'Somalia',flag:'\u{1F1F8}\u{1F1F4}',region:'east',currency:'SOS',symbol:'Sh',regulated:'no'},
+    SS:{name:'South Sudan',flag:'\u{1F1F8}\u{1F1F8}',region:'east',currency:'SSP',symbol:'SSP',regulated:'partial'},
+    SD:{name:'Sudan',flag:'\u{1F1F8}\u{1F1E9}',region:'east',currency:'SDG',symbol:'SDG',regulated:'yes'},
+    KM:{name:'Comoros',flag:'\u{1F1F0}\u{1F1F2}',region:'east',currency:'KMF',symbol:'CF',regulated:'yes'},
+    SC:{name:'Seychelles',flag:'\u{1F1F8}\u{1F1E8}',region:'east',currency:'SCR',symbol:'SCR',regulated:'partial'},
+    MU:{name:'Mauritius',flag:'\u{1F1F2}\u{1F1FA}',region:'east',currency:'MUR',symbol:'Rs',regulated:'partial'},
+    ZA:{name:'South Africa',flag:'\u{1F1FF}\u{1F1E6}',region:'south',currency:'ZAR',symbol:'R',regulated:'partial'},
+    BW:{name:'Botswana',flag:'\u{1F1E7}\u{1F1FC}',region:'south',currency:'BWP',symbol:'P',regulated:'partial'},
+    NA:{name:'Namibia',flag:'\u{1F1F3}\u{1F1E6}',region:'south',currency:'NAD',symbol:'N$',regulated:'partial'},
+    ZM:{name:'Zambia',flag:'\u{1F1FF}\u{1F1F2}',region:'south',currency:'ZMW',symbol:'ZK',regulated:'partial'},
+    ZW:{name:'Zimbabwe',flag:'\u{1F1FF}\u{1F1FC}',region:'south',currency:'ZWL',symbol:'ZWL',regulated:'no'},
+    MW:{name:'Malawi',flag:'\u{1F1F2}\u{1F1FC}',region:'south',currency:'MWK',symbol:'MK',regulated:'partial'},
+    MZ:{name:'Mozambique',flag:'\u{1F1F2}\u{1F1FF}',region:'south',currency:'MZN',symbol:'MT',regulated:'partial'},
+    SZ:{name:'Eswatini',flag:'\u{1F1F8}\u{1F1FF}',region:'south',currency:'SZL',symbol:'E',regulated:'partial'},
+    LS:{name:'Lesotho',flag:'\u{1F1F1}\u{1F1F8}',region:'south',currency:'LSL',symbol:'L',regulated:'partial'},
+    MG:{name:'Madagascar',flag:'\u{1F1F2}\u{1F1EC}',region:'south',currency:'MGA',symbol:'Ar',regulated:'yes'},
+    AO:{name:'Angola',flag:'\u{1F1E6}\u{1F1F4}',region:'south',currency:'AOA',symbol:'Kz',regulated:'yes'},
+    EG:{name:'Egypt',flag:'\u{1F1EA}\u{1F1EC}',region:'north',currency:'EGP',symbol:'E\u00A3',regulated:'yes'},
+    LY:{name:'Libya',flag:'\u{1F1F1}\u{1F1FE}',region:'north',currency:'LYD',symbol:'LD',regulated:'yes'},
+    TN:{name:'Tunisia',flag:'\u{1F1F9}\u{1F1F3}',region:'north',currency:'TND',symbol:'DT',regulated:'yes'},
+    DZ:{name:'Algeria',flag:'\u{1F1E9}\u{1F1FF}',region:'north',currency:'DZD',symbol:'DA',regulated:'yes'},
+    MA:{name:'Morocco',flag:'\u{1F1F2}\u{1F1E6}',region:'north',currency:'MAD',symbol:'MAD',regulated:'partial'},
+    CM:{name:'Cameroon',flag:'\u{1F1E8}\u{1F1F2}',region:'central',currency:'XAF',symbol:'FCFA',regulated:'yes'},
+    CD:{name:'DR Congo',flag:'\u{1F1E8}\u{1F1E9}',region:'central',currency:'CDF',symbol:'FC',regulated:'no'},
+    CG:{name:'Congo',flag:'\u{1F1E8}\u{1F1EC}',region:'central',currency:'XAF',symbol:'FCFA',regulated:'yes'},
+    CF:{name:'Central African Rep.',flag:'\u{1F1E8}\u{1F1EB}',region:'central',currency:'XAF',symbol:'FCFA',regulated:'no'},
+    TD:{name:'Chad',flag:'\u{1F1F9}\u{1F1E9}',region:'central',currency:'XAF',symbol:'FCFA',regulated:'yes'},
+    GA:{name:'Gabon',flag:'\u{1F1EC}\u{1F1E6}',region:'central',currency:'XAF',symbol:'FCFA',regulated:'yes'},
+    GQ:{name:'Equatorial Guinea',flag:'\u{1F1EC}\u{1F1F6}',region:'central',currency:'XAF',symbol:'FCFA',regulated:'yes'},
+    ST:{name:'S\u00e3o Tom\u00e9 & Pr\u00edncipe',flag:'\u{1F1F8}\u{1F1F9}',region:'central',currency:'STN',symbol:'Db',regulated:'yes'}
+  };
+
+  /* ═══════════════════════════════════════════════════════════
+     FALLBACK / DEMO DATA
+     Used when /data/fuel/latest.json is unavailable
+     ═══════════════════════════════════════════════════════════ */
+  function generateFallbackData() {
+    const basePrices = {
+      NG:{petrol:0.42,diesel:1.05,lpg:0.85},GH:{petrol:1.15,diesel:1.22,lpg:1.05},
+      SN:{petrol:1.38,diesel:1.20,lpg:1.10},CI:{petrol:1.30,diesel:1.15,lpg:0.98},
+      ML:{petrol:1.35,diesel:1.25,lpg:1.12},BF:{petrol:1.32,diesel:1.18,lpg:1.08},
+      NE:{petrol:1.10,diesel:1.00,lpg:0.92},GN:{petrol:1.22,diesel:1.14,lpg:0.96},
+      SL:{petrol:1.18,diesel:1.08,lpg:0.88},LR:{petrol:0.98,diesel:0.92,lpg:0.82},
+      GM:{petrol:1.25,diesel:1.15,lpg:0.95},GW:{petrol:1.40,diesel:1.28,lpg:1.15},
+      TG:{petrol:1.28,diesel:1.12,lpg:0.99},BJ:{petrol:1.22,diesel:1.10,lpg:0.94},
+      CV:{petrol:1.42,diesel:1.30,lpg:1.18},MR:{petrol:1.08,diesel:0.98,lpg:0.88},
+      KE:{petrol:1.30,diesel:1.20,lpg:1.02},TZ:{petrol:1.10,diesel:1.02,lpg:0.90},
+      UG:{petrol:1.22,diesel:1.15,lpg:0.95},RW:{petrol:1.18,diesel:1.10,lpg:0.92},
+      BI:{petrol:1.35,diesel:1.25,lpg:1.10},ET:{petrol:0.82,diesel:0.78,lpg:0.70},
+      ER:{petrol:0.65,diesel:0.60,lpg:0.55},DJ:{petrol:1.28,diesel:1.18,lpg:1.05},
+      SO:{petrol:1.05,diesel:0.98,lpg:0.85},SS:{petrol:1.45,diesel:1.35,lpg:1.20},
+      SD:{petrol:0.58,diesel:0.55,lpg:0.48},KM:{petrol:1.50,diesel:1.38,lpg:1.22},
+      SC:{petrol:1.55,diesel:1.42,lpg:1.28},MU:{petrol:1.35,diesel:1.22,lpg:1.10},
+      ZA:{petrol:1.18,diesel:1.12,lpg:0.92},BW:{petrol:0.95,diesel:0.88,lpg:0.78},
+      NA:{petrol:1.02,diesel:0.95,lpg:0.82},ZM:{petrol:1.15,diesel:1.08,lpg:0.90},
+      ZW:{petrol:1.58,diesel:1.48,lpg:1.32},MW:{petrol:1.52,diesel:1.42,lpg:1.25},
+      MZ:{petrol:1.20,diesel:1.12,lpg:0.95},SZ:{petrol:1.08,diesel:1.00,lpg:0.85},
+      LS:{petrol:1.10,diesel:1.02,lpg:0.88},MG:{petrol:1.15,diesel:1.05,lpg:0.90},
+      AO:{petrol:0.32,diesel:0.28,lpg:0.25},EG:{petrol:0.38,diesel:0.42,lpg:0.35},
+      LY:{petrol:0.03,diesel:0.04,lpg:0.03},TN:{petrol:0.72,diesel:0.62,lpg:0.55},
+      DZ:{petrol:0.23,diesel:0.18,lpg:0.15},MA:{petrol:1.32,diesel:1.18,lpg:1.02},
+      CM:{petrol:1.25,diesel:1.15,lpg:0.98},CD:{petrol:1.38,diesel:1.28,lpg:1.12},
+      CG:{petrol:1.15,diesel:1.05,lpg:0.90},CF:{petrol:1.65,diesel:1.55,lpg:1.38},
+      TD:{petrol:1.22,diesel:1.12,lpg:0.98},GA:{petrol:1.05,diesel:0.95,lpg:0.82},
+      GQ:{petrol:0.85,diesel:0.78,lpg:0.68},ST:{petrol:1.38,diesel:1.25,lpg:1.10}
+    };
+
+    const countries = {};
+    const codes = Object.keys(COUNTRIES);
+    codes.forEach(code => {
+      const bp = basePrices[code] || {petrol:1.10,diesel:1.00,lpg:0.88};
+      const change = (Math.random() * 10 - 5);
+      const localMultiplier = getLocalMultiplier(code);
+      countries[code] = {
+        petrol_usd: bp.petrol,
+        diesel_usd: bp.diesel,
+        lpg_usd: bp.lpg,
+        petrol_local: +(bp.petrol * localMultiplier).toFixed(2),
+        diesel_local: +(bp.diesel * localMultiplier).toFixed(2),
+        lpg_local: +(bp.lpg * localMultiplier).toFixed(2),
+        change_pct: +change.toFixed(1),
+        history: generateHistory(bp.petrol, 12)
+      };
+    });
+
+    return {
+      updated: new Date().toISOString(),
+      countries: countries
+    };
+  }
+
+  function getLocalMultiplier(code) {
+    const multipliers = {
+      NG:1600,GH:15,SN:655,CI:655,ML:655,BF:655,NE:655,GN:8600,SL:22,LR:192,
+      GM:68,GW:655,TG:655,BJ:655,CV:110,MR:38,KE:155,TZ:2650,UG:3800,RW:1300,
+      BI:2900,ET:57,ER:15,DJ:178,SO:575,SS:650,SD:600,KM:490,SC:14,MU:45,
+      ZA:18,BW:14,NA:18,ZM:25,ZW:322,MW:1700,MZ:64,SZ:18,LS:18,MG:4500,
+      AO:850,EG:50,LY:5,TN:3.1,DZ:137,MA:11,CM:655,CD:2750,CG:655,CF:655,
+      TD:655,GA:655,GQ:655,ST:24
+    };
+    return multipliers[code] || 1;
+  }
+
+  function generateHistory(basePrice, months) {
+    const history = [];
+    let price = basePrice * (0.85 + Math.random() * 0.15);
+    for (let i = 0; i < months; i++) {
+      price += (Math.random() - 0.48) * 0.08;
+      price = Math.max(0.01, price);
+      history.push(+price.toFixed(3));
+    }
+    return history;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     STATE
+     ═══════════════════════════════════════════════════════════ */
+  let fuelData = null;
+  let activeFuel = 'petrol';
+  let activeRegion = 'all';
+  let searchQuery = '';
+  let sortMode = 'price-asc';
+  let chartInstance = null;
+  let chartCountries = ['NG','ZA','KE','EG','GH'];
+
+  const CHART_COLORS = ['#007AFF','#FF3B30','#34C759','#FF9500','#AF52DE'];
+  const CHART_DEFAULTS = ['NG','ZA','KE','EG','GH'];
+
+  /* ═══════════════════════════════════════════════════════════
+     INIT
+     ═══════════════════════════════════════════════════════════ */
+  const liveData = new AfroTools.LiveData('/data/fuel/latest.json', {
+    refreshInterval: 6 * 60 * 60 * 1000,  // 6 hours
+    cacheKey: 'afro-fuel-latest',
+    cacheTTL: 6 * 60 * 60 * 1000,
+    onUpdate: function(data) {
+      fuelData = data;
+      render();
+    },
+    onError: function() {
+      if (!fuelData) {
+        fuelData = generateFallbackData();
+        render();
+      }
+    }
+  });
+  liveData.start();
+
+  // If no data within 2s, use fallback
+  setTimeout(function() {
+    if (!fuelData) {
+      fuelData = generateFallbackData();
+      render();
+    }
+  }, 2000);
+
+  /* ═══════════════════════════════════════════════════════════
+     RENDER ALL
+     ═══════════════════════════════════════════════════════════ */
+  function render() {
+    if (!fuelData) return;
+    updateTimestamp();
+    updateAvgPrice();
+    updateMap();
+    renderTable();
+    renderChart();
+    populateCalcCountry();
+    updateCalc();
+  }
+
+  /* ── Timestamp ── */
+  function updateTimestamp() {
+    var el = document.getElementById('last-updated');
+    if (fuelData.updated) {
+      var d = new Date(fuelData.updated);
+      el.textContent = 'Last updated: ' + d.toLocaleDateString('en-GB', {day:'numeric',month:'long',year:'numeric'});
+    }
+  }
+
+  /* ── Average Price ── */
+  function updateAvgPrice() {
+    var el = document.getElementById('avg-price');
+    var total = 0, count = 0;
+    var countries = fuelData.countries || {};
+    for (var code in countries) {
+      var key = activeFuel + '_usd';
+      if (countries[code][key]) {
+        total += countries[code][key];
+        count++;
+      }
+    }
+    el.textContent = count ? '$' + (total / count).toFixed(2) : '$--';
+  }
+
+  /* ── Map ── */
+  function updateMap() {
+    var mapEl = document.getElementById('afro-fuel-map');
+    if (!mapEl || !mapEl.setData) return;
+    var key = activeFuel + '_usd';
+    var items = [];
+    var countries = fuelData.countries || {};
+    for (var code in countries) {
+      if (COUNTRIES[code]) {
+        items.push({
+          code: code,
+          value: countries[code][key] || 0,
+          label: COUNTRIES[code].name + ': $' + (countries[code][key] || 0).toFixed(2) + '/L'
+        });
+      }
+    }
+    mapEl.setData(items);
+  }
+
+  /* ── Table ── */
+  function renderTable() {
+    var tbody = document.getElementById('price-table-body');
+    var countries = fuelData.countries || {};
+    var rows = [];
+
+    for (var code in COUNTRIES) {
+      var c = COUNTRIES[code];
+      var d = countries[code];
+      if (!d) continue;
+
+      // Region filter
+      if (activeRegion !== 'all' && c.region !== activeRegion) continue;
+
+      // Search filter
+      if (searchQuery && c.name.toLowerCase().indexOf(searchQuery.toLowerCase()) === -1) continue;
+
+      rows.push({
+        code: code,
+        name: c.name,
+        flag: c.flag,
+        symbol: c.symbol,
+        region: c.region,
+        petrol_local: d.petrol_local,
+        diesel_local: d.diesel_local,
+        lpg_local: d.lpg_local,
+        petrol_usd: d.petrol_usd,
+        diesel_usd: d.diesel_usd,
+        lpg_usd: d.lpg_usd,
+        change: d.change_pct || 0,
+        regulated: c.regulated,
+        history: d.history || []
+      });
+    }
+
+    // Sort
+    var key = activeFuel + '_usd';
+    switch(sortMode) {
+      case 'price-asc': rows.sort(function(a,b){return (a[key]||0) - (b[key]||0);}); break;
+      case 'price-desc': rows.sort(function(a,b){return (b[key]||0) - (a[key]||0);}); break;
+      case 'name-asc': rows.sort(function(a,b){return a.name.localeCompare(b.name);}); break;
+      case 'name-desc': rows.sort(function(a,b){return b.name.localeCompare(a.name);}); break;
+      case 'change-desc': rows.sort(function(a,b){return b.change - a.change;}); break;
+      case 'change-asc': rows.sort(function(a,b){return a.change - b.change;}); break;
+    }
+
+    if (rows.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="8" class="table-empty">No countries match your filters.</td></tr>';
+      document.getElementById('table-count').textContent = '';
+      return;
+    }
+
+    var html = '';
+    rows.forEach(function(row, i) {
+      var trendClass = row.change > 0.5 ? 'trend-up' : row.change < -0.5 ? 'trend-down' : 'trend-flat';
+      var trendSymbol = row.change > 0.5 ? '\u25B2' : row.change < -0.5 ? '\u25BC' : '\u2014';
+      var regClass = row.regulated === 'yes' ? 'badge-yes' : row.regulated === 'partial' ? 'badge-partial' : 'badge-no';
+      var regLabel = row.regulated === 'yes' ? 'Yes' : row.regulated === 'partial' ? 'Partial' : 'No';
+
+      var localPrice, localKey;
+      if (activeFuel === 'petrol') { localPrice = row.petrol_local; localKey = 'petrol_usd'; }
+      else if (activeFuel === 'diesel') { localPrice = row.diesel_local; localKey = 'diesel_usd'; }
+      else { localPrice = row.lpg_local; localKey = 'lpg_usd'; }
+
+      html += '<tr>' +
+        '<td>' + (i + 1) + '</td>' +
+        '<td><div class="country-cell"><span class="country-flag">' + row.flag + '</span>' + row.name + '</div></td>' +
+        '<td>' + row.symbol + ' ' + (row.petrol_local || '--') + '</td>' +
+        '<td>' + row.symbol + ' ' + (row.diesel_local || '--') + '</td>' +
+        '<td><strong>$' + (row[key] || 0).toFixed(2) + '</strong></td>' +
+        '<td><span class="' + trendClass + '">' + trendSymbol + ' ' + Math.abs(row.change).toFixed(1) + '%</span></td>' +
+        '<td><span class="badge-regulated ' + regClass + '">' + regLabel + '</span></td>' +
+        '<td class="sparkline-cell"><canvas width="80" height="24" data-history="' + (row.history || []).join(',') + '"></canvas></td>' +
+        '</tr>';
+    });
+
+    tbody.innerHTML = html;
+    document.getElementById('table-count').textContent = 'Showing ' + rows.length + ' of 54 countries';
+
+    // Draw sparklines
+    if (window.AfroTools && AfroTools.sparkline) {
+      var canvases = tbody.querySelectorAll('canvas[data-history]');
+      canvases.forEach(function(canvas) {
+        var data = canvas.getAttribute('data-history');
+        if (data) {
+          var vals = data.split(',').map(Number).filter(function(n){return !isNaN(n);});
+          if (vals.length > 1) {
+            var color = vals[vals.length-1] >= vals[0] ? '#FF3B30' : '#34C759';
+            AfroTools.sparkline(canvas, vals, {color:color, width:80, height:24, lineWidth:1.5, filled:true});
+          }
+        }
+      });
+    }
+  }
+
+  /* ── Chart ── */
+  function renderChart() {
+    var ctx = document.getElementById('trend-chart');
+    if (!ctx) return;
+
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var datasets = [];
+
+    chartCountries.forEach(function(code, idx) {
+      var c = COUNTRIES[code];
+      var d = (fuelData.countries || {})[code];
+      if (!c || !d) return;
+      var history = d.history || [];
+      datasets.push({
+        label: c.flag + ' ' + c.name,
+        data: history.length ? history : months.map(function(){return null;}),
+        borderColor: CHART_COLORS[idx % CHART_COLORS.length],
+        backgroundColor: CHART_COLORS[idx % CHART_COLORS.length] + '18',
+        borderWidth: 2.5,
+        tension: 0.3,
+        pointRadius: 3,
+        pointHoverRadius: 6,
+        fill: false
+      });
+    });
+
+    if (chartInstance) {
+      chartInstance.data.labels = months;
+      chartInstance.data.datasets = datasets;
+      chartInstance.update();
+    } else if (typeof Chart !== 'undefined') {
+      chartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {labels: months, datasets: datasets},
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: {mode:'index',intersect:false},
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {font:{family:'DM Sans',size:12,weight:'600'},padding:16,usePointStyle:true,pointStyleWidth:10}
+            },
+            tooltip: {
+              backgroundColor:'#0a1628',
+              titleFont:{family:'DM Sans',weight:'700'},
+              bodyFont:{family:'DM Sans'},
+              padding:12,
+              cornerRadius:10,
+              callbacks:{
+                label: function(ctx) { return ctx.dataset.label + ': $' + (ctx.parsed.y || 0).toFixed(2) + '/L'; }
+              }
+            }
+          },
+          scales: {
+            y: {
+              title:{display:true,text:'USD / Litre',font:{family:'DM Sans',size:12,weight:'600'},color:'#9ca3af'},
+              grid:{color:'#f0f0f0'},
+              ticks:{font:{family:'DM Sans',size:11},color:'#9ca3af',callback:function(v){return '$'+v.toFixed(2);}}
+            },
+            x: {
+              grid:{display:false},
+              ticks:{font:{family:'DM Sans',size:11},color:'#9ca3af'}
+            }
+          }
+        }
+      });
+    }
+
+    // Render picker buttons
+    renderChartPicker();
+  }
+
+  function renderChartPicker() {
+    var picker = document.getElementById('chart-picker');
+    if (!picker) return;
+    var popular = ['NG','ZA','KE','EG','GH','ET','TZ','DZ','MA','AO','CM','SN','UG','RW','MU'];
+    var html = '';
+    popular.forEach(function(code, idx) {
+      var c = COUNTRIES[code];
+      if (!c) return;
+      var isActive = chartCountries.indexOf(code) !== -1;
+      var colorIdx = isActive ? chartCountries.indexOf(code) : 0;
+      var btnColor = isActive ? CHART_COLORS[colorIdx % CHART_COLORS.length] : '#e5e7eb';
+      html += '<button class="country-picker-btn' + (isActive ? ' active' : '') + '" data-code="' + code + '" style="--btn-color:' + btnColor + '">' + c.flag + ' ' + c.name + '</button>';
+    });
+    picker.innerHTML = html;
+  }
+
+  /* ── Generator Calculator ── */
+  var calcPopulated = false;
+  function populateCalcCountry() {
+    if (calcPopulated) return;
+    var sel = document.getElementById('calc-country');
+    var html = '';
+    var codes = Object.keys(COUNTRIES).sort(function(a,b){return COUNTRIES[a].name.localeCompare(COUNTRIES[b].name);});
+    codes.forEach(function(code) {
+      var c = COUNTRIES[code];
+      var selected = code === 'NG' ? ' selected' : '';
+      html += '<option value="' + code + '"' + selected + '>' + c.flag + ' ' + c.name + '</option>';
+    });
+    sel.innerHTML = html;
+    calcPopulated = true;
+    updateCalcPrice();
+  }
+
+  function updateCalcPrice() {
+    var code = document.getElementById('calc-country').value;
+    var d = (fuelData && fuelData.countries) ? fuelData.countries[code] : null;
+    var priceInput = document.getElementById('calc-price');
+    if (d) {
+      var key = activeFuel === 'lpg' ? 'lpg_local' : activeFuel === 'diesel' ? 'diesel_local' : 'petrol_local';
+      priceInput.value = d[key] || '';
+      priceInput.placeholder = COUNTRIES[code].symbol + ' per litre';
+    }
+  }
+
+  function updateCalc() {
+    var genSizeEl = document.getElementById('calc-gen-size');
+    var consumption = parseFloat(genSizeEl.value);
+    if (genSizeEl.value === 'custom') {
+      consumption = parseFloat(document.getElementById('calc-custom-rate').value) || 0;
+    }
+
+    var hours = parseInt(document.getElementById('calc-hours').value) || 8;
+    var days = parseInt(document.getElementById('calc-days').value) || 26;
+    var pricePerLitre = parseFloat(document.getElementById('calc-price').value) || 0;
+    var code = document.getElementById('calc-country').value;
+    var c = COUNTRIES[code] || {};
+    var sym = c.symbol || '';
+
+    // Monthly litres and cost
+    var litresPerMonth = consumption * hours * days;
+    var monthlyCost = litresPerMonth * pricePerLitre;
+    var annualCost = monthlyCost * 12;
+    var dailyCost = litresPerMonth > 0 ? monthlyCost / days : 0;
+
+    // Cost per kWh (generator efficiency ~3.5 kWh per litre of petrol for small gensets)
+    var genSizeKVA = getGenKVA(consumption);
+    var kwhPerMonth = genSizeKVA * 0.8 * hours * days; // 80% load factor
+    var costPerKwh = kwhPerMonth > 0 ? monthlyCost / kwhPerMonth : 0;
+
+    // Format
+    document.getElementById('result-monthly').textContent = sym + ' ' + formatNum(monthlyCost);
+    document.getElementById('result-litres').textContent = formatNum(litresPerMonth, 0) + ' litres/month';
+    document.getElementById('result-annual').textContent = sym + ' ' + formatNum(annualCost);
+    document.getElementById('result-kwh').textContent = sym + ' ' + formatNum(costPerKwh);
+    document.getElementById('result-daily').textContent = sym + ' ' + formatNum(dailyCost);
+    document.getElementById('result-litres-num').textContent = formatNum(litresPerMonth, 0) + ' L';
+
+    // Comparisons (Nigeria-focused: Band A = 68 NGN/kWh, Solar amortized = 45 NGN/kWh)
+    var gridRate = 68;    // NGN/kWh Band A
+    var solarRate = 45;   // NGN/kWh amortized
+    if (code !== 'NG') {
+      // Scale rates by local multiplier relative to Nigeria
+      var ngMulti = getLocalMultiplier('NG');
+      var localMulti = getLocalMultiplier(code);
+      var ratio = localMulti / ngMulti;
+      gridRate = +(gridRate * ratio).toFixed(2);
+      solarRate = +(solarRate * ratio).toFixed(2);
+    }
+
+    var gridMonthlyCost = gridRate * kwhPerMonth;
+    var solarMonthlyCost = solarRate * kwhPerMonth;
+    var genVsGrid = monthlyCost - gridMonthlyCost;
+    var genVsSolar = monthlyCost - solarMonthlyCost;
+
+    document.getElementById('cmp-grid').innerHTML = sym + ' ' + formatNum(gridMonthlyCost) + '/mo' +
+      (genVsGrid > 0 ? ' <span class="comparison-savings savings-negative">+' + formatNum(genVsGrid) + '</span>' :
+       ' <span class="comparison-savings savings-positive">' + formatNum(genVsGrid) + '</span>');
+
+    document.getElementById('cmp-solar').innerHTML = sym + ' ' + formatNum(solarMonthlyCost) + '/mo' +
+      (genVsSolar > 0 ? ' <span class="comparison-savings savings-negative">+' + formatNum(genVsSolar) + '</span>' :
+       ' <span class="comparison-savings savings-positive">' + formatNum(genVsSolar) + '</span>');
+
+    // Break-even: typical solar install cost for equivalent KVA
+    var solarInstallCost = genSizeKVA * 350000 * (getLocalMultiplier(code) / getLocalMultiplier('NG')); // rough cost per KVA
+    var monthlySaving = monthlyCost - solarMonthlyCost;
+    var breakEvenMonths = monthlySaving > 0 ? Math.ceil(solarInstallCost / monthlySaving) : 0;
+    document.getElementById('cmp-breakeven').textContent = breakEvenMonths > 0 ? breakEvenMonths + ' months' : '--';
+  }
+
+  function getGenKVA(consumption) {
+    var map = {0.4:1, 0.8:2.5, 1.5:5, 2.8:10, 5.0:20, 12.0:50};
+    return map[consumption] || (consumption / 0.3); // rough estimate for custom
+  }
+
+  function formatNum(n, decimals) {
+    if (typeof decimals === 'undefined') decimals = 0;
+    if (!n || isNaN(n)) return '--';
+    if (Math.abs(n) >= 1000000) return (n/1000000).toFixed(1) + 'M';
+    return n.toLocaleString('en', {minimumFractionDigits:decimals, maximumFractionDigits: decimals > 0 ? decimals : 0});
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     EVENT LISTENERS
+     ═══════════════════════════════════════════════════════════ */
+
+  // Fuel tabs
+  document.getElementById('fuel-tabs').addEventListener('click', function(e) {
+    var btn = e.target.closest('.fuel-tab');
+    if (!btn) return;
+    document.querySelectorAll('.fuel-tab').forEach(function(t){t.classList.remove('active');});
+    btn.classList.add('active');
+    activeFuel = btn.dataset.fuel;
+    render();
+  });
+
+  // Region filters
+  document.getElementById('region-filters').addEventListener('click', function(e) {
+    var btn = e.target.closest('.region-btn');
+    if (!btn) return;
+    document.querySelectorAll('.region-btn').forEach(function(t){t.classList.remove('active');});
+    btn.classList.add('active');
+    activeRegion = btn.dataset.region;
+    renderTable();
+  });
+
+  // Search
+  document.getElementById('table-search').addEventListener('input', function(e) {
+    searchQuery = e.target.value;
+    renderTable();
+  });
+
+  // Sort
+  document.getElementById('sort-select').addEventListener('change', function(e) {
+    sortMode = e.target.value;
+    renderTable();
+  });
+
+  // Chart picker
+  document.getElementById('chart-picker').addEventListener('click', function(e) {
+    var btn = e.target.closest('.country-picker-btn');
+    if (!btn) return;
+    var code = btn.dataset.code;
+    var idx = chartCountries.indexOf(code);
+    if (idx !== -1) {
+      chartCountries.splice(idx, 1);
+    } else if (chartCountries.length < 5) {
+      chartCountries.push(code);
+    }
+    renderChart();
+  });
+
+  // Generator calculator inputs
+  document.getElementById('calc-country').addEventListener('change', function() {
+    updateCalcPrice();
+    updateCalc();
+  });
+
+  document.getElementById('calc-gen-size').addEventListener('change', function() {
+    var isCustom = this.value === 'custom';
+    document.getElementById('custom-consumption-group').style.display = isCustom ? 'block' : 'none';
+    updateCalc();
+  });
+
+  document.getElementById('calc-custom-rate').addEventListener('input', updateCalc);
+  document.getElementById('calc-price').addEventListener('input', updateCalc);
+
+  document.getElementById('calc-hours').addEventListener('input', function() {
+    document.getElementById('hours-val').textContent = this.value;
+    updateCalc();
+  });
+
+  document.getElementById('calc-days').addEventListener('input', function() {
+    document.getElementById('days-val').textContent = this.value;
+    updateCalc();
+  });
+
+  // FAQ accordion
+  document.getElementById('faq-list').addEventListener('click', function(e) {
+    var btn = e.target.closest('.faq-question');
+    if (!btn) return;
+    var item = btn.closest('.faq-item');
+    var wasOpen = item.classList.contains('open');
+    // Close all
+    document.querySelectorAll('.faq-item.open').forEach(function(fi){fi.classList.remove('open');});
+    if (!wasOpen) item.classList.add('open');
+  });
+
+  // Map country click — scroll to table
+  document.addEventListener('country-click', function(e) {
+    if (e.detail && e.detail.code) {
+      var search = document.getElementById('table-search');
+      var cObj = COUNTRIES[e.detail.code];
+      if (cObj) {
+        search.value = cObj.name;
+        searchQuery = cObj.name;
+        renderTable();
+        document.querySelector('.table-section').scrollIntoView({behavior:'smooth',block:'start'});
+      }
+    }
+  });
+
+})();
+</script>
+
+</body>
+</html>
