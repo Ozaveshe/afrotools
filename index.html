@@ -1262,31 +1262,31 @@
   <div class="wrap">
     <div class="eyebrow eyebrow--lt">What's Next</div>
     <h2 class="sec-title sec-title--lt" id="pipeline-heading">We're Just Getting Started.</h2>
-    <p class="sec-sub sec-sub--lt" style="margin-bottom:36px">380+ tools live, hundreds more planned. New ones ship every week. Here's the roadmap — get on the list to be first.</p>
+    <p class="sec-sub sec-sub--lt" style="margin-bottom:36px"><span id="roadmap-count">380+</span> tools live, hundreds more planned. New ones ship every week. Here's the roadmap -- get on the list to be first.</p>
 
     <div class="phase-grid" id="phase-grid"></div>
 
     <!-- Roadmap milestones -->
     <div class="roadmap-grid" style="margin-top:32px;display:grid;grid-template-columns:repeat(2,1fr);gap:14px">
       <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:20px">
-        <div style="font-size:.68rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#60b5ff;margin-bottom:8px">Now Live — Q1 2026</div>
-        <div style="font-size:1rem;font-weight:700;color:#fff;margin-bottom:8px">380+ Tools Across 54 Countries</div>
-        <div style="font-size:.78rem;color:rgba(255,255,255,.55);line-height:1.6">PAYE calculators, PDF tools, currency, mobile money, GPA, solar, floor plan, BOQ, and more — all free.</div>
+        <div style="font-size:.68rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#34C759;margin-bottom:8px">Now Live -- Q1 2026</div>
+        <div style="font-size:1rem;font-weight:700;color:#fff;margin-bottom:8px" id="roadmap-live-count">380+ Tools Across 54 Countries</div>
+        <div style="font-size:.78rem;color:rgba(255,255,255,.55);line-height:1.6">PAYE calculators for every African country, PDF workspace, BOQ builder, business plan generator, contract generator, cover letter builder, meeting minutes, Ajo/Chama tracker, AfroDraft CAD, school fees comparator, and hundreds more.</div>
       </div>
       <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:20px">
-        <div style="font-size:.68rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#60A5FA;margin-bottom:8px">Q2 2026 — Health Wave</div>
-        <div style="font-size:1rem;font-weight:700;color:#fff;margin-bottom:8px">Health, Fertility & Food Tools</div>
-        <div style="font-size:.78rem;color:rgba(255,255,255,.55);line-height:1.6">Malaria risk checker ✓, ovulation tracker, African food calorie counter, sickle cell advisor, vaccine schedule, diabetes risk.</div>
+        <div style="font-size:.68rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#60A5FA;margin-bottom:8px">Q2 2026 -- Engineering & Health</div>
+        <div style="font-size:1rem;font-weight:700;color:#fff;margin-bottom:8px">Construction & Health Tools</div>
+        <div style="font-size:.78rem;color:rgba(255,255,255,.55);line-height:1.6">Beam calculator, concrete mix design, paint calculator, electrical load calculator, plumbing pipe sizer, rebar calculator, ovulation tracker, sickle cell advisor, African food calorie counter.</div>
       </div>
       <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:20px">
-        <div style="font-size:.68rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#f59e0b;margin-bottom:8px">Q3 2026 — Business & Law</div>
-        <div style="font-size:1rem;font-weight:700;color:#fff;margin-bottom:8px">Startup, Legal & Finance Tools</div>
-        <div style="font-size:.78rem;color:rgba(255,255,255,.55);line-height:1.6">Tenancy agreement generator, CAC checker, crypto tax Africa, startup valuation, African stock screener, salary benchmark.</div>
+        <div style="font-size:.68rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#f59e0b;margin-bottom:8px">Q3 2026 -- Business & Legal</div>
+        <div style="font-size:1rem;font-weight:700;color:#fff;margin-bottom:8px">Startup, Legal & Market Tools</div>
+        <div style="font-size:.78rem;color:rgba(255,255,255,.55);line-height:1.6">Market price tracker, startup valuation, African stock screener, salary benchmark, crypto tax Africa, CAC/CIPC business registration checker.</div>
       </div>
       <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:20px">
-        <div style="font-size:.68rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#e879f9;margin-bottom:8px">Q4 2026 — The Platform</div>
-        <div style="font-size:1rem;font-weight:700;color:#fff;margin-bottom:8px">Community, API & Pro Features</div>
-        <div style="font-size:.78rem;color:rgba(255,255,255,.55);line-height:1.6">AfroTools Pro, community forum, developer API, African language tools, personalised dashboard, team accounts.</div>
+        <div style="font-size:.68rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#e879f9;margin-bottom:8px">Q4 2026 -- The Platform</div>
+        <div style="font-size:1rem;font-weight:700;color:#fff;margin-bottom:8px">API, Community & Pro Features</div>
+        <div style="font-size:.78rem;color:rgba(255,255,255,.55);line-height:1.6">AfroTools developer API for tax & currency data, community forum, AfroTools Pro with team accounts, personalised dashboard, African language tools, saved work sync across devices.</div>
       </div>
     </div>
 
@@ -1838,6 +1838,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // cats-heading fallback
     el = document.getElementById('cats-heading');
     if (el) el.textContent = cats + ' Categories. 54 Countries. ' + total + '+ Tools.';
+
+    // Roadmap dynamic counts
+    el = document.getElementById('roadmap-count');
+    if (el) el.textContent = total + '+';
+    el = document.getElementById('roadmap-live-count');
+    if (el) el.textContent = total + '+ Tools Across 54 Countries';
   })();
   (function renderCategories() {
     var grid = document.getElementById('cats-grid');
