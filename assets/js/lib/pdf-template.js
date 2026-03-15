@@ -1,0 +1,312 @@
+/**
+ * AFROTOOLS — PDF Template Library
+ * ═══════════════════════════════════════════════════════════
+ * Shared branded PDF generation for all tools.
+ * Uses jsPDF (loaded lazily) with consistent branding.
+ *
+ * Usage:
+ *   await AfroTools.pdf.generate({
+ *     title: 'Nigeria PAYE Tax Report',
+ *     subtitle: 'NTA 2026 Calculation',
+ *     country: 'Nigeria',
+ *     countryFlag: '\uD83C\uDDF3\uD83C\uDDEC',
+ *     toolId: 'ng-paye',
+ *     heroStats: [
+ *       { label: 'Gross Annual', value: '\u20A63,600,000' },
+ *       { label: 'Take-Home', value: '\u20A6275,000/mo', highlight: true },
+ *       { label: 'Tax Rate', value: '12.5%', color: 'red' },
+ *     ],
+ *     sections: [
+ *       {
+ *         title: 'Income Breakdown',
+ *         rows: [
+ *           { label: 'Gross Salary', value: '\u20A63,600,000' },
+ *           { label: 'Pension (8%)', value: '-\u20A6288,000', type: 'deduction' },
+ *           { label: 'Take-Home Pay', value: '\u20A62,800,000', type: 'total' },
+ *         ],
+ *       }
+ *     ],
+ *     chartImage: canvasElement, // optional — canvas or data URL
+ *     disclaimer: 'Custom disclaimer text...',
+ *     source: 'Nigeria Tax Act 2025, FIRS',
+ *   });
+ * ═══════════════════════════════════════════════════════════
+ */
+
+(function (window) {
+  'use strict';
+
+  let jsPDFLoaded = false;
+  let loadPromise = null;
+
+  /**
+   * Lazily load jsPDF from CDN
+   */
+  function loadJsPDF() {
+    if (jsPDFLoaded && window.jspdf) return Promise.resolve();
+    if (loadPromise) return loadPromise;
+
+    loadPromise = new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+      script.onload = () => { jsPDFLoaded = true; resolve(); };
+      script.onerror = () => reject(new Error('Failed to load jsPDF'));
+      document.head.appendChild(script);
+    });
+    return loadPromise;
+  }
+
+  // Brand colors
+  const COLORS = {
+    dark: [15, 23, 42],       // #0f172a
+    brand: [0, 113, 227],     // #0071E3
+    green: [93, 219, 158],    // #5ddb9e
+    red: [192, 57, 43],       // #c0392b
+    text: [17, 24, 39],       // #111827
+    muted: [107, 114, 128],   // #6b7280
+    light: [249, 250, 251],   // #f9fafb
+    border: [229, 231, 235],  // #e5e7eb
+    white: [255, 255, 255],
+  };
+
+  /**
+   * Generate a branded PDF
+   * @param {Object} config
+   * @returns {Promise<void>}
+   */
+  async function generate(config) {
+    await loadJsPDF();
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+    const W = 210, H = 297;
+    const margin = 20;
+    const contentW = W - margin * 2;
+    let y = 0;
+
+    // ── HEADER BAR ──────────────────────────────────
+    doc.setFillColor(...COLORS.dark);
+    doc.rect(0, 0, W, 42, 'F');
+
+    // Brand accent line
+    doc.setFillColor(...COLORS.brand);
+    doc.rect(0, 42, W, 1.5, 'F');
+
+    // Brand name
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(14);
+    doc.setTextColor(...COLORS.white);
+    doc.text('AFROTOOLS', margin, 14);
+
+    // Brand tagline
+    doc.setFontSize(7);
+    doc.setTextColor(200, 200, 200);
+    doc.text("Africa's Financial Platform", margin, 19);
+
+    // Reference & date
+    const refNo = 'AFT-' + (config.toolId || 'TOOL').toUpperCase().replace(/-/g, '') + '-' + Date.now().toString(36).toUpperCase().slice(-6);
+    const dateStr = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+    doc.setFontSize(7);
+    doc.setTextColor(180, 180, 180);
+    doc.text('Ref: ' + refNo, W - margin, 12, { align: 'right' });
+    doc.text(dateStr, W - margin, 17, { align: 'right' });
+
+    // Title
+    doc.setFontSize(16);
+    doc.setTextColor(...COLORS.white);
+    doc.text(config.title || 'Tax Report', margin, 32);
+
+    // Subtitle
+    if (config.subtitle) {
+      doc.setFontSize(9);
+      doc.setTextColor(...COLORS.green);
+      doc.text(config.subtitle, margin, 38);
+    }
+
+    y = 50;
+
+    // ── HERO STATS BAR ──────────────────────────────
+    if (config.heroStats && config.heroStats.length > 0) {
+      doc.setFillColor(...COLORS.light);
+      doc.setDrawColor(...COLORS.border);
+      doc.roundedRect(margin, y, contentW, 22, 3, 3, 'FD');
+
+      const statW = contentW / config.heroStats.length;
+      config.heroStats.forEach((stat, i) => {
+        const cx = margin + statW * i + statW / 2;
+
+        // Label
+        doc.setFontSize(6.5);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(...COLORS.muted);
+        doc.text(stat.label.toUpperCase(), cx, y + 8, { align: 'center' });
+
+        // Value
+        doc.setFontSize(11);
+        doc.setFont('helvetica', 'bold');
+        if (stat.color === 'red') doc.setTextColor(...COLORS.red);
+        else if (stat.highlight) doc.setTextColor(...COLORS.brand);
+        else doc.setTextColor(...COLORS.text);
+        doc.text(stat.value, cx, y + 16, { align: 'center' });
+
+        // Divider
+        if (i < config.heroStats.length - 1) {
+          doc.setDrawColor(...COLORS.border);
+          doc.line(margin + statW * (i + 1), y + 4, margin + statW * (i + 1), y + 18);
+        }
+      });
+
+      y += 28;
+    }
+
+    // ── SECTIONS ────────────────────────────────────
+    if (config.sections) {
+      for (const section of config.sections) {
+        // Check for page break
+        if (y > H - 50) {
+          doc.addPage();
+          y = 20;
+        }
+
+        // Section title
+        doc.setFontSize(7);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(...COLORS.muted);
+        doc.text(section.title.toUpperCase(), margin, y);
+        y += 2;
+        doc.setDrawColor(...COLORS.border);
+        doc.line(margin, y, margin + contentW, y);
+        y += 5;
+
+        // Rows
+        for (const row of section.rows) {
+          if (y > H - 30) {
+            doc.addPage();
+            y = 20;
+          }
+
+          const isTotal = row.type === 'total';
+          const isDeduction = row.type === 'deduction';
+          const isSubtotal = row.type === 'subtotal';
+
+          if (isTotal || isSubtotal) {
+            doc.setDrawColor(...COLORS.border);
+            doc.line(margin, y - 1, margin + contentW, y - 1);
+            y += 1;
+          }
+
+          // Label
+          doc.setFontSize(isTotal ? 9 : 8.5);
+          doc.setFont('helvetica', (isTotal || isSubtotal) ? 'bold' : 'normal');
+          doc.setTextColor(...(isTotal ? COLORS.text : COLORS.text));
+          doc.text(row.label, margin + (row.indent ? 8 : 0), y);
+
+          // Value
+          doc.setFont('helvetica', (isTotal || isSubtotal) ? 'bold' : 'normal');
+          if (isDeduction) doc.setTextColor(...COLORS.red);
+          else if (isTotal && row.highlight !== false) doc.setTextColor(...COLORS.brand);
+          else if (row.color === 'red') doc.setTextColor(...COLORS.red);
+          else if (row.color === 'green') doc.setTextColor(...COLORS.brand);
+          else if (row.color === 'muted') doc.setTextColor(...COLORS.muted);
+          else doc.setTextColor(...COLORS.text);
+          doc.text(row.value, margin + contentW, y, { align: 'right' });
+
+          y += isTotal ? 7 : 5.5;
+        }
+
+        y += 4;
+      }
+    }
+
+    // ── CHART IMAGE ─────────────────────────────────
+    if (config.chartImage) {
+      if (y > H - 80) {
+        doc.addPage();
+        y = 20;
+      }
+
+      try {
+        let imgData;
+        if (typeof config.chartImage === 'string') {
+          imgData = config.chartImage;
+        } else if (config.chartImage.toDataURL) {
+          imgData = config.chartImage.toDataURL('image/png');
+        }
+
+        if (imgData) {
+          const chartW = Math.min(contentW, 140);
+          const chartH = chartW * 0.55;
+          const cx = margin + (contentW - chartW) / 2;
+          doc.addImage(imgData, 'PNG', cx, y, chartW, chartH);
+          y += chartH + 8;
+        }
+      } catch (e) {
+        // Silently skip chart if it fails
+      }
+    }
+
+    // ── LEGAL SOURCE ────────────────────────────────
+    if (config.source) {
+      if (y > H - 30) { doc.addPage(); y = 20; }
+      doc.setFontSize(7);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(...COLORS.muted);
+      doc.text('LEGAL BASIS', margin, y);
+      y += 4;
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(7);
+      const sourceLines = doc.splitTextToSize(config.source, contentW);
+      doc.text(sourceLines, margin, y);
+      y += sourceLines.length * 3.5 + 4;
+    }
+
+    // ── FOOTER ──────────────────────────────────────
+    const footerY = H - 18;
+    doc.setFillColor(...COLORS.light);
+    doc.rect(0, footerY - 4, W, 22, 'F');
+    doc.setDrawColor(...COLORS.border);
+    doc.line(0, footerY - 4, W, footerY - 4);
+
+    doc.setFontSize(7);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(...COLORS.text);
+    doc.text('AFROTOOLS.COM', margin, footerY + 2);
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(6);
+    doc.setTextColor(...COLORS.muted);
+    const disclaimer = config.disclaimer || 'This report is for informational purposes only and does not constitute professional tax or financial advice. Consult a qualified professional for binding guidance.';
+    const discLines = doc.splitTextToSize(disclaimer, contentW - 30);
+    doc.text(discLines, margin, footerY + 6);
+
+    doc.setFontSize(6.5);
+    doc.text(refNo + '  |  ' + dateStr, W - margin, footerY + 2, { align: 'right' });
+    doc.text('afrotools.com', W - margin, footerY + 6, { align: 'right' });
+
+    // ── SAVE ────────────────────────────────────────
+    const fileName = `afrotools-${config.toolId || 'report'}-${(config.country || 'report').toLowerCase().replace(/\s+/g, '-')}-${new Date().toISOString().slice(0, 10)}.pdf`;
+    doc.save(fileName);
+
+    // Track download
+    if (window.gtag) {
+      window.gtag('event', 'pdf_download', {
+        tool_name: config.toolId || 'unknown',
+        country: config.country || 'unknown',
+      });
+    }
+
+    // Toast feedback
+    if (window.AfroTools && window.AfroTools.toast) {
+      window.AfroTools.toast.success('PDF downloaded');
+    }
+  }
+
+  const pdf = {
+    generate,
+    loadJsPDF,
+  };
+
+  // Expose globally
+  window.AfroTools = window.AfroTools || {};
+  window.AfroTools.pdf = pdf;
+
+})(window);
