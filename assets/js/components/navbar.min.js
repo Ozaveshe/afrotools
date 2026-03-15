@@ -96,12 +96,17 @@
   const CSS = `
     @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap');
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; font-family: 'DM Sans', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
-    :host { display: block; }
+    :host {
+      display: block;
+      position: sticky;
+      top: 0;
+      z-index: 500;
+    }
 
     nav {
-      position: sticky; top: 0; z-index: 500;
+      position: relative;
       height: 60px;
-      background: rgba(248, 250, 253, 0.8);
+      background: rgba(248, 250, 253, 0.95);
       backdrop-filter: blur(20px) saturate(180%);
       -webkit-backdrop-filter: blur(20px) saturate(180%);
       border-bottom: 1px solid rgba(0, 0, 0, 0.06);
