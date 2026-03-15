@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business Plan Builder | AfroTools</title>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="/assets/js/lib/save-state.js"></script>
+<style>
+:root{--color-primary:#007AFF;--blue-light:#EFF6FF}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#f1f5f9;color:#1e293b}
+
+.topbar{background:#fff;border-bottom:1px solid #e5e7eb;padding:0 20px;display:flex;align-items:center;height:52px;gap:12px}
+.topbar-back{font-size:12px;color:#6b7280;text-decoration:none;font-weight:600;display:flex;align-items:center;gap:4px}
+.topbar-brand{font-size:14px;font-weight:800;color:#111;display:flex;align-items:center;gap:8px;text-decoration:none}
+.topbar-title{font-size:12px;color:#6b7280;font-weight:600;flex:1}
+.btn{padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:.15s;display:inline-flex;align-items:center;gap:5px}
+.btn-p{background:var(--color-primary);color:#fff}.btn-p:hover{background:#0059B3}
+.btn-g{background:#f3f4f6;color:#374151;border:1px solid #e5e7eb}.btn-g:hover{background:#e5e7eb}
+
+.main{max-width:800px;margin:0 auto;padding:24px 20px}
+
+/* Progress */
+.progress{background:#fff;border:1.5px solid #e5e7eb;border-radius:12px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;gap:12px}
+.prog-bar{flex:1;height:6px;background:#e5e7eb;border-radius:6px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--color-primary),#5AC8FA);border-radius:6px;transition:width .3s}
+.prog-text{font-size:12px;font-weight:700;color:var(--color-primary);min-width:40px;text-align:right}
+
+/* Template picker */
+.tpl-picker{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:20px;margin-bottom:20px}
+.tpl-picker h3{font-size:.9rem;font-weight:800;color:#111;margin-bottom:12px}
+.tpl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+.tpl-card{background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:10px;padding:14px;text-align:center;cursor:pointer;transition:.15s}
+.tpl-card:hover,.tpl-card.on{border-color:var(--color-primary);background:var(--blue-light)}
+.tpl-card .icon{font-size:1.4rem;margin-bottom:6px}
+.tpl-card .name{font-size:.78rem;font-weight:700;color:#111}
+
+/* Sections nav */
+.sec-nav{display:flex;gap:6px;margin-bottom:20px;overflow-x:auto;padding-bottom:4px}
+.sec-tab{padding:8px 16px;border-radius:8px;font-size:12px;font-weight:700;border:1.5px solid #e5e7eb;background:#fff;color:#6b7280;cursor:pointer;white-space:nowrap;transition:.15s}
+.sec-tab:hover{border-color:#d1d5db}.sec-tab.on{border-color:var(--color-primary);background:var(--blue-light);color:var(--color-primary)}
+.sec-tab.done{position:relative}.sec-tab.done::after{content:'';position:absolute;top:3px;right:3px;width:6px;height:6px;background:#34C759;border-radius:50%}
+
+/* Section content */
+.sec-card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:24px;margin-bottom:16px;display:none}
+.sec-card.on{display:block}
+.sec-card h3{font-size:1rem;font-weight:800;color:#111;margin-bottom:4px}
+.sec-card .hint{font-size:.78rem;color:#6b7280;margin-bottom:16px;line-height:1.5}
+.field{margin-bottom:14px}
+.field label{font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px}
+.field input,.field textarea,.field select{width:100%;padding:10px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:13px;font-family:inherit;color:#1e293b;outline:none;transition:border-color .15s}
+.field input:focus,.field textarea:focus{border-color:var(--color-primary)}
+.field textarea{min-height:100px;resize:vertical}
+
+/* Financials table */
+.fin-table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:14px}
+.fin-table th{text-align:left;font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;padding:8px;border-bottom:1px solid #e5e7eb}
+.fin-table td{padding:6px 8px;border-bottom:1px solid #f1f5f9}
+.fin-table input{width:100%;padding:6px 8px;border:1.5px solid #e2e8f0;border-radius:6px;font-size:12px;font-family:inherit;text-align:right;outline:none}
+.fin-table .calc{font-weight:700;color:var(--color-primary);text-align:right}
+
+/* Nav buttons */
+.sec-nav-btns{display:flex;justify-content:space-between;margin-top:20px}
+
+@media(max-width:640px){.sec-nav{flex-wrap:wrap}.tpl-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="index.html" class="topbar-back">&larr; Back</a>
+  <a href="index.html" class="topbar-brand"><span>📋</span> Business Plan Builder</a>
+  <span class="topbar-title" id="planTitle">Untitled Business Plan</span>
+  <button class="btn btn-g" onclick="savePlan()">Save</button>
+  <button class="btn btn-p" onclick="exportPDF()">Download PDF</button>
+</div>
+
+<div class="main">
+
+  <!-- Progress -->
+  <div class="progress">
+    <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+    <div class="prog-text" id="progText">0%</div>
+  </div>
+
+  <!-- Template Picker -->
+  <div class="tpl-picker" id="tplPicker">
+    <h3>Choose an Industry Template (optional)</h3>
+    <div class="tpl-grid">
+      <div class="tpl-card" onclick="pickTemplate('restaurant')"><div class="icon">🍽️</div><div class="name">Restaurant</div></div>
+      <div class="tpl-card" onclick="pickTemplate('tech')"><div class="icon">💻</div><div class="name">Tech Startup</div></div>
+      <div class="tpl-card" onclick="pickTemplate('retail')"><div class="icon">🏪</div><div class="name">Retail</div></div>
+      <div class="tpl-card" onclick="pickTemplate('agriculture')"><div class="icon">🌾</div><div class="name">Agriculture</div></div>
+      <div class="tpl-card" onclick="pickTemplate('manufacturing')"><div class="icon">🏭</div><div class="name">Manufacturing</div></div>
+    </div>
+  </div>
+
+  <!-- Section Tabs -->
+  <div class="sec-nav" id="secNav"></div>
+
+  <!-- Section Content -->
+  <div id="sections"></div>
+
+  <!-- Navigation buttons -->
+  <div class="sec-nav-btns">
+    <button class="btn btn-g" id="prevBtn" onclick="prevSection()">Previous</button>
+    <button class="btn btn-p" id="nextBtn" onclick="nextSection()">Next Section</button>
+  </div>
+
+</div>
+
+<script>
+var SECTIONS = [
+  { id:'exec', name:'Executive Summary', fields:[
+    {id:'mission',label:'Mission Statement',type:'textarea',hint:'What does your business do and why does it exist?'},
+    {id:'vision',label:'Vision',type:'textarea',hint:'Where do you see the business in 5 years?'},
+    {id:'valueProp',label:'Value Proposition',type:'textarea',hint:'What unique value do you offer customers?'},
+    {id:'overview',label:'Business Overview',type:'textarea',hint:'Brief summary of your business, products, and market.'}
+  ]},
+  { id:'company', name:'Company', fields:[
+    {id:'legalName',label:'Legal Name',type:'input'},
+    {id:'legalStructure',label:'Legal Structure',type:'select',options:['Sole Proprietorship','Partnership','Limited Liability Company','Corporation','Cooperative']},
+    {id:'founded',label:'Year Founded',type:'input'},
+    {id:'location',label:'Location',type:'input',hint:'City, State, Country'},
+    {id:'team',label:'Founding Team',type:'textarea',hint:'Key team members and their roles/experience.'}
+  ]},
+  { id:'market', name:'Market Analysis', fields:[
+    {id:'targetMarket',label:'Target Market',type:'textarea',hint:'Who are your ideal customers? Demographics, location, income level.'},
+    {id:'marketSize',label:'Market Size',type:'input',hint:'Estimated total addressable market (e.g., $500M in Nigeria)'},
+    {id:'competitors',label:'Key Competitors',type:'textarea',hint:'Who are your main competitors and how are you different?'},
+    {id:'swot',label:'SWOT Analysis',type:'textarea',hint:'Strengths, Weaknesses, Opportunities, Threats'}
+  ]},
+  { id:'products', name:'Products & Services', fields:[
+    {id:'offerings',label:'Products / Services',type:'textarea',hint:'Describe what you sell or the service you provide.'},
+    {id:'pricing',label:'Pricing Strategy',type:'textarea',hint:'How do you price your products? What margins do you target?'},
+    {id:'competitive',label:'Competitive Advantage',type:'textarea',hint:'What makes your offering better or different?'}
+  ]},
+  { id:'marketing', name:'Marketing Strategy', fields:[
+    {id:'channels',label:'Marketing Channels',type:'textarea',hint:'How will customers find you? (Social media, SEO, referrals, events...)'},
+    {id:'budget',label:'Marketing Budget',type:'input',hint:'Planned monthly/annual marketing spend'},
+    {id:'gtm',label:'Go-to-Market Plan',type:'textarea',hint:'Your plan for the first 6-12 months of customer acquisition.'}
+  ]},
+  { id:'financials', name:'Financials', fields:'FINANCIAL_TABLE' },
+  { id:'funding', name:'Funding', fields:[
+    {id:'fundingNeeded',label:'Total Funding Required',type:'input',hint:'How much capital do you need?'},
+    {id:'fundingUse',label:'Use of Funds',type:'textarea',hint:'Break down how the money will be spent.'},
+    {id:'fundingSources',label:'Funding Sources',type:'textarea',hint:'Where will the money come from? (Personal savings, angel investors, bank loan, grant...)'}
+  ]}
+];
+
+var DATA = {};
+var currentSec = 0;
+var ss = new SaveState('business-plan');
+var _currentId = null;
+
+// Init
+(function(){
+  renderTabs();
+  renderSection(0);
+  updateProgress();
+  var params = new URLSearchParams(window.location.search);
+  var id = params.get('id');
+  if (id) loadPlan(id);
+})();
+
+function renderTabs() {
+  var nav = document.getElementById('secNav');
+  nav.innerHTML = SECTIONS.map(function(s, i){
+    return '<button class="sec-tab'+(i===currentSec?' on':'')+'" onclick="goSection('+i+')">'+s.name+'</button>';
+  }).join('');
+}
+
+function goSection(i) {
+  currentSec = i;
+  renderTabs();
+  renderSection(i);
+  document.getElementById('prevBtn').style.visibility = i===0?'hidden':'visible';
+  document.getElementById('nextBtn').textContent = i===SECTIONS.length-1?'Finish':'Next Section';
+}
+
+function prevSection(){ if(currentSec>0) goSection(currentSec-1); }
+function nextSection(){ if(currentSec<SECTIONS.length-1) goSection(currentSec+1); }
+
+function renderSection(i) {
+  var sec = SECTIONS[i];
+  var container = document.getElementById('sections');
+
+  if (sec.fields === 'FINANCIAL_TABLE') {
+    container.innerHTML = renderFinancials();
+    return;
+  }
+
+  var html = '<div class="sec-card on"><h3>'+sec.name+'</h3>';
+  sec.fields.forEach(function(f){
+    var val = DATA[f.id] || '';
+    html += '<div class="field"><label>'+f.label+'</label>';
+    if (f.hint) html += '<div style="font-size:.72rem;color:#9ca3af;margin-bottom:4px;">'+f.hint+'</div>';
+    if (f.type === 'textarea') {
+      html += '<textarea id="f_'+f.id+'" oninput="saveField(\''+f.id+'\',this.value)">'+esc(val)+'</textarea>';
+    } else if (f.type === 'select') {
+      html += '<select id="f_'+f.id+'" onchange="saveField(\''+f.id+'\',this.value)">';
+      (f.options||[]).forEach(function(o){html += '<option'+(val===o?' selected':'')+'>'+o+'</option>';});
+      html += '</select>';
+    } else {
+      html += '<input type="text" id="f_'+f.id+'" value="'+esc(val)+'" oninput="saveField(\''+f.id+'\',this.value)">';
+    }
+    html += '</div>';
+  });
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+function renderFinancials() {
+  var years = ['Year 1','Year 2','Year 3'];
+  var rows = [
+    {id:'revenue',label:'Revenue',type:'input'},
+    {id:'cogs',label:'Cost of Goods Sold',type:'input'},
+    {id:'grossProfit',label:'Gross Profit',type:'calc'},
+    {id:'opex',label:'Operating Expenses',type:'input'},
+    {id:'marketing_cost',label:'Marketing Costs',type:'input'},
+    {id:'salaries',label:'Salaries & Wages',type:'input'},
+    {id:'netProfit',label:'Net Profit',type:'calc'}
+  ];
+
+  var html = '<div class="sec-card on"><h3>Financial Projections (3 Years)</h3>' +
+    '<p class="hint">Enter your estimates in your local currency. Profit rows are calculated automatically.</p>' +
+    '<table class="fin-table"><thead><tr><th>Item</th>';
+  years.forEach(function(y){html += '<th style="text-align:right">'+y+'</th>';});
+  html += '</tr></thead><tbody>';
+
+  rows.forEach(function(r){
+    html += '<tr><td style="font-weight:600">'+r.label+'</td>';
+    years.forEach(function(y, yi){
+      var key = 'fin_'+r.id+'_y'+(yi+1);
+      var val = DATA[key] || '';
+      if (r.type === 'calc') {
+        html += '<td class="calc" id="'+key+'">0</td>';
+      } else {
+        html += '<td><input type="number" id="'+key+'" value="'+esc(val)+'" placeholder="0" oninput="saveField(\''+key+'\',this.value);calcFinancials()"></td>';
+      }
+    });
+    html += '</tr>';
+  });
+  html += '</tbody></table></div>';
+  return html;
+}
+
+function calcFinancials() {
+  for (var y = 1; y <= 3; y++) {
+    var rev = parseFloat(DATA['fin_revenue_y'+y]) || 0;
+    var cogs = parseFloat(DATA['fin_cogs_y'+y]) || 0;
+    var opex = parseFloat(DATA['fin_opex_y'+y]) || 0;
+    var mkt = parseFloat(DATA['fin_marketing_cost_y'+y]) || 0;
+    var sal = parseFloat(DATA['fin_salaries_y'+y]) || 0;
+    var gp = rev - cogs;
+    var np = gp - opex - mkt - sal;
+    var gpEl = document.getElementById('fin_grossProfit_y'+y);
+    var npEl = document.getElementById('fin_netProfit_y'+y);
+    if (gpEl) gpEl.textContent = gp.toLocaleString();
+    if (npEl) { npEl.textContent = np.toLocaleString(); npEl.style.color = np >= 0 ? '#34C759' : '#FF3B30'; }
+  }
+}
+
+function saveField(id, val) {
+  DATA[id] = val;
+  updateProgress();
+}
+
+function updateProgress() {
+  var total = 0, filled = 0;
+  SECTIONS.forEach(function(sec){
+    if (sec.fields === 'FINANCIAL_TABLE') {
+      for (var y=1;y<=3;y++){['revenue','cogs','opex'].forEach(function(r){total++;if(DATA['fin_'+r+'_y'+y])filled++;});}
+    } else {
+      sec.fields.forEach(function(f){total++;if(DATA[f.id])filled++;});
+    }
+  });
+  var pct = total ? Math.round(filled/total*100) : 0;
+  document.getElementById('progFill').style.width = pct+'%';
+  document.getElementById('progText').textContent = pct+'%';
+}
+
+function pickTemplate(tpl) {
+  document.querySelectorAll('.tpl-card').forEach(function(c){c.classList.remove('on');});
+  event.currentTarget.classList.add('on');
+  // Pre-fill hints based on template
+  var hints = {
+    restaurant: {mission:'To provide authentic African cuisine...',targetMarket:'Local professionals, families, and tourists...',offerings:'Dine-in, takeaway, and catering services...'},
+    tech: {mission:'To solve X problem using technology...',targetMarket:'SMEs across West Africa...',offerings:'SaaS platform for...'},
+    retail: {mission:'To provide affordable quality goods...',targetMarket:'Middle-income consumers in urban areas...',offerings:'Physical store and e-commerce...'},
+    agriculture: {mission:'To modernise farming in...',targetMarket:'Local and export markets for...',offerings:'Farm produce, processed goods...'},
+    manufacturing: {mission:'To manufacture quality products locally...',targetMarket:'Construction firms, retailers...',offerings:'Building materials, consumer goods...'}
+  };
+  var h = hints[tpl] || {};
+  Object.keys(h).forEach(function(k){ if(!DATA[k]) DATA[k]=h[k]; });
+  goSection(0);
+}
+
+// Save / Load
+function savePlan() {
+  var name = DATA.legalName || DATA.mission ? (DATA.legalName || 'Business Plan') : 'Untitled Plan';
+  var entry = ss.save({ id: _currentId, title: name, data: JSON.parse(JSON.stringify(DATA)) });
+  _currentId = entry.id;
+  alert('Plan saved!');
+}
+
+function loadPlan(id) {
+  var item = ss.load(id);
+  if (!item || !item.data) return;
+  _currentId = item.id;
+  DATA = item.data;
+  document.getElementById('planTitle').textContent = item.title;
+  goSection(0);
+  updateProgress();
+}
+
+function exportPDF() {
+  if (window.afroEmailGate && !window.afroEmailGate.check()) return;
+  var w = window.open('','_blank');
+  var html = '<html><head><title>Business Plan</title><style>body{font-family:Arial,sans-serif;max-width:700px;margin:40px auto;color:#333;font-size:12px;line-height:1.7}h1{font-size:22px;color:#111;border-bottom:2px solid #007AFF;padding-bottom:8px;margin-bottom:20px}h2{font-size:16px;color:#007AFF;margin:24px 0 8px;border-bottom:1px solid #eee;padding-bottom:4px}p{margin-bottom:12px;white-space:pre-wrap}table{width:100%;border-collapse:collapse;margin:12px 0}th,td{border:1px solid #ddd;padding:6px 10px;font-size:11px}th{background:#f0f0f0;text-align:left}.calc{font-weight:700;text-align:right}@media print{body{margin:20px}}</style></head><body>';
+  html += '<h1>'+(DATA.legalName||'Business Plan')+'</h1>';
+
+  SECTIONS.forEach(function(sec){
+    html += '<h2>'+sec.name+'</h2>';
+    if (sec.fields === 'FINANCIAL_TABLE') {
+      html += '<table><tr><th>Item</th><th>Year 1</th><th>Year 2</th><th>Year 3</th></tr>';
+      ['revenue','cogs','grossProfit','opex','marketing_cost','salaries','netProfit'].forEach(function(r){
+        var label = r.replace(/_/g,' ').replace(/\b\w/g,function(c){return c.toUpperCase();});
+        var isCalc = r==='grossProfit'||r==='netProfit';
+        html += '<tr><td>'+label+'</td>';
+        for(var y=1;y<=3;y++){
+          var val = DATA['fin_'+r+'_y'+y]||'';
+          if(isCalc){
+            var rev=parseFloat(DATA['fin_revenue_y'+y])||0,cogs=parseFloat(DATA['fin_cogs_y'+y])||0;
+            var opex=parseFloat(DATA['fin_opex_y'+y])||0,mkt=parseFloat(DATA['fin_marketing_cost_y'+y])||0,sal=parseFloat(DATA['fin_salaries_y'+y])||0;
+            val = r==='grossProfit'?(rev-cogs):(rev-cogs-opex-mkt-sal);
+            html += '<td class="calc">'+val.toLocaleString()+'</td>';
+          } else {
+            html += '<td style="text-align:right">'+(val?parseFloat(val).toLocaleString():'')+'</td>';
+          }
+        }
+        html += '</tr>';
+      });
+      html += '</table>';
+    } else {
+      sec.fields.forEach(function(f){
+        if(DATA[f.id]) html += '<p><strong>'+f.label+':</strong><br>'+esc(DATA[f.id])+'</p>';
+      });
+    }
+  });
+  html += '</body></html>';
+  w.document.write(html); w.document.close();
+  setTimeout(function(){w.print();},500);
+}
+
+function esc(s){return s?String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'):'';}
+</script>
+<script src="/assets/js/lib/auto-email-gate.js" defer></script>
+</body>
+</html>
