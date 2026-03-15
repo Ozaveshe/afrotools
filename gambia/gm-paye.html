@@ -54,6 +54,7 @@
   .tool-hero::after { content: '🇬🇲'; position: absolute; right: 5%; top: 50%; transform: translateY(-50%); font-size: 8rem; opacity: .06; pointer-events: none; }
   .tool-hero { background: #071a0d; }
 </style>
+<script src="/assets/js/lib/chart-config.js" defer></script>
 </head>
 <body class="tool-page">
 <afro-navbar active="tools"></afro-navbar>
@@ -593,7 +594,7 @@ function renderChart(type) {
       type: 'doughnut',
       data: {
         labels: ['Take-Home', 'PAYE Tax', R.sector === 'private' ? 'NSSF' : 'PSSSF'],
-        datasets: [{ data: [R.netMonthly, R.monthlyPAYE, R.social], backgroundColor: ['#FCD116','#2563EB','#00A3DD'], borderWidth: 2, borderColor: '#fff' }]
+        datasets: [{ data: [R.netMonthly, R.monthlyPAYE, R.social], backgroundColor: AfroChartColors.doughnut.slice(0, 3), borderWidth: 2, borderColor: '#fff' }]
       },
       options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{size:11,weight:'600'}, padding:12 } } } }
     });
@@ -604,18 +605,18 @@ function renderChart(type) {
       type: 'bar',
       data: {
         labels: bands.map(b => b.isFlat ? '30% flat' : (b.rate*100)+'%'),
-        datasets: [{ label:'Tax (TZS)', data: bands.map(b=>b.tax), backgroundColor:'#2563EB', borderRadius:5 }]
+        datasets: [{ label:'Tax (TZS)', data: bands.map(b=>b.tax), backgroundColor: AfroChartColors.series.slice(0, bands.length), borderRadius:5 }]
       },
-      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'TZS'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid:{color:'#EFF6FF'} }, x:{ticks:{font:{size:10,weight:'600'}}} } }
+      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'TZS'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid: { color: AfroChartColors.grid} }, x:{ticks:{font:{size:10,weight:'600'}}} } }
     });
   } else if (type === 'employer') {
     CHART = new Chart(canvas, {
       type: 'bar',
       data: {
         labels: ['Take-Home', 'PAYE', R.sector==='private'?'Emp NSSF':'Emp PSSSF', 'Empr Social', 'SDL', 'WCF'],
-        datasets: [{ label:'TZS', data:[R.netMonthly, R.monthlyPAYE, R.social, R.empSocial, R.sdl, R.wcf], backgroundColor:['#FCD116','#2563EB','#00A3DD','#0077aa','#555','#aaa'], borderRadius:5 }]
+        datasets: [{ label:'TZS', data:[R.netMonthly, R.monthlyPAYE, R.social, R.empSocial, R.sdl, R.wcf], backgroundColor: AfroChartColors.doughnut.slice(0, 6), borderRadius:5 }]
       },
-      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'TZS'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid:{color:'#EFF6FF'} }, x:{ticks:{font:{size:9,weight:'600'}}} } }
+      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'TZS'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid: { color: AfroChartColors.grid} }, x:{ticks:{font:{size:9,weight:'600'}}} } }
     });
   }
 }

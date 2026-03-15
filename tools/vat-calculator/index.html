@@ -44,6 +44,7 @@ gtag('config', 'G-D859CGF391');
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the VAT rate in Nigeria?","acceptedAnswer":{"@type":"Answer","text":"Nigeria's VAT rate is 7.5%, one of the lowest in Africa. Basic food items were exempted from January 2026 under the new tax reform."}},{"@type":"Question","name":"What is the VAT rate in Kenya?","acceptedAnswer":{"@type":"Answer","text":"Kenya's standard VAT rate is 16%. Some goods and services are zero-rated or exempt."}},{"@type":"Question","name":"What is the VAT rate in South Africa?","acceptedAnswer":{"@type":"Answer","text":"South Africa's VAT rate is 15%, increased from 14% in April 2018. Basic foodstuffs are zero-rated."}},{"@type":"Question","name":"Which African country has the highest VAT?","acceptedAnswer":{"@type":"Answer","text":"Morocco and Madagascar share the highest standard VAT rate in Africa at 20%. Cameroon follows at 19.25%."}},{"@type":"Question","name":"What is the difference between adding and extracting VAT?","acceptedAnswer":{"@type":"Answer","text":"Adding VAT calculates the total price from a net (before-tax) amount. Extracting VAT separates the tax portion from a VAT-inclusive price. For example, with 15% VAT: adding to 100 gives 115, extracting from 115 gives net 100 and VAT 15."}},{"@type":"Question","name":"Which African countries have no VAT?","acceptedAnswer":{"@type":"Answer","text":"Somalia, Eritrea, and Libya currently do not have operational VAT systems."}}]}
 </script>
+<script src="/assets/js/lib/chart-config.js" defer></script>
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
@@ -551,7 +552,7 @@ gtag('config', 'G-D859CGF391');
         labels: ['Net Amount', `VAT (${rate}%)`],
         datasets: [{
           data: [net, vat],
-          backgroundColor: ['var(--color-primary)', 'var(--color-primary)'],
+          backgroundColor: AfroChartColors.series.slice(0, 2),
           borderWidth: 0,
           hoverOffset: 8
         }]
@@ -562,7 +563,7 @@ gtag('config', 'G-D859CGF391');
         cutout: '60%',
         plugins: {
           legend: { position: 'bottom', labels: { font: { family: "'DM Sans', sans-serif", size: 13 }, padding: 16 } },
-          tooltip: { backgroundColor: '#0f172a', bodyFont: { family: "'DM Sans', sans-serif" } }
+          tooltip: { backgroundColor: AfroChartColors.tooltipBg, bodyFont: { family: "'DM Sans', sans-serif" } }
         }
       }
     });

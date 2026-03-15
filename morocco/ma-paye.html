@@ -56,6 +56,7 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What are Morocco DGI tax bands?","acceptedAnswer":{"@type":"Answer","text":"0% on first MAD 30,000; 10% on 30,001–50,000; 20% on 50,001–60,000; 30% on 60,001–80,000; 34% on 80,001–180,000; 38% above MAD 180,000. Applied annually to taxable income after CNSS."}},{"@type":"Question","name":"Is CNSS capped in Morocco?","acceptedAnswer":{"@type":"Answer","text":"Yes — CNSS contribution is capped at MAD 6,000/month (MAD 72,000/year). The employee 4.48% is fully tax-deductible up to this cap."}}]}
 </script>
+<script src="/assets/js/lib/chart-config.js" defer></script>
 </head>
 <body class="tool-page">
 <afro-navbar active="tools"></afro-navbar>
@@ -279,8 +280,8 @@ const hasCNSS=isOn('cnss');const cnssRaw=gross*0.0448;const cnss=Math.min(cnssRa
 function toggleBands(h){const b=h.nextElementSibling;b.classList.toggle('open');h.querySelector('.tog-arrow').classList.toggle('open');}
 function setChart(t,b){CHART_TYPE=t;document.querySelectorAll('.chart-tab').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderChart(t);}
 function renderChart(type){if(!RESULT)return;const R=RESULT;const canvas=document.getElementById('mainChart');if(CHART){CHART.destroy();CHART=null;}
-if(type==='donut'){CHART=new Chart(canvas,{type:'doughnut',data:{labels:['Take-Home','DGI Tax','CNSS'],datasets:[{data:[R.net,R.annualDGI,R.cnss],backgroundColor:['#FCD116','#0063D1','#C60C30'],borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11,weight:'600'},padding:12}}}}});}
-else if(type==='bar'){const bands=R.bandBreakdown.filter(b=>b.tax>0);if(bands.length)CHART=new Chart(canvas,{type:'bar',data:{labels:bands.map(b=>(b.rate*100)+'%'),datasets:[{label:'Tax (MAD)',data:bands.map(b=>b.tax),backgroundColor:'#0063D1',borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'MAD'+(v/1000).toFixed(0)+'k',font:{size:10}},grid:{color:'#EFF6FF'}},x:{ticks:{font:{size:10}}}}}});}}
+if(type==='donut'){CHART=new Chart(canvas,{type:'doughnut',data:{labels:['Take-Home','DGI Tax','CNSS'],datasets:[{data:[R.net,R.annualDGI,R.cnss],backgroundColor: AfroChartColors.doughnut.slice(0, 3),borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11,weight:'600'},padding:12}}}}});}
+else if(type==='bar'){const bands=R.bandBreakdown.filter(b=>b.tax>0);if(bands.length)CHART=new Chart(canvas,{type:'bar',data:{labels:bands.map(b=>(b.rate*100)+'%'),datasets:[{label:'Tax (MAD)',data:bands.map(b=>b.tax),backgroundColor: AfroChartColors.series.slice(0, bands.length),borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'MAD'+(v/1000).toFixed(0)+'k',font:{size:10}},grid: { color: AfroChartColors.grid}},x:{ticks:{font:{size:10}}}}}});}}
 function openPdfModal(){if(!RESULT)return;document.getElementById('pdfModal').classList.add('on');document.getElementById('modalForm').style.display='block';}
 function closePdfModal(){document.getElementById('pdfModal').classList.remove('on');}
 document.getElementById('pdfModal').addEventListener('click',e=>{if(e.target===document.getElementById('pdfModal'))closePdfModal();});

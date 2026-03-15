@@ -50,6 +50,7 @@
   .tool-hero::after { content: '🇳🇦'; position: absolute; right: 5%; top: 50%; transform: translateY(-50%); font-size: 8rem; opacity: .06; pointer-events: none; }
   .tool-hero { background: #0a1f3a; }
 </style>
+<script src="/assets/js/lib/chart-config.js" defer></script>
 </head>
 <body class="tool-page">
 <afro-navbar active="tools"></afro-navbar>
@@ -112,7 +113,7 @@ function setPeriod(period,btn){PERIOD=period;document.querySelectorAll('.per-btn
 function toggleBands(header){const body=header.nextElementSibling;const arr=header.querySelector('.tog-arrow');body.classList.toggle('open');arr.classList.toggle('open');}
 function setChart(type,btn){CHART_TYPE=type;document.querySelectorAll('.chart-tab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderChart(type);}
 function renderChart(type){if(!RESULT)return;const R=RESULT;const canvas=document.getElementById('mainChart');if(CHART){CHART.destroy();CHART=null;}
-if(type==='donut'){CHART=new Chart(canvas,{type:'doughnut',data:{labels:['Take-Home','PAYE Tax','SSC'],datasets:[{data:[R.netAnnual,R.annualPAYE,R.sscAnnual],backgroundColor:['#FFB612','#00A0D2','#CE1126'],borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11,weight:'600'},padding:12}}}}})}else if(type==='bar'){const bands=R.bandBreakdown.filter(b=>b.tax>0);if(!bands.length)return;CHART=new Chart(canvas,{type:'bar',data:{labels:bands.map(b=>(b.rate*100)+'%'),datasets:[{label:'Tax (N$)',data:bands.map(b=>b.tax),backgroundColor:'#00A0D2',borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'N$'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid:{color:'#EFF6FF'}},x:{ticks:{font:{size:10,weight:'600'}}}}}}); }}
+if(type==='donut'){CHART=new Chart(canvas,{type:'doughnut',data:{labels:['Take-Home','PAYE Tax','SSC'],datasets:[{data:[R.netAnnual,R.annualPAYE,R.sscAnnual],backgroundColor: AfroChartColors.doughnut.slice(0, 3),borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11,weight:'600'},padding:12}}}}})}else if(type==='bar'){const bands=R.bandBreakdown.filter(b=>b.tax>0);if(!bands.length)return;CHART=new Chart(canvas,{type:'bar',data:{labels:bands.map(b=>(b.rate*100)+'%'),datasets:[{label:'Tax (N$)',data:bands.map(b=>b.tax),backgroundColor: AfroChartColors.series.slice(0, bands.length),borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'N$'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid: { color: AfroChartColors.grid}},x:{ticks:{font:{size:10,weight:'600'}}}}}}); }}
 function openPdfModal(){if(!RESULT)return;document.getElementById('pdfModal').classList.add('on');document.getElementById('modalForm').style.display='block';document.getElementById('modalSuccess').style.display='none';}
 function closePdfModal(){document.getElementById('pdfModal').classList.remove('on');}
 document.getElementById('pdfModal').addEventListener('click',e=>{if(e.target===document.getElementById('pdfModal'))closePdfModal();});

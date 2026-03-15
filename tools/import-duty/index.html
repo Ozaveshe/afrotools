@@ -51,6 +51,7 @@ gtag('config', 'G-D859CGF391');
 <script src="/assets/js/lib/toast.js" defer></script>
 <script src="/assets/js/lib/share-state.js" defer></script>
 <script src="/assets/js/lib/pdf-template.js" defer></script>
+<script src="/assets/js/lib/chart-config.js" defer></script>
 </head>
 <body class="tool-page">
 <afro-navbar active="tools"></afro-navbar>
@@ -648,7 +649,7 @@ async function renderDutyChart(R) {
     type: 'doughnut',
     data: {
       labels: ['Goods + Shipping', 'Customs Duty', 'Other Levies', 'VAT'],
-      datasets: [{ data: [R.cif, R.duty, R.totalLevies, R.vat], backgroundColor: ['var(--color-primary)', '#DE3831', '#F5A623', '#38BDF8'], borderWidth: 2, borderColor: '#fff' }]
+      datasets: [{ data: [R.cif, R.duty, R.totalLevies, R.vat], backgroundColor: AfroChartColors.series.slice(0, 4), borderWidth: 2, borderColor: '#fff' }]
     },
     options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { font: { size: 11, weight: '600' }, padding: 12 } } } }
   });

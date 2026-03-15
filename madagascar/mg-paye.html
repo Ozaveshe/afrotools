@@ -34,6 +34,7 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is Madagascar's PAYE structure?","acceptedAnswer":{"@type":"Answer","text":"Two bands: 0% on first MGA 350,000/month, and 20% on income above that. CNAPS pension is 1% employee + 13% employer, capped at MGA 1.61M/month."}},{"@type":"Question","name":"Is CNAPS deductible from taxable income?","acceptedAnswer":{"@type":"Answer","text":"Yes. The 1% CNAPS employee contribution is deductible from gross before calculating PAYE tax. Only 1% is deductible; above-cap amounts are not."}},{"@type":"Question","name":"What is the CNAPS cap?","acceptedAnswer":{"@type":"Answer","text":"CNAPS contributions are capped at MGA 1.61M per month. Once your gross salary reaches this contribution ceiling, no further CNAPS is deducted."}},{"@type":"Question","name":"How is Madagascar PAYE calculated?","acceptedAnswer":{"@type":"Answer","text":"Monthly: deduct CNAPS (1%, capped), then apply 0% band (first 350k) and 20% band (above 350k) to the remaining taxable income."}}]}
 </script>
+<script src="/assets/js/lib/chart-config.js" defer></script>
 </head><body class="tool-page">
 <afro-navbar active="tools"></afro-navbar>
 <section class="tool-hero"><div class="tool-hero-inner"><nav class="breadcrumb"><a href="/">Home</a> / <a href="/madagascar/">🇲🇬 Madagascar</a> / <span>PAYE Calculator</span></nav><h1>Madagascar PAYE<br><em>Calculator 2025/26</em></h1><p class="hero-sub">Progressive tax 0%–20% on monthly income. CNAPS pension (1%+13%, capped MGA 1.61M/mo). Monthly calculation.</p><div class="hero-badges"><span class="badge b-white">✦ Includes AI Advisor</span><span class="badge b-white">MGA · Malagasy Ariary</span></div></div></section>
@@ -119,7 +120,7 @@ function renderChart(type) {
   const canvas = document.getElementById('mainChart');
   if (CHART) { CHART.destroy(); CHART = null; }
   if (type === 'donut') {
-    CHART = new Chart(canvas, { type: 'doughnut', data: { labels: ['Take-Home', 'PAYE Tax', 'CNAPS'], datasets: [{ data: [R.net, R.tax, R.cnaps], backgroundColor: ['#FFF','#E31C23','#007AFF'], borderWidth: 2, borderColor: '#333' }] }, options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{size:11,weight:'600'}, padding:12 } } } } });
+    CHART = new Chart(canvas, { type: 'doughnut', data: { labels: ['Take-Home', 'PAYE Tax', 'CNAPS'], datasets: [{ data: [R.net, R.tax, R.cnaps], backgroundColor: AfroChartColors.doughnut.slice(0, 3), borderWidth: 2, borderColor: '#333' }] }, options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{size:11,weight:'600'}, padding:12 } } } } });
   }
 }
 function openPdfModal()  { if(!RESULT) return; document.getElementById('pdfModal').classList.add('on'); document.getElementById('modalForm').style.display='block'; document.getElementById('modalSuccess').style.display='none'; }

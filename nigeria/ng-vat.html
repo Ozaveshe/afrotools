@@ -551,6 +551,7 @@ document.getElementById('aiInput')?.addEventListener('keypress', e => {
 .ai-thinking{font-size:.74rem;color:rgba(245,215,110,.6);padding:6px 0}
   @media(max-width:480px){.card-body{padding:16px}.res-body{padding:16px}}
 </style>
+<script src="/assets/js/lib/chart-config.js" defer></script>
 </head>
 <body class="tool-page">
 <afro-navbar active="tools"></afro-navbar>
@@ -924,7 +925,7 @@ function renderChart(type) {
         labels: ['Net Amount', 'VAT Amount'],
         datasets: [{ label:'NGN', data: [R.netAmount, R.vatAmount], backgroundColor:['#FCD116','var(--color-primary)'], borderRadius:5 }]
       },
-      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'₦'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid:{color:'#EFF6FF'} }, x:{ticks:{font:{size:10,weight:'600'}}} } }
+      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'₦'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid: { color: AfroChartColors.grid} }, x:{ticks:{font:{size:10,weight:'600'}}} } }
     });
   }
 }

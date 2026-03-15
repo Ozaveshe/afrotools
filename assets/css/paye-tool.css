@@ -192,9 +192,10 @@ input[type=range]::-moz-range-track { height: 5px; border-radius: 3px; backgroun
 /* ── CHART SECTION ── */
 .chart-section { padding: 0 22px 22px; }
 .chart-tabs { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
-.chart-tab { padding: 6px 14px; font-size: 0.7rem; font-weight: 700; border: 1.5px solid #CBD5E1; background: transparent; border-radius: 5px; cursor: pointer; color: #8B9CB8; transition: all 0.15s; }
-.chart-tab.on { background: var(--color-primary); border-color: var(--color-primary); color: #fff; }
-.chart-canvas-wrap { position: relative; height: 220px; }
+.chart-tab { padding: 8px 16px; font-size: 0.72rem; font-weight: 600; border: 1.5px solid #E2E8F0; background: transparent; border-radius: 6px; cursor: pointer; color: #64748B; transition: all 0.18s; }
+.chart-tab:hover { color: #1E293B; border-color: #CBD5E1; background: #F8FAFC; }
+.chart-tab.on { background: var(--color-primary, #007AFF); border-color: var(--color-primary, #007AFF); color: #fff; box-shadow: 0 2px 8px rgba(0,122,255,0.2); }
+.chart-canvas-wrap { position: relative; height: 240px; }
 
 /* ── EMPLOYER COST ── */
 .employer-card { display: none; margin-top: 12px; }
@@ -270,6 +271,23 @@ input[type=range]::-moz-range-track { height: 5px; border-radius: 3px; backgroun
 /* ── DISCLAIMER ── */
 .disclaimer { font-size: 0.71rem; font-weight: 400; color: #8B9CB8; line-height: 1.6; padding: 13px 16px; background: #F4F7FA; border: 1px solid #D1D9E6; border-radius: 8px; }
 .disclaimer strong { font-weight: 600; color: #3D5A80; }
+
+/* ── COLLAPSIBLE LEGAL / REFERENCE SECTIONS ── */
+.legal-basis, .band-reference { margin-top: 24px; border: 1px solid var(--color-border, #E2E8F0); border-radius: 12px; overflow: hidden; }
+.legal-basis summary, .band-reference summary { padding: 14px 20px; font-weight: 600; cursor: pointer; background: var(--color-bg-subtle, #F1F5F9); font-size: 0.82rem; color: #3D5A80; list-style: none; display: flex; align-items: center; gap: 8px; transition: background 0.15s; }
+.legal-basis summary:hover, .band-reference summary:hover { background: #E8EFF8; }
+.legal-basis summary::-webkit-details-marker, .band-reference summary::-webkit-details-marker { display: none; }
+.legal-basis summary::after, .band-reference summary::after { content: '+'; margin-left: auto; font-size: 1.1rem; font-weight: 700; color: #94A3B8; transition: transform 0.2s; }
+.legal-basis[open] summary::after, .band-reference[open] summary::after { content: '-'; }
+.legal-content, .band-reference table { padding: 16px 20px; font-size: 0.78rem; color: var(--color-text-secondary, #64748B); line-height: 1.7; }
+.legal-content ul { padding-left: 18px; margin: 6px 0; }
+.legal-content li { margin-bottom: 4px; }
+
+/* ── INFO BANNER (for update notices) ── */
+.info-banner { background: rgba(0,122,255,0.06); border: 1px solid rgba(0,122,255,0.15); border-radius: 10px; padding: 12px 18px; font-size: 0.8rem; color: #1E40AF; line-height: 1.6; margin-bottom: 16px; }
+.info-banner strong { font-weight: 700; }
+.info-banner a { color: var(--color-primary); font-weight: 600; text-decoration: none; }
+.info-banner a:hover { text-decoration: underline; }
 
 /* ── FAQ ── */
 .faq-sec { padding: 52px 0; background: #fff; border-top: 1px solid #E2E8F0; }

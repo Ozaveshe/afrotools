@@ -45,6 +45,7 @@ gtag('config', 'G-D859CGF391');
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What are the Ghana GRA PAYE tax bands for 2026?","acceptedAnswer":{"@type":"Answer","text":"Seven bands: 0% on first GHS 5,880; 5% on next GHS 1,320; 10% on next GHS 1,560; 17.5% on next GHS 38,000; 25% on next GHS 192,000; 30% on next GHS 360,000; 35% above GHS 600,000."}},{"@type":"Question","name":"What is SSNIT Tier III and how does it reduce tax?","acceptedAnswer":{"@type":"Answer","text":"Tier III is a voluntary pension scheme. Contributions are tax-deductible up to 16.5% of basic salary, directly reducing chargeable income before PAYE is applied."}},{"@type":"Question","name":"How are bonuses taxed in Ghana?","acceptedAnswer":{"@type":"Answer","text":"The first 15% of annual basic salary paid as bonus is taxed at a flat 5%. Any bonus exceeding 15% of basic is taxed at progressive GRA PAYE rates."}}]}
 </script>
   <link rel="stylesheet" href="/assets/css/print.css" media="print">
+<script src="/assets/js/lib/chart-config.js" defer></script>
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
@@ -554,23 +555,23 @@ gtag('config', 'G-D859CGF391');
         type: 'doughnut',
         data: {
           labels: ['Take-Home', 'PAYE Tax', 'SSNIT/Deductions'],
-          datasets: [{ data: [R.netAnnual, R.tax, R.ssnit + R.tier3], backgroundColor: ['#FCD116', '#CE1126', '#004EA8'], borderWidth: 0, hoverOffset: 8 }]
+          datasets: [{ data: [R.netAnnual, R.tax, R.ssnit + R.tier3], backgroundColor: AfroChartColors.doughnut.slice(0, 3), borderWidth: 0, hoverOffset: 8 }]
         },
-        options: { responsive: true, maintainAspectRatio: false, cutout: '60%', plugins: { legend: { position: 'bottom', labels: { font: { family: "'DM Sans',sans-serif", size: 12 }, padding: 14 } } } }
+        options: { responsive: true, maintainAspectRatio: false, cutout: '65%', plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, pointStyle: 'circle', font: { family: "'DM Sans',sans-serif", size: 12 }, padding: 14, color: '#64748B' } }, tooltip: { backgroundColor: AfroChartColors.tooltipBg, titleColor: '#fff', bodyColor: '#fff', cornerRadius: 8, padding: 12 } } }
       });
     } else if (type === 'bar') {
       const bands = R.bandBreakdown;
       if (!bands.length) return;
       chartInstance = new Chart(ctx, {
         type: 'bar',
-        data: { labels: bands.map(b => (b.rate * 100) + '%'), datasets: [{ label: 'Tax (GHS)', data: bands.map(b => b.amount), backgroundColor: '#004EA8', borderRadius: 5 }] },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { ticks: { callback: v => 'GHS ' + (v / 1000).toFixed(0) + 'k' } } } }
+        data: { labels: bands.map(b => (b.rate * 100) + '%'), datasets: [{ label: 'Tax (GHS)', data: bands.map(b => b.amount), backgroundColor: AfroChartColors.series.slice(0, bands.length), borderRadius: 6 }] },
+        options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', plugins: { legend: { display: false }, tooltip: { backgroundColor: AfroChartColors.tooltipBg, titleColor: '#fff', bodyColor: '#fff', cornerRadius: 8 } }, scales: { x: { ticks: { callback: v => 'GHS ' + (v / 1000).toFixed(0) + 'k', color: AfroChartColors.tickText }, grid: { color: AfroChartColors.grid } }, y: { ticks: { color: AfroChartColors.tickText } } } }
       });
     } else if (type === 'employer') {
       chartInstance = new Chart(ctx, {
         type: 'bar',
-        data: { labels: ['Take-Home', 'PAYE Tax', 'Employee SSNIT', 'Employer SSNIT'], datasets: [{ label: 'GHS', data: [R.netAnnual, R.tax, R.ssnit + R.tier3, R.employerSSNIT], backgroundColor: ['#FCD116', '#CE1126', '#93A3B8', '#004EA8'], borderRadius: 5 }] },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { ticks: { callback: v => 'GHS ' + (v / 1000).toFixed(0) + 'k' } } } }
+        data: { labels: ['Take-Home', 'PAYE Tax', 'Employee SSNIT', 'Employer SSNIT'], datasets: [{ label: 'GHS', data: [R.netAnnual, R.tax, R.ssnit + R.tier3, R.employerSSNIT], backgroundColor: AfroChartColors.doughnut.slice(0, 4), borderRadius: 6 }] },
+        options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', plugins: { legend: { display: false }, tooltip: { backgroundColor: AfroChartColors.tooltipBg, titleColor: '#fff', bodyColor: '#fff', cornerRadius: 8 } }, scales: { x: { ticks: { callback: v => 'GHS ' + (v / 1000).toFixed(0) + 'k', color: AfroChartColors.tickText }, grid: { color: AfroChartColors.grid } }, y: { ticks: { color: AfroChartColors.tickText } } } }
       });
     }
   }
