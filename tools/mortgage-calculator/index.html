@@ -143,9 +143,20 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
 @media(max-width:900px){.tool-wrap{grid-template-columns:1fr}.fields-grid{grid-template-columns:1fr}.faq-grid{grid-template-columns:1fr}}
 @media(max-width:480px){.hero{padding:48px 0 40px}.result-grid{grid-template-columns:1fr}}
 </style>
+<script src="/assets/js/lib/save-state.js"></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
+
+<!-- ── Saved Scenarios ── -->
+<div id="mort-saved-section" style="display:none;max-width:1160px;margin:0 auto;padding:20px 24px 0;">
+  <div style="background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:20px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+      <h3 style="font-size:.95rem;font-weight:800;color:#111827;margin:0;font-family:'DM Sans',sans-serif;">Your Saved Scenarios</h3>
+    </div>
+    <div id="mort-saved-grid" style="display:flex;flex-wrap:wrap;gap:10px;"></div>
+  </div>
+</div>
 
 <!-- ── Hero ── -->
 <section class="hero">
@@ -633,6 +644,60 @@ function toggleAmort() {
 
 // Init
 renderLoanTypes();
+
+// ── Saved Scenarios ──
+(function(){
+  if(typeof SaveState==='undefined')return;
+  var ss=new SaveState('mortgage-calculator',{maxFree:10});
+  var section=document.getElementById('mort-saved-section');
+  var grid=document.getElementById('mort-saved-grid');
+  if(!section||!grid)return;
+
+  function esc(s){return s?String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'):'';}
+  function ago(ts){var s=Math.floor((Date.now()-ts)/1000);if(s<60)return'just now';if(s<3600)return Math.floor(s/60)+'m ago';if(s<86400)return Math.floor(s/3600)+'h ago';var d=Math.floor(s/86400);if(d<30)return d+'d ago';return new Date(ts).toLocaleDateString('en-GB',{day:'numeric',month:'short'});}
+
+  function render(){
+    var items=ss.getAll();
+    if(!items.length){section.style.display='none';return;}
+    section.style.display='';
+    grid.innerHTML=items.map(function(it){
+      var d=it.data||{};
+      return '<div style="flex:1;min-width:200px;max-width:260px;background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:10px;padding:14px;cursor:pointer;transition:border-color .15s;" onmouseenter="this.style.borderColor=\'#007AFF\'" onmouseleave="this.style.borderColor=\'#e5e7eb\'" onclick="mortLoadSaved(\''+it.id+'\')">'+
+        '<div style="font-size:.82rem;font-weight:700;color:#111827;margin-bottom:3px;">'+esc(it.title)+'</div>'+
+        (d.monthly?'<div style="font-size:.78rem;font-weight:800;color:#007AFF;">'+esc(d.monthly)+'/mo</div>':'')+
+        '<div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px;">'+
+        '<span style="font-size:.6rem;color:#9ca3af;">'+ago(it.updatedAt)+'</span>'+
+        '<button onclick="event.stopPropagation();mortDelSaved(\''+it.id+'\')" style="background:none;border:none;color:#ef4444;font-size:.65rem;font-weight:700;cursor:pointer;">Delete</button>'+
+        '</div></div>';
+    }).join('');
+  }
+  window.mortDelSaved=function(id){if(confirm('Delete this scenario?')){ss.delete(id);render();}};
+  window.mortLoadSaved=function(id){
+    var item=ss.load(id);if(!item||!item.data)return;
+    var d=item.data;
+    ['price','downPct','rate','term','income','rent'].forEach(function(k){
+      var el=document.getElementById(k);if(el&&d[k]!==undefined)el.value=d[k];
+    });
+    if(typeof calculate==='function')calculate();
+  };
+  window.mortSaveScenario=function(){
+    var name=prompt('Name this scenario (e.g., "3BR Lekki", "Cape Town Flat"):');
+    if(!name)return;
+    var monthly=document.querySelector('.result-value');
+    ss.save({title:name,data:{
+      price:document.getElementById('price')?document.getElementById('price').value:'',
+      downPct:document.getElementById('downPct')?document.getElementById('downPct').value:'',
+      rate:document.getElementById('rate')?document.getElementById('rate').value:'',
+      term:document.getElementById('term')?document.getElementById('term').value:'',
+      income:document.getElementById('income')?document.getElementById('income').value:'',
+      rent:document.getElementById('rent')?document.getElementById('rent').value:'',
+      monthly:monthly?monthly.textContent:''
+    }});
+    render();
+    alert('Scenario saved!');
+  };
+  render();
+})();
 </script>
 </body>
 </html>
