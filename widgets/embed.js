@@ -198,14 +198,14 @@
       // Load the widget module
       return loadScript(BASE + path + '.js').then(function() {
         // Widget registers itself on AfroWidgets
-        // Try multiple key formats: underscore, camelCase, and raw
+        // Try multiple key formats: underscore, camelCase, PascalCase, and raw
         function toCamel(s) { return s.replace(/-([a-z])/g, function(m, c) { return c.toUpperCase(); }); }
+        function toPascal(s) { var c = toCamel(s); return c.charAt(0).toUpperCase() + c.slice(1); }
         var AW = window.AfroWidgets || {};
-        var idU = widgetId.replace(/-/g, '_');
-        var idC = toCamel(widgetId);
-        var fnU = path.split('/').pop().replace(/-/g, '_');
-        var fnC = toCamel(path.split('/').pop());
-        var widgetFn = AW[idU] || AW[idC] || AW[fnU] || AW[fnC];
+        var fn = path.split('/').pop();
+        var widgetFn = AW[widgetId.replace(/-/g, '_')] || AW[toCamel(widgetId)] || AW[toPascal(widgetId)]
+          || AW[fn.replace(/-/g, '_')] || AW[toCamel(fn)] || AW[toPascal(fn)]
+          || AW[fn.toUpperCase().replace(/-/g, '')];
 
         if (widgetFn) {
           shadow.innerHTML = '';
