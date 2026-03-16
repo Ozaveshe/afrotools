@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'Flyer & Poster Maker'});</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Flyer & Poster Maker — Free Event Flyer Creator | AfroTools</title>
+<meta name="description" content="Create professional event flyers and posters with customizable templates. Add text, change colors, upload images. Download as high-resolution PNG. Free, no signup.">
+<meta name="keywords" content="flyer maker, poster maker, event flyer, party flyer, church flyer, African event poster, free flyer creator">
+<link rel="canonical" href="https://afrotools.org/tools/flyer-maker/">
+<meta property="og:title" content="Flyer & Poster Maker"><meta property="og:description" content="Create professional event flyers with templates. Free, no signup needed.">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.org/tools/flyer-maker/">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<style>
+:root{--sky:#0ea5e9;--sky-light:#f0f9ff;--sky-dark:#0284c7}*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6}.hero{background:linear-gradient(135deg,#0c4a6e 0%,#0284c7 50%,#38bdf8 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}.hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}.hero p{font-size:1.05rem;opacity:.9;max-width:600px;margin:0 auto}.container{max-width:1100px;margin:0 auto;padding:1.5rem}.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:1.5rem}.card h2{font-size:1.1rem;font-weight:700;margin-bottom:1rem;color:#0c4a6e}
+.editor{display:grid;grid-template-columns:1fr 300px;gap:1.5rem}
+@media(max-width:800px){.editor{grid-template-columns:1fr}}
+.canvas-wrap{border-radius:8px;overflow:hidden;border:1px solid #e2e8f0;background:#f1f5f9}
+#flyerCanvas{width:100%;display:block}
+.controls{display:flex;flex-direction:column;gap:.75rem;max-height:80vh;overflow-y:auto}
+.form-group{display:flex;flex-direction:column;gap:.25rem}
+.form-group label{font-weight:600;font-size:.8rem;color:#475569}
+.form-group input,.form-group select,.form-group textarea{padding:.45rem .6rem;border:1.5px solid #cbd5e1;border-radius:6px;font-size:.88rem;background:#f8fafc;font-family:inherit}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--sky)}
+.form-group textarea{min-height:50px;resize:vertical}
+.color-row{display:flex;gap:.4rem;align-items:center}
+.color-row input[type=color]{width:36px;height:30px;border:1.5px solid #cbd5e1;border-radius:4px;padding:1px;cursor:pointer}
+.btn{padding:.55rem 1rem;border:none;border-radius:7px;font-weight:600;font-size:.88rem;cursor:pointer;background:var(--sky);color:#fff;transition:all .2s;width:100%}.btn:hover{background:var(--sky-dark)}
+.template-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:.5rem;margin-bottom:1rem}
+.tpl-card{border:2px solid #e2e8f0;border-radius:6px;padding:.4rem;text-align:center;cursor:pointer;font-size:.72rem;font-weight:600;transition:all .15s}
+.tpl-card:hover,.tpl-card.active{border-color:var(--sky);background:var(--sky-light)}
+.tpl-preview{height:60px;border-radius:3px;margin-bottom:.25rem}
+.seo-section{max-width:800px;margin:2rem auto;padding:0 1.5rem}.seo-section h2{font-size:1.4rem;font-weight:800;color:#0c4a6e;margin-bottom:1rem}.seo-section h3{font-size:1.1rem;font-weight:700;color:#334155;margin:1.5rem 0 .5rem}.seo-section p{color:#475569;margin-bottom:1rem}.faq{max-width:800px;margin:2rem auto;padding:0 1.5rem}.faq h2{font-size:1.4rem;font-weight:800;color:#0c4a6e;margin-bottom:1rem}.faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:.75rem;background:#fff}.faq summary{padding:1rem 1.25rem;font-weight:600;cursor:pointer;color:#334155;list-style:none;display:flex;justify-content:space-between;align-items:center}.faq summary::after{content:'+';font-size:1.3rem;color:#94a3b8;font-weight:300}.faq details[open] summary::after{content:'-'}.faq details p{padding:0 1.25rem 1rem;color:#64748b;font-size:.95rem}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<section class="hero"><h1>Flyer & Poster Maker</h1><p>Create professional event flyers and posters with customizable templates. Download as high-resolution PNG. Free, no signup.</p></section>
+<div class="container">
+<div class="card">
+<h2>Choose a Template</h2>
+<div class="template-grid" id="templates"></div>
+</div>
+<div class="card">
+<div class="editor">
+<div class="canvas-wrap"><canvas id="flyerCanvas" width="1080" height="1350"></canvas></div>
+<div class="controls">
+<div class="form-group"><label>Size</label><select id="size" onchange="changeSize()"><option value="1080x1350">Instagram (1080x1350)</option><option value="1080x1080">Square (1080x1080)</option><option value="1080x1920">Story (1080x1920)</option><option value="2480x3508">A4 Print (2480x3508)</option></select></div>
+<div class="form-group"><label>Background</label><div class="color-row"><input type="color" id="bg1" value="#1a1a2e" oninput="draw()"><input type="color" id="bg2" value="#e94560" oninput="draw()"></div><input type="file" id="bgFile" accept="image/*" onchange="loadBg(this.files[0])" style="margin-top:.25rem;font-size:.8rem"></div>
+<div class="form-group"><label>Event Title</label><textarea id="title" oninput="draw()">YOUR EVENT</textarea></div>
+<div class="form-group"><label>Title Size</label><input type="range" id="titleSize" min="30" max="150" value="80" oninput="draw()"></div>
+<div class="form-group"><label>Title Color</label><input type="color" id="titleColor" value="#ffffff" oninput="draw()"></div>
+<div class="form-group"><label>Date & Time</label><input type="text" id="dateText" value="Saturday, March 20 | 7PM" oninput="draw()"></div>
+<div class="form-group"><label>Venue</label><input type="text" id="venue" value="The Landmark Centre, Lagos" oninput="draw()"></div>
+<div class="form-group"><label>Details / Description</label><textarea id="details" oninput="draw()">Live Music | Drinks | Food | Networking</textarea></div>
+<div class="form-group"><label>Accent Color</label><input type="color" id="accent" value="#ffd700" oninput="draw()"></div>
+<div class="form-group"><label>Footer Text</label><input type="text" id="footer" value="Tickets: afrotools.org | Free Entry" oninput="draw()"></div>
+<button class="btn" onclick="download()">Download Flyer</button>
+</div>
+</div>
+</div>
+</div>
+<section class="seo-section">
+<h2>Create Professional Event Flyers</h2>
+<p>Event promotion in Africa relies heavily on eye-catching flyers shared via WhatsApp, Instagram, Twitter, and Facebook. Whether you're organizing a church event, party, wedding celebration, business conference, or community gathering, a professional flyer is essential. This tool lets you create stunning flyers without expensive design software.</p>
+<h3>Design Tips</h3>
+<p>Keep your flyer simple and focused. Use large, bold text for the event name — it should be readable even as a small WhatsApp thumbnail. Include the essentials: what (event name), when (date and time), where (venue), and how (contact/tickets). Use high-contrast colours and limit your palette to 2-3 colours for a professional look.</p>
+<h3>Social Media Sizes</h3>
+<p>This tool supports multiple sizes: Instagram post (1080x1350), Instagram/WhatsApp Story (1080x1920), Square (1080x1080), and A4 print (2480x3508). For maximum reach, create versions in multiple sizes. Instagram stories have the highest engagement for event promotion, while square formats work well across all platforms.</p>
+</section>
+<section class="faq">
+<h2>Frequently Asked Questions</h2>
+<details><summary>What size should my flyer be?</summary><p>For social media sharing (WhatsApp, Instagram), use 1080x1350 or 1080x1920. For print, use A4 (2480x3508 at 300 DPI). Square (1080x1080) works across all platforms. This tool supports all these sizes.</p></details>
+<details><summary>Can I upload my own background?</summary><p>Yes. Use the "Background" file upload to add your own image. It will be scaled to fill the canvas. Add text overlays on top of your custom background for a professional look.</p></details>
+<details><summary>Is the output high resolution?</summary><p>Yes. The canvas renders at the exact pixel dimensions shown (e.g., 1080x1350 for Instagram). The A4 option renders at 2480x3508 pixels, suitable for high-quality printing at 300 DPI.</p></details>
+</section>
+<afro-related-tools></afro-related-tools><afro-newsletter-cta></afro-newsletter-cta><afro-footer></afro-footer>
+<script src="/assets/js/components/navbar.js" defer></script><script src="/assets/js/components/footer.js" defer></script><script src="/assets/js/components/related-tools.js" defer></script><script src="/assets/js/components/newsletter-cta.js" defer></script>
+<script>
+const canvas=document.getElementById('flyerCanvas');
+const ctx=canvas.getContext('2d');
+let bgImg=null;
+
+const TEMPLATES=[
+{name:'Neon Party',bg1:'#1a1a2e',bg2:'#e94560',title:'#ffffff',accent:'#ffd700'},
+{name:'Afro Gold',bg1:'#1c1917',bg2:'#d97706',title:'#ffffff',accent:'#fef3c7'},
+{name:'Ocean',bg1:'#0c4a6e',bg2:'#06b6d4',title:'#ffffff',accent:'#fde68a'},
+{name:'Forest',bg1:'#14532d',bg2:'#4ade80',title:'#ffffff',accent:'#fbbf24'},
+{name:'Royal',bg1:'#312e81',bg2:'#818cf8',title:'#ffffff',accent:'#fde68a'},
+{name:'Sunset',bg1:'#831843',bg2:'#fb923c',title:'#ffffff',accent:'#fef08a'},
+{name:'Monochrome',bg1:'#0f172a',bg2:'#334155',title:'#ffffff',accent:'#38bdf8'},
+{name:'Earth',bg1:'#44403c',bg2:'#a16207',title:'#fef3c7',accent:'#f97316'},
+];
+
+document.getElementById('templates').innerHTML=TEMPLATES.map((t,i)=>`<div class="tpl-card" onclick="applyTpl(${i})"><div class="tpl-preview" style="background:linear-gradient(135deg,${t.bg1},${t.bg2})"></div>${t.name}</div>`).join('');
+
+function applyTpl(i){
+  const t=TEMPLATES[i];
+  document.getElementById('bg1').value=t.bg1;document.getElementById('bg2').value=t.bg2;
+  document.getElementById('titleColor').value=t.title;document.getElementById('accent').value=t.accent;
+  draw();
+}
+
+function changeSize(){
+  const [w,h]=document.getElementById('size').value.split('x').map(Number);
+  canvas.width=w;canvas.height=h;draw();
+}
+
+function loadBg(f){
+  if(!f)return;
+  const reader=new FileReader();
+  reader.onload=e=>{const img=new Image();img.onload=()=>{bgImg=img;draw();};img.src=e.target.result;};
+  reader.readAsDataURL(f);
+}
+
+function draw(){
+  const w=canvas.width,h=canvas.height;
+  const scale=w/1080;
+  // Background
+  if(bgImg){
+    const s=Math.max(w/bgImg.width,h/bgImg.height);
+    ctx.drawImage(bgImg,(w-bgImg.width*s)/2,(h-bgImg.height*s)/2,bgImg.width*s,bgImg.height*s);
+    ctx.fillStyle='rgba(0,0,0,0.4)';ctx.fillRect(0,0,w,h);
+  } else {
+    const grad=ctx.createLinearGradient(0,0,w,h);
+    grad.addColorStop(0,document.getElementById('bg1').value);
+    grad.addColorStop(1,document.getElementById('bg2').value);
+    ctx.fillStyle=grad;ctx.fillRect(0,0,w,h);
+  }
+
+  const titleSize=parseInt(document.getElementById('titleSize').value)*scale;
+  const titleColor=document.getElementById('titleColor').value;
+  const accent=document.getElementById('accent').value;
+
+  // Decorative line
+  ctx.strokeStyle=accent;ctx.lineWidth=3*scale;
+  ctx.beginPath();ctx.moveTo(w*0.15,h*0.15);ctx.lineTo(w*0.85,h*0.15);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(w*0.15,h*0.85);ctx.lineTo(w*0.85,h*0.85);ctx.stroke();
+
+  // Title
+  ctx.textAlign='center';ctx.fillStyle=titleColor;
+  ctx.font=`900 ${titleSize}px DM Sans,Impact,sans-serif`;
+  const titleText=document.getElementById('title').value;
+  const titleLines=titleText.split('\n');
+  const lh=titleSize*1.1;
+  const startY=h*0.35-(titleLines.length-1)*lh/2;
+  ctx.shadowColor='rgba(0,0,0,0.4)';ctx.shadowBlur=8*scale;
+  titleLines.forEach((l,i)=>ctx.fillText(l,w/2,startY+i*lh));
+  ctx.shadowBlur=0;
+
+  // Date
+  const dateText=document.getElementById('dateText').value;
+  if(dateText){
+    ctx.font=`700 ${28*scale}px DM Sans,sans-serif`;ctx.fillStyle=accent;
+    ctx.fillText(dateText,w/2,h*0.55);
+  }
+
+  // Venue
+  const venue=document.getElementById('venue').value;
+  if(venue){
+    ctx.font=`500 ${22*scale}px DM Sans,sans-serif`;ctx.fillStyle='rgba(255,255,255,0.85)';
+    ctx.fillText(venue,w/2,h*0.62);
+  }
+
+  // Details
+  const details=document.getElementById('details').value;
+  if(details){
+    ctx.font=`400 ${20*scale}px DM Sans,sans-serif`;ctx.fillStyle='rgba(255,255,255,0.7)';
+    ctx.fillText(details,w/2,h*0.70);
+  }
+
+  // Footer
+  const footer=document.getElementById('footer').value;
+  if(footer){
+    ctx.font=`600 ${18*scale}px DM Sans,sans-serif`;ctx.fillStyle=accent;
+    ctx.fillText(footer,w/2,h*0.90);
+  }
+}
+
+function download(){
+  const a=document.createElement('a');a.href=canvas.toDataURL('image/png');
+  a.download='flyer.png';a.click();
+}
+
+draw();
+</script>
+</body>
+</html>

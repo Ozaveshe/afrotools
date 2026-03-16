@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'Bulk Watermark Tool'});</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bulk Watermark Tool — Add Watermarks to Multiple Images | AfroTools</title>
+<meta name="description" content="Add text or image watermarks to multiple images at once. Customize position, opacity, size, and font. All processing in your browser — images stay private.">
+<meta name="keywords" content="watermark tool, bulk watermark, add watermark to image, image watermark, protect photos, batch watermark">
+<link rel="canonical" href="https://afrotools.org/tools/watermark-bulk/">
+<meta property="og:title" content="Bulk Watermark Tool"><meta property="og:description" content="Add watermarks to multiple images at once. Files never leave your browser.">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.org/tools/watermark-bulk/">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<style>
+:root{--sky:#0ea5e9;--sky-light:#f0f9ff;--sky-dark:#0284c7}*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6}.hero{background:linear-gradient(135deg,#0c4a6e 0%,#0284c7 50%,#38bdf8 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}.hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}.hero p{font-size:1.05rem;opacity:.9;max-width:600px;margin:0 auto}.container{max-width:1000px;margin:0 auto;padding:1.5rem}.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:1.5rem}.card h2{font-size:1.1rem;font-weight:700;margin-bottom:1rem;color:#0c4a6e}
+.drop-zone{border:2px dashed #cbd5e1;border-radius:10px;padding:2.5rem 1.5rem;text-align:center;cursor:pointer;transition:all .2s;background:#f8fafc}
+.drop-zone:hover,.drop-zone.active{border-color:var(--sky);background:var(--sky-light)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0}
+@media(max-width:600px){.form-grid{grid-template-columns:1fr}}
+.form-group{display:flex;flex-direction:column;gap:.3rem}
+.form-group label{font-weight:600;font-size:.85rem;color:#475569}
+.form-group input,.form-group select{padding:.55rem .75rem;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.95rem;background:#f8fafc;font-family:inherit}
+.form-group input:focus,.form-group select:focus{outline:none;border-color:var(--sky);box-shadow:0 0 0 3px rgba(14,165,233,.15)}
+.btn{padding:.65rem 1.5rem;border:none;border-radius:7px;font-weight:600;font-size:.95rem;cursor:pointer;background:var(--sky);color:#fff;transition:all .2s}.btn:hover{background:var(--sky-dark)}
+.preview-canvas{max-width:100%;border:1px solid #e2e8f0;border-radius:8px;margin-top:1rem;background:repeating-conic-gradient(#f1f5f9 0% 25%,#fff 0% 50%) 0 0/20px 20px}
+.thumb-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.thumb{width:80px;height:80px;object-fit:cover;border-radius:6px;border:2px solid transparent;cursor:pointer}
+.thumb.active{border-color:var(--sky)}
+.actions{display:flex;gap:.75rem;margin-top:1rem;flex-wrap:wrap}
+.privacy-note{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:7px;padding:.6rem 1rem;font-size:.82rem;color:#15803d;text-align:center;margin-top:1rem}
+.seo-section{max-width:800px;margin:2rem auto;padding:0 1.5rem}.seo-section h2{font-size:1.4rem;font-weight:800;color:#0c4a6e;margin-bottom:1rem}.seo-section h3{font-size:1.1rem;font-weight:700;color:#334155;margin:1.5rem 0 .5rem}.seo-section p{color:#475569;margin-bottom:1rem}.faq{max-width:800px;margin:2rem auto;padding:0 1.5rem}.faq h2{font-size:1.4rem;font-weight:800;color:#0c4a6e;margin-bottom:1rem}.faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:.75rem;background:#fff}.faq summary{padding:1rem 1.25rem;font-weight:600;cursor:pointer;color:#334155;list-style:none;display:flex;justify-content:space-between;align-items:center}.faq summary::after{content:'+';font-size:1.3rem;color:#94a3b8;font-weight:300}.faq details[open] summary::after{content:'-'}.faq details p{padding:0 1.25rem 1rem;color:#64748b;font-size:.95rem}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<section class="hero"><h1>Bulk Watermark Tool</h1><p>Add text watermarks to multiple images at once. Customize position, opacity, and style. Everything runs in your browser.</p></section>
+<div class="container">
+<div class="card">
+<h2>1. Upload Images</h2>
+<div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
+<p style="font-size:2rem;margin-bottom:.5rem">&#128247;</p>
+<p>Drop images here or click to browse<br><small>Select multiple images at once</small></p>
+</div>
+<input type="file" id="fileInput" accept="image/*" multiple style="display:none" onchange="handleFiles(this.files)">
+<div class="thumb-row" id="thumbs"></div>
+</div>
+<div class="card">
+<h2>2. Watermark Settings</h2>
+<div class="form-grid">
+<div class="form-group"><label>Watermark Text</label><input type="text" id="wmText" value="AfroTools.org" oninput="updatePreview()"></div>
+<div class="form-group"><label>Font Size</label><input type="number" id="wmSize" value="48" min="12" max="200" oninput="updatePreview()"></div>
+<div class="form-group"><label>Position</label><select id="wmPos" onchange="updatePreview()"><option value="center">Center</option><option value="bottom-right">Bottom Right</option><option value="bottom-left">Bottom Left</option><option value="top-right">Top Right</option><option value="top-left">Top Left</option><option value="tile">Tiled (Repeat)</option></select></div>
+<div class="form-group"><label>Opacity (%)</label><input type="range" id="wmOpacity" min="5" max="100" value="30" oninput="updatePreview();document.getElementById('opVal').textContent=this.value+'%'"><span id="opVal" style="font-size:.82rem;color:#64748b">30%</span></div>
+<div class="form-group"><label>Color</label><input type="color" id="wmColor" value="#ffffff" oninput="updatePreview()"></div>
+<div class="form-group"><label>Rotation</label><select id="wmRot" onchange="updatePreview()"><option value="0">0 degrees</option><option value="-30">-30 degrees</option><option value="-45" selected>-45 degrees</option><option value="30">30 degrees</option><option value="45">45 degrees</option></select></div>
+</div>
+</div>
+<div class="card">
+<h2>3. Preview & Download</h2>
+<canvas id="previewCanvas" class="preview-canvas"></canvas>
+<div class="actions">
+<button class="btn" onclick="downloadAll()">Download All Watermarked</button>
+<button class="btn" onclick="downloadCurrent()" style="background:#475569">Download Current</button>
+</div>
+<div class="privacy-note">All processing happens in your browser. Your images are never uploaded to any server.</div>
+</div>
+</div>
+<section class="seo-section">
+<h2>Protect Your Images with Watermarks</h2>
+<p>Watermarking is essential for photographers, designers, and businesses who share images online. A watermark deters unauthorized use while still allowing your work to be displayed. This tool lets you add professional text watermarks to multiple images simultaneously, saving hours of manual work in photo editing software.</p>
+<h3>Why Watermark?</h3>
+<p>In Africa's growing digital economy, content creators and photographers need to protect their intellectual property. Whether you're a Lagos wedding photographer, a Nairobi food blogger, or a Cape Town real estate agent, watermarking your images before posting online helps establish ownership and brand recognition. A subtle watermark can prevent image theft while maintaining visual appeal.</p>
+<h3>Best Practices</h3>
+<p>Place watermarks where they can't be easily cropped out — the center or a tiled pattern works best. Use semi-transparent watermarks (20-40% opacity) that protect without obscuring the image. Include your brand name, website, or copyright symbol. For portfolios, a diagonal tiled watermark provides the best protection against unauthorized use.</p>
+</section>
+<section class="faq">
+<h2>Frequently Asked Questions</h2>
+<details><summary>Are my images uploaded to a server?</summary><p>No. All watermark processing happens entirely in your browser using HTML5 Canvas. Your images never leave your device. This ensures complete privacy and works even without an internet connection (after the page loads).</p></details>
+<details><summary>Can I watermark multiple images at once?</summary><p>Yes. Select multiple images when uploading, and the same watermark settings will be applied to all of them. Use the "Download All Watermarked" button to process and download each watermarked image.</p></details>
+<details><summary>What image formats are supported?</summary><p>You can upload PNG, JPG, WebP, BMP, and GIF images. All watermarked images are downloaded as PNG files to preserve quality and transparency.</p></details>
+</section>
+<afro-related-tools></afro-related-tools><afro-newsletter-cta></afro-newsletter-cta><afro-footer></afro-footer>
+<script src="/assets/js/components/navbar.js" defer></script><script src="/assets/js/components/footer.js" defer></script><script src="/assets/js/components/related-tools.js" defer></script><script src="/assets/js/components/newsletter-cta.js" defer></script>
+<script>
+const dz=document.getElementById('dropZone');
+dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('active');});
+dz.addEventListener('dragleave',()=>dz.classList.remove('active'));
+dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('active');handleFiles(e.dataTransfer.files);});
+
+let images=[];let currentIdx=0;
+
+function handleFiles(files){
+  for(const f of files){
+    if(!f.type.startsWith('image/'))continue;
+    const reader=new FileReader();
+    reader.onload=e=>{
+      const img=new Image();
+      img.onload=()=>{images.push({img,name:f.name});renderThumbs();if(images.length===1)updatePreview();};
+      img.src=e.target.result;
+    };
+    reader.readAsDataURL(f);
+  }
+}
+
+function renderThumbs(){
+  document.getElementById('thumbs').innerHTML=images.map((im,i)=>`<img src="${im.img.src}" class="thumb ${i===currentIdx?'active':''}" onclick="currentIdx=${i};renderThumbs();updatePreview()">`).join('');
+}
+
+function updatePreview(){
+  if(!images.length)return;
+  const canvas=document.getElementById('previewCanvas');
+  applyWatermark(canvas,images[currentIdx].img);
+}
+
+function applyWatermark(canvas,img){
+  const maxW=800;const scale=img.width>maxW?maxW/img.width:1;
+  canvas.width=img.width*scale;canvas.height=img.height*scale;
+  const ctx=canvas.getContext('2d');
+  ctx.drawImage(img,0,0,canvas.width,canvas.height);
+  const text=document.getElementById('wmText').value||'Watermark';
+  const size=parseInt(document.getElementById('wmSize').value)*scale;
+  const pos=document.getElementById('wmPos').value;
+  const opacity=parseInt(document.getElementById('wmOpacity').value)/100;
+  const color=document.getElementById('wmColor').value;
+  const rot=parseInt(document.getElementById('wmRot').value)*Math.PI/180;
+  ctx.globalAlpha=opacity;ctx.fillStyle=color;ctx.font=`bold ${size}px DM Sans,sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';
+  if(pos==='tile'){
+    const gap=size*4;
+    for(let y=-canvas.height;y<canvas.height*2;y+=gap){
+      for(let x=-canvas.width;x<canvas.width*2;x+=gap){
+        ctx.save();ctx.translate(x,y);ctx.rotate(rot);ctx.fillText(text,0,0);ctx.restore();
+      }
+    }
+  } else {
+    let x=canvas.width/2,y=canvas.height/2;
+    if(pos==='bottom-right'){x=canvas.width-size*2;y=canvas.height-size;}
+    else if(pos==='bottom-left'){x=size*2;y=canvas.height-size;}
+    else if(pos==='top-right'){x=canvas.width-size*2;y=size;}
+    else if(pos==='top-left'){x=size*2;y=size;}
+    ctx.save();ctx.translate(x,y);ctx.rotate(rot);ctx.fillText(text,0,0);ctx.restore();
+  }
+  ctx.globalAlpha=1;
+}
+
+function downloadCurrent(){
+  if(!images.length)return;
+  const canvas=document.createElement('canvas');
+  const img=images[currentIdx].img;
+  canvas.width=img.width;canvas.height=img.height;
+  const ctx=canvas.getContext('2d');ctx.drawImage(img,0,0);
+  // Re-apply at full resolution
+  const text=document.getElementById('wmText').value||'Watermark';
+  const size=parseInt(document.getElementById('wmSize').value);
+  const pos=document.getElementById('wmPos').value;
+  const opacity=parseInt(document.getElementById('wmOpacity').value)/100;
+  const color=document.getElementById('wmColor').value;
+  const rot=parseInt(document.getElementById('wmRot').value)*Math.PI/180;
+  ctx.globalAlpha=opacity;ctx.fillStyle=color;ctx.font=`bold ${size}px DM Sans,sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';
+  if(pos==='tile'){const gap=size*4;for(let y=-canvas.height;y<canvas.height*2;y+=gap)for(let x=-canvas.width;x<canvas.width*2;x+=gap){ctx.save();ctx.translate(x,y);ctx.rotate(rot);ctx.fillText(text,0,0);ctx.restore();}}
+  else{let x=canvas.width/2,y=canvas.height/2;if(pos==='bottom-right'){x=canvas.width-size*2;y=canvas.height-size;}else if(pos==='bottom-left'){x=size*2;y=canvas.height-size;}else if(pos==='top-right'){x=canvas.width-size*2;y=size;}else if(pos==='top-left'){x=size*2;y=size;}ctx.save();ctx.translate(x,y);ctx.rotate(rot);ctx.fillText(text,0,0);ctx.restore();}
+  const a=document.createElement('a');a.href=canvas.toDataURL('image/png');a.download='watermarked_'+images[currentIdx].name.replace(/\.[^.]+$/,'')+'.png';a.click();
+}
+
+function downloadAll(){
+  images.forEach((im,i)=>{
+    setTimeout(()=>{currentIdx=i;downloadCurrent();},i*500);
+  });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'African Colour Palette Generator'});</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>African Colour Palette Generator — Inspired by African Art & Culture | AfroTools</title>
+<meta name="description" content="Generate beautiful colour palettes inspired by African art, landscapes, textiles, and culture. 50+ curated palettes from Kente, Ankara, Maasai, and more.">
+<meta name="keywords" content="African colour palette, African design colors, Kente colors, Ankara palette, African art colors, web design Africa">
+<link rel="canonical" href="https://afrotools.org/tools/colour-palette/">
+<meta property="og:title" content="African Colour Palette Generator"><meta property="og:description" content="50+ colour palettes inspired by African art, textiles, landscapes, and culture.">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.org/tools/colour-palette/">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<style>
+:root{--sky:#0ea5e9;--sky-light:#f0f9ff;--sky-dark:#0284c7}*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6}.hero{background:linear-gradient(135deg,#0c4a6e 0%,#0284c7 50%,#38bdf8 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}.hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}.hero p{font-size:1.05rem;opacity:.9;max-width:600px;margin:0 auto}.container{max-width:1000px;margin:0 auto;padding:1.5rem}.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:1.5rem}.card h2{font-size:1.1rem;font-weight:700;margin-bottom:1rem;color:#0c4a6e}
+.cats{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.25rem}
+.cat-btn{padding:.4rem .85rem;border:1.5px solid #e2e8f0;border-radius:20px;background:#fff;font-size:.82rem;font-weight:600;cursor:pointer;color:#64748b;transition:all .2s}
+.cat-btn:hover,.cat-btn.active{background:var(--sky);color:#fff;border-color:var(--sky)}
+.palette-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem}
+.palette-card{border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;transition:all .2s;cursor:pointer}
+.palette-card:hover{box-shadow:0 4px 12px rgba(0,0,0,.1);transform:translateY(-2px)}
+.palette-colors{display:flex;height:100px}
+.palette-colors div{flex:1;transition:flex .3s}
+.palette-colors div:hover{flex:1.5}
+.palette-info{padding:.75rem 1rem}
+.palette-info .name{font-weight:700;font-size:.95rem;color:#1e293b}
+.palette-info .origin{font-size:.78rem;color:#94a3b8}
+.palette-info .codes{display:flex;gap:.4rem;margin-top:.5rem;flex-wrap:wrap}
+.hex-tag{background:#f1f5f9;padding:.15rem .4rem;border-radius:3px;font-size:.7rem;font-family:monospace;color:#475569;cursor:pointer;transition:all .15s}
+.hex-tag:hover{background:var(--sky-light);color:var(--sky)}
+.copied-toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;padding:.5rem 1.25rem;border-radius:7px;font-size:.85rem;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:100}
+.copied-toast.show{opacity:1}
+.btn{padding:.55rem 1.25rem;border:none;border-radius:7px;font-weight:600;font-size:.9rem;cursor:pointer;background:var(--sky);color:#fff;transition:all .2s}.btn:hover{background:var(--sky-dark)}
+.random-bar{display:flex;gap:.75rem;align-items:center;margin-bottom:1rem;flex-wrap:wrap}
+.seo-section{max-width:800px;margin:2rem auto;padding:0 1.5rem}.seo-section h2{font-size:1.4rem;font-weight:800;color:#0c4a6e;margin-bottom:1rem}.seo-section h3{font-size:1.1rem;font-weight:700;color:#334155;margin:1.5rem 0 .5rem}.seo-section p{color:#475569;margin-bottom:1rem}.faq{max-width:800px;margin:2rem auto;padding:0 1.5rem}.faq h2{font-size:1.4rem;font-weight:800;color:#0c4a6e;margin-bottom:1rem}.faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:.75rem;background:#fff}.faq summary{padding:1rem 1.25rem;font-weight:600;cursor:pointer;color:#334155;list-style:none;display:flex;justify-content:space-between;align-items:center}.faq summary::after{content:'+';font-size:1.3rem;color:#94a3b8;font-weight:300}.faq details[open] summary::after{content:'-'}.faq details p{padding:0 1.25rem 1rem;color:#64748b;font-size:.95rem}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<section class="hero"><h1>African Colour Palette Generator</h1><p>50+ beautiful colour palettes inspired by African art, landscapes, textiles, and culture. Click any colour to copy its hex code.</p></section>
+<div class="container">
+<div class="card">
+<h2>Browse Palettes</h2>
+<div class="random-bar"><button class="btn" onclick="randomPalette()">Random Palette</button><span style="font-size:.85rem;color:#94a3b8">Click any hex code to copy</span></div>
+<div class="cats" id="cats"></div>
+<div class="palette-grid" id="grid"></div>
+</div>
+</div>
+<div class="copied-toast" id="toast">Copied!</div>
+<section class="seo-section">
+<h2>Colour in African Design</h2>
+<p>Colour plays a profoundly symbolic role in African art and culture. From the bold geometric patterns of Kente cloth to the earth tones of Maasai beadwork, African colour traditions carry deep meaning and have influenced global design for centuries. These curated palettes draw from textile traditions, natural landscapes, architectural heritage, and contemporary African design movements.</p>
+<h3>Textile Traditions</h3>
+<p>African textiles are among the world's most colourful and iconic. Ghanaian Kente cloth uses specific colour combinations with symbolic meanings — gold for royalty, green for fertility, blue for peace. Nigerian Ankara (African wax print) features bold, high-contrast patterns. Maasai shuka cloth is known for its distinctive red and blue checks. Ndebele art from South Africa uses vibrant primary colours in geometric wall paintings.</p>
+<h3>Symbolism of Colour</h3>
+<p>Across many African cultures, colours carry specific meanings. Red often represents life force, blood, and spiritual power. White symbolizes purity, peace, and the spirit world. Black represents maturity, spiritual energy, and ancestral connection. Green represents growth, fertility, and the land. Gold/yellow signifies wealth, royalty, and the harvest. Understanding these associations enriches the use of African-inspired colour palettes in design work.</p>
+<h3>Modern African Design</h3>
+<p>Contemporary African designers and brands are creating a distinct visual language that draws from traditional colour palettes while embracing modern aesthetics. From Lagos to Nairobi to Cape Town, a new generation of graphic designers, fashion designers, and architects are defining what African design looks like in the 21st century — often characterized by bold colour, pattern mixing, and a connection to cultural roots.</p>
+</section>
+<section class="faq">
+<h2>Frequently Asked Questions</h2>
+<details><summary>Can I use these palettes commercially?</summary><p>Yes, these colour palettes are freely available for any commercial or personal use. Colours themselves cannot be copyrighted. However, we encourage crediting African design traditions as inspiration when using these palettes in your work.</p></details>
+<details><summary>What formats are the colours in?</summary><p>All colours are provided as hex codes (e.g., #E4572E). Click any hex code to copy it to your clipboard. You can convert hex codes to RGB, HSL, or other formats using any colour converter tool.</p></details>
+<details><summary>How were these palettes created?</summary><p>Each palette was curated by studying actual African textiles, artworks, landscapes, and architectural traditions. Colours were sampled from authentic sources and harmonized for use in digital design. The palettes aim to capture the spirit and feel of their inspirations while being practical for web and graphic design applications.</p></details>
+</section>
+<afro-related-tools></afro-related-tools><afro-newsletter-cta></afro-newsletter-cta><afro-footer></afro-footer>
+<script src="/assets/js/components/navbar.js" defer></script><script src="/assets/js/components/footer.js" defer></script><script src="/assets/js/components/related-tools.js" defer></script><script src="/assets/js/components/newsletter-cta.js" defer></script>
+<script>
+const PALETTES=[
+{name:'Kente Gold',origin:'Ghana — Ashanti Kente Cloth',cat:'Textiles',colors:['#D4A017','#8B6914','#2E8B57','#1C1C1C','#FFFDD0']},
+{name:'Ankara Sunset',origin:'West Africa — Wax Print Fabric',cat:'Textiles',colors:['#E4572E','#F3A712','#17BEBB','#2E282A','#EDB88B']},
+{name:'Maasai Red',origin:'Kenya/Tanzania — Maasai Shuka',cat:'Textiles',colors:['#C62828','#1565C0','#212121','#FAFAFA','#6A1B9A']},
+{name:'Ndebele Bright',origin:'South Africa — Ndebele Wall Art',cat:'Textiles',colors:['#E53935','#1E88E5','#FDD835','#43A047','#FAFAFA']},
+{name:'Bogolan Earth',origin:'Mali — Mudcloth (Bogolanfini)',cat:'Textiles',colors:['#3E2723','#8D6E63','#EFEBE9','#D7CCC8','#1B0E07']},
+{name:'Adire Indigo',origin:'Nigeria — Yoruba Adire Cloth',cat:'Textiles',colors:['#1A237E','#283593','#5C6BC0','#E8EAF6','#0D47A1']},
+{name:'Shweshwe Blue',origin:'South Africa — Shweshwe Fabric',cat:'Textiles',colors:['#1565C0','#42A5F5','#E3F2FD','#0D47A1','#FAFAFA']},
+{name:'Kitenge Vibrant',origin:'East Africa — Kitenge/Chitenge',cat:'Textiles',colors:['#FF6F00','#AD1457','#00695C','#FFC107','#311B92']},
+{name:'Savanna Dry',origin:'East Africa — Dry Season',cat:'Landscapes',colors:['#D4A574','#C7956D','#8B7355','#DEB887','#F5DEB3']},
+{name:'Sahara Dunes',origin:'North Africa — Desert Landscape',cat:'Landscapes',colors:['#EDC9AF','#C19A6B','#D2B48C','#2B1700','#FFE4C4']},
+{name:'Kilimanjaro',origin:'Tanzania — Mountain Vista',cat:'Landscapes',colors:['#1B5E20','#4CAF50','#90CAF9','#FAFAFA','#795548']},
+{name:'Victoria Falls',origin:'Zimbabwe/Zambia — Waterfall Mist',cat:'Landscapes',colors:['#00ACC1','#00838F','#B2EBF2','#E0F7FA','#004D40']},
+{name:'Serengeti Gold',origin:'Tanzania — Golden Grasslands',cat:'Landscapes',colors:['#F9A825','#F57F17','#827717','#33691E','#3E2723']},
+{name:'Baobab Twilight',origin:'Madagascar — Baobab Alley',cat:'Landscapes',colors:['#FF7043','#BF360C','#4E342E','#FFB74D','#1A237E']},
+{name:'Nile Delta',origin:'Egypt — Fertile River Valley',cat:'Landscapes',colors:['#2E7D32','#1B5E20','#4DB6AC','#A1887F','#3E2723']},
+{name:'Zanzibar Spice',origin:'Tanzania — Spice Island',cat:'Landscapes',colors:['#E65100','#BF360C','#FFA726','#4E342E','#FFF8E1']},
+{name:'Pan-African',origin:'Pan-African Flag Colours',cat:'Flags & Symbols',colors:['#009639','#000000','#CE1126','#FCD116','#FFFFFF']},
+{name:'Nigerian Green',origin:'Nigeria — National Colours',cat:'Flags & Symbols',colors:['#008751','#FFFFFF','#1D6D37','#0A3A1C','#4CAF50']},
+{name:'Kenyan Harambee',origin:'Kenya — National Colours',cat:'Flags & Symbols',colors:['#000000','#BB0000','#006600','#FFFFFF','#BB0000']},
+{name:'South African Rainbow',origin:'South Africa — Rainbow Nation',cat:'Flags & Symbols',colors:['#007749','#FFB81C','#000000','#DE3831','#002395']},
+{name:'Ethiopian Coffee',origin:'Ethiopia — Coffee Ceremony',cat:'Culture',colors:['#3E2723','#5D4037','#A1887F','#D7CCC8','#1B0E07']},
+{name:'Moroccan Riad',origin:'Morocco — Traditional Architecture',cat:'Culture',colors:['#00695C','#E65100','#FFF8E1','#1A237E','#C62828']},
+{name:'Djembe Rhythm',origin:'West Africa — Traditional Drumming',cat:'Culture',colors:['#4E342E','#795548','#D7CCC8','#FF6F00','#BF360C']},
+{name:'Afrobeats Neon',origin:'Lagos — Contemporary Music Scene',cat:'Modern',colors:['#E91E63','#00BCD4','#FFEB3B','#9C27B0','#1A1A2E']},
+{name:'Nairobi Tech',origin:'Kenya — Silicon Savannah',cat:'Modern',colors:['#0097A7','#00BCD4','#E0F7FA','#263238','#FF6D00']},
+{name:'Lagos Hustle',origin:'Nigeria — Urban Energy',cat:'Modern',colors:['#FF6F00','#FFAB00','#212121','#FAFAFA','#00C853']},
+{name:'Cape Town Chic',origin:'South Africa — Design Capital',cat:'Modern',colors:['#455A64','#78909C','#ECEFF1','#FF5722','#FFFFFF']},
+{name:'Dakar Fashion',origin:'Senegal — Fashion Week',cat:'Modern',colors:['#6A1B9A','#AB47BC','#F3E5F5','#FF6F00','#212121']},
+{name:'Accra Market',origin:'Ghana — Makola Market',cat:'Modern',colors:['#F44336','#FF9800','#4CAF50','#2196F3','#FFC107']},
+{name:'Marrakech Souk',origin:'Morocco — Market Spices',cat:'Culture',colors:['#BF360C','#E65100','#FF8F00','#1B5E20','#4E342E']},
+{name:'Zanzibar Door',origin:'Tanzania — Carved Doorways',cat:'Culture',colors:['#00838F','#006064','#B2EBF2','#3E2723','#FFC107']},
+{name:'Timbuktu Sand',origin:'Mali — Ancient City',cat:'Landscapes',colors:['#D7CCC8','#BCAAA4','#8D6E63','#3E2723','#FFF8E1']},
+{name:'Congo Rainforest',origin:'Central Africa — Tropical Forest',cat:'Landscapes',colors:['#1B5E20','#2E7D32','#4CAF50','#81C784','#33691E']},
+];
+
+let activeCat='All';
+function init(){
+  const cats=[...new Set(PALETTES.map(p=>p.cat))];
+  document.getElementById('cats').innerHTML='<button class="cat-btn active" onclick="setCat(\'All\')">All</button>'+cats.map(c=>`<button class="cat-btn" onclick="setCat('${c}')">${c}</button>`).join('');
+  render();
+}
+function setCat(c){activeCat=c;document.querySelectorAll('.cat-btn').forEach(b=>b.classList.toggle('active',b.textContent===c));render();}
+function render(){
+  const list=activeCat==='All'?PALETTES:PALETTES.filter(p=>p.cat===activeCat);
+  document.getElementById('grid').innerHTML=list.map(p=>`
+    <div class="palette-card">
+      <div class="palette-colors">${p.colors.map(c=>`<div style="background:${c}" title="${c}"></div>`).join('')}</div>
+      <div class="palette-info">
+        <div class="name">${p.name}</div>
+        <div class="origin">${p.origin}</div>
+        <div class="codes">${p.colors.map(c=>`<span class="hex-tag" onclick="copyHex('${c}')">${c}</span>`).join('')}</div>
+      </div>
+    </div>`).join('');
+}
+function copyHex(hex){
+  navigator.clipboard.writeText(hex);
+  const t=document.getElementById('toast');
+  t.textContent='Copied '+hex;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),1500);
+}
+function randomPalette(){
+  const p=PALETTES[Math.floor(Math.random()*PALETTES.length)];
+  activeCat='All';
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.toggle('active',b.textContent==='All'));
+  render();
+  // Scroll to and highlight
+  const cards=document.querySelectorAll('.palette-card');
+  const idx=PALETTES.indexOf(p);
+  if(cards[idx]){cards[idx].scrollIntoView({behavior:'smooth',block:'center'});cards[idx].style.boxShadow='0 0 0 3px #0ea5e9';setTimeout(()=>cards[idx].style.boxShadow='',2000);}
+}
+init();
+</script>
+</body>
+</html>

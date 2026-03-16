@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'YouTube Thumbnail Maker'});</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>YouTube Thumbnail Maker — Free Online Thumbnail Creator | AfroTools</title>
+<meta name="description" content="Create eye-catching YouTube thumbnails with text overlays, backgrounds, and templates. 1280x720 HD output. Free, no signup required.">
+<meta name="keywords" content="YouTube thumbnail maker, thumbnail creator, video thumbnail, YouTube thumbnail template, free thumbnail maker">
+<link rel="canonical" href="https://afrotools.org/tools/thumbnail-maker/">
+<meta property="og:title" content="YouTube Thumbnail Maker"><meta property="og:description" content="Create eye-catching YouTube thumbnails with text overlays and templates. Free, no signup.">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.org/tools/thumbnail-maker/">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<style>
+:root{--sky:#0ea5e9;--sky-light:#f0f9ff;--sky-dark:#0284c7}*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6}.hero{background:linear-gradient(135deg,#0c4a6e 0%,#0284c7 50%,#38bdf8 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}.hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}.hero p{font-size:1.05rem;opacity:.9;max-width:600px;margin:0 auto}.container{max-width:1100px;margin:0 auto;padding:1.5rem}.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:1.5rem}.card h2{font-size:1.1rem;font-weight:700;margin-bottom:1rem;color:#0c4a6e}
+.editor{display:grid;grid-template-columns:1fr 320px;gap:1.5rem}
+@media(max-width:800px){.editor{grid-template-columns:1fr}}
+.canvas-wrap{position:relative;border-radius:8px;overflow:hidden;border:1px solid #e2e8f0}
+#thumbCanvas{width:100%;display:block;cursor:crosshair}
+.controls{display:flex;flex-direction:column;gap:1rem}
+.form-group{display:flex;flex-direction:column;gap:.3rem}
+.form-group label{font-weight:600;font-size:.82rem;color:#475569}
+.form-group input,.form-group select,.form-group textarea{padding:.5rem .65rem;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.9rem;background:#f8fafc;font-family:inherit}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--sky);box-shadow:0 0 0 3px rgba(14,165,233,.15)}
+.form-group textarea{min-height:60px;resize:vertical}
+.color-row{display:flex;gap:.5rem;align-items:center}
+.color-row input[type=color]{width:40px;height:34px;border:1.5px solid #cbd5e1;border-radius:5px;padding:2px;cursor:pointer}
+.btn{padding:.6rem 1.25rem;border:none;border-radius:7px;font-weight:600;font-size:.9rem;cursor:pointer;background:var(--sky);color:#fff;transition:all .2s;width:100%}.btn:hover{background:var(--sky-dark)}
+.btn-secondary{background:#475569}.btn-secondary:hover{background:#334155}
+.template-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.75rem}
+.tpl-btn{padding:.3rem .6rem;border:1.5px solid #e2e8f0;border-radius:5px;font-size:.75rem;font-weight:600;cursor:pointer;background:#fff;color:#64748b;transition:all .15s}
+.tpl-btn:hover,.tpl-btn.active{background:var(--sky);color:#fff;border-color:var(--sky)}
+.seo-section{max-width:800px;margin:2rem auto;padding:0 1.5rem}.seo-section h2{font-size:1.4rem;font-weight:800;color:#0c4a6e;margin-bottom:1rem}.seo-section h3{font-size:1.1rem;font-weight:700;color:#334155;margin:1.5rem 0 .5rem}.seo-section p{color:#475569;margin-bottom:1rem}.faq{max-width:800px;margin:2rem auto;padding:0 1.5rem}.faq h2{font-size:1.4rem;font-weight:800;color:#0c4a6e;margin-bottom:1rem}.faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:.75rem;background:#fff}.faq summary{padding:1rem 1.25rem;font-weight:600;cursor:pointer;color:#334155;list-style:none;display:flex;justify-content:space-between;align-items:center}.faq summary::after{content:'+';font-size:1.3rem;color:#94a3b8;font-weight:300}.faq details[open] summary::after{content:'-'}.faq details p{padding:0 1.25rem 1rem;color:#64748b;font-size:.95rem}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<section class="hero"><h1>YouTube Thumbnail Maker</h1><p>Create eye-catching 1280x720 thumbnails with text overlays, gradients, and custom backgrounds. Free, no signup needed.</p></section>
+<div class="container">
+<div class="card">
+<h2>Templates</h2>
+<div class="template-row" id="templates"></div>
+</div>
+<div class="card">
+<div class="editor">
+<div class="canvas-wrap"><canvas id="thumbCanvas" width="1280" height="720"></canvas></div>
+<div class="controls">
+<div class="form-group"><label>Background</label>
+<div class="color-row"><input type="color" id="bgColor1" value="#1a1a2e" oninput="draw()"><input type="color" id="bgColor2" value="#e94560" oninput="draw()"><select id="bgStyle" onchange="draw()"><option value="gradient">Gradient</option><option value="solid">Solid</option></select></div>
+<input type="file" id="bgImage" accept="image/*" onchange="loadBg(this.files[0])" style="margin-top:.3rem">
+</div>
+<div class="form-group"><label>Main Text</label><textarea id="mainText" oninput="draw()">YOUR TITLE HERE</textarea></div>
+<div class="form-group"><label>Text Size</label><input type="range" id="textSize" min="30" max="120" value="72" oninput="draw()"></div>
+<div class="form-group"><label>Text Color</label><div class="color-row"><input type="color" id="textColor" value="#ffffff" oninput="draw()"><label style="font-size:.78rem"><input type="checkbox" id="textShadow" checked onchange="draw()"> Shadow</label></div></div>
+<div class="form-group"><label>Subtitle</label><input type="text" id="subText" placeholder="Optional subtitle..." oninput="draw()"></div>
+<div class="form-group"><label>Subtitle Color</label><input type="color" id="subColor" value="#ffd700" oninput="draw()"></div>
+<div class="form-group"><label>Overlay</label><select id="overlay" onchange="draw()"><option value="none">None</option><option value="dark">Dark Vignette</option><option value="gradient-bottom">Bottom Gradient</option><option value="stripe">Diagonal Stripe</option></select></div>
+<button class="btn" onclick="download()">Download Thumbnail (1280x720)</button>
+<button class="btn btn-secondary" onclick="resetCanvas()">Reset</button>
+</div>
+</div>
+</div>
+</div>
+<section class="seo-section">
+<h2>Create Click-Worthy YouTube Thumbnails</h2>
+<p>Your thumbnail is the single most important factor in getting clicks on YouTube. Studies show that 90% of top-performing videos have custom thumbnails. A great thumbnail combines bold text, vibrant colours, and clear visual hierarchy to communicate your video's value in a split second. This tool helps African content creators design professional thumbnails without expensive software.</p>
+<h3>Thumbnail Best Practices</h3>
+<p>Use large, bold text (3-5 words maximum). Choose high-contrast colours that stand out on both desktop and mobile. Include faces with emotional expressions when possible — thumbnails with faces get 38% more clicks. Avoid cluttering the image. YouTube recommends 1280x720 pixels (16:9 ratio) with a minimum width of 640 pixels.</p>
+<h3>For African Content Creators</h3>
+<p>Africa's YouTube community is booming, with channels in Afrobeats, Nollywood reviews, tech, cooking, and education growing rapidly. Standing out requires eye-catching thumbnails that reflect your brand and content. Use culturally resonant colours (vibrant Ankara-inspired palettes work great), clear text in the language your audience speaks, and consistent branding across your channel.</p>
+</section>
+<section class="faq">
+<h2>Frequently Asked Questions</h2>
+<details><summary>What size should a YouTube thumbnail be?</summary><p>YouTube recommends 1280x720 pixels (16:9 aspect ratio) with a minimum width of 640 pixels. The file should be under 2MB in JPG, GIF, or PNG format. This tool outputs at the recommended 1280x720 resolution.</p></details>
+<details><summary>Can I upload my own background image?</summary><p>Yes. Use the "Background" file upload to add your own image. The image will be scaled to fit the 1280x720 canvas. You can then add text overlays on top of your custom background.</p></details>
+<details><summary>Is this really free?</summary><p>Yes, completely free with no watermarks, no signup, and no limits. The tool runs entirely in your browser — your images and designs are never uploaded to any server.</p></details>
+</section>
+<afro-related-tools></afro-related-tools><afro-newsletter-cta></afro-newsletter-cta><afro-footer></afro-footer>
+<script src="/assets/js/components/navbar.js" defer></script><script src="/assets/js/components/footer.js" defer></script><script src="/assets/js/components/related-tools.js" defer></script><script src="/assets/js/components/newsletter-cta.js" defer></script>
+<script>
+const canvas=document.getElementById('thumbCanvas');
+const ctx=canvas.getContext('2d');
+let bgImg=null;
+
+const TEMPLATES=[
+{name:'Neon Night',bg1:'#1a1a2e',bg2:'#e94560',text:'#ffffff',sub:'#ffd700',overlay:'dark'},
+{name:'Ocean Blue',bg1:'#0c4a6e',bg2:'#38bdf8',text:'#ffffff',sub:'#fde68a',overlay:'gradient-bottom'},
+{name:'Sunset',bg1:'#831843',bg2:'#fb923c',text:'#ffffff',sub:'#fef08a',overlay:'none'},
+{name:'Forest',bg1:'#14532d',bg2:'#4ade80',text:'#ffffff',sub:'#fbbf24',overlay:'dark'},
+{name:'Fire',bg1:'#7f1d1d',bg2:'#f97316',text:'#ffffff',sub:'#fef9c3',overlay:'stripe'},
+{name:'Royal',bg1:'#312e81',bg2:'#a78bfa',text:'#ffffff',sub:'#fde68a',overlay:'gradient-bottom'},
+{name:'Monochrome',bg1:'#000000',bg2:'#404040',text:'#ffffff',sub:'#fbbf24',overlay:'none'},
+{name:'Afro Gold',bg1:'#1c1917',bg2:'#d97706',text:'#ffffff',sub:'#fef3c7',overlay:'dark'},
+];
+
+document.getElementById('templates').innerHTML=TEMPLATES.map((t,i)=>`<button class="tpl-btn" onclick="applyTemplate(${i})">${t.name}</button>`).join('');
+
+function applyTemplate(i){
+  const t=TEMPLATES[i];
+  document.getElementById('bgColor1').value=t.bg1;
+  document.getElementById('bgColor2').value=t.bg2;
+  document.getElementById('textColor').value=t.text;
+  document.getElementById('subColor').value=t.sub;
+  document.getElementById('overlay').value=t.overlay;
+  document.getElementById('bgStyle').value='gradient';
+  draw();
+}
+
+function loadBg(f){
+  if(!f)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const img=new Image();
+    img.onload=()=>{bgImg=img;draw();};
+    img.src=e.target.result;
+  };
+  reader.readAsDataURL(f);
+}
+
+function draw(){
+  const w=1280,h=720;
+  const bgStyle=document.getElementById('bgStyle').value;
+  const c1=document.getElementById('bgColor1').value;
+  const c2=document.getElementById('bgColor2').value;
+
+  // Background
+  if(bgImg){
+    const scale=Math.max(w/bgImg.width,h/bgImg.height);
+    const sw=bgImg.width*scale,sh=bgImg.height*scale;
+    ctx.drawImage(bgImg,(w-sw)/2,(h-sh)/2,sw,sh);
+  } else if(bgStyle==='gradient'){
+    const grad=ctx.createLinearGradient(0,0,w,h);
+    grad.addColorStop(0,c1);grad.addColorStop(1,c2);
+    ctx.fillStyle=grad;ctx.fillRect(0,0,w,h);
+  } else {
+    ctx.fillStyle=c1;ctx.fillRect(0,0,w,h);
+  }
+
+  // Overlay
+  const overlay=document.getElementById('overlay').value;
+  if(overlay==='dark'){
+    const grad=ctx.createRadialGradient(w/2,h/2,w*0.2,w/2,h/2,w*0.7);
+    grad.addColorStop(0,'rgba(0,0,0,0)');grad.addColorStop(1,'rgba(0,0,0,0.6)');
+    ctx.fillStyle=grad;ctx.fillRect(0,0,w,h);
+  } else if(overlay==='gradient-bottom'){
+    const grad=ctx.createLinearGradient(0,h*0.4,0,h);
+    grad.addColorStop(0,'rgba(0,0,0,0)');grad.addColorStop(1,'rgba(0,0,0,0.7)');
+    ctx.fillStyle=grad;ctx.fillRect(0,0,w,h);
+  } else if(overlay==='stripe'){
+    ctx.save();ctx.globalAlpha=0.15;ctx.fillStyle='#000';
+    for(let i=-w;i<w*2;i+=60){ctx.beginPath();ctx.moveTo(i,0);ctx.lineTo(i+30,0);ctx.lineTo(i+30+h,h);ctx.lineTo(i+h,h);ctx.fill();}
+    ctx.restore();
+  }
+
+  // Main Text
+  const mainText=document.getElementById('mainText').value;
+  const textSize=parseInt(document.getElementById('textSize').value);
+  const textColor=document.getElementById('textColor').value;
+  const hasShadow=document.getElementById('textShadow').checked;
+  ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.font=`900 ${textSize}px DM Sans,Impact,sans-serif`;
+  if(hasShadow){ctx.shadowColor='rgba(0,0,0,0.5)';ctx.shadowBlur=12;ctx.shadowOffsetX=4;ctx.shadowOffsetY=4;}
+  ctx.fillStyle=textColor;
+  // Word wrap
+  const lines=mainText.split('\n');
+  const lineH=textSize*1.15;
+  const startY=h/2-(lines.length-1)*lineH/2;
+  lines.forEach((line,i)=>{ctx.fillText(line,w/2,startY+i*lineH);});
+  ctx.shadowColor='transparent';ctx.shadowBlur=0;ctx.shadowOffsetX=0;ctx.shadowOffsetY=0;
+
+  // Subtitle
+  const subText=document.getElementById('subText').value;
+  if(subText){
+    ctx.font=`700 ${Math.round(textSize*0.4)}px DM Sans,sans-serif`;
+    ctx.fillStyle=document.getElementById('subColor').value;
+    ctx.fillText(subText,w/2,startY+lines.length*lineH+10);
+  }
+}
+
+function download(){
+  const a=document.createElement('a');
+  a.href=canvas.toDataURL('image/png');
+  a.download='thumbnail.png';a.click();
+}
+
+function resetCanvas(){
+  bgImg=null;
+  document.getElementById('mainText').value='YOUR TITLE HERE';
+  document.getElementById('subText').value='';
+  document.getElementById('textSize').value=72;
+  applyTemplate(0);
+}
+
+applyTemplate(0);draw();
+</script>
+</body>
+</html>
