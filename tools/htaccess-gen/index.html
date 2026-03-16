@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'htaccess-gen'});</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>.htaccess Generator | AfroTools</title>
+<meta name="description" content="Generate .htaccess files for Apache servers. Redirects, HTTPS forcing, caching, security headers, CORS, gzip compression, custom error pages, and more.">
+<link rel="canonical" href="https://afrotools.com/tools/htaccess-gen/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content=".htaccess Generator | AfroTools">
+<meta property="og:description" content="Generate .htaccess files with redirects, security headers, caching, and more.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/htaccess-gen/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+:root{--afro-dark:#0f1419;--accent:#0ea5e9}
+.tool-hero{background:linear-gradient(135deg,#0c4a6e 0%,#0ea5e9 50%,#0284c7 100%);padding:44px 0 36px}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#bae6fd}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:#bae6fd;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-em{background:rgba(186,230,253,.2);color:#bae6fd;border:1px solid rgba(186,230,253,.4)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
+.card-body{padding:22px}
+label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f1f5f9}
+.toggle-row:last-child{border-bottom:none}
+.toggle-label{font-size:.8rem;font-weight:600;color:var(--afro-dark)}
+.toggle-desc{font-size:.7rem;color:#64748b;margin-top:2px}
+.toggle{position:relative;width:40px;height:22px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0}
+.toggle .slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#cbd5e1;border-radius:11px;transition:.2s}
+.toggle input:checked+.slider{background:var(--accent)}
+.toggle .slider::before{content:'';position:absolute;height:16px;width:16px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.2s}
+.toggle input:checked+.slider::before{transform:translateX(18px)}
+.section-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:18px 0 8px;padding-top:12px;border-top:1px solid #e2e8f0}
+.section-title:first-child{border-top:none;margin-top:0;padding-top:0}
+input[type="text"],select,textarea{width:100%;padding:8px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.8rem;background:#f8fafc;font-family:'DM Sans',monospace;box-sizing:border-box}
+input[type="text"]:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(14,165,233,.15)}
+.field{margin-bottom:10px}
+.btn-row{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.btn{padding:10px 18px;border:none;border-radius:8px;font-size:.78rem;font-weight:700;cursor:pointer}
+.btn-primary{background:linear-gradient(135deg,#0284c7,#0ea5e9);color:#fff}
+.btn-secondary{background:#f1f5f9;color:#475569;border:1px solid #e2e8f0}
+.output-area{width:100%;min-height:300px;padding:14px;border:1.5px solid #cbd5e1;border-radius:7px;font-family:'Courier New',monospace;font-size:.78rem;background:#1e293b;color:#e2e8f0;resize:vertical;box-sizing:border-box;line-height:1.7;white-space:pre;overflow-x:auto}
+.sidebar .info-card{background:#f0f9ff;border:1px solid #7dd3fc;border-radius:8px;padding:16px;margin-top:14px}
+.info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#0c4a6e;margin-bottom:8px}
+.info-card p,.info-card li{font-size:.78rem;color:#0c4a6e;line-height:1.6}
+.info-card ul{padding-left:16px;margin:6px 0}
+.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
+.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
+.seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
+.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
+.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
+.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<section class="tool-hero"><div class="tool-hero-inner">
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>.htaccess Generator</span></div>
+<h1>.htaccess <em>Generator</em></h1>
+<p class="hero-sub">Generate production-ready .htaccess files for Apache servers. HTTPS redirects, security headers, caching, gzip compression, custom error pages, and more.</p>
+<div class="hero-badges"><span class="badge b-em">Apache</span><span class="badge b-em">Security Headers</span><span class="badge b-em">Free</span></div>
+</div></section>
+
+<section class="tool-main"><div class="tool-main-inner">
+<div class="calculator">
+<div class="card">
+<div class="card-head"><span class="card-title">Configuration Options</span></div>
+<div class="card-body">
+<div class="section-title">Redirects</div>
+<div class="toggle-row"><div><div class="toggle-label">Force HTTPS</div><div class="toggle-desc">Redirect all HTTP traffic to HTTPS</div></div><label class="toggle"><input type="checkbox" id="forceHttps" checked><span class="slider"></span></label></div>
+<div class="toggle-row"><div><div class="toggle-label">Force www</div><div class="toggle-desc">Redirect non-www to www</div></div><label class="toggle"><input type="checkbox" id="forceWww"><span class="slider"></span></label></div>
+<div class="toggle-row"><div><div class="toggle-label">Remove www</div><div class="toggle-desc">Redirect www to non-www</div></div><label class="toggle"><input type="checkbox" id="removeWww" checked><span class="slider"></span></label></div>
+<div class="toggle-row"><div><div class="toggle-label">Trailing Slash</div><div class="toggle-desc">Add trailing slash to URLs</div></div><label class="toggle"><input type="checkbox" id="trailingSlash"><span class="slider"></span></label></div>
+
+<div class="section-title">Security</div>
+<div class="toggle-row"><div><div class="toggle-label">Security Headers</div><div class="toggle-desc">X-Frame-Options, X-Content-Type, XSS-Protection, HSTS</div></div><label class="toggle"><input type="checkbox" id="secHeaders" checked><span class="slider"></span></label></div>
+<div class="toggle-row"><div><div class="toggle-label">Block Directory Browsing</div><div class="toggle-desc">Prevent listing directory contents</div></div><label class="toggle"><input type="checkbox" id="blockDir" checked><span class="slider"></span></label></div>
+<div class="toggle-row"><div><div class="toggle-label">Block Sensitive Files</div><div class="toggle-desc">Block .env, .git, .htaccess, etc.</div></div><label class="toggle"><input type="checkbox" id="blockFiles" checked><span class="slider"></span></label></div>
+<div class="toggle-row"><div><div class="toggle-label">Hotlink Protection</div><div class="toggle-desc">Prevent other sites from embedding your images</div></div><label class="toggle"><input type="checkbox" id="hotlink"><span class="slider"></span></label></div>
+
+<div class="section-title">Performance</div>
+<div class="toggle-row"><div><div class="toggle-label">Gzip Compression</div><div class="toggle-desc">Compress text, HTML, CSS, JS, XML, JSON</div></div><label class="toggle"><input type="checkbox" id="gzip" checked><span class="slider"></span></label></div>
+<div class="toggle-row"><div><div class="toggle-label">Browser Caching</div><div class="toggle-desc">Set cache expiry headers for static assets</div></div><label class="toggle"><input type="checkbox" id="caching" checked><span class="slider"></span></label></div>
+<div class="toggle-row"><div><div class="toggle-label">ETags</div><div class="toggle-desc">Disable ETags (use cache headers instead)</div></div><label class="toggle"><input type="checkbox" id="etags" checked><span class="slider"></span></label></div>
+
+<div class="section-title">Other</div>
+<div class="toggle-row"><div><div class="toggle-label">Custom Error Pages</div><div class="toggle-desc">404, 403, 500 error pages</div></div><label class="toggle"><input type="checkbox" id="errorPages"><span class="slider"></span></label></div>
+<div class="toggle-row"><div><div class="toggle-label">CORS Headers</div><div class="toggle-desc">Allow cross-origin requests (Access-Control-Allow-Origin)</div></div><label class="toggle"><input type="checkbox" id="cors"><span class="slider"></span></label></div>
+<div class="toggle-row"><div><div class="toggle-label">PHP Settings</div><div class="toggle-desc">upload_max_filesize, memory_limit, etc.</div></div><label class="toggle"><input type="checkbox" id="php"><span class="slider"></span></label></div>
+
+<div class="field" style="margin-top:14px"><label>Your Domain (for hotlink protection)</label><input type="text" id="domain" value="example.com" placeholder="yourdomain.com"></div>
+
+<div class="btn-row">
+<button class="btn btn-primary" onclick="generate()">Generate .htaccess</button>
+</div>
+</div></div>
+
+<div class="card" id="outputCard" style="display:none">
+<div class="card-head"><span class="card-title">Generated .htaccess</span></div>
+<div class="card-body">
+<textarea class="output-area" id="output" readonly></textarea>
+<div class="btn-row">
+<button class="btn btn-secondary" onclick="copyOutput()">Copy to Clipboard</button>
+<button class="btn btn-secondary" onclick="downloadFile()">Download .htaccess</button>
+</div>
+</div></div>
+</div>
+
+<div class="sidebar">
+<div class="card">
+<div class="card-head"><span class="card-title">What is .htaccess?</span></div>
+<div class="card-body" style="font-size:.78rem;color:#475569;line-height:1.7">
+<p>The <strong>.htaccess</strong> file is a configuration file for Apache web servers. It allows you to control URL redirects, security, caching, and more at the directory level without editing the main server config.</p>
+<p style="margin-top:6px">Place the file in your website's root directory. Changes take effect immediately — no server restart needed.</p>
+<p style="margin-top:6px"><strong>Note:</strong> .htaccess only works on Apache servers. If you use Nginx, you'll need to add equivalent directives to your nginx.conf.</p>
+</div></div>
+<div class="info-card">
+<h4>Best Practices</h4>
+<ul>
+<li>Always backup before making changes</li>
+<li>Test on staging before production</li>
+<li>Use HTTPS for all sites</li>
+<li>Enable security headers</li>
+<li>Set proper cache headers</li>
+<li>Block access to sensitive files</li>
+</ul>
+</div>
+<div class="info-card" style="margin-top:10px">
+<h4>Common Hosting Providers</h4>
+<p>Apache/.htaccess works on: cPanel, Namecheap, GoDaddy, Bluehost, A2 Hosting, Hetzner, and most shared hosting. <strong>Not supported</strong> on Nginx-only hosts (DigitalOcean droplets with Nginx, Vercel, Netlify).</p>
+</div>
+</div>
+</div></section>
+
+<section class="seo-section">
+<h2>Understanding .htaccess Files</h2>
+<p>The .htaccess (Hypertext Access) file is one of the most powerful configuration tools available to web developers and site administrators using Apache web servers. This distributed configuration file allows you to make configuration changes on a per-directory basis without needing root access to the server or editing the main httpd.conf file.</p>
+<p>One of the most common uses of .htaccess is URL redirection. Forcing HTTPS ensures all traffic is encrypted, which is essential for security and now a ranking factor for search engines. Choosing between www and non-www (canonical URL) prevents duplicate content issues. These redirects use Apache's mod_rewrite module, which is enabled on virtually all modern Apache installations.</p>
+<p>Security headers are another critical use case. Headers like X-Frame-Options prevent clickjacking attacks, X-Content-Type-Options prevents MIME-type sniffing, and HTTP Strict Transport Security (HSTS) tells browsers to always use HTTPS. Content Security Policy (CSP) headers can prevent cross-site scripting (XSS) and data injection attacks. These headers are recommended by security organizations like OWASP.</p>
+<p>Performance optimization through .htaccess includes enabling gzip/deflate compression (which can reduce page size by 60-80%), setting browser cache expiry headers (so returning visitors load pages faster), and disabling ETags (which can cause issues with CDNs and load-balanced servers). These optimizations directly improve page load speed, user experience, and search engine rankings.</p>
+<p>For websites hosted in Africa, where internet speeds can vary significantly, these performance optimizations are especially important. Proper caching and compression can make the difference between a usable and an unusable website for visitors on slower connections. Combined with a CDN, a well-configured .htaccess can dramatically improve your site's accessibility across the continent.</p>
+
+<h2>Frequently Asked Questions</h2>
+<details class="faq-item"><summary>Where do I put the .htaccess file?</summary><p>Place it in your website's root directory (usually public_html or www). The file affects the directory it's in and all subdirectories. You can have multiple .htaccess files in different directories for directory-specific rules.</p></details>
+<details class="faq-item"><summary>Why can't I see my .htaccess file?</summary><p>Files starting with a dot (.) are hidden on Linux/Mac systems. In your FTP client, enable "Show hidden files" in settings. In cPanel File Manager, check "Show Hidden Files" in Settings.</p></details>
+<details class="faq-item"><summary>Will .htaccess work on Nginx?</summary><p>No. .htaccess is Apache-specific. Nginx uses its own configuration syntax in nginx.conf. If you're on Nginx, you'll need to convert these rules to Nginx format. Many hosting providers use Apache, but cloud servers often use Nginx.</p></details>
+</section>
+
+<afro-related-tools category="developer" current="htaccess-gen"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+function generate(){
+  const domain=document.getElementById('domain').value.trim()||'example.com';
+  let lines=['# Generated by AfroTools .htaccess Generator','# https://afrotools.com/tools/htaccess-gen/',''];
+
+  // Force HTTPS
+  if(document.getElementById('forceHttps').checked){
+    lines.push('# Force HTTPS','<IfModule mod_rewrite.c>','RewriteEngine On','RewriteCond %{HTTPS} off','RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]','</IfModule>','');
+  }
+
+  // Force www
+  if(document.getElementById('forceWww').checked){
+    lines.push('# Force www','<IfModule mod_rewrite.c>','RewriteEngine On',`RewriteCond %{HTTP_HOST} !^www\\. [NC]`,`RewriteRule ^(.*)$ https://www.%{HTTP_HOST}/$1 [R=301,L]`,'</IfModule>','');
+  }
+
+  // Remove www
+  if(document.getElementById('removeWww').checked&&!document.getElementById('forceWww').checked){
+    lines.push('# Remove www','<IfModule mod_rewrite.c>','RewriteEngine On',`RewriteCond %{HTTP_HOST} ^www\\.(.+)$ [NC]`,`RewriteRule ^(.*)$ https://%1/$1 [R=301,L]`,'</IfModule>','');
+  }
+
+  // Trailing slash
+  if(document.getElementById('trailingSlash').checked){
+    lines.push('# Add trailing slash','<IfModule mod_rewrite.c>','RewriteEngine On','RewriteCond %{REQUEST_FILENAME} !-f','RewriteCond %{REQUEST_URI} !(.*)/$','RewriteRule ^(.*)$ %{REQUEST_URI}/ [L,R=301]','</IfModule>','');
+  }
+
+  // Security headers
+  if(document.getElementById('secHeaders').checked){
+    lines.push('# Security Headers','<IfModule mod_headers.c>','Header set X-Frame-Options "SAMEORIGIN"','Header set X-Content-Type-Options "nosniff"','Header set X-XSS-Protection "1; mode=block"','Header set Referrer-Policy "strict-origin-when-cross-origin"','Header set Permissions-Policy "camera=(), microphone=(), geolocation=()"','Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"','</IfModule>','');
+  }
+
+  // Block directory browsing
+  if(document.getElementById('blockDir').checked){
+    lines.push('# Disable directory browsing','Options -Indexes','');
+  }
+
+  // Block sensitive files
+  if(document.getElementById('blockFiles').checked){
+    lines.push('# Block access to sensitive files','<FilesMatch "^\\.(htaccess|htpasswd|env|git|gitignore|editorconfig)">','Order allow,deny','Deny from all','</FilesMatch>','','<FilesMatch "(composer\\.json|composer\\.lock|package\\.json|package-lock\\.json|yarn\\.lock|\\.sql)$">','Order allow,deny','Deny from all','</FilesMatch>','');
+  }
+
+  // Hotlink protection
+  if(document.getElementById('hotlink').checked){
+    lines.push('# Hotlink Protection','<IfModule mod_rewrite.c>','RewriteEngine On',`RewriteCond %{HTTP_REFERER} !^$`,`RewriteCond %{HTTP_REFERER} !^https?://(www\\.)?${domain.replace(/\./g,'\\.')}/ [NC]`,`RewriteRule \\.(jpg|jpeg|png|gif|webp|svg)$ - [F,NC,L]`,'</IfModule>','');
+  }
+
+  // Gzip
+  if(document.getElementById('gzip').checked){
+    lines.push('# Gzip Compression','<IfModule mod_deflate.c>','AddOutputFilterByType DEFLATE text/plain','AddOutputFilterByType DEFLATE text/html','AddOutputFilterByType DEFLATE text/xml','AddOutputFilterByType DEFLATE text/css','AddOutputFilterByType DEFLATE application/xml','AddOutputFilterByType DEFLATE application/xhtml+xml','AddOutputFilterByType DEFLATE application/rss+xml','AddOutputFilterByType DEFLATE application/javascript','AddOutputFilterByType DEFLATE application/x-javascript','AddOutputFilterByType DEFLATE application/json','AddOutputFilterByType DEFLATE image/svg+xml','</IfModule>','');
+  }
+
+  // Caching
+  if(document.getElementById('caching').checked){
+    lines.push('# Browser Caching','<IfModule mod_expires.c>','ExpiresActive On','ExpiresByType image/jpg "access plus 1 year"','ExpiresByType image/jpeg "access plus 1 year"','ExpiresByType image/png "access plus 1 year"','ExpiresByType image/gif "access plus 1 year"','ExpiresByType image/webp "access plus 1 year"','ExpiresByType image/svg+xml "access plus 1 year"','ExpiresByType text/css "access plus 1 month"','ExpiresByType application/javascript "access plus 1 month"','ExpiresByType text/html "access plus 1 hour"','ExpiresByType application/pdf "access plus 1 month"','ExpiresByType application/x-font-woff2 "access plus 1 year"','</IfModule>','');
+  }
+
+  // ETags
+  if(document.getElementById('etags').checked){
+    lines.push('# Disable ETags','<IfModule mod_headers.c>','Header unset ETag','</IfModule>','FileETag None','');
+  }
+
+  // Error pages
+  if(document.getElementById('errorPages').checked){
+    lines.push('# Custom Error Pages','ErrorDocument 400 /errors/400.html','ErrorDocument 401 /errors/401.html','ErrorDocument 403 /errors/403.html','ErrorDocument 404 /errors/404.html','ErrorDocument 500 /errors/500.html','ErrorDocument 503 /errors/503.html','');
+  }
+
+  // CORS
+  if(document.getElementById('cors').checked){
+    lines.push('# CORS Headers','<IfModule mod_headers.c>','Header set Access-Control-Allow-Origin "*"','Header set Access-Control-Allow-Methods "GET, POST, OPTIONS"','Header set Access-Control-Allow-Headers "Content-Type, Authorization"','</IfModule>','');
+  }
+
+  // PHP settings
+  if(document.getElementById('php').checked){
+    lines.push('# PHP Settings','php_value upload_max_filesize 64M','php_value post_max_size 64M','php_value max_execution_time 300','php_value max_input_time 300','php_value memory_limit 256M','');
+  }
+
+  document.getElementById('output').value=lines.join('\n');
+  document.getElementById('outputCard').style.display='block';
+  document.getElementById('outputCard').scrollIntoView({behavior:'smooth'});
+}
+
+function copyOutput(){
+  const el=document.getElementById('output');
+  el.select();
+  document.execCommand('copy');
+  alert('Copied to clipboard!');
+}
+
+function downloadFile(){
+  const content=document.getElementById('output').value;
+  const blob=new Blob([content],{type:'text/plain'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='.htaccess';
+  a.click();
+}
+</script>
+</body>
+</html>

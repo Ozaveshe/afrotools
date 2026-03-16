@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'statistics-calc'});</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Statistics Calculator | AfroTools</title>
+<meta name="description" content="Free statistics calculator — mean, median, mode, standard deviation, variance, quartiles, skewness, and more. Paste your data and get instant results with visual distribution.">
+<link rel="canonical" href="https://afrotools.com/tools/statistics-calc/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Statistics Calculator | AfroTools">
+<meta property="og:description" content="Calculate mean, median, mode, standard deviation, variance, quartiles, and more.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/statistics-calc/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+:root{--afro-dark:#0f1419;--accent:#7c3aed}
+.tool-hero{background:linear-gradient(135deg,#3b0764 0%,#7c3aed 50%,#6d28d9 100%);padding:44px 0 36px}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#e9d5ff}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:#e9d5ff;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-em{background:rgba(233,213,255,.2);color:#e9d5ff;border:1px solid rgba(233,213,255,.4)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
+.card-body{padding:22px}
+label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
+textarea{width:100%;padding:12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:'DM Sans',monospace;box-sizing:border-box;resize:vertical;min-height:100px}
+textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,58,237,.15)}
+.btn-row{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.btn{padding:10px 18px;border:none;border-radius:8px;font-size:.78rem;font-weight:700;cursor:pointer}
+.btn-primary{background:linear-gradient(135deg,#6d28d9,#7c3aed);color:#fff}
+.btn-secondary{background:#f1f5f9;color:#475569;border:1px solid #e2e8f0}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-top:14px}
+.stat-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px;text-align:center}
+.stat-box .num{font-size:1.1rem;font-weight:800;color:#7c3aed;word-break:break-all}
+.stat-box .lbl{font-size:.65rem;color:#64748b;font-weight:600;margin-top:3px;text-transform:uppercase;letter-spacing:.04em}
+.stat-box.big{grid-column:span 2;background:linear-gradient(135deg,#faf5ff,#f3e8ff);border-color:#c4b5fd}
+.stat-box.big .num{font-size:1.5rem}
+.histogram{margin-top:18px}
+.hist-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.hist-label{font-size:.68rem;color:#64748b;min-width:70px;text-align:right}
+.hist-bar{height:18px;background:linear-gradient(90deg,#7c3aed,#a78bfa);border-radius:3px;transition:width .3s}
+.hist-count{font-size:.68rem;color:#64748b;font-weight:600}
+.sorted-data{font-size:.76rem;color:#475569;line-height:1.8;margin-top:12px;word-break:break-all;max-height:120px;overflow-y:auto;background:#f8fafc;padding:10px;border-radius:6px;border:1px solid #e2e8f0}
+.sidebar .info-card{background:#faf5ff;border:1px solid #c4b5fd;border-radius:8px;padding:16px;margin-top:14px}
+.info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#3b0764;margin-bottom:8px}
+.info-card p,.info-card li{font-size:.78rem;color:#3b0764;line-height:1.6}
+.info-card ul{padding-left:16px;margin:6px 0}
+.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
+.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
+.seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
+.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
+.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
+.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.stat-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<section class="tool-hero"><div class="tool-hero-inner">
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Statistics Calculator</span></div>
+<h1>Statistics <em>Calculator</em></h1>
+<p class="hero-sub">Paste your numbers and instantly get mean, median, mode, standard deviation, variance, quartiles, range, skewness, and a visual distribution histogram.</p>
+<div class="hero-badges"><span class="badge b-em">Descriptive Stats</span><span class="badge b-em">Free</span><span class="badge b-em">Instant Results</span></div>
+</div></section>
+
+<section class="tool-main"><div class="tool-main-inner">
+<div class="calculator">
+<div class="card">
+<div class="card-head"><span class="card-title">Enter Your Data</span></div>
+<div class="card-body">
+<label>Numbers (comma, space, or newline separated)</label>
+<textarea id="dataInput" placeholder="e.g. 12, 15, 18, 22, 25, 28, 30, 35, 40, 45">12, 15, 18, 22, 25, 28, 30, 35, 40, 45</textarea>
+<div class="btn-row">
+<button class="btn btn-primary" onclick="calculate()">Calculate</button>
+<button class="btn btn-secondary" onclick="loadSample('exam')">Sample: Exam Scores</button>
+<button class="btn btn-secondary" onclick="loadSample('salary')">Sample: Salaries</button>
+<button class="btn btn-secondary" onclick="document.getElementById('dataInput').value='';document.getElementById('resultCard').style.display='none'">Clear</button>
+</div>
+</div></div>
+
+<div class="card" id="resultCard" style="display:none">
+<div class="card-head"><span class="card-title">Statistical Summary</span></div>
+<div class="card-body">
+<div class="stat-grid" id="statGrid"></div>
+<div class="histogram" id="histogram"></div>
+<div id="sortedSection"></div>
+</div></div>
+</div>
+
+<div class="sidebar">
+<div class="card">
+<div class="card-head"><span class="card-title">Quick Reference</span></div>
+<div class="card-body" style="font-size:.78rem;color:#475569;line-height:1.7">
+<p><strong>Mean:</strong> Sum of values / count. The arithmetic average.</p>
+<p style="margin-top:6px"><strong>Median:</strong> Middle value when sorted. Less sensitive to outliers than mean.</p>
+<p style="margin-top:6px"><strong>Mode:</strong> Most frequently occurring value(s).</p>
+<p style="margin-top:6px"><strong>Standard Deviation:</strong> Measures spread/dispersion. Low SD = data clustered near mean.</p>
+<p style="margin-top:6px"><strong>Variance:</strong> SD squared. Average of squared deviations from mean.</p>
+</div></div>
+<div class="info-card">
+<h4>Interpretation Tips</h4>
+<ul>
+<li><strong>Skewness &gt; 0:</strong> Right-skewed (tail to right)</li>
+<li><strong>Skewness &lt; 0:</strong> Left-skewed (tail to left)</li>
+<li><strong>Skewness ≈ 0:</strong> Approximately symmetric</li>
+<li><strong>CV &gt; 30%:</strong> High variability</li>
+<li><strong>IQR:</strong> Middle 50% of data spread</li>
+</ul>
+</div>
+<div class="info-card" style="margin-top:10px">
+<h4>Accepted Formats</h4>
+<p>Comma-separated: 1, 2, 3<br>Space-separated: 1 2 3<br>Newline-separated (paste from Excel)</p>
+</div>
+</div>
+</div></section>
+
+<section class="seo-section">
+<h2>Free Online Statistics Calculator</h2>
+<p>This statistics calculator provides a comprehensive set of descriptive statistics for any dataset you enter. Whether you're a student working on a statistics assignment, a researcher analyzing survey data, or a professional making data-driven decisions, this tool gives you instant results without needing spreadsheet software or statistical packages.</p>
+<p>Descriptive statistics summarize and describe the main features of a dataset. The measures of central tendency — mean, median, and mode — tell you where the "center" of your data lies. The mean is the arithmetic average, the median is the middle value (resistant to outliers), and the mode is the most frequent value. For skewed data, the median is often more representative than the mean.</p>
+<p>Measures of dispersion — standard deviation, variance, range, and interquartile range (IQR) — tell you how spread out your data is. A low standard deviation means values are clustered close to the mean, while a high standard deviation indicates wide spread. The coefficient of variation (CV) expresses the standard deviation as a percentage of the mean, making it useful for comparing variability between datasets with different units or scales.</p>
+<p>Quartiles divide your sorted data into four equal parts. Q1 (25th percentile) marks the lower quarter, Q2 (50th percentile) is the median, and Q3 (75th percentile) marks the upper quarter. The IQR (Q3 - Q1) represents the middle 50% of your data and is commonly used to identify outliers — values more than 1.5 times the IQR below Q1 or above Q3.</p>
+<p>Skewness measures the asymmetry of the distribution. Positive skewness indicates a right tail (common in income data), while negative skewness indicates a left tail. Understanding skewness helps you choose appropriate statistical methods and interpret your data correctly.</p>
+
+<h2>Frequently Asked Questions</h2>
+<details class="faq-item"><summary>What's the difference between population and sample standard deviation?</summary><p>Population SD divides by N (total count), while sample SD divides by N-1 (Bessel's correction). Use sample SD when your data is a subset of a larger population. This calculator provides both values.</p></details>
+<details class="faq-item"><summary>When should I use median instead of mean?</summary><p>Use the median when your data is skewed or contains outliers. For example, salary data is typically right-skewed (a few very high earners pull the mean up), so the median salary better represents the "typical" worker. If your data is roughly symmetric, mean and median will be similar.</p></details>
+<details class="faq-item"><summary>What does a high coefficient of variation mean?</summary><p>A CV above 30% is generally considered high variability. It means the standard deviation is large relative to the mean. CV is useful for comparing variability between datasets with different scales — for example, comparing the variability of heights (in cm) vs weights (in kg).</p></details>
+</section>
+
+<afro-related-tools category="education" current="statistics-calc"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+function loadSample(type){
+  const samples={
+    exam:'65, 72, 78, 82, 85, 88, 90, 55, 60, 75, 80, 92, 68, 74, 77, 83, 95, 58, 70, 86, 73, 79, 81, 87, 63',
+    salary:'35000, 42000, 38000, 55000, 48000, 62000, 41000, 39000, 150000, 45000, 52000, 36000, 43000, 47000, 58000, 40000, 44000, 37000, 51000, 46000'
+  };
+  document.getElementById('dataInput').value=samples[type]||'';
+  calculate();
+}
+
+function parseData(str){
+  return str.split(/[\s,;\n\r\t]+/).map(s=>s.trim()).filter(s=>s!=='').map(Number).filter(n=>!isNaN(n));
+}
+
+function calculate(){
+  const data=parseData(document.getElementById('dataInput').value);
+  if(data.length<2){alert('Please enter at least 2 numbers.');return;}
+
+  const n=data.length;
+  const sorted=[...data].sort((a,b)=>a-b);
+  const sum=data.reduce((a,b)=>a+b,0);
+  const mean=sum/n;
+
+  // Median
+  const median=n%2===0?(sorted[n/2-1]+sorted[n/2])/2:sorted[Math.floor(n/2)];
+
+  // Mode
+  const freq={};
+  data.forEach(v=>{freq[v]=(freq[v]||0)+1;});
+  const maxFreq=Math.max(...Object.values(freq));
+  const modes=Object.keys(freq).filter(k=>freq[k]===maxFreq).map(Number);
+  const modeStr=maxFreq===1?'None':modes.join(', ');
+
+  // Variance & SD (sample)
+  const sampleVar=data.reduce((s,v)=>s+(v-mean)**2,0)/(n-1);
+  const sampleSD=Math.sqrt(sampleVar);
+  const popVar=data.reduce((s,v)=>s+(v-mean)**2,0)/n;
+  const popSD=Math.sqrt(popVar);
+
+  // Range
+  const min=sorted[0],max=sorted[n-1];
+  const range=max-min;
+
+  // Quartiles (inclusive method)
+  function quartile(arr,q){
+    const pos=(arr.length-1)*q;
+    const base=Math.floor(pos);
+    const rest=pos-base;
+    return arr[base+1]!==undefined?arr[base]+rest*(arr[base+1]-arr[base]):arr[base];
+  }
+  const q1=quartile(sorted,0.25);
+  const q3=quartile(sorted,0.75);
+  const iqr=q3-q1;
+
+  // CV
+  const cv=mean!==0?(sampleSD/Math.abs(mean))*100:0;
+
+  // Skewness (Fisher-Pearson)
+  const skewness=n>=3?(n/((n-1)*(n-2)))*data.reduce((s,v)=>s+((v-mean)/sampleSD)**3,0):0;
+
+  // Sum of squares
+  const sumSq=data.reduce((s,v)=>s+(v-mean)**2,0);
+
+  const fmt=v=>{
+    if(Math.abs(v)>=1000)return v.toLocaleString('en',{maximumFractionDigits:2});
+    if(Number.isInteger(v))return v.toString();
+    return v.toFixed(4);
+  };
+
+  let html='';
+  html+=`<div class="stat-box big"><div class="num">${fmt(mean)}</div><div class="lbl">Mean</div></div>`;
+  html+=`<div class="stat-box big"><div class="num">${fmt(median)}</div><div class="lbl">Median</div></div>`;
+  html+=`<div class="stat-box"><div class="num">${modeStr}</div><div class="lbl">Mode</div></div>`;
+  html+=`<div class="stat-box"><div class="num">${n}</div><div class="lbl">Count (n)</div></div>`;
+  html+=`<div class="stat-box"><div class="num">${fmt(sampleSD)}</div><div class="lbl">Std Dev (Sample)</div></div>`;
+  html+=`<div class="stat-box"><div class="num">${fmt(popSD)}</div><div class="lbl">Std Dev (Pop)</div></div>`;
+  html+=`<div class="stat-box"><div class="num">${fmt(sampleVar)}</div><div class="lbl">Variance (Sample)</div></div>`;
+  html+=`<div class="stat-box"><div class="num">${fmt(range)}</div><div class="lbl">Range</div></div>`;
+  html+=`<div class="stat-box"><div class="num">${fmt(min)}</div><div class="lbl">Minimum</div></div>`;
+  html+=`<div class="stat-box"><div class="num">${fmt(max)}</div><div class="lbl">Maximum</div></div>`;
+  html+=`<div class="stat-box"><div class="num">${fmt(q1)}</div><div class="lbl">Q1 (25th)</div></div>`;
+  html+=`<div class="stat-box"><div class="num">${fmt(q3)}</div><div class="lbl">Q3 (75th)</div></div>`;
+  html+=`<div class="stat-box"><div class="num">${fmt(iqr)}</div><div class="lbl">IQR</div></div>`;
+  html+=`<div class="stat-box"><div class="num">${fmt(cv)}%</div><div class="lbl">Coeff. of Variation</div></div>`;
+  html+=`<div class="stat-box"><div class="num">${fmt(skewness)}</div><div class="lbl">Skewness</div></div>`;
+  html+=`<div class="stat-box"><div class="num">${fmt(sum)}</div><div class="lbl">Sum</div></div>`;
+
+  document.getElementById('statGrid').innerHTML=html;
+
+  // Histogram
+  const bins=Math.min(Math.max(5,Math.ceil(Math.sqrt(n))),15);
+  const binWidth=(range||1)/bins;
+  const binCounts=new Array(bins).fill(0);
+  sorted.forEach(v=>{
+    let idx=Math.min(Math.floor((v-min)/binWidth),bins-1);
+    binCounts[idx]++;
+  });
+  const maxCount=Math.max(...binCounts);
+  let histHtml='<div style="font-size:.7rem;font-weight:700;color:var(--afro-dark);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Distribution</div>';
+  binCounts.forEach((c,i)=>{
+    const lo=(min+i*binWidth).toFixed(1);
+    const hi=(min+(i+1)*binWidth).toFixed(1);
+    const pct=maxCount>0?(c/maxCount)*100:0;
+    histHtml+=`<div class="hist-bar-row"><span class="hist-label">${lo}-${hi}</span><div class="hist-bar" style="width:${pct}%"></div><span class="hist-count">${c}</span></div>`;
+  });
+  document.getElementById('histogram').innerHTML=histHtml;
+
+  document.getElementById('sortedSection').innerHTML=`<div style="font-size:.7rem;font-weight:700;color:var(--afro-dark);text-transform:uppercase;letter-spacing:.06em;margin-top:18px;margin-bottom:6px">Sorted Data</div><div class="sorted-data">${sorted.join(', ')}</div>`;
+
+  document.getElementById('resultCard').style.display='block';
+  document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>

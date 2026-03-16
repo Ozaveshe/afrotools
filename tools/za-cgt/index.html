@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'za-cgt'});</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>South Africa Capital Gains Tax Calculator | AfroTools</title>
+<meta name="description" content="Calculate South Africa CGT using the inclusion rate method. Individuals: 40% inclusion at marginal rate. Companies: 80% inclusion at 27%. Includes R40,000 annual exclusion.">
+<link rel="canonical" href="https://afrotools.com/tools/za-cgt/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="SA CGT Calculator | AfroTools">
+<meta property="og:description" content="Calculate your South Africa Capital Gains Tax with inclusion rates and annual exclusion.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/za-cgt/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+:root{--afro-dark:#0f1419;--accent:#16a34a}
+.tool-hero{background:linear-gradient(135deg,#14532d 0%,#16a34a 50%,#15803d 100%);padding:44px 0 36px}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#bbf7d0}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:#bbf7d0;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-em{background:rgba(187,247,208,.2);color:#bbf7d0;border:1px solid rgba(187,247,208,.4)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
+.card-body{padding:22px}
+label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
+input,select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;box-sizing:border-box}
+input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(22,163,74,.15)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field{margin-bottom:14px}
+.btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;margin-top:18px}
+.btn-primary{background:linear-gradient(135deg,#15803d,#16a34a);color:#fff}
+.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.result-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;text-align:center}
+.result-box .num{font-size:1.3rem;font-weight:800;color:#16a34a}
+.result-box .lbl{font-size:.68rem;color:#64748b;font-weight:600;margin-top:3px;text-transform:uppercase;letter-spacing:.04em}
+.result-box.highlight{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-color:#86efac;grid-column:1/-1}
+.result-box.highlight .num{font-size:1.8rem}
+.sidebar .info-card{background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:16px;margin-top:14px}
+.info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#14532d;margin-bottom:8px}
+.info-card p,.info-card li{font-size:.78rem;color:#14532d;line-height:1.6}
+.info-card ul{padding-left:16px;margin:6px 0}
+.breakdown-table{width:100%;border-collapse:collapse;margin-top:12px;font-size:.78rem}
+.breakdown-table th,.breakdown-table td{padding:8px 10px;text-align:left;border-bottom:1px solid #e2e8f0}
+.breakdown-table th{font-weight:700;color:var(--afro-dark);background:#f8fafc;font-size:.7rem;text-transform:uppercase;letter-spacing:.04em}
+.breakdown-table td:last-child{text-align:right;font-weight:600}
+.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
+.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
+.seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
+.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
+.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
+.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}}
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"South Africa Capital Gains Tax Calculator","url":"https://afrotools.com/tools/za-cgt/","applicationCategory":"FinanceApplication","operatingSystem":"All","description":"Calculate SA CGT using inclusion rates and annual exclusion.","offers":{"@type":"Offer","price":"0","priceCurrency":"ZAR"}}
+</script>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<section class="tool-hero"><div class="tool-hero-inner">
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>SA CGT</span></div>
+<h1>South Africa <em>Capital Gains Tax</em> Calculator</h1>
+<p class="hero-sub">Calculate your CGT using SARS inclusion rates. Individuals get a 40% inclusion rate with R40,000 annual exclusion. Companies use 80% inclusion at 27% corporate rate.</p>
+<div class="hero-badges"><span class="badge b-em">2025 SARS Rates</span><span class="badge b-em">South Africa</span><span class="badge b-em">Inclusion Rate Method</span></div>
+</div></section>
+
+<section class="tool-main"><div class="tool-main-inner">
+<div class="calculator">
+<div class="card">
+<div class="card-head"><span class="card-title">Asset Disposal Details</span></div>
+<div class="card-body">
+<div class="row field">
+<div><label>Taxpayer Type</label>
+<select id="taxpayerType" onchange="updateFields()">
+<option value="individual">Individual</option>
+<option value="company">Company</option>
+<option value="trust">Trust</option>
+</select></div>
+<div><label>Asset Type</label>
+<select id="assetType">
+<option value="property">Property / Real Estate</option>
+<option value="shares">Shares / Unit Trusts</option>
+<option value="crypto">Cryptocurrency</option>
+<option value="other">Other Capital Asset</option>
+</select></div>
+</div>
+<div class="row field">
+<div><label>Proceeds / Sale Price (R)</label><input type="number" id="salePrice" value="2500000" min="0" step="10000"></div>
+<div><label>Base Cost (R)</label><input type="number" id="baseCost" value="1500000" min="0" step="10000"></div>
+</div>
+<div class="row field">
+<div><label>Improvement Costs (R)</label><input type="number" id="improvements" value="200000" min="0" step="10000"></div>
+<div><label>Selling Costs (R)</label><input type="number" id="sellingCosts" value="50000" min="0" step="5000"></div>
+</div>
+<div class="row field" id="marginalRow">
+<div><label>Your Marginal Tax Rate (%)</label>
+<select id="marginalRate">
+<option value="18">18% (R0 - R237,100)</option>
+<option value="26">26% (R237,101 - R370,500)</option>
+<option value="31">31% (R370,501 - R512,800)</option>
+<option value="36">36% (R512,801 - R673,000)</option>
+<option value="39">39% (R673,001 - R857,900)</option>
+<option value="41">41% (R857,901 - R1,817,000)</option>
+<option value="45" selected>45% (R1,817,001+)</option>
+</select></div>
+<div><label>Primary Residence?</label>
+<select id="primaryRes">
+<option value="no">No</option>
+<option value="yes">Yes (R2M exclusion)</option>
+</select></div>
+</div>
+<button class="btn btn-primary" onclick="calculate()">Calculate CGT</button>
+</div></div>
+
+<div class="card" id="resultCard" style="display:none">
+<div class="card-head"><span class="card-title">Your CGT Breakdown</span></div>
+<div class="card-body">
+<table class="breakdown-table" id="breakdownTable"></table>
+<div class="result-grid" id="resultGrid"></div>
+</div></div>
+</div>
+
+<div class="sidebar">
+<div class="card">
+<div class="card-head"><span class="card-title">SA CGT Inclusion Rates</span></div>
+<div class="card-body" style="font-size:.78rem;color:#475569;line-height:1.7">
+<p>South Africa uses an <strong>inclusion rate</strong> system rather than a separate CGT rate:</p>
+<p style="margin-top:6px"><strong>Individuals:</strong> 40% of the net capital gain is included in taxable income and taxed at your marginal rate. Max effective rate: 18% (40% x 45%).</p>
+<p style="margin-top:6px"><strong>Companies:</strong> 80% inclusion at 27% corporate rate. Effective rate: 21.6%.</p>
+<p style="margin-top:6px"><strong>Trusts:</strong> 80% inclusion at 45% trust rate. Effective rate: 36%.</p>
+<p style="margin-top:6px"><strong>Annual exclusion:</strong> R40,000 for individuals (R300,000 in year of death).</p>
+</div></div>
+<div class="info-card">
+<h4>Key Exclusions</h4>
+<ul>
+<li>R40,000 annual exclusion (individuals)</li>
+<li>R2,000,000 primary residence exclusion</li>
+<li>Personal-use assets under R10,000</li>
+<li>Retirement benefits</li>
+<li>Long-term insurance payouts</li>
+<li>Donations to approved PBOs</li>
+</ul>
+</div>
+<div class="info-card" style="margin-top:10px">
+<h4>Filing with SARS</h4>
+<ul>
+<li>Declare on ITR12 annual return</li>
+<li>Complete CGT schedule (IT-CG)</li>
+<li>Keep records for 5 years</li>
+<li>Provisional taxpayers: include in IRP6</li>
+</ul>
+</div>
+</div>
+</div></section>
+
+<section class="seo-section">
+<h2>Understanding Capital Gains Tax in South Africa</h2>
+<p>South Africa's approach to Capital Gains Tax is unique in that it doesn't apply a separate CGT rate. Instead, a portion of the net capital gain is "included" in the taxpayer's taxable income and taxed at their normal income tax rate. This inclusion rate system means the effective CGT rate varies depending on the type of taxpayer and their marginal tax rate.</p>
+<p>For individuals, 40% of the net capital gain is included in taxable income. With the top marginal tax rate at 45%, the maximum effective CGT rate for individuals is 18% (40% x 45%). For someone in a lower tax bracket, the effective rate is correspondingly lower — for example, someone at the 31% marginal rate pays an effective CGT rate of just 12.4% (40% x 31%).</p>
+<p>Companies face an 80% inclusion rate at the 27% corporate tax rate, resulting in an effective CGT rate of 21.6%. Trusts (other than special trusts) also use the 80% inclusion rate but at the trust tax rate of 45%, giving an effective rate of 36% — making trusts the least tax-efficient vehicle for holding capital assets.</p>
+<p>Individuals benefit from an annual exclusion of R40,000, meaning the first R40,000 of net capital gains in any tax year is completely tax-free. In the year of death, this exclusion increases to R300,000. There is also a generous R2,000,000 primary residence exclusion — if you sell your primary home and the gain is R2 million or less, no CGT is payable. Only the amount exceeding R2 million is subject to the inclusion rate.</p>
+<p>The base cost of an asset includes the acquisition cost, costs of improvement (not repairs), and costs directly related to the acquisition or disposal. For assets acquired before 1 October 2001 (when CGT was introduced in SA), taxpayers can use one of three valuation methods: market value as at 1 October 2001, the time-apportionment method, or 20% of proceeds less expenditure (the "20% rule").</p>
+
+<h2>Frequently Asked Questions</h2>
+<details class="faq-item"><summary>What is the effective CGT rate in South Africa?</summary><p>It depends on your taxpayer type: Individuals pay a maximum effective rate of 18% (40% inclusion x 45% top rate). Companies pay 21.6% (80% x 27%). Trusts pay 36% (80% x 45%). Your actual rate may be lower depending on your marginal tax bracket.</p></details>
+<details class="faq-item"><summary>Is my home exempt from CGT?</summary><p>Your primary residence qualifies for a R2,000,000 exclusion. If the gain on your home is R2M or less, you pay no CGT. Only the gain exceeding R2M is subject to CGT. The property must be your primary residence and you must have lived there for most of the ownership period.</p></details>
+<details class="faq-item"><summary>How is cryptocurrency taxed for CGT?</summary><p>SARS treats crypto as a capital asset for investors (not traders). Gains from selling crypto are subject to the same CGT inclusion rates. The R40,000 annual exclusion applies. If you trade crypto frequently, SARS may classify your gains as revenue (income) instead, which is taxed at full marginal rates.</p></details>
+<details class="faq-item"><summary>What records do I need to keep?</summary><p>Keep all purchase agreements, improvement invoices, and disposal documents for at least 5 years after filing. For property, keep title deeds, transfer duty receipts, and renovation invoices. For shares, keep contract notes and brokerage statements.</p></details>
+</section>
+
+<afro-related-tools category="financial" current="za-cgt"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+function updateFields(){
+  const type=document.getElementById('taxpayerType').value;
+  document.getElementById('marginalRow').style.display=type==='individual'?'grid':'none';
+}
+
+function calculate(){
+  const taxpayerType=document.getElementById('taxpayerType').value;
+  const salePrice=+document.getElementById('salePrice').value;
+  const baseCost=+document.getElementById('baseCost').value;
+  const improvements=+document.getElementById('improvements').value;
+  const sellingCosts=+document.getElementById('sellingCosts').value;
+  const primaryRes=document.getElementById('primaryRes').value;
+
+  const totalBaseCost=baseCost+improvements+sellingCosts;
+  let capitalGain=Math.max(0,salePrice-totalBaseCost);
+
+  // Primary residence exclusion (individuals only)
+  let primaryExclusion=0;
+  if(primaryRes==='yes'&&taxpayerType==='individual'){
+    primaryExclusion=Math.min(capitalGain,2000000);
+    capitalGain=Math.max(0,capitalGain-primaryExclusion);
+  }
+
+  // Annual exclusion (individuals only)
+  let annualExclusion=0;
+  if(taxpayerType==='individual'){
+    annualExclusion=Math.min(capitalGain,40000);
+    capitalGain=Math.max(0,capitalGain-annualExclusion);
+  }
+
+  // Inclusion rates & tax rates
+  let inclusionRate,taxRate,inclusionLabel;
+  if(taxpayerType==='individual'){
+    inclusionRate=0.40;
+    taxRate=(+document.getElementById('marginalRate').value)/100;
+    inclusionLabel='40%';
+  } else if(taxpayerType==='company'){
+    inclusionRate=0.80;
+    taxRate=0.27;
+    inclusionLabel='80%';
+  } else { // trust
+    inclusionRate=0.80;
+    taxRate=0.45;
+    inclusionLabel='80%';
+  }
+
+  const taxableGain=capitalGain*inclusionRate;
+  const cgt=taxableGain*taxRate;
+  const effectiveRate=capitalGain>0?((cgt/capitalGain)*100):0;
+  const netProceeds=salePrice-cgt;
+  const fmt=n=>'R '+Math.round(n).toLocaleString('en');
+
+  // Breakdown table
+  let rows='<tr><th>Item</th><th>Amount</th></tr>';
+  rows+=`<tr><td>Proceeds</td><td>${fmt(salePrice)}</td></tr>`;
+  rows+=`<tr><td>Less: Base Cost</td><td>(${fmt(totalBaseCost)})</td></tr>`;
+  rows+=`<tr><td>Capital Gain</td><td>${fmt(salePrice-totalBaseCost>0?salePrice-totalBaseCost:0)}</td></tr>`;
+  if(primaryExclusion>0) rows+=`<tr><td>Less: Primary Residence Exclusion</td><td>(${fmt(primaryExclusion)})</td></tr>`;
+  if(annualExclusion>0) rows+=`<tr><td>Less: Annual Exclusion (R40,000)</td><td>(${fmt(annualExclusion)})</td></tr>`;
+  rows+=`<tr><td>Net Capital Gain</td><td>${fmt(capitalGain)}</td></tr>`;
+  rows+=`<tr><td>Inclusion Rate (${inclusionLabel})</td><td>${fmt(taxableGain)}</td></tr>`;
+  rows+=`<tr style="font-weight:800;color:var(--accent)"><td>CGT Payable (at ${(taxRate*100).toFixed(0)}%)</td><td>${fmt(cgt)}</td></tr>`;
+
+  document.getElementById('breakdownTable').innerHTML=rows;
+
+  let html='';
+  html+=`<div class="result-box highlight"><div class="num">${fmt(cgt)}</div><div class="lbl">Capital Gains Tax Payable</div></div>`;
+  html+=`<div class="result-box"><div class="num">${effectiveRate.toFixed(1)}%</div><div class="lbl">Effective CGT Rate</div></div>`;
+  html+=`<div class="result-box"><div class="num">${fmt(netProceeds)}</div><div class="lbl">Net Proceeds</div></div>`;
+
+  document.getElementById('resultGrid').innerHTML=html;
+  document.getElementById('resultCard').style.display='block';
+  document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>
