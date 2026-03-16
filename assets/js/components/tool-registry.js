@@ -484,6 +484,15 @@ var AFRO_TOOLS = [
   { id: 'cac-checker',            name: 'CAC / Business Name Checker',     icon: '🏢', desc: 'Search CAC Nigeria business name availability. CACM, BN, IT registration guide.',       href: '/tools/cac-checker/',            category: 'legal',        tier: 'T2', status: 'live', phase: 'LIVE', countries: ['NG'], revenue: 'Freemium', estTraffic: 8000,  estRevenue: 160, priority: 79 },
   { id: 'ip-rights-africa',       name: 'African IP Rights Guide',         icon: '©️',  desc: 'Trademark, copyright, and patent filing guide for 20 African countries with costs.',    href: '/tools/ip-rights-africa/',       category: 'legal',        tier: 'T2', status: 'live', phase: 'LIVE', countries: ['ALL'], revenue: 'Freemium', estTraffic: 5000,  estRevenue: 100, priority: 72 },
 
+  // ═══════════════════════════════════════════════════════════
+  //  PHASE 6 — Crypto & Web3 Tools
+  // ═══════════════════════════════════════════════════════════
+  { id: 'crypto-p2p',       name: 'P2P Rate Comparator',        icon: '₿',  desc: 'Compare buy/sell rates across 8+ P2P platforms. Binance, Bybit, Luno, Quidax and more.', href: '/crypto/p2p-rates/',       category: 'crypto', tier: 'T1', status: 'live', phase: 'LIVE', countries: ['ALL'], revenue: 'Affiliate', estTraffic: 15000, estRevenue: 500, priority: 95 },
+  { id: 'crypto-prices',    name: 'Live Crypto Prices',         icon: '📊', desc: 'Real-time prices for 50+ coins in Naira, Shilling, Rand, Cedi and 15+ African currencies.', href: '/crypto/prices/',          category: 'crypto', tier: 'T1', status: 'live', phase: 'LIVE', countries: ['ALL'], revenue: 'Ad-supported', estTraffic: 20000, estRevenue: 300, priority: 93 },
+  { id: 'crypto-stablecoins', name: 'Stablecoin Rate Tracker',  icon: '💵', desc: 'Compare USDT, USDC, DAI rates across platforms. Best for savings, trading, or remittance.', href: '/crypto/stablecoins/',     category: 'crypto', tier: 'T1', status: 'live', phase: 'LIVE', countries: ['ALL'], revenue: 'Affiliate', estTraffic: 12000, estRevenue: 400, priority: 91 },
+  { id: 'crypto-remittance', name: 'Crypto Remittance Calculator', icon: '🌐', desc: 'Compare crypto vs Wise vs Western Union for sending money to Africa. See real savings.', href: '/crypto/remittance/',      category: 'crypto', tier: 'T1', status: 'live', phase: 'LIVE', countries: ['ALL'], revenue: 'Affiliate', estTraffic: 10000, estRevenue: 600, priority: 92 },
+  { id: 'crypto-arbitrage',  name: 'Naira Arbitrage Spotter',   icon: '⚡', desc: 'Find crypto price gaps across Nigerian platforms. Spot buy-low sell-high opportunities.', href: '/crypto/arbitrage/',       category: 'crypto', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['NG'], revenue: 'Freemium', estTraffic: 8000, estRevenue: 200, priority: 85 },
+
 ];
 
 // ═══════════════════════════════════════════════════════════
@@ -502,6 +511,7 @@ var AFRO_CATEGORIES = {
   'language':          { name: 'Language & Translation',  icon: '🌍', color: '#a855f7', bg: '#faf5ff', href: '/language/',             desc: 'AfroTranslate — 10+ African languages. Yoruba, Swahili, Amharic, Zulu, Hausa.' },
   'african':           { name: 'Uniquely African',        icon: '⚡', color: '#dc2626', bg: '#fef2f2', href: '/uniquely-african/',     desc: 'Generator fuel calc, Japa cost calc, Ajo/Chama/Tontine, mobile money fees.' },
   'engineering':       { name: 'Engineering & CAD',       icon: '🏗️', color: '#78716c', bg: '#f5f5f4', href: '/engineering/',          desc: 'Solar panel sizing, structural calculator, floor plan designer. KEBS/SABS standards.' },
+  'crypto':            { name: 'Crypto & Web3',           icon: '₿',  color: '#AF52DE', bg: '#1A1040', href: '/crypto/',               desc: 'P2P rates, live prices, stablecoin tracker, remittance calculator, arbitrage spotter.' },
 };
 
 // ═══════════════════════════════════════════════════════════

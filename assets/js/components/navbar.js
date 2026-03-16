@@ -67,6 +67,18 @@
       tools: []
     },
     {
+      id: 'crypto', label: 'Crypto & Web3', icon: '₿',
+      desc: 'P2P rates, prices, stablecoins, arbitrage',
+      href: '/crypto/', color: '#1A1040', accent: '#AF52DE',
+      tools: [
+        { label: 'P2P Rate Comparator', href: '/crypto/p2p-rates/', emoji: '₿', badge: 'LIVE' },
+        { label: 'Live Crypto Prices', href: '/crypto/prices/', emoji: '📊', badge: 'LIVE' },
+        { label: 'Stablecoin Tracker', href: '/crypto/stablecoins/', emoji: '💵', badge: 'LIVE' },
+        { label: 'Crypto Remittance', href: '/crypto/remittance/', emoji: '🌐', badge: 'LIVE' },
+        { label: 'Naira Arbitrage', href: '/crypto/arbitrage/', emoji: '⚡', badge: 'LIVE' },
+      ]
+    },
+    {
       id: 'african', label: 'Uniquely African', icon: '🌍',
       desc: 'Japa, generator, ajo, mobile money',
       href: '/african/', color: '#fef2f2', accent: '#dc2626',
@@ -293,10 +305,10 @@
     @media (max-width: 940px) {
       .nav-links, .pill-54 { display: none; }
       .btn-login { border: none; padding: 0; font-size: 0; }
-      .btn-login .nav-user-name { display: none; }
+      .btn-login .nav-user-name, .btn-login .user-menu-name { display: none !important; }
       .burger { display: flex; }
       .mob    { display: flex; }
-      nav     { padding: 0 16px; }
+      nav     { padding: 0 16px; max-width: 100vw !important; overflow-x: hidden !important; }
     }
     @media (max-width: 480px) {
       .logo-tag { display: none; }
@@ -955,7 +967,7 @@
         // Desktop: show avatar initial + first name
         if (loginBtn) {
           loginBtn.href = '/dashboard/';
-          loginBtn.innerHTML = '<span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:#007AFF;color:#fff;border-radius:50%;font-size:10px;font-weight:800;margin-right:5px;">' + initial + '</span><span class="nav-user-name">' + name + '</span>';
+          loginBtn.innerHTML = '<span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:#007AFF;color:#fff;border-radius:50%;font-size:10px;font-weight:800;margin-right:5px;">' + initial + '</span><span class="nav-user-name user-menu-name">' + name + '</span>';
         }
         // Mobile: show name
         if (mobLoginBtn) {
