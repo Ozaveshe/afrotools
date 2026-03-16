@@ -23,8 +23,7 @@
   SavedTools.prototype._init = function () {
     var self = this;
     return new Promise(function (resolve) {
-      // Wait for AfroAuth to be ready (if available)
-      if (window.AfroAuth && typeof window.AfroAuth.onReady === 'function') {
+      function connectAuth() {
         window.AfroAuth.onReady(function () {
           if (window.AfroAuth.isLoggedIn()) {
             self._user = window.AfroAuth.getUser();
@@ -40,19 +39,35 @@
             resolve();
           }
         });
-      } else {
-        // AfroAuth not available — localStorage only
-        self._ready = true;
-        resolve();
       }
 
-      // Safety timeout — don't block forever
+      // AfroAuth may not be loaded yet (navbar injects it dynamically).
+      // Poll for it instead of giving up immediately.
+      if (window.AfroAuth && typeof window.AfroAuth.onReady === 'function') {
+        connectAuth();
+      } else {
+        var attempts = 0;
+        var poll = setInterval(function () {
+          attempts++;
+          if (window.AfroAuth && typeof window.AfroAuth.onReady === 'function') {
+            clearInterval(poll);
+            connectAuth();
+          } else if (attempts >= 40) {
+            // 8 seconds — give up, localStorage only
+            clearInterval(poll);
+            self._ready = true;
+            resolve();
+          }
+        }, 200);
+      }
+
+      // Safety timeout — don't block forever (10s absolute max)
       setTimeout(function () {
         if (!self._ready) {
           self._ready = true;
           resolve();
         }
-      }, 5000);
+      }, 10000);
     });
   };
 

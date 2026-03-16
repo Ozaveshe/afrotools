@@ -1059,7 +1059,7 @@
     if (window._afroSupaAuthLoaded) return;
     if (!document.getElementById('afro-supabase-auth-js')) {
       const s = document.createElement('script'); s.id = 'afro-supabase-auth-js';
-      s.src = '/assets/js/supabase-auth.js?v=4'; document.head.appendChild(s);
+      s.src = '/assets/js/supabase-auth.js?v=5'; document.head.appendChild(s);
     }
   })();
 })();
