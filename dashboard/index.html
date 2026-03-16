@@ -819,7 +819,7 @@
     <afro-footer></afro-footer>
 
     <script src="/assets/js/components/tool-registry.js"></script>
-    <script src="/assets/js/supabase-auth.js?v=4"></script>
+    <script src="/assets/js/supabase-auth.js?v=5"></script>
     <script src="/assets/js/lib/saved-tools.js"></script>
     <script src="/assets/js/tax-calendar.js"></script>
     <script src="/assets/js/dashboard.js"></script>
@@ -855,17 +855,26 @@
 
         // Wait for Supabase auth to be ready before initializing
         function waitForAuth() {
+            console.log('[Dashboard] waitForAuth called, AfroAuth:', !!window.AfroAuth);
             if (window.AfroAuth) {
-                AfroAuth.onReady(init);
+                AfroAuth.onReady(function() {
+                    console.log('[Dashboard] AfroAuth ready, isLoggedIn:', AfroAuth.isLoggedIn());
+                    init();
+                });
             } else {
                 var attempts = 0;
                 var check = setInterval(function() {
                     attempts++;
                     if (window.AfroAuth) {
                         clearInterval(check);
-                        AfroAuth.onReady(init);
+                        console.log('[Dashboard] AfroAuth found after', attempts * 100, 'ms');
+                        AfroAuth.onReady(function() {
+                            console.log('[Dashboard] AfroAuth ready (delayed), isLoggedIn:', AfroAuth.isLoggedIn());
+                            init();
+                        });
                     } else if (attempts > 50) {
                         clearInterval(check);
+                        console.warn('[Dashboard] AfroAuth never loaded after 5s');
                         showAuth();
                     }
                 }, 100);
@@ -879,6 +888,20 @@
                 showDashboard();
             } else {
                 showAuth();
+                // Race-condition guard: session may still be refreshing.
+                // Re-check a few times in case TOKEN_REFRESHED arrives late.
+                var retries = 0;
+                var recheck = setInterval(function() {
+                    retries++;
+                    if (AfroAuth.isLoggedIn()) {
+                        clearInterval(recheck);
+                        isLoggedIn = true;
+                        currentUser = AfroAuth.getUser();
+                        showDashboard();
+                    } else if (retries >= 8) {
+                        clearInterval(recheck);
+                    }
+                }, 500);
             }
             setupEventListeners();
         }
@@ -911,17 +934,21 @@
                 });
             });
 
-            // Listen for auth changes (e.g. user signs in via modal)
-            window.addEventListener('afro-auth-change', function() {
+            // Listen for auth changes (e.g. user signs in via modal, or late token refresh)
+            function handleAuthChange() {
                 var wasLoggedIn = isLoggedIn;
                 isLoggedIn = AfroAuth.isLoggedIn();
+                console.log('[Dashboard] Auth change: wasLoggedIn=' + wasLoggedIn + ', isLoggedIn=' + isLoggedIn);
                 if (isLoggedIn && !wasLoggedIn) {
                     currentUser = AfroAuth.getUser();
                     showDashboard();
                 } else if (!isLoggedIn && wasLoggedIn) {
                     showAuth();
                 }
-            });
+            }
+            window.addEventListener('afro-auth-change', handleAuthChange);
+            // Also listen on document in case events fire there
+            document.addEventListener('afro-auth-change', handleAuthChange);
         }
 
         function handleLogout() {
@@ -1195,6 +1222,29 @@
 
         // Start
         waitForAuth();
+
+        // Nuclear fallback: if after 3s we're still showing auth but Supabase has a session, force dashboard
+        setTimeout(function() {
+            if (!isLoggedIn && window.AfroAuth && AfroAuth.isLoggedIn()) {
+                console.log('[Dashboard] Fallback: AfroAuth says logged in but dashboard missed it — forcing showDashboard');
+                isLoggedIn = true;
+                currentUser = AfroAuth.getUser();
+                showDashboard();
+            } else if (!isLoggedIn && window.AfroAuth) {
+                // Try getting session directly from Supabase client
+                var sb = AfroAuth.getSupabase && AfroAuth.getSupabase();
+                if (sb) {
+                    sb.auth.getSession().then(function(res) {
+                        if (res.data && res.data.session) {
+                            console.log('[Dashboard] Fallback: Found active Supabase session — reloading');
+                            window.location.reload();
+                        } else {
+                            console.log('[Dashboard] Fallback: No Supabase session found');
+                        }
+                    });
+                }
+            }
+        }, 3000);
     </script>
 </body>
 </html>
