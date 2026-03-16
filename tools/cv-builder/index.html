@@ -166,7 +166,6 @@ input,textarea,select{font-family:'Outfit',system-ui,sans-serif}
   ]
 }
 </script>
-<script src="/assets/js/lib/save-state.js"></script>
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
@@ -390,8 +389,7 @@ function CVBuilder() {
     const w = window.open('','_blank');
     w.document.write('<html><head><title>CV</title><style>body{margin:0}@page{margin:0;size:A4}</style></head><body>');
     w.document.write(el.outerHTML);
-    w.document.write('<script src="/assets/js/lib/auto-email-gate.js" defer></script>
-</body></html>');
+    w.document.write('<scr'+'ipt src="/assets/js/lib/auto-email-gate.js" defer><\/scr'+'ipt>\n</body></html>');
     w.document.close();
     w.onload = () => { w.print(); };
   };
@@ -1211,10 +1209,10 @@ ReactDOM.createRoot(document.getElementById('root')).render(<CVBuilder/>);
 <script src="/assets/js/lib/saved-tools.js" defer></script>
 <script src="/assets/js/favorites-widget.js" defer></script>
 <script src="/assets/js/lib/auto-email-gate.js" defer></script>
-<script>
+<script type="module">
 // CV Builder — saved CVs
+import { SaveState } from '/assets/js/lib/save-state.js';
 (function(){
-  if(typeof SaveState==='undefined')return;
   var ss=new SaveState('cv-builder',{maxFree:10});
   var section=document.getElementById('cv-saved-section');
   var grid=document.getElementById('cv-saved-grid');

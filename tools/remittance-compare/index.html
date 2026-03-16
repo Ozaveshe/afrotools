@@ -1,1349 +1,1124 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="tool-id" content="remittance-compare">
-    <meta name="theme-color" content="var(--color-primary)">
-    <title>Remittance Comparator — Best Rates to Africa | AfroTools</title>
-    <meta name="description" content="Compare transfer fees and exchange rates for sending money to Nigeria, Kenya, Ghana, South Africa and 50+ African countries. Find the cheapest way to send money to Africa in 2026.">
-    <meta name="keywords" content="remittance comparison, send money to Africa, exchange rates, transfer fees, Nigeria, Kenya, Ghana, South Africa">
-    <meta property="og:title" content="African Remittance Comparator | Best Rates for International Money Transfer">
-    <meta property="og:description" content="Compare and find the best remittance providers for sending money to African countries with real exchange rates and fees.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-D859CGF391');
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Remittance Comparator 2026 | Cheapest Way to Send Money to Africa | AfroTools</title>
+<meta name="description" content="Compare remittance fees, exchange rates and delivery times across Wise, WorldRemit, Remitly, Western Union, LemFi, Sendwave and more. Find the cheapest way to send money to Nigeria, Kenya, Ghana, South Africa and 20+ African countries.">
+<link rel="canonical" href="https://afrotools.com/tools/remittance-compare/">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="var(--color-primary)">
+<meta property="og:title" content="Remittance Comparator 2026 | Cheapest Way to Send Money to Africa | AfroTools">
+<meta property="og:description" content="Compare fees, exchange rates, and delivery times across 9 money transfer providers for 20+ African corridors. Find the cheapest way to send money home.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/remittance-compare/">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
-    <meta property="og:type" content="website">
-    <meta name="author" content="AfroTools">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <script src="/assets/js/components/tool-registry.min.js"></script>
-<script src="/assets/js/components/navbar.min.js" defer></script>
-    <script src="/assets/js/components/footer.min.js" defer></script>
-    <script src="/assets/js/favorites.js" defer></script>
-    <script src="/assets/js/lib/saved-tools.js" defer></script>
-<script src="/assets/js/favorites-widget.js" defer></script>
-
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html, body {
-            width: 100%;
-            height: 100%;
-        }
-
-        body {
-            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background-color: #F5F5F7;
-            color: #1D1D1F;
-            line-height: 1.6;
-        }
-
-        /* Hero Section */
-        .hero {
-            background-color: #fff;
-            position: relative;
-            overflow: hidden;
-            padding: 80px 20px;
-            text-align: center;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -200px;
-            right: -200px;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(0, 113, 227, 0.15) 0%, transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-        }
-
-        .hero::after {
-            content: '';
-            position: absolute;
-            bottom: -150px;
-            left: -150px;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(0, 113, 227, 0.1) 0%, transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 1;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .hero-eyebrow {
-            display: inline-block;
-            background-color: #F5F5F7;
-            border: 1px solid #E5E7EB;
-            border-radius: 980px;
-            padding: 6px 12px;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--color-primary);
-            margin-bottom: 16px;
-            letter-spacing: -0.3px;
-        }
-
-        .hero h1 {
-            font-size: clamp(32px, 5vw, 56px);
-            font-weight: 700;
-            margin-bottom: 12px;
-            letter-spacing: -0.5px;
-            line-height: 1.2;
-        }
-
-        .hero .subtitle {
-            font-size: clamp(16px, 2vw, 20px);
-            color: #666;
-            margin-bottom: 32px;
-            font-weight: 400;
-            letter-spacing: -0.2px;
-        }
-
-        .corridor-pills {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            justify-content: center;
-            margin-top: 24px;
-        }
-
-        .corridor-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 16px;
-            background-color: #F5F5F7;
-            border: 1.5px solid #E5E7EB;
-            border-radius: 980px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            color: #1D1D1F;
-        }
-
-        .corridor-pill:hover {
-            background-color: #E8E8ED;
-            border-color: var(--color-primary);
-            color: var(--color-primary);
-        }
-
-        .corridor-pill.active {
-            background-color: var(--color-primary);
-            border-color: var(--color-primary);
-            color: #fff;
-        }
-
-        /* Main Container */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        section {
-            margin: 60px auto;
-        }
-
-        section h2 {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 24px;
-            letter-spacing: -0.5px;
-        }
-
-        /* Tool Card */
-        .tool-card {
-            background-color: #fff;
-            border-radius: 18px;
-            border: 1.5px solid #E5E7EB;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-            padding: 32px;
-            margin-bottom: 40px;
-        }
-
-        .tool-card.hero-card {
-            max-width: 600px;
-            margin: -60px auto 40px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .input-group {
-            margin-bottom: 24px;
-        }
-
-        .input-group label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #1D1D1F;
-            letter-spacing: -0.2px;
-        }
-
-        .input-wrapper {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        input[type="number"],
-        select {
-            flex: 1;
-            min-width: 140px;
-            padding: 12px 16px;
-            border: 1.5px solid #E5E7EB;
-            border-radius: 12px;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 14px;
-            color: #1D1D1F;
-            background-color: #F5F5F7;
-            transition: border-color 0.2s ease;
-        }
-
-        input[type="number"]:focus,
-        select:focus {
-            outline: none;
-            border-color: var(--color-primary);
-            background-color: #fff;
-        }
-
-        .selector-group {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            margin-bottom: 24px;
-        }
-
-        .selector-group select {
-            flex: 1;
-            min-width: 140px;
-        }
-
-        .arrow-icon {
-            font-size: 20px;
-            color: #999;
-        }
-
-        /* Buttons */
-        .btn {
-            padding: 12px 32px;
-            border: none;
-            border-radius: 980px;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            letter-spacing: -0.2px;
-        }
-
-        .btn-primary {
-            background-color: var(--color-primary);
-            color: #fff;
-        }
-
-        .btn-primary:hover {
-            background-color: #005BBF;
-            box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
-        }
-
-        .btn-primary:active {
-            transform: scale(0.98);
-        }
-
-        .btn-secondary {
-            background-color: #F5F5F7;
-            color: #1D1D1F;
-            border: 1.5px solid #E5E7EB;
-        }
-
-        .btn-secondary:hover {
-            background-color: #E8E8ED;
-            border-color: var(--color-primary);
-            color: var(--color-primary);
-        }
-
-        /* Results Section */
-        .results-section {
-            display: none;
-        }
-
-        .results-section.active {
-            display: block;
-        }
-
-        .sort-controls {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .sort-btn {
-            padding: 8px 16px;
-            background-color: #F5F5F7;
-            border: 1.5px solid #E5E7EB;
-            border-radius: 12px;
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            color: #1D1D1F;
-        }
-
-        .sort-btn.active {
-            background-color: var(--color-primary);
-            border-color: var(--color-primary);
-            color: #fff;
-        }
-
-        .sort-btn:hover {
-            border-color: var(--color-primary);
-            color: var(--color-primary);
-        }
-
-        /* Comparison Table */
-        .comparison-table {
-            width: 100%;
-            border-collapse: collapse;
-            background-color: #fff;
-            border-radius: 18px;
-            border: 1.5px solid #E5E7EB;
-            overflow: hidden;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-        }
-
-        .comparison-table thead {
-            background-color: #F5F5F7;
-            border-bottom: 1.5px solid #E5E7EB;
-        }
-
-        .comparison-table th {
-            padding: 16px;
-            text-align: left;
-            font-size: 13px;
-            font-weight: 600;
-            color: #1D1D1F;
-            letter-spacing: -0.2px;
-        }
-
-        .comparison-table td {
-            padding: 16px;
-            border-bottom: 1px solid #F0F0F2;
-            font-size: 14px;
-            color: #1D1D1F;
-        }
-
-        .comparison-table tbody tr:last-child td {
-            border-bottom: none;
-        }
-
-        .comparison-table tbody tr:hover {
-            background-color: #F9F9FB;
-        }
-
-        .comparison-table tbody tr.best-option {
-            background-color: #F0F7FF;
-        }
-
-        .best-value-badge {
-            display: inline-block;
-            background-color: var(--color-primary);
-            color: #fff;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 600;
-            margin-left: 8px;
-        }
-
-        .provider-name {
-            font-weight: 600;
-            color: #1D1D1F;
-        }
-
-        .provider-logo {
-            display: inline-block;
-            width: 32px;
-            height: 32px;
-            border-radius: 6px;
-            background-color: #F0F0F2;
-            margin-right: 8px;
-            vertical-align: middle;
-            text-align: center;
-            line-height: 32px;
-            font-size: 18px;
-        }
-
-        .amount-highlight {
-            font-weight: 700;
-            color: var(--color-primary);
-            font-size: 15px;
-        }
-
-        .rating {
-            display: inline-flex;
-            gap: 2px;
-            align-items: center;
-        }
-
-        .star {
-            color: #FFB800;
-            font-size: 13px;
-        }
-
-        .star.empty {
-            color: #E5E7EB;
-        }
-
-        .rating-text {
-            font-size: 12px;
-            color: #666;
-            margin-left: 4px;
-        }
-
-        /* Chart Section */
-        .chart-container {
-            background-color: #fff;
-            border-radius: 18px;
-            border: 1.5px solid #E5E7EB;
-            padding: 24px;
-            margin: 40px 0;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-        }
-
-        .chart-container h3 {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            letter-spacing: -0.3px;
-        }
-
-        .bars {
-            display: flex;
-            align-items: flex-end;
-            gap: 16px;
-            height: 300px;
-            padding: 0 10px;
-        }
-
-        .bar-wrapper {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            height: 100%;
-            justify-content: flex-end;
-            gap: 8px;
-        }
-
-        .bar {
-            width: 100%;
-            background-color: var(--color-primary);
-            border-radius: 8px 8px 0 0;
-            min-height: 4px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .bar:hover {
-            background-color: #005BBF;
-        }
-
-        .bar-value {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--color-primary);
-            white-space: nowrap;
-        }
-
-        .bar-label {
-            font-size: 12px;
-            color: #666;
-            text-align: center;
-            word-break: break-word;
-            width: 100%;
-        }
-
-        /* Tips Section */
-        .tips-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-
-        .tip-card {
-            background-color: #fff;
-            border-radius: 18px;
-            border: 1.5px solid #E5E7EB;
-            padding: 24px;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-        }
-
-        .tip-card h3 {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 12px;
-            color: #1D1D1F;
-        }
-
-        .tip-card p {
-            font-size: 14px;
-            color: #666;
-            line-height: 1.6;
-        }
-
-        .tip-icon {
-            font-size: 28px;
-            margin-bottom: 12px;
-        }
-
-        /* Popular Corridors */
-        .popular-corridors {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-top: 20px;
-        }
-
-        /* FAQ Section */
-        .faq-container {
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        .faq-item {
-            background-color: #fff;
-            border-radius: 18px;
-            border: 1.5px solid #E5E7EB;
-            margin-bottom: 12px;
-            overflow: hidden;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-        }
-
-        .faq-question {
-            padding: 20px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 600;
-            color: #1D1D1F;
-            user-select: none;
-            transition: background-color 0.2s ease;
-        }
-
-        .faq-question:hover {
-            background-color: #F5F5F7;
-        }
-
-        .faq-toggle {
-            font-size: 20px;
-            color: var(--color-primary);
-            transition: transform 0.3s ease;
-        }
-
-        .faq-item.open .faq-toggle {
-            transform: rotate(180deg);
-        }
-
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-            background-color: #F9F9FB;
-        }
-
-        .faq-item.open .faq-answer {
-            max-height: 500px;
-        }
-
-        .faq-answer p {
-            padding: 0 20px 20px 20px;
-            color: #666;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero {
-                padding: 60px 20px;
-            }
-
-            .tool-card {
-                padding: 24px;
-            }
-
-            .tool-card.hero-card {
-                margin: -40px 0 30px 0;
-            }
-
-            .comparison-table {
-                font-size: 12px;
-            }
-
-            .comparison-table th,
-            .comparison-table td {
-                padding: 12px 8px;
-            }
-
-            .input-wrapper {
-                flex-direction: column;
-            }
-
-            input[type="number"],
-            select {
-                width: 100%;
-            }
-
-            .selector-group {
-                flex-direction: column;
-            }
-
-            .selector-group select {
-                width: 100%;
-            }
-
-            .bars {
-                gap: 8px;
-                padding: 0;
-            }
-
-            .tips-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .corridor-pills {
-                gap: 6px;
-            }
-
-            .corridor-pill {
-                padding: 8px 12px;
-                font-size: 12px;
-            }
-
-            .hero h1 {
-                font-size: 32px;
-            }
-
-            .hero .subtitle {
-                font-size: 16px;
-            }
-        }
-
-        /* Loading State */
-        .loading {
-            opacity: 0.6;
-            pointer-events: none;
-        }
-
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: #666;
-        }
-
-        .empty-state p {
-            font-size: 16px;
-            margin-bottom: 16px;
-        }
-    </style>
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Remittance Comparator 2026 | AfroTools">
+<meta name="twitter:description" content="Compare 9 remittance providers across 20+ African corridors. Fees, rates, speed, mobile money support.">
+<meta name="tool-id" content="remittance-compare">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"African Remittance Comparator 2026","url":"https://afrotools.com/tools/remittance-compare/","description":"Compare remittance costs across 9 providers for 20+ African corridors. Find the cheapest way to send money to Africa.","applicationCategory":"FinanceApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com"},{"@type":"ListItem","position":2,"name":"Remittance Comparator","item":"https://afrotools.com/tools/remittance-compare/"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How accurate are these remittance comparisons?","acceptedAnswer":{"@type":"Answer","text":"Our fee structures and exchange rate margins are based on published provider pricing as of early 2026. Actual rates fluctuate in real time, so always verify the exact quote on the provider's site before sending. This tool shows the relative cost ranking accurately."}},{"@type":"Question","name":"Which provider is cheapest for sending money to Nigeria?","acceptedAnswer":{"@type":"Answer","text":"For the US-to-Nigeria corridor, Wise and LemFi typically offer the best value due to low exchange rate markups. For small amounts under $200, Sendwave's zero-fee model can be competitive. Western Union and MoneyGram are more expensive but offer cash pickup."}},{"@type":"Question","name":"What is the mid-market exchange rate?","acceptedAnswer":{"@type":"Answer","text":"The mid-market rate (also called the interbank rate) is the midpoint between buy and sell prices of two currencies on the global market. It is the fairest rate available. Providers add a margin (markup) on top of this rate to make profit. Wise is known for offering rates closest to mid-market."}},{"@type":"Question","name":"How long do money transfers to Africa take?","acceptedAnswer":{"@type":"Answer","text":"Transfer times vary: mobile money (M-Pesa, MTN MoMo) and cash pickup are often instant to same-day. Bank transfers typically take 1-3 business days. Wise bank transfers take 1-2 days for most corridors. Speed also depends on payment method: card payments process faster than bank debits."}},{"@type":"Question","name":"Is it safe to use these remittance providers?","acceptedAnswer":{"@type":"Answer","text":"All providers listed are licensed and regulated in their operating countries. Wise is authorized by the FCA (UK) and FinCEN (US). Western Union and MoneyGram are established global operators. Always use official apps and websites, and never share your transfer PIN with anyone other than the intended recipient."}},{"@type":"Question","name":"What is the difference between transfer fee and exchange rate markup?","acceptedAnswer":{"@type":"Answer","text":"The transfer fee is an explicit charge (flat or percentage) shown upfront. The exchange rate markup is a hidden cost: the provider offers a rate worse than mid-market and keeps the difference. Some providers advertise 'zero fees' but compensate with a larger exchange rate markup. Our tool shows the true total cost including both."}}]}
+</script>
+
+<style>
+/* ── REMITTANCE TOOL STYLES ─── */
+/* Uses vat-* class prefix pattern from AfroTools design system */
+
+.rc-hero {
+  background: linear-gradient(135deg, #0a1929 0%, #0d2040 50%, #0d2b5e 100%);
+  color: #fff;
+  padding: 56px 20px 48px;
+  text-align: center;
+}
+.rc-hero h1 {
+  font-size: clamp(1.6rem, 4vw, 2.6rem);
+  font-weight: 800;
+  margin-bottom: 10px;
+  letter-spacing: -0.03em;
+}
+.rc-hero p {
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.7);
+  max-width: 620px;
+  margin: 0 auto 20px;
+  line-height: 1.6;
+}
+.rc-badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.rc-badge {
+  background: rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.9);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Container */
+.rc-container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+.rc-main { margin-top: 32px; margin-bottom: 48px; }
+
+/* Card */
+.rc-card {
+  background: #fff;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 28px;
+  margin-bottom: 20px;
+}
+
+/* Fields */
+.rc-field { margin-bottom: 16px; }
+.rc-field label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.rc-input, .rc-select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: 'DM Sans', sans-serif;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background: #fff;
+}
+.rc-input:focus, .rc-select:focus {
+  outline: none;
+  border-color: var(--color-primary, #0071e3);
+  box-shadow: 0 0 0 3px rgba(0,113,227,0.12);
+}
+
+/* Input with currency prefix */
+.rc-input-group {
+  display: flex;
+  gap: 12px;
+  align-items: stretch;
+}
+.rc-input-group .rc-input { flex: 1; min-width: 0; }
+.rc-input-group .rc-select { flex: 0 0 120px; }
+
+/* Corridor row */
+.rc-corridor-row {
+  display: flex;
+  gap: 12px;
+  align-items: end;
+}
+.rc-corridor-row .rc-field { flex: 1; }
+.rc-corridor-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 20px;
+  font-size: 1.2rem;
+  color: #9ca3af;
+  font-weight: 700;
+}
+
+/* Corridor pills */
+.rc-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; justify-content: center; }
+.rc-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 980px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.85);
+  transition: all 0.2s;
+}
+.rc-pill:hover { background: rgba(255,255,255,0.15); color: #fff; }
+
+/* Compare button */
+.rc-calc-btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  background: var(--color-primary, #0071e3);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+  margin-top: 4px;
+}
+.rc-calc-btn:hover { background: #005bbd; box-shadow: 0 4px 12px rgba(0,113,227,0.25); }
+
+/* Filters row */
+.rc-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.rc-filter-btn {
+  padding: 7px 16px;
+  background: #f3f4f6;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: #374151;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.2s;
+}
+.rc-filter-btn:hover { border-color: var(--color-primary, #0071e3); color: var(--color-primary, #0071e3); }
+.rc-filter-btn.active { background: var(--color-primary, #0071e3); color: #fff; border-color: var(--color-primary, #0071e3); }
+
+/* Results area */
+.rc-results { display: none; margin-top: 28px; }
+.rc-results.active { display: block; }
+.rc-results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.rc-results-header h2 { font-size: 1.2rem; font-weight: 700; margin: 0; }
+.rc-results-count { font-size: 0.85rem; color: #6b7280; }
+
+/* Provider result cards (mobile-first, no table) */
+.rc-provider-list { display: grid; gap: 12px; }
+.rc-provider-card {
+  background: #fff;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  position: relative;
+}
+.rc-provider-card:hover { border-color: #93c5fd; box-shadow: 0 2px 10px rgba(0,113,227,0.08); }
+.rc-provider-card.best { border-color: var(--color-primary, #0071e3); border-width: 2px; }
+.rc-best-tag {
+  position: absolute;
+  top: -1px;
+  right: 20px;
+  background: var(--color-primary, #0071e3);
+  color: #fff;
+  padding: 4px 12px;
+  border-radius: 0 0 8px 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.rc-provider-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.rc-provider-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #f3f4f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+.rc-provider-name { font-weight: 700; font-size: 1rem; color: #111827; }
+.rc-provider-speed { font-size: 0.78rem; color: #6b7280; margin-top: 2px; }
+
+.rc-provider-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.rc-provider-stat {}
+.rc-stat-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 2px;
+}
+.rc-stat-value { font-size: 0.95rem; font-weight: 600; color: #111827; }
+.rc-stat-value.highlight {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--color-primary, #0071e3);
+}
+
+.rc-provider-methods {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.rc-method-tag {
+  padding: 3px 8px;
+  background: #f3f4f6;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+/* Savings callout */
+.rc-savings {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 10px;
+  padding: 16px;
+  text-align: center;
+  margin-top: 16px;
+  font-size: 0.9rem;
+  color: #1e40af;
+}
+.rc-savings strong { font-weight: 700; }
+
+/* Chart */
+.rc-chart-section {
+  margin-top: 28px;
+}
+.rc-chart-section h3 { font-size: 1rem; font-weight: 700; margin-bottom: 16px; }
+.rc-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  height: 220px;
+  padding: 0 4px;
+}
+.rc-bar-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  justify-content: flex-end;
+  gap: 6px;
+  min-width: 0;
+}
+.rc-bar {
+  width: 100%;
+  background: var(--color-primary, #0071e3);
+  border-radius: 6px 6px 0 0;
+  min-height: 4px;
+  transition: height 0.4s ease;
+}
+.rc-bar-col.best .rc-bar { background: #16a34a; }
+.rc-bar-val { font-size: 0.72rem; font-weight: 700; color: var(--color-primary, #0071e3); white-space: nowrap; }
+.rc-bar-col.best .rc-bar-val { color: #16a34a; }
+.rc-bar-lbl { font-size: 0.68rem; color: #6b7280; text-align: center; word-break: break-word; width: 100%; line-height: 1.2; }
+
+/* Disclaimer */
+.rc-disclaimer {
+  margin-top: 16px;
+  padding: 12px 16px;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  color: #92400e;
+  line-height: 1.5;
+}
+
+/* Tips grid */
+.rc-tips { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 28px; }
+.rc-tip {
+  background: #fff;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 20px;
+}
+.rc-tip-icon { font-size: 1.5rem; margin-bottom: 8px; }
+.rc-tip h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; color: #111827; }
+.rc-tip p { font-size: 0.85rem; color: #6b7280; line-height: 1.5; }
+
+/* FAQ (reuse vat pattern) */
+.rc-faq { margin-top: 48px; margin-bottom: 48px; }
+.rc-faq h2 { font-size: 1.4rem; font-weight: 800; margin-bottom: 20px; text-align: center; }
+.rc-faq-grid { display: grid; gap: 12px; max-width: 700px; margin: 0 auto; }
+.rc-faq-item {
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+}
+.rc-faq-item summary {
+  padding: 16px 20px;
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95rem;
+}
+.rc-faq-item summary::-webkit-details-marker { display: none; }
+.rc-faq-item summary::after { content: '+'; font-size: 1.2rem; color: #9ca3af; transition: transform 0.2s; }
+.rc-faq-item[open] summary::after { content: '-'; }
+.rc-faq-body { padding: 0 20px 16px; font-size: 0.88rem; color: #6b7280; line-height: 1.6; }
+
+/* SEO section */
+.rc-seo { max-width: 800px; margin: 0 auto 48px; padding: 0 20px; }
+.rc-seo h2 { font-size: 1.3rem; font-weight: 800; margin-bottom: 12px; }
+.rc-seo h3 { font-size: 1.05rem; font-weight: 700; margin: 20px 0 8px; }
+.rc-seo p { font-size: 0.9rem; color: #6b7280; line-height: 1.7; margin-bottom: 12px; }
+
+/* Responsive */
+@media (max-width: 700px) {
+  .rc-hero { padding: 40px 16px 36px; }
+  .rc-corridor-row { flex-direction: column; }
+  .rc-corridor-arrow { transform: rotate(90deg); padding: 0; }
+  .rc-input-group { flex-direction: column; }
+  .rc-input-group .rc-select { flex: auto; }
+  .rc-provider-grid { grid-template-columns: repeat(2, 1fr); }
+  .rc-bars { height: 160px; gap: 6px; }
+  .rc-bar-val { font-size: 0.65rem; }
+  .rc-bar-lbl { font-size: 0.6rem; }
+  .rc-pills { gap: 6px; }
+  .rc-pill { padding: 6px 10px; font-size: 12px; }
+}
+</style>
 </head>
 <body>
-    <afro-navbar active="african"></afro-navbar>
+<afro-navbar active="african"></afro-navbar>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <div class="hero-eyebrow">💸 Real-time Comparison</div>
-            <h1>African Remittance Comparator</h1>
-            <p class="subtitle">Compare exchange rates, fees, and transfer speeds. Send money smarter to Africa.</p>
+<!-- Hero -->
+<section class="rc-hero">
+  <div class="rc-container">
+    <h1>African Remittance Comparator</h1>
+    <p>Compare fees, exchange rates and delivery times across 9 providers for 20+ African corridors. Find the cheapest way to send money home.</p>
+    <div class="rc-badges">
+      <span class="rc-badge">9 Providers</span>
+      <span class="rc-badge">20+ Corridors</span>
+      <span class="rc-badge">Fee + Rate Markup Analysis</span>
+      <span class="rc-badge">2026 Data</span>
+    </div>
+    <div class="rc-pills">
+      <button class="rc-pill" data-from="US" data-to="NG" data-cur="USD">US to Nigeria</button>
+      <button class="rc-pill" data-from="GB" data-to="KE" data-cur="GBP">UK to Kenya</button>
+      <button class="rc-pill" data-from="US" data-to="GH" data-cur="USD">US to Ghana</button>
+      <button class="rc-pill" data-from="GB" data-to="ZA" data-cur="GBP">UK to South Africa</button>
+      <button class="rc-pill" data-from="EU" data-to="MA" data-cur="EUR">EU to Morocco</button>
+      <button class="rc-pill" data-from="US" data-to="ET" data-cur="USD">US to Ethiopia</button>
+    </div>
+  </div>
+</section>
 
-            <div class="corridor-pills">
-                <button class="corridor-pill" data-from="US" data-to="NG">🇺🇸 → 🇳🇬 Nigeria</button>
-                <button class="corridor-pill" data-from="GB" data-to="KE">🇬🇧 → 🇰🇪 Kenya</button>
-                <button class="corridor-pill" data-from="AE" data-to="ET">🇦🇪 → 🇪🇹 Ethiopia</button>
-                <button class="corridor-pill" data-from="ZA" data-to="ZA">🇿🇦 → 🇿🇦 South Africa</button>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:20px;justify-content:center;">
-                <span style="background:var(--color-primary);color:#fff;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:600;letter-spacing:0.01em;">8 Providers</span>
-                <span style="background:var(--color-primary);color:#fff;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:600;letter-spacing:0.01em;">10+ Corridors</span>
-                <span style="background:var(--color-primary);color:#fff;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:600;letter-spacing:0.01em;">Live Rate Comparison</span>
-                <span style="background:var(--color-primary);color:#fff;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:600;letter-spacing:0.01em;">Wise · Remitly · WorldRemit</span>
-                <span style="background:#EFF6FF;color:var(--color-primary);padding:6px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1.5px solid #BFDBFE;">Free Forever</span>
-            </div>
-        </div>
-    </section>
-
-    <div class="container">
-        <!-- Tool Card -->
-        <div class="tool-card hero-card">
-            <div class="input-group">
-                <label>Amount to Send</label>
-                <div class="input-wrapper">
-                    <input type="number" id="sendAmount" placeholder="Enter amount" value="100" min="1" max="100000">
-                    <select id="sendCurrency">
-                        <option value="USD">USD ($)</option>
-                        <option value="GBP">GBP (£)</option>
-                        <option value="EUR">EUR (€)</option>
-                        <option value="AED">AED</option>
-                        <option value="ZAR">ZAR (R)</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="input-group">
-                <label>From → To Country</label>
-                <div class="selector-group">
-                    <select id="fromCountry">
-                        <option value="US">United States</option>
-                        <option value="GB">United Kingdom</option>
-                        <option value="EU">Europe (EUR)</option>
-                        <option value="AE">UAE</option>
-                        <option value="ZA">South Africa</option>
-                    </select>
-                    <span class="arrow-icon">→</span>
-                    <select id="toCountry">
-                        <option value="NG">Nigeria (NGN)</option>
-                        <option value="KE">Kenya (KES)</option>
-                        <option value="GH">Ghana (GHS)</option>
-                        <option value="ZA">South Africa (ZAR)</option>
-                        <option value="TZ">Tanzania (TZS)</option>
-                        <option value="UG">Uganda (UGX)</option>
-                        <option value="ET">Ethiopia (ETB)</option>
-                        <option value="EG">Egypt (EGP)</option>
-                        <option value="MA">Morocco (MAD)</option>
-                        <option value="SN">Senegal (XOF)</option>
-                    </select>
-                </div>
-            </div>
-
-            <button class="btn btn-primary" id="calculateBtn" style="width: 100%; margin-top: 8px;">Compare Rates</button>
-        </div>
-
-        <!-- Results Section -->
-        <section class="results-section" id="resultsSection">
-            <h2>Provider Comparison</h2>
-
-            <div class="sort-controls">
-                <button class="sort-btn active" data-sort="best-value">💰 Best Value</button>
-                <button class="sort-btn" data-sort="rate">📊 Best Rate</button>
-                <button class="sort-btn" data-sort="fee">💳 Lowest Fee</button>
-                <button class="sort-btn" data-sort="speed">⚡ Fastest</button>
-            </div>
-
-            <table class="comparison-table">
-                <thead>
-                    <tr>
-                        <th>Provider</th>
-                        <th>Exchange Rate</th>
-                        <th>Fee</th>
-                        <th>You Send</th>
-                        <th>Recipient Gets</th>
-                        <th>Speed</th>
-                        <th>Rating</th>
-                    </tr>
-                </thead>
-                <tbody id="resultsBody">
-                </tbody>
-            </table>
-
-            <!-- Chart -->
-            <div class="chart-container">
-                <h3>Recipient Amount Comparison</h3>
-                <div class="bars" id="chartBars"></div>
-            </div>
-        </section>
-
-        <!-- Tips Section -->
-        <section>
-            <h2>How to Save on Remittances</h2>
-            <div class="tips-grid">
-                <div class="tip-card">
-                    <div class="tip-icon">📦</div>
-                    <h3>Use Wise for Large Amounts</h3>
-                    <p>Wise offers the most competitive exchange rates for transfers over $1000, with transparent, mid-market rates.</p>
-                </div>
-                <div class="tip-card">
-                    <div class="tip-icon">⏰</div>
-                    <h3>Time Your Transfer</h3>
-                    <p>Monitor exchange rates and send when rates are favorable. Avoid peak hours when fees may be higher.</p>
-                </div>
-                <div class="tip-card">
-                    <div class="tip-icon">💬</div>
-                    <h3>Use Bank Transfers</h3>
-                    <p>Direct bank transfers via services like Wise are cheaper than cash pickup services for regular corridors.</p>
-                </div>
-                <div class="tip-card">
-                    <div class="tip-icon">🔄</div>
-                    <h3>Compare Before Every Send</h3>
-                    <p>Exchange rates and fees change daily. Always compare providers to ensure you get the best deal.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Popular Corridors -->
-        <section style="text-align: center; margin-bottom: 60px;">
-            <h2>Popular Routes</h2>
-            <div class="popular-corridors">
-                <button class="corridor-pill" onclick="selectCorridor('US', 'NG')">🇺🇸→🇳🇬 US→Nigeria</button>
-                <button class="corridor-pill" onclick="selectCorridor('GB', 'KE')">🇬🇧→🇰🇪 UK→Kenya</button>
-                <button class="corridor-pill" onclick="selectCorridor('AE', 'ET')">🇦🇪→🇪🇹 UAE→Ethiopia</button>
-                <button class="corridor-pill" onclick="selectCorridor('US', 'GH')">🇺🇸→🇬🇭 US→Ghana</button>
-                <button class="corridor-pill" onclick="selectCorridor('GB', 'ZA')">🇬🇧→🇿🇦 UK→SA</button>
-                <button class="corridor-pill" onclick="selectCorridor('US', 'KE')">🇺🇸→🇰🇪 US→Kenya</button>
-                <button class="corridor-pill" onclick="selectCorridor('AE', 'NG')">🇦🇪→🇳🇬 UAE→Nigeria</button>
-                <button class="corridor-pill" onclick="selectCorridor('EU', 'UG')">🇪🇺→🇺🇬 EU→Uganda</button>
-            </div>
-        </section>
-
-        <!-- FAQ Section -->
-        <section>
-            <h2>Frequently Asked Questions</h2>
-            <div class="faq-container">
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>How accurate are these exchange rates?</span>
-                        <span class="faq-toggle">▼</span>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Our rates are based on real market data as of 2026 and are updated regularly. However, providers may charge different rates based on the amount, payment method, and current market conditions. Always verify the exact rate with your provider before confirming a transfer.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>Which provider is cheapest for my transfer?</span>
-                        <span class="faq-toggle">▼</span>
-                    </div>
-                    <div class="faq-answer">
-                        <p>This depends on the amount and corridor. For small amounts, services like Remitly may be competitive. For larger amounts over $1000, Wise typically offers the best mid-market rates. Use our comparator to get a personalized recommendation for your specific transfer.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>What's the difference between exchange rate and spread?</span>
-                        <span class="faq-toggle">▼</span>
-                    </div>
-                    <div class="faq-answer">
-                        <p>The exchange rate is the official conversion between two currencies. The spread is the markup a provider adds to make a profit. A lower spread means you get closer to the mid-market rate. Wise is known for low spreads (0.5-1%), while traditional services like Western Union have wider spreads (3-5%).</p>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>How long do transfers take?</span>
-                        <span class="faq-toggle">▼</span>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Transfer times vary by provider and destination. Bank transfers typically take 1-3 business days, while cash pickup services (Western Union, MoneyGram) can be same-day in many corridors. Digital wallets like Chipper Cash offer instant transfers in Africa.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>Is my money safe with these providers?</span>
-                        <span class="faq-toggle">▼</span>
-                    </div>
-                    <div class="faq-answer">
-                        <p>All providers listed here are regulated and compliant with international money transfer regulations. Wise, Western Union, and MoneyGram are all established global companies. For digital services like Remitly and Sendwave, check that they're licensed in your country before use.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>Can I compare providers for a specific corridor?</span>
-                        <span class="faq-toggle">▼</span>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Yes! Simply enter your send amount, select your source country and currency, choose the recipient country, and click "Compare Rates". The tool will show you all available providers for that specific corridor with their exact fees and rates.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+<main class="rc-container rc-main">
+  <!-- Calculator form -->
+  <div class="rc-card">
+    <div class="rc-field">
+      <label for="rcAmount">You Send</label>
+      <div class="rc-input-group">
+        <input type="text" inputmode="decimal" class="rc-input" id="rcAmount" placeholder="1000" value="500" autocomplete="off">
+        <select class="rc-select" id="rcCurrency">
+          <option value="USD">USD ($)</option>
+          <option value="GBP">GBP (&pound;)</option>
+          <option value="EUR">EUR (&euro;)</option>
+          <option value="CAD">CAD (C$)</option>
+          <option value="AED">AED</option>
+        </select>
+      </div>
     </div>
 
-    
+    <div class="rc-corridor-row">
+      <div class="rc-field">
+        <label for="rcFrom">Sending From</label>
+        <select class="rc-select" id="rcFrom">
+          <option value="US">United States</option>
+          <option value="GB">United Kingdom</option>
+          <option value="EU">Europe (Eurozone)</option>
+          <option value="CA">Canada</option>
+          <option value="AE">UAE</option>
+        </select>
+      </div>
+      <div class="rc-corridor-arrow">&rarr;</div>
+      <div class="rc-field">
+        <label for="rcTo">Sending To</label>
+        <select class="rc-select" id="rcTo">
+          <option value="NG">Nigeria (NGN)</option>
+          <option value="KE">Kenya (KES)</option>
+          <option value="GH">Ghana (GHS)</option>
+          <option value="ZA">South Africa (ZAR)</option>
+          <option value="ET">Ethiopia (ETB)</option>
+          <option value="TZ">Tanzania (TZS)</option>
+          <option value="UG">Uganda (UGX)</option>
+          <option value="EG">Egypt (EGP)</option>
+          <option value="MA">Morocco (MAD)</option>
+          <option value="SN">Senegal (XOF)</option>
+          <option value="CM">Cameroon (XAF)</option>
+          <option value="RW">Rwanda (RWF)</option>
+          <option value="ZM">Zambia (ZMW)</option>
+          <option value="ZW">Zimbabwe (USD)</option>
+          <option value="MZ">Mozambique (MZN)</option>
+          <option value="CI">Ivory Coast (XOF)</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="rc-calc-btn" id="rcCompareBtn">Compare Providers</button>
+  </div>
+
+  <!-- Filters -->
+  <div id="rcFiltersArea" style="display:none;">
+    <div style="margin-bottom: 8px;">
+      <span style="font-size:0.82rem;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:0.04em;">Sort by</span>
+    </div>
+    <div class="rc-filters" id="rcSortBtns">
+      <button class="rc-filter-btn active" data-sort="value">Best Value</button>
+      <button class="rc-filter-btn" data-sort="fee">Lowest Fee</button>
+      <button class="rc-filter-btn" data-sort="rate">Best Rate</button>
+      <button class="rc-filter-btn" data-sort="speed">Fastest</button>
+    </div>
+    <div style="margin: 12px 0 8px;">
+      <span style="font-size:0.82rem;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:0.04em;">Delivery Method</span>
+    </div>
+    <div class="rc-filters" id="rcMethodBtns">
+      <button class="rc-filter-btn active" data-method="all">All Methods</button>
+      <button class="rc-filter-btn" data-method="bank">Bank Transfer</button>
+      <button class="rc-filter-btn" data-method="mobile">Mobile Money</button>
+      <button class="rc-filter-btn" data-method="cash">Cash Pickup</button>
+    </div>
+  </div>
+
+  <!-- Results -->
+  <div class="rc-results" id="rcResults">
+    <div class="rc-results-header">
+      <h2 id="rcResultsTitle">Provider Comparison</h2>
+      <span class="rc-results-count" id="rcCount"></span>
+    </div>
+
+    <div class="rc-provider-list" id="rcProviderList"></div>
+
+    <!-- Savings callout -->
+    <div class="rc-savings" id="rcSavings" style="display:none;"></div>
+
+    <!-- Bar chart -->
+    <div class="rc-chart-section">
+      <h3>Recipient Gets (by Provider)</h3>
+      <div class="rc-bars" id="rcBars"></div>
+    </div>
+
+    <!-- Disclaimer -->
+    <div class="rc-disclaimer">
+      Rates shown are estimates based on published provider pricing (March 2026). Actual rates, fees and delivery times vary by amount, payment method, and market conditions. Always verify the final quote on the provider's website or app before confirming your transfer. AfroTools is not a money transfer service and does not process transactions.
+    </div>
+  </div>
+
+  <!-- Tips -->
+  <section style="margin-top: 48px;">
+    <h2 style="font-size:1.2rem;font-weight:800;margin-bottom:16px;">Save More on Every Transfer</h2>
+    <div class="rc-tips">
+      <div class="rc-tip">
+        <div class="rc-tip-icon">&#x1F4B0;</div>
+        <h3>Watch the Exchange Rate, Not Just the Fee</h3>
+        <p>A provider with zero fees but a 4% rate markup costs more than one with a $3 fee and 0.5% markup on a $500 transfer. Always compare the total recipient amount.</p>
+      </div>
+      <div class="rc-tip">
+        <div class="rc-tip-icon">&#x1F3E6;</div>
+        <h3>Pay by Bank Transfer</h3>
+        <p>Card payments are processed faster but often cost 1-2% more in fees. Bank/ACH transfers are cheaper for non-urgent sends.</p>
+      </div>
+      <div class="rc-tip">
+        <div class="rc-tip-icon">&#x1F4F1;</div>
+        <h3>Use Mobile Money for Speed</h3>
+        <p>In Kenya (M-Pesa), Ghana (MTN MoMo), and Uganda (Airtel Money), mobile money delivery is often instant and free on the receiving end.</p>
+      </div>
+      <div class="rc-tip">
+        <div class="rc-tip-icon">&#x1F4C8;</div>
+        <h3>Send Larger Amounts Less Often</h3>
+        <p>Flat fees hurt small transfers the most. Sending $500 once costs less in total fees than five $100 transfers.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="rc-faq">
+    <h2>Frequently Asked Questions</h2>
+    <div class="rc-faq-grid">
+      <details class="rc-faq-item"><summary>How accurate are these comparisons?</summary><div class="rc-faq-body">Our fee structures and rate margins are based on published provider pricing as of early 2026. Exchange rates fluctuate constantly, so the absolute amounts will differ from live quotes. However, the relative ranking (which provider is cheapest) is generally accurate. Always verify on the provider's site before sending.</div></details>
+      <details class="rc-faq-item"><summary>Which provider is cheapest for sending to Nigeria?</summary><div class="rc-faq-body">For the US-to-Nigeria corridor, Wise and LemFi typically offer the best value due to their low exchange rate markups (0.5-1%). For small amounts under $200, Sendwave (zero fees, mobile money delivery) is competitive. Western Union and MoneyGram cost more but offer cash pickup at thousands of agent locations across Nigeria.</div></details>
+      <details class="rc-faq-item"><summary>What is the mid-market exchange rate?</summary><div class="rc-faq-body">The mid-market rate is the midpoint between buy and sell prices on the global currency market. It is the fairest exchange rate available. Providers add a margin (markup) above this rate to profit. Wise is known for rates closest to mid-market. Traditional operators like Western Union may add 3-5% margin.</div></details>
+      <details class="rc-faq-item"><summary>How long do transfers take?</summary><div class="rc-faq-body">Mobile money delivery (M-Pesa, MTN MoMo) and cash pickup are typically instant to same-day. Bank transfers take 1-3 business days. Speed also depends on your payment method: debit card and instant bank payments process faster than standard ACH/bank transfers.</div></details>
+      <details class="rc-faq-item"><summary>What is the difference between fees and exchange rate markup?</summary><div class="rc-faq-body">Transfer fees are explicit charges shown upfront. Exchange rate markup is a hidden cost where the provider offers a worse rate than mid-market and keeps the difference. Some providers advertise "zero fees" but compensate with larger markups. Our comparator shows the true total cost including both, so you can compare fairly.</div></details>
+      <details class="rc-faq-item"><summary>Are these providers safe and regulated?</summary><div class="rc-faq-body">Yes. All providers listed are licensed and regulated in their operating countries. Wise is authorized by the FCA (UK) and FinCEN (US). Western Union and MoneyGram are established global operators with decades of history. LemFi and Afriex are newer fintech players but are also properly licensed. Always use official apps and websites.</div></details>
+    </div>
+  </section>
+</main>
+
+<!-- SEO Content -->
+<section class="rc-seo">
+  <h2>Comparing Remittance Costs to Africa in 2026</h2>
+  <p>Africa receives over $100 billion in remittances annually, with Nigeria, Egypt, Morocco, Ghana, and Kenya among the top recipients globally. For millions of Africans in the diaspora, finding the cheapest and fastest way to send money home is a recurring challenge. Transfer costs to Sub-Saharan Africa remain among the highest in the world, averaging around 7-8% according to the World Bank, far above the Sustainable Development Goal target of 3%.</p>
+  <p>This comparator helps you cut through provider marketing and see the true cost of each transfer, including both explicit fees and hidden exchange rate markups. By comparing across Wise, WorldRemit, Remitly, Western Union, MoneyGram, LemFi, Sendwave, Afriex, and Chipper Cash, you can identify the best option for your specific corridor and amount.</p>
+  <h3>How Remittance Costs Work</h3>
+  <p>Every money transfer has two cost components: the upfront transfer fee (flat amount or percentage of send amount) and the exchange rate margin (the difference between the mid-market rate and the rate the provider offers you). Some providers, like Wise, keep margins low (0.4-0.7%) but charge explicit fees. Others, like Sendwave, advertise zero fees but bake costs into a wider exchange rate spread. The only way to compare fairly is to look at the total amount the recipient receives.</p>
+  <h3>Popular African Remittance Corridors</h3>
+  <p>The busiest corridors include US to Nigeria, UK to Kenya, UK to Ghana, US to Ethiopia, and Europe to Morocco. Each corridor has different provider availability, fee structures, and delivery options. Mobile money (M-Pesa in Kenya, MTN MoMo in Ghana and Uganda) has transformed delivery, enabling instant receipt without a bank account. Cash pickup through Western Union and MoneyGram agent networks remains important in countries with lower banking penetration.</p>
+</section>
+
 <afro-related-tools category="african" current="remittance-compare"></afro-related-tools>
 <afro-chat
   tool="remittance-compare"
-  system="You are an expert African remittance and diaspora finance advisor. Help users find the cheapest and fastest ways to send money to Africa, compare providers like Wise, Remitly, WorldRemit, MoneyGram, Western Union, Chipper Cash, and local banks. Advise on exchange rate margins, transfer limits, mobile money integration (M-Pesa, MTN MoMo, Airtel Money), and tax implications of receiving remittances in Africa."
+  system="You are an expert African remittance and diaspora finance advisor. Help users find the cheapest and fastest ways to send money to Africa, compare providers like Wise, Remitly, WorldRemit, MoneyGram, Western Union, LemFi, Sendwave, Chipper Cash, and Afriex. Advise on exchange rate margins, transfer limits, mobile money integration (M-Pesa, MTN MoMo, Airtel Money), and regulatory considerations."
 ></afro-chat>
 <afro-footer></afro-footer>
 
-    <!-- JSON-LD Schema -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-            {
-                "@type": "ListItem",
-                "position": 1,
-                "name": "Home",
-                "item": "https://afrotools.com/"
-            },
-            {
-                "@type": "ListItem",
-                "position": 2,
-                "name": "Tools",
-                "item": "https://afrotools.com/tools"
-            },
-            {
-                "@type": "ListItem",
-                "position": 3,
-                "name": "Remittance Comparator",
-                "item": "https://afrotools.com/tools/remittance-compare"
-            }
-        ]
+<!-- Scripts -->
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<script src="/assets/js/components/related-tools.min.js" defer></script>
+<script src="/assets/js/components/tool-registry.js" defer></script>
+
+<script>
+(function() {
+  'use strict';
+
+  // ═══════════════════════════════════════════════════════════════
+  // REMITTANCE PROVIDER DATABASE
+  // Fee structures based on published pricing (March 2026).
+  // Exchange rate margins are the % added on top of mid-market rate.
+  // ═══════════════════════════════════════════════════════════════
+
+  // Mid-market exchange rates per corridor (source currency -> destination currency)
+  // These approximate real mid-market rates as of early 2026.
+  const MID_MARKET = {
+    // USD corridors
+    'USD-NGN': 1580, 'USD-KES': 129,  'USD-GHS': 14.8, 'USD-ZAR': 18.2,
+    'USD-ETB': 127,  'USD-TZS': 2680, 'USD-UGX': 3750, 'USD-EGP': 50.5,
+    'USD-MAD': 9.8,  'USD-XOF': 605,  'USD-XAF': 605,  'USD-RWF': 1380,
+    'USD-ZMW': 27.5, 'USD-USD': 1,    'USD-MZN': 64,
+    // GBP corridors
+    'GBP-NGN': 2000, 'GBP-KES': 163,  'GBP-GHS': 18.7, 'GBP-ZAR': 23.0,
+    'GBP-ETB': 161,  'GBP-TZS': 3390, 'GBP-UGX': 4750, 'GBP-EGP': 64.0,
+    'GBP-MAD': 12.4, 'GBP-XOF': 766,  'GBP-XAF': 766,  'GBP-RWF': 1748,
+    'GBP-ZMW': 34.8, 'GBP-USD': 1.27, 'GBP-MZN': 81,
+    // EUR corridors
+    'EUR-NGN': 1720, 'EUR-KES': 140,  'EUR-GHS': 16.1, 'EUR-ZAR': 19.8,
+    'EUR-ETB': 138,  'EUR-TZS': 2920, 'EUR-UGX': 4090, 'EUR-EGP': 55.0,
+    'EUR-MAD': 10.7, 'EUR-XOF': 656,  'EUR-XAF': 656,  'EUR-RWF': 1504,
+    'EUR-ZMW': 30.0, 'EUR-MZN': 70,
+    // CAD corridors
+    'CAD-NGN': 1105, 'CAD-KES': 90,   'CAD-GHS': 10.4, 'CAD-ZAR': 12.7,
+    'CAD-ETB': 89,   'CAD-TZS': 1875, 'CAD-UGX': 2625, 'CAD-EGP': 35.3,
+    'CAD-MAD': 6.9,  'CAD-XOF': 423,  'CAD-XAF': 423,  'CAD-RWF': 966,
+    'CAD-ZMW': 19.2, 'CAD-MZN': 45,
+    // AED corridors
+    'AED-NGN': 430,  'AED-KES': 35.1, 'AED-GHS': 4.03, 'AED-ZAR': 4.96,
+    'AED-ETB': 34.6, 'AED-TZS': 730,  'AED-UGX': 1021, 'AED-EGP': 13.8,
+    'AED-MAD': 2.67, 'AED-XOF': 165,  'AED-XAF': 165,  'AED-RWF': 376,
+    'AED-ZMW': 7.49, 'AED-MZN': 17.4,
+  };
+
+  // Destination currency codes
+  const DEST_CURRENCY = {
+    NG:'NGN', KE:'KES', GH:'GHS', ZA:'ZAR', ET:'ETB', TZ:'TZS',
+    UG:'UGX', EG:'EGP', MA:'MAD', SN:'XOF', CM:'XAF', RW:'RWF',
+    ZM:'ZMW', ZW:'USD', MZ:'MZN', CI:'XOF'
+  };
+
+  const DEST_NAMES = {
+    NG:'Nigeria', KE:'Kenya', GH:'Ghana', ZA:'South Africa', ET:'Ethiopia',
+    TZ:'Tanzania', UG:'Uganda', EG:'Egypt', MA:'Morocco', SN:'Senegal',
+    CM:'Cameroon', RW:'Rwanda', ZM:'Zambia', ZW:'Zimbabwe', MZ:'Mozambique',
+    CI:'Ivory Coast'
+  };
+
+  const CURRENCY_SYMBOLS = {
+    USD:'$', GBP:'\u00A3', EUR:'\u20AC', CAD:'C$', AED:'AED',
+    NGN:'\u20A6', KES:'KSh', GHS:'GH\u20B5', ZAR:'R', ETB:'Br',
+    TZS:'TSh', UGX:'USh', EGP:'E\u00A3', MAD:'MAD', XOF:'CFA',
+    XAF:'CFA', RWF:'FRw', ZMW:'ZK', MZN:'MT'
+  };
+
+  // Speed categories in hours for sorting
+  const SPEED_HOURS = { 'Instant': 0, 'Minutes': 0.5, 'Same day': 12, '1-2 days': 36, '1-3 days': 48, '2-4 days': 72, '3-5 days': 96 };
+
+  // ═══════════════════════════════════════════════════════════════
+  // PROVIDER DEFINITIONS
+  // Each provider has: flat fee tiers, percentage fee, exchange rate
+  // margin (% above mid-market), speed, delivery methods, and
+  // corridor availability.
+  //
+  // Fee model: totalFee = flatFee + (sendAmount * pctFee)
+  // Provider rate = midMarketRate * (1 - margin)
+  // Recipient gets = (sendAmount - totalFee) * providerRate
+  //
+  // This correctly subtracts fees in the SEND currency before
+  // converting, unlike the previous version.
+  // ═══════════════════════════════════════════════════════════════
+
+  const PROVIDERS = {
+    wise: {
+      name: 'Wise',
+      logo: 'W',
+      color: '#9fe870',
+      // Wise charges a variable % fee (differs by corridor) + low margin
+      getFees(amount, fromCur, toCur) {
+        // Wise fee is roughly 0.4-1% of send amount depending on corridor + payment method
+        // Card adds ~1.5% extra, we model bank/ACH
+        let pct = 0.006; // 0.6% base
+        if (fromCur === 'GBP') pct = 0.004; // cheaper from UK
+        if (fromCur === 'EUR') pct = 0.005;
+        const flat = fromCur === 'USD' ? 0.49 : (fromCur === 'GBP' ? 0.31 : 0.43);
+        return { flat, pct };
+      },
+      margin: 0.005,  // 0.5% - Wise is closest to mid-market
+      speed: '1-2 days',
+      methods: ['bank', 'mobile'],
+      // Wise supports all our listed corridors
+      corridors: null, // null = all
+    },
+    worldremit: {
+      name: 'WorldRemit',
+      logo: 'WR',
+      color: '#702b8a',
+      getFees(amount, fromCur, toCur) {
+        let flat;
+        if (fromCur === 'USD') flat = amount < 300 ? 1.99 : 3.99;
+        else if (fromCur === 'GBP') flat = amount < 300 ? 1.49 : 2.99;
+        else flat = amount < 300 ? 1.99 : 3.49;
+        return { flat, pct: 0 };
+      },
+      margin: 0.02, // ~2% markup
+      speed: 'Minutes',
+      methods: ['bank', 'mobile', 'cash'],
+      corridors: null,
+    },
+    remitly: {
+      name: 'Remitly',
+      logo: 'R',
+      color: '#1e6b3a',
+      getFees(amount, fromCur, toCur) {
+        // Remitly: Economy (bank, 3-5 days) is cheaper; Express (card, instant) is more
+        // We model Economy pricing
+        let flat;
+        if (fromCur === 'USD') {
+          flat = amount < 200 ? 0.99 : (amount < 1000 ? 2.99 : 4.99);
+        } else if (fromCur === 'GBP') {
+          flat = amount < 200 ? 0.99 : (amount < 1000 ? 1.99 : 3.99);
+        } else {
+          flat = amount < 200 ? 1.49 : 3.99;
+        }
+        return { flat, pct: 0 };
+      },
+      margin: 0.018, // ~1.8% markup
+      speed: 'Minutes',
+      methods: ['bank', 'mobile', 'cash'],
+      corridors: {to: ['NG','KE','GH','ET','EG','MA','SN','UG','TZ','PH','IN','CM','CI','RW','ZM']},
+    },
+    westernunion: {
+      name: 'Western Union',
+      logo: 'WU',
+      color: '#ffdd00',
+      getFees(amount, fromCur, toCur) {
+        // WU has tiered flat fees, generally higher
+        let flat;
+        if (amount < 100) flat = 5.99;
+        else if (amount < 300) flat = 7.99;
+        else if (amount < 1000) flat = 9.99;
+        else flat = 14.99;
+        if (fromCur === 'GBP') { flat = flat * 0.85; }
+        if (fromCur === 'EUR') { flat = flat * 0.9; }
+        return { flat, pct: 0 };
+      },
+      margin: 0.04, // 3.5-4.5% markup - WU makes money on the spread
+      speed: 'Same day',
+      methods: ['bank', 'mobile', 'cash'],
+      corridors: null,
+    },
+    moneygram: {
+      name: 'MoneyGram',
+      logo: 'MG',
+      color: '#ff6600',
+      getFees(amount, fromCur, toCur) {
+        let flat;
+        if (amount < 100) flat = 4.99;
+        else if (amount < 500) flat = 7.99;
+        else flat = 11.99;
+        if (fromCur === 'GBP') flat = flat * 0.85;
+        return { flat, pct: 0 };
+      },
+      margin: 0.035, // ~3.5%
+      speed: 'Same day',
+      methods: ['bank', 'mobile', 'cash'],
+      corridors: null,
+    },
+    lemfi: {
+      name: 'LemFi',
+      logo: 'LF',
+      color: '#4f46e5',
+      getFees(amount, fromCur, toCur) {
+        // LemFi (formerly Lemonade Finance): competitive for NG, KE, GH
+        // Zero or very low fees for most corridors
+        let flat = 0;
+        if (fromCur === 'CAD') flat = 1.99;
+        return { flat, pct: 0.002 }; // 0.2% variable
+      },
+      margin: 0.008, // 0.8% - very competitive
+      speed: 'Minutes',
+      methods: ['bank', 'mobile'],
+      corridors: {from: ['US','GB','CA','EU'], to: ['NG','KE','GH','ZA','TZ','UG','RW','CM','CI','BJ']},
+    },
+    sendwave: {
+      name: 'Sendwave',
+      logo: 'SW',
+      color: '#00b4d8',
+      getFees(amount, fromCur, toCur) {
+        // Sendwave: zero explicit fees, money made on exchange rate
+        return { flat: 0, pct: 0 };
+      },
+      margin: 0.025, // ~2.5% baked into rate
+      speed: 'Instant',
+      methods: ['mobile'],
+      corridors: {from: ['US','GB'], to: ['NG','KE','GH','ET','TZ','UG','SN','CI','CM','RW','ZM','MZ']},
+    },
+    afriex: {
+      name: 'Afriex',
+      logo: 'AX',
+      color: '#059669',
+      getFees(amount, fromCur, toCur) {
+        // Afriex: zero fees for most transfers
+        return { flat: 0, pct: 0 };
+      },
+      margin: 0.012, // ~1.2%
+      speed: '1-2 days',
+      methods: ['bank', 'mobile'],
+      corridors: {from: ['US','GB','CA'], to: ['NG','KE','GH','UG','TZ','RW']},
+    },
+    chipper: {
+      name: 'Chipper Cash',
+      logo: 'CC',
+      color: '#7c3aed',
+      getFees(amount, fromCur, toCur) {
+        // Chipper: small percentage fee
+        return { flat: 0, pct: 0.01 }; // 1%
+      },
+      margin: 0.015, // ~1.5%
+      speed: 'Instant',
+      methods: ['mobile'],
+      corridors: {from: ['US','GB'], to: ['NG','KE','GH','ZA','UG','TZ','RW']},
+    },
+  };
+
+  // ═══════════════════════════════════════════════════════════════
+  // HELPERS
+  // ═══════════════════════════════════════════════════════════════
+  const $ = id => document.getElementById(id);
+  const parseAmt = str => parseFloat((str || '').replace(/[^0-9.]/g, '')) || 0;
+  const fmtNum = (n, decimals) => {
+    if (decimals === undefined) decimals = n >= 100 ? 0 : 2;
+    return n.toFixed(decimals).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  };
+  const fmtCur = (amt, cur) => (CURRENCY_SYMBOLS[cur] || cur) + ' ' + fmtNum(amt);
+
+  let currentSort = 'value';
+  let currentMethod = 'all';
+  let lastResults = [];
+
+  // ═══════════════════════════════════════════════════════════════
+  // INIT
+  // ═══════════════════════════════════════════════════════════════
+  document.addEventListener('DOMContentLoaded', () => {
+    bindEvents();
+    syncCurrencyWithFrom();
+  });
+
+  function syncCurrencyWithFrom() {
+    const map = { US:'USD', GB:'GBP', EU:'EUR', CA:'CAD', AE:'AED' };
+    const from = $('rcFrom').value;
+    const cur = map[from];
+    if (cur) $('rcCurrency').value = cur;
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // EVENTS
+  // ═══════════════════════════════════════════════════════════════
+  function bindEvents() {
+    $('rcCompareBtn').addEventListener('click', compare);
+    $('rcAmount').addEventListener('keypress', e => { if (e.key === 'Enter') compare(); });
+    $('rcFrom').addEventListener('change', () => { syncCurrencyWithFrom(); });
+
+    // Amount formatting
+    $('rcAmount').addEventListener('focus', function() { this.value = this.value.replace(/,/g, ''); this.select(); });
+    $('rcAmount').addEventListener('blur', function() { const v = parseAmt(this.value); if (v > 0) this.value = fmtNum(v, 2); });
+
+    // Sort buttons
+    $('rcSortBtns').addEventListener('click', e => {
+      const btn = e.target.closest('.rc-filter-btn');
+      if (!btn) return;
+      $('rcSortBtns').querySelectorAll('.rc-filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentSort = btn.dataset.sort;
+      renderResults();
+    });
+
+    // Method filter buttons
+    $('rcMethodBtns').addEventListener('click', e => {
+      const btn = e.target.closest('.rc-filter-btn');
+      if (!btn) return;
+      $('rcMethodBtns').querySelectorAll('.rc-filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentMethod = btn.dataset.method;
+      renderResults();
+    });
+
+    // Corridor pills
+    document.querySelectorAll('.rc-pill').forEach(pill => {
+      pill.addEventListener('click', function() {
+        const from = this.dataset.from;
+        const to = this.dataset.to;
+        const cur = this.dataset.cur;
+        if (from) $('rcFrom').value = from;
+        if (to) $('rcTo').value = to;
+        if (cur) $('rcCurrency').value = cur;
+        compare();
+      });
+    });
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // COMPARE CALCULATION
+  // ═══════════════════════════════════════════════════════════════
+  function compare() {
+    const sendAmount = parseAmt($('rcAmount').value);
+    const sendCur = $('rcCurrency').value;
+    const fromCountry = $('rcFrom').value;
+    const toCountry = $('rcTo').value;
+
+    if (sendAmount <= 0) {
+      alert('Please enter a valid amount to send.');
+      return;
     }
-    </script>
 
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-            {
-                "@type": "Question",
-                "name": "How accurate are these exchange rates?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Our rates are based on real market data and are updated regularly. However, providers may charge different rates based on the amount and current market conditions. Always verify the exact rate with your provider before confirming a transfer."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "Which provider is cheapest for my transfer?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "This depends on the amount and corridor. For small amounts, services like Remitly may be competitive. For larger amounts over $1000, Wise typically offers the best rates. Use our comparator to get a personalized recommendation."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "What's the difference between exchange rate and spread?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "The exchange rate is the official conversion between two currencies. The spread is the markup a provider adds. Wise has low spreads (0.5-1%), while traditional services have wider spreads (3-5%)."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "How long do transfers take?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Bank transfers typically take 1-3 business days, while cash pickup services can be same-day in many corridors. Digital wallets offer instant transfers in Africa."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "Is my money safe with these providers?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "All providers listed here are regulated and compliant with international money transfer regulations. Check that digital services are licensed in your country before use."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "Can I compare providers for a specific corridor?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Yes! Enter your send amount, select source and destination countries, and click 'Compare Rates' to see all providers with their exact fees and rates for that corridor."
-                }
-            }
-        ]
+    const destCur = DEST_CURRENCY[toCountry];
+    if (!destCur) {
+      alert('This destination is not supported yet.');
+      return;
     }
-    </script>
 
-    <script>
-        // Exchange rates (realistic 2025/2026 rates)
-        const exchangeRates = {
-            'US-NG': { rate: 1650, currency: 'NGN', country: 'Nigeria' },
-            'US-KE': { rate: 130, currency: 'KES', country: 'Kenya' },
-            'US-GH': { rate: 15, currency: 'GHS', country: 'Ghana' },
-            'US-ZA': { rate: 18, currency: 'ZAR', country: 'South Africa' },
-            'US-TZ': { rate: 2600, currency: 'TZS', country: 'Tanzania' },
-            'US-UG': { rate: 3700, currency: 'UGX', country: 'Uganda' },
-            'US-ET': { rate: 130, currency: 'ETB', country: 'Ethiopia' },
-            'US-EG': { rate: 50, currency: 'EGP', country: 'Egypt' },
-            'US-MA': { rate: 10, currency: 'MAD', country: 'Morocco' },
-            'US-SN': { rate: 600, currency: 'XOF', country: 'Senegal' },
+    const rateKey = sendCur + '-' + destCur;
+    const midRate = MID_MARKET[rateKey];
+    if (!midRate) {
+      alert('This currency corridor (' + sendCur + ' to ' + destCur + ') is not available yet. Try a different send currency.');
+      return;
+    }
 
-            'GB-NG': { rate: 2050, currency: 'NGN', country: 'Nigeria' },
-            'GB-KE': { rate: 161, currency: 'KES', country: 'Kenya' },
-            'GB-GH': { rate: 18.5, currency: 'GHS', country: 'Ghana' },
-            'GB-ZA': { rate: 22.4, currency: 'ZAR', country: 'South Africa' },
-            'GB-ET': { rate: 161, currency: 'ETB', country: 'Ethiopia' },
+    lastResults = [];
 
-            'EU-NG': { rate: 1760, currency: 'NGN', country: 'Nigeria' },
-            'EU-KE': { rate: 139, currency: 'KES', country: 'Kenya' },
-            'EU-UG': { rate: 3960, currency: 'UGX', country: 'Uganda' },
-            'EU-TZ': { rate: 2790, currency: 'TZS', country: 'Tanzania' },
+    for (const [key, prov] of Object.entries(PROVIDERS)) {
+      // Check corridor availability
+      if (prov.corridors) {
+        if (prov.corridors.from && !prov.corridors.from.includes(fromCountry)) continue;
+        if (prov.corridors.to && !prov.corridors.to.includes(toCountry)) continue;
+      }
 
-            'AE-NG': { rate: 449, currency: 'NGN', country: 'Nigeria' },
-            'AE-ET': { rate: 35.4, currency: 'ETB', country: 'Ethiopia' },
-            'AE-KE': { rate: 35.3, currency: 'KES', country: 'Kenya' },
+      const fees = prov.getFees(sendAmount, sendCur, destCur);
+      const totalFee = fees.flat + (sendAmount * fees.pct);
 
-            'ZA-ZA': { rate: 1, currency: 'ZAR', country: 'South Africa' }
-        };
+      // The send amount after fees (in send currency)
+      const netSend = sendAmount - totalFee;
+      if (netSend <= 0) continue; // fee exceeds send amount
 
-        // Provider data
-        const providers = {
-            'wise': {
-                name: 'Wise (TransferWise)',
-                logo: '💳',
-                speed: '1-3 days',
-                baseRating: 4.8,
-                reviews: 8500,
-                available: true
-            },
-            'remitly': {
-                name: 'Remitly',
-                logo: '📱',
-                speed: '1-5 days',
-                baseRating: 4.6,
-                reviews: 6200,
-                available: true
-            },
-            'worldremit': {
-                name: 'WorldRemit',
-                logo: '🌍',
-                speed: 'Same day',
-                baseRating: 4.5,
-                reviews: 5100,
-                available: true
-            },
-            'western-union': {
-                name: 'Western Union',
-                logo: '🏦',
-                speed: 'Same day',
-                baseRating: 4.2,
-                reviews: 12000,
-                available: true
-            },
-            'moneygram': {
-                name: 'MoneyGram',
-                logo: '💰',
-                speed: 'Same day',
-                baseRating: 4.1,
-                reviews: 8800,
-                available: true
-            },
-            'sendwave': {
-                name: 'Sendwave',
-                logo: '📲',
-                speed: 'Instant',
-                baseRating: 4.4,
-                reviews: 4300,
-                available: true
-            },
-            'chipper': {
-                name: 'Chipper Cash',
-                logo: '⚡',
-                speed: 'Instant',
-                baseRating: 4.3,
-                reviews: 3500,
-                available: true
-            },
-            'cashapp': {
-                name: 'CashApp',
-                logo: '💵',
-                speed: 'Instant',
-                baseRating: 4.7,
-                reviews: 15000,
-                available: true,
-                usOnly: true
-            }
-        };
+      // Provider's exchange rate (worse than mid-market by margin %)
+      const providerRate = midRate * (1 - prov.margin);
 
-        // Fee structures per provider
-        function calculateProviderFee(provider, baseRate, amount, corridor) {
-            let fee = 0;
-            let spread = 0;
+      // What recipient actually gets
+      const recipientGets = netSend * providerRate;
 
-            switch(provider) {
-                case 'wise':
-                    spread = 0.005; // 0.5%
-                    fee = 1.50;
-                    break;
-                case 'remitly':
-                    if (amount < 100) fee = 2.99;
-                    else if (amount < 500) fee = 3.99;
-                    else fee = 5.99;
-                    spread = 0.015; // 1.5%
-                    break;
-                case 'worldremit':
-                    fee = amount < 100 ? 1.99 : 2.99;
-                    spread = 0.02; // 2%
-                    break;
-                case 'western-union':
-                    if (amount < 100) fee = 4.99;
-                    else if (amount < 500) fee = 8.99;
-                    else fee = 14.99;
-                    spread = 0.035; // 3.5%
-                    break;
-                case 'moneygram':
-                    if (amount < 100) fee = 5.99;
-                    else fee = 9.99;
-                    spread = 0.04; // 4%
-                    break;
-                case 'sendwave':
-                    spread = 0.015; // 1.5%
-                    if (corridor.includes('US') || corridor.includes('GB')) {
-                        fee = amount * 0.005; // 0.5%
-                    }
-                    break;
-                case 'chipper':
-                    spread = 0.01; // 1%
-                    fee = amount * 0.015; // 1.5%
-                    break;
-                case 'cashapp':
-                    spread = 0.008; // 0.8%
-                    fee = 0;
-                    break;
-            }
+      // True cost = what you'd get at mid-market minus what you actually get
+      const midMarketResult = sendAmount * midRate;
+      const trueCost = midMarketResult - recipientGets;
+      const trueCostPct = (trueCost / midMarketResult) * 100;
 
-            return { fee, spread };
-        }
+      lastResults.push({
+        key,
+        name: prov.name,
+        logo: prov.logo,
+        color: prov.color,
+        fee: totalFee,
+        feePct: (totalFee / sendAmount * 100),
+        margin: prov.margin * 100,
+        providerRate,
+        recipientGets,
+        trueCost,
+        trueCostPct,
+        speed: prov.speed,
+        speedHours: SPEED_HOURS[prov.speed] || 48,
+        methods: prov.methods,
+        sendAmount,
+        sendCur,
+        destCur,
+      });
+    }
 
-        function sortResults(sortType) {
-            const tbody = document.getElementById('resultsBody');
-            const rows = Array.from(tbody.querySelectorAll('tr'));
+    // Show filters
+    $('rcFiltersArea').style.display = 'block';
 
-            rows.sort((a, b) => {
-                if (sortType === 'best-value') {
-                    const aAmount = parseFloat(a.querySelector('td:nth-child(5)').textContent.replace(/[^\d.]/g, ''));
-                    const bAmount = parseFloat(b.querySelector('td:nth-child(5)').textContent.replace(/[^\d.]/g, ''));
-                    return bAmount - aAmount;
-                } else if (sortType === 'rate') {
-                    const aRate = parseFloat(a.querySelector('td:nth-child(2)').textContent.replace(/[^\d.]/g, ''));
-                    const bRate = parseFloat(b.querySelector('td:nth-child(2)').textContent.replace(/[^\d.]/g, ''));
-                    return bRate - aRate;
-                } else if (sortType === 'fee') {
-                    const aFee = parseFloat(a.querySelector('td:nth-child(3)').textContent.replace(/[^\d.$]/g, ''));
-                    const bFee = parseFloat(b.querySelector('td:nth-child(3)').textContent.replace(/[^\d.$]/g, ''));
-                    return aFee - bFee;
-                } else if (sortType === 'speed') {
-                    const speedOrder = { 'Instant': 0, 'Same day': 1, '1-3 days': 2, '1-5 days': 3 };
-                    const aSpeed = a.querySelector('td:nth-child(6)').textContent.trim();
-                    const bSpeed = b.querySelector('td:nth-child(6)').textContent.trim();
-                    return speedOrder[aSpeed] - speedOrder[bSpeed];
-                }
-            });
+    // GA4 tracking
+    if (window.gtag) {
+      window.gtag('event', 'remittance_compare', {
+        corridor: fromCountry + '_' + toCountry,
+        amount: sendAmount,
+        currency: sendCur,
+        providers_found: lastResults.length
+      });
+    }
 
-            rows.forEach(row => tbody.appendChild(row));
-        }
+    renderResults();
+  }
 
-        function formatCurrency(amount, currency) {
-            const symbols = {
-                'USD': '$', 'GBP': '£', 'EUR': '€', 'AED': 'د.إ',
-                'NGN': '₦', 'KES': 'KSh', 'GHS': '₵', 'ZAR': 'R',
-                'TZS': 'TSh', 'UGX': 'USh', 'ETB': 'Br', 'EGP': '£',
-                'MAD': 'د.م.', 'XOF': 'Fr'
-            };
-            const symbol = symbols[currency] || currency;
-            return `${symbol}${amount.toFixed(2)}`;
-        }
+  // ═══════════════════════════════════════════════════════════════
+  // RENDER
+  // ═══════════════════════════════════════════════════════════════
+  function renderResults() {
+    let filtered = [...lastResults];
 
-        function renderStars(rating) {
-            const fullStars = Math.floor(rating);
-            const hasHalf = rating % 1 >= 0.5;
-            let html = '';
+    // Method filter
+    if (currentMethod !== 'all') {
+      filtered = filtered.filter(r => r.methods.includes(currentMethod));
+    }
 
-            for (let i = 0; i < fullStars; i++) {
-                html += '<span class="star">★</span>';
-            }
-            if (hasHalf) {
-                html += '<span class="star">½</span>';
-            }
-            for (let i = fullStars + (hasHalf ? 1 : 0); i < 5; i++) {
-                html += '<span class="star empty">★</span>';
-            }
+    // Sort
+    if (currentSort === 'value') {
+      filtered.sort((a, b) => b.recipientGets - a.recipientGets);
+    } else if (currentSort === 'fee') {
+      filtered.sort((a, b) => a.fee - b.fee);
+    } else if (currentSort === 'rate') {
+      filtered.sort((a, b) => b.providerRate - a.providerRate);
+    } else if (currentSort === 'speed') {
+      filtered.sort((a, b) => a.speedHours - b.speedHours);
+    }
 
-            return html;
-        }
+    if (filtered.length === 0) {
+      $('rcResults').classList.add('active');
+      $('rcProviderList').innerHTML = '<div style="text-align:center;padding:40px 20px;color:#6b7280;"><p style="font-size:1rem;margin-bottom:8px;">No providers found for this corridor and filter combination.</p><p style="font-size:0.85rem;">Try changing the delivery method filter or selecting a different corridor.</p></div>';
+      $('rcBars').innerHTML = '';
+      $('rcSavings').style.display = 'none';
+      $('rcCount').textContent = '';
+      return;
+    }
 
-        function calculateResults() {
-            const amount = parseFloat(document.getElementById('sendAmount').value);
-            const sendCurrency = document.getElementById('sendCurrency').value;
-            const fromCountry = document.getElementById('fromCountry').value;
-            const toCountry = document.getElementById('toCountry').value;
+    const best = filtered.reduce((a, b) => a.recipientGets > b.recipientGets ? a : b);
+    const worst = filtered.reduce((a, b) => a.recipientGets < b.recipientGets ? a : b);
 
-            if (!amount || amount <= 0) {
-                alert('Please enter a valid amount');
-                return;
-            }
+    // Title
+    const destName = DEST_NAMES[$('rcTo').value] || $('rcTo').value;
+    $('rcResultsTitle').textContent = 'Sending ' + fmtCur(filtered[0].sendAmount, filtered[0].sendCur) + ' to ' + destName;
+    $('rcCount').textContent = filtered.length + ' provider' + (filtered.length > 1 ? 's' : '') + ' available';
 
-            // Get exchange rate
-            const corridorKey = `${fromCountry}-${toCountry}`;
-            const rateData = exchangeRates[corridorKey];
+    // Provider cards
+    let html = '';
+    filtered.forEach(r => {
+      const isBest = r === best;
+      const methodTags = r.methods.map(m => {
+        const labels = { bank: 'Bank', mobile: 'Mobile Money', cash: 'Cash Pickup' };
+        return '<span class="rc-method-tag">' + (labels[m] || m) + '</span>';
+      }).join('');
 
-            if (!rateData) {
-                alert('This corridor is not yet available. Please select another route.');
-                return;
-            }
+      html += `
+        <div class="rc-provider-card${isBest ? ' best' : ''}">
+          ${isBest ? '<div class="rc-best-tag">Best Value</div>' : ''}
+          <div class="rc-provider-top">
+            <div class="rc-provider-logo" style="background:${r.color}20;color:${r.color};font-weight:800;font-size:0.75rem;">${r.logo}</div>
+            <div>
+              <div class="rc-provider-name">${r.name}</div>
+              <div class="rc-provider-speed">${r.speed} delivery</div>
+            </div>
+          </div>
+          <div class="rc-provider-grid">
+            <div class="rc-provider-stat">
+              <div class="rc-stat-label">Fee</div>
+              <div class="rc-stat-value">${r.fee < 0.01 ? 'Free' : fmtCur(r.fee, r.sendCur)}</div>
+            </div>
+            <div class="rc-provider-stat">
+              <div class="rc-stat-label">Rate</div>
+              <div class="rc-stat-value">${r.providerRate >= 100 ? fmtNum(r.providerRate, 2) : r.providerRate.toFixed(4)}</div>
+            </div>
+            <div class="rc-provider-stat">
+              <div class="rc-stat-label">True Cost</div>
+              <div class="rc-stat-value">${r.trueCostPct.toFixed(1)}%</div>
+            </div>
+            <div class="rc-provider-stat">
+              <div class="rc-stat-label">Recipient Gets</div>
+              <div class="rc-stat-value highlight">${fmtCur(r.recipientGets, r.destCur)}</div>
+            </div>
+          </div>
+          <div class="rc-provider-methods">${methodTags}</div>
+        </div>`;
+    });
+    $('rcProviderList').innerHTML = html;
 
-            const baseRate = rateData.rate;
-            const recipientCurrency = rateData.currency;
+    // Savings callout
+    if (filtered.length >= 2) {
+      const saving = best.recipientGets - worst.recipientGets;
+      const savingPct = (saving / worst.recipientGets * 100).toFixed(1);
+      $('rcSavings').innerHTML = 'Choosing <strong>' + best.name + '</strong> over <strong>' + worst.name + '</strong> saves your recipient <strong>' + fmtCur(saving, best.destCur) + '</strong> (' + savingPct + '% more) on this transfer.';
+      $('rcSavings').style.display = 'block';
+    } else {
+      $('rcSavings').style.display = 'none';
+    }
 
-            // Convert amount to recipient currency first
-            let baseAmount = amount;
-            if (sendCurrency !== 'USD' && sendCurrency !== 'GBP' && sendCurrency !== 'EUR' && sendCurrency !== 'AED' && sendCurrency !== 'ZAR') {
-                // Simplified: assume these are the major currencies
-                baseAmount = amount;
-            }
+    // Bar chart
+    const maxRecipient = Math.max(...filtered.map(r => r.recipientGets));
+    let barsHtml = '';
+    // Sort by value for chart always
+    const chartData = [...filtered].sort((a, b) => b.recipientGets - a.recipientGets);
+    chartData.forEach(r => {
+      const pct = Math.max(5, (r.recipientGets / maxRecipient) * 100);
+      const isBestChart = r.recipientGets === best.recipientGets;
+      barsHtml += `
+        <div class="rc-bar-col${isBestChart ? ' best' : ''}">
+          <div class="rc-bar-val">${fmtNum(r.recipientGets)}</div>
+          <div class="rc-bar" style="height:${pct}%;background:${isBestChart ? '#16a34a' : r.color || 'var(--color-primary)'}"></div>
+          <div class="rc-bar-lbl">${r.name}</div>
+        </div>`;
+    });
+    $('rcBars').innerHTML = barsHtml;
 
-            let results = [];
+    // Show results
+    $('rcResults').classList.add('active');
+    setTimeout(() => $('rcResults').scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+  }
 
-            // Calculate for each provider
-            for (const [providerKey, providerData] of Object.entries(providers)) {
-                if (!providerData.available) continue;
-                if (providerData.usOnly && fromCountry !== 'US' && fromCountry !== 'AE') continue;
-
-                const { fee, spread } = calculateProviderFee(providerKey, baseRate, amount, corridorKey);
-                const adjustedRate = baseRate * (1 - spread);
-                const recipientAmount = (baseAmount * adjustedRate) - fee;
-
-                results.push({
-                    provider: providerKey,
-                    name: providerData.name,
-                    logo: providerData.logo,
-                    rate: adjustedRate,
-                    fee: fee,
-                    recipientAmount: recipientAmount,
-                    speed: providerData.speed,
-                    rating: providerData.baseRating,
-                    reviews: providerData.reviews
-                });
-            }
-
-            // Sort by best value
-            results.sort((a, b) => b.recipientAmount - a.recipientAmount);
-
-            // Render table
-            const tbody = document.getElementById('resultsBody');
-            tbody.innerHTML = '';
-
-            let bestValue = results[0];
-            results.forEach((result, index) => {
-                const isBest = result === bestValue;
-                const row = document.createElement('tr');
-                if (isBest) row.classList.add('best-option');
-
-                const rateDisplay = result.rate.toFixed(4);
-                const feeDisplay = formatCurrency(result.fee, sendCurrency);
-                const recipientDisplay = formatCurrency(result.recipientAmount, recipientCurrency);
-                const sendDisplay = formatCurrency(amount, sendCurrency);
-
-                row.innerHTML = `
-                    <td><span class="provider-logo">${result.logo}</span><span class="provider-name">${result.name}${isBest ? '<span class="best-value-badge">✓ Best Value</span>' : ''}</span></td>
-                    <td>${rateDisplay}</td>
-                    <td>${feeDisplay}</td>
-                    <td>${sendDisplay}</td>
-                    <td><span class="amount-highlight">${recipientDisplay}</span></td>
-                    <td>${result.speed}</td>
-                    <td>
-                        <div class="rating">
-                            ${renderStars(result.rating)}
-                            <span class="rating-text">${result.rating} (${result.reviews})</span>
-                        </div>
-                    </td>
-                `;
-                tbody.appendChild(row);
-            });
-
-            // Render chart
-            const chartBars = document.getElementById('chartBars');
-            chartBars.innerHTML = '';
-
-            const maxAmount = Math.max(...results.map(r => r.recipientAmount));
-
-            results.forEach(result => {
-                const percentage = (result.recipientAmount / maxAmount) * 100;
-                const barWrapper = document.createElement('div');
-                barWrapper.className = 'bar-wrapper';
-                barWrapper.innerHTML = `
-                    <div class="bar" style="height: ${percentage}%;"></div>
-                    <div class="bar-value">${result.recipientAmount.toFixed(0)}</div>
-                    <div class="bar-label">${result.name.split(' ')[0]}</div>
-                `;
-                chartBars.appendChild(barWrapper);
-            });
-
-            // Show results
-            document.getElementById('resultsSection').classList.add('active');
-
-            // Scroll to results
-            setTimeout(() => {
-                document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
-            }, 100);
-        }
-
-        function selectCorridor(from, to) {
-            document.getElementById('fromCountry').value = from;
-            document.getElementById('toCountry').value = to;
-            document.getElementById('sendAmount').value = '100';
-            document.getElementById('calculateBtn').click();
-        }
-
-        // Event listeners
-        document.getElementById('calculateBtn').addEventListener('click', calculateResults);
-
-        // Sort controls
-        document.querySelectorAll('.sort-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                sortResults(this.dataset.sort);
-            });
-        });
-
-        // Corridor pills in hero
-        document.querySelectorAll('.corridor-pill').forEach(pill => {
-            pill.addEventListener('click', function() {
-                const from = this.dataset.from;
-                const to = this.dataset.to;
-                if (from && to) {
-                    selectCorridor(from, to);
-                }
-            });
-        });
-
-        // FAQ Accordion
-        document.querySelectorAll('.faq-question').forEach(question => {
-            question.addEventListener('click', function() {
-                const item = this.closest('.faq-item');
-                item.classList.toggle('open');
-            });
-        });
-
-        // Enter key on amount input
-        document.getElementById('sendAmount').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') calculateResults();
-        });
-    </script>
+})();
+</script>
 </body>
 </html>

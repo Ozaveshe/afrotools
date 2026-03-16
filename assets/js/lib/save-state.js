@@ -275,7 +275,10 @@ function escHtml(s) {
 }
 
 /* ── Exports ── */
-// Support both ES module import and global/script-tag usage
+// Note: the export statement means this file must be loaded as a module
+// (type="module") or imported via ES module import. Loading as a regular
+// <script> will cause a SyntaxError. Use window.SaveState / window.renderSavedItems
+// for non-module contexts after loading as type="module".
 if (typeof window !== 'undefined') {
   window.SaveState = SaveState;
   window.renderSavedItems = renderSavedItems;

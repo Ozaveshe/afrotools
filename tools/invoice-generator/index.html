@@ -68,7 +68,7 @@
 </section>
 
 <!-- ══════ MAIN ══════ -->
-<main class="inv-main">
+<main class="inv-main" aria-label="Invoice generator form and preview">
 <div class="container" style="max-width:1140px;margin:0 auto;padding:0 20px;">
 <div class="inv-grid">
 
@@ -82,13 +82,13 @@
       <span class="card-sub">Choose a style</span>
     </div>
     <div class="card-body">
-      <div class="tpl-bar" id="tplBar">
-        <button class="tpl-btn on" data-tpl="modern">Modern</button>
-        <button class="tpl-btn" data-tpl="classic">Classic</button>
-        <button class="tpl-btn" data-tpl="minimal">Minimal</button>
-        <button class="tpl-btn" data-tpl="corporate">Corporate</button>
-        <button class="tpl-btn" data-tpl="creative">Creative</button>
-        <button class="tpl-btn" data-tpl="dark">Dark</button>
+      <div class="tpl-bar" id="tplBar" role="radiogroup" aria-label="Invoice template style">
+        <button class="tpl-btn on" data-tpl="modern" role="radio" aria-checked="true">Modern</button>
+        <button class="tpl-btn" data-tpl="classic" role="radio" aria-checked="false">Classic</button>
+        <button class="tpl-btn" data-tpl="minimal" role="radio" aria-checked="false">Minimal</button>
+        <button class="tpl-btn" data-tpl="corporate" role="radio" aria-checked="false">Corporate</button>
+        <button class="tpl-btn" data-tpl="creative" role="radio" aria-checked="false">Creative</button>
+        <button class="tpl-btn" data-tpl="dark" role="radio" aria-checked="false">Dark</button>
       </div>
     </div>
   </div>
@@ -105,11 +105,12 @@
         <input class="f-input" id="companyName" type="text" placeholder="e.g., Tech Solutions Ltd" required>
       </div>
       <div class="field">
-        <label class="f-label">Business Logo</label>
-        <div style="display:flex;gap:12px;align-items:flex-start;">
-          <input class="f-input" id="logoInput" type="file" accept="image/*" style="flex:1;">
-          <div id="logoPreview" style="width:60px;height:60px;border:1.5px dashed #DBEAFE;border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:0.65rem;color:#93A3B8;flex-shrink:0;">Logo</div>
+        <label class="f-label" for="logoInput">Business Logo</label>
+        <div style="display:flex;gap:12px;align-items:center;">
+          <input class="f-input" id="logoInput" type="file" accept="image/*" aria-describedby="logoHelp" style="flex:1;">
+          <div id="logoPreview" style="width:56px;height:56px;border:1.5px dashed #DBEAFE;border-radius:8px;display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:0.65rem;color:#93A3B8;flex-shrink:0;" role="img" aria-label="Logo preview">Logo</div>
         </div>
+        <span class="f-note" id="logoHelp">PNG, JPG or SVG. Max 120x60px on invoice.</span>
       </div>
       <div class="field">
         <label class="f-label" for="businessAddress">Address</label>
@@ -159,9 +160,9 @@
         <label class="f-label" for="clientEmail">Client Email</label>
         <input class="f-input" id="clientEmail" type="email" placeholder="client@company.com">
       </div>
-      <div style="display:flex;gap:6px;margin-top:4px;">
-        <button class="btn" id="btnSaveClient" type="button" style="font-size:0.7rem;padding:6px 12px;">+ Save Client</button>
-        <button class="btn" id="btnClearClient" type="button" style="font-size:0.7rem;padding:6px 12px;">Clear</button>
+      <div style="display:flex;gap:8px;margin-top:8px;">
+        <button class="btn" id="btnSaveClient" type="button" style="font-size:0.72rem;padding:8px 14px;" aria-label="Save client to database">+ Save Client</button>
+        <button class="btn" id="btnClearClient" type="button" style="font-size:0.72rem;padding:8px 14px;" aria-label="Clear client fields">Clear</button>
       </div>
     </div>
   </div>
@@ -253,31 +254,31 @@
       <span class="card-sub" id="itemCountLabel">1 item</span>
     </div>
     <div class="card-body">
-      <div style="overflow-x:auto;">
-        <table class="items-table" id="lineItemsTable">
+      <div class="items-table-wrap" style="overflow-x:auto;">
+        <table class="items-table" id="lineItemsTable" role="table" aria-label="Invoice line items">
           <thead>
             <tr>
-              <th style="width:38%">Description</th>
-              <th style="width:12%">Qty</th>
-              <th style="width:16%">Unit Price</th>
-              <th style="width:10%">Tax %</th>
-              <th style="width:16%">Total</th>
-              <th style="width:8%"></th>
+              <th style="width:38%" scope="col">Description</th>
+              <th style="width:12%" scope="col">Qty</th>
+              <th style="width:16%" scope="col">Unit Price</th>
+              <th style="width:10%" scope="col">Tax %</th>
+              <th style="width:16%" scope="col">Total</th>
+              <th style="width:8%" scope="col"><span class="sr-only">Actions</span></th>
             </tr>
           </thead>
           <tbody id="lineItemsBody">
             <tr class="line-item">
-              <td><input type="text" class="li-desc" placeholder="Service or product"></td>
-              <td><input type="number" class="li-qty" value="1" min="0" step="0.01"></td>
-              <td><input type="number" class="li-price" value="0" min="0" step="0.01"></td>
-              <td><input type="number" class="li-tax" value="0" min="0" max="100" step="0.01"></td>
-              <td style="text-align:right;font-weight:600;" class="li-total">0.00</td>
-              <td><button type="button" class="btn-remove" onclick="removeLineItem(this)">X</button></td>
+              <td><input type="text" class="li-desc" placeholder="Service or product" aria-label="Item description"></td>
+              <td><input type="number" class="li-qty" value="1" min="0" step="0.01" aria-label="Quantity"></td>
+              <td><input type="number" class="li-price" value="0" min="0" step="0.01" aria-label="Unit price"></td>
+              <td><input type="number" class="li-tax" value="0" min="0" max="100" step="0.01" aria-label="Tax percent"></td>
+              <td style="text-align:right;font-weight:600;" class="li-total" aria-label="Line total">0.00</td>
+              <td><button type="button" class="btn-remove js-remove-item" aria-label="Remove line item">&times;</button></td>
             </tr>
           </tbody>
         </table>
       </div>
-      <button type="button" class="btn-add" id="btnAddItem">+ Add Line Item</button>
+      <button type="button" class="btn-add" id="btnAddItem" aria-label="Add a new line item">+ Add Line Item</button>
     </div>
   </div>
 
@@ -290,8 +291,10 @@
       <div class="totals">
         <div class="totals-row"><span>Subtotal</span><span id="sumSubtotal">0.00</span></div>
         <div class="totals-row">
-          <span>Discount
-            <input type="number" id="discountPercent" value="0" min="0" max="100" step="0.01" style="width:50px;padding:3px 6px;border:1px solid #DBEAFE;border-radius:4px;font-size:0.78rem;margin-left:4px;">%
+          <span class="discount-inline">
+            <label for="discountPercent" class="sr-only">Discount percentage</label>
+            Discount
+            <input type="number" id="discountPercent" value="0" min="0" max="100" step="0.01" aria-label="Discount percentage">%
           </span>
           <span id="sumDiscount">0.00</span>
         </div>
@@ -299,21 +302,21 @@
         <div class="totals-row total"><span>Total</span><span id="sumTotal">0.00</span></div>
       </div>
 
-      <div class="field" style="margin-top:14px;">
+      <div class="field" style="margin-top:18px;">
         <label class="f-label" for="notes">Notes / Payment Instructions</label>
-        <textarea class="f-input" id="notes" placeholder="Thank you for your business! Payment should be made to..."></textarea>
+        <textarea class="f-input" id="notes" placeholder="Thank you for your business! Payment should be made to..." rows="3"></textarea>
       </div>
 
-      <div class="field" style="display:flex;align-items:center;gap:8px;">
-        <input type="checkbox" id="markPaid" style="width:auto;">
-        <label for="markPaid" style="font-size:0.82rem;font-weight:600;color:#2d4a38;cursor:pointer;">Mark invoice as PAID</label>
+      <div class="field-checkbox">
+        <input type="checkbox" id="markPaid">
+        <label for="markPaid">Mark invoice as PAID</label>
       </div>
 
-      <div class="btn-row">
-        <button class="btn btn-primary" id="btnPDF" type="button">Download PDF</button>
-        <button class="btn" id="btnShare" type="button">Share Link</button>
-        <button class="btn" id="btnSaveTemplate" type="button">Save Template</button>
-        <button class="btn" id="btnNewInvoice" type="button">New Invoice</button>
+      <div class="btn-row" role="group" aria-label="Invoice actions">
+        <button class="btn btn-primary" id="btnPDF" type="button" aria-label="Download invoice as PDF">Download PDF</button>
+        <button class="btn" id="btnShare" type="button" aria-label="Share invoice link">Share Link</button>
+        <button class="btn" id="btnSaveTemplate" type="button" aria-label="Save current invoice as template">Save Template</button>
+        <button class="btn" id="btnNewInvoice" type="button" aria-label="Start a new blank invoice">New Invoice</button>
       </div>
     </div>
   </div>
@@ -339,7 +342,7 @@
   <div class="card">
     <div class="card-head">
       <span class="card-title">Live Preview</span>
-      <span class="card-sub" id="previewStatus">Draft</span>
+      <span class="card-sub" id="previewStatus" aria-live="polite">Draft</span>
     </div>
     <div class="card-body" style="padding:0;">
 
@@ -348,7 +351,7 @@
         This invoice is <strong>overdue</strong>. Due date has passed.
       </div>
 
-      <div class="invoice-preview" id="invoicePreview" data-tpl="modern">
+      <div class="invoice-preview" id="invoicePreview" data-tpl="modern" role="region" aria-label="Invoice preview">
 
         <!-- PAID Watermark -->
         <div class="inv-paid-stamp" id="paidStamp" style="display:none;">PAID</div>
@@ -643,23 +646,31 @@ function addLineItem() {
   const tr = document.createElement('tr');
   tr.className = 'line-item';
   tr.innerHTML = `
-    <td><input type="text" class="li-desc" placeholder="Service or product"></td>
-    <td><input type="number" class="li-qty" value="1" min="0" step="0.01"></td>
-    <td><input type="number" class="li-price" value="0" min="0" step="0.01"></td>
-    <td><input type="number" class="li-tax" value="0" min="0" max="100" step="0.01"></td>
-    <td style="text-align:right;font-weight:600;" class="li-total">0.00</td>
-    <td><button type="button" class="btn-remove" onclick="removeLineItem(this)">X</button></td>
+    <td><input type="text" class="li-desc" placeholder="Service or product" aria-label="Item description"></td>
+    <td><input type="number" class="li-qty" value="1" min="0" step="0.01" aria-label="Quantity"></td>
+    <td><input type="number" class="li-price" value="0" min="0" step="0.01" aria-label="Unit price"></td>
+    <td><input type="number" class="li-tax" value="0" min="0" max="100" step="0.01" aria-label="Tax percent"></td>
+    <td style="text-align:right;font-weight:600;" class="li-total" aria-label="Line total">0.00</td>
+    <td><button type="button" class="btn-remove js-remove-item" aria-label="Remove line item">&times;</button></td>
   `;
   tbody.appendChild(tr);
   attachLineListeners(tr);
+  // Focus the new description field
+  const descInput = tr.querySelector('.li-desc');
+  if (descInput) descInput.focus();
   updatePreview();
 }
-window.removeLineItem = function(btn) {
+
+// Event delegation for remove buttons on the line items table
+$('lineItemsTable').addEventListener('click', function(e) {
+  const btn = e.target.closest('.js-remove-item');
+  if (!btn) return;
   const tbody = $('lineItemsBody');
   if (tbody.children.length <= 1) { toast('Need at least one line item', 'error'); return; }
   btn.closest('tr').remove();
   updatePreview();
-};
+});
+
 $('btnAddItem').addEventListener('click', addLineItem);
 
 function attachLineListeners(row) {
@@ -670,8 +681,9 @@ function attachLineListeners(row) {
 $('tplBar').addEventListener('click', e => {
   const btn = e.target.closest('.tpl-btn');
   if (!btn) return;
-  qsa('.tpl-btn').forEach(b => b.classList.remove('on'));
+  qsa('.tpl-btn').forEach(b => { b.classList.remove('on'); b.setAttribute('aria-checked', 'false'); });
   btn.classList.add('on');
+  btn.setAttribute('aria-checked', 'true');
   $('invoicePreview').dataset.tpl = btn.dataset.tpl;
   applyTemplate(btn.dataset.tpl);
 });
@@ -846,8 +858,45 @@ qsa('input, select, textarea').forEach(el => {
 });
 qsa('.line-item').forEach(attachLineListeners);
 
+/* ── FORM VALIDATION ── */
+function validateForm() {
+  const errors = [];
+  if (!$('companyName').value.trim()) errors.push('Company name is required.');
+  if (!$('clientName').value.trim()) errors.push('Client name is required.');
+  if (!$('invoiceNumber').value.trim()) errors.push('Invoice number is required.');
+  if (!$('invoiceDate').value) errors.push('Invoice date is required.');
+  if (!$('dueDate').value) errors.push('Due date is required.');
+
+  // Check at least one item has a description
+  const hasItem = Array.from(qsa('.line-item')).some(r => r.querySelector('.li-desc').value.trim());
+  if (!hasItem) errors.push('Add at least one line item with a description.');
+
+  // Highlight first invalid required field
+  const requiredFields = ['companyName','clientName','invoiceNumber','invoiceDate','dueDate'];
+  let firstInvalid = null;
+  requiredFields.forEach(id => {
+    const el = $(id);
+    const field = el.closest('.field');
+    if (!el.value.trim()) {
+      if (field) field.classList.add('has-error');
+      if (!firstInvalid) firstInvalid = el;
+    } else {
+      if (field) field.classList.remove('has-error');
+    }
+  });
+
+  if (errors.length > 0) {
+    toast(errors[0], 'error');
+    if (firstInvalid) firstInvalid.focus();
+    return false;
+  }
+  return true;
+}
+
 /* ── PDF DOWNLOAD ── */
 $('btnPDF').addEventListener('click', () => {
+  if (!validateForm()) return;
+
   const cur = $('currency').value;
   const sym = (CURRENCIES[cur] || {}).s || cur;
 
@@ -1021,7 +1070,7 @@ function restoreState(s) {
           <td><input type="number" class="li-price" value="${it.p||0}" min="0" step="0.01"></td>
           <td><input type="number" class="li-tax" value="${it.t||0}" min="0" max="100" step="0.01"></td>
           <td style="text-align:right;font-weight:600;" class="li-total">0.00</td>
-          <td><button type="button" class="btn-remove" onclick="removeLineItem(this)">X</button></td>
+          <td><button type="button" class="btn-remove js-remove-item" aria-label="Remove line item">&times;</button></td>
         `;
         tbody.appendChild(tr);
         attachLineListeners(tr);
@@ -1118,7 +1167,7 @@ $('btnNewInvoice').addEventListener('click', () => {
     <td><input type="number" class="li-price" value="0" min="0" step="0.01"></td>
     <td><input type="number" class="li-tax" value="0" min="0" max="100" step="0.01"></td>
     <td style="text-align:right;font-weight:600;" class="li-total">0.00</td>
-    <td><button type="button" class="btn-remove" onclick="removeLineItem(this)">X</button></td>
+    <td><button type="button" class="btn-remove js-remove-item" aria-label="Remove line item">&times;</button></td>
   </tr>`;
   attachLineListeners(tbody.querySelector('.line-item'));
 

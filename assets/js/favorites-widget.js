@@ -28,7 +28,7 @@
       btn.style.borderColor = saved ? 'var(--color-primary,#007AFF)' : '#e2e8f0';
     }
 
-    btn.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:9990;border-radius:100px;padding:10px 18px;font-family:"DM Sans",system-ui,sans-serif;font-size:0.82rem;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.12);transition:all 0.18s;display:flex;align-items:center;gap:6px;border:1.5px solid #e2e8f0;';
+    btn.style.cssText = 'position:fixed;bottom:24px;right:92px;z-index:9990;border-radius:100px;padding:10px 18px;font-family:"DM Sans",system-ui,sans-serif;font-size:0.82rem;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.12);transition:all 0.18s;display:flex;align-items:center;gap:6px;border:1.5px solid #e2e8f0;';
     updateBtn(isFav);
 
     btn.addEventListener('click', async function() {

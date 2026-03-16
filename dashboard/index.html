@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
@@ -61,12 +61,10 @@
             color: #64748b;
             margin-bottom: 2rem;
         }
-
         .breadcrumb a {
             color: #007AFF;
             text-decoration: none;
         }
-
         .breadcrumb a:hover {
             text-decoration: underline;
         }
@@ -76,549 +74,993 @@
             max-width: 480px;
             margin: 2rem auto;
             background: white;
-            border-radius: 0.875rem;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border-radius: 14px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
             padding: 2rem;
         }
 
-        .auth-header {
-            text-align: center;
-            margin-bottom: 2rem;
+        /* Dashboard */
+        .dashboard { display: none; }
+        .dashboard.active { display: block; }
+
+        /* ===================== PROFILE HEADER ===================== */
+        .profile-header {
+            background: #fff;
+            border: 1.5px solid #E5E7EB;
+            border-radius: 14px;
+            padding: 28px 32px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            position: relative;
+            transition: box-shadow 250ms ease;
+        }
+        .profile-header:hover {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
         }
 
-        .auth-header h1 {
-            font-size: 1.875rem;
+        .avatar-wrap {
+            position: relative;
+            flex-shrink: 0;
+            cursor: default;
+        }
+        .avatar-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #E5E7EB;
+            background: #F1F5F9;
+            display: block;
+            transition: border-color 200ms ease;
+        }
+        .avatar-initial-lg {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
             font-weight: 700;
-            margin-bottom: 0.5rem;
+            color: #fff;
+            border: 3px solid #E5E7EB;
+            flex-shrink: 0;
+            user-select: none;
+        }
+
+        .profile-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .profile-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #0A1628;
+            line-height: 1.2;
+            margin: 0;
+        }
+        .profile-jobtitle {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-top: 2px;
+        }
+        .profile-meta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 10px;
+            align-items: center;
+        }
+        .profile-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+        .profile-meta-item svg {
+            width: 14px;
+            height: 14px;
+            color: #94a3b8;
+            flex-shrink: 0;
+        }
+        .plan-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 10px;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+        .plan-badge.free {
+            background: #F1F5F9;
+            color: #64748b;
+        }
+        .plan-badge.pro {
+            background: linear-gradient(135deg, #F5A623, #FF6B35);
+            color: #fff;
+        }
+
+        /* Completeness ring */
+        .completeness-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-shrink: 0;
+            gap: 4px;
+        }
+        .completeness-ring {
+            width: 56px;
+            height: 56px;
+            position: relative;
+        }
+        .completeness-ring svg {
+            width: 56px;
+            height: 56px;
+            transform: rotate(-90deg);
+        }
+        .completeness-ring .ring-bg {
+            fill: none;
+            stroke: #E5E7EB;
+            stroke-width: 5;
+        }
+        .completeness-ring .ring-fg {
+            fill: none;
+            stroke-width: 5;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 600ms cubic-bezier(0.22,0.61,0.36,1), stroke 300ms ease;
+        }
+        .completeness-pct {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            font-size: 0.75rem;
+            font-weight: 700;
             color: #1e293b;
         }
-
-        .auth-header p {
-            color: #64748b;
-            font-size: 0.95rem;
+        .completeness-label {
+            font-size: 0.65rem;
+            color: #94a3b8;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
         }
 
-        /* Tabs */
-        .auth-tabs {
+        .profile-actions {
             display: flex;
-            gap: 0.5rem;
-            margin-bottom: 2rem;
-            border-bottom: 1px solid #e2e8f0;
+            gap: 8px;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        .btn-edit-profile {
+            padding: 8px 18px;
+            background: #007AFF;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 200ms ease, transform 100ms ease;
+        }
+        .btn-edit-profile:hover {
+            background: #0063D1;
+        }
+        .btn-edit-profile:active {
+            transform: scale(0.97);
+        }
+        .btn-logout {
+            padding: 8px 14px;
+            background: transparent;
+            color: #64748b;
+            border: 1.5px solid #E5E7EB;
+            border-radius: 10px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 200ms ease;
+        }
+        .btn-logout:hover {
+            border-color: #dc2626;
+            color: #dc2626;
+            background: rgba(220,38,38,0.04);
         }
 
-        .auth-tab-btn {
-            flex: 1;
-            padding: 1rem;
+        /* ===================== PROFILE EDITOR ===================== */
+        .profile-editor {
+            background: #fff;
+            border: 1.5px solid #E5E7EB;
+            border-radius: 14px;
+            margin-bottom: 24px;
+            overflow: hidden;
+            max-height: 0;
+            opacity: 0;
+            transition: max-height 400ms cubic-bezier(0.22,0.61,0.36,1), opacity 300ms ease, margin 300ms ease;
+        }
+        .profile-editor.open {
+            max-height: 2000px;
+            opacity: 1;
+        }
+        .editor-tabs {
+            display: flex;
+            border-bottom: 1.5px solid #E5E7EB;
+            background: #FAFBFC;
+            padding: 0 8px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .editor-tab {
+            padding: 14px 20px;
             background: none;
             border: none;
             font-family: 'DM Sans', sans-serif;
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             font-weight: 500;
             color: #64748b;
             cursor: pointer;
             position: relative;
-            transition: color 0.2s;
-            border-bottom: 2px solid transparent;
-            margin-bottom: -1px;
+            white-space: nowrap;
+            transition: color 200ms ease;
         }
-
-        .auth-tab-btn:hover {
-            color: #475569;
-        }
-
-        .auth-tab-btn.active {
+        .editor-tab:hover {
             color: #1e293b;
-            border-bottom-color: #1e293b;
         }
-
-        .auth-content {
+        .editor-tab.active {
+            color: #007AFF;
+            font-weight: 600;
+        }
+        .editor-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1.5px;
+            left: 16px;
+            right: 16px;
+            height: 2px;
+            background: #007AFF;
+            border-radius: 2px 2px 0 0;
+        }
+        .editor-panel {
             display: none;
+            padding: 28px 32px;
+            animation: fadeInPanel 250ms ease;
         }
-
-        .auth-content.active {
+        .editor-panel.active {
             display: block;
         }
-
-        /* Form */
-        .form-group {
-            margin-bottom: 1.5rem;
+        @keyframes fadeInPanel {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
+        /* Form styles */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
         .form-group label {
             display: block;
-            font-size: 0.9rem;
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-            color: #1e293b;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #374151;
         }
-
         .form-group input,
-        .form-group select {
+        .form-group select,
+        .form-group textarea {
             width: 100%;
-            padding: 0.75rem;
+            padding: 12px 14px;
             font-family: 'DM Sans', sans-serif;
-            font-size: 0.95rem;
-            border: 1px solid #e2e8f0;
-            border-radius: 0.5rem;
-            background: white;
+            font-size: 0.9rem;
+            border: 1.5px solid #E5E7EB;
+            border-radius: 10px;
+            background: #fff;
             color: #1e293b;
-            transition: border-color 0.2s;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus {
+            transition: border-color 200ms ease, box-shadow 200ms ease;
             outline: none;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
             border-color: #007AFF;
-            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.12);
+            box-shadow: 0 0 0 3px rgba(0,122,255,0.1);
         }
-
-        .form-error {
-            display: none;
-            color: #dc2626;
-            font-size: 0.85rem;
-            margin-top: 0.25rem;
-        }
-
-        .form-error.show {
-            display: block;
-        }
-
-        .btn {
-            padding: 0.75rem 1.5rem;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 0.95rem;
-            font-weight: 500;
-            border: none;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .btn-primary {
-            width: 100%;
-            background-color: #007AFF;
-            color: white;
-            margin-top: 1rem;
-        }
-
-        .btn-primary:hover {
-            background-color: #0063D1;
-        }
-
-        .btn-primary:disabled {
-            background-color: #cbd5e1;
+        .form-group input:read-only {
+            background: #F9FAFB;
+            color: #94a3b8;
             cursor: not-allowed;
         }
-
-        .btn-secondary {
-            background-color: #e2e8f0;
-            color: #1e293b;
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #CBD5E1;
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+            line-height: 1.5;
+        }
+        .form-hint {
+            font-size: 0.72rem;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+        .char-counter {
+            font-size: 0.72rem;
+            color: #94a3b8;
+            text-align: right;
+            margin-top: 4px;
+        }
+        .char-counter.over {
+            color: #dc2626;
         }
 
-        .btn-secondary:hover {
-            background-color: #cbd5e1;
+        /* Interest chips */
+        .interest-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
         }
-
-        .btn-danger {
-            background-color: #dc2626;
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background-color: #b91c1c;
-        }
-
-        .btn-text {
-            background: none;
-            color: #007AFF;
-            padding: 0;
-            margin: 0;
+        .interest-chip {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 14px;
+            border: 1.5px solid #E5E7EB;
+            border-radius: 100px;
+            background: #fff;
+            cursor: pointer;
+            transition: all 200ms ease;
+            user-select: none;
+            font-size: 0.82rem;
             font-weight: 500;
+            color: #374151;
+        }
+        .interest-chip:hover {
+            border-color: #94a3b8;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .interest-chip.selected {
+            border-color: #007AFF;
+            background: rgba(0,122,255,0.06);
+            color: #007AFF;
+            font-weight: 600;
+        }
+        .interest-chip .chip-check {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 1.5px solid #D1D5DB;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 200ms ease;
+        }
+        .interest-chip.selected .chip-check {
+            background: #007AFF;
+            border-color: #007AFF;
+        }
+        .interest-chip.selected .chip-check svg {
+            opacity: 1;
+        }
+        .interest-chip .chip-check svg {
+            width: 10px;
+            height: 10px;
+            color: #fff;
+            opacity: 0;
+            transition: opacity 200ms ease;
+        }
+        .chip-emoji {
+            font-size: 1.1rem;
+            line-height: 1;
         }
 
-        .btn-text:hover {
+        /* Editor actions bar */
+        .editor-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            padding: 20px 32px;
+            border-top: 1.5px solid #E5E7EB;
+            background: #FAFBFC;
+        }
+        .btn-cancel {
+            padding: 10px 20px;
+            background: transparent;
+            color: #64748b;
+            border: 1.5px solid #E5E7EB;
+            border-radius: 10px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 200ms ease;
+        }
+        .btn-cancel:hover {
+            border-color: #94a3b8;
+            color: #374151;
+        }
+        .btn-save {
+            padding: 10px 24px;
+            background: #007AFF;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 200ms ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-save:hover {
+            background: #0063D1;
+        }
+        .btn-save:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+        .btn-save .spinner {
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 600ms linear infinite;
+            display: none;
+        }
+        .btn-save.saving .spinner {
+            display: block;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ===================== TOAST ===================== */
+        .toast-container {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 500;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .toast {
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #fff;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            transform: translateX(120%);
+            transition: transform 300ms cubic-bezier(0.22,0.61,0.36,1), opacity 200ms ease;
+            opacity: 0;
+            max-width: 360px;
+        }
+        .toast.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        .toast.success {
+            background: #059669;
+        }
+        .toast.error {
+            background: #dc2626;
+        }
+        .toast.info {
+            background: #007AFF;
+        }
+
+        /* ===================== SECTION STYLES ===================== */
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 14px;
+            margin-top: 0;
+        }
+        .section-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+        .section-link {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #007AFF;
+            text-decoration: none;
+        }
+        .section-link:hover {
             text-decoration: underline;
         }
 
-        /* Dashboard */
-        .dashboard {
-            display: none;
-        }
-
-        .dashboard.active {
-            display: block;
-        }
-
-        /* Dashboard Header */
-        .dashboard-header {
-            background: white;
-            padding: 2rem;
-            border-radius: 0.875rem;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            margin-bottom: 2rem;
-            border-left: 4px solid #007AFF;
-        }
-
-        .dashboard-header h1 {
-            font-size: 1.875rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .profile-summary {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-top: 1.5rem;
-            font-size: 0.9rem;
-        }
-
-        .profile-item {
-            color: #64748b;
-        }
-
-        .profile-item strong {
-            color: #1e293b;
-            display: block;
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .btn-sm {
-            padding: 0.5rem 1rem;
-            font-size: 0.85rem;
-        }
-
-        /* Card Grid */
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
+        /* Card base */
         .card {
-            background: white;
-            border-radius: 0.875rem;
-            padding: 1.5rem;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            transition: box-shadow 0.2s, border-color 0.2s;
-            border: 1.5px solid transparent;
+            background: #fff;
+            border: 1.5px solid #E5E7EB;
+            border-radius: 14px;
+            padding: 20px;
+            transition: border-color 200ms ease, box-shadow 200ms ease;
+        }
+        .card:hover {
+            border-color: #007AFF;
+            box-shadow: 0 4px 16px rgba(0,122,255,0.06);
         }
 
-        .card:hover {
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        /* Quick Calculate grid */
+        .qc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 10px;
+            margin-bottom: 28px;
+        }
+        .qc-card {
+            background: #fff;
+            border: 1.5px solid #E5E7EB;
+            border-radius: 14px;
+            padding: 16px;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: border-color 180ms ease;
+        }
+        .qc-card:hover {
             border-color: #007AFF;
         }
+        .qc-flag { font-size: 1.5rem; }
+        .qc-label { font-size: 0.85rem; font-weight: 600; }
 
-        .card-header {
+        /* Market rates */
+        .market-card {
+            background: #fff;
+            border: 1.5px solid #E5E7EB;
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 28px;
+        }
+        .market-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 12px;
+        }
+        .rate-item {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1rem;
+            align-items: center;
+            padding: 10px 14px;
+            background: #F9FAFB;
+            border-radius: 10px;
+        }
+        .rate-pair { font-weight: 600; font-size: 0.85rem; }
+        .rate-value { font-weight: 700; color: #007AFF; font-size: 0.9rem; }
+
+        /* What's New */
+        .whatsnew-card {
+            background: #fff;
+            border: 1.5px solid #E5E7EB;
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 28px;
+        }
+        .whatsnew-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            gap: 10px;
+        }
+        .whatsnew-list li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.88rem;
         }
 
-        .card-title {
-            font-size: 1.125rem;
-            font-weight: 600;
-            color: #1e293b;
+        /* Pro upsell */
+        .pro-upsell {
+            background: linear-gradient(135deg, #0a1929, #0d2b5e);
+            border-radius: 14px;
+            padding: 24px;
+            margin-bottom: 28px;
+            color: #fff;
         }
-
-        .card-subtitle {
-            font-size: 0.85rem;
-            color: #64748b;
-            margin-top: 0.25rem;
-        }
-
-        .section-title {
-            font-size: 1.25rem;
+        .pro-upsell h3 {
+            font-size: 1.1rem;
             font-weight: 700;
-            color: #1e293b;
-            margin-bottom: 1.5rem;
-            margin-top: 2rem;
+            margin-bottom: 8px;
+        }
+        .pro-upsell p {
+            font-size: 0.88rem;
+            opacity: 0.8;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+        .pro-upsell a {
+            display: inline-block;
+            background: #007AFF;
+            color: #fff;
+            padding: 10px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.88rem;
+            text-decoration: none;
+            transition: background 200ms ease;
+        }
+        .pro-upsell a:hover {
+            background: #0063D1;
         }
 
-        .section-title:first-child {
-            margin-top: 0;
+        /* Quick Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+        .stat-card {
+            background: #fff;
+            border: 1.5px solid #E5E7EB;
+            border-radius: 14px;
+            padding: 18px 20px;
+            text-align: center;
+        }
+        .stat-num {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #007AFF;
+            line-height: 1;
+        }
+        .stat-num.gold {
+            color: #F5A623;
+        }
+        .stat-label {
+            font-size: 0.7rem;
+            color: #6B7280;
+            margin-top: 4px;
+            font-weight: 600;
         }
 
-        /* Quick Access */
+        /* Favorites grid */
+        .favorites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 10px;
+            margin-bottom: 28px;
+        }
+
+        /* Quick access grid */
         .quick-access-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
+            gap: 10px;
+            margin-bottom: 28px;
         }
-
         .quick-access-card {
-            background: white;
-            border-radius: 0.875rem;
-            padding: 1rem;
+            background: #fff;
+            border: 1.5px solid #E5E7EB;
+            border-radius: 14px;
+            padding: 14px;
             text-align: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: 1px solid #e2e8f0;
             text-decoration: none;
             color: inherit;
+            transition: all 200ms ease;
         }
-
         .quick-access-card:hover {
-            border-color: #1e293b;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-color: #007AFF;
+            box-shadow: 0 4px 12px rgba(0,122,255,0.06);
         }
-
-        .tool-icon {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .quick-access-name {
-            font-size: 0.85rem;
-            font-weight: 500;
-            margin-bottom: 0.25rem;
-        }
-
-        .quick-access-date {
-            font-size: 0.75rem;
-            color: #94a3b8;
-        }
+        .tool-icon { font-size: 2rem; margin-bottom: 6px; }
+        .quick-access-name { font-size: 0.82rem; font-weight: 600; margin-bottom: 2px; }
+        .quick-access-date { font-size: 0.72rem; color: #94a3b8; }
 
         /* Saved Calculations */
         .saved-items {
             display: grid;
-            gap: 1rem;
+            gap: 10px;
+            margin-bottom: 28px;
         }
-
         .saved-item {
-            background: white;
-            border-radius: 0.875rem;
-            padding: 1.5rem;
-            border: 1px solid #e2e8f0;
+            background: #fff;
+            border: 1.5px solid #E5E7EB;
+            border-radius: 14px;
+            padding: 18px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-
         .saved-content h3 {
-            font-size: 1rem;
-            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+            margin-bottom: 4px;
             color: #1e293b;
         }
-
         .saved-value {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 700;
             color: #007AFF;
-            margin-bottom: 0.25rem;
+            margin-bottom: 2px;
         }
-
         .saved-meta {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: #94a3b8;
         }
-
         .saved-actions {
             display: flex;
-            gap: 0.5rem;
+            gap: 6px;
         }
 
-        .btn-icon {
-            padding: 0.5rem 0.75rem;
-            font-size: 0.8rem;
-            width: auto;
-        }
-
-        /* Favorites */
-        .favorites-grid {
+        /* Recommendation cards */
+        .rec-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 1rem;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 12px;
         }
-
-        .favorite-card {
-            background: white;
-            border-radius: 0.875rem;
-            padding: 1.5rem;
-            text-align: center;
+        .rec-card {
+            background: #fff;
+            border: 1.5px solid #E5E7EB;
+            border-radius: 14px;
+            padding: 18px;
             text-decoration: none;
             color: inherit;
-            border: 2px solid #e2e8f0;
-            transition: all 0.2s;
+            transition: all 200ms ease;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
         }
-
-        .favorite-card:hover {
+        .rec-card:hover {
             border-color: #007AFF;
-            box-shadow: 0 4px 6px rgba(0, 122, 255, 0.1);
+            box-shadow: 0 4px 16px rgba(0,122,255,0.06);
+            transform: translateY(-2px);
         }
-
-        .favorite-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
+        .rec-icon {
+            font-size: 1.6rem;
+            flex-shrink: 0;
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #EFF6FF;
+            border-radius: 12px;
         }
-
-        .favorite-name {
+        .rec-name {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 2px;
+        }
+        .rec-desc {
+            font-size: 0.78rem;
+            color: #6B7280;
+            line-height: 1.4;
+        }
+        .rec-reason {
+            font-size: 0.68rem;
+            color: #007AFF;
             font-weight: 600;
-            font-size: 0.95rem;
+            margin-top: 4px;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 8px 16px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 200ms ease;
+        }
+        .btn-primary {
+            background: #007AFF;
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background: #0063D1;
+        }
+        .btn-secondary {
+            background: #F1F5F9;
+            color: #374151;
+            border: 1.5px solid #E5E7EB;
+        }
+        .btn-secondary:hover {
+            background: #E5E7EB;
         }
 
         .empty-state {
             text-align: center;
-            padding: 3rem 1rem;
-            color: #94a3b8;
+            padding: 24px 16px;
+            color: #9CA3AF;
+            font-size: 0.85rem;
         }
 
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal.active {
-            display: flex;
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-        }
-
-        .modal-content {
-            background: white;
-            border-radius: 0.875rem;
-            padding: 2rem;
-            max-width: 480px;
-            width: 90%;
-            box-shadow: 0 20px 25px rgba(0, 0, 0, 0.15);
-        }
-
-        .modal-header {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-        }
-
-        .modal-body {
-            color: #64748b;
-            margin-bottom: 1.5rem;
-        }
-
-        .modal-actions {
-            display: flex;
-            gap: 1rem;
-            justify-content: flex-end;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            main {
-                padding: 1rem;
+        /* ===================== DARK MODE ===================== */
+        @media (prefers-color-scheme: dark) {
+            html, body {
+                background-color: #0A1628;
+                color: #E2E8F0;
             }
+            .profile-header,
+            .profile-editor,
+            .card,
+            .qc-card,
+            .market-card,
+            .whatsnew-card,
+            .stat-card,
+            .quick-access-card,
+            .saved-item,
+            .rec-card,
+            .auth-container {
+                background: #131D2E;
+                border-color: #1E2D40;
+            }
+            .profile-header:hover {
+                box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            }
+            .profile-name { color: #E2E8F0; }
+            .profile-jobtitle,
+            .profile-meta-item { color: #8B9CB8; }
+            .profile-meta-item svg { color: #5A6F8A; }
+            .avatar-img { border-color: #1E2D40; }
+            .editor-tabs { background: #0F1926; border-color: #1E2D40; }
+            .editor-tab { color: #8B9CB8; }
+            .editor-tab:hover { color: #E2E8F0; }
+            .editor-tab.active { color: #4DA3FF; }
+            .editor-tab.active::after { background: #4DA3FF; }
+            .editor-actions { background: #0F1926; border-color: #1E2D40; }
+            .form-group label { color: #C9D6E8; }
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                background: #0A1628;
+                border-color: #1E2D40;
+                color: #E2E8F0;
+            }
+            .form-group input:focus,
+            .form-group select:focus,
+            .form-group textarea:focus {
+                border-color: #4DA3FF;
+                box-shadow: 0 0 0 3px rgba(77,163,255,0.15);
+            }
+            .form-group input:read-only {
+                background: #0F1926;
+                color: #5A6F8A;
+            }
+            .interest-chip {
+                background: #0A1628;
+                border-color: #1E2D40;
+                color: #C9D6E8;
+            }
+            .interest-chip:hover {
+                border-color: #2A3D55;
+            }
+            .interest-chip.selected {
+                background: rgba(77,163,255,0.1);
+                border-color: #4DA3FF;
+                color: #4DA3FF;
+            }
+            .interest-chip .chip-check {
+                border-color: #2A3D55;
+            }
+            .section-title { color: #E2E8F0; }
+            .plan-badge.free {
+                background: #1E2D40;
+                color: #8B9CB8;
+            }
+            .rate-item { background: #0F1926; }
+            .rate-pair { color: #C9D6E8; }
+            .rec-icon { background: rgba(0,122,255,0.12); }
+            .rec-name { color: #E2E8F0; }
+            .rec-desc { color: #8B9CB8; }
+            .completeness-ring .ring-bg { stroke: #1E2D40; }
+            .completeness-pct { color: #E2E8F0; }
+            .btn-cancel { border-color: #1E2D40; color: #8B9CB8; }
+            .btn-cancel:hover { border-color: #2A3D55; color: #C9D6E8; }
+            .btn-logout { border-color: #1E2D40; color: #8B9CB8; }
+            .btn-secondary { background: #1E2D40; border-color: #2A3D55; color: #C9D6E8; }
+            .btn-secondary:hover { background: #2A3D55; }
+            .saved-content h3 { color: #E2E8F0; }
+            .breadcrumb { color: #5A6F8A; }
+            .breadcrumb a { color: #4DA3FF; }
+            .completeness-label { color: #5A6F8A; }
+            .qc-card:hover,
+            .quick-access-card:hover,
+            .rec-card:hover,
+            .card:hover {
+                border-color: #4DA3FF;
+                box-shadow: 0 4px 16px rgba(77,163,255,0.08);
+            }
+        }
 
-            .cards-grid {
+        /* ===================== RESPONSIVE ===================== */
+        @media (max-width: 768px) {
+            main { padding: 1rem; }
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+                padding: 24px 20px;
+                gap: 16px;
+            }
+            .profile-meta-row {
+                justify-content: center;
+            }
+            .profile-actions {
+                width: 100%;
+                justify-content: center;
+            }
+            .completeness-wrap {
+                position: static;
+            }
+            .form-row {
                 grid-template-columns: 1fr;
             }
-
-            .dashboard-header {
-                padding: 1.5rem;
+            .interest-grid {
+                grid-template-columns: 1fr 1fr;
             }
-
-            .quick-access-grid {
-                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            .editor-panel {
+                padding: 20px 16px;
             }
-
-            .favorites-grid {
-                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            .editor-actions {
+                padding: 16px;
             }
-
+            .qc-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            }
+            .rec-grid {
+                grid-template-columns: 1fr;
+            }
             .saved-item {
                 flex-direction: column;
                 align-items: flex-start;
             }
-
             .saved-actions {
                 width: 100%;
-                margin-top: 1rem;
+                margin-top: 10px;
             }
-
-            .header-actions {
-                flex-direction: column;
+            .favorites-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
             }
-
-            .header-actions .btn {
-                width: 100%;
+            .quick-access-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
             }
         }
 
         /* Loading state */
-        .loading {
-            opacity: 0.6;
-            pointer-events: none;
-        }
-
-        /* Message */
-        .message {
-            padding: 1rem;
-            border-radius: 0.5rem;
-            margin-bottom: 1rem;
-            display: none;
-        }
-
-        .message.show {
-            display: block;
-        }
-
-        .message.success {
-            background-color: #DBEAFE;
-            color: #1E3A5F;
-            border: 1px solid #93C5FD;
-        }
-
-        .message.error {
-            background-color: #fee2e2;
-            color: #991b1b;
-            border: 1px solid #fca5a5;
-        }
-
-        /* Edit Profile */
-        .edit-profile-form {
-            display: none;
-        }
-
-        .edit-profile-form.active {
-            display: block;
-        }
-
-        .edit-profile-view {
-            display: block;
-        }
-
-        .edit-profile-view.hidden {
-            display: none;
-        }
+        .loading { opacity: 0.6; pointer-events: none; }
     </style>
 </head>
 <body>
     <afro-navbar></afro-navbar>
+
+    <!-- Toast container -->
+    <div class="toast-container" id="toastContainer"></div>
 
     <main>
         <div class="breadcrumb">
             <a href="/">Home</a> / Dashboard
         </div>
 
-        <!-- Auth Section — shown when not logged in -->
+        <!-- Auth Section -->
         <div id="authSection" class="auth-container" style="text-align:center;">
-            <div style="font-size:3rem;margin-bottom:1rem;">🔐</div>
+            <div style="font-size:3rem;margin-bottom:1rem;">&#x1F510;</div>
             <h1 style="font-size:1.75rem;font-weight:700;margin-bottom:0.5rem;color:#0A1628;">Sign in to your dashboard</h1>
             <p style="color:#64748b;margin-bottom:2rem;font-size:0.95rem;">Access your saved calculations, favorite tools, and personalized recommendations.</p>
             <button onclick="AfroAuth.openModal()" style="max-width:300px;margin:0 auto;display:block;font-size:1rem;padding:0.875rem 2rem;border-radius:12px;background:#007AFF;color:#fff;border:none;font-family:'DM Sans',system-ui,sans-serif;font-weight:600;cursor:pointer;">
@@ -629,252 +1071,369 @@
 
         <!-- Dashboard Section -->
         <div id="dashboardSection" class="dashboard">
-            <!-- Header -->
-            <div class="dashboard-header">
-                <div id="profileAvatarWrap" style="display:flex;align-items:center;gap:1rem;margin-bottom:0.5rem;">
-                    <img id="profileAvatar" src="" alt="" style="width:52px;height:52px;border-radius:50%;object-fit:cover;display:none;border:2px solid #e2e8f0;">
-                    <div>
-                        <h1 id="welcomeMessage" style="margin:0;">Welcome back!</h1>
-                        <p id="profileEmail" style="color:#64748b;font-size:0.9rem;margin:0.125rem 0 0;">-</p>
-                    </div>
-                </div>
-                <div class="profile-summary">
-                    <div class="profile-item">
-                        <strong>Member Since</strong>
-                        <span id="profileMemberSince">-</span>
-                    </div>
-                    <div class="profile-item">
-                        <strong>Country</strong>
-                        <span id="profileCountry">-</span>
-                    </div>
-                    <div class="profile-item">
-                        <strong>Plan</strong>
-                        <span id="profileTier">Free</span>
-                    </div>
-                </div>
 
-                <div class="header-actions">
-                    <button class="btn btn-secondary btn-sm" id="editProfileBtn">Edit Profile</button>
-                    <button class="btn btn-secondary btn-sm" id="logoutBtn">Log Out</button>
+            <!-- Profile Header -->
+            <div class="profile-header">
+                <div class="avatar-wrap" id="avatarWrap">
+                    <img id="profileAvatar" class="avatar-img" src="" alt="" style="display:none;">
+                </div>
+                <div class="profile-info">
+                    <h1 class="profile-name" id="profileName">Welcome back!</h1>
+                    <div class="profile-jobtitle" id="profileJobTitle"></div>
+                    <div class="profile-meta-row">
+                        <div class="profile-meta-item" id="metaEmail">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg>
+                            <span id="profileEmail">-</span>
+                        </div>
+                        <div class="profile-meta-item" id="metaCountry">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+                            <span id="profileCountry">-</span>
+                        </div>
+                        <div class="profile-meta-item" id="metaMember">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                            <span id="profileMemberSince">-</span>
+                        </div>
+                        <span class="plan-badge free" id="profilePlanBadge">Free</span>
+                    </div>
+                </div>
+                <div class="completeness-wrap" id="completenessWrap">
+                    <div class="completeness-ring">
+                        <svg viewBox="0 0 56 56">
+                            <circle class="ring-bg" cx="28" cy="28" r="22"/>
+                            <circle class="ring-fg" id="completenessRing" cx="28" cy="28" r="22" stroke-dasharray="138.23" stroke-dashoffset="138.23"/>
+                        </svg>
+                        <span class="completeness-pct" id="completenessPct">0%</span>
+                    </div>
+                    <span class="completeness-label">Profile</span>
+                </div>
+                <div class="profile-actions">
+                    <button class="btn-edit-profile" id="editProfileBtn">Edit Profile</button>
+                    <button class="btn-logout" id="logoutBtn">Log Out</button>
                 </div>
             </div>
 
-            <!-- Edit Profile Modal -->
-            <div class="modal" id="editProfileModal">
-                <div class="modal-content">
-                    <div class="modal-header">Edit Profile</div>
-                    <div class="message" id="editMessage"></div>
+            <!-- Profile Editor (inline, expands below header) -->
+            <div class="profile-editor" id="profileEditor">
+                <div class="editor-tabs">
+                    <button class="editor-tab active" data-tab="personal">Personal Info</button>
+                    <button class="editor-tab" data-tab="professional">Professional</button>
+                    <button class="editor-tab" data-tab="interests">Interests</button>
+                    <button class="editor-tab" data-tab="security" id="securityTab">Security</button>
+                </div>
 
-                    <form id="editProfileForm" class="edit-profile-form active">
+                <!-- Tab 1: Personal Info -->
+                <div class="editor-panel active" data-panel="personal">
+                    <div class="form-row">
                         <div class="form-group">
                             <label for="editName">Full Name</label>
-                            <input type="text" id="editName" required>
+                            <input type="text" id="editName" placeholder="Your full name" required>
                         </div>
-
                         <div class="form-group">
-                            <label for="editCountry">Country</label>
-                            <select id="editCountry" required>
-                                <option value="">Select a country</option>
-                                <option value="Algeria">Algeria</option>
-                                <option value="Angola">Angola</option>
-                                <option value="Benin">Benin</option>
-                                <option value="Botswana">Botswana</option>
-                                <option value="Burkina Faso">Burkina Faso</option>
-                                <option value="Burundi">Burundi</option>
-                                <option value="Cabo Verde">Cabo Verde</option>
-                                <option value="Cameroon">Cameroon</option>
-                                <option value="Central African Republic">Central African Republic</option>
-                                <option value="Chad">Chad</option>
-                                <option value="Comoros">Comoros</option>
-                                <option value="Côte d'Ivoire">Côte d'Ivoire</option>
-                                <option value="DR Congo">DR Congo</option>
-                                <option value="Djibouti">Djibouti</option>
-                                <option value="Egypt">Egypt</option>
-                                <option value="Equatorial Guinea">Equatorial Guinea</option>
-                                <option value="Eritrea">Eritrea</option>
-                                <option value="Eswatini">Eswatini</option>
-                                <option value="Ethiopia">Ethiopia</option>
-                                <option value="Gabon">Gabon</option>
-                                <option value="Gambia">Gambia</option>
-                                <option value="Ghana">Ghana</option>
-                                <option value="Guinea">Guinea</option>
-                                <option value="Guinea-Bissau">Guinea-Bissau</option>
-                                <option value="Kenya">Kenya</option>
-                                <option value="Lesotho">Lesotho</option>
-                                <option value="Liberia">Liberia</option>
-                                <option value="Libya">Libya</option>
-                                <option value="Madagascar">Madagascar</option>
-                                <option value="Malawi">Malawi</option>
-                                <option value="Mali">Mali</option>
-                                <option value="Mauritania">Mauritania</option>
-                                <option value="Mauritius">Mauritius</option>
-                                <option value="Morocco">Morocco</option>
-                                <option value="Mozambique">Mozambique</option>
-                                <option value="Namibia">Namibia</option>
-                                <option value="Niger">Niger</option>
-                                <option value="Nigeria">Nigeria</option>
-                                <option value="Republic of the Congo">Republic of the Congo</option>
-                                <option value="Rwanda">Rwanda</option>
-                                <option value="São Tomé and Príncipe">São Tomé and Príncipe</option>
-                                <option value="Senegal">Senegal</option>
-                                <option value="Seychelles">Seychelles</option>
-                                <option value="Sierra Leone">Sierra Leone</option>
-                                <option value="Somalia">Somalia</option>
-                                <option value="South Africa">South Africa</option>
-                                <option value="South Sudan">South Sudan</option>
-                                <option value="Sudan">Sudan</option>
-                                <option value="Tanzania">Tanzania</option>
-                                <option value="Togo">Togo</option>
-                                <option value="Tunisia">Tunisia</option>
-                                <option value="Uganda">Uganda</option>
-                                <option value="Zambia">Zambia</option>
-                                <option value="Zimbabwe">Zimbabwe</option>
+                            <label for="editEmail">Email Address</label>
+                            <input type="email" id="editEmail" readonly>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editPhone">Phone Number</label>
+                            <input type="tel" id="editPhone" placeholder="+234 800 000 0000">
+                            <div class="form-hint">Include country code</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="editCity">City</label>
+                            <input type="text" id="editCity" placeholder="e.g. Lagos, Nairobi">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="editCountry">Country</label>
+                        <select id="editCountry" required>
+                            <option value="">Select a country</option>
+                            <option value="Algeria">Algeria</option>
+                            <option value="Angola">Angola</option>
+                            <option value="Benin">Benin</option>
+                            <option value="Botswana">Botswana</option>
+                            <option value="Burkina Faso">Burkina Faso</option>
+                            <option value="Burundi">Burundi</option>
+                            <option value="Cabo Verde">Cabo Verde</option>
+                            <option value="Cameroon">Cameroon</option>
+                            <option value="Central African Republic">Central African Republic</option>
+                            <option value="Chad">Chad</option>
+                            <option value="Comoros">Comoros</option>
+                            <option value="C&#244;te d'Ivoire">C&#244;te d'Ivoire</option>
+                            <option value="DR Congo">DR Congo</option>
+                            <option value="Djibouti">Djibouti</option>
+                            <option value="Egypt">Egypt</option>
+                            <option value="Equatorial Guinea">Equatorial Guinea</option>
+                            <option value="Eritrea">Eritrea</option>
+                            <option value="Eswatini">Eswatini</option>
+                            <option value="Ethiopia">Ethiopia</option>
+                            <option value="Gabon">Gabon</option>
+                            <option value="Gambia">Gambia</option>
+                            <option value="Ghana">Ghana</option>
+                            <option value="Guinea">Guinea</option>
+                            <option value="Guinea-Bissau">Guinea-Bissau</option>
+                            <option value="Kenya">Kenya</option>
+                            <option value="Lesotho">Lesotho</option>
+                            <option value="Liberia">Liberia</option>
+                            <option value="Libya">Libya</option>
+                            <option value="Madagascar">Madagascar</option>
+                            <option value="Malawi">Malawi</option>
+                            <option value="Mali">Mali</option>
+                            <option value="Mauritania">Mauritania</option>
+                            <option value="Mauritius">Mauritius</option>
+                            <option value="Morocco">Morocco</option>
+                            <option value="Mozambique">Mozambique</option>
+                            <option value="Namibia">Namibia</option>
+                            <option value="Niger">Niger</option>
+                            <option value="Nigeria">Nigeria</option>
+                            <option value="Republic of the Congo">Republic of the Congo</option>
+                            <option value="Rwanda">Rwanda</option>
+                            <option value="S&#227;o Tom&#233; and Pr&#237;ncipe">S&#227;o Tom&#233; and Pr&#237;ncipe</option>
+                            <option value="Senegal">Senegal</option>
+                            <option value="Seychelles">Seychelles</option>
+                            <option value="Sierra Leone">Sierra Leone</option>
+                            <option value="Somalia">Somalia</option>
+                            <option value="South Africa">South Africa</option>
+                            <option value="South Sudan">South Sudan</option>
+                            <option value="Sudan">Sudan</option>
+                            <option value="Tanzania">Tanzania</option>
+                            <option value="Togo">Togo</option>
+                            <option value="Tunisia">Tunisia</option>
+                            <option value="Uganda">Uganda</option>
+                            <option value="Zambia">Zambia</option>
+                            <option value="Zimbabwe">Zimbabwe</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editBio">Bio</label>
+                        <textarea id="editBio" maxlength="200" placeholder="A short bio about yourself..."></textarea>
+                        <div class="char-counter" id="bioCounter">0 / 200</div>
+                    </div>
+                </div>
+
+                <!-- Tab 2: Professional -->
+                <div class="editor-panel" data-panel="professional">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editJobTitle">Job Title</label>
+                            <input type="text" id="editJobTitle" placeholder="e.g. Accountant, Software Engineer">
+                        </div>
+                        <div class="form-group">
+                            <label for="editCompany">Company</label>
+                            <input type="text" id="editCompany" placeholder="e.g. Flutterwave, MTN">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editIndustry">Industry</label>
+                            <select id="editIndustry">
+                                <option value="">Select your industry</option>
+                                <option value="Accounting & Finance">Accounting & Finance</option>
+                                <option value="Agriculture">Agriculture</option>
+                                <option value="Construction & Real Estate">Construction & Real Estate</option>
+                                <option value="Crypto & Blockchain">Crypto & Blockchain</option>
+                                <option value="Education">Education</option>
+                                <option value="Engineering">Engineering</option>
+                                <option value="Government & Public Sector">Government & Public Sector</option>
+                                <option value="Healthcare">Healthcare</option>
+                                <option value="Legal">Legal</option>
+                                <option value="Manufacturing">Manufacturing</option>
+                                <option value="Media & Entertainment">Media & Entertainment</option>
+                                <option value="Mining & Resources">Mining & Resources</option>
+                                <option value="NGO & Development">NGO & Development</option>
+                                <option value="Retail & E-Commerce">Retail & E-Commerce</option>
+                                <option value="Technology">Technology</option>
+                                <option value="Telecommunications">Telecommunications</option>
+                                <option value="Transport & Logistics">Transport & Logistics</option>
                                 <option value="Other">Other</option>
                             </select>
                         </div>
-
-                        <!-- Change Password (email accounts only, hidden for OAuth) -->
-                        <div id="changePasswordSection" style="display:none;border-top:1px solid #e2e8f0;padding-top:1.25rem;margin-top:1rem;">
-                            <h3 style="font-size:0.95rem;font-weight:600;margin-bottom:1rem;color:#1e293b;">Change Password</h3>
-                            <div class="form-group">
-                                <label for="editCurrentPassword">Current Password</label>
-                                <input type="password" id="editCurrentPassword" autocomplete="current-password">
-                            </div>
-                            <div class="form-group">
-                                <label for="editNewPassword">New Password</label>
-                                <input type="password" id="editNewPassword" minlength="6" autocomplete="new-password">
-                            </div>
-                            <div class="form-group">
-                                <label for="editConfirmPassword">Confirm New Password</label>
-                                <input type="password" id="editConfirmPassword" minlength="6" autocomplete="new-password">
-                            </div>
-                            <div class="message" id="passwordMessage" style="display:none;"></div>
+                        <div class="form-group">
+                            <label for="editCompanySize">Company Size</label>
+                            <select id="editCompanySize">
+                                <option value="">Select size</option>
+                                <option value="Solo/Freelancer">Solo / Freelancer</option>
+                                <option value="2-10">2 - 10</option>
+                                <option value="11-50">11 - 50</option>
+                                <option value="51-200">51 - 200</option>
+                                <option value="201-1000">201 - 1,000</option>
+                                <option value="1000+">1,000+</option>
+                            </select>
                         </div>
-
-                        <div class="modal-actions">
-                            <button type="button" class="btn btn-secondary" id="cancelEditBtn">Cancel</button>
-                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                    <div class="form-group">
+                        <label for="editExperience">Experience Level</label>
+                        <select id="editExperience">
+                            <option value="">Select level</option>
+                            <option value="Student">Student</option>
+                            <option value="Entry Level (0-2 years)">Entry Level (0-2 years)</option>
+                            <option value="Mid Level (3-5 years)">Mid Level (3-5 years)</option>
+                            <option value="Senior (6-10 years)">Senior (6-10 years)</option>
+                            <option value="Expert (10+ years)">Expert (10+ years)</option>
+                            <option value="Executive">Executive</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editLinkedIn">LinkedIn URL</label>
+                            <input type="url" id="editLinkedIn" placeholder="https://linkedin.com/in/yourname">
                         </div>
-                    </form>
+                        <div class="form-group">
+                            <label for="editWebsite">Website URL</label>
+                            <input type="url" id="editWebsite" placeholder="https://yoursite.com">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 3: Interests -->
+                <div class="editor-panel" data-panel="interests">
+                    <p style="font-size:0.88rem;color:#64748b;margin-bottom:20px;">Select your interests to get personalized tool recommendations.</p>
+                    <div class="interest-grid" id="interestGrid">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Tab 4: Security -->
+                <div class="editor-panel" data-panel="security">
+                    <h3 style="font-size:1rem;font-weight:600;margin-bottom:16px;">Change Password</h3>
+                    <div class="form-group">
+                        <label for="editCurrentPassword">Current Password</label>
+                        <input type="password" id="editCurrentPassword" autocomplete="current-password">
+                    </div>
+                    <div class="form-group">
+                        <label for="editNewPassword">New Password</label>
+                        <input type="password" id="editNewPassword" minlength="6" autocomplete="new-password">
+                    </div>
+                    <div class="form-group">
+                        <label for="editConfirmPassword">Confirm New Password</label>
+                        <input type="password" id="editConfirmPassword" minlength="6" autocomplete="new-password">
+                    </div>
+                </div>
+
+                <div class="editor-actions">
+                    <button class="btn-cancel" id="cancelEditBtn">Cancel</button>
+                    <button class="btn-save" id="saveProfileBtn">
+                        <span class="spinner"></span>
+                        Save Changes
+                    </button>
                 </div>
             </div>
 
-            <!-- Delete Account removed — handled via Supabase dashboard -->
-
-            <!-- NEW: Dashboard Widgets -->
+            <!-- Dashboard Widgets -->
             <div class="dash-widgets-grid">
               <div class="dash-widget">
-                <div class="dash-widget-title"><span class="widget-icon">📅</span> Tax Calendar</div>
+                <div class="dash-widget-title"><span class="widget-icon">&#x1F4C5;</span> Tax Calendar</div>
                 <div id="taxCalendar"></div>
               </div>
               <div class="dash-widget">
-                <div class="dash-widget-title"><span class="widget-icon">🔔</span> Regulatory Alerts</div>
+                <div class="dash-widget-title"><span class="widget-icon">&#x1F514;</span> Regulatory Alerts</div>
                 <div id="taxAlerts"></div>
               </div>
             </div>
 
             <div class="dash-widgets-grid">
               <div class="dash-widget">
-                <div class="dash-widget-title"><span class="widget-icon">💡</span> Recommended For You</div>
+                <div class="dash-widget-title"><span class="widget-icon">&#x1F4A1;</span> Recommended For You</div>
                 <div id="recommendations"></div>
               </div>
               <div class="dash-widget">
-                <div class="dash-widget-title"><span class="widget-icon">📊</span> PAYE Comparison</div>
+                <div class="dash-widget-title"><span class="widget-icon">&#x1F4CA;</span> PAYE Comparison</div>
                 <div id="yoyComparison"></div>
               </div>
             </div>
 
             <!-- Quick Calculate -->
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+            <div class="section-row">
               <h2 class="section-title" style="margin-bottom:0;">Quick Calculate</h2>
             </div>
-            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:28px;">
-              <a href="/nigeria/ng-salary-tax" style="background:#fff;border:1.5px solid #E5E7EB;border-radius:14px;padding:16px;text-decoration:none;color:inherit;display:flex;align-items:center;gap:12px;transition:border-color .18s;" onmouseover="this.style.borderColor='#007AFF'" onmouseout="this.style.borderColor='#E5E7EB'"><span style="font-size:1.5rem;">&#x1F1F3;&#x1F1EC;</span><span style="font-size:.85rem;font-weight:600;">Nigeria PAYE</span></a>
-              <a href="/kenya/ke-paye" style="background:#fff;border:1.5px solid #E5E7EB;border-radius:14px;padding:16px;text-decoration:none;color:inherit;display:flex;align-items:center;gap:12px;transition:border-color .18s;" onmouseover="this.style.borderColor='#007AFF'" onmouseout="this.style.borderColor='#E5E7EB'"><span style="font-size:1.5rem;">&#x1F1F0;&#x1F1EA;</span><span style="font-size:.85rem;font-weight:600;">Kenya PAYE</span></a>
-              <a href="/ghana/gh-paye" style="background:#fff;border:1.5px solid #E5E7EB;border-radius:14px;padding:16px;text-decoration:none;color:inherit;display:flex;align-items:center;gap:12px;transition:border-color .18s;" onmouseover="this.style.borderColor='#007AFF'" onmouseout="this.style.borderColor='#E5E7EB'"><span style="font-size:1.5rem;">&#x1F1EC;&#x1F1ED;</span><span style="font-size:.85rem;font-weight:600;">Ghana PAYE</span></a>
-              <a href="/south-africa/za-paye" style="background:#fff;border:1.5px solid #E5E7EB;border-radius:14px;padding:16px;text-decoration:none;color:inherit;display:flex;align-items:center;gap:12px;transition:border-color .18s;" onmouseover="this.style.borderColor='#007AFF'" onmouseout="this.style.borderColor='#E5E7EB'"><span style="font-size:1.5rem;">&#x1F1FF;&#x1F1E6;</span><span style="font-size:.85rem;font-weight:600;">SA PAYE</span></a>
-              <a href="/tanzania/tz-paye" style="background:#fff;border:1.5px solid #E5E7EB;border-radius:14px;padding:16px;text-decoration:none;color:inherit;display:flex;align-items:center;gap:12px;transition:border-color .18s;" onmouseover="this.style.borderColor='#007AFF'" onmouseout="this.style.borderColor='#E5E7EB'"><span style="font-size:1.5rem;">&#x1F1F9;&#x1F1FF;</span><span style="font-size:.85rem;font-weight:600;">Tanzania PAYE</span></a>
-              <a href="/tools/currency-converter/" style="background:#fff;border:1.5px solid #E5E7EB;border-radius:14px;padding:16px;text-decoration:none;color:inherit;display:flex;align-items:center;gap:12px;transition:border-color .18s;" onmouseover="this.style.borderColor='#007AFF'" onmouseout="this.style.borderColor='#E5E7EB'"><span style="font-size:1.5rem;">&#x1F4B1;</span><span style="font-size:.85rem;font-weight:600;">Currency Converter</span></a>
+            <div class="qc-grid">
+              <a href="/nigeria/ng-salary-tax" class="qc-card"><span class="qc-flag">&#x1F1F3;&#x1F1EC;</span><span class="qc-label">Nigeria PAYE</span></a>
+              <a href="/kenya/ke-paye" class="qc-card"><span class="qc-flag">&#x1F1F0;&#x1F1EA;</span><span class="qc-label">Kenya PAYE</span></a>
+              <a href="/ghana/gh-paye" class="qc-card"><span class="qc-flag">&#x1F1EC;&#x1F1ED;</span><span class="qc-label">Ghana PAYE</span></a>
+              <a href="/south-africa/za-paye" class="qc-card"><span class="qc-flag">&#x1F1FF;&#x1F1E6;</span><span class="qc-label">SA PAYE</span></a>
+              <a href="/tanzania/tz-paye" class="qc-card"><span class="qc-flag">&#x1F1F9;&#x1F1FF;</span><span class="qc-label">Tanzania PAYE</span></a>
+              <a href="/tools/currency-converter/" class="qc-card"><span class="qc-flag">&#x1F4B1;</span><span class="qc-label">Currency Converter</span></a>
             </div>
 
             <!-- Live Market Snapshot -->
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+            <div class="section-row">
               <h2 class="section-title" style="margin-bottom:0;">Live Market Snapshot</h2>
-              <a href="/tools/currency-converter/" style="font-size:.8rem;font-weight:700;color:#007AFF;text-decoration:none;">All rates &#8594;</a>
+              <a href="/tools/currency-converter/" class="section-link">All rates &#8594;</a>
             </div>
-            <div style="background:#fff;border:1.5px solid #E5E7EB;border-radius:14px;padding:20px;margin-bottom:28px;">
-              <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;" id="dashMarketRates">
-                <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#F9FAFB;border-radius:10px;"><span style="font-weight:600;font-size:.85rem;">USD/NGN</span><span style="font-weight:700;color:#007AFF;font-size:.9rem;" id="dash-rate-ngn">--</span></div>
-                <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#F9FAFB;border-radius:10px;"><span style="font-weight:600;font-size:.85rem;">USD/KES</span><span style="font-weight:700;color:#007AFF;font-size:.9rem;" id="dash-rate-kes">--</span></div>
-                <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#F9FAFB;border-radius:10px;"><span style="font-weight:600;font-size:.85rem;">USD/ZAR</span><span style="font-weight:700;color:#007AFF;font-size:.9rem;" id="dash-rate-zar">--</span></div>
-                <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#F9FAFB;border-radius:10px;"><span style="font-weight:600;font-size:.85rem;">USD/GHS</span><span style="font-weight:700;color:#007AFF;font-size:.9rem;" id="dash-rate-ghs">--</span></div>
+            <div class="market-card">
+              <div class="market-grid" id="dashMarketRates">
+                <div class="rate-item"><span class="rate-pair">USD/NGN</span><span class="rate-value" id="dash-rate-ngn">--</span></div>
+                <div class="rate-item"><span class="rate-pair">USD/KES</span><span class="rate-value" id="dash-rate-kes">--</span></div>
+                <div class="rate-item"><span class="rate-pair">USD/ZAR</span><span class="rate-value" id="dash-rate-zar">--</span></div>
+                <div class="rate-item"><span class="rate-pair">USD/GHS</span><span class="rate-value" id="dash-rate-ghs">--</span></div>
               </div>
             </div>
 
             <!-- What's New -->
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+            <div class="section-row">
               <h2 class="section-title" style="margin-bottom:0;">What's New</h2>
-              <a href="/blog/" style="font-size:.8rem;font-weight:700;color:#007AFF;text-decoration:none;">Read blog &#8594;</a>
+              <a href="/blog/" class="section-link">Read blog &#8594;</a>
             </div>
-            <div style="background:#fff;border:1.5px solid #E5E7EB;border-radius:14px;padding:20px;margin-bottom:28px;">
-              <ul style="list-style:none;padding:0;margin:0;display:grid;gap:10px;">
-                <li style="display:flex;align-items:center;gap:10px;font-size:.88rem;">&#x20BF; AfroCrypto &mdash; 15 crypto tools for Africa</li>
-                <li style="display:flex;align-items:center;gap:10px;font-size:.88rem;">&#x1F6E1;&#xFE0F; Crypto Safety Suite &mdash; scam checker, address validator, exchange ratings</li>
-                <li style="display:flex;align-items:center;gap:10px;font-size:.88rem;">&#x1F4CA; AfroFX Live Currency Dashboard</li>
-                <li style="display:flex;align-items:center;gap:10px;font-size:.88rem;">&#x26FD; AfroFuel Price Tracker for 54 countries</li>
-                <li style="display:flex;align-items:center;gap:10px;font-size:.88rem;">&#x1F3E6; AfroRates Central Bank Rate Tracker</li>
+            <div class="whatsnew-card">
+              <ul class="whatsnew-list">
+                <li>&#x20BF; AfroCrypto &mdash; 15 crypto tools for Africa</li>
+                <li>&#x1F6E1;&#xFE0F; Crypto Safety Suite &mdash; scam checker, address validator, exchange ratings</li>
+                <li>&#x1F4CA; AfroFX Live Currency Dashboard</li>
+                <li>&#x26FD; AfroFuel Price Tracker for 54 countries</li>
+                <li>&#x1F3E6; AfroRates Central Bank Rate Tracker</li>
               </ul>
             </div>
 
             <!-- AfroTools Pro Upsell -->
-            <div id="proUpsell" style="background:linear-gradient(135deg,#0a1929,#0d2b5e);border-radius:14px;padding:24px;margin-bottom:28px;color:#fff;">
-              <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:8px;">Upgrade to AfroTools Pro</h3>
-              <p style="font-size:.88rem;opacity:.8;margin-bottom:16px;line-height:1.5;">Unlimited AI advisor, clean PDF exports, saved history, tax law alerts.</p>
-              <a href="/pro/" style="display:inline-block;background:#007AFF;color:#fff;padding:10px 24px;border-radius:10px;font-weight:600;font-size:.88rem;text-decoration:none;">Upgrade &mdash; $5/month</a>
+            <div id="proUpsell" class="pro-upsell">
+              <h3>Upgrade to AfroTools Pro</h3>
+              <p>Unlimited AI advisor, clean PDF exports, saved history, tax law alerts.</p>
+              <a href="/pro/">Upgrade &mdash; $5/month</a>
             </div>
 
             <!-- Quick Stats Bar -->
-            <div id="quickStatsBar" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-bottom:28px;">
-              <div style="background:#fff;border:1.5px solid #E5E7EB;border-radius:14px;padding:18px 20px;text-align:center;">
-                <div style="font-size:1.8rem;font-weight:800;color:#007AFF;line-height:1;" id="stat-favs">0</div>
-                <div style="font-size:.7rem;color:#6B7280;margin-top:4px;font-weight:600;">Saved Tools</div>
+            <div class="stats-grid" id="quickStatsBar">
+              <div class="stat-card">
+                <div class="stat-num" id="stat-favs">0</div>
+                <div class="stat-label">Saved Tools</div>
               </div>
-              <div style="background:#fff;border:1.5px solid #E5E7EB;border-radius:14px;padding:18px 20px;text-align:center;">
-                <div style="font-size:1.8rem;font-weight:800;color:#007AFF;line-height:1;" id="stat-docs">0</div>
-                <div style="font-size:.7rem;color:#6B7280;margin-top:4px;font-weight:600;">My Documents</div>
+              <div class="stat-card">
+                <div class="stat-num" id="stat-docs">0</div>
+                <div class="stat-label">My Documents</div>
               </div>
-              <div style="background:#fff;border:1.5px solid #E5E7EB;border-radius:14px;padding:18px 20px;text-align:center;">
-                <div style="font-size:1.8rem;font-weight:800;color:#007AFF;line-height:1;" id="stat-calcs">0</div>
-                <div style="font-size:.7rem;color:#6B7280;margin-top:4px;font-weight:600;">Saved Calcs</div>
+              <div class="stat-card">
+                <div class="stat-num" id="stat-calcs">0</div>
+                <div class="stat-label">Saved Calcs</div>
               </div>
-              <div style="background:#fff;border:1.5px solid #E5E7EB;border-radius:14px;padding:18px 20px;text-align:center;">
-                <div style="font-size:1.8rem;font-weight:800;color:#F5A623;line-height:1;" id="stat-plan">Free</div>
-                <div style="font-size:.7rem;color:#6B7280;margin-top:4px;font-weight:600;">Current Plan</div>
+              <div class="stat-card">
+                <div class="stat-num gold" id="stat-plan">Free</div>
+                <div class="stat-label">Current Plan</div>
               </div>
             </div>
 
-            <!-- Favorite Tools — iOS App Grid style -->
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-              <h2 class="section-title" style="margin-bottom:0;">⭐ My Tools</h2>
-              <a href="/" style="font-size:.8rem;font-weight:700;color:#007AFF;text-decoration:none;">Browse All →</a>
+            <!-- Favorite Tools -->
+            <div class="section-row">
+              <h2 class="section-title" style="margin-bottom:0;">&#x2B50; My Tools</h2>
+              <a href="/" class="section-link">Browse All &#8594;</a>
             </div>
-            <div id="favoritesContainer" class="favorites-grid" style="margin-bottom:28px;"></div>
+            <div id="favoritesContainer" class="favorites-grid"></div>
 
             <!-- My Documents -->
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-              <h2 class="section-title" style="margin-bottom:0;">📁 My Documents</h2>
+            <div class="section-row">
+              <h2 class="section-title" style="margin-bottom:0;">&#x1F4C1; My Documents</h2>
             </div>
             <div id="myDocumentsContainer" style="margin-bottom:28px;"></div>
 
-            <!-- Quick Access -->
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-              <h2 class="section-title" style="margin-bottom:0;">🕐 Recently Used</h2>
+            <!-- Recently Used -->
+            <div class="section-row">
+              <h2 class="section-title" style="margin-bottom:0;">&#x1F550; Recently Used</h2>
             </div>
-            <div id="quickAccessContainer" class="quick-access-grid" style="margin-bottom:28px;"></div>
+            <div id="quickAccessContainer" class="quick-access-grid"></div>
 
             <!-- Saved Calculations -->
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-              <h2 class="section-title" style="margin-bottom:0;">💾 Saved Calculations</h2>
+            <div class="section-row">
+              <h2 class="section-title" style="margin-bottom:0;">&#x1F4BE; Saved Calculations</h2>
             </div>
             <div id="savedContainer" class="saved-items"></div>
         </div>
@@ -893,52 +1452,421 @@
     <script>
         let currentUser = null;
         let isLoggedIn = false;
+        let extendedProfile = {};
+        let selectedInterests = [];
+        let editorOpen = false;
 
-        // Tool metadata for display — build from registry if available, with hardcoded fallbacks
+        // ===================== INTEREST DEFINITIONS =====================
+        const INTEREST_OPTIONS = [
+            { id: 'tax-salary',      emoji: '\uD83D\uDCB0', label: 'Tax & Salary',          categories: ['financial'] },
+            { id: 'documents',       emoji: '\uD83D\uDCC4', label: 'Documents & PDF',       categories: ['document-pdf'] },
+            { id: 'crypto',          emoji: '\u20BF',        label: 'Crypto & Web3',         categories: ['crypto'] },
+            { id: 'vat-business',    emoji: '\uD83E\uDDFE', label: 'VAT & Business Tax',    categories: ['ecommerce'] },
+            { id: 'property',        emoji: '\uD83C\uDFE0', label: 'Property & Mortgage',   categories: ['legal'] },
+            { id: 'engineering',     emoji: '\uD83D\uDD27', label: 'Engineering & CAD',     categories: ['engineering'] },
+            { id: 'health',          emoji: '\uD83C\uDFE5', label: 'Health & Wellness',     categories: ['health'] },
+            { id: 'developer',       emoji: '\u2328\uFE0F', label: 'Developer Tools',       categories: ['developer'] },
+            { id: 'education',       emoji: '\uD83C\uDF93', label: 'Education',             categories: ['education'] },
+            { id: 'business-roi',    emoji: '\uD83D\uDCCA', label: 'Business & ROI',        categories: ['data-productivity'] },
+            { id: 'design',          emoji: '\uD83D\uDDBC\uFE0F', label: 'Design & Images', categories: ['image-design'] },
+            { id: 'currency-fx',     emoji: '\uD83D\uDCB1', label: 'Currency & FX',         categories: ['financial'] },
+            { id: 'african-culture', emoji: '\uD83C\uDF0D', label: 'African Culture',       categories: ['african'] },
+            { id: 'language',        emoji: '\uD83D\uDDE3\uFE0F', label: 'Language & Translation', categories: ['language'] },
+            { id: 'investment',      emoji: '\uD83D\uDCC8', label: 'Investment & Savings',  categories: ['financial'] }
+        ];
+
+        // ===================== TOOL METADATA =====================
         const toolMetadataFallback = {
-            'bmi-calculator': { name: 'BMI Calculator', icon: '⚖' },
-            'paye-calculator': { name: 'PAYE Calculator', icon: '💷' },
-            'profit-margin': { name: 'Profit Margin', icon: '📊' },
-            'currency-converter': { name: 'Currency Converter', icon: '💱' },
-            'inflation-calculator': { name: 'Inflation Calculator', icon: '📈' },
-            'savings-calculator': { name: 'Savings Calculator', icon: '🏦' },
-            'loan-calculator': { name: 'Loan Calculator', icon: '🏡' },
-            'investment-calculator': { name: 'Investment Calculator', icon: '📈' }
+            'bmi-calculator': { name: 'BMI Calculator', icon: '\u2696' },
+            'paye-calculator': { name: 'PAYE Calculator', icon: '\uD83D\uDCB7' },
+            'profit-margin': { name: 'Profit Margin', icon: '\uD83D\uDCCA' },
+            'currency-converter': { name: 'Currency Converter', icon: '\uD83D\uDCB1' },
+            'inflation-calculator': { name: 'Inflation Calculator', icon: '\uD83D\uDCC8' },
+            'savings-calculator': { name: 'Savings Calculator', icon: '\uD83C\uDFE6' },
+            'loan-calculator': { name: 'Loan Calculator', icon: '\uD83C\uDFE1' },
+            'investment-calculator': { name: 'Investment Calculator', icon: '\uD83D\uDCC8' }
         };
-        // Dynamically populate from tool registry for all tools
         const toolMetadata = new Proxy(toolMetadataFallback, {
             get(target, prop) {
                 if (prop in target) return target[prop];
                 if (typeof AFRO_TOOLS !== 'undefined') {
                     const found = AFRO_TOOLS.find(t => t.id === prop);
-                    if (found) return { name: found.name, icon: found.icon || '🔧' };
+                    if (found) return { name: found.name, icon: found.icon || '\uD83D\uDD27' };
                 }
-                return { name: prop.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()), icon: '🔧' };
+                return { name: prop.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()), icon: '\uD83D\uDD27' };
             }
         });
 
-        // Wait for Supabase auth to be ready before initializing
-        function waitForAuth() {
-            console.log('[Dashboard] waitForAuth called, AfroAuth:', !!window.AfroAuth);
-            if (window.AfroAuth) {
-                AfroAuth.onReady(function() {
-                    console.log('[Dashboard] AfroAuth ready, isLoggedIn:', AfroAuth.isLoggedIn());
-                    init();
+        // ===================== TOAST =====================
+        function showToast(message, type) {
+            type = type || 'success';
+            var container = document.getElementById('toastContainer');
+            var toast = document.createElement('div');
+            toast.className = 'toast ' + type;
+            toast.textContent = message;
+            container.appendChild(toast);
+            requestAnimationFrame(function() {
+                requestAnimationFrame(function() {
+                    toast.classList.add('show');
                 });
+            });
+            setTimeout(function() {
+                toast.classList.remove('show');
+                setTimeout(function() { toast.remove(); }, 300);
+            }, 3500);
+        }
+
+        // ===================== SUPABASE PROFILE HELPERS =====================
+        async function fetchFullProfile() {
+            var user = AfroAuth.getUser();
+            if (!user || !user.id) return null;
+            try {
+                var token = AfroAuth.getSessionToken ? AfroAuth.getSessionToken() : null;
+                var headers = {
+                    'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpwY2xhZ3RnY3pzeWdyZ3p0bHRzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzkzMTU0NjEsImV4cCI6MjA1NDg5MTQ2MX0.aNaQecpqxbPxJpJ0WMb6F4k2HN_pTaH-n-G6bTSAjfY',
+                    'Content-Type': 'application/json'
+                };
+                if (token) headers['Authorization'] = 'Bearer ' + token;
+                var res = await fetch('https://zpclagtgczsygrgztlts.supabase.co/rest/v1/profiles?id=eq.' + user.id + '&select=*', { headers: headers });
+                var data = await res.json();
+                return data[0] || null;
+            } catch(e) {
+                console.warn('[Profile] fetchFullProfile error:', e);
+                return null;
+            }
+        }
+
+        async function saveFullProfile(profileData) {
+            var user = AfroAuth.getUser();
+            if (!user || !user.id) return { ok: false, error: 'Not logged in' };
+            try {
+                var token = AfroAuth.getSessionToken ? AfroAuth.getSessionToken() : null;
+                var headers = {
+                    'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpwY2xhZ3RnY3pzeWdyZ3p0bHRzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzkzMTU0NjEsImV4cCI6MjA1NDg5MTQ2MX0.aNaQecpqxbPxJpJ0WMb6F4k2HN_pTaH-n-G6bTSAjfY',
+                    'Content-Type': 'application/json',
+                    'Prefer': 'return=minimal'
+                };
+                if (token) headers['Authorization'] = 'Bearer ' + token;
+                var res = await fetch('https://zpclagtgczsygrgztlts.supabase.co/rest/v1/profiles?id=eq.' + user.id, {
+                    method: 'PATCH',
+                    headers: headers,
+                    body: JSON.stringify(profileData)
+                });
+                if (res.ok) {
+                    if (profileData.name || profileData.country) {
+                        await AfroAuth.updateProfile({ name: profileData.name, country: profileData.country });
+                    }
+                    localStorage.setItem('afro_profile_extended', JSON.stringify(profileData));
+                    return { ok: true };
+                }
+                return { ok: false, error: 'Save failed (HTTP ' + res.status + ')' };
+            } catch(e) {
+                return { ok: false, error: e.message };
+            }
+        }
+
+        // ===================== PROFILE COMPLETENESS =====================
+        function calculateCompleteness(user, profile) {
+            var pct = 0;
+            if (user && user.name) pct += 10;
+            if (user && user.country) pct += 10;
+            if (profile.bio) pct += 10;
+            if (profile.phone) pct += 5;
+            if (profile.city) pct += 5;
+            if (profile.job_title) pct += 10;
+            if (profile.company) pct += 10;
+            if (profile.industry) pct += 10;
+            var interests = profile.interests || [];
+            if (interests.length >= 3) pct += 15;
+            if (user && user.avatar_url) pct += 5;
+            if (profile.linkedin_url || profile.website_url) pct += 10;
+            return Math.min(pct, 100);
+        }
+
+        function updateCompletenessRing(pct) {
+            var circumference = 2 * Math.PI * 22; // r=22
+            var offset = circumference - (pct / 100) * circumference;
+            var ring = document.getElementById('completenessRing');
+            var label = document.getElementById('completenessPct');
+            if (ring) {
+                ring.style.strokeDasharray = circumference;
+                ring.style.strokeDashoffset = offset;
+                // Color based on percentage
+                if (pct >= 80) ring.style.stroke = '#059669';
+                else if (pct >= 50) ring.style.stroke = '#007AFF';
+                else ring.style.stroke = '#F59E0B';
+            }
+            if (label) label.textContent = pct + '%';
+        }
+
+        // ===================== INTEREST GRID =====================
+        function renderInterestGrid() {
+            var grid = document.getElementById('interestGrid');
+            if (!grid) return;
+            grid.innerHTML = INTEREST_OPTIONS.map(function(opt) {
+                var sel = selectedInterests.indexOf(opt.id) !== -1;
+                return '<div class="interest-chip' + (sel ? ' selected' : '') + '" data-interest="' + opt.id + '">' +
+                    '<span class="chip-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="2 6 5 9 10 3"/></svg></span>' +
+                    '<span class="chip-emoji">' + opt.emoji + '</span>' +
+                    '<span>' + opt.label + '</span>' +
+                '</div>';
+            }).join('');
+
+            grid.querySelectorAll('.interest-chip').forEach(function(chip) {
+                chip.addEventListener('click', function() {
+                    var id = this.dataset.interest;
+                    var idx = selectedInterests.indexOf(id);
+                    if (idx === -1) {
+                        selectedInterests.push(id);
+                        this.classList.add('selected');
+                    } else {
+                        selectedInterests.splice(idx, 1);
+                        this.classList.remove('selected');
+                    }
+                });
+            });
+        }
+
+        // ===================== PROFILE EDITOR TABS =====================
+        function initEditorTabs() {
+            var tabs = document.querySelectorAll('.editor-tab');
+            tabs.forEach(function(tab) {
+                tab.addEventListener('click', function() {
+                    var target = this.dataset.tab;
+                    tabs.forEach(function(t) { t.classList.remove('active'); });
+                    this.classList.add('active');
+                    document.querySelectorAll('.editor-panel').forEach(function(p) { p.classList.remove('active'); });
+                    var panel = document.querySelector('.editor-panel[data-panel="' + target + '"]');
+                    if (panel) panel.classList.add('active');
+                });
+            });
+        }
+
+        function openProfileEditor() {
+            if (editorOpen) { closeProfileEditor(); return; }
+            editorOpen = true;
+            hydrateEditorForms();
+            var editor = document.getElementById('profileEditor');
+            editor.classList.add('open');
+            // Reset to personal tab
+            document.querySelectorAll('.editor-tab').forEach(function(t) { t.classList.remove('active'); });
+            document.querySelector('.editor-tab[data-tab="personal"]').classList.add('active');
+            document.querySelectorAll('.editor-panel').forEach(function(p) { p.classList.remove('active'); });
+            document.querySelector('.editor-panel[data-panel="personal"]').classList.add('active');
+            // Hide security tab for OAuth users
+            var secTab = document.getElementById('securityTab');
+            if (secTab && currentUser) {
+                var isOAuth = currentUser.provider === 'google' || currentUser.provider === 'oauth';
+                secTab.style.display = isOAuth ? 'none' : '';
+            }
+            renderInterestGrid();
+        }
+
+        function closeProfileEditor() {
+            editorOpen = false;
+            document.getElementById('profileEditor').classList.remove('open');
+        }
+
+        function hydrateEditorForms() {
+            if (!currentUser) return;
+            var p = extendedProfile || {};
+            document.getElementById('editName').value = currentUser.name || '';
+            document.getElementById('editEmail').value = currentUser.email || '';
+            document.getElementById('editPhone').value = p.phone || '';
+            document.getElementById('editCity').value = p.city || '';
+            document.getElementById('editCountry').value = currentUser.country || '';
+            document.getElementById('editBio').value = p.bio || '';
+            updateBioCounter();
+            document.getElementById('editJobTitle').value = p.job_title || '';
+            document.getElementById('editCompany').value = p.company || '';
+            document.getElementById('editIndustry').value = p.industry || '';
+            document.getElementById('editCompanySize').value = p.company_size || '';
+            document.getElementById('editExperience').value = p.experience_level || '';
+            document.getElementById('editLinkedIn').value = p.linkedin_url || '';
+            document.getElementById('editWebsite').value = p.website_url || '';
+            // Interests
+            selectedInterests = (p.interests && Array.isArray(p.interests)) ? p.interests.slice() : [];
+            // Clear password fields
+            document.getElementById('editCurrentPassword').value = '';
+            document.getElementById('editNewPassword').value = '';
+            document.getElementById('editConfirmPassword').value = '';
+        }
+
+        function updateBioCounter() {
+            var bio = document.getElementById('editBio');
+            var counter = document.getElementById('bioCounter');
+            if (bio && counter) {
+                var len = bio.value.length;
+                counter.textContent = len + ' / 200';
+                counter.classList.toggle('over', len > 200);
+            }
+        }
+
+        // ===================== SAVE PROFILE =====================
+        async function handleSaveProfile() {
+            var btn = document.getElementById('saveProfileBtn');
+            btn.classList.add('saving');
+            btn.disabled = true;
+
+            var name = document.getElementById('editName').value.trim();
+            var country = document.getElementById('editCountry').value;
+            if (!name) { showToast('Please enter your name', 'error'); btn.classList.remove('saving'); btn.disabled = false; return; }
+
+            // Handle password change first
+            var newPw = document.getElementById('editNewPassword').value;
+            var confirmPw = document.getElementById('editConfirmPassword').value;
+            var secTab = document.getElementById('securityTab');
+            if (secTab && secTab.style.display !== 'none' && newPw) {
+                if (newPw.length < 6) {
+                    showToast('New password must be at least 6 characters', 'error');
+                    btn.classList.remove('saving'); btn.disabled = false;
+                    return;
+                }
+                if (newPw !== confirmPw) {
+                    showToast('Passwords do not match', 'error');
+                    btn.classList.remove('saving'); btn.disabled = false;
+                    return;
+                }
+                try {
+                    if (AfroAuth.updatePassword) {
+                        var pwResult = await AfroAuth.updatePassword(newPw);
+                        if (!pwResult.ok) {
+                            showToast(pwResult.error || 'Password update failed', 'error');
+                            btn.classList.remove('saving'); btn.disabled = false;
+                            return;
+                        }
+                    }
+                } catch(pwErr) {
+                    showToast('Password update failed', 'error');
+                    btn.classList.remove('saving'); btn.disabled = false;
+                    return;
+                }
+            }
+
+            var profileData = {
+                name: name,
+                country: country,
+                phone: document.getElementById('editPhone').value.trim(),
+                city: document.getElementById('editCity').value.trim(),
+                bio: document.getElementById('editBio').value.trim().substring(0, 200),
+                job_title: document.getElementById('editJobTitle').value.trim(),
+                company: document.getElementById('editCompany').value.trim(),
+                industry: document.getElementById('editIndustry').value,
+                company_size: document.getElementById('editCompanySize').value,
+                experience_level: document.getElementById('editExperience').value,
+                linkedin_url: document.getElementById('editLinkedIn').value.trim(),
+                website_url: document.getElementById('editWebsite').value.trim(),
+                interests: selectedInterests,
+                updated_at: new Date().toISOString()
+            };
+
+            var result = await saveFullProfile(profileData);
+            btn.classList.remove('saving');
+            btn.disabled = false;
+
+            if (result.ok) {
+                extendedProfile = Object.assign(extendedProfile, profileData);
+                currentUser = AfroAuth.getUser() || currentUser;
+                // Update currentUser with new name/country in case AfroAuth.updateProfile updated it
+                currentUser.name = name;
+                currentUser.country = country;
+                loadProfileDisplay();
+                updateCompletenessRing(calculateCompleteness(currentUser, extendedProfile));
+                closeProfileEditor();
+                showToast('Profile saved successfully');
+                // Re-render recommendations with new interests
+                renderSmartRecommendations();
+            } else {
+                showToast(result.error || 'Failed to save profile', 'error');
+            }
+        }
+
+        // ===================== SMART RECOMMENDATIONS =====================
+        function renderSmartRecommendations() {
+            var container = document.getElementById('recommendations');
+            if (!container || typeof AFRO_TOOLS === 'undefined') return;
+
+            var user = currentUser || {};
+            var interests = (extendedProfile && extendedProfile.interests) || selectedInterests || [];
+            var recentIds = AfroData.getRecentTools().map(function(r) { return r.toolId; });
+
+            // Build category set from interests
+            var interestCategories = {};
+            var interestLabels = {};
+            interests.forEach(function(intId) {
+                var opt = INTEREST_OPTIONS.find(function(o) { return o.id === intId; });
+                if (opt) {
+                    opt.categories.forEach(function(cat) {
+                        interestCategories[cat] = true;
+                        interestLabels[cat] = opt.label;
+                    });
+                }
+            });
+
+            var scored = AFRO_TOOLS.filter(function(t) {
+                return t.status === 'live' || t.status === 'new';
+            }).map(function(t) {
+                var score = 0;
+                var reason = '';
+                // Interest match
+                if (interestCategories[t.category]) {
+                    score += 10;
+                    reason = interestLabels[t.category] || t.category;
+                }
+                // Country match
+                if (user.country && (t.countries.indexOf('ALL') !== -1 || t.countries.indexOf(user.country) !== -1)) {
+                    score += 5;
+                }
+                // Freshness boost
+                if (t.status === 'new') score += 3;
+                // Base priority
+                score += (t.priority || 0) / 10;
+                // Avoid repetition
+                if (recentIds.indexOf(t.id) !== -1) score -= 20;
+                return { tool: t, score: score, reason: reason };
+            }).sort(function(a, b) { return b.score - a.score; }).slice(0, 6);
+
+            // Fallback if no good recommendations
+            if (scored.length === 0 || scored[0].score <= 0) {
+                scored = AFRO_TOOLS.filter(function(t) {
+                    return (t.status === 'live' || t.status === 'new') && recentIds.indexOf(t.id) === -1;
+                }).sort(function(a, b) { return b.priority - a.priority; }).slice(0, 6).map(function(t) {
+                    return { tool: t, score: t.priority, reason: '' };
+                });
+            }
+
+            if (scored.length === 0) {
+                container.innerHTML = '<p class="dash-empty">Explore our tools to get personalized recommendations.</p>';
+                return;
+            }
+
+            container.innerHTML = '<div class="rec-grid">' + scored.map(function(item) {
+                var t = item.tool;
+                var reasonHtml = item.reason ? '<div class="rec-reason">Because you\'re interested in ' + item.reason + '</div>' : '';
+                return '<a href="' + t.href + '" class="rec-card">' +
+                    '<span class="rec-icon">' + t.icon + '</span>' +
+                    '<div>' +
+                        '<div class="rec-name">' + t.name + '</div>' +
+                        '<div class="rec-desc">' + (t.desc.length > 70 ? t.desc.substring(0, 70) + '...' : t.desc) + '</div>' +
+                        reasonHtml +
+                    '</div>' +
+                '</a>';
+            }).join('') + '</div>';
+        }
+
+        // ===================== AUTH FLOW =====================
+        function waitForAuth() {
+            if (window.AfroAuth) {
+                AfroAuth.onReady(function() { init(); });
             } else {
                 var attempts = 0;
                 var check = setInterval(function() {
                     attempts++;
                     if (window.AfroAuth) {
                         clearInterval(check);
-                        console.log('[Dashboard] AfroAuth found after', attempts * 100, 'ms');
-                        AfroAuth.onReady(function() {
-                            console.log('[Dashboard] AfroAuth ready (delayed), isLoggedIn:', AfroAuth.isLoggedIn());
-                            init();
-                        });
+                        AfroAuth.onReady(function() { init(); });
                     } else if (attempts > 50) {
                         clearInterval(check);
-                        console.warn('[Dashboard] AfroAuth never loaded after 5s');
                         showAuth();
                     }
                 }, 100);
@@ -952,8 +1880,6 @@
                 showDashboard();
             } else {
                 showAuth();
-                // Race-condition guard: session may still be refreshing.
-                // Re-check a few times in case TOKEN_REFRESHED arrives late.
                 var retries = 0;
                 var recheck = setInterval(function() {
                     retries++;
@@ -980,29 +1906,62 @@
             document.getElementById('dashboardSection').classList.add('active');
             loadDashboardData();
             if (window.AfroDashboard) {
-                try { AfroDashboard.initDashboard(); } catch(e) { console.warn('Dashboard widgets:', e); }
+                try {
+                    // Override renderRecommendations to use smart version
+                    AfroDashboard.renderRecommendations = renderSmartRecommendations;
+                    AfroDashboard.initDashboard();
+                } catch(e) { console.warn('Dashboard widgets:', e); }
+            }
+            // Always re-render recommendations with smart engine
+            renderSmartRecommendations();
+            // Load extended profile
+            loadExtendedProfile();
+        }
+
+        async function loadExtendedProfile() {
+            // Try localStorage first for instant display
+            try {
+                var cached = localStorage.getItem('afro_profile_extended');
+                if (cached) {
+                    extendedProfile = JSON.parse(cached);
+                    selectedInterests = (extendedProfile.interests && Array.isArray(extendedProfile.interests)) ? extendedProfile.interests.slice() : [];
+                    loadProfileDisplay();
+                    updateCompletenessRing(calculateCompleteness(currentUser, extendedProfile));
+                    renderSmartRecommendations();
+                }
+            } catch(e) {}
+
+            // Then fetch from Supabase for fresh data
+            var fresh = await fetchFullProfile();
+            if (fresh) {
+                extendedProfile = fresh;
+                selectedInterests = (fresh.interests && Array.isArray(fresh.interests)) ? fresh.interests.slice() : [];
+                localStorage.setItem('afro_profile_extended', JSON.stringify(fresh));
+                loadProfileDisplay();
+                updateCompletenessRing(calculateCompleteness(currentUser, extendedProfile));
+                renderSmartRecommendations();
+            } else if (!extendedProfile || Object.keys(extendedProfile).length === 0) {
+                // No data anywhere — show empty completeness
+                updateCompletenessRing(calculateCompleteness(currentUser, {}));
             }
         }
 
         function setupEventListeners() {
-            document.getElementById('editProfileBtn')?.addEventListener('click', openEditProfileModal);
-            document.getElementById('logoutBtn')?.addEventListener('click', handleLogout);
+            document.getElementById('editProfileBtn').addEventListener('click', openProfileEditor);
+            document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+            document.getElementById('cancelEditBtn').addEventListener('click', closeProfileEditor);
+            document.getElementById('saveProfileBtn').addEventListener('click', handleSaveProfile);
 
-            document.getElementById('cancelEditBtn')?.addEventListener('click', closeEditProfileModal);
-            document.getElementById('editProfileForm')?.addEventListener('submit', handleEditProfile);
+            // Bio counter
+            document.getElementById('editBio').addEventListener('input', updateBioCounter);
 
-            // Click outside modal to close
-            document.querySelectorAll('.modal').forEach(modal => {
-                modal.addEventListener('click', (e) => {
-                    if (e.target === modal) modal.classList.remove('active');
-                });
-            });
+            // Editor tabs
+            initEditorTabs();
 
-            // Listen for auth changes (e.g. user signs in via modal, or late token refresh)
+            // Auth change listener
             function handleAuthChange() {
                 var wasLoggedIn = isLoggedIn;
                 isLoggedIn = AfroAuth.isLoggedIn();
-                console.log('[Dashboard] Auth change: wasLoggedIn=' + wasLoggedIn + ', isLoggedIn=' + isLoggedIn);
                 if (isLoggedIn && !wasLoggedIn) {
                     currentUser = AfroAuth.getUser();
                     showDashboard();
@@ -1011,7 +1970,6 @@
                 }
             }
             window.addEventListener('afro-auth-change', handleAuthChange);
-            // Also listen on document in case events fire there
             document.addEventListener('afro-auth-change', handleAuthChange);
         }
 
@@ -1019,83 +1977,81 @@
             AfroAuth.logout();
             isLoggedIn = false;
             currentUser = null;
+            extendedProfile = {};
+            selectedInterests = [];
+            closeProfileEditor();
             showAuth();
         }
 
-        function openEditProfileModal() {
-            if (!currentUser) return;
-            document.getElementById('editName').value = currentUser.name || '';
-            document.getElementById('editCountry').value = currentUser.country || '';
-            // Show Change Password only for email-based accounts (not Google OAuth)
-            var pwSection = document.getElementById('changePasswordSection');
-            if (pwSection) {
-                var isOAuth = currentUser.provider === 'google' || currentUser.provider === 'oauth';
-                pwSection.style.display = isOAuth ? 'none' : 'block';
-                // Clear password fields
-                document.getElementById('editCurrentPassword').value = '';
-                document.getElementById('editNewPassword').value = '';
-                document.getElementById('editConfirmPassword').value = '';
-                var pwMsg = document.getElementById('passwordMessage');
-                if (pwMsg) { pwMsg.style.display = 'none'; pwMsg.className = 'message'; }
-            }
-            document.getElementById('editProfileModal').classList.add('active');
-        }
-
-        function closeEditProfileModal() {
-            document.getElementById('editProfileModal').classList.remove('active');
-        }
-
-        async function handleEditProfile(e) {
-            e.preventDefault();
-            const name = document.getElementById('editName').value.trim();
-            const country = document.getElementById('editCountry').value;
-            if (!name || !country) { showEditMessage('Please fill in all fields', 'error'); return; }
-
-            // Handle password change if fields are filled
-            var newPw = document.getElementById('editNewPassword').value;
-            var confirmPw = document.getElementById('editConfirmPassword').value;
-            var pwSection = document.getElementById('changePasswordSection');
-            if (pwSection && pwSection.style.display !== 'none' && newPw) {
-                if (newPw.length < 6) {
-                    showEditMessage('New password must be at least 6 characters', 'error');
-                    return;
-                }
-                if (newPw !== confirmPw) {
-                    showEditMessage('New passwords do not match', 'error');
-                    return;
-                }
-                try {
-                    if (AfroAuth.updatePassword) {
-                        var pwResult = await AfroAuth.updatePassword(newPw);
-                        if (!pwResult.ok) {
-                            showEditMessage(pwResult.error || 'Password update failed', 'error');
-                            return;
-                        }
-                    }
-                } catch(pwErr) {
-                    showEditMessage('Password update failed: ' + (pwErr.message || pwErr), 'error');
-                    return;
-                }
-            }
-
-            const result = await AfroAuth.updateProfile({ name, country });
-            if (result.ok) {
-                currentUser = result.user;
-                loadDashboardData();
-                closeEditProfileModal();
-            } else {
-                showEditMessage(result.error || 'Update failed', 'error');
-            }
-        }
-
+        // ===================== LOAD DASHBOARD DATA =====================
         function loadDashboardData() {
-            loadProfileData();
+            loadProfileDisplay();
             loadFavorites();
             loadMyDocuments();
             loadQuickAccess();
             loadSavedCalculations();
             updateQuickStats();
             loadMarketSnapshot();
+        }
+
+        function loadProfileDisplay() {
+            if (!currentUser) return;
+            var nameEl = document.getElementById('profileName');
+            nameEl.textContent = currentUser.name || 'Welcome back!';
+
+            var jobEl = document.getElementById('profileJobTitle');
+            var p = extendedProfile || {};
+            var jobParts = [];
+            if (p.job_title) jobParts.push(p.job_title);
+            if (p.company) jobParts.push(p.company);
+            jobEl.textContent = jobParts.join(' at ');
+            jobEl.style.display = jobParts.length > 0 ? 'block' : 'none';
+
+            document.getElementById('profileEmail').textContent = currentUser.email || '-';
+            document.getElementById('profileCountry').textContent = currentUser.country || '-';
+
+            var createdDate = new Date(currentUser.createdAt);
+            document.getElementById('profileMemberSince').textContent = isNaN(createdDate.getTime()) ? '-' : createdDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
+
+            // Plan badge
+            var badge = document.getElementById('profilePlanBadge');
+            if (currentUser.tier === 'pro') {
+                badge.textContent = 'Pro';
+                badge.className = 'plan-badge pro';
+            } else {
+                badge.textContent = 'Free';
+                badge.className = 'plan-badge free';
+            }
+
+            // Hide Pro upsell for Pro users
+            var proUpsell = document.getElementById('proUpsell');
+            if (proUpsell) proUpsell.style.display = currentUser.tier === 'pro' ? 'none' : '';
+
+            // Avatar
+            renderAvatar();
+        }
+
+        function renderAvatar() {
+            var wrap = document.getElementById('avatarWrap');
+            var img = document.getElementById('profileAvatar');
+            // Remove old fallback
+            var oldFb = wrap.querySelector('.avatar-initial-lg');
+            if (oldFb) oldFb.remove();
+
+            if (currentUser.avatar_url) {
+                img.src = currentUser.avatar_url;
+                img.style.display = 'block';
+            } else {
+                img.style.display = 'none';
+                var initial = (currentUser.name || currentUser.email || '?').charAt(0).toUpperCase();
+                var colors = ['#007AFF','#34C759','#FF9500','#AF52DE','#FF3B30','#5AC8FA','#FF2D55','#5856D6'];
+                var colorIdx = initial.charCodeAt(0) % colors.length;
+                var fb = document.createElement('div');
+                fb.className = 'avatar-initial-lg';
+                fb.style.background = colors[colorIdx];
+                fb.textContent = initial;
+                wrap.insertBefore(fb, img);
+            }
         }
 
         function loadMarketSnapshot() {
@@ -1109,102 +2065,59 @@
             }).catch(function(){});
         }
 
-        function loadProfileData() {
-            if (!currentUser) return;
-            document.getElementById('welcomeMessage').textContent = 'Welcome back, ' + (currentUser.name || 'there') + '!';
-            document.getElementById('profileEmail').textContent = currentUser.email;
-            document.getElementById('profileCountry').textContent = currentUser.country || '-';
-            document.getElementById('profileTier').textContent = currentUser.tier === 'pro' ? 'Pro' : 'Free';
-
-            // Hide Pro upsell for Pro users
-            var proUpsell = document.getElementById('proUpsell');
-            if (proUpsell) proUpsell.style.display = currentUser.tier === 'pro' ? 'none' : 'block';
-
-            // Avatar — show image if available, otherwise generate initial circle
-            var avatarEl = document.getElementById('profileAvatar');
-            var avatarWrap = document.getElementById('profileAvatarWrap');
-            if (avatarEl && avatarWrap) {
-                if (currentUser.avatar_url) {
-                    avatarEl.src = currentUser.avatar_url;
-                    avatarEl.style.display = 'block';
-                    // Remove any generated fallback
-                    var existingFallback = avatarWrap.querySelector('.avatar-initial');
-                    if (existingFallback) existingFallback.remove();
-                } else {
-                    avatarEl.style.display = 'none';
-                    // Generate initial-based avatar if not already present
-                    if (!avatarWrap.querySelector('.avatar-initial')) {
-                        var initial = (currentUser.name || currentUser.email || '?').charAt(0).toUpperCase();
-                        var colors = ['#007AFF','#34C759','#FF9500','#AF52DE','#FF3B30','#5AC8FA','#FF2D55','#5856D6'];
-                        var colorIdx = initial.charCodeAt(0) % colors.length;
-                        var fallback = document.createElement('div');
-                        fallback.className = 'avatar-initial';
-                        fallback.style.cssText = 'width:52px;height:52px;border-radius:50%;background:' + colors[colorIdx] + ';color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:700;border:2px solid #e2e8f0;flex-shrink:0;';
-                        fallback.textContent = initial;
-                        avatarWrap.insertBefore(fallback, avatarEl);
-                    }
-                }
-            }
-
-            var createdDate = new Date(currentUser.createdAt);
-            document.getElementById('profileMemberSince').textContent = createdDate.toLocaleDateString('en-US', {
-                year: 'numeric', month: 'long', day: 'numeric'
-            });
-        }
-
         function loadQuickAccess() {
-            const container = document.getElementById('quickAccessContainer');
-            const recentTools = AfroData.getRecentTools();
+            var container = document.getElementById('quickAccessContainer');
+            var recentTools = AfroData.getRecentTools();
             if (recentTools.length === 0) {
-                container.innerHTML = '<p style="color:#94a3b8;grid-column:1/-1;">Start using tools to see them here</p>';
+                container.innerHTML = '<p style="color:#94a3b8;grid-column:1/-1;font-size:0.85rem;">Start using tools to see them here</p>';
                 return;
             }
-            container.innerHTML = recentTools.slice(0, 6).map(tool => {
-                const meta = toolMetadata[tool.toolId] || { name: tool.name || tool.toolId, icon: '🔧' };
-                const daysAgo = Math.floor((Date.now() - new Date(tool.date)) / 86400000);
-                const timeStr = daysAgo === 0 ? 'Today' : daysAgo + ' days ago';
+            container.innerHTML = recentTools.slice(0, 6).map(function(tool) {
+                var meta = toolMetadata[tool.toolId] || { name: tool.name || tool.toolId, icon: '\uD83D\uDD27' };
+                var daysAgo = Math.floor((Date.now() - new Date(tool.date)) / 86400000);
+                var timeStr = daysAgo === 0 ? 'Today' : daysAgo + ' days ago';
                 return '<a href="/tools/' + tool.toolId + '/" class="quick-access-card"><div class="tool-icon">' + meta.icon + '</div><div class="quick-access-name">' + meta.name + '</div><div class="quick-access-date">' + timeStr + '</div></a>';
             }).join('');
         }
 
         function loadSavedCalculations() {
-            const container = document.getElementById('savedContainer');
-            const allSaved = AfroData.getAllSaved();
+            var container = document.getElementById('savedContainer');
+            var allSaved = AfroData.getAllSaved();
             if (Object.keys(allSaved).length === 0) {
                 container.innerHTML = '<div class="empty-state">No saved calculations yet. Try a tool and save your results!</div>';
                 return;
             }
-            container.innerHTML = Object.entries(allSaved).map(([toolId, data]) => {
-                const meta = toolMetadata[toolId] || { name: toolId, icon: '🔧' };
-                const formatted = new Date(data.latest.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-                let displayValue = data.count + ' saved item' + (data.count !== 1 ? 's' : '');
-                return '<div class="saved-item"><div class="saved-content"><h3>' + meta.name + '</h3><div class="saved-value">' + displayValue + '</div><div class="saved-meta">Last used: ' + formatted + '</div></div><div class="saved-actions"><a href="/tools/' + toolId + '/" class="btn btn-secondary btn-icon">View</a><button class="btn btn-secondary btn-icon" onclick="clearSaved(\'' + toolId + '\')">Clear</button></div></div>';
+            container.innerHTML = Object.entries(allSaved).map(function(entry) {
+                var toolId = entry[0], data = entry[1];
+                var meta = toolMetadata[toolId] || { name: toolId, icon: '\uD83D\uDD27' };
+                var formatted = new Date(data.latest.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                var displayValue = data.count + ' saved item' + (data.count !== 1 ? 's' : '');
+                return '<div class="saved-item"><div class="saved-content"><h3>' + meta.name + '</h3><div class="saved-value">' + displayValue + '</div><div class="saved-meta">Last used: ' + formatted + '</div></div><div class="saved-actions"><a href="/tools/' + toolId + '/" class="btn btn-secondary" style="font-size:0.8rem;padding:6px 12px;">View</a><button class="btn btn-secondary" style="font-size:0.8rem;padding:6px 12px;" onclick="clearSaved(\'' + toolId + '\')">Clear</button></div></div>';
             }).join('');
         }
 
         function loadFavorites() {
-            const container = document.getElementById('favoritesContainer');
-            const registry = typeof AFRO_TOOLS !== 'undefined' ? AFRO_TOOLS : [];
+            var container = document.getElementById('favoritesContainer');
+            var registry = typeof AFRO_TOOLS !== 'undefined' ? AFRO_TOOLS : [];
 
             function renderFavGrid(favorites) {
                 if (favorites.length === 0) {
-                    container.innerHTML = '<div style="background:#F9FAFB;border:1.5px dashed #D1D5DB;border-radius:12px;padding:24px;text-align:center;color:#9CA3AF;font-size:.85rem;grid-column:1/-1;"><div style="font-size:2rem;margin-bottom:8px;">⭐</div>No saved tools yet.<br><span style="font-size:.78rem;">Click the ★ button on any tool page to save it here.</span></div>';
+                    container.innerHTML = '<div style="background:#F9FAFB;border:1.5px dashed #D1D5DB;border-radius:12px;padding:24px;text-align:center;color:#9CA3AF;font-size:.85rem;grid-column:1/-1;"><div style="font-size:2rem;margin-bottom:8px;">&#x2B50;</div>No saved tools yet.<br><span style="font-size:.78rem;">Click the star button on any tool page to save it here.</span></div>';
                     return;
                 }
-                container.innerHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;">' + favorites.map(toolId => {
-                    const regTool = registry.find(t => t.id === toolId);
-                    const meta = toolMetadata[toolId] || (regTool ? { name: regTool.name, icon: regTool.icon || '🔧' } : { name: toolId.replace(/-/g,' '), icon: '🔧' });
-                    const href = regTool ? regTool.href : '/tools/' + toolId + '/';
-                    const imgSrc = '/assets/img/tools/' + toolId + '.webp';
-                    const imgFb = '/assets/img/tool-icons/' + toolId + '.png';
-                    return `<a href="${href}" style="background:#fff;border:1.5px solid #E5E7EB;border-radius:14px;padding:14px 12px;text-decoration:none;color:inherit;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;transition:all .18s;" onmouseover="this.style.borderColor='#007AFF';this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 20px rgba(0,122,255,.10)'" onmouseout="this.style.borderColor='#E5E7EB';this.style.transform='none';this.style.boxShadow='none'">
-                        <div style="width:48px;height:48px;border-radius:12px;background:#EFF6FF;display:flex;align-items:center;justify-content:center;font-size:1.4rem;overflow:hidden;"><img src="${imgSrc}" alt="" width="36" height="36" style="width:36px;height:36px;object-fit:contain;border-radius:8px;" onerror="this.onerror=function(){this.outerHTML='${meta.icon}'};this.src='${imgFb}'"></div>
-                        <div style="font-size:.78rem;font-weight:700;color:#111827;line-height:1.3;">${meta.name}</div>
-                    </a>`;
-                }).join('') + '</div>';
+                container.innerHTML = favorites.map(function(toolId) {
+                    var regTool = registry.find(function(t) { return t.id === toolId; });
+                    var meta = toolMetadata[toolId] || (regTool ? { name: regTool.name, icon: regTool.icon || '\uD83D\uDD27' } : { name: toolId.replace(/-/g,' '), icon: '\uD83D\uDD27' });
+                    var href = regTool ? regTool.href : '/tools/' + toolId + '/';
+                    var imgSrc = '/assets/img/tools/' + toolId + '.webp';
+                    var imgFb = '/assets/img/tool-icons/' + toolId + '.png';
+                    return '<a href="' + href + '" style="background:#fff;border:1.5px solid #E5E7EB;border-radius:14px;padding:14px 12px;text-decoration:none;color:inherit;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;transition:all .18s;" onmouseover="this.style.borderColor=\'#007AFF\';this.style.transform=\'translateY(-3px)\';this.style.boxShadow=\'0 8px 20px rgba(0,122,255,.10)\'" onmouseout="this.style.borderColor=\'#E5E7EB\';this.style.transform=\'none\';this.style.boxShadow=\'none\'">' +
+                        '<div style="width:48px;height:48px;border-radius:12px;background:#EFF6FF;display:flex;align-items:center;justify-content:center;font-size:1.4rem;overflow:hidden;"><img src="' + imgSrc + '" alt="" width="36" height="36" style="width:36px;height:36px;object-fit:contain;border-radius:8px;" onerror="this.onerror=function(){this.outerHTML=\'' + meta.icon + '\'};this.src=\'' + imgFb + '\'"></div>' +
+                        '<div style="font-size:.78rem;font-weight:700;color:#111827;line-height:1.3;">' + meta.name + '</div>' +
+                    '</a>';
+                }).join('');
             }
 
-            // Render localStorage favorites immediately, then update from Supabase
             var localFavs = JSON.parse(localStorage.getItem('afro_favs_v2') || '[]');
             renderFavGrid(localFavs);
             if (typeof window._savedToolsInstance !== 'undefined') {
@@ -1213,112 +2126,73 @@
                     new Promise(function(_, reject) { setTimeout(function() { reject('timeout'); }, 3000); })
                 ]).then(function(items) {
                     renderFavGrid(items.map(function(i) { return i.slug; }));
-                }).catch(function() { /* keep localStorage render */ });
+                }).catch(function() {});
             }
         }
 
         function loadMyDocuments() {
-            const container = document.getElementById('myDocumentsContainer');
+            var container = document.getElementById('myDocumentsContainer');
             if (!container) return;
-            const docs = [];
+            var docs = [];
 
-            // Check invoice generator drafts
             try {
-                const inv = localStorage.getItem('afro_invoice_draft');
+                var inv = localStorage.getItem('afro_invoice_draft');
                 if (inv) {
-                    const d = JSON.parse(inv);
-                    docs.push({
-                        type: 'Invoice',
-                        icon: '🧾',
-                        name: d.invoiceNumber ? 'Invoice #' + d.invoiceNumber : 'Invoice Draft',
-                        detail: d.client || 'Client draft',
-                        href: '/tools/invoice-generator/',
-                        color: '#EFF6FF',
-                        saved: d.savedAt ? new Date(d.savedAt).toLocaleDateString('en-US', {month:'short',day:'numeric'}) : 'Recent'
-                    });
+                    var d = JSON.parse(inv);
+                    docs.push({ type: 'Invoice', icon: '\uD83E\uDDFE', name: d.invoiceNumber ? 'Invoice #' + d.invoiceNumber : 'Invoice Draft', detail: d.client || 'Client draft', href: '/tools/invoice-generator/', color: '#EFF6FF', saved: d.savedAt ? new Date(d.savedAt).toLocaleDateString('en-US', {month:'short',day:'numeric'}) : 'Recent' });
                 }
             } catch(e) {}
 
-            // Check CV builder data
             try {
-                const cv = localStorage.getItem('afro_cv_data') || localStorage.getItem('cv_builder_data');
+                var cv = localStorage.getItem('afro_cv_data') || localStorage.getItem('cv_builder_data');
                 if (cv) {
-                    const d = JSON.parse(cv);
-                    docs.push({
-                        type: 'CV / Résumé',
-                        icon: '📄',
-                        name: (d.name || d.fullName || 'My CV'),
-                        detail: d.title || d.jobTitle || 'Professional CV',
-                        href: '/tools/cv-builder/',
-                        color: '#EFF6FF',
-                        saved: d.savedAt ? new Date(d.savedAt).toLocaleDateString('en-US', {month:'short',day:'numeric'}) : 'Recent'
-                    });
+                    var d = JSON.parse(cv);
+                    docs.push({ type: 'CV / R\u00E9sum\u00E9', icon: '\uD83D\uDCC4', name: (d.name || d.fullName || 'My CV'), detail: d.title || d.jobTitle || 'Professional CV', href: '/tools/cv-builder/', color: '#EFF6FF', saved: d.savedAt ? new Date(d.savedAt).toLocaleDateString('en-US', {month:'short',day:'numeric'}) : 'Recent' });
                 }
             } catch(e) {}
 
-            // Check PAYE calculations saved
             try {
-                const paye = localStorage.getItem('afro_paye_saved');
+                var paye = localStorage.getItem('afro_paye_saved');
                 if (paye) {
-                    const d = JSON.parse(paye);
-                    docs.push({
-                        type: 'Tax Calculation',
-                        icon: '💰',
-                        name: 'PAYE Result',
-                        detail: d.country ? d.country + ' — ' + (d.gross || '') : 'Saved calculation',
-                        href: '/salary-tax/',
-                        color: '#FFF8E8',
-                        saved: d.date ? new Date(d.date).toLocaleDateString('en-US', {month:'short',day:'numeric'}) : 'Recent'
-                    });
+                    var d = JSON.parse(paye);
+                    docs.push({ type: 'Tax Calculation', icon: '\uD83D\uDCB0', name: 'PAYE Result', detail: d.country ? d.country + ' \u2014 ' + (d.gross || '') : 'Saved calculation', href: '/salary-tax/', color: '#FFF8E8', saved: d.date ? new Date(d.date).toLocaleDateString('en-US', {month:'short',day:'numeric'}) : 'Recent' });
                 }
             } catch(e) {}
 
-            // Check markdown editor drafts
             try {
-                const md = localStorage.getItem('afro_markdown_draft') || localStorage.getItem('markdown_content');
+                var md = localStorage.getItem('afro_markdown_draft') || localStorage.getItem('markdown_content');
                 if (md && md.length > 20) {
-                    docs.push({
-                        type: 'Document',
-                        icon: '📝',
-                        name: 'Markdown Draft',
-                        detail: md.substring(0, 60).replace(/[#*\[\]]/g, '') + '...',
-                        href: '/tools/markdown-editor/',
-                        color: '#F5F3FF',
-                        saved: 'Recent'
-                    });
+                    docs.push({ type: 'Document', icon: '\uD83D\uDCDD', name: 'Markdown Draft', detail: md.substring(0, 60).replace(/[#*\[\]]/g, '') + '...', href: '/tools/markdown-editor/', color: '#F5F3FF', saved: 'Recent' });
                 }
             } catch(e) {}
 
-            // Update stats
-            const statDocs = document.getElementById('stat-docs');
+            var statDocs = document.getElementById('stat-docs');
             if (statDocs) statDocs.textContent = docs.length;
 
             if (docs.length === 0) {
-                container.innerHTML = '<div style="background:#fff;border:1.5px solid #E5E7EB;border-radius:12px;padding:24px;text-align:center;color:#9CA3AF;font-size:.85rem;"><div style="font-size:2rem;margin-bottom:8px;">📂</div>PDFs and documents you generate will appear here.<br><span style="font-size:.78rem;">Use tools like Invoice Generator, CV Builder, or PAYE Calculator to get started.</span></div>';
+                container.innerHTML = '<div style="background:#fff;border:1.5px solid #E5E7EB;border-radius:12px;padding:24px;text-align:center;color:#9CA3AF;font-size:.85rem;"><div style="font-size:2rem;margin-bottom:8px;">&#x1F4C2;</div>PDFs and documents you generate will appear here.<br><span style="font-size:.78rem;">Use tools like Invoice Generator, CV Builder, or PAYE Calculator to get started.</span></div>';
                 return;
             }
 
             container.innerHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;">' +
-                docs.map(doc => `
-                    <a href="${doc.href}" style="background:${doc.color};border:1.5px solid #E5E7EB;border-radius:14px;padding:18px 18px 16px;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:8px;transition:all .18s;" onmouseover="this.style.borderColor='#007AFF';this.style.boxShadow='0 4px 16px rgba(0,122,255,.08)'" onmouseout="this.style.borderColor='#E5E7EB';this.style.boxShadow='none'">
-                        <div style="display:flex;align-items:center;justify-content:space-between;">
-                            <span style="font-size:1.6rem;">${doc.icon}</span>
-                            <span style="font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#007AFF;background:rgba(0,122,255,.08);padding:3px 8px;border-radius:100px;">${doc.type}</span>
-                        </div>
-                        <div style="font-size:.9rem;font-weight:700;color:#111827;line-height:1.3;">${doc.name}</div>
-                        <div style="font-size:.75rem;color:#6B7280;line-height:1.5;">${doc.detail}</div>
-                        <div style="font-size:.68rem;color:#9CA3AF;margin-top:2px;">Saved: ${doc.saved} · Click to continue →</div>
-                    </a>
-                `).join('') + '</div>';
+                docs.map(function(doc) {
+                    return '<a href="' + doc.href + '" style="background:' + doc.color + ';border:1.5px solid #E5E7EB;border-radius:14px;padding:18px 18px 16px;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:8px;transition:all .18s;" onmouseover="this.style.borderColor=\'#007AFF\';this.style.boxShadow=\'0 4px 16px rgba(0,122,255,.08)\'" onmouseout="this.style.borderColor=\'#E5E7EB\';this.style.boxShadow=\'none\'">' +
+                        '<div style="display:flex;align-items:center;justify-content:space-between;">' +
+                            '<span style="font-size:1.6rem;">' + doc.icon + '</span>' +
+                            '<span style="font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#007AFF;background:rgba(0,122,255,.08);padding:3px 8px;border-radius:100px;">' + doc.type + '</span>' +
+                        '</div>' +
+                        '<div style="font-size:.9rem;font-weight:700;color:#111827;line-height:1.3;">' + doc.name + '</div>' +
+                        '<div style="font-size:.75rem;color:#6B7280;line-height:1.5;">' + doc.detail + '</div>' +
+                        '<div style="font-size:.68rem;color:#9CA3AF;margin-top:2px;">Saved: ' + doc.saved + ' \u00B7 Click to continue \u2192</div>' +
+                    '</a>';
+                }).join('') + '</div>';
         }
 
         function updateQuickStats() {
             try {
-                // Saved calculations count
                 var calcs = 0;
                 if (typeof AfroData !== 'undefined' && AfroData.getAllSaved) {
                     var allSaved = AfroData.getAllSaved();
-                    // Count total individual saved items across all tools
                     Object.values(allSaved).forEach(function(data) {
                         calcs += (data.count || 1);
                     });
@@ -1326,18 +2200,15 @@
                 var statCalcs = document.getElementById('stat-calcs');
                 if (statCalcs) statCalcs.textContent = calcs;
 
-                // Plan
                 var statPlan = document.getElementById('stat-plan');
                 if (statPlan && currentUser) statPlan.textContent = currentUser.tier === 'pro' ? 'Pro' : 'Free';
 
-                // Favorites count — try SavedTools instance first, then localStorage
                 var statFavs = document.getElementById('stat-favs');
                 if (statFavs) {
                     if (typeof window._savedToolsInstance !== 'undefined') {
                         window._savedToolsInstance.getAll().then(function(items) {
                             statFavs.textContent = items.length;
                         }).catch(function() {
-                            // Fallback to localStorage
                             var localFavs = JSON.parse(localStorage.getItem('afro_favs_v2') || '[]');
                             statFavs.textContent = localFavs.length;
                         });
@@ -1346,21 +2217,15 @@
                         statFavs.textContent = localFavs.length;
                     }
                 }
-
-                // stat-docs is updated by loadMyDocuments(), keep as-is
             } catch(e) { console.warn('updateQuickStats error:', e); }
         }
 
         function clearSaved(toolId) {
-            if (confirm('Clear all saved data for ' + (toolMetadata[toolId]?.name || toolId) + '?')) {
+            if (confirm('Clear all saved data for ' + (toolMetadata[toolId] ? toolMetadata[toolId].name : toolId) + '?')) {
                 AfroData.clearTool(toolId);
                 loadSavedCalculations();
+                updateQuickStats();
             }
-        }
-
-        function showEditMessage(msg, type) {
-            const el = document.getElementById('editMessage');
-            if (el) { el.textContent = msg; el.className = 'message show ' + type; }
         }
 
         // Start

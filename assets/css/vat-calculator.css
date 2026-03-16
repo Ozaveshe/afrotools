@@ -15,31 +15,48 @@
 .vat-hero {
   background: linear-gradient(135deg, #0a1929 0%, #0d2040 50%, #0d2b5e 100%);
   color: #fff;
-  padding: 56px 20px 48px;
+  padding: 60px 20px 52px;
   text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.vat-hero::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  right: -10%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(93,219,158,0.08) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
 }
 .vat-hero h1 {
-  font-size: clamp(1.6rem, 4vw, 2.6rem);
+  font-size: clamp(1.8rem, 4.5vw, 2.8rem);
   font-weight: 800;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   letter-spacing: -0.03em;
+  color: #ffffff !important;
+  text-transform: none;
+  line-height: 1.15;
 }
 .vat-hero p {
-  font-size: 0.95rem;
-  color: rgba(255,255,255,0.7);
-  max-width: 600px;
-  margin: 0 auto 20px;
-  line-height: 1.6;
+  font-size: 1rem;
+  color: rgba(255,255,255,0.75);
+  max-width: 620px;
+  margin: 0 auto 24px;
+  line-height: 1.65;
 }
 .vat-badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
 .vat-badge {
-  background: rgba(255,255,255,0.12);
-  color: rgba(255,255,255,0.9);
-  padding: 6px 14px;
+  background: rgba(93,219,158,0.12);
+  color: rgba(255,255,255,0.92);
+  padding: 6px 16px;
   border-radius: 20px;
   font-size: 12px;
   font-weight: 600;
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid rgba(93,219,158,0.2);
+  backdrop-filter: blur(4px);
 }
 
 /* ── TABS ────────────────────────────────────────── */
@@ -404,6 +421,138 @@
 .vat-seo h3 { font-size: 1.1rem; font-weight: 600; margin: 20px 0 8px; }
 .vat-seo p { color: #444; line-height: 1.7; margin-bottom: 16px; }
 
+/* ── QUICK STRIP ─────────────────────────────────── */
+.vat-quick-strip {
+  display: flex;
+  gap: 8px;
+  padding: 16px 0 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.vat-quick-strip::-webkit-scrollbar { display: none; }
+.vat-quick-btn {
+  flex-shrink: 0;
+  background: #fff;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.vat-quick-btn:hover { border-color: var(--color-primary); color: var(--color-primary); background: #f0f7ff; }
+.vat-quick-btn.active { background: var(--color-primary); color: #fff; border-color: var(--color-primary); }
+
+/* ── KEYBOARD HINT ──────────────────────────────── */
+.vat-keyboard-hint {
+  text-align: center;
+  font-size: 0.78rem;
+  color: #9ca3af;
+  margin-top: 10px;
+}
+.vat-keyboard-hint kbd {
+  background: #f3f4f6;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-size: 0.75rem;
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* ── RESULTS SUBTITLE ───────────────────────────── */
+.vat-results-subtitle {
+  font-size: 0.82rem;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+/* ── RATE NOTICE ────────────────────────────────── */
+.vat-rate-notice {
+  margin: 0 28px 12px;
+  padding: 10px 14px;
+  background: #fef3c7;
+  border: 1px solid #fbbf24;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  color: #92400e;
+  line-height: 1.5;
+}
+
+/* ── COUNTRY DETAIL CARD ────────────────────────── */
+.vat-country-detail {
+  margin: 0 28px 16px;
+  padding: 16px;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+}
+.vat-country-detail h4 {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #111827 !important;
+  text-transform: none;
+  margin-bottom: 12px;
+}
+.vat-detail-grid { display: grid; gap: 8px; }
+.vat-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.82rem;
+  padding: 4px 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+.vat-detail-row span { color: #6b7280; }
+.vat-detail-row strong { color: #111827; font-weight: 600; text-align: right; }
+.vat-detail-note {
+  font-size: 0.78rem;
+  color: #6b7280;
+  margin-top: 10px;
+  line-height: 1.5;
+  font-style: italic;
+}
+
+/* ── HISTORY ────────────────────────────────────── */
+.vat-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.vat-clear-history {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+.vat-clear-history:hover { color: #ef4444; background: #fef2f2; }
+.vat-history-list { max-height: 300px; overflow-y: auto; }
+.vat-history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #f3f4f6;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: background 0.15s;
+  border-radius: 4px;
+  padding-inline: 4px;
+}
+.vat-history-item:hover { background: #f0f7ff; }
+.vat-history-country { font-weight: 600; color: #111827; }
+.vat-history-amount { color: var(--color-primary); font-weight: 600; }
+.vat-history-meta { color: #9ca3af; font-size: 0.72rem; }
+
 /* ── UTILITY ─────────────────────────────────────── */
 .vat-muted { font-size: 0.88rem; color: #6b7280; line-height: 1.5; }
 
@@ -472,4 +621,19 @@
   .vat-line-rm { border-color: #334155; }
   .vat-seo h2, .vat-seo h3 { color: #e2e8f0; }
   .vat-seo p { color: #94a3b8; }
+  .vat-quick-btn { background: #1e293b; border-color: #334155; color: #94a3b8; }
+  .vat-quick-btn:hover { background: #1e3a5f; color: #60a5fa; }
+  .vat-quick-btn.active { background: var(--color-primary); color: #fff; }
+  .vat-keyboard-hint { color: #4b5563; }
+  .vat-keyboard-hint kbd { background: #1e293b; border-color: #334155; color: #94a3b8; }
+  .vat-rate-notice { background: #422006; border-color: #78350f; color: #fbbf24; }
+  .vat-country-detail { background: #0f172a; border-color: #334155; }
+  .vat-country-detail h4 { color: #e2e8f0 !important; }
+  .vat-detail-row span { color: #94a3b8; }
+  .vat-detail-row strong { color: #e2e8f0; }
+  .vat-detail-row { border-bottom-color: #1e293b; }
+  .vat-detail-note { color: #64748b; }
+  .vat-history-item:hover { background: #1e293b; }
+  .vat-history-country { color: #e2e8f0; }
+  .vat-history-meta { color: #4b5563; }
 }

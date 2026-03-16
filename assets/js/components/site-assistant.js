@@ -195,9 +195,9 @@ IMPORTANT RULES:
       this._welcomed = false;
       this._hasBeenOpened = !!localStorage.getItem('afrobot_opened');
 
-      // Theme: use localStorage if set, otherwise detect system preference
+      // Theme: use localStorage if set, otherwise default to light (white)
       const stored = localStorage.getItem('afrobot_theme');
-      this._theme = stored || detectSystemTheme();
+      this._theme = stored || 'light';
     }
 
     connectedCallback() {
