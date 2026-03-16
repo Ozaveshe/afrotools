@@ -256,6 +256,7 @@
             border-radius: 0.875rem;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
             margin-bottom: 2rem;
+            border-left: 4px solid #007AFF;
         }
 
         .dashboard-header h1 {
@@ -307,11 +308,13 @@
             border-radius: 0.875rem;
             padding: 1.5rem;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            transition: box-shadow 0.2s;
+            transition: box-shadow 0.2s, border-color 0.2s;
+            border: 1.5px solid transparent;
         }
 
         .card:hover {
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-color: #007AFF;
         }
 
         .card-header {
@@ -486,6 +489,8 @@
 
         .modal.active {
             display: flex;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
         }
 
         .modal-content {
@@ -626,7 +631,7 @@
         <div id="dashboardSection" class="dashboard">
             <!-- Header -->
             <div class="dashboard-header">
-                <div style="display:flex;align-items:center;gap:1rem;margin-bottom:0.5rem;">
+                <div id="profileAvatarWrap" style="display:flex;align-items:center;gap:1rem;margin-bottom:0.5rem;">
                     <img id="profileAvatar" src="" alt="" style="width:52px;height:52px;border-radius:50%;object-fit:cover;display:none;border:2px solid #e2e8f0;">
                     <div>
                         <h1 id="welcomeMessage" style="margin:0;">Welcome back!</h1>
@@ -670,21 +675,80 @@
                             <label for="editCountry">Country</label>
                             <select id="editCountry" required>
                                 <option value="">Select a country</option>
-                                <option value="Nigeria">Nigeria</option>
-                                <option value="Kenya">Kenya</option>
-                                <option value="Ghana">Ghana</option>
-                                <option value="South Africa">South Africa</option>
-                                <option value="Egypt">Egypt</option>
-                                <option value="Tanzania">Tanzania</option>
-                                <option value="Uganda">Uganda</option>
-                                <option value="Rwanda">Rwanda</option>
-                                <option value="Ethiopia">Ethiopia</option>
-                                <option value="Morocco">Morocco</option>
-                                <option value="Senegal">Senegal</option>
+                                <option value="Algeria">Algeria</option>
+                                <option value="Angola">Angola</option>
+                                <option value="Benin">Benin</option>
+                                <option value="Botswana">Botswana</option>
+                                <option value="Burkina Faso">Burkina Faso</option>
+                                <option value="Burundi">Burundi</option>
+                                <option value="Cabo Verde">Cabo Verde</option>
                                 <option value="Cameroon">Cameroon</option>
+                                <option value="Central African Republic">Central African Republic</option>
+                                <option value="Chad">Chad</option>
+                                <option value="Comoros">Comoros</option>
                                 <option value="Côte d'Ivoire">Côte d'Ivoire</option>
+                                <option value="DR Congo">DR Congo</option>
+                                <option value="Djibouti">Djibouti</option>
+                                <option value="Egypt">Egypt</option>
+                                <option value="Equatorial Guinea">Equatorial Guinea</option>
+                                <option value="Eritrea">Eritrea</option>
+                                <option value="Eswatini">Eswatini</option>
+                                <option value="Ethiopia">Ethiopia</option>
+                                <option value="Gabon">Gabon</option>
+                                <option value="Gambia">Gambia</option>
+                                <option value="Ghana">Ghana</option>
+                                <option value="Guinea">Guinea</option>
+                                <option value="Guinea-Bissau">Guinea-Bissau</option>
+                                <option value="Kenya">Kenya</option>
+                                <option value="Lesotho">Lesotho</option>
+                                <option value="Liberia">Liberia</option>
+                                <option value="Libya">Libya</option>
+                                <option value="Madagascar">Madagascar</option>
+                                <option value="Malawi">Malawi</option>
+                                <option value="Mali">Mali</option>
+                                <option value="Mauritania">Mauritania</option>
+                                <option value="Mauritius">Mauritius</option>
+                                <option value="Morocco">Morocco</option>
+                                <option value="Mozambique">Mozambique</option>
+                                <option value="Namibia">Namibia</option>
+                                <option value="Niger">Niger</option>
+                                <option value="Nigeria">Nigeria</option>
+                                <option value="Republic of the Congo">Republic of the Congo</option>
+                                <option value="Rwanda">Rwanda</option>
+                                <option value="São Tomé and Príncipe">São Tomé and Príncipe</option>
+                                <option value="Senegal">Senegal</option>
+                                <option value="Seychelles">Seychelles</option>
+                                <option value="Sierra Leone">Sierra Leone</option>
+                                <option value="Somalia">Somalia</option>
+                                <option value="South Africa">South Africa</option>
+                                <option value="South Sudan">South Sudan</option>
+                                <option value="Sudan">Sudan</option>
+                                <option value="Tanzania">Tanzania</option>
+                                <option value="Togo">Togo</option>
+                                <option value="Tunisia">Tunisia</option>
+                                <option value="Uganda">Uganda</option>
+                                <option value="Zambia">Zambia</option>
+                                <option value="Zimbabwe">Zimbabwe</option>
                                 <option value="Other">Other</option>
                             </select>
+                        </div>
+
+                        <!-- Change Password (email accounts only, hidden for OAuth) -->
+                        <div id="changePasswordSection" style="display:none;border-top:1px solid #e2e8f0;padding-top:1.25rem;margin-top:1rem;">
+                            <h3 style="font-size:0.95rem;font-weight:600;margin-bottom:1rem;color:#1e293b;">Change Password</h3>
+                            <div class="form-group">
+                                <label for="editCurrentPassword">Current Password</label>
+                                <input type="password" id="editCurrentPassword" autocomplete="current-password">
+                            </div>
+                            <div class="form-group">
+                                <label for="editNewPassword">New Password</label>
+                                <input type="password" id="editNewPassword" minlength="6" autocomplete="new-password">
+                            </div>
+                            <div class="form-group">
+                                <label for="editConfirmPassword">Confirm New Password</label>
+                                <input type="password" id="editConfirmPassword" minlength="6" autocomplete="new-password">
+                            </div>
+                            <div class="message" id="passwordMessage" style="display:none;"></div>
                         </div>
 
                         <div class="modal-actions">
@@ -754,11 +818,11 @@
             </div>
             <div style="background:#fff;border:1.5px solid #E5E7EB;border-radius:14px;padding:20px;margin-bottom:28px;">
               <ul style="list-style:none;padding:0;margin:0;display:grid;gap:10px;">
+                <li style="display:flex;align-items:center;gap:10px;font-size:.88rem;">&#x20BF; AfroCrypto &mdash; 15 crypto tools for Africa</li>
+                <li style="display:flex;align-items:center;gap:10px;font-size:.88rem;">&#x1F6E1;&#xFE0F; Crypto Safety Suite &mdash; scam checker, address validator, exchange ratings</li>
                 <li style="display:flex;align-items:center;gap:10px;font-size:.88rem;">&#x1F4CA; AfroFX Live Currency Dashboard</li>
                 <li style="display:flex;align-items:center;gap:10px;font-size:.88rem;">&#x26FD; AfroFuel Price Tracker for 54 countries</li>
                 <li style="display:flex;align-items:center;gap:10px;font-size:.88rem;">&#x1F3E6; AfroRates Central Bank Rate Tracker</li>
-                <li style="display:flex;align-items:center;gap:10px;font-size:.88rem;">&#x1F4DD; 15 blog articles published</li>
-                <li style="display:flex;align-items:center;gap:10px;font-size:.88rem;">&#x2B50; AfroTools Pro &mdash; $5/month</li>
               </ul>
             </div>
 
@@ -962,6 +1026,18 @@
             if (!currentUser) return;
             document.getElementById('editName').value = currentUser.name || '';
             document.getElementById('editCountry').value = currentUser.country || '';
+            // Show Change Password only for email-based accounts (not Google OAuth)
+            var pwSection = document.getElementById('changePasswordSection');
+            if (pwSection) {
+                var isOAuth = currentUser.provider === 'google' || currentUser.provider === 'oauth';
+                pwSection.style.display = isOAuth ? 'none' : 'block';
+                // Clear password fields
+                document.getElementById('editCurrentPassword').value = '';
+                document.getElementById('editNewPassword').value = '';
+                document.getElementById('editConfirmPassword').value = '';
+                var pwMsg = document.getElementById('passwordMessage');
+                if (pwMsg) { pwMsg.style.display = 'none'; pwMsg.className = 'message'; }
+            }
             document.getElementById('editProfileModal').classList.add('active');
         }
 
@@ -974,6 +1050,33 @@
             const name = document.getElementById('editName').value.trim();
             const country = document.getElementById('editCountry').value;
             if (!name || !country) { showEditMessage('Please fill in all fields', 'error'); return; }
+
+            // Handle password change if fields are filled
+            var newPw = document.getElementById('editNewPassword').value;
+            var confirmPw = document.getElementById('editConfirmPassword').value;
+            var pwSection = document.getElementById('changePasswordSection');
+            if (pwSection && pwSection.style.display !== 'none' && newPw) {
+                if (newPw.length < 6) {
+                    showEditMessage('New password must be at least 6 characters', 'error');
+                    return;
+                }
+                if (newPw !== confirmPw) {
+                    showEditMessage('New passwords do not match', 'error');
+                    return;
+                }
+                try {
+                    if (AfroAuth.updatePassword) {
+                        var pwResult = await AfroAuth.updatePassword(newPw);
+                        if (!pwResult.ok) {
+                            showEditMessage(pwResult.error || 'Password update failed', 'error');
+                            return;
+                        }
+                    }
+                } catch(pwErr) {
+                    showEditMessage('Password update failed: ' + (pwErr.message || pwErr), 'error');
+                    return;
+                }
+            }
 
             const result = await AfroAuth.updateProfile({ name, country });
             if (result.ok) {
@@ -1017,11 +1120,30 @@
             var proUpsell = document.getElementById('proUpsell');
             if (proUpsell) proUpsell.style.display = currentUser.tier === 'pro' ? 'none' : 'block';
 
-            // Avatar
+            // Avatar — show image if available, otherwise generate initial circle
             var avatarEl = document.getElementById('profileAvatar');
-            if (currentUser.avatar_url && avatarEl) {
-                avatarEl.src = currentUser.avatar_url;
-                avatarEl.style.display = 'block';
+            var avatarWrap = document.getElementById('profileAvatarWrap');
+            if (avatarEl && avatarWrap) {
+                if (currentUser.avatar_url) {
+                    avatarEl.src = currentUser.avatar_url;
+                    avatarEl.style.display = 'block';
+                    // Remove any generated fallback
+                    var existingFallback = avatarWrap.querySelector('.avatar-initial');
+                    if (existingFallback) existingFallback.remove();
+                } else {
+                    avatarEl.style.display = 'none';
+                    // Generate initial-based avatar if not already present
+                    if (!avatarWrap.querySelector('.avatar-initial')) {
+                        var initial = (currentUser.name || currentUser.email || '?').charAt(0).toUpperCase();
+                        var colors = ['#007AFF','#34C759','#FF9500','#AF52DE','#FF3B30','#5AC8FA','#FF2D55','#5856D6'];
+                        var colorIdx = initial.charCodeAt(0) % colors.length;
+                        var fallback = document.createElement('div');
+                        fallback.className = 'avatar-initial';
+                        fallback.style.cssText = 'width:52px;height:52px;border-radius:50%;background:' + colors[colorIdx] + ';color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:700;border:2px solid #e2e8f0;flex-shrink:0;';
+                        fallback.textContent = initial;
+                        avatarWrap.insertBefore(fallback, avatarEl);
+                    }
+                }
             }
 
             var createdDate = new Date(currentUser.createdAt);
@@ -1172,7 +1294,7 @@
             if (statDocs) statDocs.textContent = docs.length;
 
             if (docs.length === 0) {
-                container.innerHTML = '<div style="background:#fff;border:1.5px solid #E5E7EB;border-radius:12px;padding:24px;text-align:center;color:#9CA3AF;font-size:.85rem;"><div style="font-size:2rem;margin-bottom:8px;">📂</div>No saved documents yet.<br><span style="font-size:.78rem;">Use tools like Invoice Generator, CV Builder, or PAYE Calculator and your work appears here.</span></div>';
+                container.innerHTML = '<div style="background:#fff;border:1.5px solid #E5E7EB;border-radius:12px;padding:24px;text-align:center;color:#9CA3AF;font-size:.85rem;"><div style="font-size:2rem;margin-bottom:8px;">📂</div>PDFs and documents you generate will appear here.<br><span style="font-size:.78rem;">Use tools like Invoice Generator, CV Builder, or PAYE Calculator to get started.</span></div>';
                 return;
             }
 
@@ -1192,22 +1314,41 @@
 
         function updateQuickStats() {
             try {
-                const calcs = AfroData.getAllSaved ? Object.keys(AfroData.getAllSaved()).length : 0;
-                const statFavs = document.getElementById('stat-favs');
-                const statCalcs = document.getElementById('stat-calcs');
-                const statPlan = document.getElementById('stat-plan');
+                // Saved calculations count
+                var calcs = 0;
+                if (typeof AfroData !== 'undefined' && AfroData.getAllSaved) {
+                    var allSaved = AfroData.getAllSaved();
+                    // Count total individual saved items across all tools
+                    Object.values(allSaved).forEach(function(data) {
+                        calcs += (data.count || 1);
+                    });
+                }
+                var statCalcs = document.getElementById('stat-calcs');
                 if (statCalcs) statCalcs.textContent = calcs;
+
+                // Plan
+                var statPlan = document.getElementById('stat-plan');
                 if (statPlan && currentUser) statPlan.textContent = currentUser.tier === 'pro' ? 'Pro' : 'Free';
-                // Async-safe favorites count
+
+                // Favorites count — try SavedTools instance first, then localStorage
+                var statFavs = document.getElementById('stat-favs');
                 if (statFavs) {
                     if (typeof window._savedToolsInstance !== 'undefined') {
-                        window._savedToolsInstance.getAll().then(function(items) { statFavs.textContent = items.length; });
+                        window._savedToolsInstance.getAll().then(function(items) {
+                            statFavs.textContent = items.length;
+                        }).catch(function() {
+                            // Fallback to localStorage
+                            var localFavs = JSON.parse(localStorage.getItem('afro_favs_v2') || '[]');
+                            statFavs.textContent = localFavs.length;
+                        });
                     } else {
-                        var favs = (typeof AfroData !== 'undefined' && AfroData.getFavorites) ? AfroData.getFavorites() : [];
-                        statFavs.textContent = favs.length;
+                        var localFavs = JSON.parse(localStorage.getItem('afro_favs_v2') || '[]');
+                        statFavs.textContent = localFavs.length;
                     }
                 }
-            } catch(e) {}
+
+                // stat-docs is updated by loadMyDocuments(), keep as-is
+            } catch(e) { console.warn('updateQuickStats error:', e); }
         }
 
         function clearSaved(toolId) {

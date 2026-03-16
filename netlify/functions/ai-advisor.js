@@ -1,7 +1,7 @@
 // netlify/functions/ai-advisor.js
 // Universal AI advisor for all AfroTools calculators
 // Proxies requests to Anthropic API using server-side ANTHROPIC_API_KEY
-// Rate limiting: 3 calls/day (free), unlimited (Pro users)
+// Rate limiting: 5 calls/day (anonymous), 15 calls/day (logged-in free), unlimited (Pro users)
 
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 const AUTH_SECRET = process.env.AUTH_SECRET;
@@ -28,8 +28,9 @@ async function checkRateLimit(event) {
   const key = `ai_rate_${ip}_${today}`;
 
   // Check if user is authenticated (higher limit)
-  let limit = 3; // free users: 3 requests/day
+  let limit = 5; // anonymous users: 5 requests/day
   let isPro = false;
+  let isLoggedIn = false;
   const authHeader = event.headers.authorization || '';
   if (authHeader.startsWith('Bearer ') && AUTH_SECRET) {
     try {
@@ -41,7 +42,8 @@ async function checkRateLimit(event) {
         const payload = JSON.parse(Buffer.from(b64, 'base64url').toString());
         if (payload.exp > Date.now()) {
           isPro = payload.tier === 'pro';
-          limit = isPro ? Infinity : 3; // Pro users: unlimited
+          isLoggedIn = true;
+          limit = isPro ? Infinity : 15; // Pro: unlimited, logged-in free: 15/day
         }
       }
     } catch {}
@@ -108,6 +110,20 @@ const TOOL_CONTEXT = {
   // ── JAPA ───────────────────────────────────────────────────────────
   "japa-calculator": "African relocation/migration (Japa) expert. You help people planning to relocate from African countries understand visa pathways, costs, timelines, and requirements for destinations including Canada, UK, US, Germany, Netherlands, Australia, UAE, and others. Reference specific visa fees, processing times, and proof-of-funds requirements. Be practical and specific with numbers.",
   "japa-visa-predict": "Visa success prediction expert for African migrants. Assess visa application strength based on education, work experience, English proficiency, finances, job offers, and personal factors. Give a realistic success percentage and specific recommendations to improve chances. Be honest about challenges while remaining encouraging.",
+
+  // ── CRYPTO ──────────────────────────────────────────────────────────
+  "crypto-p2p": "Crypto P2P rate comparison expert for Africa. Binance P2P, Bybit, Luno, Quidax, YellowCard, Noones, Roqqu rates for NGN, KES, ZAR, GHS.",
+  "crypto-prices": "Live cryptocurrency price tracker expert. 50+ coins in 19 African currencies via CoinGecko. Market cap, volume, 24h change.",
+  "crypto-stablecoins": "Stablecoin expert for Africa. USDT vs USDC vs DAI rates across platforms. Best for savings, trading, remittance.",
+  "crypto-remittance": "Crypto remittance expert. Compare crypto vs Wise vs Western Union for sending money to/from Africa.",
+  "crypto-portfolio": "Crypto portfolio tracker expert. Holdings in Naira, Shilling, Rand. Live valuation, P/L, allocation.",
+  "crypto-dca": "Dollar cost averaging expert. Backtesting DCA strategies for Bitcoin, Ethereum in African currencies.",
+  "crypto-tax": "African crypto tax expert. Capital gains tax on crypto for Nigeria (NTA 2026), South Africa (SARS), Kenya (KRA), Ghana (GRA), Egypt (ETA).",
+  "crypto-profit": "Crypto profit/loss calculator expert. ROI, break-even, what-if scenarios.",
+  "crypto-mining": "Crypto mining profitability expert for Africa. Grid vs generator vs solar electricity costs in Nigeria, Kenya, South Africa.",
+  "crypto-scam": "Crypto scam identification expert for Africa. Common scam patterns, red flags, Ponzi schemes, fake exchanges, romance scams.",
+  "crypto-exchange": "African crypto exchange expert. Trust scores, security, fees, fiat support for Binance, Luno, Quidax, YellowCard, Bybit, KuCoin.",
+  "crypto-quiz": "Crypto education expert for Africa. Blockchain basics, DeFi, NFTs, regulations.",
 };
 
 exports.handler = async function(event) {
@@ -199,7 +215,7 @@ exports.handler = async function(event) {
     if (isMedical) {
       systemPrompt += "Rules: Be thorough but use plain language a non-medical person can understand. Explain each test result clearly. Flag anything abnormal. Always end with a reminder that this is educational, not a diagnosis, and they should discuss results with their doctor. No markdown formatting. Write in warm, reassuring conversational sentences.";
     } else {
-      systemPrompt += "Rules: Under 220 words. Specific with numbers and percentages. Use the user's local currency. Be direct and practical — give exact figures, not vague guidance. No markdown: no asterisks, no bullet dashes, no bold. Write in plain conversational sentences. If you don't know the exact current rate, say so and suggest the user verify with the official tax authority.";
+      systemPrompt += "Rules: Under 220 words. Specific with numbers and percentages. Use the user's local currency. Be direct and practical — give exact figures, not vague guidance. You may use **bold** for emphasis and [text](url) for links. Do NOT use markdown headers (#), bullet lists with dashes, or code blocks. Write in plain conversational sentences. If you don't know the exact current rate, say so and suggest the user verify with the official tax authority.";
     }
   }
 
@@ -211,6 +227,11 @@ exports.handler = async function(event) {
     apiMessages = [{ role: "user", content: String(message) }];
   } else {
     return { statusCode: 400, headers, body: JSON.stringify({ error: "No message provided" }) };
+  }
+
+  // Trim to last 10 messages to prevent token overflow
+  if (apiMessages.length > 10) {
+    apiMessages = apiMessages.slice(-10);
   }
 
   try {
@@ -228,7 +249,7 @@ exports.handler = async function(event) {
       },
       body: JSON.stringify({
         model: "claude-haiku-4-5-20251001",
-        max_tokens: isMedical ? 1200 : isJapa ? 600 : isSiteAssistant ? 500 : 400,
+        max_tokens: isMedical ? 1500 : isJapa ? 800 : isSiteAssistant ? 700 : 600,
         system: systemPrompt,
         messages: apiMessages
       })
