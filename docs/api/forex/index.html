@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AfroFX API Overview — AfroTools API Docs</title>
+<meta name="description" content="AfroFX API: real-time exchange rates for 42 African currencies against major pairs. 15-minute updates with historical data.">
+<meta name="theme-color" content="#007AFF">
+<link rel="canonical" href="https://afrotools.com/docs/api/forex/">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/design-system.css">
+<link rel="stylesheet" href="/assets/css/api-docs.css">
+<script src="/assets/js/components/navbar.js" defer></script>
+<script src="/assets/js/components/footer.js" defer></script>
+<script src="/assets/js/components/api-sidebar.js" defer></script>
+<script src="/assets/js/components/api-code-tabs.js" defer></script>
+</head>
+<body class="api-docs-body">
+<afro-navbar></afro-navbar>
+<div class="api-docs-layout">
+  <api-sidebar active="/docs/api/forex/"></api-sidebar>
+  <main class="api-content">
+    <div class="api-two-panel api-two-panel--wide-left">
+      <div class="api-content__left">
+        <h1 class="mt-0">AfroFX API</h1>
+        <p class="api-subtitle">Real-time exchange rates for 42 African currencies against major global pairs. Updated every 15 minutes with bid/ask spreads.</p>
+
+        <h2>Overview</h2>
+        <p>The AfroFX API provides live and historical exchange rates sourced from central banks, commercial banks, and interbank markets across Africa. Rates include bid/ask spreads and are updated every 15 minutes during market hours.</p>
+
+        <h3>Key Features</h3>
+        <ul style="margin:8px 0 20px 20px;font-size:.88rem;color:#4B5563;line-height:1.8">
+          <li><strong>42 African currencies</strong> &mdash; From NGN and KES to XOF and ZAR</li>
+          <li><strong>Major pairs</strong> &mdash; USD, EUR, GBP, CNY, and more as base currencies</li>
+          <li><strong>Crypto rates</strong> &mdash; BTC and ETH priced in African currencies</li>
+          <li><strong>Bid/ask spreads</strong> &mdash; Real market data, not just mid-rates</li>
+          <li><strong>Historical data</strong> &mdash; Access rates back to 2020 (Pro plan and above)</li>
+        </ul>
+
+        <h2>Endpoints</h2>
+        <div class="api-cards-grid">
+          <a href="/docs/api/forex/latest.html" class="api-card">
+            <div class="api-card__title"><span class="endpoint-method endpoint-method--get" style="font-size:.6rem;vertical-align:middle;margin-right:6px">GET</span> Latest Rates</div>
+            <div class="api-card__desc">Get the latest exchange rate between any two supported currencies with bid/ask spreads.</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="api-content__right">
+        <div class="code-label">Base URL</div>
+        <div class="code-example">https://afrotools.com/api/forex</div>
+
+        <hr class="api-divider api-divider--dark">
+
+        <div class="code-label">Quick Example</div>
+        <div class="code-example"><span class="c"># Get USD to NGN exchange rate</span>
+curl "https://afrotools.com/api/forex?from=USD&to=NGN" \
+  -H "x-api-key: afro_test_abc123"</div>
+
+        <hr class="api-divider api-divider--dark">
+
+        <div class="code-label">Example Response</div>
+        <div class="code-example">{
+  "success": true,
+  "data": {
+    "from": "USD",
+    "to": "NGN",
+    "rate": 1580.25,
+    "bid": 1578.50,
+    "ask": 1582.00,
+    "change_24h": -0.35,
+    "change_pct_24h": -0.022,
+    "timestamp": "2026-03-15T10:30:00Z",
+    "source": "CBN"
+  }
+}</div>
+
+        <hr class="api-divider api-divider--dark">
+
+        <div class="code-label">Supported Currencies (sample)</div>
+        <div class="code-example">NGN  Nigerian Naira
+KES  Kenyan Shilling
+ZAR  South African Rand
+GHS  Ghanaian Cedi
+EGP  Egyptian Pound
+XOF  West African CFA Franc
+XAF  Central African CFA Franc
+MAD  Moroccan Dirham
+TZS  Tanzanian Shilling
+UGX  Ugandan Shilling
+ETB  Ethiopian Birr
+... and 31 more</div>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>
