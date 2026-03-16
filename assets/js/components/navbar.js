@@ -314,8 +314,9 @@
     /* RESPONSIVE */
     @media (max-width: 940px) {
       .nav-links, .pill-54 { display: none; }
-      .btn-login { border: none; padding: 0; font-size: 0; }
-      .btn-login .nav-user-name, .btn-login .user-menu-name { display: none !important; }
+      .btn-login { border: none; padding: 4px; max-width: 32px; overflow: hidden; }
+      .btn-login .nav-user-name, .btn-login .user-menu-name { display: none !important; width: 0 !important; height: 0 !important; overflow: hidden !important; font-size: 0 !important; }
+      .btn-login span:first-child { margin-right: 0 !important; }
       .burger { display: flex; }
       .mob    { display: flex; }
       nav     { padding: 0 16px; max-width: 100vw !important; overflow-x: hidden !important; }
