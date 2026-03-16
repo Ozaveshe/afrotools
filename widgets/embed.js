@@ -198,12 +198,14 @@
       // Load the widget module
       return loadScript(BASE + path + '.js').then(function() {
         // Widget registers itself on AfroWidgets
-        var widgetFn = window.AfroWidgets && window.AfroWidgets[widgetId.replace(/-/g, '_')];
-        if (!widgetFn) {
-          // Try generic render function name from path
-          var fnName = path.split('/').pop().replace(/-/g, '_');
-          widgetFn = window.AfroWidgets && window.AfroWidgets[fnName];
-        }
+        // Try multiple key formats: underscore, camelCase, and raw
+        function toCamel(s) { return s.replace(/-([a-z])/g, function(m, c) { return c.toUpperCase(); }); }
+        var AW = window.AfroWidgets || {};
+        var idU = widgetId.replace(/-/g, '_');
+        var idC = toCamel(widgetId);
+        var fnU = path.split('/').pop().replace(/-/g, '_');
+        var fnC = toCamel(path.split('/').pop());
+        var widgetFn = AW[idU] || AW[idC] || AW[fnU] || AW[fnC];
 
         if (widgetFn) {
           shadow.innerHTML = '';
