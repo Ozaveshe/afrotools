@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'okada-income'});</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Okada / Boda Boda Income Calculator | AfroTools</title>
+<meta name="description" content="Calculate daily, weekly, and monthly income for Okada (Nigeria) and Boda Boda (Kenya/Uganda) motorcycle riders. Track fuel costs, maintenance, and net profit.">
+<link rel="canonical" href="https://afrotools.com/tools/okada-income/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Okada / Boda Boda Income Calculator | AfroTools"><meta property="og:description" content="Track motorcycle taxi income and expenses.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png"><meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/okada-income/">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css"><link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+:root{--afro-dark:#0f1419;--accent:#16a34a}
+.tool-hero{background:linear-gradient(135deg,#14532d 0%,#16a34a 50%,#15803d 100%);padding:44px 0 36px}.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#bbf7d0}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}h1 em{color:#bbf7d0;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}.b-em{background:rgba(187,247,208,.2);color:#bbf7d0;border:1px solid rgba(187,247,208,.4)}
+.tool-main{padding:28px 0 72px}.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}.card-body{padding:22px}
+label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
+input,select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;box-sizing:border-box}
+input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(22,163,74,.15)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}.field{margin-bottom:14px}
+.btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;margin-top:18px}.btn-primary{background:linear-gradient(135deg,#15803d,#16a34a);color:#fff}
+.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.result-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;text-align:center}
+.result-box .num{font-size:1.3rem;font-weight:800;color:#16a34a}.result-box .lbl{font-size:.68rem;color:#64748b;font-weight:600;margin-top:3px;text-transform:uppercase;letter-spacing:.04em}
+.result-box.highlight{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-color:#86efac;grid-column:1/-1}.result-box.highlight .num{font-size:1.8rem}
+.result-box.expense .num{color:#dc2626}
+.breakdown-table{width:100%;border-collapse:collapse;margin-top:14px;font-size:.78rem}
+.breakdown-table th,.breakdown-table td{padding:8px 10px;text-align:left;border-bottom:1px solid #e2e8f0}
+.breakdown-table th{font-weight:700;background:#f8fafc;font-size:.7rem;text-transform:uppercase}
+.breakdown-table td:nth-child(2),.breakdown-table td:nth-child(3),.breakdown-table td:nth-child(4){text-align:right}
+.breakdown-table th:nth-child(2),.breakdown-table th:nth-child(3),.breakdown-table th:nth-child(4){text-align:right}
+.breakdown-table tr.total{font-weight:800;background:#f0fdf4;border-top:2px solid #16a34a}
+.breakdown-table tr.expense{color:#dc2626}
+.profit-bar{height:24px;border-radius:6px;margin-top:14px;overflow:hidden;display:flex;font-size:.68rem;font-weight:700;color:#fff}
+.profit-bar .income-fill{background:#16a34a}.profit-bar .expense-fill{background:#dc2626}
+.sidebar .info-card{background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:16px;margin-top:14px}
+.info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#14532d;margin-bottom:8px}
+.info-card p,.info-card li{font-size:.78rem;color:#14532d;line-height:1.6}.info-card ul{padding-left:16px;margin:6px 0}
+.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
+.seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
+.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.row3{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<section class="tool-hero"><div class="tool-hero-inner">
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Okada Income</span></div>
+<h1>Okada / <em>Boda Boda</em> Income Calculator</h1>
+<p class="hero-sub">Calculate daily, weekly, and monthly income for motorcycle taxi riders. Track fuel, maintenance, owner payments, and net profit for Okada, Boda Boda, and ride-hailing platforms.</p>
+<div class="hero-badges"><span class="badge b-em">Nigeria / Kenya / Uganda</span><span class="badge b-em">Daily Tracking</span><span class="badge b-em">Net Profit</span></div>
+</div></section>
+
+<section class="tool-main"><div class="tool-main-inner">
+<div class="calculator">
+<div class="card">
+<div class="card-head"><span class="card-title">Daily Earnings & Costs</span></div>
+<div class="card-body">
+<div class="row field">
+<div><label>Country / Region</label>
+<select id="country" onchange="updateDefaults()">
+<option value="ng">Nigeria (Okada)</option>
+<option value="ke">Kenya (Boda Boda)</option>
+<option value="ug">Uganda (Boda Boda)</option>
+<option value="gh">Ghana (Okada / Pragya)</option>
+</select></div>
+<div><label>Ownership</label>
+<select id="ownership" onchange="updateDefaults()">
+<option value="owner">Own Bike</option>
+<option value="hire">Hired / Daily Payment to Owner</option>
+</select></div>
+</div>
+<div class="row3 field">
+<div><label>Avg Trips/Day</label><input type="number" id="trips" value="15" min="1" max="50"></div>
+<div><label>Avg Fare/Trip</label><input type="number" id="fare" value="300" min="0" step="50"></div>
+<div><label>Working Days/Week</label><input type="number" id="days" value="6" min="1" max="7"></div>
+</div>
+<div class="row field">
+<div><label>Daily Fuel Cost</label><input type="number" id="fuel" value="1500" min="0" step="100"></div>
+<div><label>Daily Owner Payment (if hired)</label><input type="number" id="ownerPay" value="0" min="0" step="100"></div>
+</div>
+<div class="row3 field">
+<div><label>Weekly Maintenance</label><input type="number" id="maintenance" value="500" min="0" step="100"></div>
+<div><label>Monthly Insurance</label><input type="number" id="insurance" value="0" min="0" step="100"></div>
+<div><label>Monthly Phone/Data</label><input type="number" id="phone" value="2000" min="0" step="100"></div>
+</div>
+<div class="row field">
+<div><label>Platform Commission (%)</label><input type="number" id="commission" value="0" min="0" max="30" step="1">
+<span style="font-size:.68rem;color:#94a3b8">0% if not on app platform</span></div>
+<div><label>Monthly Loan/Savings Payment</label><input type="number" id="loan" value="0" min="0" step="500"></div>
+</div>
+<button class="btn btn-primary" onclick="calculate()">Calculate Income</button>
+</div></div>
+
+<div class="card" id="resultCard" style="display:none">
+<div class="card-head"><span class="card-title">Income Breakdown</span></div>
+<div class="card-body">
+<div class="result-grid" id="resultGrid"></div>
+<div class="profit-bar" id="profitBar"></div>
+<table class="breakdown-table" id="breakdownTable"></table>
+</div></div>
+</div>
+
+<div class="sidebar">
+<div class="card">
+<div class="card-head"><span class="card-title">Regional Context</span></div>
+<div class="card-body" style="font-size:.78rem;color:#475569;line-height:1.7">
+<p><strong>Nigeria:</strong> ~15 million Okada riders. Average daily income ₦4,000-8,000. Banned in Lagos (some areas). Platforms: MAX, Gokada (paused).</p>
+<p style="margin-top:6px"><strong>Kenya:</strong> ~1.5 million Boda Bodas. Average KSh 800-1,500/day. Heavily regulated. NTSA requires licensing. Platforms: SafeBoda, Bolt.</p>
+<p style="margin-top:6px"><strong>Uganda:</strong> ~600,000 Boda Bodas. Average UGX 20,000-40,000/day. Less regulated. SafeBoda dominant in Kampala.</p>
+<p style="margin-top:6px"><strong>Ghana:</strong> ~400,000 Okada/Pragya riders. Concentrated in Northern Ghana and rural areas.</p>
+</div></div>
+<div class="info-card">
+<h4>Grow Your Income</h4>
+<ul>
+<li>Join a ride-hailing platform for more trips</li>
+<li>Offer delivery services between rides</li>
+<li>Work peak hours (morning & evening rush)</li>
+<li>Maintain your bike to reduce breakdowns</li>
+<li>Save 20% of daily income for emergencies</li>
+<li>Consider hire-purchase to own your bike</li>
+</ul>
+</div>
+<div class="info-card" style="margin-top:10px">
+<h4>Hire-Purchase Math</h4>
+<p>A typical hire-purchase deal: Pay daily for 12-18 months → own the bike. Example (Nigeria): ₦2,500/day x 365 days = ₦912,500 for a bike worth ₦600,000-700,000. Compare total cost vs buying outright with savings or a microloan.</p>
+</div>
+</div>
+</div></section>
+
+<section class="seo-section">
+<h2>The Economics of Okada and Boda Boda Riding</h2>
+<p>Motorcycle taxis — known as Okada in Nigeria and Ghana, Boda Boda in Kenya and Uganda, and by various other names across Africa — represent one of the continent's largest informal employment sectors. An estimated 20-30 million people across Sub-Saharan Africa depend on motorcycle taxi riding as their primary source of income, making it one of the most significant livelihood activities for young men in urban and peri-urban areas.</p>
+<p>The economics of motorcycle taxi riding vary significantly by country and city. In Nigeria, an Okada rider in a secondary city might earn ₦4,000-8,000 gross per day, while riders in Lagos (where Okada is partially banned) or Abuja can earn more per trip but face higher costs and regulatory risks. After deducting fuel (₦1,500-3,000/day), owner payments if the bike is hired (₦1,500-3,000/day), and maintenance, net daily income typically ranges from ₦2,000-5,000. This translates to monthly net income of ₦50,000-130,000 — often comparable to or exceeding entry-level formal sector wages.</p>
+<p>In Kenya, Boda Boda riders earn approximately KSh 800-1,500 per day. The sector employs an estimated 1.5 million riders and generates over KSh 200 billion annually. The Kenyan government has moved to formalize the sector through NTSA registration, insurance requirements, and digital platforms. SafeBoda and Bolt have brought technology to the sector, offering riders more predictable income streams but taking 15-25% commission on each ride.</p>
+<p>A critical decision for riders is whether to own their bike outright or work on a hire-purchase or daily rental basis. Owning eliminates the daily payment to an owner (the single largest expense for hired riders) but requires upfront capital of $600-$1,500 for a new bike. Hire-purchase schemes, where riders pay a daily amount for 12-18 months before owning the bike, are popular but expensive — the total cost typically exceeds the bike's retail price by 30-50%. Cooperatives and SACCO groups in Kenya have emerged to provide affordable motorcycle financing, reducing the exploitation inherent in individual hire-purchase arrangements.</p>
+
+<h2>Frequently Asked Questions</h2>
+<details class="faq-item"><summary>How much do Okada riders earn per month?</summary><p>Monthly earnings vary widely. In Nigeria, net monthly income after expenses typically ranges from ₦50,000-130,000. In Kenya, Boda Boda riders net KSh 15,000-35,000/month. In Uganda, UGX 400,000-800,000/month. These figures depend heavily on location (city vs rural), hours worked, ownership status, and fuel costs.</p></details>
+<details class="faq-item"><summary>Is it better to own or hire a motorcycle?</summary><p>Owning is always more profitable long-term because you eliminate the daily payment to an owner (typically 30-40% of gross income). However, it requires upfront capital. If you must hire, try to join a cooperative or SACCO for better hire-purchase terms rather than individual arrangements, which often charge excessive premiums.</p></details>
+<details class="faq-item"><summary>How do ride-hailing platforms affect income?</summary><p>Platforms like SafeBoda, Bolt, and MAX provide more consistent ride requests and higher fares (especially for longer trips), but charge 15-25% commission. Net effect depends on your location — in busy urban areas with many organic rides, you might earn more without a platform. In less busy areas, platforms help fill idle time.</p></details>
+</section>
+
+<afro-related-tools category="financial" current="okada-income"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+const DEFAULTS={
+  ng:{trips:15,fare:300,fuel:1500,owner:2000,maint:500,ins:0,phone:2000,cur:'₦'},
+  ke:{trips:12,fare:150,fuel:400,owner:500,maint:200,ins:500,phone:1000,cur:'KSh '},
+  ug:{trips:12,fare:3000,fuel:8000,owner:10000,maint:5000,ins:0,phone:5000,cur:'UGX '},
+  gh:{trips:10,fare:8,fuel:40,owner:30,maint:15,ins:0,phone:50,cur:'GH₵'}
+};
+
+function updateDefaults(){
+  const c=document.getElementById('country').value;
+  const d=DEFAULTS[c];
+  const hired=document.getElementById('ownership').value==='hire';
+  document.getElementById('trips').value=d.trips;
+  document.getElementById('fare').value=d.fare;
+  document.getElementById('fuel').value=d.fuel;
+  document.getElementById('ownerPay').value=hired?d.owner:0;
+  document.getElementById('maintenance').value=d.maint;
+  document.getElementById('insurance').value=d.ins;
+  document.getElementById('phone').value=d.phone;
+}
+
+function calculate(){
+  const c=document.getElementById('country').value;
+  const cur=DEFAULTS[c].cur;
+  const trips=+document.getElementById('trips').value;
+  const fare=+document.getElementById('fare').value;
+  const daysPerWeek=+document.getElementById('days').value;
+  const fuel=+document.getElementById('fuel').value;
+  const ownerPay=+document.getElementById('ownerPay').value;
+  const weeklyMaint=+document.getElementById('maintenance').value;
+  const monthlyIns=+document.getElementById('insurance').value;
+  const monthlyPhone=+document.getElementById('phone').value;
+  const commPct=(+document.getElementById('commission').value)/100;
+  const monthlyLoan=+document.getElementById('loan').value;
+
+  const daysPerMonth=daysPerWeek*4.33;
+
+  // Daily
+  const dailyGross=trips*fare;
+  const dailyCommission=dailyGross*commPct;
+  const dailyNet=dailyGross-dailyCommission;
+
+  // Monthly income
+  const monthlyGross=dailyGross*daysPerMonth;
+  const monthlyNetRides=dailyNet*daysPerMonth;
+
+  // Monthly expenses
+  const monthlyFuel=fuel*daysPerMonth;
+  const monthlyOwner=ownerPay*daysPerMonth;
+  const monthlyMaint=weeklyMaint*4.33;
+  const monthlyComm=dailyCommission*daysPerMonth;
+  const totalExpenses=monthlyFuel+monthlyOwner+monthlyMaint+monthlyIns+monthlyPhone+monthlyComm+monthlyLoan;
+
+  const monthlyProfit=monthlyGross-totalExpenses;
+  const weeklyProfit=monthlyProfit/4.33;
+  const dailyProfit=monthlyProfit/daysPerMonth;
+  const profitMargin=(monthlyProfit/monthlyGross*100);
+
+  const fmt=n=>cur+Math.round(n).toLocaleString('en');
+
+  let html='';
+  html+=`<div class="result-box highlight"><div class="num">${fmt(monthlyProfit)}/mo</div><div class="lbl">Net Monthly Profit</div></div>`;
+  html+=`<div class="result-box"><div class="num">${fmt(dailyProfit)}/day</div><div class="lbl">Net Daily Profit</div></div>`;
+  html+=`<div class="result-box"><div class="num">${fmt(weeklyProfit)}/wk</div><div class="lbl">Net Weekly Profit</div></div>`;
+  html+=`<div class="result-box"><div class="num">${fmt(monthlyGross)}</div><div class="lbl">Monthly Gross Income</div></div>`;
+  html+=`<div class="result-box expense"><div class="num">${fmt(totalExpenses)}</div><div class="lbl">Monthly Total Expenses</div></div>`;
+  html+=`<div class="result-box"><div class="num">${profitMargin.toFixed(0)}%</div><div class="lbl">Profit Margin</div></div>`;
+  document.getElementById('resultGrid').innerHTML=html;
+
+  // Profit bar
+  const incPct=monthlyGross>0?((monthlyGross-totalExpenses)/monthlyGross*100):0;
+  const expPct=100-Math.max(0,incPct);
+  document.getElementById('profitBar').innerHTML=`<div class="income-fill" style="width:${Math.max(0,incPct)}%;display:flex;align-items:center;justify-content:center">Profit ${Math.max(0,incPct).toFixed(0)}%</div><div class="expense-fill" style="width:${expPct}%;display:flex;align-items:center;justify-content:center">Costs ${expPct.toFixed(0)}%</div>`;
+
+  // Breakdown table
+  let tbl='<tr><th>Item</th><th>Daily</th><th>Weekly</th><th>Monthly</th></tr>';
+  tbl+=`<tr style="font-weight:700;color:#16a34a"><td>Gross Ride Income</td><td>${fmt(dailyGross)}</td><td>${fmt(dailyGross*daysPerWeek)}</td><td>${fmt(monthlyGross)}</td></tr>`;
+
+  const expenses=[
+    ['Fuel',fuel,fuel*daysPerWeek,monthlyFuel],
+    ['Platform Commission',dailyCommission,dailyCommission*daysPerWeek,monthlyComm],
+    ['Owner Payment',ownerPay,ownerPay*daysPerWeek,monthlyOwner],
+    ['Maintenance',weeklyMaint/daysPerWeek,weeklyMaint,monthlyMaint],
+    ['Insurance',monthlyIns/daysPerMonth,monthlyIns/4.33,monthlyIns],
+    ['Phone/Data',monthlyPhone/daysPerMonth,monthlyPhone/4.33,monthlyPhone],
+    ['Loan/Savings',monthlyLoan/daysPerMonth,monthlyLoan/4.33,monthlyLoan]
+  ];
+  expenses.forEach(([label,d,w,m])=>{
+    if(m>0)tbl+=`<tr class="expense"><td>${label}</td><td>-${fmt(d)}</td><td>-${fmt(w)}</td><td>-${fmt(m)}</td></tr>`;
+  });
+  tbl+=`<tr class="total"><td>NET PROFIT</td><td>${fmt(dailyProfit)}</td><td>${fmt(weeklyProfit)}</td><td>${fmt(monthlyProfit)}</td></tr>`;
+  tbl+=`<tr style="font-size:.72rem;color:#64748b"><td>Annual Projection</td><td colspan="3" style="text-align:right;font-weight:700;color:#16a34a">${fmt(monthlyProfit*12)}/year</td></tr>`;
+
+  document.getElementById('breakdownTable').innerHTML=tbl;
+  document.getElementById('resultCard').style.display='block';
+  document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>

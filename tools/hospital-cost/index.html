@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'hospital-cost'});</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>African Hospital Cost Estimator | AfroTools</title>
+<meta name="description" content="Estimate hospital and medical procedure costs across Nigeria, Kenya, South Africa, and Ghana. Compare public vs private facility charges for common procedures.">
+<link rel="canonical" href="https://afrotools.com/tools/hospital-cost/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Hospital Cost Estimator | AfroTools"><meta property="og:description" content="Estimate medical costs across African hospitals.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png"><meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/hospital-cost/">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css"><link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+:root{--afro-dark:#0f1419;--accent:#dc2626}
+.tool-hero{background:linear-gradient(135deg,#7f1d1d 0%,#dc2626 50%,#b91c1c 100%);padding:44px 0 36px}.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#fca5a5}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}h1 em{color:#fca5a5;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}.b-em{background:rgba(252,165,165,.2);color:#fca5a5;border:1px solid rgba(252,165,165,.4)}
+.tool-main{padding:28px 0 72px}.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}.card-body{padding:22px}
+label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
+select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;box-sizing:border-box}
+select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(220,38,38,.15)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{margin-bottom:14px}
+.btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;margin-top:18px}.btn-primary{background:linear-gradient(135deg,#b91c1c,#dc2626);color:#fff}
+.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.result-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;text-align:center}
+.result-box .num{font-size:1.2rem;font-weight:800;color:#dc2626}.result-box .lbl{font-size:.68rem;color:#64748b;font-weight:600;margin-top:3px;text-transform:uppercase;letter-spacing:.04em}
+.result-box.highlight{background:linear-gradient(135deg,#fef2f2,#fee2e2);border-color:#fca5a5;grid-column:1/-1}.result-box.highlight .num{font-size:1.6rem}
+.cost-table{width:100%;border-collapse:collapse;font-size:.76rem;margin-top:12px}
+.cost-table th,.cost-table td{padding:8px 10px;border-bottom:1px solid #e2e8f0;text-align:left}
+.cost-table th{background:#f8fafc;font-weight:700;font-size:.68rem;text-transform:uppercase}
+.cost-table .cheaper{background:#f0fdf4;color:#16a34a;font-weight:700}
+.sidebar .info-card{background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;padding:16px;margin-top:14px}
+.info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#7f1d1d;margin-bottom:8px}
+.info-card p,.info-card li{font-size:.78rem;color:#7f1d1d;line-height:1.6}.info-card ul{padding-left:16px;margin:6px 0}
+.disclaimer{background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:14px;margin-top:14px;font-size:.74rem;color:#78350f;line-height:1.6}
+.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
+.seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
+.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<section class="tool-hero"><div class="tool-hero-inner">
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Hospital Cost</span></div>
+<h1>African <em>Hospital Cost</em> Estimator</h1>
+<p class="hero-sub">Estimate medical procedure costs across Nigeria, Kenya, South Africa, and Ghana. Compare public vs private hospital charges for common procedures and treatments.</p>
+<div class="hero-badges"><span class="badge b-em">NG / KE / ZA / GH</span><span class="badge b-em">Public & Private</span><span class="badge b-em">2025 Estimates</span></div>
+</div></section>
+
+<section class="tool-main"><div class="tool-main-inner">
+<div class="calculator">
+<div class="card">
+<div class="card-head"><span class="card-title">Select Procedure & Location</span></div>
+<div class="card-body">
+<div class="row field">
+<div><label>Country</label>
+<select id="country" onchange="loadProcedures()">
+<option value="ng">Nigeria</option>
+<option value="ke">Kenya</option>
+<option value="za">South Africa</option>
+<option value="gh">Ghana</option>
+</select></div>
+<div><label>Facility Type</label>
+<select id="facility">
+<option value="public">Public / Government Hospital</option>
+<option value="private">Private Hospital</option>
+<option value="teaching">Teaching Hospital</option>
+</select></div>
+</div>
+<div class="field"><label>Procedure / Service</label>
+<select id="procedure">
+<option value="consultation">General Consultation</option>
+<option value="malaria">Malaria Treatment (Outpatient)</option>
+<option value="caesarean">Caesarean Section (C-Section)</option>
+<option value="normal-delivery">Normal Delivery</option>
+<option value="appendectomy">Appendectomy</option>
+<option value="hernia">Hernia Repair</option>
+<option value="fracture">Fracture Treatment (Cast)</option>
+<option value="dialysis">Dialysis (per session)</option>
+<option value="ct-scan">CT Scan</option>
+<option value="mri">MRI Scan</option>
+<option value="xray">X-Ray</option>
+<option value="blood-test">Full Blood Count (FBC)</option>
+<option value="dental-extraction">Dental Extraction</option>
+<option value="eye-cataract">Cataract Surgery</option>
+<option value="admission">Ward Admission (per night)</option>
+</select></div>
+<button class="btn btn-primary" onclick="estimate()">Estimate Cost</button>
+</div></div>
+
+<div class="card" id="resultCard" style="display:none">
+<div class="card-head"><span class="card-title">Cost Estimate</span></div>
+<div class="card-body">
+<div class="result-grid" id="resultGrid"></div>
+<h3 style="font-size:.78rem;font-weight:700;margin-top:18px;color:var(--afro-dark)">ALL FACILITIES COMPARISON</h3>
+<table class="cost-table" id="costTable"></table>
+<div class="disclaimer"><strong>Disclaimer:</strong> These are approximate estimates based on publicly available data and surveys. Actual costs vary significantly based on hospital, doctor, location (urban vs rural), complexity, complications, and insurance coverage. Always confirm costs with your specific facility before treatment.</div>
+</div></div>
+</div>
+
+<div class="sidebar">
+<div class="card">
+<div class="card-head"><span class="card-title">Healthcare Systems</span></div>
+<div class="card-body" style="font-size:.78rem;color:#475569;line-height:1.7">
+<p><strong>Nigeria:</strong> NHIS covers <5% of population. Most pay out-of-pocket. Public hospitals subsidized but often underfunded.</p>
+<p style="margin-top:6px"><strong>Kenya:</strong> NHIF (now SHIF) covers ~20% of population. Linda Mama programme covers maternity for all.</p>
+<p style="margin-top:6px"><strong>South Africa:</strong> Public sector serves ~85% of population. NHI being phased in. Private sector world-class but expensive.</p>
+<p style="margin-top:6px"><strong>Ghana:</strong> NHIS covers ~40% of population. Premium based on income. Covers most outpatient and inpatient care.</p>
+</div></div>
+<div class="info-card">
+<h4>Cost-Saving Tips</h4>
+<ul>
+<li>Enroll in national health insurance</li>
+<li>Use teaching hospitals (quality care, lower costs)</li>
+<li>Request detailed bills and question charges</li>
+<li>Compare prices between facilities</li>
+<li>Consider medical tourism within Africa for major procedures</li>
+</ul>
+</div>
+</div>
+</div></section>
+
+<section class="seo-section">
+<h2>Understanding Hospital Costs in Africa</h2>
+<p>Healthcare costs in Africa vary enormously between countries, between public and private facilities, and between urban and rural areas. Out-of-pocket health expenditure remains the primary payment method for most Africans, with catastrophic health spending pushing an estimated 11 million Africans into poverty each year. Understanding typical costs helps patients plan financially, compare options, and advocate for fair pricing.</p>
+<p>In Nigeria, public hospital costs are relatively low but access and quality can be challenging. A normal delivery in a public hospital might cost N50,000-N150,000, while the same procedure in a private hospital in Lagos could range from N300,000-N1,500,000. The National Health Insurance Scheme (NHIS) covers less than 5% of the population, meaning most Nigerians pay entirely out-of-pocket. The informal sector remains largely uninsured despite recent efforts to expand coverage through state health insurance schemes.</p>
+<p>Kenya's healthcare system offers a mix of public and private options. The National Hospital Insurance Fund (NHIF), now transitioning to the Social Health Insurance Fund (SHIF), covers about 20% of the population. Public hospital fees are regulated and relatively affordable, but waiting times can be long. A C-section in a public hospital costs approximately KSh 20,000-50,000, while private hospitals charge KSh 150,000-400,000. Kenya is also an emerging medical tourism destination within East Africa, particularly for specialized procedures.</p>
+<p>South Africa has a two-tier healthcare system: an extensive public sector serving about 85% of the population, and a world-class private sector that rivals developed nations but serves only ~15% of people (those with medical aid). Public hospital costs are means-tested, with the poorest patients paying nothing. Private hospital costs are among the highest in Africa — a private C-section can cost R50,000-R80,000. The National Health Insurance (NHI) is being phased in to provide universal coverage. Ghana's NHIS is one of Africa's most successful national insurance schemes, covering about 40% of the population with comprehensive benefits.</p>
+
+<h2>Frequently Asked Questions</h2>
+<details class="faq-item"><summary>Which African country has the cheapest healthcare?</summary><p>Public healthcare in Nigeria and Ghana tends to be among the most affordable in West Africa, while Ethiopia and Tanzania offer low-cost options in East Africa. However, "cheap" doesn't always mean accessible — costs must be considered alongside quality, waiting times, and availability of services. South Africa offers the highest quality private healthcare in Africa but at significantly higher prices.</p></details>
+<details class="faq-item"><summary>Does health insurance cover these procedures?</summary><p>Coverage depends on your specific plan. Nigeria's NHIS covers basic outpatient and inpatient care. Kenya's NHIF/SHIF covers most hospitalization. Ghana's NHIS covers about 95% of disease conditions including malaria, caesareans, and dialysis. South African medical aid schemes vary widely — from basic hospital-only plans to comprehensive cover. Always verify with your insurer before treatment.</p></details>
+<details class="faq-item"><summary>Why are private hospitals so much more expensive?</summary><p>Private hospitals charge more due to better equipment, shorter waiting times, specialist availability, nicer facilities, and the profit motive. However, teaching hospitals often offer a good middle ground — they have specialist doctors, modern equipment, and research-grade care at lower costs because they're government-subsidized and serve as training facilities.</p></details>
+</section>
+
+<afro-related-tools category="health" current="hospital-cost"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+// Costs in local currency: [public, teaching, private]
+const COSTS={
+  ng:{
+    cur:'₦',mult:1,
+    consultation:[3000,5000,15000],malaria:[5000,10000,30000],caesarean:[80000,150000,500000],
+    'normal-delivery':[30000,60000,300000],appendectomy:[80000,150000,500000],hernia:[70000,120000,400000],
+    fracture:[15000,30000,80000],dialysis:[15000,25000,60000],'ct-scan':[25000,40000,100000],
+    mri:[50000,80000,200000],xray:[3000,5000,15000],'blood-test':[2000,3000,8000],
+    'dental-extraction':[5000,8000,25000],'eye-cataract':[100000,200000,600000],admission:[5000,15000,50000]
+  },
+  ke:{
+    cur:'KSh ',mult:1,
+    consultation:[500,1000,3000],malaria:[1500,3000,8000],caesarean:[25000,50000,250000],
+    'normal-delivery':[5000,15000,100000],appendectomy:[30000,60000,200000],hernia:[25000,50000,180000],
+    fracture:[5000,10000,30000],dialysis:[5000,8000,20000],'ct-scan':[8000,12000,35000],
+    mri:[15000,25000,60000],xray:[1000,2000,5000],'blood-test':[500,800,2500],
+    'dental-extraction':[1000,2000,8000],'eye-cataract':[30000,60000,200000],admission:[2000,5000,20000]
+  },
+  za:{
+    cur:'R ',mult:1,
+    consultation:[0,150,800],malaria:[0,500,3000],caesarean:[0,5000,55000],
+    'normal-delivery':[0,2000,25000],appendectomy:[0,5000,40000],hernia:[0,4000,35000],
+    fracture:[0,1000,8000],dialysis:[0,2000,8000],'ct-scan':[0,2000,6000],
+    mri:[0,3500,10000],xray:[0,300,1500],'blood-test':[0,200,800],
+    'dental-extraction':[0,500,3000],'eye-cataract':[0,8000,30000],admission:[0,1000,5000]
+  },
+  gh:{
+    cur:'GH₵',mult:1,
+    consultation:[20,50,200],malaria:[30,80,250],caesarean:[500,1500,5000],
+    'normal-delivery':[100,400,2000],appendectomy:[600,1500,5000],hernia:[500,1200,4000],
+    fracture:[100,300,1000],dialysis:[200,400,1200],'ct-scan':[300,600,2000],
+    mri:[500,1000,3000],xray:[30,60,200],'blood-test':[20,40,150],
+    'dental-extraction':[50,100,400],'eye-cataract':[800,2000,6000],admission:[50,150,500]
+  }
+};
+
+function loadProcedures(){}
+
+function estimate(){
+  const c=document.getElementById('country').value;
+  const f=document.getElementById('facility').value;
+  const p=document.getElementById('procedure').value;
+  const data=COSTS[c];
+  const cur=data.cur;
+  const costs=data[p];
+  const fIdx=f==='public'?0:f==='teaching'?1:2;
+  const cost=costs[fIdx];
+  const procName=document.getElementById('procedure').selectedOptions[0].text;
+  const facName=document.getElementById('facility').selectedOptions[0].text;
+  const countryName=document.getElementById('country').selectedOptions[0].text;
+
+  const fmt=n=>{
+    if(n===0)return cur+'0 (Free/subsidized)';
+    return cur+n.toLocaleString('en');
+  };
+
+  let html='';
+  html+=`<div class="result-box highlight"><div class="num">${fmt(cost)}</div><div class="lbl">${procName} — ${facName}</div></div>`;
+  html+=`<div class="result-box"><div class="num">${fmt(costs[0])}</div><div class="lbl">Public Hospital</div></div>`;
+  html+=`<div class="result-box"><div class="num">${fmt(costs[2])}</div><div class="lbl">Private Hospital</div></div>`;
+  if(costs[2]>0&&costs[0]>0){
+    const ratio=Math.round(costs[2]/costs[0]);
+    html+=`<div class="result-box"><div class="num">${ratio}x</div><div class="lbl">Private vs Public Multiple</div></div>`;
+  }
+  document.getElementById('resultGrid').innerHTML=html;
+
+  // Full comparison table for all procedures
+  const procedures=[
+    ['consultation','General Consultation'],['malaria','Malaria Treatment'],['caesarean','C-Section'],
+    ['normal-delivery','Normal Delivery'],['appendectomy','Appendectomy'],['hernia','Hernia Repair'],
+    ['fracture','Fracture Treatment'],['dialysis','Dialysis (session)'],['ct-scan','CT Scan'],
+    ['mri','MRI Scan'],['xray','X-Ray'],['blood-test','Blood Test (FBC)'],
+    ['dental-extraction','Dental Extraction'],['eye-cataract','Cataract Surgery'],['admission','Admission (night)']
+  ];
+
+  let tbl='<tr><th>Procedure</th><th>Public</th><th>Teaching</th><th>Private</th></tr>';
+  procedures.forEach(([key,label])=>{
+    const pc=data[key];
+    const minVal=Math.min(...pc.filter(v=>v>0));
+    tbl+=`<tr${key===p?' style="background:#fef2f2;font-weight:700"':''}><td>${label}</td>`;
+    pc.forEach(v=>{
+      const cls=v===minVal&&v>0?'cheaper':'';
+      tbl+=`<td class="${cls}">${fmt(v)}</td>`;
+    });
+    tbl+='</tr>';
+  });
+  document.getElementById('costTable').innerHTML=tbl;
+
+  document.getElementById('resultCard').style.display='block';
+  document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>
