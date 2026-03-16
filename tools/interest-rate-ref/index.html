@@ -74,7 +74,7 @@ h1 em{color:#99f6e4;font-style:normal}
 
 <section class="tool-main"><div class="tool-main-inner">
 <div class="card">
-<div class="card-head"><span class="card-title">Central Bank Policy Rates</span><span style="font-size:.68rem;color:#94a3b8">Data as of Q1 2025</span></div>
+<div class="card-head"><span class="card-title">Central Bank Policy Rates</span><span id="dataFreshness" style="font-size:.68rem;color:#94a3b8">Loading live data...</span></div>
 <div class="card-body">
 <div class="summary-grid" id="summaryGrid"></div>
 <div class="search-row">
@@ -221,8 +221,58 @@ function sortTable() {
   renderSummary(currentData);
 }
 
+// Try live data first, fallback to hardcoded RATES
+var liveLoaded = false;
+function initWithData(data, source) {
+  RATES.length = 0;
+  data.forEach(function(r) { RATES.push(r); });
+  currentData = RATES.slice();
+  renderSummary(RATES);
+  renderTable(RATES);
+  var freshEl = document.getElementById('dataFreshness');
+  if (freshEl) freshEl.textContent = source;
+  liveLoaded = true;
+}
+
+// Show hardcoded data immediately (fast)
+currentData = RATES.slice();
 renderSummary(RATES);
 renderTable(RATES);
+
+// Then try live API data
+(function fetchLiveRates() {
+  var freshEl = document.getElementById('dataFreshness');
+  fetch('/api/rates')
+    .then(function(res) { return res.json(); })
+    .then(function(apiData) {
+      if (!apiData || !apiData.countries) throw new Error('No data');
+      // Map API response to our format
+      var mapped = [];
+      var regionMap = {NG:'west',ZA:'south',KE:'east',GH:'west',EG:'north',MA:'north',TZ:'east',UG:'east',ET:'east',RW:'east',SN:'west',CI:'west',CM:'central',AO:'south',MZ:'south',BW:'south',NA:'south',MW:'east',ZM:'south',ZW:'south',DZ:'north',TN:'north',LY:'north',SD:'east',ER:'east',DJ:'east',SO:'east',ML:'west',BF:'west',NE:'west',TD:'central',GA:'central',CG:'central',CD:'central',CF:'central',GQ:'central',ST:'central',BI:'east',KM:'east',SC:'east',MU:'east',MG:'east',CV:'west',GW:'west',GM:'west',GN:'west',SL:'west',LR:'west',TG:'west',BJ:'west',SS:'east',LS:'south',SZ:'south'};
+      apiData.countries.forEach(function(c) {
+        if (c.policyRate || c.policy_rate) {
+          var rate = c.policyRate || c.policy_rate || 0;
+          mapped.push({
+            country: c.name || c.country,
+            code: c.code || c.countryCode,
+            bank: c.centralBank || c.bank || '',
+            rate: typeof rate === 'number' ? rate : parseFloat(rate) || 0,
+            rateName: c.rateName || 'Policy Rate',
+            region: regionMap[c.code] || regionMap[c.countryCode] || 'other',
+            currency: c.currency || ''
+          });
+        }
+      });
+      if (mapped.length > 10) {
+        initWithData(mapped, 'Live data \u00b7 Updated ' + new Date().toLocaleDateString());
+      } else {
+        if (freshEl) freshEl.textContent = 'Hardcoded data \u00b7 Q1 2025';
+      }
+    })
+    .catch(function() {
+      if (freshEl) freshEl.textContent = 'Offline data \u00b7 Q1 2025';
+    });
+})();
 </script>
 </body>
 </html>

@@ -135,5 +135,7 @@ function setCat(c){activeCat=c;document.querySelectorAll('.cat-btn').forEach(b=>
 function filter(){const q=document.getElementById('search').value.toLowerCase();const list=PHRASES.filter(p=>{if(activeCat!=='All'&&p.cat!==activeCat)return false;if(!q)return true;return p.en.toLowerCase().includes(q)||p.lang.toLowerCase().includes(q);});document.getElementById('countBadge').textContent=list.length+' phrases';document.getElementById('phrases').innerHTML=list.map(p=>`<div class="phrase"><span class="en">${p.en}</span><span><span class="lang">${p.lang}</span>${p.note?'<br><span class="note">'+p.note+'</span>':''}</span></div>`).join('');}
 init();
 </script>
+<script>window.TRANSLATOR_CONFIG={source:"en",target:"pcm",langName:"Nigerian Pidgin",langCode:"pcm"};</script>
+<script src="/assets/js/lib/live-translate.js" defer></script>
 </body>
 </html>
