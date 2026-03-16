@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'receipt-generator'});</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Receipt & Invoice Generator | AfroTools</title>
+<meta name="description" content="Generate professional receipts and invoices for your African business. Add line items, tax, discounts, and print or save as PDF. Multi-currency support.">
+<link rel="canonical" href="https://afrotools.com/tools/receipt-generator/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Receipt Generator | AfroTools">
+<meta property="og:description" content="Generate professional receipts and invoices with African currency support.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/receipt-generator/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+:root{--afro-dark:#0f1419;--accent:#007AFF}
+.tool-hero{background:linear-gradient(135deg,#1e3a5f 0%,#007AFF 50%,#0056b3 100%);padding:44px 0 36px}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#bfdbfe}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:#bfdbfe;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-em{background:rgba(191,219,254,.2);color:#bfdbfe;border:1px solid rgba(191,219,254,.4)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 380px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
+.card-body{padding:22px}
+label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
+input,select,textarea{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;box-sizing:border-box}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,122,255,.15)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.item-row{display:grid;grid-template-columns:2fr 1fr 1fr 30px;gap:8px;align-items:end;margin-bottom:8px}
+.item-row input{padding:7px 8px;font-size:.78rem}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border:none;border-radius:6px;font-size:.78rem;font-weight:700;cursor:pointer}
+.btn-primary{background:linear-gradient(135deg,#0056b3,#007AFF);color:#fff;margin-top:14px;display:block;width:100%;justify-content:center;padding:12px}
+.btn-sm{background:#f8fafc;border:1px solid #e2e8f0;color:#64748b;padding:6px 12px;font-size:.72rem}
+.btn-sm:hover{border-color:var(--accent);color:var(--accent)}
+.del-btn{background:none;border:none;color:#ef4444;cursor:pointer;font-size:1rem;padding:4px}
+/* Receipt preview */
+.receipt{background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:24px;font-family:'DM Sans',sans-serif}
+.receipt .r-header{text-align:center;border-bottom:2px solid #1e293b;padding-bottom:12px;margin-bottom:14px}
+.receipt .r-biz{font-size:1.1rem;font-weight:800;color:#1e293b}
+.receipt .r-sub{font-size:.72rem;color:#64748b}
+.receipt .r-info{display:flex;justify-content:space-between;font-size:.72rem;color:#64748b;margin-bottom:14px}
+.receipt .r-table{width:100%;border-collapse:collapse;margin-bottom:14px}
+.receipt .r-table th{text-align:left;font-size:.68rem;color:#64748b;text-transform:uppercase;border-bottom:1px solid #e2e8f0;padding:6px 0}
+.receipt .r-table td{padding:6px 0;font-size:.82rem;border-bottom:1px solid #f1f5f9}
+.receipt .r-table td:last-child,.receipt .r-table th:last-child{text-align:right}
+.receipt .r-totals{text-align:right;font-size:.82rem;line-height:2}
+.receipt .r-total{font-size:1.1rem;font-weight:800;color:#1e293b}
+.receipt .r-footer{text-align:center;font-size:.68rem;color:#94a3b8;margin-top:14px;padding-top:10px;border-top:1px dashed #e2e8f0}
+.print-btn{display:block;width:100%;padding:12px;background:linear-gradient(135deg,#059669,#10b981);color:#fff;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;margin-top:14px}
+.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
+.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
+.seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
+.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
+.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
+.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
+@media print{body *{visibility:hidden}.receipt,.receipt *{visibility:visible}.receipt{position:absolute;left:0;top:0;width:100%}}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<section class="tool-hero"><div class="tool-hero-inner">
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Receipt Generator</span></div>
+<h1>Receipt & <em>Invoice Generator</em></h1>
+<p class="hero-sub">Create professional receipts and invoices for your business. Add items, tax, discounts, and print or save. Multi-currency support for African businesses.</p>
+<div class="hero-badges"><span class="badge b-em">Multi-Currency</span><span class="badge b-em">Print Ready</span><span class="badge b-em">Free</span></div>
+</div></section>
+
+<section class="tool-main"><div class="tool-main-inner">
+<div class="calculator">
+<div class="card">
+<div class="card-head"><span class="card-title">Business Details</span></div>
+<div class="card-body">
+<div class="row" style="margin-bottom:14px">
+<div><label>Business Name</label><input type="text" id="bizName" placeholder="e.g. Ade's Electronics" oninput="preview()"></div>
+<div><label>Currency</label>
+<select id="currency" onchange="preview()">
+<option value="NGN">NGN (₦)</option><option value="KES">KES (KSh)</option>
+<option value="ZAR">ZAR (R)</option><option value="GHS">GHS (GH₵)</option>
+<option value="USD">USD ($)</option><option value="EGP">EGP (E£)</option>
+</select></div>
+</div>
+<div class="row" style="margin-bottom:14px">
+<div><label>Address (optional)</label><input type="text" id="bizAddr" placeholder="123 Main Street, Lagos" oninput="preview()"></div>
+<div><label>Phone (optional)</label><input type="text" id="bizPhone" placeholder="+234 801 234 5678" oninput="preview()"></div>
+</div>
+<div class="row">
+<div><label>Receipt / Invoice #</label><input type="text" id="receiptNo" value="001" oninput="preview()"></div>
+<div><label>Date</label><input type="date" id="receiptDate" oninput="preview()"></div>
+</div>
+</div></div>
+
+<div class="card">
+<div class="card-head"><span class="card-title">Customer</span></div>
+<div class="card-body">
+<div class="row">
+<div><label>Customer Name</label><input type="text" id="custName" placeholder="Customer name" oninput="preview()"></div>
+<div><label>Payment Method</label>
+<select id="payMethod" onchange="preview()">
+<option value="Cash">Cash</option><option value="Bank Transfer">Bank Transfer</option>
+<option value="Mobile Money">Mobile Money</option><option value="POS/Card">POS / Card</option>
+<option value="Cheque">Cheque</option>
+</select></div>
+</div>
+</div></div>
+
+<div class="card">
+<div class="card-head"><span class="card-title">Line Items</span></div>
+<div class="card-body">
+<div style="margin-bottom:6px;display:grid;grid-template-columns:2fr 1fr 1fr 30px;gap:8px;font-size:.68rem;font-weight:700;color:#64748b;text-transform:uppercase">
+<span>Description</span><span>Qty</span><span>Unit Price</span><span></span>
+</div>
+<div id="items"></div>
+<button class="btn btn-sm" onclick="addItem()">+ Add Item</button>
+<div class="row" style="margin-top:14px">
+<div><label>Tax Rate (%)</label><input type="number" id="taxRate" value="7.5" min="0" max="50" step="0.5" oninput="preview()"></div>
+<div><label>Discount (%)</label><input type="number" id="discount" value="0" min="0" max="100" step="0.5" oninput="preview()"></div>
+</div>
+</div></div>
+</div>
+
+<div style="position:sticky;top:20px">
+<div class="receipt" id="receiptPreview"></div>
+<button class="print-btn" onclick="window.print()">Print / Save as PDF</button>
+</div>
+</div></section>
+
+<section class="seo-section">
+<h2>Professional Receipts for African Businesses</h2>
+<p>Every business transaction should be documented with a proper receipt. Whether you're running a small shop in Lagos, a service business in Nairobi, or an online store in Johannesburg, providing professional receipts builds trust with customers and helps you maintain accurate financial records for tax purposes.</p>
+<p>In Nigeria, FIRS requires businesses to issue receipts for all transactions. In South Africa, SARS expects tax invoices for VAT-registered businesses. Kenya's KRA similarly requires proper documentation. Even informal businesses benefit from issuing receipts — it helps track income, manage inventory, and resolve customer disputes.</p>
+<p>This free receipt generator creates clean, professional receipts that you can print directly or save as PDF using your browser's print function. It supports all major African currencies (NGN, KES, ZAR, GHS, EGP, USD) and includes automatic tax calculation, discount application, and line item totalling.</p>
+<p>For VAT-registered businesses, the tax rate defaults to the standard rate but can be adjusted. Nigeria uses 7.5% VAT, Kenya 16%, South Africa 15%, and Ghana 15%. You can also set the tax to 0% for tax-exempt items or non-VAT-registered businesses. The receipt format is designed to meet basic documentation requirements across African tax jurisdictions.</p>
+
+<h2>Frequently Asked Questions</h2>
+<details class="faq-item"><summary>Is this receipt legally valid?</summary><p>This generates a basic commercial receipt suitable for most small business transactions. However, for VAT invoices (required by FIRS, SARS, KRA, GRA), you may need additional fields like your VAT/TIN number, customer TIN, and specific formatting. Consult your accountant for compliance with your specific tax authority's requirements.</p></details>
+<details class="faq-item"><summary>Can I save receipts for later?</summary><p>Use your browser's "Print" function and select "Save as PDF" as the destination. This creates a permanent PDF copy of the receipt. For ongoing business needs, consider accounting software like QuickBooks, Wave, or Zoho that provides receipt/invoice generation with cloud storage and reporting.</p></details>
+</section>
+
+<afro-related-tools category="document-pdf" current="receipt-generator"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+const SYMBOLS = {NGN:'₦',KES:'KSh',ZAR:'R',GHS:'GH₵',USD:'$',EGP:'E£'};
+let itemCount = 0;
+
+function addItem() {
+  const div = document.createElement('div');
+  div.className = 'item-row';
+  div.id = 'item-' + itemCount;
+  const idx = itemCount++;
+  div.innerHTML = `<input type="text" id="desc-${idx}" placeholder="Item description" oninput="preview()">
+    <input type="number" id="qty-${idx}" value="1" min="1" oninput="preview()">
+    <input type="number" id="price-${idx}" value="0" min="0" step="100" oninput="preview()">
+    <button class="del-btn" onclick="document.getElementById('item-${idx}').remove();preview()">×</button>`;
+  document.getElementById('items').appendChild(div);
+}
+
+// Start with 2 items
+addItem(); addItem();
+document.getElementById('receiptDate').value = new Date().toISOString().split('T')[0];
+
+function preview() {
+  const sym = SYMBOLS[document.getElementById('currency').value];
+  const fmt = n => sym + ' ' + n.toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2});
+  const bizName = document.getElementById('bizName').value || 'Business Name';
+  const bizAddr = document.getElementById('bizAddr').value;
+  const bizPhone = document.getElementById('bizPhone').value;
+  const receiptNo = document.getElementById('receiptNo').value;
+  const receiptDate = document.getElementById('receiptDate').value;
+  const custName = document.getElementById('custName').value || 'Walk-in Customer';
+  const payMethod = document.getElementById('payMethod').value;
+  const taxRate = +document.getElementById('taxRate').value / 100;
+  const discount = +document.getElementById('discount').value / 100;
+
+  let items = [], subtotal = 0;
+  for (let i = 0; i < itemCount; i++) {
+    const descEl = document.getElementById('desc-' + i);
+    if (!descEl) continue;
+    const desc = descEl.value || 'Item';
+    const qty = +document.getElementById('qty-' + i).value || 0;
+    const price = +document.getElementById('price-' + i).value || 0;
+    const total = qty * price;
+    items.push({ desc, qty, price, total });
+    subtotal += total;
+  }
+
+  const discAmt = subtotal * discount;
+  const afterDisc = subtotal - discAmt;
+  const taxAmt = afterDisc * taxRate;
+  const grandTotal = afterDisc + taxAmt;
+
+  let html = `<div class="r-header">
+    <div class="r-biz">${bizName}</div>
+    ${bizAddr ? `<div class="r-sub">${bizAddr}</div>` : ''}
+    ${bizPhone ? `<div class="r-sub">${bizPhone}</div>` : ''}
+  </div>
+  <div class="r-info">
+    <div><strong>Receipt #:</strong> ${receiptNo}<br><strong>Date:</strong> ${receiptDate}</div>
+    <div style="text-align:right"><strong>Customer:</strong> ${custName}<br><strong>Payment:</strong> ${payMethod}</div>
+  </div>
+  <table class="r-table">
+    <thead><tr><th>Description</th><th>Qty</th><th>Price</th><th>Total</th></tr></thead>
+    <tbody>`;
+
+  items.forEach(i => {
+    html += `<tr><td>${i.desc}</td><td>${i.qty}</td><td>${fmt(i.price)}</td><td>${fmt(i.total)}</td></tr>`;
+  });
+
+  html += `</tbody></table>
+  <div class="r-totals">
+    Subtotal: ${fmt(subtotal)}<br>`;
+  if (discount > 0) html += `Discount (${(discount*100).toFixed(1)}%): -${fmt(discAmt)}<br>`;
+  if (taxRate > 0) html += `Tax (${(taxRate*100).toFixed(1)}%): ${fmt(taxAmt)}<br>`;
+  html += `<span class="r-total">Total: ${fmt(grandTotal)}</span>
+  </div>
+  <div class="r-footer">Thank you for your business! — Generated with AfroTools.com</div>`;
+
+  document.getElementById('receiptPreview').innerHTML = html;
+}
+
+preview();
+</script>
+</body>
+</html>

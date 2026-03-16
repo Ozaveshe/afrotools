@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'shipping-calc'});</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>African Shipping Cost Calculator | AfroTools</title>
+<meta name="description" content="Estimate shipping costs within and from Africa. Compare carriers like DHL, FedEx, GIG Logistics, and Sendy. Domestic and international shipping rates.">
+<link rel="canonical" href="https://afrotools.com/tools/shipping-calc/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Shipping Cost Calculator | AfroTools">
+<meta property="og:description" content="Estimate shipping costs for packages within and from Africa.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/shipping-calc/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+:root{--afro-dark:#0f1419;--accent:#0ea5e9}
+.tool-hero{background:linear-gradient(135deg,#0c4a6e 0%,#0ea5e9 50%,#0284c7 100%);padding:44px 0 36px}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#bae6fd}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:#bae6fd;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-em{background:rgba(186,230,253,.2);color:#bae6fd;border:1px solid rgba(186,230,253,.4)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
+.card-body{padding:22px}
+label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
+input,select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;box-sizing:border-box}
+input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(14,165,233,.15)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;margin-top:18px}
+.btn-primary{background:linear-gradient(135deg,#0284c7,#0ea5e9);color:#fff}
+.carrier-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;margin-bottom:12px;display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center}
+.carrier-card .name{font-size:.88rem;font-weight:800;color:#1e293b}
+.carrier-card .details{font-size:.78rem;color:#64748b;line-height:1.5;margin-top:4px}
+.carrier-card .price{font-size:1.3rem;font-weight:800;color:#0ea5e9;text-align:right}
+.carrier-card .time{font-size:.68rem;color:#64748b;text-align:right;margin-top:2px}
+.carrier-card.cheapest{border-color:#86efac;background:#f0fdf4}
+.carrier-card.cheapest .price{color:#059669}
+.sidebar .info-card{background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:16px;margin-top:14px}
+.info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#0c4a6e;margin-bottom:8px}
+.info-card p,.info-card li{font-size:.78rem;color:#0c4a6e;line-height:1.6}
+.info-card ul{padding-left:16px;margin:6px 0}
+.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
+.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
+.seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
+.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
+.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
+.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.row3{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<section class="tool-hero"><div class="tool-hero-inner">
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Shipping Calculator</span></div>
+<h1>African <em>Shipping Cost Calculator</em></h1>
+<p class="hero-sub">Estimate shipping costs within Africa and internationally. Compare rates from DHL, FedEx, GIG Logistics, Sendy, and local carriers.</p>
+<div class="hero-badges"><span class="badge b-em">Compare Carriers</span><span class="badge b-em">Domestic & International</span><span class="badge b-em">Instant Estimate</span></div>
+</div></section>
+
+<section class="tool-main"><div class="tool-main-inner">
+<div class="calculator">
+<div class="card">
+<div class="card-head"><span class="card-title">Shipment Details</span></div>
+<div class="card-body">
+<div class="row" style="margin-bottom:14px">
+<div><label>From</label>
+<select id="from">
+<option value="NG">Nigeria</option>
+<option value="KE">Kenya</option>
+<option value="ZA">South Africa</option>
+<option value="GH">Ghana</option>
+<option value="EG">Egypt</option>
+<option value="TZ">Tanzania</option>
+</select></div>
+<div><label>To</label>
+<select id="to">
+<option value="NG">Nigeria</option>
+<option value="KE" selected>Kenya</option>
+<option value="ZA">South Africa</option>
+<option value="GH">Ghana</option>
+<option value="EG">Egypt</option>
+<option value="TZ">Tanzania</option>
+<option value="UK">United Kingdom</option>
+<option value="US">United States</option>
+<option value="CN">China</option>
+<option value="AE">UAE (Dubai)</option>
+</select></div>
+</div>
+<div class="row3" style="margin-bottom:14px">
+<div><label>Weight (kg)</label><input type="number" id="weight" value="2" min="0.1" max="500" step="0.5"></div>
+<div><label>Length (cm)</label><input type="number" id="length" value="30" min="1" max="300"></div>
+<div><label>Width (cm)</label><input type="number" id="width" value="20" min="1" max="300"></div>
+</div>
+<div class="row" style="margin-bottom:14px">
+<div><label>Height (cm)</label><input type="number" id="height" value="15" min="1" max="300"></div>
+<div><label>Package Type</label>
+<select id="pkgType">
+<option value="parcel">Parcel / Box</option>
+<option value="document">Document / Envelope</option>
+<option value="pallet">Pallet / Freight</option>
+</select></div>
+</div>
+<button class="btn btn-primary" onclick="calculate()">Compare Shipping Rates</button>
+</div></div>
+
+<div class="card" id="resultCard" style="display:none">
+<div class="card-head"><span class="card-title">Estimated Rates</span></div>
+<div class="card-body" id="results"></div>
+</div>
+</div>
+
+<div class="sidebar">
+<div class="card">
+<div class="card-head"><span class="card-title">Volumetric Weight</span></div>
+<div class="card-body" style="font-size:.78rem;color:#475569;line-height:1.7">
+<p>Carriers charge by <strong>actual weight</strong> or <strong>volumetric weight</strong> — whichever is greater.</p>
+<p style="margin-top:6px"><strong>Formula:</strong> (L x W x H) / 5000</p>
+<p style="margin-top:6px">A large, light box may cost more than a small, heavy one due to volumetric pricing.</p>
+</div></div>
+<div class="info-card">
+<h4>Popular African Carriers</h4>
+<ul>
+<li><strong>GIG Logistics</strong> — Nigeria, Ghana, US, UK</li>
+<li><strong>Sendy</strong> — Kenya, Uganda, Tanzania</li>
+<li><strong>Kwik</strong> — Nigeria last-mile</li>
+<li><strong>The Courier Guy</strong> — South Africa</li>
+<li><strong>DHL Africa</strong> — Pan-African</li>
+<li><strong>FedEx</strong> — International</li>
+</ul>
+</div>
+<div class="info-card" style="margin-top:10px">
+<h4>Shipping Tips</h4>
+<ul>
+<li>Package items securely for rough handling</li>
+<li>Declare value accurately for customs</li>
+<li>Keep customs documents ready</li>
+<li>Consider insurance for valuable items</li>
+<li>Track shipments via carrier app</li>
+</ul>
+</div>
+</div>
+</div></section>
+
+<section class="seo-section">
+<h2>Shipping in Africa</h2>
+<p>Shipping within and from Africa has improved dramatically with the growth of e-commerce and logistics startups. Companies like GIG Logistics (Nigeria/Ghana), Sendy (Kenya), and The Courier Guy (South Africa) have made domestic shipping more reliable and affordable. International carriers DHL, FedEx, and UPS maintain strong African networks for cross-border shipments.</p>
+<p>The biggest challenges for African shipping remain customs clearance (especially for intra-African trade), infrastructure limitations in rural areas, and the high cost of international shipping compared to other regions. The African Continental Free Trade Area (AfCFTA) is gradually reducing trade barriers between African countries, which should lower shipping costs over time.</p>
+<p>When shipping from Africa, understanding volumetric weight pricing is essential. Carriers charge by either actual weight or volumetric weight (calculated from package dimensions), whichever is greater. This means a large, lightweight package can cost as much as a small, heavy one. Our calculator factors in both actual and volumetric weight to give you accurate estimates.</p>
+<p>For e-commerce businesses in Africa, choosing the right shipping partner can significantly impact customer satisfaction and profit margins. Domestic last-mile delivery is generally affordable (NGN 1,500-5,000 within Lagos, KES 200-500 within Nairobi), but international shipping from Africa remains expensive — expect $30-100+ for a small parcel to Europe or the US via express carriers.</p>
+
+<h2>Frequently Asked Questions</h2>
+<details class="faq-item"><summary>How long does shipping within Africa take?</summary><p>Domestic shipping typically takes 1-3 days for express and 3-7 days for standard within major cities. Intra-African shipping (e.g., Nigeria to Kenya) takes 5-14 days depending on the carrier. International shipping to Europe/US is 3-5 days express or 7-21 days standard.</p></details>
+<details class="faq-item"><summary>What can't I ship from Africa?</summary><p>Restricted items vary by carrier and destination, but generally you cannot ship: perishable food (without special packaging), hazardous materials, firearms, live animals, currency, and some agricultural products. Customs restrictions apply — check destination country rules for electronics, medicines, and food items.</p></details>
+</section>
+
+<afro-related-tools category="ecommerce" current="shipping-calc"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+const CARRIERS = [
+  { name: 'DHL Express', domestic: 15, intraAfrica: 45, international: 65, perKg: 8, time: { domestic: '1-2 days', intra: '3-5 days', intl: '3-5 days' }},
+  { name: 'FedEx', domestic: 18, intraAfrica: 50, international: 60, perKg: 9, time: { domestic: '1-3 days', intra: '4-7 days', intl: '3-5 days' }},
+  { name: 'UPS', domestic: 16, intraAfrica: 48, international: 62, perKg: 8.5, time: { domestic: '2-3 days', intra: '5-7 days', intl: '3-6 days' }},
+  { name: 'GIG Logistics', domestic: 5, intraAfrica: 30, international: 45, perKg: 4, time: { domestic: '1-3 days', intra: '5-10 days', intl: '7-14 days' }},
+  { name: 'Sendy', domestic: 3, intraAfrica: 25, international: 0, perKg: 2.5, time: { domestic: '1-2 days', intra: '3-7 days', intl: 'N/A' }},
+  { name: 'The Courier Guy', domestic: 6, intraAfrica: 28, international: 40, perKg: 5, time: { domestic: '1-3 days', intra: '5-10 days', intl: '7-14 days' }},
+  { name: 'Aramex', domestic: 10, intraAfrica: 35, international: 50, perKg: 6, time: { domestic: '2-3 days', intra: '4-7 days', intl: '4-7 days' }},
+  { name: 'NIPOST / PostNet', domestic: 2, intraAfrica: 15, international: 25, perKg: 2, time: { domestic: '3-7 days', intra: '10-21 days', intl: '14-30 days' }}
+];
+
+const AFRICAN = ['NG','KE','ZA','GH','EG','TZ'];
+
+function calculate() {
+  const from = document.getElementById('from').value;
+  const to = document.getElementById('to').value;
+  const weight = +document.getElementById('weight').value;
+  const l = +document.getElementById('length').value;
+  const w = +document.getElementById('width').value;
+  const h = +document.getElementById('height').value;
+  const pkgType = document.getElementById('pkgType').value;
+
+  const volWeight = (l * w * h) / 5000;
+  const chargeWeight = Math.max(weight, volWeight);
+  const isDomestic = from === to;
+  const isIntraAfrica = !isDomestic && AFRICAN.includes(from) && AFRICAN.includes(to);
+  const isIntl = !isDomestic && !isIntraAfrica;
+
+  const results = [];
+  CARRIERS.forEach(c => {
+    let base, time;
+    if (isDomestic) { base = c.domestic; time = c.time.domestic; }
+    else if (isIntraAfrica) { base = c.intraAfrica; time = c.time.intra; }
+    else { base = c.international; time = c.time.intl; }
+
+    if (base === 0) return; // Carrier doesn't serve this route
+
+    let cost = base + (chargeWeight * c.perKg);
+    if (pkgType === 'document') cost *= 0.6;
+    if (pkgType === 'pallet') cost *= 3;
+    cost = Math.round(cost * 100) / 100;
+
+    results.push({ name: c.name, cost, time });
+  });
+
+  results.sort((a, b) => a.cost - b.cost);
+
+  let html = `<p style="font-size:.78rem;color:#64748b;margin-bottom:14px">Charged weight: <strong>${chargeWeight.toFixed(1)} kg</strong> (actual: ${weight}kg, volumetric: ${volWeight.toFixed(1)}kg) — ${isDomestic ? 'Domestic' : isIntraAfrica ? 'Intra-Africa' : 'International'}</p>`;
+
+  results.forEach((r, i) => {
+    html += `<div class="carrier-card${i===0?' cheapest':''}">
+      <div><div class="name">${r.name}${i===0?' ★ Cheapest':''}</div><div class="details">Estimated delivery: ${r.time}</div></div>
+      <div><div class="price">$${r.cost.toFixed(2)}</div><div class="time">USD estimate</div></div>
+    </div>`;
+  });
+
+  document.getElementById('results').innerHTML = html;
+  document.getElementById('resultCard').style.display = 'block';
+  document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>

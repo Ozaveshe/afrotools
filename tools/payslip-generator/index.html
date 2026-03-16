@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'payslip-generator'});</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>African Payslip Generator | AfroTools</title>
+<meta name="description" content="Generate professional payslips for Nigerian, Kenyan, South African, and Ghanaian employees. Includes PAYE, pension, NHF, NHIF, UIF deductions. Print-ready.">
+<link rel="canonical" href="https://afrotools.com/tools/payslip-generator/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Payslip Generator | AfroTools">
+<meta property="og:description" content="Generate professional payslips with automatic African tax deductions.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/payslip-generator/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+:root{--afro-dark:#0f1419;--accent:#007AFF}
+.tool-hero{background:linear-gradient(135deg,#1e3a5f 0%,#007AFF 50%,#0056b3 100%);padding:44px 0 36px}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#bfdbfe}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:#bfdbfe;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-em{background:rgba(191,219,254,.2);color:#bfdbfe;border:1px solid rgba(191,219,254,.4)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 400px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
+.card-body{padding:22px}
+label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
+input,select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;box-sizing:border-box}
+input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,122,255,.15)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;margin-top:18px}
+.btn-primary{background:linear-gradient(135deg,#0056b3,#007AFF);color:#fff}
+/* Payslip */
+.payslip{background:#fff;border:2px solid #1e293b;border-radius:8px;padding:24px;font-family:'DM Sans',sans-serif;font-size:.78rem}
+.payslip .ps-header{text-align:center;border-bottom:2px solid #1e293b;padding-bottom:12px;margin-bottom:14px}
+.payslip .ps-company{font-size:1.1rem;font-weight:800;color:#1e293b;text-transform:uppercase}
+.payslip .ps-title{font-size:.82rem;font-weight:700;color:#64748b;margin-top:2px}
+.payslip .ps-info{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;font-size:.72rem;color:#475569;line-height:1.6}
+.payslip .ps-info strong{color:#1e293b}
+.payslip .ps-table{width:100%;border-collapse:collapse;margin-bottom:14px}
+.payslip .ps-table th{text-align:left;font-size:.68rem;text-transform:uppercase;color:#64748b;border-bottom:1px solid #e2e8f0;padding:6px 0}
+.payslip .ps-table td{padding:5px 0;border-bottom:1px solid #f1f5f9;font-size:.78rem}
+.payslip .ps-table td:last-child{text-align:right;font-weight:600}
+.payslip .ps-table tr.total td{border-top:2px solid #1e293b;border-bottom:none;font-weight:800;font-size:.88rem}
+.payslip .ps-net{text-align:center;padding:14px;background:#f8fafc;border-radius:6px;margin-top:14px}
+.payslip .ps-net .big{font-size:1.4rem;font-weight:900;color:#007AFF}
+.payslip .ps-net .lbl{font-size:.68rem;color:#64748b;font-weight:600;text-transform:uppercase}
+.print-btn{display:block;width:100%;padding:12px;background:linear-gradient(135deg,#059669,#10b981);color:#fff;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;margin-top:14px}
+.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
+.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
+.seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
+.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
+.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
+.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
+@media print{body *{visibility:hidden}.payslip,.payslip *{visibility:visible}.payslip{position:absolute;left:0;top:0;width:100%;border:none}}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<section class="tool-hero"><div class="tool-hero-inner">
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Payslip Generator</span></div>
+<h1>African <em>Payslip Generator</em></h1>
+<p class="hero-sub">Generate professional payslips with automatic PAYE, pension, and statutory deductions for Nigeria, Kenya, South Africa, and Ghana.</p>
+<div class="hero-badges"><span class="badge b-em">4 Countries</span><span class="badge b-em">Auto Deductions</span><span class="badge b-em">Print Ready</span></div>
+</div></section>
+
+<section class="tool-main"><div class="tool-main-inner">
+<div class="calculator">
+<div class="card">
+<div class="card-head"><span class="card-title">Company & Employee Details</span></div>
+<div class="card-body">
+<div class="row" style="margin-bottom:14px">
+<div><label>Company Name</label><input type="text" id="company" value="ABC Company Ltd" oninput="gen()"></div>
+<div><label>Country</label>
+<select id="country" onchange="gen()">
+<option value="NG">Nigeria</option>
+<option value="KE">Kenya</option>
+<option value="ZA">South Africa</option>
+<option value="GH">Ghana</option>
+</select></div>
+</div>
+<div class="row" style="margin-bottom:14px">
+<div><label>Employee Name</label><input type="text" id="empName" value="John Doe" oninput="gen()"></div>
+<div><label>Employee ID / Staff No.</label><input type="text" id="empId" value="EMP-001" oninput="gen()"></div>
+</div>
+<div class="row" style="margin-bottom:14px">
+<div><label>Pay Period</label>
+<select id="period" onchange="gen()">
+<option value="Jan 2025">January 2025</option>
+<option value="Feb 2025">February 2025</option>
+<option value="Mar 2025" selected>March 2025</option>
+<option value="Apr 2025">April 2025</option>
+</select></div>
+<div><label>Department</label><input type="text" id="dept" value="Operations" oninput="gen()"></div>
+</div>
+</div></div>
+
+<div class="card">
+<div class="card-head"><span class="card-title">Earnings</span></div>
+<div class="card-body">
+<div class="row" style="margin-bottom:14px">
+<div><label>Basic Salary</label><input type="number" id="basic" value="500000" min="0" step="10000" oninput="gen()"></div>
+<div><label>Housing Allowance</label><input type="number" id="housing" value="100000" min="0" step="10000" oninput="gen()"></div>
+</div>
+<div class="row" style="margin-bottom:14px">
+<div><label>Transport Allowance</label><input type="number" id="transport" value="50000" min="0" step="5000" oninput="gen()"></div>
+<div><label>Other Allowances</label><input type="number" id="other" value="0" min="0" step="5000" oninput="gen()"></div>
+</div>
+<div class="row">
+<div><label>Overtime</label><input type="number" id="overtime" value="0" min="0" step="5000" oninput="gen()"></div>
+<div><label>Bonus</label><input type="number" id="bonus" value="0" min="0" step="10000" oninput="gen()"></div>
+</div>
+</div></div>
+</div>
+
+<div style="position:sticky;top:20px">
+<div class="payslip" id="payslipPreview"></div>
+<button class="print-btn" onclick="window.print()">Print Payslip</button>
+</div>
+</div></section>
+
+<section class="seo-section">
+<h2>Generating Payslips in Africa</h2>
+<p>Every employer in Africa is legally required to provide employees with payslips showing their earnings and deductions. In Nigeria, the Labour Act requires employers to provide itemised pay statements. South Africa's BCEA mandates written payslips. Kenya's Employment Act and Ghana's Labour Act have similar requirements.</p>
+<p>A proper payslip should show: gross earnings (basic salary plus all allowances), all statutory deductions (PAYE tax, pension contributions, health insurance), any voluntary deductions (loans, union dues), and the net pay. Our generator automatically calculates the major statutory deductions based on the selected country's current tax laws.</p>
+<p>For Nigerian employers, deductions include PAYE (7-24%), pension (8% employee contribution), NHF (2.5%), and NHIS. Kenyan payslips show PAYE (10-35%), NSSF, SHIF (2.75%), and AHL (1.5%). South African payslips include PAYE (18-45%), UIF (1%), and retirement fund contributions. Ghanaian payslips show PAYE and SSNIT Tier 1 (5.5% employee).</p>
+
+<h2>Frequently Asked Questions</h2>
+<details class="faq-item"><summary>Is a payslip legally required?</summary><p>Yes, in all four countries covered. Nigeria's Labour Act, Kenya's Employment Act, South Africa's BCEA, and Ghana's Labour Act all require employers to provide itemised pay statements to employees. Failure to provide payslips can result in penalties during labour inspections.</p></details>
+<details class="faq-item"><summary>Are these calculations exact?</summary><p>The deductions are calculated using simplified versions of each country's tax rules. For Nigeria, we use the PITA progressive rates; for Kenya, the KRA PAYE bands; for SA, the SARS tax tables; and for Ghana, the GRA PAYE rates. Actual deductions may vary based on individual reliefs, allowances, and specific employer arrangements. Consult a payroll professional for exact figures.</p></details>
+</section>
+
+<afro-related-tools category="financial" current="payslip-generator"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+const SYMS = {NG:'₦',KE:'KES',ZA:'R',GH:'GH₵'};
+const TAX = {
+  NG: { // Nigeria simplified PAYE
+    calcPAYE: function(annual) {
+      const cra = 200000 + annual*0.01; // CRA
+      const taxable = Math.max(0, annual - cra - annual*0.08); // minus pension
+      let tax = 0, prev = 0;
+      const bands = [[300000,.07],[300000,.11],[500000,.15],[500000,.19],[1600000,.21],[Infinity,.24]];
+      let rem = taxable;
+      for (const [width, rate] of bands) {
+        const t = Math.min(rem, width);
+        tax += t * rate;
+        rem -= t;
+        if (rem <= 0) break;
+      }
+      return tax / 12;
+    },
+    deductions: (gross) => {
+      const annual = gross * 12;
+      return [
+        { name: 'PAYE Tax', amount: TAX.NG.calcPAYE(annual) },
+        { name: 'Pension (8%)', amount: gross * 0.08 },
+        { name: 'NHF (2.5%)', amount: gross * 0.025 }
+      ];
+    }
+  },
+  KE: {
+    calcPAYE: function(monthly) {
+      let tax = 0, rem = monthly;
+      const bands = [[24000,.10],[8333,.25],[467778,.30],[300000,.325],[Infinity,.35]];
+      for (const [width, rate] of bands) {
+        const t = Math.min(rem, width);
+        tax += t * rate;
+        rem -= t;
+        if (rem <= 0) break;
+      }
+      return Math.max(0, tax - 2400); // personal relief
+    },
+    deductions: (gross) => [
+      { name: 'PAYE Tax', amount: TAX.KE.calcPAYE(gross) },
+      { name: 'NSSF (6%)', amount: Math.min(gross * 0.06, 2160) },
+      { name: 'SHIF (2.75%)', amount: gross * 0.0275 },
+      { name: 'AHL (1.5%)', amount: gross * 0.015 }
+    ]
+  },
+  ZA: {
+    calcPAYE: function(monthly) {
+      const annual = monthly * 12;
+      let tax = 0, prev = 0;
+      const bands = [[237100,.18],[370500,.26],[512800,.31],[673000,.36],[857900,.39],[1817000,.41],[Infinity,.45]];
+      for (const [threshold, rate] of bands) {
+        const t = Math.min(annual, threshold) - prev;
+        if (t > 0) tax += t * rate;
+        prev = threshold;
+        if (annual <= threshold) break;
+      }
+      tax = Math.max(0, tax - 17235); // primary rebate
+      return tax / 12;
+    },
+    deductions: (gross) => [
+      { name: 'PAYE Tax', amount: TAX.ZA.calcPAYE(gross) },
+      { name: 'UIF (1%)', amount: Math.min(gross * 0.01, 177.12) }
+    ]
+  },
+  GH: {
+    calcPAYE: function(monthly) {
+      let tax = 0, rem = monthly;
+      const bands = [[402,0],[110,.05],[130,.10],[3034,.175],[16000,.25],[Infinity,.30]];
+      for (const [width, rate] of bands) {
+        const t = Math.min(rem, width);
+        tax += t * rate;
+        rem -= t;
+        if (rem <= 0) break;
+      }
+      return tax;
+    },
+    deductions: (gross) => [
+      { name: 'PAYE Tax', amount: TAX.GH.calcPAYE(gross) },
+      { name: 'SSNIT Tier 1 (5.5%)', amount: gross * 0.055 }
+    ]
+  }
+};
+
+function gen() {
+  const c = document.getElementById('country').value;
+  const sym = SYMS[c];
+  const fmt = n => sym + ' ' + Math.round(n).toLocaleString('en');
+
+  const basic = +document.getElementById('basic').value;
+  const housing = +document.getElementById('housing').value;
+  const transport = +document.getElementById('transport').value;
+  const other = +document.getElementById('other').value;
+  const overtime = +document.getElementById('overtime').value;
+  const bonus = +document.getElementById('bonus').value;
+  const gross = basic + housing + transport + other + overtime + bonus;
+
+  const deductions = TAX[c].deductions(gross);
+  const totalDed = deductions.reduce((s, d) => s + d.amount, 0);
+  const net = gross - totalDed;
+
+  const earnings = [
+    { name: 'Basic Salary', amount: basic },
+    { name: 'Housing Allowance', amount: housing },
+    { name: 'Transport Allowance', amount: transport }
+  ];
+  if (other > 0) earnings.push({ name: 'Other Allowances', amount: other });
+  if (overtime > 0) earnings.push({ name: 'Overtime', amount: overtime });
+  if (bonus > 0) earnings.push({ name: 'Bonus', amount: bonus });
+
+  let html = `<div class="ps-header">
+    <div class="ps-company">${document.getElementById('company').value}</div>
+    <div class="ps-title">PAYSLIP — ${document.getElementById('period').value}</div>
+  </div>
+  <div class="ps-info">
+    <div><strong>Employee:</strong> ${document.getElementById('empName').value}<br><strong>Staff No:</strong> ${document.getElementById('empId').value}</div>
+    <div><strong>Department:</strong> ${document.getElementById('dept').value}<br><strong>Pay Date:</strong> ${new Date().toLocaleDateString('en-GB')}</div>
+  </div>
+  <table class="ps-table">
+    <thead><tr><th>Earnings</th><th>Amount</th></tr></thead>
+    <tbody>`;
+  earnings.forEach(e => { if (e.amount > 0) html += `<tr><td>${e.name}</td><td>${fmt(e.amount)}</td></tr>`; });
+  html += `<tr class="total"><td>Gross Earnings</td><td>${fmt(gross)}</td></tr></tbody></table>
+  <table class="ps-table">
+    <thead><tr><th>Deductions</th><th>Amount</th></tr></thead>
+    <tbody>`;
+  deductions.forEach(d => { html += `<tr><td>${d.name}</td><td>${fmt(d.amount)}</td></tr>`; });
+  html += `<tr class="total"><td>Total Deductions</td><td>${fmt(totalDed)}</td></tr></tbody></table>
+  <div class="ps-net"><div class="lbl">Net Pay</div><div class="big">${fmt(net)}</div></div>`;
+
+  document.getElementById('payslipPreview').innerHTML = html;
+}
+
+gen();
+</script>
+</body>
+</html>
