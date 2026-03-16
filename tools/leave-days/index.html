@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'leave-days'});</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Statutory Leave Days Calculator — Annual, Sick & Maternity Leave | AfroTools</title>
+<meta name="description" content="Calculate statutory leave entitlements for Nigeria, Kenya, South Africa, and Ghana. Annual leave, sick leave, maternity/paternity leave, and public holidays.">
+<link rel="canonical" href="https://afrotools.com/tools/leave-days/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Statutory Leave Days Calculator | AfroTools">
+<meta property="og:description" content="Leave entitlements for NG, KE, ZA, GH. Annual, sick, maternity leave.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/leave-days/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+:root{--afro-blue:var(--color-primary);--afro-dark:#0f1419}
+.tool-hero{background:linear-gradient(135deg,var(--afro-dark) 0%,#1a1f2e 100%);padding:44px 0 36px;overflow:hidden}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:var(--afro-blue)}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:var(--afro-blue);font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-blue{background:rgba(0,113,227,.18);color:var(--color-primary);border:1px solid rgba(0,113,227,.38)}
+.b-green{background:rgba(16,185,129,.12);color:#10b981;border:1px solid rgba(16,185,129,.3)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
+.card-body{padding:22px}
+.field{margin-bottom:16px}
+.f-label{font-size:.75rem;font-weight:700;color:var(--afro-dark);margin-bottom:6px;display:block}
+.f-select{width:100%;padding:11px 13px;background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:7px;font-size:1rem;font-weight:600;color:var(--afro-dark);outline:none;font-family:'DM Sans',sans-serif;box-sizing:border-box}
+.f-select:focus{border-color:var(--afro-blue);box-shadow:0 0 0 3px rgba(0,113,227,.1)}
+.calc-btn{width:100%;padding:13px;background:var(--afro-blue);color:#fff;border:none;border-radius:8px;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .18s;font-family:'DM Sans',sans-serif}
+.calc-btn:hover{background:#0059B3;transform:translateY(-1px)}
+#results{display:none}
+.leave-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:14px}
+.leave-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;text-align:center}
+.leave-card.wide{grid-column:1/-1}
+.l-icon{font-size:1.8rem;margin-bottom:6px}
+.l-label{font-size:.68rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#64748b;margin-bottom:4px}
+.l-value{font-size:1.4rem;font-weight:800;color:var(--afro-dark)}
+.l-note{font-size:.7rem;color:#94a3b8;margin-top:2px}
+.compare-table{width:100%;border-collapse:collapse;margin-top:14px;font-size:.78rem}
+.compare-table th{background:#f1f5f9;padding:10px;text-align:left;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#64748b;border-bottom:1px solid #e2e8f0}
+.compare-table td{padding:10px;border-bottom:1px solid #f1f5f9;font-weight:500;color:var(--afro-dark)}
+.compare-table tr:hover td{background:#f8fafc}
+.sidebar .card-body{font-size:.82rem;color:#475569;line-height:1.7}
+.seo-content{max-width:800px;margin:0 auto;padding:48px 24px}
+.seo-content h2{font-size:1.4rem;font-weight:800;color:var(--afro-dark);margin:32px 0 12px}
+.seo-content p,.seo-content li{font-size:.92rem;color:#475569;line-height:1.8}
+.seo-content ul{padding-left:20px}
+.faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:10px;overflow:hidden}
+.faq summary{padding:14px 18px;font-weight:700;font-size:.88rem;cursor:pointer;background:#f8fafc;color:var(--afro-dark)}
+.faq details[open] summary{border-bottom:1px solid #e2e8f0}
+.faq details div{padding:14px 18px;font-size:.85rem;color:#475569;line-height:1.7}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.leave-grid{grid-template-columns:1fr 1fr}}
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Statutory Leave Days Calculator","url":"https://afrotools.com/tools/leave-days/","description":"Calculate statutory leave entitlements for Nigeria, Kenya, South Africa, and Ghana.","applicationCategory":"BusinessApplication","operatingSystem":"All","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
+</script>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<section class="tool-hero"><div class="tool-hero-inner">
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/categories/legal/">Legal</a> / <span>Leave Days</span></div>
+<h1>Statutory <em>Leave Days</em> Calculator</h1>
+<p class="hero-sub">Know your leave entitlements. Calculate annual leave, sick leave, maternity/paternity leave, and public holidays for Nigeria, Kenya, South Africa, and Ghana.</p>
+<div class="hero-badges"><span class="badge b-blue">4 Countries</span><span class="badge b-green">2026 Rules</span></div>
+</div></section>
+
+<section class="tool-main"><div class="tool-main-inner">
+<div class="calc-area">
+<div class="card"><div class="card-head"><span class="card-title">Select Country</span></div>
+<div class="card-body">
+<div class="field"><label class="f-label">Country</label>
+<select id="country" class="f-select" onchange="showLeave()">
+<option value="NG">Nigeria</option>
+<option value="KE">Kenya</option>
+<option value="ZA">South Africa</option>
+<option value="GH">Ghana</option>
+</select></div>
+<button class="calc-btn" onclick="showLeave()">Show Leave Entitlements</button>
+</div></div>
+
+<div class="card" id="results">
+<div class="card-head"><span class="card-title" id="countryTitle">Nigeria — Statutory Leave Entitlements</span></div>
+<div class="card-body">
+<div class="leave-grid" id="leaveGrid"></div>
+<div style="margin-top:18px;padding:14px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;font-size:.82rem;color:#0c4a6e;line-height:1.7" id="notes"></div>
+</div></div>
+
+<div class="card">
+<div class="card-head"><span class="card-title">Country Comparison</span></div>
+<div class="card-body" style="padding:0;overflow-x:auto">
+<table class="compare-table">
+<thead><tr><th>Leave Type</th><th>Nigeria</th><th>Kenya</th><th>South Africa</th><th>Ghana</th></tr></thead>
+<tbody>
+<tr><td>Annual Leave</td><td>6 days min</td><td>21 days</td><td>21 days</td><td>15 days</td></tr>
+<tr><td>Sick Leave</td><td>12 days</td><td>7 days + half pay 7</td><td>30 days/3yr cycle</td><td>Contractual</td></tr>
+<tr><td>Maternity</td><td>12 weeks</td><td>3 months</td><td>4 months</td><td>12 weeks</td></tr>
+<tr><td>Paternity</td><td>Not statutory</td><td>2 weeks</td><td>10 days</td><td>Not statutory</td></tr>
+<tr><td>Public Holidays</td><td>~14 days</td><td>~13 days</td><td>12 days</td><td>13 days</td></tr>
+<tr><td>Bereavement</td><td>Contractual</td><td>Contractual</td><td>3 days</td><td>Contractual</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+
+<div class="sidebar">
+<div class="card"><div class="card-head"><span class="card-title">Key Notes</span></div>
+<div class="card-body">
+<p><strong>Statutory vs Contractual:</strong> Statutory leave is the legal minimum. Many employers, especially multinationals and tech companies, offer more generous leave packages.</p>
+<p style="margin-top:8px"><strong>Carry-over:</strong> Rules about carrying unused leave to the next year vary by country and employer policy. In Nigeria, unused leave should generally be used or paid out.</p>
+<p style="margin-top:8px"><strong>Probation:</strong> Some leave entitlements don't fully apply during probation periods, though this varies by jurisdiction.</p>
+</div></div>
+</div>
+</div></section>
+
+<section class="seo-content">
+<h2>Understanding Leave Entitlements in Africa</h2>
+<p>Employee leave entitlements are enshrined in labour laws across Africa, though they vary significantly between countries. Understanding your statutory rights is essential whether you're an employee or employer. Many workers in Africa, particularly in the informal sector, are unaware of their legal leave entitlements. This tool provides a clear reference for the four largest African economies.</p>
+
+<h2>Country-by-Country Overview</h2>
+<p><strong>Nigeria (Labour Act, 2004):</strong> The statutory minimum annual leave is just 6 working days after 12 months of continuous service — one of the lowest in Africa. However, most formal sector employers offer 15-25 days. Maternity leave is 12 weeks with at least 50% pay. There is no statutory paternity leave, though some progressive employers offer 1-2 weeks.</p>
+<p><strong>Kenya (Employment Act, 2007):</strong> 21 working days of annual leave, 3 months maternity leave with full pay, 2 weeks paternity leave. Kenya has among the most generous statutory leave provisions in East Africa.</p>
+<p><strong>South Africa (BCEA, 1997):</strong> 21 consecutive days (15 working days) annual leave. 4 months unpaid maternity leave (UIF provides partial income). 10 days paternity leave. The most comprehensive sick leave provision at 30 days per 3-year cycle.</p>
+<p><strong>Ghana (Labour Act, 2003):</strong> 15 working days annual leave after 12 months of service. 12 weeks maternity leave. Sick leave provisions are generally contractual rather than statutory.</p>
+
+<div class="faq">
+<h2>Frequently Asked Questions</h2>
+<details><summary>Can my employer deny my annual leave?</summary><div>In most African jurisdictions, annual leave is a legal right and cannot be permanently denied. However, employers can require reasonable notice and may reschedule leave for operational reasons. If you're unable to take leave, you may be entitled to payment in lieu.</div></details>
+<details><summary>Is maternity leave paid in Nigeria?</summary><div>Yes. Under the Labour Act, female employees are entitled to 12 weeks of maternity leave with at least 50% of their normal pay, provided they have been employed for at least 6 months. Many employers pay full salary during maternity leave.</div></details>
+<details><summary>Do public holidays count as leave days?</summary><div>No. Public holidays are separate from annual leave. If a public holiday falls on your annual leave, you should get an additional day off. If you work on a public holiday, you're typically entitled to overtime or a day off in lieu.</div></details>
+</div>
+</section>
+
+<afro-related-tools></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+const LEAVE_DATA={
+  NG:{
+    name:'Nigeria',
+    law:'Labour Act 2004 & Employee Compensation Act 2010',
+    annual:{days:'6 working days',note:'Minimum after 12 months continuous service. Most employers offer 15-25 days.'},
+    sick:{days:'12 days',note:'Up to 12 working days with full pay per year, subject to medical certificate.'},
+    maternity:{days:'12 weeks',note:'At least 50% pay. Must have 6+ months service. 6 weeks before, 6 weeks after delivery.'},
+    paternity:{days:'Not statutory',note:'No federal law mandates paternity leave. Some employers offer 1-2 weeks.'},
+    publicHols:{days:'~14 days',note:'New Year, Workers Day, Democracy Day, Independence Day, Christmas, Eid (2), Good Friday, Easter Monday, etc.'},
+    bereavement:{days:'Contractual',note:'Not mandated by law. Typically 3-5 days per employer policy.'},
+    notes:'Nigeria\'s Labour Act is from 2004 and is widely considered outdated. The proposed National Employment Policy may increase statutory leave. Many employers exceed the minimum 6 days significantly.'
+  },
+  KE:{
+    name:'Kenya',
+    law:'Employment Act 2007',
+    annual:{days:'21 working days',note:'After 12 months continuous service. Pro-rated for less.'},
+    sick:{days:'7 days full + 7 half',note:'7 days full pay, then 7 days half pay per year after 2 months service.'},
+    maternity:{days:'3 months',note:'Full pay. After giving 7 days notice. Cannot be dismissed during maternity.'},
+    paternity:{days:'2 weeks',note:'Full pay. Within period from birth to 2 weeks after.'},
+    publicHols:{days:'~13 days',note:'Mashujaa Day, Jamhuri Day, Madaraka Day, Utamaduni Day, Labour Day, etc.'},
+    bereavement:{days:'Contractual',note:'Not specifically mandated. Most employers offer 3-7 days.'},
+    notes:'Kenya has one of the most progressive labour frameworks in East Africa. The Employment Act also provides for housing levy, NSSF, and NHIF contributions by employers.'
+  },
+  ZA:{
+    name:'South Africa',
+    law:'Basic Conditions of Employment Act (BCEA) 1997',
+    annual:{days:'21 consecutive days',note:'Equivalent to 15 working days. Accrues from first day of employment.'},
+    sick:{days:'30 days per 3-year cycle',note:'First 6 months: 1 day per 26 worked. Then 30 days per 36-month cycle. Medical certificate for 2+ consecutive days.'},
+    maternity:{days:'4 months unpaid',note:'UIF provides up to 66% of salary. Cannot work for 6 weeks after birth. No minimum service requirement.'},
+    paternity:{days:'10 consecutive days',note:'Full pay. From birth or adoption date. As per 2020 Labour Laws Amendment Act.'},
+    publicHols:{days:'12 days',note:'Human Rights Day, Freedom Day, Workers Day, Youth Day, Heritage Day, Day of Reconciliation, etc.'},
+    bereavement:{days:'3 days',note:'For death of spouse, life partner, parent, adoptive parent, grandparent, child, grandchild, or sibling.'},
+    notes:'South Africa has the most comprehensive labour protections on the continent, including strong unfair dismissal and discrimination laws. The CCMA handles labour disputes.'
+  },
+  GH:{
+    name:'Ghana',
+    law:'Labour Act 2003 (Act 651)',
+    annual:{days:'15 working days',note:'After 12 months continuous service. Pro-rated. Increases with service in some sectors.'},
+    sick:{days:'Contractual',note:'Not specifically defined in statute. Most collective agreements provide 10-15 days.'},
+    maternity:{days:'12 weeks',note:'Full pay for registered SSNIT contributors. Additional 2 weeks for complications.'},
+    paternity:{days:'Not statutory',note:'Not mandated by law. Some employers and collective agreements provide 1-5 days.'},
+    publicHols:{days:'13 days',note:'Independence Day, Republic Day, Farmers Day, Founders Day, Kwame Nkrumah Memorial, etc.'},
+    bereavement:{days:'Contractual',note:'Not mandated. Typically 3-7 days in formal sector.'},
+    notes:'Ghana\'s Labour Act provides a framework but many specifics are determined by collective bargaining agreements and individual employment contracts. SSNIT membership is required for most benefits.'
+  }
+};
+
+function showLeave(){
+  const c=document.getElementById('country').value;
+  const data=LEAVE_DATA[c];
+  document.getElementById('countryTitle').textContent=data.name+' — Statutory Leave Entitlements';
+
+  const items=[
+    {icon:'🏖️',label:'Annual Leave',key:'annual'},
+    {icon:'🤒',label:'Sick Leave',key:'sick'},
+    {icon:'🤰',label:'Maternity Leave',key:'maternity'},
+    {icon:'👨‍👧',label:'Paternity Leave',key:'paternity'},
+    {icon:'📅',label:'Public Holidays',key:'publicHols'},
+    {icon:'🕊️',label:'Bereavement Leave',key:'bereavement'}
+  ];
+
+  let html='';
+  items.forEach(item=>{
+    const d=data[item.key];
+    html+=`<div class="leave-card"><div class="l-icon">${item.icon}</div><div class="l-label">${item.label}</div><div class="l-value">${d.days}</div><div class="l-note">${d.note}</div></div>`;
+  });
+  document.getElementById('leaveGrid').innerHTML=html;
+  document.getElementById('notes').innerHTML=`<strong>Source:</strong> ${data.law}<br>${data.notes}`;
+
+  document.getElementById('results').style.display='block';
+}
+
+showLeave();
+</script>
+</body>
+</html>

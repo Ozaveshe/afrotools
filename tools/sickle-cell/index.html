@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'sickle-cell'});</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sickle Cell Genotype Compatibility Checker | AfroTools</title>
+<meta name="description" content="Check genotype compatibility for sickle cell disease. See inheritance probabilities for AA, AS, SS, AC, SC combinations. Essential for family planning in Africa.">
+<link rel="canonical" href="https://afrotools.com/tools/sickle-cell/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Sickle Cell Genotype Checker | AfroTools">
+<meta property="og:description" content="Genotype compatibility for sickle cell. AA, AS, SS, AC, SC probabilities.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/sickle-cell/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+:root{--afro-blue:var(--color-primary);--afro-dark:#0f1419}
+.tool-hero{background:linear-gradient(135deg,#7f1d1d 0%,#dc2626 100%);padding:44px 0 36px;overflow:hidden}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#fca5a5}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:#fca5a5;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-red{background:rgba(252,165,165,.2);color:#fca5a5;border:1px solid rgba(252,165,165,.4)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
+.card-body{padding:22px}
+.field{margin-bottom:16px}
+.f-label{font-size:.75rem;font-weight:700;color:var(--afro-dark);margin-bottom:6px;display:block}
+.f-select{width:100%;padding:11px 13px;background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:7px;font-size:1rem;font-weight:600;color:var(--afro-dark);outline:none;font-family:'DM Sans',sans-serif;box-sizing:border-box}
+.f-select:focus{border-color:#dc2626;box-shadow:0 0 0 3px rgba(220,38,38,.12)}
+.calc-btn{width:100%;padding:13px;background:#dc2626;color:#fff;border:none;border-radius:8px;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .18s;font-family:'DM Sans',sans-serif}
+.calc-btn:hover{background:#b91c1c;transform:translateY(-1px);box-shadow:0 6px 20px rgba(220,38,38,.3)}
+#results{display:none}
+.compat-badge{display:inline-block;padding:8px 20px;border-radius:8px;font-size:1rem;font-weight:800;margin:12px 0}
+.compat-safe{background:#dcfce7;color:#16a34a;border:2px solid #bbf7d0}
+.compat-caution{background:#fef3c7;color:#d97706;border:2px solid #fde68a}
+.compat-danger{background:#fee2e2;color:#dc2626;border:2px solid #fecaca}
+.punnett{display:grid;grid-template-columns:80px 1fr 1fr;gap:0;margin:18px 0;border:2px solid #e2e8f0;border-radius:8px;overflow:hidden}
+.punnett .p-header{background:#f1f5f9;padding:12px;font-size:.78rem;font-weight:700;text-align:center;color:#64748b;border:1px solid #e2e8f0}
+.punnett .p-cell{padding:12px;text-align:center;font-size:1.1rem;font-weight:800;border:1px solid #e2e8f0}
+.p-cell.safe{background:#f0fdf4;color:#16a34a}
+.p-cell.carrier{background:#fffbeb;color:#d97706}
+.p-cell.affected{background:#fef2f2;color:#dc2626}
+.outcome-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:16px}
+.outcome-card{border-radius:8px;padding:14px;text-align:center}
+.outcome-card .genotype{font-size:1.3rem;font-weight:800;margin-bottom:4px}
+.outcome-card .pct{font-size:.85rem;font-weight:700}
+.outcome-card .desc{font-size:.68rem;font-weight:600;color:#64748b;margin-top:2px}
+.advice{padding:16px 20px;border-radius:8px;font-size:.85rem;line-height:1.7;margin-top:16px}
+.sidebar .card-body{font-size:.82rem;color:#475569;line-height:1.7}
+.seo-content{max-width:800px;margin:0 auto;padding:48px 24px}
+.seo-content h2{font-size:1.4rem;font-weight:800;color:var(--afro-dark);margin:32px 0 12px}
+.seo-content p,.seo-content li{font-size:.92rem;color:#475569;line-height:1.8}
+.seo-content ul{padding-left:20px}
+.faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:10px;overflow:hidden}
+.faq summary{padding:14px 18px;font-weight:700;font-size:.88rem;cursor:pointer;background:#f8fafc;color:var(--afro-dark)}
+.faq details[open] summary{border-bottom:1px solid #e2e8f0}
+.faq details div{padding:14px 18px;font-size:.85rem;color:#475569;line-height:1.7}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.punnett{grid-template-columns:60px 1fr 1fr}}
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Sickle Cell Genotype Compatibility Checker","url":"https://afrotools.com/tools/sickle-cell/","description":"Check genotype compatibility for sickle cell disease. See inheritance probabilities for AA, AS, SS, AC, SC combinations.","applicationCategory":"HealthApplication","operatingSystem":"All","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
+</script>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<section class="tool-hero"><div class="tool-hero-inner">
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/categories/health/">Health</a> / <span>Sickle Cell</span></div>
+<h1>Sickle Cell <em>Genotype Checker</em></h1>
+<p class="hero-sub">Check genotype compatibility for sickle cell disease. See the probability of each genotype in children for any parent combination.</p>
+<div class="hero-badges"><span class="badge b-red">Punnett Square</span><span class="badge b-red">Inheritance Probability</span><span class="badge b-red">African Relevance</span></div>
+</div></section>
+
+<section class="tool-main"><div class="tool-main-inner">
+<div class="calc-area">
+<div class="card"><div class="card-head"><span class="card-title">Parent Genotypes</span></div>
+<div class="card-body">
+<div class="field"><label class="f-label">Partner 1 Genotype</label>
+<select id="parent1" class="f-select">
+<option value="AA">AA (Normal)</option>
+<option value="AS">AS (Sickle Cell Carrier)</option>
+<option value="SS">SS (Sickle Cell Disease)</option>
+<option value="AC">AC (Haemoglobin C Carrier)</option>
+<option value="SC">SC (Haemoglobin SC Disease)</option>
+<option value="CC">CC (Haemoglobin C Disease)</option>
+</select></div>
+<div class="field"><label class="f-label">Partner 2 Genotype</label>
+<select id="parent2" class="f-select">
+<option value="AA">AA (Normal)</option>
+<option value="AS" selected>AS (Sickle Cell Carrier)</option>
+<option value="SS">SS (Sickle Cell Disease)</option>
+<option value="AC">AC (Haemoglobin C Carrier)</option>
+<option value="SC">SC (Haemoglobin SC Disease)</option>
+<option value="CC">CC (Haemoglobin C Disease)</option>
+</select></div>
+<button class="calc-btn" onclick="calculate()">Check Compatibility</button>
+</div></div>
+
+<div class="card" id="results">
+<div class="card-head"><span class="card-title">Compatibility Result</span></div>
+<div class="card-body">
+<div style="text-align:center" id="compatResult"></div>
+<div id="punnettSquare"></div>
+<div class="outcome-grid" id="outcomes"></div>
+<div class="advice" id="advice"></div>
+</div></div>
+</div>
+
+<div class="sidebar">
+<div class="card"><div class="card-head"><span class="card-title">Sickle Cell in Africa</span></div>
+<div class="card-body">
+<p>Africa bears the highest burden of sickle cell disease globally. Approximately <strong>75% of the world's sickle cell cases</strong> occur in Sub-Saharan Africa.</p>
+<p style="margin-top:8px"><strong>Prevalence of AS trait:</strong></p>
+<p>Nigeria: 25-30% of population</p>
+<p>Ghana: 20-25%</p>
+<p>East Africa: 15-20%</p>
+<p>South Africa: 1-5%</p>
+<p style="margin-top:8px"><strong>Why so common?</strong> The AS trait provides partial protection against malaria, which is why it's most prevalent in malaria-endemic regions. This is an example of "balanced polymorphism" — the trait is maintained because carriers have a survival advantage.</p>
+</div></div>
+<div class="card"><div class="card-head"><span class="card-title">Know Your Genotype</span></div>
+<div class="card-body">
+<p>Every Nigerian, Ghanaian, and person of West African descent should know their haemoglobin genotype before marriage or having children.</p>
+<p style="margin-top:8px"><strong>Testing:</strong> A simple blood test (haemoglobin electrophoresis) at any hospital or diagnostic centre. Costs NGN 1,500-5,000 in Nigeria.</p>
+<p style="margin-top:8px"><strong>When to test:</strong> Before any serious relationship, before marriage, and during antenatal care.</p>
+</div></div>
+</div>
+</div></section>
+
+<section class="seo-content">
+<h2>Understanding Sickle Cell Genotypes</h2>
+<p>Sickle cell disease is an inherited blood disorder caused by a mutation in the gene that produces haemoglobin. The genotype determines whether a person is normal (AA), a carrier (AS or AC), or has the disease (SS, SC, or CC). Understanding these genotypes and their inheritance patterns is crucial for family planning, especially in Africa where sickle cell prevalence is highest.</p>
+
+<h2>Genotype Combinations Explained</h2>
+<ul>
+<li><strong>AA (Normal):</strong> Both haemoglobin genes are normal. No sickle cell risk to pass on.</li>
+<li><strong>AS (Sickle Cell Trait/Carrier):</strong> One normal gene, one sickle gene. Usually no symptoms but can pass the S gene to children. About 25-30% of Nigerians carry this trait.</li>
+<li><strong>SS (Sickle Cell Disease):</strong> Both genes carry the sickle mutation. Causes sickle cell anaemia with chronic pain crises, organ damage, and reduced life expectancy if untreated.</li>
+<li><strong>AC (Haemoglobin C Trait):</strong> One normal gene, one C gene. Generally mild or no symptoms.</li>
+<li><strong>SC (Haemoglobin SC Disease):</strong> One sickle gene, one C gene. Milder than SS but still causes significant health issues.</li>
+<li><strong>CC (Haemoglobin C Disease):</strong> Both genes carry the C mutation. Causes mild to moderate anaemia.</li>
+</ul>
+
+<h2>The Critical Importance of Genotype Testing</h2>
+<p>When two AS carriers have children together, each pregnancy has a 25% chance of producing a child with SS (sickle cell disease). This means that statistically, 1 in 4 children will have the disease, 2 in 4 will be carriers (AS), and 1 in 4 will be normal (AA). In Nigeria alone, approximately 150,000 babies are born with sickle cell disease each year — more than any other country in the world.</p>
+<p>Pre-marital genotype testing has become standard practice in many Nigerian churches, hospitals, and cultural settings. While the decision to marry despite incompatible genotypes is deeply personal, informed decisions save lives. Genetic counselling is available at teaching hospitals across Africa.</p>
+
+<div class="faq">
+<h2>Frequently Asked Questions</h2>
+<details><summary>Can two AS carriers have healthy children?</summary><div>Yes, but each pregnancy has a 25% chance of producing a child with SS (sickle cell disease), 50% chance of AS (carrier), and 25% chance of AA (normal). There is no way to guarantee the outcome for any individual pregnancy without assisted reproductive techniques like PGD (preimplantation genetic diagnosis).</div></details>
+<details><summary>Should AS + AS couples avoid marriage?</summary><div>This is a personal decision that should be made with full information and genetic counselling. While the risk is real (25% per pregnancy), some couples choose to proceed with awareness. Options include genetic counselling, PGD/IVF, prenatal testing, and newborn screening for early treatment.</div></details>
+<details><summary>Is AA + AS safe?</summary><div>Yes. When one partner is AA, no child can have sickle cell disease (SS). Children will either be AA (50%) or AS (50%). AS carriers live normal, healthy lives and typically have no symptoms.</div></details>
+<details><summary>Can sickle cell disease be cured?</summary><div>Bone marrow transplant can cure sickle cell disease but is expensive, risky, and requires a compatible donor. Gene therapy is showing promising results in clinical trials. Hydroxyurea medication significantly reduces complications. In Africa, access to treatment is improving but remains limited in many areas.</div></details>
+</div>
+</section>
+
+<afro-related-tools></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+const GENOTYPE_DATA={
+  'AA+AA':{outcomes:{AA:100},compat:'safe',msg:'Excellent compatibility. All children will be AA (normal). No sickle cell risk.'},
+  'AA+AS':{outcomes:{AA:50,AS:50},compat:'safe',msg:'Safe combination. Children will be either AA (50%) or AS carrier (50%). No child can have sickle cell disease.'},
+  'AA+SS':{outcomes:{AS:100},compat:'caution',msg:'All children will be AS (carriers). No child will have sickle cell disease, but all will carry the trait and should be aware for their future family planning.'},
+  'AA+AC':{outcomes:{AA:50,AC:50},compat:'safe',msg:'Safe combination. Children will be either AA (50%) or AC carrier (50%). No risk of sickle cell disease.'},
+  'AA+SC':{outcomes:{AS:50,AC:50},compat:'caution',msg:'Children will be either AS (50%) or AC (50%). All will be carriers but none will have sickle cell disease.'},
+  'AA+CC':{outcomes:{AC:100},compat:'safe',msg:'All children will be AC carriers. No risk of sickle cell disease.'},
+  'AS+AS':{outcomes:{AA:25,AS:50,SS:25},compat:'danger',msg:'WARNING: Each pregnancy has a 25% chance of producing a child with sickle cell disease (SS). Genetic counselling is strongly recommended.'},
+  'AS+SS':{outcomes:{AS:50,SS:50},compat:'danger',msg:'DANGER: 50% chance of sickle cell disease in each pregnancy. This combination carries very high risk. Seek genetic counselling immediately.'},
+  'AS+AC':{outcomes:{AA:25,AS:25,AC:25,SC:25},compat:'danger',msg:'WARNING: 25% chance of SC disease per pregnancy. SC disease is milder than SS but still causes significant health problems. Genetic counselling recommended.'},
+  'AS+SC':{outcomes:{AS:25,SS:25,AC:25,SC:25},compat:'danger',msg:'DANGER: 25% chance of SS and 25% chance of SC disease per pregnancy. Total 50% risk of haemoglobin disorder. Strongly seek genetic counselling.'},
+  'AS+CC':{outcomes:{AC:50,SC:50},compat:'danger',msg:'WARNING: 50% chance of SC disease per pregnancy. Genetic counselling recommended.'},
+  'SS+SS':{outcomes:{SS:100},compat:'danger',msg:'EXTREME RISK: All children will have sickle cell disease (SS). This combination is strongly advised against without assisted reproduction and genetic counselling.'},
+  'SS+AC':{outcomes:{AS:50,SC:50},compat:'danger',msg:'DANGER: 50% chance of SC disease per pregnancy. No child will be free of a haemoglobin variant.'},
+  'SS+SC':{outcomes:{SS:50,SC:50},compat:'danger',msg:'EXTREME RISK: All children will have either SS (50%) or SC (50%) disease. Genetic counselling essential.'},
+  'SS+CC':{outcomes:{SC:100},compat:'danger',msg:'All children will have SC disease. Genetic counselling strongly recommended.'},
+  'AC+AC':{outcomes:{AA:25,AC:50,CC:25},compat:'caution',msg:'25% chance of CC disease per pregnancy. CC causes mild anaemia. Moderate risk overall.'},
+  'AC+SC':{outcomes:{AS:25,AC:25,SC:25,CC:25},compat:'danger',msg:'25% SC disease + 25% CC disease risk per pregnancy. Genetic counselling recommended.'},
+  'AC+CC':{outcomes:{AC:50,CC:50},compat:'caution',msg:'50% chance of CC disease per pregnancy. CC is milder than SS but still requires medical monitoring.'},
+  'SC+SC':{outcomes:{SS:25,SC:50,CC:25},compat:'danger',msg:'DANGER: 25% SS, 50% SC, 25% CC per pregnancy. All outcomes involve haemoglobin disorders. Genetic counselling essential.'},
+  'SC+CC':{outcomes:{SC:50,CC:50},compat:'danger',msg:'All children will have either SC (50%) or CC (50%) disease. Genetic counselling recommended.'},
+  'CC+CC':{outcomes:{CC:100},compat:'caution',msg:'All children will have CC disease (mild to moderate anaemia). Medical monitoring recommended.'}
+};
+
+const COLORS={AA:'#16a34a',AS:'#d97706',SS:'#dc2626',AC:'#2563eb',SC:'#9333ea',CC:'#64748b'};
+const LABELS={AA:'Normal',AS:'Carrier (Sickle)',SS:'Sickle Cell Disease',AC:'Carrier (Hb C)',SC:'SC Disease',CC:'Hb C Disease'};
+const BG={AA:'#f0fdf4',AS:'#fffbeb',SS:'#fef2f2',AC:'#eff6ff',SC:'#faf5ff',CC:'#f8fafc'};
+
+function calculate(){
+  let p1=document.getElementById('parent1').value;
+  let p2=document.getElementById('parent2').value;
+
+  // Normalize: always sort alphabetically for lookup
+  let key=p1+'+'+p2;
+  if(!GENOTYPE_DATA[key])key=p2+'+'+p1;
+  const data=GENOTYPE_DATA[key];
+
+  if(!data){alert('This combination is not in our database. Please try again.');return}
+
+  // Compatibility badge
+  const compatLabels={safe:'Compatible',caution:'Proceed with Caution',danger:'High Risk'};
+  const compatClasses={safe:'compat-safe',caution:'compat-caution',danger:'compat-danger'};
+  document.getElementById('compatResult').innerHTML=`<div class="compat-badge ${compatClasses[data.compat]}">${compatLabels[data.compat]}</div>`;
+
+  // Punnett Square
+  const alleles1=[p1[0],p1[1]];
+  const alleles2=[p2[0],p2[1]];
+  const punnett=document.getElementById('punnettSquare');
+  let cells=[];
+  for(let i=0;i<2;i++){
+    for(let j=0;j<2;j++){
+      const g=[alleles1[i],alleles2[j]].sort().join('');
+      cells.push(g);
+    }
+  }
+  let pHtml=`<div class="punnett">
+    <div class="p-header"></div><div class="p-header">${alleles2[0]}</div><div class="p-header">${alleles2[1]}</div>
+    <div class="p-header">${alleles1[0]}</div>`;
+  const cellClass=g=>g==='SS'||g==='SC'?'affected':g==='AS'||g==='AC'||g==='CC'?'carrier':'safe';
+  pHtml+=`<div class="p-cell ${cellClass(cells[0])}">${cells[0]}</div><div class="p-cell ${cellClass(cells[1])}">${cells[1]}</div>`;
+  pHtml+=`<div class="p-header">${alleles1[1]}</div>`;
+  pHtml+=`<div class="p-cell ${cellClass(cells[2])}">${cells[2]}</div><div class="p-cell ${cellClass(cells[3])}">${cells[3]}</div>`;
+  pHtml+='</div>';
+  punnett.innerHTML=pHtml;
+
+  // Outcome cards
+  const outHtml=Object.entries(data.outcomes).map(([g,pct])=>{
+    return `<div class="outcome-card" style="background:${BG[g]};border:1px solid ${COLORS[g]}30">
+      <div class="genotype" style="color:${COLORS[g]}">${g}</div>
+      <div class="pct" style="color:${COLORS[g]}">${pct}%</div>
+      <div class="desc">${LABELS[g]}</div>
+    </div>`;
+  }).join('');
+  document.getElementById('outcomes').innerHTML=outHtml;
+
+  // Advice
+  const adv=document.getElementById('advice');
+  adv.textContent=data.msg;
+  adv.style.background=data.compat==='safe'?'#f0fdf4':data.compat==='caution'?'#fffbeb':'#fef2f2';
+  adv.style.border='1px solid '+(data.compat==='safe'?'#bbf7d0':data.compat==='caution'?'#fde68a':'#fecaca');
+  adv.style.color=data.compat==='safe'?'#166534':data.compat==='caution'?'#854d0e':'#991b1b';
+
+  document.getElementById('results').style.display='block';
+  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+}
+</script>
+</body>
+</html>
