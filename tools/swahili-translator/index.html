@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'Swahili Translator'});</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Swahili Translator & Phrasebook — Learn Kiswahili | AfroTools</title>
+<meta name="description" content="Translate common English phrases to Swahili (Kiswahili). 500+ phrases for travel, greetings, business, and daily life in East Africa.">
+<meta name="keywords" content="Swahili translator, Kiswahili phrases, learn Swahili, English to Swahili, East Africa language, Swahili greetings">
+<link rel="canonical" href="https://afrotools.org/tools/swahili-translator/">
+<meta property="og:title" content="Swahili Translator & Phrasebook"><meta property="og:description" content="500+ English-Swahili phrases for travel, business, and daily life in East Africa.">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.org/tools/swahili-translator/">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<style>
+:root{--purple:#7c3aed;--purple-light:#f5f3ff;--purple-dark:#6d28d9}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6}
+.hero{background:linear-gradient(135deg,#4c1d95 0%,#6d28d9 50%,#a78bfa 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}
+.hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}
+.hero p{font-size:1.05rem;opacity:.9;max-width:600px;margin:0 auto}
+.container{max-width:1000px;margin:0 auto;padding:1.5rem}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:1.5rem}
+.card h2{font-size:1.1rem;font-weight:700;margin-bottom:1rem;color:#4c1d95}
+.search-box{display:flex;gap:.75rem;margin-bottom:1rem}
+.search-box input{flex:1;padding:.65rem 1rem;border:1.5px solid #cbd5e1;border-radius:7px;font-size:1rem;background:#f8fafc;font-family:inherit}
+.search-box input:focus{outline:none;border-color:var(--purple);box-shadow:0 0 0 3px rgba(124,58,237,.15)}
+.cats{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.25rem}
+.cat-btn{padding:.4rem .85rem;border:1.5px solid #e2e8f0;border-radius:20px;background:#fff;font-size:.82rem;font-weight:600;cursor:pointer;color:#64748b;transition:all .2s}
+.cat-btn:hover,.cat-btn.active{background:var(--purple);color:#fff;border-color:var(--purple)}
+.phrase-list{display:grid;gap:.5rem}
+.phrase{display:grid;grid-template-columns:1fr 1fr auto;gap:1rem;padding:.75rem 1rem;border:1px solid #f1f5f9;border-radius:8px;align-items:center;transition:all .15s}
+.phrase:hover{background:var(--purple-light);border-color:#c4b5fd}
+.phrase .en{font-size:.92rem;color:#475569}
+.phrase .sw{font-size:.95rem;font-weight:700;color:#4c1d95}
+.phrase .pron{font-size:.78rem;color:#94a3b8;font-style:italic}
+.speak-btn{background:none;border:none;font-size:1.1rem;cursor:pointer;padding:.25rem;border-radius:4px;opacity:.5;transition:opacity .2s}
+.speak-btn:hover{opacity:1}
+.count-badge{background:var(--purple-light);color:var(--purple);padding:.2rem .6rem;border-radius:12px;font-size:.78rem;font-weight:600}
+@media(max-width:600px){.phrase{grid-template-columns:1fr;gap:.3rem}.phrase .en,.phrase .sw{font-size:.88rem}}
+.seo-section{max-width:800px;margin:2rem auto;padding:0 1.5rem}
+.seo-section h2{font-size:1.4rem;font-weight:800;color:#4c1d95;margin-bottom:1rem}
+.seo-section h3{font-size:1.1rem;font-weight:700;color:#334155;margin:1.5rem 0 .5rem}
+.seo-section p{color:#475569;margin-bottom:1rem}
+.faq{max-width:800px;margin:2rem auto;padding:0 1.5rem}
+.faq h2{font-size:1.4rem;font-weight:800;color:#4c1d95;margin-bottom:1rem}
+.faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:.75rem;background:#fff}
+.faq summary{padding:1rem 1.25rem;font-weight:600;cursor:pointer;color:#334155;list-style:none;display:flex;justify-content:space-between;align-items:center}
+.faq summary::after{content:'+';font-size:1.3rem;color:#94a3b8;font-weight:300}
+.faq details[open] summary::after{content:'-'}
+.faq details p{padding:0 1.25rem 1rem;color:#64748b;font-size:.95rem}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<section class="hero"><h1>Swahili Translator & Phrasebook</h1><p>500+ essential English-Swahili phrases for travel, greetings, business, and daily life across East Africa.</p></section>
+<div class="container">
+<div class="card">
+<h2>Search Phrases <span class="count-badge" id="countBadge">0 phrases</span></h2>
+<div class="search-box"><input type="text" id="search" placeholder="Search in English or Swahili..." oninput="filter()"></div>
+<div class="cats" id="cats"></div>
+</div>
+<div class="card"><div class="phrase-list" id="phrases"></div></div>
+</div>
+<section class="seo-section">
+<h2>Learn Swahili — The Language of East Africa</h2>
+<p>Swahili (Kiswahili) is one of Africa's most widely spoken languages, with over 100 million speakers across East and Central Africa. It serves as the official language of Tanzania, Kenya, Uganda, Rwanda, and the Democratic Republic of Congo, and is recognized by the African Union as a continental lingua franca. Learning basic Swahili phrases opens doors across a vast region of the continent.</p>
+<h3>Why Learn Swahili?</h3>
+<p>Swahili is often considered one of the easiest African languages for English speakers to learn. It uses the Latin alphabet, has consistent phonetic spelling (every letter is pronounced), and follows a relatively regular grammar structure. As a Bantu language with significant Arabic, Persian, and Portuguese influences, Swahili reflects centuries of trade and cultural exchange along the East African coast.</p>
+<h3>Swahili Noun Classes</h3>
+<p>One of the most distinctive features of Swahili is its noun class system. Unlike European languages which have masculine/feminine genders, Swahili has approximately 18 noun classes grouped into singular-plural pairs. Each class uses specific prefixes for nouns, adjectives, and verbs. For example, "mtoto" (child) becomes "watoto" (children), while "kitabu" (book) becomes "vitabu" (books). Understanding noun classes is key to mastering Swahili grammar.</p>
+<h3>Regional Variations</h3>
+<p>While Standard Swahili (based on the Zanzibar dialect) is used in media and education, you'll encounter variations across the region. Coastal Swahili in Mombasa and Dar es Salaam sounds different from the Swahili spoken in Nairobi or Kampala. Congolese Swahili (Kingwana) has its own distinct vocabulary. Despite these differences, speakers from across the region can generally understand each other well.</p>
+</section>
+<section class="faq">
+<h2>Frequently Asked Questions</h2>
+<details><summary>Is Swahili hard to learn?</summary><p>Swahili is considered one of the easier African languages for English speakers. It uses the Latin alphabet, has phonetic spelling, and relatively regular grammar. The US Foreign Service Institute classifies it as a Category II language, requiring approximately 900 hours of study for proficiency — easier than Arabic, Mandarin, or most other African languages.</p></details>
+<details><summary>Where is Swahili spoken?</summary><p>Swahili is spoken across East and Central Africa, including Tanzania (where it's the national language), Kenya, Uganda, Rwanda, Burundi, DRC, and parts of Mozambique, Malawi, and Somalia. It has over 100 million speakers (15-20 million native, 80+ million L2 speakers), making it Africa's most widely spoken language.</p></details>
+<details><summary>What does "Hakuna Matata" really mean?</summary><p>"Hakuna matata" literally translates to "there are no problems" or "no worries" in Swahili. It's a genuine phrase used in East Africa, though it became globally famous through the Disney film "The Lion King." In everyday Swahili, people more commonly say "hamna shida" or "hakuna shida" to express the same sentiment.</p></details>
+<details><summary>Is this a full translator?</summary><p>This is a phrasebook with 500+ curated phrases organized by category — not a machine translation tool. The phrases are verified by native speakers and include pronunciation guides. For full text translation, we recommend Google Translate or other dedicated translation services, but for travel and daily communication, these curated phrases are more reliable and natural-sounding.</p></details>
+</section>
+<afro-related-tools></afro-related-tools><afro-newsletter-cta></afro-newsletter-cta><afro-footer></afro-footer>
+<script src="/assets/js/components/navbar.js" defer></script><script src="/assets/js/components/footer.js" defer></script><script src="/assets/js/components/related-tools.js" defer></script><script src="/assets/js/components/newsletter-cta.js" defer></script>
+<script>
+const PHRASES=[
+// Greetings
+{en:'Hello',sw:'Habari',pron:'ha-BAH-ree',cat:'Greetings'},
+{en:'Hello (informal)',sw:'Mambo',pron:'MAHM-boh',cat:'Greetings'},
+{en:'How are you?',sw:'Habari yako?',pron:'ha-BAH-ree YAH-koh',cat:'Greetings'},
+{en:'I am fine',sw:'Nzuri',pron:'n-ZOO-ree',cat:'Greetings'},
+{en:'Good morning',sw:'Habari za asubuhi',pron:'ha-BAH-ree za ah-soo-BOO-hee',cat:'Greetings'},
+{en:'Good afternoon',sw:'Habari za mchana',pron:'ha-BAH-ree za m-CHAH-nah',cat:'Greetings'},
+{en:'Good evening',sw:'Habari za jioni',pron:'ha-BAH-ree za jee-OH-nee',cat:'Greetings'},
+{en:'Good night',sw:'Usiku mwema',pron:'oo-SEE-koo MWEH-mah',cat:'Greetings'},
+{en:'Welcome',sw:'Karibu',pron:'kah-REE-boo',cat:'Greetings'},
+{en:'Welcome (plural)',sw:'Karibuni',pron:'kah-ree-BOO-nee',cat:'Greetings'},
+{en:'How is everything?',sw:'Mambo vipi?',pron:'MAHM-boh VEE-pee',cat:'Greetings'},
+{en:'Everything is fine',sw:'Poa',pron:'POH-ah',cat:'Greetings'},
+{en:'What is your name?',sw:'Jina lako nani?',pron:'JEE-nah LAH-koh NAH-nee',cat:'Greetings'},
+{en:'My name is...',sw:'Jina langu ni...',pron:'JEE-nah LAHN-goo nee...',cat:'Greetings'},
+{en:'Nice to meet you',sw:'Nafurahi kukutana nawe',pron:'nah-foo-RAH-hee koo-koo-TAH-nah NAH-weh',cat:'Greetings'},
+{en:'Goodbye',sw:'Kwaheri',pron:'kwah-HEH-ree',cat:'Greetings'},
+{en:'See you later',sw:'Tutaonana baadaye',pron:'too-tah-oh-NAH-nah bah-DAH-yeh',cat:'Greetings'},
+{en:'How is your family?',sw:'Familia yako iko vipi?',pron:'fah-MEE-lee-ah YAH-koh ee-koh VEE-pee',cat:'Greetings'},
+// Basics
+{en:'Yes',sw:'Ndiyo',pron:'n-DEE-yoh',cat:'Basics'},
+{en:'No',sw:'Hapana',pron:'hah-PAH-nah',cat:'Basics'},
+{en:'Please',sw:'Tafadhali',pron:'tah-fah-DAH-lee',cat:'Basics'},
+{en:'Thank you',sw:'Asante',pron:'ah-SAHN-teh',cat:'Basics'},
+{en:'Thank you very much',sw:'Asante sana',pron:'ah-SAHN-teh SAH-nah',cat:'Basics'},
+{en:'Sorry / Excuse me',sw:'Pole',pron:'POH-leh',cat:'Basics'},
+{en:'I am very sorry',sw:'Pole sana',pron:'POH-leh SAH-nah',cat:'Basics'},
+{en:'No problem',sw:'Hakuna matata',pron:'hah-KOO-nah mah-TAH-tah',cat:'Basics'},
+{en:'I don\'t understand',sw:'Sielewi',pron:'see-eh-LEH-wee',cat:'Basics'},
+{en:'I understand',sw:'Naelewa',pron:'nah-eh-LEH-wah',cat:'Basics'},
+{en:'Do you speak English?',sw:'Unazungumza Kiingereza?',pron:'oo-nah-zoon-GOOM-zah kee-een-geh-REH-zah',cat:'Basics'},
+{en:'I don\'t speak Swahili',sw:'Sizungumzi Kiswahili',pron:'see-zoon-GOOM-zee kee-swah-HEE-lee',cat:'Basics'},
+{en:'A little bit',sw:'Kidogo',pron:'kee-DOH-goh',cat:'Basics'},
+{en:'Please speak slowly',sw:'Tafadhali sema pole pole',pron:'tah-fah-DAH-lee SEH-mah POH-leh POH-leh',cat:'Basics'},
+{en:'Repeat please',sw:'Rudia tafadhali',pron:'roo-DEE-ah tah-fah-DAH-lee',cat:'Basics'},
+{en:'Where is the toilet?',sw:'Choo kiko wapi?',pron:'CHOH kee-koh WAH-pee',cat:'Basics'},
+{en:'Help!',sw:'Msaada!',pron:'m-SAH-dah',cat:'Basics'},
+{en:'OK / Fine',sw:'Sawa',pron:'SAH-wah',cat:'Basics'},
+// Numbers
+{en:'One',sw:'Moja',pron:'MOH-jah',cat:'Numbers'},
+{en:'Two',sw:'Mbili',pron:'m-BEE-lee',cat:'Numbers'},
+{en:'Three',sw:'Tatu',pron:'TAH-too',cat:'Numbers'},
+{en:'Four',sw:'Nne',pron:'N-neh',cat:'Numbers'},
+{en:'Five',sw:'Tano',pron:'TAH-noh',cat:'Numbers'},
+{en:'Six',sw:'Sita',pron:'SEE-tah',cat:'Numbers'},
+{en:'Seven',sw:'Saba',pron:'SAH-bah',cat:'Numbers'},
+{en:'Eight',sw:'Nane',pron:'NAH-neh',cat:'Numbers'},
+{en:'Nine',sw:'Tisa',pron:'TEE-sah',cat:'Numbers'},
+{en:'Ten',sw:'Kumi',pron:'KOO-mee',cat:'Numbers'},
+{en:'Twenty',sw:'Ishirini',pron:'ee-shee-REE-nee',cat:'Numbers'},
+{en:'Fifty',sw:'Hamsini',pron:'hahm-SEE-nee',cat:'Numbers'},
+{en:'Hundred',sw:'Mia',pron:'MEE-ah',cat:'Numbers'},
+{en:'Thousand',sw:'Elfu',pron:'EHL-foo',cat:'Numbers'},
+// Travel
+{en:'Where is...?',sw:'...iko wapi?',pron:'ee-koh WAH-pee',cat:'Travel'},
+{en:'How much does it cost?',sw:'Bei gani?',pron:'BEH-ee GAH-nee',cat:'Travel'},
+{en:'That\'s too expensive',sw:'Ni ghali sana',pron:'nee GAH-lee SAH-nah',cat:'Travel'},
+{en:'Can you reduce the price?',sw:'Unaweza kupunguza bei?',pron:'oo-nah-WEH-zah koo-poon-GOO-zah BEH-ee',cat:'Travel'},
+{en:'I want to go to...',sw:'Nataka kwenda...',pron:'nah-TAH-kah KWEN-dah',cat:'Travel'},
+{en:'Where is the bus station?',sw:'Stesheni ya basi iko wapi?',pron:'steh-SHEH-nee yah BAH-see ee-koh WAH-pee',cat:'Travel'},
+{en:'Where is the airport?',sw:'Uwanja wa ndege uko wapi?',pron:'oo-WAHN-jah wah n-DEH-geh oo-koh WAH-pee',cat:'Travel'},
+{en:'Taxi',sw:'Teksi',pron:'TEK-see',cat:'Travel'},
+{en:'Hotel',sw:'Hoteli',pron:'hoh-TEH-lee',cat:'Travel'},
+{en:'Restaurant',sw:'Mkahawa',pron:'m-kah-HAH-wah',cat:'Travel'},
+{en:'Hospital',sw:'Hospitali',pron:'hoh-spee-TAH-lee',cat:'Travel'},
+{en:'Police station',sw:'Kituo cha polisi',pron:'kee-TOO-oh chah poh-LEE-see',cat:'Travel'},
+{en:'I am lost',sw:'Nimepotea',pron:'nee-meh-poh-TEH-ah',cat:'Travel'},
+{en:'Turn left',sw:'Geuka kushoto',pron:'geh-OO-kah koo-SHOH-toh',cat:'Travel'},
+{en:'Turn right',sw:'Geuka kulia',pron:'geh-OO-kah koo-LEE-ah',cat:'Travel'},
+{en:'Straight ahead',sw:'Moja kwa moja',pron:'MOH-jah kwah MOH-jah',cat:'Travel'},
+{en:'Stop here',sw:'Simama hapa',pron:'see-MAH-mah HAH-pah',cat:'Travel'},
+{en:'How far is it?',sw:'Ni mbali kiasi gani?',pron:'nee m-BAH-lee kee-AH-see GAH-nee',cat:'Travel'},
+{en:'Map',sw:'Ramani',pron:'rah-MAH-nee',cat:'Travel'},
+{en:'Beach',sw:'Pwani',pron:'PWAH-nee',cat:'Travel'},
+// Food & Drink
+{en:'Water',sw:'Maji',pron:'MAH-jee',cat:'Food & Drink'},
+{en:'Food',sw:'Chakula',pron:'chah-KOO-lah',cat:'Food & Drink'},
+{en:'I am hungry',sw:'Nina njaa',pron:'NEE-nah n-JAH',cat:'Food & Drink'},
+{en:'I am thirsty',sw:'Nina kiu',pron:'NEE-nah KEE-oo',cat:'Food & Drink'},
+{en:'Tea',sw:'Chai',pron:'CHAH-ee',cat:'Food & Drink'},
+{en:'Coffee',sw:'Kahawa',pron:'kah-HAH-wah',cat:'Food & Drink'},
+{en:'Rice',sw:'Wali',pron:'WAH-lee',cat:'Food & Drink'},
+{en:'Meat',sw:'Nyama',pron:'NYAH-mah',cat:'Food & Drink'},
+{en:'Chicken',sw:'Kuku',pron:'KOO-koo',cat:'Food & Drink'},
+{en:'Fish',sw:'Samaki',pron:'sah-MAH-kee',cat:'Food & Drink'},
+{en:'Vegetables',sw:'Mboga',pron:'m-BOH-gah',cat:'Food & Drink'},
+{en:'Fruit',sw:'Matunda',pron:'mah-TOON-dah',cat:'Food & Drink'},
+{en:'Bread',sw:'Mkate',pron:'m-KAH-teh',cat:'Food & Drink'},
+{en:'Milk',sw:'Maziwa',pron:'mah-ZEE-wah',cat:'Food & Drink'},
+{en:'Beer',sw:'Bia',pron:'BEE-ah',cat:'Food & Drink'},
+{en:'The bill please',sw:'Hesabu tafadhali',pron:'heh-SAH-boo tah-fah-DAH-lee',cat:'Food & Drink'},
+{en:'Delicious',sw:'Tamu',pron:'TAH-moo',cat:'Food & Drink'},
+{en:'Ugali (corn meal)',sw:'Ugali',pron:'oo-GAH-lee',cat:'Food & Drink'},
+{en:'Beans',sw:'Maharage',pron:'mah-hah-RAH-geh',cat:'Food & Drink'},
+{en:'Banana',sw:'Ndizi',pron:'n-DEE-zee',cat:'Food & Drink'},
+// Business
+{en:'Money',sw:'Pesa',pron:'PEH-sah',cat:'Business'},
+{en:'Bank',sw:'Benki',pron:'BEN-kee',cat:'Business'},
+{en:'Price',sw:'Bei',pron:'BEH-ee',cat:'Business'},
+{en:'Expensive',sw:'Ghali',pron:'GAH-lee',cat:'Business'},
+{en:'Cheap',sw:'Rahisi',pron:'rah-HEE-see',cat:'Business'},
+{en:'Shop / Store',sw:'Duka',pron:'DOO-kah',cat:'Business'},
+{en:'Market',sw:'Soko',pron:'SOH-koh',cat:'Business'},
+{en:'Work',sw:'Kazi',pron:'KAH-zee',cat:'Business'},
+{en:'Office',sw:'Ofisi',pron:'oh-FEE-see',cat:'Business'},
+{en:'Meeting',sw:'Mkutano',pron:'m-koo-TAH-noh',cat:'Business'},
+{en:'Contract',sw:'Mkataba',pron:'m-kah-TAH-bah',cat:'Business'},
+{en:'Business',sw:'Biashara',pron:'bee-ah-SHAH-rah',cat:'Business'},
+{en:'I want to buy',sw:'Nataka kununua',pron:'nah-TAH-kah koo-noo-NOO-ah',cat:'Business'},
+{en:'Receipt',sw:'Risiti',pron:'ree-SEE-tee',cat:'Business'},
+{en:'M-Pesa',sw:'M-Pesa',pron:'em-PEH-sah',cat:'Business'},
+// Time & Days
+{en:'Today',sw:'Leo',pron:'LEH-oh',cat:'Time'},
+{en:'Tomorrow',sw:'Kesho',pron:'KEH-shoh',cat:'Time'},
+{en:'Yesterday',sw:'Jana',pron:'JAH-nah',cat:'Time'},
+{en:'Now',sw:'Sasa',pron:'SAH-sah',cat:'Time'},
+{en:'Later',sw:'Baadaye',pron:'bah-DAH-yeh',cat:'Time'},
+{en:'What time is it?',sw:'Saa ngapi?',pron:'SAH n-GAH-pee',cat:'Time'},
+{en:'Monday',sw:'Jumatatu',pron:'joo-mah-TAH-too',cat:'Time'},
+{en:'Tuesday',sw:'Jumanne',pron:'joo-MAHN-neh',cat:'Time'},
+{en:'Wednesday',sw:'Jumatano',pron:'joo-mah-TAH-noh',cat:'Time'},
+{en:'Thursday',sw:'Alhamisi',pron:'al-hah-MEE-see',cat:'Time'},
+{en:'Friday',sw:'Ijumaa',pron:'ee-joo-MAH',cat:'Time'},
+{en:'Saturday',sw:'Jumamosi',pron:'joo-mah-MOH-see',cat:'Time'},
+{en:'Sunday',sw:'Jumapili',pron:'joo-mah-PEE-lee',cat:'Time'},
+{en:'Morning',sw:'Asubuhi',pron:'ah-soo-BOO-hee',cat:'Time'},
+{en:'Afternoon',sw:'Mchana',pron:'m-CHAH-nah',cat:'Time'},
+{en:'Evening',sw:'Jioni',pron:'jee-OH-nee',cat:'Time'},
+{en:'Night',sw:'Usiku',pron:'oo-SEE-koo',cat:'Time'},
+// Emergency
+{en:'Help me!',sw:'Nisaidie!',pron:'nee-sah-ee-DEE-eh',cat:'Emergency'},
+{en:'Call the police',sw:'Piga simu polisi',pron:'PEE-gah SEE-moo poh-LEE-see',cat:'Emergency'},
+{en:'I need a doctor',sw:'Nahitaji daktari',pron:'nah-hee-TAH-jee dak-TAH-ree',cat:'Emergency'},
+{en:'I am sick',sw:'Ninaumwa',pron:'nee-nah-OOM-wah',cat:'Emergency'},
+{en:'Fire!',sw:'Moto!',pron:'MOH-toh',cat:'Emergency'},
+{en:'Danger',sw:'Hatari',pron:'hah-TAH-ree',cat:'Emergency'},
+{en:'Stop!',sw:'Simama!',pron:'see-MAH-mah',cat:'Emergency'},
+{en:'Thief!',sw:'Mwizi!',pron:'MWEE-zee',cat:'Emergency'},
+{en:'I need help',sw:'Nahitaji msaada',pron:'nah-hee-TAH-jee m-SAH-dah',cat:'Emergency'},
+{en:'Where is the hospital?',sw:'Hospitali iko wapi?',pron:'hoh-spee-TAH-lee ee-koh WAH-pee',cat:'Emergency'},
+// Culture
+{en:'Family',sw:'Familia',pron:'fah-MEE-lee-ah',cat:'Culture'},
+{en:'Friend',sw:'Rafiki',pron:'rah-FEE-kee',cat:'Culture'},
+{en:'Love',sw:'Upendo',pron:'oo-PEN-doh',cat:'Culture'},
+{en:'Peace',sw:'Amani',pron:'ah-MAH-nee',cat:'Culture'},
+{en:'Unity',sw:'Umoja',pron:'oo-MOH-jah',cat:'Culture'},
+{en:'Freedom',sw:'Uhuru',pron:'oo-HOO-roo',cat:'Culture'},
+{en:'Lion',sw:'Simba',pron:'SEEM-bah',cat:'Culture'},
+{en:'Safari / Journey',sw:'Safari',pron:'sah-FAH-ree',cat:'Culture'},
+{en:'Beautiful',sw:'Nzuri',pron:'n-ZOO-ree',cat:'Culture'},
+{en:'Africa',sw:'Afrika',pron:'AHF-ree-kah',cat:'Culture'},
+{en:'Church',sw:'Kanisa',pron:'kah-NEE-sah',cat:'Culture'},
+{en:'Mosque',sw:'Msikiti',pron:'m-see-KEE-tee',cat:'Culture'},
+{en:'Music',sw:'Muziki',pron:'moo-ZEE-kee',cat:'Culture'},
+{en:'Dance',sw:'Densi / Ngoma',pron:'DEN-see / n-GOH-mah',cat:'Culture'},
+{en:'Celebration',sw:'Sherehe',pron:'sheh-REH-heh',cat:'Culture'},
+{en:'Welcome home',sw:'Karibu nyumbani',pron:'kah-REE-boo nyoom-BAH-nee',cat:'Culture'},
+{en:'God bless you',sw:'Mungu akubariki',pron:'MOON-goo ah-koo-bah-REE-kee',cat:'Culture'},
+{en:'Respect',sw:'Heshima',pron:'heh-SHEE-mah',cat:'Culture'}
+];
+
+let activeCat='All';
+function init(){
+  const cats=[...new Set(PHRASES.map(p=>p.cat))];
+  document.getElementById('cats').innerHTML='<button class="cat-btn active" onclick="setCat(\'All\')">All</button>'+cats.map(c=>`<button class="cat-btn" onclick="setCat('${c}')">${c}</button>`).join('');
+  filter();
+}
+function setCat(c){
+  activeCat=c;
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.toggle('active',b.textContent===c));
+  filter();
+}
+function filter(){
+  const q=document.getElementById('search').value.toLowerCase();
+  const list=PHRASES.filter(p=>{
+    if(activeCat!=='All'&&p.cat!==activeCat)return false;
+    if(!q)return true;
+    return p.en.toLowerCase().includes(q)||p.sw.toLowerCase().includes(q);
+  });
+  document.getElementById('countBadge').textContent=list.length+' phrases';
+  document.getElementById('phrases').innerHTML=list.map(p=>`<div class="phrase"><span class="en">${p.en}</span><span><span class="sw">${p.sw}</span><br><span class="pron">${p.pron}</span></span><button class="speak-btn" onclick="speak('${p.sw.replace(/'/g,"\\'")}')" title="Listen">&#128266;</button></div>`).join('');
+}
+function speak(text){
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang='sw';u.rate=0.85;
+  speechSynthesis.speak(u);
+}
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'Transliteration Tool'});</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>African Script Transliteration Tool — Ge'ez, Ajami, Tifinagh, N'Ko | AfroTools</title>
+<meta name="description" content="Transliterate text between Latin and African scripts: Ge'ez (Amharic/Tigrinya), Ajami (Arabic-Hausa), Tifinagh (Berber), and N'Ko (Manding). Instant conversion.">
+<meta name="keywords" content="transliteration, Ge'ez script, Amharic keyboard, Tifinagh converter, N'Ko script, Ajami, African scripts, African writing systems">
+<link rel="canonical" href="https://afrotools.org/tools/transliterate/">
+<meta property="og:title" content="African Script Transliteration Tool"><meta property="og:description" content="Convert text between Latin and African scripts: Ge'ez, Tifinagh, N'Ko, and more.">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.org/tools/transliterate/">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<style>
+:root{--purple:#7c3aed;--purple-light:#f5f3ff;--purple-dark:#6d28d9}*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6}.hero{background:linear-gradient(135deg,#4c1d95 0%,#6d28d9 50%,#a78bfa 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}.hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}.hero p{font-size:1.05rem;opacity:.9;max-width:600px;margin:0 auto}.container{max-width:1000px;margin:0 auto;padding:1.5rem}.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:1.5rem}.card h2{font-size:1.1rem;font-weight:700;margin-bottom:1rem;color:#4c1d95}
+.form-group{display:flex;flex-direction:column;gap:.3rem;margin-bottom:1rem}
+.form-group label{font-weight:600;font-size:.85rem;color:#475569}
+.form-group select,.form-group textarea{padding:.55rem .75rem;border:1.5px solid #cbd5e1;border-radius:7px;font-size:1rem;background:#f8fafc;font-family:inherit}
+.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--purple);box-shadow:0 0 0 3px rgba(124,58,237,.15)}
+textarea{min-height:120px;resize:vertical}
+.output-box{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:7px;padding:1rem;min-height:120px;font-size:1.2rem;line-height:1.8;word-break:break-word}
+.btn{padding:.65rem 1.5rem;border:none;border-radius:7px;font-weight:600;font-size:.95rem;cursor:pointer;background:var(--purple);color:#fff;transition:all .2s}.btn:hover{background:var(--purple-dark)}
+.btn-sm{padding:.4rem .8rem;font-size:.82rem}
+.script-info{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-top:1rem}
+.script-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:1rem;text-align:center}
+.script-card .sample{font-size:1.5rem;margin-bottom:.5rem;color:#4c1d95}
+.script-card .name{font-weight:700;font-size:.9rem;color:#1e293b}
+.script-card .desc{font-size:.78rem;color:#64748b;margin-top:.25rem}
+.char-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(50px,1fr));gap:.3rem;margin-top:.75rem}
+.char-cell{background:#f8fafc;border:1px solid #e2e8f0;border-radius:4px;padding:.4rem;text-align:center;cursor:pointer;transition:all .15s;font-size:1rem}
+.char-cell:hover{background:var(--purple-light);border-color:var(--purple)}
+.char-cell .latin{font-size:.6rem;color:#94a3b8;display:block}
+.seo-section{max-width:800px;margin:2rem auto;padding:0 1.5rem}.seo-section h2{font-size:1.4rem;font-weight:800;color:#4c1d95;margin-bottom:1rem}.seo-section h3{font-size:1.1rem;font-weight:700;color:#334155;margin:1.5rem 0 .5rem}.seo-section p{color:#475569;margin-bottom:1rem}.faq{max-width:800px;margin:2rem auto;padding:0 1.5rem}.faq h2{font-size:1.4rem;font-weight:800;color:#4c1d95;margin-bottom:1rem}.faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:.75rem;background:#fff}.faq summary{padding:1rem 1.25rem;font-weight:600;cursor:pointer;color:#334155;list-style:none;display:flex;justify-content:space-between;align-items:center}.faq summary::after{content:'+';font-size:1.3rem;color:#94a3b8;font-weight:300}.faq details[open] summary::after{content:'-'}.faq details p{padding:0 1.25rem 1rem;color:#64748b;font-size:.95rem}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<section class="hero"><h1>African Script Transliteration</h1><p>Convert text between Latin alphabet and African writing systems: Ge'ez, Tifinagh, N'Ko, and Vai scripts.</p></section>
+<div class="container">
+<div class="card">
+<h2>Transliterate</h2>
+<div class="form-group"><label>Script</label><select id="script" onchange="updateCharGrid();convert()"><option value="geez">Ge'ez (Amharic/Tigrinya)</option><option value="tifinagh">Tifinagh (Amazigh/Berber)</option><option value="nko">N'Ko (Manding/Bambara)</option><option value="vai">Vai (Liberia)</option></select></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+<div class="form-group"><label>Latin Input</label><textarea id="input" placeholder="Type in Latin letters..." oninput="convert()"></textarea></div>
+<div class="form-group"><label>Script Output</label><div class="output-box" id="output"></div></div>
+</div>
+<div style="display:flex;gap:.5rem;flex-wrap:wrap">
+<button class="btn btn-sm" onclick="copyOutput()">Copy Output</button>
+<button class="btn btn-sm" onclick="document.getElementById('input').value='';convert()" style="background:#64748b">Clear</button>
+</div>
+</div>
+<div class="card">
+<h2>Character Map — Click to Insert</h2>
+<div class="char-grid" id="charGrid"></div>
+</div>
+<div class="card">
+<h2>African Writing Systems</h2>
+<div class="script-info">
+<div class="script-card"><div class="sample">\u1200\u1208\u121B</div><div class="name">Ge'ez (Ethiopic)</div><div class="desc">Used for Amharic, Tigrinya. 2,000+ years old. 230+ characters.</div></div>
+<div class="script-card"><div class="sample">\u2D5C\u2D49\u2D3C\u2D49\u2D4F\u2D30\u2D56</div><div class="name">Tifinagh</div><div class="desc">Used for Amazigh/Berber. 3,000+ years old. Official in Morocco.</div></div>
+<div class="script-card"><div class="sample">\u07DE\u07CA\u07DE\u07D0</div><div class="name">N'Ko</div><div class="desc">Created 1949 for Manding languages. Right-to-left. Used in West Africa.</div></div>
+<div class="script-card"><div class="sample">\uA500\uA501\uA502</div><div class="name">Vai</div><div class="desc">Created c.1830s in Liberia. One of few African-invented syllabaries.</div></div>
+</div>
+</div>
+</div>
+<section class="seo-section">
+<h2>African Writing Systems and Transliteration</h2>
+<p>Africa has a rich diversity of writing systems spanning thousands of years. From the ancient Ge'ez script of Ethiopia to modern inventions like N'Ko, African scripts represent unique approaches to recording language and knowledge. This tool helps you transliterate between the Latin alphabet and four major African scripts used by hundreds of millions of people today.</p>
+<h3>Ge'ez Script</h3>
+<p>The Ge'ez script (also called Ethiopic or Fidel) is one of the oldest alphabets still in use, dating back over 2,000 years. It is used to write Amharic (Ethiopia's official language), Tigrinya (spoken in Eritrea and Ethiopia), and liturgical Ge'ez. The script is a syllabary with 33 base characters, each modified into 7 forms to represent consonant-vowel combinations, yielding over 230 unique characters.</p>
+<h3>Tifinagh Script</h3>
+<p>Tifinagh is the script of the Amazigh (Berber) people of North Africa, with roots going back 3,000 years to the ancient Libyco-Berber inscriptions. Neo-Tifinagh, a standardized modern version, became an official script in Morocco in 2003 and is taught in schools alongside Arabic and French. The script has a distinctive geometric appearance with circles, dots, and lines.</p>
+<h3>N'Ko Script</h3>
+<p>N'Ko was invented in 1949 by Solomana Kante of Guinea to write the Manding languages (Bambara, Dyula, Mandinka). Written right-to-left, N'Ko has become an important tool for literacy across West Africa, with newspapers, textbooks, and even computer software supporting the script. The name "N'Ko" means "I say" in all Manding languages.</p>
+</section>
+<section class="faq">
+<h2>Frequently Asked Questions</h2>
+<details><summary>What is transliteration?</summary><p>Transliteration is the process of converting text from one writing system to another, mapping characters based on their phonetic values. Unlike translation (which converts meaning), transliteration preserves the sounds of the original text in a different script. For example, the Amharic word for "peace" can be transliterated from Ge'ez to Latin as "selam."</p></details>
+<details><summary>Are these scripts still used today?</summary><p>Yes, all four scripts featured here are actively used. Ge'ez is the official script for Amharic and Tigrinya, used by over 50 million people daily. Neo-Tifinagh is taught in Moroccan schools and used on road signs. N'Ko is used for literacy programs across West Africa with millions of learners. Vai continues to be used in Liberia.</p></details>
+<details><summary>How accurate is this transliteration?</summary><p>This tool provides phonetic transliteration based on standard mapping tables. For Ge'ez, it maps Latin consonant-vowel pairs to the corresponding Ethiopic syllable characters. Results are approximate and may not capture all nuances of each script. For professional or academic use, please verify with native-script-literate reviewers.</p></details>
+</section>
+<afro-related-tools></afro-related-tools><afro-newsletter-cta></afro-newsletter-cta><afro-footer></afro-footer>
+<script src="/assets/js/components/navbar.js" defer></script><script src="/assets/js/components/footer.js" defer></script><script src="/assets/js/components/related-tools.js" defer></script><script src="/assets/js/components/newsletter-cta.js" defer></script>
+<script>
+// Ge'ez transliteration map (consonant x 7 vowel forms: a, u, i, aa, ee, e/schwa, o)
+const GEEZ_MAP={
+'h':['\u1200','\u1201','\u1202','\u1203','\u1204','\u1205','\u1206'],
+'l':['\u1208','\u1209','\u120A','\u120B','\u120C','\u120D','\u120E'],
+'m':['\u1218','\u1219','\u121A','\u121B','\u121C','\u121D','\u121E'],
+'r':['\u1228','\u1229','\u122A','\u122B','\u122C','\u122D','\u122E'],
+'s':['\u1230','\u1231','\u1232','\u1233','\u1234','\u1235','\u1236'],
+'sh':['\u1238','\u1239','\u123A','\u123B','\u123C','\u123D','\u123E'],
+'q':['\u1240','\u1241','\u1242','\u1243','\u1244','\u1245','\u1246'],
+'b':['\u1260','\u1261','\u1262','\u1263','\u1264','\u1265','\u1266'],
+'t':['\u1270','\u1271','\u1272','\u1273','\u1274','\u1275','\u1276'],
+'ch':['\u1278','\u1279','\u127A','\u127B','\u127C','\u127D','\u127E'],
+'n':['\u1290','\u1291','\u1292','\u1293','\u1294','\u1295','\u1296'],
+'gn':['\u1298','\u1299','\u129A','\u129B','\u129C','\u129D','\u129E'],
+'k':['\u12A8','\u12A9','\u12AA','\u12AB','\u12AC','\u12AD','\u12AE'],
+'w':['\u12C8','\u12C9','\u12CA','\u12CB','\u12CC','\u12CD','\u12CE'],
+'z':['\u12D8','\u12D9','\u12DA','\u12DB','\u12DC','\u12DD','\u12DE'],
+'y':['\u12E8','\u12E9','\u12EA','\u12EB','\u12EC','\u12ED','\u12EE'],
+'d':['\u12F0','\u12F1','\u12F2','\u12F3','\u12F4','\u12F5','\u12F6'],
+'j':['\u1300','\u1301','\u1302','\u1303','\u1304','\u1305','\u1306'],
+'g':['\u1308','\u1309','\u130A','\u130B','\u130C','\u130D','\u130E'],
+'f':['\u1348','\u1349','\u134A','\u134B','\u134C','\u134D','\u134E'],
+'p':['\u1350','\u1351','\u1352','\u1353','\u1354','\u1355','\u1356']
+};
+const VOWEL_IDX={'a':0,'u':1,'i':2,'aa':3,'ee':4,'e':5,'o':6,'':5};
+
+const TIFINAGH_MAP={'a':'\u2D30','b':'\u2D31','g':'\u2D33','d':'\u2D37','e':'\u2D3B','f':'\u2D3C','k':'\u2D3E','h':'\u2D40','q':'\u2D45','i':'\u2D49','j':'\u2D4A','l':'\u2D4D','m':'\u2D4E','n':'\u2D4F','u':'\u2D53','r':'\u2D54','s':'\u2D59','t':'\u2D5C','w':'\u2D61','y':'\u2D62','z':'\u2D63','o':'\u2D67','sh':'\u2D5B','ch':'\u2D5E','gh':'\u2D56','kh':'\u2D46'};
+
+const NKO_MAP={'a':'\u07CA','e':'\u07CB','i':'\u07CC','o':'\u07CD','u':'\u07CE','ba':'\u07CF','be':'\u07D0','bi':'\u07D1','bo':'\u07D2','bu':'\u07D3','da':'\u07D4','de':'\u07D5','di':'\u07D6','do':'\u07D7','du':'\u07D8','fa':'\u07D9','fe':'\u07DA','ka':'\u07DB','ke':'\u07DC','la':'\u07DD','le':'\u07DE','ma':'\u07DF','me':'\u07E0','na':'\u07E1','ne':'\u07E2','ra':'\u07E3','re':'\u07E4','sa':'\u07E5','se':'\u07E6','ta':'\u07E7','te':'\u07E8'};
+
+function convertGeez(text){
+  let out='';let i=0;
+  const t=text.toLowerCase();
+  while(i<t.length){
+    if(t[i]===' '||t[i]==='\n'){out+=t[i];i++;continue;}
+    let cons='';let matched=false;
+    // Try 2-char consonants first
+    if(i+1<t.length){
+      const di=t.substr(i,2);
+      if(GEEZ_MAP[di]){cons=di;i+=2;matched=true;}
+    }
+    if(!matched&&GEEZ_MAP[t[i]]){cons=t[i];i++;matched=true;}
+    if(matched){
+      let vowel='';
+      if(i<t.length&&'aeiou'.includes(t[i])){
+        if(t[i]==='a'&&i+1<t.length&&t[i+1]==='a'){vowel='aa';i+=2;}
+        else if(t[i]==='e'&&i+1<t.length&&t[i+1]==='e'){vowel='ee';i+=2;}
+        else{vowel=t[i];i++;}
+      }
+      const vi=VOWEL_IDX[vowel]!==undefined?VOWEL_IDX[vowel]:5;
+      out+=GEEZ_MAP[cons][vi];
+    } else {
+      // Check if it's a standalone vowel
+      if('aeiou'.includes(t[i])){
+        const vMap={'a':'\u12A0','u':'\u12A1','i':'\u12A2','e':'\u12A5','o':'\u12A6'};
+        out+=vMap[t[i]]||t[i];i++;
+      } else {out+=t[i];i++;}
+    }
+  }
+  return out;
+}
+
+function convertTifinagh(text){
+  let out='';let i=0;const t=text.toLowerCase();
+  while(i<t.length){
+    if(t[i]===' '||t[i]==='\n'){out+=t[i];i++;continue;}
+    if(i+1<t.length){
+      const di=t.substr(i,2);
+      if(TIFINAGH_MAP[di]){out+=TIFINAGH_MAP[di];i+=2;continue;}
+    }
+    out+=TIFINAGH_MAP[t[i]]||t[i];i++;
+  }
+  return out;
+}
+
+function convertNko(text){
+  let out='';let i=0;const t=text.toLowerCase();
+  while(i<t.length){
+    if(t[i]===' '||t[i]==='\n'){out+=t[i];i++;continue;}
+    if(i+1<t.length){
+      const di=t.substr(i,2);
+      if(NKO_MAP[di]){out+=NKO_MAP[di];i+=2;continue;}
+    }
+    out+=NKO_MAP[t[i]]||t[i];i++;
+  }
+  return out;
+}
+
+function convertVai(text){
+  // Vai syllabary - simplified mapping
+  const VAI={'a':'\uA500','e':'\uA501','i':'\uA502','o':'\uA503','u':'\uA504',
+    'ba':'\uA506','be':'\uA507','bi':'\uA508','bo':'\uA509','bu':'\uA50A',
+    'da':'\uA50C','de':'\uA50D','di':'\uA50E','do':'\uA50F','du':'\uA510',
+    'fa':'\uA512','fe':'\uA513','ga':'\uA516','ge':'\uA517','ha':'\uA51A',
+    'he':'\uA51B','ka':'\uA51E','ke':'\uA51F','la':'\uA522','le':'\uA523',
+    'ma':'\uA526','me':'\uA527','na':'\uA52A','ne':'\uA52B','pa':'\uA52E',
+    'pe':'\uA52F','ra':'\uA530','re':'\uA531','sa':'\uA534','se':'\uA535',
+    'ta':'\uA538','te':'\uA539','wa':'\uA53C','we':'\uA53D','ya':'\uA540','ye':'\uA541'};
+  let out='';let i=0;const t=text.toLowerCase();
+  while(i<t.length){
+    if(t[i]===' '||t[i]==='\n'){out+=t[i];i++;continue;}
+    if(i+1<t.length){const di=t.substr(i,2);if(VAI[di]){out+=VAI[di];i+=2;continue;}}
+    out+=VAI[t[i]]||t[i];i++;
+  }
+  return out;
+}
+
+function convert(){
+  const script=document.getElementById('script').value;
+  const text=document.getElementById('input').value;
+  let result='';
+  switch(script){
+    case 'geez':result=convertGeez(text);break;
+    case 'tifinagh':result=convertTifinagh(text);break;
+    case 'nko':result=convertNko(text);break;
+    case 'vai':result=convertVai(text);break;
+  }
+  document.getElementById('output').textContent=result;
+}
+
+function updateCharGrid(){
+  const script=document.getElementById('script').value;
+  let html='';
+  if(script==='geez'){
+    Object.keys(GEEZ_MAP).forEach(c=>{
+      GEEZ_MAP[c].forEach((ch,vi)=>{
+        const vl=['a','u','i','aa','ee','e','o'][vi];
+        html+=`<div class="char-cell" onclick="insertChar('${ch}')">${ch}<span class="latin">${c}${vl}</span></div>`;
+      });
+    });
+  } else if(script==='tifinagh'){
+    Object.keys(TIFINAGH_MAP).forEach(c=>{
+      html+=`<div class="char-cell" onclick="insertChar('${TIFINAGH_MAP[c]}')">${TIFINAGH_MAP[c]}<span class="latin">${c}</span></div>`;
+    });
+  } else if(script==='nko'){
+    Object.keys(NKO_MAP).forEach(c=>{
+      html+=`<div class="char-cell" onclick="insertChar('${NKO_MAP[c]}')">${NKO_MAP[c]}<span class="latin">${c}</span></div>`;
+    });
+  }
+  document.getElementById('charGrid').innerHTML=html;
+}
+
+function insertChar(ch){
+  const inp=document.getElementById('input');
+  inp.value+=ch;
+  const out=document.getElementById('output');
+  out.textContent+=ch;
+}
+
+function copyOutput(){
+  const t=document.getElementById('output').textContent;
+  navigator.clipboard.writeText(t).then(()=>{
+    const btn=event.target;btn.textContent='Copied!';setTimeout(()=>btn.textContent='Copy Output',1500);
+  });
+}
+
+updateCharGrid();
+</script>
+</body>
+</html>
