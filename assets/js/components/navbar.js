@@ -73,6 +73,11 @@
       tools: [
         { label: 'P2P Rate Comparator', href: '/crypto/p2p-rates/', emoji: '₿', badge: 'LIVE' },
         { label: 'Live Crypto Prices', href: '/crypto/prices/', emoji: '📊', badge: 'LIVE' },
+        { label: 'Portfolio Tracker', href: '/crypto/portfolio/', emoji: '📁', badge: 'LIVE' },
+        { label: 'DCA Calculator', href: '/crypto/dca-calculator/', emoji: '📈', badge: 'LIVE' },
+        { label: 'Crypto Tax', href: '/crypto/tax-calculator/', emoji: '🧾', badge: 'LIVE' },
+        { label: 'Profit Calculator', href: '/crypto/profit-calculator/', emoji: '💰', badge: 'LIVE' },
+        { label: 'Mining Calculator', href: '/crypto/mining-calculator/', emoji: '⛏️', badge: 'LIVE' },
         { label: 'Stablecoin Tracker', href: '/crypto/stablecoins/', emoji: '💵', badge: 'LIVE' },
         { label: 'Crypto Remittance', href: '/crypto/remittance/', emoji: '🌐', badge: 'LIVE' },
         { label: 'Naira Arbitrage', href: '/crypto/arbitrage/', emoji: '⚡', badge: 'LIVE' },
