@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'periodic-table'});</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive Periodic Table | AfroTools</title>
+<meta name="description" content="Interactive periodic table of elements with atomic mass, electron configuration, properties, and African mining context. Click any element for full details.">
+<link rel="canonical" href="https://afrotools.com/tools/periodic-table/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Interactive Periodic Table | AfroTools">
+<meta property="og:description" content="Explore all 118 elements with properties, electron configs, and African mining context.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/periodic-table/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+:root{--afro-dark:#0f1419;--accent:#7c3aed}
+.tool-hero{background:linear-gradient(135deg,#3b0764 0%,#7c3aed 50%,#6d28d9 100%);padding:44px 0 36px}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#e9d5ff}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:#e9d5ff;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-em{background:rgba(233,213,255,.2);color:#e9d5ff;border:1px solid rgba(233,213,255,.4)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1280px;margin:0 auto;padding:0 16px}
+.filter-bar{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap;align-items:center}
+.filter-bar input{padding:8px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.8rem;width:200px;font-family:inherit}
+.filter-bar input:focus{outline:none;border-color:var(--accent)}
+.legend{display:flex;gap:8px;flex-wrap:wrap;font-size:.68rem;font-weight:600}
+.legend span{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px}
+.ptable{display:grid;grid-template-columns:repeat(18,1fr);gap:2px;margin-bottom:22px}
+.el{border-radius:4px;padding:4px 2px;text-align:center;cursor:pointer;transition:transform .15s,box-shadow .15s;position:relative;min-height:52px;display:flex;flex-direction:column;justify-content:center}
+.el:hover{transform:scale(1.3);box-shadow:0 4px 16px rgba(0,0,0,.3);z-index:10}
+.el .num{font-size:.5rem;color:rgba(0,0,0,.5);font-weight:600}
+.el .sym{font-size:.9rem;font-weight:800;line-height:1}
+.el .name{font-size:.42rem;color:rgba(0,0,0,.6);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.el.empty{background:transparent;cursor:default}
+.el.empty:hover{transform:none;box-shadow:none}
+.cat-nonmetal{background:#a7f3d0}.cat-noble{background:#c4b5fd}.cat-alkali{background:#fecaca}.cat-alkaline{background:#fed7aa}
+.cat-transition{background:#fde68a}.cat-post{background:#bae6fd}.cat-metalloid{background:#99f6e4}.cat-halogen{background:#fbcfe8}
+.cat-lanthanide{background:#c7d2fe}.cat-actinide{background:#fca5a5}.cat-unknown{background:#e2e8f0}
+.detail-card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:22px;box-shadow:0 2px 12px rgba(0,0,0,.08);display:none;margin-bottom:22px}
+.detail-card.show{display:block}
+.detail-header{display:flex;gap:18px;align-items:center;margin-bottom:14px}
+.detail-symbol{font-size:3rem;font-weight:800;color:var(--accent);line-height:1}
+.detail-info h2{font-size:1.2rem;font-weight:800;color:var(--afro-dark);margin-bottom:4px}
+.detail-info p{font-size:.82rem;color:#64748b}
+.detail-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.detail-item{background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:10px}
+.detail-item .val{font-size:.92rem;font-weight:700;color:var(--afro-dark)}
+.detail-item .lbl{font-size:.65rem;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.africa-note{margin-top:14px;background:#faf5ff;border:1px solid #c4b5fd;border-radius:8px;padding:12px;font-size:.8rem;color:#3b0764;line-height:1.6;display:none}
+.africa-note.show{display:block}
+.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
+.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
+.seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
+.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
+.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
+.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
+@media(max-width:768px){.ptable{grid-template-columns:repeat(18,1fr);gap:1px;font-size:.7rem}.el{min-height:36px;padding:2px 1px}.el .sym{font-size:.65rem}.el .name,.el .num{display:none}}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<section class="tool-hero"><div class="tool-hero-inner">
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Periodic Table</span></div>
+<h1>Interactive <em>Periodic Table</em></h1>
+<p class="hero-sub">Explore all 118 elements with atomic mass, electron configuration, and properties. Includes African mining context — which elements are found where on the continent.</p>
+<div class="hero-badges"><span class="badge b-em">118 Elements</span><span class="badge b-em">African Mining</span><span class="badge b-em">Interactive</span></div>
+</div></section>
+
+<section class="tool-main"><div class="tool-main-inner">
+<div class="filter-bar">
+<input type="text" id="search" placeholder="Search element..." oninput="filterElements()">
+<div class="legend">
+<span class="cat-alkali">Alkali</span>
+<span class="cat-alkaline">Alkaline</span>
+<span class="cat-transition">Transition</span>
+<span class="cat-post">Post-Trans</span>
+<span class="cat-metalloid">Metalloid</span>
+<span class="cat-nonmetal">Nonmetal</span>
+<span class="cat-halogen">Halogen</span>
+<span class="cat-noble">Noble Gas</span>
+<span class="cat-lanthanide">Lanthanide</span>
+<span class="cat-actinide">Actinide</span>
+</div>
+</div>
+
+<div class="detail-card" id="detailCard">
+<div class="detail-header">
+<div class="detail-symbol" id="detailSym"></div>
+<div class="detail-info"><h2 id="detailName"></h2><p id="detailMeta"></p></div>
+</div>
+<div class="detail-grid" id="detailGrid"></div>
+<div class="africa-note" id="africaNote"></div>
+</div>
+
+<div class="ptable" id="ptable"></div>
+</div></section>
+
+<section class="seo-section">
+<h2>The Periodic Table and Africa</h2>
+<p>The periodic table of elements is one of the most important tools in chemistry and science education. It organizes all 118 known elements by their atomic number, electron configuration, and recurring chemical properties. This interactive version adds an African dimension — highlighting which elements are significantly mined or found on the African continent.</p>
+<p>Africa is extraordinarily rich in mineral resources. The continent produces over 50% of the world's cobalt (primarily from the Democratic Republic of Congo), is the leading source of platinum group metals (South Africa's Bushveld Complex), and is a major producer of gold (Ghana, South Africa, Tanzania, Mali), diamonds (Botswana, DRC, South Africa), and manganese (South Africa, Gabon). These elements are critical for modern technology, from smartphones to electric vehicles.</p>
+<p>Understanding the periodic table is fundamental to science education across Africa. Whether you're a secondary school student preparing for WAEC, KCSE, or Matric exams, or a university student studying chemistry, this tool provides quick access to essential element data including atomic mass, electron configuration, density, melting point, boiling point, and electronegativity.</p>
+<p>The rare earth elements (lanthanides) deserve special attention in the African context. Countries like Burundi, Malawi, and South Africa have significant rare earth deposits that are becoming increasingly valuable as the world transitions to green energy technologies. Tantalum from Central Africa is essential for electronic capacitors, while lithium deposits in Zimbabwe and the DRC are critical for battery production.</p>
+
+<h2>Frequently Asked Questions</h2>
+<details class="faq-item"><summary>How many elements are in the periodic table?</summary><p>There are 118 confirmed elements, from hydrogen (1) to oganesson (118). Elements 1-94 occur naturally, while elements 95-118 are synthetic (created in laboratories). The most recently confirmed elements (113-118) were added in 2016.</p></details>
+<details class="faq-item"><summary>Which elements are mined in Africa?</summary><p>Africa is a major producer of gold (Au), platinum (Pt), palladium (Pd), cobalt (Co), manganese (Mn), chromium (Cr), diamonds (C), tantalum (Ta), coltan, uranium (U), copper (Cu), lithium (Li), and many others. South Africa and the DRC are the continent's two most significant mining economies.</p></details>
+</section>
+
+<afro-related-tools category="education" current="periodic-table"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+const E=[
+{z:1,s:'H',n:'Hydrogen',m:1.008,c:'nonmetal',ec:'1s1',g:1,p:1},{z:2,s:'He',n:'Helium',m:4.003,c:'noble',ec:'1s2',g:18,p:1},
+{z:3,s:'Li',n:'Lithium',m:6.941,c:'alkali',ec:'[He]2s1',g:1,p:2,af:'Zimbabwe & DRC have significant lithium deposits for EV batteries.'},{z:4,s:'Be',n:'Beryllium',m:9.012,c:'alkaline',ec:'[He]2s2',g:2,p:2},
+{z:5,s:'B',n:'Boron',m:10.81,c:'metalloid',ec:'[He]2s2 2p1',g:13,p:2},{z:6,s:'C',n:'Carbon',m:12.011,c:'nonmetal',ec:'[He]2s2 2p2',g:14,p:2,af:'Botswana, DRC, South Africa, Angola & Sierra Leone are major diamond producers.'},
+{z:7,s:'N',n:'Nitrogen',m:14.007,c:'nonmetal',ec:'[He]2s2 2p3',g:15,p:2},{z:8,s:'O',n:'Oxygen',m:15.999,c:'nonmetal',ec:'[He]2s2 2p4',g:16,p:2},
+{z:9,s:'F',n:'Fluorine',m:18.998,c:'halogen',ec:'[He]2s2 2p5',g:17,p:2},{z:10,s:'Ne',n:'Neon',m:20.180,c:'noble',ec:'[He]2s2 2p6',g:18,p:2},
+{z:11,s:'Na',n:'Sodium',m:22.990,c:'alkali',ec:'[Ne]3s1',g:1,p:3},{z:12,s:'Mg',n:'Magnesium',m:24.305,c:'alkaline',ec:'[Ne]3s2',g:2,p:3},
+{z:13,s:'Al',n:'Aluminium',m:26.982,c:'post',ec:'[Ne]3s2 3p1',g:13,p:3,af:'Guinea has the world\'s largest bauxite reserves (aluminium ore). Ghana & Mozambique also have significant deposits.'},
+{z:14,s:'Si',n:'Silicon',m:28.086,c:'metalloid',ec:'[Ne]3s2 3p2',g:14,p:3},{z:15,s:'P',n:'Phosphorus',m:30.974,c:'nonmetal',ec:'[Ne]3s2 3p3',g:15,p:3,af:'Morocco & Western Sahara hold ~70% of world phosphate reserves.'},
+{z:16,s:'S',n:'Sulfur',m:32.065,c:'nonmetal',ec:'[Ne]3s2 3p4',g:16,p:3},{z:17,s:'Cl',n:'Chlorine',m:35.453,c:'halogen',ec:'[Ne]3s2 3p5',g:17,p:3},
+{z:18,s:'Ar',n:'Argon',m:39.948,c:'noble',ec:'[Ne]3s2 3p6',g:18,p:3},{z:19,s:'K',n:'Potassium',m:39.098,c:'alkali',ec:'[Ar]4s1',g:1,p:4},
+{z:20,s:'Ca',n:'Calcium',m:40.078,c:'alkaline',ec:'[Ar]4s2',g:2,p:4},{z:21,s:'Sc',n:'Scandium',m:44.956,c:'transition',ec:'[Ar]3d1 4s2',g:3,p:4},
+{z:22,s:'Ti',n:'Titanium',m:47.867,c:'transition',ec:'[Ar]3d2 4s2',g:4,p:4,af:'South Africa, Mozambique & Kenya produce titanium minerals (ilmenite, rutile).'},
+{z:23,s:'V',n:'Vanadium',m:50.942,c:'transition',ec:'[Ar]3d3 4s2',g:5,p:4,af:'South Africa is the world\'s third-largest vanadium producer.'},
+{z:24,s:'Cr',n:'Chromium',m:51.996,c:'transition',ec:'[Ar]3d5 4s1',g:6,p:4,af:'South Africa produces ~40% of world chromite (chromium ore).'},
+{z:25,s:'Mn',n:'Manganese',m:54.938,c:'transition',ec:'[Ar]3d5 4s2',g:7,p:4,af:'South Africa holds ~80% of world manganese reserves. Gabon is also a major producer.'},
+{z:26,s:'Fe',n:'Iron',m:55.845,c:'transition',ec:'[Ar]3d6 4s2',g:8,p:4,af:'South Africa, Mauritania, Sierra Leone & Liberia have major iron ore deposits.'},
+{z:27,s:'Co',n:'Cobalt',m:58.933,c:'transition',ec:'[Ar]3d7 4s2',g:9,p:4,af:'DRC produces ~70% of world cobalt — critical for lithium-ion batteries.'},
+{z:28,s:'Ni',n:'Nickel',m:58.693,c:'transition',ec:'[Ar]3d8 4s2',g:10,p:4},{z:29,s:'Cu',n:'Copper',m:63.546,c:'transition',ec:'[Ar]3d10 4s1',g:11,p:4,af:'DRC & Zambia form the Central African Copper Belt — one of the world\'s richest copper regions.'},
+{z:30,s:'Zn',n:'Zinc',m:65.38,c:'transition',ec:'[Ar]3d10 4s2',g:12,p:4},{z:31,s:'Ga',n:'Gallium',m:69.723,c:'post',ec:'[Ar]3d10 4s2 4p1',g:13,p:4},
+{z:32,s:'Ge',n:'Germanium',m:72.630,c:'metalloid',ec:'[Ar]3d10 4s2 4p2',g:14,p:4},{z:33,s:'As',n:'Arsenic',m:74.922,c:'metalloid',ec:'[Ar]3d10 4s2 4p3',g:15,p:4},
+{z:34,s:'Se',n:'Selenium',m:78.971,c:'nonmetal',ec:'[Ar]3d10 4s2 4p4',g:16,p:4},{z:35,s:'Br',n:'Bromine',m:79.904,c:'halogen',ec:'[Ar]3d10 4s2 4p5',g:17,p:4},
+{z:36,s:'Kr',n:'Krypton',m:83.798,c:'noble',ec:'[Ar]3d10 4s2 4p6',g:18,p:4},
+{z:37,s:'Rb',n:'Rubidium',m:85.468,c:'alkali',g:1,p:5},{z:38,s:'Sr',n:'Strontium',m:87.62,c:'alkaline',g:2,p:5},
+{z:39,s:'Y',n:'Yttrium',m:88.906,c:'transition',g:3,p:5},{z:40,s:'Zr',n:'Zirconium',m:91.224,c:'transition',g:4,p:5,af:'South Africa & Mozambique are major zircon producers.'},
+{z:41,s:'Nb',n:'Niobium',m:92.906,c:'transition',g:5,p:5},{z:42,s:'Mo',n:'Molybdenum',m:95.95,c:'transition',g:6,p:5},
+{z:43,s:'Tc',n:'Technetium',m:98,c:'transition',g:7,p:5},{z:44,s:'Ru',n:'Ruthenium',m:101.07,c:'transition',g:8,p:5,af:'South Africa produces most of the world\'s ruthenium (platinum group metal).'},
+{z:45,s:'Rh',n:'Rhodium',m:102.91,c:'transition',g:9,p:5,af:'South Africa produces ~80% of world rhodium — the most valuable precious metal.'},{z:46,s:'Pd',n:'Palladium',m:106.42,c:'transition',g:10,p:5,af:'South Africa is the second-largest palladium producer globally.'},
+{z:47,s:'Ag',n:'Silver',m:107.87,c:'transition',g:11,p:5},{z:48,s:'Cd',n:'Cadmium',m:112.41,c:'transition',g:12,p:5},
+{z:49,s:'In',n:'Indium',m:114.82,c:'post',g:13,p:5},{z:50,s:'Sn',n:'Tin',m:118.71,c:'post',g:14,p:5,af:'DRC, Nigeria & Rwanda produce significant tin (cassiterite).'},
+{z:51,s:'Sb',n:'Antimony',m:121.76,c:'metalloid',g:15,p:5},{z:52,s:'Te',n:'Tellurium',m:127.60,c:'metalloid',g:16,p:5},
+{z:53,s:'I',n:'Iodine',m:126.90,c:'halogen',g:17,p:5},{z:54,s:'Xe',n:'Xenon',m:131.29,c:'noble',g:18,p:5},
+{z:55,s:'Cs',n:'Caesium',m:132.91,c:'alkali',g:1,p:6},{z:56,s:'Ba',n:'Barium',m:137.33,c:'alkaline',g:2,p:6},
+{z:57,s:'La',n:'Lanthanum',m:138.91,c:'lanthanide',g:3,p:6},{z:58,s:'Ce',n:'Cerium',m:140.12,c:'lanthanide',g:3,p:6},
+{z:59,s:'Pr',n:'Praseodymium',m:140.91,c:'lanthanide',g:3,p:6},{z:60,s:'Nd',n:'Neodymium',m:144.24,c:'lanthanide',g:3,p:6},
+{z:61,s:'Pm',n:'Promethium',m:145,c:'lanthanide',g:3,p:6},{z:62,s:'Sm',n:'Samarium',m:150.36,c:'lanthanide',g:3,p:6},
+{z:63,s:'Eu',n:'Europium',m:151.96,c:'lanthanide',g:3,p:6},{z:64,s:'Gd',n:'Gadolinium',m:157.25,c:'lanthanide',g:3,p:6},
+{z:65,s:'Tb',n:'Terbium',m:158.93,c:'lanthanide',g:3,p:6},{z:66,s:'Dy',n:'Dysprosium',m:162.50,c:'lanthanide',g:3,p:6},
+{z:67,s:'Ho',n:'Holmium',m:164.93,c:'lanthanide',g:3,p:6},{z:68,s:'Er',n:'Erbium',m:167.26,c:'lanthanide',g:3,p:6},
+{z:69,s:'Tm',n:'Thulium',m:168.93,c:'lanthanide',g:3,p:6},{z:70,s:'Yb',n:'Ytterbium',m:173.04,c:'lanthanide',g:3,p:6},
+{z:71,s:'Lu',n:'Lutetium',m:174.97,c:'lanthanide',g:3,p:6},
+{z:72,s:'Hf',n:'Hafnium',m:178.49,c:'transition',g:4,p:6},{z:73,s:'Ta',n:'Tantalum',m:180.95,c:'transition',g:5,p:6,af:'DRC & Rwanda are major tantalum (coltan) sources — essential for electronics.'},
+{z:74,s:'W',n:'Tungsten',m:183.84,c:'transition',g:6,p:6,af:'Rwanda & DRC produce significant tungsten (wolframite).'},{z:75,s:'Re',n:'Rhenium',m:186.21,c:'transition',g:7,p:6},
+{z:76,s:'Os',n:'Osmium',m:190.23,c:'transition',g:8,p:6},{z:77,s:'Ir',n:'Iridium',m:192.22,c:'transition',g:9,p:6,af:'South Africa produces most of the world\'s iridium (platinum group).'},
+{z:78,s:'Pt',n:'Platinum',m:195.08,c:'transition',g:10,p:6,af:'South Africa produces ~70% of world platinum from the Bushveld Complex.'},{z:79,s:'Au',n:'Gold',m:196.97,c:'transition',g:11,p:6,af:'Ghana, South Africa, Tanzania, Mali, Burkina Faso & Guinea are major gold producers.'},
+{z:80,s:'Hg',n:'Mercury',m:200.59,c:'transition',g:12,p:6},{z:81,s:'Tl',n:'Thallium',m:204.38,c:'post',g:13,p:6},
+{z:82,s:'Pb',n:'Lead',m:207.2,c:'post',g:14,p:6},{z:83,s:'Bi',n:'Bismuth',m:208.98,c:'post',g:15,p:6},
+{z:84,s:'Po',n:'Polonium',m:209,c:'metalloid',g:16,p:6},{z:85,s:'At',n:'Astatine',m:210,c:'halogen',g:17,p:6},
+{z:86,s:'Rn',n:'Radon',m:222,c:'noble',g:18,p:6},
+{z:87,s:'Fr',n:'Francium',m:223,c:'alkali',g:1,p:7},{z:88,s:'Ra',n:'Radium',m:226,c:'alkaline',g:2,p:7},
+{z:89,s:'Ac',n:'Actinium',m:227,c:'actinide',g:3,p:7},{z:90,s:'Th',n:'Thorium',m:232.04,c:'actinide',g:3,p:7},
+{z:91,s:'Pa',n:'Protactinium',m:231.04,c:'actinide',g:3,p:7},{z:92,s:'U',n:'Uranium',m:238.03,c:'actinide',g:3,p:7,af:'Niger, Namibia & South Africa are significant uranium producers.'},
+{z:93,s:'Np',n:'Neptunium',m:237,c:'actinide',g:3,p:7},{z:94,s:'Pu',n:'Plutonium',m:244,c:'actinide',g:3,p:7},
+{z:95,s:'Am',n:'Americium',m:243,c:'actinide',g:3,p:7},{z:96,s:'Cm',n:'Curium',m:247,c:'actinide',g:3,p:7},
+{z:97,s:'Bk',n:'Berkelium',m:247,c:'actinide',g:3,p:7},{z:98,s:'Cf',n:'Californium',m:251,c:'actinide',g:3,p:7},
+{z:99,s:'Es',n:'Einsteinium',m:252,c:'actinide',g:3,p:7},{z:100,s:'Fm',n:'Fermium',m:257,c:'actinide',g:3,p:7},
+{z:101,s:'Md',n:'Mendelevium',m:258,c:'actinide',g:3,p:7},{z:102,s:'No',n:'Nobelium',m:259,c:'actinide',g:3,p:7},
+{z:103,s:'Lr',n:'Lawrencium',m:266,c:'actinide',g:3,p:7},
+{z:104,s:'Rf',n:'Rutherfordium',m:267,c:'transition',g:4,p:7},{z:105,s:'Db',n:'Dubnium',m:268,c:'transition',g:5,p:7},
+{z:106,s:'Sg',n:'Seaborgium',m:269,c:'transition',g:6,p:7},{z:107,s:'Bh',n:'Bohrium',m:270,c:'transition',g:7,p:7},
+{z:108,s:'Hs',n:'Hassium',m:277,c:'transition',g:8,p:7},{z:109,s:'Mt',n:'Meitnerium',m:278,c:'transition',g:9,p:7},
+{z:110,s:'Ds',n:'Darmstadtium',m:281,c:'transition',g:10,p:7},{z:111,s:'Rg',n:'Roentgenium',m:282,c:'transition',g:11,p:7},
+{z:112,s:'Cn',n:'Copernicium',m:285,c:'transition',g:12,p:7},{z:113,s:'Nh',n:'Nihonium',m:286,c:'post',g:13,p:7},
+{z:114,s:'Fl',n:'Flerovium',m:289,c:'post',g:14,p:7},{z:115,s:'Mc',n:'Moscovium',m:290,c:'post',g:15,p:7},
+{z:116,s:'Lv',n:'Livermorium',m:293,c:'post',g:16,p:7},{z:117,s:'Ts',n:'Tennessine',m:294,c:'halogen',g:17,p:7},
+{z:118,s:'Og',n:'Oganesson',m:294,c:'noble',g:18,p:7}
+];
+
+// Layout: standard 18-column periodic table
+const GRID=[];
+// Rows 1-7 main, rows 8-9 lanthanides/actinides
+function buildTable(){
+  const grid=document.getElementById('ptable');
+  // Create 7 rows x 18 cols + 2 extra rows for La/Ac series
+  const cells=new Array(9).fill(null).map(()=>new Array(18).fill(null));
+
+  E.forEach(el=>{
+    if(el.c==='lanthanide'){
+      const col=el.z-57+2; // La=col3, Ce=col4...
+      cells[7][col]=el;
+    }else if(el.c==='actinide'){
+      const col=el.z-89+2;
+      cells[8][col]=el;
+    }else{
+      cells[el.p-1][el.g-1]=el;
+    }
+  });
+
+  let html='';
+  for(let r=0;r<9;r++){
+    if(r===7){html+=`<div class="el empty" style="grid-column:1/3;font-size:.6rem;color:#64748b;display:flex;align-items:center;justify-content:end;padding-right:6px">Lanthanides</div>`;
+      for(let c=2;c<17;c++){
+        const el=cells[r][c];
+        if(el)html+=`<div class="el cat-${el.c}" onclick="showDetail(${el.z})" title="${el.n}"><div class="num">${el.z}</div><div class="sym">${el.s}</div><div class="name">${el.n}</div></div>`;
+        else html+=`<div class="el empty"></div>`;
+      }
+      html+=`<div class="el empty"></div>`;
+      continue;
+    }
+    if(r===8){html+=`<div class="el empty" style="grid-column:1/3;font-size:.6rem;color:#64748b;display:flex;align-items:center;justify-content:end;padding-right:6px">Actinides</div>`;
+      for(let c=2;c<17;c++){
+        const el=cells[r][c];
+        if(el)html+=`<div class="el cat-${el.c}" onclick="showDetail(${el.z})" title="${el.n}"><div class="num">${el.z}</div><div class="sym">${el.s}</div><div class="name">${el.n}</div></div>`;
+        else html+=`<div class="el empty"></div>`;
+      }
+      html+=`<div class="el empty"></div>`;
+      continue;
+    }
+    for(let c=0;c<18;c++){
+      const el=cells[r][c];
+      if(el)html+=`<div class="el cat-${el.c}" onclick="showDetail(${el.z})" title="${el.n}"><div class="num">${el.z}</div><div class="sym">${el.s}</div><div class="name">${el.n}</div></div>`;
+      else html+=`<div class="el empty"></div>`;
+    }
+  }
+  grid.innerHTML=html;
+}
+
+function showDetail(z){
+  const el=E.find(e=>e.z===z);
+  if(!el)return;
+  document.getElementById('detailSym').textContent=el.s;
+  document.getElementById('detailName').textContent=el.n;
+  document.getElementById('detailMeta').textContent=`#${el.z} | Period ${el.p} | Group ${el.g} | ${el.c.replace('-',' ')}`;
+  let grid='';
+  grid+=`<div class="detail-item"><div class="val">${el.z}</div><div class="lbl">Atomic Number</div></div>`;
+  grid+=`<div class="detail-item"><div class="val">${el.m}</div><div class="lbl">Atomic Mass</div></div>`;
+  grid+=`<div class="detail-item"><div class="val">${el.ec||'—'}</div><div class="lbl">Electron Config</div></div>`;
+  grid+=`<div class="detail-item"><div class="val">${el.p}</div><div class="lbl">Period</div></div>`;
+  grid+=`<div class="detail-item"><div class="val">${el.g}</div><div class="lbl">Group</div></div>`;
+  grid+=`<div class="detail-item"><div class="val">${el.c.replace('-',' ')}</div><div class="lbl">Category</div></div>`;
+  document.getElementById('detailGrid').innerHTML=grid;
+
+  const note=document.getElementById('africaNote');
+  if(el.af){note.innerHTML='<strong>African Context:</strong> '+el.af;note.classList.add('show');}
+  else{note.classList.remove('show');}
+
+  const card=document.getElementById('detailCard');
+  card.classList.add('show');
+  card.scrollIntoView({behavior:'smooth'});
+}
+
+function filterElements(){
+  const q=document.getElementById('search').value.toLowerCase();
+  document.querySelectorAll('.el:not(.empty)').forEach(el=>{
+    const t=(el.title||'').toLowerCase()+(el.querySelector('.sym')?.textContent||'').toLowerCase();
+    el.style.opacity=!q||t.includes(q)?'1':'0.15';
+  });
+}
+
+buildTable();
+</script>
+</body>
+</html>

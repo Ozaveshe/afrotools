@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'data-compliance'});</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>POPIA / NDPR Data Compliance Checker | AfroTools</title>
+<meta name="description" content="Check your website or business compliance with African data protection laws — POPIA (South Africa), NDPR/NDPA (Nigeria), DPA (Kenya), and DPA (Ghana).">
+<link rel="canonical" href="https://afrotools.com/tools/data-compliance/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="POPIA/NDPR Compliance Checker | AfroTools">
+<meta property="og:description" content="Check compliance with African data protection laws — POPIA, NDPR, Kenya DPA, Ghana DPA.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/data-compliance/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+:root{--afro-dark:#0f1419;--accent:#1d4ed8}
+.tool-hero{background:linear-gradient(135deg,#1e3a5f 0%,#1d4ed8 50%,#1e40af 100%);padding:44px 0 36px}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#bfdbfe}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:#bfdbfe;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-em{background:rgba(191,219,254,.2);color:#bfdbfe;border:1px solid rgba(191,219,254,.4)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
+.card-body{padding:22px}
+label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
+select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;box-sizing:border-box}
+.check-group{margin-top:14px}
+.check-section{margin-bottom:18px}
+.check-section-title{font-size:.74rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #e2e8f0}
+.check-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid #f1f5f9}
+.check-item:last-child{border-bottom:none}
+.check-item input[type=checkbox]{margin-top:3px;width:16px;height:16px;accent-color:var(--accent);flex-shrink:0}
+.check-item label{margin:0;font-size:.8rem;color:var(--afro-dark);line-height:1.5;cursor:pointer}
+.btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;margin-top:18px}
+.btn-primary{background:linear-gradient(135deg,#1e40af,#1d4ed8);color:#fff}
+.score-ring{width:120px;height:120px;margin:0 auto 14px;position:relative}
+.score-ring svg{transform:rotate(-90deg)}
+.score-ring .bg{stroke:#e2e8f0;fill:none;stroke-width:10}
+.score-ring .fg{fill:none;stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset .6s}
+.score-num{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:1.8rem;font-weight:800}
+.score-label{text-align:center;font-size:.88rem;font-weight:700;margin-bottom:6px}
+.score-desc{text-align:center;font-size:.78rem;color:#64748b;line-height:1.5;margin-bottom:18px}
+.gap-list{list-style:none;padding:0}
+.gap-list li{padding:8px 0;border-bottom:1px solid #f1f5f9;font-size:.8rem;color:#475569;display:flex;gap:8px;align-items:flex-start}
+.gap-list li::before{content:'';flex-shrink:0;width:8px;height:8px;background:#ef4444;border-radius:50%;margin-top:5px}
+.sidebar .info-card{background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:16px;margin-top:14px}
+.info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#1e3a5f;margin-bottom:8px}
+.info-card p,.info-card li{font-size:.78rem;color:#1e3a5f;line-height:1.6}
+.info-card ul{padding-left:16px;margin:6px 0}
+.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
+.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
+.seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
+.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
+.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
+.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<section class="tool-hero"><div class="tool-hero-inner">
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Data Compliance</span></div>
+<h1>African <em>Data Protection</em> Compliance Checker</h1>
+<p class="hero-sub">Assess your organisation's compliance with African data protection laws. Covers POPIA (South Africa), NDPA (Nigeria), DPA (Kenya), and DPA (Ghana).</p>
+<div class="hero-badges"><span class="badge b-em">POPIA</span><span class="badge b-em">NDPA / NDPR</span><span class="badge b-em">Kenya DPA</span><span class="badge b-em">Ghana DPA</span></div>
+</div></section>
+
+<section class="tool-main"><div class="tool-main-inner">
+<div class="calculator">
+<div class="card">
+<div class="card-head"><span class="card-title">Compliance Assessment</span></div>
+<div class="card-body">
+<div style="margin-bottom:14px"><label>Primary Jurisdiction</label>
+<select id="jurisdiction">
+<option value="za">South Africa (POPIA)</option>
+<option value="ng">Nigeria (NDPA / NDPR)</option>
+<option value="ke">Kenya (DPA 2019)</option>
+<option value="gh">Ghana (DPA 2012)</option>
+</select></div>
+
+<div class="check-group">
+<div class="check-section">
+<div class="check-section-title">Lawful Basis for Processing</div>
+<div class="check-item"><input type="checkbox" id="c1"><label for="c1">You have identified and documented a lawful basis for each processing activity (consent, contract, legal obligation, legitimate interest, etc.)</label></div>
+<div class="check-item"><input type="checkbox" id="c2"><label for="c2">Where consent is the basis, it is freely given, specific, informed, and unambiguous</label></div>
+<div class="check-item"><input type="checkbox" id="c3"><label for="c3">You have a mechanism for data subjects to withdraw consent easily</label></div>
+</div>
+
+<div class="check-section">
+<div class="check-section-title">Notice &amp; Transparency</div>
+<div class="check-item"><input type="checkbox" id="c4"><label for="c4">You have a published privacy policy / PAIA manual that is accessible to data subjects</label></div>
+<div class="check-item"><input type="checkbox" id="c5"><label for="c5">The privacy notice states: what data is collected, why, how long it's kept, and who it's shared with</label></div>
+<div class="check-item"><input type="checkbox" id="c6"><label for="c6">You provide notice at or before the point of collection</label></div>
+</div>
+
+<div class="check-section">
+<div class="check-section-title">Data Subject Rights</div>
+<div class="check-item"><input type="checkbox" id="c7"><label for="c7">You have a process for data subjects to access their personal data</label></div>
+<div class="check-item"><input type="checkbox" id="c8"><label for="c8">You can correct or delete personal data upon request</label></div>
+<div class="check-item"><input type="checkbox" id="c9"><label for="c9">You can respond to data subject requests within the statutory timeframe (e.g., 30 days for POPIA)</label></div>
+</div>
+
+<div class="check-section">
+<div class="check-section-title">Security &amp; Breach Management</div>
+<div class="check-item"><input type="checkbox" id="c10"><label for="c10">You have appropriate technical and organisational security measures (encryption, access controls, etc.)</label></div>
+<div class="check-item"><input type="checkbox" id="c11"><label for="c11">You have a documented data breach response plan</label></div>
+<div class="check-item"><input type="checkbox" id="c12"><label for="c12">You can notify the regulator and affected data subjects within required timeframes after a breach</label></div>
+</div>
+
+<div class="check-section">
+<div class="check-section-title">Governance &amp; Accountability</div>
+<div class="check-item"><input type="checkbox" id="c13"><label for="c13">You have appointed a Data Protection Officer (DPO) / Information Officer where required</label></div>
+<div class="check-item"><input type="checkbox" id="c14"><label for="c14">You have registered with the relevant data protection authority (Information Regulator, NITDA, ODPC, etc.)</label></div>
+<div class="check-item"><input type="checkbox" id="c15"><label for="c15">You maintain a record of processing activities (ROPA)</label></div>
+<div class="check-item"><input type="checkbox" id="c16"><label for="c16">You conduct Data Protection Impact Assessments (DPIAs) for high-risk processing</label></div>
+</div>
+
+<div class="check-section">
+<div class="check-section-title">Cross-Border Transfers</div>
+<div class="check-item"><input type="checkbox" id="c17"><label for="c17">You have identified all cross-border data transfers</label></div>
+<div class="check-item"><input type="checkbox" id="c18"><label for="c18">Cross-border transfers have adequate safeguards (adequacy, consent, binding corporate rules, etc.)</label></div>
+</div>
+
+<div class="check-section">
+<div class="check-section-title">Third-Party Management</div>
+<div class="check-item"><input type="checkbox" id="c19"><label for="c19">You have data processing agreements with all third-party processors</label></div>
+<div class="check-item"><input type="checkbox" id="c20"><label for="c20">You conduct due diligence on third-party data processors' security practices</label></div>
+</div>
+</div>
+
+<button class="btn btn-primary" onclick="assess()">Assess Compliance</button>
+</div></div>
+
+<div class="card" id="resultCard" style="display:none">
+<div class="card-head"><span class="card-title">Compliance Score</span></div>
+<div class="card-body" id="resultBody"></div>
+</div>
+</div>
+
+<div class="sidebar">
+<div class="card">
+<div class="card-head"><span class="card-title">Penalties</span></div>
+<div class="card-body" style="font-size:.78rem;color:#475569;line-height:1.7">
+<p><strong>POPIA (SA):</strong> Up to R10 million fine and/or imprisonment up to 10 years.</p>
+<p style="margin-top:6px"><strong>NDPA (NG):</strong> Up to ₦10 million or 2% of annual gross revenue (whichever is higher).</p>
+<p style="margin-top:6px"><strong>DPA (KE):</strong> Up to KSh 5 million or 1% of annual turnover.</p>
+<p style="margin-top:6px"><strong>DPA (GH):</strong> Up to GH₵6,000 fine and/or imprisonment.</p>
+</div></div>
+<div class="info-card">
+<h4>Key Regulators</h4>
+<ul>
+<li><strong>SA:</strong> Information Regulator</li>
+<li><strong>NG:</strong> NITDA / Nigeria Data Protection Commission</li>
+<li><strong>KE:</strong> Office of the Data Protection Commissioner (ODPC)</li>
+<li><strong>GH:</strong> Data Protection Commission</li>
+</ul>
+</div>
+</div>
+</div></section>
+
+<section class="seo-section">
+<h2>Data Protection Compliance in Africa</h2>
+<p>Data protection legislation across Africa has rapidly matured in recent years. South Africa's Protection of Personal Information Act (POPIA) became fully enforceable in July 2021. Nigeria replaced its NDPR with the comprehensive Nigeria Data Protection Act (NDPA) in 2023. Kenya's Data Protection Act 2019 is actively enforced by the ODPC. Ghana's Data Protection Act 2012 was one of the continent's earliest comprehensive data protection laws.</p>
+<p>These laws share common principles derived from international standards: lawful processing, purpose limitation, data minimisation, accuracy, storage limitation, security, and accountability. They all require organisations to have a lawful basis for processing personal data, provide transparency through privacy notices, respect data subject rights, implement appropriate security measures, and manage cross-border data transfers responsibly.</p>
+<p>For businesses operating across multiple African markets, compliance can be complex. Each jurisdiction has its own registration requirements, breach notification timelines, and specific rules around cross-border transfers. A pan-African compliance strategy should identify the strictest requirements and build baseline compliance around those, with country-specific additions where needed.</p>
+<p>Common compliance gaps include: lack of a formal privacy policy, failure to register with the relevant authority, no documented data breach response plan, inadequate third-party processor agreements, and no mechanism for handling data subject access requests. This checklist helps you identify these gaps quickly and prioritise your compliance efforts.</p>
+
+<h2>Frequently Asked Questions</h2>
+<details class="faq-item"><summary>Do I need to comply with POPIA if I'm not in South Africa?</summary><p>Yes, if you process the personal information of South African data subjects. POPIA applies to any "responsible party" that processes personal information in the context of activities in South Africa, regardless of where the processing physically occurs. This is similar to the GDPR's extraterritorial reach.</p></details>
+<details class="faq-item"><summary>Do I need a Data Protection Officer?</summary><p>Under POPIA, every responsible party must designate an Information Officer (and can appoint deputy Information Officers). Under the NDPA, organisations processing large volumes of personal data must appoint a DPO. Kenya's DPA requires a DPO for organisations processing sensitive data or monitoring individuals systematically.</p></details>
+</section>
+
+<afro-related-tools category="legal" current="data-compliance"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+const LABELS={
+  c1:'Lawful basis documented',c2:'Valid consent mechanism',c3:'Consent withdrawal mechanism',
+  c4:'Published privacy policy',c5:'Comprehensive privacy notice',c6:'Notice at point of collection',
+  c7:'Data access request process',c8:'Correction/deletion process',c9:'Timely response to requests',
+  c10:'Security measures in place',c11:'Breach response plan',c12:'Breach notification capability',
+  c13:'DPO/Information Officer appointed',c14:'Registered with regulator',c15:'Record of processing activities',c16:'DPIAs for high-risk processing',
+  c17:'Cross-border transfers identified',c18:'Transfer safeguards in place',
+  c19:'Third-party processing agreements',c20:'Third-party due diligence'
+};
+
+function assess(){
+  const total=20;
+  let checked=0;
+  const gaps=[];
+  for(let i=1;i<=total;i++){
+    const el=document.getElementById('c'+i);
+    if(el.checked)checked++;
+    else gaps.push(LABELS['c'+i]);
+  }
+
+  const pct=Math.round((checked/total)*100);
+  const circumference=2*Math.PI*50;
+  const offset=circumference-(pct/100)*circumference;
+
+  let color,level,desc;
+  if(pct>=90){color='#16a34a';level='Strong Compliance';desc='Your organisation demonstrates strong compliance. Address any remaining gaps to achieve full compliance.';}
+  else if(pct>=70){color='#eab308';level='Moderate Compliance';desc='You have a solid foundation but several important gaps remain. Prioritise the items below.';}
+  else if(pct>=50){color='#f97316';level='Partial Compliance';desc='Significant compliance gaps exist. You are at risk of enforcement action. Immediate attention required.';}
+  else{color='#dc2626';level='Low Compliance';desc='Major compliance gaps across multiple areas. Your organisation is at serious risk. Seek professional data protection guidance urgently.';}
+
+  let html=`
+    <div class="score-ring">
+      <svg width="120" height="120" viewBox="0 0 120 120">
+        <circle class="bg" cx="60" cy="60" r="50"/>
+        <circle class="fg" cx="60" cy="60" r="50" stroke="${color}" stroke-dasharray="${circumference}" stroke-dashoffset="${offset}"/>
+      </svg>
+      <div class="score-num" style="color:${color}">${pct}%</div>
+    </div>
+    <div class="score-label" style="color:${color}">${level}</div>
+    <div class="score-desc">${desc}<br><strong>${checked}/${total}</strong> items checked.</div>
+  `;
+
+  if(gaps.length>0){
+    html+=`<div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--afro-dark);margin-bottom:8px">Compliance Gaps (${gaps.length})</div>`;
+    html+=`<ul class="gap-list">${gaps.map(g=>`<li>${g}</li>`).join('')}</ul>`;
+  }
+
+  document.getElementById('resultBody').innerHTML=html;
+  document.getElementById('resultCard').style.display='block';
+  document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>
