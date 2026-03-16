@@ -4,8 +4,8 @@
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Changelog — AfroTools API Docs</title>
-<meta name="description" content="AfroTools API changelog. Track new features, improvements, and fixes across all API products.">
+<title>API Changelog — AfroTools API Docs</title>
+<meta name="description" content="AfroTools API changelog. Track new features, improvements, and breaking changes across all API versions.">
 <meta name="theme-color" content="#007AFF">
 <link rel="canonical" href="https://afrotools.com/docs/api/changelog.html">
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
@@ -14,105 +14,129 @@
 <script src="/assets/js/components/navbar.js" defer></script>
 <script src="/assets/js/components/footer.js" defer></script>
 <script src="/assets/js/components/api-sidebar.js" defer></script>
+<script src="/assets/js/components/api-code-tabs.js" defer></script>
 </head>
 <body class="api-docs-body">
 <afro-navbar></afro-navbar>
 <div class="api-docs-layout">
   <api-sidebar active="/docs/api/changelog.html"></api-sidebar>
   <main class="api-content">
-    <div class="api-full-width" style="max-width:760px">
-      <h1 class="mt-0">API Changelog</h1>
-      <p class="api-subtitle">Track new features, improvements, and fixes across all AfroTools API products.</p>
+    <div class="api-two-panel api-two-panel--wide-left">
+      <div class="api-content__left">
+        <h1 class="mt-0">Changelog</h1>
+        <p class="api-subtitle">Track new features, improvements, and changes across all AfroTools API products.</p>
 
-      <div style="margin-top:32px">
-
-        <div class="changelog-entry">
-          <div class="changelog-date">March 15, 2026</div>
-          <h3><span class="changelog-tag changelog-tag--new">New</span> AfroVAT API Launch</h3>
-          <ul>
-            <li>New <code>POST /api/vat</code> endpoint for VAT/GST calculations</li>
-            <li>Supports exclusive (add) and inclusive (extract) calculation modes</li>
-            <li>Category-based rates: standard, food_basic, medical, education, digital, export</li>
-            <li>Multi-item invoice support for mixed-category calculations</li>
-            <li>Coverage for all 54 African countries</li>
-          </ul>
+        <div class="api-callout api-callout--info">
+          <strong>Versioning policy.</strong> The AfroTools API uses URL-based versioning. The current version is <code>v1</code>. Breaking changes will always be released under a new version number with at least 90 days of deprecation notice.
         </div>
 
-        <div class="changelog-entry">
-          <div class="changelog-date">March 10, 2026</div>
-          <h3><span class="changelog-tag changelog-tag--new">New</span> AfroTax API Launch</h3>
-          <ul>
-            <li>New <code>POST /api/tax</code> endpoint for income, corporate, and withholding tax calculations</li>
-            <li>Gross-to-net and net-to-gross calculation modes</li>
-            <li>Pension/social security deductions included</li>
-            <li><code>GET /api/tax</code> for listing countries and detailed country info</li>
-            <li>Full tax bracket data for all 54 African countries</li>
-          </ul>
-        </div>
+        <hr style="border:0;border-top:1px solid #E5E7EB;margin:32px 0">
 
-        <div class="changelog-entry">
-          <div class="changelog-date">March 1, 2026</div>
-          <h3><span class="changelog-tag changelog-tag--improve">Improve</span> API Documentation Redesign</h3>
-          <ul>
-            <li>New Stripe-style two-panel documentation layout</li>
-            <li>Code examples in 5 languages (cURL, JavaScript, Python, Node.js, PHP)</li>
-            <li>Interactive API Explorer widget</li>
-            <li>Improved search and navigation</li>
-          </ul>
-        </div>
+        <h2 style="display:flex;align-items:center;gap:12px">
+          <span style="background:#007AFF;color:#fff;padding:4px 12px;border-radius:6px;font-size:.75rem;font-weight:700">v1.0</span>
+          March 2026
+        </h2>
+        <p style="color:#6B7280;font-size:.88rem;margin-bottom:16px">Initial public release of the AfroTools API platform with five API products covering all 54 African countries.</p>
 
-        <div class="changelog-entry">
-          <div class="changelog-date">February 20, 2026</div>
-          <h3><span class="changelog-tag changelog-tag--improve">Improve</span> AfroFX: 24-hour Change Data</h3>
-          <ul>
-            <li>Added <code>change_24h</code> and <code>change_pct_24h</code> fields to forex responses</li>
-            <li>Improved rate accuracy with additional data sources</li>
-            <li>Reduced average response time from 280ms to 180ms</li>
-          </ul>
-        </div>
+        <h3>AfroTax API</h3>
+        <ul style="margin:8px 0 20px 20px;font-size:.88rem;color:#4B5563;line-height:1.8">
+          <li>Income tax (PAYE) calculations for all 54 African countries</li>
+          <li>Corporate tax and withholding tax support</li>
+          <li>Capital gains tax calculations</li>
+          <li>Gross-to-net and net-to-gross calculation modes</li>
+          <li>Pension and social security deductions</li>
+          <li>Monthly, annual, weekly, and biweekly pay periods</li>
+          <li>Country listing and detailed country info endpoints</li>
+        </ul>
 
-        <div class="changelog-entry">
-          <div class="changelog-date">February 10, 2026</div>
-          <h3><span class="changelog-tag changelog-tag--new">New</span> Official SDKs</h3>
-          <ul>
-            <li>JavaScript/Node.js SDK: <code>npm install afrotools</code></li>
-            <li>Python SDK: <code>pip install afrotools</code></li>
-            <li>PHP SDK: <code>composer require afrotools/sdk</code></li>
-          </ul>
-        </div>
+        <h3>AfroFX API</h3>
+        <ul style="margin:8px 0 20px 20px;font-size:.88rem;color:#4B5563;line-height:1.8">
+          <li>Real-time exchange rates for 42 African currencies</li>
+          <li>Bid/ask spreads from central bank sources</li>
+          <li>Currency conversion with custom amounts</li>
+          <li>24-hour change tracking with percentage and absolute values</li>
+          <li>Historical rates available on Pro plan and above</li>
+        </ul>
 
-        <div class="changelog-entry">
-          <div class="changelog-date">January 15, 2026</div>
-          <h3><span class="changelog-tag changelog-tag--fix">Fix</span> AfroFuel: Data Accuracy</h3>
-          <ul>
-            <li>Fixed stale data for 3 countries where price feeds had stopped updating</li>
-            <li>Added <code>change</code> field to fuel price responses showing price change since last update</li>
-            <li>Improved data freshness monitoring with automated alerts</li>
-          </ul>
-        </div>
+        <h3>AfroFuel API</h3>
+        <ul style="margin:8px 0 20px 20px;font-size:.88rem;color:#4B5563;line-height:1.8">
+          <li>Fuel prices for all 54 African countries</li>
+          <li>Petrol (PMS), diesel (AGO), kerosene (DPK), and LPG coverage</li>
+          <li>Weekly updates from national petroleum regulators</li>
+          <li>Price change tracking since last update</li>
+          <li>Optional currency conversion for cross-country comparison</li>
+        </ul>
 
-        <div class="changelog-entry">
-          <div class="changelog-date">January 5, 2026</div>
-          <h3><span class="changelog-tag changelog-tag--improve">Improve</span> AfroRates: GDP Data</h3>
-          <ul>
-            <li>Added <code>gdp_growth</code> field to central bank rate responses</li>
-            <li>Added food inflation (<code>inflation.food</code>) breakdown</li>
-            <li>Improved MPC calendar accuracy for 2026 dates</li>
-          </ul>
-        </div>
+        <h3>AfroRates API</h3>
+        <ul style="margin:8px 0 20px 20px;font-size:.88rem;color:#4B5563;line-height:1.8">
+          <li>Central bank policy rates for all 54 countries</li>
+          <li>Headline CPI inflation data</li>
+          <li>Treasury bill yields (91-day, 182-day, 364-day)</li>
+          <li>Prime lending and deposit rates</li>
+          <li>MPC meeting date tracking (last and next)</li>
+          <li>Historical data available on Pro plan and above</li>
+        </ul>
 
-        <div class="changelog-entry">
-          <div class="changelog-date">December 1, 2025</div>
-          <h3><span class="changelog-tag changelog-tag--new">New</span> AfroTools API v1 Launch</h3>
-          <ul>
-            <li>AfroFX API: Live exchange rates for 42 African currencies</li>
-            <li>AfroFuel API: Fuel prices for 54 African countries</li>
-            <li>AfroRates API: Central bank data for 54 countries</li>
-            <li>Free tier with 100 calls/day</li>
-            <li>API key authentication via header or query parameter</li>
-          </ul>
-        </div>
+        <h3>AfroVAT API</h3>
+        <ul style="margin:8px 0 20px 20px;font-size:.88rem;color:#4B5563;line-height:1.8">
+          <li>VAT/GST calculation for all 54 African countries</li>
+          <li>Add mode (add VAT to net amount) and extract mode (extract VAT from gross amount)</li>
+          <li>Standard, reduced, and zero rate support</li>
+          <li>Category-based rate lookup for food, medical, education, digital, and exports</li>
+        </ul>
 
+        <h3>Platform</h3>
+        <ul style="margin:8px 0 20px 20px;font-size:.88rem;color:#4B5563;line-height:1.8">
+          <li>API key authentication with <code>afro_test_</code> and <code>afro_live_</code> key modes</li>
+          <li>Four pricing tiers: Free ($0), Starter ($29/mo), Pro ($99/mo), Enterprise ($299/mo)</li>
+          <li>Rate limiting with daily and monthly quotas and informative response headers</li>
+          <li>Official SDKs for JavaScript/Node.js and Python</li>
+          <li>Two-panel API documentation with code examples in 5 languages</li>
+          <li>Interactive API Explorer for testing endpoints in the browser</li>
+        </ul>
+      </div>
+
+      <div class="api-content__right">
+        <div class="code-label">Current Version</div>
+        <div class="code-example">API Version: v1.0
+Release Date: March 2026
+Status: Stable</div>
+
+        <hr class="api-divider api-divider--dark">
+
+        <div class="code-label">API Products in v1.0</div>
+        <div class="code-example" style="white-space:pre-wrap;font-size:.82rem">AfroTax   - Income, corporate, withholding,
+            and capital gains tax (54 countries)
+AfroFX    - Live forex rates (42 currencies)
+AfroFuel  - Fuel prices: petrol, diesel,
+            kerosene, LPG (54 countries)
+AfroRates - Central bank policy rates,
+            inflation, T-bills (54 countries)
+AfroVAT   - VAT/GST calculations with
+            add and extract modes (54 countries)</div>
+
+        <hr class="api-divider api-divider--dark">
+
+        <div class="code-label">Versioning Policy</div>
+        <div class="code-example" style="white-space:pre-wrap;font-size:.82rem">Breaking changes are released under
+a new API version (e.g., v2).
+
+Deprecated versions receive at least
+90 days of continued support.
+
+Non-breaking additions (new fields,
+new endpoints) are added to the
+current version without notice.</div>
+
+        <hr class="api-divider api-divider--dark">
+
+        <div class="code-label">Stay Updated</div>
+        <div class="code-example" style="white-space:pre-wrap;font-size:.82rem">Bookmark this changelog page for the
+latest updates to the AfroTools API.
+
+Check your dashboard for deprecation
+notices and migration guides when
+new versions are released.</div>
       </div>
     </div>
   </main>

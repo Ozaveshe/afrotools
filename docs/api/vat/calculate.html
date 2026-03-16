@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>POST /api/vat — Calculate VAT — AfroTools API Docs</title>
-<meta name="description" content="Calculate VAT/GST for any African country with category-based rates and exclusive/inclusive modes.">
+<meta name="description" content="Calculate VAT for any African country. Add VAT to a net amount or extract VAT from a gross amount using the AfroVAT API.">
 <meta name="theme-color" content="#007AFF">
 <link rel="canonical" href="https://afrotools.com/docs/api/vat/calculate.html">
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
@@ -24,7 +24,7 @@
     <div class="api-two-panel api-two-panel--wide-left">
       <div class="api-content__left">
         <h1 class="mt-0">Calculate VAT</h1>
-        <p class="api-subtitle">Calculate VAT for a given amount, country, and category with exclusive or inclusive modes.</p>
+        <p class="api-subtitle">Add VAT to a net amount or extract the VAT component from a gross amount for any African country.</p>
 
         <div class="endpoint-header">
           <span class="endpoint-method endpoint-method--post">POST</span>
@@ -36,33 +36,34 @@
         </div>
 
         <h2>Request Body</h2>
+        <p>Send a JSON body with the following parameters:</p>
         <table class="param-table">
           <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
           <tbody>
             <tr>
               <td><span class="param-name">country</span> <span class="param-required">required</span></td>
               <td><span class="param-type">string</span></td>
-              <td>ISO 3166-1 alpha-2 country code.</td>
+              <td>ISO 3166-1 alpha-2 country code (e.g., <code>NG</code>, <code>KE</code>, <code>ZA</code>).</td>
             </tr>
             <tr>
               <td><span class="param-name">amount</span> <span class="param-required">required</span></td>
               <td><span class="param-type">number</span></td>
-              <td>Monetary amount in local currency.</td>
+              <td>The monetary amount in local currency. Must be a positive number.</td>
             </tr>
             <tr>
-              <td><span class="param-name">mode</span> <span class="param-optional">optional</span></td>
+              <td><span class="param-name">mode</span> <span class="param-required">required</span></td>
               <td><span class="param-type">string</span></td>
-              <td><code>exclusive</code> (add VAT, default) or <code>inclusive</code> (extract VAT).</td>
+              <td>Calculation mode: <code>add</code> (add VAT to net amount) or <code>extract</code> (extract VAT from gross amount).</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">rate_type</span> <span class="param-optional">optional</span></td>
+              <td><span class="param-type">string</span></td>
+              <td>VAT rate category: <code>standard</code> (default), <code>reduced</code>, or <code>zero</code>.</td>
             </tr>
             <tr>
               <td><span class="param-name">category</span> <span class="param-optional">optional</span></td>
               <td><span class="param-type">string</span></td>
-              <td>Product category: <code>standard</code>, <code>food_basic</code>, <code>medical</code>, <code>education</code>, <code>digital</code>, <code>export</code>. Default: <code>standard</code>.</td>
-            </tr>
-            <tr>
-              <td><span class="param-name">items</span> <span class="param-optional">optional</span></td>
-              <td><span class="param-type">array</span></td>
-              <td>Array of line items for multi-item invoices. Each item has <code>amount</code>, <code>category</code>, and optional <code>description</code>.</td>
+              <td>Product category for rate lookup: <code>standard</code>, <code>food_basic</code>, <code>medical</code>, <code>education</code>, <code>digital</code>, <code>export</code>.</td>
             </tr>
           </tbody>
         </table>
@@ -72,14 +73,15 @@
           <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
           <tbody>
             <tr><td><span class="param-name">country</span></td><td><span class="param-type">string</span></td><td>ISO country code.</td></tr>
-            <tr><td><span class="param-name">currency</span></td><td><span class="param-type">string</span></td><td>Currency code.</td></tr>
-            <tr><td><span class="param-name">vat_rate</span></td><td><span class="param-type">number</span></td><td>Applied VAT rate (%).</td></tr>
-            <tr><td><span class="param-name">category</span></td><td><span class="param-type">string</span></td><td>Category used for rate lookup.</td></tr>
-            <tr><td><span class="param-name">mode</span></td><td><span class="param-type">string</span></td><td>Calculation mode used.</td></tr>
+            <tr><td><span class="param-name">country_name</span></td><td><span class="param-type">string</span></td><td>Full country name.</td></tr>
+            <tr><td><span class="param-name">currency</span></td><td><span class="param-type">string</span></td><td>ISO currency code.</td></tr>
+            <tr><td><span class="param-name">mode</span></td><td><span class="param-type">string</span></td><td>Calculation mode used (<code>add</code> or <code>extract</code>).</td></tr>
             <tr><td><span class="param-name">net_amount</span></td><td><span class="param-type">number</span></td><td>Amount before VAT.</td></tr>
-            <tr><td><span class="param-name">vat_amount</span></td><td><span class="param-type">number</span></td><td>VAT amount.</td></tr>
+            <tr><td><span class="param-name">vat_rate</span></td><td><span class="param-type">number</span></td><td>VAT rate applied (%).</td></tr>
+            <tr><td><span class="param-name">vat_amount</span></td><td><span class="param-type">number</span></td><td>VAT component.</td></tr>
             <tr><td><span class="param-name">gross_amount</span></td><td><span class="param-type">number</span></td><td>Amount including VAT.</td></tr>
-            <tr><td><span class="param-name">items</span></td><td><span class="param-type">array</span></td><td>Breakdown per item (if items were provided).</td></tr>
+            <tr><td><span class="param-name">rate_type</span></td><td><span class="param-type">string</span></td><td>Rate category applied.</td></tr>
+            <tr><td><span class="param-name">updated</span></td><td><span class="param-type">string</span></td><td>Date the VAT rate was last updated.</td></tr>
           </tbody>
         </table>
 
@@ -87,11 +89,11 @@
         <table class="param-table">
           <thead><tr><th>Status</th><th>Code</th><th>Description</th></tr></thead>
           <tbody>
-            <tr><td>400</td><td><span class="param-name">invalid_country</span></td><td>Country code not supported.</td></tr>
-            <tr><td>400</td><td><span class="param-name">invalid_amount</span></td><td>Amount must be a positive number.</td></tr>
-            <tr><td>400</td><td><span class="param-name">invalid_category</span></td><td>Category is not recognized.</td></tr>
-            <tr><td>401</td><td><span class="param-name">missing_api_key</span></td><td>No API key was provided.</td></tr>
-            <tr><td>429</td><td><span class="param-name">rate_limit_exceeded</span></td><td>Rate limit exceeded.</td></tr>
+            <tr><td>400</td><td><span class="param-name">INVALID_COUNTRY</span></td><td>The country code is not supported.</td></tr>
+            <tr><td>400</td><td><span class="param-name">INVALID_SALARY</span></td><td>The amount must be a positive number.</td></tr>
+            <tr><td>400</td><td><span class="param-name">MISSING_REQUIRED_FIELD</span></td><td>A required field (country, amount, or mode) is missing.</td></tr>
+            <tr><td>401</td><td><span class="param-name">INVALID_API_KEY</span></td><td>No valid API key was provided.</td></tr>
+            <tr><td>429</td><td><span class="param-name">RATE_LIMIT_EXCEEDED</span></td><td>Rate limit exceeded for your plan.</td></tr>
           </tbody>
         </table>
       </div>
@@ -111,9 +113,8 @@
   -H "Content-Type: application/json" \
   -d '{
     "country": "NG",
-    "amount": 10000,
-    "mode": "exclusive",
-    "category": "standard"
+    "amount": 100000,
+    "mode": "add"
   }'</div>
           <div class="code-panel" data-lang="js">const res = await fetch("https://afrotools.com/api/vat", {
   method: "POST",
@@ -123,9 +124,8 @@
   },
   body: JSON.stringify({
     country: "NG",
-    amount: 10000,
-    mode: "exclusive",
-    category: "standard"
+    amount: 100000,
+    mode: "add"
   })
 });
 const data = await res.json();
@@ -137,31 +137,30 @@ resp = requests.post(
     headers={"x-api-key": "afro_live_your_key_here"},
     json={
         "country": "NG",
-        "amount": 10000,
-        "mode": "exclusive",
-        "category": "standard"
+        "amount": 100000,
+        "mode": "add"
     }
 )
 data = resp.json()
-print(f"VAT: {data['data']['vat_amount']}")</div>
+print(f"VAT: {data['data']['vat_amount']} NGN")</div>
           <div class="code-panel" data-lang="node">const axios = require("axios");
 
 const { data } = await axios.post(
   "https://afrotools.com/api/vat",
   {
     country: "NG",
-    amount: 10000,
-    mode: "exclusive",
-    category: "standard"
+    amount: 100000,
+    mode: "add"
   },
-  { headers: { "x-api-key": "afro_live_your_key_here" } }
+  {
+    headers: { "x-api-key": "afro_live_your_key_here" }
+  }
 );
-console.log(`VAT: ${data.data.vat_amount}`);</div>
+console.log(`VAT: ${data.data.vat_amount} NGN`);</div>
           <div class="code-panel" data-lang="php">$payload = json_encode([
     "country" => "NG",
-    "amount" => 10000,
-    "mode" => "exclusive",
-    "category" => "standard"
+    "amount" => 100000,
+    "mode" => "add"
 ]);
 
 $ch = curl_init("https://afrotools.com/api/vat");
@@ -175,59 +174,59 @@ curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 $response = curl_exec($ch);
 curl_close($ch);
 $data = json_decode($response, true);
-echo "VAT: " . $data["data"]["vat_amount"];</div>
+echo "VAT: " . $data["data"]["vat_amount"] . " NGN";</div>
         </div>
 
         <hr class="api-divider api-divider--dark">
 
-        <div class="code-label">Response (200 OK) &mdash; Exclusive</div>
+        <div class="code-label">Response &mdash; Add Mode (200 OK)</div>
         <div class="code-example">{
   "success": true,
   "data": {
     "country": "NG",
+    "country_name": "Nigeria",
     "currency": "NGN",
+    "mode": "add",
+    "net_amount": 100000,
     "vat_rate": 7.5,
-    "category": "standard",
-    "mode": "exclusive",
-    "net_amount": 10000.00,
-    "vat_amount": 750.00,
-    "gross_amount": 10750.00
+    "vat_amount": 7500,
+    "gross_amount": 107500,
+    "rate_type": "standard",
+    "updated": "2026-01-01"
   }
 }</div>
 
         <hr class="api-divider api-divider--dark">
 
-        <div class="code-label">Response &mdash; Inclusive Mode</div>
-        <div class="code-example"><span class="c"># Extract VAT from gross amount</span>
+        <div class="code-label">Response &mdash; Extract Mode</div>
+        <div class="code-example"><span class="c"># Extract VAT from 107,500 NGN</span>
 {
   "success": true,
   "data": {
     "country": "NG",
+    "country_name": "Nigeria",
     "currency": "NGN",
+    "mode": "extract",
+    "net_amount": 100000,
     "vat_rate": 7.5,
-    "category": "standard",
-    "mode": "inclusive",
-    "net_amount": 9302.33,
-    "vat_amount": 697.67,
-    "gross_amount": 10000.00
+    "vat_amount": 7500,
+    "gross_amount": 107500,
+    "rate_type": "standard",
+    "updated": "2026-01-01"
   }
 }</div>
 
         <hr class="api-divider api-divider--dark">
 
-        <div class="code-label">Multi-Item Invoice</div>
-        <div class="code-example">curl -X POST https://afrotools.com/api/vat \
-  -H "x-api-key: afro_test_abc123" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "country": "KE",
-    "mode": "exclusive",
-    "items": [
-      {"amount": 5000, "category": "standard"},
-      {"amount": 2000, "category": "food_basic"},
-      {"amount": 3000, "category": "digital"}
-    ]
-  }'</div>
+        <div class="code-label">Error Response (400)</div>
+        <div class="code-example">{
+  "success": false,
+  "error": {
+    "code": "MISSING_REQUIRED_FIELD",
+    "message": "The 'mode' field is required. Use 'add' or 'extract'.",
+    "docs": "https://afrotools.com/docs/api/vat/calculate.html"
+  }
+}</div>
       </div>
     </div>
   </main>

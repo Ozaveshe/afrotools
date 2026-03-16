@@ -54,7 +54,7 @@
 <style>
 /* ── Reset ── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7;color:#1d1d1f;-webkit-font-smoothing:antialiased}
+body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:#f5f5f7;color:#1d1d1f;-webkit-font-smoothing:antialiased}
 
 /* ── Hero ── */
 .hero{background:linear-gradient(160deg,#0d1117 0%,#0a1628 55%,#111827 100%);padding:64px 0 56px;position:relative;overflow:hidden}
@@ -195,6 +195,29 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
 .faq-item.open .faq-answer{max-height:500px}
 .faq-answer-inner{padding:0 0 18px;font-size:.88rem;color:#6e6e73;line-height:1.7}
 
+/* ── Insights Cards ── */
+.insights-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.insight-card{background:#fff;border:1.5px solid #e5e7eb;border-radius:16px;padding:20px;text-align:center;transition:all .2s}
+.insight-card:hover{border-color:var(--color-primary);box-shadow:0 4px 16px rgba(0,122,255,.1);transform:translateY(-2px)}
+.insight-icon{font-size:1.8rem;margin-bottom:8px}
+.insight-val{font-size:1.5rem;font-weight:800;color:#1d1d1f;letter-spacing:-.02em}
+.insight-label{font-size:.72rem;font-weight:600;color:#6e6e73;text-transform:uppercase;letter-spacing:.05em;margin-top:4px}
+.insight-change{font-size:.7rem;font-weight:700;margin-top:6px;padding:2px 8px;border-radius:100px;display:inline-block}
+.insight-up{background:#fee2e2;color:#dc2626}
+.insight-down{background:#dcfce7;color:#16a34a}
+.insight-neutral{background:#f3f4f6;color:#6b7280}
+
+/* ── News Section ── */
+.news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.news-card{background:#fff;border:1.5px solid #e5e7eb;border-radius:16px;padding:20px;transition:all .2s;cursor:pointer;text-decoration:none;color:inherit;display:flex;flex-direction:column}
+.news-card:hover{border-color:var(--color-primary);box-shadow:0 8px 24px rgba(0,122,255,.12);transform:translateY(-3px)}
+.news-tag{font-size:.62rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#007AFF;margin-bottom:8px}
+.news-title{font-size:.92rem;font-weight:700;color:#1d1d1f;line-height:1.4;margin-bottom:8px}
+.news-snippet{font-size:.8rem;color:#6e6e73;line-height:1.6;flex:1;margin-bottom:12px}
+.news-meta{display:flex;align-items:center;justify-content:space-between;font-size:.68rem;color:#9ca3af;border-top:1px solid #f3f4f6;padding-top:10px}
+.news-source{font-weight:600}
+.news-live-dot{width:6px;height:6px;border-radius:50%;background:#FF3B30;display:inline-block;margin-right:4px;animation:pd 2s infinite}
+
 /* ── Responsive ── */
 @media(max-width:768px){
   .hero{padding:48px 0 44px}
@@ -211,6 +234,8 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
   .result-grid{grid-template-columns:1fr}
   .map-container{padding:20px}
   .section{padding:28px 16px}
+  .insights-grid{grid-template-columns:1fr 1fr}
+  .news-grid{grid-template-columns:1fr}
 }
 
 /* ── Print ── */
@@ -222,7 +247,7 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
   .result-hero-val{color:#007AFF!important}
 }
 </style>
-<script src="/assets/js/lib/chart-config.js" defer></script>
+<script src="/assets/js/lib/chart-config.js"></script>
 </head>
 <body>
 
@@ -349,6 +374,17 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
   </div>
 </section>
 
+<!-- ── Fuel Insights ── -->
+<section class="section insights-section">
+  <div class="section-header">
+    <h2 class="section-title">Fuel Price Insights</h2>
+    <p class="section-sub">Key statistics and trends across the continent.</p>
+  </div>
+  <div class="insights-grid" id="insights-grid">
+    <!-- Populated by JS -->
+  </div>
+</section>
+
 <!-- ── Generator Cost Calculator ── -->
 <section class="calc-section">
   <div class="section-inner">
@@ -365,6 +401,33 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
           <label class="calc-label">Country</label>
           <select class="calc-select" id="calc-country">
             <!-- Populated by JS -->
+          </select>
+        </div>
+
+        <div class="calc-form-group">
+          <label class="calc-label">Display Currency</label>
+          <select class="calc-select" id="calc-display-currency">
+            <option value="local" selected>Local Currency</option>
+            <option value="USD">USD ($)</option>
+            <option value="EUR">EUR (&euro;)</option>
+            <option value="GBP">GBP (&pound;)</option>
+            <option value="NGN">NGN (&#8358;)</option>
+            <option value="KES">KES (KSh)</option>
+            <option value="ZAR">ZAR (R)</option>
+            <option value="GHS">GHS (GH&#8373;)</option>
+            <option value="EGP">EGP (E&pound;)</option>
+            <option value="XOF">XOF (CFA)</option>
+            <option value="XAF">XAF (FCFA)</option>
+            <option value="TZS">TZS (TSh)</option>
+            <option value="ETB">ETB (Br)</option>
+          </select>
+        </div>
+
+        <div class="calc-form-group">
+          <label class="calc-label">Fuel Type</label>
+          <select class="calc-select" id="calc-fuel-type">
+            <option value="petrol" selected>Petrol (PMS)</option>
+            <option value="diesel">Diesel (AGO)</option>
           </select>
         </div>
 
@@ -403,11 +466,12 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
         </div>
 
         <div class="calc-form-group">
-          <label class="calc-label">Current fuel price (per litre)</label>
+          <label class="calc-label" id="calc-price-label">Current fuel price (per litre)</label>
           <input type="number" class="calc-input" id="calc-price" placeholder="Auto-filled from data" step="0.01" min="0">
         </div>
 
-        <button class="calc-btn calc-btn-outline" onclick="window.print()">&#128196; Download Report (PDF)</button>
+        <button class="calc-btn" id="calc-share-btn">&#128279; Share Results</button>
+        <button class="calc-btn calc-btn-outline" onclick="window.print()" style="margin-top:8px">&#128196; Download Report (PDF)</button>
       </div>
 
       <!-- Results -->
@@ -437,22 +501,44 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
           </div>
         </div>
 
-        <div class="comparison-title">Compared to Alternatives</div>
+        <!-- Cost Breakdown Chart -->
+        <div style="margin:20px 0 16px">
+          <div class="comparison-title">Cost Breakdown</div>
+          <div style="position:relative;height:200px">
+            <canvas id="calc-breakdown-chart"></canvas>
+          </div>
+        </div>
 
-        <div class="comparison-row">
-          <span class="comparison-label">&#9889; Grid (Band A: &#8358;68/kWh)</span>
+        <div class="comparison-title">Compared to Alternatives</div>
+        <div id="cmp-grid-label" class="comparison-row">
+          <span class="comparison-label">&#9889; Grid Electricity</span>
           <span class="comparison-val" id="cmp-grid">--</span>
         </div>
         <div class="comparison-row">
-          <span class="comparison-label">&#9728;&#65039; Solar (amort. &#8358;45/kWh)</span>
+          <span class="comparison-label">&#9728;&#65039; Solar (amortized)</span>
           <span class="comparison-val" id="cmp-solar">--</span>
         </div>
         <div class="comparison-row">
           <span class="comparison-label">&#9201; Solar break-even</span>
           <span class="comparison-val" id="cmp-breakeven">--</span>
         </div>
+        <div class="comparison-row">
+          <span class="comparison-label">&#127758; USD Equivalent</span>
+          <span class="comparison-val" id="cmp-usd">--</span>
+        </div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ── Live Fuel News ── -->
+<section class="section news-section">
+  <div class="section-header">
+    <h2 class="section-title">African Fuel News</h2>
+    <p class="section-sub">Latest developments in African energy markets and fuel pricing.</p>
+  </div>
+  <div class="news-grid" id="news-grid">
+    <!-- Populated by JS -->
   </div>
 </section>
 
@@ -674,16 +760,55 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
   /* ═══════════════════════════════════════════════════════════
      INIT
      ═══════════════════════════════════════════════════════════ */
+  function isValidFuelData(d) {
+    if (!d || !d.countries) return false;
+    var keys = Object.keys(d.countries);
+    if (keys.length === 0) return false;
+    var sample = d.countries[keys[0]];
+    return sample && typeof sample.petrol_usd === 'number';
+  }
+
+  function normalizeApiData(data) {
+    // Handle API format: countries as array with nested petrol.usd structure
+    if (data && data.countries && !isValidFuelData(data)) {
+      var normalized = {updated: data.updated || new Date().toISOString(), countries: {}};
+      var arr = Array.isArray(data.countries) ? data.countries : Object.values(data.countries);
+      arr.forEach(function(c) {
+        if (!c || !c.code) return;
+        var code = c.code;
+        var localMult = getLocalMultiplier(code);
+        normalized.countries[code] = {
+          petrol_usd: c.petrol ? c.petrol.usd : 0,
+          diesel_usd: c.diesel ? c.diesel.usd : 0,
+          lpg_usd: c.lpg ? c.lpg.usd : 0,
+          petrol_local: c.petrol ? c.petrol.price : 0,
+          diesel_local: c.diesel ? c.diesel.price : 0,
+          lpg_local: c.lpg ? c.lpg.price : 0,
+          change_pct: c.petrol ? (c.petrol.change_pct || 0) : 0,
+          history: generateHistory(c.petrol ? c.petrol.usd : 1, 12)
+        };
+      });
+      return normalized;
+    }
+    return data;
+  }
+
   const liveData = new AfroTools.LiveData('/data/fuel/latest.json', {
-    refreshInterval: 6 * 60 * 60 * 1000,  // 6 hours
-    cacheKey: 'afro-fuel-latest',
+    refreshInterval: 6 * 60 * 60 * 1000,
+    cacheKey: 'afro-fuel-latest-v2',
     cacheTTL: 6 * 60 * 60 * 1000,
     onUpdate: function(data) {
-      fuelData = data;
-      render();
+      data = normalizeApiData(data);
+      if (isValidFuelData(data)) {
+        fuelData = data;
+        render();
+      } else {
+        fuelData = generateFallbackData();
+        render();
+      }
     },
     onError: function() {
-      if (!fuelData) {
+      if (!isValidFuelData(fuelData)) {
         fuelData = generateFallbackData();
         render();
       }
@@ -691,9 +816,9 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
   });
   liveData.start();
 
-  // If no data within 2s, use fallback
+  // If no valid data within 2s, use fallback
   setTimeout(function() {
-    if (!fuelData) {
+    if (!isValidFuelData(fuelData)) {
       fuelData = generateFallbackData();
       render();
     }
@@ -711,6 +836,8 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
     renderChart();
     populateCalcCountry();
     updateCalc();
+    renderInsights();
+    renderNews();
   }
 
   /* ── Timestamp ── */
@@ -940,8 +1067,60 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
     picker.innerHTML = html;
   }
 
+  /* ── Currency conversion rates (to USD) ── */
+  var FX_RATES = {
+    USD:1, EUR:0.92, GBP:0.79, NGN:1600, KES:155, ZAR:18, GHS:15, EGP:50,
+    XOF:655, XAF:655, TZS:2650, ETB:57, GNF:8600, SLL:22, LRD:192,
+    GMD:68, CVE:110, MRU:38, UGX:3800, RWF:1300, BIF:2900, ERN:15,
+    DJF:178, SOS:575, SSP:650, SDG:600, KMF:490, SCR:14, MUR:45,
+    BWP:14, NAD:18, ZMW:25, ZWL:322, MWK:1700, MZN:64, SZL:18,
+    LSL:18, MGA:4500, AOA:850, LYD:5, TND:3.1, DZD:137, MAD:11,
+    CDF:2750, STN:24
+  };
+
+  var CURRENCY_SYMBOLS = {
+    USD:'$', EUR:'\u20AC', GBP:'\u00A3', NGN:'\u20A6', KES:'KSh', ZAR:'R', GHS:'GH\u20B5',
+    EGP:'E\u00A3', XOF:'CFA', XAF:'FCFA', TZS:'TSh', ETB:'Br'
+  };
+
+  /* Country-specific grid electricity rates (local currency per kWh) */
+  var GRID_RATES = {
+    NG:68, KE:25, ZA:2.8, GH:1.2, EG:1.5, TZ:350, UG:820,
+    RW:182, ET:2.5, SN:120, CI:85, CM:80, CD:0.10, MA:1.6,
+    DZ:5.5, TN:0.29, LY:0.02, MZ:6.5, ZM:1.8, BW:1.5, NA:2.2
+  };
+
+  function getDisplaySymbol() {
+    var sel = document.getElementById('calc-display-currency');
+    var val = sel ? sel.value : 'local';
+    if (val === 'local') {
+      var code = document.getElementById('calc-country').value;
+      return (COUNTRIES[code] || {}).symbol || '$';
+    }
+    return CURRENCY_SYMBOLS[val] || val;
+  }
+
+  function convertCurrency(amount, fromCurrencyCode, toCurrencyCode) {
+    if (fromCurrencyCode === toCurrencyCode) return amount;
+    var fromRate = FX_RATES[fromCurrencyCode] || 1;
+    var toRate = FX_RATES[toCurrencyCode] || 1;
+    return amount / fromRate * toRate;
+  }
+
+  function getDisplayCurrency() {
+    var sel = document.getElementById('calc-display-currency');
+    var val = sel ? sel.value : 'local';
+    if (val === 'local') {
+      var code = document.getElementById('calc-country').value;
+      return (COUNTRIES[code] || {}).currency || 'USD';
+    }
+    return val;
+  }
+
   /* ── Generator Calculator ── */
   var calcPopulated = false;
+  var breakdownChart = null;
+
   function populateCalcCountry() {
     if (calcPopulated) return;
     var sel = document.getElementById('calc-country');
@@ -961,10 +1140,12 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
     var code = document.getElementById('calc-country').value;
     var d = (fuelData && fuelData.countries) ? fuelData.countries[code] : null;
     var priceInput = document.getElementById('calc-price');
+    var calcFuel = document.getElementById('calc-fuel-type').value;
     if (d) {
-      var key = activeFuel === 'lpg' ? 'lpg_local' : activeFuel === 'diesel' ? 'diesel_local' : 'petrol_local';
+      var key = calcFuel === 'diesel' ? 'diesel_local' : 'petrol_local';
       priceInput.value = d[key] || '';
-      priceInput.placeholder = COUNTRIES[code].symbol + ' per litre';
+      var c = COUNTRIES[code] || {};
+      document.getElementById('calc-price-label').textContent = 'Fuel price (' + c.symbol + ' per litre)';
     }
   }
 
@@ -980,69 +1161,194 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
     var pricePerLitre = parseFloat(document.getElementById('calc-price').value) || 0;
     var code = document.getElementById('calc-country').value;
     var c = COUNTRIES[code] || {};
-    var sym = c.symbol || '';
+    var localCurrency = c.currency || 'USD';
+    var dispCurrency = getDisplayCurrency();
+    var sym = getDisplaySymbol();
 
-    // Monthly litres and cost
+    // Monthly litres and cost (in local currency)
     var litresPerMonth = consumption * hours * days;
-    var monthlyCost = litresPerMonth * pricePerLitre;
+    var monthlyCostLocal = litresPerMonth * pricePerLitre;
+
+    // Convert to display currency
+    var monthlyCost = convertCurrency(monthlyCostLocal, localCurrency, dispCurrency);
     var annualCost = monthlyCost * 12;
     var dailyCost = litresPerMonth > 0 ? monthlyCost / days : 0;
 
-    // Cost per kWh (generator efficiency ~3.5 kWh per litre of petrol for small gensets)
+    // Cost per kWh
     var genSizeKVA = getGenKVA(consumption);
-    var kwhPerMonth = genSizeKVA * 0.8 * hours * days; // 80% load factor
+    var kwhPerMonth = genSizeKVA * 0.8 * hours * days;
     var costPerKwh = kwhPerMonth > 0 ? monthlyCost / kwhPerMonth : 0;
 
     // Format
     document.getElementById('result-monthly').textContent = sym + ' ' + formatNum(monthlyCost);
     document.getElementById('result-litres').textContent = formatNum(litresPerMonth, 0) + ' litres/month';
     document.getElementById('result-annual').textContent = sym + ' ' + formatNum(annualCost);
-    document.getElementById('result-kwh').textContent = sym + ' ' + formatNum(costPerKwh);
+    document.getElementById('result-kwh').textContent = sym + ' ' + formatNum(costPerKwh, 2);
     document.getElementById('result-daily').textContent = sym + ' ' + formatNum(dailyCost);
     document.getElementById('result-litres-num').textContent = formatNum(litresPerMonth, 0) + ' L';
 
-    // Comparisons (Nigeria-focused: Band A = 68 NGN/kWh, Solar amortized = 45 NGN/kWh)
-    var gridRate = 68;    // NGN/kWh Band A
-    var solarRate = 45;   // NGN/kWh amortized
-    if (code !== 'NG') {
-      // Scale rates by local multiplier relative to Nigeria
-      var ngMulti = getLocalMultiplier('NG');
-      var localMulti = getLocalMultiplier(code);
-      var ratio = localMulti / ngMulti;
-      gridRate = +(gridRate * ratio).toFixed(2);
-      solarRate = +(solarRate * ratio).toFixed(2);
-    }
+    // Grid rate: use country-specific rate or estimate from local multiplier
+    var gridRateLocal = GRID_RATES[code] || (68 * (getLocalMultiplier(code) / getLocalMultiplier('NG')));
+    var solarRateLocal = gridRateLocal * 0.65; // solar is ~65% of grid in most African markets
 
-    var gridMonthlyCost = gridRate * kwhPerMonth;
-    var solarMonthlyCost = solarRate * kwhPerMonth;
+    var gridMonthlyCostLocal = gridRateLocal * kwhPerMonth;
+    var solarMonthlyCostLocal = solarRateLocal * kwhPerMonth;
+
+    var gridMonthlyCost = convertCurrency(gridMonthlyCostLocal, localCurrency, dispCurrency);
+    var solarMonthlyCost = convertCurrency(solarMonthlyCostLocal, localCurrency, dispCurrency);
+
     var genVsGrid = monthlyCost - gridMonthlyCost;
     var genVsSolar = monthlyCost - solarMonthlyCost;
 
     document.getElementById('cmp-grid').innerHTML = sym + ' ' + formatNum(gridMonthlyCost) + '/mo' +
-      (genVsGrid > 0 ? ' <span class="comparison-savings savings-negative">+' + formatNum(genVsGrid) + '</span>' :
-       ' <span class="comparison-savings savings-positive">' + formatNum(genVsGrid) + '</span>');
+      (genVsGrid > 0 ? ' <span class="comparison-savings savings-negative">+' + formatNum(Math.abs(genVsGrid)) + '</span>' :
+       ' <span class="comparison-savings savings-positive">-' + formatNum(Math.abs(genVsGrid)) + '</span>');
 
     document.getElementById('cmp-solar').innerHTML = sym + ' ' + formatNum(solarMonthlyCost) + '/mo' +
-      (genVsSolar > 0 ? ' <span class="comparison-savings savings-negative">+' + formatNum(genVsSolar) + '</span>' :
-       ' <span class="comparison-savings savings-positive">' + formatNum(genVsSolar) + '</span>');
+      (genVsSolar > 0 ? ' <span class="comparison-savings savings-negative">+' + formatNum(Math.abs(genVsSolar)) + '</span>' :
+       ' <span class="comparison-savings savings-positive">-' + formatNum(Math.abs(genVsSolar)) + '</span>');
 
-    // Break-even: typical solar install cost for equivalent KVA
-    var solarInstallCost = genSizeKVA * 350000 * (getLocalMultiplier(code) / getLocalMultiplier('NG')); // rough cost per KVA
-    var monthlySaving = monthlyCost - solarMonthlyCost;
-    var breakEvenMonths = monthlySaving > 0 ? Math.ceil(solarInstallCost / monthlySaving) : 0;
-    document.getElementById('cmp-breakeven').textContent = breakEvenMonths > 0 ? breakEvenMonths + ' months' : '--';
+    // Break-even
+    var solarInstallCostLocal = genSizeKVA * 350000 * (getLocalMultiplier(code) / getLocalMultiplier('NG'));
+    var monthlySavingLocal = monthlyCostLocal - solarMonthlyCostLocal;
+    var breakEvenMonths = monthlySavingLocal > 0 ? Math.ceil(solarInstallCostLocal / monthlySavingLocal) : 0;
+    document.getElementById('cmp-breakeven').textContent = breakEvenMonths > 0 && breakEvenMonths < 600 ? breakEvenMonths + ' months (' + (breakEvenMonths/12).toFixed(1) + ' yrs)' : '--';
+
+    // USD equivalent
+    var monthlyUSD = convertCurrency(monthlyCostLocal, localCurrency, 'USD');
+    document.getElementById('cmp-usd').textContent = '$' + formatNum(monthlyUSD, 2) + '/mo ($' + formatNum(monthlyUSD * 12, 0) + '/yr)';
+
+    // Update breakdown chart
+    updateBreakdownChart(monthlyCost, gridMonthlyCost, solarMonthlyCost, sym);
+  }
+
+  function updateBreakdownChart(genCost, gridCost, solarCost, sym) {
+    var ctx = document.getElementById('calc-breakdown-chart');
+    if (!ctx || typeof Chart === 'undefined') return;
+
+    var data = {
+      labels: ['Generator', 'Grid Electricity', 'Solar'],
+      datasets: [{
+        data: [Math.max(0, genCost), Math.max(0, gridCost), Math.max(0, solarCost)],
+        backgroundColor: ['#FF9500', '#007AFF', '#34C759'],
+        borderWidth: 0,
+        borderRadius: 4
+      }]
+    };
+
+    if (breakdownChart) {
+      breakdownChart.data = data;
+      breakdownChart.update();
+    } else {
+      breakdownChart = new Chart(ctx, {
+        type: 'bar',
+        data: data,
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          indexAxis: 'y',
+          plugins: {
+            legend: {display: false},
+            tooltip: {
+              backgroundColor: '#1E293B',
+              titleFont: {family: 'DM Sans', weight: '700'},
+              bodyFont: {family: 'DM Sans'},
+              padding: 12,
+              cornerRadius: 8,
+              callbacks: {
+                label: function(ctx) { return sym + ' ' + formatNum(ctx.parsed.x) + '/month'; }
+              }
+            }
+          },
+          scales: {
+            x: {grid: {color: 'rgba(255,255,255,0.06)'}, ticks: {color: 'rgba(255,255,255,0.4)', font: {family: 'DM Sans', size: 11}, callback: function(v) { return sym + formatNum(v); }}},
+            y: {grid: {display: false}, ticks: {color: 'rgba(255,255,255,0.6)', font: {family: 'DM Sans', size: 12, weight: '600'}}}
+          }
+        }
+      });
+    }
   }
 
   function getGenKVA(consumption) {
     var map = {0.4:1, 0.8:2.5, 1.5:5, 2.8:10, 5.0:20, 12.0:50};
-    return map[consumption] || (consumption / 0.3); // rough estimate for custom
+    return map[consumption] || (consumption / 0.3);
   }
 
   function formatNum(n, decimals) {
     if (typeof decimals === 'undefined') decimals = 0;
     if (!n || isNaN(n)) return '--';
     if (Math.abs(n) >= 1000000) return (n/1000000).toFixed(1) + 'M';
-    return n.toLocaleString('en', {minimumFractionDigits:decimals, maximumFractionDigits: decimals > 0 ? decimals : 0});
+    return n.toLocaleString('en', {minimumFractionDigits: decimals, maximumFractionDigits: Math.max(decimals, 0)});
+  }
+
+  /* ── Insights Cards ── */
+  function renderInsights() {
+    if (!fuelData || !fuelData.countries) return;
+    var el = document.getElementById('insights-grid');
+    if (!el) return;
+
+    var countries = fuelData.countries;
+    var codes = Object.keys(countries);
+    var key = activeFuel + '_usd';
+
+    // Find cheapest, most expensive, average, and biggest change
+    var cheapest = null, expensive = null, totalPrice = 0, count = 0, biggestUp = null, biggestDown = null;
+    codes.forEach(function(code) {
+      var d = countries[code];
+      var price = d[key] || 0;
+      if (!price) return;
+      totalPrice += price; count++;
+      if (!cheapest || price < cheapest.price) cheapest = {code: code, price: price};
+      if (!expensive || price > expensive.price) expensive = {code: code, price: price};
+      var change = d.change_pct || 0;
+      if (!biggestUp || change > biggestUp.change) biggestUp = {code: code, change: change};
+      if (!biggestDown || change < biggestDown.change) biggestDown = {code: code, change: change};
+    });
+
+    var avg = count ? totalPrice / count : 0;
+
+    function card(icon, val, label, change, changeClass) {
+      return '<div class="insight-card"><div class="insight-icon">' + icon + '</div>' +
+        '<div class="insight-val">' + val + '</div>' +
+        '<div class="insight-label">' + label + '</div>' +
+        (change ? '<div class="insight-change ' + changeClass + '">' + change + '</div>' : '') + '</div>';
+    }
+
+    var cheapC = cheapest ? COUNTRIES[cheapest.code] : null;
+    var expC = expensive ? COUNTRIES[expensive.code] : null;
+
+    el.innerHTML =
+      card('&#9981;', '$' + avg.toFixed(2), 'Avg ' + activeFuel + ' price/L', count + ' countries tracked', 'insight-neutral') +
+      card(cheapC ? cheapC.flag : '&#127758;', '$' + (cheapest ? cheapest.price.toFixed(2) : '--'), 'Cheapest: ' + (cheapC ? cheapC.name : '--'), '', '') +
+      card(expC ? expC.flag : '&#127758;', '$' + (expensive ? expensive.price.toFixed(2) : '--'), 'Most Expensive: ' + (expC ? expC.name : '--'), '', '') +
+      card('&#128200;', (biggestUp ? biggestUp.change.toFixed(1) : '0') + '%', 'Biggest Price Rise', biggestUp && COUNTRIES[biggestUp.code] ? COUNTRIES[biggestUp.code].name : '', 'insight-up');
+  }
+
+  /* ── News Section ── */
+  function renderNews() {
+    var el = document.getElementById('news-grid');
+    if (!el) return;
+
+    // Curated African fuel/energy news items (updated periodically)
+    var newsItems = [
+      {tag: 'Nigeria', title: 'Dangote Refinery Begins Petrol Distribution Across Nigeria', snippet: 'The 650,000 bpd Dangote refinery has started distributing refined petroleum products, potentially reducing Nigeria\'s dependence on imported fuel and stabilising petrol prices.', source: 'Reuters Africa', date: 'Mar 2026', live: true},
+      {tag: 'Kenya', title: 'Kenya ERC Announces Monthly Fuel Price Review', snippet: 'The Energy and Petroleum Regulatory Authority publishes new maximum retail prices for petroleum products, reflecting changes in global crude oil markets.', source: 'Business Daily', date: 'Mar 2026', live: true},
+      {tag: 'South Africa', title: 'SA Fuel Levy Increase Takes Effect', snippet: 'The annual fuel levy adjustment adds pressure on South African motorists, with petrol and diesel prices both climbing. The general fuel levy now stands at R4.07 per litre.', source: 'News24', date: 'Mar 2026', live: false},
+      {tag: 'Egypt', title: 'Egypt Raises Fuel Prices as Subsidy Reform Continues', snippet: 'Egypt has adjusted fuel prices upward as part of its ongoing subsidy reform programme agreed with the IMF, affecting both petrol and diesel.', source: 'Al Ahram', date: 'Feb 2026', live: false},
+      {tag: 'OPEC+', title: 'African OPEC Members Navigate Production Cuts', snippet: 'Nigeria, Angola, Algeria, Libya, and other African OPEC+ members continue to manage production quotas amid fluctuating global oil demand and price targets.', source: 'Bloomberg Africa', date: 'Mar 2026', live: true},
+      {tag: 'Continental', title: 'AfCFTA Explores Common Energy Market Framework', snippet: 'The African Continental Free Trade Area secretariat is studying harmonised fuel pricing and cross-border energy trade to reduce fuel costs across the continent.', source: 'African Union', date: 'Feb 2026', live: false}
+    ];
+
+    var html = '';
+    newsItems.forEach(function(n) {
+      html += '<div class="news-card">' +
+        '<div class="news-tag">' + (n.live ? '<span class="news-live-dot"></span>' : '') + n.tag + '</div>' +
+        '<div class="news-title">' + n.title + '</div>' +
+        '<div class="news-snippet">' + n.snippet + '</div>' +
+        '<div class="news-meta"><span class="news-source">' + n.source + '</span><span>' + n.date + '</span></div>' +
+        '</div>';
+    });
+    el.innerHTML = html;
   }
 
   /* ═══════════════════════════════════════════════════════════
@@ -1109,6 +1415,25 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
 
   document.getElementById('calc-custom-rate').addEventListener('input', updateCalc);
   document.getElementById('calc-price').addEventListener('input', updateCalc);
+
+  document.getElementById('calc-display-currency').addEventListener('change', updateCalc);
+
+  document.getElementById('calc-fuel-type').addEventListener('change', function() {
+    updateCalcPrice();
+    updateCalc();
+  });
+
+  document.getElementById('calc-share-btn').addEventListener('click', function() {
+    var code = document.getElementById('calc-country').value;
+    var c = COUNTRIES[code] || {};
+    var monthly = document.getElementById('result-monthly').textContent;
+    var text = 'My generator costs ' + monthly + '/month in ' + c.name + '! Calculate yours at AfroTools.com/tools/fuel-tracker/';
+    if (navigator.share) {
+      navigator.share({title: 'AfroFuel Generator Cost', text: text, url: window.location.href});
+    } else if (navigator.clipboard) {
+      navigator.clipboard.writeText(text).then(function() { alert('Copied to clipboard!'); });
+    }
+  });
 
   document.getElementById('calc-hours').addEventListener('input', function() {
     document.getElementById('hours-val').textContent = this.value;

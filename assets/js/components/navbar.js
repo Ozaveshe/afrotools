@@ -291,7 +291,9 @@
 
     /* RESPONSIVE */
     @media (max-width: 940px) {
-      .nav-links, .pill-54, .btn-login { display: none; }
+      .nav-links, .pill-54 { display: none; }
+      .btn-login { border: none; padding: 0; font-size: 0; }
+      .btn-login .nav-user-name { display: none; }
       .burger { display: flex; }
       .mob    { display: flex; }
       nav     { padding: 0 16px; }
@@ -953,7 +955,7 @@
         // Desktop: show avatar initial + first name
         if (loginBtn) {
           loginBtn.href = '/dashboard/';
-          loginBtn.innerHTML = '<span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:#007AFF;color:#fff;border-radius:50%;font-size:10px;font-weight:800;margin-right:5px;">' + initial + '</span>' + name;
+          loginBtn.innerHTML = '<span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:#007AFF;color:#fff;border-radius:50%;font-size:10px;font-weight:800;margin-right:5px;">' + initial + '</span><span class="nav-user-name">' + name + '</span>';
         }
         // Mobile: show name
         if (mobLoginBtn) {

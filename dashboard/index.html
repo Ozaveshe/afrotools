@@ -770,7 +770,7 @@
             </div>
 
             <!-- Quick Stats Bar -->
-            <div id="quickStatsBar" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px;">
+            <div id="quickStatsBar" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-bottom:28px;">
               <div style="background:#fff;border:1.5px solid #E5E7EB;border-radius:14px;padding:18px 20px;text-align:center;">
                 <div style="font-size:1.8rem;font-weight:800;color:#007AFF;line-height:1;" id="stat-favs">0</div>
                 <div style="font-size:.7rem;color:#6B7280;margin-top:4px;font-weight:600;">Saved Tools</div>
@@ -1082,14 +1082,16 @@
                 }).join('') + '</div>';
             }
 
-            // Use SavedTools (Supabase sync) if available, else fallback
+            // Render localStorage favorites immediately, then update from Supabase
+            var localFavs = JSON.parse(localStorage.getItem('afro_favs_v2') || '[]');
+            renderFavGrid(localFavs);
             if (typeof window._savedToolsInstance !== 'undefined') {
-                window._savedToolsInstance.getAll().then(function(items) {
+                Promise.race([
+                    window._savedToolsInstance.getAll(),
+                    new Promise(function(_, reject) { setTimeout(function() { reject('timeout'); }, 3000); })
+                ]).then(function(items) {
                     renderFavGrid(items.map(function(i) { return i.slug; }));
-                });
-            } else {
-                const favorites = (typeof AfroData !== 'undefined' && AfroData.getFavorites) ? AfroData.getFavorites() : (JSON.parse(localStorage.getItem('afro_favs_v2') || '[]'));
-                renderFavGrid(favorites);
+                }).catch(function() { /* keep localStorage render */ });
             }
         }
 

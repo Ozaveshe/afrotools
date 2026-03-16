@@ -27,6 +27,7 @@
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
 <script src="/assets/js/components/tool-registry.js" defer></script>
+<script src="/assets/js/components/category-cards.js" defer></script>
 <style>
   .cat-hero { background: var(--color-bg-dark); padding: 64px 0 48px; }
   .cat-hero-inner { max-width: 900px; margin: 0 auto; padding: 0 24px; }
@@ -188,42 +189,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Render tool grid
     var grid = document.getElementById('tool-grid');
-    if (grid && typeof AFRO_CATEGORIES !== 'undefined') {
-      var cat = AFRO_CATEGORIES[CAT_KEY] || { bg: '#f0f0f0' };
+    if (grid) {
       var html = '';
-
       if (live.length) {
         html += '<h3 style="font-size:17px;font-weight:800;color:#111;margin:0 0 14px;display:flex;align-items:center;gap:8px;font-family:DM Sans,sans-serif"><span style="width:7px;height:7px;border-radius:50%;background:var(--color-primary)"></span> Available Now</h3>';
         html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-bottom:32px">';
-        live.forEach(function(t) {
-          html += '<a href="' + t.href + '" style="background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:22px;text-decoration:none;color:inherit;transition:.2s;display:block;position:relative">'
-            + '<span style="position:absolute;top:14px;right:14px;padding:3px 10px;background:#DBEAFE;border:1px solid #BFDBFE;border-radius:100px;font-size:10px;font-weight:700;color:#1E3A5F;text-transform:uppercase;display:flex;align-items:center;gap:4px"><span style="width:5px;height:5px;background:var(--color-primary);border-radius:50%"></span>' + (t.status === 'new' ? 'New' : 'Live') + '</span>'
-            + '<div style="font-size:1.6rem;margin-bottom:12px">' + (t.icon || '🔧') + '</div>'
-            + '<div style="font-size:15px;font-weight:700;color:#111;margin-bottom:5px">' + t.name + '</div>'
-            + '<div style="font-size:13px;color:#4b5563;line-height:1.6">' + t.desc + '</div>'
-            + '</a>';
-        });
+        live.forEach(function(t) { html += afroCard(t, true); });
         html += '</div>';
       }
-
       if (coming.length) {
         html += '<h3 style="font-size:17px;font-weight:800;color:#111;margin:0 0 14px;display:flex;align-items:center;gap:8px;font-family:DM Sans,sans-serif"><span style="width:7px;height:7px;border-radius:50%;background:#d1d5db"></span> Coming Soon</h3>';
         html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px">';
-        coming.forEach(function(t) {
-          html += '<div style="background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:22px;opacity:.6;position:relative">'
-            + '<span style="position:absolute;top:14px;right:14px;padding:3px 10px;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:100px;font-size:10px;font-weight:700;color:#6b7280;text-transform:uppercase">Coming Soon</span>'
-            + '<div style="font-size:1.6rem;margin-bottom:12px">' + (t.icon || '🔧') + '</div>'
-            + '<div style="font-size:15px;font-weight:700;color:#374151;margin-bottom:5px">' + t.name + '</div>'
-            + '<div style="font-size:13px;color:#6b7280;line-height:1.6">' + t.desc + '</div>'
-            + '</div>';
-        });
+        coming.forEach(function(t) { html += afroCard(t, false); });
         html += '</div>';
       }
-
       if (!live.length && !coming.length) {
         html = '<p style="color:#6b7280;font-size:14px">Tools for this category are being built. Check back soon.</p>';
       }
-
       grid.innerHTML = html;
       grid.setAttribute('data-html', html); // store for search
     }

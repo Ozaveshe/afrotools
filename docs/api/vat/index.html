@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AfroVAT API Overview — AfroTools API Docs</title>
-<meta name="description" content="AfroVAT API: VAT/GST calculation engine for African countries. Add-on or inclusive modes with exemption support.">
+<meta name="description" content="AfroVAT API: VAT/GST calculation for all 54 African countries. Add and extract modes with multiple rate categories.">
 <meta name="theme-color" content="#007AFF">
 <link rel="canonical" href="https://afrotools.com/docs/api/vat/">
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
@@ -24,36 +24,49 @@
     <div class="api-two-panel api-two-panel--wide-left">
       <div class="api-content__left">
         <h1 class="mt-0">AfroVAT API</h1>
-        <p class="api-subtitle">VAT and GST calculation engine for African countries. Calculate tax-inclusive or tax-exclusive prices with category-based exemptions.</p>
+        <p class="api-subtitle">VAT/GST calculation for all 54 African countries. Add VAT to a net amount or extract VAT from a gross amount.</p>
 
         <h2>Overview</h2>
-        <p>The AfroVAT API handles value-added tax calculations for e-commerce, invoicing, and accounting software. It understands country-specific VAT rates, reduced rates for essential goods, exempt categories, and zero-rated items.</p>
+        <p>The AfroVAT API calculates Value Added Tax (VAT) and Goods &amp; Services Tax (GST) based on each country's current rates. It supports both adding VAT to a net amount and extracting the VAT component from a VAT-inclusive amount.</p>
 
         <h3>Calculation Modes</h3>
         <table class="param-table">
           <thead><tr><th>Mode</th><th>Description</th></tr></thead>
           <tbody>
-            <tr><td><span class="param-name">exclusive</span></td><td>Given a net amount, add VAT on top. Returns gross amount and VAT.</td></tr>
-            <tr><td><span class="param-name">inclusive</span></td><td>Given a gross amount, extract the VAT included. Returns net amount and VAT.</td></tr>
+            <tr><td><span class="param-name">add</span></td><td>Add VAT to a net (VAT-exclusive) amount. Returns gross amount and VAT component.</td></tr>
+            <tr><td><span class="param-name">extract</span></td><td>Extract VAT from a gross (VAT-inclusive) amount. Returns net amount and VAT component.</td></tr>
           </tbody>
         </table>
 
-        <h3>Category-Based Rates</h3>
-        <p>Many African countries apply different VAT rates based on the type of goods or services. The AfroVAT API supports category codes to automatically apply the correct rate:</p>
+        <h3>Key Features</h3>
         <ul style="margin:8px 0 20px 20px;font-size:.88rem;color:#4B5563;line-height:1.8">
-          <li><strong>standard</strong> &mdash; Standard VAT rate (default)</li>
-          <li><strong>food_basic</strong> &mdash; Basic food items (often zero-rated or reduced)</li>
-          <li><strong>medical</strong> &mdash; Medical supplies and pharmaceuticals</li>
-          <li><strong>education</strong> &mdash; Educational materials and services</li>
-          <li><strong>digital</strong> &mdash; Digital services and software</li>
-          <li><strong>export</strong> &mdash; Exported goods (zero-rated)</li>
+          <li><strong>54 Countries</strong> &mdash; All African nations with their current VAT/GST rates</li>
+          <li><strong>Add &amp; Extract</strong> &mdash; Add VAT to net amounts or extract from inclusive prices</li>
+          <li><strong>Multiple Rates</strong> &mdash; Standard, reduced, and zero rates per country</li>
+          <li><strong>Category Support</strong> &mdash; Food, medical, education, digital, and export categories</li>
+          <li><strong>Auto-updated</strong> &mdash; Rates updated within 30 days of legislative changes</li>
         </ul>
+
+        <h3>Sample VAT Rates</h3>
+        <table class="param-table">
+          <thead><tr><th>Country</th><th>Standard Rate</th></tr></thead>
+          <tbody>
+            <tr><td>Nigeria (NG)</td><td>7.5%</td></tr>
+            <tr><td>Kenya (KE)</td><td>16.0%</td></tr>
+            <tr><td>South Africa (ZA)</td><td>15.0%</td></tr>
+            <tr><td>Ghana (GH)</td><td>15.0%</td></tr>
+            <tr><td>Egypt (EG)</td><td>14.0%</td></tr>
+            <tr><td>Tanzania (TZ)</td><td>18.0%</td></tr>
+            <tr><td>Morocco (MA)</td><td>20.0%</td></tr>
+            <tr><td>Ethiopia (ET)</td><td>15.0%</td></tr>
+          </tbody>
+        </table>
 
         <h2>Endpoints</h2>
         <div class="api-cards-grid">
           <a href="/docs/api/vat/calculate.html" class="api-card">
             <div class="api-card__title"><span class="endpoint-method endpoint-method--post" style="font-size:.6rem;vertical-align:middle;margin-right:6px">POST</span> Calculate VAT</div>
-            <div class="api-card__desc">Calculate VAT for a given amount, country, and category. Supports exclusive and inclusive modes.</div>
+            <div class="api-card__desc">Add VAT to a net amount or extract VAT from a gross amount for any African country.</div>
           </a>
         </div>
       </div>
@@ -64,47 +77,63 @@
 
         <hr class="api-divider api-divider--dark">
 
-        <div class="code-label">Quick Example</div>
-        <div class="code-example"><span class="c"># Calculate VAT on 10,000 NGN (exclusive)</span>
+        <div class="code-label">Quick Example &mdash; Add Mode</div>
+        <div class="code-example"><span class="c"># Add VAT to 100,000 NGN</span>
 curl -X POST https://afrotools.com/api/vat \
   -H "x-api-key: afro_test_abc123" \
   -H "Content-Type: application/json" \
   -d '{
     "country": "NG",
-    "amount": 10000,
-    "mode": "exclusive"
+    "amount": 100000,
+    "mode": "add"
   }'</div>
 
         <hr class="api-divider api-divider--dark">
 
-        <div class="code-label">Example Response</div>
+        <div class="code-label">Response &mdash; Add Mode</div>
         <div class="code-example">{
   "success": true,
   "data": {
     "country": "NG",
+    "country_name": "Nigeria",
     "currency": "NGN",
+    "mode": "add",
+    "net_amount": 100000,
     "vat_rate": 7.5,
-    "category": "standard",
-    "mode": "exclusive",
-    "net_amount": 10000.00,
-    "vat_amount": 750.00,
-    "gross_amount": 10750.00
+    "vat_amount": 7500,
+    "gross_amount": 107500,
+    "rate_type": "standard",
+    "updated": "2026-01-01"
   }
 }</div>
 
         <hr class="api-divider api-divider--dark">
 
-        <div class="code-label">VAT Rates (sample)</div>
-        <div class="code-example">NG  Nigeria         7.5%
-KE  Kenya          16.0%
-ZA  South Africa   15.0%
-GH  Ghana          15.0%
-EG  Egypt          14.0%
-TZ  Tanzania       18.0%
-RW  Rwanda         18.0%
-SN  Senegal        18.0%
-MA  Morocco        20.0%
-ET  Ethiopia       15.0%</div>
+        <div class="code-label">Quick Example &mdash; Extract Mode</div>
+        <div class="code-example"><span class="c"># Extract VAT from 107,500 NGN</span>
+curl -X POST https://afrotools.com/api/vat \
+  -H "x-api-key: afro_test_abc123" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "country": "NG",
+    "amount": 107500,
+    "mode": "extract"
+  }'</div>
+        <div class="code-example">{
+  "success": true,
+  "data": {
+    "country": "NG",
+    "country_name": "Nigeria",
+    "currency": "NGN",
+    "mode": "extract",
+    "net_amount": 100000,
+    "vat_rate": 7.5,
+    "vat_amount": 7500,
+    "gross_amount": 107500,
+    "rate_type": "standard",
+    "updated": "2026-01-01"
+  }
+}</div>
       </div>
     </div>
   </main>
