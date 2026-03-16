@@ -78,9 +78,25 @@ const countryHubs = Array.from(countryHubSet).map(url => ({
   changefreq: 'monthly',
 }));
 
+// ── BLOG PAGES ──────────────────────────────────────────
+
+const blogDir = path.join(__dirname, '..', 'blog');
+const blogPages = [{ url: '/blog/', priority: '0.8', changefreq: 'weekly' }];
+if (fs.existsSync(blogDir)) {
+  fs.readdirSync(blogDir).forEach(entry => {
+    const entryPath = path.join(blogDir, entry);
+    if (fs.statSync(entryPath).isDirectory() && entry !== 'assets') {
+      const indexFile = path.join(entryPath, 'index.html');
+      if (fs.existsSync(indexFile)) {
+        blogPages.push({ url: `/blog/${entry}/`, priority: '0.6', changefreq: 'monthly' });
+      }
+    }
+  });
+}
+
 // ── DEDUPLICATE & GENERATE ─────────────────────────────
 
-const allPages = [...staticPages, ...categoryPages, ...countryHubs, ...toolPages];
+const allPages = [...staticPages, ...categoryPages, ...countryHubs, ...toolPages, ...blogPages];
 
 // Deduplicate by URL
 const seen = new Set();
@@ -119,3 +135,4 @@ console.log(`  Static: ${staticPages.length}`);
 console.log(`  Categories: ${categoryPages.length}`);
 console.log(`  Country hubs: ${countryHubs.length}`);
 console.log(`  Tool pages: ${toolPages.length}`);
+console.log(`  Blog posts: ${blogPages.length}`);
