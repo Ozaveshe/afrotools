@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'savings-goal'});</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Savings Goal Calculator — How Long to Save? | AfroTools</title>
+<meta name="description" content="Calculate how long it takes to reach your savings goal. Factor in monthly deposits, interest rates, and inflation. Supports Naira, Rand, Shilling, Cedi.">
+<link rel="canonical" href="https://afrotools.com/tools/savings-goal/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Savings Goal Calculator | AfroTools">
+<meta property="og:description" content="How long to reach your savings target? Factor in interest and inflation.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/savings-goal/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+:root{--afro-blue:var(--color-primary);--afro-dark:#0f1419}
+.tool-hero{background:linear-gradient(135deg,var(--afro-dark) 0%,#1a1f2e 100%);padding:44px 0 36px;position:relative;overflow:hidden}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px;position:relative}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:var(--afro-blue)}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:var(--afro-blue);font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-blue{background:rgba(0,113,227,.18);color:var(--color-primary);border:1px solid rgba(0,113,227,.38)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
+.card-body{padding:22px}
+.field{margin-bottom:16px}
+.f-label{font-size:.75rem;font-weight:700;color:var(--afro-dark);margin-bottom:6px;display:block}
+.f-input,.f-select{width:100%;padding:11px 13px;background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:7px;font-size:1rem;font-weight:600;color:var(--afro-dark);outline:none;font-family:'DM Sans',sans-serif}
+.f-input:focus,.f-select:focus{border-color:var(--afro-blue);box-shadow:0 0 0 3px rgba(0,113,227,.1)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.calc-btn{width:100%;padding:13px;background:var(--afro-blue);color:#fff;border:none;border-radius:8px;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .18s;font-family:'DM Sans',sans-serif}
+.calc-btn:hover{background:#0059B3;transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,113,227,.3)}
+.result-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:18px}
+.result-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;text-align:center}
+.result-box.wide{grid-column:1/-1}
+.result-num{font-size:1.6rem;font-weight:800;color:var(--afro-blue);line-height:1}
+.result-label{font-size:.65rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.05em;margin-top:4px}
+.progress-bar{height:12px;background:#e2e8f0;border-radius:6px;margin-top:16px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--afro-blue),#38bdf8);border-radius:6px;transition:width .5s}
+.milestone-list{margin-top:14px}
+.milestone{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f1f5f9;font-size:.82rem}
+.milestone:last-child{border-bottom:none}
+.ms-label{color:#475569;font-weight:600}
+.ms-val{color:var(--afro-blue);font-weight:800}
+.sidebar{display:flex;flex-direction:column;gap:16px}
+.info-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px}
+.info-title{font-size:.72rem;font-weight:700;color:var(--afro-dark);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+.info-text{font-size:.8rem;color:#475569;line-height:1.6}
+.rate-item{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #f1f5f9;font-size:.78rem}
+.rate-item:last-child{border-bottom:none}
+.rate-name{font-weight:600;color:#334155}
+.rate-val{font-weight:700;color:var(--afro-blue)}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.field-row{grid-template-columns:1fr}.result-grid{grid-template-columns:1fr 1fr}}
+details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-details-marker{display:none}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Savings Goal Calculator","description":"Calculate how long it takes to reach your savings goal with monthly deposits and interest.","url":"https://afrotools.com/tools/savings-goal/","applicationCategory":"FinanceApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"How is the savings timeline calculated?","acceptedAnswer":{"@type":"Answer","text":"The calculator simulates month-by-month savings, adding your monthly deposit and applying compound interest each month until the target is reached. It uses the formula for future value of annuity."}},
+{"@type":"Question","name":"What interest rates should I use for African savings accounts?","acceptedAnswer":{"@type":"Answer","text":"Nigerian savings accounts offer 3-7% annually, Kenyan accounts offer 4-8%, South African accounts offer 5-9%, and Ghanaian accounts offer 8-15%. Money market funds and fixed deposits offer higher rates."}},
+{"@type":"Question","name":"Does inflation affect my savings goal?","acceptedAnswer":{"@type":"Answer","text":"Yes. The calculator optionally factors in inflation to show the real value of your savings. With Nigeria's inflation around 15-25% and Kenya's around 6-9%, your target amount may need to be higher in nominal terms."}}
+]}</script>
+</head>
+<body>
+<afro-navbar active="tools"></afro-navbar>
+<div class="tool-hero"><div class="tool-hero-inner">
+  <div class="breadcrumb"><a href="/">AfroTools</a> / <a href="/all-tools">Tools</a> / <span>Savings Goal</span></div>
+  <h1>Savings Goal <em>Calculator</em></h1>
+  <p class="hero-sub">Find out how long it takes to reach your savings target. Factor in monthly deposits, interest rates, and inflation for a realistic plan.</p>
+  <div class="hero-badges"><span class="badge b-blue">Compound Interest</span><span class="badge b-blue">Inflation Adjusted</span><span class="badge b-blue">African Rates</span></div>
+</div></div>
+
+<div class="tool-main"><div class="tool-main-inner">
+  <div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">Set Your Savings Goal</span></div>
+      <div class="card-body">
+        <div class="field-row">
+          <div class="field"><label class="f-label">Savings Goal</label><input type="number" class="f-input" id="goal" value="5000000" step="1000" min="0"></div>
+          <div class="field"><label class="f-label">Currency</label>
+            <select class="f-select" id="currency">
+              <option value="₦">NGN (₦)</option><option value="KSh">KES (KSh)</option>
+              <option value="R">ZAR (R)</option><option value="GH₵">GHS (GH₵)</option>
+              <option value="$">USD ($)</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label class="f-label">Current Savings</label><input type="number" class="f-input" id="current" value="500000" step="1000" min="0"></div>
+          <div class="field"><label class="f-label">Monthly Deposit</label><input type="number" class="f-input" id="monthly" value="100000" step="1000" min="0"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label class="f-label">Annual Interest Rate (%)</label><input type="number" class="f-input" id="rate" value="7" step="0.1" min="0" max="50"></div>
+          <div class="field"><label class="f-label">Annual Inflation (%)</label><input type="number" class="f-input" id="inflation" value="0" step="0.1" min="0" max="50"></div>
+        </div>
+        <button class="calc-btn" onclick="calculate()">Calculate</button>
+
+        <div id="results" style="display:none">
+          <div class="result-grid">
+            <div class="result-box wide"><div class="result-label">Time to Reach Goal</div><div class="result-num" id="timeResult">0</div></div>
+            <div class="result-box"><div class="result-label">Total Deposited</div><div class="result-num" id="totalDeposited" style="font-size:1.2rem">0</div></div>
+            <div class="result-box"><div class="result-label">Interest Earned</div><div class="result-num" id="interestEarned" style="font-size:1.2rem">0</div></div>
+            <div class="result-box"><div class="result-label">Final Balance</div><div class="result-num" id="finalBalance" style="font-size:1.2rem">0</div></div>
+            <div class="result-box"><div class="result-label">Target Date</div><div class="result-num" id="targetDate" style="font-size:1rem">—</div></div>
+          </div>
+
+          <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+          <div style="display:flex;justify-content:space-between;font-size:.7rem;color:#94a3b8;margin-top:4px">
+            <span>Starting: <span id="startPct">0%</span></span>
+            <span>Goal: 100%</span>
+          </div>
+
+          <div class="milestone-list" id="milestones"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><span class="card-title">About This Tool</span></div>
+      <div class="card-body">
+        <h2 style="font-size:1.1rem;font-weight:800;color:#111;margin-bottom:12px">How the Savings Goal Calculator Works</h2>
+        <p style="font-size:.85rem;color:#475569;line-height:1.7;margin-bottom:12px">
+          This calculator simulates your savings journey month by month. It starts with your current balance, adds your monthly deposit, then applies <strong>compound interest</strong> (compounded monthly). If you enable inflation, it adjusts your goal upward each month to reflect the decreasing purchasing power of money.
+        </p>
+        <h3 style="font-size:.95rem;font-weight:700;color:#111;margin-bottom:8px">Savings Tips for Africans</h3>
+        <p style="font-size:.85rem;color:#475569;line-height:1.7;margin-bottom:12px">
+          <strong>1. Start with an emergency fund:</strong> Save 3-6 months of expenses before investing.<br>
+          <strong>2. Use high-yield instruments:</strong> Nigerian money market funds offer 10-15% vs 3% for regular savings. Kenyan T-bills offer 12-16%.<br>
+          <strong>3. Automate your savings:</strong> Set up standing orders from your bank account to a savings account on payday.<br>
+          <strong>4. Account for inflation:</strong> With Nigeria's inflation around 20%, your ₦5M target today needs to be ₦6M next year in nominal terms.
+        </p>
+        <p style="font-size:.85rem;color:#475569;line-height:1.7;margin-bottom:12px">
+          The <a href="https://www.cbn.gov.ng/" target="_blank" rel="noopener" style="color:var(--afro-blue)">Central Bank of Nigeria</a> publishes savings rates and inflation data monthly. For more financial planning, try our <a href="/tools/investment-return/" style="color:var(--afro-blue)">Investment Return Calculator</a> or the <a href="/tools/break-even/" style="color:var(--afro-blue)">Break-Even Calculator</a>.
+        </p>
+      </div>
+    </div>
+
+    <section style="margin-top:18px">
+      <h2 style="font-size:1.15rem;font-weight:800;color:#111;margin-bottom:14px">Frequently Asked Questions</h2>
+      <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">How is the savings timeline calculated?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">The calculator simulates month-by-month savings, adding your monthly deposit and applying compound interest each month until the target is reached.</div></details>
+      <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">What interest rates should I use for African savings?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">Nigerian savings accounts offer 3-7% annually, Kenyan accounts 4-8%, South African accounts 5-9%, and Ghanaian accounts 8-15%. Money market funds and fixed deposits offer higher rates.</div></details>
+      <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">Does inflation affect my savings goal?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">Yes. With inflation enabled, the calculator adjusts your goal upward to reflect decreased purchasing power. Nigeria's inflation around 15-25% means your target amount needs to be significantly higher in nominal terms.</div></details>
+    </section>
+  </div>
+
+  <div class="sidebar">
+    <div class="info-card">
+      <div class="info-title">African Savings Rates (2026)</div>
+      <div class="rate-item"><span class="rate-name">Nigeria (savings)</span><span class="rate-val">3-7%</span></div>
+      <div class="rate-item"><span class="rate-name">Nigeria (money mkt)</span><span class="rate-val">10-15%</span></div>
+      <div class="rate-item"><span class="rate-name">Kenya (savings)</span><span class="rate-val">4-8%</span></div>
+      <div class="rate-item"><span class="rate-name">Kenya (T-bills)</span><span class="rate-val">12-16%</span></div>
+      <div class="rate-item"><span class="rate-name">South Africa</span><span class="rate-val">5-9%</span></div>
+      <div class="rate-item"><span class="rate-name">Ghana</span><span class="rate-val">8-15%</span></div>
+    </div>
+    <div class="info-card">
+      <div class="info-title">Inflation Rates</div>
+      <div class="rate-item"><span class="rate-name">Nigeria</span><span class="rate-val">~20%</span></div>
+      <div class="rate-item"><span class="rate-name">Kenya</span><span class="rate-val">~7%</span></div>
+      <div class="rate-item"><span class="rate-name">South Africa</span><span class="rate-val">~5%</span></div>
+      <div class="rate-item"><span class="rate-name">Ghana</span><span class="rate-val">~22%</span></div>
+      <div style="font-size:.7rem;color:#94a3b8;margin-top:8px">Approximate annual rates, 2025-2026</div>
+    </div>
+    <div class="info-card">
+      <div class="info-title">Savings Formula</div>
+      <div class="info-text" style="font-family:monospace;font-size:.75rem">
+        FV = PV(1+r)^n + PMT[((1+r)^n - 1)/r]<br><br>
+        PV = present value<br>
+        r = monthly rate<br>
+        n = months<br>
+        PMT = monthly deposit
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<afro-footer></afro-footer>
+
+<script>
+function calculate(){
+  const goal=parseFloat(document.getElementById('goal').value)||0;
+  const current=parseFloat(document.getElementById('current').value)||0;
+  const monthly=parseFloat(document.getElementById('monthly').value)||0;
+  const annualRate=parseFloat(document.getElementById('rate').value)||0;
+  const annualInflation=parseFloat(document.getElementById('inflation').value)||0;
+  const cur=document.getElementById('currency').value;
+
+  if(goal<=0){alert('Please enter a savings goal');return;}
+  if(monthly<=0&&current>=goal){
+    document.getElementById('timeResult').textContent='Already reached!';
+    document.getElementById('results').style.display='block';
+    return;
+  }
+
+  const monthlyRate=annualRate/100/12;
+  const monthlyInflation=annualInflation/100/12;
+
+  let balance=current;
+  let adjustedGoal=goal;
+  let months=0;
+  let totalDeposits=current;
+  const milestones=[];
+  const pcts=[25,50,75,100];
+  let nextPct=0;
+
+  while(balance<adjustedGoal&&months<600){// max 50 years
+    months++;
+    balance+=monthly;
+    balance*=(1+monthlyRate);
+    totalDeposits+=monthly;
+    if(monthlyInflation>0) adjustedGoal*=(1+monthlyInflation);
+
+    // Check milestones
+    const pct=goal>0?(balance/adjustedGoal*100):0;
+    if(nextPct<pcts.length&&pct>=pcts[nextPct]){
+      milestones.push({pct:pcts[nextPct],months,balance});
+      nextPct++;
+    }
+  }
+
+  const fmt=n=>cur+n.toLocaleString(undefined,{maximumFractionDigits:0});
+  const interest=balance-totalDeposits;
+  const years=Math.floor(months/12);
+  const remMonths=months%12;
+  let timeStr='';
+  if(months>=600) timeStr='50+ years (consider increasing deposits)';
+  else if(years>0&&remMonths>0) timeStr=years+' yr '+remMonths+' mo';
+  else if(years>0) timeStr=years+' years';
+  else timeStr=remMonths+' months';
+
+  document.getElementById('timeResult').textContent=timeStr;
+  document.getElementById('totalDeposited').textContent=fmt(totalDeposits);
+  document.getElementById('interestEarned').textContent=fmt(interest);
+  document.getElementById('finalBalance').textContent=fmt(balance);
+
+  // Target date
+  const targetDate=new Date();
+  targetDate.setMonth(targetDate.getMonth()+months);
+  document.getElementById('targetDate').textContent=targetDate.toLocaleDateString('en-GB',{month:'short',year:'numeric'});
+
+  // Progress bar
+  const startPct=Math.min(100,(current/goal*100));
+  document.getElementById('progressFill').style.width=startPct+'%';
+  document.getElementById('startPct').textContent=startPct.toFixed(0)+'%';
+
+  // Milestones
+  const msEl=document.getElementById('milestones');
+  msEl.innerHTML=milestones.map(m=>{
+    const y=Math.floor(m.months/12);
+    const mo=m.months%12;
+    const t=y>0?(y+'yr '+mo+'mo'):(mo+'mo');
+    return `<div class="milestone"><span class="ms-label">${m.pct}% (${fmt(m.balance)})</span><span class="ms-val">${t}</span></div>`;
+  }).join('');
+
+  document.getElementById('results').style.display='block';
+}
+
+calculate();
+</script>
+<script src="/assets/js/components/tool-registry.min.js" defer></script>
+<script src="/assets/js/components/related-tools.min.js" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js" defer></script>
+<afro-newsletter-cta></afro-newsletter-cta>
+</body>
+</html>

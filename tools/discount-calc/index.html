@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'discount-calc'});</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Discount Calculator — Price After Discount | AfroTools</title>
+<meta name="description" content="Calculate the final price after discount. Supports single, double, and triple discounts. Shows savings amount and effective discount percentage. Multi-currency.">
+<link rel="canonical" href="https://afrotools.com/tools/discount-calc/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Discount Calculator | AfroTools">
+<meta property="og:description" content="Calculate price after discount. Single, double, triple discounts. Multi-currency.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/discount-calc/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+:root{--afro-blue:var(--color-primary);--afro-dark:#0f1419;--afro-red:#ef4444}
+.tool-hero{background:linear-gradient(135deg,var(--afro-dark) 0%,#1a1f2e 100%);padding:44px 0 36px;position:relative;overflow:hidden}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px;position:relative}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:var(--afro-blue)}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:var(--afro-blue);font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-blue{background:rgba(0,113,227,.18);color:var(--color-primary);border:1px solid rgba(0,113,227,.38)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:900px;margin:0 auto;padding:0 24px}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
+.card-body{padding:22px}
+.field{margin-bottom:16px}
+.f-label{font-size:.75rem;font-weight:700;color:var(--afro-dark);margin-bottom:6px;display:block}
+.f-input,.f-select{width:100%;padding:11px 13px;background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:7px;font-size:1rem;font-weight:600;color:var(--afro-dark);outline:none;font-family:'DM Sans',sans-serif}
+.f-input:focus,.f-select:focus{border-color:var(--afro-blue);box-shadow:0 0 0 3px rgba(0,113,227,.1)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.discount-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.discount-row .f-input{flex:1}
+.disc-badge{background:var(--afro-red);color:#fff;padding:2px 8px;border-radius:4px;font-size:.65rem;font-weight:700;white-space:nowrap}
+.add-disc{background:none;border:1.5px dashed #cbd5e1;border-radius:7px;padding:8px;width:100%;cursor:pointer;font-size:.78rem;font-weight:600;color:#64748b;font-family:'DM Sans',sans-serif;transition:all .15s}
+.add-disc:hover{border-color:var(--afro-blue);color:var(--afro-blue)}
+.del-disc{background:none;border:none;color:#ef4444;cursor:pointer;font-size:1rem;font-weight:700;padding:4px 8px}
+.result-display{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:12px;padding:28px;text-align:center;margin-top:18px}
+.result-original{font-size:1rem;color:rgba(255,255,255,.4);text-decoration:line-through;margin-bottom:4px}
+.result-big{font-size:2.8rem;font-weight:800;color:#22c55e;line-height:1}
+.result-lbl{font-size:.72rem;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.result-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.result-sub{padding:12px;background:rgba(255,255,255,.06);border-radius:8px;text-align:center}
+.result-sub-val{font-size:1.2rem;font-weight:800;color:#fff}
+.result-sub-lbl{font-size:.6rem;font-weight:600;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}
+.savings-highlight{color:var(--afro-red);font-weight:800}
+@media(max-width:600px){.field-row{grid-template-columns:1fr}.result-row{grid-template-columns:1fr}.result-big{font-size:2rem}}
+details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-details-marker{display:none}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Discount Calculator","description":"Calculate price after discount. Supports single, double, triple discounts with multiple currencies.","url":"https://afrotools.com/tools/discount-calc/","applicationCategory":"FinanceApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"How do stacked discounts work?","acceptedAnswer":{"@type":"Answer","text":"Stacked (sequential) discounts are applied one after another. A 20% + 10% discount is NOT 30%. First 20% is taken off, then 10% off the reduced price. This gives an effective discount of 28%."}},
+{"@type":"Question","name":"What is the difference between discount and markup?","acceptedAnswer":{"@type":"Answer","text":"A discount reduces a selling price (e.g., 20% off ₦10,000 = ₦8,000). Markup increases a cost price to get a selling price (e.g., 50% markup on ₦6,000 cost = ₦9,000 selling price)."}},
+{"@type":"Question","name":"Can I calculate reverse discount (original price)?","acceptedAnswer":{"@type":"Answer","text":"Yes. If you know the final price after discount, enter it and use the tool to work backwards to find the original price before discount was applied."}}
+]}</script>
+</head>
+<body>
+<afro-navbar active="tools"></afro-navbar>
+<div class="tool-hero"><div class="tool-hero-inner">
+  <div class="breadcrumb"><a href="/">AfroTools</a> / <a href="/all-tools">Tools</a> / <span>Discount Calculator</span></div>
+  <h1>Discount <em>Calculator</em></h1>
+  <p class="hero-sub">Calculate the final price after single or stacked discounts. See exactly how much you save with multiple discount layers applied sequentially.</p>
+  <div class="hero-badges"><span class="badge b-blue">Stacked Discounts</span><span class="badge b-blue">Multi-Currency</span><span class="badge b-blue">Instant</span></div>
+</div></div>
+
+<div class="tool-main"><div class="tool-main-inner">
+  <div class="card">
+    <div class="card-head"><span class="card-title">Discount Calculator</span></div>
+    <div class="card-body">
+      <div class="field-row">
+        <div class="field"><label class="f-label">Original Price</label><input type="number" class="f-input" id="price" value="10000" step="1" min="0"></div>
+        <div class="field"><label class="f-label">Currency</label>
+          <select class="f-select" id="currency"><option value="₦">NGN (₦)</option><option value="KSh">KES (KSh)</option><option value="R">ZAR (R)</option><option value="GH₵">GHS (GH₵)</option><option value="$">USD ($)</option><option value="£">GBP (£)</option></select>
+        </div>
+      </div>
+
+      <div class="f-label">Discounts</div>
+      <div id="discountsList">
+        <div class="discount-row">
+          <span class="disc-badge">1st</span>
+          <input type="number" class="f-input" data-disc value="20" step="0.5" min="0" max="100">
+          <span style="font-size:.82rem;font-weight:700;color:#64748b">%</span>
+        </div>
+      </div>
+      <button class="add-disc" onclick="addDiscount()">+ Add Another Discount</button>
+
+      <div class="field" style="margin-top:16px">
+        <label class="f-label">Tax Rate (applied after discount, optional)</label>
+        <input type="number" class="f-input" id="tax" value="0" step="0.5" min="0" max="100">
+      </div>
+
+      <div class="result-display">
+        <div class="result-original" id="originalPrice">₦10,000</div>
+        <div class="result-lbl">Final Price</div>
+        <div class="result-big" id="finalPrice">₦8,000</div>
+        <div class="result-row">
+          <div class="result-sub"><div class="result-sub-lbl">You Save</div><div class="result-sub-val savings-highlight" id="savings">₦2,000</div></div>
+          <div class="result-sub"><div class="result-sub-lbl">Effective Discount</div><div class="result-sub-val" id="effectiveDisc">20%</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><span class="card-title">About Discounts</span></div>
+    <div class="card-body">
+      <h2 style="font-size:1.1rem;font-weight:800;color:#111;margin-bottom:12px">How Stacked Discounts Work</h2>
+      <p style="font-size:.85rem;color:#475569;line-height:1.7;margin-bottom:12px">
+        When a store offers "20% off plus an extra 10% off", these are <strong>sequential (stacked) discounts</strong>, not additive. The first discount is applied to the original price, then the second discount is applied to the already-reduced price. This means 20% + 10% gives an effective discount of <strong>28%, not 30%</strong>.
+      </p>
+      <h3 style="font-size:.95rem;font-weight:700;color:#111;margin-bottom:8px">Example</h3>
+      <p style="font-size:.85rem;color:#475569;line-height:1.7;margin-bottom:12px">
+        Original price: ₦10,000. First 20% off = ₦8,000. Then 10% off ₦8,000 = ₦7,200. Total savings: ₦2,800 (28% effective discount). This is important during sales events like <strong>Black Friday</strong>, <strong>Jumia sales</strong>, and <strong>Konga special offers</strong> in Nigeria.
+      </p>
+      <p style="font-size:.85rem;color:#475569;line-height:1.7;margin-bottom:12px">
+        For the mathematics behind discount calculations, see <a href="https://en.wikipedia.org/wiki/Discounts_and_allowances" target="_blank" rel="noopener" style="color:var(--afro-blue)">Wikipedia's guide on discounts</a>.
+      </p>
+      <p style="font-size:.85rem;color:#475569;line-height:1.7">For more: <a href="/tools/percentage-calc/" style="color:var(--afro-blue)">Percentage Calculator</a> and <a href="/tools/markup-calc/" style="color:var(--afro-blue)">Markup Calculator</a>.</p>
+    </div>
+  </div>
+
+  <section style="margin-top:18px">
+    <h2 style="font-size:1.15rem;font-weight:800;color:#111;margin-bottom:14px">Frequently Asked Questions</h2>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">How do stacked discounts work?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">They're applied sequentially. 20% + 10% = 28% effective (not 30%). Each discount applies to the already-reduced price.</div></details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">Discount vs markup?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">Discount reduces selling price. Markup increases cost price to get selling price. Different base amounts.</div></details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">Can I find the original price from a discounted price?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">To find original price: divide the final price by (1 - discount/100). For 20% off giving ₦8,000: original = 8000 / 0.8 = ₦10,000.</div></details>
+  </section>
+</div></div>
+
+<afro-footer></afro-footer>
+
+<script>
+const ordinals=['1st','2nd','3rd','4th','5th'];
+
+function addDiscount(){
+  const list=document.getElementById('discountsList');
+  const count=list.querySelectorAll('.discount-row').length;
+  if(count>=5) return;
+  const row=document.createElement('div');
+  row.className='discount-row';
+  row.innerHTML=`
+    <span class="disc-badge">${ordinals[count]||count+1}</span>
+    <input type="number" class="f-input" data-disc value="10" step="0.5" min="0" max="100">
+    <span style="font-size:.82rem;font-weight:700;color:#64748b">%</span>
+    <button class="del-disc" onclick="this.parentElement.remove();calc()">×</button>
+  `;
+  row.querySelector('input').addEventListener('input',calc);
+  list.appendChild(row);
+  calc();
+}
+
+function calc(){
+  const price=parseFloat(document.getElementById('price').value)||0;
+  const cur=document.getElementById('currency').value;
+  const tax=parseFloat(document.getElementById('tax').value)||0;
+  const discInputs=document.querySelectorAll('[data-disc]');
+
+  let current=price;
+  discInputs.forEach(inp=>{
+    const d=parseFloat(inp.value)||0;
+    current=current*(1-d/100);
+  });
+
+  // Apply tax
+  if(tax>0) current=current*(1+tax/100);
+
+  const savings=price-current;
+  const effectivePct=price>0?((savings/price)*100):0;
+
+  const fmt=n=>cur+Math.round(n).toLocaleString();
+  document.getElementById('originalPrice').textContent=fmt(price);
+  document.getElementById('finalPrice').textContent=fmt(current);
+  document.getElementById('savings').textContent=fmt(savings);
+  document.getElementById('effectiveDisc').textContent=effectivePct.toFixed(1)+'%';
+}
+
+// Bind all inputs
+document.querySelectorAll('#price,#tax,[data-disc]').forEach(el=>{
+  el.addEventListener('input',calc);
+});
+document.getElementById('currency').addEventListener('change',calc);
+
+calc();
+</script>
+<script src="/assets/js/components/tool-registry.min.js" defer></script>
+<script src="/assets/js/components/related-tools.min.js" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js" defer></script>
+<afro-newsletter-cta></afro-newsletter-cta>
+</body>
+</html>

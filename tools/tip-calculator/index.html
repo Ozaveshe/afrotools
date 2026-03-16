@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'tip-calculator'});</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tip & Bill Splitter Calculator | AfroTools</title>
+<meta name="description" content="Free tip calculator and bill splitter. Calculate tip amounts, split bills evenly or custom. Supports multiple African currencies. Instant results.">
+<link rel="canonical" href="https://afrotools.com/tools/tip-calculator/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Tip & Bill Splitter | AfroTools">
+<meta property="og:description" content="Calculate tips and split bills. Multiple currencies. Free.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/tip-calculator/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+:root{--afro-blue:var(--color-primary);--afro-dark:#0f1419}
+.tool-hero{background:linear-gradient(135deg,var(--afro-dark) 0%,#1a1f2e 100%);padding:44px 0 36px;position:relative;overflow:hidden}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px;position:relative}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:var(--afro-blue)}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:var(--afro-blue);font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-blue{background:rgba(0,113,227,.18);color:var(--color-primary);border:1px solid rgba(0,113,227,.38)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:800px;margin:0 auto;padding:0 24px}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
+.card-body{padding:22px}
+.field{margin-bottom:16px}
+.f-label{font-size:.75rem;font-weight:700;color:var(--afro-dark);margin-bottom:6px;display:block}
+.f-input,.f-select{width:100%;padding:11px 13px;background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:7px;font-size:1rem;font-weight:600;color:var(--afro-dark);outline:none;font-family:'DM Sans',sans-serif}
+.f-input:focus,.f-select:focus{border-color:var(--afro-blue);box-shadow:0 0 0 3px rgba(0,113,227,.1)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tip-presets{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:16px}
+.tip-btn{padding:10px 4px;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:7px;cursor:pointer;font-size:.82rem;font-weight:700;color:#334155;text-align:center;transition:all .15s;font-family:'DM Sans',sans-serif}
+.tip-btn.active{background:var(--afro-blue);color:#fff;border-color:var(--afro-blue)}
+.tip-btn:hover{border-color:var(--afro-blue)}
+.result-display{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:12px;padding:28px;text-align:center;margin-top:18px}
+.result-big{font-size:2.4rem;font-weight:800;color:#38bdf8;line-height:1}
+.result-label{font-size:.68rem;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.result-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:16px}
+.result-sub{padding:12px;background:rgba(255,255,255,.06);border-radius:8px}
+.result-sub-val{font-size:1.2rem;font-weight:800;color:#fff}
+.result-sub-label{font-size:.6rem;font-weight:600;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}
+@media(max-width:600px){
+  .tip-presets{grid-template-columns:repeat(3,1fr)}
+  .result-row{grid-template-columns:1fr}
+  .field-row{grid-template-columns:1fr}
+}
+details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-details-marker{display:none}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Tip & Bill Splitter Calculator","description":"Free tip calculator and bill splitter. Calculate tip amounts, split bills evenly. Supports African currencies.","url":"https://afrotools.com/tools/tip-calculator/","applicationCategory":"FinanceApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"How much should I tip in Africa?","acceptedAnswer":{"@type":"Answer","text":"Tipping customs vary by country. In Nigeria, 5-10% is typical at restaurants. In South Africa, 10-15% is standard. In Kenya, 10% is common. In Ethiopia, tipping is less expected but appreciated at 5-10%."}},
+{"@type":"Question","name":"Can I split the bill unevenly?","acceptedAnswer":{"@type":"Answer","text":"The calculator splits the total (bill + tip) evenly among the number of people. For uneven splits, use the total with tip and manually divide based on each person's share."}},
+{"@type":"Question","name":"Does the calculator support African currencies?","acceptedAnswer":{"@type":"Answer","text":"Yes. You can select from Nigerian Naira, Kenyan Shilling, South African Rand, Ghanaian Cedi, and more. The currency symbol updates throughout the results."}}
+]}</script>
+</head>
+<body>
+<afro-navbar active="tools"></afro-navbar>
+<div class="tool-hero"><div class="tool-hero-inner">
+  <div class="breadcrumb"><a href="/">AfroTools</a> / <a href="/all-tools">Tools</a> / <span>Tip Calculator</span></div>
+  <h1>Tip & Bill <em>Splitter</em></h1>
+  <p class="hero-sub">Calculate the perfect tip and split bills evenly among friends. Supports Naira, Rand, Shilling, Cedi, and more.</p>
+  <div class="hero-badges"><span class="badge b-blue">Multi-Currency</span><span class="badge b-blue">Bill Split</span><span class="badge b-blue">Instant</span></div>
+</div></div>
+
+<div class="tool-main"><div class="tool-main-inner">
+  <div class="card">
+    <div class="card-head"><span class="card-title">Tip Calculator</span></div>
+    <div class="card-body">
+      <div class="field-row">
+        <div class="field"><label class="f-label">Bill Amount</label><input type="number" class="f-input" id="billAmt" value="5000" step="0.01" min="0"></div>
+        <div class="field"><label class="f-label">Currency</label>
+          <select class="f-select" id="currency">
+            <option value="₦">NGN (₦)</option><option value="KSh">KES (KSh)</option>
+            <option value="R">ZAR (R)</option><option value="GH₵">GHS (GH₵)</option>
+            <option value="$">USD ($)</option><option value="£">GBP (£)</option><option value="€">EUR (€)</option>
+          </select>
+        </div>
+      </div>
+      <div class="f-label">Tip Percentage</div>
+      <div class="tip-presets">
+        <button class="tip-btn" data-tip="5">5%</button>
+        <button class="tip-btn active" data-tip="10">10%</button>
+        <button class="tip-btn" data-tip="15">15%</button>
+        <button class="tip-btn" data-tip="20">20%</button>
+        <button class="tip-btn" data-tip="25">25%</button>
+      </div>
+      <div class="field-row">
+        <div class="field"><label class="f-label">Custom Tip %</label><input type="number" class="f-input" id="tipPct" value="10" step="0.5" min="0" max="100"></div>
+        <div class="field"><label class="f-label">Split Between</label><input type="number" class="f-input" id="splitNum" value="1" step="1" min="1" max="100"></div>
+      </div>
+
+      <div class="result-display">
+        <div class="result-label">Total with Tip</div>
+        <div class="result-big" id="totalWithTip">₦5,500</div>
+        <div class="result-row">
+          <div class="result-sub"><div class="result-sub-label">Tip Amount</div><div class="result-sub-val" id="tipAmount">₦500</div></div>
+          <div class="result-sub"><div class="result-sub-label">Per Person</div><div class="result-sub-val" id="perPerson">₦5,500</div></div>
+          <div class="result-sub"><div class="result-sub-label">Tip Per Person</div><div class="result-sub-val" id="tipPerPerson">₦500</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><span class="card-title">About This Tool</span></div>
+    <div class="card-body">
+      <h2 style="font-size:1.1rem;font-weight:800;color:#111;margin-bottom:12px">Tipping Guide for Africa</h2>
+      <p style="font-size:.85rem;color:#475569;line-height:1.7;margin-bottom:12px">
+        Tipping customs vary significantly across Africa. In <strong>South Africa</strong>, tipping 10-15% is standard at restaurants and is an important part of service workers' income. In <strong>Nigeria</strong>, 5-10% is typical, though many upscale restaurants add a service charge. In <strong>Kenya</strong>, 10% is the norm, and in <strong>Ghana</strong>, service charges are often included but an additional 5% is appreciated.
+      </p>
+      <h3 style="font-size:.95rem;font-weight:700;color:#111;margin-bottom:8px">How to Use</h3>
+      <ol style="font-size:.85rem;color:#475569;line-height:1.8;padding-left:20px;margin-bottom:12px">
+        <li>Enter your total bill amount</li>
+        <li>Select your currency (NGN, KES, ZAR, GHS, etc.)</li>
+        <li>Choose a tip percentage using presets or enter a custom amount</li>
+        <li>Set the number of people splitting the bill</li>
+        <li>Results update instantly — total, tip, and per-person amounts</li>
+      </ol>
+      <p style="font-size:.85rem;color:#475569;line-height:1.7;margin-bottom:12px">
+        According to <a href="https://en.wikipedia.org/wiki/Gratuity" target="_blank" rel="noopener" style="color:var(--afro-blue)">international tipping norms</a>, Africa generally follows the European model where tips supplement (rather than replace) wages, unlike the US where tips form a major part of server income.
+      </p>
+      <p style="font-size:.85rem;color:#475569;line-height:1.7">For more financial tools, try our <a href="/tools/percentage-calc/" style="color:var(--afro-blue)">Percentage Calculator</a> or <a href="/tools/profit-margin/" style="color:var(--afro-blue)">Profit Margin Calculator</a>.</p>
+    </div>
+  </div>
+
+  <section style="margin-top:18px">
+    <h2 style="font-size:1.15rem;font-weight:800;color:#111;margin-bottom:14px">Frequently Asked Questions</h2>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">How much should I tip in Africa?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">In Nigeria, 5-10% is typical. In South Africa, 10-15% is standard. In Kenya, 10% is common. In Ghana, service charges are often included but an extra 5% is appreciated.</div></details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">Does the calculator support African currencies?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">Yes. Select from Nigerian Naira, Kenyan Shilling, South African Rand, Ghanaian Cedi, and more. The currency symbol updates throughout the results.</div></details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">Can I round up the tip to a nice number?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">The calculator shows exact amounts. In practice, many people round up to the nearest convenient number. For example, if your tip comes to ₦487, you might round to ₦500.</div></details>
+  </section>
+</div></div>
+
+<afro-footer></afro-footer>
+
+<script>
+function calc(){
+  const bill=parseFloat(document.getElementById('billAmt').value)||0;
+  const tipPct=parseFloat(document.getElementById('tipPct').value)||0;
+  const split=parseInt(document.getElementById('splitNum').value)||1;
+  const cur=document.getElementById('currency').value;
+
+  const tip=bill*tipPct/100;
+  const total=bill+tip;
+  const perPerson=total/split;
+  const tipPer=tip/split;
+
+  const fmt=n=>cur+n.toLocaleString(undefined,{minimumFractionDigits:0,maximumFractionDigits:0});
+  document.getElementById('totalWithTip').textContent=fmt(total);
+  document.getElementById('tipAmount').textContent=fmt(tip);
+  document.getElementById('perPerson').textContent=fmt(perPerson);
+  document.getElementById('tipPerPerson').textContent=fmt(tipPer);
+}
+
+// Preset buttons
+document.querySelectorAll('.tip-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.tip-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tipPct').value=btn.dataset.tip;
+    calc();
+  });
+});
+
+// Live calculation
+['billAmt','tipPct','splitNum','currency'].forEach(id=>{
+  document.getElementById(id).addEventListener('input',calc);
+});
+
+calc();
+</script>
+<script src="/assets/js/components/tool-registry.min.js" defer></script>
+<script src="/assets/js/components/related-tools.min.js" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js" defer></script>
+<afro-newsletter-cta></afro-newsletter-cta>
+</body>
+</html>

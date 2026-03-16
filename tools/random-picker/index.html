@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'random-picker'});</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Random Name & Number Picker — Spin the Wheel | AfroTools</title>
+<meta name="description" content="Pick random names, numbers, or items from any list. Perfect for giveaways, classroom picks, team assignments, and decision making. Free, instant, and fair.">
+<link rel="canonical" href="https://afrotools.com/tools/random-picker/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Random Name & Number Picker | AfroTools">
+<meta property="og:description" content="Pick random names or numbers fairly. Great for giveaways, classrooms. Free.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/random-picker/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+:root{--afro-blue:var(--color-primary);--afro-dark:#0f1419}
+.tool-hero{background:linear-gradient(135deg,var(--afro-dark) 0%,#1a1f2e 100%);padding:44px 0 36px;position:relative;overflow:hidden}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px;position:relative}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:var(--afro-blue)}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:var(--afro-blue);font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-blue{background:rgba(0,113,227,.18);color:var(--color-primary);border:1px solid rgba(0,113,227,.38)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:900px;margin:0 auto;padding:0 24px}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc;display:flex;justify-content:space-between;align-items:center}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
+.card-body{padding:22px}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px}
+.tab-btn{padding:10px;background:#f1f5f9;border:1.5px solid #cbd5e1;border-radius:7px;cursor:pointer;font-size:.78rem;font-weight:700;color:#475569;transition:all .15s;font-family:'DM Sans',sans-serif;text-align:center}
+.tab-btn.active{background:var(--afro-blue);color:#fff;border-color:var(--afro-blue)}
+.tab-content{display:none}.tab-content.active{display:block}
+.field{margin-bottom:16px}
+.f-label{font-size:.75rem;font-weight:700;color:var(--afro-dark);margin-bottom:6px;display:block}
+.f-input,.f-textarea{width:100%;padding:11px 13px;background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:7px;font-size:1rem;font-weight:600;color:var(--afro-dark);outline:none;font-family:'DM Sans',sans-serif}
+.f-textarea{min-height:120px;resize:vertical;font-size:.9rem}
+.f-input:focus,.f-textarea:focus{border-color:var(--afro-blue);box-shadow:0 0 0 3px rgba(0,113,227,.1)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pick-btn{width:100%;padding:16px;background:var(--afro-blue);color:#fff;border:none;border-radius:8px;font-size:1.1rem;font-weight:800;cursor:pointer;transition:all .18s;font-family:'DM Sans',sans-serif}
+.pick-btn:hover{background:#0059B3;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,113,227,.3)}
+.pick-btn:active{transform:translateY(0)}
+.result-display{margin-top:20px;text-align:center;padding:32px;background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:12px;display:none}
+.result-text{font-size:2.2rem;font-weight:800;color:#38bdf8;word-break:break-word}
+.result-sub{font-size:.78rem;color:rgba(255,255,255,.4);margin-top:8px}
+.history{margin-top:14px}
+.hist-item{display:inline-block;padding:4px 12px;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:20px;font-size:.75rem;font-weight:600;color:#1e40af;margin:3px}
+.count-badge{font-size:.72rem;background:#e2e8f0;padding:2px 8px;border-radius:4px;color:#64748b;font-weight:700}
+@media(max-width:600px){.tabs{grid-template-columns:1fr 1fr 1fr}.field-row{grid-template-columns:1fr}.result-text{font-size:1.6rem}}
+details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-details-marker{display:none}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Random Name & Number Picker","description":"Pick random names, numbers, or items from any list. Fair and cryptographically random.","url":"https://afrotools.com/tools/random-picker/","applicationCategory":"UtilityApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"Is the random picker truly random?","acceptedAnswer":{"@type":"Answer","text":"Yes. It uses the Web Crypto API (crypto.getRandomValues) which provides cryptographically secure random numbers, making results unpredictable and fair."}},
+{"@type":"Question","name":"Can I pick multiple items at once?","acceptedAnswer":{"@type":"Answer","text":"Yes. In the Name Picker mode, you can set how many names to pick at once. The picker ensures no duplicates in a single draw."}},
+{"@type":"Question","name":"Is this suitable for giveaways and competitions?","acceptedAnswer":{"@type":"Answer","text":"Yes. The cryptographic randomness makes it fair for giveaways, raffles, classroom selection, team assignments, and any scenario requiring unbiased random selection."}}
+]}</script>
+</head>
+<body>
+<afro-navbar active="tools"></afro-navbar>
+<div class="tool-hero"><div class="tool-hero-inner">
+  <div class="breadcrumb"><a href="/">AfroTools</a> / <a href="/all-tools">Tools</a> / <span>Random Picker</span></div>
+  <h1>Random <em>Picker</em></h1>
+  <p class="hero-sub">Fairly pick random names, numbers, or items from any list. Uses cryptographic randomness for truly unbiased results. Perfect for giveaways, classrooms, and decisions.</p>
+  <div class="hero-badges"><span class="badge b-blue">Crypto Random</span><span class="badge b-blue">Names & Numbers</span><span class="badge b-blue">No Signup</span></div>
+</div></div>
+
+<div class="tool-main"><div class="tool-main-inner">
+  <div class="card">
+    <div class="card-head"><span class="card-title">Pick Something Random</span><span class="count-badge" id="countBadge">0 items</span></div>
+    <div class="card-body">
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="names">Name Picker</button>
+        <button class="tab-btn" data-tab="numbers">Number Generator</button>
+        <button class="tab-btn" data-tab="coin">Coin Flip</button>
+      </div>
+
+      <!-- Name Picker -->
+      <div class="tab-content active" id="names">
+        <div class="field">
+          <label class="f-label">Enter names/items (one per line)</label>
+          <textarea class="f-textarea" id="nameList" placeholder="Chinedu&#10;Amina&#10;Thabo&#10;Ama&#10;Kwame&#10;Fatima&#10;Sipho&#10;Ngozi">Chinedu
+Amina
+Thabo
+Ama
+Kwame
+Fatima
+Sipho
+Ngozi</textarea>
+        </div>
+        <div class="field">
+          <label class="f-label">How many to pick?</label>
+          <input type="number" class="f-input" id="pickCount" value="1" min="1" max="100">
+        </div>
+        <button class="pick-btn" onclick="pickNames()">Pick Random Name(s)</button>
+      </div>
+
+      <!-- Number Generator -->
+      <div class="tab-content" id="numbers">
+        <div class="field-row">
+          <div class="field"><label class="f-label">Minimum</label><input type="number" class="f-input" id="numMin" value="1"></div>
+          <div class="field"><label class="f-label">Maximum</label><input type="number" class="f-input" id="numMax" value="100"></div>
+        </div>
+        <div class="field">
+          <label class="f-label">How many numbers?</label>
+          <input type="number" class="f-input" id="numCount" value="1" min="1" max="100">
+        </div>
+        <button class="pick-btn" onclick="pickNumbers()">Generate Random Number(s)</button>
+      </div>
+
+      <!-- Coin Flip -->
+      <div class="tab-content" id="coin">
+        <p style="font-size:.88rem;color:#475569;margin-bottom:16px;line-height:1.6">Flip a fair coin. 50/50 chance. Uses cryptographic randomness.</p>
+        <button class="pick-btn" onclick="flipCoin()">Flip Coin</button>
+      </div>
+
+      <div class="result-display" id="resultDisplay">
+        <div class="result-text" id="resultText"></div>
+        <div class="result-sub" id="resultSub"></div>
+      </div>
+
+      <div class="history" id="history"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><span class="card-title">About This Tool</span></div>
+    <div class="card-body">
+      <h2 style="font-size:1.1rem;font-weight:800;color:#111;margin-bottom:12px">How the Random Picker Works</h2>
+      <p style="font-size:.85rem;color:#475569;line-height:1.7;margin-bottom:12px">
+        The AfroTools Random Picker uses the <strong>Web Crypto API</strong> (<code>crypto.getRandomValues()</code>) to generate cryptographically secure random selections. Unlike <code>Math.random()</code> which uses a pseudo-random algorithm, our picker produces truly unpredictable results suitable for competitions and giveaways.
+      </p>
+      <h3 style="font-size:.95rem;font-weight:700;color:#111;margin-bottom:8px">Common Uses</h3>
+      <ul style="font-size:.85rem;color:#475569;line-height:1.8;padding-left:20px;margin-bottom:12px">
+        <li><strong>Social media giveaways:</strong> Paste comment names and pick a winner fairly</li>
+        <li><strong>Classroom selection:</strong> Pick students to answer questions randomly</li>
+        <li><strong>Team assignments:</strong> Randomly assign people to groups</li>
+        <li><strong>Decision making:</strong> Let fate decide between options</li>
+        <li><strong>Raffle draws:</strong> Pick winning ticket numbers</li>
+      </ul>
+      <p style="font-size:.85rem;color:#475569;line-height:1.7;margin-bottom:12px">
+        According to <a href="https://en.wikipedia.org/wiki/Cryptographically_secure_pseudorandom_number_generator" target="_blank" rel="noopener" style="color:var(--afro-blue)">cryptographic standards</a>, the Web Crypto API meets the requirements for unpredictability that simple random functions do not.
+      </p>
+      <p style="font-size:.85rem;color:#475569;line-height:1.7">
+        For other useful utilities, try the <a href="/tools/password-generator/" style="color:var(--afro-blue)">Password Generator</a> or <a href="/tools/uuid-generator/" style="color:var(--afro-blue)">UUID Generator</a>.
+      </p>
+    </div>
+  </div>
+
+  <section style="margin-top:18px">
+    <h2 style="font-size:1.15rem;font-weight:800;color:#111;margin-bottom:14px">Frequently Asked Questions</h2>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">Is the random picker truly random?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">Yes. It uses the Web Crypto API for cryptographically secure random numbers.</div></details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">Can I pick multiple items at once?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">Yes. Set how many to pick and the tool ensures no duplicates in a single draw.</div></details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">Is this suitable for giveaways?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">Yes. The cryptographic randomness makes it fair for giveaways, raffles, classroom selection, and any scenario requiring unbiased random selection.</div></details>
+  </section>
+</div></div>
+
+<afro-footer></afro-footer>
+
+<script>
+// Tabs
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+  });
+});
+
+let historyArr=[];
+
+function cryptoRandom(max){
+  const arr=new Uint32Array(1);
+  crypto.getRandomValues(arr);
+  return arr[0]%max;
+}
+
+function showResult(text,sub){
+  const el=document.getElementById('resultDisplay');
+  el.style.display='block';
+  document.getElementById('resultText').textContent=text;
+  document.getElementById('resultSub').textContent=sub||'';
+  // Animation
+  el.style.transform='scale(0.95)';
+  setTimeout(()=>el.style.transform='scale(1)',50);
+}
+
+function addHistory(text){
+  const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+  historyArr.unshift(text);
+  if(historyArr.length>20) historyArr.pop();
+  document.getElementById('history').innerHTML=historyArr.map(h=>`<span class="hist-item">${esc(h)}</span>`).join('');
+}
+
+function pickNames(){
+  const raw=document.getElementById('nameList').value.trim();
+  if(!raw){alert('Enter some names first');return;}
+  const names=raw.split('\n').map(n=>n.trim()).filter(Boolean);
+  const count=Math.min(parseInt(document.getElementById('pickCount').value)||1,names.length);
+  document.getElementById('countBadge').textContent=names.length+' items';
+
+  if(count>names.length){alert('Not enough names for that many picks');return;}
+
+  // Fisher-Yates shuffle with crypto random
+  const shuffled=[...names];
+  for(let i=shuffled.length-1;i>0;i--){
+    const j=cryptoRandom(i+1);
+    [shuffled[i],shuffled[j]]=[shuffled[j],shuffled[i]];
+  }
+  const picked=shuffled.slice(0,count);
+  showResult(picked.join(', '),count===1?'Selected from '+names.length+' items':'Picked '+count+' from '+names.length+' items');
+  picked.forEach(p=>addHistory(p));
+}
+
+function pickNumbers(){
+  const min=parseInt(document.getElementById('numMin').value)||0;
+  const max=parseInt(document.getElementById('numMax').value)||100;
+  const count=parseInt(document.getElementById('numCount').value)||1;
+  if(min>=max){alert('Minimum must be less than maximum');return;}
+  const range=max-min+1;
+  if(count>range){alert('Range too small for that many unique numbers');return;}
+
+  const picked=new Set();
+  while(picked.size<count){
+    picked.add(min+cryptoRandom(range));
+  }
+  const arr=[...picked].sort((a,b)=>a-b);
+  showResult(arr.join(', '),count===1?'Random number between '+min+' and '+max:'Picked '+count+' unique numbers');
+  arr.forEach(n=>addHistory(String(n)));
+}
+
+function flipCoin(){
+  const result=cryptoRandom(2)===0?'Heads':'Tails';
+  showResult(result,result==='Heads'?'The coin landed on heads':'The coin landed on tails');
+  addHistory(result);
+}
+</script>
+<script src="/assets/js/components/tool-registry.min.js" defer></script>
+<script src="/assets/js/components/related-tools.min.js" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js" defer></script>
+<afro-newsletter-cta></afro-newsletter-cta>
+</body>
+</html>

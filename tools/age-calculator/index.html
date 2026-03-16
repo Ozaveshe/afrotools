@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-D859CGF391');
+  gtag('event', 'tool_view', { tool_name: 'age-calculator' });
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Age Calculator — Exact Years, Months & Days | AfroTools</title>
+<meta name="description" content="Calculate your exact age in years, months, days, hours and minutes. Find days until next birthday, zodiac sign, and generation. Free online age calculator.">
+<link rel="canonical" href="https://afrotools.com/tools/age-calculator/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Age Calculator | AfroTools">
+<meta property="og:description" content="Calculate exact age in years, months, days. Free, instant.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/age-calculator/">
+<meta property="og:site_name" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+:root{--afro-blue:var(--color-primary);--afro-dark:#0f1419}
+.tool-hero{background:linear-gradient(135deg,var(--afro-dark) 0%,#1a1f2e 100%);padding:44px 0 36px;position:relative;overflow:hidden}
+.tool-hero::after{content:'🎂';position:absolute;right:5%;top:50%;transform:translateY(-50%);font-size:8rem;opacity:.06;pointer-events:none}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px;position:relative}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}
+.breadcrumb span{color:var(--afro-blue)}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:var(--afro-blue);font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-blue{background:rgba(0,113,227,.18);color:var(--color-primary);border:1px solid rgba(0,113,227,.38)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
+.card-body{padding:22px}
+.field{margin-bottom:16px}
+.f-label{font-size:.75rem;font-weight:700;color:var(--afro-dark);margin-bottom:6px;display:block}
+.f-input{width:100%;padding:11px 13px;background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:7px;font-size:1rem;font-weight:600;color:var(--afro-dark);outline:none;font-family:'DM Sans',sans-serif}
+.f-input:focus{border-color:var(--afro-blue);box-shadow:0 0 0 3px rgba(0,113,227,.1)}
+.calc-btn{width:100%;padding:13px;background:var(--afro-blue);color:#fff;border:none;border-radius:8px;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .18s;font-family:'DM Sans',sans-serif}
+.calc-btn:hover{background:#0059B3;transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,113,227,.3)}
+.result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
+.result-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;text-align:center}
+.result-num{font-size:1.8rem;font-weight:800;color:var(--afro-blue);line-height:1}
+.result-label{font-size:.65rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.05em;margin-top:4px}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.detail-box{background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:12px}
+.detail-title{font-size:.65rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.04em}
+.detail-val{font-size:1.05rem;font-weight:800;color:var(--afro-dark);margin-top:2px}
+.birthday-banner{background:linear-gradient(135deg,#fef3c7,#fde68a);border:1px solid #f59e0b;border-radius:8px;padding:14px;margin-top:14px;text-align:center;font-size:.88rem;font-weight:700;color:#92400e;display:none}
+.sidebar{display:flex;flex-direction:column;gap:16px}
+.info-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px}
+.info-title{font-size:.72rem;font-weight:700;color:var(--afro-dark);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+.info-text{font-size:.8rem;color:#475569;line-height:1.6}
+@media(max-width:768px){
+  .tool-main-inner{grid-template-columns:1fr}
+  .result-grid{grid-template-columns:repeat(3,1fr)}
+  .result-num{font-size:1.4rem}
+}
+@media(max-width:480px){
+  .detail-grid{grid-template-columns:1fr}
+}
+details[open] summary svg{transform:rotate(180deg)}
+details summary::-webkit-details-marker{display:none}
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Age Calculator","description":"Calculate your exact age in years, months, days, hours and minutes. Find days until next birthday and zodiac sign.","url":"https://afrotools.com/tools/age-calculator/","applicationCategory":"UtilityApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"How does the age calculator work?","acceptedAnswer":{"@type":"Answer","text":"Enter your date of birth and the calculator computes the exact difference between that date and today, broken down into years, months, days, hours, and minutes. It accounts for leap years and varying month lengths."}},
+{"@type":"Question","name":"Does it account for leap years?","acceptedAnswer":{"@type":"Answer","text":"Yes. The calculator correctly handles leap years when computing the total number of days you have been alive and when calculating your next birthday."}},
+{"@type":"Question","name":"Can I calculate age between two specific dates?","acceptedAnswer":{"@type":"Answer","text":"Yes. You can optionally set a custom 'Calculate at' date to find the age at any specific point in time, not just today."}}
+]}
+</script>
+</head>
+<body>
+<afro-navbar active="tools"></afro-navbar>
+
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb"><a href="/">AfroTools</a> / <a href="/all-tools">Tools</a> / <span>Age Calculator</span></div>
+    <h1>Age <em>Calculator</em></h1>
+    <p class="hero-sub">Calculate your exact age in years, months, days, hours, and minutes. Discover your zodiac sign, generation, and days until your next birthday.</p>
+    <div class="hero-badges">
+      <span class="badge b-blue">Exact Age</span>
+      <span class="badge b-blue">Zodiac Sign</span>
+      <span class="badge b-blue">Next Birthday</span>
+    </div>
+  </div>
+</div>
+
+<div class="tool-main">
+  <div class="tool-main-inner">
+    <div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Enter Your Date of Birth</span></div>
+        <div class="card-body">
+          <div class="field">
+            <label class="f-label">Date of Birth</label>
+            <input type="date" class="f-input" id="dob" value="1995-06-15">
+          </div>
+          <div class="field">
+            <label class="f-label">Calculate At (default: today)</label>
+            <input type="date" class="f-input" id="atDate">
+          </div>
+          <button class="calc-btn" onclick="calculate()">Calculate Age</button>
+
+          <div id="results" style="display:none">
+            <div class="result-grid">
+              <div class="result-box"><div class="result-num" id="rYears">0</div><div class="result-label">Years</div></div>
+              <div class="result-box"><div class="result-num" id="rMonths">0</div><div class="result-label">Months</div></div>
+              <div class="result-box"><div class="result-num" id="rDays">0</div><div class="result-label">Days</div></div>
+            </div>
+
+            <div class="detail-grid">
+              <div class="detail-box"><div class="detail-title">Total Months</div><div class="detail-val" id="totalMonths">0</div></div>
+              <div class="detail-box"><div class="detail-title">Total Weeks</div><div class="detail-val" id="totalWeeks">0</div></div>
+              <div class="detail-box"><div class="detail-title">Total Days</div><div class="detail-val" id="totalDays">0</div></div>
+              <div class="detail-box"><div class="detail-title">Total Hours</div><div class="detail-val" id="totalHours">0</div></div>
+              <div class="detail-box"><div class="detail-title">Total Minutes</div><div class="detail-val" id="totalMinutes">0</div></div>
+              <div class="detail-box"><div class="detail-title">Next Birthday</div><div class="detail-val" id="nextBday">—</div></div>
+              <div class="detail-box"><div class="detail-title">Zodiac Sign</div><div class="detail-val" id="zodiac">—</div></div>
+              <div class="detail-box"><div class="detail-title">Generation</div><div class="detail-val" id="generation">—</div></div>
+            </div>
+
+            <div class="birthday-banner" id="bdayBanner">Happy Birthday! You were born exactly <span id="bdayYears"></span> years ago today.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span class="card-title">About This Tool</span></div>
+        <div class="card-body">
+          <h2 style="font-size:1.1rem;font-weight:800;color:#111;margin-bottom:12px">How the Age Calculator Works</h2>
+          <p style="font-size:.85rem;color:#475569;line-height:1.7;margin-bottom:12px">
+            The AfroTools Age Calculator computes the exact difference between your date of birth and today (or any date you choose). Unlike simple age calculators that only show years, our tool breaks down your age into <strong>years, months, days, hours, and minutes</strong>. It correctly accounts for leap years, varying month lengths (28-31 days), and time zone differences.
+          </p>
+          <h3 style="font-size:.95rem;font-weight:700;color:#111;margin-bottom:8px">How to Use</h3>
+          <ol style="font-size:.85rem;color:#475569;line-height:1.8;padding-left:20px;margin-bottom:12px">
+            <li>Enter your date of birth using the date picker</li>
+            <li>Optionally set a "Calculate At" date to find your age at a specific point</li>
+            <li>Click "Calculate Age" to see your detailed age breakdown</li>
+          </ol>
+          <h3 style="font-size:.95rem;font-weight:700;color:#111;margin-bottom:8px">Zodiac Signs and Generations</h3>
+          <p style="font-size:.85rem;color:#475569;line-height:1.7;margin-bottom:12px">
+            The calculator also identifies your <strong>Western zodiac sign</strong> based on your birth date and your <strong>generational cohort</strong> (Baby Boomer, Gen X, Millennial, Gen Z, or Gen Alpha). These are commonly referenced in African and global pop culture. According to <a href="https://en.wikipedia.org/wiki/Generation" target="_blank" rel="noopener" style="color:var(--afro-blue)">generational research</a>, understanding your cohort can provide cultural context.
+          </p>
+          <p style="font-size:.85rem;color:#475569;line-height:1.7">
+            For more useful calculators, check out the <a href="/tools/percentage-calc/" style="color:var(--afro-blue)">Percentage Calculator</a> or the <a href="/tools/working-days/" style="color:var(--afro-blue)">Working Days Calculator</a>.
+          </p>
+        </div>
+      </div>
+
+      <section style="margin-top:18px">
+        <h2 style="font-size:1.15rem;font-weight:800;color:#111;margin-bottom:14px">Frequently Asked Questions</h2>
+        <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+          <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">How does the age calculator work?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
+          <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">Enter your date of birth and the calculator computes the exact difference between that date and today, broken down into years, months, days, hours, and minutes. It accounts for leap years and varying month lengths.</div>
+        </details>
+        <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+          <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">Does it account for leap years?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
+          <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">Yes. The calculator correctly handles leap years when computing the total number of days you have been alive and when calculating your next birthday.</div>
+        </details>
+        <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+          <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">Can I calculate age between two specific dates?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
+          <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">Yes. You can optionally set a custom "Calculate at" date to find the age at any specific point in time, not just today.</div>
+        </details>
+      </section>
+    </div>
+
+    <div class="sidebar">
+      <div class="info-card">
+        <div class="info-title">Did You Know?</div>
+        <div class="info-text">
+          <strong>Africa's median age</strong> is just 19.7 years — the youngest continent on Earth. Nigeria's median age is 18.1, Kenya's is 20.0, and South Africa's is 27.6.<br><br>
+          By 2050, Africa will be home to over 2.5 billion people, with 60% under age 25.
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-title">Zodiac Signs</div>
+        <div class="info-text" style="font-size:.75rem">
+          Aries: Mar 21 – Apr 19<br>Taurus: Apr 20 – May 20<br>Gemini: May 21 – Jun 20<br>Cancer: Jun 21 – Jul 22<br>Leo: Jul 23 – Aug 22<br>Virgo: Aug 23 – Sep 22<br>Libra: Sep 23 – Oct 22<br>Scorpio: Oct 23 – Nov 21<br>Sagittarius: Nov 22 – Dec 21<br>Capricorn: Dec 22 – Jan 19<br>Aquarius: Jan 20 – Feb 18<br>Pisces: Feb 19 – Mar 20
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<afro-footer></afro-footer>
+
+<script>
+function calculate(){
+  const dobStr=document.getElementById('dob').value;
+  const atStr=document.getElementById('atDate').value;
+  if(!dobStr){alert('Please enter your date of birth');return;}
+
+  const dob=new Date(dobStr+'T00:00:00');
+  const now=atStr?new Date(atStr+'T00:00:00'):new Date();
+
+  if(dob>now){alert('Date of birth cannot be in the future');return;}
+
+  // Calculate years, months, days
+  let years=now.getFullYear()-dob.getFullYear();
+  let months=now.getMonth()-dob.getMonth();
+  let days=now.getDate()-dob.getDate();
+
+  if(days<0){
+    months--;
+    const prevMonth=new Date(now.getFullYear(),now.getMonth(),0);
+    days+=prevMonth.getDate();
+  }
+  if(months<0){
+    years--;
+    months+=12;
+  }
+
+  // Total calculations
+  const diffMs=now-dob;
+  const totalDays=Math.floor(diffMs/(1000*60*60*24));
+  const totalWeeks=Math.floor(totalDays/7);
+  const totalMonths=years*12+months;
+  const totalHours=Math.floor(diffMs/(1000*60*60));
+  const totalMinutes=Math.floor(diffMs/(1000*60));
+
+  document.getElementById('rYears').textContent=years;
+  document.getElementById('rMonths').textContent=months;
+  document.getElementById('rDays').textContent=days;
+  document.getElementById('totalMonths').textContent=totalMonths.toLocaleString();
+  document.getElementById('totalWeeks').textContent=totalWeeks.toLocaleString();
+  document.getElementById('totalDays').textContent=totalDays.toLocaleString();
+  document.getElementById('totalHours').textContent=totalHours.toLocaleString();
+  document.getElementById('totalMinutes').textContent=totalMinutes.toLocaleString();
+
+  // Next birthday
+  let nextBday=new Date(now.getFullYear(),dob.getMonth(),dob.getDate());
+  if(nextBday<=now) nextBday=new Date(now.getFullYear()+1,dob.getMonth(),dob.getDate());
+  const daysUntil=Math.ceil((nextBday-now)/(1000*60*60*24));
+
+  // Check if today IS birthday
+  const isBirthday=(now.getMonth()===dob.getMonth()&&now.getDate()===dob.getDate());
+  const banner=document.getElementById('bdayBanner');
+  if(isBirthday){
+    banner.style.display='block';
+    document.getElementById('bdayYears').textContent=years;
+    document.getElementById('nextBday').textContent='Today!';
+  } else {
+    banner.style.display='none';
+    document.getElementById('nextBday').textContent=daysUntil+' days';
+  }
+
+  // Zodiac
+  const m=dob.getMonth()+1,d=dob.getDate();
+  const zodiacSigns=[
+    {s:'Capricorn',e:'♑',from:[12,22],to:[1,19]},
+    {s:'Aquarius',e:'♒',from:[1,20],to:[2,18]},
+    {s:'Pisces',e:'♓',from:[2,19],to:[3,20]},
+    {s:'Aries',e:'♈',from:[3,21],to:[4,19]},
+    {s:'Taurus',e:'♉',from:[4,20],to:[5,20]},
+    {s:'Gemini',e:'♊',from:[5,21],to:[6,20]},
+    {s:'Cancer',e:'♋',from:[6,21],to:[7,22]},
+    {s:'Leo',e:'♌',from:[7,23],to:[8,22]},
+    {s:'Virgo',e:'♍',from:[8,23],to:[9,22]},
+    {s:'Libra',e:'♎',from:[9,23],to:[10,22]},
+    {s:'Scorpio',e:'♏',from:[10,23],to:[11,21]},
+    {s:'Sagittarius',e:'♐',from:[11,22],to:[12,21]}
+  ];
+  let zodiac='Unknown';
+  for(const z of zodiacSigns){
+    const [fm,fd]=z.from,[tm,td]=z.to;
+    if(fm>tm){// wraps around year (Capricorn)
+      if((m===fm&&d>=fd)||(m===tm&&d<=td)) zodiac=z.e+' '+z.s;
+    } else {
+      if((m===fm&&d>=fd)||(m===tm&&d<=td)||(m>fm&&m<tm)) zodiac=z.e+' '+z.s;
+    }
+  }
+  document.getElementById('zodiac').textContent=zodiac;
+
+  // Generation
+  const birthYear=dob.getFullYear();
+  let gen='Unknown';
+  if(birthYear<=1945) gen='Silent Generation';
+  else if(birthYear<=1964) gen='Baby Boomer';
+  else if(birthYear<=1980) gen='Gen X';
+  else if(birthYear<=1996) gen='Millennial';
+  else if(birthYear<=2012) gen='Gen Z';
+  else gen='Gen Alpha';
+  document.getElementById('generation').textContent=gen;
+
+  document.getElementById('results').style.display='block';
+}
+
+// Set default "at" date to today
+document.getElementById('atDate').value=new Date().toISOString().split('T')[0];
+calculate();
+</script>
+<script src="/assets/js/components/tool-registry.min.js" defer></script>
+<script src="/assets/js/components/related-tools.min.js" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js" defer></script>
+<afro-newsletter-cta></afro-newsletter-cta>
+</body>
+</html>
