@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'ajo-interest'});</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ajo / Esusu / Stokvel Calculator — Group Savings Rotation | AfroTools</title>
+<meta name="description" content="Calculate your Ajo, Esusu, Chama, or Stokvel group savings. See rotation schedule, total contributions, and when you receive your payout. African savings groups.">
+<link rel="canonical" href="https://afrotools.com/tools/ajo-interest/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Ajo / Esusu / Stokvel Calculator | AfroTools">
+<meta property="og:description" content="African group savings calculator. Rotation schedule and payout timing.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/ajo-interest/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+:root{--afro-blue:var(--color-primary);--afro-dark:#0f1419;--green:#059669}
+.tool-hero{background:linear-gradient(135deg,#064e3b 0%,#059669 100%);padding:44px 0 36px;overflow:hidden}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#6ee7b7}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:#6ee7b7;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-green{background:rgba(110,231,183,.2);color:#6ee7b7;border:1px solid rgba(110,231,183,.4)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
+.card-body{padding:22px}
+.field{margin-bottom:16px}
+.f-label{font-size:.75rem;font-weight:700;color:var(--afro-dark);margin-bottom:6px;display:block}
+.f-input,.f-select{width:100%;padding:11px 13px;background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:7px;font-size:1rem;font-weight:600;color:var(--afro-dark);outline:none;font-family:'DM Sans',sans-serif;box-sizing:border-box}
+.f-input:focus,.f-select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(5,150,105,.12)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.calc-btn{width:100%;padding:13px;background:var(--green);color:#fff;border:none;border-radius:8px;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .18s;font-family:'DM Sans',sans-serif}
+.calc-btn:hover{background:#047857;transform:translateY(-1px)}
+#results{display:none}
+.result-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:18px}
+.result-box{background:#ecfdf5;border:1px solid #a7f3d0;border-radius:8px;padding:16px;text-align:center}
+.result-box.wide{grid-column:1/-1}
+.r-label{font-size:.68rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#64748b;margin-bottom:4px}
+.r-value{font-size:1.35rem;font-weight:800;color:var(--afro-dark)}
+.r-value.green{color:var(--green)}
+.rotation-table{width:100%;border-collapse:collapse;font-size:.78rem;margin-top:14px}
+.rotation-table th{background:#f1f5f9;padding:8px 10px;text-align:left;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#64748b;border-bottom:1px solid #e2e8f0}
+.rotation-table td{padding:8px 10px;border-bottom:1px solid #f1f5f9;font-weight:500}
+.rotation-table tr.your-turn{background:#ecfdf5;font-weight:700}
+.rotation-table tr.your-turn td{color:var(--green)}
+.sidebar .card-body{font-size:.82rem;color:#475569;line-height:1.7}
+.seo-content{max-width:800px;margin:0 auto;padding:48px 24px}
+.seo-content h2{font-size:1.4rem;font-weight:800;color:var(--afro-dark);margin:32px 0 12px}
+.seo-content p,.seo-content li{font-size:.92rem;color:#475569;line-height:1.8}
+.seo-content ul{padding-left:20px}
+.faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:10px;overflow:hidden}
+.faq summary{padding:14px 18px;font-weight:700;font-size:.88rem;cursor:pointer;background:#f8fafc;color:var(--afro-dark)}
+.faq details[open] summary{border-bottom:1px solid #e2e8f0}
+.faq details div{padding:14px 18px;font-size:.85rem;color:#475569;line-height:1.7}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.field-row{grid-template-columns:1fr}}
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Ajo / Esusu / Stokvel Calculator","url":"https://afrotools.com/tools/ajo-interest/","description":"Calculate African group savings (Ajo, Esusu, Chama, Stokvel) rotation schedules and payout timing.","applicationCategory":"FinanceApplication","operatingSystem":"All","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
+</script>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<section class="tool-hero"><div class="tool-hero-inner">
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/categories/african/">African</a> / <span>Ajo / Esusu Calculator</span></div>
+<h1>Ajo / Esusu <em>Calculator</em></h1>
+<p class="hero-sub">Calculate your group savings rotation. See when it's your turn, total contributions, and payout amount. Works for Ajo, Esusu, Chama, Stokvel, and Tontine groups.</p>
+<div class="hero-badges"><span class="badge b-green">Rotation Schedule</span><span class="badge b-green">Multi-Currency</span><span class="badge b-green">Payout Timing</span></div>
+</div></section>
+
+<section class="tool-main"><div class="tool-main-inner">
+<div class="calc-area">
+<div class="card"><div class="card-head"><span class="card-title">Group Details</span></div>
+<div class="card-body">
+<div class="field"><label class="f-label">What do you call it?</label>
+<select id="type" class="f-select">
+<option value="Ajo/Esusu">Ajo / Esusu (Nigeria - Yoruba)</option>
+<option value="Adashe">Adashe (Nigeria - Hausa)</option>
+<option value="Isusu">Isusu (Nigeria - Igbo)</option>
+<option value="Chama">Chama (Kenya)</option>
+<option value="Stokvel">Stokvel (South Africa)</option>
+<option value="Susu">Susu (Ghana)</option>
+<option value="Tontine">Tontine (Francophone Africa)</option>
+<option value="Other">Other</option>
+</select></div>
+<div class="field"><label class="f-label">Currency</label>
+<select id="currency" class="f-select">
+<option value="NGN">NGN - Nigerian Naira</option>
+<option value="KES">KES - Kenyan Shilling</option>
+<option value="ZAR">ZAR - South African Rand</option>
+<option value="GHS">GHS - Ghanaian Cedi</option>
+<option value="XOF">XOF - CFA Franc</option>
+<option value="USD">USD - US Dollar</option>
+</select></div>
+<div class="field-row">
+<div class="field"><label class="f-label">Number of Members</label><input type="number" id="members" class="f-input" value="10" min="2" max="100"></div>
+<div class="field"><label class="f-label">Your Position in Rotation</label><input type="number" id="position" class="f-input" value="3" min="1" max="100"></div>
+</div>
+<div class="field-row">
+<div class="field"><label class="f-label">Contribution per Person</label><input type="text" id="contribution" class="f-input" placeholder="e.g. 50,000" inputmode="numeric"></div>
+<div class="field"><label class="f-label">Frequency</label>
+<select id="frequency" class="f-select">
+<option value="daily">Daily</option>
+<option value="weekly">Weekly</option>
+<option value="monthly" selected>Monthly</option>
+</select></div>
+</div>
+<div class="field"><label class="f-label">Collector/Admin Fee (%)</label><input type="number" id="fee" class="f-input" value="0" min="0" max="20" step="0.5">
+<p style="font-size:.7rem;color:#94a3b8;margin-top:2px">Some Ajo collectors charge 1 contribution cycle or 2-5% fee</p></div>
+<div class="field"><label class="f-label">Start Date</label><input type="date" id="startDate" class="f-input"></div>
+<button class="calc-btn" onclick="calculate()">Calculate Rotation</button>
+</div></div>
+
+<div class="card" id="results">
+<div class="card-head"><span class="card-title">Your Group Summary</span></div>
+<div class="card-body">
+<div class="result-grid">
+<div class="result-box"><div class="r-label">Payout Amount</div><div class="r-value green" id="rPayout">--</div></div>
+<div class="result-box"><div class="r-label">Your Total Contribution</div><div class="r-value" id="rTotal">--</div></div>
+<div class="result-box"><div class="r-label">Your Turn</div><div class="r-value green" id="rTurn">--</div></div>
+<div class="result-box"><div class="r-label">Cycles to Wait</div><div class="r-value" id="rWait">--</div></div>
+<div class="result-box"><div class="r-label">Group Pool per Cycle</div><div class="r-value" id="rPool">--</div></div>
+<div class="result-box"><div class="r-label">Full Rotation Duration</div><div class="r-value" id="rDuration">--</div></div>
+</div>
+<table class="rotation-table" id="rotationTable"></table>
+</div></div>
+</div>
+
+<div class="sidebar">
+<div class="card"><div class="card-head"><span class="card-title">About Group Savings</span></div>
+<div class="card-body">
+<p><strong>Ajo/Esusu (Nigeria):</strong> A rotating savings scheme where members contribute a fixed amount regularly. Each cycle, one member receives the entire pool. Common among traders and market women.</p>
+<p style="margin-top:8px"><strong>Chama (Kenya):</strong> Investment and savings groups, often with elements of investment beyond simple rotation. Regulated under the Groups Registration Act.</p>
+<p style="margin-top:8px"><strong>Stokvel (South Africa):</strong> Over 11 million South Africans belong to stokvels, collectively saving over ZAR 50 billion annually. Some stokvels invest collectively rather than rotate.</p>
+<p style="margin-top:8px"><strong>Susu (Ghana):</strong> Often run by professional collectors who visit businesses daily. The collector typically keeps one day's contribution as their fee.</p>
+<p style="margin-top:8px"><strong>Tontine (Francophone Africa):</strong> Common in Cameroon, Senegal, and Cote d'Ivoire. Similar to Ajo but may include interest or penalty provisions.</p>
+</div></div>
+<div class="card"><div class="card-head"><span class="card-title">Tips</span></div>
+<div class="card-body">
+<p><strong>Trust is key:</strong> Only join groups with people you know and trust. Defaults can destroy the entire group.</p>
+<p style="margin-top:6px"><strong>Written agreement:</strong> Always have a written agreement specifying amounts, dates, and penalties.</p>
+<p style="margin-top:6px"><strong>Position matters:</strong> Receiving early is like getting an interest-free loan. Receiving late is like saving without interest. Negotiate your position.</p>
+</div></div>
+</div>
+</div></section>
+
+<section class="seo-content">
+<h2>Understanding African Group Savings</h2>
+<p>Group savings schemes are one of Africa's oldest and most effective financial innovations. Known by various names across the continent — Ajo/Esusu in Nigeria, Chama in Kenya, Stokvel in South Africa, Susu in Ghana, Tontine in Francophone Africa — these schemes predate formal banking and continue to thrive alongside modern financial institutions.</p>
+<p>The concept is simple: a group of people agree to contribute a fixed amount at regular intervals (daily, weekly, or monthly). The total pool is given to one member each cycle, rotating until everyone has received their payout. It's essentially a zero-interest rotating credit facility built on trust and social accountability.</p>
+
+<h2>The Mathematics of Group Savings</h2>
+<p>In a group of 10 members each contributing NGN 50,000 monthly, the pool is NGN 500,000 per month. Each member receives NGN 500,000 once during the 10-month cycle. Their total contribution over 10 months is also NGN 500,000. The key benefit isn't interest — it's the lump sum. Getting NGN 500,000 in month 3 means you effectively borrowed NGN 350,000 interest-free (you'd only contributed NGN 150,000 at that point).</p>
+
+<div class="faq">
+<h2>Frequently Asked Questions</h2>
+<details><summary>Is being first or last better?</summary><div>Being first is like getting an interest-free loan — you receive the full amount after just one contribution. Being last is like saving without interest — you've paid everything before receiving your payout. First position is more valuable but may come with obligations or higher scrutiny.</div></details>
+<details><summary>What happens if someone defaults?</summary><div>This is the biggest risk. Once a member receives their payout and stops contributing, remaining members lose money. Mitigation strategies include: only joining trusted groups, requiring guarantors, keeping membership small, collecting post-dated cheques, and having written agreements with penalty clauses.</div></details>
+<details><summary>How does the collector's fee work?</summary><div>In traditional Susu (Ghana) and some Ajo systems, the collector keeps one cycle's contribution as their fee. In a 30-day daily Ajo, you contribute 30 times but receive only 29 contributions worth. Modern groups often have no fee or charge a small percentage for administration.</div></details>
+</div>
+</section>
+
+<afro-related-tools></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+function parseNum(s){return parseFloat(String(s).replace(/[^0-9.\-]/g,''))||0}
+function fmt(n,cur){const symbols={NGN:'\u20A6',KES:'KSh ',ZAR:'R',GHS:'GH\u20B5',XOF:'CFA ',USD:'$'};return(symbols[cur]||'')+n.toLocaleString('en',{minimumFractionDigits:0,maximumFractionDigits:0})}
+
+function calculate(){
+  const type=document.getElementById('type').value;
+  const cur=document.getElementById('currency').value;
+  const members=parseInt(document.getElementById('members').value)||10;
+  const position=Math.min(parseInt(document.getElementById('position').value)||1,members);
+  const contribution=parseNum(document.getElementById('contribution').value);
+  const frequency=document.getElementById('frequency').value;
+  const fee=parseFloat(document.getElementById('fee').value)||0;
+  const startDateStr=document.getElementById('startDate').value;
+
+  if(contribution<=0){alert('Please enter the contribution amount.');return}
+
+  const pool=contribution*members;
+  const feeAmount=pool*(fee/100);
+  const payout=pool-feeAmount;
+  const totalContribution=contribution*members;
+  const wait=position-1;
+
+  const freqLabels={daily:'day',weekly:'week',monthly:'month'};
+  const freqDays={daily:1,weekly:7,monthly:30};
+
+  document.getElementById('rPayout').textContent=fmt(Math.round(payout),cur);
+  document.getElementById('rTotal').textContent=fmt(Math.round(totalContribution),cur);
+  document.getElementById('rTurn').textContent=freqLabels[frequency]+' '+position;
+  document.getElementById('rWait').textContent=wait+' '+freqLabels[frequency]+(wait!==1?'s':'');
+  document.getElementById('rPool').textContent=fmt(Math.round(pool),cur);
+  document.getElementById('rDuration').textContent=members+' '+freqLabels[frequency]+'s';
+
+  // Build rotation table
+  let startDate=startDateStr?new Date(startDateStr+'T00:00:00'):new Date();
+  let html='<thead><tr><th>#</th><th>Date</th><th>Contribution</th><th>Running Total</th><th>Receives Payout</th></tr></thead><tbody>';
+  let runningTotal=0;
+  for(let i=1;i<=members;i++){
+    runningTotal+=contribution;
+    const date=new Date(startDate.getTime()+(i-1)*freqDays[frequency]*86400000);
+    const dateStr=date.toLocaleDateString('en',{month:'short',day:'numeric',year:'numeric'});
+    const isYou=i===position;
+    html+=`<tr class="${isYou?'your-turn':''}"><td>${i}</td><td>${dateStr}</td><td>${fmt(contribution,cur)}</td><td>${fmt(runningTotal,cur)}</td><td>${isYou?'YOU ('+fmt(Math.round(payout),cur)+')':'Member '+i}</td></tr>`;
+  }
+  html+='</tbody>';
+  document.getElementById('rotationTable').innerHTML=html;
+
+  document.getElementById('results').style.display='block';
+  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// Format
+const el=document.getElementById('contribution');
+el.addEventListener('blur',()=>{const v=parseNum(el.value);if(v>0)el.value=v.toLocaleString('en')});
+el.addEventListener('focus',()=>{el.value=el.value.replace(/,/g,'')});
+
+// Default date
+document.getElementById('startDate').value=new Date().toISOString().split('T')[0];
+</script>
+</body>
+</html>
