@@ -36,8 +36,8 @@
 
       // 3. Check Supabase subscriptions table (async)
       try {
-        const supabase = window.supabase || (window.AfroAuth && window.AfroAuth._supabase);
-        if (!supabase) return false;
+        const supabase = (window.AfroAuth && typeof window.AfroAuth.getSupabase === 'function' && window.AfroAuth.getSupabase()) || null;
+        if (!supabase || !supabase.auth) return false;
 
         const { data: userData } = await supabase.auth.getUser();
         if (!userData || !userData.user) return false;
