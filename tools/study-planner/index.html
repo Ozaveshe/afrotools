@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'study-planner'});</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Study Planner & Timetable Generator — Free for Students | AfroTools</title>
+<meta name="description" content="Create a personalised study timetable. Add subjects, set exam dates, allocate hours based on difficulty. Designed for African university and secondary school students.">
+<link rel="canonical" href="https://afrotools.com/tools/study-planner/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Study Planner & Timetable Generator | AfroTools">
+<meta property="og:description" content="Generate a personalized study timetable for exam preparation.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/study-planner/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+:root{--afro-blue:var(--color-primary);--afro-dark:#0f1419;--accent:#0d9488}
+.tool-hero{background:linear-gradient(135deg,#134e4a 0%,#0d9488 100%);padding:44px 0 36px}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#99f6e4}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:#99f6e4;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-teal{background:rgba(153,246,228,.2);color:#99f6e4;border:1px solid rgba(153,246,228,.4)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 320px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc;display:flex;justify-content:space-between;align-items:center}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
+.card-body{padding:22px}
+label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
+input,select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;transition:border .2s}
+input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(13,148,136,.15)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;margin-top:18px;transition:transform .1s}
+.btn-primary{background:linear-gradient(135deg,#0f766e,#0d9488);color:#fff}
+.btn-primary:hover{transform:translateY(-1px)}
+.btn-sm{display:inline-flex;padding:6px 12px;font-size:.72rem;border-radius:6px;border:1.5px solid #cbd5e1;background:#fff;cursor:pointer;font-weight:600;color:#475569;font-family:inherit}
+.subject-row{display:grid;grid-template-columns:1fr 90px 90px 40px;gap:8px;align-items:end;margin-bottom:8px}
+.subject-row input,.subject-row select{margin-bottom:0}
+.remove-btn{background:#fee2e2;color:#dc2626;border:none;border-radius:6px;padding:8px;cursor:pointer;font-size:.75rem;font-weight:700}
+.timetable{width:100%;border-collapse:collapse;margin-top:14px;font-size:.75rem}
+.timetable th{background:#f0fdfa;color:#0f766e;font-weight:700;padding:8px;text-align:left;font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;border-bottom:2px solid #99f6e4}
+.timetable td{padding:7px 8px;border-bottom:1px solid #f1f5f9;vertical-align:top}
+.slot{border-radius:4px;padding:4px 8px;font-size:.7rem;font-weight:600;margin:2px 0;display:block}
+.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.summary-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;text-align:center}
+.summary-box .num{font-size:1.6rem;font-weight:800;color:#0d9488}
+.summary-box .lbl{font-size:.68rem;color:#64748b;font-weight:600;margin-top:3px;text-transform:uppercase;letter-spacing:.04em}
+.sidebar .info-card{background:#f0fdfa;border:1px solid #99f6e4;border-radius:8px;padding:16px;margin-top:14px}
+.info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#0f766e;margin-bottom:8px}
+.info-card p,.info-card li{font-size:.78rem;color:#0f766e;line-height:1.6}
+.info-card ul{padding-left:16px;margin:6px 0}
+.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
+.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
+.seo-section p{font-size:.88rem;color:#475569;line-height:1.75}
+.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
+.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
+.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.subject-row{grid-template-columns:1fr 1fr}}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Study Planner & Timetable Generator","url":"https://afrotools.com/tools/study-planner/","applicationCategory":"EducationalApplication","operatingSystem":"All","description":"Create a personalised study timetable for exam preparation. Designed for African students.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<section class="tool-hero"><div class="tool-hero-inner">
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Study Planner</span></div>
+<h1>Study Planner & <em>Timetable Generator</em></h1>
+<p class="hero-sub">Add your subjects, set your available study hours, and generate a balanced weekly timetable. Allocates more time to harder subjects automatically.</p>
+<div class="hero-badges"><span class="badge b-teal">WAEC / NECO</span><span class="badge b-teal">University Exams</span><span class="badge b-teal">JAMB Prep</span></div>
+</div></section>
+
+<section class="tool-main"><div class="tool-main-inner">
+<div class="calculator">
+<div class="card">
+<div class="card-head"><span class="card-title">Your Subjects</span></div>
+<div class="card-body">
+<div style="display:grid;grid-template-columns:1fr 90px 90px 40px;gap:8px;margin-bottom:6px;font-size:.68rem;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em">
+<span>Subject</span><span>Difficulty</span><span>Exam Date</span><span></span>
+</div>
+<div id="subjectList"></div>
+<button class="btn-sm" onclick="addSubject('','medium','')" style="margin-top:8px">+ Add Subject</button>
+</div></div>
+
+<div class="card">
+<div class="card-head"><span class="card-title">Schedule Preferences</span></div>
+<div class="card-body">
+<div class="row" style="margin-bottom:14px">
+<div><label>Study Hours per Day</label><input type="number" id="hoursPerDay" value="4" min="1" max="12" step="0.5"></div>
+<div><label>Study Days per Week</label>
+<select id="daysPerWeek">
+<option value="5">5 (Mon-Fri)</option>
+<option value="6" selected>6 (Mon-Sat)</option>
+<option value="7">7 (Every day)</option>
+</select></div>
+</div>
+<div class="row">
+<div><label>Session Length</label>
+<select id="sessionLength">
+<option value="0.5">30 minutes</option>
+<option value="1" selected>1 hour</option>
+<option value="1.5">1.5 hours</option>
+<option value="2">2 hours</option>
+</select></div>
+<div><label>Start Time</label><input type="time" id="startTime" value="08:00"></div>
+</div>
+<button class="btn btn-primary" onclick="generate()">Generate Timetable</button>
+</div></div>
+
+<div class="card" id="resultCard" style="display:none">
+<div class="card-head"><span class="card-title">Your Weekly Timetable</span><button class="btn-sm" onclick="printTable()">Print / Save</button></div>
+<div class="card-body">
+<div class="summary-grid" id="summaryGrid"></div>
+<div style="overflow-x:auto"><table class="timetable" id="timetable"></table></div>
+</div></div>
+</div>
+
+<div class="sidebar">
+<div class="card">
+<div class="card-head"><span class="card-title">Quick Presets</span></div>
+<div class="card-body" style="display:flex;flex-direction:column;gap:6px">
+<button class="btn-sm" onclick="loadPreset('waec')">WAEC / SSCE Subjects</button>
+<button class="btn-sm" onclick="loadPreset('jamb')">JAMB Subjects</button>
+<button class="btn-sm" onclick="loadPreset('kcse')">Kenya KCSE Subjects</button>
+<button class="btn-sm" onclick="loadPreset('uni')">University (General)</button>
+</div></div>
+<div class="info-card">
+<h4>Study Tips</h4>
+<ul>
+<li>Pomodoro: 25min study + 5min break</li>
+<li>Harder subjects in the morning</li>
+<li>Review previous day first (15 mins)</li>
+<li>Active recall > passive reading</li>
+<li>Space repetition for memorisation</li>
+</ul>
+</div>
+<div class="info-card" style="margin-top:10px">
+<h4>Difficulty Weights</h4>
+<ul>
+<li><strong>Hard:</strong> 3x time allocation</li>
+<li><strong>Medium:</strong> 2x time allocation</li>
+<li><strong>Easy:</strong> 1x time allocation</li>
+</ul>
+<p style="margin-top:6px">Harder subjects get proportionally more study hours in the timetable.</p>
+</div>
+</div>
+</div></section>
+
+<section class="seo-section">
+<h2>Free Study Timetable Generator for African Students</h2>
+<p>Effective study planning is the difference between passing and excelling in exams. Whether you're preparing for WAEC/SSCE, JAMB UTME, Kenya KCSE, or university semester exams, a well-structured timetable ensures you cover all subjects while giving harder topics more attention.</p>
+<p>This study planner automatically allocates more hours to difficult subjects, creates balanced daily schedules, and generates a printable weekly timetable. No signup required — your data stays in your browser.</p>
+
+<h2>Frequently Asked Questions</h2>
+<details class="faq-item"><summary>How does the difficulty weighting work?</summary><p>Hard subjects get 3x the time allocation, Medium gets 2x, and Easy gets 1x. For example, with 3 subjects (1 hard, 1 medium, 1 easy), the total weight is 3+2+1=6. The hard subject gets 3/6 = 50% of study time, medium gets 33%, easy gets 17%.</p></details>
+<details class="faq-item"><summary>Can I save my timetable?</summary><p>Click "Print / Save" to open the browser's print dialog where you can save as PDF or print directly. Your subjects are also saved in your browser's local storage so they'll be there when you return.</p></details>
+<details class="faq-item"><summary>How many hours should I study per day?</summary><p>For exam preparation, 4-6 hours of focused study per day is effective. Quality matters more than quantity — use active recall and spaced repetition rather than passive reading. Take regular breaks (Pomodoro technique: 25 minutes study, 5 minutes break).</p></details>
+</section>
+
+<afro-related-tools category="education" current="study-planner"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+const COLORS = ['#0d9488','#6366f1','#ea580c','#dc2626','#2563eb','#ca8a04','#9333ea','#059669','#be185d','#0284c7'];
+const DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+const PRESETS_DATA = {
+  waec: [['English',  'medium'],['Mathematics','hard'],['Physics','hard'],['Chemistry','medium'],['Biology','medium'],['Civic Education','easy'],['Further Mathematics','hard']],
+  jamb: [['English','medium'],['Mathematics','hard'],['Physics','hard'],['Chemistry','medium']],
+  kcse: [['English','medium'],['Mathematics','hard'],['Physics','hard'],['Chemistry','medium'],['Biology','medium'],['Kiswahili','easy'],['History','medium']],
+  uni: [['Course 1','hard'],['Course 2','medium'],['Course 3','medium'],['Course 4','easy'],['Course 5','hard']],
+};
+
+let subjectId = 0;
+const subjectList = document.getElementById('subjectList');
+
+function addSubject(name, difficulty, examDate) {
+  const id = subjectId++;
+  const div = document.createElement('div');
+  div.className = 'subject-row';
+  div.id = 'sub-' + id;
+  div.innerHTML = `<input type="text" value="${name}" placeholder="e.g. Mathematics"><select><option value="easy"${difficulty==='easy'?' selected':''}>Easy</option><option value="medium"${difficulty==='medium'?' selected':''}>Medium</option><option value="hard"${difficulty==='hard'?' selected':''}>Hard</option></select><input type="date" value="${examDate}"><button class="remove-btn" onclick="this.parentElement.remove()">X</button>`;
+  subjectList.appendChild(div);
+}
+
+function loadPreset(key) {
+  subjectList.innerHTML = '';
+  subjectId = 0;
+  PRESETS_DATA[key].forEach(([name, diff]) => addSubject(name, diff, ''));
+}
+
+// Load default
+loadPreset('waec');
+
+function generate() {
+  const rows = document.querySelectorAll('.subject-row');
+  const subjects = [];
+  rows.forEach((row, i) => {
+    const inputs = row.querySelectorAll('input');
+    const select = row.querySelector('select');
+    const name = inputs[0].value || `Subject ${i+1}`;
+    const diff = select.value;
+    const weight = diff === 'hard' ? 3 : diff === 'medium' ? 2 : 1;
+    subjects.push({ name, diff, weight, color: COLORS[i % COLORS.length] });
+  });
+
+  if (subjects.length === 0) return alert('Add at least one subject');
+
+  const hoursPerDay = +document.getElementById('hoursPerDay').value;
+  const daysPerWeek = +document.getElementById('daysPerWeek').value;
+  const sessionLen = +document.getElementById('sessionLength').value;
+  const startTime = document.getElementById('startTime').value;
+
+  const totalWeeklyHours = hoursPerDay * daysPerWeek;
+  const sessionsPerDay = Math.floor(hoursPerDay / sessionLen);
+  const totalSessions = sessionsPerDay * daysPerWeek;
+  const totalWeight = subjects.reduce((s, sub) => s + sub.weight, 0);
+
+  // Allocate sessions proportionally
+  let allocated = 0;
+  subjects.forEach(sub => {
+    sub.sessions = Math.max(1, Math.round((sub.weight / totalWeight) * totalSessions));
+    allocated += sub.sessions;
+  });
+  // Adjust if over/under
+  while (allocated > totalSessions) { subjects[subjects.length - 1].sessions--; allocated--; }
+  while (allocated < totalSessions) { subjects[0].sessions++; allocated++; }
+
+  sub_hours = subjects.map(s => ({ ...s, hours: (s.sessions * sessionLen).toFixed(1) }));
+
+  // Build schedule: distribute sessions across days
+  const schedule = [];
+  for (let d = 0; d < daysPerWeek; d++) schedule.push([]);
+
+  let pool = [];
+  subjects.forEach(sub => { for (let i = 0; i < sub.sessions; i++) pool.push(sub); });
+
+  // Spread evenly: try not to repeat same subject in same day
+  let dayIdx = 0;
+  pool.forEach(sub => {
+    // Find a day that doesn't already have this subject if possible
+    let placed = false;
+    for (let attempt = 0; attempt < daysPerWeek; attempt++) {
+      const idx = (dayIdx + attempt) % daysPerWeek;
+      if (schedule[idx].length < sessionsPerDay) {
+        const alreadyHas = schedule[idx].filter(s => s.name === sub.name).length;
+        if (alreadyHas === 0 || attempt === daysPerWeek - 1) {
+          schedule[idx].push(sub);
+          dayIdx = (idx + 1) % daysPerWeek;
+          placed = true;
+          break;
+        }
+      }
+    }
+    if (!placed) {
+      for (let idx = 0; idx < daysPerWeek; idx++) {
+        if (schedule[idx].length < sessionsPerDay) { schedule[idx].push(sub); break; }
+      }
+    }
+  });
+
+  // Summary
+  let summary = '';
+  summary += `<div class="summary-box"><div class="num">${totalWeeklyHours}h</div><div class="lbl">Weekly Hours</div></div>`;
+  summary += `<div class="summary-box"><div class="num">${subjects.length}</div><div class="lbl">Subjects</div></div>`;
+  document.getElementById('summaryGrid').innerHTML = summary;
+
+  // Render timetable
+  const [startH, startM] = startTime.split(':').map(Number);
+  let table = '<tr><th>Time</th>';
+  for (let d = 0; d < daysPerWeek; d++) table += `<th>${DAYS[d].slice(0, 3)}</th>`;
+  table += '</tr>';
+
+  for (let slot = 0; slot < sessionsPerDay; slot++) {
+    const slotStartMin = startH * 60 + startM + (slot * sessionLen * 60);
+    const slotEndMin = slotStartMin + sessionLen * 60;
+    const timeStr = `${String(Math.floor(slotStartMin / 60)).padStart(2, '0')}:${String(slotStartMin % 60).padStart(2, '0')} - ${String(Math.floor(slotEndMin / 60)).padStart(2, '0')}:${String(slotEndMin % 60).padStart(2, '0')}`;
+    table += `<tr><td style="white-space:nowrap;font-weight:600;color:#64748b;font-size:.7rem">${timeStr}</td>`;
+    for (let d = 0; d < daysPerWeek; d++) {
+      const sub = schedule[d][slot];
+      if (sub) {
+        table += `<td><span class="slot" style="background:${sub.color}15;color:${sub.color};border-left:3px solid ${sub.color}">${sub.name}</span></td>`;
+      } else {
+        table += '<td style="color:#cbd5e1;font-size:.7rem">Free</td>';
+      }
+    }
+    table += '</tr>';
+  }
+
+  // Add subject summary row
+  table += '<tr><td style="padding-top:12px;font-weight:700;color:var(--afro-dark);font-size:.7rem">Hours/week</td>';
+  for (let d = 0; d < daysPerWeek; d++) {
+    table += `<td style="padding-top:12px;font-size:.7rem;color:#64748b">${(schedule[d].length * sessionLen).toFixed(1)}h</td>`;
+  }
+  table += '</tr>';
+
+  document.getElementById('timetable').innerHTML = table;
+  document.getElementById('resultCard').style.display = 'block';
+  document.getElementById('resultCard').scrollIntoView({ behavior: 'smooth' });
+}
+
+function printTable() { window.print(); }
+</script>
+</body>
+</html>
