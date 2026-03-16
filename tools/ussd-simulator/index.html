@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'ussd-simulator'});</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>USSD Code Simulator | AfroTools</title>
+<meta name="description" content="Test and simulate USSD menus for African mobile money, banking, and telecom services. Build and preview USSD flows before deployment.">
+<link rel="canonical" href="https://afrotools.com/tools/ussd-simulator/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="USSD Code Simulator | AfroTools"><meta property="og:description" content="Test and build USSD menu flows.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png"><meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/ussd-simulator/">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css"><link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+:root{--afro-dark:#0f1419;--accent:#0ea5e9}
+.tool-hero{background:linear-gradient(135deg,#0c4a6e 0%,#0ea5e9 50%,#0284c7 100%);padding:44px 0 36px}.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#bae6fd}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}h1 em{color:#bae6fd;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}.b-em{background:rgba(186,230,253,.2);color:#bae6fd;border:1px solid rgba(186,230,253,.4)}
+.tool-main{padding:28px 0 72px}.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 380px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}.card-body{padding:22px}
+label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
+select,input{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;box-sizing:border-box}
+select:focus,input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(14,165,233,.15)}
+textarea{width:100%;padding:12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.78rem;background:#f8fafc;font-family:'DM Sans',monospace;box-sizing:border-box;resize:vertical;min-height:200px}
+textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(14,165,233,.15)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{margin-bottom:14px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border:none;border-radius:8px;font-size:.78rem;font-weight:700;cursor:pointer}.btn-primary{background:linear-gradient(135deg,#0284c7,#0ea5e9);color:#fff}
+.btn-block{display:block;width:100%;text-align:center;justify-content:center;margin-top:18px}
+/* Phone Simulator */
+.phone-frame{background:#1a1a2e;border-radius:28px;padding:12px;max-width:320px;margin:0 auto;box-shadow:0 8px 32px rgba(0,0,0,.3)}
+.phone-screen{background:#000;border-radius:18px;padding:0;overflow:hidden;min-height:480px;display:flex;flex-direction:column}
+.phone-status{background:#000;padding:8px 16px;display:flex;justify-content:space-between;font-size:.6rem;color:#888;font-weight:600}
+.ussd-display{flex:1;background:#f5f5dc;padding:16px;font-family:'Courier New',monospace;font-size:.82rem;color:#000;line-height:1.5;display:flex;flex-direction:column}
+.ussd-text{flex:1;white-space:pre-wrap;word-wrap:break-word}
+.ussd-input-area{margin-top:10px;display:flex;gap:6px}
+.ussd-input-area input{flex:1;padding:8px;border:1px solid #999;border-radius:4px;font-family:'Courier New',monospace;font-size:.82rem;background:#fff}
+.ussd-input-area button{padding:8px 14px;background:#4CAF50;color:#fff;border:none;border-radius:4px;font-weight:700;font-size:.78rem;cursor:pointer}
+.ussd-input-area .cancel{background:#f44336}
+.phone-nav{background:#000;padding:12px;display:flex;justify-content:center;gap:24px}
+.phone-nav span{width:36px;height:36px;border-radius:50%;border:1.5px solid #444;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:#666}
+.presets{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.preset-btn{padding:6px 12px;border:1.5px solid #e2e8f0;border-radius:6px;background:#fff;font-size:.72rem;font-weight:600;cursor:pointer;color:#475569}
+.preset-btn:hover,.preset-btn.active{border-color:var(--accent);color:var(--accent);background:#f0f9ff}
+.sidebar .info-card{background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:16px;margin-top:14px}
+.info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#0c4a6e;margin-bottom:8px}
+.info-card p,.info-card li{font-size:.78rem;color:#0c4a6e;line-height:1.6}.info-card ul{padding-left:16px;margin:6px 0}
+.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
+.seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
+.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<section class="tool-hero"><div class="tool-hero-inner">
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>USSD Simulator</span></div>
+<h1>USSD Code <em>Simulator</em></h1>
+<p class="hero-sub">Test and preview USSD menu flows for mobile money, banking, and telecom services. Build custom flows or explore preset African service codes.</p>
+<div class="hero-badges"><span class="badge b-em">Live Preview</span><span class="badge b-em">Custom Flows</span><span class="badge b-em">African Services</span></div>
+</div></section>
+
+<section class="tool-main"><div class="tool-main-inner">
+<div class="calculator">
+<div class="card">
+<div class="card-head"><span class="card-title">Preset USSD Services</span></div>
+<div class="card-body">
+<div class="presets" id="presets"></div>
+<div class="field"><label>Or Enter Custom USSD Code</label><input type="text" id="ussdCode" placeholder="*123#" value="*182#"></div>
+</div></div>
+
+<div class="card">
+<div class="card-head"><span class="card-title">Custom Flow Editor (JSON)</span></div>
+<div class="card-body">
+<textarea id="flowEditor"></textarea>
+<button class="btn btn-primary btn-block" onclick="loadCustomFlow()">Load Custom Flow</button>
+</div></div>
+</div>
+
+<div class="sidebar">
+<div class="phone-frame">
+<div class="phone-screen">
+<div class="phone-status"><span>Safaricom</span><span>12:00</span><span>4G</span></div>
+<div class="ussd-display">
+<div class="ussd-text" id="ussdText">Dial a USSD code to begin...</div>
+<div class="ussd-input-area">
+<input type="text" id="ussdInput" placeholder="Enter response" onkeydown="if(event.key==='Enter')sendResponse()">
+<button onclick="sendResponse()">Send</button>
+<button class="cancel" onclick="cancelSession()">Cancel</button>
+</div>
+</div>
+<div class="phone-nav"><span>&#9664;</span><span>&#9679;</span><span>&#9632;</span></div>
+</div>
+</div>
+
+<div class="info-card">
+<h4>How USSD Works</h4>
+<p>USSD (Unstructured Supplementary Service Data) is a real-time messaging protocol used on GSM networks. Unlike SMS, USSD sessions are interactive and real-time. Dial a code like *123#, navigate menus by entering numbers, and the session closes automatically after ~180 seconds of inactivity.</p>
+</div>
+<div class="info-card" style="margin-top:10px">
+<h4>Common African USSD Codes</h4>
+<ul>
+<li><strong>*182#</strong> — M-Pesa (Kenya)</li>
+<li><strong>*737#</strong> — GTBank (Nigeria)</li>
+<li><strong>*170#</strong> — Mobile Money (Ghana)</li>
+<li><strong>*120*321#</strong> — FNB (South Africa)</li>
+<li><strong>*100#</strong> — Airtel Money</li>
+</ul>
+</div>
+</div>
+</div></section>
+
+<section class="seo-section">
+<h2>Understanding USSD in Africa</h2>
+<p>USSD (Unstructured Supplementary Service Data) is the backbone of digital financial services across Africa. Unlike smartphone apps that require internet connectivity and modern devices, USSD works on any GSM phone — including basic feature phones that cost as little as $10. This universality has made USSD the primary interface for mobile money services like M-Pesa, bank transfers, airtime purchases, and government services across the continent.</p>
+<p>Africa has over 600 million mobile money accounts, with the majority accessed via USSD menus. Kenya's M-Pesa (*182#) processes over $50 billion annually through USSD. Nigeria's bank USSD codes (*737# for GTBank, *901# for Access Bank, *894# for First Bank) have become the primary banking interface for millions who never visit a branch. Ghana's *170# unified mobile money code serves MTN MoMo, Vodafone Cash, and AirtelTigo Money. South African banks offer comprehensive USSD banking — you can transfer money, buy airtime, pay bills, and check balances all without internet.</p>
+<p>For developers building USSD services, testing flows is essential. A USSD session is essentially a state machine: the user dials a short code, receives a menu, responds with a number, and navigates through nested menus until they reach a terminal action. Sessions timeout after about 180 seconds, and the entire interaction must be text-based within the 182-character limit per screen. This simulator helps developers design, test, and preview USSD flows before deploying them to production, ensuring a smooth user experience on any phone.</p>
+<p>USSD services in Africa are increasingly being supplemented by WhatsApp bots and app-based interfaces, but USSD remains critical for financial inclusion — reaching the ~60% of African mobile users who don't have regular internet access. Understanding USSD design principles (short menus, clear options, minimal steps to completion) is essential for any developer building for African markets.</p>
+
+<h2>Frequently Asked Questions</h2>
+<details class="faq-item"><summary>Do USSD codes work without internet?</summary><p>Yes! USSD operates over the GSM signaling channel, separate from data networks. It works on any phone (even basic feature phones) without internet, WiFi, or data bundles. This is why it's the preferred channel for financial services in Africa where internet penetration is limited.</p></details>
+<details class="faq-item"><summary>How do I build a USSD service?</summary><p>You need: (1) A short code from your telecom provider. (2) A USSD gateway (Africa's Talking, Hubtel, or your MNO's API). (3) A server application that receives requests and returns menu responses. Popular frameworks include Python/Flask, Node.js, and PHP. The flow is: User dials code → Telco sends request to your server → You return menu text → User responds → Repeat until terminal screen.</p></details>
+</section>
+
+<afro-related-tools category="developer" current="ussd-simulator"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+const PRESETS={
+  'mpesa':{code:'*182#',name:'M-Pesa (Kenya)',flow:{
+    start:{text:'M-Pesa\n1. Send Money\n2. Withdraw Cash\n3. Buy Airtime\n4. Loans & Savings\n5. Lipa na M-Pesa\n6. My Account',options:{
+      '1':{text:'Send Money\nEnter Phone Number:',input:'phone',next:'send_amount'},
+      '2':{text:'Withdraw Cash\n1. From Agent\n2. From ATM',options:{'1':{text:'Enter Agent Number:',input:'agent',next:'withdraw_amount'},'2':{text:'Enter Amount:',input:'amount',next:'withdraw_confirm'}}},
+      '3':{text:'Buy Airtime\n1. My Phone\n2. Other Phone',options:{'1':{text:'Enter Amount:',input:'amount',next:'airtime_confirm'},'2':{text:'Enter Phone Number:',input:'phone',next:'airtime_other'}}},
+      '4':{text:'Loans & Savings\n1. M-Shwari\n2. KCB M-Pesa\n3. Fuliza',options:{'1':{text:'M-Shwari\n1. Send to M-Shwari\n2. Withdraw\n3. Loan\n4. Balance',end:true},'2':{text:'KCB M-Pesa\n1. Loan\n2. Savings\n3. Balance',end:true},'3':{text:'Fuliza\n1. Check Limit\n2. Opt In/Out',end:true}}},
+      '5':{text:'Lipa na M-Pesa\n1. Pay Bill\n2. Buy Goods',options:{'1':{text:'Enter Business Number:',input:'biz',next:'paybill_acct'},'2':{text:'Enter Till Number:',input:'till',next:'buygoods_amount'}}},
+      '6':{text:'My Account\n1. Balance\n2. Statement\n3. PIN Change\n4. Language',end:true}
+    }},
+    send_amount:{text:'Enter Amount:',input:'amount',next:'send_confirm'},
+    send_confirm:{text:'Send KSh {amount} to {phone}?\n1. Confirm\n2. Cancel',end:true},
+    withdraw_amount:{text:'Enter Amount:',input:'amount',next:'withdraw_confirm'},
+    withdraw_confirm:{text:'Withdraw KSh {amount}.\nEnter M-Pesa PIN:',end:true},
+    airtime_confirm:{text:'Buy KSh {amount} airtime for your number?\n1. Confirm\n2. Cancel',end:true},
+    airtime_other:{text:'Enter Amount:',input:'amount',next:'airtime_confirm'},
+    paybill_acct:{text:'Enter Account Number:',input:'acct',next:'paybill_amount'},
+    paybill_amount:{text:'Enter Amount:',input:'amount',next:'paybill_confirm'},
+    paybill_confirm:{text:'Pay KSh {amount} to {biz}?\nEnter PIN:',end:true},
+    buygoods_amount:{text:'Enter Amount:',input:'amount',next:'buygoods_confirm'},
+    buygoods_confirm:{text:'Pay KSh {amount} to Till {till}?\nEnter PIN:',end:true}
+  }},
+  'gtbank':{code:'*737#',name:'GTBank (Nigeria)',flow:{
+    start:{text:'Welcome to GTBank\n1. Transfer\n2. Airtime\n3. Bills\n4. Balance\n5. Account Opening\n6. Cardless Withdrawal',options:{
+      '1':{text:'Transfer\n1. GTBank Account\n2. Other Banks\n3. Phone Number',options:{'1':{text:'Enter Account Number:',input:'acct',next:'gt_amount'},'2':{text:'Enter Account Number:',input:'acct',next:'gt_bank_select'},'3':{text:'Enter Phone Number:',input:'phone',next:'gt_amount'}}},
+      '2':{text:'Buy Airtime\n1. Self\n2. Others',options:{'1':{text:'Enter Amount:',input:'amount',next:'gt_airtime_confirm'},'2':{text:'Enter Phone Number:',input:'phone',next:'gt_airtime_other'}}},
+      '3':{text:'Pay Bills\n1. DSTV\n2. Electricity\n3. Internet\n4. School Fees',end:true},
+      '4':{text:'Your balance is ₦XXX,XXX.XX\nLast transaction: ₦5,000 debit',end:true},
+      '5':{text:'Account Opening\nEnter your BVN:',input:'bvn',next:'gt_acct_open'},
+      '6':{text:'Cardless Withdrawal\nEnter Amount:',input:'amount',next:'gt_cardless'}
+    }},
+    gt_amount:{text:'Enter Amount:',input:'amount',next:'gt_pin'},
+    gt_bank_select:{text:'Select Bank:\n1. Access\n2. Zenith\n3. First Bank\n4. UBA\n5. Others',next:'gt_amount'},
+    gt_pin:{text:'Enter your 4-digit PIN:',end:true},
+    gt_airtime_confirm:{text:'Buy ₦{amount} airtime?\nEnter PIN:',end:true},
+    gt_airtime_other:{text:'Enter Amount:',input:'amount',next:'gt_airtime_confirm'},
+    gt_acct_open:{text:'Processing...\nAccount Number: 012XXXXXXX\nVisit any branch to complete.',end:true},
+    gt_cardless:{text:'Withdrawal code: XXXX\nValid for 1 hour at any GTBank ATM.',end:true}
+  }},
+  'momo':{code:'*170#',name:'MTN MoMo (Ghana)',flow:{
+    start:{text:'MTN MoMo\n1. Transfer Money\n2. Airtime\n3. MoMo Pay\n4. Financial Services\n5. Cash Out\n6. My Account',options:{
+      '1':{text:'Transfer to:\n1. MoMo User\n2. Other Network\n3. Bank Account',options:{'1':{text:'Enter Phone Number:',input:'phone',next:'momo_amount'},'2':{text:'Enter Phone Number:',input:'phone',next:'momo_amount'},'3':{text:'Enter Bank & Account:',input:'acct',next:'momo_amount'}}},
+      '2':{text:'Buy Airtime\n1. Self\n2. Others',options:{'1':{text:'Enter Amount:',input:'amount',next:'momo_confirm'},'2':{text:'Enter Number:',input:'phone',next:'momo_airtime_amt'}}},
+      '3':{text:'MoMo Pay\n1. Merchant Payment\n2. QR Code',end:true},
+      '4':{text:'Financial Services\n1. MoMo Loan\n2. Insurance\n3. Savings',end:true},
+      '5':{text:'Cash Out\nEnter Agent Number:',input:'agent',next:'momo_cashout_amt'},
+      '6':{text:'My Account\n1. Balance\n2. Mini Statement\n3. PIN Change',end:true}
+    }},
+    momo_amount:{text:'Enter Amount (GH₵):',input:'amount',next:'momo_confirm'},
+    momo_confirm:{text:'Confirm transaction?\nEnter MoMo PIN:',end:true},
+    momo_airtime_amt:{text:'Enter Amount:',input:'amount',next:'momo_confirm'},
+    momo_cashout_amt:{text:'Enter Amount:',input:'amount',next:'momo_confirm'}
+  }},
+  'fnb':{code:'*120*321#',name:'FNB (South Africa)',flow:{
+    start:{text:'FNB Banking\n1. Payments\n2. Transfers\n3. Prepaid\n4. Balances\n5. eWallet\n6. More',options:{
+      '1':{text:'Payments\n1. Pay Beneficiary\n2. Once-off Payment\n3. Buy Electricity',end:true},
+      '2':{text:'Transfers\n1. Between Accounts\n2. To FNB Account\n3. To Other Bank',end:true},
+      '3':{text:'Prepaid\n1. Airtime Self\n2. Airtime Other\n3. Data Bundle',options:{'1':{text:'Select Amount:\n1. R5\n2. R10\n3. R29\n4. R55\n5. R110',end:true},'2':{text:'Enter Number:',input:'phone',next:'fnb_airtime'},'3':{text:'Select Bundle:\n1. 1GB R99\n2. 2GB R149\n3. 5GB R299',end:true}}},
+      '4':{text:'Balances\n1. Cheque Account\n2. Savings\n3. Credit Card\n4. All Accounts',end:true},
+      '5':{text:'eWallet\n1. Send Money\n2. Cash Out\n3. Balance',options:{'1':{text:'Enter Phone Number:',input:'phone',next:'fnb_ewallet_amt'},'2':{text:'Your eWallet PIN is XXXX',end:true},'3':{text:'eWallet Balance: R XXX',end:true}}},
+      '6':{text:'More\n1. Cardless\n2. Stop Card\n3. Branch Locator',end:true}
+    }},
+    fnb_airtime:{text:'Select Amount:\n1. R5\n2. R12\n3. R29\n4. R55',end:true},
+    fnb_ewallet_amt:{text:'Enter Amount:',input:'amount',next:'fnb_ewallet_confirm'},
+    fnb_ewallet_confirm:{text:'Send R{amount} to {phone}?\n1. Confirm\n2. Cancel',end:true}
+  }}
+};
+
+let currentFlow=null;
+let currentState='start';
+let sessionVars={};
+
+function initPresets(){
+  const el=document.getElementById('presets');
+  let html='';
+  Object.entries(PRESETS).forEach(([key,p])=>{
+    html+=`<button class="preset-btn" data-key="${key}" onclick="loadPreset('${key}')">${p.name} (${p.code})</button>`;
+  });
+  el.innerHTML=html;
+}
+
+function loadPreset(key){
+  document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector(`.preset-btn[data-key="${key}"]`).classList.add('active');
+  const preset=PRESETS[key];
+  document.getElementById('ussdCode').value=preset.code;
+  currentFlow=preset.flow;
+  document.getElementById('flowEditor').value=JSON.stringify(preset.flow,null,2);
+  startSession();
+}
+
+function loadCustomFlow(){
+  try{
+    currentFlow=JSON.parse(document.getElementById('flowEditor').value);
+    startSession();
+  }catch(e){
+    alert('Invalid JSON. Please check your flow definition.');
+  }
+}
+
+function startSession(){
+  currentState='start';
+  sessionVars={};
+  renderScreen();
+}
+
+function renderScreen(){
+  if(!currentFlow||!currentFlow[currentState])return;
+  const screen=currentFlow[currentState];
+  let text=screen.text;
+  // Replace variables
+  Object.entries(sessionVars).forEach(([k,v])=>{
+    text=text.replace(new RegExp('\\{'+k+'\\}','g'),v);
+  });
+  document.getElementById('ussdText').textContent=text;
+  document.getElementById('ussdInput').value='';
+  document.getElementById('ussdInput').focus();
+}
+
+function sendResponse(){
+  const input=document.getElementById('ussdInput').value.trim();
+  if(!input||!currentFlow)return;
+  const screen=currentFlow[currentState];
+
+  // Store input if this screen expects it
+  if(screen.input){
+    sessionVars[screen.input]=input;
+  }
+
+  // Navigate
+  if(screen.options&&screen.options[input]){
+    const next=screen.options[input];
+    if(typeof next==='string'){
+      currentState=next;
+    }else if(next.next){
+      // Inline screen with next state
+      if(next.input)sessionVars[next.input]=input;
+      currentState=next.next;
+    }else if(next.options){
+      // Inline nested menu
+      currentFlow['_inline_'+Date.now()]=next;
+      currentState='_inline_'+Date.now();
+      // Store inline for back navigation
+    }else if(next.end){
+      document.getElementById('ussdText').textContent=replaceVars(next.text)+'\n\n[Session Ended]';
+      return;
+    }
+    if(next.text&&!next.next&&!next.options){
+      document.getElementById('ussdText').textContent=replaceVars(next.text)+'\n\n[Session Ended]';
+      return;
+    }
+    if(next.text&&next.options){
+      // Create temp state
+      const tmpKey='_tmp_'+Date.now();
+      currentFlow[tmpKey]=next;
+      currentState=tmpKey;
+    }
+  }else if(screen.next){
+    currentState=screen.next;
+  }else if(screen.end){
+    document.getElementById('ussdText').textContent=replaceVars(screen.text)+'\n\n[Session Ended]';
+    return;
+  }
+
+  renderScreen();
+}
+
+function replaceVars(text){
+  if(!text)return '';
+  Object.entries(sessionVars).forEach(([k,v])=>{
+    text=text.replace(new RegExp('\\{'+k+'\\}','g'),v);
+  });
+  return text;
+}
+
+function cancelSession(){
+  document.getElementById('ussdText').textContent='Session cancelled.\n\nDial a USSD code to start again.';
+  currentFlow=null;
+  currentState='start';
+  sessionVars={};
+}
+
+// Init
+initPresets();
+// Load M-Pesa by default
+loadPreset('mpesa');
+</script>
+</body>
+</html>

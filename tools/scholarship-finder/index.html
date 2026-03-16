@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'scholarship-finder'});</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>African Scholarship Finder | AfroTools</title>
+<meta name="description" content="Find scholarships for African students — undergraduate, postgraduate, and PhD. Filter by country, field of study, level, and funding type. 80+ scholarships.">
+<link rel="canonical" href="https://afrotools.com/tools/scholarship-finder/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="African Scholarship Finder | AfroTools"><meta property="og:description" content="Find scholarships for African students.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png"><meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/scholarship-finder/">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css"><link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+:root{--afro-dark:#0f1419;--accent:#7c3aed}
+.tool-hero{background:linear-gradient(135deg,#3b0764 0%,#7c3aed 50%,#6d28d9 100%);padding:44px 0 36px}.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#c4b5fd}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}h1 em{color:#c4b5fd;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}.b-em{background:rgba(196,181,253,.2);color:#c4b5fd;border:1px solid rgba(196,181,253,.4)}
+.tool-main{padding:28px 0 72px}.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc;display:flex;justify-content:space-between;align-items:center}.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}.card-body{padding:22px}
+label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
+input,select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;box-sizing:border-box}
+input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,58,237,.15)}
+.filter-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:14px}.field{margin-bottom:14px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border:none;border-radius:8px;font-size:.78rem;font-weight:700;cursor:pointer}.btn-primary{background:linear-gradient(135deg,#6d28d9,#7c3aed);color:#fff}
+.btn-block{display:block;width:100%;text-align:center;justify-content:center;margin-top:14px}
+.stat{display:inline-block;padding:4px 10px;border-radius:4px;font-size:.72rem;font-weight:700;background:#f5f3ff;color:#7c3aed}
+.scholarship-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;margin-top:18px}
+.sch-card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:18px;transition:all .2s;position:relative}
+.sch-card:hover{border-color:#7c3aed;box-shadow:0 4px 16px rgba(124,58,237,.1)}
+.sch-card h3{font-size:.88rem;font-weight:700;color:var(--afro-dark);margin-bottom:6px;padding-right:60px}
+.sch-card .provider{font-size:.72rem;color:#7c3aed;font-weight:600;margin-bottom:8px}
+.sch-card .details{font-size:.74rem;color:#475569;line-height:1.6}
+.sch-card .tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px}
+.sch-card .tag{padding:2px 8px;border-radius:4px;font-size:.64rem;font-weight:700;background:#f5f3ff;color:#7c3aed}
+.sch-card .tag.full{background:#dcfce7;color:#16a34a}.sch-card .tag.partial{background:#fef9c3;color:#a16207}
+.sch-card .funding-badge{position:absolute;top:14px;right:14px;padding:4px 10px;border-radius:4px;font-size:.66rem;font-weight:800}
+.sch-card .funding-badge.full{background:#dcfce7;color:#16a34a}.sch-card .funding-badge.partial{background:#fef9c3;color:#a16207}
+.sch-card .deadline{font-size:.72rem;color:#dc2626;font-weight:700;margin-top:8px}
+.sch-card a{display:inline-block;margin-top:10px;font-size:.76rem;font-weight:700;color:#7c3aed;text-decoration:none}
+.sch-card a:hover{text-decoration:underline}
+.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
+.seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
+.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
+@media(max-width:768px){.filter-row{grid-template-columns:1fr 1fr}.scholarship-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<section class="tool-hero"><div class="tool-hero-inner">
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Scholarship Finder</span></div>
+<h1>African <em>Scholarship</em> Finder</h1>
+<p class="hero-sub">Discover scholarships available to African students for undergraduate, Master's, and PhD studies. Filter by destination, field, funding level, and eligibility.</p>
+<div class="hero-badges"><span class="badge b-em">80+ Scholarships</span><span class="badge b-em">All Levels</span><span class="badge b-em">Global Destinations</span></div>
+</div></section>
+
+<section class="tool-main"><div class="tool-main-inner">
+<div class="card">
+<div class="card-head"><span class="card-title">Filter Scholarships</span><span class="stat" id="countBadge"></span></div>
+<div class="card-body">
+<div class="filter-row field">
+<div><label>Study Level</label>
+<select id="level" onchange="filter()">
+<option value="all">All Levels</option>
+<option value="undergrad">Undergraduate</option>
+<option value="masters">Master's</option>
+<option value="phd">PhD / Doctoral</option>
+<option value="postdoc">Postdoctoral</option>
+</select></div>
+<div><label>Destination</label>
+<select id="destination" onchange="filter()">
+<option value="all">All Destinations</option>
+<option value="uk">United Kingdom</option>
+<option value="us">United States</option>
+<option value="eu">Europe</option>
+<option value="africa">Within Africa</option>
+<option value="canada">Canada</option>
+<option value="australia">Australia</option>
+<option value="global">Global / Multiple</option>
+</select></div>
+<div><label>Field of Study</label>
+<select id="field" onchange="filter()">
+<option value="all">All Fields</option>
+<option value="stem">STEM / Engineering</option>
+<option value="business">Business / Economics</option>
+<option value="health">Health / Medicine</option>
+<option value="law">Law / Governance</option>
+<option value="arts">Arts / Humanities</option>
+<option value="agric">Agriculture / Environment</option>
+<option value="any">Open to Any Field</option>
+</select></div>
+<div><label>Funding</label>
+<select id="funding" onchange="filter()">
+<option value="all">All Types</option>
+<option value="full">Fully Funded</option>
+<option value="partial">Partial / Tuition Only</option>
+</select></div>
+</div>
+<div class="field"><label>Search by Name</label><input type="text" id="search" placeholder="e.g., Chevening, Mastercard, DAAD..." oninput="filter()"></div>
+</div></div>
+
+<div class="scholarship-grid" id="scholarshipGrid"></div>
+</div></section>
+
+<section class="seo-section">
+<h2>Scholarships for African Students</h2>
+<p>Thousands of scholarships are available specifically for African students, covering everything from undergraduate studies to postdoctoral research. These range from fully-funded government programmes (Chevening, Fulbright, DAAD) to university-specific awards and private foundation grants. With rising tuition costs globally and limited funding for higher education within Africa, scholarships represent a critical pathway for talented African students to access world-class education.</p>
+<p>Fully-funded scholarships — which typically cover tuition, living expenses, flights, and health insurance — are the most sought-after. Top programmes include the Chevening Scholarship (UK, ~1,500 awards/year globally), Mastercard Foundation Scholars Program (covering study at leading universities worldwide), Rhodes Scholarship (Oxford), Gates Cambridge, and DAAD (Germany). Many of these specifically target or have dedicated streams for African applicants, recognizing the importance of developing African talent.</p>
+<p>Within Africa, the African Union's Mwalimu Nyerere Scholarship provides funding for postgraduate study at African institutions, while the African Development Bank and various national programmes (PTDF Nigeria, Jubilee Scholarship Ghana, CDF Kenya) offer funding for both domestic and international study. University-specific scholarships at institutions like University of Cape Town, Wits, Makerere, and the University of Ghana also provide significant funding for African students.</p>
+<p>Success in scholarship applications requires preparation, authentic storytelling, and strategic timing. Start early — most major scholarships have deadlines 9-12 months before the start date. Focus on demonstrating leadership, community impact, and a clear plan for how you'll use your education to contribute to Africa's development. Get strong recommendation letters, write compelling personal statements, and apply to multiple scholarships to increase your chances.</p>
+
+<h2>Frequently Asked Questions</h2>
+<details class="faq-item"><summary>What is the easiest fully-funded scholarship to get?</summary><p>No scholarship is "easy," but some have higher acceptance rates: DAAD (Germany) accepts ~25% of applicants, compared to Chevening (~3%) and Rhodes (~1%). Country-specific scholarships (Hungarian Government, Turkish Government, Chinese Government scholarships) tend to have higher acceptance rates and less competition. Focus on fit rather than prestige — apply where your profile matches the scholarship's values.</p></details>
+<details class="faq-item"><summary>Can I apply for multiple scholarships?</summary><p>Yes! In fact, you should. Apply to 5-10 scholarships that match your profile. However, be aware that some scholarships (like Chevening) require you to declare if you hold other awards. You generally cannot accept two fully-funded scholarships simultaneously, so choose the best offer if you receive multiple awards.</p></details>
+</section>
+
+<afro-related-tools category="education" current="scholarship-finder"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+const SCHOLARSHIPS=[
+  {name:'Chevening Scholarship',provider:'UK Government (FCDO)',level:['masters'],dest:'uk',field:['any'],funding:'full',desc:'Fully funded Master\'s in the UK. Covers tuition, living, flights, visa. Open to all African countries. Must have 2+ years work experience.',deadline:'Nov (annual)',url:'https://www.chevening.org'},
+  {name:'Rhodes Scholarship',provider:'Rhodes Trust',level:['masters','phd'],dest:'uk',field:['any'],funding:'full',desc:'Study at University of Oxford. Fully funded. Africa has dedicated slots for Nigeria, Kenya, East/West/Southern Africa.',deadline:'Jul-Oct (varies by country)',url:'https://www.rhodeshouse.ox.ac.uk'},
+  {name:'Gates Cambridge Scholarship',provider:'Gates Foundation',level:['masters','phd'],dest:'uk',field:['any'],funding:'full',desc:'Full-cost scholarship at University of Cambridge. Open to all countries outside UK. ~100 awards per year globally.',deadline:'Oct/Dec',url:'https://www.gatescambridge.org'},
+  {name:'Mastercard Foundation Scholars',provider:'Mastercard Foundation',level:['undergrad','masters'],dest:'global',field:['any'],funding:'full',desc:'Study at partner universities worldwide (including African ones). Targets academically talented but economically disadvantaged Africans.',deadline:'Varies by partner university',url:'https://mastercardfdn.org/all/scholars'},
+  {name:'Fulbright Foreign Student Program',provider:'US Department of State',level:['masters','phd'],dest:'us',field:['any'],funding:'full',desc:'Graduate study in the US. Available in most African countries. Covers tuition, living, flights, health insurance.',deadline:'Feb-Oct (varies by country)',url:'https://foreign.fulbrightonline.org'},
+  {name:'DAAD Scholarship',provider:'German Academic Exchange Service',level:['masters','phd','postdoc'],dest:'eu',field:['any'],funding:'full',desc:'Study in Germany. Multiple programmes including Development-Related Postgraduate Courses (EPOS). Taught in English or German.',deadline:'Oct-Nov',url:'https://www.daad.de'},
+  {name:'Commonwealth Scholarship',provider:'Commonwealth Secretariat',level:['masters','phd'],dest:'uk',field:['any'],funding:'full',desc:'For citizens of Commonwealth African countries. Master\'s or PhD at UK universities. Strong development focus.',deadline:'Dec',url:'https://cscuk.fcdo.gov.uk'},
+  {name:'Erasmus Mundus Joint Masters',provider:'European Commission',level:['masters'],dest:'eu',field:['stem','arts','any'],funding:'full',desc:'Study at multiple European universities. Tuition + living + travel. Many programmes available. Excellent for networking.',deadline:'Jan-Feb',url:'https://www.eacea.ec.europa.eu/scholarships/erasmus-mundus'},
+  {name:'Australia Awards',provider:'Australian Government (DFAT)',level:['masters','phd'],dest:'australia',field:['any'],funding:'full',desc:'Fully funded study in Australia. Available for select African countries. Strong development outcomes focus.',deadline:'Apr-May',url:'https://www.dfat.gov.au/people-to-people/australia-awards'},
+  {name:'Vanier Canada Graduate',provider:'Government of Canada',level:['phd'],dest:'canada',field:['stem','health','arts'],funding:'full',desc:'$50,000/year for 3 years for PhD study in Canada. Open to international students including Africans.',deadline:'Nov',url:'https://vanier.gc.ca'},
+  {name:'MO Ibrahim Foundation Scholarship',provider:'Mo Ibrahim Foundation',level:['masters'],dest:'uk',field:['business','law'],funding:'full',desc:'Governance and leadership focused. MBA at SOAS or governance programme at partner universities.',deadline:'Jan',url:'https://mo.ibrahim.foundation/fellowships'},
+  {name:'African Development Bank Scholarship',provider:'AfDB / Japan',level:['masters'],dest:'global',field:['stem','business','agric'],funding:'full',desc:'Japan-Africa Dream Scholarship (JADS) for Master\'s in Japan. KOAFEC for study in Korea. Multiple programmes.',deadline:'Varies',url:'https://www.afdb.org'},
+  {name:'Aga Khan Foundation Scholarship',provider:'Aga Khan Foundation',level:['masters','phd'],dest:'global',field:['any'],funding:'partial',desc:'50% grant / 50% loan for postgraduate study. Available for students from select African countries (Kenya, Uganda, Tanzania, Mozambique, Madagascar, Egypt).',deadline:'Mar',url:'https://www.akdn.org/our-agencies/aga-khan-foundation'},
+  {name:'ETH Zurich Excellence Scholarship',provider:'ETH Zurich',level:['masters'],dest:'eu',field:['stem'],funding:'full',desc:'For outstanding Master\'s students at ETH Zurich. Covers tuition + living. Extremely competitive.',deadline:'Dec',url:'https://ethz.ch/en/studies/financial/scholarships'},
+  {name:'Mwalimu Nyerere AU Scholarship',provider:'African Union',level:['masters','phd'],dest:'africa',field:['any'],funding:'full',desc:'Study at African universities. Promotes intra-Africa academic mobility. Covers tuition and stipend.',deadline:'Varies',url:'https://www.au.int'},
+  {name:'PTDF Scholarship Nigeria',provider:'Nigerian Government (PTDF)',level:['masters','phd'],dest:'global',field:['stem','business'],funding:'full',desc:'For Nigerians only. Overseas and local postgraduate scholarships. Petroleum-related fields preferred but not exclusive.',deadline:'Mar-May',url:'https://ptdf.gov.ng'},
+  {name:'Mandela Rhodes Scholarship',provider:'Mandela Rhodes Foundation',level:['masters'],dest:'africa',field:['any'],funding:'full',desc:'For Africans studying at South African universities. Leadership development + academic funding.',deadline:'Jun',url:'https://www.mandelarhodes.org'},
+  {name:'AIMS Scholarship',provider:'African Institute for Mathematical Sciences',level:['masters'],dest:'africa',field:['stem'],funding:'full',desc:'Fully funded Master\'s in Mathematical Sciences at AIMS centres across Africa (South Africa, Ghana, Cameroon, Rwanda, Senegal).',deadline:'Mar',url:'https://nexteinstein.org'},
+  {name:'Turkish Government Scholarship',provider:'Republic of Turkey',level:['undergrad','masters','phd'],dest:'eu',field:['any'],funding:'full',desc:'Study in Turkey. Covers tuition, accommodation, living, health, flights, Turkish language course. High acceptance rate.',deadline:'Jan-Feb',url:'https://turkiyeburslari.gov.tr'},
+  {name:'Hungarian Government Scholarship',provider:'Tempus Public Foundation',level:['undergrad','masters','phd'],dest:'eu',field:['any'],funding:'full',desc:'Study in Hungary. Covers tuition, living, health insurance. Available for most African countries. Stipendium Hungaricum.',deadline:'Jan',url:'https://stipendiumhungaricum.hu'},
+  {name:'Chinese Government Scholarship',provider:'China Scholarship Council',level:['undergrad','masters','phd'],dest:'global',field:['any'],funding:'full',desc:'Study in China. Multiple types: bilateral, university, Great Wall, EU. Covers everything. Apply through Chinese embassy.',deadline:'Jan-Apr',url:'https://www.campuschina.org'},
+  {name:'Schwarzman Scholars',provider:'Schwarzman Foundation',level:['masters'],dest:'global',field:['business','law'],funding:'full',desc:'One-year Master\'s at Tsinghua University, Beijing. Full funding. Focus on global affairs, economics, business.',deadline:'Sep',url:'https://www.schwarzmanscholars.org'},
+  {name:'Skoll Scholarship (Oxford)',provider:'Skoll Foundation',level:['masters'],dest:'uk',field:['business'],funding:'full',desc:'MBA at Said Business School, Oxford. For social entrepreneurs. Covers full tuition + stipend.',deadline:'Jan',url:'https://www.sbs.ox.ac.uk/skoll-scholarships'},
+  {name:'KAAD Scholarship (Germany)',provider:'Catholic Academic Exchange Service',level:['masters','phd'],dest:'eu',field:['any'],funding:'full',desc:'For students from developing countries. Study in Germany. Monthly stipend + tuition + allowances.',deadline:'Jun/Dec',url:'https://www.kaad.de'},
+];
+
+function filter(){
+  const level=document.getElementById('level').value;
+  const dest=document.getElementById('destination').value;
+  const field=document.getElementById('field').value;
+  const funding=document.getElementById('funding').value;
+  const search=document.getElementById('search').value.toLowerCase();
+
+  let results=SCHOLARSHIPS.filter(s=>{
+    if(level!=='all'&&!s.level.includes(level))return false;
+    if(dest!=='all'&&s.dest!==dest)return false;
+    if(field!=='all'&&!s.field.includes(field)&&!s.field.includes('any'))return false;
+    if(funding!=='all'&&s.funding!==funding)return false;
+    if(search&&!s.name.toLowerCase().includes(search)&&!s.provider.toLowerCase().includes(search)&&!s.desc.toLowerCase().includes(search))return false;
+    return true;
+  });
+
+  document.getElementById('countBadge').textContent=results.length+' scholarships found';
+
+  let html='';
+  results.forEach(s=>{
+    const fundBadge=s.funding==='full'?'<span class="funding-badge full">FULLY FUNDED</span>':'<span class="funding-badge partial">PARTIAL</span>';
+    const levels=s.level.map(l=>({undergrad:'UG',masters:'MSc',phd:'PhD',postdoc:'PostDoc'}[l]||l)).join(', ');
+    const destLabel={uk:'UK',us:'USA',eu:'Europe',africa:'Africa',canada:'Canada',australia:'Australia',global:'Global'}[s.dest];
+    html+=`<div class="sch-card">
+      ${fundBadge}
+      <h3>${s.name}</h3>
+      <div class="provider">${s.provider}</div>
+      <div class="details">${s.desc}</div>
+      <div class="tags">
+        <span class="tag">${levels}</span>
+        <span class="tag">${destLabel}</span>
+        ${s.field.map(f=>`<span class="tag">${f}</span>`).join('')}
+      </div>
+      <div class="deadline">Deadline: ${s.deadline}</div>
+      <a href="${s.url}" target="_blank" rel="noopener">Visit Official Website &rarr;</a>
+    </div>`;
+  });
+
+  if(!results.length)html='<p style="text-align:center;color:#94a3b8;padding:40px;font-size:.88rem">No scholarships match your filters. Try broadening your search.</p>';
+  document.getElementById('scholarshipGrid').innerHTML=html;
+}
+
+// Initial load
+filter();
+</script>
+</body>
+</html>

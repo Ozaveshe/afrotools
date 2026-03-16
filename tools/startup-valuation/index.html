@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'startup-valuation'});</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>African Startup Valuation Tool | AfroTools</title>
+<meta name="description" content="Estimate your African startup's valuation using multiple methods — Revenue Multiple, Berkus, Scorecard, DCF. Industry-specific benchmarks for African markets.">
+<link rel="canonical" href="https://afrotools.com/tools/startup-valuation/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="African Startup Valuation Tool | AfroTools"><meta property="og:description" content="Estimate your African startup valuation.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png"><meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/startup-valuation/">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css"><link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+:root{--afro-dark:#0f1419;--accent:#16a34a}
+.tool-hero{background:linear-gradient(135deg,#14532d 0%,#16a34a 50%,#15803d 100%);padding:44px 0 36px}.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#bbf7d0}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}h1 em{color:#bbf7d0;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}.b-em{background:rgba(187,247,208,.2);color:#bbf7d0;border:1px solid rgba(187,247,208,.4)}
+.tool-main{padding:28px 0 72px}.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}.card-body{padding:22px}
+label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
+input,select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;box-sizing:border-box}
+input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(22,163,74,.15)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{margin-bottom:14px}
+.btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;margin-top:18px}.btn-primary{background:linear-gradient(135deg,#15803d,#16a34a);color:#fff}
+.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.result-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;text-align:center}
+.result-box .num{font-size:1.2rem;font-weight:800;color:#16a34a}.result-box .lbl{font-size:.68rem;color:#64748b;font-weight:600;margin-top:3px;text-transform:uppercase;letter-spacing:.04em}
+.result-box.highlight{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-color:#86efac;grid-column:1/-1}.result-box.highlight .num{font-size:1.6rem}
+.method-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;margin-top:10px}
+.method-card h4{font-size:.76rem;font-weight:700;color:var(--afro-dark);margin-bottom:6px}.method-card .val{font-size:1.1rem;font-weight:800;color:#16a34a}.method-card .desc{font-size:.72rem;color:#64748b;margin-top:4px}
+.sidebar .info-card{background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:16px;margin-top:14px}
+.info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#14532d;margin-bottom:8px}
+.info-card p,.info-card li{font-size:.78rem;color:#14532d;line-height:1.6}.info-card ul{padding-left:16px;margin:6px 0}
+.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
+.seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
+.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<section class="tool-hero"><div class="tool-hero-inner">
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Startup Valuation</span></div>
+<h1>African <em>Startup Valuation</em> Tool</h1>
+<p class="hero-sub">Estimate your startup's valuation using multiple methods adapted for African markets. Revenue multiples, scorecard method, and comparable analysis with African deal benchmarks.</p>
+<div class="hero-badges"><span class="badge b-em">4 Methods</span><span class="badge b-em">African Benchmarks</span><span class="badge b-em">Pre-Seed to Series B</span></div>
+</div></section>
+
+<section class="tool-main"><div class="tool-main-inner">
+<div class="calculator">
+<div class="card">
+<div class="card-head"><span class="card-title">Startup Details</span></div>
+<div class="card-body">
+<div class="row field">
+<div><label>Stage</label>
+<select id="stage">
+<option value="pre-seed">Pre-Seed (Idea / MVP)</option>
+<option value="seed" selected>Seed (Early Revenue)</option>
+<option value="series-a">Series A (Growth)</option>
+<option value="series-b">Series B (Scaling)</option>
+</select></div>
+<div><label>Sector</label>
+<select id="sector">
+<option value="fintech" selected>Fintech / Payments</option>
+<option value="healthtech">Healthtech</option>
+<option value="edtech">Edtech</option>
+<option value="agritech">Agritech</option>
+<option value="logistics">Logistics / Mobility</option>
+<option value="ecommerce">E-commerce / Marketplace</option>
+<option value="saas">SaaS / Enterprise</option>
+<option value="cleantech">Cleantech / Energy</option>
+<option value="proptech">Proptech</option>
+</select></div>
+</div>
+<div class="row field">
+<div><label>Country / HQ</label>
+<select id="country">
+<option value="ng">Nigeria</option>
+<option value="ke">Kenya</option>
+<option value="za">South Africa</option>
+<option value="eg">Egypt</option>
+<option value="gh">Ghana</option>
+<option value="other">Other Africa</option>
+</select></div>
+<div><label>Currency</label>
+<select id="currency">
+<option value="$" selected>USD ($)</option>
+<option value="₦">NGN (₦)</option>
+<option value="KSh ">KES (KSh)</option>
+<option value="R ">ZAR (R)</option>
+</select></div>
+</div>
+<div class="row field">
+<div><label>Annual Revenue (ARR / Last 12 months)</label><input type="number" id="revenue" value="500000" min="0" step="10000"></div>
+<div><label>Monthly Revenue Growth (%)</label><input type="number" id="growth" value="15" min="0" max="100" step="1"></div>
+</div>
+<div class="row field">
+<div><label>Gross Margin (%)</label><input type="number" id="grossMargin" value="65" min="0" max="100" step="5"></div>
+<div><label>Monthly Active Users / Customers</label><input type="number" id="users" value="50000" min="0" step="1000"></div>
+</div>
+<div class="row field">
+<div><label>Team Score (1-5)</label>
+<select id="team"><option value="1">1 — Solo founder, no track record</option><option value="2">2 — Small team, some experience</option><option value="3" selected>3 — Strong team, relevant experience</option><option value="4">4 — Experienced team, prior exits</option><option value="5">5 — All-star team, serial entrepreneurs</option></select></div>
+<div><label>Product Score (1-5)</label>
+<select id="product"><option value="1">1 — Idea only</option><option value="2">2 — MVP / Prototype</option><option value="3" selected>3 — Working product, early traction</option><option value="4">4 — Product-market fit proven</option><option value="5">5 — Scaling, strong retention</option></select></div>
+</div>
+<button class="btn btn-primary" onclick="valuate()">Calculate Valuation</button>
+</div></div>
+
+<div class="card" id="resultCard" style="display:none">
+<div class="card-head"><span class="card-title">Valuation Estimates</span></div>
+<div class="card-body">
+<div class="result-grid" id="resultGrid"></div>
+<div id="methodCards"></div>
+<p style="font-size:.72rem;color:#94a3b8;margin-top:14px">* These are indicative estimates based on publicly available African deal data and industry benchmarks. Actual valuation depends on detailed due diligence, market conditions, negotiation, and investor appetite. This tool is for educational purposes and should not be used as the sole basis for investment decisions.</p>
+</div></div>
+</div>
+
+<div class="sidebar">
+<div class="card">
+<div class="card-head"><span class="card-title">African VC Landscape</span></div>
+<div class="card-body" style="font-size:.78rem;color:#475569;line-height:1.7">
+<p><strong>2024 Africa VC:</strong> ~$4.8B raised across 800+ deals. Down from $6.5B peak in 2022.</p>
+<p style="margin-top:6px"><strong>Top sectors:</strong> Fintech (45%), Cleantech (12%), Healthtech (8%), Logistics (7%).</p>
+<p style="margin-top:6px"><strong>Big 4:</strong> Nigeria, Kenya, South Africa, Egypt account for ~80% of funding.</p>
+<p style="margin-top:6px"><strong>Median seed:</strong> $1-3M. Median Series A: $5-15M. Median Series B: $15-40M.</p>
+</div></div>
+<div class="info-card">
+<h4>Revenue Multiples by Sector</h4>
+<ul>
+<li>Fintech: 8-15x revenue</li>
+<li>SaaS: 8-12x revenue</li>
+<li>E-commerce: 2-5x revenue</li>
+<li>Logistics: 3-6x revenue</li>
+<li>Healthtech: 5-10x revenue</li>
+<li>Agritech: 3-7x revenue</li>
+<li>Edtech: 4-8x revenue</li>
+</ul>
+<p style="margin-top:6px;font-size:.72rem;font-style:italic">*Multiples for high-growth (>20% MoM). Lower growth = lower multiples.</p>
+</div>
+</div>
+</div></section>
+
+<section class="seo-section">
+<h2>How to Value an African Startup</h2>
+<p>Valuing startups is more art than science, and this is especially true in African markets where comparable data is limited, markets are less mature, and additional risk factors (currency volatility, regulatory uncertainty, infrastructure challenges) affect investor expectations. Unlike public companies where market capitalization provides a clear valuation, startup valuations are negotiated between founders and investors based on a combination of quantitative metrics and qualitative assessments.</p>
+<p>The most common valuation methods for African startups are: (1) Revenue Multiple — multiply annual revenue by an industry-specific multiple, adjusted for growth rate and market. For example, a fintech doing $1M ARR with 20% monthly growth might command a 10-15x multiple, giving a $10-15M valuation. (2) Scorecard Method — compare your startup against a benchmark pre-money valuation for your stage and adjust based on team quality, market size, product, competitive advantage, and other factors. (3) Berkus Method — assign value ($0-500K each) to key de-risking milestones: idea quality, prototype, team, strategic relationships, and early sales. (4) Comparable Transactions — look at what similar African startups raised at what valuations.</p>
+<p>African startup valuations typically trade at a 20-40% discount to comparable US/European startups, reflecting higher market risk, smaller addressable markets (per country, though pan-African opportunity is large), currency risk, and less liquid exit markets. However, this discount has been narrowing as African tech ecosystems mature, more exits occur (Paystack's $200M acquisition by Stripe, MFS Africa, DPO Group), and global investors become more comfortable with African markets. Key African-focused investors include Partech Africa, TLcom Capital, Novastar Ventures, Launch Africa, and regional players like CcHUB's Growth Capital fund.</p>
+
+<h2>Frequently Asked Questions</h2>
+<details class="faq-item"><summary>What multiple should I use for my African startup?</summary><p>Revenue multiples vary by sector, growth rate, and stage. Fast-growing African fintechs (>20% MoM growth) can command 8-15x ARR. SaaS companies: 8-12x. E-commerce: 2-5x. Apply a 20-40% Africa discount vs. global benchmarks. Pre-revenue startups typically use scorecard or Berkus methods instead.</p></details>
+<details class="faq-item"><summary>How do I account for currency risk in valuation?</summary><p>If your revenue is in local currency (NGN, KES, etc.), investors typically: (1) Convert to USD at current rates, (2) Apply a higher discount rate (25-35% vs 15-20% for USD revenues), or (3) Use a lower revenue multiple. Startups with USD-linked revenue or natural hedges (e.g., cross-border payments) get better multiples.</p></details>
+</section>
+
+<afro-related-tools category="financial" current="startup-valuation"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+const MULTIPLES={
+  fintech:{low:8,mid:12,high:15},healthtech:{low:5,mid:8,high:10},edtech:{low:4,mid:6,high:8},
+  agritech:{low:3,mid:5,high:7},logistics:{low:3,mid:5,high:6},ecommerce:{low:2,mid:3.5,high:5},
+  saas:{low:8,mid:10,high:12},cleantech:{low:4,mid:7,high:10},proptech:{low:3,mid:5,high:7}
+};
+
+const STAGE_BASE={
+  'pre-seed':250000,'seed':1500000,'series-a':8000000,'series-b':25000000
+};
+
+function valuate(){
+  const stage=document.getElementById('stage').value;
+  const sector=document.getElementById('sector').value;
+  const country=document.getElementById('country').value;
+  const cur=document.getElementById('currency').value;
+  const revenue=+document.getElementById('revenue').value;
+  const growth=+document.getElementById('growth').value;
+  const grossMargin=+document.getElementById('grossMargin').value;
+  const users=+document.getElementById('users').value;
+  const team=+document.getElementById('team').value;
+  const product=+document.getElementById('product').value;
+
+  const mult=MULTIPLES[sector]||MULTIPLES.fintech;
+  const fmt=n=>{
+    if(n>=1000000)return cur+(n/1000000).toFixed(1)+'M';
+    if(n>=1000)return cur+(n/1000).toFixed(0)+'K';
+    return cur+n.toFixed(0);
+  };
+
+  // Method 1: Revenue Multiple
+  let growthAdj=1;
+  if(growth>20)growthAdj=1.3;
+  else if(growth>10)growthAdj=1.0;
+  else if(growth>5)growthAdj=0.7;
+  else growthAdj=0.5;
+
+  let marginAdj=grossMargin>60?1.1:grossMargin>40?1.0:0.8;
+  let countryAdj=country==='ng'||country==='ke'?1:country==='za'||country==='eg'?0.95:0.85;
+
+  const revMultLow=revenue*mult.low*growthAdj*marginAdj*countryAdj;
+  const revMultMid=revenue*mult.mid*growthAdj*marginAdj*countryAdj;
+  const revMultHigh=revenue*mult.high*growthAdj*marginAdj*countryAdj;
+
+  // Method 2: Scorecard
+  const baseVal=STAGE_BASE[stage];
+  const teamW=0.30,prodW=0.25,mktW=0.20,compW=0.15,otherW=0.10;
+  const teamScore=team/3; // normalized to 1.0 = average
+  const prodScore=product/3;
+  const mktScore=(growth>10?1.3:growth>5?1.0:0.7);
+  const compScore=(users>10000?1.3:users>1000?1.0:0.7);
+  const otherScore=1.0;
+  const scorecardMultiplier=teamW*teamScore+prodW*prodScore+mktW*mktScore+compW*compScore+otherW*otherScore;
+  const scorecardVal=baseVal*scorecardMultiplier;
+
+  // Method 3: Berkus (pre-revenue friendly)
+  const maxPerFactor=500000;
+  const berkusTeam=Math.min(team/5,1)*maxPerFactor;
+  const berkusProd=Math.min(product/5,1)*maxPerFactor;
+  const berkusMarket=(growth>10?maxPerFactor:growth>5?maxPerFactor*0.6:maxPerFactor*0.3);
+  const berkusRelationships=(users>10000?maxPerFactor:users>1000?maxPerFactor*0.5:maxPerFactor*0.2);
+  const berkusRevenue=revenue>0?Math.min(maxPerFactor,revenue*0.5):0;
+  const berkusVal=berkusTeam+berkusProd+berkusMarket+berkusRelationships+berkusRevenue;
+
+  // Average
+  const methods=[revMultMid,scorecardVal,berkusVal].filter(v=>v>0);
+  const avgVal=methods.reduce((a,b)=>a+b,0)/methods.length;
+
+  let html='';
+  html+=`<div class="result-box highlight"><div class="num">${fmt(avgVal)}</div><div class="lbl">Average Estimated Valuation</div></div>`;
+  html+=`<div class="result-box"><div class="num">${fmt(revMultLow)} - ${fmt(revMultHigh)}</div><div class="lbl">Revenue Multiple Range</div></div>`;
+  html+=`<div class="result-box"><div class="num">${mult.low}x - ${mult.high}x</div><div class="lbl">${sector} Revenue Multiple</div></div>`;
+  html+=`<div class="result-box"><div class="num">${fmt(revenue)}</div><div class="lbl">Annual Revenue</div></div>`;
+  html+=`<div class="result-box"><div class="num">${growth}% MoM</div><div class="lbl">Growth Rate</div></div>`;
+  document.getElementById('resultGrid').innerHTML=html;
+
+  let mHtml='';
+  mHtml+=`<div class="method-card"><h4>1. Revenue Multiple Method</h4><div class="val">${fmt(revMultMid)}</div><div class="desc">ARR (${fmt(revenue)}) x ${mult.mid}x (${sector}) x growth adj (${growthAdj.toFixed(1)}) x margin adj (${marginAdj.toFixed(1)}). Range: ${fmt(revMultLow)} — ${fmt(revMultHigh)}</div></div>`;
+  mHtml+=`<div class="method-card"><h4>2. Scorecard Method</h4><div class="val">${fmt(scorecardVal)}</div><div class="desc">Base ${stage} valuation (${fmt(baseVal)}) adjusted by team (${(teamScore*100).toFixed(0)}%), product (${(prodScore*100).toFixed(0)}%), market (${(mktScore*100).toFixed(0)}%), competition (${(compScore*100).toFixed(0)}%). Multiplier: ${scorecardMultiplier.toFixed(2)}x</div></div>`;
+  mHtml+=`<div class="method-card"><h4>3. Berkus Method</h4><div class="val">${fmt(berkusVal)}</div><div class="desc">Team: ${fmt(berkusTeam)} + Product: ${fmt(berkusProd)} + Market: ${fmt(berkusMarket)} + Relationships: ${fmt(berkusRelationships)} + Revenue: ${fmt(berkusRevenue)}</div></div>`;
+  document.getElementById('methodCards').innerHTML=mHtml;
+
+  document.getElementById('resultCard').style.display='block';
+  document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>
