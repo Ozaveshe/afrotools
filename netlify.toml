@@ -27,6 +27,9 @@
 [functions."scheduled-fetch-central-bank-rates"]
   schedule = "0 */12 * * *"
 
+[functions."scheduled-fetch-crypto-p2p"]
+  schedule = "*/5 * * * *"
+
 # --- Live Monitoring API Redirects ---
 
 [[redirects]]
@@ -83,4 +86,26 @@
 [[redirects]]
   from = "/api/keys/*"
   to = "/.netlify/functions/api-keys"
+  status = 200
+
+# --- Crypto API Redirects ---
+
+[[redirects]]
+  from = "/api/crypto/prices"
+  to = "/.netlify/functions/crypto-prices"
+  status = 200
+
+[[redirects]]
+  from = "/api/crypto/p2p"
+  to = "/.netlify/functions/crypto-p2p"
+  status = 200
+
+[[redirects]]
+  from = "/api/crypto"
+  to = "/.netlify/functions/api-crypto"
+  status = 200
+
+[[redirects]]
+  from = "/api/crypto/*"
+  to = "/.netlify/functions/api-crypto"
   status = 200
