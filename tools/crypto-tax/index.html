@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'crypto-tax'});</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>African Crypto Tax Calculator | AfroTools</title>
+<meta name="description" content="Calculate tax on cryptocurrency gains in Nigeria, Kenya, South Africa, and Ghana. Covers Bitcoin, Ethereum, and all crypto disposals. Capital gains and income tax.">
+<link rel="canonical" href="https://afrotools.com/tools/crypto-tax/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Crypto Tax Calculator for Africa | AfroTools">
+<meta property="og:description" content="Calculate crypto capital gains tax for NG, KE, ZA, GH.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/crypto-tax/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+:root{--afro-dark:#0f1419;--accent:#f59e0b}
+.tool-hero{background:linear-gradient(135deg,#78350f 0%,#f59e0b 50%,#d97706 100%);padding:44px 0 36px}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#fef3c7}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:#fef3c7;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-em{background:rgba(254,243,199,.2);color:#fef3c7;border:1px solid rgba(254,243,199,.4)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
+.card-body{padding:22px}
+label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
+input,select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;box-sizing:border-box}
+input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(245,158,11,.15)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;margin-top:18px}
+.btn-primary{background:linear-gradient(135deg,#d97706,#f59e0b);color:#fff}
+.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.result-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;text-align:center}
+.result-box .num{font-size:1.3rem;font-weight:800;color:#d97706}
+.result-box .lbl{font-size:.68rem;color:#64748b;font-weight:600;margin-top:3px;text-transform:uppercase;letter-spacing:.04em}
+.result-box.highlight{background:linear-gradient(135deg,#fffbeb,#fef3c7);border-color:#fde68a;grid-column:1/-1}
+.result-box.highlight .num{font-size:1.8rem}
+.breakdown{margin-top:14px}
+.breakdown-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f1f5f9;font-size:.82rem}
+.breakdown-row .item{color:#475569}.breakdown-row .cost{font-weight:700;color:#d97706}
+.breakdown-row.total{border-top:2px solid #e2e8f0;border-bottom:none;font-weight:800;font-size:.92rem}
+.tip{background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:12px;font-size:.78rem;color:#92400e;margin-top:14px;line-height:1.6}
+.sidebar .info-card{background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:16px;margin-top:14px}
+.info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#92400e;margin-bottom:8px}
+.info-card p,.info-card li{font-size:.78rem;color:#92400e;line-height:1.6}
+.info-card ul{padding-left:16px;margin:6px 0}
+.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
+.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
+.seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
+.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
+.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
+.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.result-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<section class="tool-hero"><div class="tool-hero-inner">
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Crypto Tax</span></div>
+<h1>African <em>Crypto Tax Calculator</em></h1>
+<p class="hero-sub">Calculate capital gains tax on your cryptocurrency disposals in Nigeria, Kenya, South Africa, and Ghana. Covers Bitcoin, Ethereum, and all crypto assets.</p>
+<div class="hero-badges"><span class="badge b-em">Capital Gains</span><span class="badge b-em">4 Countries</span><span class="badge b-em">2025 Rates</span></div>
+</div></section>
+
+<section class="tool-main"><div class="tool-main-inner">
+<div class="calculator">
+<div class="card">
+<div class="card-head"><span class="card-title">Your Crypto Transaction</span></div>
+<div class="card-body">
+<div class="row" style="margin-bottom:14px">
+<div><label>Country</label>
+<select id="country" onchange="updateInfo()">
+<option value="NG">Nigeria</option>
+<option value="KE">Kenya</option>
+<option value="ZA">South Africa</option>
+<option value="GH">Ghana</option>
+</select></div>
+<div><label>Transaction Type</label>
+<select id="txType">
+<option value="sell">Sold Crypto for Fiat</option>
+<option value="swap">Swapped Crypto to Crypto</option>
+<option value="spend">Spent Crypto (Purchased Goods)</option>
+<option value="mining">Mining / Staking Income</option>
+</select></div>
+</div>
+<div class="row" style="margin-bottom:14px">
+<div><label>Purchase Price (Cost Basis)</label><input type="number" id="costBasis" value="500000" min="0" step="10000"></div>
+<div><label>Sale / Disposal Price</label><input type="number" id="salePrice" value="1500000" min="0" step="10000"></div>
+</div>
+<div class="row" style="margin-bottom:14px">
+<div><label>Transaction Fees / Gas</label><input type="number" id="fees" value="5000" min="0" step="1000"></div>
+<div><label>Holding Period</label>
+<select id="holdingPeriod">
+<option value="short">Less than 12 months</option>
+<option value="long">12 months or more</option>
+</select></div>
+</div>
+<div class="row">
+<div><label>Your Annual Income Bracket</label>
+<select id="incomeBracket">
+<option value="low">Low (below median)</option>
+<option value="mid">Medium</option>
+<option value="high">High (top bracket)</option>
+</select></div>
+<div><label>Total Annual Crypto Gains</label><input type="number" id="annualGains" value="0" min="0" step="100000" placeholder="Other crypto gains this year"></div>
+</div>
+<button class="btn btn-primary" onclick="calculate()">Calculate Tax</button>
+</div></div>
+
+<div class="card" id="resultCard" style="display:none">
+<div class="card-head"><span class="card-title">Tax Estimate</span></div>
+<div class="card-body">
+<div class="result-grid" id="resultGrid"></div>
+<div class="breakdown" id="breakdown"></div>
+<div class="tip" id="tipBox"></div>
+</div></div>
+</div>
+
+<div class="sidebar">
+<div class="card">
+<div class="card-head"><span class="card-title">Crypto Tax Status</span></div>
+<div class="card-body" id="countryInfo" style="font-size:.78rem;color:#475569;line-height:1.7"></div>
+</div>
+<div class="info-card">
+<h4>Taxable Events</h4>
+<ul>
+<li>Selling crypto for fiat currency</li>
+<li>Trading one crypto for another</li>
+<li>Using crypto to buy goods/services</li>
+<li>Receiving mining/staking rewards</li>
+<li>Airdrops and hard forks</li>
+</ul>
+</div>
+<div class="info-card" style="margin-top:10px">
+<h4>NOT Taxable</h4>
+<ul>
+<li>Buying crypto with fiat (no disposal)</li>
+<li>Transferring between your own wallets</li>
+<li>Holding crypto (unrealised gains)</li>
+<li>Donating to registered charities</li>
+</ul>
+</div>
+</div>
+</div></section>
+
+<section class="seo-section">
+<h2>Cryptocurrency Tax in Africa</h2>
+<p>Cryptocurrency taxation in Africa is evolving rapidly. As digital asset adoption grows across the continent — Nigeria, Kenya, and South Africa are consistently among the top crypto adoption countries globally — tax authorities are increasingly clarifying their positions on how crypto should be taxed. Understanding your obligations is essential to avoid penalties.</p>
+<p>In Nigeria, FIRS treats cryptocurrency gains as part of assessable income under personal income tax rules. While Nigeria initially attempted to ban crypto banking in 2021, the SEC has since developed a regulatory framework. Crypto gains are taxed at your marginal income tax rate (7%-24%). Capital gains tax (10%) may also apply depending on how the transaction is classified.</p>
+<p>South Africa's SARS is the most explicit in Africa about crypto taxation. Crypto is treated as a financial asset, not currency. Profits from crypto trading are subject to capital gains tax (CGT) — with an annual exclusion of R40,000. Only 40% of gains are included in taxable income for individuals (effective max rate ~18%). If you're a frequent trader, SARS may classify your activity as trading income (100% taxable at marginal rates, up to 45%).</p>
+<p>Kenya introduced a 3% Digital Asset Tax (DAT) on the value of digital asset transfers in 2023, making it one of the first African countries with crypto-specific tax legislation. This is payable by exchanges and platforms, though the obligation ultimately falls on the taxpayer. Ghana's GRA has not issued specific crypto guidelines but treats crypto profits as income subject to regular tax rates.</p>
+
+<h2>Frequently Asked Questions</h2>
+<details class="faq-item"><summary>Do I need to pay tax on crypto in Nigeria?</summary><p>Yes. FIRS considers crypto gains as taxable income. If you sell Bitcoin for Naira at a profit, that profit is subject to personal income tax. Keep records of all your purchases (cost basis), sales, and the dates of transactions. The lack of specific crypto legislation doesn't mean it's tax-free — general income tax rules apply.</p></details>
+<details class="faq-item"><summary>What if I swap one crypto for another?</summary><p>In most jurisdictions, swapping one cryptocurrency for another (e.g., Bitcoin to Ethereum) is a taxable disposal. You're essentially "selling" the first crypto and "buying" the second. The gain is calculated as the fair market value at the time of the swap minus your original cost basis. This applies in South Africa, Kenya, and most other countries.</p></details>
+</section>
+
+<afro-related-tools category="financial" current="crypto-tax"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+const TAX_INFO = {
+  NG: {
+    name: 'Nigeria', symbol: '₦', currency: 'NGN',
+    cgtRate: 0.10, // 10% CGT
+    marginalRates: { low: 0.07, mid: 0.15, high: 0.24 },
+    exclusion: 0,
+    info: '<p><strong>Nigeria:</strong> Crypto gains taxed under PIT (7%-24% marginal) or CGT (10%). FIRS has no crypto-specific rules yet — general income tax applies. SEC is developing regulatory framework.</p><p style="margin-top:6px"><strong>Filing:</strong> Annual tax return via FIRS or state IRS. TIN required.</p>'
+  },
+  KE: {
+    name: 'Kenya', symbol: 'KES', currency: 'KES',
+    cgtRate: 0.15, // 15% CGT (increased 2023)
+    digitalAssetTax: 0.03, // 3% DAT
+    marginalRates: { low: 0.10, mid: 0.25, high: 0.35 },
+    exclusion: 0,
+    info: '<p><strong>Kenya:</strong> 3% Digital Asset Tax (DAT) on transfer value since Sep 2023. CGT rate is 15% on net gains. KRA monitors transactions through exchange reporting.</p><p style="margin-top:6px"><strong>Filing:</strong> Via iTax (KRA PIN required).</p>'
+  },
+  ZA: {
+    name: 'South Africa', symbol: 'R', currency: 'ZAR',
+    cgtRate: 0.18, // effective max ~18% (40% inclusion x 45% marginal)
+    inclusionRate: 0.40,
+    exclusion: 40000, // R40,000 annual exclusion
+    marginalRates: { low: 0.18, mid: 0.31, high: 0.45 },
+    info: '<p><strong>South Africa:</strong> Crypto is a financial asset per SARS. CGT: 40% inclusion rate + marginal tax rate. R40,000 annual exclusion. Frequent traders taxed at full marginal rates (income, not CGT).</p><p style="margin-top:6px"><strong>Filing:</strong> Via SARS eFiling. Provisional tax may apply.</p>'
+  },
+  GH: {
+    name: 'Ghana', symbol: 'GH₵', currency: 'GHS',
+    cgtRate: 0.15, // 15% CGT
+    marginalRates: { low: 0.05, mid: 0.175, high: 0.30 },
+    exclusion: 0,
+    info: '<p><strong>Ghana:</strong> No specific crypto tax rules. GRA applies general CGT (15%) and income tax rules. Crypto profits treated as assessable income. Limited enforcement currently.</p><p style="margin-top:6px"><strong>Filing:</strong> Annual return via GRA.</p>'
+  }
+};
+
+function updateInfo() {
+  const c = document.getElementById('country').value;
+  document.getElementById('countryInfo').innerHTML = TAX_INFO[c].info;
+}
+
+function calculate() {
+  const c = document.getElementById('country').value;
+  const t = TAX_INFO[c];
+  const costBasis = +document.getElementById('costBasis').value;
+  const salePrice = +document.getElementById('salePrice').value;
+  const fees = +document.getElementById('fees').value;
+  const txType = document.getElementById('txType').value;
+  const bracket = document.getElementById('incomeBracket').value;
+  const otherGains = +document.getElementById('annualGains').value;
+
+  const gain = salePrice - costBasis - fees;
+  const totalGains = gain + otherGains;
+  const fmt = n => t.symbol + ' ' + Math.round(Math.abs(n)).toLocaleString('en');
+
+  let tax = 0, method = '', effectiveRate = 0;
+
+  if (gain <= 0) {
+    // Loss
+    document.getElementById('resultGrid').innerHTML = `<div class="result-box highlight" style="background:#dcfce7;border-color:#86efac"><div class="num" style="color:#166534">Capital Loss: ${fmt(gain)}</div><div class="lbl">No tax payable on losses</div></div>`;
+    document.getElementById('breakdown').innerHTML = '';
+    document.getElementById('tipBox').innerHTML = '<strong>Note:</strong> Capital losses can potentially be carried forward to offset future gains. Keep records of all losses.';
+    document.getElementById('resultCard').style.display = 'block';
+    return;
+  }
+
+  if (c === 'ZA') {
+    const taxableGain = Math.max(0, totalGains - t.exclusion);
+    const includedGain = taxableGain * t.inclusionRate;
+    const marginalRate = t.marginalRates[bracket];
+    tax = includedGain * marginalRate;
+    // Proportion to this transaction
+    if (totalGains > 0) tax = tax * (gain / totalGains);
+    method = `CGT: ${(t.inclusionRate*100)}% inclusion x ${(marginalRate*100)}% marginal rate`;
+    effectiveRate = gain > 0 ? (tax / gain * 100) : 0;
+  } else if (c === 'KE') {
+    // DAT (3% on transfer value) or CGT (15% on gain) — whichever applies
+    const dat = salePrice * t.digitalAssetTax;
+    const cgt = gain * t.cgtRate;
+    tax = Math.max(dat, cgt); // Conservative: use higher
+    method = dat > cgt ? `Digital Asset Tax: 3% of sale value` : `CGT: ${(t.cgtRate*100)}% of net gain`;
+    effectiveRate = gain > 0 ? (tax / gain * 100) : 0;
+  } else {
+    // NG, GH: CGT or income tax
+    const cgtTax = gain * t.cgtRate;
+    const incomeTax = gain * t.marginalRates[bracket];
+    if (txType === 'mining') {
+      tax = incomeTax;
+      method = `Income tax: ${(t.marginalRates[bracket]*100)}% (mining = income)`;
+    } else {
+      tax = Math.min(cgtTax, incomeTax); // Use more favorable
+      method = cgtTax < incomeTax ? `CGT: ${(t.cgtRate*100)}%` : `Income tax: ${(t.marginalRates[bracket]*100)}%`;
+    }
+    effectiveRate = gain > 0 ? (tax / gain * 100) : 0;
+  }
+
+  let html = '';
+  html += `<div class="result-box highlight"><div class="num">${fmt(tax)}</div><div class="lbl">Estimated Tax</div></div>`;
+  html += `<div class="result-box"><div class="num">${fmt(gain)}</div><div class="lbl">Capital Gain</div></div>`;
+  html += `<div class="result-box"><div class="num">${effectiveRate.toFixed(1)}%</div><div class="lbl">Effective Rate</div></div>`;
+  html += `<div class="result-box"><div class="num">${fmt(gain - tax)}</div><div class="lbl">After-Tax Profit</div></div>`;
+  html += `<div class="result-box"><div class="num">${method}</div><div class="lbl">Tax Method</div></div>`;
+  document.getElementById('resultGrid').innerHTML = html;
+
+  let bd = '';
+  bd += `<div class="breakdown-row"><span class="item">Sale / Disposal Price</span><span class="cost">${fmt(salePrice)}</span></div>`;
+  bd += `<div class="breakdown-row"><span class="item">Less: Cost Basis (Purchase Price)</span><span class="cost">- ${fmt(costBasis)}</span></div>`;
+  bd += `<div class="breakdown-row"><span class="item">Less: Transaction Fees</span><span class="cost">- ${fmt(fees)}</span></div>`;
+  bd += `<div class="breakdown-row"><span class="item"><strong>Net Capital Gain</strong></span><span class="cost"><strong>${fmt(gain)}</strong></span></div>`;
+  if (c === 'ZA') {
+    bd += `<div class="breakdown-row"><span class="item">Less: Annual Exclusion</span><span class="cost">- ${fmt(t.exclusion)}</span></div>`;
+    bd += `<div class="breakdown-row"><span class="item">Inclusion Rate (${(t.inclusionRate*100)}%)</span><span class="cost">${fmt(Math.max(0,totalGains-t.exclusion)*t.inclusionRate)}</span></div>`;
+  }
+  bd += `<div class="breakdown-row total"><span class="item">Tax Payable</span><span class="cost">${fmt(tax)}</span></div>`;
+  document.getElementById('breakdown').innerHTML = bd;
+
+  const tips = {
+    NG: 'Keep records of all purchases and sales. FIRS is increasing digital asset monitoring. Consider using a crypto tax tracking tool.',
+    KE: 'The 3% DAT is withheld by licensed exchanges. If using P2P or foreign exchanges, you must self-report to KRA.',
+    ZA: 'Use the R40,000 annual exclusion wisely. Hold assets for longer periods when possible. SARS has data-sharing agreements with major exchanges.',
+    GH: 'While enforcement is limited, GRA is building capacity. File voluntarily to avoid future penalties. Keep all transaction records.'
+  };
+  document.getElementById('tipBox').innerHTML = '<strong>Tax Tip:</strong> ' + tips[c];
+
+  document.getElementById('resultCard').style.display = 'block';
+  document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
+}
+
+updateInfo();
+</script>
+</body>
+</html>

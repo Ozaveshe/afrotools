@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'robots-txt'});</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Robots.txt Generator | AfroTools</title>
+<meta name="description" content="Generate a robots.txt file for your website. Control which pages search engines can crawl. Includes presets for WordPress, e-commerce, and custom configurations.">
+<link rel="canonical" href="https://afrotools.com/tools/robots-txt/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Robots.txt Generator | AfroTools">
+<meta property="og:description" content="Generate robots.txt files to control search engine crawling.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/robots-txt/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+:root{--afro-dark:#0f1419;--accent:#0ea5e9}
+.tool-hero{background:linear-gradient(135deg,#0c4a6e 0%,#0ea5e9 50%,#0284c7 100%);padding:44px 0 36px}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#bae6fd}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:#bae6fd;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-em{background:rgba(186,230,253,.2);color:#bae6fd;border:1px solid rgba(186,230,253,.4)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
+.card-body{padding:22px}
+label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
+input,select,textarea{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;box-sizing:border-box}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(14,165,233,.15)}
+textarea{resize:vertical;font-family:'Fira Code',monospace,Consolas}
+.chk{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:.82rem;color:#475569}
+.chk input{width:auto}
+.preset-btns{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.preset-btn{background:#f8fafc;border:1px solid #e2e8f0;border-radius:5px;padding:5px 10px;font-size:.72rem;cursor:pointer;color:#64748b;font-weight:600}
+.preset-btn:hover,.preset-btn.active{border-color:var(--accent);color:var(--accent);background:#f0f9ff}
+.code-output{position:relative;margin-top:14px}
+.code-output pre{background:#1e293b;color:#e2e8f0;padding:16px;border-radius:8px;font-size:.78rem;line-height:1.7;overflow-x:auto;font-family:'Fira Code',monospace,Consolas;white-space:pre-wrap}
+.copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.15);border:none;color:#e2e8f0;padding:4px 10px;border-radius:4px;font-size:.68rem;cursor:pointer;font-weight:600}
+.copy-btn:hover{background:rgba(255,255,255,.25)}
+.dl-btn{display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:8px 16px;background:linear-gradient(135deg,#0284c7,#0ea5e9);color:#fff;border:none;border-radius:6px;font-size:.78rem;font-weight:700;cursor:pointer}
+.sidebar .info-card{background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:16px;margin-top:14px}
+.info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#0c4a6e;margin-bottom:8px}
+.info-card p,.info-card li{font-size:.78rem;color:#0c4a6e;line-height:1.6}
+.info-card ul{padding-left:16px;margin:6px 0}
+.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
+.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
+.seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
+.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
+.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
+.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<section class="tool-hero"><div class="tool-hero-inner">
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Robots.txt Generator</span></div>
+<h1>Robots.txt <em>Generator</em></h1>
+<p class="hero-sub">Generate a robots.txt file to control how search engines crawl your website. Choose from presets or customise rules for specific bots.</p>
+<div class="hero-badges"><span class="badge b-em">SEO Tool</span><span class="badge b-em">Presets</span><span class="badge b-em">Download</span></div>
+</div></section>
+
+<section class="tool-main"><div class="tool-main-inner">
+<div class="calculator">
+<div class="card">
+<div class="card-head"><span class="card-title">Quick Presets</span></div>
+<div class="card-body">
+<div class="preset-btns">
+<button class="preset-btn" onclick="preset('allow')">Allow All</button>
+<button class="preset-btn" onclick="preset('block')">Block All</button>
+<button class="preset-btn" onclick="preset('wordpress')">WordPress</button>
+<button class="preset-btn" onclick="preset('ecommerce')">E-commerce</button>
+<button class="preset-btn" onclick="preset('nextjs')">Next.js / SPA</button>
+<button class="preset-btn" onclick="preset('custom')">Custom</button>
+</div>
+</div></div>
+
+<div class="card">
+<div class="card-head"><span class="card-title">Configuration</span></div>
+<div class="card-body">
+<div style="margin-bottom:14px">
+<label>Sitemap URL</label>
+<input type="url" id="sitemap" placeholder="https://example.com/sitemap.xml" oninput="generate()">
+</div>
+<div style="margin-bottom:14px">
+<label>Disallowed Paths (one per line)</label>
+<textarea id="disallow" rows="5" placeholder="/admin/&#10;/private/&#10;/tmp/" oninput="generate()"></textarea>
+</div>
+<div style="margin-bottom:14px">
+<label>Allowed Paths (one per line, overrides disallow)</label>
+<textarea id="allow" rows="3" placeholder="/admin/public/&#10;/api/public/" oninput="generate()"></textarea>
+</div>
+<div style="margin-bottom:14px">
+<label>Crawl Delay (seconds, optional)</label>
+<input type="number" id="crawlDelay" min="0" max="60" placeholder="e.g. 10" oninput="generate()">
+</div>
+<div style="margin-bottom:14px">
+<label>Bot-Specific Rules</label>
+<div class="chk"><input type="checkbox" id="blockGPT" onchange="generate()"><label for="blockGPT">Block GPTBot (OpenAI)</label></div>
+<div class="chk"><input type="checkbox" id="blockCCBot" onchange="generate()"><label for="blockCCBot">Block CCBot (Common Crawl)</label></div>
+<div class="chk"><input type="checkbox" id="blockBing" onchange="generate()"><label for="blockBing">Block Bingbot</label></div>
+<div class="chk"><input type="checkbox" id="blockSemrush" onchange="generate()"><label for="blockSemrush">Block SemrushBot</label></div>
+<div class="chk"><input type="checkbox" id="blockAhrefs" onchange="generate()"><label for="blockAhrefs">Block AhrefsBot</label></div>
+</div>
+</div></div>
+
+<div class="card">
+<div class="card-head"><span class="card-title">Generated robots.txt</span></div>
+<div class="card-body">
+<div class="code-output">
+<button class="copy-btn" onclick="copyCode()">Copy</button>
+<pre id="output"></pre>
+</div>
+<button class="dl-btn" onclick="download()">Download robots.txt</button>
+</div></div>
+</div>
+
+<div class="sidebar">
+<div class="card">
+<div class="card-head"><span class="card-title">About robots.txt</span></div>
+<div class="card-body" style="font-size:.78rem;color:#475569;line-height:1.7">
+<p>The <strong>robots.txt</strong> file tells search engine crawlers which pages they can and cannot access on your site. It's placed at the root of your domain (e.g., example.com/robots.txt).</p>
+<p style="margin-top:8px"><strong>Important:</strong> robots.txt is a suggestion, not a security measure. Malicious bots can ignore it. Don't use it to hide sensitive content.</p>
+</div></div>
+<div class="info-card">
+<h4>Common Directives</h4>
+<ul>
+<li><strong>User-agent:</strong> Which bot the rules apply to (* = all)</li>
+<li><strong>Disallow:</strong> Path to block</li>
+<li><strong>Allow:</strong> Path to allow (overrides Disallow)</li>
+<li><strong>Sitemap:</strong> URL of your XML sitemap</li>
+<li><strong>Crawl-delay:</strong> Seconds between requests</li>
+</ul>
+</div>
+<div class="info-card" style="margin-top:10px">
+<h4>AI Bot Blocking</h4>
+<p>Many website owners now block AI training bots. GPTBot (OpenAI), CCBot (Common Crawl), and others scrape content for AI training. You can block them while still allowing Google and Bing.</p>
+</div>
+</div>
+</div></section>
+
+<section class="seo-section">
+<h2>Understanding robots.txt</h2>
+<p>The robots.txt file is one of the most important technical SEO files on any website. It lives at the root of your domain and provides instructions to search engine crawlers about which parts of your site they should and shouldn't access. While it's a simple text file, getting it wrong can accidentally block your entire site from being indexed.</p>
+<p>Every website should have a robots.txt file, even if it just allows everything. Search engines like Google check for this file before crawling your site. If it's missing, crawlers will assume they can access everything. If it contains errors, crawlers may be blocked from important pages or waste their crawl budget on unimportant ones.</p>
+<p>For African businesses and developers, proper robots.txt configuration is especially important for managing crawl budget efficiently. If your site is hosted in Africa, response times to Google's crawlers (which are primarily based in the US and Europe) may be higher, making crawl budget management even more critical. Block unnecessary paths like admin panels, search result pages, and staging areas to ensure Google focuses its crawl budget on your most important pages.</p>
+<p>In 2024-2025, blocking AI training bots has become a major concern. Bots like GPTBot (OpenAI), CCBot (Common Crawl/Anthropic), and Google-Extended scrape website content for AI training. Many publishers and businesses now specifically block these bots while continuing to allow search engine indexing. Our generator makes it easy to add these rules.</p>
+
+<h2>Frequently Asked Questions</h2>
+<details class="faq-item"><summary>Where do I put the robots.txt file?</summary><p>The robots.txt file must be placed at the root of your domain: https://example.com/robots.txt. It only works at the root level — placing it in a subdirectory (like /blog/robots.txt) will not work. Upload it via FTP, your hosting file manager, or your CMS settings.</p></details>
+<details class="faq-item"><summary>Will robots.txt hide my pages from Google?</summary><p>Not exactly. Blocking a page in robots.txt prevents Google from crawling it, but the URL may still appear in search results (without a description) if other pages link to it. To fully remove a page from Google, use the "noindex" meta tag instead, and make sure the page is NOT blocked in robots.txt (Google needs to crawl the page to see the noindex tag).</p></details>
+</section>
+
+<afro-related-tools category="developer" current="robots-txt"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+function preset(type) {
+  const d = document.getElementById('disallow');
+  const a = document.getElementById('allow');
+  const s = document.getElementById('sitemap');
+
+  if (type === 'allow') { d.value = ''; a.value = ''; }
+  else if (type === 'block') { d.value = '/'; a.value = ''; }
+  else if (type === 'wordpress') { d.value = '/wp-admin/\n/wp-includes/\n/wp-content/plugins/\n/trackback/\n/feed/\n/?s=\n/search/'; a.value = '/wp-admin/admin-ajax.php'; }
+  else if (type === 'ecommerce') { d.value = '/cart/\n/checkout/\n/account/\n/wishlist/\n/compare/\n/*?sort=\n/*?filter=\n/*?page=\n/search/'; a.value = ''; }
+  else if (type === 'nextjs') { d.value = '/_next/static/\n/api/\n/404\n/500'; a.value = ''; }
+  else if (type === 'custom') { d.value = ''; a.value = ''; }
+
+  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  generate();
+}
+
+function generate() {
+  const sitemap = document.getElementById('sitemap').value.trim();
+  const disallowRaw = document.getElementById('disallow').value.trim();
+  const allowRaw = document.getElementById('allow').value.trim();
+  const crawlDelay = document.getElementById('crawlDelay').value;
+  const blockGPT = document.getElementById('blockGPT').checked;
+  const blockCCBot = document.getElementById('blockCCBot').checked;
+  const blockBing = document.getElementById('blockBing').checked;
+  const blockSemrush = document.getElementById('blockSemrush').checked;
+  const blockAhrefs = document.getElementById('blockAhrefs').checked;
+
+  let out = '# robots.txt generated by AfroTools.com\n\n';
+
+  // Bot-specific blocks
+  const blockedBots = [];
+  if (blockGPT) blockedBots.push('GPTBot');
+  if (blockCCBot) blockedBots.push('CCBot');
+  if (blockBing) blockedBots.push('Bingbot');
+  if (blockSemrush) blockedBots.push('SemrushBot');
+  if (blockAhrefs) blockedBots.push('AhrefsBot');
+
+  blockedBots.forEach(bot => {
+    out += `User-agent: ${bot}\nDisallow: /\n\n`;
+  });
+
+  // Main rules
+  out += 'User-agent: *\n';
+  const allows = allowRaw.split('\n').filter(l => l.trim());
+  allows.forEach(p => { out += `Allow: ${p.trim()}\n`; });
+
+  const disallows = disallowRaw.split('\n').filter(l => l.trim());
+  disallows.forEach(p => { out += `Disallow: ${p.trim()}\n`; });
+
+  if (!disallows.length) out += 'Disallow:\n';
+
+  if (crawlDelay && parseInt(crawlDelay) > 0) {
+    out += `Crawl-delay: ${parseInt(crawlDelay)}\n`;
+  }
+
+  if (sitemap) {
+    out += `\nSitemap: ${sitemap}\n`;
+  }
+
+  document.getElementById('output').textContent = out;
+}
+
+function copyCode() {
+  navigator.clipboard.writeText(document.getElementById('output').textContent).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 1500);
+  });
+}
+
+function download() {
+  const content = document.getElementById('output').textContent;
+  const blob = new Blob([content], {type:'text/plain'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'robots.txt';
+  a.click();
+}
+
+generate();
+</script>
+</body>
+</html>

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'drug-dosage'});</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Medication Dosage Calculator | AfroTools</title>
+<meta name="description" content="Calculate medication dosages based on body weight. Covers common drugs like paracetamol, ibuprofen, amoxicillin, and more. Paediatric and adult dosing.">
+<link rel="canonical" href="https://afrotools.com/tools/drug-dosage/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Medication Dosage Calculator | AfroTools">
+<meta property="og:description" content="Calculate weight-based medication dosages for adults and children.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/drug-dosage/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+:root{--afro-dark:#0f1419;--accent:#dc2626}
+.tool-hero{background:linear-gradient(135deg,#991b1b 0%,#dc2626 50%,#b91c1c 100%);padding:44px 0 36px}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#fecaca}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:#fecaca;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-em{background:rgba(254,202,202,.2);color:#fecaca;border:1px solid rgba(254,202,202,.4)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
+.card-body{padding:22px}
+label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
+input,select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;box-sizing:border-box}
+input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(220,38,38,.15)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;margin-top:18px}
+.btn-primary{background:linear-gradient(135deg,#b91c1c,#dc2626);color:#fff}
+.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.result-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;text-align:center}
+.result-box .num{font-size:1.3rem;font-weight:800;color:#dc2626}
+.result-box .lbl{font-size:.68rem;color:#64748b;font-weight:600;margin-top:3px;text-transform:uppercase;letter-spacing:.04em}
+.result-box.highlight{background:linear-gradient(135deg,#fef2f2,#fee2e2);border-color:#fecaca;grid-column:1/-1}
+.result-box.highlight .num{font-size:1.8rem}
+.warning{background:#fef3c7;border:1px solid #fde68a;border-radius:8px;padding:14px;margin-top:14px;font-size:.78rem;color:#92400e;line-height:1.6}
+.warning strong{color:#78350f}
+.disclaimer{background:#fef2f2;border:2px solid #fecaca;border-radius:8px;padding:16px;margin-top:18px;font-size:.78rem;color:#991b1b;line-height:1.6}
+.sidebar .info-card{background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:16px;margin-top:14px}
+.info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#991b1b;margin-bottom:8px}
+.info-card p,.info-card li{font-size:.78rem;color:#991b1b;line-height:1.6}
+.info-card ul{padding-left:16px;margin:6px 0}
+.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
+.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
+.seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
+.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
+.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
+.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<section class="tool-hero"><div class="tool-hero-inner">
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Drug Dosage</span></div>
+<h1>Medication <em>Dosage Calculator</em></h1>
+<p class="hero-sub">Calculate weight-based medication dosages for common drugs. Covers paediatric and adult dosing for pain relief, antibiotics, antimalarials, and more.</p>
+<div class="hero-badges"><span class="badge b-em">Weight-Based</span><span class="badge b-em">Paediatric</span><span class="badge b-em">Common Drugs</span></div>
+</div></section>
+
+<section class="tool-main"><div class="tool-main-inner">
+<div class="calculator">
+<div class="disclaimer"><strong>DISCLAIMER:</strong> This calculator is for educational and reference purposes only. It does NOT replace professional medical advice. Always consult a doctor, pharmacist, or qualified healthcare provider before taking any medication. Dosages may vary based on individual health conditions, kidney/liver function, and drug interactions.</div>
+
+<div class="card" style="margin-top:18px">
+<div class="card-head"><span class="card-title">Patient & Medication Details</span></div>
+<div class="card-body">
+<div class="row" style="margin-bottom:14px">
+<div><label>Patient Type</label>
+<select id="patientType" onchange="updateDrugs()">
+<option value="adult">Adult (12+ years)</option>
+<option value="child">Child (1-12 years)</option>
+<option value="infant">Infant (3-12 months)</option>
+</select></div>
+<div><label>Body Weight (kg)</label><input type="number" id="weight" value="70" min="3" max="200" step="0.5"></div>
+</div>
+<div style="margin-bottom:14px">
+<label>Medication</label>
+<select id="drug" onchange="updateDrugInfo()">
+<option value="paracetamol">Paracetamol (Acetaminophen)</option>
+<option value="ibuprofen">Ibuprofen</option>
+<option value="amoxicillin">Amoxicillin</option>
+<option value="metronidazole">Metronidazole (Flagyl)</option>
+<option value="artemether">Artemether-Lumefantrine (Coartem)</option>
+<option value="ciprofloxacin">Ciprofloxacin</option>
+<option value="azithromycin">Azithromycin</option>
+<option value="cetirizine">Cetirizine (Allergy)</option>
+<option value="omeprazole">Omeprazole</option>
+<option value="ors">ORS (Oral Rehydration Salts)</option>
+</select>
+</div>
+<div id="drugDesc" style="font-size:.78rem;color:#64748b;margin-bottom:14px;line-height:1.6;background:#f8fafc;padding:10px;border-radius:6px"></div>
+<button class="btn btn-primary" onclick="calculate()">Calculate Dosage</button>
+</div></div>
+
+<div class="card" id="resultCard" style="display:none">
+<div class="card-head"><span class="card-title">Dosage Result</span></div>
+<div class="card-body">
+<div class="result-grid" id="resultGrid"></div>
+<div class="warning" id="warnings"></div>
+</div></div>
+</div>
+
+<div class="sidebar">
+<div class="card">
+<div class="card-head"><span class="card-title">Important Notes</span></div>
+<div class="card-body" style="font-size:.78rem;color:#475569;line-height:1.7">
+<p><strong>Always verify</strong> dosages with the medication packaging or a pharmacist.</p>
+<p style="margin-top:6px"><strong>Maximum doses</strong> should never be exceeded regardless of body weight.</p>
+<p style="margin-top:6px"><strong>Allergies:</strong> Check for known drug allergies before taking any medication.</p>
+<p style="margin-top:6px"><strong>Interactions:</strong> Some drugs interact with each other. Tell your pharmacist about all medications you're taking.</p>
+</div></div>
+<div class="info-card">
+<h4>Common African Brands</h4>
+<ul>
+<li><strong>Paracetamol:</strong> Panadol, Emzor, Tylenol</li>
+<li><strong>Ibuprofen:</strong> Brufen, Ibucap</li>
+<li><strong>Amoxicillin:</strong> Amoxil, Augmentin</li>
+<li><strong>Artemether:</strong> Coartem, Lonart</li>
+<li><strong>Metronidazole:</strong> Flagyl, Trogyl</li>
+</ul>
+</div>
+<div class="info-card" style="margin-top:10px">
+<h4>When to See a Doctor</h4>
+<ul>
+<li>Symptoms persist after 3 days</li>
+<li>High fever (&gt; 39°C / 102°F)</li>
+<li>Difficulty breathing</li>
+<li>Severe pain or swelling</li>
+<li>Allergic reaction (rash, swelling)</li>
+<li>Children under 3 months</li>
+</ul>
+</div>
+</div>
+</div></section>
+
+<section class="seo-section">
+<h2>Understanding Medication Dosages</h2>
+<p>Correct medication dosing is critical for treatment effectiveness and safety. Under-dosing can lead to treatment failure (especially with antibiotics, contributing to antimicrobial resistance), while overdosing can cause serious side effects or toxicity. This is particularly important in Africa where access to healthcare professionals may be limited in rural areas.</p>
+<p>Weight-based dosing (mg per kg of body weight) is the standard approach for most medications, especially in paediatrics. Children are NOT simply "small adults" — their metabolism, organ function, and drug clearance differ significantly from adults. A child's dose should always be calculated based on their actual weight, not estimated or guessed.</p>
+<p>In many African countries, over-the-counter medications are widely available from pharmacies and patent medicine stores. Common drugs like paracetamol, ibuprofen, antimalarials (Coartem/ACTs), and antibiotics are frequently self-administered. While self-medication is sometimes necessary due to healthcare access limitations, knowing the correct dosage is crucial for safety.</p>
+<p>This calculator provides general dosing guidelines based on widely accepted medical references. However, individual factors like kidney function, liver disease, pregnancy, breastfeeding, and drug interactions can significantly alter the appropriate dose. Always consult a qualified healthcare provider when possible, and always complete the full course of antibiotics even if you feel better.</p>
+
+<h2>Frequently Asked Questions</h2>
+<details class="faq-item"><summary>Can I give adult medication to children?</summary><p>It depends on the medication. Some adult formulations (like paracetamol and ibuprofen) can be given to children at weight-appropriate doses, but the tablet strengths are usually too high. Use paediatric formulations (syrups/suspensions) for children. NEVER give aspirin to children under 16 (risk of Reye's syndrome). Some antibiotics also have different paediatric formulations.</p></details>
+<details class="faq-item"><summary>What if I miss a dose?</summary><p>Take the missed dose as soon as you remember, unless it's almost time for your next dose. Never take a double dose to make up for a missed one. For antibiotics, try to maintain regular intervals. If you miss multiple doses, contact your healthcare provider for guidance on whether to restart or continue the course.</p></details>
+</section>
+
+<afro-related-tools category="health" current="drug-dosage"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+const DRUGS = {
+  paracetamol: {
+    name: 'Paracetamol (Acetaminophen)',
+    desc: 'Pain relief and fever reduction. Available as tablets (500mg, 1000mg), syrup (120mg/5ml, 250mg/5ml).',
+    adult: { dose: 15, unit: 'mg', freq: 'every 4-6 hours', maxDaily: 4000, maxSingle: 1000 },
+    child: { dose: 15, unit: 'mg', freq: 'every 4-6 hours', maxDaily: 60, maxSingle: 15, perKg: true },
+    infant: { dose: 10, unit: 'mg', freq: 'every 4-6 hours', maxDaily: 40, maxSingle: 10, perKg: true },
+    warnings: 'Do not exceed 4g (4000mg) per day for adults. Risk of liver damage with overdose. Avoid alcohol.'
+  },
+  ibuprofen: {
+    name: 'Ibuprofen',
+    desc: 'Anti-inflammatory pain relief. Available as tablets (200mg, 400mg), syrup (100mg/5ml).',
+    adult: { dose: 5, unit: 'mg', freq: 'every 6-8 hours', maxDaily: 1200, maxSingle: 400 },
+    child: { dose: 10, unit: 'mg', freq: 'every 6-8 hours', maxDaily: 40, maxSingle: 10, perKg: true },
+    infant: { dose: 5, unit: 'mg', freq: 'every 6-8 hours', maxDaily: 30, maxSingle: 10, perKg: true },
+    warnings: 'Take with food. Not recommended for patients with stomach ulcers, kidney disease, or asthma triggered by NSAIDs. Avoid in third trimester of pregnancy.'
+  },
+  amoxicillin: {
+    name: 'Amoxicillin',
+    desc: 'Broad-spectrum antibiotic. Available as capsules (250mg, 500mg), syrup (125mg/5ml, 250mg/5ml).',
+    adult: { dose: 7.5, unit: 'mg', freq: 'every 8 hours', maxDaily: 3000, maxSingle: 1000 },
+    child: { dose: 25, unit: 'mg', freq: 'every 8 hours', maxDaily: 100, maxSingle: 30, perKg: true },
+    infant: { dose: 25, unit: 'mg', freq: 'every 8 hours', maxDaily: 100, maxSingle: 30, perKg: true },
+    warnings: 'Complete the full course (usually 5-7 days). Check for penicillin allergy. May cause diarrhoea.'
+  },
+  metronidazole: {
+    name: 'Metronidazole (Flagyl)',
+    desc: 'Antibiotic/antiprotozoal. Used for infections, diarrhoea, dental infections. Tablets (200mg, 400mg).',
+    adult: { dose: 5, unit: 'mg', freq: 'every 8 hours', maxDaily: 2000, maxSingle: 800 },
+    child: { dose: 7.5, unit: 'mg', freq: 'every 8 hours', maxDaily: 30, maxSingle: 10, perKg: true },
+    infant: { dose: 7.5, unit: 'mg', freq: 'every 8 hours', maxDaily: 30, maxSingle: 10, perKg: true },
+    warnings: 'DO NOT drink alcohol during treatment and for 48 hours after. May cause metallic taste. Complete full course.'
+  },
+  artemether: {
+    name: 'Artemether-Lumefantrine (Coartem)',
+    desc: 'First-line antimalarial (ACT). Tablets contain 20mg artemether + 120mg lumefantrine.',
+    adult: { dose: 0, unit: 'tablets', freq: 'at 0, 8, 24, 36, 48, 60 hours (6 doses)', maxDaily: 0, maxSingle: 4, fixed: true, fixedDose: '4 tablets per dose x 6 doses = 24 tablets total' },
+    child: { dose: 0, unit: 'tablets', freq: 'at 0, 8, 24, 36, 48, 60 hours', maxDaily: 0, maxSingle: 0, perKg: false, weightBased: true },
+    infant: { dose: 0, unit: 'tablets', freq: 'at 0, 8, 24, 36, 48, 60 hours', maxDaily: 0, maxSingle: 0, perKg: false, weightBased: true },
+    warnings: 'Take with food or milk for better absorption. Complete all 6 doses over 3 days. Confirm malaria with test before taking. Not for prevention.'
+  },
+  ciprofloxacin: {
+    name: 'Ciprofloxacin',
+    desc: 'Fluoroquinolone antibiotic. Tablets (250mg, 500mg). For urinary tract, respiratory, GI infections.',
+    adult: { dose: 7, unit: 'mg', freq: 'every 12 hours', maxDaily: 1500, maxSingle: 750 },
+    child: { dose: 10, unit: 'mg', freq: 'every 12 hours', maxDaily: 30, maxSingle: 15, perKg: true },
+    infant: { dose: 0, unit: 'mg', freq: '', maxDaily: 0, maxSingle: 0, perKg: true, contraindicated: true },
+    warnings: 'Not recommended for children under 18 except in severe cases. Avoid dairy and antacids within 2 hours. May cause tendon problems.'
+  },
+  azithromycin: {
+    name: 'Azithromycin',
+    desc: 'Macrolide antibiotic. Tablets (250mg, 500mg). For respiratory, skin, STI infections.',
+    adult: { dose: 0, unit: 'mg', freq: 'once daily for 3 days', maxDaily: 500, maxSingle: 500, fixed: true, fixedDose: '500mg once daily for 3 days (total 1.5g)' },
+    child: { dose: 10, unit: 'mg', freq: 'once daily for 3 days', maxDaily: 10, maxSingle: 10, perKg: true },
+    infant: { dose: 10, unit: 'mg', freq: 'once daily for 3 days', maxDaily: 10, maxSingle: 10, perKg: true },
+    warnings: 'Take on an empty stomach (1 hour before or 2 hours after food). May cause nausea and diarrhoea.'
+  },
+  cetirizine: {
+    name: 'Cetirizine',
+    desc: 'Antihistamine for allergies. Tablets (10mg), syrup (5mg/5ml).',
+    adult: { dose: 0, unit: 'mg', freq: 'once daily', maxDaily: 10, maxSingle: 10, fixed: true, fixedDose: '10mg once daily' },
+    child: { dose: 0, unit: 'mg', freq: 'once daily', maxDaily: 0, maxSingle: 0, perKg: false, ageBased: true },
+    infant: { dose: 0, unit: 'mg', freq: 'once daily', maxDaily: 2.5, maxSingle: 2.5, fixed: true, fixedDose: '2.5mg once daily (for 6-12 months)' },
+    warnings: 'May cause drowsiness. Avoid driving until you know how it affects you. Generally well tolerated.'
+  },
+  omeprazole: {
+    name: 'Omeprazole',
+    desc: 'Proton pump inhibitor for acid reflux, ulcers. Capsules (10mg, 20mg, 40mg).',
+    adult: { dose: 0, unit: 'mg', freq: 'once daily before breakfast', maxDaily: 40, maxSingle: 40, fixed: true, fixedDose: '20mg once daily (40mg for severe cases)' },
+    child: { dose: 1, unit: 'mg', freq: 'once daily', maxDaily: 20, maxSingle: 20, perKg: true },
+    infant: { dose: 0, unit: 'mg', freq: '', maxDaily: 0, maxSingle: 0, perKg: true, contraindicated: true },
+    warnings: 'Take 30 minutes before food. Swallow whole, do not crush. Long-term use may affect calcium absorption.'
+  },
+  ors: {
+    name: 'ORS (Oral Rehydration Salts)',
+    desc: 'For dehydration from diarrhoea/vomiting. WHO formula: 1 sachet in 1 litre clean water.',
+    adult: { dose: 0, unit: 'ml', freq: 'after each loose stool', maxDaily: 0, maxSingle: 0, fixed: true, fixedDose: '200-400ml after each loose stool' },
+    child: { dose: 0, unit: 'ml', freq: 'after each loose stool', maxDaily: 0, maxSingle: 0, perKg: false, ageBased: true },
+    infant: { dose: 0, unit: 'ml', freq: 'after each loose stool', maxDaily: 0, maxSingle: 0, fixed: true, fixedDose: '50-100ml after each loose stool' },
+    warnings: 'Sip slowly and frequently. Continue breastfeeding for infants. Seek medical attention if dehydration is severe, if there is blood in stool, or if symptoms persist beyond 24-48 hours.'
+  }
+};
+
+function updateDrugs() {
+  const pt = document.getElementById('patientType').value;
+  if (pt === 'adult') document.getElementById('weight').value = 70;
+  else if (pt === 'child') document.getElementById('weight').value = 20;
+  else document.getElementById('weight').value = 8;
+  updateDrugInfo();
+}
+
+function updateDrugInfo() {
+  const drug = DRUGS[document.getElementById('drug').value];
+  document.getElementById('drugDesc').innerHTML = `<strong>${drug.name}:</strong> ${drug.desc}`;
+}
+
+function calculate() {
+  const drugKey = document.getElementById('drug').value;
+  const drug = DRUGS[drugKey];
+  const pt = document.getElementById('patientType').value;
+  const weight = +document.getElementById('weight').value;
+  const dosing = drug[pt];
+
+  if (dosing.contraindicated) {
+    document.getElementById('resultGrid').innerHTML = `<div class="result-box highlight" style="background:#fef2f2;border-color:#fca5a5"><div class="num" style="color:#dc2626">CONTRAINDICATED</div><div class="lbl">Not recommended for this age group</div></div>`;
+    document.getElementById('warnings').innerHTML = `<strong>Warning:</strong> ${drug.name} is generally not recommended for ${pt === 'infant' ? 'infants' : 'this age group'}. Consult a doctor for alternatives.`;
+    document.getElementById('resultCard').style.display = 'block';
+    return;
+  }
+
+  let singleDose, dailyMax, html = '';
+
+  if (dosing.fixed) {
+    html += `<div class="result-box highlight"><div class="num">${dosing.fixedDose}</div><div class="lbl">Recommended Dose</div></div>`;
+    html += `<div class="result-box"><div class="num">${dosing.freq}</div><div class="lbl">Frequency</div></div>`;
+    html += `<div class="result-box"><div class="num">${weight} kg</div><div class="lbl">Body Weight</div></div>`;
+  } else if (dosing.perKg) {
+    singleDose = Math.min(dosing.dose * weight, dosing.maxSingle * weight);
+    dailyMax = dosing.maxDaily * weight;
+    if (pt === 'adult') {
+      singleDose = Math.min(dosing.dose * weight, dosing.maxSingle);
+      dailyMax = dosing.maxDaily;
+    }
+
+    html += `<div class="result-box highlight"><div class="num">${Math.round(singleDose)} mg</div><div class="lbl">Single Dose</div></div>`;
+    html += `<div class="result-box"><div class="num">${dosing.freq}</div><div class="lbl">Frequency</div></div>`;
+    html += `<div class="result-box"><div class="num">${Math.round(dailyMax)} mg</div><div class="lbl">Max Daily</div></div>`;
+    html += `<div class="result-box"><div class="num">${weight} kg</div><div class="lbl">Body Weight</div></div>`;
+    html += `<div class="result-box"><div class="num">${dosing.dose} mg/kg</div><div class="lbl">Dose per kg</div></div>`;
+  } else if (dosing.weightBased && drugKey === 'artemether') {
+    // Coartem weight-based dosing
+    let tablets;
+    if (weight < 5) tablets = 'Consult doctor';
+    else if (weight < 15) tablets = '1 tablet';
+    else if (weight < 25) tablets = '2 tablets';
+    else if (weight < 35) tablets = '3 tablets';
+    else tablets = '4 tablets';
+    html += `<div class="result-box highlight"><div class="num">${tablets} per dose</div><div class="lbl">Dose (6 doses over 3 days)</div></div>`;
+    html += `<div class="result-box"><div class="num">${dosing.freq}</div><div class="lbl">Schedule</div></div>`;
+    html += `<div class="result-box"><div class="num">${weight} kg</div><div class="lbl">Body Weight</div></div>`;
+  } else if (dosing.ageBased) {
+    if (drugKey === 'cetirizine') {
+      const dose = weight < 15 ? '2.5mg' : weight < 30 ? '5mg' : '10mg';
+      html += `<div class="result-box highlight"><div class="num">${dose} once daily</div><div class="lbl">Recommended Dose</div></div>`;
+    } else if (drugKey === 'ors') {
+      const dose = weight < 10 ? '50-100ml' : weight < 20 ? '100-200ml' : '200-400ml';
+      html += `<div class="result-box highlight"><div class="num">${dose} per stool</div><div class="lbl">After Each Loose Stool</div></div>`;
+    }
+    html += `<div class="result-box"><div class="num">${weight} kg</div><div class="lbl">Body Weight</div></div>`;
+  }
+
+  document.getElementById('resultGrid').innerHTML = html;
+  document.getElementById('warnings').innerHTML = `<strong>Important:</strong> ${drug.warnings}`;
+  document.getElementById('resultCard').style.display = 'block';
+  document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
+}
+
+updateDrugInfo();
+</script>
+</body>
+</html>
