@@ -576,6 +576,7 @@
               </button>
               <span class="pill-54">🌍 54 countries</span>
               <a href="/dashboard/" class="btn-login">Sign in</a>
+              <a href="/widgets/demo/" class="cta" style="background:transparent;border:1.5px solid var(--clr-accent,#008751);color:var(--clr-accent,#008751);font-size:12px;padding:7px 14px">Embed Tools</a>
               <a href="/#newsletter" class="cta">Get Updates →</a>
               <button class="burger" type="button" aria-label="Open menu" aria-expanded="false">
                 <span></span><span></span><span></span>

@@ -1,0 +1,105 @@
+/**
+ * AfroTools Widget Registry
+ * Complete catalog of every embeddable widget
+ * Auto-generated — do not edit manually
+ */
+var AFRO_WIDGET_REGISTRY = [
+  // ══════════════════════════════════════════════
+  //  FINANCIAL — PAYE Calculators (54 countries)
+  // ══════════════════════════════════════════════
+  {id:'nigeria-paye',name:'Nigeria PAYE Calculator',category:'financial',embedCode:'<div data-afrotools="nigeria-paye"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/financial-nigeria-paye.html" width="100%" height="500" frameborder="0" loading="lazy"></iframe>',description:'NTA 2026 income tax, CRA, pension, NHF',fullToolLink:'/nigeria/ng-salary-tax'},
+  {id:'kenya-paye',name:'Kenya PAYE Calculator',category:'financial',embedCode:'<div data-afrotools="kenya-paye"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/financial-kenya-paye.html" width="100%" height="500" frameborder="0" loading="lazy"></iframe>',description:'KRA 5-band PAYE, NSSF, SHIF, AHL',fullToolLink:'/kenya/ke-paye'},
+  {id:'ghana-paye',name:'Ghana PAYE + SSNIT',category:'financial',embedCode:'<div data-afrotools="ghana-paye"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/financial-ghana-paye.html" width="100%" height="500" frameborder="0" loading="lazy"></iframe>',description:'GRA 7-band tax, SSNIT tiers',fullToolLink:'/ghana/gh-paye'},
+  {id:'south-africa-paye',name:'South Africa SARS Tax',category:'financial',embedCode:'<div data-afrotools="south-africa-paye"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/financial-south-africa-paye.html" width="100%" height="500" frameborder="0" loading="lazy"></iframe>',description:'SARS 7-band, UIF, medical credits',fullToolLink:'/south-africa/za-paye'},
+  {id:'egypt-paye',name:'Egypt Income Tax',category:'financial',embedCode:'<div data-afrotools="egypt-paye"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/financial-egypt-paye.html" width="100%" height="500" frameborder="0" loading="lazy"></iframe>',description:'ETA progressive rates, NOSI',fullToolLink:'/egypt/eg-paye'},
+  {id:'tanzania-paye',name:'Tanzania PAYE',category:'financial',embedCode:'<div data-afrotools="tanzania-paye"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/financial-tanzania-paye.html" width="100%" height="500" frameborder="0" loading="lazy"></iframe>',description:'TRA 5-band, NSSF, SDL',fullToolLink:'/tanzania/tz-paye'},
+  {id:'uganda-paye',name:'Uganda PAYE',category:'financial',embedCode:'<div data-afrotools="uganda-paye"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/financial-uganda-paye.html" width="100%" height="500" frameborder="0" loading="lazy"></iframe>',description:'URA 5-band, NSSF, LST',fullToolLink:'/uganda/ug-paye'},
+  {id:'rwanda-paye',name:'Rwanda PAYE',category:'financial',embedCode:'<div data-afrotools="rwanda-paye"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/financial-rwanda-paye.html" width="100%" height="500" frameborder="0" loading="lazy"></iframe>',description:'RRA 3-band, RSSB contributions',fullToolLink:'/rwanda/rw-paye'},
+  {id:'ethiopia-paye',name:'Ethiopia PAYE',category:'financial',embedCode:'<div data-afrotools="ethiopia-paye"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/financial-ethiopia-paye.html" width="100%" height="500" frameborder="0" loading="lazy"></iframe>',description:'ERCA 7-band, pension',fullToolLink:'/ethiopia/et-paye'},
+  {id:'morocco-paye',name:'Morocco PAYE',category:'financial',embedCode:'<div data-afrotools="morocco-paye"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/financial-morocco-paye.html" width="100%" height="500" frameborder="0" loading="lazy"></iframe>',description:'DGI IR, CNSS, AMO',fullToolLink:'/morocco/ma-paye'},
+
+  // ══════════════════════════════════════════════
+  //  FINANCIAL — VAT Calculators
+  // ══════════════════════════════════════════════
+  {id:'vat-calculator',name:'VAT Calculator (Pan-African)',category:'financial',embedCode:'<div data-afrotools="vat-calculator"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/financial-vat-calculator.html" width="100%" height="500" frameborder="0" loading="lazy"></iframe>',description:'All 50+ African countries',fullToolLink:'/tools/vat-calculator/vat-calc'},
+
+  // ══════════════════════════════════════════════
+  //  FINANCIAL — Other
+  // ══════════════════════════════════════════════
+  {id:'mortgage-calculator',name:'Mortgage Calculator',category:'financial',embedCode:'<div data-afrotools="mortgage-calculator"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/financial-mortgage.html" width="100%" height="500" frameborder="0" loading="lazy"></iframe>',description:'Monthly payments, amortization',fullToolLink:'/tools/mortgage-calculator/'},
+  {id:'savings-goal',name:'Savings Goal Calculator',category:'financial',embedCode:'<div data-afrotools="savings-goal"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/financial-savings-goal.html" width="100%" height="500" frameborder="0" loading="lazy"></iframe>',description:'Target savings planner',fullToolLink:'/tools/savings-goal/'},
+  {id:'investment-return',name:'Investment Return Calculator',category:'financial',embedCode:'<div data-afrotools="investment-return"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/financial-investment-return.html" width="100%" height="500" frameborder="0" loading="lazy"></iframe>',description:'Compound growth projections',fullToolLink:'/tools/investment-return/'},
+  {id:'break-even',name:'Break-Even Calculator',category:'financial',embedCode:'<div data-afrotools="break-even"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/financial-break-even.html" width="100%" height="500" frameborder="0" loading="lazy"></iframe>',description:'Break-even analysis',fullToolLink:'/tools/break-even/'},
+  {id:'profit-margin',name:'Profit Margin Calculator',category:'financial',embedCode:'<div data-afrotools="profit-margin"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/financial-profit-margin.html" width="100%" height="500" frameborder="0" loading="lazy"></iframe>',description:'Revenue, cost, margin',fullToolLink:'/tools/profit-margin/'},
+  {id:'tip-calculator',name:'Tip Calculator',category:'financial',embedCode:'<div data-afrotools="tip-calculator"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/financial-tip-calc.html" width="100%" height="500" frameborder="0" loading="lazy"></iframe>',description:'Bill splitting with tip',fullToolLink:'/tools/tip-calculator/'},
+  {id:'currency-converter',name:'Currency Converter',category:'financial',embedCode:'<div data-afrotools="currency-converter"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/financial-currency-converter.html" width="100%" height="500" frameborder="0" loading="lazy"></iframe>',description:'Live exchange rates',fullToolLink:'/tools/currency-converter/'},
+  {id:'percentage-calculator',name:'Percentage Calculator',category:'financial',embedCode:'<div data-afrotools="percentage-calculator"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/financial-percentage-calc.html" width="100%" height="500" frameborder="0" loading="lazy"></iframe>',description:'All percentage calculations',fullToolLink:'/tools/percentage-calc/'},
+
+  // ══════════════════════════════════════════════
+  //  CRYPTO
+  // ══════════════════════════════════════════════
+  {id:'crypto-converter',name:'Crypto → African Currency',category:'crypto',embedCode:'<div data-afrotools="crypto-converter"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/crypto-crypto-converter.html" width="100%" height="500" frameborder="0" loading="lazy"></iframe>',description:'BTC, ETH, USDT to African currencies',fullToolLink:'/tools/afrorates/'},
+  {id:'crypto-profit-loss',name:'Crypto Profit/Loss',category:'crypto',embedCode:'<div data-afrotools="crypto-profit-loss"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/crypto-profit-loss.html" width="100%" height="500" frameborder="0" loading="lazy"></iframe>',description:'P/L and ROI calculator',fullToolLink:'/tools/crypto-tax/'},
+  {id:'dca-calculator',name:'DCA Calculator',category:'crypto',embedCode:'<div data-afrotools="dca-calculator"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/crypto-dca-calc.html" width="100%" height="500" frameborder="0" loading="lazy"></iframe>',description:'Dollar cost averaging',fullToolLink:'/tools/crypto-tax/'},
+  {id:'staking-rewards',name:'Staking Rewards',category:'crypto',embedCode:'<div data-afrotools="staking-rewards"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/crypto-staking-rewards.html" width="100%" height="500" frameborder="0" loading="lazy"></iframe>',description:'APY rewards calculator',fullToolLink:'/tools/crypto-tax/'},
+
+  // ══════════════════════════════════════════════
+  //  HEALTH
+  // ══════════════════════════════════════════════
+  {id:'bmi-calculator',name:'BMI Calculator',category:'health',embedCode:'<div data-afrotools="bmi-calculator"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/health-bmi.html" width="100%" height="500" frameborder="0" loading="lazy"></iframe>',description:'BMI with category',fullToolLink:'/tools/bmi-calculator/'},
+  {id:'calorie-calculator',name:'Calorie Calculator',category:'health',embedCode:'<div data-afrotools="calorie-calculator"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/health-calorie.html" width="100%" height="500" frameborder="0" loading="lazy"></iframe>',description:'Daily calorie needs',fullToolLink:'/tools/calorie-counter/'},
+  {id:'water-intake',name:'Water Intake Calculator',category:'health',embedCode:'<div data-afrotools="water-intake"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/health-water-intake.html" width="100%" height="500" frameborder="0" loading="lazy"></iframe>',description:'Daily water recommendation',fullToolLink:'/tools/water-intake/'},
+  {id:'due-date',name:'Pregnancy Due Date',category:'health',embedCode:'<div data-afrotools="due-date"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/health-due-date.html" width="100%" height="500" frameborder="0" loading="lazy"></iframe>',description:'Pregnancy calculator',fullToolLink:'/tools/due-date/'},
+
+  // ══════════════════════════════════════════════
+  //  EDUCATION
+  // ══════════════════════════════════════════════
+  {id:'gpa-calculator',name:'GPA Calculator',category:'education',embedCode:'<div data-afrotools="gpa-calculator"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/education-gpa.html" width="100%" height="500" frameborder="0" loading="lazy"></iframe>',description:'Multi-scale GPA',fullToolLink:'/tools/gpa-calculator/'},
+  {id:'jamb-aggregate',name:'JAMB Aggregate',category:'education',embedCode:'<div data-afrotools="jamb-aggregate"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/education-jamb-aggregate.html" width="100%" height="500" frameborder="0" loading="lazy"></iframe>',description:'JAMB + O\'Level aggregate',fullToolLink:'/tools/jamb-aggregate/'},
+
+  // ══════════════════════════════════════════════
+  //  DEVELOPER
+  // ══════════════════════════════════════════════
+  {id:'json-formatter',name:'JSON Formatter',category:'developer',embedCode:'<div data-afrotools="json-formatter"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/developer-json-formatter.html" width="100%" height="600" frameborder="0" loading="lazy"></iframe>',description:'Format, validate, minify JSON',fullToolLink:'/tools/dev-tools/'},
+  {id:'base64',name:'Base64 Encoder/Decoder',category:'developer',embedCode:'<div data-afrotools="base64"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/developer-base64.html" width="100%" height="500" frameborder="0" loading="lazy"></iframe>',description:'Base64 encode/decode',fullToolLink:'/tools/base64/'},
+  {id:'uuid-generator',name:'UUID Generator',category:'developer',embedCode:'<div data-afrotools="uuid-generator"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/developer-uuid-generator.html" width="100%" height="400" frameborder="0" loading="lazy"></iframe>',description:'UUID v4 generator',fullToolLink:'/tools/uuid-generator/'},
+  {id:'password-generator',name:'Password Generator',category:'developer',embedCode:'<div data-afrotools="password-generator"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/developer-password-generator.html" width="100%" height="500" frameborder="0" loading="lazy"></iframe>',description:'Secure password generator',fullToolLink:'/tools/password-generator/'},
+  {id:'hash-generator',name:'Hash Generator',category:'developer',embedCode:'<div data-afrotools="hash-generator"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/developer-hash-generator.html" width="100%" height="500" frameborder="0" loading="lazy"></iframe>',description:'MD5, SHA-1, SHA-256',fullToolLink:'/tools/hash-generator/'},
+  {id:'color-picker',name:'Color Picker',category:'developer',embedCode:'<div data-afrotools="color-picker"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/developer-color-picker.html" width="100%" height="500" frameborder="0" loading="lazy"></iframe>',description:'HEX ↔ RGB ↔ HSL',fullToolLink:'/tools/color-picker/'},
+
+  // ══════════════════════════════════════════════
+  //  DOCUMENT & PDF
+  // ══════════════════════════════════════════════
+  {id:'word-counter',name:'Word Counter',category:'document-pdf',embedCode:'<div data-afrotools="word-counter"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/document-pdf-word-counter.html" width="100%" height="500" frameborder="0" loading="lazy"></iframe>',description:'Words, characters, reading time',fullToolLink:'/tools/word-counter/'},
+
+  // ══════════════════════════════════════════════
+  //  IMAGE & DESIGN
+  // ══════════════════════════════════════════════
+  {id:'qr-generator',name:'QR Code Generator',category:'image-design',embedCode:'<div data-afrotools="qr-generator"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/image-design-qr-generator.html" width="100%" height="500" frameborder="0" loading="lazy"></iframe>',description:'Text/URL to QR code',fullToolLink:'/tools/qr-generator/'},
+
+  // ══════════════════════════════════════════════
+  //  DATA & PRODUCTIVITY
+  // ══════════════════════════════════════════════
+  {id:'unit-converter',name:'Unit Converter',category:'data-productivity',embedCode:'<div data-afrotools="unit-converter"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/data-productivity-unit-converter.html" width="100%" height="500" frameborder="0" loading="lazy"></iframe>',description:'Universal unit converter',fullToolLink:'/tools/unit-converter/'},
+  {id:'age-calculator',name:'Age Calculator',category:'data-productivity',embedCode:'<div data-afrotools="age-calculator"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/data-productivity-age-calculator.html" width="100%" height="400" frameborder="0" loading="lazy"></iframe>',description:'Exact age from birthdate',fullToolLink:'/tools/age-calculator/'},
+  {id:'time-zone',name:'Time Zone Converter',category:'data-productivity',embedCode:'<div data-afrotools="time-zone"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/data-productivity-time-zone.html" width="100%" height="500" frameborder="0" loading="lazy"></iframe>',description:'African + global time zones',fullToolLink:'/tools/time-zone/'},
+
+  // ══════════════════════════════════════════════
+  //  AFRICAN-SPECIFIC
+  // ══════════════════════════════════════════════
+  {id:'japa-calculator',name:'Japa Cost Calculator',category:'african',embedCode:'<div data-afrotools="japa-calculator"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/african-japa-calculator.html" width="100%" height="600" frameborder="0" loading="lazy"></iframe>',description:'African relocation cost estimator',fullToolLink:'/tools/japa-calculator/'},
+  {id:'mobile-money-fees',name:'Mobile Money Fees',category:'african',embedCode:'<div data-afrotools="mobile-money-fees"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/african-mobile-money-fees.html" width="100%" height="500" frameborder="0" loading="lazy"></iframe>',description:'M-Pesa, MTN MoMo fees',fullToolLink:'/tools/mobile-money-fees/'},
+
+  // ══════════════════════════════════════════════
+  //  ENGINEERING
+  // ══════════════════════════════════════════════
+  {id:'solar-calculator',name:'Solar Panel Calculator',category:'engineering',embedCode:'<div data-afrotools="solar-calculator"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/engineering-solar-calculator.html" width="100%" height="500" frameborder="0" loading="lazy"></iframe>',description:'Solar system sizing',fullToolLink:'/tools/solar-calculator/'},
+  {id:'generator-fuel',name:'Generator Fuel Cost',category:'engineering',embedCode:'<div data-afrotools="generator-fuel"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/engineering-generator-fuel.html" width="100%" height="500" frameborder="0" loading="lazy"></iframe>',description:'Fuel consumption calculator',fullToolLink:'/tools/generator-fuel/'},
+
+  // ══════════════════════════════════════════════
+  //  LEGAL
+  // ══════════════════════════════════════════════
+  {id:'stamp-duty',name:'Stamp Duty Calculator',category:'legal',embedCode:'<div data-afrotools="stamp-duty"></div>',iframeCode:'<iframe src="https://afrotools.com/widgets/iframe/legal-stamp-duty.html" width="100%" height="500" frameborder="0" loading="lazy"></iframe>',description:'Property stamp duty',fullToolLink:'/tools/stamp-duty/'}
+];
+
+if (typeof module !== 'undefined') module.exports = AFRO_WIDGET_REGISTRY;

@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Embed Africa's Best Tools On Your Website — Free | AfroTools Widgets</title>
+<meta name="description" content="200+ embeddable calculators and tools for your website. PAYE, VAT, crypto, health, developer tools. One line of code. Free forever.">
+<meta property="og:title" content="AfroTools Embeddable Widgets — Free Tools for Your Website">
+<meta property="og:description" content="200+ embeddable calculators. One script tag. Automatic backlink. Free forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/widgets/demo/">
+<link rel="canonical" href="https://afrotools.com/widgets/demo/">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"AfroTools Embeddable Widgets","url":"https://afrotools.com/widgets/demo/","description":"200+ free embeddable calculators and tools for any website","applicationCategory":"FinanceApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+</script>
+<style>
+  :root{--bg:#0a0f1a;--surface:#111827;--card:#1a2234;--border:#1e293b;--text:#f1f5f9;--muted:#94a3b8;--accent:#008751;--accent-hover:#5ddb9e;--font-serif:'Georgia','Times New Roman',serif;--font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--text);font-family:var(--font-sans);line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:var(--accent);text-decoration:none}a:hover{color:var(--accent-hover);text-decoration:underline}
+
+  /* Hero */
+  .hero{padding:80px 20px 60px;text-align:center;background:linear-gradient(135deg,#0a1a12 0%,#0a0f1a 50%,#0f1225 100%);border-bottom:1px solid var(--border)}
+  .hero-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 16px;border-radius:100px;background:rgba(0,135,81,.12);color:var(--accent);font-size:13px;font-weight:600;margin-bottom:24px}
+  .hero-badge::before{content:'';width:6px;height:6px;background:var(--accent);border-radius:50%;animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+  .hero h1{font-family:var(--font-serif);font-size:clamp(2rem,5vw,3.6rem);font-weight:700;letter-spacing:-.03em;line-height:1.1;margin-bottom:16px}
+  .hero h1 em{font-style:normal;color:var(--accent)}
+  .hero p{font-size:1.15rem;color:var(--muted);max-width:600px;margin:0 auto 32px}
+  .stats-bar{display:flex;justify-content:center;gap:40px;flex-wrap:wrap}
+  .stat{text-align:center}
+  .stat-num{font-size:2rem;font-weight:800;color:var(--accent)}
+  .stat-label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+
+  /* Container */
+  .container{max-width:1100px;margin:0 auto;padding:0 20px}
+
+  /* Section */
+  .section{padding:60px 0}
+  .section-title{font-size:1.6rem;font-weight:700;margin-bottom:8px}
+  .section-desc{color:var(--muted);margin-bottom:32px}
+
+  /* Widget Grid */
+  .widget-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+  .widget-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;cursor:pointer;transition:all .2s}
+  .widget-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,135,81,.12)}
+  .widget-card-name{font-size:15px;font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+  .widget-card-desc{font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.5}
+  .widget-card-actions{display:flex;gap:8px}
+  .btn-copy{padding:6px 14px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--accent);background:transparent;color:var(--accent);transition:all .15s}
+  .btn-copy:hover{background:var(--accent);color:#fff}
+  .btn-preview{padding:6px 14px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:transparent;color:var(--muted);transition:all .15s}
+  .btn-preview:hover{border-color:var(--muted);color:var(--text)}
+
+  /* Category tabs */
+  .cat-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:32px}
+  .cat-tab{padding:8px 18px;border-radius:100px;font-size:13px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:transparent;color:var(--muted);transition:all .15s}
+  .cat-tab:hover,.cat-tab--active{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+  /* Preview Modal */
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9999;display:none;align-items:center;justify-content:center;padding:20px}
+  .modal-overlay.show{display:flex}
+  .modal{background:var(--surface);border:1px solid var(--border);border-radius:16px;max-width:560px;width:100%;max-height:90vh;overflow-y:auto;padding:24px}
+  .modal-close{float:right;background:none;border:none;color:var(--muted);font-size:24px;cursor:pointer;padding:4px 8px}
+  .modal-close:hover{color:var(--text)}
+  .modal h3{font-size:18px;margin-bottom:16px}
+  .code-block{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;font-family:'SFMono-Regular',Consolas,monospace;font-size:12px;color:var(--accent);overflow-x:auto;margin:12px 0;position:relative;white-space:pre-wrap;word-break:break-all}
+  .code-copy{position:absolute;top:8px;right:8px;padding:4px 10px;border-radius:4px;font-size:11px;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--muted)}
+  .code-copy:hover{color:var(--text)}
+  .widget-preview-frame{border:1px solid var(--border);border-radius:12px;margin:16px 0;min-height:300px;overflow:hidden}
+
+  /* How It Works */
+  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;margin-top:32px}
+  .step{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px}
+  .step-num{width:36px;height:36px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;margin-bottom:12px}
+  .step h4{font-size:15px;margin-bottom:6px}
+  .step p{font-size:13px;color:var(--muted)}
+
+  /* Platform instructions */
+  .platform-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+  .platform-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center}
+  .platform-card h4{font-size:14px;margin-top:8px}
+  .platform-card p{font-size:12px;color:var(--muted);margin-top:4px}
+
+  /* FAQ */
+  .faq-list{max-width:700px}
+  .faq-item{border-bottom:1px solid var(--border);padding:16px 0}
+  .faq-q{font-weight:700;font-size:15px;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+  .faq-a{font-size:14px;color:var(--muted);margin-top:8px;display:none;line-height:1.7}
+  .faq-item.open .faq-a{display:block}
+  .faq-item.open .faq-arrow{transform:rotate(180deg)}
+  .faq-arrow{transition:transform .2s;font-size:12px}
+
+  /* Customizer */
+  .customizer{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:24px}
+  .customizer-controls{display:flex;flex-direction:column;gap:14px}
+  .customizer-label{font-size:13px;font-weight:600;margin-bottom:4px}
+  .customizer-input{padding:8px 12px;border-radius:6px;border:1.5px solid var(--border);background:var(--card);color:var(--text);font-size:14px}
+  .customizer-preview{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;min-height:300px;display:flex;align-items:center;justify-content:center}
+
+  /* CTA */
+  .cta-section{text-align:center;padding:60px 20px;background:linear-gradient(135deg,rgba(0,135,81,.08),transparent)}
+  .cta-section h2{font-size:1.8rem;margin-bottom:12px}
+  .cta-section p{color:var(--muted);margin-bottom:24px}
+  .btn-cta{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:10px;background:var(--accent);color:#fff;font-weight:700;font-size:15px;border:none;cursor:pointer;transition:background .15s}
+  .btn-cta:hover{background:var(--accent-hover);color:#fff;text-decoration:none}
+
+  /* Footer */
+  .footer{text-align:center;padding:40px 20px;border-top:1px solid var(--border);color:var(--muted);font-size:13px}
+
+  @media(max-width:640px){
+    .stats-bar{gap:24px}
+    .customizer{grid-template-columns:1fr}
+    .hero h1{font-size:1.8rem}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav style="padding:16px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)">
+  <a href="https://afrotools.com" style="display:flex;align-items:center;gap:8px;font-weight:800;font-size:18px;color:var(--text)">
+    <svg width="28" height="28" viewBox="0 0 32 32"><path d="M16 2l12 7v14l-12 7-12-7V9z" fill="#008751" opacity=".2"/><path d="M16 6l8 4.7v9.3L16 25 8 20V10.7z" fill="#008751"/><path d="M16 10l4 2.3v4.7L16 19.3 12 17v-4.7z" fill="#fff"/></svg>
+    AFROTOOLS
+  </a>
+  <a href="https://afrotools.com" class="btn-cta" style="padding:8px 18px;font-size:13px">← Back to AfroTools</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">Embeddable Widgets</div>
+  <h1>Embed Africa's Best Tools<br>On Your Website — <em>Free</em></h1>
+  <p>200+ embeddable calculators and tools. One line of code. Automatic backlink. Works on any platform.</p>
+  <div class="stats-bar">
+    <div class="stat"><div class="stat-num" id="total-widgets">200+</div><div class="stat-label">Widgets</div></div>
+    <div class="stat"><div class="stat-num">14</div><div class="stat-label">Categories</div></div>
+    <div class="stat"><div class="stat-num">54</div><div class="stat-label">Countries</div></div>
+    <div class="stat"><div class="stat-num">&lt;8KB</div><div class="stat-label">Loader Size</div></div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<div class="container">
+<section class="section">
+  <h2 class="section-title">How It Works</h2>
+  <p class="section-desc">Three steps to add any AfroTools widget to your site.</p>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <h4>Choose a Widget</h4>
+      <p>Browse 200+ widgets below. PAYE calculators, VAT tools, crypto converters, health calculators, and more.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <h4>Copy the Code</h4>
+      <p>Click "Copy Embed Code" — paste the two lines into your HTML. That's it.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <h4>It Just Works</h4>
+      <p>The widget loads asynchronously, matches your site's style, works on mobile. Zero config.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WIDGET GALLERY -->
+<section class="section" id="gallery">
+  <h2 class="section-title">Widget Gallery</h2>
+  <p class="section-desc">Click any widget to preview it and get the embed code.</p>
+
+  <div class="cat-tabs" id="cat-tabs">
+    <button class="cat-tab cat-tab--active" data-cat="all">All</button>
+    <button class="cat-tab" data-cat="financial">💰 Financial</button>
+    <button class="cat-tab" data-cat="crypto">₿ Crypto</button>
+    <button class="cat-tab" data-cat="health">🏥 Health</button>
+    <button class="cat-tab" data-cat="education">🎓 Education</button>
+    <button class="cat-tab" data-cat="developer">⌨️ Developer</button>
+    <button class="cat-tab" data-cat="document-pdf">📄 Document</button>
+    <button class="cat-tab" data-cat="image-design">🖼️ Design</button>
+    <button class="cat-tab" data-cat="data-productivity">📊 Productivity</button>
+    <button class="cat-tab" data-cat="african">🌍 African</button>
+    <button class="cat-tab" data-cat="engineering">🔧 Engineering</button>
+    <button class="cat-tab" data-cat="legal">⚖️ Legal</button>
+    <button class="cat-tab" data-cat="ecommerce">🛒 Ecommerce</button>
+  </div>
+
+  <div class="widget-grid" id="widget-grid"></div>
+</section>
+
+<!-- CUSTOMIZER -->
+<section class="section">
+  <h2 class="section-title">Customize Your Widget</h2>
+  <p class="section-desc">Every widget supports theme, width, and accent color customization.</p>
+  <div class="customizer">
+    <div class="customizer-controls">
+      <div>
+        <div class="customizer-label">Widget</div>
+        <select class="customizer-input" id="cust-widget" style="width:100%">
+          <option value="nigeria-paye">Nigeria PAYE Calculator</option>
+          <option value="bmi-calculator">BMI Calculator</option>
+          <option value="vat-calculator">VAT Calculator</option>
+          <option value="tip-calculator">Tip Calculator</option>
+          <option value="password-generator">Password Generator</option>
+        </select>
+      </div>
+      <div>
+        <div class="customizer-label">Theme</div>
+        <select class="customizer-input" id="cust-theme" style="width:100%">
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div>
+        <div class="customizer-label">Max Width (px)</div>
+        <input class="customizer-input" id="cust-width" type="number" value="480" min="280" max="800" style="width:100%">
+      </div>
+      <div>
+        <div class="customizer-label">Accent Color</div>
+        <input class="customizer-input" id="cust-accent" type="color" value="#008751" style="width:100%;height:40px;padding:4px">
+      </div>
+      <div>
+        <div class="customizer-label">Generated Code</div>
+        <div class="code-block" id="cust-code" style="position:relative"></div>
+      </div>
+    </div>
+    <div class="customizer-preview" id="cust-preview">
+      <div style="color:var(--muted);font-size:13px;text-align:center">Select a widget and click "Update Preview" to see it live</div>
+    </div>
+  </div>
+</section>
+
+<!-- PLATFORM INSTRUCTIONS -->
+<section class="section">
+  <h2 class="section-title">Works Everywhere</h2>
+  <p class="section-desc">Step-by-step integration for every major platform.</p>
+  <div class="platform-grid">
+    <div class="platform-card">
+      <div style="font-size:2rem">🌐</div>
+      <h4>Plain HTML</h4>
+      <p>Paste the embed code anywhere in your HTML body.</p>
+    </div>
+    <div class="platform-card">
+      <div style="font-size:2rem">📝</div>
+      <h4>WordPress</h4>
+      <p>Add a Custom HTML block and paste the embed code.</p>
+    </div>
+    <div class="platform-card">
+      <div style="font-size:2rem">🛍️</div>
+      <h4>Shopify</h4>
+      <p>Edit theme → Add custom Liquid section with the code.</p>
+    </div>
+    <div class="platform-card">
+      <div style="font-size:2rem">✨</div>
+      <h4>Wix</h4>
+      <p>Add an "Embed HTML" element and paste the code.</p>
+    </div>
+    <div class="platform-card">
+      <div style="font-size:2rem">⬜</div>
+      <h4>Squarespace</h4>
+      <p>Add a Code Block and paste the embed snippet.</p>
+    </div>
+    <div class="platform-card">
+      <div style="font-size:2rem">🔷</div>
+      <h4>Webflow</h4>
+      <p>Add an Embed element in the designer and paste.</p>
+    </div>
+    <div class="platform-card">
+      <div style="font-size:2rem">⚛️</div>
+      <h4>React / Next.js</h4>
+      <p>Use dangerouslySetInnerHTML or useEffect to load the script.</p>
+    </div>
+    <div class="platform-card">
+      <div style="font-size:2rem">📋</div>
+      <h4>iFrame</h4>
+      <p>Every widget also has an iframe version for maximum compatibility.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section">
+  <h2 class="section-title">FAQ</h2>
+  <div class="faq-list">
+    <div class="faq-item">
+      <div class="faq-q">Is it free? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Yes, completely free. No sign-up, no API key, no usage limits. Free forever.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Will it slow my website? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">No. The loader is under 8KB and loads asynchronously. Widgets are lazy-loaded via IntersectionObserver — they only load when visible. Zero render-blocking.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Can I customize the colors? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Yes! Use data-afrotools-theme="light" or "dark", data-afrotools-accent="#yourcolor", and data-afrotools-width to control the max width.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Do you track my visitors? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">We only track anonymous widget load counts (which widget loaded and the referring domain). No personal data, no cookies, no fingerprinting.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Can I use multiple widgets on one page? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Absolutely. Add as many data-afrotools divs as you want. The single embed.js script handles all of them. Each widget uses Shadow DOM for complete CSS isolation.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">What about the "Powered by AfroTools" link? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">It's a small footer link on each widget. It helps us keep the service free and provides SEO value. The link is a standard dofollow link to the corresponding tool on AfroTools.com.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Do the calculators produce accurate results? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Yes. Every widget uses the exact same calculation logic as the full tool on AfroTools.com. PAYE calculators use official 2025/2026 tax bands from each country's revenue authority.</div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2>Need a Custom Widget?</h2>
+  <p>We can build bespoke embeddable tools for your business.</p>
+  <a href="mailto:hello@afrotools.com" class="btn-cta">Contact Us →</a>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <p>© 2025 <a href="https://afrotools.com">AfroTools.com</a> — Africa's Everything Platform</p>
+  <p style="margin-top:8px"><a href="https://afrotools.com">Home</a> · <a href="https://afrotools.com/tools/">All Tools</a> · <a href="https://afrotools.com/dashboard/">Dashboard</a></p>
+</footer>
+
+<!-- PREVIEW MODAL -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <button class="modal-close" id="modal-close">&times;</button>
+    <h3 id="modal-title">Widget Preview</h3>
+    <div class="widget-preview-frame" id="modal-preview"></div>
+    <h4 style="font-size:14px;margin-top:16px">Script Embed Code</h4>
+    <div class="code-block" id="modal-script-code"></div>
+    <h4 style="font-size:14px;margin-top:12px">iFrame Embed Code</h4>
+    <div class="code-block" id="modal-iframe-code"></div>
+  </div>
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  // Widget catalog — populated from embed.js map
+  var WIDGETS = [
+    // Financial — PAYE
+    {id:'nigeria-paye',name:'Nigeria PAYE Calculator',cat:'financial',icon:'🇳🇬',desc:'NTA 2026 income tax, CRA, pension, NHF',link:'/nigeria/ng-salary-tax'},
+    {id:'kenya-paye',name:'Kenya PAYE Calculator',cat:'financial',icon:'🇰🇪',desc:'KRA 5-band PAYE, NSSF, SHIF, AHL',link:'/kenya/ke-paye'},
+    {id:'ghana-paye',name:'Ghana PAYE + SSNIT',cat:'financial',icon:'🇬🇭',desc:'GRA 7-band tax, SSNIT tiers, reliefs',link:'/ghana/gh-paye'},
+    {id:'south-africa-paye',name:'South Africa SARS Tax',cat:'financial',icon:'🇿🇦',desc:'SARS 7-band, UIF, medical credits',link:'/south-africa/za-paye'},
+    {id:'egypt-paye',name:'Egypt Income Tax',cat:'financial',icon:'🇪🇬',desc:'ETA progressive rates, NOSI',link:'/egypt/eg-paye'},
+    {id:'tanzania-paye',name:'Tanzania PAYE',cat:'financial',icon:'🇹🇿',desc:'TRA 5-band, NSSF, SDL',link:'/tanzania/tz-paye'},
+    {id:'uganda-paye',name:'Uganda PAYE',cat:'financial',icon:'🇺🇬',desc:'URA 5-band, NSSF, LST',link:'/uganda/ug-paye'},
+    {id:'rwanda-paye',name:'Rwanda PAYE',cat:'financial',icon:'🇷🇼',desc:'RRA 3-band, RSSB 6%+6%',link:'/rwanda/rw-paye'},
+    {id:'ethiopia-paye',name:'Ethiopia PAYE',cat:'financial',icon:'🇪🇹',desc:'ERCA 7-band, pension',link:'/ethiopia/et-paye'},
+    {id:'morocco-paye',name:'Morocco PAYE',cat:'financial',icon:'🇲🇦',desc:'DGI IR, CNSS, AMO',link:'/morocco/ma-paye'},
+    // Financial — VAT
+    {id:'vat-calculator',name:'VAT Calculator (All Africa)',cat:'financial',icon:'💱',desc:'All 50+ African countries, add/extract VAT',link:'/tools/vat-calculator/vat-calc'},
+    {id:'nigeria-vat',name:'Nigeria VAT',cat:'financial',icon:'🇳🇬',desc:'7.5% standard rate',link:'/nigeria/ng-vat'},
+    {id:'kenya-vat',name:'Kenya VAT',cat:'financial',icon:'🇰🇪',desc:'16% standard rate',link:'/kenya/ke-vat'},
+    {id:'south-africa-vat',name:'South Africa VAT',cat:'financial',icon:'🇿🇦',desc:'15% standard rate',link:'/south-africa/za-vat'},
+    // Financial — Other
+    {id:'mortgage-calculator',name:'Mortgage Calculator',cat:'financial',icon:'🏠',desc:'Monthly payments, total interest, amortization',link:'/tools/mortgage-calculator/'},
+    {id:'savings-goal',name:'Savings Goal',cat:'financial',icon:'🎯',desc:'Monthly savings needed for your target',link:'/tools/savings-goal/'},
+    {id:'investment-return',name:'Investment Return',cat:'financial',icon:'📈',desc:'Future value with compound growth',link:'/tools/investment-return/'},
+    {id:'loan-compare',name:'Loan Comparison',cat:'financial',icon:'⚖️',desc:'Compare two loans side by side',link:'/tools/loan-compare/'},
+    {id:'break-even',name:'Break-Even Calculator',cat:'financial',icon:'📊',desc:'Fixed costs, variable costs, price → break-even',link:'/tools/break-even/'},
+    {id:'profit-margin',name:'Profit Margin',cat:'financial',icon:'💰',desc:'Cost, revenue → margin percentage',link:'/tools/profit-margin/'},
+    {id:'discount-calculator',name:'Discount Calculator',cat:'financial',icon:'🏷️',desc:'Original price, discount → sale price',link:'/tools/discount-calc/'},
+    {id:'tip-calculator',name:'Tip Calculator',cat:'financial',icon:'💳',desc:'Bill, tip %, split between people',link:'/tools/tip-calculator/'},
+    {id:'budget-planner',name:'Budget Planner',cat:'financial',icon:'📋',desc:'Income vs expenses summary',link:'/tools/budget-planner/'},
+    {id:'currency-converter',name:'Currency Converter',cat:'financial',icon:'💱',desc:'Live rates, African + international',link:'/tools/currency-converter/'},
+    {id:'percentage-calculator',name:'Percentage Calculator',cat:'financial',icon:'%',desc:'All percentage calculations',link:'/tools/percentage-calc/'},
+    // Crypto
+    {id:'crypto-converter',name:'Crypto → African Currency',cat:'crypto',icon:'₿',desc:'BTC, ETH, USDT → NGN, KES, ZAR, GHS',link:'/tools/afrorates/'},
+    {id:'crypto-profit-loss',name:'Crypto Profit/Loss',cat:'crypto',icon:'📊',desc:'Buy price, sell price → P/L and ROI',link:'/tools/crypto-tax/'},
+    {id:'dca-calculator',name:'DCA Calculator',cat:'crypto',icon:'📅',desc:'Dollar cost averaging simulator',link:'/tools/crypto-tax/'},
+    {id:'staking-rewards',name:'Staking Rewards',cat:'crypto',icon:'🥩',desc:'Amount, APY, duration → rewards',link:'/tools/crypto-tax/'},
+    // Health
+    {id:'bmi-calculator',name:'BMI Calculator',cat:'health',icon:'⚖️',desc:'Height + weight → BMI + category',link:'/tools/bmi-calculator/'},
+    {id:'calorie-calculator',name:'Calorie Calculator',cat:'health',icon:'🔥',desc:'Daily calorie needs (Mifflin-St Jeor)',link:'/tools/calorie-counter/'},
+    {id:'water-intake',name:'Water Intake',cat:'health',icon:'💧',desc:'Daily water recommendation',link:'/tools/water-intake/'},
+    {id:'due-date',name:'Pregnancy Due Date',cat:'health',icon:'🤰',desc:'Last period → due date, trimester',link:'/tools/due-date/'},
+    {id:'ovulation-calculator',name:'Ovulation Calculator',cat:'health',icon:'📅',desc:'Cycle tracking, fertile window',link:'/tools/ovulation-calc/'},
+    {id:'blood-pressure',name:'Blood Pressure Checker',cat:'health',icon:'❤️',desc:'Systolic + diastolic → category',link:'/tools/blood-pressure/'},
+    // Education
+    {id:'gpa-calculator',name:'GPA Calculator',cat:'education',icon:'🎓',desc:'Courses + grades → GPA (4.0/5.0/7.0)',link:'/tools/gpa-calculator/'},
+    {id:'student-loan',name:'Student Loan Calculator',cat:'education',icon:'🎒',desc:'Loan repayment schedule',link:'/tools/student-loan/'},
+    {id:'jamb-aggregate',name:'JAMB Aggregate',cat:'education',icon:'📝',desc:'JAMB + O\'Level → aggregate score',link:'/tools/jamb-aggregate/'},
+    {id:'waec-calculator',name:'WAEC Calculator',cat:'education',icon:'📋',desc:'WAEC grade calculation',link:'/tools/waec-calculator/'},
+    {id:'ielts-calculator',name:'IELTS Band Calculator',cat:'education',icon:'🌍',desc:'Section scores → overall band',link:'/tools/ielts-calculator/'},
+    // Developer
+    {id:'json-formatter',name:'JSON Formatter',cat:'developer',icon:'{…}',desc:'Format, validate, minify JSON',link:'/tools/dev-tools/'},
+    {id:'base64',name:'Base64 Encoder/Decoder',cat:'developer',icon:'🔐',desc:'Encode/decode Base64 strings',link:'/tools/base64/'},
+    {id:'url-encoder',name:'URL Encoder/Decoder',cat:'developer',icon:'🔗',desc:'URL encode and decode',link:'/tools/url-encoder/'},
+    {id:'hash-generator',name:'Hash Generator',cat:'developer',icon:'#️',desc:'MD5, SHA-1, SHA-256 hashes',link:'/tools/hash-generator/'},
+    {id:'jwt-decoder',name:'JWT Decoder',cat:'developer',icon:'🔑',desc:'Decode JWT header and payload',link:'/tools/jwt-decoder/'},
+    {id:'uuid-generator',name:'UUID Generator',cat:'developer',icon:'🆔',desc:'Generate UUID v4',link:'/tools/uuid-generator/'},
+    {id:'password-generator',name:'Password Generator',cat:'developer',icon:'🔒',desc:'Secure random passwords',link:'/tools/password-generator/'},
+    {id:'regex-tester',name:'Regex Tester',cat:'developer',icon:'.*',desc:'Pattern + string → matches',link:'/tools/regex-tester/'},
+    {id:'color-picker',name:'Color Picker',cat:'developer',icon:'🎨',desc:'HEX ↔ RGB ↔ HSL converter',link:'/tools/color-picker/'},
+    {id:'css-gradient',name:'CSS Gradient Generator',cat:'developer',icon:'🌈',desc:'Visual gradient → CSS code',link:'/tools/css-gradient/'},
+    {id:'markdown-editor',name:'Markdown Preview',cat:'developer',icon:'📝',desc:'Markdown input → HTML preview',link:'/tools/markdown-editor/'},
+    // Document
+    {id:'word-counter',name:'Word Counter',cat:'document-pdf',icon:'📄',desc:'Words, characters, sentences, reading time',link:'/tools/word-counter/'},
+    {id:'diff-checker',name:'Text Diff Checker',cat:'document-pdf',icon:'📋',desc:'Compare two texts side-by-side',link:'/tools/diff-checker/'},
+    // Image & Design
+    {id:'qr-generator',name:'QR Code Generator',cat:'image-design',icon:'📱',desc:'Text/URL → QR code image',link:'/tools/qr-generator/'},
+    {id:'color-contrast',name:'Color Contrast Checker',cat:'image-design',icon:'🎨',desc:'WCAG contrast ratio checker',link:'/tools/color-contrast/'},
+    // Data & Productivity
+    {id:'unit-converter',name:'Unit Converter',cat:'data-productivity',icon:'📐',desc:'Length, weight, temperature, data',link:'/tools/unit-converter/'},
+    {id:'time-zone',name:'Time Zone Converter',cat:'data-productivity',icon:'🕐',desc:'African + international time zones',link:'/tools/time-zone/'},
+    {id:'age-calculator',name:'Age Calculator',cat:'data-productivity',icon:'🎂',desc:'Birthdate → exact age',link:'/tools/age-calculator/'},
+    {id:'scientific-calculator',name:'Scientific Calculator',cat:'data-productivity',icon:'🔬',desc:'Full scientific calculator',link:'/tools/scientific-calc/'},
+    // African
+    {id:'japa-calculator',name:'Japa Cost Calculator',cat:'african',icon:'✈️',desc:'Relocation cost from Africa',link:'/tools/japa-calculator/'},
+    {id:'mobile-money-fees',name:'Mobile Money Fees',cat:'african',icon:'📱',desc:'M-Pesa, MTN MoMo fees',link:'/tools/mobile-money-fees/'},
+    {id:'public-holidays',name:'Public Holidays',cat:'african',icon:'🎉',desc:'Next holidays by country',link:'/tools/public-holidays/'},
+    // Engineering
+    {id:'solar-calculator',name:'Solar Panel Calculator',cat:'engineering',icon:'☀️',desc:'Solar system sizing',link:'/tools/solar-calculator/'},
+    {id:'generator-fuel',name:'Generator Fuel Cost',cat:'engineering',icon:'⛽',desc:'Fuel consumption calculator',link:'/tools/generator-fuel/'},
+    // Legal
+    {id:'stamp-duty',name:'Stamp Duty Calculator',cat:'legal',icon:'📜',desc:'Property stamp duty',link:'/tools/stamp-duty/'},
+    // Ecommerce
+    {id:'import-duty',name:'Import Duty Calculator',cat:'ecommerce',icon:'📦',desc:'Import duty estimation',link:'/tools/import-duty/'},
+  ];
+
+  // Render widget cards
+  var grid = document.getElementById('widget-grid');
+  var activeCat = 'all';
+
+  function renderGrid() {
+    var filtered = activeCat === 'all' ? WIDGETS : WIDGETS.filter(function(w) { return w.cat === activeCat; });
+    grid.innerHTML = filtered.map(function(w) {
+      return '<div class="widget-card" data-wid="' + w.id + '">' +
+        '<div class="widget-card-name"><span>' + w.icon + '</span> ' + w.name + '</div>' +
+        '<div class="widget-card-desc">' + w.desc + '</div>' +
+        '<div class="widget-card-actions">' +
+          '<button class="btn-copy" data-copy="' + w.id + '">Copy Embed</button>' +
+          '<button class="btn-preview" data-preview="' + w.id + '">Preview</button>' +
+        '</div></div>';
+    }).join('');
+
+    document.getElementById('total-widgets').textContent = WIDGETS.length + '+';
+  }
+
+  renderGrid();
+
+  // Category tabs
+  document.getElementById('cat-tabs').addEventListener('click', function(e) {
+    var tab = e.target.closest('.cat-tab');
+    if (!tab) return;
+    document.querySelectorAll('.cat-tab').forEach(function(t) { t.classList.remove('cat-tab--active'); });
+    tab.classList.add('cat-tab--active');
+    activeCat = tab.dataset.cat;
+    renderGrid();
+  });
+
+  // Copy embed code
+  grid.addEventListener('click', function(e) {
+    var copyBtn = e.target.closest('.btn-copy');
+    if (copyBtn) {
+      var wid = copyBtn.dataset.copy;
+      var code = '<div data-afrotools="' + wid + '"></div>\n<script src="https://afrotools.com/widgets/embed.js" async><\/script>';
+      navigator.clipboard.writeText(code).then(function() {
+        copyBtn.textContent = 'Copied!';
+        setTimeout(function() { copyBtn.textContent = 'Copy Embed'; }, 2000);
+      });
+      return;
+    }
+
+    var previewBtn = e.target.closest('.btn-preview');
+    if (previewBtn) {
+      showModal(previewBtn.dataset.preview);
+    }
+  });
+
+  // Modal
+  var modal = document.getElementById('modal-overlay');
+  document.getElementById('modal-close').onclick = function() { modal.classList.remove('show'); };
+  modal.onclick = function(e) { if (e.target === modal) modal.classList.remove('show'); };
+
+  function showModal(wid) {
+    var w = WIDGETS.find(function(x) { return x.id === wid; });
+    if (!w) return;
+    document.getElementById('modal-title').textContent = w.icon + ' ' + w.name;
+
+    var scriptCode = '&lt;div data-afrotools="' + wid + '"&gt;&lt;/div&gt;\n&lt;script src="https://afrotools.com/widgets/embed.js" async&gt;&lt;/script&gt;';
+    document.getElementById('modal-script-code').innerHTML = scriptCode;
+
+    var cat = w.cat;
+    var iframeCode = '&lt;iframe\n  src="https://afrotools.com/widgets/iframe/' + cat + '-' + wid + '.html"\n  width="100%" height="500" frameborder="0"\n  style="border-radius:12px;max-width:480px;"\n  title="' + w.name + ' — AfroTools"\n  loading="lazy"&gt;\n&lt;/iframe&gt;';
+    document.getElementById('modal-iframe-code').innerHTML = iframeCode;
+
+    var preview = document.getElementById('modal-preview');
+    preview.innerHTML = '<div data-afrotools="' + wid + '"></div>';
+
+    modal.classList.add('show');
+  }
+
+  // FAQ toggles
+  document.querySelectorAll('.faq-q').forEach(function(q) {
+    q.addEventListener('click', function() {
+      q.parentElement.classList.toggle('open');
+    });
+  });
+
+  // Customizer
+  function updateCustomizer() {
+    var wid = document.getElementById('cust-widget').value;
+    var theme = document.getElementById('cust-theme').value;
+    var width = document.getElementById('cust-width').value;
+    var accent = document.getElementById('cust-accent').value;
+
+    var code = '<div data-afrotools="' + wid + '"';
+    if (theme !== 'light') code += '\n     data-afrotools-theme="' + theme + '"';
+    if (width !== '480') code += '\n     data-afrotools-width="' + width + '"';
+    if (accent !== '#008751') code += '\n     data-afrotools-accent="' + accent + '"';
+    code += '></div>\n<script src="https://afrotools.com/widgets/embed.js" async><\/script>';
+
+    document.getElementById('cust-code').textContent = code;
+  }
+
+  ['cust-widget','cust-theme','cust-width','cust-accent'].forEach(function(id) {
+    document.getElementById(id).addEventListener('change', updateCustomizer);
+    document.getElementById(id).addEventListener('input', updateCustomizer);
+  });
+  updateCustomizer();
+})();
+</script>
+</body>
+</html>

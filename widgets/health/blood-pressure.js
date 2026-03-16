@@ -1,0 +1,74 @@
+(function(){
+  window.AfroWidgets = window.AfroWidgets || {};
+  window.AfroWidgets.BloodPressure = function(container, opts) {
+    opts = opts || {};
+    var theme = opts.theme || 'light';
+    var isDark = theme === 'dark';
+    var bg = isDark ? '#1a1a2e' : '#fff';
+    var text = isDark ? '#e2e8f0' : '#0f1419';
+    var border = isDark ? '#334155' : '#e2e8f0';
+    var accent = '#dc2626';
+    var inputBg = isDark ? '#0f172a' : '#f8fafc';
+    var cardBg = isDark ? '#0f172a' : '#f8fafc';
+    var s = 'style="width:100%;padding:9px 12px;border:1.5px solid '+border+';border-radius:7px;font-size:.82rem;background:'+inputBg+';color:'+text+';font-family:inherit;box-sizing:border-box"';
+    var lbl = 'style="display:block;font-size:.72rem;font-weight:600;color:#64748b;margin-bottom:5px"';
+
+    container.innerHTML = '<div class="aw-bp" style="font-family:\'DM Sans\',system-ui,sans-serif;background:'+bg+';color:'+text+';border:1px solid '+border+';border-radius:10px;overflow:hidden">' +
+      '<div style="padding:15px 22px;border-bottom:1px solid '+border+';background:'+cardBg+'">' +
+        '<span style="font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase">Blood Pressure Checker</span>' +
+      '</div>' +
+      '<div style="padding:22px">' +
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">' +
+          '<div><label '+lbl+'>Systolic (top) mmHg</label><input type="number" id="aw-bp-sys" value="120" min="60" max="260" '+s+'></div>' +
+          '<div><label '+lbl+'>Diastolic (bottom) mmHg</label><input type="number" id="aw-bp-dia" value="80" min="40" max="160" '+s+'></div>' +
+        '</div>' +
+        '<button id="aw-bp-btn" style="display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;background:linear-gradient(135deg,#b91c1c,'+accent+');color:#fff;font-family:inherit">Check Blood Pressure</button>' +
+        '<div id="aw-bp-result" style="display:none;margin-top:14px">' +
+          '<div id="aw-bp-card" style="text-align:center;padding:28px;border-radius:10px">' +
+            '<div id="aw-bp-reading" style="font-size:2.4rem;font-weight:900;line-height:1"></div>' +
+            '<div id="aw-bp-category" style="font-size:1rem;font-weight:700;margin-top:8px"></div>' +
+            '<div id="aw-bp-advice" style="font-size:.82rem;margin-top:10px;line-height:1.6;opacity:.8"></div>' +
+          '</div>' +
+          '<table style="width:100%;border-collapse:collapse;margin-top:14px;font-size:.78rem">' +
+            '<thead><tr style="background:'+cardBg+'"><th style="text-align:left;padding:8px;color:#64748b;font-size:.68rem;text-transform:uppercase">Category</th><th style="text-align:center;padding:8px;color:#64748b;font-size:.68rem;text-transform:uppercase">Systolic</th><th style="text-align:center;padding:8px;color:#64748b;font-size:.68rem;text-transform:uppercase">Diastolic</th></tr></thead>' +
+            '<tbody>' +
+              '<tr style="border-bottom:1px solid '+border+'"><td style="padding:8px"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#22c55e;margin-right:6px"></span>Normal</td><td style="text-align:center;padding:8px">&lt; 120</td><td style="text-align:center;padding:8px">&lt; 80</td></tr>' +
+              '<tr style="border-bottom:1px solid '+border+'"><td style="padding:8px"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#eab308;margin-right:6px"></span>Elevated</td><td style="text-align:center;padding:8px">120-129</td><td style="text-align:center;padding:8px">&lt; 80</td></tr>' +
+              '<tr style="border-bottom:1px solid '+border+'"><td style="padding:8px"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#f97316;margin-right:6px"></span>High Stage 1</td><td style="text-align:center;padding:8px">130-139</td><td style="text-align:center;padding:8px">80-89</td></tr>' +
+              '<tr style="border-bottom:1px solid '+border+'"><td style="padding:8px"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#ef4444;margin-right:6px"></span>High Stage 2</td><td style="text-align:center;padding:8px">140+</td><td style="text-align:center;padding:8px">90+</td></tr>' +
+              '<tr><td style="padding:8px"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#991b1b;margin-right:6px"></span>Crisis</td><td style="text-align:center;padding:8px">&gt; 180</td><td style="text-align:center;padding:8px">&gt; 120</td></tr>' +
+            '</tbody>' +
+          '</table>' +
+        '</div>' +
+        (opts.footerHTML ? '<div style="margin-top:14px">'+opts.footerHTML+'</div>' : '') +
+      '</div>' +
+    '</div>';
+
+    function classify(sys, dia) {
+      if (sys > 180 || dia > 120) return { cat: 'Hypertensive Crisis', bg: '#fca5a5', color: '#7f1d1d', advice: 'SEEK IMMEDIATE MEDICAL ATTENTION. This is a medical emergency.' };
+      if (sys >= 140 || dia >= 90) return { cat: 'High Blood Pressure (Stage 2)', bg: '#fecaca', color: '#991b1b', advice: 'See your doctor promptly. You likely need medication plus lifestyle changes.' };
+      if (sys >= 130 || dia >= 80) return { cat: 'High Blood Pressure (Stage 1)', bg: '#fed7aa', color: '#9a3412', advice: 'Lifestyle changes recommended: reduce salt, exercise, manage weight.' };
+      if (sys >= 120 && dia < 80) return { cat: 'Elevated', bg: '#fef9c3', color: '#854d0e', advice: 'Higher than ideal. Reduce salt, increase exercise, manage stress.' };
+      if (sys < 90 || dia < 60) return { cat: 'Low (Hypotension)', bg: '#fef9c3', color: '#854d0e', advice: 'Below normal. If you experience dizziness or fainting, consult a doctor.' };
+      return { cat: 'Normal', bg: '#dcfce7', color: '#166534', advice: 'Great! Your blood pressure is in the healthy range. Maintain your healthy lifestyle.' };
+    }
+
+    function calc() {
+      var sys = parseInt(container.querySelector('#aw-bp-sys').value) || 0;
+      var dia = parseInt(container.querySelector('#aw-bp-dia').value) || 0;
+      if (sys < 60 || sys > 260 || dia < 40 || dia > 160) return;
+
+      var result = classify(sys, dia);
+      var card = container.querySelector('#aw-bp-card');
+      card.style.background = isDark ? result.color : result.bg;
+      card.style.color = isDark ? '#e2e8f0' : result.color;
+      container.querySelector('#aw-bp-reading').innerHTML = sys + '/' + dia + ' <span style="font-size:.8rem;font-weight:400">mmHg</span>';
+      container.querySelector('#aw-bp-category').textContent = result.cat;
+      container.querySelector('#aw-bp-advice').textContent = result.advice;
+
+      container.querySelector('#aw-bp-result').style.display = 'block';
+    }
+
+    container.querySelector('#aw-bp-btn').addEventListener('click', calc);
+  };
+})();
