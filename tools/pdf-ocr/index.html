@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-D859CGF391');
+  gtag('event', 'tool_view', { tool_name: 'pdf-ocr' });
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDF OCR - Extract Text from Scanned PDFs & Images | AfroTools</title>
+<meta name="description" content="Free PDF OCR tool to extract text from scanned PDFs and images using Tesseract.js. Supports English, French, Arabic, Swahili, Portuguese. 100% client-side, no uploads.">
+<link rel="canonical" href="https://afrotools.com/tools/pdf-ocr">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="PDF OCR - Text Extraction | AfroTools">
+<meta property="og:description" content="Extract text from scanned PDFs and images with OCR. Supports 5 languages. No server uploads.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/pdf-ocr">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-pdf.png">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="PDF OCR - Text Extraction | AfroTools">
+<meta name="twitter:description" content="Extract text from scanned PDFs and images with OCR. 5 languages supported.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/tool-registry.min.js"></script>
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<script src="/assets/js/components/related-tools.min.js" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<style>
+  :root { --afro-blue: var(--color-primary); --afro-dark: #0f1419; }
+
+  .tool-hero {
+    background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
+    padding: 44px 0 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  .tool-hero::after {
+    content: '';
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 8rem;
+    opacity: 0.06;
+    pointer-events: none;
+  }
+  .tool-hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+  }
+  .breadcrumb {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .breadcrumb a { color: rgba(255,255,255,0.3); text-decoration: none; }
+  .breadcrumb span { color: var(--afro-blue); }
+
+  h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+  h1 em { color: var(--afro-blue); font-style: normal; }
+
+  .hero-sub {
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.6;
+    max-width: 560px;
+    margin-bottom: 14px;
+  }
+  .hero-badges { display: flex; flex-wrap: wrap; gap: 7px; }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 11px;
+    border-radius: 4px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+  .b-green {
+    background: rgba(0,113,227,0.18);
+    color: var(--color-primary);
+    border: 1px solid rgba(0,113,227,0.38);
+  }
+
+  .tool-main { padding: 28px 0 72px; }
+  .tool-main-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 22px;
+    align-items: start;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid #DBEAFE;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.05);
+  }
+  .card + .card { margin-top: 18px; }
+  .card-head {
+    padding: 15px 22px;
+    border-bottom: 1px solid #EFF6FF;
+    background: #F5F9FF;
+  }
+  .card-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #0a4018;
+  }
+  .card-body { padding: 22px; }
+
+  .file-input-label {
+    display: block;
+    padding: 36px 24px;
+    background: #EFF6FF;
+    border: 2px dashed #BFDBFE;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+    color: #244d2c;
+    font-weight: 600;
+  }
+  .file-input-label:hover {
+    border-color: var(--afro-blue);
+    background: #EFF6FF;
+  }
+  .file-input-label.dragover {
+    border-color: var(--afro-blue);
+    background: rgba(0,113,227,0.1);
+  }
+  .file-input-label .drop-icon {
+    display: block;
+    font-size: 2rem;
+    margin-bottom: 8px;
+  }
+  .file-input-label .drop-hint {
+    font-size: 0.72rem;
+    color: #6B8CAE;
+    font-weight: 500;
+    margin-top: 6px;
+  }
+
+  input[type="file"] { display: none; }
+
+  .file-info {
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: #EFF6FF;
+    border-radius: 6px;
+    font-size: 0.78rem;
+    color: #244d2c;
+    font-weight: 600;
+    display: none;
+    align-items: center;
+    gap: 8px;
+  }
+  .file-info.on { display: flex; }
+  .file-info .file-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .file-info .file-remove {
+    background: none;
+    border: none;
+    color: #dc2626;
+    cursor: pointer;
+    font-size: 0.72rem;
+    font-weight: 700;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .field { margin-bottom: 18px; }
+  .field:last-child { margin-bottom: 0; }
+  .f-label-text {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #0d2813;
+    margin-bottom: 6px;
+    display: block;
+  }
+  .f-input {
+    width: 100%;
+    padding: 11px 13px;
+    background: #EFF6FF;
+    border: 1.5px solid #BFDBFE;
+    border-radius: 7px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0d2813;
+    outline: none;
+    transition: border-color 0.18s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .f-input:focus {
+    border-color: var(--afro-blue);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(0,113,227,0.1);
+  }
+
+  .calc-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--afro-blue);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: all 0.18s;
+    margin-top: 8px;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .calc-btn:hover {
+    background: #0059B3;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0,113,227,0.3);
+  }
+  .calc-btn:disabled {
+    background: #BFDBFE;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .progress-section { margin-top: 16px; display: none; }
+  .progress-section.on { display: block; }
+  .progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #DBEAFE;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--afro-blue), #3b82f6);
+    width: 0%;
+    transition: width 0.3s;
+    border-radius: 4px;
+  }
+  .progress-text {
+    font-size: 0.72rem;
+    color: #6B8CAE;
+    text-align: center;
+    font-weight: 600;
+  }
+
+  .result-card {
+    background: #fff;
+    border: 1px solid #DBEAFE;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.05);
+    display: none;
+  }
+  .result-card.on { display: block; }
+
+  .page-tabs {
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    border-bottom: 1px solid #EFF6FF;
+    background: #F5F9FF;
+    padding: 0 22px;
+  }
+  .page-tab {
+    padding: 10px 16px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #6B8CAE;
+    cursor: pointer;
+    border: none;
+    background: none;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+    white-space: nowrap;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .page-tab:hover { color: var(--afro-blue); }
+  .page-tab.active {
+    color: var(--afro-blue);
+    border-bottom-color: var(--afro-blue);
+  }
+
+  .extracted-text {
+    background: #F8FAFC;
+    border: 1px solid #DBEAFE;
+    border-radius: 6px;
+    padding: 16px;
+    font-size: 0.84rem;
+    color: #0d2813;
+    line-height: 1.7;
+    min-height: 160px;
+    max-height: 400px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: 'DM Sans', monospace;
+  }
+
+  .action-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .act-btn {
+    padding: 10px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border: 1.5px solid rgba(0,113,227,0.35);
+    font-family: 'DM Sans', sans-serif;
+    background: rgba(0,113,227,0.1);
+    color: #1a5c3a;
+  }
+  .act-btn:hover { background: rgba(0,113,227,0.2); }
+
+  .sidebar { display: flex; flex-direction: column; gap: 16px; }
+
+  .info-card {
+    background: #F5F9FF;
+    border: 1px solid #DBEAFE;
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .info-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #0a4018;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .info-text {
+    font-size: 0.8rem;
+    color: #244d2c;
+    line-height: 1.6;
+  }
+  .info-text li { margin-bottom: 6px; }
+  .info-text ul { margin: 0; padding-left: 16px; }
+
+  .note-box {
+    background: #FFFBEB;
+    border: 1px solid #FDE68A;
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 0.76rem;
+    color: #92400E;
+    line-height: 1.5;
+    font-weight: 500;
+  }
+
+  .seo-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 48px 24px 32px;
+  }
+  .seo-section h2 {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #0d2813;
+    margin-bottom: 14px;
+    letter-spacing: -0.01em;
+  }
+  .seo-section p {
+    font-size: 0.88rem;
+    color: #3c5a45;
+    line-height: 1.7;
+    margin-bottom: 14px;
+    max-width: 800px;
+  }
+  .seo-section h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0d2813;
+    margin: 20px 0 8px;
+  }
+
+  @media (max-width: 768px) {
+    .tool-main-inner { grid-template-columns: 1fr; }
+    .action-row { grid-template-columns: 1fr; }
+  }
+</style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "PDF OCR - Text Extraction",
+      "description": "Free PDF OCR tool to extract text from scanned PDFs and images using Tesseract.js. Supports English, French, Arabic, Swahili, Portuguese. 100% client-side.",
+      "url": "https://afrotools.com/tools/pdf-ocr",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "provider": {
+        "@type": "Organization",
+        "name": "AfroTools",
+        "url": "https://afrotools.com"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "AfroTools",
+          "item": "https://afrotools.com"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "All Tools",
+          "item": "https://afrotools.com/all-tools"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "PDF OCR",
+          "item": "https://afrotools.com/tools/pdf-ocr"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How does PDF OCR work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "PDF OCR uses Optical Character Recognition (Tesseract.js) to analyze scanned PDF pages or images and extract readable text. Each PDF page is rendered as an image, then the OCR engine identifies characters and words."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my PDF uploaded to a server?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. All processing happens 100% in your browser using JavaScript. Your files never leave your device, ensuring complete privacy."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What languages are supported?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The tool supports English, French, Arabic, Swahili, and Portuguese. You can select the language before running OCR for better accuracy."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I extract text from images too?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. In addition to scanned PDFs, you can upload images (PNG, JPG, WEBP, BMP, TIFF) and extract text from them using OCR."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does OCR take a long time?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "OCR processing is computationally intensive. Large PDFs with many pages take longer. The first run also downloads language data files. Subsequent runs on the same language are faster."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<afro-navbar active="tools"></afro-navbar>
+
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb">
+      <a href="/">AfroTools</a> / <a href="/all-tools">Tools</a> / <span>PDF OCR</span>
+    </div>
+    <h1>PDF <em>OCR</em> Text Extraction</h1>
+    <p class="hero-sub">Extract text from scanned PDFs and images using OCR. Supports English, French, Arabic, Swahili, and Portuguese. Everything runs in your browser.</p>
+    <div class="hero-badges">
+      <span class="badge b-green">No Upload</span>
+      <span class="badge b-green">100% Client-Side</span>
+      <span class="badge b-green">5 Languages</span>
+      <span class="badge b-green">PDF + Images</span>
+    </div>
+  </div>
+</div>
+
+<div class="tool-main">
+  <div class="tool-main-inner">
+    <div>
+      <!-- Upload -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Upload File</span>
+        </div>
+        <div class="card-body">
+          <input type="file" id="fileInput" accept=".pdf,image/*">
+          <label for="fileInput" class="file-input-label" id="dropZone">
+            <span class="drop-icon">&#128196;</span>
+            Drop PDF or image here, or click to browse
+            <span class="drop-hint">Supports PDF, PNG, JPG, WEBP, BMP, TIFF</span>
+          </label>
+          <div class="file-info" id="fileInfo">
+            <span class="file-name" id="fileName"></span>
+            <button class="file-remove" id="fileRemove">Remove</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Settings -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">OCR Settings</span>
+        </div>
+        <div class="card-body">
+          <div class="field">
+            <label class="f-label-text">OCR Language</label>
+            <select class="f-input" id="languageSelect">
+              <option value="eng">English</option>
+              <option value="fra">French (Francais)</option>
+              <option value="ara">Arabic</option>
+              <option value="swa">Swahili</option>
+              <option value="por">Portuguese (Portugues)</option>
+            </select>
+          </div>
+
+          <button class="calc-btn" id="extractBtn" disabled>Extract Text with OCR</button>
+
+          <div class="progress-section" id="progressSection">
+            <div class="progress-bar">
+              <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text" id="progressText">Preparing...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div class="result-card" id="resultCard">
+        <div class="card-head" style="display:flex;align-items:center;justify-content:space-between;">
+          <span class="card-title">Extracted Text</span>
+          <span id="pageCount" style="font-size:0.7rem;color:#6B8CAE;font-weight:600;"></span>
+        </div>
+        <div class="page-tabs" id="pageTabs"></div>
+        <div class="card-body">
+          <div class="extracted-text" id="extractedText"></div>
+          <div class="action-row">
+            <button class="act-btn" id="copyBtn">&#128203; Copy Text</button>
+            <button class="act-btn" id="downloadBtn">&#128229; Download .txt</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="info-card">
+        <div class="info-title">How It Works</div>
+        <div class="info-text">
+          <ul>
+            <li>Upload a scanned PDF or image</li>
+            <li>Select the document language</li>
+            <li>Each PDF page is rendered as an image</li>
+            <li>Tesseract.js OCR extracts text</li>
+            <li>Copy or download the result</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-title">Supported Formats</div>
+        <div class="info-text">
+          <ul>
+            <li><strong>PDF</strong> -- scanned or image-based</li>
+            <li><strong>PNG, JPG, JPEG</strong> -- photos of documents</li>
+            <li><strong>WEBP, BMP, TIFF</strong> -- other image formats</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="note-box">
+        <strong>Note:</strong> OCR on large PDFs can take several minutes. The first run downloads language data (~2-5 MB). Processing happens entirely in your browser -- your files are never uploaded.
+      </div>
+
+      <div class="info-card">
+        <div class="info-title">Tips for Better Results</div>
+        <div class="info-text">
+          <ul>
+            <li>Use high-resolution scans (300+ DPI)</li>
+            <li>Ensure text is not rotated or skewed</li>
+            <li>Select the correct language</li>
+            <li>Clean, high-contrast documents work best</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SEO Content -->
+<div class="seo-section">
+  <h2>Free PDF OCR Tool -- Extract Text from Scanned Documents</h2>
+  <p>
+    AfroTools PDF OCR is a free, browser-based tool that extracts text from scanned PDFs and images. Powered by Tesseract.js, it performs Optical Character Recognition directly in your browser with zero server uploads. Your documents remain 100% private.
+  </p>
+  <h3>What is PDF OCR?</h3>
+  <p>
+    OCR (Optical Character Recognition) converts images of text into machine-readable text. When you scan a document, the resulting PDF contains images rather than selectable text. This tool analyzes those images and reconstructs the text content, making it searchable, copyable, and editable.
+  </p>
+  <h3>Multi-Language Support</h3>
+  <p>
+    Built for a global audience, this tool supports five languages: English, French, Arabic, Swahili, and Portuguese. Select the matching language before extraction for the most accurate results.
+  </p>
+  <h3>Privacy First</h3>
+  <p>
+    Unlike most online OCR tools that upload your files to remote servers, AfroTools PDF OCR processes everything locally in your browser using WebAssembly-powered Tesseract.js. Your sensitive documents never leave your device.
+  </p>
+</div>
+
+<afro-related-tools category="document-pdf" current="pdf-ocr"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<!-- Hidden canvas for rendering -->
+<canvas id="renderCanvas" style="display:none;"></canvas>
+
+<script type="module">
+// Import pdf.js as ES module
+import * as pdfjsModule from 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/build/pdf.min.mjs';
+
+const pdfjsLib = pdfjsModule;
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/build/pdf.worker.min.mjs';
+
+// DOM refs
+const fileInput = document.getElementById('fileInput');
+const dropZone = document.getElementById('dropZone');
+const fileInfo = document.getElementById('fileInfo');
+const fileName = document.getElementById('fileName');
+const fileRemove = document.getElementById('fileRemove');
+const languageSelect = document.getElementById('languageSelect');
+const extractBtn = document.getElementById('extractBtn');
+const progressSection = document.getElementById('progressSection');
+const progressFill = document.getElementById('progressFill');
+const progressText = document.getElementById('progressText');
+const resultCard = document.getElementById('resultCard');
+const pageTabs = document.getElementById('pageTabs');
+const extractedTextDiv = document.getElementById('extractedText');
+const pageCount = document.getElementById('pageCount');
+const copyBtn = document.getElementById('copyBtn');
+const downloadBtn = document.getElementById('downloadBtn');
+const renderCanvas = document.getElementById('renderCanvas');
+
+let currentFile = null;
+let allPagesText = []; // array of { page, text }
+let fullText = '';
+
+// File handling
+function handleFile(file) {
+  if (!file) return;
+  const maxSize = 50 * 1024 * 1024; // 50MB
+  if (file.size > maxSize) {
+    alert('File too large. Please use files under 50 MB.');
+    return;
+  }
+  const isPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
+  const isImage = file.type.startsWith('image/');
+  if (!isPdf && !isImage) {
+    alert('Please upload a PDF or image file.');
+    return;
+  }
+  currentFile = file;
+  fileName.textContent = file.name + ' (' + formatSize(file.size) + ')';
+  fileInfo.classList.add('on');
+  extractBtn.disabled = false;
+  resultCard.classList.remove('on');
+}
+
+function formatSize(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+  return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+}
+
+fileInput.addEventListener('change', (e) => {
+  handleFile(e.target.files[0]);
+});
+
+dropZone.addEventListener('dragover', (e) => {
+  e.preventDefault();
+  dropZone.classList.add('dragover');
+});
+dropZone.addEventListener('dragleave', () => {
+  dropZone.classList.remove('dragover');
+});
+dropZone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  dropZone.classList.remove('dragover');
+  const file = e.dataTransfer.files[0];
+  if (file) {
+    handleFile(file);
+    // Update the file input
+    const dt = new DataTransfer();
+    dt.items.add(file);
+    fileInput.files = dt.files;
+  }
+});
+
+fileRemove.addEventListener('click', () => {
+  currentFile = null;
+  fileInput.value = '';
+  fileInfo.classList.remove('on');
+  extractBtn.disabled = true;
+  resultCard.classList.remove('on');
+  progressSection.classList.remove('on');
+});
+
+// Progress helpers
+function showProgress(pct, text) {
+  progressSection.classList.add('on');
+  progressFill.style.width = pct + '%';
+  progressText.textContent = text;
+}
+function hideProgress() {
+  progressSection.classList.remove('on');
+  progressFill.style.width = '0%';
+}
+
+// Render a single PDF page to canvas and return data URL
+async function renderPdfPage(pdfDoc, pageNum) {
+  const page = await pdfDoc.getPage(pageNum);
+  const scale = 2.0; // Higher scale = better OCR accuracy
+  const viewport = page.getViewport({ scale });
+  renderCanvas.width = viewport.width;
+  renderCanvas.height = viewport.height;
+  const ctx = renderCanvas.getContext('2d');
+  ctx.clearRect(0, 0, renderCanvas.width, renderCanvas.height);
+  await page.render({ canvasContext: ctx, viewport }).promise;
+  return renderCanvas.toDataURL('image/png');
+}
+
+// Main OCR extraction
+extractBtn.addEventListener('click', async () => {
+  if (!currentFile) return;
+  extractBtn.disabled = true;
+  resultCard.classList.remove('on');
+  allPagesText = [];
+  fullText = '';
+
+  const language = languageSelect.value;
+  const isPdf = currentFile.type === 'application/pdf' || currentFile.name.toLowerCase().endsWith('.pdf');
+
+  try {
+    showProgress(5, 'Initializing OCR engine...');
+
+    // Create Tesseract worker
+    const worker = await Tesseract.createWorker(language, 1, {
+      logger: (m) => {
+        if (m.status === 'recognizing text' && typeof m.progress === 'number') {
+          // This fires per-page; we handle overall progress in the loop
+        }
+      }
+    });
+
+    if (isPdf) {
+      // Load PDF
+      showProgress(10, 'Loading PDF...');
+      const arrayBuffer = await currentFile.arrayBuffer();
+      const pdfDoc = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+      const totalPages = pdfDoc.numPages;
+
+      showProgress(15, 'Processing ' + totalPages + ' page' + (totalPages > 1 ? 's' : '') + '...');
+
+      for (let i = 1; i <= totalPages; i++) {
+        const pageLabel = 'Page ' + i + ' of ' + totalPages;
+        const basePct = 15 + ((i - 1) / totalPages) * 80;
+
+        showProgress(basePct, 'Rendering ' + pageLabel + '...');
+        const imgData = await renderPdfPage(pdfDoc, i);
+
+        showProgress(basePct + 20 / totalPages, 'OCR on ' + pageLabel + '...');
+        const result = await worker.recognize(imgData);
+        const text = result.data.text.trim();
+
+        allPagesText.push({ page: i, text: text || '(No text detected on this page)' });
+
+        showProgress(15 + (i / totalPages) * 80, 'Completed ' + pageLabel);
+      }
+    } else {
+      // Image file
+      showProgress(20, 'Reading image...');
+      const dataUrl = await readFileAsDataURL(currentFile);
+
+      showProgress(40, 'Running OCR on image...');
+      const result = await worker.recognize(dataUrl);
+      const text = result.data.text.trim();
+      allPagesText.push({ page: 1, text: text || '(No text detected in this image)' });
+    }
+
+    await worker.terminate();
+
+    // Build full text
+    if (allPagesText.length === 1) {
+      fullText = allPagesText[0].text;
+    } else {
+      fullText = allPagesText.map(p => '--- Page ' + p.page + ' ---\n' + p.text).join('\n\n');
+    }
+
+    showProgress(100, 'Done!');
+
+    setTimeout(() => {
+      hideProgress();
+      displayResults();
+      extractBtn.disabled = false;
+    }, 600);
+
+  } catch (err) {
+    console.error('OCR Error:', err);
+    showProgress(0, 'Error: ' + (err.message || 'OCR processing failed'));
+    progressFill.style.width = '0%';
+    extractBtn.disabled = false;
+  }
+});
+
+function readFileAsDataURL(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+// Display results with page tabs
+function displayResults() {
+  resultCard.classList.add('on');
+  pageTabs.innerHTML = '';
+
+  if (allPagesText.length > 1) {
+    // "All" tab
+    const allTab = document.createElement('button');
+    allTab.className = 'page-tab active';
+    allTab.textContent = 'All Pages';
+    allTab.addEventListener('click', () => {
+      setActiveTab(allTab);
+      extractedTextDiv.textContent = fullText;
+    });
+    pageTabs.appendChild(allTab);
+
+    // Individual page tabs
+    allPagesText.forEach((p) => {
+      const tab = document.createElement('button');
+      tab.className = 'page-tab';
+      tab.textContent = 'Page ' + p.page;
+      tab.addEventListener('click', () => {
+        setActiveTab(tab);
+        extractedTextDiv.textContent = p.text;
+      });
+      pageTabs.appendChild(tab);
+    });
+
+    pageCount.textContent = allPagesText.length + ' pages processed';
+    pageTabs.style.display = 'flex';
+  } else {
+    pageCount.textContent = '1 page processed';
+    pageTabs.style.display = 'none';
+  }
+
+  extractedTextDiv.textContent = fullText;
+
+  // Scroll to results
+  resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function setActiveTab(activeTab) {
+  pageTabs.querySelectorAll('.page-tab').forEach(t => t.classList.remove('active'));
+  activeTab.classList.add('active');
+}
+
+// Copy
+copyBtn.addEventListener('click', () => {
+  const textToCopy = extractedTextDiv.textContent;
+  if (!textToCopy) return;
+  navigator.clipboard.writeText(textToCopy).then(() => {
+    copyBtn.innerHTML = '&#10003; Copied!';
+    setTimeout(() => { copyBtn.innerHTML = '&#128203; Copy Text'; }, 2000);
+  }).catch(() => {
+    // Fallback
+    const ta = document.createElement('textarea');
+    ta.value = textToCopy;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    copyBtn.innerHTML = '&#10003; Copied!';
+    setTimeout(() => { copyBtn.innerHTML = '&#128203; Copy Text'; }, 2000);
+  });
+});
+
+// Download as .txt
+downloadBtn.addEventListener('click', () => {
+  if (!fullText) return;
+  const blob = new Blob([fullText], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  const baseName = currentFile ? currentFile.name.replace(/\.[^.]+$/, '') : 'ocr-result';
+  link.download = baseName + '_ocr.txt';
+  link.click();
+  setTimeout(() => URL.revokeObjectURL(url), 5000);
+});
+</script>
+<script src="/assets/js/lib/saved-tools.js" defer></script>
+<script src="/assets/js/favorites-widget.js" defer></script>
+</body>
+</html>

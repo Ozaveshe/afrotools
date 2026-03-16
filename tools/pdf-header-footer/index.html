@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-D859CGF391');
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDF Header & Footer | Add Headers & Footers to PDF | AfroTools</title>
+<meta name="description" content="Add custom headers and footers to every page of your PDF. Support for page numbers, date, filename variables. 100% client-side, free, no upload.">
+<link rel="canonical" href="https://afrotools.com/tools/pdf-header-footer">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="PDF Header & Footer | AfroTools">
+<meta property="og:description" content="Add custom headers and footers to PDF pages with dynamic variables like page numbers, date, and filename.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/pdf-header-footer">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-pdf.png">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="PDF Header & Footer | AfroTools">
+<meta name="twitter:description" content="Add headers and footers to PDFs with page numbers, date, and more.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/tool-registry.min.js"></script>
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<script src="/assets/js/components/related-tools.min.js" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js" defer></script>
+<script src="/assets/js/lib/saved-tools.js" defer></script>
+<script src="/assets/js/favorites-widget.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<style>
+  :root {
+    --afro-green: var(--color-primary);
+    --afro-dark: #0f1419;
+  }
+
+  .tool-hero {
+    background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
+    padding: 44px 0 36px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tool-hero::after {
+    content: '\1F4C4';
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 8rem;
+    opacity: 0.06;
+    pointer-events: none;
+  }
+
+  .tool-hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+  }
+
+  .breadcrumb {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .breadcrumb a {
+    color: rgba(255, 255, 255, 0.3);
+    text-decoration: none;
+  }
+
+  .breadcrumb span {
+    color: var(--afro-green);
+  }
+
+  h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+
+  h1 em {
+    color: var(--afro-green);
+    font-style: normal;
+  }
+
+  .hero-sub {
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 1.6;
+    max-width: 560px;
+    margin-bottom: 14px;
+  }
+
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 6px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 11px;
+    border-radius: 4px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .b-green {
+    background: rgba(0, 113, 227, 0.18);
+    color: var(--color-primary);
+    border: 1px solid rgba(0, 113, 227, 0.38);
+  }
+
+  .tool-main {
+    padding: 28px 0 72px;
+  }
+
+  .tool-main-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 22px;
+    align-items: start;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .card + .card {
+    margin-top: 18px;
+  }
+
+  .card-head {
+    padding: 15px 22px;
+    border-bottom: 1px solid #e5e7eb;
+    background: #f9fafb;
+  }
+
+  .card-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #374151;
+  }
+
+  .card-body {
+    padding: 22px;
+  }
+
+  .field {
+    margin-bottom: 18px;
+  }
+
+  .field:last-child {
+    margin-bottom: 0;
+  }
+
+  .f-label-text {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #0d2813;
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  .f-input, .f-select {
+    width: 100%;
+    padding: 11px 13px;
+    background: #EFF6FF;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 7px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0d2813;
+    outline: none;
+    transition: border-color 0.18s;
+    font-family: 'DM Sans', sans-serif;
+    box-sizing: border-box;
+  }
+
+  .f-input:focus, .f-select:focus {
+    border-color: var(--afro-green);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+  }
+
+  .file-input-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 28px 20px;
+    background: #EFF6FF;
+    border: 2px dashed #e5e7eb;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+    color: #244d2c;
+    font-weight: 600;
+    min-height: 80px;
+  }
+
+  .file-input-label:hover {
+    border-color: var(--afro-green);
+  }
+
+  .file-input-label.dragover {
+    border-color: var(--afro-green);
+    background: rgba(0, 113, 227, 0.1);
+  }
+
+  .file-input-label.has-file {
+    border-color: var(--afro-green);
+    background: rgba(0, 113, 227, 0.06);
+  }
+
+  .file-input-label .file-icon {
+    font-size: 2rem;
+    line-height: 1;
+  }
+
+  .file-input-label .file-name {
+    font-size: 0.78rem;
+    color: var(--color-primary);
+    font-weight: 700;
+    word-break: break-all;
+  }
+
+  .var-btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+
+  .var-btn {
+    padding: 4px 10px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    background: rgba(0, 113, 227, 0.08);
+    border: 1px solid rgba(0, 113, 227, 0.25);
+    border-radius: 4px;
+    color: #1e40af;
+    cursor: pointer;
+    font-family: 'DM Mono', 'DM Sans', monospace;
+    transition: all 0.15s;
+  }
+
+  .var-btn:hover {
+    background: rgba(0, 113, 227, 0.18);
+    border-color: rgba(0, 113, 227, 0.5);
+  }
+
+  .pos-group {
+    display: flex;
+    gap: 0;
+    border-radius: 7px;
+    overflow: hidden;
+    border: 1.5px solid #e5e7eb;
+  }
+
+  .pos-btn {
+    flex: 1;
+    padding: 10px 8px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    background: #EFF6FF;
+    border: none;
+    cursor: pointer;
+    color: #374151;
+    transition: all 0.15s;
+    font-family: 'DM Sans', sans-serif;
+    text-align: center;
+  }
+
+  .pos-btn + .pos-btn {
+    border-left: 1.5px solid #e5e7eb;
+  }
+
+  .pos-btn.active {
+    background: var(--color-primary);
+    color: #fff;
+  }
+
+  .pos-btn:hover:not(.active) {
+    background: rgba(0, 113, 227, 0.12);
+  }
+
+  .range-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .range-row input[type="range"] {
+    flex: 1;
+    accent-color: var(--color-primary);
+    height: 6px;
+  }
+
+  .range-val {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    min-width: 36px;
+    text-align: right;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .chk-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+  }
+
+  .chk-row input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--color-primary);
+    cursor: pointer;
+  }
+
+  .chk-row label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #374151;
+    cursor: pointer;
+  }
+
+  .calc-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--color-primary);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: all 0.18s;
+    margin-top: 8px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .calc-btn:hover {
+    background: #0059B3;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 113, 227, 0.3);
+  }
+
+  .calc-btn:disabled {
+    background: #93c5fd;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* Preview card */
+  .preview-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .preview-canvas-wrap {
+    background: #f1f5f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    padding: 16px;
+    position: relative;
+  }
+
+  .preview-canvas-wrap canvas {
+    max-width: 100%;
+    max-height: 460px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.12);
+    border-radius: 2px;
+  }
+
+  .preview-placeholder {
+    color: #9ca3af;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-align: center;
+    padding: 40px 20px;
+  }
+
+  .preview-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 12px;
+    border-top: 1px solid #e5e7eb;
+    background: #f9fafb;
+  }
+
+  .preview-nav button {
+    padding: 6px 14px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    background: rgba(0, 113, 227, 0.1);
+    border: 1px solid rgba(0, 113, 227, 0.25);
+    border-radius: 5px;
+    color: #1e40af;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .preview-nav button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .preview-nav span {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #374151;
+  }
+
+  .result-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 20px;
+    display: none;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .result-card.on {
+    display: block;
+  }
+
+  .result-text {
+    font-size: 0.85rem;
+    color: #0d2813;
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+
+  .act-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-family: 'DM Sans', sans-serif;
+    background: var(--color-primary);
+    border: none;
+    color: #fff;
+  }
+
+  .act-btn:hover {
+    background: #0059B3;
+    box-shadow: 0 4px 16px rgba(0, 113, 227, 0.3);
+  }
+
+  .info-card {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  .info-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #374151;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .info-text {
+    font-size: 0.8rem;
+    color: #244d2c;
+    line-height: 1.6;
+  }
+
+  .info-text ul {
+    margin: 0;
+    padding-left: 18px;
+  }
+
+  .info-text li {
+    margin-bottom: 4px;
+  }
+
+  /* How-to section */
+  .how-to {
+    padding: 48px 0;
+    background: #f9fafb;
+  }
+
+  .how-to-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .how-to h2 {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #0d2813;
+    margin-bottom: 28px;
+    text-align: center;
+  }
+
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px;
+  }
+
+  .step-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 22px;
+    text-align: center;
+  }
+
+  .step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+  }
+
+  .step-card h3 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #0d2813;
+    margin-bottom: 6px;
+  }
+
+  .step-card p {
+    font-size: 0.78rem;
+    color: #6b7280;
+    line-height: 1.5;
+  }
+
+  /* FAQ */
+  .faq-section {
+    padding: 48px 0;
+  }
+
+  .faq-inner {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .faq-section h2 {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #0d2813;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+
+  .faq-item {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+
+  .faq-q {
+    padding: 16px 20px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #0d2813;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    border: none;
+    width: 100%;
+    text-align: left;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .faq-q::after {
+    content: '+';
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    transition: transform 0.2s;
+  }
+
+  .faq-q.open::after {
+    content: '-';
+  }
+
+  .faq-a {
+    padding: 0 20px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s, padding 0.3s;
+    font-size: 0.82rem;
+    color: #6b7280;
+    line-height: 1.6;
+  }
+
+  .faq-a.open {
+    padding: 0 20px 16px;
+    max-height: 300px;
+  }
+
+  @media (max-width: 768px) {
+    .tool-main-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .grid-2 {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "PDF Header & Footer",
+      "description": "Add custom headers and footers to every page of your PDF with dynamic variables like page numbers, total pages, date, and filename.",
+      "url": "https://afrotools.com/tools/pdf-header-footer",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "provider": {
+        "@type": "Organization",
+        "name": "AfroTools",
+        "url": "https://afrotools.com"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "AfroTools",
+          "item": "https://afrotools.com"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "All Tools",
+          "item": "https://afrotools.com/all-tools"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "PDF Header & Footer",
+          "item": "https://afrotools.com/tools/pdf-header-footer"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What variables can I use in headers and footers?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You can use {page} for the current page number, {pages} for total page count, {date} for today's date, and {filename} for the PDF file name. These are automatically replaced on each page."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my PDF uploaded to a server?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. This tool runs entirely in your browser. Your PDF never leaves your device. All processing happens client-side using JavaScript."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I add both a header and a footer at the same time?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. You can configure header text and footer text independently, each with their own alignment (left, center, or right). Leave either field blank to skip it."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I skip the first page?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Check the 'Skip first page' option to exclude the first page (e.g., a title page) from receiving headers and footers."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What font sizes are supported?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Font sizes from 8pt to 24pt are supported via the slider control. The default is 10pt which works well for most documents."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<afro-navbar active="tools"></afro-navbar>
+
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb">
+      <a href="/">AfroTools</a> / <a href="/all-tools">Tools</a> / <span>PDF Header & Footer</span>
+    </div>
+    <h1>PDF Header & <em>Footer</em></h1>
+    <p class="hero-sub">Add custom headers and footers to every page of your PDF. Use dynamic variables like page numbers, date, and filename. 100% client-side.</p>
+    <div class="hero-badges">
+      <span class="badge b-green">No Upload</span>
+      <span class="badge b-green">Client-side</span>
+      <span class="badge b-green">Free</span>
+    </div>
+  </div>
+</div>
+
+<div class="tool-main">
+  <div class="tool-main-inner">
+    <div>
+      <!-- File Upload -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Upload PDF</span>
+        </div>
+        <div class="card-body">
+          <input type="file" id="pdfInput" accept=".pdf" style="position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;">
+          <label for="pdfInput" class="file-input-label" id="dropLabel">
+            <span class="file-icon">&#128193;</span>
+            <span>Click or drag & drop a PDF file</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Header Settings -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Header Settings</span>
+        </div>
+        <div class="card-body">
+          <div class="field">
+            <label class="f-label-text">Header Text</label>
+            <input type="text" class="f-input" id="headerText" placeholder="e.g. {filename} - Page {page} of {pages}">
+            <div class="var-btns">
+              <button type="button" class="var-btn" data-target="headerText" data-var="{page}">{page}</button>
+              <button type="button" class="var-btn" data-target="headerText" data-var="{pages}">{pages}</button>
+              <button type="button" class="var-btn" data-target="headerText" data-var="{date}">{date}</button>
+              <button type="button" class="var-btn" data-target="headerText" data-var="{filename}">{filename}</button>
+            </div>
+          </div>
+          <div class="field">
+            <label class="f-label-text">Header Position</label>
+            <div class="pos-group" data-name="headerPos">
+              <button type="button" class="pos-btn" data-value="left">Left</button>
+              <button type="button" class="pos-btn active" data-value="center">Center</button>
+              <button type="button" class="pos-btn" data-value="right">Right</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Settings -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Footer Settings</span>
+        </div>
+        <div class="card-body">
+          <div class="field">
+            <label class="f-label-text">Footer Text</label>
+            <input type="text" class="f-input" id="footerText" placeholder="e.g. Page {page} of {pages}">
+            <div class="var-btns">
+              <button type="button" class="var-btn" data-target="footerText" data-var="{page}">{page}</button>
+              <button type="button" class="var-btn" data-target="footerText" data-var="{pages}">{pages}</button>
+              <button type="button" class="var-btn" data-target="footerText" data-var="{date}">{date}</button>
+              <button type="button" class="var-btn" data-target="footerText" data-var="{filename}">{filename}</button>
+            </div>
+          </div>
+          <div class="field">
+            <label class="f-label-text">Footer Position</label>
+            <div class="pos-group" data-name="footerPos">
+              <button type="button" class="pos-btn" data-value="left">Left</button>
+              <button type="button" class="pos-btn active" data-value="center">Center</button>
+              <button type="button" class="pos-btn" data-value="right">Right</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- General Settings -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">General Settings</span>
+        </div>
+        <div class="card-body">
+          <div class="field">
+            <label class="f-label-text">Font Size: <span id="fontSizeVal">10</span>pt</label>
+            <div class="range-row">
+              <span style="font-size:0.72rem;color:#9ca3af;">8pt</span>
+              <input type="range" id="fontSize" min="8" max="24" value="10" step="1">
+              <span style="font-size:0.72rem;color:#9ca3af;">24pt</span>
+            </div>
+          </div>
+          <div class="grid-2">
+            <div class="field">
+              <label class="f-label-text">Top Margin (mm)</label>
+              <input type="number" class="f-input" id="marginTop" min="5" max="50" value="15">
+            </div>
+            <div class="field">
+              <label class="f-label-text">Bottom Margin (mm)</label>
+              <input type="number" class="f-input" id="marginBottom" min="5" max="50" value="15">
+            </div>
+          </div>
+          <div class="field">
+            <div class="chk-row">
+              <input type="checkbox" id="skipFirst">
+              <label for="skipFirst">Skip first page (e.g. title page)</label>
+            </div>
+          </div>
+
+          <button class="calc-btn" id="applyBtn" disabled>Apply Headers & Footers</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Preview -->
+      <div class="preview-card" id="previewCard">
+        <div class="card-head">
+          <span class="card-title">Preview</span>
+        </div>
+        <div class="preview-canvas-wrap" id="previewWrap">
+          <div class="preview-placeholder" id="previewPlaceholder">Upload a PDF to see preview</div>
+          <canvas id="previewCanvas" style="display:none;"></canvas>
+        </div>
+        <div class="preview-nav" id="previewNav" style="display:none;">
+          <button id="prevPage" disabled>&laquo; Prev</button>
+          <span id="pageInfo">1 / 1</span>
+          <button id="nextPage" disabled>Next &raquo;</button>
+        </div>
+      </div>
+
+      <!-- Result -->
+      <div class="result-card" id="resultCard">
+        <div class="result-text" id="resultText"></div>
+        <button class="act-btn" id="downloadBtn" style="display:none;">&#128229; Download PDF</button>
+      </div>
+
+      <!-- Info -->
+      <div class="info-card">
+        <div class="info-title">Supported Variables</div>
+        <div class="info-text">
+          <ul>
+            <li><strong>{page}</strong> - Current page number</li>
+            <li><strong>{pages}</strong> - Total page count</li>
+            <li><strong>{date}</strong> - Today's date</li>
+            <li><strong>{filename}</strong> - PDF file name</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-title">Features</div>
+        <div class="info-text">
+          <ul>
+            <li>Independent header & footer</li>
+            <li>Left / Center / Right alignment</li>
+            <li>Dynamic variables per page</li>
+            <li>Adjustable font size & margins</li>
+            <li>Skip first page option</li>
+            <li>100% client-side processing</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- How To Section -->
+<div class="how-to">
+  <div class="how-to-inner">
+    <h2>How to Add Headers & Footers to Your PDF</h2>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <h3>Upload PDF</h3>
+        <p>Click or drag & drop your PDF file into the upload zone.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <h3>Set Header & Footer</h3>
+        <p>Enter text for header and/or footer using variables like {page} and {date}.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <h3>Customize Settings</h3>
+        <p>Choose alignment, font size, margins, and whether to skip the first page.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <h3>Download</h3>
+        <p>Preview the result and download your PDF with headers and footers applied.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ Section -->
+<div class="faq-section">
+  <div class="faq-inner">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <button class="faq-q">What variables can I use in headers and footers?</button>
+      <div class="faq-a">You can use {page} for the current page number, {pages} for total page count, {date} for today's date, and {filename} for the PDF file name. These are automatically replaced on each page.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">Is my PDF uploaded to a server?</button>
+      <div class="faq-a">No. This tool runs entirely in your browser using JavaScript (pdf-lib). Your PDF never leaves your device and is never sent to any server.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">Can I add both a header and a footer at the same time?</button>
+      <div class="faq-a">Yes. You can configure header text and footer text independently, each with their own alignment. Leave either field blank to skip it.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">Can I skip the first page?</button>
+      <div class="faq-a">Yes. Enable the "Skip first page" checkbox to exclude the first page from receiving headers and footers, useful for title pages or cover pages.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">What font sizes are supported?</button>
+      <div class="faq-a">Font sizes from 8pt to 24pt are supported. The default is 10pt which works well for most documents. Adjust using the slider in General Settings.</div>
+    </div>
+  </div>
+</div>
+
+<afro-related-tools category="document-pdf" current="pdf-header-footer"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script type="module">
+  // pdf.js for preview
+  const pdfjsURL = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/build/pdf.min.mjs';
+  let pdfjsLib = null;
+
+  async function loadPdfJs() {
+    if (!pdfjsLib) {
+      pdfjsLib = await import(pdfjsURL);
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/build/pdf.worker.min.mjs';
+    }
+    return pdfjsLib;
+  }
+
+  const PDFLib = window.PDFLib;
+
+  // State
+  let currentFile = null;
+  let resultPdfBytes = null;
+  let previewPdfBytes = null;
+  let previewDoc = null;
+  let currentPreviewPage = 1;
+  let totalPreviewPages = 0;
+
+  // DOM refs
+  const pdfInput = document.getElementById('pdfInput');
+  const dropLabel = document.getElementById('dropLabel');
+  const headerText = document.getElementById('headerText');
+  const footerText = document.getElementById('footerText');
+  const fontSizeSlider = document.getElementById('fontSize');
+  const fontSizeVal = document.getElementById('fontSizeVal');
+  const marginTop = document.getElementById('marginTop');
+  const marginBottom = document.getElementById('marginBottom');
+  const skipFirst = document.getElementById('skipFirst');
+  const applyBtn = document.getElementById('applyBtn');
+  const resultCard = document.getElementById('resultCard');
+  const resultText = document.getElementById('resultText');
+  const downloadBtn = document.getElementById('downloadBtn');
+  const previewCanvas = document.getElementById('previewCanvas');
+  const previewPlaceholder = document.getElementById('previewPlaceholder');
+  const previewNav = document.getElementById('previewNav');
+  const pageInfo = document.getElementById('pageInfo');
+  const prevPageBtn = document.getElementById('prevPage');
+  const nextPageBtn = document.getElementById('nextPage');
+
+  // Position state
+  let headerPos = 'center';
+  let footerPos = 'center';
+
+  // File upload
+  function handleFile(file) {
+    if (file && file.type === 'application/pdf') {
+      currentFile = file;
+      resultPdfBytes = null;
+      resultCard.classList.remove('on');
+      downloadBtn.style.display = 'none';
+      applyBtn.disabled = false;
+      dropLabel.classList.add('has-file');
+      dropLabel.innerHTML = '<span class="file-icon">&#128196;</span><span class="file-name">' + file.name + '</span><span style="font-size:0.72rem;color:#9ca3af;">(' + (file.size / 1024).toFixed(1) + ' KB) - Click to change</span>';
+      showOriginalPreview(file);
+    }
+  }
+
+  pdfInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
+
+  dropLabel.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    dropLabel.classList.add('dragover');
+  });
+
+  dropLabel.addEventListener('dragleave', () => dropLabel.classList.remove('dragover'));
+
+  dropLabel.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropLabel.classList.remove('dragover');
+    handleFile(e.dataTransfer.files[0]);
+  });
+
+  // Variable buttons
+  document.querySelectorAll('.var-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = document.getElementById(btn.dataset.target);
+      const start = target.selectionStart || target.value.length;
+      const end = target.selectionEnd || target.value.length;
+      const val = btn.dataset.var;
+      target.value = target.value.substring(0, start) + val + target.value.substring(end);
+      target.focus();
+      target.selectionStart = target.selectionEnd = start + val.length;
+    });
+  });
+
+  // Position buttons
+  document.querySelectorAll('.pos-group').forEach(group => {
+    const name = group.dataset.name;
+    group.querySelectorAll('.pos-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        group.querySelectorAll('.pos-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        if (name === 'headerPos') headerPos = btn.dataset.value;
+        if (name === 'footerPos') footerPos = btn.dataset.value;
+      });
+    });
+  });
+
+  // Font size slider
+  fontSizeSlider.addEventListener('input', () => {
+    fontSizeVal.textContent = fontSizeSlider.value;
+  });
+
+  // FAQ toggles
+  document.querySelectorAll('.faq-q').forEach(q => {
+    q.addEventListener('click', () => {
+      const a = q.nextElementSibling;
+      const wasOpen = q.classList.contains('open');
+      document.querySelectorAll('.faq-q').forEach(qq => qq.classList.remove('open'));
+      document.querySelectorAll('.faq-a').forEach(aa => aa.classList.remove('open'));
+      if (!wasOpen) {
+        q.classList.add('open');
+        a.classList.add('open');
+      }
+    });
+  });
+
+  // Preview original PDF
+  async function showOriginalPreview(file) {
+    try {
+      const pdfjs = await loadPdfJs();
+      const ab = await file.arrayBuffer();
+      previewPdfBytes = ab;
+      previewDoc = await pdfjs.getDocument({ data: new Uint8Array(ab) }).promise;
+      totalPreviewPages = previewDoc.numPages;
+      currentPreviewPage = 1;
+      await renderPreviewPage(currentPreviewPage);
+      previewPlaceholder.style.display = 'none';
+      previewCanvas.style.display = 'block';
+      previewNav.style.display = 'flex';
+      updatePreviewNav();
+    } catch (err) {
+      previewPlaceholder.textContent = 'Could not preview PDF';
+      previewPlaceholder.style.display = 'block';
+      previewCanvas.style.display = 'none';
+      previewNav.style.display = 'none';
+    }
+  }
+
+  async function renderPreviewPage(pageNum) {
+    if (!previewDoc) return;
+    try {
+      const page = await previewDoc.getPage(pageNum);
+      const viewport = page.getViewport({ scale: 1.2 });
+      previewCanvas.width = viewport.width;
+      previewCanvas.height = viewport.height;
+      const ctx = previewCanvas.getContext('2d');
+      await page.render({ canvasContext: ctx, viewport }).promise;
+    } catch (e) {
+      // silent
+    }
+  }
+
+  function updatePreviewNav() {
+    pageInfo.textContent = currentPreviewPage + ' / ' + totalPreviewPages;
+    prevPageBtn.disabled = currentPreviewPage <= 1;
+    nextPageBtn.disabled = currentPreviewPage >= totalPreviewPages;
+  }
+
+  prevPageBtn.addEventListener('click', async () => {
+    if (currentPreviewPage > 1) {
+      currentPreviewPage--;
+      await renderPreviewPage(currentPreviewPage);
+      updatePreviewNav();
+    }
+  });
+
+  nextPageBtn.addEventListener('click', async () => {
+    if (currentPreviewPage < totalPreviewPages) {
+      currentPreviewPage++;
+      await renderPreviewPage(currentPreviewPage);
+      updatePreviewNav();
+    }
+  });
+
+  // Resolve variables for a given page
+  function resolveVars(template, pageNum, totalPages, filename) {
+    const today = new Date();
+    const dateStr = today.getFullYear() + '-' +
+      String(today.getMonth() + 1).padStart(2, '0') + '-' +
+      String(today.getDate()).padStart(2, '0');
+    return template
+      .replace(/\{page\}/gi, String(pageNum))
+      .replace(/\{pages\}/gi, String(totalPages))
+      .replace(/\{date\}/gi, dateStr)
+      .replace(/\{filename\}/gi, filename);
+  }
+
+  // mm to PDF points (1mm = 2.835pt)
+  function mmToPt(mm) {
+    return mm * 2.835;
+  }
+
+  // Apply headers and footers
+  applyBtn.addEventListener('click', async () => {
+    if (!currentFile) return;
+
+    const hText = headerText.value.trim();
+    const fText = footerText.value.trim();
+
+    if (!hText && !fText) {
+      resultText.textContent = 'Please enter at least a header or footer text.';
+      resultCard.classList.add('on');
+      downloadBtn.style.display = 'none';
+      return;
+    }
+
+    applyBtn.disabled = true;
+    applyBtn.textContent = 'Processing...';
+    resultText.textContent = 'Adding headers & footers...';
+    resultCard.classList.add('on');
+    downloadBtn.style.display = 'none';
+
+    try {
+      const arrayBuffer = await currentFile.arrayBuffer();
+      const pdf = await PDFLib.PDFDocument.load(arrayBuffer);
+      const pages = pdf.getPages();
+      const totalPages = pages.length;
+      const fontSize = parseInt(fontSizeSlider.value);
+      const topMarginPt = mmToPt(parseInt(marginTop.value) || 15);
+      const bottomMarginPt = mmToPt(parseInt(marginBottom.value) || 15);
+      const sideMarginPt = mmToPt(15); // 15mm side margin
+      const shouldSkipFirst = skipFirst.checked;
+      const filename = currentFile.name.replace(/\.pdf$/i, '');
+
+      const font = await pdf.embedFont(PDFLib.StandardFonts.Helvetica);
+
+      pages.forEach((page, index) => {
+        if (shouldSkipFirst && index === 0) return;
+
+        const { width, height } = page.getSize();
+        const pageNum = index + 1;
+
+        // Draw header
+        if (hText) {
+          const resolvedHeader = resolveVars(hText, pageNum, totalPages, filename);
+          const textWidth = font.widthOfTextAtSize(resolvedHeader, fontSize);
+          let x;
+          if (headerPos === 'left') {
+            x = sideMarginPt;
+          } else if (headerPos === 'right') {
+            x = width - sideMarginPt - textWidth;
+          } else {
+            x = (width - textWidth) / 2;
+          }
+          const y = height - topMarginPt;
+
+          page.drawText(resolvedHeader, {
+            x: x,
+            y: y,
+            size: fontSize,
+            font: font,
+            color: PDFLib.rgb(0.15, 0.15, 0.15),
+          });
+        }
+
+        // Draw footer
+        if (fText) {
+          const resolvedFooter = resolveVars(fText, pageNum, totalPages, filename);
+          const textWidth = font.widthOfTextAtSize(resolvedFooter, fontSize);
+          let x;
+          if (footerPos === 'left') {
+            x = sideMarginPt;
+          } else if (footerPos === 'right') {
+            x = width - sideMarginPt - textWidth;
+          } else {
+            x = (width - textWidth) / 2;
+          }
+          const y = bottomMarginPt;
+
+          page.drawText(resolvedFooter, {
+            x: x,
+            y: y,
+            size: fontSize,
+            font: font,
+            color: PDFLib.rgb(0.15, 0.15, 0.15),
+          });
+        }
+      });
+
+      resultPdfBytes = await pdf.save();
+
+      // Update preview with modified PDF
+      try {
+        const pdfjs = await loadPdfJs();
+        previewPdfBytes = resultPdfBytes.slice();
+        previewDoc = await pdfjs.getDocument({ data: new Uint8Array(previewPdfBytes) }).promise;
+        totalPreviewPages = previewDoc.numPages;
+        currentPreviewPage = 1;
+        await renderPreviewPage(currentPreviewPage);
+        previewPlaceholder.style.display = 'none';
+        previewCanvas.style.display = 'block';
+        previewNav.style.display = 'flex';
+        updatePreviewNav();
+      } catch(e) {
+        // preview failed but pdf is still ready
+      }
+
+      let summary = '';
+      if (hText && fText) summary = 'Headers & footers added to ' + totalPages + ' page' + (totalPages > 1 ? 's' : '') + '.';
+      else if (hText) summary = 'Headers added to ' + totalPages + ' page' + (totalPages > 1 ? 's' : '') + '.';
+      else summary = 'Footers added to ' + totalPages + ' page' + (totalPages > 1 ? 's' : '') + '.';
+      if (shouldSkipFirst) summary += ' (first page skipped)';
+
+      resultText.textContent = summary;
+      downloadBtn.style.display = 'flex';
+    } catch (err) {
+      resultText.textContent = 'Error: ' + err.message;
+      downloadBtn.style.display = 'none';
+    }
+
+    applyBtn.disabled = false;
+    applyBtn.textContent = 'Apply Headers & Footers';
+  });
+
+  // Download
+  downloadBtn.addEventListener('click', () => {
+    if (!resultPdfBytes) return;
+    const blob = new Blob([resultPdfBytes], { type: 'application/pdf' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    const baseName = currentFile ? currentFile.name.replace(/\.pdf$/i, '') : 'document';
+    a.download = baseName + '-header-footer.pdf';
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 5000);
+  });
+</script>
+</body>
+</html>

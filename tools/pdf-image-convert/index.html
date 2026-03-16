@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-D859CGF391');
+  gtag('event', 'tool_view', { tool_name: 'PDF Image Converter' });
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDF to Image & Image to PDF Converter | Free Online Tool | AfroTools</title>
+<meta name="description" content="Free PDF to Image and Image to PDF converter. Convert PDF pages to PNG/JPG or combine images into a PDF. Batch processing, ZIP download, 100% client-side.">
+<link rel="canonical" href="https://afrotools.com/tools/pdf-image-convert">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="PDF to Image & Image to PDF Converter | AfroTools">
+<meta property="og:description" content="Convert PDF pages to PNG/JPG images or combine images into PDF. Free, fast, no upload to servers.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/pdf-image-convert">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-pdf.png">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="PDF to Image & Image to PDF Converter | AfroTools">
+<meta name="twitter:description" content="Convert between PDF and images. Client-side processing, no data leaves your device.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/tool-registry.min.js"></script>
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+  :root { --afro-blue: var(--color-primary); --afro-dark: #0f1419; --afro-light: #f5f7fa; }
+
+  .tool-hero { background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%); padding: 44px 0 36px; position: relative; overflow: hidden; }
+  .tool-hero::after { content: ''; position: absolute; right: 5%; top: 50%; transform: translateY(-50%); font-size: 8rem; opacity: 0.06; pointer-events: none; }
+  .tool-hero-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; }
+  .breadcrumb { font-size: 0.72rem; font-weight: 500; color: rgba(255,255,255,0.3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
+  .breadcrumb a { color: rgba(255,255,255,0.3); text-decoration: none; }
+  .breadcrumb span { color: var(--afro-blue); }
+  h1 { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; color: #fff; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 10px; }
+  h1 em { color: var(--afro-blue); font-style: normal; }
+  .hero-sub { font-size: 0.88rem; color: rgba(255,255,255,0.45); line-height: 1.6; max-width: 560px; margin-bottom: 14px; }
+  .hero-badges { display: flex; flex-wrap: wrap; gap: 7px; }
+  .badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 11px; border-radius: 4px; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.05em; }
+  .b-green { background: rgba(0,122,255,0.18); color: var(--color-primary); border: 1px solid rgba(0,122,255,0.38); }
+
+  .tool-main { max-width: 900px; margin: 0 auto; padding: 28px 24px 72px; }
+  .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 8px rgba(0,0,0,0.05); margin-bottom: 18px; }
+  .card-head { padding: 15px 22px; border-bottom: 1px solid #EFF6FF; display: flex; align-items: center; justify-content: space-between; background: #F5F9FF; }
+  .card-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #374151; }
+  .card-body { padding: 22px; }
+
+  .mode-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 0; }
+  .mode-btn { padding: 14px 16px; background: #EFF6FF; border: 1.5px solid #e5e7eb; border-radius: 7px; cursor: pointer; transition: all 0.15s; font-size: 0.82rem; font-weight: 700; color: #244d2c; font-family: 'DM Sans', sans-serif; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .mode-btn:hover { border-color: var(--afro-blue); }
+  .mode-btn.on { border-color: var(--afro-blue); background: var(--color-primary); color: #fff; }
+
+  .drop-zone { border: 2px dashed #e5e7eb; border-radius: 8px; padding: 40px 20px; text-align: center; cursor: pointer; transition: all 0.2s; background: #EFF6FF; }
+  .drop-zone:hover { border-color: var(--afro-blue); }
+  .drop-zone.dragover { border-color: var(--afro-blue); background: rgba(0,122,255,0.08); box-shadow: 0 0 0 3px rgba(0,122,255,0.1); }
+  .drop-icon { font-size: 2.4rem; margin-bottom: 8px; }
+  .drop-text { font-size: 0.85rem; color: #244d2c; font-weight: 600; margin-bottom: 4px; }
+  .drop-hint { font-size: 0.72rem; color: #6B8CAE; }
+
+  .settings-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+  .field { margin-bottom: 0; }
+  .f-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.04em; color: #0d2813; margin-bottom: 6px; display: block; }
+  .f-select { width: 100%; padding: 10px 13px; background: #EFF6FF; border: 1.5px solid #e5e7eb; border-radius: 7px; font-size: 0.88rem; font-weight: 600; color: #0d2813; outline: none; font-family: 'DM Sans', sans-serif; cursor: pointer; }
+  .f-select:focus { border-color: var(--afro-blue); background: #fff; box-shadow: 0 0 0 3px rgba(0,122,255,0.1); }
+
+  .slider-wrap { margin-top: 16px; }
+  .slider-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .slider-label { font-size: 0.75rem; font-weight: 700; color: #0d2813; }
+  .slider-val { font-size: 0.92rem; font-weight: 800; color: var(--afro-blue); }
+  input[type=range] { -webkit-appearance: none; width: 100%; height: 5px; border-radius: 3px; outline: none; cursor: pointer; background: #e5e7eb; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; background: var(--afro-blue); border-radius: 50%; border: 2.5px solid #fff; box-shadow: 0 1px 6px rgba(0,122,255,0.35); cursor: pointer; }
+  input[type=range]::-moz-range-thumb { width: 18px; height: 18px; background: var(--afro-blue); border-radius: 50%; border: 2.5px solid #fff; box-shadow: 0 1px 6px rgba(0,122,255,0.35); cursor: pointer; }
+
+  .calc-btn { width: 100%; padding: 14px; background: var(--color-primary); color: #fff; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.03em; cursor: pointer; transition: all 0.18s; margin-top: 16px; font-family: 'DM Sans', sans-serif; }
+  .calc-btn:hover:not(:disabled) { background: #0059B3; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,122,255,0.3); }
+  .calc-btn:disabled { background: #93c5fd; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  .progress-bar { width: 100%; height: 6px; background: #e5e7eb; border-radius: 3px; overflow: hidden; margin-top: 12px; display: none; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--color-primary), #60a5fa); width: 0%; transition: width 0.3s; border-radius: 3px; }
+  .progress-text { font-size: 0.72rem; color: #6B8CAE; margin-top: 6px; text-align: center; display: none; }
+
+  .thumb-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; margin-top: 16px; }
+  .thumb-card { background: #F5F9FF; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; transition: 0.2s; }
+  .thumb-card:hover { border-color: var(--afro-blue); box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+  .thumb-img-wrap { width: 100%; aspect-ratio: 1/1.2; display: flex; align-items: center; justify-content: center; background: #fff; border-bottom: 1px solid #e5e7eb; overflow: hidden; }
+  .thumb-img-wrap img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  .thumb-info { padding: 8px 10px; display: flex; align-items: center; justify-content: space-between; }
+  .thumb-label { font-size: 0.7rem; font-weight: 700; color: #374151; }
+  .thumb-dl { background: none; border: none; cursor: pointer; font-size: 0.88rem; padding: 4px 8px; border-radius: 4px; transition: 0.15s; color: var(--color-primary); }
+  .thumb-dl:hover { background: rgba(0,122,255,0.1); }
+
+  .result-actions { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+  .act-btn { padding: 12px 20px; font-size: 0.78rem; font-weight: 700; border-radius: 6px; cursor: pointer; transition: all 0.15s; display: inline-flex; align-items: center; gap: 6px; font-family: 'DM Sans', sans-serif; border: none; }
+  .act-download { background: rgba(0,122,255,0.1); border: 1.5px solid rgba(0,122,255,0.35); color: #1e40af; }
+  .act-download:hover { background: rgba(0,122,255,0.2); }
+  .act-reset { background: #f3f4f6; border: 1.5px solid #e5e7eb; color: #374151; }
+  .act-reset:hover { background: #e5e7eb; }
+
+  .file-list { margin-top: 12px; }
+  .file-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; margin-bottom: 6px; }
+  .file-item-info { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
+  .file-item-thumb { width: 36px; height: 36px; border-radius: 4px; object-fit: cover; border: 1px solid #e5e7eb; }
+  .file-item-name { font-size: 0.82rem; color: #0d2813; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .file-item-size { font-size: 0.68rem; color: #9ca3af; }
+  .file-item-remove { background: #EFF6FF; border: 1px solid #e5e7eb; color: #374151; padding: 5px 9px; border-radius: 4px; cursor: pointer; font-size: 0.68rem; font-weight: 700; transition: all 0.15s; }
+  .file-item-remove:hover { background: #fee2e2; border-color: #fca5a5; color: #dc2626; }
+
+  .hidden { display: none !important; }
+
+  /* SEO content */
+  .seo-section { max-width: 900px; margin: 0 auto; padding: 0 24px 60px; }
+  .seo-section h2 { font-size: 1.3rem; font-weight: 800; color: #0d2813; margin-bottom: 12px; }
+  .seo-section h3 { font-size: 1rem; font-weight: 700; color: #1a3a22; margin-bottom: 8px; margin-top: 20px; }
+  .seo-section p { font-size: 0.88rem; color: #374151; line-height: 1.7; margin-bottom: 12px; }
+  .seo-section ul { padding-left: 20px; margin-bottom: 12px; }
+  .seo-section li { font-size: 0.85rem; color: #374151; line-height: 1.7; margin-bottom: 4px; }
+
+  .tips-section { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px; padding: 20px 24px; margin-top: 8px; }
+  .tips-title { font-size: 0.72rem; font-weight: 700; color: #374151; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+  .tips-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .tip-item { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; color: #244d2c; font-weight: 600; padding: 8px 12px; background: #fff; border: 1px solid #e5e7eb; border-radius: 6px; }
+
+  @media (max-width: 768px) {
+    .mode-row { grid-template-columns: 1fr; }
+    .settings-row { grid-template-columns: 1fr; }
+    .thumb-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+    .tips-grid { grid-template-columns: 1fr; }
+    .result-actions { flex-direction: column; }
+    .act-btn { width: 100%; justify-content: center; }
+  }
+</style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "PDF Image Converter",
+      "description": "Free PDF to Image and Image to PDF converter. Convert PDF pages to PNG/JPG images or combine images into a PDF. 100% client-side processing.",
+      "url": "https://afrotools.com/tools/pdf-image-convert",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "provider": {
+        "@type": "Organization",
+        "name": "AfroTools",
+        "url": "https://afrotools.com"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "AfroTools", "item": "https://afrotools.com" },
+        { "@type": "ListItem", "position": 2, "name": "All Tools", "item": "https://afrotools.com/all-tools" },
+        { "@type": "ListItem", "position": 3, "name": "PDF Image Converter", "item": "https://afrotools.com/tools/pdf-image-convert" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How do I convert a PDF to images?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Upload your PDF file using the drag-and-drop zone or file picker. Choose your preferred image format (PNG or JPG), set the quality, and click Convert. Each page becomes a separate image that you can download individually or as a ZIP file."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I convert multiple images to a single PDF?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Switch to the Image to PDF tab, upload multiple PNG, JPG, or WebP images, arrange them in the order you want, and click Create PDF. All images will be combined into a single PDF document."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my data safe when using this tool?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Absolutely. All processing happens 100% in your browser. Your files are never uploaded to any server. The conversion uses JavaScript libraries running locally on your device."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What image formats are supported?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "For PDF to Image conversion, you can export as PNG (lossless, larger files) or JPG (compressed, smaller files). For Image to PDF, you can upload PNG, JPG/JPEG, and WebP images."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is there a file size or page limit?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Since processing happens in your browser, limits depend on your device's memory. Most devices handle PDFs up to 100 pages and images up to 50MB without issues. For very large files, processing may take longer."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<afro-navbar active="tools"></afro-navbar>
+
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb"><a href="/">AfroTools</a> / <a href="/all-tools">Tools</a> / <span>PDF Image Converter</span></div>
+    <h1>PDF <em>&harr;</em> Image <em>Converter</em></h1>
+    <p class="hero-sub">Convert PDF pages to PNG/JPG images or combine multiple images into a single PDF. Fast, free, and 100% client-side &mdash; your files never leave your device.</p>
+    <div class="hero-badges">
+      <span class="badge b-green">No Upload</span>
+      <span class="badge b-green">Client-side</span>
+      <span class="badge b-green">Batch Processing</span>
+      <span class="badge b-green">ZIP Download</span>
+    </div>
+  </div>
+</div>
+
+<div class="tool-main">
+  <!-- Mode Selection -->
+  <div class="card">
+    <div class="card-head"><span class="card-title">Conversion Mode</span></div>
+    <div class="card-body">
+      <div class="mode-row">
+        <button class="mode-btn on" id="modePdfToImg" onclick="switchMode('pdf2img')">PDF &rarr; Image</button>
+        <button class="mode-btn" id="modeImgToPdf" onclick="switchMode('img2pdf')">Image &rarr; PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ PDF TO IMAGE ============ -->
+  <div id="pdf2img-panel">
+    <div class="card">
+      <div class="card-head"><span class="card-title">Upload PDF</span></div>
+      <div class="card-body">
+        <div class="drop-zone" id="pdfDropZone">
+          <div class="drop-icon">&#128196;</div>
+          <div class="drop-text">Drag & drop your PDF here, or click to browse</div>
+          <div class="drop-hint">Supports any PDF file</div>
+          <input type="file" id="pdfFileInput" accept=".pdf" style="display:none">
+        </div>
+        <div id="pdfFileInfo" class="hidden" style="margin-top:12px; padding:10px 14px; background:#f9fafb; border:1px solid #e5e7eb; border-radius:6px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <span style="font-size:0.85rem;font-weight:700;color:#0d2813;" id="pdfFileName"></span>
+              <span style="font-size:0.72rem;color:#9ca3af;margin-left:8px;" id="pdfFileSize"></span>
+              <span style="font-size:0.72rem;color:var(--color-primary);margin-left:8px;font-weight:700;" id="pdfPageCount"></span>
+            </div>
+            <button class="file-item-remove" onclick="resetPdf2Img()">Remove</button>
+          </div>
+        </div>
+        <div class="settings-row">
+          <div class="field">
+            <label class="f-label">Output Format</label>
+            <select class="f-select" id="p2iFormat">
+              <option value="png">PNG (Lossless)</option>
+              <option value="jpeg">JPG (Compressed)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="f-label">Resolution Scale</label>
+            <select class="f-select" id="p2iScale">
+              <option value="1">1x (72 DPI)</option>
+              <option value="2" selected>2x (144 DPI)</option>
+              <option value="3">3x (216 DPI)</option>
+            </select>
+          </div>
+        </div>
+        <div class="slider-wrap" id="p2iQualityWrap" style="display:none;">
+          <div class="slider-row">
+            <span class="slider-label">JPG Quality</span>
+            <span class="slider-val" id="p2iQualityVal">85</span>
+          </div>
+          <input type="range" id="p2iQuality" min="10" max="100" value="85" step="5">
+        </div>
+        <button class="calc-btn" id="p2iConvertBtn" disabled onclick="convertPdf2Img()">Convert PDF to Images</button>
+        <div class="progress-bar" id="p2iProgress"><div class="progress-fill" id="p2iProgressFill"></div></div>
+        <div class="progress-text" id="p2iProgressText"></div>
+      </div>
+    </div>
+
+    <!-- PDF to Image Results -->
+    <div class="card hidden" id="p2iResultCard">
+      <div class="card-head"><span class="card-title">Converted Images</span></div>
+      <div class="card-body">
+        <div class="thumb-grid" id="p2iThumbGrid"></div>
+        <div class="result-actions" id="p2iActions">
+          <button class="act-btn act-download" onclick="downloadAllAsZip()">&#128230; Download All as ZIP</button>
+          <button class="act-btn act-reset" onclick="resetPdf2Img()">&#8635; Convert Another</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ IMAGE TO PDF ============ -->
+  <div id="img2pdf-panel" class="hidden">
+    <div class="card">
+      <div class="card-head"><span class="card-title">Upload Images</span></div>
+      <div class="card-body">
+        <div class="drop-zone" id="imgDropZone">
+          <div class="drop-icon">&#128444;</div>
+          <div class="drop-text">Drag & drop images here, or click to browse</div>
+          <div class="drop-hint">Supports PNG, JPG, JPEG, WebP &mdash; select multiple files</div>
+          <input type="file" id="imgFileInput" accept="image/png,image/jpeg,image/webp" multiple style="display:none">
+        </div>
+        <div class="file-list" id="imgFileList"></div>
+        <div class="settings-row">
+          <div class="field">
+            <label class="f-label">Page Size</label>
+            <select class="f-select" id="i2pPageSize">
+              <option value="a4">A4 (210 x 297 mm)</option>
+              <option value="letter">Letter (8.5 x 11 in)</option>
+              <option value="fit">Fit to Image</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="f-label">Image Fit</label>
+            <select class="f-select" id="i2pFit">
+              <option value="contain">Fit (preserve aspect ratio)</option>
+              <option value="cover">Fill page (may crop)</option>
+              <option value="stretch">Stretch to page</option>
+            </select>
+          </div>
+        </div>
+        <div class="slider-wrap">
+          <div class="slider-row">
+            <span class="slider-label">Page Margin</span>
+            <span class="slider-val" id="i2pMarginVal">10 mm</span>
+          </div>
+          <input type="range" id="i2pMargin" min="0" max="30" value="10" step="1">
+        </div>
+        <button class="calc-btn" id="i2pConvertBtn" disabled onclick="convertImg2Pdf()">Create PDF from Images</button>
+        <div class="progress-bar" id="i2pProgress"><div class="progress-fill" id="i2pProgressFill"></div></div>
+        <div class="progress-text" id="i2pProgressText"></div>
+      </div>
+    </div>
+
+    <!-- Image to PDF Results -->
+    <div class="card hidden" id="i2pResultCard">
+      <div class="card-head"><span class="card-title">PDF Created</span></div>
+      <div class="card-body" style="text-align:center;">
+        <div style="font-size:3rem;margin-bottom:8px;">&#128196;</div>
+        <div style="font-size:1rem;font-weight:700;color:#0d2813;margin-bottom:4px;" id="i2pResultName"></div>
+        <div style="font-size:0.82rem;color:#6B8CAE;margin-bottom:16px;" id="i2pResultInfo"></div>
+        <div class="result-actions" style="justify-content:center;">
+          <button class="act-btn act-download" id="i2pDownloadBtn">&#128229; Download PDF</button>
+          <button class="act-btn act-reset" onclick="resetImg2Pdf()">&#8635; Create Another</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tips -->
+  <div class="tips-section">
+    <div class="tips-title">Tips</div>
+    <div class="tips-grid">
+      <div class="tip-item">&#128274; Files never leave your device</div>
+      <div class="tip-item">&#128200; Use 2x scale for high-quality images</div>
+      <div class="tip-item">&#127912; PNG for sharp text, JPG for photos</div>
+      <div class="tip-item">&#128230; ZIP download for multiple pages</div>
+    </div>
+  </div>
+</div>
+
+<!-- SEO Content -->
+<div class="seo-section">
+  <h2>Free PDF to Image & Image to PDF Converter</h2>
+  <p>The AfroTools PDF Image Converter is a free, browser-based tool that lets you convert between PDF documents and images without uploading your files to any server. Whether you need to extract pages from a PDF as high-quality PNG or JPG images, or combine multiple photos into a single PDF document, this tool handles it all instantly in your browser.</p>
+
+  <h3>PDF to Image Conversion</h3>
+  <p>Upload any PDF and convert each page into a crisp, high-resolution image. Choose between PNG format for lossless quality (perfect for text-heavy documents and screenshots) or JPG format for smaller file sizes (ideal for photos and presentations). The resolution scale option lets you control the output quality &mdash; 2x scale produces images at 144 DPI, suitable for most uses, while 3x scale gives you 216 DPI for print-quality output.</p>
+
+  <h3>Image to PDF Conversion</h3>
+  <p>Combine multiple images into a single, professionally formatted PDF document. Upload PNG, JPG, or WebP images, arrange them in your preferred order, and choose from standard page sizes including A4 and US Letter. The fit options let you control how images appear on each page &mdash; preserve aspect ratios, fill the entire page, or stretch to fit.</p>
+
+  <h3>Why Use This Tool?</h3>
+  <ul>
+    <li><strong>100% Private:</strong> All processing happens in your browser. Your files are never uploaded to any server.</li>
+    <li><strong>Batch Processing:</strong> Convert all pages of a multi-page PDF at once, or combine dozens of images into one PDF.</li>
+    <li><strong>High Quality:</strong> Render PDF pages at up to 3x scale for sharp, detailed images.</li>
+    <li><strong>ZIP Download:</strong> Download all converted images as a single ZIP file for easy organization.</li>
+    <li><strong>No Registration:</strong> No account needed. No limits. Just open and use.</li>
+  </ul>
+
+  <h3>Common Use Cases</h3>
+  <ul>
+    <li>Extract charts and diagrams from PDF reports for presentations</li>
+    <li>Convert scanned documents to individual image files</li>
+    <li>Create a PDF portfolio from a collection of photos</li>
+    <li>Turn presentation slides into shareable images</li>
+    <li>Combine receipts and invoices into a single PDF for filing</li>
+  </ul>
+</div>
+
+<afro-related-tools category="pdf" current="pdf-image-convert"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<!-- Libraries -->
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+
+<script>
+// ============================================================
+// PDF.js setup (ES module loaded via dynamic import)
+// ============================================================
+let pdfjsLib = null;
+const PDFJS_CDN = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/build/pdf.min.mjs';
+const PDFJS_WORKER = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/build/pdf.worker.min.mjs';
+
+async function ensurePdfJs() {
+  if (pdfjsLib) return pdfjsLib;
+  const mod = await import(PDFJS_CDN);
+  pdfjsLib = mod;
+  pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_WORKER;
+  return pdfjsLib;
+}
+
+// ============================================================
+// State
+// ============================================================
+let currentMode = 'pdf2img';
+let pdfDoc = null;
+let pdfArrayBuffer = null;
+let convertedImages = []; // {blob, name, url}
+let imgFiles = []; // File objects for img2pdf
+let pdfBlob = null; // result of img2pdf
+
+// ============================================================
+// Mode switching
+// ============================================================
+function switchMode(mode) {
+  currentMode = mode;
+  document.getElementById('modePdfToImg').classList.toggle('on', mode === 'pdf2img');
+  document.getElementById('modeImgToPdf').classList.toggle('on', mode === 'img2pdf');
+  document.getElementById('pdf2img-panel').classList.toggle('hidden', mode !== 'pdf2img');
+  document.getElementById('img2pdf-panel').classList.toggle('hidden', mode !== 'img2pdf');
+}
+
+// ============================================================
+// Format-dependent quality slider visibility
+// ============================================================
+document.getElementById('p2iFormat').addEventListener('change', function() {
+  document.getElementById('p2iQualityWrap').style.display = this.value === 'jpeg' ? 'block' : 'none';
+});
+document.getElementById('p2iQuality').addEventListener('input', function() {
+  document.getElementById('p2iQualityVal').textContent = this.value;
+});
+document.getElementById('i2pMargin').addEventListener('input', function() {
+  document.getElementById('i2pMarginVal').textContent = this.value + ' mm';
+});
+
+// ============================================================
+// PDF Drop Zone
+// ============================================================
+(function() {
+  const dz = document.getElementById('pdfDropZone');
+  const fi = document.getElementById('pdfFileInput');
+  dz.addEventListener('click', () => fi.click());
+  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('dragover'); });
+  dz.addEventListener('dragleave', () => dz.classList.remove('dragover'));
+  dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('dragover'); if (e.dataTransfer.files[0]) handlePdfFile(e.dataTransfer.files[0]); });
+  fi.addEventListener('change', e => { if (e.target.files[0]) handlePdfFile(e.target.files[0]); });
+})();
+
+async function handlePdfFile(file) {
+  if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
+    alert('Please select a PDF file.');
+    return;
+  }
+  try {
+    await ensurePdfJs();
+    pdfArrayBuffer = await file.arrayBuffer();
+    pdfDoc = await pdfjsLib.getDocument({ data: pdfArrayBuffer.slice(0) }).promise;
+    document.getElementById('pdfFileName').textContent = file.name;
+    document.getElementById('pdfFileSize').textContent = formatSize(file.size);
+    document.getElementById('pdfPageCount').textContent = pdfDoc.numPages + ' page' + (pdfDoc.numPages !== 1 ? 's' : '');
+    document.getElementById('pdfFileInfo').classList.remove('hidden');
+    document.getElementById('pdfDropZone').style.display = 'none';
+    document.getElementById('p2iConvertBtn').disabled = false;
+    document.getElementById('p2iResultCard').classList.add('hidden');
+    convertedImages.forEach(img => URL.revokeObjectURL(img.url));
+    convertedImages = [];
+  } catch (err) {
+    alert('Error loading PDF: ' + err.message);
+  }
+}
+
+function resetPdf2Img() {
+  pdfDoc = null;
+  pdfArrayBuffer = null;
+  convertedImages.forEach(img => URL.revokeObjectURL(img.url));
+  convertedImages = [];
+  document.getElementById('pdfFileInfo').classList.add('hidden');
+  document.getElementById('pdfDropZone').style.display = '';
+  document.getElementById('p2iConvertBtn').disabled = true;
+  document.getElementById('p2iResultCard').classList.add('hidden');
+  document.getElementById('p2iProgress').style.display = 'none';
+  document.getElementById('p2iProgressText').style.display = 'none';
+  document.getElementById('p2iThumbGrid').innerHTML = '';
+  document.getElementById('pdfFileInput').value = '';
+}
+
+// ============================================================
+// PDF to Image Conversion
+// ============================================================
+async function convertPdf2Img() {
+  if (!pdfDoc) return;
+  const format = document.getElementById('p2iFormat').value;
+  const scale = parseFloat(document.getElementById('p2iScale').value);
+  const quality = format === 'jpeg' ? parseInt(document.getElementById('p2iQuality').value) / 100 : undefined;
+  const mimeType = format === 'jpeg' ? 'image/jpeg' : 'image/png';
+  const ext = format === 'jpeg' ? 'jpg' : 'png';
+
+  const btn = document.getElementById('p2iConvertBtn');
+  const bar = document.getElementById('p2iProgress');
+  const fill = document.getElementById('p2iProgressFill');
+  const ptxt = document.getElementById('p2iProgressText');
+
+  btn.disabled = true;
+  btn.textContent = 'Converting...';
+  bar.style.display = 'block';
+  ptxt.style.display = 'block';
+  fill.style.width = '0%';
+
+  convertedImages.forEach(img => URL.revokeObjectURL(img.url));
+  convertedImages = [];
+  document.getElementById('p2iThumbGrid').innerHTML = '';
+
+  const total = pdfDoc.numPages;
+  const baseName = document.getElementById('pdfFileName').textContent.replace(/\.pdf$/i, '');
+
+  try {
+    for (let i = 1; i <= total; i++) {
+      ptxt.textContent = `Rendering page ${i} of ${total}...`;
+      fill.style.width = ((i - 1) / total * 100) + '%';
+
+      const page = await pdfDoc.getPage(i);
+      const viewport = page.getViewport({ scale });
+      const canvas = document.createElement('canvas');
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+      const ctx = canvas.getContext('2d');
+
+      // White background for JPG
+      if (format === 'jpeg') {
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+
+      await page.render({ canvasContext: ctx, viewport }).promise;
+
+      const blob = await new Promise((resolve, reject) => {
+        canvas.toBlob(b => {
+          if (b) resolve(b);
+          else reject(new Error('Failed to create image from page ' + i));
+        }, mimeType, quality);
+      });
+
+      const url = URL.createObjectURL(blob);
+      const name = `${baseName}_page${String(i).padStart(String(total).length, '0')}.${ext}`;
+      convertedImages.push({ blob, name, url });
+
+      // Add thumbnail
+      addThumb(url, name, i, blob.size);
+
+      fill.style.width = (i / total * 100) + '%';
+    }
+
+    ptxt.textContent = `Done! ${total} image${total !== 1 ? 's' : ''} created.`;
+    document.getElementById('p2iResultCard').classList.remove('hidden');
+  } catch (err) {
+    ptxt.textContent = 'Error: ' + err.message;
+  }
+
+  btn.textContent = 'Convert PDF to Images';
+  btn.disabled = false;
+}
+
+function addThumb(url, name, pageNum, size) {
+  const grid = document.getElementById('p2iThumbGrid');
+  const card = document.createElement('div');
+  card.className = 'thumb-card';
+  card.innerHTML = `
+    <div class="thumb-img-wrap"><img src="${url}" alt="Page ${pageNum}" loading="lazy"></div>
+    <div class="thumb-info">
+      <span class="thumb-label">Page ${pageNum} (${formatSize(size)})</span>
+      <button class="thumb-dl" title="Download" onclick="downloadSingle(${pageNum - 1})">&#11015;</button>
+    </div>`;
+  grid.appendChild(card);
+}
+
+function downloadSingle(index) {
+  const img = convertedImages[index];
+  if (!img) return;
+  const a = document.createElement('a');
+  a.href = img.url;
+  a.download = img.name;
+  a.click();
+}
+
+async function downloadAllAsZip() {
+  if (!convertedImages.length) return;
+  const btn = document.querySelector('#p2iActions .act-download');
+  btn.textContent = 'Creating ZIP...';
+  btn.disabled = true;
+
+  try {
+    const zip = new JSZip();
+    convertedImages.forEach(img => {
+      zip.file(img.name, img.blob);
+    });
+    const zipBlob = await zip.generateAsync({ type: 'blob' }, metadata => {
+      // optional progress
+    });
+    const baseName = document.getElementById('pdfFileName').textContent.replace(/\.pdf$/i, '');
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(zipBlob);
+    a.download = `${baseName}_images.zip`;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+  } catch (err) {
+    alert('Error creating ZIP: ' + err.message);
+  }
+
+  btn.innerHTML = '&#128230; Download All as ZIP';
+  btn.disabled = false;
+}
+
+// ============================================================
+// Image Drop Zone (Image to PDF)
+// ============================================================
+(function() {
+  const dz = document.getElementById('imgDropZone');
+  const fi = document.getElementById('imgFileInput');
+  dz.addEventListener('click', () => fi.click());
+  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('dragover'); });
+  dz.addEventListener('dragleave', () => dz.classList.remove('dragover'));
+  dz.addEventListener('drop', e => {
+    e.preventDefault(); dz.classList.remove('dragover');
+    const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
+    if (files.length) addImgFiles(files);
+  });
+  fi.addEventListener('change', e => {
+    const files = Array.from(e.target.files);
+    if (files.length) addImgFiles(files);
+    fi.value = '';
+  });
+})();
+
+function addImgFiles(files) {
+  files.forEach(f => {
+    if (!f.type.match(/^image\/(png|jpe?g|webp)$/)) return;
+    imgFiles.push(f);
+  });
+  renderImgFileList();
+  document.getElementById('i2pConvertBtn').disabled = imgFiles.length === 0;
+  document.getElementById('i2pResultCard').classList.add('hidden');
+}
+
+function removeImgFile(index) {
+  imgFiles.splice(index, 1);
+  renderImgFileList();
+  document.getElementById('i2pConvertBtn').disabled = imgFiles.length === 0;
+}
+
+function renderImgFileList() {
+  const list = document.getElementById('imgFileList');
+  if (imgFiles.length === 0) {
+    list.innerHTML = '';
+    return;
+  }
+  list.innerHTML = imgFiles.map((f, i) => `
+    <div class="file-item">
+      <div class="file-item-info">
+        <span style="font-size:0.72rem;color:#6B8CAE;font-weight:700;min-width:20px;">${i + 1}</span>
+        <span class="file-item-name">${f.name}</span>
+        <span class="file-item-size">${formatSize(f.size)}</span>
+      </div>
+      <button class="file-item-remove" onclick="removeImgFile(${i})">&#10005;</button>
+    </div>
+  `).join('');
+}
+
+function resetImg2Pdf() {
+  imgFiles = [];
+  pdfBlob = null;
+  document.getElementById('imgFileList').innerHTML = '';
+  document.getElementById('i2pConvertBtn').disabled = true;
+  document.getElementById('i2pResultCard').classList.add('hidden');
+  document.getElementById('i2pProgress').style.display = 'none';
+  document.getElementById('i2pProgressText').style.display = 'none';
+  document.getElementById('imgFileInput').value = '';
+}
+
+// ============================================================
+// Image to PDF Conversion
+// ============================================================
+async function convertImg2Pdf() {
+  if (imgFiles.length === 0) return;
+
+  const pageSize = document.getElementById('i2pPageSize').value;
+  const fitMode = document.getElementById('i2pFit').value;
+  const margin = parseFloat(document.getElementById('i2pMargin').value);
+
+  const btn = document.getElementById('i2pConvertBtn');
+  const bar = document.getElementById('i2pProgress');
+  const fill = document.getElementById('i2pProgressFill');
+  const ptxt = document.getElementById('i2pProgressText');
+
+  btn.disabled = true;
+  btn.textContent = 'Creating PDF...';
+  bar.style.display = 'block';
+  ptxt.style.display = 'block';
+  fill.style.width = '0%';
+
+  try {
+    const { jsPDF } = window.jspdf;
+    let pdf = null;
+    const total = imgFiles.length;
+
+    for (let i = 0; i < total; i++) {
+      ptxt.textContent = `Processing image ${i + 1} of ${total}...`;
+      fill.style.width = ((i) / total * 100) + '%';
+
+      const imgData = await readFileAsDataURL(imgFiles[i]);
+      const dims = await getImageDimensions(imgData);
+
+      // Page dimensions in mm
+      let pageW, pageH;
+      if (pageSize === 'a4') {
+        pageW = 210; pageH = 297;
+      } else if (pageSize === 'letter') {
+        pageW = 215.9; pageH = 279.4;
+      } else {
+        // fit to image: convert px to mm at 96dpi
+        pageW = dims.width * 25.4 / 96 + margin * 2;
+        pageH = dims.height * 25.4 / 96 + margin * 2;
+      }
+
+      const orientation = pageW > pageH ? 'landscape' : 'portrait';
+
+      if (i === 0) {
+        pdf = new jsPDF({ orientation, unit: 'mm', format: pageSize === 'fit' ? [pageW, pageH] : pageSize });
+      } else {
+        pdf.addPage(pageSize === 'fit' ? [pageW, pageH] : pageSize, orientation);
+      }
+
+      const areaW = pageW - margin * 2;
+      const areaH = pageH - margin * 2;
+      const imgAspect = dims.width / dims.height;
+      const areaAspect = areaW / areaH;
+
+      let drawW, drawH, drawX, drawY;
+
+      if (fitMode === 'stretch') {
+        drawW = areaW; drawH = areaH;
+        drawX = margin; drawY = margin;
+      } else if (fitMode === 'contain') {
+        if (imgAspect > areaAspect) {
+          drawW = areaW;
+          drawH = areaW / imgAspect;
+        } else {
+          drawH = areaH;
+          drawW = areaH * imgAspect;
+        }
+        drawX = margin + (areaW - drawW) / 2;
+        drawY = margin + (areaH - drawH) / 2;
+      } else { // cover
+        if (imgAspect > areaAspect) {
+          drawH = areaH;
+          drawW = areaH * imgAspect;
+        } else {
+          drawW = areaW;
+          drawH = areaW / imgAspect;
+        }
+        drawX = margin + (areaW - drawW) / 2;
+        drawY = margin + (areaH - drawH) / 2;
+      }
+
+      const imgFormat = imgFiles[i].type === 'image/png' ? 'PNG' : 'JPEG';
+      pdf.addImage(imgData, imgFormat, drawX, drawY, drawW, drawH);
+
+      fill.style.width = ((i + 1) / total * 100) + '%';
+    }
+
+    pdfBlob = pdf.output('blob');
+    const pdfName = total === 1 ? imgFiles[0].name.replace(/\.[^.]+$/, '') + '.pdf' : 'images_combined.pdf';
+
+    ptxt.textContent = `Done! PDF created with ${total} page${total !== 1 ? 's' : ''}.`;
+    document.getElementById('i2pResultName').textContent = pdfName;
+    document.getElementById('i2pResultInfo').textContent = `${total} page${total !== 1 ? 's' : ''} | ${formatSize(pdfBlob.size)}`;
+    document.getElementById('i2pResultCard').classList.remove('hidden');
+
+    const dlBtn = document.getElementById('i2pDownloadBtn');
+    dlBtn.onclick = () => {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(pdfBlob);
+      a.download = pdfName;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+    };
+  } catch (err) {
+    ptxt.textContent = 'Error: ' + err.message;
+  }
+
+  btn.textContent = 'Create PDF from Images';
+  btn.disabled = false;
+}
+
+// ============================================================
+// Utilities
+// ============================================================
+function readFileAsDataURL(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function getImageDimensions(dataUrl) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve({ width: img.width, height: img.height });
+    img.onerror = reject;
+    img.src = dataUrl;
+  });
+}
+
+function formatSize(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+  return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+}
+</script>
+<script src="/assets/js/components/related-tools.min.js" defer></script>
+<script src="/assets/js/components/newsletter-cta.js" defer></script>
+<script src="/assets/js/lib/saved-tools.js" defer></script>
+<script src="/assets/js/favorites-widget.js" defer></script>
+</body>
+</html>
