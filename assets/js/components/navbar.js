@@ -81,6 +81,11 @@
         { label: 'Stablecoin Tracker', href: '/crypto/stablecoins/', emoji: '💵', badge: 'LIVE' },
         { label: 'Crypto Remittance', href: '/crypto/remittance/', emoji: '🌐', badge: 'LIVE' },
         { label: 'Naira Arbitrage', href: '/crypto/arbitrage/', emoji: '⚡', badge: 'LIVE' },
+        { label: 'Scam Checker', href: '/crypto/scam-checker/', emoji: '🛡️', badge: 'NEW' },
+        { label: 'Address Validator', href: '/crypto/address-validator/', emoji: '🔍', badge: 'NEW' },
+        { label: 'Exchange Ratings', href: '/crypto/exchange-ratings/', emoji: '⭐', badge: 'NEW' },
+        { label: 'Contract Scanner', href: '/crypto/contract-scanner/', emoji: '📜', badge: 'NEW' },
+        { label: 'Crypto Quiz', href: '/crypto/quiz/', emoji: '🧠', badge: 'NEW' },
       ]
     },
     {
