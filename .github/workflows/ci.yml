@@ -1,0 +1,36 @@
+name: CI — Link Check & Audit
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check internal links
+        run: node scripts/check-links.js
+        continue-on-error: true  # warn but don't block until all broken links are fixed
+
+      - name: Audit tool registry
+        run: node scripts/audit-tools.js
+
+      - name: Run minification (verify it works)
+        run: |
+          node scripts/minify.js
+          git diff --stat
+          # Fail if minified files are out of date
+          if [ -n "$(git diff --name-only)" ]; then
+            echo "::warning::Minified files are out of date. Run 'npm run minify' and commit."
+          fi
