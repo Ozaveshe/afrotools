@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-D859CGF391');
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crypto Profit Calculator — Bitcoin P/L in Naira, Rand, Shillings | AfroTools</title>
+<meta name="description" content="Calculate your crypto profit or loss in African currencies. Enter buy price, sell price, and quantity to see ROI, break-even price, and what-if projections for Bitcoin, Ethereum, Solana and more.">
+<link rel="canonical" href="https://afrotools.com/crypto/profit-calculator">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Crypto Profit Calculator — P/L in African Currencies | AfroTools">
+<meta property="og:description" content="Calculate your crypto profit or loss in Naira, Rand, Shillings, Cedi and more. See ROI, break-even price, and what-if projections.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/crypto/profit-calculator">
+<meta property="og:site_name" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/assets/css/crypto.css">
+<script src="/assets/js/components/tool-registry.js"></script>
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<script src="/assets/js/components/cookie-consent.js" defer></script>
+<script src="/assets/js/lib/recent-tools.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@nicedoc/twemoji@14/dist/twemoji.min.js" crossorigin="anonymous" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+<script src="/assets/js/lib/chart-config.js"></script>
+<script src="/assets/js/lib/crypto-data.js"></script>
+<style>
+/* ── Page-specific styles ─────────────────────── */
+.calc-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 24px 48px;
+}
+.calc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-top: 32px;
+}
+@media (max-width: 768px) {
+  .calc-grid { grid-template-columns: 1fr; }
+}
+
+/* Input panel */
+.calc-panel {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 28px;
+}
+.calc-panel h2 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 20px;
+  color: var(--color-text);
+}
+.form-group {
+  margin-bottom: 16px;
+}
+.form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  margin-bottom: 6px;
+}
+.form-group select,
+.form-group input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  background: var(--color-bg);
+  color: var(--color-text);
+  transition: border-color 0.2s;
+}
+.form-group select:focus,
+.form-group input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(0,122,255,0.1);
+}
+.input-with-prefix {
+  position: relative;
+}
+.input-with-prefix .prefix {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-weight: 600;
+  color: var(--color-text-muted);
+  font-size: 14px;
+  pointer-events: none;
+}
+.input-with-prefix input {
+  padding-left: 42px;
+}
+.toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.toggle-row input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-primary);
+}
+.toggle-row label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text);
+  margin: 0;
+  cursor: pointer;
+}
+.fee-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: end;
+}
+.fee-row select {
+  width: 80px;
+  padding: 10px 8px;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+.btn-calculate {
+  width: 100%;
+  padding: 14px;
+  margin-top: 8px;
+  border: none;
+  border-radius: 12px;
+  background: var(--color-primary);
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+.btn-calculate:hover { background: #0066d6; }
+.btn-calculate:active { transform: scale(0.98); }
+.live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #34C759;
+  font-weight: 600;
+  margin-left: 8px;
+}
+.live-badge .dot {
+  width: 6px; height: 6px;
+  background: #34C759;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* Results panel */
+.results-panel {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 28px;
+}
+.results-panel h2 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 20px;
+  color: var(--color-text);
+}
+.result-rows {}
+.result-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 15px;
+}
+.result-row:last-child { border-bottom: none; }
+.result-row .label { color: var(--color-text-muted); font-weight: 500; }
+.result-row .value { font-weight: 700; color: var(--color-text); }
+.result-row .value.profit { color: #34C759; }
+.result-row .value.loss { color: #FF3B30; }
+.result-row.highlight {
+  background: var(--color-bg-subtle);
+  margin: 0 -28px;
+  padding: 16px 28px;
+  border-radius: 10px;
+  border-bottom: none;
+}
+.result-row.highlight .value { font-size: 20px; }
+.result-placeholder {
+  text-align: center;
+  padding: 48px 0;
+  color: var(--color-text-muted);
+  font-size: 15px;
+}
+.breakeven-box {
+  margin-top: 16px;
+  padding: 14px 18px;
+  background: var(--color-bg-subtle);
+  border-radius: 10px;
+  font-size: 14px;
+  color: var(--color-text-muted);
+}
+.breakeven-box strong { color: var(--color-text); }
+
+/* What-if slider */
+.whatif-section {
+  margin-top: 24px;
+}
+.whatif-section h3 {
+  font-size: 15px;
+  font-weight: 700;
+  margin: 0 0 12px;
+  color: var(--color-text);
+}
+.whatif-slider {
+  width: 100%;
+  accent-color: var(--color-primary);
+}
+.whatif-output {
+  margin-top: 10px;
+  padding: 14px 18px;
+  background: var(--color-bg-subtle);
+  border-radius: 10px;
+  font-size: 14px;
+  color: var(--color-text);
+  font-weight: 600;
+  text-align: center;
+  min-height: 46px;
+}
+
+/* Chart section */
+.chart-section {
+  margin-top: 32px;
+}
+.chart-section h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 16px;
+  color: var(--color-text);
+}
+.chart-wrap {
+  position: relative;
+  height: 320px;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 20px;
+}
+</style>
+</head>
+<body>
+
+<afro-navbar></afro-navbar>
+
+<!-- Hero -->
+<section class="crypto-hero">
+  <span class="crypto-badge">Profit Calculator</span>
+  <h1>Crypto Profit Calculator</h1>
+  <p>I bought X amount of Bitcoin at Y. What's my profit now? Quick P/L calculator.</p>
+</section>
+
+<!-- Calculator -->
+<div class="calc-container">
+  <div class="calc-grid">
+
+    <!-- Input Panel -->
+    <div class="calc-panel">
+      <h2>Enter Your Trade</h2>
+
+      <div class="form-group">
+        <label for="coinSelect">Coin</label>
+        <select id="coinSelect">
+          <option value="bitcoin">Bitcoin (BTC)</option>
+          <option value="ethereum">Ethereum (ETH)</option>
+          <option value="solana">Solana (SOL)</option>
+          <option value="binancecoin">BNB (BNB)</option>
+          <option value="ripple">XRP (XRP)</option>
+          <option value="tether">Tether (USDT)</option>
+          <option value="usd-coin">USD Coin (USDC)</option>
+          <option value="dogecoin">Dogecoin (DOGE)</option>
+          <option value="cardano">Cardano (ADA)</option>
+          <option value="tron">TRON (TRX)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="currencySelect">Currency</label>
+        <select id="currencySelect">
+          <option value="ngn" selected>NGN &mdash; Nigerian Naira</option>
+          <option value="kes">KES &mdash; Kenyan Shilling</option>
+          <option value="zar">ZAR &mdash; South African Rand</option>
+          <option value="ghs">GHS &mdash; Ghanaian Cedi</option>
+          <option value="egp">EGP &mdash; Egyptian Pound</option>
+          <option value="usd">USD &mdash; US Dollar</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="buyPrice">Buy Price (per coin)</label>
+        <div class="input-with-prefix">
+          <span class="prefix" id="buyPrefix">\u20A6</span>
+          <input type="number" id="buyPrice" placeholder="e.g. 45000000" min="0" step="any">
+        </div>
+      </div>
+
+      <div class="toggle-row">
+        <input type="checkbox" id="useCurrentPrice" checked>
+        <label for="useCurrentPrice">Use current market price as sell price</label>
+        <span class="live-badge" id="liveBadge"><span class="dot"></span>Live</span>
+      </div>
+
+      <div class="form-group" id="sellPriceGroup" style="display:none">
+        <label for="sellPrice">Sell Price (per coin)</label>
+        <div class="input-with-prefix">
+          <span class="prefix" id="sellPrefix">\u20A6</span>
+          <input type="number" id="sellPrice" placeholder="e.g. 52000000" min="0" step="any">
+        </div>
+      </div>
+
+      <div id="currentPriceDisplay" style="margin-bottom:16px;padding:10px 14px;background:var(--color-bg-subtle);border-radius:10px;font-size:14px;color:var(--color-text)">
+        Current price: <strong id="currentPriceValue">Loading...</strong>
+      </div>
+
+      <div class="form-group">
+        <label for="quantity">Quantity (coins)</label>
+        <input type="number" id="quantity" placeholder="e.g. 0.5" min="0" step="any">
+      </div>
+
+      <div class="form-group">
+        <label for="feeAmount">Trading Fees</label>
+        <div class="fee-row">
+          <input type="number" id="feeAmount" placeholder="0" min="0" step="any" value="0">
+          <select id="feeType">
+            <option value="percent">%</option>
+            <option value="flat">Flat</option>
+          </select>
+        </div>
+      </div>
+
+      <button class="btn-calculate" id="calcBtn">Calculate Profit / Loss</button>
+    </div>
+
+    <!-- Results Panel -->
+    <div class="results-panel">
+      <h2>Results</h2>
+
+      <div id="resultsContent">
+        <div class="result-placeholder">Enter your trade details and click calculate to see your profit or loss.</div>
+      </div>
+
+      <!-- What-if slider -->
+      <div class="whatif-section" id="whatifSection" style="display:none">
+        <h3>What If? Price Explorer</h3>
+        <input type="range" class="whatif-slider" id="whatifSlider" min="0" max="100" value="50">
+        <div class="whatif-output" id="whatifOutput"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart -->
+  <div class="chart-section" id="chartSection" style="display:none">
+    <h3>Break-Even vs Current Price</h3>
+    <div class="chart-wrap">
+      <canvas id="profitChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- SEO Content -->
+<section class="crypto-content">
+  <h2>How to Calculate Crypto Profits in African Currencies</h2>
+
+  <p>Calculating profits and losses on cryptocurrency trades is an essential skill for every investor, whether you are a seasoned trader in Lagos or a first-time Bitcoin buyer in Nairobi. The fundamental formula is straightforward: subtract what you paid from what you received, then deduct any trading fees. However, when dealing with volatile African currencies and rapidly moving crypto markets, having a dedicated calculator that works in your local currency eliminates guesswork and helps you make smarter decisions.</p>
+
+  <h2>Understanding P/L in Local Currency Terms</h2>
+
+  <p>Most global crypto platforms display prices in US dollars, but your actual profit depends on your local currency. If you bought 0.1 BTC when Bitcoin was trading at 45 million Naira and sold when it reached 52 million Naira, your gross profit is 700,000 Naira per coin, or 70,000 Naira total. But this calculation gets more complex when you factor in exchange fees, withdrawal charges, and the spread between buy and sell prices on your platform. Our calculator handles all of these variables, giving you a clear picture of your net profit in NGN, KES, ZAR, GHS, EGP, or USD.</p>
+
+  <h2>Why ROI Matters More Than Absolute Profit</h2>
+
+  <p>A profit of 100,000 Naira sounds impressive, but if you invested 50 million Naira to earn it, your return on investment is only 0.2 percent. Conversely, turning 50,000 Naira into 100,000 Naira represents a 100 percent ROI. This is why our calculator displays both absolute profit and percentage ROI, giving you a complete view of your trade performance. Comparing ROI across different trades and time periods helps you identify which strategies work best in African markets.</p>
+
+  <h2>The Break-Even Price Concept</h2>
+
+  <p>Your break-even price is the minimum sell price at which you recover your total investment including all fees. This number is particularly important in African markets where trading fees on local exchanges can range from 0.1 percent on major platforms to as high as 2 percent on some peer-to-peer services. If you paid a 1.5 percent fee when buying and expect another 1.5 percent when selling, your break-even price is roughly 3 percent above your purchase price before you make a single Naira of profit. Understanding this helps you set realistic profit targets.</p>
+
+  <h2>Using the What-If Price Explorer</h2>
+
+  <p>Crypto prices are notoriously volatile. Our What-If slider lets you explore hypothetical scenarios without risking real money. Drag the slider to see what your profit would be if Bitcoin hits 100 million Naira or drops back to 30 million. This feature is particularly useful for setting take-profit and stop-loss levels. Many experienced African traders use this kind of scenario planning to manage risk in a market where prices can swing 10 to 20 percent in a single day. Combined with the visual chart showing your break-even line against the current price, you get an intuitive understanding of where your trade stands and where it could go.</p>
+
+  <p>Whether you trade on Binance, Luno, Quidax, Yellow Card, or any other platform popular across Africa, this profit calculator gives you the clarity you need. Enter your buy price, quantity, and fees, and let the tool do the rest. All prices are fetched in real time from global markets and converted to your chosen African currency.</p>
+</section>
+
+<afro-footer></afro-footer>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ── Currency symbols ───────────────────────────── */
+  var SYMBOLS = {
+    ngn: '\u20A6', kes: 'KSh', zar: 'R', ghs: 'GH\u20B5', egp: 'E\u00A3', usd: '$'
+  };
+
+  /* ── State ──────────────────────────────────────── */
+  var currency = 'ngn';
+  var currentLivePrice = null;
+  var profitChart = null;
+  var lastCalc = null;
+
+  /* ── DOM refs ───────────────────────────────────── */
+  var $coin = document.getElementById('coinSelect');
+  var $currency = document.getElementById('currencySelect');
+  var $buyPrice = document.getElementById('buyPrice');
+  var $sellPrice = document.getElementById('sellPrice');
+  var $quantity = document.getElementById('quantity');
+  var $feeAmount = document.getElementById('feeAmount');
+  var $feeType = document.getElementById('feeType');
+  var $useCurrentPrice = document.getElementById('useCurrentPrice');
+  var $sellPriceGroup = document.getElementById('sellPriceGroup');
+  var $currentPriceDisplay = document.getElementById('currentPriceDisplay');
+  var $currentPriceValue = document.getElementById('currentPriceValue');
+  var $liveBadge = document.getElementById('liveBadge');
+  var $calcBtn = document.getElementById('calcBtn');
+  var $resultsContent = document.getElementById('resultsContent');
+  var $whatifSection = document.getElementById('whatifSection');
+  var $whatifSlider = document.getElementById('whatifSlider');
+  var $whatifOutput = document.getElementById('whatifOutput');
+  var $chartSection = document.getElementById('chartSection');
+  var $buyPrefix = document.getElementById('buyPrefix');
+  var $sellPrefix = document.getElementById('sellPrefix');
+
+  /* ── Update currency symbol prefix ──────────────── */
+  function updatePrefixes() {
+    var sym = SYMBOLS[currency] || currency.toUpperCase();
+    $buyPrefix.textContent = sym;
+    $sellPrefix.textContent = sym;
+  }
+
+  /* ── Fetch live price ───────────────────────────── */
+  function fetchLivePrice() {
+    $currentPriceValue.textContent = 'Loading...';
+    CryptoData.getPrices(currency).then(function (data) {
+      if (!data) { $currentPriceValue.textContent = 'Unavailable'; return; }
+      var coinId = $coin.value;
+      if (data[coinId] && data[coinId][currency]) {
+        currentLivePrice = data[coinId][currency];
+        $currentPriceValue.textContent = CryptoData.formatPrice(currentLivePrice, currency);
+      } else {
+        $currentPriceValue.textContent = 'Unavailable';
+        currentLivePrice = null;
+      }
+    });
+  }
+
+  /* ── Toggle sell price / current price ──────────── */
+  $useCurrentPrice.addEventListener('change', function () {
+    if (this.checked) {
+      $sellPriceGroup.style.display = 'none';
+      $currentPriceDisplay.style.display = '';
+      $liveBadge.style.display = '';
+    } else {
+      $sellPriceGroup.style.display = '';
+      $currentPriceDisplay.style.display = 'none';
+      $liveBadge.style.display = 'none';
+    }
+  });
+
+  /* ── Currency / Coin change ─────────────────────── */
+  $currency.addEventListener('change', function () {
+    currency = this.value;
+    updatePrefixes();
+    fetchLivePrice();
+  });
+  $coin.addEventListener('change', function () {
+    fetchLivePrice();
+  });
+
+  /* ── Format number for display ──────────────────── */
+  function fmt(amount) {
+    return CryptoData.formatPrice(amount, currency);
+  }
+  function fmtFull(amount) {
+    var sym = SYMBOLS[currency] || currency.toUpperCase() + ' ';
+    return sym + Number(amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  /* ── Calculate ──────────────────────────────────── */
+  function calculate() {
+    var buyPrice = parseFloat($buyPrice.value);
+    var quantity = parseFloat($quantity.value);
+    var feeVal = parseFloat($feeAmount.value) || 0;
+    var feeType = $feeType.value;
+    var sellPrice;
+
+    if ($useCurrentPrice.checked) {
+      if (!currentLivePrice) {
+        $resultsContent.innerHTML = '<div class="result-placeholder" style="color:#FF3B30">Live price unavailable. Try again or enter a sell price manually.</div>';
+        return;
+      }
+      sellPrice = currentLivePrice;
+    } else {
+      sellPrice = parseFloat($sellPrice.value);
+    }
+
+    if (!buyPrice || buyPrice <= 0 || !sellPrice || sellPrice <= 0 || !quantity || quantity <= 0) {
+      $resultsContent.innerHTML = '<div class="result-placeholder" style="color:#FF3B30">Please fill in all required fields with valid numbers.</div>';
+      return;
+    }
+
+    var investmentCost = buyPrice * quantity;
+    var sellValue = sellPrice * quantity;
+    var grossProfit = sellValue - investmentCost;
+
+    // Calculate fees
+    var totalFees = 0;
+    if (feeType === 'percent') {
+      totalFees = (investmentCost * feeVal / 100) + (sellValue * feeVal / 100);
+    } else {
+      totalFees = feeVal;
+    }
+
+    var netProfit = grossProfit - totalFees;
+    var roi = (netProfit / investmentCost) * 100;
+
+    // Break-even price (factoring in fees)
+    var breakEvenPrice;
+    if (feeType === 'percent') {
+      breakEvenPrice = (buyPrice * (1 + feeVal / 100)) / (1 - feeVal / 100);
+    } else {
+      breakEvenPrice = buyPrice + (totalFees / quantity);
+    }
+
+    var isProfit = netProfit >= 0;
+    var colorClass = isProfit ? 'profit' : 'loss';
+
+    lastCalc = {
+      buyPrice: buyPrice,
+      sellPrice: sellPrice,
+      quantity: quantity,
+      investmentCost: investmentCost,
+      totalFees: totalFees,
+      breakEvenPrice: breakEvenPrice
+    };
+
+    // Render results
+    var html = '<div class="result-rows">';
+    html += '<div class="result-row"><span class="label">Investment Cost</span><span class="value">' + fmtFull(investmentCost) + '</span></div>';
+    html += '<div class="result-row"><span class="label">Current / Sell Value</span><span class="value">' + fmtFull(sellValue) + '</span></div>';
+    html += '<div class="result-row"><span class="label">Gross Profit</span><span class="value ' + (grossProfit >= 0 ? 'profit' : 'loss') + '">' + (grossProfit >= 0 ? '+' : '') + fmtFull(grossProfit) + '</span></div>';
+    html += '<div class="result-row"><span class="label">Trading Fees</span><span class="value">' + fmtFull(totalFees) + '</span></div>';
+    html += '<div class="result-row highlight"><span class="label">Net Profit</span><span class="value ' + colorClass + '">' + (netProfit >= 0 ? '+' : '') + fmtFull(netProfit) + '</span></div>';
+    html += '<div class="result-row highlight"><span class="label">ROI</span><span class="value ' + colorClass + '">' + (roi >= 0 ? '+' : '') + roi.toFixed(2) + '%</span></div>';
+    html += '</div>';
+    html += '<div class="breakeven-box">Break-even price: <strong>' + fmtFull(breakEvenPrice) + '</strong> per coin (including fees)</div>';
+    $resultsContent.innerHTML = html;
+
+    // Show what-if slider
+    $whatifSection.style.display = '';
+    setupWhatIfSlider();
+
+    // Show chart
+    $chartSection.style.display = '';
+    renderChart();
+  }
+
+  /* ── What-If Slider ─────────────────────────────── */
+  function setupWhatIfSlider() {
+    if (!lastCalc) return;
+    var bp = lastCalc.buyPrice;
+    // Range: 0.1x to 5x of buy price
+    var minPrice = bp * 0.1;
+    var maxPrice = bp * 5;
+    $whatifSlider.min = Math.floor(minPrice);
+    $whatifSlider.max = Math.ceil(maxPrice);
+    $whatifSlider.value = lastCalc.sellPrice;
+    updateWhatIfDisplay();
+  }
+
+  $whatifSlider.addEventListener('input', updateWhatIfDisplay);
+
+  function updateWhatIfDisplay() {
+    if (!lastCalc) return;
+    var hypotheticalPrice = parseFloat($whatifSlider.value);
+    var sellValue = hypotheticalPrice * lastCalc.quantity;
+    var hypotheticalProfit = sellValue - lastCalc.investmentCost - lastCalc.totalFees;
+    var isProfit = hypotheticalProfit >= 0;
+    var coinMeta = CryptoData.COIN_META[$coin.value];
+    var coinSymbol = coinMeta ? coinMeta.symbol : $coin.value.toUpperCase();
+
+    $whatifOutput.innerHTML = 'If <strong>' + coinSymbol + '</strong> hits <strong>' + fmtFull(hypotheticalPrice) + '</strong>, your profit would be <span style="color:' + (isProfit ? '#34C759' : '#FF3B30') + ';font-weight:700">' + (isProfit ? '+' : '') + fmtFull(hypotheticalProfit) + '</span>';
+  }
+
+  /* ── Profit/Loss Chart ──────────────────────────── */
+  function renderChart() {
+    if (!lastCalc) return;
+    var bp = lastCalc.buyPrice;
+    var be = lastCalc.breakEvenPrice;
+    var qty = lastCalc.quantity;
+    var fees = lastCalc.totalFees;
+
+    // Generate price points from 0.2x to 3x buy price
+    var labels = [];
+    var profitData = [];
+    var breakEvenData = [];
+    var steps = 50;
+    var minP = bp * 0.2;
+    var maxP = bp * 3;
+    var step = (maxP - minP) / steps;
+
+    for (var i = 0; i <= steps; i++) {
+      var price = minP + (step * i);
+      labels.push(CryptoData.formatPrice(price, currency, 0));
+      var profit = (price * qty) - (bp * qty) - fees;
+      profitData.push(profit);
+      breakEvenData.push(0);
+    }
+
+    if (profitChart) profitChart.destroy();
+
+    var ctx = document.getElementById('profitChart').getContext('2d');
+    profitChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: 'Profit / Loss',
+            data: profitData,
+            borderColor: AfroChartColors.series[0],
+            borderWidth: 2.5,
+            pointRadius: 0,
+            fill: {
+              target: 1,
+              above: 'rgba(52, 199, 89, 0.15)',
+              below: 'rgba(255, 59, 48, 0.15)'
+            },
+            tension: 0.3
+          },
+          {
+            label: 'Break-Even Line',
+            data: breakEvenData,
+            borderColor: AfroChartColors.series[5],
+            borderWidth: 1.5,
+            borderDash: [6, 4],
+            pointRadius: 0,
+            fill: false
+          }
+        ]
+      },
+      options: Object.assign({}, AfroChartDefaults, {
+        interaction: { intersect: false, mode: 'index' },
+        plugins: Object.assign({}, AfroChartDefaults.plugins, {
+          tooltip: Object.assign({}, AfroChartDefaults.plugins.tooltip, {
+            callbacks: {
+              label: function (ctx) {
+                if (ctx.datasetIndex === 0) {
+                  return 'P/L: ' + fmtFull(ctx.parsed.y);
+                }
+                return 'Break-even: 0';
+              }
+            }
+          })
+        }),
+        scales: {
+          x: Object.assign({}, AfroChartDefaults.scales.x, {
+            title: { display: true, text: 'Sell Price', color: '#64748B', font: { family: "'DM Sans', sans-serif", size: 12 } },
+            ticks: Object.assign({}, AfroChartDefaults.scales.x.ticks, { maxTicksLimit: 8, maxRotation: 45 })
+          }),
+          y: Object.assign({}, AfroChartDefaults.scales.y, {
+            title: { display: true, text: 'Profit / Loss', color: '#64748B', font: { family: "'DM Sans', sans-serif", size: 12 } },
+            ticks: Object.assign({}, AfroChartDefaults.scales.y.ticks, {
+              callback: function (val) { return CryptoData.formatPrice(val, currency, 0); }
+            })
+          })
+        }
+      })
+    });
+  }
+
+  /* ── Button handler ─────────────────────────────── */
+  $calcBtn.addEventListener('click', calculate);
+
+  // Also calculate on Enter key in any input
+  document.querySelectorAll('.calc-panel input[type="number"]').forEach(function (inp) {
+    inp.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') calculate();
+    });
+  });
+
+  /* ── Init ────────────────────────────────────────── */
+  updatePrefixes();
+  fetchLivePrice();
+
+  // Refresh live price every 60s
+  setInterval(fetchLivePrice, 60000);
+
+})();
+</script>
+
+</body>
+</html>

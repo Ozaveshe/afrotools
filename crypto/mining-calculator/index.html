@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-D859CGF391');
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crypto Mining Profitability Calculator for Africa — Grid, Generator, Solar | AfroTools</title>
+<meta name="description" content="Is crypto mining profitable in Africa? Calculate earnings vs electricity costs for grid power, diesel/petrol generators, and solar. BTC, ETH, LTC mining in Nigeria, Kenya, South Africa, Ghana, Egypt.">
+<link rel="canonical" href="https://afrotools.com/crypto/mining-calculator">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Crypto Mining Profitability Calculator for Africa | AfroTools">
+<meta property="og:description" content="Is mining profitable in Africa? Calculate earnings vs electricity costs for grid, generator, and solar power.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/crypto/mining-calculator">
+<meta property="og:site_name" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/assets/css/crypto.css">
+<script src="/assets/js/components/tool-registry.js"></script>
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<script src="/assets/js/components/cookie-consent.js" defer></script>
+<script src="/assets/js/lib/recent-tools.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@nicedoc/twemoji@14/dist/twemoji.min.js" crossorigin="anonymous" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+<script src="/assets/js/lib/chart-config.js"></script>
+<script src="/assets/js/lib/crypto-data.js"></script>
+<style>
+/* ── Page-specific styles ─────────────────────── */
+.calc-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 24px 48px;
+}
+.calc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-top: 32px;
+}
+@media (max-width: 768px) {
+  .calc-grid { grid-template-columns: 1fr; }
+}
+
+/* Panels */
+.calc-panel {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 28px;
+}
+.calc-panel h2 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 20px;
+  color: var(--color-text);
+}
+.form-group {
+  margin-bottom: 16px;
+}
+.form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  margin-bottom: 6px;
+}
+.form-group select,
+.form-group input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  background: var(--color-bg);
+  color: var(--color-text);
+  transition: border-color 0.2s;
+}
+.form-group select:focus,
+.form-group input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(0,122,255,0.1);
+}
+.form-group .hint {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-top: 4px;
+}
+
+/* Power source toggle */
+.power-toggle {
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.power-toggle button {
+  flex: 1;
+  padding: 10px 8px;
+  border: none;
+  background: var(--color-bg);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  white-space: nowrap;
+}
+.power-toggle button.active {
+  background: var(--color-primary);
+  color: #fff;
+}
+.power-toggle button:not(:last-child) {
+  border-right: 1px solid var(--color-border);
+}
+
+.rate-info {
+  padding: 10px 14px;
+  background: var(--color-bg-subtle);
+  border-radius: 10px;
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+.rate-info strong { color: var(--color-text); }
+
+.btn-calculate {
+  width: 100%;
+  padding: 14px;
+  margin-top: 8px;
+  border: none;
+  border-radius: 12px;
+  background: var(--color-primary);
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+.btn-calculate:hover { background: #0066d6; }
+.btn-calculate:active { transform: scale(0.98); }
+
+/* Results */
+.results-panel {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 28px;
+}
+.results-panel h2 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 20px;
+  color: var(--color-text);
+}
+.result-placeholder {
+  text-align: center;
+  padding: 48px 0;
+  color: var(--color-text-muted);
+  font-size: 15px;
+}
+.result-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.result-table th {
+  text-align: left;
+  padding: 10px 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  border-bottom: 1px solid var(--color-border);
+}
+.result-table td {
+  padding: 10px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text);
+  border-bottom: 1px solid var(--color-border);
+}
+.result-table td:not(:first-child),
+.result-table th:not(:first-child) {
+  text-align: right;
+}
+.result-table .profit { color: #34C759; }
+.result-table .loss { color: #FF3B30; }
+.result-table tr.total-row td {
+  font-size: 15px;
+  font-weight: 700;
+  border-bottom: 2px solid var(--color-border);
+}
+
+.breakeven-box {
+  margin-top: 16px;
+  padding: 14px 18px;
+  background: var(--color-bg-subtle);
+  border-radius: 10px;
+  font-size: 14px;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+.breakeven-box strong { color: var(--color-text); }
+
+/* Mining vs Buying */
+.comparison-box {
+  margin-top: 16px;
+  padding: 16px 18px;
+  border-radius: 10px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.comparison-box.better { background: rgba(52,199,89,0.1); color: #1a7a34; border: 1px solid rgba(52,199,89,0.2); }
+.comparison-box.worse { background: rgba(255,59,48,0.1); color: #c0392b; border: 1px solid rgba(255,59,48,0.2); }
+.comparison-box strong { font-weight: 700; }
+
+/* Africa insight */
+.insight-box {
+  margin-top: 16px;
+  padding: 16px 18px;
+  background: rgba(255,149,0,0.08);
+  border: 1px solid rgba(255,149,0,0.2);
+  border-radius: 10px;
+  font-size: 14px;
+  color: var(--color-text);
+  line-height: 1.6;
+}
+.insight-box .icon { font-size: 18px; margin-right: 6px; }
+
+/* Chart */
+.chart-section {
+  margin-top: 32px;
+}
+.chart-section h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 16px;
+  color: var(--color-text);
+}
+.chart-wrap {
+  position: relative;
+  height: 340px;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 20px;
+}
+</style>
+</head>
+<body>
+
+<afro-navbar></afro-navbar>
+
+<!-- Hero -->
+<section class="crypto-hero">
+  <span class="crypto-badge">Mining Calculator</span>
+  <h1>Crypto Mining Profitability Calculator</h1>
+  <p>Is mining profitable in Africa? Calculate earnings vs electricity costs for grid, generator, and solar.</p>
+</section>
+
+<!-- Calculator -->
+<div class="calc-container">
+  <div class="calc-grid">
+
+    <!-- Input Panel -->
+    <div class="calc-panel">
+      <h2>Mining Setup</h2>
+
+      <div class="form-group">
+        <label for="countrySelect">Country</label>
+        <select id="countrySelect">
+          <option value="NG" selected>Nigeria</option>
+          <option value="KE">Kenya</option>
+          <option value="ZA">South Africa</option>
+          <option value="GH">Ghana</option>
+          <option value="EG">Egypt</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Power Source</label>
+        <div class="power-toggle" id="powerToggle">
+          <button class="active" data-source="grid">Grid</button>
+          <button data-source="generator_petrol">Gen (Petrol)</button>
+          <button data-source="generator_diesel">Gen (Diesel)</button>
+          <button data-source="solar">Solar</button>
+        </div>
+      </div>
+
+      <div class="rate-info" id="rateInfo">Loading rates...</div>
+
+      <div class="form-group">
+        <label for="coinSelect">Coin to Mine</label>
+        <select id="coinSelect">
+          <option value="BTC" selected>Bitcoin (BTC)</option>
+          <option value="ETH">Ethereum (ETH)</option>
+          <option value="LTC">Litecoin (LTC)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="hashrate">Hashrate (TH/s)</label>
+        <input type="number" id="hashrate" value="100" min="0" step="any">
+        <div class="hint">Typical ASIC: 100-140 TH/s (e.g., Antminer S19 XP)</div>
+      </div>
+
+      <div class="form-group">
+        <label for="power">Power Consumption (Watts)</label>
+        <input type="number" id="power" value="3250" min="0" step="any">
+        <div class="hint">Typical ASIC: 3000-3500W</div>
+      </div>
+
+      <div class="form-group">
+        <label for="customRate">Custom Electricity Cost ($/kWh) <span style="font-weight:400;color:var(--color-text-muted)">&mdash; optional override</span></label>
+        <input type="number" id="customRate" placeholder="Leave blank to use country rate" min="0" step="any">
+      </div>
+
+      <div class="form-group">
+        <label for="poolFee">Pool Fee (%)</label>
+        <input type="number" id="poolFee" value="1" min="0" max="100" step="0.1">
+      </div>
+
+      <button class="btn-calculate" id="calcBtn">Calculate Profitability</button>
+    </div>
+
+    <!-- Results Panel -->
+    <div class="results-panel">
+      <h2>Mining Results</h2>
+
+      <div id="resultsContent">
+        <div class="result-placeholder">Configure your mining setup and click calculate to see profitability projections.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart -->
+  <div class="chart-section" id="chartSection" style="display:none">
+    <h3>Revenue vs Costs Breakdown (Monthly)</h3>
+    <div class="chart-wrap">
+      <canvas id="miningChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- SEO Content -->
+<section class="crypto-content">
+  <h2>Is Crypto Mining Profitable in Africa?</h2>
+
+  <p>Cryptocurrency mining has attracted significant interest across Africa, particularly in countries like Nigeria, Kenya, South Africa, Ghana, and Egypt. The promise of earning Bitcoin, Ethereum, or Litecoin by running specialized hardware is appealing, but profitability depends heavily on one critical factor: the cost of electricity. Africa presents a unique landscape for miners because electricity costs vary dramatically not just between countries, but between power sources within the same country. Understanding these dynamics is essential before investing in mining equipment.</p>
+
+  <h2>The Electricity Challenge in African Mining</h2>
+
+  <p>Electricity is the single largest operating cost for any mining operation. In Nigeria, the national grid provides power at approximately 68 Naira per kilowatt-hour for Band A customers, which translates to roughly $0.045/kWh at current exchange rates. This is competitive globally. However, the Nigerian grid is notoriously unreliable, with frequent outages that can last hours or even days. Many miners turn to petrol or diesel generators as backup, where costs skyrocket to 350-530 Naira per kWh. At these rates, mining Bitcoin with a standard ASIC miner becomes unprofitable almost immediately. South Africa offers more reliable grid power at around R2.50/kWh ($0.12/kWh), but load shedding has become a persistent challenge, pushing miners toward solar alternatives.</p>
+
+  <h2>Solar Mining: The African Advantage</h2>
+
+  <p>Africa receives more sunlight per square meter than almost any other continent, making solar power an increasingly attractive option for mining operations. The levelized cost of solar electricity has fallen below $0.10/kWh in many African countries, and in some regions it is as low as $0.05/kWh for large-scale installations. A well-designed solar setup with battery storage can provide consistent, cheap power for mining rigs. Countries like Egypt and Kenya, with abundant sunshine and improving solar infrastructure, are seeing growing interest in solar-powered mining farms. The initial capital investment in solar panels and batteries is higher, but the long-term operating costs are significantly lower than grid or generator power.</p>
+
+  <h2>Mining Hardware Considerations</h2>
+
+  <p>The most popular Bitcoin mining hardware in Africa includes the Antminer S19 series and the Whatsminer M30 series, both producing around 100-140 TH/s of computing power while consuming 3000-3500 watts. Importing these machines can be challenging due to customs duties, shipping costs, and the weight of the equipment. Some African miners source refurbished units from China or the UAE at lower costs, though warranty coverage may be limited. For Ethereum and Litecoin, GPU-based mining rigs are more common, though Ethereum has moved to proof-of-stake, making ETH mining no longer viable with traditional hardware.</p>
+
+  <h2>Mining vs Buying: The Fundamental Question</h2>
+
+  <p>Before investing in mining hardware and electricity infrastructure, every African crypto enthusiast should ask: would I earn more by simply buying the cryptocurrency directly? Our calculator includes a Mining vs Buying comparison that answers this question based on your specific electricity costs and hardware setup. In many cases, particularly for miners relying on generator power, the total cost of mining one Bitcoin exceeds the market price of simply purchasing it on an exchange. This comparison is critical for making informed investment decisions. For those with access to cheap grid power or solar installations, mining can still be profitable, but the margins are thinner than they were during the early days of cryptocurrency. Use this calculator to model your specific scenario before committing capital to a mining operation.</p>
+
+  <p>Our mining calculator uses real-time Bitcoin prices from global markets, current network difficulty estimates, and country-specific electricity rates to give you the most accurate profitability projection possible. Select your country, choose your power source, enter your hardware specifications, and see daily, monthly, and yearly projections in seconds.</p>
+</section>
+
+<afro-footer></afro-footer>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ── Electricity Rates by Country ───────────────── */
+  var ELECTRICITY_RATES = {
+    NG: { grid:0.045, generator_petrol:0.35, generator_diesel:0.28, solar:0.08, currency:'NGN', label:'Grid N68/kWh, Generator N350-530/kWh, Solar N120/kWh' },
+    KE: { grid:0.20, solar:0.10, currency:'KES', label:'Grid KSh22-28/kWh, Solar KSh14/kWh' },
+    ZA: { grid:0.12, solar:0.06, currency:'ZAR', label:'Grid R2.50/kWh, Solar R1.20/kWh' },
+    GH: { grid:0.08, solar:0.07, currency:'GHS', label:'Grid GH\u20B51.20/kWh, Solar GH\u20B51.05/kWh' },
+    EG: { grid:0.04, solar:0.05, currency:'EGP', label:'Grid E\u00A30.85/kWh, Solar E\u00A31.10/kWh' }
+  };
+
+  /* ── Mining constants ───────────────────────────── */
+  var MINING_PARAMS = {
+    BTC: { difficulty: 80e12, blockReward: 3.125, algo: 'SHA-256', coinGeckoId: 'bitcoin' },
+    ETH: { difficulty: 1e16, blockReward: 0, algo: 'Ethash (PoS)', coinGeckoId: 'ethereum' },
+    LTC: { difficulty: 40e6, blockReward: 6.25, algo: 'Scrypt', coinGeckoId: 'litecoin' }
+  };
+
+  /* ── Currency map ───────────────────────────────── */
+  var CURRENCY_MAP = { NG: 'ngn', KE: 'kes', ZA: 'zar', GH: 'ghs', EG: 'egp' };
+  var SYMBOLS = { ngn: '\u20A6', kes: 'KSh', zar: 'R', ghs: 'GH\u20B5', egp: 'E\u00A3', usd: '$' };
+
+  /* ── State ──────────────────────────────────────── */
+  var country = 'NG';
+  var powerSource = 'grid';
+  var miningChart = null;
+  var livePriceUSD = null;
+  var livePriceLocal = null;
+
+  /* ── DOM refs ───────────────────────────────────── */
+  var $country = document.getElementById('countrySelect');
+  var $coin = document.getElementById('coinSelect');
+  var $hashrate = document.getElementById('hashrate');
+  var $power = document.getElementById('power');
+  var $customRate = document.getElementById('customRate');
+  var $poolFee = document.getElementById('poolFee');
+  var $calcBtn = document.getElementById('calcBtn');
+  var $resultsContent = document.getElementById('resultsContent');
+  var $rateInfo = document.getElementById('rateInfo');
+  var $chartSection = document.getElementById('chartSection');
+
+  /* ── Power source toggle ────────────────────────── */
+  var powerBtns = document.querySelectorAll('#powerToggle button');
+  powerBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      powerBtns.forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      powerSource = btn.getAttribute('data-source');
+      updateRateInfo();
+    });
+  });
+
+  /* ── Update available power sources per country ─── */
+  function updatePowerSources() {
+    var rates = ELECTRICITY_RATES[country];
+    powerBtns.forEach(function (btn) {
+      var src = btn.getAttribute('data-source');
+      if (rates[src] !== undefined) {
+        btn.style.display = '';
+        btn.disabled = false;
+      } else {
+        btn.style.display = 'none';
+        btn.disabled = true;
+        if (powerSource === src) {
+          // Switch to grid
+          powerSource = 'grid';
+          powerBtns.forEach(function (b) { b.classList.remove('active'); });
+          document.querySelector('#powerToggle button[data-source="grid"]').classList.add('active');
+        }
+      }
+    });
+  }
+
+  /* ── Update rate info display ───────────────────── */
+  function updateRateInfo() {
+    var rates = ELECTRICITY_RATES[country];
+    var rate = rates[powerSource];
+    if (rate !== undefined) {
+      $rateInfo.innerHTML = '<strong>Electricity rate:</strong> $' + rate.toFixed(3) + '/kWh (' + powerSource.replace('_', ' ') + ')<br>' + rates.label;
+    } else {
+      $rateInfo.innerHTML = rates.label;
+    }
+  }
+
+  /* ── Country change ─────────────────────────────── */
+  $country.addEventListener('change', function () {
+    country = this.value;
+    updatePowerSources();
+    updateRateInfo();
+    fetchLivePrice();
+  });
+
+  $coin.addEventListener('change', function () {
+    fetchLivePrice();
+  });
+
+  /* ── Fetch live price ───────────────────────────── */
+  function fetchLivePrice() {
+    var cur = CURRENCY_MAP[country];
+    CryptoData.getPrices(cur).then(function (data) {
+      if (!data) return;
+      var coinId = MINING_PARAMS[$coin.value].coinGeckoId;
+      if (data[coinId]) {
+        livePriceUSD = data[coinId].usd || null;
+        livePriceLocal = data[coinId][cur] || null;
+      }
+    });
+  }
+
+  /* ── Format helpers ─────────────────────────────── */
+  function fmtUSD(amount) {
+    return '$' + Number(amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+  function fmtLocal(amount) {
+    var cur = CURRENCY_MAP[country];
+    return CryptoData.formatPrice(amount, cur);
+  }
+  function fmtCrypto(amount, sym) {
+    if (amount < 0.00001) return amount.toExponential(4) + ' ' + sym;
+    return amount.toFixed(8) + ' ' + sym;
+  }
+
+  /* ── Calculate ──────────────────────────────────── */
+  function calculate() {
+    var coinKey = $coin.value;
+    var params = MINING_PARAMS[coinKey];
+    var hashrate = parseFloat($hashrate.value);
+    var power = parseFloat($power.value);
+    var poolFee = parseFloat($poolFee.value) || 0;
+
+    if (!hashrate || hashrate <= 0 || !power || power <= 0) {
+      $resultsContent.innerHTML = '<div class="result-placeholder" style="color:#FF3B30">Please enter valid hashrate and power consumption values.</div>';
+      return;
+    }
+
+    if (coinKey === 'ETH') {
+      $resultsContent.innerHTML = '<div class="result-placeholder" style="color:#FF9500">Ethereum has moved to Proof-of-Stake (PoS). Traditional GPU/ASIC mining of ETH is no longer possible. Consider mining BTC or LTC instead.</div>';
+      return;
+    }
+
+    // Get electricity rate
+    var rates = ELECTRICITY_RATES[country];
+    var elecRate = parseFloat($customRate.value);
+    if (!elecRate || elecRate <= 0) {
+      elecRate = rates[powerSource];
+      if (elecRate === undefined) elecRate = rates.grid;
+    }
+
+    // Daily BTC revenue = (hashrate_in_hashes / (difficulty * 2^32)) * block_reward * 86400
+    var hashrateHashes = hashrate * 1e12; // TH/s to H/s
+    var dailyCoinRevenue = (hashrateHashes / (params.difficulty * Math.pow(2, 32))) * params.blockReward * 86400;
+
+    // Pool fee deduction
+    var dailyCoinAfterPool = dailyCoinRevenue * (1 - poolFee / 100);
+
+    // Electricity cost (in USD)
+    var dailyElecCostUSD = (power / 1000) * 24 * elecRate;
+
+    // Revenue in USD & local
+    var dailyRevenueUSD = dailyCoinAfterPool * (livePriceUSD || 0);
+    var dailyRevenueLocal = dailyCoinAfterPool * (livePriceLocal || 0);
+
+    // Pool fee in USD
+    var dailyPoolFeeUSD = (dailyCoinRevenue * poolFee / 100) * (livePriceUSD || 0);
+
+    // Electricity in local currency
+    var cur = CURRENCY_MAP[country];
+    // Approximate local electricity cost using price ratio
+    var usdToLocal = (livePriceLocal && livePriceUSD) ? (livePriceLocal / livePriceUSD) : 1;
+    var dailyElecCostLocal = dailyElecCostUSD * usdToLocal;
+    var dailyPoolFeeLocal = dailyPoolFeeUSD * usdToLocal;
+
+    // Net profit
+    var dailyProfitUSD = dailyRevenueUSD - dailyElecCostUSD - dailyPoolFeeUSD;
+    var dailyProfitLocal = dailyRevenueLocal - dailyElecCostLocal - dailyPoolFeeLocal;
+
+    var monthly = 30;
+    var yearly = 365;
+
+    var isProfit = dailyProfitUSD >= 0;
+    var profitClass = isProfit ? 'profit' : 'loss';
+
+    // Break-even electricity price
+    var breakEvenElec = dailyCoinAfterPool * (livePriceUSD || 0) / ((power / 1000) * 24);
+
+    // Mining vs Buying comparison
+    // Cost to mine 1 coin vs buying 1 coin
+    var daysToMineOne = dailyCoinAfterPool > 0 ? (1 / dailyCoinAfterPool) : Infinity;
+    var totalCostToMineOne = daysToMineOne * dailyElecCostUSD + daysToMineOne * dailyPoolFeeUSD;
+    var buyPrice = livePriceUSD || 0;
+    var miningCheaper = totalCostToMineOne < buyPrice;
+
+    // Build results HTML
+    var html = '';
+
+    // Live price display
+    html += '<div style="margin-bottom:16px;padding:10px 14px;background:var(--color-bg-subtle);border-radius:10px;font-size:14px">';
+    html += '<strong>' + coinKey + ' Price:</strong> ' + fmtUSD(livePriceUSD || 0) + ' / ' + fmtLocal(livePriceLocal || 0);
+    html += '</div>';
+
+    // Coin mined per day
+    html += '<div style="margin-bottom:16px;padding:10px 14px;background:var(--color-bg-subtle);border-radius:10px;font-size:14px">';
+    html += '<strong>Daily mining output:</strong> ' + fmtCrypto(dailyCoinAfterPool, coinKey) + ' (after pool fee)';
+    html += '</div>';
+
+    // Results table
+    html += '<table class="result-table">';
+    html += '<thead><tr><th></th><th>Daily</th><th>Monthly</th><th>Yearly</th></tr></thead>';
+    html += '<tbody>';
+
+    // Revenue
+    html += '<tr><td>Revenue</td>';
+    html += '<td>' + fmtLocal(dailyRevenueLocal) + '</td>';
+    html += '<td>' + fmtLocal(dailyRevenueLocal * monthly) + '</td>';
+    html += '<td>' + fmtLocal(dailyRevenueLocal * yearly) + '</td>';
+    html += '</tr>';
+
+    // Electricity
+    html += '<tr><td>Electricity</td>';
+    html += '<td style="color:#FF3B30">-' + fmtLocal(dailyElecCostLocal) + '</td>';
+    html += '<td style="color:#FF3B30">-' + fmtLocal(dailyElecCostLocal * monthly) + '</td>';
+    html += '<td style="color:#FF3B30">-' + fmtLocal(dailyElecCostLocal * yearly) + '</td>';
+    html += '</tr>';
+
+    // Pool fee
+    html += '<tr><td>Pool Fee (' + poolFee + '%)</td>';
+    html += '<td style="color:#FF9500">-' + fmtLocal(dailyPoolFeeLocal) + '</td>';
+    html += '<td style="color:#FF9500">-' + fmtLocal(dailyPoolFeeLocal * monthly) + '</td>';
+    html += '<td style="color:#FF9500">-' + fmtLocal(dailyPoolFeeLocal * yearly) + '</td>';
+    html += '</tr>';
+
+    // Net profit
+    html += '<tr class="total-row"><td>Net Profit</td>';
+    html += '<td class="' + profitClass + '">' + (isProfit ? '+' : '') + fmtLocal(dailyProfitLocal) + '</td>';
+    html += '<td class="' + profitClass + '">' + (isProfit ? '+' : '') + fmtLocal(dailyProfitLocal * monthly) + '</td>';
+    html += '<td class="' + profitClass + '">' + (isProfit ? '+' : '') + fmtLocal(dailyProfitLocal * yearly) + '</td>';
+    html += '</tr>';
+
+    // USD row
+    html += '<tr style="opacity:0.7"><td>Net Profit (USD)</td>';
+    html += '<td class="' + profitClass + '">' + (isProfit ? '+' : '') + fmtUSD(dailyProfitUSD) + '</td>';
+    html += '<td class="' + profitClass + '">' + (isProfit ? '+' : '') + fmtUSD(dailyProfitUSD * monthly) + '</td>';
+    html += '<td class="' + profitClass + '">' + (isProfit ? '+' : '') + fmtUSD(dailyProfitUSD * yearly) + '</td>';
+    html += '</tr>';
+
+    html += '</tbody></table>';
+
+    // Break-even electricity
+    html += '<div class="breakeven-box">';
+    html += '<strong>Break-even electricity price:</strong> $' + breakEvenElec.toFixed(4) + '/kWh<br>';
+    html += 'Your current rate: $' + elecRate.toFixed(3) + '/kWh &mdash; ';
+    if (elecRate < breakEvenElec) {
+      html += '<span style="color:#34C759;font-weight:700">Below break-even (profitable)</span>';
+    } else {
+      html += '<span style="color:#FF3B30;font-weight:700">Above break-even (unprofitable)</span>';
+    }
+    html += '</div>';
+
+    // Mining vs Buying
+    if (buyPrice > 0 && daysToMineOne < Infinity) {
+      html += '<div class="comparison-box ' + (miningCheaper ? 'better' : 'worse') + '">';
+      html += '<strong>Mining vs Buying:</strong><br>';
+      html += 'Cost to mine 1 ' + coinKey + ': ' + fmtUSD(totalCostToMineOne) + ' (electricity + pool fees over ' + Math.round(daysToMineOne) + ' days)<br>';
+      html += 'Cost to buy 1 ' + coinKey + ': ' + fmtUSD(buyPrice) + '<br>';
+      if (miningCheaper) {
+        html += '<strong>Mining is cheaper</strong> by ' + fmtUSD(buyPrice - totalCostToMineOne) + ' per coin (excluding hardware costs).';
+      } else {
+        html += '<strong>Buying is cheaper</strong> by ' + fmtUSD(totalCostToMineOne - buyPrice) + ' per coin. It may be more cost-effective to purchase directly.';
+      }
+      html += '</div>';
+    }
+
+    // Africa insight box
+    var insightHTML = getAfricaInsight();
+    if (insightHTML) {
+      html += '<div class="insight-box"><span class="icon">&#9889;</span>' + insightHTML + '</div>';
+    }
+
+    $resultsContent.innerHTML = html;
+
+    // Render chart
+    $chartSection.style.display = '';
+    renderChart(dailyRevenueLocal * monthly, dailyElecCostLocal * monthly, dailyPoolFeeLocal * monthly, dailyProfitLocal * monthly);
+  }
+
+  /* ── Africa insight ─────────────────────────────── */
+  function getAfricaInsight() {
+    if (country === 'NG' && (powerSource === 'generator_petrol' || powerSource === 'generator_diesel')) {
+      return 'At Nigerian generator ' + (powerSource === 'generator_diesel' ? 'diesel' : 'petrol') + ' prices (' + (powerSource === 'generator_diesel' ? 'N350/kWh' : 'N530/kWh') + '), mining is <strong>NOT profitable</strong> for most home setups. Consider solar or grid power during off-peak hours.';
+    }
+    if (country === 'NG' && powerSource === 'grid') {
+      return 'Nigerian grid power is cheap when available, but frequent outages reduce uptime. A hybrid grid + solar setup maximizes mining profitability in Nigeria.';
+    }
+    if (country === 'ZA' && powerSource === 'grid') {
+      return 'South African grid power is moderately priced, but load shedding can cut your mining uptime by 20-40%. A UPS or solar backup system is recommended for serious miners.';
+    }
+    if (country === 'KE' && powerSource === 'grid') {
+      return 'Kenya grid rates are among the highest in Africa. Solar is strongly recommended for mining operations in Kenya, especially given the abundant equatorial sunlight.';
+    }
+    if (powerSource === 'solar') {
+      return 'Solar-powered mining is the most sustainable option in Africa. With 5-7 peak sun hours per day across most of the continent, a well-sized solar + battery system can run mining rigs 24/7 at a fraction of grid costs.';
+    }
+    return 'Consider comparing grid, generator, and solar power costs for your region. Many successful African miners use a hybrid approach, combining solar with grid power as backup.';
+  }
+
+  /* ── Bar Chart ──────────────────────────────────── */
+  function renderChart(revenue, electricity, poolFee, netProfit) {
+    if (miningChart) miningChart.destroy();
+
+    var ctx = document.getElementById('miningChart').getContext('2d');
+    miningChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Revenue', 'Electricity Cost', 'Pool Fee', 'Net Profit'],
+        datasets: [{
+          data: [revenue, electricity, poolFee, netProfit],
+          backgroundColor: [
+            AfroChartColors.series[0],
+            AfroChartColors.series[5],
+            AfroChartColors.series[3],
+            netProfit >= 0 ? AfroChartColors.series[2] : AfroChartColors.series[5]
+          ],
+          borderRadius: 8,
+          borderSkipped: false,
+          barPercentage: 0.6
+        }]
+      },
+      options: Object.assign({}, AfroChartDefaults, {
+        plugins: Object.assign({}, AfroChartDefaults.plugins, {
+          legend: { display: false },
+          tooltip: Object.assign({}, AfroChartDefaults.plugins.tooltip, {
+            callbacks: {
+              label: function (ctx) {
+                var cur = CURRENCY_MAP[country];
+                return CryptoData.formatPrice(Math.abs(ctx.parsed.y), cur);
+              }
+            }
+          })
+        }),
+        scales: {
+          x: Object.assign({}, AfroChartDefaults.scales.x, {
+            grid: { display: false }
+          }),
+          y: Object.assign({}, AfroChartDefaults.scales.y, {
+            ticks: Object.assign({}, AfroChartDefaults.scales.y.ticks, {
+              callback: function (val) {
+                var cur = CURRENCY_MAP[country];
+                return CryptoData.formatPrice(val, cur, 0);
+              }
+            })
+          })
+        }
+      })
+    });
+  }
+
+  /* ── Button handler ─────────────────────────────── */
+  $calcBtn.addEventListener('click', calculate);
+
+  document.querySelectorAll('.calc-panel input[type="number"]').forEach(function (inp) {
+    inp.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') calculate();
+    });
+  });
+
+  /* ── Init ────────────────────────────────────────── */
+  updatePowerSources();
+  updateRateInfo();
+  fetchLivePrice();
+
+})();
+</script>
+
+</body>
+</html>
