@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'car-loan'});</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Car Loan Calculator — Monthly Payment, Interest & Amortisation | AfroTools</title>
+<meta name="description" content="Calculate monthly car loan payments, total interest, and see a full amortisation schedule. Compare rates from African banks. Supports NGN, KES, ZAR, GHS.">
+<link rel="canonical" href="https://afrotools.com/tools/car-loan/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Car Loan Calculator | AfroTools">
+<meta property="og:description" content="Monthly car loan payments, total interest, amortisation schedule. African bank rates.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/car-loan/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+:root{--afro-blue:var(--color-primary);--afro-dark:#0f1419}
+.tool-hero{background:linear-gradient(135deg,var(--afro-dark) 0%,#1a1f2e 100%);padding:44px 0 36px;position:relative;overflow:hidden}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px;position:relative}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:var(--afro-blue)}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:var(--afro-blue);font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-blue{background:rgba(0,113,227,.18);color:var(--color-primary);border:1px solid rgba(0,113,227,.38)}
+.b-green{background:rgba(16,185,129,.12);color:#10b981;border:1px solid rgba(16,185,129,.3)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
+.card-body{padding:22px}
+.field{margin-bottom:16px}
+.f-label{font-size:.75rem;font-weight:700;color:var(--afro-dark);margin-bottom:6px;display:block}
+.f-input,.f-select{width:100%;padding:11px 13px;background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:7px;font-size:1rem;font-weight:600;color:var(--afro-dark);outline:none;font-family:'DM Sans',sans-serif}
+.f-input:focus,.f-select:focus{border-color:var(--afro-blue);box-shadow:0 0 0 3px rgba(0,113,227,.1)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.calc-btn{width:100%;padding:13px;background:var(--afro-blue);color:#fff;border:none;border-radius:8px;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .18s;font-family:'DM Sans',sans-serif}
+.calc-btn:hover{background:#0059B3;transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,113,227,.3)}
+.result-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:18px}
+.result-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;text-align:center}
+.result-box.wide{grid-column:1/-1}
+.r-label{font-size:.68rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#64748b;margin-bottom:4px}
+.r-value{font-size:1.35rem;font-weight:800;color:var(--afro-dark)}
+.r-value.blue{color:var(--afro-blue)}
+.r-value.green{color:#10b981}
+.r-value.red{color:#ef4444}
+#results{display:none}
+.amort-table{width:100%;border-collapse:collapse;font-size:.78rem;margin-top:12px}
+.amort-table th{background:#f1f5f9;padding:8px 10px;text-align:left;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#64748b;border-bottom:1px solid #e2e8f0;position:sticky;top:0}
+.amort-table td{padding:8px 10px;border-bottom:1px solid #f1f5f9;color:var(--afro-dark);font-weight:500}
+.amort-table tr:hover td{background:#f8fafc}
+.amort-wrap{max-height:400px;overflow-y:auto;border:1px solid #e2e8f0;border-radius:8px}
+.progress-bar{background:#e2e8f0;border-radius:99px;height:8px;overflow:hidden;margin-top:14px}
+.progress-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--afro-blue),#10b981);transition:width .5s}
+.sidebar .card-body{font-size:.82rem;color:#475569;line-height:1.7}
+.rate-table{width:100%;border-collapse:collapse;margin:10px 0}
+.rate-table td{padding:6px 8px;border-bottom:1px solid #f1f5f9;font-size:.78rem}
+.rate-table td:first-child{font-weight:600;color:var(--afro-dark)}
+.rate-table td:last-child{text-align:right;font-weight:700;color:var(--afro-blue)}
+.seo-content{max-width:800px;margin:0 auto;padding:48px 24px}
+.seo-content h2{font-size:1.4rem;font-weight:800;color:var(--afro-dark);margin:32px 0 12px}
+.seo-content p,.seo-content li{font-size:.92rem;color:#475569;line-height:1.8}
+.seo-content ul{padding-left:20px}
+.faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:10px;overflow:hidden}
+.faq summary{padding:14px 18px;font-weight:700;font-size:.88rem;cursor:pointer;background:#f8fafc;color:var(--afro-dark)}
+.faq details[open] summary{border-bottom:1px solid #e2e8f0}
+.faq details div{padding:14px 18px;font-size:.85rem;color:#475569;line-height:1.7}
+.pie-chart{width:200px;height:200px;border-radius:50%;margin:16px auto;position:relative}
+.pie-legend{display:flex;justify-content:center;gap:16px;font-size:.75rem;font-weight:600;margin-top:8px}
+.pie-legend span{display:flex;align-items:center;gap:5px}
+.pie-legend .dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.field-row{grid-template-columns:1fr}.result-grid{grid-template-columns:1fr 1fr}}
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Car Loan Calculator","url":"https://afrotools.com/tools/car-loan/","description":"Calculate monthly car loan payments, total interest, and amortisation schedule. Supports African currencies and bank rates.","applicationCategory":"FinanceApplication","operatingSystem":"All","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How is a car loan monthly payment calculated?","acceptedAnswer":{"@type":"Answer","text":"Car loan monthly payments use the amortisation formula: M = P * [r(1+r)^n] / [(1+r)^n - 1], where P is loan amount, r is monthly interest rate, and n is total number of payments."}},{"@type":"Question","name":"What are typical car loan rates in Africa?","acceptedAnswer":{"@type":"Answer","text":"Car loan rates vary across Africa. Nigeria: 18-28% p.a., Kenya: 13-18% p.a., South Africa: 10-15% p.a., Ghana: 25-35% p.a. Rates depend on bank, credit history, and loan tenure."}},{"@type":"Question","name":"Should I pay a larger deposit on a car?","acceptedAnswer":{"@type":"Answer","text":"A larger deposit reduces total interest paid and monthly payments. In Africa, most banks require 20-30% deposit. A bigger deposit also improves loan approval chances and may get you a lower rate."}}]}
+</script>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<section class="tool-hero">
+<div class="tool-hero-inner">
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/categories/financial/">Financial</a> / <span>Car Loan</span></div>
+<h1>Car Loan <em>Calculator</em></h1>
+<p class="hero-sub">Calculate monthly payments, total interest, and view a full amortisation schedule. Compare rates across African banks.</p>
+<div class="hero-badges">
+<span class="badge b-blue">Multi-Currency</span>
+<span class="badge b-blue">Amortisation Table</span>
+<span class="badge b-green">African Rates</span>
+</div>
+</div>
+</section>
+
+<section class="tool-main">
+<div class="tool-main-inner">
+<div class="calc-area">
+
+<div class="card">
+<div class="card-head"><span class="card-title">Loan Details</span></div>
+<div class="card-body">
+<div class="field">
+<label class="f-label">Currency</label>
+<select id="currency" class="f-select">
+<option value="NGN">NGN - Nigerian Naira</option>
+<option value="KES">KES - Kenyan Shilling</option>
+<option value="ZAR">ZAR - South African Rand</option>
+<option value="GHS">GHS - Ghanaian Cedi</option>
+<option value="USD">USD - US Dollar</option>
+<option value="GBP">GBP - British Pound</option>
+</select>
+</div>
+<div class="field">
+<label class="f-label">Vehicle Price</label>
+<input type="text" id="price" class="f-input" placeholder="e.g. 15,000,000" inputmode="numeric">
+</div>
+<div class="field-row">
+<div class="field">
+<label class="f-label">Deposit / Down Payment</label>
+<input type="text" id="deposit" class="f-input" placeholder="e.g. 3,000,000" inputmode="numeric">
+</div>
+<div class="field">
+<label class="f-label">Trade-In Value</label>
+<input type="text" id="tradeIn" class="f-input" placeholder="0" inputmode="numeric">
+</div>
+</div>
+<div class="field-row">
+<div class="field">
+<label class="f-label">Annual Interest Rate (%)</label>
+<input type="number" id="rate" class="f-input" value="22" step="0.1" min="0" max="100">
+</div>
+<div class="field">
+<label class="f-label">Loan Term (Years)</label>
+<select id="term" class="f-select">
+<option value="1">1 Year</option>
+<option value="2">2 Years</option>
+<option value="3" selected>3 Years</option>
+<option value="4">4 Years</option>
+<option value="5">5 Years</option>
+<option value="6">6 Years</option>
+<option value="7">7 Years</option>
+</select>
+</div>
+</div>
+<div class="field">
+<label class="f-label">Insurance & Fees (Optional, Lump Sum)</label>
+<input type="text" id="fees" class="f-input" placeholder="0" inputmode="numeric">
+</div>
+<button class="calc-btn" onclick="calculate()">Calculate Car Loan</button>
+</div>
+</div>
+
+<div class="card" id="results">
+<div class="card-head"><span class="card-title">Loan Summary</span></div>
+<div class="card-body">
+<div class="result-grid">
+<div class="result-box"><div class="r-label">Monthly Payment</div><div class="r-value blue" id="rMonth">--</div></div>
+<div class="result-box"><div class="r-label">Loan Amount</div><div class="r-value" id="rLoan">--</div></div>
+<div class="result-box"><div class="r-label">Total Interest</div><div class="r-value red" id="rInterest">--</div></div>
+<div class="result-box"><div class="r-label">Total Cost</div><div class="r-value" id="rTotal">--</div></div>
+<div class="result-box"><div class="r-label">Interest as % of Loan</div><div class="r-value" id="rPct">--</div></div>
+<div class="result-box"><div class="r-label">Effective Monthly Rate</div><div class="r-value" id="rMonthRate">--</div></div>
+</div>
+<div class="progress-bar" style="margin-top:18px"><div class="progress-fill" id="pFill" style="width:0"></div></div>
+<div class="pie-legend" style="margin-top:8px">
+<span><span class="dot" style="background:var(--afro-blue)"></span> Principal</span>
+<span><span class="dot" style="background:#ef4444"></span> Interest</span>
+</div>
+<div style="text-align:center;margin-top:6px;font-size:.75rem;color:#64748b" id="pieSummary"></div>
+</div>
+</div>
+
+<div class="card" id="amortCard" style="display:none">
+<div class="card-head"><span class="card-title">Amortisation Schedule</span></div>
+<div class="card-body" style="padding:0">
+<div class="amort-wrap">
+<table class="amort-table">
+<thead><tr><th>#</th><th>Payment</th><th>Principal</th><th>Interest</th><th>Balance</th></tr></thead>
+<tbody id="amortBody"></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div>
+
+<div class="sidebar">
+<div class="card">
+<div class="card-head"><span class="card-title">African Car Loan Rates</span></div>
+<div class="card-body">
+<table class="rate-table">
+<tr><td>Nigeria (Banks)</td><td>18 - 28%</td></tr>
+<tr><td>Kenya (Banks)</td><td>13 - 18%</td></tr>
+<tr><td>South Africa</td><td>10 - 15%</td></tr>
+<tr><td>Ghana</td><td>25 - 35%</td></tr>
+<tr><td>Rwanda</td><td>16 - 22%</td></tr>
+<tr><td>Tanzania</td><td>16 - 24%</td></tr>
+</table>
+<p style="font-size:.75rem;color:#94a3b8;margin-top:8px">Rates are indicative and vary by bank, credit profile, and tenure. Always confirm with your lender.</p>
+</div>
+</div>
+<div class="card">
+<div class="card-head"><span class="card-title">Tips for Financing</span></div>
+<div class="card-body">
+<p><strong>Deposit matters:</strong> Most African banks require 20-30% down. A larger deposit means lower monthly payments and less total interest.</p>
+<p style="margin-top:10px"><strong>Consider total cost:</strong> A longer loan term reduces monthly payments but significantly increases the total interest you pay.</p>
+<p style="margin-top:10px"><strong>Insurance:</strong> Comprehensive insurance is usually mandatory for financed vehicles in Africa. Factor this into your budget.</p>
+<p style="margin-top:10px"><strong>Trade-in:</strong> Trading in your old vehicle can reduce the loan amount needed. Get multiple valuations to ensure a fair price.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="seo-content">
+<h2>How to Calculate Your Car Loan Payment</h2>
+<p>Buying a car is one of the biggest financial decisions for many Africans. Whether you're purchasing a brand-new Toyota from a dealership in Lagos, a pre-owned vehicle in Nairobi, or financing through a bank in Johannesburg, understanding the true cost of your car loan is essential for sound financial planning.</p>
+<p>Our car loan calculator uses the standard amortisation formula to compute your exact monthly payment. The formula divides the loan principal into equal monthly installments that cover both the interest charge and a portion of the principal, ensuring the loan is fully repaid by the end of the term.</p>
+
+<h2>Understanding Amortisation</h2>
+<p>In an amortising loan, early payments are heavily weighted toward interest. As the principal decreases over time, a larger share of each payment goes toward reducing the actual loan balance. The amortisation schedule shows this shift month by month, helping you understand exactly where your money goes.</p>
+<p>For example, on a 5-year NGN 10,000,000 loan at 22% interest, your first month's payment of approximately NGN 277,000 might allocate NGN 183,000 to interest and only NGN 94,000 to principal. By the final year, almost the entire payment reduces your principal.</p>
+
+<h2>Car Financing in Africa</h2>
+<p>Car loan markets across Africa are maturing rapidly. In Nigeria, banks like Access, GTB, and First Bank offer asset financing with rates from 18% to 28% depending on your relationship with the bank and employment status. Kenya's car loan market is competitive, with banks like Equity, KCB, and Co-operative offering rates from 13% to 18%. South Africa has the most developed vehicle financing market on the continent, with rates often linked to the prime lending rate.</p>
+<ul>
+<li><strong>Nigeria:</strong> Typically requires 20-30% deposit, 12-60 month terms, comprehensive insurance mandatory</li>
+<li><strong>Kenya:</strong> 20-30% deposit common, up to 60 months, logbook held by bank as security</li>
+<li><strong>South Africa:</strong> Balloon payments available, up to 72 months, GPS tracking often required</li>
+<li><strong>Ghana:</strong> Higher rates due to cedi volatility, 30% deposit typical, shorter terms preferred</li>
+</ul>
+
+<h2>Tips to Get the Best Car Loan Rate</h2>
+<p>Compare offers from multiple banks before committing. Maintain a good repayment history on existing obligations. Consider a larger deposit to reduce the financed amount. Choose the shortest term you can afford, as this minimises total interest paid. If possible, get pre-approved before visiting the dealership so you can negotiate from a position of strength.</p>
+
+<div class="faq">
+<h2>Frequently Asked Questions</h2>
+<details><summary>How is the monthly payment calculated?</summary><div>The calculator uses the standard amortisation formula: M = P x [r(1+r)^n] / [(1+r)^n - 1], where P is the loan amount, r is the monthly interest rate (annual rate / 12), and n is the total number of monthly payments. This gives you a fixed monthly payment that fully repays the loan over the selected term.</div></details>
+<details><summary>What are typical car loan rates in Africa?</summary><div>Rates vary widely. Nigeria: 18-28% p.a., Kenya: 13-18%, South Africa: 10-15% (linked to prime rate), Ghana: 25-35%. These rates depend on your bank relationship, credit history, employment type, and the vehicle being financed (new vs used).</div></details>
+<details><summary>Should I choose a longer or shorter loan term?</summary><div>A shorter term means higher monthly payments but significantly less total interest. A longer term eases monthly cash flow but costs much more overall. For example, a 3-year term at 22% costs roughly 36% of the loan in interest, while a 7-year term costs roughly 95% extra in interest.</div></details>
+<details><summary>Is a larger deposit always better?</summary><div>Generally, yes. A larger deposit reduces the loan amount, which lowers both monthly payments and total interest. Most African banks require 20-30% minimum. Some offer better rates for higher deposits.</div></details>
+<details><summary>What additional costs should I factor in?</summary><div>Beyond the loan payment, budget for comprehensive insurance (mandatory for financed vehicles), fuel, maintenance, annual licensing/registration, and possible GPS tracking fees. In Nigeria, also consider import duties if buying directly.</div></details>
+</div>
+</section>
+
+<afro-related-tools></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+function parseNum(s){return parseFloat(String(s).replace(/[^0-9.\-]/g,''))||0}
+function fmt(n,cur){const symbols={NGN:'\u20A6',KES:'KSh ',ZAR:'R',GHS:'GH\u20B5',USD:'$',GBP:'\u00A3'};const s=symbols[cur]||'';const abs=Math.abs(n);let formatted;if(abs>=1e9)formatted=(n/1e9).toFixed(2)+'B';else if(abs>=1e6)formatted=(n/1e6).toFixed(2)+'M';else formatted=n.toLocaleString('en',{minimumFractionDigits:0,maximumFractionDigits:0});return s+formatted}
+function fmtFull(n,cur){const symbols={NGN:'\u20A6',KES:'KSh ',ZAR:'R',GHS:'GH\u20B5',USD:'$',GBP:'\u00A3'};return(symbols[cur]||'')+n.toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2})}
+
+function calculate(){
+  const cur=document.getElementById('currency').value;
+  const price=parseNum(document.getElementById('price').value);
+  const deposit=parseNum(document.getElementById('deposit').value);
+  const tradeIn=parseNum(document.getElementById('tradeIn').value);
+  const rate=parseFloat(document.getElementById('rate').value)||0;
+  const years=parseInt(document.getElementById('term').value);
+  const fees=parseNum(document.getElementById('fees').value);
+
+  if(price<=0){alert('Please enter the vehicle price.');return}
+
+  const loanAmt=Math.max(0,price-deposit-tradeIn+fees);
+  const n=years*12;
+  const r=rate/100/12;
+  let monthly,totalPaid,totalInterest;
+
+  if(r===0){
+    monthly=loanAmt/n;
+    totalPaid=loanAmt;
+    totalInterest=0;
+  }else{
+    monthly=loanAmt*(r*Math.pow(1+r,n))/(Math.pow(1+r,n)-1);
+    totalPaid=monthly*n;
+    totalInterest=totalPaid-loanAmt;
+  }
+
+  document.getElementById('rMonth').textContent=fmt(Math.round(monthly),cur)+'/mo';
+  document.getElementById('rLoan').textContent=fmt(Math.round(loanAmt),cur);
+  document.getElementById('rInterest').textContent=fmt(Math.round(totalInterest),cur);
+  document.getElementById('rTotal').textContent=fmt(Math.round(totalPaid),cur);
+  document.getElementById('rPct').textContent=(loanAmt>0?((totalInterest/loanAmt)*100).toFixed(1):'0')+'%';
+  document.getElementById('rMonthRate').textContent=(rate/12).toFixed(2)+'%';
+
+  const pctPrincipal=loanAmt>0?((loanAmt/totalPaid)*100).toFixed(0):100;
+  document.getElementById('pFill').style.width=pctPrincipal+'%';
+  document.getElementById('pieSummary').textContent=pctPrincipal+'% principal, '+(100-pctPrincipal)+'% interest of total payments';
+
+  // Amortisation schedule
+  const tbody=document.getElementById('amortBody');
+  tbody.innerHTML='';
+  let balance=loanAmt;
+  for(let i=1;i<=n;i++){
+    const intPart=balance*r;
+    const prinPart=monthly-intPart;
+    balance=Math.max(0,balance-prinPart);
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${i}</td><td>${fmtFull(monthly,cur)}</td><td>${fmtFull(prinPart,cur)}</td><td>${fmtFull(intPart,cur)}</td><td>${fmtFull(balance,cur)}</td>`;
+    tbody.appendChild(tr);
+  }
+
+  document.getElementById('results').style.display='block';
+  document.getElementById('amortCard').style.display='block';
+  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// Format inputs with commas on blur
+['price','deposit','tradeIn','fees'].forEach(id=>{
+  const el=document.getElementById(id);
+  el.addEventListener('blur',()=>{
+    const v=parseNum(el.value);
+    if(v>0)el.value=v.toLocaleString('en');
+  });
+  el.addEventListener('focus',()=>{
+    el.value=el.value.replace(/,/g,'');
+  });
+});
+</script>
+</body>
+</html>

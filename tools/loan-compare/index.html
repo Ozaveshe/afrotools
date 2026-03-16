@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'loan-compare'});</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loan Comparison Calculator — Compare Up to 4 Loans Side by Side | AfroTools</title>
+<meta name="description" content="Compare up to 4 loan offers side by side. See monthly payments, total interest, and total cost for each. Find the best deal from African banks.">
+<link rel="canonical" href="https://afrotools.com/tools/loan-compare/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Loan Comparison Calculator | AfroTools">
+<meta property="og:description" content="Compare up to 4 loans side by side. Monthly payments, total interest, total cost.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/loan-compare/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+:root{--afro-blue:var(--color-primary);--afro-dark:#0f1419}
+.tool-hero{background:linear-gradient(135deg,var(--afro-dark) 0%,#1a1f2e 100%);padding:44px 0 36px;position:relative;overflow:hidden}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px;position:relative}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:var(--afro-blue)}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:var(--afro-blue);font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-blue{background:rgba(0,113,227,.18);color:var(--color-primary);border:1px solid rgba(0,113,227,.38)}
+.b-green{background:rgba(16,185,129,.12);color:#10b981;border:1px solid rgba(16,185,129,.3)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc;display:flex;justify-content:space-between;align-items:center}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
+.card-body{padding:22px}
+.field{margin-bottom:14px}
+.f-label{font-size:.75rem;font-weight:700;color:var(--afro-dark);margin-bottom:6px;display:block}
+.f-input,.f-select{width:100%;padding:10px 12px;background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.92rem;font-weight:600;color:var(--afro-dark);outline:none;font-family:'DM Sans',sans-serif;box-sizing:border-box}
+.f-input:focus,.f-select:focus{border-color:var(--afro-blue);box-shadow:0 0 0 3px rgba(0,113,227,.1)}
+.calc-btn{width:100%;padding:13px;background:var(--afro-blue);color:#fff;border:none;border-radius:8px;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .18s;font-family:'DM Sans',sans-serif}
+.calc-btn:hover{background:#0059B3;transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,113,227,.3)}
+.loans-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.loan-card{border:2px solid #e2e8f0;border-radius:10px;padding:18px;position:relative}
+.loan-card.best{border-color:#10b981;background:#f0fdf4}
+.loan-card.best::after{content:'BEST DEAL';position:absolute;top:-10px;right:12px;background:#10b981;color:#fff;font-size:.62rem;font-weight:700;padding:3px 10px;border-radius:4px;letter-spacing:.06em}
+.loan-header{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.loan-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.loan-name{font-size:.85rem;font-weight:700;color:var(--afro-dark)}
+.loan-name input{border:none;background:transparent;font-size:.85rem;font-weight:700;color:var(--afro-dark);font-family:'DM Sans',sans-serif;width:100%;outline:none;padding:0}
+.loan-name input:focus{border-bottom:2px solid var(--afro-blue)}
+.compare-table{width:100%;border-collapse:collapse;margin-top:18px}
+.compare-table th{background:#f1f5f9;padding:10px 14px;text-align:left;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#64748b;border-bottom:1px solid #e2e8f0}
+.compare-table td{padding:10px 14px;border-bottom:1px solid #f1f5f9;font-weight:600;color:var(--afro-dark)}
+.compare-table .best-cell{color:#10b981;font-weight:800}
+.compare-table .worst-cell{color:#ef4444}
+.r-label{font-size:.68rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#64748b;margin-bottom:4px}
+.r-value{font-size:1.2rem;font-weight:800}
+.r-value.blue{color:var(--afro-blue)}
+.r-value.green{color:#10b981}
+.r-value.red{color:#ef4444}
+.result-item{margin-bottom:12px}
+.add-loan-btn{padding:8px 16px;background:transparent;border:2px dashed #cbd5e1;border-radius:8px;color:#64748b;font-size:.82rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%;transition:all .15s}
+.add-loan-btn:hover{border-color:var(--afro-blue);color:var(--afro-blue)}
+.remove-loan{position:absolute;top:8px;right:8px;width:24px;height:24px;background:#fee2e2;color:#ef4444;border:none;border-radius:50%;cursor:pointer;font-size:.8rem;font-weight:700;display:flex;align-items:center;justify-content:center}
+#results{display:none}
+.insight{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1px solid #bbf7d0;border-radius:8px;padding:16px 20px;margin-top:18px;font-size:.85rem;color:#166534;line-height:1.7}
+.seo-content{max-width:800px;margin:0 auto;padding:48px 24px}
+.seo-content h2{font-size:1.4rem;font-weight:800;color:var(--afro-dark);margin:32px 0 12px}
+.seo-content p,.seo-content li{font-size:.92rem;color:#475569;line-height:1.8}
+.seo-content ul{padding-left:20px}
+.faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:10px;overflow:hidden}
+.faq summary{padding:14px 18px;font-weight:700;font-size:.88rem;cursor:pointer;background:#f8fafc;color:var(--afro-dark)}
+.faq details[open] summary{border-bottom:1px solid #e2e8f0}
+.faq details div{padding:14px 18px;font-size:.85rem;color:#475569;line-height:1.7}
+@media(max-width:768px){.loans-grid{grid-template-columns:1fr}}
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Loan Comparison Calculator","url":"https://afrotools.com/tools/loan-compare/","description":"Compare up to 4 loan offers side by side. Monthly payments, total interest, and total cost.","applicationCategory":"FinanceApplication","operatingSystem":"All","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
+</script>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<section class="tool-hero">
+<div class="tool-hero-inner">
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/categories/financial/">Financial</a> / <span>Loan Comparison</span></div>
+<h1>Loan <em>Comparison</em></h1>
+<p class="hero-sub">Compare up to 4 loan offers side by side. See which lender gives you the best deal on monthly payments, total interest, and overall cost.</p>
+<div class="hero-badges">
+<span class="badge b-blue">Up to 4 Loans</span>
+<span class="badge b-green">Best Deal Highlight</span>
+<span class="badge b-blue">Multi-Currency</span>
+</div>
+</div>
+</section>
+
+<section class="tool-main">
+<div class="tool-main-inner">
+
+<div class="card">
+<div class="card-head">
+<span class="card-title">Loan Offers</span>
+<select id="currency" class="f-select" style="width:auto;padding:6px 10px;font-size:.78rem">
+<option value="NGN">NGN</option><option value="KES">KES</option><option value="ZAR">ZAR</option><option value="GHS">GHS</option><option value="USD">USD</option><option value="GBP">GBP</option>
+</select>
+</div>
+<div class="card-body">
+<div class="loans-grid" id="loansGrid"></div>
+<button class="add-loan-btn" id="addLoanBtn" onclick="addLoan()" style="margin-top:14px">+ Add Another Loan</button>
+<button class="calc-btn" onclick="compare()" style="margin-top:18px">Compare Loans</button>
+</div>
+</div>
+
+<div class="card" id="results">
+<div class="card-head"><span class="card-title">Comparison Results</span></div>
+<div class="card-body">
+<div style="overflow-x:auto">
+<table class="compare-table" id="compareTable"></table>
+</div>
+<div class="insight" id="insight"></div>
+</div>
+</div>
+
+</div>
+</section>
+
+<section class="seo-content">
+<h2>How to Compare Loan Offers</h2>
+<p>When shopping for a loan in Africa, you'll often receive multiple offers with different interest rates, terms, and fee structures. Comparing them on monthly payment alone can be misleading because a lower monthly payment with a longer term may cost significantly more in total interest. This calculator helps you make an apples-to-apples comparison.</p>
+
+<h2>Key Factors to Compare</h2>
+<ul>
+<li><strong>Monthly Payment:</strong> What you pay each month. Important for budgeting, but don't optimise for this alone.</li>
+<li><strong>Total Interest:</strong> The real cost of borrowing. A loan with slightly higher monthly payments but lower total interest saves you money overall.</li>
+<li><strong>Total Cost:</strong> Principal plus all interest — what you actually pay back. This is the truest measure of cost.</li>
+<li><strong>Fees:</strong> Processing fees, insurance requirements, and other charges can significantly change the effective cost.</li>
+</ul>
+
+<h2>Comparing Loans in Africa</h2>
+<p>African banks often have very different rate structures. In Nigeria, rates between commercial banks can differ by 5-10 percentage points. Microfinance banks may offer faster approval but at significantly higher rates. Digital lenders like Carbon, FairMoney, and Branch offer convenience but typically at 3-5% monthly rates. Always convert monthly rates to annual rates for fair comparison.</p>
+<p>In Kenya, compare SACCOs (often 12% p.a.) with commercial banks (13-18% p.a.) and digital lenders (up to 36% p.a.). In South Africa, compare bank personal loans with vehicle-specific financing. Don't forget to factor in mandatory insurance requirements.</p>
+
+<div class="faq">
+<h2>Frequently Asked Questions</h2>
+<details><summary>What is APR vs interest rate?</summary><div>The stated interest rate is the cost of borrowing. The APR (Annual Percentage Rate) includes interest plus fees, giving you a more accurate picture of the total cost. In Africa, always ask for the APR or total cost of credit, not just the headline rate.</div></details>
+<details><summary>Is a lower monthly payment always better?</summary><div>Not necessarily. A lower monthly payment usually means a longer term, which means more total interest paid. For example, a 3-year loan at 20% costs about 33% of the principal in interest, while a 5-year loan at 18% costs about 52% — despite the lower rate.</div></details>
+<details><summary>Should I consider digital lenders?</summary><div>Digital lenders (Carbon, FairMoney, Branch, Tala) offer convenience and speed but typically charge much higher rates than banks. A 5% monthly rate equals 60% annual rate. Use them only for short-term needs, not large or long-term borrowing.</div></details>
+<details><summary>What fees should I watch for?</summary><div>Common fees include processing/arrangement fees (1-3% of loan), insurance premiums (often mandatory), legal fees, and early repayment penalties. Some lenders deduct fees upfront, reducing your actual disbursement while charging interest on the full amount.</div></details>
+</div>
+</section>
+
+<afro-related-tools></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+const COLORS=['#3b82f6','#10b981','#f59e0b','#8b5cf6'];
+let loanCount=0;
+
+function parseNum(s){return parseFloat(String(s).replace(/[^0-9.\-]/g,''))||0}
+function fmt(n,cur){const symbols={NGN:'\u20A6',KES:'KSh ',ZAR:'R',GHS:'GH\u20B5',USD:'$',GBP:'\u00A3'};return(symbols[cur]||'')+n.toLocaleString('en',{minimumFractionDigits:0,maximumFractionDigits:0})}
+
+function addLoan(name){
+  if(loanCount>=4)return;
+  const i=loanCount;
+  const grid=document.getElementById('loansGrid');
+  const card=document.createElement('div');
+  card.className='loan-card';
+  card.id='loan'+i;
+  card.innerHTML=`
+    <button class="remove-loan" onclick="removeLoan(${i})" title="Remove">&times;</button>
+    <div class="loan-header">
+      <span class="loan-dot" style="background:${COLORS[i]}"></span>
+      <span class="loan-name"><input type="text" value="${name||'Loan '+(i+1)}" id="lName${i}"></span>
+    </div>
+    <div class="field"><label class="f-label">Loan Amount</label><input type="text" class="f-input" id="lAmt${i}" placeholder="e.g. 5,000,000" inputmode="numeric"></div>
+    <div class="field"><label class="f-label">Annual Interest Rate (%)</label><input type="number" class="f-input" id="lRate${i}" placeholder="22" step="0.1" min="0" max="200"></div>
+    <div class="field"><label class="f-label">Term (Months)</label><input type="number" class="f-input" id="lTerm${i}" placeholder="36" min="1" max="360"></div>
+    <div class="field"><label class="f-label">Upfront Fees</label><input type="text" class="f-input" id="lFees${i}" placeholder="0" inputmode="numeric"></div>
+  `;
+  grid.appendChild(card);
+  loanCount++;
+  if(loanCount>=4)document.getElementById('addLoanBtn').style.display='none';
+  // Format amount fields
+  ['lAmt'+i,'lFees'+i].forEach(fid=>{
+    const el=document.getElementById(fid);
+    el.addEventListener('blur',()=>{const v=parseNum(el.value);if(v>0)el.value=v.toLocaleString('en')});
+    el.addEventListener('focus',()=>{el.value=el.value.replace(/,/g,'')});
+  });
+}
+
+function removeLoan(i){
+  const el=document.getElementById('loan'+i);
+  if(el)el.remove();
+  // Don't decrement loanCount to keep IDs unique
+  document.getElementById('addLoanBtn').style.display='block';
+}
+
+function compare(){
+  const cur=document.getElementById('currency').value;
+  const loans=[];
+  for(let i=0;i<10;i++){
+    const card=document.getElementById('loan'+i);
+    if(!card||!card.parentElement)continue;
+    const name=document.getElementById('lName'+i)?.value||'Loan '+(i+1);
+    const amount=parseNum(document.getElementById('lAmt'+i)?.value);
+    const rate=parseFloat(document.getElementById('lRate'+i)?.value)||0;
+    const term=parseInt(document.getElementById('lTerm'+i)?.value)||0;
+    const fees=parseNum(document.getElementById('lFees'+i)?.value);
+    if(amount<=0||term<=0)continue;
+    const r=rate/100/12;
+    let monthly;
+    if(r===0)monthly=amount/term;
+    else monthly=amount*(r*Math.pow(1+r,term))/(Math.pow(1+r,term)-1);
+    const totalPaid=monthly*term;
+    const totalInterest=totalPaid-amount;
+    const totalCost=totalPaid+fees;
+    loans.push({name,amount,rate,term,fees,monthly,totalInterest,totalCost,totalPaid,color:COLORS[loans.length%4]});
+  }
+
+  if(loans.length<2){alert('Please fill in at least 2 loans to compare.');return}
+
+  // Find best (lowest total cost)
+  const bestIdx=loans.reduce((best,l,i)=>l.totalCost<loans[best].totalCost?i:best,0);
+  loans.forEach((l,i)=>l.isBest=i===bestIdx);
+
+  // Highlight best loan card
+  document.querySelectorAll('.loan-card').forEach(c=>c.classList.remove('best'));
+  // Mark in the visible cards
+  let visIdx=0;
+  for(let i=0;i<10;i++){
+    const card=document.getElementById('loan'+i);
+    if(!card||!card.parentElement)continue;
+    if(visIdx===bestIdx)card.classList.add('best');
+    visIdx++;
+  }
+
+  // Build comparison table
+  let html='<thead><tr><th>Metric</th>';
+  loans.forEach(l=>html+=`<th style="color:${l.color}">${l.name}</th>`);
+  html+='</tr></thead><tbody>';
+
+  const metrics=[
+    {label:'Loan Amount',key:'amount',format:v=>fmt(Math.round(v),cur),best:'none'},
+    {label:'Interest Rate',key:'rate',format:v=>v.toFixed(1)+'%',best:'min'},
+    {label:'Term',key:'term',format:v=>v+' months',best:'none'},
+    {label:'Monthly Payment',key:'monthly',format:v=>fmt(Math.round(v),cur),best:'min'},
+    {label:'Total Interest',key:'totalInterest',format:v=>fmt(Math.round(v),cur),best:'min'},
+    {label:'Upfront Fees',key:'fees',format:v=>fmt(Math.round(v),cur),best:'min'},
+    {label:'Total Cost',key:'totalCost',format:v=>fmt(Math.round(v),cur),best:'min'}
+  ];
+
+  metrics.forEach(m=>{
+    html+=`<tr><td>${m.label}</td>`;
+    const vals=loans.map(l=>l[m.key]);
+    const minVal=Math.min(...vals);
+    const maxVal=Math.max(...vals);
+    loans.forEach(l=>{
+      let cls='';
+      if(m.best==='min'){
+        if(l[m.key]===minVal)cls='best-cell';
+        else if(l[m.key]===maxVal)cls='worst-cell';
+      }
+      html+=`<td class="${cls}">${m.format(l[m.key])}</td>`;
+    });
+    html+='</tr>';
+  });
+  html+='</tbody>';
+  document.getElementById('compareTable').innerHTML=html;
+
+  // Insight
+  const best=loans[bestIdx];
+  const savings=loans.filter((_,i)=>i!==bestIdx).map(l=>l.totalCost-best.totalCost);
+  const maxSaving=Math.max(...savings);
+  document.getElementById('insight').innerHTML=`<strong>${best.name}</strong> offers the best deal with a total cost of <strong>${fmt(Math.round(best.totalCost),cur)}</strong>. Choosing this over the most expensive option saves you <strong>${fmt(Math.round(maxSaving),cur)}</strong> over the life of the loan. The monthly payment is <strong>${fmt(Math.round(best.monthly),cur)}</strong>.`;
+
+  document.getElementById('results').style.display='block';
+  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// Initialize with 2 loans
+addLoan('Bank A');
+addLoan('Bank B');
+</script>
+</body>
+</html>

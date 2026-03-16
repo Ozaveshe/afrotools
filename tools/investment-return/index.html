@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'investment-return'});</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Investment Return Calculator — CAGR, ROI & Total Returns | AfroTools</title>
+<meta name="description" content="Calculate investment returns, CAGR, ROI, and total profit. Compare lump sum vs monthly investments. Supports African currencies and interest rates.">
+<link rel="canonical" href="https://afrotools.com/tools/investment-return/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Investment Return Calculator | AfroTools">
+<meta property="og:description" content="Calculate CAGR, ROI, total returns. African currencies. Free.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/investment-return/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+:root{--afro-blue:var(--color-primary);--afro-dark:#0f1419}
+.tool-hero{background:linear-gradient(135deg,var(--afro-dark) 0%,#1a1f2e 100%);padding:44px 0 36px;position:relative;overflow:hidden}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px;position:relative}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:var(--afro-blue)}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:var(--afro-blue);font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-blue{background:rgba(0,113,227,.18);color:var(--color-primary);border:1px solid rgba(0,113,227,.38)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
+.card-body{padding:22px}
+.field{margin-bottom:16px}
+.f-label{font-size:.75rem;font-weight:700;color:var(--afro-dark);margin-bottom:6px;display:block}
+.f-input,.f-select{width:100%;padding:11px 13px;background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:7px;font-size:1rem;font-weight:600;color:var(--afro-dark);outline:none;font-family:'DM Sans',sans-serif}
+.f-input:focus,.f-select:focus{border-color:var(--afro-blue);box-shadow:0 0 0 3px rgba(0,113,227,.1)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.calc-btn{width:100%;padding:13px;background:var(--afro-blue);color:#fff;border:none;border-radius:8px;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .18s;font-family:'DM Sans',sans-serif}
+.calc-btn:hover{background:#0059B3;transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,113,227,.3)}
+.result-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:18px}
+.result-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;text-align:center}
+.result-box.wide{grid-column:1/-1}
+.result-num{font-size:1.5rem;font-weight:800;color:var(--afro-blue);line-height:1}
+.result-label{font-size:.62rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.05em;margin-top:4px}
+.year-table{width:100%;border-collapse:collapse;font-size:.82rem;margin-top:14px;max-height:300px;overflow-y:auto;display:block}
+.year-table th{background:#f8fafc;padding:8px;text-align:right;font-weight:700;border-bottom:2px solid #e2e8f0;font-size:.68rem;text-transform:uppercase;color:#64748b;position:sticky;top:0}
+.year-table td{padding:8px;text-align:right;border-bottom:1px solid #f1f5f9;color:#475569}
+.year-table td:first-child{text-align:left;font-weight:700;color:var(--afro-dark)}
+.year-table tr:hover{background:#EFF6FF}
+.sidebar{display:flex;flex-direction:column;gap:16px}
+.info-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px}
+.info-title{font-size:.72rem;font-weight:700;color:var(--afro-dark);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+.info-text{font-size:.8rem;color:#475569;line-height:1.6}
+.rate-item{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #f1f5f9;font-size:.78rem}
+.rate-name{font-weight:600;color:#334155}
+.rate-val{font-weight:700;color:var(--afro-blue)}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.field-row{grid-template-columns:1fr}.result-grid{grid-template-columns:1fr 1fr}}
+details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-details-marker{display:none}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Investment Return Calculator","description":"Calculate investment returns, CAGR, ROI, and total profit with African currencies.","url":"https://afrotools.com/tools/investment-return/","applicationCategory":"FinanceApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"What is CAGR?","acceptedAnswer":{"@type":"Answer","text":"CAGR (Compound Annual Growth Rate) is the mean annual growth rate of an investment over a period longer than one year. It smooths out volatility to show a constant rate at which an investment would have grown if it grew at a steady rate."}},
+{"@type":"Question","name":"How is ROI calculated?","acceptedAnswer":{"@type":"Answer","text":"ROI (Return on Investment) = (Final Value - Total Invested) / Total Invested x 100%. It shows the total percentage gain or loss on your investment."}},
+{"@type":"Question","name":"Should I invest lump sum or monthly?","acceptedAnswer":{"@type":"Answer","text":"Lump sum generally outperforms in rising markets because your money is invested longer. Dollar/Naira cost averaging (monthly) reduces timing risk and is better for most African investors who earn monthly salaries."}}
+]}</script>
+</head>
+<body>
+<afro-navbar active="tools"></afro-navbar>
+<div class="tool-hero"><div class="tool-hero-inner">
+  <div class="breadcrumb"><a href="/">AfroTools</a> / <a href="/all-tools">Tools</a> / <span>Investment Return</span></div>
+  <h1>Investment Return <em>Calculator</em></h1>
+  <p class="hero-sub">Calculate how your money grows over time. See total returns, CAGR, and year-by-year breakdown. Compare lump sum vs monthly investing strategies.</p>
+  <div class="hero-badges"><span class="badge b-blue">CAGR & ROI</span><span class="badge b-blue">Year-by-Year</span><span class="badge b-blue">African Rates</span></div>
+</div></div>
+
+<div class="tool-main"><div class="tool-main-inner">
+  <div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">Investment Details</span></div>
+      <div class="card-body">
+        <div class="field-row">
+          <div class="field"><label class="f-label">Initial Investment</label><input type="number" class="f-input" id="initial" value="1000000" step="10000" min="0"></div>
+          <div class="field"><label class="f-label">Currency</label>
+            <select class="f-select" id="currency"><option value="₦">NGN (₦)</option><option value="KSh">KES (KSh)</option><option value="R">ZAR (R)</option><option value="GH₵">GHS (GH₵)</option><option value="$">USD ($)</option></select>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label class="f-label">Monthly Contribution</label><input type="number" class="f-input" id="monthly" value="50000" step="1000" min="0"></div>
+          <div class="field"><label class="f-label">Annual Return Rate (%)</label><input type="number" class="f-input" id="rate" value="12" step="0.5" min="0" max="100"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label class="f-label">Investment Period (years)</label><input type="number" class="f-input" id="years" value="10" step="1" min="1" max="50"></div>
+          <div class="field"><label class="f-label">Compounding</label>
+            <select class="f-select" id="compound"><option value="12">Monthly</option><option value="4">Quarterly</option><option value="1">Annually</option></select>
+          </div>
+        </div>
+        <button class="calc-btn" onclick="calculate()">Calculate Returns</button>
+
+        <div id="results" style="display:none">
+          <div class="result-grid">
+            <div class="result-box wide"><div class="result-label">Final Value</div><div class="result-num" id="finalValue" style="font-size:2rem">0</div></div>
+            <div class="result-box"><div class="result-label">Total Invested</div><div class="result-num" id="totalInvested" style="font-size:1.2rem">0</div></div>
+            <div class="result-box"><div class="result-label">Total Interest</div><div class="result-num" id="totalInterest" style="font-size:1.2rem;color:#22c55e">0</div></div>
+            <div class="result-box"><div class="result-label">ROI</div><div class="result-num" id="roi">0%</div></div>
+            <div class="result-box"><div class="result-label">CAGR</div><div class="result-num" id="cagr">0%</div></div>
+          </div>
+
+          <div style="margin-top:18px;overflow:auto;max-height:350px;border:1px solid #e2e8f0;border-radius:8px">
+            <table class="year-table" id="yearTable">
+              <thead><tr><th style="text-align:left">Year</th><th>Deposits</th><th>Interest</th><th>Balance</th></tr></thead>
+              <tbody id="yearBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><span class="card-title">About Investment Returns</span></div>
+      <div class="card-body">
+        <h2 style="font-size:1.1rem;font-weight:800;color:#111;margin-bottom:12px">Understanding Compound Interest</h2>
+        <p style="font-size:.85rem;color:#475569;line-height:1.7;margin-bottom:12px">
+          Albert Einstein reportedly called compound interest "the eighth wonder of the world." When your investment earns returns, those returns themselves start earning returns — creating exponential growth over time. The longer you invest, the more dramatic the compounding effect becomes.
+        </p>
+        <h3 style="font-size:.95rem;font-weight:700;color:#111;margin-bottom:8px">Investment Options in Africa</h3>
+        <p style="font-size:.85rem;color:#475569;line-height:1.7;margin-bottom:12px">
+          <strong>Nigerian T-Bills:</strong> 12-18% annually<br>
+          <strong>Nigerian money market funds:</strong> 10-16% (Cowrywise, PiggyVest, Carbon)<br>
+          <strong>Kenyan T-Bills:</strong> 12-16%<br>
+          <strong>SA Unit Trusts:</strong> 8-14% (Allan Gray, Coronation)<br>
+          <strong>NSE/JSE Stock Index:</strong> Historical 10-15% long-term<br>
+          Always compare returns against inflation to calculate <strong>real returns</strong>.
+        </p>
+        <p style="font-size:.85rem;color:#475569;line-height:1.7;margin-bottom:12px">
+          For more information on investment calculations, see <a href="https://www.investopedia.com/terms/c/cagr.asp" target="_blank" rel="noopener" style="color:var(--afro-blue)">Investopedia's CAGR guide</a>.
+        </p>
+        <p style="font-size:.85rem;color:#475569;line-height:1.7">Related: <a href="/tools/savings-goal/" style="color:var(--afro-blue)">Savings Goal Calculator</a> and <a href="/tools/break-even/" style="color:var(--afro-blue)">Break-Even Calculator</a>.</p>
+      </div>
+    </div>
+
+    <section style="margin-top:18px">
+      <h2 style="font-size:1.15rem;font-weight:800;color:#111;margin-bottom:14px">Frequently Asked Questions</h2>
+      <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">What is CAGR?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">CAGR (Compound Annual Growth Rate) shows the mean annual growth rate over a period. It smooths volatility to show a constant rate your investment would have grown at steadily.</div></details>
+      <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">How is ROI calculated?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">ROI = (Final Value - Total Invested) / Total Invested x 100%. Shows total percentage gain.</div></details>
+      <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">Lump sum vs monthly investing?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">Lump sum outperforms in rising markets. Monthly investing (Naira/Dollar cost averaging) reduces timing risk and suits salary earners better.</div></details>
+    </section>
+  </div>
+
+  <div class="sidebar">
+    <div class="info-card">
+      <div class="info-title">African Investment Rates</div>
+      <div class="rate-item"><span class="rate-name">Nigeria T-Bills</span><span class="rate-val">12-18%</span></div>
+      <div class="rate-item"><span class="rate-name">Nigeria Money Mkt</span><span class="rate-val">10-16%</span></div>
+      <div class="rate-item"><span class="rate-name">Kenya T-Bills</span><span class="rate-val">12-16%</span></div>
+      <div class="rate-item"><span class="rate-name">SA Unit Trusts</span><span class="rate-val">8-14%</span></div>
+      <div class="rate-item"><span class="rate-name">Ghana Fixed Dep</span><span class="rate-val">15-25%</span></div>
+      <div class="rate-item"><span class="rate-name">Stock Market (avg)</span><span class="rate-val">10-15%</span></div>
+    </div>
+    <div class="info-card">
+      <div class="info-title">Formulas</div>
+      <div class="info-text" style="font-family:monospace;font-size:.72rem">
+        <strong>Compound Interest:</strong><br>
+        A = P(1 + r/n)^(nt)<br><br>
+        <strong>FV of Annuity:</strong><br>
+        FV = PMT x [((1+r/n)^(nt)-1)/(r/n)]<br><br>
+        <strong>CAGR:</strong><br>
+        CAGR = (FV/PV)^(1/t) - 1<br><br>
+        <strong>ROI:</strong><br>
+        ROI = (FV - Total) / Total x 100
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<afro-footer></afro-footer>
+
+<script>
+function calculate(){
+  const initial=parseFloat(document.getElementById('initial').value)||0;
+  const monthly=parseFloat(document.getElementById('monthly').value)||0;
+  const rate=parseFloat(document.getElementById('rate').value)||0;
+  const years=parseInt(document.getElementById('years').value)||0;
+  const compound=parseInt(document.getElementById('compound').value)||12;
+  const cur=document.getElementById('currency').value;
+
+  const r=rate/100;
+  const periodicRate=r/compound;
+  const totalPeriods=years*compound;
+  const monthsPerPeriod=12/compound;
+
+  // Year-by-year simulation
+  let balance=initial;
+  let totalDeposits=initial;
+  const yearData=[];
+
+  for(let y=1;y<=years;y++){
+    let yearInterest=0;
+    let yearDeposits=0;
+    for(let p=0;p<compound;p++){
+      // Add monthly contributions for this period
+      const contributions=monthly*monthsPerPeriod;
+      balance+=contributions;
+      yearDeposits+=contributions;
+      totalDeposits+=contributions;
+      // Apply interest
+      const interest=balance*periodicRate;
+      balance+=interest;
+      yearInterest+=interest;
+    }
+    yearData.push({year:y,deposits:totalDeposits,interest:yearInterest,balance});
+  }
+
+  const totalInterest=balance-totalDeposits;
+  const roi=totalDeposits>0?((balance-totalDeposits)/totalDeposits*100):0;
+  const cagr=totalDeposits>0?(Math.pow(balance/initial,1/years)-1)*100:0;
+
+  const fmt=n=>cur+Math.round(n).toLocaleString();
+
+  document.getElementById('finalValue').textContent=fmt(balance);
+  document.getElementById('totalInvested').textContent=fmt(totalDeposits);
+  document.getElementById('totalInterest').textContent=fmt(totalInterest);
+  document.getElementById('roi').textContent=roi.toFixed(1)+'%';
+  document.getElementById('cagr').textContent=cagr.toFixed(1)+'%';
+
+  // Year table
+  const tbody=document.getElementById('yearBody');
+  tbody.innerHTML=yearData.map(d=>`
+    <tr>
+      <td>Year ${d.year}</td>
+      <td>${fmt(d.deposits)}</td>
+      <td style="color:#22c55e">${fmt(d.interest)}</td>
+      <td style="font-weight:700;color:var(--afro-blue)">${fmt(d.balance)}</td>
+    </tr>
+  `).join('');
+
+  document.getElementById('results').style.display='block';
+}
+
+calculate();
+</script>
+<script src="/assets/js/components/tool-registry.min.js" defer></script>
+<script src="/assets/js/components/related-tools.min.js" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js" defer></script>
+<afro-newsletter-cta></afro-newsletter-cta>
+</body>
+</html>

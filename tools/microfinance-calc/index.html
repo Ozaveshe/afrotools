@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'microfinance-calc'});</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Microfinance Loan Calculator — Flat Rate vs Reducing Balance | AfroTools</title>
+<meta name="description" content="Calculate microfinance loan repayments. Compare flat rate vs reducing balance interest methods. True cost of microfinance, digital lending, and cooperative loans in Africa.">
+<link rel="canonical" href="https://afrotools.com/tools/microfinance-calc/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Microfinance Loan Calculator | AfroTools">
+<meta property="og:description" content="Microfinance loan calculator. Flat rate vs reducing balance. True cost of borrowing.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/microfinance-calc/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+:root{--afro-blue:var(--color-primary);--afro-dark:#0f1419}
+.tool-hero{background:linear-gradient(135deg,var(--afro-dark) 0%,#1a1f2e 100%);padding:44px 0 36px;position:relative;overflow:hidden}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px;position:relative}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:var(--afro-blue)}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:var(--afro-blue);font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-blue{background:rgba(0,113,227,.18);color:var(--color-primary);border:1px solid rgba(0,113,227,.38)}
+.b-red{background:rgba(239,68,68,.12);color:#ef4444;border:1px solid rgba(239,68,68,.3)}
+.b-green{background:rgba(16,185,129,.12);color:#10b981;border:1px solid rgba(16,185,129,.3)}
+.tool-main{padding:28px 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
+.card-body{padding:22px}
+.field{margin-bottom:16px}
+.f-label{font-size:.75rem;font-weight:700;color:var(--afro-dark);margin-bottom:6px;display:block}
+.f-hint{font-size:.68rem;color:#94a3b8;margin-top:3px}
+.f-input,.f-select{width:100%;padding:11px 13px;background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:7px;font-size:1rem;font-weight:600;color:var(--afro-dark);outline:none;font-family:'DM Sans',sans-serif;box-sizing:border-box}
+.f-input:focus,.f-select:focus{border-color:var(--afro-blue);box-shadow:0 0 0 3px rgba(0,113,227,.1)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.calc-btn{width:100%;padding:13px;background:var(--afro-blue);color:#fff;border:none;border-radius:8px;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .18s;font-family:'DM Sans',sans-serif}
+.calc-btn:hover{background:#0059B3;transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,113,227,.3)}
+.result-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:18px}
+.result-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;text-align:center}
+.result-box.wide{grid-column:1/-1}
+.r-label{font-size:.68rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#64748b;margin-bottom:4px}
+.r-value{font-size:1.35rem;font-weight:800;color:var(--afro-dark)}
+.r-value.blue{color:var(--afro-blue)}
+.r-value.green{color:#10b981}
+.r-value.red{color:#ef4444}
+#results{display:none}
+.compare-box{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px}
+.method-col{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px}
+.method-col h4{font-size:.78rem;font-weight:700;color:var(--afro-dark);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em}
+.method-col .val{font-size:1.1rem;font-weight:800;margin-bottom:8px}
+.method-col .val.green{color:#10b981}
+.method-col .val.red{color:#ef4444}
+.method-col .detail{font-size:.75rem;color:#64748b;margin-bottom:4px}
+.warning{background:#fee2e2;border:1px solid #fecaca;border-radius:8px;padding:14px 18px;margin-top:16px;font-size:.82rem;color:#991b1b;line-height:1.6}
+.warning strong{color:#7f1d1d}
+.insight{background:linear-gradient(135deg,#fef3c7,#fde68a);border:1px solid #f59e0b;border-radius:8px;padding:14px 18px;margin-top:16px;font-size:.82rem;color:#92400e;line-height:1.6}
+.amort-table{width:100%;border-collapse:collapse;font-size:.78rem;margin-top:12px}
+.amort-table th{background:#f1f5f9;padding:8px 10px;text-align:left;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#64748b;border-bottom:1px solid #e2e8f0;position:sticky;top:0}
+.amort-table td{padding:8px 10px;border-bottom:1px solid #f1f5f9;color:var(--afro-dark);font-weight:500}
+.amort-wrap{max-height:360px;overflow-y:auto;border:1px solid #e2e8f0;border-radius:8px}
+.sidebar .card-body{font-size:.82rem;color:#475569;line-height:1.7}
+.seo-content{max-width:800px;margin:0 auto;padding:48px 24px}
+.seo-content h2{font-size:1.4rem;font-weight:800;color:var(--afro-dark);margin:32px 0 12px}
+.seo-content p,.seo-content li{font-size:.92rem;color:#475569;line-height:1.8}
+.seo-content ul{padding-left:20px}
+.faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:10px;overflow:hidden}
+.faq summary{padding:14px 18px;font-weight:700;font-size:.88rem;cursor:pointer;background:#f8fafc;color:var(--afro-dark)}
+.faq details[open] summary{border-bottom:1px solid #e2e8f0}
+.faq details div{padding:14px 18px;font-size:.85rem;color:#475569;line-height:1.7}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.field-row{grid-template-columns:1fr}.result-grid{grid-template-columns:1fr 1fr}.compare-box{grid-template-columns:1fr}}
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Microfinance Loan Calculator","url":"https://afrotools.com/tools/microfinance-calc/","description":"Calculate microfinance loan repayments comparing flat rate vs reducing balance methods. True cost of borrowing from microfinance banks and digital lenders in Africa.","applicationCategory":"FinanceApplication","operatingSystem":"All","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
+</script>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<section class="tool-hero">
+<div class="tool-hero-inner">
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/categories/financial/">Financial</a> / <span>Microfinance Calculator</span></div>
+<h1>Microfinance <em>Loan Calculator</em></h1>
+<p class="hero-sub">Calculate the true cost of microfinance loans. Compare flat rate vs reducing balance methods and see the effective annual rate digital lenders actually charge.</p>
+<div class="hero-badges">
+<span class="badge b-blue">Flat vs Reducing</span>
+<span class="badge b-red">True APR Reveal</span>
+<span class="badge b-green">African Lenders</span>
+</div>
+</div>
+</section>
+
+<section class="tool-main">
+<div class="tool-main-inner">
+<div class="calc-area">
+
+<div class="card">
+<div class="card-head"><span class="card-title">Loan Details</span></div>
+<div class="card-body">
+<div class="field">
+<label class="f-label">Currency</label>
+<select id="currency" class="f-select">
+<option value="NGN">NGN - Nigerian Naira</option>
+<option value="KES">KES - Kenyan Shilling</option>
+<option value="ZAR">ZAR - South African Rand</option>
+<option value="GHS">GHS - Ghanaian Cedi</option>
+<option value="USD">USD - US Dollar</option>
+</select>
+</div>
+<div class="field">
+<label class="f-label">Loan Amount</label>
+<input type="text" id="amount" class="f-input" placeholder="e.g. 500,000" inputmode="numeric">
+</div>
+<div class="field-row">
+<div class="field">
+<label class="f-label">Interest Rate</label>
+<input type="number" id="rate" class="f-input" value="5" step="0.1" min="0">
+</div>
+<div class="field">
+<label class="f-label">Rate Type</label>
+<select id="rateType" class="f-select">
+<option value="monthly">Per Month (Flat)</option>
+<option value="annual">Per Year (Reducing)</option>
+</select>
+</div>
+</div>
+<div class="field-row">
+<div class="field">
+<label class="f-label">Loan Term</label>
+<input type="number" id="term" class="f-input" value="6" min="1" max="120">
+</div>
+<div class="field">
+<label class="f-label">Term Unit</label>
+<select id="termUnit" class="f-select">
+<option value="months">Months</option>
+<option value="weeks">Weeks</option>
+</select>
+</div>
+</div>
+<div class="field">
+<label class="f-label">Processing Fee (%)</label>
+<input type="number" id="procFee" class="f-input" value="1" step="0.5" min="0">
+<div class="f-hint">Many microfinance banks charge 1-5% upfront processing fee</div>
+</div>
+<div class="field">
+<label class="f-label">Insurance/Other Fees (Lump Sum)</label>
+<input type="text" id="otherFees" class="f-input" placeholder="0" inputmode="numeric">
+</div>
+<button class="calc-btn" onclick="calculate()">Calculate True Cost</button>
+</div>
+</div>
+
+<div class="card" id="results">
+<div class="card-head"><span class="card-title">True Cost of This Loan</span></div>
+<div class="card-body">
+<div class="result-grid">
+<div class="result-box"><div class="r-label">Repayment per Period</div><div class="r-value blue" id="rPayment">--</div></div>
+<div class="result-box"><div class="r-label">Total Repayment</div><div class="r-value red" id="rTotal">--</div></div>
+<div class="result-box"><div class="r-label">Total Interest + Fees</div><div class="r-value red" id="rCost">--</div></div>
+<div class="result-box"><div class="r-label">Effective APR</div><div class="r-value red" id="rAPR">--</div></div>
+<div class="result-box"><div class="r-label">Amount Disbursed</div><div class="r-value" id="rDisbursed">--</div></div>
+<div class="result-box"><div class="r-label">Cost as % of Loan</div><div class="r-value" id="rCostPct">--</div></div>
+</div>
+
+<div class="compare-box" id="compareBox">
+<div class="method-col">
+<h4>Flat Rate Method</h4>
+<div class="val red" id="cFlatPayment">--</div>
+<div class="detail" id="cFlatTotal">Total: --</div>
+<div class="detail" id="cFlatInterest">Interest: --</div>
+<div class="detail" id="cFlatAPR">Effective APR: --</div>
+</div>
+<div class="method-col">
+<h4>Reducing Balance Method</h4>
+<div class="val green" id="cRedPayment">--</div>
+<div class="detail" id="cRedTotal">Total: --</div>
+<div class="detail" id="cRedInterest">Interest: --</div>
+<div class="detail" id="cRedAPR">Effective APR: --</div>
+</div>
+</div>
+
+<div class="warning" id="warningBox" style="display:none"></div>
+<div class="insight" id="insight"></div>
+</div>
+</div>
+
+<div class="card" id="schedCard" style="display:none">
+<div class="card-head"><span class="card-title">Repayment Schedule</span></div>
+<div class="card-body" style="padding:0">
+<div class="amort-wrap">
+<table class="amort-table">
+<thead><tr><th>#</th><th>Payment</th><th>Principal</th><th>Interest</th><th>Balance</th></tr></thead>
+<tbody id="schedBody"></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div>
+
+<div class="sidebar">
+<div class="card">
+<div class="card-head"><span class="card-title">Digital Lender Rates</span></div>
+<div class="card-body">
+<p><strong>Carbon (Nigeria):</strong> 5-28% monthly flat on short-term loans. Effective APR: 60-336%</p>
+<p style="margin-top:8px"><strong>FairMoney:</strong> 3-30% monthly. Processing fee 1-5%.</p>
+<p style="margin-top:8px"><strong>Branch (Kenya):</strong> 1-21% per month depending on credit score.</p>
+<p style="margin-top:8px"><strong>Tala:</strong> 5-15% per month. Short-term only.</p>
+<p style="margin-top:8px"><strong>M-Shwari (Kenya):</strong> 7.5% per month on 30-day loan.</p>
+<p style="margin-top:12px;font-size:.75rem;color:#94a3b8;border-top:1px solid #f1f5f9;padding-top:10px">Always convert monthly rates to annual to understand the true cost. A "small" 5% monthly rate is actually 60% per year flat, or ~80% effective APR.</p>
+</div>
+</div>
+<div class="card">
+<div class="card-head"><span class="card-title">Flat vs Reducing Balance</span></div>
+<div class="card-body">
+<p><strong>Flat rate:</strong> Interest is calculated on the original loan amount for the entire term. You pay the same interest even as you repay principal. This makes the effective rate roughly double the stated rate.</p>
+<p style="margin-top:8px"><strong>Reducing balance:</strong> Interest is calculated on the outstanding balance. As you repay, interest decreases. This is fairer and costs less overall.</p>
+<p style="margin-top:8px;color:#ef4444;font-weight:600">Most microfinance banks and all digital lenders in Africa use flat rate, making loans much more expensive than they appear.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="seo-content">
+<h2>The Hidden Cost of Microfinance Loans</h2>
+<p>Microfinance loans play a crucial role in financial inclusion across Africa, providing credit to small businesses and individuals who can't access traditional banking. However, the true cost of these loans is often obscured by flat-rate interest calculations, processing fees, and mandatory insurance. A loan advertised at "5% per month" sounds manageable but translates to a 60% annual flat rate and an effective APR of approximately 80-100%.</p>
+
+<h2>Flat Rate vs Reducing Balance: Why It Matters</h2>
+<p>The most important concept borrowers must understand is the difference between flat rate and reducing balance interest. With flat rate interest, the lender calculates interest on the original loan amount for the entire term, even though you're making regular payments that reduce your outstanding balance. This means you're effectively paying interest on money you've already returned.</p>
+<p>A flat rate of 5% per month on a 6-month loan means: Interest = Principal x 5% x 6 months = 30% of the loan in interest. But since you're repaying principal along the way, your average outstanding balance is only about half the original amount. The effective APR is therefore roughly double the stated annual flat rate.</p>
+
+<h2>Microfinance in Africa</h2>
+<ul>
+<li><strong>Nigeria:</strong> Over 900 microfinance banks, plus digital lenders like Carbon, FairMoney, Renmoney. Rates vary from 2.5% to 30% monthly flat.</li>
+<li><strong>Kenya:</strong> SACCOs offer 12% p.a. reducing balance. Mobile lenders (M-Shwari, Tala, Branch) charge 5-15% per month flat.</li>
+<li><strong>Ghana:</strong> Microfinance rates range from 3-10% per month flat. Susu collectors (informal) also charge significant fees.</li>
+<li><strong>South Africa:</strong> Registered credit providers regulated by the NCR. Maximum prescribed rates apply.</li>
+</ul>
+
+<h2>How to Evaluate a Microfinance Offer</h2>
+<p>Always ask for the total amount you'll repay (not just the monthly payment). Calculate the total cost as a percentage of the amount received. Compare this across lenders. Factor in all fees. If possible, choose reducing balance over flat rate. Consider whether you truly need the loan — the cost of microfinance borrowing can significantly eat into business profits.</p>
+
+<div class="faq">
+<h2>Frequently Asked Questions</h2>
+<details><summary>What does "5% per month" actually mean?</summary><div>When a lender says "5% per month flat rate," they charge 5% of the original loan amount every month regardless of how much you've repaid. On a 6-month loan, that's 30% of the loan in interest. The effective annual rate is approximately 80-100% because you're paying interest on money you've already returned. Use this calculator to see the true APR.</div></details>
+<details><summary>Why do microfinance banks charge so much?</summary><div>Microfinance banks serve higher-risk borrowers without traditional collateral, have higher operational costs per loan (small amounts, many transactions), and face significant default rates (5-15%). These costs are passed to borrowers. Digital lenders also face high customer acquisition costs and technology expenses.</div></details>
+<details><summary>Is flat rate interest illegal?</summary><div>Flat rate interest is not illegal in most African countries but is considered less transparent than reducing balance. Some regulators require lenders to disclose the effective APR alongside the flat rate. In practice, many lenders only advertise the flat rate, which understates the true cost.</div></details>
+<details><summary>How do I compare loan offers fairly?</summary><div>Calculate the effective APR for each offer using this calculator. Also compare: total amount repaid, fees deducted upfront (which reduce your actual disbursement), and any penalties for late or early payment. The loan with the lowest total repayment relative to amount received is the cheapest.</div></details>
+</div>
+</section>
+
+<afro-related-tools></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+function parseNum(s){return parseFloat(String(s).replace(/[^0-9.\-]/g,''))||0}
+function fmt(n,cur){const symbols={NGN:'\u20A6',KES:'KSh ',ZAR:'R',GHS:'GH\u20B5',USD:'$'};return(symbols[cur]||'')+n.toLocaleString('en',{minimumFractionDigits:0,maximumFractionDigits:0})}
+function fmtD(n,cur){const symbols={NGN:'\u20A6',KES:'KSh ',ZAR:'R',GHS:'GH\u20B5',USD:'$'};return(symbols[cur]||'')+n.toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2})}
+
+function calculate(){
+  const cur=document.getElementById('currency').value;
+  const principal=parseNum(document.getElementById('amount').value);
+  const rateInput=parseFloat(document.getElementById('rate').value)||0;
+  const rateType=document.getElementById('rateType').value;
+  const termInput=parseInt(document.getElementById('term').value)||1;
+  const termUnit=document.getElementById('termUnit').value;
+  const procFeePct=parseFloat(document.getElementById('procFee').value)||0;
+  const otherFees=parseNum(document.getElementById('otherFees').value);
+
+  if(principal<=0){alert('Please enter the loan amount.');return}
+
+  // Normalize to months
+  const termMonths=termUnit==='weeks'?Math.ceil(termInput/4.33):termInput;
+  const periods=termUnit==='weeks'?termInput:termInput;
+  const periodsPerYear=termUnit==='weeks'?52:12;
+
+  // Calculate processing fee
+  const procFee=principal*(procFeePct/100);
+  const disbursed=principal-procFee-otherFees;
+  const totalFees=procFee+otherFees;
+
+  // FLAT RATE calculation
+  let flatMonthlyRate=rateType==='monthly'?rateInput/100:(rateInput/100/12);
+  const flatInterestTotal=principal*flatMonthlyRate*periods*(termUnit==='weeks'?(1/4.33):1);
+  const flatTotalRepay=principal+flatInterestTotal;
+  const flatPayment=flatTotalRepay/periods;
+
+  // Calculate effective APR for flat rate (approximate using IRR concept)
+  // Rule of thumb: effective APR ~ flat annual rate * 1.8 to 2.0
+  const flatAnnualRate=flatMonthlyRate*12*100;
+  const flatEffAPR=flatAnnualRate*1.85; // Approximate
+
+  // REDUCING BALANCE calculation
+  let redMonthlyRate=rateType==='monthly'?rateInput/100:(rateInput/100/12);
+  if(termUnit==='weeks')redMonthlyRate=redMonthlyRate/4.33;
+  let redPayment,redTotalRepay,redTotalInterest;
+  if(redMonthlyRate===0){
+    redPayment=principal/periods;
+    redTotalRepay=principal;
+    redTotalInterest=0;
+  }else{
+    redPayment=principal*(redMonthlyRate*Math.pow(1+redMonthlyRate,periods))/(Math.pow(1+redMonthlyRate,periods)-1);
+    redTotalRepay=redPayment*periods;
+    redTotalInterest=redTotalRepay-principal;
+  }
+  const redAnnualRate=rateType==='monthly'?rateInput*12:rateInput;
+
+  // Determine which method is being used based on rateType
+  const isFlat=rateType==='monthly';
+  const payment=isFlat?flatPayment:redPayment;
+  const totalRepay=(isFlat?flatTotalRepay:redTotalRepay)+totalFees;
+  const totalCost=(isFlat?flatInterestTotal:redTotalInterest)+totalFees;
+  const effectiveAPR=isFlat?flatEffAPR:redAnnualRate;
+
+  // Display results
+  const periodLabel=termUnit==='weeks'?'/wk':'/mo';
+  document.getElementById('rPayment').textContent=fmt(Math.round(payment),cur)+periodLabel;
+  document.getElementById('rTotal').textContent=fmt(Math.round(totalRepay),cur);
+  document.getElementById('rCost').textContent=fmt(Math.round(totalCost),cur);
+  document.getElementById('rAPR').textContent=effectiveAPR.toFixed(1)+'%';
+  document.getElementById('rDisbursed').textContent=fmt(Math.round(disbursed),cur);
+  document.getElementById('rCostPct').textContent=(principal>0?((totalCost/principal)*100).toFixed(1):'0')+'%';
+
+  // Compare methods
+  document.getElementById('cFlatPayment').textContent=fmt(Math.round(flatPayment),cur)+periodLabel;
+  document.getElementById('cFlatTotal').textContent='Total: '+fmt(Math.round(flatTotalRepay+totalFees),cur);
+  document.getElementById('cFlatInterest').textContent='Interest: '+fmt(Math.round(flatInterestTotal),cur);
+  document.getElementById('cFlatAPR').textContent='Effective APR: ~'+flatEffAPR.toFixed(0)+'%';
+
+  document.getElementById('cRedPayment').textContent=fmt(Math.round(redPayment),cur)+periodLabel;
+  document.getElementById('cRedTotal').textContent='Total: '+fmt(Math.round(redTotalRepay+totalFees),cur);
+  document.getElementById('cRedInterest').textContent='Interest: '+fmt(Math.round(redTotalInterest),cur);
+  document.getElementById('cRedAPR').textContent='Effective APR: '+redAnnualRate.toFixed(1)+'%';
+
+  // Savings from reducing balance
+  const savings=flatTotalRepay-redTotalRepay;
+
+  // Warning for high rates
+  const warnBox=document.getElementById('warningBox');
+  if(effectiveAPR>100){
+    warnBox.style.display='block';
+    warnBox.innerHTML=`<strong>Warning: High-cost loan!</strong> The effective annual rate of ${effectiveAPR.toFixed(0)}% is extremely expensive. You'll pay back <strong>${fmt(Math.round(totalCost),cur)}</strong> in interest and fees on a <strong>${fmt(principal,cur)}</strong> loan. Only borrow if absolutely necessary and explore cheaper alternatives first.`;
+  }else{
+    warnBox.style.display='none';
+  }
+
+  // Insight
+  document.getElementById('insight').innerHTML=`If this loan were offered on <strong>reducing balance</strong> instead of flat rate, you'd save <strong>${fmt(Math.round(savings),cur)}</strong> in interest (${fmt(Math.round(flatTotalRepay),cur)} vs ${fmt(Math.round(redTotalRepay),cur)}). Always ask your lender which method they use.`;
+
+  // Repayment schedule (using the selected method)
+  const tbody=document.getElementById('schedBody');
+  tbody.innerHTML='';
+  let balance=principal;
+  for(let i=1;i<=periods;i++){
+    let intPart,prinPart;
+    if(isFlat){
+      intPart=principal*flatMonthlyRate*(termUnit==='weeks'?(1/4.33):1);
+      prinPart=flatPayment-intPart;
+    }else{
+      intPart=balance*redMonthlyRate;
+      prinPart=redPayment-intPart;
+    }
+    balance=Math.max(0,balance-prinPart);
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${i}</td><td>${fmtD(isFlat?flatPayment:redPayment,cur)}</td><td>${fmtD(prinPart,cur)}</td><td>${fmtD(intPart,cur)}</td><td>${fmtD(balance,cur)}</td>`;
+    tbody.appendChild(tr);
+  }
+
+  document.getElementById('results').style.display='block';
+  document.getElementById('schedCard').style.display='block';
+  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// Format
+['amount','otherFees'].forEach(id=>{
+  const el=document.getElementById(id);
+  el.addEventListener('blur',()=>{const v=parseNum(el.value);if(v>0)el.value=v.toLocaleString('en')});
+  el.addEventListener('focus',()=>{el.value=el.value.replace(/,/g,'')});
+});
+</script>
+</body>
+</html>
