@@ -493,6 +493,45 @@
       }
     });
 
+    // Inline validation: name field
+    var nameInput = document.getElementById('afroAuthName');
+    if (nameInput) {
+      nameInput.addEventListener('blur', function () {
+        if (!_isSignupMode) return;
+        var v = nameInput.value.trim();
+        if (v.length > 0 && v.length < 2) {
+          nameInput.style.borderColor = '#ef4444';
+        } else {
+          nameInput.style.borderColor = '';
+        }
+      });
+      nameInput.addEventListener('input', function () {
+        if (nameInput.style.borderColor === 'rgb(239, 68, 68)' && nameInput.value.trim().length >= 2) {
+          nameInput.style.borderColor = '';
+        }
+      });
+    }
+
+    // Inline validation: email field
+    var emailInput = document.getElementById('afroAuthEmail');
+    if (emailInput) {
+      emailInput.addEventListener('blur', function () {
+        var v = emailInput.value.trim();
+        if (v.length > 0 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) {
+          emailInput.style.borderColor = '#ef4444';
+        } else {
+          emailInput.style.borderColor = '';
+        }
+      });
+      emailInput.addEventListener('input', function () {
+        if (emailInput.style.borderColor === 'rgb(239, 68, 68)') {
+          if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value.trim())) {
+            emailInput.style.borderColor = '';
+          }
+        }
+      });
+    }
+
     // Forgot password
     document.addEventListener('click', function (e) {
       if (e.target && e.target.id === 'afroForgotBtn') {
@@ -523,6 +562,26 @@
       var submitLabel = _isSignupMode ? 'Create account' : 'Sign in';
 
       if (!email || !password) { showMsg('Please enter your email and password.', 'error'); return; }
+
+      // Signup-specific validation
+      if (_isSignupMode) {
+        var nameField = document.getElementById('afroAuthName');
+        var nameVal = nameField ? nameField.value.trim() : '';
+        if (nameVal.length < 2) {
+          showMsg('Name must be at least 2 characters.', 'error');
+          if (nameField) nameField.focus();
+          return;
+        }
+        if (password.length < 8) {
+          showMsg('Password must be at least 8 characters.', 'error');
+          return;
+        }
+        var strength = calcPasswordStrength(password);
+        if (strength.score < 2) {
+          showMsg('Password is too weak. Add uppercase, numbers, or special characters.', 'error');
+          return;
+        }
+      }
 
       // Loading state
       submitBtn.disabled = true;

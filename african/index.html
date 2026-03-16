@@ -285,9 +285,12 @@ document.addEventListener('DOMContentLoaded', function init(){
     if(!t) return;
     var isLive = t.status === 'live' || t.status === 'new';
     var bg = FEAT_COLORS[f.id] || 'linear-gradient(135deg,#111,#222)';
+    var imgSrc = '/assets/img/tools/'+t.id+'.webp';
+    var imgFallback = '/assets/img/tool-icons/'+t.id+'.png';
     featHtml += '<a href="'+(isLive ? t.href : '#')+'" class="feat-card'+(isLive?' live':'')+'">'
       + '<div class="feat-banner" style="background:'+bg+';">'
-      + '<div class="feat-icon">'+t.icon+'</div>'
+      + '<img class="feat-img" src="'+imgSrc+'" alt="'+t.name+'" width="56" height="56" loading="lazy" style="position:relative;z-index:1;width:56px;height:56px;object-fit:contain;border-radius:12px;background:rgba(255,255,255,.12);box-shadow:0 4px 16px rgba(0,0,0,.2);" onerror="this.onerror=function(){this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'};this.src=\''+imgFallback+'\';">'
+      + '<div class="feat-icon" style="display:none;width:56px;height:56px;align-items:center;justify-content:center;">'+t.icon+'</div>'
       + '</div>'
       + '<div class="feat-body">'
       + '<div class="feat-name">'+t.name+'</div>'
@@ -305,8 +308,10 @@ document.addEventListener('DOMContentLoaded', function init(){
   var allGrid = document.getElementById('allToolsGrid');
   var allHtml = '';
   live.forEach(function(t){
+    var tImg = '/assets/img/tools/'+t.id+'.webp';
+    var tFb = '/assets/img/tool-icons/'+t.id+'.png';
     allHtml += '<a href="'+t.href+'" class="tool-row">'
-      + '<div class="tr-icon">'+t.icon+'</div>'
+      + '<div class="tr-icon"><img src="'+tImg+'" alt="" width="28" height="28" style="width:28px;height:28px;object-fit:contain;border-radius:6px;" loading="lazy" onerror="this.onerror=function(){this.outerHTML=\''+t.icon.replace(/'/g,"\\'")+'\';};this.src=\''+tFb+'\';"></div>'
       + '<div class="tr-body"><div class="tr-name">'+t.name+'</div>'
       + '<div class="tr-desc">'+(t.desc||'').substring(0,60)+(t.desc&&t.desc.length>60?'...':'')+'</div>'
       + '<span class="tr-badge live">Live</span></div>'

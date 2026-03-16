@@ -760,6 +760,7 @@
     .my-tool-unfav:hover{color:#dc2626}
   </style>
   <script src="/assets/js/favorites.js"></script>
+  <script src="/assets/js/lib/saved-tools.js"></script>
 </head>
 <body>
 
@@ -1933,43 +1934,75 @@ document.addEventListener('DOMContentLoaded', function() {
     if (window._afroObs) grid.querySelectorAll('.rv').forEach(function(el) { window._afroObs.observe(el); });
   })();
 
-  // MY TOOLS — Favorites system
+  // MY TOOLS — Favorites system (Supabase-backed via SavedTools, localStorage fallback)
   function renderMyTools() {
-    if (typeof afroFavs === 'undefined' || typeof AFRO_TOOLS === 'undefined') return;
-    const favIds = afroFavs.getAll();
-    const section = document.getElementById('myToolsSection');
-    const grid = document.getElementById('myToolsGrid');
-    const countEl = document.getElementById('myToolsCount');
+    if (typeof AFRO_TOOLS === 'undefined') return;
+    var section = document.getElementById('myToolsSection');
+    var grid = document.getElementById('myToolsGrid');
+    var countEl = document.getElementById('myToolsCount');
     if (!section || !grid) return;
-    if (favIds.length === 0) { section.classList.remove('has-favs'); return; }
 
-    const favTools = favIds.map(id => AFRO_TOOLS.find(t => t.id === id)).filter(Boolean);
-    if (favTools.length === 0) { section.classList.remove('has-favs'); return; }
+    // Use SavedTools if available (Supabase sync), else afroFavs (localStorage only)
+    var hasSavedTools = typeof window._savedToolsInstance !== 'undefined';
+    var hasAfroFavs = typeof window.afroFavs !== 'undefined';
+
+    if (hasSavedTools) {
+      // Async path — get all from Supabase or localStorage
+      window._savedToolsInstance.getAll().then(function(items) {
+        var favIds = items.map(function(i) { return i.slug; });
+        _renderMyToolsGrid(favIds, section, grid, countEl);
+      });
+    } else if (hasAfroFavs) {
+      var favIds = afroFavs.getAll();
+      _renderMyToolsGrid(favIds, section, grid, countEl);
+    } else {
+      section.classList.remove('has-favs');
+    }
+  }
+
+  function _renderMyToolsGrid(favIds, section, grid, countEl) {
+    if (favIds.length === 0) { section.classList.remove('has-favs'); grid.innerHTML = ''; return; }
+    var favTools = favIds.map(function(id) { return AFRO_TOOLS.find(function(t){ return t.id === id; }); }).filter(Boolean);
+    if (favTools.length === 0) { section.classList.remove('has-favs'); grid.innerHTML = ''; return; }
 
     section.classList.add('has-favs');
-    countEl.textContent = `(${favTools.length})`;
-    grid.innerHTML = favTools.map(t => `
-      <a href="${t.href}" class="my-tool-card">
-        <div class="my-tool-icon">${t.icon}</div>
-        <div class="my-tool-name">${t.name}</div>
-        <button class="my-tool-unfav" onclick="unfavTool(event,'${t.id}')" title="Remove">✕</button>
-      </a>`).join('');
+    countEl.textContent = '(' + favTools.length + ')';
+    grid.innerHTML = favTools.map(function(t) {
+      var img = '/assets/img/tools/' + t.id + '.webp';
+      var imgFb = '/assets/img/tool-icons/' + t.id + '.png';
+      return '<a href="' + t.href + '" class="my-tool-card">'
+        + '<div class="my-tool-icon"><img src="' + img + '" alt="" width="24" height="24" style="width:24px;height:24px;object-fit:contain;border-radius:5px;" onerror="this.onerror=function(){this.outerHTML=\'' + t.icon.replace(/'/g, "\\'") + '\'};this.src=\'' + imgFb + '\'"></div>'
+        + '<div class="my-tool-name">' + t.name + '</div>'
+        + '<button class="my-tool-unfav" onclick="unfavTool(event,\'' + t.id + '\')" title="Remove">\u2715</button>'
+        + '</a>';
+    }).join('');
   }
 
   function unfavTool(e, id) {
     e.preventDefault();
     e.stopPropagation();
-    afroFavs.toggle(id);
-    renderMyTools();
+    if (typeof window._savedToolsInstance !== 'undefined') {
+      window._savedToolsInstance.remove(id).then(function() { renderMyTools(); });
+    } else if (typeof afroFavs !== 'undefined') {
+      afroFavs.toggle(id);
+      renderMyTools();
+    }
   }
 
   function clearAllFavs() {
-    localStorage.removeItem('afro_favs_v2');
-    localStorage.removeItem('afro_favs_v1');
-    renderMyTools();
+    if (typeof window._savedToolsInstance !== 'undefined') {
+      window._savedToolsInstance.clearAll().then(function() { renderMyTools(); });
+    } else {
+      localStorage.removeItem('afro_favs_v2');
+      localStorage.removeItem('afro_favs_v1');
+      renderMyTools();
+    }
   }
 
   renderMyTools();
+
+  // Re-render when auth state changes (user logs in/out — favorites may differ)
+  document.addEventListener('afro-auth-change', function() { renderMyTools(); });
 
 }); // end DOMContentLoaded
 </script>

@@ -55,14 +55,15 @@ class AfroRelatedTools extends HTMLElement {
 
     const cards = tools.map(t => {
       const cs   = this._cat(t.category);
-      const img  = `/assets/img/tool-icons/${t.id}.png`;
+      const img  = `/assets/img/tools/${t.id}.webp`;
+      const imgFallback = `/assets/img/tool-icons/${t.id}.png`;
       const desc = t.desc && t.desc.length > 68 ? t.desc.slice(0,66)+'…' : (t.desc||'');
       return `
         <a class="card" href="${t.href}" aria-label="${t.name}">
           <div class="card-visual" style="background:${cs.gradient}">
             <img class="card-img" src="${img}" alt="${t.name} icon"
                  width="56" height="56" loading="lazy"
-                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                 onerror="this.onerror=function(){this.style.display='none';this.nextElementSibling.style.display='flex'};this.src='${imgFallback}'">
             <div class="card-emoji" style="display:none" aria-hidden="true">${t.icon||'🔧'}</div>
           </div>
           <div class="card-body">
