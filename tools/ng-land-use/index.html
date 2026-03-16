@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'ng-land-use'});</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nigeria Land Use Charge Calculator | AfroTools</title>
+<meta name="description" content="Calculate Lagos and other Nigerian state Land Use Charge (LUC). Property rates, ground rent, and neighbourhood improvement charge based on property value.">
+<link rel="canonical" href="https://afrotools.com/tools/ng-land-use/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Nigeria Land Use Charge Calculator | AfroTools"><meta property="og:description" content="Calculate Land Use Charge for Nigerian properties.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png"><meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/ng-land-use/">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css"><link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+:root{--afro-dark:#0f1419;--accent:#16a34a}
+.tool-hero{background:linear-gradient(135deg,#14532d 0%,#16a34a 50%,#15803d 100%);padding:44px 0 36px}.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#bbf7d0}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}h1 em{color:#bbf7d0;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}.b-em{background:rgba(187,247,208,.2);color:#bbf7d0;border:1px solid rgba(187,247,208,.4)}
+.tool-main{padding:28px 0 72px}.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}.card-body{padding:22px}
+label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
+input,select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;box-sizing:border-box}
+input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(22,163,74,.15)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{margin-bottom:14px}
+.btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;margin-top:18px}.btn-primary{background:linear-gradient(135deg,#15803d,#16a34a);color:#fff}
+.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.result-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;text-align:center}
+.result-box .num{font-size:1.3rem;font-weight:800;color:#16a34a}.result-box .lbl{font-size:.68rem;color:#64748b;font-weight:600;margin-top:3px;text-transform:uppercase;letter-spacing:.04em}
+.result-box.highlight{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-color:#86efac;grid-column:1/-1}.result-box.highlight .num{font-size:1.8rem}
+.breakdown-table{width:100%;border-collapse:collapse;font-size:.78rem;margin-top:12px}
+.breakdown-table th,.breakdown-table td{padding:8px 10px;text-align:left;border-bottom:1px solid #e2e8f0}
+.breakdown-table th{font-weight:700;background:#f8fafc;font-size:.7rem;text-transform:uppercase}.breakdown-table td:last-child{text-align:right;font-weight:600}
+.sidebar .info-card{background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:16px;margin-top:14px}
+.info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#14532d;margin-bottom:8px}
+.info-card p,.info-card li{font-size:.78rem;color:#14532d;line-height:1.6}.info-card ul{padding-left:16px;margin:6px 0}
+.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
+.seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
+.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<section class="tool-hero"><div class="tool-hero-inner">
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Nigeria Land Use Charge</span></div>
+<h1>Nigeria <em>Land Use Charge</em> Calculator</h1>
+<p class="hero-sub">Calculate your annual Land Use Charge (LUC) for Lagos and other Nigerian states. Includes property rate, ground rent, and neighbourhood improvement levy based on property value and use.</p>
+<div class="hero-badges"><span class="badge b-em">Lagos LUC Law 2020</span><span class="badge b-em">Nigeria</span><span class="badge b-em">All Property Types</span></div>
+</div></section>
+
+<section class="tool-main"><div class="tool-main-inner">
+<div class="calculator">
+<div class="card">
+<div class="card-head"><span class="card-title">Property Details</span></div>
+<div class="card-body">
+<div class="row field">
+<div><label>State</label>
+<select id="state">
+<option value="lagos" selected>Lagos</option>
+<option value="abuja">FCT Abuja</option>
+<option value="rivers">Rivers</option>
+<option value="ogun">Ogun</option>
+<option value="oyo">Oyo</option>
+<option value="other">Other State</option>
+</select></div>
+<div><label>Property Use</label>
+<select id="propUse">
+<option value="residential" selected>Owner-Occupied Residential</option>
+<option value="residential-rental">Residential (Rental/Income)</option>
+<option value="commercial">Commercial</option>
+<option value="industrial">Industrial</option>
+<option value="agricultural">Agricultural</option>
+</select></div>
+</div>
+<div class="row field">
+<div><label>Assessed Property Value (₦)</label><input type="number" id="propValue" value="50000000" min="0" step="1000000"></div>
+<div><label>Land Area (sqm)</label><input type="number" id="landArea" value="600" min="0" step="50"></div>
+</div>
+<div class="row field">
+<div><label>Building Type</label>
+<select id="buildType">
+<option value="bungalow">Bungalow</option>
+<option value="duplex" selected>Duplex</option>
+<option value="flat">Flat / Apartment</option>
+<option value="office">Office Building</option>
+<option value="shop">Shop / Retail</option>
+<option value="warehouse">Warehouse</option>
+<option value="vacant">Vacant Land</option>
+</select></div>
+<div><label>Pensioner / Exemption?</label>
+<select id="exemption">
+<option value="none" selected>No Exemption</option>
+<option value="pensioner">Pensioner (65+ years)</option>
+<option value="disabled">Person with Disability</option>
+</select></div>
+</div>
+<button class="btn btn-primary" onclick="calculate()">Calculate Land Use Charge</button>
+</div></div>
+
+<div class="card" id="resultCard" style="display:none">
+<div class="card-head"><span class="card-title">LUC Breakdown</span></div>
+<div class="card-body">
+<div class="result-grid" id="resultGrid"></div>
+<table class="breakdown-table" id="breakdownTable"></table>
+</div></div>
+</div>
+
+<div class="sidebar">
+<div class="card">
+<div class="card-head"><span class="card-title">Lagos LUC Rates</span></div>
+<div class="card-body" style="font-size:.78rem;color:#475569;line-height:1.7">
+<p><strong>Owner-Occupied:</strong> 0.076% of assessed value</p>
+<p><strong>Residential (Rental):</strong> 0.256%</p>
+<p><strong>Commercial:</strong> 0.76%</p>
+<p><strong>Industrial:</strong> 0.76%</p>
+<p><strong>Agricultural:</strong> 0.076%</p>
+<p><strong>Vacant Land:</strong> 0.076%</p>
+<p style="margin-top:8px"><em>Source: Lagos Land Use Charge Law 2020 (as amended)</em></p>
+</div></div>
+<div class="info-card">
+<h4>Exemptions & Reliefs</h4>
+<ul>
+<li>Properties valued under ₦4M (owner-occupied) — exempt in Lagos</li>
+<li>Pensioners aged 65+: 50% discount</li>
+<li>Persons with disabilities: 50% discount</li>
+<li>10% early payment discount (pay before 31 March)</li>
+<li>Religious/charitable properties may be exempt</li>
+</ul>
+</div>
+<div class="info-card" style="margin-top:10px">
+<h4>Payment</h4>
+<p>Pay online at <strong>lirs.gov.ng</strong> or at any LIRS office. Penalties for late payment: 25% of annual charge + 10% interest. LUC clearance certificate needed for property transactions.</p>
+</div>
+</div>
+</div></section>
+
+<section class="seo-section">
+<h2>Understanding Land Use Charge in Nigeria</h2>
+<p>Land Use Charge (LUC) is an annual property tax levied by state governments in Nigeria. It consolidates three previously separate charges — ground rent, property rate, and tenement rate — into a single annual payment. Lagos State, which generates the most revenue from LUC, reformed its system significantly with the Land Use Charge Law 2020, creating a more transparent and automated assessment process.</p>
+<p>The Lagos LUC is calculated as a percentage of the assessed property value, with rates varying by property use. Owner-occupied residential properties attract the lowest rate at 0.076% of assessed value, while commercial and industrial properties are charged 0.76%. This means a ₦50 million owner-occupied property pays about ₦38,000 annually, while the same property used commercially would pay about ₦380,000. Properties valued below ₦4 million (owner-occupied) are exempt from LUC in Lagos.</p>
+<p>Other Nigerian states have similar property tax systems, though they're generally less developed than Lagos. FCT Abuja charges tenement rates and ground rent separately. Rivers State has a property tax system administered by the Board of Internal Revenue. Most states are working to modernize their property tax collection, following Lagos's lead in using technology for property enumeration and assessment.</p>
+<p>LUC compliance is increasingly important for property transactions in Lagos. A valid LUC clearance certificate is required for: Governor's Consent applications, property transfers, building plan approvals, and registration of property documents. Failure to pay LUC attracts penalties of 25% of the annual charge plus 10% interest on the outstanding amount.</p>
+
+<h2>Frequently Asked Questions</h2>
+<details class="faq-item"><summary>How is my property assessed for LUC?</summary><p>Lagos uses a mass appraisal system that considers: location, land area, building type, age of building, and current market values for the area. You can dispute the assessment by applying to the LUC Tribunal within 60 days of receiving your demand notice. Many property owners have successfully challenged overvalued assessments.</p></details>
+<details class="faq-item"><summary>What happens if I don't pay LUC?</summary><p>Non-payment attracts: 25% penalty on the annual charge, 10% interest on outstanding amounts, inability to obtain LUC clearance certificate (needed for property transactions), and ultimately, the government can place a lien on the property or seek court orders for recovery.</p></details>
+</section>
+
+<afro-related-tools category="financial" current="ng-land-use"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+const RATES={
+  lagos:{residential:0.00076,'residential-rental':0.00256,commercial:0.0076,industrial:0.0076,agricultural:0.00076},
+  abuja:{residential:0.001,'residential-rental':0.003,commercial:0.008,industrial:0.008,agricultural:0.001},
+  rivers:{residential:0.001,'residential-rental':0.003,commercial:0.006,industrial:0.006,agricultural:0.0008},
+  ogun:{residential:0.0008,'residential-rental':0.002,commercial:0.005,industrial:0.005,agricultural:0.0006},
+  oyo:{residential:0.0008,'residential-rental':0.002,commercial:0.005,industrial:0.005,agricultural:0.0006},
+  other:{residential:0.001,'residential-rental':0.002,commercial:0.005,industrial:0.005,agricultural:0.0008}
+};
+
+const EXEMPTION_THRESHOLD={lagos:4000000,abuja:2000000,rivers:2000000,ogun:2000000,oyo:2000000,other:2000000};
+
+function calculate(){
+  const state=document.getElementById('state').value;
+  const propUse=document.getElementById('propUse').value;
+  const propValue=+document.getElementById('propValue').value;
+  const landArea=+document.getElementById('landArea').value;
+  const exemption=document.getElementById('exemption').value;
+
+  const rate=RATES[state][propUse]||0.001;
+  const threshold=EXEMPTION_THRESHOLD[state]||2000000;
+
+  let annualCharge=propValue*rate;
+
+  // Check exemption threshold
+  let exemptNote='';
+  if(propUse==='residential'&&propValue<=threshold){
+    annualCharge=0;
+    exemptNote='Property below '+state.charAt(0).toUpperCase()+state.slice(1)+' exemption threshold (₦'+threshold.toLocaleString('en')+')';
+  }
+
+  // Apply discounts
+  let discount=0;
+  if(exemption==='pensioner'){discount=0.5;exemptNote='50% pensioner discount applied';}
+  if(exemption==='disabled'){discount=0.5;exemptNote='50% disability discount applied';}
+  const discountAmount=annualCharge*discount;
+  annualCharge-=discountAmount;
+
+  const earlyPayDiscount=annualCharge*0.1;
+  const earlyPayAmount=annualCharge-earlyPayDiscount;
+  const monthlyEquiv=annualCharge/12;
+
+  const fmt=n=>'₦'+Math.round(n).toLocaleString('en');
+
+  let html='';
+  html+=`<div class="result-box highlight"><div class="num">${fmt(annualCharge)}/yr</div><div class="lbl">Annual Land Use Charge</div></div>`;
+  html+=`<div class="result-box"><div class="num">${fmt(monthlyEquiv)}/mo</div><div class="lbl">Monthly Equivalent</div></div>`;
+  html+=`<div class="result-box"><div class="num">${(rate*100).toFixed(3)}%</div><div class="lbl">Applicable Rate</div></div>`;
+  html+=`<div class="result-box"><div class="num">${fmt(earlyPayAmount)}</div><div class="lbl">Early Payment (10% off)</div></div>`;
+  html+=`<div class="result-box"><div class="num">${fmt(propValue)}</div><div class="lbl">Assessed Value</div></div>`;
+  document.getElementById('resultGrid').innerHTML=html;
+
+  // Breakdown
+  let tbl='<tr><th>Component</th><th>Amount</th></tr>';
+  tbl+=`<tr><td>Assessed Property Value</td><td>${fmt(propValue)}</td></tr>`;
+  tbl+=`<tr><td>LUC Rate (${propUse.replace('-',' ')})</td><td>${(rate*100).toFixed(3)}%</td></tr>`;
+  tbl+=`<tr><td>Gross LUC</td><td>${fmt(propValue*rate)}</td></tr>`;
+  if(discount>0)tbl+=`<tr style="color:#16a34a"><td>${exemptNote}</td><td>-${fmt(discountAmount)}</td></tr>`;
+  if(exemptNote&&discount===0&&annualCharge===0)tbl+=`<tr style="color:#16a34a"><td colspan="2">${exemptNote}</td></tr>`;
+  tbl+=`<tr style="font-weight:800;border-top:2px solid #e2e8f0"><td>Annual LUC Payable</td><td>${fmt(annualCharge)}</td></tr>`;
+  tbl+=`<tr style="color:#16a34a"><td>If paid early (before 31 March) — 10% off</td><td>${fmt(earlyPayAmount)}</td></tr>`;
+  tbl+=`<tr style="color:#dc2626"><td>If paid late — 25% penalty + 10% interest</td><td>${fmt(annualCharge*1.35)}</td></tr>`;
+  document.getElementById('breakdownTable').innerHTML=tbl;
+
+  document.getElementById('resultCard').style.display='block';
+  document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>

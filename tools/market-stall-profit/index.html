@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'Market Stall Profit Calculator'});</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Market Stall Profit Calculator — Track Daily Market Earnings | AfroTools</title>
+<meta name="description" content="Free profit calculator for African market traders. Track daily sales, costs, and profit margins for your market stall. Supports multiple currencies across Africa.">
+<meta name="keywords" content="market stall profit calculator, market trader income, African market business, daily profit tracker, small business calculator, market woman earnings">
+<link rel="canonical" href="https://afrotools.org/tools/market-stall-profit/">
+<meta property="og:title" content="Market Stall Profit Calculator — Track Your Market Earnings">
+<meta property="og:description" content="Calculate daily profit for your market stall. Track stock costs, sales revenue, and expenses. Built for African traders.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.org/tools/market-stall-profit/">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<style>
+:root{--green:#16a34a;--green-light:#f0fdf4;--green-dark:#15803d}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6}
+
+.hero{background:linear-gradient(135deg,#14532d 0%,#15803d 50%,#22c55e 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}
+.hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}
+.hero p{font-size:1.05rem;opacity:.9;max-width:600px;margin:0 auto}
+
+.container{max-width:900px;margin:0 auto;padding:1.5rem}
+
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:1.5rem}
+.card h2{font-size:1.1rem;font-weight:700;margin-bottom:1rem;color:#14532d}
+
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media(max-width:600px){.form-grid{grid-template-columns:1fr}}
+.form-group{display:flex;flex-direction:column;gap:.3rem}
+.form-group label{font-weight:600;font-size:.85rem;color:#475569}
+.form-group input,.form-group select{padding:.55rem .75rem;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.95rem;background:#f8fafc;font-family:inherit}
+.form-group input:focus,.form-group select:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(22,163,74,.15)}
+.full-span{grid-column:1/-1}
+
+.btn{padding:.65rem 1.5rem;border:none;border-radius:7px;font-weight:600;font-size:.95rem;cursor:pointer;transition:all .2s}
+.btn-primary{background:var(--green);color:#fff}
+.btn-primary:hover{background:var(--green-dark)}
+.btn-outline{background:#fff;color:var(--green);border:1.5px solid var(--green)}
+.btn-outline:hover{background:var(--green-light)}
+.btn-danger{background:#fef2f2;color:#dc2626;border:1px solid #fecaca;font-size:.85rem;padding:.4rem .75rem}
+.btn-danger:hover{background:#fee2e2}
+
+.items-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem}
+.items-header h2{margin-bottom:0}
+
+.item-row{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr auto;gap:.5rem;align-items:end;margin-bottom:.75rem;padding-bottom:.75rem;border-bottom:1px solid #f1f5f9}
+@media(max-width:700px){.item-row{grid-template-columns:1fr 1fr;}.item-row .remove-btn-col{grid-column:1/-1;text-align:right}}
+.item-row label{font-size:.75rem;color:#64748b;font-weight:600;margin-bottom:.2rem;display:block}
+.item-row input{padding:.45rem .6rem;border:1.5px solid #cbd5e1;border-radius:6px;font-size:.85rem;background:#f8fafc;width:100%;font-family:inherit}
+.item-row input:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 2px rgba(22,163,74,.12)}
+
+.expense-row{display:grid;grid-template-columns:2fr 1fr auto;gap:.5rem;align-items:end;margin-bottom:.5rem}
+.expense-row input{padding:.45rem .6rem;border:1.5px solid #cbd5e1;border-radius:6px;font-size:.85rem;background:#f8fafc;width:100%;font-family:inherit}
+.expense-row input:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 2px rgba(22,163,74,.12)}
+
+.results-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:1.5rem}
+.result-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:1rem;text-align:center}
+.result-card.profit{background:var(--green-light);border-color:#86efac}
+.result-card.loss{background:#fef2f2;border-color:#fecaca}
+.result-label{font-size:.8rem;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.result-value{font-size:1.5rem;font-weight:800;margin-top:.3rem}
+.result-card.profit .result-value{color:var(--green)}
+.result-card.loss .result-value{color:#dc2626}
+
+.breakdown-table{width:100%;border-collapse:collapse;font-size:.9rem;margin-top:1rem}
+.breakdown-table th{background:#f0fdf4;color:#14532d;padding:.6rem .75rem;text-align:left;font-weight:600;border-bottom:2px solid #bbf7d0}
+.breakdown-table td{padding:.5rem .75rem;border-bottom:1px solid #f1f5f9}
+.breakdown-table tr:hover td{background:#f8fafc}
+.breakdown-table .total-row td{font-weight:700;border-top:2px solid #e2e8f0;background:#f8fafc}
+.breakdown-table .profit-row td{font-weight:700;color:var(--green);background:var(--green-light)}
+.breakdown-table .loss-row td{font-weight:700;color:#dc2626;background:#fef2f2}
+
+.profit-bar{height:24px;border-radius:12px;background:#e2e8f0;overflow:hidden;margin-top:.5rem}
+.profit-bar-fill{height:100%;border-radius:12px;transition:width .5s ease}
+
+.preset-btns{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem}
+.preset-btn{padding:.35rem .75rem;border:1px solid #bbf7d0;background:#f0fdf4;color:#15803d;border-radius:5px;font-size:.8rem;cursor:pointer;font-weight:500;transition:all .2s}
+.preset-btn:hover,.preset-btn.active{background:var(--green);color:#fff;border-color:var(--green)}
+
+.actions{display:flex;gap:.75rem;margin-top:1rem;flex-wrap:wrap}
+
+.seo-section{max-width:800px;margin:2rem auto;padding:0 1.5rem}
+.seo-section h2{font-size:1.4rem;font-weight:800;color:#14532d;margin-bottom:1rem}
+.seo-section h3{font-size:1.1rem;font-weight:700;color:#334155;margin:1.5rem 0 .5rem}
+.seo-section p{color:#475569;margin-bottom:1rem}
+
+.faq{max-width:800px;margin:2rem auto;padding:0 1.5rem}
+.faq h2{font-size:1.4rem;font-weight:800;color:#14532d;margin-bottom:1rem}
+.faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:.75rem;background:#fff}
+.faq summary{padding:1rem 1.25rem;font-weight:600;cursor:pointer;color:#334155;list-style:none;display:flex;justify-content:space-between;align-items:center}
+.faq summary::after{content:'+';font-size:1.3rem;color:#94a3b8;font-weight:300}
+.faq details[open] summary::after{content:'-'}
+.faq details p{padding:0 1.25rem 1rem;color:#64748b;font-size:.95rem}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<section class="hero">
+<h1>Market Stall Profit Calculator</h1>
+<p>Track your daily sales, costs, and expenses. Know exactly how much profit your market stall is making.</p>
+</section>
+
+<div class="container">
+<!-- Settings -->
+<div class="card">
+<h2>Business Settings</h2>
+<div class="form-grid">
+<div class="form-group">
+<label for="currency">Currency</label>
+<select id="currency">
+<option value="NGN">Nigerian Naira (NGN)</option>
+<option value="GHS">Ghana Cedi (GHS)</option>
+<option value="KES">Kenya Shilling (KES)</option>
+<option value="ZAR">South African Rand (ZAR)</option>
+<option value="UGX">Uganda Shilling (UGX)</option>
+<option value="TZS">Tanzania Shilling (TZS)</option>
+<option value="XOF">CFA Franc (XOF)</option>
+<option value="EGP">Egyptian Pound (EGP)</option>
+</select>
+</div>
+<div class="form-group">
+<label for="businessType">Business Type</label>
+<select id="businessType">
+<option value="custom">Custom / Other</option>
+<option value="food">Food & Provisions</option>
+<option value="clothing">Clothing & Fabrics</option>
+<option value="electronics">Electronics & Accessories</option>
+<option value="vegetables">Vegetables & Farm Produce</option>
+<option value="cosmetics">Cosmetics & Beauty</option>
+<option value="household">Household Items</option>
+</select>
+</div>
+</div>
+<div class="preset-btns" id="presetBtns" style="margin-top:1rem">
+<span style="font-size:.85rem;color:#64748b;font-weight:600;margin-right:.25rem">Quick presets:</span>
+<button class="preset-btn" onclick="loadPreset('food')">Food Seller</button>
+<button class="preset-btn" onclick="loadPreset('clothing')">Fabric Trader</button>
+<button class="preset-btn" onclick="loadPreset('vegetables')">Vegetable Seller</button>
+<button class="preset-btn" onclick="loadPreset('electronics')">Phone Accessories</button>
+<button class="preset-btn" onclick="loadPreset('cosmetics')">Beauty Products</button>
+</div>
+</div>
+
+<!-- Items Sold -->
+<div class="card">
+<div class="items-header">
+<h2>Items Sold Today</h2>
+<button class="btn btn-outline" onclick="addItem()" style="font-size:.85rem;padding:.4rem .75rem">+ Add Item</button>
+</div>
+<div id="itemsContainer"></div>
+</div>
+
+<!-- Daily Expenses -->
+<div class="card">
+<div class="items-header">
+<h2>Daily Expenses</h2>
+<button class="btn btn-outline" onclick="addExpense()" style="font-size:.85rem;padding:.4rem .75rem">+ Add Expense</button>
+</div>
+<div id="expensesContainer"></div>
+</div>
+
+<!-- Calculate -->
+<div class="card" style="text-align:center">
+<button class="btn btn-primary" onclick="calculate()" style="font-size:1.05rem;padding:.75rem 2.5rem">Calculate Profit</button>
+</div>
+
+<!-- Results -->
+<div id="resultsSection" style="display:none">
+<div class="card">
+<h2>Daily Profit Summary</h2>
+<div class="results-grid" id="summaryCards"></div>
+<div class="profit-bar"><div class="profit-bar-fill" id="profitBar"></div></div>
+<p id="profitBarLabel" style="font-size:.8rem;color:#64748b;text-align:center;margin-top:.5rem"></p>
+</div>
+
+<div class="card">
+<h2>Detailed Breakdown</h2>
+<table class="breakdown-table" id="breakdownTable"></table>
+</div>
+
+<div class="card">
+<h2>Monthly Projection (26 market days)</h2>
+<div class="results-grid" id="monthlyCards"></div>
+</div>
+
+<div class="actions" style="justify-content:center;margin-bottom:1.5rem">
+<button class="btn btn-outline" onclick="downloadReport()">Download Report</button>
+<button class="btn btn-outline" onclick="resetAll()">Start Over</button>
+</div>
+</div>
+</div>
+
+<section class="seo-section">
+<h2>Market Stall Profit Calculator for African Traders</h2>
+<p>Running a market stall is one of the most common forms of entrepreneurship across Africa. From the sprawling markets of Onitsha and Makola to the bustling stalls of Kariakoo and Marabastad, millions of traders buy and sell goods daily. Knowing your exact profit margin is the difference between a thriving business and one that slowly bleeds money.</p>
+
+<h3>Why Track Your Market Profits?</h3>
+<p>Many market traders operate on intuition — buying stock, selling throughout the day, and counting whatever cash remains. But without tracking each item's cost and selling price, it's impossible to know which products are actually profitable. Transport costs, stall rent, mobile money fees, and spoilage can silently eat into your margins. This calculator helps you see the full picture clearly.</p>
+
+<h3>Built for African Market Realities</h3>
+<p>This tool understands the African market context. It accounts for common expenses like transport to the market, daily stall rent, loading boys' fees, and market association dues. Whether you sell provisions in Mile 12, fabrics in Kejetia Market, vegetables in Wakulima, or cosmetics in Yaba, the calculator adapts to your specific trade. Quick presets let you start with typical items for your business type, then customize from there.</p>
+
+<h3>From Daily to Monthly Insights</h3>
+<p>Your daily profit tells one story, but the monthly projection reveals the bigger picture. Based on an average of 26 market days per month (accounting for rest days and holidays), the calculator projects your monthly revenue, costs, and net profit. This projection helps you plan for stock purchases, set savings targets, and evaluate whether your business is meeting your financial goals. Use the downloadable report to keep records and track your progress over time.</p>
+</section>
+
+<section class="faq">
+<h2>Frequently Asked Questions</h2>
+<details><summary>Why 26 market days per month?</summary><p>Most African markets operate 6 days a week, with some traders taking Sundays off. Some markets also have traditional rest days. 26 days accounts for approximately 4 rest days per month, which reflects reality for most traders.</p></details>
+<details><summary>How do I handle items I didn't sell?</summary><p>Only enter items you actually sold today. Unsold stock is not a cost or loss for the day — it remains your inventory. For perishable goods that spoiled, you can add the cost price as an expense called "Spoilage/Waste."</p></details>
+<details><summary>What about items sold on credit?</summary><p>You can still enter credit sales as items sold, since the revenue is expected. However, track credit separately in your records. If a customer defaults, add the amount as a "Bad Debt" expense on a future day.</p></details>
+<details><summary>Can I track multiple days?</summary><p>This calculator is designed for single-day analysis. For ongoing tracking, we recommend downloading the report each day and keeping a weekly record. This helps you compare daily performance and identify your most profitable market days.</p></details>
+<details><summary>What profit margin should I aim for?</summary><p>Healthy profit margins vary by trade. Food and provisions typically have 15-25% margins, clothing and fabrics 30-50%, electronics 20-35%, and vegetables 25-40%. If your margin is consistently below 15%, review your pricing or look for cheaper suppliers.</p></details>
+</section>
+
+<afro-related-tools></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script src="/assets/js/components/navbar.js" defer></script>
+<script src="/assets/js/components/footer.js" defer></script>
+<script src="/assets/js/components/related-tools.js" defer></script>
+<script src="/assets/js/components/newsletter-cta.js" defer></script>
+<script>
+const CURRENCIES = {NGN:'\u20a6',GHS:'GH\u20b5',KES:'KSh',ZAR:'R',UGX:'USh',TZS:'TSh',XOF:'CFA',EGP:'E\u00a3'};
+
+const PRESETS = {
+  food: {
+    items: [
+      {name:'Rice (50kg bag, sold in cups)',costPrice:42000,sellPrice:56000,qty:1},
+      {name:'Garri (paint bucket)',costPrice:800,sellPrice:1200,qty:15},
+      {name:'Palm Oil (4L)',costPrice:5500,sellPrice:7000,qty:3},
+      {name:'Beans (mudu measure)',costPrice:600,sellPrice:900,qty:10},
+      {name:'Seasoning cubes (carton)',costPrice:4800,sellPrice:6000,qty:2}
+    ],
+    expenses:[{name:'Transport to market',amount:1500},{name:'Stall rent (daily)',amount:500},{name:'Loading/Carrying',amount:300}]
+  },
+  clothing: {
+    items: [
+      {name:'Ankara (6 yards)',costPrice:6500,sellPrice:9000,qty:3},
+      {name:'Lace Fabric (5 yards)',costPrice:15000,sellPrice:22000,qty:1},
+      {name:'Ready-made dress',costPrice:4000,sellPrice:7500,qty:2},
+      {name:'Head tie (gele)',costPrice:2000,sellPrice:3500,qty:4}
+    ],
+    expenses:[{name:'Stall rent (daily)',amount:1000},{name:'Transport',amount:800},{name:'Market association dues',amount:200}]
+  },
+  vegetables: {
+    items: [
+      {name:'Tomatoes (basket)',costPrice:8000,sellPrice:12000,qty:2},
+      {name:'Peppers (bag)',costPrice:3000,sellPrice:5000,qty:3},
+      {name:'Onions (bag)',costPrice:5000,sellPrice:7500,qty:2},
+      {name:'Leafy greens (bundles)',costPrice:100,sellPrice:200,qty:30},
+      {name:'Okra (heap)',costPrice:200,sellPrice:400,qty:15}
+    ],
+    expenses:[{name:'Transport from farm/wholesale',amount:2500},{name:'Stall space',amount:300},{name:'Spoilage/waste (~10%)',amount:1500}]
+  },
+  electronics: {
+    items: [
+      {name:'Phone case',costPrice:500,sellPrice:1500,qty:5},
+      {name:'USB charging cable',costPrice:300,sellPrice:800,qty:8},
+      {name:'Bluetooth earpiece',costPrice:2500,sellPrice:4500,qty:2},
+      {name:'Screen protector + fix',costPrice:200,sellPrice:1000,qty:6},
+      {name:'Power bank',costPrice:3500,sellPrice:6000,qty:1}
+    ],
+    expenses:[{name:'Stall/table rent',amount:1000},{name:'Electricity (charging)',amount:500},{name:'Transport',amount:500}]
+  },
+  cosmetics: {
+    items: [
+      {name:'Body cream (large)',costPrice:1800,sellPrice:2800,qty:3},
+      {name:'Hair attachment',costPrice:1200,sellPrice:2000,qty:4},
+      {name:'Lipstick',costPrice:400,sellPrice:800,qty:6},
+      {name:'Black soap (pack)',costPrice:300,sellPrice:600,qty:8},
+      {name:'Perfume oil (small)',costPrice:500,sellPrice:1200,qty:5}
+    ],
+    expenses:[{name:'Stall rent',amount:800},{name:'Transport',amount:500},{name:'Display/packaging',amount:200}]
+  }
+};
+
+let items = [];
+let expenses = [];
+let itemIdCounter = 0;
+let expenseIdCounter = 0;
+
+function getCurrSymbol() { return CURRENCIES[document.getElementById('currency').value] || ''; }
+
+function addItem(data) {
+  const id = itemIdCounter++;
+  items.push(id);
+  const d = data || {name:'',costPrice:'',sellPrice:'',qty:1};
+  const container = document.getElementById('itemsContainer');
+  const div = document.createElement('div');
+  div.className = 'item-row';
+  div.id = `item-${id}`;
+  div.innerHTML = `
+    <div><label>Item Name</label><input type="text" data-field="name" value="${d.name}" placeholder="e.g. Rice (50kg)"></div>
+    <div><label>Cost Price</label><input type="number" data-field="cost" value="${d.costPrice}" placeholder="0" min="0"></div>
+    <div><label>Sell Price</label><input type="number" data-field="sell" value="${d.sellPrice}" placeholder="0" min="0"></div>
+    <div><label>Qty Sold</label><input type="number" data-field="qty" value="${d.qty}" placeholder="1" min="1"></div>
+    <div><label>Profit</label><input type="text" data-field="itemprofit" readonly style="background:#f0fdf4;font-weight:600;color:#16a34a"></div>
+    <div class="remove-btn-col"><label>&nbsp;</label><button class="btn-danger" onclick="removeItem(${id})">Remove</button></div>
+  `;
+  container.appendChild(div);
+
+  // Auto-calc item profit
+  const row = div;
+  const calc = () => {
+    const cost = parseFloat(row.querySelector('[data-field="cost"]').value) || 0;
+    const sell = parseFloat(row.querySelector('[data-field="sell"]').value) || 0;
+    const qty = parseInt(row.querySelector('[data-field="qty"]').value) || 0;
+    row.querySelector('[data-field="itemprofit"]').value = getCurrSymbol() + ((sell - cost) * qty).toLocaleString();
+  };
+  row.querySelectorAll('input[type="number"]').forEach(inp => inp.addEventListener('input', calc));
+  calc();
+}
+
+function removeItem(id) {
+  items = items.filter(i => i !== id);
+  document.getElementById(`item-${id}`)?.remove();
+}
+
+function addExpense(data) {
+  const id = expenseIdCounter++;
+  expenses.push(id);
+  const d = data || {name:'',amount:''};
+  const container = document.getElementById('expensesContainer');
+  const div = document.createElement('div');
+  div.className = 'expense-row';
+  div.id = `expense-${id}`;
+  div.innerHTML = `
+    <div><label style="font-size:.75rem;color:#64748b;font-weight:600;display:block;margin-bottom:.2rem">Expense Name</label><input type="text" data-field="ename" value="${d.name}" placeholder="e.g. Transport"></div>
+    <div><label style="font-size:.75rem;color:#64748b;font-weight:600;display:block;margin-bottom:.2rem">Amount</label><input type="number" data-field="eamount" value="${d.amount}" placeholder="0" min="0"></div>
+    <div><label style="font-size:.75rem;color:#64748b;font-weight:600;display:block;margin-bottom:.2rem">&nbsp;</label><button class="btn-danger" onclick="removeExpense(${id})">Remove</button></div>
+  `;
+  container.appendChild(div);
+}
+
+function removeExpense(id) {
+  expenses = expenses.filter(i => i !== id);
+  document.getElementById(`expense-${id}`)?.remove();
+}
+
+function loadPreset(type) {
+  const preset = PRESETS[type];
+  if (!preset) return;
+
+  document.getElementById('currency').value = 'NGN';
+  document.getElementById('businessType').value = type;
+
+  // Clear existing
+  document.getElementById('itemsContainer').innerHTML = '';
+  document.getElementById('expensesContainer').innerHTML = '';
+  items = []; expenses = [];
+  itemIdCounter = 0; expenseIdCounter = 0;
+
+  preset.items.forEach(i => addItem(i));
+  preset.expenses.forEach(e => addExpense(e));
+
+  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+function calculate() {
+  const sym = getCurrSymbol();
+  let totalRevenue = 0, totalCost = 0, totalExpenses = 0;
+  const itemData = [];
+
+  items.forEach(id => {
+    const row = document.getElementById(`item-${id}`);
+    if (!row) return;
+    const name = row.querySelector('[data-field="name"]').value || 'Unnamed item';
+    const cost = parseFloat(row.querySelector('[data-field="cost"]').value) || 0;
+    const sell = parseFloat(row.querySelector('[data-field="sell"]').value) || 0;
+    const qty = parseInt(row.querySelector('[data-field="qty"]').value) || 0;
+    const revenue = sell * qty;
+    const totalItemCost = cost * qty;
+    const profit = revenue - totalItemCost;
+    totalRevenue += revenue;
+    totalCost += totalItemCost;
+    itemData.push({name, cost, sell, qty, revenue, totalItemCost, profit});
+  });
+
+  const expenseData = [];
+  expenses.forEach(id => {
+    const row = document.getElementById(`expense-${id}`);
+    if (!row) return;
+    const name = row.querySelector('[data-field="ename"]').value || 'Unnamed expense';
+    const amount = parseFloat(row.querySelector('[data-field="eamount"]').value) || 0;
+    totalExpenses += amount;
+    expenseData.push({name, amount});
+  });
+
+  const grossProfit = totalRevenue - totalCost;
+  const netProfit = grossProfit - totalExpenses;
+  const margin = totalRevenue > 0 ? (netProfit / totalRevenue * 100) : 0;
+  const isProfit = netProfit >= 0;
+
+  // Summary cards
+  document.getElementById('summaryCards').innerHTML = `
+    <div class="result-card"><div class="result-label">Total Revenue</div><div class="result-value" style="color:#0369a1">${sym}${totalRevenue.toLocaleString()}</div></div>
+    <div class="result-card"><div class="result-label">Stock Cost</div><div class="result-value" style="color:#dc2626">${sym}${totalCost.toLocaleString()}</div></div>
+    <div class="result-card"><div class="result-label">Expenses</div><div class="result-value" style="color:#d97706">${sym}${totalExpenses.toLocaleString()}</div></div>
+    <div class="result-card ${isProfit ? 'profit' : 'loss'}"><div class="result-label">Net ${isProfit ? 'Profit' : 'Loss'}</div><div class="result-value">${sym}${Math.abs(netProfit).toLocaleString()}</div></div>
+  `;
+
+  // Profit bar
+  const bar = document.getElementById('profitBar');
+  const barPct = totalRevenue > 0 ? Math.min(Math.max((netProfit / totalRevenue) * 100, 0), 100) : 0;
+  bar.style.width = barPct + '%';
+  bar.style.background = isProfit ? 'linear-gradient(90deg,#22c55e,#16a34a)' : '#dc2626';
+  document.getElementById('profitBarLabel').textContent = `Profit margin: ${margin.toFixed(1)}% of revenue`;
+
+  // Breakdown table
+  let tableHTML = '<thead><tr><th>Description</th><th style="text-align:right">Amount</th></tr></thead><tbody>';
+  itemData.forEach(item => {
+    tableHTML += `<tr><td>${item.name} (${item.qty} x ${sym}${item.sell.toLocaleString()})</td><td style="text-align:right">${sym}${item.revenue.toLocaleString()}</td></tr>`;
+  });
+  tableHTML += `<tr class="total-row"><td>Total Revenue</td><td style="text-align:right">${sym}${totalRevenue.toLocaleString()}</td></tr>`;
+  tableHTML += `<tr><td colspan="2" style="padding:.25rem;background:#fff"></td></tr>`;
+
+  itemData.forEach(item => {
+    tableHTML += `<tr><td>Cost: ${item.name} (${item.qty} x ${sym}${item.cost.toLocaleString()})</td><td style="text-align:right;color:#dc2626">-${sym}${item.totalItemCost.toLocaleString()}</td></tr>`;
+  });
+  tableHTML += `<tr class="total-row"><td>Total Stock Cost</td><td style="text-align:right;color:#dc2626">-${sym}${totalCost.toLocaleString()}</td></tr>`;
+  tableHTML += `<tr style="background:#f0fdf4"><td style="font-weight:600">Gross Profit</td><td style="text-align:right;font-weight:600;color:${grossProfit >= 0 ? '#16a34a' : '#dc2626'}">${sym}${grossProfit.toLocaleString()}</td></tr>`;
+
+  if (expenseData.length > 0) {
+    tableHTML += `<tr><td colspan="2" style="padding:.25rem;background:#fff"></td></tr>`;
+    expenseData.forEach(exp => {
+      tableHTML += `<tr><td>${exp.name}</td><td style="text-align:right;color:#d97706">-${sym}${exp.amount.toLocaleString()}</td></tr>`;
+    });
+    tableHTML += `<tr class="total-row"><td>Total Expenses</td><td style="text-align:right;color:#d97706">-${sym}${totalExpenses.toLocaleString()}</td></tr>`;
+  }
+
+  tableHTML += `<tr class="${isProfit ? 'profit-row' : 'loss-row'}"><td>NET ${isProfit ? 'PROFIT' : 'LOSS'}</td><td style="text-align:right">${isProfit ? '' : '-'}${sym}${Math.abs(netProfit).toLocaleString()}</td></tr>`;
+  tableHTML += '</tbody>';
+  document.getElementById('breakdownTable').innerHTML = tableHTML;
+
+  // Monthly projection
+  const marketDays = 26;
+  document.getElementById('monthlyCards').innerHTML = `
+    <div class="result-card"><div class="result-label">Monthly Revenue</div><div class="result-value" style="color:#0369a1">${sym}${(totalRevenue * marketDays).toLocaleString()}</div></div>
+    <div class="result-card"><div class="result-label">Monthly Costs</div><div class="result-value" style="color:#dc2626">${sym}${((totalCost + totalExpenses) * marketDays).toLocaleString()}</div></div>
+    <div class="result-card ${isProfit ? 'profit' : 'loss'}"><div class="result-label">Monthly ${isProfit ? 'Profit' : 'Loss'}</div><div class="result-value">${sym}${Math.abs(netProfit * marketDays).toLocaleString()}</div></div>
+    <div class="result-card"><div class="result-label">Annual Projection</div><div class="result-value" style="color:#334155">${sym}${Math.abs(netProfit * marketDays * 12).toLocaleString()}</div></div>
+  `;
+
+  document.getElementById('resultsSection').style.display = 'block';
+  document.getElementById('resultsSection').scrollIntoView({behavior:'smooth'});
+}
+
+function downloadReport() {
+  const sym = getCurrSymbol();
+  const curr = document.getElementById('currency').value;
+  let text = `MARKET STALL PROFIT REPORT\n`;
+  text += `Date: ${new Date().toLocaleDateString()}\n`;
+  text += `Currency: ${curr}\n\n`;
+  text += `ITEMS SOLD\n${'='.repeat(50)}\n`;
+
+  items.forEach(id => {
+    const row = document.getElementById(`item-${id}`);
+    if (!row) return;
+    const name = row.querySelector('[data-field="name"]').value || 'Item';
+    const cost = parseFloat(row.querySelector('[data-field="cost"]').value) || 0;
+    const sell = parseFloat(row.querySelector('[data-field="sell"]').value) || 0;
+    const qty = parseInt(row.querySelector('[data-field="qty"]').value) || 0;
+    text += `${name}: ${qty} x ${sym}${sell} = ${sym}${(sell*qty).toLocaleString()} (cost: ${sym}${(cost*qty).toLocaleString()})\n`;
+  });
+
+  text += `\nEXPENSES\n${'='.repeat(50)}\n`;
+  expenses.forEach(id => {
+    const row = document.getElementById(`expense-${id}`);
+    if (!row) return;
+    const name = row.querySelector('[data-field="ename"]').value || 'Expense';
+    const amount = parseFloat(row.querySelector('[data-field="eamount"]').value) || 0;
+    text += `${name}: ${sym}${amount.toLocaleString()}\n`;
+  });
+
+  text += `\nGenerated by AfroTools — https://afrotools.org/tools/market-stall-profit/\n`;
+
+  const blob = new Blob([text], {type:'text/plain'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `market-profit-${new Date().toISOString().split('T')[0]}.txt`;
+  a.click();
+}
+
+function resetAll() {
+  document.getElementById('itemsContainer').innerHTML = '';
+  document.getElementById('expensesContainer').innerHTML = '';
+  items = []; expenses = [];
+  itemIdCounter = 0; expenseIdCounter = 0;
+  document.getElementById('resultsSection').style.display = 'none';
+  addItem(); addItem(); addItem();
+  addExpense({name:'Transport',amount:''});
+  addExpense({name:'Stall rent',amount:''});
+}
+
+// Initialize with 3 empty item rows and 2 expense rows
+addItem(); addItem(); addItem();
+addExpense({name:'Transport',amount:''});
+addExpense({name:'Stall rent',amount:''});
+</script>
+</body>
+</html>

@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'SQL Playground'});</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SQL Playground — Practice SQL Queries Online | AfroTools</title>
+<meta name="description" content="Free browser-based SQL playground. Write and run SQL queries against sample databases. Perfect for learning SQL, practicing for interviews, and testing queries.">
+<meta name="keywords" content="SQL playground, practice SQL online, SQL editor, learn SQL, SQL tutorial, database query, SELECT, JOIN, GROUP BY">
+<link rel="canonical" href="https://afrotools.org/tools/sql-playground/">
+<meta property="og:title" content="SQL Playground — Practice SQL Online">
+<meta property="og:description" content="Write and run SQL queries in your browser. Sample databases included. No setup required.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.org/tools/sql-playground/">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<style>
+:root{--sky:#0ea5e9;--sky-light:#e0f2fe;--sky-dark:#0284c7}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6}
+
+.hero{background:linear-gradient(135deg,#0c4a6e 0%,#0369a1 50%,#0ea5e9 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}
+.hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}
+.hero p{font-size:1.05rem;opacity:.9;max-width:600px;margin:0 auto}
+
+.container{max-width:1100px;margin:0 auto;padding:1.5rem}
+
+.playground-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem}
+@media(max-width:768px){.playground-grid{grid-template-columns:1fr}}
+
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.card h2{font-size:1.1rem;font-weight:700;margin-bottom:1rem;color:#0c4a6e}
+
+.editor-wrap{position:relative}
+#sql-editor{width:100%;min-height:200px;font-family:'Fira Code','Courier New',monospace;font-size:.9rem;line-height:1.5;padding:1rem;border:1.5px solid #cbd5e1;border-radius:7px;background:#0f172a;color:#e2e8f0;resize:vertical;tab-size:2}
+#sql-editor:focus{outline:none;border-color:var(--sky);box-shadow:0 0 0 3px rgba(14,165,233,.15)}
+#sql-editor::placeholder{color:#64748b}
+
+.toolbar{display:flex;gap:.75rem;margin-top:1rem;flex-wrap:wrap;align-items:center}
+.btn{padding:.6rem 1.2rem;border:none;border-radius:7px;font-weight:600;font-size:.9rem;cursor:pointer;transition:all .2s}
+.btn-primary{background:var(--sky);color:#fff}
+.btn-primary:hover{background:var(--sky-dark)}
+.btn-secondary{background:#f1f5f9;color:#475569;border:1px solid #e2e8f0}
+.btn-secondary:hover{background:#e2e8f0}
+.btn-danger{background:#fef2f2;color:#dc2626;border:1px solid #fecaca}
+.btn-danger:hover{background:#fee2e2}
+
+.sample-btns{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem}
+.sample-btn{padding:.35rem .75rem;border:1px solid #bae6fd;background:#f0f9ff;color:#0369a1;border-radius:5px;font-size:.8rem;cursor:pointer;font-weight:500;transition:all .2s}
+.sample-btn:hover,.sample-btn.active{background:var(--sky);color:#fff;border-color:var(--sky)}
+
+.db-selector{margin-bottom:1rem}
+.db-selector label{font-weight:600;font-size:.85rem;color:#475569;display:block;margin-bottom:.4rem}
+.db-selector select{width:100%;padding:.55rem .75rem;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.9rem;background:#f8fafc;font-family:inherit}
+.db-selector select:focus{outline:none;border-color:var(--sky);box-shadow:0 0 0 3px rgba(14,165,233,.15)}
+
+.results-area{margin-top:1rem;overflow-x:auto}
+.results-table{width:100%;border-collapse:collapse;font-size:.85rem}
+.results-table th{background:#f0f9ff;color:#0c4a6e;padding:.6rem .75rem;text-align:left;font-weight:600;border-bottom:2px solid #bae6fd;white-space:nowrap}
+.results-table td{padding:.5rem .75rem;border-bottom:1px solid #f1f5f9;white-space:nowrap}
+.results-table tr:hover td{background:#f8fafc}
+
+.result-meta{display:flex;gap:1.5rem;margin-top:.75rem;font-size:.8rem;color:#64748b}
+.result-meta span{display:flex;align-items:center;gap:.3rem}
+
+.error-msg{background:#fef2f2;border:1px solid #fecaca;color:#dc2626;padding:.75rem 1rem;border-radius:7px;font-size:.85rem;margin-top:.75rem}
+.success-msg{background:#f0fdf4;border:1px solid #bbf7d0;color:#16a34a;padding:.75rem 1rem;border-radius:7px;font-size:.85rem;margin-top:.75rem}
+
+.schema-section{margin-top:1.5rem}
+.schema-table{margin-bottom:1rem}
+.schema-table h3{font-size:.95rem;font-weight:700;color:#0369a1;margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem;cursor:pointer}
+.schema-table h3::before{content:'';display:inline-block;width:10px;height:10px;background:var(--sky);border-radius:2px}
+.schema-cols{font-size:.8rem;color:#475569;padding:.5rem .75rem;background:#f8fafc;border-radius:5px;border:1px solid #e2e8f0}
+.schema-cols code{font-family:'Fira Code','Courier New',monospace;color:#0369a1;font-size:.78rem}
+
+.history-item{padding:.5rem .75rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:5px;margin-bottom:.4rem;font-size:.8rem;font-family:monospace;cursor:pointer;transition:all .2s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.history-item:hover{background:#e0f2fe;border-color:#bae6fd}
+
+.full-width{grid-column:1/-1}
+
+.seo-section{max-width:800px;margin:2rem auto;padding:0 1.5rem}
+.seo-section h2{font-size:1.4rem;font-weight:800;color:#0c4a6e;margin-bottom:1rem}
+.seo-section h3{font-size:1.1rem;font-weight:700;color:#334155;margin:1.5rem 0 .5rem}
+.seo-section p{color:#475569;margin-bottom:1rem}
+
+.faq{max-width:800px;margin:2rem auto;padding:0 1.5rem}
+.faq h2{font-size:1.4rem;font-weight:800;color:#0c4a6e;margin-bottom:1rem}
+.faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:.75rem;background:#fff}
+.faq summary{padding:1rem 1.25rem;font-weight:600;cursor:pointer;color:#334155;list-style:none;display:flex;justify-content:space-between;align-items:center}
+.faq summary::after{content:'+';font-size:1.3rem;color:#94a3b8;font-weight:300}
+.faq details[open] summary::after{content:'-'}
+.faq details p{padding:0 1.25rem 1rem;color:#64748b;font-size:.95rem}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<section class="hero">
+<h1>SQL Playground</h1>
+<p>Write and run SQL queries in your browser. Practice with sample African business databases — no setup required.</p>
+</section>
+
+<div class="container">
+<div class="playground-grid">
+<!-- Editor Panel -->
+<div class="card">
+<h2>Query Editor</h2>
+<div class="db-selector">
+<label for="dbSelect">Sample Database</label>
+<select id="dbSelect">
+<option value="ecommerce">African E-Commerce Store</option>
+<option value="school">School Management System</option>
+<option value="hospital">Hospital Records</option>
+</select>
+</div>
+<div class="sample-btns" id="sampleBtns"></div>
+<div class="editor-wrap">
+<textarea id="sql-editor" placeholder="-- Write your SQL query here&#10;SELECT * FROM products LIMIT 10;" spellcheck="false">SELECT * FROM products LIMIT 10;</textarea>
+</div>
+<div class="toolbar">
+<button class="btn btn-primary" onclick="runQuery()">Run Query (Ctrl+Enter)</button>
+<button class="btn btn-secondary" onclick="formatQuery()">Format</button>
+<button class="btn btn-danger" onclick="clearEditor()">Clear</button>
+</div>
+</div>
+
+<!-- Results Panel -->
+<div class="card">
+<h2>Results</h2>
+<div id="resultsArea">
+<p style="color:#94a3b8;font-size:.9rem;text-align:center;padding:3rem 1rem">Run a query to see results here</p>
+</div>
+</div>
+
+<!-- Schema Browser -->
+<div class="card">
+<h2>Database Schema</h2>
+<div id="schemaArea" class="schema-section"></div>
+</div>
+
+<!-- Query History -->
+<div class="card">
+<h2>Query History</h2>
+<div id="historyArea">
+<p style="color:#94a3b8;font-size:.85rem">Your queries will appear here</p>
+</div>
+</div>
+</div>
+</div>
+
+<section class="seo-section">
+<h2>Free Browser-Based SQL Playground</h2>
+<p>Learning SQL is one of the most valuable skills for anyone working with data in Africa's growing tech ecosystem. Whether you're a computer science student in Lagos, a data analyst in Nairobi, or a developer in Johannesburg, SQL proficiency opens doors to countless opportunities in tech, finance, and business intelligence.</p>
+
+<h3>Practice with Realistic African Datasets</h3>
+<p>Unlike generic SQL tutorials, our playground includes sample databases modelled on real African business scenarios. Practice queries against an e-commerce store with products priced in Naira, Shillings, and Rand. Explore a school management system reflecting African educational structures, or query hospital records that mirror healthcare data across the continent.</p>
+
+<h3>No Installation Required</h3>
+<p>This SQL playground runs entirely in your browser using sql.js (SQLite compiled to WebAssembly). There's nothing to download, no database server to configure, and no account to create. Simply type your query and press Ctrl+Enter to see results instantly. It's perfect for quick practice during lunch breaks, interview preparation, or classroom demonstrations.</p>
+
+<h3>Key SQL Concepts You Can Practice</h3>
+<p>Start with basic SELECT statements and work your way up to complex queries. Practice JOINs to combine data across tables, GROUP BY with aggregate functions for summary reports, subqueries for nested logic, and window functions for advanced analytics. Each sample database includes enough data to produce meaningful results for all these concepts. The schema browser shows all available tables and columns so you always know what data you can query.</p>
+
+<p>SQL skills are in high demand across Africa's tech hubs. From Lagos to Cape Town, companies are hiring data professionals who can extract insights from databases. This free tool gives you unlimited practice time with instant feedback — no paid subscriptions, no signup walls. Start writing queries now and level up your database skills for your next job interview or data project.</p>
+</section>
+
+<section class="faq">
+<h2>Frequently Asked Questions</h2>
+<details><summary>Is my data saved anywhere?</summary><p>No. Everything runs locally in your browser using WebAssembly. No data is sent to any server. When you refresh the page, the sample databases are recreated fresh.</p></details>
+<details><summary>What SQL dialect does this support?</summary><p>This playground uses SQLite syntax, which is very close to standard SQL. Most SELECT, INSERT, UPDATE, DELETE, JOIN, GROUP BY, and aggregate function queries work exactly as expected. Some advanced features specific to PostgreSQL or MySQL (like stored procedures) are not available.</p></details>
+<details><summary>Can I create my own tables?</summary><p>Yes! You can run CREATE TABLE, INSERT INTO, and other DDL/DML statements. Your custom tables exist for the duration of your session. Switch between sample databases to get fresh starting data at any time.</p></details>
+<details><summary>Can I use this for interview preparation?</summary><p>Absolutely. The sample queries cover common interview topics including JOINs, aggregations, subqueries, and window functions. Practice these patterns and you'll be well-prepared for SQL technical interviews at African and international tech companies.</p></details>
+<details><summary>Why African-themed databases?</summary><p>We believe learning is more effective when the data feels familiar. Our sample databases use African currencies, city names, and business contexts that reflect the environments where many of our users work and live.</p></details>
+</section>
+
+<afro-related-tools></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
+<script src="/assets/js/components/navbar.js" defer></script>
+<script src="/assets/js/components/footer.js" defer></script>
+<script src="/assets/js/components/related-tools.js" defer></script>
+<script src="/assets/js/components/newsletter-cta.js" defer></script>
+<script>
+const DATABASES = {
+  ecommerce: {
+    name: 'African E-Commerce Store',
+    schema: {
+      customers: { cols: 'id INTEGER PK, name TEXT, email TEXT, city TEXT, country TEXT, joined DATE', create: `CREATE TABLE customers (id INTEGER PRIMARY KEY, name TEXT, email TEXT, city TEXT, country TEXT, joined DATE);` },
+      products: { cols: 'id INTEGER PK, name TEXT, category TEXT, price REAL, currency TEXT, stock INTEGER', create: `CREATE TABLE products (id INTEGER PRIMARY KEY, name TEXT, category TEXT, price REAL, currency TEXT, stock INTEGER);` },
+      orders: { cols: 'id INTEGER PK, customer_id INTEGER FK, order_date DATE, total REAL, currency TEXT, status TEXT', create: `CREATE TABLE orders (id INTEGER PRIMARY KEY, customer_id INTEGER, order_date DATE, total REAL, currency TEXT, status TEXT);` },
+      order_items: { cols: 'id INTEGER PK, order_id INTEGER FK, product_id INTEGER FK, quantity INTEGER, unit_price REAL', create: `CREATE TABLE order_items (id INTEGER PRIMARY KEY, order_id INTEGER, product_id INTEGER, quantity INTEGER, unit_price REAL);` }
+    },
+    seed: `
+INSERT INTO customers VALUES (1,'Amina Bello','amina@email.com','Lagos','Nigeria','2024-01-15');
+INSERT INTO customers VALUES (2,'Kwame Asante','kwame@email.com','Accra','Ghana','2024-02-20');
+INSERT INTO customers VALUES (3,'Wanjiku Mwangi','wanjiku@email.com','Nairobi','Kenya','2024-03-10');
+INSERT INTO customers VALUES (4,'Sipho Ndlovu','sipho@email.com','Johannesburg','South Africa','2024-01-08');
+INSERT INTO customers VALUES (5,'Fatima Diallo','fatima@email.com','Dakar','Senegal','2024-04-01');
+INSERT INTO customers VALUES (6,'Chidi Okafor','chidi@email.com','Abuja','Nigeria','2024-02-14');
+INSERT INTO customers VALUES (7,'Ama Mensah','ama@email.com','Kumasi','Ghana','2024-05-12');
+INSERT INTO customers VALUES (8,'James Otieno','james@email.com','Mombasa','Kenya','2024-03-25');
+INSERT INTO customers VALUES (9,'Thabo Molefe','thabo@email.com','Cape Town','South Africa','2024-06-01');
+INSERT INTO customers VALUES (10,'Ngozi Eze','ngozi@email.com','Enugu','Nigeria','2024-04-18');
+INSERT INTO products VALUES (1,'Ankara Fabric (6 yards)','Fashion',8500,'NGN',120);
+INSERT INTO products VALUES (2,'Kente Cloth Strip','Fashion',450,'GHS',80);
+INSERT INTO products VALUES (3,'Maasai Beaded Necklace','Jewelry',2500,'KES',45);
+INSERT INTO products VALUES (4,'Shea Butter (500g)','Beauty',3200,'NGN',200);
+INSERT INTO products VALUES (5,'Rooibos Tea (100g)','Food',89.99,'ZAR',150);
+INSERT INTO products VALUES (6,'African Black Soap','Beauty',1500,'NGN',300);
+INSERT INTO products VALUES (7,'Dashiki Shirt','Fashion',12000,'NGN',60);
+INSERT INTO products VALUES (8,'Moringa Powder (250g)','Health',180,'GHS',95);
+INSERT INTO products VALUES (9,'Kilim Basket (Large)','Home',3800,'KES',25);
+INSERT INTO products VALUES (10,'Biltong (500g)','Food',159.99,'ZAR',110);
+INSERT INTO products VALUES (11,'Palm Oil (1L)','Food',4500,'NGN',180);
+INSERT INTO products VALUES (12,'Cocoa Butter Cream','Beauty',120,'GHS',140);
+INSERT INTO orders VALUES (1,1,'2024-06-01',25500,'NGN','delivered');
+INSERT INTO orders VALUES (2,2,'2024-06-03',630,'GHS','delivered');
+INSERT INTO orders VALUES (3,3,'2024-06-05',6300,'KES','shipped');
+INSERT INTO orders VALUES (4,4,'2024-06-07',249.98,'ZAR','delivered');
+INSERT INTO orders VALUES (5,1,'2024-06-10',15500,'NGN','processing');
+INSERT INTO orders VALUES (6,6,'2024-06-12',8500,'NGN','delivered');
+INSERT INTO orders VALUES (7,5,'2024-06-15',8500,'NGN','shipped');
+INSERT INTO orders VALUES (8,3,'2024-06-18',3800,'KES','delivered');
+INSERT INTO orders VALUES (9,7,'2024-06-20',750,'GHS','processing');
+INSERT INTO orders VALUES (10,8,'2024-06-22',2500,'KES','shipped');
+INSERT INTO orders VALUES (11,9,'2024-06-25',319.98,'ZAR','delivered');
+INSERT INTO orders VALUES (12,10,'2024-06-28',9700,'NGN','processing');
+INSERT INTO order_items VALUES (1,1,1,2,8500);INSERT INTO order_items VALUES (2,1,6,3,1500);INSERT INTO order_items VALUES (3,1,4,1,3200);
+INSERT INTO order_items VALUES (4,2,2,1,450);INSERT INTO order_items VALUES (5,2,8,1,180);
+INSERT INTO order_items VALUES (6,3,3,2,2500);INSERT INTO order_items VALUES (7,3,9,1,3800);
+INSERT INTO order_items VALUES (8,4,5,1,89.99);INSERT INTO order_items VALUES (9,4,10,1,159.99);
+INSERT INTO order_items VALUES (10,5,7,1,12000);INSERT INTO order_items VALUES (11,5,6,1,1500);INSERT INTO order_items VALUES (12,5,11,1,4500);
+INSERT INTO order_items VALUES (13,6,1,1,8500);
+INSERT INTO order_items VALUES (14,7,7,1,12000);
+INSERT INTO order_items VALUES (15,8,9,1,3800);
+INSERT INTO order_items VALUES (16,9,2,1,450);INSERT INTO order_items VALUES (17,9,12,2,120);
+INSERT INTO order_items VALUES (18,10,3,1,2500);
+INSERT INTO order_items VALUES (19,11,5,2,89.99);INSERT INTO order_items VALUES (20,11,10,1,159.99);
+INSERT INTO order_items VALUES (21,12,4,2,3200);INSERT INTO order_items VALUES (22,12,11,1,4500);
+`
+  },
+  school: {
+    name: 'School Management System',
+    schema: {
+      students: { cols: 'id INTEGER PK, name TEXT, class TEXT, stream TEXT, gender TEXT, county TEXT', create: `CREATE TABLE students (id INTEGER PRIMARY KEY, name TEXT, class TEXT, stream TEXT, gender TEXT, county TEXT);` },
+      subjects: { cols: 'id INTEGER PK, name TEXT, department TEXT, credit_hours INTEGER', create: `CREATE TABLE subjects (id INTEGER PRIMARY KEY, name TEXT, department TEXT, credit_hours INTEGER);` },
+      grades: { cols: 'id INTEGER PK, student_id INTEGER FK, subject_id INTEGER FK, term TEXT, score INTEGER, grade TEXT', create: `CREATE TABLE grades (id INTEGER PRIMARY KEY, student_id INTEGER, subject_id INTEGER, term TEXT, score INTEGER, grade TEXT);` },
+      teachers: { cols: 'id INTEGER PK, name TEXT, subject TEXT, experience_years INTEGER, qualification TEXT', create: `CREATE TABLE teachers (id INTEGER PRIMARY KEY, name TEXT, subject TEXT, experience_years INTEGER, qualification TEXT);` }
+    },
+    seed: `
+INSERT INTO students VALUES (1,'Adaeze Okoro','SS3','Science','F','Lagos');
+INSERT INTO students VALUES (2,'Kofi Mensah','SS3','Arts','M','Central');
+INSERT INTO students VALUES (3,'Faith Wambui','Form 4','Science','F','Kiambu');
+INSERT INTO students VALUES (4,'Tendai Moyo','Form 5','Commerce','M','Harare');
+INSERT INTO students VALUES (5,'Bola Adeyemi','SS2','Science','M','Oyo');
+INSERT INTO students VALUES (6,'Esi Appiah','SS3','Science','F','Ashanti');
+INSERT INTO students VALUES (7,'Peter Kamau','Form 4','Arts','M','Nakuru');
+INSERT INTO students VALUES (8,'Zainab Musa','SS2','Arts','F','Kano');
+INSERT INTO students VALUES (9,'Thandiwe Dube','Form 5','Science','F','Bulawayo');
+INSERT INTO students VALUES (10,'Emeka Nwosu','SS3','Commerce','M','Anambra');
+INSERT INTO subjects VALUES (1,'Mathematics','Science',4);INSERT INTO subjects VALUES (2,'English','Languages',3);INSERT INTO subjects VALUES (3,'Physics','Science',4);
+INSERT INTO subjects VALUES (4,'Chemistry','Science',4);INSERT INTO subjects VALUES (5,'Biology','Science',4);INSERT INTO subjects VALUES (6,'Economics','Commerce',3);
+INSERT INTO subjects VALUES (7,'History','Arts',3);INSERT INTO subjects VALUES (8,'Geography','Arts',3);
+INSERT INTO grades VALUES (1,1,1,'Term 1',85,'A');INSERT INTO grades VALUES (2,1,2,'Term 1',78,'B');INSERT INTO grades VALUES (3,1,3,'Term 1',92,'A');INSERT INTO grades VALUES (4,1,4,'Term 1',88,'A');
+INSERT INTO grades VALUES (5,2,2,'Term 1',72,'B');INSERT INTO grades VALUES (6,2,7,'Term 1',81,'A');INSERT INTO grades VALUES (7,2,8,'Term 1',67,'C');
+INSERT INTO grades VALUES (8,3,1,'Term 1',90,'A');INSERT INTO grades VALUES (9,3,3,'Term 1',76,'B');INSERT INTO grades VALUES (10,3,5,'Term 1',94,'A');
+INSERT INTO grades VALUES (11,4,6,'Term 1',69,'C');INSERT INTO grades VALUES (12,4,2,'Term 1',74,'B');INSERT INTO grades VALUES (13,4,1,'Term 1',58,'C');
+INSERT INTO grades VALUES (14,5,1,'Term 1',82,'A');INSERT INTO grades VALUES (15,5,4,'Term 1',71,'B');INSERT INTO grades VALUES (16,5,5,'Term 1',79,'B');
+INSERT INTO grades VALUES (17,6,1,'Term 1',95,'A');INSERT INTO grades VALUES (18,6,3,'Term 1',89,'A');INSERT INTO grades VALUES (19,6,4,'Term 1',91,'A');
+INSERT INTO grades VALUES (20,7,7,'Term 1',64,'C');INSERT INTO grades VALUES (21,7,8,'Term 1',73,'B');INSERT INTO grades VALUES (22,7,2,'Term 1',68,'C');
+INSERT INTO grades VALUES (23,8,2,'Term 1',82,'A');INSERT INTO grades VALUES (24,8,7,'Term 1',77,'B');INSERT INTO grades VALUES (25,8,6,'Term 1',71,'B');
+INSERT INTO grades VALUES (26,9,1,'Term 1',87,'A');INSERT INTO grades VALUES (27,9,3,'Term 1',83,'A');INSERT INTO grades VALUES (28,9,5,'Term 1',90,'A');
+INSERT INTO grades VALUES (29,10,6,'Term 1',76,'B');INSERT INTO grades VALUES (30,10,2,'Term 1',70,'B');INSERT INTO grades VALUES (31,10,1,'Term 1',65,'C');
+INSERT INTO teachers VALUES (1,'Mrs. Adebayo','Mathematics',15,'M.Ed');INSERT INTO teachers VALUES (2,'Mr. Osei','English',8,'B.Ed');INSERT INTO teachers VALUES (3,'Dr. Kimani','Physics',20,'PhD');
+INSERT INTO teachers VALUES (4,'Ms. Mutasa','Chemistry',12,'M.Sc');INSERT INTO teachers VALUES (5,'Mr. Okello','Biology',6,'B.Sc');INSERT INTO teachers VALUES (6,'Mrs. Balogun','Economics',10,'MBA');
+`
+  },
+  hospital: {
+    name: 'Hospital Records',
+    schema: {
+      patients: { cols: 'id INTEGER PK, name TEXT, age INTEGER, gender TEXT, blood_type TEXT, city TEXT', create: `CREATE TABLE patients (id INTEGER PRIMARY KEY, name TEXT, age INTEGER, gender TEXT, blood_type TEXT, city TEXT);` },
+      doctors: { cols: 'id INTEGER PK, name TEXT, specialty TEXT, hospital TEXT, years_exp INTEGER', create: `CREATE TABLE doctors (id INTEGER PRIMARY KEY, name TEXT, specialty TEXT, hospital TEXT, years_exp INTEGER);` },
+      visits: { cols: 'id INTEGER PK, patient_id INTEGER FK, doctor_id INTEGER FK, visit_date DATE, diagnosis TEXT, cost REAL, currency TEXT', create: `CREATE TABLE visits (id INTEGER PRIMARY KEY, patient_id INTEGER, doctor_id INTEGER, visit_date DATE, diagnosis TEXT, cost REAL, currency TEXT);` },
+      prescriptions: { cols: 'id INTEGER PK, visit_id INTEGER FK, medication TEXT, dosage TEXT, days INTEGER, cost REAL', create: `CREATE TABLE prescriptions (id INTEGER PRIMARY KEY, visit_id INTEGER, medication TEXT, dosage TEXT, days INTEGER, cost REAL);` }
+    },
+    seed: `
+INSERT INTO patients VALUES (1,'Amara Diop',34,'F','O+','Dakar');INSERT INTO patients VALUES (2,'Oluwaseun Ade',28,'M','A+','Lagos');
+INSERT INTO patients VALUES (3,'Grace Achieng',45,'F','B+','Kisumu');INSERT INTO patients VALUES (4,'Mohammed Ali',52,'M','O-','Dar es Salaam');
+INSERT INTO patients VALUES (5,'Naledi Tau',29,'F','AB+','Gaborone');INSERT INTO patients VALUES (6,'Emmanuel Kojo',61,'M','A-','Accra');
+INSERT INTO patients VALUES (7,'Amina Hassan',38,'F','O+','Mombasa');INSERT INTO patients VALUES (8,'Tunde Bello',43,'M','B-','Ibadan');
+INSERT INTO patients VALUES (9,'Lindiwe Zulu',55,'F','A+','Durban');INSERT INTO patients VALUES (10,'Yaw Boateng',31,'M','O+','Kumasi');
+INSERT INTO doctors VALUES (1,'Dr. Nkemelu','General Medicine','Lagos General Hospital',18);INSERT INTO doctors VALUES (2,'Dr. Odhiambo','Pediatrics','Kenyatta National Hospital',12);
+INSERT INTO doctors VALUES (3,'Dr. Van der Merwe','Cardiology','Groote Schuur Hospital',22);INSERT INTO doctors VALUES (4,'Dr. Asare','Obstetrics','Korle Bu Teaching Hospital',15);
+INSERT INTO doctors VALUES (5,'Dr. Mwanza','Surgery','Muhimbili Hospital',10);
+INSERT INTO visits VALUES (1,1,1,'2024-06-01','Malaria',15000,'NGN');INSERT INTO visits VALUES (2,2,1,'2024-06-03','Typhoid',22000,'NGN');
+INSERT INTO visits VALUES (3,3,2,'2024-06-05','Pneumonia',8500,'KES');INSERT INTO visits VALUES (4,4,5,'2024-06-07','Appendicitis',450000,'TZS');
+INSERT INTO visits VALUES (5,5,3,'2024-06-10','Hypertension',850,'BWP');INSERT INTO visits VALUES (6,6,4,'2024-06-12','Diabetes Checkup',350,'GHS');
+INSERT INTO visits VALUES (7,7,2,'2024-06-15','Malaria',6500,'KES');INSERT INTO visits VALUES (8,8,1,'2024-06-18','Fracture',35000,'NGN');
+INSERT INTO visits VALUES (9,9,3,'2024-06-20','Heart Palpitations',2800,'ZAR');INSERT INTO visits VALUES (10,10,4,'2024-06-22','General Checkup',200,'GHS');
+INSERT INTO visits VALUES (11,2,1,'2024-07-01','Follow-up',8000,'NGN');INSERT INTO visits VALUES (12,3,2,'2024-07-05','Follow-up',3500,'KES');
+INSERT INTO prescriptions VALUES (1,1,'Artemether-Lumefantrine','80/480mg twice daily',3,4500);INSERT INTO prescriptions VALUES (2,1,'Paracetamol','1g three times daily',5,800);
+INSERT INTO prescriptions VALUES (3,2,'Ciprofloxacin','500mg twice daily',7,3200);INSERT INTO prescriptions VALUES (4,2,'ORS Sachets','1 sachet in 1L water',5,600);
+INSERT INTO prescriptions VALUES (5,3,'Amoxicillin','500mg three times daily',7,2100);INSERT INTO prescriptions VALUES (6,5,'Amlodipine','5mg once daily',30,180);
+INSERT INTO prescriptions VALUES (7,6,'Metformin','500mg twice daily',30,95);INSERT INTO prescriptions VALUES (8,7,'Artemether-Lumefantrine','80/480mg twice daily',3,1800);
+INSERT INTO prescriptions VALUES (9,8,'Ibuprofen','400mg three times daily',10,1500);INSERT INTO prescriptions VALUES (10,9,'Aspirin','75mg once daily',30,450);
+`
+  }
+};
+
+const SAMPLE_QUERIES = {
+  ecommerce: [
+    { label: 'All Products', sql: 'SELECT * FROM products ORDER BY price DESC;' },
+    { label: 'Customer Orders', sql: 'SELECT c.name, c.country, COUNT(o.id) as order_count, SUM(o.total) as total_spent\nFROM customers c\nJOIN orders o ON c.id = o.customer_id\nGROUP BY c.id\nORDER BY total_spent DESC;' },
+    { label: 'Top Products', sql: 'SELECT p.name, p.category, SUM(oi.quantity) as units_sold\nFROM products p\nJOIN order_items oi ON p.id = oi.product_id\nGROUP BY p.id\nORDER BY units_sold DESC\nLIMIT 5;' },
+    { label: 'Revenue by Country', sql: 'SELECT c.country, o.currency, COUNT(o.id) as orders, SUM(o.total) as revenue\nFROM orders o\nJOIN customers c ON o.customer_id = c.id\nGROUP BY c.country\nORDER BY revenue DESC;' },
+    { label: 'JOIN Example', sql: 'SELECT o.id as order_id, c.name as customer, p.name as product,\n       oi.quantity, oi.unit_price\nFROM order_items oi\nJOIN orders o ON oi.order_id = o.id\nJOIN customers c ON o.customer_id = c.id\nJOIN products p ON oi.product_id = p.id\nORDER BY o.id;' }
+  ],
+  school: [
+    { label: 'All Students', sql: 'SELECT * FROM students ORDER BY name;' },
+    { label: 'Top Scorers', sql: 'SELECT s.name, s.class, ROUND(AVG(g.score),1) as avg_score\nFROM students s\nJOIN grades g ON s.id = g.student_id\nGROUP BY s.id\nHAVING AVG(g.score) >= 80\nORDER BY avg_score DESC;' },
+    { label: 'Subject Averages', sql: 'SELECT sub.name as subject, sub.department,\n       ROUND(AVG(g.score),1) as avg_score,\n       MIN(g.score) as lowest, MAX(g.score) as highest\nFROM subjects sub\nJOIN grades g ON sub.id = g.subject_id\nGROUP BY sub.id\nORDER BY avg_score DESC;' },
+    { label: 'Grade Distribution', sql: 'SELECT g.grade, COUNT(*) as count,\n       ROUND(COUNT(*)*100.0/(SELECT COUNT(*) FROM grades),1) as percentage\nFROM grades g\nGROUP BY g.grade\nORDER BY g.grade;' },
+    { label: 'Gender Analysis', sql: 'SELECT s.gender, COUNT(DISTINCT s.id) as students,\n       ROUND(AVG(g.score),1) as avg_score\nFROM students s\nJOIN grades g ON s.id = g.student_id\nGROUP BY s.gender;' }
+  ],
+  hospital: [
+    { label: 'All Patients', sql: 'SELECT * FROM patients ORDER BY name;' },
+    { label: 'Visit Summary', sql: 'SELECT p.name, p.city, v.visit_date, v.diagnosis, v.cost, v.currency\nFROM visits v\nJOIN patients p ON v.patient_id = p.id\nORDER BY v.visit_date DESC;' },
+    { label: 'Doctor Workload', sql: 'SELECT d.name, d.specialty, d.hospital, COUNT(v.id) as visit_count\nFROM doctors d\nLEFT JOIN visits v ON d.id = v.doctor_id\nGROUP BY d.id\nORDER BY visit_count DESC;' },
+    { label: 'Common Diagnoses', sql: 'SELECT diagnosis, COUNT(*) as cases\nFROM visits\nGROUP BY diagnosis\nORDER BY cases DESC;' },
+    { label: 'Prescriptions', sql: 'SELECT p.name as patient, v.diagnosis, rx.medication, rx.dosage, rx.days\nFROM prescriptions rx\nJOIN visits v ON rx.visit_id = v.id\nJOIN patients p ON v.patient_id = p.id\nORDER BY p.name;' }
+  ]
+};
+
+let db = null;
+let currentDb = 'ecommerce';
+let queryHistory = [];
+
+async function initSQL() {
+  const SQL = await initSqlJs({ locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/${file}` });
+  loadDatabase(currentDb, SQL);
+}
+
+function loadDatabase(dbKey, SQLoverride) {
+  currentDb = dbKey;
+  const dbDef = DATABASES[dbKey];
+  const SQLclass = SQLoverride || window._SQL;
+  if (SQLoverride) window._SQL = SQLoverride;
+
+  if (db) db.close();
+  db = new (window._SQL || SQLclass).Database();
+
+  for (const [tbl, def] of Object.entries(dbDef.schema)) {
+    db.run(def.create);
+  }
+  db.run(dbDef.seed);
+
+  renderSchema(dbDef);
+  renderSampleButtons(dbKey);
+}
+
+function renderSchema(dbDef) {
+  const area = document.getElementById('schemaArea');
+  area.innerHTML = Object.entries(dbDef.schema).map(([name, def]) => `
+    <div class="schema-table">
+      <h3>${name}</h3>
+      <div class="schema-cols"><code>${def.cols}</code></div>
+    </div>
+  `).join('');
+}
+
+function renderSampleButtons(dbKey) {
+  const area = document.getElementById('sampleBtns');
+  area.innerHTML = SAMPLE_QUERIES[dbKey].map((q, i) => `
+    <button class="sample-btn" onclick="loadSample(${i})">${q.label}</button>
+  `).join('');
+}
+
+function loadSample(idx) {
+  const q = SAMPLE_QUERIES[currentDb][idx];
+  document.getElementById('sql-editor').value = q.sql;
+  document.querySelectorAll('.sample-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+}
+
+function runQuery() {
+  const sql = document.getElementById('sql-editor').value.trim();
+  if (!sql) return;
+
+  const area = document.getElementById('resultsArea');
+  const start = performance.now();
+
+  try {
+    const results = db.exec(sql);
+    const elapsed = (performance.now() - start).toFixed(1);
+
+    if (results.length === 0) {
+      area.innerHTML = `<div class="success-msg">Query executed successfully. No rows returned.</div>
+        <div class="result-meta"><span>Time: ${elapsed}ms</span></div>`;
+    } else {
+      const res = results[0];
+      const rowCount = res.values.length;
+      area.innerHTML = `
+        <div class="results-area">
+          <table class="results-table">
+            <thead><tr>${res.columns.map(c => `<th>${c}</th>`).join('')}</tr></thead>
+            <tbody>${res.values.map(row => `<tr>${row.map(v => `<td>${v === null ? '<em style="color:#94a3b8">NULL</em>' : v}</td>`).join('')}</tr>`).join('')}</tbody>
+          </table>
+        </div>
+        <div class="result-meta">
+          <span>${rowCount} row${rowCount !== 1 ? 's' : ''}</span>
+          <span>${res.columns.length} column${res.columns.length !== 1 ? 's' : ''}</span>
+          <span>${elapsed}ms</span>
+        </div>`;
+    }
+
+    addToHistory(sql);
+  } catch (e) {
+    area.innerHTML = `<div class="error-msg"><strong>Error:</strong> ${e.message}</div>`;
+  }
+}
+
+function addToHistory(sql) {
+  queryHistory.unshift(sql);
+  if (queryHistory.length > 20) queryHistory.pop();
+  const area = document.getElementById('historyArea');
+  area.innerHTML = queryHistory.map((q, i) => `
+    <div class="history-item" onclick="document.getElementById('sql-editor').value=queryHistory[${i}]" title="${q.replace(/"/g, '&quot;')}">${q}</div>
+  `).join('');
+}
+
+function formatQuery() {
+  const editor = document.getElementById('sql-editor');
+  let sql = editor.value;
+  const keywords = ['SELECT','FROM','WHERE','JOIN','LEFT JOIN','RIGHT JOIN','INNER JOIN','OUTER JOIN','ON','AND','OR','GROUP BY','ORDER BY','HAVING','LIMIT','INSERT INTO','VALUES','UPDATE','SET','DELETE FROM','CREATE TABLE','ALTER TABLE','DROP TABLE','UNION','UNION ALL','CASE','WHEN','THEN','ELSE','END','AS','IN','NOT','EXISTS','BETWEEN','LIKE','IS NULL','IS NOT NULL','ASC','DESC','DISTINCT','COUNT','SUM','AVG','MIN','MAX','ROUND'];
+  keywords.forEach(kw => {
+    const regex = new RegExp('\\b' + kw.replace(/\s+/g, '\\s+') + '\\b', 'gi');
+    sql = sql.replace(regex, kw);
+  });
+  editor.value = sql;
+}
+
+function clearEditor() {
+  document.getElementById('sql-editor').value = '';
+  document.getElementById('sql-editor').focus();
+}
+
+document.getElementById('dbSelect').addEventListener('change', function() {
+  loadDatabase(this.value);
+  document.getElementById('resultsArea').innerHTML = '<p style="color:#94a3b8;font-size:.9rem;text-align:center;padding:3rem 1rem">Database loaded. Run a query to see results.</p>';
+});
+
+document.getElementById('sql-editor').addEventListener('keydown', function(e) {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+    e.preventDefault();
+    runQuery();
+  }
+  if (e.key === 'Tab') {
+    e.preventDefault();
+    const start = this.selectionStart;
+    const end = this.selectionEnd;
+    this.value = this.value.substring(0, start) + '  ' + this.value.substring(end);
+    this.selectionStart = this.selectionEnd = start + 2;
+  }
+});
+
+initSQL();
+</script>
+</body>
+</html>

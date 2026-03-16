@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'api-tester'});</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>API Tester (Postman Lite) | AfroTools</title>
+<meta name="description" content="Test REST APIs directly in your browser. Send GET, POST, PUT, DELETE requests with custom headers, body, and authentication. View formatted responses.">
+<link rel="canonical" href="https://afrotools.com/tools/api-tester/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="API Tester | AfroTools"><meta property="og:description" content="Test REST APIs in your browser — Postman Lite.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png"><meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/api-tester/">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css"><link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+:root{--afro-dark:#0f1419;--accent:#0ea5e9}
+.tool-hero{background:linear-gradient(135deg,#0c4a6e 0%,#0ea5e9 50%,#0284c7 100%);padding:44px 0 36px}.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#bae6fd}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}h1 em{color:#bae6fd;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}.b-em{background:rgba(186,230,253,.2);color:#bae6fd;border:1px solid rgba(186,230,253,.4)}
+.tool-main{padding:28px 0 72px}.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}.card+.card{margin-top:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}.card-body{padding:22px}
+label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
+input,select,textarea{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;box-sizing:border-box}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(14,165,233,.15)}
+textarea{font-family:'Courier New',monospace;font-size:.78rem;resize:vertical}
+.url-row{display:flex;gap:8px;margin-bottom:14px}
+.url-row select{width:120px;font-weight:700;flex-shrink:0}
+.url-row input{flex:1}
+.url-row button{padding:10px 24px;background:linear-gradient(135deg,#0284c7,#0ea5e9);color:#fff;border:none;border-radius:7px;font-weight:700;font-size:.82rem;cursor:pointer;white-space:nowrap}
+.tabs{display:flex;gap:2px;border-bottom:2px solid #e2e8f0;margin-bottom:14px}
+.tab{padding:8px 16px;font-size:.76rem;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;color:#64748b}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.tab-content{display:none}.tab-content.active{display:block}
+.kv-row{display:flex;gap:8px;margin-bottom:6px;align-items:center}
+.kv-row input{flex:1}.kv-row .remove{background:none;border:none;color:#dc2626;cursor:pointer;font-size:1.2rem;padding:0 4px}
+.add-btn{font-size:.72rem;color:var(--accent);font-weight:700;cursor:pointer;background:none;border:none;padding:4px 0}
+.response-area{background:#1e293b;border-radius:8px;padding:16px;margin-top:14px;max-height:500px;overflow:auto}
+.response-area pre{color:#e2e8f0;font-size:.76rem;font-family:'Courier New',monospace;white-space:pre-wrap;margin:0;line-height:1.5}
+.response-meta{display:flex;gap:14px;margin-top:10px;font-size:.72rem;font-weight:700}
+.meta-badge{padding:4px 10px;border-radius:4px}.status-ok{background:#dcfce7;color:#16a34a}.status-err{background:#fee2e2;color:#dc2626}.status-info{background:#e0f2fe;color:#0284c7}
+.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
+.seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
+.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<section class="tool-hero"><div class="tool-hero-inner">
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>API Tester</span></div>
+<h1>API <em>Tester</em></h1>
+<p class="hero-sub">Test REST APIs directly in your browser. Send requests with custom headers, body, and authentication. View formatted JSON responses with status codes and timing.</p>
+<div class="hero-badges"><span class="badge b-em">GET / POST / PUT / DELETE</span><span class="badge b-em">Custom Headers</span><span class="badge b-em">JSON Formatting</span></div>
+</div></section>
+
+<section class="tool-main"><div class="tool-main-inner">
+<div class="card">
+<div class="card-head"><span class="card-title">Request</span></div>
+<div class="card-body">
+<div class="url-row">
+<select id="method">
+<option value="GET">GET</option>
+<option value="POST">POST</option>
+<option value="PUT">PUT</option>
+<option value="PATCH">PATCH</option>
+<option value="DELETE">DELETE</option>
+</select>
+<input type="url" id="url" placeholder="https://jsonplaceholder.typicode.com/posts/1" value="https://jsonplaceholder.typicode.com/posts/1">
+<button onclick="sendRequest()">Send</button>
+</div>
+
+<div class="tabs">
+<div class="tab active" onclick="switchTab('headers')">Headers</div>
+<div class="tab" onclick="switchTab('body')">Body</div>
+<div class="tab" onclick="switchTab('auth')">Auth</div>
+</div>
+
+<div class="tab-content active" id="tab-headers">
+<div id="headerRows">
+<div class="kv-row"><input placeholder="Key" value="Content-Type"><input placeholder="Value" value="application/json"><button class="remove" onclick="this.parentElement.remove()">x</button></div>
+</div>
+<button class="add-btn" onclick="addHeader()">+ Add Header</button>
+</div>
+
+<div class="tab-content" id="tab-body">
+<label>Request Body (JSON)</label>
+<textarea id="reqBody" rows="8" placeholder='{"title":"Test","body":"Hello from AfroTools","userId":1}'>{"title":"Test Post","body":"Hello from AfroTools API Tester","userId":1}</textarea>
+</div>
+
+<div class="tab-content" id="tab-auth">
+<div class="field"><label>Authorization Type</label>
+<select id="authType" onchange="toggleAuth()">
+<option value="none">None</option>
+<option value="bearer">Bearer Token</option>
+<option value="basic">Basic Auth</option>
+<option value="api-key">API Key (Header)</option>
+</select></div>
+<div id="authFields"></div>
+</div>
+</div></div>
+
+<div class="card" id="responseCard" style="display:none">
+<div class="card-head"><span class="card-title">Response</span></div>
+<div class="card-body">
+<div class="response-meta" id="responseMeta"></div>
+<div class="response-area"><pre id="responseBody">Loading...</pre></div>
+</div></div>
+</div></section>
+
+<section class="seo-section">
+<h2>Testing APIs Made Simple</h2>
+<p>API testing is a critical part of software development, especially in Africa's rapidly growing tech ecosystem where developers are building everything from fintech payment gateways to logistics APIs. This browser-based API tester provides Postman-like functionality without requiring any installation — perfect for quick tests, debugging, and demonstrating API endpoints during pair programming or interviews.</p>
+<p>The tool supports all standard HTTP methods (GET, POST, PUT, PATCH, DELETE), custom headers, JSON request bodies, and common authentication methods (Bearer token, Basic Auth, API keys). Responses are displayed with syntax-highlighted JSON formatting, status codes, and response timing — all the information you need to verify your API is working correctly.</p>
+<p>For African developers working with popular APIs like Paystack, Flutterwave, Africa's Talking, M-Pesa Daraja, and MTN MoMo, this tool provides a quick way to test endpoints without setting up a full development environment. Simply paste your API URL, add your authentication headers, and send a request to see the response in real-time. Note that due to browser CORS restrictions, some APIs may not be accessible directly — in those cases, you'll need a CORS proxy or a server-side testing tool.</p>
+
+<h2>Frequently Asked Questions</h2>
+<details class="faq-item"><summary>Why am I getting a CORS error?</summary><p>Browser security (CORS) prevents JavaScript from making requests to domains that don't explicitly allow it. Most production APIs don't set CORS headers for browser access. Solutions: (1) Use a CORS proxy, (2) Test from your own server/terminal, (3) Use APIs that support CORS like JSONPlaceholder. This tool works best with CORS-enabled APIs.</p></details>
+<details class="faq-item"><summary>Is my data secure when using this tool?</summary><p>Yes — all requests are made directly from your browser. No data is sent to AfroTools servers. However, be cautious with production API keys and tokens. Never paste sensitive credentials into any web-based tool, and always use test/sandbox environments when possible.</p></details>
+</section>
+
+<afro-related-tools category="developer" current="api-tester"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+function switchTab(name){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
+}
+
+function addHeader(){
+  const row=document.createElement('div');
+  row.className='kv-row';
+  row.innerHTML='<input placeholder="Key"><input placeholder="Value"><button class="remove" onclick="this.parentElement.remove()">x</button>';
+  document.getElementById('headerRows').appendChild(row);
+}
+
+function toggleAuth(){
+  const type=document.getElementById('authType').value;
+  const el=document.getElementById('authFields');
+  if(type==='bearer')el.innerHTML='<div class="field"><label>Token</label><input id="authToken" placeholder="your-bearer-token"></div>';
+  else if(type==='basic')el.innerHTML='<div class="field"><label>Username</label><input id="authUser"></div><div class="field"><label>Password</label><input id="authPass" type="password"></div>';
+  else if(type==='api-key')el.innerHTML='<div class="field"><label>Header Name</label><input id="authKeyName" value="X-API-Key"></div><div class="field"><label>API Key</label><input id="authKeyValue"></div>';
+  else el.innerHTML='';
+}
+
+async function sendRequest(){
+  const method=document.getElementById('method').value;
+  const url=document.getElementById('url').value;
+  if(!url){alert('Please enter a URL');return;}
+
+  // Collect headers
+  const headers={};
+  document.querySelectorAll('#headerRows .kv-row').forEach(row=>{
+    const inputs=row.querySelectorAll('input');
+    if(inputs[0].value&&inputs[1].value)headers[inputs[0].value]=inputs[1].value;
+  });
+
+  // Auth
+  const authType=document.getElementById('authType').value;
+  if(authType==='bearer'){
+    const token=document.getElementById('authToken')?.value;
+    if(token)headers['Authorization']='Bearer '+token;
+  }else if(authType==='basic'){
+    const user=document.getElementById('authUser')?.value||'';
+    const pass=document.getElementById('authPass')?.value||'';
+    headers['Authorization']='Basic '+btoa(user+':'+pass);
+  }else if(authType==='api-key'){
+    const name=document.getElementById('authKeyName')?.value;
+    const val=document.getElementById('authKeyValue')?.value;
+    if(name&&val)headers[name]=val;
+  }
+
+  const options={method,headers};
+  if(['POST','PUT','PATCH'].includes(method)){
+    const body=document.getElementById('reqBody').value;
+    if(body)options.body=body;
+  }
+
+  document.getElementById('responseCard').style.display='block';
+  document.getElementById('responseBody').textContent='Sending request...';
+  document.getElementById('responseMeta').innerHTML='';
+
+  const startTime=performance.now();
+  try{
+    const res=await fetch(url,options);
+    const elapsed=Math.round(performance.now()-startTime);
+    const contentType=res.headers.get('content-type')||'';
+
+    let body='';
+    if(contentType.includes('json')){
+      const json=await res.json();
+      body=JSON.stringify(json,null,2);
+    }else{
+      body=await res.text();
+    }
+
+    const statusClass=res.status<300?'status-ok':res.status<400?'status-info':'status-err';
+    let meta=`<span class="meta-badge ${statusClass}">Status: ${res.status} ${res.statusText}</span>`;
+    meta+=`<span class="meta-badge status-info">Time: ${elapsed}ms</span>`;
+    meta+=`<span class="meta-badge status-info">Size: ${new Blob([body]).size} bytes</span>`;
+    document.getElementById('responseMeta').innerHTML=meta;
+    document.getElementById('responseBody').textContent=body;
+  }catch(err){
+    const elapsed=Math.round(performance.now()-startTime);
+    document.getElementById('responseMeta').innerHTML=`<span class="meta-badge status-err">Error</span><span class="meta-badge status-info">Time: ${elapsed}ms</span>`;
+    document.getElementById('responseBody').textContent='Error: '+err.message+'\n\nThis is likely a CORS issue. The API server does not allow browser-based requests.\nTry a CORS-enabled API like https://jsonplaceholder.typicode.com/posts';
+  }
+
+  document.getElementById('responseCard').scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>
