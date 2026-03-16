@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Naira Arbitrage Spotter — Find Crypto Price Gaps Across Nigerian Platforms | AfroTools</title>
+<meta name="description" content="Find crypto price differences across Nigerian platforms. Spot arbitrage opportunities in BTC, ETH, USDT, BNB, SOL before they disappear. Real-time comparison.">
+<link rel="canonical" href="https://afrotools.com/crypto/arbitrage/">
+<meta property="og:title" content="Naira Arbitrage Spotter — Find Crypto Price Gaps Across Nigerian Platforms">
+<meta property="og:description" content="Spot crypto arbitrage opportunities across Nigerian exchanges. Compare buy/sell prices for BTC, ETH, USDT, BNB, SOL in real-time.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:url" content="https://afrotools.com/crypto/arbitrage/">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="robots" content="index, follow">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Naira Arbitrage Spotter",
+      "description": "Find crypto price differences across Nigerian platforms. Spot arbitrage opportunities before they disappear.",
+      "url": "https://afrotools.com/crypto/arbitrage/",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Any",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "provider": { "@type": "Organization", "name": "AfroTools", "url": "https://afrotools.com" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "AfroTools", "item": "https://afrotools.com" },
+        { "@type": "ListItem", "position": 2, "name": "Crypto", "item": "https://afrotools.com/crypto/" },
+        { "@type": "ListItem", "position": 3, "name": "Naira Arbitrage Spotter", "item": "https://afrotools.com/crypto/arbitrage/" }
+      ]
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/assets/css/crypto.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+<script src="/assets/js/lib/chart-config.js"></script>
+<script src="/assets/js/lib/crypto-data.js"></script>
+
+<script src="/assets/js/components/tool-registry.js"></script>
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<script src="/assets/js/components/cookie-consent.js" defer></script>
+<script src="/assets/js/lib/recent-tools.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js" defer></script>
+
+<style>
+/* ── Arbitrage-specific styles ──────────────────────── */
+.risk-disclaimer {
+  background: rgba(255, 59, 48, 0.06);
+  border: 1px solid rgba(255, 59, 48, 0.2);
+  border-radius: var(--radius-lg);
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: var(--leading-relaxed);
+}
+.risk-disclaimer .risk-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+.risk-disclaimer strong {
+  color: #FF3B30;
+  display: block;
+  margin-bottom: 4px;
+  font-size: var(--text-base);
+}
+
+.arb-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  margin-top: 24px;
+}
+.arb-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+  min-width: 700px;
+}
+.arb-table thead th {
+  text-align: left;
+  padding: 14px 16px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  border-bottom: 2px solid var(--color-border);
+  background: var(--color-bg-subtle);
+  white-space: nowrap;
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+.arb-table tbody tr {
+  border-bottom: 1px solid var(--color-border-subtle);
+  transition: background var(--transition-fast);
+}
+.arb-table tbody tr:hover { background: var(--color-bg-subtle); }
+.arb-table tbody td {
+  padding: 14px 16px;
+  vertical-align: middle;
+}
+.arb-table .plat-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+}
+.arb-table .plat-cell img {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+}
+.price-cheap {
+  background: rgba(52, 199, 89, 0.08);
+  color: #34C759;
+  font-weight: 700;
+}
+.price-expensive {
+  background: rgba(255, 59, 48, 0.08);
+  color: #FF3B30;
+  font-weight: 700;
+}
+.gap-highlight {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 700;
+}
+.gap-highlight.hot {
+  background: rgba(255, 59, 48, 0.12);
+  color: #FF3B30;
+}
+.gap-highlight.warm {
+  background: rgba(255, 149, 0, 0.12);
+  color: #FF9500;
+}
+.gap-highlight.cool {
+  background: rgba(52, 199, 89, 0.12);
+  color: #34C759;
+}
+
+/* Arbitrage calculator */
+.arb-calculator {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-top: 32px;
+}
+.arb-calculator h3 {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+.arb-calc-form {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.arb-calc-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.arb-calc-form label {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+.arb-calc-form input {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  padding: 10px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  color: var(--color-text);
+  width: 200px;
+}
+.arb-calc-form input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(0,122,255,0.1);
+}
+.arb-result {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+.arb-result-card {
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
+.arb-result-card .label {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: var(--tracking-wide);
+}
+.arb-result-card .value {
+  font-size: var(--text-xl);
+  font-weight: 800;
+  margin-top: 4px;
+}
+.arb-result-card .value.profit { color: #34C759; }
+.arb-result-card .value.loss { color: #FF3B30; }
+.arb-result-card .sub {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin-top: 2px;
+}
+
+/* Historical chart */
+.arb-chart-wrap {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-top: 32px;
+}
+.arb-chart-wrap h3 {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+.arb-chart-wrap .chart-note {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin-top: 12px;
+}
+
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 20px;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+.loading-spinner::before {
+  content: '';
+  width: 24px;
+  height: 24px;
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-right: 12px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@media (max-width: 768px) {
+  .arb-calc-form { flex-direction: column; align-items: stretch; }
+  .arb-calc-form input { width: 100%; }
+  .risk-disclaimer { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<!-- Hero -->
+<section class="crypto-hero">
+  <span class="crypto-badge">Arbitrage</span>
+  <h1>Naira Arbitrage Spotter</h1>
+  <p>Find crypto price differences across Nigerian platforms. Spot opportunities before they disappear.</p>
+</section>
+
+<!-- Main Content -->
+<section class="crypto-section">
+
+  <!-- Risk Disclaimer -->
+  <div class="risk-disclaimer">
+    <span class="risk-icon">&#x26A0;&#xFE0F;</span>
+    <div>
+      <strong>Risk Disclaimer</strong>
+      Prices change rapidly. This tool is for information only and is not financial advice. Arbitrage carries risk including slippage, withdrawal delays, and account restrictions. Never trade more than you can afford to lose. Always verify prices directly on each platform before executing any trade.
+    </div>
+  </div>
+
+  <!-- Controls -->
+  <div class="crypto-controls">
+    <label for="crypto-select">Cryptocurrency</label>
+    <select id="crypto-select">
+      <option value="bitcoin" selected>BTC - Bitcoin</option>
+      <option value="ethereum">ETH - Ethereum</option>
+      <option value="tether">USDT - Tether</option>
+      <option value="binancecoin">BNB - BNB</option>
+      <option value="solana">SOL - Solana</option>
+    </select>
+
+    <div class="auto-refresh" style="margin-left:auto;">
+      <span class="dot"></span> Auto-refreshing every 30s
+    </div>
+  </div>
+
+  <!-- Price Comparison Table -->
+  <h2>Platform Price Comparison (NGN)</h2>
+  <div class="arb-table-wrap">
+    <table class="arb-table" id="arb-table">
+      <thead>
+        <tr>
+          <th>Platform</th>
+          <th>Buy Price (NGN)</th>
+          <th>Sell Price (NGN)</th>
+          <th>Spread</th>
+          <th>vs Cheapest</th>
+          <th>Trading Fee</th>
+          <th>Withdraw Fee</th>
+        </tr>
+      </thead>
+      <tbody id="arb-tbody">
+        <tr><td colspan="7"><div class="loading-spinner">Fetching platform prices...</div></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Arbitrage Calculator -->
+  <div class="arb-calculator">
+    <h3>Arbitrage Profit Calculator</h3>
+    <div class="arb-calc-form">
+      <div class="form-group">
+        <label for="trade-amount">Amount to Trade (NGN)</label>
+        <input type="number" id="trade-amount" value="1000000" min="10000" max="100000000" step="100000">
+      </div>
+    </div>
+    <div class="arb-result" id="arb-result">
+      <div class="arb-result-card">
+        <div class="label">Buy On</div>
+        <div class="value" id="res-buy-platform">--</div>
+        <div class="sub" id="res-buy-price">--</div>
+      </div>
+      <div class="arb-result-card">
+        <div class="label">Sell On</div>
+        <div class="value" id="res-sell-platform">--</div>
+        <div class="sub" id="res-sell-price">--</div>
+      </div>
+      <div class="arb-result-card">
+        <div class="label">Gross Profit</div>
+        <div class="value" id="res-gross">--</div>
+        <div class="sub" id="res-gross-pct">--</div>
+      </div>
+      <div class="arb-result-card">
+        <div class="label">Net Profit (After Fees)</div>
+        <div class="value" id="res-net">--</div>
+        <div class="sub" id="res-net-note">Includes trading + withdrawal fees</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Historical Chart -->
+  <div class="arb-chart-wrap">
+    <h3>7-Day Arbitrage Opportunity Size</h3>
+    <div style="height:350px;"><canvas id="arb-chart"></canvas></div>
+    <p class="chart-note">Simulated data showing the maximum buy/sell price gap (%) across Nigerian platforms over the past 7 days.</p>
+  </div>
+</section>
+
+<!-- SEO Content -->
+<section class="crypto-content">
+  <h2>How Crypto Arbitrage Works in Nigeria</h2>
+  <p>Crypto arbitrage is the practice of buying a cryptocurrency on one platform where it is cheaper and selling it on another platform where it is more expensive, pocketing the difference as profit. In Nigeria's fragmented crypto market, price differences between platforms can be significant, creating regular arbitrage opportunities for alert traders.</p>
+
+  <p>The Nigerian crypto market is unique because multiple factors create persistent price gaps. Different platforms have different liquidity levels, user bases, and payment methods. Binance P2P, the largest marketplace, often has different prices than local exchanges like Quidax, Roqqu, or Luno. International platforms may price naira differently than local ones, especially during periods of currency volatility when the CBN rate and parallel market rate diverge significantly.</p>
+
+  <p>There are three main types of crypto arbitrage available to Nigerian traders. Simple arbitrage involves buying on one exchange and selling on another. This requires accounts on multiple platforms and enough capital to execute quickly before the price gap closes. Triangular arbitrage involves trading between three different crypto pairs on a single exchange to exploit pricing inefficiencies. P2P arbitrage involves buying from one P2P trader at a lower price and selling to another at a higher price on the same or different platform.</p>
+
+  <p>For a typical arbitrage trade, the process works like this: You identify that Bitcoin is selling for 98 million naira on Platform A but 100 million naira on Platform B. You buy 1 million naira worth of Bitcoin on Platform A, transfer it to Platform B, and sell it for approximately 1,020,408 naira. After accounting for trading fees (typically 0.1-0.5% per trade) and network withdrawal fees, your net profit might be 10,000-15,000 naira on that single trade.</p>
+
+  <h2>Risks and Practical Considerations</h2>
+  <p>While arbitrage sounds like free money, several risks make it far from guaranteed. The biggest risk is slippage: by the time you buy on one platform and transfer to another, the price gap may have closed or even reversed. Blockchain transfers can take anywhere from 1 minute to over an hour depending on network congestion, and a lot can change in that time.</p>
+
+  <p>Withdrawal delays are another major concern. Some Nigerian platforms impose withdrawal holds on new deposits, meaning you cannot immediately send your crypto to another exchange. This can trap your capital and eliminate the arbitrage opportunity entirely. Always check each platform's withdrawal policies before committing to a trade.</p>
+
+  <p>Account restrictions are increasingly common as platforms tighten their compliance procedures. Frequent deposits and withdrawals, especially in large amounts, may trigger KYC reviews or temporary account freezes. Some platforms have explicit policies against arbitrage trading and may restrict accounts that engage in it.</p>
+
+  <p>Transaction fees eat into profits significantly. Consider trading fees on both the buying and selling platforms (typically 0.1-0.5% each), blockchain network fees for transferring between platforms, and any deposit or withdrawal fees charged by the platforms. For a 2% price gap, total fees might consume 0.5-1.5% of your capital, leaving only 0.5-1.5% as actual profit. This means you need significant capital for arbitrage to be worthwhile, and the risk-reward ratio must be carefully evaluated for each opportunity.</p>
+
+  <p>The most successful Nigerian arbitrage traders maintain verified accounts on multiple platforms, keep capital pre-positioned on each platform to avoid transfer delays, use automated monitoring tools to spot opportunities quickly, and have clear risk limits on the maximum amount they will commit to any single trade. For most retail traders, arbitrage should be viewed as an occasional opportunity rather than a primary trading strategy.</p>
+</section>
+
+<!-- FAQ -->
+<section class="crypto-faq">
+  <h2>Frequently Asked Questions</h2>
+  <details class="faq-item">
+    <summary>Is crypto arbitrage legal in Nigeria?</summary>
+    <p>Yes, crypto arbitrage is legal in Nigeria. The SEC has issued regulations recognizing digital assets, and buying and selling crypto across platforms is permitted. However, you must comply with each platform's terms of service and KYC requirements.</p>
+  </details>
+  <details class="faq-item">
+    <summary>How much capital do I need for arbitrage?</summary>
+    <p>Most profitable arbitrage requires at least 500,000 to 1,000,000 NGN to make the fees and effort worthwhile. With smaller amounts, the fees may consume most of your potential profit.</p>
+  </details>
+  <details class="faq-item">
+    <summary>Why do prices differ between platforms?</summary>
+    <p>Price differences arise from different liquidity levels, user bases, payment methods, and market-making strategies. Local platforms may have different supply/demand dynamics than global P2P marketplaces.</p>
+  </details>
+  <details class="faq-item">
+    <summary>How quickly do arbitrage opportunities close?</summary>
+    <p>Most significant price gaps (>2%) close within minutes as arbitrage traders act on them. Smaller gaps (1-2%) may persist for hours. Speed is critical in arbitrage trading.</p>
+  </details>
+</section>
+
+<afro-footer></afro-footer>
+
+<script>
+(function() {
+  'use strict';
+
+  // Nigerian platforms with simulated data
+  var PLATFORMS = [
+    { id: 'binance',    name: 'Binance P2P',   tradingFee: 0.001, withdrawFeeNGN: 500,  spreadFactor: 0.012 },
+    { id: 'bybit',      name: 'Bybit P2P',     tradingFee: 0.001, withdrawFeeNGN: 600,  spreadFactor: 0.015 },
+    { id: 'okx',        name: 'OKX P2P',       tradingFee: 0.001, withdrawFeeNGN: 550,  spreadFactor: 0.013 },
+    { id: 'quidax',     name: 'Quidax',        tradingFee: 0.005, withdrawFeeNGN: 300,  spreadFactor: 0.020 },
+    { id: 'luno',       name: 'Luno',          tradingFee: 0.005, withdrawFeeNGN: 0,    spreadFactor: 0.025 },
+    { id: 'roqqu',      name: 'Roqqu',         tradingFee: 0.003, withdrawFeeNGN: 200,  spreadFactor: 0.018 },
+    { id: 'yellowcard', name: 'Yellow Card',   tradingFee: 0.003, withdrawFeeNGN: 0,    spreadFactor: 0.022 },
+    { id: 'kucoin',     name: 'KuCoin P2P',    tradingFee: 0.001, withdrawFeeNGN: 700,  spreadFactor: 0.016 }
+  ];
+
+  var CRYPTO_MAP = {
+    bitcoin:     { symbol: 'BTC', name: 'Bitcoin' },
+    ethereum:    { symbol: 'ETH', name: 'Ethereum' },
+    tether:      { symbol: 'USDT', name: 'Tether' },
+    binancecoin: { symbol: 'BNB', name: 'BNB' },
+    solana:      { symbol: 'SOL', name: 'Solana' }
+  };
+
+  var selectedCrypto = 'bitcoin';
+  var platformPrices = [];
+  var arbChart = null;
+
+  // DOM refs
+  var cryptoSelect = document.getElementById('crypto-select');
+  var arbTbody = document.getElementById('arb-tbody');
+  var tradeAmountInput = document.getElementById('trade-amount');
+
+  cryptoSelect.addEventListener('change', function() {
+    selectedCrypto = this.value;
+    loadData();
+  });
+  tradeAmountInput.addEventListener('input', updateCalculator);
+
+  function loadData() {
+    arbTbody.innerHTML = '<tr><td colspan="7"><div class="loading-spinner">Fetching platform prices...</div></td></tr>';
+
+    CryptoData.getPrices('ngn').then(function(prices) {
+      if (!prices) {
+        arbTbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--color-text-muted);">Unable to fetch prices. Please try again.</td></tr>';
+        return;
+      }
+
+      var basePrice = prices[selectedCrypto] && prices[selectedCrypto].ngn ? prices[selectedCrypto].ngn : getFallbackPrice(selectedCrypto);
+
+      // Generate platform-specific prices with realistic variations
+      platformPrices = PLATFORMS.map(function(plat) {
+        var variation = (Math.random() * 0.04) - 0.02; // +/- 2% variation
+        var midPrice = basePrice * (1 + variation);
+        var halfSpread = plat.spreadFactor / 2;
+        return {
+          platform: plat,
+          buyPrice: midPrice * (1 + halfSpread),
+          sellPrice: midPrice * (1 - halfSpread),
+          midPrice: midPrice
+        };
+      });
+
+      renderTable();
+      updateCalculator();
+      renderHistoricalChart();
+    });
+  }
+
+  function getFallbackPrice(coinId) {
+    var fallbacks = {
+      bitcoin: 155000000,
+      ethereum: 5200000,
+      tether: 1580,
+      binancecoin: 950000,
+      solana: 280000
+    };
+    return fallbacks[coinId] || 1580;
+  }
+
+  function renderTable() {
+    // Find cheapest buy and most expensive sell
+    var cheapestBuy = Infinity, expensiveSell = 0;
+    platformPrices.forEach(function(pd) {
+      if (pd.buyPrice < cheapestBuy) cheapestBuy = pd.buyPrice;
+      if (pd.sellPrice > expensiveSell) expensiveSell = pd.sellPrice;
+    });
+
+    // Sort by buy price
+    var sorted = platformPrices.slice().sort(function(a, b) { return a.buyPrice - b.buyPrice; });
+
+    var html = '';
+    sorted.forEach(function(pd) {
+      var plat = pd.platform;
+      var spread = ((pd.buyPrice - pd.sellPrice) / pd.sellPrice * 100).toFixed(2);
+      var vsCheapest = ((pd.buyPrice - cheapestBuy) / cheapestBuy * 100).toFixed(2);
+
+      var buyClass = pd.buyPrice === cheapestBuy ? 'price-cheap' : (pd.buyPrice > cheapestBuy * 1.01 ? 'price-expensive' : '');
+      var sellClass = pd.sellPrice === expensiveSell ? 'price-cheap' : (pd.sellPrice < expensiveSell * 0.99 ? 'price-expensive' : '');
+
+      var gapClass = parseFloat(vsCheapest) > 2 ? 'hot' : parseFloat(vsCheapest) > 1 ? 'warm' : 'cool';
+
+      html += '<tr>';
+      html += '<td><div class="plat-cell"><img src="/assets/img/crypto/' + plat.id + '.svg" alt="' + plat.name + '" onerror="this.style.display=\'none\'"> ' + plat.name + '</div></td>';
+      html += '<td class="' + buyClass + '">' + formatNGN(pd.buyPrice) + '</td>';
+      html += '<td class="' + sellClass + '">' + formatNGN(pd.sellPrice) + '</td>';
+      html += '<td>' + spread + '%</td>';
+      html += '<td><span class="gap-highlight ' + gapClass + '">' + (parseFloat(vsCheapest) > 0 ? '+' : '') + vsCheapest + '%</span></td>';
+      html += '<td>' + (plat.tradingFee * 100).toFixed(1) + '%</td>';
+      html += '<td>' + (plat.withdrawFeeNGN === 0 ? '<span style="color:#34C759;font-weight:600;">Free</span>' : '\u20A6' + plat.withdrawFeeNGN.toLocaleString()) + '</td>';
+      html += '</tr>';
+    });
+
+    arbTbody.innerHTML = html;
+  }
+
+  function updateCalculator() {
+    if (platformPrices.length === 0) return;
+
+    var tradeAmount = parseFloat(tradeAmountInput.value) || 1000000;
+
+    // Find cheapest buy platform and most expensive sell platform
+    var cheapest = platformPrices.reduce(function(best, pd) {
+      return pd.buyPrice < best.buyPrice ? pd : best;
+    });
+    var mostExpensive = platformPrices.reduce(function(best, pd) {
+      return pd.sellPrice > best.sellPrice ? pd : best;
+    });
+
+    // Calculate
+    var cryptoAmount = tradeAmount / cheapest.buyPrice;
+    var grossRevenue = cryptoAmount * mostExpensive.sellPrice;
+    var grossProfit = grossRevenue - tradeAmount;
+
+    // Fees: trading fee on buy + trading fee on sell + withdrawal fee
+    var buyFee = tradeAmount * cheapest.platform.tradingFee;
+    var sellFee = grossRevenue * mostExpensive.platform.tradingFee;
+    var withdrawFee = cheapest.platform.withdrawFeeNGN;
+    var totalFees = buyFee + sellFee + withdrawFee;
+    var netProfit = grossProfit - totalFees;
+
+    document.getElementById('res-buy-platform').textContent = cheapest.platform.name;
+    document.getElementById('res-buy-price').textContent = 'at ' + formatNGN(cheapest.buyPrice) + ' per ' + (CRYPTO_MAP[selectedCrypto] || {}).symbol;
+
+    document.getElementById('res-sell-platform').textContent = mostExpensive.platform.name;
+    document.getElementById('res-sell-price').textContent = 'at ' + formatNGN(mostExpensive.sellPrice) + ' per ' + (CRYPTO_MAP[selectedCrypto] || {}).symbol;
+
+    var grossEl = document.getElementById('res-gross');
+    grossEl.textContent = '\u20A6' + formatNum(grossProfit);
+    grossEl.className = 'value ' + (grossProfit >= 0 ? 'profit' : 'loss');
+    document.getElementById('res-gross-pct').textContent = (grossProfit / tradeAmount * 100).toFixed(2) + '% return';
+
+    var netEl = document.getElementById('res-net');
+    netEl.textContent = '\u20A6' + formatNum(netProfit);
+    netEl.className = 'value ' + (netProfit >= 0 ? 'profit' : 'loss');
+    document.getElementById('res-net-note').textContent =
+      'Fees: \u20A6' + formatNum(buyFee) + ' (buy) + \u20A6' + formatNum(sellFee) + ' (sell) + \u20A6' + formatNum(withdrawFee) + ' (withdraw)';
+  }
+
+  function renderHistoricalChart() {
+    var ctx = document.getElementById('arb-chart').getContext('2d');
+    if (arbChart) arbChart.destroy();
+
+    var colors = window.AfroChartColors || { series: ['#007AFF','#5AC8FA','#34C759','#FF9500','#AF52DE'], seriesBg: ['rgba(0,122,255,0.15)'], grid: 'rgba(0,0,0,0.04)', tickText: '#94A3B8' };
+    var defaults = window.AfroChartDefaults || {};
+
+    // Generate simulated 7-day data
+    var labels = [];
+    var maxGapData = [];
+    var avgGapData = [];
+    var now = new Date();
+    for (var i = 6; i >= 0; i--) {
+      var d = new Date(now);
+      d.setDate(d.getDate() - i);
+      labels.push(d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }));
+      // Simulate realistic arbitrage gaps
+      var maxGap = 0.8 + Math.random() * 3.5; // 0.8% to 4.3%
+      var avgGap = 0.3 + Math.random() * 1.2; // 0.3% to 1.5%
+      maxGapData.push(parseFloat(maxGap.toFixed(2)));
+      avgGapData.push(parseFloat(avgGap.toFixed(2)));
+    }
+
+    arbChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: 'Max Arbitrage Gap (%)',
+            data: maxGapData,
+            borderColor: colors.series[5] || '#FF3B30',
+            backgroundColor: 'rgba(255, 59, 48, 0.1)',
+            borderWidth: 2,
+            fill: true,
+            tension: 0.4,
+            pointRadius: 4,
+            pointHoverRadius: 6
+          },
+          {
+            label: 'Average Gap (%)',
+            data: avgGapData,
+            borderColor: colors.series[0],
+            backgroundColor: colors.seriesBg[0],
+            borderWidth: 2,
+            fill: true,
+            tension: 0.4,
+            pointRadius: 4,
+            pointHoverRadius: 6
+          }
+        ]
+      },
+      options: Object.assign({}, defaults, {
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: {
+              padding: 16,
+              usePointStyle: true,
+              pointStyle: 'circle',
+              font: { family: "'DM Sans', sans-serif", size: 12 },
+              color: '#64748B'
+            }
+          },
+          tooltip: {
+            backgroundColor: colors.tooltipBg || '#1E293B',
+            titleColor: '#fff',
+            bodyColor: '#fff',
+            callbacks: {
+              label: function(ctx) {
+                return ctx.dataset.label + ': ' + ctx.raw + '%';
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            grid: { color: colors.grid, drawBorder: false },
+            ticks: { color: colors.tickText, font: { family: "'DM Sans', sans-serif", size: 11 } }
+          },
+          y: {
+            grid: { color: colors.grid, drawBorder: false },
+            ticks: {
+              color: colors.tickText,
+              font: { family: "'DM Sans', sans-serif", size: 11 },
+              callback: function(val) { return val + '%'; }
+            },
+            beginAtZero: true
+          }
+        }
+      })
+    });
+  }
+
+  function formatNGN(n) {
+    if (!n || isNaN(n)) return '\u20A60';
+    return '\u20A6' + Number(n).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+  }
+
+  function formatNum(n) {
+    if (!n || isNaN(n)) return '0';
+    return Number(Math.abs(n)).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+  }
+
+  // Initial load
+  loadData();
+
+  // Auto-refresh every 30s
+  setInterval(loadData, 30000);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crypto Remittance Calculator — Compare Crypto vs Wise vs Western Union | AfroTools</title>
+<meta name="description" content="What's the cheapest way to send money to Africa? Compare crypto, Wise, Remitly, and Western Union side by side. See fees, exchange rates, and total received.">
+<link rel="canonical" href="https://afrotools.com/crypto/remittance/">
+<meta property="og:title" content="Crypto Remittance Calculator — Compare Crypto vs Wise vs Western Union">
+<meta property="og:description" content="Compare the cheapest ways to send money to Africa. Crypto P2P, stablecoin direct, Wise, Remitly, and Western Union side by side.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:url" content="https://afrotools.com/crypto/remittance/">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="robots" content="index, follow">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Crypto Remittance Calculator",
+      "description": "Compare the cheapest ways to send money to Africa. See fees, exchange rates, and delivery time for crypto vs traditional remittance.",
+      "url": "https://afrotools.com/crypto/remittance/",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Any",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "provider": { "@type": "Organization", "name": "AfroTools", "url": "https://afrotools.com" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "AfroTools", "item": "https://afrotools.com" },
+        { "@type": "ListItem", "position": 2, "name": "Crypto", "item": "https://afrotools.com/crypto/" },
+        { "@type": "ListItem", "position": 3, "name": "Crypto Remittance Calculator", "item": "https://afrotools.com/crypto/remittance/" }
+      ]
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/assets/css/crypto.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+<script src="/assets/js/lib/chart-config.js"></script>
+<script src="/assets/js/lib/crypto-data.js"></script>
+
+<script src="/assets/js/components/tool-registry.js"></script>
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<script src="/assets/js/components/cookie-consent.js" defer></script>
+<script src="/assets/js/lib/recent-tools.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js" defer></script>
+
+<style>
+/* ── Remittance-specific styles ─────────────────────── */
+.remit-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.remit-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.remit-form label {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+.remit-form select,
+.remit-form input {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  padding: 10px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+.remit-form select:focus,
+.remit-form input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(0,122,255,0.1);
+}
+.channels-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  margin-top: 24px;
+}
+.channel-card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  position: relative;
+  transition: all 0.2s;
+}
+.channel-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+.channel-card.winner {
+  border-color: #34C759;
+  box-shadow: 0 0 0 2px rgba(52,199,89,0.15);
+}
+.channel-card.winner::before {
+  content: 'BEST VALUE';
+  position: absolute;
+  top: -10px;
+  right: 16px;
+  background: #34C759;
+  color: #fff;
+  padding: 3px 12px;
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 700;
+}
+.channel-icon {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+.channel-title {
+  font-size: var(--text-lg);
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+.channel-subtitle {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin-bottom: 16px;
+}
+.channel-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.channel-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--text-sm);
+}
+.channel-row .label {
+  color: var(--color-text-muted);
+}
+.channel-row .value {
+  font-weight: 700;
+  text-align: right;
+}
+.channel-total {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 2px solid var(--color-border);
+}
+.channel-total .total-label {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+.channel-total .total-amount {
+  font-size: var(--text-2xl);
+  font-weight: 800;
+  color: var(--color-text);
+  margin-top: 4px;
+}
+.channel-total .total-time {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin-top: 4px;
+}
+.savings-callout {
+  background: rgba(52,199,89,0.08);
+  border: 1px solid rgba(52,199,89,0.2);
+  border-radius: var(--radius-lg);
+  padding: 20px 24px;
+  margin-top: 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.savings-callout .savings-icon {
+  font-size: 32px;
+  flex-shrink: 0;
+}
+.savings-callout .savings-text h3 {
+  font-size: var(--text-lg);
+  font-weight: 800;
+  color: #34C759;
+  margin-bottom: 4px;
+}
+.savings-callout .savings-text p {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin: 0;
+}
+.provider-breakdown {
+  margin-top: 12px;
+}
+.provider-breakdown .provider-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  font-size: var(--text-sm);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+.provider-breakdown .provider-item:last-child { border-bottom: none; }
+.provider-breakdown .provider-name { font-weight: 600; }
+.fee-highlight { color: #FF3B30; }
+.fee-low { color: #34C759; }
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 20px;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+.loading-spinner::before {
+  content: '';
+  width: 24px;
+  height: 24px;
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-right: 12px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.comparison-chart-wrap {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-top: 32px;
+}
+.comparison-chart-wrap h3 {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 768px) {
+  .channels-grid { grid-template-columns: 1fr; }
+  .savings-callout { flex-direction: column; text-align: center; }
+}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<!-- Hero -->
+<section class="crypto-hero">
+  <span class="crypto-badge">Remittance</span>
+  <h1>Crypto Remittance Calculator</h1>
+  <p>What's the cheapest way to send money to Africa? Compare crypto, Wise, and Western Union side by side.</p>
+</section>
+
+<!-- Controls -->
+<section class="crypto-section">
+  <div class="crypto-controls">
+    <div class="auto-refresh" style="margin-left:auto;">
+      <span class="dot"></span> Live exchange rates
+    </div>
+  </div>
+
+  <div class="remit-form">
+    <div class="form-group">
+      <label for="origin-country">Sending From</label>
+      <select id="origin-country">
+        <option value="US" selected>United States (USD)</option>
+        <option value="UK">United Kingdom (GBP)</option>
+        <option value="CA">Canada (CAD)</option>
+        <option value="DE">Germany (EUR)</option>
+        <option value="FR">France (EUR)</option>
+        <option value="AE">UAE (AED)</option>
+        <option value="SA">Saudi Arabia (SAR)</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="dest-country">Sending To</label>
+      <select id="dest-country">
+        <option value="NG" selected>Nigeria (NGN)</option>
+        <option value="KE">Kenya (KES)</option>
+        <option value="ZA">South Africa (ZAR)</option>
+        <option value="GH">Ghana (GHS)</option>
+        <option value="EG">Egypt (EGP)</option>
+        <option value="TZ">Tanzania (TZS)</option>
+        <option value="UG">Uganda (UGX)</option>
+        <option value="ET">Ethiopia (ETB)</option>
+        <option value="RW">Rwanda (RWF)</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="send-amount">Amount to Send</label>
+      <input type="number" id="send-amount" value="500" min="10" max="50000" step="50">
+    </div>
+  </div>
+
+  <!-- Channel comparison -->
+  <h2>Side-by-Side Comparison</h2>
+  <div class="channels-grid" id="channels">
+    <div class="loading-spinner">Calculating best routes...</div>
+  </div>
+
+  <!-- Savings callout -->
+  <div id="savings-callout" style="display:none;"></div>
+
+  <!-- Bar chart comparison -->
+  <div class="comparison-chart-wrap">
+    <h3>Total Received Comparison</h3>
+    <div style="height:300px;"><canvas id="comparison-chart"></canvas></div>
+  </div>
+</section>
+
+<!-- SEO Content -->
+<section class="crypto-content">
+  <h2>Crypto vs Wise for Sending Money to Africa</h2>
+  <p>The African diaspora sends over $100 billion in remittances to the continent every year, making it one of the largest financial flows into Africa. Yet traditional remittance services continue to charge exorbitant fees that eat into the money families actually receive. The average cost of sending $200 to Sub-Saharan Africa remains around 8%, nearly double the global average and far above the UN's Sustainable Development Goal target of 3%.</p>
+
+  <p>Wise (formerly TransferWise) disrupted the remittance market by offering mid-market exchange rates with transparent, low fees typically ranging from 0.4% to 1.5% depending on the corridor. For a $500 transfer from the US to Nigeria, Wise might charge $4-7 in fees, significantly less than Western Union's $15-40 range. Wise has become the go-to option for many in the African diaspora, especially for UK-to-Nigeria and US-to-Kenya corridors.</p>
+
+  <p>However, cryptocurrency is emerging as an even cheaper alternative for those willing to learn the process. The crypto remittance method typically works in three steps: buy USDT or USDC on a regulated exchange in the origin country, send the stablecoins to a wallet accessible in the destination country, then sell on a peer-to-peer marketplace for local currency. The total cost often comes to around 1.5% all-in, which can save $10-30 on a typical $500 transfer.</p>
+
+  <p>The stablecoin direct method is even cheaper. If both sender and recipient have crypto wallets, sending USDT on the Tron network costs roughly $0.50-$2 regardless of the amount. A $5,000 transfer for $1 is dramatically cheaper than any traditional service. The catch is that the recipient needs to be comfortable converting stablecoins to local currency, which typically involves selling on a P2P marketplace.</p>
+
+  <h2>Speed and Convenience Trade-offs</h2>
+  <p>Traditional services like Wise and Remitly excel in convenience. Money arrives in the recipient's bank account or mobile money wallet with no action required from them. Wise typically delivers within 1-2 business days for bank transfers, while Remitly offers instant delivery to mobile money in Kenya, Ghana, and other markets.</p>
+
+  <p>Crypto transfers are faster in theory but require more steps. The blockchain transaction itself takes minutes, but buying stablecoins and selling them on P2P markets adds time. A well-practiced user can complete the entire process in 30-60 minutes, but first-time users should expect longer as they learn the platforms.</p>
+
+  <p>Western Union remains relevant for cash pickup, which is critical in areas with limited banking infrastructure. In rural Ethiopia, Tanzania, and Uganda, cash pickup through Western Union or MoneyGram agent networks may be the only viable option, despite the higher fees.</p>
+
+  <p>The best choice depends on corridor, amount, and recipient capability. For tech-savvy recipients in Nigeria, Kenya, or South Africa, crypto offers significant savings. For recipients who need cash pickup or are not comfortable with digital wallets, Wise or Remitly provide the best balance of cost and convenience. Use the calculator above to compare your specific corridor and amount.</p>
+</section>
+
+<!-- FAQ -->
+<section class="crypto-faq">
+  <h2>Frequently Asked Questions</h2>
+  <details class="faq-item">
+    <summary>Is it legal to send money to Africa using crypto?</summary>
+    <p>In most corridors, using crypto for remittance is legal, though regulations vary by country. Nigeria, Kenya, and South Africa have growing crypto regulatory frameworks. Always comply with local KYC/AML requirements on both sending and receiving platforms.</p>
+  </details>
+  <details class="faq-item">
+    <summary>How long does a crypto remittance take?</summary>
+    <p>The blockchain transfer itself takes 1-5 minutes for most networks. The total process (buying stablecoins, sending, and selling for local currency) typically takes 30-60 minutes for experienced users.</p>
+  </details>
+  <details class="faq-item">
+    <summary>What if the recipient does not have a crypto wallet?</summary>
+    <p>If the recipient is not comfortable with crypto, traditional services like Wise or Remitly are better options. Alternatively, you can handle the crypto side yourself and sell on a P2P platform that delivers directly to the recipient's bank account.</p>
+  </details>
+  <details class="faq-item">
+    <summary>Are these calculations exact?</summary>
+    <p>The fees and exchange rates shown are estimates based on typical rates. Actual costs may vary depending on payment method, market conditions, and the specific providers available in your corridor. Always verify current rates before sending.</p>
+  </details>
+</section>
+
+<afro-footer></afro-footer>
+
+<script>
+(function() {
+  'use strict';
+
+  // Origin country data
+  var ORIGINS = {
+    US: { currency: 'USD', symbol: '$', flag: '&#x1F1FA;&#x1F1F8;', name: 'United States' },
+    UK: { currency: 'GBP', symbol: '\u00A3', flag: '&#x1F1EC;&#x1F1E7;', name: 'United Kingdom' },
+    CA: { currency: 'CAD', symbol: 'C$', flag: '&#x1F1E8;&#x1F1E6;', name: 'Canada' },
+    DE: { currency: 'EUR', symbol: '\u20AC', flag: '&#x1F1E9;&#x1F1EA;', name: 'Germany' },
+    FR: { currency: 'EUR', symbol: '\u20AC', flag: '&#x1F1EB;&#x1F1F7;', name: 'France' },
+    AE: { currency: 'AED', symbol: 'AED', flag: '&#x1F1E6;&#x1F1EA;', name: 'UAE' },
+    SA: { currency: 'SAR', symbol: 'SAR', flag: '&#x1F1F8;&#x1F1E6;', name: 'Saudi Arabia' }
+  };
+
+  // Destination country data
+  var DESTS = {
+    NG: { currency: 'NGN', cryptoCurrency: 'ngn', symbol: '\u20A6', flag: '&#x1F1F3;&#x1F1EC;', name: 'Nigeria' },
+    KE: { currency: 'KES', cryptoCurrency: 'kes', symbol: 'KSh', flag: '&#x1F1F0;&#x1F1EA;', name: 'Kenya' },
+    ZA: { currency: 'ZAR', cryptoCurrency: 'zar', symbol: 'R', flag: '&#x1F1FF;&#x1F1E6;', name: 'South Africa' },
+    GH: { currency: 'GHS', cryptoCurrency: 'ghs', symbol: 'GH\u20B5', flag: '&#x1F1EC;&#x1F1ED;', name: 'Ghana' },
+    EG: { currency: 'EGP', cryptoCurrency: 'egp', symbol: 'E\u00A3', flag: '&#x1F1EA;&#x1F1EC;', name: 'Egypt' },
+    TZ: { currency: 'TZS', cryptoCurrency: 'tzs', symbol: 'TSh', flag: '&#x1F1F9;&#x1F1FF;', name: 'Tanzania' },
+    UG: { currency: 'UGX', cryptoCurrency: 'ugx', symbol: 'USh', flag: '&#x1F1FA;&#x1F1EC;', name: 'Uganda' },
+    ET: { currency: 'ETB', cryptoCurrency: 'etb', symbol: 'Br', flag: '&#x1F1EA;&#x1F1F9;', name: 'Ethiopia' },
+    RW: { currency: 'RWF', cryptoCurrency: 'rwf', symbol: 'FRw', flag: '&#x1F1F7;&#x1F1FC;', name: 'Rwanda' }
+  };
+
+  // Simulated exchange rates from origin to USD
+  var TO_USD = {
+    USD: 1, GBP: 1.27, CAD: 0.74, EUR: 1.08, AED: 0.2723, SAR: 0.2667
+  };
+
+  // Simulated exchange rates from USD to local currency
+  var USD_TO_LOCAL = {
+    NGN: 1580, KES: 153, ZAR: 18.2, GHS: 14.8, EGP: 49.5,
+    TZS: 2570, UGX: 3780, ETB: 57.2, RWF: 1320
+  };
+
+  // Corridor-specific Wise fee percentages
+  var WISE_FEES = {
+    'US-NG': 0.0065, 'US-KE': 0.0055, 'US-ZA': 0.0045, 'US-GH': 0.0070, 'US-EG': 0.0080,
+    'UK-NG': 0.0040, 'UK-KE': 0.0045, 'UK-ZA': 0.0040, 'UK-GH': 0.0060, 'UK-EG': 0.0070,
+    'default': 0.0080
+  };
+
+  // Western Union markup on exchange rate + flat fee
+  var WU_FEE_PCT = 0.05; // 5% average total cost
+  var REMITLY_FEE_PCT = 0.02; // 2% average
+
+  var comparisonChart = null;
+
+  // DOM refs
+  var originSelect = document.getElementById('origin-country');
+  var destSelect = document.getElementById('dest-country');
+  var amountInput = document.getElementById('send-amount');
+  var channelsContainer = document.getElementById('channels');
+  var savingsCallout = document.getElementById('savings-callout');
+
+  originSelect.addEventListener('change', calculate);
+  destSelect.addEventListener('change', calculate);
+  amountInput.addEventListener('input', calculate);
+
+  function getWiseFee(origin, dest) {
+    var key = origin + '-' + dest;
+    return WISE_FEES[key] || WISE_FEES['default'];
+  }
+
+  function calculate() {
+    var originCode = originSelect.value;
+    var destCode = destSelect.value;
+    var amount = parseFloat(amountInput.value) || 500;
+    var origin = ORIGINS[originCode];
+    var dest = DESTS[destCode];
+
+    if (!origin || !dest) return;
+
+    var amountUSD = amount * TO_USD[origin.currency];
+    var localRate = USD_TO_LOCAL[dest.currency] || 1580;
+
+    // Channel 1: Traditional providers
+    var wiseFee = getWiseFee(originCode, destCode);
+    var wiseTotal = amountUSD * (1 - wiseFee);
+    var wiseReceived = wiseTotal * localRate * 0.998; // Wise uses near mid-market rate
+    var wiseFeeAmount = amountUSD * wiseFee;
+
+    var remitlyFeeAmt = amountUSD * REMITLY_FEE_PCT;
+    var remitlyReceived = (amountUSD - remitlyFeeAmt) * localRate * 0.995;
+
+    var wuFeeAmt = amountUSD * WU_FEE_PCT;
+    var wuReceived = (amountUSD - wuFeeAmt) * localRate * 0.97; // WU uses poor exchange rate
+
+    // Channel 2: Crypto P2P
+    var cryptoExchangeFee = amountUSD * 0.005; // 0.5% to buy USDT
+    var networkFee = 1.00; // $1 network fee
+    var p2pSpread = 0.01; // 1% P2P spread
+    var cryptoAfterFees = amountUSD - cryptoExchangeFee - networkFee;
+    var cryptoReceived = cryptoAfterFees * localRate * (1 - p2pSpread);
+    var cryptoTotalFees = cryptoExchangeFee + networkFee + (cryptoAfterFees * localRate * p2pSpread / localRate);
+
+    // Channel 3: Stablecoin direct
+    var stableNetworkFee = 1.00; // $0.50-$2 averaged
+    var stableReceived = (amountUSD - stableNetworkFee) * localRate;
+    var stableTotalFees = stableNetworkFee;
+
+    // Find winner
+    var results = [
+      { name: 'traditional', received: Math.max(wiseReceived, remitlyReceived) },
+      { name: 'crypto', received: cryptoReceived },
+      { name: 'stablecoin', received: stableReceived }
+    ];
+    results.sort(function(a, b) { return b.received - a.received; });
+    var winnerName = results[0].name;
+
+    // Render channels
+    var html = '';
+
+    // Traditional card
+    html += '<div class="channel-card' + (winnerName === 'traditional' ? ' winner' : '') + '">';
+    html += '<div class="channel-icon">&#x1F3E6;</div>';
+    html += '<div class="channel-title">Traditional Transfer</div>';
+    html += '<div class="channel-subtitle">Wise, Remitly, Western Union</div>';
+    html += '<div class="channel-rows">';
+
+    html += '<div class="provider-breakdown">';
+    html += '<div class="provider-item"><span class="provider-name">Wise</span><span>Fee: ' + origin.symbol + wiseFeeAmount.toFixed(2) + ' (' + (wiseFee * 100).toFixed(1) + '%)</span></div>';
+    html += '<div class="provider-item"><span class="provider-name">&nbsp;</span><span>Received: ' + dest.symbol + formatNum(wiseReceived) + '</span></div>';
+    html += '<div class="provider-item"><span class="provider-name">Remitly</span><span>Fee: ' + origin.symbol + remitlyFeeAmt.toFixed(2) + ' (' + (REMITLY_FEE_PCT * 100).toFixed(0) + '%)</span></div>';
+    html += '<div class="provider-item"><span class="provider-name">&nbsp;</span><span>Received: ' + dest.symbol + formatNum(remitlyReceived) + '</span></div>';
+    html += '<div class="provider-item"><span class="provider-name">Western Union</span><span class="fee-highlight">Fee: ' + origin.symbol + wuFeeAmt.toFixed(2) + ' (' + (WU_FEE_PCT * 100).toFixed(0) + '%)</span></div>';
+    html += '<div class="provider-item"><span class="provider-name">&nbsp;</span><span>Received: ' + dest.symbol + formatNum(wuReceived) + '</span></div>';
+    html += '</div>';
+
+    html += '</div>';
+    html += '<div class="channel-total">';
+    html += '<div class="total-label">Best Traditional (Wise)</div>';
+    html += '<div class="total-amount">' + dest.symbol + formatNum(wiseReceived) + '</div>';
+    html += '<div class="total-time">&#x23F1; 1-2 business days</div>';
+    html += '</div></div>';
+
+    // Crypto P2P card
+    html += '<div class="channel-card' + (winnerName === 'crypto' ? ' winner' : '') + '">';
+    html += '<div class="channel-icon">&#x1F4B1;</div>';
+    html += '<div class="channel-title">Crypto P2P</div>';
+    html += '<div class="channel-subtitle">Buy USDT &rarr; Send &rarr; Sell on P2P</div>';
+    html += '<div class="channel-rows">';
+    html += '<div class="channel-row"><span class="label">Exchange fee (0.5%)</span><span class="value">' + origin.symbol + cryptoExchangeFee.toFixed(2) + '</span></div>';
+    html += '<div class="channel-row"><span class="label">Network fee</span><span class="value">' + origin.symbol + networkFee.toFixed(2) + '</span></div>';
+    html += '<div class="channel-row"><span class="label">P2P spread (1%)</span><span class="value">~' + dest.symbol + formatNum(cryptoAfterFees * localRate * p2pSpread) + '</span></div>';
+    html += '<div class="channel-row"><span class="label">Exchange rate</span><span class="value">1 USD = ' + dest.symbol + localRate.toLocaleString() + '</span></div>';
+    html += '</div>';
+    html += '<div class="channel-total">';
+    html += '<div class="total-label">Recipient Receives</div>';
+    html += '<div class="total-amount">' + dest.symbol + formatNum(cryptoReceived) + '</div>';
+    html += '<div class="total-time">&#x23F1; 30-60 minutes</div>';
+    html += '</div></div>';
+
+    // Stablecoin Direct card
+    html += '<div class="channel-card' + (winnerName === 'stablecoin' ? ' winner' : '') + '">';
+    html += '<div class="channel-icon">&#x26A1;</div>';
+    html += '<div class="channel-title">Stablecoin Direct</div>';
+    html += '<div class="channel-subtitle">Wallet to wallet (both have crypto wallets)</div>';
+    html += '<div class="channel-rows">';
+    html += '<div class="channel-row"><span class="label">Network fee only</span><span class="value fee-low">' + origin.symbol + stableNetworkFee.toFixed(2) + '</span></div>';
+    html += '<div class="channel-row"><span class="label">Exchange fee</span><span class="value fee-low">$0.00</span></div>';
+    html += '<div class="channel-row"><span class="label">Exchange rate</span><span class="value">1 USD = ' + dest.symbol + localRate.toLocaleString() + '</span></div>';
+    html += '<div class="channel-row"><span class="label">Requirement</span><span class="value" style="font-size:12px;">Both need wallets</span></div>';
+    html += '</div>';
+    html += '<div class="channel-total">';
+    html += '<div class="total-label">Recipient Receives</div>';
+    html += '<div class="total-amount">' + dest.symbol + formatNum(stableReceived) + '</div>';
+    html += '<div class="total-time">&#x23F1; 1-5 minutes</div>';
+    html += '</div></div>';
+
+    channelsContainer.innerHTML = html;
+    if (typeof twemoji !== 'undefined') twemoji.parse(channelsContainer);
+
+    // Savings callout
+    var bestCrypto = Math.max(cryptoReceived, stableReceived);
+    var worstTraditional = wuReceived;
+    var savingsVsWU = bestCrypto - worstTraditional;
+    var savingsVsWise = stableReceived - wiseReceived;
+
+    if (savingsVsWU > 0) {
+      savingsCallout.style.display = 'flex';
+      savingsCallout.className = 'savings-callout';
+      savingsCallout.innerHTML =
+        '<div class="savings-icon">&#x1F4B0;</div>' +
+        '<div class="savings-text">' +
+        '<h3>Save ' + dest.symbol + formatNum(savingsVsWU) + ' by using crypto instead of Western Union</h3>' +
+        '<p>Even compared to Wise, stablecoin direct transfer saves you ' + dest.symbol + formatNum(Math.max(0, savingsVsWise)) + ' on this ' + origin.symbol + amount + ' transfer to ' + dest.name + '.</p>' +
+        '</div>';
+      if (typeof twemoji !== 'undefined') twemoji.parse(savingsCallout);
+    } else {
+      savingsCallout.style.display = 'none';
+    }
+
+    // Update chart
+    renderChart(dest.symbol, wiseReceived, remitlyReceived, wuReceived, cryptoReceived, stableReceived);
+  }
+
+  function formatNum(n) {
+    if (!n || isNaN(n)) return '0';
+    return Number(n).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+  }
+
+  function renderChart(sym, wise, remitly, wu, crypto, stable) {
+    var ctx = document.getElementById('comparison-chart').getContext('2d');
+    if (comparisonChart) comparisonChart.destroy();
+
+    var colors = window.AfroChartColors || { series: ['#007AFF','#5AC8FA','#FF9500','#34C759','#AF52DE'] };
+    comparisonChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Wise', 'Remitly', 'Western Union', 'Crypto P2P', 'Stablecoin Direct'],
+        datasets: [{
+          label: 'Recipient Receives (' + sym + ')',
+          data: [wise, remitly, wu, crypto, stable],
+          backgroundColor: [
+            colors.series[0],
+            colors.series[1],
+            colors.series[5] || '#FF3B30',
+            colors.series[2],
+            colors.series[4]
+          ],
+          borderRadius: 6,
+          borderSkipped: false
+        }]
+      },
+      options: Object.assign({}, window.AfroChartDefaults || {}, {
+        indexAxis: 'y',
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: (window.AfroChartColors || {}).tooltipBg || '#1E293B',
+            titleColor: '#fff',
+            bodyColor: '#fff',
+            callbacks: {
+              label: function(ctx) {
+                return sym + Number(ctx.raw).toLocaleString(undefined, { maximumFractionDigits: 0 });
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            grid: { color: (window.AfroChartColors || {}).grid || 'rgba(0,0,0,0.04)' },
+            ticks: {
+              callback: function(val) { return sym + Number(val).toLocaleString(); },
+              color: (window.AfroChartColors || {}).tickText || '#94A3B8'
+            }
+          },
+          y: {
+            grid: { display: false },
+            ticks: { color: (window.AfroChartColors || {}).tickText || '#94A3B8' }
+          }
+        }
+      })
+    });
+  }
+
+  // Use CryptoData to get real exchange rates when available
+  function loadWithLiveRates() {
+    var destCode = destSelect.value;
+    var dest = DESTS[destCode];
+    if (dest && CryptoData) {
+      CryptoData.getPrices(dest.cryptoCurrency).then(function(prices) {
+        if (prices && prices['tether'] && prices['tether'][dest.cryptoCurrency]) {
+          USD_TO_LOCAL[dest.currency] = prices['tether'][dest.cryptoCurrency];
+        }
+        calculate();
+      }).catch(function() {
+        calculate();
+      });
+    } else {
+      calculate();
+    }
+  }
+
+  // Initial load
+  loadWithLiveRates();
+
+  // Recalculate on change with live rates
+  destSelect.addEventListener('change', loadWithLiveRates);
+})();
+</script>
+</body>
+</html>

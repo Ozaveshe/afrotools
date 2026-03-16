@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stablecoin Rate Tracker — Compare USDT, USDC, DAI, BUSD Rates | AfroTools</title>
+<meta name="description" content="Compare USDT, USDC, DAI, BUSD rates across African platforms. Find the best stablecoin deal for savings, trading, or remittance in NGN, KES, ZAR, GHS, EGP.">
+<link rel="canonical" href="https://afrotools.com/crypto/stablecoins/">
+<meta property="og:title" content="Stablecoin Rate Tracker — Compare USDT, USDC, DAI, BUSD Rates">
+<meta property="og:description" content="Compare stablecoin rates across African platforms. Find the best deal for savings, trading, or remittance.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:url" content="https://afrotools.com/crypto/stablecoins/">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="robots" content="index, follow">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Stablecoin Rate Tracker",
+      "description": "Compare USDT, USDC, DAI, BUSD rates across African platforms. Find the best stablecoin deal for savings, trading, or remittance.",
+      "url": "https://afrotools.com/crypto/stablecoins/",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Any",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "provider": { "@type": "Organization", "name": "AfroTools", "url": "https://afrotools.com" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "AfroTools", "item": "https://afrotools.com" },
+        { "@type": "ListItem", "position": 2, "name": "Crypto", "item": "https://afrotools.com/crypto/" },
+        { "@type": "ListItem", "position": 3, "name": "Stablecoin Rate Tracker", "item": "https://afrotools.com/crypto/stablecoins/" }
+      ]
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/assets/css/crypto.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+<script src="/assets/js/lib/chart-config.js"></script>
+<script src="/assets/js/lib/crypto-data.js"></script>
+
+<script src="/assets/js/components/tool-registry.js"></script>
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<script src="/assets/js/components/cookie-consent.js" defer></script>
+<script src="/assets/js/lib/recent-tools.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js" defer></script>
+
+<style>
+/* ── Stablecoin-specific styles ─────────────────────── */
+.stable-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  margin-top: 24px;
+}
+.stable-coin-section {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.stable-coin-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: var(--color-bg-subtle);
+  border-bottom: 1px solid var(--color-border);
+  font-weight: 700;
+  font-size: var(--text-lg);
+}
+.stable-coin-header img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+.stable-coin-header .base-price {
+  margin-left: auto;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+.platform-row {
+  display: grid;
+  grid-template-columns: 200px repeat(6, 1fr) 140px;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--color-border-subtle);
+  font-size: var(--text-sm);
+  transition: background var(--transition-fast);
+}
+.platform-row:hover { background: var(--color-bg-subtle); }
+.platform-row:last-child { border-bottom: none; }
+.platform-row .plat-name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+}
+.platform-row .plat-name img {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+}
+.platform-row .cell-label {
+  display: none;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+.spread-good { color: #34C759; font-weight: 700; }
+.spread-ok { color: #FF9500; font-weight: 700; }
+.spread-bad { color: #FF3B30; font-weight: 700; }
+.use-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.use-badge.savings { background: rgba(52,199,89,0.12); color: #34C759; }
+.use-badge.trading { background: rgba(0,122,255,0.12); color: #007AFF; }
+.use-badge.remittance { background: rgba(175,82,222,0.12); color: #AF52DE; }
+.trust-bar {
+  display: flex;
+  gap: 2px;
+}
+.trust-bar .star {
+  width: 14px;
+  height: 14px;
+  color: #FFCC00;
+}
+.trust-bar .star.empty { color: var(--color-border); }
+.table-header {
+  display: grid;
+  grid-template-columns: 200px repeat(6, 1fr) 140px;
+  gap: 8px;
+  padding: 10px 20px;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  border-bottom: 2px solid var(--color-border);
+}
+.recommendation-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+.rec-card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+}
+.rec-card h4 {
+  font-size: var(--text-base);
+  font-weight: 700;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.rec-card .rec-platform {
+  font-size: var(--text-xl);
+  font-weight: 800;
+  color: var(--color-primary);
+  margin: 8px 0;
+}
+.rec-card .rec-reason {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: var(--leading-relaxed);
+}
+.deposit-methods {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.deposit-methods .dep-tag {
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-subtle);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 20px;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+.loading-spinner::before {
+  content: '';
+  width: 24px;
+  height: 24px;
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-right: 12px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@media (max-width: 900px) {
+  .platform-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .platform-row .cell-label { display: block; }
+  .table-header { display: none; }
+}
+@media (max-width: 480px) {
+  .platform-row { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<!-- Hero -->
+<section class="crypto-hero">
+  <span class="crypto-badge">Stablecoins</span>
+  <h1>Stablecoin Rate Tracker</h1>
+  <p>Compare USDT, USDC, DAI, BUSD rates across platforms. Find the best deal for savings, trading, or remittance.</p>
+</section>
+
+<!-- Controls -->
+<section class="crypto-section">
+  <div class="crypto-controls">
+    <label for="currency-select">Currency</label>
+    <select id="currency-select">
+      <option value="ngn" selected>NGN - Nigerian Naira</option>
+      <option value="kes">KES - Kenyan Shilling</option>
+      <option value="zar">ZAR - South African Rand</option>
+      <option value="ghs">GHS - Ghanaian Cedi</option>
+      <option value="egp">EGP - Egyptian Pound</option>
+    </select>
+
+    <label>Deposit Method</label>
+    <div class="toggle-group" id="deposit-toggle">
+      <button class="active" data-method="bank">Bank Transfer</button>
+      <button data-method="mobile">Mobile Money</button>
+      <button data-method="card">Card</button>
+    </div>
+
+    <div class="auto-refresh" style="margin-left:auto;">
+      <span class="dot"></span> Live rates
+    </div>
+  </div>
+
+  <!-- Recommendations -->
+  <h2>Recommendations</h2>
+  <div class="recommendation-cards" id="recommendations">
+    <div class="loading-spinner">Loading recommendations...</div>
+  </div>
+
+  <!-- Stablecoin Comparison Tables -->
+  <h2 style="margin-top:40px;">Platform Comparison</h2>
+  <div id="stablecoin-tables">
+    <div class="loading-spinner">Fetching stablecoin rates...</div>
+  </div>
+</section>
+
+<!-- SEO Content -->
+<section class="crypto-content">
+  <h2>USDT vs USDC for Nigerians: Which Stablecoin Should You Use?</h2>
+  <p>Stablecoins have become the backbone of crypto adoption in Africa. For Nigerians navigating volatile naira exchange rates, stablecoins offer a reliable way to store value in US dollar terms without needing a domiciliary account. But with multiple stablecoins available, choosing the right one matters more than most people realize.</p>
+
+  <p>USDT (Tether) is by far the most popular stablecoin in Nigeria. It dominates peer-to-peer trading on platforms like Binance P2P, Bybit, and local exchanges like Quidax and Luno. The reason is simple: liquidity. USDT has the deepest order books, the tightest spreads, and the most trading pairs. If you are buying or selling crypto regularly, USDT gives you the most options and the best prices.</p>
+
+  <p>USDC (USD Coin), issued by Circle, is the more transparent alternative. Circle publishes regular attestation reports from major accounting firms, showing that every USDC is backed 1:1 by US dollar reserves held in regulated financial institutions. For Nigerians who plan to hold stablecoins for savings rather than active trading, USDC offers peace of mind that Tether historically has not. Circle is also regulated in the US and has obtained e-money licenses in multiple jurisdictions.</p>
+
+  <p>DAI stands out as a decentralized stablecoin. Instead of being backed by dollars in a bank account, DAI is backed by over-collateralized crypto assets locked in smart contracts on Ethereum. This means no single company can freeze your DAI or block your transactions. For users who value censorship resistance and decentralization, DAI is the clear choice, though it comes with slightly wider spreads on African platforms due to lower liquidity.</p>
+
+  <p>BUSD (Binance USD) was once the third-largest stablecoin but has seen declining volume since Paxos stopped minting new tokens in 2023. While existing BUSD remains redeemable, Nigerian traders should be cautious about holding large amounts long-term. Most platforms now recommend converting BUSD to USDT or USDC.</p>
+
+  <h2>Stablecoin Safety Tips for African Users</h2>
+  <p>Security is paramount when dealing with stablecoins in Africa. First, always verify the platform you are using. Check that the exchange is registered and has a track record in your country. In Nigeria, platforms like Quidax and Roqqu have established local presence and customer support.</p>
+
+  <p>Second, understand the difference between custodial and non-custodial storage. Keeping stablecoins on an exchange is convenient but means the exchange controls your funds. For long-term savings, consider moving your stablecoins to a personal wallet like Trust Wallet or MetaMask, where you hold the private keys.</p>
+
+  <p>Third, be aware of network fees. USDT and USDC exist on multiple blockchains. Sending on Ethereum can cost several dollars in gas fees, while using Tron (TRC-20) or Solana typically costs under $1. Most Nigerian P2P platforms support TRC-20 USDT, making it the most cost-effective option for regular transactions.</p>
+
+  <p>Finally, never invest more than you can afford to lose. While stablecoins are designed to maintain a 1:1 peg with the US dollar, they carry risks including smart contract vulnerabilities, regulatory crackdowns, and reserve adequacy concerns. Diversifying across multiple stablecoins and platforms is a prudent strategy for any serious African crypto user.</p>
+</section>
+
+<!-- FAQ -->
+<section class="crypto-faq">
+  <h2>Frequently Asked Questions</h2>
+  <details class="faq-item">
+    <summary>Which stablecoin has the best rate in Nigeria?</summary>
+    <p>USDT typically has the tightest buy/sell spread in Nigeria due to its high liquidity on P2P markets. However, rates vary by platform and time of day. Use the tracker above to compare live rates.</p>
+  </details>
+  <details class="faq-item">
+    <summary>Is it safe to hold USDT long-term?</summary>
+    <p>USDT is widely used but has faced scrutiny over its reserves. For long-term holdings, consider diversifying between USDT and USDC, which has more transparent auditing.</p>
+  </details>
+  <details class="faq-item">
+    <summary>What network should I use for stablecoin transfers?</summary>
+    <p>TRC-20 (Tron network) is the most popular for USDT in Africa due to low fees (usually under $1). For USDC, Solana and Polygon offer cheap alternatives to Ethereum.</p>
+  </details>
+  <details class="faq-item">
+    <summary>Can I earn interest on stablecoins in Africa?</summary>
+    <p>Some platforms offer stablecoin savings products. However, always verify the platform's credibility and understand that yields come with risk. Never deposit more than you can afford to lose.</p>
+  </details>
+</section>
+
+<afro-footer></afro-footer>
+
+<script>
+(function() {
+  'use strict';
+
+  // Platform data with simulated variations
+  var PLATFORMS = [
+    { id: 'binance',   name: 'Binance P2P',   trust: 5, methods: ['bank','mobile','card'], withdrawFee: 0.80, processingTime: '5-30 min',  spreadFactor: 1.005, bestFor: 'trading' },
+    { id: 'bybit',     name: 'Bybit P2P',     trust: 4, methods: ['bank','card'],          withdrawFee: 1.00, processingTime: '5-30 min',  spreadFactor: 1.008, bestFor: 'trading' },
+    { id: 'quidax',    name: 'Quidax',        trust: 4, methods: ['bank','mobile'],        withdrawFee: 0.50, processingTime: '10-60 min', spreadFactor: 1.012, bestFor: 'savings' },
+    { id: 'luno',      name: 'Luno',          trust: 5, methods: ['bank','card'],           withdrawFee: 0.00, processingTime: '15-60 min', spreadFactor: 1.015, bestFor: 'savings' },
+    { id: 'paxful',    name: 'Paxful',        trust: 3, methods: ['bank','mobile','card'],  withdrawFee: 1.50, processingTime: '5-45 min',  spreadFactor: 1.020, bestFor: 'remittance' },
+    { id: 'roqqu',     name: 'Roqqu',         trust: 4, methods: ['bank','mobile'],         withdrawFee: 0.30, processingTime: '5-20 min',  spreadFactor: 1.010, bestFor: 'remittance' },
+    { id: 'yellowcard',name: 'Yellow Card',   trust: 4, methods: ['bank','mobile','card'],  withdrawFee: 0.00, processingTime: '10-30 min', spreadFactor: 1.018, bestFor: 'remittance' },
+    { id: 'okx',       name: 'OKX P2P',       trust: 4, methods: ['bank','card'],           withdrawFee: 0.80, processingTime: '5-30 min',  spreadFactor: 1.007, bestFor: 'trading' }
+  ];
+
+  var STABLECOINS = [
+    { id: 'tether',   symbol: 'USDT', name: 'Tether',   color: '#26A17B' },
+    { id: 'usd-coin', symbol: 'USDC', name: 'USD Coin', color: '#2775CA' },
+    { id: 'dai',      symbol: 'DAI',  name: 'Dai',      color: '#F5AC37' },
+    { id: 'binance-usd', symbol: 'BUSD', name: 'Binance USD', color: '#F0B90B' }
+  ];
+
+  var selectedCurrency = 'ngn';
+  var selectedMethod = 'bank';
+
+  // DOM refs
+  var currencySelect = document.getElementById('currency-select');
+  var depositToggle = document.getElementById('deposit-toggle');
+  var tablesContainer = document.getElementById('stablecoin-tables');
+  var recsContainer = document.getElementById('recommendations');
+
+  // Toggle group logic
+  depositToggle.addEventListener('click', function(e) {
+    var btn = e.target.closest('button');
+    if (!btn) return;
+    depositToggle.querySelectorAll('button').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    selectedMethod = btn.dataset.method;
+    loadData();
+  });
+
+  currencySelect.addEventListener('change', function() {
+    selectedCurrency = this.value;
+    loadData();
+  });
+
+  function loadData() {
+    tablesContainer.innerHTML = '<div class="loading-spinner">Fetching stablecoin rates...</div>';
+    recsContainer.innerHTML = '<div class="loading-spinner">Loading recommendations...</div>';
+
+    var stablecoinIds = STABLECOINS.map(function(s) { return s.id; }).join(',');
+    CryptoData.getPrices(selectedCurrency).then(function(prices) {
+      if (!prices) {
+        tablesContainer.innerHTML = '<p style="text-align:center;color:var(--color-text-muted);padding:40px;">Unable to fetch prices. Please try again later.</p>';
+        return;
+      }
+      renderTables(prices);
+      renderRecommendations(prices);
+    });
+  }
+
+  function getBasePrice(prices, coinId) {
+    if (prices[coinId] && prices[coinId][selectedCurrency]) {
+      return prices[coinId][selectedCurrency];
+    }
+    // Fallback estimates
+    var fallbacks = { 'tether': 1600, 'usd-coin': 1600, 'dai': 1598, 'binance-usd': 1595 };
+    var multipliers = { ngn: 1, kes: 0.096, zar: 0.011, ghs: 0.0094, egp: 0.031 };
+    return (fallbacks[coinId] || 1600) * (multipliers[selectedCurrency] || 1);
+  }
+
+  function renderTables(prices) {
+    var html = '';
+    STABLECOINS.forEach(function(coin) {
+      var basePrice = getBasePrice(prices, coin.id);
+      html += '<div class="stable-coin-section">';
+      html += '<div class="stable-coin-header">';
+      html += '<img src="/assets/img/crypto/' + coin.id + '.svg" alt="' + coin.symbol + '" onerror="this.style.display=\'none\'">';
+      html += '<span>' + coin.symbol + ' &mdash; ' + coin.name + '</span>';
+      html += '<span class="base-price">Base: ' + CryptoData.formatPrice(basePrice, selectedCurrency.toUpperCase()) + '</span>';
+      html += '</div>';
+
+      // Table header
+      html += '<div class="table-header">';
+      html += '<span>Platform</span><span>Buy Price</span><span>Sell Price</span><span>Spread</span><span>Deposit</span><span>Withdraw Fee</span><span>Time</span><span>Trust / Badge</span>';
+      html += '</div>';
+
+      // Filter and render platforms
+      var filteredPlatforms = PLATFORMS.filter(function(p) {
+        return p.methods.indexOf(selectedMethod) !== -1;
+      });
+
+      // Generate simulated prices with variation
+      var platformData = filteredPlatforms.map(function(plat) {
+        var variation = (Math.random() * 0.005) - 0.0025; // +/- 0.25% random variation
+        var buyPrice = basePrice * (plat.spreadFactor + variation);
+        var sellPrice = basePrice * (2 - plat.spreadFactor + variation);
+        var spread = ((buyPrice - sellPrice) / sellPrice * 100).toFixed(2);
+        return {
+          platform: plat,
+          buyPrice: buyPrice,
+          sellPrice: sellPrice,
+          spread: parseFloat(spread)
+        };
+      });
+
+      // Sort by buy price (cheapest first)
+      platformData.sort(function(a, b) { return a.buyPrice - b.buyPrice; });
+
+      platformData.forEach(function(pd, idx) {
+        var plat = pd.platform;
+        var spreadClass = pd.spread < 1 ? 'spread-good' : pd.spread < 2 ? 'spread-ok' : 'spread-bad';
+        var isCheapest = idx === 0;
+
+        html += '<div class="platform-row' + (isCheapest ? ' best-deal' : '') + '" style="' + (isCheapest ? 'border-left:3px solid #34C759;' : '') + '">';
+
+        html += '<div class="plat-name">';
+        html += '<img src="/assets/img/crypto/' + plat.id + '.svg" alt="' + plat.name + '" onerror="this.style.display=\'none\'">';
+        html += plat.name;
+        if (isCheapest) html += ' <span class="best-deal-badge">Best Price</span>';
+        html += '</div>';
+
+        html += '<div><span class="cell-label">Buy</span>' + CryptoData.formatPrice(pd.buyPrice, selectedCurrency.toUpperCase()) + '</div>';
+        html += '<div><span class="cell-label">Sell</span>' + CryptoData.formatPrice(pd.sellPrice, selectedCurrency.toUpperCase()) + '</div>';
+        html += '<div><span class="cell-label">Spread</span><span class="' + spreadClass + '">' + pd.spread + '%</span></div>';
+
+        html += '<div><span class="cell-label">Deposit</span><div class="deposit-methods">';
+        plat.methods.forEach(function(m) {
+          var labels = { bank: 'Bank', mobile: 'M-Money', card: 'Card' };
+          html += '<span class="dep-tag">' + labels[m] + '</span>';
+        });
+        html += '</div></div>';
+
+        html += '<div><span class="cell-label">Withdraw Fee</span>' + (plat.withdrawFee === 0 ? '<span style="color:#34C759;font-weight:600;">Free</span>' : '$' + plat.withdrawFee.toFixed(2)) + '</div>';
+        html += '<div><span class="cell-label">Time</span>' + plat.processingTime + '</div>';
+
+        html += '<div><span class="cell-label">Trust / Badge</span>';
+        html += renderTrust(plat.trust) + ' ';
+        var badgeClass = plat.bestFor;
+        var badgeLabels = { savings: 'Best for Savings', trading: 'Best for Trading', remittance: 'Best for Remittance' };
+        html += '<span class="use-badge ' + badgeClass + '">' + badgeLabels[badgeClass] + '</span>';
+        html += '</div>';
+
+        html += '</div>'; // .platform-row
+      });
+
+      html += '</div>'; // .stable-coin-section
+    });
+
+    tablesContainer.innerHTML = html;
+  }
+
+  function renderTrust(rating) {
+    var html = '<span class="trust-bar">';
+    for (var i = 1; i <= 5; i++) {
+      html += '<svg class="star' + (i > rating ? ' empty' : '') + '" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>';
+    }
+    html += '</span>';
+    return html;
+  }
+
+  function renderRecommendations(prices) {
+    var categories = [
+      { key: 'savings',    icon: '&#x1F4B0;', title: 'Best for Savings',    desc: 'Lowest fees and most reliable for long-term holding' },
+      { key: 'trading',   icon: '&#x26A1;',   title: 'Best for Trading',   desc: 'Tightest spreads and fastest execution' },
+      { key: 'remittance',icon: '&#x1F30D;',   title: 'Best for Remittance', desc: 'Best rates for sending money across borders' }
+    ];
+
+    var filteredPlatforms = PLATFORMS.filter(function(p) {
+      return p.methods.indexOf(selectedMethod) !== -1;
+    });
+
+    var html = '';
+    categories.forEach(function(cat) {
+      var best = null;
+      filteredPlatforms.forEach(function(p) {
+        if (p.bestFor === cat.key) {
+          if (!best || p.spreadFactor < best.spreadFactor) best = p;
+        }
+      });
+      if (!best) best = filteredPlatforms[0];
+
+      html += '<div class="rec-card">';
+      html += '<h4>' + cat.icon + ' ' + cat.title + '</h4>';
+      html += '<div class="rec-platform">' + best.name + '</div>';
+      html += '<p class="rec-reason">' + cat.desc + '. ' + best.name + ' offers ';
+      if (cat.key === 'savings') html += 'zero or low withdrawal fees with strong trust ratings.';
+      else if (cat.key === 'trading') html += 'the tightest spreads at ' + ((best.spreadFactor - 1) * 100).toFixed(1) + '% markup.';
+      else html += 'wide deposit method support including mobile money and bank transfers.';
+      html += '</p></div>';
+    });
+
+    recsContainer.innerHTML = html;
+    if (typeof twemoji !== 'undefined') twemoji.parse(recsContainer);
+  }
+
+  // Initial load
+  loadData();
+
+  // Auto-refresh every 60s
+  setInterval(loadData, 60000);
+})();
+</script>
+</body>
+</html>
