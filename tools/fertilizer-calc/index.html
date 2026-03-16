@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'Fertilizer Calculator'});</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fertilizer & Yield Calculator — African Crop Recommendations | AfroTools</title>
+<meta name="description" content="Calculate fertilizer quantities per hectare for African crops. Get NPK recommendations by soil type, crop, and region. Estimate expected yield and input costs.">
+<meta name="keywords" content="fertilizer calculator, NPK calculator, crop yield estimator, African farming, fertilizer per hectare, maize fertilizer, cassava fertilizer, soil nutrients">
+<link rel="canonical" href="https://afrotools.org/tools/fertilizer-calc/">
+<meta property="og:title" content="Fertilizer & Yield Calculator for African Crops">
+<meta property="og:description" content="Calculate exact fertilizer needs per hectare. NPK recommendations for 15+ African crops across different soil types.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.org/tools/fertilizer-calc/">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<style>
+:root{--green:#16a34a;--green-light:#f0fdf4;--green-dark:#15803d}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6}
+.hero{background:linear-gradient(135deg,#14532d 0%,#15803d 50%,#22c55e 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}
+.hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}
+.hero p{font-size:1.05rem;opacity:.9;max-width:600px;margin:0 auto}
+.container{max-width:900px;margin:0 auto;padding:1.5rem}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:1.5rem}
+.card h2{font-size:1.1rem;font-weight:700;margin-bottom:1rem;color:#14532d}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media(max-width:600px){.form-grid{grid-template-columns:1fr}}
+.form-group{display:flex;flex-direction:column;gap:.3rem}
+.form-group label{font-weight:600;font-size:.85rem;color:#475569}
+.form-group input,.form-group select{padding:.55rem .75rem;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.95rem;background:#f8fafc;font-family:inherit}
+.form-group input:focus,.form-group select:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(22,163,74,.15)}
+.btn{padding:.65rem 1.5rem;border:none;border-radius:7px;font-weight:600;font-size:.95rem;cursor:pointer;background:var(--green);color:#fff;transition:all .2s}
+.btn:hover{background:var(--green-dark)}
+.results-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:1.5rem}
+.result-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:1rem;text-align:center}
+.result-card.highlight{background:var(--green-light);border-color:#86efac}
+.result-label{font-size:.8rem;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.result-value{font-size:1.4rem;font-weight:800;color:var(--green);margin-top:.3rem}
+.result-unit{font-size:.75rem;color:#64748b;font-weight:500}
+.rec-table{width:100%;border-collapse:collapse;font-size:.9rem}
+.rec-table th{background:#f0fdf4;color:#14532d;padding:.6rem .75rem;text-align:left;font-weight:600;border-bottom:2px solid #bbf7d0}
+.rec-table td{padding:.5rem .75rem;border-bottom:1px solid #f1f5f9}
+.rec-table tr:hover td{background:#f8fafc}
+.npk-bar{display:flex;gap:4px;margin-top:.5rem;height:20px;border-radius:4px;overflow:hidden}
+.npk-bar div{height:100%;transition:width .5s}
+.npk-n{background:#3b82f6}
+.npk-p{background:#f59e0b}
+.npk-k{background:#ef4444}
+.npk-legend{display:flex;gap:1rem;margin-top:.5rem;font-size:.75rem;color:#64748b}
+.npk-legend span::before{content:'';display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px;vertical-align:middle}
+.npk-legend .ln::before{background:#3b82f6}
+.npk-legend .lp::before{background:#f59e0b}
+.npk-legend .lk::before{background:#ef4444}
+.cost-note{background:#fffbeb;border:1px solid #fde68a;border-radius:7px;padding:.75rem 1rem;font-size:.85rem;color:#92400e;margin-top:1rem}
+.seo-section{max-width:800px;margin:2rem auto;padding:0 1.5rem}
+.seo-section h2{font-size:1.4rem;font-weight:800;color:#14532d;margin-bottom:1rem}
+.seo-section h3{font-size:1.1rem;font-weight:700;color:#334155;margin:1.5rem 0 .5rem}
+.seo-section p{color:#475569;margin-bottom:1rem}
+.faq{max-width:800px;margin:2rem auto;padding:0 1.5rem}
+.faq h2{font-size:1.4rem;font-weight:800;color:#14532d;margin-bottom:1rem}
+.faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:.75rem;background:#fff}
+.faq summary{padding:1rem 1.25rem;font-weight:600;cursor:pointer;color:#334155;list-style:none;display:flex;justify-content:space-between;align-items:center}
+.faq summary::after{content:'+';font-size:1.3rem;color:#94a3b8;font-weight:300}
+.faq details[open] summary::after{content:'-'}
+.faq details p{padding:0 1.25rem 1rem;color:#64748b;font-size:.95rem}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<section class="hero">
+<h1>Fertilizer & Yield Calculator</h1>
+<p>Calculate exact fertilizer quantities per hectare for African crops. Get NPK recommendations based on your soil type and target yield.</p>
+</section>
+<div class="container">
+<div class="card">
+<h2>Crop & Field Details</h2>
+<div class="form-grid">
+<div class="form-group">
+<label for="crop">Crop</label>
+<select id="crop">
+<option value="maize">Maize (Corn)</option>
+<option value="rice">Rice (Paddy)</option>
+<option value="cassava">Cassava</option>
+<option value="yam">Yam</option>
+<option value="sorghum">Sorghum</option>
+<option value="millet">Millet</option>
+<option value="cowpea">Cowpea (Beans)</option>
+<option value="groundnut">Groundnut (Peanut)</option>
+<option value="soybean">Soybean</option>
+<option value="cocoa">Cocoa</option>
+<option value="coffee">Coffee</option>
+<option value="cotton">Cotton</option>
+<option value="wheat">Wheat</option>
+<option value="potato">Irish Potato</option>
+<option value="tomato">Tomato</option>
+<option value="plantain">Plantain</option>
+</select>
+</div>
+<div class="form-group">
+<label for="area">Field Size (hectares)</label>
+<input type="number" id="area" value="1" min="0.1" step="0.1">
+</div>
+<div class="form-group">
+<label for="soil">Soil Type</label>
+<select id="soil">
+<option value="loam">Loam (Balanced)</option>
+<option value="sandy">Sandy (Low nutrients)</option>
+<option value="clay">Clay (Heavy)</option>
+<option value="laterite">Laterite (Tropical)</option>
+<option value="volcanic">Volcanic (Rich)</option>
+</select>
+</div>
+<div class="form-group">
+<label for="region">Region</label>
+<select id="region">
+<option value="west">West Africa</option>
+<option value="east">East Africa</option>
+<option value="south">Southern Africa</option>
+<option value="central">Central Africa</option>
+<option value="north">North Africa</option>
+</select>
+</div>
+<div class="form-group">
+<label for="yieldTarget">Yield Target</label>
+<select id="yieldTarget">
+<option value="low">Low (Subsistence)</option>
+<option value="medium" selected>Medium (Commercial)</option>
+<option value="high">High (Intensive)</option>
+</select>
+</div>
+<div class="form-group">
+<label for="currency">Currency</label>
+<select id="currency">
+<option value="NGN">NGN - Nigerian Naira</option>
+<option value="KES">KES - Kenya Shilling</option>
+<option value="GHS">GHS - Ghana Cedi</option>
+<option value="ZAR">ZAR - South African Rand</option>
+<option value="TZS">TZS - Tanzania Shilling</option>
+<option value="UGX">UGX - Uganda Shilling</option>
+<option value="USD">USD - US Dollar</option>
+</select>
+</div>
+</div>
+<div style="text-align:center;margin-top:1.25rem">
+<button class="btn" onclick="calculate()">Calculate Fertilizer Needs</button>
+</div>
+</div>
+<div id="results" style="display:none">
+<div class="card">
+<h2>Fertilizer Recommendation</h2>
+<div class="results-grid" id="summaryCards"></div>
+<div id="npkVisual"></div>
+</div>
+<div class="card">
+<h2>Application Schedule</h2>
+<table class="rec-table" id="scheduleTable"></table>
+</div>
+<div class="card">
+<h2>Cost Estimate</h2>
+<div class="results-grid" id="costCards"></div>
+<div class="cost-note" id="costNote"></div>
+</div>
+<div class="card">
+<h2>Expected Yield</h2>
+<div class="results-grid" id="yieldCards"></div>
+</div>
+</div>
+</div>
+<section class="seo-section">
+<h2>Fertilizer Calculator for African Farmers</h2>
+<p>Proper fertilizer application is one of the most impactful interventions for improving crop yields across Africa. Research from IITA, CIMMYT, and national agricultural research institutes consistently shows that African soils, particularly in the tropical belt, are often deficient in nitrogen, phosphorus, and key micronutrients. Yet over-application wastes money and harms the environment, while under-application leaves yield potential on the table.</p>
+<h3>Soil-Specific Recommendations</h3>
+<p>African soils vary enormously — from the volcanic highlands of East Africa to the laterite soils of West Africa and the sandy Kalahari soils of Southern Africa. This calculator adjusts NPK recommendations based on your specific soil type. Sandy soils need more frequent but lighter applications, while clay soils retain nutrients longer. Laterite soils common in Nigeria, Ghana, and Cameroon require specific phosphorus management due to high iron content that binds phosphorus.</p>
+<h3>Crop-Specific NPK Ratios</h3>
+<p>Different crops have very different nutrient needs. Maize is a heavy nitrogen feeder requiring up to 120 kg N/ha for optimal yields. Legumes like cowpea and soybean fix their own nitrogen but need phosphorus for nodulation. Root crops like cassava and yam need high potassium for tuber development. This calculator provides the right NPK balance for each crop, adjusted by your yield target and growing conditions.</p>
+<h3>Cost-Effective Farming</h3>
+<p>Fertilizer represents one of the largest input costs for African farmers, often accounting for 30-50% of production costs. Getting the quantity right means you're not wasting money on excess fertilizer or losing income to preventable nutrient deficiency. The cost estimates in this calculator use current market prices across different African countries, helping you budget accurately for the season ahead.</p>
+</section>
+<section class="faq">
+<h2>Frequently Asked Questions</h2>
+<details><summary>What does NPK mean?</summary><p>NPK stands for Nitrogen (N), Phosphorus (P), and Potassium (K) — the three primary macronutrients that crops need. A fertilizer labelled "15-15-15" contains 15% each of N, P2O5, and K2O. Different crops need different ratios of these nutrients.</p></details>
+<details><summary>When should I apply fertilizer?</summary><p>Most annual crops benefit from split application — a basal dose at planting and a top-dress 4-6 weeks later. The application schedule in this calculator shows the recommended timing. Always apply when the soil is moist but not waterlogged for best absorption.</p></details>
+<details><summary>Can I use organic fertilizer instead?</summary><p>Yes! Compost, manure, and green manures can replace or supplement chemical fertilizers. However, organic sources have lower and more variable nutrient concentrations. As a rule of thumb, 10 tonnes of well-decomposed cattle manure provides roughly 50 kg N, 25 kg P2O5, and 50 kg K2O per hectare.</p></details>
+<details><summary>How accurate are the yield estimates?</summary><p>Yield estimates assume adequate rainfall or irrigation, proper pest management, and quality seeds. Actual yields can vary 30-50% depending on weather, pest pressure, and management practices. The estimates represent achievable yields under good management in each region.</p></details>
+<details><summary>Where can I buy fertilizer in Africa?</summary><p>In Nigeria, major distributors include Notore, Indorama, and state agricultural development programmes. In Kenya, check with NCPB outlets and certified agro-dealers. In Ghana, COCOBOD supplies cocoa farmers. Most countries have government subsidy programmes — check with your local agricultural extension officer.</p></details>
+</section>
+<afro-related-tools></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+<script src="/assets/js/components/navbar.js" defer></script>
+<script src="/assets/js/components/footer.js" defer></script>
+<script src="/assets/js/components/related-tools.js" defer></script>
+<script src="/assets/js/components/newsletter-cta.js" defer></script>
+<script>
+const CROPS={
+maize:{name:'Maize',npk:{low:[60,30,30],medium:[100,50,50],high:[150,75,75]},yield:{low:2,medium:5,high:8},unit:'tonnes/ha',schedule:['Basal at planting: all P, 1/3 N, all K','Top-dress at 4 weeks: 1/3 N','Top-dress at 8 weeks: 1/3 N']},
+rice:{name:'Rice',npk:{low:[50,25,25],medium:[90,45,45],high:[130,60,60]},yield:{low:2,medium:4.5,high:7},unit:'tonnes/ha',schedule:['Basal at transplanting: all P, all K, 1/3 N','Tillering (3 weeks): 1/3 N','Panicle initiation: 1/3 N']},
+cassava:{name:'Cassava',npk:{low:[30,20,40],medium:[60,40,80],high:[100,60,120]},yield:{low:8,medium:20,high:35},unit:'tonnes/ha',schedule:['Basal at planting: all P, 1/2 K','Top-dress at 8 weeks: all N, 1/2 K']},
+yam:{name:'Yam',npk:{low:[30,15,50],medium:[60,30,90],high:[90,45,120]},yield:{low:5,medium:15,high:25},unit:'tonnes/ha',schedule:['Basal in mound: all P, 1/2 K','Top-dress at vine growth: all N, 1/2 K']},
+sorghum:{name:'Sorghum',npk:{low:[40,20,20],medium:[80,40,40],high:[120,60,60]},yield:{low:1.5,medium:3,high:5},unit:'tonnes/ha',schedule:['Basal at planting: all P, all K, 1/2 N','Top-dress at 6 weeks: 1/2 N']},
+millet:{name:'Millet',npk:{low:[30,15,15],medium:[60,30,30],high:[90,45,45]},yield:{low:1,medium:2,high:3.5},unit:'tonnes/ha',schedule:['Basal at planting: all P, all K, 1/2 N','Top-dress at 4 weeks: 1/2 N']},
+cowpea:{name:'Cowpea',npk:{low:[10,25,20],medium:[20,40,30],high:[20,60,40]},yield:{low:0.5,medium:1.2,high:2},unit:'tonnes/ha',schedule:['Basal only: all N, all P, all K (legume fixes N)']},
+groundnut:{name:'Groundnut',npk:{low:[10,30,20],medium:[20,50,30],high:[25,60,40]},yield:{low:0.8,medium:1.8,high:3},unit:'tonnes/ha',schedule:['Basal at planting: all nutrients','Apply gypsum at pegging if available']},
+soybean:{name:'Soybean',npk:{low:[10,30,20],medium:[20,50,30],high:[25,60,45]},yield:{low:1,medium:2,high:3},unit:'tonnes/ha',schedule:['Basal at planting: all P, all K, starter N','Inoculate seeds with Bradyrhizobium']},
+cocoa:{name:'Cocoa',npk:{low:[40,25,60],medium:[80,50,100],high:[120,75,150]},yield:{low:0.3,medium:0.8,high:1.5},unit:'tonnes/ha (dry beans)',schedule:['April/May: 1/2 annual dose (ring application)','September/October: 1/2 annual dose']},
+coffee:{name:'Coffee',npk:{low:[50,20,50],medium:[100,40,100],high:[150,60,150]},yield:{low:0.5,medium:1.5,high:3},unit:'tonnes/ha (clean)',schedule:['Start of rains: 1/3 dose','Mid-season: 1/3 dose','Late season: 1/3 dose']},
+cotton:{name:'Cotton',npk:{low:[40,20,20],medium:[80,40,40],high:[120,60,60]},yield:{low:0.5,medium:1.5,high:2.5},unit:'tonnes/ha (seed cotton)',schedule:['Basal at planting: all P, all K, 1/3 N','Top-dress at squaring: 1/3 N','Top-dress at flowering: 1/3 N']},
+wheat:{name:'Wheat',npk:{low:[50,30,20],medium:[100,50,40],high:[150,75,60]},yield:{low:2,medium:4,high:6},unit:'tonnes/ha',schedule:['Basal at planting: all P, all K, 1/2 N','Top-dress at tillering: 1/2 N']},
+potato:{name:'Irish Potato',npk:{low:[60,50,80],medium:[100,80,120],high:[150,100,180]},yield:{low:8,medium:20,high:35},unit:'tonnes/ha',schedule:['Basal at planting: all P, 1/2 N, 1/2 K','Top-dress at hilling: 1/2 N, 1/2 K']},
+tomato:{name:'Tomato',npk:{low:[60,40,60],medium:[120,80,100],high:[180,100,150]},yield:{low:10,medium:30,high:50},unit:'tonnes/ha',schedule:['Basal at transplanting: all P, 1/3 N, 1/3 K','2 weeks after: 1/3 N, 1/3 K','At flowering: 1/3 N, 1/3 K']},
+plantain:{name:'Plantain',npk:{low:[50,20,100],medium:[100,40,200],high:[150,60,300]},yield:{low:5,medium:15,high:25},unit:'tonnes/ha',schedule:['At planting: all P, 1/4 K','3 months: 1/2 N, 1/4 K','6 months: 1/2 N, 1/2 K']}
+};
+const SOIL_MULT={loam:1,sandy:1.2,clay:0.85,laterite:1.1,volcanic:0.8};
+const COSTS={NGN:{urea:28000,npk15:32000,symbol:'\u20a6'},KES:{urea:4500,npk15:5200,symbol:'KSh'},GHS:{urea:320,npk15:380,symbol:'GH\u20b5'},ZAR:{urea:850,npk15:950,symbol:'R'},TZS:{urea:85000,npk15:95000,symbol:'TSh'},UGX:{urea:150000,npk15:170000,symbol:'USh'},USD:{urea:35,npk15:42,symbol:'$'}};
+
+function calculate(){
+  const crop=CROPS[document.getElementById('crop').value];
+  const area=parseFloat(document.getElementById('area').value)||1;
+  const soil=document.getElementById('soil').value;
+  const target=document.getElementById('yieldTarget').value;
+  const curr=document.getElementById('currency').value;
+  const sm=SOIL_MULT[soil];
+  const [n,p,k]=crop.npk[target].map(v=>Math.round(v*sm));
+  const totalN=Math.round(n*area);
+  const totalP=Math.round(p*area);
+  const totalK=Math.round(k*area);
+  const ureaBags=Math.ceil((totalN/0.46)/50);
+  const dapBags=Math.ceil((totalP/0.46)/50);
+  const mopBags=Math.ceil((totalK/0.60)/50);
+  const npkBags=Math.ceil(Math.max(totalN,totalP,totalK)/7.5);
+  const c=COSTS[curr];
+  const sym=c.symbol;
+  const ureaCost=ureaBags*c.urea;
+  const npkCost=npkBags*c.npk15;
+  const yieldEst=crop.yield[target]*area;
+
+  document.getElementById('summaryCards').innerHTML=`
+    <div class="result-card highlight"><div class="result-label">Nitrogen (N)</div><div class="result-value">${totalN}<span class="result-unit"> kg</span></div></div>
+    <div class="result-card highlight"><div class="result-label">Phosphorus (P2O5)</div><div class="result-value">${totalP}<span class="result-unit"> kg</span></div></div>
+    <div class="result-card highlight"><div class="result-label">Potassium (K2O)</div><div class="result-value">${totalK}<span class="result-unit"> kg</span></div></div>
+    <div class="result-card"><div class="result-label">Per Hectare</div><div class="result-value">${n}:${p}:${k}<span class="result-unit"> N:P:K kg/ha</span></div></div>
+  `;
+
+  const total=n+p+k;
+  document.getElementById('npkVisual').innerHTML=`
+    <div class="npk-bar"><div class="npk-n" style="width:${(n/total*100).toFixed(1)}%"></div><div class="npk-p" style="width:${(p/total*100).toFixed(1)}%"></div><div class="npk-k" style="width:${(k/total*100).toFixed(1)}%"></div></div>
+    <div class="npk-legend"><span class="ln">N ${Math.round(n/total*100)}%</span><span class="lp">P ${Math.round(p/total*100)}%</span><span class="lk">K ${Math.round(k/total*100)}%</span></div>
+  `;
+
+  let sched='<thead><tr><th>Timing</th><th>Application</th></tr></thead><tbody>';
+  crop.schedule.forEach((s,i)=>{sched+=`<tr><td style="font-weight:600">Stage ${i+1}</td><td>${s}</td></tr>`;});
+  sched+='</tbody>';
+  document.getElementById('scheduleTable').innerHTML=sched;
+
+  document.getElementById('costCards').innerHTML=`
+    <div class="result-card"><div class="result-label">Urea (46-0-0)</div><div class="result-value">${ureaBags}<span class="result-unit"> bags (50kg)</span></div><div style="font-size:.8rem;color:#64748b;margin-top:.25rem">${sym}${ureaCost.toLocaleString()}</div></div>
+    <div class="result-card"><div class="result-label">NPK 15-15-15</div><div class="result-value">${npkBags}<span class="result-unit"> bags (50kg)</span></div><div style="font-size:.8rem;color:#64748b;margin-top:.25rem">${sym}${npkCost.toLocaleString()}</div></div>
+    <div class="result-card highlight"><div class="result-label">Total Est. Cost</div><div class="result-value">${sym}${(ureaCost+npkCost).toLocaleString()}</div></div>
+  `;
+
+  document.getElementById('costNote').textContent=`Prices are approximate ${curr} market rates for 50kg bags. Actual prices vary by location, supplier, and season. Government subsidy programmes may reduce costs by 30-50%.`;
+
+  document.getElementById('yieldCards').innerHTML=`
+    <div class="result-card highlight"><div class="result-label">Expected Yield</div><div class="result-value">${yieldEst.toFixed(1)}<span class="result-unit"> ${crop.unit}</span></div></div>
+    <div class="result-card"><div class="result-label">Yield Target</div><div class="result-value">${target.charAt(0).toUpperCase()+target.slice(1)}</div></div>
+    <div class="result-card"><div class="result-label">Total Area</div><div class="result-value">${area}<span class="result-unit"> hectares</span></div></div>
+  `;
+
+  document.getElementById('results').style.display='block';
+  document.getElementById('results').scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'Structural Calculator'});</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Structural Calculator — Beam, Column & Slab Design | AfroTools</title>
+<meta name="description" content="Free structural engineering calculator for beams, columns, and slabs. Calculate load capacity, reinforcement, and deflection for African building projects.">
+<meta name="keywords" content="structural calculator, beam design, column sizing, slab reinforcement, building structure, civil engineering, African construction">
+<link rel="canonical" href="https://afrotools.org/tools/structural-calc/">
+<meta property="og:title" content="Structural Calculator — Beam, Column & Slab Design">
+<meta property="og:description" content="Calculate beam sizes, column reinforcement, and slab thickness for building projects. Based on BS/EC codes used across Africa.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.org/tools/structural-calc/">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<style>
+:root{--sky:#0ea5e9;--sky-light:#e0f2fe;--sky-dark:#0284c7}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6}
+.hero{background:linear-gradient(135deg,#0c4a6e 0%,#0369a1 50%,#0ea5e9 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}
+.hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}
+.hero p{font-size:1.05rem;opacity:.9;max-width:600px;margin:0 auto}
+.container{max-width:900px;margin:0 auto;padding:1.5rem}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:1.5rem}
+.card h2{font-size:1.1rem;font-weight:700;margin-bottom:1rem;color:#0c4a6e}
+.tabs{display:flex;gap:.5rem;margin-bottom:1.5rem;flex-wrap:wrap}
+.tab{padding:.5rem 1rem;border:1.5px solid #e2e8f0;border-radius:7px;background:#fff;cursor:pointer;font-weight:600;font-size:.9rem;color:#475569;transition:all .2s}
+.tab:hover{border-color:#bae6fd;color:#0369a1}
+.tab.active{background:var(--sky);color:#fff;border-color:var(--sky)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media(max-width:600px){.form-grid{grid-template-columns:1fr}}
+.form-group{display:flex;flex-direction:column;gap:.3rem}
+.form-group label{font-weight:600;font-size:.85rem;color:#475569}
+.form-group input,.form-group select{padding:.55rem .75rem;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.95rem;background:#f8fafc;font-family:inherit}
+.form-group input:focus,.form-group select:focus{outline:none;border-color:var(--sky);box-shadow:0 0 0 3px rgba(14,165,233,.15)}
+.btn{padding:.65rem 1.5rem;border:none;border-radius:7px;font-weight:600;font-size:.95rem;cursor:pointer;background:var(--sky);color:#fff;transition:all .2s}
+.btn:hover{background:var(--sky-dark)}
+.results-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:1rem}
+.result-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:1rem;text-align:center}
+.result-card.highlight{background:var(--sky-light);border-color:#7dd3fc}
+.result-label{font-size:.8rem;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.result-value{font-size:1.3rem;font-weight:800;color:var(--sky-dark);margin-top:.3rem}
+.result-unit{font-size:.75rem;color:#64748b}
+.rec-table{width:100%;border-collapse:collapse;font-size:.9rem;margin-top:.75rem}
+.rec-table th{background:var(--sky-light);color:#0c4a6e;padding:.6rem .75rem;text-align:left;font-weight:600;border-bottom:2px solid #7dd3fc}
+.rec-table td{padding:.5rem .75rem;border-bottom:1px solid #f1f5f9}
+.warning-box{background:#fffbeb;border:1px solid #fde68a;border-radius:7px;padding:.75rem 1rem;font-size:.85rem;color:#92400e;margin-top:1rem}
+.calc-section{display:none}
+.calc-section.active{display:block}
+.seo-section{max-width:800px;margin:2rem auto;padding:0 1.5rem}
+.seo-section h2{font-size:1.4rem;font-weight:800;color:#0c4a6e;margin-bottom:1rem}
+.seo-section h3{font-size:1.1rem;font-weight:700;color:#334155;margin:1.5rem 0 .5rem}
+.seo-section p{color:#475569;margin-bottom:1rem}
+.faq{max-width:800px;margin:2rem auto;padding:0 1.5rem}
+.faq h2{font-size:1.4rem;font-weight:800;color:#0c4a6e;margin-bottom:1rem}
+.faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:.75rem;background:#fff}
+.faq summary{padding:1rem 1.25rem;font-weight:600;cursor:pointer;color:#334155;list-style:none;display:flex;justify-content:space-between;align-items:center}
+.faq summary::after{content:'+';font-size:1.3rem;color:#94a3b8;font-weight:300}
+.faq details[open] summary::after{content:'-'}
+.faq details p{padding:0 1.25rem 1rem;color:#64748b;font-size:.95rem}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<section class="hero">
+<h1>Structural Calculator</h1>
+<p>Calculate beam sizes, column reinforcement, and slab thickness for building projects. Based on BS 8110 and Eurocode standards used across Africa.</p>
+</section>
+<div class="container">
+<div class="tabs">
+<button class="tab active" onclick="switchTab('beam')">Beam Design</button>
+<button class="tab" onclick="switchTab('column')">Column Design</button>
+<button class="tab" onclick="switchTab('slab')">Slab Design</button>
+<button class="tab" onclick="switchTab('footing')">Pad Footing</button>
+</div>
+
+<!-- BEAM -->
+<div class="calc-section active" id="sec-beam">
+<div class="card">
+<h2>Simply Supported Beam</h2>
+<div class="form-grid">
+<div class="form-group"><label>Span (m)</label><input type="number" id="b-span" value="5" step="0.1" min="1"></div>
+<div class="form-group"><label>Uniformly Distributed Load (kN/m)</label><input type="number" id="b-udl" value="25" step="1" min="1"></div>
+<div class="form-group"><label>Concrete Grade</label><select id="b-fcu"><option value="20">C20 (20 MPa)</option><option value="25" selected>C25 (25 MPa)</option><option value="30">C30 (30 MPa)</option><option value="35">C35 (35 MPa)</option></select></div>
+<div class="form-group"><label>Steel Grade</label><select id="b-fy"><option value="410">Y410 (Grade 410)</option><option value="460" selected>Y460 (Grade 460)</option><option value="500">Y500 (Grade 500)</option></select></div>
+<div class="form-group"><label>Beam Width (mm)</label><input type="number" id="b-width" value="225" step="25" min="150"></div>
+<div class="form-group"><label>Cover (mm)</label><input type="number" id="b-cover" value="25" step="5" min="20"></div>
+</div>
+<div style="text-align:center;margin-top:1.25rem"><button class="btn" onclick="calcBeam()">Calculate Beam</button></div>
+</div>
+<div id="beam-results" style="display:none">
+<div class="card"><h2>Beam Results</h2><div id="beam-summary" class="results-grid"></div><table class="rec-table" id="beam-table"></table><div class="warning-box">This is a preliminary design tool. All structural designs must be verified by a registered structural engineer before construction.</div></div>
+</div>
+</div>
+
+<!-- COLUMN -->
+<div class="calc-section" id="sec-column">
+<div class="card">
+<h2>Short Braced Column (Axial Load)</h2>
+<div class="form-grid">
+<div class="form-group"><label>Axial Load N (kN)</label><input type="number" id="c-load" value="800" step="10" min="10"></div>
+<div class="form-group"><label>Concrete Grade</label><select id="c-fcu"><option value="20">C20 (20 MPa)</option><option value="25" selected>C25 (25 MPa)</option><option value="30">C30 (30 MPa)</option></select></div>
+<div class="form-group"><label>Steel Grade</label><select id="c-fy"><option value="410">Y410</option><option value="460" selected>Y460</option><option value="500">Y500</option></select></div>
+<div class="form-group"><label>Column Shape</label><select id="c-shape"><option value="square">Square</option><option value="circular">Circular</option></select></div>
+<div class="form-group"><label>Steel Percentage (%)</label><input type="number" id="c-steel" value="2" step="0.5" min="1" max="6"></div>
+</div>
+<div style="text-align:center;margin-top:1.25rem"><button class="btn" onclick="calcColumn()">Calculate Column</button></div>
+</div>
+<div id="col-results" style="display:none">
+<div class="card"><h2>Column Results</h2><div id="col-summary" class="results-grid"></div><table class="rec-table" id="col-table"></table><div class="warning-box">This is a preliminary design tool. All structural designs must be verified by a registered structural engineer before construction.</div></div>
+</div>
+</div>
+
+<!-- SLAB -->
+<div class="calc-section" id="sec-slab">
+<div class="card">
+<h2>One-Way Solid Slab</h2>
+<div class="form-grid">
+<div class="form-group"><label>Span (m)</label><input type="number" id="s-span" value="4" step="0.1" min="1"></div>
+<div class="form-group"><label>Imposed Load (kN/m2)</label><input type="number" id="s-live" value="3" step="0.5" min="0.5"><div style="font-size:.75rem;color:#94a3b8">Residential: 1.5-2, Office: 2.5-3, Commercial: 4-5</div></div>
+<div class="form-group"><label>Concrete Grade</label><select id="s-fcu"><option value="20">C20</option><option value="25" selected>C25</option><option value="30">C30</option></select></div>
+<div class="form-group"><label>Finishes Load (kN/m2)</label><input type="number" id="s-finish" value="1.5" step="0.5" min="0"></div>
+</div>
+<div style="text-align:center;margin-top:1.25rem"><button class="btn" onclick="calcSlab()">Calculate Slab</button></div>
+</div>
+<div id="slab-results" style="display:none">
+<div class="card"><h2>Slab Results</h2><div id="slab-summary" class="results-grid"></div><table class="rec-table" id="slab-table"></table><div class="warning-box">This is a preliminary design tool. All structural designs must be verified by a registered structural engineer before construction.</div></div>
+</div>
+</div>
+
+<!-- FOOTING -->
+<div class="calc-section" id="sec-footing">
+<div class="card">
+<h2>Pad Footing (Concentric Load)</h2>
+<div class="form-grid">
+<div class="form-group"><label>Column Load (kN)</label><input type="number" id="f-load" value="600" step="10" min="10"></div>
+<div class="form-group"><label>Soil Bearing Capacity (kN/m2)</label><select id="f-sbc"><option value="75">Soft clay (75)</option><option value="100">Firm clay (100)</option><option value="150" selected>Stiff clay (150)</option><option value="200">Sandy (200)</option><option value="300">Gravel (300)</option><option value="400">Laterite/Rock (400)</option></select></div>
+<div class="form-group"><label>Concrete Grade</label><select id="f-fcu"><option value="20" selected>C20</option><option value="25">C25</option><option value="30">C30</option></select></div>
+<div class="form-group"><label>Column Size (mm)</label><input type="number" id="f-colsize" value="225" step="25" min="150"></div>
+</div>
+<div style="text-align:center;margin-top:1.25rem"><button class="btn" onclick="calcFooting()">Calculate Footing</button></div>
+</div>
+<div id="foot-results" style="display:none">
+<div class="card"><h2>Footing Results</h2><div id="foot-summary" class="results-grid"></div><table class="rec-table" id="foot-table"></table><div class="warning-box">This is a preliminary design tool. All structural designs must be verified by a registered structural engineer before construction.</div></div>
+</div>
+</div>
+</div>
+
+<section class="seo-section">
+<h2>Structural Engineering Calculator for African Projects</h2>
+<p>Structural design is a critical phase of any building project, whether it's a residential bungalow in Lagos, a commercial complex in Nairobi, or a warehouse in Johannesburg. Getting the beam sizes, column dimensions, and slab thickness right ensures safety while controlling material costs — often the largest expense in African construction projects.</p>
+<h3>Code-Based Calculations</h3>
+<p>This calculator uses BS 8110 (British Standard) design methodology, which is the primary structural design code in Nigeria, Ghana, Kenya, Tanzania, Uganda, and many other African countries. South Africa uses SANS codes which are similar in principle. The calculations follow established engineering formulas for ultimate limit state design, ensuring adequate strength and serviceability.</p>
+<h3>Optimise Material Usage</h3>
+<p>With concrete and steel prices rising across Africa, engineers need to optimise designs to minimise waste. An oversized beam wastes concrete and steel; an undersized one is dangerous. This tool gives you preliminary sizes that you can refine with detailed analysis. For columns, the steel percentage directly impacts cost — using the minimum required reinforcement saves money without compromising safety.</p>
+<h3>Soil Considerations</h3>
+<p>Foundation design depends heavily on local soil conditions. Lagos clay is notoriously soft, requiring wider footings or pile foundations. Nairobi's volcanic soils generally have better bearing capacity. The footing calculator includes common African soil types so you can size pad footings appropriately. Always conduct a proper geotechnical investigation before finalising foundation design.</p>
+</section>
+<section class="faq">
+<h2>Frequently Asked Questions</h2>
+<details><summary>Is this tool sufficient for my building design?</summary><p>No. This tool provides preliminary sizing for simple structural elements. A complete structural design requires professional analysis considering load combinations, wind loads, seismic considerations (for East Africa), and detailed reinforcement detailing. Always engage a registered structural engineer for your building project.</p></details>
+<details><summary>Which code should I use in my country?</summary><p>Nigeria, Ghana, Kenya, Uganda, Tanzania, and most Anglophone African countries use BS 8110 or are transitioning to Eurocodes. South Africa uses SANS 10100. Francophone countries use French standards (BAEL). This calculator uses BS 8110 methodology which is widely applicable across the continent.</p></details>
+<details><summary>What concrete grade should I use?</summary><p>For residential buildings, C20-C25 is standard. Commercial and multi-storey buildings typically use C25-C30. High-rise and special structures may need C30-C40. Always specify the grade in your concrete order and test cubes during construction.</p></details>
+<details><summary>How do I determine the load on my beam?</summary><p>The load includes the slab self-weight (typically 3-6 kN/m2 depending on thickness), finishes (1-2 kN/m2), imposed load (1.5 kN/m2 for residential, 2.5-4 for commercial), and the beam's own self-weight. Factor these using 1.4 for dead load and 1.6 for live load (BS 8110 factors).</p></details>
+</section>
+<afro-related-tools></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+<script src="/assets/js/components/navbar.js" defer></script>
+<script src="/assets/js/components/footer.js" defer></script>
+<script src="/assets/js/components/related-tools.js" defer></script>
+<script src="/assets/js/components/newsletter-cta.js" defer></script>
+<script>
+function switchTab(tab){
+  document.querySelectorAll('.calc-section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('sec-'+tab).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function calcBeam(){
+  const L=parseFloat(document.getElementById('b-span').value);
+  const w=parseFloat(document.getElementById('b-udl').value);
+  const fcu=parseFloat(document.getElementById('b-fcu').value);
+  const fy=parseFloat(document.getElementById('b-fy').value);
+  const b=parseFloat(document.getElementById('b-width').value);
+  const cover=parseFloat(document.getElementById('b-cover').value);
+
+  // Ultimate moment (simply supported, UDL)
+  const M=w*L*L/8; // kNm
+  const V=w*L/2; // kN (max shear)
+
+  // Effective depth estimation: span/12 for simply supported
+  const dMin=Math.ceil(L*1000/12);
+  const hMin=dMin+cover+10+8; // cover + bar radius + link
+  const h=Math.ceil(hMin/25)*25; // round up to 25mm
+  const d=h-cover-8-10; // effective depth
+
+  // K factor
+  const K=M*1e6/(fcu*b*d*d);
+  const Klim=0.156;
+  const compression=K>Klim;
+  const Kuse=Math.min(K,Klim);
+
+  // Lever arm
+  const z=Math.min(d*(0.5+Math.sqrt(0.25-Kuse/0.9)),0.95*d);
+
+  // Steel area required
+  const As=M*1e6/(0.87*fy*z);
+
+  // Select bars
+  const bars=[{d:12,a:113},{d:16,a:201},{d:20,a:314},{d:25,a:491},{d:32,a:804}];
+  let barChoice='';
+  for(const bar of bars){
+    const n=Math.ceil(As/bar.a);
+    if(n<=6){barChoice=`${n}Y${bar.d} (${(n*bar.a).toFixed(0)} mm2)`;break;}
+  }
+  if(!barChoice) barChoice='Requires larger section';
+
+  // Min steel
+  const AsMin=0.13*b*h/100;
+
+  document.getElementById('beam-summary').innerHTML=`
+    <div class="result-card highlight"><div class="result-label">Beam Size</div><div class="result-value">${b} x ${h}<span class="result-unit"> mm</span></div></div>
+    <div class="result-card"><div class="result-label">Ultimate Moment</div><div class="result-value">${M.toFixed(1)}<span class="result-unit"> kNm</span></div></div>
+    <div class="result-card"><div class="result-label">Max Shear</div><div class="result-value">${V.toFixed(1)}<span class="result-unit"> kN</span></div></div>
+    <div class="result-card highlight"><div class="result-label">Main Steel</div><div class="result-value">${As.toFixed(0)}<span class="result-unit"> mm2</span></div></div>
+  `;
+
+  document.getElementById('beam-table').innerHTML=`
+    <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
+    <tbody>
+    <tr><td>Effective depth (d)</td><td>${d} mm</td></tr>
+    <tr><td>K factor</td><td>${K.toFixed(4)} ${compression?'> 0.156 (COMPRESSION STEEL NEEDED)':''}</td></tr>
+    <tr><td>Lever arm (z)</td><td>${z.toFixed(1)} mm</td></tr>
+    <tr><td>Required As</td><td>${As.toFixed(0)} mm2</td></tr>
+    <tr><td>Min As (0.13%bh)</td><td>${AsMin.toFixed(0)} mm2</td></tr>
+    <tr><td>Suggested bars (bottom)</td><td>${barChoice}</td></tr>
+    <tr><td>Links</td><td>R8 @ ${Math.min(Math.floor(0.75*d),300)} mm c/c</td></tr>
+    </tbody>`;
+  document.getElementById('beam-results').style.display='block';
+}
+
+function calcColumn(){
+  const N=parseFloat(document.getElementById('c-load').value);
+  const fcu=parseFloat(document.getElementById('c-fcu').value);
+  const fy=parseFloat(document.getElementById('c-fy').value);
+  const shape=document.getElementById('c-shape').value;
+  const pSteel=parseFloat(document.getElementById('c-steel').value)/100;
+
+  // BS 8110: N = 0.4*fcu*Ac + 0.8*fy*Asc (short braced, axial)
+  // Ac = Ag - Asc, Asc = p*Ag
+  // N = 0.4*fcu*(Ag - p*Ag) + 0.8*fy*p*Ag
+  // N = Ag*(0.4*fcu*(1-p) + 0.8*fy*p)
+  const Ag=N*1000/(0.4*fcu*(1-pSteel)+0.8*fy*pSteel);
+
+  let dim,dimLabel;
+  if(shape==='square'){
+    dim=Math.ceil(Math.sqrt(Ag)/25)*25;
+    dimLabel=dim+'x'+dim+' mm';
+  } else {
+    dim=Math.ceil(2*Math.sqrt(Ag/Math.PI)/25)*25;
+    dimLabel=dim+' mm diameter';
+  }
+
+  const actualAg=shape==='square'?dim*dim:Math.PI*dim*dim/4;
+  const Asc=Math.round(pSteel*actualAg);
+
+  const bars=[{d:12,a:113},{d:16,a:201},{d:20,a:314},{d:25,a:491},{d:32,a:804}];
+  let barChoice='';
+  for(const bar of bars){
+    const n=Math.ceil(Asc/bar.a);
+    if(n>=4&&n<=8){barChoice=`${n}Y${bar.d} (${(n*bar.a).toFixed(0)} mm2)`;break;}
+  }
+  if(!barChoice){
+    for(const bar of bars){
+      const n=Math.ceil(Asc/bar.a);
+      if(n>=4){barChoice=`${n}Y${bar.d} (${(n*bar.a).toFixed(0)} mm2)`;break;}
+    }
+  }
+
+  document.getElementById('col-summary').innerHTML=`
+    <div class="result-card highlight"><div class="result-label">Column Size</div><div class="result-value">${dimLabel}</div></div>
+    <div class="result-card"><div class="result-label">Req. Gross Area</div><div class="result-value">${Math.round(Ag).toLocaleString()}<span class="result-unit"> mm2</span></div></div>
+    <div class="result-card"><div class="result-label">Steel Area</div><div class="result-value">${Asc.toLocaleString()}<span class="result-unit"> mm2</span></div></div>
+    <div class="result-card highlight"><div class="result-label">Bars</div><div class="result-value" style="font-size:1rem">${barChoice}</div></div>
+  `;
+
+  document.getElementById('col-table').innerHTML=`
+    <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
+    <tbody>
+    <tr><td>Design load</td><td>${N} kN</td></tr>
+    <tr><td>Concrete grade</td><td>C${fcu}</td></tr>
+    <tr><td>Steel percentage</td><td>${(pSteel*100).toFixed(1)}%</td></tr>
+    <tr><td>Actual Ag</td><td>${Math.round(actualAg).toLocaleString()} mm2</td></tr>
+    <tr><td>Links</td><td>R8 @ ${Math.min(Math.floor(12*16),300)} mm c/c</td></tr>
+    <tr><td>Capacity check</td><td>${(0.4*fcu*(actualAg-Asc)/1000+0.8*fy*Asc/1000).toFixed(0)} kN ${(0.4*fcu*(actualAg-Asc)/1000+0.8*fy*Asc/1000)>=N?'> '+N+' OK':'< '+N+' INCREASE SIZE'}</td></tr>
+    </tbody>`;
+  document.getElementById('col-results').style.display='block';
+}
+
+function calcSlab(){
+  const L=parseFloat(document.getElementById('s-span').value);
+  const qk=parseFloat(document.getElementById('s-live').value);
+  const fcu=parseFloat(document.getElementById('s-fcu').value);
+  const finish=parseFloat(document.getElementById('s-finish').value);
+
+  // Min thickness: span/20 for simply supported, span/26 for continuous
+  const hMin=Math.ceil(L*1000/26/25)*25;
+  const h=Math.max(hMin,125);
+  const cover=20;
+  const d=h-cover-6; // 12mm bar, half
+
+  // Self weight
+  const sw=h/1000*24; // kN/m2
+  const gk=sw+finish;
+
+  // Ultimate load per m width
+  const n=1.4*gk+1.6*qk;
+  const M=n*L*L/8; // kNm per m width
+
+  // Steel calculation (per m width, b=1000)
+  const K=M*1e6/(fcu*1000*d*d);
+  const z=Math.min(d*(0.5+Math.sqrt(0.25-K/0.9)),0.95*d);
+  const As=M*1e6/(0.87*460*z);
+  const AsMin=0.13*1000*h/100;
+  const AsDesign=Math.max(As,AsMin);
+
+  // Bar spacing
+  const bars=[{d:10,a:78.5},{d:12,a:113},{d:16,a:201}];
+  let barChoice='';
+  for(const bar of bars){
+    const spacing=Math.floor(bar.a*1000/AsDesign/25)*25;
+    if(spacing>=100&&spacing<=300){barChoice=`Y${bar.d} @ ${spacing} mm c/c (${Math.round(bar.a*1000/spacing)} mm2/m)`;break;}
+  }
+  if(!barChoice) barChoice='Y12 @ 150 mm c/c';
+
+  document.getElementById('slab-summary').innerHTML=`
+    <div class="result-card highlight"><div class="result-label">Slab Thickness</div><div class="result-value">${h}<span class="result-unit"> mm</span></div></div>
+    <div class="result-card"><div class="result-label">Ultimate Load</div><div class="result-value">${n.toFixed(1)}<span class="result-unit"> kN/m2</span></div></div>
+    <div class="result-card"><div class="result-label">Moment</div><div class="result-value">${M.toFixed(1)}<span class="result-unit"> kNm/m</span></div></div>
+    <div class="result-card highlight"><div class="result-label">Main Steel</div><div class="result-value" style="font-size:1rem">${barChoice}</div></div>
+  `;
+
+  document.getElementById('slab-table').innerHTML=`
+    <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
+    <tbody>
+    <tr><td>Self weight</td><td>${sw.toFixed(1)} kN/m2</td></tr>
+    <tr><td>Total dead load (gk)</td><td>${gk.toFixed(1)} kN/m2</td></tr>
+    <tr><td>Live load (qk)</td><td>${qk} kN/m2</td></tr>
+    <tr><td>Effective depth</td><td>${d} mm</td></tr>
+    <tr><td>Required As</td><td>${Math.round(AsDesign)} mm2/m</td></tr>
+    <tr><td>Min As (0.13%)</td><td>${Math.round(AsMin)} mm2/m</td></tr>
+    <tr><td>Distribution steel</td><td>Y10 @ 300 mm c/c (min)</td></tr>
+    </tbody>`;
+  document.getElementById('slab-results').style.display='block';
+}
+
+function calcFooting(){
+  const N=parseFloat(document.getElementById('f-load').value);
+  const sbc=parseFloat(document.getElementById('f-sbc').value);
+  const fcu=parseFloat(document.getElementById('f-fcu').value);
+  const colSize=parseFloat(document.getElementById('f-colsize').value);
+
+  // Service load area
+  const swFactor=1.1; // 10% for self weight
+  const areaReq=N*swFactor/sbc;
+  const side=Math.ceil(Math.sqrt(areaReq)*1000/50)*50; // mm, round to 50mm
+  const sideM=side/1000;
+  const actualArea=sideM*sideM;
+
+  // Soil pressure (ultimate)
+  const Nu=1.4*N; // factored (conservative)
+  const qu=Nu/actualArea;
+
+  // Punching shear check
+  const d=Math.max(150,Math.ceil((side-colSize)/4/25)*25); // approx effective depth
+  const h=d+50+12; // cover + bar
+
+  // Bending moment at face of column
+  const cantilever=(side-colSize)/2/1000;
+  const M=qu*sideM*cantilever*cantilever/2;
+
+  // Steel area
+  const As=M*1e6/(0.87*460*0.95*d);
+  const AsMin=0.13*1000*h/100;
+  const AsDesign=Math.max(As,AsMin);
+
+  const bars=[{d:12,a:113},{d:16,a:201},{d:20,a:314}];
+  let barChoice='';
+  for(const bar of bars){
+    const spacing=Math.floor(bar.a*1000/AsDesign/25)*25;
+    if(spacing>=100&&spacing<=300){barChoice=`Y${bar.d} @ ${spacing} mm c/c both ways`;break;}
+  }
+  if(!barChoice) barChoice='Y16 @ 150 mm c/c both ways';
+
+  document.getElementById('foot-summary').innerHTML=`
+    <div class="result-card highlight"><div class="result-label">Footing Size</div><div class="result-value">${side}x${side}<span class="result-unit"> mm</span></div></div>
+    <div class="result-card"><div class="result-label">Depth</div><div class="result-value">${Math.ceil(h/25)*25}<span class="result-unit"> mm</span></div></div>
+    <div class="result-card"><div class="result-label">Soil Pressure</div><div class="result-value">${(N*swFactor/actualArea).toFixed(0)}<span class="result-unit"> kN/m2</span></div></div>
+    <div class="result-card highlight"><div class="result-label">Reinforcement</div><div class="result-value" style="font-size:.9rem">${barChoice}</div></div>
+  `;
+
+  document.getElementById('foot-table').innerHTML=`
+    <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
+    <tbody>
+    <tr><td>Column load</td><td>${N} kN</td></tr>
+    <tr><td>Bearing capacity</td><td>${sbc} kN/m2</td></tr>
+    <tr><td>Required area</td><td>${areaReq.toFixed(2)} m2</td></tr>
+    <tr><td>Provided area</td><td>${actualArea.toFixed(2)} m2</td></tr>
+    <tr><td>Cantilever length</td><td>${(cantilever*1000).toFixed(0)} mm</td></tr>
+    <tr><td>Concrete volume</td><td>${(actualArea*Math.ceil(h/25)*25/1000).toFixed(2)} m3</td></tr>
+    </tbody>`;
+  document.getElementById('foot-results').style.display='block';
+}
+</script>
+</body>
+</html>
