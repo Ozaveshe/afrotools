@@ -812,8 +812,33 @@
     closeModal: function () { closeModal(); },
 
     onReady: function (fn) {
-      if (_ready) fn();
-      else _readyCbs.push(fn);
+      if (_ready) { fn(); return; }
+      _readyCbs.push(fn);
+      // Safety: if _ready never gets set (e.g. auth event race), poll for it
+      var attempts = 0;
+      var poll = setInterval(function () {
+        attempts++;
+        if (_ready || _user) {
+          clearInterval(poll);
+          // If _ready was set but callback wasn't fired (race condition), fire it now
+          if (!_ready) { _ready = true; }
+          // Check if fn is still in the queue (hasn't been called yet)
+          var idx = _readyCbs.indexOf(fn);
+          if (idx !== -1) {
+            _readyCbs.splice(idx, 1);
+            try { fn(); } catch (e) { console.warn('[AfroAuth] onReady callback error:', e); }
+          }
+        } else if (attempts > 20) {
+          clearInterval(poll);
+          // Give up waiting — fire anyway so pages don't hang
+          _ready = true;
+          var idx2 = _readyCbs.indexOf(fn);
+          if (idx2 !== -1) {
+            _readyCbs.splice(idx2, 1);
+            try { fn(); } catch (e) { console.warn('[AfroAuth] onReady callback error:', e); }
+          }
+        }
+      }, 250);
     },
 
     getSupabase: function () { return _sb; }

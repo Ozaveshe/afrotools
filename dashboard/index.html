@@ -1222,29 +1222,6 @@
 
         // Start
         waitForAuth();
-
-        // Nuclear fallback: if after 3s we're still showing auth but Supabase has a session, force dashboard
-        setTimeout(function() {
-            if (!isLoggedIn && window.AfroAuth && AfroAuth.isLoggedIn()) {
-                console.log('[Dashboard] Fallback: AfroAuth says logged in but dashboard missed it — forcing showDashboard');
-                isLoggedIn = true;
-                currentUser = AfroAuth.getUser();
-                showDashboard();
-            } else if (!isLoggedIn && window.AfroAuth) {
-                // Try getting session directly from Supabase client
-                var sb = AfroAuth.getSupabase && AfroAuth.getSupabase();
-                if (sb) {
-                    sb.auth.getSession().then(function(res) {
-                        if (res.data && res.data.session) {
-                            console.log('[Dashboard] Fallback: Found active Supabase session — reloading');
-                            window.location.reload();
-                        } else {
-                            console.log('[Dashboard] Fallback: No Supabase session found');
-                        }
-                    });
-                }
-            }
-        }, 3000);
     </script>
 </body>
 </html>
