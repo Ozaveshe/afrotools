@@ -56,7 +56,8 @@ const CVTemplates = (function() {
     const hasHobbies = !!(d.extras.hobbies);
     const hasVolunteer = !!(d.extras.volunteer);
     const hasMemberships = !!(d.extras.memberships);
-    return { name, title, contact, personal, nyscInfo, techSkills, softSkills, toolSkills, allSkills, hasExp, hasEdu, hasProj, hasCert, hasRef, hasLang, hasNysc, hasAwards, hasHobbies, hasVolunteer, hasMemberships };
+    const hasCustom = d.customSections && d.customSections.some(cs => cs.title && cs.content);
+    return { name, title, contact, personal, nyscInfo, techSkills, softSkills, toolSkills, allSkills, hasExp, hasEdu, hasProj, hasCert, hasRef, hasLang, hasNysc, hasAwards, hasHobbies, hasVolunteer, hasMemberships, hasCustom };
   }
 
   function photoHTML(d, size, radius, border) {
@@ -134,6 +135,13 @@ const CVTemplates = (function() {
     return info.map(i => `<div style="font-size:8px;margin-bottom:2px">${i}</div>`).join('');
   }
 
+  function customSectionsHTML(d, secFn) {
+    if (!d.customSections || !d.customSections.length) return '';
+    return d.customSections.filter(cs => cs.title && cs.content).map(cs =>
+      secFn(esc(cs.title), '<div style="font-size:8.5px;color:#555;line-height:1.6">' + descToHTML(cs.content) + '</div>')
+    ).join('');
+  }
+
   const watermark = '<div class="tpl-watermark">Generated with AfroTools.com</div>';
 
   // ═══════════════════════════════════════════════════════════
@@ -165,6 +173,7 @@ const CVTemplates = (function() {
         ${secR('Certifications', p.hasCert ? certHTML(d.certs) : '')}
         ${secR('Awards', p.hasAwards ? '<div style="font-size:8.5px;color:#555">' + descToHTML(d.extras.awards) + '</div>' : '')}
         ${secR('Volunteering', p.hasVolunteer ? '<div style="font-size:8.5px;color:#555">' + descToHTML(d.extras.volunteer) + '</div>' : '')}
+        ${customSectionsHTML(d, secR)}
         ${secR('References', p.hasRef ? refHTML(d.refs) : '')}
         ${watermark}
       </div>
@@ -197,6 +206,7 @@ const CVTemplates = (function() {
       ${sec('Languages', p.hasLang ? langHTML(d.langs) : '')}
       ${sec('Projects', p.hasProj ? projHTML(d.projs) : '')}
       ${sec('Certifications', p.hasCert ? certHTML(d.certs) : '')}
+      ${customSectionsHTML(d, sec)}
       ${sec('References', p.hasRef ? refHTML(d.refs) : '')}
       ${watermark}
     </div>`;
@@ -224,6 +234,7 @@ const CVTemplates = (function() {
         ${sec('Skills', (p.allSkills.length || p.toolSkills.length) ? '<div style="font-size:8.5px;color:#444;line-height:1.7">' + [...p.allSkills, ...p.toolSkills].map(s => esc(s)).join(' \u00B7 ') + '</div>' : '')}
         ${sec('Languages', p.hasLang ? langHTML(d.langs) : '')}
         ${sec('Certifications', p.hasCert ? certHTML(d.certs) : '')}
+        ${customSectionsHTML(d, sec)}
         ${sec('References', p.hasRef ? refHTML(d.refs) : '')}
       </div>
       ${watermark}
@@ -259,6 +270,7 @@ const CVTemplates = (function() {
         ${sec('Languages', p.hasLang ? langHTML(d.langs) : '')}
         ${sec('Projects', p.hasProj ? projHTML(d.projs) : '')}
         ${sec('Certifications', p.hasCert ? certHTML(d.certs) : '')}
+        ${customSectionsHTML(d, sec)}
         ${sec('References', p.hasRef ? refHTML(d.refs) : '')}
         ${watermark}
       </div>
@@ -293,6 +305,7 @@ const CVTemplates = (function() {
         ${secL('Projects', p.hasProj ? projHTML(d.projs) : '')}
         ${secL('Certifications', p.hasCert ? certHTML(d.certs) : '')}
         ${secL('Awards', p.hasAwards ? '<div style="font-size:8.5px;color:#555">' + descToHTML(d.extras.awards) + '</div>' : '')}
+        ${customSectionsHTML(d, secL)}
         ${secL('References', p.hasRef ? refHTML(d.refs) : '')}
         ${watermark}
       </div>
@@ -324,6 +337,7 @@ const CVTemplates = (function() {
       ${sec('Languages', p.hasLang ? langHTML(d.langs) : '')}
       ${sec('Projects', p.hasProj ? projHTML(d.projs) : '')}
       ${sec('Certifications', p.hasCert ? certHTML(d.certs) : '')}
+      ${customSectionsHTML(d, sec)}
       ${sec('References', p.hasRef ? refHTML(d.refs) : '')}
       ${watermark}
     </div>`;
@@ -365,6 +379,7 @@ const CVTemplates = (function() {
           ${sec('Projects', p.hasProj ? projHTML(d.projs) : '')}
           ${sec('Certifications', p.hasCert ? certHTML(d.certs) : '')}
           ${sec('Awards', p.hasAwards ? '<div style="font-size:8.5px;color:#444">' + descToHTML(d.extras.awards) + '</div>' : '')}
+          ${customSectionsHTML(d, sec)}
           ${sec('References', p.hasRef ? refHTML(d.refs) : '')}
           ${watermark}
         </div>
@@ -403,6 +418,7 @@ const CVTemplates = (function() {
           ${sec('Certifications', p.hasCert ? certHTML(d.certs) : '')}
         </div>
       </div>
+      ${customSectionsHTML(d, sec)}
       ${sec('References', p.hasRef ? '<div style="display:flex;flex-wrap:wrap;gap:12px">' + d.refs.filter(r => r.n).map(r => `<div style="font-size:8.5px;flex:0 0 45%"><div style="font-weight:700">${esc(r.n)}</div>${r.t ? '<div style="color:#777">' + esc(r.t) + (r.org ? ' \u00B7 ' + esc(r.org) : '') + '</div>' : ''}<div style="color:#bbb;font-size:8px">${[r.e, r.p].filter(Boolean).join(' \u00B7 ')}</div></div>`).join('') + '</div>' : '')}
       ${watermark}
     </div>`;
@@ -440,6 +456,7 @@ const CVTemplates = (function() {
           ${sec('Projects', p.hasProj ? projHTML(d.projs) : '')}
         </div>
       </div>
+      ${customSectionsHTML(d, sec)}
       ${sec('References', p.hasRef ? '<div style="display:flex;flex-wrap:wrap;gap:12px">' + d.refs.filter(r => r.n).map(r => `<div style="font-size:8.5px;flex:0 0 45%"><div style="font-weight:700">${esc(r.n)}</div>${r.t ? '<div style="color:#777">' + esc(r.t) + (r.org ? ' \u00B7 ' + esc(r.org) : '') + '</div>' : ''}<div style="color:#bbb;font-size:8px">${[r.e, r.p].filter(Boolean).join(' \u00B7 ')}</div></div>`).join('') + '</div>' : '')}
       ${watermark}
     </div>`;
@@ -481,6 +498,7 @@ const CVTemplates = (function() {
           ${sec('Projects', p.hasProj ? projHTML(d.projs) : '')}
           ${sec('Certifications', p.hasCert ? certHTML(d.certs) : '')}
           ${sec('Awards', p.hasAwards ? '<div style="font-size:8.5px;color:#44403c">' + descToHTML(d.extras.awards) + '</div>' : '')}
+          ${customSectionsHTML(d, sec)}
           ${sec('References', p.hasRef ? refHTML(d.refs) : '')}
           ${watermark}
         </div>
@@ -523,6 +541,7 @@ const CVTemplates = (function() {
           </div>
         </div>
         ${sec('Projects', p.hasProj ? projHTML(d.projs) : '')}
+        ${customSectionsHTML(d, sec)}
         ${sec('References', p.hasRef ? refHTML(d.refs) : '')}
         ${watermark}
       </div>
@@ -552,6 +571,7 @@ const CVTemplates = (function() {
       ${sec('Professional Memberships', p.hasMemberships ? '<div style="font-size:8.5px">' + esc(d.extras.memberships) + '</div>' : '')}
       ${sec('Certifications', p.hasCert ? certHTML(d.certs) : '')}
       ${sec('Awards & Honours', p.hasAwards ? '<div style="font-size:8.5px">' + descToHTML(d.extras.awards) + '</div>' : '')}
+      ${customSectionsHTML(d, sec)}
       ${sec('References', p.hasRef ? refHTML(d.refs) : '')}
       <div style="margin-top:16px;padding-top:10px;border-top:1px solid #999;font-size:8px;color:#555">
         <div style="font-weight:700;margin-bottom:4px">DECLARATION</div>
@@ -595,6 +615,7 @@ const CVTemplates = (function() {
         ${sec('Projects', p.hasProj ? d.projs.filter(pp => pp.n).map(pp => `<div style="margin-bottom:8px;padding:6px 8px;background:#f8fafc;border-radius:6px;border:1px solid #e2e8f0"><div style="font-weight:700;font-size:9.5px">${esc(pp.n)}${pp.url ? '<span style="font-weight:400;color:' + blue + ';margin-left:5px;font-size:8px">\uD83D\uDD17 ' + esc(pp.url) + '</span>' : ''}</div>${pp.tech ? '<div style="margin-top:2px">' + pp.tech.split(',').map(t => `<span style="display:inline-block;padding:1px 5px;border-radius:3px;font-size:7px;font-weight:600;margin:1px;background:#E8F2FF;color:${blue};font-family:\'JetBrains Mono\',monospace">${esc(t.trim())}</span>`).join('') + '</div>' : ''}${pp.d ? '<div style="font-size:8px;color:#666;margin-top:2px">' + esc(pp.d) + '</div>' : ''}</div>`).join('') : '')}
         ${sec('Education', p.hasEdu ? eduHTML(d.edus) : '')}
         ${sec('Certifications', p.hasCert ? certHTML(d.certs) : '')}
+        ${customSectionsHTML(d, sec)}
         ${sec('References', p.hasRef ? refHTML(d.refs) : '')}
         ${watermark}
       </div>
@@ -625,6 +646,7 @@ const CVTemplates = (function() {
       ${sec('Professional Memberships', p.hasMemberships ? '<div>' + esc(d.extras.memberships) + '</div>' : '')}
       ${sec('Awards', p.hasAwards ? '<div>' + descToHTML(d.extras.awards) + '</div>' : '')}
       ${sec('Volunteering', p.hasVolunteer ? '<div>' + descToHTML(d.extras.volunteer) + '</div>' : '')}
+      ${customSectionsHTML(d, sec)}
       ${sec('References', p.hasRef ? d.refs.filter(r => r.n).map(r => `<div style="margin-bottom:5px"><span style="font-weight:700">${esc(r.n)}</span>${r.t ? ', ' + esc(r.t) : ''}${r.org ? ' (' + esc(r.org) + ')' : ''} | ${[r.e, r.p].filter(Boolean).join(' | ')}</div>`).join('') : '')}
       ${watermark}
     </div>`;
@@ -726,6 +748,7 @@ const CVTemplates = (function() {
       </div>
       ${sec('Projects', p.hasProj ? projHTML(d.projs) : '')}
       ${sec('Certifications', p.hasCert ? certHTML(d.certs) : '')}
+      ${customSectionsHTML(d, sec)}
       ${sec('References', p.hasRef ? refHTML(d.refs) : '')}
       ${watermark}
     </div>`;

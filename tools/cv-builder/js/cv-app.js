@@ -122,7 +122,28 @@ const CVApp = (function() {
       state.dirty = false;
       const el = $('.cv-auto-saved');
       if (el) el.textContent = 'Auto-saved \u2713';
+      // Save version history (max 20 versions)
+      saveVersionSnapshot(saveData);
     } catch(e) { /* quota exceeded or private browsing */ }
+  }
+
+  function saveVersionSnapshot(saveData) {
+    try {
+      const versions = JSON.parse(localStorage.getItem('afro_cv_versions') || '[]');
+      // Only save if data actually changed (compare to last version)
+      const last = versions[0];
+      const currentStr = JSON.stringify(saveData.data);
+      if (last && JSON.stringify(last.data) === currentStr) return;
+      versions.unshift({
+        timestamp: Date.now(),
+        data: saveData.data,
+        country: saveData.country,
+        template: saveData.template,
+      });
+      // Keep max 20
+      if (versions.length > 20) versions.length = 20;
+      localStorage.setItem('afro_cv_versions', JSON.stringify(versions));
+    } catch(e) { /* quota or storage error */ }
   }
 
   function loadFromLocalStorage() {
@@ -507,6 +528,23 @@ const CVApp = (function() {
       <textarea class="cv-textarea" placeholder="Football, Photography, Travelling, Open Source..." data-path="extras.hobbies" style="min-height:52px">${esc(d.extras.hobbies)}</textarea>
     `);
 
+    // ── Custom Sections ──────────────────────────────────
+    html += sectionWrap('custom', '➕ Custom Sections', `
+      ${(d.customSections || []).map((cs, i) => `
+        ${i > 0 ? '<hr class="cv-item-divider">' : ''}
+        <div class="cv-item-header">
+          <span class="cv-item-num">Section ${i+1}</span>
+          <button class="cv-remove-btn" data-remove="customSections" data-idx="${i}">✕ Remove</button>
+        </div>
+        <input class="cv-inp" placeholder="Section Title (e.g. Publications, Awards)" value="${esc(cs.title||'')}" data-path="customSections.${i}.title">
+        <textarea class="cv-textarea" placeholder="Section content..." data-path="customSections.${i}.content" style="min-height:60px">${esc(cs.content||'')}</textarea>
+      `).join('')}
+      <button class="cv-add-btn" data-add="customSections">+ Add Custom Section</button>
+      <div style="margin-top:10px;font-size:10px;color:var(--color-text-subtle)">
+        Suggested: Publications, Conferences, Awards, Volunteering, Professional Memberships, Hobbies
+      </div>
+    `);
+
     html += '<div style="height:20px"></div>';
     return html;
   }
@@ -576,6 +614,7 @@ const CVApp = (function() {
           certs: {n:'',i:'',y:''},
           langs: {l:'',lv:'Fluent'},
           refs: {n:'',t:'',org:'',p:'',e:'',rel:''},
+          customSections: {title:'',content:''},
         };
         state.data[key] = [...state.data[key], templates[key]];
         renderEditor();
@@ -611,6 +650,44 @@ const CVApp = (function() {
         }
       });
     }
+
+    // Drag-and-drop reordering for array items
+    let dragSrc = null;
+    form.querySelectorAll('.cv-drag-handle').forEach(handle => {
+      const parent = handle.closest('.cv-item-header')?.parentElement;
+      if (!parent) return;
+      parent.setAttribute('draggable', 'true');
+      parent.addEventListener('dragstart', e => {
+        dragSrc = { arr: handle.dataset.arr, idx: parseInt(handle.dataset.idx) };
+        parent.classList.add('cv-dragging');
+        e.dataTransfer.effectAllowed = 'move';
+      });
+      parent.addEventListener('dragend', () => {
+        parent.classList.remove('cv-dragging');
+        form.querySelectorAll('.cv-drag-over').forEach(el => el.classList.remove('cv-drag-over'));
+        dragSrc = null;
+      });
+      parent.addEventListener('dragover', e => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        parent.classList.add('cv-drag-over');
+      });
+      parent.addEventListener('dragleave', () => parent.classList.remove('cv-drag-over'));
+      parent.addEventListener('drop', e => {
+        e.preventDefault();
+        parent.classList.remove('cv-drag-over');
+        if (!dragSrc || dragSrc.arr !== handle.dataset.arr) return;
+        const toIdx = parseInt(handle.dataset.idx);
+        if (dragSrc.idx === toIdx) return;
+        const arr = [...state.data[dragSrc.arr]];
+        const [moved] = arr.splice(dragSrc.idx, 1);
+        arr.splice(toIdx, 0, moved);
+        state.data[dragSrc.arr] = arr;
+        renderEditor();
+        renderPreview();
+        scheduleAutoSave();
+      });
+    });
   }
 
   // ── Render Preview ────────────────────────────────────────
@@ -952,12 +1029,49 @@ const CVApp = (function() {
           case 'new': newCV(); break;
           case 'analyze': aiAnalyzeCV(); break;
           case 'chat': aiOpenChat(); break;
+          case 'import':
+          case 'ats':
+          case 'coverletter':
+          case 'history':
+            loadAdvanced(btn.dataset.action);
+            break;
         }
       });
     });
 
+    // Language selector
+    const langSel = $('.cv-lang-sel');
+    if (langSel) {
+      langSel.addEventListener('change', e => {
+        setUILang(e.target.value);
+        renderAll();
+      });
+    }
+
     // Track page view
     trackEvent('page_view', {tool: 'cv-builder'});
+  }
+
+  // ── Load Advanced Features (lazy) ──────────────────────
+  function loadAdvanced(action) {
+    if (typeof CVAdvanced === 'undefined') {
+      const s = document.createElement('script');
+      s.src = '/tools/cv-builder/js/cv-advanced.js';
+      s.onload = () => dispatchAdvanced(action);
+      document.head.appendChild(s);
+    } else {
+      dispatchAdvanced(action);
+    }
+  }
+
+  function dispatchAdvanced(action) {
+    if (typeof CVAdvanced === 'undefined') return;
+    switch(action) {
+      case 'import': CVAdvanced.openImportModal(); break;
+      case 'ats': CVAdvanced.runATSSimulator(state.data, state.country); break;
+      case 'coverletter': CVAdvanced.openCoverLetterGenerator(state.data, state.country); break;
+      case 'history': CVAdvanced.openVersionHistory(); break;
+    }
   }
 
   // ── Public API ────────────────────────────────────────────

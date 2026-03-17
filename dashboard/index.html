@@ -1045,6 +1045,70 @@
 
         /* Loading state */
         .loading { opacity: 0.6; pointer-events: none; }
+
+        /* CV Cards */
+        .cv-card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+        }
+        .cv-card {
+            background: white;
+            border: 1.5px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .cv-card:hover {
+            border-color: #007AFF;
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.1);
+        }
+        .cv-card-name {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .cv-card-meta {
+            font-size: 0.75rem;
+            color: #64748b;
+            margin-bottom: 10px;
+        }
+        .cv-card-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .cv-card-actions a, .cv-card-actions button {
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 6px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .cv-card-edit {
+            background: #007AFF;
+            color: white !important;
+        }
+        .cv-card-edit:hover {
+            background: #0063D1;
+        }
+        .cv-card-dup {
+            background: #f3f4f6;
+            color: #64748b !important;
+        }
+        .cv-card-del {
+            background: none;
+            color: #ef4444 !important;
+            font-size: 0.7rem;
+        }
     </style>
 </head>
 <body>
@@ -1418,6 +1482,13 @@
               <a href="/" class="section-link">Browse All &#8594;</a>
             </div>
             <div id="favoritesContainer" class="favorites-grid"></div>
+
+            <!-- My CVs -->
+            <div class="section-row" style="display:flex;align-items:center;justify-content:space-between">
+              <h2 class="section-title" style="margin-bottom:0;">&#x1F4DD; My CVs</h2>
+              <a href="/tools/cv-builder/?new=1" style="font-size:0.8rem;font-weight:600;color:#007AFF;text-decoration:none;padding:6px 14px;border:1.5px solid #007AFF;border-radius:8px;transition:all 0.15s">+ New CV</a>
+            </div>
+            <div id="myCVsContainer" style="margin-bottom:28px;"></div>
 
             <!-- My Documents -->
             <div class="section-row">
@@ -1987,6 +2058,7 @@
         function loadDashboardData() {
             loadProfileDisplay();
             loadFavorites();
+            loadMyCVs();
             loadMyDocuments();
             loadQuickAccess();
             loadSavedCalculations();
@@ -2226,6 +2298,75 @@
                 loadSavedCalculations();
                 updateQuickStats();
             }
+        }
+
+        // My CVs integration
+        function loadMyCVs() {
+            var container = document.getElementById('myCVsContainer');
+            if (!container) return;
+
+            var cvs = [];
+            try {
+                var list = localStorage.getItem('afro_cv_list');
+                cvs = list ? JSON.parse(list) : [];
+            } catch(e) { cvs = []; }
+
+            if (!cvs.length) {
+                container.innerHTML = '<div style="padding:20px;text-align:center;color:#94a3b8;font-size:0.85rem;background:#f8fafc;border-radius:12px;border:1.5px dashed #e2e8f0"><p style="margin-bottom:8px">No saved CVs yet</p><a href="/tools/cv-builder/?new=1" style="color:#007AFF;font-weight:600;text-decoration:none">Create your first CV \u2192</a></div>';
+                return;
+            }
+
+            function timeAgo(ts) {
+                var s = Math.floor((Date.now() - ts) / 1000);
+                if (s < 60) return 'just now';
+                if (s < 3600) return Math.floor(s/60) + 'm ago';
+                if (s < 86400) return Math.floor(s/3600) + 'h ago';
+                var d = Math.floor(s/86400);
+                if (d < 30) return d + 'd ago';
+                return new Date(ts).toLocaleDateString('en-GB', {day:'numeric', month:'short'});
+            }
+
+            container.innerHTML = '<div class="cv-card-grid">' + cvs.map(function(cv) {
+                var name = cv.title || 'Untitled CV';
+                var person = (((cv.data && cv.data.fn) || '') + ' ' + ((cv.data && cv.data.ln) || '')).trim() || 'No name';
+                var tmpl = cv.template || 'slate';
+                var time = timeAgo(cv.updatedAt || cv.createdAt || Date.now());
+                return '<div class="cv-card">' +
+                    '<div class="cv-card-name">' + name + '</div>' +
+                    '<div class="cv-card-meta">' + person + ' &middot; ' + tmpl + ' &middot; ' + time + '</div>' +
+                    '<div class="cv-card-actions">' +
+                        '<a class="cv-card-edit" href="/tools/cv-builder/?cv=' + cv.id + '">Edit</a>' +
+                        '<button class="cv-card-dup" onclick="duplicateDashboardCV(\'' + cv.id + '\')">Duplicate</button>' +
+                        '<button class="cv-card-del" onclick="deleteDashboardCV(\'' + cv.id + '\')">Delete</button>' +
+                    '</div>' +
+                '</div>';
+            }).join('') + '</div>';
+        }
+
+        function duplicateDashboardCV(id) {
+            try {
+                var cvs = JSON.parse(localStorage.getItem('afro_cv_list') || '[]');
+                var cv = cvs.find(function(c) { return c.id === id; });
+                if (!cv) return;
+                var newCV = JSON.parse(JSON.stringify(cv));
+                newCV.id = 'cv_' + Date.now();
+                newCV.title = cv.title + ' (Copy)';
+                newCV.createdAt = Date.now();
+                newCV.updatedAt = Date.now();
+                cvs.unshift(newCV);
+                localStorage.setItem('afro_cv_list', JSON.stringify(cvs));
+                loadMyCVs();
+            } catch(e) {}
+        }
+
+        function deleteDashboardCV(id) {
+            if (!confirm('Delete this CV?')) return;
+            try {
+                var cvs = JSON.parse(localStorage.getItem('afro_cv_list') || '[]');
+                cvs = cvs.filter(function(c) { return c.id !== id; });
+                localStorage.setItem('afro_cv_list', JSON.stringify(cvs));
+                loadMyCVs();
+            } catch(e) {}
         }
 
         // Start

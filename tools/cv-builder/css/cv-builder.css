@@ -708,11 +708,19 @@
   .cv-ai-panel { width: 100%; max-width: 100%; border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
 }
 @media (max-width: 600px) {
-  .cv-toolbar { padding: 0 12px; }
+  .cv-toolbar { padding: 0 12px; flex-wrap: wrap; height: auto; min-height: 52px; }
   .cv-tool-sub { display: none; }
   .cv-form-inner { padding: 12px; }
   .cv-preview-scroll { padding: 12px; }
-  .cv-toolbar-right { gap: 4px; }
+  .cv-toolbar-right { gap: 4px; flex-wrap: wrap; }
+  .cv-toolbar-right [data-action="import"],
+  .cv-toolbar-right [data-action="ats"],
+  .cv-toolbar-right [data-action="coverletter"],
+  .cv-toolbar-right [data-action="history"] { display: none; }
+  .cv-lang-sel { display: none; }
+}
+@media (max-width: 400px) {
+  .cv-toolbar-right .cv-btn { padding: 5px 8px; font-size: 11px; }
 }
 
 /* ─── Print ─────────────────────────────────────────────────── */
