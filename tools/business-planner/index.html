@@ -16,6 +16,7 @@
 <meta property="og:url" content="https://afrotools.com/tools/business-planner/">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="tool-id" content="business-planner">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"AfroTools AI Business Planner","url":"https://afrotools.com/tools/business-planner/","description":"Start your business in any African country. Get country-specific registration steps, tax setup, licensing requirements, and AI-powered business planning for all 54 African nations.","applicationCategory":"BusinessApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
@@ -25,6 +26,7 @@
 <script src="/engines/business-planner-engine.js"></script>
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
+<script src="/assets/js/pro-gate.js" defer></script>
 <style>
 *{box-sizing:border-box}
 body{font-family:'DM Sans',system-ui,sans-serif;background:var(--color-bg,#F8FAFD);color:var(--color-text,#0f172a);margin:0;-webkit-font-smoothing:antialiased}
@@ -508,10 +510,11 @@ a{text-decoration:none;color:inherit}
       </div>
     </div>
 
-    <!-- Premium -->
-    <div class="premium-section">
-      <h3>Get a Complete Business Plan</h3>
-      <p>AI-generated executive summary, market analysis, financial projections, and funding strategy.</p>
+    <!-- Premium / Pro Upsell -->
+    <div class="premium-section free-only">
+      <span style="display:inline-block;background:linear-gradient(135deg,#F5A623,#e8960e);color:#fff;font-size:.6rem;font-weight:800;padding:4px 14px;border-radius:100px;letter-spacing:.1em;margin-bottom:14px">AFROTOOLS PRO</span>
+      <h3>Unlock the Full Business Plan</h3>
+      <p>Go beyond registration steps. Get an AI-generated business plan tailored to your country and industry.</p>
       <div class="premium-features">
         <span class="pf">Executive Summary</span>
         <span class="pf">Market Analysis</span>
@@ -519,12 +522,24 @@ a{text-decoration:none;color:inherit}
         <span class="pf">SWOT Analysis</span>
         <span class="pf">Funding Strategy</span>
       </div>
-      <button class="btn-locked">Generate Full Business Plan &mdash; Coming Soon</button>
-      <form class="email-row" data-netlify="true" name="business-plan-notify" method="POST" action="/tools/business-planner/?submitted=true">
-        <input type="hidden" name="form-name" value="business-plan-notify">
-        <input type="email" name="email" placeholder="Get notified when this launches" required>
-        <button type="submit">Notify Me</button>
-      </form>
+      <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-bottom:16px">
+        <a href="/pro/" style="padding:12px 28px;background:#fff;color:var(--color-primary,#007AFF);border-radius:980px;font-weight:700;font-size:.85rem;text-decoration:none;transition:transform .15s,box-shadow .15s;display:inline-block">Start 7-Day Free Trial</a>
+        <a href="/pro/#pricing" style="padding:12px 28px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);border-radius:980px;font-weight:700;font-size:.85rem;text-decoration:none;display:inline-block">See Plans &mdash; $5/mo</a>
+      </div>
+      <div style="font-size:.72rem;color:rgba(255,255,255,.35);line-height:1.5">Free plan includes: action plan, 3 AI advisor questions/day, PDF with watermark.<br>Pro adds: full business plan, unlimited AI, clean PDFs, cloud history.</div>
+    </div>
+    <div class="premium-section pro-only" style="display:none">
+      <span style="display:inline-block;background:linear-gradient(135deg,#F5A623,#e8960e);color:#fff;font-size:.6rem;font-weight:800;padding:4px 14px;border-radius:100px;letter-spacing:.1em;margin-bottom:14px">PRO</span>
+      <h3>Generate Full Business Plan</h3>
+      <p>AI-powered executive summary, market analysis, SWOT, financial projections, and funding strategy for your business.</p>
+      <div class="premium-features">
+        <span class="pf">Executive Summary</span>
+        <span class="pf">Market Analysis</span>
+        <span class="pf">3-Year Projections</span>
+        <span class="pf">SWOT Analysis</span>
+        <span class="pf">Funding Strategy</span>
+      </div>
+      <button class="btn-generate" id="btn-full-plan" style="margin:0 auto">Generate Full Business Plan</button>
     </div>
 
     <div class="disclaimer" id="plan-disclaimer"></div>
@@ -730,8 +745,9 @@ a{text-decoration:none;color:inherit}
   document.getElementById('btn-print').onclick = function(){ window.print(); };
 
   // ── PDF Download (Enhanced V2)
-  document.getElementById('btn-pdf').onclick = function(){
+  document.getElementById('btn-pdf').onclick = async function(){
     if (!state.plan || typeof jspdf === 'undefined') return;
+    var isProUser = window.AfroProGate ? await AfroProGate.isPro() : false;
     var p = state.plan;
     var doc = new jspdf.jsPDF();
     var pageW = doc.internal.pageSize.getWidth();
@@ -985,6 +1001,20 @@ a{text-decoration:none;color:inherit}
     doc.setTextColor(0, 0, 0);
 
     addFooter();
+
+    // Add watermark on every page for free users
+    if (!isProUser) {
+      var totalPages = doc.internal.getNumberOfPages();
+      for (var wp = 1; wp <= totalPages; wp++) {
+        doc.setPage(wp);
+        doc.setTextColor(200, 200, 200);
+        doc.setFontSize(48);
+        doc.setFont(undefined, 'bold');
+        doc.text('AFROTOOLS FREE', pageW / 2, pageH / 2, { align: 'center', angle: 45 });
+        doc.setTextColor(0, 0, 0);
+      }
+    }
+
     doc.save('AfroTools-Business-Plan-' + p.country.replace(/\s/g,'-') + '.pdf');
   };
 
@@ -1075,9 +1105,19 @@ a{text-decoration:none;color:inherit}
   chatSend.onclick = function(){ sendChat(); };
   chatInput.addEventListener('keydown', function(e){ if (e.key==='Enter' && !e.shiftKey){ e.preventDefault(); sendChat(); } });
 
-  function sendChat(){
+  async function sendChat(){
     var msg = chatInput.value.trim();
     if (!msg) return;
+
+    // Gate AI advisor: 3 free questions/day
+    if (window.AfroProGate) {
+      var allowed = await AfroProGate.gateAiAdvisor(chatMsgs);
+      if (!allowed) {
+        chatInput.value = '';
+        return;
+      }
+    }
+
     chatInput.value = '';
     state.lastUserMsg = msg;
     addMsg('user', msg);

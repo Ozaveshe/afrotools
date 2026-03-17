@@ -1,7 +1,7 @@
 (function(window) {
   'use strict';
 
-  const PRO_TOOLS = ['japa-calculator', 'medical-report', 'japa-visa-predict'];
+  const PRO_TOOLS = ['japa-calculator', 'medical-report', 'japa-visa-predict', 'business-planner'];
 
   // Cache duration: 5 minutes
   const CACHE_TTL = 5 * 60 * 1000;
@@ -118,6 +118,11 @@
           title: 'Theme Toggle',
           desc: 'Switch between dark and light themes manually with AfroTools Pro.',
           icon: '&#127769;'
+        },
+        'business-plan': {
+          title: 'Full Business Plan',
+          desc: 'Generate AI-powered executive summaries, market analysis, SWOT, financial projections, and funding strategies with Pro.',
+          icon: '&#128203;'
         }
       };
 
