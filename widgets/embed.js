@@ -7,7 +7,7 @@
  *   data-afrotools="widget-id"
  *   data-afrotools-theme="light|dark"  (default: light)
  *   data-afrotools-width="400"         (max-width in px)
- *   data-afrotools-accent="#008751"    (custom accent color)
+ *   data-afrotools-accent="#007AFF"    (custom accent color)
  */
 (function() {
   'use strict';
@@ -152,7 +152,7 @@
   function getFooterHTML(toolLink) {
     var link = toolLink || 'https://afrotools.com';
     return '<div class="aw-footer"><a href="' + link + '" target="_blank" rel="noopener">' +
-      '<svg viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" fill="#008751"/></svg>' +
+      '<svg viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" fill="#007AFF"/></svg>' +
       ' Powered by AfroTools.com</a></div>';
   }
 

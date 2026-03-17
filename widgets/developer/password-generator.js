@@ -86,8 +86,8 @@
       if (score <= 2) { pct = 20; color = '#dc2626'; label = 'Very Weak'; }
       else if (score <= 4) { pct = 40; color = '#f97316'; label = 'Weak'; }
       else if (score <= 5) { pct = 60; color = '#eab308'; label = 'Fair'; }
-      else if (score <= 6) { pct = 80; color = '#22c55e'; label = 'Strong'; }
-      else { pct = 100; color = '#16a34a'; label = 'Very Strong'; }
+      else if (score <= 6) { pct = 80; color = '#007AFF'; label = 'Strong'; }
+      else { pct = 100; color = '#007AFF'; label = 'Very Strong'; }
 
       strengthBar.style.width = pct + '%';
       strengthBar.style.background = color;

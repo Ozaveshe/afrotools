@@ -113,12 +113,12 @@
       var html = '';
       results.forEach(function(r, i) {
         var isBest = i === 0 && results.length > 1;
-        var cardBg = isBest ? (theme==='dark'?'rgba(34,197,94,.1)':'#f0fdf4') : inputBg;
-        var cardBorder = isBest ? '#22c55e' : border;
+        var cardBg = isBest ? (theme==='dark'?'rgba(0,122,255,.1)':'#eff6ff') : inputBg;
+        var cardBorder = isBest ? '#007AFF' : border;
         html += '<div style="background:' + cardBg + ';border:1.5px solid ' + cardBorder + ';border-radius:8px;padding:12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">' +
           '<div><div style="font-size:.82rem;font-weight:700;color:' + text + ';">' +
             '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:' + r.color + ';margin-right:6px;"></span>' +
-            r.name + (isBest ? ' <span style="font-size:.62rem;background:#22c55e;color:#fff;padding:1px 6px;border-radius:3px;font-weight:700;">CHEAPEST</span>' : '') +
+            r.name + (isBest ? ' <span style="font-size:.62rem;background:#007AFF;color:#fff;padding:1px 6px;border-radius:3px;font-weight:700;">CHEAPEST</span>' : '') +
           '</div></div>' +
           '<div style="text-align:right;"><div style="font-size:1rem;font-weight:800;color:' + accent + ';">' + data.sym + ' ' + r.fee.toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2}) + '</div>' +
           '<div style="font-size:.65rem;color:' + muted + ';">' + r.pct.toFixed(2) + '% of amount</div></div></div>';

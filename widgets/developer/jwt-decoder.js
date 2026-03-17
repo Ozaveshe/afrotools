@@ -66,7 +66,7 @@
           if (expDate < now) {
             statusParts.push('<span style="color:#dc2626">Expired: ' + expDate.toLocaleString() + '</span>');
           } else {
-            statusParts.push('<span style="color:#16a34a">Expires: ' + expDate.toLocaleString() + '</span>');
+            statusParts.push('<span style="color:#007AFF">Expires: ' + expDate.toLocaleString() + '</span>');
           }
         }
         if (payload.iat) {

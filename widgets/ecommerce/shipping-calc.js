@@ -8,7 +8,7 @@
     var muted = theme === 'dark' ? '#94a3b8' : '#64748b';
     var border = theme === 'dark' ? 'rgba(255,255,255,.12)' : '#e2e8f0';
     var inputBg = theme === 'dark' ? 'rgba(255,255,255,.06)' : '#f8fafc';
-    var accent = opts.accent || '#059669';
+    var accent = opts.accent || '#007AFF';
     var uid = 'aw-sc2-' + Math.random().toString(36).slice(2,8);
 
     var CARRIERS = [
@@ -101,10 +101,10 @@
 
       results.forEach(function(r, i) {
         var isCheapest = i === 0 && results.length > 1;
-        var cardBg = isCheapest ? (theme==='dark'?'rgba(5,150,105,.1)':'#f0fdf4') : inputBg;
-        var cardBorder = isCheapest ? '#059669' : border;
+        var cardBg = isCheapest ? (theme==='dark'?'rgba(0,122,255,.1)':'#eff6ff') : inputBg;
+        var cardBorder = isCheapest ? '#007AFF' : border;
         html += '<div style="background:' + cardBg + ';border:1.5px solid ' + cardBorder + ';border-radius:8px;padding:12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">' +
-          '<div><div style="font-size:.82rem;font-weight:700;color:' + text + ';">' + r.name + (isCheapest ? ' <span style="font-size:.62rem;background:#059669;color:#fff;padding:1px 6px;border-radius:3px;">CHEAPEST</span>' : '') + '</div>' +
+          '<div><div style="font-size:.82rem;font-weight:700;color:' + text + ';">' + r.name + (isCheapest ? ' <span style="font-size:.62rem;background:#007AFF;color:#fff;padding:1px 6px;border-radius:3px;">CHEAPEST</span>' : '') + '</div>' +
           '<div style="font-size:.7rem;color:' + muted + ';">Est. delivery: ' + r.time + '</div></div>' +
           '<div style="text-align:right;"><div style="font-size:1.05rem;font-weight:800;color:' + accent + ';">$' + r.cost.toFixed(2) + '</div>' +
           '<div style="font-size:.62rem;color:' + muted + ';">USD estimate</div></div></div>';

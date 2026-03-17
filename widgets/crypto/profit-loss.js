@@ -7,7 +7,7 @@
     var bg = isDark ? '#1a1a2e' : '#fff';
     var text = isDark ? '#e2e8f0' : '#0f1419';
     var border = isDark ? '#334155' : '#e2e8f0';
-    var accent = '#22c55e';
+    var accent = '#007AFF';
     var inputBg = isDark ? '#0f172a' : '#f8fafc';
     var cardBg = isDark ? '#0f172a' : '#f8fafc';
 
@@ -28,7 +28,7 @@
           '<div><label style="display:block;font-size:.72rem;font-weight:600;color:#64748b;margin-bottom:5px">Fees (total)</label>' +
             '<input type="number" id="aw-pl-fees" value="0" min="0" step="0.01" style="width:100%;padding:9px 12px;border:1.5px solid '+border+';border-radius:7px;font-size:.82rem;background:'+inputBg+';color:'+text+';font-family:inherit;box-sizing:border-box"></div>' +
         '</div>' +
-        '<button id="aw-pl-btn" style="display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;background:linear-gradient(135deg,#16a34a,'+accent+');color:#fff;font-family:inherit">Calculate Profit / Loss</button>' +
+        '<button id="aw-pl-btn" style="display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;background:linear-gradient(135deg,#007AFF,'+accent+');color:#fff;font-family:inherit">Calculate Profit / Loss</button>' +
         '<div id="aw-pl-result" style="display:none;margin-top:14px">' +
           '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">' +
             '<div id="aw-pl-pnl" style="text-align:center;padding:16px;border-radius:8px;grid-column:1/-1"></div>' +
@@ -62,11 +62,11 @@
       var pnlDiv = container.querySelector('#aw-pl-pnl');
       pnlDiv.style.background = isProfit ? '#dcfce7' : '#fee2e2';
       pnlDiv.style.border = '1px solid ' + (isProfit ? '#86efac' : '#fecaca');
-      pnlDiv.innerHTML = '<div style="font-size:1.8rem;font-weight:800;color:'+(isProfit?'#16a34a':'#dc2626')+'">'+(isProfit?'+':'-')+fmt(profitLoss)+'</div>' +
+      pnlDiv.innerHTML = '<div style="font-size:1.8rem;font-weight:800;color:'+(isProfit?'#007AFF':'#dc2626')+'">'+(isProfit?'+':'-')+fmt(profitLoss)+'</div>' +
         '<div style="font-size:.68rem;color:'+(isProfit?'#166534':'#991b1b')+';font-weight:600;text-transform:uppercase;margin-top:3px">'+(isProfit?'Profit':'Loss')+'</div>';
 
       container.querySelector('#aw-pl-roi').textContent = roi.toFixed(2) + '%';
-      container.querySelector('#aw-pl-roi').style.color = isProfit ? '#16a34a' : '#dc2626';
+      container.querySelector('#aw-pl-roi').style.color = isProfit ? '#007AFF' : '#dc2626';
       container.querySelector('#aw-pl-total-cost').textContent = fmt(totalCost);
       container.querySelector('#aw-pl-total-rev').textContent = fmt(totalRevenue);
       container.querySelector('#aw-pl-breakeven').textContent = fmt(breakeven);

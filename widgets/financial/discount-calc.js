@@ -18,7 +18,7 @@
       var sale = orig - savings;
       var f = function(n){return n.toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2})};
       var r = container.querySelector('#aw-res'); r.style.display='block';
-      r.innerHTML = '<div class="aw-result-row"><span class="aw-result-label">Sale Price</span><span class="aw-result-main">'+f(sale)+'</span></div><div class="aw-result-row"><span class="aw-result-label">You Save</span><span class="aw-result-main" style="color:#16a34a">'+f(savings)+'</span></div><hr class="aw-divider"><div class="aw-result-row"><span class="aw-result-label">Original</span><span>'+f(orig)+'</span></div>';
+      r.innerHTML = '<div class="aw-result-row"><span class="aw-result-label">Sale Price</span><span class="aw-result-main">'+f(sale)+'</span></div><div class="aw-result-row"><span class="aw-result-label">You Save</span><span class="aw-result-main" style="color:#007AFF">'+f(savings)+'</span></div><hr class="aw-divider"><div class="aw-result-row"><span class="aw-result-label">Original</span><span>'+f(orig)+'</span></div>';
     }
     container.querySelector('#aw-calc').addEventListener('click',calc);
   };

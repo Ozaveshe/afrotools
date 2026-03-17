@@ -103,8 +103,8 @@
           '<div class="aw-result-row"><span>UIF (1%)</span><span style="color:#dc2626">-' + fmt(R.uif) + '</span></div>' +
           '<div class="aw-result-row"><span>Effective Rate</span><span>' + pct(R.effectiveRate) + '</span></div>' +
           '<hr class="aw-divider">' +
-          '<div class="aw-result-row" style="font-weight:700"><span>Annual Net</span><span style="color:#16a34a">' + fmt(R.netAnnual) + '</span></div>' +
-          '<div class="aw-result-row" style="font-weight:700"><span>Monthly Net</span><span style="color:#16a34a">' + fmt(R.netMonthly) + '</span></div>' +
+          '<div class="aw-result-row" style="font-weight:700"><span>Annual Net</span><span style="color:#007AFF">' + fmt(R.netAnnual) + '</span></div>' +
+          '<div class="aw-result-row" style="font-weight:700"><span>Monthly Net</span><span style="color:#007AFF">' + fmt(R.netMonthly) + '</span></div>' +
         '</div>';
     });
 

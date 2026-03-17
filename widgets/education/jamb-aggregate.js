@@ -221,8 +221,8 @@
           var passes = aggregate >= match.cutoff;
           cutoffBox.style.display = 'block';
           cutoffBox.style.background = passes ? (isDark ? '#052e16' : '#dcfce7') : (isDark ? '#450a0a' : '#fef2f2');
-          cutoffBox.style.borderColor = passes ? '#16a34a' : '#dc2626';
-          container.querySelector('#aw-jamb-cutoff-text').innerHTML = uni + ' — ' + course + ': Cutoff <strong>' + match.cutoff + '</strong> | You: <strong>' + aggregate.toFixed(2) + '</strong> — <span style="color:' + (passes ? '#16a34a' : '#dc2626') + ';font-weight:800">' + (passes ? 'QUALIFIES' : 'BELOW CUTOFF') + '</span>';
+          cutoffBox.style.borderColor = passes ? '#007AFF' : '#dc2626';
+          container.querySelector('#aw-jamb-cutoff-text').innerHTML = uni + ' — ' + course + ': Cutoff <strong>' + match.cutoff + '</strong> | You: <strong>' + aggregate.toFixed(2) + '</strong> — <span style="color:' + (passes ? '#007AFF' : '#dc2626') + ';font-weight:800">' + (passes ? 'QUALIFIES' : 'BELOW CUTOFF') + '</span>';
         } else {
           cutoffBox.style.display = 'none';
         }

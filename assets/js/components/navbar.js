@@ -313,7 +313,7 @@
 
     /* RESPONSIVE */
     @media (max-width: 940px) {
-      .nav-links, .pill-54 { display: none; }
+      .nav-links, .pill-54, .cta { display: none; }
       .btn-login { border: none; padding: 4px; max-width: 32px; overflow: hidden; }
       .btn-login .nav-user-name, .btn-login .user-menu-name { display: none !important; width: 0 !important; height: 0 !important; overflow: hidden !important; font-size: 0 !important; }
       .btn-login span:first-child { margin-right: 0 !important; }
@@ -576,7 +576,7 @@
               </button>
               <span class="pill-54">🌍 54 countries</span>
               <a href="/dashboard/" class="btn-login">Sign in</a>
-              <a href="/widgets/demo/" class="cta" style="background:transparent;border:1.5px solid var(--clr-accent,#008751);color:var(--clr-accent,#008751);font-size:12px;padding:7px 14px">Embed Tools</a>
+              <a href="/widgets/demo/" class="cta" style="background:transparent;border:1.5px solid var(--clr-accent,#007AFF);color:var(--clr-accent,#007AFF);font-size:12px;padding:7px 14px">Embed Tools</a>
               <a href="/#newsletter" class="cta">Get Updates →</a>
               <button class="burger" type="button" aria-label="Open menu" aria-expanded="false">
                 <span></span><span></span><span></span>

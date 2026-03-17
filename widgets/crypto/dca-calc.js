@@ -96,10 +96,10 @@
       container.querySelector('#aw-dca-avg').textContent = fmt(avgCost);
       container.querySelector('#aw-dca-coins').textContent = totalCoins.toFixed(6);
       container.querySelector('#aw-dca-roi').textContent = roi.toFixed(2) + '%';
-      container.querySelector('#aw-dca-roi').style.color = isProfit ? '#16a34a' : '#dc2626';
+      container.querySelector('#aw-dca-roi').style.color = isProfit ? '#007AFF' : '#dc2626';
       container.querySelector('#aw-dca-purchases').textContent = numPurchases;
       container.querySelector('#aw-dca-pnl').textContent = (isProfit ? '+' : '-') + fmt(profitLoss);
-      container.querySelector('#aw-dca-pnl').style.color = isProfit ? '#16a34a' : '#dc2626';
+      container.querySelector('#aw-dca-pnl').style.color = isProfit ? '#007AFF' : '#dc2626';
 
       container.querySelector('#aw-dca-result').style.display = 'block';
     }

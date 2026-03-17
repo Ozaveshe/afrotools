@@ -9,7 +9,7 @@
     var muted = isDark ? '#aaa' : '#666';
     var border = isDark ? '#333' : '#e0e0e0';
     var accent = '#E8590C';
-    var green = '#16a34a';
+    var green = '#007AFF';
 
     var uid = 'aw_lnc_' + Math.random().toString(36).substr(2,6);
 

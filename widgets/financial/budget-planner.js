@@ -25,7 +25,7 @@
       var savingsRate = income > 0 ? (remaining / income * 100) : 0;
       var f = function(n){return Math.round(n).toLocaleString('en')};
       var r = container.querySelector('#aw-res'); r.style.display='block';
-      var color = remaining >= 0 ? '#16a34a' : '#dc2626';
+      var color = remaining >= 0 ? '#007AFF' : '#dc2626';
       r.innerHTML = '<div class="aw-result-row"><span class="aw-result-label">Total Expenses</span><span class="aw-result-main">'+f(total)+'</span></div><div class="aw-result-row"><span class="aw-result-label">Remaining</span><span class="aw-result-main" style="color:'+color+'">'+f(remaining)+'</span></div><hr class="aw-divider"><div class="aw-result-row"><span class="aw-result-label">Savings Rate</span><span>'+savingsRate.toFixed(1)+'%</span></div><div class="aw-result-row"><span class="aw-result-label">Expense Ratio</span><span>'+(income>0?(total/income*100).toFixed(1):0)+'%</span></div>';
     }
     container.querySelector('#aw-calc').addEventListener('click',calc);

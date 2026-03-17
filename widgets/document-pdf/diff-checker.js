@@ -114,7 +114,7 @@
             return '<div style="padding:1px 8px;background:'+rmBg+'"><span style="color:#dc2626">-</span> ' + ln + ' ' + escapeHtml(d.left) + '</div>';
           } else {
             added++;
-            return '<div style="padding:1px 8px;background:'+addBg+'"><span style="color:#16a34a">+</span> ' + ln + ' ' + escapeHtml(d.right) + '</div>';
+            return '<div style="padding:1px 8px;background:'+addBg+'"><span style="color:#007AFF">+</span> ' + ln + ' ' + escapeHtml(d.right) + '</div>';
           }
         }).join('');
         outputEl.innerHTML = html || '<div style="padding:10px;color:#888;text-align:center">No differences</div>';

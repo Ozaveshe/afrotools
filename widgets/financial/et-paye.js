@@ -68,8 +68,8 @@
           '<div class="aw-result-row"><span>PAYE Tax</span><span style="color:#dc2626">-' + fmt(R.tax) + '</span></div>' +
           '<div class="aw-result-row"><span>Effective Rate</span><span>' + pct(R.effectiveRate) + '</span></div>' +
           '<hr class="aw-divider">' +
-          '<div class="aw-result-row" style="font-weight:700"><span>Net Salary</span><span style="color:#16a34a">' + fmt(R.net) + '</span></div>' +
-          '<div class="aw-result-row" style="font-weight:700"><span>Annual Net</span><span style="color:#16a34a">' + fmt(R.net * 12) + '</span></div>' +
+          '<div class="aw-result-row" style="font-weight:700"><span>Net Salary</span><span style="color:#007AFF">' + fmt(R.net) + '</span></div>' +
+          '<div class="aw-result-row" style="font-weight:700"><span>Annual Net</span><span style="color:#007AFF">' + fmt(R.net * 12) + '</span></div>' +
         '</div>';
     });
 

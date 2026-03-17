@@ -98,7 +98,7 @@
     function setStatus(selector, pass) {
       var el = container.querySelector(selector + ' .aw-cc-status');
       el.textContent = pass ? 'PASS' : 'FAIL';
-      el.style.color = pass ? '#16a34a' : '#dc2626';
+      el.style.color = pass ? '#007AFF' : '#dc2626';
       container.querySelector(selector).style.background = pass ? (isDark ? 'rgba(22,163,74,0.1)' : 'rgba(22,163,74,0.05)') : (isDark ? 'rgba(220,38,38,0.1)' : 'rgba(220,38,38,0.05)');
     }
 

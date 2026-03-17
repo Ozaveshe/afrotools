@@ -52,11 +52,11 @@
       var risk, riskColor, shape, advice;
 
       if (gender === 'female') {
-        if (whr <= 0.80) { risk = 'Low Risk'; riskColor = '#16a34a'; shape = 'Pear Shape'; advice = 'Your WHR indicates low cardiovascular risk. Maintain your healthy lifestyle with regular exercise and balanced nutrition.'; }
+        if (whr <= 0.80) { risk = 'Low Risk'; riskColor = '#007AFF'; shape = 'Pear Shape'; advice = 'Your WHR indicates low cardiovascular risk. Maintain your healthy lifestyle with regular exercise and balanced nutrition.'; }
         else if (whr <= 0.85) { risk = 'Moderate Risk'; riskColor = '#d97706'; shape = 'Intermediate'; advice = 'Your WHR suggests moderate risk. Consider increasing physical activity and reviewing your diet.'; }
         else { risk = 'High Risk'; riskColor = '#dc2626'; shape = 'Apple Shape'; advice = 'Your WHR indicates elevated cardiovascular risk. Consult a healthcare professional. Focus on reducing abdominal fat.'; }
       } else {
-        if (whr <= 0.90) { risk = 'Low Risk'; riskColor = '#16a34a'; shape = 'Healthy Distribution'; advice = 'Your WHR indicates low cardiovascular risk. Continue maintaining a healthy weight.'; }
+        if (whr <= 0.90) { risk = 'Low Risk'; riskColor = '#007AFF'; shape = 'Healthy Distribution'; advice = 'Your WHR indicates low cardiovascular risk. Continue maintaining a healthy weight.'; }
         else if (whr <= 0.99) { risk = 'Moderate Risk'; riskColor = '#d97706'; shape = 'Intermediate'; advice = 'Your WHR suggests moderate risk. Increase cardiovascular exercise and review your diet.'; }
         else { risk = 'High Risk'; riskColor = '#dc2626'; shape = 'Central Obesity'; advice = 'Your WHR indicates significantly elevated cardiovascular risk. Please consult a healthcare professional.'; }
       }
@@ -75,7 +75,7 @@
       adviceEl.textContent = advice;
       adviceEl.style.background = riskColor + '10';
       adviceEl.style.border = '1px solid ' + riskColor + '30';
-      adviceEl.style.color = isDark ? '#e2e8f0' : (riskColor === '#16a34a' ? '#166534' : riskColor === '#d97706' ? '#854d0e' : '#991b1b');
+      adviceEl.style.color = isDark ? '#e2e8f0' : (riskColor === '#007AFF' ? '#166534' : riskColor === '#d97706' ? '#854d0e' : '#991b1b');
 
       container.querySelector('#aw-whr-result').style.display = 'block';
     }

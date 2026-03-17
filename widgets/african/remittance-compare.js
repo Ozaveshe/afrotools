@@ -8,7 +8,7 @@
     var muted = theme === 'dark' ? '#94a3b8' : '#64748b';
     var border = theme === 'dark' ? 'rgba(255,255,255,.12)' : '#e2e8f0';
     var inputBg = theme === 'dark' ? 'rgba(255,255,255,.06)' : '#f8fafc';
-    var accent = opts.accent || '#16a34a';
+    var accent = opts.accent || '#007AFF';
     var uid = 'aw-rc-' + Math.random().toString(36).slice(2,8);
 
     var PROVIDERS = [
@@ -79,11 +79,11 @@
       var html = '';
       results.forEach(function(r, i) {
         var isBest = i === 0;
-        var cardBg = isBest ? (theme==='dark'?'rgba(34,197,94,.1)':'#f0fdf4') : inputBg;
-        var cardBorder = isBest ? '#22c55e' : border;
+        var cardBg = isBest ? (theme==='dark'?'rgba(0,122,255,.1)':'#eff6ff') : inputBg;
+        var cardBorder = isBest ? '#007AFF' : border;
         html += '<div style="background:' + cardBg + ';border:1.5px solid ' + cardBorder + ';border-radius:8px;padding:12px;margin-bottom:8px;">' +
           '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">' +
-            '<div style="font-size:.85rem;font-weight:700;color:' + text + ';">' + r.name + (isBest ? ' <span style="font-size:.62rem;background:#22c55e;color:#fff;padding:1px 6px;border-radius:3px;">CHEAPEST</span>' : '') + '</div>' +
+            '<div style="font-size:.85rem;font-weight:700;color:' + text + ';">' + r.name + (isBest ? ' <span style="font-size:.62rem;background:#007AFF;color:#fff;padding:1px 6px;border-radius:3px;">CHEAPEST</span>' : '') + '</div>' +
             '<div style="font-size:.95rem;font-weight:800;color:' + accent + ';">' + toSym + Math.round(r.received).toLocaleString() + '</div>' +
           '</div>' +
           '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;">' +

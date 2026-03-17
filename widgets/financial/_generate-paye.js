@@ -850,8 +850,8 @@ ${calcBody}${creditCode}
           '<div class="aw-result-row"><span>PAYE Tax</span><span style="color:#dc2626">-' + fmt(R.tax) + '</span></div>' +`}
           '<div class="aw-result-row"><span>Effective Rate</span><span>' + pct(R.effectiveRate) + '</span></div>' +
           '<hr class="aw-divider">' +
-          '<div class="aw-result-row" style="font-weight:700"><span>${periodLabel} Net</span><span style="color:#16a34a">' + fmt(R.net) + '</span></div>' +
-          '<div class="aw-result-row" style="font-weight:700"><span>${c.period === 'monthly' ? 'Annual' : 'Monthly'} Net</span><span style="color:#16a34a">' + fmt(R.net ${c.period === 'monthly' ? '* 12' : '/ 12'}) + '</span></div>' +
+          '<div class="aw-result-row" style="font-weight:700"><span>${periodLabel} Net</span><span style="color:#007AFF">' + fmt(R.net) + '</span></div>' +
+          '<div class="aw-result-row" style="font-weight:700"><span>${c.period === 'monthly' ? 'Annual' : 'Monthly'} Net</span><span style="color:#007AFF">' + fmt(R.net ${c.period === 'monthly' ? '* 12' : '/ 12'}) + '</span></div>' +
         '</div>';
     });
 

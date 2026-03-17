@@ -86,7 +86,7 @@
 
       var category, catColor;
       if (bmi < 18.5) { category = 'Underweight'; catColor = '#3b82f6'; }
-      else if (bmi < 25) { category = 'Normal Weight'; catColor = '#22c55e'; }
+      else if (bmi < 25) { category = 'Normal Weight'; catColor = '#007AFF'; }
       else if (bmi < 30) { category = 'Overweight'; catColor = '#f59e0b'; }
       else { category = 'Obese'; catColor = '#ef4444'; }
 

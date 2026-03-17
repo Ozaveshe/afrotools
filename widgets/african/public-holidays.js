@@ -122,10 +122,10 @@
         var dow = hd.getDay();
         var isWE = dow === 0 || dow === 6;
         var dateStr = hd.toLocaleDateString('en-GB',{day:'numeric',month:'short'});
-        var statusColor = isPast ? muted : '#16a34a';
+        var statusColor = isPast ? muted : '#007AFF';
         var statusText = isPast ? 'Passed' : isNext ? 'Next Up' : 'Upcoming';
-        var dayBg = isWE ? (theme==='dark'?'rgba(239,68,68,.15)':'#fef2f2') : (theme==='dark'?'rgba(34,197,94,.15)':'#f0fdf4');
-        var dayColor = isWE ? '#ef4444' : '#16a34a';
+        var dayBg = isWE ? (theme==='dark'?'rgba(239,68,68,.15)':'#fef2f2') : (theme==='dark'?'rgba(0,122,255,.15)':'#eff6ff');
+        var dayColor = isWE ? '#ef4444' : '#007AFF';
 
         listHtml += '<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid ' + border + ';opacity:' + (isPast?'.5':'1') + ';">' +
           '<div><div style="font-size:.8rem;font-weight:600;color:' + text + ';">' + h.n + '</div>' +

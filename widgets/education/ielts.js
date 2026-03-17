@@ -132,7 +132,7 @@
         var pass = meetsOverall && meetsMin;
         table += '<tr><td '+tdS+'>' + req.dest + '</td>' +
           '<td '+tdS+' style="text-align:center">' + req.overall + '+ (min ' + req.min + ')</td>' +
-          '<td '+tdS+' style="text-align:center;font-weight:700;color:' + (pass ? '#16a34a' : '#dc2626') + '">' + (pass ? 'MEETS' : 'BELOW') + '</td></tr>';
+          '<td '+tdS+' style="text-align:center;font-weight:700;color:' + (pass ? '#007AFF' : '#dc2626') + '">' + (pass ? 'MEETS' : 'BELOW') + '</td></tr>';
       }
       table += '</tbody></table>';
       container.querySelector('#aw-ielts-reqs').innerHTML = table;

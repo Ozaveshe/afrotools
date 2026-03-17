@@ -7,7 +7,7 @@
     var bg = isDark ? '#1a1a2e' : '#fff';
     var text = isDark ? '#e2e8f0' : '#0f1419';
     var border = isDark ? '#334155' : '#e2e8f0';
-    var accent = '#059669';
+    var accent = '#007AFF';
     var inputBg = isDark ? '#0f172a' : '#f8fafc';
     var cardBg = isDark ? '#0f172a' : '#f8fafc';
     var s = 'style="width:100%;padding:9px 12px;border:1.5px solid '+border+';border-radius:7px;font-size:.82rem;background:'+inputBg+';color:'+text+';font-family:inherit;box-sizing:border-box"';
@@ -111,13 +111,13 @@
 
       var classification, classColor;
       if (currentMode === 'nigeria') {
-        if (aggregate <= 9) { classification = 'First Class'; classColor = '#16a34a'; }
+        if (aggregate <= 9) { classification = 'First Class'; classColor = '#007AFF'; }
         else if (aggregate <= 15) { classification = 'Credit'; classColor = '#d97706'; }
         else if (aggregate <= 20) { classification = 'Pass'; classColor = '#2563eb'; }
         else { classification = 'Fail'; classColor = '#dc2626'; }
       } else {
         // Ghana WASSCE
-        if (aggregate <= 12) { classification = 'Excellent'; classColor = '#16a34a'; }
+        if (aggregate <= 12) { classification = 'Excellent'; classColor = '#007AFF'; }
         else if (aggregate <= 18) { classification = 'Credit'; classColor = '#d97706'; }
         else if (aggregate <= 24) { classification = 'Pass'; classColor = '#2563eb'; }
         else { classification = 'Needs Improvement'; classColor = '#dc2626'; }

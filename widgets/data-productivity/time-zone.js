@@ -111,7 +111,7 @@
         var td = d.toLocaleString('en-US',{timeZone:tt,day:'numeric'});
         if (fd === td) {
           dayInd.textContent = 'Same day';
-          dayInd.style.background = '#dcfce7'; dayInd.style.color = '#16a34a';
+          dayInd.style.background = '#dcfce7'; dayInd.style.color = '#007AFF';
         } else {
           dayInd.textContent = parseInt(td) > parseInt(fd) ? 'Next day' : 'Previous day';
           dayInd.style.background = '#fef3c7'; dayInd.style.color = '#d97706';

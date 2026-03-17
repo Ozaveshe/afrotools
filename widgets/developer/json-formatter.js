@@ -36,7 +36,7 @@
     function validate(str) {
       try {
         var obj = JSON.parse(str);
-        status.style.color = '#16a34a';
+        status.style.color = '#007AFF';
         status.textContent = 'Valid JSON';
         return obj;
       } catch(e) {
