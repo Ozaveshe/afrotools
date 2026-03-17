@@ -67,9 +67,9 @@
       tools: []
     },
     {
-      id: 'crypto', label: 'Crypto & Web3', icon: '🪙',
+      id: 'crypto', label: 'Crypto & Web3', icon: '₿',
       desc: 'P2P rates, prices, stablecoins, arbitrage',
-      href: '/crypto/', color: '#f3e8ff', accent: '#AF52DE',
+      href: '/crypto/', color: '#fff7ed', accent: '#f97316',
       tools: [
         { label: 'P2P Rate Comparator', href: '/crypto/p2p-rates/', emoji: '₿', badge: 'LIVE' },
         { label: 'Live Crypto Prices', href: '/crypto/prices/', emoji: '📊', badge: 'LIVE' },

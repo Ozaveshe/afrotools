@@ -1,0 +1,1159 @@
+// /engines/business-planner-engine.js
+// ═══════════════════════════════════════════════════════════
+// AfroTools Business Planner Engine — All 54 African Countries
+// Standalone: works in browser AND Node.js (future API endpoint)
+// ═══════════════════════════════════════════════════════════
+
+var BusinessPlannerEngine = (function () {
+
+  // Helper for countries with minimal online data
+  function _basic(name, code, symbol, currName, lang, region, regAuth, regWeb, taxAuth, taxWeb, citRate, pitRate, vatRate, vatThreshold, banks, soleFee, ltdFee) {
+    return {
+      name: name,
+      currency: { code: code, symbol: symbol, name: currName },
+      language: lang,
+      region: region,
+      registration: {
+        authority: regAuth,
+        website: regWeb || '',
+        portalUrl: '',
+        types: [
+          {
+            type: 'Sole Proprietorship',
+            registrationFee: soleFee || 0,
+            minCapital: 0,
+            timeline: '7-30 days',
+            requirements: ['Valid national ID or passport', 'Tax identification number', 'Proof of business address', 'Passport photographs'],
+            steps: ['Obtain tax identification number from ' + taxAuth, 'Register business name with ' + regAuth, 'Pay registration fee (' + symbol + (soleFee||0).toLocaleString() + ')', 'Obtain certificate of registration', 'Open business bank account']
+          },
+          {
+            type: 'Limited Company',
+            registrationFee: ltdFee || 0,
+            minCapital: 0,
+            timeline: '14-60 days',
+            requirements: ['Minimum 2 shareholders', 'Minimum 1 director', 'Memorandum and Articles of Association', 'Registered office address', 'Tax ID for all directors', 'Valid ID for all directors'],
+            steps: ['Search and reserve company name with ' + regAuth, 'Prepare Memorandum & Articles of Association', 'File incorporation documents', 'Pay registration fee (' + symbol + (ltdFee||0).toLocaleString() + ')', 'Receive Certificate of Incorporation', 'Register for tax with ' + taxAuth, 'Register for VAT if applicable', 'Open corporate bank account']
+          }
+        ]
+      },
+      tax: {
+        authority: taxAuth,
+        website: taxWeb || '',
+        obligations: [
+          { name: 'Corporate Income Tax', rate: citRate, applicableTo: ['Ltd'] },
+          { name: 'Personal Income Tax', rate: pitRate, applicableTo: ['Sole Proprietorship'] },
+          { name: 'VAT', rate: vatRate, applicableTo: ['Ltd', 'Sole Proprietorship'], note: vatThreshold ? 'If turnover exceeds threshold' : '' }
+        ],
+        filingDeadlines: [
+          { tax: 'CIT', deadline: 'Within 3-6 months of financial year end' },
+          { tax: 'VAT', deadline: 'Monthly or quarterly, varies' }
+        ]
+      },
+      licenses: { general: [{ name: 'Tax ID / TIN', authority: taxAuth, cost: 'Free', timeline: '1-7 days' }], byIndustry: {} },
+      banking: { majorBanks: banks || [], accountRequirements: ['Certificate of Registration/Incorporation', 'Tax ID', 'Directors\' IDs', 'Proof of address'], estimatedTimeline: '3-10 business days' },
+      startupCosts: {
+        low: { range: symbol + '50,000 - ' + symbol + '200,000', description: 'Sole proprietorship, home-based' },
+        medium: { range: symbol + '500,000 - ' + symbol + '2,000,000', description: 'Ltd company, small office, 1-5 employees' },
+        high: { range: symbol + '5,000,000+', description: 'Ltd company, commercial premises, industry licenses' }
+      }
+    };
+  }
+
+  var countries = {
+
+    // ══════════════════════════════════════════════════════
+    //  WEST AFRICA
+    // ══════════════════════════════════════════════════════
+
+    "NG": {
+      name: "Nigeria",
+      currency: { code: "NGN", symbol: "\u20A6", name: "Nigerian Naira" },
+      language: "English",
+      region: "West Africa",
+      registration: {
+        authority: "Corporate Affairs Commission (CAC)",
+        website: "https://www.cac.gov.ng",
+        portalUrl: "https://pre.cac.gov.ng",
+        types: [
+          {
+            type: "Sole Proprietorship (Business Name)",
+            registrationFee: 10000,
+            minCapital: 0,
+            timeline: "7-14 days",
+            requirements: ["Proposed business name (at least 2 options)", "Completed CAC Form BN1", "Valid government-issued ID (NIN, passport, driver\u2019s license)", "Passport photograph", "Business address in Nigeria"],
+            steps: ["Search for name availability on CAC portal (pre.cac.gov.ng)", "Reserve your business name (\u20A6500 reservation fee)", "Complete BN1 registration form online", "Upload required documents (ID, passport photo)", "Pay registration fee (\u20A610,000) via Remita", "Download your Certificate of Business Name Registration"]
+          },
+          {
+            type: "Private Limited Company (Ltd)",
+            registrationFee: 25000,
+            minCapital: 100000,
+            timeline: "14-28 days",
+            requirements: ["Minimum 2 shareholders, maximum 50", "Minimum 2 directors (at least 1 must be Nigerian resident)", "Registered office address in Nigeria", "Memorandum and Articles of Association", "Form CAC 1.1 (Application for Registration)", "Statement of Share Capital", "Valid ID for all directors and shareholders", "Tax Identification Number (TIN) for all directors"],
+            steps: ["Search and reserve company name on CAC portal", "Prepare Memorandum & Articles of Association (MEMART)", "Complete CAC 1.1 form with director/shareholder details", "Pay stamp duty on share capital (0.75%)", "Submit registration via CAC online portal", "Pay registration fee (\u20A625,000 + stamp duty)", "Receive Certificate of Incorporation", "Apply for Tax Identification Number (TIN) from FIRS", "Register for VAT with FIRS if applicable"]
+          },
+          {
+            type: "Non-Governmental Organization (NGO)",
+            registrationFee: 20000,
+            timeline: "30-60 days",
+            minCapital: 0,
+            requirements: ["Minimum 2 trustees", "Constitution/Trust Deed", "Board resolution", "Objects must be charitable or for public benefit"],
+            steps: ["Search and reserve name with CAC (must include 'Foundation', 'Initiative', etc.)", "Prepare Constitution or Trust Deed", "Complete CAC IT/1 form (Incorporated Trustees)", "Obtain recommendation letter from state\u2019s Ministry of Internal Affairs", "Submit application with registration fee", "Receive Certificate of Incorporation as Trustee"]
+          }
+        ]
+      },
+      tax: {
+        authority: "Federal Inland Revenue Service (FIRS)",
+        website: "https://www.firs.gov.ng",
+        obligations: [
+          { name: "Company Income Tax (CIT)", rate: "30% (large), 20% (medium), 0% (small < \u20A625M)", applicableTo: ["Ltd"] },
+          { name: "Value Added Tax (VAT)", rate: "7.5%", applicableTo: ["Ltd", "Sole Proprietorship"], note: "If turnover > \u20A625M per annum" },
+          { name: "Pay As You Earn (PAYE)", rate: "7% - 24% progressive", applicableTo: ["Ltd"], note: "If you have employees" },
+          { name: "Withholding Tax (WHT)", rate: "5% - 10%", applicableTo: ["Ltd"] },
+          { name: "Education Tax", rate: "2.5% of assessable profit", applicableTo: ["Ltd"] },
+          { name: "Personal Income Tax", rate: "7% - 24% progressive", applicableTo: ["Sole Proprietorship"] }
+        ],
+        filingDeadlines: [
+          { tax: "CIT", deadline: "Within 6 months of financial year end" },
+          { tax: "VAT", deadline: "21st of every month" },
+          { tax: "PAYE", deadline: "10th of every month" }
+        ]
+      },
+      licenses: {
+        general: [
+          { name: "Tax Identification Number (TIN)", authority: "FIRS", cost: "Free", timeline: "1-3 days" },
+          { name: "Business Premises Permit", authority: "Local Government", cost: "\u20A65,000 - \u20A650,000", timeline: "7-14 days" }
+        ],
+        byIndustry: {
+          "Food & Beverage": [{ name: "NAFDAC Registration", authority: "National Agency for Food & Drug Administration (NAFDAC)", cost: "\u20A650,000 - \u20A6500,000", timeline: "3-6 months" }],
+          "Technology / Fintech": [
+            { name: "NITDA Registration", authority: "National Information Technology Development Agency", cost: "\u20A650,000+", timeline: "14-30 days" },
+            { name: "CBN Fintech License", authority: "Central Bank of Nigeria", cost: "Varies by category", timeline: "6-12 months", note: "Required for payment processing, lending, banking" }
+          ],
+          "Import/Export": [
+            { name: "Import Duty Registration", authority: "Nigeria Customs Service", cost: "Varies", timeline: "14-30 days" },
+            { name: "SON Conformity Assessment", authority: "Standards Organisation of Nigeria", cost: "Varies by product", timeline: "30-60 days" }
+          ],
+          "Healthcare": [{ name: "Medical Practice License", authority: "Medical and Dental Council of Nigeria", cost: "\u20A650,000+", timeline: "30-60 days" }],
+          "Education": [{ name: "Approval to Operate", authority: "State Ministry of Education", cost: "Varies by state", timeline: "3-12 months" }],
+          "Construction / Real Estate": [{ name: "Building Plan Approval", authority: "State Physical Planning Authority", cost: "Varies", timeline: "30-60 days" }]
+        }
+      },
+      banking: {
+        majorBanks: ["First Bank", "Access Bank", "GTBank", "Zenith Bank", "UBA"],
+        accountRequirements: ["Certificate of Incorporation / Business Name Registration", "TIN Certificate", "Board Resolution (for Ltd companies)", "Two passport photos per signatory", "Utility bill for business address", "Valid ID for all signatories"],
+        estimatedTimeline: "1-5 business days"
+      },
+      startupCosts: {
+        low: { range: "\u20A650,000 - \u20A6200,000", description: "Sole proprietorship, home-based, no employees" },
+        medium: { range: "\u20A6500,000 - \u20A62,000,000", description: "Ltd company, small office, 1-5 employees" },
+        high: { range: "\u20A65,000,000+", description: "Ltd company, commercial premises, 10+ employees, industry licenses" }
+      }
+    },
+
+    "GH": {
+      name: "Ghana",
+      currency: { code: "GHS", symbol: "GH\u20B5", name: "Ghanaian Cedi" },
+      language: "English",
+      region: "West Africa",
+      registration: {
+        authority: "Office of the Registrar General (RGD)",
+        website: "https://rgd.gov.gh",
+        portalUrl: "https://eregistrations.gov.gh",
+        types: [
+          {
+            type: "Sole Proprietorship",
+            registrationFee: 75,
+            minCapital: 0,
+            timeline: "1-5 days",
+            requirements: ["Ghana Card or valid passport", "TIN (Tax Identification Number)", "Digital address (GhanaPostGPS)", "Passport photograph"],
+            steps: ["Obtain a TIN from GRA if you don\u2019t have one", "Visit eregistrations.gov.gh and create an account", "Search and reserve business name", "Complete online registration form", "Pay registration fee (GH\u20B575)", "Download Certificate of Registration"]
+          },
+          {
+            type: "Private Limited Company",
+            registrationFee: 320,
+            minCapital: 500,
+            timeline: "5-14 days",
+            requirements: ["Minimum 1 shareholder", "Minimum 1 director (must be Ghanaian or have work permit)", "Company secretary (can be a firm)", "Registered office address in Ghana", "Constitution (Regulations)", "TIN for all directors"],
+            steps: ["Search and reserve company name at RGD", "Prepare company Constitution (Regulations)", "File incorporation documents on eregistrations.gov.gh", "Pay registration fee (GH\u20B5320) + stamp duty", "Receive Certificate of Incorporation and Commencement", "Register with GRA for tax purposes", "Register for VAT if expected turnover > GH\u20B5200,000"]
+          }
+        ]
+      },
+      tax: {
+        authority: "Ghana Revenue Authority (GRA)",
+        website: "https://gra.gov.gh",
+        obligations: [
+          { name: "Corporate Income Tax", rate: "25%", applicableTo: ["Ltd"] },
+          { name: "Personal Income Tax", rate: "0% - 35% progressive", applicableTo: ["Sole Proprietorship"] },
+          { name: "VAT + NHIL + GETFund + COVID Levy", rate: "21.9% combined", applicableTo: ["Ltd", "Sole Proprietorship"], note: "If turnover > GH\u20B5200,000" },
+          { name: "PAYE", rate: "0% - 35% progressive", applicableTo: ["Ltd"], note: "If you have employees" },
+          { name: "Withholding Tax", rate: "3% - 15%", applicableTo: ["Ltd"] }
+        ],
+        filingDeadlines: [
+          { tax: "CIT", deadline: "Within 4 months of financial year end" },
+          { tax: "VAT", deadline: "Last working day of the month following" },
+          { tax: "PAYE", deadline: "15th of every month" }
+        ]
+      },
+      licenses: {
+        general: [
+          { name: "TIN", authority: "GRA", cost: "Free", timeline: "1-2 days" },
+          { name: "Business Operating Permit", authority: "Metropolitan/Municipal Assembly", cost: "GH\u20B5200 - GH\u20B55,000", timeline: "7-14 days" }
+        ],
+        byIndustry: {
+          "Food & Beverage": [{ name: "FDA Registration", authority: "Food and Drugs Authority", cost: "GH\u20B5500 - GH\u20B55,000", timeline: "1-3 months" }],
+          "Technology / Fintech": [{ name: "Electronic Money Issuer License", authority: "Bank of Ghana", cost: "Varies", timeline: "6-12 months" }],
+          "Import/Export": [{ name: "Import/Export License", authority: "Ministry of Trade and Industry", cost: "GH\u20B5500+", timeline: "14-30 days" }]
+        }
+      },
+      banking: {
+        majorBanks: ["GCB Bank", "Ecobank", "Stanbic Bank", "Fidelity Bank", "Absa Ghana"],
+        accountRequirements: ["Certificate of Registration/Incorporation", "TIN Certificate", "Ghana Card for all signatories", "Board Resolution (for Ltd)", "Proof of business address"],
+        estimatedTimeline: "1-5 business days"
+      },
+      startupCosts: {
+        low: { range: "GH\u20B5500 - GH\u20B55,000", description: "Sole proprietorship, home-based" },
+        medium: { range: "GH\u20B510,000 - GH\u20B550,000", description: "Ltd company, small office, 1-5 employees" },
+        high: { range: "GH\u20B5100,000+", description: "Ltd with commercial premises and industry licenses" }
+      }
+    },
+
+    "SN": {
+      name: "Senegal",
+      currency: { code: "XOF", symbol: "CFA", name: "West African CFA Franc" },
+      language: "French",
+      region: "West Africa",
+      registration: {
+        authority: "Agence de Promotion des Investissements (APIX)",
+        website: "https://www.apix.sn",
+        portalUrl: "https://creationentreprise.sn",
+        types: [
+          { type: "Entreprise Individuelle (Sole Proprietorship)", registrationFee: 10000, minCapital: 0, timeline: "2-5 days",
+            requirements: ["National ID (CNI) or passport", "NINEA (tax identification)", "Proof of address", "Criminal record extract"],
+            steps: ["Visit APIX one-stop shop or online portal", "Reserve business name", "Complete registration form", "Pay registration fee (CFA 10,000)", "Obtain RCCM (trade register) extract", "Register for NINEA with tax authority (DGID)"]
+          },
+          { type: "SARL (Soci\u00e9t\u00e9 \u00e0 Responsabilit\u00e9 Limit\u00e9e)", registrationFee: 100000, minCapital: 100000, timeline: "5-14 days",
+            requirements: ["Minimum 1 shareholder", "Minimum CFA 100,000 share capital", "Notarized statutes", "Proof of capital deposit at bank", "Criminal record extract for manager"],
+            steps: ["Reserve company name with RCCM", "Draft and notarize company statutes", "Deposit share capital at bank", "Register at APIX one-stop shop", "Pay registration fees (CFA ~100,000 including notary)", "Obtain RCCM registration", "Register for NINEA with DGID", "Register with IPRES (pension) and CSS (social security)"]
+          }
+        ]
+      },
+      tax: {
+        authority: "Direction G\u00e9n\u00e9rale des Imp\u00f4ts et Domaines (DGID)",
+        website: "https://www.impotsetdomaines.gouv.sn",
+        obligations: [
+          { name: "Imp\u00f4t sur les Soci\u00e9t\u00e9s (Corporate Tax)", rate: "30%", applicableTo: ["SARL"] },
+          { name: "Imp\u00f4t sur le Revenu (Personal Income Tax)", rate: "0% - 40% progressive", applicableTo: ["Sole Proprietorship"] },
+          { name: "TVA (VAT)", rate: "18%", applicableTo: ["SARL", "Sole Proprietorship"], note: "If turnover > CFA 100M" },
+          { name: "PAYE / Retenue \u00e0 la source", rate: "Progressive", applicableTo: ["SARL"], note: "If you have employees" },
+          { name: "Patente (Business Tax)", rate: "Varies by turnover", applicableTo: ["SARL", "Sole Proprietorship"] }
+        ],
+        filingDeadlines: [
+          { tax: "CIT", deadline: "April 30 each year" },
+          { tax: "VAT", deadline: "15th of the following month" }
+        ]
+      },
+      licenses: {
+        general: [
+          { name: "NINEA (Tax ID)", authority: "DGID", cost: "Free", timeline: "1-3 days" },
+          { name: "Patente", authority: "Municipal authority", cost: "CFA 50,000 - CFA 500,000", timeline: "7-14 days" }
+        ],
+        byIndustry: {
+          "Food & Beverage": [{ name: "Hygiene Certificate", authority: "Ministry of Health", cost: "CFA 25,000+", timeline: "14-30 days" }],
+          "Technology / Fintech": [{ name: "E-Money License", authority: "BCEAO", cost: "Varies", timeline: "6-12 months" }]
+        }
+      },
+      banking: {
+        majorBanks: ["CBAO (Attijariwafa)", "Soci\u00e9t\u00e9 G\u00e9n\u00e9rale S\u00e9n\u00e9gal", "Ecobank Senegal", "BICIS (BNP Paribas)", "Bank of Africa Senegal"],
+        accountRequirements: ["RCCM extract", "NINEA", "Notarized statutes", "ID for signatories", "Proof of address"],
+        estimatedTimeline: "3-7 business days"
+      },
+      startupCosts: {
+        low: { range: "CFA 50,000 - CFA 300,000", description: "Sole proprietorship, home-based" },
+        medium: { range: "CFA 1,000,000 - CFA 5,000,000", description: "SARL, small office, 1-5 employees" },
+        high: { range: "CFA 10,000,000+", description: "SARL, commercial premises, industry licenses" }
+      }
+    },
+
+    "CI": {
+      name: "C\u00f4te d'Ivoire",
+      currency: { code: "XOF", symbol: "CFA", name: "West African CFA Franc" },
+      language: "French",
+      region: "West Africa",
+      registration: {
+        authority: "Centre de Promotion des Investissements en C\u00f4te d'Ivoire (CEPICI)",
+        website: "https://www.cepici.gouv.ci",
+        portalUrl: "https://www.cepici.gouv.ci",
+        types: [
+          { type: "Entreprise Individuelle", registrationFee: 15000, minCapital: 0, timeline: "1-3 days",
+            requirements: ["CNI or passport", "Criminal record extract", "Proof of address", "2 passport photos"],
+            steps: ["Visit CEPICI one-stop shop in Abidjan or regional office", "Complete registration form", "Pay fees (CFA ~15,000)", "Obtain RCCM registration", "Register for DFE (tax ID) with DGI"]
+          },
+          { type: "SARL", registrationFee: 200000, minCapital: 100000, timeline: "3-7 days",
+            requirements: ["Minimum 1 shareholder", "Minimum CFA 100,000 share capital (OHADA reform)", "Notarized statutes", "Bank deposit certificate"],
+            steps: ["Reserve company name", "Draft and notarize statutes", "Deposit capital at bank", "Register at CEPICI (all formalities handled)", "Obtain RCCM + DFE", "Register with CNPS (social security)"]
+          }
+        ]
+      },
+      tax: {
+        authority: "Direction G\u00e9n\u00e9rale des Imp\u00f4ts (DGI)",
+        website: "https://www.dgi.gouv.ci",
+        obligations: [
+          { name: "BIC (Corporate Tax)", rate: "25%", applicableTo: ["SARL"] },
+          { name: "Personal Income Tax (IGR)", rate: "0% - 36% progressive", applicableTo: ["Sole Proprietorship"] },
+          { name: "TVA", rate: "18%", applicableTo: ["SARL", "Sole Proprietorship"] },
+          { name: "Contribution Nationale (CN)", rate: "1.5% of turnover", applicableTo: ["SARL"], note: "If turnover > CFA 50M" }
+        ],
+        filingDeadlines: [
+          { tax: "BIC", deadline: "April 30 each year" },
+          { tax: "TVA", deadline: "10th of the following month" }
+        ]
+      },
+      licenses: { general: [{ name: "DFE (Tax ID)", authority: "DGI", cost: "Free", timeline: "1-2 days" }], byIndustry: { "Technology / Fintech": [{ name: "E-Money License", authority: "BCEAO", cost: "Varies", timeline: "6-12 months" }] } },
+      banking: { majorBanks: ["Soci\u00e9t\u00e9 G\u00e9n\u00e9rale CI", "Ecobank CI", "NSIA Banque", "Bank of Africa CI", "Oragroup"], accountRequirements: ["RCCM", "DFE", "Notarized statutes", "ID for signatories"], estimatedTimeline: "3-7 business days" },
+      startupCosts: { low: { range: "CFA 50,000 - CFA 300,000", description: "Sole proprietorship, home-based" }, medium: { range: "CFA 1,000,000 - CFA 5,000,000", description: "SARL, small office" }, high: { range: "CFA 10,000,000+", description: "SARL, commercial premises" } }
+    },
+
+    "ML": _basic("Mali", "XOF", "CFA", "West African CFA Franc", "French", "West Africa", "CEFORE (Centre de Facilitation des Entreprises)", "https://cefore.ml", "Direction G\u00e9n\u00e9rale des Imp\u00f4ts (DGI)", "", "30%", "0% - 40% progressive", "18%", true, ["BMS", "Ecobank Mali", "Bank of Africa Mali", "BNDA"], 15000, 150000),
+
+    "BF": _basic("Burkina Faso", "XOF", "CFA", "West African CFA Franc", "French", "West Africa", "CEFORE (Centre de Formalit\u00e9s des Entreprises)", "https://www.cefore.bf", "Direction G\u00e9n\u00e9rale des Imp\u00f4ts", "", "27.5%", "0% - 25% progressive", "18%", true, ["Coris Bank", "Ecobank BF", "Bank of Africa BF", "Soci\u00e9t\u00e9 G\u00e9n\u00e9rale BF"], 12000, 100000),
+
+    "NE": _basic("Niger", "XOF", "CFA", "West African CFA Franc", "French", "West Africa", "Maison de l'Entreprise", "", "Direction G\u00e9n\u00e9rale des Imp\u00f4ts", "", "30%", "0% - 35% progressive", "19%", true, ["Bank of Africa Niger", "Ecobank Niger", "BIA Niger", "Sonibank"], 10000, 100000),
+
+    "GN": _basic("Guinea", "GNF", "GNF", "Guinean Franc", "French", "West Africa", "APIP (Agence de Promotion des Investissements Priv\u00e9s)", "https://apip.gov.gn", "Direction Nationale des Imp\u00f4ts", "", "25%", "0% - 35% progressive", "18%", true, ["Ecobank Guinea", "BICIGUI", "Soci\u00e9t\u00e9 G\u00e9n\u00e9rale Guinea", "UBA Guinea"], 500000, 2000000),
+
+    "SL": _basic("Sierra Leone", "SLE", "Le", "Sierra Leonean Leone", "English", "West Africa", "Corporate Affairs Commission (OARG)", "https://ofrg.gov.sl", "National Revenue Authority (NRA)", "https://www.nra.gov.sl", "25%", "0% - 30% progressive", "15%", true, ["Sierra Leone Commercial Bank", "Rokel Commercial Bank", "Ecobank SL", "UBA SL"], 50000, 500000),
+
+    "LR": _basic("Liberia", "LRD", "L$", "Liberian Dollar", "English", "West Africa", "Liberia Business Registry (LBR)", "https://lbr.gov.lr", "Liberia Revenue Authority (LRA)", "https://www.lra.gov.lr", "25%", "0% - 25% progressive", "10%", true, ["LBDI", "Ecobank Liberia", "UBA Liberia", "GT Bank Liberia"], 5000, 25000),
+
+    "TG": _basic("Togo", "XOF", "CFA", "West African CFA Franc", "French", "West Africa", "Centre de Formalit\u00e9s des Entreprises (CFE)", "https://www.cfetogo.tg", "Office Togolais des Recettes (OTR)", "https://www.otr.tg", "27%", "0% - 35% progressive", "18%", true, ["Ecobank Togo", "UTB", "BTCI", "Oragroup"], 12000, 100000),
+
+    "BJ": _basic("Benin", "XOF", "CFA", "West African CFA Franc", "French", "West Africa", "Guichet Unique de Formalisation des Entreprises (GUFE)", "https://monentreprise.bj", "Direction G\u00e9n\u00e9rale des Imp\u00f4ts", "", "30%", "0% - 35% progressive", "18%", true, ["Bank of Africa Benin", "Ecobank Benin", "BGFI Benin", "UBA Benin"], 12000, 100000),
+
+    "GM": _basic("Gambia", "GMD", "D", "Gambian Dalasi", "English", "West Africa", "Business Registration Office", "", "Gambia Revenue Authority (GRA)", "https://www.gra.gm", "27%", "0% - 30% progressive", "15%", true, ["Trust Bank Gambia", "Ecobank Gambia", "GT Bank Gambia", "Zenith Bank Gambia"], 1000, 5000),
+
+    "GW": _basic("Guinea-Bissau", "XOF", "CFA", "West African CFA Franc", "Portuguese", "West Africa", "Guich\u00e9 \u00danico de Empresas", "", "Direc\u00e7\u00e3o-Geral das Contribui\u00e7\u00f5es e Impostos", "", "25%", "0% - 20% progressive", "17%", true, ["Ecobank Guinea-Bissau", "BAO", "Banco da Uni\u00e3o"], 15000, 100000),
+
+    "CV": {
+      name: "Cabo Verde",
+      currency: { code: "CVE", symbol: "Esc", name: "Cape Verdean Escudo" },
+      language: "Portuguese",
+      region: "West Africa",
+      registration: {
+        authority: "Casa do Cidad\u00e3o (Citizen House)",
+        website: "https://portondinosilha.cv",
+        portalUrl: "https://portondinosilha.cv",
+        types: [
+          { type: "Empresa em Nome Individual (Sole Proprietorship)", registrationFee: 5000, minCapital: 0, timeline: "1-3 days",
+            requirements: ["Valid ID / passport", "NIF (tax ID)", "Proof of address"],
+            steps: ["Visit Casa do Cidad\u00e3o one-stop shop", "Reserve business name", "Pay registration fee (~Esc 5,000)", "Obtain Commercial Registry certificate", "Register for NIF with DNRE"]
+          },
+          { type: "Sociedade por Quotas (Lda)", registrationFee: 15000, minCapital: 100000, timeline: "5-14 days",
+            requirements: ["Minimum 2 partners", "Minimum Esc 100,000 share capital", "Notarized articles", "NIF for all partners"],
+            steps: ["Reserve company name", "Draft and notarize articles of association", "Deposit capital at bank", "Register at Casa do Cidad\u00e3o", "Obtain NIF for company", "Register for social security"]
+          }
+        ]
+      },
+      tax: {
+        authority: "Direc\u00e7\u00e3o Nacional de Receitas do Estado (DNRE)",
+        website: "",
+        obligations: [
+          { name: "IRPC (Corporate Tax)", rate: "22%", applicableTo: ["Lda"] },
+          { name: "IUR (Personal Income Tax)", rate: "0% - 35% progressive", applicableTo: ["Sole Proprietorship"] },
+          { name: "IVA (VAT)", rate: "15%", applicableTo: ["Lda", "Sole Proprietorship"] }
+        ],
+        filingDeadlines: [{ tax: "IRPC", deadline: "By May 31 each year" }, { tax: "IVA", deadline: "Monthly by 15th" }]
+      },
+      licenses: { general: [{ name: "NIF", authority: "DNRE", cost: "Free", timeline: "1-2 days" }], byIndustry: {} },
+      banking: { majorBanks: ["BCA", "BI", "Caixa Econ\u00f3mica de Cabo Verde", "BAI Cabo Verde"], accountRequirements: ["Commercial Registry certificate", "NIF", "ID for signatories"], estimatedTimeline: "3-7 business days" },
+      startupCosts: { low: { range: "Esc 20,000 - Esc 100,000", description: "Sole proprietorship, home-based" }, medium: { range: "Esc 500,000 - Esc 2,000,000", description: "Lda, small office" }, high: { range: "Esc 5,000,000+", description: "Lda, commercial premises" } }
+    },
+
+    "MR": _basic("Mauritania", "MRU", "UM", "Mauritanian Ouguiya", "Arabic, French", "West Africa", "Guichet Unique", "", "Direction G\u00e9n\u00e9rale des Imp\u00f4ts", "", "25%", "0% - 40% progressive", "16%", true, ["Banque Mauritanienne pour le Commerce International", "Soci\u00e9t\u00e9 G\u00e9n\u00e9rale Mauritanie", "Chinguittel Bank"], 5000, 50000),
+
+    // ══════════════════════════════════════════════════════
+    //  EAST AFRICA
+    // ══════════════════════════════════════════════════════
+
+    "KE": {
+      name: "Kenya",
+      currency: { code: "KES", symbol: "KSh", name: "Kenyan Shilling" },
+      language: "English, Swahili",
+      region: "East Africa",
+      registration: {
+        authority: "Business Registration Service (BRS)",
+        website: "https://brs.go.ke",
+        portalUrl: "https://ecitizenportal.ecitizen.go.ke",
+        types: [
+          {
+            type: "Sole Proprietorship (Business Name)",
+            registrationFee: 950,
+            minCapital: 0,
+            timeline: "1-3 days",
+            requirements: ["National ID or passport", "KRA PIN", "Business name (at least 3 options)", "Physical business address"],
+            steps: ["Obtain KRA PIN from itax.kra.go.ke if you don\u2019t have one", "Log in to eCitizen portal", "Search and reserve business name (KSh 150)", "Fill in BN/2 registration form", "Pay registration fee (KSh 950)", "Download Certificate of Registration"]
+          },
+          {
+            type: "Private Limited Company",
+            registrationFee: 10650,
+            minCapital: 1,
+            timeline: "3-14 days",
+            requirements: ["Minimum 1 shareholder, minimum 1 director", "Company secretary (if >1 director)", "KRA PIN for all directors", "Registered office in Kenya", "Memorandum and Articles of Association", "CR forms (CR1, CR2, CR8)"],
+            steps: ["Reserve company name on eCitizen (KSh 150)", "Prepare Memorandum & Articles of Association", "Complete and file CR forms (CR1, CR2, CR8)", "Pay registration fee (KSh 10,650) via eCitizen", "Receive Certificate of Incorporation", "Apply for KRA PIN for the company", "Register for VAT if turnover > KSh 5M", "Register for PAYE if hiring employees", "Register for NSSF and NHIF for employees"]
+          }
+        ]
+      },
+      tax: {
+        authority: "Kenya Revenue Authority (KRA)",
+        website: "https://www.kra.go.ke",
+        obligations: [
+          { name: "Corporation Tax", rate: "30%", applicableTo: ["Ltd"] },
+          { name: "Personal Income Tax", rate: "10% - 35% progressive", applicableTo: ["Sole Proprietorship"] },
+          { name: "VAT", rate: "16%", applicableTo: ["Ltd", "Sole Proprietorship"], note: "If turnover > KSh 5,000,000" },
+          { name: "PAYE", rate: "10% - 35% progressive", applicableTo: ["Ltd"], note: "If you have employees" },
+          { name: "Digital Service Tax", rate: "1.5% of gross transaction value", applicableTo: ["Ltd"], note: "For digital marketplace services" },
+          { name: "Withholding Tax", rate: "3% - 20%", applicableTo: ["Ltd"] }
+        ],
+        filingDeadlines: [
+          { tax: "Corporation Tax", deadline: "6 months after end of accounting period" },
+          { tax: "VAT", deadline: "20th of every month" },
+          { tax: "PAYE", deadline: "9th of every month" }
+        ]
+      },
+      licenses: {
+        general: [
+          { name: "KRA PIN", authority: "KRA", cost: "Free", timeline: "Instant online" },
+          { name: "Single Business Permit", authority: "County Government", cost: "KSh 5,000 - KSh 50,000", timeline: "7-14 days" }
+        ],
+        byIndustry: {
+          "Food & Beverage": [
+            { name: "Food Hygiene License", authority: "Public Health Department", cost: "KSh 5,000 - KSh 20,000", timeline: "14-30 days" },
+            { name: "KEBS Standardization Mark", authority: "Kenya Bureau of Standards", cost: "KSh 10,000+", timeline: "1-3 months" }
+          ],
+          "Technology / Fintech": [{ name: "CBK Fintech License", authority: "Central Bank of Kenya", cost: "Varies", timeline: "6-12 months" }]
+        }
+      },
+      banking: {
+        majorBanks: ["Equity Bank", "KCB Bank", "Co-operative Bank", "ABSA Kenya", "NCBA"],
+        accountRequirements: ["Certificate of Incorporation / Business Name Registration", "KRA PIN Certificate", "National ID/Passport for signatories", "Board Resolution (for Ltd)", "CR12 (list of directors)"],
+        estimatedTimeline: "1-3 business days"
+      },
+      startupCosts: {
+        low: { range: "KSh 5,000 - KSh 50,000", description: "Sole proprietorship, home-based" },
+        medium: { range: "KSh 100,000 - KSh 500,000", description: "Ltd, small office, 1-5 employees" },
+        high: { range: "KSh 1,000,000+", description: "Ltd, commercial premises, industry licenses" }
+      }
+    },
+
+    "TZ": {
+      name: "Tanzania",
+      currency: { code: "TZS", symbol: "TSh", name: "Tanzanian Shilling" },
+      language: "Swahili, English",
+      region: "East Africa",
+      registration: {
+        authority: "Business Registrations and Licensing Agency (BRELA)",
+        website: "https://www.brela.go.tz",
+        portalUrl: "https://ors.brela.go.tz",
+        types: [
+          { type: "Sole Proprietorship (Business Name)", registrationFee: 40000, minCapital: 0, timeline: "1-3 days",
+            requirements: ["National ID (NIDA) or passport", "TIN from TRA", "Proposed business name"],
+            steps: ["Obtain TIN from Tanzania Revenue Authority (TRA)", "Search for name availability on BRELA online system", "Apply for business name registration", "Pay registration fee (TSh 40,000)", "Receive Certificate of Registration"]
+          },
+          { type: "Private Limited Company", registrationFee: 588000, minCapital: 0, timeline: "7-21 days",
+            requirements: ["Minimum 2 shareholders", "Minimum 2 directors", "Memorandum and Articles of Association", "Registered office in Tanzania", "TIN for directors"],
+            steps: ["Search and reserve company name with BRELA", "Prepare Memorandum & Articles of Association", "File registration forms online", "Pay registration fee (TSh 588,000)", "Receive Certificate of Incorporation", "Register for TIN with TRA", "Register for VAT if turnover > TSh 200M", "Register for NSSF and WCF for employees"]
+          }
+        ]
+      },
+      tax: {
+        authority: "Tanzania Revenue Authority (TRA)",
+        website: "https://www.tra.go.tz",
+        obligations: [
+          { name: "Corporate Tax", rate: "30%", applicableTo: ["Ltd"] },
+          { name: "Personal Income Tax", rate: "0% - 30% progressive", applicableTo: ["Sole Proprietorship"] },
+          { name: "VAT", rate: "18%", applicableTo: ["Ltd", "Sole Proprietorship"], note: "If turnover > TSh 200,000,000" },
+          { name: "PAYE", rate: "0% - 30% progressive", applicableTo: ["Ltd"], note: "If you have employees" },
+          { name: "Skills & Development Levy (SDL)", rate: "4.5%", applicableTo: ["Ltd"], note: "4 or more employees" }
+        ],
+        filingDeadlines: [
+          { tax: "Corporate Tax", deadline: "6 months after financial year end" },
+          { tax: "VAT", deadline: "20th of the following month" },
+          { tax: "PAYE", deadline: "7th of the following month" }
+        ]
+      },
+      licenses: { general: [{ name: "TIN", authority: "TRA", cost: "Free", timeline: "1-2 days" }, { name: "Business License", authority: "Municipal/City Council", cost: "TSh 50,000 - TSh 500,000", timeline: "7-14 days" }], byIndustry: {} },
+      banking: { majorBanks: ["CRDB Bank", "NMB Bank", "Stanbic Tanzania", "Equity Bank Tanzania", "DTB"], accountRequirements: ["Certificate of Incorporation / Business Name", "TIN Certificate", "Directors' IDs", "Board Resolution (for Ltd)"], estimatedTimeline: "1-5 business days" },
+      startupCosts: { low: { range: "TSh 200,000 - TSh 1,000,000", description: "Sole proprietorship, home-based" }, medium: { range: "TSh 5,000,000 - TSh 20,000,000", description: "Ltd, small office" }, high: { range: "TSh 50,000,000+", description: "Ltd, commercial premises, industry licenses" } }
+    },
+
+    "UG": {
+      name: "Uganda",
+      currency: { code: "UGX", symbol: "USh", name: "Ugandan Shilling" },
+      language: "English, Swahili",
+      region: "East Africa",
+      registration: {
+        authority: "Uganda Registration Services Bureau (URSB)",
+        website: "https://ursb.go.ug",
+        portalUrl: "https://ebr.ursb.go.ug",
+        types: [
+          { type: "Sole Proprietorship (Business Name)", registrationFee: 25000, minCapital: 0, timeline: "1-3 days",
+            requirements: ["National ID or passport", "TIN from URA", "Proposed business name"],
+            steps: ["Obtain TIN from URA (ura.go.ug)", "Search name availability on URSB portal", "Register business name online", "Pay registration fee (USh 25,000)", "Receive Certificate of Registration"]
+          },
+          { type: "Private Limited Company", registrationFee: 100000, minCapital: 1, timeline: "7-21 days",
+            requirements: ["Minimum 1 shareholder, 1 director", "Memorandum and Articles of Association", "Registered office in Uganda", "TIN for directors"],
+            steps: ["Reserve company name on URSB portal", "Prepare Memorandum & Articles of Association", "File incorporation forms", "Pay registration fee (USh 100,000 + stamp duty)", "Receive Certificate of Incorporation", "Register for TIN with URA", "Register for VAT if turnover > USh 150M"]
+          }
+        ]
+      },
+      tax: {
+        authority: "Uganda Revenue Authority (URA)",
+        website: "https://www.ura.go.ug",
+        obligations: [
+          { name: "Corporate Tax", rate: "30%", applicableTo: ["Ltd"] },
+          { name: "Personal Income Tax", rate: "10% - 40% progressive", applicableTo: ["Sole Proprietorship"] },
+          { name: "VAT", rate: "18%", applicableTo: ["Ltd", "Sole Proprietorship"], note: "If turnover > USh 150,000,000" },
+          { name: "PAYE", rate: "10% - 40% progressive", applicableTo: ["Ltd"], note: "If you have employees" },
+          { name: "Local Service Tax", rate: "Varies", applicableTo: ["Ltd", "Sole Proprietorship"] }
+        ],
+        filingDeadlines: [{ tax: "CIT", deadline: "6 months after financial year end" }, { tax: "VAT", deadline: "15th of the following month" }]
+      },
+      licenses: { general: [{ name: "TIN", authority: "URA", cost: "Free", timeline: "Instant online" }, { name: "Trading License", authority: "KCCA / District", cost: "USh 100,000 - USh 2,000,000", timeline: "7-14 days" }], byIndustry: {} },
+      banking: { majorBanks: ["Stanbic Uganda", "ABSA Uganda", "Centenary Bank", "dfcu Bank", "Equity Bank Uganda"], accountRequirements: ["Certificate of Incorporation / Registration", "TIN", "Directors' IDs", "Board Resolution"], estimatedTimeline: "1-5 business days" },
+      startupCosts: { low: { range: "USh 200,000 - USh 1,000,000", description: "Sole proprietorship, home-based" }, medium: { range: "USh 5,000,000 - USh 20,000,000", description: "Ltd, small office" }, high: { range: "USh 50,000,000+", description: "Ltd, commercial premises" } }
+    },
+
+    "RW": {
+      name: "Rwanda",
+      currency: { code: "RWF", symbol: "FRw", name: "Rwandan Franc" },
+      language: "Kinyarwanda, English, French",
+      region: "East Africa",
+      registration: {
+        authority: "Rwanda Development Board (RDB)",
+        website: "https://rdb.rw",
+        portalUrl: "https://org.rdb.rw",
+        types: [
+          { type: "Sole Proprietorship", registrationFee: 0, minCapital: 0, timeline: "1 day (6 hours online)",
+            requirements: ["National ID or passport", "TIN", "Business name"],
+            steps: ["Visit RDB online portal (org.rdb.rw)", "Register business — free of charge", "Receive Certificate of Registration (same day)", "Register for TIN with RRA"]
+          },
+          { type: "Private Limited Company", registrationFee: 0, minCapital: 0, timeline: "1-3 days",
+            requirements: ["Minimum 1 shareholder", "Minimum 1 director", "Articles of Association", "Registered address"],
+            steps: ["Register on RDB portal — free of charge", "Upload Articles of Association", "Receive Certificate of Incorporation (1-3 days)", "Register for TIN with RRA", "Register for VAT if turnover > FRw 20M"]
+          }
+        ]
+      },
+      tax: {
+        authority: "Rwanda Revenue Authority (RRA)",
+        website: "https://www.rra.gov.rw",
+        obligations: [
+          { name: "Corporate Income Tax", rate: "30%", applicableTo: ["Ltd"] },
+          { name: "Personal Income Tax", rate: "0% - 30% progressive", applicableTo: ["Sole Proprietorship"] },
+          { name: "VAT", rate: "18%", applicableTo: ["Ltd", "Sole Proprietorship"], note: "If turnover > FRw 20,000,000" },
+          { name: "PAYE", rate: "0% - 30% progressive", applicableTo: ["Ltd"], note: "If you have employees" }
+        ],
+        filingDeadlines: [{ tax: "CIT", deadline: "March 31 each year" }, { tax: "VAT", deadline: "15th of the following month" }]
+      },
+      licenses: { general: [{ name: "TIN", authority: "RRA", cost: "Free", timeline: "Instant" }], byIndustry: {} },
+      banking: { majorBanks: ["Bank of Kigali", "Equity Bank Rwanda", "I&M Bank Rwanda", "Access Bank Rwanda", "Cogebanque"], accountRequirements: ["Certificate of Incorporation", "TIN", "Directors' IDs"], estimatedTimeline: "1-3 business days" },
+      startupCosts: { low: { range: "FRw 50,000 - FRw 500,000", description: "Sole proprietorship, home-based" }, medium: { range: "FRw 2,000,000 - FRw 10,000,000", description: "Ltd, small office" }, high: { range: "FRw 30,000,000+", description: "Ltd, commercial premises" } }
+    },
+
+    "ET": {
+      name: "Ethiopia",
+      currency: { code: "ETB", symbol: "ETB", name: "Ethiopian Birr" },
+      language: "Amharic, English",
+      region: "East Africa",
+      registration: {
+        authority: "Ministry of Trade and Regional Integration",
+        website: "https://www.mot.gov.et",
+        portalUrl: "",
+        types: [
+          { type: "Sole Proprietorship", registrationFee: 500, minCapital: 0, timeline: "1-5 days",
+            requirements: ["Kebele ID or passport", "TIN from ERCA", "Business address", "Trade name"],
+            steps: ["Obtain TIN from Ethiopian Revenues and Customs Authority (ERCA)", "Register at regional trade office", "Pay registration fee (~ETB 500)", "Obtain business license", "Open business bank account"]
+          },
+          { type: "Private Limited Company (PLC)", registrationFee: 5000, minCapital: 15000, timeline: "7-30 days",
+            requirements: ["Minimum 2 shareholders (max 50)", "Minimum ETB 15,000 share capital", "Memorandum and Articles of Association", "Registered office in Ethiopia"],
+            steps: ["Draft and notarize Memorandum & Articles of Association", "Deposit capital at bank (25% minimum upfront)", "Register with Ministry of Trade", "Pay registration fee (~ETB 5,000)", "Receive Certificate of Incorporation", "Obtain TIN from ERCA", "Register for VAT if turnover > ETB 1M"]
+          }
+        ]
+      },
+      tax: {
+        authority: "Ethiopian Revenues and Customs Authority (ERCA)",
+        website: "https://www.erca.gov.et",
+        obligations: [
+          { name: "Corporate Income Tax", rate: "30%", applicableTo: ["PLC"] },
+          { name: "Personal Income Tax", rate: "0% - 35% progressive", applicableTo: ["Sole Proprietorship"] },
+          { name: "VAT (TOT)", rate: "15%", applicableTo: ["PLC", "Sole Proprietorship"], note: "If turnover > ETB 1,000,000" },
+          { name: "PAYE", rate: "0% - 35% progressive", applicableTo: ["PLC"], note: "If you have employees" },
+          { name: "Pension", rate: "7% employee + 11% employer", applicableTo: ["PLC"] }
+        ],
+        filingDeadlines: [{ tax: "CIT", deadline: "Within 4 months of fiscal year end (Hamle 7 / Oct)" }, { tax: "VAT", deadline: "Monthly by end of month" }]
+      },
+      licenses: { general: [{ name: "TIN", authority: "ERCA", cost: "Free", timeline: "1-3 days" }, { name: "Business License", authority: "Regional Trade Bureau", cost: "ETB 1,000 - ETB 10,000", timeline: "7-14 days" }], byIndustry: {} },
+      banking: { majorBanks: ["Commercial Bank of Ethiopia", "Dashen Bank", "Awash Bank", "Bank of Abyssinia", "Zemen Bank"], accountRequirements: ["Certificate of Incorporation", "TIN", "Directors' IDs", "Memorandum of Association"], estimatedTimeline: "1-5 business days" },
+      startupCosts: { low: { range: "ETB 10,000 - ETB 50,000", description: "Sole proprietorship, home-based" }, medium: { range: "ETB 200,000 - ETB 1,000,000", description: "PLC, small office" }, high: { range: "ETB 5,000,000+", description: "PLC, commercial premises" } }
+    },
+
+    "BI": _basic("Burundi", "BIF", "FBu", "Burundian Franc", "Kirundi, French", "East Africa", "Agence de Promotion des Investissements (API)", "", "Office Burundais des Recettes (OBR)", "", "30%", "0% - 35% progressive", "18%", true, ["Bancobu", "BCB", "Ecobank Burundi", "KCB Burundi"], 20000, 200000),
+
+    "SS": _basic("South Sudan", "SSP", "SSP", "South Sudanese Pound", "English", "East Africa", "Ministry of Justice — Business Registry", "", "National Revenue Authority (NRA)", "", "25%", "10% - 20% progressive", "18%", true, ["Equity Bank South Sudan", "KCB South Sudan", "Cooperative Bank of South Sudan"], 5000, 50000),
+
+    "ER": _basic("Eritrea", "ERN", "Nfk", "Eritrean Nakfa", "Tigrinya, Arabic, English", "East Africa", "Ministry of Trade and Industry", "", "Inland Revenue Department", "", "30%", "2% - 30% progressive", "5%", false, ["Commercial Bank of Eritrea", "Housing and Commerce Bank of Eritrea"], 5000, 50000),
+
+    "DJ": _basic("Djibouti", "DJF", "Fdj", "Djiboutian Franc", "French, Arabic", "East Africa", "Guichet Unique / ODPIC", "", "Direction des Imp\u00f4ts", "", "25%", "0% - 30% progressive", "10%", true, ["Banque pour le Commerce et l'Industrie", "Saba Islamic Bank", "CAC International Bank"], 30000, 200000),
+
+    "SO": _basic("Somalia", "SOS", "Sh", "Somali Shilling", "Somali, Arabic", "East Africa", "Ministry of Commerce and Industry", "", "Federal Ministry of Finance", "", "No formal CIT system", "Variable", "10% (sales tax)", false, ["Dahabshiil", "Premier Bank", "Salaam Somali Bank", "Amal Bank"], 50000, 500000),
+
+    "KM": _basic("Comoros", "KMF", "CF", "Comorian Franc", "Comorian, French, Arabic", "East Africa", "Tribunal de Commerce", "", "Direction G\u00e9n\u00e9rale des Imp\u00f4ts", "", "35%", "0% - 30% progressive", "10%", false, ["Banque F\u00e9d\u00e9rale de Commerce", "Banque de D\u00e9veloppement des Comores", "Exim Bank Comoros"], 50000, 300000),
+
+    "SC": {
+      name: "Seychelles",
+      currency: { code: "SCR", symbol: "SR", name: "Seychellois Rupee" },
+      language: "English, French, Seychellois Creole",
+      region: "East Africa",
+      registration: {
+        authority: "Registration Division — Department of Legal Affairs",
+        website: "https://www.legalaffairs.gov.sc",
+        portalUrl: "",
+        types: [
+          { type: "Sole Proprietorship", registrationFee: 250, minCapital: 0, timeline: "1-3 days",
+            requirements: ["Valid ID / passport", "TIN from SRC", "Business address"],
+            steps: ["Obtain TIN from Seychelles Revenue Commission (SRC)", "Register business name at Registration Division", "Pay fee (SR 250)", "Receive registration certificate"]
+          },
+          { type: "Private Company Ltd", registrationFee: 1000, minCapital: 0, timeline: "3-7 days",
+            requirements: ["Minimum 1 shareholder, 1 director", "Memorandum and Articles of Association", "Registered office in Seychelles"],
+            steps: ["Reserve company name", "File incorporation documents", "Pay registration fee (SR 1,000)", "Receive Certificate of Incorporation", "Register with SRC for tax"]
+          }
+        ]
+      },
+      tax: {
+        authority: "Seychelles Revenue Commission (SRC)",
+        website: "https://www.src.gov.sc",
+        obligations: [
+          { name: "Business Tax", rate: "25% (first SCR 1M) / 33% above", applicableTo: ["Ltd"] },
+          { name: "Personal Income Tax", rate: "0% - 15% progressive", applicableTo: ["Sole Proprietorship"] },
+          { name: "VAT", rate: "15%", applicableTo: ["Ltd", "Sole Proprietorship"], note: "If turnover > SCR 5,000,000" }
+        ],
+        filingDeadlines: [{ tax: "Business Tax", deadline: "March 31 each year" }, { tax: "VAT", deadline: "21st of the following month" }]
+      },
+      licenses: { general: [{ name: "TIN", authority: "SRC", cost: "Free", timeline: "1-2 days" }, { name: "Trade License", authority: "Seychelles Licensing Authority", cost: "SR 1,000 - SR 10,000", timeline: "7-14 days" }], byIndustry: {} },
+      banking: { majorBanks: ["Seychelles Commercial Bank", "Nouvobanq", "BMI Bank", "Absa Seychelles"], accountRequirements: ["Certificate of Incorporation", "TIN", "ID for signatories"], estimatedTimeline: "3-7 business days" },
+      startupCosts: { low: { range: "SR 5,000 - SR 25,000", description: "Sole proprietorship, home-based" }, medium: { range: "SR 100,000 - SR 500,000", description: "Ltd, small office" }, high: { range: "SR 1,000,000+", description: "Ltd, commercial premises" } }
+    },
+
+    "MU": {
+      name: "Mauritius",
+      currency: { code: "MUR", symbol: "Rs", name: "Mauritian Rupee" },
+      language: "English, French, Creole",
+      region: "East Africa",
+      registration: {
+        authority: "Corporate and Business Registration Department (CBRD)",
+        website: "https://companies.govmu.org",
+        portalUrl: "https://companies.govmu.org",
+        types: [
+          { type: "Sole Proprietorship", registrationFee: 500, minCapital: 0, timeline: "1-2 days",
+            requirements: ["National ID / passport", "TAN from MRA", "Business address"],
+            steps: ["Obtain TAN from Mauritius Revenue Authority", "Register business name at CBRD", "Pay registration fee (Rs 500)", "Receive Certificate of Registration"]
+          },
+          { type: "Private Company Ltd", registrationFee: 3000, minCapital: 1, timeline: "3-7 days",
+            requirements: ["Minimum 1 shareholder, 1 director", "Constitution", "Registered office in Mauritius"],
+            steps: ["Reserve company name at CBRD", "File incorporation documents + Constitution", "Pay registration fee (Rs 3,000)", "Receive Certificate of Incorporation", "Register with MRA for TAN + VAT if applicable"]
+          }
+        ]
+      },
+      tax: {
+        authority: "Mauritius Revenue Authority (MRA)",
+        website: "https://www.mra.mu",
+        obligations: [
+          { name: "Corporate Tax", rate: "15%", applicableTo: ["Ltd"] },
+          { name: "Personal Income Tax", rate: "15% flat", applicableTo: ["Sole Proprietorship"], note: "First Rs 325,000 exempt" },
+          { name: "VAT", rate: "15%", applicableTo: ["Ltd", "Sole Proprietorship"], note: "If turnover > Rs 6,000,000" },
+          { name: "CSG (Social Contribution)", rate: "1.5% (employee) - 3% (employer)", applicableTo: ["Ltd"] }
+        ],
+        filingDeadlines: [{ tax: "CIT", deadline: "Within 6 months of year end" }, { tax: "VAT", deadline: "Quarterly" }]
+      },
+      licenses: { general: [{ name: "TAN", authority: "MRA", cost: "Free", timeline: "1-2 days" }, { name: "Trade Fee", authority: "Local Authority", cost: "Rs 1,000 - Rs 10,000", timeline: "7-14 days" }], byIndustry: {} },
+      banking: { majorBanks: ["MCB", "SBM", "ABSA Mauritius", "AfrAsia Bank", "Bank One"], accountRequirements: ["Certificate of Incorporation", "TAN", "Directors' IDs", "Constitution"], estimatedTimeline: "1-5 business days" },
+      startupCosts: { low: { range: "Rs 10,000 - Rs 50,000", description: "Sole proprietorship, home-based" }, medium: { range: "Rs 200,000 - Rs 1,000,000", description: "Ltd, small office" }, high: { range: "Rs 5,000,000+", description: "Ltd, commercial premises" } }
+    },
+
+    // ══════════════════════════════════════════════════════
+    //  NORTH AFRICA
+    // ══════════════════════════════════════════════════════
+
+    "EG": {
+      name: "Egypt",
+      currency: { code: "EGP", symbol: "E\u00A3", name: "Egyptian Pound" },
+      language: "Arabic",
+      region: "North Africa",
+      registration: {
+        authority: "General Authority for Investment and Free Zones (GAFI)",
+        website: "https://www.gafi.gov.eg",
+        portalUrl: "https://www.invest.gov.eg",
+        types: [
+          { type: "Sole Proprietorship (Individual Enterprise)", registrationFee: 500, minCapital: 0, timeline: "3-7 days",
+            requirements: ["National ID card", "Tax card from Egyptian Tax Authority", "Proof of business premises (lease/ownership)", "No criminal record certificate"],
+            steps: ["Obtain Tax Card from Egyptian Tax Authority", "Register at the Commercial Registry office", "Obtain a commercial register extract", "Register with the Chamber of Commerce", "Open a bank account"]
+          },
+          { type: "Limited Liability Company (LLC)", registrationFee: 1000, minCapital: 0, timeline: "7-21 days",
+            requirements: ["Minimum 2 partners, maximum 50", "At least 1 manager (can be a partner or external)", "No minimum capital requirement", "Articles of Association (notarized)", "Tax card for all partners"],
+            steps: ["Reserve company name at Commercial Registry", "Open a temporary bank account and deposit capital", "Notarize Articles of Association", "Register at GAFI or Commercial Registry", "Obtain Tax Card for the company", "Register for VAT if applicable", "Register with Social Insurance Authority for employees", "Obtain commercial register extract"]
+          }
+        ]
+      },
+      tax: {
+        authority: "Egyptian Tax Authority (ETA)",
+        website: "https://www.eta.gov.eg",
+        obligations: [
+          { name: "Corporate Income Tax", rate: "22.5%", applicableTo: ["LLC"] },
+          { name: "Personal Income Tax", rate: "0% - 27.5% progressive", applicableTo: ["Sole Proprietorship"] },
+          { name: "VAT", rate: "14%", applicableTo: ["LLC", "Sole Proprietorship"], note: "Standard rate; some goods/services exempt" },
+          { name: "Social Insurance", rate: "18.75% employer + 11% employee", applicableTo: ["LLC"] },
+          { name: "Stamp Tax", rate: "0.225% - 0.9%", applicableTo: ["LLC"] }
+        ],
+        filingDeadlines: [
+          { tax: "CIT", deadline: "Within 4 months of fiscal year end" },
+          { tax: "VAT", deadline: "Monthly, by the 15th" },
+          { tax: "PAYE", deadline: "Within 15 days of end of month" }
+        ]
+      },
+      licenses: {
+        general: [
+          { name: "Tax Card", authority: "ETA", cost: "E\u00A3250 - E\u00A3500", timeline: "1-5 days" },
+          { name: "Chamber of Commerce Membership", authority: "Egyptian Chamber of Commerce", cost: "E\u00A3500 - E\u00A32,000", timeline: "1-3 days" }
+        ],
+        byIndustry: {
+          "Food & Beverage": [{ name: "Health Certificate", authority: "Ministry of Health", cost: "Varies", timeline: "1-3 months" }],
+          "Technology / Fintech": [{ name: "Fintech License", authority: "Financial Regulatory Authority (FRA) or CBE", cost: "Varies", timeline: "6-12 months" }]
+        }
+      },
+      banking: { majorBanks: ["National Bank of Egypt", "Banque Misr", "Commercial International Bank (CIB)", "QNB Alahli", "HSBC Egypt"], accountRequirements: ["Commercial register extract", "Tax card", "National ID for all signatories", "Company Articles of Association", "Power of attorney for authorized signatories"], estimatedTimeline: "3-7 business days" },
+      startupCosts: { low: { range: "E\u00A35,000 - E\u00A320,000", description: "Sole proprietorship, home-based" }, medium: { range: "E\u00A350,000 - E\u00A3200,000", description: "LLC, small office, 1-5 employees" }, high: { range: "E\u00A3500,000+", description: "LLC, commercial premises, industry licenses" } }
+    },
+
+    "MA": {
+      name: "Morocco",
+      currency: { code: "MAD", symbol: "MAD", name: "Moroccan Dirham" },
+      language: "Arabic, French",
+      region: "North Africa",
+      registration: {
+        authority: "Office Marocain de la Propri\u00e9t\u00e9 Industrielle et Commerciale (OMPIC) / CRI",
+        website: "https://www.ompic.ma",
+        portalUrl: "https://directentreprise.ma",
+        types: [
+          { type: "Auto-Entrepreneur", registrationFee: 0, minCapital: 0, timeline: "Instant online",
+            requirements: ["Moroccan national ID (CIN) or foreigner residence permit", "Valid email + phone number"],
+            steps: ["Register online at ae.gov.ma — free and instant", "Receive Auto-Entrepreneur certificate", "Open dedicated bank account", "Begin invoicing (max MAD 500,000/year goods or MAD 200,000/year services)"]
+          },
+          { type: "SARL (Soci\u00e9t\u00e9 \u00e0 Responsabilit\u00e9 Limit\u00e9e)", registrationFee: 1000, minCapital: 10000, timeline: "3-10 days",
+            requirements: ["Minimum 1 shareholder (up to 50)", "Minimum MAD 10,000 share capital", "Statutes signed by all shareholders", "Certificate of domiciliation", "Certified copies of ID for all shareholders"],
+            steps: ["Obtain Certificat N\u00e9gatif (name reservation) from OMPIC (MAD 210)", "Open bank account and deposit capital", "Draft and sign company statutes", "Register at CRI (Centre R\u00e9gional d'Investissement)", "Obtain trade register (RC) number", "Register for Tax ID (identifiant fiscal) with DGI", "Register with CNSS for social security"]
+          }
+        ]
+      },
+      tax: {
+        authority: "Direction G\u00e9n\u00e9rale des Imp\u00f4ts (DGI)",
+        website: "https://www.tax.gov.ma",
+        obligations: [
+          { name: "IS (Corporate Tax)", rate: "10% - 31% progressive (based on profit)", applicableTo: ["SARL"] },
+          { name: "IR (Income Tax)", rate: "0% - 38% progressive", applicableTo: ["Sole Proprietorship"] },
+          { name: "TVA (VAT)", rate: "20% standard", applicableTo: ["SARL", "Sole Proprietorship"], note: "Reduced rates: 7%, 10%, 14% for some goods/services" },
+          { name: "CNSS (Social Security)", rate: "4.48% employee + 12.89% employer", applicableTo: ["SARL"] }
+        ],
+        filingDeadlines: [{ tax: "IS", deadline: "March 31 each year" }, { tax: "TVA", deadline: "Monthly by 20th or quarterly" }]
+      },
+      licenses: { general: [{ name: "Tax ID (IF)", authority: "DGI", cost: "Free", timeline: "1-3 days" }, { name: "Patente", authority: "Municipality", cost: "Varies", timeline: "Automatic" }], byIndustry: {} },
+      banking: { majorBanks: ["Attijariwafa Bank", "BMCE Bank of Africa", "Banque Populaire", "CIH Bank", "Soci\u00e9t\u00e9 G\u00e9n\u00e9rale Maroc"], accountRequirements: ["RC extract", "Tax ID", "Company statutes", "ID for signatories"], estimatedTimeline: "1-5 business days" },
+      startupCosts: { low: { range: "MAD 1,000 - MAD 10,000", description: "Auto-entrepreneur, home-based" }, medium: { range: "MAD 50,000 - MAD 200,000", description: "SARL, small office" }, high: { range: "MAD 500,000+", description: "SARL, commercial premises" } }
+    },
+
+    "DZ": _basic("Algeria", "DZD", "DA", "Algerian Dinar", "Arabic, French", "North Africa", "Centre National du Registre de Commerce (CNRC)", "https://www.cnrc.dz", "Direction G\u00e9n\u00e9rale des Imp\u00f4ts (DGI)", "https://www.mfdgi.gov.dz", "19% (26% for some sectors)", "0% - 35% progressive", "19%", true, ["BNA", "BEA", "CPA", "Soci\u00e9t\u00e9 G\u00e9n\u00e9rale Alg\u00e9rie", "Gulf Bank Algeria"], 5000, 100000),
+
+    "TN": {
+      name: "Tunisia",
+      currency: { code: "TND", symbol: "TND", name: "Tunisian Dinar" },
+      language: "Arabic, French",
+      region: "North Africa",
+      registration: {
+        authority: "Registre National des Entreprises (RNE) / API",
+        website: "https://www.registre-entreprises.tn",
+        portalUrl: "https://www.registre-entreprises.tn",
+        types: [
+          { type: "Entreprise Individuelle", registrationFee: 0, minCapital: 0, timeline: "1-3 days",
+            requirements: ["CIN (national ID)", "Proof of address", "Tax ID"],
+            steps: ["Register online at RNE portal — free", "Obtain tax identification from Direction G\u00e9n\u00e9rale des Imp\u00f4ts", "Register with CNSS (social security)"]
+          },
+          { type: "SARL", registrationFee: 500, minCapital: 1000, timeline: "5-14 days",
+            requirements: ["Minimum 2 shareholders", "Minimum TND 1,000 share capital", "Notarized statutes", "Certificate of capital deposit"],
+            steps: ["Reserve company name at INNORPI/RNE", "Draft and notarize statutes", "Deposit capital at bank", "Register at RNE", "Obtain tax ID from DGI", "Register with CNSS"]
+          }
+        ]
+      },
+      tax: {
+        authority: "Direction G\u00e9n\u00e9rale des Imp\u00f4ts (DGI)",
+        website: "https://www.finances.gov.tn",
+        obligations: [
+          { name: "IS (Corporate Tax)", rate: "15% (standard), 25% for some sectors", applicableTo: ["SARL"] },
+          { name: "IRPP (Personal Income Tax)", rate: "0% - 35% progressive", applicableTo: ["Sole Proprietorship"] },
+          { name: "TVA", rate: "19%", applicableTo: ["SARL", "Sole Proprietorship"], note: "Reduced rates 7% and 13% for some items" },
+          { name: "CNSS", rate: "9.18% employee + 16.57% employer", applicableTo: ["SARL"] }
+        ],
+        filingDeadlines: [{ tax: "IS", deadline: "March 25 each year" }, { tax: "TVA", deadline: "Monthly by 28th" }]
+      },
+      licenses: { general: [{ name: "Tax ID (Identifiant Fiscal)", authority: "DGI", cost: "Free", timeline: "1-3 days" }], byIndustry: {} },
+      banking: { majorBanks: ["BIAT", "Banque de Tunisie", "Amen Bank", "Attijari Bank", "STB"], accountRequirements: ["RNE extract", "Tax ID", "Statutes", "CIN for signatories"], estimatedTimeline: "3-7 business days" },
+      startupCosts: { low: { range: "TND 500 - TND 5,000", description: "Sole proprietorship, home-based" }, medium: { range: "TND 20,000 - TND 100,000", description: "SARL, small office" }, high: { range: "TND 200,000+", description: "SARL, commercial premises" } }
+    },
+
+    "LY": _basic("Libya", "LYD", "LD", "Libyan Dinar", "Arabic", "North Africa", "Ministry of Economy and Trade", "", "Tax Authority of Libya", "", "20%", "5% - 15% progressive", "No general VAT", false, ["Bank of Commerce & Development", "Wahda Bank", "Jumhouria Bank", "National Commercial Bank"], 500, 5000),
+
+    "SD": _basic("Sudan", "SDG", "SDG", "Sudanese Pound", "Arabic, English", "North Africa", "Commercial Registrar General", "", "Taxation Chamber", "", "15% - 30%", "0% - 15% progressive", "17%", true, ["Bank of Khartoum", "Faisal Islamic Bank", "Omdurman National Bank", "Farmer's Bank"], 5000, 50000),
+
+    // ══════════════════════════════════════════════════════
+    //  SOUTHERN AFRICA
+    // ══════════════════════════════════════════════════════
+
+    "ZA": {
+      name: "South Africa",
+      currency: { code: "ZAR", symbol: "R", name: "South African Rand" },
+      language: "English (+ 10 other official languages)",
+      region: "Southern Africa",
+      registration: {
+        authority: "Companies and Intellectual Property Commission (CIPC)",
+        website: "https://www.cipc.co.za",
+        portalUrl: "https://eservices.cipc.co.za",
+        types: [
+          { type: "Sole Proprietorship", registrationFee: 0, minCapital: 0, timeline: "Immediate (no formal registration required)",
+            requirements: ["South African ID or valid work permit", "Tax registration with SARS"],
+            steps: ["No formal registration needed with CIPC", "Register as provisional taxpayer with SARS", "Register for VAT if turnover > R1,000,000", "Open a business bank account", "Register for UIF and COIDA if hiring employees"]
+          },
+          { type: "Private Company (Pty) Ltd", registrationFee: 175, minCapital: 0, timeline: "1-5 days",
+            requirements: ["Minimum 1 director (natural person)", "Minimum 1 shareholder", "Memorandum of Incorporation (MOI)", "South African registered office address", "Valid ID for all directors"],
+            steps: ["Register on CIPC eServices portal", "Search and reserve company name (R50)", "File CoR 14.1 (registration form) and MOI", "Pay registration fee (R175 online)", "Receive Registration Certificate and company number", "Register with SARS for Income Tax, VAT (if applicable), PAYE, UIF, SDL", "Register for COIDA (Compensation for Occupational Injuries)", "Open business bank account", "Register with Department of Employment & Labour if hiring"]
+          }
+        ]
+      },
+      tax: {
+        authority: "South African Revenue Service (SARS)",
+        website: "https://www.sars.gov.za",
+        obligations: [
+          { name: "Corporate Income Tax", rate: "27%", applicableTo: ["Pty Ltd"] },
+          { name: "Personal Income Tax", rate: "18% - 45% progressive", applicableTo: ["Sole Proprietorship"] },
+          { name: "VAT", rate: "15%", applicableTo: ["Pty Ltd", "Sole Proprietorship"], note: "Mandatory if turnover > R1,000,000" },
+          { name: "PAYE", rate: "18% - 45% progressive", applicableTo: ["Pty Ltd"], note: "If you have employees" },
+          { name: "Skills Development Levy (SDL)", rate: "1% of total payroll", applicableTo: ["Pty Ltd"], note: "If annual payroll > R500,000" },
+          { name: "Unemployment Insurance Fund (UIF)", rate: "2% (1% employer + 1% employee)", applicableTo: ["Pty Ltd"] },
+          { name: "Dividends Tax", rate: "20%", applicableTo: ["Pty Ltd"] }
+        ],
+        filingDeadlines: [
+          { tax: "CIT", deadline: "12 months after financial year end" },
+          { tax: "VAT", deadline: "25th of the month following the tax period" },
+          { tax: "PAYE", deadline: "7th of every month" }
+        ]
+      },
+      licenses: {
+        general: [
+          { name: "SARS Tax Registration", authority: "SARS", cost: "Free", timeline: "1-3 days" },
+          { name: "B-BBEE Certificate", authority: "Accredited verification agency", cost: "R500 - R30,000", timeline: "14-30 days", note: "Important for government contracts" }
+        ],
+        byIndustry: {
+          "Food & Beverage": [{ name: "Certificate of Acceptability", authority: "Department of Health", cost: "R500 - R5,000", timeline: "1-3 months" }],
+          "Technology / Fintech": [{ name: "Financial Service Provider License", authority: "Financial Sector Conduct Authority (FSCA)", cost: "R5,000+", timeline: "3-12 months" }]
+        }
+      },
+      banking: { majorBanks: ["Standard Bank", "FNB", "ABSA", "Nedbank", "Capitec"], accountRequirements: ["CIPC Registration Certificate", "Company MOI", "Director\u2019s ID documents", "Proof of business address", "SARS Tax Number"], estimatedTimeline: "1-5 business days" },
+      startupCosts: { low: { range: "R500 - R5,000", description: "Sole proprietorship, home-based" }, medium: { range: "R20,000 - R100,000", description: "Pty Ltd, small office, 1-5 employees" }, high: { range: "R500,000+", description: "Pty Ltd, commercial premises, industry licenses, B-BBEE" } }
+    },
+
+    "BW": {
+      name: "Botswana",
+      currency: { code: "BWP", symbol: "P", name: "Botswana Pula" },
+      language: "English, Setswana",
+      region: "Southern Africa",
+      registration: {
+        authority: "Companies and Intellectual Property Authority (CIPA)",
+        website: "https://www.cipa.co.bw",
+        portalUrl: "https://www.cipa.co.bw",
+        types: [
+          { type: "Sole Proprietorship", registrationFee: 25, minCapital: 0, timeline: "1-3 days",
+            requirements: ["Omang (national ID) or passport", "TIN from BURS", "Business address"],
+            steps: ["Obtain TIN from BURS", "Register business name with CIPA", "Pay registration fee (P25)", "Obtain trade license from local authority"]
+          },
+          { type: "Private Limited Company (Pty)", registrationFee: 300, minCapital: 1, timeline: "5-14 days",
+            requirements: ["Minimum 1 shareholder, 1 director", "Constitution", "Registered office in Botswana"],
+            steps: ["Reserve company name with CIPA", "File incorporation forms + Constitution", "Pay registration fee (P300)", "Receive Certificate of Incorporation", "Register with BURS for tax"]
+          }
+        ]
+      },
+      tax: {
+        authority: "Botswana Unified Revenue Service (BURS)",
+        website: "https://www.burs.org.bw",
+        obligations: [
+          { name: "Corporate Tax", rate: "22%", applicableTo: ["Pty"] },
+          { name: "Personal Income Tax", rate: "0% - 25% progressive", applicableTo: ["Sole Proprietorship"] },
+          { name: "VAT", rate: "14%", applicableTo: ["Pty", "Sole Proprietorship"], note: "If turnover > P1,000,000" }
+        ],
+        filingDeadlines: [{ tax: "CIT", deadline: "Within 4 months of year end" }, { tax: "VAT", deadline: "25th of the following month" }]
+      },
+      licenses: { general: [{ name: "TIN", authority: "BURS", cost: "Free", timeline: "1-3 days" }, { name: "Trade License", authority: "Local Authority", cost: "P200 - P5,000", timeline: "7-14 days" }], byIndustry: {} },
+      banking: { majorBanks: ["First National Bank Botswana", "Barclays/Absa Botswana", "Stanbic Botswana", "Standard Chartered Botswana", "Bank of Botswana"], accountRequirements: ["Certificate of Incorporation", "TIN", "Directors' IDs", "Constitution"], estimatedTimeline: "1-5 business days" },
+      startupCosts: { low: { range: "P1,000 - P10,000", description: "Sole proprietorship, home-based" }, medium: { range: "P50,000 - P200,000", description: "Pty, small office" }, high: { range: "P500,000+", description: "Pty, commercial premises" } }
+    },
+
+    "NA": _basic("Namibia", "NAD", "N$", "Namibian Dollar", "English", "Southern Africa", "Business and Intellectual Property Authority (BIPA)", "https://www.bipa.na", "Namibia Revenue Agency (NamRA)", "https://www.namra.org.na", "32%", "0% - 37% progressive", "15%", true, ["FNB Namibia", "Standard Bank Namibia", "Bank Windhoek", "Nedbank Namibia"], 100, 350),
+
+    "ZM": {
+      name: "Zambia",
+      currency: { code: "ZMW", symbol: "ZK", name: "Zambian Kwacha" },
+      language: "English",
+      region: "Southern Africa",
+      registration: {
+        authority: "Patents and Companies Registration Agency (PACRA)",
+        website: "https://www.pacra.org.zm",
+        portalUrl: "https://www.pacra.org.zm",
+        types: [
+          { type: "Sole Proprietorship (Business Name)", registrationFee: 150, minCapital: 0, timeline: "1-3 days",
+            requirements: ["National ID or passport", "TPIN from ZRA", "Business address"],
+            steps: ["Obtain TPIN from ZRA", "Register business name at PACRA", "Pay fee (ZK 150)", "Obtain Certificate of Registration"]
+          },
+          { type: "Private Limited Company", registrationFee: 500, minCapital: 0, timeline: "3-7 days",
+            requirements: ["Minimum 1 shareholder, 1 director", "Articles of Association", "Registered office in Zambia"],
+            steps: ["Reserve company name at PACRA", "File incorporation forms", "Pay fee (ZK 500)", "Receive Certificate of Incorporation", "Register for TPIN with ZRA", "Register for VAT if turnover > ZMW 800,000"]
+          }
+        ]
+      },
+      tax: {
+        authority: "Zambia Revenue Authority (ZRA)",
+        website: "https://www.zra.org.zm",
+        obligations: [
+          { name: "Corporate Tax", rate: "30%", applicableTo: ["Ltd"] },
+          { name: "Personal Income Tax", rate: "0% - 37.5% progressive", applicableTo: ["Sole Proprietorship"] },
+          { name: "VAT", rate: "16%", applicableTo: ["Ltd", "Sole Proprietorship"], note: "If turnover > ZMW 800,000" },
+          { name: "PAYE", rate: "0% - 37.5% progressive", applicableTo: ["Ltd"], note: "If you have employees" },
+          { name: "NAPSA (Pension)", rate: "5% employee + 5% employer", applicableTo: ["Ltd"] }
+        ],
+        filingDeadlines: [{ tax: "CIT", deadline: "June 21 each year" }, { tax: "VAT", deadline: "18th of the following month" }]
+      },
+      licenses: { general: [{ name: "TPIN", authority: "ZRA", cost: "Free", timeline: "1-3 days" }], byIndustry: {} },
+      banking: { majorBanks: ["Zanaco", "Stanbic Zambia", "ABSA Zambia", "Standard Chartered Zambia", "FNB Zambia"], accountRequirements: ["Certificate of Incorporation", "TPIN", "Directors' IDs", "Board Resolution"], estimatedTimeline: "1-5 business days" },
+      startupCosts: { low: { range: "ZK 1,000 - ZK 10,000", description: "Sole proprietorship, home-based" }, medium: { range: "ZK 50,000 - ZK 200,000", description: "Ltd, small office" }, high: { range: "ZK 500,000+", description: "Ltd, commercial premises" } }
+    },
+
+    "ZW": _basic("Zimbabwe", "ZWG", "ZiG", "Zimbabwe Gold", "English, Shona, Ndebele", "Southern Africa", "Companies and Deeds Registry (CIPC)", "https://www.dcip.gov.zw", "Zimbabwe Revenue Authority (ZIMRA)", "https://www.zimra.co.zw", "24.72% (incl. AIDS levy)", "0% - 40% progressive", "15%", true, ["CBZ Bank", "FBC Bank", "Stanbic Zimbabwe", "NMB Bank", "Steward Bank"], 50, 200),
+
+    "MW": _basic("Malawi", "MWK", "MK", "Malawian Kwacha", "English, Chichewa", "Southern Africa", "Department of Registrar General", "https://www.registrargeneral.gov.mw", "Malawi Revenue Authority (MRA)", "https://www.mra.mw", "30%", "0% - 35% progressive", "16.5%", true, ["National Bank of Malawi", "Standard Bank Malawi", "FDH Bank", "NBS Bank"], 2000, 20000),
+
+    "MZ": _basic("Mozambique", "MZN", "MT", "Mozambican Metical", "Portuguese", "Southern Africa", "Bali\u00e7\u00e3o de Atendimento \u00danico (BAU) / CRE", "https://www.portaldogoverno.gov.mz", "Autoridade Tribut\u00e1ria (AT)", "", "32%", "10% - 32% progressive", "16%", true, ["Millennium bim", "Standard Bank Mo\u00e7ambique", "BCI", "Absa Mo\u00e7ambique"], 5000, 50000),
+
+    "AO": _basic("Angola", "AOA", "Kz", "Angolan Kwanza", "Portuguese", "Southern Africa", "Guich\u00ea \u00danico da Empresa (GUE)", "https://gue.gov.ao", "Administra\u00e7\u00e3o Geral Tribut\u00e1ria (AGT)", "https://www.agt.minfin.gov.ao", "25%", "0% - 25% progressive (IRT)", "14%", true, ["BAI", "BFA", "BIC", "Standard Bank Angola", "Banco Millennium Atlantico"], 20000, 200000),
+
+    "SZ": _basic("Eswatini", "SZL", "E", "Swazi Lilangeni", "English, siSwati", "Southern Africa", "Registrar of Companies", "", "Eswatini Revenue Authority (SRA)", "https://www.sra.org.sz", "27.5%", "20% - 33% progressive", "15%", true, ["Standard Bank Eswatini", "FNB Eswatini", "Nedbank Eswatini"], 500, 2500),
+
+    "LS": _basic("Lesotho", "LSL", "L", "Lesotho Loti", "English, Sesotho", "Southern Africa", "Registrar of Companies", "", "Lesotho Revenue Authority (LRA)", "https://www.lra.org.ls", "25%", "20% - 30% progressive", "15%", true, ["Standard Lesotho Bank", "FNB Lesotho", "Nedbank Lesotho"], 300, 1500),
+
+    "MG": _basic("Madagascar", "MGA", "Ar", "Malagasy Ariary", "Malagasy, French", "Southern Africa", "EDBM (Economic Development Board of Madagascar)", "https://www.edbm.mg", "Direction G\u00e9n\u00e9rale des Imp\u00f4ts", "", "20%", "0% - 20% progressive", "20%", true, ["BFV-SG", "BOA Madagascar", "BNI Madagascar", "Access Banque"], 50000, 500000),
+
+    // ══════════════════════════════════════════════════════
+    //  CENTRAL AFRICA
+    // ══════════════════════════════════════════════════════
+
+    "CD": _basic("DR Congo", "CDF", "FC", "Congolese Franc", "French", "Central Africa", "Guichet Unique de Cr\u00e9ation d'Entreprises (GUCE)", "https://www.guichetunique.cd", "Direction G\u00e9n\u00e9rale des Imp\u00f4ts (DGI)", "", "30%", "0% - 40% progressive", "16%", true, ["Rawbank", "Equity BCDC", "TMB", "FBN Bank DRC", "Access Bank DRC"], 50000, 500000),
+
+    "CG": _basic("Republic of Congo", "XAF", "FCFA", "Central African CFA Franc", "French", "Central Africa", "Centre de Formalit\u00e9s des Entreprises (CFE)", "", "Direction G\u00e9n\u00e9rale des Imp\u00f4ts et Domaines", "", "28%", "1% - 40% progressive", "18.9%", true, ["BGFI Bank Congo", "Soci\u00e9t\u00e9 G\u00e9n\u00e9rale Congo", "LCB Bank", "UBA Congo"], 50000, 300000),
+
+    "CM": {
+      name: "Cameroon",
+      currency: { code: "XAF", symbol: "FCFA", name: "Central African CFA Franc" },
+      language: "French, English",
+      region: "Central Africa",
+      registration: {
+        authority: "Centre de Formalit\u00e9s de Cr\u00e9ation d'Entreprises (CFCE)",
+        website: "https://www.cfce.cm",
+        portalUrl: "https://myenterprise.cm",
+        types: [
+          { type: "Entreprise Individuelle", registrationFee: 25000, minCapital: 0, timeline: "3-5 days",
+            requirements: ["CNI or passport", "Criminal record extract", "Proof of address", "Passport photos"],
+            steps: ["Visit CFCE one-stop shop", "Complete registration form", "Pay registration fee (FCFA 25,000)", "Obtain RCCM registration", "Register for NIU (tax ID) with DGI"]
+          },
+          { type: "SARL", registrationFee: 150000, minCapital: 100000, timeline: "7-21 days",
+            requirements: ["Minimum 1 shareholder", "Minimum FCFA 100,000 share capital (OHADA)", "Notarized statutes", "Capital deposit certificate"],
+            steps: ["Reserve company name", "Draft and notarize statutes", "Deposit capital at bank", "Register at CFCE", "Obtain RCCM + NIU", "Register with CNPS (social security)"]
+          }
+        ]
+      },
+      tax: {
+        authority: "Direction G\u00e9n\u00e9rale des Imp\u00f4ts (DGI)",
+        website: "https://www.impots.cm",
+        obligations: [
+          { name: "IS (Corporate Tax)", rate: "30% + 10% surcharge = 33%", applicableTo: ["SARL"] },
+          { name: "IRPP (Personal Income Tax)", rate: "10% - 38.5% progressive", applicableTo: ["Sole Proprietorship"] },
+          { name: "TVA", rate: "19.25%", applicableTo: ["SARL", "Sole Proprietorship"] },
+          { name: "CNPS", rate: "4.2% employee + 11.2% employer", applicableTo: ["SARL"] }
+        ],
+        filingDeadlines: [{ tax: "IS", deadline: "March 15 each year" }, { tax: "TVA", deadline: "15th of the following month" }]
+      },
+      licenses: { general: [{ name: "NIU (Tax ID)", authority: "DGI", cost: "Free", timeline: "1-3 days" }, { name: "Patente", authority: "Municipal authority", cost: "FCFA 30,000+", timeline: "7-14 days" }], byIndustry: {} },
+      banking: { majorBanks: ["Afriland First Bank", "BGFI Cameroon", "Soci\u00e9t\u00e9 G\u00e9n\u00e9rale Cameroun", "Ecobank Cameroon", "UBA Cameroon"], accountRequirements: ["RCCM", "NIU", "Notarized statutes", "ID for signatories"], estimatedTimeline: "3-7 business days" },
+      startupCosts: { low: { range: "FCFA 100,000 - FCFA 500,000", description: "Sole proprietorship, home-based" }, medium: { range: "FCFA 2,000,000 - FCFA 10,000,000", description: "SARL, small office" }, high: { range: "FCFA 25,000,000+", description: "SARL, commercial premises" } }
+    },
+
+    "GA": _basic("Gabon", "XAF", "FCFA", "Central African CFA Franc", "French", "Central Africa", "Agence Nationale de Promotion des Investissements (ANPI)", "https://www.anpi-gabon.com", "Direction G\u00e9n\u00e9rale des Imp\u00f4ts", "", "30%", "0% - 35% progressive", "18%", true, ["BGFI Bank", "UBA Gabon", "Orabank Gabon", "Ecobank Gabon"], 50000, 300000),
+
+    "GQ": _basic("Equatorial Guinea", "XAF", "FCFA", "Central African CFA Franc", "Spanish, French", "Central Africa", "Ministry of Commerce / CCGE", "", "Direction G\u00e9n\u00e9rale des Imp\u00f4ts", "", "25%", "0% - 35% progressive", "15%", false, ["BGFI Bank GQ", "CCEI Bank", "Banco Nacional de Guinea Ecuatorial"], 100000, 500000),
+
+    "TD": _basic("Chad", "XAF", "FCFA", "Central African CFA Franc", "French, Arabic", "Central Africa", "Agence Nationale des Investissements et des Exportations (ANIE)", "", "Direction G\u00e9n\u00e9rale des Imp\u00f4ts", "", "35%", "0% - 60% progressive", "18%", true, ["Ecobank Chad", "Soci\u00e9t\u00e9 G\u00e9n\u00e9rale Tchad", "UBA Chad", "Commercial Bank Tchad"], 30000, 200000),
+
+    "CF": _basic("Central African Republic", "XAF", "FCFA", "Central African CFA Franc", "French, Sango", "Central Africa", "Guichet Unique des Op\u00e9rations du Commerce Ext\u00e9rieur", "", "Direction G\u00e9n\u00e9rale des Imp\u00f4ts et Contributions", "", "30%", "0% - 50% progressive", "19%", false, ["Ecobank RCA", "BSIC", "Commercial Bank Centrafrique"], 20000, 200000),
+
+    "ST": _basic("S\u00e3o Tom\u00e9 and Pr\u00edncipe", "STN", "Db", "S\u00e3o Tom\u00e9an Dobra", "Portuguese", "Central Africa", "Conservat\u00f3ria do Registo Comercial", "", "Direc\u00e7\u00e3o dos Impostos", "", "25%", "0% - 25% progressive", "15%", false, ["BISTP", "Afriland First Bank STP", "Ecobank STP"], 10000, 100000)
+
+  };
+
+  // ══════════════════════════════════════════════════════
+  //  INDUSTRY CATEGORIES
+  // ══════════════════════════════════════════════════════
+
+  var industries = [
+    "Agriculture & Agribusiness",
+    "Technology / Fintech",
+    "Food & Beverage",
+    "Retail & E-commerce",
+    "Import/Export & Trading",
+    "Healthcare",
+    "Education",
+    "Construction / Real Estate",
+    "Transportation & Logistics",
+    "Manufacturing",
+    "Tourism & Hospitality",
+    "Creative & Media",
+    "Mining & Natural Resources",
+    "Professional Services (Consulting, Legal, Accounting)",
+    "Energy & Utilities",
+    "Other"
+  ];
+
+  // ══════════════════════════════════════════════════════
+  //  ACTION PLAN GENERATOR
+  // ══════════════════════════════════════════════════════
+
+  function generateActionPlan(params) {
+    var countryCode = params.countryCode;
+    var businessType = params.businessType;
+    var industry = params.industry;
+    var hasEmployees = params.hasEmployees;
+    var estimatedRevenue = params.estimatedRevenue;
+
+    var country = countries[countryCode];
+    if (!country) return { error: "Country not found" };
+
+    var regType = null;
+    for (var i = 0; i < country.registration.types.length; i++) {
+      if (country.registration.types[i].type.toLowerCase().indexOf(businessType.toLowerCase()) !== -1) {
+        regType = country.registration.types[i];
+        break;
+      }
+    }
+    if (!regType) {
+      // Fallback: use first type
+      regType = country.registration.types[0];
+    }
+
+    var applicableTaxes = [];
+    for (var j = 0; j < country.tax.obligations.length; j++) {
+      var t = country.tax.obligations[j];
+      var typeMatch = false;
+      for (var k = 0; k < t.applicableTo.length; k++) {
+        if (regType.type.indexOf(t.applicableTo[k]) !== -1 || t.applicableTo[k].indexOf('Sole') !== -1 && regType.type.indexOf('Sole') !== -1 || t.applicableTo[k].indexOf('Sole') !== -1 && regType.type.indexOf('Individu') !== -1) {
+          typeMatch = true;
+          break;
+        }
+      }
+      if (t.note && t.note.indexOf('employees') !== -1 && !hasEmployees) continue;
+      if (typeMatch) applicableTaxes.push(t);
+    }
+
+    var plan = {
+      country: country.name,
+      countryCode: countryCode,
+      currency: country.currency,
+      language: country.language,
+      region: country.region,
+      businessType: regType.type,
+
+      phase1_registration: {
+        title: "Business Registration",
+        authority: country.registration.authority,
+        website: country.registration.website,
+        portalUrl: country.registration.portalUrl || '',
+        steps: regType.steps,
+        requirements: regType.requirements,
+        estimatedCost: regType.registrationFee,
+        estimatedTimeline: regType.timeline
+      },
+
+      phase2_tax: {
+        title: "Tax Registration & Compliance",
+        authority: country.tax.authority,
+        website: country.tax.website,
+        applicableTaxes: applicableTaxes,
+        filingDeadlines: country.tax.filingDeadlines
+      },
+
+      phase3_licenses: {
+        title: "Licenses & Permits",
+        generalLicenses: country.licenses.general,
+        industryLicenses: (country.licenses.byIndustry && country.licenses.byIndustry[industry]) || [],
+        note: (industry && country.licenses.byIndustry && !country.licenses.byIndustry[industry])
+          ? 'Industry-specific license data for "' + industry + '" in ' + country.name + ' not yet available. The AI advisor can help research this.'
+          : null
+      },
+
+      phase4_banking: {
+        title: "Business Banking",
+        recommendedBanks: country.banking.majorBanks,
+        requirements: country.banking.accountRequirements,
+        estimatedTimeline: country.banking.estimatedTimeline
+      },
+
+      costEstimate: country.startupCosts,
+
+      generated: new Date().toISOString(),
+      disclaimer: 'This action plan is based on publicly available information about business registration in ' + country.name + '. Regulations change frequently. Always verify current requirements with ' + country.registration.authority + ' and ' + country.tax.authority + ' before proceeding.'
+    };
+
+    return plan;
+  }
+
+  // ══════════════════════════════════════════════════════
+  //  PUBLIC API
+  // ══════════════════════════════════════════════════════
+
+  return {
+    getCountries: function () {
+      var result = [];
+      for (var code in countries) {
+        if (countries.hasOwnProperty(code)) {
+          var c = countries[code];
+          result.push({ code: code, name: c.name, region: c.region, currency: c.currency, language: c.language });
+        }
+      }
+      return result.sort(function (a, b) { return a.name.localeCompare(b.name); });
+    },
+    getCountry: function (code) {
+      return countries[code] || null;
+    },
+    getIndustries: function () {
+      return industries;
+    },
+    getRegions: function () {
+      return ["West Africa", "East Africa", "North Africa", "Southern Africa", "Central Africa"];
+    },
+    generateActionPlan: generateActionPlan
+  };
+
+})();
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = BusinessPlannerEngine;
+}
