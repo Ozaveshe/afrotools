@@ -18,7 +18,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"AfroTools AI Business Planner","url":"https://afrotools.com/tools/business-planner/","description":"Start your business in any African country. Get country-specific registration steps, tax setup, licensing requirements, and AI-powered business planning for all 54 African nations.","applicationCategory":"BusinessApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
 <link rel="stylesheet" href="/assets/css/global.min.css">
 <script src="/assets/js/components/tool-registry.js"></script>
@@ -27,159 +27,406 @@
 <script src="/assets/js/components/footer.min.js" defer></script>
 <style>
 *{box-sizing:border-box}
-body{font-family:'DM Sans',sans-serif;background:#FAFAF8;color:#0f172a;margin:0;-webkit-font-smoothing:antialiased}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--color-bg,#F8FAFD);color:var(--color-text,#0f172a);margin:0;-webkit-font-smoothing:antialiased}
 a{text-decoration:none;color:inherit}
-.wrap{max-width:960px;margin:0 auto;padding:0 20px}
-/* Hero */
-.hero{background:linear-gradient(135deg,#0c1a10 0%,#143d1f 40%,#0c1a10 100%);padding:64px 0 48px;position:relative;overflow:hidden;text-align:center}
-.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 40% 40%,rgba(93,219,158,.1) 0%,transparent 50%);pointer-events:none}
-.hero>*{position:relative;z-index:1}
-.hero h1{font-family:'Instrument Serif',serif;font-size:clamp(2rem,5vw,3rem);color:#fff;margin:0 0 12px;line-height:1.1}
-.hero h1 span{color:#5ddb9e}
-.hero p{font-size:1rem;color:rgba(255,255,255,.75);max-width:520px;margin:0 auto 24px;line-height:1.6}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(93,219,158,.12);border:1px solid rgba(93,219,158,.25);border-radius:6px;padding:6px 14px;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#5ddb9e;margin-bottom:16px}
-/* Progress */
-.progress-bar{display:flex;justify-content:center;gap:8px;padding:20px;background:#fff;border-bottom:1px solid #e5e5e5;position:sticky;top:0;z-index:50}
-.step-pill{display:flex;align-items:center;gap:6px;padding:8px 16px;border-radius:100px;font-size:.78rem;font-weight:700;background:#f3f4f6;color:#9ca3af;transition:.2s}
-.step-pill.active{background:#008751;color:#fff}
-.step-pill.done{background:#dcfce7;color:#166534}
-.step-num{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;background:rgba(0,0,0,.08)}
+.wrap{max-width:960px;margin:0 auto;padding:0 24px}
+
+/* ── HERO ── */
+.tool-hero{
+  background:var(--color-bg-dark,#0A1628);
+  padding:48px 0 40px;position:relative;overflow:hidden;
+  border-bottom:1px solid rgba(0,122,255,0.1);
+}
+.tool-hero::before{
+  content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;
+  background:radial-gradient(circle at 30% 50%,rgba(0,122,255,.12) 0%,transparent 50%),
+              radial-gradient(circle at 70% 30%,rgba(96,181,255,.08) 0%,transparent 40%);
+  pointer-events:none;
+}
+.tool-hero::after{
+  content:'';position:absolute;top:0;left:0;right:0;bottom:0;
+  background-image:radial-gradient(2px 2px at 20% 30%,rgba(255,255,255,.06),transparent),
+                    radial-gradient(2px 2px at 60% 70%,rgba(255,255,255,.04),transparent),
+                    radial-gradient(1px 1px at 80% 15%,rgba(255,255,255,.05),transparent);
+  pointer-events:none;
+}
+.hero-z{position:relative;z-index:1}
+.hero-layout{display:flex;align-items:flex-start;justify-content:space-between;gap:32px}
+.breadcrumb{display:flex;align-items:center;gap:6px;font-size:.72rem;font-weight:500;letter-spacing:.06em;color:rgba(255,255,255,.35);margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.35);transition:color .15s}
+.breadcrumb a:hover{color:var(--color-primary,#007AFF)}
+.breadcrumb span{color:rgba(255,255,255,.15)}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(0,122,255,.1);border:1px solid rgba(0,122,255,.2);
+  border-radius:100px;padding:5px 14px;
+  font-size:.67rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--color-primary,#007AFF);margin-bottom:16px;
+}
+.hero-eyebrow::before{content:'';width:6px;height:6px;background:var(--color-primary,#007AFF);border-radius:50%;animation:pd 2s infinite}
+@keyframes pd{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,122,255,.4)}50%{opacity:.8;box-shadow:0 0 0 6px rgba(0,122,255,0)}}
+.tool-hero h1{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;color:#fff;letter-spacing:-.025em;line-height:1.08;margin-bottom:12px;text-transform:uppercase}
+.tool-hero h1 em{color:var(--color-primary,#007AFF);font-style:normal}
+.hero-sub{font-size:.95rem;color:rgba(255,255,255,.55);line-height:1.65;max-width:520px;margin-bottom:20px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.badge-gold{background:rgba(245,166,35,.15);color:#F5A623;border:1px solid rgba(245,166,35,.3)}
+.badge-blue{background:rgba(0,122,255,.15);color:var(--color-primary,#007AFF);border:1px solid rgba(0,122,255,.3)}
+.badge-grey{background:rgba(255,255,255,.07);color:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.12)}
+
+/* ── HERO STATS ── */
+.hero-stats{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;flex-shrink:0;margin-top:32px;
+}
+.hero-stat{
+  padding:16px 18px;border-radius:14px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  backdrop-filter:blur(8px);text-align:center;min-width:110px;
+}
+.hero-stat-num{font-size:1.5rem;font-weight:800;color:#fff;line-height:1}
+.hero-stat-label{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.4);margin-top:4px}
+
+/* ── PROGRESS BAR ── */
+.progress-bar{
+  display:flex;justify-content:center;gap:8px;padding:16px 24px;
+  background:#fff;border-bottom:1px solid var(--color-border,#e2e8f0);
+  position:sticky;top:0;z-index:50;
+  box-shadow:0 1px 4px rgba(0,0,0,.04);
+}
+.step-pill{
+  display:flex;align-items:center;gap:6px;padding:8px 18px;border-radius:100px;
+  font-size:.78rem;font-weight:700;letter-spacing:.02em;
+  background:var(--color-bg-subtle,#F1F5F9);color:var(--color-text-subtle,#94a3af);
+  transition:all .2s;
+}
+.step-pill.active{background:var(--color-primary,#007AFF);color:#fff}
+.step-pill.done{background:#DBEAFE;color:#1a4fa0}
+.step-num{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;background:rgba(0,0,0,.06)}
 .step-pill.active .step-num{background:rgba(255,255,255,.25)}
-.step-pill.done .step-num{background:rgba(22,101,52,.15)}
-/* Sections */
-.section{padding:40px 0;opacity:1;transition:opacity .3s}
-.section.locked{opacity:.45;pointer-events:none}
-.section-title{font-family:'Instrument Serif',serif;font-size:1.6rem;margin-bottom:8px;color:#0f172a}
-.section-sub{font-size:.88rem;color:#6b7280;margin-bottom:24px;line-height:1.6}
-/* Country grid */
+.step-pill.done .step-num{background:rgba(26,79,160,.12)}
+
+/* ── SECTIONS ── */
+.section{padding:48px 0;opacity:1;transition:opacity .3s}
+.section.locked{opacity:.4;pointer-events:none}
+.section--alt{background:var(--color-bg-subtle,#F1F5F9)}
+.eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:.65rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--color-primary,#007AFF);margin-bottom:8px}
+.eyebrow::before{content:'';width:14px;height:2px;background:var(--color-primary,#007AFF);border-radius:2px}
+.section-title{font-size:clamp(1.4rem,2.5vw,1.75rem);font-weight:800;color:#111827;letter-spacing:-.025em;line-height:1.15;margin-bottom:6px;text-transform:uppercase}
+.section-sub{font-size:.88rem;color:#6b7280;line-height:1.7;max-width:520px;margin-bottom:28px}
+
+/* ── COUNTRY GRID ── */
 .region-tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
-.region-tab{padding:7px 14px;border-radius:6px;font-size:.75rem;font-weight:700;background:#f3f4f6;color:#6b7280;cursor:pointer;border:none;transition:.15s}
-.region-tab.active{background:#008751;color:#fff}
-.country-search{width:100%;padding:10px 14px 10px 38px;border:1.5px solid #e5e5e5;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none;margin-bottom:16px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") 12px center no-repeat}
-.country-search:focus{border-color:#008751;box-shadow:0 0 0 3px rgba(0,135,81,.1)}
-.country-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;max-height:400px;overflow-y:auto;padding:4px}
-.country-card{display:flex;align-items:center;gap:8px;padding:10px 12px;border:1.5px solid #e5e5e5;border-radius:10px;background:#fff;cursor:pointer;transition:.15s;font-size:.82rem;font-weight:600}
-.country-card:hover{border-color:#008751;background:#f0fdf4}
-.country-card.selected{border-color:#008751;background:#dcfce7;box-shadow:0 0 0 3px rgba(0,135,81,.12)}
+.region-tab{
+  padding:6px 14px;border-radius:20px;border:1.5px solid var(--color-border,#E5E7EB);
+  background:#fff;color:#6b7280;font-size:.75rem;font-weight:600;
+  cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .14s;
+}
+.region-tab:hover{border-color:var(--color-primary,#007AFF);color:var(--color-primary,#007AFF)}
+.region-tab.active{background:var(--color-primary,#007AFF);border-color:var(--color-primary,#007AFF);color:#fff}
+.country-search{
+  width:100%;padding:12px 14px 12px 40px;
+  border:1.5px solid var(--color-border,#E5E7EB);border-radius:10px;
+  font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none;
+  margin-bottom:16px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") 14px center no-repeat;
+  transition:border-color .15s,box-shadow .15s;
+}
+.country-search:focus{border-color:var(--color-primary,#007AFF);box-shadow:0 0 0 3px rgba(0,122,255,.1)}
+.country-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;max-height:420px;overflow-y:auto;padding:4px}
+.country-card{
+  display:flex;align-items:center;gap:8px;padding:11px 14px;
+  border:1.5px solid var(--color-border,#E5E7EB);border-radius:12px;
+  background:#fff;cursor:pointer;transition:all .15s;
+  font-size:.82rem;font-weight:600;color:var(--color-text,#0f172a);
+  box-shadow:0 1px 3px rgba(0,0,0,.04);
+}
+.country-card:hover{border-color:var(--color-primary,#007AFF);background:#EFF6FF;box-shadow:0 4px 12px rgba(0,122,255,.08)}
+.country-card.selected{border-color:var(--color-primary,#007AFF);background:#DBEAFE;box-shadow:0 0 0 3px rgba(0,122,255,.12)}
 .country-flag{font-size:1.3rem;flex-shrink:0}
-/* Form */
+
+/* ── FORM ── */
 .form-group{margin-bottom:20px}
-.form-label{display:block;font-size:.78rem;font-weight:700;color:#374151;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em}
-.form-select,.form-input,.form-textarea{width:100%;padding:10px 14px;border:1.5px solid #e5e5e5;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.88rem;background:#fff;outline:none;transition:.15s}
-.form-select:focus,.form-input:focus,.form-textarea:focus{border-color:#008751;box-shadow:0 0 0 3px rgba(0,135,81,.1)}
+.form-label{display:block;font-size:.72rem;font-weight:700;color:#3D5A80;margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em}
+.form-select,.form-input,.form-textarea{
+  width:100%;padding:11px 14px;
+  border:1.5px solid var(--color-border-strong,#CBD5E1);border-radius:7px;
+  font-family:'DM Sans',sans-serif;font-size:.92rem;font-weight:500;
+  background:#F4F7FA;color:var(--color-text,#1E293B);outline:none;
+  transition:border-color .18s,box-shadow .18s;
+}
+.form-select:focus,.form-input:focus,.form-textarea:focus{border-color:var(--color-primary,#007AFF);background:#fff;box-shadow:0 0 0 3px rgba(0,122,255,.1)}
 .form-textarea{resize:vertical;min-height:80px}
-.toggle-row{display:flex;gap:12px;align-items:center}
-.toggle-btn{padding:8px 20px;border:1.5px solid #e5e5e5;border-radius:8px;background:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:700;transition:.15s}
-.toggle-btn.active{background:#008751;color:#fff;border-color:#008751}
-.btn-generate{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;background:#008751;color:#fff;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;transition:.15s;margin-top:8px}
-.btn-generate:hover{background:#005d38;transform:translateY(-1px)}
-.btn-generate:disabled{opacity:.5;cursor:not-allowed;transform:none}
-/* Action Plan */
+.toggle-row{display:flex;gap:8px;align-items:center}
+.toggle-btn{
+  padding:9px 22px;border:1.5px solid var(--color-border-strong,#CBD5E1);
+  border-radius:7px;background:#F4F7FA;cursor:pointer;
+  font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:700;
+  color:#3D5A80;transition:all .15s;
+}
+.toggle-btn:hover{border-color:var(--color-primary,#007AFF)}
+.toggle-btn.active{background:var(--color-primary,#007AFF);color:#fff;border-color:var(--color-primary,#007AFF)}
+.btn-generate{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:13px 28px;background:var(--color-primary,#007AFF);color:#fff;
+  border:none;border-radius:980px;
+  font-family:'DM Sans',sans-serif;font-size:.87rem;font-weight:700;
+  letter-spacing:-.01em;cursor:pointer;transition:all .18s;
+  box-shadow:0 2px 10px rgba(0,122,255,.3);margin-top:8px;
+}
+.btn-generate:hover{background:#005BBF;transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,122,255,.35)}
+.btn-generate:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* ── ACTION PLAN ── */
 .plan-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:24px}
-.plan-country{font-family:'Instrument Serif',serif;font-size:1.4rem}
+.plan-country{font-size:1.3rem;font-weight:800;letter-spacing:-.02em;text-transform:uppercase}
 .plan-actions{display:flex;gap:8px;flex-wrap:wrap}
-.btn-sm{padding:8px 16px;border-radius:8px;font-size:.78rem;font-weight:700;border:1.5px solid #e5e5e5;background:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;transition:.15s}
-.btn-sm:hover{border-color:#008751;color:#008751}
-.btn-sm.primary{background:#008751;color:#fff;border-color:#008751}
-.btn-sm.primary:hover{background:#005d38}
-/* Accordion */
-.phase{border:1.5px solid #e5e5e5;border-radius:12px;background:#fff;margin-bottom:12px;overflow:hidden;transition:.2s}
-.phase:hover{border-color:#d1d5db}
-.phase-head{display:flex;align-items:center;gap:12px;padding:16px 20px;cursor:pointer;user-select:none}
-.phase-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
-.phase-icon.green{background:#dcfce7;color:#166534}
-.phase-icon.blue{background:#dbeafe;color:#1e40af}
-.phase-icon.amber{background:#fef3c7;color:#92400e}
-.phase-icon.purple{background:#ede9fe;color:#5b21b6}
-.phase-icon.emerald{background:#d1fae5;color:#065f46}
-.phase-title{font-size:.95rem;font-weight:700;flex:1}
-.phase-meta{font-size:.72rem;color:#9ca3af;font-weight:600}
-.phase-arrow{font-size:.8rem;color:#9ca3af;transition:transform .2s}
+.btn-sm{
+  padding:8px 18px;border-radius:980px;font-size:.78rem;font-weight:700;
+  border:1.5px solid var(--color-border-strong,#CBD5E1);background:#fff;
+  cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;color:#374151;
+}
+.btn-sm:hover{border-color:var(--color-primary,#007AFF);color:var(--color-primary,#007AFF)}
+.btn-sm.primary{background:var(--color-primary,#007AFF);color:#fff;border-color:var(--color-primary,#007AFF)}
+.btn-sm.primary:hover{background:#005BBF}
+
+/* ── CHECKLIST PROGRESS ── */
+.checklist-progress{
+  display:flex;align-items:center;gap:12px;padding:14px 20px;margin-bottom:20px;
+  background:#EFF6FF;border:1.5px solid #BFDBFE;border-radius:12px;
+}
+.checklist-bar{flex:1;height:8px;background:#DBEAFE;border-radius:8px;overflow:hidden}
+.checklist-fill{height:100%;background:var(--color-primary,#007AFF);border-radius:8px;transition:width .4s ease}
+.checklist-pct{font-size:.82rem;font-weight:800;color:var(--color-primary,#007AFF);min-width:36px;text-align:right}
+.checklist-label{font-size:.72rem;font-weight:600;color:#3D5A80}
+
+/* ── ACCORDION PHASES ── */
+.phase{
+  border:1.5px solid var(--color-border,#E5E7EB);border-radius:14px;
+  background:#fff;margin-bottom:12px;overflow:hidden;
+  transition:border-color .2s,box-shadow .2s;
+  box-shadow:0 1px 4px rgba(0,0,0,.04);
+}
+.phase:hover{border-color:var(--color-border-strong,#CBD5E1);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.phase-head{display:flex;align-items:center;gap:14px;padding:18px 22px;cursor:pointer;user-select:none}
+.phase-icon{
+  width:38px;height:38px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.85rem;font-weight:800;flex-shrink:0;
+}
+.phase-icon.ph-1{background:#DBEAFE;color:#1a4fa0}
+.phase-icon.ph-2{background:rgba(0,122,255,.08);color:var(--color-primary,#007AFF)}
+.phase-icon.ph-3{background:var(--_gold-100,#fff3cd);color:var(--_gold-600,#d48a00)}
+.phase-icon.ph-4{background:#ede9fe;color:#5b21b6}
+.phase-icon.ph-cost{background:#EFF6FF;color:var(--color-primary,#007AFF)}
+.phase-title{font-size:.92rem;font-weight:800;letter-spacing:-.01em;flex:1;color:var(--color-text,#111827)}
+.phase-meta{font-size:.68rem;color:var(--color-text-subtle,#94a3af);font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.phase-arrow{font-size:.75rem;color:var(--color-text-subtle,#94a3af);transition:transform .2s}
 .phase.open .phase-arrow{transform:rotate(180deg)}
-.phase-body{display:none;padding:0 20px 20px;animation:fadeIn .2s}
+.phase-body{display:none;padding:0 22px 22px;animation:fadeIn .25s}
 .phase.open .phase-body{display:block}
 @keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
-.step-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid #f3f4f6;font-size:.85rem;line-height:1.5}
+.step-item{
+  display:flex;align-items:flex-start;gap:10px;padding:9px 0;
+  border-bottom:1px solid var(--color-border-subtle,#f1f5f9);
+  font-size:.84rem;line-height:1.55;color:#374151;
+}
 .step-item:last-child{border:none}
-.step-check{width:18px;height:18px;border-radius:4px;border:2px solid #d1d5db;cursor:pointer;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:.15s}
-.step-check.checked{background:#008751;border-color:#008751;color:#fff}
+.step-check{
+  width:18px;height:18px;border-radius:4px;
+  border:2px solid var(--color-border-strong,#CBD5E1);
+  cursor:pointer;flex-shrink:0;margin-top:2px;
+  display:flex;align-items:center;justify-content:center;transition:.15s;
+}
+.step-check.checked{background:var(--color-primary,#007AFF);border-color:var(--color-primary,#007AFF);color:#fff}
 .step-check.checked::after{content:'\2713';font-size:.7rem;font-weight:800}
+.sub-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#3D5A80;margin:16px 0 8px;display:block}
 .req-list{margin:0;padding:0 0 0 20px;font-size:.82rem;color:#4b5563;line-height:1.7}
-.tax-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f3f4f6;font-size:.84rem}
+.tax-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--color-border-subtle,#f1f5f9);font-size:.84rem}
 .tax-row:last-child{border:none}
-.tax-name{font-weight:600}
-.tax-rate{color:#008751;font-weight:700}
-.tax-note{font-size:.72rem;color:#9ca3af;margin-top:2px}
-.info-card{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:12px 16px;font-size:.82rem;line-height:1.6;color:#166534;margin-top:12px}
+.tax-name{font-weight:600;color:var(--color-text,#111827)}
+.tax-rate{color:var(--color-primary,#007AFF);font-weight:700}
+.tax-note{font-size:.72rem;color:var(--color-text-subtle,#94a3af);margin-top:2px}
+.info-card{background:#EFF6FF;border:1px solid #BFDBFE;border-left:4px solid var(--color-primary,#007AFF);border-radius:8px;padding:12px 16px;font-size:.82rem;line-height:1.6;color:#1E3A5F;margin-top:12px}
 .bank-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-.bank-chip{padding:5px 12px;background:#f3f4f6;border-radius:6px;font-size:.75rem;font-weight:600;color:#374151}
+.bank-chip{padding:5px 12px;background:var(--color-bg-subtle,#F1F5F9);border:1px solid var(--color-border,#e2e8f0);border-radius:6px;font-size:.75rem;font-weight:600;color:#374151}
 .cost-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:12px}
-.cost-card{padding:16px;border-radius:10px;border:1px solid #e5e5e5;text-align:center}
-.cost-card.low{background:#f0fdf4;border-color:#bbf7d0}
-.cost-card.med{background:#eff6ff;border-color:#bfdbfe}
-.cost-card.high{background:#fef3c7;border-color:#fde68a}
-.cost-label{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6b7280;margin-bottom:4px}
-.cost-range{font-size:1rem;font-weight:800;margin-bottom:4px}
+.cost-card{padding:18px;border-radius:12px;border:1.5px solid var(--color-border,#E5E7EB);text-align:center;background:#fff}
+.cost-card.low{background:#EFF6FF;border-color:#BFDBFE}
+.cost-card.med{background:rgba(0,122,255,.04);border-color:rgba(0,122,255,.2)}
+.cost-card.high{background:var(--_gold-100,#fff3cd);border-color:rgba(212,138,0,.25)}
+.cost-label{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6b7280;margin-bottom:4px}
+.cost-range{font-size:1.05rem;font-weight:800;color:var(--color-text,#111827);margin-bottom:4px}
 .cost-desc{font-size:.72rem;color:#6b7280}
-.disclaimer{font-size:.72rem;color:#9ca3af;margin-top:16px;line-height:1.6;padding:12px;background:#f9fafb;border-radius:8px}
-/* Chat */
+.disclaimer{
+  font-size:.72rem;color:var(--color-text-subtle,#94a3af);margin-top:24px;
+  line-height:1.6;padding:14px 18px;
+  background:var(--color-bg-subtle,#F1F5F9);border:1px solid var(--color-border,#e2e8f0);
+  border-radius:10px;
+}
+
+/* ── AI CHAT ── */
 .chat-section{margin-top:32px}
-.chat-box{border:1.5px solid #e5e5e5;border-radius:14px;background:#fff;overflow:hidden}
-.chat-header{padding:14px 20px;background:#0c1a10;color:#fff;display:flex;align-items:center;gap:10px;font-size:.88rem;font-weight:700}
-.chat-header-dot{width:8px;height:8px;background:#5ddb9e;border-radius:50%}
-.chat-messages{height:300px;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:12px}
-.msg{max-width:85%;padding:10px 14px;border-radius:12px;font-size:.84rem;line-height:1.6;animation:fadeIn .3s}
-.msg.ai{background:#f0fdf4;color:#0f172a;border-bottom-left-radius:4px;align-self:flex-start}
-.msg.user{background:#008751;color:#fff;border-bottom-right-radius:4px;align-self:flex-end}
-.msg.error{background:#fef2f2;color:#991b1b;border:1px solid #fecaca}
-.chat-suggestions{display:flex;flex-wrap:wrap;gap:6px;padding:0 20px 12px}
-.suggest-btn{padding:6px 12px;border:1px solid #e5e5e5;border-radius:100px;font-size:.72rem;font-weight:600;background:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;color:#374151;transition:.15s}
-.suggest-btn:hover{border-color:#008751;color:#008751}
-.chat-input-row{display:flex;gap:8px;padding:12px 16px;border-top:1px solid #e5e5e5}
-.chat-input{flex:1;padding:10px 14px;border:1.5px solid #e5e5e5;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.85rem;outline:none;resize:none}
-.chat-input:focus{border-color:#008751}
-.chat-send{padding:10px 20px;background:#008751;color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.82rem}
+.chat-box{border:1.5px solid var(--color-border,#E5E7EB);border-radius:16px;background:#fff;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.chat-header{padding:16px 22px;background:var(--color-bg-dark,#0A1628);color:#fff;display:flex;align-items:center;gap:10px;font-size:.85rem;font-weight:700;letter-spacing:.02em}
+.chat-header-dot{width:8px;height:8px;background:var(--color-primary,#007AFF);border-radius:50%;animation:pd 2s infinite}
+.chat-messages{height:340px;overflow-y:auto;padding:18px 22px;display:flex;flex-direction:column;gap:12px}
+.msg{max-width:85%;padding:11px 16px;border-radius:14px;font-size:.84rem;line-height:1.6;animation:fadeIn .3s}
+.msg.ai{background:#EFF6FF;color:var(--color-text,#0f172a);border-bottom-left-radius:4px;align-self:flex-start;border:1px solid #BFDBFE}
+.msg.ai p{margin:0 0 8px;color:var(--color-text,#0f172a)}
+.msg.ai p:last-child{margin-bottom:0}
+.msg.ai strong{font-weight:700;color:#1a4fa0}
+.msg.ai ul,.msg.ai ol{margin:4px 0 8px 16px;padding:0}
+.msg.ai li{margin-bottom:4px}
+.msg.ai a{color:var(--color-primary,#007AFF);text-decoration:underline}
+.msg.ai code{background:#DBEAFE;padding:1px 5px;border-radius:3px;font-size:.8rem;font-family:var(--font-mono,'JetBrains Mono',monospace)}
+.msg.user{background:var(--color-primary,#007AFF);color:#fff;border-bottom-right-radius:4px;align-self:flex-end}
+.msg.error{background:var(--_red-100,rgba(239,68,68,.08));color:#991b1b;border:1px solid #fecaca;align-self:flex-start}
+.msg.error .retry-btn{
+  display:inline-block;margin-top:8px;padding:4px 14px;border-radius:100px;
+  font-size:.72rem;font-weight:700;cursor:pointer;
+  background:#fff;border:1px solid #fecaca;color:#991b1b;
+  font-family:'DM Sans',sans-serif;transition:all .15s;
+}
+.msg.error .retry-btn:hover{background:#fecaca}
+.typing-indicator{align-self:flex-start;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:14px;border-bottom-left-radius:4px;padding:12px 18px;display:flex;gap:5px;align-items:center}
+.typing-dot{width:7px;height:7px;background:var(--color-primary,#007AFF);border-radius:50%;animation:typingBounce 1.4s infinite}
+.typing-dot:nth-child(2){animation-delay:.2s}
+.typing-dot:nth-child(3){animation-delay:.4s}
+@keyframes typingBounce{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-6px);opacity:1}}
+.chat-suggestions{display:flex;flex-wrap:wrap;gap:6px;padding:0 22px 14px}
+.suggest-btn{
+  padding:6px 14px;border:1.5px solid var(--color-border,#E5E7EB);border-radius:100px;
+  font-size:.72rem;font-weight:600;background:#fff;cursor:pointer;
+  font-family:'DM Sans',sans-serif;color:#374151;transition:all .15s;
+}
+.suggest-btn:hover{border-color:var(--color-primary,#007AFF);color:var(--color-primary,#007AFF);background:#EFF6FF}
+.chat-input-row{display:flex;gap:8px;padding:14px 18px;border-top:1px solid var(--color-border,#e2e8f0)}
+.chat-input{
+  flex:1;padding:10px 14px;border:1.5px solid var(--color-border-strong,#CBD5E1);
+  border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.85rem;outline:none;resize:none;
+  background:#F4F7FA;transition:border-color .15s;
+}
+.chat-input:focus{border-color:var(--color-primary,#007AFF);background:#fff}
+.chat-send{
+  padding:10px 22px;background:var(--color-primary,#007AFF);color:#fff;border:none;
+  border-radius:980px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;
+  font-size:.82rem;transition:background .15s;
+}
+.chat-send:hover{background:#005BBF}
 .chat-send:disabled{opacity:.5;cursor:not-allowed}
-/* Premium */
-.premium-section{background:linear-gradient(135deg,#0c1a10 0%,#1a3a25 100%);border-radius:16px;padding:40px 32px;color:#fff;text-align:center;margin-top:40px}
-.premium-section h3{font-family:'Instrument Serif',serif;font-size:1.4rem;margin-bottom:8px}
-.premium-section p{font-size:.88rem;color:rgba(255,255,255,.7);margin-bottom:20px}
-.premium-features{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-bottom:24px}
-.pf{padding:6px 14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:6px;font-size:.75rem;font-weight:600;color:rgba(255,255,255,.8)}
-.btn-locked{padding:12px 28px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:10px;color:rgba(255,255,255,.5);font-weight:700;font-size:.88rem;cursor:not-allowed;font-family:'DM Sans',sans-serif}
-.email-row{display:flex;gap:8px;max-width:400px;margin:16px auto 0}
-.email-row input{flex:1;padding:10px 14px;border:1px solid rgba(255,255,255,.2);border-radius:8px;background:rgba(255,255,255,.06);color:#fff;font-family:'DM Sans',sans-serif;font-size:.85rem;outline:none}
-.email-row input::placeholder{color:rgba(255,255,255,.4)}
-.email-row button{padding:10px 20px;background:#5ddb9e;color:#0c1a10;border:none;border-radius:8px;font-weight:700;font-size:.82rem;cursor:pointer;font-family:'DM Sans',sans-serif}
-/* Footer CTA */
-.cta-bar{background:#f3f4f6;padding:40px 20px;text-align:center;margin-top:40px}
-.cta-bar h3{font-family:'Instrument Serif',serif;font-size:1.2rem;margin-bottom:8px}
-.cta-bar p{font-size:.85rem;color:#6b7280;margin-bottom:16px}
-/* Responsive */
+
+/* ── PREMIUM SECTION ── */
+.premium-section{
+  background:linear-gradient(135deg,#0a1929 0%,#0d2b5e 55%,#1a3a6b 100%);
+  border-radius:22px;padding:48px 36px;color:#fff;text-align:center;
+  margin-top:40px;
+  box-shadow:0 8px 40px rgba(0,0,0,.16),0 2px 8px rgba(0,0,0,.08);
+  position:relative;overflow:hidden;
+}
+.premium-section::before{
+  content:'';position:absolute;inset:-20px;
+  background:radial-gradient(ellipse at 30% 50%,rgba(0,122,255,.2) 0%,transparent 60%);
+  pointer-events:none;
+}
+.premium-section>*{position:relative;z-index:1}
+.premium-section h3{font-size:1.4rem;font-weight:800;letter-spacing:-.02em;text-transform:uppercase;margin-bottom:10px}
+.premium-section p{font-size:.88rem;color:rgba(255,255,255,.55);margin-bottom:24px;line-height:1.6}
+.premium-features{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:28px}
+.pf{
+  padding:6px 14px;background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.1);border-radius:100px;
+  font-size:.72rem;font-weight:600;color:rgba(255,255,255,.7);
+  backdrop-filter:blur(8px);
+}
+.btn-locked{
+  padding:12px 28px;background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.15);border-radius:980px;
+  color:rgba(255,255,255,.4);font-weight:700;font-size:.85rem;
+  cursor:not-allowed;font-family:'DM Sans',sans-serif;
+  backdrop-filter:blur(8px);
+}
+.email-row{display:flex;gap:8px;max-width:420px;margin:20px auto 0}
+.email-row input{
+  flex:1;padding:11px 16px;border:1px solid rgba(255,255,255,.15);border-radius:980px;
+  background:rgba(255,255,255,.06);color:#fff;font-family:'DM Sans',sans-serif;
+  font-size:.85rem;outline:none;backdrop-filter:blur(8px);
+}
+.email-row input::placeholder{color:rgba(255,255,255,.35)}
+.email-row input:focus{border-color:rgba(0,122,255,.5)}
+.email-row button{
+  padding:11px 24px;background:var(--color-primary,#007AFF);color:#fff;border:none;
+  border-radius:980px;font-weight:700;font-size:.82rem;cursor:pointer;
+  font-family:'DM Sans',sans-serif;transition:background .15s;
+}
+.email-row button:hover{background:#005BBF}
+
+/* ── PRINT ── */
+@media print{
+  .tool-hero,.progress-bar,.chat-section,.premium-section,.plan-actions,afro-navbar,afro-footer,.hero-stats,.breadcrumb{display:none!important}
+  body{background:#fff;color:#000;font-size:11pt}
+  .section{padding:12px 0}
+  .section.locked{opacity:1;pointer-events:auto}
+  .phase{break-inside:avoid;border:1px solid #ccc;box-shadow:none;margin-bottom:8px}
+  .phase-body{display:block!important}
+  .phase-arrow{display:none}
+  .checklist-progress{border:1px solid #ccc;background:#f5f5f5}
+  .wrap{max-width:100%;padding:0 16px}
+  .disclaimer{border:1px solid #ccc;background:#f9f9f9}
+  @page{margin:1.5cm}
+}
+
+/* ── RESPONSIVE ── */
 @media(max-width:640px){
-  .hero{padding:48px 0 36px}
+  .tool-hero{padding:36px 0 28px}
+  .hero-layout{flex-direction:column}
+  .hero-stats{grid-template-columns:repeat(4,1fr);gap:6px;margin-top:20px}
+  .hero-stat{padding:10px 8px}
+  .hero-stat-num{font-size:1.1rem}
+  .hero-stat-label{font-size:.56rem}
   .country-grid{grid-template-columns:repeat(2,1fr)}
   .progress-bar{gap:4px;padding:12px 8px}
   .step-pill{padding:6px 10px;font-size:.7rem}
   .step-pill .step-label{display:none}
   .cost-grid{grid-template-columns:1fr}
   .plan-header{flex-direction:column;align-items:flex-start}
-  .chat-messages{height:250px}
+  .chat-messages{height:260px}
   .email-row{flex-direction:column}
+  .premium-section{padding:32px 20px;border-radius:16px}
 }
 </style>
 </head>
-<body>
-<afro-navbar></afro-navbar>
+<body class="tool-page">
+<afro-navbar theme="dark" active="tools"></afro-navbar>
 
-<section class="hero">
-  <div class="wrap">
-    <div class="hero-badge">AI-POWERED &bull; 54 COUNTRIES</div>
-    <h1>Start Your Business <span>in Africa</span></h1>
-    <p>Country-specific registration, tax setup, and licensing — step-by-step action plans powered by AI for all 54 African countries.</p>
+<!-- HERO -->
+<section class="tool-hero">
+  <div class="wrap hero-z">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a><span>/</span>
+      <a href="/salary-tax/">Tools</a><span>/</span>
+      <span aria-current="page">Business Planner</span>
+    </nav>
+    <div class="hero-layout">
+      <div>
+        <div class="hero-eyebrow">AI-Powered &bull; 54 Countries</div>
+        <h1>AI Business<br><em>Planner</em></h1>
+        <p class="hero-sub">Country-specific registration, tax setup, and licensing &mdash; step-by-step action plans powered by AI for all 54 African countries.</p>
+        <div class="hero-badges">
+          <span class="badge badge-gold">Includes AI Advisor</span>
+          <span class="badge badge-blue">54 Countries</span>
+          <span class="badge badge-grey">PDF Export</span>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="hero-stat-num">54</div><div class="hero-stat-label">Countries</div></div>
+        <div class="hero-stat"><div class="hero-stat-num">16</div><div class="hero-stat-label">Industries</div></div>
+        <div class="hero-stat"><div class="hero-stat-num">4</div><div class="hero-stat-label">Phases</div></div>
+        <div class="hero-stat"><div class="hero-stat-num">AI</div><div class="hero-stat-label">Advisor</div></div>
+      </div>
+    </div>
   </div>
 </section>
 
+<!-- PROGRESS -->
 <nav class="progress-bar" id="progress">
   <div class="step-pill active" data-step="1"><span class="step-num">1</span> <span class="step-label">Country</span></div>
   <div class="step-pill" data-step="2"><span class="step-num">2</span> <span class="step-label">Details</span></div>
@@ -189,17 +436,19 @@ a{text-decoration:none;color:inherit}
 <!-- STEP 1: Country -->
 <section class="section" id="sec-country">
   <div class="wrap">
+    <span class="eyebrow">Step 1</span>
     <h2 class="section-title">Select Your Country</h2>
     <p class="section-sub">Choose the African country where you want to start or register your business.</p>
-    <input type="text" class="country-search" id="country-search" placeholder="Search countries — e.g. Nigeria, Kenya, Ghana…" autocomplete="off" spellcheck="false">
+    <input type="text" class="country-search" id="country-search" placeholder="Search countries — e.g. Nigeria, Kenya, Ghana..." autocomplete="off" spellcheck="false">
     <div class="region-tabs" id="region-tabs"></div>
     <div class="country-grid" id="country-grid"></div>
   </div>
 </section>
 
 <!-- STEP 2: Business details -->
-<section class="section locked" id="sec-details">
+<section class="section locked section--alt" id="sec-details">
   <div class="wrap">
+    <span class="eyebrow">Step 2</span>
     <h2 class="section-title">Tell Us About Your Business</h2>
     <p class="section-sub">We'll use this to generate a tailored action plan with real registration steps, tax obligations, and licenses.</p>
     <div class="form-group">
@@ -208,7 +457,7 @@ a{text-decoration:none;color:inherit}
     </div>
     <div class="form-group">
       <label class="form-label">Industry</label>
-      <select class="form-select" id="biz-industry"><option value="">Select your industry…</option></select>
+      <select class="form-select" id="biz-industry"><option value="">Select your industry...</option></select>
     </div>
     <div class="form-group">
       <label class="form-label">Will You Have Employees?</label>
@@ -219,7 +468,7 @@ a{text-decoration:none;color:inherit}
     </div>
     <div class="form-group">
       <label class="form-label">Brief Description (optional)</label>
-      <textarea class="form-textarea" id="biz-desc" placeholder="E.g. Online clothing store targeting Nigerian youth…" maxlength="250"></textarea>
+      <textarea class="form-textarea" id="biz-desc" placeholder="E.g. Online clothing store targeting Nigerian youth..." maxlength="250"></textarea>
     </div>
     <button class="btn-generate" id="btn-plan">Generate Action Plan &rarr;</button>
   </div>
@@ -231,10 +480,19 @@ a{text-decoration:none;color:inherit}
     <div class="plan-header">
       <h2 class="plan-country" id="plan-title"></h2>
       <div class="plan-actions">
+        <button class="btn-sm" id="btn-print" title="Print plan">Print</button>
         <button class="btn-sm" id="btn-pdf">Download PDF</button>
         <button class="btn-sm primary" id="btn-chat-open">Ask AI Advisor</button>
       </div>
     </div>
+
+    <!-- Checklist progress -->
+    <div class="checklist-progress" id="checklist-progress">
+      <span class="checklist-label">Progress</span>
+      <div class="checklist-bar"><div class="checklist-fill" id="checklist-fill" style="width:0%"></div></div>
+      <span class="checklist-pct" id="checklist-pct">0%</span>
+    </div>
+
     <div id="plan-content"></div>
 
     <!-- AI Chat -->
@@ -244,7 +502,7 @@ a{text-decoration:none;color:inherit}
         <div class="chat-messages" id="chat-messages"></div>
         <div class="chat-suggestions" id="chat-suggestions"></div>
         <div class="chat-input-row">
-          <textarea class="chat-input" id="chat-input" placeholder="Ask about registration, taxes, licenses…" rows="1"></textarea>
+          <textarea class="chat-input" id="chat-input" placeholder="Ask about registration, taxes, licenses..." rows="1"></textarea>
           <button class="chat-send" id="chat-send">Send</button>
         </div>
       </div>
@@ -261,7 +519,7 @@ a{text-decoration:none;color:inherit}
         <span class="pf">SWOT Analysis</span>
         <span class="pf">Funding Strategy</span>
       </div>
-      <button class="btn-locked">Generate Full Business Plan — Coming Soon</button>
+      <button class="btn-locked">Generate Full Business Plan &mdash; Coming Soon</button>
       <form class="email-row" data-netlify="true" name="business-plan-notify" method="POST" action="/tools/business-planner/?submitted=true">
         <input type="hidden" name="form-name" value="business-plan-notify">
         <input type="email" name="email" placeholder="Get notified when this launches" required>
@@ -278,23 +536,17 @@ a{text-decoration:none;color:inherit}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
 <script>
 (function(){
-  // ── State ───────────────────────────────────────────
-  var state = {
-    country: null,
-    plan: null,
-    chatHistory: [],
-    chatOpen: false
-  };
+  // ── State
+  var state = { country: null, plan: null, chatHistory: [], chatOpen: false, lastUserMsg: '' };
 
   var FLAG_MAP = {"DZ":"\uD83C\uDDE9\uD83C\uDDFF","AO":"\uD83C\uDDE6\uD83C\uDDF4","BJ":"\uD83C\uDDE7\uD83C\uDDEF","BW":"\uD83C\uDDE7\uD83C\uDDFC","BF":"\uD83C\uDDE7\uD83C\uDDEB","BI":"\uD83C\uDDE7\uD83C\uDDEE","CV":"\uD83C\uDDE8\uD83C\uDDFB","CM":"\uD83C\uDDE8\uD83C\uDDF2","CF":"\uD83C\uDDE8\uD83C\uDDEB","TD":"\uD83C\uDDF9\uD83C\uDDE9","KM":"\uD83C\uDDF0\uD83C\uDDF2","CG":"\uD83C\uDDE8\uD83C\uDDEC","CD":"\uD83C\uDDE8\uD83C\uDDE9","CI":"\uD83C\uDDE8\uD83C\uDDEE","DJ":"\uD83C\uDDE9\uD83C\uDDEF","EG":"\uD83C\uDDEA\uD83C\uDDEC","GQ":"\uD83C\uDDEC\uD83C\uDDF6","ER":"\uD83C\uDDEA\uD83C\uDDF7","SZ":"\uD83C\uDDF8\uD83C\uDDFF","ET":"\uD83C\uDDEA\uD83C\uDDF9","GA":"\uD83C\uDDEC\uD83C\uDDE6","GM":"\uD83C\uDDEC\uD83C\uDDF2","GH":"\uD83C\uDDEC\uD83C\uDDED","GN":"\uD83C\uDDEC\uD83C\uDDF3","GW":"\uD83C\uDDEC\uD83C\uDDFC","KE":"\uD83C\uDDF0\uD83C\uDDEA","LS":"\uD83C\uDDF1\uD83C\uDDF8","LR":"\uD83C\uDDF1\uD83C\uDDF7","LY":"\uD83C\uDDF1\uD83C\uDDFE","MG":"\uD83C\uDDF2\uD83C\uDDEC","MW":"\uD83C\uDDF2\uD83C\uDDFC","ML":"\uD83C\uDDF2\uD83C\uDDF1","MR":"\uD83C\uDDF2\uD83C\uDDF7","MU":"\uD83C\uDDF2\uD83C\uDDFA","MA":"\uD83C\uDDF2\uD83C\uDDE6","MZ":"\uD83C\uDDF2\uD83C\uDDFF","NA":"\uD83C\uDDF3\uD83C\uDDE6","NE":"\uD83C\uDDF3\uD83C\uDDEA","NG":"\uD83C\uDDF3\uD83C\uDDEC","RW":"\uD83C\uDDF7\uD83C\uDDFC","ST":"\uD83C\uDDF8\uD83C\uDDF9","SN":"\uD83C\uDDF8\uD83C\uDDF3","SC":"\uD83C\uDDF8\uD83C\uDDE8","SL":"\uD83C\uDDF8\uD83C\uDDF1","SO":"\uD83C\uDDF8\uD83C\uDDF4","ZA":"\uD83C\uDDFF\uD83C\uDDE6","SS":"\uD83C\uDDF8\uD83C\uDDF8","SD":"\uD83C\uDDF8\uD83C\uDDE9","TZ":"\uD83C\uDDF9\uD83C\uDDFF","TG":"\uD83C\uDDF9\uD83C\uDDEC","TN":"\uD83C\uDDF9\uD83C\uDDF3","UG":"\uD83C\uDDFA\uD83C\uDDEC","ZM":"\uD83C\uDDFF\uD83C\uDDF2","ZW":"\uD83C\uDDFF\uD83C\uDDFC"};
 
-  // ── Init ─────────────────────────────────────────────
+  // ── Init
   var countries = BusinessPlannerEngine.getCountries();
   var industries = BusinessPlannerEngine.getIndustries();
   var regions = BusinessPlannerEngine.getRegions();
   var activeRegion = 'All';
 
-  // Populate industry dropdown
   var indSel = document.getElementById('biz-industry');
   industries.forEach(function(ind){ var o = document.createElement('option'); o.value = ind; o.textContent = ind; indSel.appendChild(o); });
 
@@ -317,9 +569,9 @@ a{text-decoration:none;color:inherit}
       if (activeRegion !== 'All' && c.region !== activeRegion) return;
       if (q && c.name.toLowerCase().indexOf(q) === -1 && c.code.toLowerCase().indexOf(q) === -1) return;
       var sel = state.country && state.country.code === c.code ? ' selected' : '';
-      html += '<div class="country-card' + sel + '" data-code="' + c.code + '"><span class="country-flag">' + (FLAG_MAP[c.code]||'') + '</span>' + c.name + '</div>';
+      html += '<div class="country-card' + sel + '" data-code="' + c.code + '"><span class="country-flag">' + (FLAG_MAP[c.code]||c.code) + '</span>' + c.name + '</div>';
     });
-    gridEl.innerHTML = html || '<p style="color:#9ca3af;grid-column:1/-1;text-align:center;padding:20px">No countries found.</p>';
+    gridEl.innerHTML = html || '<p style="color:#94a3af;grid-column:1/-1;text-align:center;padding:24px;font-size:.88rem">No countries found.</p>';
   }
   renderCountries();
 
@@ -335,99 +587,93 @@ a{text-decoration:none;color:inherit}
   });
 
   function onCountrySelected(){
-    // Populate business types
     var c = BusinessPlannerEngine.getCountry(state.country.code);
     var typeSel = document.getElementById('biz-type');
     typeSel.innerHTML = '';
     c.registration.types.forEach(function(t){
       var o = document.createElement('option'); o.value = t.type; o.textContent = t.type; typeSel.appendChild(o);
     });
-    // Unlock step 2
     document.getElementById('sec-details').classList.remove('locked');
     updateProgress(2);
     document.getElementById('sec-details').scrollIntoView({behavior:'smooth', block:'start'});
   }
 
-  // ── Employees toggle ─────────────────────────────────
+  // ── Employees toggle
   document.getElementById('emp-yes').onclick = function(){ this.classList.add('active'); document.getElementById('emp-no').classList.remove('active'); };
   document.getElementById('emp-no').onclick = function(){ this.classList.add('active'); document.getElementById('emp-yes').classList.remove('active'); };
 
-  // ── Generate plan ────────────────────────────────────
+  // ── Generate plan
   document.getElementById('btn-plan').onclick = function(){
     if (!state.country) return;
-    var btype = document.getElementById('biz-type').value;
-    var industry = document.getElementById('biz-industry').value;
-    var hasEmp = document.getElementById('emp-yes').classList.contains('active');
-
     state.plan = BusinessPlannerEngine.generateActionPlan({
       countryCode: state.country.code,
-      businessType: btype,
-      industry: industry,
-      hasEmployees: hasEmp
+      businessType: document.getElementById('biz-type').value,
+      industry: document.getElementById('biz-industry').value,
+      hasEmployees: document.getElementById('emp-yes').classList.contains('active')
     });
-
+    state.chatHistory = [];
     renderPlan();
     document.getElementById('sec-plan').classList.remove('locked');
     updateProgress(3);
     document.getElementById('sec-plan').scrollIntoView({behavior:'smooth', block:'start'});
   };
 
-  // ── Render plan ──────────────────────────────────────
+  // ── Render plan
   function renderPlan(){
     var p = state.plan;
-    document.getElementById('plan-title').textContent = (FLAG_MAP[p.countryCode]||'') + ' ' + p.country + ' — ' + p.businessType;
+    document.getElementById('plan-title').textContent = (FLAG_MAP[p.countryCode]||'') + ' ' + p.country + ' \u2014 ' + p.businessType;
     document.getElementById('plan-disclaimer').textContent = p.disclaimer;
 
     var html = '';
 
     // Phase 1: Registration
-    html += buildPhase('Phase 1: ' + p.phase1_registration.title, 'green', '1',
-      '<p style="font-size:.82rem;color:#6b7280;margin-bottom:12px"><strong>Authority:</strong> ' + esc(p.phase1_registration.authority) + (p.phase1_registration.website ? ' &mdash; <a href="'+esc(p.phase1_registration.website)+'" target="_blank" rel="noopener" style="color:#008751">'+esc(p.phase1_registration.website)+'</a>' : '') + '</p>'
-      + '<p style="font-size:.82rem;color:#6b7280;margin-bottom:12px"><strong>Estimated Cost:</strong> ' + esc(p.currency.symbol) + Number(p.phase1_registration.estimatedCost).toLocaleString() + ' &nbsp;|&nbsp; <strong>Timeline:</strong> ' + esc(p.phase1_registration.estimatedTimeline) + '</p>'
-      + '<h4 style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#374151;margin:16px 0 8px">Steps</h4>'
-      + p.phase1_registration.steps.map(function(s){ return '<div class="step-item"><div class="step-check" onclick="this.classList.toggle(\'checked\')"></div><span>'+esc(s)+'</span></div>'; }).join('')
-      + '<h4 style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#374151;margin:16px 0 8px">Requirements</h4>'
+    html += buildPhase('Phase 1: ' + p.phase1_registration.title, 'ph-1', '1',
+      '<p style="font-size:.82rem;color:#6b7280;margin-bottom:12px"><strong style="color:#3D5A80">Authority:</strong> ' + esc(p.phase1_registration.authority) + (p.phase1_registration.website ? ' &mdash; <a href="'+esc(p.phase1_registration.website)+'" target="_blank" rel="noopener" style="color:var(--color-primary,#007AFF)">'+esc(p.phase1_registration.website)+'</a>' : '') + '</p>'
+      + '<p style="font-size:.82rem;color:#6b7280;margin-bottom:16px"><strong style="color:#3D5A80">Estimated Cost:</strong> ' + esc(p.currency.symbol) + Number(p.phase1_registration.estimatedCost).toLocaleString() + ' &nbsp;|&nbsp; <strong style="color:#3D5A80">Timeline:</strong> ' + esc(p.phase1_registration.estimatedTimeline) + '</p>'
+      + '<span class="sub-label">Steps</span>'
+      + p.phase1_registration.steps.map(function(s){ return '<div class="step-item"><div class="step-check" data-checkable="1"></div><span>'+esc(s)+'</span></div>'; }).join('')
+      + '<span class="sub-label">Requirements</span>'
       + '<ul class="req-list">' + p.phase1_registration.requirements.map(function(r){ return '<li>'+esc(r)+'</li>'; }).join('') + '</ul>',
       p.phase1_registration.estimatedTimeline
     );
 
     // Phase 2: Tax
-    html += buildPhase('Phase 2: ' + p.phase2_tax.title, 'blue', '2',
-      '<p style="font-size:.82rem;color:#6b7280;margin-bottom:12px"><strong>Authority:</strong> ' + esc(p.phase2_tax.authority) + (p.phase2_tax.website ? ' &mdash; <a href="'+esc(p.phase2_tax.website)+'" target="_blank" rel="noopener" style="color:#008751">'+esc(p.phase2_tax.website)+'</a>' : '') + '</p>'
-      + (p.phase2_tax.applicableTaxes.length ? p.phase2_tax.applicableTaxes.map(function(t){ return '<div class="tax-row"><div><div class="tax-name">'+esc(t.name)+'</div>'+(t.note?'<div class="tax-note">'+esc(t.note)+'</div>':'')+'</div><div class="tax-rate">'+esc(t.rate)+'</div></div>'; }).join('') : '<p style="color:#9ca3af;font-size:.84rem">No specific tax obligations identified for this business type.</p>')
-      + (p.phase2_tax.filingDeadlines.length ? '<h4 style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#374151;margin:16px 0 8px">Filing Deadlines</h4>' + p.phase2_tax.filingDeadlines.map(function(d){ return '<div style="font-size:.82rem;padding:4px 0"><strong>'+esc(d.tax)+':</strong> '+esc(d.deadline)+'</div>'; }).join('') : ''),
+    html += buildPhase('Phase 2: ' + p.phase2_tax.title, 'ph-2', '2',
+      '<p style="font-size:.82rem;color:#6b7280;margin-bottom:12px"><strong style="color:#3D5A80">Authority:</strong> ' + esc(p.phase2_tax.authority) + (p.phase2_tax.website ? ' &mdash; <a href="'+esc(p.phase2_tax.website)+'" target="_blank" rel="noopener" style="color:var(--color-primary,#007AFF)">'+esc(p.phase2_tax.website)+'</a>' : '') + '</p>'
+      + (p.phase2_tax.applicableTaxes.length ? p.phase2_tax.applicableTaxes.map(function(t){ return '<div class="tax-row"><div><div class="tax-name">'+esc(t.name)+'</div>'+(t.note?'<div class="tax-note">'+esc(t.note)+'</div>':'')+'</div><div class="tax-rate">'+esc(t.rate)+'</div></div>'; }).join('') : '<p style="color:#94a3af;font-size:.84rem">No specific tax obligations identified for this business type.</p>')
+      + (p.phase2_tax.filingDeadlines.length ? '<span class="sub-label">Filing Deadlines</span>' + p.phase2_tax.filingDeadlines.map(function(d){ return '<div style="font-size:.82rem;padding:4px 0;color:#374151"><strong style="color:#3D5A80">'+esc(d.tax)+':</strong> '+esc(d.deadline)+'</div>'; }).join('') : ''),
       p.phase2_tax.applicableTaxes.length + ' taxes'
     );
 
     // Phase 3: Licenses
     var licHtml = '';
     if (p.phase3_licenses.generalLicenses.length) {
-      licHtml += '<h4 style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#374151;margin:0 0 8px">General</h4>';
-      p.phase3_licenses.generalLicenses.forEach(function(l){ licHtml += '<div class="step-item"><div class="step-check" onclick="this.classList.toggle(\'checked\')"></div><span><strong>'+esc(l.name)+'</strong> — '+esc(l.authority)+' ('+esc(l.cost)+', '+esc(l.timeline)+')</span></div>'; });
+      licHtml += '<span class="sub-label">General</span>';
+      p.phase3_licenses.generalLicenses.forEach(function(l){ licHtml += '<div class="step-item"><div class="step-check" data-checkable="1"></div><span><strong>'+esc(l.name)+'</strong> \u2014 '+esc(l.authority)+' ('+esc(l.cost)+', '+esc(l.timeline)+')</span></div>'; });
     }
     if (p.phase3_licenses.industryLicenses.length) {
-      licHtml += '<h4 style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#374151;margin:16px 0 8px">Industry-Specific</h4>';
-      p.phase3_licenses.industryLicenses.forEach(function(l){ licHtml += '<div class="step-item"><div class="step-check" onclick="this.classList.toggle(\'checked\')"></div><span><strong>'+esc(l.name)+'</strong> — '+esc(l.authority)+' ('+esc(l.cost)+', '+esc(l.timeline)+')'+(l.note?' <em style="color:#9ca3af">'+esc(l.note)+'</em>':'')+'</span></div>'; });
+      licHtml += '<span class="sub-label">Industry-Specific</span>';
+      p.phase3_licenses.industryLicenses.forEach(function(l){ licHtml += '<div class="step-item"><div class="step-check" data-checkable="1"></div><span><strong>'+esc(l.name)+'</strong> \u2014 '+esc(l.authority)+' ('+esc(l.cost)+', '+esc(l.timeline)+')'+(l.note?' <em style="color:#94a3af">'+esc(l.note)+'</em>':'')+'</span></div>'; });
     }
     if (p.phase3_licenses.note) {
       licHtml += '<div class="info-card">' + esc(p.phase3_licenses.note) + '</div>';
     }
-    html += buildPhase('Phase 3: ' + p.phase3_licenses.title, 'amber', '3', licHtml || '<p style="color:#9ca3af;font-size:.84rem">No specific licenses identified. The AI advisor can help research requirements.</p>',
+    html += buildPhase('Phase 3: ' + p.phase3_licenses.title, 'ph-3', '3', licHtml || '<p style="color:#94a3af;font-size:.84rem">No specific licenses identified. The AI advisor can help research requirements.</p>',
       (p.phase3_licenses.generalLicenses.length + p.phase3_licenses.industryLicenses.length) + ' licenses'
     );
 
     // Phase 4: Banking
-    html += buildPhase('Phase 4: ' + p.phase4_banking.title, 'purple', '4',
-      '<p style="font-size:.82rem;color:#6b7280;margin-bottom:8px"><strong>Estimated Timeline:</strong> ' + esc(p.phase4_banking.estimatedTimeline) + '</p>'
-      + '<h4 style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#374151;margin:12px 0 8px">Recommended Banks</h4>'
+    html += buildPhase('Phase 4: ' + p.phase4_banking.title, 'ph-4', '4',
+      '<p style="font-size:.82rem;color:#6b7280;margin-bottom:8px"><strong style="color:#3D5A80">Estimated Timeline:</strong> ' + esc(p.phase4_banking.estimatedTimeline) + '</p>'
+      + '<span class="sub-label">Recommended Banks</span>'
       + '<div class="bank-chips">' + p.phase4_banking.recommendedBanks.map(function(b){ return '<span class="bank-chip">'+esc(b)+'</span>'; }).join('') + '</div>'
-      + '<h4 style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#374151;margin:16px 0 8px">Account Requirements</h4>'
+      + '<span class="sub-label">Account Requirements</span>'
       + '<ul class="req-list">' + p.phase4_banking.requirements.map(function(r){ return '<li>'+esc(r)+'</li>'; }).join('') + '</ul>',
       p.phase4_banking.estimatedTimeline
     );
 
     // Cost Estimate
-    html += buildPhase('Cost Estimate', 'emerald', '\uD83D\uDCB0',
+    html += buildPhase('Cost Estimate', 'ph-cost', '\uD83D\uDCB0',
       '<div class="cost-grid">'
       + '<div class="cost-card low"><div class="cost-label">Low Budget</div><div class="cost-range">' + esc(p.costEstimate.low.range) + '</div><div class="cost-desc">' + esc(p.costEstimate.low.description) + '</div></div>'
       + '<div class="cost-card med"><div class="cost-label">Medium Budget</div><div class="cost-range">' + esc(p.costEstimate.medium.range) + '</div><div class="cost-desc">' + esc(p.costEstimate.medium.description) + '</div></div>'
@@ -437,16 +683,20 @@ a{text-decoration:none;color:inherit}
     );
 
     document.getElementById('plan-content').innerHTML = html;
-
-    // Auto-open first phase
     var first = document.querySelector('.phase');
     if (first) first.classList.add('open');
+
+    // Bind checkboxes
+    document.querySelectorAll('[data-checkable="1"]').forEach(function(el){
+      el.addEventListener('click', function(){ this.classList.toggle('checked'); updateChecklistProgress(); });
+    });
+    updateChecklistProgress();
   }
 
-  function buildPhase(title, color, num, bodyHtml, meta){
+  function buildPhase(title, colorClass, num, bodyHtml, meta){
     return '<div class="phase">'
       + '<div class="phase-head" onclick="this.parentElement.classList.toggle(\'open\')">'
-      + '<div class="phase-icon '+color+'">' + num + '</div>'
+      + '<div class="phase-icon '+colorClass+'">' + num + '</div>'
       + '<div class="phase-title">' + title + '</div>'
       + (meta ? '<div class="phase-meta">' + esc(meta) + '</div>' : '')
       + '<div class="phase-arrow">\u25BC</div>'
@@ -457,7 +707,16 @@ a{text-decoration:none;color:inherit}
 
   function esc(s){ if (!s) return ''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
-  // ── Progress bar ─────────────────────────────────────
+  // ── Checklist progress
+  function updateChecklistProgress(){
+    var total = document.querySelectorAll('[data-checkable="1"]');
+    var checked = document.querySelectorAll('[data-checkable="1"].checked');
+    var pct = total.length ? Math.round((checked.length / total.length) * 100) : 0;
+    document.getElementById('checklist-fill').style.width = pct + '%';
+    document.getElementById('checklist-pct').textContent = pct + '%';
+  }
+
+  // ── Progress bar
   function updateProgress(step){
     document.querySelectorAll('.step-pill').forEach(function(p){
       var s = parseInt(p.getAttribute('data-step'));
@@ -467,61 +726,269 @@ a{text-decoration:none;color:inherit}
     });
   }
 
-  // ── PDF Download ─────────────────────────────────────
+  // ── Print
+  document.getElementById('btn-print').onclick = function(){ window.print(); };
+
+  // ── PDF Download (Enhanced V2)
   document.getElementById('btn-pdf').onclick = function(){
     if (!state.plan || typeof jspdf === 'undefined') return;
     var p = state.plan;
     var doc = new jspdf.jsPDF();
-    var y = 20;
-    doc.setFontSize(18);
-    doc.text('Business Action Plan: ' + p.country, 20, y); y += 10;
-    doc.setFontSize(12);
-    doc.text('Business Type: ' + p.businessType, 20, y); y += 8;
-    doc.text('Generated: ' + new Date().toLocaleDateString(), 20, y); y += 12;
+    var pageW = doc.internal.pageSize.getWidth();
+    var pageH = doc.internal.pageSize.getHeight();
+    var margin = 20;
+    var contentW = pageW - margin * 2;
+    var y = 0;
+    var pageNum = 1;
 
-    // Phase 1
-    doc.setFontSize(14);
-    doc.text('Phase 1: Registration', 20, y); y += 8;
-    doc.setFontSize(10);
-    doc.text('Authority: ' + p.phase1_registration.authority, 20, y); y += 6;
-    doc.text('Cost: ' + p.currency.symbol + Number(p.phase1_registration.estimatedCost).toLocaleString() + '  |  Timeline: ' + p.phase1_registration.estimatedTimeline, 20, y); y += 8;
-    p.phase1_registration.steps.forEach(function(s,i){
-      if (y > 270) { doc.addPage(); y = 20; }
-      var lines = doc.splitTextToSize((i+1) + '. ' + s, 170);
-      doc.text(lines, 20, y); y += lines.length * 5 + 2;
+    function addHeader(){
+      // Blue header bar
+      doc.setFillColor(0, 122, 255);
+      doc.rect(0, 0, pageW, 28, 'F');
+      doc.setTextColor(255, 255, 255);
+      doc.setFontSize(11);
+      doc.setFont(undefined, 'bold');
+      doc.text('AFROTOOLS', margin, 12);
+      doc.setFontSize(8);
+      doc.setFont(undefined, 'normal');
+      doc.text('AI Business Planner', margin, 19);
+      doc.setFontSize(7);
+      doc.text('afrotools.com', pageW - margin, 12, { align: 'right' });
+      doc.text('Generated: ' + new Date().toLocaleDateString(), pageW - margin, 19, { align: 'right' });
+      doc.setTextColor(0, 0, 0);
+      y = 38;
+    }
+
+    function addFooter(){
+      doc.setFillColor(240, 244, 248);
+      doc.rect(0, pageH - 16, pageW, 16, 'F');
+      doc.setFontSize(7);
+      doc.setTextColor(140, 140, 140);
+      doc.text('Generated by AfroTools AI Business Planner | afrotools.com | Page ' + pageNum, pageW / 2, pageH - 6, { align: 'center' });
+      doc.setTextColor(0, 0, 0);
+    }
+
+    function checkPage(needed){
+      if (y + needed > pageH - 24) {
+        addFooter();
+        doc.addPage();
+        pageNum++;
+        addHeader();
+      }
+    }
+
+    function sectionHeader(text, r, g, b){
+      checkPage(20);
+      doc.setFillColor(r, g, b);
+      doc.roundedRect(margin, y, contentW, 14, 2, 2, 'F');
+      doc.setFontSize(10);
+      doc.setFont(undefined, 'bold');
+      doc.setTextColor(255, 255, 255);
+      doc.text(text.toUpperCase(), margin + 6, y + 9.5);
+      doc.setTextColor(0, 0, 0);
+      doc.setFont(undefined, 'normal');
+      y += 20;
+    }
+
+    function addText(text, size, bold, indent){
+      doc.setFontSize(size || 9);
+      if (bold) doc.setFont(undefined, 'bold');
+      else doc.setFont(undefined, 'normal');
+      var x = margin + (indent || 0);
+      var lines = doc.splitTextToSize(text, contentW - (indent || 0));
+      checkPage(lines.length * (size || 9) * 0.45 + 2);
+      doc.text(lines, x, y);
+      y += lines.length * (size || 9) * 0.45 + 2;
+    }
+
+    function addKeyValue(key, val){
+      doc.setFontSize(8);
+      doc.setFont(undefined, 'bold');
+      doc.setTextColor(61, 90, 128);
+      checkPage(8);
+      doc.text(key, margin + 4, y);
+      doc.setFont(undefined, 'normal');
+      doc.setTextColor(55, 65, 81);
+      doc.text(val, margin + 4 + doc.getTextWidth(key) + 2, y);
+      doc.setTextColor(0, 0, 0);
+      y += 5;
+    }
+
+    function addNumberedStep(i, text){
+      doc.setFontSize(8);
+      doc.setFont(undefined, 'normal');
+      var prefix = (i + 1) + '. ';
+      var lines = doc.splitTextToSize(prefix + text, contentW - 10);
+      checkPage(lines.length * 4 + 2);
+      doc.setTextColor(0, 122, 255);
+      doc.text(prefix, margin + 4, y);
+      doc.setTextColor(55, 65, 81);
+      var restLines = doc.splitTextToSize(text, contentW - 10 - doc.getTextWidth(prefix));
+      doc.text(restLines, margin + 4 + doc.getTextWidth(prefix), y);
+      y += restLines.length * 4 + 2;
+      doc.setTextColor(0, 0, 0);
+    }
+
+    // === PAGE 1: TITLE ===
+    addHeader();
+
+    // Title block
+    doc.setFillColor(10, 22, 40);
+    doc.roundedRect(margin, y, contentW, 36, 3, 3, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(16);
+    doc.setFont(undefined, 'bold');
+    doc.text('BUSINESS ACTION PLAN', margin + 10, y + 14);
+    doc.setFontSize(11);
+    doc.setFont(undefined, 'normal');
+    doc.setTextColor(180, 200, 230);
+    doc.text((FLAG_MAP[p.countryCode] ? '' : '') + p.country + ' \u2014 ' + p.businessType, margin + 10, y + 24);
+    doc.setFontSize(8);
+    doc.text('Industry: ' + (document.getElementById('biz-industry').value || 'General'), margin + 10, y + 31);
+    doc.setTextColor(0, 0, 0);
+    y += 44;
+
+    // Quick facts row
+    doc.setFillColor(239, 246, 255);
+    doc.roundedRect(margin, y, contentW, 18, 2, 2, 'F');
+    doc.setFontSize(7);
+    doc.setFont(undefined, 'bold');
+    doc.setTextColor(26, 79, 160);
+    var facts = [
+      'Currency: ' + p.currency.code + ' (' + p.currency.symbol + ')',
+      'Language: ' + p.language,
+      'Region: ' + p.region
+    ];
+    var factX = margin + 6;
+    facts.forEach(function(f){
+      doc.text(f, factX, y + 11);
+      factX += contentW / 3;
     });
-    y += 6;
+    doc.setTextColor(0, 0, 0);
+    y += 26;
 
-    // Phase 2
-    if (y > 250) { doc.addPage(); y = 20; }
-    doc.setFontSize(14);
-    doc.text('Phase 2: Tax Obligations', 20, y); y += 8;
-    doc.setFontSize(10);
-    p.phase2_tax.applicableTaxes.forEach(function(t){
-      if (y > 270) { doc.addPage(); y = 20; }
-      doc.text(t.name + ': ' + t.rate, 20, y); y += 5;
-      if (t.note) { doc.text('  Note: ' + t.note, 20, y); y += 5; }
+    // === PHASE 1 ===
+    sectionHeader('Phase 1: ' + p.phase1_registration.title, 26, 79, 160);
+    addKeyValue('Authority: ', p.phase1_registration.authority);
+    if (p.phase1_registration.website) addKeyValue('Website: ', p.phase1_registration.website);
+    addKeyValue('Estimated Cost: ', p.currency.symbol + Number(p.phase1_registration.estimatedCost).toLocaleString());
+    addKeyValue('Timeline: ', p.phase1_registration.estimatedTimeline);
+    y += 3;
+    addText('STEPS', 8, true);
+    p.phase1_registration.steps.forEach(function(s, i){ addNumberedStep(i, s); });
+    y += 3;
+    addText('REQUIREMENTS', 8, true);
+    p.phase1_registration.requirements.forEach(function(r, i){ addNumberedStep(i, r); });
+
+    // === PHASE 2 ===
+    y += 4;
+    sectionHeader('Phase 2: ' + p.phase2_tax.title, 0, 122, 255);
+    addKeyValue('Authority: ', p.phase2_tax.authority);
+    if (p.phase2_tax.website) addKeyValue('Website: ', p.phase2_tax.website);
+    y += 3;
+    if (p.phase2_tax.applicableTaxes.length) {
+      p.phase2_tax.applicableTaxes.forEach(function(t){
+        checkPage(10);
+        doc.setFontSize(8);
+        doc.setFont(undefined, 'bold');
+        doc.setTextColor(55, 65, 81);
+        doc.text(t.name, margin + 4, y);
+        doc.setTextColor(0, 122, 255);
+        doc.text(t.rate, pageW - margin - 4, y, { align: 'right' });
+        doc.setTextColor(0, 0, 0);
+        y += 4;
+        if (t.note) {
+          doc.setFontSize(7); doc.setFont(undefined, 'normal'); doc.setTextColor(140, 140, 140);
+          doc.text(t.note, margin + 4, y); y += 4;
+          doc.setTextColor(0, 0, 0);
+        }
+        y += 1;
+      });
+    }
+    if (p.phase2_tax.filingDeadlines.length) {
+      y += 2;
+      addText('FILING DEADLINES', 8, true);
+      p.phase2_tax.filingDeadlines.forEach(function(d){ addKeyValue(d.tax + ': ', d.deadline); });
+    }
+
+    // === PHASE 3 ===
+    y += 4;
+    sectionHeader('Phase 3: ' + p.phase3_licenses.title, 212, 138, 0);
+    if (p.phase3_licenses.generalLicenses.length) {
+      addText('GENERAL LICENSES', 8, true);
+      p.phase3_licenses.generalLicenses.forEach(function(l, i){
+        addNumberedStep(i, l.name + ' \u2014 ' + l.authority + ' (' + l.cost + ', ' + l.timeline + ')');
+      });
+    }
+    if (p.phase3_licenses.industryLicenses.length) {
+      addText('INDUSTRY-SPECIFIC LICENSES', 8, true);
+      p.phase3_licenses.industryLicenses.forEach(function(l, i){
+        addNumberedStep(i, l.name + ' \u2014 ' + l.authority + ' (' + l.cost + ', ' + l.timeline + ')');
+      });
+    }
+    if (p.phase3_licenses.note) {
+      y += 2;
+      doc.setFontSize(7); doc.setFont(undefined, 'italic'); doc.setTextColor(100, 100, 100);
+      var noteLines = doc.splitTextToSize(p.phase3_licenses.note, contentW - 8);
+      checkPage(noteLines.length * 3.5 + 4);
+      doc.text(noteLines, margin + 4, y);
+      y += noteLines.length * 3.5 + 4;
+      doc.setTextColor(0, 0, 0);
+    }
+
+    // === PHASE 4 ===
+    y += 4;
+    sectionHeader('Phase 4: ' + p.phase4_banking.title, 91, 33, 182);
+    addKeyValue('Timeline: ', p.phase4_banking.estimatedTimeline);
+    y += 2;
+    addText('RECOMMENDED BANKS', 8, true);
+    addText(p.phase4_banking.recommendedBanks.join('  |  '), 8, false, 4);
+    y += 2;
+    addText('ACCOUNT REQUIREMENTS', 8, true);
+    p.phase4_banking.requirements.forEach(function(r, i){ addNumberedStep(i, r); });
+
+    // === COST ESTIMATE ===
+    y += 4;
+    sectionHeader('Cost Estimate', 0, 122, 255);
+    var costs = [
+      { label: 'Low Budget', data: p.costEstimate.low },
+      { label: 'Medium Budget', data: p.costEstimate.medium },
+      { label: 'High Budget', data: p.costEstimate.high }
+    ];
+    checkPage(22);
+    var colW = contentW / 3 - 3;
+    costs.forEach(function(c, i){
+      var cx = margin + i * (colW + 4.5);
+      doc.setFillColor(i === 0 ? 239 : i === 1 ? 230 : 255, i === 0 ? 246 : i === 1 ? 240 : 243, i === 0 ? 255 : i === 1 ? 255 : 205);
+      doc.roundedRect(cx, y, colW, 18, 2, 2, 'F');
+      doc.setFontSize(6); doc.setFont(undefined, 'bold'); doc.setTextColor(100, 100, 100);
+      doc.text(c.label.toUpperCase(), cx + colW / 2, y + 6, { align: 'center' });
+      doc.setFontSize(9); doc.setTextColor(17, 24, 39);
+      doc.text(c.data.range, cx + colW / 2, y + 12, { align: 'center' });
+      doc.setFontSize(6); doc.setFont(undefined, 'normal'); doc.setTextColor(100, 100, 100);
+      var descLines = doc.splitTextToSize(c.data.description, colW - 6);
+      doc.text(descLines[0] || '', cx + colW / 2, y + 16, { align: 'center' });
     });
-    y += 6;
-
-    // Phase 4
-    if (y > 250) { doc.addPage(); y = 20; }
-    doc.setFontSize(14);
-    doc.text('Phase 4: Banking', 20, y); y += 8;
-    doc.setFontSize(10);
-    doc.text('Banks: ' + p.phase4_banking.recommendedBanks.join(', '), 20, y); y += 8;
+    y += 26;
+    doc.setTextColor(0, 0, 0);
 
     // Disclaimer
-    if (y > 250) { doc.addPage(); y = 20; }
     y += 6;
-    doc.setFontSize(8);
-    var discLines = doc.splitTextToSize(p.disclaimer, 170);
-    doc.text(discLines, 20, y);
+    checkPage(20);
+    doc.setFillColor(245, 247, 250);
+    var discLines = doc.splitTextToSize(p.disclaimer, contentW - 12);
+    var discH = discLines.length * 3.5 + 8;
+    doc.roundedRect(margin, y, contentW, discH, 2, 2, 'F');
+    doc.setFontSize(6.5);
+    doc.setTextColor(140, 140, 140);
+    doc.text(discLines, margin + 6, y + 6);
+    doc.setTextColor(0, 0, 0);
 
+    addFooter();
     doc.save('AfroTools-Business-Plan-' + p.country.replace(/\s/g,'-') + '.pdf');
   };
 
-  // ── AI Chat ──────────────────────────────────────────
+  // ── AI Chat
   var chatMsgs = document.getElementById('chat-messages');
   var chatInput = document.getElementById('chat-input');
   var chatSend = document.getElementById('chat-send');
@@ -550,16 +1017,59 @@ a{text-decoration:none;color:inherit}
       'What are common mistakes when registering in ' + p.country + '?',
       'Do I need a local partner or agent?'
     ];
-    chatSuggestions.innerHTML = suggestions.map(function(s){ return '<button class="suggest-btn" onclick="document.getElementById(\'chat-input\').value=this.textContent;document.getElementById(\'chat-send\').click()">'+s+'</button>'; }).join('');
+    chatSuggestions.innerHTML = suggestions.map(function(s){ return '<button class="suggest-btn">'+esc(s)+'</button>'; }).join('');
+    chatSuggestions.querySelectorAll('.suggest-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){ chatInput.value = this.textContent; sendChat(); });
+    });
+  }
+
+  // Simple markdown renderer for AI responses
+  function renderMarkdown(text){
+    // Escape HTML first
+    var s = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    // Bold **text**
+    s = s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    // Inline code `text`
+    s = s.replace(/`([^`]+)`/g, '<code>$1</code>');
+    // Links [text](url)
+    s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+    // Unordered lists (lines starting with - or *)
+    s = s.replace(/^[\-\*]\s+(.+)$/gm, '<li>$1</li>');
+    s = s.replace(/((?:<li>.*<\/li>\n?)+)/g, '<ul>$1</ul>');
+    // Numbered lists
+    s = s.replace(/^\d+\.\s+(.+)$/gm, '<li>$1</li>');
+    // Paragraphs (double newlines)
+    s = s.replace(/\n{2,}/g, '</p><p>');
+    // Single newlines to <br> within paragraphs
+    s = s.replace(/\n/g, '<br>');
+    return '<p>' + s + '</p>';
   }
 
   function addMsg(role, text){
     state.chatHistory.push({role:role, content:text});
     var div = document.createElement('div');
     div.className = 'msg ' + role;
-    div.textContent = text;
+    if (role === 'ai') {
+      div.innerHTML = renderMarkdown(text);
+    } else {
+      div.textContent = text;
+    }
     chatMsgs.appendChild(div);
     chatMsgs.scrollTop = chatMsgs.scrollHeight;
+  }
+
+  function showTyping(){
+    var el = document.createElement('div');
+    el.className = 'typing-indicator';
+    el.id = 'typing-indicator';
+    el.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+    chatMsgs.appendChild(el);
+    chatMsgs.scrollTop = chatMsgs.scrollHeight;
+  }
+
+  function hideTyping(){
+    var el = document.getElementById('typing-indicator');
+    if (el) el.remove();
   }
 
   chatSend.onclick = function(){ sendChat(); };
@@ -569,14 +1079,15 @@ a{text-decoration:none;color:inherit}
     var msg = chatInput.value.trim();
     if (!msg) return;
     chatInput.value = '';
+    state.lastUserMsg = msg;
     addMsg('user', msg);
     chatSuggestions.innerHTML = '';
     chatSend.disabled = true;
+    showTyping();
 
-    var systemPrompt = 'You are the AfroTools Business Advisor \u2014 an AI assistant specializing in business registration and compliance across all 54 African countries.\n\nCONTEXT: The user selected:\n- Country: '+state.plan.country+'\n- Business Type: '+state.plan.businessType+'\n- Industry: '+(document.getElementById('biz-industry').value||'Not specified')+'\n- Has Employees: '+(document.getElementById('emp-yes').classList.contains('active')?'Yes':'No')+'\n\nRULES:\n- Be specific. Name the exact authority, website, fee.\n- Use local currency ('+state.plan.currency.symbol+' '+state.plan.currency.code+').\n- If unsure, say so and recommend verification.\n- Keep responses concise \u2014 2-3 paragraphs max.\n- Be encouraging. Starting a business in Africa should feel achievable.';
+    var systemPrompt = 'You are the AfroTools Business Advisor \u2014 an AI assistant specializing in business registration and compliance across all 54 African countries.\n\nCONTEXT: The user selected:\n- Country: '+state.plan.country+'\n- Business Type: '+state.plan.businessType+'\n- Industry: '+(document.getElementById('biz-industry').value||'Not specified')+'\n- Has Employees: '+(document.getElementById('emp-yes').classList.contains('active')?'Yes':'No')+'\n\nRULES:\n- Be specific. Name the exact authority, website, fee.\n- Use local currency ('+state.plan.currency.symbol+' '+state.plan.currency.code+').\n- If unsure, say so and recommend verification.\n- Keep responses concise \u2014 2-3 paragraphs max.\n- Use **bold** for important terms and amounts.\n- Use numbered or bullet lists for steps.\n- Be encouraging. Starting a business in Africa should feel achievable.';
 
     var messages = [{role:'user', content: systemPrompt + '\n\nUser question: ' + msg}];
-    // Include last 4 exchanges for context
     var history = state.chatHistory.slice(-8);
     if (history.length > 2) {
       var prior = history.slice(0, -1).map(function(m){ return (m.role==='user'?'User':'Assistant') + ': ' + m.content; }).join('\n');
@@ -590,21 +1101,29 @@ a{text-decoration:none;color:inherit}
     })
     .then(function(r){ return r.json(); })
     .then(function(data){
+      hideTyping();
       if (data.error) throw new Error(data.error);
       var reply = (data.content || data.response || data.message || 'No response received.').trim();
       addMsg('ai', reply);
       chatSend.disabled = false;
     })
-    .catch(function(){
+    .catch(function(err){
+      hideTyping();
       var div = document.createElement('div');
       div.className = 'msg error';
-      div.textContent = 'Our AI advisor is temporarily unavailable. Your action plan above is complete \u2014 you can proceed with those steps while we restore the advisor.';
+      div.innerHTML = 'Our AI advisor is temporarily unavailable. Your action plan above is complete \u2014 you can proceed with those steps while we restore the advisor.<br><button class="retry-btn" id="retry-chat">Retry</button>';
       chatMsgs.appendChild(div);
       chatMsgs.scrollTop = chatMsgs.scrollHeight;
       chatSend.disabled = false;
+      document.getElementById('retry-chat').addEventListener('click', function(){
+        div.remove();
+        if (state.lastUserMsg) {
+          chatInput.value = state.lastUserMsg;
+          sendChat();
+        }
+      });
     });
   }
-
 })();
 </script>
 </body>
