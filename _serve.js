@@ -7,7 +7,10 @@ http.createServer((req, res) => {
   let u = decodeURIComponent(req.url.split('?')[0]);
   if (u.endsWith('/')) u += 'index.html';
   let fp = path.join(root, u);
-  if (!fs.existsSync(fp) && !path.extname(fp)) fp += '/index.html';
+  if (!fs.existsSync(fp) && !path.extname(fp)) {
+    if (fs.existsSync(fp + '.html')) fp += '.html';
+    else fp += '/index.html';
+  }
   if (!fs.existsSync(fp)) { fp = path.join(root, 'index.html'); }
   const ext = path.extname(fp);
   const mime = MIME[ext] || 'application/octet-stream';
