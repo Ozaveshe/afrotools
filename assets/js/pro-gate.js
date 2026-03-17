@@ -3,6 +3,15 @@
 
   const PRO_TOOLS = ['japa-calculator', 'medical-report', 'japa-visa-predict', 'business-planner'];
 
+  // Education and Health tools are FREE FOREVER — all features unlocked, no Pro gate
+  const FREE_FOREVER_TOOLS = [
+    'afrostudy', 'waec-calculator', 'school-fees-comparator', 'gpa-calculator',
+    'scholarship-finder', 'ielts-calculator', 'jamb-aggregate',
+    'calorie-counter', 'bmi-calculator', 'ovulation-tracker', 'sickle-cell-advisor',
+    'blood-pressure-tracker', 'pregnancy-calculator', 'waist-hip-ratio', 'water-intake'
+  ];
+  const FREE_FOREVER_CATEGORIES = ['education', 'health'];
+
   // Cache duration: 5 minutes
   const CACHE_TTL = 5 * 60 * 1000;
 
@@ -77,7 +86,20 @@
       } catch (e) { /* storage full, ignore */ }
     },
 
+    /**
+     * Check if the current page is a free-forever tool (education/health).
+     * These tools get all features unlocked — no Pro gates, no limits.
+     */
+    _isFreeForever(toolId) {
+      const id = toolId || (document.querySelector('meta[name="tool-id"]') || {}).content || '';
+      if (FREE_FOREVER_TOOLS.includes(id)) return true;
+      const cat = (document.querySelector('meta[name="tool-category"]') || {}).content || '';
+      if (FREE_FOREVER_CATEGORIES.includes(cat)) return true;
+      return false;
+    },
+
     isProFeature(toolId) {
+      if (this._isFreeForever(toolId)) return false;
       return PRO_TOOLS.includes(toolId);
     },
 
@@ -162,6 +184,7 @@
      * @returns {Promise<boolean>} true = clean export allowed
      */
     async gatePdfExport(container) {
+      if (this._isFreeForever()) return true;
       const pro = await this.isPro();
       if (!pro && container) {
         this.showProUpsell('pdf', container);
@@ -176,6 +199,7 @@
      * @returns {Promise<boolean>} true = allowed to ask
      */
     async gateAiAdvisor(container) {
+      if (this._isFreeForever()) return true;
       const pro = await this.isPro();
       if (pro) return true;
 
@@ -203,6 +227,7 @@
      * @returns {Promise<Array>} Truncated if free, full if Pro
      */
     async gateHistory(history) {
+      if (this._isFreeForever()) return history;
       const pro = await this.isPro();
       if (pro) return history;
 
@@ -217,6 +242,7 @@
       const meta = document.querySelector('meta[name="tool-id"]');
       if (!meta) return;
       const toolId = meta.content;
+      if (this._isFreeForever(toolId)) return;
       if (!this.isProFeature(toolId)) return;
 
       // Use async isPro
@@ -245,12 +271,14 @@
 
     // Toggle .pro-only elements visibility
     applyGating() {
+      var self = this;
       this.isPro().then(function(pro) {
+        var unlocked = pro || self._isFreeForever();
         document.querySelectorAll('.pro-only').forEach(function(el) {
-          el.style.display = pro ? '' : 'none';
+          el.style.display = unlocked ? '' : 'none';
         });
         document.querySelectorAll('.free-only').forEach(function(el) {
-          el.style.display = pro ? 'none' : '';
+          el.style.display = unlocked ? 'none' : '';
         });
       });
     }
