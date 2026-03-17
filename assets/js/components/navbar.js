@@ -314,7 +314,7 @@
     /* RESPONSIVE */
     @media (max-width: 940px) {
       .nav-links, .pill-54, .cta { display: none; }
-      .btn-login { border: none; padding: 4px; max-width: 32px; overflow: hidden; }
+      .btn-login { border: none; padding: 4px 8px; max-width: none; overflow: hidden; font-size: 0.75rem; }
       .btn-login .nav-user-name, .btn-login .user-menu-name { display: none !important; width: 0 !important; height: 0 !important; overflow: hidden !important; font-size: 0 !important; }
       .btn-login span:first-child { margin-right: 0 !important; }
       .burger { display: flex; }
