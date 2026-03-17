@@ -141,7 +141,6 @@
     .inner {
       max-width: 1200px; margin: 0 auto; width: 100%;
       display: flex; align-items: center; gap: 2px;
-      overflow: hidden;
     }
 
     /* LOGO */
@@ -154,7 +153,7 @@
     .logo-tag { font-size: 0.44rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #9ca3af; display: block; margin-top: 2px; }
 
     /* NAV LINKS */
-    .nav-links { display: flex; align-items: center; list-style: none; flex: 1; gap: 0; }
+    .nav-links { display: flex; align-items: center; list-style: none; flex: 1; gap: 0; overflow: hidden; min-width: 0; }
     li { position: relative; }
 
     .lnk {
@@ -229,7 +228,7 @@
     .mega-footer-lnk:hover { text-decoration: underline; }
 
     /* RIGHT */
-    .right { display: flex; align-items: center; gap: 8px; flex-shrink: 1; min-width: 0; margin-left: auto; }
+    .right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; margin-left: auto; }
     .pill-54 { font-size: 0.66rem; font-weight: 600; color: #6b7280; padding: 4px 10px; border-radius: 20px; border: 1px solid #e5e7eb; background: #f9fafb; white-space: nowrap; }
 
     .btn-login {
@@ -314,6 +313,9 @@
 
     /* RESPONSIVE — progressive collapse */
     .pill-54 { display: none; }
+    @media (max-width: 1280px) {
+      .cta-embed { display: none; }
+    }
     @media (max-width: 1100px) {
       .cta { display: none; }
     }
@@ -581,7 +583,7 @@
               </button>
               <span class="pill-54">🌍 54 countries</span>
               <a href="/dashboard/" class="btn-login">Sign in</a>
-              <a href="/widgets/demo/" class="cta" style="background:transparent;border:1.5px solid var(--clr-accent,#007AFF);color:var(--clr-accent,#007AFF);font-size:12px;padding:7px 14px">Embed Tools</a>
+              <a href="/widgets/demo/" class="cta cta-embed" style="background:transparent;border:1.5px solid var(--clr-accent,#007AFF);color:var(--clr-accent,#007AFF);font-size:12px;padding:7px 14px">Embed Tools</a>
               <a href="/#newsletter" class="cta">Get Updates →</a>
               <button class="burger" type="button" aria-label="Open menu" aria-expanded="false">
                 <span></span><span></span><span></span>
