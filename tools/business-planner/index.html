@@ -393,7 +393,80 @@ a{text-decoration:none;color:inherit}
   .chat-messages{height:260px}
   .email-row{flex-direction:column}
   .premium-section{padding:32px 20px;border-radius:16px}
+  .pro-plan-section .pro-section{padding:24px 16px}
+  .swot-grid{grid-template-columns:1fr}
+  .fin-chart-row{grid-template-columns:1fr}
 }
+
+/* ── PRO PLAN GENERATION ── */
+.pro-gen-overlay{
+  padding:36px;background:#fff;border:1.5px solid var(--color-border,#E5E7EB);
+  border-radius:18px;margin-top:24px;text-align:center;
+}
+.pro-gen-title{font-size:1.1rem;font-weight:800;text-transform:uppercase;letter-spacing:-.01em;margin-bottom:20px}
+.gen-steps{list-style:none;padding:0;margin:0 auto 20px;max-width:320px;text-align:left}
+.gen-step{display:flex;align-items:center;gap:10px;padding:8px 0;font-size:.84rem;font-weight:600;color:var(--color-text-subtle,#94a3af);transition:color .3s}
+.gen-step.done{color:#1a4fa0}
+.gen-step.active{color:var(--color-primary,#007AFF)}
+.gen-step-icon{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;flex-shrink:0;border:2px solid var(--color-border,#E5E7EB);background:#fff;transition:all .3s}
+.gen-step.done .gen-step-icon{background:var(--color-primary,#007AFF);border-color:var(--color-primary,#007AFF);color:#fff}
+.gen-step.active .gen-step-icon{border-color:var(--color-primary,#007AFF);color:var(--color-primary,#007AFF);animation:pd 2s infinite}
+.gen-step.fail{color:#EF4444}
+.gen-step.fail .gen-step-icon{background:#FEE2E2;border-color:#EF4444;color:#EF4444}
+.gen-step.fail .gen-step-icon::after{content:'\00d7'}
+.gen-step.done .gen-step-icon::after{content:'\2713'}
+.gen-bar{height:8px;background:#DBEAFE;border-radius:8px;overflow:hidden;margin-bottom:12px}
+.gen-bar-fill{height:100%;background:var(--color-primary,#007AFF);border-radius:8px;transition:width .5s ease;width:0}
+.gen-status{font-size:.78rem;color:var(--color-text-subtle,#94a3af);font-weight:500}
+
+/* ── PRO PLAN SECTIONS ── */
+.pro-plan-section{margin-top:32px}
+.pro-section{
+  border:1.5px solid var(--color-border,#E5E7EB);border-radius:18px;
+  background:#fff;padding:32px;margin-bottom:16px;
+  box-shadow:0 1px 4px rgba(0,0,0,.04);
+  animation:fadeIn .4s ease;
+}
+.pro-section-head{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.pro-section-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.pro-section-icon.exec{background:#DBEAFE;color:#1a4fa0}
+.pro-section-icon.market{background:#EDE9FE;color:#5b21b6}
+.pro-section-icon.finance{background:#D1FAE5;color:#065f46}
+.pro-section-icon.swot-icon{background:var(--_gold-100,#fff3cd);color:var(--_gold-600,#d48a00)}
+.pro-section-icon.funding{background:#FCE7F3;color:#9d174d}
+.pro-section-title{font-size:1rem;font-weight:800;text-transform:uppercase;letter-spacing:-.01em}
+.pro-section-body{font-size:.88rem;line-height:1.7;color:#374151}
+.pro-section-body h4{font-size:.85rem;font-weight:800;color:#1a4fa0;text-transform:uppercase;letter-spacing:.04em;margin:20px 0 8px}
+.pro-section-body p{margin:0 0 12px;color:#374151}
+.pro-section-body table{width:100%;border-collapse:collapse;font-size:.82rem;margin:12px 0}
+.pro-section-body table th{background:var(--color-bg-subtle,#F1F5F9);font-weight:700;text-align:left;padding:10px 12px;font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;color:#3D5A80;border-bottom:2px solid var(--color-border,#e2e8f0)}
+.pro-section-body table td{padding:10px 12px;border-bottom:1px solid var(--color-border-subtle,#f1f5f9);color:#374151}
+
+/* SWOT Grid */
+.swot-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.swot-quad{padding:20px;border-radius:14px;border:1.5px solid}
+.swot-quad h5{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;margin:0 0 10px}
+.swot-quad ul{margin:0;padding:0 0 0 16px;font-size:.82rem;line-height:1.6}
+.swot-quad li{margin-bottom:6px}
+.swot-s{background:#EFF6FF;border-color:#BFDBFE}.swot-s h5{color:#1a4fa0}
+.swot-w{background:#FFF7ED;border-color:#FED7AA}.swot-w h5{color:#9a3412}
+.swot-o{background:#F0FDF4;border-color:#BBF7D0}.swot-o h5{color:#166534}
+.swot-t{background:#FEF2F2;border-color:#FECACA}.swot-t h5{color:#991b1b}
+
+/* Financial Charts */
+.fin-chart-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+.fin-chart-box{background:var(--color-bg-subtle,#F1F5F9);border-radius:14px;padding:16px;border:1px solid var(--color-border,#e2e8f0)}
+.fin-chart-box canvas{width:100%!important;max-height:260px}
+.fin-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
+.fin-card{padding:16px;border-radius:12px;text-align:center;border:1.5px solid var(--color-border,#E5E7EB);background:#fff}
+.fin-card-label{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6b7280;margin-bottom:4px}
+.fin-card-val{font-size:1.1rem;font-weight:800;color:var(--color-text,#111827)}
+.fin-card-sub{font-size:.7rem;color:var(--color-text-subtle,#94a3af);margin-top:2px}
+.fin-card.positive .fin-card-val{color:#059669}
+.fin-card.negative .fin-card-val{color:#dc2626}
+
+/* Pro Plan Actions */
+.pro-plan-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px;justify-content:center}
 </style>
 </head>
 <body class="tool-page">
@@ -542,6 +615,25 @@ a{text-decoration:none;color:inherit}
       <button class="btn-generate" id="btn-full-plan" style="margin:0 auto">Generate Full Business Plan</button>
     </div>
 
+    <!-- Pro Plan Generation UI (hidden until triggered) -->
+    <div id="pro-gen-ui" style="display:none">
+      <div class="pro-gen-overlay" id="pro-gen-overlay">
+        <div class="pro-gen-title">Generating Your Business Plan</div>
+        <ul class="gen-steps" id="gen-steps">
+          <li class="gen-step" data-section="executive-summary"><span class="gen-step-icon"></span> Executive Summary</li>
+          <li class="gen-step" data-section="market-analysis"><span class="gen-step-icon"></span> Market Analysis</li>
+          <li class="gen-step" data-section="financial-projections"><span class="gen-step-icon"></span> Financial Projections</li>
+          <li class="gen-step" data-section="swot"><span class="gen-step-icon"></span> SWOT Analysis</li>
+          <li class="gen-step" data-section="funding-strategy"><span class="gen-step-icon"></span> Funding Strategy</li>
+        </ul>
+        <div class="gen-bar"><div class="gen-bar-fill" id="gen-bar-fill"></div></div>
+        <div class="gen-status" id="gen-status">Preparing your personalized business plan...</div>
+      </div>
+    </div>
+
+    <!-- Pro Plan Rendered Output -->
+    <div class="pro-plan-section" id="pro-plan-output" style="display:none"></div>
+
     <div class="disclaimer" id="plan-disclaimer"></div>
   </div>
 </section>
@@ -549,6 +641,7 @@ a{text-decoration:none;color:inherit}
 <afro-footer></afro-footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <script>
 (function(){
   // ── State
@@ -1163,6 +1256,461 @@ a{text-decoration:none;color:inherit}
         }
       });
     });
+  }
+
+  // ══════════════════════════════════════════════════════
+  //  PRO BUSINESS PLAN GENERATOR
+  // ══════════════════════════════════════════════════════
+
+  var PRO_SECTIONS = [
+    { id: 'executive-summary', label: 'Executive Summary', icon: 'exec', emoji: '1' },
+    { id: 'market-analysis', label: 'Market Analysis', icon: 'market', emoji: '2' },
+    { id: 'financial-projections', label: 'Financial Projections', icon: 'finance', emoji: '3' },
+    { id: 'swot', label: 'SWOT Analysis', icon: 'swot-icon', emoji: '4' },
+    { id: 'funding-strategy', label: 'Funding Strategy', icon: 'funding', emoji: '5' }
+  ];
+
+  var proSectionData = {};
+
+  var btnFullPlan = document.getElementById('btn-full-plan');
+  if (btnFullPlan) {
+    btnFullPlan.addEventListener('click', function(){ generateProPlan(); });
+  }
+
+  async function generateProPlan(){
+    if (!state.plan) return;
+    var p = state.plan;
+
+    // Show generation UI
+    var genUI = document.getElementById('pro-gen-ui');
+    var genOverlay = document.getElementById('pro-gen-overlay');
+    var genBarFill = document.getElementById('gen-bar-fill');
+    var genStatus = document.getElementById('gen-status');
+    var outputEl = document.getElementById('pro-plan-output');
+
+    genUI.style.display = 'block';
+    outputEl.style.display = 'none';
+    outputEl.innerHTML = '';
+    proSectionData = {};
+    genBarFill.style.width = '0%';
+    genUI.scrollIntoView({behavior:'smooth', block:'start'});
+
+    // Reset step indicators
+    document.querySelectorAll('.gen-step').forEach(function(el){ el.className = 'gen-step'; });
+
+    var costRange = p.costEstimate ? p.costEstimate.medium.range : '';
+
+    var requestCtx = {
+      country: p.country,
+      countryCode: p.countryCode,
+      businessType: p.businessType,
+      industry: document.getElementById('biz-industry').value || 'General',
+      description: document.getElementById('biz-desc').value || '',
+      hasEmployees: document.getElementById('emp-yes').classList.contains('active'),
+      startupCost: costRange,
+      currency: p.currency.symbol + ' ' + p.currency.code,
+      currencyCode: p.currency.code
+    };
+
+    // Process sections sequentially
+    for (var i = 0; i < PRO_SECTIONS.length; i++) {
+      var sec = PRO_SECTIONS[i];
+      var stepEl = document.querySelector('.gen-step[data-section="'+sec.id+'"]');
+      if (stepEl) stepEl.classList.add('active');
+      genStatus.textContent = 'Generating ' + sec.label + '...';
+      genBarFill.style.width = (((i) / PRO_SECTIONS.length) * 100) + '%';
+
+      try {
+        var resp = await fetch('/.netlify/functions/ai-business-plan', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(Object.assign({section: sec.id}, requestCtx))
+        });
+        var data = await resp.json();
+
+        if (data.content) {
+          proSectionData[sec.id] = data.content;
+          renderProSection(sec, data.content, outputEl);
+          outputEl.style.display = 'block';
+        }
+      } catch(err) {
+        console.error('Pro plan section error:', sec.id, err);
+        if (stepEl) { stepEl.classList.remove('active'); stepEl.classList.add('fail'); }
+        continue;
+      }
+
+      if (stepEl) { stepEl.classList.remove('active'); stepEl.classList.add('done'); }
+    }
+
+    // Done
+    genBarFill.style.width = '100%';
+
+    var sectionsGenerated = Object.keys(proSectionData).length;
+    if (sectionsGenerated === 0) {
+      genStatus.textContent = 'Generation failed — please check your connection and try again.';
+      genBarFill.style.background = '#EF4444';
+      return;
+    }
+
+    genStatus.textContent = 'Business plan complete! (' + sectionsGenerated + '/' + PRO_SECTIONS.length + ' sections)';
+
+    // Add Pro PDF download button
+    var actionsDiv = document.createElement('div');
+    actionsDiv.className = 'pro-plan-actions';
+    actionsDiv.innerHTML = '<button class="btn-sm primary" id="btn-pro-pdf">Download Full Business Plan PDF</button>';
+    outputEl.appendChild(actionsDiv);
+
+    document.getElementById('btn-pro-pdf').addEventListener('click', function(){ generateProPdf(); });
+
+    // Scroll to output
+    setTimeout(function(){
+      outputEl.scrollIntoView({behavior:'smooth', block:'start'});
+    }, 500);
+  }
+
+  function renderProSection(sec, content, container){
+    var div = document.createElement('div');
+    div.className = 'pro-section';
+    div.id = 'pro-sec-' + sec.id;
+
+    var headHtml = '<div class="pro-section-head">'
+      + '<div class="pro-section-icon ' + sec.icon + '">' + sec.emoji + '</div>'
+      + '<div class="pro-section-title">' + sec.label + '</div>'
+      + '</div>';
+
+    if (sec.id === 'financial-projections') {
+      div.innerHTML = headHtml + '<div class="pro-section-body" id="fin-body"></div>';
+      container.appendChild(div);
+      renderFinancials(content);
+    } else if (sec.id === 'swot') {
+      div.innerHTML = headHtml + '<div class="pro-section-body" id="swot-body"></div>';
+      container.appendChild(div);
+      renderSwot(content);
+    } else {
+      div.innerHTML = headHtml + '<div class="pro-section-body">' + content + '</div>';
+      container.appendChild(div);
+    }
+  }
+
+  function renderSwot(raw){
+    var el = document.getElementById('swot-body');
+    if (!el) return;
+    try {
+      // Try parsing JSON — might have markdown wrapping
+      var clean = raw.replace(/```json\s*/g, '').replace(/```\s*/g, '').trim();
+      var data = JSON.parse(clean);
+      el.innerHTML =
+        '<div class="swot-grid">'
+        + swotQuad('Strengths', data.strengths, 'swot-s')
+        + swotQuad('Weaknesses', data.weaknesses, 'swot-w')
+        + swotQuad('Opportunities', data.opportunities, 'swot-o')
+        + swotQuad('Threats', data.threats, 'swot-t')
+        + '</div>';
+    } catch(e) {
+      // Fallback: render as HTML
+      el.innerHTML = raw;
+    }
+  }
+
+  function swotQuad(title, items, cls){
+    return '<div class="swot-quad ' + cls + '"><h5>' + esc(title) + '</h5><ul>'
+      + (items || []).map(function(s){ return '<li>' + esc(s) + '</li>'; }).join('')
+      + '</ul></div>';
+  }
+
+  function renderFinancials(raw){
+    var el = document.getElementById('fin-body');
+    if (!el) return;
+    try {
+      var clean = raw.replace(/```json\s*/g, '').replace(/```\s*/g, '').trim();
+      var data = JSON.parse(clean);
+      proSectionData['financial-data'] = data; // store parsed for PDF
+
+      var cur = data.currency || state.plan.currency.code;
+      var sym = state.plan.currency.symbol;
+
+      // Summary cards
+      var y1 = data.year1 || {};
+      var y2 = data.year2 || {};
+      var y3 = data.year3 || {};
+      var brkEven = data.breakevenMonth || '?';
+
+      el.innerHTML =
+        '<div class="fin-summary">'
+        + finCard('Year 1 Revenue', sym + fmt(y1.totalRevenue), '')
+        + finCard('Year 1 Profit', sym + fmt(y1.netProfit), y1.netProfit >= 0 ? 'positive' : 'negative')
+        + finCard('Breakeven', 'Month ' + brkEven, 'positive')
+        + finCard('Year 2 Revenue', sym + fmt(y2.totalRevenue), '')
+        + finCard('Year 2 Profit', sym + fmt(y2.netProfit), y2.netProfit >= 0 ? 'positive' : 'negative')
+        + finCard('Year 3 Revenue', sym + fmt(y3.totalRevenue), '')
+        + '</div>'
+        + '<div class="fin-chart-row">'
+        + '<div class="fin-chart-box"><canvas id="chart-monthly"></canvas></div>'
+        + '<div class="fin-chart-box"><canvas id="chart-annual"></canvas></div>'
+        + '</div>';
+
+      // Assumptions
+      if (data.assumptions && data.assumptions.length) {
+        el.innerHTML += '<div style="margin-top:16px"><span class="sub-label">Key Assumptions</span><ul class="req-list">'
+          + data.assumptions.map(function(a){ return '<li>' + esc(a) + '</li>'; }).join('')
+          + '</ul></div>';
+      }
+
+      // Render Chart.js charts
+      if (typeof Chart !== 'undefined' && y1.months) {
+        var months = y1.months;
+        var labels = months.map(function(m){ return 'M' + m.month; });
+
+        // Line chart: monthly revenue vs costs
+        new Chart(document.getElementById('chart-monthly'), {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [
+              { label: 'Revenue', data: months.map(function(m){ return m.revenue; }), borderColor: '#007AFF', backgroundColor: 'rgba(0,122,255,.08)', fill: true, tension: 0.3 },
+              { label: 'Costs', data: months.map(function(m){ return m.costs; }), borderColor: '#EF4444', backgroundColor: 'rgba(239,68,68,.08)', fill: true, tension: 0.3 }
+            ]
+          },
+          options: {
+            responsive: true,
+            plugins: { legend: { position: 'bottom', labels: { font: { family: 'DM Sans', weight: 600, size: 11 } } }, title: { display: true, text: 'Year 1 — Monthly Revenue vs Costs', font: { family: 'DM Sans', weight: 800, size: 13 } } },
+            scales: { y: { beginAtZero: true, ticks: { callback: function(v){ return sym + fmt(v); }, font: { size: 10 } }, grid: { color: '#E5E7EB' } }, x: { grid: { display: false } } }
+          }
+        });
+
+        // Bar chart: annual comparison
+        new Chart(document.getElementById('chart-annual'), {
+          type: 'bar',
+          data: {
+            labels: ['Year 1', 'Year 2', 'Year 3'],
+            datasets: [
+              { label: 'Revenue', data: [y1.totalRevenue, y2.totalRevenue, y3.totalRevenue], backgroundColor: '#007AFF' },
+              { label: 'Costs', data: [y1.totalCosts, y2.totalCosts, y3.totalCosts], backgroundColor: '#94A3B8' },
+              { label: 'Profit', data: [y1.netProfit, y2.netProfit, y3.netProfit], backgroundColor: function(ctx){ return ctx.raw >= 0 ? '#10B981' : '#EF4444'; } }
+            ]
+          },
+          options: {
+            responsive: true,
+            plugins: { legend: { position: 'bottom', labels: { font: { family: 'DM Sans', weight: 600, size: 11 } } }, title: { display: true, text: '3-Year Financial Overview', font: { family: 'DM Sans', weight: 800, size: 13 } } },
+            scales: { y: { beginAtZero: true, ticks: { callback: function(v){ return sym + fmt(v); }, font: { size: 10 } }, grid: { color: '#E5E7EB' } }, x: { grid: { display: false } } }
+          }
+        });
+      }
+    } catch(e) {
+      console.error('Financial parse error:', e);
+      el.innerHTML = '<div class="info-card">Financial projections could not be rendered as charts. Raw data:<br><pre style="white-space:pre-wrap;font-size:.78rem;margin-top:8px">' + esc(raw) + '</pre></div>';
+    }
+  }
+
+  function finCard(label, val, cls){
+    return '<div class="fin-card ' + (cls||'') + '"><div class="fin-card-label">' + label + '</div><div class="fin-card-val">' + val + '</div></div>';
+  }
+
+  function fmt(n){
+    if (n == null) return '0';
+    return Number(n).toLocaleString(undefined, {maximumFractionDigits: 0});
+  }
+
+  // ── Pro PDF Export ──
+  function generateProPdf(){
+    if (!state.plan || typeof jspdf === 'undefined') return;
+    var p = state.plan;
+    var doc = new jspdf.jsPDF();
+    var pageW = doc.internal.pageSize.getWidth();
+    var pageH = doc.internal.pageSize.getHeight();
+    var margin = 20;
+    var contentW = pageW - margin * 2;
+    var y = 0;
+    var pageNum = 1;
+
+    function addHeader(){
+      doc.setFillColor(0, 122, 255);
+      doc.rect(0, 0, pageW, 28, 'F');
+      doc.setTextColor(255, 255, 255);
+      doc.setFontSize(11);
+      doc.setFont(undefined, 'bold');
+      doc.text('AFROTOOLS PRO', margin, 12);
+      doc.setFontSize(8);
+      doc.setFont(undefined, 'normal');
+      doc.text('Full Business Plan', margin, 19);
+      doc.setFontSize(7);
+      doc.text('afrotools.com', pageW - margin, 12, { align: 'right' });
+      doc.text('Generated: ' + new Date().toLocaleDateString(), pageW - margin, 19, { align: 'right' });
+      doc.setTextColor(0, 0, 0);
+      y = 38;
+    }
+
+    function addFooter(){
+      doc.setFillColor(240, 244, 248);
+      doc.rect(0, pageH - 16, pageW, 16, 'F');
+      doc.setFontSize(7);
+      doc.setTextColor(140, 140, 140);
+      doc.text('Generated by AfroTools Pro | afrotools.com | Page ' + pageNum, pageW / 2, pageH - 6, { align: 'center' });
+      doc.setTextColor(0, 0, 0);
+    }
+
+    function checkPage(needed){
+      if (y + needed > pageH - 24) {
+        addFooter();
+        doc.addPage();
+        pageNum++;
+        addHeader();
+      }
+    }
+
+    function sectionHead(text, r, g, b){
+      checkPage(20);
+      doc.setFillColor(r, g, b);
+      doc.roundedRect(margin, y, contentW, 14, 2, 2, 'F');
+      doc.setFontSize(10); doc.setFont(undefined, 'bold'); doc.setTextColor(255, 255, 255);
+      doc.text(text.toUpperCase(), margin + 6, y + 9.5);
+      doc.setTextColor(0, 0, 0); doc.setFont(undefined, 'normal');
+      y += 20;
+    }
+
+    function addWrappedText(text, size, bold){
+      doc.setFontSize(size || 9);
+      if (bold) doc.setFont(undefined, 'bold'); else doc.setFont(undefined, 'normal');
+      // Strip HTML tags
+      var clean = text.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+      var lines = doc.splitTextToSize(clean, contentW);
+      for (var li = 0; li < lines.length; li++){
+        checkPage(5);
+        doc.text(lines[li], margin, y);
+        y += (size || 9) * 0.42;
+      }
+      y += 3;
+    }
+
+    // === COVER PAGE ===
+    addHeader();
+    doc.setFillColor(10, 22, 40);
+    doc.roundedRect(margin, y, contentW, 50, 3, 3, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(20); doc.setFont(undefined, 'bold');
+    doc.text('FULL BUSINESS PLAN', margin + 10, y + 18);
+    doc.setFontSize(12); doc.setFont(undefined, 'normal');
+    doc.setTextColor(180, 200, 230);
+    doc.text(p.country + ' \u2014 ' + p.businessType, margin + 10, y + 30);
+    doc.setFontSize(9);
+    doc.text('Industry: ' + (document.getElementById('biz-industry').value || 'General'), margin + 10, y + 40);
+    doc.setTextColor(0, 0, 0);
+    y += 60;
+
+    // Helper to render a section's HTML content to PDF
+    function renderSectionToPdf(title, content, r, g, b){
+      sectionHead(title, r, g, b);
+      if (content) addWrappedText(content, 9, false);
+    }
+
+    // Executive Summary
+    if (proSectionData['executive-summary']) {
+      renderSectionToPdf('Executive Summary', proSectionData['executive-summary'], 26, 79, 160);
+    }
+
+    // Market Analysis
+    if (proSectionData['market-analysis']) {
+      renderSectionToPdf('Market Analysis', proSectionData['market-analysis'], 91, 33, 182);
+    }
+
+    // Financial Projections
+    if (proSectionData['financial-data']) {
+      sectionHead('Financial Projections', 6, 95, 70);
+      var fd = proSectionData['financial-data'];
+      var sym = p.currency.symbol;
+
+      // Summary table
+      doc.setFontSize(8); doc.setFont(undefined, 'bold');
+      checkPage(30);
+      var cols = ['', 'Revenue', 'Costs', 'Net Profit'];
+      var rows = [
+        ['Year 1', sym + fmt(fd.year1.totalRevenue), sym + fmt(fd.year1.totalCosts), sym + fmt(fd.year1.netProfit)],
+        ['Year 2', sym + fmt(fd.year2.totalRevenue), sym + fmt(fd.year2.totalCosts), sym + fmt(fd.year2.netProfit)],
+        ['Year 3', sym + fmt(fd.year3.totalRevenue), sym + fmt(fd.year3.totalCosts), sym + fmt(fd.year3.netProfit)]
+      ];
+      // Header row
+      doc.setFillColor(239, 246, 255);
+      doc.rect(margin, y, contentW, 8, 'F');
+      doc.setTextColor(26, 79, 160);
+      var colW = contentW / 4;
+      cols.forEach(function(c, ci){ doc.text(c, margin + ci * colW + 4, y + 5.5); });
+      y += 10;
+      doc.setTextColor(55, 65, 81); doc.setFont(undefined, 'normal');
+      rows.forEach(function(row){
+        row.forEach(function(cell, ci){ doc.text(cell, margin + ci * colW + 4, y + 4); });
+        y += 7;
+      });
+      y += 4;
+      doc.setFontSize(8);
+      doc.text('Breakeven: Month ' + (fd.breakevenMonth || '?'), margin, y); y += 6;
+
+      // Embed chart images if available
+      try {
+        var monthlyCanvas = document.getElementById('chart-monthly');
+        var annualCanvas = document.getElementById('chart-annual');
+        if (monthlyCanvas) {
+          checkPage(70);
+          doc.addImage(monthlyCanvas.toDataURL('image/png'), 'PNG', margin, y, contentW / 2 - 2, 55);
+          if (annualCanvas) {
+            doc.addImage(annualCanvas.toDataURL('image/png'), 'PNG', margin + contentW / 2 + 2, y, contentW / 2 - 2, 55);
+          }
+          y += 60;
+        }
+      } catch(e){}
+
+      if (fd.assumptions) {
+        checkPage(20);
+        doc.setFontSize(8); doc.setFont(undefined, 'bold');
+        doc.text('KEY ASSUMPTIONS', margin, y); y += 5;
+        doc.setFont(undefined, 'normal'); doc.setFontSize(7.5);
+        fd.assumptions.forEach(function(a){
+          var lines = doc.splitTextToSize('\u2022 ' + a, contentW - 4);
+          checkPage(lines.length * 3.5);
+          doc.text(lines, margin + 2, y);
+          y += lines.length * 3.5 + 1;
+        });
+      }
+    }
+
+    // SWOT
+    var swotRaw = proSectionData['swot'];
+    if (swotRaw) {
+      sectionHead('SWOT Analysis', 212, 138, 0);
+      try {
+        var swotClean = swotRaw.replace(/```json\s*/g, '').replace(/```\s*/g, '').trim();
+        var swot = JSON.parse(swotClean);
+        var quads = [
+          { title: 'STRENGTHS', items: swot.strengths, color: [26, 79, 160] },
+          { title: 'WEAKNESSES', items: swot.weaknesses, color: [154, 52, 18] },
+          { title: 'OPPORTUNITIES', items: swot.opportunities, color: [22, 101, 52] },
+          { title: 'THREATS', items: swot.threats, color: [153, 27, 27] }
+        ];
+        quads.forEach(function(q){
+          checkPage(35);
+          doc.setFontSize(8); doc.setFont(undefined, 'bold');
+          doc.setTextColor(q.color[0], q.color[1], q.color[2]);
+          doc.text(q.title, margin, y); y += 5;
+          doc.setFont(undefined, 'normal'); doc.setTextColor(55, 65, 81); doc.setFontSize(7.5);
+          (q.items || []).forEach(function(item){
+            var lines = doc.splitTextToSize('\u2022 ' + item, contentW - 4);
+            checkPage(lines.length * 3.5);
+            doc.text(lines, margin + 2, y);
+            y += lines.length * 3.5 + 1;
+          });
+          y += 3;
+        });
+      } catch(e){
+        addWrappedText(swotRaw, 8, false);
+      }
+    }
+
+    // Funding Strategy
+    if (proSectionData['funding-strategy']) {
+      renderSectionToPdf('Funding Strategy', proSectionData['funding-strategy'], 157, 23, 77);
+    }
+
+    addFooter();
+    doc.save('AfroTools-PRO-Business-Plan-' + p.country.replace(/\s/g,'-') + '.pdf');
   }
 })();
 </script>
