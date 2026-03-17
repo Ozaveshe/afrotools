@@ -1490,6 +1490,13 @@
             </div>
             <div id="myCVsContainer" style="margin-bottom:28px;"></div>
 
+            <!-- My Floor Plans -->
+            <div class="section-row" style="display:flex;align-items:center;justify-content:space-between">
+              <h2 class="section-title" style="margin-bottom:0;">&#x1F3E0; My Floor Plans</h2>
+              <a href="/engineering/floor-planner/" style="font-size:0.8rem;font-weight:600;color:#007AFF;text-decoration:none;padding:6px 14px;border:1.5px solid #007AFF;border-radius:8px;transition:all 0.15s">+ New Plan</a>
+            </div>
+            <div id="myFloorPlansContainer" style="margin-bottom:28px;"></div>
+
             <!-- My Documents -->
             <div class="section-row">
               <h2 class="section-title" style="margin-bottom:0;">&#x1F4C1; My Documents</h2>
@@ -2059,6 +2066,7 @@
             loadProfileDisplay();
             loadFavorites();
             loadMyCVs();
+            loadMyFloorPlans();
             loadMyDocuments();
             loadQuickAccess();
             loadSavedCalculations();
@@ -2366,6 +2374,72 @@
                 cvs = cvs.filter(function(c) { return c.id !== id; });
                 localStorage.setItem('afro_cv_list', JSON.stringify(cvs));
                 loadMyCVs();
+            } catch(e) {}
+        }
+
+        function loadMyFloorPlans() {
+            var container = document.getElementById('myFloorPlansContainer');
+            if (!container) return;
+            var plans = [];
+            try {
+                var list = localStorage.getItem('afro_fp_list');
+                plans = list ? JSON.parse(list) : [];
+            } catch(e) { plans = []; }
+            if (!plans.length) {
+                container.innerHTML = '<div style="padding:20px;text-align:center;color:#94a3b8;font-size:0.85rem;background:#f8fafc;border-radius:12px;border:1.5px dashed #e2e8f0"><p style="margin-bottom:8px">No saved floor plans yet</p><a href="/engineering/floor-planner/" style="color:#007AFF;font-weight:600;text-decoration:none">Design your first floor plan \u2192</a></div>';
+                return;
+            }
+            function timeAgo(ts) {
+                var s = Math.floor((Date.now() - ts) / 1000);
+                if (s < 60) return 'just now';
+                if (s < 3600) return Math.floor(s/60) + 'm ago';
+                if (s < 86400) return Math.floor(s/3600) + 'h ago';
+                var d = Math.floor(s/86400);
+                if (d < 30) return d + 'd ago';
+                return new Date(ts).toLocaleDateString('en-GB', {day:'numeric', month:'short'});
+            }
+            container.innerHTML = '<div class="cv-card-grid">' + plans.map(function(p) {
+                var time = timeAgo(p.updatedAt || Date.now());
+                return '<div class="cv-card">' +
+                    '<div class="cv-card-name">' + (p.name || 'Untitled Plan') + '</div>' +
+                    '<div class="cv-card-meta">' + (p.rooms || 0) + ' rooms &middot; ' + (p.area ? p.area.toFixed(1) + ' m\u00B2' : '—') + ' &middot; ' + time + '</div>' +
+                    '<div class="cv-card-actions">' +
+                        '<a class="cv-card-edit" href="/engineering/floor-planner/?project=' + p.id + '">Edit</a>' +
+                        '<button class="cv-card-dup" onclick="duplicateDashboardFP(\'' + p.id + '\')">Duplicate</button>' +
+                        '<button class="cv-card-del" onclick="deleteDashboardFP(\'' + p.id + '\')">Delete</button>' +
+                    '</div>' +
+                '</div>';
+            }).join('') + '</div>';
+        }
+        function duplicateDashboardFP(id) {
+            try {
+                var plans = JSON.parse(localStorage.getItem('afro_fp_list') || '[]');
+                var p = plans.find(function(x) { return x.id === id; });
+                if (!p) return;
+                var np = JSON.parse(JSON.stringify(p));
+                np.id = 'fp_' + Date.now();
+                np.name = p.name + ' (Copy)';
+                np.updatedAt = Date.now();
+                plans.unshift(np);
+                localStorage.setItem('afro_fp_list', JSON.stringify(plans));
+                var srcData = localStorage.getItem('afro_fp_' + id);
+                if (srcData) {
+                    var data = JSON.parse(srcData);
+                    data.id = np.id;
+                    data.name = np.name;
+                    localStorage.setItem('afro_fp_' + np.id, JSON.stringify(data));
+                }
+                loadMyFloorPlans();
+            } catch(e) {}
+        }
+        function deleteDashboardFP(id) {
+            if (!confirm('Delete this floor plan?')) return;
+            try {
+                var plans = JSON.parse(localStorage.getItem('afro_fp_list') || '[]');
+                plans = plans.filter(function(x) { return x.id !== id; });
+                localStorage.setItem('afro_fp_list', JSON.stringify(plans));
+                localStorage.removeItem('afro_fp_' + id);
+                loadMyFloorPlans();
             } catch(e) {}
         }
 

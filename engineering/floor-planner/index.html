@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-D859CGF391');
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Free AI Floor Planner for Africa — Design and Estimate Your Home | AfroTools</title>
+<meta name="description" content="Design your dream home with AI. Draw floor plans, add furniture, estimate construction costs in local currency. Nigerian, Kenyan, South African templates. Free.">
+<link rel="canonical" href="https://afrotools.com/engineering/floor-planner/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="apple-touch-icon" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="AfroPlan — AI-Powered Floor Planner for Africa">
+<meta property="og:description" content="Design your dream home with AI. Draw floor plans, add furniture, estimate construction costs in local currency. Free.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:url" content="https://afrotools.com/engineering/floor-planner/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"AfroPlan — AI Floor Planner","description":"Design your dream home with AI. Draw floor plans, add furniture, estimate construction costs in local African currencies.","url":"https://afrotools.com/engineering/floor-planner/","applicationCategory":"DesignApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com"}}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/engineering/floor-planner/css/floor-planner.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<div id="fp-app">
+  <!-- AI Bar -->
+  <div class="fp-ai-bar">
+    <div class="fp-ai-bar-inner">
+      <input type="text" id="fpAiInput" class="fp-ai-input" placeholder="Describe your floor plan... e.g. &quot;3 bedroom bungalow with BQ on a 60x120 plot&quot;">
+      <button id="fpAiGenerate" class="fp-btn fp-btn-primary">Generate</button>
+      <button id="fpTemplatesBtn" class="fp-btn fp-btn-ghost">Templates</button>
+    </div>
+  </div>
+
+  <!-- Main Layout -->
+  <div class="fp-layout">
+    <!-- Left Toolbar -->
+    <div class="fp-toolbar" id="fpToolbar">
+      <button class="fp-tool active" data-tool="select" title="Select (V)"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 2l12 8-5 1.5L8.5 17z" fill="currentColor"/></svg><span>Select</span></button>
+      <button class="fp-tool" data-tool="wall" title="Draw Wall (W)"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="8" width="16" height="4" rx="1" fill="currentColor"/></svg><span>Wall</span></button>
+      <button class="fp-tool" data-tool="door" title="Door (D)"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 3h2v14H4zM6 3h8v2H6z" fill="currentColor"/><path d="M6 3a8 8 0 018 8H6z" fill="currentColor" opacity="0.3"/></svg><span>Door</span></button>
+      <button class="fp-tool" data-tool="window" title="Window (N)"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="7" width="16" height="6" rx="1" stroke="currentColor" stroke-width="2" fill="none"/><line x1="10" y1="7" x2="10" y2="13" stroke="currentColor" stroke-width="2"/></svg><span>Window</span></button>
+      <div class="fp-tool-sep"></div>
+      <button class="fp-tool" data-tool="furniture" title="Furniture (F)"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="10" width="14" height="6" rx="2" fill="currentColor"/><rect x="5" y="7" width="10" height="4" rx="1" fill="currentColor" opacity="0.5"/></svg><span>Furniture</span></button>
+      <button class="fp-tool" data-tool="measure" title="Measure (M)"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M2 18L18 2" stroke="currentColor" stroke-width="2"/><path d="M2 18v-5M2 18h5M18 2v5M18 2h-5" stroke="currentColor" stroke-width="1.5"/></svg><span>Measure</span></button>
+      <button class="fp-tool" data-tool="label" title="Label (L)"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><text x="4" y="15" font-size="14" font-weight="bold" fill="currentColor">A</text></svg><span>Label</span></button>
+      <div class="fp-tool-sep"></div>
+      <button class="fp-tool" data-tool="erase" title="Erase (E)"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 14l7-10 7 4-5 8H5z" fill="currentColor" opacity="0.3"/><path d="M5 16h10" stroke="currentColor" stroke-width="2"/></svg><span>Erase</span></button>
+    </div>
+
+    <!-- Canvas Container -->
+    <div class="fp-canvas-wrap" id="fpCanvasWrap">
+      <!-- Rulers -->
+      <canvas id="fpRulerH" class="fp-ruler fp-ruler-h" height="24"></canvas>
+      <canvas id="fpRulerV" class="fp-ruler fp-ruler-v" width="24"></canvas>
+      <div class="fp-ruler-corner"></div>
+      <!-- Main Canvas -->
+      <canvas id="fpCanvas"></canvas>
+      <!-- Zoom Controls -->
+      <div class="fp-zoom-controls">
+        <button id="fpZoomIn" class="fp-zoom-btn" title="Zoom In">+</button>
+        <span id="fpZoomLevel" class="fp-zoom-level">100%</span>
+        <button id="fpZoomOut" class="fp-zoom-btn" title="Zoom Out">&minus;</button>
+        <button id="fpZoomFit" class="fp-zoom-btn" title="Fit All" style="font-size:11px">Fit</button>
+      </div>
+    </div>
+
+    <!-- Right Properties Panel -->
+    <div class="fp-props" id="fpProps">
+      <div class="fp-props-header">
+        <span>Properties</span>
+        <button id="fpPropsClose" class="fp-props-toggle" title="Close">&times;</button>
+      </div>
+      <div id="fpPropsContent" class="fp-props-body">
+        <div class="fp-props-empty">Select an element to view properties</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Action Bar -->
+  <div class="fp-action-bar">
+    <div class="fp-action-left">
+      <button id="fpUndo" class="fp-act-btn" title="Undo (Ctrl+Z)" disabled><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h8a3 3 0 010 6H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M6 5L3 8l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Undo</button>
+      <button id="fpRedo" class="fp-act-btn" title="Redo (Ctrl+Y)" disabled><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13 8H5a3 3 0 000 6h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M10 5l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Redo</button>
+      <span class="fp-act-sep"></span>
+      <button id="fpSave" class="fp-act-btn" title="Save"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 2h8l3 3v8a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="9" width="6" height="4" rx="0.5" stroke="currentColor" stroke-width="1"/></svg> Save</button>
+      <select id="fpUnits" class="fp-act-select" title="Units">
+        <option value="m">Metric (m)</option>
+        <option value="ft">Imperial (ft)</option>
+      </select>
+    </div>
+    <div class="fp-action-right">
+      <button id="fpOptimize" class="fp-act-btn fp-act-ai" title="AI Optimize Layout">Optimize Layout</button>
+      <button id="fpEstimateCost" class="fp-act-btn fp-act-ai" title="Estimate Cost">Estimate Cost</button>
+      <button id="fpAiChat" class="fp-act-btn fp-act-ai" title="AI Chat">Chat</button>
+      <span class="fp-act-sep"></span>
+      <button id="fpExportPdf" class="fp-act-btn" title="Export PDF">PDF</button>
+      <button id="fpExportPng" class="fp-act-btn" title="Export PNG">PNG</button>
+      <button id="fpExportBoq" class="fp-act-btn" title="Download BOQ">BOQ</button>
+      <button id="fpShare" class="fp-act-btn" title="Share Plan">Share</button>
+    </div>
+  </div>
+</div>
+
+<!-- Templates Modal -->
+<div id="fpTemplatesModal" class="fp-modal-overlay" hidden>
+  <div class="fp-modal fp-modal-lg">
+    <div class="fp-modal-header">
+      <h2>Floor Plan Templates</h2>
+      <button class="fp-modal-close" data-close="fpTemplatesModal">&times;</button>
+    </div>
+    <div class="fp-modal-body" id="fpTemplatesGrid"></div>
+  </div>
+</div>
+
+<!-- Furniture Panel (slide-in) -->
+<div id="fpFurniturePanel" class="fp-slide-panel" hidden>
+  <div class="fp-slide-header">
+    <h3>Furniture & Fixtures</h3>
+    <button class="fp-slide-close" data-close="fpFurniturePanel">&times;</button>
+  </div>
+  <div class="fp-slide-body" id="fpFurnitureList"></div>
+</div>
+
+<!-- Cost Estimator Modal -->
+<div id="fpCostModal" class="fp-modal-overlay" hidden>
+  <div class="fp-modal fp-modal-lg">
+    <div class="fp-modal-header">
+      <h2>Construction Cost Estimate</h2>
+      <button class="fp-modal-close" data-close="fpCostModal">&times;</button>
+    </div>
+    <div class="fp-modal-body" id="fpCostContent"></div>
+  </div>
+</div>
+
+<!-- AI Chat Drawer -->
+<div id="fpChatDrawer" class="fp-chat-drawer" hidden>
+  <div class="fp-chat-header">
+    <span>AfroPlan AI Advisor</span>
+    <button id="fpChatClose" class="fp-chat-close">&times;</button>
+  </div>
+  <div id="fpChatMessages" class="fp-chat-messages"></div>
+  <div class="fp-chat-input-wrap">
+    <input type="text" id="fpChatInput" class="fp-chat-input" placeholder="Ask about your floor plan...">
+    <button id="fpChatSend" class="fp-chat-send">Send</button>
+  </div>
+</div>
+
+<!-- Mobile Bottom Sheet (tool selection) -->
+<div id="fpMobileTools" class="fp-mobile-sheet" hidden>
+  <div class="fp-mobile-handle"></div>
+  <div class="fp-mobile-tools-grid" id="fpMobileToolsGrid"></div>
+</div>
+
+<!-- Mobile FAB for AI -->
+<button id="fpMobileFab" class="fp-mobile-fab" title="AI Assistant">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2a7 7 0 017 7v3l2 4H3l2-4V9a7 7 0 017-7z" fill="currentColor" opacity="0.2"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>
+</button>
+
+<afro-footer></afro-footer>
+
+<!-- Core scripts (loaded immediately) -->
+<script src="/engineering/floor-planner/js/fp-canvas.js"></script>
+<script src="/engineering/floor-planner/js/fp-walls.js"></script>
+<script src="/engineering/floor-planner/js/fp-objects.js"></script>
+<script src="/engineering/floor-planner/js/fp-furniture.js"></script>
+<script src="/engineering/floor-planner/js/fp-templates.js"></script>
+<script src="/engineering/floor-planner/js/fp-app.js"></script>
+<!-- Lazy-loaded: fp-ai.js, fp-cost.js, fp-export.js -->
+</body>
+</html>
