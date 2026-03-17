@@ -101,7 +101,7 @@
       tools: [
         { label: 'AfroDraft 2D CAD', href: '/engineering/afrodraft/', emoji: '📐', badge: 'LIVE' },
         { label: 'Solar Calculator', href: '/tools/solar-calculator/', emoji: '☀️', badge: 'Soon' },
-        { label: 'Floor Plan Designer', href: '/tools/floor-plan/', emoji: '🏗️', badge: 'Soon' },
+        { label: 'AfroPlan Floor Planner', href: '/engineering/floor-planner/', emoji: '🏗️', badge: 'NEW' },
         { label: 'Bill of Quantities', href: '/tools/boq-generator/', emoji: '📋', badge: 'Soon' },
       ]
     },
