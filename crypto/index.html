@@ -31,27 +31,26 @@
 body{font-family:'DM Sans',sans-serif;background:var(--color-bg);color:var(--color-text);-webkit-font-smoothing:antialiased;}
 a{text-decoration:none;color:inherit;}
 
-/* ══════ HERO ENHANCEMENTS ══════ */
-.crypto-hero{display:flex;align-items:center;justify-content:center;min-height:440px;}
-.crypto-hero__content{max-width:760px;position:relative;z-index:2;}
-.crypto-hero h1 em{color:#AF52DE;font-style:italic;}
-.crypto-hero__stats-line{
-  font-size:var(--text-sm);color:rgba(255,255,255,0.5);
-  margin-top:20px;letter-spacing:0.04em;font-weight:600;
-}
-.crypto-hero__stats-line span{color:#AF52DE;font-weight:700;}
-
-/* ══════ FLOATING ICONS ══════ */
-.floating-icon{
-  position:absolute;font-size:2rem;opacity:0.12;
-  left:var(--x);top:var(--y);
-  animation:float-gentle 6s ease-in-out infinite;
-  animation-delay:var(--delay);
-}
-@keyframes float-gentle{
-  0%,100%{transform:translateY(0) rotate(0deg);}
-  50%{transform:translateY(-15px) rotate(5deg);}
-}
+/* ══════ HERO ══════ */
+.wrap{max-width:1000px;margin:0 auto;padding:0 24px}
+.bc{font-size:.72rem;font-weight:500;color:#9ca3af;letter-spacing:.06em;padding:14px 0}
+.bc a{color:#9ca3af;transition:color .15s}
+.bc a:hover{color:#AF52DE}
+.bc .cur{color:#374151}
+.hero{background:linear-gradient(135deg,#1a0a2e 0%,#2d1545 40%,#1a1040 100%);padding:56px 0 48px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 30% 50%,rgba(175,82,222,.12) 0%,transparent 50%),radial-gradient(circle at 70% 30%,rgba(175,82,222,.08) 0%,transparent 40%);animation:heroGlow 8s ease-in-out infinite alternate;pointer-events:none}
+.hero::after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background-image:radial-gradient(2px 2px at 20% 30%,rgba(255,255,255,.08),transparent),radial-gradient(2px 2px at 60% 70%,rgba(255,255,255,.05),transparent),radial-gradient(1px 1px at 80% 20%,rgba(255,255,255,.06),transparent),radial-gradient(1px 1px at 40% 80%,rgba(255,255,255,.04),transparent);animation:heroDots 12s linear infinite;pointer-events:none}
+@keyframes heroGlow{0%{transform:translate(0,0) rotate(0deg)}100%{transform:translate(2%,-2%) rotate(3deg)}}
+@keyframes heroDots{0%{transform:translateY(0)}100%{transform:translateY(-20px)}}
+.hero-z{position:relative;z-index:1}
+.hero-ey{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:6px;font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.82);margin-bottom:16px}
+.hero h1{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;color:#fff;line-height:1.08;letter-spacing:-.025em;margin-bottom:12px}
+.hero h1 b{color:#d8b4fe}
+.hero-sub{font-size:.95rem;color:rgba(255,255,255,.85);line-height:1.6;max-width:480px;margin-bottom:24px}
+.hero-stats{display:flex;gap:32px}
+.hs-n{font-size:2.2rem;font-weight:800;color:#c084fc;line-height:1}
+.hs-l{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-top:4px}
+@media(max-width:640px){.hero-stats{gap:20px}.hs-n{font-size:1.6rem}}
 
 /* ══════ FEATURED TOOLS ══════ */
 .page-main{max-width:1000px;margin:0 auto;padding:40px 24px 80px;}
@@ -181,21 +180,18 @@ a{text-decoration:none;color:inherit;}
 <afro-navbar></afro-navbar>
 
 <!-- ══════ CRYPTO HERO ══════ -->
-<section class="crypto-hero">
-  <div class="crypto-hero__content">
-    <span class="crypto-badge">Crypto & Web3</span>
-    <h1>AfroCrypto -- Crypto Tools <em>for Africa</em></h1>
-    <p>P2P rates, portfolio tracker, scam checker, tax calculator -- built for 54 African countries. Because $59 billion in Nigerian crypto transactions deserves better tools.</p>
-    <div class="crypto-hero__stats-line">
-      <span>5 Tools</span> | <span>54 Countries</span> | <span>8+ P2P Platforms</span> | <span>Free</span>
+<div class="wrap"><nav class="bc"><a href="/">AfroTools</a> › <a href="/categories/">Categories</a> › <span class="cur">Crypto & Web3</span></nav></div>
+
+<section class="hero">
+  <div class="wrap hero-z">
+    <div class="hero-ey"><span>🪙</span> CRYPTO & WEB3</div>
+    <h1><b>Crypto & Web3</b></h1>
+    <p class="hero-sub">P2P rates, portfolio tracker, scam checker, tax calculator — built for 54 African countries. $59 billion in Nigerian crypto transactions deserves better tools.</p>
+    <div class="hero-stats">
+      <div><div class="hs-n">15</div><div class="hs-l">Tools</div></div>
+      <div><div class="hs-n">54</div><div class="hs-l">Countries</div></div>
+      <div><div class="hs-n">8+</div><div class="hs-l">P2P Platforms</div></div>
     </div>
-  </div>
-  <div aria-hidden="true">
-    <span class="floating-icon" style="--delay:0s;--x:8%;--y:20%;">&#x20BF;</span>
-    <span class="floating-icon" style="--delay:1.2s;--x:85%;--y:15%;">&#9889;</span>
-    <span class="floating-icon" style="--delay:2.4s;--x:75%;--y:70%;">&#128176;</span>
-    <span class="floating-icon" style="--delay:3.6s;--x:15%;--y:75%;">&#127760;</span>
-    <span class="floating-icon" style="--delay:4.8s;--x:50%;--y:8%;">&#128200;</span>
   </div>
 </section>
 
