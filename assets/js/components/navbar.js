@@ -141,6 +141,7 @@
     .inner {
       max-width: 1200px; margin: 0 auto; width: 100%;
       display: flex; align-items: center; gap: 2px;
+      overflow: hidden;
     }
 
     /* LOGO */
@@ -228,7 +229,7 @@
     .mega-footer-lnk:hover { text-decoration: underline; }
 
     /* RIGHT */
-    .right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; margin-left: auto; }
+    .right { display: flex; align-items: center; gap: 8px; flex-shrink: 1; min-width: 0; margin-left: auto; }
     .pill-54 { font-size: 0.66rem; font-weight: 600; color: #6b7280; padding: 4px 10px; border-radius: 20px; border: 1px solid #e5e7eb; background: #f9fafb; white-space: nowrap; }
 
     .btn-login {
@@ -311,7 +312,11 @@
     }
     .mob-note { text-align: center; font-size: 0.7rem; font-weight: 500; color: #9ca3af; }
 
-    /* RESPONSIVE */
+    /* RESPONSIVE — progressive collapse */
+    .pill-54 { display: none; }
+    @media (max-width: 1100px) {
+      .cta { display: none; }
+    }
     @media (max-width: 940px) {
       .nav-links, .pill-54, .cta { display: none; }
       .btn-login { border: none; padding: 4px 8px; max-width: none; overflow: hidden; font-size: 0.75rem; }
