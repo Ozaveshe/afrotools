@@ -26,9 +26,20 @@
     const h1 = document.querySelector('h1');
     if (h1) {
       const text = h1.textContent;
-      const match = text.match(/^([\w\s]+)\s+(?:PAYE|VAT|Income Tax|Tax)/i);
+      const match = text.match(/^([\w\s'ôéèêë]+)\s+(?:PAYE|VAT|Income Tax|Tax)/i);
       if (match) return match[1].trim();
     }
+    return '';
+  }
+
+  function getCurrency() {
+    // Try currency prefix in inputs
+    const prefix = document.querySelector('.f-prefix');
+    if (prefix) return prefix.textContent.trim();
+    // Try from page content
+    const text = document.body.textContent;
+    const match = text.match(/(?:Currency|currency)[:\s]+([A-Z]{3})/);
+    if (match) return match[1];
     return '';
   }
 
@@ -73,25 +84,36 @@
 
         const toolId = getToolId();
         const country = getCountryName();
+        const currency = getCurrency();
         const toolUrl = location.pathname;
 
         // Build card data from RESULT — adapt to different result shapes
         const effectiveRate = R.effectiveRate || R.effective_rate || R.rate || 0;
         const gross = R.gross || R.grossAnnual || R.grossIncome || 0;
         const net = R.netMonthly || R.net_monthly || R.netIncome || 0;
+        const netAnnual = R.netAnnual || R.annualNet || (net * 12) || 0;
+        const tax = R.tax || R.monthlyPAYE || R.annualTax || 0;
+        const marginal = R.marginalRate || R.marginal_rate || 0;
 
         // Try to use page's own format function
         const fmtFn = window.fmt || (n => Math.round(n).toLocaleString());
         const pctFn = window.pct || (n => n.toFixed(1) + '%');
 
+        const cur = currency ? currency + ' ' : '';
+        const detailParts = [
+          'Gross: ' + cur + fmtFn(gross) + '/mo',
+          'Take-home: ' + cur + fmtFn(net) + '/mo',
+          'Tax: ' + cur + fmtFn(tax) + '/mo'
+        ];
+
         await window.AfroTools.resultCard.generateAndShare({
           title: 'My Effective Tax Rate',
           value: pctFn(effectiveRate),
-          subtitle: country + ' PAYE ' + new Date().getFullYear(),
-          details: 'Gross: ' + fmtFn(gross) + '/yr | Take-home: ' + fmtFn(net) + '/mo',
+          subtitle: country + ' PAYE ' + new Date().getFullYear() + (currency ? ' · ' + currency : ''),
+          details: detailParts.join(' | '),
           toolUrl,
           toolId,
-          text: `My effective tax rate is ${pctFn(effectiveRate)} in ${country}. What's yours?`
+          text: `My effective tax rate is ${pctFn(effectiveRate)} in ${country}. Gross ${cur}${fmtFn(gross)}/mo → Take-home ${cur}${fmtFn(net)}/mo. What's yours?`
         });
       } catch (err) {
         console.error('Share image error:', err);

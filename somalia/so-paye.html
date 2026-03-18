@@ -367,7 +367,7 @@ function renderRows(R,period){
   const isAnnual=period==='annual';const gross=isAnnual?R.annualGross:R.gross;const tax=isAnnual?R.annualTax:R.tax;const net=isAnnual?R.annualNet:R.net;const lbl=isAnnual?'/year':'/month';const row=(l,v,cls='')=>`<div class="res-row"><span class="res-row-lbl">${l}</span><span class="res-row-val ${cls}">${v}</span></div>`;return `<div class="res-section"><div class="res-section-title">Gross Income</div>${row(`Salary${lbl}`,fmt(gross))}</div><div class="res-section"><div class="res-section-title">Tax</div>${row(`Employment tax (5%)${lbl}`,fmt(tax),'c-red')}</div><div class="res-section"><div class="res-row total"><span class="res-row-lbl">Take-Home Pay</span><span class="res-row-val c-grn">${fmt(net)}</span></div></div>`;
 }
 
-function setPeriod(period,btn){PERIOD=period;document.querySelectorAll('.per-btn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');if(RESULT)document.getElementById('resContent').innerHTML=renderRows(RESULT,period);}
+function setPeriod(period, btn) { PERIOD = period; document.querySelectorAll('.per-btn').forEach(b => b.classList.remove('on')); btn.classList.add('on'); if (RESULT) { var isM=period==='monthly';var net=isM?RESULT.netMonthly:(RESULT.annualNet||RESULT.netAnnual||RESULT.netMonthly*12);var gr=isM?RESULT.gross:(RESULT.annualGross||RESULT.gross*12);document.getElementById('resAmount').textContent=fmt(net);document.getElementById('resGross').textContent=isM?'Gross: '+fmt(gr)+'/month':'Gross: '+fmt(gr)+'/year'; document.getElementById('resContent').innerHTML = renderRows(RESULT, period); } }
 
 function setChart(type,btn){document.querySelectorAll('.chart-tab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderChart(type);}
 

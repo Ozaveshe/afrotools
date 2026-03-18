@@ -641,7 +641,17 @@ function setPeriod(period, btn) {
   PERIOD = period;
   document.querySelectorAll('.per-btn').forEach(b => b.classList.remove('on'));
   btn.classList.add('on');
-  if (RESULT) document.getElementById('resContent').innerHTML = renderRows(RESULT, period);
+  if (RESULT) {
+    // Update hero
+    var isMonthly = period === 'monthly';
+    var net = isMonthly ? RESULT.netMonthly : (RESULT.annualNet || RESULT.netAnnual || RESULT.netMonthly * 12);
+    var gr = isMonthly ? RESULT.gross : (RESULT.annualGross || RESULT.gross * 12);
+    document.getElementById('resAmount').textContent = fmt(net);
+    document.getElementById('resGross').textContent = isMonthly
+      ? 'Gross: ' + fmt(gr) + '/month'
+      : 'Gross: ' + fmt(gr) + '/year';
+    document.getElementById('resContent').innerHTML = renderRows(RESULT, period);
+  }
 }
 
 // ── BANDS TOGGLE ──────────────────────────────────────────────

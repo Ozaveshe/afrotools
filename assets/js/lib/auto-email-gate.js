@@ -71,6 +71,9 @@
       + '</div>'
       + '<form style="display:flex;flex-direction:column;gap:10px;">'
       + '<input type="email" placeholder="your@email.com" required autocomplete="email" style="padding:13px 16px;border:1.5px solid #D1D5DB;border-radius:10px;font-size:.9rem;font-family:inherit;outline:none;">'
+      + '<input type="text" name="name" placeholder="Full name (optional)" autocomplete="name" style="padding:13px 16px;border:1.5px solid #D1D5DB;border-radius:10px;font-size:.9rem;font-family:inherit;outline:none;">'
+      + '<input type="text" name="company" placeholder="Company (optional)" autocomplete="organization" style="padding:13px 16px;border:1.5px solid #D1D5DB;border-radius:10px;font-size:.9rem;font-family:inherit;outline:none;">'
+      + '<input type="text" name="role" placeholder="Job title (optional)" autocomplete="organization-title" style="padding:13px 16px;border:1.5px solid #D1D5DB;border-radius:10px;font-size:.9rem;font-family:inherit;outline:none;">'
       + '<button type="submit" style="padding:13px;background:#007AFF;color:#fff;border:none;border-radius:10px;font-size:.9rem;font-weight:700;cursor:pointer;font-family:inherit;">Download PDF Report →</button>'
       + '</form>'
       + '<p style="text-align:center;font-size:.72rem;color:#9CA3AF;margin:12px 0 0;">🔒 No spam. Unsubscribe anytime.</p>'
@@ -91,18 +94,27 @@
       var email = emailInp.value.trim();
       if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return;
 
+      var nameVal = (form.querySelector('[name="name"]').value || '').trim();
+      var companyVal = (form.querySelector('[name="company"]').value || '').trim();
+      var roleVal = (form.querySelector('[name="role"]').value || '').trim();
+
       try { localStorage.setItem(STORAGE_KEY, email); } catch(ex) {}
 
       // Submit to Netlify Forms
+      var formData = {
+        'form-name': 'pdf-leads',
+        'email': email,
+        'tool': toolName,
+        'source': 'auto-email-gate'
+      };
+      if (nameVal) formData['name'] = nameVal;
+      if (companyVal) formData['company'] = companyVal;
+      if (roleVal) formData['role'] = roleVal;
+
       fetch('/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({
-          'form-name': 'pdf-leads',
-          'email': email,
-          'tool': toolName,
-          'source': 'auto-email-gate'
-        }).toString()
+        body: new URLSearchParams(formData).toString()
       }).catch(function(){});
 
       // GA4 tracking

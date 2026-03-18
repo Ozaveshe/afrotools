@@ -434,7 +434,7 @@ function renderRows(R, period) {
     <div class="res-section">${row('Total Deductions', fmt(paye), 'c-red')}<div class="res-row total"><span class="res-row-lbl">Take-Home Pay</span><span class="res-row-val c-grn">${fmt(net)}</span></div></div>`;
 }
 
-function setPeriod(period, btn) { PERIOD = period; document.querySelectorAll('.per-btn').forEach(b => b.classList.remove('on')); btn.classList.add('on'); if (RESULT) document.getElementById('resContent').innerHTML = renderRows(RESULT, period); }
+function setPeriod(period, btn) { PERIOD = period; document.querySelectorAll('.per-btn').forEach(b => b.classList.remove('on')); btn.classList.add('on'); if (RESULT) { var isM=period==='monthly';var net=isM?(RESULT.monthlyNet||RESULT.netAnnual/12):RESULT.netAnnual;var gr=isM?(RESULT.monthlyGross||RESULT.gross/12):RESULT.gross;document.getElementById('resAmount').textContent=fmt(net);document.getElementById('resGross').textContent=isM?'Gross: '+fmt(gr)+'/month':'Gross: '+fmt(gr)+'/year'; document.getElementById('resContent').innerHTML = renderRows(RESULT, period); } }
 function toggleBands(header) { const body = header.nextElementSibling; const arr = header.querySelector('.tog-arrow'); body.classList.toggle('open'); arr.classList.toggle('open'); }
 function setChart(type, btn) { CHART_TYPE = type; document.querySelectorAll('.chart-tab').forEach(b => b.classList.remove('on')); btn.classList.add('on'); renderChart(type); }
 

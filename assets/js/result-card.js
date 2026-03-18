@@ -68,7 +68,7 @@
     logoRow.innerHTML = `
       <div style="display:flex;align-items:center;gap:10px;">
         <div style="width:36px;height:36px;background:#0a1a10;border:2px solid rgba(0,200,115,.3);border-radius:8px;display:flex;align-items:center;justify-content:center;">
-          <div style="width:12px;height:12px;background:var(--color-primary);transform:rotate(45deg);"></div>
+          <div style="width:12px;height:12px;background:#007AFF;transform:rotate(45deg);"></div>
         </div>
         <span style="font-size:18px;font-weight:800;letter-spacing:-0.02em;color:#fff;">AfroTools</span>
       </div>
@@ -84,7 +84,7 @@
 
     // Value
     const value = document.createElement('div');
-    value.style.cssText = 'font-size:72px;font-weight:800;color:var(--color-primary);letter-spacing:-0.03em;line-height:1;margin-bottom:16px;';
+    value.style.cssText = 'font-size:72px;font-weight:800;color:#007AFF;letter-spacing:-0.03em;line-height:1;margin-bottom:16px;';
     value.textContent = opts.value || '—';
     content.appendChild(value);
 
@@ -94,12 +94,18 @@
     subtitle.textContent = opts.subtitle || '';
     content.appendChild(subtitle);
 
-    // Details line
+    // Details — show as structured pills if pipe-separated
     if (opts.details) {
-      const details = document.createElement('div');
-      details.style.cssText = 'font-size:16px;color:rgba(255,255,255,.4);margin-bottom:32px;letter-spacing:0.01em;';
-      details.textContent = opts.details;
-      content.appendChild(details);
+      const parts = opts.details.split(' | ');
+      const detailsWrap = document.createElement('div');
+      detailsWrap.style.cssText = 'display:flex;gap:16px;flex-wrap:wrap;margin-bottom:32px;';
+      parts.forEach(part => {
+        const pill = document.createElement('div');
+        pill.style.cssText = 'padding:10px 18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:8px;font-size:15px;color:rgba(255,255,255,.55);font-weight:500;';
+        pill.textContent = part;
+        detailsWrap.appendChild(pill);
+      });
+      content.appendChild(detailsWrap);
     }
 
     // CTA bar
@@ -153,13 +159,31 @@
       if (!blob) return;
 
       const shareText = opts.text || `${opts.title}: ${opts.value} — ${opts.subtitle}`;
-      await window.AfroTools.share.shareResult({
-        title: opts.title || 'My AfroTools Result',
-        text: shareText,
-        url: 'https://afrotools.com' + (opts.toolUrl || ''),
-        imageBlob: blob,
-        toolId: opts.toolId || 'unknown'
-      });
+      const shareTitle = opts.title || 'My AfroTools Result';
+      const shareUrl = 'https://afrotools.com' + (opts.toolUrl || '');
+      const file = new File([blob], `afrotools-${opts.toolId || 'result'}.png`, { type: 'image/png' });
+
+      // Try Web Share API with image
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        try {
+          await navigator.share({ title: shareTitle, text: shareText, url: shareUrl, files: [file] });
+          return;
+        } catch (e) {
+          if (e.name === 'AbortError') return; // user cancelled
+        }
+      }
+
+      // Fallback: download the image
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `afrotools-${opts.toolId || 'result'}.png`;
+      a.click();
+      URL.revokeObjectURL(url);
+
+      if (window.AfroTools && window.AfroTools.toast) {
+        window.AfroTools.toast.show('Image downloaded! Share it on social media.', 'success');
+      }
     },
 
     /**

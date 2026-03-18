@@ -42,15 +42,21 @@
     }
   }
 
-  function submitEmailToNetlify(email, toolName, country) {
-    var body = new URLSearchParams({
+  function submitEmailToNetlify(email, toolName, country, extras) {
+    var formData = {
       'form-name': FORM_NAME,
       'email': email,
       'tool': toolName || '',
       'country': country || '',
       'source': 'email-gate',
       'timestamp': new Date().toISOString()
-    });
+    };
+    if (extras) {
+      if (extras.name) formData['name'] = extras.name;
+      if (extras.company) formData['company'] = extras.company;
+      if (extras.role) formData['role'] = extras.role;
+    }
+    var body = new URLSearchParams(formData);
     fetch('/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -121,6 +127,12 @@
         + '<form id="eg-form" style="display:flex;flex-direction:column;gap:10px;">'
         + '<input type="email" id="eg-email" placeholder="your@email.com" required autocomplete="email" '
         + 'style="padding:13px 16px;border:1.5px solid #D1D5DB;border-radius:10px;font-size:.9rem;font-family:inherit;outline:none;transition:border-color .15s;">'
+        + '<input type="text" name="name" placeholder="Full name (optional)" autocomplete="name" '
+        + 'style="padding:13px 16px;border:1.5px solid #D1D5DB;border-radius:10px;font-size:.9rem;font-family:inherit;outline:none;transition:border-color .15s;">'
+        + '<input type="text" name="company" placeholder="Company (optional)" autocomplete="organization" '
+        + 'style="padding:13px 16px;border:1.5px solid #D1D5DB;border-radius:10px;font-size:.9rem;font-family:inherit;outline:none;transition:border-color .15s;">'
+        + '<input type="text" name="role" placeholder="Job title (optional)" autocomplete="organization-title" '
+        + 'style="padding:13px 16px;border:1.5px solid #D1D5DB;border-radius:10px;font-size:.9rem;font-family:inherit;outline:none;transition:border-color .15s;">'
         + '<button type="submit" id="eg-submit" '
         + 'style="padding:13px;background:#007AFF;color:#fff;border:none;border-radius:10px;font-size:.9rem;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s;">'
         + 'Download PDF Report →</button>'
@@ -146,13 +158,17 @@
         var email = document.getElementById('eg-email').value.trim();
         if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return;
 
+        var nameVal = (form.querySelector('[name="name"]').value || '').trim();
+        var companyVal = (form.querySelector('[name="company"]').value || '').trim();
+        var roleVal = (form.querySelector('[name="role"]').value || '').trim();
+
         var btn = document.getElementById('eg-submit');
         btn.textContent = 'Generating...';
         btn.disabled = true;
 
         // Store, submit, track, download
         storeEmail(email);
-        submitEmailToNetlify(email, self.toolName, self.country);
+        submitEmailToNetlify(email, self.toolName, self.country, { name: nameVal, company: companyVal, role: roleVal });
         trackDownload(self.toolName);
 
         setTimeout(function() {

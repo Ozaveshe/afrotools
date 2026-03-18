@@ -106,7 +106,7 @@ gtag('config', 'G-D859CGF391');
 
           <!-- Mode Toggle -->
           <div class="mode-toggle">
-            <button class="mode-btn active" id="modeGross" data-mode="gross">Gross &rarr; Net</button>
+            <button class="mode-btn on" id="modeGross" data-mode="gross">Gross &rarr; Net</button>
             <button class="mode-btn" id="modeNet" data-mode="net">Net &rarr; Gross</button>
           </div>
 
@@ -183,7 +183,7 @@ gtag('config', 'G-D859CGF391');
         <div class="res-body">
           <!-- Period Toggle -->
           <div class="period-row">
-            <button class="per-btn active" data-period="monthly">Monthly</button>
+            <button class="per-btn on" data-period="monthly">Monthly</button>
             <button class="per-btn" data-period="annual">Annual</button>
           </div>
 
@@ -206,7 +206,7 @@ gtag('config', 'G-D859CGF391');
           <!-- Chart -->
           <div class="chart-section">
             <div class="chart-tabs">
-              <button class="chart-tab active" data-chart="donut">Breakdown</button>
+              <button class="chart-tab on" data-chart="donut">Breakdown</button>
               <button class="chart-tab" data-chart="bar">Tax Bands</button>
               <button class="chart-tab" data-chart="employer">Employer Cost</button>
             </div>
@@ -748,8 +748,8 @@ gtag('config', 'G-D859CGF391');
   // ═══ EVENTS ═══
   document.addEventListener('DOMContentLoaded', () => {
     // Mode toggle
-    $('modeGross').addEventListener('click', () => { calcMode = 'gross'; $('modeGross').classList.add('active'); $('modeNet').classList.remove('active'); $('salaryLabel').textContent = 'Annual Gross Salary'; });
-    $('modeNet').addEventListener('click', () => { calcMode = 'net'; $('modeNet').classList.add('active'); $('modeGross').classList.remove('active'); $('salaryLabel').textContent = 'Desired Annual Net Pay'; });
+    $('modeGross').addEventListener('click', () => { calcMode = 'gross'; $('modeGross').classList.add('on'); $('modeNet').classList.remove('on'); $('salaryLabel').textContent = 'Annual Gross Salary'; });
+    $('modeNet').addEventListener('click', () => { calcMode = 'net'; $('modeNet').classList.add('on'); $('modeGross').classList.remove('on'); $('salaryLabel').textContent = 'Desired Annual Net Pay'; });
 
     // Salary input
     const salaryEl = $('salaryInput');
@@ -783,8 +783,8 @@ gtag('config', 'G-D859CGF391');
     // Period toggle
     document.querySelectorAll('.per-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        document.querySelectorAll('.per-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
+        document.querySelectorAll('.per-btn').forEach(b => b.classList.remove('on'));
+        btn.classList.add('on');
         period = btn.dataset.period;
         if (R) renderResults();
       });
@@ -793,8 +793,8 @@ gtag('config', 'G-D859CGF391');
     // Chart tabs
     document.querySelectorAll('.chart-tab').forEach(btn => {
       btn.addEventListener('click', () => {
-        document.querySelectorAll('.chart-tab').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
+        document.querySelectorAll('.chart-tab').forEach(b => b.classList.remove('on'));
+        btn.classList.add('on');
         chartType = btn.dataset.chart;
         renderChart(chartType);
       });
@@ -829,7 +829,7 @@ gtag('config', 'G-D859CGF391');
     const p = new URLSearchParams(window.location.search);
     if (p.has('g')) { $('salaryInput').value = parseInt(p.get('g')).toLocaleString('en-US'); }
     if (p.has('b')) { $('basicSalary').value = parseInt(p.get('b')).toLocaleString('en-US'); }
-    if (p.get('m') === 'net') { calcMode = 'net'; $('modeNet').classList.add('active'); $('modeGross').classList.remove('active'); $('salaryLabel').textContent = 'Desired Annual Net Pay'; }
+    if (p.get('m') === 'net') { calcMode = 'net'; $('modeNet').classList.add('on'); $('modeGross').classList.remove('on'); $('salaryLabel').textContent = 'Desired Annual Net Pay'; }
     if (p.has('g')) setTimeout(calculate, 300);
   });
 })();
