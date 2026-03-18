@@ -20,15 +20,18 @@
   const CARD_WIDTH = 1200;
   const CARD_HEIGHT = 630;
 
-  // Ensure html2canvas is loaded
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+  // Ensure html2canvas is loaded (with timeout for slow networks)
   function loadHtml2Canvas() {
     return new Promise((resolve, reject) => {
       if (window.html2canvas) return resolve(window.html2canvas);
       const s = document.createElement('script');
       s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
       s.onload = () => resolve(window.html2canvas);
-      s.onerror = reject;
+      s.onerror = () => reject(new Error('Failed to load html2canvas'));
       document.head.appendChild(s);
+      setTimeout(() => reject(new Error('html2canvas load timeout')), 15000);
     });
   }
 
@@ -136,14 +139,15 @@
         const canvas = await h2c(card, {
           width: CARD_WIDTH,
           height: CARD_HEIGHT,
-          scale: 2,
+          scale: isMobile ? 1 : 2,
           useCORS: true,
           backgroundColor: '#0a1a10',
           logging: false
         });
 
-        return new Promise(resolve => {
-          canvas.toBlob(blob => resolve(blob), 'image/png');
+        return new Promise((resolve, reject) => {
+          const timer = setTimeout(() => resolve(null), 8000);
+          canvas.toBlob(blob => { clearTimeout(timer); resolve(blob); }, 'image/png');
         });
       } finally {
         card.remove();
@@ -156,34 +160,54 @@
      */
     async generateAndShare(opts = {}) {
       const blob = await this.generate(opts);
-      if (!blob) return;
+      if (!blob) {
+        if (window.AfroTools && window.AfroTools.toast) {
+          window.AfroTools.toast.show('Could not generate image. Try the text share instead.', 'error');
+        }
+        return;
+      }
 
       const shareText = opts.text || `${opts.title}: ${opts.value} — ${opts.subtitle}`;
       const shareTitle = opts.title || 'My AfroTools Result';
       const shareUrl = 'https://afrotools.com' + (opts.toolUrl || '');
-      const file = new File([blob], `afrotools-${opts.toolId || 'result'}.png`, { type: 'image/png' });
 
       // Try Web Share API with image
-      if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        try {
+      try {
+        const file = new File([blob], `afrotools-${opts.toolId || 'result'}.png`, { type: 'image/png' });
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
           await navigator.share({ title: shareTitle, text: shareText, url: shareUrl, files: [file] });
           return;
+        }
+      } catch (e) {
+        if (e.name === 'AbortError') return;
+      }
+
+      // Try text-only share on mobile (no file)
+      if (isMobile && navigator.share) {
+        try {
+          await navigator.share({ title: shareTitle, text: shareText, url: shareUrl });
+          // Also trigger download of the image
+          this._downloadBlob(blob, opts.toolId);
+          return;
         } catch (e) {
-          if (e.name === 'AbortError') return; // user cancelled
+          if (e.name === 'AbortError') return;
         }
       }
 
       // Fallback: download the image
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `afrotools-${opts.toolId || 'result'}.png`;
-      a.click();
-      URL.revokeObjectURL(url);
-
+      this._downloadBlob(blob, opts.toolId);
       if (window.AfroTools && window.AfroTools.toast) {
         window.AfroTools.toast.show('Image downloaded! Share it on social media.', 'success');
       }
+    },
+
+    _downloadBlob(blob, toolId) {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `afrotools-${toolId || 'result'}.png`;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 5000);
     },
 
     /**

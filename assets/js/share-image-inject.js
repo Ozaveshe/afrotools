@@ -77,8 +77,9 @@
             const s = document.createElement('script');
             s.src = '/assets/js/result-card.js';
             s.onload = resolve;
-            s.onerror = reject;
+            s.onerror = () => reject(new Error('Failed to load result-card.js'));
             document.head.appendChild(s);
+            setTimeout(() => reject(new Error('result-card.js load timeout')), 10000);
           });
         }
 
@@ -106,7 +107,8 @@
           'Tax: ' + cur + fmtFn(tax) + '/mo'
         ];
 
-        await window.AfroTools.resultCard.generateAndShare({
+        // Wrap in a timeout so it never hangs forever on mobile
+        const sharePromise = window.AfroTools.resultCard.generateAndShare({
           title: 'My Effective Tax Rate',
           value: pctFn(effectiveRate),
           subtitle: country + ' PAYE ' + new Date().getFullYear() + (currency ? ' · ' + currency : ''),
@@ -115,6 +117,12 @@
           toolId,
           text: `My effective tax rate is ${pctFn(effectiveRate)} in ${country}. Gross ${cur}${fmtFn(gross)}/mo → Take-home ${cur}${fmtFn(net)}/mo. What's yours?`
         });
+
+        const timeoutPromise = new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('Share image timed out')), 30000)
+        );
+
+        await Promise.race([sharePromise, timeoutPromise]);
       } catch (err) {
         console.error('Share image error:', err);
         if (window.AfroTools && window.AfroTools.toast) {
