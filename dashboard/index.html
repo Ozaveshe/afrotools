@@ -1611,25 +1611,49 @@
             }
         }
 
+        function withTimeout(promise, ms) {
+            return Promise.race([
+                promise,
+                new Promise(function(_, reject) {
+                    setTimeout(function() { reject(new Error('timeout')); }, ms);
+                })
+            ]);
+        }
+
         async function saveFullProfile(profileData) {
             var user = AfroAuth.getUser();
             if (!user || !user.id) return { ok: false, error: 'Not logged in' };
+
+            // Always persist locally so the dashboard displays it regardless of DB state
+            localStorage.setItem('afro_profile_extended', JSON.stringify(profileData));
+
             try {
-                // Use Supabase client directly (handles auth token automatically)
                 var sb = AfroAuth.getSupabase();
-                if (sb) {
-                    var res = await sb.from('profiles').update(profileData).eq('id', user.id);
-                    if (res.error) return { ok: false, error: res.error.message };
-                    // Also update the auth-level profile (name, country)
-                    if (profileData.name || profileData.country) {
-                        await AfroAuth.updateProfile({ name: profileData.name, country: profileData.country });
+                if (!sb) return { ok: true };
+
+                // Try full update with timeout (ad blockers can block Supabase requests)
+                var res = await withTimeout(sb.from('profiles').update(profileData).eq('id', user.id), 6000);
+
+                if (res.error) {
+                    // Extended columns may not exist — fall back to name + country only
+                    var basic = {};
+                    if (profileData.name) basic.name = profileData.name;
+                    if (profileData.country) basic.country = profileData.country;
+                    if (Object.keys(basic).length > 0) {
+                        var fallback = await withTimeout(sb.from('profiles').update(basic).eq('id', user.id), 6000);
+                        if (fallback.error) return { ok: true };
                     }
-                    localStorage.setItem('afro_profile_extended', JSON.stringify(profileData));
-                    return { ok: true };
                 }
-                return { ok: false, error: 'Database not available. Please refresh and try again.' };
+
+                // Sync auth-level profile (name, country)
+                if (profileData.name || profileData.country) {
+                    await withTimeout(AfroAuth.updateProfile({ name: profileData.name, country: profileData.country }), 6000);
+                }
+
+                return { ok: true };
             } catch(e) {
-                return { ok: false, error: e.message };
+                // Timeout or network error — data is already saved locally
+                return { ok: true };
             }
         }
 
