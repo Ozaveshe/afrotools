@@ -127,11 +127,11 @@
         + '<form id="eg-form" style="display:flex;flex-direction:column;gap:10px;">'
         + '<input type="email" id="eg-email" placeholder="your@email.com" required autocomplete="email" '
         + 'style="padding:13px 16px;border:1.5px solid #D1D5DB;border-radius:10px;font-size:.9rem;font-family:inherit;outline:none;transition:border-color .15s;">'
-        + '<input type="text" name="name" placeholder="Full name (optional)" autocomplete="name" '
+        + '<input type="text" name="name" placeholder="Full name" required autocomplete="name" '
         + 'style="padding:13px 16px;border:1.5px solid #D1D5DB;border-radius:10px;font-size:.9rem;font-family:inherit;outline:none;transition:border-color .15s;">'
-        + '<input type="text" name="company" placeholder="Company (optional)" autocomplete="organization" '
+        + '<input type="text" name="company" placeholder="Company" required autocomplete="organization" '
         + 'style="padding:13px 16px;border:1.5px solid #D1D5DB;border-radius:10px;font-size:.9rem;font-family:inherit;outline:none;transition:border-color .15s;">'
-        + '<input type="text" name="role" placeholder="Job title (optional)" autocomplete="organization-title" '
+        + '<input type="text" name="role" placeholder="Job title" required autocomplete="organization-title" '
         + 'style="padding:13px 16px;border:1.5px solid #D1D5DB;border-radius:10px;font-size:.9rem;font-family:inherit;outline:none;transition:border-color .15s;">'
         + '<button type="submit" id="eg-submit" '
         + 'style="padding:13px;background:#007AFF;color:#fff;border:none;border-radius:10px;font-size:.9rem;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s;">'
@@ -161,6 +161,14 @@
         var nameVal = (form.querySelector('[name="name"]').value || '').trim();
         var companyVal = (form.querySelector('[name="company"]').value || '').trim();
         var roleVal = (form.querySelector('[name="role"]').value || '').trim();
+
+        // All fields required
+        if (!nameVal || !companyVal || !roleVal) {
+          form.querySelectorAll('input').forEach(function(inp) {
+            if (!inp.value.trim()) inp.style.borderColor = '#EF4444';
+          });
+          return;
+        }
 
         var btn = document.getElementById('eg-submit');
         btn.textContent = 'Generating...';
