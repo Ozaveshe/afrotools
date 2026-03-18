@@ -136,7 +136,7 @@
       document.body.appendChild(card);
 
       try {
-        const canvas = await h2c(card, {
+        const h2cPromise = h2c(card, {
           width: CARD_WIDTH,
           height: CARD_HEIGHT,
           scale: isMobile ? 1 : 2,
@@ -144,9 +144,12 @@
           backgroundColor: '#0a1a10',
           logging: false
         });
+        const h2cTimeout = new Promise(r => setTimeout(() => r(null), 12000));
+        const canvas = await Promise.race([h2cPromise, h2cTimeout]);
+        if (!canvas) return null;
 
-        return new Promise((resolve, reject) => {
-          const timer = setTimeout(() => resolve(null), 8000);
+        return new Promise(resolve => {
+          const timer = setTimeout(() => resolve(null), 5000);
           canvas.toBlob(blob => { clearTimeout(timer); resolve(blob); }, 'image/png');
         });
       } finally {
@@ -167,37 +170,11 @@
         return;
       }
 
-      const shareText = opts.text || `${opts.title}: ${opts.value} — ${opts.subtitle}`;
-      const shareTitle = opts.title || 'My AfroTools Result';
-      const shareUrl = 'https://afrotools.com' + (opts.toolUrl || '');
-
-      // Try Web Share API with image
-      try {
-        const file = new File([blob], `afrotools-${opts.toolId || 'result'}.png`, { type: 'image/png' });
-        if (navigator.canShare && navigator.canShare({ files: [file] })) {
-          await navigator.share({ title: shareTitle, text: shareText, url: shareUrl, files: [file] });
-          return;
-        }
-      } catch (e) {
-        if (e.name === 'AbortError') return;
-      }
-
-      // Try text-only share on mobile (no file)
-      if (isMobile && navigator.share) {
-        try {
-          await navigator.share({ title: shareTitle, text: shareText, url: shareUrl });
-          // Also trigger download of the image
-          this._downloadBlob(blob, opts.toolId);
-          return;
-        } catch (e) {
-          if (e.name === 'AbortError') return;
-        }
-      }
-
-      // Fallback: download the image
+      // Always download the image first
       this._downloadBlob(blob, opts.toolId);
+
       if (window.AfroTools && window.AfroTools.toast) {
-        window.AfroTools.toast.show('Image downloaded! Share it on social media.', 'success');
+        window.AfroTools.toast.show('Image saved! Share it on social media.', 'success');
       }
     },
 
