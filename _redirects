@@ -25,6 +25,14 @@
 /tools/vat-calculator        /tools/vat-calculator/vat-calc.html  200
 /tools/vat-calculator/       /tools/vat-calculator/vat-calc.html  200
 
+# AfroKitchen — SEO-friendly recipe URLs
+/tools/afrokitchen/recipe/:slug/  /tools/afrokitchen/recipe.html?slug=:slug  200
+/tools/afrokitchen/recipe/:slug   /tools/afrokitchen/recipe.html?slug=:slug  200
+/tools/afrokitchen/country/:code/ /tools/afrokitchen/country.html?country=:code  200
+/tools/afrokitchen/country/:code  /tools/afrokitchen/country.html?country=:code  200
+/tools/afrokitchen/collection/:slug/ /tools/afrokitchen/collection.html?slug=:slug  200
+/tools/afrokitchen/collection/:slug  /tools/afrokitchen/collection.html?slug=:slug  200
+
 # SEO — alternate URL patterns (Fix 404s)
 /south-africa/sa-income-tax  /south-africa/za-paye  301
 /south-africa/sa-income-tax/ /south-africa/za-paye/ 301
@@ -76,3 +84,17 @@
 /uniquely-african/    /uniquely-african/index.html     200
 /engineering          /engineering/index.html          200
 /engineering/         /engineering/index.html          200
+/crypto               /crypto/index.html               200
+/crypto/              /crypto/index.html               200
+
+# SEO — prevent trailing-slash 301 redirects (catches all directory index pages)
+# These catch-all rules MUST stay at the bottom. Netlify uses first-match-wins,
+# so all specific rules above take priority. These only fire for paths not
+# already handled above, eliminating the /path → /path/ 301 redirect that
+# Google Search Console flags as "Page with redirect".
+
+# Tool pages: /tools/xyz → /tools/xyz/index.html (200, no redirect)
+/tools/:tool          /tools/:tool/index.html          200
+
+# Country & top-level pages: /xyz → /xyz/index.html (200, no redirect)
+/:page                /:page/index.html                200

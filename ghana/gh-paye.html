@@ -33,7 +33,28 @@ gtag('config', 'G-D859CGF391');
 <link rel="stylesheet" href="/assets/css/global.min.css">
 <link rel="stylesheet" href="/assets/css/paye-tool.css">
 
-<style>:root { --color-brand: #004EA8; }</style>
+<style>:root { --color-brand: #004EA8; }
+  .tool-info-card{background:#fff;border:1px solid #DBEAFE;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+  .tool-info-header{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid #EFF6FF;background:#F5F9FF}
+  .tool-info-img{width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0}
+  .tool-info-meta{flex:1;min-width:0}
+  .tool-info-name{font-size:.82rem;font-weight:700;color:#0f172a;line-height:1.2;margin-bottom:2px}
+  .tool-info-cat{font-size:.62rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B8CAE}
+  .tool-info-body{padding:14px 18px}
+  .tool-info-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
+  .tool-stat{text-align:center}
+  .tool-stat-val{font-size:1rem;font-weight:800;color:#007AFF;line-height:1}
+  .tool-stat-lbl{font-size:.6rem;font-weight:500;color:#6B8CAE;text-transform:uppercase;letter-spacing:.04em;margin-top:3px}
+  .tool-info-features{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+  .tool-feat{font-size:.62rem;font-weight:600;padding:3px 8px;background:#EFF6FF;border:1px solid #DBEAFE;border-radius:3px;color:#0f172a}
+  .tool-info-footer{display:flex;justify-content:space-between;align-items:center;padding:10px 18px;border-top:1px solid #EFF6FF;background:#FAFBFF}
+  .tool-info-updated{font-size:.62rem;color:#6B8CAE}
+  .tool-info-actions{display:flex;gap:6px}
+  .tool-info-action{font-size:.62rem;font-weight:600;color:#007AFF;text-decoration:none;padding:3px 8px;border:1px solid #DBEAFE;border-radius:4px;background:#fff;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
+  .tool-info-action:hover{background:#EFF6FF;border-color:#007AFF}
+  @media(max-width:900px){.tool-info-card{order:1}}
+  @media(max-width:480px){.tool-info-stats{grid-template-columns:1fr 1fr 1fr}.tool-info-header{padding:12px 14px}.tool-info-body{padding:10px 14px}}
+</style>
 <meta name="tool-id" content="gh-paye">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebApplication","name":"Ghana PAYE Tax Calculator 2026","url":"https://afrotools.com/ghana/gh-paye","description":"Calculate Ghana take-home pay using 2026 GRA tax bands, SSNIT, and personal reliefs.","applicationCategory":"FinanceApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"GHS"},"provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
@@ -45,7 +66,7 @@ gtag('config', 'G-D859CGF391');
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What are the Ghana GRA PAYE tax bands for 2026?","acceptedAnswer":{"@type":"Answer","text":"Seven bands: 0% on first GHS 5,880; 5% on next GHS 1,320; 10% on next GHS 1,560; 17.5% on next GHS 38,000; 25% on next GHS 192,000; 30% on next GHS 360,000; 35% above GHS 600,000."}},{"@type":"Question","name":"What is SSNIT Tier III and how does it reduce tax?","acceptedAnswer":{"@type":"Answer","text":"Tier III is a voluntary pension scheme. Contributions are tax-deductible up to 16.5% of basic salary, directly reducing chargeable income before PAYE is applied."}},{"@type":"Question","name":"How are bonuses taxed in Ghana?","acceptedAnswer":{"@type":"Answer","text":"The first 15% of annual basic salary paid as bonus is taxed at a flat 5%. Any bonus exceeding 15% of basic is taxed at progressive GRA PAYE rates."}}]}
 </script>
   <link rel="stylesheet" href="/assets/css/print.css" media="print">
-<script src="/assets/js/lib/chart-config.js" defer></script>
+<script src="/assets/js/lib/chart-config.js"></script>
 <script src="/assets/js/lib/save-state.js"></script>
 <script>window.PAYE_SAVE_SLUG='gh-paye';</script>
 <script src="/assets/js/lib/paye-save.js" defer></script>
@@ -54,151 +75,151 @@ gtag('config', 'G-D859CGF391');
 <afro-navbar active="tools"></afro-navbar>
 
 <!-- Hero -->
-<section class="paye-hero">
-  <div class="paye-container">
-    <nav class="paye-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/ghana/">Ghana</a> / <span>PAYE Calculator</span></nav>
+<section class="tool-hero">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/ghana/">Ghana</a> / <span>PAYE Calculator</span></nav>
     <h1>Ghana PAYE Tax Calculator 2026</h1>
-    <p class="paye-hero-sub">GRA 7-band progressive tax (0%-35%), SSNIT Tier I/II/III optimizer, bonus calculator, all personal reliefs. Your exact take-home pay in Ghana cedis.</p>
-    <div class="paye-badges">
-      <span class="paye-badge paye-badge--accent">AI Advisor</span>
-      <span class="paye-badge">GRA 2026 Verified</span>
-      <span class="paye-badge">SSNIT Cap GHS 61,000</span>
-      <span class="paye-badge">Tier III Optimizer</span>
+    <p class="tool-hero-sub">GRA 7-band progressive tax (0%-35%), SSNIT Tier I/II/III optimizer, bonus calculator, all personal reliefs. Your exact take-home pay in Ghana cedis.</p>
+    <div class="hero-badges">
+      <span class="badge badge-green">AI Advisor</span>
+      <span class="badge">GRA 2026 Verified</span>
+      <span class="badge">SSNIT Cap GHS 61,000</span>
+      <span class="badge">Tier III Optimizer</span>
     </div>
-    <p class="paye-hero-meta">Source: GRA (gra.gov.gh) &middot; Income Tax Act 2015 (Act 896) &middot; SSNIT Act 1991 &middot; NPRA</p>
+    <p class="hero-meta">Source: GRA (gra.gov.gh) &middot; Income Tax Act 2015 (Act 896) &middot; SSNIT Act 1991 &middot; NPRA</p>
   </div>
 </section>
 
-<main class="paye-container paye-main">
-  <div class="paye-layout">
+<main class="container tool-main">
+  <div class="tool-grid">
 
     <!-- ═══ LEFT COLUMN ═══ -->
-    <div class="paye-calc-area">
+    <div class="tool-left">
 
       <!-- Input Card -->
-      <div class="paye-card">
-        <div class="paye-card-head">
-          <span class="paye-card-title">Enter Your Details</span>
-          <span class="paye-card-sub">Ghana Cedi &middot; GHS</span>
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Enter Your Details</span>
+          <span class="card-sub">Ghana Cedi &middot; GHS</span>
         </div>
-        <div class="paye-card-body">
+        <div class="card-body">
 
           <!-- Mode Toggle -->
-          <div class="paye-mode-row">
-            <button class="paye-mode-btn active" id="modeGross" data-mode="gross">Gross &rarr; Net</button>
-            <button class="paye-mode-btn" id="modeNet" data-mode="net">Net &rarr; Gross</button>
+          <div class="mode-toggle">
+            <button class="mode-btn active" id="modeGross" data-mode="gross">Gross &rarr; Net</button>
+            <button class="mode-btn" id="modeNet" data-mode="net">Net &rarr; Gross</button>
           </div>
 
           <!-- Gross/Net Salary -->
-          <div class="paye-field">
+          <div class="field">
             <label for="salaryInput" id="salaryLabel">Annual Gross Salary</label>
-            <div class="paye-input-wrap">
-              <span class="paye-prefix">GHS</span>
-              <input type="text" inputmode="decimal" class="paye-input" id="salaryInput" value="60,000" autocomplete="off">
+            <div class="f-wrap">
+              <span class="f-prefix">GHS</span>
+              <input type="text" inputmode="decimal" class="f-input" id="salaryInput" value="60,000" autocomplete="off">
             </div>
           </div>
 
           <!-- Quick Presets -->
-          <div class="paye-presets">
-            <button class="paye-preset" data-val="24000">GHS 2k/mo</button>
-            <button class="paye-preset" data-val="60000">GHS 5k/mo</button>
-            <button class="paye-preset" data-val="120000">GHS 10k/mo</button>
-            <button class="paye-preset" data-val="360000">GHS 30k/mo</button>
+          <div class="presets">
+            <button class="preset-btn" data-val="24000">GHS 2k/mo</button>
+            <button class="preset-btn" data-val="60000">GHS 5k/mo</button>
+            <button class="preset-btn" data-val="120000">GHS 10k/mo</button>
+            <button class="preset-btn" data-val="360000">GHS 30k/mo</button>
           </div>
 
           <!-- Basic Salary -->
-          <div class="paye-field">
+          <div class="field">
             <label for="basicSalary">Basic Salary (for SSNIT)</label>
-            <div class="paye-input-wrap">
-              <span class="paye-prefix">GHS</span>
-              <input type="text" inputmode="decimal" class="paye-input" id="basicSalary" placeholder="Leave blank = full gross" autocomplete="off">
+            <div class="f-wrap">
+              <span class="f-prefix">GHS</span>
+              <input type="text" inputmode="decimal" class="f-input" id="basicSalary" placeholder="Leave blank = full gross" autocomplete="off">
             </div>
-            <p class="paye-hint">SSNIT 5.5% applies to basic salary only, not allowances.</p>
+            <p class="f-note">SSNIT 5.5% applies to basic salary only, not allowances.</p>
           </div>
 
           <!-- SSNIT Toggles -->
-          <div class="paye-field">
+          <div class="field">
             <label>Pension (SSNIT)</label>
-            <div class="paye-toggles">
-              <label class="paye-toggle"><input type="checkbox" id="togSSNIT" checked><span class="paye-toggle-box"></span><div><strong>SSNIT Tier I + II</strong><span class="paye-toggle-rate">5.5% of basic</span></div></label>
-              <label class="paye-toggle"><input type="checkbox" id="togTier3"><span class="paye-toggle-box"></span><div><strong>SSNIT Tier III</strong><span class="paye-toggle-rate">Voluntary, tax-deductible</span></div></label>
+            <div class="toggles">
+              <label class="tog on"><input type="checkbox" id="togSSNIT" checked hidden><div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="tog-label">SSNIT Tier I + II</div><span class="tog-rate">5.5% of basic</span></div></label>
+              <label class="tog"><input type="checkbox" id="togTier3" hidden><div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="tog-label">SSNIT Tier III</div><span class="tog-rate">Voluntary, tax-deductible</span></div></label>
             </div>
           </div>
 
           <!-- Tier III Amount -->
-          <div class="paye-field" id="tier3Field" style="display:none;">
+          <div class="field" id="tier3Field" style="display:none;">
             <label for="tier3Amt">Tier III Contribution (Annual)</label>
-            <div class="paye-input-wrap">
-              <span class="paye-prefix">GHS</span>
-              <input type="text" inputmode="decimal" class="paye-input" id="tier3Amt" placeholder="0" autocomplete="off">
+            <div class="f-wrap">
+              <span class="f-prefix">GHS</span>
+              <input type="text" inputmode="decimal" class="f-input" id="tier3Amt" placeholder="0" autocomplete="off">
             </div>
-            <p class="paye-hint" style="color:#b45309;">Tier III directly reduces your chargeable income - one of Ghana's best legal tax reduction tools. Cap: 16.5% of basic.</p>
+            <p class="f-note" style="color:#b45309;">Tier III directly reduces your chargeable income - one of Ghana's best legal tax reduction tools. Cap: 16.5% of basic.</p>
           </div>
 
           <!-- Personal Reliefs -->
-          <div class="paye-field">
+          <div class="field">
             <label>Personal Reliefs (GRA-registered)</label>
-            <div class="paye-toggles">
-              <label class="paye-toggle"><input type="checkbox" id="togMarriage"><span class="paye-toggle-box"></span><div><strong>Marriage Relief</strong><span class="paye-toggle-rate">GHS 1,200/yr</span></div></label>
-              <label class="paye-toggle"><input type="checkbox" id="togChild1"><span class="paye-toggle-box"></span><div><strong>1 Child Relief</strong><span class="paye-toggle-rate">GHS 1,200/yr</span></div></label>
-              <label class="paye-toggle"><input type="checkbox" id="togChild2"><span class="paye-toggle-box"></span><div><strong>2 Children Relief</strong><span class="paye-toggle-rate">GHS 2,400/yr</span></div></label>
-              <label class="paye-toggle"><input type="checkbox" id="togDisabled"><span class="paye-toggle-box"></span><div><strong>Disability Relief</strong><span class="paye-toggle-rate">25% of income</span></div></label>
-              <label class="paye-toggle"><input type="checkbox" id="togOldAge"><span class="paye-toggle-box"></span><div><strong>Old Age (60+)</strong><span class="paye-toggle-rate">GHS 1,500/yr</span></div></label>
-              <label class="paye-toggle"><input type="checkbox" id="togDependent"><span class="paye-toggle-box"></span><div><strong>Dependent Relative</strong><span class="paye-toggle-rate">GHS 1,000/yr</span></div></label>
+            <div class="toggles">
+              <label class="tog"><input type="checkbox" id="togMarriage" hidden><div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="tog-label">Marriage Relief</div><span class="tog-rate">GHS 1,200/yr</span></div></label>
+              <label class="tog"><input type="checkbox" id="togChild1" hidden><div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="tog-label">1 Child Relief</div><span class="tog-rate">GHS 1,200/yr</span></div></label>
+              <label class="tog"><input type="checkbox" id="togChild2" hidden><div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="tog-label">2 Children Relief</div><span class="tog-rate">GHS 2,400/yr</span></div></label>
+              <label class="tog"><input type="checkbox" id="togDisabled" hidden><div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="tog-label">Disability Relief</div><span class="tog-rate">25% of income</span></div></label>
+              <label class="tog"><input type="checkbox" id="togOldAge" hidden><div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="tog-label">Old Age (60+)</div><span class="tog-rate">GHS 1,500/yr</span></div></label>
+              <label class="tog"><input type="checkbox" id="togDependent" hidden><div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="tog-label">Dependent Relative</div><span class="tog-rate">GHS 1,000/yr</span></div></label>
             </div>
           </div>
 
-          <button class="paye-calc-btn" id="calcBtn">Calculate My Take-Home Pay</button>
+          <button class="calc-btn" id="calcBtn">Calculate My Take-Home Pay</button>
         </div>
       </div>
 
       <!-- Results -->
-      <div class="paye-results" id="resultsCard" style="display:none;" aria-live="polite">
-        <div class="paye-results-hero">
-          <div class="paye-results-label" id="resLabel">Monthly Take-Home Pay</div>
-          <div class="paye-results-amount" id="resAmount">GHS 0</div>
-          <div class="paye-results-sub" id="resGross"></div>
+      <div class="results-card" id="resultsCard" style="display:none;" aria-live="polite">
+        <div class="res-hero">
+          <div class="res-hero-label" id="resLabel">Monthly Take-Home Pay</div>
+          <div class="res-hero-amount" id="resAmount">GHS 0</div>
+          <div class="res-hero-gross" id="resGross"></div>
         </div>
-        <div class="paye-results-body">
+        <div class="res-body">
           <!-- Period Toggle -->
-          <div class="paye-period-row">
-            <button class="paye-period active" data-period="monthly">Monthly</button>
-            <button class="paye-period" data-period="annual">Annual</button>
+          <div class="period-row">
+            <button class="per-btn active" data-period="monthly">Monthly</button>
+            <button class="per-btn" data-period="annual">Annual</button>
           </div>
 
           <div id="resRows"></div>
 
           <!-- Effective Rate -->
-          <div class="paye-rate-bar">
-            <div class="paye-rate-header"><span>Effective Tax Rate</span><span id="effRate">0%</span></div>
-            <div class="paye-rate-track"><div class="paye-rate-fill" id="rateFill"></div></div>
+          <div class="rate-bar-wrap">
+            <div class="rate-bar-hdr"><span>Effective Tax Rate</span><span id="effRate">0%</span></div>
+            <div class="rate-track"><div class="rate-fill" id="rateFill"></div></div>
           </div>
 
           <!-- Tier III Optimizer -->
-          <div class="paye-callout" id="tier3Optimizer" style="display:none;">
+          <div class="exempt-box" id="tier3Optimizer" style="display:none;">
             <strong>Tier III Optimizer:</strong> <span id="tier3OptimizerText"></span>
           </div>
 
           <!-- Employer Cost -->
-          <div class="paye-employer" id="employerStrip" style="display:none;"></div>
+          <div class="employer-card" id="employerStrip" style="display:none;"></div>
 
           <!-- Chart -->
-          <div class="paye-chart-section">
-            <div class="paye-chart-tabs">
-              <button class="paye-chart-tab active" data-chart="donut">Breakdown</button>
-              <button class="paye-chart-tab" data-chart="bar">Tax Bands</button>
-              <button class="paye-chart-tab" data-chart="employer">Employer Cost</button>
+          <div class="chart-section">
+            <div class="chart-tabs">
+              <button class="chart-tab active" data-chart="donut">Breakdown</button>
+              <button class="chart-tab" data-chart="bar">Tax Bands</button>
+              <button class="chart-tab" data-chart="employer">Employer Cost</button>
             </div>
-            <div class="paye-chart-wrap"><canvas id="mainChart" width="400" height="250"></canvas></div>
+            <div class="chart-canvas-wrap"><canvas id="mainChart" width="400" height="250"></canvas></div>
           </div>
 
           <!-- Actions -->
-          <div class="paye-actions">
-            <button class="paye-action-btn" id="pdfBtn">
+          <div class="action-row">
+            <button class="act-btn" id="pdfBtn">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
               Download PDF
             </button>
-            <button class="paye-action-btn" id="shareBtn">
+            <button class="act-btn" id="shareBtn">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
               Share Result
             </button>
@@ -207,15 +228,15 @@ gtag('config', 'G-D859CGF391');
       </div>
 
       <!-- Bonus Calculator -->
-      <div class="paye-card" id="bonusCard" style="display:none;">
-        <div class="paye-card-head">
-          <span class="paye-card-title">Bonus Tax Calculator</span>
-          <span class="paye-card-sub">First 15% of basic at 5%, rest at progressive rates</span>
+      <div class="card" id="bonusCard" style="display:none;">
+        <div class="card-head">
+          <span class="card-title">Bonus Tax Calculator</span>
+          <span class="card-sub">First 15% of basic at 5%, rest at progressive rates</span>
         </div>
-        <div class="paye-card-body">
-          <div class="paye-field">
+        <div class="card-body">
+          <div class="field">
             <label for="bonusAmt">Bonus Amount (Annual)</label>
-            <div class="paye-input-wrap"><span class="paye-prefix">GHS</span><input type="text" inputmode="decimal" class="paye-input" id="bonusAmt" placeholder="0" autocomplete="off"></div>
+            <div class="f-wrap"><span class="f-prefix">GHS</span><input type="text" inputmode="decimal" class="f-input" id="bonusAmt" placeholder="0" autocomplete="off"></div>
           </div>
           <div id="bonusResult" style="display:none;"></div>
         </div>
@@ -223,61 +244,110 @@ gtag('config', 'G-D859CGF391');
     </div>
 
     <!-- ═══ RIGHT SIDEBAR ═══ -->
-    <aside class="paye-sidebar">
+    <aside class="sidebar">
       <!-- AI Advisor -->
-      <div class="paye-ai-card">
-        <div class="paye-ai-head"><span class="paye-ai-dot"></span><strong>AI Tax Advisor</strong><span class="paye-ai-by">by Claude</span></div>
-        <div class="paye-ai-body">
-          <p class="paye-ai-status" id="aiStatus">Calculate your salary first for personalised Ghana tax advice.</p>
-          <div class="paye-ai-response" id="aiResp" style="display:none;"></div>
-          <button class="paye-ai-btn" id="aiBtn" disabled>Calculate first to unlock</button>
+      <div class="ai-card">
+        <div class="ai-head"><span class="ai-dot"></span><strong>AI Tax Advisor</strong><span class="ai-head-by">by Claude</span></div>
+        <div class="ai-body">
+          <p class="ai-status" id="aiStatus">Calculate your salary first for personalised Ghana tax advice.</p>
+          <div class="ai-response" id="aiResp" style="display:none;"></div>
+          <button class="ai-btn" id="aiBtn" disabled>Calculate first to unlock</button>
         </div>
       </div>
 
+
+
+      <div class="tool-info-card">
+        <div class="tool-info-header">
+          <img src="/assets/img/tools/gh-vat.webp" alt="Ghana PAYE Calculator" class="tool-info-img" loading="lazy">
+          <div class="tool-info-meta">
+            <div class="tool-info-name">Ghana PAYE Calculator</div>
+            <div class="tool-info-cat">Tax &amp; Finance</div>
+          </div>
+        </div>
+        <div class="tool-info-body">
+          <div class="tool-info-stats">
+            <div class="tool-stat"><div class="tool-stat-val">2.4K</div><div class="tool-stat-lbl">Calculations</div></div>
+            <div class="tool-stat"><div class="tool-stat-val">4.8</div><div class="tool-stat-lbl">Rating</div></div>
+            <div class="tool-stat"><div class="tool-stat-val">Free</div><div class="tool-stat-lbl">Forever</div></div>
+          </div>
+          <div class="tool-info-features">
+            <span class="tool-feat">Net Pay Calc</span>
+            <span class="tool-feat">Tax Bands</span>
+            <span class="tool-feat">PDF Export</span>
+            <span class="tool-feat">AI Advisor</span>
+            <span class="tool-feat">Deductions</span>
+          </div>
+        </div>
+        <div class="tool-info-footer">
+          <span class="tool-info-updated">Updated: Mar 2026</span>
+          <div class="tool-info-actions">
+            <button class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Share</button>
+            <a class="tool-info-action" href="/tools/paye-calculator/">All Countries</a>
+          </div>
+        </div>
+      </div>
       <!-- GRA Tax Bands -->
-      <div class="paye-card">
-        <div class="paye-card-head"><span class="paye-card-title">GRA 2026 Tax Bands</span></div>
-        <div class="paye-card-body">
-          <div class="paye-band-row"><span>First GHS 5,880/yr</span><strong style="color:var(--color-brand);">0%</strong></div>
-          <div class="paye-band-row"><span>Next GHS 1,320</span><strong>5%</strong></div>
-          <div class="paye-band-row"><span>Next GHS 1,560</span><strong>10%</strong></div>
-          <div class="paye-band-row"><span>Next GHS 38,000</span><strong>17.5%</strong></div>
-          <div class="paye-band-row"><span>Next GHS 192,000</span><strong>25%</strong></div>
-          <div class="paye-band-row"><span>Next GHS 360,000</span><strong>30%</strong></div>
-          <div class="paye-band-row"><span>Above GHS 600,000</span><strong>35%</strong></div>
-          <p class="paye-hint" style="margin-top:8px;">Applied on chargeable income after SSNIT, Tier III, and reliefs. Source: GRA, Act 896.</p>
+      <div class="card">
+        <div class="card-head"><span class="card-title">GRA 2026 Tax Bands</span></div>
+        <div class="card-body">
+          <div class="band-row"><span>First GHS 5,880/yr</span><strong style="color:var(--color-brand);">0%</strong></div>
+          <div class="band-row"><span>Next GHS 1,320</span><strong>5%</strong></div>
+          <div class="band-row"><span>Next GHS 1,560</span><strong>10%</strong></div>
+          <div class="band-row"><span>Next GHS 38,000</span><strong>17.5%</strong></div>
+          <div class="band-row"><span>Next GHS 192,000</span><strong>25%</strong></div>
+          <div class="band-row"><span>Next GHS 360,000</span><strong>30%</strong></div>
+          <div class="band-row"><span>Above GHS 600,000</span><strong>35%</strong></div>
+          <p class="f-note" style="margin-top:8px;">Applied on chargeable income after SSNIT, Tier III, and reliefs. Source: GRA, Act 896.</p>
         </div>
       </div>
 
       <!-- SSNIT Reference -->
-      <div class="paye-card">
-        <div class="paye-card-head"><span class="paye-card-title">SSNIT Reference</span></div>
-        <div class="paye-card-body">
-          <div class="paye-band-row"><span>Employee Tier I (SSNIT)</span><strong>0.5%</strong></div>
-          <div class="paye-band-row"><span>Employee Tier II (Provident)</span><strong>5.0%</strong></div>
-          <div class="paye-band-row"><span>Total Employee SSNIT</span><strong>5.5%</strong></div>
-          <div class="paye-band-row"><span>Employer Contribution</span><strong>13.0%</strong></div>
-          <div class="paye-band-row"><span>2026 Insurable Cap</span><strong>GHS 61,000/yr</strong></div>
-          <div class="paye-band-row"><span>Max Employee SSNIT/yr</span><strong>GHS 3,355</strong></div>
-          <p class="paye-hint" style="margin-top:8px;">Tier III voluntary: tax-deductible up to 16.5% of basic. Source: SSNIT Act 247, NPRA.</p>
+      <div class="card">
+        <div class="card-head"><span class="card-title">SSNIT Reference</span></div>
+        <div class="card-body">
+          <div class="band-row"><span>Employee Tier I (SSNIT)</span><strong>0.5%</strong></div>
+          <div class="band-row"><span>Employee Tier II (Provident)</span><strong>5.0%</strong></div>
+          <div class="band-row"><span>Total Employee SSNIT</span><strong>5.5%</strong></div>
+          <div class="band-row"><span>Employer Contribution</span><strong>13.0%</strong></div>
+          <div class="band-row"><span>2026 Insurable Cap</span><strong>GHS 61,000/yr</strong></div>
+          <div class="band-row"><span>Max Employee SSNIT/yr</span><strong>GHS 3,355</strong></div>
+          <p class="f-note" style="margin-top:8px;">Tier III voluntary: tax-deductible up to 16.5% of basic. Source: SSNIT Act 247, NPRA.</p>
         </div>
       </div>
 
-      <p class="paye-disclaimer"><strong>Disclaimer:</strong> For informational purposes only. Personal reliefs require GRA registration. Confirm with a qualified Ghanaian tax professional.</p>
+      <p class="disclaimer"><strong>Disclaimer:</strong> For informational purposes only. Personal reliefs require GRA registration. Confirm with a qualified Ghanaian tax professional.</p>
     </aside>
   </div>
 </main>
 
 <!-- FAQ -->
-<section class="paye-container paye-faq-section">
+<section class="container faq-sec">
   <h2>Ghana Tax FAQ</h2>
-  <div class="paye-faq-grid">
-    <details class="paye-faq"><summary>What are the Ghana GRA PAYE tax bands for 2026?</summary><div class="paye-faq-body">Seven bands: 0% on first GHS 5,880; 5% on next GHS 1,320; 10% on next GHS 1,560; 17.5% on next GHS 38,000; 25% on next GHS 192,000; 30% on next GHS 360,000; 35% above GHS 600,000.</div></details>
-    <details class="paye-faq"><summary>How is SSNIT calculated in Ghana?</summary><div class="paye-faq-body">Employees contribute 5.5% of basic salary (Tier I: 0.5% + Tier II: 5%). Employers add 13%. 2026 insurable earnings cap is GHS 61,000/year - max employee SSNIT is GHS 3,355/year.</div></details>
-    <details class="paye-faq"><summary>What is SSNIT Tier III and how does it reduce tax?</summary><div class="paye-faq-body">Tier III is a voluntary occupational pension. Contributions are tax-deductible up to 16.5% of basic salary, directly reducing chargeable income before PAYE. It's one of Ghana's most powerful legal tax tools.</div></details>
-    <details class="paye-faq"><summary>How are bonuses taxed in Ghana?</summary><div class="paye-faq-body">The first 15% of annual basic salary paid as bonus is taxed at a flat 5%. Any bonus above 15% of basic is taxed at progressive GRA PAYE rates.</div></details>
-    <details class="paye-faq"><summary>What personal reliefs can I claim?</summary><div class="paye-faq-body">Marriage relief (GHS 1,200/yr), child relief (GHS 1,200 per child, up to 2), disability (25% of income), old age 60+ (GHS 1,500/yr), dependent relative (GHS 1,000/yr). All require GRA registration.</div></details>
-    <details class="paye-faq"><summary>What is the employer's total cost in Ghana?</summary><div class="paye-faq-body">Total employer cost = employee gross + 13% employer SSNIT on basic (capped at GHS 61,000). For GHS 60,000 gross with GHS 40,000 basic, employer cost is approximately GHS 65,200/year.</div></details>
+  <div class="faq-grid">
+    <details class="faq-item"><summary>What are the Ghana GRA PAYE tax bands for 2026?</summary><div class="faq-a">Seven bands: 0% on first GHS 5,880; 5% on next GHS 1,320; 10% on next GHS 1,560; 17.5% on next GHS 38,000; 25% on next GHS 192,000; 30% on next GHS 360,000; 35% above GHS 600,000.</div></details>
+    <details class="faq-item"><summary>How is SSNIT calculated in Ghana?</summary><div class="faq-a">Employees contribute 5.5% of basic salary (Tier I: 0.5% + Tier II: 5%). Employers add 13%. 2026 insurable earnings cap is GHS 61,000/year - max employee SSNIT is GHS 3,355/year.</div></details>
+    <details class="faq-item"><summary>What is SSNIT Tier III and how does it reduce tax?</summary><div class="faq-a">Tier III is a voluntary occupational pension. Contributions are tax-deductible up to 16.5% of basic salary, directly reducing chargeable income before PAYE. It's one of Ghana's most powerful legal tax tools.</div></details>
+    <details class="faq-item"><summary>How are bonuses taxed in Ghana?</summary><div class="faq-a">The first 15% of annual basic salary paid as bonus is taxed at a flat 5%. Any bonus above 15% of basic is taxed at progressive GRA PAYE rates.</div></details>
+    <details class="faq-item"><summary>What personal reliefs can I claim?</summary><div class="faq-a">Marriage relief (GHS 1,200/yr), child relief (GHS 1,200 per child, up to 2), disability (25% of income), old age 60+ (GHS 1,500/yr), dependent relative (GHS 1,000/yr). All require GRA registration.</div></details>
+    <details class="faq-item"><summary>What is the employer's total cost in Ghana?</summary><div class="faq-a">Total employer cost = employee gross + 13% employer SSNIT on basic (capped at GHS 61,000). For GHS 60,000 gross with GHS 40,000 basic, employer cost is approximately GHS 65,200/year.</div></details>
+  </div>
+</section>
+
+<section class="more-tools-sec">
+  <div class="more-tools-inner">
+    <h2 class="more-tools-title">More African Tax Tools</h2>
+    <div class="more-tools-grid">
+      <a href="/nigeria/ng-salary-tax" class="more-tool-link">🇳🇬 Nigeria PAYE Calculator</a>
+      <a href="/kenya/ke-paye" class="more-tool-link">🇰🇪 Kenya PAYE Calculator</a>
+      <a href="/south-africa/za-paye" class="more-tool-link">🇿🇦 South Africa PAYE Calculator</a>
+      <a href="/egypt/eg-paye" class="more-tool-link">🇪🇬 Egypt PAYE Calculator</a>
+      <a href="/ethiopia/et-paye" class="more-tool-link">🇪🇹 Ethiopia PAYE Calculator</a>
+      <a href="/tanzania/tz-paye" class="more-tool-link">🇹🇿 Tanzania PAYE Calculator</a>
+      <a href="/rwanda/rw-paye" class="more-tool-link">🇷🇼 Rwanda PAYE Calculator</a>
+      <a href="/tools/vat-calculator/" class="more-tool-link">🌍 Pan-African VAT Calculator</a>
+      <a href="/tools/currency-converter/" class="more-tool-link">💱 African Currency Converter</a>
+    </div>
   </div>
 </section>
 
@@ -392,7 +462,13 @@ gtag('config', 'G-D859CGF391');
   // ═══ MAIN CALCULATE ═══
   function calculate() {
     let salary = parseAmt($('salaryInput').value);
-    if (salary <= 0) return;
+    if (!salary || salary <= 0) {
+      const el = $('salaryInput');
+      el.focus(); el.style.borderColor = '#e53e3e';
+      el.setAttribute('placeholder', 'Enter a valid salary');
+      setTimeout(() => { el.style.borderColor = ''; el.removeAttribute('placeholder'); }, 3000);
+      return;
+    }
 
     let gross;
     if (calcMode === 'net') {
@@ -430,31 +506,31 @@ gtag('config', 'G-D859CGF391');
     setTimeout(() => { $('rateFill').style.width = Math.min(R.effectiveRate * 200, 100) + '%'; }, 50);
 
     // Rows
-    const row = (lbl, val, cls = '') => `<div class="paye-row"><span>${lbl}</span><span class="${cls}">${val}</span></div>`;
+    const row = (lbl, val, cls = '') => `<div class="res-row"><span>${lbl}</span><span class="${cls}">${val}</span></div>`;
     let html = '';
-    html += `<div class="paye-section-title">Gross Income</div>`;
+    html += `<div class="res-section-title">Gross Income</div>`;
     html += row('Gross Salary', fmt(R.gross / d));
-    html += `<div class="paye-section-title">SSNIT Contributions</div>`;
-    html += R.ssnit > 0 ? row('SSNIT Tier I + II (5.5%)', '-' + fmt(R.ssnit / d), 'paye-val-red') : row('SSNIT Tier I + II', 'Not selected', 'paye-val-muted');
-    if (R.tier3 > 0) html += row('SSNIT Tier III (voluntary)', '-' + fmt(R.tier3 / d), 'paye-val-red');
+    html += `<div class="res-section-title">SSNIT Contributions</div>`;
+    html += R.ssnit > 0 ? row('SSNIT Tier I + II (5.5%)', '-' + fmt(R.ssnit / d), 'c-red') : row('SSNIT Tier I + II', 'Not selected', 'c-muted');
+    if (R.tier3 > 0) html += row('SSNIT Tier III (voluntary)', '-' + fmt(R.tier3 / d), 'c-red');
     if (R.totalRelief > 0) {
-      html += `<div class="paye-section-title">Personal Reliefs</div>`;
-      if (R.marriage > 0) html += row('Marriage Relief', '-' + fmt(R.marriage / d), 'paye-val-green');
-      if (R.childRel > 0) html += row('Child Relief', '-' + fmt(R.childRel / d), 'paye-val-green');
-      if (R.disabled > 0) html += row('Disability Relief (25%)', '-' + fmt(R.disabled / d), 'paye-val-green');
-      if (R.oldAge > 0) html += row('Old Age Relief (60+)', '-' + fmt(R.oldAge / d), 'paye-val-green');
-      if (R.dependent > 0) html += row('Dependent Relative', '-' + fmt(R.dependent / d), 'paye-val-green');
+      html += `<div class="res-section-title">Personal Reliefs</div>`;
+      if (R.marriage > 0) html += row('Marriage Relief', '-' + fmt(R.marriage / d), 'c-grn');
+      if (R.childRel > 0) html += row('Child Relief', '-' + fmt(R.childRel / d), 'c-grn');
+      if (R.disabled > 0) html += row('Disability Relief (25%)', '-' + fmt(R.disabled / d), 'c-grn');
+      if (R.oldAge > 0) html += row('Old Age Relief (60+)', '-' + fmt(R.oldAge / d), 'c-grn');
+      if (R.dependent > 0) html += row('Dependent Relative', '-' + fmt(R.dependent / d), 'c-grn');
     }
-    html += `<div class="paye-section-title">Income Tax</div>`;
-    html += row('Chargeable Income', fmt(R.chargeableIncome / d), 'paye-val-muted');
+    html += `<div class="res-section-title">Income Tax</div>`;
+    html += row('Chargeable Income', fmt(R.chargeableIncome / d), 'c-muted');
     if (R.chargeableIncome <= 5880) {
-      html += `<div class="paye-callout" style="margin:8px 0;">Below GHS 5,880 threshold - no PAYE tax due.</div>`;
+      html += `<div class="exempt-box" style="margin:8px 0;">Below GHS 5,880 threshold - no PAYE tax due.</div>`;
     } else {
-      html += row('PAYE Tax (GRA 2026)', '-' + fmt(R.tax / d), 'paye-val-red');
+      html += row('PAYE Tax (GRA 2026)', '-' + fmt(R.tax / d), 'c-red');
     }
-    html += `<div class="paye-section-title">Summary</div>`;
-    html += row('Total Deductions', '-' + fmt(R.totalDeductions / d), 'paye-val-red');
-    html += `<div class="paye-row paye-row--total"><span>Take-Home Pay</span><span class="paye-val-brand">${fmt(R.netAnnual / d)}</span></div>`;
+    html += `<div class="res-section-title">Summary</div>`;
+    html += row('Total Deductions', '-' + fmt(R.totalDeductions / d), 'c-red');
+    html += `<div class="res-row res-row total"><span>Take-Home Pay</span><span class="c-grn">${fmt(R.netAnnual / d)}</span></div>`;
 
     $('resRows').innerHTML = html;
 
@@ -515,11 +591,11 @@ gtag('config', 'G-D859CGF391');
 
     $('bonusResult').style.display = 'block';
     $('bonusResult').innerHTML = `
-      <div class="paye-row"><span>Bonus Amount</span><span>${fmt(bonusAmt)}</span></div>
-      <div class="paye-row"><span>Flat 5% portion (first 15% of basic = ${fmt(threshold)})</span><span class="paye-val-red">-${fmt(flatTax)}</span></div>
-      ${excessPortion > 0 ? `<div class="paye-row"><span>Excess at ${(marginalRate * 100).toFixed(1)}% marginal rate</span><span class="paye-val-red">-${fmt(excessTax)}</span></div>` : ''}
-      <div class="paye-row"><span>Total Bonus Tax</span><span class="paye-val-red">-${fmt(totalBonusTax)}</span></div>
-      <div class="paye-row paye-row--total"><span>Net Bonus</span><span class="paye-val-brand">${fmt(netBonus)}</span></div>
+      <div class="res-row"><span>Bonus Amount</span><span>${fmt(bonusAmt)}</span></div>
+      <div class="res-row"><span>Flat 5% portion (first 15% of basic = ${fmt(threshold)})</span><span class="c-red">-${fmt(flatTax)}</span></div>
+      ${excessPortion > 0 ? `<div class="res-row"><span>Excess at ${(marginalRate * 100).toFixed(1)}% marginal rate</span><span class="c-red">-${fmt(excessTax)}</span></div>` : ''}
+      <div class="res-row"><span>Total Bonus Tax</span><span class="c-red">-${fmt(totalBonusTax)}</span></div>
+      <div class="res-row res-row total"><span>Net Bonus</span><span class="c-grn">${fmt(netBonus)}</span></div>
     `;
   }
 
@@ -582,6 +658,7 @@ gtag('config', 'G-D859CGF391');
   // ═══ PDF ═══
   async function exportPdf() {
     if (!R || !window.AfroTools?.pdf) return;
+    try {
     const d = period === 'monthly' ? 12 : 1;
     const rows = [
       { label: 'Gross Salary', value: fmt(R.gross / d) },
@@ -616,6 +693,7 @@ gtag('config', 'G-D859CGF391');
       source: 'GRA (gra.gov.gh), Income Tax Act 2015 (Act 896) as amended, SSNIT Act 1991 (Act 247), NPRA. SSNIT insurable cap GHS 61,000/yr. PAYE remittance by 15th of following month.'
     });
   } catch(e) { console.error('[AfroTools] PDF failed:', e); window.print(); }
+  }
 
   // ═══ AI ADVISOR ═══
   async function getAI() {
@@ -633,13 +711,16 @@ gtag('config', 'G-D859CGF391');
           messages: [{ role: 'user', content: prompt }]
         })
       });
+      if (res.status === 429) throw new Error('rate-limit');
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const data = await res.json();
       const text = data.text || 'Unable to generate analysis.';
       $('aiResp').textContent = text;
       $('aiBtn').textContent = 'Analysis complete';
-    } catch {
-      $('aiResp').textContent = 'AI analysis temporarily unavailable. Your calculation results above are accurate.';
+    } catch(e) {
+      $('aiResp').textContent = e.message === 'rate-limit'
+        ? 'Too many requests — please try again in a minute.'
+        : 'AI analysis temporarily unavailable. Your calculation results above are accurate.';
       $('aiBtn').disabled = false; $('aiBtn').textContent = 'Try Again';
     }
   }
@@ -657,25 +738,32 @@ gtag('config', 'G-D859CGF391');
     salaryEl.addEventListener('blur', function() { const v = parseAmt(this.value); if (v > 0) this.value = v.toLocaleString('en-US'); });
 
     // Presets
-    document.querySelectorAll('.paye-preset').forEach(btn => {
+    document.querySelectorAll('.preset-btn').forEach(btn => {
       btn.addEventListener('click', () => { $('salaryInput').value = parseInt(btn.dataset.val).toLocaleString('en-US'); calculate(); });
+    });
+
+    // Toggle .on class sync for all tog labels
+    document.querySelectorAll('.tog input[type="checkbox"]').forEach(cb => {
+      cb.addEventListener('change', () => {
+        cb.closest('.tog').classList.toggle('on', cb.checked);
+      });
     });
 
     // Tier III toggle
     $('togTier3').addEventListener('change', () => { $('tier3Field').style.display = $('togTier3').checked ? 'block' : 'none'; });
 
     // Child mutual exclusion
-    $('togChild1').addEventListener('change', () => { if ($('togChild1').checked) $('togChild2').checked = false; });
-    $('togChild2').addEventListener('change', () => { if ($('togChild2').checked) $('togChild1').checked = false; });
+    $('togChild1').addEventListener('change', () => { if ($('togChild1').checked) { $('togChild2').checked = false; $('togChild2').closest('.tog').classList.remove('on'); } });
+    $('togChild2').addEventListener('change', () => { if ($('togChild2').checked) { $('togChild1').checked = false; $('togChild1').closest('.tog').classList.remove('on'); } });
 
     // Calc button
     $('calcBtn').addEventListener('click', calculate);
     salaryEl.addEventListener('keydown', e => { if (e.key === 'Enter') calculate(); });
 
     // Period toggle
-    document.querySelectorAll('.paye-period').forEach(btn => {
+    document.querySelectorAll('.per-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        document.querySelectorAll('.paye-period').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.per-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         period = btn.dataset.period;
         if (R) renderResults();
@@ -683,9 +771,9 @@ gtag('config', 'G-D859CGF391');
     });
 
     // Chart tabs
-    document.querySelectorAll('.paye-chart-tab').forEach(btn => {
+    document.querySelectorAll('.chart-tab').forEach(btn => {
       btn.addEventListener('click', () => {
-        document.querySelectorAll('.paye-chart-tab').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.chart-tab').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         chartType = btn.dataset.chart;
         renderChart(chartType);

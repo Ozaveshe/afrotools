@@ -19,6 +19,7 @@
 <meta name="robots" content="index, follow">
 <meta property="og:title" content="Equatorial Guinea PAYE Calculator | AfroTools">
 <meta property="og:locale" content="es_GQ">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Equatorial Guinea PAYE Calculator 2025/2026","url":"https://afrotools.com/eq-guinea/gq-paye","description":"Calculate Equatorial Guinea PAYE income tax with IRPF bands, social security deductions.","applicationCategory":"FinanceApplication","operatingSystem":"Web","inLanguage":"en","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"XAF"},"provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}</script>
 <style>
   :root {
     --calc-accent: #2563EB;
@@ -30,13 +31,40 @@
   }
   .tool-hero { background: #0a0a0a}
 .tool-hero{background:var(--dark); }
+
+  .tool-info-card{background:#fff;border:1px solid #DBEAFE;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+  .tool-info-header{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid #EFF6FF;background:#F5F9FF}
+  .tool-info-img{width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0}
+  .tool-info-meta{flex:1;min-width:0}
+  .tool-info-name{font-size:.82rem;font-weight:700;color:#0f172a;line-height:1.2;margin-bottom:2px}
+  .tool-info-cat{font-size:.62rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B8CAE}
+  .tool-info-body{padding:14px 18px}
+  .tool-info-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
+  .tool-stat{text-align:center}
+  .tool-stat-val{font-size:1rem;font-weight:800;color:#007AFF;line-height:1}
+  .tool-stat-lbl{font-size:.6rem;font-weight:500;color:#6B8CAE;text-transform:uppercase;letter-spacing:.04em;margin-top:3px}
+  .tool-info-features{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+  .tool-feat{font-size:.62rem;font-weight:600;padding:3px 8px;background:#EFF6FF;border:1px solid #DBEAFE;border-radius:3px;color:#0f172a}
+  .tool-info-footer{display:flex;justify-content:space-between;align-items:center;padding:10px 18px;border-top:1px solid #EFF6FF;background:#FAFBFF}
+  .tool-info-updated{font-size:.62rem;color:#6B8CAE}
+  .tool-info-actions{display:flex;gap:6px}
+  .tool-info-action{font-size:.62rem;font-weight:600;color:#007AFF;text-decoration:none;padding:3px 8px;border:1px solid #DBEAFE;border-radius:4px;background:#fff;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
+  .tool-info-action:hover{background:#EFF6FF;border-color:#007AFF}
+  @media(max-width:900px){.tool-info-card{order:1}}
+  @media(max-width:480px){.tool-info-stats{grid-template-columns:1fr 1fr 1fr}.tool-info-header{padding:12px 14px}.tool-info-body{padding:10px 14px}}
 </style>
 <link rel="stylesheet" href="/assets/css/global.min.css">
 <link rel="stylesheet" href="/assets/css/calculator.min.css">
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<script src="/assets/js/lib/chart-config.js" defer></script>
+<script src="/assets/js/lib/chart-config.js"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Equatorial Guinea PAYE Calculator 2025/26","url":"https://afrotools.com/eq-guinea/gq-paye","description":"Calculate Equatorial Guinea take-home pay using 2025/26 IRPF tax bands (0%–35%), social security contributions. XAF CFA franc.","applicationCategory":"FinanceApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"XAF"},"provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com"},{"@type":"ListItem","position":2,"name":"Equatorial Guinea","item":"https://afrotools.com/eq-guinea"},{"@type":"ListItem","position":3,"name":"PAYE Calculator","item":"https://afrotools.com/eq-guinea/gq-paye"}]}
+</script>
 </head>
 <body class="tool-page">
 <afro-navbar active="tools"></afro-navbar>
@@ -91,6 +119,15 @@
               <input type="number" class="f-input" id="grossSalary" placeholder="300,000" min="0" value="300000" oninput="onInput(this)" style="width:100%;padding:11px 13px 11px 60px;background:#f5f5f5;border:1.5px solid #ddd;border-radius:7px;font-size:1rem;font-weight:600;outline:none;-moz-appearance:textfield">
             </div>
           </div>
+          <!-- Quick Presets -->
+          <div class="presets">
+            <button class="preset-btn" onclick="setPreset(300000, this)">XAF 300k</button>
+            <button class="preset-btn" onclick="setPreset(1000000, this)">XAF 1M</button>
+            <button class="preset-btn" onclick="setPreset(2000000, this)">XAF 2M</button>
+            <button class="preset-btn" onclick="setPreset(4000000, this)">XAF 4M</button>
+            <button class="preset-btn" onclick="setPreset(7000000, this)">XAF 7M</button>
+          </div>
+
 
           <div style="margin-bottom:18px">
             <div style="font-size:.75rem;font-weight:700;margin-bottom:6px;color:#333">Active Deductions</div>
@@ -187,6 +224,38 @@
         </div>
       </div>
 
+      <div class="tool-info-card">
+        <div class="tool-info-header">
+          <img src="/assets/img/tools/gq-vat.webp" alt="Equatorial Guinea PAYE Calculator" class="tool-info-img" loading="lazy">
+          <div class="tool-info-meta">
+            <div class="tool-info-name">Equatorial Guinea PAYE Calculator</div>
+            <div class="tool-info-cat">Tax &amp; Finance</div>
+          </div>
+        </div>
+        <div class="tool-info-body">
+          <div class="tool-info-stats">
+            <div class="tool-stat"><div class="tool-stat-val">2.4K</div><div class="tool-stat-lbl">Calculations</div></div>
+            <div class="tool-stat"><div class="tool-stat-val">4.8</div><div class="tool-stat-lbl">Rating</div></div>
+            <div class="tool-stat"><div class="tool-stat-val">Free</div><div class="tool-stat-lbl">Forever</div></div>
+          </div>
+          <div class="tool-info-features">
+            <span class="tool-feat">Net Pay Calc</span>
+            <span class="tool-feat">Tax Bands</span>
+            <span class="tool-feat">PDF Export</span>
+            <span class="tool-feat">AI Advisor</span>
+            <span class="tool-feat">Deductions</span>
+          </div>
+        </div>
+        <div class="tool-info-footer">
+          <span class="tool-info-updated">Updated: Mar 2026</span>
+          <div class="tool-info-actions">
+            <button class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Share</button>
+            <a class="tool-info-action" href="/tools/paye-calculator/">All Countries</a>
+          </div>
+        </div>
+      </div>
+
+
       <div class="disclaimer" style="font-size:.71rem;color:#666;line-height:1.6;padding:13px 16px;background:#f9f9f9;border:1px solid #ddd;border-radius:8px">
         <strong>Disclaimer:</strong> For informational purposes only. Not professional tax advice. Verify with Ministry of Finance or a qualified tax advisor.
       </div>
@@ -232,15 +301,18 @@
   </div>
 </div>
 
-<section style="max-width:800px;margin:3rem auto 0;padding:2rem;background:#fff;border-radius:0.875rem;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
-  <h2 style="font-size:1.25rem;font-weight:700;margin-bottom:1rem;color:#1e293b;">More African Tax Tools</h2>
-  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0.75rem;">
-    <a href="/nigeria/ng-salary-tax" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;transition:border-color 0.2s;">🇳🇬 Nigeria PAYE Calculator</a>
-    <a href="/kenya/ke-paye" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;transition:border-color 0.2s;">🇰🇪 Kenya PAYE Calculator</a>
-    <a href="/ghana/gh-paye" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;transition:border-color 0.2s;">🇬🇭 Ghana PAYE Calculator</a>
-    <a href="/south-africa/za-paye" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;transition:border-color 0.2s;">🇿🇦 South Africa PAYE Calculator</a>
-    <a href="/tools/vat-calculator/vat-calc" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;transition:border-color 0.2s;">🌍 Pan-African VAT Calculator</a>
-    <a href="/tools/currency-converter/" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;transition:border-color 0.2s;">💱 African Currency Converter</a>
+<section class="more-tools-sec">
+  <div class="more-tools-inner">
+    <h2 class="more-tools-title">More African Tax Tools</h2>
+    <div class="more-tools-grid">
+      <a href="/nigeria/ng-salary-tax" class="more-tool-link">Nigeria PAYE Calculator</a>
+      <a href="/kenya/ke-paye" class="more-tool-link">Kenya PAYE Calculator</a>
+      <a href="/ghana/gh-paye" class="more-tool-link">Ghana PAYE Calculator</a>
+      <a href="/south-africa/za-paye" class="more-tool-link">South Africa PAYE Calculator</a>
+      <a href="/egypt/eg-paye" class="more-tool-link">Egypt PAYE Calculator</a>
+      <a href="/tools/vat-calculator/vat-calc" class="more-tool-link">Pan-African VAT Calculator</a>
+      <a href="/tools/currency-converter/" class="more-tool-link">African Currency Converter</a>
+    </div>
   </div>
 </section>
 
@@ -262,7 +334,16 @@ updateSliderFill(document.getElementById('salarySlider'));
 function togItem(e){e.classList.toggle('on')}
 function isOn(t){return!!document.querySelector(`[data-tog="${t}"]`)?.classList.contains('on')}
 function calcAnnualIRPF(i){const n=Math.max(0,i),d=[];if(n<=1e6)return d.push({rate:0,income:n,tax:0}),{tax:0,bandBreakdown:d};let a=0;d.push({rate:0,income:1e6,tax:0});if(n>1e6){const s=Math.min(n-1e6,2e6);a+=s*0.1,d.push({rate:0.1,income:s,tax:s*0.1})}if(n>3e6){const s=Math.min(n-3e6,2e6);a+=s*0.15,d.push({rate:0.15,income:s,tax:s*0.15})}if(n>5e6){const s=Math.min(n-5e6,5e6);a+=s*0.2,d.push({rate:0.2,income:s,tax:s*0.2})}if(n>1e7){const s=Math.min(n-1e7,5e6);a+=s*0.25,d.push({rate:0.25,income:s,tax:s*0.25})}if(n>1.5e7){const s=Math.min(n-1.5e7,1e7);a+=s*0.3,d.push({rate:0.3,income:s,tax:s*0.3})}if(n>2.5e7){const s=n-2.5e7;a+=s*0.35,d.push({rate:0.35,income:s,tax:s*0.35})}return{tax:a,bandBreakdown:d.filter(e=>e.income>0)}}
-function calculate(){const e=parseFloat(document.getElementById('grossSalary').value)||0;if(!e||e<=0)return document.getElementById('grossSalary').focus(),void(document.getElementById('grossSalary').style.borderColor='#e53e3e');const n=isOn('socSec'),s=n?0.045:0,r=0.215,o=e*s,a=e*r,l=e*12,d=o*12,c=Math.max(0,l-d),t=calcAnnualIRPF(c),u=t.tax/12,i=t.bandBreakdown,m=o+u,h=e-m,b=e>0?u/e:0;RESULT={gross:e,monthly:e,socSec:o,socSecRate:s,empSocSec:a,monthlyPAYE:u,bandBreakdown:i,annualPAYE:t.tax,totalEmployeeDeductions:m,netMonthly:h,effectiveRate:b,annualGross:l,annualNet:h*12,annualTax:t.tax,annualSocSec:d,totalEmployerCostMonthly:e+a},document.getElementById('resAmount').textContent=fmt(h),document.getElementById('resGross').textContent=`Gross: ${fmt(e)}/month · ${fmt(l)}/year`,document.getElementById('resContent').innerHTML=renderRows(RESULT,PERIOD),document.getElementById('effRateDisplay').textContent=pct(b),setTimeout(()=>{document.getElementById('rateFill').style.width=Math.min(b*200,100)+'%'},80),document.getElementById('hiddenGross').value=e,document.getElementById('employerStrip').innerHTML=`<strong>Total Employer Cost: ${fmt(RESULT.totalEmployerCostMonthly)}/month</strong> — gross + social security ${fmt(a)}/mo.`,document.getElementById('employerStrip').style.display='block',document.getElementById('resultsCard').style.display='block',renderChart(CHART_TYPE),document.getElementById('resultsCard').scrollIntoView({behavior:'smooth',block:'nearest'}),document.getElementById('aiBtn').disabled=!1,document.getElementById('aiBtn').textContent='Get AI Tax Analysis →',document.getElementById('aiStatus').textContent=`Gross: ${fmt(e)}/mo · Take-home: ${fmt(h)}/mo · Tax: ${fmt(u)}/mo · Effective: ${pct(b)}`}
+  function setPreset(val, btn) {
+    document.getElementById('grossSalary').value = val;
+    document.getElementById('salarySlider').value = val;
+    onSlider(document.getElementById('salarySlider'));
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+    if(btn) btn.classList.add('active');
+    calculate();
+  }
+
+  function calculate(){const e=parseFloat(document.getElementById('grossSalary').value)||0;if(!e||e<=0){const _el=document.getElementById('grossSalary');_el.focus();_el.style.borderColor='#e53e3e';_el.setAttribute('placeholder','Enter a valid salary');setTimeout(()=>{_el.style.borderColor='';_el.removeAttribute('placeholder')},3000);return}const n=isOn('socSec'),s=n?0.045:0,r=0.215,o=e*s,a=e*r,l=e*12,d=o*12,c=Math.max(0,l-d),t=calcAnnualIRPF(c),u=t.tax/12,i=t.bandBreakdown,m=o+u,h=e-m,b=e>0?u/e:0;RESULT={gross:e,monthly:e,socSec:o,socSecRate:s,empSocSec:a,monthlyPAYE:u,bandBreakdown:i,annualPAYE:t.tax,totalEmployeeDeductions:m,netMonthly:h,effectiveRate:b,annualGross:l,annualNet:h*12,annualTax:t.tax,annualSocSec:d,totalEmployerCostMonthly:e+a},document.getElementById('resAmount').textContent=fmt(h),document.getElementById('resGross').textContent=`Gross: ${fmt(e)}/month · ${fmt(l)}/year`,document.getElementById('resContent').innerHTML=renderRows(RESULT,PERIOD),document.getElementById('effRateDisplay').textContent=pct(b),setTimeout(()=>{document.getElementById('rateFill').style.width=Math.min(b*200,100)+'%'},80),document.getElementById('hiddenGross').value=e,document.getElementById('employerStrip').innerHTML=`<strong>Total Employer Cost: ${fmt(RESULT.totalEmployerCostMonthly)}/month</strong> — gross + social security ${fmt(a)}/mo.`,document.getElementById('employerStrip').style.display='block',document.getElementById('resultsCard').style.display='block',renderChart(CHART_TYPE),document.getElementById('resultsCard').scrollIntoView({behavior:'smooth',block:'nearest'}),document.getElementById('aiBtn').disabled=!1,document.getElementById('aiBtn').textContent='Get AI Tax Analysis →',document.getElementById('aiStatus').textContent=`Gross: ${fmt(e)}/mo · Take-home: ${fmt(h)}/mo · Tax: ${fmt(u)}/mo · Effective: ${pct(b)}`}
 function renderRows(e,n){const s='annual'===n,r=s?e.annualGross:e.gross,o=s?e.annualSocSec:e.socSec,a=s?e.annualTax:e.monthlyPAYE,l=s?e.annualNet:e.netMonthly,d=s?e.annualTax+e.annualSocSec:e.totalEmployeeDeductions,c=s?'/year':'/month',t=(e,n,s='')=>`<div style="display:flex;justify-content:space-between;padding:5px 0;font-size:.85rem;border-top:1px solid #f5f5f5"><span style="color:#555">${e}</span><span style="font-weight:700;color:#333${s?' '+s:''}">${n}</span></div>`;return`<div style="margin-bottom:16px"><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;color:#666;margin-bottom:8px;padding-bottom:7px;border-bottom:1px solid #f5f5f5">Gross Income</div>${t(`Gross Salary${c}`,fmt(r))}</div><div style="margin-bottom:16px"><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;color:#666;margin-bottom:8px;padding-bottom:7px;border-bottom:1px solid #f5f5f5">Deductions</div>${e.socSec>0?t(`Social Security (${pct(e.socSecRate)})`,fmt(o),' c-red'):''}<span style="color:#666">${t(`Net taxable income${c}`,fmt(s?e.annualGross-e.annualSocSec:e.gross-e.socSec),' c-mut')}</span></div><div style="margin-bottom:16px"><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;color:#666;margin-bottom:8px;padding-bottom:7px;border-bottom:1px solid #f5f5f5">IRPF Income Tax</div>${t(`Income tax${c}`,fmt(a),' c-red')}</div><div>${t('Total Deductions',fmt(d),' c-red')}<div style="display:flex;justify-content:space-between;padding:5px 0;font-size:.85rem;border-top:2px solid #ddd;margin-top:4px;padding-top:10px"><span style="font-weight:700;color:#333">Take-Home Pay</span><span style="font-size:1.05rem;font-weight:800;color:var(--primary)">${fmt(l)}</span></div></div>`}
 function setPeriod(e,n){PERIOD=e,document.querySelectorAll('.per-btn').forEach(e=>e.classList.remove('on')),n.classList.add('on'),n.style.background='#fff',n.style.color='var(--primary)',RESULT&&(document.getElementById('resContent').innerHTML=renderRows(RESULT,e))}
 function toggleBands(e){const n=e.nextElementSibling;n.style.display='none'===n.style.display?'block':'none';const s=e.querySelector('.tog-arrow');s.style.transform='none'===s.style.transform||'rotate(0deg)'===s.style.transform?'rotate(180deg)':'rotate(0deg)'}

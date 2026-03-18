@@ -10,15 +10,36 @@
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png"><link rel="canonical" href="https://afrotools.com/madagascar/mg-paye"><link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg"><meta property="og:title" content="Madagascar PAYE Calculator | AfroTools"><meta property="og:url" content="https://afrotools.com/madagascar/mg-paye"><meta property="og:locale" content="mg_MG"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet"><link rel="stylesheet" href="/assets/css/tokens.min.css"><link rel="stylesheet" href="/assets/css/global.min.css">
 <link rel="stylesheet" href="/assets/css/calculator.min.css"><script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script><script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script><style>
   :root {
-    --calc-accent: #E31C23;
-    --calc-accent-rgb: 227,28,35;
-    --calc-accent-subtle: #E31C2312;
-    --calc-gold: #f5d76e;
-    --calc-gold-rgb: 245,215,110;
-    --mg-red:#E31C23;--mg-white:#FFF;--mg-green:#007AFF
+    --calc-accent: #007E39;
+    --calc-accent-rgb: 0,126,57;
+    --calc-accent-subtle: #007E3912;
+    --calc-gold: #f5a623;
+    --calc-gold-rgb: 245,166,35;
+    --mg-red:#E31C23;--mg-white:#FFF;--mg-green:#007E39
   }
   .tool-hero::after { content: '🇲🇬'; position: absolute; right: 5%; top: 50%; transform: translateY(-50%); font-size: 8rem; opacity: .06; pointer-events: none; }
-  .tool-hero { background: #E31C23; }
+  .tool-hero { background: linear-gradient(135deg, #007E39 0%, #005a28 100%); }
+
+  .tool-info-card{background:#fff;border:1px solid #DBEAFE;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+  .tool-info-header{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid #EFF6FF;background:#F5F9FF}
+  .tool-info-img{width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0}
+  .tool-info-meta{flex:1;min-width:0}
+  .tool-info-name{font-size:.82rem;font-weight:700;color:#0f172a;line-height:1.2;margin-bottom:2px}
+  .tool-info-cat{font-size:.62rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B8CAE}
+  .tool-info-body{padding:14px 18px}
+  .tool-info-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
+  .tool-stat{text-align:center}
+  .tool-stat-val{font-size:1rem;font-weight:800;color:#007AFF;line-height:1}
+  .tool-stat-lbl{font-size:.6rem;font-weight:500;color:#6B8CAE;text-transform:uppercase;letter-spacing:.04em;margin-top:3px}
+  .tool-info-features{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+  .tool-feat{font-size:.62rem;font-weight:600;padding:3px 8px;background:#EFF6FF;border:1px solid #DBEAFE;border-radius:3px;color:#0f172a}
+  .tool-info-footer{display:flex;justify-content:space-between;align-items:center;padding:10px 18px;border-top:1px solid #EFF6FF;background:#FAFBFF}
+  .tool-info-updated{font-size:.62rem;color:#6B8CAE}
+  .tool-info-actions{display:flex;gap:6px}
+  .tool-info-action{font-size:.62rem;font-weight:600;color:#007AFF;text-decoration:none;padding:3px 8px;border:1px solid #DBEAFE;border-radius:4px;background:#fff;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
+  .tool-info-action:hover{background:#EFF6FF;border-color:#007AFF}
+  @media(max-width:900px){.tool-info-card{order:1}}
+  @media(max-width:480px){.tool-info-stats{grid-template-columns:1fr 1fr 1fr}.tool-info-header{padding:12px 14px}.tool-info-body{padding:10px 14px}}
 </style>
 <meta name="robots" content="index, follow">
 <meta name="twitter:card" content="summary_large_image">
@@ -34,24 +55,68 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is Madagascar's PAYE structure?","acceptedAnswer":{"@type":"Answer","text":"Two bands: 0% on first MGA 350,000/month, and 20% on income above that. CNAPS pension is 1% employee + 13% employer, capped at MGA 1.61M/month."}},{"@type":"Question","name":"Is CNAPS deductible from taxable income?","acceptedAnswer":{"@type":"Answer","text":"Yes. The 1% CNAPS employee contribution is deductible from gross before calculating PAYE tax. Only 1% is deductible; above-cap amounts are not."}},{"@type":"Question","name":"What is the CNAPS cap?","acceptedAnswer":{"@type":"Answer","text":"CNAPS contributions are capped at MGA 1.61M per month. Once your gross salary reaches this contribution ceiling, no further CNAPS is deducted."}},{"@type":"Question","name":"How is Madagascar PAYE calculated?","acceptedAnswer":{"@type":"Answer","text":"Monthly: deduct CNAPS (1%, capped), then apply 0% band (first 350k) and 20% band (above 350k) to the remaining taxable income."}}]}
 </script>
-<script src="/assets/js/lib/chart-config.js" defer></script>
+<script src="/assets/js/lib/chart-config.js"></script>
 </head><body class="tool-page">
 <afro-navbar active="tools"></afro-navbar>
 <section class="tool-hero"><div class="tool-hero-inner"><nav class="breadcrumb"><a href="/">Home</a> / <a href="/madagascar/">🇲🇬 Madagascar</a> / <span>PAYE Calculator</span></nav><h1>Madagascar PAYE<br><em>Calculator 2025/26</em></h1><p class="hero-sub">Progressive tax 0%–20% on monthly income. CNAPS pension (1%+13%, capped MGA 1.61M/mo). Monthly calculation.</p><div class="hero-badges"><span class="badge b-white">✦ Includes AI Advisor</span><span class="badge b-white">MGA · Malagasy Ariary</span></div></div></section>
 <div class="amendment-bar"><div class="amendment-bar-inner"><p><strong>2025/26 Key Facts:</strong> Tax: <strong>0% first MGA 350,000/mo</strong>; <strong>20% above 350,000</strong>. CNAPS: <strong>1% employee + 13% employer</strong>, capped at <strong>MGA 1.61M/mo</strong>. Monthly calculation on gross.</p></div></div>
-<div class="tool-main"><div class="tool-main-inner"><div><div class="card"><div class="card-head"><span class="card-title">Enter Your Details</span><span class="card-sub">Malagasy Ariary · MGA</span></div><div class="card-body"><div class="slider-wrap"><div class="slider-row"><span class="slider-label">Monthly Gross Salary</span><span class="slider-val" id="sliderVal">MGA 1,000,000</span></div><input type="range" id="salarySlider" min="100000" max="5000000" step="100000" value="1000000" oninput="onSlider(this)"><div class="slider-limits"><span>MGA 100,000</span><span>MGA 5,000,000</span></div></div><div class="field"><div class="f-label"><span class="f-label-text">Or type exact monthly amount</span><span class="f-hint">Before any deductions</span></div><div class="f-wrap"><span class="f-prefix">MGA</span><input type="number" class="f-input" id="grossSalary" placeholder="1,000,000" min="0" step="100000" value="1000000" oninput="onInput(this)"></div></div><div class="field"><div class="f-label"><span class="f-label-text">Active Deductions</span></div><div style="display:flex;align-items:center;gap:9px;padding:10px 12px;background:#f9f9f9;border:1.5px solid #ddd;border-radius:7px"><input type="checkbox" id="cnapsChk" checked onclick="togCNAPS()"><label for="cnapsChk" style="font-size:.72rem;font-weight:700;color:#333;margin:0;cursor:pointer">CNAPS Pension (1%, capped MGA 1.61M/mo)</label></div></div><button class="calc-btn" onclick="calculate()">Calculate My Take-Home Pay →</button></div></div><div class="card results-card" id="resultsCard"><div class="res-hero"><div class="res-hero-label">Monthly Take-Home Pay</div><div class="res-hero-amount" id="resAmount">MGA 0</div><div class="res-hero-period">After tax &amp; CNAPS</div><div class="res-hero-gross" id="resGross"></div></div><div class="res-body"><div class="period-row"><button class="per-btn on" onclick="setPeriod('monthly',this)">Monthly</button><button class="per-btn" onclick="setPeriod('annual',this)">Annual</button></div><div id="resContent"></div><div class="rate-bar-wrap"><div class="rate-bar-hdr"><span class="rate-bar-lbl">Effective Tax Rate</span><span class="rate-bar-pct" id="effRateDisplay">0%</span></div><div class="rate-track"><div class="rate-fill" id="rateFill"></div></div></div></div><div class="chart-section"><div class="chart-tabs"><button class="chart-tab on" onclick="setChart('donut',this)">Breakdown</button></div><div class="chart-canvas-wrap"><canvas id="mainChart"></canvas></div></div><div class="action-row"><button class="act-btn act-pdf" onclick="openPdfModal()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Download PDF</button><button class="act-btn act-share" id="mgShareBtn" onclick="shareResult()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share Result</button></div></div></div><div class="sidebar"><div class="ai-card"><div class="ai-head"><div class="ai-dot"></div><span class="ai-head-title">AI Tax Advisor</span><span class="ai-head-by">Powered by Claude</span></div><div class="ai-body"><p class="ai-status" id="aiStatus">Calculate first.</p><div class="ai-response" id="aiResp"></div><button class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Calculate first to unlock →</button></div></div><div class="card bands-card"><div class="card-head" onclick="toggleBands(this)"><span class="card-title">Madagascar Tax Bands</span><span class="tog-arrow">▾</span></div><div class="bands-body"><div class="band-row"><span class="band-range">MGA 0 – 350,000/mo</span><span class="band-rate">0%</span></div><div class="band-row"><span class="band-range">Above MGA 350,000</span><span class="band-rate">20%</span></div><div class="band-note">CNAPS: 1% employee (capped MGA 1.61M/mo) + 13% employer.</div></div></div><div class="disclaimer"><strong>Disclaimer:</strong> Informational only. Verify with local tax authority.</div></div></div></div>
+<div class="tool-main"><div class="tool-main-inner"><div><div class="card"><div class="card-head"><span class="card-title">Enter Your Details</span><span class="card-sub">Malagasy Ariary · MGA</span></div><div class="card-body"><div class="slider-wrap"><div class="slider-row"><span class="slider-label">Monthly Gross Salary</span><span class="slider-val" id="sliderVal">MGA 1,000,000</span></div><input type="range" id="salarySlider" min="100000" max="5000000" step="100000" value="1000000" oninput="onSlider(this)"><div class="slider-limits"><span>MGA 100,000</span><span>MGA 5,000,000</span></div></div><div class="field"><div class="f-label"><span class="f-label-text">Or type exact monthly amount</span><span class="f-hint">Before any deductions</span></div><div class="f-wrap"><span class="f-prefix">MGA</span><input type="number" class="f-input" id="grossSalary" placeholder="1,000,000" min="0" step="100000" value="1000000" oninput="onInput(this)"></div></div>
+          <!-- Quick Presets -->
+          <div class="presets">
+            <button class="preset-btn" onclick="setPreset(500000, this)">MGA 500k</button>
+            <button class="preset-btn" onclick="setPreset(1000000, this)">MGA 1M</button>
+            <button class="preset-btn" onclick="setPreset(2000000, this)">MGA 2M</button>
+            <button class="preset-btn" onclick="setPreset(3500000, this)">MGA 3.5M</button>
+            <button class="preset-btn" onclick="setPreset(5000000, this)">MGA 5M</button>
+          </div>
+<div class="field"><div class="f-label"><span class="f-label-text">Active Deductions</span></div><div style="display:flex;align-items:center;gap:9px;padding:10px 12px;background:#f9f9f9;border:1.5px solid #ddd;border-radius:7px"><input type="checkbox" id="cnapsChk" checked onclick="togCNAPS()"><label for="cnapsChk" style="font-size:.72rem;font-weight:700;color:#333;margin:0;cursor:pointer">CNAPS Pension (1%, capped MGA 1.61M/mo)</label></div></div><button class="calc-btn" onclick="calculate()">Calculate My Take-Home Pay →</button></div></div><div class="card results-card" id="resultsCard"><div class="res-hero"><div class="res-hero-label">Monthly Take-Home Pay</div><div class="res-hero-amount" id="resAmount">MGA 0</div><div class="res-hero-period">After tax &amp; CNAPS</div><div class="res-hero-gross" id="resGross"></div></div><div class="res-body"><div class="period-row"><button class="per-btn on" onclick="setPeriod('monthly',this)">Monthly</button><button class="per-btn" onclick="setPeriod('annual',this)">Annual</button></div><div id="resContent"></div><div class="rate-bar-wrap"><div class="rate-bar-hdr"><span class="rate-bar-lbl">Effective Tax Rate</span><span class="rate-bar-pct" id="effRateDisplay">0%</span></div><div class="rate-track"><div class="rate-fill" id="rateFill"></div></div></div><div class="info-strip" id="employerStrip"></div></div><div class="chart-section"><div class="chart-tabs"><button class="chart-tab on" onclick="setChart('donut',this)">Breakdown</button><button class="chart-tab" onclick="setChart('employer',this)">Employer Cost</button></div><div class="chart-canvas-wrap"><canvas id="mainChart"></canvas></div></div><div class="action-row"><button class="act-btn act-pdf" onclick="openPdfModal()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Download PDF</button><button class="act-btn act-share" id="mgShareBtn" onclick="shareResult()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share Result</button></div></div></div><div class="sidebar"><div class="ai-card"><div class="ai-head"><div class="ai-dot"></div><span class="ai-head-title">AI Tax Advisor</span><span class="ai-head-by">Powered by Claude</span></div><div class="ai-body"><p class="ai-status" id="aiStatus">Calculate first.</p><div class="ai-response" id="aiResp"></div><button class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Calculate first to unlock →</button></div></div><div class="card bands-card"><div class="card-head" onclick="toggleBands(this)"><span class="card-title">Madagascar Tax Bands</span><span class="tog-arrow">▾</span></div><div class="bands-body"><div class="band-row"><span class="band-range">MGA 0 – 350,000/mo</span><span class="band-rate">0%</span></div><div class="band-row"><span class="band-range">Above MGA 350,000</span><span class="band-rate">20%</span></div><div class="band-note">CNAPS: 1% employee (capped MGA 1.61M/mo) + 13% employer.</div></div></div><div class="disclaimer"><strong>Disclaimer:</strong> Informational only. Verify with local tax authority.</div></div></div></div>
+
+
+      <div class="tool-info-card">
+        <div class="tool-info-header">
+          <img src="/assets/img/tools/mg-vat.webp" alt="Madagascar PAYE Calculator" class="tool-info-img" loading="lazy">
+          <div class="tool-info-meta">
+            <div class="tool-info-name">Madagascar PAYE Calculator</div>
+            <div class="tool-info-cat">Tax &amp; Finance</div>
+          </div>
+        </div>
+        <div class="tool-info-body">
+          <div class="tool-info-stats">
+            <div class="tool-stat"><div class="tool-stat-val">2.4K</div><div class="tool-stat-lbl">Calculations</div></div>
+            <div class="tool-stat"><div class="tool-stat-val">4.8</div><div class="tool-stat-lbl">Rating</div></div>
+            <div class="tool-stat"><div class="tool-stat-val">Free</div><div class="tool-stat-lbl">Forever</div></div>
+          </div>
+          <div class="tool-info-features">
+            <span class="tool-feat">Net Pay Calc</span>
+            <span class="tool-feat">Tax Bands</span>
+            <span class="tool-feat">PDF Export</span>
+            <span class="tool-feat">AI Advisor</span>
+            <span class="tool-feat">Deductions</span>
+          </div>
+        </div>
+        <div class="tool-info-footer">
+          <span class="tool-info-updated">Updated: Mar 2026</span>
+          <div class="tool-info-actions">
+            <button class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Share</button>
+            <a class="tool-info-action" href="/tools/paye-calculator/">All Countries</a>
+          </div>
+        </div>
+      </div>
 <section class="faq-sec"><div class="faq-inner"><span class="eyebrow">Madagascar Tax FAQ</span><h2 class="sec-title">Common Questions</h2><div class="faq-grid"><div class="faq-item"><div class="faq-q">What is Madagascar's PAYE structure?</div><p class="faq-a">Two bands: 0% on first MGA 350,000/month, and 20% on income above that. CNAPS pension is 1% employee + 13% employer, capped at MGA 1.61M/month.</p></div><div class="faq-item"><div class="faq-q">Is CNAPS deductible from taxable income?</div><p class="faq-a">Yes. The 1% CNAPS employee contribution is deductible from gross before calculating PAYE tax. Only 1% is deductible; above-cap amounts are not.</p></div><div class="faq-item"><div class="faq-q">What is the CNAPS cap?</div><p class="faq-a">CNAPS contributions are capped at MGA 1.61M per month. Once your gross salary reaches this contribution ceiling, no further CNAPS is deducted.</p></div><div class="faq-item"><div class="faq-q">How is Madagascar PAYE calculated?</div><p class="faq-a">Monthly: deduct CNAPS (1%, capped), then apply 0% band (first 350k) and 20% band (above 350k) to the remaining taxable income.</p></div></div></div></section>
 <div class="modal-bg" id="pdfModal"><div class="modal"><div id="modalForm"><h3>📄 Download Your PAYE Summary</h3><p>Enter your email to get a detailed PDF.</p><form name="pdf-leads" data-netlify="true" netlify-honeypot="bot-field" id="leadForm" onsubmit="submitPdf(event)"><input type="hidden" name="form-name" value="pdf-leads"><input type="hidden" name="country" value="Madagascar"><input type="hidden" name="country_code" value="MG"><input type="hidden" name="tool" value="paye"><input type="hidden" name="tool_id" value="mg-paye"><input type="hidden" name="currency" value="MGA"><input type="hidden" name="gross_salary" id="hiddenGross" value=""><input class="modal-input" type="text" name="name" id="pdfName" placeholder="Your name (optional)" autocomplete="name"><input class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Your email address" required><button class="modal-submit" type="submit">Get My PDF →</button></form><button class="modal-cancel" onclick="closePdfModal()">No thanks</button></div><div class="modal-success" id="modalSuccess" style="display:none"><div class="big-check">✅</div><h4>PDF opening</h4></div></div></div>
         <p style="display:none"><input name="bot-field"></p>
-<section style="max-width:800px;margin:3rem auto 0;padding:2rem;background:#fff;border-radius:0.875rem;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
-  <h2 style="font-size:1.25rem;font-weight:700;margin-bottom:1rem;color:#1e293b;">More African Tax Tools</h2>
-  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0.75rem;">
-    <a href="/nigeria/ng-salary-tax" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;transition:border-color 0.2s;">🇳🇬 Nigeria PAYE Calculator</a>
-    <a href="/kenya/ke-paye" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;transition:border-color 0.2s;">🇰🇪 Kenya PAYE Calculator</a>
-    <a href="/ghana/gh-paye" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;transition:border-color 0.2s;">🇬🇭 Ghana PAYE Calculator</a>
-    <a href="/south-africa/za-paye" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;transition:border-color 0.2s;">🇿🇦 South Africa PAYE Calculator</a>
-    <a href="/tools/vat-calculator/vat-calc" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;transition:border-color 0.2s;">🌍 Pan-African VAT Calculator</a>
-    <a href="/tools/currency-converter/" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;transition:border-color 0.2s;">💱 African Currency Converter</a>
+<section class="more-tools-sec">
+  <div class="more-tools-inner">
+    <h2 class="more-tools-title">More African Tax Tools</h2>
+    <div class="more-tools-grid">
+      <a href="/nigeria/ng-salary-tax" class="more-tool-link">Nigeria PAYE Calculator</a>
+      <a href="/kenya/ke-paye" class="more-tool-link">Kenya PAYE Calculator</a>
+      <a href="/ghana/gh-paye" class="more-tool-link">Ghana PAYE Calculator</a>
+      <a href="/south-africa/za-paye" class="more-tool-link">South Africa PAYE Calculator</a>
+      <a href="/egypt/eg-paye" class="more-tool-link">Egypt PAYE Calculator</a>
+      <a href="/tools/vat-calculator/vat-calc" class="more-tool-link">Pan-African VAT Calculator</a>
+      <a href="/tools/currency-converter/" class="more-tool-link">African Currency Converter</a>
+    </div>
   </div>
 </section>
 
@@ -79,13 +144,24 @@ function calcTax(gross) {
   else { tax = (taxable - 350000) * 0.20; }
   return { cnaps, tax, taxable };
 }
-function calculate() {
+  function setPreset(val, btn) {
+    document.getElementById('grossSalary').value = val;
+    document.getElementById('salarySlider').value = val;
+    onSlider(document.getElementById('salarySlider'));
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+    if(btn) btn.classList.add('active');
+    calculate();
+  }
+
+  function calculate() {
   const gross = parseFloat(document.getElementById('grossSalary').value) || 0;
-  if (gross <= 0) { const el = document.getElementById('grossSalary'); el.focus(); el.style.borderColor = '#e31c23'; setTimeout(() => el.style.borderColor = '', 2000); return; }
+  if (gross <= 0) { const el = document.getElementById('grossSalary'); el.focus(); el.style.borderColor = '#e53e3e'; el.setAttribute('placeholder', 'Enter a valid salary'); setTimeout(() => { el.style.borderColor = ''; el.removeAttribute('placeholder'); }, 3000); return; }
   const { cnaps, tax } = calcTax(gross);
   const net = gross - cnaps - tax;
   const eff = gross > 0 ? tax / gross : 0;
-  RESULT = { gross, cnaps, tax, net, effectiveRate: eff, annualGross: gross * 12, annualNet: net * 12 };
+  const employerCNaPS = gross * 0.13;
+  const totalEmployerCost = gross + employerCNaPS;
+  RESULT = { gross, cnaps, tax, net, effectiveRate: eff, annualGross: gross * 12, annualNet: net * 12, employerCNaPS, totalEmployerCost };
   document.getElementById('resAmount').textContent = fmt(net);
   document.getElementById('resGross').textContent = `Gross: ${fmt(gross)}/mo · ${fmt(gross * 12)}/yr`;
   document.getElementById('resContent').innerHTML = renderRows(RESULT, PERIOD);
@@ -97,6 +173,8 @@ function calculate() {
   document.getElementById('aiBtn').disabled = false;
   document.getElementById('aiBtn').textContent = 'Get AI Tax Analysis →';
   document.getElementById('aiStatus').textContent = `Gross: ${fmt(gross)}/mo · Take-home: ${fmt(net)}/mo · Tax: ${fmt(tax)}/mo`;
+  const empStrip = document.getElementById('employerStrip');
+  if (empStrip) { empStrip.classList.add('on'); empStrip.innerHTML = '<strong>Total Employer Cost: ' + fmt(RESULT.totalEmployerCost) + '/month</strong> — gross salary + employer CNaPS (13%) ' + fmt(RESULT.employerCNaPS) + '/month.'; }
 }
 function renderRows(R, period) {
   const isAnnual = period === 'annual';
@@ -121,6 +199,8 @@ function renderChart(type) {
   if (CHART) { CHART.destroy(); CHART = null; }
   if (type === 'donut') {
     CHART = new Chart(canvas, { type: 'doughnut', data: { labels: ['Take-Home', 'PAYE Tax', 'CNAPS'], datasets: [{ data: [R.net, R.tax, R.cnaps], backgroundColor: AfroChartColors.doughnut.slice(0, 3), borderWidth: 2, borderColor: '#333' }] }, options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{size:11,weight:'600'}, padding:12 } } } } });
+  } else if (type === 'employer') {
+    CHART = new Chart(canvas, { type: 'bar', data: { labels: ['Take-Home','PAYE Tax','CNAPS (Employee)','CNaPS (Employer)'], datasets: [{ label:'Amount', data: [R.net, R.tax, R.cnaps, R.employerCNaPS], backgroundColor: AfroChartColors.doughnut.slice(0,4), borderRadius:5 }] }, options: { responsive:true, maintainAspectRatio:false, indexAxis:'y', plugins:{ legend:{display:false} }, scales:{ x:{ ticks:{callback:v=>'MGA'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid:{color:AfroChartColors.grid} }, y:{ticks:{font:{size:10,weight:'600'}}} } } });
   }
 }
 function openPdfModal()  { if(!RESULT) return; document.getElementById('pdfModal').classList.add('on'); document.getElementById('modalForm').style.display='block'; document.getElementById('modalSuccess').style.display='none'; }

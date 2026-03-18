@@ -44,7 +44,7 @@ gtag('config', 'G-D859CGF391');
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the VAT rate in Nigeria?","acceptedAnswer":{"@type":"Answer","text":"Nigeria's VAT rate is 7.5%, one of the lowest in Africa. Basic food items were exempted from January 2026 under the new tax reform."}},{"@type":"Question","name":"What is the VAT rate in Kenya?","acceptedAnswer":{"@type":"Answer","text":"Kenya's standard VAT rate is 16%. Some goods and services are zero-rated or exempt."}},{"@type":"Question","name":"What is the VAT rate in South Africa?","acceptedAnswer":{"@type":"Answer","text":"South Africa's VAT rate is 15%, increased from 14% in April 2018. Basic foodstuffs are zero-rated."}},{"@type":"Question","name":"Which African country has the highest VAT?","acceptedAnswer":{"@type":"Answer","text":"Morocco and Madagascar share the highest standard VAT rate in Africa at 20%. Cameroon follows at 19.25%."}},{"@type":"Question","name":"What is the difference between adding and extracting VAT?","acceptedAnswer":{"@type":"Answer","text":"Adding VAT calculates the total price from a net (before-tax) amount. Extracting VAT separates the tax portion from a VAT-inclusive price. For example, with 15% VAT: adding to 100 gives 115, extracting from 115 gives net 100 and VAT 15."}},{"@type":"Question","name":"Which African countries have no VAT?","acceptedAnswer":{"@type":"Answer","text":"Somalia, Eritrea, and Libya currently do not have operational VAT systems."}}]}
 </script>
-<script src="/assets/js/lib/chart-config.js" defer></script>
+<script src="/assets/js/lib/chart-config.js"></script>
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
@@ -85,6 +85,7 @@ gtag('config', 'G-D859CGF391');
         <button class="vat-tab active" role="tab" data-tab="single">Single Amount</button>
         <button class="vat-tab" role="tab" data-tab="invoice">Multi-Item Invoice</button>
         <button class="vat-tab" role="tab" data-tab="compare">Compare Countries</button>
+        <button class="vat-tab" role="tab" data-tab="withholding">VAT Withholding</button>
       </div>
 
       <!-- ═══ SINGLE AMOUNT TAB ═══ -->
@@ -100,11 +101,31 @@ gtag('config', 'G-D859CGF391');
             <button class="vat-mode" id="modeExtract" data-mode="extract">&larr; Extract VAT</button>
           </div>
 
+          <!-- Custom rate override -->
+          <div class="vat-custom-rate" id="customRateWrap">
+            <label class="vat-custom-toggle">
+              <input type="checkbox" id="customRateCheck"> Use custom VAT rate
+            </label>
+            <div class="vat-custom-input" id="customRateField" style="display:none;">
+              <input type="text" inputmode="decimal" class="vat-input" id="customRateInput" placeholder="e.g. 12.5" autocomplete="off" style="width:100px;text-align:center;">
+              <span class="vat-custom-pct">%</span>
+            </div>
+          </div>
+
           <div class="vat-field">
             <label for="amountInput" id="amountLabel">Amount (excl. VAT)</label>
             <div class="vat-input-wrap">
               <span class="vat-prefix" id="currencySymbol">$</span>
               <input type="text" inputmode="decimal" class="vat-input" id="amountInput" placeholder="0.00" autocomplete="off">
+            </div>
+            <!-- Quick amount chips -->
+            <div class="vat-amount-chips">
+              <button class="vat-chip" data-amt="1000">1K</button>
+              <button class="vat-chip" data-amt="5000">5K</button>
+              <button class="vat-chip" data-amt="10000">10K</button>
+              <button class="vat-chip" data-amt="50000">50K</button>
+              <button class="vat-chip" data-amt="100000">100K</button>
+              <button class="vat-chip" data-amt="1000000">1M</button>
             </div>
           </div>
 
@@ -139,6 +160,12 @@ gtag('config', 'G-D859CGF391');
               <div class="vat-breakdown-label">Total (Incl.)</div>
               <div class="vat-breakdown-value" id="breakTotal">0.00</div>
             </div>
+          </div>
+
+          <!-- Formula display -->
+          <div class="vat-formula" id="formulaBox">
+            <div class="vat-formula-title">Formula Used</div>
+            <code id="formulaText"></code>
           </div>
 
           <!-- Effective rate notice for Ghana -->
@@ -235,6 +262,38 @@ gtag('config', 'G-D859CGF391');
         </div>
         <div id="compareResults" style="margin-top:20px;"></div>
       </div>
+
+      <!-- ═══ VAT WITHHOLDING TAB ═══ -->
+      <div class="vat-panel" id="panel-withholding">
+        <div class="vat-card">
+          <p class="vat-muted" style="margin-bottom:16px;">Calculate VAT withholding for B2B transactions. Many African countries require buyers to withhold a portion of VAT and remit directly to the tax authority.</p>
+          <div class="vat-field">
+            <label for="whCountry">Country</label>
+            <select class="vat-select" id="whCountry"><option value="">-- Select a country --</option></select>
+          </div>
+          <div class="vat-field">
+            <label for="whAmount">Invoice Amount (excl. VAT)</label>
+            <div class="vat-input-wrap">
+              <span class="vat-prefix" id="whCurrency">$</span>
+              <input type="text" inputmode="decimal" class="vat-input" id="whAmount" placeholder="0.00" autocomplete="off">
+            </div>
+          </div>
+          <div class="vat-field">
+            <label for="whRate">Withholding Rate</label>
+            <div class="vat-wh-rate-row">
+              <select class="vat-select" id="whRate" style="flex:1;">
+                <option value="50">50% of VAT (standard)</option>
+                <option value="100">100% of VAT (full)</option>
+                <option value="33.33">33.33% of VAT</option>
+                <option value="custom">Custom rate...</option>
+              </select>
+              <input type="text" inputmode="decimal" class="vat-input" id="whCustomRate" placeholder="%" autocomplete="off" style="display:none;width:80px;text-align:center;">
+            </div>
+          </div>
+          <button class="vat-btn vat-btn--primary vat-btn--full" id="calcWhBtn">Calculate Withholding</button>
+        </div>
+        <div id="whResults" style="margin-top:20px;"></div>
+      </div>
     </div>
 
     <!-- ═══ RIGHT: Sidebar ═══ -->
@@ -265,6 +324,36 @@ gtag('config', 'G-D859CGF391');
         <h3 class="vat-card-title">All African VAT Rates</h3>
         <input type="text" class="vat-input vat-rates-search" id="ratesSearch" placeholder="Search country..." style="margin-bottom:12px;padding:8px 12px;font-size:0.85rem;">
         <div class="vat-rates-list" id="ratesTableBody"></div>
+      </div>
+
+      <div class="tool-info-card">
+        <div class="tool-info-header">
+          <img src="/assets/img/tools/vat-calculator.webp" alt="Pan-African VAT Calculator" class="tool-info-img" loading="lazy" onerror="this.style.display='none'">
+          <div class="tool-info-meta">
+            <div class="tool-info-name">Pan-African VAT Calculator</div>
+            <div class="tool-info-cat">Tax &amp; Finance</div>
+          </div>
+        </div>
+        <div class="tool-info-body">
+          <div class="tool-info-stats">
+            <div class="tool-stat"><div class="tool-stat-val">54</div><div class="tool-stat-lbl">Countries</div></div>
+            <div class="tool-stat"><div class="tool-stat-val">4.9</div><div class="tool-stat-lbl">Rating</div></div>
+            <div class="tool-stat"><div class="tool-stat-val">Free</div><div class="tool-stat-lbl">Forever</div></div>
+          </div>
+          <div class="tool-info-features">
+            <span class="tool-feat">Single &amp; Invoice</span>
+            <span class="tool-feat">Compare Countries</span>
+            <span class="tool-feat">Withholding VAT</span>
+            <span class="tool-feat">PDF Export</span>
+            <span class="tool-feat">Keyboard Shortcuts</span>
+          </div>
+        </div>
+        <div class="tool-info-footer">
+          <span class="tool-info-updated">Updated: Mar 2026</span>
+          <div class="tool-info-actions">
+            <button class="tool-info-action" onclick="navigator.share?.({title:document.title,url:location.href})||navigator.clipboard?.writeText(location.href)">Share</button>
+          </div>
+        </div>
       </div>
     </aside>
   </div>
@@ -365,20 +454,21 @@ gtag('config', 'G-D859CGF391');
     KM:{name:'Comoros',flag:'\u{1F1F0}\u{1F1F2}',currency:'CF',rate:10,reduced:'',exemptions:'Some items',notes:''},
     SO:{name:'Somalia',flag:'\u{1F1F8}\u{1F1F4}',currency:'Sh',rate:0,reduced:'N/A',exemptions:'N/A',notes:'No VAT system'},
     ER:{name:'Eritrea',flag:'\u{1F1EA}\u{1F1F7}',currency:'Nfk',rate:0,reduced:'N/A',exemptions:'N/A',notes:'No VAT system'},
-    LY:{name:'Libya',flag:'\u{1F1F1}\u{1F1FE}',currency:'LD',rate:0,reduced:'N/A',exemptions:'N/A',notes:'No VAT system'}
+    LY:{name:'Libya',flag:'\u{1F1F1}\u{1F1FE}',currency:'LD',rate:0,reduced:'N/A',exemptions:'N/A',notes:'No VAT system'},
+    GW:{name:'Guinea-Bissau',flag:'\u{1F1EC}\u{1F1FC}',currency:'CFA',rate:15,reduced:'',exemptions:'Some items',notes:''}
   };
 
   // ═══ HELPERS ═══
   const $ = id => document.getElementById(id);
   const fmtC = (amt, sym) => sym + ' ' + amt.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   const parseAmt = str => parseFloat((str || '').replace(/,/g, '')) || 0;
-  let debounceTimer = null;
-  const debounce = (fn, ms) => (...args) => { clearTimeout(debounceTimer); debounceTimer = setTimeout(() => fn(...args), ms); };
+  const debounce = (fn, ms) => { let t; return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); }; };
 
   let mode = 'add';
   let chartLoaded = false;
   let chartInstance = null;
   let lineItemCount = 0;
+  let useCustomRate = false;
   const HISTORY_KEY = 'afro_vat_history';
 
   // ═══ INIT ═══
@@ -397,13 +487,13 @@ gtag('config', 'G-D859CGF391');
   function populateSelects() {
     const groups = {
       'East Africa': ['KE','TZ','UG','RW','ET','DJ','SO','ER'],
-      'West Africa': ['NG','GH','CI','SN','BJ','BF','ML','NE','TG','GN','LR','SL','GM','CV'],
-      'Southern Africa': ['ZA','BW','NA','ZM','ZW','MZ','MW','MU','SC','SZ','LS'],
+      'West Africa': ['NG','GH','CI','SN','BJ','BF','ML','NE','TG','GN','GW','LR','SL','GM','CV'],
+      'Southern Africa': ['ZA','BW','NA','ZM','ZW','MZ','MW','MU','MG','SC','SZ','LS'],
       'North Africa': ['EG','MA','DZ','TN','LY','SD','MR'],
       'Central Africa': ['CM','GA','CG','GQ','TD','CF','CD','AO','BI','ST','SS','KM']
     };
 
-    const targets = ['countrySelect','invoiceCountry','cmp1','cmp2','cmp3'];
+    const targets = ['countrySelect','invoiceCountry','cmp1','cmp2','cmp3','whCountry'];
     targets.forEach(id => {
       const sel = $(id);
       if (!sel) return;
@@ -548,6 +638,35 @@ gtag('config', 'G-D859CGF391');
     // Rates search filter
     $('ratesSearch').addEventListener('input', debounce(filterRates, 200));
 
+    // Quick amount chips
+    document.querySelectorAll('.vat-chip').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.vat-chip').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        $('amountInput').value = parseFloat(btn.dataset.amt).toLocaleString('en-US');
+        autoCalc();
+      });
+    });
+
+    // Custom rate toggle
+    $('customRateCheck').addEventListener('change', function() {
+      useCustomRate = this.checked;
+      $('customRateField').style.display = this.checked ? 'flex' : 'none';
+      if (!this.checked) autoCalc();
+    });
+    $('customRateInput').addEventListener('input', debounce(autoCalc, 300));
+
+    // Withholding tab
+    $('whCountry').addEventListener('change', () => {
+      const code = $('whCountry').value;
+      if (code && DB[code]) $('whCurrency').textContent = DB[code].currency + ' ';
+    });
+    $('calcWhBtn').addEventListener('click', calcWithholding);
+    $('whRate').addEventListener('change', () => {
+      $('whCustomRate').style.display = $('whRate').value === 'custom' ? 'inline-block' : 'none';
+    });
+    $('whAmount').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); calcWithholding(); } });
+
     // History clear
     $('clearHistoryBtn').addEventListener('click', () => {
       localStorage.removeItem(HISTORY_KEY);
@@ -582,7 +701,9 @@ gtag('config', 'G-D859CGF391');
     if (amount <= 0) { if (window.AfroTools?.toast) window.AfroTools.toast.info('Please enter an amount'); return; }
 
     const d = DB[code];
-    const rate = d.rate / 100;
+    const customR = useCustomRate ? parseFloat($('customRateInput').value) : 0;
+    const effectiveRate = useCustomRate && customR > 0 ? customR : d.rate;
+    const rate = effectiveRate / 100;
     let net, vat, total;
 
     if (mode === 'add') {
@@ -599,11 +720,18 @@ gtag('config', 'G-D859CGF391');
     $('resultsArea').style.display = 'block';
     $('resultLabel').textContent = mode === 'add' ? 'Total (VAT inclusive)' : 'Breakdown (VAT extracted)';
     $('totalAmount').textContent = fmtC(total, sym);
-    $('resultSubtitle').textContent = d.flag + ' ' + d.name + ' \u2014 ' + d.rate + '% VAT';
+    $('resultSubtitle').textContent = d.flag + ' ' + d.name + ' \u2014 ' + effectiveRate + '% VAT' + (useCustomRate && customR > 0 ? ' (custom)' : '');
     $('breakNet').textContent = fmtC(net, sym);
     $('breakVat').textContent = fmtC(vat, sym);
-    $('breakVatRate').textContent = d.rate + '% VAT';
+    $('breakVatRate').textContent = effectiveRate + '% VAT';
     $('breakTotal').textContent = fmtC(total, sym);
+
+    // Formula display
+    if (mode === 'add') {
+      $('formulaText').textContent = `VAT = ${fmtC(net, sym)} \u00D7 ${effectiveRate}% = ${fmtC(vat, sym)}  |  Total = ${fmtC(net, sym)} + ${fmtC(vat, sym)} = ${fmtC(total, sym)}`;
+    } else {
+      $('formulaText').textContent = `Net = ${fmtC(total, sym)} \u00F7 (1 + ${effectiveRate}%) = ${fmtC(net, sym)}  |  VAT = ${fmtC(total, sym)} \u2212 ${fmtC(net, sym)} = ${fmtC(vat, sym)}`;
+    }
 
     // Ghana composite rate notice
     if (code === 'GH') {
@@ -629,7 +757,7 @@ gtag('config', 'G-D859CGF391');
     showCountryDetail(code, d);
 
     // Chart
-    renderChart(net, vat, d.rate);
+    renderChart(net, vat, effectiveRate);
 
     // Save to history
     saveToHistory(code, amount, total, mode);
@@ -731,6 +859,7 @@ gtag('config', 'G-D859CGF391');
   // ═══ COMPARE ═══
   function doCompare() {
     const amt = parseAmt($('compareAmount').value) || 10000;
+    if (amt <= 0) { if (window.AfroTools?.toast) window.AfroTools.toast.info('Please enter a positive amount'); return; }
     const codes = [$('cmp1').value, $('cmp2').value, $('cmp3').value].filter(c => c && DB[c]);
 
     if (codes.length < 2) { if (window.AfroTools?.toast) window.AfroTools.toast.info('Select at least 2 countries'); return; }
@@ -760,6 +889,41 @@ gtag('config', 'G-D859CGF391');
     }
 
     $('compareResults').innerHTML = html;
+  }
+
+  // ═══ VAT WITHHOLDING ═══
+  function calcWithholding() {
+    const code = $('whCountry').value;
+    const amt = parseAmt($('whAmount').value);
+    if (!code || !DB[code]) { if (window.AfroTools?.toast) window.AfroTools.toast.info('Please select a country'); return; }
+    if (amt <= 0) { if (window.AfroTools?.toast) window.AfroTools.toast.info('Please enter an amount'); return; }
+
+    const d = DB[code];
+    const vatRate = d.rate / 100;
+    const whSel = $('whRate').value;
+    const whPct = whSel === 'custom' ? (parseFloat($('whCustomRate').value) || 0) : parseFloat(whSel);
+    if (whPct <= 0 || whPct > 100) { if (window.AfroTools?.toast) window.AfroTools.toast.info('Enter a valid withholding rate (1-100%)'); return; }
+
+    const vatAmount = amt * vatRate;
+    const withheld = vatAmount * (whPct / 100);
+    const supplierReceives = amt + vatAmount - withheld;
+    const sym = d.currency;
+
+    $('whResults').innerHTML = `
+      <div class="vat-card">
+        <h3 class="vat-card-title">${d.flag} ${d.name} \u2014 VAT Withholding Breakdown</h3>
+        <div class="vat-wh-grid">
+          <div class="vat-wh-item"><div class="vat-wh-label">Invoice (excl. VAT)</div><div class="vat-wh-value">${fmtC(amt, sym)}</div></div>
+          <div class="vat-wh-item"><div class="vat-wh-label">VAT (${d.rate}%)</div><div class="vat-wh-value">${fmtC(vatAmount, sym)}</div></div>
+          <div class="vat-wh-item vat-wh-item--warn"><div class="vat-wh-label">Withheld (${whPct}% of VAT)</div><div class="vat-wh-value">${fmtC(withheld, sym)}</div></div>
+          <div class="vat-wh-item vat-wh-item--accent"><div class="vat-wh-label">VAT Remitted by Supplier</div><div class="vat-wh-value">${fmtC(vatAmount - withheld, sym)}</div></div>
+          <div class="vat-wh-item vat-wh-item--total"><div class="vat-wh-label">Supplier Receives</div><div class="vat-wh-value">${fmtC(supplierReceives, sym)}</div></div>
+        </div>
+        <div class="vat-formula" style="margin-top:16px;">
+          <div class="vat-formula-title">How it works</div>
+          <code>Buyer withholds ${fmtC(withheld, sym)} (${whPct}% of ${fmtC(vatAmount, sym)} VAT) and remits it directly to ${d.authority || 'the tax authority'}. Supplier remits the remaining ${fmtC(vatAmount - withheld, sym)} VAT.</code>
+        </div>
+      </div>`;
   }
 
   // ═══ PDF EXPORT ═══

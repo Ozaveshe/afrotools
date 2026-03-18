@@ -53,8 +53,29 @@
   }
   .tool-hero::after { content: '🇨🇩'; position: absolute; right: 5%; top: 50%; transform: translateY(-50%); font-size: 8rem; opacity: .06; pointer-events: none; }
   .tool-hero { background: #0a1929; }
+
+  .tool-info-card{background:#fff;border:1px solid #DBEAFE;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+  .tool-info-header{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid #EFF6FF;background:#F5F9FF}
+  .tool-info-img{width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0}
+  .tool-info-meta{flex:1;min-width:0}
+  .tool-info-name{font-size:.82rem;font-weight:700;color:#0f172a;line-height:1.2;margin-bottom:2px}
+  .tool-info-cat{font-size:.62rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B8CAE}
+  .tool-info-body{padding:14px 18px}
+  .tool-info-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
+  .tool-stat{text-align:center}
+  .tool-stat-val{font-size:1rem;font-weight:800;color:#007AFF;line-height:1}
+  .tool-stat-lbl{font-size:.6rem;font-weight:500;color:#6B8CAE;text-transform:uppercase;letter-spacing:.04em;margin-top:3px}
+  .tool-info-features{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+  .tool-feat{font-size:.62rem;font-weight:600;padding:3px 8px;background:#EFF6FF;border:1px solid #DBEAFE;border-radius:3px;color:#0f172a}
+  .tool-info-footer{display:flex;justify-content:space-between;align-items:center;padding:10px 18px;border-top:1px solid #EFF6FF;background:#FAFBFF}
+  .tool-info-updated{font-size:.62rem;color:#6B8CAE}
+  .tool-info-actions{display:flex;gap:6px}
+  .tool-info-action{font-size:.62rem;font-weight:600;color:#007AFF;text-decoration:none;padding:3px 8px;border:1px solid #DBEAFE;border-radius:4px;background:#fff;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
+  .tool-info-action:hover{background:#EFF6FF;border-color:#007AFF}
+  @media(max-width:900px){.tool-info-card{order:1}}
+  @media(max-width:480px){.tool-info-stats{grid-template-columns:1fr 1fr 1fr}.tool-info-header{padding:12px 14px}.tool-info-body{padding:10px 14px}}
 </style>
-<script src="/assets/js/lib/chart-config.js" defer></script>
+<script src="/assets/js/lib/chart-config.js"></script>
 </head>
 <body class="tool-page">
 <afro-navbar active="tools"></afro-navbar>
@@ -115,6 +136,15 @@
               <input type="number" class="f-input" id="grossSalary" placeholder="18,000,000" min="0" step="1000000" value="18000000" oninput="onInput(this)">
             </div>
           </div>
+          <!-- Quick Presets -->
+          <div class="presets">
+            <button class="preset-btn" onclick="setPreset(5000000, this)">CDF 5M</button>
+            <button class="preset-btn" onclick="setPreset(18000000, this)">CDF 18M</button>
+            <button class="preset-btn" onclick="setPreset(36000000, this)">CDF 36M</button>
+            <button class="preset-btn" onclick="setPreset(72000000, this)">CDF 72M</button>
+            <button class="preset-btn" onclick="setPreset(150000000, this)">CDF 150M</button>
+          </div>
+
 
           <!-- CONTRIBUTION TOGGLES -->
           <div class="field">
@@ -195,6 +225,38 @@
               <button class="chat-send" onclick="sendChat()">→</button>
             </div>
           </div>
+
+
+      <div class="tool-info-card">
+        <div class="tool-info-header">
+          <img src="/assets/img/tools/cd-vat.webp" alt="DR Congo PAYE Calculator" class="tool-info-img" loading="lazy">
+          <div class="tool-info-meta">
+            <div class="tool-info-name">DR Congo PAYE Calculator</div>
+            <div class="tool-info-cat">Tax &amp; Finance</div>
+          </div>
+        </div>
+        <div class="tool-info-body">
+          <div class="tool-info-stats">
+            <div class="tool-stat"><div class="tool-stat-val">2.4K</div><div class="tool-stat-lbl">Calculations</div></div>
+            <div class="tool-stat"><div class="tool-stat-val">4.8</div><div class="tool-stat-lbl">Rating</div></div>
+            <div class="tool-stat"><div class="tool-stat-val">Free</div><div class="tool-stat-lbl">Forever</div></div>
+          </div>
+          <div class="tool-info-features">
+            <span class="tool-feat">Net Pay Calc</span>
+            <span class="tool-feat">Tax Bands</span>
+            <span class="tool-feat">PDF Export</span>
+            <span class="tool-feat">AI Advisor</span>
+            <span class="tool-feat">Deductions</span>
+          </div>
+        </div>
+        <div class="tool-info-footer">
+          <span class="tool-info-updated">Updated: Mar 2026</span>
+          <div class="tool-info-actions">
+            <button class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Share</button>
+            <a class="tool-info-action" href="/tools/paye-calculator/">All Countries</a>
+          </div>
+        </div>
+      </div>
         </div>
       </div>
 
@@ -304,15 +366,18 @@
   </div>
 </div>
 
-<section style="max-width:800px;margin:3rem auto 0;padding:2rem;background:#fff;border-radius:0.875rem;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
-  <h2 style="font-size:1.25rem;font-weight:700;margin-bottom:1rem;color:#1e293b;">More African Tax Tools</h2>
-  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0.75rem;">
-    <a href="/nigeria/ng-salary-tax" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;transition:border-color 0.2s;">🇳🇬 Nigeria PAYE Calculator</a>
-    <a href="/kenya/ke-paye" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;transition:border-color 0.2s;">🇰🇪 Kenya PAYE Calculator</a>
-    <a href="/ghana/gh-paye" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;transition:border-color 0.2s;">🇬🇭 Ghana PAYE Calculator</a>
-    <a href="/south-africa/za-paye" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;transition:border-color 0.2s;">🇿🇦 South Africa PAYE Calculator</a>
-    <a href="/tools/vat-calculator/vat-calc" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;transition:border-color 0.2s;">🌍 Pan-African VAT Calculator</a>
-    <a href="/tools/currency-converter/" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;transition:border-color 0.2s;">💱 African Currency Converter</a>
+<section class="more-tools-sec">
+  <div class="more-tools-inner">
+    <h2 class="more-tools-title">More African Tax Tools</h2>
+    <div class="more-tools-grid">
+      <a href="/nigeria/ng-salary-tax" class="more-tool-link">Nigeria PAYE Calculator</a>
+      <a href="/kenya/ke-paye" class="more-tool-link">Kenya PAYE Calculator</a>
+      <a href="/ghana/gh-paye" class="more-tool-link">Ghana PAYE Calculator</a>
+      <a href="/south-africa/za-paye" class="more-tool-link">South Africa PAYE Calculator</a>
+      <a href="/egypt/eg-paye" class="more-tool-link">Egypt PAYE Calculator</a>
+      <a href="/tools/vat-calculator/vat-calc" class="more-tool-link">Pan-African VAT Calculator</a>
+      <a href="/tools/currency-converter/" class="more-tool-link">African Currency Converter</a>
+    </div>
   </div>
 </section>
 
@@ -464,12 +529,22 @@ function calcAnnualPAYE(annualTaxableIncome) {
 }
 
 // ── MAIN CALCULATE ────────────────────────────────────────────
-function calculate() {
+  function setPreset(val, btn) {
+    document.getElementById('grossSalary').value = val;
+    document.getElementById('salarySlider').value = val;
+    onSlider(document.getElementById('salarySlider'));
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+    if(btn) btn.classList.add('active');
+    calculate();
+  }
+
+  function calculate() {
   const gross = parseFloat(document.getElementById('grossSalary').value) || 0;
   if (!gross || gross <= 0) {
     const el = document.getElementById('grossSalary');
-    el.focus(); el.style.borderColor = '#c0392b';
-    setTimeout(() => el.style.borderColor = '', 2000);
+    el.focus(); el.style.borderColor = '#e53e3e';
+    el.setAttribute('placeholder', 'Enter a valid salary');
+    setTimeout(() => { el.style.borderColor = ''; el.removeAttribute('placeholder'); }, 3000);
     return;
   }
 
@@ -719,7 +794,6 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
     </div>
   </div>
 </div>
-<script src="/assets/js/lib/auto-email-gate.js" defer></script>
 </body></html>`;
 
   const blob = new Blob([html],{type:'text/html;charset=utf-8'});
@@ -800,7 +874,7 @@ async function sendChat() {
   input.value = '';
   const R = RESULT;
   const msgs = document.getElementById('chatMsgs');
-  msgs.innerHTML += `<div class="msg u">${msg}</div>`;
+  msgs.innerHTML += `<div class="msg u">${msg.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`;
   const aiEl = document.createElement('div');
   aiEl.className = 'msg a'; aiEl.textContent = '…';
   msgs.appendChild(aiEl); msgs.scrollTop = msgs.scrollHeight;

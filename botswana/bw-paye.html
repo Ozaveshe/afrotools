@@ -52,8 +52,29 @@
   }
   .tool-hero::after { content: '🇧🇼'; position: absolute; right: 5%; top: 50%; transform: translateY(-50%); font-size: 8rem; opacity: .06; pointer-events: none; }
   .tool-hero { background: #0a1f3a; }
+
+  .tool-info-card{background:#fff;border:1px solid #DBEAFE;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+  .tool-info-header{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid #EFF6FF;background:#F5F9FF}
+  .tool-info-img{width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0}
+  .tool-info-meta{flex:1;min-width:0}
+  .tool-info-name{font-size:.82rem;font-weight:700;color:#0f172a;line-height:1.2;margin-bottom:2px}
+  .tool-info-cat{font-size:.62rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B8CAE}
+  .tool-info-body{padding:14px 18px}
+  .tool-info-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
+  .tool-stat{text-align:center}
+  .tool-stat-val{font-size:1rem;font-weight:800;color:#007AFF;line-height:1}
+  .tool-stat-lbl{font-size:.6rem;font-weight:500;color:#6B8CAE;text-transform:uppercase;letter-spacing:.04em;margin-top:3px}
+  .tool-info-features{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+  .tool-feat{font-size:.62rem;font-weight:600;padding:3px 8px;background:#EFF6FF;border:1px solid #DBEAFE;border-radius:3px;color:#0f172a}
+  .tool-info-footer{display:flex;justify-content:space-between;align-items:center;padding:10px 18px;border-top:1px solid #EFF6FF;background:#FAFBFF}
+  .tool-info-updated{font-size:.62rem;color:#6B8CAE}
+  .tool-info-actions{display:flex;gap:6px}
+  .tool-info-action{font-size:.62rem;font-weight:600;color:#007AFF;text-decoration:none;padding:3px 8px;border:1px solid #DBEAFE;border-radius:4px;background:#fff;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
+  .tool-info-action:hover{background:#EFF6FF;border-color:#007AFF}
+  @media(max-width:900px){.tool-info-card{order:1}}
+  @media(max-width:480px){.tool-info-stats{grid-template-columns:1fr 1fr 1fr}.tool-info-header{padding:12px 14px}.tool-info-body{padding:10px 14px}}
 </style>
-<script src="/assets/js/lib/chart-config.js" defer></script>
+<script src="/assets/js/lib/chart-config.js"></script>
 </head>
 <body class="tool-page">
 <afro-navbar active="tools"></afro-navbar>
@@ -114,6 +135,15 @@
               <input type="number" class="f-input" id="grossSalary" placeholder="120,000" min="0" step="10000" value="120000" oninput="onInput(this)">
             </div>
           </div>
+          <!-- Quick Presets -->
+          <div class="presets">
+            <button class="preset-btn" onclick="setPreset(60000, this)">P 5k/mo</button>
+            <button class="preset-btn" onclick="setPreset(120000, this)">P 10k/mo</button>
+            <button class="preset-btn" onclick="setPreset(240000, this)">P 20k/mo</button>
+            <button class="preset-btn" onclick="setPreset(480000, this)">P 40k/mo</button>
+            <button class="preset-btn" onclick="setPreset(1000000, this)">P 1M</button>
+          </div>
+
 
           <p class="f-note">No mandatory employee contributions. PAYE is the only statutory deduction from your gross salary.</p>
           <button class="calc-btn" onclick="calculate()">Calculate My Take-Home Pay →</button>
@@ -141,12 +171,14 @@
             </div>
             <div class="rate-track"><div class="rate-fill" id="rateFill"></div></div>
           </div>
+          <div class="info-strip" id="employerStrip"></div>
         </div>
 
         <div class="chart-section">
           <div class="chart-tabs">
             <button class="chart-tab on" onclick="setChart('donut',this)">Breakdown</button>
             <button class="chart-tab" onclick="setChart('bar',this)">Tax Bands</button>
+            <button class="chart-tab" onclick="setChart('employer',this)">Employer Cost</button>
           </div>
           <div class="chart-canvas-wrap"><canvas id="mainChart"></canvas></div>
         </div>
@@ -185,6 +217,38 @@
               <button class="chat-send" onclick="sendChat()">→</button>
             </div>
           </div>
+
+
+      <div class="tool-info-card">
+        <div class="tool-info-header">
+          <img src="/assets/img/tools/bw-vat.webp" alt="Botswana PAYE Calculator" class="tool-info-img" loading="lazy">
+          <div class="tool-info-meta">
+            <div class="tool-info-name">Botswana PAYE Calculator</div>
+            <div class="tool-info-cat">Tax &amp; Finance</div>
+          </div>
+        </div>
+        <div class="tool-info-body">
+          <div class="tool-info-stats">
+            <div class="tool-stat"><div class="tool-stat-val">2.4K</div><div class="tool-stat-lbl">Calculations</div></div>
+            <div class="tool-stat"><div class="tool-stat-val">4.8</div><div class="tool-stat-lbl">Rating</div></div>
+            <div class="tool-stat"><div class="tool-stat-val">Free</div><div class="tool-stat-lbl">Forever</div></div>
+          </div>
+          <div class="tool-info-features">
+            <span class="tool-feat">Net Pay Calc</span>
+            <span class="tool-feat">Tax Bands</span>
+            <span class="tool-feat">PDF Export</span>
+            <span class="tool-feat">AI Advisor</span>
+            <span class="tool-feat">Deductions</span>
+          </div>
+        </div>
+        <div class="tool-info-footer">
+          <span class="tool-info-updated">Updated: Mar 2026</span>
+          <div class="tool-info-actions">
+            <button class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Share</button>
+            <a class="tool-info-action" href="/tools/paye-calculator/">All Countries</a>
+          </div>
+        </div>
+      </div>
         </div>
       </div>
 
@@ -276,15 +340,18 @@
   </div>
 </div>
 
-<section style="max-width:800px;margin:3rem auto 0;padding:2rem;background:#fff;border-radius:0.875rem;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
-  <h2 style="font-size:1.25rem;font-weight:700;margin-bottom:1rem;color:#1e293b;">More African Tax Tools</h2>
-  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0.75rem;">
-    <a href="/nigeria/ng-salary-tax" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;transition:border-color 0.2s;">🇳🇬 Nigeria PAYE Calculator</a>
-    <a href="/kenya/ke-paye" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;transition:border-color 0.2s;">🇰🇪 Kenya PAYE Calculator</a>
-    <a href="/ghana/gh-paye" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;transition:border-color 0.2s;">🇬🇭 Ghana PAYE Calculator</a>
-    <a href="/south-africa/za-paye" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;transition:border-color 0.2s;">🇿🇦 South Africa PAYE Calculator</a>
-    <a href="/tools/vat-calculator/vat-calc" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;transition:border-color 0.2s;">🌍 Pan-African VAT Calculator</a>
-    <a href="/tools/currency-converter/" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;transition:border-color 0.2s;">💱 African Currency Converter</a>
+<section class="more-tools-sec">
+  <div class="more-tools-inner">
+    <h2 class="more-tools-title">More African Tax Tools</h2>
+    <div class="more-tools-grid">
+      <a href="/nigeria/ng-salary-tax" class="more-tool-link">Nigeria PAYE Calculator</a>
+      <a href="/kenya/ke-paye" class="more-tool-link">Kenya PAYE Calculator</a>
+      <a href="/ghana/gh-paye" class="more-tool-link">Ghana PAYE Calculator</a>
+      <a href="/south-africa/za-paye" class="more-tool-link">South Africa PAYE Calculator</a>
+      <a href="/egypt/eg-paye" class="more-tool-link">Egypt PAYE Calculator</a>
+      <a href="/tools/vat-calculator/vat-calc" class="more-tool-link">Pan-African VAT Calculator</a>
+      <a href="/tools/currency-converter/" class="more-tool-link">African Currency Converter</a>
+    </div>
   </div>
 </section>
 
@@ -318,15 +385,24 @@ function calcAnnualPAYE(annualIncome) {
   return { tax, bandBreakdown: bandBreakdown.filter(b => b.income > 0) };
 }
 
-function calculate() {
+  function setPreset(val, btn) {
+    document.getElementById('grossSalary').value = val;
+    document.getElementById('salarySlider').value = val;
+    onSlider(document.getElementById('salarySlider'));
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+    if(btn) btn.classList.add('active');
+    calculate();
+  }
+
+  function calculate() {
   const gross = parseFloat(document.getElementById('grossSalary').value) || 0;
-  if (!gross || gross <= 0) { const el = document.getElementById('grossSalary'); el.focus(); el.style.borderColor = '#e53e3e'; setTimeout(() => el.style.borderColor = '', 2000); return; }
+  if (!gross || gross <= 0) { const el = document.getElementById('grossSalary'); el.focus(); el.style.borderColor = '#e53e3e'; el.setAttribute('placeholder', 'Enter a valid salary'); setTimeout(() => { el.style.borderColor = ''; el.removeAttribute('placeholder'); }, 3000); return; }
   const result = calcAnnualPAYE(gross);
   const annualPAYE = result.tax;
   const netAnnual = gross - annualPAYE;
   const effectiveRate = gross > 0 ? annualPAYE / gross : 0;
   const monthly = v => v / 12;
-  RESULT = { gross, annual: gross, annualPAYE, bandBreakdown: result.bandBreakdown, netAnnual, effectiveRate, monthlyGross: monthly(gross), monthlyNet: monthly(netAnnual), monthlyTax: monthly(annualPAYE) };
+  RESULT = { gross, annual: gross, annualPAYE, bandBreakdown: result.bandBreakdown, netAnnual, effectiveRate, monthlyGross: monthly(gross), monthlyNet: monthly(netAnnual), monthlyTax: monthly(annualPAYE), employerCost: 0, totalEmployerCost: gross };
   document.getElementById('resAmount').textContent = fmt(netAnnual);
   document.getElementById('resGross').textContent = `Gross: ${fmt(gross)}/year · ${fmt(monthly(gross))}/month`;
   document.getElementById('resContent').innerHTML = renderRows(RESULT, PERIOD);
@@ -339,6 +415,8 @@ function calculate() {
   document.getElementById('aiBtn').disabled = false;
   document.getElementById('aiBtn').textContent = 'Get AI Tax Analysis →';
   document.getElementById('aiStatus').textContent = `Gross: ${fmt(gross)}/year · Take-home: ${fmt(netAnnual)}/year · PAYE: ${fmt(annualPAYE)}/year · Effective: ${pct(effectiveRate)}`;
+  const empStrip = document.getElementById('employerStrip');
+  if (empStrip) { empStrip.classList.add('on'); empStrip.innerHTML = '<strong>Total Employer Cost: ' + fmt(RESULT.totalEmployerCost) + '/year</strong> — no mandatory employer contributions in Botswana. Employer cost equals gross salary.'; }
 }
 
 function renderRows(R, period) {
@@ -369,6 +447,8 @@ function renderChart(type) {
     const bands = R.bandBreakdown.filter(b => b.tax > 0);
     if (!bands.length) return;
     CHART = new Chart(canvas, { type: 'bar', data: { labels: bands.map(b => (b.rate*100)+'%'), datasets: [{ label:'Tax (P)', data: bands.map(b=>b.tax), backgroundColor: AfroChartColors.series.slice(0, bands.length), borderRadius:5 }] }, options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'P'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid: { color: AfroChartColors.grid} }, x:{ticks:{font:{size:10,weight:'600'}}} } } });
+  } else if (type === 'employer') {
+    CHART = new Chart(canvas, { type: 'bar', data: { labels: ['Take-Home','PAYE Tax','Employer Contributions'], datasets: [{ label:'Amount', data: [R.netAnnual, R.annualPAYE, R.employerCost], backgroundColor: AfroChartColors.doughnut.slice(0,3), borderRadius:5 }] }, options: { responsive:true, maintainAspectRatio:false, indexAxis:'y', plugins:{ legend:{display:false} }, scales:{ x:{ ticks:{callback:v=>'P'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid:{color:AfroChartColors.grid} }, y:{ticks:{font:{size:10,weight:'600'}}} } } });
   }
 }
 
@@ -393,7 +473,6 @@ function generatePdf() {
   const refNo = 'AFT-BW-PAYE-' + Date.now().toString(36).toUpperCase().slice(-6);
   const bandRows = R.bandBreakdown.filter(b => b.tax > 0).map(b => `<tr><td style="padding-left:14px;color:#4b5563">Rate ${(b.rate*100)}% on P${Math.round(b.income).toLocaleString()}</td><td class="num red">(P${Math.round(b.tax).toLocaleString()})</td></tr>`).join('');
   const html = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
-<title>AfroTools Botswana PAYE — ${refNo}</title><link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet"><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'DM Sans',Arial,sans-serif;background:#fff;color:#111827;font-size:9pt;line-height:1.5}@page{size:A4;margin:0}.cover{background:linear-gradient(135deg,#0a1f3a 0%,#0d2813 100%);padding:28px 36px 22px;color:#fff}.cover-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}.brand{font-size:13pt;font-weight:800;color:#fff}.brand b{color:#F7CA18}.brand-sub{font-size:6pt;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.32);margin-top:2px}.ref-label{font-size:6pt;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.32);text-align:right}.ref-val{font-size:8pt;font-weight:700;color:rgba(255,255,255,.65);margin-top:2px;text-align:right}.doc-title{font-size:18pt;font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1}.doc-title span{color:#F7CA18}.doc-meta{margin-top:8px;font-size:7.5pt;color:rgba(255,255,255,.4)}.badge{display:inline-block;margin-top:10px;padding:3px 10px;border-radius:3px;font-size:7pt;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:rgba(0,163,228,.22);color:#7dd5f0;border:1px solid rgba(0,163,228,.4)}.body{padding:24px 36px 28px}.sh{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:12px}.shi{text-align:center;flex:1}.sh-lbl{font-size:6pt;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#9ca3af;margin-bottom:3px}.sh-val{font-size:13pt;font-weight:800;color:#111827}.sh-val.gold{color:#9a7a00}.sh-val.red{color:#c0392b}.sh-div{width:1px;height:40px;background:#e5e7eb;flex-shrink:0}.sec-head{font-size:6.5pt;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#9ca3af;padding:0 0 5px;border-bottom:1.5px solid #e5e7eb;margin:16px 0 8px}table{width:100%;border-collapse:collapse}tr{border-bottom:1px solid #f3f4f6}td{padding:5.5px 4px;font-size:8.5pt;vertical-align:middle}td.num{text-align:right;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}.red{color:#c0392b}.green{color:#00A3E4}.muted{color:#9ca3af}tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-size:9.5pt}.src{display:inline-block;padding:2px 7px;background:#f3f4f6;border-radius:3px;font-size:6.5pt;font-weight:600;color:#6b7280;margin-right:4px}</style></head><body><div class="cover"><div class="cover-top"><div><div class="brand">AFRO<b>TOOLS</b></div><div class="brand-sub">Africa's Everything Platform</div></div><div><div class="ref-label">Reference</div><div class="ref-val">${refNo}</div></div></div><div class="doc-title">Botswana PAYE<br><span>Summary 2025/26</span></div><div class="doc-meta">Generated ${dateStr} · afrotools.com/botswana/bw-paye</div><div class="badge">BURS 2025/26</div></div><div class="body"><div class="sh"><div class="shi"><div class="sh-lbl">Annual Take-Home</div><div class="sh-val gold">P${Math.round(R.netAnnual).toLocaleString()}</div></div><div class="sh-div"></div><div class="shi"><div class="sh-lbl">Annual Gross</div><div class="sh-val">P${Math.round(R.gross).toLocaleString()}</div></div><div class="sh-div"></div><div class="shi"><div class="sh-lbl">Annual PAYE</div><div class="sh-val red">P${Math.round(R.annualPAYE).toLocaleString()}</div></div><div class="sh-div"></div><div class="shi"><div class="sh-lbl">Effective Rate</div><div class="sh-val red">${pct(R.effectiveRate)}</div></div></div><div class="sec-head">Section 1 — Annual Income & Deductions</div><table><tr><td>Annual Gross Salary</td><td class="num">P${Math.round(R.gross).toLocaleString()}</td></tr></table><div class="sec-head">Section 2 — PAYE Computation (BURS 2025/26)</div><table>${bandRows || '<tr><td colspan="2" style="color:#94A3B8;padding-left:14px">Income in 0% band — no PAYE due</td></tr>'}<tr class="total"><td>Annual PAYE</td><td class="num red">P${Math.round(R.annualPAYE).toLocaleString()}</td></tr></table><div class="sec-head">Section 3 — Annual Net Pay Summary</div><table><tr><td>PAYE income tax</td><td class="num red">(P${Math.round(R.annualPAYE).toLocaleString()})</td></tr><tr class="total"><td style="color:#00A3E4;font-weight:800">Annual Take-Home Pay</td><td class="num green">P${Math.round(R.netAnnual).toLocaleString()}</td></tr><tr class="total"><td style="color:#00A3E4;font-weight:800">Monthly Take-Home Pay</td><td class="num green">P${Math.round(R.monthlyNet).toLocaleString()}</td></tr></table><div class="sec-head">Section 4 — Legal Basis & Sources</div><table><tr><td style="width:30%"><span class="src">ITA</span>Income Tax Act</td><td style="color:#6b7280;font-size:8pt">Progressive PAYE on employment income. Bands per BURS 2025/26. No mandatory deductions.</td></tr></table></div><div style="background:#f9fafb;border-top:1px solid #e5e7eb;padding:14px 36px"><div style="display:flex;justify-content:space-between;align-items:flex-start"><div><div style="font-size:7pt;font-weight:700;color:#111827">AFRO<b style="color:#00A3E4">TOOLS</b>.COM — Africa's Financial Calculator Platform</div><div style="font-size:6.5pt;color:#9ca3af;max-width:440px;line-height:1.4;margin-top:4px">Informational only. Not professional tax advice. Verify with BURS (burs.org.bw) or a qualified Botswana tax advisor.</div></div><div style="text-align:right;font-size:7pt;color:#9ca3af;white-space:nowrap;margin-left:20px"><div>Ref: ${refNo}</div><div style="margin-top:2px">${dateStr}</div><div style="margin-top:2px">afrotools.com</div></div></div></div><script src="/assets/js/lib/auto-email-gate.js" defer></script>
 </body></html>`;
   const blob = new Blob([html],{type:'text/html;charset=utf-8'});
   const url = URL.createObjectURL(blob);
@@ -437,7 +516,7 @@ async function sendChat() {
   input.value = '';
   const R = RESULT;
   const msgs = document.getElementById('chatMsgs');
-  msgs.innerHTML += `<div class="msg u">${msg}</div>`;
+  msgs.innerHTML += `<div class="msg u">${msg.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`;
   const aiEl = document.createElement('div');
   aiEl.className = 'msg a'; aiEl.textContent = '…';
   msgs.appendChild(aiEl); msgs.scrollTop = msgs.scrollHeight;

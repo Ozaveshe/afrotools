@@ -130,11 +130,11 @@
 
             <!-- QUICK PRESETS -->
             <div class="presets" id="presetRow">
-              <button class="preset-btn" onclick="setPreset(1200000)">&#8358;100k/mo</button>
-              <button class="preset-btn" onclick="setPreset(3000000)">&#8358;250k/mo</button>
-              <button class="preset-btn" onclick="setPreset(6000000)">&#8358;500k/mo</button>
-              <button class="preset-btn" onclick="setPreset(12000000)">&#8358;1M/mo</button>
-              <button class="preset-btn" onclick="setPreset(36000000)">&#8358;3M/mo</button>
+              <button class="preset-btn" onclick="setPreset(1200000, this)">&#8358;100k/mo</button>
+              <button class="preset-btn" onclick="setPreset(3000000, this)">&#8358;250k/mo</button>
+              <button class="preset-btn" onclick="setPreset(6000000, this)">&#8358;500k/mo</button>
+              <button class="preset-btn" onclick="setPreset(12000000, this)">&#8358;1M/mo</button>
+              <button class="preset-btn" onclick="setPreset(36000000, this)">&#8358;3M/mo</button>
             </div>
 
             <!-- SALARY SLIDER -->
@@ -444,15 +444,19 @@
 </section>
 
 <!-- MORE TOOLS -->
-<section style="max-width:800px;margin:3rem auto 0;padding:2rem;background:#fff;border-radius:0.875rem;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
-  <h2 style="font-size:1.25rem;font-weight:700;margin-bottom:1rem;color:#1e293b;">More African Tax Tools</h2>
-  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0.75rem;">
-    <a href="/egypt/eg-paye" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;transition:border-color 0.2s;">Egypt PAYE Calculator</a>
-    <a href="/kenya/ke-paye" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;transition:border-color 0.2s;">Kenya PAYE Calculator</a>
-    <a href="/ghana/gh-paye" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;transition:border-color 0.2s;">Ghana PAYE Calculator</a>
-    <a href="/south-africa/za-paye" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;transition:border-color 0.2s;">South Africa PAYE Calculator</a>
-    <a href="/tools/vat-calculator/vat-calc" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;transition:border-color 0.2s;">Pan-African VAT Calculator</a>
-    <a href="/tools/currency-converter/" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;transition:border-color 0.2s;">African Currency Converter</a>
+<section class="more-tools-sec">
+  <div class="more-tools-inner">
+    <h2 class="more-tools-title">More African Tax Tools</h2>
+    <div class="more-tools-grid">
+      <a href="/ghana/gh-paye" class="more-tool-link">🇬🇭 Ghana PAYE Calculator</a>
+      <a href="/cameroon/cm-paye" class="more-tool-link">🇨🇲 Cameroon PAYE Calculator</a>
+      <a href="/egypt/eg-paye" class="more-tool-link">🇪🇬 Egypt PAYE Calculator</a>
+      <a href="/kenya/ke-paye" class="more-tool-link">🇰🇪 Kenya PAYE Calculator</a>
+      <a href="/south-africa/za-paye" class="more-tool-link">🇿🇦 South Africa PAYE Calculator</a>
+      <a href="/senegal/sn-paye" class="more-tool-link">🇸🇳 Senegal PAYE Calculator</a>
+      <a href="/tools/vat-calculator/vat-calc" class="more-tool-link">🌍 Pan-African VAT Calculator</a>
+      <a href="/tools/currency-converter/" class="more-tool-link">💱 African Currency Converter</a>
+    </div>
   </div>
 </section>
 
@@ -541,13 +545,13 @@ function setSalaryPeriod(period, btn) {
 }
 
 // ── PRESET BUTTONS ───────────────────────────
-function setPreset(annual) {
+function setPreset(annual, btn) {
   document.getElementById('grossSalary').value = Math.round(annual).toLocaleString('en-NG');
   slider.value = Math.min(Math.max(annual, 500000), 50000000);
   document.getElementById('sliderVal').textContent = fmt(annual);
   updateSliderFill(slider);
   document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
+  if(btn) btn.classList.add('active');
   calculate();
 }
 
@@ -795,11 +799,10 @@ function renderEmployerCost(r) {
 function calculate() {
   let rawInput = parseNum(document.getElementById('grossSalary').value);
   if (!rawInput || rawInput <= 0) {
-    if (event && event.type === 'click') {
-      const el = document.getElementById('grossSalary');
-      el.focus(); el.style.borderColor = '#c0392b';
-      setTimeout(() => el.style.borderColor = '', 2000);
-    }
+    const el = document.getElementById('grossSalary');
+    el.focus(); el.style.borderColor = '#e53e3e';
+    el.setAttribute('placeholder', 'Enter a valid salary');
+    setTimeout(() => { el.style.borderColor = ''; el.removeAttribute('placeholder'); }, 3000);
     return;
   }
 
@@ -1249,7 +1252,7 @@ async function sendChat() {
   if (!msg || !RESULT) return;
   input.value = '';
   const msgs = document.getElementById('chatMsgs');
-  msgs.innerHTML += `<div class="msg u">${msg.replace(/</g,'&lt;')}</div>`;
+  msgs.innerHTML += `<div class="msg u">${msg.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`;
   const aiEl = document.createElement('div');
   aiEl.className = 'msg a'; aiEl.textContent = '...';
   msgs.appendChild(aiEl); msgs.scrollTop = msgs.scrollHeight;

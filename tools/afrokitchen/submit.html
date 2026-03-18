@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Submit a Recipe — AfroKitchen | AfroTools</title>
+<meta name="description" content="Share your family's recipe with Africa. Submit your authentic African recipe to AfroKitchen.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<div class="ak-page">
+  <section class="ak-hero" style="padding-bottom:40px">
+    <div class="ak-hero-inner" style="grid-template-columns:1fr">
+      <div class="ak-hero-text" style="max-width:700px">
+        <nav class="ak-breadcrumb" aria-label="breadcrumb">
+          <a href="/">AfroTools</a><span>/</span><a href="/tools/afrokitchen/">AfroKitchen</a><span>/</span><span>Submit Recipe</span>
+        </nav>
+        <div class="ak-eyebrow">COMMUNITY</div>
+        <h1>Share Your Family's Recipe</h1>
+        <p class="ak-hero-sub">Every family has a dish that brings everyone together. Submit your recipe and help preserve Africa's rich food heritage for future generations.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="ak-section">
+    <div class="ak-container" style="max-width:640px">
+      <form id="submit-form" onsubmit="return handleSubmit(event)">
+        <div class="ak-form-group">
+          <label class="ak-form-label">Recipe Name *</label>
+          <input class="ak-form-input" id="f-name" required placeholder="e.g., Grandma's Egusi Soup">
+        </div>
+
+        <div class="ak-form-group">
+          <label class="ak-form-label">Country of Origin *</label>
+          <select class="ak-form-select" id="f-country" required>
+            <option value="">Select a country</option>
+          </select>
+        </div>
+
+        <div class="ak-form-group">
+          <label class="ak-form-label">Short Description</label>
+          <input class="ak-form-input" id="f-desc" placeholder="One-line description of the dish">
+        </div>
+
+        <div class="ak-form-group">
+          <label class="ak-form-label">Ingredients *</label>
+          <textarea class="ak-form-textarea" id="f-ingredients" required placeholder="List each ingredient on a new line, e.g.:
+3 cups rice
+6 fresh tomatoes
+3 scotch bonnet peppers
+1 teaspoon thyme
+..." style="min-height:160px"></textarea>
+          <div class="ak-form-hint">List each ingredient on its own line with quantity and unit</div>
+        </div>
+
+        <div class="ak-form-group">
+          <label class="ak-form-label">Cooking Steps *</label>
+          <textarea class="ak-form-textarea" id="f-steps" required placeholder="Describe each step clearly, e.g.:
+Step 1: Blend the tomatoes, peppers, and onions until smooth.
+Step 2: Heat oil in a large pot and fry the sliced onions.
+Step 3: Add the tomato paste and fry for 3 minutes.
+..." style="min-height:200px"></textarea>
+          <div class="ak-form-hint">Number each step. Include timing where relevant (e.g., "cook for 20 minutes")</div>
+        </div>
+
+        <div class="ak-form-group">
+          <label class="ak-form-label">Story / Cultural Context</label>
+          <textarea class="ak-form-textarea" id="f-story" placeholder="Tell us about this dish. Where does it come from? When is it traditionally served? What makes it special to your family?"></textarea>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div class="ak-form-group">
+            <label class="ak-form-label">Your Name</label>
+            <input class="ak-form-input" id="f-author" placeholder="Optional">
+          </div>
+          <div class="ak-form-group">
+            <label class="ak-form-label">Email</label>
+            <input class="ak-form-input" type="email" id="f-email" placeholder="Optional (for follow-up)">
+          </div>
+        </div>
+
+        <div style="margin-top:8px">
+          <button type="submit" class="ak-btn ak-btn-primary" id="submit-btn" style="width:100%;justify-content:center">Submit Recipe</button>
+        </div>
+
+        <div id="submit-success" style="display:none;text-align:center;padding:32px 0">
+          <div style="font-size:2rem;margin-bottom:12px">&#x2705;</div>
+          <h3 style="font-weight:800;margin-bottom:6px">Recipe Submitted!</h3>
+          <p style="color:var(--ak-muted);font-size:.88rem;line-height:1.6">Thank you for sharing your recipe. Our team will review it and add it to AfroKitchen. If you provided your email, we'll notify you when it's live.</p>
+          <a href="/tools/afrokitchen/" class="ak-btn ak-btn-outline" style="margin-top:16px">Browse Recipes</a>
+        </div>
+      </form>
+    </div>
+  </section>
+</div>
+<afro-footer></afro-footer>
+
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<script src="/engines/afrokitchen-engine.js"></script>
+<script>
+(function () {
+  var AK = AfroKitchenEngine;
+  var countrySelect = document.getElementById('f-country');
+  var codes = Object.keys(AK.COUNTRIES).sort(function (a, b) { return AK.COUNTRIES[a].name.localeCompare(AK.COUNTRIES[b].name); });
+  codes.forEach(function (c) {
+    var opt = document.createElement('option');
+    opt.value = c;
+    opt.textContent = AK.COUNTRIES[c].flag + ' ' + AK.COUNTRIES[c].name;
+    countrySelect.appendChild(opt);
+  });
+})();
+
+async function handleSubmit(e) {
+  e.preventDefault();
+  var btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Submitting...';
+
+  var res = await AfroKitchenEngine.submitRecipe({
+    name: document.getElementById('f-name').value.trim(),
+    country_code: document.getElementById('f-country').value,
+    description: document.getElementById('f-desc').value.trim(),
+    ingredients_text: document.getElementById('f-ingredients').value.trim(),
+    steps_text: document.getElementById('f-steps').value.trim(),
+    story: document.getElementById('f-story').value.trim(),
+    submitted_by: document.getElementById('f-author').value.trim(),
+    email: document.getElementById('f-email').value.trim()
+  });
+
+  if (res.success) {
+    document.getElementById('submit-form').style.display = 'none';
+    document.getElementById('submit-success').style.display = '';
+  } else {
+    alert('Error submitting recipe: ' + (res.error || 'Please try again'));
+    btn.disabled = false;
+    btn.textContent = 'Submit Recipe';
+  }
+}
+</script>
+</body>
+</html>

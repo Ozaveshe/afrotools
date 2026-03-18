@@ -24,6 +24,7 @@
 <link rel="stylesheet" href="/assets/css/global.min.css">
 <script src="/assets/js/components/tool-registry.js"></script>
 <script src="/engines/business-planner-engine.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js" defer></script>
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
 <script src="/assets/js/pro-gate.js" defer></script>
@@ -144,6 +145,8 @@ a{text-decoration:none;color:inherit}
 .country-card:hover{border-color:var(--color-primary,#007AFF);background:#EFF6FF;box-shadow:0 4px 12px rgba(0,122,255,.08)}
 .country-card.selected{border-color:var(--color-primary,#007AFF);background:#DBEAFE;box-shadow:0 0 0 3px rgba(0,122,255,.12)}
 .country-flag{font-size:1.3rem;flex-shrink:0}
+.country-flag img.emoji,.country-card img.emoji{height:1.3em;width:1.3em;vertical-align:-0.15em}
+img.emoji{height:1em;width:1em;margin:0 .05em 0 .1em;vertical-align:-0.1em}
 
 /* ── FORM ── */
 .form-group{margin-bottom:20px}
@@ -707,8 +710,16 @@ a{text-decoration:none;color:inherit}
       html += '<div class="country-card' + sel + '" data-code="' + c.code + '"><span class="country-flag">' + (FLAG_MAP[c.code]||c.code) + '</span>' + c.name + '</div>';
     });
     gridEl.innerHTML = html || '<p style="color:#94a3af;grid-column:1/-1;text-align:center;padding:24px;font-size:.88rem">No countries found.</p>';
+    if (typeof twemoji !== 'undefined') twemoji.parse(gridEl, { folder: 'svg', ext: '.svg', base: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/' });
   }
   renderCountries();
+  // Fallback: if twemoji loaded late, re-parse after it's ready
+  if (typeof twemoji === 'undefined') {
+    var _twRetry = setInterval(function() {
+      if (typeof twemoji !== 'undefined') { clearInterval(_twRetry); twemoji.parse(gridEl, { folder: 'svg', ext: '.svg', base: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/' }); }
+    }, 200);
+    setTimeout(function() { clearInterval(_twRetry); }, 5000);
+  }
 
   document.getElementById('country-search').addEventListener('input', function(){ renderCountries(this.value); });
 
@@ -757,6 +768,7 @@ a{text-decoration:none;color:inherit}
   function renderPlan(){
     var p = state.plan;
     document.getElementById('plan-title').textContent = (FLAG_MAP[p.countryCode]||'') + ' ' + p.country + ' \u2014 ' + p.businessType;
+    if (typeof twemoji !== 'undefined') twemoji.parse(document.getElementById('plan-title'), { folder: 'svg', ext: '.svg', base: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/' });
     document.getElementById('plan-disclaimer').textContent = p.disclaimer;
 
     var html = '';
@@ -1850,6 +1862,7 @@ a{text-decoration:none;color:inherit}
           + '<button class="saved-plan-del" data-del-id="' + plan.id + '" title="Delete plan">\u2715</button>'
           + '</div>';
       }).join('');
+      if (typeof twemoji !== 'undefined') twemoji.parse(savedList, { folder: 'svg', ext: '.svg', base: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/' });
     } catch(e) {
       console.error('[BusinessPlanner] Load plans error:', e);
       savedList.innerHTML = '<div class="saved-plans-empty">Failed to load plans.</div>';

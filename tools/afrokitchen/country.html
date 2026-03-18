@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Country Cuisine — AfroKitchen | AfroTools</title>
+<meta name="description" content="Explore authentic recipes from African cuisine. Step-by-step cooking instructions with timers and AI advisor.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<div class="ak-page">
+  <section class="ak-hero" style="padding-bottom:40px">
+    <div class="ak-hero-inner" style="grid-template-columns:1fr">
+      <div class="ak-hero-text" style="max-width:700px">
+        <nav class="ak-breadcrumb" aria-label="breadcrumb">
+          <a href="/">AfroTools</a><span>/</span><a href="/tools/afrokitchen/">AfroKitchen</a><span>/</span><span id="breadcrumb-country">Country</span>
+        </nav>
+        <div class="ak-eyebrow" id="country-region"></div>
+        <h1 id="country-title"></h1>
+        <p class="ak-hero-sub" id="country-desc"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="ak-section">
+    <div class="ak-container">
+      <div class="ak-filters ak-filters-light">
+        <select class="ak-filter-select" id="filter-category"><option value="">All Categories</option></select>
+        <select class="ak-filter-select" id="filter-difficulty"><option value="">Any Difficulty</option></select>
+      </div>
+      <div class="ak-loading" id="recipes-loading"><div class="ak-spinner"></div><div>Loading recipes...</div></div>
+      <div class="ak-grid" id="recipes-grid"></div>
+      <div class="ak-empty" id="recipes-empty" style="display:none">
+        <div class="ak-empty-icon">&#x1F373;</div>
+        <h3>No recipes yet for this country</h3>
+        <p>Know a recipe from here? <a href="submit.html">Submit it!</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="ak-section">
+    <div class="ak-container">
+      <div class="ak-cta-banner">
+        <h2>Know a recipe from this country?</h2>
+        <p>Help us build the most comprehensive collection of African recipes.</p>
+        <a href="submit.html" class="ak-btn ak-btn-primary">Submit a Recipe</a>
+      </div>
+    </div>
+  </section>
+</div>
+<afro-footer></afro-footer>
+
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<script src="/engines/afrokitchen-engine.js"></script>
+<script>
+(function () {
+  var AK = AfroKitchenEngine;
+  var params = new URLSearchParams(window.location.search);
+  var code = params.get('country') || params.get('code');
+  var country = code ? AK.COUNTRIES[code] : null;
+
+  if (!country) {
+    document.getElementById('country-title').textContent = 'Country Not Found';
+    document.getElementById('recipes-loading').style.display = 'none';
+    document.getElementById('recipes-empty').style.display = '';
+    return;
+  }
+
+  document.title = country.name + ' Cuisine \u2014 AfroKitchen | AfroTools';
+  document.getElementById('breadcrumb-country').textContent = country.name;
+  document.getElementById('country-region').textContent = country.region;
+  document.getElementById('country-title').textContent = country.flag + ' ' + country.name + ' Cuisine';
+  document.getElementById('country-desc').textContent = 'Authentic recipes from ' + country.name + '. Step-by-step cooking instructions with timers and ingredient costs in ' + country.currency.code + '.';
+
+  // Populate filters
+  var catSelect = document.getElementById('filter-category');
+  AK.CATEGORIES.forEach(function (c) { var o = document.createElement('option'); o.value = c.id; o.textContent = c.label; catSelect.appendChild(o); });
+  var diffSelect = document.getElementById('filter-difficulty');
+  AK.DIFFICULTIES.forEach(function (d) { var o = document.createElement('option'); o.value = d; o.textContent = d.charAt(0).toUpperCase() + d.slice(1); diffSelect.appendChild(o); });
+
+  async function load() {
+    var grid = document.getElementById('recipes-grid');
+    var loading = document.getElementById('recipes-loading');
+    var empty = document.getElementById('recipes-empty');
+    grid.innerHTML = ''; loading.style.display = ''; empty.style.display = 'none';
+
+    var filters = { country: code };
+    if (catSelect.value) filters.category = catSelect.value;
+    if (diffSelect.value) filters.difficulty = diffSelect.value;
+
+    var recipes = await AK.fetchRecipes(filters);
+    loading.style.display = 'none';
+    if (!recipes || !recipes.length) { empty.style.display = ''; return; }
+
+    recipes.forEach(function (r) {
+      var totalMin = (r.prep_time_minutes || 0) + (r.cook_time_minutes || 0);
+      var card = document.createElement('a');
+      card.className = 'ak-recipe-card';
+      card.href = 'recipe.html?slug=' + r.slug;
+      card.innerHTML =
+        '<img class="ak-recipe-card-img" src="' + (r.image_url || '/assets/img/og-default.png') + '" alt="' + r.name + '" loading="lazy">' +
+        '<div class="ak-recipe-card-body">' +
+          '<div class="ak-recipe-card-title">' + r.name + '</div>' +
+          '<div class="ak-recipe-card-desc">' + (r.description || '').slice(0, 100) + '</div>' +
+          '<div class="ak-recipe-card-meta">' +
+            '<span>&#x23F1; ' + totalMin + ' min</span><span>' + (r.difficulty || 'medium') + '</span>' +
+          '</div>' +
+        '</div>';
+      grid.appendChild(card);
+    });
+  }
+
+  catSelect.addEventListener('change', load);
+  diffSelect.addEventListener('change', load);
+  load();
+})();
+</script>
+</body>
+</html>

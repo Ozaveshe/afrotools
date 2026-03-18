@@ -755,7 +755,22 @@
 
     isPro: function () { return _profile && _profile.tier === 'pro'; },
 
-    getSessionToken: function () { return _user ? 'active' : null; },
+    getSessionToken: function () {
+      if (!_sb) return null;
+      try {
+        var s = _sb.auth.session && _sb.auth.session();
+        if (s && s.access_token) return s.access_token;
+      } catch (e) {}
+      return null;
+    },
+    getSessionTokenAsync: async function () {
+      if (!_sb) return null;
+      try {
+        var res = await _sb.auth.getSession();
+        if (res.data && res.data.session) return res.data.session.access_token;
+      } catch (e) {}
+      return null;
+    },
 
     async login(email, password) {
       if (!_sb) return { ok: false, error: 'Auth not ready' };
@@ -788,10 +803,16 @@
 
     async logout() {
       if (_sb) {
-        try { await _sb.auth.signOut(); } catch (e) {}
+        try { await _sb.auth.signOut(); } catch (e) { console.warn('[AfroAuth] signOut error:', e); }
       }
       _user = null;
       _profile = null;
+      // Clear any cached profile/auth data
+      try {
+        localStorage.removeItem('afro_profile_extended');
+        localStorage.removeItem('afro_favs_v2');
+        localStorage.removeItem('afrotools-recent-tools');
+      } catch (e) {}
       refreshNavbar();
       fire('afro-auth-change', { user: null, profile: null, event: 'SIGNED_OUT' });
     },

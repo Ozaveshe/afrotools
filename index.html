@@ -1549,48 +1549,22 @@
 document.addEventListener('DOMContentLoaded', function() {
 
   // ── TWEMOJI: parse flags so they render on Windows ──
-  if (typeof twemoji !== 'undefined') {
-    twemoji.parse(document.body, { folder: 'svg', ext: '.svg', base: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/' });
+  function parseTwemoji(el) {
+    if (typeof twemoji !== 'undefined') {
+      twemoji.parse(el || document.body, { folder: 'svg', ext: '.svg', base: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/' });
+    }
+  }
+  parseTwemoji();
+  // Fallback: if twemoji loaded after DOMContentLoaded (slow CDN), retry once
+  if (typeof twemoji === 'undefined') {
+    var _twRetry = setInterval(function() {
+      if (typeof twemoji !== 'undefined') { clearInterval(_twRetry); parseTwemoji(); }
+    }, 200);
+    setTimeout(function() { clearInterval(_twRetry); }, 5000);
   }
 
-  // ── MY TOOLS: populate from localStorage ──
-  (function(){
-    var section = document.getElementById('myToolsSection');
-    var grid = document.getElementById('myToolsGrid');
-    var countEl = document.getElementById('myToolsCount');
-    if (!section || !grid) return;
-    var recents = [];
-    try { recents = JSON.parse(localStorage.getItem('afrotools-recent-tools')) || []; } catch(e){}
-    if (recents.length === 0) {
-      section.classList.add('has-favs');
-      grid.innerHTML = '<div class="my-tools-empty">You haven\'t used any tools yet. Start with our most popular: <a href="/nigeria/ng-salary-tax/">Nigeria PAYE</a>, <a href="/tools/pdf-workspace/">PDF Workspace</a>, or <a href="/tools/currency-converter/">Currency Converter</a></div>';
-      return;
-    }
-    section.classList.add('has-favs');
-    if (countEl) countEl.textContent = '(' + recents.length + ')';
-    recents.forEach(function(t){
-      var card = document.createElement('a');
-      card.href = t.url || '#';
-      card.className = 'my-tools-card';
-      card.style.cssText = 'display:flex;align-items:center;gap:10px;background:#fff;border:1.5px solid #E5E7EB;border-radius:12px;padding:12px 14px;transition:border-color .15s,box-shadow .15s;text-decoration:none;color:inherit;';
-      card.innerHTML = '<span style="font-size:1.3rem;">' + (t.icon||'🔧') + '</span><span style="font-size:.85rem;font-weight:700;color:#111827;">' + (t.name||t.slug) + '</span>';
-      card.onmouseover = function(){ card.style.borderColor='var(--color-primary)'; };
-      card.onmouseout = function(){ card.style.borderColor='#E5E7EB'; };
-      grid.appendChild(card);
-    });
-    // Re-parse Twemoji for any emoji in My Tools cards
-    if (typeof twemoji !== 'undefined') twemoji.parse(grid, { folder: 'svg', ext: '.svg', base: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/' });
-  })();
-
-  // ── CLEAR ALL FAVS ──
-  window.clearAllFavs = function() {
-    try { localStorage.removeItem('afrotools-recent-tools'); } catch(e){}
-    var grid = document.getElementById('myToolsGrid');
-    var section = document.getElementById('myToolsSection');
-    var countEl = document.getElementById('myToolsCount');
-    if (grid) grid.innerHTML = '<div class="my-tools-empty">Cleared! Start exploring: <a href="/all-tools/">Browse All Tools</a></div>';
-    if (countEl) countEl.textContent = '';
-  };
+  // ── MY TOOLS: handled by Supabase-backed renderMyTools() below ──
+  // (Old localStorage system removed — only signed-in users get My Tools now)
 
   // ── DYNAMIC STAT UPDATES for categories heading ──
   (function(){
@@ -1939,7 +1913,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (window._afroObs) grid.querySelectorAll('.rv').forEach(function(el) { window._afroObs.observe(el); });
   })();
 
-  // MY TOOLS — Favorites system (Supabase-backed via SavedTools, localStorage fallback)
+  // MY TOOLS — Favorites system (Supabase-backed, sign-in required)
   function renderMyTools() {
     if (typeof AFRO_TOOLS === 'undefined') return;
     var section = document.getElementById('myToolsSection');
@@ -1947,21 +1921,25 @@ document.addEventListener('DOMContentLoaded', function() {
     var countEl = document.getElementById('myToolsCount');
     if (!section || !grid) return;
 
-    // Use SavedTools if available (Supabase sync), else afroFavs (localStorage only)
-    var hasSavedTools = typeof window._savedToolsInstance !== 'undefined';
-    var hasAfroFavs = typeof window.afroFavs !== 'undefined';
+    // Only show My Tools for signed-in users
+    var isLoggedIn = typeof AfroAuth !== 'undefined' && AfroAuth.isLoggedIn();
+    if (!isLoggedIn) {
+      section.classList.add('has-favs');
+      grid.innerHTML = '<div class="my-tools-empty"><a href="/dashboard/" style="color:#007AFF;font-weight:600;text-decoration:none;">Sign in</a> to save and sync your favourite tools across devices.</div>';
+      if (countEl) countEl.textContent = '';
+      return;
+    }
 
+    // Use SavedTools if available (Supabase sync)
+    var hasSavedTools = typeof window._savedToolsInstance !== 'undefined';
     if (hasSavedTools) {
-      // Async path — get all from Supabase or localStorage
       window._savedToolsInstance.getAll().then(function(items) {
         var favIds = items.map(function(i) { return i.slug; });
         _renderMyToolsGrid(favIds, section, grid, countEl);
       });
-    } else if (hasAfroFavs) {
-      var favIds = afroFavs.getAll();
-      _renderMyToolsGrid(favIds, section, grid, countEl);
     } else {
-      section.classList.remove('has-favs');
+      section.classList.add('has-favs');
+      grid.innerHTML = '<div class="my-tools-empty">No saved tools yet. Browse tools and click the star to save them.</div>';
     }
   }
 
@@ -1994,15 +1972,16 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  function clearAllFavs() {
+  window.clearAllFavs = function() {
     if (typeof window._savedToolsInstance !== 'undefined') {
       window._savedToolsInstance.clearAll().then(function() { renderMyTools(); });
     } else {
       localStorage.removeItem('afro_favs_v2');
       localStorage.removeItem('afro_favs_v1');
+      localStorage.removeItem('afrotools-recent-tools');
       renderMyTools();
     }
-  }
+  };
 
   renderMyTools();
 

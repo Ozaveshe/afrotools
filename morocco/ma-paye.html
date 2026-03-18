@@ -41,6 +41,27 @@
   }
   .tool-hero::after { content: '🇲🇦'; position: absolute; right: 5%; top: 50%; transform: translateY(-50%); font-size: 8rem; opacity: .06; pointer-events: none; }
   .tool-hero { background: #1a0f0f; }
+
+  .tool-info-card{background:#fff;border:1px solid #DBEAFE;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+  .tool-info-header{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid #EFF6FF;background:#F5F9FF}
+  .tool-info-img{width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0}
+  .tool-info-meta{flex:1;min-width:0}
+  .tool-info-name{font-size:.82rem;font-weight:700;color:#0f172a;line-height:1.2;margin-bottom:2px}
+  .tool-info-cat{font-size:.62rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B8CAE}
+  .tool-info-body{padding:14px 18px}
+  .tool-info-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
+  .tool-stat{text-align:center}
+  .tool-stat-val{font-size:1rem;font-weight:800;color:#007AFF;line-height:1}
+  .tool-stat-lbl{font-size:.6rem;font-weight:500;color:#6B8CAE;text-transform:uppercase;letter-spacing:.04em;margin-top:3px}
+  .tool-info-features{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+  .tool-feat{font-size:.62rem;font-weight:600;padding:3px 8px;background:#EFF6FF;border:1px solid #DBEAFE;border-radius:3px;color:#0f172a}
+  .tool-info-footer{display:flex;justify-content:space-between;align-items:center;padding:10px 18px;border-top:1px solid #EFF6FF;background:#FAFBFF}
+  .tool-info-updated{font-size:.62rem;color:#6B8CAE}
+  .tool-info-actions{display:flex;gap:6px}
+  .tool-info-action{font-size:.62rem;font-weight:600;color:#007AFF;text-decoration:none;padding:3px 8px;border:1px solid #DBEAFE;border-radius:4px;background:#fff;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
+  .tool-info-action:hover{background:#EFF6FF;border-color:#007AFF}
+  @media(max-width:900px){.tool-info-card{order:1}}
+  @media(max-width:480px){.tool-info-stats{grid-template-columns:1fr 1fr 1fr}.tool-info-header{padding:12px 14px}.tool-info-body{padding:10px 14px}}
 </style>
 <meta name="robots" content="index, follow">
 <meta name="twitter:card" content="summary_large_image">
@@ -56,7 +77,7 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What are Morocco DGI tax bands?","acceptedAnswer":{"@type":"Answer","text":"0% on first MAD 30,000; 10% on 30,001–50,000; 20% on 50,001–60,000; 30% on 60,001–80,000; 34% on 80,001–180,000; 38% above MAD 180,000. Applied annually to taxable income after CNSS."}},{"@type":"Question","name":"Is CNSS capped in Morocco?","acceptedAnswer":{"@type":"Answer","text":"Yes — CNSS contribution is capped at MAD 6,000/month (MAD 72,000/year). The employee 4.48% is fully tax-deductible up to this cap."}}]}
 </script>
-<script src="/assets/js/lib/chart-config.js" defer></script>
+<script src="/assets/js/lib/chart-config.js"></script>
 </head>
 <body class="tool-page">
 <afro-navbar active="tools"></afro-navbar>
@@ -104,6 +125,15 @@
               <input type="number" class="f-input" id="grossSalary" placeholder="300,000" min="0" step="10000" value="300000" oninput="onInput(this)">
             </div>
           </div>
+          <!-- Quick Presets -->
+          <div class="presets">
+            <button class="preset-btn" onclick="setPreset(100000, this)">MAD 100k</button>
+            <button class="preset-btn" onclick="setPreset(300000, this)">MAD 300k</button>
+            <button class="preset-btn" onclick="setPreset(600000, this)">MAD 600k</button>
+            <button class="preset-btn" onclick="setPreset(1200000, this)">MAD 1.2M</button>
+            <button class="preset-btn" onclick="setPreset(3000000, this)">MAD 3M</button>
+          </div>
+
           <div class="field">
             <div class="f-label"><span class="f-label-text">Active Deductions</span><span class="f-hint">Toggle to include / exclude</span></div>
             <div class="toggles">
@@ -130,11 +160,13 @@
             <div class="rate-bar-hdr"><span class="rate-bar-lbl">Effective Tax Rate</span><span class="rate-bar-pct" id="effRateDisplay">0%</span></div>
             <div class="rate-track"><div class="rate-fill" id="rateFill"></div></div>
           </div>
+          <div class="info-strip" id="employerStrip"></div>
         </div>
         <div class="chart-section">
           <div class="chart-tabs">
             <button class="chart-tab on" onclick="setChart('donut',this)">Breakdown</button>
             <button class="chart-tab" onclick="setChart('bar',this)">Tax Bands</button>
+            <button class="chart-tab" onclick="setChart('employer',this)">Employer Cost</button>
           </div>
           <div class="chart-canvas-wrap"><canvas id="mainChart"></canvas></div>
         </div>
@@ -162,6 +194,38 @@
               <button class="chat-send" onclick="sendChat()">→</button>
             </div>
           </div>
+
+
+      <div class="tool-info-card">
+        <div class="tool-info-header">
+          <img src="/assets/img/tools/ma-vat.webp" alt="Morocco PAYE Calculator" class="tool-info-img" loading="lazy">
+          <div class="tool-info-meta">
+            <div class="tool-info-name">Morocco PAYE Calculator</div>
+            <div class="tool-info-cat">Tax &amp; Finance</div>
+          </div>
+        </div>
+        <div class="tool-info-body">
+          <div class="tool-info-stats">
+            <div class="tool-stat"><div class="tool-stat-val">2.4K</div><div class="tool-stat-lbl">Calculations</div></div>
+            <div class="tool-stat"><div class="tool-stat-val">4.8</div><div class="tool-stat-lbl">Rating</div></div>
+            <div class="tool-stat"><div class="tool-stat-val">Free</div><div class="tool-stat-lbl">Forever</div></div>
+          </div>
+          <div class="tool-info-features">
+            <span class="tool-feat">Net Pay Calc</span>
+            <span class="tool-feat">Tax Bands</span>
+            <span class="tool-feat">PDF Export</span>
+            <span class="tool-feat">AI Advisor</span>
+            <span class="tool-feat">Deductions</span>
+          </div>
+        </div>
+        <div class="tool-info-footer">
+          <span class="tool-info-updated">Updated: Mar 2026</span>
+          <div class="tool-info-actions">
+            <button class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Share</button>
+            <a class="tool-info-action" href="/tools/paye-calculator/">All Countries</a>
+          </div>
+        </div>
+      </div>
         </div>
       </div>
       <div class="card bands-card">
@@ -238,15 +302,19 @@
     </div>
   </div>
 </div>
-<section style="max-width:800px;margin:3rem auto 0;padding:2rem;background:#fff;border-radius:0.875rem;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
-  <h2 style="font-size:1.25rem;font-weight:700;margin-bottom:1rem;color:#1e293b;">More African Tax Tools</h2>
-  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0.75rem;">
-    <a href="/nigeria/ng-salary-tax" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;transition:border-color 0.2s;">🇳🇬 Nigeria PAYE Calculator</a>
-    <a href="/kenya/ke-paye" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;transition:border-color 0.2s;">🇰🇪 Kenya PAYE Calculator</a>
-    <a href="/ghana/gh-paye" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;transition:border-color 0.2s;">🇬🇭 Ghana PAYE Calculator</a>
-    <a href="/south-africa/za-paye" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;transition:border-color 0.2s;">🇿🇦 South Africa PAYE Calculator</a>
-    <a href="/tools/vat-calculator/vat-calc" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;transition:border-color 0.2s;">🌍 Pan-African VAT Calculator</a>
-    <a href="/tools/currency-converter/" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;transition:border-color 0.2s;">💱 African Currency Converter</a>
+<section class="more-tools-sec">
+  <div class="more-tools-inner">
+    <h2 class="more-tools-title">More African Tax Tools</h2>
+    <div class="more-tools-grid">
+      <a href="/algeria/dz-paye" class="more-tool-link">🇩🇿 Algeria PAYE Calculator</a>
+      <a href="/tunisia/tn-paye" class="more-tool-link">🇹🇳 Tunisia PAYE Calculator</a>
+      <a href="/egypt/eg-paye" class="more-tool-link">🇪🇬 Egypt PAYE Calculator</a>
+      <a href="/nigeria/ng-salary-tax" class="more-tool-link">🇳🇬 Nigeria PAYE Calculator</a>
+      <a href="/kenya/ke-paye" class="more-tool-link">🇰🇪 Kenya PAYE Calculator</a>
+      <a href="/south-africa/za-paye" class="more-tool-link">🇿🇦 South Africa PAYE Calculator</a>
+      <a href="/tools/vat-calculator/vat-calc" class="more-tool-link">🌍 Pan-African VAT Calculator</a>
+      <a href="/tools/currency-converter/" class="more-tool-link">💱 African Currency Converter</a>
+    </div>
   </div>
 </section>
 
@@ -274,14 +342,23 @@ if(income>60000){const chunk=Math.min(income-60000,20000);tax+=chunk*0.30;bands.
 if(income>80000){const chunk=Math.min(income-80000,100000);tax+=chunk*0.34;bands.push({rate:0.34,income:chunk,tax:chunk*0.34});}
 if(income>180000){const chunk=income-180000;tax+=chunk*0.38;bands.push({rate:0.38,income:chunk,tax:chunk*0.38});}
 return{tax,bandBreakdown:bands.filter(b=>b.income>0)};}
-function calculate(){const gross=parseFloat(document.getElementById('grossSalary').value)||0;if(!gross){document.getElementById('grossSalary').focus();return;}
-const hasCNSS=isOn('cnss');const cnssRaw=gross*0.0448;const cnss=Math.min(cnssRaw,72000);const empCNSS=Math.min(gross*0.0898,72000);const taxableIncome=Math.max(0,gross-cnss);const result=calcAnnualDGI(taxableIncome);const annualDGI=result.tax;const totalDed=cnss+annualDGI;const net=gross-totalDed;const eff=gross>0?annualDGI/gross:0;RESULT={gross,cnss,empCNSS,annualDGI,bandBreakdown:result.bandBreakdown,totalDed,net,effectiveRate:eff,empCost:gross+empCNSS};document.getElementById('resAmount').textContent=fmt(net);document.getElementById('resGross').textContent=`Gross: ${fmt(gross)}/year`;document.getElementById('resContent').innerHTML=`<div class="res-section"><div class="res-section-title">Gross</div><div class="res-row"><span class="res-row-lbl">Annual Gross</span><span class="res-row-val">${fmt(gross)}</span></div></div><div class="res-section"><div class="res-section-title">Deductions</div>${hasCNSS?`<div class="res-row"><span class="res-row-lbl">CNSS (4.48%, capped)</span><span class="res-row-val c-red">${fmt(cnss)}</span></div>`:''}
-<div class="res-row"><span class="res-row-lbl">Net Taxable</span><span class="res-row-val c-mut">${fmt(gross-cnss)}</span></div></div><div class="res-section"><div class="res-section-title">DGI Tax</div><div class="res-row"><span class="res-row-lbl">Annual DGI</span><span class="res-row-val c-red">${fmt(annualDGI)}</span></div></div><div class="res-section"><div class="res-row"><span class="res-row-lbl">Total Deductions</span><span class="res-row-val c-red">${fmt(totalDed)}</span></div><div class="res-row total"><span class="res-row-lbl">Take-Home Pay</span><span class="res-row-val c-grn">${fmt(net)}</span></div></div>`;document.getElementById('effRateDisplay').textContent=pct(eff);setTimeout(()=>{document.getElementById('rateFill').style.width=Math.min(eff*200,100)+'%';},80);document.getElementById('hiddenGross').value=gross;document.getElementById('resultsCard').classList.add('on');renderChart(CHART_TYPE);document.getElementById('aiBtn').disabled=false;document.getElementById('aiBtn').textContent='Get AI Tax Analysis →';}
+  function setPreset(val, btn) {
+    document.getElementById('grossSalary').value = val;
+    document.getElementById('salarySlider').value = val;
+    onSlider(document.getElementById('salarySlider'));
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+    if(btn) btn.classList.add('active');
+    calculate();
+  }
+
+  function calculate(){const gross=parseFloat(document.getElementById('grossSalary').value)||0;if(!gross||gross<=0){const el=document.getElementById('grossSalary');el.focus();el.style.borderColor='#e53e3e';el.setAttribute('placeholder','Enter a valid salary');setTimeout(()=>{el.style.borderColor='';el.removeAttribute('placeholder')},3000);return;}
+const hasCNSS=isOn('cnss');const cnssRaw=gross*0.0448;const cnss=Math.min(cnssRaw,72000);const empCNSS=Math.min(gross*0.0898,72000);const taxableIncome=Math.max(0,gross-cnss);const result=calcAnnualDGI(taxableIncome);const annualDGI=result.tax;const totalDed=cnss+annualDGI;const net=gross-totalDed;const eff=gross>0?annualDGI/gross:0;const employerCNSS=Math.min(gross,72000)*0.064;const employerAMO=gross*0.0411;const employerProf=gross*0.016;const employerTotal=employerCNSS+employerAMO+employerProf;const totalEmployerCost=gross+employerTotal;RESULT={gross,cnss,empCNSS,annualDGI,bandBreakdown:result.bandBreakdown,totalDed,net,effectiveRate:eff,empCost:gross+empCNSS,employerCNSS,employerAMO,employerProf,employerTotal,totalEmployerCost};document.getElementById('resAmount').textContent=fmt(net);document.getElementById('resGross').textContent=`Gross: ${fmt(gross)}/year`;document.getElementById('resContent').innerHTML=`<div class="res-section"><div class="res-section-title">Gross</div><div class="res-row"><span class="res-row-lbl">Annual Gross</span><span class="res-row-val">${fmt(gross)}</span></div></div><div class="res-section"><div class="res-section-title">Deductions</div>${hasCNSS?`<div class="res-row"><span class="res-row-lbl">CNSS (4.48%, capped)</span><span class="res-row-val c-red">${fmt(cnss)}</span></div>`:''}
+<div class="res-row"><span class="res-row-lbl">Net Taxable</span><span class="res-row-val c-mut">${fmt(gross-cnss)}</span></div></div><div class="res-section"><div class="res-section-title">DGI Tax</div><div class="res-row"><span class="res-row-lbl">Annual DGI</span><span class="res-row-val c-red">${fmt(annualDGI)}</span></div></div><div class="res-section"><div class="res-row"><span class="res-row-lbl">Total Deductions</span><span class="res-row-val c-red">${fmt(totalDed)}</span></div><div class="res-row total"><span class="res-row-lbl">Take-Home Pay</span><span class="res-row-val c-grn">${fmt(net)}</span></div></div>`;document.getElementById('effRateDisplay').textContent=pct(eff);setTimeout(()=>{document.getElementById('rateFill').style.width=Math.min(eff*200,100)+'%';},80);document.getElementById('hiddenGross').value=gross;document.getElementById('resultsCard').classList.add('on');renderChart(CHART_TYPE);var empStrip=document.getElementById('employerStrip');if(empStrip){empStrip.classList.add('on');empStrip.innerHTML='<strong>Total Employer Cost: '+fmt(RESULT.totalEmployerCost)+'/year</strong> — gross + CNSS (6.4%) '+fmt(RESULT.employerCNSS)+' + AMO (4.11%) '+fmt(RESULT.employerAMO)+' + Prof tax (1.6%) '+fmt(RESULT.employerProf)+'.';}document.getElementById('aiBtn').disabled=false;document.getElementById('aiBtn').textContent='Get AI Tax Analysis →';}
 function toggleBands(h){const b=h.nextElementSibling;b.classList.toggle('open');h.querySelector('.tog-arrow').classList.toggle('open');}
 function setChart(t,b){CHART_TYPE=t;document.querySelectorAll('.chart-tab').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderChart(t);}
 function renderChart(type){if(!RESULT)return;const R=RESULT;const canvas=document.getElementById('mainChart');if(CHART){CHART.destroy();CHART=null;}
 if(type==='donut'){CHART=new Chart(canvas,{type:'doughnut',data:{labels:['Take-Home','DGI Tax','CNSS'],datasets:[{data:[R.net,R.annualDGI,R.cnss],backgroundColor: AfroChartColors.doughnut.slice(0, 3),borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11,weight:'600'},padding:12}}}}});}
-else if(type==='bar'){const bands=R.bandBreakdown.filter(b=>b.tax>0);if(bands.length)CHART=new Chart(canvas,{type:'bar',data:{labels:bands.map(b=>(b.rate*100)+'%'),datasets:[{label:'Tax (MAD)',data:bands.map(b=>b.tax),backgroundColor: AfroChartColors.series.slice(0, bands.length),borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'MAD'+(v/1000).toFixed(0)+'k',font:{size:10}},grid: { color: AfroChartColors.grid}},x:{ticks:{font:{size:10}}}}}});}}
+else if(type==='bar'){const bands=R.bandBreakdown.filter(b=>b.tax>0);if(bands.length)CHART=new Chart(canvas,{type:'bar',data:{labels:bands.map(b=>(b.rate*100)+'%'),datasets:[{label:'Tax (MAD)',data:bands.map(b=>b.tax),backgroundColor: AfroChartColors.series.slice(0, bands.length),borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'MAD'+(v/1000).toFixed(0)+'k',font:{size:10}},grid: { color: AfroChartColors.grid}},x:{ticks:{font:{size:10}}}}}});}else if(type==='employer'){CHART=new Chart(canvas,{type:'bar',data:{labels:['Take-Home','DGI Tax','CNSS (Employee)','CNSS (Employer)','AMO (Employer)','Prof Tax (Employer)'],datasets:[{label:'Amount',data:[R.net,R.annualDGI,R.cnss,R.employerCNSS,R.employerAMO,R.employerProf],backgroundColor:AfroChartColors.doughnut.slice(0,6),borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{ticks:{callback:v=>'MAD'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid:{color:AfroChartColors.grid}},y:{ticks:{font:{size:10,weight:'600'}}}}}});}}
 function openPdfModal(){if(!RESULT)return;document.getElementById('pdfModal').classList.add('on');document.getElementById('modalForm').style.display='block';}
 function closePdfModal(){document.getElementById('pdfModal').classList.remove('on');}
 document.getElementById('pdfModal').addEventListener('click',e=>{if(e.target===document.getElementById('pdfModal'))closePdfModal();});
@@ -289,7 +366,7 @@ async function submitPdf(e){e.preventDefault();try{await fetch('/',{method:'POST
 document.getElementById('modalForm').style.display='none';document.getElementById('modalSuccess').style.display='block';}
 function shareResult(){if(!RESULT)return;const text=`Morocco PAYE: Gross MAD ${Math.round(RESULT.gross).toLocaleString()}/yr → Take-home MAD ${Math.round(RESULT.net).toLocaleString()}/yr. afrotools.com/morocco/ma-paye`;if(navigator.share){navigator.share({title:'My Morocco PAYE',text,url:'https://afrotools.com/morocco/ma-paye'});}else if(navigator.clipboard){navigator.clipboard.writeText(text);const btn=document.getElementById('maShareBtn');btn.textContent='✓ Copied!';setTimeout(()=>btn.textContent='Share Result',2500);}}
 async function getAI(){if(!RESULT)return;const R=RESULT;const btn=document.getElementById('aiBtn');btn.disabled=true;btn.textContent='Analysing…';const prompt=`Morocco PAYE 2025: Gross MAD ${Math.round(R.gross).toLocaleString()}, CNSS MAD ${Math.round(R.cnss).toLocaleString()}, DGI MAD ${Math.round(R.annualDGI).toLocaleString()}, Take-home MAD ${Math.round(R.net).toLocaleString()}, Rate ${pct(R.effectiveRate)}. Summarize in 150 words.`;try{const res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'Morocco tax advisor. Concise.',messages:[{role:'user',content:prompt}]})});const data=await res.json();const text=data.text||'Unable.';document.getElementById('aiResp').textContent=text;document.getElementById('aiResp').style.display='block';document.getElementById('aiChat').classList.add('on');CHAT_HISTORY=[{role:'user',content:prompt},{role:'assistant',content:text}];btn.textContent='Ask below ↓';}catch(e){btn.disabled=false;btn.textContent='Try Again';}}
-async function sendChat(){const input=document.getElementById('chatIn');const msg=input.value.trim();if(!msg||!RESULT)return;input.value='';const msgs=document.getElementById('chatMsgs');msgs.innerHTML+=`<div class="msg u">${msg}</div>`;const aiEl=document.createElement('div');aiEl.className='msg a';aiEl.textContent='…';msgs.appendChild(aiEl);CHAT_HISTORY.push({role:'user',content:msg});try{const res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'Morocco tax advisor.',messages:CHAT_HISTORY})});const data=await res.json();aiEl.textContent=data.text||'Error';CHAT_HISTORY.push({role:'assistant',content:data.text||'Error'});}catch{aiEl.textContent='Error.';}}
+async function sendChat(){const input=document.getElementById('chatIn');const msg=input.value.trim();if(!msg||!RESULT)return;input.value='';const msgs=document.getElementById('chatMsgs');msgs.innerHTML+=`<div class="msg u">${msg.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`;const aiEl=document.createElement('div');aiEl.className='msg a';aiEl.textContent='…';msgs.appendChild(aiEl);CHAT_HISTORY.push({role:'user',content:msg});try{const res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'Morocco tax advisor.',messages:CHAT_HISTORY})});const data=await res.json();aiEl.textContent=data.text||'Error';CHAT_HISTORY.push({role:'assistant',content:data.text||'Error'});}catch{aiEl.textContent='Error.';}}
 document.getElementById('grossSalary').addEventListener('keydown',e=>{if(e.key==='Enter')calculate();});
 </script>
 <script src="/assets/js/lib/auto-email-gate.js" defer></script>

@@ -69,6 +69,27 @@
   @media (prefers-color-scheme: dark) {
     .tool-hero, .res-hero, .ai-card { background: #0f0a08; }
   }
+
+  .tool-info-card{background:#fff;border:1px solid #DBEAFE;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+  .tool-info-header{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid #EFF6FF;background:#F5F9FF}
+  .tool-info-img{width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0}
+  .tool-info-meta{flex:1;min-width:0}
+  .tool-info-name{font-size:.82rem;font-weight:700;color:#0f172a;line-height:1.2;margin-bottom:2px}
+  .tool-info-cat{font-size:.62rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B8CAE}
+  .tool-info-body{padding:14px 18px}
+  .tool-info-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
+  .tool-stat{text-align:center}
+  .tool-stat-val{font-size:1rem;font-weight:800;color:#007AFF;line-height:1}
+  .tool-stat-lbl{font-size:.6rem;font-weight:500;color:#6B8CAE;text-transform:uppercase;letter-spacing:.04em;margin-top:3px}
+  .tool-info-features{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+  .tool-feat{font-size:.62rem;font-weight:600;padding:3px 8px;background:#EFF6FF;border:1px solid #DBEAFE;border-radius:3px;color:#0f172a}
+  .tool-info-footer{display:flex;justify-content:space-between;align-items:center;padding:10px 18px;border-top:1px solid #EFF6FF;background:#FAFBFF}
+  .tool-info-updated{font-size:.62rem;color:#6B8CAE}
+  .tool-info-actions{display:flex;gap:6px}
+  .tool-info-action{font-size:.62rem;font-weight:600;color:#007AFF;text-decoration:none;padding:3px 8px;border:1px solid #DBEAFE;border-radius:4px;background:#fff;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
+  .tool-info-action:hover{background:#EFF6FF;border-color:#007AFF}
+  @media(max-width:900px){.tool-info-card{order:1}}
+  @media(max-width:480px){.tool-info-stats{grid-template-columns:1fr 1fr 1fr}.tool-info-header{padding:12px 14px}.tool-info-body{padding:10px 14px}}
 </style>
   <link rel="stylesheet" href="/assets/css/print.css" media="print">
 <script src="/assets/js/lib/save-state.js"></script>
@@ -123,12 +144,12 @@
 
             <!-- Presets -->
             <div class="presets">
-              <button class="preset-btn" onclick="setPreset(30000)">KES 30k</button>
-              <button class="preset-btn" onclick="setPreset(50000)">KES 50k</button>
-              <button class="preset-btn" onclick="setPreset(100000)">KES 100k</button>
-              <button class="preset-btn" onclick="setPreset(250000)">KES 250k</button>
-              <button class="preset-btn" onclick="setPreset(500000)">KES 500k</button>
-              <button class="preset-btn" onclick="setPreset(1000000)">KES 1M</button>
+              <button class="preset-btn" onclick="setPreset(30000, this)">KES 30k</button>
+              <button class="preset-btn" onclick="setPreset(50000, this)">KES 50k</button>
+              <button class="preset-btn" onclick="setPreset(100000, this)">KES 100k</button>
+              <button class="preset-btn" onclick="setPreset(250000, this)">KES 250k</button>
+              <button class="preset-btn" onclick="setPreset(500000, this)">KES 500k</button>
+              <button class="preset-btn" onclick="setPreset(1000000, this)">KES 1M</button>
             </div>
 
             <!-- Slider -->
@@ -271,7 +292,7 @@
 
           <div style="padding:0 22px 16px;">
             <details>
-              <summary style="font-size:0.75rem;font-weight:700;color:#3d6349;cursor:pointer;padding:8px 0;">Detailed Band-by-Band Breakdown</summary>
+              <summary style="font-size:0.75rem;font-weight:700;color:#475569;cursor:pointer;padding:8px 0;">Detailed Band-by-Band Breakdown</summary>
               <div id="bandDetailContent"></div>
             </details>
           </div>
@@ -319,6 +340,38 @@
                 <button class="chat-send" onclick="sendChat()" aria-label="Send">&rarr;</button>
               </div>
             </div>
+
+
+      <div class="tool-info-card">
+        <div class="tool-info-header">
+          <img src="/assets/img/tools/ke-vat.webp" alt="Kenya PAYE Calculator" class="tool-info-img" loading="lazy">
+          <div class="tool-info-meta">
+            <div class="tool-info-name">Kenya PAYE Calculator</div>
+            <div class="tool-info-cat">Tax &amp; Finance</div>
+          </div>
+        </div>
+        <div class="tool-info-body">
+          <div class="tool-info-stats">
+            <div class="tool-stat"><div class="tool-stat-val">2.4K</div><div class="tool-stat-lbl">Calculations</div></div>
+            <div class="tool-stat"><div class="tool-stat-val">4.8</div><div class="tool-stat-lbl">Rating</div></div>
+            <div class="tool-stat"><div class="tool-stat-val">Free</div><div class="tool-stat-lbl">Forever</div></div>
+          </div>
+          <div class="tool-info-features">
+            <span class="tool-feat">Net Pay Calc</span>
+            <span class="tool-feat">Tax Bands</span>
+            <span class="tool-feat">PDF Export</span>
+            <span class="tool-feat">AI Advisor</span>
+            <span class="tool-feat">Deductions</span>
+          </div>
+        </div>
+        <div class="tool-info-footer">
+          <span class="tool-info-updated">Updated: Mar 2026</span>
+          <div class="tool-info-actions">
+            <button class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Share</button>
+            <a class="tool-info-action" href="/tools/paye-calculator/">All Countries</a>
+          </div>
+        </div>
+      </div>
           </div>
         </div>
 
@@ -341,7 +394,7 @@
         <!-- Remittance Info -->
         <div class="card" style="padding:14px 18px">
           <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#93A3B8;margin-bottom:6px;">Remittance Deadline</div>
-          <p style="font-size:0.78rem;color:#3d6349;line-height:1.6;">PAYE, SHIF, and AHL must be remitted by the <strong>9th of the following month</strong> via KRA iTax (Form P10). NSSF: via NSSF i-portal by the 9th. Late: 5% penalty + 1%/month interest (NSSF), 2%/month (SHIF), 3%/month (AHL).</p>
+          <p style="font-size:0.78rem;color:#475569;line-height:1.6;">PAYE, SHIF, and AHL must be remitted by the <strong>9th of the following month</strong> via KRA iTax (Form P10). NSSF: via NSSF i-portal by the 9th. Late: 5% penalty + 1%/month interest (NSSF), 2%/month (SHIF), 3%/month (AHL).</p>
         </div>
 
         <div class="disclaimer">
@@ -379,15 +432,20 @@
 </section>
 
 <!-- More Tools -->
-<section style="max-width:800px;margin:3rem auto 0;padding:2rem;background:#fff;border-radius:0.875rem;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
-  <h2 style="font-size:1.25rem;font-weight:700;margin-bottom:1rem;color:#1e293b;">More African Tax Tools</h2>
-  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0.75rem;">
-    <a href="/nigeria/ng-salary-tax" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;">Nigeria PAYE Calculator</a>
-    <a href="/ghana/gh-paye" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;">Ghana PAYE Calculator</a>
-    <a href="/south-africa/za-paye" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;">South Africa PAYE Calculator</a>
-    <a href="/tanzania/tz-paye" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;">Tanzania PAYE Calculator</a>
-    <a href="/tools/currency-converter/" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;">Currency Converter</a>
-    <a href="/tools/vat-calculator/vat-calc" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;">VAT Calculator</a>
+<section class="more-tools-sec">
+  <div class="more-tools-inner">
+    <h2 class="more-tools-title">More African Tax Tools</h2>
+    <div class="more-tools-grid">
+      <a href="/uganda/ug-paye" class="more-tool-link">🇺🇬 Uganda PAYE Calculator</a>
+      <a href="/tanzania/tz-paye" class="more-tool-link">🇹🇿 Tanzania PAYE Calculator</a>
+      <a href="/rwanda/rw-paye" class="more-tool-link">🇷🇼 Rwanda PAYE Calculator</a>
+      <a href="/ethiopia/et-paye" class="more-tool-link">🇪🇹 Ethiopia PAYE Calculator</a>
+      <a href="/nigeria/ng-salary-tax" class="more-tool-link">🇳🇬 Nigeria PAYE Calculator</a>
+      <a href="/south-africa/za-paye" class="more-tool-link">🇿🇦 South Africa PAYE Calculator</a>
+      <a href="/ghana/gh-paye" class="more-tool-link">🇬🇭 Ghana PAYE Calculator</a>
+      <a href="/tools/vat-calculator/vat-calc" class="more-tool-link">🌍 Pan-African VAT Calculator</a>
+      <a href="/tools/currency-converter/" class="more-tool-link">💱 African Currency Converter</a>
+    </div>
   </div>
 </section>
 
@@ -433,13 +491,13 @@ function updateSliderFill(el) {
 }
 updateSliderFill(slider);
 
-function setPreset(val) {
+function setPreset(val, btn) {
   document.getElementById('salaryInput').value = Math.round(val).toLocaleString('en-KE');
   slider.value = Math.min(Math.max(val, 15000), 1500000);
   document.getElementById('sliderVal').textContent = fmt(val);
   updateSliderFill(slider);
   document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
-  if (event && event.target) event.target.classList.add('active');
+  if(btn) btn.classList.add('active');
   calculate();
 }
 
@@ -508,7 +566,7 @@ function getMarginalRate(taxable) {
 
 function calculate() {
   const gross = parseNum(document.getElementById('salaryInput').value);
-  if (!gross || gross <= 0) return;
+  if (!gross || gross <= 0) {const _el=document.getElementById('salaryInput');_el.focus();_el.style.borderColor='#e53e3e';_el.setAttribute('placeholder','Enter a valid salary');setTimeout(()=>{_el.style.borderColor='';_el.removeAttribute('placeholder')},3000);return}
 
   // Statutory deductions (reduce taxable income)
   const nssf = isOn('nssf') ? calcNSSF(gross) : 0;
@@ -788,7 +846,7 @@ async function sendChat() {
   if (!msg || !RESULT) return;
   input.value = '';
   const msgs = document.getElementById('chatMsgs');
-  msgs.innerHTML += `<div class="msg u">${msg.replace(/</g,'&lt;')}</div>`;
+  msgs.innerHTML += `<div class="msg u">${msg.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`;
   const aiEl = document.createElement('div'); aiEl.className = 'msg a'; aiEl.textContent = '...';
   msgs.appendChild(aiEl); msgs.scrollTop = msgs.scrollHeight;
   CHAT_HISTORY.push({ role: 'user', content: msg });

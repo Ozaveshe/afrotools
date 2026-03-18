@@ -92,7 +92,9 @@
       id: 'african', label: 'Uniquely African', icon: '🌍',
       desc: 'Japa, generator, ajo, mobile money',
       href: '/african/', color: '#fef2f2', accent: '#dc2626',
-      tools: []
+      tools: [
+        { label: 'AfroKitchen Recipes', href: '/tools/afrokitchen/', emoji: '🍲', badge: 'NEW' },
+      ]
     },
     {
       id: 'engineering', label: 'Engineering & CAD', icon: '🔧',
@@ -228,7 +230,7 @@
     .mega-footer-lnk:hover { text-decoration: underline; }
 
     /* RIGHT */
-    .right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; margin-left: auto; }
+    .right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; margin-left: auto; }
     .pill-54 { font-size: 0.66rem; font-weight: 600; color: #6b7280; padding: 4px 10px; border-radius: 20px; border: 1px solid #e5e7eb; background: #f9fafb; white-space: nowrap; }
 
     .btn-login {
@@ -584,7 +586,6 @@
               <span class="pill-54">🌍 54 countries</span>
               <a href="/dashboard/" class="btn-login">Sign in</a>
               <a href="/widgets/demo/" class="cta cta-embed" style="background:transparent;border:1.5px solid var(--clr-accent,#007AFF);color:var(--clr-accent,#007AFF);font-size:12px;padding:7px 14px">Embed Tools</a>
-              <a href="/#newsletter" class="cta">Get Updates →</a>
               <button class="burger" type="button" aria-label="Open menu" aria-expanded="false">
                 <span></span><span></span><span></span>
               </button>
@@ -615,7 +616,6 @@
             ${this._mobileContent()}
           </div>
           <div class="mob-footer">
-            <a href="/#newsletter" class="mob-cta">Get Updates →</a>
             <a href="/dashboard/" class="mob-login">Sign In</a>
             <p class="mob-note">🌍 54 countries · always free · no sign-up required</p>
           </div>

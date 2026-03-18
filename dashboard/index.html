@@ -1599,15 +1599,12 @@
             var user = AfroAuth.getUser();
             if (!user || !user.id) return null;
             try {
-                var token = AfroAuth.getSessionToken ? AfroAuth.getSessionToken() : null;
-                var headers = {
-                    'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpwY2xhZ3RnY3pzeWdyZ3p0bHRzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzkzMTU0NjEsImV4cCI6MjA1NDg5MTQ2MX0.aNaQecpqxbPxJpJ0WMb6F4k2HN_pTaH-n-G6bTSAjfY',
-                    'Content-Type': 'application/json'
-                };
-                if (token) headers['Authorization'] = 'Bearer ' + token;
-                var res = await fetch('https://zpclagtgczsygrgztlts.supabase.co/rest/v1/profiles?id=eq.' + user.id + '&select=*', { headers: headers });
-                var data = await res.json();
-                return data[0] || null;
+                var sb = AfroAuth.getSupabase();
+                if (sb) {
+                    var res = await sb.from('profiles').select('*').eq('id', user.id).single();
+                    return res.data || null;
+                }
+                return null;
             } catch(e) {
                 console.warn('[Profile] fetchFullProfile error:', e);
                 return null;
@@ -1618,26 +1615,19 @@
             var user = AfroAuth.getUser();
             if (!user || !user.id) return { ok: false, error: 'Not logged in' };
             try {
-                var token = AfroAuth.getSessionToken ? AfroAuth.getSessionToken() : null;
-                var headers = {
-                    'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpwY2xhZ3RnY3pzeWdyZ3p0bHRzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzkzMTU0NjEsImV4cCI6MjA1NDg5MTQ2MX0.aNaQecpqxbPxJpJ0WMb6F4k2HN_pTaH-n-G6bTSAjfY',
-                    'Content-Type': 'application/json',
-                    'Prefer': 'return=minimal'
-                };
-                if (token) headers['Authorization'] = 'Bearer ' + token;
-                var res = await fetch('https://zpclagtgczsygrgztlts.supabase.co/rest/v1/profiles?id=eq.' + user.id, {
-                    method: 'PATCH',
-                    headers: headers,
-                    body: JSON.stringify(profileData)
-                });
-                if (res.ok) {
+                // Use Supabase client directly (handles auth token automatically)
+                var sb = AfroAuth.getSupabase();
+                if (sb) {
+                    var res = await sb.from('profiles').update(profileData).eq('id', user.id);
+                    if (res.error) return { ok: false, error: res.error.message };
+                    // Also update the auth-level profile (name, country)
                     if (profileData.name || profileData.country) {
                         await AfroAuth.updateProfile({ name: profileData.name, country: profileData.country });
                     }
                     localStorage.setItem('afro_profile_extended', JSON.stringify(profileData));
                     return { ok: true };
                 }
-                return { ok: false, error: 'Save failed (HTTP ' + res.status + ')' };
+                return { ok: false, error: 'Database not available. Please refresh and try again.' };
             } catch(e) {
                 return { ok: false, error: e.message };
             }
@@ -2051,8 +2041,8 @@
             document.addEventListener('afro-auth-change', handleAuthChange);
         }
 
-        function handleLogout() {
-            AfroAuth.logout();
+        async function handleLogout() {
+            try { await AfroAuth.logout(); } catch(e) { console.warn('[Dashboard] logout error:', e); }
             isLoggedIn = false;
             currentUser = null;
             extendedProfile = {};

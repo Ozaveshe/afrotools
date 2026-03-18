@@ -28,296 +28,14 @@
 <meta name="robots"             content="index, follow">
 <meta name="author"             content="AfroTools">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com"},{"@type":"ListItem","position":2,"name":"Kenya","item":"https://afrotools.com/kenya"},{"@type":"ListItem","position":3,"name":"Kenya VAT Calculator","item":"https://afrotools.com/kenya/ke-vat"}]}</script>
-<script>
-// AI ADVISOR
-const AI_MSGS = [];
-async function sendAI() {
-  const input = document.getElementById('aiInput');
-  const msgsEl = document.getElementById('aiMsgs');
-  const sendBtn = document.getElementById('aiSend');
-  const q = input.value.trim();
-  if (!q) return;
-  
-  // Append user message
-  AI_MSGS.push({ role: 'user', content: q });
-  msgsEl.innerHTML += `<div class="ai-msg-u">${q}</div>`;
-  input.value = '';
-  sendBtn.disabled = true;
-  
-  // Show thinking
-  const thinkEl = document.createElement('div');
-  thinkEl.className = 'ai-thinking';
-  thinkEl.textContent = 'Thinking…';
-  msgsEl.appendChild(thinkEl);
-  msgsEl.scrollTop = msgsEl.scrollHeight;
-  
-  // Get context from current calculation
-  const vatAmountEl = document.getElementById('resVat') || document.getElementById('vatAmount');
-  const rateEl = document.getElementById('resRate') || document.getElementById('vatRate');
-  const context = vatAmountEl ? `Current VAT calc: rate=${rateEl?.textContent||''}, VAT amount=${vatAmountEl?.textContent||''}` : '';
-  
-  try {
-    const res = await fetch('/.netlify/functions/ai-advisor', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 
-        messages: AI_MSGS,
-        tool: 'ke-vat',
-        context
-      })
-    });
-    const data = await res.json();
-    thinkEl.remove();
-    const reply = data.reply || 'Could not get a response.';
-    AI_MSGS.push({ role: 'assistant', content: reply });
-    msgsEl.innerHTML += `<div class="ai-msg-a">${reply}</div>`;
-  } catch {
-    thinkEl.remove();
-    msgsEl.innerHTML += `<div class="ai-msg-a" style="color:rgba(255,100,100,.7)">Connection error. Please try again.</div>`;
-  }
-  
-  sendBtn.disabled = false;
-  msgsEl.scrollTop = msgsEl.scrollHeight;
-  document.getElementById('aiStatus').style.display = 'none';
-}
-
-document.getElementById('aiInput')?.addEventListener('keypress', e => {
-  if (e.key === 'Enter') sendAI();
-});
-</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Kenya VAT Calculator 2026","url":"https://afrotools.com/kenya/ke-vat","description":"Calculate Kenya VAT: standard 16%, reduced 8% (petroleum), zero-rated exports, exempt finance/agriculture. Calculate VAT-inclusive, VAT-exclusive, reverse VAT.","applicationCategory":"FinanceApplication","operatingSystem":"Web","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KES"},"provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}</script>
-<script>
-// AI ADVISOR
-const AI_MSGS = [];
-async function sendAI() {
-  const input = document.getElementById('aiInput');
-  const msgsEl = document.getElementById('aiMsgs');
-  const sendBtn = document.getElementById('aiSend');
-  const q = input.value.trim();
-  if (!q) return;
-  
-  // Append user message
-  AI_MSGS.push({ role: 'user', content: q });
-  msgsEl.innerHTML += `<div class="ai-msg-u">${q}</div>`;
-  input.value = '';
-  sendBtn.disabled = true;
-  
-  // Show thinking
-  const thinkEl = document.createElement('div');
-  thinkEl.className = 'ai-thinking';
-  thinkEl.textContent = 'Thinking…';
-  msgsEl.appendChild(thinkEl);
-  msgsEl.scrollTop = msgsEl.scrollHeight;
-  
-  // Get context from current calculation
-  const vatAmountEl = document.getElementById('resVat') || document.getElementById('vatAmount');
-  const rateEl = document.getElementById('resRate') || document.getElementById('vatRate');
-  const context = vatAmountEl ? `Current VAT calc: rate=${rateEl?.textContent||''}, VAT amount=${vatAmountEl?.textContent||''}` : '';
-  
-  try {
-    const res = await fetch('/.netlify/functions/ai-advisor', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 
-        messages: AI_MSGS,
-        tool: 'ke-vat',
-        context
-      })
-    });
-    const data = await res.json();
-    thinkEl.remove();
-    const reply = data.reply || 'Could not get a response.';
-    AI_MSGS.push({ role: 'assistant', content: reply });
-    msgsEl.innerHTML += `<div class="ai-msg-a">${reply}</div>`;
-  } catch {
-    thinkEl.remove();
-    msgsEl.innerHTML += `<div class="ai-msg-a" style="color:rgba(255,100,100,.7)">Connection error. Please try again.</div>`;
-  }
-  
-  sendBtn.disabled = false;
-  msgsEl.scrollTop = msgsEl.scrollHeight;
-  document.getElementById('aiStatus').style.display = 'none';
-}
-
-document.getElementById('aiInput')?.addEventListener('keypress', e => {
-  if (e.key === 'Enter') sendAI();
-});
-</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
 <link rel="stylesheet" href="/assets/css/global.min.css">
-<script src="/assets/js/components/navbar.min.js" defer>
-// AI ADVISOR
-const AI_MSGS = [];
-async function sendAI() {
-  const input = document.getElementById('aiInput');
-  const msgsEl = document.getElementById('aiMsgs');
-  const sendBtn = document.getElementById('aiSend');
-  const q = input.value.trim();
-  if (!q) return;
-  
-  // Append user message
-  AI_MSGS.push({ role: 'user', content: q });
-  msgsEl.innerHTML += `<div class="ai-msg-u">${q}</div>`;
-  input.value = '';
-  sendBtn.disabled = true;
-  
-  // Show thinking
-  const thinkEl = document.createElement('div');
-  thinkEl.className = 'ai-thinking';
-  thinkEl.textContent = 'Thinking…';
-  msgsEl.appendChild(thinkEl);
-  msgsEl.scrollTop = msgsEl.scrollHeight;
-  
-  // Get context from current calculation
-  const vatAmountEl = document.getElementById('resVat') || document.getElementById('vatAmount');
-  const rateEl = document.getElementById('resRate') || document.getElementById('vatRate');
-  const context = vatAmountEl ? `Current VAT calc: rate=${rateEl?.textContent||''}, VAT amount=${vatAmountEl?.textContent||''}` : '';
-  
-  try {
-    const res = await fetch('/.netlify/functions/ai-advisor', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 
-        messages: AI_MSGS,
-        tool: 'ke-vat',
-        context
-      })
-    });
-    const data = await res.json();
-    thinkEl.remove();
-    const reply = data.reply || 'Could not get a response.';
-    AI_MSGS.push({ role: 'assistant', content: reply });
-    msgsEl.innerHTML += `<div class="ai-msg-a">${reply}</div>`;
-  } catch {
-    thinkEl.remove();
-    msgsEl.innerHTML += `<div class="ai-msg-a" style="color:rgba(255,100,100,.7)">Connection error. Please try again.</div>`;
-  }
-  
-  sendBtn.disabled = false;
-  msgsEl.scrollTop = msgsEl.scrollHeight;
-  document.getElementById('aiStatus').style.display = 'none';
-}
-
-document.getElementById('aiInput')?.addEventListener('keypress', e => {
-  if (e.key === 'Enter') sendAI();
-});
-</script>
-<script src="/assets/js/components/footer.min.js" defer>
-// AI ADVISOR
-const AI_MSGS = [];
-async function sendAI() {
-  const input = document.getElementById('aiInput');
-  const msgsEl = document.getElementById('aiMsgs');
-  const sendBtn = document.getElementById('aiSend');
-  const q = input.value.trim();
-  if (!q) return;
-  
-  // Append user message
-  AI_MSGS.push({ role: 'user', content: q });
-  msgsEl.innerHTML += `<div class="ai-msg-u">${q}</div>`;
-  input.value = '';
-  sendBtn.disabled = true;
-  
-  // Show thinking
-  const thinkEl = document.createElement('div');
-  thinkEl.className = 'ai-thinking';
-  thinkEl.textContent = 'Thinking…';
-  msgsEl.appendChild(thinkEl);
-  msgsEl.scrollTop = msgsEl.scrollHeight;
-  
-  // Get context from current calculation
-  const vatAmountEl = document.getElementById('resVat') || document.getElementById('vatAmount');
-  const rateEl = document.getElementById('resRate') || document.getElementById('vatRate');
-  const context = vatAmountEl ? `Current VAT calc: rate=${rateEl?.textContent||''}, VAT amount=${vatAmountEl?.textContent||''}` : '';
-  
-  try {
-    const res = await fetch('/.netlify/functions/ai-advisor', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 
-        messages: AI_MSGS,
-        tool: 'ke-vat',
-        context
-      })
-    });
-    const data = await res.json();
-    thinkEl.remove();
-    const reply = data.reply || 'Could not get a response.';
-    AI_MSGS.push({ role: 'assistant', content: reply });
-    msgsEl.innerHTML += `<div class="ai-msg-a">${reply}</div>`;
-  } catch {
-    thinkEl.remove();
-    msgsEl.innerHTML += `<div class="ai-msg-a" style="color:rgba(255,100,100,.7)">Connection error. Please try again.</div>`;
-  }
-  
-  sendBtn.disabled = false;
-  msgsEl.scrollTop = msgsEl.scrollHeight;
-  document.getElementById('aiStatus').style.display = 'none';
-}
-
-document.getElementById('aiInput')?.addEventListener('keypress', e => {
-  if (e.key === 'Enter') sendAI();
-});
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js">
-// AI ADVISOR
-const AI_MSGS = [];
-async function sendAI() {
-  const input = document.getElementById('aiInput');
-  const msgsEl = document.getElementById('aiMsgs');
-  const sendBtn = document.getElementById('aiSend');
-  const q = input.value.trim();
-  if (!q) return;
-  
-  // Append user message
-  AI_MSGS.push({ role: 'user', content: q });
-  msgsEl.innerHTML += `<div class="ai-msg-u">${q}</div>`;
-  input.value = '';
-  sendBtn.disabled = true;
-  
-  // Show thinking
-  const thinkEl = document.createElement('div');
-  thinkEl.className = 'ai-thinking';
-  thinkEl.textContent = 'Thinking…';
-  msgsEl.appendChild(thinkEl);
-  msgsEl.scrollTop = msgsEl.scrollHeight;
-  
-  // Get context from current calculation
-  const vatAmountEl = document.getElementById('resVat') || document.getElementById('vatAmount');
-  const rateEl = document.getElementById('resRate') || document.getElementById('vatRate');
-  const context = vatAmountEl ? `Current VAT calc: rate=${rateEl?.textContent||''}, VAT amount=${vatAmountEl?.textContent||''}` : '';
-  
-  try {
-    const res = await fetch('/.netlify/functions/ai-advisor', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 
-        messages: AI_MSGS,
-        tool: 'ke-vat',
-        context
-      })
-    });
-    const data = await res.json();
-    thinkEl.remove();
-    const reply = data.reply || 'Could not get a response.';
-    AI_MSGS.push({ role: 'assistant', content: reply });
-    msgsEl.innerHTML += `<div class="ai-msg-a">${reply}</div>`;
-  } catch {
-    thinkEl.remove();
-    msgsEl.innerHTML += `<div class="ai-msg-a" style="color:rgba(255,100,100,.7)">Connection error. Please try again.</div>`;
-  }
-  
-  sendBtn.disabled = false;
-  msgsEl.scrollTop = msgsEl.scrollHeight;
-  document.getElementById('aiStatus').style.display = 'none';
-}
-
-document.getElementById('aiInput')?.addEventListener('keypress', e => {
-  if (e.key === 'Enter') sendAI();
-});
-</script>
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root {
     --ke-black:  #000000;   /* Kenya flag black */
@@ -348,7 +66,7 @@ document.getElementById('aiInput')?.addEventListener('keypress', e => {
   .update-bar{background:rgba(0,99,209,.06);border-bottom:1px solid rgba(0,99,209,.18);padding:11px 0}
   .update-bar-inner{max-width:1200px;margin:0 auto;padding:0 24px}
   .update-bar p{font-size:.78rem;color:rgba(0,0,0,.62);line-height:1.6}
-  .update-bar strong{color:#0a5c1e;font-weight:700}
+  .update-bar strong{color:#0f172a;font-weight:700}
 
   .tool-main{padding:28px 0 72px}
   .tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 360px;gap:22px;align-items:start}
@@ -356,25 +74,25 @@ document.getElementById('aiInput')?.addEventListener('keypress', e => {
   .card{background:#fff;border:1px solid #DBEAFE;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
   .card+.card{margin-top:18px}
   .card-head{padding:15px 22px;border-bottom:1px solid #EFF6FF;display:flex;align-items:center;justify-content:space-between;background:#F5F9FF}
-  .card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#0a4018}
+  .card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#0f172a}
   .card-sub{font-size:.72rem;color:#6B8CAE}
 
   .field{margin-bottom:18px}
   .field:last-child{margin-bottom:0}
   .f-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
-  .f-label-text{font-size:.75rem;font-weight:700;letter-spacing:.04em;color:#0d2813}
+  .f-label-text{font-size:.75rem;font-weight:700;letter-spacing:.04em;color:#0f172a}
   .f-hint{font-size:.7rem;color:#6B8CAE}
   .f-wrap{position:relative}
   .f-prefix{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:.78rem;font-weight:700;color:#6B8CAE;pointer-events:none}
-  .f-input{width:100%;padding:11px 13px 11px 60px;background:#EFF6FF;border:1.5px solid #BFDBFE;border-radius:7px;font-size:1rem;font-weight:600;color:#0d2813;outline:none;transition:border-color .18s,box-shadow .18s;font-family:'DM Sans',sans-serif;-moz-appearance:textfield}
+  .f-input{width:100%;padding:11px 13px 11px 60px;background:#EFF6FF;border:1.5px solid #BFDBFE;border-radius:7px;font-size:1rem;font-weight:600;color:#0f172a;outline:none;transition:border-color .18s,box-shadow .18s;font-family:'DM Sans',sans-serif;-moz-appearance:textfield}
   .f-input::-webkit-inner-spin-button,.f-input::-webkit-outer-spin-button{-webkit-appearance:none}
   .f-input:focus{border-color:var(--ke-green);background:#fff;box-shadow:0 0 0 3px rgba(0,99,209,.1)}
   .f-note{font-size:.7rem;color:#6B8CAE;margin-top:5px;line-height:1.55}
 
   .slider-wrap{margin-bottom:18px}
   .slider-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-  .slider-label{font-size:.75rem;font-weight:700;color:#0d2813}
-  .slider-val{font-size:.92rem;font-weight:800;color:var(--ke-green)}
+  .slider-label{font-size:.75rem;font-weight:700;color:#0f172a}
+  .slider-val{font-size:.92rem;font-weight:800;color:#007AFF}
   input[type=range]{-webkit-appearance:none;width:100%;height:5px;border-radius:3px;outline:none;cursor:pointer}
   input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;background:var(--ke-green);border-radius:50%;border:2.5px solid #fff;box-shadow:0 1px 6px rgba(0,99,209,.35);cursor:pointer}
   .slider-limits{display:flex;justify-content:space-between;margin-top:4px}
@@ -388,7 +106,7 @@ document.getElementById('aiInput')?.addEventListener('keypress', e => {
   .tog.on .tog-box{background:var(--ke-green);border-color:var(--ke-green)}
   .tog-box svg{display:none}
   .tog.on .tog-box svg{display:block}
-  .tog-label{font-size:.72rem;font-weight:700;color:#0d2813;line-height:1.3}
+  .tog-label{font-size:.72rem;font-weight:700;color:#0f172a;line-height:1.3}
   .tog-rate{font-size:.65rem;color:#6B8CAE}
 
   .rate-selector{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
@@ -400,7 +118,7 @@ document.getElementById('aiInput')?.addEventListener('keypress', e => {
 
   .results-card{display:none}
   .results-card.on{display:block}
-  .res-hero{background:linear-gradient(135deg,var(--ke-dark) 0%,#0d2a13 100%);padding:26px 24px;text-align:center;border-radius:10px 10px 0 0}
+  .res-hero{background:linear-gradient(135deg,#0a1929 0%,#0d2040 100%);padding:26px 24px;text-align:center;border-radius:10px 10px 0 0}
   .res-hero-label{font-size:.68rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.38);margin-bottom:6px}
   .res-hero-amount{font-size:clamp(2.2rem,4.5vw,3.2rem);font-weight:800;color:var(--ke-gold);letter-spacing:-.02em;line-height:1}
   .res-hero-period{font-size:.78rem;color:rgba(255,255,255,.3);margin-top:5px}
@@ -410,11 +128,11 @@ document.getElementById('aiInput')?.addEventListener('keypress', e => {
   .res-section-title{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#6B8CAE;margin-bottom:8px;padding-bottom:7px;border-bottom:1px solid #EFF6FF}
   .res-row{display:flex;align-items:center;justify-content:space-between;padding:5px 0;font-size:.85rem}
   .res-row+.res-row{border-top:1px solid #EFF6FF}
-  .res-row-lbl{color:#244d2c;font-weight:400}
-  .res-row-val{font-weight:700;color:#0d2813;font-variant-numeric:tabular-nums}
+  .res-row-lbl{color:#0f172a;font-weight:400}
+  .res-row-val{font-weight:700;color:#0f172a;font-variant-numeric:tabular-nums}
   .c-red{color:#c0392b}.c-grn{color:#0063D1}.c-gold{color:#9a7a00}.c-mut{color:#6B8CAE}
   .res-row.total{border-top:2px solid #BFDBFE !important;margin-top:4px;padding-top:10px}
-  .res-row.total .res-row-lbl{font-weight:700;color:#0d2813}
+  .res-row.total .res-row-lbl{font-weight:700;color:#0f172a}
   .res-row.total .res-row-val{font-size:1.05rem;font-weight:800}
 
   .chart-section{padding:0 22px 22px}
@@ -427,14 +145,14 @@ document.getElementById('aiInput')?.addEventListener('keypress', e => {
   .act-btn{padding:10px;font-size:.72rem;font-weight:700;border-radius:6px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px;font-family:'DM Sans',sans-serif}
   .act-pdf{background:rgba(255,184,28,.1);border:1.5px solid rgba(255,184,28,.35);color:#7a6200}
   .act-pdf:hover{background:rgba(255,184,28,.22)}
-  .act-share{background:#EFF6FF;border:1.5px solid #BFDBFE;color:#244d2c}
+  .act-share{background:#EFF6FF;border:1.5px solid #BFDBFE;color:#0f172a}
   .act-share:hover{background:#EFF6FF}
 
   .sidebar{display:flex;flex-direction:column;gap:16px}
 
-  .exempt-card{background:linear-gradient(160deg,var(--ke-dark) 0%,#0d2a13 100%);border-radius:10px;border:1px solid rgba(255,184,28,.1);overflow:hidden;padding:16px 18px}
-  .exempt-card h4{font-size:.72rem;font-weight:700;letter-spacing:.06em;color:#fff;margin-bottom:10px}
-  .exempt-item{font-size:.78rem;color:rgba(255,255,255,.7);line-height:1.6;margin-bottom:6px}
+  .exempt-card{background:#fff;border-radius:10px;border:1px solid #DBEAFE;overflow:hidden;padding:16px 18px;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+  .exempt-card h4{font-size:.72rem;font-weight:700;letter-spacing:.06em;color:#0f172a;margin-bottom:10px}
+  .exempt-item{font-size:.78rem;color:#0f172a;line-height:1.6;margin-bottom:6px}
 
   .bands-card .card-head{cursor:pointer;user-select:none}
   .tog-arrow{font-size:.8rem;color:#6B8CAE;transition:transform .2s}
@@ -443,19 +161,19 @@ document.getElementById('aiInput')?.addEventListener('keypress', e => {
   .bands-body.open{display:block}
   .band-row{display:flex;justify-content:space-between;padding:5px 0;font-size:.8rem}
   .band-row+.band-row{border-top:1px solid #EFF6FF}
-  .band-range{color:#244d2c}
-  .band-rate{font-weight:700;color:var(--ke-green)}
+  .band-range{color:#0f172a}
+  .band-rate{font-weight:700;color:#007AFF}
   .band-note{font-size:.7rem;color:#6B8CAE;margin-top:10px;line-height:1.55}
 
   .disclaimer{font-size:.71rem;color:#6B8CAE;line-height:1.6;padding:13px 16px;background:#F5F9FF;border:1px solid #BFDBFE;border-radius:8px}
-  .disclaimer strong{font-weight:600;color:#244d2c}
+  .disclaimer strong{font-weight:600;color:#0f172a}
 
   .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;display:none;align-items:center;justify-content:center;padding:20px}
   .modal-bg.on{display:flex}
   .modal{background:#fff;border-radius:12px;padding:32px;max-width:420px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,.22);position:relative}
-  .modal h3{font-size:1.1rem;font-weight:800;color:#0d2813;margin-bottom:6px}
-  .modal p{font-size:.83rem;color:#244d2c;line-height:1.6;margin-bottom:20px}
-  .modal-input{width:100%;padding:12px 14px;border:1.5px solid #BFDBFE;border-radius:7px;font-size:.9rem;color:#0d2813;outline:none;margin-bottom:10px;background:#EFF6FF;transition:border-color .15s;font-family:'DM Sans',sans-serif;box-sizing:border-box}
+  .modal h3{font-size:1.1rem;font-weight:800;color:#0f172a;margin-bottom:6px}
+  .modal p{font-size:.83rem;color:#0f172a;line-height:1.6;margin-bottom:20px}
+  .modal-input{width:100%;padding:12px 14px;border:1.5px solid #BFDBFE;border-radius:7px;font-size:.9rem;color:#0f172a;outline:none;margin-bottom:10px;background:#EFF6FF;transition:border-color .15s;font-family:'DM Sans',sans-serif;box-sizing:border-box}
   .modal-input:focus{border-color:var(--ke-green);background:#fff}
   .modal-submit{width:100%;padding:13px;background:var(--ke-green);color:#fff;border:none;border-radius:7px;font-size:.88rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif}
   .modal-submit:hover{background:#005f47}
@@ -465,36 +183,107 @@ document.getElementById('aiInput')?.addEventListener('keypress', e => {
   .faq-inner{max-width:1200px;margin:0 auto;padding:0 24px}
   .faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:28px}
   .faq-item{padding:18px 20px;background:#F5F9FF;border:1px solid #DBEAFE;border-radius:8px}
-  .faq-q{font-size:.85rem;font-weight:700;color:#0d2813;margin-bottom:7px;line-height:1.4}
-  .faq-a{font-size:.82rem;color:#244d2c;line-height:1.7}
-  .eyebrow{display:block;font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ke-green);margin-bottom:6px}
-  .sec-title{font-size:clamp(1.3rem,2.5vw,1.7rem);font-weight:800;color:#0d2813;letter-spacing:-.02em}
+  .faq-q{font-size:.85rem;font-weight:700;color:#0f172a;margin-bottom:7px;line-height:1.4}
+  .faq-a{font-size:.82rem;color:#0f172a;line-height:1.7}
+  .eyebrow{display:block;font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#007AFF;margin-bottom:6px}
+  .sec-title{font-size:clamp(1.3rem,2.5vw,1.7rem);font-weight:800;color:#0f172a;letter-spacing:-.02em}
 
   .card-body{padding:22px}
   @media(max-width:900px){.tool-main-inner{grid-template-columns:1fr}.faq-grid{grid-template-columns:1fr}}
-  .ai-advisor-card{background:linear-gradient(160deg,#0a1f0e 0%,#0f2818 100%);border-radius:10px;border:1px solid rgba(245,215,110,.12);overflow:hidden}
-.ai-advisor-head{padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:9px}
-.ai-dot{width:8px;height:8px;border-radius:50%;background:#f5d76e;animation:aiPulse 2s infinite;flex-shrink:0}
+  .ai-advisor-card{background:#fff;border-radius:10px;border:1px solid #DBEAFE;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.ai-advisor-head{padding:14px 18px;border-bottom:1px solid #EFF6FF;display:flex;align-items:center;gap:9px}
+.ai-dot{width:8px;height:8px;border-radius:50%;background:#007AFF;animation:aiPulse 2s infinite;flex-shrink:0}
 @keyframes aiPulse{0%,100%{opacity:1}50%{opacity:.3}}
-.ai-title{font-size:.72rem;font-weight:700;letter-spacing:.06em;color:#fff}
-.ai-by{font-size:.62rem;color:rgba(255,255,255,.28);margin-left:auto}
+.ai-title{font-size:.72rem;font-weight:700;letter-spacing:.06em;color:#0f172a}
+.ai-by{font-size:.62rem;color:#6B8CAE;margin-left:auto}
 .ai-advisor-body{padding:14px 18px}
-.ai-status{font-size:.78rem;color:rgba(255,255,255,.5);line-height:1.6;margin-bottom:10px}
+.ai-status{font-size:.78rem;color:#0f172a;line-height:1.6;margin-bottom:10px}
 .ai-chat{margin-top:8px}
 .ai-msgs{max-height:200px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
-.ai-msg-u{font-size:.76rem;padding:7px 10px;background:rgba(0,122,255,.22);color:rgba(255,255,255,.85);border-radius:6px;align-self:flex-end;max-width:90%}
-.ai-msg-a{font-size:.76rem;padding:7px 10px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.72);border-radius:6px;align-self:flex-start;line-height:1.55}
+.ai-msg-u{font-size:.76rem;padding:7px 10px;background:#007AFF;color:#fff;border-radius:6px;align-self:flex-end;max-width:90%}
+.ai-msg-a{font-size:.76rem;padding:7px 10px;background:#EFF6FF;color:#0f172a;border-radius:6px;align-self:flex-start;line-height:1.55}
 .ai-input-row{display:flex;gap:6px}
-.ai-input{flex:1;padding:8px 11px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:5px;font-size:.76rem;color:#fff;outline:none;font-family:'DM Sans',sans-serif}
-.ai-input::placeholder{color:rgba(255,255,255,.28)}
-.ai-input:focus{border-color:rgba(245,215,110,.4)}
+.ai-input{flex:1;padding:8px 11px;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:5px;font-size:.76rem;color:#0f172a;outline:none;font-family:'DM Sans',sans-serif}
+.ai-input::placeholder{color:#6B8CAE}
+.ai-input:focus{border-color:#007AFF}
 .ai-send{padding:8px 13px;background:var(--color-primary);border:none;border-radius:5px;color:#fff;cursor:pointer;font-weight:700;font-size:.82rem;font-family:'DM Sans',sans-serif;transition:background .15s}
-.ai-send:hover{background:#005BBF}
+.ai-send:hover{background:#0063D1}
 .ai-send:disabled{opacity:.4;cursor:not-allowed}
-.ai-thinking{font-size:.74rem;color:rgba(245,215,110,.6);padding:6px 0}
+.ai-thinking{font-size:.74rem;color:#007AFF;padding:6px 0}
   @media(max-width:480px){.card-body{padding:16px}.res-body{padding:16px}}
+
+  /* ── QUICK CHIPS ─────────────────────── */
+  .quick-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+  .q-chip{padding:5px 12px;font-size:.72rem;font-weight:700;border:1.5px solid #BFDBFE;background:#EFF6FF;border-radius:16px;cursor:pointer;color:#6B8CAE;transition:all .15s;font-family:'DM Sans',sans-serif}
+  .q-chip:hover{border-color:var(--color-primary);color:var(--color-primary);background:#e0f2fe}
+  .q-chip.on{background:var(--color-primary);border-color:var(--color-primary);color:#fff}
+
+  /* ── CUSTOM RATE ─────────────────────── */
+  .custom-rate-wrap{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding:8px 12px;background:#F5F9FF;border:1px solid #DBEAFE;border-radius:7px}
+  .custom-rate-wrap label{font-size:.74rem;font-weight:600;color:#0f172a;cursor:pointer;display:flex;align-items:center;gap:6px;white-space:nowrap}
+  .custom-rate-wrap input[type="checkbox"]{width:15px;height:15px;accent-color:var(--color-primary);cursor:pointer}
+  .custom-rate-input{width:80px;padding:6px 10px;border:1.5px solid #BFDBFE;border-radius:5px;font-size:.82rem;font-weight:600;text-align:center;font-family:'DM Sans',sans-serif;background:#fff;color:#0f172a}
+  .custom-rate-input:focus{border-color:var(--color-primary);outline:none}
+
+  /* ── FORMULA DISPLAY ─────────────────── */
+  .formula-box{margin:16px 0;padding:12px 16px;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:8px;display:none;overflow:hidden}
+  .formula-box.on{display:block}
+  .formula-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#0063D1;margin-bottom:5px}
+  .formula-text{font-size:.8rem;color:#0f172a;font-family:'DM Sans',sans-serif;line-height:1.6;word-break:break-word}
+
+  /* ── WITHHOLDING ─────────────────────── */
+  .wh-section{margin-top:18px}
+  .wh-toggle{width:100%;padding:12px 16px;background:#F5F9FF;border:1.5px solid #DBEAFE;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:'DM Sans',sans-serif;transition:all .15s}
+  .wh-toggle:hover{border-color:var(--color-primary)}
+  .wh-toggle-label{font-size:.78rem;font-weight:700;color:#0f172a}
+  .wh-toggle-arrow{font-size:.8rem;color:#6B8CAE;transition:transform .2s}
+  .wh-toggle-arrow.open{transform:rotate(180deg)}
+  .wh-body{display:none;margin-top:10px}
+  .wh-body.open{display:block}
+  .wh-rate-row{display:flex;gap:8px;align-items:center;margin-bottom:10px}
+  .wh-rate-btn{padding:7px 12px;font-size:.72rem;font-weight:700;border:1.5px solid #BFDBFE;background:#EFF6FF;border-radius:5px;cursor:pointer;color:#6B8CAE;transition:all .15s;font-family:'DM Sans',sans-serif}
+  .wh-rate-btn.on{background:var(--color-primary);border-color:var(--color-primary);color:#fff}
+  .wh-custom-input{width:60px;padding:6px 8px;border:1.5px solid #BFDBFE;border-radius:5px;font-size:.78rem;text-align:center;font-family:'DM Sans',sans-serif}
+  .wh-results{margin-top:12px}
+  .wh-row{display:flex;justify-content:space-between;padding:7px 0;font-size:.82rem;border-bottom:1px solid #EFF6FF}
+  .wh-row:last-child{border-bottom:none}
+  .wh-lbl{color:#0f172a}
+  .wh-val{font-weight:700;color:#0f172a}
+  .wh-val.warn{color:#c0392b}
+  .wh-val.accent{color:var(--color-primary)}
+  .wh-note{font-size:.72rem;color:#6B8CAE;margin-top:8px;line-height:1.5;font-style:italic}
+  @media(max-width:480px){.quick-chips{gap:4px}.q-chip{padding:4px 10px;font-size:.68rem}.wh-rate-row{flex-wrap:wrap}}
+
+  .tool-info-card{background:#fff;border:1px solid #DBEAFE;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+  .tool-info-header{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid #EFF6FF;background:#F5F9FF}
+  .tool-info-img{width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0}
+  .tool-info-meta{flex:1;min-width:0}
+  .tool-info-name{font-size:.82rem;font-weight:700;color:#0f172a;line-height:1.2;margin-bottom:2px}
+  .tool-info-cat{font-size:.62rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B8CAE}
+  .tool-info-body{padding:14px 18px}
+  .tool-info-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
+  .tool-stat{text-align:center}
+  .tool-stat-val{font-size:1rem;font-weight:800;color:#007AFF;line-height:1}
+  .tool-stat-lbl{font-size:.6rem;font-weight:500;color:#6B8CAE;text-transform:uppercase;letter-spacing:.04em;margin-top:3px}
+  .tool-info-features{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+  .tool-feat{font-size:.62rem;font-weight:600;padding:3px 8px;background:#EFF6FF;border:1px solid #DBEAFE;border-radius:3px;color:#0f172a}
+  .tool-info-footer{display:flex;justify-content:space-between;align-items:center;padding:10px 18px;border-top:1px solid #EFF6FF;background:#FAFBFF}
+  .tool-info-updated{font-size:.62rem;color:#6B8CAE}
+  .tool-info-actions{display:flex;gap:6px}
+  .tool-info-action{font-size:.62rem;font-weight:600;color:#007AFF;text-decoration:none;padding:3px 8px;border:1px solid #DBEAFE;border-radius:4px;background:#fff;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
+  .tool-info-action:hover{background:#EFF6FF;border-color:#007AFF}
+  @media(max-width:900px){.tool-info-card{order:1}}
+  @media(max-width:480px){.tool-info-stats{grid-template-columns:1fr 1fr 1fr}.tool-info-header{padding:12px 14px}.tool-info-body{padding:10px 14px}}
+
+.more-tools-sec{max-width:800px;margin:3rem auto 4rem;padding:0 24px}
+.more-tools-inner{padding:2rem;background:#fff;border-radius:.875rem;border:1px solid #E2E8F0;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.more-tools-title{font-size:1.1rem;font-weight:700;margin-bottom:1rem;color:#1e293b}
+.more-tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.6rem}
+.more-tool-link{display:block;padding:.7rem 1rem;border:1px solid #E2E8F0;border-radius:.5rem;text-decoration:none;color:#1e293b;font-size:.82rem;font-weight:500;transition:all .18s}
+.more-tool-link:hover{border-color:#007AFF;color:#007AFF;background:#F0F7FF}
+.faq-sec .rv,.faq-sec .rv-scale{opacity:1!important;transform:none!important}
 </style>
-<script src="/assets/js/lib/chart-config.js" defer></script>
+<script src="/assets/js/lib/chart-config.js"></script>
 </head>
 <body class="tool-page">
 <afro-navbar active="tools"></afro-navbar>
@@ -581,6 +370,24 @@ document.getElementById('aiInput')?.addEventListener('keypress', e => {
             </div>
           </div>
 
+          
+          <!-- CUSTOM VAT RATE -->
+          <div class="custom-rate-wrap">
+            <label><input type="checkbox" id="customRateToggle" onchange="toggleCustomRate(this)"> Use custom rate</label>
+            <input type="text" class="custom-rate-input" id="customRateInput" placeholder="e.g. 12" style="display:none" oninput="onCustomRate()">
+            <span id="customRateHint" style="font-size:.7rem;color:#6B8CAE;display:none">%</span>
+          </div>
+
+          <!-- QUICK AMOUNT CHIPS -->
+          <div class="quick-chips" id="quickChips">
+            <button class="q-chip" onclick="setChip(1000,this)">1K</button>
+            <button class="q-chip" onclick="setChip(5000,this)">5K</button>
+            <button class="q-chip" onclick="setChip(10000,this)">10K</button>
+            <button class="q-chip" onclick="setChip(50000,this)">50K</button>
+            <button class="q-chip" onclick="setChip(100000,this)">100K</button>
+            <button class="q-chip" onclick="setChip(1000000,this)">1M</button>
+          </div>
+
           <button class="calc-btn" onclick="calculate()">Calculate VAT →</button>
         </div>
       </div>
@@ -595,6 +402,12 @@ document.getElementById('aiInput')?.addEventListener('keypress', e => {
           <div class="res-section">
             <div class="res-section-title">VAT Breakdown</div>
             <div id="resContent"></div>
+          </div>
+          
+          <!-- FORMULA -->
+          <div class="formula-box" id="formulaBox">
+            <div class="formula-title">Formula Used</div>
+            <div class="formula-text" id="formulaText"></div>
           </div>
           <div class="chart-section">
             <div class="chart-tabs">
@@ -614,6 +427,24 @@ document.getElementById('aiInput')?.addEventListener('keypress', e => {
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
             Share Result
           </button>
+        </div>
+
+        <!-- VAT WITHHOLDING -->
+        <div class="wh-section" style="padding:0 22px 22px">
+          <button class="wh-toggle" onclick="toggleWh(this)">
+            <span class="wh-toggle-label">🏢 VAT Withholding (B2B)</span>
+            <span class="wh-toggle-arrow">▾</span>
+          </button>
+          <div class="wh-body" id="whBody">
+            <p style="font-size:.76rem;color:#6B8CAE;margin-bottom:10px;line-height:1.5">Calculate how much VAT the buyer withholds and remits to the tax authority on this transaction.</p>
+            <div class="wh-rate-row">
+              <button class="wh-rate-btn on" onclick="setWhRate(50,this)">50%</button>
+              <button class="wh-rate-btn" onclick="setWhRate(100,this)">100%</button>
+              <button class="wh-rate-btn" onclick="setWhRate(33.33,this)">33.3%</button>
+              <input type="text" class="wh-custom-input" id="whCustom" placeholder="%" oninput="calcWh()">
+            </div>
+            <div class="wh-results" id="whResults"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -640,6 +471,39 @@ document.getElementById('aiInput')?.addEventListener('keypress', e => {
     </div>
   </div>
 </div>
+
+
+
+      <div class="tool-info-card">
+        <div class="tool-info-header">
+          <img src="/assets/img/tools/ke-vat.webp" alt="Kenya VAT Calculator" class="tool-info-img" loading="lazy">
+          <div class="tool-info-meta">
+            <div class="tool-info-name">Kenya VAT Calculator</div>
+            <div class="tool-info-cat">Tax &amp; Finance</div>
+          </div>
+        </div>
+        <div class="tool-info-body">
+          <div class="tool-info-stats">
+            <div class="tool-stat"><div class="tool-stat-val">2.4K</div><div class="tool-stat-lbl">Calculations</div></div>
+            <div class="tool-stat"><div class="tool-stat-val">4.8</div><div class="tool-stat-lbl">Rating</div></div>
+            <div class="tool-stat"><div class="tool-stat-val">Free</div><div class="tool-stat-lbl">Forever</div></div>
+          </div>
+          <div class="tool-info-features">
+            <span class="tool-feat">Add / Extract VAT</span>
+            <span class="tool-feat">Custom Rates</span>
+            <span class="tool-feat">PDF Export</span>
+            <span class="tool-feat">AI Advisor</span>
+            <span class="tool-feat">Withholding</span>
+          </div>
+        </div>
+        <div class="tool-info-footer">
+          <span class="tool-info-updated">Updated: Mar 2026</span>
+          <div class="tool-info-actions">
+            <button class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Share</button>
+            <a class="tool-info-action" href="/tools/vat-calculator/">All Countries</a>
+          </div>
+        </div>
+      </div>
 
 <!-- EXEMPT ITEMS -->
       <div class="exempt-card">
@@ -786,6 +650,7 @@ updateSliderFill(document.getElementById('amountSlider'));
 
 // ── MAIN CALCULATE ────────────────────────────────────────────────
 function calculate() {
+  const effectiveRate = getEffectiveRate();
   const amount = parseFloat(document.getElementById('amount').value) || 0;
   if (!amount || amount <= 0) {
     const el = document.getElementById('amount');
@@ -799,16 +664,16 @@ function calculate() {
 
   if (MODE === 'add-vat') {
     netAmount = amount;
-    vatAmount = amount * RATE;
+    vatAmount = amount * effectiveRate;
     totalInclusive = amount + vatAmount;
   } else {
     totalInclusive = amount;
-    netAmount = amount / (1 + RATE);
+    netAmount = amount / (1 + effectiveRate);
     vatAmount = totalInclusive - netAmount;
   }
 
   RESULT = {
-    amount, netAmount, vatAmount, totalInclusive, rate: RATE, rateLabel: RATE_LABEL, mode: MODE
+    amount, netAmount, vatAmount, totalInclusive, rate: effectiveRate, rateLabel: USE_CUSTOM_RATE ? "Custom" : RATE_LABEL, mode: MODE
   };
 
   document.getElementById('resLabel').textContent = MODE === 'add-vat' ? 'Total (Inclusive)' : 'Total (Inclusive)';
@@ -829,6 +694,18 @@ function calculate() {
   document.getElementById('hiddenAmount').value = amount;
   document.getElementById('resultsCard').classList.add('on');
   renderChart(CHART_TYPE);
+
+  // Show formula
+  const fmtC = n => fmt(Math.abs(n));
+  const rPct = (effectiveRate * 100);
+  const rPctStr = rPct % 1 === 0 ? rPct.toFixed(0) : rPct.toFixed(2);
+  if (MODE === 'add-vat') {
+    document.getElementById('formulaText').textContent = 'VAT = ' + fmtC(netAmount) + ' × ' + rPctStr + '% = ' + fmtC(vatAmount) + '  |  Total = ' + fmtC(netAmount) + ' + ' + fmtC(vatAmount) + ' = ' + fmtC(totalInclusive);
+  } else {
+    document.getElementById('formulaText').textContent = 'Net = ' + fmtC(totalInclusive) + ' ÷ (1 + ' + rPctStr + '%) = ' + fmtC(netAmount) + '  |  VAT = ' + fmtC(totalInclusive) + ' − ' + fmtC(netAmount) + ' = ' + fmtC(vatAmount);
+  }
+  document.getElementById('formulaBox').classList.add('on');
+  if (document.getElementById('whBody')?.classList.contains('open')) calcWh();
   document.getElementById('resultsCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
@@ -911,7 +788,7 @@ async function sendAI() {
   
   // Append user message
   AI_MSGS.push({ role: 'user', content: q });
-  msgsEl.innerHTML += `<div class="ai-msg-u">${q}</div>`;
+  msgsEl.innerHTML += `<div class="ai-msg-u">${q.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`;
   input.value = '';
   sendBtn.disabled = true;
   
@@ -941,10 +818,10 @@ async function sendAI() {
     thinkEl.remove();
     const reply = data.reply || 'Could not get a response.';
     AI_MSGS.push({ role: 'assistant', content: reply });
-    msgsEl.innerHTML += `<div class="ai-msg-a">${reply}</div>`;
+    const replyEl = document.createElement('div'); replyEl.className = 'ai-msg-a'; replyEl.textContent = reply; msgsEl.appendChild(replyEl);
   } catch {
     thinkEl.remove();
-    msgsEl.innerHTML += `<div class="ai-msg-a" style="color:rgba(255,100,100,.7)">Connection error. Please try again.</div>`;
+    msgsEl.innerHTML += `<div class="ai-msg-a" style="color:#dc2626">Connection error. Please try again.</div>`;
   }
   
   sendBtn.disabled = false;
@@ -955,6 +832,78 @@ async function sendAI() {
 document.getElementById('aiInput')?.addEventListener('keypress', e => {
   if (e.key === 'Enter') sendAI();
 });
+
+
+// ── CUSTOM RATE ──────────────────────────────────────────
+let USE_CUSTOM_RATE = false;
+let CUSTOM_RATE = 0;
+
+function toggleCustomRate(el) {
+  USE_CUSTOM_RATE = el.checked;
+  document.getElementById('customRateInput').style.display = el.checked ? '' : 'none';
+  document.getElementById('customRateHint').style.display = el.checked ? '' : 'none';
+  if (!el.checked) { CUSTOM_RATE = 0; }
+}
+
+function onCustomRate() {
+  CUSTOM_RATE = parseFloat(document.getElementById('customRateInput').value) || 0;
+}
+
+function getEffectiveRate() {
+  return USE_CUSTOM_RATE && CUSTOM_RATE > 0 ? CUSTOM_RATE / 100 : RATE;
+}
+
+// ── QUICK CHIPS ──────────────────────────────────────────
+function setChip(val, btn) {
+  document.getElementById('amount').value = val;
+  const s = document.getElementById('amountSlider');
+  if (s) { s.value = Math.min(val, parseInt(s.max)); updateSliderFill(s); }
+  document.getElementById('sliderVal').textContent = fmt(val);
+  document.querySelectorAll('.q-chip').forEach(c => c.classList.remove('on'));
+  btn.classList.add('on');
+  calculate();
+}
+
+// ── WITHHOLDING ──────────────────────────────────────────
+let WH_RATE = 50;
+
+function toggleWh(btn) {
+  const body = document.getElementById('whBody');
+  const arrow = btn.querySelector('.wh-toggle-arrow');
+  body.classList.toggle('open');
+  arrow.classList.toggle('open');
+  if (body.classList.contains('open') && RESULT) calcWh();
+}
+
+function setWhRate(rate, btn) {
+  WH_RATE = rate;
+  document.querySelectorAll('.wh-rate-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('whCustom').value = '';
+  calcWh();
+}
+
+function calcWh() {
+  if (!RESULT) return;
+  const customWh = parseFloat(document.getElementById('whCustom').value);
+  const whPct = customWh > 0 ? customWh : WH_RATE;
+  if (customWh > 0) document.querySelectorAll('.wh-rate-btn').forEach(b => b.classList.remove('on'));
+
+  const invoice = RESULT.netAmount;
+  const vatAmt = RESULT.vatAmount;
+  const withheld = vatAmt * (whPct / 100);
+  const supplierRemits = vatAmt - withheld;
+  const supplierReceives = invoice + vatAmt - withheld;
+
+  const row = (l, v, cls='') => `<div class="wh-row"><span class="wh-lbl">${l}</span><span class="wh-val ${cls}">${v}</span></div>`;
+  document.getElementById('whResults').innerHTML =
+    row('Invoice (excl. VAT)', fmt(invoice)) +
+    row(`VAT (${pct(RESULT.rate)})`, fmt(vatAmt)) +
+    row(`Withheld (${whPct}% of VAT)`, fmt(withheld), 'warn') +
+    row('Supplier Remits', fmt(supplierRemits), 'accent') +
+    row('Supplier Receives', fmt(supplierReceives)) +
+    `<div class="wh-note">The buyer withholds ${fmt(withheld)} and remits it directly to the tax authority. The supplier remits the remaining ${fmt(supplierRemits)} of VAT.</div>`;
+}
 </script>
 <script src="/assets/js/lib/auto-email-gate.js" defer></script>
 </body>

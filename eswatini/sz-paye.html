@@ -44,6 +44,27 @@
   }
   .tool-hero::after { content: '🇸🇿'; position: absolute; right: 5%; top: 50%; transform: translateY(-50%); font-size: 8rem; opacity: .06; pointer-events: none; }
   .tool-hero { background: #003DA5; }
+
+  .tool-info-card{background:#fff;border:1px solid #DBEAFE;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+  .tool-info-header{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid #EFF6FF;background:#F5F9FF}
+  .tool-info-img{width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0}
+  .tool-info-meta{flex:1;min-width:0}
+  .tool-info-name{font-size:.82rem;font-weight:700;color:#0f172a;line-height:1.2;margin-bottom:2px}
+  .tool-info-cat{font-size:.62rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B8CAE}
+  .tool-info-body{padding:14px 18px}
+  .tool-info-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
+  .tool-stat{text-align:center}
+  .tool-stat-val{font-size:1rem;font-weight:800;color:#007AFF;line-height:1}
+  .tool-stat-lbl{font-size:.6rem;font-weight:500;color:#6B8CAE;text-transform:uppercase;letter-spacing:.04em;margin-top:3px}
+  .tool-info-features{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+  .tool-feat{font-size:.62rem;font-weight:600;padding:3px 8px;background:#EFF6FF;border:1px solid #DBEAFE;border-radius:3px;color:#0f172a}
+  .tool-info-footer{display:flex;justify-content:space-between;align-items:center;padding:10px 18px;border-top:1px solid #EFF6FF;background:#FAFBFF}
+  .tool-info-updated{font-size:.62rem;color:#6B8CAE}
+  .tool-info-actions{display:flex;gap:6px}
+  .tool-info-action{font-size:.62rem;font-weight:600;color:#007AFF;text-decoration:none;padding:3px 8px;border:1px solid #DBEAFE;border-radius:4px;background:#fff;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
+  .tool-info-action:hover{background:#EFF6FF;border-color:#007AFF}
+  @media(max-width:900px){.tool-info-card{order:1}}
+  @media(max-width:480px){.tool-info-stats{grid-template-columns:1fr 1fr 1fr}.tool-info-header{padding:12px 14px}.tool-info-body{padding:10px 14px}}
 </style>
 <meta name="robots" content="index, follow">
 <meta name="twitter:card" content="summary_large_image">
@@ -59,7 +80,7 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the Eswatini PAYE tax structure?","acceptedAnswer":{"@type":"Answer","text":"Eswatini PAYE is calculated annually using four progressive bands starting at 20% on the first E41,000, rising to 33% above E100,000. A tax rebate of E8,200 is applied after tax calculation. SNPF pension deductions are allowed before tax is computed."}},{"@type":"Question","name":"What is SNPF and how much is capped?","acceptedAnswer":{"@type":"Answer","text":"The Swaziland National Provident Fund (SNPF) is a mandatory retirement savings scheme. Employee contribution is 5% of gross salary, capped at E600 per month (E7,200 per year). Employer contributes matching 5%. Only employee SNPF is deductible from taxable income."}},{"@type":"Question","name":"How does the E8,200 tax rebate work?","acceptedAnswer":{"@type":"Answer","text":"The tax rebate of E8,200 is applied after calculating SRA tax on taxable income. It effectively reduces your final tax liability. For example, if your calculated tax is E12,000, after the E8,200 rebate your payable tax becomes E3,800."}},{"@type":"Question","name":"Is SNPF deductible from taxable income?","acceptedAnswer":{"@type":"Answer","text":"Yes. The employee's 5% SNPF contribution is fully deductible from gross pay before calculating SRA PAYE. This reduces your taxable income and therefore your tax liability. The employer's 5% contribution is not deductible from the employee's income."}},{"@type":"Question","name":"When must employers remit PAYE?","acceptedAnswer":{"@type":"Answer","text":"PAYE is calculated and remitted annually in Eswatini. Employees file tax returns by a specified deadline, and employers must remit employee tax withholdings to SRA within the prescribed timeframe set annually by the Commissioner of Income Tax."}},{"@type":"Question","name":"Can I reduce my Eswatini tax?","acceptedAnswer":{"@type":"Answer","text":"SNPF contributions (5%, capped at E600/mo) directly reduce taxable income. The E8,200 rebate applies to all residents. Some approved life insurance policies may allow deductions. Consult SRA or a tax advisor on any other qualifying deductions."}}]}
 </script>
-<script src="/assets/js/lib/chart-config.js" defer></script>
+<script src="/assets/js/lib/chart-config.js"></script>
 </head>
 <body class="tool-page">
 <afro-navbar active="tools"></afro-navbar>
@@ -113,6 +134,15 @@
               <input type="number" class="f-input" id="grossSalary" placeholder="600,000" min="0" step="50000" value="600000" oninput="onInput(this)">
             </div>
           </div>
+          <!-- Quick Presets -->
+          <div class="presets">
+            <button class="preset-btn" onclick="setPreset(200000, this)">E 200k</button>
+            <button class="preset-btn" onclick="setPreset(400000, this)">E 400k</button>
+            <button class="preset-btn" onclick="setPreset(600000, this)">E 600k</button>
+            <button class="preset-btn" onclick="setPreset(1200000, this)">E 1.2M</button>
+            <button class="preset-btn" onclick="setPreset(2500000, this)">E 2.5M</button>
+          </div>
+
 
           <div class="field">
             <div class="f-label"><span class="f-label-text">Active Deductions</span><span class="f-hint">Toggle to include / exclude</span></div>
@@ -149,12 +179,14 @@
             </div>
             <div class="rate-track"><div class="rate-fill" id="rateFill"></div></div>
           </div>
+          <div class="info-strip" id="employerStrip"></div>
         </div>
 
         <div class="chart-section">
           <div class="chart-tabs">
             <button class="chart-tab on" onclick="setChart('donut',this)">Breakdown</button>
             <button class="chart-tab" onclick="setChart('bar',this)">Tax Bands</button>
+            <button class="chart-tab" onclick="setChart('employer',this)">Employer Cost</button>
           </div>
           <div class="chart-canvas-wrap"><canvas id="mainChart"></canvas></div>
         </div>
@@ -191,6 +223,38 @@
               <button class="chat-send" onclick="sendChat()">→</button>
             </div>
           </div>
+
+
+      <div class="tool-info-card">
+        <div class="tool-info-header">
+          <img src="/assets/img/tools/sz-vat.webp" alt="Eswatini PAYE Calculator" class="tool-info-img" loading="lazy">
+          <div class="tool-info-meta">
+            <div class="tool-info-name">Eswatini PAYE Calculator</div>
+            <div class="tool-info-cat">Tax &amp; Finance</div>
+          </div>
+        </div>
+        <div class="tool-info-body">
+          <div class="tool-info-stats">
+            <div class="tool-stat"><div class="tool-stat-val">2.4K</div><div class="tool-stat-lbl">Calculations</div></div>
+            <div class="tool-stat"><div class="tool-stat-val">4.8</div><div class="tool-stat-lbl">Rating</div></div>
+            <div class="tool-stat"><div class="tool-stat-val">Free</div><div class="tool-stat-lbl">Forever</div></div>
+          </div>
+          <div class="tool-info-features">
+            <span class="tool-feat">Net Pay Calc</span>
+            <span class="tool-feat">Tax Bands</span>
+            <span class="tool-feat">PDF Export</span>
+            <span class="tool-feat">AI Advisor</span>
+            <span class="tool-feat">Deductions</span>
+          </div>
+        </div>
+        <div class="tool-info-footer">
+          <span class="tool-info-updated">Updated: Mar 2026</span>
+          <div class="tool-info-actions">
+            <button class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Share</button>
+            <a class="tool-info-action" href="/tools/paye-calculator/">All Countries</a>
+          </div>
+        </div>
+      </div>
         </div>
       </div>
 
@@ -278,15 +342,18 @@
   </div>
 </div>
 
-<section style="max-width:800px;margin:3rem auto 0;padding:2rem;background:#fff;border-radius:0.875rem;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
-  <h2 style="font-size:1.25rem;font-weight:700;margin-bottom:1rem;color:#1e293b;">More African Tax Tools</h2>
-  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0.75rem;">
-    <a href="/nigeria/ng-salary-tax" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;transition:border-color 0.2s;">🇳🇬 Nigeria PAYE Calculator</a>
-    <a href="/kenya/ke-paye" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;transition:border-color 0.2s;">🇰🇪 Kenya PAYE Calculator</a>
-    <a href="/ghana/gh-paye" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;transition:border-color 0.2s;">🇬🇭 Ghana PAYE Calculator</a>
-    <a href="/south-africa/za-paye" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;transition:border-color 0.2s;">🇿🇦 South Africa PAYE Calculator</a>
-    <a href="/tools/vat-calculator/vat-calc" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;transition:border-color 0.2s;">🌍 Pan-African VAT Calculator</a>
-    <a href="/tools/currency-converter/" style="padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;text-decoration:none;color:#1e293b;font-size:0.9rem;transition:border-color 0.2s;">💱 African Currency Converter</a>
+<section class="more-tools-sec">
+  <div class="more-tools-inner">
+    <h2 class="more-tools-title">More African Tax Tools</h2>
+    <div class="more-tools-grid">
+      <a href="/nigeria/ng-salary-tax" class="more-tool-link">Nigeria PAYE Calculator</a>
+      <a href="/kenya/ke-paye" class="more-tool-link">Kenya PAYE Calculator</a>
+      <a href="/ghana/gh-paye" class="more-tool-link">Ghana PAYE Calculator</a>
+      <a href="/south-africa/za-paye" class="more-tool-link">South Africa PAYE Calculator</a>
+      <a href="/egypt/eg-paye" class="more-tool-link">Egypt PAYE Calculator</a>
+      <a href="/tools/vat-calculator/vat-calc" class="more-tool-link">Pan-African VAT Calculator</a>
+      <a href="/tools/currency-converter/" class="more-tool-link">African Currency Converter</a>
+    </div>
   </div>
 </section>
 
@@ -368,12 +435,22 @@ function calcAnnualPAYE(annualTaxableIncome) {
   return { tax, bandBreakdown: bandBreakdown.filter(b => b.income > 0) };
 }
 
-function calculate() {
+  function setPreset(val, btn) {
+    document.getElementById('grossSalary').value = val;
+    document.getElementById('salarySlider').value = val;
+    onSlider(document.getElementById('salarySlider'));
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+    if(btn) btn.classList.add('active');
+    calculate();
+  }
+
+  function calculate() {
   const gross = parseFloat(document.getElementById('grossSalary').value) || 0;
   if (!gross || gross <= 0) {
     const el = document.getElementById('grossSalary');
-    el.focus(); el.style.borderColor = '#c0392b';
-    setTimeout(() => el.style.borderColor = '', 2000);
+    el.focus(); el.style.borderColor = '#e53e3e';
+    el.setAttribute('placeholder', 'Enter a valid salary');
+    setTimeout(() => { el.style.borderColor = ''; el.removeAttribute('placeholder'); }, 3000);
     return;
   }
 
@@ -392,6 +469,9 @@ function calculate() {
   const netAnnual = gross - snpf - annualTax;
   const effectiveRate = gross > 0 ? annualTax / gross : 0;
 
+  const employerENPF = gross * 0.05;
+  const totalEmployerCost = gross + employerENPF;
+
   RESULT = {
     gross, annual: gross, snpf,
     annualTax, bandBreakdown, taxRebate,
@@ -399,6 +479,7 @@ function calculate() {
     monthlyGross: gross / 12,
     monthlyNet: netAnnual / 12,
     monthlyTax: annualTax / 12,
+    employerENPF, totalEmployerCost,
   };
 
   const netMonthly = netAnnual / 12;
@@ -416,6 +497,8 @@ function calculate() {
   document.getElementById('aiBtn').disabled = false;
   document.getElementById('aiBtn').textContent = 'Get AI Tax Analysis →';
   document.getElementById('aiStatus').textContent = `Gross: E${Math.round(gross).toLocaleString()}/yr · Take-home: E${Math.round(netAnnual).toLocaleString()}/yr · Tax: E${Math.round(annualTax).toLocaleString()}/yr · Effective: ${pct(effectiveRate)}`;
+  const empStrip = document.getElementById('employerStrip');
+  if (empStrip) { empStrip.classList.add('on'); empStrip.innerHTML = '<strong>Total Employer Cost: ' + fmt(RESULT.totalEmployerCost) + '/year</strong> — gross salary + employer ENPF (5%) ' + fmt(RESULT.employerENPF) + '/year.'; }
 }
 
 function renderRows(R, period) {
@@ -496,6 +579,8 @@ function renderChart(type) {
       },
       options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'E'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid:{color:'#e8f1f7'} }, x:{ticks:{font:{size:10,weight:'600'}}} } }
     });
+  } else if (type === 'employer') {
+    CHART = new Chart(canvas, { type: 'bar', data: { labels: ['Take-Home','PAYE Tax','SNPF (Employee)','ENPF (Employer)'], datasets: [{ label:'Amount', data: [R.netAnnual, R.annualTax, R.snpf, R.employerENPF], backgroundColor: AfroChartColors.doughnut.slice(0,4), borderRadius:5 }] }, options: { responsive:true, maintainAspectRatio:false, indexAxis:'y', plugins:{ legend:{display:false} }, scales:{ x:{ ticks:{callback:v=>'E'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid:{color:AfroChartColors.grid} }, y:{ticks:{font:{size:10,weight:'600'}}} } } });
   }
 }
 
@@ -609,7 +694,6 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
     </div>
   </div>
 </div>
-<script src="/assets/js/lib/auto-email-gate.js" defer></script>
 </body></html>`;
 
   const blob = new Blob([html],{type:'text/html;charset=utf-8'});
@@ -686,7 +770,7 @@ async function sendChat() {
   input.value = '';
   const R = RESULT;
   const msgs = document.getElementById('chatMsgs');
-  msgs.innerHTML += `<div class="msg u">${msg}</div>`;
+  msgs.innerHTML += `<div class="msg u">${msg.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`;
   const aiEl = document.createElement('div');
   aiEl.className = 'msg a'; aiEl.textContent = '…';
   msgs.appendChild(aiEl); msgs.scrollTop = msgs.scrollHeight;

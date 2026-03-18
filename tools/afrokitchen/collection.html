@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recipe Collection — AfroKitchen | AfroTools</title>
+<meta name="description" content="Curated African recipe collection from AfroKitchen.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<div class="ak-page">
+  <section class="ak-hero" style="padding-bottom:40px">
+    <div class="ak-hero-inner" style="grid-template-columns:1fr">
+      <div class="ak-hero-text" style="max-width:700px">
+        <nav class="ak-breadcrumb" aria-label="breadcrumb">
+          <a href="/">AfroTools</a><span>/</span><a href="/tools/afrokitchen/">AfroKitchen</a><span>/</span><span id="breadcrumb-col">Collection</span>
+        </nav>
+        <div class="ak-eyebrow">COLLECTION</div>
+        <h1 id="col-title"></h1>
+        <p class="ak-hero-sub" id="col-desc"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="ak-section">
+    <div class="ak-container">
+      <div class="ak-loading" id="recipes-loading"><div class="ak-spinner"></div><div>Loading recipes...</div></div>
+      <div class="ak-grid" id="recipes-grid"></div>
+      <div class="ak-empty" id="recipes-empty" style="display:none">
+        <div class="ak-empty-icon">&#x1F4DA;</div>
+        <h3>Collection coming soon</h3>
+        <p>We're still curating recipes for this collection.</p>
+        <a href="/tools/afrokitchen/" class="ak-btn ak-btn-primary" style="margin-top:16px">Browse All Recipes</a>
+      </div>
+    </div>
+  </section>
+</div>
+<afro-footer></afro-footer>
+
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<script src="/engines/afrokitchen-engine.js"></script>
+<script>
+(function () {
+  var AK = AfroKitchenEngine;
+  var params = new URLSearchParams(window.location.search);
+  var slug = params.get('slug');
+
+  async function load() {
+    var collections = await AK.fetchCollections();
+    var col = (collections || []).find(function (c) { return c.slug === slug; });
+
+    if (!col) {
+      document.getElementById('col-title').textContent = 'Collection Not Found';
+      document.getElementById('recipes-loading').style.display = 'none';
+      document.getElementById('recipes-empty').style.display = '';
+      return;
+    }
+
+    document.title = col.name + ' \u2014 AfroKitchen | AfroTools';
+    document.getElementById('breadcrumb-col').textContent = col.name;
+    document.getElementById('col-title').textContent = col.name;
+    document.getElementById('col-desc').textContent = col.description || '';
+
+    // Load recipes for this collection
+    var recipes = [];
+    if (col.recipe_ids && col.recipe_ids.length) {
+      recipes = await AK.fetchRecipes({ ids: col.recipe_ids });
+    } else {
+      // Fallback: show all recipes as placeholder
+      recipes = await AK.fetchRecipes({ limit: 12 });
+    }
+
+    var loading = document.getElementById('recipes-loading');
+    var grid = document.getElementById('recipes-grid');
+    var empty = document.getElementById('recipes-empty');
+    loading.style.display = 'none';
+
+    if (!recipes || !recipes.length) { empty.style.display = ''; return; }
+
+    recipes.forEach(function (r) {
+      var country = AK.COUNTRIES[r.country_code] || {};
+      var totalMin = (r.prep_time_minutes || 0) + (r.cook_time_minutes || 0);
+      var card = document.createElement('a');
+      card.className = 'ak-recipe-card';
+      card.href = 'recipe.html?slug=' + r.slug;
+      card.innerHTML =
+        '<img class="ak-recipe-card-img" src="' + (r.image_url || '/assets/img/og-default.png') + '" alt="' + r.name + '" loading="lazy">' +
+        '<div class="ak-recipe-card-body">' +
+          '<div class="ak-recipe-card-flag">' + (country.flag || '') + ' ' + r.country_name + '</div>' +
+          '<div class="ak-recipe-card-title">' + r.name + '</div>' +
+          '<div class="ak-recipe-card-desc">' + (r.description || '').slice(0, 100) + '</div>' +
+          '<div class="ak-recipe-card-meta"><span>&#x23F1; ' + totalMin + ' min</span><span>' + (r.difficulty || '') + '</span></div>' +
+        '</div>';
+      grid.appendChild(card);
+    });
+  }
+
+  load();
+})();
+</script>
+</body>
+</html>
