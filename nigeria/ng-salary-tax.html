@@ -818,6 +818,7 @@ function calculate() {
   }
 
   RESULT = REGIME === 'nta' ? calcNTA(gross) : calcPITA(gross);
+  window.RESULT = RESULT;
 
   // Update hero
   const heroLabel = CALC_MODE === 'net'
@@ -969,10 +970,9 @@ function setChart(type, btn) {
   renderChart(type);
 }
 
-const CHART_COLORS = AfroChartColors.doughnut;
-
 function renderChart(type) {
-  if (!RESULT || !window.Chart) return;
+  if (!RESULT || !window.Chart || !window.AfroChartColors) return;
+  const CHART_COLORS = AfroChartColors.doughnut;
   const canvas = document.getElementById('mainChart');
   if (CHART) { CHART.destroy(); CHART = null; }
 
