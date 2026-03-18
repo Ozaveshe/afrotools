@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-D859CGF391');
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDF Repair — Fix Corrupt PDF Files Instantly | AfroTools</title>
+<meta name="description" content="Repair corrupt or damaged PDF files instantly. Recovers pages from broken PDFs, fixes structural errors, and lets you download a clean copy. 100% client-side.">
+<link rel="canonical" href="https://afrotools.com/tools/pdf-repair/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="PDF Repair Tool | AfroTools">
+<meta property="og:description" content="Fix corrupt or damaged PDF files instantly. Recover pages and download a repaired copy.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/pdf-repair/">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-pdf.png">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="PDF Repair Tool | AfroTools">
+<meta name="twitter:description" content="Fix corrupt or damaged PDF files. Recover pages and re-save a clean copy instantly.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "PDF Repair",
+  "description": "Repair corrupt or damaged PDF files. Recovers pages and structural data from broken PDFs.",
+  "url": "https://afrotools.com/tools/pdf-repair/",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/tool-registry.min.js"></script>
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<style>
+  :root {
+    --afro-green: var(--color-primary);
+    --afro-dark: #0f1419;
+    --afro-light: #f5f7fa;
+  }
+
+  .tool-hero {
+    background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
+    padding: 44px 0 36px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tool-hero::after {
+    content: '';
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 8rem;
+    opacity: 0.06;
+    pointer-events: none;
+  }
+
+  .tool-hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+  }
+
+  .breadcrumb {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .breadcrumb a {
+    color: rgba(255, 255, 255, 0.3);
+    text-decoration: none;
+  }
+
+  .breadcrumb span {
+    color: var(--afro-green);
+  }
+
+  h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+
+  h1 em {
+    color: var(--afro-green);
+    font-style: normal;
+  }
+
+  .hero-sub {
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 1.6;
+    max-width: 560px;
+    margin-bottom: 14px;
+  }
+
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 6px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 11px;
+    border-radius: 4px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .b-green {
+    background: rgba(0, 113, 227, 0.18);
+    color: var(--color-primary);
+    border: 1px solid rgba(0, 113, 227, 0.38);
+  }
+
+  .tool-main {
+    padding: 28px 0 72px;
+  }
+
+  .tool-main-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 22px;
+    align-items: start;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .card + .card {
+    margin-top: 18px;
+  }
+
+  .card-head {
+    padding: 15px 22px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f9fafb;
+  }
+
+  .card-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #374151;
+  }
+
+  .card-body {
+    padding: 22px;
+  }
+
+  .file-input-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+  }
+
+  .file-input-wrapper input[type="file"] {
+    position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;
+  }
+
+  .file-input-label {
+    display: block;
+    padding: 28px 20px;
+    background: #EFF6FF;
+    border: 2px dashed #e5e7eb;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+    color: #244d2c;
+    font-weight: 600;
+  }
+
+  .file-input-label:hover {
+    border-color: var(--afro-green);
+    background: #EFF6FF;
+  }
+
+  .file-input-label.dragover {
+    border-color: var(--afro-green);
+    background: rgba(0, 113, 227, 0.1);
+  }
+
+  .file-info {
+    display: none;
+    margin-top: 14px;
+    padding: 12px 14px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 7px;
+  }
+
+  .file-info.on {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .file-info-name {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #0d2813;
+  }
+
+  .file-info-size {
+    font-size: 0.72rem;
+    color: #9ca3af;
+    font-weight: 600;
+  }
+
+  .calc-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--color-primary);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: all 0.18s;
+    margin-top: 16px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .calc-btn:hover {
+    background: #0059B3;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 113, 227, 0.3);
+  }
+
+  .calc-btn:disabled {
+    background: #93c5fd;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .progress-bar {
+    width: 100%;
+    height: 6px;
+    background: #e5e7eb;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 14px;
+    display: none;
+  }
+
+  .progress-bar.on {
+    display: block;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--color-primary);
+    width: 0%;
+    transition: width 0.3s;
+    border-radius: 3px;
+  }
+
+  .progress-text {
+    font-size: 0.72rem;
+    color: #6b7280;
+    margin-top: 6px;
+    text-align: center;
+    display: none;
+  }
+
+  .progress-text.on {
+    display: block;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .result-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+    display: none;
+  }
+
+  .result-card.on {
+    display: block;
+  }
+
+  .report-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #f3f4f6;
+    font-size: 0.82rem;
+  }
+
+  .report-row:last-child {
+    border-bottom: none;
+  }
+
+  .report-label {
+    font-weight: 600;
+    color: #374151;
+  }
+
+  .report-value {
+    font-weight: 700;
+    color: #0d2813;
+  }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+
+  .status-success {
+    background: rgba(16, 185, 129, 0.15);
+    color: #065f46;
+  }
+
+  .status-partial {
+    background: rgba(245, 166, 35, 0.15);
+    color: #92400e;
+  }
+
+  .status-failed {
+    background: rgba(239, 68, 68, 0.15);
+    color: #991b1b;
+  }
+
+  .action-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .act-btn {
+    padding: 11px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-family: 'DM Sans', sans-serif;
+    border: none;
+  }
+
+  .act-download {
+    background: rgba(0, 113, 227, 0.1);
+    border: 1.5px solid rgba(0, 113, 227, 0.35);
+    color: #1e40af;
+  }
+
+  .act-download:hover {
+    background: rgba(0, 113, 227, 0.2);
+  }
+
+  .info-card {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  .info-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #374151;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .info-text {
+    font-size: 0.8rem;
+    color: #244d2c;
+    line-height: 1.6;
+  }
+
+  .info-text li {
+    margin-bottom: 8px;
+  }
+
+  /* FAQs */
+  .seo-section {
+    max-width: 1200px;
+    margin: 0 auto 60px;
+    padding: 0 24px;
+  }
+
+  .seo-section h2 {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #0d2813;
+    margin-bottom: 24px;
+    letter-spacing: -0.01em;
+  }
+
+  .faq-item {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+
+  .faq-q {
+    width: 100%;
+    padding: 14px 18px;
+    background: #f9fafb;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #0d2813;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .faq-q::after {
+    content: '+';
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    transition: transform 0.2s;
+  }
+
+  .faq-q.open::after {
+    content: '-';
+  }
+
+  .faq-a {
+    padding: 0 18px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s, padding 0.3s;
+    font-size: 0.82rem;
+    color: #374151;
+    line-height: 1.7;
+  }
+
+  .faq-a.open {
+    padding: 14px 18px;
+    max-height: 400px;
+  }
+
+  @media (max-width: 768px) {
+    .tool-main-inner {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body>
+<afro-navbar active="tools"></afro-navbar>
+
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb">
+      <a href="/">AfroTools</a> / <span>Tools</span>
+    </div>
+    <h1>PDF <em>Repair</em></h1>
+    <p class="hero-sub">Fix corrupt or damaged PDF files. Recovers pages, repairs structural errors, and produces a clean downloadable copy.</p>
+    <div class="hero-badges">
+      <span class="badge b-green">No Upload</span>
+      <span class="badge b-green">Client-side</span>
+      <span class="badge b-green">Fast</span>
+    </div>
+  </div>
+</div>
+
+<div class="tool-main">
+  <div class="tool-main-inner">
+    <div>
+      <!-- Upload Card -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Upload PDF</span>
+        </div>
+        <div class="card-body">
+          <div class="file-input-wrapper">
+            <input type="file" id="pdfFileInput" accept=".pdf">
+            <label for="pdfFileInput" class="file-input-label" id="dropLabel">
+              Drop your corrupt PDF here or click to select
+              <div style="font-size:0.72rem;margin-top:4px;opacity:.65">Accepts .pdf files</div>
+            </label>
+          </div>
+
+          <div class="file-info" id="fileInfo">
+            <span class="file-info-name" id="fileName"></span>
+            <span class="file-info-size" id="fileSize"></span>
+          </div>
+
+          <button class="calc-btn" id="repairBtn" disabled>Repair PDF</button>
+
+          <div class="progress-bar" id="progressBar">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+          <div class="progress-text" id="progressText">Analyzing file...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Result Card -->
+      <div class="result-card" id="resultCard">
+        <div class="card-head">
+          <span class="card-title">Repair Report</span>
+          <span class="status-badge" id="statusBadge"></span>
+        </div>
+        <div class="card-body">
+          <div id="reportRows"></div>
+          <div id="errorList" style="display:none; margin-top:12px;">
+            <div style="font-size:0.72rem;font-weight:700;color:#991b1b;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">Errors Found</div>
+            <div id="errorListInner" style="font-size:0.78rem;color:#6b7280;line-height:1.6;"></div>
+          </div>
+          <div class="action-row" id="actionRow" style="display:none;">
+            <button class="act-btn act-download" id="downloadBtn">Download Repaired PDF</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info Card -->
+      <div class="info-card">
+        <div class="info-title">How PDF Repair Works</div>
+        <div class="info-text">
+          This tool attempts to recover your PDF by parsing and re-saving the document structure using pdf-lib.
+          <ul style="margin-top:10px;padding-left:16px;">
+            <li>Reads the raw file bytes and attempts to load the PDF structure</li>
+            <li>Skips over corrupt objects and recovers valid pages</li>
+            <li>Rebuilds the cross-reference table and file trailer</li>
+            <li>Saves a clean copy with repaired structure</li>
+          </ul>
+          <div style="margin-top:12px;padding:10px;background:#fff;border:1px solid #e5e7eb;border-radius:6px;font-size:0.75rem;">
+            <strong>Works best on:</strong> PDFs with damaged headers, broken cross-references, or incomplete writes. Severely corrupted files with destroyed page data may not be fully recoverable.
+          </div>
+        </div>
+      </div>
+
+      <!-- Privacy Card -->
+      <div class="info-card">
+        <div class="info-title">Privacy</div>
+        <div class="info-text">
+          Your file never leaves your device. All processing happens locally in your browser using JavaScript. No data is uploaded to any server.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FAQs -->
+<div class="seo-section">
+  <h2>Frequently Asked Questions</h2>
+
+  <div class="faq-item">
+    <button class="faq-q">What types of PDF corruption can this tool fix?</button>
+    <div class="faq-a">This tool can fix PDFs with damaged headers, broken cross-reference tables, incomplete file trailers, and corrupt object streams. It works by re-parsing the document structure and rebuilding a clean version. It handles most cases where the PDF viewer shows an error but the page data is still intact.</div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q">Is my PDF uploaded to a server?</button>
+    <div class="faq-a">No. The entire repair process runs locally in your browser using JavaScript. Your file never leaves your device and no data is sent to any server. This ensures complete privacy for sensitive documents.</div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q">What does "partial repair" mean?</button>
+    <div class="faq-a">A partial repair means the tool was able to load and re-save the PDF, but had to skip some corrupt objects. The repaired file may be missing images, fonts, or other embedded resources, but the page structure and text content should be recovered.</div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q">Why did the repair fail?</button>
+    <div class="faq-a">Repair can fail when the PDF file is too severely damaged for the parser to find any valid structure. This typically happens with truncated downloads, files corrupted by malware, or files that are not actually PDFs. Try downloading the original file again if possible.</div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q">Will the repaired PDF look identical to the original?</button>
+    <div class="faq-a">In most cases, yes. The tool preserves all recoverable pages, text, images, and formatting. However, if some objects were corrupt and had to be skipped, there may be minor differences such as missing images or font substitutions.</div>
+  </div>
+</div>
+
+<afro-related-tools category="document-pdf" current="pdf-repair"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+<script src="/assets/js/components/related-tools.min.js" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js" defer></script>
+<script src="/assets/js/lib/saved-tools.js" defer></script>
+<script src="/assets/js/favorites-widget.js" defer></script>
+
+<script>
+(function() {
+  'use strict';
+
+  const { PDFDocument } = PDFLib;
+
+  let currentFile = null;
+  let repairedBytes = null;
+
+  // DOM refs
+  const pdfFileInput = document.getElementById('pdfFileInput');
+  const dropLabel = document.getElementById('dropLabel');
+  const fileInfo = document.getElementById('fileInfo');
+  const fileName = document.getElementById('fileName');
+  const fileSize = document.getElementById('fileSize');
+  const repairBtn = document.getElementById('repairBtn');
+  const progressBar = document.getElementById('progressBar');
+  const progressFill = document.getElementById('progressFill');
+  const progressText = document.getElementById('progressText');
+  const resultCard = document.getElementById('resultCard');
+  const statusBadge = document.getElementById('statusBadge');
+  const reportRows = document.getElementById('reportRows');
+  const errorList = document.getElementById('errorList');
+  const errorListInner = document.getElementById('errorListInner');
+  const actionRow = document.getElementById('actionRow');
+  const downloadBtn = document.getElementById('downloadBtn');
+
+  function formatSize(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+  }
+
+  function setProgress(pct, text) {
+    progressBar.classList.add('on');
+    progressText.classList.add('on');
+    progressFill.style.width = pct + '%';
+    if (text) progressText.textContent = text;
+  }
+
+  function hideProgress() {
+    progressBar.classList.remove('on');
+    progressText.classList.remove('on');
+    progressFill.style.width = '0%';
+  }
+
+  function handleFile(file) {
+    if (!file || !file.name.toLowerCase().endsWith('.pdf')) return;
+    currentFile = file;
+    repairedBytes = null;
+    fileName.textContent = file.name;
+    fileSize.textContent = formatSize(file.size);
+    fileInfo.classList.add('on');
+    repairBtn.disabled = false;
+    resultCard.classList.remove('on');
+    hideProgress();
+  }
+
+  // File input
+  pdfFileInput.addEventListener('change', function(e) {
+    if (e.target.files.length > 0) handleFile(e.target.files[0]);
+  });
+
+  // Drag & drop
+  dropLabel.addEventListener('dragover', function(e) {
+    e.preventDefault();
+    dropLabel.classList.add('dragover');
+  });
+
+  dropLabel.addEventListener('dragleave', function() {
+    dropLabel.classList.remove('dragover');
+  });
+
+  dropLabel.addEventListener('drop', function(e) {
+    e.preventDefault();
+    dropLabel.classList.remove('dragover');
+    const files = Array.from(e.dataTransfer.files).filter(function(f) {
+      return f.name.toLowerCase().endsWith('.pdf');
+    });
+    if (files.length > 0) handleFile(files[0]);
+  });
+
+  // Repair
+  repairBtn.addEventListener('click', async function() {
+    if (!currentFile) return;
+
+    repairBtn.disabled = true;
+    resultCard.classList.remove('on');
+    actionRow.style.display = 'none';
+    errorList.style.display = 'none';
+    repairedBytes = null;
+
+    const errors = [];
+    let status = 'failed';
+    let pageCount = 0;
+    let repairedSize = 0;
+    const originalSize = currentFile.size;
+
+    try {
+      setProgress(10, 'Reading file...');
+      const bytes = await currentFile.arrayBuffer();
+      const uint8 = new Uint8Array(bytes);
+
+      setProgress(30, 'Attempting to load PDF structure...');
+
+      let pdfDoc = null;
+
+      // Attempt 1: standard load with lenient options
+      try {
+        pdfDoc = await PDFDocument.load(uint8, {
+          ignoreEncryption: true,
+          updateMetadata: false
+        });
+      } catch (err1) {
+        errors.push('Standard load failed: ' + err1.message);
+        setProgress(50, 'Trying alternative repair strategy...');
+
+        // Attempt 2: even more lenient with throwOnInvalidObject disabled
+        try {
+          pdfDoc = await PDFDocument.load(uint8, {
+            ignoreEncryption: true,
+            updateMetadata: false,
+            throwOnInvalidObject: false
+          });
+        } catch (err2) {
+          errors.push('Lenient load failed: ' + err2.message);
+        }
+      }
+
+      if (pdfDoc) {
+        setProgress(70, 'Rebuilding PDF...');
+
+        pageCount = pdfDoc.getPageCount();
+
+        // Re-save with clean structure (no object streams for maximum compatibility)
+        setProgress(85, 'Saving repaired copy...');
+        const savedBytes = await pdfDoc.save({ useObjectStreams: false });
+        repairedBytes = savedBytes;
+        repairedSize = savedBytes.length;
+
+        status = errors.length > 0 ? 'partial' : 'success';
+      } else {
+        status = 'failed';
+        errors.push('Could not parse any valid PDF structure from this file.');
+      }
+
+      setProgress(100, 'Done');
+    } catch (err) {
+      status = 'failed';
+      errors.push(err.message);
+      setProgress(100, 'Repair failed');
+    }
+
+    // Build report
+    setTimeout(function() {
+      hideProgress();
+      resultCard.classList.add('on');
+
+      // Status badge
+      statusBadge.textContent = status === 'success' ? 'Repaired' : status === 'partial' ? 'Partial Repair' : 'Failed';
+      statusBadge.className = 'status-badge ' + (status === 'success' ? 'status-success' : status === 'partial' ? 'status-partial' : 'status-failed');
+
+      // Report rows
+      let rows = '';
+      rows += buildRow('Original Size', formatSize(originalSize));
+      if (repairedBytes) {
+        rows += buildRow('Repaired Size', formatSize(repairedSize));
+        const diff = repairedSize - originalSize;
+        const diffLabel = diff > 0 ? '+' + formatSize(diff) : (diff < 0 ? '-' + formatSize(Math.abs(diff)) : 'No change');
+        rows += buildRow('Size Change', diffLabel);
+        rows += buildRow('Pages Recovered', pageCount);
+      }
+      rows += buildRow('Status', status.charAt(0).toUpperCase() + status.slice(1));
+      reportRows.innerHTML = rows;
+
+      // Errors
+      if (errors.length > 0) {
+        errorList.style.display = 'block';
+        errorListInner.innerHTML = errors.map(function(e) {
+          return '<div style="padding:4px 0;border-bottom:1px solid #f3f4f6;">' + escapeHtml(e) + '</div>';
+        }).join('');
+      }
+
+      // Download button
+      if (repairedBytes) {
+        actionRow.style.display = 'grid';
+      }
+
+      repairBtn.disabled = false;
+    }, 400);
+  });
+
+  function buildRow(label, value) {
+    return '<div class="report-row"><span class="report-label">' + escapeHtml(label) + '</span><span class="report-value">' + escapeHtml(String(value)) + '</span></div>';
+  }
+
+  function escapeHtml(str) {
+    var div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  // Download
+  downloadBtn.addEventListener('click', function() {
+    if (!repairedBytes) return;
+    var blob = new Blob([repairedBytes], { type: 'application/pdf' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = currentFile.name.replace(/\.pdf$/i, '_repaired.pdf');
+    a.click();
+    setTimeout(function() { URL.revokeObjectURL(url); }, 5000);
+  });
+
+  // FAQ toggles
+  document.querySelectorAll('.faq-q').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var answer = btn.nextElementSibling;
+      var isOpen = btn.classList.contains('open');
+      // Close all
+      document.querySelectorAll('.faq-q').forEach(function(b) { b.classList.remove('open'); });
+      document.querySelectorAll('.faq-a').forEach(function(a) { a.classList.remove('open'); });
+      // Toggle current
+      if (!isOpen) {
+        btn.classList.add('open');
+        answer.classList.add('open');
+      }
+    });
+  });
+
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-D859CGF391');
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Chat with PDF — Ask Questions About Any PDF | AfroTools</title>
+<meta name="description" content="Upload a PDF and chat with AI to get instant answers. Ask questions, get summaries, find key points — all powered by Claude AI. Free and private.">
+<link rel="canonical" href="https://afrotools.com/tools/pdf-chat/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="AI Chat with PDF | AfroTools">
+<meta property="og:description" content="Upload a PDF and ask AI questions about it. Get summaries, key points, and cited answers instantly.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/pdf-chat/">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-pdf.png">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI Chat with PDF | AfroTools">
+<meta name="twitter:description" content="Chat with your PDF using AI. Get instant answers, summaries, and key points.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "AI Chat with PDF",
+  "description": "Upload a PDF and chat with AI to get instant answers, summaries, and key points.",
+  "url": "https://afrotools.com/tools/pdf-chat/",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/tool-registry.min.js"></script>
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+  :root {
+    --afro-green: var(--color-primary);
+    --afro-dark: #0f1419;
+    --afro-light: #f5f7fa;
+    --chat-user: var(--color-primary, #008751);
+    --chat-ai: #f3f4f6;
+  }
+
+  /* ── Hero ── */
+  .tool-hero {
+    background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
+    padding: 44px 0 36px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tool-hero::after {
+    content: '';
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 120px;
+    height: 120px;
+    background: radial-gradient(circle, rgba(0,135,81,.12) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .tool-hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+  }
+
+  .breadcrumb {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .breadcrumb a {
+    color: rgba(255, 255, 255, 0.3);
+    text-decoration: none;
+  }
+
+  .breadcrumb span {
+    color: var(--afro-green);
+  }
+
+  h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+
+  h1 em {
+    color: var(--afro-green);
+    font-style: normal;
+  }
+
+  .hero-sub {
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 1.6;
+    max-width: 560px;
+    margin-bottom: 14px;
+  }
+
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 6px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 11px;
+    border-radius: 4px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .b-green {
+    background: rgba(0, 135, 81, 0.18);
+    color: var(--afro-green);
+    border: 1px solid rgba(0, 135, 81, 0.38);
+  }
+
+  .b-blue {
+    background: rgba(59, 130, 246, 0.15);
+    color: #60a5fa;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+  }
+
+  /* ── Upload View ── */
+  .upload-view {
+    max-width: 680px;
+    margin: 48px auto 64px;
+    padding: 0 24px;
+    text-align: center;
+  }
+
+  .upload-view.hidden { display: none; }
+
+  .upload-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 8px;
+  }
+
+  .upload-subtitle {
+    font-size: 0.92rem;
+    color: #64748b;
+    line-height: 1.6;
+    margin-bottom: 32px;
+  }
+
+  .drop-zone {
+    border: 2px dashed #d1d5db;
+    border-radius: 16px;
+    padding: 56px 32px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    background: #fafbfc;
+    position: relative;
+  }
+
+  .drop-zone:hover,
+  .drop-zone.dragover {
+    border-color: var(--afro-green);
+    background: rgba(0, 135, 81, 0.04);
+  }
+
+  .drop-zone-icon {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 16px;
+    background: rgba(0, 135, 81, 0.1);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .drop-zone-icon svg {
+    width: 28px;
+    height: 28px;
+    color: var(--afro-green);
+  }
+
+  .drop-zone-text {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #334155;
+    margin-bottom: 4px;
+  }
+
+  .drop-zone-hint {
+    font-size: 0.78rem;
+    color: #94a3b8;
+  }
+
+  .drop-zone input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .feature-pills {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 32px;
+  }
+
+  .feature-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    background: #f1f5f9;
+    border-radius: 100px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #475569;
+  }
+
+  .feature-pill svg {
+    width: 14px;
+    height: 14px;
+    color: var(--afro-green);
+  }
+
+  .upload-error {
+    margin-top: 16px;
+    padding: 10px 16px;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 10px;
+    color: #dc2626;
+    font-size: 0.82rem;
+    font-weight: 600;
+    display: none;
+  }
+
+  .upload-error.show { display: block; }
+
+  .upload-loading {
+    margin-top: 20px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 0.85rem;
+    color: #64748b;
+    font-weight: 600;
+  }
+
+  .upload-loading.show { display: flex; }
+
+  .upload-spinner {
+    width: 20px;
+    height: 20px;
+    border: 2.5px solid #e2e8f0;
+    border-top-color: var(--afro-green);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── Workspace ── */
+  .workspace {
+    display: none;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+
+  .workspace.show {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 0;
+    height: calc(100vh - 80px);
+    min-height: 500px;
+    margin-top: 0;
+  }
+
+  /* ── PDF Panel ── */
+  .pdf-panel {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #e5e7eb;
+    background: #f8fafc;
+    overflow: hidden;
+  }
+
+  .file-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    background: #fff;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 0.78rem;
+    flex-shrink: 0;
+  }
+
+  .file-bar-icon {
+    width: 28px;
+    height: 28px;
+    background: #fee2e2;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .file-bar-icon svg { width: 14px; height: 14px; color: #dc2626; }
+
+  .file-bar-name {
+    font-weight: 700;
+    color: #1e293b;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+  }
+
+  .file-bar-meta {
+    color: #94a3b8;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .file-bar-close {
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    color: #94a3b8;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+  }
+
+  .file-bar-close:hover { background: #f1f5f9; color: #475569; }
+  .file-bar-close svg { width: 16px; height: 16px; }
+
+  .pdf-preview {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .pdf-preview canvas {
+    max-width: 100%;
+    border-radius: 4px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    background: #fff;
+  }
+
+  .page-nav {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 16px;
+    background: #fff;
+    border-top: 1px solid #e5e7eb;
+    flex-shrink: 0;
+  }
+
+  .page-nav button {
+    background: #f1f5f9;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #475569;
+    font-weight: 600;
+    font-size: 0.78rem;
+    transition: all 0.15s;
+  }
+
+  .page-nav button:hover:not(:disabled) { background: #e2e8f0; }
+  .page-nav button:disabled { opacity: 0.4; cursor: default; }
+
+  .page-nav-info {
+    font-size: 0.78rem;
+    color: #64748b;
+    font-weight: 600;
+    flex: 1;
+    text-align: center;
+  }
+
+  /* ── Chat Panel ── */
+  .chat-panel {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    overflow: hidden;
+  }
+
+  .chat-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-bottom: 1px solid #e5e7eb;
+    flex-shrink: 0;
+  }
+
+  .chat-header-icon {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, var(--afro-green), #5ddb9e);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .chat-header-icon svg { width: 16px; height: 16px; color: #fff; }
+
+  .chat-header-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #1e293b;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .chat-header-subtitle {
+    font-size: 0.7rem;
+    color: #94a3b8;
+    font-weight: 500;
+  }
+
+  /* ── Messages ── */
+  .messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .msg {
+    max-width: 88%;
+    animation: msgIn 0.3s ease;
+  }
+
+  @keyframes msgIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .msg-ai {
+    align-self: flex-start;
+  }
+
+  .msg-user {
+    align-self: flex-end;
+  }
+
+  .msg-bubble {
+    padding: 10px 14px;
+    border-radius: 14px;
+    font-size: 0.84rem;
+    line-height: 1.65;
+    word-break: break-word;
+  }
+
+  .msg-ai .msg-bubble {
+    background: var(--chat-ai);
+    color: #1e293b;
+    border-bottom-left-radius: 4px;
+  }
+
+  .msg-user .msg-bubble {
+    background: var(--chat-user);
+    color: #fff;
+    border-bottom-right-radius: 4px;
+  }
+
+  .msg-ai .msg-bubble strong { color: #0f172a; }
+
+  .msg-ai .msg-bubble ul,
+  .msg-ai .msg-bubble ol {
+    padding-left: 18px;
+    margin: 6px 0;
+  }
+
+  .msg-ai .msg-bubble li { margin-bottom: 3px; }
+
+  .msg-ai .msg-bubble p { margin: 6px 0; }
+  .msg-ai .msg-bubble p:first-child { margin-top: 0; }
+  .msg-ai .msg-bubble p:last-child { margin-bottom: 0; }
+
+  .msg-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: #94a3b8;
+    margin-bottom: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .msg-user .msg-label { text-align: right; }
+
+  .msg-error .msg-bubble {
+    background: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+  }
+
+  .msg-error .msg-bubble a {
+    color: var(--afro-green);
+    font-weight: 600;
+    text-decoration: underline;
+  }
+
+  /* ── Typing indicator ── */
+  .typing {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 12px 16px;
+  }
+
+  .typing-dot {
+    width: 7px;
+    height: 7px;
+    background: #94a3b8;
+    border-radius: 50%;
+    animation: typingPulse 1.4s ease-in-out infinite;
+  }
+
+  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes typingPulse {
+    0%, 60%, 100% { transform: scale(0.7); opacity: 0.4; }
+    30% { transform: scale(1); opacity: 1; }
+  }
+
+  /* ── Quick Actions ── */
+  .quick-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 8px 16px 0;
+    flex-shrink: 0;
+  }
+
+  .quick-btn {
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    padding: 5px 12px;
+    border-radius: 100px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #475569;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .quick-btn:hover {
+    background: var(--afro-green);
+    color: #fff;
+    border-color: var(--afro-green);
+  }
+
+  /* ── Input Bar ── */
+  .chat-input-bar {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    padding: 10px 16px 12px;
+    border-top: 1px solid #e5e7eb;
+    background: #fff;
+    flex-shrink: 0;
+  }
+
+  .chat-input-bar textarea {
+    flex: 1;
+    resize: none;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.84rem;
+    line-height: 1.5;
+    color: #1e293b;
+    background: #f8fafc;
+    max-height: 120px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .chat-input-bar textarea:focus {
+    border-color: var(--afro-green);
+    background: #fff;
+  }
+
+  .chat-input-bar textarea::placeholder { color: #94a3b8; }
+
+  .send-btn {
+    width: 40px;
+    height: 40px;
+    background: var(--afro-green);
+    border: none;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.15s;
+    flex-shrink: 0;
+  }
+
+  .send-btn:hover { opacity: 0.85; transform: scale(1.04); }
+  .send-btn:disabled { opacity: 0.4; cursor: default; transform: none; }
+  .send-btn svg { width: 18px; height: 18px; color: #fff; }
+
+  .chat-footer {
+    padding: 4px 16px 6px;
+    font-size: 0.65rem;
+    color: #94a3b8;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  /* ── SEO Section ── */
+  .seo-section {
+    max-width: 800px;
+    margin: 64px auto;
+    padding: 0 24px;
+  }
+
+  .seo-section h2 {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 12px;
+  }
+
+  .seo-section p {
+    font-size: 0.9rem;
+    color: #475569;
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+
+  .seo-section h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 24px 0 8px;
+  }
+
+  /* ── FAQs ── */
+  .faq-section {
+    max-width: 800px;
+    margin: 0 auto 64px;
+    padding: 0 24px;
+  }
+
+  .faq-section h2 {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 20px;
+  }
+
+  .faq-item {
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .faq-q {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 16px 0;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #1e293b;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .faq-q::after {
+    content: '+';
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: #94a3b8;
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+
+  .faq-item.open .faq-q::after {
+    content: '-';
+  }
+
+  .faq-a {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  .faq-item.open .faq-a {
+    max-height: 200px;
+  }
+
+  .faq-a p {
+    padding: 0 0 16px;
+    font-size: 0.85rem;
+    color: #64748b;
+    line-height: 1.7;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .workspace.show {
+      grid-template-columns: 1fr;
+      height: auto;
+      min-height: 0;
+    }
+
+    .pdf-panel {
+      border-right: none;
+      border-bottom: 1px solid #e5e7eb;
+      max-height: 45vh;
+    }
+
+    .chat-panel {
+      height: 55vh;
+      min-height: 400px;
+    }
+
+    .msg { max-width: 92%; }
+  }
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<!-- Hero -->
+<section class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb">
+      <a href="/">Home</a> / <a href="/document-pdf/">PDF Tools</a> / <span>AI Chat with PDF</span>
+    </div>
+    <h1>AI Chat with <em>PDF</em></h1>
+    <p class="hero-sub">Upload any PDF document and ask questions. Get instant AI-powered answers, summaries, and key points.</p>
+    <div class="hero-badges">
+      <span class="badge b-blue">AI-Powered</span>
+      <span class="badge b-green">Client-side</span>
+      <span class="badge b-green">Free</span>
+    </div>
+  </div>
+</section>
+
+<!-- Upload View -->
+<div class="upload-view" id="uploadView">
+  <h2 class="upload-title">Chat with your <b>PDF</b></h2>
+  <p class="upload-subtitle">Upload a PDF document and ask questions. AI analyzes the content and gives cited answers.</p>
+
+  <div class="drop-zone" id="dropZone">
+    <div class="drop-zone-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 16V4m0 0l-4 4m4-4l4 4M4 20h16"/></svg>
+    </div>
+    <div class="drop-zone-text">Drop your PDF here or click to browse</div>
+    <div class="drop-zone-hint">PDF files up to 20 MB</div>
+    <input type="file" accept=".pdf,application/pdf" id="fileInput">
+  </div>
+
+  <div class="upload-error" id="uploadError"></div>
+  <div class="upload-loading" id="uploadLoading">
+    <div class="upload-spinner"></div>
+    <span>Analyzing document...</span>
+  </div>
+
+  <div class="feature-pills">
+    <span class="feature-pill">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01"/></svg>
+      Ask Questions
+    </span>
+    <span class="feature-pill">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h8m-8 6h16"/></svg>
+      Get Summaries
+    </span>
+    <span class="feature-pill">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      Find Key Points
+    </span>
+    <span class="feature-pill">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+      AI-Powered
+    </span>
+  </div>
+</div>
+
+<!-- Workspace -->
+<div class="workspace" id="workspace">
+  <!-- PDF Panel -->
+  <div class="pdf-panel">
+    <div class="file-bar">
+      <div class="file-bar-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 21h10a2 2 0 002-2V9l-5-5H7a2 2 0 00-2 2v13a2 2 0 002 2z"/></svg>
+      </div>
+      <span class="file-bar-name" id="fileName">document.pdf</span>
+      <span class="file-bar-meta" id="fileMeta"></span>
+      <button class="file-bar-close" id="closeBtn" title="Close document">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="pdf-preview" id="pdfPreview"></div>
+    <div class="page-nav">
+      <button id="prevPage">Prev</button>
+      <span class="page-nav-info" id="pageInfo">Page 1 of 1</span>
+      <button id="nextPage">Next</button>
+    </div>
+  </div>
+
+  <!-- Chat Panel -->
+  <div class="chat-panel">
+    <div class="chat-header">
+      <div class="chat-header-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+      </div>
+      <div>
+        <div class="chat-header-title" id="chatTitle">Chat about your PDF</div>
+        <div class="chat-header-subtitle">AI-powered document analysis</div>
+      </div>
+    </div>
+
+    <div class="messages" id="messages"></div>
+
+    <div class="quick-actions" id="quickActions">
+      <button class="quick-btn" data-prompt="Please provide a concise summary of this document.">Summarize</button>
+      <button class="quick-btn" data-prompt="What are the key points and main takeaways from this document?">Key Points</button>
+      <button class="quick-btn" data-prompt="Explain the main concepts in this document in simple terms.">Explain</button>
+    </div>
+
+    <div class="chat-input-bar">
+      <textarea id="chatInput" rows="1" placeholder="Ask a question about this PDF..."></textarea>
+      <button class="send-btn" id="sendBtn" disabled title="Send message">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+    <div class="chat-footer" id="chatFooter"></div>
+  </div>
+</div>
+
+<!-- SEO -->
+<section class="seo-section">
+  <h2>AI Chat with PDF</h2>
+  <p>Chat with any PDF document using AI. Upload contracts, reports, research papers, or textbooks and ask questions in natural language. The AI reads and understands your document, providing accurate answers with relevant context.</p>
+
+  <h3>How It Works</h3>
+  <p>Your PDF is processed entirely in your browser using pdf.js. The extracted text is sent to our AI endpoint, which uses Claude to analyze the content and answer your questions. Your document stays private and is never stored on our servers.</p>
+
+  <h3>What You Can Do</h3>
+  <p>Ask for summaries, extract key points, get explanations of complex sections, compare different parts of the document, or ask specific questions about the content. The AI maintains conversation context, so you can ask follow-up questions naturally.</p>
+</section>
+
+<!-- FAQs -->
+<section class="faq-section">
+  <h2>Frequently Asked Questions</h2>
+
+  <div class="faq-item">
+    <button class="faq-q">Is my PDF data private and secure?</button>
+    <div class="faq-a"><p>Yes. Your PDF is processed in your browser. Only the extracted text is sent to our AI for analysis. We do not store your documents or conversation history on our servers.</p></div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q">What types of PDFs work best?</button>
+    <div class="faq-a"><p>Text-based PDFs work best, including reports, contracts, research papers, and ebooks. Scanned or image-only PDFs may not extract text properly. For those, try our OCR tool first.</p></div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q">How many questions can I ask?</button>
+    <div class="faq-a"><p>Free users get a daily limit of AI questions. Sign in to your AfroTools account for additional questions. The limit resets every 24 hours.</p></div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q">Is there a file size limit?</button>
+    <div class="faq-a"><p>PDFs up to 20 MB are supported. Very large documents are truncated to the first ~8,000 characters of text to stay within AI context limits, but this typically covers the most important content.</p></div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q">Can I ask follow-up questions?</button>
+    <div class="faq-a"><p>Yes. The AI remembers your recent conversation, so you can ask follow-up questions naturally. The last 10 messages are included for context in each request.</p></div>
+  </div>
+</section>
+
+<afro-related-tools category="document-pdf" current="pdf-chat"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+<script src="/assets/js/components/related-tools.min.js" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js" defer></script>
+<script src="/assets/js/lib/saved-tools.js" defer></script>
+<script src="/assets/js/favorites-widget.js" defer></script>
+<script src="/assets/js/lib/pdf-utils.js"></script>
+
+<script>
+(function() {
+  'use strict';
+
+  /* ── State ── */
+  let pdfDoc = null;
+  let pdfData = null;
+  let context = '';
+  let chatHistory = [];
+  let currentPage = 1;
+  let totalPages = 0;
+  let isSending = false;
+  let renderedPages = {};
+
+  /* ── Elements ── */
+  const uploadView = document.getElementById('uploadView');
+  const workspace = document.getElementById('workspace');
+  const dropZone = document.getElementById('dropZone');
+  const fileInput = document.getElementById('fileInput');
+  const uploadError = document.getElementById('uploadError');
+  const uploadLoading = document.getElementById('uploadLoading');
+  const pdfPreview = document.getElementById('pdfPreview');
+  const messagesEl = document.getElementById('messages');
+  const chatInput = document.getElementById('chatInput');
+  const sendBtn = document.getElementById('sendBtn');
+  const chatTitle = document.getElementById('chatTitle');
+  const chatFooter = document.getElementById('chatFooter');
+  const pageInfo = document.getElementById('pageInfo');
+  const prevPageBtn = document.getElementById('prevPage');
+  const nextPageBtn = document.getElementById('nextPage');
+  const closeBtn = document.getElementById('closeBtn');
+  const quickActions = document.getElementById('quickActions');
+
+  /* ── Drag & Drop ── */
+  PdfUtils.initDragDrop(dropZone, {
+    accept: '.pdf',
+    multiple: false,
+    onFiles: function(files) { if (files[0]) handleFile(files[0]); }
+  });
+
+  fileInput.addEventListener('change', function() {
+    if (this.files[0]) handleFile(this.files[0]);
+  });
+
+  /* ── File Handling ── */
+  async function handleFile(file) {
+    if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
+      showUploadError('Please upload a PDF file.');
+      return;
+    }
+    if (file.size > 20 * 1024 * 1024) {
+      showUploadError('File is too large. Maximum size is 20 MB.');
+      return;
+    }
+
+    hideUploadError();
+    uploadLoading.classList.add('show');
+
+    try {
+      pdfData = await PdfUtils.loadPdf(file);
+      pdfDoc = pdfData.pdfDoc;
+      totalPages = pdfData.pageCount;
+
+      /* Extract text */
+      const textData = await PdfUtils.extractText(pdfDoc);
+      const fullText = textData.map(function(p) {
+        return '--- Page ' + p.page + ' ---\n' + p.text;
+      }).join('\n\n');
+
+      if (!fullText.trim() || fullText.replace(/\s/g, '').length < 30) {
+        showUploadError('This PDF appears to be scanned or image-only. Try our <a href="/tools/pdf-ocr/" style="color:var(--afro-green);font-weight:700">OCR tool</a> first to extract text.');
+        uploadLoading.classList.remove('show');
+        return;
+      }
+
+      context = fullText.substring(0, 8000);
+
+      /* Switch to workspace */
+      uploadView.classList.add('hidden');
+      workspace.classList.add('show');
+
+      /* File info */
+      document.getElementById('fileName').textContent = pdfData.fileName;
+      document.getElementById('fileMeta').textContent = totalPages + ' pages  |  ' + PdfUtils.formatSize(pdfData.fileSize);
+      chatTitle.textContent = 'Chat about ' + pdfData.fileName;
+
+      /* Render first page */
+      currentPage = 1;
+      renderedPages = {};
+      await renderCurrentPage();
+      updatePageNav();
+
+      /* Welcome message */
+      chatHistory = [];
+      messagesEl.innerHTML = '';
+      addMessage('ai', "I've analyzed your PDF (" + totalPages + " page" + (totalPages > 1 ? 's' : '') + "). What would you like to know? You can ask questions, request a summary, or find key points.");
+
+    } catch (err) {
+      console.error('PDF load error:', err);
+      showUploadError('Failed to load PDF. The file may be corrupted or password-protected.');
+    } finally {
+      uploadLoading.classList.remove('show');
+    }
+  }
+
+  /* ── PDF Rendering ── */
+  async function renderCurrentPage() {
+    pdfPreview.innerHTML = '';
+    try {
+      let canvas;
+      if (renderedPages[currentPage]) {
+        canvas = renderedPages[currentPage];
+      } else {
+        canvas = await PdfUtils.renderPage(pdfDoc, currentPage, 1.2);
+        renderedPages[currentPage] = canvas;
+      }
+      pdfPreview.appendChild(canvas);
+    } catch (err) {
+      console.error('Render error:', err);
+      const errDiv = document.createElement('div');
+      errDiv.style.cssText = 'padding:32px;color:#94a3b8;font-size:0.85rem;text-align:center';
+      errDiv.textContent = 'Failed to render page ' + currentPage;
+      pdfPreview.appendChild(errDiv);
+    }
+  }
+
+  function updatePageNav() {
+    pageInfo.textContent = 'Page ' + currentPage + ' of ' + totalPages;
+    prevPageBtn.disabled = currentPage <= 1;
+    nextPageBtn.disabled = currentPage >= totalPages;
+  }
+
+  prevPageBtn.addEventListener('click', async function() {
+    if (currentPage > 1) {
+      currentPage--;
+      await renderCurrentPage();
+      updatePageNav();
+    }
+  });
+
+  nextPageBtn.addEventListener('click', async function() {
+    if (currentPage < totalPages) {
+      currentPage++;
+      await renderCurrentPage();
+      updatePageNav();
+    }
+  });
+
+  /* ── Close Document ── */
+  closeBtn.addEventListener('click', function() {
+    workspace.classList.remove('show');
+    uploadView.classList.remove('hidden');
+    pdfDoc = null;
+    pdfData = null;
+    context = '';
+    chatHistory = [];
+    renderedPages = {};
+    messagesEl.innerHTML = '';
+    pdfPreview.innerHTML = '';
+    fileInput.value = '';
+    chatInput.value = '';
+    chatFooter.textContent = '';
+    updateSendBtn();
+  });
+
+  /* ── Chat Messages ── */
+  function addMessage(role, text) {
+    const msg = document.createElement('div');
+    msg.className = 'msg msg-' + role;
+
+    const label = document.createElement('div');
+    label.className = 'msg-label';
+    label.textContent = role === 'ai' ? 'AfroTools AI' : 'You';
+
+    const bubble = document.createElement('div');
+    bubble.className = 'msg-bubble';
+
+    if (role === 'ai') {
+      bubble.innerHTML = formatAiText(text);
+    } else {
+      bubble.textContent = text;
+    }
+
+    msg.appendChild(label);
+    msg.appendChild(bubble);
+    messagesEl.appendChild(msg);
+    scrollToBottom();
+    return msg;
+  }
+
+  function addTypingIndicator() {
+    const msg = document.createElement('div');
+    msg.className = 'msg msg-ai';
+    msg.id = 'typingMsg';
+
+    const label = document.createElement('div');
+    label.className = 'msg-label';
+    label.textContent = 'AfroTools AI';
+
+    const bubble = document.createElement('div');
+    bubble.className = 'msg-bubble';
+
+    const typing = document.createElement('div');
+    typing.className = 'typing';
+    typing.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+
+    bubble.appendChild(typing);
+    msg.appendChild(label);
+    msg.appendChild(bubble);
+    messagesEl.appendChild(msg);
+    scrollToBottom();
+  }
+
+  function removeTypingIndicator() {
+    const el = document.getElementById('typingMsg');
+    if (el) el.remove();
+  }
+
+  function formatAiText(text) {
+    /* Basic markdown-like formatting */
+    let html = text
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+
+    /* Bold */
+    html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
+    /* Bullet lists */
+    html = html.replace(/^[-*]\s+(.+)/gm, '<li>$1</li>');
+    html = html.replace(/(<li>.*<\/li>)/s, function(match) {
+      return '<ul>' + match + '</ul>';
+    });
+
+    /* Numbered lists */
+    html = html.replace(/^\d+\.\s+(.+)/gm, '<li>$1</li>');
+
+    /* Paragraphs */
+    html = html.replace(/\n{2,}/g, '</p><p>');
+    html = '<p>' + html + '</p>';
+    html = html.replace(/<p>\s*<\/p>/g, '');
+
+    return html;
+  }
+
+  function scrollToBottom() {
+    requestAnimationFrame(function() {
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    });
+  }
+
+  function addErrorMessage(text) {
+    const msg = document.createElement('div');
+    msg.className = 'msg msg-ai msg-error';
+    const bubble = document.createElement('div');
+    bubble.className = 'msg-bubble';
+    bubble.innerHTML = text;
+    msg.appendChild(bubble);
+    messagesEl.appendChild(msg);
+    scrollToBottom();
+  }
+
+  /* ── Send Message ── */
+  async function sendMessage(userMessage) {
+    if (!userMessage.trim() || isSending || !context) return;
+
+    isSending = true;
+    updateSendBtn();
+
+    /* User bubble */
+    addMessage('user', userMessage);
+    chatHistory.push({ role: 'user', content: userMessage });
+
+    /* Typing */
+    addTypingIndicator();
+
+    try {
+      const headers = { 'Content-Type': 'application/json' };
+      if (window.AfroAuth && typeof AfroAuth.getSessionToken === 'function') {
+        const token = AfroAuth.getSessionToken();
+        if (token) headers['Authorization'] = 'Bearer ' + token;
+      }
+
+      const response = await fetch('/.netlify/functions/ai-advisor', {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify({
+          tool: 'pdf-chat',
+          context: context,
+          messages: chatHistory.slice(-10)
+        })
+      });
+
+      removeTypingIndicator();
+
+      if (response.status === 429) {
+        addErrorMessage('Daily AI limit reached. <a href="/dashboard/">Sign in</a> for more questions.');
+        isSending = false;
+        updateSendBtn();
+        return;
+      }
+
+      if (!response.ok) {
+        throw new Error('Server error: ' + response.status);
+      }
+
+      const data = await response.json();
+      const aiText = data.response || data.reply || data.message || 'Sorry, I could not generate a response.';
+      addMessage('ai', aiText);
+      chatHistory.push({ role: 'assistant', content: aiText });
+
+      /* Update remaining count if provided */
+      if (data.remaining !== undefined) {
+        chatFooter.textContent = data.remaining + ' questions remaining today';
+      }
+
+    } catch (err) {
+      removeTypingIndicator();
+      console.error('AI error:', err);
+      addErrorMessage('Something went wrong. Please try again.');
+    } finally {
+      isSending = false;
+      updateSendBtn();
+    }
+  }
+
+  /* ── Input Handling ── */
+  chatInput.addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+    updateSendBtn();
+  });
+
+  chatInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      if (chatInput.value.trim() && !isSending) {
+        const msg = chatInput.value.trim();
+        chatInput.value = '';
+        chatInput.style.height = 'auto';
+        updateSendBtn();
+        sendMessage(msg);
+      }
+    }
+  });
+
+  sendBtn.addEventListener('click', function() {
+    if (chatInput.value.trim() && !isSending) {
+      const msg = chatInput.value.trim();
+      chatInput.value = '';
+      chatInput.style.height = 'auto';
+      updateSendBtn();
+      sendMessage(msg);
+    }
+  });
+
+  function updateSendBtn() {
+    sendBtn.disabled = !chatInput.value.trim() || isSending;
+  }
+
+  /* ── Quick Actions ── */
+  quickActions.addEventListener('click', function(e) {
+    const btn = e.target.closest('.quick-btn');
+    if (!btn || isSending) return;
+    sendMessage(btn.dataset.prompt);
+  });
+
+  /* ── FAQs ── */
+  document.querySelectorAll('.faq-q').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      const item = this.closest('.faq-item');
+      const wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(function(el) { el.classList.remove('open'); });
+      if (!wasOpen) item.classList.add('open');
+    });
+  });
+
+  /* ── Upload Error Helpers ── */
+  function showUploadError(msg) {
+    uploadError.innerHTML = msg;
+    uploadError.classList.add('show');
+  }
+
+  function hideUploadError() {
+    uploadError.classList.remove('show');
+  }
+
+})();
+</script>
+</body>
+</html>

@@ -451,7 +451,7 @@
       "name": "PDF Password Protection",
       "description": "Protect PDFs with passwords. Encrypt PDFs with user permissions for print, copy, and edit. Client-side processing, no upload.",
       "url": "https://afrotools.com/tools/pdf-password",
-      "applicationCategory": "FinanceApplication",
+      "applicationCategory": "UtilitiesApplication",
       "operatingSystem": "Any",
       "offers": {
         "@type": "Offer",
@@ -538,9 +538,22 @@
             </label>
           </div>
 
+          <div id="encryptFileInfo" style="display:none; margin-top:12px; padding:10px 14px; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:6px;">
+            <span style="font-size:0.82rem;font-weight:700;color:#166534;" id="encryptFileName"></span>
+          </div>
+
           <div class="field" style="margin-top:18px;">
             <label class="f-label-text">User Password</label>
             <input type="password" class="f-input" id="userPassword" placeholder="Password to open PDF">
+            <div id="passwordStrength" style="margin-top:6px;display:none;">
+              <div style="display:flex;gap:3px;margin-bottom:4px;">
+                <div id="str1" style="flex:1;height:4px;border-radius:2px;background:#e5e7eb;"></div>
+                <div id="str2" style="flex:1;height:4px;border-radius:2px;background:#e5e7eb;"></div>
+                <div id="str3" style="flex:1;height:4px;border-radius:2px;background:#e5e7eb;"></div>
+                <div id="str4" style="flex:1;height:4px;border-radius:2px;background:#e5e7eb;"></div>
+              </div>
+              <span id="strLabel" style="font-size:0.68rem;font-weight:700;"></span>
+            </div>
           </div>
 
           <div class="field">
@@ -631,7 +644,12 @@
 
 
 <afro-related-tools category="document-pdf" current="pdf-password"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
+<script src="/assets/js/components/related-tools.min.js" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js" defer></script>
+<script src="/assets/js/lib/saved-tools.js" defer></script>
+<script src="/assets/js/favorites-widget.js" defer></script>
 
 <script>
   const PDFLib = window.PDFLib;
@@ -672,6 +690,30 @@
     });
   });
 
+  // Password strength indicator
+  userPassword.addEventListener('input', () => {
+    const pw = userPassword.value;
+    const strengthDiv = document.getElementById('passwordStrength');
+    if (!pw) { strengthDiv.style.display = 'none'; return; }
+    strengthDiv.style.display = 'block';
+
+    let score = 0;
+    if (pw.length >= 6) score++;
+    if (pw.length >= 10) score++;
+    if (/[A-Z]/.test(pw) && /[a-z]/.test(pw)) score++;
+    if (/[0-9]/.test(pw) && /[^A-Za-z0-9]/.test(pw)) score++;
+
+    const colors = ['#ef4444', '#f59e0b', '#3b82f6', '#22c55e'];
+    const labels = ['Weak', 'Fair', 'Good', 'Strong'];
+    const labelColors = ['#ef4444', '#f59e0b', '#3b82f6', '#22c55e'];
+
+    for (let i = 1; i <= 4; i++) {
+      document.getElementById('str' + i).style.background = i <= score ? colors[score - 1] : '#e5e7eb';
+    }
+    document.getElementById('strLabel').textContent = labels[score - 1] || 'Too short';
+    document.getElementById('strLabel').style.color = labelColors[score - 1] || '#9ca3af';
+  });
+
   // Encrypt file input
   encryptFileInput.addEventListener('change', (e) => {
     const file = e.target.files[0];
@@ -679,6 +721,8 @@
       currentFile = file;
       encryptBtn.disabled = false;
       resultCard.classList.remove('on');
+      document.getElementById('encryptFileName').textContent = file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
+      document.getElementById('encryptFileInfo').style.display = 'block';
     }
   });
 
@@ -791,7 +835,7 @@
       successSpan.textContent = '✓ PDF password-protected successfully!';
       const infoDiv = document.createElement('div');
       infoDiv.style.cssText = 'margin-top:6px;font-size:0.8rem;color:#6b7280;';
-      infoDiv.textContent = 'Password: "' + userPassword.value + '" — users will need this to open the file.';
+      infoDiv.textContent = 'Users will need the password you set to open this file. Keep it somewhere safe.';
       resultText.appendChild(successSpan);
       resultText.appendChild(infoDiv);
       actionRow.style.display = 'grid';

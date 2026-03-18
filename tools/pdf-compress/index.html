@@ -475,19 +475,22 @@
       <!-- File Upload -->
       <div class="card">
         <div class="card-head">
-          <span class="card-title">Upload PDF</span>
+          <span class="card-title">Upload PDFs</span>
+          <span id="batchBadge" style="font-size:0.68rem;font-weight:700;color:var(--color-primary);display:none;">Batch Mode</span>
         </div>
         <div class="card-body">
           <div class="file-input-wrapper">
-            <input type="file" id="pdfFileInput" accept=".pdf">
+            <input type="file" id="pdfFileInput" accept=".pdf" multiple>
             <label for="pdfFileInput" class="file-input-label">
-              📁 Click to select or drag & drop a PDF here
+              📁 Click to select or drag & drop PDFs here
+              <div style="font-size:0.72rem;margin-top:4px;opacity:.65">Select multiple files for batch compression</div>
             </label>
           </div>
           <div id="fileInfo" style="display:none; margin-top:12px;">
             <div class="f-label-text">File: <span id="fileName"></span></div>
             <div style="font-size:0.7rem;color:#9ca3af;margin-top:4px;">Size: <span id="fileSize"></span></div>
           </div>
+          <div id="batchFileList" style="display:none; margin-top:12px;"></div>
         </div>
       </div>
 
@@ -586,7 +589,12 @@
 
 
 <afro-related-tools category="document-pdf" current="pdf-compress"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
+<script src="/assets/js/components/related-tools.min.js" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js" defer></script>
+<script src="/assets/js/lib/saved-tools.js" defer></script>
+<script src="/assets/js/favorites-widget.js" defer></script>
 
 <script>
   pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
@@ -597,6 +605,8 @@
   let compressedPdf = null;
   let customDPI = 72;
   let customQuality = 0.5;
+  let batchFiles = [];
+  let batchResults = [];
 
   const presets = {
     screen: { dpi: 72, quality: 0.5, label: 'Screen' },
@@ -649,14 +659,39 @@
     document.getElementById('qualityVal').textContent = parseInt(e.target.value);
   });
 
-  // File input
+  const batchFileList = document.getElementById('batchFileList');
+  const batchBadge = document.getElementById('batchBadge');
+
+  // File input — supports single and batch
   pdfFileInput.addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (file && file.type === 'application/pdf') {
-      currentFile = file;
-      fileName.textContent = file.name;
-      fileSize.textContent = formatFileSize(file.size);
+    const files = Array.from(e.target.files).filter(f => f.type === 'application/pdf');
+    if (files.length === 0) return;
+
+    if (files.length === 1) {
+      // Single file mode
+      currentFile = files[0];
+      batchFiles = [];
+      fileName.textContent = files[0].name;
+      fileSize.textContent = formatFileSize(files[0].size);
       fileInfo.style.display = 'block';
+      batchFileList.style.display = 'none';
+      batchBadge.style.display = 'none';
+      compressBtn.disabled = false;
+      resultCard.classList.remove('on');
+    } else {
+      // Batch mode
+      currentFile = null;
+      batchFiles = files;
+      fileInfo.style.display = 'none';
+      batchBadge.style.display = 'inline';
+      batchFileList.style.display = 'block';
+      let totalSize = 0;
+      batchFileList.innerHTML = files.map((f, i) => {
+        totalSize += f.size;
+        return '<div style="display:flex;justify-content:space-between;padding:6px 10px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:5px;margin-bottom:4px;font-size:0.78rem;">' +
+          '<span style="font-weight:600;color:#0d2813;">' + f.name + '</span>' +
+          '<span style="color:#9ca3af;">' + formatFileSize(f.size) + '</span></div>';
+      }).join('') + '<div style="font-size:0.72rem;color:#6b7280;margin-top:6px;font-weight:600;">' + files.length + ' files — Total: ' + formatFileSize(totalSize) + '</div>';
       compressBtn.disabled = false;
       resultCard.classList.remove('on');
     }
@@ -676,20 +711,74 @@
   label.addEventListener('drop', async (e) => {
     e.preventDefault();
     label.classList.remove('dragover');
-    const file = e.dataTransfer.files[0];
-    if (file && file.type === 'application/pdf') {
-      currentFile = file;
-      fileName.textContent = file.name;
-      fileSize.textContent = formatFileSize(file.size);
+    const files = Array.from(e.dataTransfer.files).filter(f => f.type === 'application/pdf');
+    if (files.length === 1) {
+      currentFile = files[0];
+      batchFiles = [];
+      fileName.textContent = files[0].name;
+      fileSize.textContent = formatFileSize(files[0].size);
       fileInfo.style.display = 'block';
+      batchFileList.style.display = 'none';
+      batchBadge.style.display = 'none';
+      compressBtn.disabled = false;
+      resultCard.classList.remove('on');
+    } else if (files.length > 1) {
+      currentFile = null;
+      batchFiles = files;
+      fileInfo.style.display = 'none';
+      batchBadge.style.display = 'inline';
+      batchFileList.style.display = 'block';
+      let totalSize = 0;
+      batchFileList.innerHTML = files.map(f => {
+        totalSize += f.size;
+        return '<div style="display:flex;justify-content:space-between;padding:6px 10px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:5px;margin-bottom:4px;font-size:0.78rem;">' +
+          '<span style="font-weight:600;color:#0d2813;">' + f.name + '</span>' +
+          '<span style="color:#9ca3af;">' + formatFileSize(f.size) + '</span></div>';
+      }).join('') + '<div style="font-size:0.72rem;color:#6b7280;margin-top:6px;font-weight:600;">' + files.length + ' files — Total: ' + formatFileSize(totalSize) + '</div>';
       compressBtn.disabled = false;
       resultCard.classList.remove('on');
     }
   });
 
-  // Compress function using PDF.js + pdf-lib
+  // Core compress function for a single file
+  async function compressSingleFile(file, dpi, quality) {
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    const scale = dpi / 72;
+    const pdfDoc = await PDFDocument.create();
+    const pageCount = pdf.numPages;
+
+    for (let i = 1; i <= pageCount; i++) {
+      const page = await pdf.getPage(i);
+      const viewport = page.getViewport({ scale });
+      const canvas = document.createElement('canvas');
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+      const context = canvas.getContext('2d');
+      if (!context) throw new Error('Could not create canvas context for page ' + i);
+      await page.render({ canvasContext: context, viewport }).promise;
+      const jpegDataUrl = canvas.toDataURL('image/jpeg', quality);
+      const jpegBytes = await fetch(jpegDataUrl).then(r => r.arrayBuffer());
+      const image = await pdfDoc.embedJpg(jpegBytes);
+      const newPage = pdfDoc.addPage([viewport.width, viewport.height]);
+      newPage.drawImage(image, { x: 0, y: 0, width: viewport.width, height: viewport.height });
+    }
+
+    return await pdfDoc.save();
+  }
+
+  // Get current compression settings
+  function getCompressionSettings() {
+    if (currentPreset === 'custom') {
+      return { dpi: customDPI, quality: customQuality };
+    }
+    const preset = presets[currentPreset];
+    return { dpi: preset.dpi, quality: preset.quality };
+  }
+
+  // Compress function — handles single and batch
   compressBtn.addEventListener('click', async () => {
-    if (!currentFile) return;
+    if (!currentFile && batchFiles.length === 0) return;
 
     resultContent.style.display = 'none';
     processingText.style.display = 'block';
@@ -697,100 +786,111 @@
     resultCard.classList.add('on');
     compressBtn.disabled = true;
 
+    const { dpi, quality } = getCompressionSettings();
+
     try {
-      const arrayBuffer = await currentFile.arrayBuffer();
-      progressFill.style.width = '10%';
+      if (batchFiles.length > 1) {
+        // === BATCH MODE ===
+        batchResults = [];
+        let totalOriginal = 0, totalCompressed = 0;
 
-      // Load PDF with PDF.js
-      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-      progressFill.style.width = '20%';
+        for (let f = 0; f < batchFiles.length; f++) {
+          const file = batchFiles[f];
+          processingText.querySelector('div:first-child').textContent = 'Compressing ' + (f + 1) + '/' + batchFiles.length + ': ' + file.name + '...';
+          progressFill.style.width = (f / batchFiles.length * 100) + '%';
 
-      // Get compression settings
-      let dpi, quality;
-      if (currentPreset === 'custom') {
-        dpi = customDPI;
-        quality = customQuality;
-      } else {
-        const preset = presets[currentPreset];
-        dpi = preset.dpi;
-        quality = preset.quality;
-      }
-
-      const scale = dpi / 72; // 72 is default screen DPI
-      const pdfDoc = await PDFDocument.create();
-      const pageCount = pdf.numPages;
-
-      // Render each page to canvas, convert to JPEG, add to new PDF
-      for (let i = 1; i <= pageCount; i++) {
-        const page = await pdf.getPage(i);
-        const viewport = page.getViewport({ scale });
-
-        // Create canvas
-        const canvas = document.createElement('canvas');
-        canvas.width = viewport.width;
-        canvas.height = viewport.height;
-        const context = canvas.getContext('2d');
-        if (!context) throw new Error('Could not create canvas context for page ' + i);
-
-        // Render page
-        await page.render({
-          canvasContext: context,
-          viewport: viewport
-        }).promise;
-
-        // Convert to JPEG
-        const jpegDataUrl = canvas.toDataURL('image/jpeg', quality);
-        const jpegBytes = await fetch(jpegDataUrl).then(r => r.arrayBuffer());
-
-        // Add to new PDF
-        const image = await pdfDoc.embedJpg(jpegBytes);
-        const newPage = pdfDoc.addPage([viewport.width, viewport.height]);
-        newPage.drawImage(image, {
-          x: 0,
-          y: 0,
-          width: viewport.width,
-          height: viewport.height
-        });
-
-        // Update progress
-        const progress = 20 + Math.round((i / pageCount) * 70);
-        progressFill.style.width = progress + '%';
-      }
-
-      progressFill.style.width = '95%';
-
-      // Save compressed PDF
-      const pdfBytes = await pdfDoc.save();
-      compressedPdf = pdfBytes;
-
-      progressFill.style.width = '100%';
-
-      const originalSize = currentFile.size;
-      const compressedSize = compressedPdf.length;
-      const savings = originalSize - compressedSize;
-      const savingsPercent = savings > 0 ? Math.round((savings / originalSize) * 100) : 0;
-
-      setTimeout(() => {
-        processingText.style.display = 'none';
-        resultContent.style.display = 'block';
-
-        document.getElementById('originalSize').textContent = formatFileSize(originalSize);
-        document.getElementById('compressedSize').textContent = formatFileSize(compressedSize);
-
-        if (savings > 0) {
-          document.getElementById('savingsBadge').textContent = `Saved ${savingsPercent}% (${formatFileSize(savings)})`;
-          document.getElementById('savingsBadge').style.background = 'rgba(0, 113, 227, 0.15)';
-          document.getElementById('savingsBadge').style.color = '#1e40af';
-        } else {
-          document.getElementById('savingsBadge').textContent = 'Text-heavy PDF: try Screen or Ebook preset for better results';
-          document.getElementById('savingsBadge').style.background = 'rgba(245, 166, 35, 0.15)';
-          document.getElementById('savingsBadge').style.color = '#92400e';
+          const pdfBytes = await compressSingleFile(file, dpi, quality);
+          totalOriginal += file.size;
+          totalCompressed += pdfBytes.length;
+          batchResults.push({ name: file.name.replace(/\.pdf$/i, '_compressed.pdf'), data: pdfBytes, originalSize: file.size });
         }
-      }, 500);
 
+        progressFill.style.width = '100%';
+
+        const savings = totalOriginal - totalCompressed;
+        const savingsPercent = savings > 0 ? Math.round((savings / totalOriginal) * 100) : 0;
+
+        setTimeout(() => {
+          processingText.style.display = 'none';
+          resultContent.style.display = 'block';
+          document.getElementById('originalSize').textContent = formatFileSize(totalOriginal);
+          document.getElementById('compressedSize').textContent = formatFileSize(totalCompressed);
+
+          if (savings > 0) {
+            document.getElementById('savingsBadge').textContent = 'Saved ' + savingsPercent + '% (' + formatFileSize(savings) + ') across ' + batchFiles.length + ' files';
+            document.getElementById('savingsBadge').style.background = 'rgba(0, 113, 227, 0.15)';
+            document.getElementById('savingsBadge').style.color = '#1e40af';
+          } else {
+            document.getElementById('savingsBadge').textContent = 'Files are text-heavy — try a lower preset';
+            document.getElementById('savingsBadge').style.background = 'rgba(245, 166, 35, 0.15)';
+            document.getElementById('savingsBadge').style.color = '#92400e';
+          }
+
+          // Replace download button with batch download
+          downloadBtn.textContent = '📥 Download All as ZIP';
+          downloadBtn.onclick = async () => {
+            downloadBtn.textContent = 'Creating ZIP...';
+            downloadBtn.disabled = true;
+            const JSZip = (await import('https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js')).default || window.JSZip;
+            if (!window.JSZip) {
+              const s = document.createElement('script');
+              s.src = 'https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js';
+              document.head.appendChild(s);
+              await new Promise(r => s.onload = r);
+            }
+            const zip = new JSZip();
+            batchResults.forEach(r => zip.file(r.name, r.data));
+            const blob = await zip.generateAsync({ type: 'blob' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'compressed_pdfs.zip';
+            a.click();
+            setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+            downloadBtn.textContent = '📥 Download All as ZIP';
+            downloadBtn.disabled = false;
+          };
+        }, 500);
+
+      } else {
+        // === SINGLE FILE MODE ===
+        progressFill.style.width = '10%';
+        processingText.querySelector('div:first-child').textContent = 'Compressing...';
+        progressFill.style.width = '20%';
+
+        const pdfBytes = await compressSingleFile(currentFile, dpi, quality);
+        compressedPdf = pdfBytes;
+
+        progressFill.style.width = '100%';
+
+        const originalSize = currentFile.size;
+        const compressedSize = compressedPdf.length;
+        const savings = originalSize - compressedSize;
+        const savingsPercent = savings > 0 ? Math.round((savings / originalSize) * 100) : 0;
+
+        setTimeout(() => {
+          processingText.style.display = 'none';
+          resultContent.style.display = 'block';
+          document.getElementById('originalSize').textContent = formatFileSize(originalSize);
+          document.getElementById('compressedSize').textContent = formatFileSize(compressedSize);
+
+          if (savings > 0) {
+            document.getElementById('savingsBadge').textContent = 'Saved ' + savingsPercent + '% (' + formatFileSize(savings) + ')';
+            document.getElementById('savingsBadge').style.background = 'rgba(0, 113, 227, 0.15)';
+            document.getElementById('savingsBadge').style.color = '#1e40af';
+          } else {
+            document.getElementById('savingsBadge').textContent = 'Text-heavy PDF: try Screen or Ebook preset for better results';
+            document.getElementById('savingsBadge').style.background = 'rgba(245, 166, 35, 0.15)';
+            document.getElementById('savingsBadge').style.color = '#92400e';
+          }
+
+          // Reset download button for single file
+          downloadBtn.textContent = '📥 Download';
+          downloadBtn.onclick = null;
+        }, 500);
+      }
     } catch (err) {
       console.error(err);
-      processingText.textContent = '';
+      processingText.querySelector('div:first-child').textContent = '';
       const errDiv = document.createElement('div');
       errDiv.style.color = 'red';
       errDiv.textContent = '✗ Error: ' + err.message;

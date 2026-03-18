@@ -497,7 +497,7 @@
       "name": "PDF Watermark",
       "description": "Add text watermarks to PDFs with custom text, color, opacity, rotation, and positioning. Download watermarked PDF instantly.",
       "url": "https://afrotools.com/tools/pdf-watermark",
-      "applicationCategory": "FinanceApplication",
+      "applicationCategory": "UtilitiesApplication",
       "operatingSystem": "Any",
       "offers": {
         "@type": "Offer",
@@ -570,6 +570,10 @@
               📁 Click to select or drag & drop a PDF here
             </label>
           </div>
+          <div id="fileInfo" style="display:none; margin-top:12px; padding:10px 14px; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:6px;">
+            <span style="font-size:0.82rem;font-weight:700;color:#166534;" id="fileName"></span>
+            <span style="font-size:0.72rem;color:#9ca3af;margin-left:8px;" id="fileSize"></span>
+          </div>
         </div>
       </div>
 
@@ -579,6 +583,15 @@
           <span class="card-title">Watermark Settings</span>
         </div>
         <div class="card-body">
+          <div class="field">
+            <label class="f-label-text">Watermark Type</label>
+            <div class="position-row">
+              <button class="pos-btn on" data-wtype="text">Text</button>
+              <button class="pos-btn" data-wtype="image">Image</button>
+            </div>
+          </div>
+
+          <div id="textWatermarkPanel">
           <div class="field">
             <label class="f-label">
               <span class="f-label-text">Watermark Text</span>
@@ -618,6 +631,34 @@
               <button class="pos-btn" data-position="diagonal">Diagonal</button>
               <button class="pos-btn" data-position="top">Top</button>
               <button class="pos-btn" data-position="bottom">Bottom</button>
+            </div>
+          </div>
+
+          </div><!-- end textWatermarkPanel -->
+
+          <div id="imageWatermarkPanel" style="display:none;">
+            <div class="field">
+              <label class="f-label-text">Watermark Image</label>
+              <div style="position:relative;">
+                <input type="file" id="watermarkImageInput" accept="image/png,image/jpeg,image/webp" style="position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;">
+                <label for="watermarkImageInput" class="file-input-label" style="padding:16px;">
+                  Click to select PNG, JPG or WebP image
+                </label>
+              </div>
+              <div id="imgPreviewWrap" style="display:none;margin-top:10px;text-align:center;">
+                <img id="imgPreview" style="max-width:140px;max-height:100px;border:1px solid #e5e7eb;border-radius:6px;">
+                <div style="font-size:0.7rem;color:#9ca3af;margin-top:4px;" id="imgPreviewName"></div>
+              </div>
+            </div>
+
+            <div class="slider-group">
+              <label class="f-label-text">Image Scale: <span id="imgScaleValue">30</span>%</label>
+              <input type="range" class="slider" id="imgScaleSlider" min="5" max="80" value="30">
+            </div>
+
+            <div class="slider-group">
+              <label class="f-label-text">Image Opacity: <span id="imgOpacityValue">30</span>%</label>
+              <input type="range" class="slider" id="imgOpacitySlider" min="5" max="100" value="30">
             </div>
           </div>
 
@@ -665,13 +706,55 @@
 
 
 <afro-related-tools category="document-pdf" current="pdf-watermark"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
+<script src="/assets/js/components/related-tools.min.js" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js" defer></script>
+<script src="/assets/js/lib/saved-tools.js" defer></script>
+<script src="/assets/js/favorites-widget.js" defer></script>
 
 <script>
   const PDFLib = window.PDFLib;
   let currentFile = null;
   let watermarkedPdf = null;
   let currentPosition = 'center';
+  let watermarkType = 'text';
+  let watermarkImageBytes = null;
+  let watermarkImageType = null;
+
+  // Watermark type switching
+  document.querySelectorAll('[data-wtype]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      watermarkType = btn.dataset.wtype;
+      document.querySelectorAll('[data-wtype]').forEach(b => b.classList.remove('on'));
+      btn.classList.add('on');
+      document.getElementById('textWatermarkPanel').style.display = watermarkType === 'text' ? 'block' : 'none';
+      document.getElementById('imageWatermarkPanel').style.display = watermarkType === 'image' ? 'block' : 'none';
+    });
+  });
+
+  // Image watermark upload
+  const watermarkImageInput = document.getElementById('watermarkImageInput');
+  const imgPreviewWrap = document.getElementById('imgPreviewWrap');
+  const imgPreview = document.getElementById('imgPreview');
+  const imgPreviewName = document.getElementById('imgPreviewName');
+  const imgScaleSlider = document.getElementById('imgScaleSlider');
+  const imgScaleValue = document.getElementById('imgScaleValue');
+  const imgOpacitySlider = document.getElementById('imgOpacitySlider');
+  const imgOpacityValue = document.getElementById('imgOpacityValue');
+
+  imgScaleSlider.addEventListener('input', (e) => { imgScaleValue.textContent = e.target.value; });
+  imgOpacitySlider.addEventListener('input', (e) => { imgOpacityValue.textContent = e.target.value; });
+
+  watermarkImageInput.addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    watermarkImageBytes = new Uint8Array(await file.arrayBuffer());
+    watermarkImageType = file.type;
+    imgPreview.src = URL.createObjectURL(file);
+    imgPreviewName.textContent = file.name;
+    imgPreviewWrap.style.display = 'block';
+  });
 
   const pdfFileInput = document.getElementById('pdfFileInput');
   const watermarkText = document.getElementById('watermarkText');
@@ -719,6 +802,16 @@
     });
   });
 
+  const fileInfoDiv = document.getElementById('fileInfo');
+  const fileNameSpan = document.getElementById('fileName');
+  const fileSizeSpan = document.getElementById('fileSize');
+
+  function showFileInfo(file) {
+    fileNameSpan.textContent = file.name;
+    fileSizeSpan.textContent = '(' + (file.size / 1024).toFixed(1) + ' KB)';
+    fileInfoDiv.style.display = 'block';
+  }
+
   // File input
   pdfFileInput.addEventListener('change', (e) => {
     const file = e.target.files[0];
@@ -726,6 +819,7 @@
       currentFile = file;
       watermarkBtn.disabled = false;
       resultCard.classList.remove('on');
+      showFileInfo(file);
     }
   });
 
@@ -748,6 +842,7 @@
       currentFile = file;
       watermarkBtn.disabled = false;
       resultCard.classList.remove('on');
+      showFileInfo(file);
     }
   });
 
@@ -768,65 +863,101 @@
       const pages = pdf.getPages();
       const totalPages = pages.length;
 
-      const color = watermarkColor.value;
-      const r = parseInt(color.slice(1, 3), 16) / 255;
-      const g = parseInt(color.slice(3, 5), 16) / 255;
-      const b = parseInt(color.slice(5, 7), 16) / 255;
-
-      const text = watermarkText.value || 'WATERMARK';
-      const fontSize = parseInt(fontSizeSlider.value);
-      const opacity = parseInt(opacitySlider.value) / 100;
-      const rotation = parseInt(rotationSlider.value);
-
-      // Embed font for proper text width calculation
-      const font = await pdf.embedFont(PDFLib.StandardFonts.Helvetica);
-      const textWidth = font.widthOfTextAtSize(text, fontSize);
-
-      for (let i = 0; i < totalPages; i++) {
-        const page = pages[i];
-        const { width, height } = page.getSize();
-
-        let x, y, rot;
-        switch (currentPosition) {
-          case 'center':
-            x = (width - textWidth) / 2;
-            y = height / 2;
-            rot = rotation;
-            break;
-          case 'diagonal':
-            // Diagonal forces -45 degrees across the page
-            x = width * 0.15;
-            y = height * 0.35;
-            rot = -45;
-            break;
-          case 'top':
-            x = (width - textWidth) / 2;
-            y = height - 60;
-            rot = 0;
-            break;
-          case 'bottom':
-            x = (width - textWidth) / 2;
-            y = 40;
-            rot = 0;
-            break;
+      if (watermarkType === 'image') {
+        // Image watermark
+        if (!watermarkImageBytes) {
+          resultText.textContent = '✗ Please select a watermark image first.';
+          watermarkBtn.disabled = false;
+          return;
         }
 
-        page.drawText(text, {
-          x: x,
-          y: y,
-          size: fontSize,
-          font: font,
-          color: PDFLib.rgb(r, g, b),
-          opacity: opacity,
-          rotate: PDFLib.degrees(rot),
-        });
+        let embeddedImage;
+        if (watermarkImageType === 'image/png') {
+          embeddedImage = await pdf.embedPng(watermarkImageBytes);
+        } else {
+          embeddedImage = await pdf.embedJpg(watermarkImageBytes);
+        }
 
-        progressFill.style.width = ((i + 1) / totalPages * 100) + '%';
+        const imgScale = parseInt(imgScaleSlider.value) / 100;
+        const imgOpacity = parseInt(imgOpacitySlider.value) / 100;
+
+        for (let i = 0; i < totalPages; i++) {
+          const page = pages[i];
+          const { width, height } = page.getSize();
+          const imgDims = embeddedImage.scale(imgScale);
+          const x = (width - imgDims.width) / 2;
+          const y = (height - imgDims.height) / 2;
+
+          page.drawImage(embeddedImage, {
+            x: x,
+            y: y,
+            width: imgDims.width,
+            height: imgDims.height,
+            opacity: imgOpacity,
+          });
+
+          progressFill.style.width = ((i + 1) / totalPages * 100) + '%';
+        }
+      } else {
+        // Text watermark
+        const color = watermarkColor.value;
+        const r = parseInt(color.slice(1, 3), 16) / 255;
+        const g = parseInt(color.slice(3, 5), 16) / 255;
+        const b = parseInt(color.slice(5, 7), 16) / 255;
+
+        const text = watermarkText.value || 'WATERMARK';
+        const fontSize = parseInt(fontSizeSlider.value);
+        const opacity = parseInt(opacitySlider.value) / 100;
+        const rotation = parseInt(rotationSlider.value);
+
+        const font = await pdf.embedFont(PDFLib.StandardFonts.Helvetica);
+        const textWidth = font.widthOfTextAtSize(text, fontSize);
+
+        for (let i = 0; i < totalPages; i++) {
+          const page = pages[i];
+          const { width, height } = page.getSize();
+
+          let x, y, rot;
+          switch (currentPosition) {
+            case 'center':
+              x = (width - textWidth) / 2;
+              y = height / 2;
+              rot = rotation;
+              break;
+            case 'diagonal':
+              x = width * 0.15;
+              y = height * 0.35;
+              rot = -45;
+              break;
+            case 'top':
+              x = (width - textWidth) / 2;
+              y = height - 60;
+              rot = 0;
+              break;
+            case 'bottom':
+              x = (width - textWidth) / 2;
+              y = 40;
+              rot = 0;
+              break;
+          }
+
+          page.drawText(text, {
+            x: x,
+            y: y,
+            size: fontSize,
+            font: font,
+            color: PDFLib.rgb(r, g, b),
+            opacity: opacity,
+            rotate: PDFLib.degrees(rot),
+          });
+
+          progressFill.style.width = ((i + 1) / totalPages * 100) + '%';
+        }
       }
 
       watermarkedPdf = await pdf.save();
       progressFill.style.width = '100%';
-      resultText.textContent = '✓ Watermark added to all pages!';
+      resultText.textContent = '✓ Watermark added to all ' + totalPages + ' pages!';
       actionRow.style.display = 'grid';
     } catch (err) {
       resultText.textContent = '✗ Error: ' + err.message;

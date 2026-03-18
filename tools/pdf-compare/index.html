@@ -1,0 +1,1601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-D859CGF391');
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDF Compare Tool — Side-by-Side Text Diff & Visual Overlay | AfroTools</title>
+<meta name="description" content="Compare two PDFs side-by-side with text diff and visual overlay. See additions, deletions, and changes instantly. 100% client-side, no uploads, free.">
+<link rel="canonical" href="https://afrotools.com/tools/pdf-compare/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="PDF Compare Tool | AfroTools">
+<meta property="og:description" content="Compare two PDFs side-by-side with text diff and visual overlay. Spot every change instantly. Free, client-side.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/pdf-compare/">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-pdf.png">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="PDF Compare Tool | AfroTools">
+<meta name="twitter:description" content="Compare two PDFs side-by-side with text diff and visual overlay. Free and client-side.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "PDF Compare Tool",
+  "description": "Compare two PDF documents side-by-side with text diff highlighting and visual overlay to spot every change.",
+  "url": "https://afrotools.com/tools/pdf-compare/",
+  "applicationCategory": "UtilitiesApplication"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How does the text diff work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The tool extracts text from each page of both PDFs, then uses a diff algorithm to find additions, deletions, and unchanged sections. Results are displayed side-by-side with color-coded highlights."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What does the visual diff show?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Visual diff renders both PDF pages as images and uses pixel-level comparison to highlight areas that differ. You can use a slider to blend between the original and modified versions."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my PDF uploaded to a server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. All processing happens entirely in your browser using JavaScript. Your PDFs never leave your device."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I compare PDFs with different page counts?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The tool compares pages that exist in both PDFs. Extra pages in either document are flagged as entirely added or removed."
+      }
+    }
+  ]
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/tool-registry.min.js"></script>
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<script src="/assets/js/components/related-tools.min.js" defer></script>
+<script src="/assets/js/lib/saved-tools.js" defer></script>
+<script src="/assets/js/favorites-widget.js" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js" defer></script>
+<style>
+  :root {
+    --afro-green: var(--color-primary);
+    --afro-dark: #0f1419;
+    --afro-light: #f5f7fa;
+    --diff-add-bg: #d1fae5;
+    --diff-add-text: #065f46;
+    --diff-del-bg: #fee2e2;
+    --diff-del-text: #991b1b;
+  }
+
+  /* === Hero === */
+  .tool-hero {
+    background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
+    padding: 44px 0 36px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tool-hero::after {
+    content: '\21C4';
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 8rem;
+    opacity: 0.06;
+    pointer-events: none;
+    color: #fff;
+  }
+
+  .tool-hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+  }
+
+  .breadcrumb {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .breadcrumb a {
+    color: rgba(255, 255, 255, 0.3);
+    text-decoration: none;
+  }
+
+  .breadcrumb span {
+    color: var(--afro-green);
+  }
+
+  h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+
+  h1 em {
+    color: var(--afro-green);
+    font-style: normal;
+  }
+
+  .hero-sub {
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 1.6;
+    max-width: 560px;
+    margin-bottom: 14px;
+  }
+
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 6px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 11px;
+    border-radius: 4px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .b-green {
+    background: rgba(0, 113, 227, 0.18);
+    color: var(--color-primary);
+    border: 1px solid rgba(0, 113, 227, 0.38);
+  }
+
+  .b-blue {
+    background: rgba(59, 130, 246, 0.15);
+    color: #60a5fa;
+    border: 1px solid rgba(59, 130, 246, 0.35);
+  }
+
+  .b-purple {
+    background: rgba(139, 92, 246, 0.15);
+    color: #a78bfa;
+    border: 1px solid rgba(139, 92, 246, 0.35);
+  }
+
+  /* === Main === */
+  .tool-main {
+    padding: 28px 0 72px;
+  }
+
+  .tool-main-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .card + .card {
+    margin-top: 18px;
+  }
+
+  .card-head {
+    padding: 15px 22px;
+    border-bottom: 1px solid #e5e7eb;
+    background: #f9fafb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .card-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #374151;
+  }
+
+  .card-body {
+    padding: 22px;
+  }
+
+  /* === Upload Grid === */
+  .upload-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+
+  .upload-col {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .upload-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #374151;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .upload-label .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .dot-original { background: #6366f1; }
+  .dot-modified { background: #10b981; }
+
+  .upload-zone {
+    border: 2px dashed #d1d5db;
+    border-radius: 8px;
+    padding: 36px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: #fafbfc;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 160px;
+  }
+
+  .upload-zone:hover,
+  .upload-zone.dragover {
+    border-color: var(--afro-green);
+    background: rgba(0, 113, 227, 0.04);
+  }
+
+  .upload-zone input[type="file"] {
+    display: none;
+  }
+
+  .upload-icon {
+    font-size: 2.2rem;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .upload-text {
+    font-size: 0.85rem;
+    color: #6b7280;
+    margin-bottom: 4px;
+  }
+
+  .upload-hint {
+    font-size: 0.72rem;
+    color: #9ca3af;
+  }
+
+  .upload-zone.has-file {
+    border-color: #bbf7d0;
+    background: #f0fdf4;
+    cursor: default;
+  }
+
+  .file-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .file-info .file-icon {
+    font-size: 2rem;
+    margin-bottom: 2px;
+  }
+
+  .file-info .file-name {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #166534;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .file-info .file-meta {
+    font-size: 0.72rem;
+    color: #6b7280;
+  }
+
+  .file-info .change-btn {
+    margin-top: 6px;
+    background: none;
+    border: 1px solid #d1d5db;
+    border-radius: 5px;
+    padding: 4px 14px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #6b7280;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .file-info .change-btn:hover {
+    border-color: var(--afro-green);
+    color: var(--afro-green);
+  }
+
+  /* === Compare Button === */
+  .compare-row {
+    text-align: center;
+    margin-top: 18px;
+  }
+
+  .compare-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 36px;
+    background: var(--afro-green);
+    color: #fff;
+    font-size: 0.88rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .compare-btn:hover:not(:disabled) {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+  }
+
+  .compare-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  /* === Mode Toggle === */
+  .mode-toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    margin-bottom: 16px;
+  }
+
+  .mode-btn {
+    padding: 8px 20px;
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #6b7280;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .mode-btn:first-child {
+    border-radius: 6px 0 0 6px;
+  }
+
+  .mode-btn:last-child {
+    border-radius: 0 6px 6px 0;
+  }
+
+  .mode-btn.active {
+    background: var(--afro-green);
+    color: #fff;
+    border-color: var(--afro-green);
+  }
+
+  /* === Summary Bar === */
+  .summary-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: center;
+    padding: 12px 18px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #374151;
+  }
+
+  .stat-add {
+    color: var(--diff-add-text);
+  }
+
+  .stat-del {
+    color: var(--diff-del-text);
+  }
+
+  .stat-pages {
+    color: #6366f1;
+  }
+
+  .stat-sim {
+    color: #6b7280;
+    margin-left: auto;
+  }
+
+  /* === Page Navigation === */
+  .page-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .page-nav button {
+    padding: 6px 16px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #374151;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .page-nav button:hover:not(:disabled) {
+    border-color: var(--afro-green);
+    color: var(--afro-green);
+  }
+
+  .page-nav button:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  .page-nav .page-indicator {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #6b7280;
+    min-width: 80px;
+    text-align: center;
+  }
+
+  /* === Text Diff Panels === */
+  .diff-panels {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .diff-panel {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .diff-panel-head {
+    padding: 10px 16px;
+    background: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #374151;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .diff-panel-body {
+    padding: 16px;
+    max-height: 520px;
+    overflow-y: auto;
+    font-family: 'DM Sans', monospace;
+    font-size: 0.82rem;
+    line-height: 1.7;
+    color: #1f2937;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .diff-add {
+    background: var(--diff-add-bg);
+    color: var(--diff-add-text);
+    border-radius: 3px;
+    padding: 1px 3px;
+  }
+
+  .diff-del {
+    background: var(--diff-del-bg);
+    color: var(--diff-del-text);
+    border-radius: 3px;
+    padding: 1px 3px;
+    text-decoration: line-through;
+  }
+
+  /* === Visual Diff === */
+  .visual-diff-container {
+    position: relative;
+    background: #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .visual-canvas-wrap {
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
+  }
+
+  .visual-canvas-wrap canvas {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .visual-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+    margin-top: 12px;
+    padding: 12px 16px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+  }
+
+  .visual-controls label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #374151;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .visual-controls input[type="range"] {
+    width: 180px;
+    accent-color: var(--afro-green);
+  }
+
+  .visual-controls .mode-label {
+    font-size: 0.72rem;
+    color: #6b7280;
+  }
+
+  .visual-btn-group {
+    display: flex;
+    gap: 4px;
+  }
+
+  .visual-btn-group button {
+    padding: 5px 14px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #6b7280;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .visual-btn-group button:first-child { border-radius: 5px 0 0 5px; }
+  .visual-btn-group button:last-child { border-radius: 0 5px 5px 0; }
+
+  .visual-btn-group button.active {
+    background: var(--afro-green);
+    color: #fff;
+    border-color: var(--afro-green);
+  }
+
+  /* === Results Card === */
+  .results-card {
+    display: none;
+  }
+
+  .results-card.on {
+    display: block;
+  }
+
+  /* === Progress === */
+  .progress-bar {
+    width: 100%;
+    height: 4px;
+    background: #e5e7eb;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 16px;
+    display: none;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--afro-green);
+    border-radius: 4px;
+    transition: width 0.3s;
+    width: 0%;
+  }
+
+  /* === Empty State === */
+  .empty-state {
+    text-align: center;
+    padding: 48px 20px;
+    color: #9ca3af;
+    font-size: 0.88rem;
+  }
+
+  .empty-state .empty-icon {
+    font-size: 3rem;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  /* === SEO Section === */
+  .seo-section {
+    max-width: 1200px;
+    margin: 0 auto 48px;
+    padding: 0 24px;
+  }
+
+  .seo-section h2 {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #111;
+    margin-bottom: 12px;
+  }
+
+  .seo-section p {
+    font-size: 0.88rem;
+    color: #6b7280;
+    line-height: 1.7;
+    max-width: 720px;
+    margin-bottom: 16px;
+  }
+
+  .faq-list {
+    max-width: 720px;
+  }
+
+  .faq-item {
+    border-bottom: 1px solid #e5e7eb;
+    padding: 16px 0;
+  }
+
+  .faq-q {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: #111;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .faq-q::after {
+    content: '+';
+    font-size: 1.2rem;
+    font-weight: 300;
+    color: #9ca3af;
+    transition: transform 0.2s;
+  }
+
+  .faq-item.open .faq-q::after {
+    transform: rotate(45deg);
+  }
+
+  .faq-a {
+    font-size: 0.85rem;
+    color: #6b7280;
+    line-height: 1.7;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.25s ease, padding 0.25s ease;
+    padding-top: 0;
+  }
+
+  .faq-item.open .faq-a {
+    max-height: 300px;
+    padding-top: 10px;
+  }
+
+  /* === Info Cards === */
+  .info-card {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 18px 20px;
+    margin-top: 18px;
+  }
+
+  .info-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #374151;
+    margin-bottom: 10px;
+  }
+
+  .info-text {
+    font-size: 0.82rem;
+    color: #6b7280;
+    line-height: 1.7;
+  }
+
+  .info-text ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .info-text li {
+    padding: 3px 0;
+  }
+
+  /* === Spinner === */
+  .spinner {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* === Responsive === */
+  @media (max-width: 768px) {
+    .upload-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .diff-panels {
+      grid-template-columns: 1fr;
+    }
+
+    .diff-panel-body {
+      max-height: 360px;
+    }
+
+    .summary-bar {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+    }
+
+    .stat-sim {
+      margin-left: 0;
+    }
+
+    .visual-controls {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .visual-controls input[type="range"] {
+      width: 100%;
+    }
+  }
+</style>
+</head>
+<body>
+
+<afro-navbar></afro-navbar>
+
+<!-- Hero -->
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb">
+      <a href="/">Home</a> / <a href="/document-pdf/">PDF Tools</a> / <span>Compare</span>
+    </div>
+    <h1>PDF <em>Compare</em></h1>
+    <p class="hero-sub">Compare two PDFs side-by-side. See text differences and visual changes instantly &mdash; 100% client-side.</p>
+    <div class="hero-badges">
+      <span class="badge b-green">&#8596; Side-by-Side</span>
+      <span class="badge b-blue">&#9998; Text Diff</span>
+      <span class="badge b-purple">&#128065; Visual Overlay</span>
+    </div>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="tool-main">
+  <div class="tool-main-inner">
+
+    <!-- Upload Card -->
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title">Upload PDFs</span>
+      </div>
+      <div class="card-body">
+        <div class="upload-grid">
+          <!-- Original -->
+          <div class="upload-col">
+            <div class="upload-label"><span class="dot dot-original"></span> Original PDF</div>
+            <div class="upload-zone" id="dropOriginal">
+              <input type="file" id="fileOriginal" accept=".pdf">
+              <span class="upload-icon">&#128196;</span>
+              <div class="upload-text">Drop original PDF here</div>
+              <div class="upload-hint">or click to browse</div>
+            </div>
+          </div>
+          <!-- Modified -->
+          <div class="upload-col">
+            <div class="upload-label"><span class="dot dot-modified"></span> Modified PDF</div>
+            <div class="upload-zone" id="dropModified">
+              <input type="file" id="fileModified" accept=".pdf">
+              <span class="upload-icon">&#128196;</span>
+              <div class="upload-text">Drop modified PDF here</div>
+              <div class="upload-hint">or click to browse</div>
+            </div>
+          </div>
+        </div>
+        <div class="compare-row">
+          <button class="compare-btn" id="compareBtn" disabled>
+            <span id="compareBtnText">&#8596; Compare PDFs</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div class="results-card" id="resultsCard">
+      <div class="card" style="margin-top:18px;">
+        <div class="card-head">
+          <span class="card-title">Comparison Results</span>
+          <div class="mode-toggle-row" style="margin-bottom:0;">
+            <button class="mode-btn active" id="modeText" data-mode="text">&#9998; Text Diff</button>
+            <button class="mode-btn" id="modeVisual" data-mode="visual">&#128065; Visual Diff</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="progress-bar" id="progressBar">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+
+          <!-- Text Diff View -->
+          <div id="textDiffView">
+            <div class="summary-bar" id="summaryBar">
+              <span class="stat-add" id="statAdd">0 additions</span>
+              <span class="stat-del" id="statDel">0 deletions</span>
+              <span class="stat-pages" id="statPages">0 / 0 pages changed</span>
+              <span class="stat-sim" id="statSim">100% similar</span>
+            </div>
+            <div class="page-nav" id="textPageNav">
+              <button id="textPrevBtn" disabled>&#8592; Prev</button>
+              <span class="page-indicator" id="textPageIndicator">Page 1 / 1</span>
+              <button id="textNextBtn" disabled>Next &#8594;</button>
+            </div>
+            <div class="diff-panels">
+              <div class="diff-panel">
+                <div class="diff-panel-head"><span class="dot dot-original"></span> Original</div>
+                <div class="diff-panel-body" id="diffLeft"></div>
+              </div>
+              <div class="diff-panel">
+                <div class="diff-panel-head"><span class="dot dot-modified"></span> Modified</div>
+                <div class="diff-panel-body" id="diffRight"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Visual Diff View -->
+          <div id="visualDiffView" style="display:none;">
+            <div class="page-nav" id="visualPageNav">
+              <button id="visualPrevBtn" disabled>&#8592; Prev</button>
+              <span class="page-indicator" id="visualPageIndicator">Page 1 / 1</span>
+              <button id="visualNextBtn" disabled>Next &#8594;</button>
+            </div>
+            <div class="visual-diff-container" id="visualContainer">
+              <div class="empty-state">
+                <span class="empty-icon">&#128065;</span>
+                Select a visual mode below
+              </div>
+            </div>
+            <div class="visual-controls">
+              <label>
+                <span class="mode-label">View:</span>
+                <div class="visual-btn-group">
+                  <button class="active" data-vmode="difference" id="vmodeDiff">Difference</button>
+                  <button data-vmode="slider" id="vmodeSlider">Slider</button>
+                  <button data-vmode="sidebyside" id="vmodeSbs">Side by Side</button>
+                </div>
+              </label>
+              <label id="sliderLabel" style="display:none;">
+                Blend: <input type="range" id="blendSlider" min="0" max="100" value="50">
+              </label>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- How to Use -->
+    <div class="info-card">
+      <div class="info-title">How to Use</div>
+      <div class="info-text">
+        <strong>1. Upload</strong> your original PDF on the left and the modified version on the right.<br><br>
+        <strong>2. Compare</strong> &mdash; the tool extracts text and renders pages for both documents.<br><br>
+        <strong>3. Text Diff</strong> highlights additions (green) and deletions (red) side-by-side.<br><br>
+        <strong>4. Visual Diff</strong> overlays rendered pages to show pixel-level differences.
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-title">Tips</div>
+      <div class="info-text">
+        <ul>
+          <li>&#10003; Works best with text-based PDFs (not scanned images)</li>
+          <li>&#10003; Visual diff shows layout and formatting changes</li>
+          <li>&#10003; Text diff shows content-level additions and deletions</li>
+          <li>&#10003; Use page navigation to step through multi-page documents</li>
+          <li>&#10003; 100% client-side &mdash; nothing is uploaded</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SEO + FAQs -->
+<div class="seo-section">
+  <h2>Compare PDFs Online for Free</h2>
+  <p>
+    The AfroTools PDF Compare tool lets you diff two PDF documents side-by-side directly in your browser.
+    Whether you need to review contract changes, compare document drafts, or verify edits,
+    this tool highlights every addition, deletion, and modification at both the text and visual level.
+  </p>
+  <p>
+    Everything runs locally in your browser. Your PDF files are never uploaded to any server,
+    ensuring complete privacy and security for sensitive documents.
+  </p>
+
+  <h2>Frequently Asked Questions</h2>
+  <div class="faq-list" id="faqList">
+    <div class="faq-item">
+      <div class="faq-q">How does the text diff work?</div>
+      <div class="faq-a">The tool extracts text from each page of both PDFs, then uses a diff algorithm to find additions, deletions, and unchanged sections. Results are displayed side-by-side with color-coded highlights.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">What does the visual diff show?</div>
+      <div class="faq-a">Visual diff renders both PDF pages as images and uses pixel-level comparison to highlight areas that differ between the two documents. You can also use a slider to blend between original and modified versions.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Is my PDF uploaded to a server?</div>
+      <div class="faq-a">No. All processing happens entirely in your browser using JavaScript. Your PDFs never leave your device.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Can I compare PDFs with different page counts?</div>
+      <div class="faq-a">Yes. The tool compares pages that exist in both PDFs. Extra pages in either document are flagged as entirely added or removed.</div>
+    </div>
+  </div>
+</div>
+
+<afro-related-tools category="document-pdf" current="pdf-compare"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script src="/assets/js/lib/pdf-utils.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/diff-match-patch@1.0.5/index.js"></script>
+<script>
+// ============================================================
+// PDF Compare Tool — AfroTools
+// ============================================================
+(function() {
+  'use strict';
+
+  // === DOM refs ===
+  var dropOriginal = document.getElementById('dropOriginal');
+  var dropModified = document.getElementById('dropModified');
+  var fileOriginal = document.getElementById('fileOriginal');
+  var fileModified = document.getElementById('fileModified');
+  var compareBtn   = document.getElementById('compareBtn');
+  var compareBtnText = document.getElementById('compareBtnText');
+  var resultsCard  = document.getElementById('resultsCard');
+  var progressBar  = document.getElementById('progressBar');
+  var progressFill = document.getElementById('progressFill');
+
+  // Text diff
+  var textDiffView = document.getElementById('textDiffView');
+  var diffLeft     = document.getElementById('diffLeft');
+  var diffRight    = document.getElementById('diffRight');
+  var summaryBar   = document.getElementById('summaryBar');
+  var statAdd      = document.getElementById('statAdd');
+  var statDel      = document.getElementById('statDel');
+  var statPages    = document.getElementById('statPages');
+  var statSim      = document.getElementById('statSim');
+  var textPrevBtn  = document.getElementById('textPrevBtn');
+  var textNextBtn  = document.getElementById('textNextBtn');
+  var textPageInd  = document.getElementById('textPageIndicator');
+
+  // Visual diff
+  var visualDiffView = document.getElementById('visualDiffView');
+  var visualContainer = document.getElementById('visualContainer');
+  var visualPrevBtn = document.getElementById('visualPrevBtn');
+  var visualNextBtn = document.getElementById('visualNextBtn');
+  var visualPageInd = document.getElementById('visualPageIndicator');
+  var blendSlider   = document.getElementById('blendSlider');
+  var sliderLabel   = document.getElementById('sliderLabel');
+
+  // Mode buttons
+  var modeText    = document.getElementById('modeText');
+  var modeVisual  = document.getElementById('modeVisual');
+  var vmodeDiff   = document.getElementById('vmodeDiff');
+  var vmodeSlider = document.getElementById('vmodeSlider');
+  var vmodeSbs    = document.getElementById('vmodeSbs');
+
+  // === State ===
+  var pdfOriginal = null;  // { pdfDoc, fileName, pageCount }
+  var pdfModified = null;
+  var textResults = [];    // per-page: { leftHtml, rightHtml, adds, dels }
+  var totalAdds = 0;
+  var totalDels = 0;
+  var pagesChanged = 0;
+  var totalPages = 0;
+  var currentTextPage = 0;
+  var currentVisualPage = 0;
+  var currentMode = 'text';       // text | visual
+  var currentVMode = 'difference'; // difference | slider | sidebyside
+
+  // === Upload handling ===
+  function setupUploadZone(dropZone, fileInput, side) {
+    dropZone.addEventListener('click', function(e) {
+      if (e.target.closest('.change-btn')) return;
+      fileInput.click();
+    });
+
+    fileInput.addEventListener('change', function() {
+      if (fileInput.files.length > 0) {
+        handleFile(fileInput.files[0], side);
+      }
+    });
+
+    PdfUtils.initDragDrop(dropZone, {
+      accept: '.pdf',
+      multiple: false,
+      onFiles: function(files) {
+        if (files.length > 0 && files[0].name.toLowerCase().endsWith('.pdf')) {
+          handleFile(files[0], side);
+        }
+      }
+    });
+  }
+
+  async function handleFile(file, side) {
+    if (!file.name.toLowerCase().endsWith('.pdf')) {
+      PdfUtils.showToast('Please upload a PDF file', true);
+      return;
+    }
+
+    try {
+      var result = await PdfUtils.loadPdf(file);
+      var dropZone = side === 'original' ? dropOriginal : dropModified;
+
+      if (side === 'original') {
+        pdfOriginal = result;
+      } else {
+        pdfModified = result;
+      }
+
+      // Update UI
+      dropZone.classList.add('has-file');
+      dropZone.innerHTML = '<div class="file-info">' +
+        '<span class="file-icon">&#128196;</span>' +
+        '<span class="file-name">' + escapeHtml(result.fileName) + '</span>' +
+        '<span class="file-meta">' + result.pageCount + ' page' + (result.pageCount !== 1 ? 's' : '') + ' &middot; ' + PdfUtils.formatSize(result.fileSize) + '</span>' +
+        '<button class="change-btn" data-side="' + side + '">Change</button>' +
+        '</div>';
+
+      // Re-bind change button
+      dropZone.querySelector('.change-btn').addEventListener('click', function(e) {
+        e.stopPropagation();
+        resetSide(side);
+      });
+
+      updateCompareBtn();
+    } catch (err) {
+      PdfUtils.showToast('Failed to load PDF: ' + err.message, true);
+    }
+  }
+
+  function resetSide(side) {
+    var dropZone = side === 'original' ? dropOriginal : dropModified;
+    var fileInput = side === 'original' ? fileOriginal : fileModified;
+    var label = side === 'original' ? 'original' : 'modified';
+
+    if (side === 'original') pdfOriginal = null;
+    else pdfModified = null;
+
+    dropZone.classList.remove('has-file');
+    dropZone.innerHTML = '<input type="file" id="file' + (side === 'original' ? 'Original' : 'Modified') + '" accept=".pdf">' +
+      '<span class="upload-icon">&#128196;</span>' +
+      '<div class="upload-text">Drop ' + label + ' PDF here</div>' +
+      '<div class="upload-hint">or click to browse</div>';
+
+    // Re-get the file input and bind
+    var newInput = dropZone.querySelector('input[type="file"]');
+    if (side === 'original') {
+      fileOriginal = newInput;
+    } else {
+      fileModified = newInput;
+    }
+    newInput.addEventListener('change', function() {
+      if (newInput.files.length > 0) handleFile(newInput.files[0], side);
+    });
+
+    updateCompareBtn();
+  }
+
+  function updateCompareBtn() {
+    compareBtn.disabled = !(pdfOriginal && pdfModified);
+  }
+
+  setupUploadZone(dropOriginal, fileOriginal, 'original');
+  setupUploadZone(dropModified, fileModified, 'modified');
+
+  // === Compare ===
+  compareBtn.addEventListener('click', async function() {
+    if (!pdfOriginal || !pdfModified) return;
+
+    compareBtnText.innerHTML = '<span class="spinner"></span> Comparing...';
+    compareBtn.disabled = true;
+    resultsCard.classList.add('on');
+    progressBar.style.display = 'block';
+    progressFill.style.width = '0%';
+
+    try {
+      // Extract text from both
+      var textOrig = await PdfUtils.extractText(pdfOriginal.pdfDoc);
+      progressFill.style.width = '30%';
+
+      var textMod = await PdfUtils.extractText(pdfModified.pdfDoc);
+      progressFill.style.width = '60%';
+
+      // Compute diffs
+      totalPages = Math.max(textOrig.length, textMod.length);
+      textResults = [];
+      totalAdds = 0;
+      totalDels = 0;
+      pagesChanged = 0;
+
+      var dmp = new diff_match_patch();
+
+      for (var i = 0; i < totalPages; i++) {
+        var origText = i < textOrig.length ? textOrig[i].text : '';
+        var modText  = i < textMod.length  ? textMod[i].text  : '';
+
+        var diffs = dmp.diff_main(origText, modText);
+        dmp.diff_cleanupSemantic(diffs);
+
+        var leftHtml  = '';
+        var rightHtml = '';
+        var pageAdds = 0;
+        var pageDels = 0;
+
+        for (var j = 0; j < diffs.length; j++) {
+          var op   = diffs[j][0];
+          var text = escapeHtml(diffs[j][1]);
+
+          if (op === 0) {
+            // Equal
+            leftHtml  += text;
+            rightHtml += text;
+          } else if (op === -1) {
+            // Deletion
+            leftHtml += '<span class="diff-del">' + text + '</span>';
+            pageDels++;
+          } else if (op === 1) {
+            // Insertion
+            rightHtml += '<span class="diff-add">' + text + '</span>';
+            pageAdds++;
+          }
+        }
+
+        totalAdds += pageAdds;
+        totalDels += pageDels;
+        if (pageAdds > 0 || pageDels > 0) pagesChanged++;
+
+        textResults.push({
+          leftHtml: leftHtml || '<span style="color:#9ca3af;font-style:italic;">(no text on this page)</span>',
+          rightHtml: rightHtml || '<span style="color:#9ca3af;font-style:italic;">(no text on this page)</span>',
+          adds: pageAdds,
+          dels: pageDels
+        });
+
+        progressFill.style.width = (60 + (i / totalPages) * 35) + '%';
+      }
+
+      progressFill.style.width = '100%';
+
+      // Update summary
+      statAdd.textContent = totalAdds + ' addition' + (totalAdds !== 1 ? 's' : '');
+      statDel.textContent = totalDels + ' deletion' + (totalDels !== 1 ? 's' : '');
+      statPages.textContent = pagesChanged + ' / ' + totalPages + ' pages changed';
+
+      // Compute similarity
+      var totalChars = 0;
+      var changedChars = 0;
+      for (var k = 0; k < totalPages; k++) {
+        var oText = k < textOrig.length ? textOrig[k].text : '';
+        var mText = k < textMod.length  ? textMod[k].text  : '';
+        totalChars += Math.max(oText.length, mText.length);
+        var d = dmp.diff_main(oText, mText);
+        for (var q = 0; q < d.length; q++) {
+          if (d[q][0] !== 0) changedChars += d[q][1].length;
+        }
+      }
+      var similarity = totalChars > 0 ? Math.round((1 - changedChars / (totalChars * 2 || 1)) * 100) : 100;
+      similarity = Math.max(0, Math.min(100, similarity));
+      statSim.textContent = similarity + '% similar';
+
+      // Show first page
+      currentTextPage = 0;
+      currentVisualPage = 0;
+      renderTextPage(0);
+      updateTextNav();
+
+      setTimeout(function() {
+        progressBar.style.display = 'none';
+      }, 400);
+
+    } catch (err) {
+      PdfUtils.showToast('Comparison failed: ' + err.message, true);
+      progressBar.style.display = 'none';
+    }
+
+    compareBtnText.innerHTML = '&#8596; Compare PDFs';
+    compareBtn.disabled = false;
+  });
+
+  // === Render text diff page ===
+  function renderTextPage(idx) {
+    if (idx < 0 || idx >= textResults.length) return;
+    currentTextPage = idx;
+    diffLeft.innerHTML  = textResults[idx].leftHtml;
+    diffRight.innerHTML = textResults[idx].rightHtml;
+    updateTextNav();
+
+    // Sync scroll
+    diffLeft.scrollTop = 0;
+    diffRight.scrollTop = 0;
+  }
+
+  function updateTextNav() {
+    textPrevBtn.disabled = currentTextPage <= 0;
+    textNextBtn.disabled = currentTextPage >= totalPages - 1;
+    textPageInd.textContent = 'Page ' + (currentTextPage + 1) + ' / ' + totalPages;
+  }
+
+  textPrevBtn.addEventListener('click', function() {
+    if (currentTextPage > 0) renderTextPage(currentTextPage - 1);
+  });
+
+  textNextBtn.addEventListener('click', function() {
+    if (currentTextPage < totalPages - 1) renderTextPage(currentTextPage + 1);
+  });
+
+  // Sync scroll between panels
+  var syncing = false;
+  diffLeft.addEventListener('scroll', function() {
+    if (syncing) return;
+    syncing = true;
+    diffRight.scrollTop = diffLeft.scrollTop;
+    syncing = false;
+  });
+  diffRight.addEventListener('scroll', function() {
+    if (syncing) return;
+    syncing = true;
+    diffLeft.scrollTop = diffRight.scrollTop;
+    syncing = false;
+  });
+
+  // === Mode Toggle ===
+  modeText.addEventListener('click', function() {
+    currentMode = 'text';
+    modeText.classList.add('active');
+    modeVisual.classList.remove('active');
+    textDiffView.style.display = '';
+    visualDiffView.style.display = 'none';
+  });
+
+  modeVisual.addEventListener('click', function() {
+    currentMode = 'visual';
+    modeVisual.classList.add('active');
+    modeText.classList.remove('active');
+    textDiffView.style.display = 'none';
+    visualDiffView.style.display = '';
+    renderVisualPage(currentVisualPage);
+  });
+
+  // === Visual Diff ===
+  var visualModeButtons = [vmodeDiff, vmodeSlider, vmodeSbs];
+  visualModeButtons.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      currentVMode = btn.dataset.vmode;
+      visualModeButtons.forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      sliderLabel.style.display = currentVMode === 'slider' ? '' : 'none';
+      renderVisualPage(currentVisualPage);
+    });
+  });
+
+  blendSlider.addEventListener('input', function() {
+    renderVisualPage(currentVisualPage);
+  });
+
+  visualPrevBtn.addEventListener('click', function() {
+    if (currentVisualPage > 0) {
+      currentVisualPage--;
+      renderVisualPage(currentVisualPage);
+    }
+  });
+
+  visualNextBtn.addEventListener('click', function() {
+    if (currentVisualPage < totalPages - 1) {
+      currentVisualPage++;
+      renderVisualPage(currentVisualPage);
+    }
+  });
+
+  async function renderVisualPage(pageIdx) {
+    if (!pdfOriginal || !pdfModified) return;
+
+    var origPages = pdfOriginal.pdfDoc.numPages;
+    var modPages  = pdfModified.pdfDoc.numPages;
+
+    visualPrevBtn.disabled = pageIdx <= 0;
+    visualNextBtn.disabled = pageIdx >= totalPages - 1;
+    visualPageInd.textContent = 'Page ' + (pageIdx + 1) + ' / ' + totalPages;
+
+    visualContainer.innerHTML = '<div style="text-align:center;padding:30px;color:#6b7280;font-size:0.85rem;"><span class="spinner" style="border-color:rgba(0,0,0,0.15);border-top-color:var(--afro-green);width:24px;height:24px;"></span><br>Rendering...</div>';
+
+    try {
+      var scale = 1.2;
+      var canvasOrig = null;
+      var canvasMod  = null;
+
+      if (pageIdx < origPages) {
+        canvasOrig = await PdfUtils.renderPage(pdfOriginal.pdfDoc, pageIdx + 1, scale);
+      }
+      if (pageIdx < modPages) {
+        canvasMod = await PdfUtils.renderPage(pdfModified.pdfDoc, pageIdx + 1, scale);
+      }
+
+      if (currentVMode === 'difference') {
+        renderDifferenceMode(canvasOrig, canvasMod);
+      } else if (currentVMode === 'slider') {
+        renderSliderMode(canvasOrig, canvasMod);
+      } else {
+        renderSideBySideVisual(canvasOrig, canvasMod);
+      }
+
+    } catch (err) {
+      visualContainer.innerHTML = '<div class="empty-state"><span class="empty-icon">&#9888;</span>Failed to render page: ' + escapeHtml(err.message) + '</div>';
+    }
+  }
+
+  function renderDifferenceMode(canvasOrig, canvasMod) {
+    if (!canvasOrig && !canvasMod) {
+      visualContainer.innerHTML = '<div class="empty-state"><span class="empty-icon">&#128196;</span>No pages to compare</div>';
+      return;
+    }
+
+    // Use the larger dimensions
+    var w = Math.max(canvasOrig ? canvasOrig.width : 0, canvasMod ? canvasMod.width : 0);
+    var h = Math.max(canvasOrig ? canvasOrig.height : 0, canvasMod ? canvasMod.height : 0);
+
+    var canvas = document.createElement('canvas');
+    canvas.width = w;
+    canvas.height = h;
+    var ctx = canvas.getContext('2d');
+
+    // White background
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, w, h);
+
+    // Draw original
+    if (canvasOrig) {
+      ctx.drawImage(canvasOrig, 0, 0);
+    }
+
+    // Composite with difference mode
+    if (canvasMod) {
+      ctx.globalCompositeOperation = 'difference';
+      ctx.drawImage(canvasMod, 0, 0);
+      ctx.globalCompositeOperation = 'source-over';
+    }
+
+    // Boost contrast: invert to show changes as bright on dark
+    var imageData = ctx.getImageData(0, 0, w, h);
+    var data = imageData.data;
+    for (var i = 0; i < data.length; i += 4) {
+      // Amplify differences
+      var r = data[i], g = data[i + 1], b = data[i + 2];
+      var brightness = (r + g + b) / 3;
+      if (brightness > 10) {
+        // Mark changed pixels in red
+        data[i]     = 255;  // R
+        data[i + 1] = 60;   // G
+        data[i + 2] = 60;   // B
+        data[i + 3] = Math.min(255, brightness * 3);
+      } else {
+        // Unchanged: show faintly
+        data[i]     = 240;
+        data[i + 1] = 240;
+        data[i + 2] = 240;
+        data[i + 3] = 255;
+      }
+    }
+    ctx.putImageData(imageData, 0, 0);
+
+    // Draw original faintly underneath
+    var finalCanvas = document.createElement('canvas');
+    finalCanvas.width = w;
+    finalCanvas.height = h;
+    var fctx = finalCanvas.getContext('2d');
+
+    // Draw the original at low opacity for context
+    if (canvasOrig) {
+      fctx.globalAlpha = 0.2;
+      fctx.drawImage(canvasOrig, 0, 0);
+      fctx.globalAlpha = 1;
+    }
+
+    // Draw the difference overlay
+    fctx.drawImage(canvas, 0, 0);
+
+    visualContainer.innerHTML = '';
+    var wrap = document.createElement('div');
+    wrap.className = 'visual-canvas-wrap';
+    wrap.appendChild(finalCanvas);
+    visualContainer.appendChild(wrap);
+  }
+
+  function renderSliderMode(canvasOrig, canvasMod) {
+    var w = Math.max(canvasOrig ? canvasOrig.width : 0, canvasMod ? canvasMod.width : 0);
+    var h = Math.max(canvasOrig ? canvasOrig.height : 0, canvasMod ? canvasMod.height : 0);
+
+    if (w === 0 || h === 0) {
+      visualContainer.innerHTML = '<div class="empty-state"><span class="empty-icon">&#128196;</span>No pages to compare</div>';
+      return;
+    }
+
+    var canvas = document.createElement('canvas');
+    canvas.width = w;
+    canvas.height = h;
+    var ctx = canvas.getContext('2d');
+
+    var blend = parseInt(blendSlider.value) / 100;
+
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, w, h);
+
+    if (canvasOrig) {
+      ctx.globalAlpha = 1 - blend;
+      ctx.drawImage(canvasOrig, 0, 0);
+    }
+
+    if (canvasMod) {
+      ctx.globalAlpha = blend;
+      ctx.drawImage(canvasMod, 0, 0);
+    }
+
+    ctx.globalAlpha = 1;
+
+    visualContainer.innerHTML = '';
+    var wrap = document.createElement('div');
+    wrap.className = 'visual-canvas-wrap';
+    wrap.appendChild(canvas);
+    visualContainer.appendChild(wrap);
+  }
+
+  function renderSideBySideVisual(canvasOrig, canvasMod) {
+    visualContainer.innerHTML = '';
+
+    var wrap = document.createElement('div');
+    wrap.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;padding:8px;';
+
+    var makeCol = function(canvas, label) {
+      var col = document.createElement('div');
+      col.style.cssText = 'text-align:center;';
+      var lbl = document.createElement('div');
+      lbl.style.cssText = 'font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#374151;margin-bottom:6px;';
+      lbl.textContent = label;
+      col.appendChild(lbl);
+
+      if (canvas) {
+        canvas.style.cssText = 'max-width:100%;height:auto;border-radius:4px;border:1px solid #e5e7eb;';
+        col.appendChild(canvas);
+      } else {
+        var placeholder = document.createElement('div');
+        placeholder.style.cssText = 'padding:60px 20px;color:#9ca3af;font-size:0.85rem;font-style:italic;border:1px dashed #d1d5db;border-radius:4px;';
+        placeholder.textContent = 'No page';
+        col.appendChild(placeholder);
+      }
+      return col;
+    };
+
+    wrap.appendChild(makeCol(canvasOrig, 'Original'));
+    wrap.appendChild(makeCol(canvasMod, 'Modified'));
+    visualContainer.appendChild(wrap);
+  }
+
+  // === FAQs ===
+  document.querySelectorAll('.faq-q').forEach(function(q) {
+    q.addEventListener('click', function() {
+      var item = q.closest('.faq-item');
+      item.classList.toggle('open');
+    });
+  });
+
+  // === Helpers ===
+  function escapeHtml(text) {
+    var div = document.createElement('div');
+    div.appendChild(document.createTextNode(text));
+    return div.innerHTML;
+  }
+
+})();
+</script>
+</body>
+</html>

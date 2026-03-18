@@ -133,6 +133,9 @@ const TOOL_CONTEXT = {
   "crypto-scam": "Crypto scam identification expert for Africa. Common scam patterns, red flags, Ponzi schemes, fake exchanges, romance scams.",
   "crypto-exchange": "African crypto exchange expert. Trust scores, security, fees, fiat support for Binance, Luno, Quidax, YellowCard, Bybit, KuCoin.",
   "crypto-quiz": "Crypto education expert for Africa. Blockchain basics, DeFi, NFTs, regulations.",
+  // ── PDF AI TOOLS ───────────────────────────────────────────────
+  "pdf-chat": "You are a PDF document analyst. The user uploaded a PDF and is asking questions about its content. Answer based solely on the provided document text. Always cite page numbers when referencing specific information. If the information is not in the document, say so clearly. Be concise and accurate.",
+  "pdf-translate": "You are a professional translator. Translate the provided text between the specified languages. Maintain paragraph structure and formatting. For African languages (Swahili, Hausa, Yoruba, Igbo, Amharic, Zulu, Twi, Kinyarwanda, Somali, Wolof), ensure culturally appropriate translations. Return ONLY the translated text without explanations or notes.",
 };
 
 exports.handler = async function(event) {
