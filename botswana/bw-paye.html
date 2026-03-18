@@ -476,6 +476,7 @@ function generatePdf() {
   const bandRows = R.bandBreakdown.filter(b => b.tax > 0).map(b => `<tr><td style="padding-left:14px;color:#4b5563">Rate ${(b.rate*100)}% on P${Math.round(b.income).toLocaleString()}</td><td class="num red">(P${Math.round(b.tax).toLocaleString()})</td></tr>`).join('');
   const html = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 </body></html>`;
+
   const blob = new Blob([html],{type:'text/html;charset=utf-8'});
   const url = URL.createObjectURL(blob);
   const w = window.open(url,'_blank');
@@ -536,5 +537,6 @@ async function sendChat() {
 document.getElementById('grossSalary').addEventListener('keydown',e=>{if(e.key==='Enter')calculate();});
 </script>
 <script src="/assets/js/lib/auto-email-gate.js" defer></script>
+<script src="/assets/js/share-image-inject.js" defer></script>
 </body>
 </html>

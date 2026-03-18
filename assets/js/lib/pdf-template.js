@@ -110,10 +110,11 @@
     doc.text('Ref: ' + refNo, W - margin, 12, { align: 'right' });
     doc.text(dateStr, W - margin, 17, { align: 'right' });
 
-    // Title
+    // Country flag + title
     doc.setFontSize(16);
     doc.setTextColor(...COLORS.white);
-    doc.text(config.title || 'Tax Report', margin, 32);
+    const titleText = (config.countryFlag ? config.countryFlag + '  ' : '') + (config.title || 'Tax Report');
+    doc.text(titleText, margin, 32);
 
     // Subtitle
     if (config.subtitle) {
@@ -158,6 +159,39 @@
       y += 28;
     }
 
+    // ── EFFECTIVE RATE BAR ────────────────────────────
+    if (config.effectiveRate != null) {
+      const rate = Math.min(Math.max(config.effectiveRate, 0), 1);
+      const barW = contentW - 60;
+      const barH = 4;
+      const barX = margin + 50;
+      const barY = y + 1;
+
+      doc.setFontSize(7);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(...COLORS.muted);
+      doc.text('EFFECTIVE RATE', margin, y + 4);
+
+      // Track
+      doc.setFillColor(...COLORS.border);
+      doc.roundedRect(barX, barY, barW, barH, 2, 2, 'F');
+
+      // Fill
+      if (rate > 0) {
+        const fillW = Math.max(barW * rate, 3);
+        doc.setFillColor(...COLORS.brand);
+        doc.roundedRect(barX, barY, fillW, barH, 2, 2, 'F');
+      }
+
+      // Percentage
+      doc.setFontSize(9);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(...COLORS.text);
+      doc.text((rate * 100).toFixed(1) + '%', barX + barW + 4, y + 4.5);
+
+      y += 12;
+    }
+
     // ── SECTIONS ────────────────────────────────────
     if (config.sections) {
       for (const section of config.sections) {
@@ -167,17 +201,18 @@
           y = 20;
         }
 
-        // Section title
+        // Section title with colored bar
+        doc.setFillColor(240, 245, 255);
+        doc.setDrawColor(...COLORS.border);
+        doc.roundedRect(margin, y - 3, contentW, 8, 1.5, 1.5, 'FD');
         doc.setFontSize(7);
         doc.setFont('helvetica', 'bold');
-        doc.setTextColor(...COLORS.muted);
-        doc.text(section.title.toUpperCase(), margin, y);
-        y += 2;
-        doc.setDrawColor(...COLORS.border);
-        doc.line(margin, y, margin + contentW, y);
-        y += 5;
+        doc.setTextColor(...COLORS.brand);
+        doc.text(section.title.toUpperCase(), margin + 4, y + 2);
+        y += 9;
 
         // Rows
+        let rowIdx = 0;
         for (const row of section.rows) {
           if (y > H - 30) {
             doc.addPage();
@@ -192,6 +227,12 @@
             doc.setDrawColor(...COLORS.border);
             doc.line(margin, y - 1, margin + contentW, y - 1);
             y += 1;
+          }
+
+          // Alternating row background
+          if (!isTotal && !isSubtotal && rowIdx % 2 === 0) {
+            doc.setFillColor(248, 250, 252);
+            doc.rect(margin, y - 3.5, contentW, 5.5, 'F');
           }
 
           // Label
@@ -211,6 +252,7 @@
           doc.text(row.value, margin + contentW, y, { align: 'right' });
 
           y += isTotal ? 7 : 5.5;
+          rowIdx++;
         }
 
         y += 4;
@@ -260,27 +302,36 @@
     }
 
     // ── FOOTER ──────────────────────────────────────
-    const footerY = H - 18;
+    const footerY = H - 20;
+    // Blue accent line
+    doc.setFillColor(...COLORS.brand);
+    doc.rect(0, footerY - 4, W, 1, 'F');
+    // Footer background
     doc.setFillColor(...COLORS.light);
-    doc.rect(0, footerY - 4, W, 22, 'F');
-    doc.setDrawColor(...COLORS.border);
-    doc.line(0, footerY - 4, W, footerY - 4);
+    doc.rect(0, footerY - 3, W, 23, 'F');
 
-    doc.setFontSize(7);
+    doc.setFontSize(7.5);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(...COLORS.text);
-    doc.text('AFROTOOLS.COM', margin, footerY + 2);
-
-    doc.setFont('helvetica', 'normal');
+    doc.text('AFROTOOLS', margin, footerY + 3);
     doc.setFontSize(6);
+    doc.setFont('helvetica', 'normal');
     doc.setTextColor(...COLORS.muted);
-    const disclaimer = config.disclaimer || 'This report is for informational purposes only and does not constitute professional tax or financial advice. Consult a qualified professional for binding guidance.';
-    const discLines = doc.splitTextToSize(disclaimer, contentW - 30);
-    doc.text(discLines, margin, footerY + 6);
+    doc.text("Free tax calculators for all 54 African countries", margin, footerY + 7);
+
+    const disclaimer = config.disclaimer || 'For informational purposes only. Not professional tax or financial advice. Verify with local tax authority.';
+    const discLines = doc.splitTextToSize(disclaimer, contentW);
+    doc.setFontSize(5.5);
+    doc.text(discLines, margin, footerY + 12);
 
     doc.setFontSize(6.5);
-    doc.text(refNo + '  |  ' + dateStr, W - margin, footerY + 2, { align: 'right' });
-    doc.text('afrotools.com', W - margin, footerY + 6, { align: 'right' });
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(...COLORS.brand);
+    doc.text('afrotools.com', W - margin, footerY + 3, { align: 'right' });
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(...COLORS.muted);
+    doc.setFontSize(5.5);
+    doc.text(refNo + '  |  ' + dateStr, W - margin, footerY + 7, { align: 'right' });
 
     // ── SAVE ────────────────────────────────────────
     const fileName = `afrotools-${config.toolId || 'report'}-${(config.country || 'report').toLowerCase().replace(/\s+/g, '-')}-${new Date().toISOString().slice(0, 10)}.pdf`;
