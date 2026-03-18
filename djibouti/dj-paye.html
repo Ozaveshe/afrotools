@@ -457,8 +457,15 @@ async function getAI(){if(!RESULT)return;const R=RESULT;const btn=document.getEl
 async function sendChat(){const input=document.getElementById('chatIn');const msg=input.value.trim();if(!msg||!RESULT)return;input.value='';const R=RESULT;const msgs=document.getElementById('chatMsgs');msgs.innerHTML+=`<div class="msg u">${msg.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`;const aiEl=document.createElement('div');aiEl.className='msg a';aiEl.textContent='…';msgs.appendChild(aiEl);msgs.scrollTop=msgs.scrollHeight;CHAT_HISTORY.push({role:'user',content:msg});try{const res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:`Djibouti advisor for gross ${fmt(R.gross)}, take-home ${fmt(R.net)}, rate ${pct(R.effRate)}. Concise.`,messages:CHAT_HISTORY})});const data=await res.json();const text=data.text||'Unable to respond.';aiEl.textContent=text;CHAT_HISTORY.push({role:'assistant',content:text});msgs.scrollTop=msgs.scrollHeight;}catch{aiEl.textContent='Network error.';}}
 
 document.getElementById('grossSalary').addEventListener('keydown',e=>{if(e.key==='Enter')calculate();});
+
+
+// Net-to-Gross: register forward function
+window._grossToNet = function(g) {
+  var d=isOn('social')?g*0.04:0;return g-(d+calcMonthlyPAYE(Math.max(0,g-d)).tax);
+};
 </script>
 <script src="/assets/js/lib/auto-email-gate.js" defer></script>
 <script src="/assets/js/share-image-inject.js" defer></script>
+<script src="/assets/js/lib/net-to-gross.js" defer></script>
 </body>
 </html>

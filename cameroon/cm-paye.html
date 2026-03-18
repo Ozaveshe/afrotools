@@ -393,8 +393,15 @@ function shareResult(){if(!RESULT)return;const text=`Cameroon PAYE: Gross XAF ${
 async function getAI(){if(!RESULT)return;const R=RESULT;const btn=document.getElementById('aiBtn');const respEl=document.getElementById('aiResp');btn.disabled=true;btn.textContent='Analysing…';respEl.style.display='block';respEl.className='ai-response typing';respEl.textContent='';document.getElementById('aiStatus').style.display='none';const prompt=`Cameroon PAYE 2025: Gross XAF ${Math.round(R.gross).toLocaleString()}/yr, CNPS XAF ${Math.round(R.cnps).toLocaleString()}, DGI XAF ${Math.round(R.annualDGI).toLocaleString()}, Take-home XAF ${Math.round(R.net).toLocaleString()}, Rate ${pct(R.effectiveRate)}. Summarize position in 150 words.`;try{const res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'AfroTools Tax Advisor - Cameroon DGI. Concise, practical, no markdown.',messages:[{role:'user',content:prompt}]})});if(!res.ok)throw new Error('HTTP');const data=await res.json();const text=data.text||'Unable to generate.';respEl.className='ai-response';respEl.textContent='';let i=0;const type=()=>{if(i<text.length){respEl.textContent+=text[i++];setTimeout(type,12);}else{document.getElementById('aiChat').classList.add('on');CHAT_HISTORY=[{role:'user',content:prompt},{role:'assistant',content:text}];btn.textContent='Ask below ↓';}};type();}catch(err){respEl.textContent='AI unavailable.';btn.disabled=false;btn.textContent='Try Again';}}
 async function sendChat(){const input=document.getElementById('chatIn');const msg=input.value.trim();if(!msg||!RESULT)return;input.value='';const msgs=document.getElementById('chatMsgs');msgs.innerHTML+=`<div class="msg u">${msg.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`;const aiEl=document.createElement('div');aiEl.className='msg a';aiEl.textContent='…';msgs.appendChild(aiEl);msgs.scrollTop=msgs.scrollHeight;CHAT_HISTORY.push({role:'user',content:msg});try{const res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'Cameroon tax advisor. Concise.',messages:CHAT_HISTORY})});const data=await res.json();aiEl.textContent=data.text||'Error';CHAT_HISTORY.push({role:'assistant',content:data.text||'Error'});msgs.scrollTop=msgs.scrollHeight;}catch(e){aiEl.textContent='Network error.';}}
 document.getElementById('grossSalary').addEventListener('keydown',e=>{if(e.key==='Enter')calculate();});
+
+
+// Net-to-Gross: register forward function
+window._grossToNet = function(g) {
+  var d=isOn('cnps')?g*0.042:0;return g-(d+calcAnnualDGI(Math.max(0,g-d)).tax);
+};
 </script>
 <script src="/assets/js/lib/auto-email-gate.js" defer></script>
 <script src="/assets/js/share-image-inject.js" defer></script>
+<script src="/assets/js/lib/net-to-gross.js" defer></script>
 </body>
 </html>

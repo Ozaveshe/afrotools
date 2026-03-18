@@ -240,8 +240,15 @@ async function sendChat(){
   msgs.scrollTop=msgs.scrollHeight;
 }
 document.getElementById('grossSalary').addEventListener('keydown',e=>{if(e.key==='Enter')calculate();});
+
+
+// Net-to-Gross: register forward function
+window._grossToNet = function(g) {
+  return g-calcAnnualPAYE(g).tax;
+};
 </script>
 <script src="/assets/js/lib/auto-email-gate.js" defer></script>
 <script src="/assets/js/share-image-inject.js" defer></script>
+<script src="/assets/js/lib/net-to-gross.js" defer></script>
 </body>
 </html>

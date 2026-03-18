@@ -395,8 +395,15 @@ function shareResult(){if(!RESULT)return;const text=`Morocco PAYE: Gross MAD ${M
 async function getAI(){if(!RESULT)return;const R=RESULT;const btn=document.getElementById('aiBtn');btn.disabled=true;btn.textContent='Analysing…';const prompt=`Morocco PAYE 2025: Gross MAD ${Math.round(R.gross).toLocaleString()}, CNSS MAD ${Math.round(R.cnss).toLocaleString()}, DGI MAD ${Math.round(R.annualDGI).toLocaleString()}, Take-home MAD ${Math.round(R.net).toLocaleString()}, Rate ${pct(R.effectiveRate)}. Summarize in 150 words.`;try{const res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'Morocco tax advisor. Concise.',messages:[{role:'user',content:prompt}]})});const data=await res.json();const text=data.text||'Unable.';document.getElementById('aiResp').textContent=text;document.getElementById('aiResp').style.display='block';document.getElementById('aiChat').classList.add('on');CHAT_HISTORY=[{role:'user',content:prompt},{role:'assistant',content:text}];btn.textContent='Ask below ↓';}catch(e){btn.disabled=false;btn.textContent='Try Again';}}
 async function sendChat(){const input=document.getElementById('chatIn');const msg=input.value.trim();if(!msg||!RESULT)return;input.value='';const msgs=document.getElementById('chatMsgs');msgs.innerHTML+=`<div class="msg u">${msg.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`;const aiEl=document.createElement('div');aiEl.className='msg a';aiEl.textContent='…';msgs.appendChild(aiEl);CHAT_HISTORY.push({role:'user',content:msg});try{const res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'Morocco tax advisor.',messages:CHAT_HISTORY})});const data=await res.json();aiEl.textContent=data.text||'Error';CHAT_HISTORY.push({role:'assistant',content:data.text||'Error'});}catch{aiEl.textContent='Error.';}}
 document.getElementById('grossSalary').addEventListener('keydown',e=>{if(e.key==='Enter')calculate();});
+
+
+// Net-to-Gross: register forward function
+window._grossToNet = function(g) {
+  var d=isOn('cnss')?Math.min(g*0.0448,72000*0.0448):0;return g-(d+calcAnnualDGI(Math.max(0,g-d)).tax);
+};
 </script>
 <script src="/assets/js/lib/auto-email-gate.js" defer></script>
 <script src="/assets/js/share-image-inject.js" defer></script>
+<script src="/assets/js/lib/net-to-gross.js" defer></script>
 </body>
 </html>
