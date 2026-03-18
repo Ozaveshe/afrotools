@@ -3,6 +3,10 @@
  * Automatically adds "Share as Image" button to all PAYE/VAT tool pages.
  * Include this script on any tool page to get the share image feature.
  *
+ * Detects tool type from URL/title:
+ *  - VAT pages: builds card from RESULT.netAmount / vatAmount / totalInclusive / rate
+ *  - PAYE pages: builds card from RESULT.gross / net / tax / effectiveRate
+ *
  * Looks for:
  *  - .action-row container (where existing PDF/Share buttons live)
  *  - window.RESULT object (populated after calculation)
@@ -88,35 +92,56 @@
         const currency = getCurrency();
         const toolUrl = location.pathname;
 
-        // Build card data from RESULT — adapt to different result shapes
-        const effectiveRate = R.effectiveRate || R.effective_rate || R.rate || 0;
-        const gross = R.gross || R.grossAnnual || R.grossIncome || 0;
-        const net = R.netMonthly || R.net_monthly || R.netIncome || 0;
-        const netAnnual = R.netAnnual || R.annualNet || (net * 12) || 0;
-        const tax = R.tax || R.monthlyPAYE || R.annualTax || 0;
-        const marginal = R.marginalRate || R.marginal_rate || 0;
-
         // Try to use page's own format function
         const fmtFn = window.fmt || (n => Math.round(n).toLocaleString());
-        const pctFn = window.pct || (n => n.toFixed(1) + '%');
+        const pctFn = window.pct || (n => (n * 100).toFixed(1) + '%');
 
+        // Detect VAT vs PAYE from URL or page title
+        const isVAT = /vat/i.test(toolId) || /vat/i.test(document.title);
         const cur = currency ? currency + ' ' : '';
-        const detailParts = [
-          'Gross: ' + cur + fmtFn(gross) + '/mo',
-          'Take-home: ' + cur + fmtFn(net) + '/mo',
-          'Tax: ' + cur + fmtFn(tax) + '/mo'
-        ];
+
+        let cardOpts;
+
+        if (isVAT) {
+          // VAT page — RESULT has: netAmount, vatAmount, totalInclusive, rate
+          const netAmt = R.netAmount || 0;
+          const vatAmt = R.vatAmount || 0;
+          const total = R.totalInclusive || 0;
+          const rate = R.rate || 0;
+          const ratePct = (rate * 100);
+          const rateStr = ratePct % 1 === 0 ? ratePct.toFixed(0) + '%' : ratePct.toFixed(2) + '%';
+          const mode = R.mode || '';
+          const rateLabel = R.rateLabel || 'Standard';
+
+          cardOpts = {
+            title: country + ' VAT Calculation',
+            value: fmtFn(total),
+            subtitle: rateLabel + ' ' + rateStr + ' VAT · ' + new Date().getFullYear() + (currency ? ' · ' + currency : ''),
+            details: ['Net: ' + fmtFn(netAmt), 'VAT: ' + fmtFn(vatAmt), 'Total: ' + fmtFn(total)].join(' | '),
+            toolUrl,
+            toolId,
+            text: `${country} VAT: ${fmtFn(total)} (incl.) | Net: ${fmtFn(netAmt)} | VAT: ${fmtFn(vatAmt)} (${rateStr}). Calculate yours free at AfroTools!`
+          };
+        } else {
+          // PAYE page — RESULT has: gross, net, tax, effectiveRate etc.
+          const effectiveRate = R.effectiveRate || R.effective_rate || R.rate || 0;
+          const gross = R.gross || R.grossAnnual || R.grossIncome || 0;
+          const net = R.netMonthly || R.net_monthly || R.netIncome || 0;
+          const tax = R.tax || R.monthlyPAYE || R.annualTax || 0;
+
+          cardOpts = {
+            title: 'My Effective Tax Rate',
+            value: pctFn(effectiveRate),
+            subtitle: country + ' PAYE ' + new Date().getFullYear() + (currency ? ' · ' + currency : ''),
+            details: ['Gross: ' + cur + fmtFn(gross) + '/mo', 'Take-home: ' + cur + fmtFn(net) + '/mo', 'Tax: ' + cur + fmtFn(tax) + '/mo'].join(' | '),
+            toolUrl,
+            toolId,
+            text: `My effective tax rate is ${pctFn(effectiveRate)} in ${country}. Gross ${cur}${fmtFn(gross)}/mo → Take-home ${cur}${fmtFn(net)}/mo. What's yours?`
+          };
+        }
 
         // Wrap in a timeout so it never hangs forever on mobile
-        const sharePromise = window.AfroTools.resultCard.generateAndShare({
-          title: 'My Effective Tax Rate',
-          value: pctFn(effectiveRate),
-          subtitle: country + ' PAYE ' + new Date().getFullYear() + (currency ? ' · ' + currency : ''),
-          details: detailParts.join(' | '),
-          toolUrl,
-          toolId,
-          text: `My effective tax rate is ${pctFn(effectiveRate)} in ${country}. Gross ${cur}${fmtFn(gross)}/mo → Take-home ${cur}${fmtFn(net)}/mo. What's yours?`
-        });
+        const sharePromise = window.AfroTools.resultCard.generateAndShare(cardOpts);
 
         const timeoutPromise = new Promise((_, reject) =>
           setTimeout(() => reject(new Error('Share image timed out')), 30000)
