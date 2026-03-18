@@ -156,16 +156,22 @@
 }
 .article-card-img {
   width: 100%;
-  height: 200px;
+  aspect-ratio: 16 / 10;
   position: relative;
   overflow: hidden;
+  background: #f3f4f6;
 }
 .article-card-img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
+  object-position: top center;
   display: block;
+}
+.article-card-img img[src$=".svg"] {
+  object-fit: contain;
+  padding: 20px;
+  background: #f3f4f6;
 }
 .article-card-body {
   padding: 20px;
@@ -720,6 +726,74 @@
 }
 .sidebar-list a:hover { color: var(--color-primary); }
 
+/* ── PAGINATION ── */
+.blog-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 40px;
+  flex-wrap: wrap;
+}
+.page-btn, .page-num {
+  padding: 8px 16px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  background: #fff;
+  font-size: .82rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all .15s;
+  font-family: inherit;
+  line-height: 1;
+}
+.page-btn:hover:not(:disabled), .page-num:hover:not(.active) {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+.page-num.active {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+.page-btn:disabled {
+  opacity: .35;
+  cursor: not-allowed;
+}
+.page-numbers {
+  display: flex;
+  gap: 4px;
+}
+
+/* ── ARTICLE FEATURED IMAGE ── */
+.article-featured-img {
+  max-width: 720px;
+  margin: -32px auto 0;
+  padding: 0 24px;
+  position: relative;
+  z-index: 2;
+}
+.article-featured-img-inner {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid rgba(255,255,255,.1);
+  box-shadow: 0 8px 32px rgba(0,0,0,.2);
+}
+.article-featured-img-inner img {
+  width: 100%;
+  height: auto;
+  display: block;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: top center;
+}
+.article-featured-img-inner img[src$=".svg"] {
+  object-fit: contain;
+  background: #fff;
+  padding: 24px;
+}
+
 /* ============================================================
    RESPONSIVE
    ============================================================ */
@@ -727,14 +801,16 @@
   .blog-grid { grid-template-columns: 1fr; }
   .related-grid { grid-template-columns: 1fr; gap: 14px; }
   .author-box { flex-direction: column; text-align: center; align-items: center; }
-  .article-card-img { height: 140px; }
+  .article-card-img { aspect-ratio: 16 / 9; }
   .blog-hero { padding: 48px 0 40px; }
   .article-hero { padding: 48px 0 36px; }
   .article-cta { padding: 24px 20px; }
+  .article-featured-img { margin: -24px auto 0; padding: 0 16px; }
 }
 @media (max-width: 480px) {
   .blog-section { padding: 24px 16px 60px; }
   .article-layout { padding: 0 16px 60px; }
   .blog-filters { gap: 6px; }
   .blog-filter-tab { font-size: .68rem; padding: 5px 12px; }
+  .page-btn, .page-num { padding: 6px 10px; font-size: .75rem; }
 }

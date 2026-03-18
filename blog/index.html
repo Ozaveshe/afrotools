@@ -56,6 +56,72 @@
 <main class="blog-section">
   <div class="blog-grid" id="blogGrid">
 
+    <!-- ===== NEW ARTICLES (Mar 18, 2026) ===== -->
+
+    <article class="article-card" data-cat="tax">
+      <div class="article-card-img"><img src="/assets/img/tools/ke-paye.webp" alt="Kenya PAYE Tax Calculator" loading="lazy"></div>
+      <div class="article-card-body">
+        <span class="category-badge category-badge--tax">Tax &amp; PAYE</span>
+        <h3><a href="/blog/kenya-salary-tax-2026/">How Much Tax Do I Pay on My Salary in Kenya 2026</a></h3>
+        <p class="article-card-excerpt">Complete guide to Kenya's 5-band PAYE system, SHIF, AHL, NSSF Tier I+II deductions, personal relief, and a worked example at KES 150,000 monthly salary.</p>
+        <div class="article-card-meta">
+          <span>AfroTools Team</span>
+          <span class="dot"></span>
+          <span>Mar 18, 2026</span>
+          <span class="dot"></span>
+          <span>10 min read</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="article-card" data-cat="tools">
+      <div class="article-card-img"><img src="/assets/img/tools/za-uif.webp" alt="South Africa UIF Calculator" loading="lazy"></div>
+      <div class="article-card-body">
+        <span class="category-badge category-badge--tools">Tools &amp; Guides</span>
+        <h3><a href="/blog/uif-calculator-south-africa-2026/">UIF Calculator South Africa 2026 — How Much Will You Get?</a></h3>
+        <p class="article-card-excerpt">Calculate your UIF payout after retrenchment. IRR sliding scale, payout tables by salary, claim duration, maternity benefits, and uFiling steps explained.</p>
+        <div class="article-card-meta">
+          <span>AfroTools Team</span>
+          <span class="dot"></span>
+          <span>Mar 18, 2026</span>
+          <span class="dot"></span>
+          <span>9 min read</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="article-card" data-cat="business">
+      <div class="article-card-img"><img src="/assets/img/tools/business-name-gen.svg" alt="Business Registration Nigeria" loading="lazy"></div>
+      <div class="article-card-body">
+        <span class="category-badge category-badge--business">Business &amp; Legal</span>
+        <h3><a href="/blog/register-business-nigeria-cac-2026/">How to Register a Business in Nigeria 2026 — CAC Guide</a></h3>
+        <p class="article-card-excerpt">Step-by-step CAC online registration for Business Name and LLC. Costs, documents needed, timelines, and post-registration requirements including TIN and VAT.</p>
+        <div class="article-card-meta">
+          <span>AfroTools Team</span>
+          <span class="dot"></span>
+          <span>Mar 18, 2026</span>
+          <span class="dot"></span>
+          <span>11 min read</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="article-card" data-cat="currency">
+      <div class="article-card-img"><img src="/assets/img/tools/budget-planner.svg" alt="Best Savings Accounts Nigeria" loading="lazy"></div>
+      <div class="article-card-body">
+        <span class="category-badge category-badge--currency">Currency &amp; Forex</span>
+        <h3><a href="/blog/best-savings-accounts-nigeria-2026/">Best Savings Accounts in Nigeria 2026 — Interest Rates Compared</a></h3>
+        <p class="article-card-excerpt">Compare savings rates across traditional banks, digital banks, fintech apps, treasury bills, and fixed deposits. Piggyvest vs Cowrywise vs bank rates.</p>
+        <div class="article-card-meta">
+          <span>AfroTools Team</span>
+          <span class="dot"></span>
+          <span>Mar 18, 2026</span>
+          <span class="dot"></span>
+          <span>10 min read</span>
+        </div>
+      </div>
+    </article>
+
     <!-- ===== NEW ARTICLES (Mar 16, 2026) ===== -->
 
     <article class="article-card" data-cat="tools">
@@ -476,22 +542,84 @@
     </article>
 
   </div>
+
+  <nav class="blog-pagination" id="blogPagination" aria-label="Blog pagination">
+    <button class="page-btn page-prev" id="pagePrev" aria-label="Previous page">&lsaquo; Prev</button>
+    <div class="page-numbers" id="pageNumbers"></div>
+    <button class="page-btn page-next" id="pageNext" aria-label="Next page">Next &rsaquo;</button>
+  </nav>
 </main>
 
 <afro-footer></afro-footer>
 
 <script>
-// Category filter
-document.querySelectorAll('.blog-filter-tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelector('.blog-filter-tab.active').classList.remove('active');
-    tab.classList.add('active');
-    const cat = tab.dataset.cat;
-    document.querySelectorAll('.article-card').forEach(card => {
-      card.style.display = (cat === 'all' || card.dataset.cat === cat) ? '' : 'none';
+(function() {
+  var PER_PAGE = 8;
+  var grid = document.getElementById('blogGrid');
+  var allCards = Array.from(grid.querySelectorAll('.article-card'));
+  var pagination = document.getElementById('blogPagination');
+  var pageNumbers = document.getElementById('pageNumbers');
+  var prevBtn = document.getElementById('pagePrev');
+  var nextBtn = document.getElementById('pageNext');
+  var currentPage = 1;
+  var currentCat = 'all';
+
+  function getFiltered() {
+    return allCards.filter(function(c) {
+      return currentCat === 'all' || c.dataset.cat === currentCat;
+    });
+  }
+
+  function render() {
+    var filtered = getFiltered();
+    var total = Math.ceil(filtered.length / PER_PAGE);
+    if (currentPage > total) currentPage = total || 1;
+
+    allCards.forEach(function(c) { c.style.display = 'none'; });
+    var start = (currentPage - 1) * PER_PAGE;
+    filtered.slice(start, start + PER_PAGE).forEach(function(c) { c.style.display = ''; });
+
+    pageNumbers.innerHTML = '';
+    for (var i = 1; i <= total; i++) {
+      var btn = document.createElement('button');
+      btn.className = 'page-num' + (i === currentPage ? ' active' : '');
+      btn.textContent = i;
+      btn.dataset.page = i;
+      pageNumbers.appendChild(btn);
+    }
+
+    prevBtn.disabled = currentPage <= 1;
+    nextBtn.disabled = currentPage >= total;
+    pagination.style.display = total <= 1 ? 'none' : 'flex';
+  }
+
+  function scrollUp() {
+    document.querySelector('.blog-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  pageNumbers.addEventListener('click', function(e) {
+    if (e.target.classList.contains('page-num')) {
+      currentPage = parseInt(e.target.dataset.page);
+      render();
+      scrollUp();
+    }
+  });
+
+  prevBtn.addEventListener('click', function() { currentPage--; render(); scrollUp(); });
+  nextBtn.addEventListener('click', function() { currentPage++; render(); scrollUp(); });
+
+  document.querySelectorAll('.blog-filter-tab').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      document.querySelector('.blog-filter-tab.active').classList.remove('active');
+      tab.classList.add('active');
+      currentCat = tab.dataset.cat;
+      currentPage = 1;
+      render();
     });
   });
-});
+
+  render();
+})();
 </script>
 </body>
 </html>
