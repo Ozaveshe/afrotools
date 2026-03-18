@@ -811,6 +811,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
     </div>
   </div>
 </div>
+</body></html>`;
 
   const w = window.open();
   w.document.write(html);
@@ -910,7 +911,19 @@ async function sendChat() {
 }
 
 document.getElementById('grossSalary').addEventListener('keydown',e=>{if(e.key==='Enter')calculate();});
+
+// Net-to-Gross: register forward function
+window._grossToNet = function(g) {
+  var _isNonRes = isOn('nonres');
+  var _hasNSSF = isOn('nssf');
+  var _hasLST = isOn('lst');
+  var nssf = _hasNSSF ? g * 0.05 : 0;
+  var lstMo = _hasLST ? (g * 12 * 0.01) / 12 : 0;
+  var paye = calcMonthlyPAYE(g, _isNonRes).tax;
+  return g - (nssf + paye + lstMo);
+};
 </script>
+<script src="/assets/js/lib/net-to-gross.js" defer></script>
 <script src="/assets/js/lib/saved-tools.js" defer></script>
 <script src="/assets/js/favorites-widget.js" defer></script>
 <script src="/assets/js/lib/auto-email-gate.js" defer></script>

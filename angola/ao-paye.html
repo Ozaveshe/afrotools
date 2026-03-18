@@ -918,7 +918,15 @@ async function sendChat() {
 }
 
 document.getElementById('grossSalary').addEventListener('keydown',e=>{if(e.key==='Enter')calculate();});
+
+// Net-to-Gross: register forward function
+window._grossToNet = function(g) {
+  var inss = isOn('inss') ? g * 0.03 : 0;
+  var taxable = Math.max(0, g - inss);
+  return g - (inss + calcMonthlyPAYE(taxable).tax);
+};
 </script>
+<script src="/assets/js/lib/net-to-gross.js" defer></script>
 <script src="/assets/js/lib/auto-email-gate.js" defer></script>
 <script src="/assets/js/share-image-inject.js" defer></script>
 </body>
