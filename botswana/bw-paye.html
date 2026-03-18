@@ -475,7 +475,6 @@ function generatePdf() {
   const refNo = 'AFT-BW-PAYE-' + Date.now().toString(36).toUpperCase().slice(-6);
   const bandRows = R.bandBreakdown.filter(b => b.tax > 0).map(b => `<tr><td style="padding-left:14px;color:#4b5563">Rate ${(b.rate*100)}% on P${Math.round(b.income).toLocaleString()}</td><td class="num red">(P${Math.round(b.tax).toLocaleString()})</td></tr>`).join('');
   const html = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
-<script src="/assets/js/lib/net-to-gross.js" defer></script>
 </body></html>`;
 
   const blob = new Blob([html],{type:'text/html;charset=utf-8'});
@@ -545,5 +544,6 @@ window._grossToNet = function(g) {
 </script>
 <script src="/assets/js/lib/auto-email-gate.js" defer></script>
 <script src="/assets/js/share-image-inject.js" defer></script>
+<script src="/assets/js/lib/net-to-gross.js" defer></script>
 </body>
 </html>
