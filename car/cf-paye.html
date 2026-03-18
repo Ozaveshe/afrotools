@@ -175,16 +175,23 @@ body{font-family:'DM Sans',Arial,sans-serif; }
     </div>
 
     <div style="display:flex;flex-direction:column;gap:16px">
-      <div style="background:linear-gradient(160deg,var(--dark) 0%,#1a1a1a 100%);border-radius:10px;border:1px solid rgba(255,206,0,.1);overflow:hidden;color:#fff">
-        <div style="padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:9px">
-          <div style="width:8px;height:8px;border-radius:50%;background:#FFCE00;animation:pulse 2s infinite"></div>
-          <span style="font-size:.72rem;font-weight:700">AI Advisor</span>
-          <span style="font-size:.65rem;color:rgba(255,255,255,.28);margin-left:auto">Claude</span>
+      <div class="ai-card">
+        <div class="ai-head">
+          <div class="ai-dot"></div>
+          <span class="ai-head-title">AI Tax Advisor</span>
+          <span class="ai-head-by">Powered by Claude</span>
         </div>
-        <div style="padding:16px 18px">
-          <p id="aiStatus" style="font-size:.8rem;color:rgba(255,255,255,.48);margin-bottom:12px">Calculate first to unlock AI analysis.</p>
-          <div id="aiResp" style="font-size:.82rem;color:rgba(255,255,255,.78);display:none"></div>
-          <button id="aiBtn" onclick="getAI()" disabled style="width:100%;padding:11px;background:rgba(29,78,216,.18);border:1px solid rgba(29,78,216,.38);border-radius:6px;color:#93C5FD;font-size:.72rem;font-weight:700;cursor:pointer;margin-top:12px">Calculate first →</button>
+        <div class="ai-body">
+          <p class="ai-status" id="aiStatus">Calculate salary to unlock Central African Republic tax analysis.</p>
+          <div class="ai-response" id="aiResp"></div>
+          <button class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Calculate first →</button>
+          <div class="ai-chat" id="aiChat">
+            <div class="chat-msgs" id="chatMsgs"></div>
+            <div class="chat-row">
+              <input class="chat-in" id="chatIn" placeholder="Ask a follow-up…" onkeydown="if(event.key==='Enter')sendChat()">
+              <button class="chat-send" onclick="sendChat()">→</button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -299,14 +306,55 @@ function calcAnnualDGI(i){const n=Math.max(0,i),d=[];if(n<=200000)return d.push(
     calculate();
   }
 
-  function calculate(){const e=parseFloat(document.getElementById('grossSalary').value)||0;if(!e||e<=0){const _el=document.getElementById('grossSalary');_el.focus();_el.style.borderColor='#e53e3e';_el.setAttribute('placeholder','Enter a valid salary');setTimeout(()=>{_el.style.borderColor='';_el.removeAttribute('placeholder')},3000);return}const n=isOn('cnss'),s=n?0.03:0,r=0.18,o=e*s,a=e*r,l=e*12,d=o*12,c=Math.max(0,l-d),t=calcAnnualDGI(c),u=t.tax/12,i=t.bandBreakdown,m=o+u,h=e-m,b=e>0?u/e:0;RESULT={gross:e,cnss:o,empCNSS:a,monthlyPAYE:u,bandBreakdown:i,annualPAYE:t.tax,totalEmployeeDeductions:m,netMonthly:h,effectiveRate:b,annualGross:l,annualNet:h*12,annualTax:t.tax,annualCNSS:d,totalEmployerCostMonthly:e+a},document.getElementById('resAmount').textContent=fmt(h),document.getElementById('resGross').textContent=`Gross: ${fmt(e)}/mo · ${fmt(l)}/yr`,document.getElementById('resContent').innerHTML=renderRows(RESULT,PERIOD),document.getElementById('effRateDisplay').textContent=pct(b),setTimeout(()=>{document.getElementById('rateFill').style.width=Math.min(b*200,100)+'%'},80),document.getElementById('employerStrip').innerHTML=`<strong>Employer Cost: ${fmt(RESULT.totalEmployerCostMonthly)}/mo</strong> — gross + CNSS ${fmt(a)}/mo`,document.getElementById('employerStrip').style.display='block',document.getElementById('resultsCard').style.display='block',renderChart('donut'),document.getElementById('aiBtn').disabled=!1}
+  function calculate(){const e=parseFloat(document.getElementById('grossSalary').value)||0;if(!e||e<=0){const _el=document.getElementById('grossSalary');_el.focus();_el.style.borderColor='#e53e3e';_el.setAttribute('placeholder','Enter a valid salary');setTimeout(()=>{_el.style.borderColor='';_el.removeAttribute('placeholder')},3000);return}const n=isOn('cnss'),s=n?0.03:0,r=0.18,o=e*s,a=e*r,l=e*12,d=o*12,c=Math.max(0,l-d),t=calcAnnualDGI(c),u=t.tax/12,i=t.bandBreakdown,m=o+u,h=e-m,b=e>0?u/e:0;RESULT={gross:e,cnss:o,empCNSS:a,monthlyPAYE:u,bandBreakdown:i,annualPAYE:t.tax,totalEmployeeDeductions:m,netMonthly:h,effectiveRate:b,annualGross:l,annualNet:h*12,annualTax:t.tax,annualCNSS:d,totalEmployerCostMonthly:e+a},document.getElementById('resAmount').textContent=fmt(h),document.getElementById('resGross').textContent=`Gross: ${fmt(e)}/mo · ${fmt(l)}/yr`,document.getElementById('resContent').innerHTML=renderRows(RESULT,PERIOD),document.getElementById('effRateDisplay').textContent=pct(b),setTimeout(()=>{document.getElementById('rateFill').style.width=Math.min(b*200,100)+'%'},80),document.getElementById('employerStrip').innerHTML=`<strong>Employer Cost: ${fmt(RESULT.totalEmployerCostMonthly)}/mo</strong> — gross + CNSS ${fmt(a)}/mo`,document.getElementById('employerStrip').style.display='block',document.getElementById('resultsCard').style.display='block',renderChart('donut'),document.getElementById('aiBtn').disabled=false,document.getElementById('aiBtn').textContent='Get AI Tax Analysis'}
 function renderRows(e,n){const s='annual'===n,r=s?e.annualGross:e.gross,o=s?e.annualCNSS:e.cnss,a=s?e.annualTax:e.monthlyPAYE,l=s?e.annualNet:e.netMonthly;return`<div style="margin-bottom:16px"><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;color:#666;margin-bottom:8px;border-bottom:1px solid #f5f5f5;padding-bottom:7px">Gross</div><div style="display:flex;justify-content:space-between;padding:5px 0"><span>Salary${s?'/yr':'/mo'}</span><span style="font-weight:700">${fmt(r)}</span></div></div><div style="margin-bottom:16px"><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;color:#666;margin-bottom:8px;border-bottom:1px solid #f5f5f5;padding-bottom:7px">Deductions</div>${e.cnss>0?`<div style="display:flex;justify-content:space-between;padding:5px 0"><span>CNSS (3%)</span><span style="color:#c0392b;font-weight:700">${fmt(o)}</span></div>`:''}<div style="display:flex;justify-content:space-between;padding:5px 0;border-top:1px solid #f5f5f5"><span>Tax</span><span style="color:#c0392b;font-weight:700">${fmt(a)}</span></div></div><div style="display:flex;justify-content:space-between;padding:5px 0;border-top:2px solid #ddd;margin-top:4px;padding-top:10px"><span style="font-weight:700">Take-Home</span><span style="font-size:1.05rem;font-weight:800;color:var(--primary)">${fmt(l)}</span></div>`}
 function setPeriod(e,n){PERIOD=e,document.querySelectorAll('.per-btn').forEach(e=>e.style.background='transparent'),n.style.background='#fff',n.style.color='var(--primary)',RESULT&&(document.getElementById('resContent').innerHTML=renderRows(RESULT,e))}
 function toggleBands(e){const n=e.nextElementSibling;n.style.display='none'===n.style.display?'block':'none'}
 function renderChart(e){return setChart(e)}
 function setChart(e){const n=document.getElementById('mainChart');if(CHART){CHART.destroy();CHART=null}if(!RESULT)return;'donut'===e?CHART=new Chart(n,{type:'doughnut',data:{labels:['Take-Home','Tax','CNSS'],datasets:[{data:[RESULT.netMonthly,RESULT.monthlyPAYE,RESULT.cnss],backgroundColor:['#FFCE00','var(--primary)','#E32118'],borderWidth:2,borderColor:'#fff'}]},options:{responsive:!0,maintainAspectRatio:!1,plugins:{legend:{position:'bottom'}}}}):'bar'===e?RESULT.bandBreakdown.filter(e=>e.tax>0).length>0&&(CHART=new Chart(n,{type:'bar',data:{labels:RESULT.bandBreakdown.map(e=>(100*e.rate)+'%'),datasets:[{label:'Tax (XAF)',data:RESULT.bandBreakdown.map(e=>e.tax),backgroundColor:'var(--primary)',borderRadius:5}]},options:{responsive:!0,maintainAspectRatio:!1,scales:{y:{ticks:{callback:e=>'XAF'+(e/1e6).toFixed(1)+'M'}}}}})):'employer'===e&&(CHART=new Chart(n,{type:'bar',data:{labels:['Take-Home','Tax','CNSS','Emp CNSS'],datasets:[{data:[RESULT.netMonthly,RESULT.monthlyPAYE,RESULT.cnss,RESULT.empCNSS],backgroundColor:['#FFCE00','var(--primary)','#E32118','#FF9500'],borderRadius:5}]},options:{responsive:!0,maintainAspectRatio:!1}}))}
 function shareResult(){if(!RESULT)return;const e=`CAR PAYE: ${Math.round(RESULT.gross).toLocaleString()} XAF gross → ${Math.round(RESULT.netMonthly).toLocaleString()} take-home (${pct(RESULT.effectiveRate)})`;navigator.clipboard&&(navigator.clipboard.writeText(e),document.getElementById('cfShareBtn').textContent='✓ Copied!')}
-async function getAI(){if(!RESULT)return;document.getElementById('aiBtn').disabled=!0,document.getElementById('aiStatus').style.display='none';try{const e=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'Brief tax analysis for CAR PAYE.',messages:[{role:'user',content:'Summarize in 1-2 sentences.'}]})});if(e.ok){const n=await e.json();document.getElementById('aiResp').textContent=n.text||'Analysis unavailable.',document.getElementById('aiResp').style.display='block'}}catch(e){document.getElementById('aiResp').textContent='AI temporarily unavailable.'}}
+async function getAI(){
+  if(!RESULT) return;
+  document.getElementById('aiBtn').disabled=true;
+  document.getElementById('aiBtn').textContent='Analysing...';
+  document.getElementById('aiResp').style.display='block';
+  document.getElementById('aiResp').textContent='';
+  const prompt='Central African Republic PAYE: Gross XAF '+Math.round(RESULT.gross).toLocaleString()+'/mo, Tax XAF '+Math.round(RESULT.monthlyPAYE).toLocaleString()+'/mo, Net XAF '+Math.round(RESULT.netMonthly).toLocaleString()+'/mo, Effective '+((RESULT.monthlyPAYE/RESULT.gross)*100).toFixed(1)+'%. Give 1) summary 2) two tax optimization tips 3) one compliance point. Under 150 words, no markdown.';
+  try{
+    const res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'AfroTools AI Tax Advisor specialising in Central African Republic PAYE. Concise, specific, practical. No markdown.',messages:[{role:'user',content:prompt}]})});
+    if(res.status===429) throw new Error('rate-limit');
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const data=await res.json();
+    document.getElementById('aiResp').textContent=data.text||'Unable to generate analysis.';
+    document.getElementById('aiBtn').textContent='Analysis complete';
+    document.getElementById('aiChat').classList.add('on');
+  }catch(e){
+    document.getElementById('aiResp').textContent=e.message==='rate-limit'?'Too many requests — try again in a minute.':'AI analysis temporarily unavailable.';
+    document.getElementById('aiBtn').disabled=false;
+    document.getElementById('aiBtn').textContent='Try Again';
+  }
+}
+async function sendChat(){
+  const input=document.getElementById('chatIn');
+  const msg=input.value.trim();
+  if(!msg) return;
+  input.value='';
+  const msgs=document.getElementById('chatMsgs');
+  msgs.innerHTML+='<div style="font-size:.78rem;padding:7px 11px;background:#EFF6FF;border-radius:6px;color:#0f172a;align-self:flex-end;max-width:85%">'+msg+'</div>';
+  const thinking=document.createElement('div');
+  thinking.style.cssText='font-size:.78rem;padding:7px 11px;color:#64748b';
+  thinking.textContent='Thinking...';
+  msgs.appendChild(thinking);
+  msgs.scrollTop=msgs.scrollHeight;
+  try{
+    const res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'AfroTools AI Tax Advisor for Central African Republic. Answer concisely. No markdown.',messages:[{role:'user',content:msg}]})});
+    const data=await res.json();
+    thinking.textContent=data.text||'No response.';
+    thinking.style.background='#F8FAFC';
+    thinking.style.borderRadius='6px';
+  }catch(e){thinking.textContent='Unable to respond right now.';}
+  msgs.scrollTop=msgs.scrollHeight;
+}
 </script>
 <script src="/assets/js/lib/auto-email-gate.js" defer></script>
 </body>

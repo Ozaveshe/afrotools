@@ -165,6 +165,26 @@
     </div>
 
     <div class="sidebar">
+      <div class="ai-card">
+        <div class="ai-head">
+          <div class="ai-dot"></div>
+          <span class="ai-head-title">AI Tax Advisor</span>
+          <span class="ai-head-by">Powered by Claude</span>
+        </div>
+        <div class="ai-body">
+          <p class="ai-status" id="aiStatus">Calculate salary to unlock Somalia tax analysis.</p>
+          <div class="ai-response" id="aiResp"></div>
+          <button class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Calculate first →</button>
+          <div class="ai-chat" id="aiChat">
+            <div class="chat-msgs" id="chatMsgs"></div>
+            <div class="chat-row">
+              <input class="chat-in" id="chatIn" placeholder="Ask a follow-up…" onkeydown="if(event.key==='Enter')sendChat()">
+              <button class="chat-send" onclick="sendChat()">→</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="card" style="background:#fffacd;border:1px solid #ffeaa7;margin-top:0">
         <div style="padding:16px 18px">
           <div style="font-size:.78rem;color:#856404;line-height:1.6">
@@ -336,6 +356,8 @@ updateSliderFill(document.getElementById('salarySlider'));
   if(!gross||gross<=0){const el=document.getElementById('grossSalary');el.focus();el.style.borderColor='#e53e3e';setTimeout(()=>el.style.borderColor='',2000);return;}
   const tax=gross*0.05;const net=gross-tax;RESULT={gross,monthly:gross,tax,net,annualGross:gross*12,annualNet:net*12,annualTax:tax*12,totalEmployerCost:gross};
   document.getElementById('resAmount').textContent=fmt(net);document.getElementById('resGross').textContent=`Gross: ${fmt(gross)}/mo · ${fmt(gross*12)}/yr`;document.getElementById('resContent').innerHTML=renderRows(RESULT,PERIOD);document.getElementById('hiddenGross').value=gross;document.getElementById('resultsCard').classList.add('on');renderChart('donut');var empStrip=document.getElementById('employerStrip');if(empStrip){empStrip.classList.add('on');var d=PERIOD==='monthly'?12:1;empStrip.innerHTML='<strong>Total Employer Cost: '+fmt(RESULT.totalEmployerCost/d)+'/'+(PERIOD==='monthly'?'mo':'yr')+'</strong> — no formal employer contributions in Somalia; total cost equals gross salary.';}document.getElementById('resultsCard').scrollIntoView({behavior:'smooth',block:'nearest'});
+  document.getElementById('aiBtn').disabled=false;
+  document.getElementById('aiBtn').textContent='Get AI Tax Analysis';
 }
 
 function renderRows(R,period){
@@ -362,6 +384,48 @@ async function submitPdf(e){e.preventDefault();const email=document.getElementBy
 function shareResult(){if(!RESULT)return;const text=`My Somalia PAYE: Gross SOS ${Math.round(RESULT.gross).toLocaleString()}/mo → Take-home SOS ${Math.round(RESULT.net).toLocaleString()}/mo (5% flat tax). Calculated at afrotools.com/somalia/so-paye`;if(navigator.share){navigator.share({title:'My Somalia PAYE',text,url:'https://afrotools.com/somalia/so-paye'});}else if(navigator.clipboard){navigator.clipboard.writeText(text);const btn=document.getElementById('soShareBtn');btn.textContent='✓ Copied!';setTimeout(()=>btn.innerHTML=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share`,2500);}}
 
 document.getElementById('grossSalary').addEventListener('keydown',e=>{if(e.key==='Enter')calculate();});
+async function getAI(){
+  if(!RESULT) return;
+  document.getElementById('aiBtn').disabled=true;
+  document.getElementById('aiBtn').textContent='Analysing...';
+  document.getElementById('aiResp').style.display='block';
+  document.getElementById('aiResp').textContent='';
+  const prompt='Somalia PAYE: Gross SOS '+Math.round(RESULT.gross).toLocaleString()+'/mo, Tax SOS '+Math.round(RESULT.tax).toLocaleString()+'/mo, Net SOS '+Math.round(RESULT.net).toLocaleString()+'/mo, Effective 5%. Give 1) summary 2) two tax optimization tips 3) one compliance point. Under 150 words, no markdown.';
+  try{
+    const res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'AfroTools AI Tax Advisor specialising in Somalia PAYE. Concise, specific, practical. No markdown.',messages:[{role:'user',content:prompt}]})});
+    if(res.status===429) throw new Error('rate-limit');
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const data=await res.json();
+    document.getElementById('aiResp').textContent=data.text||'Unable to generate analysis.';
+    document.getElementById('aiBtn').textContent='Analysis complete';
+    document.getElementById('aiChat').classList.add('on');
+  }catch(e){
+    document.getElementById('aiResp').textContent=e.message==='rate-limit'?'Too many requests — try again in a minute.':'AI analysis temporarily unavailable.';
+    document.getElementById('aiBtn').disabled=false;
+    document.getElementById('aiBtn').textContent='Try Again';
+  }
+}
+async function sendChat(){
+  const input=document.getElementById('chatIn');
+  const msg=input.value.trim();
+  if(!msg) return;
+  input.value='';
+  const msgs=document.getElementById('chatMsgs');
+  msgs.innerHTML+='<div style="font-size:.78rem;padding:7px 11px;background:#EFF6FF;border-radius:6px;color:#0f172a;align-self:flex-end;max-width:85%">'+msg+'</div>';
+  const thinking=document.createElement('div');
+  thinking.style.cssText='font-size:.78rem;padding:7px 11px;color:#64748b';
+  thinking.textContent='Thinking...';
+  msgs.appendChild(thinking);
+  msgs.scrollTop=msgs.scrollHeight;
+  try{
+    const res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'AfroTools AI Tax Advisor for Somalia. Answer concisely. No markdown.',messages:[{role:'user',content:msg}]})});
+    const data=await res.json();
+    thinking.textContent=data.text||'No response.';
+    thinking.style.background='#F8FAFC';
+    thinking.style.borderRadius='6px';
+  }catch(e){thinking.textContent='Unable to respond right now.';}
+  msgs.scrollTop=msgs.scrollHeight;
+}
 </script>
 <script src="/assets/js/lib/auto-email-gate.js" defer></script>
 </body>
