@@ -63,14 +63,34 @@
     }).join('');
   }
 
-  function renderAlerts(containerId) {
+  async function renderAlerts(containerId) {
     const container = document.getElementById(containerId);
-    if (!container || !window.AfroTaxCalendar) return;
+    if (!container) return;
 
     const user = AfroAuth.getUser();
     const country = resolveCountryCode(user?.country);
     const dismissed = JSON.parse(localStorage.getItem('afro_alerts_dismissed_' + (user?.id || 'guest')) || '[]');
-    const alerts = AfroTaxCalendar.getAlerts(country).filter(a => !dismissed.includes(a.date + a.title));
+
+    // Try API first (admin-managed alerts from Supabase)
+    let alerts = [];
+    try {
+      const res = await fetch('/api/alerts' + (country ? '?country=' + country : ''));
+      if (res.ok) {
+        const data = await res.json();
+        alerts = (data.alerts || []).map(a => ({
+          date: a.effective_date, title: a.title, desc: a.description,
+          severity: a.severity, id: a.id
+        }));
+      }
+    } catch (e) { /* fall through to hardcoded */ }
+
+    // Fallback to hardcoded alerts if API failed or returned nothing
+    if (alerts.length === 0 && window.AfroTaxCalendar) {
+      alerts = AfroTaxCalendar.getAlerts(country);
+    }
+
+    // Filter dismissed
+    alerts = alerts.filter(a => !dismissed.includes((a.id || '') + a.date + a.title));
 
     if (alerts.length === 0) {
       container.innerHTML = '<p class="dash-empty">No new regulatory alerts.</p>';
@@ -81,7 +101,7 @@
       <div class="alert-item alert-${a.severity}">
         <div class="alert-header">
           <span class="alert-severity">${a.severity === 'high' ? '🔴' : '🟡'} ${a.severity.toUpperCase()}</span>
-          <button class="alert-dismiss" data-alert="${a.date + a.title}" aria-label="Dismiss">&times;</button>
+          <button class="alert-dismiss" data-alert="${(a.id || '') + a.date + a.title}" aria-label="Dismiss">&times;</button>
         </div>
         <div class="alert-title">${a.title}</div>
         <div class="alert-desc">${a.desc}</div>

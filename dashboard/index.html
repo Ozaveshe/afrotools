@@ -610,7 +610,8 @@
         .qc-card:hover {
             border-color: #007AFF;
         }
-        .qc-flag { font-size: 1.5rem; }
+        .qc-flag { font-size: 1.5rem; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .qc-icon { width: 36px; height: 36px; border-radius: 8px; object-fit: contain; flex-shrink: 0; }
         .qc-label { font-size: 0.85rem; font-weight: 600; }
 
         /* Market rates */
@@ -1436,7 +1437,7 @@
                     <div class="form-group">
                         <label for="editCountry">Country</label>
                         <select id="editCountry" required>
-                            <option value="">Select a country</option>
+                            <option value="">Select your African country</option>
                             <option value="Algeria">Algeria</option>
                             <option value="Angola">Angola</option>
                             <option value="Benin">Benin</option>
@@ -1491,7 +1492,6 @@
                             <option value="Uganda">Uganda</option>
                             <option value="Zambia">Zambia</option>
                             <option value="Zimbabwe">Zimbabwe</option>
-                            <option value="Other">Other</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -2652,12 +2652,12 @@
                            t.countries.indexOf(loc.code) !== -1 && (t.id.indexOf('paye') !== -1 || t.id.indexOf('salary-tax') !== -1);
                 });
                 if (countryPaye) {
-                    cards.push({ href: countryPaye.href, icon: countryPaye.icon, label: 'Your PAYE', badge: true });
+                    cards.push({ href: countryPaye.href, icon: countryPaye.icon, toolId: countryPaye.id, label: 'Your PAYE', badge: true });
                 }
             }
 
             // Slot 2: Currency Converter
-            cards.push({ href: '/tools/currency-converter/', icon: '\uD83D\uDCB1', label: 'Currency Converter' });
+            cards.push({ href: '/tools/currency-converter/', icon: '\uD83D\uDCB1', toolId: 'currency-converter', label: 'Currency Converter' });
 
             // Interest-driven slots
             var interestToolMap = [
@@ -2688,7 +2688,7 @@
                     if (fallbackTool && usedHrefs.indexOf(fallbackTool.href) === -1) tool = fallbackTool;
                 }
                 if (tool && usedHrefs.indexOf(tool.href) === -1) {
-                    cards.push({ href: tool.href, icon: tool.icon, label: tool.name });
+                    cards.push({ href: tool.href, icon: tool.icon, toolId: tool.id, label: tool.name });
                     usedHrefs.push(tool.href);
                 }
             });
@@ -2696,11 +2696,11 @@
             // Fill remaining slots with popular defaults
             if (cards.length < 6) {
                 var defaults = [
-                    { href: '/nigeria/ng-salary-tax', icon: '\uD83C\uDDF3\uD83C\uDDEC', label: 'Nigeria PAYE' },
-                    { href: '/kenya/ke-paye', icon: '\uD83C\uDDF0\uD83C\uDDEA', label: 'Kenya PAYE' },
-                    { href: '/ghana/gh-paye', icon: '\uD83C\uDDEC\uD83C\uDDED', label: 'Ghana PAYE' },
-                    { href: '/south-africa/za-paye', icon: '\uD83C\uDDFF\uD83C\uDDE6', label: 'SA PAYE' },
-                    { href: '/tanzania/tz-paye', icon: '\uD83C\uDDF9\uD83C\uDDFF', label: 'Tanzania PAYE' }
+                    { href: '/nigeria/ng-salary-tax', icon: '\uD83C\uDDF3\uD83C\uDDEC', toolId: 'ng-paye', label: 'Nigeria PAYE' },
+                    { href: '/kenya/ke-paye', icon: '\uD83C\uDDF0\uD83C\uDDEA', toolId: 'ke-paye', label: 'Kenya PAYE' },
+                    { href: '/ghana/gh-paye', icon: '\uD83C\uDDEC\uD83C\uDDED', toolId: 'gh-paye', label: 'Ghana PAYE' },
+                    { href: '/south-africa/za-paye', icon: '\uD83C\uDDFF\uD83C\uDDE6', toolId: 'za-paye', label: 'SA PAYE' },
+                    { href: '/tanzania/tz-paye', icon: '\uD83C\uDDF9\uD83C\uDDFF', toolId: 'tz-paye', label: 'Tanzania PAYE' }
                 ];
                 defaults.forEach(function(d) {
                     if (cards.length < 6 && usedHrefs.indexOf(d.href) === -1) {
@@ -2712,7 +2712,10 @@
 
             container.innerHTML = cards.map(function(c) {
                 var badgeHtml = c.badge ? '<span class="qc-badge">For you</span>' : '';
-                return '<a href="' + c.href + '" class="qc-card"><span class="qc-flag">' + c.icon + '</span><span class="qc-label">' + c.label + '</span>' + badgeHtml + '</a>';
+                var iconHtml = c.toolId
+                    ? '<img class="qc-icon" src="/assets/img/tools/' + c.toolId + '.webp" alt="" width="36" height="36" onerror="this.onerror=null;this.src=\'/assets/img/tools/' + c.toolId + '.svg\';this.onerror=function(){this.outerHTML=\'<span class=qc-flag>' + (c.icon || '') + '</span>\'}">'
+                    : '<span class="qc-flag">' + c.icon + '</span>';
+                return '<a href="' + c.href + '" class="qc-card">' + iconHtml + '<span class="qc-label">' + c.label + '</span>' + badgeHtml + '</a>';
             }).join('');
         }
 

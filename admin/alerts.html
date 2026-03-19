@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Manage Alerts — AfroTools Admin</title>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', -apple-system, sans-serif; background: #F5F9FF; color: #1a2e22; line-height: 1.6; }
+  .dash { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
+  .dash-header { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; }
+  .dash-header h1 { font-size: 1.4rem; font-weight: 800; }
+  .dash-header .badge { background: #fef3cd; color: #92400e; font-size: .65rem; font-weight: 700; padding: 3px 10px; border-radius: 12px; text-transform: uppercase; }
+  .back-link { font-size: .82rem; color: #007AFF; text-decoration: none; margin-bottom: 16px; display: inline-block; }
+  .back-link:hover { text-decoration: underline; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; margin-bottom: 24px; }
+  .stat-card { background: #fff; border: 1px solid #E8F0FE; border-radius: 12px; padding: 16px; text-align: center; }
+  .stat-value { font-size: 1.6rem; font-weight: 800; color: #007AFF; }
+  .stat-label { font-size: .72rem; color: #6B7F99; margin-top: 2px; }
+  .section { background: #fff; border: 1px solid #E8F0FE; border-radius: 12px; padding: 24px; margin-bottom: 20px; }
+  .section h2 { font-size: 1rem; font-weight: 700; margin-bottom: 16px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .form-group { margin-bottom: 12px; }
+  .form-group label { display: block; font-size: .78rem; font-weight: 600; color: #374151; margin-bottom: 4px; }
+  .form-group input, .form-group select, .form-group textarea {
+    width: 100%; padding: 10px 12px; border: 1.5px solid #E5E7EB; border-radius: 8px;
+    font-family: inherit; font-size: .85rem; color: #1e293b; outline: none;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #007AFF; }
+  .form-group textarea { resize: vertical; min-height: 60px; }
+  .btn { padding: 10px 20px; border: none; border-radius: 8px; font-family: inherit; font-size: .85rem; font-weight: 600; cursor: pointer; }
+  .btn-primary { background: #007AFF; color: #fff; }
+  .btn-primary:hover { background: #0063D1; }
+  .btn-danger { background: #dc2626; color: #fff; }
+  .btn-danger:hover { background: #b91c1c; }
+  .btn-sm { padding: 6px 12px; font-size: .75rem; }
+  table { width: 100%; border-collapse: collapse; font-size: .82rem; }
+  th { text-align: left; font-weight: 600; color: #6B7F99; padding: 8px 10px; border-bottom: 2px solid #E8F0FE; }
+  td { padding: 8px 10px; border-bottom: 1px solid #EFF6FF; vertical-align: top; }
+  tr:hover td { background: #F5F9FF; }
+  .sev-high { color: #dc2626; font-weight: 700; }
+  .sev-medium { color: #d97706; font-weight: 700; }
+  .sev-low { color: #059669; font-weight: 700; }
+  .toast { position: fixed; top: 20px; right: 20px; padding: 12px 20px; border-radius: 8px; color: #fff; font-size: .85rem; font-weight: 500; z-index: 999; transform: translateY(-20px); opacity: 0; transition: all .3s; }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast.success { background: #059669; }
+  .toast.error { background: #dc2626; }
+  @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="dash">
+  <a href="/admin/dashboard.html" class="back-link">&larr; Admin Dashboard</a>
+  <div class="dash-header">
+    <h1>Manage Alerts</h1>
+    <span class="badge">Admin</span>
+  </div>
+
+  <div class="stats" id="alertStats"></div>
+
+  <!-- Create Alert Form -->
+  <div class="section">
+    <h2 id="formTitle">Create New Alert</h2>
+    <input type="hidden" id="editId" value="">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="alertTitle">Title</label>
+        <input type="text" id="alertTitle" placeholder="e.g. Nigeria Tax Act 2026 enacted">
+      </div>
+      <div class="form-group">
+        <label for="alertSeverity">Severity</label>
+        <select id="alertSeverity">
+          <option value="high">High</option>
+          <option value="medium" selected>Medium</option>
+          <option value="low">Low</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="alertDesc">Description</label>
+      <textarea id="alertDesc" placeholder="Detailed description of the alert..."></textarea>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="alertCountries">Country Codes (comma-separated, or ALL)</label>
+        <input type="text" id="alertCountries" placeholder="NG, KE, GH or ALL" value="ALL">
+      </div>
+      <div class="form-group">
+        <label for="alertDate">Effective Date</label>
+        <input type="date" id="alertDate">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="alertExpiry">Expires (optional)</label>
+        <input type="date" id="alertExpiry">
+      </div>
+      <div></div>
+    </div>
+    <button class="btn btn-primary" id="saveAlertBtn" onclick="saveAlert()">Create Alert</button>
+    <button class="btn btn-sm" id="cancelEditBtn" style="display:none;margin-left:8px;" onclick="cancelEdit()">Cancel</button>
+  </div>
+
+  <!-- Existing Alerts -->
+  <div class="section">
+    <h2>Existing Alerts</h2>
+    <table>
+      <thead>
+        <tr><th>Countries</th><th>Title</th><th>Severity</th><th>Date</th><th>Expires</th><th>Actions</th></tr>
+      </thead>
+      <tbody id="alertsTable">
+        <tr><td colspan="6" style="text-align:center;color:#94a3b8;">Loading...</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var adminKey = sessionStorage.getItem('admin_key');
+if (!adminKey) {
+  adminKey = prompt('Enter admin password:');
+  if (adminKey) sessionStorage.setItem('admin_key', adminKey);
+}
+
+function showToast(msg, type) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + (type || 'success');
+  t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, 3000);
+}
+
+async function apiFetch(method, params, body) {
+  var url = '/api/alerts' + (params ? '?' + params : '');
+  var opts = { method: method, headers: { 'Content-Type': 'application/json', 'x-admin-key': adminKey } };
+  if (body) opts.body = JSON.stringify(body);
+  var res = await fetch(url, opts);
+  return res.json();
+}
+
+async function loadAlerts() {
+  var data = await apiFetch('GET', '');
+  var alerts = data.alerts || [];
+  var active = alerts.filter(function(a) { return a.active; });
+  var expired = alerts.filter(function(a) { return a.expires_at && new Date(a.expires_at) < new Date(); });
+
+  document.getElementById('alertStats').innerHTML =
+    '<div class="stat-card"><div class="stat-value">' + alerts.length + '</div><div class="stat-label">Total Alerts</div></div>' +
+    '<div class="stat-card"><div class="stat-value">' + active.length + '</div><div class="stat-label">Active</div></div>' +
+    '<div class="stat-card"><div class="stat-value">' + expired.length + '</div><div class="stat-label">Expiring</div></div>';
+
+  var tbody = document.getElementById('alertsTable');
+  if (alerts.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#94a3b8;">No alerts yet. Create one above.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = alerts.map(function(a) {
+    var sevClass = a.severity === 'high' ? 'sev-high' : a.severity === 'medium' ? 'sev-medium' : 'sev-low';
+    return '<tr>' +
+      '<td>' + (a.country_codes || []).join(', ') + '</td>' +
+      '<td><strong>' + a.title + '</strong><br><span style="font-size:.72rem;color:#6B7F99;">' + (a.description || '').substring(0, 80) + '</span></td>' +
+      '<td class="' + sevClass + '">' + a.severity.toUpperCase() + '</td>' +
+      '<td>' + (a.effective_date || '-') + '</td>' +
+      '<td>' + (a.expires_at || 'Never') + '</td>' +
+      '<td><button class="btn btn-sm btn-primary" onclick="editAlert(\'' + a.id + '\')">Edit</button> ' +
+      '<button class="btn btn-sm btn-danger" onclick="deleteAlert(\'' + a.id + '\')">Delete</button></td>' +
+    '</tr>';
+  }).join('');
+
+  window._alertsCache = alerts;
+}
+
+async function saveAlert() {
+  var editId = document.getElementById('editId').value;
+  var countriesRaw = document.getElementById('alertCountries').value.trim();
+  var countries = countriesRaw === 'ALL' ? ['ALL'] : countriesRaw.split(',').map(function(c) { return c.trim().toUpperCase(); });
+
+  var body = {
+    country_codes: countries,
+    title: document.getElementById('alertTitle').value.trim(),
+    description: document.getElementById('alertDesc').value.trim(),
+    severity: document.getElementById('alertSeverity').value,
+    effective_date: document.getElementById('alertDate').value,
+    expires_at: document.getElementById('alertExpiry').value || null,
+  };
+
+  if (!body.title || !body.description || !body.effective_date) {
+    showToast('Please fill in title, description, and date', 'error');
+    return;
+  }
+
+  if (editId) {
+    await apiFetch('PUT', 'id=' + editId, body);
+    showToast('Alert updated');
+    cancelEdit();
+  } else {
+    await apiFetch('POST', '', body);
+    showToast('Alert created');
+  }
+
+  // Reset form
+  document.getElementById('alertTitle').value = '';
+  document.getElementById('alertDesc').value = '';
+  document.getElementById('alertCountries').value = 'ALL';
+  document.getElementById('alertDate').value = '';
+  document.getElementById('alertExpiry').value = '';
+  loadAlerts();
+}
+
+function editAlert(id) {
+  var alert = (window._alertsCache || []).find(function(a) { return a.id === id; });
+  if (!alert) return;
+  document.getElementById('editId').value = id;
+  document.getElementById('alertTitle').value = alert.title;
+  document.getElementById('alertDesc').value = alert.description;
+  document.getElementById('alertSeverity').value = alert.severity;
+  document.getElementById('alertCountries').value = (alert.country_codes || []).join(', ');
+  document.getElementById('alertDate').value = alert.effective_date || '';
+  document.getElementById('alertExpiry').value = alert.expires_at || '';
+  document.getElementById('formTitle').textContent = 'Edit Alert';
+  document.getElementById('saveAlertBtn').textContent = 'Update Alert';
+  document.getElementById('cancelEditBtn').style.display = '';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function cancelEdit() {
+  document.getElementById('editId').value = '';
+  document.getElementById('formTitle').textContent = 'Create New Alert';
+  document.getElementById('saveAlertBtn').textContent = 'Create Alert';
+  document.getElementById('cancelEditBtn').style.display = 'none';
+  document.getElementById('alertTitle').value = '';
+  document.getElementById('alertDesc').value = '';
+  document.getElementById('alertCountries').value = 'ALL';
+  document.getElementById('alertDate').value = '';
+  document.getElementById('alertExpiry').value = '';
+}
+
+async function deleteAlert(id) {
+  if (!confirm('Deactivate this alert?')) return;
+  await apiFetch('DELETE', 'id=' + id);
+  showToast('Alert deactivated');
+  loadAlerts();
+}
+
+// Set default date to today
+document.getElementById('alertDate').value = new Date().toISOString().split('T')[0];
+loadAlerts();
+</script>
+</body>
+</html>
