@@ -145,6 +145,288 @@
 .yoy-flat { color: #9CA3AF; }
 .yoy-dates { font-size: .68rem; color: #9CA3AF; margin-top: 8px; text-align: right; }
 
+/* ── Profile Nudge Bar ── */
+.nudge-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #ECFDF5, #F0FDF4);
+  border: 1.5px solid #A7F3D0;
+  border-radius: 12px;
+  margin-bottom: 24px;
+}
+.nudge-content {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+  min-width: 0;
+}
+.nudge-icon {
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+.nudge-title {
+  font-size: .88rem;
+  font-weight: 700;
+  color: #065F46;
+  margin-bottom: 2px;
+}
+.nudge-desc {
+  font-size: .78rem;
+  color: #047857;
+  line-height: 1.5;
+}
+.nudge-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.nudge-btn {
+  padding: 8px 18px;
+  background: #007AFF;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s;
+  white-space: nowrap;
+}
+.nudge-btn:hover { background: #0063D1; }
+.nudge-dismiss {
+  background: none;
+  border: none;
+  color: #6B7280;
+  font-size: .82rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 8px 4px;
+  white-space: nowrap;
+}
+.nudge-dismiss:hover { color: #374151; }
+
+@media (max-width: 600px) {
+  .nudge-card { flex-direction: column; align-items: flex-start; }
+  .nudge-actions { width: 100%; }
+}
+
+/* ── Country Snapshot ── */
+.snapshot-header { margin-bottom: 14px; }
+.snapshot-hint {
+  font-size: .72rem;
+  color: #9CA3AF;
+  margin-top: 4px;
+}
+.snapshot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+.snapshot-grid-fallback {
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+}
+.snapshot-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: #F9FAFB;
+  border-radius: 10px;
+}
+.snapshot-pair {
+  font-weight: 600;
+  font-size: .85rem;
+  color: #374151;
+}
+.snapshot-value {
+  font-weight: 700;
+  font-size: .9rem;
+  color: #007AFF;
+}
+.snapshot-card {
+  background: #fff;
+  border: 1.5px solid #E5E7EB;
+  border-radius: 12px;
+  padding: 16px;
+}
+.snapshot-card-label {
+  font-size: .7rem;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  margin-bottom: 6px;
+}
+.snapshot-card-value {
+  font-size: .88rem;
+  font-weight: 600;
+  color: #111827;
+}
+.change-up { color: #dc2626; }
+.change-down { color: #059669; }
+
+/* ── What's New Grid ── */
+.whatsnew-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.whatsnew-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  background: #fff;
+  border: 1.5px solid #E5E7EB;
+  border-radius: 12px;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color .15s, box-shadow .15s;
+}
+.whatsnew-item:hover {
+  border-color: #007AFF;
+  box-shadow: 0 4px 12px rgba(0,122,255,.06);
+}
+.whatsnew-icon {
+  font-size: 1.4rem;
+  width: 42px;
+  height: 42px;
+  background: #EFF6FF;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.whatsnew-info { flex: 1; min-width: 0; }
+.whatsnew-name {
+  font-size: .85rem;
+  font-weight: 700;
+  color: #111827;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.whatsnew-badge {
+  font-size: .6rem;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  background: #ECFDF5;
+  color: #059669;
+  padding: 2px 8px;
+  border-radius: 100px;
+}
+.whatsnew-desc {
+  font-size: .75rem;
+  color: #6B7280;
+  line-height: 1.4;
+  margin-top: 2px;
+}
+
+/* ── Workspace Tabs ── */
+.ws-tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1.5px solid #E5E7EB;
+  margin-bottom: 16px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.ws-tab {
+  padding: 10px 18px;
+  background: none;
+  border: none;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .82rem;
+  font-weight: 500;
+  color: #64748b;
+  cursor: pointer;
+  white-space: nowrap;
+  position: relative;
+  transition: color .15s;
+}
+.ws-tab:hover { color: #1e293b; }
+.ws-tab.active {
+  color: #007AFF;
+  font-weight: 600;
+}
+.ws-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1.5px;
+  left: 12px;
+  right: 12px;
+  height: 2px;
+  background: #007AFF;
+  border-radius: 2px 2px 0 0;
+}
+.ws-panel { display: none; }
+.ws-panel.active { display: block; }
+.ws-empty {
+  text-align: center;
+  padding: 32px 16px;
+  color: #94a3b8;
+  font-size: .88rem;
+  background: #F9FAFB;
+  border: 1.5px dashed #D1D5DB;
+  border-radius: 12px;
+  margin-bottom: 24px;
+}
+
+/* ── CV / Floor Plan Cards ── */
+.cv-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 10px;
+}
+.cv-card {
+  background: #fff;
+  border: 1.5px solid #E5E7EB;
+  border-radius: 12px;
+  padding: 16px;
+  transition: border-color .15s;
+}
+.cv-card:hover { border-color: #007AFF; }
+.cv-card-name {
+  font-size: .88rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 4px;
+}
+.cv-card-meta {
+  font-size: .72rem;
+  color: #9CA3AF;
+  margin-bottom: 10px;
+}
+.cv-card-actions {
+  display: flex;
+  gap: 8px;
+}
+.cv-card-edit,
+.cv-card-dup,
+.cv-card-del {
+  font-size: .72rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid #E5E7EB;
+  background: #fff;
+  color: #374151;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all .15s;
+}
+.cv-card-edit:hover { border-color: #007AFF; color: #007AFF; }
+.cv-card-del:hover { border-color: #dc2626; color: #dc2626; }
+
 /* ═══════════════════════════════════════════════════
    MY NUMBERS COMMAND CENTER
    ═══════════════════════════════════════════════════ */

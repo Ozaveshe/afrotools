@@ -104,38 +104,11 @@
   }
 
   /* ── 1. Header Bar ── */
+  /* The unified header is now in the HTML (profile-header).
+     This function is kept for compatibility but is a no-op since
+     the profile header is rendered by the inline dashboard script. */
   function renderHeader() {
-    var el = _el('mnHeader');
-    if (!el) return;
-    var loc = resolveCountry();
-    var firstName = (_user && _user.name) ? _user.name.split(' ')[0] : '';
-    var greet = greeting() + (firstName ? ', ' + escHtml(firstName) : '');
-    var flagCurrency = loc.flag && loc.currency ? loc.flag + ' ' + loc.currency : '';
-
-    el.innerHTML =
-      '<div class="mn-header-left">' +
-        '<div class="mn-avatar" id="mnAvatar"></div>' +
-        '<div class="mn-greeting">' + greet + '</div>' +
-        (flagCurrency ? '<span class="mn-currency-badge">' + flagCurrency + '</span>' : '') +
-      '</div>' +
-      '<button class="mn-settings-btn" id="mnSettingsBtn" title="Settings">' +
-        '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>' +
-      '</button>';
-
-    // Avatar
-    var avatarEl = _el('mnAvatar');
-    if (_user && _user.avatar_url) {
-      avatarEl.innerHTML = '<img src="' + escHtml(_user.avatar_url) + '" alt="" class="mn-avatar-img">';
-    } else {
-      var initial = ((_user && _user.name) || (_user && _user.email) || '?').charAt(0).toUpperCase();
-      var colors = ['#007AFF','#34C759','#FF9500','#AF52DE','#FF3B30','#5AC8FA','#FF2D55','#5856D6'];
-      avatarEl.innerHTML = '<div class="mn-avatar-initial" style="background:' + colors[initial.charCodeAt(0) % colors.length] + '">' + initial + '</div>';
-    }
-
-    // Settings button
-    _el('mnSettingsBtn').addEventListener('click', function () {
-      if (typeof openProfileEditor === 'function') openProfileEditor();
-    });
+    // No-op — unified header is managed by loadProfileDisplay() in the inline script
   }
 
   /* ── 2. "Your Numbers" Summary Cards ── */

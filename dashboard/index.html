@@ -200,52 +200,6 @@
             color: #fff;
         }
 
-        /* Completeness ring */
-        .completeness-wrap {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            flex-shrink: 0;
-            gap: 4px;
-        }
-        .completeness-ring {
-            width: 56px;
-            height: 56px;
-            position: relative;
-        }
-        .completeness-ring svg {
-            width: 56px;
-            height: 56px;
-            transform: rotate(-90deg);
-        }
-        .completeness-ring .ring-bg {
-            fill: none;
-            stroke: #E5E7EB;
-            stroke-width: 5;
-        }
-        .completeness-ring .ring-fg {
-            fill: none;
-            stroke-width: 5;
-            stroke-linecap: round;
-            transition: stroke-dashoffset 600ms cubic-bezier(0.22,0.61,0.36,1), stroke 300ms ease;
-        }
-        .completeness-pct {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%,-50%);
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: #1e293b;
-        }
-        .completeness-label {
-            font-size: 0.65rem;
-            color: #94a3b8;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.03em;
-        }
-
         .profile-actions {
             display: flex;
             gap: 8px;
@@ -602,6 +556,23 @@
         }
         .section-link:hover {
             text-decoration: underline;
+        }
+
+        /* ── 2-Column Dashboard Grid ── */
+        .dash-main-grid {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 24px;
+            margin-bottom: 28px;
+        }
+        .dash-main-col,
+        .dash-side-col {
+            min-width: 0;
+        }
+        @media (max-width: 900px) {
+            .dash-main-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         /* Card base */
@@ -987,8 +958,6 @@
             .rec-icon { background: rgba(0,122,255,0.12); }
             .rec-name { color: #E2E8F0; }
             .rec-desc { color: #8B9CB8; }
-            .completeness-ring .ring-bg { stroke: #1E2D40; }
-            .completeness-pct { color: #E2E8F0; }
             .btn-cancel { border-color: #1E2D40; color: #8B9CB8; }
             .btn-cancel:hover { border-color: #2A3D55; color: #C9D6E8; }
             .btn-logout { border-color: #1E2D40; color: #8B9CB8; }
@@ -1022,9 +991,6 @@
             .profile-actions {
                 width: 100%;
                 justify-content: center;
-            }
-            .completeness-wrap {
-                position: static;
             }
             .form-row {
                 grid-template-columns: 1fr;
@@ -1400,8 +1366,8 @@
         <!-- Dashboard Section -->
         <div id="dashboardSection" class="dashboard">
 
-            <!-- Profile Header -->
-            <div class="profile-header">
+            <!-- Unified Header (replaces old profile-header + mn-header) -->
+            <div class="profile-header" id="unifiedHeader">
                 <div class="avatar-wrap" id="avatarWrap">
                     <img id="profileAvatar" class="avatar-img" src="" alt="" style="display:none;">
                 </div>
@@ -1427,16 +1393,6 @@
                         </div>
                         <span class="plan-badge free" id="profilePlanBadge">Free</span>
                     </div>
-                </div>
-                <div class="completeness-wrap" id="completenessWrap">
-                    <div class="completeness-ring">
-                        <svg viewBox="0 0 56 56">
-                            <circle class="ring-bg" cx="28" cy="28" r="22"/>
-                            <circle class="ring-fg" id="completenessRing" cx="28" cy="28" r="22" stroke-dasharray="138.23" stroke-dashoffset="138.23"/>
-                        </svg>
-                        <span class="completeness-pct" id="completenessPct">0%</span>
-                    </div>
-                    <span class="completeness-label">Profile</span>
                 </div>
                 <div class="profile-actions">
                     <button class="btn-edit-profile" id="editProfileBtn">Edit Profile</button>
@@ -1665,13 +1621,11 @@
                 </div>
             </div>
 
-            <!-- ═══════ MY NUMBERS COMMAND CENTER ═══════ -->
-
-            <!-- Header Bar -->
-            <div class="mn-header" id="mnHeader"></div>
-
             <!-- Profile Nudge -->
             <div id="profileNudge" style="display:none;"></div>
+
+            <!-- ═══════ MY NUMBERS COMMAND CENTER ═══════ -->
+            <div class="mn-header" id="mnHeader" style="display:none;"></div>
 
             <!-- Your Numbers Summary Cards -->
             <div class="section-row">
@@ -1679,105 +1633,92 @@
             </div>
             <div class="mn-summary-scroll" id="mnSummaryCards"></div>
 
-            <!-- Recent Activity -->
-            <div class="section-row">
-              <h2 class="section-title" style="margin-bottom:0;">Recent Activity</h2>
+            <!-- Main 2-Column Grid: Activity + Sidebar -->
+            <div class="dash-main-grid">
+              <!-- Left Column: Activity + Recommendations -->
+              <div class="dash-main-col">
+                <!-- Recent Activity -->
+                <div class="section-row">
+                  <h2 class="section-title" style="margin-bottom:0;">Recent Activity</h2>
+                </div>
+                <div class="mn-activity-list" id="mnRecentActivity"></div>
+
+                <!-- My Country Snapshot -->
+                <div id="countrySnapshot" class="section-card"></div>
+              </div>
+
+              <!-- Right Column: Quick Actions + Widgets -->
+              <div class="dash-side-col">
+                <!-- Quick Actions -->
+                <div class="section-row">
+                  <h2 class="section-title" style="margin-bottom:0;">Quick Actions</h2>
+                </div>
+                <div class="mn-qa-grid" id="mnQuickActions"></div>
+
+                <!-- Dashboard Widgets -->
+                <div class="dash-widget">
+                  <div class="dash-widget-title"><span class="widget-icon">&#x1F4C5;</span> Tax Calendar</div>
+                  <div id="taxCalendar"></div>
+                </div>
+                <div class="dash-widget">
+                  <div class="dash-widget-title"><span class="widget-icon">&#x1F514;</span> Alerts</div>
+                  <div id="taxAlerts"></div>
+                </div>
+              </div>
             </div>
-            <div class="mn-activity-list" id="mnRecentActivity"></div>
 
             <!-- Recommended for You -->
-            <div class="section-row">
-              <h2 class="section-title" style="margin-bottom:0;">Recommended for You</h2>
+            <div id="recSection">
+              <div class="section-row">
+                <h2 class="section-title" style="margin-bottom:0;">Recommended for You</h2>
+              </div>
+              <div id="mnRecommendations"></div>
+              <div id="recommendations" style="display:none;"></div>
             </div>
-            <div id="mnRecommendations"></div>
-
-            <!-- Quick Actions -->
-            <div class="section-row">
-              <h2 class="section-title" style="margin-bottom:0;">Quick Actions</h2>
-            </div>
-            <div class="mn-qa-grid" id="mnQuickActions"></div>
-
-            <!-- ═══════ EXISTING SECTIONS (preserved) ═══════ -->
-
-            <!-- My Country Snapshot -->
-            <div id="countrySnapshot" class="section-card" style="margin-bottom:24px;"></div>
 
             <!-- Quick Calculate -->
-            <div class="section-row">
-              <h2 class="section-title" style="margin-bottom:0;">Quick Calculate</h2>
-            </div>
-            <div id="quickCalcGrid" class="qc-grid"></div>
-
-            <!-- Dashboard Widgets -->
-            <div class="dash-widgets-grid">
-              <div class="dash-widget">
-                <div class="dash-widget-title"><span class="widget-icon">&#x1F4C5;</span> Tax Calendar</div>
-                <div id="taxCalendar"></div>
+            <div id="qcSection">
+              <div class="section-row">
+                <h2 class="section-title" style="margin-bottom:0;">Quick Calculate</h2>
               </div>
-              <div class="dash-widget">
-                <div class="dash-widget-title"><span class="widget-icon">&#x1F514;</span> Regulatory Alerts</div>
-                <div id="taxAlerts"></div>
-              </div>
-            </div>
-
-            <div class="dash-widgets-grid">
-              <div class="dash-widget">
-                <div class="dash-widget-title"><span class="widget-icon">&#x1F4A1;</span> Recommended For You</div>
-                <div id="recommendations"></div>
-              </div>
-              <div class="dash-widget">
-                <div class="dash-widget-title"><span class="widget-icon">&#x1F4CA;</span> PAYE Comparison</div>
-                <div id="yoyComparison"></div>
-              </div>
+              <div id="quickCalcGrid" class="qc-grid"></div>
             </div>
 
             <!-- My Workspace -->
-            <div class="section-row" id="myWorkspace">
-              <h2 class="section-title" style="margin-bottom:0;">&#x1F4BC; My Workspace</h2>
-            </div>
-            <div id="myWorkspaceContent"></div>
-
-            <!-- Recently Used (conditional) -->
-            <div id="recentlyUsedSection">
-              <div class="section-row">
-                <h2 class="section-title" style="margin-bottom:0;">&#x1F550; Recently Used</h2>
+            <div id="wsSection">
+              <div class="section-row" id="myWorkspace">
+                <h2 class="section-title" style="margin-bottom:0;">My Workspace</h2>
               </div>
+              <div id="myWorkspaceContent"></div>
+            </div>
+
+            <!-- PAYE Comparison (only shows when data exists) -->
+            <div class="dash-widget" id="yoyComparisonWrap" style="display:none;">
+              <div class="dash-widget-title"><span class="widget-icon">&#x1F4CA;</span> PAYE Comparison</div>
+              <div id="yoyComparison"></div>
+            </div>
+
+            <!-- Hidden sections for data hooks -->
+            <div id="recentlyUsedSection" style="display:none;">
               <div id="quickAccessContainer" class="quick-access-grid"></div>
+            </div>
+            <div id="savedCalcsSection" style="display:none;">
+              <div id="savedContainer" class="saved-items"></div>
+            </div>
+            <div id="quickStatsBar" style="display:none;">
+              <div id="stat-favs">0</div>
+              <div id="stat-docs">0</div>
+              <div id="stat-calcs">0</div>
+              <div id="stat-plan">Free</div>
             </div>
 
             <!-- What's New -->
-            <div class="section-row">
-              <h2 class="section-title" style="margin-bottom:0;">&#x1F195; What's New</h2>
-              <a href="/changelog/" class="section-link">All updates &#8594;</a>
-            </div>
-            <div id="whatsNewContainer"></div>
-
-            <!-- Quick Stats Bar -->
-            <div class="stats-grid" id="quickStatsBar">
-              <div class="stat-card">
-                <div class="stat-num" id="stat-favs">0</div>
-                <div class="stat-label">Saved Tools</div>
-              </div>
-              <div class="stat-card">
-                <div class="stat-num" id="stat-docs">0</div>
-                <div class="stat-label">My Documents</div>
-              </div>
-              <div class="stat-card">
-                <div class="stat-num" id="stat-calcs">0</div>
-                <div class="stat-label">Saved Calcs</div>
-              </div>
-              <div class="stat-card">
-                <div class="stat-num gold" id="stat-plan">Free</div>
-                <div class="stat-label">Current Plan</div>
-              </div>
-            </div>
-
-            <!-- Saved Calculations (conditional) -->
-            <div id="savedCalcsSection">
+            <div id="whatsNewSection">
               <div class="section-row">
-                <h2 class="section-title" style="margin-bottom:0;">&#x1F4BE; Saved Calculations</h2>
+                <h2 class="section-title" style="margin-bottom:0;">What's New</h2>
+                <a href="/changelog/" class="section-link">All updates &#8594;</a>
               </div>
-              <div id="savedContainer" class="saved-items"></div>
+              <div id="whatsNewContainer"></div>
             </div>
 
             <!-- AfroTools Pro Upsell -->
@@ -1989,18 +1930,19 @@
         }
 
         function updateCompletenessRing(pct) {
-            var circumference = 2 * Math.PI * 22; // r=22
-            var offset = circumference - (pct / 100) * circumference;
+            // Completeness is now shown via the profile nudge bar
+            // Keep function for compatibility
             var ring = document.getElementById('completenessRing');
-            var label = document.getElementById('completenessPct');
             if (ring) {
+                var circumference = 2 * Math.PI * 22;
+                var offset = circumference - (pct / 100) * circumference;
                 ring.style.strokeDasharray = circumference;
                 ring.style.strokeDashoffset = offset;
-                // Color based on percentage
                 if (pct >= 80) ring.style.stroke = '#059669';
                 else if (pct >= 50) ring.style.stroke = '#007AFF';
                 else ring.style.stroke = '#F59E0B';
             }
+            var label = document.getElementById('completenessPct');
             if (label) label.textContent = pct + '%';
         }
 
@@ -2196,7 +2138,7 @@
 
         // ===================== SMART RECOMMENDATIONS =====================
         function renderSmartRecommendations() {
-            var container = document.getElementById('recommendations');
+            var container = document.getElementById('recommendations') || document.getElementById('mnRecommendations');
             if (!container || typeof AFRO_TOOLS === 'undefined') return;
 
             var user = currentUser || {};
@@ -2860,28 +2802,34 @@
         function toggleSectionVisibility() {
             var loc = resolveCountry();
 
-            // Recently Used
+            // Recently Used — hidden, data feeds into MN Recent Activity
             var recentSection = document.getElementById('recentlyUsedSection');
-            if (recentSection) {
-                var recent = AfroData.getRecentTools();
-                recentSection.style.display = recent.length > 0 ? '' : 'none';
-            }
+            if (recentSection) recentSection.style.display = 'none';
 
-            // Saved Calculations
+            // Saved Calculations — hidden, data feeds into workspace
             var savedSection = document.getElementById('savedCalcsSection');
-            if (savedSection) {
-                var saved = AfroData.getAllSaved();
-                savedSection.style.display = Object.keys(saved).length > 0 ? '' : 'none';
-            }
+            if (savedSection) savedSection.style.display = 'none';
 
             // PAYE Comparison widget - hide container if no data
-            var yoyWidget = document.getElementById('yoyComparison');
-            if (yoyWidget) {
-                var allSaved = AfroData.getAllSaved();
-                var hasPayeData = Object.keys(allSaved).some(function(id) { return id.indexOf('paye') !== -1 || id.indexOf('salary-tax') !== -1; });
-                var widgetParent = yoyWidget.closest('.dash-widget');
-                if (widgetParent) widgetParent.style.display = hasPayeData ? '' : 'none';
+            var yoyWrap = document.getElementById('yoyComparisonWrap');
+            if (yoyWrap) {
+                var allSaved2 = AfroData.getAllSaved();
+                var hasPayeData = Object.keys(allSaved2).some(function(id) { return id.indexOf('paye') !== -1 || id.indexOf('salary-tax') !== -1; });
+                yoyWrap.style.display = hasPayeData ? '' : 'none';
             }
+
+            // Hide section wrappers if their content containers are empty
+            var sectionMap = [
+                { wrapper: 'recSection', content: 'mnRecommendations' },
+                { wrapper: 'qcSection', content: 'quickCalcGrid' }
+            ];
+            sectionMap.forEach(function(s) {
+                var wrapper = document.getElementById(s.wrapper);
+                var content = document.getElementById(s.content);
+                if (wrapper && content) {
+                    wrapper.style.display = content.innerHTML.trim() ? '' : 'none';
+                }
+            });
         }
 
         function loadMarketSnapshot() {
