@@ -98,6 +98,16 @@
     return d.innerHTML;
   }
 
+  /* ── Timeout helper ── */
+  function withTimeout(promise, ms) {
+    return Promise.race([
+      promise,
+      new Promise(function (_, reject) {
+        setTimeout(function () { reject(new Error('timeout')); }, ms);
+      })
+    ]);
+  }
+
   /* ── Skeleton loader ── */
   function skeleton(w, h) {
     return '<div class="mn-skeleton" style="width:' + w + ';height:' + h + ';"></div>';
@@ -392,11 +402,20 @@
     renderHeader();
     renderQuickActions();
 
-    // Fetch data in parallel
-    var profilePromise = typeof fetchFullProfile === 'function' ? fetchFullProfile() : Promise.resolve(null);
-    var historyPromise = window.AfroHistory ? AfroHistory.getRecent(10) : Promise.resolve([]);
-    var monthlyPromise = window.AfroHistory ? AfroHistory.getMonthlyCount() : Promise.resolve({ count: 0 });
-    var fxPromise = fetch('/api/fx-rates?base=USD').then(function (r) { return r.json(); }).catch(function () { return null; });
+    // Fetch data in parallel — each with 6s timeout so skeletons never hang
+    var profilePromise = typeof fetchFullProfile === 'function'
+      ? withTimeout(fetchFullProfile(), 6000).catch(function () { return null; })
+      : Promise.resolve(null);
+    var historyPromise = window.AfroHistory
+      ? withTimeout(AfroHistory.getRecent(10), 6000).catch(function () { return []; })
+      : Promise.resolve([]);
+    var monthlyPromise = window.AfroHistory
+      ? withTimeout(AfroHistory.getMonthlyCount(), 6000).catch(function () { return { count: 0 }; })
+      : Promise.resolve({ count: 0 });
+    var fxPromise = withTimeout(
+      fetch('/api/fx-rates?base=USD').then(function (r) { return r.json(); }),
+      6000
+    ).catch(function () { return null; });
 
     // Also try localStorage profile
     try {
@@ -417,7 +436,7 @@
       console.warn('[DashboardApp] data fetch error:', e);
     }
 
-    // Render all sections
+    // Always render — replaces skeletons with real content or empty states
     renderHeader();
     renderSummaryCards();
     renderRecentActivity();
