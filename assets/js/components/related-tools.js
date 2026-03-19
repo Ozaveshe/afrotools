@@ -38,7 +38,8 @@ class AfroRelatedTools extends HTMLElement {
     const cat     = this.getAttribute('category') || '';
     const current = this.getAttribute('current')  || '';
     const all     = (typeof AFRO_TOOLS !== 'undefined') ? AFRO_TOOLS : [];
-    const live    = all.filter(t => t.status === 'live' && t.id !== current);
+    const pageLang = document.documentElement.lang || 'en';
+    const live    = all.filter(t => t.status === 'live' && t.id !== current && (t.lang || 'en') === pageLang);
     const same    = live.filter(t => t.category === cat).sort((a,b)=>(b.priority||0)-(a.priority||0));
     const others  = live.filter(t => t.category !== cat).sort((a,b)=>(b.estTraffic||0)-(a.estTraffic||0));
     let res = same.slice(0,6);

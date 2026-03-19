@@ -55,9 +55,10 @@
     } catch (e) { /* ignore */ }
 
     if (!window.AFRO_TOOLS) return [];
+    var pageLang = document.documentElement.lang || 'en';
     return window.AFRO_TOOLS
       .filter(function (t) {
-        return t.status === 'live' && t.countries && t.countries.indexOf(country) !== -1;
+        return t.status === 'live' && (t.lang || 'en') === pageLang && t.countries && t.countries.indexOf(country) !== -1;
       })
       .sort(function (a, b) { return (b.priority || 0) - (a.priority || 0); })
       .slice(0, 6);

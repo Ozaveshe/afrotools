@@ -782,7 +782,8 @@
 
       const getTools = () => {
         if (typeof AFRO_TOOLS !== 'undefined' && Array.isArray(AFRO_TOOLS)) {
-          return AFRO_TOOLS.filter(t => t.status === 'live');
+          var pageLang = document.documentElement.lang || 'en';
+          return AFRO_TOOLS.filter(t => t.status === 'live' && (t.lang || 'en') === pageLang);
         }
         return null;
       };
@@ -843,7 +844,7 @@
                   </div>
                 </a>`).join('') +
               '<div class="search-section-label" style="padding-top:16px">All Tools</div>' +
-              '<div class="search-empty" style="padding:16px"><div class="search-empty-hint">Type to search 100+ tools</div></div>';
+              '<div class="search-empty" style="padding:16px"><div class="search-empty-hint">Type to search 540+ tools</div></div>';
             _activeIdx = 0;
             container.querySelector('#clearRecent')?.addEventListener('click', e => {
               e.preventDefault(); e.stopPropagation();

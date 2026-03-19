@@ -1690,8 +1690,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // ── DYNAMIC STAT UPDATES for categories heading ──
   (function(){
     if (typeof AFRO_TOOLS === 'undefined') return;
-    var ct = document.getElementById('cats-tool-count');
-    if (ct) ct.textContent = AFRO_TOOLS.length + '+';
+    // cats-tool-count now shows "English & French" — don't override with number
     var ph = document.getElementById('paye-heading');
     var liveF = AFRO_TOOLS.filter(function(t){return (t.status==='live'||t.status==='new') && t.category==='financial';}).length;
     if (ph && liveF > 0) ph.textContent = 'PAYE Calculators — ' + liveF + ' Tools Live';
@@ -1937,8 +1936,8 @@ document.addEventListener('DOMContentLoaded', function() {
     var el;
     el = document.getElementById('stat-total');      if (el) el.textContent = total + '+';
     el = document.getElementById('stat-live');       if (el) el.textContent = live;
-    el = document.getElementById('stat-categories'); if (el) el.textContent = cats;
-    el = document.getElementById('hero-h1');         if (el) el.innerHTML = total + '+ Free Tools for <span class="acc">Africa.</span><br><span class="hero-sub-line">Tax, Finance, PDF &amp; More</span>';
+    // stat-categories now shows language count — don't override
+    el = document.getElementById('hero-h1');         if (el) el.innerHTML = 'Africa\'s Financial <span class="acc">Operating System.</span><br><span class="hero-sub-line">' + total + '+ Tools · 54 Countries · AI-Powered</span>';
 
     // PAYE section heading (rendered lower in page, safe to update now)
     el = document.getElementById('paye-heading');
@@ -1946,7 +1945,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // cats-heading fallback
     el = document.getElementById('cats-heading');
-    if (el) el.textContent = cats + ' Categories. 54 Countries. ' + total + '+ Tools.';
+    if (el) el.textContent = total + '+ Tools. 54 Countries. English & French.';
 
     // Roadmap dynamic counts
     el = document.getElementById('roadmap-count');
@@ -1962,8 +1961,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var h = document.getElementById('cats-heading');
     if (h) {
       var total = AFRO_TOOLS.length;
-      var catCount = Object.keys(AFRO_CATEGORIES).length;
-      h.textContent = catCount + ' Categories. 54 Countries. ' + total + '+ Tools.';
+      h.innerHTML = total + '+ Tools. 54 Countries. <span id="cats-tool-count">English &amp; French</span>.';
     }
 
     // Count live/new tools per category

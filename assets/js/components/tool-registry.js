@@ -1,7 +1,8 @@
 // /assets/js/components/tool-registry.js
 // ═══════════════════════════════════════════════════════════
-// AFROTOOLS — Single source of truth for all tools
+// AFROTOOLS — Single source of truth for all tools (540+)
 // Add a tool here ONCE → it appears on every relevant page
+// Supports `lang` field: 'en' (default) or 'fr' for French tools
 // ═══════════════════════════════════════════════════════════
 
 var AFRO_TOOLS = [
@@ -518,6 +519,42 @@ var AFRO_TOOLS = [
   { id: 'crypto-contract',  name: 'Smart Contract Scanner',        icon: '📜', desc: 'Verify contracts on Ethereum & BSC. Check source, holders, honeypot risk, rug-pull indicators.', href: '/crypto/contract-scanner/', category: 'crypto', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['ALL'], revenue: 'Freemium', estTraffic: 6000, estRevenue: 100, priority: 83 },
   { id: 'crypto-quiz',      name: 'Crypto Knowledge Quiz',         icon: '🧠', desc: '3 difficulty levels, Africa-specific questions. Test your crypto knowledge, share your score.', href: '/crypto/quiz/',            category: 'crypto', tier: 'T3', status: 'live', phase: 'LIVE', countries: ['ALL'], revenue: 'Free', estTraffic: 8000, estRevenue: 50, priority: 80 },
 
+  // ═══════════════════════════════════════════════════════════
+  //  FRANCOPHONE AFRICA — French PAYE Calculators (14 countries)
+  // ═══════════════════════════════════════════════════════════
+  { id: 'ci-paye-fr', name: 'Calculateur Salaire Net — Côte d\'Ivoire', icon: '🇨🇮', desc: 'Barème IRPP, cotisations CNPS, contribution nationale. Calcul complet en français.', href: '/fr/cote-divoire/calculateur-salaire-net', category: 'financial', tier: 'T1', status: 'live', phase: 'LIVE', countries: ['CI'], lang: 'fr', revenue: 'Premium PDF', estTraffic: 2000, priority: 78 },
+  { id: 'sn-paye-fr', name: 'Calculateur Salaire Net — Sénégal', icon: '🇸🇳', desc: 'IRPP barème progressif, cotisations IPRES et CSS. Calcul complet en français.', href: '/fr/senegal/calculateur-salaire-net', category: 'financial', tier: 'T1', status: 'live', phase: 'LIVE', countries: ['SN'], lang: 'fr', revenue: 'Premium PDF', estTraffic: 1800, priority: 75 },
+  { id: 'cm-paye-fr', name: 'Calculateur Salaire Net — Cameroun', icon: '🇨🇲', desc: 'IRPP progressif, CNPS, centimes additionnels communaux. Calcul complet en français.', href: '/fr/cameroun/calculateur-salaire-net', category: 'financial', tier: 'T1', status: 'live', phase: 'LIVE', countries: ['CM'], lang: 'fr', revenue: 'Premium PDF', estTraffic: 1500, priority: 76 },
+  { id: 'cd-paye-fr', name: 'Calculateur Salaire Net — RDC', icon: '🇨🇩', desc: 'IPR progressif, cotisations INSS. 105M d\'habitants, aucun concurrent.', href: '/fr/rdc/calculateur-salaire-net', category: 'financial', tier: 'T1', status: 'live', phase: 'LIVE', countries: ['CD'], lang: 'fr', revenue: 'Premium PDF', estTraffic: 2500, priority: 79 },
+  { id: 'ma-paye-fr', name: 'Calculateur Salaire Net — Maroc', icon: '🇲🇦', desc: 'IR barème progressif, CNSS, AMO, frais professionnels 20%. En français.', href: '/fr/maroc/calculateur-salaire-net', category: 'financial', tier: 'T1', status: 'live', phase: 'LIVE', countries: ['MA'], lang: 'fr', revenue: 'Premium PDF', estTraffic: 3000, priority: 83 },
+  { id: 'dz-paye-fr', name: 'Calculateur Salaire Net — Algérie', icon: '🇩🇿', desc: 'IRG tranches progressives, CNAS 9%, frais professionnels 25%. En français.', href: '/fr/algerie/calculateur-salaire-net', category: 'financial', tier: 'T1', status: 'live', phase: 'LIVE', countries: ['DZ'], lang: 'fr', revenue: 'Premium PDF', estTraffic: 2500, priority: 80 },
+  { id: 'tn-paye-fr', name: 'Calculateur Salaire Net — Tunisie', icon: '🇹🇳', desc: 'IRPP tranches progressives, CNSS 9,18%. En français.', href: '/fr/tunisie/calculateur-salaire-net', category: 'financial', tier: 'T1', status: 'live', phase: 'LIVE', countries: ['TN'], lang: 'fr', revenue: 'Premium PDF', estTraffic: 2000, priority: 77 },
+  { id: 'ml-paye-fr', name: 'Calculateur Salaire Net — Mali', icon: '🇲🇱', desc: 'ITS progressif, cotisations INPS. En français.', href: '/fr/mali/calculateur-salaire-net', category: 'financial', tier: 'T1', status: 'live', phase: 'LIVE', countries: ['ML'], lang: 'fr', revenue: 'Premium PDF', estTraffic: 800, priority: 60 },
+  { id: 'bf-paye-fr', name: 'Calculateur Salaire Net — Burkina Faso', icon: '🇧🇫', desc: 'IUTS progressif, CNSS. En français.', href: '/fr/burkina-faso/calculateur-salaire-net', category: 'financial', tier: 'T1', status: 'live', phase: 'LIVE', countries: ['BF'], lang: 'fr', revenue: 'Premium PDF', estTraffic: 800, priority: 60 },
+  { id: 'ne-paye-fr', name: 'Calculateur Salaire Net — Niger', icon: '🇳🇪', desc: 'IUTS, CNSS. En français.', href: '/fr/niger/calculateur-salaire-net', category: 'financial', tier: 'T1', status: 'live', phase: 'LIVE', countries: ['NE'], lang: 'fr', revenue: 'Premium PDF', estTraffic: 500, priority: 57 },
+  { id: 'gn-paye-fr', name: 'Calculateur Salaire Net — Guinée', icon: '🇬🇳', desc: 'Impôt sur le revenu, CNSS. En français.', href: '/fr/guinee/calculateur-salaire-net', category: 'financial', tier: 'T1', status: 'live', phase: 'LIVE', countries: ['GN'], lang: 'fr', revenue: 'Premium PDF', estTraffic: 500, priority: 58 },
+  { id: 'cg-paye-fr', name: 'Calculateur Salaire Net — Congo', icon: '🇨🇬', desc: 'IRPP, CNSS. En français.', href: '/fr/congo/calculateur-salaire-net', category: 'financial', tier: 'T1', status: 'live', phase: 'LIVE', countries: ['CG'], lang: 'fr', revenue: 'Premium PDF', estTraffic: 600, priority: 62 },
+  { id: 'ga-paye-fr', name: 'Calculateur Salaire Net — Gabon', icon: '🇬🇦', desc: 'IRPP progressif, CNSS. En français.', href: '/fr/gabon/calculateur-salaire-net', category: 'financial', tier: 'T1', status: 'live', phase: 'LIVE', countries: ['GA'], lang: 'fr', revenue: 'Premium PDF', estTraffic: 700, priority: 63 },
+  { id: 'tg-paye-fr', name: 'Calculateur Salaire Net — Togo', icon: '🇹🇬', desc: 'IRPP, CNSS. En français.', href: '/fr/togo/calculateur-salaire-net', category: 'financial', tier: 'T1', status: 'live', phase: 'LIVE', countries: ['TG'], lang: 'fr', revenue: 'Premium PDF', estTraffic: 500, priority: 58 },
+
+  // ═══════════════════════════════════════════════════════════
+  //  FRANCOPHONE AFRICA — French TVA Calculators (14 countries)
+  // ═══════════════════════════════════════════════════════════
+  { id: 'ci-tva-fr', name: 'Calculateur TVA — Côte d\'Ivoire', icon: '🇨🇮', desc: 'TVA 18% — Montant HT/TTC. En français.', href: '/fr/cote-divoire/calculateur-tva', category: 'financial', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['CI'], lang: 'fr', priority: 60 },
+  { id: 'sn-tva-fr', name: 'Calculateur TVA — Sénégal', icon: '🇸🇳', desc: 'TVA 18% — Montant HT/TTC. En français.', href: '/fr/senegal/calculateur-tva', category: 'financial', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['SN'], lang: 'fr', priority: 58 },
+  { id: 'cm-tva-fr', name: 'Calculateur TVA — Cameroun', icon: '🇨🇲', desc: 'TVA 19,25% — Montant HT/TTC. En français.', href: '/fr/cameroun/calculateur-tva', category: 'financial', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['CM'], lang: 'fr', priority: 58 },
+  { id: 'cd-tva-fr', name: 'Calculateur TVA — RDC', icon: '🇨🇩', desc: 'TVA 16% — Montant HT/TTC. En français.', href: '/fr/rdc/calculateur-tva', category: 'financial', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['CD'], lang: 'fr', priority: 60 },
+  { id: 'ma-tva-fr', name: 'Calculateur TVA — Maroc', icon: '🇲🇦', desc: 'TVA 20% — Montant HT/TTC. En français.', href: '/fr/maroc/calculateur-tva', category: 'financial', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['MA'], lang: 'fr', priority: 62 },
+  { id: 'dz-tva-fr', name: 'Calculateur TVA — Algérie', icon: '🇩🇿', desc: 'TVA 19% — Montant HT/TTC. En français.', href: '/fr/algerie/calculateur-tva', category: 'financial', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['DZ'], lang: 'fr', priority: 60 },
+  { id: 'tn-tva-fr', name: 'Calculateur TVA — Tunisie', icon: '🇹🇳', desc: 'TVA 19% — Montant HT/TTC. En français.', href: '/fr/tunisie/calculateur-tva', category: 'financial', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['TN'], lang: 'fr', priority: 58 },
+  { id: 'ml-tva-fr', name: 'Calculateur TVA — Mali', icon: '🇲🇱', desc: 'TVA 18% — Montant HT/TTC. En français.', href: '/fr/mali/calculateur-tva', category: 'financial', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['ML'], lang: 'fr', priority: 55 },
+  { id: 'bf-tva-fr', name: 'Calculateur TVA — Burkina Faso', icon: '🇧🇫', desc: 'TVA 18% — Montant HT/TTC. En français.', href: '/fr/burkina-faso/calculateur-tva', category: 'financial', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['BF'], lang: 'fr', priority: 55 },
+  { id: 'ne-tva-fr', name: 'Calculateur TVA — Niger', icon: '🇳🇪', desc: 'TVA 19% — Montant HT/TTC. En français.', href: '/fr/niger/calculateur-tva', category: 'financial', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['NE'], lang: 'fr', priority: 52 },
+  { id: 'gn-tva-fr', name: 'Calculateur TVA — Guinée', icon: '🇬🇳', desc: 'TVA 18% — Montant HT/TTC. En français.', href: '/fr/guinee/calculateur-tva', category: 'financial', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['GN'], lang: 'fr', priority: 52 },
+  { id: 'cg-tva-fr', name: 'Calculateur TVA — Congo', icon: '🇨🇬', desc: 'TVA 18,9% — Montant HT/TTC. En français.', href: '/fr/congo/calculateur-tva', category: 'financial', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['CG'], lang: 'fr', priority: 55 },
+  { id: 'ga-tva-fr', name: 'Calculateur TVA — Gabon', icon: '🇬🇦', desc: 'TVA 18% — Montant HT/TTC. En français.', href: '/fr/gabon/calculateur-tva', category: 'financial', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['GA'], lang: 'fr', priority: 55 },
+  { id: 'tg-tva-fr', name: 'Calculateur TVA — Togo', icon: '🇹🇬', desc: 'TVA 18% — Montant HT/TTC. En français.', href: '/fr/togo/calculateur-tva', category: 'financial', tier: 'T2', status: 'live', phase: 'LIVE', countries: ['TG'], lang: 'fr', priority: 52 },
+
 ];
 
 // ═══════════════════════════════════════════════════════════
@@ -544,10 +581,12 @@ var AFRO_CATEGORIES = {
 // ═══════════════════════════════════════════════════════════
 
 function getToolsFor(countryCode, filter) {
+  var pageLang = document.documentElement.lang || 'en';
   return AFRO_TOOLS.filter(function(t) {
     var countryMatch = t.countries.indexOf('ALL') !== -1 || t.countries.indexOf(countryCode) !== -1;
     var statusMatch = !filter || t.status === filter;
-    return countryMatch && statusMatch;
+    var langMatch = (t.lang || 'en') === pageLang;
+    return countryMatch && statusMatch && langMatch;
   });
 }
 
@@ -611,13 +650,15 @@ function renderToolGrid(containerId, countryCode, opts) {
 // STATS HELPER — useful for dashboard/admin pages
 // ═══════════════════════════════════════════════════════════
 function getRegistryStats() {
-  var stats = { total: AFRO_TOOLS.length, live: 0, queued: 0, planned: 0, byPhase: {}, byCategory: {}, estMonthlyRevenue: 0 };
+  var stats = { total: AFRO_TOOLS.length, live: 0, queued: 0, planned: 0, byPhase: {}, byCategory: {}, byLang: {}, estMonthlyRevenue: 0 };
   AFRO_TOOLS.forEach(function(t) {
     if (t.status === 'live' || t.status === 'new') stats.live++;
     else if (t.status === 'queued') stats.queued++;
     else if (t.status === 'planned') stats.planned++;
     stats.byPhase[t.phase] = (stats.byPhase[t.phase] || 0) + 1;
     stats.byCategory[t.category] = (stats.byCategory[t.category] || 0) + 1;
+    var lang = t.lang || 'en';
+    stats.byLang[lang] = (stats.byLang[lang] || 0) + 1;
     stats.estMonthlyRevenue += (t.estRevenue || 0);
   });
   return stats;
