@@ -174,8 +174,9 @@
     if (_fxData && loc.currency && _fxData.rates && _fxData.rates[loc.currency]) {
       var rate = Number(_fxData.rates[loc.currency]);
       var fxSub = 'Live rate';
-      if (_fxData.updated_at) {
-        fxSub = 'Updated ' + timeAgo(new Date(_fxData.updated_at));
+      var fxTime = _fxData.updated_at || _fxData.timestamp;
+      if (fxTime) {
+        fxSub = 'Updated ' + timeAgo(new Date(fxTime));
       }
       cardC = '<div class="mn-summary-card">' +
         '<div class="mn-card-label">FX Watch</div>' +
@@ -413,7 +414,7 @@
       ? withTimeout(AfroHistory.getMonthlyCount(), 6000).catch(function () { return { count: 0 }; })
       : Promise.resolve({ count: 0 });
     var fxPromise = withTimeout(
-      fetch('/api/fx-rates?base=USD').then(function (r) { return r.json(); }),
+      fetch('/api/forex').then(function (r) { return r.json(); }),
       6000
     ).catch(function () { return null; });
 

@@ -1881,32 +1881,61 @@
             var dbSynced = false;
             try {
                 var sb = AfroAuth.getSupabase();
-                if (!sb) return { ok: true, synced: false };
+                if (!sb) {
+                    console.warn('[Profile] No Supabase client available');
+                    return { ok: true, synced: false };
+                }
+
+                // Strip fields Supabase might reject (updated_at handled by DB trigger)
+                var dbData = Object.assign({}, profileData);
+                delete dbData.updated_at; // Let DB handle timestamp
+                delete dbData.id;         // Never update the PK
 
                 // Try full update with timeout (ad blockers can block Supabase requests)
-                var res = await withTimeout(sb.from('profiles').update(profileData).eq('id', user.id), 8000);
+                console.log('[Profile] Saving to Supabase...', Object.keys(dbData));
+                var res = await withTimeout(sb.from('profiles').update(dbData).eq('id', user.id).select(), 8000);
 
                 if (res.error) {
-                    // Extended columns may not exist — fall back to name + country only
+                    console.warn('[Profile] Full update failed:', res.error.message, '— trying basic fields');
+                    // Extended columns may not exist — fall back to known columns only
                     var basic = {};
-                    if (profileData.name) basic.name = profileData.name;
-                    if (profileData.country) basic.country = profileData.country;
+                    if (dbData.name) basic.name = dbData.name;
+                    if (dbData.country) basic.country = dbData.country;
+                    if (dbData.bio !== undefined) basic.bio = dbData.bio;
+                    if (dbData.phone !== undefined) basic.phone = dbData.phone;
+                    if (dbData.city !== undefined) basic.city = dbData.city;
+                    if (dbData.job_title !== undefined) basic.job_title = dbData.job_title;
+                    if (dbData.industry !== undefined) basic.industry = dbData.industry;
+                    if (dbData.interests !== undefined) basic.interests = dbData.interests;
                     if (Object.keys(basic).length > 0) {
-                        var fallback = await withTimeout(sb.from('profiles').update(basic).eq('id', user.id), 8000);
-                        dbSynced = !fallback.error;
+                        var fallback = await withTimeout(sb.from('profiles').update(basic).eq('id', user.id).select(), 8000);
+                        if (fallback.error) {
+                            console.warn('[Profile] Basic update also failed:', fallback.error.message, '— trying name+country only');
+                            var minimal = {};
+                            if (dbData.name) minimal.name = dbData.name;
+                            if (dbData.country) minimal.country = dbData.country;
+                            if (Object.keys(minimal).length > 0) {
+                                var last = await withTimeout(sb.from('profiles').update(minimal).eq('id', user.id).select(), 8000);
+                                dbSynced = !last.error;
+                                if (last.error) console.error('[Profile] Even minimal save failed:', last.error.message);
+                            }
+                        } else {
+                            dbSynced = true;
+                        }
                     }
                 } else {
                     dbSynced = true;
+                    console.log('[Profile] Saved to Supabase successfully');
                 }
 
-                // Sync auth-level profile (name, country)
+                // Sync auth-level profile (name, country) via Supabase Auth metadata
                 if (profileData.name || profileData.country) {
                     try { await withTimeout(AfroAuth.updateProfile({ name: profileData.name, country: profileData.country }), 6000); } catch(e2) {}
                 }
 
                 return { ok: true, synced: dbSynced };
             } catch(e) {
-                // Timeout or network error — data saved locally only
+                console.warn('[Profile] Save error:', e.message);
                 return { ok: true, synced: false };
             }
         }
@@ -2438,9 +2467,9 @@
         async function fetchDashboardData() {
             try {
                 var results = await Promise.all([
-                    fetch('/data/forex/latest.json').then(function(r){return r.json()}).catch(function(){return null}),
-                    fetch('/data/fuel/latest.json').then(function(r){return r.json()}).catch(function(){return null}),
-                    fetch('/data/rates/latest.json').then(function(r){return r.json()}).catch(function(){return null})
+                    fetch('/api/forex').then(function(r){return r.json()}).catch(function(){return null}),
+                    fetch('/api/fuel').then(function(r){return r.json()}).catch(function(){return null}),
+                    fetch('/api/rates').then(function(r){return r.json()}).catch(function(){return null})
                 ]);
                 dashboardCache.forex = results[0];
                 dashboardCache.fuel = results[1];
@@ -2833,7 +2862,7 @@
         }
 
         function loadMarketSnapshot() {
-            fetch('/data/forex/latest.json').then(function(r){return r.json()}).then(function(data){
+            fetch('/api/forex').then(function(r){return r.json()}).then(function(data){
                 var rates = data.rates || {};
                 var pairs = {'dash-rate-ngn':'NGN','dash-rate-kes':'KES','dash-rate-zar':'ZAR','dash-rate-ghs':'GHS'};
                 Object.keys(pairs).forEach(function(id){
