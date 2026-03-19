@@ -2,7 +2,12 @@
 <html lang="en">
 <head>
     <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/assets/img/logo-mark.svg">
 <meta charset="UTF-8">
+<meta name="theme-color" content="#007AFF">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <!-- Google Analytics 4 -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
 <script>
@@ -13,6 +18,7 @@
 </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="Your personalized AfroTools dashboard. Track salary calculations, saved tools, and financial insights across Africa.">
     <title>My Dashboard | AfroTools</title>
     <link rel="stylesheet" href="/assets/css/design-system.css">
     <link rel="stylesheet" href="/assets/css/tokens.min.css">
@@ -20,7 +26,8 @@
     <link rel="stylesheet" href="/assets/css/dashboard.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..800;1,9..40,300..800&family=Instrument+Serif:ital@0;1&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..800;1,9..40,300..800&family=Instrument+Serif:ital@0;1&display=swap">
     <style>
         * {
             margin: 0;
@@ -30,6 +37,7 @@
 
         html {
             overflow-y: scroll !important;
+            overflow-x: hidden;
         }
 
         html, body {
@@ -37,6 +45,7 @@
             background-color: #F8FAFD;
             color: #1e293b;
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
         /* Override global.css text-transform: uppercase on headings */
@@ -1351,6 +1360,19 @@
             .profile-subtitle { color: #94A3B8; }
             .profile-subtitle.subtitle-warning { color: #F59E0B; }
         }
+
+        /* Print styles */
+        @media print {
+            nav, footer, .mobile-nav, .btn, .fab, [data-no-print],
+            .btn-edit-profile, .btn-logout, .profile-editor, .nudge-card,
+            .pro-upsell, .toast-container, .breadcrumb { display: none !important; }
+            body { background: white; color: black; font-size: 12pt; }
+            .card, .profile-header, .stat-card, .qc-card, .saved-item,
+            .market-card, .whatsnew-card, .snapshot-card, .snapshot-item {
+                border: 1px solid #ccc; box-shadow: none; break-inside: avoid;
+            }
+            a[href]::after { content: " (" attr(href) ")"; font-size: 0.8em; color: #666; }
+        }
     </style>
 </head>
 <body>
@@ -1428,6 +1450,7 @@
                     <button class="editor-tab active" data-tab="personal">Personal Info</button>
                     <button class="editor-tab" data-tab="professional">Professional</button>
                     <button class="editor-tab" data-tab="interests">Interests</button>
+                    <button class="editor-tab" data-tab="notifications">Notifications</button>
                     <button class="editor-tab" data-tab="security" id="securityTab">Security</button>
                 </div>
 
@@ -1604,7 +1627,19 @@
                     </div>
                 </div>
 
-                <!-- Tab 4: Security -->
+                <!-- Tab 4: Notifications -->
+                <div class="editor-panel" data-panel="notifications">
+                    <h3 style="font-size:1rem;font-weight:600;margin-bottom:16px;">Email Notifications</h3>
+                    <label style="display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border:1.5px solid #E2E8F0;border-radius:10px;cursor:pointer;">
+                        <input type="checkbox" id="editEmailDigest" style="accent-color:#007AFF;width:18px;height:18px;margin-top:2px;flex-shrink:0;">
+                        <span>
+                            <span style="font-size:0.92rem;font-weight:500;color:#1e293b;display:block;">Monthly financial digest</span>
+                            <span style="font-size:0.82rem;color:#64748b;">Your take-home, FX rates, salary benchmarks, and tool recommendations — sent on the 1st of each month.</span>
+                        </span>
+                    </label>
+                </div>
+
+                <!-- Tab 5: Security -->
                 <div class="editor-panel" data-panel="security">
                     <h3 style="font-size:1rem;font-weight:600;margin-bottom:16px;">Change Password</h3>
                     <div class="form-group">
@@ -1630,8 +1665,39 @@
                 </div>
             </div>
 
+            <!-- ═══════ MY NUMBERS COMMAND CENTER ═══════ -->
+
+            <!-- Header Bar -->
+            <div class="mn-header" id="mnHeader"></div>
+
             <!-- Profile Nudge -->
             <div id="profileNudge" style="display:none;"></div>
+
+            <!-- Your Numbers Summary Cards -->
+            <div class="section-row">
+              <h2 class="section-title" style="margin-bottom:0;">Your Numbers</h2>
+            </div>
+            <div class="mn-summary-scroll" id="mnSummaryCards"></div>
+
+            <!-- Recent Activity -->
+            <div class="section-row">
+              <h2 class="section-title" style="margin-bottom:0;">Recent Activity</h2>
+            </div>
+            <div class="mn-activity-list" id="mnRecentActivity"></div>
+
+            <!-- Recommended for You -->
+            <div class="section-row">
+              <h2 class="section-title" style="margin-bottom:0;">Recommended for You</h2>
+            </div>
+            <div id="mnRecommendations"></div>
+
+            <!-- Quick Actions -->
+            <div class="section-row">
+              <h2 class="section-title" style="margin-bottom:0;">Quick Actions</h2>
+            </div>
+            <div class="mn-qa-grid" id="mnQuickActions"></div>
+
+            <!-- ═══════ EXISTING SECTIONS (preserved) ═══════ -->
 
             <!-- My Country Snapshot -->
             <div id="countrySnapshot" class="section-card" style="margin-bottom:24px;"></div>
@@ -1666,10 +1732,10 @@
             </div>
 
             <!-- My Workspace -->
-            <div class="section-row">
+            <div class="section-row" id="myWorkspace">
               <h2 class="section-title" style="margin-bottom:0;">&#x1F4BC; My Workspace</h2>
             </div>
-            <div id="myWorkspace"></div>
+            <div id="myWorkspaceContent"></div>
 
             <!-- Recently Used (conditional) -->
             <div id="recentlyUsedSection">
@@ -1724,12 +1790,17 @@
     </main>
 
     <afro-footer></afro-footer>
+    <onboarding-modal></onboarding-modal>
 
+    <script src="/assets/js/data/african-countries.js"></script>
     <script src="/assets/js/components/tool-registry.js"></script>
-    <script src="/assets/js/supabase-auth.js?v=5"></script>
+    <script src="/assets/js/components/onboarding-modal.js"></script>
+    <script src="/assets/js/supabase-auth.js?v=6"></script>
+    <script src="/assets/js/afro-history.js"></script>
     <script src="/assets/js/lib/saved-tools.js"></script>
     <script src="/assets/js/tax-calendar.js"></script>
     <script src="/assets/js/dashboard.js"></script>
+    <script src="/dashboard/dashboard-app.js"></script>
     <script src="/assets/js/components/navbar.min.js"></script>
     <script src="/assets/js/components/footer.min.js"></script>
 
@@ -1773,7 +1844,7 @@
         }
 
         // ===================== INTEREST DEFINITIONS =====================
-        const INTEREST_OPTIONS = [
+        var INTEREST_OPTIONS = window.INTEREST_OPTIONS = [
             { id: 'tax-salary',      emoji: '\uD83D\uDCB0', label: 'Tax & Salary',          categories: ['financial'] },
             { id: 'documents',       emoji: '\uD83D\uDCC4', label: 'Documents & PDF',       categories: ['document-pdf'] },
             { id: 'crypto',          emoji: '\u20BF',        label: 'Crypto & Web3',         categories: ['crypto'] },
@@ -1838,13 +1909,14 @@
             if (!user || !user.id) return null;
             try {
                 var sb = AfroAuth.getSupabase();
-                if (sb) {
-                    var res = await sb.from('profiles').select('*').eq('id', user.id).single();
-                    return res.data || null;
-                }
-                return null;
+                if (!sb) return null;
+                var res = await withTimeout(
+                    sb.from('profiles').select('*').eq('id', user.id).single(),
+                    8000
+                );
+                return (res && !res.error && res.data) ? res.data : null;
             } catch(e) {
-                console.warn('[Profile] fetchFullProfile error:', e);
+                console.warn('[Profile] fetchFullProfile timeout/error:', e.message);
                 return null;
             }
         }
@@ -1862,15 +1934,16 @@
             var user = AfroAuth.getUser();
             if (!user || !user.id) return { ok: false, error: 'Not logged in' };
 
-            // Always persist locally so the dashboard displays it regardless of DB state
+            // Always persist locally for instant display
             localStorage.setItem('afro_profile_extended', JSON.stringify(profileData));
 
+            var dbSynced = false;
             try {
                 var sb = AfroAuth.getSupabase();
-                if (!sb) return { ok: true };
+                if (!sb) return { ok: true, synced: false };
 
                 // Try full update with timeout (ad blockers can block Supabase requests)
-                var res = await withTimeout(sb.from('profiles').update(profileData).eq('id', user.id), 6000);
+                var res = await withTimeout(sb.from('profiles').update(profileData).eq('id', user.id), 8000);
 
                 if (res.error) {
                     // Extended columns may not exist — fall back to name + country only
@@ -1878,20 +1951,22 @@
                     if (profileData.name) basic.name = profileData.name;
                     if (profileData.country) basic.country = profileData.country;
                     if (Object.keys(basic).length > 0) {
-                        var fallback = await withTimeout(sb.from('profiles').update(basic).eq('id', user.id), 6000);
-                        if (fallback.error) return { ok: true };
+                        var fallback = await withTimeout(sb.from('profiles').update(basic).eq('id', user.id), 8000);
+                        dbSynced = !fallback.error;
                     }
+                } else {
+                    dbSynced = true;
                 }
 
                 // Sync auth-level profile (name, country)
                 if (profileData.name || profileData.country) {
-                    await withTimeout(AfroAuth.updateProfile({ name: profileData.name, country: profileData.country }), 6000);
+                    try { await withTimeout(AfroAuth.updateProfile({ name: profileData.name, country: profileData.country }), 6000); } catch(e2) {}
                 }
 
-                return { ok: true };
+                return { ok: true, synced: dbSynced };
             } catch(e) {
-                // Timeout or network error — data is already saved locally
-                return { ok: true };
+                // Timeout or network error — data saved locally only
+                return { ok: true, synced: false };
             }
         }
 
@@ -2016,6 +2091,9 @@
             document.getElementById('editWebsite').value = p.website_url || '';
             // Interests
             selectedInterests = (p.interests && Array.isArray(p.interests)) ? p.interests.slice() : [];
+            // Email digest
+            var digestCb = document.getElementById('editEmailDigest');
+            if (digestCb) digestCb.checked = p.email_digest_enabled !== false;
             // Clear password fields
             document.getElementById('editCurrentPassword').value = '';
             document.getElementById('editNewPassword').value = '';
@@ -2087,6 +2165,7 @@
                 linkedin_url: document.getElementById('editLinkedIn').value.trim(),
                 website_url: document.getElementById('editWebsite').value.trim(),
                 interests: selectedInterests,
+                email_digest_enabled: document.getElementById('editEmailDigest') ? document.getElementById('editEmailDigest').checked : true,
                 updated_at: new Date().toISOString()
             };
 
@@ -2103,7 +2182,11 @@
                 loadProfileDisplay();
                 updateCompletenessRing(calculateCompleteness(currentUser, extendedProfile));
                 closeProfileEditor();
-                showToast('Profile saved successfully');
+                if (result.synced) {
+                    showToast('Profile saved and synced across devices');
+                } else {
+                    showToast('Saved locally. Connect without ad-blocker to sync across devices.', 'info');
+                }
                 // Re-render recommendations with new interests
                 renderSmartRecommendations();
             } else {
@@ -2234,6 +2317,10 @@
         function showDashboard() {
             document.getElementById('authSection').style.display = 'none';
             document.getElementById('dashboardSection').classList.add('active');
+            // Init "My Numbers" command center
+            if (window.DashboardApp) {
+                try { DashboardApp.init(); } catch(e) { console.warn('DashboardApp:', e); }
+            }
             loadDashboardData();
             if (window.AfroDashboard) {
                 try {
@@ -2696,7 +2783,7 @@
         }
 
         function renderMyWorkspace() {
-            var container = document.getElementById('myWorkspace');
+            var container = document.getElementById('myWorkspaceContent');
             if (!container) return;
 
             var tabs = [];
@@ -3109,5 +3196,138 @@
         // Start
         waitForAuth();
     </script>
+
+<!-- AI Chat Widget -->
+<style>
+.ai-fab { position: fixed; bottom: 24px; right: 24px; width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, #008751, #5ddb9e); color: #fff; border: none; cursor: pointer; box-shadow: 0 4px 16px rgba(0,135,81,0.3); z-index: 1000; font-size: 1.3rem; display: flex; align-items: center; justify-content: center; transition: transform 0.2s; }
+.ai-fab:hover { transform: scale(1.08); }
+.ai-fab.has-panel { background: #475569; }
+.ai-panel { display: none; position: fixed; bottom: 88px; right: 24px; width: 360px; max-height: 480px; background: #fff; border-radius: 14px; box-shadow: 0 8px 40px rgba(0,0,0,0.18); z-index: 1000; overflow: hidden; flex-direction: column; }
+.ai-panel.open { display: flex; }
+@media (max-width: 480px) { .ai-panel { bottom: 0; right: 0; left: 0; width: 100%; max-height: 70vh; border-radius: 14px 14px 0 0; } .ai-fab { bottom: 16px; right: 16px; } }
+.ai-panel-head { padding: 14px 18px; background: linear-gradient(135deg, #0c1a10, #1a3520); color: #fff; display: flex; align-items: center; gap: 10px; }
+.ai-panel-head .ai-dot { width: 8px; height: 8px; border-radius: 50%; background: #5ddb9e; animation: pulse 2s infinite; }
+.ai-panel-head span { font-size: 0.82rem; font-weight: 700; }
+.ai-panel-head .close-btn { margin-left: auto; background: none; border: none; color: rgba(255,255,255,0.5); cursor: pointer; font-size: 1.1rem; }
+.ai-panel-msgs { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; min-height: 200px; max-height: 340px; }
+.ai-msg { font-size: 0.82rem; line-height: 1.55; padding: 10px 14px; border-radius: 10px; max-width: 90%; word-wrap: break-word; }
+.ai-msg.user { background: #EEF2FF; color: #1e293b; align-self: flex-end; border-bottom-right-radius: 3px; }
+.ai-msg.bot { background: #F1F5F9; color: #334155; align-self: flex-start; border-bottom-left-radius: 3px; }
+.ai-msg.bot.loading { color: #94A3B8; }
+.ai-panel-input { display: flex; padding: 10px 14px; gap: 8px; border-top: 1px solid #E2E8F0; }
+.ai-panel-input input { flex: 1; border: 1.5px solid #E2E8F0; border-radius: 8px; padding: 10px 14px; font-size: 0.82rem; font-family: inherit; outline: none; }
+.ai-panel-input input:focus { border-color: #008751; }
+.ai-panel-input button { background: #008751; color: #fff; border: none; border-radius: 8px; padding: 10px 16px; font-size: 0.82rem; font-weight: 700; cursor: pointer; white-space: nowrap; }
+.ai-panel-input button:disabled { opacity: 0.5; cursor: not-allowed; }
+.ai-panel-footer { padding: 6px 14px 10px; text-align: center; font-size: 0.68rem; color: #94A3B8; }
+</style>
+
+<button class="ai-fab" id="aiFab" onclick="toggleAiPanel()" title="Ask AI">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+</button>
+
+<div class="ai-panel" id="aiPanel">
+  <div class="ai-panel-head">
+    <div class="ai-dot"></div>
+    <span>AI Assistant</span>
+    <small style="font-size:0.65rem;color:rgba(255,255,255,0.4);margin-left:4px;">Powered by Claude</small>
+    <button class="close-btn" onclick="toggleAiPanel()">&times;</button>
+  </div>
+  <div class="ai-panel-msgs" id="aiPanelMsgs">
+    <div class="ai-msg bot">Hi! I'm your AfroTools assistant. Ask me anything about tax, finance, or your recent calculations.</div>
+  </div>
+  <div class="ai-panel-input">
+    <input id="aiPanelIn" placeholder="Ask a question..." onkeydown="if(event.key==='Enter')sendAiChat()">
+    <button id="aiPanelSend" onclick="sendAiChat()">Send</button>
+  </div>
+  <div class="ai-panel-footer" id="aiPanelFooter"></div>
+</div>
+
+<script>
+var _aiChatHistory = [];
+var _aiPanelOpen = false;
+
+function toggleAiPanel() {
+  _aiPanelOpen = !_aiPanelOpen;
+  document.getElementById('aiPanel').classList.toggle('open', _aiPanelOpen);
+  document.getElementById('aiFab').classList.toggle('has-panel', _aiPanelOpen);
+  if (_aiPanelOpen) document.getElementById('aiPanelIn').focus();
+}
+
+async function sendAiChat() {
+  var input = document.getElementById('aiPanelIn');
+  var msg = input.value.trim();
+  if (!msg) return;
+  input.value = '';
+
+  var msgs = document.getElementById('aiPanelMsgs');
+  msgs.innerHTML += '<div class="ai-msg user">' + msg.replace(/</g, '&lt;') + '</div>';
+
+  var loading = document.createElement('div');
+  loading.className = 'ai-msg bot loading';
+  loading.textContent = 'Thinking...';
+  msgs.appendChild(loading);
+  msgs.scrollTop = msgs.scrollHeight;
+
+  _aiChatHistory.push({ role: 'user', content: msg });
+
+  var reqHeaders = { 'Content-Type': 'application/json' };
+  if (window.AfroAuth) {
+    var t = AfroAuth.getSessionToken();
+    if (t) reqHeaders['Authorization'] = 'Bearer ' + t;
+  }
+
+  // Build user context from profile
+  var userContext = null;
+  if (window.AfroAuth && AfroAuth.isLoggedIn && AfroAuth.isLoggedIn()) {
+    var profile = AfroAuth.getProfile ? AfroAuth.getProfile() : null;
+    if (profile) {
+      userContext = {
+        country: profile.country_code || profile.country,
+        currency: profile.currency,
+        employment: profile.employment_type,
+        tier: profile.subscription_tier || profile.tier || 'free'
+      };
+    }
+  }
+
+  try {
+    var res = await fetch('/.netlify/functions/ai-advisor', {
+      method: 'POST',
+      headers: reqHeaders,
+      body: JSON.stringify({
+        tool: 'dashboard',
+        messages: _aiChatHistory.slice(-10),
+        userContext: userContext
+      })
+    });
+    var data = await res.json();
+    var reply = data.reply || data.text || 'Unable to respond.';
+    loading.textContent = reply;
+    loading.classList.remove('loading');
+    _aiChatHistory.push({ role: 'assistant', content: reply });
+
+    // Show remaining questions for free users
+    if (typeof data.remaining === 'number') {
+      var footer = document.getElementById('aiPanelFooter');
+      if (data.remaining <= 0) {
+        footer.innerHTML = '<a href="/pricing/" style="color:#008751;font-weight:600">Upgrade to Pro</a> for unlimited AI questions';
+      } else if (data.remaining < 5) {
+        footer.textContent = data.remaining + ' questions remaining today';
+      }
+    }
+
+    // Show rate limit error with upgrade CTA
+    if (data.error === 'rate_limited' && data.upgradeCta) {
+      loading.innerHTML = reply + ' <a href="/pricing/" style="color:#008751;font-weight:600">Upgrade to Pro &rarr;</a>';
+    }
+  } catch (e) {
+    loading.textContent = 'Network error. Please try again.';
+    loading.classList.remove('loading');
+  }
+
+  msgs.scrollTop = msgs.scrollHeight;
+}
+</script>
 </body>
 </html>

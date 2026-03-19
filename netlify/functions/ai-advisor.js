@@ -1,10 +1,14 @@
 // netlify/functions/ai-advisor.js
 // Universal AI advisor for all AfroTools calculators
 // Proxies requests to Anthropic API using server-side ANTHROPIC_API_KEY
-// Rate limiting: 5 calls/day (anonymous), 15 calls/day (logged-in free), unlimited (Pro users)
+// Rate limiting: 3 calls/day (anonymous), 10 calls/day (logged-in free), unlimited (Pro users)
 
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 const AUTH_SECRET = process.env.AUTH_SECRET;
+const SUPABASE_DATA_URL = process.env.SUPABASE_URL || 'https://jbmhfpkzbgyeodsqhprx.supabase.co';
+const SUPABASE_DATA_KEY = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY;
+const SUPABASE_AUTH_URL = process.env.SUPABASE_AUTH_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
+const SUPABASE_AUTH_KEY = process.env.SUPABASE_AUTH_SERVICE_KEY || process.env.SUPABASE_SERVICE_KEY;
 
 // In-memory rate limit store (per instance — Netlify Blobs for persistence)
 let _rateStore;
@@ -28,7 +32,7 @@ async function checkRateLimit(event) {
   const key = `ai_rate_${ip}_${today}`;
 
   // Check if user is authenticated (higher limit)
-  let limit = 5; // anonymous users: 5 requests/day
+  let limit = 3; // anonymous users: 3 requests/day
   let isPro = false;
   let isLoggedIn = false;
   const authHeader = event.headers.authorization || '';
@@ -43,7 +47,7 @@ async function checkRateLimit(event) {
         if (payload.exp > Date.now()) {
           isPro = payload.tier === 'pro';
           isLoggedIn = true;
-          limit = isPro ? Infinity : 15; // Pro: unlimited, logged-in free: 15/day
+          limit = isPro ? Infinity : 10; // Pro: unlimited, logged-in free: 10/day
         }
       }
     } catch {}
@@ -63,6 +67,97 @@ async function checkRateLimit(event) {
   try { await store.set(key, String(count + 1), { metadata: { ttl: 86400 } }); } catch {}
 
   return { allowed: true, remaining: limit - count - 1, limit };
+}
+
+// Extract user_id from Supabase JWT (decode without verification — Supabase handles auth)
+function extractUserId(authHeader) {
+  if (!authHeader || !authHeader.startsWith('Bearer ')) return null;
+  try {
+    const token = authHeader.replace('Bearer ', '');
+    const parts = token.split('.');
+    if (parts.length === 3) {
+      const payload = JSON.parse(Buffer.from(parts[1], 'base64url').toString());
+      return payload.sub || null;
+    }
+  } catch {}
+  return null;
+}
+
+// Fetch user context (profile + recent history) in parallel
+async function fetchUserContext(userId, userContextFromClient) {
+  if (!userId) return userContextFromClient || null;
+
+  const result = { ...(userContextFromClient || {}) };
+  const fetches = [];
+
+  // Fetch profile from AUTH Supabase
+  if (SUPABASE_AUTH_KEY && !result.country) {
+    fetches.push(
+      fetch(`${SUPABASE_AUTH_URL}/rest/v1/profiles?id=eq.${userId}&select=country_code,currency,employment_type,subscription_tier&limit=1`, {
+        headers: { apikey: SUPABASE_AUTH_KEY, Authorization: `Bearer ${SUPABASE_AUTH_KEY}` }
+      }).then(r => r.ok ? r.json() : []).then(rows => {
+        if (rows[0]) {
+          result.country = rows[0].country_code || result.country;
+          result.currency = rows[0].currency || result.currency;
+          result.employment = rows[0].employment_type || result.employment;
+          result.tier = rows[0].subscription_tier || result.tier;
+        }
+      }).catch(() => {})
+    );
+  }
+
+  // Fetch recent calculations from DATA Supabase
+  if (SUPABASE_DATA_KEY) {
+    fetches.push(
+      fetch(`${SUPABASE_DATA_URL}/rest/v1/calculation_history?user_id=eq.${userId}&select=tool_slug,tool_name,inputs,outputs,created_at&order=created_at.desc&limit=5`, {
+        headers: { apikey: SUPABASE_DATA_KEY, Authorization: `Bearer ${SUPABASE_DATA_KEY}` }
+      }).then(r => r.ok ? r.json() : []).then(rows => {
+        if (rows && rows.length > 0) {
+          result.recentCalcs = rows.map(r => ({
+            tool: r.tool_name || r.tool_slug,
+            slug: r.tool_slug,
+            date: r.created_at ? new Date(r.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : '',
+            gross: r.inputs?.grossSalary || r.inputs?.gross,
+            net: r.outputs?.netPay || r.outputs?.netMonthly || r.outputs?.net,
+          }));
+        }
+      }).catch(() => {})
+    );
+  }
+
+  if (fetches.length > 0) {
+    // 3s timeout for context fetches — don't delay the AI response
+    await Promise.race([
+      Promise.allSettled(fetches),
+      new Promise(resolve => setTimeout(resolve, 3000))
+    ]);
+  }
+
+  return Object.keys(result).length > 0 ? result : null;
+}
+
+// Build user context string for system prompt
+function buildUserContextPrompt(userCtx) {
+  if (!userCtx) return '';
+  let parts = [];
+
+  if (userCtx.country || userCtx.currency || userCtx.employment) {
+    parts.push('USER CONTEXT:');
+    if (userCtx.country) parts.push(`- Country: ${userCtx.country}`);
+    if (userCtx.currency) parts.push(`- Currency: ${userCtx.currency}`);
+    if (userCtx.employment) parts.push(`- Employment: ${userCtx.employment}`);
+    if (userCtx.tier) parts.push(`- Subscription: ${userCtx.tier}`);
+  }
+
+  if (userCtx.recentCalcs && userCtx.recentCalcs.length > 0) {
+    parts.push('RECENT ACTIVITY:');
+    for (const calc of userCtx.recentCalcs) {
+      const summary = calc.gross ? `gross ${calc.gross}` : '';
+      parts.push(`- ${calc.tool}: ${summary} (${calc.date})`);
+    }
+  }
+
+  return parts.length > 0 ? '\n\n' + parts.join('\n') : '';
 }
 
 // Per-country/tool context injected into system prompt
@@ -92,6 +187,38 @@ const TOOL_CONTEXT = {
   "mw-paye": "Malawi PAYE expert. MRA graduated tax: 0% ≤MWK 100,000/month, 15% to 400k, 25% to 800k, 30% to 1M, 35% above. MASM pension 10% employee.",
   "sz-paye": "Eswatini PAYE expert. SRA progressive: 20–33% bands. SNPF (National Provident Fund) 5% employee.",
   "ls-paye": "Lesotho PAYE expert. LRA progressive: 20% to LSL 59,136/year, 30% above. LNPF pension contributions.",
+
+  // ── FRANCOPHONE PAYE (French) ───────────────────────────────────────
+  "ci-paye-fr": "Expert en fiscalité ivoirienne. IS (Impôt sur les Salaires) progressif 9 tranches (0%-35%). CN (Contribution Nationale) 1,5%. CNPS 6,3% salarié, plafond 70 000 FCFA/mois. DGI administre. IMPORTANT: Répondez TOUJOURS en français. Utilisez les termes fiscaux français appropriés.",
+  "sn-paye-fr": "Expert en fiscalité sénégalaise. IRPP barème progressif 6 tranches (0%-40%) avec système de quotient familial. IPRES 5,6% salarié (retraite). CSS 5,6% (sécurité sociale). DGID administre. IMPORTANT: Répondez TOUJOURS en français.",
+  "cm-paye-fr": "Expert en fiscalité camerounaise. IRPP progressif 4 tranches (10%-35%) + CAC (Centimes Additionnels Communaux) 10% de l'IRPP. CNPS 4,2% salarié, plafond 750 000 FCFA/mois. DGI administre. IMPORTANT: Répondez TOUJOURS en français.",
+  "cd-paye-fr": "Expert en fiscalité congolaise (RDC). IPR (Impôt Professionnel sur les Rémunérations) progressif 4 tranches (3%-40%). CNSS 5% salarié. DGI administre. Monnaie: Franc Congolais (FC/CDF). IMPORTANT: Répondez TOUJOURS en français.",
+  "ma-paye-fr": "Expert en fiscalité marocaine. IR (Impôt sur le Revenu) progressif 6 tranches (0%-38%). CNSS 4,48% salarié, plafonné à 6 000 MAD/mois. AMO 2,26%. Déduction frais professionnels 20% (max 30 000 MAD/an). DGI administre. IMPORTANT: Répondez TOUJOURS en français.",
+  "dz-paye-fr": "Expert en fiscalité algérienne. IRG (Impôt sur le Revenu Global) progressif 6 tranches (0%-35%). CNAS 9% salarié. Déduction frais professionnels 25%. DGI administre. Monnaie: Dinar algérien (DA/DZD). IMPORTANT: Répondez TOUJOURS en français.",
+  "tn-paye-fr": "Expert en fiscalité tunisienne. IRPP progressif 5 tranches (0%-35%). CNSS 9,18% salarié. Déduction frais professionnels 10%. DGI administre. Monnaie: Dinar tunisien (DT/TND). IMPORTANT: Répondez TOUJOURS en français.",
+  "ml-paye-fr": "Expert en fiscalité malienne. ITS (Impôt sur les Traitements et Salaires) progressif 5 tranches (0%-40%). INPS 3,6% salarié. DGI administre. Monnaie: FCFA (XOF). IMPORTANT: Répondez TOUJOURS en français.",
+  "bf-paye-fr": "Expert en fiscalité burkinabè. IUTS (Impôt Unique sur les Traitements et Salaires) progressif 6 tranches (0%-27,5%). CNSS 5,5% salarié, plafond 600 000 FCFA/mois. DGI administre. IMPORTANT: Répondez TOUJOURS en français.",
+  "ne-paye-fr": "Expert en fiscalité nigérienne. IUTS progressif 6 tranches (0%-35%). CNSS 4,17% salarié. DGI administre. Monnaie: FCFA (XOF). IMPORTANT: Répondez TOUJOURS en français.",
+  "gn-paye-fr": "Expert en fiscalité guinéenne. ITS (Impôt sur les Traitements et Salaires) progressif 7 tranches (0%-35%). CNSS 5% salarié. DNI administre. Monnaie: Franc Guinéen (FG/GNF). IMPORTANT: Répondez TOUJOURS en français.",
+  "cg-paye-fr": "Expert en fiscalité congolaise (Brazzaville). IRPP progressif 5 tranches (1%-45%). CNSS 4% salarié. DGI administre. Monnaie: FCFA (XAF). IMPORTANT: Répondez TOUJOURS en français.",
+  "ga-paye-fr": "Expert en fiscalité gabonaise. IRPP progressif 8 tranches (0%-35%). CNSS 2,5% salarié, plafond 1 500 000 FCFA/mois. CNAMGS 2% (assurance maladie). DGI administre. IMPORTANT: Répondez TOUJOURS en français.",
+  "tg-paye-fr": "Expert en fiscalité togolaise. IRPP progressif 5 tranches (0%-35%). CNSS 4% salarié. OTR (Office Togolais des Recettes) administre. Monnaie: FCFA (XOF). IMPORTANT: Répondez TOUJOURS en français.",
+
+  // ── FRANCOPHONE TVA (French) ──────────────────────────────────────
+  "ci-tva-fr": "Expert TVA ivoirienne. Taux normal 18%, réduit 9%. DGI administre. Répondez en français.",
+  "sn-tva-fr": "Expert TVA sénégalaise. Taux normal 18%, réduit 10%. DGID administre. Répondez en français.",
+  "cm-tva-fr": "Expert TVA camerounaise. Taux normal 19,25% (TVA 17,5% + CAC 10%). DGI administre. Répondez en français.",
+  "cd-tva-fr": "Expert TVA congolaise (RDC). Taux unique 16%. DGI administre. Répondez en français.",
+  "ma-tva-fr": "Expert TVA marocaine. Taux normal 20%, réduits 14%/10%/7%. DGI administre. Répondez en français.",
+  "dz-tva-fr": "Expert TVA algérienne. Taux normal 19%, réduit 9%. DGI administre. Répondez en français.",
+  "tn-tva-fr": "Expert TVA tunisienne. Taux normal 19%, réduits 13%/7%. DGI administre. Répondez en français.",
+  "ml-tva-fr": "Expert TVA malienne. Taux unique 18%. DGI administre. Répondez en français.",
+  "bf-tva-fr": "Expert TVA burkinabè. Taux unique 18%. DGI administre. Répondez en français.",
+  "ne-tva-fr": "Expert TVA nigérienne. Taux unique 19%. DGI administre. Répondez en français.",
+  "gn-tva-fr": "Expert TVA guinéenne. Taux unique 18%. DNI administre. Répondez en français.",
+  "cg-tva-fr": "Expert TVA congolaise (Brazzaville). Taux normal 18%, réduit 5%. DGI administre. Répondez en français.",
+  "ga-tva-fr": "Expert TVA gabonaise. Taux normal 18%, réduit 10%. DGI administre. Répondez en français.",
+  "tg-tva-fr": "Expert TVA togolaise. Taux normal 18%, réduit 10%. OTR administre. Répondez en français.",
 
   // ── VAT ──────────────────────────────────────────────────────────────
   "ke-vat": "Kenya VAT expert. KRA standard 16%, petroleum reduced 8%, zero-rated: exports, coffee/tea. Exempt: financial services, medical, education, agricultural inputs, passenger transport. Registration threshold KES 5M/year. eTIMS mandatory for VAT-registered businesses.",
@@ -195,7 +322,56 @@ const TOOL_CONTEXT = {
   // ── REGEX TESTER ──────────────────────────────────────────────────
   "regex-tester": "You are a regex expert. Help users write, debug, and understand regular expressions. Explain patterns in plain English. Common African patterns: Nigerian phone (+234), Kenya (+254), SA (+27), M-Pesa codes, BVN, NIN, Ghana Card, EAC Passport. Cover JavaScript, Python, and PHP regex syntax differences. Warn about catastrophic backtracking with nested quantifiers. Keep answers concise with example patterns.",
   "json-formatter": "You are a JSON expert. Help users understand JSON structure, fix syntax errors, explain data schemas, and convert between formats. Common JSON issues: trailing commas (not allowed), single quotes (must be double), unquoted keys, missing commas. Explain JSONPath syntax ($.key, $[0], $.array[*].field). Help generate TypeScript interfaces and JSON Schema from data. Explain differences between JSON, JSONL, JSON5. Keep answers concise with examples.",
+
+  // ── DASHBOARD & GENERAL ───────────────────────────────────────────
+  "dashboard": "You are the AfroTools assistant on the user's dashboard. Help them navigate tools, understand their financial data, and plan next steps. You can reference their recent calculations and suggest workflows. Be concise and helpful. Suggest specific AfroTools calculators when relevant.",
+  "general": "You are the AfroTools assistant. Help users find the right tool, answer general questions about African tax, finance, and business. Suggest specific AfroTools calculators when relevant. Cover all 54 African countries.",
 };
+
+// Tool affinity map — suggests related tools after a calculation
+const TOOL_AFFINITY = {
+  'ng-paye': ['savings-goal', 'pension-proj', 'side-hustle-tax', 'salary-compare'],
+  'ke-paye': ['savings-goal', 'pension-proj', 'side-hustle-tax', 'salary-compare'],
+  'za-paye': ['savings-goal', 'retirement-planner', 'side-hustle-tax', 'salary-compare'],
+  'gh-paye': ['savings-goal', 'pension-proj', 'side-hustle-tax', 'salary-compare'],
+  'eg-paye': ['savings-goal', 'pension-proj', 'salary-compare'],
+  'savings-goal': ['pension-proj', 'inflation-calc', 'retirement-planner'],
+  'pension-proj': ['retirement-planner', 'savings-goal', 'inflation-calc'],
+  'retirement-planner': ['pension-proj', 'savings-goal', 'inflation-calc'],
+  'car-loan': ['bank-charges', 'savings-goal', 'inflation-calc'],
+  'property-tax': ['rental-yield', 'housing-fund', 'inflation-calc'],
+  'rental-yield': ['property-tax', 'housing-fund', 'savings-goal'],
+  'housing-fund': ['property-tax', 'rental-yield', 'savings-goal'],
+  'crypto-tax': ['crypto-portfolio', 'crypto-profit', 'side-hustle-tax'],
+  'crypto-portfolio': ['crypto-tax', 'crypto-profit', 'crypto-dca'],
+  'salary-compare': ['side-hustle-tax', 'savings-goal', 'pension-proj'],
+  'side-hustle-tax': ['salary-compare', 'savings-goal', 'bank-charges'],
+  'inflation-calc': ['savings-goal', 'retirement-planner', 'pension-proj'],
+  'bank-charges': ['savings-goal', 'car-loan'],
+  'interest-rates': ['savings-goal', 'car-loan', 'inflation-calc'],
+};
+
+// Strip lone surrogates that break JSON serialization to the Anthropic API
+function sanitizeString(str) {
+  if (typeof str !== 'string') return str;
+  // Remove unpaired high surrogates (D800-DBFF not followed by DC00-DFFF)
+  // and unpaired low surrogates (DC00-DFFF not preceded by D800-DBFF)
+  return str.replace(/[\uD800-\uDBFF](?![\uDC00-\uDFFF])/g, '')
+            .replace(/(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/g, '');
+}
+
+function sanitizeMessages(messages) {
+  return messages.map(m => ({
+    ...m,
+    content: typeof m.content === 'string'
+      ? sanitizeString(m.content)
+      : Array.isArray(m.content)
+        ? m.content.map(block =>
+            block.type === 'text' ? { ...block, text: sanitizeString(block.text) } : block
+          )
+        : m.content
+  }));
+}
 
 exports.handler = async function(event) {
   // CORS: allow production + Netlify preview deployments + localhost dev
@@ -241,7 +417,8 @@ exports.handler = async function(event) {
       statusCode: 429, headers,
       body: JSON.stringify({
         error: "rate_limited",
-        reply: "You've reached your daily AI advisor limit. Sign up or log in for more questions, or try again tomorrow.",
+        reply: "You've reached your daily AI advisor limit. Upgrade to AfroTools Pro for unlimited AI questions, or try again tomorrow.",
+        upgradeCta: true,
         remaining: 0,
         limit: rateResult.limit,
         resetAt: rateResult.resetAt
@@ -256,12 +433,18 @@ exports.handler = async function(event) {
   try { body = JSON.parse(event.body); }
   catch { return { statusCode: 400, headers, body: JSON.stringify({ error: "Invalid JSON body" }) }; }
 
-  const { message, messages, tool, context, system: clientSystem } = body;
+  const { message, messages, tool, context, system: clientSystem, userContext: clientUserCtx } = body;
+
+  // Fetch user context (profile + history) in parallel with prompt construction
+  const userId = extractUserId(event.headers.authorization || '');
+  const userCtxPromise = fetchUserContext(userId, clientUserCtx);
 
   // System prompt construction
   const isMedical = tool === "medical-report";
   const isJapa = tool && tool.startsWith("japa");
+  const isPdfDoc = tool === "pdf-chat" || tool === "pdf-translate";
   const isSiteAssistant = !tool || tool === "site-assistant";
+  const isDashboard = tool === "dashboard" || tool === "general";
 
   let systemPrompt;
 
@@ -273,18 +456,42 @@ exports.handler = async function(event) {
       ? "You are the AfroTools Medical Report Interpreter — you help everyday people understand their lab results in simple, clear language. "
       : isJapa
       ? "You are the AfroTools Japa Advisor — an expert on African emigration, visa pathways, and relocation planning. "
+      : isDashboard
+      ? "You are the AfroTools AI Advisor — helping users navigate their financial tools and data. "
       : "You are the AfroTools AI Advisor — an expert in African tax, payroll, VAT, and financial regulations across all 54 African countries. ";
 
     if (tool && TOOL_CONTEXT[tool]) {
       systemPrompt += TOOL_CONTEXT[tool] + " ";
     }
 
+    // French tool detection — ensure AI responds in French
+    if (tool && tool.endsWith('-fr')) {
+      systemPrompt += "IMPORTANT: Répondez TOUJOURS en français. Utilisez les termes fiscaux français appropriés. ";
+    }
+
+    // Inject user context (country, currency, recent activity)
+    const userCtx = await userCtxPromise;
+    const userCtxStr = buildUserContextPrompt(userCtx);
+    if (userCtxStr) {
+      systemPrompt += userCtxStr + "\n\n";
+      systemPrompt += "INSTRUCTIONS: Reference the user's country and currency in your answers. If the user's question relates to a previous calculation, reference it. Suggest related tools when relevant. ";
+      if (userCtx && userCtx.tier === 'free') {
+        systemPrompt += "If the user asks about a Pro feature, mention the upgrade option briefly. ";
+      }
+    }
+
     if (context) {
-      systemPrompt += `Live calculation data from the page: ${context}. Reference these exact figures in your answer. `;
+      if (isPdfDoc) {
+        systemPrompt += `Document text extracted from the user's PDF: ${context}. Answer based on this document content. `;
+      } else {
+        systemPrompt += `Live calculation data from the page: ${context}. Reference these exact figures in your answer. `;
+      }
     }
 
     if (isMedical) {
       systemPrompt += "Rules: Be thorough but use plain language a non-medical person can understand. Explain each test result clearly. Flag anything abnormal. Always end with a reminder that this is educational, not a diagnosis, and they should discuss results with their doctor. No markdown formatting. Write in warm, reassuring conversational sentences.";
+    } else if (isPdfDoc) {
+      systemPrompt += "Rules: Be thorough and accurate. Cite page numbers when possible. Use **bold** for emphasis and numbered/bulleted lists for clarity. If the answer is not in the document, say so clearly.";
     } else {
       systemPrompt += "Rules: Under 220 words. Specific with numbers and percentages. Use the user's local currency. Be direct and practical — give exact figures, not vague guidance. You may use **bold** for emphasis and [text](url) for links. Do NOT use markdown headers (#), bullet lists with dashes, or code blocks. Write in plain conversational sentences. If you don't know the exact current rate, say so and suggest the user verify with the official tax authority.";
     }
@@ -310,6 +517,10 @@ exports.handler = async function(event) {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 15000);
 
+    // Sanitize all text to remove lone surrogates that break JSON
+    const safeSystem = sanitizeString(systemPrompt);
+    const safeMessages = sanitizeMessages(apiMessages);
+
     const response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       signal: controller.signal,
@@ -320,9 +531,9 @@ exports.handler = async function(event) {
       },
       body: JSON.stringify({
         model: "claude-haiku-4-5-20251001",
-        max_tokens: isMedical ? 1500 : isJapa ? 800 : isSiteAssistant ? 700 : 600,
-        system: systemPrompt,
-        messages: apiMessages
+        max_tokens: isMedical ? 1500 : isPdfDoc ? 1200 : isJapa ? 800 : isSiteAssistant ? 700 : isDashboard ? 800 : 600,
+        system: safeSystem,
+        messages: safeMessages
       })
     });
 
@@ -339,10 +550,14 @@ exports.handler = async function(event) {
 
     const data = await response.json();
     const reply = data?.content?.[0]?.text ?? "Sorry, I could not generate a response. Please try again.";
+
+    // Cross-tool suggestions based on affinity map
+    const suggestedTools = tool && TOOL_AFFINITY[tool] ? TOOL_AFFINITY[tool].slice(0, 3) : [];
+
     return {
       statusCode: 200, headers,
       // Return both 'reply' and 'text' — some pages read data.reply, others data.text
-      body: JSON.stringify({ reply, text: reply, remaining: rateResult.remaining })
+      body: JSON.stringify({ reply, text: reply, remaining: rateResult.remaining, suggestedTools })
     };
 
   } catch (err) {

@@ -200,6 +200,9 @@
 }
 </script>
 <script src="/assets/js/lib/save-state.js"></script>
+<script src="/assets/js/lib/toast.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js" defer></script>
+<script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
 <div class="priv-bar">&#1D4ED8; Your files <strong>never leave your browser</strong> &#8212; zero server uploads</div>
@@ -246,6 +249,7 @@
     <div class="tb-sep"></div>
     <div class="tb-zoom"><button id="zo">&#8722;</button><span id="zl">100%</span><button id="zi">+</button></div>
     <button class="tb-btn tb-dl" id="tbDL"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>Download</span></button>
+    <save-to-vault id="tbVault" tool-slug="pdf-workspace" file-name="document.pdf" style="margin-left:4px"></save-to-vault>
     <button class="tb-close" id="tbX">&#215;</button>
   </div>
   <div class="ws-body"><button class="sb-toggle" id="sbTog">&#9776;</button><div class="sidebar" id="sb"></div><div class="main-view" id="mv"></div></div>
@@ -303,6 +307,8 @@
 <script src="/assets/js/components/newsletter-cta.min.js" defer></script>
 <script src="/assets/js/lib/saved-tools.js" defer></script>
 <script src="/assets/js/favorites-widget.js" defer></script>
+<script src="/assets/js/components/save-to-vault-button.js" defer></script>
+<script src="/assets/js/afro-vault.js" defer></script>
 <div class="p-ov" id="pOv"><div class="p-card"><div class="p-spin"></div><h3 id="pT">Processing...</h3><p id="pS"></p><div class="p-bar"><div class="p-fill" id="pF"></div></div></div></div>
 <div class="toast" id="toast"></div>
 
@@ -603,7 +609,7 @@ async function buildPDF(){var src=await PDFLib.PDFDocument.load(pB.slice(),{igno
   for(var i=0;i<cp.length;i++){var pg=cp[i];var oi=po[i];if(pr[oi])pg.setRotation(PDFLib.degrees((pg.getRotation().angle||0)+pr[oi]));doc.addPage(pg)}return doc}
 
 async function dlPDF(){showP("Building PDF...","");try{var doc=await buildPDF();var b=await doc.save();hideP();dlB(fn.replace(".pdf","")+"_edited.pdf",new Uint8Array(b));toast("Downloaded!")}catch(e){hideP();toast("Error: "+e.message,1)}}
-function dlB(n,b){var bl=new Blob([b],{type:"application/pdf"});var u=URL.createObjectURL(bl);var a=document.createElement("a");a.href=u;a.download=n;document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(function(){URL.revokeObjectURL(u)},5000)}
+function dlB(n,b){var bl=new Blob([b],{type:"application/pdf"});var u=URL.createObjectURL(bl);var a=document.createElement("a");a.href=u;a.download=n;document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(function(){URL.revokeObjectURL(u)},5000);var vb=document.getElementById("tbVault");if(vb&&vb.setFile)vb.setFile(bl,n)}
 function opM(){$("mOv").classList.add("on")}
 function clM(){$("mOv").classList.remove("on")}
 function showP(t,s){$("pT").textContent=t;$("pS").textContent=s;$("pF").style.width="0%";$("pOv").classList.add("on")}
@@ -647,6 +653,19 @@ function toast(m,e){var t=$("toast");t.textContent=m;t.className="toast"+(e?" er
   window.pdfSaveOp=function(name,operation){ss.save({title:name,data:{operation:operation}});render();};
 
   render();
+})();
+</script>
+
+<script>
+// Save/Share buttons — manual placement needed
+(function(){
+  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
+  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
+  div.innerHTML = '<share-result-button tool-name="Pdf Workspace" tool-slug="pdf-workspace"></share-result-button>';
+  target.appendChild(div);
 })();
 </script>
 </body>

@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-D859CGF391');
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculateur Salaire Net RDC 2026 — IPR, CNSS | AfroTools</title>
+<meta name="description" content="Calculateur de salaire net RDC 2026. IPR progressif (3%–40%), cotisations CNSS (5% salarié). Barème DGI officiel. Téléchargement PDF gratuit.">
+<link rel="canonical" href="https://afrotools.com/fr/rdc/calculateur-salaire-net">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/rdc/calculateur-salaire-net">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/dr-congo/cd-paye">
+<meta property="og:title"       content="Calculateur Salaire Net RDC 2026 | AfroTools">
+<meta property="og:description" content="IPR progressif (3%–40%), cotisations CNSS 5% salarié. Barème DGI 2026. PDF gratuit.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:type"        content="website">
+<meta property="og:url"         content="https://afrotools.com/fr/rdc/calculateur-salaire-net">
+<meta property="og:locale"      content="fr_CD">
+<meta property="og:site_name"   content="AfroTools">
+<meta name="twitter:card"       content="summary_large_image">
+<meta name="twitter:title"      content="Calculateur Salaire Net RDC 2026 | AfroTools">
+<meta name="twitter:description" content="IPR progressif 3%–40%, CNSS 5% salarié. Barème DGI 2026.">
+<meta name="robots"             content="index, follow">
+<meta name="author"             content="AfroTools">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com"},{"@type":"ListItem","position":2,"name":"RD Congo","item":"https://afrotools.com/fr/rdc"},{"@type":"ListItem","position":3,"name":"Calculateur Salaire Net","item":"https://afrotools.com/fr/rdc/calculateur-salaire-net"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Calculateur Salaire Net RDC 2026","url":"https://afrotools.com/fr/rdc/calculateur-salaire-net","description":"Calculez votre salaire net en RD Congo avec le barème IPR 2026 de la DGI et les cotisations CNSS.","applicationCategory":"FinanceApplication","operatingSystem":"Web","inLanguage":"fr","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"CDF"},"provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Quels sont les taux IPR en RDC pour 2026 ?","acceptedAnswer":{"@type":"Answer","text":"L'IPR en RDC est un impôt progressif sur les rémunérations avec quatre tranches annuelles : 0 à 524 160 FC à 3%, 524 161 à 1 428 000 FC à 15%, 1 428 001 à 2 700 000 FC à 30%, et au-delà de 2 700 000 FC à 40%."}},{"@type":"Question","name":"Qu'est-ce que la CNSS en RDC ?","acceptedAnswer":{"@type":"Answer","text":"La Caisse Nationale de Sécurité Sociale (CNSS) est l'organisme de sécurité sociale de la RD Congo. La cotisation salarié est de 5% du salaire brut, déductible du revenu imposable avant le calcul de l'IPR."}},{"@type":"Question","name":"La cotisation CNSS est-elle déductible de l'IPR ?","acceptedAnswer":{"@type":"Answer","text":"Oui, la cotisation CNSS du salarié (5%) est intégralement déductible du salaire brut avant le calcul de l'Impôt Professionnel sur les Rémunérations (IPR)."}},{"@type":"Question","name":"Comment est calculé le taux effectif d'imposition ?","acceptedAnswer":{"@type":"Answer","text":"Le taux effectif = (Total IPR / Salaire brut) × 100%. Il représente le pourcentage moyen du salaire brut payé en impôt sur le revenu. Le taux marginal peut être plus élevé en raison du barème progressif."}},{"@type":"Question","name":"Quelle est la différence entre l'IPR et l'IRPP ?","acceptedAnswer":{"@type":"Answer","text":"En RDC, l'impôt sur les salaires s'appelle IPR (Impôt Professionnel sur les Rémunérations), et non IRPP comme dans d'autres pays francophones. L'IPR est prélevé à la source par l'employeur et reversé à la DGI."}}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/assets/css/calculator.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --calc-accent: #007FFF;
+    --calc-accent-rgb: 0,127,255;
+    --calc-accent-subtle: #007FFF12;
+    --calc-gold: #F7D618;
+    --calc-gold-rgb: 247,214,24;
+    --cd-blue:   #007FFF;
+    --cd-red:    #CE1021;
+    --cd-gold:   #F7D618;
+    --cd-black:  #111827;
+    --cd-dark:   #0a1a30;
+  }
+  .tool-hero::after { content: '\1F1E8\1F1E9'; position: absolute; right: 5%; top: 50%; transform: translateY(-50%); font-size: 8rem; opacity: .06; pointer-events: none; }
+  .tool-hero { background: #0a1a30; }
+
+  .tool-info-card{background:#fff;border:1px solid #DBEAFE;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+  .tool-info-header{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid #EFF6FF;background:#F5F9FF}
+  .tool-info-img{width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0}
+  .tool-info-meta{flex:1;min-width:0}
+  .tool-info-name{font-size:.82rem;font-weight:700;color:#0f172a;line-height:1.2;margin-bottom:2px}
+  .tool-info-cat{font-size:.62rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B8CAE}
+  .tool-info-body{padding:14px 18px}
+  .tool-info-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
+  .tool-stat{text-align:center}
+  .tool-stat-val{font-size:1rem;font-weight:800;color:#007AFF;line-height:1}
+  .tool-stat-lbl{font-size:.6rem;font-weight:500;color:#6B8CAE;text-transform:uppercase;letter-spacing:.04em;margin-top:3px}
+  .tool-info-features{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+  .tool-feat{font-size:.62rem;font-weight:600;padding:3px 8px;background:#EFF6FF;border:1px solid #DBEAFE;border-radius:3px;color:#0f172a}
+  .tool-info-footer{display:flex;justify-content:space-between;align-items:center;padding:10px 18px;border-top:1px solid #EFF6FF;background:#FAFBFF}
+  .tool-info-updated{font-size:.62rem;color:#6B8CAE}
+  .tool-info-actions{display:flex;gap:6px}
+  .tool-info-action{font-size:.62rem;font-weight:600;color:#007AFF;text-decoration:none;padding:3px 8px;border:1px solid #DBEAFE;border-radius:4px;background:#fff;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
+  .tool-info-action:hover{background:#EFF6FF;border-color:#007AFF}
+  @media(max-width:900px){.tool-info-card{order:1}}
+  @media(max-width:480px){.tool-info-stats{grid-template-columns:1fr 1fr 1fr}.tool-info-header{padding:12px 14px}.tool-info-body{padding:10px 14px}}
+</style>
+<script src="/assets/js/lib/chart-config.js"></script>
+
+  <script src="/assets/js/afro-history.js" defer></script>
+  <script src="/assets/js/components/save-result-button.js" defer></script>
+  <script src="/assets/js/components/share-card-generator.js" defer></script>
+  <script src="/assets/js/components/share-button.js" defer></script>
+  <script src="/assets/js/utils/french-locale.js"></script>
+  <script src="/engines/francophone-paye-engine.js"></script>
+</head>
+<body class="tool-page">
+<afro-navbar active="tools"></afro-navbar>
+
+<!-- HERO -->
+<section class="tool-hero">
+  <div class="tool-hero-inner">
+    <nav class="breadcrumb" aria-label="Fil d'Ariane">
+      <a href="/">Home</a> / <a href="/fr/rdc/">&#x1F1E8;&#x1F1E9; RD Congo</a> / <span>Calculateur Salaire Net</span>
+    </nav>
+    <h1>Calculateur de Salaire Net<br><em>RD Congo 2026</em></h1>
+    <p class="hero-sub">IPR progressif (3%&ndash;40%), cotisations CNSS (5% salari&eacute;). Bar&egrave;me DGI 2026.</p>
+    <div class="hero-badges">
+      <span class="badge b-gold">&#10022; Conseiller IA inclus</span>
+      <span class="badge b-blue">DGI 2026 V&eacute;rifi&eacute;</span>
+      <span class="badge b-red">CNSS &middot; 5% salari&eacute;</span>
+      <span class="badge b-grey">FC &middot; Franc Congolais</span>
+    </div>
+    <p class="hero-meta">Derni&egrave;re v&eacute;rification : 2026 &middot; Source : DGI (dgimpots.cd) &middot; Code des Imp&ocirc;ts &middot; R&egrave;glementation CNSS</p>
+  </div>
+</section>
+
+<!-- BARRE DE MISE &Agrave; JOUR -->
+<div class="amendment-bar">
+  <div class="amendment-bar-inner">
+    <p><strong>Faits cl&eacute;s 2026 :</strong> L'IPR (Imp&ocirc;t Professionnel sur les R&eacute;mun&eacute;rations) est calcul&eacute; sur le revenu imposable annuel apr&egrave;s d&eacute;duction de la CNSS. Quatre tranches : 0&ndash;524 160 FC &agrave; 3% ; 524 161&ndash;1 428 000 FC &agrave; 15% ; 1 428 001&ndash;2 700 000 FC &agrave; 30% ; au-del&agrave; de 2 700 000 FC &agrave; 40%. Cotisation CNSS salari&eacute; : 5%, d&eacute;ductible du revenu imposable.</p>
+  </div>
+</div>
+
+<!-- CONTENU PRINCIPAL -->
+<div class="tool-main">
+  <div class="tool-main-inner">
+
+    <!-- COLONNE GAUCHE -->
+    <div>
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Vos informations</span>
+          <span class="card-sub">Franc Congolais &middot; FC</span>
+        </div>
+        <div class="card-body">
+
+          <!-- CURSEUR SALAIRE -->
+          <div class="slider-wrap">
+            <div class="slider-row">
+              <span class="slider-label">Salaire brut annuel</span>
+              <span class="slider-val" id="sliderVal">FC 18 000 000</span>
+            </div>
+            <input type="range" id="salarySlider" min="1000000" max="500000000" step="1000000" value="18000000" oninput="onSlider(this)">
+            <div class="slider-limits"><span>FC 1 000 000</span><span>FC 500 000 000</span></div>
+          </div>
+
+          <!-- SAISIE MANUELLE -->
+          <div class="field">
+            <div class="f-label"><span class="f-label-text">Ou saisissez le montant annuel exact</span><span class="f-hint">Avant toute d&eacute;duction</span></div>
+            <div class="f-wrap">
+              <span class="f-prefix">FC</span>
+              <input type="number" class="f-input" id="grossSalary" placeholder="18 000 000" min="0" step="1000000" value="18000000" oninput="onInput(this)">
+            </div>
+          </div>
+          <!-- Montants pr&eacute;d&eacute;finis -->
+          <div class="presets">
+            <button class="preset-btn" onclick="setPreset(5000000, this)">5M FC</button>
+            <button class="preset-btn" onclick="setPreset(15000000, this)">15M FC</button>
+            <button class="preset-btn" onclick="setPreset(30000000, this)">30M FC</button>
+            <button class="preset-btn" onclick="setPreset(60000000, this)">60M FC</button>
+            <button class="preset-btn" onclick="setPreset(120000000, this)">120M FC</button>
+          </div>
+
+          <!-- BASCULES COTISATIONS -->
+          <div class="field">
+            <div class="f-label"><span class="f-label-text">D&eacute;ductions actives</span><span class="f-hint">Activez ou d&eacute;sactivez</span></div>
+            <div class="toggles">
+              <div class="tog on" data-tog="cnss" onclick="togItem(this)">
+                <div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div><div class="tog-label">CNSS (salari&eacute;)</div><div class="tog-rate">5% &mdash; d&eacute;ductible du revenu imposable</div></div>
+              </div>
+            </div>
+            <p class="f-note">La cotisation CNSS du salari&eacute; (5%) est int&eacute;gralement d&eacute;ductible du revenu imposable avant le calcul de l'IPR. La part patronale (5%) est un co&ucirc;t suppl&eacute;mentaire affich&eacute; dans le graphique employeur.</p>
+          </div>
+
+          <button class="calc-btn" onclick="calculate()">Calculer mon salaire net &rarr;</button>
+        </div>
+      </div>
+
+      <!-- R&Eacute;SULTATS -->
+      <div class="card results-card" id="resultsCard">
+        <div class="res-hero">
+          <div class="res-hero-label">Salaire net annuel</div>
+          <div class="res-hero-amount" id="resAmount">FC 0</div>
+          <div class="res-hero-period">Apr&egrave;s IPR, CNSS et toutes d&eacute;ductions</div>
+          <div class="res-hero-gross" id="resGross"></div>
+        </div>
+        <div class="res-body">
+          <div id="resContent"></div>
+          <div class="rate-bar-wrap">
+            <div class="rate-bar-hdr">
+              <span class="rate-bar-lbl">Taux effectif d'imposition</span>
+              <span class="rate-bar-pct" id="effRateDisplay">0%</span>
+            </div>
+            <div class="rate-track"><div class="rate-fill" id="rateFill"></div></div>
+          </div>
+          <div class="employer-strip" id="employerStrip"></div>
+        </div>
+
+        <div class="chart-section">
+          <div class="chart-tabs">
+            <button class="chart-tab on" onclick="setChart('donut',this)">R&eacute;partition</button>
+            <button class="chart-tab" onclick="setChart('bar',this)">Bar&egrave;me fiscal</button>
+            <button class="chart-tab" onclick="setChart('employer',this)">Co&ucirc;t employeur</button>
+          </div>
+          <div class="chart-canvas-wrap"><canvas id="mainChart"></canvas></div>
+        </div>
+
+        <div class="action-row">
+          <button class="act-btn act-pdf" onclick="openPdfModal()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            T&eacute;l&eacute;charger le PDF
+          </button>
+          <button class="act-btn act-share" id="cdShareBtn" onclick="shareResult()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            Partager
+          </button>
+        </div>
+
+          <!-- Sauvegarder & Partager -->
+          <div class="save-share-row">
+            <save-result-button
+              tool-slug="cd-paye-fr"
+              tool-name="Calculateur Salaire Net RDC"
+              country-code="CD"
+              currency="CDF">
+            </save-result-button>
+            <share-result-button
+              tool-name="Calculateur Salaire Net RDC"
+              tool-slug="cd-paye-fr"
+              country-flag="&#x1F1E8;&#x1F1E9;">
+            </share-result-button>
+          </div>
+          <salary-benchmark country-code="CD" currency="CDF"></salary-benchmark>
+      </div>
+    </div>
+
+    <!-- BARRE LAT&Eacute;RALE -->
+    <div class="sidebar">
+
+      <!-- CONSEILLER FISCAL IA -->
+      <div class="ai-card">
+        <div class="ai-head">
+          <div class="ai-dot"></div>
+          <span class="ai-head-title">Conseiller Fiscal IA</span>
+          <span class="ai-head-by">Propuls&eacute; par Claude</span>
+        </div>
+        <div class="ai-body">
+          <p class="ai-status" id="aiStatus">Calculez d'abord votre salaire &mdash; j'analyserai votre situation IPR, expliquerai la d&eacute;ductibilit&eacute; CNSS et donnerai des conseils d'optimisation pour la RD Congo.</p>
+          <div class="ai-response" id="aiResp"></div>
+          <button class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Calculez d'abord pour d&eacute;bloquer &rarr;</button>
+          <div class="ai-chat" id="aiChat">
+            <div class="chat-msgs" id="chatMsgs"></div>
+            <div class="chat-row">
+              <input class="chat-in" id="chatIn" placeholder="Posez une question&hellip;" onkeydown="if(event.key==='Enter')sendChat()">
+              <button class="chat-send" onclick="sendChat()">&rarr;</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+<!-- TRANCHES IPR -->
+      <div class="card bands-card">
+        <div class="card-head" onclick="toggleBands(this)">
+          <span class="card-title">Tranches IPR 2026 (annuelles)</span>
+          <span class="tog-arrow">&#9662;</span>
+        </div>
+        <div class="bands-body">
+          <div class="band-row"><span class="band-range">FC 0 &ndash; 524 160</span><span class="band-rate">3%</span></div>
+          <div class="band-row"><span class="band-range">FC 524 161 &ndash; 1 428 000</span><span class="band-rate">15%</span></div>
+          <div class="band-row"><span class="band-range">FC 1 428 001 &ndash; 2 700 000</span><span class="band-rate">30%</span></div>
+          <div class="band-row"><span class="band-range">Au-del&agrave; de FC 2 700 000</span><span class="band-rate">40%</span></div>
+          <p class="band-note">Calcul&eacute; annuellement sur le revenu imposable (brut moins CNSS). La cotisation CNSS du salari&eacute; est d&eacute;ductible avant application du bar&egrave;me.</p>
+        </div>
+      </div>
+
+      <!-- CNSS -->
+      <div class="card bands-card">
+        <div class="card-head" onclick="toggleBands(this)">
+          <span class="card-title">Taux CNSS 2026</span>
+          <span class="tog-arrow">&#9662;</span>
+        </div>
+        <div class="bands-body">
+          <div class="band-row"><span class="band-range">Part salari&eacute;</span><span class="band-rate">5% du salaire brut</span></div>
+          <div class="band-row"><span class="band-range">Part employeur</span><span class="band-rate">5% du salaire brut</span></div>
+          <p class="band-note">La cotisation CNSS du salari&eacute; (5%) est int&eacute;gralement d&eacute;ductible du revenu imposable avant le calcul de l'IPR. La part patronale est un co&ucirc;t suppl&eacute;mentaire pour l'employeur. Total CNSS : 10% (salari&eacute; 5% + employeur 5%).</p>
+        </div>
+      </div>
+
+      <div class="disclaimer">
+        <strong>Avertissement :</strong> &Agrave; titre informatif uniquement. Ne constitue pas un conseil fiscal ou juridique professionnel. Taux bas&eacute;s sur la r&eacute;glementation DGI et le Code des Imp&ocirc;ts. V&eacute;rifiez aupr&egrave;s de la DGI (dgimpots.cd) ou d'un conseiller fiscal congolais qualifi&eacute;.
+      </div>
+
+      <div class="tool-info-card">
+        <div class="tool-info-header">
+          <img src="/assets/img/tools/cd-vat.webp" alt="Calculateur Salaire Net RDC" class="tool-info-img" loading="lazy">
+          <div class="tool-info-meta">
+            <div class="tool-info-name">Calculateur Salaire Net RDC</div>
+            <div class="tool-info-cat">Fiscalit&eacute; &amp; Finance</div>
+          </div>
+        </div>
+        <div class="tool-info-body">
+          <div class="tool-info-stats">
+            <div class="tool-stat"><div class="tool-stat-val">2.4K</div><div class="tool-stat-lbl">Calculs</div></div>
+            <div class="tool-stat"><div class="tool-stat-val">4.8</div><div class="tool-stat-lbl">Note</div></div>
+            <div class="tool-stat"><div class="tool-stat-val">Gratuit</div><div class="tool-stat-lbl">&Agrave; vie</div></div>
+          </div>
+          <div class="tool-info-features">
+            <span class="tool-feat">Salaire net</span>
+            <span class="tool-feat">Tranches IPR</span>
+            <span class="tool-feat">Export PDF</span>
+            <span class="tool-feat">Conseiller IA</span>
+            <span class="tool-feat">D&eacute;ductions</span>
+          </div>
+        </div>
+        <div class="tool-info-footer">
+          <span class="tool-info-updated">Mis &agrave; jour : mars 2026</span>
+          <div class="tool-info-actions">
+            <button class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Partager</button>
+            <a class="tool-info-action" href="/tools/paye-calculator/">Tous les pays</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<section class="faq-sec">
+  <div class="faq-inner">
+    <span class="eyebrow">FAQ Fiscalit&eacute; RDC</span>
+    <h2 class="sec-title">Questions fr&eacute;quentes sur l'IPR</h2>
+    <div class="faq-grid">
+      <div class="faq-item">
+        <div class="faq-q">Quels sont les taux IPR en RDC pour 2026 ?</div>
+        <p class="faq-a">L'IPR (Imp&ocirc;t Professionnel sur les R&eacute;mun&eacute;rations) en RDC comporte quatre tranches annuelles : 0 &agrave; 524 160 FC &agrave; 3% ; 524 161 &agrave; 1 428 000 FC &agrave; 15% ; 1 428 001 &agrave; 2 700 000 FC &agrave; 30% ; au-del&agrave; de 2 700 000 FC &agrave; 40%. Le calcul s'effectue sur le revenu imposable annuel (apr&egrave;s d&eacute;duction CNSS).</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">La cotisation CNSS est-elle d&eacute;ductible de l'IPR ?</div>
+        <p class="faq-a">Oui, la cotisation CNSS du salari&eacute; (5%) est int&eacute;gralement d&eacute;ductible du salaire brut avant le calcul de l'IPR. Cela r&eacute;duit votre revenu imposable et donc le montant de l'IPR d&ucirc;. La part patronale (5%) est un co&ucirc;t distinct pour l'employeur.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Qu'est-ce que la CNSS en RD Congo ?</div>
+        <p class="faq-a">La Caisse Nationale de S&eacute;curit&eacute; Sociale (CNSS) assure la couverture sociale des travailleurs en RDC, incluant la pension, l'invalidit&eacute; et les prestations aux survivants. La cotisation totale est de 10% (salari&eacute; 5% + employeur 5%).</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Quelle est la diff&eacute;rence entre l'IPR et l'IRPP ?</div>
+        <p class="faq-a">En RDC, l'imp&ocirc;t sur les salaires s'appelle IPR (Imp&ocirc;t Professionnel sur les R&eacute;mun&eacute;rations), et non IRPP comme dans d'autres pays francophones (Cameroun, S&eacute;n&eacute;gal). L'IPR est pr&eacute;lev&eacute; &agrave; la source par l'employeur et revers&eacute; mensuellement &agrave; la DGI.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Y a-t-il d'autres charges patronales en RDC ?</div>
+        <p class="faq-a">En plus de la cotisation CNSS patronale (5%), les employeurs peuvent &ecirc;tre soumis &agrave; d'autres taxes selon le secteur et le type d'organisation. Consultez un fiscaliste congolais pour un calcul complet du co&ucirc;t employeur.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Comment est calcul&eacute; le taux effectif d'imposition ?</div>
+        <p class="faq-a">Taux effectif = (Total IPR / Salaire brut) &times; 100%. Il repr&eacute;sente le pourcentage moyen du salaire brut pay&eacute; en imp&ocirc;t. Le taux marginal (sur le prochain FC gagn&eacute;) est g&eacute;n&eacute;ralement sup&eacute;rieur en raison du bar&egrave;me progressif.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Qui est redevable de l'IPR en RDC ?</div>
+        <p class="faq-a">L'IPR s'applique &agrave; toute personne physique percevant des r&eacute;mun&eacute;rations provenant d'une activit&eacute; professionnelle exerc&eacute;e en RDC, qu'elle soit de nationalit&eacute; congolaise ou &eacute;trang&egrave;re. L'employeur est responsable de la retenue &agrave; la source.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Quelles sont les p&eacute;nalit&eacute;s pour retard de paiement de l'IPR ?</div>
+        <p class="faq-a">Les retards de reversement de l'IPR &agrave; la DGI entra&icirc;nent des p&eacute;nalit&eacute;s et int&eacute;r&ecirc;ts de retard. L'employeur, en tant que responsable de la retenue &agrave; la source, est passible de sanctions fiscales. V&eacute;rifiez les taux de p&eacute;nalit&eacute; en vigueur aupr&egrave;s de la DGI.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODALE PDF -->
+<div class="modal-bg" id="pdfModal">
+  <div class="modal">
+    <div id="modalForm">
+      <h3>&#128196; T&eacute;l&eacute;chargez votre r&eacute;sum&eacute; IPR</h3>
+      <p>Entrez votre e-mail pour obtenir un PDF d&eacute;taill&eacute; &mdash; nous vous notifierons lors des changements de taux en RDC.</p>
+      <form name="pdf-leads" data-netlify="true" netlify-honeypot="bot-field" id="leadForm" onsubmit="submitPdf(event)">
+        <input type="hidden" name="form-name" value="pdf-leads">
+      <p style="display:none"><input name="bot-field"></p>
+        <input type="hidden" name="country"      value="RD Congo">
+        <input type="hidden" name="country_code" value="CD">
+        <input type="hidden" name="tool"         value="paye">
+        <input type="hidden" name="tool_id"      value="cd-paye-fr">
+        <input type="hidden" name="currency"     value="CDF">
+        <input type="hidden" name="gross_salary" id="hiddenGross" value="">
+        <input class="modal-input" type="text"  name="name"  id="pdfName"  placeholder="Votre nom (optionnel)" autocomplete="name">
+        <input class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Votre adresse e-mail" autocomplete="email" required>
+        <button class="modal-submit" type="submit">Obtenir mon PDF &rarr;</button>
+      </form>
+      <button class="modal-cancel" onclick="closePdfModal()">Non merci</button>
+    </div>
+    <div class="modal-success" id="modalSuccess">
+      <button onclick="closePdfModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#9ca3af;line-height:1;" aria-label="Fermer">&#10005;</button>
+      <div class="big-check">&#9989;</div>
+      <h4>Le PDF s'ouvre maintenant</h4>
+      <p>Cliquez sur <strong>Enregistrer en PDF</strong> dans la bo&icirc;te de dialogue d'impression.</p>
+      <button class="modal-submit" onclick="closePdfModal()" style="margin-top:14px">Termin&eacute; &rarr;</button>
+    </div>
+  </div>
+</div>
+
+<section class="more-tools-sec">
+  <div class="more-tools-inner">
+    <h2 class="more-tools-title">Plus d'outils fiscaux africains</h2>
+    <div class="more-tools-grid">
+      <a href="/dr-congo/cd-paye" class="more-tool-link">RDC PAYE (English)</a>
+      <a href="/nigeria/ng-salary-tax" class="more-tool-link">Nigeria PAYE Calculator</a>
+      <a href="/kenya/ke-paye" class="more-tool-link">Kenya PAYE Calculator</a>
+      <a href="/ghana/gh-paye" class="more-tool-link">Ghana PAYE Calculator</a>
+      <a href="/south-africa/za-paye" class="more-tool-link">South Africa PAYE Calculator</a>
+      <a href="/cameroon/cm-paye" class="more-tool-link">Cameroun PAYE Calculator</a>
+      <a href="/tools/vat-calculator/vat-calc" class="more-tool-link">Calculateur TVA Pan-Africain</a>
+    </div>
+  </div>
+</section>
+
+<afro-footer></afro-footer>
+
+<script>
+// ══════════════════════════════════════════════════════════════════
+//  CALCULATEUR SALAIRE NET RDC 2026
+//  IPR Progressif Annuel · CNSS (5% salarié)
+//  Source : Code des Impôts · Réglementation DGI
+// ══════════════════════════════════════════════════════════════════
+
+var RESULT=null;
+var CHART        = null;
+var CHART_TYPE   = 'donut';
+var CHAT_HISTORY = [];
+
+var fmt = function(n) { return 'FC\u00A0' + Math.round(Math.abs(n)).toLocaleString('fr-CD'); };
+var pct = function(r) { var v = r * 100; return (v % 1 === 0 ? v.toFixed(0) : parseFloat(v.toFixed(2)).toString()) + '%'; };
+
+// ── CURSEUR ────────────────────────────────────────────────────
+function onSlider(el) {
+  var v = parseInt(el.value);
+  document.getElementById('grossSalary').value = v;
+  document.getElementById('sliderVal').textContent = fmt(v);
+  updateSliderFill(el);
+}
+function onInput(el) {
+  var v = Math.min(Math.max(parseInt(el.value) || 0, 1000000), 500000000);
+  var s = document.getElementById('salarySlider');
+  s.value = v;
+  document.getElementById('sliderVal').textContent = fmt(parseInt(el.value) || 0);
+  updateSliderFill(s);
+}
+function updateSliderFill(el) {
+  var p = ((parseInt(el.value) - parseInt(el.min)) / (parseInt(el.max) - parseInt(el.min))) * 100;
+  var c = getComputedStyle(document.documentElement).getPropertyValue('--calc-accent');
+  c = c ? c.trim() : 'var(--color-primary)';
+  el.style.background = 'linear-gradient(to right, ' + c + ' 0%, ' + c + ' ' + p + '%, #e2e8f0 ' + p + '%, #e2e8f0 100%)';
+}
+updateSliderFill(document.getElementById('salarySlider'));
+
+// ── BASCULES ───────────────────────────────────────────────────
+function togItem(el) { el.classList.toggle('on'); }
+function isOn(tog) { return !!document.querySelector('[data-tog="' + tog + '"]')?.classList.contains('on'); }
+
+// ══════════════════════════════════════════════════════════════
+//  MOTEUR IPR (ANNUEL)
+//  Tranches sur le REVENU IMPOSABLE ANNUEL (brut moins CNSS) :
+//  3%    sur FC 0 – 524 160
+//  15%   sur FC 524 161 – 1 428 000
+//  30%   sur FC 1 428 001 – 2 700 000
+//  40%   au-delà de FC 2 700 000
+// ══════════════════════════════════════════════════════════════
+
+function calcAnnualIPR(annualTaxableIncome) {
+  var income = Math.max(0, annualTaxableIncome);
+  var bandBreakdown = [];
+
+  if (income <= 0) {
+    return { tax: 0, bandBreakdown: [] };
+  }
+
+  var tax = 0;
+
+  // Tranche 1 : 3% sur 0 – 524 160
+  if (income > 0) {
+    var chunk = Math.min(income, 524160);
+    var t = chunk * 0.03;
+    tax += t;
+    bandBreakdown.push({ rate: 0.03, income: chunk, tax: t });
+  }
+
+  // Tranche 2 : 15% sur 524 161 – 1 428 000
+  if (income > 524160) {
+    var chunk = Math.min(income - 524160, 903840);
+    var t = chunk * 0.15;
+    tax += t;
+    bandBreakdown.push({ rate: 0.15, income: chunk, tax: t });
+  }
+
+  // Tranche 3 : 30% sur 1 428 001 – 2 700 000
+  if (income > 1428000) {
+    var chunk = Math.min(income - 1428000, 1272000);
+    var t = chunk * 0.30;
+    tax += t;
+    bandBreakdown.push({ rate: 0.30, income: chunk, tax: t });
+  }
+
+  // Tranche 4 : 40% au-delà de 2 700 000
+  if (income > 2700000) {
+    var chunk = income - 2700000;
+    var t = chunk * 0.40;
+    tax += t;
+    bandBreakdown.push({ rate: 0.40, income: chunk, tax: t });
+  }
+
+  return { tax: tax, bandBreakdown: bandBreakdown.filter(function(b) { return b.income > 0; }) };
+}
+
+// ── MONTANTS PRÉDÉFINIS ──────────────────────────────────────
+  function setPreset(val, btn) {
+    document.getElementById('grossSalary').value = val;
+    document.getElementById('salarySlider').value = val;
+    onSlider(document.getElementById('salarySlider'));
+    document.querySelectorAll('.preset-btn').forEach(function(b) { b.classList.remove('active'); });
+    if(btn) btn.classList.add('active');
+    calculate();
+  }
+
+// ── CALCUL PRINCIPAL ─────────────────────────────────────────
+  function calculate() {
+  var gross = parseFloat(document.getElementById('grossSalary').value) || 0;
+  if (!gross || gross <= 0) {
+    var el = document.getElementById('grossSalary');
+    el.focus(); el.style.borderColor = '#e53e3e';
+    el.setAttribute('placeholder', 'Entrez un salaire valide');
+    setTimeout(function() { el.style.borderColor = ''; el.removeAttribute('placeholder'); }, 3000);
+    return;
+  }
+
+  var hasCNSS = isOn('cnss');
+
+  // Calcul CNSS
+  var cnssRate = hasCNSS ? 0.05 : 0;
+  var cnss = gross * cnssRate;
+  var empCNSS = gross * 0.05;
+
+  // IPR
+  var taxableIncome = Math.max(0, gross - cnss);
+  var result = calcAnnualIPR(taxableIncome);
+  var annualIPR = result.tax;
+  var bandBreakdown = result.bandBreakdown;
+
+  // Salaire net
+  var totalEmployeeDeductions = cnss + annualIPR;
+  var netAnnual = gross - totalEmployeeDeductions;
+  var effectiveRate = gross > 0 ? annualIPR / gross : 0;
+
+  RESULT = {
+    gross: gross, annual: gross, cnss: cnss, cnssRate: cnssRate, empCNSS: empCNSS,
+    annualIPR: annualIPR, bandBreakdown: bandBreakdown,
+    totalEmployeeDeductions: totalEmployeeDeductions, netAnnual: netAnnual, effectiveRate: effectiveRate,
+    totalEmployerCostAnnual: gross + empCNSS,
+  };
+
+  document.getElementById('resAmount').textContent      = fmt(netAnnual);
+  document.getElementById('resGross').textContent        = 'Brut : ' + fmt(gross) + '/an';
+  document.getElementById('resContent').innerHTML        = renderRows(RESULT);
+  document.getElementById('effRateDisplay').textContent  = pct(effectiveRate);
+  setTimeout(function() { document.getElementById('rateFill').style.width = Math.min(effectiveRate * 150, 100) + '%'; }, 80);
+  document.getElementById('hiddenGross').value = gross;
+
+  var strip = document.getElementById('employerStrip');
+  strip.innerHTML = '<strong>Co\u00FBt total employeur : ' + fmt(RESULT.totalEmployerCostAnnual) + '/an</strong><br>Brut + CNSS patronale ' + fmt(empCNSS) + '/an.';
+  strip.classList.add('on');
+
+  document.getElementById('resultsCard').classList.add('on');
+  // Save/Share/Benchmark wiring
+  var _saveBtn = document.querySelector('save-result-button');
+  if (_saveBtn) _saveBtn.setData({
+    inputs: { grossSalary: RESULT.gross },
+    outputs: {
+      netPay: RESULT.netAnnual,
+      tax: RESULT.annualIPR,
+      effectiveRate: RESULT.effectiveRate
+    }
+  });
+  var _shareBtn = document.querySelector('share-result-button');
+  if (_shareBtn) _shareBtn.setResult({
+    headline: 'Mon Salaire Net',
+    mainValue: fmt(RESULT.netAnnual) + '/an',
+    subValues: [
+      { label: 'Brut', value: fmt(RESULT.gross) + '/an' },
+      { label: 'IPR', value: fmt(RESULT.annualIPR) + '/an' },
+      { label: 'Taux effectif', value: pct(RESULT.effectiveRate) }
+    ]
+  });
+  var _bmWidget = document.querySelector('salary-benchmark');
+  if (_bmWidget) { _bmWidget.setAttribute('user-gross', RESULT.gross); _bmWidget.setAttribute('user-net', RESULT.netAnnual); }
+  renderChart(CHART_TYPE);
+  document.getElementById('resultsCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  document.getElementById('aiBtn').disabled = false;
+  document.getElementById('aiBtn').textContent = 'Obtenir l\u2019analyse IA \u2192';
+  document.getElementById('aiStatus').textContent = 'Brut : ' + fmt(gross) + '/an \u00B7 Net : ' + fmt(netAnnual) + '/an \u00B7 IPR : ' + fmt(annualIPR) + '/an \u00B7 Taux effectif : ' + pct(effectiveRate);
+}
+
+// ── LIGNES DE RÉSULTATS ──────────────────────────────────────
+function renderRows(R) {
+  var gross  = R.gross;
+  var cnss   = R.cnss;
+  var ipr    = R.annualIPR;
+  var net    = R.netAnnual;
+  var totalDeductions = R.totalEmployeeDeductions;
+
+  var row = function(l, v, cls) { return '<div class="res-row"><span class="res-row-lbl">' + l + '</span><span class="res-row-val ' + (cls||'') + '">' + v + '</span></div>'; };
+
+  return '' +
+    '<div class="res-section">' +
+      '<div class="res-section-title">Revenu brut</div>' +
+      row('Salaire brut annuel', fmt(gross)) +
+    '</div>' +
+    '<div class="res-section">' +
+      '<div class="res-section-title">D\u00E9ductions</div>' +
+      (R.cnss > 0 ? row('CNSS (' + pct(R.cnssRate) + ')', fmt(cnss), 'c-red') : '') +
+      row('Revenu imposable net', fmt(gross - cnss), 'c-mut') +
+    '</div>' +
+    '<div class="res-section">' +
+      '<div class="res-section-title">IPR (DGI)</div>' +
+      row('Imp\u00F4t sur le revenu (IPR)', fmt(ipr), 'c-red') +
+    '</div>' +
+    '<div class="res-section">' +
+      row('Total des d\u00E9ductions', fmt(totalDeductions), 'c-red') +
+      '<div class="res-row total"><span class="res-row-lbl">Salaire net</span><span class="res-row-val c-blu">' + fmt(net) + '</span></div>' +
+    '</div>';
+}
+
+// ── BASCULE TRANCHES ─────────────────────────────────────────
+function toggleBands(header) {
+  var body = header.nextElementSibling;
+  var arr  = header.querySelector('.tog-arrow');
+  body.classList.toggle('open');
+  arr.classList.toggle('open');
+}
+
+// ── GRAPHIQUES ───────────────────────────────────────────────
+function setChart(type, btn) {
+  CHART_TYPE = type;
+  document.querySelectorAll('.chart-tab').forEach(function(b) { b.classList.remove('on'); });
+  btn.classList.add('on');
+  renderChart(type);
+}
+
+function renderChart(type) {
+  if (!RESULT) return;
+  var R = RESULT;
+  var canvas = document.getElementById('mainChart');
+  if (CHART) { CHART.destroy(); CHART = null; }
+
+  if (type === 'donut') {
+    CHART = new Chart(canvas, {
+      type: 'doughnut',
+      data: {
+        labels: ['Salaire net', 'IPR', 'CNSS'],
+        datasets: [{ data: [R.netAnnual, R.annualIPR, R.cnss], backgroundColor: AfroChartColors.doughnut.slice(0, 3), borderWidth: 2, borderColor: '#fff' }]
+      },
+      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{size:11,weight:'600'}, padding:12 } } } }
+    });
+  } else if (type === 'bar') {
+    var bands = R.bandBreakdown.filter(function(b) { return b.tax > 0; });
+    if (!bands.length) return;
+    CHART = new Chart(canvas, {
+      type: 'bar',
+      data: {
+        labels: bands.map(function(b) { return (b.rate*100)+'%'; }),
+        datasets: [{ label:'IPR (FC)', data: bands.map(function(b) { return b.tax; }), backgroundColor: AfroChartColors.series.slice(0, bands.length), borderRadius:5 }]
+      },
+      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:function(v) { return 'FC'+(v/1000000).toFixed(1)+'M'; },font:{size:10,weight:'600'}},grid:{color:'#e8f1fb'} }, x:{ticks:{font:{size:10,weight:'600'}}} } }
+    });
+  } else if (type === 'employer') {
+    CHART = new Chart(canvas, {
+      type: 'bar',
+      data: {
+        labels: ['Salaire net', 'IPR', 'CNSS patron.'],
+        datasets: [{ label:'FC', data:[R.netAnnual, R.annualIPR, R.empCNSS], backgroundColor: AfroChartColors.doughnut.slice(0, 3), borderRadius:5 }]
+      },
+      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:function(v) { return 'FC'+(v/1000000).toFixed(1)+'M'; },font:{size:10,weight:'600'}},grid:{color:'#e8f1fb'} }, x:{ticks:{font:{size:9,weight:'600'}}} } }
+    });
+  }
+}
+
+// ── MODALE PDF ───────────────────────────────────────────────
+function openPdfModal()  { if(!RESULT) return; document.getElementById('pdfModal').classList.add('on'); document.getElementById('modalForm').style.display='block'; document.getElementById('modalSuccess').style.display='none'; }
+function closePdfModal() { document.getElementById('pdfModal').classList.remove('on'); }
+document.getElementById('pdfModal').addEventListener('click', function(e) { if(e.target===document.getElementById('pdfModal')) closePdfModal(); });
+
+async function submitPdf(e) {
+  e.preventDefault();
+  var email = document.getElementById('pdfEmail').value;
+  if (!email) return;
+  try {
+    await fetch('/', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body: new URLSearchParams({'form-name':'pdf-leads',email:email,country:'RD Congo',country_code:'CD',tool:'paye',tool_id:'cd-paye-fr',currency:'CDF',gross_salary:RESULT.gross}).toString() });
+  } catch(e){}
+  document.getElementById('modalForm').style.display  = 'none';
+  document.getElementById('modalSuccess').style.display = 'block';
+  generatePdf();
+}
+
+function generatePdf() {
+  if (!RESULT) return;
+  var R      = RESULT;
+  var dateStr= new Date().toLocaleDateString('fr-CD',{day:'numeric',month:'long',year:'numeric'});
+  var refNo  = 'AFT-CD-IPR-' + Date.now().toString(36).toUpperCase().slice(-6);
+
+  var bandRows = R.bandBreakdown.filter(function(b) { return b.tax > 0; }).map(function(b) {
+    return '<tr><td style="padding-left:14px;color:#4b5563">Taux ' + (b.rate*100) + '% sur FC ' + Math.round(b.income).toLocaleString('fr-CD') + '</td><td class="num red">(FC ' + Math.round(b.tax).toLocaleString('fr-CD') + ')</td></tr>';
+  }).join('');
+
+  var html = '<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8">' +
+'<title>AfroTools RDC IPR \u2014 ' + refNo + '</title>' +
+'<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">' +
+'<style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:"DM Sans",Arial,sans-serif;background:#fff;color:#111827;font-size:9pt;line-height:1.5}@page{size:A4;margin:0}' +
+'.cover{background:linear-gradient(135deg,#0a1a30 0%,#001f4d 100%);padding:28px 36px 22px;color:#fff}' +
+'.cover-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}' +
+'.brand{font-size:13pt;font-weight:800;color:#fff}.brand b{color:#007FFF}' +
+'.brand-sub{font-size:6pt;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.32);margin-top:2px}' +
+'.ref-label{font-size:6pt;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.32);text-align:right}' +
+'.ref-val{font-size:8pt;font-weight:700;color:rgba(255,255,255,.65);margin-top:2px;text-align:right}' +
+'.doc-title{font-size:18pt;font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1}' +
+'.doc-title span{color:#F7D618}.doc-meta{margin-top:8px;font-size:7.5pt;color:rgba(255,255,255,.4)}' +
+'.badge{display:inline-block;margin-top:10px;padding:3px 10px;border-radius:3px;font-size:7pt;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:rgba(0,127,255,.22);color:#80d4ff;border:1px solid rgba(0,127,255,.4)}' +
+'.body{padding:24px 36px 28px}' +
+'.sh{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:12px}' +
+'.shi{text-align:center;flex:1}.sh-lbl{font-size:6pt;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#9ca3af;margin-bottom:3px}' +
+'.sh-val{font-size:13pt;font-weight:800;color:#111827}.sh-val.gold{color:#9a7a00}.sh-val.red{color:#c0392b}' +
+'.sh-div{width:1px;height:40px;background:#e5e7eb;flex-shrink:0}' +
+'.sec-head{font-size:6.5pt;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#9ca3af;padding:0 0 5px;border-bottom:1.5px solid #e5e7eb;margin:16px 0 8px}' +
+'table{width:100%;border-collapse:collapse}tr{border-bottom:1px solid #f3f4f6}td{padding:5.5px 4px;font-size:8.5pt;vertical-align:middle}' +
+'td.num{text-align:right;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}' +
+'.red{color:#c0392b}.blue{color:#007FFF}.muted{color:#9ca3af}' +
+'tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-size:9.5pt}' +
+'.src{display:inline-block;padding:2px 7px;background:#f3f4f6;border-radius:3px;font-size:6.5pt;font-weight:600;color:#6b7280;margin-right:4px}' +
+'</style></head><body>' +
+'<div class="cover">' +
+'  <div class="cover-top">' +
+'    <div><div class="brand">AFRO<b>TOOLS</b></div><div class="brand-sub">La plateforme num\u00E9rique de l\u2019Afrique</div></div>' +
+'    <div><div class="ref-label">R\u00E9f\u00E9rence</div><div class="ref-val">' + refNo + '</div></div>' +
+'  </div>' +
+'  <div class="doc-title">IPR RD Congo<br><span>R\u00E9sum\u00E9 2026</span></div>' +
+'  <div class="doc-meta">G\u00E9n\u00E9r\u00E9 le ' + dateStr + ' \u00B7 afrotools.com/fr/rdc/calculateur-salaire-net</div>' +
+'  <div class="badge">DGI 2026 \u00B7 Code des Imp\u00F4ts</div>' +
+'</div>' +
+'<div class="body">' +
+'  <div class="sh">' +
+'    <div class="shi"><div class="sh-lbl">Salaire net annuel</div><div class="sh-val gold">FC ' + Math.round(R.netAnnual).toLocaleString('fr-CD') + '</div></div>' +
+'    <div class="sh-div"></div>' +
+'    <div class="shi"><div class="sh-lbl">Salaire brut annuel</div><div class="sh-val">FC ' + Math.round(R.gross).toLocaleString('fr-CD') + '</div></div>' +
+'    <div class="sh-div"></div>' +
+'    <div class="shi"><div class="sh-lbl">IPR annuel</div><div class="sh-val red">FC ' + Math.round(R.annualIPR).toLocaleString('fr-CD') + '</div></div>' +
+'    <div class="sh-div"></div>' +
+'    <div class="shi"><div class="sh-lbl">Taux effectif</div><div class="sh-val red">' + pct(R.effectiveRate) + '</div></div>' +
+'  </div>' +
+'' +
+'  <div class="sec-head">Section 1 \u2014 Revenu annuel et d\u00E9ductions</div>' +
+'  <table>' +
+'    <tr><td>Salaire brut annuel</td><td class="num">FC ' + Math.round(R.gross).toLocaleString('fr-CD') + '</td></tr>' +
+    (R.cnss > 0 ? '<tr><td style="padding-left:14px;color:#4b5563">Cotisation CNSS salari\u00E9 (' + pct(R.cnssRate) + ')</td><td class="num red">(FC ' + Math.round(R.cnss).toLocaleString('fr-CD') + ')</td></tr>' : '') +
+'    <tr><td style="font-weight:600">Revenu imposable annuel</td><td class="num muted">FC ' + Math.round(R.gross - R.cnss).toLocaleString('fr-CD') + '</td></tr>' +
+'  </table>' +
+'' +
+'  <div class="sec-head">Section 2 \u2014 Calcul IPR (DGI 2026)</div>' +
+'  <table>' +
+    (bandRows || '<tr><td colspan="2" style="color:#94A3B8;padding-left:14px">Revenu dans la tranche \u00E0 0% \u2014 aucun IPR d\u00FB</td></tr>') +
+'    <tr class="total"><td>IPR annuel</td><td class="num red">FC ' + Math.round(R.annualIPR).toLocaleString('fr-CD') + '</td></tr>' +
+'  </table>' +
+'' +
+'  <div class="sec-head">Section 3 \u2014 R\u00E9sum\u00E9 du salaire net annuel</div>' +
+'  <table>' +
+    (R.cnss > 0 ? '<tr><td>CNSS (salari\u00E9)</td><td class="num red">(FC ' + Math.round(R.cnss).toLocaleString('fr-CD') + ')</td></tr>' : '') +
+'    <tr><td>Imp\u00F4t sur le revenu (IPR)</td><td class="num red">(FC ' + Math.round(R.annualIPR).toLocaleString('fr-CD') + ')</td></tr>' +
+'    <tr><td style="font-weight:700">Total d\u00E9ductions annuelles</td><td class="num red">(FC ' + Math.round(R.totalEmployeeDeductions).toLocaleString('fr-CD') + ')</td></tr>' +
+'    <tr class="total"><td style="color:#007FFF;font-weight:800">Salaire net annuel</td><td class="num blue">FC ' + Math.round(R.netAnnual).toLocaleString('fr-CD') + '</td></tr>' +
+'  </table>' +
+'' +
+'  <div class="sec-head">Section 4 \u2014 Co\u00FBt employeur (annuel)</div>' +
+'  <table>' +
+'    <tr><td>Salaire brut</td><td class="num">FC ' + Math.round(R.gross).toLocaleString('fr-CD') + '</td></tr>' +
+'    <tr><td>CNSS patronale (5%)</td><td class="num red">FC ' + Math.round(R.empCNSS).toLocaleString('fr-CD') + '</td></tr>' +
+'    <tr class="total"><td style="font-weight:800">Co\u00FBt total employeur annuel</td><td class="num red">FC ' + Math.round(R.totalEmployerCostAnnual).toLocaleString('fr-CD') + '</td></tr>' +
+'  </table>' +
+'' +
+'  <div class="sec-head">Section 5 \u2014 Base l\u00E9gale et sources</div>' +
+'  <table>' +
+'    <tr><td style="width:30%"><span class="src">Code</span>Code des Imp\u00F4ts</td><td style="color:#6b7280;font-size:8pt">IPR progressif de la DGI sur les revenus d\u2019emploi. Cotisation CNSS salari\u00E9 (5%) int\u00E9gralement d\u00E9ductible.</td></tr>' +
+'    <tr><td><span class="src">CNSS</span>S\u00E9curit\u00E9 sociale</td><td style="color:#6b7280;font-size:8pt">Total 10% (salari\u00E9 5% + employeur 5%). Versement mensuel \u00E0 la CNSS.</td></tr>' +
+'  </table>' +
+'</div>' +
+'<div style="background:#f9fafb;border-top:1px solid #e5e7eb;padding:14px 36px">' +
+'  <div style="display:flex;justify-content:space-between;align-items:flex-start">' +
+'    <div>' +
+'      <div style="font-size:7pt;font-weight:700;color:#111827">AFRO<b style="color:#007FFF">TOOLS</b>.COM \u2014 La plateforme financi\u00E8re de l\u2019Afrique</div>' +
+'      <div style="font-size:6.5pt;color:#9ca3af;max-width:440px;line-height:1.4;margin-top:4px">\u00C0 titre informatif uniquement. Ne constitue pas un conseil fiscal professionnel. V\u00E9rifiez aupr\u00E8s de la DGI ou d\u2019un conseiller fiscal congolais qualifi\u00E9.</div>' +
+'    </div>' +
+'    <div style="text-align:right;font-size:7pt;color:#9ca3af;white-space:nowrap;margin-left:20px">' +
+'      <div>R\u00E9f : ' + refNo + '</div><div style="margin-top:2px">' + dateStr + '</div><div style="margin-top:2px">afrotools.com</div>' +
+'    </div>' +
+'  </div>' +
+'</div>' +
+'<script src="/assets/js/components/salary-benchmark-widget.js" defer><\/script>' +
+'</body></html>';
+
+  var blob = new Blob([html],{type:'text/html;charset=utf-8'});
+  var url  = URL.createObjectURL(blob);
+  var w    = window.open(url,'_blank');
+  if(w){
+    w.addEventListener('load',function(){setTimeout(function(){w.print();setTimeout(function(){URL.revokeObjectURL(url);},3000);},600);});
+    setTimeout(function(){try{w.print();}catch(e){}},1200);
+  }
+}
+
+// ── PARTAGER ─────────────────────────────────────────────────
+function shareResult() {
+  if (!RESULT) return;
+  var text = 'Mon calcul IPR RDC : Brut FC ' + Math.round(RESULT.gross).toLocaleString('fr-CD') + '/an \u2192 Net FC ' + Math.round(RESULT.netAnnual).toLocaleString('fr-CD') + '/an (' + pct(RESULT.effectiveRate) + ' taux effectif). Calcul\u00E9 sur afrotools.com/fr/rdc/calculateur-salaire-net';
+  if (navigator.share) {
+    navigator.share({title:'Mon IPR RDC',text:text,url:'https://afrotools.com/fr/rdc/calculateur-salaire-net'});
+  } else if (navigator.clipboard) {
+    navigator.clipboard.writeText(text);
+    var btn = document.getElementById('cdShareBtn');
+    btn.textContent = '\u2713 Copi\u00E9 !';
+    setTimeout(function(){btn.innerHTML='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Partager';},2500);
+  }
+}
+
+// ── CONSEILLER FISCAL IA ─────────────────────────────────────
+async function getAI() {
+  if (!RESULT) return;
+  var R   = RESULT;
+  var btn = document.getElementById('aiBtn');
+  var respEl = document.getElementById('aiResp');
+
+  btn.disabled = true; btn.textContent = 'Analyse en cours\u2026';
+  respEl.style.display = 'block'; respEl.className = 'ai-response typing'; respEl.textContent = '';
+  document.getElementById('aiStatus').style.display = 'none';
+
+  var prompt = 'Analyse IPR RDC (2026, DGI) :\n' +
+'- Salaire brut annuel : FC ' + Math.round(R.gross).toLocaleString('fr-CD') + '\n' +
+'- CNSS salari\u00E9 (' + pct(R.cnssRate) + ') : FC ' + Math.round(R.cnss).toLocaleString('fr-CD') + '/an\n' +
+'- Revenu imposable apr\u00E8s CNSS : FC ' + Math.round(R.gross - R.cnss).toLocaleString('fr-CD') + '/an\n' +
+'- IPR annuel : FC ' + Math.round(R.annualIPR).toLocaleString('fr-CD') + '\n' +
+'- Salaire net annuel : FC ' + Math.round(R.netAnnual).toLocaleString('fr-CD') + '\n' +
+'- Taux effectif : ' + pct(R.effectiveRate) + '\n' +
+'- CNSS patronale (5%) : FC ' + Math.round(R.empCNSS).toLocaleString('fr-CD') + '/an\n' +
+'- Co\u00FBt total employeur : FC ' + Math.round(R.totalEmployerCostAnnual).toLocaleString('fr-CD') + '/an\n\n' +
+'Donnez en fran\u00E7ais : 1) R\u00E9sum\u00E9 clair de la situation IPR 2) Deux moyens l\u00E9gaux sp\u00E9cifiques pour r\u00E9duire l\u2019imp\u00F4t en RDC 3) Un point de conformit\u00E9 DGI \u00E0 conna\u00EEtre 4) Une erreur courante sur la d\u00E9ductibilit\u00E9 CNSS. Moins de 200 mots. Pas de markdown, pas d\u2019ast\u00E9risques, pas de puces.';
+
+  try {
+    var res = await fetch('/.netlify/functions/ai-advisor', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        system:'Vous \u00EAtes le Conseiller Fiscal IA d\u2019AfroTools sp\u00E9cialis\u00E9 en IPR de la RD Congo \u2014 bar\u00E8me DGI progressif, CNSS, Code des Imp\u00F4ts. Soyez concis, sp\u00E9cifique, pratique. R\u00E9pondez en fran\u00E7ais. Pas de markdown, pas d\u2019ast\u00E9risques.',
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    var data = await res.json();
+    var text = data.text || 'Analyse indisponible pour le moment.';
+    respEl.className = 'ai-response'; respEl.textContent = '';
+    var i = 0;
+    var typeChar = function() {
+      if(i<text.length){respEl.textContent+=text[i++];setTimeout(typeChar,12);}
+      else{document.getElementById('aiChat').classList.add('on');CHAT_HISTORY=[{role:'user',content:prompt},{role:'assistant',content:text}];}
+    };
+    typeChar();
+    btn.textContent = 'Posez une question ci-dessous \u2193';
+  } catch(err) {
+    respEl.className='ai-response';respEl.textContent='Analyse IA temporairement indisponible.';
+    btn.disabled=false;btn.textContent='R\u00E9essayer';
+  }
+}
+
+async function sendChat() {
+  var input = document.getElementById('chatIn');
+  var msg   = input.value.trim();
+  if(!msg||!RESULT) return;
+  input.value = '';
+  var R = RESULT;
+  var msgs = document.getElementById('chatMsgs');
+  msgs.innerHTML += '<div class="msg u">' + msg.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div>';
+  var aiEl = document.createElement('div');
+  aiEl.className = 'msg a'; aiEl.textContent = '\u2026';
+  msgs.appendChild(aiEl); msgs.scrollTop = msgs.scrollHeight;
+  CHAT_HISTORY.push({role:'user',content:msg});
+  try {
+    var res = await fetch('/.netlify/functions/ai-advisor',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        system:'Conseiller Fiscal IA AfroTools, RD Congo. Utilisateur : brut FC ' + Math.round(R.gross).toLocaleString('fr-CD') + '/an, net FC ' + Math.round(R.netAnnual).toLocaleString('fr-CD') + '/an, taux effectif ' + pct(R.effectiveRate) + '. Concis. En fran\u00E7ais. Pas de markdown.',
+        messages:CHAT_HISTORY
+      })
+    });
+    var data = await res.json();
+    var text = data.text || 'R\u00E9ponse indisponible.';
+    aiEl.textContent = text;
+    CHAT_HISTORY.push({role:'assistant',content:text});
+    msgs.scrollTop = msgs.scrollHeight;
+  } catch(e) { aiEl.textContent='Erreur r\u00E9seau. Veuillez r\u00E9essayer.'; }
+}
+
+document.getElementById('grossSalary').addEventListener('keydown',function(e){if(e.key==='Enter')calculate();});
+
+// Net-to-Gross: register forward function
+window._grossToNet = function(g) {
+  var d=isOn('cnss')?g*0.05:0;return g-(d+calcAnnualIPR(Math.max(0,g-d)).tax);
+};
+</script>
+<script src="/assets/js/lib/auto-email-gate.js" defer></script>
+<script src="/assets/js/share-image-inject.js" defer></script>
+<script src="/assets/js/lib/net-to-gross.js" defer></script>
+</body>
+</html>

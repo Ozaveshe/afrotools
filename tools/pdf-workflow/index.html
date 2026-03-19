@@ -737,6 +737,9 @@
     .angle-grid { grid-template-columns: repeat(3, 1fr); }
   }
 </style>
+<script src="/assets/js/lib/toast.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js" defer></script>
+<script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -933,7 +936,7 @@
   const OP_DEFS = {
     compress:     { icon: '\uD83D\uDDDC', name: 'Compress',      defaultConfig: { preset: 'web' } },
     watermark:    { icon: '\uD83D\uDCA7', name: 'Watermark',      defaultConfig: { text: 'DRAFT', color: '#888888', opacity: 30, fontSize: 60, position: 'diagonal', rotation: -45 } },
-    password:     { icon: '\uD83D\uDD12', name: 'Password',       defaultConfig: { userPassword: '', ownerPassword: '' } },
+    password:     { icon: '\uD83D\uDD12', name: 'Password (use dedicated tool)',  defaultConfig: { userPassword: '', ownerPassword: '' } },
     pageNumbers:  { icon: '#\uFE0F\u20E3', name: 'Page Numbers',  defaultConfig: { format: 'numeric', position: 'bottom-center', fontSize: 12, startNum: 1 } },
     rotate:       { icon: '\uD83D\uDD04', name: 'Rotate All',     defaultConfig: { angle: 90 } },
     merge:        { icon: '\uD83D\uDCD1', name: 'Merge',          defaultConfig: { additionalFiles: [], fileNames: [] } }
@@ -1455,8 +1458,28 @@
   // ── Pipeline Operations ──
   var operations = {
     compress: async function(pdfBytes, config) {
-      var doc = await PDFLib.PDFDocument.load(pdfBytes);
-      return await doc.save({ useObjectStreams: true });
+      // Actual JPEG-based compression: render pages via pdf.js, rebuild via pdf-lib
+      var pdfjs = await PdfUtils.ensurePdfJs();
+      var srcDoc = await pdfjs.getDocument({ data: pdfBytes.slice(0) }).promise;
+      var quality = config.preset === 'screen' ? 0.4 : config.preset === 'web' ? 0.55 : config.preset === 'ebook' ? 0.7 : 0.85;
+      var scale = config.preset === 'screen' ? 1.0 : config.preset === 'web' ? 1.2 : config.preset === 'ebook' ? 1.5 : 2.0;
+      var newDoc = await PDFLib.PDFDocument.create();
+      for (var i = 1; i <= srcDoc.numPages; i++) {
+        var page = await srcDoc.getPage(i);
+        var vp = page.getViewport({ scale: scale });
+        var canvas = document.createElement('canvas');
+        canvas.width = vp.width;
+        canvas.height = vp.height;
+        var ctx = canvas.getContext('2d');
+        await page.render({ canvasContext: ctx, viewport: vp }).promise;
+        var jpegDataUrl = canvas.toDataURL('image/jpeg', quality);
+        var jpegBytes = Uint8Array.from(atob(jpegDataUrl.split(',')[1]), function(c) { return c.charCodeAt(0); });
+        var img = await newDoc.embedJpg(jpegBytes);
+        var origVp = page.getViewport({ scale: 1 });
+        var newPage = newDoc.addPage([origVp.width, origVp.height]);
+        newPage.drawImage(img, { x: 0, y: 0, width: origVp.width, height: origVp.height });
+      }
+      return await newDoc.save();
     },
 
     watermark: async function(pdfBytes, config) {
@@ -1517,18 +1540,8 @@
     },
 
     password: async function(pdfBytes, config) {
-      var doc = await PDFLib.PDFDocument.load(pdfBytes);
-      var userPw = config.userPassword || 'password';
-      var ownerPw = config.ownerPassword || userPw + '_owner';
-      return await doc.save({
-        userPassword: userPw,
-        ownerPassword: ownerPw,
-        permissions: {
-          printing: 'highResolution',
-          modifying: true,
-          copying: true
-        }
-      });
+      // Note: pdf-lib does not support encryption. Use the dedicated PDF Password tool instead.
+      throw new Error('Password protection requires the dedicated PDF Password tool. Please remove this step and use the PDF Password tool after downloading.');
     },
 
     pageNumbers: async function(pdfBytes, config) {
@@ -1632,6 +1645,7 @@
       progressLabel.textContent = 'Done!';
 
       resultBytes = bytes;
+      document.getElementById('resultIcon').textContent = '\u2714\uFE0F';
       resultMsg.textContent = 'Pipeline complete! All ' + pipeline.length + ' steps executed successfully.';
       resultSize.textContent = 'Output: ' + formatSize(bytes.length) + ' (Original: ' + formatSize(inputBytes.length) + ')';
       resultCard.classList.add('on');
@@ -1676,5 +1690,17 @@
 <script src="/assets/js/components/newsletter-cta.min.js" defer></script>
 <script src="/assets/js/lib/saved-tools.js" defer></script>
 <script src="/assets/js/favorites-widget.js" defer></script>
+
+<script>
+(function(){
+  var target = document.getElementById('resultCard');
+  if (!target) return;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
+  div.innerHTML = '<share-result-button tool-name="Pdf Workflow" tool-slug="pdf-workflow"></share-result-button>';
+  target.appendChild(div);
+})();
+</script>
 </body>
 </html>

@@ -16,15 +16,17 @@ gtag('config', 'G-D859CGF391');
 <meta name="description" content="Ghana PAYE calculator 2026. GRA 7-band progressive tax, SSNIT Tier I/II/III optimizer, bonus calculator, all personal reliefs. Most accurate Ghana salary calculator.">
 <link rel="canonical" href="https://afrotools.com/ghana/gh-paye">
 <meta name="robots" content="index, follow">
-<meta property="og:title" content="Ghana PAYE Calculator 2026 | AfroTools">
-<meta property="og:description" content="GRA 7-band PAYE, SSNIT Tier I/II/III optimizer, bonus calculator, all personal reliefs — 2026 rates.">
+<meta property="og:title" content="Ghana PAYE Calculator — GRA Tax Rates 2026">
+<meta property="og:description" content="Calculate Ghana net salary. GRA tax bands, SSNIT Tier I/II/III, overtime, bonus tax. Free PAYE calculator.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/ghana/gh-paye">
-<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-gh-paye.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Ghana PAYE Calculator 2026 | AfroTools">
-<meta name="twitter:description" content="GRA 7-band PAYE, SSNIT Tier III optimizer, bonus calculator — 2026 rates.">
+<meta name="twitter:title" content="Ghana PAYE Calculator — GRA Tax Rates 2026">
+<meta name="twitter:description" content="Calculate Ghana net salary. GRA tax bands, SSNIT Tier I/II/III, overtime, bonus tax. Free PAYE calculator.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -218,6 +220,10 @@ gtag('config', 'G-D859CGF391');
             <button class="act-btn" id="pdfBtn">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
               Download PDF
+            </button>
+            <button class="act-btn" id="waBtn" style="background:rgba(37,211,102,0.1);border-color:#25D366;color:#25D366">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492l4.618-1.462A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75c-2.171 0-4.2-.695-5.856-1.873l-.42-.277-2.735.867.87-2.664-.305-.44A9.72 9.72 0 012.25 12c0-5.385 4.365-9.75 9.75-9.75S21.75 6.615 21.75 12s-4.365 9.75-9.75 9.75z"/></svg>
+              WhatsApp
             </button>
             <button class="act-btn" id="shareBtn">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
@@ -802,6 +808,21 @@ gtag('config', 'G-D859CGF391');
 
     // Actions
     $('pdfBtn').addEventListener('click', exportPdf);
+    $('waBtn').addEventListener('click', () => {
+      if (!R || !window.AfroTools?.shareState) return;
+      window.AfroTools.shareState.whatsappShare({
+        headline: 'My Take-Home Pay',
+        mainValue: fmt(R.netMonthly) + '/mo',
+        subValues: [
+          { label: 'Gross', value: fmt(R.gross) + '/yr' },
+          { label: 'Tax', value: fmt(R.tax) + '/yr' },
+          { label: 'Effective Rate', value: pct(R.effectiveRate) }
+        ],
+        state: { g: Math.round(R.gross), b: Math.round(R.basic), m: calcMode },
+        toolId: 'gh-paye'
+      });
+    });
+
     $('shareBtn').addEventListener('click', () => {
       if (!R || !window.AfroTools?.shareState) return;
       window.AfroTools.shareState.share({

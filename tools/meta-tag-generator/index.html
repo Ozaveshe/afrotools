@@ -75,6 +75,9 @@ h1 em{color:var(--afro-blue);font-style:normal}
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebApplication","name":"SEO Meta Tag Generator","url":"https://afrotools.com/tools/meta-tag-generator/","description":"Generate SEO meta tags including title, description, Open Graph, and Twitter Card tags with live preview.","applicationCategory":"DeveloperApplication","operatingSystem":"All","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
 </script>
+<script src="/assets/js/lib/toast.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js" defer></script>
+<script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -280,6 +283,19 @@ function copyCode(){
 }
 
 updatePreview();
+</script>
+
+<script>
+// Save/Share buttons — manual placement needed
+(function(){
+  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
+  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
+  div.innerHTML = '<share-result-button tool-name="Meta Tag Generator" tool-slug="meta-tag-generator"></share-result-button>';
+  target.appendChild(div);
+})();
 </script>
 </body>
 </html>

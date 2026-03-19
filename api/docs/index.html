@@ -5,9 +5,12 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>API Documentation — AfroTools</title>
-  <meta name="description" content="AfroTools API documentation. Endpoints, authentication, rate limits, and response formats for African financial data.">
+  <title>AfroTools API Documentation — African Tax, FX & Salary Data for Developers</title>
+  <meta name="description" content="Free API for African financial data. Tax rates, FX rates, salary benchmarks, and PAYE calculations for all 54 African countries.">
   <link rel="canonical" href="https://afrotools.com/api/docs/">
+  <meta property="og:title" content="AfroTools API — African Financial Data for Developers">
+  <meta property="og:description" content="Tax, forex, salary, and country data for 54 African countries. RESTful JSON API.">
+  <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
   <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
@@ -19,9 +22,13 @@
 *,*::before,*::after{box-sizing:border-box}
 body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
 
-.docs-hero{background:var(--color-bg-dark);padding:64px 24px 48px;text-align:center}
-.docs-hero h1{font-size:clamp(28px,5vw,40px);font-weight:800;color:#fff;margin:0 0 12px}
-.docs-hero p{font-size:16px;color:#9ca3af;margin:0}
+/* Hero */
+.docs-hero{background:linear-gradient(135deg,#0A1628 0%,#0d1b3e 50%,#1a3a6b 100%);padding:80px 24px 56px;text-align:center}
+.docs-hero .badge{display:inline-block;background:rgba(93,219,158,.15);color:#5ddb9e;font-size:12px;font-weight:800;padding:5px 14px;border-radius:100px;letter-spacing:.08em;margin-bottom:16px;border:1px solid rgba(93,219,158,.3)}
+.docs-hero h1{font-size:clamp(28px,5vw,44px);font-weight:800;color:#fff;margin:0 0 12px;letter-spacing:-.02em}
+.docs-hero p{font-size:16px;color:rgba(255,255,255,.6);margin:0 auto 24px;max-width:540px;line-height:1.6}
+.docs-hero .cta{display:inline-block;background:#008751;color:#fff;padding:12px 28px;border-radius:10px;font-weight:700;font-size:14px;text-decoration:none;transition:transform .15s}
+.docs-hero .cta:hover{transform:translateY(-2px)}
 
 /* Layout */
 .docs-layout{display:grid;grid-template-columns:220px 1fr;max-width:1100px;margin:0 auto;padding:0 24px;gap:40px}
@@ -32,16 +39,20 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
 .docs-nav a:hover,.docs-nav a.active{background:#F3F4F6;color:#111827}
 .docs-content{padding:32px 0 80px;min-width:0}
 
-/* Content styles */
+/* Content */
 .docs-content h2{font-size:24px;font-weight:800;color:#111827;margin:48px 0 16px;padding-top:16px;border-top:1px solid #F3F4F6}
 .docs-content h2:first-child{margin-top:0;border-top:none;padding-top:0}
 .docs-content h3{font-size:18px;font-weight:700;color:#111827;margin:32px 0 12px}
 .docs-content p{font-size:14px;color:#374151;line-height:1.7;margin:0 0 16px}
 .docs-content code{background:#F3F4F6;padding:2px 6px;border-radius:4px;font-size:13px;color:#111827;font-family:'Courier New',monospace}
-.docs-content pre{background:#111827;border-radius:10px;padding:20px;overflow-x:auto;margin:0 0 24px}
+.docs-content pre{background:#0A1628;border-radius:10px;padding:20px;overflow-x:auto;margin:0 0 24px}
 .docs-content pre code{background:none;color:#E5E7EB;padding:0;font-size:13px;line-height:1.7}
+pre .cm{color:#6B7280}
+pre .str{color:#5ddb9e}
+pre .kw{color:#60A5FA}
+pre .num{color:#FBBF24}
 
-/* Endpoint card */
+/* Endpoint */
 .endpoint{background:#F9FAFB;border:1px solid #E5E7EB;border-radius:12px;padding:20px;margin:0 0 20px}
 .endpoint .method{display:inline-block;font-size:11px;font-weight:800;padding:3px 8px;border-radius:4px;letter-spacing:.05em;margin-right:8px}
 .method-get{background:#ECFDF5;color:#065F46}
@@ -54,8 +65,8 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
 .params th,.params td{padding:10px 12px;text-align:left;border-bottom:1px solid #F3F4F6;font-size:13px}
 .params thead th{font-weight:700;color:#6B7280;background:#F9FAFB;font-size:12px}
 .params td code{font-size:12px}
-.params .required{color:#DC2626;font-size:11px;font-weight:700}
-.params .optional{color:#9CA3AF;font-size:11px;font-weight:600}
+.required{color:#DC2626;font-size:11px;font-weight:700}
+.optional{color:#9CA3AF;font-size:11px;font-weight:600}
 
 /* Error table */
 .error-table{width:100%;border-collapse:collapse;margin:0 0 24px}
@@ -64,11 +75,27 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
 .error-code{font-weight:700;font-family:'Courier New',monospace}
 
 /* Info box */
-.info-box{background:#EFF6FF;border:1px solid #BFDBFE;border-radius:10px;padding:16px 20px;margin:0 0 24px;font-size:13px;color:#1E40AF;line-height:1.6}
+.info-box{background:#ECFDF5;border:1px solid #A7F3D0;border-radius:10px;padding:16px 20px;margin:0 0 24px;font-size:13px;color:#065F46;line-height:1.6}
+
+/* API Key form */
+.key-form{background:#F9FAFB;border:1.5px solid #E5E7EB;border-radius:14px;padding:28px;margin:0 0 32px}
+.key-form h3{margin:0 0 16px;font-size:18px}
+.key-form label{display:block;font-size:13px;font-weight:600;color:#374151;margin:0 0 4px}
+.key-form input,.key-form select{width:100%;padding:10px 14px;border:1.5px solid #E5E7EB;border-radius:8px;font-family:inherit;font-size:14px;margin:0 0 14px}
+.key-form button{padding:12px 28px;background:#008751;color:#fff;border:none;border-radius:10px;font-weight:700;font-family:inherit;cursor:pointer;font-size:14px;width:100%}
+.key-form button:hover{background:#006b40}
+.key-form button:disabled{opacity:.5;cursor:not-allowed}
+.key-result{background:#0A1628;color:#5ddb9e;border-radius:10px;padding:20px;margin-top:16px;font-family:'Courier New',monospace;font-size:14px;word-break:break-all;display:none}
+.key-result .warn{color:#FBBF24;font-size:12px;font-family:'DM Sans',sans-serif;margin-top:8px;display:block}
+
+/* Mobile nav toggle */
+.docs-nav-toggle{display:none;background:#F3F4F6;border:1px solid #E5E7EB;padding:10px 16px;border-radius:8px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;margin-bottom:16px;width:100%}
 
 @media(max-width:768px){
   .docs-layout{grid-template-columns:1fr}
-  .docs-nav{position:static;padding:16px 0 0;border-bottom:1px solid #E5E7EB;margin-bottom:16px}
+  .docs-nav{position:static;padding:0;border-bottom:1px solid #E5E7EB;margin-bottom:16px;max-height:none;display:none}
+  .docs-nav.open{display:block;padding:16px 0}
+  .docs-nav-toggle{display:block}
 }
 </style>
 </head>
@@ -76,289 +103,332 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
 <afro-navbar></afro-navbar>
 
 <section class="docs-hero">
-  <h1>API Documentation</h1>
-  <p>Everything you need to integrate AfroTools data into your applications.</p>
+  <span class="badge">API v1.0</span>
+  <h1>AfroTools API</h1>
+  <p>African financial data for developers. Tax rates, FX rates, salary benchmarks, and PAYE calculations for 54 countries.</p>
+  <a href="#get-key" class="cta">Get Your Free API Key</a>
 </section>
 
 <div class="docs-layout">
-  <!-- Sidebar Nav -->
-  <nav class="docs-nav">
+  <button class="docs-nav-toggle" id="navToggle">Menu</button>
+  <nav class="docs-nav" id="docsNav">
     <h3>Getting Started</h3>
-    <a href="#authentication" class="active">Authentication</a>
-    <a href="#base-url">Base URL</a>
+    <a href="#overview" class="active">Overview</a>
+    <a href="#authentication">Authentication</a>
     <a href="#rate-limits">Rate Limits</a>
     <a href="#errors">Error Codes</a>
-    <h3>AfroTax</h3>
-    <a href="#paye">PAYE Calculator</a>
-    <a href="#vat">VAT Rates</a>
-    <h3>AfroFX</h3>
-    <a href="#fx-rates">Exchange Rates</a>
-    <h3>AfroFuel</h3>
-    <a href="#fuel-prices">Fuel Prices</a>
-    <h3>AfroRates</h3>
-    <a href="#central-bank">Central Bank Rates</a>
+    <h3>Endpoints</h3>
+    <a href="#tax-calculate">Tax Calculate</a>
+    <a href="#tax-rates">Tax Rates</a>
+    <a href="#fx-rates">FX Rates</a>
+    <a href="#salary-data">Salary Data</a>
+    <a href="#countries">Countries</a>
     <h3>Resources</h3>
-    <a href="#try-it">Try it Live</a>
-    <a href="#pricing">Pricing</a>
-    <h3>Resources</h3>
-    <a href="/api/pricing.html">Pricing</a>
-    <a href="/dashboard/">Dashboard</a>
+    <a href="#get-key">Get API Key</a>
+    <a href="/developers/">Developer Portal</a>
   </nav>
 
-  <!-- Content -->
   <main class="docs-content">
-    <h2 id="authentication">Authentication</h2>
-    <p>All API requests require an API key passed in the <code>Authorization</code> header.</p>
-    <pre><code>Authorization: Bearer YOUR_API_KEY</code></pre>
-    <p>Get your API key from the <a href="/dashboard/">AfroTools Dashboard</a>. Free tier includes 100 API calls per day.</p>
+
+    <!-- Overview -->
+    <h2 id="overview">Overview</h2>
+    <p>The AfroTools API provides programmatic access to African financial data — tax rates, exchange rates, salary benchmarks, and PAYE calculations covering all 54 African countries.</p>
+    <p>Built for fintechs, HR platforms, payroll systems, and developer tools. Start with the free tier (100 requests/day) — no credit card required.</p>
+
     <div class="info-box">
-      Keep your API key secret. Do not expose it in client-side code. Use server-side calls or environment variables.
+      <strong>Base URL:</strong> <code style="background:none;color:inherit">https://afrotools.com/api/</code><br>
+      All endpoints return JSON with <code style="background:none;color:inherit">Content-Type: application/json</code>.
     </div>
 
-    <h2 id="base-url">Base URL</h2>
-    <p>All API endpoints use the following base URL:</p>
-    <pre><code>https://api.afrotools.com/v1</code></pre>
+    <!-- Authentication -->
+    <h2 id="authentication">Authentication</h2>
+    <p>Include your API key in every request using one of these methods:</p>
+    <pre><code><span class="cm"># Header (recommended)</span>
+x-api-key: afro_live_xxxxxxxxxxxxx
 
+<span class="cm"># Or query parameter</span>
+?api_key=afro_live_xxxxxxxxxxxxx</code></pre>
+
+    <h3>Example with cURL</h3>
+    <pre><code>curl <span class="str">"https://afrotools.com/api/tax-rates?country=NG"</span> \
+  -H <span class="str">"x-api-key: YOUR_API_KEY"</span></code></pre>
+
+    <h3>Example with JavaScript</h3>
+    <pre><code><span class="kw">const</span> res = <span class="kw">await</span> fetch(<span class="str">'https://afrotools.com/api/tax-rates?country=NG'</span>, {
+  headers: { <span class="str">'x-api-key'</span>: <span class="str">'YOUR_API_KEY'</span> }
+});
+<span class="kw">const</span> data = <span class="kw">await</span> res.json();</code></pre>
+
+    <h3>Example with Python</h3>
+    <pre><code><span class="kw">import</span> requests
+
+data = requests.get(
+    <span class="str">"https://afrotools.com/api/tax-rates"</span>,
+    params={<span class="str">"country"</span>: <span class="str">"NG"</span>},
+    headers={<span class="str">"x-api-key"</span>: <span class="str">"YOUR_API_KEY"</span>}
+).json()</code></pre>
+
+    <div class="info-box">
+      <strong>Test keys:</strong> Keys starting with <code style="background:none;color:inherit">afro_test_</code> bypass rate limits and return live data. Use for development.
+    </div>
+
+    <!-- Rate Limits -->
     <h2 id="rate-limits">Rate Limits</h2>
-    <p>Rate limits depend on your plan. Limits are applied per API key.</p>
     <table class="params">
-      <thead><tr><th>Plan</th><th>Daily Calls</th><th>Per Minute</th></tr></thead>
+      <thead><tr><th>Tier</th><th>Daily Limit</th><th>Monthly Limit</th></tr></thead>
       <tbody>
-        <tr><td>Free</td><td>100</td><td>10</td></tr>
-        <tr><td>Starter ($29/mo)</td><td>10,000</td><td>100</td></tr>
-        <tr><td>Pro ($99/mo)</td><td>100,000</td><td>1,000</td></tr>
-        <tr><td>Enterprise ($299/mo)</td><td>Unlimited</td><td>Custom</td></tr>
+        <tr><td>Free</td><td>100</td><td>3,000</td></tr>
+        <tr><td>Pro (coming soon)</td><td>10,000</td><td>300,000</td></tr>
       </tbody>
     </table>
     <p>Rate limit headers are included in every response:</p>
-    <pre><code>X-RateLimit-Limit: 100
-X-RateLimit-Remaining: 87
-X-RateLimit-Reset: 1710547200</code></pre>
+    <pre><code>X-RateLimit-Limit: <span class="num">100</span>
+X-RateLimit-Remaining: <span class="num">87</span></code></pre>
+    <p>Limits reset at midnight UTC daily.</p>
 
+    <!-- Errors -->
     <h2 id="errors">Error Codes</h2>
-    <p>The API uses standard HTTP status codes. Errors return a JSON body with details.</p>
+    <p>All errors return a JSON body with an <code>error</code> field:</p>
     <pre><code>{
-  "error": {
-    "code": "rate_limit_exceeded",
-    "message": "You have exceeded your daily API call limit.",
-    "status": 429
-  }
+  <span class="str">"error"</span>: <span class="str">"Invalid or missing API key"</span>,
+  <span class="str">"code"</span>: <span class="str">"INVALID_API_KEY"</span>
 }</code></pre>
     <table class="error-table">
-      <thead><tr><th>Status</th><th>Code</th><th>Description</th></tr></thead>
+      <thead><tr><th>Status</th><th>Code</th><th>Meaning</th></tr></thead>
       <tbody>
-        <tr><td class="error-code">400</td><td>invalid_request</td><td>Missing or invalid parameters</td></tr>
-        <tr><td class="error-code">401</td><td>unauthorized</td><td>Invalid or missing API key</td></tr>
-        <tr><td class="error-code">403</td><td>forbidden</td><td>API key does not have access to this endpoint</td></tr>
-        <tr><td class="error-code">404</td><td>not_found</td><td>Endpoint or resource not found</td></tr>
-        <tr><td class="error-code">429</td><td>rate_limit_exceeded</td><td>Daily or per-minute rate limit exceeded</td></tr>
-        <tr><td class="error-code">500</td><td>internal_error</td><td>Server error. Try again or contact support.</td></tr>
+        <tr><td class="error-code">400</td><td>MISSING_REQUIRED_FIELD</td><td>A required parameter is missing</td></tr>
+        <tr><td class="error-code">401</td><td>INVALID_API_KEY</td><td>Missing or invalid API key</td></tr>
+        <tr><td class="error-code">404</td><td>INVALID_COUNTRY</td><td>Country code not recognized</td></tr>
+        <tr><td class="error-code">429</td><td>RATE_LIMIT_EXCEEDED</td><td>Daily rate limit exceeded</td></tr>
+        <tr><td class="error-code">500</td><td>INTERNAL_ERROR</td><td>Server error — try again</td></tr>
       </tbody>
     </table>
 
-    <!-- AfroTax: PAYE -->
-    <h2 id="paye">PAYE Calculator</h2>
+    <!-- ============================================ -->
+    <!-- ENDPOINTS -->
+    <!-- ============================================ -->
+
+    <!-- Tax Calculate -->
+    <h2 id="tax-calculate">Tax Calculate (PAYE)</h2>
+    <p>The most powerful endpoint — compute African PAYE without building your own engine. Supports gross-to-net and net-to-gross calculations for 53 countries.</p>
+
     <div class="endpoint">
-      <span class="method method-get">GET</span>
-      <span class="path">/api/v1/tax/paye</span>
-      <p class="desc">Calculate Pay-As-You-Earn tax for an employee in a specific African country.</p>
+      <span class="method method-post">POST</span>
+      <span class="path">/api/v1/tax</span>
+      <p class="desc">Calculate income tax for any supported African country.</p>
     </div>
-    <h3>Parameters</h3>
+
+    <h3>Request Body</h3>
     <table class="params">
-      <thead><tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+      <thead><tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
       <tbody>
-        <tr><td><code>country</code></td><td>string</td><td><span class="required">Required</span></td><td>ISO 3166-1 alpha-2 country code (e.g., NG, ZA, KE)</td></tr>
-        <tr><td><code>salary</code></td><td>number</td><td><span class="required">Required</span></td><td>Annual gross salary in local currency</td></tr>
-        <tr><td><code>period</code></td><td>string</td><td><span class="optional">Optional</span></td><td>Pay period: "monthly", "annual" (default: "annual")</td></tr>
+        <tr><td><code>country</code></td><td>string</td><td><span class="required">Required</span></td><td>ISO 3166-1 alpha-2 code (e.g., NG, KE, ZA)</td></tr>
+        <tr><td><code>grossAnnual</code></td><td>number</td><td><span class="required">*</span></td><td>Annual gross salary in local currency</td></tr>
+        <tr><td><code>grossMonthly</code></td><td>number</td><td><span class="required">*</span></td><td>Monthly gross salary (alternative)</td></tr>
+        <tr><td><code>netAnnual</code></td><td>number</td><td><span class="required">*</span></td><td>Net salary for reverse calculation</td></tr>
+        <tr><td><code>regime</code></td><td>string</td><td><span class="optional">Optional</span></td><td>Tax regime (e.g., NTA_2026 for Nigeria)</td></tr>
+        <tr><td><code>pension</code></td><td>boolean</td><td><span class="optional">Optional</span></td><td>Include pension deduction (default: true)</td></tr>
       </tbody>
     </table>
-    <h3>Response</h3>
+    <p>* Provide one of <code>grossAnnual</code>, <code>grossMonthly</code>, <code>netAnnual</code>, or <code>netMonthly</code>.</p>
+
+    <h3>Example Request</h3>
+    <pre><code>curl -X POST <span class="str">"https://afrotools.com/api/v1/tax"</span> \
+  -H <span class="str">"x-api-key: YOUR_API_KEY"</span> \
+  -H <span class="str">"Content-Type: application/json"</span> \
+  -d <span class="str">'{"country":"NG","grossAnnual":7200000}'</span></code></pre>
+
+    <h3>Example Response</h3>
     <pre><code>{
-  "country": "NG",
-  "currency": "NGN",
-  "gross_salary": 500000,
-  "period": "annual",
-  "tax_breakdown": {
-    "taxable_income": 420000,
-    "paye_tax": 42600,
-    "pension": 40000,
-    "nhf": 12500,
-    "total_deductions": 95100,
-    "net_salary": 404900
+  <span class="str">"status"</span>: <span class="str">"success"</span>,
+  <span class="str">"input"</span>: { <span class="str">"country"</span>: <span class="str">"NG"</span>, <span class="str">"grossAnnual"</span>: <span class="num">7200000</span>, <span class="str">"regime"</span>: <span class="str">"NTA_2026"</span> },
+  <span class="str">"deductions"</span>: {
+    <span class="str">"pension"</span>: <span class="num">576000</span>,
+    <span class="str">"nhf"</span>: <span class="num">180000</span>,
+    <span class="str">"totalDeductions"</span>: <span class="num">1773600</span>
   },
-  "effective_rate": 8.52,
-  "brackets": [
-    {"range": "0 - 300,000", "rate": 7, "tax": 21000},
-    {"range": "300,001 - 600,000", "rate": 11, "tax": 13200}
-  ]
-}</code></pre>
-
-    <!-- AfroTax: VAT -->
-    <h2 id="vat">VAT Rates</h2>
-    <div class="endpoint">
-      <span class="method method-get">GET</span>
-      <span class="path">/api/v1/vat/rates</span>
-      <p class="desc">Get current VAT/GST rates for African countries.</p>
-    </div>
-    <h3>Parameters</h3>
-    <table class="params">
-      <thead><tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td><code>country</code></td><td>string</td><td><span class="optional">Optional</span></td><td>ISO 3166-1 alpha-2 code. Omit for all countries.</td></tr>
-      </tbody>
-    </table>
-    <h3>Response</h3>
-    <pre><code>{
-  "rates": [
-    {"country": "NG", "name": "Nigeria", "vat_rate": 7.5, "currency": "NGN"},
-    {"country": "ZA", "name": "South Africa", "vat_rate": 15, "currency": "ZAR"},
-    {"country": "KE", "name": "Kenya", "vat_rate": 16, "currency": "KES"}
-  ],
-  "updated_at": "2026-03-15T00:00:00Z"
-}</code></pre>
-
-    <!-- AfroFX -->
-    <h2 id="fx-rates">Exchange Rates</h2>
-    <div class="endpoint">
-      <span class="method method-get">GET</span>
-      <span class="path">/api/v1/fx/rates</span>
-      <p class="desc">Get real-time exchange rates for African currencies. Updated every 15 minutes.</p>
-    </div>
-    <h3>Parameters</h3>
-    <table class="params">
-      <thead><tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td><code>base</code></td><td>string</td><td><span class="optional">Optional</span></td><td>Base currency code (default: USD)</td></tr>
-        <tr><td><code>symbols</code></td><td>string</td><td><span class="optional">Optional</span></td><td>Comma-separated currency codes (e.g., NGN,ZAR,KES)</td></tr>
-      </tbody>
-    </table>
-    <h3>Response</h3>
-    <pre><code>{
-  "base": "USD",
-  "timestamp": "2026-03-15T12:30:00Z",
-  "rates": {
-    "NGN": 1580.50,
-    "ZAR": 18.25,
-    "KES": 152.80,
-    "GHS": 15.40,
-    "EGP": 50.75
+  <span class="str">"tax"</span>: {
+    <span class="str">"taxableIncome"</span>: <span class="num">6444000</span>,
+    <span class="str">"netTax"</span>: <span class="num">1017600</span>,
+    <span class="str">"bands"</span>: [...]
+  },
+  <span class="str">"result"</span>: {
+    <span class="str">"netAnnual"</span>: <span class="num">5426400</span>,
+    <span class="str">"netMonthly"</span>: <span class="num">452200</span>,
+    <span class="str">"effectiveRate"</span>: <span class="str">"14.13%"</span>
   }
 }</code></pre>
 
-    <!-- AfroFuel -->
-    <h2 id="fuel-prices">Fuel Prices</h2>
+    <h3>GET: List Supported Countries</h3>
     <div class="endpoint">
       <span class="method method-get">GET</span>
-      <span class="path">/api/v1/fuel/prices</span>
-      <p class="desc">Get current fuel prices across African countries.</p>
+      <span class="path">/api/v1/tax?country=NG</span>
+      <p class="desc">Get country tax info, supported regimes, and available options.</p>
     </div>
+    <pre><code>curl <span class="str">"https://afrotools.com/api/v1/tax"</span> \
+  -H <span class="str">"x-api-key: YOUR_API_KEY"</span></code></pre>
+
+    <!-- Tax Rates -->
+    <h2 id="tax-rates">Tax Rates (Reference Data)</h2>
+    <p>Static reference data — PAYE bands, VAT rates, and tax authority info for all African countries.</p>
+
+    <div class="endpoint">
+      <span class="method method-get">GET</span>
+      <span class="path">/api/tax-rates</span>
+      <p class="desc">Get tax rate data for one or all African countries.</p>
+    </div>
+
     <h3>Parameters</h3>
     <table class="params">
       <thead><tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
       <tbody>
-        <tr><td><code>country</code></td><td>string</td><td><span class="optional">Optional</span></td><td>ISO 3166-1 alpha-2 code. Omit for all countries.</td></tr>
-        <tr><td><code>fuel_type</code></td><td>string</td><td><span class="optional">Optional</span></td><td>"petrol", "diesel", or "kerosene"</td></tr>
+        <tr><td><code>country</code></td><td>string</td><td><span class="optional">Optional</span></td><td>ISO alpha-2 code. Omit for all countries.</td></tr>
+        <tr><td><code>type</code></td><td>string</td><td><span class="optional">Optional</span></td><td><code>paye</code> or <code>vat</code> to filter.</td></tr>
       </tbody>
     </table>
-    <h3>Response</h3>
+
+    <h3>Example Request</h3>
+    <pre><code>curl <span class="str">"https://afrotools.com/api/tax-rates?country=NG"</span> \
+  -H <span class="str">"x-api-key: YOUR_API_KEY"</span></code></pre>
+
+    <h3>Example Response</h3>
     <pre><code>{
-  "prices": [
-    {
-      "country": "NG",
-      "name": "Nigeria",
-      "currency": "NGN",
-      "petrol": 617.00,
-      "diesel": 1200.00,
-      "kerosene": 1100.00,
-      "unit": "per litre"
-    }
-  ],
-  "updated_at": "2026-03-15T00:00:00Z"
+  <span class="str">"country"</span>: <span class="str">"NG"</span>,
+  <span class="str">"country_name"</span>: <span class="str">"Nigeria"</span>,
+  <span class="str">"currency"</span>: <span class="str">"NGN"</span>,
+  <span class="str">"tax_authority"</span>: <span class="str">"FIRS"</span>,
+  <span class="str">"paye"</span>: {
+    <span class="str">"regimes"</span>: [<span class="str">"PITA_2025"</span>, <span class="str">"NTA_2026"</span>],
+    <span class="str">"year"</span>: <span class="str">"2026"</span>,
+    <span class="str">"source"</span>: <span class="str">"Federal Inland Revenue Service (FIRS)"</span>
+  },
+  <span class="str">"vat"</span>: {
+    <span class="str">"standard_rate"</span>: <span class="num">0.075</span>,
+    <span class="str">"currency"</span>: <span class="str">"NGN"</span>
+  }
 }</code></pre>
 
-    <!-- AfroRates -->
-    <h2 id="central-bank">Central Bank Rates</h2>
+    <!-- FX Rates -->
+    <h2 id="fx-rates">FX Rates</h2>
+    <p>Exchange rates for African currencies with historical data support.</p>
+
     <div class="endpoint">
       <span class="method method-get">GET</span>
-      <span class="path">/api/v1/rates/central-bank</span>
-      <p class="desc">Get central bank interest rates and monetary policy rates for African countries.</p>
+      <span class="path">/api/fx-rates</span>
+      <p class="desc">Get current or historical exchange rates.</p>
     </div>
+
     <h3>Parameters</h3>
     <table class="params">
       <thead><tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
       <tbody>
-        <tr><td><code>country</code></td><td>string</td><td><span class="optional">Optional</span></td><td>ISO 3166-1 alpha-2 code. Omit for all countries.</td></tr>
+        <tr><td><code>base</code></td><td>string</td><td><span class="optional">Optional</span></td><td>Base currency (e.g., USD). Returns all African pairs.</td></tr>
+        <tr><td><code>target</code></td><td>string</td><td><span class="optional">Optional</span></td><td>Target currency (e.g., NGN).</td></tr>
+        <tr><td><code>days</code></td><td>number</td><td><span class="optional">Optional</span></td><td>Historical days (e.g., 30 for 30-day history). Requires base + target.</td></tr>
       </tbody>
     </table>
-    <h3>Response</h3>
+
+    <h3>Example Request</h3>
+    <pre><code>curl <span class="str">"https://afrotools.com/api/fx-rates?base=USD&target=NGN"</span> \
+  -H <span class="str">"x-api-key: YOUR_API_KEY"</span></code></pre>
+
+    <h3>Example Response</h3>
     <pre><code>{
-  "rates": [
-    {
-      "country": "NG",
-      "name": "Nigeria",
-      "central_bank": "Central Bank of Nigeria",
-      "policy_rate": 27.50,
-      "inflation_rate": 33.20,
-      "last_changed": "2025-11-26"
-    }
-  ],
-  "updated_at": "2026-03-15T00:00:00Z"
+  <span class="str">"base"</span>: <span class="str">"USD"</span>,
+  <span class="str">"target"</span>: <span class="str">"NGN"</span>,
+  <span class="str">"rate"</span>: <span class="num">1580.50</span>,
+  <span class="str">"source"</span>: <span class="str">"CBN"</span>,
+  <span class="str">"updated_at"</span>: <span class="str">"2026-03-19T08:00:00Z"</span>,
+  <span class="str">"change_24h"</span>: <span class="num">-0.32</span>
 }</code></pre>
 
-    <!-- Try it Live -->
-    <h2 id="try-it">Try the API &mdash; Live</h2>
-    <div style="background:#F9FAFB;border:1.5px solid #E5E7EB;border-radius:14px;padding:24px;margin-bottom:32px;">
-      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px;">
-        <select id="api-endpoint" style="flex:1;min-width:240px;padding:10px 14px;border:1.5px solid #E5E7EB;border-radius:10px;font-family:inherit;font-size:.88rem;">
-          <option value="forex?base=USD&symbols=NGN,KES,ZAR">GET /api-forex &mdash; USD to NGN, KES, ZAR</option>
-          <option value="fuel?country=NG">GET /api-fuel &mdash; Nigeria fuel prices</option>
-          <option value="rates?country=NG">GET /api-rates &mdash; Nigeria central bank rates</option>
+    <!-- Salary Data -->
+    <h2 id="salary-data">Salary Benchmarks</h2>
+    <p>Salary benchmark data aggregated from AfroTools users.</p>
+
+    <div class="endpoint">
+      <span class="method method-get">GET</span>
+      <span class="path">/api/salary-benchmarks</span>
+      <p class="desc">Get salary benchmarks for a specific country.</p>
+    </div>
+
+    <h3>Parameters</h3>
+    <table class="params">
+      <thead><tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>country</code></td><td>string</td><td><span class="required">Required</span></td><td>ISO alpha-2 code (e.g., NG, KE, ZA)</td></tr>
+        <tr><td><code>period</code></td><td>string</td><td><span class="optional">Optional</span></td><td><code>monthly</code> (default) or <code>annual</code></td></tr>
+      </tbody>
+    </table>
+
+    <h3>Example Response</h3>
+    <pre><code>{
+  <span class="str">"country"</span>: <span class="str">"NG"</span>,
+  <span class="str">"currency"</span>: <span class="str">"NGN"</span>,
+  <span class="str">"period"</span>: <span class="str">"monthly"</span>,
+  <span class="str">"sample_size"</span>: <span class="num">1250</span>,
+  <span class="str">"gross"</span>: { <span class="str">"median"</span>: <span class="num">450000</span>, <span class="str">"p25"</span>: <span class="num">250000</span>, <span class="str">"p75"</span>: <span class="num">800000</span> },
+  <span class="str">"net"</span>: { <span class="str">"median"</span>: <span class="num">375000</span>, <span class="str">"p25"</span>: <span class="num">220000</span>, <span class="str">"p75"</span>: <span class="num">680000</span> },
+  <span class="str">"effective_tax_rate"</span>: <span class="num">12.5</span>
+}</code></pre>
+
+    <!-- Countries -->
+    <h2 id="countries">Countries</h2>
+    <p>Reference data for all 54 African countries including currencies, regions, and available tools.</p>
+
+    <div class="endpoint">
+      <span class="method method-get">GET</span>
+      <span class="path">/api/countries</span>
+      <p class="desc">List all African countries or get detail for one.</p>
+    </div>
+
+    <h3>Parameters</h3>
+    <table class="params">
+      <thead><tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>code</code></td><td>string</td><td><span class="optional">Optional</span></td><td>ISO alpha-2 code for single-country detail.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Example Response (single country)</h3>
+    <pre><code>{
+  <span class="str">"code"</span>: <span class="str">"NG"</span>,
+  <span class="str">"name"</span>: <span class="str">"Nigeria"</span>,
+  <span class="str">"currency"</span>: <span class="str">"NGN"</span>,
+  <span class="str">"currency_symbol"</span>: <span class="str">"\u20a6"</span>,
+  <span class="str">"region"</span>: <span class="str">"West Africa"</span>,
+  <span class="str">"population"</span>: <span class="num">230000000</span>,
+  <span class="str">"tools_available"</span>: [<span class="str">"paye"</span>, <span class="str">"vat"</span>, <span class="str">"fx"</span>]
+}</code></pre>
+
+    <!-- Get API Key -->
+    <h2 id="get-key">Get Your API Key</h2>
+    <p>Sign up below to get a free API key instantly. 100 requests/day, no credit card required.</p>
+
+    <div class="key-form" id="keyFormWrapper">
+      <form id="apiKeyForm">
+        <label for="keyEmail">Email address</label>
+        <input type="email" id="keyEmail" placeholder="you@company.com" required>
+
+        <label for="keyName">Your name or company</label>
+        <input type="text" id="keyName" placeholder="Acme Fintech">
+
+        <label for="keyUseCase">Use case</label>
+        <select id="keyUseCase">
+          <option value="personal">Personal project</option>
+          <option value="fintech">Fintech / Startup</option>
+          <option value="hr">HR / Payroll platform</option>
+          <option value="research">Research / Academic</option>
+          <option value="other">Other</option>
         </select>
-        <button id="try-api-btn" style="padding:10px 24px;background:#007AFF;color:#fff;border:none;border-radius:10px;font-weight:600;font-family:inherit;cursor:pointer;font-size:.88rem;">Send Request &rarr;</button>
-      </div>
-      <pre style="background:#111827;color:#e2e8f0;padding:20px;border-radius:10px;font-size:.82rem;line-height:1.6;overflow-x:auto;min-height:100px;margin:0;" id="api-response">// Click "Send Request" to try an endpoint</pre>
-    </div>
 
-    <h2 id="pricing">Pricing</h2>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-bottom:32px;">
-      <div style="background:#F9FAFB;border:1px solid #E5E7EB;border-radius:12px;padding:24px;">
-        <h3 style="font-size:1rem;font-weight:700;margin:0 0 8px;">Free</h3>
-        <p style="font-size:2rem;font-weight:800;color:#007AFF;margin:0 0 12px;">$0</p>
-        <ul style="list-style:none;padding:0;margin:0;font-size:.82rem;color:#6B7280;line-height:2;">
-          <li>100 calls/day</li>
-          <li>Latest data only</li>
-          <li>All 4 APIs included</li>
-        </ul>
-      </div>
-      <div style="background:#F9FAFB;border:1px solid #E5E7EB;border-radius:12px;padding:24px;">
-        <h3 style="font-size:1rem;font-weight:700;margin:0 0 8px;">Starter</h3>
-        <p style="font-size:2rem;font-weight:800;color:#007AFF;margin:0 0 12px;">$29<span style="font-size:.7rem;font-weight:500;color:#6B7280">/mo</span></p>
-        <ul style="list-style:none;padding:0;margin:0;font-size:.82rem;color:#6B7280;line-height:2;">
-          <li>10,000 calls/day</li>
-          <li>30-day history</li>
-          <li>All 4 APIs included</li>
-        </ul>
-      </div>
-      <div style="background:#EFF6FF;border:2px solid #007AFF;border-radius:12px;padding:24px;">
-        <h3 style="font-size:1rem;font-weight:700;margin:0 0 8px;color:#007AFF;">Pro</h3>
-        <p style="font-size:2rem;font-weight:800;color:#007AFF;margin:0 0 12px;">$99<span style="font-size:.7rem;font-weight:500;color:#6B7280">/mo</span></p>
-        <ul style="list-style:none;padding:0;margin:0;font-size:.82rem;color:#6B7280;line-height:2;">
-          <li>100,000 calls/day</li>
-          <li>Full history</li>
-          <li>Webhooks</li>
-        </ul>
-      </div>
-      <div style="background:#F9FAFB;border:1px solid #E5E7EB;border-radius:12px;padding:24px;">
-        <h3 style="font-size:1rem;font-weight:700;margin:0 0 8px;">Enterprise</h3>
-        <p style="font-size:2rem;font-weight:800;color:#007AFF;margin:0 0 12px;">$299<span style="font-size:.7rem;font-weight:500;color:#6B7280">/mo</span></p>
-        <ul style="list-style:none;padding:0;margin:0;font-size:.82rem;color:#6B7280;line-height:2;">
-          <li>Unlimited calls</li>
-          <li>SLA guarantee</li>
-          <li>Custom endpoints</li>
-        </ul>
+        <button type="submit" id="keySubmitBtn">Get Free API Key</button>
+      </form>
+      <div class="key-result" id="keyResult">
+        <span id="keyValue"></span>
+        <span class="warn">Save this key now. It will not be shown in full again.</span>
       </div>
     </div>
-    <p style="text-align:center;font-size:.82rem;color:#6B7280;">All plans include: AfroTax + AfroFX + AfroFuel + AfroRates APIs.</p>
 
   </main>
 </div>
@@ -366,51 +436,72 @@ X-RateLimit-Reset: 1710547200</code></pre>
 <afro-footer></afro-footer>
 
 <script>
-// API Tester
-document.getElementById('try-api-btn').addEventListener('click', async function(){
-  var endpoint = document.getElementById('api-endpoint').value;
-  var pre = document.getElementById('api-response');
-  pre.textContent = '// Loading...';
-  try {
-    var r = await fetch('/.netlify/functions/api-' + endpoint);
-    var data = await r.json();
-    pre.textContent = JSON.stringify(data, null, 2);
-  } catch(e) {
-    // Try fetching from static data as fallback
-    try {
-      var type = endpoint.split('?')[0];
-      var staticUrl = '/data/' + (type === 'forex' ? 'forex' : type === 'fuel' ? 'fuel' : 'rates') + '/latest.json';
-      var r2 = await fetch(staticUrl);
-      var data2 = await r2.json();
-      pre.textContent = '// Static data (API function not deployed yet)\n' + JSON.stringify(data2, null, 2).slice(0, 2000);
-    } catch(e2) {
-      pre.textContent = '// API endpoint not yet deployed.\n// When live, call: /.netlify/functions/api-' + endpoint;
-    }
-  }
-});
-
-// Highlight active nav item on scroll
 (function(){
+  // Mobile nav toggle
+  var toggle = document.getElementById('navToggle');
+  var nav = document.getElementById('docsNav');
+  if (toggle) {
+    toggle.addEventListener('click', function() {
+      nav.classList.toggle('open');
+    });
+  }
+
+  // Scroll spy for active nav
   var links = document.querySelectorAll('.docs-nav a[href^="#"]');
   var sections = [];
   links.forEach(function(link){
     var id = link.getAttribute('href').slice(1);
     var el = document.getElementById(id);
-    if(el) sections.push({el:el, link:link});
+    if (el) sections.push({ el: el, link: link });
   });
 
   function onScroll(){
-    var scrollY = window.scrollY + 100;
+    var scrollY = window.scrollY + 120;
     var current = null;
     sections.forEach(function(s){
-      if(s.el.offsetTop <= scrollY) current = s;
+      if (s.el.offsetTop <= scrollY) current = s;
     });
     links.forEach(function(l){ l.classList.remove('active'); });
-    if(current) current.link.classList.add('active');
+    if (current) current.link.classList.add('active');
   }
-
-  window.addEventListener('scroll', onScroll, {passive:true});
+  window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
+
+  // API Key form
+  var form = document.getElementById('apiKeyForm');
+  if (form) {
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      var btn = document.getElementById('keySubmitBtn');
+      btn.disabled = true;
+      btn.textContent = 'Creating key...';
+
+      try {
+        var res = await fetch('/api/keys/create', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: document.getElementById('keyEmail').value,
+            name: document.getElementById('keyName').value,
+            useCase: document.getElementById('keyUseCase').value
+          })
+        });
+        var data = await res.json();
+        if (data.apiKey || data.ok) {
+          var resultEl = document.getElementById('keyResult');
+          document.getElementById('keyValue').textContent = data.apiKey;
+          resultEl.style.display = 'block';
+          form.style.display = 'none';
+        } else {
+          btn.textContent = data.error || 'Error — try again';
+          btn.disabled = false;
+        }
+      } catch (err) {
+        btn.textContent = 'Error — try again';
+        btn.disabled = false;
+      }
+    });
+  }
 })();
 </script>
 </body>

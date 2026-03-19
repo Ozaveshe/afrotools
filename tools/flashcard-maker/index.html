@@ -99,6 +99,9 @@
     <script type="application/ld+json">
     {"@context":"https://schema.org","@type":"WebApplication","name":"Flashcard Study Tool","url":"https://afrotools.com/tools/flashcard-maker","description":"Free flashcard maker with flip, quiz, and match study modes, spaced repetition, and progress tracking.","applicationCategory":"EducationalApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
     </script>
+<script src="/assets/js/lib/toast.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js" defer></script>
+<script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
     <afro-navbar></afro-navbar>
@@ -502,5 +505,18 @@
 <script src="/assets/js/favorites-widget.js" defer></script>
     <script src="/assets/js/components/tool-registry.js" defer></script>
     <script src="/assets/js/components/related-tools.min.js" defer></script>
+
+<script>
+// Save/Share buttons — manual placement needed
+(function(){
+  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
+  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
+  div.innerHTML = '<share-result-button tool-name="Flashcard Maker" tool-slug="flashcard-maker"></share-result-button>';
+  target.appendChild(div);
+})();
+</script>
 </body>
 </html>

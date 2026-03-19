@@ -337,6 +337,14 @@
     const fileName = `afrotools-${config.toolId || 'report'}-${(config.country || 'report').toLowerCase().replace(/\s+/g, '-')}-${new Date().toISOString().slice(0, 10)}.pdf`;
     doc.save(fileName);
 
+    // Expose blob for vault save button
+    try {
+      var pdfBlob = doc.output('blob');
+      window.dispatchEvent(new CustomEvent('afro-pdf-generated', { detail: { blob: pdfBlob, fileName: fileName, toolId: config.toolId || '' } }));
+      var vaultBtn = document.querySelector('save-to-vault');
+      if (vaultBtn && vaultBtn.setFile) vaultBtn.setFile(pdfBlob, fileName);
+    } catch (_e) { /* ignore */ }
+
     // Track download
     if (window.gtag) {
       window.gtag('event', 'pdf_download', {

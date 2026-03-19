@@ -72,6 +72,11 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I write a Ghana Cedi cheque correctly?","acceptedAnswer":{"@type":"Answer","text":"Write the date in DD/MM/YYYY format, fill in the payee name, write the amount in figures in the box, then write the amount in words starting with 'Ghana Cedis' and ending with 'Only.' Draw a line through any remaining space on the amount line."}},{"@type":"Question","name":"What are pesewas and how do I include them?","acceptedAnswer":{"@type":"Answer","text":"Pesewas (Gp) are the subunit of the Ghana Cedi. 100 pesewas equal 1 cedi. When writing amounts in words, include pesewas after 'and Pesewas' — for example, GH₵ 50.30 becomes 'Ghana Cedis Fifty and Pesewas Thirty Only.'"}},{"@type":"Question","name":"Is the current Ghana Cedi the same as the old cedi?","acceptedAnswer":{"@type":"Answer","text":"No. Ghana redenominated its currency on July 3, 2007. The new Ghana Cedi (GHS) replaced the old cedi (GHC) at a rate of 10,000 old cedis to 1 new cedi. All current transactions use the new cedi."}},{"@type":"Question","name":"Do Ghanaian banks still accept cheques?","acceptedAnswer":{"@type":"Answer","text":"Yes, cheques are still widely used in Ghana for business transactions, rent payments, and government dealings. However, mobile money (MTN MoMo, Vodafone Cash, AirtelTigo Money) has become dominant for everyday transactions. For large amounts, cheques and bank transfers remain standard."}}]}
 </script>
+<script src="/assets/js/lib/toast.js" defer></script>
+<script src="/assets/js/afro-history.js" defer></script>
+<script src="/assets/js/components/save-result-button.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js" defer></script>
+<script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -241,6 +246,18 @@ function copyWords() {
     setTimeout(() => btn.textContent = 'Copy Words', 1500);
   });
 }
+</script>
+
+<script>
+(function(){
+  var target = document.getElementById('resultCard');
+  if (!target) return;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
+  div.innerHTML = '<save-result-button tool-slug="amount-words-gh" tool-name="Amount Words Gh"></save-result-button><share-result-button tool-name="Amount Words Gh" tool-slug="amount-words-gh"></share-result-button>';
+  target.appendChild(div);
+})();
 </script>
 </body>
 </html>

@@ -56,6 +56,11 @@
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is Libya's income tax structure?","acceptedAnswer":{"@type":"Answer","text":"Libya applies a flat 10% income tax, plus a 3% Jihad tax, plus a 1% stamp duty, totalling approximately 14% of gross salary. Social contributions add 3.75% (employee) and 11.25% (employer)."}},{"@type":"Question","name":"What are Libya's social security contributions?","acceptedAnswer":{"@type":"Answer","text":"Employee contributes 3.75% of gross salary. Employer contributes 11.25% of gross salary. These are separate from income tax and together represent social security and health insurance coverage."}},{"@type":"Question","name":"How is Libya PAYE calculated monthly?","acceptedAnswer":{"@type":"Answer","text":"Take your monthly gross salary and apply 10% income tax + 3% Jihad tax + 1% stamp duty + 3.75% social security. This gives total deductions of approximately 17.75% from gross pay."}},{"@type":"Question","name":"Is there a tax-free threshold in Libya?","acceptedAnswer":{"@type":"Answer","text":"No. Libya's flat tax rates apply to all income with no tax-free threshold or band structure. All salary levels are subject to the same 10% income tax rate."}},{"@type":"Question","name":"What is the total employer cost in Libya?","acceptedAnswer":{"@type":"Answer","text":"Employers pay the gross salary plus an 11.25% social security contribution. Employers must also withhold and remit employee taxes and social contributions."}},{"@type":"Question","name":"What does social security cover in Libya?","acceptedAnswer":{"@type":"Answer","text":"Libya's social security system covers retirement pensions, disability benefits, survivor benefits, and basic health insurance. The combined rate is 15% of gross salary — 3.75% from the employee and 11.25% from the employer."}},{"@type":"Question","name":"What is the Jihad tax in Libya?","acceptedAnswer":{"@type":"Answer","text":"The Jihad tax is a 3% levy on gross salary, applied alongside the 10% income tax and 1% stamp duty. It is a mandatory payroll deduction for all employees in Libya."}},{"@type":"Question","name":"Is the AfroTools Libya PAYE calculator free?","acceptedAnswer":{"@type":"Answer","text":"Yes — the AfroTools Libya PAYE calculator is completely free with no account required. It includes real-time tax computation, social security deductions, employer cost breakdown, interactive charts, AI tax analysis, and downloadable PDF summaries."}}]}
 </script>
 <script src="/assets/js/lib/chart-config.js"></script>
+
+  <script src="/assets/js/afro-history.js" defer></script>
+  <script src="/assets/js/components/save-result-button.js" defer></script>
+  <script src="/assets/js/components/share-card-generator.js" defer></script>
+  <script src="/assets/js/components/share-button.js" defer></script>
 </head><body class="tool-page">
 <afro-navbar active="tools"></afro-navbar>
 <section class="tool-hero"><div class="tool-hero-inner"><nav class="breadcrumb"><a href="/">Home</a> / <a href="/libya/">🇱🇾 Libya</a> / <span>PAYE Calculator</span></nav><h1>Libya PAYE<br><em>Calculator 2025</em></h1><p class="hero-sub">Flat 10% + 3% Jihad tax + 1% stamp (~14%), plus 3.75% employee social + 11.25% employer social. Monthly calculation.</p><div class="hero-badges"><span class="badge b-red">✦ Includes AI Advisor</span><span class="badge b-grey">LYD · Libyan Dinar</span></div><p class="hero-meta">Last verified: 2025 · Currency: LYD</p></div></section>
@@ -69,7 +74,23 @@
             <button class="preset-btn" onclick="setPreset(30000, this)">LYD 30k</button>
             <button class="preset-btn" onclick="setPreset(60000, this)">LYD 60k</button>
           </div>
-<button class="calc-btn" onclick="calculate()">Calculate My Take-Home Pay →</button></div></div><div class="card results-card" id="resultsCard"><div class="res-hero"><div class="res-hero-label">Monthly Take-Home Pay</div><div class="res-hero-amount" id="resAmount">LYD 0</div><div class="res-hero-period">After PAYE &amp; all deductions</div><div class="res-hero-gross" id="resGross"></div></div><div class="res-body"><div class="period-row"><button class="per-btn on" onclick="setPeriod('monthly',this)">Monthly</button><button class="per-btn" onclick="setPeriod('annual',this)">Annual</button></div><div id="resContent"></div><div class="rate-bar-wrap"><div class="rate-bar-hdr"><span class="rate-bar-lbl">Effective Tax Rate</span><span class="rate-bar-pct" id="effRateDisplay">0%</span></div><div class="rate-track"><div class="rate-fill" id="rateFill"></div></div></div><div class="info-strip" id="employerStrip"></div></div><div class="chart-section"><div class="chart-tabs"><button class="chart-tab on" onclick="setChart('donut',this)">Breakdown</button><button class="chart-tab" onclick="setChart('employer',this)">Employer Cost</button></div><div class="chart-canvas-wrap"><canvas id="mainChart"></canvas></div></div><div class="action-row"><button class="act-btn act-pdf" onclick="openPdfModal()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Download PDF</button><button class="act-btn act-share" id="lyShareBtn" onclick="shareResult()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share Result</button></div></div></div><div class="sidebar"><div class="ai-card"><div class="ai-head"><div class="ai-dot"></div><span class="ai-head-title">AI Tax Advisor</span><span class="ai-head-by">Powered by Claude</span></div><div class="ai-body"><p class="ai-status" id="aiStatus">Calculate your salary first — I'll analyse your Libya tax and social contributions.</p><div class="ai-response" id="aiResp"></div><button class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Calculate first to unlock →</button><div class="ai-chat" id="aiChat"><div class="chat-msgs" id="chatMsgs"></div><div class="chat-row"><input class="chat-in" id="chatIn" placeholder="Ask a follow-up…" onkeydown="if(event.key==='Enter')sendChat()"><button class="chat-send" onclick="sendChat()">→</button></div></div></div></div><div class="card bands-card"><div class="card-head" onclick="toggleBands(this)"><span class="card-title">Libya 2025 Tax Components</span><span class="tog-arrow">▾</span></div><div class="bands-body"><div class="band-row"><span class="band-range">Income Tax</span><span class="band-rate">10% flat</span></div><div class="band-row"><span class="band-range">Jihad Tax</span><span class="band-rate">3% flat</span></div><div class="band-row"><span class="band-range">Stamp Duty</span><span class="band-rate">1% flat</span></div><div class="band-row"><span class="band-range">Employee Social</span><span class="band-rate">3.75%</span></div><div class="band-row"><span class="band-range">Employer Social</span><span class="band-rate">11.25%</span></div><p class="band-note">All rates applied monthly. Total deductions from gross: ~17.75% (10% + 3% + 1% + 3.75%). Employer cost: gross + 11.25% social.</p></div></div><div class="disclaimer"><strong>Disclaimer:</strong> For informational purposes only. Rates based on Libyan law. Verify with local tax authority.</div>
+<button class="calc-btn" onclick="calculate()">Calculate My Take-Home Pay →</button></div></div><div class="card results-card" id="resultsCard"><div class="res-hero"><div class="res-hero-label">Monthly Take-Home Pay</div><div class="res-hero-amount" id="resAmount">LYD 0</div><div class="res-hero-period">After PAYE &amp; all deductions</div><div class="res-hero-gross" id="resGross"></div></div><div class="res-body"><div class="period-row"><button class="per-btn on" onclick="setPeriod('monthly',this)">Monthly</button><button class="per-btn" onclick="setPeriod('annual',this)">Annual</button></div><div id="resContent"></div><div class="rate-bar-wrap"><div class="rate-bar-hdr"><span class="rate-bar-lbl">Effective Tax Rate</span><span class="rate-bar-pct" id="effRateDisplay">0%</span></div><div class="rate-track"><div class="rate-fill" id="rateFill"></div></div></div><div class="info-strip" id="employerStrip"></div></div><div class="chart-section"><div class="chart-tabs"><button class="chart-tab on" onclick="setChart('donut',this)">Breakdown</button><button class="chart-tab" onclick="setChart('employer',this)">Employer Cost</button></div><div class="chart-canvas-wrap"><canvas id="mainChart"></canvas></div></div><div class="action-row"><button class="act-btn act-pdf" onclick="openPdfModal()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Download PDF</button><button class="act-btn act-share" id="lyShareBtn" onclick="shareResult()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share Result</button></div>
+
+          <!-- Save & Share -->
+          <div class="save-share-row">
+            <save-result-button
+              tool-slug="ly-paye"
+              tool-name="Libya PAYE Calculator"
+              country-code="LY"
+              currency="LYD">
+            </save-result-button>
+            <share-result-button
+              tool-name="Libya PAYE Calculator"
+              tool-slug="ly-paye"
+              country-flag="🇱🇾">
+            </share-result-button>
+          </div>
+          <salary-benchmark country-code="LY" currency="LYD"></salary-benchmark></div></div><div class="sidebar"><div class="ai-card"><div class="ai-head"><div class="ai-dot"></div><span class="ai-head-title">AI Tax Advisor</span><span class="ai-head-by">Powered by Claude</span></div><div class="ai-body"><p class="ai-status" id="aiStatus">Calculate your salary first — I'll analyse your Libya tax and social contributions.</p><div class="ai-response" id="aiResp"></div><button class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Calculate first to unlock →</button><div class="ai-chat" id="aiChat"><div class="chat-msgs" id="chatMsgs"></div><div class="chat-row"><input class="chat-in" id="chatIn" placeholder="Ask a follow-up…" onkeydown="if(event.key==='Enter')sendChat()"><button class="chat-send" onclick="sendChat()">→</button></div></div></div></div><div class="card bands-card"><div class="card-head" onclick="toggleBands(this)"><span class="card-title">Libya 2025 Tax Components</span><span class="tog-arrow">▾</span></div><div class="bands-body"><div class="band-row"><span class="band-range">Income Tax</span><span class="band-rate">10% flat</span></div><div class="band-row"><span class="band-range">Jihad Tax</span><span class="band-rate">3% flat</span></div><div class="band-row"><span class="band-range">Stamp Duty</span><span class="band-rate">1% flat</span></div><div class="band-row"><span class="band-range">Employee Social</span><span class="band-rate">3.75%</span></div><div class="band-row"><span class="band-range">Employer Social</span><span class="band-rate">11.25%</span></div><p class="band-note">All rates applied monthly. Total deductions from gross: ~17.75% (10% + 3% + 1% + 3.75%). Employer cost: gross + 11.25% social.</p></div></div><div class="disclaimer"><strong>Disclaimer:</strong> For informational purposes only. Rates based on Libyan law. Verify with local tax authority.</div>
 
       <div class="tool-info-card">
         <div class="tool-info-header">
@@ -166,6 +187,28 @@ updateSliderFill(document.getElementById('salarySlider'));
   setTimeout(() => { document.getElementById('rateFill').style.width = Math.min(effectiveRate * 200, 100) + '%'; }, 80);
   document.getElementById('hiddenGross').value = gross;
   document.getElementById('resultsCard').classList.add('on');
+  // Save/Share/Benchmark wiring
+  var _saveBtn = document.querySelector('save-result-button');
+  if (_saveBtn) _saveBtn.setData({
+    inputs: { grossSalary: RESULT.gross },
+    outputs: {
+      netPay: RESULT.netMonthly || RESULT.net,
+      tax: RESULT.monthlyPAYE || RESULT.tax || RESULT.paye,
+      effectiveRate: RESULT.effectiveRate
+    }
+  });
+  var _shareBtn = document.querySelector('share-result-button');
+  if (_shareBtn) _shareBtn.setResult({
+    headline: 'My Take-Home Pay',
+    mainValue: fmt(RESULT.netMonthly || RESULT.net) + '/mo',
+    subValues: [
+      { label: 'Gross', value: fmt(RESULT.gross) + '/mo' },
+      { label: 'Tax', value: fmt(RESULT.monthlyPAYE || RESULT.tax || RESULT.paye) + '/mo' },
+      { label: 'Effective Rate', value: pct(RESULT.effectiveRate) }
+    ]
+  });
+  var _bmWidget = document.querySelector('salary-benchmark');
+  if (_bmWidget) { _bmWidget.setAttribute('user-gross', RESULT.gross); _bmWidget.setAttribute('user-net', RESULT.netMonthly || RESULT.net); }
   renderChart(CHART_TYPE);
   document.getElementById('resultsCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   document.getElementById('aiBtn').disabled = false;
@@ -272,4 +315,5 @@ async function sendChat() {
 <script src="/assets/js/share-image-inject.js" defer></script>
 <script>window._grossToNet=function(g){return g-calcMonthlyPAYE(g).tax;};</script>
 <script src="/assets/js/lib/net-to-gross.js" defer></script>
+<script src="/assets/js/components/salary-benchmark-widget.js" defer></script>
 </body></html>

@@ -139,6 +139,31 @@
     },
 
     /**
+     * Share directly to WhatsApp with optimized text
+     * @param {Object} opts - { headline, mainValue, subValues, state, toolId }
+     */
+    whatsappShare(opts = {}) {
+      const url = opts.state ? this.encode(opts.state, opts.baseUrl) : window.location.href;
+      const emoji = getToolEmoji(opts.toolId || '');
+      let text = emoji + ' ' + (opts.headline || 'My Result') + ': ' + (opts.mainValue || '') + '\n\n';
+
+      const subs = (opts.subValues || []).slice(0, 3);
+      if (subs.length) {
+        text += subs.map(s => s.label + ': ' + s.value).join(' | ') + '\n\n';
+      }
+      text += 'Calculate yours FREE \uD83D\uDC47\n' + url;
+
+      window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+
+      if (window.gtag) {
+        window.gtag('event', 'share_click', {
+          tool_name: opts.toolId || 'unknown',
+          method: 'whatsapp',
+        });
+      }
+    },
+
+    /**
      * Clear state from URL without page reload
      */
     clearUrl() {
@@ -147,8 +172,93 @@
     },
   };
 
+  function getToolEmoji(toolId) {
+    if (!toolId) return '\uD83D\uDCCA';
+    const t = toolId.toLowerCase();
+    if (t.includes('paye') || t.includes('salary') || t.includes('tax')) return '\uD83D\uDCB0';
+    if (t.includes('vat')) return '\uD83E\uDDFE';
+    if (t.includes('currency') || t.includes('fx') || t.includes('rate')) return '\uD83D\uDCB1';
+    if (t.includes('pension') || t.includes('retirement')) return '\uD83C\uDFE6';
+    if (t.includes('loan') || t.includes('mortgage')) return '\uD83C\uDFE0';
+    if (t.includes('crypto') || t.includes('bitcoin')) return '\u20BF';
+    if (t.includes('budget') || t.includes('saving')) return '\uD83D\uDCB0';
+    if (t.includes('mobile-money') || t.includes('mpesa')) return '\uD83D\uDCF1';
+    return '\uD83D\uDCCA';
+  }
+
+  /* ═══════════════════════════════════════════
+     Deep Link / Compare Mode Handler
+     ═══════════════════════════════════════════ */
+  function checkDeepLink() {
+    var params = new URLSearchParams(window.location.search);
+    if (!params.has('compare')) return;
+
+    var gross = params.get('gross');
+    if (!gross) return;
+
+    /* Try common input IDs across tool pages */
+    var inputIds = ['grossSalary', 'salaryInput', 'grossInput', 'amount'];
+    var filled = false;
+    for (var i = 0; i < inputIds.length; i++) {
+      var el = document.getElementById(inputIds[i]);
+      if (el) {
+        el.value = Number(gross).toLocaleString('en');
+        filled = true;
+        break;
+      }
+    }
+    if (!filled) return;
+
+    /* Show compare banner — create if it doesn't exist */
+    var banner = document.getElementById('compareBanner');
+    if (!banner) {
+      banner = document.createElement('div');
+      banner.id = 'compareBanner';
+      banner.className = 'compare-banner';
+      /* Insert before the results card or form */
+      var anchor = document.querySelector('.results-card, .result-card, .res-card, .res-hero, .tool-form, .calc-form, .card');
+      if (anchor && anchor.parentNode) {
+        anchor.parentNode.insertBefore(banner, anchor);
+      }
+    }
+    if (banner) {
+      banner.innerHTML =
+        '<div style="display:flex;align-items:center;justify-content:space-between;gap:12px">' +
+          '<span>A friend shared their result. <strong>Calculate yours to compare!</strong></span>' +
+          '<button onclick="this.closest(\'.compare-banner\').classList.remove(\'show\')" ' +
+            'style="background:none;border:none;font-size:1.1rem;cursor:pointer;padding:4px;color:inherit" ' +
+            'aria-label="Dismiss">\u2715</button>' +
+        '</div>';
+      banner.classList.add('show');
+    }
+
+    /* Auto-trigger calculation after a short delay */
+    setTimeout(function () {
+      var calcBtn = document.querySelector('.calc-btn') ||
+                    document.querySelector('[type="submit"]') ||
+                    document.querySelector('button[onclick*="calculate"]');
+      if (calcBtn) calcBtn.click();
+    }, 300);
+
+    /* Track compare visit */
+    if (window.gtag) {
+      gtag('event', 'compare_visit', {
+        tool_name: document.querySelector('meta[name="tool-id"]')?.content || 'unknown',
+        gross_prefilled: gross
+      });
+    }
+  }
+
+  /* Run deep link check when DOM is ready */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', checkDeepLink);
+  } else {
+    checkDeepLink();
+  }
+
   // Expose globally
   window.AfroTools = window.AfroTools || {};
   window.AfroTools.shareState = shareState;
+  window.AfroTools.checkDeepLink = checkDeepLink;
 
 })(window);

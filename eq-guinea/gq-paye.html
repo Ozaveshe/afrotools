@@ -65,6 +65,10 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com"},{"@type":"ListItem","position":2,"name":"Equatorial Guinea","item":"https://afrotools.com/eq-guinea"},{"@type":"ListItem","position":3,"name":"PAYE Calculator","item":"https://afrotools.com/eq-guinea/gq-paye"}]}
 </script>
+  <script src="/assets/js/afro-history.js" defer></script>
+  <script src="/assets/js/components/save-result-button.js" defer></script>
+  <script src="/assets/js/components/share-card-generator.js" defer></script>
+  <script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body class="tool-page">
 <afro-navbar active="tools"></afro-navbar>
@@ -184,6 +188,22 @@
           <button onclick="openPdfModal()" style="padding:10px;font-size:.72rem;font-weight:700;border-radius:6px;cursor:pointer;background:rgba(255,215,0,.1);border:1.5px solid rgba(255,215,0,.35);color:#7a6200">📄 Download PDF</button>
           <button id="gqShareBtn" onclick="shareResult()" style="padding:10px;font-size:.72rem;font-weight:700;border-radius:6px;cursor:pointer;background:#f5f5f5;border:1.5px solid #ddd;color:#333">Share Result</button>
         </div>
+
+          <!-- Save & Share -->
+          <div class="save-share-row">
+            <save-result-button
+              tool-slug="gq-paye"
+              tool-name="Equatorial Guinea PAYE Calculator"
+              country-code="GQ"
+              currency="XAF">
+            </save-result-button>
+            <share-result-button
+              tool-name="Equatorial Guinea PAYE Calculator"
+              tool-slug="gq-paye"
+              country-flag="🇬🇶">
+            </share-result-button>
+          </div>
+          <salary-benchmark country-code="GQ" currency="XAF"></salary-benchmark>
       </div>
     </div>
 
@@ -343,7 +363,14 @@ function calcAnnualIRPF(i){const n=Math.max(0,i),d=[];if(n<=1e6)return d.push({r
     calculate();
   }
 
-  function calculate(){const e=parseFloat(document.getElementById('grossSalary').value)||0;if(!e||e<=0){const _el=document.getElementById('grossSalary');_el.focus();_el.style.borderColor='#e53e3e';_el.setAttribute('placeholder','Enter a valid salary');setTimeout(()=>{_el.style.borderColor='';_el.removeAttribute('placeholder')},3000);return}const n=isOn('socSec'),s=n?0.045:0,r=0.215,o=e*s,a=e*r,l=e*12,d=o*12,c=Math.max(0,l-d),t=calcAnnualIRPF(c),u=t.tax/12,i=t.bandBreakdown,m=o+u,h=e-m,b=e>0?u/e:0;RESULT={gross:e,monthly:e,socSec:o,socSecRate:s,empSocSec:a,monthlyPAYE:u,bandBreakdown:i,annualPAYE:t.tax,totalEmployeeDeductions:m,netMonthly:h,effectiveRate:b,annualGross:l,annualNet:h*12,annualTax:t.tax,annualSocSec:d,totalEmployerCostMonthly:e+a},document.getElementById('resAmount').textContent=fmt(h),document.getElementById('resGross').textContent=`Gross: ${fmt(e)}/month · ${fmt(l)}/year`,document.getElementById('resContent').innerHTML=renderRows(RESULT,PERIOD),document.getElementById('effRateDisplay').textContent=pct(b),setTimeout(()=>{document.getElementById('rateFill').style.width=Math.min(b*200,100)+'%'},80),document.getElementById('hiddenGross').value=e,document.getElementById('employerStrip').innerHTML=`<strong>Total Employer Cost: ${fmt(RESULT.totalEmployerCostMonthly)}/month</strong><br>Gross + social security ${fmt(a)}/mo.`,document.getElementById('employerStrip').style.display='block',document.getElementById('resultsCard').style.display='block',renderChart(CHART_TYPE),document.getElementById('resultsCard').scrollIntoView({behavior:'smooth',block:'nearest'}),document.getElementById('aiBtn').disabled=!1,document.getElementById('aiBtn').textContent='Get AI Tax Analysis →',document.getElementById('aiStatus').textContent=`Gross: ${fmt(e)}/mo · Take-home: ${fmt(h)}/mo · Tax: ${fmt(u)}/mo · Effective: ${pct(b)}`}
+  function calculate(){const e=parseFloat(document.getElementById('grossSalary').value)||0;if(!e||e<=0){const _el=document.getElementById('grossSalary');_el.focus();_el.style.borderColor='#e53e3e';_el.setAttribute('placeholder','Enter a valid salary');setTimeout(()=>{_el.style.borderColor='';_el.removeAttribute('placeholder')},3000);return}const n=isOn('socSec'),s=n?0.045:0,r=0.215,o=e*s,a=e*r,l=e*12,d=o*12,c=Math.max(0,l-d),t=calcAnnualIRPF(c),u=t.tax/12,i=t.bandBreakdown,m=o+u,h=e-m,b=e>0?u/e:0;RESULT={gross:e,monthly:e,socSec:o,socSecRate:s,empSocSec:a,monthlyPAYE:u,bandBreakdown:i,annualPAYE:t.tax,totalEmployeeDeductions:m,netMonthly:h,effectiveRate:b,annualGross:l,annualNet:h*12,annualTax:t.tax,annualSocSec:d,totalEmployerCostMonthly:e+a},document.getElementById('resAmount').textContent=fmt(h),document.getElementById('resGross').textContent=`Gross: ${fmt(e)}/month · ${fmt(l)}/year`,document.getElementById('resContent').innerHTML=renderRows(RESULT,PERIOD),document.getElementById('effRateDisplay').textContent=pct(b),setTimeout(()=>{document.getElementById('rateFill').style.width=Math.min(b*200,100)+'%'},80),document.getElementById('hiddenGross').value=e,document.getElementById('employerStrip').innerHTML=`<strong>Total Employer Cost: ${fmt(RESULT.totalEmployerCostMonthly)}/month</strong><br>Gross + social security ${fmt(a)}/mo.`,document.getElementById('employerStrip').style.display='block',document.getElementById('resultsCard').style.display='block',renderChart(CHART_TYPE),document.getElementById('resultsCard').scrollIntoView({behavior:'smooth',block:'nearest'}),document.getElementById('aiBtn').disabled=!1,document.getElementById('aiBtn').textContent='Get AI Tax Analysis →',document.getElementById('aiStatus').textContent=`Gross: ${fmt(e)}/mo · Take-home: ${fmt(h)}/mo · Tax: ${fmt(u)}/mo · Effective: ${pct(b)}`;
+  var _saveBtn = document.querySelector('save-result-button');
+  if (_saveBtn) _saveBtn.setData({ inputs: { grossSalary: RESULT.gross }, outputs: { netPay: RESULT.netMonthly, tax: RESULT.monthlyPAYE, effectiveRate: RESULT.effectiveRate } });
+  var _shareBtn = document.querySelector('share-result-button');
+  if (_shareBtn) _shareBtn.setResult({ headline: 'My Take-Home Pay', mainValue: fmt(RESULT.netMonthly) + '/mo', subValues: [{ label: 'Gross', value: fmt(RESULT.gross) + '/mo' }, { label: 'Tax', value: fmt(RESULT.monthlyPAYE) + '/mo' }, { label: 'Effective Rate', value: pct(RESULT.effectiveRate) }] });
+  var _bmWidget = document.querySelector('salary-benchmark');
+  if (_bmWidget) { _bmWidget.setAttribute('user-gross', RESULT.gross); _bmWidget.setAttribute('user-net', RESULT.netMonthly); }
+}
 function renderRows(e,n){const s='annual'===n,r=s?e.annualGross:e.gross,o=s?e.annualSocSec:e.socSec,a=s?e.annualTax:e.monthlyPAYE,l=s?e.annualNet:e.netMonthly,d=s?e.annualTax+e.annualSocSec:e.totalEmployeeDeductions,c=s?'/year':'/month',t=(e,n,s='')=>`<div style="display:flex;justify-content:space-between;padding:5px 0;font-size:.85rem;border-top:1px solid #f5f5f5"><span style="color:#555">${e}</span><span style="font-weight:700;color:#333${s?' '+s:''}">${n}</span></div>`;return`<div style="margin-bottom:16px"><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;color:#666;margin-bottom:8px;padding-bottom:7px;border-bottom:1px solid #f5f5f5">Gross Income</div>${t(`Gross Salary${c}`,fmt(r))}</div><div style="margin-bottom:16px"><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;color:#666;margin-bottom:8px;padding-bottom:7px;border-bottom:1px solid #f5f5f5">Deductions</div>${e.socSec>0?t(`Social Security (${pct(e.socSecRate)})`,fmt(o),' c-red'):''}<span style="color:#666">${t(`Net taxable income${c}`,fmt(s?e.annualGross-e.annualSocSec:e.gross-e.socSec),' c-mut')}</span></div><div style="margin-bottom:16px"><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;color:#666;margin-bottom:8px;padding-bottom:7px;border-bottom:1px solid #f5f5f5">IRPF Income Tax</div>${t(`Income tax${c}`,fmt(a),' c-red')}</div><div>${t('Total Deductions',fmt(d),' c-red')}<div style="display:flex;justify-content:space-between;padding:5px 0;font-size:.85rem;border-top:2px solid #ddd;margin-top:4px;padding-top:10px"><span style="font-weight:700;color:#333">Take-Home Pay</span><span style="font-size:1.05rem;font-weight:800;color:var(--primary)">${fmt(l)}</span></div></div>`}
 function setPeriod(e,n){PERIOD=e,document.querySelectorAll('.per-btn').forEach(e=>e.classList.remove('on')),n.classList.add('on'),n.style.background='#fff',n.style.color='var(--primary)',RESULT&&((function(){var m=PERIOD==='monthly',n=m?RESULT.netMonthly:(RESULT.annualNet||RESULT.netAnnual||RESULT.netMonthly*12),g=m?RESULT.gross:(RESULT.annualGross||RESULT.gross*12);document.getElementById('resAmount').textContent=fmt(n);document.getElementById('resGross').textContent=m?'Gross: '+fmt(g)+'/month':'Gross: '+fmt(g)+'/year'})(),document.getElementById('resContent').innerHTML=renderRows(RESULT,e))}
 function toggleBands(e){const n=e.nextElementSibling;n.style.display='none'===n.style.display?'block':'none';const s=e.querySelector('.tog-arrow');s.style.transform='none'===s.style.transform||'rotate(0deg)'===s.style.transform?'rotate(180deg)':'rotate(0deg)'}
@@ -362,5 +389,6 @@ async function sendChat(){const e=document.getElementById('chatIn'),n=e.value.tr
 <script src="/assets/js/share-image-inject.js" defer></script>
 <script>window._grossToNet=function(g){var d=isOn('socSec')?g*0.045:0;return g-(d+calcAnnualIRPF(Math.max(0,(g-d)*12)).tax/12);};</script>
 <script src="/assets/js/lib/net-to-gross.js" defer></script>
+<script src="/assets/js/components/salary-benchmark-widget.js" defer></script>
 </body>
 </html>

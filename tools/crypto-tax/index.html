@@ -67,6 +67,11 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 .faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
 @media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.result-grid{grid-template-columns:1fr}}
 </style>
+<script src="/assets/js/lib/toast.js" defer></script>
+<script src="/assets/js/afro-history.js" defer></script>
+<script src="/assets/js/components/save-result-button.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js" defer></script>
+<script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -74,7 +79,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Crypto Tax</span></div>
 <h1>African <em>Crypto Tax Calculator</em></h1>
 <p class="hero-sub">Calculate capital gains tax on your cryptocurrency disposals in Nigeria, Kenya, South Africa, and Ghana. Covers Bitcoin, Ethereum, and all crypto assets.</p>
-<div class="hero-badges"><span class="badge b-em">Capital Gains</span><span class="badge b-em">4 Countries</span><span class="badge b-em">2025 Rates</span></div>
+<div class="hero-badges"><span class="badge b-em">Capital Gains</span><span class="badge b-em">4 Countries</span><span class="badge b-em">2026 Rates</span></div>
 </div></section>
 
 <section class="tool-main"><div class="tool-main-inner">
@@ -161,7 +166,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <section class="seo-section">
 <h2>Cryptocurrency Tax in Africa</h2>
 <p>Cryptocurrency taxation in Africa is evolving rapidly. As digital asset adoption grows across the continent — Nigeria, Kenya, and South Africa are consistently among the top crypto adoption countries globally — tax authorities are increasingly clarifying their positions on how crypto should be taxed. Understanding your obligations is essential to avoid penalties.</p>
-<p>In Nigeria, FIRS treats cryptocurrency gains as part of assessable income under personal income tax rules. While Nigeria initially attempted to ban crypto banking in 2021, the SEC has since developed a regulatory framework. Crypto gains are taxed at your marginal income tax rate (7%-24%). Capital gains tax (10%) may also apply depending on how the transaction is classified.</p>
+<p>In Nigeria, the Nigeria Tax Act 2025 (effective January 2026) taxes crypto gains as "chargeable gains" at rates up to 25%, with a tax-free threshold of &#x20A6;800,000. All crypto users must link exchange accounts to their TIN and NIN. VASPs face 30% corporate tax and non-compliance penalties up to &#x20A6;10M.</p>
 <p>South Africa's SARS is the most explicit in Africa about crypto taxation. Crypto is treated as a financial asset, not currency. Profits from crypto trading are subject to capital gains tax (CGT) — with an annual exclusion of R40,000. Only 40% of gains are included in taxable income for individuals (effective max rate ~18%). If you're a frequent trader, SARS may classify your activity as trading income (100% taxable at marginal rates, up to 45%).</p>
 <p>Kenya introduced a 3% Digital Asset Tax (DAT) on the value of digital asset transfers in 2023, making it one of the first African countries with crypto-specific tax legislation. This is payable by exchanges and platforms, though the obligation ultimately falls on the taxpayer. Ghana's GRA has not issued specific crypto guidelines but treats crypto profits as income subject to regular tax rates.</p>
 
@@ -178,10 +183,10 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 const TAX_INFO = {
   NG: {
     name: 'Nigeria', symbol: '₦', currency: 'NGN',
-    cgtRate: 0.10, // 10% CGT
-    marginalRates: { low: 0.07, mid: 0.15, high: 0.24 },
-    exclusion: 0,
-    info: '<p><strong>Nigeria:</strong> Crypto gains taxed under PIT (7%-24% marginal) or CGT (10%). FIRS has no crypto-specific rules yet — general income tax applies. SEC is developing regulatory framework.</p><p style="margin-top:6px"><strong>Filing:</strong> Annual tax return via FIRS or state IRS. TIN required.</p>'
+    cgtRate: 0.25, // up to 25% chargeable gains (NTA 2025)
+    marginalRates: { low: 0.07, mid: 0.15, high: 0.25 },
+    exclusion: 800000, // ₦800,000 tax-free threshold
+    info: '<p><strong>Nigeria:</strong> Nigeria Tax Act 2025 (effective Jan 2026): crypto gains taxed as chargeable gains up to 25%. First ₦800,000 tax-free. Must link accounts to TIN &amp; NIN. VASPs face 30% corporate tax.</p><p style="margin-top:6px"><strong>Filing:</strong> Annual tax return via FIRS. TIN &amp; NIN required.</p>'
   },
   KE: {
     name: 'Kenya', symbol: 'KES', currency: 'KES',
@@ -256,14 +261,17 @@ function calculate() {
     effectiveRate = gain > 0 ? (tax / gain * 100) : 0;
   } else {
     // NG, GH: CGT or income tax
-    const cgtTax = gain * t.cgtRate;
-    const incomeTax = gain * t.marginalRates[bracket];
+    const taxableGainAfterExemption = Math.max(0, totalGains - (t.exclusion || 0));
+    const proportionalTaxable = totalGains > 0 ? taxableGainAfterExemption * (gain / totalGains) : 0;
+    const cgtTax = proportionalTaxable * t.cgtRate;
+    const incomeTax = proportionalTaxable * t.marginalRates[bracket];
     if (txType === 'mining') {
-      tax = incomeTax;
+      tax = gain * t.marginalRates[bracket]; // mining = full income, no exemption
       method = `Income tax: ${(t.marginalRates[bracket]*100)}% (mining = income)`;
     } else {
-      tax = Math.min(cgtTax, incomeTax); // Use more favorable
-      method = cgtTax < incomeTax ? `CGT: ${(t.cgtRate*100)}%` : `Income tax: ${(t.marginalRates[bracket]*100)}%`;
+      tax = Math.min(cgtTax, incomeTax);
+      method = cgtTax < incomeTax ? `CGT: up to ${(t.cgtRate*100)}%` : `Income tax: ${(t.marginalRates[bracket]*100)}%`;
+      if (t.exclusion > 0) method += ` (after ${t.symbol}${t.exclusion.toLocaleString('en')} exemption)`;
     }
     effectiveRate = gain > 0 ? (tax / gain * 100) : 0;
   }
@@ -301,6 +309,18 @@ function calculate() {
 }
 
 updateInfo();
+</script>
+
+<script>
+(function(){
+  var target = document.getElementById('resultCard');
+  if (!target) return;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
+  div.innerHTML = '<save-result-button tool-slug="crypto-tax" tool-name="Crypto Tax"></save-result-button><share-result-button tool-name="Crypto Tax" tool-slug="crypto-tax"></share-result-button>';
+  target.appendChild(div);
+})();
 </script>
 </body>
 </html>

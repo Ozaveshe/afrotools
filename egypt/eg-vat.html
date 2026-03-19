@@ -275,6 +275,11 @@
   @media print{.tool-hero,.sidebar,.faq-sec,.more-tools-sec,.action-row,.chart-section,afro-navbar,afro-footer,afro-chat,afro-related-tools,.amendment-bar,.mode-tabs,.calc-btn,.slider-wrap,.quick-chips,.custom-rate-wrap,.wh-section{display:none!important}.tool-main-inner{grid-template-columns:1fr!important}}
 </style>
 <script src="/assets/js/lib/chart-config.js"></script>
+
+  <script src="/assets/js/afro-history.js" defer></script>
+  <script src="/assets/js/components/save-result-button.js" defer></script>
+  <script src="/assets/js/components/share-card-generator.js" defer></script>
+  <script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body class="tool-page">
 <afro-navbar active="tools"></afro-navbar>
@@ -418,6 +423,20 @@
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
             Share Result
           </button>
+        </div>
+
+        <div class="result-actions" style="display:flex;gap:8px;margin:0 22px 22px;flex-wrap:wrap">
+          <save-result-button
+            tool-slug="eg-vat"
+            tool-name="Egypt VAT Calculator"
+            country-code="EG"
+            currency="EGP">
+          </save-result-button>
+          <share-result-button
+            tool-name="Egypt VAT Calculator"
+            tool-slug="eg-vat"
+            country-flag="🇪🇬">
+          </share-result-button>
         </div>
 
         <!-- VAT WITHHOLDING -->
@@ -670,6 +689,23 @@ function calculate() {
   document.getElementById('formulaBox').classList.add('on');
   if (document.getElementById('whBody')?.classList.contains('open')) calcWh();
   document.getElementById('resultsCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  // Save & Share button data
+  var saveBtn = document.querySelector('save-result-button');
+  if (saveBtn) saveBtn.setData({
+    inputs: { amount: amount, mode: MODE, rate: effectiveRate, rateLabel: RESULT.rateLabel },
+    outputs: { netAmount: netAmount, vatAmount: vatAmount, totalInclusive: totalInclusive }
+  });
+  var shareBtn = document.querySelector('share-result-button');
+  if (shareBtn) shareBtn.setResult({
+    headline: MODE === 'add-vat' ? 'VAT Inclusive Total' : 'VAT Extracted',
+    mainValue: fmt(totalInclusive),
+    subValues: [
+      { label: 'Net Amount', value: fmt(netAmount) },
+      { label: 'VAT', value: fmt(vatAmount) },
+      { label: 'Rate', value: pct(effectiveRate) }
+    ]
+  });
 }
 
 function toggleBands(header) {

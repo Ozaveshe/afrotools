@@ -331,6 +331,11 @@
 
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Generator Fuel Calculator","url":"https://afrotools.com/tools/generator-fuel/","applicationCategory":"UtilityApplication","operatingSystem":"All","description":"Calculate generator running cost per hour. Compare generator vs solar panel investment over time.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How much does it cost to run a generator per hour in Nigeria?","acceptedAnswer":{"@type":"Answer","text":"The cost depends on your generator size and fuel type. A typical 3.5KVA petrol generator in Nigeria costs approximately ₦500-800 per hour based on current fuel prices. Use our calculator for exact figures."}},{"@type":"Question","name":"Is solar cheaper than a generator in the long run?","acceptedAnswer":{"@type":"Answer","text":"In most cases, yes. A solar panel system typically pays for itself within 2-4 years when compared to ongoing generator fuel costs, especially in Nigeria where fuel prices are high."}},{"@type":"Question","name":"What size generator do I need for my home?","acceptedAnswer":{"@type":"Answer","text":"A typical 3-bedroom Nigerian home needs a 3.5-5KVA generator. Factor in your essential appliances: AC units (1-1.5KVA each), refrigerator (200W), lights, and fans."}},{"@type":"Question","name":"How can I reduce generator fuel consumption?","acceptedAnswer":{"@type":"Answer","text":"Use energy-efficient appliances, avoid running the generator at low load, maintain it regularly (oil changes, air filters), and consider an inverter generator which adjusts output to load."}}]}</script>
+<script src="/assets/js/lib/toast.js" defer></script>
+<script src="/assets/js/afro-history.js" defer></script>
+<script src="/assets/js/components/save-result-button.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js" defer></script>
+<script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
@@ -620,5 +625,17 @@ async function askAI(preset){
 
 <afro-related-tools category="african" current="generator-fuel"></afro-related-tools>
 <afro-footer></afro-footer>
+
+<script>
+(function(){
+  var target = document.getElementById('results');
+  if (!target) return;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
+  div.innerHTML = '<save-result-button tool-slug="generator-fuel" tool-name="Generator Fuel"></save-result-button><share-result-button tool-name="Generator Fuel" tool-slug="generator-fuel"></share-result-button>';
+  target.appendChild(div);
+})();
+</script>
 </body>
 </html>

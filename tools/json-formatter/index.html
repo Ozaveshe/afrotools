@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="theme-color" content="#007AFF">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-D859CGF391');
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JSON Formatter & Validator — Format, Minify, Fix | AfroTools</title>
+<meta name="description" content="Free JSON formatter, validator & fixer. Format, minify, tree view, diff, JSONPath, syntax highlighting. Fix trailing commas & single quotes. No upload needed.">
+<link rel="canonical" href="https://afrotools.com/tools/json-formatter/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="apple-touch-icon" href="/assets/img/logo-mark.svg">
+<link rel="manifest" href="/manifest.json">
+<meta property="og:title" content="JSON Formatter & Validator | AfroTools">
+<meta property="og:description" content="Format, validate, minify & fix JSON online. Tree view, diff mode, JSONPath, syntax highlighting. 100% client-side.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/json-formatter/">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-image.png">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="JSON Formatter & Validator | AfroTools">
+<meta name="twitter:description" content="Free JSON formatter with tree view, diff, JSONPath & auto-fix.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/design-system.css">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/tool-registry.min.js"></script>
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+:root {
+  --afro-green: var(--color-primary);
+  --afro-dark: #0f1419;
+  --json-key: #0071E3;
+  --json-string: #2d8659;
+  --json-number: #d97706;
+  --json-bool: #7c3aed;
+  --json-null: #94a3b8;
+  --json-bracket: #64748b;
+  --json-error: #ef4444;
+}
+.tool-hero{background:linear-gradient(135deg,var(--afro-dark) 0%,#1a1f2e 100%);padding:44px 0 36px;position:relative;overflow:hidden}
+.tool-hero::after{content:'{}';position:absolute;right:5%;top:50%;transform:translateY(-50%);font-size:8rem;opacity:.06;pointer-events:none;font-family:var(--font-mono);color:#fff}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px;position:relative}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}
+.breadcrumb a:hover{color:rgba(255,255,255,.5)}
+.breadcrumb span{color:var(--afro-green)}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:var(--afro-green);font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:6px}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-green{background:rgba(0,113,227,.18);color:var(--color-primary);border:1px solid rgba(0,113,227,.38)}
+
+/* Toolbar */
+.tool-bar{max-width:1200px;margin:0 auto;padding:10px 24px;display:flex;flex-wrap:wrap;align-items:center;gap:6px;background:#fff;border-bottom:1px solid #DBEAFE;position:sticky;top:0;z-index:50}
+.tb-group{display:flex;align-items:center;gap:4px}
+.tb-sep{width:1px;height:24px;background:#e2e8f0;margin:0 4px}
+.tb-btn{padding:6px 12px;border:1px solid #DBEAFE;background:#F5F9FF;border-radius:6px;font-size:.72rem;font-weight:700;color:#1e3a5f;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif;white-space:nowrap}
+.tb-btn:hover{border-color:var(--afro-green);background:rgba(0,113,227,.08)}
+.tb-btn.active{background:var(--afro-green);color:#fff;border-color:var(--afro-green)}
+.tb-btn.danger{color:#ef4444}
+.tb-btn.danger:hover{background:rgba(239,68,68,.08);border-color:#ef4444}
+.tb-select{padding:6px 10px;border:1px solid #DBEAFE;background:#F5F9FF;border-radius:6px;font-size:.72rem;font-weight:600;color:#1e3a5f;cursor:pointer;font-family:'DM Sans',sans-serif}
+.stats-bar{margin-left:auto;display:flex;gap:12px;font-size:.68rem;font-weight:600;color:#64748b}
+.stats-bar span{white-space:nowrap}
+
+/* Main layout */
+.tool-main{padding:0 0 72px}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 1fr;gap:0;align-items:stretch;min-height:500px}
+
+/* Panels */
+.panel{display:flex;flex-direction:column;border:1px solid #DBEAFE;background:#fff;min-height:500px}
+.panel:first-child{border-right:none}
+.panel-head{padding:10px 16px;background:#F5F9FF;border-bottom:1px solid #EFF6FF;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-shrink:0}
+.panel-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#0a4018}
+.panel-actions{display:flex;gap:4px}
+.panel-btn{padding:3px 8px;border:1px solid #DBEAFE;background:#fff;border-radius:4px;font-size:.65rem;font-weight:600;color:#64748b;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
+.panel-btn:hover{border-color:var(--afro-green);color:var(--afro-green)}
+
+/* Editor */
+.editor-wrap{flex:1;position:relative;overflow:hidden;display:flex}
+.line-numbers{padding:12px 0;background:#f8fafd;border-right:1px solid #EFF6FF;text-align:right;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:#94a3b8;line-height:1.5;user-select:none;overflow:hidden;min-width:36px;flex-shrink:0}
+.line-numbers div{padding:0 8px 0 4px}
+.editor-textarea{width:100%;height:100%;min-height:460px;padding:12px;border:none;outline:none;resize:none;font-family:'JetBrains Mono',monospace;font-size:.82rem;line-height:1.5;color:#1e293b;background:transparent;tab-size:2;white-space:pre;overflow-wrap:normal;overflow-x:auto}
+.editor-textarea::placeholder{color:#94a3b8}
+.output-area{flex:1;padding:12px;font-family:'JetBrains Mono',monospace;font-size:.82rem;line-height:1.5;overflow:auto;white-space:pre;color:#1e293b;min-height:460px}
+
+/* Syntax colors */
+.sj-key{color:var(--json-key)}.sj-str{color:var(--json-string)}.sj-num{color:var(--json-number)}.sj-bool{color:var(--json-bool)}.sj-null{color:var(--json-null)}.sj-brace{color:var(--json-bracket)}
+
+/* Error bar */
+.error-bar{padding:8px 16px;background:rgba(239,68,68,.06);border-top:1px solid rgba(239,68,68,.2);font-size:.75rem;color:#dc2626;font-weight:600;display:none;flex-shrink:0}
+.error-bar.on{display:flex;align-items:center;gap:8px}
+.error-bar .fix-btn{padding:3px 10px;background:#fff;border:1px solid rgba(239,68,68,.3);border-radius:4px;font-size:.68rem;font-weight:700;color:#dc2626;cursor:pointer;margin-left:auto;flex-shrink:0}
+.error-bar .fix-btn:hover{background:rgba(239,68,68,.08)}
+
+/* Tree view */
+.tree-view{padding:12px;font-family:'JetBrains Mono',monospace;font-size:.78rem;line-height:1.6;overflow:auto;min-height:460px;flex:1}
+.tree-toggle{display:inline-block;width:16px;text-align:center;cursor:pointer;color:#94a3b8;user-select:none}
+.tree-toggle:hover{color:var(--afro-green)}
+.tree-children{padding-left:20px}
+.tree-children.collapsed{display:none}
+.tree-key{color:var(--json-key);cursor:pointer}
+.tree-key:hover{text-decoration:underline}
+.tree-colon{color:#64748b}
+.tree-str{color:var(--json-string)}.tree-num{color:var(--json-number)}.tree-bool{color:var(--json-bool)}.tree-null{color:var(--json-null)}
+.tree-bracket{color:var(--json-bracket);font-weight:600}
+.tree-count{color:#94a3b8;font-size:.65rem;font-style:italic}
+
+/* JSONPath toast */
+.jsonpath-toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#1e293b;color:#e2e8f0;padding:8px 16px;border-radius:6px;font-size:.75rem;font-family:'JetBrains Mono',monospace;z-index:400;display:none;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.jsonpath-toast.on{display:flex;align-items:center;gap:8px}
+.jsonpath-toast button{background:rgba(255,255,255,.15);border:none;color:#fff;padding:2px 8px;border-radius:3px;font-size:.65rem;cursor:pointer}
+
+/* Diff */
+.diff-add{background:rgba(34,197,94,.12)}.diff-remove{background:rgba(239,68,68,.12)}.diff-change{background:rgba(234,179,8,.12)}
+
+/* Toast */
+.toast{position:fixed;bottom:24px;right:24px;background:#1e293b;color:#fff;padding:10px 20px;border-radius:8px;font-size:.78rem;font-weight:600;z-index:400;opacity:0;transform:translateY(10px);transition:all .2s;pointer-events:none}
+.toast.on{opacity:1;transform:translateY(0);pointer-events:auto}
+
+/* AI Panel */
+.ai-toggle{padding:6px 12px;background:linear-gradient(135deg,#7c3aed,#2563eb);color:#fff;border:none;border-radius:6px;font-size:.72rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif}
+.ai-panel{display:none;border:1px solid #DBEAFE;border-radius:10px;background:#fff;overflow:hidden;margin-top:16px}
+.ai-panel.on{display:block}
+.ai-header{padding:12px 16px;background:linear-gradient(135deg,rgba(124,58,237,.08),rgba(37,99,235,.08));border-bottom:1px solid #EFF6FF;display:flex;align-items:center;gap:8px}
+.ai-badge{font-size:.72rem;font-weight:700;color:#7c3aed}
+.ai-powered{font-size:.62rem;color:#94a3b8;margin-left:auto}
+.ai-close{background:none;border:none;font-size:1.1rem;color:#94a3b8;cursor:pointer;padding:0 4px}
+.ai-messages{padding:12px 16px;max-height:240px;overflow-y:auto;font-size:.78rem;line-height:1.6}
+.ai-msg{margin-bottom:10px}.ai-msg.user{color:#1e293b;font-weight:600}.ai-msg.assistant{color:#475569}
+.ai-input-row{padding:8px 16px 12px;display:flex;gap:6px}
+.ai-input-row input{flex:1;padding:8px 12px;border:1.5px solid #DBEAFE;border-radius:6px;font-size:.78rem;font-family:'DM Sans',sans-serif;outline:none}
+.ai-input-row input:focus{border-color:var(--afro-green)}
+.ai-input-row button{padding:8px 14px;background:var(--afro-green);color:#fff;border:none;border-radius:6px;font-size:.72rem;font-weight:700;cursor:pointer}
+.ai-suggestions{padding:0 16px 12px;display:flex;flex-wrap:wrap;gap:4px}
+.ai-sug{padding:4px 10px;background:#F5F9FF;border:1px solid #DBEAFE;border-radius:12px;font-size:.65rem;font-weight:600;color:#475569;cursor:pointer;font-family:'DM Sans',sans-serif}
+.ai-sug:hover{border-color:var(--afro-green);color:var(--afro-green)}
+
+/* Drop zone */
+.drop-zone{position:absolute;inset:0;background:rgba(0,122,255,.08);border:2px dashed var(--afro-green);display:none;align-items:center;justify-content:center;z-index:10;font-size:.88rem;font-weight:700;color:var(--afro-green)}
+.drop-zone.on{display:flex}
+
+/* Dark mode */
+.dark-mode .panel{background:#1e293b;border-color:#334155}
+.dark-mode .panel-head{background:#0f172a;border-color:#334155}
+.dark-mode .panel-title{color:#94a3b8}
+.dark-mode .editor-textarea{color:#e2e8f0}
+.dark-mode .output-area{color:#e2e8f0;background:#1e293b}
+.dark-mode .line-numbers{background:#0f172a;border-color:#334155;color:#475569}
+.dark-mode .tool-bar{background:#1e293b;border-color:#334155}
+.dark-mode .tb-btn{background:#334155;border-color:#475569;color:#e2e8f0}
+.dark-mode .tb-btn:hover{border-color:var(--afro-green)}
+.dark-mode .tb-btn.active{background:var(--afro-green)}
+.dark-mode .tb-select{background:#334155;border-color:#475569;color:#e2e8f0}
+.dark-mode .stats-bar{color:#94a3b8}
+.dark-mode .error-bar{background:rgba(239,68,68,.15)}
+.dark-mode .tree-view{background:#1e293b}
+
+/* FAQ */
+.faq-section{max-width:1200px;margin:40px auto;padding:0 24px}
+.faq-section h2{font-size:1.3rem;margin-bottom:16px;color:var(--color-text)}
+.faq-list{display:grid;gap:8px}
+.faq-item{border:1px solid #e5e7eb;border-radius:8px;overflow:hidden}
+.faq-item summary{padding:14px 18px;font-size:.88rem;font-weight:600;color:#1e293b;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary svg{width:16px;height:16px;transition:transform .2s;flex-shrink:0;color:#94a3b8}
+.faq-item[open] summary svg{transform:rotate(180deg)}
+.faq-answer{padding:0 18px 14px;font-size:.82rem;color:#64748b;line-height:1.65}
+
+/* Responsive */
+@media(max-width:900px){
+  .tool-main-inner{grid-template-columns:1fr!important}
+  .panel{min-height:300px}
+  .panel:first-child{border-right:1px solid #DBEAFE;border-bottom:none}
+  .tool-bar{padding:10px 16px}
+  .stats-bar{display:none}
+}
+@media(max-width:600px){
+  .tool-bar{gap:4px}
+  .tb-btn{padding:5px 8px;font-size:.65rem}
+  .tb-sep{display:none}
+}
+html{overflow-x:hidden}
+body{overflow-x:hidden}
+
+/* Dark mode */
+@media(prefers-color-scheme:dark){
+  body{background:#0A1628;color:#E2E8F0}
+  .tool-hero{background:linear-gradient(135deg,#060e1a 0%,#0d1a30 100%)}
+  .tool-bar{background:#131D2E;border-color:#1E2D40}
+  .tb-btn{background:#0A1628;border-color:#1E2D40;color:#C9D6E8}
+  .tb-btn:hover{border-color:#007AFF;background:rgba(0,122,255,0.1)}
+  .tb-btn.active{background:#007AFF;color:#fff;border-color:#007AFF}
+  .tb-select{background:#0A1628;border-color:#1E2D40;color:#C9D6E8}
+  .panel{background:#131D2E;border-color:#1E2D40}
+  .panel-head{background:#0F1926;border-color:#1E2D40}
+  .panel-title{color:#94A3B8}
+  .panel-btn{background:#0A1628;border-color:#1E2D40;color:#8B9CB8}
+  .line-numbers{background:#0F1926;border-color:#1E2D40;color:#5A6F8A}
+  .editor-textarea{color:#E2E8F0}
+  .output-area{color:#E2E8F0}
+  .tree-view{color:#E2E8F0}
+  .toast{background:#1E2D40;color:#E2E8F0}
+  .ai-panel{background:#131D2E;border-color:#1E2D40}
+  .ai-header{background:linear-gradient(135deg,rgba(124,58,237,0.12),rgba(37,99,235,0.12));border-color:#1E2D40}
+  .ai-messages{color:#C9D6E8}
+  .stats-bar{color:#8B9CB8}
+  .sj-key{color:#4DA3FF}
+  .tree-key{color:#4DA3FF}
+}
+</style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "JSON Formatter & Validator",
+      "description": "Free JSON formatter, validator and fixer. Format, minify, tree view, diff, JSONPath, syntax highlighting. Fix trailing commas and single quotes automatically.",
+      "url": "https://afrotools.com/tools/json-formatter/",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Any",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "provider": { "@type": "Organization", "name": "AfroTools", "url": "https://afrotools.com" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "AfroTools", "item": "https://afrotools.com" },
+        { "@type": "ListItem", "position": 2, "name": "Developer Tools", "item": "https://afrotools.com/developer-tools/" },
+        { "@type": "ListItem", "position": 3, "name": "JSON Formatter", "item": "https://afrotools.com/tools/json-formatter/" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What does a JSON formatter do?",
+          "acceptedAnswer": { "@type": "Answer", "text": "A JSON formatter takes raw or minified JSON data and reformats it with proper indentation and line breaks, making it easier to read and debug. It can also validate JSON syntax and highlight errors." }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my JSON data safe with this tool?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. This JSON formatter processes everything client-side in your browser. Your data never leaves your device or gets uploaded to any server." }
+        },
+        {
+          "@type": "Question",
+          "name": "Can this tool fix invalid JSON?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. The Fix JSON feature can automatically repair common issues like trailing commas, single quotes instead of double quotes, unquoted keys, and missing quotes around string values." }
+        },
+        {
+          "@type": "Question",
+          "name": "What is JSONPath and how do I use it?",
+          "acceptedAnswer": { "@type": "Answer", "text": "JSONPath is a query language for JSON, similar to XPath for XML. In tree view, click any key to see its JSONPath (e.g., $.users[0].name). You can copy this path to use in code for extracting specific values." }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the difference between JSON format and minify?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Formatting adds indentation and line breaks for readability, while minifying removes all whitespace to produce the smallest possible output. Minified JSON is ideal for APIs and data transfer." }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<script src="/assets/js/lib/toast.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js" defer></script>
+<script src="/assets/js/components/share-button.js" defer></script>
+</head>
+<body>
+<afro-navbar active="tools"></afro-navbar>
+
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb">
+      <a href="/">AfroTools</a> / <a href="/developer-tools/">Developer Tools</a> / <span>JSON Formatter</span>
+    </div>
+    <h1>JSON <em>Formatter</em> & Validator</h1>
+    <p class="hero-sub">Format, validate, minify & fix JSON instantly. Tree view, diff mode, JSONPath on click, syntax highlighting — all client-side.</p>
+    <div class="hero-badges">
+      <span class="badge b-green">Client-side</span>
+      <span class="badge b-green">No Upload</span>
+      <span class="badge b-green">Free</span>
+      <span class="badge b-green">Tree View</span>
+      <span class="badge b-green">Diff Mode</span>
+    </div>
+  </div>
+</div>
+
+<!-- Toolbar -->
+<div class="tool-bar" id="toolbar">
+  <div class="tb-group">
+    <button class="tb-btn active" id="btnFormat" title="Format JSON (Ctrl+Enter)">Format</button>
+    <button class="tb-btn" id="btnMinify" title="Remove all whitespace (Ctrl+M)">Minify</button>
+    <button class="tb-btn" id="btnValidate" title="Validate JSON syntax">Validate</button>
+    <button class="tb-btn" id="btnFix" title="Auto-fix common JSON errors">Fix JSON</button>
+  </div>
+  <div class="tb-sep"></div>
+  <div class="tb-group">
+    <button class="tb-btn" id="btnTreeView" title="Toggle tree view">Tree View</button>
+    <button class="tb-btn" id="btnDiff" title="Compare two JSON objects">Diff</button>
+  </div>
+  <div class="tb-sep"></div>
+  <select class="tb-select" id="indentSelect" title="Indentation">
+    <option value="2">2 Spaces</option>
+    <option value="4">4 Spaces</option>
+    <option value="tab">Tab</option>
+  </select>
+  <div class="tb-sep"></div>
+  <div class="tb-group">
+    <button class="tb-btn" id="btnSample" title="Load sample JSON">Sample</button>
+    <button class="tb-btn" id="btnUpload" title="Upload .json file">Upload</button>
+    <button class="tb-btn" id="btnDownload" title="Download as .json">Download</button>
+    <button class="tb-btn danger" id="btnClear" title="Clear all">Clear</button>
+  </div>
+  <div class="tb-sep"></div>
+  <div class="tb-group">
+    <button class="tb-btn" id="btnDarkMode" title="Toggle dark mode">Dark</button>
+    <button class="ai-toggle" id="btnAI" title="Ask AI about your JSON">✦ AI</button>
+  </div>
+  <div class="stats-bar" id="statsBar">
+    <span id="statChars">0 chars</span>
+    <span id="statLines">0 lines</span>
+    <span id="statSize">0 B</span>
+  </div>
+</div>
+
+<input type="file" id="fileInput" accept=".json,.txt" style="display:none">
+
+<!-- Main editor -->
+<div class="tool-main">
+  <div class="tool-main-inner" id="mainGrid">
+    <!-- Input panel -->
+    <div class="panel" id="inputPanel">
+      <div class="panel-head">
+        <span class="panel-title">Input</span>
+        <div class="panel-actions">
+          <button class="panel-btn" id="btnPaste" title="Paste from clipboard">Paste</button>
+          <button class="panel-btn" id="btnClearInput" title="Clear input">Clear</button>
+        </div>
+      </div>
+      <div class="editor-wrap">
+        <div class="line-numbers" id="inputLines"></div>
+        <div style="flex:1;position:relative;overflow:auto">
+          <textarea class="editor-textarea" id="jsonInput" placeholder="Paste or type JSON here...&#10;&#10;Or drag & drop a .json file" spellcheck="false"></textarea>
+        </div>
+        <div class="drop-zone" id="dropZone">Drop .json file here</div>
+      </div>
+      <div class="error-bar" id="errorBar">
+        <span id="errorMsg"></span>
+        <button class="fix-btn" id="errorFixBtn">Fix It</button>
+      </div>
+    </div>
+
+    <!-- Output panel -->
+    <div class="panel" id="outputPanel">
+      <div class="panel-head">
+        <span class="panel-title" id="outputTitle">Output</span>
+        <div class="panel-actions">
+          <button class="panel-btn" id="btnCopyOutput" title="Copy output">Copy</button>
+        </div>
+      </div>
+      <div class="editor-wrap" id="outputWrap">
+        <div class="line-numbers" id="outputLines"></div>
+        <div class="output-area" id="jsonOutput"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JSONPath toast -->
+<div class="jsonpath-toast" id="jsonpathToast">
+  <span id="jsonpathText"></span>
+  <button id="jsonpathCopy">Copy</button>
+</div>
+
+<!-- AI Panel -->
+<div style="max-width:1200px;margin:0 auto;padding:0 24px;">
+  <div class="ai-panel" id="aiPanel">
+    <div class="ai-header">
+      <span class="ai-badge">✦ AI Assistant</span>
+      <span class="ai-powered">Powered by Claude</span>
+      <button class="ai-close" id="aiClose">&times;</button>
+    </div>
+    <div class="ai-messages" id="aiMessages"></div>
+    <div class="ai-input-row">
+      <input type="text" id="aiInput" placeholder="Ask about your JSON...">
+      <button id="aiAsk">Ask</button>
+    </div>
+    <div class="ai-suggestions">
+      <button class="ai-sug" data-q="Explain this JSON structure">Explain structure</button>
+      <button class="ai-sug" data-q="What's wrong with my JSON?">What's wrong?</button>
+      <button class="ai-sug" data-q="Convert to TypeScript interface">To TypeScript</button>
+      <button class="ai-sug" data-q="Generate a JSON Schema for this">JSON Schema</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <h2>Frequently Asked Questions</h2>
+  <div class="faq-list">
+    <details class="faq-item">
+      <summary>What does a JSON formatter do?<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg></summary>
+      <div class="faq-answer">A JSON formatter takes raw or minified JSON data and reformats it with proper indentation and line breaks, making it easier to read, understand, and debug. This tool also validates syntax and highlights any errors with exact line and column numbers.</div>
+    </details>
+    <details class="faq-item">
+      <summary>Is my JSON data safe with this tool?<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg></summary>
+      <div class="faq-answer">Absolutely. Everything is processed client-side in your browser. Your JSON data never leaves your device and is never uploaded to any server. The only network call is the optional AI assistant, which only sends a small context snippet.</div>
+    </details>
+    <details class="faq-item">
+      <summary>Can this tool fix invalid JSON automatically?<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg></summary>
+      <div class="faq-answer">Yes. The "Fix JSON" feature auto-repairs common issues: trailing commas after the last item, single quotes instead of double quotes, unquoted property keys, and missing commas between values. It handles most copy-paste errors developers encounter daily.</div>
+    </details>
+    <details class="faq-item">
+      <summary>What is JSONPath and how does it work here?<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg></summary>
+      <div class="faq-answer">JSONPath is a query syntax for navigating JSON structures, similar to XPath for XML. In tree view, click any key to see its full path (e.g., $.users[0].name). Copy the path and use it in JavaScript, Python, or any language that supports JSONPath to extract specific values.</div>
+    </details>
+    <details class="faq-item">
+      <summary>What is the difference between format and minify?<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg></summary>
+      <div class="faq-answer">Formatting adds indentation and line breaks so humans can read the JSON easily. Minifying removes all unnecessary whitespace to produce the smallest file size. Use formatting during development and debugging; use minified JSON for APIs, configuration files, and data transfer.</div>
+    </details>
+  </div>
+</section>
+
+<afro-related-tools category="developer" current="json-formatter"></afro-related-tools>
+<afro-footer></afro-footer>
+
+<script>
+(function(){
+  'use strict';
+
+  var $ = function(id){ return document.getElementById(id); };
+  var jsonInput     = $('jsonInput');
+  var jsonOutput    = $('jsonOutput');
+  var inputLines    = $('inputLines');
+  var outputLines   = $('outputLines');
+  var errorBar      = $('errorBar');
+  var errorMsg      = $('errorMsg');
+  var errorFixBtn   = $('errorFixBtn');
+  var mainGrid      = $('mainGrid');
+  var outputPanel   = $('outputPanel');
+  var outputTitle   = $('outputTitle');
+  var outputWrap    = $('outputWrap');
+  var dropZone      = $('dropZone');
+  var fileInput     = $('fileInput');
+  var toastEl       = $('toast');
+  var jsonpathToast = $('jsonpathToast');
+  var jsonpathText  = $('jsonpathText');
+  var aiPanel       = $('aiPanel');
+  var aiMessages    = $('aiMessages');
+  var aiInput       = $('aiInput');
+
+  var indentVal = 2;
+  var treeMode  = false;
+  var diffMode  = false;
+  var darkMode  = false;
+  var aiExchanges = 0;
+  var debounceTimer;
+  var lastValidJson = null;
+  var jpTimer;
+
+  function showToast(msg, ms){
+    toastEl.textContent = msg;
+    toastEl.classList.add('on');
+    setTimeout(function(){ toastEl.classList.remove('on'); }, ms || 2000);
+  }
+
+  function escHtml(s){
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function getIndent(){
+    return indentVal === 'tab' ? '\t' : Number(indentVal);
+  }
+
+  function byteSize(s){ return new Blob([s]).size; }
+
+  function fmtBytes(b){
+    if(b<1024) return b+' B';
+    if(b<1048576) return (b/1024).toFixed(1)+' KB';
+    return (b/1048576).toFixed(1)+' MB';
+  }
+
+  function updateLineNums(el, text){
+    var count = (text||'').split('\n').length;
+    var h = '';
+    for(var i=1;i<=count;i++) h += '<div>'+i+'</div>';
+    el.innerHTML = h;
+  }
+
+  function updateStats(){
+    var v = jsonInput.value;
+    $('statChars').textContent = v.length.toLocaleString()+' chars';
+    $('statLines').textContent = (v ? v.split('\n').length : 0)+' lines';
+    $('statSize').textContent = fmtBytes(byteSize(v));
+  }
+
+  function syntaxHL(json){
+    return json.replace(/("(\\u[a-fA-F0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?|[{}\[\],:])/g, function(m){
+      var c='sj-num';
+      if(/^"/.test(m)){c=/:$/.test(m)?'sj-key':'sj-str';}
+      else if(/true|false/.test(m)){c='sj-bool';}
+      else if(/null/.test(m)){c='sj-null';}
+      else if(/[{}\[\]]/.test(m)){c='sj-brace';}
+      return '<span class="'+c+'">'+escHtml(m)+'</span>';
+    });
+  }
+
+  function parseJson(str){
+    try{
+      var obj = JSON.parse(str);
+      return {ok:true, data:obj};
+    }catch(e){
+      var posM = e.message.match(/position\s+(\d+)/i);
+      var line=0, col=0;
+      if(posM){
+        var pos=parseInt(posM[1]);
+        var before=str.substring(0,pos);
+        line=(before.match(/\n/g)||[]).length+1;
+        col=pos-before.lastIndexOf('\n');
+      }
+      return {ok:false, error:e.message, line:line, col:col};
+    }
+  }
+
+  function fixJson(str){
+    var s = str;
+    // Single quotes to double
+    s = s.replace(/(^|[{,\[\s])'/g, function(m,p){ return p+'"'; });
+    s = s.replace(/'([,}\]:\s]|$)/g, function(m,p){ return '"'+p; });
+    // Unquoted keys
+    s = s.replace(/([{,]\s*)([a-zA-Z_$][a-zA-Z0-9_$]*)\s*:/g, '$1"$2":');
+    // Trailing commas
+    s = s.replace(/,\s*([\]}])/g, '$1');
+    try{ JSON.parse(s); return s; }catch(e){}
+    var t = s.trim();
+    if(!t.startsWith('{')&&!t.startsWith('[')){
+      try{ var r='{'+t+'}'; JSON.parse(r); return r; }catch(e){}
+      try{ var r2='['+t+']'; JSON.parse(r2); return r2; }catch(e){}
+    }
+    return s;
+  }
+
+  function restoreOutputPanel(){
+    if(!$('jsonOutput')){
+      outputWrap.innerHTML = '<div class="line-numbers" id="outputLines"></div><div class="output-area" id="jsonOutput"></div>';
+      outputLines = $('outputLines');
+      jsonOutput = $('jsonOutput');
+    }
+  }
+
+  function processInput(){
+    var raw = jsonInput.value;
+    updateLineNums(inputLines, raw);
+    updateStats();
+
+    if(!raw.trim()){
+      restoreOutputPanel();
+      jsonOutput.innerHTML = '';
+      outputLines.innerHTML = '';
+      errorBar.classList.remove('on');
+      lastValidJson = null;
+      return;
+    }
+
+    var result = parseJson(raw);
+    if(result.ok){
+      lastValidJson = result.data;
+      errorBar.classList.remove('on');
+      if(treeMode){
+        renderTree(result.data);
+      } else {
+        restoreOutputPanel();
+        var fmt = JSON.stringify(result.data, null, getIndent());
+        jsonOutput.innerHTML = syntaxHL(fmt);
+        updateLineNums(outputLines, fmt);
+      }
+    } else {
+      lastValidJson = null;
+      errorBar.classList.add('on');
+      var loc = result.line ? ' (Line '+result.line+', Col '+result.col+')' : '';
+      errorMsg.textContent = result.error.replace(/^JSON\.parse:\s*/,'') + loc;
+      restoreOutputPanel();
+      jsonOutput.innerHTML = '<span style="color:var(--json-error)">'+escHtml(raw)+'</span>';
+      outputLines.innerHTML = '';
+    }
+  }
+
+  /* ── Tree view ── */
+  function renderTree(data){
+    var tree = document.createElement('div');
+    tree.className = 'tree-view';
+    buildNode(tree, data, '$', '', true);
+    outputWrap.innerHTML = '';
+    outputWrap.appendChild(tree);
+  }
+
+  function buildNode(container, value, path, key, isLast){
+    var type = value===null?'null':Array.isArray(value)?'array':typeof value;
+
+    if(type==='object'||type==='array'){
+      var node = document.createElement('div');
+      node.className = 'tree-node';
+      var isArr = type==='array';
+      var count = isArr ? value.length : Object.keys(value).length;
+      var openBr = isArr ? '[' : '{';
+      var closeBr = isArr ? ']' : '}';
+
+      var toggle = document.createElement('span');
+      toggle.className = 'tree-toggle';
+      toggle.textContent = '\u25BE';
+      node.appendChild(toggle);
+
+      if(key!==''){
+        var ks = document.createElement('span');
+        ks.className = 'tree-key';
+        ks.textContent = '"'+key+'"';
+        ks.onclick = function(){ showJsonPath(path); };
+        node.appendChild(ks);
+        var col = document.createElement('span');
+        col.className = 'tree-colon';
+        col.textContent = ': ';
+        node.appendChild(col);
+      }
+
+      var br = document.createElement('span');
+      br.className = 'tree-bracket';
+      br.textContent = openBr;
+      node.appendChild(br);
+
+      var cs = document.createElement('span');
+      cs.className = 'tree-count';
+      cs.textContent = ' '+count+(count===1?' item':' items');
+      node.appendChild(cs);
+
+      container.appendChild(node);
+
+      var children = document.createElement('div');
+      children.className = 'tree-children';
+
+      if(isArr){
+        for(var i=0;i<value.length;i++){
+          buildNode(children, value[i], path+'['+i+']', '', i===value.length-1);
+        }
+      } else {
+        var keys = Object.keys(value);
+        for(var j=0;j<keys.length;j++){
+          buildNode(children, value[keys[j]], path+'.'+keys[j], keys[j], j===keys.length-1);
+        }
+      }
+      container.appendChild(children);
+
+      var closeNode = document.createElement('div');
+      closeNode.style.paddingLeft = '16px';
+      var brC = document.createElement('span');
+      brC.className = 'tree-bracket';
+      brC.textContent = closeBr+(isLast?'':',');
+      closeNode.appendChild(brC);
+      container.appendChild(closeNode);
+
+      toggle.onclick = function(){
+        var collapsed = children.classList.toggle('collapsed');
+        toggle.textContent = collapsed ? '\u25B8' : '\u25BE';
+        closeNode.style.display = collapsed ? 'none' : '';
+      };
+    } else {
+      var leaf = document.createElement('div');
+      leaf.className = 'tree-node';
+      leaf.style.paddingLeft = '16px';
+
+      if(key!==''){
+        var ks2 = document.createElement('span');
+        ks2.className = 'tree-key';
+        ks2.textContent = '"'+key+'"';
+        ks2.onclick = function(){ showJsonPath(path); };
+        leaf.appendChild(ks2);
+        var col2 = document.createElement('span');
+        col2.className = 'tree-colon';
+        col2.textContent = ': ';
+        leaf.appendChild(col2);
+      }
+
+      var vs = document.createElement('span');
+      if(type==='string'){vs.className='tree-str';vs.textContent='"'+value+'"';}
+      else if(type==='number'){vs.className='tree-num';vs.textContent=String(value);}
+      else if(type==='boolean'){vs.className='tree-bool';vs.textContent=String(value);}
+      else{vs.className='tree-null';vs.textContent='null';}
+      leaf.appendChild(vs);
+
+      if(!isLast) leaf.appendChild(document.createTextNode(','));
+      container.appendChild(leaf);
+    }
+  }
+
+  function showJsonPath(path){
+    jsonpathText.textContent = path;
+    jsonpathToast.classList.add('on');
+    clearTimeout(jpTimer);
+    jpTimer = setTimeout(function(){ jsonpathToast.classList.remove('on'); }, 4000);
+  }
+
+  $('jsonpathCopy').onclick = function(){
+    navigator.clipboard.writeText(jsonpathText.textContent).then(function(){ showToast('JSONPath copied!'); });
+    jsonpathToast.classList.remove('on');
+  };
+
+  /* ── Diff mode ── */
+  function enterDiffMode(){
+    diffMode = true;
+    $('btnDiff').classList.add('active');
+    outputTitle.textContent = 'Second JSON';
+
+    outputWrap.innerHTML = '<div style="flex:1;position:relative;overflow:auto"><textarea class="editor-textarea" id="diffInput" placeholder="Paste second JSON here..." spellcheck="false" style="min-height:460px"></textarea></div>';
+
+    var cmpBtn = document.createElement('button');
+    cmpBtn.className = 'tb-btn active';
+    cmpBtn.textContent = 'Compare';
+    cmpBtn.id = 'btnCompare';
+    cmpBtn.onclick = runDiff;
+    $('toolbar').appendChild(cmpBtn);
+  }
+
+  function exitDiffMode(){
+    diffMode = false;
+    $('btnDiff').classList.remove('active');
+    outputTitle.textContent = 'Output';
+    outputWrap.innerHTML = '<div class="line-numbers" id="outputLines"></div><div class="output-area" id="jsonOutput"></div>';
+    outputLines = $('outputLines');
+    jsonOutput = $('jsonOutput');
+    var cb = $('btnCompare');
+    if(cb) cb.remove();
+    processInput();
+  }
+
+  function runDiff(){
+    var di = $('diffInput');
+    if(!di) return;
+    var a = parseJson(jsonInput.value);
+    var b = parseJson(di.value);
+    if(!a.ok||!b.ok){ showToast('Both sides must be valid JSON'); return; }
+
+    var diffs = diffObjs(a.data, b.data, '$');
+    if(diffs.length===0){ showToast('No differences found!'); return; }
+
+    var h='<div style="padding:12px;font-size:.78rem;font-family:JetBrains Mono,monospace;overflow:auto;">';
+    h+='<div style="margin-bottom:12px;font-weight:700;color:#1e293b;">'+diffs.length+' difference'+(diffs.length>1?'s':'')+' found</div>';
+    for(var i=0;i<diffs.length;i++){
+      var d=diffs[i];
+      if(d.type==='added'){
+        h+='<div class="diff-add" style="padding:6px 10px;margin:3px 0;border-radius:4px;"><span style="color:#16a34a;font-weight:700;">+ </span><span style="color:var(--json-key)">'+escHtml(d.path)+'</span>: '+escHtml(JSON.stringify(d.value))+'</div>';
+      } else if(d.type==='removed'){
+        h+='<div class="diff-remove" style="padding:6px 10px;margin:3px 0;border-radius:4px;"><span style="color:#ef4444;font-weight:700;">- </span><span style="color:var(--json-key)">'+escHtml(d.path)+'</span>: '+escHtml(JSON.stringify(d.value))+'</div>';
+      } else {
+        h+='<div class="diff-change" style="padding:6px 10px;margin:3px 0;border-radius:4px;"><span style="color:#d97706;font-weight:700;">~ </span><span style="color:var(--json-key)">'+escHtml(d.path)+'</span><br>&nbsp;&nbsp;Left: '+escHtml(JSON.stringify(d.oldVal))+'<br>&nbsp;&nbsp;Right: '+escHtml(JSON.stringify(d.newVal))+'</div>';
+      }
+    }
+    h+='</div>';
+    outputWrap.innerHTML = h;
+  }
+
+  function diffObjs(a,b,path){
+    var diffs=[];
+    if(a===b) return diffs;
+    if(a===null||b===null||typeof a!==typeof b){ diffs.push({type:'changed',path:path,oldVal:a,newVal:b}); return diffs; }
+    if(typeof a!=='object'){ if(a!==b) diffs.push({type:'changed',path:path,oldVal:a,newVal:b}); return diffs; }
+    if(Array.isArray(a)!==Array.isArray(b)){ diffs.push({type:'changed',path:path,oldVal:a,newVal:b}); return diffs; }
+    if(Array.isArray(a)){
+      var ml=Math.max(a.length,b.length);
+      for(var i=0;i<ml;i++){
+        var p=path+'['+i+']';
+        if(i>=a.length) diffs.push({type:'added',path:p,value:b[i]});
+        else if(i>=b.length) diffs.push({type:'removed',path:p,value:a[i]});
+        else diffs=diffs.concat(diffObjs(a[i],b[i],p));
+      }
+    } else {
+      var allKeys={};
+      var ak=Object.keys(a), bk=Object.keys(b);
+      for(var j=0;j<ak.length;j++) allKeys[ak[j]]=1;
+      for(var k=0;k<bk.length;k++) allKeys[bk[k]]=1;
+      var keys2=Object.keys(allKeys);
+      for(var l=0;l<keys2.length;l++){
+        var kk=keys2[l], pp=path+'.'+kk;
+        if(!(kk in a)) diffs.push({type:'added',path:pp,value:b[kk]});
+        else if(!(kk in b)) diffs.push({type:'removed',path:pp,value:a[kk]});
+        else diffs=diffs.concat(diffObjs(a[kk],b[kk],pp));
+      }
+    }
+    return diffs;
+  }
+
+  /* ── Events ── */
+  jsonInput.addEventListener('input', function(){
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(processInput, 300);
+  });
+
+  jsonInput.addEventListener('scroll', function(){
+    inputLines.scrollTop = jsonInput.scrollTop;
+  });
+
+  // Format
+  $('btnFormat').onclick = function(){
+    if(diffMode) exitDiffMode();
+    if(treeMode){ treeMode=false; $('btnTreeView').classList.remove('active'); restoreOutputPanel(); }
+    var r = parseJson(jsonInput.value);
+    if(r.ok){
+      jsonInput.value = JSON.stringify(r.data, null, getIndent());
+      processInput();
+      showToast('Formatted!');
+    }
+  };
+
+  // Minify
+  $('btnMinify').onclick = function(){
+    if(diffMode) exitDiffMode();
+    if(treeMode){ treeMode=false; $('btnTreeView').classList.remove('active'); restoreOutputPanel(); }
+    var r = parseJson(jsonInput.value);
+    if(r.ok){
+      jsonInput.value = JSON.stringify(r.data);
+      processInput();
+      showToast('Minified!');
+    }
+  };
+
+  // Validate
+  $('btnValidate').onclick = function(){
+    var r = parseJson(jsonInput.value);
+    if(!jsonInput.value.trim()){ showToast('No JSON to validate'); return; }
+    if(r.ok) showToast('Valid JSON \u2713');
+    else showToast('Invalid JSON \u2014 check errors');
+  };
+
+  // Fix
+  function doFix(){
+    var fixed = fixJson(jsonInput.value);
+    jsonInput.value = fixed;
+    processInput();
+    var r = parseJson(fixed);
+    if(r.ok) showToast('JSON fixed!');
+    else showToast('Partial fix \u2014 some errors remain');
+  }
+  $('btnFix').onclick = doFix;
+  errorFixBtn.onclick = doFix;
+
+  // Tree view
+  $('btnTreeView').onclick = function(){
+    if(diffMode) exitDiffMode();
+    treeMode = !treeMode;
+    $('btnTreeView').classList.toggle('active', treeMode);
+    if(treeMode && lastValidJson){
+      renderTree(lastValidJson);
+    } else {
+      restoreOutputPanel();
+      processInput();
+    }
+  };
+
+  // Diff
+  $('btnDiff').onclick = function(){
+    if(diffMode) exitDiffMode();
+    else { if(treeMode){ treeMode=false; $('btnTreeView').classList.remove('active'); } enterDiffMode(); }
+  };
+
+  // Indent
+  $('indentSelect').onchange = function(e){
+    indentVal = e.target.value==='tab' ? 'tab' : parseInt(e.target.value);
+    if(lastValidJson && !treeMode && !diffMode) processInput();
+  };
+
+  // Sample
+  $('btnSample').onclick = function(){
+    if(diffMode) exitDiffMode();
+    if(treeMode){ treeMode=false; $('btnTreeView').classList.remove('active'); restoreOutputPanel(); }
+    jsonInput.value = JSON.stringify({
+      "name":"AfroTools",
+      "version":"2.0",
+      "description":"Africa's #1 digital tools platform",
+      "tools":[
+        {"id":"json-formatter","category":"developer","status":"live"},
+        {"id":"regex-tester","category":"developer","status":"live"},
+        {"id":"uuid-generator","category":"developer","status":"live"}
+      ],
+      "stats":{
+        "totalTools":260,
+        "countries":54,
+        "monthlyUsers":125000,
+        "isPremium":false,
+        "launchDate":null
+      },
+      "contact":{
+        "email":"hello@afrotools.com",
+        "socials":["twitter","linkedin","github"]
+      }
+    }, null, getIndent());
+    processInput();
+    showToast('Sample loaded!');
+  };
+
+  // Upload
+  $('btnUpload').onclick = function(){ fileInput.click(); };
+  fileInput.onchange = function(e){
+    var file = e.target.files[0];
+    if(!file) return;
+    var reader = new FileReader();
+    reader.onload = function(ev){
+      jsonInput.value = ev.target.result;
+      processInput();
+      showToast('File loaded: '+file.name);
+    };
+    reader.readAsText(file);
+    fileInput.value = '';
+  };
+
+  // Download
+  $('btnDownload').onclick = function(){
+    if(!jsonInput.value.trim()){ showToast('Nothing to download'); return; }
+    var r = parseJson(jsonInput.value);
+    var content = r.ok ? JSON.stringify(r.data, null, getIndent()) : jsonInput.value;
+    var blob = new Blob([content], {type:'application/json'});
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'data.json';
+    a.click();
+    URL.revokeObjectURL(a.href);
+    showToast('Downloaded!');
+  };
+
+  // Clear
+  $('btnClear').onclick = function(){
+    if(diffMode) exitDiffMode();
+    if(treeMode){ treeMode=false; $('btnTreeView').classList.remove('active'); restoreOutputPanel(); }
+    jsonInput.value = '';
+    processInput();
+  };
+
+  // Paste
+  $('btnPaste').onclick = function(){
+    navigator.clipboard.readText().then(function(text){
+      jsonInput.value = text;
+      processInput();
+      showToast('Pasted from clipboard');
+    }).catch(function(){ showToast('Clipboard access denied'); });
+  };
+
+  // Clear input
+  $('btnClearInput').onclick = function(){
+    jsonInput.value = '';
+    processInput();
+  };
+
+  // Copy output
+  $('btnCopyOutput').onclick = function(){
+    var el = $('jsonOutput');
+    var text = el ? el.textContent : (outputWrap ? outputWrap.textContent : '');
+    if(!text){ showToast('Nothing to copy'); return; }
+    navigator.clipboard.writeText(text).then(function(){ showToast('Copied to clipboard!'); }).catch(function(){ showToast('Copy failed'); });
+  };
+
+  // Dark mode
+  $('btnDarkMode').onclick = function(){
+    darkMode = !darkMode;
+    document.body.classList.toggle('dark-mode', darkMode);
+    $('btnDarkMode').classList.toggle('active', darkMode);
+    $('btnDarkMode').textContent = darkMode ? 'Light' : 'Dark';
+  };
+
+  // Drag & drop
+  var ip = $('inputPanel');
+  ip.addEventListener('dragover', function(e){ e.preventDefault(); dropZone.classList.add('on'); });
+  ip.addEventListener('dragleave', function(){ dropZone.classList.remove('on'); });
+  ip.addEventListener('drop', function(e){
+    e.preventDefault();
+    dropZone.classList.remove('on');
+    var file = e.dataTransfer.files[0];
+    if(!file) return;
+    var reader = new FileReader();
+    reader.onload = function(ev){
+      jsonInput.value = ev.target.result;
+      processInput();
+      showToast('File loaded: '+file.name);
+    };
+    reader.readAsText(file);
+  });
+
+  // Keyboard shortcuts
+  document.addEventListener('keydown', function(e){
+    if(e.ctrlKey && e.key==='Enter'){ e.preventDefault(); $('btnFormat').click(); }
+    if(e.ctrlKey && e.key==='m'){ e.preventDefault(); $('btnMinify').click(); }
+  });
+
+  // Tab key
+  jsonInput.addEventListener('keydown', function(e){
+    if(e.key==='Tab'){
+      e.preventDefault();
+      var start=jsonInput.selectionStart, end=jsonInput.selectionEnd;
+      var indent = indentVal==='tab' ? '\t' : Array(Number(indentVal)+1).join(' ');
+      jsonInput.value = jsonInput.value.substring(0,start)+indent+jsonInput.value.substring(end);
+      jsonInput.selectionStart = jsonInput.selectionEnd = start+indent.length;
+    }
+  });
+
+  /* ── AI ── */
+  $('btnAI').onclick = function(){ aiPanel.classList.toggle('on'); };
+  $('aiClose').onclick = function(){ aiPanel.classList.remove('on'); };
+
+  function askAI(){
+    var question = aiInput.value.trim();
+    if(!question) return;
+    if(aiExchanges>=3){
+      appendAIMsg('assistant','Session limit reached (3 questions). Refresh to start a new session.');
+      return;
+    }
+    appendAIMsg('user', question);
+    aiInput.value = '';
+    aiExchanges++;
+
+    var context = jsonInput.value.substring(0,2000);
+    var status = lastValidJson ? 'Valid JSON' : 'Invalid JSON';
+
+    fetch('/.netlify/functions/ai-advisor',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        tool:'json-formatter',
+        question:question,
+        context:'JSON content ('+status+', '+jsonInput.value.length+' chars):\n'+context,
+        max_tokens:500
+      })
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(data){ appendAIMsg('assistant', data.response||data.error||'No response'); })
+    .catch(function(){ appendAIMsg('assistant','Could not reach AI. Try again later.'); aiExchanges--; });
+  }
+
+  function appendAIMsg(role, text){
+    var div = document.createElement('div');
+    div.className = 'ai-msg '+role;
+    div.textContent = (role==='user'?'You: ':'AI: ')+text;
+    aiMessages.appendChild(div);
+    aiMessages.scrollTop = aiMessages.scrollHeight;
+  }
+
+  $('aiAsk').onclick = askAI;
+  aiInput.addEventListener('keydown', function(e){ if(e.key==='Enter') askAI(); });
+  var sugs = document.querySelectorAll('.ai-sug');
+  for(var i=0;i<sugs.length;i++){
+    sugs[i].onclick = function(){
+      aiInput.value = this.dataset.q;
+      askAI();
+    };
+  }
+
+  /* ── Init ── */
+  processInput();
+})();
+</script>
+<script src="/assets/js/components/newsletter-cta.min.js" defer></script>
+<afro-newsletter-cta></afro-newsletter-cta>
+
+<script>
+// Save/Share buttons — manual placement needed
+(function(){
+  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
+  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
+  div.innerHTML = '<share-result-button tool-name="Json Formatter" tool-slug="json-formatter"></share-result-button>';
+  target.appendChild(div);
+})();
+</script>
+</body>
+</html>

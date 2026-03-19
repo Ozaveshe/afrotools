@@ -45,6 +45,10 @@ gtag('config', 'G-D859CGF391');
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the VAT rate in Nigeria?","acceptedAnswer":{"@type":"Answer","text":"Nigeria's VAT rate is 7.5%, one of the lowest in Africa. Basic food items were exempted from January 2026 under the new tax reform."}},{"@type":"Question","name":"What is the VAT rate in Kenya?","acceptedAnswer":{"@type":"Answer","text":"Kenya's standard VAT rate is 16%. Some goods and services are zero-rated or exempt."}},{"@type":"Question","name":"What is the VAT rate in South Africa?","acceptedAnswer":{"@type":"Answer","text":"South Africa's VAT rate is 15%, increased from 14% in April 2018. Basic foodstuffs are zero-rated."}},{"@type":"Question","name":"Which African country has the highest VAT?","acceptedAnswer":{"@type":"Answer","text":"Morocco and Madagascar share the highest standard VAT rate in Africa at 20%. Cameroon follows at 19.25%."}},{"@type":"Question","name":"What is the difference between adding and extracting VAT?","acceptedAnswer":{"@type":"Answer","text":"Adding VAT calculates the total price from a net (before-tax) amount. Extracting VAT separates the tax portion from a VAT-inclusive price. For example, with 15% VAT: adding to 100 gives 115, extracting from 115 gives net 100 and VAT 15."}},{"@type":"Question","name":"Which African countries have no VAT?","acceptedAnswer":{"@type":"Answer","text":"Somalia, Eritrea, and Libya currently do not have operational VAT systems."}}]}
 </script>
 <script src="/assets/js/lib/chart-config.js"></script>
+<script src="/assets/js/afro-history.js" defer></script>
+<script src="/assets/js/components/save-result-button.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js" defer></script>
+<script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
@@ -1132,6 +1136,19 @@ gtag('config', 'G-D859CGF391');
     });
   }
 
+})();
+</script>
+
+<script>
+// Save/Share buttons — manual placement needed
+(function(){
+  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
+  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
+  div.innerHTML = '<save-result-button tool-slug="vat-calculator" tool-name="Vat Calculator"></save-result-button><share-result-button tool-name="Vat Calculator" tool-slug="vat-calculator"></share-result-button>';
+  target.appendChild(div);
 })();
 </script>
 </body>

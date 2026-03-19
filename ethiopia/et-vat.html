@@ -250,6 +250,11 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px;
   @media print{.tool-hero,.sidebar,.faq-sec,.more-tools-sec,.action-row,.chart-section,afro-navbar,afro-footer,afro-chat,afro-related-tools,.amendment-bar,.mode-tabs,.calc-btn,.slider-wrap,.quick-chips,.custom-rate-wrap,.wh-section{display:none!important}.tool-main-inner{grid-template-columns:1fr!important}}
 </style>
 <script src="/assets/js/lib/chart-config.js"></script>
+
+  <script src="/assets/js/afro-history.js" defer></script>
+  <script src="/assets/js/components/save-result-button.js" defer></script>
+  <script src="/assets/js/components/share-card-generator.js" defer></script>
+  <script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body class="tool-page">
 <afro-navbar active="tools"></afro-navbar>
@@ -335,6 +340,20 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px;
         <div class="action-row">
           <button class="act-btn act-pdf" onclick="printResult()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Download PDF</button>
           <button class="act-btn act-share" onclick="shareResult()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Share Result</button>
+        </div>
+
+        <div class="result-actions" style="display:flex;gap:8px;margin:0 22px 22px;flex-wrap:wrap">
+          <save-result-button
+            tool-slug="et-vat"
+            tool-name="Ethiopia VAT Calculator"
+            country-code="ET"
+            currency="ETB">
+          </save-result-button>
+          <share-result-button
+            tool-name="Ethiopia VAT Calculator"
+            tool-slug="et-vat"
+            country-flag="🇪🇹">
+          </share-result-button>
         </div>
 
         <!-- VAT WITHHOLDING -->
@@ -496,6 +515,23 @@ function calculate() {
   document.getElementById('formulaBox').classList.add('on');
   if (document.getElementById('whBody')?.classList.contains('open')) calcWh();
   document.getElementById('resultsCard').scrollIntoView({ behavior: 'smooth' });
+
+  // Save & Share button data
+  var saveBtn = document.querySelector('save-result-button');
+  if (saveBtn) saveBtn.setData({
+    inputs: { amount: amount, mode: MODE, rate: effectiveRate, rateLabel: RESULT.rateLabel },
+    outputs: { netAmount: netAmount, vatAmount: vatAmount, totalInclusive: totalInclusive }
+  });
+  var shareBtn = document.querySelector('share-result-button');
+  if (shareBtn) shareBtn.setResult({
+    headline: MODE === 'add-vat' ? 'VAT Inclusive Total' : 'VAT Extracted',
+    mainValue: fmt(totalInclusive),
+    subValues: [
+      { label: 'Net Amount', value: fmt(netAmount) },
+      { label: 'VAT', value: fmt(vatAmount) },
+      { label: 'Rate', value: pct(effectiveRate) }
+    ]
+  });
 }
 function toggleBands(header) { const body = header.nextElementSibling, arr = header.querySelector('.tog-arrow'); body.classList.toggle('open'); arr.classList.toggle('open'); }
 function setChart(type, btn) { CHART_TYPE = type; document.querySelectorAll('.chart-tab').forEach(b => b.classList.remove('on')); btn.classList.add('on'); renderChart(type); }

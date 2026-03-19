@@ -784,6 +784,9 @@
     .msg { max-width: 92%; }
   }
 </style>
+<script src="/assets/js/lib/toast.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js" defer></script>
+<script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -1099,6 +1102,7 @@
   closeBtn.addEventListener('click', function() {
     workspace.classList.remove('show');
     uploadView.classList.remove('hidden');
+    if (pdfDoc && pdfDoc.destroy) pdfDoc.destroy();
     pdfDoc = null;
     pdfData = null;
     context = '';
@@ -1175,14 +1179,17 @@
     /* Bold */
     html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
 
-    /* Bullet lists */
-    html = html.replace(/^[-*]\s+(.+)/gm, '<li>$1</li>');
-    html = html.replace(/(<li>.*<\/li>)/s, function(match) {
-      return '<ul>' + match + '</ul>';
+    /* Bullet lists — wrap consecutive <li> groups in <ul> */
+    html = html.replace(/^[-*]\s+(.+)/gm, '<bul>$1</bul>');
+    html = html.replace(/((?:<bul>.*?<\/bul>\n?)+)/g, function(match) {
+      return '<ul>' + match.replace(/<bul>/g, '<li>').replace(/<\/bul>/g, '</li>') + '</ul>';
     });
 
-    /* Numbered lists */
-    html = html.replace(/^\d+\.\s+(.+)/gm, '<li>$1</li>');
+    /* Numbered lists — wrap consecutive items in <ol> */
+    html = html.replace(/^\d+\.\s+(.+)/gm, '<nli>$1</nli>');
+    html = html.replace(/((?:<nli>.*?<\/nli>\n?)+)/g, function(match) {
+      return '<ol>' + match.replace(/<nli>/g, '<li>').replace(/<\/nli>/g, '</li>') + '</ol>';
+    });
 
     /* Paragraphs */
     html = html.replace(/\n{2,}/g, '</p><p>');
@@ -1254,7 +1261,7 @@
       }
 
       const data = await response.json();
-      const aiText = data.response || data.reply || data.message || 'Sorry, I could not generate a response.';
+      const aiText = data.reply || data.message || 'Sorry, I could not generate a response.';
       addMessage('ai', aiText);
       chatHistory.push({ role: 'assistant', content: aiText });
 
@@ -1334,6 +1341,19 @@
     uploadError.classList.remove('show');
   }
 
+})();
+</script>
+
+<script>
+// Save/Share buttons — manual placement needed
+(function(){
+  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
+  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
+  div.innerHTML = '<share-result-button tool-name="PDF Chat" tool-slug="pdf-chat"></share-result-button>';
+  target.appendChild(div);
 })();
 </script>
 </body>

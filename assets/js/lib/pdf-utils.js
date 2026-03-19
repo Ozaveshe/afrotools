@@ -112,7 +112,7 @@
         var s = document.createElement('script');
         s.src = JSZIP_CDN;
         document.head.appendChild(s);
-        await new Promise(function(r) { s.onload = r; });
+        await new Promise(function(r, rej) { s.onload = r; s.onerror = function() { rej(new Error('Failed to load JSZip library')); }; });
       }
       var zip = new JSZip();
       files.forEach(function(f) { zip.file(f.name, f.data); });

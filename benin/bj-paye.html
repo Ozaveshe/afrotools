@@ -77,6 +77,11 @@
   @media(max-width:480px){.tool-info-stats{grid-template-columns:1fr 1fr 1fr}.tool-info-header{padding:12px 14px}.tool-info-body{padding:10px 14px}}
 </style>
 <script src="/assets/js/lib/chart-config.js"></script>
+
+  <script src="/assets/js/afro-history.js" defer></script>
+  <script src="/assets/js/components/save-result-button.js" defer></script>
+  <script src="/assets/js/components/share-card-generator.js" defer></script>
+  <script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body class="tool-page">
 <afro-navbar active="tools"></afro-navbar>
@@ -194,6 +199,22 @@
             Share Result
           </button>
         </div>
+
+          <!-- Save & Share -->
+          <div class="save-share-row">
+            <save-result-button
+              tool-slug="bj-paye"
+              tool-name="Benin PAYE Calculator"
+              country-code="BJ"
+              currency="XOF">
+            </save-result-button>
+            <share-result-button
+              tool-name="Benin PAYE Calculator"
+              tool-slug="bj-paye"
+              country-flag="🇧🇯">
+            </share-result-button>
+          </div>
+          <salary-benchmark country-code="BJ" currency="XOF"></salary-benchmark>
       </div>
     </div>
 
@@ -555,6 +576,28 @@ function calcAnnualDGI(annualTaxableIncome) {
   strip.classList.add('on');
 
   document.getElementById('resultsCard').classList.add('on');
+  // Save/Share/Benchmark wiring
+  var _saveBtn = document.querySelector('save-result-button');
+  if (_saveBtn) _saveBtn.setData({
+    inputs: { grossSalary: RESULT.gross },
+    outputs: {
+      netPay: RESULT.netMonthly || RESULT.net,
+      tax: RESULT.monthlyPAYE || RESULT.tax || RESULT.paye,
+      effectiveRate: RESULT.effectiveRate
+    }
+  });
+  var _shareBtn = document.querySelector('share-result-button');
+  if (_shareBtn) _shareBtn.setResult({
+    headline: 'My Take-Home Pay',
+    mainValue: fmt(RESULT.netMonthly || RESULT.net) + '/mo',
+    subValues: [
+      { label: 'Gross', value: fmt(RESULT.gross) + '/mo' },
+      { label: 'Tax', value: fmt(RESULT.monthlyPAYE || RESULT.tax || RESULT.paye) + '/mo' },
+      { label: 'Effective Rate', value: pct(RESULT.effectiveRate) }
+    ]
+  });
+  var _bmWidget = document.querySelector('salary-benchmark');
+  if (_bmWidget) { _bmWidget.setAttribute('user-gross', RESULT.gross); _bmWidget.setAttribute('user-net', RESULT.netMonthly || RESULT.net); }
   renderChart(CHART_TYPE);
   document.getElementById('resultsCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
@@ -785,6 +828,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
   </div>
 </div>
 
+<script src="/assets/js/components/salary-benchmark-widget.js" defer></script>
 </body></html>`;
 
   const blob = new Blob([html],{type:'text/html;charset=utf-8'});

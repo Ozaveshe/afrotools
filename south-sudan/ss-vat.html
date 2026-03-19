@@ -288,6 +288,11 @@
   @media print{.tool-hero,.sidebar,.faq-sec,.more-tools-sec,.action-row,.chart-section,afro-navbar,afro-footer,afro-chat,afro-related-tools,.amendment-bar,.mode-tabs,.calc-btn,.slider-wrap,.quick-chips,.custom-rate-wrap,.wh-section{display:none!important}.tool-main-inner{grid-template-columns:1fr!important}}
 </style>
 <script src="/assets/js/lib/chart-config.js"></script>
+
+  <script src="/assets/js/afro-history.js" defer></script>
+  <script src="/assets/js/components/save-result-button.js" defer></script>
+  <script src="/assets/js/components/share-card-generator.js" defer></script>
+  <script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
@@ -471,6 +476,20 @@
               Share Result
             </button>
           </div>
+
+        <div class="result-actions" style="display:flex;gap:8px;margin:0 22px 22px;flex-wrap:wrap">
+          <save-result-button
+            tool-slug="ss-vat"
+            tool-name="South Sudan VAT Calculator"
+            country-code="SS"
+            currency="SSP">
+          </save-result-button>
+          <share-result-button
+            tool-name="South Sudan VAT Calculator"
+            tool-slug="ss-vat"
+            country-flag="🇸🇸">
+          </share-result-button>
+        </div>
 
         <!-- VAT WITHHOLDING -->
         <div class="wh-section" style="padding:0 22px 22px">
@@ -768,6 +787,23 @@ function getEffectiveRate() {
     }
     document.getElementById('formulaBox').classList.add('on');
     if (document.getElementById('whBody')?.classList.contains('open')) calcWh();
+
+    // Save & Share button data
+    var saveBtn = document.querySelector('save-result-button');
+    if (saveBtn) saveBtn.setData({
+      inputs: { amount: raw, mode: currentDir, rate: effRate },
+      outputs: { netAmount: pretax, vatAmount: vat, totalInclusive: total }
+    });
+    var shareBtn = document.querySelector('share-result-button');
+    if (shareBtn) shareBtn.setResult({
+      headline: currentDir === 'add' ? 'VAT Inclusive Total' : 'VAT Extracted',
+      mainValue: fmtD(total),
+      subValues: [
+        { label: 'Net Amount', value: fmtD(pretax) },
+        { label: 'VAT', value: fmtD(vat) },
+        { label: 'Rate', value: (effRate * 100).toFixed(1) + '%' }
+      ]
+    });
   }
 
   // ── MULTI-ITEM ────────────────────────────────────────────────────────

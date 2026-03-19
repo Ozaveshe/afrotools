@@ -184,9 +184,9 @@
   }
 
   .b-green {
-    background: rgba(0, 113, 227, 0.18);
+    background: rgba(0, 135, 81, 0.18);
     color: var(--color-primary);
-    border: 1px solid rgba(0, 113, 227, 0.38);
+    border: 1px solid rgba(0, 135, 81, 0.38);
   }
 
   .b-blue {
@@ -541,7 +541,7 @@
     padding: 16px;
     max-height: 520px;
     overflow-y: auto;
-    font-family: 'DM Sans', monospace;
+    font-family: 'DM Sans', sans-serif;
     font-size: 0.82rem;
     line-height: 1.7;
     color: #1f2937;
@@ -837,6 +837,9 @@
     }
   }
 </style>
+<script src="/assets/js/lib/toast.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js" defer></script>
+<script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
 
@@ -1036,7 +1039,7 @@
 <afro-footer></afro-footer>
 
 <script src="/assets/js/lib/pdf-utils.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/diff-match-patch@1.0.5/index.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/diff_match_patch/20121119/diff_match_patch.js"></script>
 <script>
 // ============================================================
 // PDF Compare Tool — AfroTools
@@ -1172,16 +1175,15 @@
       '<div class="upload-text">Drop ' + label + ' PDF here</div>' +
       '<div class="upload-hint">or click to browse</div>';
 
-    // Re-get the file input and bind
+    // Re-get the file input and fully rebind all handlers
     var newInput = dropZone.querySelector('input[type="file"]');
     if (side === 'original') {
       fileOriginal = newInput;
     } else {
       fileModified = newInput;
     }
-    newInput.addEventListener('change', function() {
-      if (newInput.files.length > 0) handleFile(newInput.files[0], side);
-    });
+    // Re-setup click, change, and drag-drop
+    setupUploadZone(dropZone, newInput, side);
 
     updateCompareBtn();
   }
@@ -1279,12 +1281,13 @@
         var oText = k < textOrig.length ? textOrig[k].text : '';
         var mText = k < textMod.length  ? textMod[k].text  : '';
         totalChars += Math.max(oText.length, mText.length);
-        var d = dmp.diff_main(oText, mText);
+        // Reuse diffs from diffPages if available, otherwise compute
+        var d = (k < diffPages.length) ? diffPages[k] : dmp.diff_main(oText, mText);
         for (var q = 0; q < d.length; q++) {
           if (d[q][0] !== 0) changedChars += d[q][1].length;
         }
       }
-      var similarity = totalChars > 0 ? Math.round((1 - changedChars / (totalChars * 2 || 1)) * 100) : 100;
+      var similarity = totalChars > 0 ? Math.round((1 - changedChars / (totalChars || 1)) * 100) : 100;
       similarity = Math.max(0, Math.min(100, similarity));
       statSim.textContent = similarity + '% similar';
 
@@ -1595,6 +1598,18 @@
     return div.innerHTML;
   }
 
+})();
+</script>
+
+<script>
+(function(){
+  var target = document.getElementById('resultsCard');
+  if (!target) return;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
+  div.innerHTML = '<share-result-button tool-name="Pdf Compare" tool-slug="pdf-compare"></share-result-button>';
+  target.appendChild(div);
 })();
 </script>
 </body>

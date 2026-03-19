@@ -58,6 +58,9 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 .faq details p{padding:0 1.25rem 1rem;color:#64748b;font-size:.95rem}
 @media print{.hero,.card,.actions,.seo-section,.faq,afro-navbar,afro-footer,afro-related-tools,afro-newsletter-cta{display:none!important}.agreement-preview{border:none;padding:1cm;font-size:12pt}}
 </style>
+<script src="/assets/js/lib/toast.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js" defer></script>
+<script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -172,6 +175,18 @@ function generate(){
 }
 function downloadText(){const t=document.getElementById('contractContent').innerText;const b=new Blob([t],{type:'text/plain'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='employment-contract.txt';a.click();}
 document.getElementById('startDate').valueAsDate=new Date();
+</script>
+
+<script>
+(function(){
+  var target = document.getElementById('output');
+  if (!target) return;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
+  div.innerHTML = '<share-result-button tool-name="Employment Contract" tool-slug="employment-contract"></share-result-button>';
+  target.appendChild(div);
+})();
 </script>
 </body>
 </html>

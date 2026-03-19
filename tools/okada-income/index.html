@@ -59,6 +59,11 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How much do Okada riders earn per month in Nigeria?","acceptedAnswer":{"@type":"Answer","text":"Monthly net earnings for Nigerian Okada riders typically range from NGN 50,000 to NGN 130,000 after deducting fuel, maintenance, and owner payments. Earnings depend on location, hours worked, ownership status, and fuel costs. Riders who own their bikes keep significantly more."}},{"@type":"Question","name":"Is it better to own or hire a motorcycle for Okada business?","acceptedAnswer":{"@type":"Answer","text":"Owning is more profitable long-term because you eliminate the daily owner payment, which typically represents 30-40% of gross income. However, owning requires upfront capital of $600-$1,500. If hiring, consider joining a cooperative or SACCO for better hire-purchase terms."}},{"@type":"Question","name":"How do ride-hailing platforms like SafeBoda and Bolt affect Okada income?","acceptedAnswer":{"@type":"Answer","text":"Platforms provide more consistent ride requests and sometimes higher fares, but charge 15-25% commission. The net effect depends on location — in busy urban areas with many organic rides, you may earn more without a platform. In less busy areas, platforms help fill idle time and increase total trips."}},{"@type":"Question","name":"What are the main expenses for a Boda Boda rider?","acceptedAnswer":{"@type":"Answer","text":"The main expenses are fuel (the largest daily cost), owner/hire-purchase payments (if not owning the bike), maintenance and repairs, insurance (where required), phone/data for ride-hailing apps, and platform commissions. Together these typically consume 40-60% of gross income."}}]}
 </script>
+<script src="/assets/js/lib/toast.js" defer></script>
+<script src="/assets/js/afro-history.js" defer></script>
+<script src="/assets/js/components/save-result-button.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js" defer></script>
+<script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -276,6 +281,18 @@ function calculate(){
   document.getElementById('resultCard').style.display='block';
   document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
 }
+</script>
+
+<script>
+(function(){
+  var target = document.getElementById('resultCard');
+  if (!target) return;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
+  div.innerHTML = '<save-result-button tool-slug="okada-income" tool-name="Okada Income"></save-result-button><share-result-button tool-name="Okada Income" tool-slug="okada-income"></share-result-button>';
+  target.appendChild(div);
+})();
 </script>
 </body>
 </html>

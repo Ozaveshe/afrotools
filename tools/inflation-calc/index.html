@@ -5,12 +5,12 @@
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'inflation-calc'});</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Inflation Calculator — Purchasing Power & Cost of Living | AfroTools</title>
-<meta name="description" content="Calculate how inflation erodes purchasing power over time. See future costs and past equivalents. African inflation rates for Nigeria, Kenya, South Africa, Ghana.">
+<title>Inflation Calculator for Africa — Purchasing Power, Future Cost & Salary Check | AfroTools</title>
+<meta name="description" content="Calculate how inflation erodes purchasing power across all 54 African countries. Future cost projections, salary erosion checks, remittance value tracking, live World Bank data, and country comparisons.">
 <link rel="canonical" href="https://afrotools.com/tools/inflation-calc/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="Inflation Calculator | AfroTools">
-<meta property="og:description" content="How inflation erodes your money. Future costs, past values. African rates.">
+<meta property="og:title" content="Africa Inflation Calculator — All 54 Countries | AfroTools">
+<meta property="og:description" content="Track inflation impact across Africa. Future costs, salary erosion, remittance value, live World Bank data, country comparisons.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/inflation-calc/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,107 +19,236 @@
 <link rel="stylesheet" href="/assets/css/global.min.css">
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
+<script src="/assets/js/components/tool-registry.min.js" defer></script>
+<script src="/assets/js/components/related-tools.min.js" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <style>
-:root{--afro-blue:var(--color-primary);--afro-dark:#0f1419}
-.tool-hero{background:linear-gradient(135deg,var(--afro-dark) 0%,#1a1f2e 100%);padding:44px 0 36px;position:relative;overflow:hidden}
-.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px;position:relative}
+:root{--afro-blue:var(--color-primary);--afro-dark:#0f1419;--sev-green:#22c55e;--sev-yellow:#eab308;--sev-orange:#f97316;--sev-red:#ef4444}
+
+/* HERO */
+.tool-hero{background:linear-gradient(135deg,var(--afro-dark) 0%,#1a1f2e 50%,#0d1117 100%);padding:48px 0 40px;position:relative;overflow:hidden}
+.tool-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 70% 30%,rgba(0,113,227,.12),transparent),radial-gradient(ellipse 40% 40% at 20% 70%,rgba(0,113,227,.06),transparent);pointer-events:none}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
 .breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
-.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:var(--afro-blue)}
-h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none;transition:color .15s}.breadcrumb a:hover{color:rgba(255,255,255,.5)}.breadcrumb span{color:var(--afro-blue)}
+h1{font-size:clamp(1.6rem,4vw,2.5rem);font-weight:900;color:#fff;letter-spacing:-.025em;line-height:1.1;margin-bottom:10px}
 h1 em{color:var(--afro-blue);font-style:normal}
-.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:580px;margin-bottom:14px}
 .hero-badges{display:flex;flex-wrap:wrap;gap:7px}
-.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
-.b-blue{background:rgba(0,113,227,.18);color:var(--color-primary);border:1px solid rgba(0,113,227,.38)}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:100px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-blue{background:rgba(0,113,227,.18);color:var(--afro-blue);border:1px solid rgba(0,113,227,.38)}
 .b-red{background:rgba(239,68,68,.12);color:#ef4444;border:1px solid rgba(239,68,68,.3)}
-.tool-main{padding:28px 0 72px}
-.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.b-green{background:rgba(34,197,94,.12);color:#22c55e;border:1px solid rgba(34,197,94,.3)}
+
+/* MAIN LAYOUT */
+.tool-main{padding:28px 0 72px;background:var(--color-bg,#FAFAF8)}
+.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 360px;gap:22px;align-items:start}
+
+/* CARDS */
 .card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
 .card+.card{margin-top:18px}
-.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc;display:flex;align-items:center;gap:8px}
 .card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
 .card-body{padding:22px}
+
+/* FORM */
 .field{margin-bottom:16px}
 .f-label{font-size:.75rem;font-weight:700;color:var(--afro-dark);margin-bottom:6px;display:block}
-.f-input,.f-select{width:100%;padding:11px 13px;background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:7px;font-size:1rem;font-weight:600;color:var(--afro-dark);outline:none;font-family:'DM Sans',sans-serif}
+.f-hint{font-size:.68rem;color:#94a3b8;margin-top:3px}
+.f-input,.f-select{width:100%;padding:11px 13px;background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:7px;font-size:1rem;font-weight:600;color:var(--afro-dark);outline:none;font-family:'DM Sans',sans-serif;box-sizing:border-box;transition:border-color .15s,box-shadow .15s}
 .f-input:focus,.f-select:focus{border-color:var(--afro-blue);box-shadow:0 0 0 3px rgba(0,113,227,.1)}
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* TABS */
+.mode-tabs{display:flex;gap:0;margin-bottom:18px;border:1.5px solid #e2e8f0;border-radius:8px;overflow:hidden}
+.mode-tab{flex:1;padding:11px 6px;text-align:center;font-size:.75rem;font-weight:700;cursor:pointer;background:#f8fafc;color:#64748b;border:none;transition:all .18s;font-family:'DM Sans',sans-serif;border-right:1px solid #e2e8f0}
+.mode-tab:last-child{border-right:none}
+.mode-tab.active{background:var(--afro-blue);color:#fff}
+.mode-tab:hover:not(.active){background:#eef2ff}
+.tab-panel{display:none}.tab-panel.active{display:block}
+
+/* BUTTONS */
 .calc-btn{width:100%;padding:13px;background:var(--afro-blue);color:#fff;border:none;border-radius:8px;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .18s;font-family:'DM Sans',sans-serif}
 .calc-btn:hover{background:#0059B3;transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,113,227,.3)}
+.calc-btn:active{transform:translateY(0)}
+.calc-btn-sm{padding:9px 16px;font-size:.78rem;width:auto;border-radius:6px}
+.calc-btn-outline{background:transparent;color:var(--afro-blue);border:1.5px solid var(--afro-blue)}
+.calc-btn-outline:hover{background:rgba(0,113,227,.06);transform:none;box-shadow:none}
+
+/* RESULTS */
 .result-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:18px}
-.result-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;text-align:center}
+.result-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;text-align:center;transition:transform .2s}
+.result-box:hover{transform:translateY(-2px)}
 .result-box.wide{grid-column:1/-1}
 .r-label{font-size:.68rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#64748b;margin-bottom:4px}
 .r-value{font-size:1.35rem;font-weight:800;color:var(--afro-dark)}
 .r-value.blue{color:var(--afro-blue)}
 .r-value.red{color:#ef4444}
+.r-value.green{color:#22c55e}
 #results{display:none}
-.year-table{width:100%;border-collapse:collapse;font-size:.78rem;margin-top:12px}
-.year-table th{background:#f1f5f9;padding:8px 10px;text-align:left;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#64748b;border-bottom:1px solid #e2e8f0;position:sticky;top:0}
+
+/* PURCHASING POWER VISUAL */
+.pp-visual{margin-top:18px;position:relative}
+.pp-bar-track{background:#f1f5f9;border-radius:8px;height:32px;overflow:hidden;position:relative}
+.pp-bar-fill{height:100%;border-radius:8px;transition:width .8s ease-out;display:flex;align-items:center;justify-content:flex-end;padding-right:10px;font-size:.72rem;font-weight:800;color:#fff}
+.pp-labels{display:flex;justify-content:space-between;font-size:.7rem;color:#64748b;margin-top:4px;font-weight:600}
+
+/* CHART */
+.chart-wrap{position:relative;height:300px;margin-top:16px}
+.chart-wrap canvas{width:100%!important;height:100%!important}
+
+/* TABLE */
+.year-table{width:100%;border-collapse:collapse;font-size:.78rem}
+.year-table th{background:#f1f5f9;padding:8px 10px;text-align:left;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#64748b;border-bottom:1px solid #e2e8f0;position:sticky;top:0;z-index:1}
 .year-table td{padding:8px 10px;border-bottom:1px solid #f1f5f9;color:var(--afro-dark);font-weight:500}
 .year-table tr:hover td{background:#f8fafc}
 .table-wrap{max-height:360px;overflow-y:auto;border:1px solid #e2e8f0;border-radius:8px}
-.insight{background:linear-gradient(135deg,#fef3c7,#fde68a);border:1px solid #f59e0b;border-radius:8px;padding:14px 18px;margin-top:16px;font-size:.82rem;color:#92400e;line-height:1.6}
+
+/* INSIGHT BOX */
+.insight{border-radius:8px;padding:14px 18px;margin-top:16px;font-size:.82rem;line-height:1.6}
+.insight-warn{background:linear-gradient(135deg,#fef3c7,#fde68a);border:1px solid #f59e0b;color:#92400e}
+.insight-info{background:linear-gradient(135deg,#dbeafe,#bfdbfe);border:1px solid #3b82f6;color:#1e40af}
+.insight-danger{background:linear-gradient(135deg,#fee2e2,#fecaca);border:1px solid #ef4444;color:#991b1b}
+
+/* SEVERITY BADGES */
+.sev-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.03em}
+.sev-low{background:rgba(34,197,94,.12);color:#16a34a}
+.sev-mid{background:rgba(234,179,8,.12);color:#ca8a04}
+.sev-high{background:rgba(249,115,22,.12);color:#ea580c}
+.sev-extreme{background:rgba(239,68,68,.12);color:#dc2626}
+
+/* SIDEBAR */
 .sidebar .card-body{font-size:.82rem;color:#475569;line-height:1.7}
-.rate-table{width:100%;border-collapse:collapse;margin:10px 0}
-.rate-table td{padding:6px 8px;border-bottom:1px solid #f1f5f9;font-size:.78rem}
+.rate-table{width:100%;border-collapse:collapse;margin:8px 0}
+.rate-table td{padding:5px 8px;border-bottom:1px solid #f1f5f9;font-size:.76rem}
 .rate-table td:first-child{font-weight:600;color:var(--afro-dark)}
-.rate-table td:last-child{text-align:right;font-weight:700;color:#ef4444}
-.mode-tabs{display:flex;gap:0;margin-bottom:18px;border:1px solid #e2e8f0;border-radius:8px;overflow:hidden}
-.mode-tab{flex:1;padding:10px;text-align:center;font-size:.78rem;font-weight:700;cursor:pointer;background:#f8fafc;color:#64748b;border:none;transition:all .15s;font-family:'DM Sans',sans-serif}
-.mode-tab.active{background:var(--afro-blue);color:#fff}
+.rate-table td:last-child{text-align:right;font-weight:700}
+.region-header{font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-blue);padding:10px 8px 4px;border-bottom:none!important}
+
+/* RULE OF 72 MINI CALC */
+.r72-result{text-align:center;padding:16px;background:#f8fafc;border-radius:8px;margin-top:10px}
+.r72-value{font-size:1.8rem;font-weight:900;color:var(--afro-blue)}
+.r72-label{font-size:.72rem;color:#64748b;font-weight:600;margin-top:2px}
+
+/* COUNTRY COMPARE */
+.compare-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:12px}
+.compare-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;text-align:center}
+.compare-card h4{font-size:.78rem;font-weight:700;color:var(--afro-dark);margin-bottom:8px}
+.compare-card .val{font-size:1.2rem;font-weight:800}
+
+/* REMITTANCE */
+.remit-result{display:grid;grid-template-columns:1fr 40px 1fr;gap:8px;align-items:center;margin-top:16px}
+.remit-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;text-align:center}
+.remit-arrow{text-align:center;font-size:1.2rem;color:#94a3b8}
+
+/* AI CHAT */
+.ai-msg{padding:10px 14px;border-radius:8px;margin-bottom:8px;font-size:.82rem;line-height:1.6;max-width:90%}
+.ai-msg.user{background:var(--afro-blue);color:#fff;margin-left:auto;border-bottom-right-radius:2px}
+.ai-msg.bot{background:#f1f5f9;color:var(--afro-dark);border-bottom-left-radius:2px}
+.ai-typing{display:inline-flex;gap:4px;padding:10px 14px;background:#f1f5f9;border-radius:8px}
+.ai-typing span{width:6px;height:6px;background:#94a3b8;border-radius:50%;animation:bounce .6s infinite alternate}
+.ai-typing span:nth-child(2){animation-delay:.2s}
+.ai-typing span:nth-child(3){animation-delay:.4s}
+@keyframes bounce{to{transform:translateY(-6px);opacity:.4}}
+
+/* FETCH BTN LOADING */
+.fetch-loading{position:relative;pointer-events:none;opacity:.7}
+.fetch-loading::after{content:'';position:absolute;top:50%;left:50%;width:16px;height:16px;margin:-8px 0 0 -8px;border:2px solid #fff;border-top-color:transparent;border-radius:50%;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* SEO CONTENT */
 .seo-content{max-width:800px;margin:0 auto;padding:48px 24px}
 .seo-content h2{font-size:1.4rem;font-weight:800;color:var(--afro-dark);margin:32px 0 12px}
 .seo-content p,.seo-content li{font-size:.92rem;color:#475569;line-height:1.8}
 .seo-content ul{padding-left:20px}
 .faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:10px;overflow:hidden}
-.faq summary{padding:14px 18px;font-weight:700;font-size:.88rem;cursor:pointer;background:#f8fafc;color:var(--afro-dark)}
+.faq summary{padding:14px 18px;font-weight:700;font-size:.88rem;cursor:pointer;background:#f8fafc;color:var(--afro-dark);list-style:none}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::before{content:'+';float:right;font-size:1.1rem;font-weight:800;color:var(--afro-blue);transition:transform .2s}
+.faq details[open] summary::before{content:'-'}
 .faq details[open] summary{border-bottom:1px solid #e2e8f0}
 .faq details div{padding:14px 18px;font-size:.85rem;color:#475569;line-height:1.7}
-@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.field-row{grid-template-columns:1fr}.result-grid{grid-template-columns:1fr 1fr}}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .tool-main-inner{grid-template-columns:1fr}
+  .field-row{grid-template-columns:1fr}
+  .result-grid{grid-template-columns:1fr 1fr}
+  .mode-tabs{flex-wrap:wrap}
+  .mode-tab{font-size:.7rem;padding:9px 4px}
+  .compare-row{grid-template-columns:1fr}
+  .remit-result{grid-template-columns:1fr;text-align:center}
+  .remit-arrow{transform:rotate(90deg)}
+  .chart-wrap{height:250px}
+}
+@media(max-width:480px){
+  .result-grid{grid-template-columns:1fr}
+  .hero-badges{gap:5px}
+  .badge{font-size:.62rem;padding:3px 8px}
+}
 </style>
+
+<!-- STRUCTURED DATA -->
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"Inflation Calculator","url":"https://afrotools.com/tools/inflation-calc/","description":"Calculate how inflation erodes purchasing power. Future costs and past value equivalents with African inflation rates.","applicationCategory":"FinanceApplication","operatingSystem":"All","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
+{"@context":"https://schema.org","@type":"WebApplication","name":"Africa Inflation Calculator","url":"https://afrotools.com/tools/inflation-calc/","description":"Calculate how inflation erodes purchasing power across all 54 African countries. Future cost projections, salary erosion, remittance value tracking, live World Bank data, and country comparisons.","applicationCategory":"FinanceApplication","operatingSystem":"All","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
 </script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Financial Tools","item":"https://afrotools.com/categories/financial/"},{"@type":"ListItem","position":3,"name":"Inflation Calculator","item":"https://afrotools.com/tools/inflation-calc/"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the Rule of 72 and how does it relate to inflation?","acceptedAnswer":{"@type":"Answer","text":"The Rule of 72 is a quick estimation tool: divide 72 by the annual inflation rate to approximate how many years it takes for prices to double. For example, at Nigeria's 33% inflation, prices double in roughly 2.2 years. At South Africa's 5.4%, they double in about 13.3 years."}},{"@type":"Question","name":"Why is inflation so high in many African countries?","acceptedAnswer":{"@type":"Answer","text":"High inflation in Africa is driven by multiple factors: currency depreciation reducing import purchasing power, food supply shocks from climate events, energy cost volatility, fiscal deficits and government borrowing, structural economic challenges, and dependence on imported goods. Countries with weaker currencies and high import dependence tend to experience the highest rates."}},{"@type":"Question","name":"How can I protect my savings from inflation in Africa?","acceptedAnswer":{"@type":"Answer","text":"Key strategies include investing in Treasury bills and government bonds that offer rates above inflation, diversifying into real estate and equities, holding some savings in stable foreign currencies or dollar-denominated instruments, and using money market funds. Avoid keeping large amounts in low-interest savings accounts where real returns are negative."}},{"@type":"Question","name":"Is food inflation different from headline inflation in Africa?","acceptedAnswer":{"@type":"Answer","text":"Yes, food inflation in Africa is often significantly higher than headline inflation because food constitutes 40-60% of household spending compared to 10-15% in developed economies. This means the real impact on ordinary families is typically worse than official inflation numbers suggest."}},{"@type":"Question","name":"How does inflation affect remittances to Africa?","acceptedAnswer":{"@type":"Answer","text":"Inflation erodes the purchasing power of remittances over time. A fixed USD amount sent to a high-inflation country buys progressively less each year. For example, $200 sent to Nigeria may have covered monthly rent in 2020, but the same amount in local currency terms may not cover it today due to both currency depreciation and local inflation."}},{"@type":"Question","name":"Which African countries have the lowest inflation rates?","acceptedAnswer":{"@type":"Answer","text":"As of 2024, the lowest inflation rates in Africa are found in the CFA franc zone countries like Cabo Verde (1.8%), Comoros (2.0%), Benin (2.1%), and Mali (2.5%). The CFA franc's peg to the Euro provides currency stability that helps keep inflation low. Morocco (3.0%) and Seychelles (3.0%) also maintain relatively stable price levels."}}]}
+</script>
+<script src="/assets/js/lib/toast.js" defer></script>
+<script src="/assets/js/afro-history.js" defer></script>
+<script src="/assets/js/components/save-result-button.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js" defer></script>
+<script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
 
+<!-- ===== HERO ===== -->
 <section class="tool-hero">
 <div class="tool-hero-inner">
 <div class="breadcrumb"><a href="/">Home</a> / <a href="/categories/financial/">Financial</a> / <span>Inflation Calculator</span></div>
-<h1>Inflation <em>Calculator</em></h1>
-<p class="hero-sub">See how inflation erodes your purchasing power over time. Calculate future costs or past equivalents using African inflation rates.</p>
+<h1>Africa Inflation <em>Calculator</em></h1>
+<p class="hero-sub">Track how inflation erodes your purchasing power across all 54 African countries. Future costs, salary checks, remittance values, live World Bank data, and country comparisons.</p>
 <div class="hero-badges">
-<span class="badge b-blue">Purchasing Power</span>
-<span class="badge b-red">African Inflation Rates</span>
-<span class="badge b-blue">Year-by-Year Table</span>
+<span class="badge b-blue">54 African Countries</span>
+<span class="badge b-red">Live World Bank Data</span>
+<span class="badge b-green">Country Comparison</span>
+<span class="badge b-blue">Remittance Tracker</span>
 </div>
 </div>
 </section>
 
+<!-- ===== MAIN ===== -->
 <section class="tool-main">
 <div class="tool-main-inner">
 <div class="calc-area">
 
+<!-- CALCULATOR CARD -->
 <div class="card">
-<div class="card-head"><span class="card-title">Inflation Parameters</span></div>
+<div class="card-head"><span class="card-title">Inflation Calculator</span></div>
 <div class="card-body">
+
+<!-- MODE TABS -->
 <div class="mode-tabs">
-<button class="mode-tab active" onclick="setMode('future')">Future Cost</button>
-<button class="mode-tab" onclick="setMode('past')">Past Value</button>
+<button class="mode-tab active" onclick="setMode('future')" data-mode="future">Future Cost</button>
+<button class="mode-tab" onclick="setMode('past')" data-mode="past">Past Value</button>
+<button class="mode-tab" onclick="setMode('salary')" data-mode="salary">Salary Check</button>
+<button class="mode-tab" onclick="setMode('remittance')" data-mode="remittance">Remittance</button>
 </div>
+
+<!-- SHARED: Country Selector -->
 <div class="field">
-<label class="f-label">Currency</label>
-<select id="currency" class="f-select">
-<option value="NGN">NGN - Nigerian Naira</option>
-<option value="KES">KES - Kenyan Shilling</option>
-<option value="ZAR">ZAR - South African Rand</option>
-<option value="GHS">GHS - Ghanaian Cedi</option>
-<option value="USD">USD - US Dollar</option>
-<option value="GBP">GBP - British Pound</option>
-</select>
+<label class="f-label">Country</label>
+<select id="country" class="f-select" onchange="onCountryChange()"></select>
 </div>
+
+<!-- FUTURE / PAST PANEL -->
+<div id="panelFuturePast" class="tab-panel active">
 <div class="field">
 <label class="f-label" id="amtLabel">Amount Today</label>
 <input type="text" id="amount" class="f-input" placeholder="e.g. 1,000,000" inputmode="numeric">
@@ -127,111 +256,236 @@ h1 em{color:var(--afro-blue);font-style:normal}
 <div class="field-row">
 <div class="field">
 <label class="f-label">Annual Inflation Rate (%)</label>
-<input type="number" id="rate" class="f-input" value="25" step="0.1" min="0" max="500">
+<input type="number" id="rate" class="f-input" step="0.1" min="0" max="500">
 </div>
 <div class="field">
 <label class="f-label">Number of Years</label>
 <input type="number" id="years" class="f-input" value="10" min="1" max="100">
 </div>
 </div>
-<div class="field">
-<label class="f-label">Preset Rates</label>
-<select id="preset" class="f-select" onchange="applyPreset()">
-<option value="">-- Custom Rate --</option>
-<option value="33.4">Nigeria (33.4% - 2024)</option>
-<option value="6.9">Kenya (6.9% - 2024)</option>
-<option value="5.4">South Africa (5.4% - 2024)</option>
-<option value="23.2">Ghana (23.2% - 2024)</option>
-<option value="29.3">Ethiopia (29.3% - 2024)</option>
-<option value="28.3">Egypt (28.3% - 2024)</option>
-<option value="3.4">USA (3.4% - 2024)</option>
-<option value="4.0">UK (4.0% - 2024)</option>
-</select>
 </div>
-<button class="calc-btn" onclick="calculate()">Calculate Inflation Impact</button>
+
+<!-- SALARY PANEL -->
+<div id="panelSalary" class="tab-panel">
+<div class="field-row">
+<div class="field">
+<label class="f-label">Old Salary (per month)</label>
+<input type="text" id="oldSalary" class="f-input" placeholder="e.g. 150,000" inputmode="numeric">
+</div>
+<div class="field">
+<label class="f-label">Current Salary (per month)</label>
+<input type="text" id="newSalary" class="f-input" placeholder="e.g. 250,000" inputmode="numeric">
+</div>
+</div>
+<div class="field-row">
+<div class="field">
+<label class="f-label">Annual Inflation Rate (%)</label>
+<input type="number" id="salaryRate" class="f-input" step="0.1" min="0" max="500">
+</div>
+<div class="field">
+<label class="f-label">Years Between</label>
+<input type="number" id="salaryYears" class="f-input" value="5" min="1" max="50">
+</div>
 </div>
 </div>
 
+<!-- REMITTANCE PANEL -->
+<div id="panelRemittance" class="tab-panel">
+<div class="field">
+<label class="f-label">USD Amount Sent</label>
+<input type="text" id="remitAmount" class="f-input" placeholder="e.g. 500" inputmode="numeric">
+</div>
+<div class="field">
+<label class="f-label">Destination Country</label>
+<select id="remitCountry" class="f-select" onchange="onRemitCountryChange()"></select>
+</div>
+<div class="field-row">
+<div class="field">
+<label class="f-label">Year Sent</label>
+<input type="number" id="remitYear" class="f-input" value="2020" min="2000" max="2026">
+</div>
+<div class="field">
+<label class="f-label">Destination Inflation (%)</label>
+<input type="number" id="remitRate" class="f-input" step="0.1" min="0" max="500">
+</div>
+</div>
+</div>
+
+<div style="display:flex;gap:8px;margin-top:4px">
+<button class="calc-btn" onclick="calculate()" style="flex:1">Calculate Impact</button>
+<button class="calc-btn calc-btn-sm calc-btn-outline" onclick="fetchLiveRates()" id="fetchBtn" title="Fetch live World Bank inflation data" style="width:auto;padding:10px 14px;font-size:.72rem">Fetch Live Rates</button>
+</div>
+</div>
+</div>
+
+<!-- RESULTS -->
 <div class="card" id="results">
-<div class="card-head"><span class="card-title">Results</span></div>
+<div class="card-head"><span class="card-title" id="resultsTitle">Results</span></div>
 <div class="card-body">
-<div class="result-grid">
-<div class="result-box"><div class="r-label" id="futureLabel">Future Cost</div><div class="r-value red" id="rFuture">--</div></div>
-<div class="result-box"><div class="r-label">Purchasing Power Lost</div><div class="r-value red" id="rLost">--</div></div>
-<div class="result-box"><div class="r-label">Cumulative Inflation</div><div class="r-value" id="rCumul">--</div></div>
-<div class="result-box"><div class="r-label" id="ppLabel">Purchasing Power of Original</div><div class="r-value blue" id="rPP">--</div></div>
+<div class="result-grid" id="resultGrid"></div>
+<!-- Purchasing Power Visual -->
+<div class="pp-visual" id="ppVisual" style="display:none">
+<div class="pp-bar-track">
+<div class="pp-bar-fill" id="ppBarFill" style="width:100%;background:var(--afro-blue)">100%</div>
+</div>
+<div class="pp-labels"><span>0%</span><span>Purchasing Power Remaining</span><span>100%</span></div>
 </div>
 <div class="insight" id="insight"></div>
 </div>
 </div>
 
+<!-- CHART -->
+<div class="card" id="chartCard" style="display:none">
+<div class="card-head">
+<span class="card-title" id="chartTitle">Purchasing Power Over Time</span>
+<div style="margin-left:auto;display:flex;gap:6px">
+<button class="calc-btn calc-btn-sm calc-btn-outline" onclick="toggleChartType()" id="chartToggle" style="font-size:.68rem;padding:5px 10px">Show Trend</button>
+</div>
+</div>
+<div class="card-body" style="padding:12px 16px">
+<div class="chart-wrap"><canvas id="mainChart"></canvas></div>
+</div>
+</div>
+
+<!-- COUNTRY COMPARISON -->
+<div class="card" id="compareCard" style="display:none">
+<div class="card-head"><span class="card-title">Country Comparison</span></div>
+<div class="card-body">
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+<select id="cmp1" class="f-select" style="flex:1;min-width:120px" onchange="runComparison()"></select>
+<select id="cmp2" class="f-select" style="flex:1;min-width:120px" onchange="runComparison()"></select>
+<select id="cmp3" class="f-select" style="flex:1;min-width:120px" onchange="runComparison()">
+<option value="">-- Add 3rd --</option>
+</select>
+</div>
+<div class="compare-row" id="compareResults"></div>
+<div class="chart-wrap" style="height:260px;margin-top:12px"><canvas id="compareChart"></canvas></div>
+</div>
+</div>
+
+<!-- YEAR BY YEAR TABLE -->
 <div class="card" id="tableCard" style="display:none">
 <div class="card-head"><span class="card-title">Year-by-Year Breakdown</span></div>
 <div class="card-body" style="padding:0">
 <div class="table-wrap">
 <table class="year-table">
-<thead><tr><th>Year</th><th>Nominal Value</th><th>Purchasing Power</th><th>Cumulative Loss</th></tr></thead>
+<thead><tr><th>Year</th><th>Nominal Value</th><th>Real Value</th><th>Cumulative Loss</th></tr></thead>
 <tbody id="tableBody"></tbody>
 </table>
 </div>
 </div>
 </div>
+
+<!-- AI ADVISOR -->
+<div class="card" style="margin-top:18px">
+<div class="card-head"><span class="card-title">AI Inflation Advisor</span></div>
+<div class="card-body">
+<div id="aiMessages" style="max-height:300px;overflow-y:auto;margin-bottom:12px">
+<div class="ai-msg bot">Ask me anything about inflation strategies, hedging options, or country-specific economic trends.</div>
+</div>
+<div style="display:flex;gap:8px">
+<input type="text" id="aiInput" class="f-input" placeholder="Ask about inflation strategies..." style="flex:1" onkeydown="if(event.key==='Enter')askAI()">
+<button class="calc-btn" style="width:auto;padding:12px 20px" onclick="askAI()">Ask</button>
+</div>
+<div style="font-size:.7rem;color:#94a3b8;margin-top:6px">Powered by AfroTools AI <span id="aiRemaining"></span></div>
+</div>
 </div>
 
+</div>
+
+<!-- ===== SIDEBAR ===== -->
 <div class="sidebar">
+
+<!-- AFRICAN RATES BY REGION -->
 <div class="card">
 <div class="card-head"><span class="card-title">African Inflation Rates (2024)</span></div>
-<div class="card-body">
-<table class="rate-table">
-<tr><td>Nigeria</td><td>33.4%</td></tr>
-<tr><td>Ghana</td><td>23.2%</td></tr>
-<tr><td>Ethiopia</td><td>29.3%</td></tr>
-<tr><td>Egypt</td><td>28.3%</td></tr>
-<tr><td>Kenya</td><td>6.9%</td></tr>
-<tr><td>South Africa</td><td>5.4%</td></tr>
-<tr><td>Rwanda</td><td>7.8%</td></tr>
-<tr><td>Tanzania</td><td>3.4%</td></tr>
-</table>
-<p style="font-size:.75rem;color:#94a3b8;margin-top:8px">Source: National statistics bureaus, World Bank. Rates are annual averages and may vary.</p>
+<div class="card-body" style="padding:10px 16px;max-height:520px;overflow-y:auto">
+<table class="rate-table" id="rateTable"></table>
+<p style="font-size:.68rem;color:#94a3b8;margin-top:8px">Source: National statistics bureaus, World Bank. Annual averages.</p>
 </div>
 </div>
+
+<!-- RULE OF 72 -->
 <div class="card">
-<div class="card-head"><span class="card-title">Why Inflation Matters</span></div>
+<div class="card-head"><span class="card-title">Rule of 72 Calculator</span></div>
 <div class="card-body">
-<p>Inflation silently erodes the value of your money. If you keep cash under your mattress or in a low-interest account, inflation eats away at what you can actually buy with it.</p>
-<p style="margin-top:10px"><strong>Example:</strong> At Nigeria's 33% inflation rate, NGN 1,000,000 today will only buy what NGN 670,000 buys one year from now.</p>
-<p style="margin-top:10px"><strong>Protection:</strong> Invest in assets that outpace inflation: Treasury bills, real estate, equities, or dollar-denominated instruments.</p>
+<p style="font-size:.78rem;color:#64748b;margin-bottom:10px">How fast do prices double at a given inflation rate?</p>
+<div class="field">
+<input type="number" id="r72input" class="f-input" value="10" step="0.1" min="0.1" max="200" oninput="calcR72()" style="font-size:1.1rem;text-align:center">
+</div>
+<div class="r72-result">
+<div class="r72-value" id="r72value">7.2</div>
+<div class="r72-label">years to double prices</div>
 </div>
 </div>
 </div>
+
+<!-- INFLATION PROTECTION TIPS -->
+<div class="card">
+<div class="card-head"><span class="card-title">Inflation Protection Tips</span></div>
+<div class="card-body" style="font-size:.78rem">
+<div style="display:flex;flex-direction:column;gap:10px">
+<div style="padding:10px;background:#f0fdf4;border-radius:6px;border-left:3px solid #22c55e">
+<strong style="color:#15803d">Treasury Bills</strong>
+<p style="color:#475569;margin-top:2px">Often offer rates above inflation. Considered safe in most markets.</p>
+</div>
+<div style="padding:10px;background:#eff6ff;border-radius:6px;border-left:3px solid #3b82f6">
+<strong style="color:#1d4ed8">Real Estate</strong>
+<p style="color:#475569;margin-top:2px">Property values and rents tend to rise with inflation over time.</p>
+</div>
+<div style="padding:10px;background:#fefce8;border-radius:6px;border-left:3px solid #eab308">
+<strong style="color:#a16207">Dollar Assets</strong>
+<p style="color:#475569;margin-top:2px">Dollar-denominated savings or investments hedge against local currency depreciation.</p>
+</div>
+<div style="padding:10px;background:#fef2f2;border-radius:6px;border-left:3px solid #ef4444">
+<strong style="color:#dc2626">Avoid: Low-Interest Savings</strong>
+<p style="color:#475569;margin-top:2px">If your savings rate is below inflation, you are losing money in real terms.</p>
+</div>
+<div style="padding:10px;background:#faf5ff;border-radius:6px;border-left:3px solid #a855f7">
+<strong style="color:#7e22ce">Index Funds & Equities</strong>
+<p style="color:#475569;margin-top:2px">Stock markets historically outpace inflation over long periods.</p>
+</div>
+</div>
+</div>
+</div>
+
+</div><!-- /sidebar -->
 </div>
 </section>
 
+<!-- ===== SEO CONTENT ===== -->
 <section class="seo-content">
-<h2>Understanding Inflation in Africa</h2>
-<p>Inflation is the rate at which the general level of prices for goods and services rises, eroding purchasing power. For many African economies, inflation is a daily reality that significantly impacts household budgets, savings, and investment returns. Unlike developed economies where central banks target 2% inflation, many African nations experience double-digit inflation driven by currency depreciation, food price shocks, and import costs.</p>
+<h2>Understanding Inflation Across Africa</h2>
+<p>Inflation is the rate at which the general price level of goods and services rises, systematically eroding purchasing power. For millions across Africa, inflation is a persistent economic reality that shapes daily spending decisions, savings strategies, and long-term financial planning. Unlike developed economies where central banks typically target 2% inflation, many African nations experience double-digit inflation driven by currency depreciation, food price volatility, energy costs, and structural economic challenges.</p>
+<p>Africa's inflation landscape is diverse. The CFA franc zone countries benefit from their currency peg to the Euro, maintaining inflation rates around 2-4%. Meanwhile, countries like Nigeria, Ghana, Ethiopia, and Egypt have faced inflation surging past 25%, driven by currency devaluation, fuel subsidy reforms, and global commodity price shocks.</p>
 
 <h2>How This Calculator Works</h2>
-<p>Our inflation calculator uses the compound inflation formula to project future costs or determine past equivalents. In "Future Cost" mode, it shows what today's amount will cost after a given number of years of inflation. In "Past Value" mode, it shows how much less your money is worth compared to previous years. The year-by-year table gives you a detailed breakdown of how purchasing power declines each year.</p>
-<p>The formula is straightforward: Future Value = Present Value x (1 + inflation rate)^years. For purchasing power loss, we calculate the real value as: Real Value = Nominal Value / (1 + inflation rate)^years.</p>
+<p>Our inflation calculator uses the compound inflation formula to give you precise projections across four modes. In Future Cost mode, it shows what today's amount will cost after years of inflation. Past Value mode reveals what your money was worth in previous years. The Salary Check mode determines whether your income has kept pace with rising prices. The Remittance mode tracks how inflation in a destination country erodes the purchasing power of money you send from abroad.</p>
+<p>The core formula: Future Value = Present Value x (1 + inflation rate)^years. For purchasing power: Real Value = Nominal Value / (1 + inflation rate)^years. We source preset rates from national statistics bureaus and the World Bank, and you can fetch live historical data directly from the World Bank API.</p>
 
-<h2>Inflation Across Africa</h2>
-<p>Nigeria has experienced some of the highest inflation on the continent, with rates exceeding 30% in 2024 following naira devaluation and fuel subsidy removal. Ghana saw inflation peak above 50% in 2023 before gradually declining. East African economies like Kenya and Tanzania have maintained relatively lower rates, while Ethiopia and Egypt face persistent double-digit inflation. South Africa, with its independent reserve bank, has maintained inflation within its 3-6% target range.</p>
+<h2>Inflation by Region in Africa</h2>
+<p>North Africa generally maintains moderate inflation, though Egypt stands out with rates above 28% following its 2023-2024 currency devaluations. West Africa sees a split between the stable CFA franc zone and high-inflation economies like Nigeria and Ghana. East Africa ranges from Tanzania's low 3.4% to Ethiopia's near 30%. Southern Africa clusters around 5%, with Zimbabwe as the notable outlier. Central Africa benefits from the CFA franc peg, keeping rates under 6% for most countries.</p>
 <ul>
-<li>At 33% inflation, prices double roughly every 2.5 years</li>
+<li>At 33% inflation (Nigeria), prices double every 2.2 years</li>
 <li>At 10% inflation, prices double every 7.2 years</li>
-<li>At 5% inflation, prices double every 14.4 years</li>
+<li>At 5% inflation (South Africa), prices double every 14.4 years</li>
+<li>At 2% inflation (CFA zone), prices double every 36 years</li>
 </ul>
 
-<h2>Strategies to Beat Inflation</h2>
-<p>In high-inflation environments, keeping cash is essentially losing money. Smart strategies include investing in Treasury bills (which often offer rates above inflation), real estate, equities, or foreign-currency denominated assets. Dollar-cost averaging into diversified investments helps protect purchasing power over the long term.</p>
+<h2>The Impact on Remittances to Africa</h2>
+<p>Africa receives over $100 billion in remittances annually, making it a critical income source for millions of families. However, inflation in recipient countries silently erodes the purchasing power of these transfers. A fixed dollar amount sent to a high-inflation economy buys progressively fewer goods and services each year. Our Remittance Calculator helps diaspora communities understand how far their money actually goes in their home countries, enabling better financial planning for family support.</p>
+
+<h2>Strategies to Beat Inflation in Africa</h2>
+<p>In high-inflation environments, holding cash is equivalent to losing money. Smart strategies include investing in Treasury bills or government bonds that offer rates above inflation, diversifying into real estate, holding some savings in stable currencies, and dollar-cost averaging into diversified equity portfolios. For countries with extremely high inflation, such as Nigeria or Zimbabwe, foreign-currency instruments and commodity-linked investments offer additional protection.</p>
 
 <div class="faq">
 <h2>Frequently Asked Questions</h2>
-<details><summary>What is the rule of 72?</summary><div>The rule of 72 is a quick way to estimate how long it takes for prices to double. Divide 72 by the inflation rate. At 10% inflation, prices double in approximately 7.2 years. At 33% inflation, prices double in about 2.2 years.</div></details>
-<details><summary>Why is inflation so high in some African countries?</summary><div>Key drivers include currency depreciation (reducing import purchasing power), food supply shocks, energy cost increases, fiscal deficits, and structural economic challenges. Countries with heavy import dependence and weak currencies tend to experience higher inflation.</div></details>
-<details><summary>How can I protect my savings from inflation?</summary><div>Invest in instruments that offer returns above the inflation rate: Treasury bills, government bonds, real estate, equities, and dollar-denominated assets. Avoid keeping large amounts in low-interest savings accounts where the real return is negative after adjusting for inflation.</div></details>
-<details><summary>Is food inflation different from headline inflation?</summary><div>Yes. In Africa, food inflation is often significantly higher than headline inflation because food constitutes a larger share of household spending (40-60% vs 10-15% in developed economies). This means the real impact on ordinary people is often worse than the headline number suggests.</div></details>
+<details><summary>What is the Rule of 72 and how does it apply to inflation?</summary><div>The Rule of 72 is a quick estimation method. Divide 72 by the annual inflation rate to approximate how many years it takes for prices to double. At Nigeria's 33% inflation, prices double in roughly 2.2 years. At South Africa's 5.4%, doubling takes about 13.3 years. This simple formula helps visualize inflation's compounding effect on your money.</div></details>
+<details><summary>Why is inflation so high in some African countries?</summary><div>Key drivers include currency depreciation (reducing import purchasing power), food supply shocks from climate disruptions, energy cost increases, fiscal deficits financed by money printing, removal of fuel and food subsidies, and structural economic challenges. Countries with heavy import dependence and weak currencies tend to experience the highest inflation rates.</div></details>
+<details><summary>How can I protect my savings from inflation in Africa?</summary><div>Invest in instruments that offer returns above the inflation rate. Treasury bills and government bonds are popular in countries like Nigeria and Kenya. Real estate, equities, and dollar-denominated assets provide additional hedging. Money market funds and fixed deposits with competitive rates can also help. The key principle: your investment return must exceed the inflation rate to maintain purchasing power.</div></details>
+<details><summary>Is food inflation different from headline inflation?</summary><div>Yes. In Africa, food inflation is often significantly higher than headline inflation because food constitutes 40-60% of household spending versus 10-15% in developed economies. This means the real impact on ordinary families is typically much worse than official inflation numbers suggest. Our calculator uses headline inflation, so actual costs for food and essentials may rise even faster.</div></details>
+<details><summary>How does inflation affect remittances to Africa?</summary><div>Inflation erodes the purchasing power of remittances over time. A fixed USD amount sent to a high-inflation country buys progressively less each year. For example, $200 sent monthly to Nigeria covered significantly more expenses in 2019 than the same amount does today, due to both the naira's depreciation and domestic price increases. Our Remittance mode helps quantify this erosion.</div></details>
+<details><summary>Which African countries have the lowest inflation rates?</summary><div>Countries using the CFA franc (pegged to the Euro) generally have the lowest and most stable inflation: Cabo Verde (1.8%), Comoros (2.0%), Benin (2.1%), and Mali (2.5%). Outside the CFA zone, Morocco (3.0%), Seychelles (3.0%), and Tanzania (3.4%) maintain relatively stable prices through prudent monetary policies.</div></details>
 </div>
 </section>
 
@@ -240,76 +494,767 @@ h1 em{color:var(--afro-blue);font-style:normal}
 <afro-footer></afro-footer>
 
 <script>
-let mode='future';
-function setMode(m){
-  mode=m;
-  document.querySelectorAll('.mode-tab').forEach((t,i)=>t.classList.toggle('active',(i===0&&m==='future')||(i===1&&m==='past')));
-  document.getElementById('amtLabel').textContent=m==='future'?'Amount Today':'Amount in Past';
-  document.getElementById('futureLabel').textContent=m==='future'?'Future Cost':'Equivalent Today';
-  document.getElementById('ppLabel').textContent=m==='future'?'Purchasing Power of Original':'What It Was Worth Then';
+/* ================================================================
+   INFLATION CALCULATOR — FULL ENGINE
+   ================================================================ */
+
+// ── COUNTRY DATA ──
+const COUNTRIES = [
+  {name:'Algeria',iso:'DZ',code:'DZD',symbol:'\u062F.\u062C',rate:3.5,wb:'DZA',region:'North Africa'},
+  {name:'Angola',iso:'AO',code:'AOA',symbol:'Kz',rate:25,wb:'AGO',region:'Southern Africa'},
+  {name:'Benin',iso:'BJ',code:'XOF',symbol:'CFA',rate:2.1,wb:'BEN',region:'West Africa'},
+  {name:'Botswana',iso:'BW',code:'BWP',symbol:'P',rate:4.5,wb:'BWA',region:'Southern Africa'},
+  {name:'Burkina Faso',iso:'BF',code:'XOF',symbol:'CFA',rate:2.8,wb:'BFA',region:'West Africa'},
+  {name:'Burundi',iso:'BI',code:'BIF',symbol:'FBu',rate:16,wb:'BDI',region:'East Africa'},
+  {name:'Cabo Verde',iso:'CV',code:'CVE',symbol:'$',rate:1.8,wb:'CPV',region:'West Africa'},
+  {name:'Cameroon',iso:'CM',code:'XAF',symbol:'FCFA',rate:5.5,wb:'CMR',region:'Central Africa'},
+  {name:'Central African Republic',iso:'CF',code:'XAF',symbol:'FCFA',rate:4.8,wb:'CAF',region:'Central Africa'},
+  {name:'Chad',iso:'TD',code:'XAF',symbol:'FCFA',rate:3.5,wb:'TCD',region:'Central Africa'},
+  {name:'Comoros',iso:'KM',code:'KMF',symbol:'CF',rate:2.0,wb:'COM',region:'East Africa'},
+  {name:'Congo-Brazzaville',iso:'CG',code:'XAF',symbol:'FCFA',rate:3.5,wb:'COG',region:'Central Africa'},
+  {name:'DR Congo',iso:'CD',code:'CDF',symbol:'FC',rate:24,wb:'COD',region:'Central Africa'},
+  {name:"C\u00f4te d'Ivoire",iso:'CI',code:'XOF',symbol:'CFA',rate:3.8,wb:'CIV',region:'West Africa'},
+  {name:'Djibouti',iso:'DJ',code:'DJF',symbol:'Fdj',rate:2.5,wb:'DJI',region:'East Africa'},
+  {name:'Egypt',iso:'EG',code:'EGP',symbol:'E\u00a3',rate:28.3,wb:'EGY',region:'North Africa'},
+  {name:'Equatorial Guinea',iso:'GQ',code:'XAF',symbol:'FCFA',rate:3.0,wb:'GNQ',region:'Central Africa'},
+  {name:'Eritrea',iso:'ER',code:'ERN',symbol:'Nfk',rate:5.0,wb:'ERI',region:'East Africa'},
+  {name:'Eswatini',iso:'SZ',code:'SZL',symbol:'E',rate:5.2,wb:'SWZ',region:'Southern Africa'},
+  {name:'Ethiopia',iso:'ET',code:'ETB',symbol:'Br',rate:29.3,wb:'ETH',region:'East Africa'},
+  {name:'Gabon',iso:'GA',code:'XAF',symbol:'FCFA',rate:3.2,wb:'GAB',region:'Central Africa'},
+  {name:'Gambia',iso:'GM',code:'GMD',symbol:'D',rate:16.5,wb:'GMB',region:'West Africa'},
+  {name:'Ghana',iso:'GH',code:'GHS',symbol:'GH\u20b5',rate:23.2,wb:'GHA',region:'West Africa'},
+  {name:'Guinea',iso:'GN',code:'GNF',symbol:'FG',rate:9.5,wb:'GIN',region:'West Africa'},
+  {name:'Guinea-Bissau',iso:'GW',code:'XOF',symbol:'CFA',rate:4.0,wb:'GNB',region:'West Africa'},
+  {name:'Kenya',iso:'KE',code:'KES',symbol:'KSh',rate:6.9,wb:'KEN',region:'East Africa'},
+  {name:'Lesotho',iso:'LS',code:'LSL',symbol:'L',rate:5.5,wb:'LSO',region:'Southern Africa'},
+  {name:'Liberia',iso:'LR',code:'LRD',symbol:'L$',rate:7.5,wb:'LBR',region:'West Africa'},
+  {name:'Libya',iso:'LY',code:'LYD',symbol:'LD',rate:3.0,wb:'LBY',region:'North Africa'},
+  {name:'Madagascar',iso:'MG',code:'MGA',symbol:'Ar',rate:9.8,wb:'MDG',region:'East Africa'},
+  {name:'Malawi',iso:'MW',code:'MWK',symbol:'MK',rate:28.5,wb:'MWI',region:'Southern Africa'},
+  {name:'Mali',iso:'ML',code:'XOF',symbol:'CFA',rate:2.5,wb:'MLI',region:'West Africa'},
+  {name:'Mauritania',iso:'MR',code:'MRU',symbol:'UM',rate:6.0,wb:'MRT',region:'West Africa'},
+  {name:'Mauritius',iso:'MU',code:'MUR',symbol:'Rs',rate:6.8,wb:'MUS',region:'East Africa'},
+  {name:'Morocco',iso:'MA',code:'MAD',symbol:'MAD',rate:3.0,wb:'MAR',region:'North Africa'},
+  {name:'Mozambique',iso:'MZ',code:'MZN',symbol:'MT',rate:4.5,wb:'MOZ',region:'Southern Africa'},
+  {name:'Namibia',iso:'NA',code:'NAD',symbol:'N$',rate:5.0,wb:'NAM',region:'Southern Africa'},
+  {name:'Niger',iso:'NE',code:'XOF',symbol:'CFA',rate:3.5,wb:'NER',region:'West Africa'},
+  {name:'Nigeria',iso:'NG',code:'NGN',symbol:'\u20a6',rate:33.4,wb:'NGA',region:'West Africa'},
+  {name:'Rwanda',iso:'RW',code:'RWF',symbol:'FRw',rate:7.8,wb:'RWA',region:'East Africa'},
+  {name:'S\u00e3o Tom\u00e9 & Pr\u00edncipe',iso:'ST',code:'STN',symbol:'Db',rate:15,wb:'STP',region:'Central Africa'},
+  {name:'Senegal',iso:'SN',code:'XOF',symbol:'CFA',rate:3.5,wb:'SEN',region:'West Africa'},
+  {name:'Seychelles',iso:'SC',code:'SCR',symbol:'SRe',rate:3.0,wb:'SYC',region:'East Africa'},
+  {name:'Sierra Leone',iso:'SL',code:'SLE',symbol:'Le',rate:30,wb:'SLE',region:'West Africa'},
+  {name:'Somalia',iso:'SO',code:'SOS',symbol:'Sh',rate:5.0,wb:'SOM',region:'East Africa'},
+  {name:'South Africa',iso:'ZA',code:'ZAR',symbol:'R',rate:5.4,wb:'ZAF',region:'Southern Africa'},
+  {name:'South Sudan',iso:'SS',code:'SSP',symbol:'\u00a3',rate:12,wb:'SSD',region:'East Africa'},
+  {name:'Sudan',iso:'SD',code:'SDG',symbol:'\u062C.\u0633',rate:64,wb:'SDN',region:'North Africa'},
+  {name:'Tanzania',iso:'TZ',code:'TZS',symbol:'TSh',rate:3.4,wb:'TZA',region:'East Africa'},
+  {name:'Togo',iso:'TG',code:'XOF',symbol:'CFA',rate:3.0,wb:'TGO',region:'West Africa'},
+  {name:'Tunisia',iso:'TN',code:'TND',symbol:'DT',rate:7.0,wb:'TUN',region:'North Africa'},
+  {name:'Uganda',iso:'UG',code:'UGX',symbol:'USh',rate:3.5,wb:'UGA',region:'East Africa'},
+  {name:'Zambia',iso:'ZM',code:'ZMW',symbol:'ZK',rate:13.2,wb:'ZMB',region:'Southern Africa'},
+  {name:'Zimbabwe',iso:'ZW',code:'ZWL',symbol:'Z$',rate:47,wb:'ZWE',region:'Southern Africa'},
+  {name:'USA',iso:'US',code:'USD',symbol:'$',rate:3.4,wb:'USA',region:'International'},
+  {name:'United Kingdom',iso:'GB',code:'GBP',symbol:'\u00a3',rate:4.0,wb:'GBR',region:'International'},
+  {name:'Euro Area',iso:'EU',code:'EUR',symbol:'\u20ac',rate:2.9,wb:'EMU',region:'International'}
+];
+
+const REGIONS_ORDER = ['West Africa','East Africa','North Africa','Southern Africa','Central Africa','International'];
+
+let mode = 'future';
+let mainChart = null;
+let compareChartInstance = null;
+let chartShowingTrend = false;
+let liveData = {};
+
+// ── INIT ──
+function init() {
+  populateSelects();
+  buildRateTable();
+  calcR72();
+  onCountryChange();
+  // Auto-calc on input changes
+  document.querySelectorAll('#amount,#rate,#years,#oldSalary,#newSalary,#salaryRate,#salaryYears,#remitAmount,#remitYear,#remitRate').forEach(el => {
+    el.addEventListener('input', debounce(calculate, 400));
+  });
+  // Comma formatting
+  ['amount','oldSalary','newSalary','remitAmount'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('blur', function(){ const v=parseNum(this.value); if(v>0) this.value=v.toLocaleString('en'); });
+    el.addEventListener('focus', function(){ this.value=this.value.replace(/,/g,''); });
+  });
 }
 
-function applyPreset(){
-  const v=document.getElementById('preset').value;
-  if(v)document.getElementById('rate').value=v;
+function debounce(fn, ms) { let t; return function(...a){ clearTimeout(t); t=setTimeout(()=>fn.apply(this,a), ms); }; }
+
+function populateSelects() {
+  const selects = ['country','remitCountry','cmp1','cmp2','cmp3'];
+  selects.forEach(id => {
+    const sel = document.getElementById(id);
+    if (!sel) return;
+    if (id === 'cmp3') {
+      sel.innerHTML = '<option value="">-- Add 3rd --</option>';
+    } else {
+      sel.innerHTML = '';
+    }
+    let lastRegion = '';
+    COUNTRIES.forEach((c, i) => {
+      if (c.region !== lastRegion) {
+        const og = document.createElement('optgroup');
+        og.label = c.region;
+        sel.appendChild(og);
+        lastRegion = c.region;
+      }
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = `${c.name} (${c.code} - ${c.rate}%)`;
+      // Defaults
+      if (id === 'country' && c.iso === 'NG') opt.selected = true;
+      if (id === 'remitCountry' && c.iso === 'NG') opt.selected = true;
+      if (id === 'cmp1' && c.iso === 'NG') opt.selected = true;
+      if (id === 'cmp2' && c.iso === 'KE') opt.selected = true;
+      sel.lastElementChild.appendChild(opt);
+    });
+  });
 }
 
-function parseNum(s){return parseFloat(String(s).replace(/[^0-9.\-]/g,''))||0}
-function fmt(n,cur){const symbols={NGN:'\u20A6',KES:'KSh ',ZAR:'R',GHS:'GH\u20B5',USD:'$',GBP:'\u00A3'};const s=symbols[cur]||'';if(Math.abs(n)>=1e12)return s+(n/1e12).toFixed(2)+'T';if(Math.abs(n)>=1e9)return s+(n/1e9).toFixed(2)+'B';if(Math.abs(n)>=1e6)return s+(n/1e6).toFixed(2)+'M';return s+n.toLocaleString('en',{minimumFractionDigits:0,maximumFractionDigits:0})}
+function buildRateTable() {
+  const table = document.getElementById('rateTable');
+  let html = '';
+  let lastRegion = '';
+  // Sort by region order then by rate desc
+  const sorted = [...COUNTRIES].filter(c => c.region !== 'International').sort((a, b) => {
+    const ra = REGIONS_ORDER.indexOf(a.region), rb = REGIONS_ORDER.indexOf(b.region);
+    if (ra !== rb) return ra - rb;
+    return b.rate - a.rate;
+  });
+  sorted.forEach(c => {
+    if (c.region !== lastRegion) {
+      html += `<tr><td colspan="2" class="region-header">${c.region}</td></tr>`;
+      lastRegion = c.region;
+    }
+    html += `<tr><td>${c.name}</td><td><span class="sev-badge ${sevClass(c.rate)}">${c.rate}%</span></td></tr>`;
+  });
+  table.innerHTML = html;
+}
 
-function calculate(){
-  const cur=document.getElementById('currency').value;
-  const amount=parseNum(document.getElementById('amount').value);
-  const rate=parseFloat(document.getElementById('rate').value)||0;
-  const years=parseInt(document.getElementById('years').value)||1;
-  if(amount<=0){alert('Please enter an amount.');return}
+function sevClass(r) {
+  if (r < 5) return 'sev-low';
+  if (r < 15) return 'sev-mid';
+  if (r < 30) return 'sev-high';
+  return 'sev-extreme';
+}
+function sevColor(r) {
+  if (r < 5) return 'var(--sev-green)';
+  if (r < 15) return 'var(--sev-yellow)';
+  if (r < 30) return 'var(--sev-orange)';
+  return 'var(--sev-red)';
+}
 
-  const r=rate/100;
-  let futureVal,ppVal,cumulPct,lostPct;
+// ── MODE SWITCHING ──
+function setMode(m) {
+  mode = m;
+  document.querySelectorAll('.mode-tab').forEach(t => t.classList.toggle('active', t.dataset.mode === m));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  if (m === 'future' || m === 'past') {
+    document.getElementById('panelFuturePast').classList.add('active');
+    document.getElementById('amtLabel').textContent = m === 'future' ? 'Amount Today' : 'Amount in Past';
+  } else if (m === 'salary') {
+    document.getElementById('panelSalary').classList.add('active');
+  } else if (m === 'remittance') {
+    document.getElementById('panelRemittance').classList.add('active');
+  }
+  // Hide previous results
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('chartCard').style.display = 'none';
+  document.getElementById('tableCard').style.display = 'none';
+  document.getElementById('compareCard').style.display = mode === 'future' || mode === 'past' ? 'block' : 'none';
+}
 
-  if(mode==='future'){
-    futureVal=amount*Math.pow(1+r,years);
-    ppVal=amount/Math.pow(1+r,years);
-    cumulPct=((futureVal-amount)/amount)*100;
-    lostPct=((amount-ppVal)/amount)*100;
-  }else{
-    futureVal=amount/Math.pow(1+r,years);
-    ppVal=amount*Math.pow(1+r,years);
-    cumulPct=(Math.pow(1+r,years)-1)*100;
-    lostPct=((amount-futureVal)/amount)*100;
+function onCountryChange() {
+  const c = COUNTRIES[document.getElementById('country').value];
+  if (!c) return;
+  document.getElementById('rate').value = c.rate;
+  if (document.getElementById('salaryRate')) document.getElementById('salaryRate').value = c.rate;
+}
+function onRemitCountryChange() {
+  const c = COUNTRIES[document.getElementById('remitCountry').value];
+  if (c) document.getElementById('remitRate').value = c.rate;
+}
+
+// ── UTILITIES ──
+function parseNum(s) { return parseFloat(String(s).replace(/[^0-9.\-]/g, '')) || 0; }
+
+function fmtCur(n, c) {
+  const sym = c ? c.symbol : '';
+  const abs = Math.abs(n);
+  if (abs >= 1e12) return sym + (n / 1e12).toFixed(2) + 'T';
+  if (abs >= 1e9) return sym + (n / 1e9).toFixed(2) + 'B';
+  if (abs >= 1e6) return sym + (n / 1e6).toFixed(2) + 'M';
+  return sym + n.toLocaleString('en', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+}
+
+function animateValue(el, target, prefix, suffix, duration) {
+  const start = parseFloat(el.dataset.current) || 0;
+  el.dataset.current = target;
+  const startTime = performance.now();
+  const diff = target - start;
+  function step(time) {
+    const elapsed = time - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const current = start + diff * eased;
+    if (Math.abs(current) >= 1e12) el.textContent = prefix + (current / 1e12).toFixed(2) + 'T' + suffix;
+    else if (Math.abs(current) >= 1e9) el.textContent = prefix + (current / 1e9).toFixed(2) + 'B' + suffix;
+    else if (Math.abs(current) >= 1e6) el.textContent = prefix + (current / 1e6).toFixed(2) + 'M' + suffix;
+    else el.textContent = prefix + Math.round(current).toLocaleString('en') + suffix;
+    if (progress < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+// ── CALCULATION ──
+function calculate() {
+  if (mode === 'salary') return calcSalary();
+  if (mode === 'remittance') return calcRemittance();
+
+  const ci = document.getElementById('country').value;
+  const c = COUNTRIES[ci];
+  const amount = parseNum(document.getElementById('amount').value);
+  const rate = parseFloat(document.getElementById('rate').value) || 0;
+  const years = parseInt(document.getElementById('years').value) || 1;
+  if (amount <= 0) return;
+
+  const r = rate / 100;
+  let futureVal, ppVal, cumulPct, lostPct;
+
+  if (mode === 'future') {
+    futureVal = amount * Math.pow(1 + r, years);
+    ppVal = amount / Math.pow(1 + r, years);
+    cumulPct = ((futureVal - amount) / amount) * 100;
+    lostPct = ((amount - ppVal) / amount) * 100;
+  } else {
+    futureVal = amount / Math.pow(1 + r, years);
+    ppVal = amount * Math.pow(1 + r, years);
+    cumulPct = (Math.pow(1 + r, years) - 1) * 100;
+    lostPct = ((amount - futureVal) / amount) * 100;
   }
 
-  document.getElementById('rFuture').textContent=fmt(Math.round(futureVal),cur);
-  document.getElementById('rLost').textContent=lostPct.toFixed(1)+'%';
-  document.getElementById('rCumul').textContent=cumulPct.toFixed(1)+'%';
-  document.getElementById('rPP').textContent=fmt(Math.round(ppVal),cur);
+  const ppRemaining = Math.max(0, 100 - lostPct);
+
+  // Build result grid
+  document.getElementById('resultGrid').innerHTML = `
+    <div class="result-box">
+      <div class="r-label">${mode === 'future' ? 'Future Cost' : 'Equivalent Today'}</div>
+      <div class="r-value red" id="rFuture">--</div>
+    </div>
+    <div class="result-box">
+      <div class="r-label">Purchasing Power Lost</div>
+      <div class="r-value red" id="rLost">--</div>
+    </div>
+    <div class="result-box">
+      <div class="r-label">Cumulative Inflation</div>
+      <div class="r-value" id="rCumul">--</div>
+    </div>
+    <div class="result-box">
+      <div class="r-label">${mode === 'future' ? 'Real Value of Original' : 'Needed Today'}</div>
+      <div class="r-value blue" id="rPP">--</div>
+    </div>
+  `;
+
+  // Animate values
+  setTimeout(() => {
+    animateValue(document.getElementById('rFuture'), futureVal, c.symbol, '', 600);
+    animateValue(document.getElementById('rLost'), lostPct, '', '%', 600);
+    animateValue(document.getElementById('rCumul'), cumulPct, '', '%', 600);
+    animateValue(document.getElementById('rPP'), ppVal, c.symbol, '', 600);
+  }, 50);
+
+  // Purchasing power bar
+  const ppVisual = document.getElementById('ppVisual');
+  ppVisual.style.display = 'block';
+  const fill = document.getElementById('ppBarFill');
+  const barColor = ppRemaining > 60 ? 'var(--sev-green)' : ppRemaining > 30 ? 'var(--sev-yellow)' : ppRemaining > 15 ? 'var(--sev-orange)' : 'var(--sev-red)';
+  setTimeout(() => {
+    fill.style.width = Math.max(ppRemaining, 3) + '%';
+    fill.style.background = barColor;
+    fill.textContent = ppRemaining.toFixed(1) + '%';
+  }, 100);
 
   // Insight
-  const doubleTime=r>0?(Math.log(2)/Math.log(1+r)).toFixed(1):'never';
-  const lost=mode==='future'?fmt(Math.round(futureVal-amount),cur):fmt(Math.round(amount-futureVal),cur);
-  document.getElementById('insight').innerHTML=mode==='future'
-    ? `At ${rate}% annual inflation, something costing <strong>${fmt(Math.round(amount),cur)}</strong> today will cost <strong>${fmt(Math.round(futureVal),cur)}</strong> in ${years} years. That's an increase of <strong>${lost}</strong>. Prices double every <strong>${doubleTime} years</strong> at this rate.`
-    : `At ${rate}% annual inflation, <strong>${fmt(Math.round(amount),cur)}</strong> from ${years} years ago is equivalent to only <strong>${fmt(Math.round(futureVal),cur)}</strong> in today's purchasing power. You'd need <strong>${fmt(Math.round(ppVal),cur)}</strong> today to have the same buying power.`;
+  const doubleTime = r > 0 ? (Math.log(2) / Math.log(1 + r)).toFixed(1) : 'never';
+  const insightClass = rate > 20 ? 'insight-danger' : rate > 10 ? 'insight-warn' : 'insight-info';
+  const insight = document.getElementById('insight');
+  insight.className = 'insight ' + insightClass;
+  if (mode === 'future') {
+    insight.innerHTML = `At <strong>${rate}%</strong> annual inflation in <strong>${c.name}</strong>, something costing <strong>${fmtCur(Math.round(amount), c)}</strong> today will cost <strong>${fmtCur(Math.round(futureVal), c)}</strong> in ${years} years. That's an increase of <strong>${fmtCur(Math.round(futureVal - amount), c)}</strong>. Prices double every <strong>${doubleTime} years</strong>.`;
+  } else {
+    insight.innerHTML = `At <strong>${rate}%</strong> annual inflation, <strong>${fmtCur(Math.round(amount), c)}</strong> from ${years} years ago is worth only <strong>${fmtCur(Math.round(futureVal), c)}</strong> in today's purchasing power. You'd need <strong>${fmtCur(Math.round(ppVal), c)}</strong> today to match that buying power.`;
+  }
 
   // Year-by-year table
-  const tbody=document.getElementById('tableBody');
-  tbody.innerHTML='';
-  for(let y=0;y<=years;y++){
-    const nomVal=mode==='future'?amount*Math.pow(1+r,y):amount;
-    const ppY=mode==='future'?amount/Math.pow(1+r,y):amount/Math.pow(1+r,y);
-    const lossY=y===0?0:((1-1/Math.pow(1+r,y))*100);
-    const tr=document.createElement('tr');
-    tr.innerHTML=`<td>${y===0?'Now':'Year '+y}</td><td>${fmt(Math.round(nomVal),cur)}</td><td>${fmt(Math.round(ppY),cur)}</td><td>${lossY.toFixed(1)}%</td>`;
+  const tbody = document.getElementById('tableBody');
+  tbody.innerHTML = '';
+  const tableData = [];
+  for (let y = 0; y <= years; y++) {
+    const nomVal = mode === 'future' ? amount * Math.pow(1 + r, y) : amount;
+    const ppY = amount / Math.pow(1 + r, y);
+    const lossY = y === 0 ? 0 : ((1 - 1 / Math.pow(1 + r, y)) * 100);
+    tableData.push({ year: y, nominal: nomVal, real: ppY, loss: lossY });
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${y === 0 ? 'Now' : 'Year ' + y}</td><td>${fmtCur(Math.round(nomVal), c)}</td><td>${fmtCur(Math.round(ppY), c)}</td><td style="color:${sevColor(lossY / (years || 1) * 10)}">${lossY.toFixed(1)}%</td>`;
     tbody.appendChild(tr);
   }
 
-  document.getElementById('results').style.display='block';
-  document.getElementById('tableCard').style.display='block';
-  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+  // Chart
+  buildMainChart(tableData, c, rate, years, amount);
+
+  // Show sections
+  document.getElementById('results').style.display = 'block';
+  document.getElementById('resultsTitle').textContent = mode === 'future' ? 'Future Cost Results' : 'Past Value Results';
+  document.getElementById('chartCard').style.display = 'block';
+  document.getElementById('tableCard').style.display = 'block';
+  document.getElementById('compareCard').style.display = 'block';
+  document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  // Run comparison too
+  runComparison();
 }
 
-document.getElementById('amount').addEventListener('blur',function(){const v=parseNum(this.value);if(v>0)this.value=v.toLocaleString('en');});
-document.getElementById('amount').addEventListener('focus',function(){this.value=this.value.replace(/,/g,'');});
+// ── SALARY MODE ──
+function calcSalary() {
+  const ci = document.getElementById('country').value;
+  const c = COUNTRIES[ci];
+  const oldSal = parseNum(document.getElementById('oldSalary').value);
+  const newSal = parseNum(document.getElementById('newSalary').value);
+  const rate = parseFloat(document.getElementById('salaryRate').value) || 0;
+  const years = parseInt(document.getElementById('salaryYears').value) || 1;
+  if (oldSal <= 0 || newSal <= 0) return;
+
+  const r = rate / 100;
+  const neededSalary = oldSal * Math.pow(1 + r, years);
+  const realGain = newSal - neededSalary;
+  const realGainPct = ((newSal / neededSalary) - 1) * 100;
+  const nomGainPct = ((newSal / oldSal) - 1) * 100;
+  const keptUp = newSal >= neededSalary;
+
+  document.getElementById('resultGrid').innerHTML = `
+    <div class="result-box wide" style="background:${keptUp ? 'linear-gradient(135deg,#f0fdf4,#dcfce7)' : 'linear-gradient(135deg,#fef2f2,#fee2e2)'}">
+      <div class="r-label">Verdict</div>
+      <div class="r-value ${keptUp ? 'green' : 'red'}" style="font-size:1.1rem">${keptUp ? 'Your salary has kept up with inflation' : 'Your salary has NOT kept up with inflation'}</div>
+    </div>
+    <div class="result-box">
+      <div class="r-label">Inflation-Adjusted Salary Needed</div>
+      <div class="r-value blue" id="rNeeded">--</div>
+    </div>
+    <div class="result-box">
+      <div class="r-label">Your Current Salary</div>
+      <div class="r-value" id="rCurrent">--</div>
+    </div>
+    <div class="result-box">
+      <div class="r-label">Nominal Raise</div>
+      <div class="r-value">${nomGainPct.toFixed(1)}%</div>
+    </div>
+    <div class="result-box">
+      <div class="r-label">Real (Inflation-Adjusted) Change</div>
+      <div class="r-value ${realGainPct >= 0 ? 'green' : 'red'}">${realGainPct >= 0 ? '+' : ''}${realGainPct.toFixed(1)}%</div>
+    </div>
+  `;
+  setTimeout(() => {
+    animateValue(document.getElementById('rNeeded'), neededSalary, c.symbol, '', 600);
+    animateValue(document.getElementById('rCurrent'), newSal, c.symbol, '', 600);
+  }, 50);
+
+  const gap = Math.abs(realGain);
+  const insightClass = keptUp ? 'insight-info' : 'insight-danger';
+  document.getElementById('insight').className = 'insight ' + insightClass;
+  document.getElementById('insight').innerHTML = keptUp
+    ? `Your salary rose <strong>${nomGainPct.toFixed(1)}%</strong> nominally over ${years} years. After adjusting for <strong>${rate}%</strong> annual inflation in <strong>${c.name}</strong>, you have a real gain of <strong>${fmtCur(Math.round(realGain), c)}</strong> per month.`
+    : `While your salary rose <strong>${nomGainPct.toFixed(1)}%</strong>, inflation at <strong>${rate}%</strong> in <strong>${c.name}</strong> means you needed <strong>${fmtCur(Math.round(neededSalary), c)}</strong> just to maintain purchasing power. You're effectively earning <strong>${fmtCur(Math.round(gap), c)} less</strong> in real terms.`;
+
+  document.getElementById('ppVisual').style.display = 'none';
+  document.getElementById('results').style.display = 'block';
+  document.getElementById('resultsTitle').textContent = 'Salary Check Results';
+  document.getElementById('chartCard').style.display = 'none';
+  document.getElementById('tableCard').style.display = 'none';
+  document.getElementById('compareCard').style.display = 'none';
+  document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ── REMITTANCE MODE ──
+function calcRemittance() {
+  const usd = parseNum(document.getElementById('remitAmount').value);
+  const ci = document.getElementById('remitCountry').value;
+  const c = COUNTRIES[ci];
+  const yearSent = parseInt(document.getElementById('remitYear').value) || 2020;
+  const rate = parseFloat(document.getElementById('remitRate').value) || 0;
+  if (usd <= 0) return;
+
+  const currentYear = 2026;
+  const years = currentYear - yearSent;
+  if (years <= 0) return;
+
+  const r = rate / 100;
+  const inflationMultiplier = Math.pow(1 + r, years);
+  const purchasingPowerNow = usd / inflationMultiplier;
+  const lostPct = ((1 - 1 / inflationMultiplier) * 100);
+
+  document.getElementById('resultGrid').innerHTML = `
+    <div class="result-box">
+      <div class="r-label">Amount Sent (${yearSent})</div>
+      <div class="r-value blue">$${usd.toLocaleString('en')}</div>
+    </div>
+    <div class="result-box">
+      <div class="r-label">Equivalent Value Today (${currentYear})</div>
+      <div class="r-value red">$${purchasingPowerNow.toFixed(2)}</div>
+    </div>
+    <div class="result-box">
+      <div class="r-label">Purchasing Power Lost</div>
+      <div class="r-value red">${lostPct.toFixed(1)}%</div>
+    </div>
+    <div class="result-box">
+      <div class="r-label">To Match ${yearSent} Value Today</div>
+      <div class="r-value blue">$${(usd * inflationMultiplier).toFixed(2)}</div>
+    </div>
+  `;
+
+  const insightClass = lostPct > 50 ? 'insight-danger' : lostPct > 20 ? 'insight-warn' : 'insight-info';
+  document.getElementById('insight').className = 'insight ' + insightClass;
+  document.getElementById('insight').innerHTML = `<strong>$${usd.toLocaleString('en')}</strong> sent to <strong>${c.name}</strong> in ${yearSent} had the local purchasing power of about <strong>$${purchasingPowerNow.toFixed(2)}</strong> in today's terms. At <strong>${rate}%</strong> annual inflation, <strong>${lostPct.toFixed(1)}%</strong> of its buying power has been eroded over ${years} years. To send the equivalent value today, you would need <strong>$${(usd * inflationMultiplier).toFixed(2)}</strong>.`;
+
+  document.getElementById('ppVisual').style.display = 'block';
+  const ppRemaining = Math.max(0, 100 - lostPct);
+  const fill = document.getElementById('ppBarFill');
+  setTimeout(() => {
+    fill.style.width = Math.max(ppRemaining, 3) + '%';
+    fill.style.background = ppRemaining > 60 ? 'var(--sev-green)' : ppRemaining > 30 ? 'var(--sev-yellow)' : 'var(--sev-orange)';
+    fill.textContent = ppRemaining.toFixed(1) + '%';
+  }, 100);
+
+  document.getElementById('results').style.display = 'block';
+  document.getElementById('resultsTitle').textContent = 'Remittance Impact';
+  document.getElementById('chartCard').style.display = 'none';
+  document.getElementById('tableCard').style.display = 'none';
+  document.getElementById('compareCard').style.display = 'none';
+  document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ── CHART ──
+function buildMainChart(tableData, c, rate, years, amount) {
+  const ctx = document.getElementById('mainChart');
+  if (mainChart) mainChart.destroy();
+  chartShowingTrend = false;
+  document.getElementById('chartToggle').textContent = 'Show Trend';
+
+  const labels = tableData.map(d => d.year === 0 ? 'Now' : 'Yr ' + d.year);
+  mainChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'Purchasing Power (' + c.symbol + ')',
+          data: tableData.map(d => Math.round(d.real)),
+          borderColor: 'rgba(0,113,227,1)',
+          backgroundColor: 'rgba(0,113,227,.08)',
+          fill: true,
+          tension: .3,
+          borderWidth: 2.5,
+          pointRadius: years > 20 ? 0 : 3,
+          pointHoverRadius: 5
+        },
+        {
+          label: mode === 'future' ? 'Cost Over Time' : 'Nominal Value',
+          data: tableData.map(d => Math.round(d.nominal)),
+          borderColor: 'rgba(239,68,68,.8)',
+          backgroundColor: 'rgba(239,68,68,.05)',
+          fill: true,
+          tension: .3,
+          borderWidth: 2,
+          borderDash: [5, 3],
+          pointRadius: 0,
+          pointHoverRadius: 4
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { position: 'bottom', labels: { boxWidth: 12, padding: 14, font: { size: 11, family: 'DM Sans' } } },
+        tooltip: {
+          callbacks: {
+            label: function(ctx) { return ctx.dataset.label + ': ' + c.symbol + ctx.parsed.y.toLocaleString('en'); }
+          }
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: false,
+          ticks: { callback: v => { if (v >= 1e6) return c.symbol + (v/1e6).toFixed(1) + 'M'; if (v >= 1e3) return c.symbol + (v/1e3).toFixed(0) + 'K'; return c.symbol + v; }, font: { size: 10, family: 'DM Sans' } },
+          grid: { color: 'rgba(0,0,0,.04)' }
+        },
+        x: { ticks: { font: { size: 10, family: 'DM Sans' } }, grid: { display: false } }
+      }
+    }
+  });
+}
+
+function toggleChartType() {
+  const ci = document.getElementById('country').value;
+  const c = COUNTRIES[ci];
+  if (!liveData[c.wb] || !liveData[c.wb].length) {
+    alert('Fetch live rates first to see the historical trend chart.');
+    return;
+  }
+  chartShowingTrend = !chartShowingTrend;
+  document.getElementById('chartToggle').textContent = chartShowingTrend ? 'Show Projection' : 'Show Trend';
+
+  if (chartShowingTrend) {
+    buildTrendChart(c);
+  } else {
+    calculate(); // Rebuilds projection chart
+  }
+}
+
+function buildTrendChart(c) {
+  const data = liveData[c.wb];
+  if (!data || !data.length) return;
+  const ctx = document.getElementById('mainChart');
+  if (mainChart) mainChart.destroy();
+  document.getElementById('chartTitle').textContent = c.name + ' — Historical Inflation Rate';
+
+  const sorted = [...data].sort((a, b) => a.year - b.year);
+  mainChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: sorted.map(d => d.year),
+      datasets: [{
+        label: 'Inflation Rate (%)',
+        data: sorted.map(d => d.value),
+        backgroundColor: sorted.map(d => {
+          if (d.value < 5) return 'rgba(34,197,94,.7)';
+          if (d.value < 15) return 'rgba(234,179,8,.7)';
+          if (d.value < 30) return 'rgba(249,115,22,.7)';
+          return 'rgba(239,68,68,.7)';
+        }),
+        borderRadius: 4,
+        borderSkipped: false
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => ctx.parsed.y.toFixed(1) + '%' } }
+      },
+      scales: {
+        y: { beginAtZero: true, ticks: { callback: v => v + '%', font: { size: 10, family: 'DM Sans' } }, grid: { color: 'rgba(0,0,0,.04)' } },
+        x: { ticks: { font: { size: 10, family: 'DM Sans' } }, grid: { display: false } }
+      }
+    }
+  });
+}
+
+// ── COUNTRY COMPARISON ──
+function runComparison() {
+  const amount = parseNum(document.getElementById('amount').value) || 1000000;
+  const years = parseInt(document.getElementById('years').value) || 10;
+  const indices = [
+    document.getElementById('cmp1').value,
+    document.getElementById('cmp2').value,
+    document.getElementById('cmp3').value
+  ].filter(v => v !== '');
+
+  if (indices.length < 2) return;
+
+  const countries = indices.map(i => COUNTRIES[i]);
+  let html = '';
+  const datasets = [];
+  const colors = ['rgba(0,113,227,1)', 'rgba(239,68,68,1)', 'rgba(34,197,94,1)'];
+  const bgColors = ['rgba(0,113,227,.08)', 'rgba(239,68,68,.08)', 'rgba(34,197,94,.08)'];
+
+  countries.forEach((c, ci) => {
+    const r = c.rate / 100;
+    const futVal = amount * Math.pow(1 + r, years);
+    const ppVal = amount / Math.pow(1 + r, years);
+    const lostPct = (1 - 1 / Math.pow(1 + r, years)) * 100;
+    const doubleTime = r > 0 ? (72 / c.rate).toFixed(1) : 'N/A';
+
+    html += `<div class="compare-card">
+      <h4>${c.name} <span class="sev-badge ${sevClass(c.rate)}">${c.rate}%</span></h4>
+      <div class="val red">${fmtCur(Math.round(futVal), c)}</div>
+      <div style="font-size:.7rem;color:#64748b;margin-top:4px">Future cost in ${years}yr</div>
+      <div style="margin-top:8px;font-size:.78rem"><strong style="color:var(--sev-red)">${lostPct.toFixed(1)}%</strong> purchasing power lost</div>
+      <div style="font-size:.72rem;color:#94a3b8;margin-top:2px">Doubles in ${doubleTime} years</div>
+    </div>`;
+
+    // Chart data
+    const ppData = [];
+    for (let y = 0; y <= years; y++) {
+      ppData.push(Math.round(amount / Math.pow(1 + r, y)));
+    }
+    datasets.push({
+      label: c.name + ' (' + c.rate + '%)',
+      data: ppData,
+      borderColor: colors[ci],
+      backgroundColor: bgColors[ci],
+      fill: false,
+      tension: .3,
+      borderWidth: 2,
+      pointRadius: years > 15 ? 0 : 2
+    });
+  });
+
+  document.getElementById('compareResults').innerHTML = html;
+
+  // Comparison chart
+  const ctx = document.getElementById('compareChart');
+  if (compareChartInstance) compareChartInstance.destroy();
+  const labels = [];
+  for (let y = 0; y <= years; y++) labels.push(y === 0 ? 'Now' : 'Yr ' + y);
+
+  compareChartInstance = new Chart(ctx, {
+    type: 'line',
+    data: { labels, datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { boxWidth: 10, padding: 10, font: { size: 10, family: 'DM Sans' } } }
+      },
+      scales: {
+        y: {
+          beginAtZero: false,
+          ticks: { callback: v => { if (v >= 1e6) return (v/1e6).toFixed(1) + 'M'; if (v >= 1e3) return (v/1e3).toFixed(0) + 'K'; return v; }, font: { size: 10, family: 'DM Sans' } },
+          grid: { color: 'rgba(0,0,0,.04)' }
+        },
+        x: { ticks: { font: { size: 9, family: 'DM Sans' } }, grid: { display: false } }
+      }
+    }
+  });
+}
+
+// ── WORLD BANK API ──
+async function fetchLiveRates() {
+  const btn = document.getElementById('fetchBtn');
+  const ci = document.getElementById('country').value;
+  const c = COUNTRIES[ci];
+  if (!c.wb) { alert('World Bank data not available for this country.'); return; }
+
+  btn.classList.add('fetch-loading');
+  btn.textContent = 'Fetching...';
+
+  try {
+    const url = `https://api.worldbank.org/v2/country/${c.wb}/indicator/FP.CPI.TOTL.ZG?format=json&date=2015:2025&per_page=50`;
+    const res = await fetch(url);
+    const json = await res.json();
+
+    if (!json[1] || json[1].length === 0) {
+      alert('No data available from World Bank for ' + c.name);
+      return;
+    }
+
+    const points = json[1]
+      .filter(d => d.value !== null)
+      .map(d => ({ year: parseInt(d.date), value: parseFloat(d.value.toFixed(1)) }))
+      .sort((a, b) => a.year - b.year);
+
+    liveData[c.wb] = points;
+
+    // Update the rate input with the latest available data
+    if (points.length > 0) {
+      const latest = points[points.length - 1];
+      document.getElementById('rate').value = latest.value;
+      if (document.getElementById('salaryRate')) document.getElementById('salaryRate').value = latest.value;
+    }
+
+    // Show trend chart
+    chartShowingTrend = true;
+    document.getElementById('chartToggle').textContent = 'Show Projection';
+    document.getElementById('chartCard').style.display = 'block';
+    document.getElementById('chartTitle').textContent = c.name + ' — Historical Inflation (World Bank)';
+    buildTrendChart(c);
+    document.getElementById('chartCard').scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  } catch (e) {
+    console.error('World Bank API error:', e);
+    alert('Could not fetch data. The World Bank API may be temporarily unavailable.');
+  } finally {
+    btn.classList.remove('fetch-loading');
+    btn.textContent = 'Fetch Live Rates';
+  }
+}
+
+// ── RULE OF 72 ──
+function calcR72() {
+  const rate = parseFloat(document.getElementById('r72input').value) || 1;
+  const years = (72 / rate).toFixed(1);
+  document.getElementById('r72value').textContent = years;
+}
+
+// ── AI ADVISOR ──
+async function askAI() {
+  const input = document.getElementById('aiInput');
+  const msg = input.value.trim();
+  if (!msg) return;
+  input.value = '';
+
+  const messagesDiv = document.getElementById('aiMessages');
+  // Add user message
+  messagesDiv.innerHTML += `<div class="ai-msg user">${escHtml(msg)}</div>`;
+  // Add typing indicator
+  messagesDiv.innerHTML += `<div class="ai-typing" id="aiTyping"><span></span><span></span><span></span></div>`;
+  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+  try {
+    const res = await fetch('/.netlify/functions/ai-advisor', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: msg, toolContext: 'inflation-calc', history: [] })
+    });
+    const data = await res.json();
+    const typing = document.getElementById('aiTyping');
+    if (typing) typing.remove();
+
+    const reply = data.reply || data.message || 'Sorry, I could not process that request.';
+    messagesDiv.innerHTML += `<div class="ai-msg bot">${formatAIReply(reply)}</div>`;
+
+    if (data.remaining !== undefined) {
+      document.getElementById('aiRemaining').textContent = data.remaining + ' questions remaining today';
+    }
+  } catch (e) {
+    const typing = document.getElementById('aiTyping');
+    if (typing) typing.remove();
+    messagesDiv.innerHTML += `<div class="ai-msg bot">Sorry, the AI service is temporarily unavailable. Please try again later.</div>`;
+  }
+  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+
+function escHtml(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+function formatAIReply(s) {
+  return s.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+          .replace(/\n/g, '<br>')
+          .replace(/`(.*?)`/g, '<code style="background:#f1f5f9;padding:1px 4px;border-radius:3px;font-size:.8em">$1</code>');
+}
+
+// ── INIT ON LOAD ──
+document.addEventListener('DOMContentLoaded', init);
+</script>
+
+<script>
+(function(){
+  var target = document.getElementById('results');
+  if (!target) return;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
+  div.innerHTML = '<save-result-button tool-slug="inflation-calc" tool-name="Inflation Calc"></save-result-button><share-result-button tool-name="Inflation Calc" tool-slug="inflation-calc"></share-result-button>';
+  target.appendChild(div);
+})();
 </script>
 </body>
 </html>

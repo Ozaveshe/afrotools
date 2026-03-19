@@ -80,6 +80,11 @@
       .input-row { flex-direction: column; }
     }
   </style>
+<script src="/assets/js/lib/toast.js" defer></script>
+<script src="/assets/js/afro-history.js" defer></script>
+<script src="/assets/js/components/save-result-button.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js" defer></script>
+<script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -243,5 +248,17 @@ function showToast(msg) {
 <script src="/assets/js/favorites.js"></script>
 <script src="/assets/js/lib/saved-tools.js" defer></script>
 <script src="/assets/js/favorites-widget.js" defer></script>
+
+<script>
+(function(){
+  var target = document.getElementById('resultCard');
+  if (!target) return;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
+  div.innerHTML = '<save-result-button tool-slug="naira-to-words" tool-name="Naira To Words"></save-result-button><share-result-button tool-name="Naira To Words" tool-slug="naira-to-words"></share-result-button>';
+  target.appendChild(div);
+})();
+</script>
 </body>
 </html>

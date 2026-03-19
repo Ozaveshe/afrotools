@@ -6,11 +6,11 @@
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'staff-cost'});</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Employee Cost Calculator — True Cost of Hiring | AfroTools</title>
-<meta name="description" content="Calculate the true cost of hiring an employee in Africa. Includes pension, NHF, NSITF, HMO, PAYE, and other statutory deductions for Nigeria, Kenya, South Africa, Ghana.">
+<meta name="description" content="Calculate the true cost of hiring an employee in Africa. Covers 15+ countries with accurate 2025/2026 tax laws — pension, PAYE, social security, and statutory deductions.">
 <link rel="canonical" href="https://afrotools.com/tools/staff-cost/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Employee Cost Calculator | AfroTools">
-<meta property="og:description" content="True cost of hiring. Pension, tax, insurance, benefits. African payroll rules.">
+<meta property="og:description" content="True cost of hiring across 15+ African countries. Pension, tax, insurance, benefits — all calculated.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/staff-cost/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,195 +20,261 @@
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
 <style>
-:root{--afro-blue:var(--color-primary);--afro-dark:#0f1419}
-.tool-hero{background:linear-gradient(135deg,var(--afro-dark) 0%,#1a1f2e 100%);padding:44px 0 36px;position:relative;overflow:hidden}
-.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px;position:relative}
-.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
-.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:var(--afro-blue)}
-h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
-h1 em{color:var(--afro-blue);font-style:normal}
-.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
-.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
-.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
-.b-blue{background:rgba(0,113,227,.18);color:var(--color-primary);border:1px solid rgba(0,113,227,.38)}
-.b-green{background:rgba(16,185,129,.12);color:#10b981;border:1px solid rgba(16,185,129,.3)}
-.tool-main{padding:28px 0 72px}
-.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
-.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
-.card+.card{margin-top:18px}
-.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
-.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
-.card-body{padding:22px}
-.field{margin-bottom:16px}
-.f-label{font-size:.75rem;font-weight:700;color:var(--afro-dark);margin-bottom:6px;display:block}
-.f-hint{font-size:.68rem;color:#94a3b8;margin-top:2px}
-.f-input,.f-select{width:100%;padding:11px 13px;background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:7px;font-size:1rem;font-weight:600;color:var(--afro-dark);outline:none;font-family:'DM Sans',sans-serif;box-sizing:border-box}
-.f-input:focus,.f-select:focus{border-color:var(--afro-blue);box-shadow:0 0 0 3px rgba(0,113,227,.1)}
-.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.calc-btn{width:100%;padding:13px;background:var(--afro-blue);color:#fff;border:none;border-radius:8px;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .18s;font-family:'DM Sans',sans-serif}
-.calc-btn:hover{background:#0059B3;transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,113,227,.3)}
-.result-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:18px}
-.result-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;text-align:center}
-.result-box.wide{grid-column:1/-1}
-.r-label{font-size:.68rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#64748b;margin-bottom:4px}
-.r-value{font-size:1.35rem;font-weight:800;color:var(--afro-dark)}
-.r-value.blue{color:var(--afro-blue)}
-.r-value.green{color:#10b981}
-.r-value.red{color:#ef4444}
+:root{--sc-primary:#008751;--sc-primary-light:#5ddb9e;--sc-dark:#0f172a;--sc-bg:#f8fafc;--sc-border:#e2e8f0;--sc-muted:#64748b;--sc-red:#ef4444;--sc-amber:#f59e0b;--sc-radius:10px}
+
+/* ── HERO ── */
+.sc-hero{background:linear-gradient(135deg,#0c1a10 0%,#0f2918 60%,#0c1a10 100%);padding:52px 0 40px;position:relative;overflow:hidden}
+.sc-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 70% 30%,rgba(0,135,81,.15),transparent),radial-gradient(ellipse 40% 40% at 20% 70%,rgba(93,219,158,.08),transparent);pointer-events:none}
+.sc-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+.sc-breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.sc-breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none;transition:color .15s}.sc-breadcrumb a:hover{color:rgba(255,255,255,.6)}
+.sc-breadcrumb span{color:var(--sc-primary-light)}
+h1{font-size:clamp(1.6rem,4vw,2.6rem);font-weight:900;color:#fff;letter-spacing:-.025em;line-height:1.1;margin-bottom:10px}
+h1 em{color:var(--sc-primary-light);font-style:normal}
+.sc-hero-sub{font-size:.9rem;color:rgba(255,255,255,.5);line-height:1.6;max-width:600px;margin-bottom:16px}
+.sc-badges{display:flex;flex-wrap:wrap;gap:7px}
+.sc-badge{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:100px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.sc-badge-g{background:rgba(0,135,81,.18);color:var(--sc-primary-light);border:1px solid rgba(0,135,81,.35)}
+.sc-badge-w{background:rgba(255,255,255,.08);color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.12)}
+
+/* ── MAIN LAYOUT ── */
+.sc-main{padding:32px 0 72px;background:var(--color-bg,#FAFAF8)}
+.sc-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 380px;gap:24px;align-items:start}
+
+/* ── CARDS ── */
+.sc-card{background:#fff;border:1px solid var(--sc-border);border-radius:var(--sc-radius);overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.04)}
+.sc-card+.sc-card{margin-top:18px}
+.sc-card-head{padding:14px 22px;border-bottom:1px solid #f1f5f9;background:var(--sc-bg);display:flex;align-items:center;gap:8px}
+.sc-card-icon{width:18px;height:18px;color:var(--sc-primary)}
+.sc-card-title{font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--sc-dark)}
+
+/* ── FORM ── */
+.sc-field{margin-bottom:16px}
+.sc-label{font-size:.75rem;font-weight:700;color:var(--sc-dark);margin-bottom:6px;display:block}
+.sc-hint{font-size:.68rem;color:#94a3b8;margin-top:3px}
+.sc-input,.sc-select{width:100%;padding:11px 14px;background:var(--sc-bg);border:1.5px solid #cbd5e1;border-radius:8px;font-size:1rem;font-weight:600;color:var(--sc-dark);outline:none;font-family:'DM Sans',sans-serif;box-sizing:border-box;transition:border-color .15s,box-shadow .15s}
+.sc-input:focus,.sc-select:focus{border-color:var(--sc-primary);box-shadow:0 0 0 3px rgba(0,135,81,.12)}
+.sc-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sc-divider{margin:18px 0;padding-top:18px;border-top:1px solid var(--sc-border)}
+
+/* Toggles */
+.sc-toggle{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid #f1f5f9}
+.sc-toggle:last-child{border-bottom:none}
+.sc-toggle label{font-size:.82rem;font-weight:600;color:var(--sc-dark);cursor:pointer}
+.sc-toggle input[type=checkbox]{width:18px;height:18px;accent-color:var(--sc-primary);cursor:pointer}
+.sc-conditional{margin-top:8px;display:none}
+.sc-conditional.show{display:block}
+
+/* Button */
+.sc-btn{width:100%;padding:14px;background:var(--sc-primary);color:#fff;border:none;border-radius:8px;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .18s;font-family:'DM Sans',sans-serif}
+.sc-btn:hover{background:#006b40;transform:translateY(-1px);box-shadow:0 6px 24px rgba(0,135,81,.3)}
+
+/* ── RESULTS ── */
 #results{display:none}
-.breakdown-table{width:100%;border-collapse:collapse;font-size:.8rem;margin-top:14px}
-.breakdown-table th{background:#f1f5f9;padding:10px 12px;text-align:left;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#64748b;border-bottom:1px solid #e2e8f0}
-.breakdown-table td{padding:10px 12px;border-bottom:1px solid #f1f5f9;color:var(--afro-dark);font-weight:500}
-.breakdown-table td:last-child{text-align:right;font-weight:700}
-.breakdown-table tr.total-row{background:#f0f9ff;font-weight:700}
-.breakdown-table tr.total-row td{border-top:2px solid var(--afro-blue);font-weight:800;color:var(--afro-blue)}
-.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f1f5f9}
-.toggle-row label{font-size:.82rem;font-weight:600;color:var(--afro-dark)}
-.toggle-row input[type=checkbox]{width:18px;height:18px;accent-color:var(--afro-blue)}
-.sidebar .card-body{font-size:.82rem;color:#475569;line-height:1.7}
-.seo-content{max-width:800px;margin:0 auto;padding:48px 24px}
-.seo-content h2{font-size:1.4rem;font-weight:800;color:var(--afro-dark);margin:32px 0 12px}
-.seo-content p,.seo-content li{font-size:.92rem;color:#475569;line-height:1.8}
-.seo-content ul{padding-left:20px}
-.faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:10px;overflow:hidden}
-.faq summary{padding:14px 18px;font-weight:700;font-size:.88rem;cursor:pointer;background:#f8fafc;color:var(--afro-dark)}
-.faq details[open] summary{border-bottom:1px solid #e2e8f0}
-.faq details div{padding:14px 18px;font-size:.85rem;color:#475569;line-height:1.7}
-@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.field-row{grid-template-columns:1fr}.result-grid{grid-template-columns:1fr 1fr}}
+.sc-result-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.sc-result-box{background:var(--sc-bg);border:1px solid var(--sc-border);border-radius:8px;padding:16px;text-align:center}
+.sc-result-box.wide{grid-column:1/-1}
+.sc-rl{font-size:.68rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--sc-muted);margin-bottom:4px}
+.sc-rv{font-size:1.3rem;font-weight:800;color:var(--sc-dark)}
+.sc-rv.green{color:var(--sc-primary)}
+.sc-rv.red{color:var(--sc-red)}
+.sc-rv.amber{color:var(--sc-amber)}
+
+/* Chart */
+.sc-chart-wrap{margin-top:20px;display:flex;justify-content:center}
+#costChart{width:100%;max-width:320px;margin:0 auto}
+#costChart svg{width:100%;height:auto}
+.sc-legend{display:flex;flex-wrap:wrap;gap:6px 14px;justify-content:center;margin-top:14px;font-size:.72rem;font-weight:600;color:var(--sc-dark)}
+.sc-legend-item{display:flex;align-items:center;gap:5px}
+.sc-legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+
+/* Breakdown table */
+.sc-table{width:100%;border-collapse:collapse;font-size:.8rem;margin-top:18px}
+.sc-table th{background:#f1f5f9;padding:10px 12px;text-align:left;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--sc-muted);border-bottom:1px solid var(--sc-border)}
+.sc-table td{padding:10px 12px;border-bottom:1px solid #f1f5f9;color:var(--sc-dark);font-weight:500}
+.sc-table td:last-child{text-align:right;font-weight:700;white-space:nowrap}
+.sc-table .sc-type{font-size:.7rem;font-weight:600;padding:2px 8px;border-radius:4px;white-space:nowrap}
+.sc-type-employer{background:rgba(239,68,68,.08);color:var(--sc-red)}
+.sc-type-employee{background:rgba(245,158,11,.08);color:var(--sc-amber)}
+.sc-type-base{background:rgba(0,135,81,.08);color:var(--sc-primary)}
+.sc-table tr.sc-total{background:linear-gradient(90deg,rgba(0,135,81,.06),rgba(0,135,81,.02))}
+.sc-table tr.sc-total td{border-top:2px solid var(--sc-primary);font-weight:800;color:var(--sc-primary)}
+
+/* ── SIDEBAR ── */
+.sc-sidebar .sc-card-body{font-size:.82rem;color:#475569;line-height:1.7}
+.sc-sidebar .sc-card-body p+p{margin-top:8px}
+.sc-sidebar .sc-card-body strong{color:var(--sc-dark)}
+.sc-info-note{font-size:.72rem;color:#94a3b8;margin-top:12px;padding-top:10px;border-top:1px solid #f1f5f9}
+.sc-card-body{padding:20px 22px}
+
+/* Country flag */
+.sc-country-opt{display:flex;align-items:center;gap:8px}
+
+/* ── SEO ── */
+.sc-seo{max-width:800px;margin:0 auto;padding:48px 24px}
+.sc-seo h2{font-size:1.35rem;font-weight:800;color:var(--sc-dark);margin:36px 0 12px}
+.sc-seo p,.sc-seo li{font-size:.92rem;color:#475569;line-height:1.8}
+.sc-seo ul{padding-left:20px}
+.sc-faq details{border:1px solid var(--sc-border);border-radius:8px;margin-bottom:10px;overflow:hidden}
+.sc-faq summary{padding:14px 18px;font-weight:700;font-size:.88rem;cursor:pointer;background:var(--sc-bg);color:var(--sc-dark);list-style:none}
+.sc-faq summary::before{content:'';display:inline-block;width:6px;height:6px;border-right:2px solid var(--sc-primary);border-bottom:2px solid var(--sc-primary);transform:rotate(-45deg);margin-right:10px;transition:transform .2s}
+.sc-faq details[open] summary::before{transform:rotate(45deg)}
+.sc-faq details[open] summary{border-bottom:1px solid var(--sc-border)}
+.sc-faq details div{padding:14px 18px;font-size:.85rem;color:#475569;line-height:1.7}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){.sc-main-inner{grid-template-columns:1fr}}
+@media(max-width:600px){.sc-row{grid-template-columns:1fr}.sc-result-grid{grid-template-columns:1fr 1fr}.sc-chart-wrap canvas{max-width:220px;max-height:220px}}
 </style>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"Employee Cost Calculator","url":"https://afrotools.com/tools/staff-cost/","description":"Calculate the true cost of hiring an employee in Africa including statutory deductions, benefits, and overhead.","applicationCategory":"BusinessApplication","operatingSystem":"All","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
+{"@context":"https://schema.org","@type":"WebApplication","name":"Employee Cost Calculator","url":"https://afrotools.com/tools/staff-cost/","description":"Calculate the true cost of hiring an employee across 15+ African countries with accurate 2025/2026 tax laws.","applicationCategory":"BusinessApplication","operatingSystem":"All","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
 </script>
+<script src="/assets/js/lib/toast.js" defer></script>
+<script src="/assets/js/afro-history.js" defer></script>
+<script src="/assets/js/components/save-result-button.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js" defer></script>
+<script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
 
-<section class="tool-hero">
-<div class="tool-hero-inner">
-<div class="breadcrumb"><a href="/">Home</a> / <a href="/categories/financial/">Financial</a> / <span>Staff Cost</span></div>
+<section class="sc-hero">
+<div class="sc-hero-inner">
+<div class="sc-breadcrumb"><a href="/">Home</a> / <a href="/categories/financial/">Financial</a> / <span>Employee Cost</span></div>
 <h1>Employee Cost <em>Calculator</em></h1>
-<p class="hero-sub">Calculate the true cost of hiring in Africa. Includes pension, PAYE, NHF, NSITF, HMO, and other statutory contributions for Nigeria, Kenya, South Africa, and Ghana.</p>
-<div class="hero-badges">
-<span class="badge b-blue">African Payroll Rules</span>
-<span class="badge b-green">Full Breakdown</span>
-<span class="badge b-blue">4 Countries</span>
+<p class="sc-hero-sub">Calculate the true cost of hiring across Africa. Accurate 2025/2026 tax laws covering pension, PAYE, social security, and statutory contributions for 15+ countries.</p>
+<div class="sc-badges">
+<span class="sc-badge sc-badge-g">2025/2026 Tax Laws</span>
+<span class="sc-badge sc-badge-g">15+ Countries</span>
+<span class="sc-badge sc-badge-w">Full Breakdown + Charts</span>
 </div>
 </div>
 </section>
 
-<section class="tool-main">
-<div class="tool-main-inner">
-<div class="calc-area">
+<section class="sc-main">
+<div class="sc-main-inner">
+<div class="sc-calc-area">
 
-<div class="card">
-<div class="card-head"><span class="card-title">Employee Details</span></div>
-<div class="card-body">
-<div class="field">
-<label class="f-label">Country</label>
-<select id="country" class="f-select" onchange="updateCountryFields()">
-<option value="NG">Nigeria</option>
-<option value="KE">Kenya</option>
-<option value="ZA">South Africa</option>
-<option value="GH">Ghana</option>
-</select>
+<!-- EMPLOYEE DETAILS -->
+<div class="sc-card">
+<div class="sc-card-head">
+<svg class="sc-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+<span class="sc-card-title">Employee Details</span>
 </div>
-<div class="field">
-<label class="f-label">Gross Monthly Salary</label>
-<input type="text" id="salary" class="f-input" placeholder="e.g. 500,000" inputmode="numeric">
+<div class="sc-card-body">
+<div class="sc-field">
+<label class="sc-label">Country</label>
+<select id="country" class="sc-select"></select>
 </div>
-<div class="field-row">
-<div class="field">
-<label class="f-label">Transport Allowance (Monthly)</label>
-<input type="text" id="transport" class="f-input" placeholder="0" inputmode="numeric">
+<div class="sc-field">
+<label class="sc-label">Gross Monthly Salary (<span id="curLabel">NGN</span>)</label>
+<input type="text" id="salary" class="sc-input" placeholder="e.g. 500,000" inputmode="numeric">
 </div>
-<div class="field">
-<label class="f-label">Housing Allowance (Monthly)</label>
-<input type="text" id="housing" class="f-input" placeholder="0" inputmode="numeric">
+<div class="sc-row">
+<div class="sc-field">
+<label class="sc-label">Transport Allowance</label>
+<input type="text" id="transport" class="sc-input" placeholder="0" inputmode="numeric">
+</div>
+<div class="sc-field">
+<label class="sc-label">Housing Allowance</label>
+<input type="text" id="housing" class="sc-input" placeholder="0" inputmode="numeric">
 </div>
 </div>
-<div class="field">
-<label class="f-label">Other Allowances (Monthly)</label>
-<input type="text" id="otherAllow" class="f-input" placeholder="0" inputmode="numeric">
-</div>
-
-<div style="margin-top:16px;padding-top:16px;border-top:1px solid #e2e8f0">
-<label class="f-label" style="margin-bottom:10px">Additional Benefits</label>
-<div class="toggle-row"><label for="hmo">HMO / Health Insurance</label><input type="checkbox" id="hmo" checked></div>
-<div class="field" id="hmoAmtField" style="margin-top:8px"><input type="text" id="hmoAmt" class="f-input" placeholder="Monthly HMO cost (e.g. 15,000)" inputmode="numeric" value="15000"></div>
-<div class="toggle-row"><label for="thirteenth">13th Month Salary</label><input type="checkbox" id="thirteenth" checked></div>
-<div class="toggle-row"><label for="training">Training Budget</label><input type="checkbox" id="training"></div>
-<div class="field" id="trainingField" style="margin-top:8px;display:none"><input type="text" id="trainingAmt" class="f-input" placeholder="Annual training budget" inputmode="numeric"></div>
-<div class="toggle-row"><label for="equipment">Equipment (Laptop, etc.)</label><input type="checkbox" id="equipment"></div>
-<div class="field" id="equipField" style="margin-top:8px;display:none"><input type="text" id="equipAmt" class="f-input" placeholder="Annual equipment cost" inputmode="numeric"></div>
+<div class="sc-field">
+<label class="sc-label">Other Allowances (Monthly)</label>
+<input type="text" id="otherAllow" class="sc-input" placeholder="0" inputmode="numeric">
 </div>
 
-<button class="calc-btn" onclick="calculate()" style="margin-top:18px">Calculate Total Cost</button>
-</div>
+<div class="sc-divider">
+<label class="sc-label" style="margin-bottom:10px">Additional Benefits</label>
+<div class="sc-toggle"><label for="hmo">HMO / Health Insurance</label><input type="checkbox" id="hmo" checked></div>
+<div class="sc-conditional show" id="hmoAmtField"><input type="text" id="hmoAmt" class="sc-input" placeholder="Monthly HMO cost" inputmode="numeric" value="15000"></div>
+<div class="sc-toggle"><label for="thirteenth">13th Month Salary</label><input type="checkbox" id="thirteenth" checked></div>
+<div class="sc-toggle"><label for="training">Training Budget</label><input type="checkbox" id="training"></div>
+<div class="sc-conditional" id="trainingField"><input type="text" id="trainingAmt" class="sc-input" placeholder="Annual training budget" inputmode="numeric"></div>
+<div class="sc-toggle"><label for="equipment">Equipment (Laptop, etc.)</label><input type="checkbox" id="equipment"></div>
+<div class="sc-conditional" id="equipField"><input type="text" id="equipAmt" class="sc-input" placeholder="Annual equipment cost" inputmode="numeric"></div>
 </div>
 
-<div class="card" id="results">
-<div class="card-head"><span class="card-title">Cost Breakdown</span></div>
-<div class="card-body">
-<div class="result-grid">
-<div class="result-box"><div class="r-label">Monthly Cost to Company</div><div class="r-value blue" id="rMonthly">--</div></div>
-<div class="result-box"><div class="r-label">Annual Cost to Company</div><div class="r-value red" id="rAnnual">--</div></div>
-<div class="result-box"><div class="r-label">Employee Take-Home (Est.)</div><div class="r-value green" id="rTakeHome">--</div></div>
-<div class="result-box"><div class="r-label">Overhead Multiplier</div><div class="r-value" id="rMultiplier">--</div></div>
-</div>
-<table class="breakdown-table" id="breakdownTable"></table>
-</div>
+<button class="sc-btn" onclick="calculate()" style="margin-top:18px">Calculate Total Cost</button>
 </div>
 </div>
 
-<div class="sidebar">
-<div class="card">
-<div class="card-head"><span class="card-title">Nigeria Statutory Costs</span></div>
-<div class="card-body" id="sidebarInfo">
-<p><strong>Pension (Employer):</strong> 10% of basic + housing + transport</p>
-<p style="margin-top:6px"><strong>Pension (Employee):</strong> 8% of basic + housing + transport</p>
-<p style="margin-top:6px"><strong>NHF:</strong> 2.5% of basic salary (employee)</p>
-<p style="margin-top:6px"><strong>NSITF:</strong> 1% of gross payroll (employer)</p>
-<p style="margin-top:6px"><strong>ITF:</strong> 1% of gross payroll (employer, 25+ staff)</p>
-<p style="margin-top:6px"><strong>PAYE:</strong> Progressive tax from 7% to 24%</p>
-<p style="margin-top:12px;font-size:.75rem;color:#94a3b8">Rates as of 2024/2025 tax year. Consult a tax professional for specific situations.</p>
+<!-- RESULTS -->
+<div class="sc-card" id="results">
+<div class="sc-card-head">
+<svg class="sc-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
+<span class="sc-card-title">Cost Breakdown</span>
+</div>
+<div class="sc-card-body">
+<div class="sc-result-grid">
+<div class="sc-result-box"><div class="sc-rl">Monthly Cost to Company</div><div class="sc-rv green" id="rMonthly">--</div></div>
+<div class="sc-result-box"><div class="sc-rl">Annual Cost to Company</div><div class="sc-rv red" id="rAnnual">--</div></div>
+<div class="sc-result-box"><div class="sc-rl">Employee Take-Home (Est.)</div><div class="sc-rv amber" id="rTakeHome">--</div></div>
+<div class="sc-result-box"><div class="sc-rl">Overhead Multiplier</div><div class="sc-rv" id="rMultiplier">--</div></div>
+</div>
+<div class="sc-chart-wrap"><div id="costChart"></div></div>
+<table class="sc-table" id="breakdownTable"></table>
 </div>
 </div>
-<div class="card">
-<div class="card-head"><span class="card-title">Why Total Cost Matters</span></div>
-<div class="card-body">
-<p>The salary you agree with an employee is just part of the cost. Statutory contributions, benefits, equipment, and overhead can add 25-50% on top of the gross salary.</p>
-<p style="margin-top:8px">Understanding the true cost helps with budgeting, pricing your services, and making informed hiring decisions. Many African startups underestimate these costs, leading to cash flow problems.</p>
 </div>
+
+<!-- SIDEBAR -->
+<div class="sc-sidebar">
+<div class="sc-card">
+<div class="sc-card-head">
+<svg class="sc-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+<span class="sc-card-title" id="sidebarTitle">Nigeria Statutory Costs</span>
+</div>
+<div class="sc-card-body" id="sidebarInfo"></div>
+</div>
+<div class="sc-card">
+<div class="sc-card-head">
+<svg class="sc-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+<span class="sc-card-title">Why Total Cost Matters</span>
+</div>
+<div class="sc-card-body">
+<p>The salary you agree with an employee is just part of the cost. Statutory contributions, benefits, equipment, and overhead can add <strong>25-60%</strong> on top of the gross salary.</p>
+<p>Understanding the true cost helps with budgeting, pricing your services, and making informed hiring decisions.</p>
+</div>
+</div>
+<div class="sc-card">
+<div class="sc-card-head">
+<svg class="sc-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+<span class="sc-card-title">Supported Countries</span>
+</div>
+<div class="sc-card-body" id="countryList" style="font-size:.78rem;line-height:2"></div>
 </div>
 </div>
 </div>
 </section>
 
-<section class="seo-content">
+<section class="sc-seo">
 <h2>Understanding Employee Costs in Africa</h2>
-<p>Hiring an employee in Africa involves much more than just the agreed salary. Every country has mandatory statutory contributions that employers must pay, from pension schemes to social insurance funds. These costs can add 20-45% on top of the gross salary, depending on the country and benefits package. This calculator helps business owners, HR managers, and finance teams understand the true cost of each hire.</p>
+<p>Hiring an employee in Africa involves much more than just the agreed salary. Every country has mandatory statutory contributions that employers must pay, from pension schemes to social insurance funds. These costs can add 20-60% on top of the gross salary, depending on the country and benefits package.</p>
 
 <h2>Country-Specific Payroll Requirements</h2>
-<p><strong>Nigeria:</strong> Employers contribute 10% to pension (PenCom), 1% to NSITF, and 1% to ITF (for companies with 25+ staff or turnover above NGN 50M). Employees contribute 8% to pension and 2.5% to NHF. PAYE tax is calculated on a progressive scale from 7% to 24%.</p>
-<p><strong>Kenya:</strong> Employers contribute to NSSF (6% capped at KES 2,160/month), NHIF (graduated based on income), and WIBA. PAYE ranges from 10% to 30%. The new Social Health Insurance Fund (SHIF) replaced NHIF in 2024.</p>
-<p><strong>South Africa:</strong> Employers pay UIF (1%), SDL (1%), and may contribute to medical aid and retirement funds. PAYE is progressive from 18% to 45%. Employers also pay Compensation Fund contributions.</p>
-<p><strong>Ghana:</strong> Employers contribute 13% to SSNIT, employees contribute 5.5%. PAYE ranges from 0% to 35%. Additional levies may apply.</p>
+<p><strong>Nigeria (2026 NTA):</strong> The Nigeria Tax Act 2025 took effect January 2026. PAYE now starts at 0% for the first NGN 800,000 annually, with bands up to 25%. CRA has been abolished and replaced with Rent Relief. Employer pension remains at 10%, NSITF at 1%, and ITF at 1%.</p>
+<p><strong>Kenya:</strong> NSSF entered Year 4 in February 2026 — the ceiling rose to KES 108,000 with maximum contributions of KES 6,480 per side. SHIF replaced NHIF at 2.75% of gross. The Affordable Housing Levy is 1.5% each for employer and employee. PAYE has 5 bands from 10% to 35%.</p>
+<p><strong>South Africa:</strong> For the 2025/2026 year, PAYE brackets remain 18%-45% with a primary rebate of R17,235. UIF is 1% each (capped at R177.12/month), SDL is 1% employer-only. The UIF ceiling is R17,712/month.</p>
+<p><strong>Ghana:</strong> Employer SSNIT is 13%, employee 5.5%, plus a 5% Tier 2 pension. PAYE ranges from 0% (first GHS 490/month) to 35%. The SSNIT cap is GHS 61,000.</p>
 
 <h2>Hidden Costs of Hiring</h2>
 <ul>
 <li><strong>Recruitment costs:</strong> Job adverts, recruiter fees (typically 1-3 months' salary), interview time</li>
-<li><strong>Equipment:</strong> Laptop, desk, software licenses, phone — NGN 500K-2M for a typical office setup</li>
-<li><strong>Training:</strong> Onboarding time, courses, conferences — budget 2-5% of annual salary</li>
-<li><strong>Office overhead:</strong> Space, electricity, internet per employee — significant in generator-dependent areas</li>
+<li><strong>Equipment:</strong> Laptop, desk, software licenses, phone</li>
+<li><strong>Training:</strong> Onboarding, courses, conferences — budget 2-5% of annual salary</li>
+<li><strong>Office overhead:</strong> Space, electricity, internet per employee</li>
 <li><strong>Leave costs:</strong> Public holidays (10-15 per year), annual leave (15-21 days), sick leave</li>
 </ul>
 
-<div class="faq">
+<div class="sc-faq">
 <h2>Frequently Asked Questions</h2>
-<details><summary>What is the overhead multiplier?</summary><div>The overhead multiplier shows how much the total cost exceeds the gross salary. A multiplier of 1.35x means the employee costs 35% more than their salary. In Nigeria, typical multipliers range from 1.25x (basic benefits) to 1.5x (comprehensive package).</div></details>
-<details><summary>Is 13th month salary mandatory in Nigeria?</summary><div>While not strictly mandated by law in all cases, 13th month salary is a widespread practice in Nigeria and is expected by employees. It's calculated as one additional month's basic salary, typically paid in December. Many companies include it in employment contracts.</div></details>
-<details><summary>How do I calculate PAYE in Nigeria?</summary><div>Nigerian PAYE uses progressive tax bands: First NGN 300,000 at 7%, next NGN 300,000 at 11%, next NGN 500,000 at 15%, next NGN 500,000 at 19%, next NGN 1.6M at 21%, and above NGN 3.2M at 24%. This is applied to taxable income after allowable deductions (pension, NHF, CRA).</div></details>
-<details><summary>What is the Consolidated Relief Allowance?</summary><div>In Nigeria, the Consolidated Relief Allowance (CRA) is a tax relief of NGN 200,000 + 20% of gross income (whichever is higher of NGN 200,000 or 1% of gross). This is deducted from gross income before calculating PAYE, significantly reducing the tax burden.</div></details>
+<details><summary>What is the overhead multiplier?</summary><div>The overhead multiplier shows how much the total cost exceeds the gross salary. A multiplier of 1.35x means the employee costs 35% more than their salary. Across Africa, typical multipliers range from 1.15x (low-cost countries) to 1.60x (comprehensive packages in high-cost countries).</div></details>
+<details><summary>Are the 2026 Nigeria Tax Act rates included?</summary><div>Yes. This calculator uses the new NTA 2025 rates effective January 2026: 0% on the first NGN 800,000 annually, progressive bands up to 25%, abolished CRA replaced by Rent Relief, and removed minimum tax.</div></details>
+<details><summary>Does this include Kenya's new NSSF Year 4 rates?</summary><div>Yes. From February 2026, NSSF uses the Year 4 ceilings: Tier I up to KES 9,000 and Tier II up to KES 108,000, with maximum contributions of KES 6,480 per side.</div></details>
+<details><summary>How accurate are the PAYE estimates?</summary><div>The PAYE calculations use official tax brackets and standard deductions. However, individual circumstances (additional reliefs, multiple employers, etc.) may differ. Always consult a tax professional for exact figures.</div></details>
+<details><summary>Is 13th month salary mandatory?</summary><div>It varies by country. In Nigeria it's widespread practice but not strictly mandated. In some countries like Angola it is legally required. This calculator lets you toggle it on or off.</div></details>
 </div>
 </section>
 
@@ -217,63 +283,356 @@ h1 em{color:var(--afro-blue);font-style:normal}
 <afro-footer></afro-footer>
 
 <script>
+/* ══════════════════════════════════════════════════════════════
+   EMPLOYEE COST CALCULATOR — AfroTools
+   15+ African countries · 2025/2026 tax laws · Chart.js
+   ══════════════════════════════════════════════════════════════ */
+
 function parseNum(s){return parseFloat(String(s).replace(/[^0-9.\-]/g,''))||0}
-function fmt(n,cur){const symbols={NGN:'\u20A6',KES:'KSh ',ZAR:'R',GHS:'GH\u20B5'};return(symbols[cur]||'')+n.toLocaleString('en',{minimumFractionDigits:0,maximumFractionDigits:0})}
 
-const CURRENCIES={NG:'NGN',KE:'KES',ZA:'ZAR',GH:'GHS'};
+// ── COUNTRY DATA ──
+const COUNTRIES = {
+  NG: { name:'Nigeria', flag:'🇳🇬', currency:'NGN', symbol:'₦', locale:'en-NG' },
+  KE: { name:'Kenya', flag:'🇰🇪', currency:'KES', symbol:'KSh ', locale:'en-KE' },
+  ZA: { name:'South Africa', flag:'🇿🇦', currency:'ZAR', symbol:'R', locale:'en-ZA' },
+  GH: { name:'Ghana', flag:'🇬🇭', currency:'GHS', symbol:'GH₵', locale:'en-GH' },
+  EG: { name:'Egypt', flag:'🇪🇬', currency:'EGP', symbol:'E£', locale:'ar-EG' },
+  TZ: { name:'Tanzania', flag:'🇹🇿', currency:'TZS', symbol:'TSh ', locale:'sw-TZ' },
+  UG: { name:'Uganda', flag:'🇺🇬', currency:'UGX', symbol:'USh ', locale:'en-UG' },
+  RW: { name:'Rwanda', flag:'🇷🇼', currency:'RWF', symbol:'RF ', locale:'rw-RW' },
+  ET: { name:'Ethiopia', flag:'🇪🇹', currency:'ETB', symbol:'ETB ', locale:'am-ET' },
+  CM: { name:'Cameroon', flag:'🇨🇲', currency:'XAF', symbol:'FCFA ', locale:'fr-CM' },
+  SN: { name:'Senegal', flag:'🇸🇳', currency:'XOF', symbol:'CFA ', locale:'fr-SN' },
+  CI: { name:'Côte d\'Ivoire', flag:'🇨🇮', currency:'XOF', symbol:'CFA ', locale:'fr-CI' },
+  MA: { name:'Morocco', flag:'🇲🇦', currency:'MAD', symbol:'MAD ', locale:'ar-MA' },
+  AO: { name:'Angola', flag:'🇦🇴', currency:'AOA', symbol:'Kz ', locale:'pt-AO' },
+  MZ: { name:'Mozambique', flag:'🇲🇿', currency:'MZN', symbol:'MT ', locale:'pt-MZ' },
+  ZW: { name:'Zimbabwe', flag:'🇿🇼', currency:'USD', symbol:'US$', locale:'en-ZW' },
+  BW: { name:'Botswana', flag:'🇧🇼', currency:'BWP', symbol:'P', locale:'en-BW' }
+};
 
-// Toggle visibility of conditional fields
-document.getElementById('hmo').addEventListener('change',function(){document.getElementById('hmoAmtField').style.display=this.checked?'block':'none'});
-document.getElementById('training').addEventListener('change',function(){document.getElementById('trainingField').style.display=this.checked?'block':'none'});
-document.getElementById('equipment').addEventListener('change',function(){document.getElementById('equipField').style.display=this.checked?'block':'none'});
-
-function updateCountryFields(){
-  const c=document.getElementById('country').value;
-  const info=document.getElementById('sidebarInfo');
-  const infoMap={
-    NG:'<p><strong>Pension (Employer):</strong> 10% of basic + housing + transport</p><p style="margin-top:6px"><strong>Pension (Employee):</strong> 8% of basic + housing + transport</p><p style="margin-top:6px"><strong>NHF:</strong> 2.5% of basic salary (employee)</p><p style="margin-top:6px"><strong>NSITF:</strong> 1% of gross payroll (employer)</p><p style="margin-top:6px"><strong>ITF:</strong> 1% of gross payroll (employer, 25+ staff)</p><p style="margin-top:6px"><strong>PAYE:</strong> Progressive tax 7%-24%</p>',
-    KE:'<p><strong>NSSF (Employer):</strong> 6% capped at KES 2,160/mo</p><p style="margin-top:6px"><strong>NSSF (Employee):</strong> 6% capped at KES 2,160/mo</p><p style="margin-top:6px"><strong>SHIF:</strong> 2.75% of gross</p><p style="margin-top:6px"><strong>Housing Levy:</strong> 1.5% each (employer + employee)</p><p style="margin-top:6px"><strong>PAYE:</strong> 10%-30% progressive</p>',
-    ZA:'<p><strong>UIF (Employer):</strong> 1% of remuneration</p><p style="margin-top:6px"><strong>UIF (Employee):</strong> 1% of remuneration</p><p style="margin-top:6px"><strong>SDL:</strong> 1% of payroll (employer)</p><p style="margin-top:6px"><strong>COIDA:</strong> Varies by industry</p><p style="margin-top:6px"><strong>PAYE:</strong> 18%-45% progressive</p>',
-    GH:'<p><strong>SSNIT (Employer):</strong> 13% of basic salary</p><p style="margin-top:6px"><strong>SSNIT (Employee):</strong> 5.5% of basic salary</p><p style="margin-top:6px"><strong>Tier 2 (Employer):</strong> 5% of basic salary</p><p style="margin-top:6px"><strong>PAYE:</strong> 0%-35% progressive</p>'
-  };
-  info.innerHTML=(infoMap[c]||'')+'<p style="margin-top:12px;font-size:.75rem;color:#94a3b8">Rates as of 2024/2025. Consult a tax professional.</p>';
+function fmt(n, code) {
+  const c = Object.values(COUNTRIES).find(x => x.currency === code) || {};
+  return (c.symbol || '') + Math.round(n).toLocaleString('en');
 }
 
-function calculate(){
-  const country=document.getElementById('country').value;
-  const cur=CURRENCIES[country];
-  const salary=parseNum(document.getElementById('salary').value);
-  const transport=parseNum(document.getElementById('transport').value);
-  const housing=parseNum(document.getElementById('housing').value);
-  const otherAllow=parseNum(document.getElementById('otherAllow').value);
-  const hasHmo=document.getElementById('hmo').checked;
-  const hmoAmt=hasHmo?parseNum(document.getElementById('hmoAmt').value):0;
-  const has13th=document.getElementById('thirteenth').checked;
-  const hasTraining=document.getElementById('training').checked;
-  const trainingAmt=hasTraining?parseNum(document.getElementById('trainingAmt').value):0;
-  const hasEquip=document.getElementById('equipment').checked;
-  const equipAmt=hasEquip?parseNum(document.getElementById('equipAmt').value):0;
+// ── POPULATE COUNTRY SELECT ──
+(function(){
+  const sel = document.getElementById('country');
+  const list = document.getElementById('countryList');
+  let listHtml = '';
+  Object.entries(COUNTRIES).forEach(([code, c]) => {
+    sel.innerHTML += `<option value="${code}">${c.flag} ${c.name} (${c.currency})</option>`;
+    listHtml += `<span>${c.flag} ${c.name}</span><br>`;
+  });
+  list.innerHTML = listHtml;
+})();
 
-  if(salary<=0){alert('Please enter the gross monthly salary.');return}
+// ── SIDEBAR INFO ──
+const SIDEBAR_INFO = {
+  NG: `<p><strong>Pension (Employer):</strong> 10% of basic + housing + transport</p>
+<p><strong>Pension (Employee):</strong> 8% of basic + housing + transport</p>
+<p><strong>NHF:</strong> 2.5% of basic salary (employee)</p>
+<p><strong>NSITF:</strong> 1% of gross payroll (employer)</p>
+<p><strong>ITF:</strong> 1% of gross payroll (employer)</p>
+<p><strong>PAYE (NTA 2025):</strong> 0% up to ₦800K, then 15%-25%</p>
+<p class="sc-info-note">New NTA 2025 rates effective Jan 2026. CRA abolished, replaced with Rent Relief.</p>`,
 
-  const gross=salary+transport+housing+otherAllow;
-  const rows=[];
-  let employerCosts=0;
-  let employeeDeductions=0;
+  KE: `<p><strong>NSSF (Year 4):</strong> 6% each, Tier I cap KES 9,000, Tier II cap KES 108,000</p>
+<p><strong>SHIF:</strong> 2.75% of gross (employee)</p>
+<p><strong>Housing Levy:</strong> 1.5% each (employer + employee)</p>
+<p><strong>PAYE:</strong> 10%-35% progressive (5 bands)</p>
+<p><strong>Personal Relief:</strong> KES 2,400/month</p>
+<p class="sc-info-note">NSSF Year 4 rates effective Feb 2026. SHIF, NSSF, AHL are tax-deductible.</p>`,
 
-  // Country-specific statutory calculations
-  if(country==='NG'){
-    const pensionBase=salary+housing+transport;
-    const employerPension=pensionBase*0.10;
-    const employeePension=pensionBase*0.08;
-    const nsitf=gross*0.01;
-    const itf=gross*0.01;
-    const nhf=salary*0.025;
-    // PAYE estimation (simplified CRA)
-    const annualGross=gross*12;
-    const cra=Math.max(200000,annualGross*0.01)+annualGross*0.20;
-    const taxableIncome=Math.max(0,annualGross-employeePension*12-nhf*12-cra);
-    const paye=calcNigeriaPAYE(taxableIncome)/12;
+  ZA: `<p><strong>UIF (Employer):</strong> 1% capped at R17,712/mo</p>
+<p><strong>UIF (Employee):</strong> 1% capped at R17,712/mo</p>
+<p><strong>SDL:</strong> 1% of payroll (employer only)</p>
+<p><strong>PAYE:</strong> 18%-45% progressive</p>
+<p><strong>Primary Rebate:</strong> R17,235/year</p>
+<p class="sc-info-note">2025/2026 tax year (1 Mar 2025 – 28 Feb 2026). Brackets unchanged from prior year.</p>`,
+
+  GH: `<p><strong>SSNIT (Employer):</strong> 13% of basic salary</p>
+<p><strong>SSNIT (Employee):</strong> 5.5% of basic salary</p>
+<p><strong>Tier 2 Pension:</strong> 5% of basic (employer)</p>
+<p><strong>PAYE:</strong> 0%-35% progressive</p>
+<p><strong>SSNIT Cap:</strong> GHS 61,000/month</p>
+<p class="sc-info-note">2025/2026 rates. Employee SSNIT deducted before PAYE calculation.</p>`,
+
+  EG: `<p><strong>Social Insurance (Employer):</strong> 18.75% (capped)</p>
+<p><strong>Social Insurance (Employee):</strong> 11% (capped)</p>
+<p><strong>Ceiling:</strong> EGP 16,700/month (2026)</p>
+<p><strong>Minimum Wage:</strong> EGP 7,000/month</p>
+<p class="sc-info-note">Social insurance caps increase 15% annually through 2027.</p>`,
+
+  TZ: `<p><strong>NSSF (Employer):</strong> 10% of gross</p>
+<p><strong>NSSF (Employee):</strong> 10% of gross</p>
+<p><strong>WCF:</strong> 0.5% (employer only)</p>
+<p><strong>SDL:</strong> 3.5% (employer, 10+ staff)</p>
+<p><strong>PAYE:</strong> 0%-37% progressive</p>
+<p class="sc-info-note">Employee NSSF is deductible before PAYE. SDL applies to employers with 10+ staff.</p>`,
+
+  UG: `<p><strong>NSSF (Employer):</strong> 10% of gross</p>
+<p><strong>NSSF (Employee):</strong> 5% of gross</p>
+<p><strong>PAYE:</strong> 0%-40% progressive</p>
+<p><strong>Tax-free:</strong> UGX 235,000/month</p>
+<p class="sc-info-note">10% surtax applies on monthly income above UGX 10,000,000.</p>`,
+
+  RW: `<p><strong>Pension (Employer):</strong> 6% of gross</p>
+<p><strong>Pension (Employee):</strong> 6% of gross</p>
+<p><strong>Maternity:</strong> 0.3% each</p>
+<p><strong>Occupational Hazard:</strong> 2% (employer only)</p>
+<p><strong>PAYE:</strong> 0%-30% progressive</p>
+<p class="sc-info-note">Pension doubled to 12% total in Jan 2025. Will increase 2%/year from 2027.</p>`,
+
+  ET: `<p><strong>Pension (Employer):</strong> 11% (capped at ETB 15,000)</p>
+<p><strong>Pension (Employee):</strong> 7% (capped at ETB 15,000)</p>
+<p><strong>PAYE:</strong> 0%-35% progressive</p>
+<p class="sc-info-note">Pension cap is ETB 15,000/month. New tax bands effective July 2025.</p>`,
+
+  CM: `<p><strong>CNPS (Employer):</strong> ~12.5% (pension + family + accident)</p>
+<p><strong>CNPS (Employee):</strong> 4.2% (capped at XAF 750K)</p>
+<p><strong>Housing Fund:</strong> 1.5% (employer)</p>
+<p><strong>FNE:</strong> 1% (employer)</p>
+<p class="sc-info-note">Accident rate varies by industry (1.75%-5%). Ceiling: XAF 750,000/month.</p>`,
+
+  SN: `<p><strong>IPRES Pension (Employer):</strong> 8.4%</p>
+<p><strong>Family Benefits:</strong> 7% (employer)</p>
+<p><strong>Accident Insurance:</strong> 1%-5% (employer)</p>
+<p><strong>Payroll Tax:</strong> 3% (employer)</p>
+<p class="sc-info-note">Total employer cost ~20-27% on top of salary depending on industry.</p>`,
+
+  CI: `<p><strong>CNPS Retirement (Employer):</strong> 7.7%</p>
+<p><strong>Family Allowance:</strong> 5.75% (employer)</p>
+<p><strong>Accident Insurance:</strong> 2%-5% (employer)</p>
+<p><strong>FDFP Training:</strong> 2% (employer)</p>
+<p class="sc-info-note">Payroll tax: 2.8% local, 12% expatriate. CNPS ceiling: XOF 3,375,000/month.</p>`,
+
+  MA: `<p><strong>CNSS (Employer):</strong> ~20.7% total</p>
+<p><strong>CNSS (Employee):</strong> ~6.5%</p>
+<p><strong>Social allocation cap:</strong> MAD 6,000/month</p>
+<p><strong>Income Tax:</strong> 0%-37% progressive</p>
+<p class="sc-info-note">New hires may be exempt from income tax for first 36 months (until Dec 2026).</p>`,
+
+  AO: `<p><strong>INSS (Employer):</strong> 8% of gross</p>
+<p><strong>INSS (Employee):</strong> 3% of gross</p>
+<p><strong>IRT (Income Tax):</strong> 0%-25% progressive</p>
+<p class="sc-info-note">8% employer rate applies. Training levy of 1% may also apply.</p>`,
+
+  MZ: `<p><strong>INSS (Employer):</strong> 4% of gross</p>
+<p><strong>INSS (Employee):</strong> 3% of gross</p>
+<p><strong>IRPS (Income Tax):</strong> 10%-32% progressive</p>
+<p class="sc-info-note">One of the lowest employer contribution rates in Africa. No INSS cap.</p>`,
+
+  ZW: `<p><strong>NSSA (Employer):</strong> 4.5% (cap US$700/mo)</p>
+<p><strong>NSSA (Employee):</strong> 4.5% (cap US$700/mo)</p>
+<p><strong>AIDS Levy:</strong> 3% of PAYE due</p>
+<p><strong>PAYE:</strong> 0%-40% progressive</p>
+<p class="sc-info-note">Dual currency system (USD & ZWG). This calculator uses USD brackets.</p>`,
+
+  BW: `<p><strong>No mandatory social security</strong> (voluntary pension)</p>
+<p><strong>PAYE:</strong> 0%-25% progressive</p>
+<p><strong>Tax-free:</strong> BWP 48,000/year</p>
+<p class="sc-info-note">Botswana has no mandatory employer social security contributions. Very employer-friendly.</p>`
+};
+
+function updateCountryFields(){
+  const c = document.getElementById('country').value;
+  const info = COUNTRIES[c];
+  document.getElementById('curLabel').textContent = info.currency;
+  document.getElementById('sidebarTitle').textContent = info.name + ' Statutory Costs';
+  document.getElementById('sidebarInfo').innerHTML = SIDEBAR_INFO[c] || '<p>Select a country to view statutory information.</p>';
+}
+document.getElementById('country').addEventListener('change', updateCountryFields);
+updateCountryFields();
+
+// ── TOGGLE VISIBILITY ──
+document.getElementById('hmo').addEventListener('change',function(){document.getElementById('hmoAmtField').classList.toggle('show',this.checked)});
+document.getElementById('training').addEventListener('change',function(){document.getElementById('trainingField').classList.toggle('show',this.checked)});
+document.getElementById('equipment').addEventListener('change',function(){document.getElementById('equipField').classList.toggle('show',this.checked)});
+
+// ── PAYE FUNCTIONS ──
+
+// Nigeria NTA 2025 (effective Jan 2026)
+function calcNigeriaPAYE(annual, pensionDeduction, nhfDeduction, rentRelief) {
+  // NTA 2025: No CRA. Deductions: pension + NHF + rent relief
+  const deductions = pensionDeduction + nhfDeduction + rentRelief;
+  const taxable = Math.max(0, annual - deductions);
+  // Bands: 0-800K @0%, 800K-3M @15%, 3M-7M @18%, 7M-20M @21%, 20M-50M @23%, 50M+ @25%
+  const bands = [[800000,0],[2200000,.15],[4000000,.18],[13000000,.21],[30000000,.23],[Infinity,.25]];
+  let tax = 0, remaining = taxable;
+  for (const [limit, rate] of bands) {
+    const amt = Math.min(remaining, limit);
+    tax += amt * rate;
+    remaining -= amt;
+    if (remaining <= 0) break;
+  }
+  return tax;
+}
+
+// Kenya 2026
+function calcKenyaPAYE(monthlyTaxable) {
+  // Bands (monthly): 0-24K @10%, 24K-32333 @25%, 32333-500K @30%, 500K-800K @32.5%, 800K+ @35%
+  const bands = [[24000,.10],[8333,.25],[467667,.30],[300000,.325],[Infinity,.35]];
+  let tax = 0, remaining = monthlyTaxable;
+  for (const [limit, rate] of bands) {
+    const amt = Math.min(remaining, limit);
+    tax += amt * rate;
+    remaining -= amt;
+    if (remaining <= 0) break;
+  }
+  return Math.max(0, tax - 2400); // personal relief
+}
+
+// South Africa 2025/2026
+function calcSAPAYE(annual) {
+  const bands = [[237100,.18],[133400,.26],[142300,.31],[160200,.36],[184900,.39],[Infinity,.45]];
+  let tax = 0, remaining = annual;
+  for (const [limit, rate] of bands) {
+    const amt = Math.min(remaining, limit);
+    tax += amt * rate;
+    remaining -= amt;
+    if (remaining <= 0) break;
+  }
+  return Math.max(0, tax - 17235); // primary rebate
+}
+
+// Ghana
+function calcGhanaPAYE(monthly) {
+  const bands = [[490,0],[110,.05],[130,.10],[3166.67,.175],[16000,.25],[30520,.30],[Infinity,.35]];
+  let tax = 0, remaining = monthly;
+  for (const [limit, rate] of bands) {
+    const amt = Math.min(remaining, limit);
+    tax += amt * rate;
+    remaining -= amt;
+    if (remaining <= 0) break;
+  }
+  return tax;
+}
+
+// Tanzania
+function calcTanzaniaPAYE(monthly) {
+  const bands = [[270000,0],[250000,.08],[240000,.16],[280000,.24],[2080000,.32],[Infinity,.37]];
+  let tax = 0, remaining = monthly;
+  for (const [limit, rate] of bands) {
+    const amt = Math.min(remaining, limit);
+    tax += amt * rate;
+    remaining -= amt;
+    if (remaining <= 0) break;
+  }
+  return tax;
+}
+
+// Uganda
+function calcUgandaPAYE(monthly) {
+  if (monthly <= 235000) return 0;
+  let tax = 0;
+  if (monthly <= 335000) {
+    tax = (monthly - 235000) * 0.10;
+  } else if (monthly <= 410000) {
+    tax = 10000 + (monthly - 335000) * 0.20;
+  } else if (monthly <= 10000000) {
+    tax = 25000 + (monthly - 410000) * 0.30;
+  } else {
+    tax = 25000 + (10000000 - 410000) * 0.30 + (monthly - 10000000) * 0.40;
+  }
+  return tax;
+}
+
+// Rwanda
+function calcRwandaPAYE(monthly) {
+  const bands = [[60000,0],[40000,.10],[100000,.20],[Infinity,.30]];
+  let tax = 0, remaining = monthly;
+  for (const [limit, rate] of bands) {
+    const amt = Math.min(remaining, limit);
+    tax += amt * rate;
+    remaining -= amt;
+    if (remaining <= 0) break;
+  }
+  return tax;
+}
+
+// Ethiopia (July 2025 rates)
+function calcEthiopiaPAYE(monthly) {
+  const bands = [[2000,0],[2000,.15],[3000,.20],[3000,.25],[4000,.30],[Infinity,.35]];
+  let tax = 0, remaining = monthly;
+  for (const [limit, rate] of bands) {
+    const amt = Math.min(remaining, limit);
+    tax += amt * rate;
+    remaining -= amt;
+    if (remaining <= 0) break;
+  }
+  return tax;
+}
+
+// Zimbabwe (USD brackets)
+function calcZimbabwePAYE(annual) {
+  // Annual USD: 0-1200 @0%, 1200-7200 @20%, 7200-12000 @25%, 12000-36000 @30%, 36000+ @40%
+  const bands = [[1200,0],[6000,.20],[4800,.25],[24000,.30],[Infinity,.40]];
+  let tax = 0, remaining = annual;
+  for (const [limit, rate] of bands) {
+    const amt = Math.min(remaining, limit);
+    tax += amt * rate;
+    remaining -= amt;
+    if (remaining <= 0) break;
+  }
+  return tax;
+}
+
+// Botswana
+function calcBotswanaPAYE(annual) {
+  // Annual: 0-48K @0%, 48K-84K @5%, 84K-120K @12.5%, 120K-156K @18.75%, 156K+ @25%
+  const bands = [[48000,0],[36000,.05],[36000,.125],[36000,.1875],[Infinity,.25]];
+  let tax = 0, remaining = annual;
+  for (const [limit, rate] of bands) {
+    const amt = Math.min(remaining, limit);
+    tax += amt * rate;
+    remaining -= amt;
+    if (remaining <= 0) break;
+  }
+  return tax;
+}
+
+// Generic progressive PAYE for countries where we estimate
+function calcGenericPAYE(annual, rate) {
+  return annual * rate;
+}
+
+// ── MAIN CALCULATION ──
+function calculate() {
+  const country = document.getElementById('country').value;
+  const cur = COUNTRIES[country].currency;
+  const salary = parseNum(document.getElementById('salary').value);
+  const transport = parseNum(document.getElementById('transport').value);
+  const housing = parseNum(document.getElementById('housing').value);
+  const otherAllow = parseNum(document.getElementById('otherAllow').value);
+  const hasHmo = document.getElementById('hmo').checked;
+  const hmoAmt = hasHmo ? parseNum(document.getElementById('hmoAmt').value) : 0;
+  const has13th = document.getElementById('thirteenth').checked;
+  const hasTraining = document.getElementById('training').checked;
+  const trainingAmt = hasTraining ? parseNum(document.getElementById('trainingAmt').value) : 0;
+  const hasEquip = document.getElementById('equipment').checked;
+  const equipAmt = hasEquip ? parseNum(document.getElementById('equipAmt').value) : 0;
+
+  if (salary <= 0) { alert('Please enter the gross monthly salary.'); return; }
+
+  const gross = salary + transport + housing + otherAllow;
+  const rows = [];
+  let employerCosts = 0;
+  let employeeDeductions = 0;
+
+  // ── COUNTRY CALCULATIONS ──
+  if (country === 'NG') {
+    // Nigeria NTA 2025 (effective Jan 2026)
+    const pensionBase = salary + housing + transport;
+    const employerPension = pensionBase * 0.10;
+    const employeePension = pensionBase * 0.08;
+    const nsitf = gross * 0.01;
+    const itf = gross * 0.01;
+    const nhf = salary * 0.025;
+    const annualGross = gross * 12;
+    const rentRelief = Math.min(annualGross * 0.20, 500000); // Rent Relief: lower of 20% rent or 500K
+    const paye = calcNigeriaPAYE(annualGross, employeePension * 12, nhf * 12, rentRelief) / 12;
 
     rows.push({item:'Gross Salary',amount:gross,type:'base'});
     rows.push({item:'Employer Pension (10%)',amount:employerPension,type:'employer'});
@@ -281,146 +640,413 @@ function calculate(){
     rows.push({item:'ITF (1%)',amount:itf,type:'employer'});
     rows.push({item:'Employee Pension (8%)',amount:employeePension,type:'employee'});
     rows.push({item:'NHF (2.5%)',amount:nhf,type:'employee'});
-    rows.push({item:'PAYE Tax (Est.)',amount:paye,type:'employee'});
-    employerCosts=employerPension+nsitf+itf;
-    employeeDeductions=employeePension+nhf+paye;
+    rows.push({item:'PAYE Tax (NTA 2025)',amount:paye,type:'employee'});
+    employerCosts = employerPension + nsitf + itf;
+    employeeDeductions = employeePension + nhf + paye;
 
-  }else if(country==='KE'){
-    const nssf=Math.min(gross*0.06,2160);
-    const shif=gross*0.0275;
-    const housingLevy=gross*0.015;
-    const paye=calcKenyaPAYE(gross*12)/12;
+  } else if (country === 'KE') {
+    // Kenya 2026 — NSSF Year 4, SHIF, AHL
+    const nssf = Math.min(gross * 0.06, 6480);
+    const shif = Math.max(gross * 0.0275, 300);
+    const housingLevy = gross * 0.015;
+    // Taxable = gross - NSSF - SHIF - AHL (all deductible)
+    const taxableMonthly = Math.max(0, gross - nssf - shif - housingLevy);
+    const paye = calcKenyaPAYE(taxableMonthly);
 
     rows.push({item:'Gross Salary',amount:gross,type:'base'});
-    rows.push({item:'NSSF Employer (6% cap 2,160)',amount:nssf,type:'employer'});
+    rows.push({item:'NSSF Employer (6%, max 6,480)',amount:nssf,type:'employer'});
     rows.push({item:'Housing Levy Employer (1.5%)',amount:housingLevy,type:'employer'});
-    rows.push({item:'NSSF Employee (6% cap 2,160)',amount:nssf,type:'employee'});
+    rows.push({item:'NSSF Employee (6%, max 6,480)',amount:nssf,type:'employee'});
     rows.push({item:'SHIF (2.75%)',amount:shif,type:'employee'});
     rows.push({item:'Housing Levy Employee (1.5%)',amount:housingLevy,type:'employee'});
-    rows.push({item:'PAYE Tax (Est.)',amount:paye,type:'employee'});
-    employerCosts=nssf+housingLevy;
-    employeeDeductions=nssf+shif+housingLevy+paye;
+    rows.push({item:'PAYE Tax',amount:paye,type:'employee'});
+    employerCosts = nssf + housingLevy;
+    employeeDeductions = nssf + shif + housingLevy + paye;
 
-  }else if(country==='ZA'){
-    const uif=Math.min(gross*0.01,177.12*1); // simplified
-    const sdl=gross*0.01;
-    const paye=calcSAPAYE(gross*12)/12;
+  } else if (country === 'ZA') {
+    // South Africa 2025/2026
+    const uifCeiling = 17712;
+    const uif = Math.min(gross * 0.01, uifCeiling * 0.01);
+    const sdl = gross * 0.01;
+    const paye = calcSAPAYE(gross * 12) / 12;
 
     rows.push({item:'Gross Salary',amount:gross,type:'base'});
     rows.push({item:'UIF Employer (1%)',amount:uif,type:'employer'});
     rows.push({item:'SDL (1%)',amount:sdl,type:'employer'});
     rows.push({item:'UIF Employee (1%)',amount:uif,type:'employee'});
-    rows.push({item:'PAYE Tax (Est.)',amount:paye,type:'employee'});
-    employerCosts=uif+sdl;
-    employeeDeductions=uif+paye;
+    rows.push({item:'PAYE Tax',amount:paye,type:'employee'});
+    employerCosts = uif + sdl;
+    employeeDeductions = uif + paye;
 
-  }else if(country==='GH'){
-    const ssnit13=salary*0.13;
-    const tier2=salary*0.05;
-    const ssnit55=salary*0.055;
-    const paye=calcGhanaPAYE((gross-ssnit55)*12)/12;
+  } else if (country === 'GH') {
+    // Ghana
+    const ssnitCap = 61000;
+    const ssnitBase = Math.min(salary, ssnitCap);
+    const ssnit13 = ssnitBase * 0.13;
+    const tier2 = ssnitBase * 0.05;
+    const ssnit55 = ssnitBase * 0.055;
+    const taxableMonthly = gross - ssnit55;
+    const paye = calcGhanaPAYE(Math.max(0, taxableMonthly));
 
     rows.push({item:'Gross Salary',amount:gross,type:'base'});
     rows.push({item:'SSNIT Employer (13%)',amount:ssnit13,type:'employer'});
     rows.push({item:'Tier 2 Pension (5%)',amount:tier2,type:'employer'});
     rows.push({item:'SSNIT Employee (5.5%)',amount:ssnit55,type:'employee'});
+    rows.push({item:'PAYE Tax',amount:paye,type:'employee'});
+    employerCosts = ssnit13 + tier2;
+    employeeDeductions = ssnit55 + paye;
+
+  } else if (country === 'EG') {
+    // Egypt
+    const siCeiling = 16700;
+    const siBase = Math.min(gross, siCeiling);
+    const employerSI = siBase * 0.1875;
+    const employeeSI = siBase * 0.11;
+    // Simplified PAYE (Egypt uses progressive 0-25% on employment income)
+    const annual = gross * 12;
+    const taxable = Math.max(0, annual - employeeSI * 12);
+    // Egypt 2025 brackets: 0-40K @0%, 40K-55K @10%, 55K-70K @15%, 70K-200K @20%, 200K-400K @22.5%, 400K-600K @25%, 600K-700K @27.5%, 700K+ @27.5%
+    const bands = [[40000,0],[15000,.10],[15000,.15],[130000,.20],[200000,.225],[200000,.25],[100000,.275],[Infinity,.275]];
+    let tax = 0, rem = taxable;
+    for (const [l,r] of bands) { const a = Math.min(rem,l); tax += a*r; rem -= a; if(rem<=0) break; }
+    const paye = tax / 12;
+
+    rows.push({item:'Gross Salary',amount:gross,type:'base'});
+    rows.push({item:'Social Insurance Employer (18.75%)',amount:employerSI,type:'employer'});
+    rows.push({item:'Social Insurance Employee (11%)',amount:employeeSI,type:'employee'});
     rows.push({item:'PAYE Tax (Est.)',amount:paye,type:'employee'});
-    employerCosts=ssnit13+tier2;
-    employeeDeductions=ssnit55+paye;
+    employerCosts = employerSI;
+    employeeDeductions = employeeSI + paye;
+
+  } else if (country === 'TZ') {
+    // Tanzania
+    const nssf = gross * 0.10;
+    const wcf = gross * 0.005;
+    const sdl = gross * 0.035;
+    const employeeNSSF = gross * 0.10;
+    const taxableMonthly = Math.max(0, gross - employeeNSSF);
+    const paye = calcTanzaniaPAYE(taxableMonthly);
+
+    rows.push({item:'Gross Salary',amount:gross,type:'base'});
+    rows.push({item:'NSSF Employer (10%)',amount:nssf,type:'employer'});
+    rows.push({item:'WCF (0.5%)',amount:wcf,type:'employer'});
+    rows.push({item:'SDL (3.5%)',amount:sdl,type:'employer'});
+    rows.push({item:'NSSF Employee (10%)',amount:employeeNSSF,type:'employee'});
+    rows.push({item:'PAYE Tax',amount:paye,type:'employee'});
+    employerCosts = nssf + wcf + sdl;
+    employeeDeductions = employeeNSSF + paye;
+
+  } else if (country === 'UG') {
+    // Uganda
+    const nssfEmployer = gross * 0.10;
+    const nssfEmployee = gross * 0.05;
+    const taxable = Math.max(0, gross - nssfEmployee);
+    const paye = calcUgandaPAYE(taxable);
+
+    rows.push({item:'Gross Salary',amount:gross,type:'base'});
+    rows.push({item:'NSSF Employer (10%)',amount:nssfEmployer,type:'employer'});
+    rows.push({item:'NSSF Employee (5%)',amount:nssfEmployee,type:'employee'});
+    rows.push({item:'PAYE Tax',amount:paye,type:'employee'});
+    employerCosts = nssfEmployer;
+    employeeDeductions = nssfEmployee + paye;
+
+  } else if (country === 'RW') {
+    // Rwanda (2025 rates)
+    const pension = gross * 0.06;
+    const maternity = gross * 0.003;
+    const occHazard = gross * 0.02;
+    const employeePension = gross * 0.06;
+    const employeeMaternity = gross * 0.003;
+    const taxable = Math.max(0, gross - employeePension - employeeMaternity);
+    const paye = calcRwandaPAYE(taxable);
+
+    rows.push({item:'Gross Salary',amount:gross,type:'base'});
+    rows.push({item:'Pension Employer (6%)',amount:pension,type:'employer'});
+    rows.push({item:'Maternity Employer (0.3%)',amount:maternity,type:'employer'});
+    rows.push({item:'Occupational Hazard (2%)',amount:occHazard,type:'employer'});
+    rows.push({item:'Pension Employee (6%)',amount:employeePension,type:'employee'});
+    rows.push({item:'Maternity Employee (0.3%)',amount:employeeMaternity,type:'employee'});
+    rows.push({item:'PAYE Tax',amount:paye,type:'employee'});
+    employerCosts = pension + maternity + occHazard;
+    employeeDeductions = employeePension + employeeMaternity + paye;
+
+  } else if (country === 'ET') {
+    // Ethiopia
+    const pensionCap = 15000;
+    const pensionBase = Math.min(gross, pensionCap);
+    const employerPension = pensionBase * 0.11;
+    const employeePension = pensionBase * 0.07;
+    const taxable = Math.max(0, gross - employeePension);
+    const paye = calcEthiopiaPAYE(taxable);
+
+    rows.push({item:'Gross Salary',amount:gross,type:'base'});
+    rows.push({item:'Pension Employer (11%)',amount:employerPension,type:'employer'});
+    rows.push({item:'Pension Employee (7%)',amount:employeePension,type:'employee'});
+    rows.push({item:'PAYE Tax',amount:paye,type:'employee'});
+    employerCosts = employerPension;
+    employeeDeductions = employeePension + paye;
+
+  } else if (country === 'CM') {
+    // Cameroon
+    const cnpsCeiling = 750000;
+    const cnpsBase = Math.min(gross, cnpsCeiling);
+    const cnpsEmployer = cnpsBase * 0.125; // ~12.5% (pension + family + accident avg)
+    const cnpsEmployee = cnpsBase * 0.042;
+    const housingFund = gross * 0.015;
+    const fne = gross * 0.01;
+    // Simplified PAYE (10-35% progressive)
+    const paye = calcGenericPAYE(gross * 12, 0.15) / 12; // ~15% effective avg
+
+    rows.push({item:'Gross Salary',amount:gross,type:'base'});
+    rows.push({item:'CNPS Employer (~12.5%)',amount:cnpsEmployer,type:'employer'});
+    rows.push({item:'Housing Fund (1.5%)',amount:housingFund,type:'employer'});
+    rows.push({item:'FNE (1%)',amount:fne,type:'employer'});
+    rows.push({item:'CNPS Employee (4.2%)',amount:cnpsEmployee,type:'employee'});
+    rows.push({item:'PAYE Tax (Est.)',amount:paye,type:'employee'});
+    employerCosts = cnpsEmployer + housingFund + fne;
+    employeeDeductions = cnpsEmployee + paye;
+
+  } else if (country === 'SN') {
+    // Senegal
+    const ipres = gross * 0.084;
+    const familyBenefits = gross * 0.07;
+    const accidentIns = gross * 0.03; // mid-range
+    const payrollTax = gross * 0.03;
+    const employeeIPRES = gross * 0.056;
+    const paye = calcGenericPAYE(gross * 12, 0.18) / 12;
+
+    rows.push({item:'Gross Salary',amount:gross,type:'base'});
+    rows.push({item:'IPRES Pension Employer (8.4%)',amount:ipres,type:'employer'});
+    rows.push({item:'Family Benefits (7%)',amount:familyBenefits,type:'employer'});
+    rows.push({item:'Accident Insurance (3%)',amount:accidentIns,type:'employer'});
+    rows.push({item:'Payroll Tax (3%)',amount:payrollTax,type:'employer'});
+    rows.push({item:'IPRES Employee (5.6%)',amount:employeeIPRES,type:'employee'});
+    rows.push({item:'PAYE Tax (Est.)',amount:paye,type:'employee'});
+    employerCosts = ipres + familyBenefits + accidentIns + payrollTax;
+    employeeDeductions = employeeIPRES + paye;
+
+  } else if (country === 'CI') {
+    // Côte d'Ivoire
+    const cnpsRetirement = gross * 0.077;
+    const familyAllow = gross * 0.0575;
+    const accidentIns = gross * 0.035; // mid-range
+    const fdfp = gross * 0.02;
+    const payrollTax = gross * 0.028;
+    const employeeCNPS = gross * 0.063;
+    const paye = calcGenericPAYE(gross * 12, 0.15) / 12;
+
+    rows.push({item:'Gross Salary',amount:gross,type:'base'});
+    rows.push({item:'CNPS Retirement (7.7%)',amount:cnpsRetirement,type:'employer'});
+    rows.push({item:'Family Allowance (5.75%)',amount:familyAllow,type:'employer'});
+    rows.push({item:'Accident Insurance (3.5%)',amount:accidentIns,type:'employer'});
+    rows.push({item:'FDFP Training (2%)',amount:fdfp,type:'employer'});
+    rows.push({item:'Payroll Tax (2.8%)',amount:payrollTax,type:'employer'});
+    rows.push({item:'CNPS Employee (6.3%)',amount:employeeCNPS,type:'employee'});
+    rows.push({item:'PAYE Tax (Est.)',amount:paye,type:'employee'});
+    employerCosts = cnpsRetirement + familyAllow + accidentIns + fdfp + payrollTax;
+    employeeDeductions = employeeCNPS + paye;
+
+  } else if (country === 'MA') {
+    // Morocco
+    const cnssBase = Math.min(gross, 6000); // social allocation ceiling
+    const cnssFamily = gross * 0.064;
+    const cnssSocial = cnssBase * 0.086;
+    const cnssTraining = gross * 0.016;
+    const cnssAMO = gross * 0.0411;
+    const employeeSocial = cnssBase * 0.0429;
+    const employeeAMO = gross * 0.0226;
+    // Morocco income tax: 0-40K @0%, progressive to 37%
+    const annual = gross * 12;
+    const bands = [[40000,0],[20000,.10],[10000,.20],[10000,.30],[40000,.34],[Infinity,.37]];
+    let tax = 0, rem = annual;
+    for (const [l,r] of bands) { const a = Math.min(rem,l); tax += a*r; rem -= a; if(rem<=0) break; }
+    const paye = tax / 12;
+
+    rows.push({item:'Gross Salary',amount:gross,type:'base'});
+    rows.push({item:'CNSS Family (6.4%)',amount:cnssFamily,type:'employer'});
+    rows.push({item:'CNSS Social (8.6%, cap 6K)',amount:cnssSocial,type:'employer'});
+    rows.push({item:'CNSS Training (1.6%)',amount:cnssTraining,type:'employer'});
+    rows.push({item:'AMO Employer (4.11%)',amount:cnssAMO,type:'employer'});
+    rows.push({item:'CNSS Employee (4.29%, cap 6K)',amount:employeeSocial,type:'employee'});
+    rows.push({item:'AMO Employee (2.26%)',amount:employeeAMO,type:'employee'});
+    rows.push({item:'Income Tax (Est.)',amount:paye,type:'employee'});
+    employerCosts = cnssFamily + cnssSocial + cnssTraining + cnssAMO;
+    employeeDeductions = employeeSocial + employeeAMO + paye;
+
+  } else if (country === 'AO') {
+    // Angola
+    const inssEmployer = gross * 0.08;
+    const inssEmployee = gross * 0.03;
+    // Angola IRT: first 100K exempt, progressive to 25%
+    const taxable = Math.max(0, gross - 100000);
+    const bands = [[50000,.10],[100000,.15],[200000,.20],[Infinity,.25]];
+    let tax = 0, rem = taxable;
+    for (const [l,r] of bands) { const a = Math.min(rem,l); tax += a*r; rem -= a; if(rem<=0) break; }
+
+    rows.push({item:'Gross Salary',amount:gross,type:'base'});
+    rows.push({item:'INSS Employer (8%)',amount:inssEmployer,type:'employer'});
+    rows.push({item:'INSS Employee (3%)',amount:inssEmployee,type:'employee'});
+    rows.push({item:'IRT Tax (Est.)',amount:tax,type:'employee'});
+    employerCosts = inssEmployer;
+    employeeDeductions = inssEmployee + tax;
+
+  } else if (country === 'MZ') {
+    // Mozambique
+    const inssEmployer = gross * 0.04;
+    const inssEmployee = gross * 0.03;
+    // IRPS: progressive 10-32%
+    const annual = gross * 12;
+    const bands = [[42000,0],[42000,.10],[168000,.15],[504000,.20],[1512000,.25],[Infinity,.32]];
+    let tax = 0, rem = annual;
+    for (const [l,r] of bands) { const a = Math.min(rem,l); tax += a*r; rem -= a; if(rem<=0) break; }
+    const paye = tax / 12;
+
+    rows.push({item:'Gross Salary',amount:gross,type:'base'});
+    rows.push({item:'INSS Employer (4%)',amount:inssEmployer,type:'employer'});
+    rows.push({item:'INSS Employee (3%)',amount:inssEmployee,type:'employee'});
+    rows.push({item:'IRPS Tax (Est.)',amount:paye,type:'employee'});
+    employerCosts = inssEmployer;
+    employeeDeductions = inssEmployee + paye;
+
+  } else if (country === 'ZW') {
+    // Zimbabwe (USD)
+    const nssaCeiling = 700;
+    const nssaBase = Math.min(gross, nssaCeiling);
+    const nssaEmployer = nssaBase * 0.045;
+    const nssaEmployee = nssaBase * 0.045;
+    const paye = calcZimbabwePAYE(gross * 12) / 12;
+    const aidsLevy = paye * 0.03;
+
+    rows.push({item:'Gross Salary',amount:gross,type:'base'});
+    rows.push({item:'NSSA Employer (4.5%, cap $700)',amount:nssaEmployer,type:'employer'});
+    rows.push({item:'NSSA Employee (4.5%, cap $700)',amount:nssaEmployee,type:'employee'});
+    rows.push({item:'PAYE Tax',amount:paye,type:'employee'});
+    rows.push({item:'AIDS Levy (3% of PAYE)',amount:aidsLevy,type:'employee'});
+    employerCosts = nssaEmployer;
+    employeeDeductions = nssaEmployee + paye + aidsLevy;
+
+  } else if (country === 'BW') {
+    // Botswana — no mandatory social security
+    const paye = calcBotswanaPAYE(gross * 12) / 12;
+
+    rows.push({item:'Gross Salary',amount:gross,type:'base'});
+    rows.push({item:'PAYE Tax',amount:paye,type:'employee'});
+    employerCosts = 0;
+    employeeDeductions = paye;
   }
 
-  // Benefits
-  if(hasHmo){rows.push({item:'HMO / Health Insurance',amount:hmoAmt,type:'employer'});employerCosts+=hmoAmt}
-  if(has13th){const thirteenthMo=salary/12;rows.push({item:'13th Month (Amortised)',amount:thirteenthMo,type:'employer'});employerCosts+=thirteenthMo}
-  if(hasTraining&&trainingAmt>0){const mo=trainingAmt/12;rows.push({item:'Training Budget (Monthly)',amount:mo,type:'employer'});employerCosts+=mo}
-  if(hasEquip&&equipAmt>0){const mo=equipAmt/12;rows.push({item:'Equipment (Monthly)',amount:mo,type:'employer'});employerCosts+=mo}
+  // ── OPTIONAL BENEFITS ──
+  if (hasHmo && hmoAmt > 0) { rows.push({item:'HMO / Health Insurance',amount:hmoAmt,type:'employer'}); employerCosts += hmoAmt; }
+  if (has13th) { const mo = salary / 12; rows.push({item:'13th Month (Amortised)',amount:mo,type:'employer'}); employerCosts += mo; }
+  if (hasTraining && trainingAmt > 0) { const mo = trainingAmt / 12; rows.push({item:'Training Budget (Monthly)',amount:mo,type:'employer'}); employerCosts += mo; }
+  if (hasEquip && equipAmt > 0) { const mo = equipAmt / 12; rows.push({item:'Equipment (Monthly)',amount:mo,type:'employer'}); employerCosts += mo; }
 
-  const totalMonthly=gross+employerCosts;
-  const totalAnnual=totalMonthly*12;
-  const takeHome=gross-employeeDeductions;
-  const multiplier=gross>0?(totalMonthly/gross):0;
+  const totalMonthly = gross + employerCosts;
+  const totalAnnual = totalMonthly * 12;
+  const takeHome = gross - employeeDeductions;
+  const multiplier = gross > 0 ? (totalMonthly / gross) : 0;
 
-  document.getElementById('rMonthly').textContent=fmt(Math.round(totalMonthly),cur);
-  document.getElementById('rAnnual').textContent=fmt(Math.round(totalAnnual),cur);
-  document.getElementById('rTakeHome').textContent=fmt(Math.round(takeHome),cur)+'/mo';
-  document.getElementById('rMultiplier').textContent=multiplier.toFixed(2)+'x';
+  // ── UPDATE UI ──
+  document.getElementById('rMonthly').textContent = fmt(totalMonthly, cur);
+  document.getElementById('rAnnual').textContent = fmt(totalAnnual, cur);
+  document.getElementById('rTakeHome').textContent = fmt(Math.max(0, takeHome), cur) + '/mo';
+  document.getElementById('rMultiplier').textContent = multiplier.toFixed(2) + 'x';
 
-  // Build breakdown table
-  let tableHtml='<thead><tr><th>Item</th><th>Type</th><th>Monthly</th></tr></thead><tbody>';
-  rows.forEach(r=>{
-    const typeLabel={base:'Base',employer:'Employer Cost',employee:'Employee Deduction'}[r.type];
-    const cls=r.type==='employer'?'color:#ef4444':r.type==='employee'?'color:#f59e0b':'';
-    tableHtml+=`<tr><td>${r.item}</td><td style="${cls};font-size:.72rem;font-weight:600">${typeLabel}</td><td>${fmt(Math.round(r.amount),cur)}</td></tr>`;
+  // ── BUILD TABLE ──
+  let tableHtml = '<thead><tr><th>Item</th><th>Type</th><th>Monthly</th></tr></thead><tbody>';
+  rows.forEach(r => {
+    const typeLabel = {base:'Base Pay',employer:'Employer Cost',employee:'Employee Deduction'}[r.type];
+    const typeCls = {base:'sc-type-base',employer:'sc-type-employer',employee:'sc-type-employee'}[r.type];
+    tableHtml += `<tr><td>${r.item}</td><td><span class="sc-type ${typeCls}">${typeLabel}</span></td><td>${fmt(Math.round(r.amount),cur)}</td></tr>`;
   });
-  tableHtml+=`<tr class="total-row"><td>Total Cost to Company</td><td></td><td>${fmt(Math.round(totalMonthly),cur)}</td></tr>`;
-  tableHtml+='</tbody>';
-  document.getElementById('breakdownTable').innerHTML=tableHtml;
+  tableHtml += `<tr class="sc-total"><td>Total Cost to Company</td><td></td><td>${fmt(Math.round(totalMonthly),cur)}</td></tr>`;
+  tableHtml += '</tbody>';
+  document.getElementById('breakdownTable').innerHTML = tableHtml;
 
-  document.getElementById('results').style.display='block';
+  // ── CHART ──
+  renderChart(rows, gross, employerCosts, employeeDeductions, takeHome);
+
+  document.getElementById('results').style.display = 'block';
   document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+
+  gtag('event','staff_cost_calc',{country:country,currency:cur,gross:gross});
 }
 
-function calcNigeriaPAYE(taxable){
-  if(taxable<=0)return 0;
-  const bands=[[300000,.07],[300000,.11],[500000,.15],[500000,.19],[1600000,.21],[Infinity,.24]];
-  let tax=0,remaining=taxable;
-  for(const [limit,rate] of bands){
-    const amt=Math.min(remaining,limit);
-    tax+=amt*rate;
-    remaining-=amt;
-    if(remaining<=0)break;
-  }
-  return tax;
+// ── SVG DONUT CHART (zero dependencies) ──
+function renderChart(rows, gross, employerCosts, employeeDeductions, takeHome) {
+  const container = document.getElementById('costChart');
+  if (!container) return;
+
+  const employerItems = rows.filter(r => r.type === 'employer');
+  const segments = [
+    { label: 'Take-Home Pay', value: Math.max(0, takeHome), color: '#008751' },
+    ...employerItems.map((r, i) => ({
+      label: r.item, value: Math.round(r.amount),
+      color: ['#ef4444','#f97316','#eab308','#ec4899','#a855f7','#6366f1','#14b8a6','#84cc16','#f43f5e'][i % 9]
+    })),
+    { label: 'Employee Deductions', value: Math.round(employeeDeductions), color: '#f59e0b' }
+  ].filter(s => s.value > 0);
+
+  const total = segments.reduce((a, s) => a + s.value, 0);
+  if (total <= 0) { container.innerHTML = ''; return; }
+
+  const cx = 120, cy = 120, R = 100, r = 60; // outer/inner radius
+  let angle = -Math.PI / 2; // start at top
+  let paths = '';
+
+  segments.forEach(seg => {
+    const frac = seg.value / total;
+    const a1 = angle;
+    const a2 = angle + frac * Math.PI * 2;
+    const large = frac > 0.5 ? 1 : 0;
+
+    const x1o = cx + R * Math.cos(a1), y1o = cy + R * Math.sin(a1);
+    const x2o = cx + R * Math.cos(a2), y2o = cy + R * Math.sin(a2);
+    const x1i = cx + r * Math.cos(a2), y1i = cy + r * Math.sin(a2);
+    const x2i = cx + r * Math.cos(a1), y2i = cy + r * Math.sin(a1);
+
+    paths += `<path d="M${x1o},${y1o} A${R},${R} 0 ${large} 1 ${x2o},${y2o} L${x1i},${y1i} A${r},${r} 0 ${large} 0 ${x2i},${y2i} Z" fill="${seg.color}" stroke="#fff" stroke-width="2">
+      <title>${seg.label}: ${(frac*100).toFixed(1)}%</title></path>`;
+    angle = a2;
+  });
+
+  // Center text
+  const multiplier = total > 0 && gross > 0 ? (total / gross).toFixed(2) : '0';
+  const centerText = `<text x="${cx}" y="${cy - 6}" text-anchor="middle" font-size="22" font-weight="800" fill="#0f172a" font-family="DM Sans,sans-serif">${multiplier}x</text>
+    <text x="${cx}" y="${cy + 14}" text-anchor="middle" font-size="10" font-weight="600" fill="#64748b" font-family="DM Sans,sans-serif">MULTIPLIER</text>`;
+
+  const svg = `<svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">${paths}${centerText}</svg>`;
+
+  // Legend
+  let legend = '<div class="sc-legend">';
+  segments.forEach(seg => {
+    const pct = ((seg.value / total) * 100).toFixed(1);
+    legend += `<span class="sc-legend-item"><span class="sc-legend-dot" style="background:${seg.color}"></span>${seg.label} (${pct}%)</span>`;
+  });
+  legend += '</div>';
+
+  container.innerHTML = svg + legend;
 }
 
-function calcKenyaPAYE(annual){
-  // Monthly bands (applied annually): up to 288,000 (10%), 288K-388K (25%), above 388K (30%)
-  // Simplified annual
-  const monthly=annual/12;
-  let tax=0;
-  if(monthly<=24000)tax=monthly*0.10;
-  else if(monthly<=32333)tax=24000*0.10+(monthly-24000)*0.25;
-  else tax=24000*0.10+8333*0.25+(monthly-32333)*0.30;
-  tax=Math.max(0,tax-2400); // personal relief
-  return tax*12;
-}
-
-function calcSAPAYE(annual){
-  const bands=[[237100,.18],[370500,.26],[512800,.31],[673000,.36],[857900,.39],[1817000,.41],[Infinity,.45]];
-  const credits=[0,42678,42678+77362,42678+77362+121475,42678+77362+121475+179147,42678+77362+121475+179147+251258,42678+77362+121475+179147+251258+644489];
-  let tax=0,remaining=annual;
-  for(let i=0;i<bands.length;i++){
-    const [limit,rate]=bands[i];
-    const prev=i>0?bands[i-1][0]:0;
-    const bandAmt=Math.min(remaining,limit-prev);
-    if(bandAmt<=0)break;
-    tax+=bandAmt*rate;
-    remaining-=bandAmt;
-  }
-  tax-=17235; // primary rebate
-  return Math.max(0,tax);
-}
-
-function calcGhanaPAYE(annual){
-  const monthly=annual/12;
-  const bands=[[490,.0],[110,.05],[130,.10],[3166.67,.175],[16461.67,.25],[29833.33,.30],[Infinity,.35]];
-  let tax=0,remaining=monthly;
-  for(const [limit,rate] of bands){
-    const amt=Math.min(remaining,limit);
-    tax+=amt*rate;
-    remaining-=amt;
-    if(remaining<=0)break;
-  }
-  return tax*12;
-}
-
-// Format inputs
-['salary','transport','housing','otherAllow','hmoAmt','trainingAmt','equipAmt'].forEach(id=>{
-  const el=document.getElementById(id);
-  if(!el)return;
-  el.addEventListener('blur',()=>{const v=parseNum(el.value);if(v>0)el.value=v.toLocaleString('en')});
-  el.addEventListener('focus',()=>{el.value=el.value.replace(/,/g,'')});
+// ── FORMAT INPUTS ──
+['salary','transport','housing','otherAllow','hmoAmt','trainingAmt','equipAmt'].forEach(id => {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.addEventListener('blur', () => { const v = parseNum(el.value); if (v > 0) el.value = v.toLocaleString('en'); });
+  el.addEventListener('focus', () => { el.value = el.value.replace(/,/g, ''); });
 });
+</script>
+
+<script>
+(function(){
+  var target = document.getElementById('results');
+  if (!target) return;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
+  div.innerHTML = '<save-result-button tool-slug="staff-cost" tool-name="Staff Cost"></save-result-button><share-result-button tool-name="Staff Cost" tool-slug="staff-cost"></share-result-button>';
+  target.appendChild(div);
+})();
 </script>
 </body>
 </html>

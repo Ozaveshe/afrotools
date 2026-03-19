@@ -237,6 +237,9 @@
   .tb-dl span{display:none}
 }
 </style>
+<script src="/assets/js/lib/toast.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js" defer></script>
+<script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
 <div class="priv-bar">&#128274; Your files <strong>never leave your browser</strong> &#8212; zero server uploads</div>
@@ -540,6 +543,7 @@ var redoStack=[];          // for redo
 var isDrawing=false;
 var drawStart={x:0,y:0};
 var drawPoints=[];
+var eraserRects=[];
 var tempShape=null;
 
 // Image placement state
@@ -889,6 +893,14 @@ function drawOperation(ctx,op){
       ctx.globalAlpha=1;
       ctx.fillRect(op.x*s,op.y*s,op.w*s,op.h*s);
       break;
+    case 'eraser-batch':
+      ctx.fillStyle='#ffffff';
+      ctx.globalAlpha=1;
+      var esz=op.size||20;
+      op.points.forEach(function(pt){
+        ctx.fillRect((pt.x-esz/2)*s,(pt.y-esz/2)*s,esz*s,esz*s);
+      });
+      break;
   }
   ctx.restore();
 }
@@ -958,9 +970,9 @@ function toggleShapeMenu(){
 function updateShapeIcon(){
   var btn=$('tbShape');
   var svgMap={
-    rect:'<rect x="3" y="5" width="18" height="14" rx="1"/>',
-    circle:'<circle cx="12" cy="12" r="9"/>',
-    line:'<line x1="4" y1="20" x2="20" y2="4"/>'
+    rect:'<rect x="3" y="5" width="18" height="14" rx="1" fill="none" stroke="currentColor" stroke-width="2"/>',
+    circle:'<circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/>',
+    line:'<line x1="4" y1="20" x2="20" y2="4" fill="none" stroke="currentColor" stroke-width="2"/>'
   };
   var svg=btn.querySelector('svg');
   if(svg)svg.innerHTML=svgMap[shapeType]||svgMap.rect;
@@ -1036,8 +1048,7 @@ function handlePointerDown(coords){
       break;
     case 'eraser':
       isDrawing=true;
-      var sz=parseInt($('propEraserSize').value)||20;
-      addOp({type:'eraser',page:currentPage,x:un.x-sz/2,y:un.y-sz/2,w:sz,h:sz});
+      eraserRects=[{x:un.x,y:un.y}];
       break;
   }
 }
@@ -1100,8 +1111,17 @@ function handlePointerMove(coords){
       drawOperation(overlayCtx,liveOp);
       break;
     case 'eraser':
+      eraserRects.push({x:un.x,y:un.y});
+      // Live preview of eraser stroke
       var sz=parseInt($('propEraserSize').value)||20;
-      addOp({type:'eraser',page:currentPage,x:un.x-sz/2,y:un.y-sz/2,w:sz,h:sz});
+      redrawOverlay();
+      overlayCtx.save();
+      overlayCtx.globalAlpha=1;
+      overlayCtx.fillStyle='#ffffff';
+      eraserRects.forEach(function(pt){
+        overlayCtx.fillRect((pt.x-sz/2)*zoom,(pt.y-sz/2)*zoom,sz*zoom,sz*zoom);
+      });
+      overlayCtx.restore();
       break;
   }
 }
@@ -1138,7 +1158,11 @@ function handlePointerUp(){
       drawPoints=[];
       break;
     case 'eraser':
-      // Already added in real-time
+      if(eraserRects&&eraserRects.length>0){
+        var esz=parseInt($('propEraserSize').value)||20;
+        addOp({type:'eraser-batch',page:currentPage,points:eraserRects.slice(),size:esz});
+      }
+      eraserRects=[];
       break;
   }
   redrawOverlay();
@@ -1625,6 +1649,17 @@ async function applyOpToPdfLib(pdfDoc,page,op,pH,pW){
         opacity:1
       });
       break;
+    case 'eraser-batch':
+      var esz=op.size||20;
+      op.points.forEach(function(pt){
+        page.drawRectangle({
+          x:pt.x-esz/2,y:pH-(pt.y-esz/2)-esz,
+          width:esz,height:esz,
+          color:rgb(1,1,1),
+          opacity:1
+        });
+      });
+      break;
   }
 }
 
@@ -1746,20 +1781,24 @@ function setupWheelZoom(){
   },{passive:false});
 }
 
-/* ─── COLOR PRESET DOTS ─── */
-var colorPresets=['#000000','#dc2626','#2563eb','#16a34a','#eab308','#9333ea','#f97316','#ffffff'];
-
-/* ─── FORMAT OPERATION TYPE FOR DISPLAY ─── */
-function opLabel(type){
-  var labels={text:'Text',image:'Image',rect:'Rectangle',circle:'Circle',line:'Line',highlight:'Highlight',draw:'Drawing',eraser:'Eraser'};
-  return labels[type]||type;
-}
-
 /* ─── START ─── */
 init();
 setupWorkspaceDrop();
 setupWheelZoom();
 
+})();
+</script>
+
+<script>
+// Save/Share buttons — manual placement needed
+(function(){
+  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
+  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
+  div.innerHTML = '<share-result-button tool-name="Pdf Editor" tool-slug="pdf-editor"></share-result-button>';
+  target.appendChild(div);
 })();
 </script>
 </body>

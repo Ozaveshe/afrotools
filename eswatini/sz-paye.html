@@ -81,6 +81,11 @@
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the Eswatini PAYE tax structure?","acceptedAnswer":{"@type":"Answer","text":"Eswatini PAYE is calculated annually using four progressive bands starting at 20% on the first E41,000, rising to 33% above E100,000. A tax rebate of E8,200 is applied after tax calculation. SNPF pension deductions are allowed before tax is computed."}},{"@type":"Question","name":"What is SNPF and how much is capped?","acceptedAnswer":{"@type":"Answer","text":"The Swaziland National Provident Fund (SNPF) is a mandatory retirement savings scheme. Employee contribution is 5% of gross salary, capped at E600 per month (E7,200 per year). Employer contributes matching 5%. Only employee SNPF is deductible from taxable income."}},{"@type":"Question","name":"How does the E8,200 tax rebate work?","acceptedAnswer":{"@type":"Answer","text":"The tax rebate of E8,200 is applied after calculating SRA tax on taxable income. It effectively reduces your final tax liability. For example, if your calculated tax is E12,000, after the E8,200 rebate your payable tax becomes E3,800."}},{"@type":"Question","name":"Is SNPF deductible from taxable income?","acceptedAnswer":{"@type":"Answer","text":"Yes. The employee's 5% SNPF contribution is fully deductible from gross pay before calculating SRA PAYE. This reduces your taxable income and therefore your tax liability. The employer's 5% contribution is not deductible from the employee's income."}},{"@type":"Question","name":"When must employers remit PAYE?","acceptedAnswer":{"@type":"Answer","text":"PAYE is calculated and remitted annually in Eswatini. Employees file tax returns by a specified deadline, and employers must remit employee tax withholdings to SRA within the prescribed timeframe set annually by the Commissioner of Income Tax."}},{"@type":"Question","name":"Can I reduce my Eswatini tax?","acceptedAnswer":{"@type":"Answer","text":"SNPF contributions (5%, capped at E600/mo) directly reduce taxable income. The E8,200 rebate applies to all residents. Some approved life insurance policies may allow deductions. Consult SRA or a tax advisor on any other qualifying deductions."}}]}
 </script>
 <script src="/assets/js/lib/chart-config.js"></script>
+
+  <script src="/assets/js/afro-history.js" defer></script>
+  <script src="/assets/js/components/save-result-button.js" defer></script>
+  <script src="/assets/js/components/share-card-generator.js" defer></script>
+  <script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body class="tool-page">
 <afro-navbar active="tools"></afro-navbar>
@@ -201,6 +206,22 @@
             Share Result
           </button>
         </div>
+
+          <!-- Save & Share -->
+          <div class="save-share-row">
+            <save-result-button
+              tool-slug="sz-paye"
+              tool-name="Eswatini PAYE Calculator"
+              country-code="SZ"
+              currency="SZL">
+            </save-result-button>
+            <share-result-button
+              tool-name="Eswatini PAYE Calculator"
+              tool-slug="sz-paye"
+              country-flag="🇸🇿">
+            </share-result-button>
+          </div>
+          <salary-benchmark country-code="SZ" currency="SZL"></salary-benchmark>
       </div>
     </div>
 
@@ -493,6 +514,28 @@ function calcAnnualPAYE(annualTaxableIncome) {
   document.getElementById('hiddenGross').value = gross;
 
   document.getElementById('resultsCard').classList.add('on');
+  // Save/Share/Benchmark wiring
+  var _saveBtn = document.querySelector('save-result-button');
+  if (_saveBtn) _saveBtn.setData({
+    inputs: { grossSalary: RESULT.gross },
+    outputs: {
+      netPay: RESULT.netMonthly || RESULT.net,
+      tax: RESULT.monthlyPAYE || RESULT.tax || RESULT.paye,
+      effectiveRate: RESULT.effectiveRate
+    }
+  });
+  var _shareBtn = document.querySelector('share-result-button');
+  if (_shareBtn) _shareBtn.setResult({
+    headline: 'My Take-Home Pay',
+    mainValue: fmt(RESULT.netMonthly || RESULT.net) + '/mo',
+    subValues: [
+      { label: 'Gross', value: fmt(RESULT.gross) + '/mo' },
+      { label: 'Tax', value: fmt(RESULT.monthlyPAYE || RESULT.tax || RESULT.paye) + '/mo' },
+      { label: 'Effective Rate', value: pct(RESULT.effectiveRate) }
+    ]
+  });
+  var _bmWidget = document.querySelector('salary-benchmark');
+  if (_bmWidget) { _bmWidget.setAttribute('user-gross', RESULT.gross); _bmWidget.setAttribute('user-net', RESULT.netMonthly || RESULT.net); }
   renderChart(CHART_TYPE);
   document.getElementById('resultsCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
@@ -708,6 +751,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 </div>
 
 <script>window._grossToNet=function(g){var d=isOn('snpf')?Math.min(g*0.05,600*12):0;return g-(d+calcAnnualPAYE(Math.max(0,g-d)).tax);};</script>
+<script src="/assets/js/components/salary-benchmark-widget.js" defer></script>
 </body></html>`;
 
   const blob = new Blob([html],{type:'text/html;charset=utf-8'});

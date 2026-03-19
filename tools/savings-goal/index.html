@@ -6,11 +6,11 @@
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'savings-goal'});</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Savings Goal Calculator — How Long to Save? | AfroTools</title>
-<meta name="description" content="Calculate how long it takes to reach your savings goal. Factor in monthly deposits, interest rates, and inflation. Supports Naira, Rand, Shilling, Cedi.">
+<meta name="description" content="Plan your savings across 54 African countries. Calculate time to goal, monthly deposits needed, or final balance with compound interest, inflation adjustment, and scenario comparison.">
 <link rel="canonical" href="https://afrotools.com/tools/savings-goal/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Savings Goal Calculator | AfroTools">
-<meta property="og:description" content="How long to reach your savings target? Factor in interest and inflation.">
+<meta property="og:description" content="Plan your savings with compound interest, inflation adjustment, and AI-powered advice for all 54 African countries.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/savings-goal/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,261 +19,978 @@
 <link rel="stylesheet" href="/assets/css/global.min.css">
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <style>
-:root{--afro-blue:var(--color-primary);--afro-dark:#0f1419}
-.tool-hero{background:linear-gradient(135deg,var(--afro-dark) 0%,#1a1f2e 100%);padding:44px 0 36px;position:relative;overflow:hidden}
-.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px;position:relative}
+:root{--accent:#10b981;--accent-light:#34d399;--accent-dark:#059669;--afro-dark:#0f1419;--sg-bg:#f8fafc;--sg-border:#e2e8f0;--sg-muted:#64748b;--sg-radius:10px}
+*,*::before,*::after{box-sizing:border-box}
+
+/* HERO */
+.sg-hero{background:linear-gradient(135deg,#0c1a10 0%,#1a2f1e 100%);padding:52px 0 40px;position:relative;overflow:hidden}
+.sg-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 70% 30%,rgba(16,185,129,.12),transparent),radial-gradient(ellipse 40% 40% at 20% 70%,rgba(52,211,153,.06),transparent);pointer-events:none}
+.sg-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
 .breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
-.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:var(--afro-blue)}
-h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
-h1 em{color:var(--afro-blue);font-style:normal}
-.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none;transition:color .15s}.breadcrumb a:hover{color:rgba(255,255,255,.6)}
+.breadcrumb span{color:var(--accent-light)}
+h1{font-size:clamp(1.6rem,4vw,2.6rem);font-weight:900;color:#fff;letter-spacing:-.025em;line-height:1.1;margin-bottom:10px}
+h1 em{color:var(--accent-light);font-style:normal}
+.hero-sub{font-size:.9rem;color:rgba(255,255,255,.5);line-height:1.6;max-width:600px;margin-bottom:16px}
 .hero-badges{display:flex;flex-wrap:wrap;gap:7px}
-.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
-.b-blue{background:rgba(0,113,227,.18);color:var(--color-primary);border:1px solid rgba(0,113,227,.38)}
-.tool-main{padding:28px 0 72px}
-.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
-.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:100px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-green{background:rgba(16,185,129,.18);color:var(--accent-light);border:1px solid rgba(16,185,129,.35)}
+.b-white{background:rgba(255,255,255,.08);color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.12)}
+
+/* MAIN LAYOUT */
+.sg-main{padding:32px 0 72px;background:var(--color-bg,#FAFAF8)}
+.sg-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 360px;gap:24px;align-items:start}
+
+/* CARDS */
+.card{background:#fff;border:1px solid var(--sg-border);border-radius:var(--sg-radius);overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.04)}
 .card+.card{margin-top:18px}
-.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
-.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
+.card-head{padding:14px 22px;border-bottom:1px solid #f1f5f9;background:var(--sg-bg);display:flex;align-items:center;gap:8px}
+.card-title{font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
+
 .card-body{padding:22px}
+
+/* TABS */
+.mode-tabs{display:flex;border-bottom:2px solid var(--sg-border);margin-bottom:18px}
+.mode-tab{flex:1;padding:10px 8px;text-align:center;font-size:.78rem;font-weight:700;color:var(--sg-muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s;background:none;border-top:none;border-left:none;border-right:none;font-family:'DM Sans',sans-serif}
+.mode-tab:hover{color:var(--afro-dark)}
+.mode-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+
+/* FORM */
 .field{margin-bottom:16px}
 .f-label{font-size:.75rem;font-weight:700;color:var(--afro-dark);margin-bottom:6px;display:block}
-.f-input,.f-select{width:100%;padding:11px 13px;background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:7px;font-size:1rem;font-weight:600;color:var(--afro-dark);outline:none;font-family:'DM Sans',sans-serif}
-.f-input:focus,.f-select:focus{border-color:var(--afro-blue);box-shadow:0 0 0 3px rgba(0,113,227,.1)}
+.f-hint{font-size:.68rem;color:#94a3b8;margin-top:3px}
+.f-input,.f-select{width:100%;padding:11px 14px;background:var(--sg-bg);border:1.5px solid #cbd5e1;border-radius:8px;font-size:1rem;font-weight:600;color:var(--afro-dark);outline:none;font-family:'DM Sans',sans-serif;box-sizing:border-box;transition:border-color .15s,box-shadow .15s}
+.f-input:focus,.f-select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(16,185,129,.12)}
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.calc-btn{width:100%;padding:13px;background:var(--afro-blue);color:#fff;border:none;border-radius:8px;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .18s;font-family:'DM Sans',sans-serif}
-.calc-btn:hover{background:#0059B3;transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,113,227,.3)}
+.field-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+
+/* INPUT GROUP */
+.input-group{display:flex;align-items:stretch}
+.input-group .f-input{border-top-right-radius:0;border-bottom-right-radius:0;border-right:none}
+.input-group .ig-suffix{padding:11px 12px;background:#e2e8f0;border:1.5px solid #cbd5e1;border-left:none;border-radius:0 8px 8px 0;font-size:.78rem;font-weight:700;color:var(--sg-muted);display:flex;align-items:center;white-space:nowrap}
+
+/* CHECKBOX */
+.check-row{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.check-row input[type=checkbox]{width:18px;height:18px;accent-color:var(--accent);cursor:pointer}
+.check-row label{font-size:.82rem;font-weight:600;color:var(--afro-dark);cursor:pointer}
+
+/* BUTTON */
+.calc-btn{width:100%;padding:14px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .18s;font-family:'DM Sans',sans-serif}
+.calc-btn:hover{background:var(--accent-dark);transform:translateY(-1px);box-shadow:0 6px 24px rgba(16,185,129,.3)}
+
+/* RESULTS */
 .result-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:18px}
-.result-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;text-align:center}
+.result-box{background:var(--sg-bg);border:1px solid var(--sg-border);border-radius:8px;padding:16px;text-align:center;transition:transform .2s}
 .result-box.wide{grid-column:1/-1}
-.result-num{font-size:1.6rem;font-weight:800;color:var(--afro-blue);line-height:1}
-.result-label{font-size:.65rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.05em;margin-top:4px}
-.progress-bar{height:12px;background:#e2e8f0;border-radius:6px;margin-top:16px;overflow:hidden}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--afro-blue),#38bdf8);border-radius:6px;transition:width .5s}
+.result-box.highlight{border-color:var(--accent);background:rgba(16,185,129,.04)}
+.result-num{font-size:1.4rem;font-weight:800;color:var(--afro-dark);line-height:1}
+.result-num.green{color:var(--accent)}
+.result-label{font-size:.65rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--sg-muted);margin-top:4px}
+
+/* PROGRESS */
+.progress-wrap{margin-top:18px}
+.progress-bar{height:14px;background:#e2e8f0;border-radius:7px;overflow:hidden;position:relative}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-light));border-radius:7px;transition:width .6s ease}
+.progress-pct{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:.6rem;font-weight:800;color:#fff}
+.progress-labels{display:flex;justify-content:space-between;font-size:.68rem;color:#94a3b8;margin-top:4px}
+
+/* MILESTONES */
 .milestone-list{margin-top:14px}
-.milestone{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f1f5f9;font-size:.82rem}
+.milestone{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #f1f5f9;font-size:.82rem}
 .milestone:last-child{border-bottom:none}
-.ms-label{color:#475569;font-weight:600}
-.ms-val{color:var(--afro-blue);font-weight:800}
+.ms-icon{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:800;color:#fff;margin-right:8px;flex-shrink:0}
+.ms-icon.q1{background:#60a5fa}.ms-icon.q2{background:#f59e0b}.ms-icon.q3{background:#f97316}.ms-icon.q4{background:var(--accent)}
+.ms-info{flex:1}
+.ms-label{font-weight:600;color:#334155}
+.ms-date{font-size:.72rem;color:#94a3b8}
+.ms-val{font-weight:800;color:var(--accent);text-align:right}
+
+/* CHART */
+.chart-wrap{position:relative;height:300px;margin-top:18px}
+
+/* SCENARIO */
+.scenario-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
+.scenario-card{border:1px solid var(--sg-border);border-radius:8px;padding:14px;text-align:center;transition:all .2s}
+.scenario-card.best{border-color:var(--accent);background:rgba(16,185,129,.04)}
+.scenario-label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.scenario-label.cons{color:#f59e0b}.scenario-label.mod{color:#3b82f6}.scenario-label.agg{color:var(--accent)}
+.scenario-val{font-size:1.1rem;font-weight:800;color:var(--afro-dark)}
+.scenario-sub{font-size:.7rem;color:var(--sg-muted);margin-top:4px}
+.scenario-bar{height:6px;border-radius:3px;background:#e2e8f0;margin-top:10px;overflow:hidden}
+.scenario-bar-fill{height:100%;border-radius:3px;transition:width .5s}
+.scenario-bar-fill.cons{background:#f59e0b}.scenario-bar-fill.mod{background:#3b82f6}.scenario-bar-fill.agg{background:var(--accent)}
+
+/* TABLE */
+.table-wrap{max-height:400px;overflow-y:auto;margin-top:12px;border:1px solid var(--sg-border);border-radius:8px}
+.table-wrap table{width:100%;border-collapse:collapse;font-size:.78rem}
+.table-wrap th{position:sticky;top:0;background:var(--sg-bg);padding:10px 12px;text-align:right;font-weight:700;font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;color:var(--sg-muted);border-bottom:2px solid var(--sg-border)}
+.table-wrap th:first-child{text-align:left}
+.table-wrap td{padding:8px 12px;border-bottom:1px solid #f1f5f9;text-align:right;color:#334155;font-weight:500}
+.table-wrap td:first-child{text-align:left;font-weight:600;color:var(--afro-dark)}
+.table-wrap tr:nth-child(even){background:rgba(248,250,252,.6)}
+.table-wrap tr:hover{background:rgba(16,185,129,.04)}
+
+/* SIDEBAR */
 .sidebar{display:flex;flex-direction:column;gap:16px}
-.info-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px}
-.info-title{font-size:.72rem;font-weight:700;color:var(--afro-dark);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+.info-card{background:#fff;border:1px solid var(--sg-border);border-radius:var(--sg-radius);padding:18px;box-shadow:0 1px 4px rgba(0,0,0,.03)}
+.info-title{font-size:.72rem;font-weight:800;color:var(--afro-dark);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px}
 .info-text{font-size:.8rem;color:#475569;line-height:1.6}
-.rate-item{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #f1f5f9;font-size:.78rem}
+.rate-item{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f1f5f9;font-size:.78rem}
 .rate-item:last-child{border-bottom:none}
 .rate-name{font-weight:600;color:#334155}
-.rate-val{font-weight:700;color:var(--afro-blue)}
-@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.field-row{grid-template-columns:1fr}.result-grid{grid-template-columns:1fr 1fr}}
-details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-details-marker{display:none}
+.rate-val{font-weight:700;color:var(--accent)}
+.tip-card{background:linear-gradient(135deg,rgba(16,185,129,.06),rgba(52,211,153,.03));border:1px solid rgba(16,185,129,.2);border-radius:var(--sg-radius);padding:16px}
+.tip-card .info-title{color:var(--accent)}
+.tip-item{font-size:.78rem;color:#475569;line-height:1.5;padding:4px 0;padding-left:16px;position:relative}
+.tip-item::before{content:'';position:absolute;left:0;top:11px;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+
+/* AI CHAT */
+.ai-msg{padding:10px 14px;border-radius:8px;margin-bottom:8px;font-size:.82rem;line-height:1.6;max-width:90%}
+.ai-msg.user{background:var(--accent);color:#fff;margin-left:auto;border-bottom-right-radius:2px}
+.ai-msg.bot{background:#f1f5f9;color:#334155;border-bottom-left-radius:2px}
+.ai-msg.err{background:#fef2f2;color:#dc2626}
+
+/* FAQ */
+.faq-section{margin-top:18px}
+.faq-section h2{font-size:1.15rem;font-weight:800;color:#111;margin-bottom:14px}
+.faq-item{border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff}
+.faq-item summary{padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary svg{flex-shrink:0;transition:transform .2s}
+.faq-item[open] summary svg{transform:rotate(180deg)}
+.faq-item .faq-answer{padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7}
+
+/* SEO CONTENT */
+.seo-section{margin-top:24px}
+.seo-section h2{font-size:1.1rem;font-weight:800;color:#111;margin-bottom:10px}
+.seo-section h3{font-size:.95rem;font-weight:700;color:#111;margin:14px 0 8px}
+.seo-section p{font-size:.85rem;color:#475569;line-height:1.7;margin-bottom:12px}
+.seo-section a{color:var(--accent);text-decoration:none}
+.seo-section a:hover{text-decoration:underline}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+.sg-main-inner{grid-template-columns:1fr}
+.sidebar{order:2}
+}
+@media(max-width:600px){
+.field-row,.field-row-3{grid-template-columns:1fr}
+.result-grid{grid-template-columns:1fr 1fr}
+.scenario-grid{grid-template-columns:1fr}
+.mode-tab{font-size:.7rem;padding:8px 4px}
+.chart-wrap{height:220px}
+}
 </style>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Savings Goal Calculator","description":"Calculate how long it takes to reach your savings goal with monthly deposits and interest.","url":"https://afrotools.com/tools/savings-goal/","applicationCategory":"FinanceApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
-{"@type":"Question","name":"How is the savings timeline calculated?","acceptedAnswer":{"@type":"Answer","text":"The calculator simulates month-by-month savings, adding your monthly deposit and applying compound interest each month until the target is reached. It uses the formula for future value of annuity."}},
-{"@type":"Question","name":"What interest rates should I use for African savings accounts?","acceptedAnswer":{"@type":"Answer","text":"Nigerian savings accounts offer 3-7% annually, Kenyan accounts offer 4-8%, South African accounts offer 5-9%, and Ghanaian accounts offer 8-15%. Money market funds and fixed deposits offer higher rates."}},
-{"@type":"Question","name":"Does inflation affect my savings goal?","acceptedAnswer":{"@type":"Answer","text":"Yes. The calculator optionally factors in inflation to show the real value of your savings. With Nigeria's inflation around 15-25% and Kenya's around 6-9%, your target amount may need to be higher in nominal terms."}}
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Savings Goal Calculator","description":"Plan your savings across 54 African countries. Calculate time to goal, monthly deposits needed, or final balance with compound interest, inflation, and scenario comparison.","url":"https://afrotools.com/tools/savings-goal/","applicationCategory":"FinanceApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}</script>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},
+{"@type":"ListItem","position":2,"name":"Tools","item":"https://afrotools.com/all-tools/"},
+{"@type":"ListItem","position":3,"name":"Savings Goal Calculator","item":"https://afrotools.com/tools/savings-goal/"}
 ]}</script>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"How is the savings timeline calculated?","acceptedAnswer":{"@type":"Answer","text":"The calculator simulates month-by-month savings, adding your chosen deposit frequency and applying compound interest each period. It accounts for inflation by adjusting the goal upward over time to reflect decreasing purchasing power."}},
+{"@type":"Question","name":"What interest rates should I use for African savings accounts?","acceptedAnswer":{"@type":"Answer","text":"Rates vary significantly by country and instrument. Nigerian savings accounts offer 5-7%, Kenyan accounts 6-8%, South African accounts 7-9%, and Ghanaian accounts 10-15%. Treasury bills and money market funds typically offer higher returns."}},
+{"@type":"Question","name":"Does inflation affect my savings goal?","acceptedAnswer":{"@type":"Answer","text":"Yes, significantly. With Nigeria's inflation around 33%, Kenya's at 6.9%, and Ghana's at 23%, your target amount needs to be much higher in nominal terms. The calculator shows both nominal and inflation-adjusted (real) values."}},
+{"@type":"Question","name":"What are the best savings instruments in Africa?","acceptedAnswer":{"@type":"Answer","text":"Treasury Bills are popular in Nigeria (10-15%), Kenya (12-16%), and Ghana (25-30%). Money market funds, fixed deposits, and savings cooperatives (like Ajo/Chama groups) are also widely used across the continent."}},
+{"@type":"Question","name":"How much should I save for an emergency fund in Africa?","acceptedAnswer":{"@type":"Answer","text":"Financial advisors recommend 3-6 months of essential expenses. In high-inflation countries like Nigeria or Ghana, aim for 6 months as costs rise quickly. Keep emergency funds in liquid instruments like money market funds."}},
+{"@type":"Question","name":"Can I increase my monthly savings over time?","acceptedAnswer":{"@type":"Answer","text":"Yes! This calculator supports annual contribution increases. Many savers increase deposits by 5-10% yearly as incomes grow. Even small annual increases can dramatically shorten your timeline to reaching your savings goal."}}
+]}</script>
+<script src="/assets/js/lib/toast.js" defer></script>
+<script src="/assets/js/afro-history.js" defer></script>
+<script src="/assets/js/components/save-result-button.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js" defer></script>
+<script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
-<div class="tool-hero"><div class="tool-hero-inner">
+
+<div class="sg-hero"><div class="sg-hero-inner">
   <div class="breadcrumb"><a href="/">AfroTools</a> / <a href="/all-tools">Tools</a> / <span>Savings Goal</span></div>
   <h1>Savings Goal <em>Calculator</em></h1>
-  <p class="hero-sub">Find out how long it takes to reach your savings target. Factor in monthly deposits, interest rates, and inflation for a realistic plan.</p>
-  <div class="hero-badges"><span class="badge b-blue">Compound Interest</span><span class="badge b-blue">Inflation Adjusted</span><span class="badge b-blue">African Rates</span></div>
+  <p class="hero-sub">Plan your savings across all 54 African countries. Calculate timelines, monthly targets, or final balances with compound interest, inflation adjustment, and AI-powered advice.</p>
+  <div class="hero-badges">
+    <span class="badge b-green">54 African Countries</span>
+    <span class="badge b-green">Compound Interest</span>
+    <span class="badge b-green">Inflation Adjusted</span>
+    <span class="badge b-white">Scenario Comparison</span>
+    <span class="badge b-white">AI Advisor</span>
+  </div>
 </div></div>
 
-<div class="tool-main"><div class="tool-main-inner">
+<div class="sg-main"><div class="sg-main-inner">
   <div>
+    <!-- CALCULATOR CARD -->
     <div class="card">
-      <div class="card-head"><span class="card-title">Set Your Savings Goal</span></div>
+      <div class="card-head"><span class="card-title">Savings Goal Calculator</span></div>
       <div class="card-body">
+        <!-- Mode Tabs -->
+        <div class="mode-tabs">
+          <button class="mode-tab active" data-mode="time" onclick="switchMode('time')">Time to Goal</button>
+          <button class="mode-tab" data-mode="monthly" onclick="switchMode('monthly')">Monthly Needed</button>
+          <button class="mode-tab" data-mode="balance" onclick="switchMode('balance')">Final Balance</button>
+        </div>
+
+        <!-- Country & Currency -->
         <div class="field-row">
-          <div class="field"><label class="f-label">Savings Goal</label><input type="number" class="f-input" id="goal" value="5000000" step="1000" min="0"></div>
-          <div class="field"><label class="f-label">Currency</label>
-            <select class="f-select" id="currency">
-              <option value="₦">NGN (₦)</option><option value="KSh">KES (KSh)</option>
-              <option value="R">ZAR (R)</option><option value="GH₵">GHS (GH₵)</option>
-              <option value="$">USD ($)</option>
+          <div class="field">
+            <label class="f-label">Country</label>
+            <select class="f-select" id="country" onchange="onCountryChange()"></select>
+          </div>
+          <div class="field">
+            <label class="f-label">Goal Preset</label>
+            <select class="f-select" id="goalPreset" onchange="onPresetChange()">
+              <option value="custom">Custom Amount</option>
+              <option value="emergency">Emergency Fund (3-6 mo)</option>
+              <option value="house">House Down Payment (20%)</option>
+              <option value="wedding">Wedding</option>
+              <option value="car">Car Purchase</option>
+              <option value="education">Education Fund</option>
+              <option value="vacation">Vacation</option>
+              <option value="business">Business Start-up</option>
             </select>
           </div>
         </div>
-        <div class="field-row">
-          <div class="field"><label class="f-label">Current Savings</label><input type="number" class="f-input" id="current" value="500000" step="1000" min="0"></div>
-          <div class="field"><label class="f-label">Monthly Deposit</label><input type="number" class="f-input" id="monthly" value="100000" step="1000" min="0"></div>
-        </div>
-        <div class="field-row">
-          <div class="field"><label class="f-label">Annual Interest Rate (%)</label><input type="number" class="f-input" id="rate" value="7" step="0.1" min="0" max="50"></div>
-          <div class="field"><label class="f-label">Annual Inflation (%)</label><input type="number" class="f-input" id="inflation" value="0" step="0.1" min="0" max="50"></div>
-        </div>
-        <button class="calc-btn" onclick="calculate()">Calculate</button>
 
+        <!-- Goal & Current -->
+        <div class="field-row">
+          <div class="field">
+            <label class="f-label">Savings Goal (<span id="curSymLabel"></span>)</label>
+            <input type="text" class="f-input" id="goal" value="5,000,000" oninput="fmtInput(this)" inputmode="numeric">
+            <div class="f-hint" id="goalHint"></div>
+          </div>
+          <div class="field">
+            <label class="f-label">Current Savings (<span id="curSymLabel2"></span>)</label>
+            <input type="text" class="f-input" id="current" value="500,000" oninput="fmtInput(this)" inputmode="numeric">
+          </div>
+        </div>
+
+        <!-- Deposit & Frequency -->
+        <div class="field-row" id="depositRow">
+          <div class="field">
+            <label class="f-label" id="depositLabel">Monthly Deposit</label>
+            <input type="text" class="f-input" id="deposit" value="100,000" oninput="fmtInput(this)" inputmode="numeric">
+          </div>
+          <div class="field">
+            <label class="f-label">Frequency</label>
+            <select class="f-select" id="frequency" onchange="updateDepositLabel()">
+              <option value="monthly">Monthly</option>
+              <option value="biweekly">Bi-weekly</option>
+              <option value="weekly">Weekly</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Timeline (for monthly-needed mode) -->
+        <div class="field" id="timelineField" style="display:none">
+          <label class="f-label">Timeline (months)</label>
+          <input type="number" class="f-input" id="timeline" value="24" min="1" max="600" step="1">
+        </div>
+
+        <!-- Rates -->
+        <div class="field-row">
+          <div class="field">
+            <label class="f-label">Annual Interest Rate (%)</label>
+            <input type="number" class="f-input" id="rate" value="7" step="0.1" min="0" max="100">
+            <div class="f-hint" id="rateHint">Typical savings rate for your country</div>
+          </div>
+          <div class="field">
+            <label class="f-label">Annual Inflation (%)</label>
+            <input type="number" class="f-input" id="inflation" value="0" step="0.1" min="0" max="200">
+            <div class="f-hint" id="inflationHint">Set to 0 to ignore inflation</div>
+          </div>
+        </div>
+
+        <!-- Options -->
+        <div class="check-row">
+          <input type="checkbox" id="annualIncrease">
+          <label for="annualIncrease">Increase contributions annually</label>
+        </div>
+        <div class="field" id="increaseField" style="display:none">
+          <label class="f-label">Annual Increase (%)</label>
+          <input type="number" class="f-input" id="increaseRate" value="5" step="1" min="0" max="100">
+        </div>
+
+        <div class="check-row">
+          <input type="checkbox" id="showReal" checked>
+          <label for="showReal">Show inflation-adjusted (real) values</label>
+        </div>
+
+        <button class="calc-btn" onclick="calculate()">Calculate Savings Plan</button>
+
+        <!-- RESULTS -->
         <div id="results" style="display:none">
-          <div class="result-grid">
-            <div class="result-box wide"><div class="result-label">Time to Reach Goal</div><div class="result-num" id="timeResult">0</div></div>
-            <div class="result-box"><div class="result-label">Total Deposited</div><div class="result-num" id="totalDeposited" style="font-size:1.2rem">0</div></div>
-            <div class="result-box"><div class="result-label">Interest Earned</div><div class="result-num" id="interestEarned" style="font-size:1.2rem">0</div></div>
-            <div class="result-box"><div class="result-label">Final Balance</div><div class="result-num" id="finalBalance" style="font-size:1.2rem">0</div></div>
-            <div class="result-box"><div class="result-label">Target Date</div><div class="result-num" id="targetDate" style="font-size:1rem">—</div></div>
+          <div class="result-grid" id="resultGrid"></div>
+
+          <!-- Progress -->
+          <div class="progress-wrap">
+            <div class="progress-bar">
+              <div class="progress-fill" id="progressFill" style="width:0%"></div>
+              <span class="progress-pct" id="progressPct">0%</span>
+            </div>
+            <div class="progress-labels">
+              <span>Start: <strong id="startPct">0%</strong></span>
+              <span>Goal: <strong>100%</strong></span>
+            </div>
           </div>
 
-          <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
-          <div style="display:flex;justify-content:space-between;font-size:.7rem;color:#94a3b8;margin-top:4px">
-            <span>Starting: <span id="startPct">0%</span></span>
-            <span>Goal: 100%</span>
-          </div>
-
+          <!-- Milestones -->
           <div class="milestone-list" id="milestones"></div>
         </div>
       </div>
     </div>
 
-    <div class="card">
-      <div class="card-head"><span class="card-title">About This Tool</span></div>
+    <!-- CHART -->
+    <div class="card" id="chartCard" style="display:none">
+      <div class="card-head"><span class="card-title">Savings Growth Chart</span></div>
       <div class="card-body">
-        <h2 style="font-size:1.1rem;font-weight:800;color:#111;margin-bottom:12px">How the Savings Goal Calculator Works</h2>
-        <p style="font-size:.85rem;color:#475569;line-height:1.7;margin-bottom:12px">
-          This calculator simulates your savings journey month by month. It starts with your current balance, adds your monthly deposit, then applies <strong>compound interest</strong> (compounded monthly). If you enable inflation, it adjusts your goal upward each month to reflect the decreasing purchasing power of money.
-        </p>
-        <h3 style="font-size:.95rem;font-weight:700;color:#111;margin-bottom:8px">Savings Tips for Africans</h3>
-        <p style="font-size:.85rem;color:#475569;line-height:1.7;margin-bottom:12px">
-          <strong>1. Start with an emergency fund:</strong> Save 3-6 months of expenses before investing.<br>
-          <strong>2. Use high-yield instruments:</strong> Nigerian money market funds offer 10-15% vs 3% for regular savings. Kenyan T-bills offer 12-16%.<br>
-          <strong>3. Automate your savings:</strong> Set up standing orders from your bank account to a savings account on payday.<br>
-          <strong>4. Account for inflation:</strong> With Nigeria's inflation around 20%, your ₦5M target today needs to be ₦6M next year in nominal terms.
-        </p>
-        <p style="font-size:.85rem;color:#475569;line-height:1.7;margin-bottom:12px">
-          The <a href="https://www.cbn.gov.ng/" target="_blank" rel="noopener" style="color:var(--afro-blue)">Central Bank of Nigeria</a> publishes savings rates and inflation data monthly. For more financial planning, try our <a href="/tools/investment-return/" style="color:var(--afro-blue)">Investment Return Calculator</a> or the <a href="/tools/break-even/" style="color:var(--afro-blue)">Break-Even Calculator</a>.
-        </p>
+        <div class="chart-wrap"><canvas id="savingsChart"></canvas></div>
       </div>
     </div>
 
-    <section style="margin-top:18px">
-      <h2 style="font-size:1.15rem;font-weight:800;color:#111;margin-bottom:14px">Frequently Asked Questions</h2>
-      <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">How is the savings timeline calculated?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">The calculator simulates month-by-month savings, adding your monthly deposit and applying compound interest each month until the target is reached.</div></details>
-      <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">What interest rates should I use for African savings?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">Nigerian savings accounts offer 3-7% annually, Kenyan accounts 4-8%, South African accounts 5-9%, and Ghanaian accounts 8-15%. Money market funds and fixed deposits offer higher rates.</div></details>
-      <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">Does inflation affect my savings goal?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">Yes. With inflation enabled, the calculator adjusts your goal upward to reflect decreased purchasing power. Nigeria's inflation around 15-25% means your target amount needs to be significantly higher in nominal terms.</div></details>
+    <!-- SCENARIO COMPARISON -->
+    <div class="card" id="scenarioCard" style="display:none">
+      <div class="card-head"><span class="card-title">Scenario Comparison</span></div>
+      <div class="card-body">
+        <p style="font-size:.82rem;color:var(--sg-muted);margin-bottom:8px">Compare conservative, moderate, and aggressive savings strategies:</p>
+        <div class="scenario-grid" id="scenarioGrid"></div>
+      </div>
+    </div>
+
+    <!-- BREAKDOWN TABLE -->
+    <div class="card" id="tableCard" style="display:none">
+      <div class="card-head"><span class="card-title">Year-by-Year Breakdown</span></div>
+      <div class="card-body" style="padding:0">
+        <div class="table-wrap" id="breakdownTable"></div>
+      </div>
+    </div>
+
+    <!-- AI ADVISOR -->
+    <div class="card" style="margin-top:18px">
+      <div class="card-head"><span class="card-title">AI Savings Advisor</span></div>
+      <div class="card-body">
+        <div id="aiMessages" style="max-height:300px;overflow-y:auto;margin-bottom:12px"></div>
+        <div style="display:flex;gap:8px">
+          <input type="text" id="aiInput" class="f-input" placeholder="Ask about savings strategies..." style="flex:1" onkeydown="if(event.key==='Enter')askAI()">
+          <button class="calc-btn" style="width:auto;padding:12px 20px" onclick="askAI()">Ask</button>
+        </div>
+        <div style="font-size:.7rem;color:#94a3b8;margin-top:6px">Powered by AfroTools AI &bull; <span id="aiRemaining"></span></div>
+      </div>
+    </div>
+
+    <!-- SEO CONTENT -->
+    <div class="card">
+      <div class="card-head"><span class="card-title">About Savings in Africa</span></div>
+      <div class="card-body seo-section">
+        <h2>How the Savings Goal Calculator Works</h2>
+        <p>This calculator simulates your savings journey period by period. It starts with your current balance, adds your deposit at the chosen frequency (monthly, bi-weekly, or weekly), then applies <strong>compound interest</strong>. If inflation is enabled, it adjusts your goal upward each month to reflect the decreasing purchasing power of money, giving you a realistic savings timeline.</p>
+
+        <h3>Savings Strategies for Africans</h3>
+        <p><strong>1. Start with an emergency fund:</strong> Save 3-6 months of essential expenses before pursuing other goals. In high-inflation economies, aim for 6 months.</p>
+        <p><strong>2. Use high-yield instruments:</strong> Nigerian money market funds offer 10-15% vs 5% for regular savings accounts. Kenyan T-bills yield 12-16%. South African notice deposits offer 7-9%.</p>
+        <p><strong>3. Automate your savings:</strong> Set up standing orders on payday. Many African banks and fintechs (PiggyVest, Cowrywise, M-Shwari) offer automated savings features.</p>
+        <p><strong>4. Account for inflation:</strong> With Nigeria's inflation at 33% and Ghana's at 23%, your savings targets need to be significantly higher in nominal terms. Always calculate in real terms.</p>
+
+        <h3>Best Savings Instruments by Country</h3>
+        <p><strong>Nigeria:</strong> Treasury Bills (10-15%), Money Market Funds (12-18%), Fixed Deposits (8-14%). Platforms like PiggyVest and Cowrywise make these accessible.</p>
+        <p><strong>Kenya:</strong> T-Bills (12-16%), M-Shwari savings, SACCOs (12-15%), Money Market Funds (8-12%). The CBK runs regular T-Bill auctions.</p>
+        <p><strong>South Africa:</strong> Notice Deposits (7-9%), Tax-Free Savings Accounts (up to R36,000/year), Unit Trusts, Retirement Annuities. Consider using a TFSA for tax-efficient growth.</p>
+
+        <h2>Understanding Compound Interest in Africa</h2>
+        <p>Compound interest is the interest earned on both your initial deposit and accumulated interest. The formula is: <code style="background:#f1f5f9;padding:2px 6px;border-radius:4px">FV = PV(1+r)^n + PMT[((1+r)^n - 1)/r]</code>. In high-interest-rate African economies, compound interest works strongly in your favour when saving, but equally strongly against you when borrowing.</p>
+
+        <p>The <a href="https://www.cbn.gov.ng/" target="_blank" rel="noopener">Central Bank of Nigeria</a>, <a href="https://www.centralbank.go.ke/" target="_blank" rel="noopener">Central Bank of Kenya</a>, and <a href="https://www.resbank.co.za/" target="_blank" rel="noopener">South African Reserve Bank</a> publish savings rates and inflation data regularly. For more financial planning, try our <a href="/tools/investment-return/">Investment Return Calculator</a> or the <a href="/tools/break-even/">Break-Even Calculator</a>.</p>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <section class="faq-section">
+      <h2>Frequently Asked Questions</h2>
+      <details class="faq-item"><summary>How is the savings timeline calculated?<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div class="faq-answer">The calculator simulates period-by-period savings, adding your deposit at your chosen frequency and applying compound interest. If inflation is enabled, the goal adjusts upward each month. The simulation runs until your balance meets or exceeds the (inflation-adjusted) goal.</div></details>
+      <details class="faq-item"><summary>What interest rates should I use for African savings accounts?<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div class="faq-answer">Rates vary by country and instrument. Nigerian savings accounts offer 5-7%, Kenyan 6-8%, South African 7-9%, Ghanaian 10-15%. For higher returns, look at Treasury Bills, Money Market Funds, and Fixed Deposits. The calculator auto-fills typical rates when you select a country.</div></details>
+      <details class="faq-item"><summary>Does inflation affect my savings goal?<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div class="faq-answer">Significantly. With Nigeria's inflation around 33%, your target must grow each year just to maintain the same purchasing power. Enable inflation adjustment to see how much you really need to save in nominal terms. The calculator shows both nominal and real (inflation-adjusted) values.</div></details>
+      <details class="faq-item"><summary>What are the best savings instruments in Africa?<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div class="faq-answer">Treasury Bills are popular in Nigeria (10-15%), Kenya (12-16%), and Ghana (25-30%). Money Market Funds offer competitive rates with more liquidity. Fixed Deposits suit medium-term goals. Traditional savings groups like Ajo (Nigeria), Chama (Kenya), and Stokvels (South Africa) are culturally significant and effective.</div></details>
+      <details class="faq-item"><summary>How much should I save for an emergency fund?<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div class="faq-answer">Financial advisors recommend 3-6 months of essential expenses. In high-inflation countries like Nigeria or Ghana, aim for 6 months since costs rise quickly. Keep your emergency fund in liquid, low-risk instruments like money market funds rather than locked fixed deposits.</div></details>
+      <details class="faq-item"><summary>Can I increase my monthly savings contributions over time?<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div class="faq-answer">Yes! Enable "Increase contributions annually" to model growing deposits. Even a 5-10% annual increase can dramatically shorten your savings timeline. This reflects real-world income growth and is a powerful strategy for reaching goals faster.</div></details>
     </section>
   </div>
 
+  <!-- SIDEBAR -->
   <div class="sidebar">
-    <div class="info-card">
-      <div class="info-title">African Savings Rates (2026)</div>
-      <div class="rate-item"><span class="rate-name">Nigeria (savings)</span><span class="rate-val">3-7%</span></div>
-      <div class="rate-item"><span class="rate-name">Nigeria (money mkt)</span><span class="rate-val">10-15%</span></div>
-      <div class="rate-item"><span class="rate-name">Kenya (savings)</span><span class="rate-val">4-8%</span></div>
-      <div class="rate-item"><span class="rate-name">Kenya (T-bills)</span><span class="rate-val">12-16%</span></div>
-      <div class="rate-item"><span class="rate-name">South Africa</span><span class="rate-val">5-9%</span></div>
-      <div class="rate-item"><span class="rate-name">Ghana</span><span class="rate-val">8-15%</span></div>
+    <div class="info-card" id="countryRatesCard">
+      <div class="info-title">Savings Rates &amp; Instruments</div>
+      <div id="countryRates"></div>
     </div>
-    <div class="info-card">
-      <div class="info-title">Inflation Rates</div>
-      <div class="rate-item"><span class="rate-name">Nigeria</span><span class="rate-val">~20%</span></div>
-      <div class="rate-item"><span class="rate-name">Kenya</span><span class="rate-val">~7%</span></div>
-      <div class="rate-item"><span class="rate-name">South Africa</span><span class="rate-val">~5%</span></div>
-      <div class="rate-item"><span class="rate-name">Ghana</span><span class="rate-val">~22%</span></div>
-      <div style="font-size:.7rem;color:#94a3b8;margin-top:8px">Approximate annual rates, 2025-2026</div>
+
+    <div class="info-card" id="inflationCard">
+      <div class="info-title">Inflation Rate</div>
+      <div id="countryInflation"></div>
     </div>
+
+    <div class="tip-card">
+      <div class="info-title">Quick Savings Tips</div>
+      <div class="tip-item">Start saving immediately, even small amounts build momentum</div>
+      <div class="tip-item">Automate transfers on payday before spending</div>
+      <div class="tip-item">Use T-Bills or Money Market Funds to beat inflation</div>
+      <div class="tip-item">Increase contributions by at least inflation rate yearly</div>
+      <div class="tip-item">Keep emergency fund separate from investment goals</div>
+      <div class="tip-item">Consider group savings (Ajo, Chama, Stokvel) for accountability</div>
+    </div>
+
     <div class="info-card">
       <div class="info-title">Savings Formula</div>
       <div class="info-text" style="font-family:monospace;font-size:.75rem">
-        FV = PV(1+r)^n + PMT[((1+r)^n - 1)/r]<br><br>
+        FV = PV(1+r)<sup>n</sup> + PMT[((1+r)<sup>n</sup> - 1)/r]<br><br>
         PV = present value<br>
-        r = monthly rate<br>
-        n = months<br>
-        PMT = monthly deposit
+        r = periodic rate<br>
+        n = number of periods<br>
+        PMT = periodic deposit
       </div>
+    </div>
+
+    <div class="info-card" id="instrumentsCard">
+      <div class="info-title">Best Instruments</div>
+      <div id="countryInstruments"></div>
     </div>
   </div>
 </div></div>
 
+<afro-related-tools></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
 
 <script>
-function calculate(){
-  const goal=parseFloat(document.getElementById('goal').value)||0;
-  const current=parseFloat(document.getElementById('current').value)||0;
-  const monthly=parseFloat(document.getElementById('monthly').value)||0;
-  const annualRate=parseFloat(document.getElementById('rate').value)||0;
-  const annualInflation=parseFloat(document.getElementById('inflation').value)||0;
-  const cur=document.getElementById('currency').value;
+/* ═══════════════════════════════════════════════════════
+   COUNTRY DATA — 54 African countries + USD, GBP, EUR
+   ═══════════════════════════════════════════════════════ */
+const COUNTRIES=[
+{name:'Nigeria',code:'NGN',symbol:'\u20A6',savingsLow:5,savingsHigh:7,inflation:33.4,instruments:['Treasury Bills (10-15%)','Money Market Funds (12-18%)','Fixed Deposits (8-14%)','PiggyVest / Cowrywise']},
+{name:'Kenya',code:'KES',symbol:'KSh',savingsLow:6,savingsHigh:8,inflation:6.9,instruments:['T-Bills (12-16%)','SACCOs (12-15%)','M-Shwari Savings','Money Market Funds (8-12%)']},
+{name:'South Africa',code:'ZAR',symbol:'R',savingsLow:7,savingsHigh:9,inflation:5.4,instruments:['Notice Deposits (7-9%)','Tax-Free Savings (TFSA)','Unit Trusts','Retirement Annuities']},
+{name:'Ghana',code:'GHS',symbol:'GH\u20B5',savingsLow:10,savingsHigh:15,inflation:23.2,instruments:['T-Bills (25-30%)','Fixed Deposits (18-25%)','Money Market Funds','Susu Savings']},
+{name:'Egypt',code:'EGP',symbol:'E\u00A3',savingsLow:12,savingsHigh:15,inflation:28.3,instruments:['Treasury Bills (20-25%)','Savings Certificates (12-15%)','Fixed Deposits (12-16%)','Post Office Savings']},
+{name:'Ethiopia',code:'ETB',symbol:'Br',savingsLow:7,savingsHigh:7,inflation:29.3,instruments:['Fixed Deposits (7-8%)','Savings Accounts (5-7%)','Equb (Traditional Savings)','Government Bonds']},
+{name:'Tanzania',code:'TZS',symbol:'TSh',savingsLow:5,savingsHigh:7,inflation:3.4,instruments:['Fixed Deposits (5-8%)','Treasury Bills (4-7%)','SACCOS','Unit Trust Funds']},
+{name:'Uganda',code:'UGX',symbol:'USh',savingsLow:5,savingsHigh:7,inflation:3.5,instruments:['Treasury Bills (8-12%)','Fixed Deposits (6-10%)','SACCOs (10-15%)','Mobile Money Savings']},
+{name:'Rwanda',code:'RWF',symbol:'FRw',savingsLow:7,savingsHigh:8,inflation:7.8,instruments:['Treasury Bills (7-10%)','Fixed Deposits (7-9%)','Tontines (Ibimina)','SACCO Savings']},
+{name:'Morocco',code:'MAD',symbol:'MAD',savingsLow:3,savingsHigh:4,inflation:3.0,instruments:['Savings Accounts (2-3%)','Treasury Bonds (3-5%)','OPCVM Funds','Fixed Deposits (3-4%)']},
+{name:'Tunisia',code:'TND',symbol:'DT',savingsLow:5,savingsHigh:7,inflation:7.0,instruments:['Savings Accounts (5-6%)','Fixed Deposits (6-8%)','Treasury Bills (7-9%)','SICAV Funds']},
+{name:'Algeria',code:'DZD',symbol:'\u062F.\u062C',savingsLow:3,savingsHigh:4,inflation:3.5,instruments:['Savings Accounts (1.75%)','Fixed Deposits (3-4%)','Treasury Bonds','Postal Savings']},
+{name:'Cameroon',code:'XAF',symbol:'FCFA',savingsLow:4,savingsHigh:5,inflation:5.5,instruments:['Fixed Deposits (4-6%)','BEAC T-Bills','Savings Accounts (3-4%)','Tontines']},
+{name:'Senegal',code:'XOF',symbol:'CFA',savingsLow:4,savingsHigh:5,inflation:3.5,instruments:['BCEAO T-Bills','Fixed Deposits (4-6%)','Savings Accounts (3-4%)','Microfinance']},
+{name:"C\u00F4te d'Ivoire",code:'XOF',symbol:'CFA',savingsLow:4,savingsHigh:5,inflation:3.8,instruments:['BCEAO T-Bills','Fixed Deposits (4-6%)','Savings Accounts (3-4%)','Mobile Money Savings']},
+{name:'Zambia',code:'ZMW',symbol:'ZK',savingsLow:8,savingsHigh:12,inflation:13.2,instruments:['Treasury Bills (10-14%)','Fixed Deposits (8-12%)','Government Bonds','Unit Trusts']},
+{name:'Zimbabwe',code:'ZWL',symbol:'Z$',savingsLow:5,savingsHigh:8,inflation:47,instruments:['USD Savings Accounts','Fixed Deposits','Money Market Funds','Mukando (Savings Clubs)']},
+{name:'Malawi',code:'MWK',symbol:'MK',savingsLow:8,savingsHigh:12,inflation:28.5,instruments:['Treasury Bills (20-28%)','Fixed Deposits (15-25%)','Savings Accounts (5-8%)','SACCO Savings']},
+{name:'Mozambique',code:'MZN',symbol:'MT',savingsLow:5,savingsHigh:8,inflation:4.5,instruments:['Fixed Deposits (5-10%)','Treasury Bills (8-12%)','Savings Accounts (3-5%)','Xitique (Savings Groups)']},
+{name:'Botswana',code:'BWP',symbol:'P',savingsLow:4,savingsHigh:6,inflation:4.5,instruments:['Fixed Deposits (4-6%)','Government Bonds','Unit Trusts','Savings Accounts (2-4%)']},
+{name:'Namibia',code:'NAD',symbol:'N$',savingsLow:5,savingsHigh:7,inflation:5.0,instruments:['Fixed Deposits (5-8%)','Government Bonds','Unit Trusts','Savings Accounts (3-5%)']},
+{name:'Mauritius',code:'MUR',symbol:'Rs',savingsLow:4,savingsHigh:5,inflation:6.8,instruments:['Fixed Deposits (4-6%)','Government Securities','Unit Trusts','Savings Accounts (2-4%)']},
+{name:'Angola',code:'AOA',symbol:'Kz',savingsLow:6,savingsHigh:10,inflation:25,instruments:['Treasury Bills (15-20%)','Fixed Deposits (8-15%)','Government Bonds','Kixikila (Savings Groups)']},
+{name:'DR Congo',code:'CDF',symbol:'FC',savingsLow:3,savingsHigh:5,inflation:19.5,instruments:['USD Savings Accounts','Fixed Deposits','Likelemba (Savings Groups)','Microfinance']},
+{name:'Sudan',code:'SDG',symbol:'SDG',savingsLow:5,savingsHigh:8,inflation:63,instruments:['Islamic Savings (Mudaraba)','Savings Certificates','Sanduk (Savings Groups)','Fixed Deposits']},
+{name:'Libya',code:'LYD',symbol:'LD',savingsLow:2,savingsHigh:3,inflation:3.5,instruments:['Savings Accounts','Fixed Deposits','Government Bonds','Postal Savings']},
+{name:'Mali',code:'XOF',symbol:'CFA',savingsLow:4,savingsHigh:5,inflation:3.0,instruments:['BCEAO T-Bills','Savings Accounts','Fixed Deposits','Tontines']},
+{name:'Burkina Faso',code:'XOF',symbol:'CFA',savingsLow:4,savingsHigh:5,inflation:3.2,instruments:['BCEAO T-Bills','Savings Accounts','Tontines','Microfinance']},
+{name:'Niger',code:'XOF',symbol:'CFA',savingsLow:4,savingsHigh:5,inflation:4.0,instruments:['BCEAO T-Bills','Savings Accounts','Tontines','Asusu (Savings Groups)']},
+{name:'Guinea',code:'GNF',symbol:'FG',savingsLow:4,savingsHigh:6,inflation:8.5,instruments:['Savings Accounts','Fixed Deposits','Government Securities','Tontines']},
+{name:'Benin',code:'XOF',symbol:'CFA',savingsLow:4,savingsHigh:5,inflation:3.0,instruments:['BCEAO T-Bills','Savings Accounts','Fixed Deposits','Tontines']},
+{name:'Togo',code:'XOF',symbol:'CFA',savingsLow:4,savingsHigh:5,inflation:3.5,instruments:['BCEAO T-Bills','Savings Accounts','Fixed Deposits','Microfinance']},
+{name:'Sierra Leone',code:'SLL',symbol:'Le',savingsLow:3,savingsHigh:5,inflation:35,instruments:['Savings Accounts','Fixed Deposits','Government Securities','Osusu (Savings Groups)']},
+{name:'Liberia',code:'LRD',symbol:'L$',savingsLow:3,savingsHigh:5,inflation:6.5,instruments:['Savings Accounts','Fixed Deposits','Susu (Savings Groups)','Microfinance']},
+{name:'Mauritania',code:'MRU',symbol:'UM',savingsLow:3,savingsHigh:5,inflation:5.0,instruments:['Savings Accounts','Fixed Deposits','Government Securities','Islamic Banking']},
+{name:'The Gambia',code:'GMD',symbol:'D',savingsLow:4,savingsHigh:6,inflation:8.0,instruments:['Treasury Bills (12-18%)','Savings Accounts','Fixed Deposits','Osusu']},
+{name:'Gabon',code:'XAF',symbol:'FCFA',savingsLow:4,savingsHigh:5,inflation:3.0,instruments:['BEAC T-Bills','Fixed Deposits','Savings Accounts','Tontines']},
+{name:'Equatorial Guinea',code:'XAF',symbol:'FCFA',savingsLow:4,savingsHigh:5,inflation:3.5,instruments:['BEAC T-Bills','Fixed Deposits','Savings Accounts']},
+{name:'Republic of Congo',code:'XAF',symbol:'FCFA',savingsLow:4,savingsHigh:5,inflation:4.5,instruments:['BEAC T-Bills','Fixed Deposits','Savings Accounts','Tontines']},
+{name:'Central African Republic',code:'XAF',symbol:'FCFA',savingsLow:4,savingsHigh:5,inflation:4.0,instruments:['BEAC T-Bills','Savings Accounts','Microfinance']},
+{name:'Chad',code:'XAF',symbol:'FCFA',savingsLow:4,savingsHigh:5,inflation:5.0,instruments:['BEAC T-Bills','Savings Accounts','Fixed Deposits','Tontines']},
+{name:'Eritrea',code:'ERN',symbol:'Nfk',savingsLow:3,savingsHigh:4,inflation:4.5,instruments:['Savings Accounts','Fixed Deposits','Government Bonds']},
+{name:'Djibouti',code:'DJF',symbol:'Fdj',savingsLow:2,savingsHigh:3,inflation:3.5,instruments:['Savings Accounts','Fixed Deposits','Islamic Banking']},
+{name:'Somalia',code:'SOS',symbol:'Sh',savingsLow:3,savingsHigh:5,inflation:6.0,instruments:['Hawala Transfers','Mobile Money (EVC Plus)','Islamic Banking','Ayuuto (Savings Groups)']},
+{name:'South Sudan',code:'SSP',symbol:'SSP',savingsLow:3,savingsHigh:5,inflation:15,instruments:['Savings Accounts','Mobile Money','Microfinance']},
+{name:'Burundi',code:'BIF',symbol:'FBu',savingsLow:3,savingsHigh:5,inflation:12,instruments:['Savings Accounts','Fixed Deposits','Government Securities','Microfinance']},
+{name:'Comoros',code:'KMF',symbol:'CF',savingsLow:3,savingsHigh:4,inflation:3.0,instruments:['Savings Accounts','Fixed Deposits','Microfinance']},
+{name:'Cabo Verde',code:'CVE',symbol:'$',savingsLow:3,savingsHigh:5,inflation:3.5,instruments:['Savings Accounts','Fixed Deposits','Government Bonds','Djunta-mon (Savings Groups)']},
+{name:'Eswatini',code:'SZL',symbol:'E',savingsLow:5,savingsHigh:7,inflation:5.5,instruments:['Fixed Deposits (5-8%)','Government Bonds','Savings Accounts','Stokvels']},
+{name:'Lesotho',code:'LSL',symbol:'L',savingsLow:4,savingsHigh:6,inflation:6.0,instruments:['Fixed Deposits','Savings Accounts','Government Bonds','Stokvels (Mochaela)']},
+{name:'Madagascar',code:'MGA',symbol:'Ar',savingsLow:4,savingsHigh:6,inflation:9.5,instruments:['Savings Accounts','Fixed Deposits','Treasury Bills','Microfinance']},
+{name:'Seychelles',code:'SCR',symbol:'Rs',savingsLow:3,savingsHigh:5,inflation:3.0,instruments:['Savings Accounts','Fixed Deposits','Government Securities','Unit Trusts']},
+{name:'S\u00E3o Tom\u00E9 & Pr\u00EDncipe',code:'STN',symbol:'Db',savingsLow:4,savingsHigh:6,inflation:9.0,instruments:['Savings Accounts','Fixed Deposits','Microfinance']},
+{name:'Guinea-Bissau',code:'XOF',symbol:'CFA',savingsLow:4,savingsHigh:5,inflation:4.0,instruments:['BCEAO T-Bills','Savings Accounts','Microfinance','Abakas']},
+// Non-African
+{name:'United States (USD)',code:'USD',symbol:'$',savingsLow:4.5,savingsHigh:4.5,inflation:3.4,instruments:['High-Yield Savings (4-5%)','CDs (4-5%)','Treasury Bills (4-5%)','Money Market Funds']},
+{name:'United Kingdom (GBP)',code:'GBP',symbol:'\u00A3',savingsLow:4,savingsHigh:4,inflation:4.0,instruments:['ISA Savings (4-5%)','Fixed Rate Bonds','NS&I Products','Money Market Funds']},
+{name:'Eurozone (EUR)',code:'EUR',symbol:'\u20AC',savingsLow:3.5,savingsHigh:3.5,inflation:2.9,instruments:['Savings Accounts (2-3%)','Government Bonds','Term Deposits (3-4%)','Money Market Funds']}
+];
 
-  if(goal<=0){alert('Please enter a savings goal');return;}
-  if(monthly<=0&&current>=goal){
-    document.getElementById('timeResult').textContent='Already reached!';
-    document.getElementById('results').style.display='block';
-    return;
-  }
+/* ═══════════════════════════════════════════════════════
+   STATE
+   ═══════════════════════════════════════════════════════ */
+let currentMode='time';
+let chartInstance=null;
+let calcData=null;
 
-  const monthlyRate=annualRate/100/12;
-  const monthlyInflation=annualInflation/100/12;
+/* ═══════════════════════════════════════════════════════
+   INIT
+   ═══════════════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded',function(){
+  const sel=document.getElementById('country');
+  COUNTRIES.forEach(function(c,i){
+    const opt=document.createElement('option');
+    opt.value=i;
+    opt.textContent=c.name+' ('+c.code+' '+c.symbol+')';
+    sel.appendChild(opt);
+  });
+  document.getElementById('annualIncrease').addEventListener('change',function(){
+    document.getElementById('increaseField').style.display=this.checked?'block':'none';
+  });
+  onCountryChange();
+});
 
-  let balance=current;
-  let adjustedGoal=goal;
-  let months=0;
-  let totalDeposits=current;
-  const milestones=[];
-  const pcts=[25,50,75,100];
-  let nextPct=0;
-
-  while(balance<adjustedGoal&&months<600){// max 50 years
-    months++;
-    balance+=monthly;
-    balance*=(1+monthlyRate);
-    totalDeposits+=monthly;
-    if(monthlyInflation>0) adjustedGoal*=(1+monthlyInflation);
-
-    // Check milestones
-    const pct=goal>0?(balance/adjustedGoal*100):0;
-    if(nextPct<pcts.length&&pct>=pcts[nextPct]){
-      milestones.push({pct:pcts[nextPct],months,balance});
-      nextPct++;
-    }
-  }
-
-  const fmt=n=>cur+n.toLocaleString(undefined,{maximumFractionDigits:0});
-  const interest=balance-totalDeposits;
-  const years=Math.floor(months/12);
-  const remMonths=months%12;
-  let timeStr='';
-  if(months>=600) timeStr='50+ years (consider increasing deposits)';
-  else if(years>0&&remMonths>0) timeStr=years+' yr '+remMonths+' mo';
-  else if(years>0) timeStr=years+' years';
-  else timeStr=remMonths+' months';
-
-  document.getElementById('timeResult').textContent=timeStr;
-  document.getElementById('totalDeposited').textContent=fmt(totalDeposits);
-  document.getElementById('interestEarned').textContent=fmt(interest);
-  document.getElementById('finalBalance').textContent=fmt(balance);
-
-  // Target date
-  const targetDate=new Date();
-  targetDate.setMonth(targetDate.getMonth()+months);
-  document.getElementById('targetDate').textContent=targetDate.toLocaleDateString('en-GB',{month:'short',year:'numeric'});
-
-  // Progress bar
-  const startPct=Math.min(100,(current/goal*100));
-  document.getElementById('progressFill').style.width=startPct+'%';
-  document.getElementById('startPct').textContent=startPct.toFixed(0)+'%';
-
-  // Milestones
-  const msEl=document.getElementById('milestones');
-  msEl.innerHTML=milestones.map(m=>{
-    const y=Math.floor(m.months/12);
-    const mo=m.months%12;
-    const t=y>0?(y+'yr '+mo+'mo'):(mo+'mo');
-    return `<div class="milestone"><span class="ms-label">${m.pct}% (${fmt(m.balance)})</span><span class="ms-val">${t}</span></div>`;
-  }).join('');
-
-  document.getElementById('results').style.display='block';
+/* ═══════════════════════════════════════════════════════
+   FORMAT HELPERS
+   ═══════════════════════════════════════════════════════ */
+function parseNum(s){return parseFloat(String(s).replace(/[^0-9.\-]/g,''))||0;}
+function fmtNum(n){return n.toLocaleString('en',{maximumFractionDigits:0});}
+function fmtMoney(n,sym){return sym+fmtNum(n);}
+function fmtInput(el){
+  var v=el.value.replace(/[^0-9.]/g,'');
+  if(!v)return;
+  var parts=v.split('.');
+  parts[0]=parseInt(parts[0]||'0',10).toLocaleString('en');
+  el.value=parts.length>1?parts[0]+'.'+parts[1]:parts[0];
 }
 
-calculate();
+/* ═══════════════════════════════════════════════════════
+   MODE SWITCHING
+   ═══════════════════════════════════════════════════════ */
+function switchMode(mode){
+  currentMode=mode;
+  document.querySelectorAll('.mode-tab').forEach(function(t){t.classList.toggle('active',t.dataset.mode===mode);});
+  var dr=document.getElementById('depositRow');
+  var tf=document.getElementById('timelineField');
+  if(mode==='time'){dr.style.display='';tf.style.display='none';}
+  else if(mode==='monthly'){dr.style.display='none';tf.style.display='block';}
+  else{dr.style.display='';tf.style.display='block';}
+}
+
+function updateDepositLabel(){
+  var f=document.getElementById('frequency').value;
+  var labels={monthly:'Monthly Deposit',biweekly:'Bi-weekly Deposit',weekly:'Weekly Deposit'};
+  document.getElementById('depositLabel').textContent=labels[f]||'Deposit';
+}
+
+/* ═══════════════════════════════════════════════════════
+   COUNTRY CHANGE
+   ═══════════════════════════════════════════════════════ */
+function onCountryChange(){
+  var c=COUNTRIES[document.getElementById('country').value];
+  if(!c)return;
+  document.getElementById('curSymLabel').textContent=c.symbol;
+  document.getElementById('curSymLabel2').textContent=c.symbol;
+  var avg=((c.savingsLow+c.savingsHigh)/2);
+  document.getElementById('rate').value=avg.toFixed(1);
+  document.getElementById('inflation').value=c.inflation.toFixed(1);
+  document.getElementById('rateHint').textContent='Typical: '+c.savingsLow+'-'+c.savingsHigh+'% for '+c.name;
+  document.getElementById('inflationHint').textContent=c.name+' inflation: ~'+c.inflation+'%';
+  // Sidebar
+  var rhtml='<div class="rate-item"><span class="rate-name">Savings Account</span><span class="rate-val">'+c.savingsLow+'-'+c.savingsHigh+'%</span></div>';
+  rhtml+='<div class="rate-item"><span class="rate-name">Inflation</span><span class="rate-val">'+c.inflation+'%</span></div>';
+  rhtml+='<div class="rate-item"><span class="rate-name">Real Return</span><span class="rate-val">'+(avg-c.inflation).toFixed(1)+'%</span></div>';
+  document.getElementById('countryRates').innerHTML=rhtml;
+  document.getElementById('countryInflation').innerHTML='<div style="font-size:2rem;font-weight:800;color:'+(c.inflation>10?'#ef4444':'var(--accent)')+'">'+c.inflation+'%</div><div style="font-size:.78rem;color:var(--sg-muted);margin-top:4px">Annual inflation rate for '+c.name+'</div>';
+  var ihtml='';
+  (c.instruments||[]).forEach(function(inst){ihtml+='<div class="rate-item"><span class="rate-name">'+inst+'</span></div>';});
+  document.getElementById('countryInstruments').innerHTML=ihtml;
+}
+
+/* ═══════════════════════════════════════════════════════
+   GOAL PRESETS
+   ═══════════════════════════════════════════════════════ */
+function onPresetChange(){
+  var c=COUNTRIES[document.getElementById('country').value];
+  var p=document.getElementById('goalPreset').value;
+  var goalEl=document.getElementById('goal');
+  var hint=document.getElementById('goalHint');
+  var multipliers={NGN:1,KES:0.003,ZAR:0.003,GHS:0.015,EGP:0.06,ETB:0.07,TZS:3.2,UGX:4.8,RWF:1.6,MAD:0.013,GHC:0.015,USD:0.0013,GBP:0.001,EUR:0.0012};
+  var m=multipliers[c.code]||1;
+  var presets={
+    emergency:{amount:Math.round(1500000*m),label:'3-6 months of expenses'},
+    house:{amount:Math.round(10000000*m),label:'20% down payment on a property'},
+    wedding:{amount:Math.round(5000000*m),label:'Average wedding cost'},
+    car:{amount:Math.round(8000000*m),label:'Mid-range vehicle'},
+    education:{amount:Math.round(3000000*m),label:'1 year university tuition'},
+    vacation:{amount:Math.round(1000000*m),label:'Holiday trip budget'},
+    business:{amount:Math.round(5000000*m),label:'Small business start-up capital'}
+  };
+  if(p==='custom'){hint.textContent='';return;}
+  var pr=presets[p];
+  if(pr){goalEl.value=fmtNum(pr.amount);hint.textContent=pr.label;}
+}
+
+/* ═══════════════════════════════════════════════════════
+   MAIN CALCULATION
+   ═══════════════════════════════════════════════════════ */
+function calculate(){
+  var c=COUNTRIES[document.getElementById('country').value];
+  var sym=c.symbol;
+  var goal=parseNum(document.getElementById('goal').value);
+  var current=parseNum(document.getElementById('current').value);
+  var deposit=parseNum(document.getElementById('deposit').value);
+  var annualRate=parseFloat(document.getElementById('rate').value)||0;
+  var annualInflation=parseFloat(document.getElementById('inflation').value)||0;
+  var freq=document.getElementById('frequency').value;
+  var showReal=document.getElementById('showReal').checked;
+  var hasIncrease=document.getElementById('annualIncrease').checked;
+  var increaseRate=hasIncrease?(parseFloat(document.getElementById('increaseRate').value)||0)/100:0;
+  var timeline=parseInt(document.getElementById('timeline').value)||24;
+
+  if(goal<=0&&currentMode!=='balance'){alert('Please enter a savings goal');return;}
+
+  // Convert frequency to monthly equivalent for deposits per month
+  var depositsPerMonth=freq==='weekly'?52/12:freq==='biweekly'?26/12:1;
+  var monthlyDeposit=deposit*depositsPerMonth;
+
+  // For 'monthly' mode, solve for deposit
+  if(currentMode==='monthly'){
+    monthlyDeposit=solveForMonthly(goal,current,annualRate/100,annualInflation/100,timeline,increaseRate);
+    deposit=monthlyDeposit/depositsPerMonth;
+    document.getElementById('deposit').value=fmtNum(Math.ceil(deposit));
+  }
+
+  // Simulate
+  var sim=simulate(goal,current,monthlyDeposit,annualRate/100,annualInflation/100,increaseRate,currentMode==='balance'?timeline:600,currentMode);
+  calcData=sim;
+  calcData.sym=sym;
+  calcData.country=c;
+
+  renderResults(sim,sym,goal,current,showReal);
+  renderChart(sim,sym,showReal,goal);
+  renderScenarios(goal,current,monthlyDeposit,annualRate,annualInflation,increaseRate,sym,freq==='balance'?timeline:sim.months);
+  renderTable(sim,sym,showReal);
+
+  document.getElementById('results').style.display='block';
+  document.getElementById('chartCard').style.display='';
+  document.getElementById('scenarioCard').style.display='';
+  document.getElementById('tableCard').style.display='';
+
+  // Scroll to results
+  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+
+  gtag('event','calculate',{tool_name:'savings-goal',mode:currentMode,country:c.name,currency:c.code});
+}
+
+function simulate(goal,current,monthlyDeposit,annualRate,annualInflation,increaseRate,maxMonths,mode){
+  var monthlyRate=annualRate/12;
+  var monthlyInflation=annualInflation/12;
+  var balance=current;
+  var adjustedGoal=goal;
+  var totalDeposits=current;
+  var totalInterest=0;
+  var months=0;
+  var data=[];// {month,deposit,interest,balance,realValue,adjustedGoal}
+  var milestones=[];
+  var pcts=[25,50,75,100];
+  var nextPct=0;
+  var currentDeposit=monthlyDeposit;
+
+  data.push({month:0,deposit:0,interest:0,balance:current,realValue:current,adjustedGoal:goal,totalDeposits:current,totalInterest:0});
+
+  var reached=false;
+  var limit=(mode==='balance')?maxMonths:Math.min(maxMonths,600);
+
+  while(months<limit){
+    months++;
+    // Annual increase
+    if(increaseRate>0&&months>1&&(months-1)%12===0){
+      currentDeposit*=(1+increaseRate);
+    }
+    balance+=currentDeposit;
+    var interest=balance*monthlyRate;
+    balance+=interest;
+    totalDeposits+=currentDeposit;
+    totalInterest+=interest;
+    if(monthlyInflation>0)adjustedGoal*=(1+monthlyInflation);
+
+    var realValue=annualInflation>0?balance/Math.pow(1+annualInflation,months/12):balance;
+
+    data.push({month:months,deposit:currentDeposit,interest:interest,balance:balance,realValue:realValue,adjustedGoal:adjustedGoal,totalDeposits:totalDeposits,totalInterest:totalInterest});
+
+    // Milestones
+    var pct=adjustedGoal>0?(balance/adjustedGoal*100):0;
+    if(nextPct<pcts.length&&pct>=pcts[nextPct]){
+      var d=new Date();d.setMonth(d.getMonth()+months);
+      milestones.push({pct:pcts[nextPct],months:months,balance:balance,date:d});
+      nextPct++;
+    }
+    if(mode!=='balance'&&balance>=adjustedGoal&&!reached){reached=true;if(mode==='time')break;}
+  }
+
+  return{months:months,balance:balance,totalDeposits:totalDeposits,totalInterest:totalInterest,adjustedGoal:adjustedGoal,milestones:milestones,data:data,reached:reached||balance>=adjustedGoal};
+}
+
+function solveForMonthly(goal,current,annualRate,annualInflation,months,increaseRate){
+  // Iterative solver
+  var low=0,high=goal*2,mid,sim;
+  for(var i=0;i<50;i++){
+    mid=(low+high)/2;
+    sim=simulate(goal,current,mid,annualRate,annualInflation,increaseRate,months,'balance');
+    if(sim.balance<sim.adjustedGoal)low=mid;else high=mid;
+  }
+  return Math.ceil(mid);
+}
+
+/* ═══════════════════════════════════════════════════════
+   RENDER RESULTS
+   ═══════════════════════════════════════════════════════ */
+function renderResults(sim,sym,goal,current,showReal){
+  var grid=document.getElementById('resultGrid');
+  var years=Math.floor(sim.months/12);
+  var remMo=sim.months%12;
+  var timeStr='';
+  if(sim.months>=600)timeStr='50+ years';
+  else if(years>0&&remMo>0)timeStr=years+' yr '+remMo+' mo';
+  else if(years>0)timeStr=years+(years===1?' year':' years');
+  else timeStr=remMo+(remMo===1?' month':' months');
+
+  var targetDate=new Date();targetDate.setMonth(targetDate.getMonth()+sim.months);
+  var dateStr=targetDate.toLocaleDateString('en-GB',{month:'short',year:'numeric'});
+
+  var html='';
+  if(currentMode==='time'){
+    html+='<div class="result-box wide highlight"><div class="result-label">Time to Reach Goal</div><div class="result-num green">'+timeStr+'</div></div>';
+    html+='<div class="result-box"><div class="result-label">Target Date</div><div class="result-num" style="font-size:1.1rem">'+dateStr+'</div></div>';
+    html+='<div class="result-box"><div class="result-label">Final Balance</div><div class="result-num" style="font-size:1.1rem">'+fmtMoney(sim.balance,sym)+'</div></div>';
+  } else if(currentMode==='monthly'){
+    var dep=sim.data.length>1?sim.data[1].deposit:0;
+    html+='<div class="result-box wide highlight"><div class="result-label">Required Monthly Deposit</div><div class="result-num green">'+fmtMoney(dep,sym)+'</div></div>';
+    html+='<div class="result-box"><div class="result-label">Target Date</div><div class="result-num" style="font-size:1.1rem">'+dateStr+'</div></div>';
+    html+='<div class="result-box"><div class="result-label">Final Balance</div><div class="result-num" style="font-size:1.1rem">'+fmtMoney(sim.balance,sym)+'</div></div>';
+  } else {
+    html+='<div class="result-box wide highlight"><div class="result-label">Final Balance After '+timeStr+'</div><div class="result-num green">'+fmtMoney(sim.balance,sym)+'</div></div>';
+  }
+  html+='<div class="result-box"><div class="result-label">Total Deposited</div><div class="result-num" style="font-size:1.1rem">'+fmtMoney(sim.totalDeposits,sym)+'</div></div>';
+  html+='<div class="result-box"><div class="result-label">Interest Earned</div><div class="result-num green" style="font-size:1.1rem">'+fmtMoney(sim.totalInterest,sym)+'</div></div>';
+  if(showReal&&sim.data.length>0){
+    var last=sim.data[sim.data.length-1];
+    html+='<div class="result-box"><div class="result-label">Real Value (Today\'s Money)</div><div class="result-num" style="font-size:1.1rem;color:#f59e0b">'+fmtMoney(last.realValue,sym)+'</div></div>';
+    if(currentMode!=='balance'){
+      html+='<div class="result-box"><div class="result-label">Inflation-Adjusted Goal</div><div class="result-num" style="font-size:1.1rem;color:#ef4444">'+fmtMoney(sim.adjustedGoal,sym)+'</div></div>';
+    }
+  }
+  grid.innerHTML=html;
+
+  // Progress
+  var startPct=goal>0?Math.min(100,(current/goal*100)):0;
+  var endPct=goal>0?Math.min(100,(sim.balance/sim.adjustedGoal*100)):0;
+  document.getElementById('progressFill').style.width=endPct+'%';
+  document.getElementById('progressPct').textContent=Math.round(endPct)+'%';
+  document.getElementById('startPct').textContent=Math.round(startPct)+'%';
+
+  // Milestones
+  var msEl=document.getElementById('milestones');
+  var icons=['q1','q2','q3','q4'];
+  msEl.innerHTML=sim.milestones.map(function(m,i){
+    var y2=Math.floor(m.months/12);var mo2=m.months%12;
+    var t=y2>0?(y2+'yr '+mo2+'mo'):(mo2+'mo');
+    var dStr=m.date.toLocaleDateString('en-GB',{month:'short',year:'numeric'});
+    return '<div class="milestone"><span class="ms-icon '+icons[i]+'">'+m.pct+'%</span><div class="ms-info"><div class="ms-label">'+m.pct+'% of Goal</div><div class="ms-date">'+dStr+' ('+t+')</div></div><div class="ms-val">'+fmtMoney(m.balance,sym)+'</div></div>';
+  }).join('');
+}
+
+/* ═══════════════════════════════════════════════════════
+   CHART
+   ═══════════════════════════════════════════════════════ */
+function renderChart(sim,sym,showReal,goal){
+  if(typeof Chart==='undefined')return;
+  var ctx=document.getElementById('savingsChart').getContext('2d');
+  if(chartInstance)chartInstance.destroy();
+
+  // Sample data points (max ~60 points for performance)
+  var step=Math.max(1,Math.floor(sim.data.length/60));
+  var labels=[],deposits=[],interests=[],goalLine=[];
+  for(var i=0;i<sim.data.length;i+=step){
+    var d=sim.data[i];
+    var mo=d.month;
+    if(mo===0)labels.push('Start');
+    else if(mo%12===0)labels.push('Year '+(mo/12));
+    else labels.push('Mo '+mo);
+    deposits.push(d.totalDeposits);
+    interests.push(d.totalInterest);
+    if(showReal)goalLine.push(d.adjustedGoal);
+  }
+  // Ensure last point is included
+  var last=sim.data[sim.data.length-1];
+  if(sim.data.length%step!==1){
+    var mo2=last.month;
+    labels.push(mo2%12===0?'Year '+(mo2/12):'Mo '+mo2);
+    deposits.push(last.totalDeposits);
+    interests.push(last.totalInterest);
+    if(showReal)goalLine.push(last.adjustedGoal);
+  }
+
+  var datasets=[
+    {label:'Deposits',data:deposits,backgroundColor:'rgba(59,130,246,.3)',borderColor:'#3b82f6',fill:true,tension:.3,pointRadius:0},
+    {label:'Interest Earned',data:interests,backgroundColor:'rgba(16,185,129,.3)',borderColor:'#10b981',fill:true,tension:.3,pointRadius:0}
+  ];
+  if(showReal&&goalLine.length){
+    datasets.push({label:'Inflation-Adjusted Goal',data:goalLine,borderColor:'#ef4444',borderDash:[5,5],fill:false,tension:.3,pointRadius:0,borderWidth:2});
+  }
+
+  chartInstance=new Chart(ctx,{
+    type:'line',
+    data:{labels:labels,datasets:datasets},
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{
+        legend:{position:'bottom',labels:{boxWidth:12,font:{family:'DM Sans',size:11}}},
+        tooltip:{
+          callbacks:{
+            label:function(ctx2){return ctx2.dataset.label+': '+sym+fmtNum(ctx2.raw);}
+          }
+        }
+      },
+      scales:{
+        x:{grid:{display:false},ticks:{font:{family:'DM Sans',size:10},maxTicksLimit:12}},
+        y:{grid:{color:'rgba(0,0,0,.05)'},ticks:{font:{family:'DM Sans',size:10},callback:function(v){
+          if(v>=1e9)return sym+(v/1e9).toFixed(1)+'B';
+          if(v>=1e6)return sym+(v/1e6).toFixed(1)+'M';
+          if(v>=1e3)return sym+(v/1e3).toFixed(0)+'K';
+          return sym+v;
+        }}}
+      }
+    }
+  });
+}
+
+/* ═══════════════════════════════════════════════════════
+   SCENARIO COMPARISON
+   ═══════════════════════════════════════════════════════ */
+function renderScenarios(goal,current,monthlyDeposit,annualRate,annualInflation,increaseRate,sym){
+  var scenarios=[
+    {label:'Conservative',cls:'cons',rateAdj:-2},
+    {label:'Moderate',cls:'mod',rateAdj:0},
+    {label:'Aggressive',cls:'agg',rateAdj:3}
+  ];
+  var results=scenarios.map(function(s){
+    var r=Math.max(0,annualRate+s.rateAdj);
+    var sim2=simulate(goal,current,monthlyDeposit,r/100,annualInflation/100,increaseRate,600,'time');
+    return{label:s.label,cls:s.cls,rate:r,months:sim2.months,balance:sim2.balance,interest:sim2.totalInterest,reached:sim2.reached};
+  });
+  var maxMonths=Math.max.apply(null,results.map(function(r){return r.months;}));
+  var best=results.reduce(function(a,b){return a.months<b.months?a:b;});
+
+  var grid=document.getElementById('scenarioGrid');
+  grid.innerHTML=results.map(function(r){
+    var y=Math.floor(r.months/12);var mo=r.months%12;
+    var timeStr=r.months>=600?'50+ yr':(y>0?(y+'yr '+mo+'mo'):(mo+'mo'));
+    var pct=maxMonths>0?((maxMonths-r.months)/maxMonths*100+20):50;
+    return '<div class="scenario-card'+(r===best?' best':'')+'">'+
+      '<div class="scenario-label '+r.cls+'">'+r.label+'</div>'+
+      '<div class="scenario-val">'+timeStr+'</div>'+
+      '<div class="scenario-sub">at '+r.rate.toFixed(1)+'% interest</div>'+
+      '<div class="scenario-sub">Interest: '+fmtMoney(r.interest,sym)+'</div>'+
+      '<div class="scenario-bar"><div class="scenario-bar-fill '+r.cls+'" style="width:'+Math.min(100,pct)+'%"></div></div>'+
+    '</div>';
+  }).join('');
+}
+
+/* ═══════════════════════════════════════════════════════
+   BREAKDOWN TABLE
+   ═══════════════════════════════════════════════════════ */
+function renderTable(sim,sym,showReal){
+  var html='<table><thead><tr><th>Period</th><th>Deposit</th><th>Interest</th><th>Balance</th>';
+  if(showReal)html+='<th>Real Value</th>';
+  html+='</tr></thead><tbody>';
+
+  // Show yearly summary with monthly detail for first year
+  var prevBal=0;
+  for(var i=0;i<sim.data.length;i++){
+    var d=sim.data[i];
+    if(i===0)continue;
+    // Show every month for first 12, then yearly
+    if(d.month<=12||d.month%12===0||i===sim.data.length-1){
+      var label=d.month<=12?'Month '+d.month:(d.month%12===0?'Year '+(d.month/12):'Month '+d.month);
+      html+='<tr><td>'+label+'</td><td>'+fmtMoney(d.deposit,sym)+'</td><td>'+fmtMoney(d.interest,sym)+'</td><td><strong>'+fmtMoney(d.balance,sym)+'</strong></td>';
+      if(showReal)html+='<td style="color:#f59e0b">'+fmtMoney(d.realValue,sym)+'</td>';
+      html+='</tr>';
+    }
+  }
+  html+='</tbody></table>';
+  document.getElementById('breakdownTable').innerHTML=html;
+}
+
+/* ═══════════════════════════════════════════════════════
+   AI ADVISOR
+   ═══════════════════════════════════════════════════════ */
+var aiHistory=[];
+function askAI(){
+  var input=document.getElementById('aiInput');
+  var msg=input.value.trim();
+  if(!msg)return;
+  input.value='';
+
+  var messagesEl=document.getElementById('aiMessages');
+  messagesEl.innerHTML+='<div class="ai-msg user">'+escapeHtml(msg)+'</div>';
+
+  // Add context
+  var context='';
+  if(calcData){
+    var c2=calcData.country;
+    context=' [Context: Country='+c2.name+', Currency='+c2.code+', Goal='+fmtMoney(parseNum(document.getElementById('goal').value),c2.symbol)+', Current savings='+fmtMoney(parseNum(document.getElementById('current').value),c2.symbol)+', Interest rate='+document.getElementById('rate').value+'%, Inflation='+document.getElementById('inflation').value+'%, Months to goal='+calcData.months+']';
+  }
+
+  var body={message:msg+context,toolContext:'savings-goal',history:aiHistory.slice(-6)};
+
+  messagesEl.innerHTML+='<div class="ai-msg bot" id="aiLoading" style="opacity:.6">Thinking...</div>';
+  messagesEl.scrollTop=messagesEl.scrollHeight;
+
+  fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})
+  .then(function(r){return r.json();})
+  .then(function(data){
+    var loadEl=document.getElementById('aiLoading');
+    if(loadEl)loadEl.remove();
+    var reply=data.response||data.message||'Sorry, I could not generate a response.';
+    messagesEl.innerHTML+='<div class="ai-msg bot">'+escapeHtml(reply)+'</div>';
+    aiHistory.push({role:'user',content:msg},{role:'assistant',content:reply});
+    if(data.remaining!==undefined)document.getElementById('aiRemaining').textContent=data.remaining+' questions remaining today';
+    messagesEl.scrollTop=messagesEl.scrollHeight;
+  })
+  .catch(function(err){
+    var loadEl=document.getElementById('aiLoading');
+    if(loadEl)loadEl.remove();
+    messagesEl.innerHTML+='<div class="ai-msg err">Connection error. Please try again.</div>';
+    messagesEl.scrollTop=messagesEl.scrollHeight;
+  });
+}
+
+function escapeHtml(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+
+/* ═══════════════════════════════════════════════════════
+   AUTO-CALCULATE ON LOAD
+   ═══════════════════════════════════════════════════════ */
+window.addEventListener('load',function(){setTimeout(calculate,300);});
 </script>
 <script src="/assets/js/components/tool-registry.min.js" defer></script>
 <script src="/assets/js/components/related-tools.min.js" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js" defer></script>
-<afro-newsletter-cta></afro-newsletter-cta>
+
+<script>
+(function(){
+  var target = document.getElementById('results');
+  if (!target) return;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
+  div.innerHTML = '<save-result-button tool-slug="savings-goal" tool-name="Savings Goal"></save-result-button><share-result-button tool-name="Savings Goal" tool-slug="savings-goal"></share-result-button>';
+  target.appendChild(div);
+})();
+</script>
 </body>
 </html>

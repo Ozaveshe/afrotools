@@ -19,6 +19,9 @@
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   body{font-family:'DM Sans',system-ui,sans-serif;background:var(--color-bg)}
 </style>
+<script src="/assets/js/lib/toast.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js" defer></script>
+<script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -126,6 +129,19 @@
 <script type="module">
   import { renderSavedItems } from '/assets/js/lib/save-state.js';
   renderSavedItems('cover-letter', 'saved-letters', { appUrl: 'app.html', itemNoun: 'letter' });
+</script>
+
+<script>
+// Save/Share buttons — manual placement needed
+(function(){
+  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
+  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
+  div.innerHTML = '<share-result-button tool-name="Cover Letter Generator" tool-slug="cover-letter-generator"></share-result-button>';
+  target.appendChild(div);
+})();
 </script>
 </body>
 </html>

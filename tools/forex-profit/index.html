@@ -77,6 +77,11 @@ h1 em{color:var(--afro-blue);font-style:normal}
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebApplication","name":"Forex Profit Calculator","url":"https://afrotools.com/tools/forex-profit/","description":"Calculate forex trading profit/loss, pip value, and position sizing for major and African currency pairs.","applicationCategory":"FinanceApplication","operatingSystem":"All","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
 </script>
+<script src="/assets/js/lib/toast.js" defer></script>
+<script src="/assets/js/afro-history.js" defer></script>
+<script src="/assets/js/components/save-result-button.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js" defer></script>
+<script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -298,6 +303,18 @@ function calculate(){
   document.getElementById('results').style.display='block';
   document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
 }
+</script>
+
+<script>
+(function(){
+  var target = document.getElementById('results');
+  if (!target) return;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
+  div.innerHTML = '<save-result-button tool-slug="forex-profit" tool-name="Forex Profit"></save-result-button><share-result-button tool-name="Forex Profit" tool-slug="forex-profit"></share-result-button>';
+  target.appendChild(div);
+})();
 </script>
 </body>
 </html>

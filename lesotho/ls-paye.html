@@ -80,6 +80,11 @@
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What are the Lesotho PAYE tax bands?","acceptedAnswer":{"@type":"Answer","text":"Lesotho has a simple two-band progressive tax system: 20% on the first M72,000 per year, and 30% on any income above M72,000. A tax credit of M10,560 is applied after tax calculation to reduce final liability."}},{"@type":"Question","name":"What is the M10,560 tax credit?","acceptedAnswer":{"@type":"Answer","text":"The tax credit of M10,560 per year is applied after calculating your LRA tax. It effectively reduces your final tax bill. For example, if your calculated tax is M20,000, the credit reduces it to M9,440."}},{"@type":"Question","name":"Is there a mandatory pension in Lesotho?","acceptedAnswer":{"@type":"Answer","text":"No. Lesotho does not have a mandatory employee pension contribution scheme. PAYE is calculated on the full gross salary with no pension deduction. Some employers may offer voluntary provident funds."}},{"@type":"Question","name":"How is Lesotho PAYE calculated?","acceptedAnswer":{"@type":"Answer","text":"PAYE is calculated annually on gross salary using the two progressive bands (20% and 30%). The tax credit of M10,560 is then subtracted from the total tax owed. Any tax above the credit is your payable PAYE."}},{"@type":"Question","name":"When must employers remit PAYE?","acceptedAnswer":{"@type":"Answer","text":"PAYE is calculated and remitted annually in Lesotho. Employers must file annual returns and remit employee tax withholdings to LRA within prescribed timelines set by the tax authority."}},{"@type":"Question","name":"Can I reduce my Lesotho tax?","acceptedAnswer":{"@type":"Answer","text":"The M10,560 tax credit is automatic and applies to all residents. Since there is no mandatory pension scheme and few deductions allowed, tax reduction opportunities are limited. Consult LRA on any qualifying deductions."}}]}
 </script>
 <script src="/assets/js/lib/chart-config.js"></script>
+
+  <script src="/assets/js/afro-history.js" defer></script>
+  <script src="/assets/js/components/save-result-button.js" defer></script>
+  <script src="/assets/js/components/share-card-generator.js" defer></script>
+  <script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body class="tool-page">
 <afro-navbar active="tools"></afro-navbar>
@@ -189,6 +194,22 @@
             Share Result
           </button>
         </div>
+
+          <!-- Save & Share -->
+          <div class="save-share-row">
+            <save-result-button
+              tool-slug="ls-paye"
+              tool-name="Lesotho PAYE Calculator"
+              country-code="LS"
+              currency="LSL">
+            </save-result-button>
+            <share-result-button
+              tool-name="Lesotho PAYE Calculator"
+              tool-slug="ls-paye"
+              country-flag="🇱🇸">
+            </share-result-button>
+          </div>
+          <salary-benchmark country-code="LS" currency="LSL"></salary-benchmark>
       </div>
     </div>
 
@@ -450,6 +471,28 @@ function calcAnnualPAYE(annualGross) {
   document.getElementById('hiddenGross').value = gross;
 
   document.getElementById('resultsCard').classList.add('on');
+  // Save/Share/Benchmark wiring
+  var _saveBtn = document.querySelector('save-result-button');
+  if (_saveBtn) _saveBtn.setData({
+    inputs: { grossSalary: RESULT.gross },
+    outputs: {
+      netPay: RESULT.netMonthly || RESULT.net,
+      tax: RESULT.monthlyPAYE || RESULT.tax || RESULT.paye,
+      effectiveRate: RESULT.effectiveRate
+    }
+  });
+  var _shareBtn = document.querySelector('share-result-button');
+  if (_shareBtn) _shareBtn.setResult({
+    headline: 'My Take-Home Pay',
+    mainValue: fmt(RESULT.netMonthly || RESULT.net) + '/mo',
+    subValues: [
+      { label: 'Gross', value: fmt(RESULT.gross) + '/mo' },
+      { label: 'Tax', value: fmt(RESULT.monthlyPAYE || RESULT.tax || RESULT.paye) + '/mo' },
+      { label: 'Effective Rate', value: pct(RESULT.effectiveRate) }
+    ]
+  });
+  var _bmWidget = document.querySelector('salary-benchmark');
+  if (_bmWidget) { _bmWidget.setAttribute('user-gross', RESULT.gross); _bmWidget.setAttribute('user-net', RESULT.netMonthly || RESULT.net); }
   renderChart(CHART_TYPE);
   document.getElementById('resultsCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
@@ -651,6 +694,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 </div>
 
 <script>window._grossToNet=function(g){return g-calcAnnualPAYE(g).tax;};</script>
+<script src="/assets/js/components/salary-benchmark-widget.js" defer></script>
 </body></html>`;
 
   const blob = new Blob([html],{type:'text/html;charset=utf-8'});

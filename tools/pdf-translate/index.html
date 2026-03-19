@@ -492,6 +492,9 @@
     .download-row { flex-direction: column; }
   }
 </style>
+<script src="/assets/js/lib/toast.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js" defer></script>
+<script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
@@ -1036,39 +1039,78 @@
     renderPreview();
   });
 
-  /* ── Download Translated PDF ── */
-  downloadPdfBtn.addEventListener('click', function() {
+  /* ── Download Translated PDF (html2canvas for Unicode support) ── */
+  downloadPdfBtn.addEventListener('click', async function() {
     if (!translatedPages.length) return;
+    downloadPdfBtn.disabled = true;
+    downloadPdfBtn.textContent = 'Generating PDF...';
 
-    var jsPDF = window.jspdf.jsPDF;
-    var doc = new jsPDF({ unit: 'mm', format: 'a4' });
-    var isFirstPage = true;
-
-    for (var i = 0; i < translatedPages.length; i++) {
-      var text = translatedPages[i];
-      if (!text) continue;
-
-      if (!isFirstPage) doc.addPage();
-      isFirstPage = false;
-
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(11);
-      var lines = doc.splitTextToSize(text, 170); // A4 width minus margins (210 - 20 - 20)
-      var y = 20;
-      var pageHeight = 277; // A4 height minus margins (297 - 20)
-
-      for (var l = 0; l < lines.length; l++) {
-        if (y > pageHeight) {
-          doc.addPage();
-          y = 20;
-        }
-        doc.text(lines[l], 20, y);
-        y += 5.5;
+    try {
+      // Load html2canvas if not loaded
+      if (!window.html2canvas) {
+        var s = document.createElement('script');
+        s.src = 'https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js';
+        document.head.appendChild(s);
+        await new Promise(function(r, rej) { s.onload = r; s.onerror = rej; });
       }
-    }
 
-    var outputName = pdfData.fileName.replace(/\.pdf$/i, '') + '_translated.pdf';
-    doc.save(outputName);
+      var jsPDF = window.jspdf.jsPDF;
+      var doc = new jsPDF({ unit: 'mm', format: 'a4' });
+      var isFirstPage = true;
+
+      for (var i = 0; i < translatedPages.length; i++) {
+        var text = translatedPages[i];
+        if (!text) continue;
+
+        // Create an off-screen div with the text, styled with a web-safe Unicode font
+        var container = document.createElement('div');
+        container.style.cssText = 'position:fixed;left:-9999px;top:0;width:794px;padding:40px 50px;background:#fff;font-family:"Noto Sans","Segoe UI",Arial,sans-serif;font-size:14px;line-height:1.7;color:#000;white-space:pre-wrap;word-wrap:break-word;';
+        container.textContent = text;
+        document.body.appendChild(container);
+
+        var canvas = await html2canvas(container, { scale: 2, useCORS: true, backgroundColor: '#ffffff' });
+        document.body.removeChild(container);
+
+        // Split tall canvases across pages
+        var imgWidth = 210; // A4 mm
+        var pageHeight = 297;
+        var margin = 10;
+        var usableHeight = pageHeight - margin * 2;
+        var imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+        if (!isFirstPage) doc.addPage();
+        isFirstPage = false;
+
+        if (imgHeight <= usableHeight) {
+          doc.addImage(canvas.toDataURL('image/jpeg', 0.92), 'JPEG', 0, margin, imgWidth, imgHeight);
+        } else {
+          // Multi-page: slice the canvas
+          var sliceHeight = Math.floor(canvas.height * (usableHeight / imgHeight));
+          var yOff = 0;
+          var first = true;
+          while (yOff < canvas.height) {
+            if (!first) doc.addPage();
+            first = false;
+            var h = Math.min(sliceHeight, canvas.height - yOff);
+            var sliceCanvas = document.createElement('canvas');
+            sliceCanvas.width = canvas.width;
+            sliceCanvas.height = h;
+            sliceCanvas.getContext('2d').drawImage(canvas, 0, yOff, canvas.width, h, 0, 0, canvas.width, h);
+            var sliceImgH = (h * imgWidth) / canvas.width;
+            doc.addImage(sliceCanvas.toDataURL('image/jpeg', 0.92), 'JPEG', 0, margin, imgWidth, sliceImgH);
+            yOff += h;
+          }
+        }
+      }
+
+      var outputName = pdfData.fileName.replace(/\.pdf$/i, '') + '_translated.pdf';
+      doc.save(outputName);
+    } catch (err) {
+      PdfUtils.showToast('Error generating PDF: ' + err.message, true);
+    } finally {
+      downloadPdfBtn.disabled = false;
+      downloadPdfBtn.textContent = 'Download Translated PDF';
+    }
   });
 
   /* ── Download as TXT ── */
@@ -1086,6 +1128,18 @@
     PdfUtils.downloadBlob(blob, outputName);
   });
 
+})();
+</script>
+
+<script>
+(function(){
+  var target = document.getElementById('resultSection');
+  if (!target) return;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
+  div.innerHTML = '<share-result-button tool-name="Pdf Translate" tool-slug="pdf-translate"></share-result-button>';
+  target.appendChild(div);
 })();
 </script>
 </body>

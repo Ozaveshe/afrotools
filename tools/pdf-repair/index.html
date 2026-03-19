@@ -514,6 +514,9 @@
     }
   }
 </style>
+<script src="/assets/js/lib/toast.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js" defer></script>
+<script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
@@ -582,6 +585,12 @@
           <div class="action-row" id="actionRow" style="display:none;">
             <button class="act-btn act-download" id="downloadBtn">Download Repaired PDF</button>
           </div>
+<div class="result-actions" style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
+  <share-result-button
+    tool-name="Pdf Repair"
+    tool-slug="pdf-repair">
+  </share-result-button>
+</div>
         </div>
       </div>
 
@@ -770,15 +779,32 @@
         errors.push('Standard load failed: ' + err1.message);
         setProgress(50, 'Trying alternative repair strategy...');
 
-        // Attempt 2: even more lenient with throwOnInvalidObject disabled
+        // Attempt 2: try with capNumbers + parseSpeed for lenient parsing
         try {
           pdfDoc = await PDFDocument.load(uint8, {
             ignoreEncryption: true,
             updateMetadata: false,
-            throwOnInvalidObject: false
+            capNumbers: true
           });
         } catch (err2) {
           errors.push('Lenient load failed: ' + err2.message);
+
+          // Attempt 3: try to find a valid PDF header and trim garbage bytes
+          try {
+            var headerIdx = 0;
+            for (var bi = 0; bi < Math.min(uint8.length, 1024); bi++) {
+              if (uint8[bi] === 0x25 && uint8[bi+1] === 0x50 && uint8[bi+2] === 0x44 && uint8[bi+3] === 0x46) {
+                headerIdx = bi; break;
+              }
+            }
+            if (headerIdx > 0) {
+              var trimmed = uint8.slice(headerIdx);
+              pdfDoc = await PDFDocument.load(trimmed, { ignoreEncryption: true, updateMetadata: false, capNumbers: true });
+              errors.push('Recovered by trimming ' + headerIdx + ' corrupt bytes from header');
+            }
+          } catch (err3) {
+            errors.push('Header recovery failed: ' + err3.message);
+          }
         }
       }
 

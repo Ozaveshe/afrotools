@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -48,7 +48,7 @@
   }
 
   .tool-hero::after {
-    content: '🔗';
+    content: '\1F517';
     position: absolute;
     right: 5%;
     top: 50%;
@@ -353,6 +353,328 @@
     border-color: var(--afro-green);
   }
 
+  /* --- Tabs nav --- */
+  .tabs-nav {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+  }
+
+  .tab-btn {
+    padding: 9px 16px;
+    background: #EFF6FF;
+    border: 1.5px solid #BFDBFE;
+    border-radius: 7px 7px 0 0;
+    cursor: pointer;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #244d2c;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .tab-btn:hover { border-color: var(--afro-green); }
+  .tab-btn.on {
+    border-color: var(--afro-green);
+    background: var(--afro-green);
+    color: #fff;
+    border-bottom-color: #fff;
+  }
+
+  .tab-panel { display: none; }
+  .tab-panel.on { display: block; }
+
+  /* --- Double-encode warning --- */
+  .warn-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    background: #FEF3C7;
+    color: #92400E;
+    border: 1px solid #F59E0B;
+    margin-bottom: 12px;
+  }
+
+  .warn-badge.hidden { display: none; }
+
+  /* --- URL Parser fields --- */
+  .parsed-field {
+    margin-bottom: 10px;
+  }
+
+  .parsed-field label {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #0a4018;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .parsed-field input {
+    width: 100%;
+    padding: 8px 10px;
+    background: #EFF6FF;
+    border: 1.5px solid #BFDBFE;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    font-family: 'Courier New', monospace;
+    color: #0d2813;
+    outline: none;
+  }
+
+  .parsed-field input:focus {
+    border-color: var(--afro-green);
+    background: #fff;
+  }
+
+  /* --- Query params table --- */
+  .qp-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.8rem;
+    margin-top: 8px;
+  }
+
+  .qp-table th {
+    background: #F5F9FF;
+    padding: 7px 10px;
+    text-align: left;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #0a4018;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border-bottom: 1.5px solid #BFDBFE;
+  }
+
+  .qp-table td {
+    padding: 5px 6px;
+    border-bottom: 1px solid #EFF6FF;
+  }
+
+  .qp-table input {
+    width: 100%;
+    padding: 6px 8px;
+    border: 1.5px solid #BFDBFE;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    font-family: 'Courier New', monospace;
+    background: #EFF6FF;
+    outline: none;
+  }
+
+  .qp-table input:focus {
+    border-color: var(--afro-green);
+    background: #fff;
+  }
+
+  /* --- Query builder --- */
+  .qb-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 36px;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+
+  .qb-row input {
+    padding: 8px 10px;
+    border: 1.5px solid #BFDBFE;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    font-family: 'Courier New', monospace;
+    background: #EFF6FF;
+    outline: none;
+  }
+
+  .qb-row input:focus {
+    border-color: var(--afro-green);
+    background: #fff;
+  }
+
+  .qb-remove {
+    width: 36px;
+    height: 36px;
+    background: #FEE2E2;
+    border: 1px solid #FCA5A5;
+    border-radius: 6px;
+    color: #DC2626;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .qb-add {
+    padding: 8px 14px;
+    background: rgba(0, 113, 227, 0.1);
+    border: 1px solid rgba(0, 113, 227, 0.35);
+    color: #1a5c3a;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.72rem;
+    font-weight: 700;
+    font-family: 'DM Sans', sans-serif;
+    margin-top: 4px;
+  }
+
+  .qb-result {
+    background: #EFF6FF;
+    border: 1.5px solid #BFDBFE;
+    border-radius: 8px;
+    padding: 12px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    color: #0d2813;
+    word-break: break-all;
+    min-height: 40px;
+    margin-top: 12px;
+    line-height: 1.4;
+  }
+
+  /* --- RFC table --- */
+  .rfc-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.78rem;
+    border: 1.5px solid #BFDBFE;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .rfc-table th {
+    background: #F5F9FF;
+    padding: 9px 10px;
+    text-align: left;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #0a4018;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border-bottom: 1.5px solid #BFDBFE;
+  }
+
+  .rfc-table td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #EFF6FF;
+    font-family: 'Courier New', monospace;
+    color: #0d2813;
+  }
+
+  .rfc-table tr:last-child td { border-bottom: none; }
+
+  .rfc-enc { color: #DC2626; font-weight: 700; }
+  .rfc-safe { color: #059669; font-weight: 700; }
+
+  /* --- FAQ accordion --- */
+  .faq-section {
+    max-width: 1200px;
+    margin: 0 auto 60px;
+    padding: 0 24px;
+  }
+
+  .faq-section h2 {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #0d2813;
+    margin-bottom: 20px;
+    letter-spacing: -0.01em;
+  }
+
+  .faq-item {
+    border: 1px solid #DBEAFE;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    overflow: hidden;
+    background: #fff;
+  }
+
+  .faq-q {
+    width: 100%;
+    padding: 16px 20px;
+    background: #F5F9FF;
+    border: none;
+    cursor: pointer;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #0d2813;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.15s;
+  }
+
+  .faq-q:hover { background: #EBF2FF; }
+
+  .faq-q::after {
+    content: '+';
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--afro-green);
+    transition: transform 0.2s;
+    flex-shrink: 0;
+    margin-left: 12px;
+  }
+
+  .faq-item.open .faq-q::after {
+    content: '\2212';
+  }
+
+  .faq-a {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.25s ease;
+  }
+
+  .faq-a-inner {
+    padding: 16px 20px;
+    font-size: 0.84rem;
+    color: #244d2c;
+    line-height: 1.7;
+  }
+
+  .faq-item.open .faq-a {
+    max-height: 300px;
+  }
+
+  /* --- Toast --- */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    padding: 12px 22px;
+    background: #0d2813;
+    color: #fff;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    z-index: 9999;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.2s, transform 0.2s;
+    pointer-events: none;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .toast.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
   @media (max-width: 768px) {
     .tool-main-inner {
       grid-template-columns: 1fr;
@@ -360,6 +682,23 @@
 
     .mode-row {
       grid-template-columns: 1fr;
+    }
+
+    .tabs-nav {
+      gap: 3px;
+    }
+
+    .tab-btn {
+      padding: 7px 10px;
+      font-size: 0.64rem;
+    }
+
+    .rfc-table {
+      font-size: 0.68rem;
+    }
+
+    .rfc-table th, .rfc-table td {
+      padding: 5px 6px;
     }
   }
 </style>
@@ -408,10 +747,58 @@
           "item": "https://afrotools.com/tools/url-encoder"
         }
       ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is URL encoding and why is it needed?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "URL encoding (also called percent-encoding) converts characters that are not allowed in a URL into a format that can be transmitted over the internet. Special characters like spaces, ampersands, and equals signs are replaced with a percent sign followed by their hexadecimal ASCII value (e.g. space becomes %20). This ensures URLs are parsed correctly by browsers and servers."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the difference between encodeURI and encodeURIComponent?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "encodeURI encodes a full URL and preserves characters that have meaning in a URL such as :, /, ?, #, and &. encodeURIComponent encodes individual URL components (like query parameter values) and does encode those reserved characters. Use encodeURI for full URLs and encodeURIComponent for individual values you are inserting into a URL."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is double URL encoding and how do I detect it?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Double encoding occurs when an already-encoded URL is encoded again. For example, %20 (an encoded space) becomes %2520 when double-encoded, because the percent sign itself gets encoded to %25. Double encoding can cause errors where servers fail to decode values correctly. You can detect it by looking for %25 sequences in the URL."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What characters are safe in a URL without encoding?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "According to RFC 3986, unreserved characters that do not need encoding are: uppercase and lowercase letters (A-Z, a-z), digits (0-9), hyphen (-), period (.), underscore (_), and tilde (~). All other characters, including reserved characters like :, /, ?, #, @, and &, should be percent-encoded when used outside their special purpose."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does URL encoding handle non-ASCII characters like accented letters or emojis?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Non-ASCII characters are first converted to their UTF-8 byte sequences, and then each byte is percent-encoded. For example, the euro sign is encoded as %E2%82%AC (three UTF-8 bytes). Emojis typically produce four percent-encoded bytes. This is why encoded non-ASCII text can appear much longer than the original."
+          }
+        }
+      ]
     }
   ]
 }
 </script>
+<script src="/assets/js/lib/toast.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js" defer></script>
+<script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
@@ -434,51 +821,176 @@
 <div class="tool-main">
   <div class="tool-main-inner">
     <div>
-      <!-- URL Encode/Decode -->
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title">URL Encoder/Decoder</span>
+      <!-- Tabs Navigation -->
+      <div class="tabs-nav">
+        <button class="tab-btn on" data-tab="encode">Encode / Decode</button>
+        <button class="tab-btn" data-tab="parser">URL Parser</button>
+        <button class="tab-btn" data-tab="builder">Query Builder</button>
+        <button class="tab-btn" data-tab="bulk">Bulk Mode</button>
+        <button class="tab-btn" data-tab="rfc">RFC Reference</button>
+      </div>
+
+      <!-- TAB 1: Encode/Decode (existing) -->
+      <div class="tab-panel on" id="tab-encode">
+        <!-- URL Encode/Decode -->
+        <div class="card">
+          <div class="card-head">
+            <span class="card-title">URL Encoder/Decoder</span>
+          </div>
+          <div class="card-body">
+            <div class="mode-row">
+              <button class="mode-btn on" data-mode="encode">Encode</button>
+              <button class="mode-btn" data-mode="decode">Decode</button>
+            </div>
+
+            <div id="doubleEncodeWarn" class="warn-badge hidden">
+              Double-encoding detected -- input contains %25 sequences. Decode first?
+            </div>
+
+            <div class="field">
+              <label class="f-label">
+                <span class="f-label-text">Input (Updated Live)</span>
+              </label>
+              <textarea class="f-input f-textarea" id="urlInput" placeholder="Enter text to encode or URL to decode..."></textarea>
+            </div>
+
+            <div class="output-box on" id="urlOutput"></div>
+            <button class="copy-btn" id="urlCopy">Copy Result</button>
+          </div>
         </div>
-        <div class="card-body">
-          <div class="mode-row">
-            <button class="mode-btn on" data-mode="encode">Encode</button>
-            <button class="mode-btn" data-mode="decode">Decode</button>
-          </div>
 
-          <div class="field">
-            <label class="f-label">
-              <span class="f-label-text">Input (Updated Live)</span>
-            </label>
-            <textarea class="f-input f-textarea" id="urlInput" placeholder="Enter text to encode or URL to decode..."></textarea>
+        <!-- Base64 Encode/Decode -->
+        <div class="card">
+          <div class="card-head">
+            <span class="card-title">Base64 Encoder</span>
           </div>
+          <div class="card-body">
+            <div class="mode-row">
+              <button class="mode-btn on" data-mode="b64encode">Encode</button>
+              <button class="mode-btn" data-mode="b64decode">Decode</button>
+            </div>
 
-          <div class="output-box on" id="urlOutput"></div>
-          <button class="copy-btn" id="urlCopy">📋 Copy Result</button>
+            <div class="field">
+              <label class="f-label">
+                <span class="f-label-text">Input (Updated Live)</span>
+              </label>
+              <textarea class="f-input f-textarea" id="b64Input" placeholder="Enter text to encode or Base64 to decode..."></textarea>
+            </div>
+
+            <div class="output-box on" id="b64Output"></div>
+            <button class="copy-btn" id="b64Copy">Copy Result</button>
+          </div>
         </div>
       </div>
 
-      <!-- Base64 Encode/Decode -->
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title">Base64 Encoder</span>
-        </div>
-        <div class="card-body">
-          <div class="mode-row">
-            <button class="mode-btn on" data-mode="b64encode">Encode</button>
-            <button class="mode-btn" data-mode="b64decode">Decode</button>
+      <!-- TAB 2: URL Parser -->
+      <div class="tab-panel" id="tab-parser">
+        <div class="card">
+          <div class="card-head">
+            <span class="card-title">URL Parser</span>
           </div>
+          <div class="card-body">
+            <div class="field">
+              <label class="f-label"><span class="f-label-text">Paste a full URL</span></label>
+              <input class="f-input" id="parserInput" placeholder="https://example.com:8080/path?key=value&q=hello#section" />
+            </div>
 
-          <div class="field">
-            <label class="f-label">
-              <span class="f-label-text">Input (Updated Live)</span>
-            </label>
-            <textarea class="f-input f-textarea" id="b64Input" placeholder="Enter text to encode or Base64 to decode..."></textarea>
+            <div id="parserResults" style="display:none;">
+              <div class="parsed-field"><label>Protocol</label><input id="pProto" readonly /></div>
+              <div class="parsed-field"><label>Host</label><input id="pHost" readonly /></div>
+              <div class="parsed-field"><label>Port</label><input id="pPort" readonly /></div>
+              <div class="parsed-field"><label>Path</label><input id="pPath" readonly /></div>
+              <div class="parsed-field"><label>Fragment</label><input id="pFrag" readonly /></div>
+
+              <div style="margin-top:14px;">
+                <label style="display:block;font-size:0.7rem;font-weight:700;color:#0a4018;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:6px;">Query Parameters</label>
+                <table class="qp-table" id="parserQPTable">
+                  <thead><tr><th>Key</th><th>Value</th></tr></thead>
+                  <tbody id="parserQPBody"></tbody>
+                </table>
+              </div>
+              <button class="copy-btn" id="parserCopy" style="margin-top:12px;">Copy Parsed JSON</button>
+            </div>
           </div>
-
-          <div class="output-box on" id="b64Output"></div>
-          <button class="copy-btn" id="b64Copy">📋 Copy Result</button>
         </div>
       </div>
+
+      <!-- TAB 3: Query String Builder -->
+      <div class="tab-panel" id="tab-builder">
+        <div class="card">
+          <div class="card-head">
+            <span class="card-title">Query String Builder</span>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <label class="f-label"><span class="f-label-text">Base URL (optional)</span></label>
+              <input class="f-input" id="qbBaseURL" placeholder="https://example.com/api" />
+            </div>
+
+            <label class="f-label" style="margin-bottom:8px;"><span class="f-label-text">Key-Value Pairs</span></label>
+            <div id="qbRows"></div>
+            <button class="qb-add" id="qbAdd">+ Add Parameter</button>
+
+            <div class="qb-result" id="qbResult"></div>
+            <button class="copy-btn" id="qbCopy">Copy URL</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 4: Bulk Mode -->
+      <div class="tab-panel" id="tab-bulk">
+        <div class="card">
+          <div class="card-head">
+            <span class="card-title">Bulk Encode/Decode</span>
+          </div>
+          <div class="card-body">
+            <div class="mode-row">
+              <button class="mode-btn on" data-mode="bulkencode">Encode All</button>
+              <button class="mode-btn" data-mode="bulkdecode">Decode All</button>
+            </div>
+
+            <div class="field">
+              <label class="f-label"><span class="f-label-text">Input (one URL per line)</span></label>
+              <textarea class="f-input f-textarea" id="bulkInput" placeholder="Enter URLs, one per line..." style="min-height:140px;"></textarea>
+            </div>
+
+            <div class="field">
+              <label class="f-label"><span class="f-label-text">Output</span></label>
+              <textarea class="f-input f-textarea" id="bulkOutput" readonly style="min-height:140px;background:#EFF6FF;"></textarea>
+            </div>
+            <button class="copy-btn" id="bulkCopy">Copy All Results</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 5: RFC Reference -->
+      <div class="tab-panel" id="tab-rfc">
+        <div class="card">
+          <div class="card-head">
+            <span class="card-title">RFC 3986 Encoding Comparison</span>
+          </div>
+          <div class="card-body">
+            <p style="font-size:0.8rem;color:#244d2c;margin-bottom:14px;line-height:1.5;">
+              How <code>encodeURI</code>, <code>encodeURIComponent</code>, and RFC 3986 treat common characters.
+              <span class="rfc-safe">Safe</span> = not encoded. <span class="rfc-enc">Encoded</span> = percent-encoded.
+            </p>
+            <div style="overflow-x:auto;">
+              <table class="rfc-table" id="rfcTable">
+                <thead>
+                  <tr>
+                    <th>Char</th>
+                    <th>encodeURI</th>
+                    <th>encodeURIComponent</th>
+                    <th>RFC 3986</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <!-- Sidebar -->
@@ -499,11 +1011,11 @@
         <div class="info-text">
           Converts special characters for safe URLs:
           <ul style="margin-top:10px;">
-            <li>✓ Spaces → %20</li>
-            <li>✓ & → %26</li>
-            <li>✓ = → %3D</li>
-            <li>✓ RFC 3986 compliant</li>
-            <li>✓ Live conversion</li>
+            <li>Spaces &rarr; %20</li>
+            <li>&amp; &rarr; %26</li>
+            <li>= &rarr; %3D</li>
+            <li>RFC 3986 compliant</li>
+            <li>Live conversion</li>
           </ul>
         </div>
       </div>
@@ -514,10 +1026,10 @@
         <div class="info-text">
           Text-to-base64 conversion using ASCII values:
           <ul style="margin-top:10px;">
-            <li>✓ 64 character alphabet</li>
-            <li>✓ Safe text transmission</li>
-            <li>✓ Fully reversible</li>
-            <li>✓ No encryption</li>
+            <li>64 character alphabet</li>
+            <li>Safe text transmission</li>
+            <li>Fully reversible</li>
+            <li>No encryption</li>
           </ul>
         </div>
       </div>
@@ -525,11 +1037,85 @@
   </div>
 </div>
 
+<!-- FAQ Accordion -->
+<div class="faq-section">
+  <h2>Frequently Asked Questions</h2>
+
+  <div class="faq-item">
+    <button class="faq-q">What is URL encoding and why is it needed?</button>
+    <div class="faq-a"><div class="faq-a-inner">URL encoding (percent-encoding) converts characters that are not allowed in a URL into a transmittable format. Special characters such as spaces, ampersands, and equals signs are replaced with a percent sign followed by two hexadecimal digits representing the character's ASCII code. For example, a space becomes <code>%20</code>. This ensures browsers and servers parse the URL correctly without ambiguity.</div></div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q">What is the difference between encodeURI and encodeURIComponent?</button>
+    <div class="faq-a"><div class="faq-a-inner"><code>encodeURI</code> encodes a full URL while preserving characters that carry meaning in a URL structure, such as <code>:</code>, <code>/</code>, <code>?</code>, <code>#</code>, and <code>&amp;</code>. <code>encodeURIComponent</code> encodes individual URL components (like query parameter values) and <em>does</em> encode those reserved characters. Use <code>encodeURI</code> for complete URLs and <code>encodeURIComponent</code> for individual values you are inserting into a URL.</div></div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q">What is double URL encoding and how do I detect it?</button>
+    <div class="faq-a"><div class="faq-a-inner">Double encoding happens when an already-encoded URL is encoded a second time. The percent sign (<code>%</code>) itself gets encoded to <code>%25</code>, so <code>%20</code> becomes <code>%2520</code>. This can cause servers to misinterpret values. You can detect it by looking for <code>%25</code> sequences in the URL. This tool automatically warns you when double-encoding is detected.</div></div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q">Which characters are safe in a URL without encoding?</button>
+    <div class="faq-a"><div class="faq-a-inner">RFC 3986 defines the unreserved characters that never need encoding: uppercase and lowercase letters (A-Z, a-z), digits (0-9), hyphen (<code>-</code>), period (<code>.</code>), underscore (<code>_</code>), and tilde (<code>~</code>). All other characters -- including reserved characters like <code>:</code>, <code>/</code>, <code>?</code>, <code>#</code>, <code>@</code>, and <code>&amp;</code> -- should be percent-encoded when used outside of their special purpose in the URL structure.</div></div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q">How does URL encoding handle emojis and non-ASCII characters?</button>
+    <div class="faq-a"><div class="faq-a-inner">Non-ASCII characters are first converted to their UTF-8 byte sequences, then each byte is individually percent-encoded. For instance, an accented letter may produce two encoded bytes, while emojis typically produce four. This is why encoded non-ASCII text appears much longer than the original input.</div></div>
+  </div>
+</div>
+
 
 <afro-related-tools category="developer" current="url-encoder"></afro-related-tools>
 <afro-footer></afro-footer>
 
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
 <script>
+(function() {
+  /* ── Toast ── */
+  const toastEl = document.getElementById('toast');
+  let toastTimer;
+  function toast(msg) {
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2200);
+  }
+
+  function copyText(text) {
+    navigator.clipboard.writeText(text).then(() => toast('Copied to clipboard')).catch(() => toast('Copy failed'));
+  }
+
+  /* ── Tabs ── */
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabPanels = document.querySelectorAll('.tab-panel');
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabBtns.forEach(b => b.classList.remove('on'));
+      tabPanels.forEach(p => p.classList.remove('on'));
+      btn.classList.add('on');
+      document.getElementById('tab-' + btn.dataset.tab).classList.add('on');
+    });
+  });
+
+  /* ── Double-encoding detection ── */
+  const doubleEncodeWarn = document.getElementById('doubleEncodeWarn');
+  function checkDoubleEncode(text) {
+    const patterns = /%25[0-9A-Fa-f]{2}/;
+    if (patterns.test(text)) {
+      doubleEncodeWarn.classList.remove('hidden');
+    } else {
+      doubleEncodeWarn.classList.add('hidden');
+    }
+  }
+
+  /* ═══════════════════════════════════
+     TAB 1: URL Encode/Decode (existing)
+     ═══════════════════════════════════ */
   const urlInput = document.getElementById('urlInput');
   const urlOutput = document.getElementById('urlOutput');
   const urlCopy = document.getElementById('urlCopy');
@@ -540,7 +1126,6 @@
   let urlMode = 'encode';
   let b64Mode = 'b64encode';
 
-  // URL Encode/Decode
   const urlModeBtns = document.querySelectorAll('[data-mode="encode"], [data-mode="decode"]');
   urlModeBtns.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -555,11 +1140,8 @@
 
   function processURL() {
     const text = urlInput.value;
-    if (!text) {
-      urlOutput.textContent = '';
-      return;
-    }
-
+    checkDoubleEncode(text);
+    if (!text) { urlOutput.textContent = ''; return; }
     try {
       let result;
       if (urlMode === 'encode') {
@@ -574,17 +1156,9 @@
   }
 
   urlInput.addEventListener('input', processURL);
-  urlCopy.addEventListener('click', () => {
-    navigator.clipboard.writeText(urlOutput.textContent).then(() => {
-      urlCopy.textContent = '✓ Copied!';
-      setTimeout(() => urlCopy.textContent = '📋 Copy Result', 2000);
-    }).catch(() => {
-      urlCopy.textContent = '✗ Copy failed';
-      setTimeout(() => urlCopy.textContent = '📋 Copy Result', 2000);
-    });
-  });
+  urlCopy.addEventListener('click', () => copyText(urlOutput.textContent));
 
-  // Base64 Encode/Decode
+  // Base64
   const b64ModeBtns = document.querySelectorAll('[data-mode="b64encode"], [data-mode="b64decode"]');
   b64ModeBtns.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -599,11 +1173,7 @@
 
   function processBase64() {
     const text = b64Input.value;
-    if (!text) {
-      b64Output.textContent = '';
-      return;
-    }
-
+    if (!text) { b64Output.textContent = ''; return; }
     try {
       let result;
       if (b64Mode === 'b64encode') {
@@ -623,18 +1193,15 @@
   }
 
   b64Input.addEventListener('input', processBase64);
-  b64Copy.addEventListener('click', () => {
-    navigator.clipboard.writeText(b64Output.textContent).then(() => {
-      b64Copy.textContent = '✓ Copied!';
-      setTimeout(() => b64Copy.textContent = '📋 Copy Result', 2000);
-    }).catch(() => {
-      b64Copy.textContent = '✗ Copy failed';
-      setTimeout(() => b64Copy.textContent = '📋 Copy Result', 2000);
-    });
-  });
+  b64Copy.addEventListener('click', () => copyText(b64Output.textContent));
 
   // Preset buttons
   document.getElementById('encodeSpacesBtn').addEventListener('click', () => {
+    // Switch to encode tab
+    tabBtns.forEach(b => b.classList.remove('on'));
+    tabPanels.forEach(p => p.classList.remove('on'));
+    tabBtns[0].classList.add('on');
+    document.getElementById('tab-encode').classList.add('on');
     urlMode = 'encode';
     urlModeBtns.forEach(b => b.classList.remove('on'));
     document.querySelector('[data-mode="encode"]').classList.add('on');
@@ -643,6 +1210,10 @@
   });
 
   document.getElementById('encodeSpecialBtn').addEventListener('click', () => {
+    tabBtns.forEach(b => b.classList.remove('on'));
+    tabPanels.forEach(p => p.classList.remove('on'));
+    tabBtns[0].classList.add('on');
+    document.getElementById('tab-encode').classList.add('on');
     urlMode = 'encode';
     urlModeBtns.forEach(b => b.classList.remove('on'));
     document.querySelector('[data-mode="encode"]').classList.add('on');
@@ -651,14 +1222,208 @@
   });
 
   document.getElementById('rfc3986Btn').addEventListener('click', () => {
+    tabBtns.forEach(b => b.classList.remove('on'));
+    tabPanels.forEach(p => p.classList.remove('on'));
+    tabBtns[0].classList.add('on');
+    document.getElementById('tab-encode').classList.add('on');
     urlMode = 'encode';
     urlModeBtns.forEach(b => b.classList.remove('on'));
     document.querySelector('[data-mode="encode"]').classList.add('on');
     urlInput.value = 'https://example.com/path?key=value&another=test';
     processURL();
   });
+
+  /* ═══════════════════════
+     TAB 2: URL Parser
+     ═══════════════════════ */
+  const parserInput = document.getElementById('parserInput');
+  const parserResults = document.getElementById('parserResults');
+
+  function parseURL() {
+    const raw = parserInput.value.trim();
+    if (!raw) { parserResults.style.display = 'none'; return; }
+    try {
+      const u = new URL(raw);
+      parserResults.style.display = 'block';
+      document.getElementById('pProto').value = u.protocol.replace(':', '');
+      document.getElementById('pHost').value = u.hostname;
+      document.getElementById('pPort').value = u.port || '(default)';
+      document.getElementById('pPath').value = u.pathname;
+      document.getElementById('pFrag').value = u.hash ? u.hash.slice(1) : '(none)';
+
+      const tbody = document.getElementById('parserQPBody');
+      tbody.innerHTML = '';
+      const params = u.searchParams;
+      if ([...params].length === 0) {
+        tbody.innerHTML = '<tr><td colspan="2" style="color:#888;font-size:0.78rem;">No query parameters</td></tr>';
+      } else {
+        params.forEach((val, key) => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = '<td><input value="' + escHTML(key) + '" readonly /></td><td><input value="' + escHTML(val) + '" readonly /></td>';
+          tbody.appendChild(tr);
+        });
+      }
+    } catch (e) {
+      parserResults.style.display = 'block';
+      document.getElementById('pProto').value = 'Invalid URL';
+      document.getElementById('pHost').value = '';
+      document.getElementById('pPort').value = '';
+      document.getElementById('pPath').value = '';
+      document.getElementById('pFrag').value = '';
+      document.getElementById('parserQPBody').innerHTML = '';
+    }
+  }
+
+  function escHTML(s) { return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+
+  parserInput.addEventListener('input', parseURL);
+  document.getElementById('parserCopy').addEventListener('click', () => {
+    const raw = parserInput.value.trim();
+    try {
+      const u = new URL(raw);
+      const obj = {
+        protocol: u.protocol.replace(':',''),
+        host: u.hostname,
+        port: u.port || null,
+        path: u.pathname,
+        query: Object.fromEntries(u.searchParams),
+        fragment: u.hash ? u.hash.slice(1) : null
+      };
+      copyText(JSON.stringify(obj, null, 2));
+    } catch (e) {
+      toast('Invalid URL');
+    }
+  });
+
+  /* ═══════════════════════════
+     TAB 3: Query String Builder
+     ═══════════════════════════ */
+  const qbRows = document.getElementById('qbRows');
+  const qbResult = document.getElementById('qbResult');
+  const qbBaseURL = document.getElementById('qbBaseURL');
+
+  function addQBRow(key, val) {
+    const div = document.createElement('div');
+    div.className = 'qb-row';
+    div.innerHTML = '<input placeholder="key" value="' + escHTML(key || '') + '" />' +
+      '<input placeholder="value" value="' + escHTML(val || '') + '" />' +
+      '<button class="qb-remove" title="Remove">&times;</button>';
+    div.querySelector('.qb-remove').addEventListener('click', () => { div.remove(); buildQS(); });
+    div.querySelectorAll('input').forEach(inp => inp.addEventListener('input', buildQS));
+    qbRows.appendChild(div);
+  }
+
+  function buildQS() {
+    const rows = qbRows.querySelectorAll('.qb-row');
+    const pairs = [];
+    rows.forEach(row => {
+      const inputs = row.querySelectorAll('input');
+      const k = inputs[0].value.trim();
+      const v = inputs[1].value;
+      if (k) pairs.push(encodeURIComponent(k) + '=' + encodeURIComponent(v));
+    });
+    const qs = pairs.join('&');
+    const base = qbBaseURL.value.trim();
+    qbResult.textContent = base ? (base + (base.includes('?') ? '&' : '?') + qs) : ('?' + qs);
+  }
+
+  document.getElementById('qbAdd').addEventListener('click', () => { addQBRow('', ''); });
+  qbBaseURL.addEventListener('input', buildQS);
+  document.getElementById('qbCopy').addEventListener('click', () => copyText(qbResult.textContent));
+
+  // Start with two rows
+  addQBRow('', '');
+  addQBRow('', '');
+
+  /* ══════════════════
+     TAB 4: Bulk Mode
+     ══════════════════ */
+  const bulkInput = document.getElementById('bulkInput');
+  const bulkOutput = document.getElementById('bulkOutput');
+  let bulkMode = 'bulkencode';
+
+  const bulkBtns = document.querySelectorAll('[data-mode="bulkencode"], [data-mode="bulkdecode"]');
+  bulkBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      bulkMode = btn.dataset.mode;
+      bulkBtns.forEach(b => b.classList.remove('on'));
+      btn.classList.add('on');
+      processBulk();
+    });
+  });
+
+  function processBulk() {
+    const lines = bulkInput.value.split('\n');
+    const results = lines.map(line => {
+      if (!line.trim()) return '';
+      try {
+        return bulkMode === 'bulkencode' ? encodeURIComponent(line) : decodeURIComponent(line);
+      } catch (e) {
+        return 'Error: ' + e.message;
+      }
+    });
+    bulkOutput.value = results.join('\n');
+  }
+
+  bulkInput.addEventListener('input', processBulk);
+  document.getElementById('bulkCopy').addEventListener('click', () => copyText(bulkOutput.value));
+
+  /* ══════════════════════
+     TAB 5: RFC Reference
+     ══════════════════════ */
+  const rfcChars = [
+    [' ', 'space'], ['!', ''], ['#', ''], ['$', ''], ['&', ''], ["'", ''],
+    ['(', ''], [')', ''], ['*', ''], ['+', ''], [',', ''], ['/', ''],
+    [':', ''], [';', ''], ['=', ''], ['?', ''], ['@', ''], ['[', ''],
+    [']', ''], ['~', 'tilde'], ['-', 'hyphen'], ['.', 'dot'], ['_', 'underscore']
+  ];
+
+  const rfcBody = document.querySelector('#rfcTable tbody');
+  rfcChars.forEach(([ch]) => {
+    const euResult = encodeURI(ch);
+    const eucResult = encodeURIComponent(ch);
+    // RFC 3986 unreserved: A-Z a-z 0-9 - . _ ~
+    const rfc3986Unreserved = /^[A-Za-z0-9\-._~]$/;
+    const rfcEncoded = rfc3986Unreserved.test(ch) ? ch : '%' + ch.charCodeAt(0).toString(16).toUpperCase().padStart(2, '0');
+
+    const tr = document.createElement('tr');
+    const displayChar = ch === ' ' ? '(space)' : ch;
+    tr.innerHTML =
+      '<td style="font-weight:700;">' + escHTML(displayChar) + '</td>' +
+      '<td class="' + (euResult === ch ? 'rfc-safe' : 'rfc-enc') + '">' + escHTML(euResult) + '</td>' +
+      '<td class="' + (eucResult === ch ? 'rfc-safe' : 'rfc-enc') + '">' + escHTML(eucResult) + '</td>' +
+      '<td class="' + (rfcEncoded === ch ? 'rfc-safe' : 'rfc-enc') + '">' + escHTML(rfcEncoded) + '</td>';
+    rfcBody.appendChild(tr);
+  });
+
+  /* ══════════════════
+     FAQ Accordion
+     ══════════════════ */
+  document.querySelectorAll('.faq-q').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.parentElement;
+      const wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!wasOpen) item.classList.add('open');
+    });
+  });
+
+})();
 </script>
 <script src="/assets/js/components/newsletter-cta.min.js" defer></script>
 <afro-newsletter-cta></afro-newsletter-cta>
+
+<script>
+// Save/Share buttons — manual placement needed
+(function(){
+  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
+  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
+  div.innerHTML = '<share-result-button tool-name="Url Encoder" tool-slug="url-encoder"></share-result-button>';
+  target.appendChild(div);
+})();
+</script>
 </body>
 </html>

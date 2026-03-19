@@ -100,6 +100,11 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
 @media(max-width:900px){.layout{grid-template-columns:1fr}.summary-cards{grid-template-columns:1fr 1fr}.cost-bar-row{grid-template-columns:120px 1fr 80px}}
 @media(max-width:600px){.grid-2{grid-template-columns:1fr}.summary-cards{grid-template-columns:1fr 1fr}}
 </style>
+<script src="/assets/js/lib/toast.js" defer></script>
+<script src="/assets/js/afro-history.js" defer></script>
+<script src="/assets/js/components/save-result-button.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js" defer></script>
+<script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -474,6 +479,18 @@ function toggleFaq(el){
 }
 
 onCountryChange();
+</script>
+
+<script>
+(function(){
+  var target = document.getElementById('results-section');
+  if (!target) return;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
+  div.innerHTML = '<save-result-button tool-slug="property-transfer-cost" tool-name="Property Transfer Cost"></save-result-button><share-result-button tool-name="Property Transfer Cost" tool-slug="property-transfer-cost"></share-result-button>';
+  target.appendChild(div);
+})();
 </script>
 </body>
 </html>

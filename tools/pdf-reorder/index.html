@@ -108,7 +108,7 @@
   .card-body { padding: 22px; }
 
   /* ── Upload Zone ── */
-  .upload-zone { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px; background: #EFF6FF; border: 2px dashed #e5e7eb; border-radius: 8px; cursor: pointer; transition: all 0.2s; text-align: center; min-height: 180px; }
+  .upload-zone { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px; background: #EFF6FF; border: 2px dashed #e5e7eb; border-radius: 8px; cursor: pointer; transition: all 0.2s; text-align: center; min-height: 180px; position: relative; }
   .upload-zone:hover, .upload-zone.dragover { border-color: var(--afro-green); background: rgba(0,122,255,0.08); }
   .upload-zone input[type="file"] { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; }
   .upload-icon { font-size: 2.5rem; margin-bottom: 10px; opacity: 0.6; }
@@ -137,8 +137,10 @@
   .page-card.dragging { opacity: 0.4; transform: scale(0.95); }
   .page-card.drag-over { border-color: var(--color-primary); border-style: dashed; }
   .page-thumb { width: 100%; aspect-ratio: 8.5/11; display: flex; align-items: center; justify-content: center; background: #f9fafb; overflow: hidden; position: relative; }
-  .page-thumb img { width: 100%; height: 100%; object-fit: contain; }
+  .page-thumb img { width: 100%; height: 100%; object-fit: contain; transition: transform 0.2s; }
   .page-thumb canvas { width: 100%; height: 100%; object-fit: contain; }
+  .page-thumb img[style*="rotate(90deg)"], .page-thumb img[style*="rotate(270deg)"], .page-thumb img[style*="rotate(-90deg)"], .page-thumb img[style*="rotate(-270deg)"] { width: 77%; height: 77%; }
+  .page-thumb img[style*="rotate(180deg)"], .page-thumb img[style*="rotate(-180deg)"] { width: 100%; height: 100%; }
   .page-label { display: flex; align-items: center; justify-content: space-between; padding: 6px 8px; background: #f9fafb; border-top: 1px solid #e5e7eb; }
   .page-num { font-size: 0.7rem; font-weight: 700; color: #4b5563; }
   .page-rotation { font-size: 0.62rem; font-weight: 600; color: #9ca3af; }
@@ -202,6 +204,9 @@
     .tool-main { padding: 16px 12px 48px; }
   }
 </style>
+<script src="/assets/js/lib/toast.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js" defer></script>
+<script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
@@ -425,6 +430,7 @@
   /* ── Render Grid ── */
   function renderGrid() {
     pageGrid.innerHTML = '';
+    lastClickIdx = null;
     pages.forEach((pg, idx) => {
       const card = document.createElement('div');
       card.className = 'page-card' + (selectedSet.has(idx) ? ' selected' : '');
@@ -717,14 +723,27 @@
       touchClone.style.top = (touch.clientY - 30) + 'px';
     }, 300);
 
-    const cleanup = () => {
+    const startX = e.touches[0].clientX;
+    const startY = e.touches[0].clientY;
+
+    const onMove = (me) => {
+      const dx = me.touches[0].clientX - startX;
+      const dy = me.touches[0].clientY - startY;
+      // Only cancel if moved more than 10px (prevents accidental cancellation)
+      if (Math.abs(dx) > 10 || Math.abs(dy) > 10) {
+        clearTimeout(timer);
+        card.removeEventListener('touchmove', onMove);
+        card.removeEventListener('touchend', onEnd);
+      }
+    };
+    const onEnd = () => {
       clearTimeout(timer);
-      card.removeEventListener('touchend', cleanup);
-      card.removeEventListener('touchmove', cleanup);
+      card.removeEventListener('touchmove', onMove);
+      card.removeEventListener('touchend', onEnd);
     };
 
-    // If user moves quickly or releases, cancel the long-press
-    card.addEventListener('touchend', cleanup, { once: true });
+    card.addEventListener('touchmove', onMove);
+    card.addEventListener('touchend', onEnd, { once: true });
   }, { passive: true });
 
   pageGrid.addEventListener('touchmove', e => {
@@ -764,6 +783,19 @@
     touchTarget = null;
   });
 
+})();
+</script>
+
+<script>
+// Save/Share buttons — manual placement needed
+(function(){
+  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
+  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
+  div.innerHTML = '<share-result-button tool-name="Pdf Reorder" tool-slug="pdf-reorder"></share-result-button>';
+  target.appendChild(div);
 })();
 </script>
 </body>

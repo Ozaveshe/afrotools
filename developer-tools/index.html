@@ -11,8 +11,8 @@
   gtag('config', 'G-D859CGF391');
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Developer Tools — Free Tools | AfroTools</title>
-<meta name="description" content="JSON formatter, Base64 encoder, hash generator, regex tester, JWT decoder, color picker — the dev utilities you open ten times a day.">
+<title>Free Developer Tools — JSON, Base64, UUID, Regex | AfroTools</title>
+<meta name="description" content="11 free developer tools: JSON formatter, Base64 encoder, hash generator, regex tester, JWT decoder, UUID generator, color picker, and more. All client-side.">
 <link rel="canonical" href="https://afrotools.com/developer-tools">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <link rel="apple-touch-icon" href="/assets/img/logo-mark.svg">
@@ -23,7 +23,10 @@
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"CollectionPage","name":"Developer Tools — AfroTools","description":"JSON formatter, Base64 encoder, hash generator, regex tester, JWT decoder, color picker — the dev utilities you open ten times a day.","url":"https://afrotools.com/developer-tools","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com"}}
+{"@context":"https://schema.org","@type":"CollectionPage","name":"Developer Tools — AfroTools","description":"11 free developer tools: JSON formatter, Base64 encoder, hash generator, regex tester, JWT decoder, UUID generator, color picker, and more.","url":"https://afrotools.com/developer-tools","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Are AfroTools developer tools free to use?","acceptedAnswer":{"@type":"Answer","text":"Yes, all developer tools on AfroTools are completely free with no sign-up required. There are no usage limits for the core tools. The optional AI assistant feature has a daily limit for anonymous users."}},{"@type":"Question","name":"Is my data safe when using these tools?","acceptedAnswer":{"@type":"Answer","text":"Absolutely. All formatting, encoding, hashing, and conversion operations run 100% in your browser using JavaScript. No data is ever sent to any server. The only optional server call is the AI assistant, which sends a summary (not your full data) for analysis."}},{"@type":"Question","name":"Do the tools work offline?","acceptedAnswer":{"@type":"Answer","text":"Once loaded, most tools work offline since all processing is client-side. The only feature requiring internet is the optional AI assistant. This makes them ideal for developers in areas with unstable connectivity."}},{"@type":"Question","name":"What developer tools are available?","acceptedAnswer":{"@type":"Answer","text":"AfroTools offers 11 developer tools: JSON Formatter & Validator, Base64 Encoder/Decoder, Hash Generator (MD5/SHA/HMAC), Regex Tester, JWT Decoder, Color Picker & Converter, UUID Generator, URL Encoder/Decoder, Markdown Editor, Binary/Number Converter, and Data Format Converter (JSON/CSV/XML/YAML)."}},{"@type":"Question","name":"Can I use these tools on mobile?","acceptedAnswer":{"@type":"Answer","text":"Yes, all tools are fully responsive and work on mobile devices. The layouts adapt to smaller screens, and all inputs are touch-friendly. They work on any modern browser including Chrome, Firefox, Safari, and Edge."}}]}
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
@@ -68,6 +71,17 @@
   .cta p{font-size:.88rem;color:rgba(255,255,255,.8);margin-bottom:16px}
   .cta a{display:inline-block;padding:11px 24px;background:#fff;color:#0891b2;border-radius:8px;font-weight:700;font-size:.88rem;transition:transform .15s}
   .cta a:hover{transform:translateY(-2px)}
+  .filter-pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+  .pill{padding:7px 16px;border-radius:980px;border:1.5px solid #e5e7eb;background:#fff;font-size:.75rem;font-weight:700;color:#6b7280;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
+  .pill:hover{border-color:var(--color-primary);color:var(--color-primary)}
+  .pill.active{background:var(--color-primary);color:#fff;border-color:var(--color-primary)}
+  .faq-section{max-width:900px;margin:0 auto;padding:48px 24px}
+  .faq-section h2{font-size:1.3rem;font-weight:800;color:#111;margin-bottom:20px;font-family:'DM Sans',sans-serif}
+  details.faq-d{border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff}
+  details.faq-d summary{padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center}
+  details.faq-d summary::-webkit-details-marker{display:none}
+  details.faq-d[open] summary svg{transform:rotate(180deg)}
+  details.faq-d .faq-a{padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif}
   @media(max-width:640px){.hero-stats{gap:20px}.hs-n{font-size:1.6rem}}
 </style>
 </head>
@@ -92,8 +106,15 @@
 
 <section class="sec"><div class="wrap">
   <div class="ey">All Tools</div>
-  <h2 class="st">Developer Tools Tools</h2>
+  <h2 class="st">Developer Tools</h2>
   <p class="ss">Live tools, queued builds, and planned additions — all from the tool registry.</p>
+  <div class="filter-pills" id="filter-pills">
+    <button class="pill active" data-filter="all">All</button>
+    <button class="pill" data-filter="encode">Encode / Decode</button>
+    <button class="pill" data-filter="format">Format</button>
+    <button class="pill" data-filter="generate">Generate</button>
+    <button class="pill" data-filter="convert">Convert</button>
+  </div>
   <div id="tool-grid"></div>
 </div></section>
 
@@ -107,6 +128,39 @@
 <p style="font-size:.93rem;color:#374151;line-height:1.85;margin-bottom:14px">Our JSON Formatter handles large payloads with syntax highlighting and tree view. The Regex Tester shows matches in real-time with capture group highlighting. The JWT Decoder breaks down header, payload, and signature with expiry warnings. The Hash Generator supports MD5, SHA-1, SHA-256, and SHA-512. The Base64 tool handles both encoding and decoding with file support.</p>
 <p style="font-size:.93rem;color:#374151;line-height:1.85"><strong>Built for African developers:</strong> These tools work offline once loaded, perfect for developers in areas with unstable internet. They're lightweight, fast on older hardware, and respect your data, nothing is ever sent to a server. Whether you're coding in a tech hub in Lagos, a co-working space in Kigali, or a university lab in Cape Town, these tools just work.</p>
 </div></section>
+<section class="faq-section">
+  <h2>Frequently Asked Questions</h2>
+  <details class="faq-d">
+    <summary>Are AfroTools developer tools free to use?
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </summary>
+    <div class="faq-a">Yes, all developer tools on AfroTools are completely free with no sign-up required. There are no usage limits for the core tools. The optional AI assistant feature has a daily limit for anonymous users.</div>
+  </details>
+  <details class="faq-d">
+    <summary>Is my data safe when using these tools?
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </summary>
+    <div class="faq-a">Absolutely. All formatting, encoding, hashing, and conversion operations run 100% in your browser. No data is ever sent to any server. The only optional server call is the AI assistant, which sends a summary for analysis.</div>
+  </details>
+  <details class="faq-d">
+    <summary>Do the tools work offline?
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </summary>
+    <div class="faq-a">Once loaded, most tools work offline since all processing is client-side. The only feature requiring internet is the optional AI assistant. This makes them ideal for developers in areas with unstable connectivity.</div>
+  </details>
+  <details class="faq-d">
+    <summary>What developer tools are available?
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </summary>
+    <div class="faq-a">AfroTools offers 11 developer tools: JSON Formatter, Base64 Encoder/Decoder, Hash Generator, Regex Tester, JWT Decoder, Color Picker, UUID Generator, URL Encoder/Decoder, Markdown Editor, Binary Converter, and Data Format Converter.</div>
+  </details>
+  <details class="faq-d">
+    <summary>Can I use these tools on mobile?
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </summary>
+    <div class="faq-a">Yes, all tools are fully responsive and work on mobile devices. The layouts adapt to smaller screens and all inputs are touch-friendly. They work on any modern browser.</div>
+  </details>
+</section>
 <afro-footer></afro-footer>
 
 <script>
@@ -142,6 +196,30 @@ function _initDeveloper(){
   container.innerHTML=html||'<p style="color:#9ca3af">No tools yet.</p>';
   if(!document.getElementById('p-s')){var s=document.createElement('style');s.id='p-s';s.textContent='@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}';document.head.appendChild(s);}
 }
+// Filter pill functionality
+var FILTER_MAP = {
+  'encode': ['base64','url-encoder','jwt-decoder'],
+  'format': ['json-formatter','markdown-editor','sql-formatter'],
+  'generate': ['uuid-generator','hash-generator','password-generator','qr-generator'],
+  'convert': ['data-converter','binary-converter','color-picker']
+};
+
+document.querySelectorAll('.pill').forEach(function(pill){
+  pill.addEventListener('click', function(){
+    document.querySelectorAll('.pill').forEach(function(p){p.classList.remove('active');});
+    pill.classList.add('active');
+    var f = pill.dataset.filter;
+    var cards = document.querySelectorAll('#tool-grid a, #tool-grid div[style*="background:#fff"]');
+    cards.forEach(function(card){
+      if (f === 'all') { card.style.display = ''; return; }
+      var href = card.getAttribute('href') || '';
+      var slugs = FILTER_MAP[f] || [];
+      var match = slugs.some(function(s){ return href.includes(s); });
+      card.style.display = match ? '' : 'none';
+    });
+  });
+});
+
 if (typeof onRegistryReady === 'function') { onRegistryReady(_initDeveloper); }
 else { document.addEventListener('DOMContentLoaded', function(){ if(typeof AFRO_TOOLS!=='undefined') _initDeveloper(); else document.addEventListener('afrotools:registry-ready', _initDeveloper); }); }
 </script>

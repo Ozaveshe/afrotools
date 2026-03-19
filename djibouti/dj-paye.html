@@ -82,6 +82,11 @@
   @media(max-width:480px){.tool-info-stats{grid-template-columns:1fr 1fr 1fr}.tool-info-header{padding:12px 14px}.tool-info-body{padding:10px 14px}}
 </style>
 <script src="/assets/js/lib/chart-config.js"></script>
+
+  <script src="/assets/js/afro-history.js" defer></script>
+  <script src="/assets/js/components/save-result-button.js" defer></script>
+  <script src="/assets/js/components/share-card-generator.js" defer></script>
+  <script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body class="tool-page">
 <afro-navbar active="tools"></afro-navbar>
@@ -172,6 +177,22 @@
           <button class="act-btn act-pdf" onclick="openPdfModal()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Download PDF</button>
           <button class="act-btn act-share" id="djShareBtn" onclick="shareResult()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Share</button>
         </div>
+
+          <!-- Save & Share -->
+          <div class="save-share-row">
+            <save-result-button
+              tool-slug="dj-paye"
+              tool-name="Djibouti PAYE Calculator"
+              country-code="DJ"
+              currency="DJF">
+            </save-result-button>
+            <share-result-button
+              tool-name="Djibouti PAYE Calculator"
+              tool-slug="dj-paye"
+              country-flag="🇩🇯">
+            </share-result-button>
+          </div>
+          <salary-benchmark country-code="DJ" currency="DJF"></salary-benchmark>
       </div>
     </div>
 
@@ -415,6 +436,28 @@ function calcMonthlyIRPP(monthlyTaxable){
   strip.classList.add('on');
   
   document.getElementById('resultsCard').classList.add('on');
+  // Save/Share/Benchmark wiring
+  var _saveBtn = document.querySelector('save-result-button');
+  if (_saveBtn) _saveBtn.setData({
+    inputs: { grossSalary: RESULT.gross },
+    outputs: {
+      netPay: RESULT.netMonthly || RESULT.net,
+      tax: RESULT.monthlyPAYE || RESULT.tax || RESULT.paye,
+      effectiveRate: RESULT.effectiveRate
+    }
+  });
+  var _shareBtn = document.querySelector('share-result-button');
+  if (_shareBtn) _shareBtn.setResult({
+    headline: 'My Take-Home Pay',
+    mainValue: fmt(RESULT.netMonthly || RESULT.net) + '/mo',
+    subValues: [
+      { label: 'Gross', value: fmt(RESULT.gross) + '/mo' },
+      { label: 'Tax', value: fmt(RESULT.monthlyPAYE || RESULT.tax || RESULT.paye) + '/mo' },
+      { label: 'Effective Rate', value: pct(RESULT.effectiveRate) }
+    ]
+  });
+  var _bmWidget = document.querySelector('salary-benchmark');
+  if (_bmWidget) { _bmWidget.setAttribute('user-gross', RESULT.gross); _bmWidget.setAttribute('user-net', RESULT.netMonthly || RESULT.net); }
   renderChart(CHART_TYPE);
   document.getElementById('resultsCard').scrollIntoView({behavior:'smooth',block:'nearest'});
   document.getElementById('aiBtn').disabled=false;
@@ -467,5 +510,6 @@ window._grossToNet = function(g) {
 <script src="/assets/js/lib/auto-email-gate.js" defer></script>
 <script src="/assets/js/share-image-inject.js" defer></script>
 <script src="/assets/js/lib/net-to-gross.js" defer></script>
+<script src="/assets/js/components/salary-benchmark-widget.js" defer></script>
 </body>
 </html>

@@ -21,6 +21,10 @@
 /signin   /dashboard/   301
 /signin/  /dashboard/   301
 
+# Vault shortcut
+/vault    /dashboard/vault/  301
+/vault/   /dashboard/vault/  301
+
 # VAT Calculator — serve vat-calc.html at /tools/vat-calculator/ (avoids meta refresh SEO penalty)
 /tools/vat-calculator        /tools/vat-calculator/vat-calc.html  200
 /tools/vat-calculator/       /tools/vat-calculator/vat-calc.html  200
@@ -32,6 +36,25 @@
 /tools/afrokitchen/country/:code  /tools/afrokitchen/country.html?country=:code  200
 /tools/afrokitchen/collection/:slug/ /tools/afrokitchen/collection.html?slug=:slug  200
 /tools/afrokitchen/collection/:slug  /tools/afrokitchen/collection.html?slug=:slug  200
+
+# Email Unsubscribe
+/api/email/unsubscribe /.netlify/functions/email-unsubscribe 200
+
+# Lead Capture (PDF gate)
+/api/capture-lead /.netlify/functions/capture-lead 200
+
+# Salary Benchmarks API
+/api/salary-benchmarks /.netlify/functions/api-salary-benchmarks 200
+
+# FX Rates API
+/api/fx-rates  /.netlify/functions/api-fx-rates  200
+/api/scrape-fx /.netlify/functions/scrape-fx-rates 200
+
+# Public API endpoints
+/api/tax-rates   /.netlify/functions/api-tax-rates   200
+/api/countries   /.netlify/functions/api-countries   200
+/api/keys/create /.netlify/functions/api-keys-create 200
+/api/keys/*      /.netlify/functions/api-keys        200
 
 # SEO — alternate URL patterns (Fix 404s)
 /south-africa/sa-income-tax  /south-africa/za-paye  301
@@ -86,6 +109,42 @@
 /engineering/         /engineering/index.html          200
 /crypto               /crypto/index.html               200
 /crypto/              /crypto/index.html               200
+
+# ── French / Francophone Tools ──────────────────────────────────────
+/fr                                         /fr/index.html                                    200
+/fr/                                        /fr/index.html                                    200
+
+# PAYE (Calculateur Salaire Net)
+/fr/cote-divoire/calculateur-salaire-net    /fr/cote-divoire/calculateur-salaire-net.html     200
+/fr/senegal/calculateur-salaire-net         /fr/senegal/calculateur-salaire-net.html           200
+/fr/cameroun/calculateur-salaire-net        /fr/cameroun/calculateur-salaire-net.html          200
+/fr/rdc/calculateur-salaire-net             /fr/rdc/calculateur-salaire-net.html               200
+/fr/maroc/calculateur-salaire-net           /fr/maroc/calculateur-salaire-net.html             200
+/fr/algerie/calculateur-salaire-net         /fr/algerie/calculateur-salaire-net.html           200
+/fr/tunisie/calculateur-salaire-net         /fr/tunisie/calculateur-salaire-net.html           200
+/fr/mali/calculateur-salaire-net            /fr/mali/calculateur-salaire-net.html              200
+/fr/burkina-faso/calculateur-salaire-net    /fr/burkina-faso/calculateur-salaire-net.html     200
+/fr/niger/calculateur-salaire-net           /fr/niger/calculateur-salaire-net.html             200
+/fr/guinee/calculateur-salaire-net          /fr/guinee/calculateur-salaire-net.html            200
+/fr/congo/calculateur-salaire-net           /fr/congo/calculateur-salaire-net.html             200
+/fr/gabon/calculateur-salaire-net           /fr/gabon/calculateur-salaire-net.html             200
+/fr/togo/calculateur-salaire-net            /fr/togo/calculateur-salaire-net.html              200
+
+# TVA (Calculateur TVA)
+/fr/cote-divoire/calculateur-tva            /fr/cote-divoire/calculateur-tva.html              200
+/fr/senegal/calculateur-tva                 /fr/senegal/calculateur-tva.html                   200
+/fr/cameroun/calculateur-tva                /fr/cameroun/calculateur-tva.html                  200
+/fr/rdc/calculateur-tva                     /fr/rdc/calculateur-tva.html                       200
+/fr/maroc/calculateur-tva                   /fr/maroc/calculateur-tva.html                     200
+/fr/algerie/calculateur-tva                 /fr/algerie/calculateur-tva.html                   200
+/fr/tunisie/calculateur-tva                 /fr/tunisie/calculateur-tva.html                   200
+/fr/mali/calculateur-tva                    /fr/mali/calculateur-tva.html                      200
+/fr/burkina-faso/calculateur-tva            /fr/burkina-faso/calculateur-tva.html              200
+/fr/niger/calculateur-tva                   /fr/niger/calculateur-tva.html                     200
+/fr/guinee/calculateur-tva                  /fr/guinee/calculateur-tva.html                    200
+/fr/congo/calculateur-tva                   /fr/congo/calculateur-tva.html                     200
+/fr/gabon/calculateur-tva                   /fr/gabon/calculateur-tva.html                     200
+/fr/togo/calculateur-tva                    /fr/togo/calculateur-tva.html                      200
 
 # SEO — prevent trailing-slash 301 redirects (catches all directory index pages)
 # These catch-all rules MUST stay at the bottom. Netlify uses first-match-wins,

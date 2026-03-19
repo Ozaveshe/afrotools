@@ -81,6 +81,11 @@
   @media(max-width:480px){.tool-info-stats{grid-template-columns:1fr 1fr 1fr}.tool-info-header{padding:12px 14px}.tool-info-body{padding:10px 14px}}
 </style>
 <script src="/assets/js/lib/chart-config.js"></script>
+
+  <script src="/assets/js/afro-history.js" defer></script>
+  <script src="/assets/js/components/save-result-button.js" defer></script>
+  <script src="/assets/js/components/share-card-generator.js" defer></script>
+  <script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body class="tool-page">
 <afro-navbar active="tools"></afro-navbar>
@@ -161,6 +166,22 @@
           <button class="act-btn" style="color:#2563eb" onclick="openPdfModal()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Download PDF</button>
           <button class="act-btn" style="color:#4189dd" id="soShareBtn" onclick="shareResult()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Share</button>
         </div>
+
+          <!-- Save & Share -->
+          <div class="save-share-row">
+            <save-result-button
+              tool-slug="so-paye"
+              tool-name="Somalia PAYE Calculator"
+              country-code="SO"
+              currency="SOS">
+            </save-result-button>
+            <share-result-button
+              tool-name="Somalia PAYE Calculator"
+              tool-slug="so-paye"
+              country-flag="🇸🇴">
+            </share-result-button>
+          </div>
+          <salary-benchmark country-code="SO" currency="SOS"></salary-benchmark>
       </div>
     </div>
 
@@ -358,7 +379,29 @@ updateSliderFill(document.getElementById('salarySlider'));
   }
   if(!gross||gross<=0){const el=document.getElementById('grossSalary');el.focus();el.style.borderColor='#e53e3e';setTimeout(()=>el.style.borderColor='',2000);return;}
   const tax=gross*0.05;const net=gross-tax;RESULT={gross,monthly:gross,tax,net,annualGross:gross*12,annualNet:net*12,annualTax:tax*12,totalEmployerCost:gross};
-  document.getElementById('resAmount').textContent=fmt(net);document.getElementById('resGross').textContent=`Gross: ${fmt(gross)}/mo · ${fmt(gross*12)}/yr`;document.getElementById('resContent').innerHTML=renderRows(RESULT,PERIOD);document.getElementById('hiddenGross').value=gross;document.getElementById('resultsCard').classList.add('on');renderChart('donut');var empStrip=document.getElementById('employerStrip');if(empStrip){empStrip.classList.add('on');var d=PERIOD==='monthly'?12:1;empStrip.innerHTML='<strong>Total Employer Cost: '+fmt(RESULT.totalEmployerCost/d)+'/'+(PERIOD==='monthly'?'mo':'yr')+'</strong><br>No formal employer contributions in Somalia; total cost equals gross salary.';}document.getElementById('resultsCard').scrollIntoView({behavior:'smooth',block:'nearest'});
+  document.getElementById('resAmount').textContent=fmt(net);document.getElementById('resGross').textContent=`Gross: ${fmt(gross)}/mo · ${fmt(gross*12)}/yr`;document.getElementById('resContent').innerHTML=renderRows(RESULT,PERIOD);document.getElementById('hiddenGross').value=gross;document.getElementById('resultsCard').classList.add('on');
+  // Save/Share/Benchmark wiring
+  var _saveBtn = document.querySelector('save-result-button');
+  if (_saveBtn) _saveBtn.setData({
+    inputs: { grossSalary: RESULT.gross },
+    outputs: {
+      netPay: RESULT.netMonthly || RESULT.net,
+      tax: RESULT.monthlyPAYE || RESULT.tax || RESULT.paye,
+      effectiveRate: RESULT.effectiveRate
+    }
+  });
+  var _shareBtn = document.querySelector('share-result-button');
+  if (_shareBtn) _shareBtn.setResult({
+    headline: 'My Take-Home Pay',
+    mainValue: fmt(RESULT.netMonthly || RESULT.net) + '/mo',
+    subValues: [
+      { label: 'Gross', value: fmt(RESULT.gross) + '/mo' },
+      { label: 'Tax', value: fmt(RESULT.monthlyPAYE || RESULT.tax || RESULT.paye) + '/mo' },
+      { label: 'Effective Rate', value: pct(RESULT.effectiveRate) }
+    ]
+  });
+  var _bmWidget = document.querySelector('salary-benchmark');
+  if (_bmWidget) { _bmWidget.setAttribute('user-gross', RESULT.gross); _bmWidget.setAttribute('user-net', RESULT.netMonthly || RESULT.net); }renderChart('donut');var empStrip=document.getElementById('employerStrip');if(empStrip){empStrip.classList.add('on');var d=PERIOD==='monthly'?12:1;empStrip.innerHTML='<strong>Total Employer Cost: '+fmt(RESULT.totalEmployerCost/d)+'/'+(PERIOD==='monthly'?'mo':'yr')+'</strong><br>No formal employer contributions in Somalia; total cost equals gross salary.';}document.getElementById('resultsCard').scrollIntoView({behavior:'smooth',block:'nearest'});
   document.getElementById('aiBtn').disabled=false;
   document.getElementById('aiBtn').textContent='Get AI Tax Analysis';
 }
@@ -439,5 +482,6 @@ window._grossToNet = function(g) {
 <script src="/assets/js/lib/auto-email-gate.js" defer></script>
 <script src="/assets/js/share-image-inject.js" defer></script>
 <script src="/assets/js/lib/net-to-gross.js" defer></script>
+<script src="/assets/js/components/salary-benchmark-widget.js" defer></script>
 </body>
 </html>

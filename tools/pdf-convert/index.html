@@ -232,6 +232,9 @@
   ]
 }
 </script>
+<script src="/assets/js/lib/toast.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js" defer></script>
+<script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
@@ -587,6 +590,12 @@ async function ensureXlsx() {
   xlsxLoaded = true;
 }
 
+async function ensureHtml2Canvas() {
+  if (html2canvasLoaded && window.html2canvas) return;
+  await loadScript('https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js');
+  html2canvasLoaded = true;
+}
+
 // ============================================================
 // Mode switching
 // ============================================================
@@ -661,6 +670,7 @@ async function convertWord() {
   try {
     await ensureMammoth();
     await ensureJsPdf();
+    await ensureHtml2Canvas();
     fill.style.width = '30%';
     ptext.textContent = 'Parsing Word document...';
 
@@ -707,15 +717,17 @@ async function convertWord() {
 
     await new Promise(function(resolve) { setTimeout(resolve, 100); });
 
-    await doc.html(container, {
-      callback: function() {},
-      x: marginMm,
-      y: marginMm,
-      width: (pageSize === 'letter' ? 216 : 210) - marginMm * 2,
-      windowWidth: container.scrollWidth,
-      margin: [marginMm, marginMm, marginMm, marginMm],
-      autoPaging: 'text',
-      html2canvas: { scale: 0.5, useCORS: true, logging: false }
+    await new Promise(function(resolve, reject) {
+      doc.html(container, {
+        callback: function(d) { resolve(d); },
+        x: marginMm,
+        y: marginMm,
+        width: (pageSize === 'letter' ? 216 : 210) - marginMm * 2,
+        windowWidth: container.scrollWidth,
+        margin: [marginMm, marginMm, marginMm, marginMm],
+        autoPaging: 'text',
+        html2canvas: { scale: 0.5, useCORS: true, logging: false }
+      });
     });
 
     document.body.removeChild(container);
@@ -727,7 +739,7 @@ async function convertWord() {
     var outputName = wordFile.name.replace(/\.docx$/i, '') + '.pdf';
 
     document.getElementById('wordResultName').textContent = outputName;
-    document.getElementById('wordResultInfo').textContent = formatSize(wordPdfBlob.size) + ' &middot; ' + doc.internal.getNumberOfPages() + ' page(s)';
+    document.getElementById('wordResultInfo').textContent = formatSize(wordPdfBlob.size) + ' \u00B7 ' + doc.internal.getNumberOfPages() + ' page(s)';
     document.getElementById('wordResultCard').classList.remove('hidden');
 
     var dlBtn = document.getElementById('wordDownloadBtn');
@@ -937,11 +949,14 @@ async function convertExcel() {
         doc.setFontSize(isHeader ? fontSize + 1 : fontSize);
         var maxTextW = cw - cellPad * 2;
         var truncated = cellVal;
-        while (doc.getTextWidth(truncated) > maxTextW && truncated.length > 1) {
-          truncated = truncated.slice(0, -1);
+        var ellipsisW = doc.getTextWidth('...');
+        if (doc.getTextWidth(truncated) > maxTextW) {
+          while (doc.getTextWidth(truncated + '...') > maxTextW && truncated.length > 1) {
+            truncated = truncated.slice(0, -1);
+          }
+          if (truncated !== cellVal) truncated += '...';
         }
-        if (truncated !== cellVal && truncated.length > 0) truncated += '...';
-        doc.text(truncated, x + cellPad, y + h / 2 + fontSize * 0.15, { baseline: 'middle' });
+        doc.text(truncated, x + cellPad, y + h / 2 + fontSize * 0.15);
 
         x += cw;
       }
@@ -1071,7 +1086,7 @@ async function extractText() {
 
     var totalChars = textPages.reduce(function(a, p) { return a + p.text.length; }, 0);
     if (totalChars === 0) {
-      showToast('No selectable text found. This may be a scanned PDF &mdash; try the OCR tool.', true);
+      showToast('No selectable text found. This may be a scanned PDF \u2014 try the OCR tool.', true);
     } else {
       showToast('Text extracted from ' + textPages.length + ' page(s)!');
     }
@@ -1133,5 +1148,18 @@ setupDropZone('textDropZone', 'textFileInput', handlePdfTextFile);
 <script src="/assets/js/components/newsletter-cta.min.js" defer></script>
 <script src="/assets/js/lib/saved-tools.js" defer></script>
 <script src="/assets/js/favorites-widget.js" defer></script>
+
+<script>
+// Save/Share buttons — manual placement needed
+(function(){
+  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
+  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
+  div.innerHTML = '<share-result-button tool-name="Pdf Convert" tool-slug="pdf-convert"></share-result-button>';
+  target.appendChild(div);
+})();
+</script>
 </body>
 </html>

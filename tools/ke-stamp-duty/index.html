@@ -67,6 +67,11 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 @media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}}
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Kenya Stamp Duty Calculator","url":"https://afrotools.com/tools/ke-stamp-duty/","applicationCategory":"FinanceApplication","operatingSystem":"All","description":"Calculate stamp duty on property transfers in Kenya. 2% rural, 4% urban rates.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<script src="/assets/js/lib/toast.js" defer></script>
+<script src="/assets/js/afro-history.js" defer></script>
+<script src="/assets/js/components/save-result-button.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js" defer></script>
+<script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -203,6 +208,18 @@ function calculate() {
   document.getElementById('resultCard').style.display = 'block';
   document.getElementById('resultCard').scrollIntoView({ behavior: 'smooth' });
 }
+</script>
+
+<script>
+(function(){
+  var target = document.getElementById('resultCard');
+  if (!target) return;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
+  div.innerHTML = '<save-result-button tool-slug="ke-stamp-duty" tool-name="Kenya Stamp Duty"></save-result-button><share-result-button tool-name="Kenya Stamp Duty" tool-slug="ke-stamp-duty"></share-result-button>';
+  target.appendChild(div);
+})();
 </script>
 </body>
 </html>

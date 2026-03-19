@@ -67,6 +67,11 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
 {"@type":"Question","name":"What is the difference between discount and markup?","acceptedAnswer":{"@type":"Answer","text":"A discount reduces a selling price (e.g., 20% off ₦10,000 = ₦8,000). Markup increases a cost price to get a selling price (e.g., 50% markup on ₦6,000 cost = ₦9,000 selling price)."}},
 {"@type":"Question","name":"Can I calculate reverse discount (original price)?","acceptedAnswer":{"@type":"Answer","text":"Yes. If you know the final price after discount, enter it and use the tool to work backwards to find the original price before discount was applied."}}
 ]}</script>
+<script src="/assets/js/lib/toast.js" defer></script>
+<script src="/assets/js/afro-history.js" defer></script>
+<script src="/assets/js/components/save-result-button.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js" defer></script>
+<script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
@@ -200,5 +205,18 @@ calc();
 <script src="/assets/js/components/related-tools.min.js" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js" defer></script>
 <afro-newsletter-cta></afro-newsletter-cta>
+
+<script>
+// Save/Share buttons — manual placement needed
+(function(){
+  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
+  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
+  div.innerHTML = '<save-result-button tool-slug="discount-calc" tool-name="Discount Calc"></save-result-button><share-result-button tool-name="Discount Calc" tool-slug="discount-calc"></share-result-button>';
+  target.appendChild(div);
+})();
+</script>
 </body>
 </html>

@@ -97,6 +97,28 @@
       ]
     },
     {
+      id: 'francophone', label: 'Outils en Français', icon: '🇫🇷',
+      desc: 'Salaire net, TVA — 14 pays',
+      href: '/fr/', color: '#eef6ff', accent: '#0055A4',
+      tools: [
+        { label: "Côte d'Ivoire — Salaire", href: '/fr/cote-divoire/calculateur-salaire-net', emoji: '🇨🇮' },
+        { label: 'Sénégal — Salaire', href: '/fr/senegal/calculateur-salaire-net', emoji: '🇸🇳' },
+        { label: 'Cameroun — Salaire', href: '/fr/cameroun/calculateur-salaire-net', emoji: '🇨🇲' },
+        { label: 'RD Congo — Salaire', href: '/fr/rdc/calculateur-salaire-net', emoji: '🇨🇩' },
+        { label: 'Maroc — Salaire', href: '/fr/maroc/calculateur-salaire-net', emoji: '🇲🇦' },
+        { label: 'Algérie — Salaire', href: '/fr/algerie/calculateur-salaire-net', emoji: '🇩🇿' },
+        { label: 'Tunisie — Salaire', href: '/fr/tunisie/calculateur-salaire-net', emoji: '🇹🇳' },
+        { label: 'Mali — Salaire', href: '/fr/mali/calculateur-salaire-net', emoji: '🇲🇱' },
+        { label: 'Burkina Faso — Salaire', href: '/fr/burkina-faso/calculateur-salaire-net', emoji: '🇧🇫' },
+        { label: 'Niger — Salaire', href: '/fr/niger/calculateur-salaire-net', emoji: '🇳🇪' },
+        { label: 'Guinée — Salaire', href: '/fr/guinee/calculateur-salaire-net', emoji: '🇬🇳' },
+        { label: 'Congo — Salaire', href: '/fr/congo/calculateur-salaire-net', emoji: '🇨🇬' },
+        { label: 'Gabon — Salaire', href: '/fr/gabon/calculateur-salaire-net', emoji: '🇬🇦' },
+        { label: 'Togo — Salaire', href: '/fr/togo/calculateur-salaire-net', emoji: '🇹🇬' },
+        { label: 'Tous les calculateurs TVA →', href: '/fr/', emoji: '🧾' },
+      ]
+    },
+    {
       id: 'engineering', label: 'Engineering & CAD', icon: '🔧',
       desc: 'Solar, structural, borehole, CAD',
       href: '/engineering/', color: '#f5f5f4', accent: '#78716c',
@@ -573,6 +595,7 @@
               <li><a href="/african/" class="lnk">African</a></li>
               <li><a href="/education/" class="lnk">Education</a></li>
               <li><a href="/blog/" class="lnk">Blog</a></li>
+              <li><a href="/api/" class="lnk">API</a></li>
               <li><a href="/pro/" class="lnk" style="color:#F5A623;font-weight:700">Pro</a></li>
             </ul>
 
@@ -617,6 +640,7 @@
           </div>
           <div class="mob-footer">
             <a href="/dashboard/" class="mob-login">Sign In</a>
+            <a href="/dashboard/vault/" class="mob-vault-link" style="display:none;padding:10px 13px;border-radius:8px;font-size:0.85rem;font-weight:600;text-decoration:none;color:#007AFF;border:1.5px solid #007AFF;text-align:center;">📁 My Vault</a>
             <p class="mob-note">🌍 54 countries · always free · no sign-up required</p>
           </div>
         </div>
@@ -972,12 +996,14 @@
       // ── AUTH STATE: update Sign-in button when user logs in/out ──
       const loginBtn = sr.querySelector('.btn-login');
       const mobLoginBtn = sr.querySelector('.mob-login');
+      const mobVaultLink = sr.querySelector('.mob-vault-link');
 
       const updateAuthUI = () => {
         if (typeof AfroAuth === 'undefined' || !AfroAuth.isLoggedIn || !AfroAuth.isLoggedIn()) {
           // Not logged in — show Sign in
           if (loginBtn) { loginBtn.textContent = 'Sign in'; loginBtn.href = '/dashboard/'; }
           if (mobLoginBtn) { mobLoginBtn.textContent = 'Sign In'; mobLoginBtn.href = '/dashboard/'; }
+          if (mobVaultLink) mobVaultLink.style.display = 'none';
           return;
         }
         const user = AfroAuth.getUser();
@@ -988,11 +1014,12 @@
           loginBtn.href = '/dashboard/';
           loginBtn.innerHTML = '<span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:#007AFF;color:#fff;border-radius:50%;font-size:10px;font-weight:800;margin-right:5px;">' + initial + '</span><span class="nav-user-name user-menu-name">' + name + '</span>';
         }
-        // Mobile: show name
+        // Mobile: show name + vault link
         if (mobLoginBtn) {
           mobLoginBtn.href = '/dashboard/';
-          mobLoginBtn.textContent = name + ' — Dashboard';
+          mobLoginBtn.textContent = name + ' \u2014 Dashboard';
         }
+        if (mobVaultLink) mobVaultLink.style.display = '';
       };
 
       // Run on initial load (auth may already be ready)

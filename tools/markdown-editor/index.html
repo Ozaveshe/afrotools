@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -34,6 +34,7 @@
 <script src="/assets/js/components/footer.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js" defer></script>
 <style>
   :root {
     --afro-green: var(--color-primary);
@@ -49,7 +50,7 @@
   }
 
   .tool-hero::after {
-    content: '📝';
+    content: '\270D';
     position: absolute;
     right: 5%;
     top: 50%;
@@ -140,6 +141,41 @@
     padding: 0 24px;
   }
 
+  /* Editor action bar above the container */
+  .editor-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .action-btn {
+    padding: 6px 14px;
+    background: #fff;
+    border: 1.5px solid #DBEAFE;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #244d2c;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .action-btn:hover {
+    border-color: var(--afro-green);
+    background: rgba(0, 113, 227, 0.04);
+  }
+
+  .action-btn.active {
+    background: var(--afro-green);
+    color: #fff;
+    border-color: var(--afro-green);
+  }
+
   .editor-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -193,6 +229,13 @@
   .toolbar-btn:hover {
     border-color: var(--afro-green);
     background: rgba(0, 113, 227, 0.05);
+  }
+
+  .toolbar-sep {
+    width: 1px;
+    background: #DBEAFE;
+    margin: 2px 2px;
+    align-self: stretch;
   }
 
   .editor-area {
@@ -316,6 +359,23 @@
     font-weight: 700;
   }
 
+  /* GFM strikethrough */
+  #preview del {
+    text-decoration: line-through;
+    color: #999;
+  }
+
+  /* GFM task lists */
+  #preview input[type="checkbox"] {
+    margin-right: 6px;
+    pointer-events: none;
+  }
+
+  #preview li.task-list-item {
+    list-style: none;
+    margin-left: -20px;
+  }
+
   .stats-section {
     padding: 8px 12px;
     border-top: 1px solid #EFF6FF;
@@ -325,11 +385,19 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .stats-left {
+    display: flex;
+    gap: 14px;
   }
 
   .export-section {
     display: flex;
     gap: 12px;
+    flex-wrap: wrap;
   }
 
   .export-btn {
@@ -344,12 +412,349 @@
     cursor: pointer;
     transition: all 0.18s;
     font-family: 'DM Sans', sans-serif;
+    min-width: 140px;
   }
 
   .export-btn:hover {
     background: #0059B3;
     transform: translateY(-1px);
     box-shadow: 0 6px 20px rgba(0, 113, 227, 0.3);
+  }
+
+  /* Dark preview theme */
+  .preview-dark #preview {
+    background: #1e1e2e;
+    color: #cdd6f4;
+    padding: 12px;
+    border-radius: 6px;
+  }
+  .preview-dark #preview h1, .preview-dark #preview h2, .preview-dark #preview h3,
+  .preview-dark #preview h4, .preview-dark #preview h5, .preview-dark #preview h6 {
+    color: #a6e3a1;
+  }
+  .preview-dark #preview code {
+    background: rgba(166,227,161,0.12);
+    color: #a6e3a1;
+  }
+  .preview-dark #preview pre {
+    background: #181825;
+    border-color: #313244;
+  }
+  .preview-dark #preview blockquote {
+    border-color: #a6e3a1;
+    color: #9399b2;
+  }
+  .preview-dark #preview a {
+    color: #89b4fa;
+  }
+  .preview-dark #preview th {
+    background: #313244;
+    color: #cdd6f4;
+  }
+  .preview-dark #preview th, .preview-dark #preview td {
+    border-color: #45475a;
+  }
+  .preview-dark #preview del {
+    color: #6c7086;
+  }
+
+  /* Fullscreen mode */
+  .fullscreen-mode {
+    position: fixed !important;
+    inset: 0;
+    z-index: 9999;
+    background: #f5f7fa;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+  }
+
+  .fullscreen-mode .editor-container {
+    flex: 1;
+    min-height: 0;
+  }
+
+  .fullscreen-mode .editor-panel {
+    min-height: 0;
+  }
+
+  .fullscreen-mode .editor-area,
+  .fullscreen-mode .preview-area {
+    min-height: 0;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .fullscreen-mode #editor {
+    height: 100%;
+  }
+
+  .fullscreen-exit-hint {
+    text-align: center;
+    font-size: 0.7rem;
+    color: #999;
+    padding: 6px;
+    display: none;
+  }
+
+  .fullscreen-mode .fullscreen-exit-hint {
+    display: block;
+  }
+
+  /* Table generator modal */
+  .table-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .table-modal-overlay.open {
+    display: flex;
+  }
+
+  .table-modal {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    width: 320px;
+    max-width: 90vw;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .table-modal h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0a4018;
+    margin-bottom: 16px;
+  }
+
+  .table-modal label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 4px;
+  }
+
+  .table-modal input {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1.5px solid #BFDBFE;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+    font-family: 'DM Sans', sans-serif;
+    outline: none;
+  }
+
+  .table-modal input:focus {
+    border-color: var(--afro-green);
+  }
+
+  .table-modal-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+
+  .table-modal-actions button {
+    padding: 8px 18px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    border: none;
+  }
+
+  .tm-cancel {
+    background: #f0f0f0;
+    color: #555;
+  }
+
+  .tm-insert {
+    background: var(--afro-green);
+    color: #fff;
+  }
+
+  /* AI Advisor Panel */
+  .ai-panel {
+    margin-top: 20px;
+    border: 1px solid #DBEAFE;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.05);
+    overflow: hidden;
+  }
+
+  .ai-panel-toggle {
+    width: 100%;
+    padding: 14px 20px;
+    background: #F5F9FF;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #0a4018;
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.15s;
+  }
+
+  .ai-panel-toggle:hover {
+    background: #EBF2FF;
+  }
+
+  .ai-panel-toggle svg {
+    transition: transform 0.2s;
+  }
+
+  .ai-panel.open .ai-panel-toggle svg {
+    transform: rotate(180deg);
+  }
+
+  .ai-panel-body {
+    display: none;
+    padding: 16px 20px;
+    border-top: 1px solid #EFF6FF;
+  }
+
+  .ai-panel.open .ai-panel-body {
+    display: block;
+  }
+
+  .ai-suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  .ai-suggestion-btn {
+    padding: 6px 12px;
+    background: #EFF6FF;
+    border: 1px solid #DBEAFE;
+    border-radius: 16px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #244d2c;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .ai-suggestion-btn:hover {
+    border-color: var(--afro-green);
+    background: rgba(0,113,227,0.06);
+  }
+
+  .ai-input-row {
+    display: flex;
+    gap: 8px;
+  }
+
+  .ai-input-row input {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1.5px solid #BFDBFE;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-family: 'DM Sans', sans-serif;
+    outline: none;
+  }
+
+  .ai-input-row input:focus {
+    border-color: var(--afro-green);
+  }
+
+  .ai-input-row button {
+    padding: 10px 18px;
+    background: var(--afro-green);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    white-space: nowrap;
+  }
+
+  .ai-input-row button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .ai-messages {
+    margin-top: 12px;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  .ai-msg {
+    padding: 10px 14px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    font-size: 0.82rem;
+    line-height: 1.6;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .ai-msg.user {
+    background: #EFF6FF;
+    color: #244d2c;
+    text-align: right;
+  }
+
+  .ai-msg.assistant {
+    background: #f0fdf4;
+    color: #0a4018;
+    border: 1px solid #dcfce7;
+  }
+
+  .ai-msg.error {
+    background: #fef2f2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+  }
+
+  .ai-footer {
+    margin-top: 8px;
+    font-size: 0.65rem;
+    color: #9ca3af;
+    text-align: right;
+  }
+
+  /* Toast */
+  .md-toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: #0a4018;
+    color: #fff;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    z-index: 99999;
+    opacity: 0;
+    transition: all 0.3s ease;
+    pointer-events: none;
+  }
+
+  .md-toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
   }
 
   @media (max-width: 1024px) {
@@ -361,7 +766,23 @@
     #editor {
       height: 400px;
     }
+
+    .editor-actions {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
   }
+
+  @media (max-width: 600px) {
+    .export-section {
+      flex-direction: column;
+    }
+
+    .export-btn {
+      min-width: 100%;
+    }
+  }
+
   details[open] summary svg { transform: rotate(180deg); }
   details summary::-webkit-details-marker { display: none; }
 </style>
@@ -396,7 +817,7 @@
       "name": "Does the AfroTools Markdown Editor support GitHub Flavored Markdown?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. The editor uses the marked.js library which supports GitHub Flavored Markdown (GFM) including tables, fenced code blocks, strikethrough, task lists, and autolinks."
+        "text": "Yes. The editor uses the marked.js library with GFM mode enabled, supporting tables, fenced code blocks, strikethrough, task lists, and autolinks out of the box."
       }
     },
     {
@@ -420,12 +841,23 @@
       "name": "Does the markdown editor work offline?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. Once the page loads, all editing, preview rendering, and export features work without an internet connection. The live preview updates instantly as you type, with no server requests required."
+        "text": "Yes. Once the page loads, all editing, preview rendering, and export features work without an internet connection. The live preview updates instantly as you type, with no server requests required. The AI advisor feature requires internet."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I create a markdown table quickly?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Click the Table+ button in the toolbar to open the table generator. Enter the number of rows and columns, and a properly formatted markdown table template will be inserted at your cursor position. You can also use the AI advisor to convert data into a markdown table."
       }
     }
   ]
 }
 </script>
+<script src="/assets/js/lib/toast.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js" defer></script>
+<script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
@@ -439,6 +871,7 @@
     <p class="hero-sub">Write markdown with live split-view preview. Formatting toolbar, word count, read-time estimate. Export to HTML or download .md/.html files. Auto-save with localStorage.</p>
     <div class="hero-badges">
       <span class="badge b-green">Live Preview</span>
+      <span class="badge b-green">GFM Support</span>
       <span class="badge b-green">Export Options</span>
       <span class="badge b-green">Auto-Save</span>
     </div>
@@ -447,35 +880,60 @@
 
 <div class="tool-main">
   <div class="tool-main-inner">
-    <div class="editor-container">
+    <!-- Action bar -->
+    <div class="editor-actions">
+      <button class="action-btn" id="themeToggleBtn" title="Toggle dark/light preview">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        Theme
+      </button>
+      <button class="action-btn" id="fullscreenBtn" title="Toggle fullscreen (Esc to exit)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 00-2 2v3M21 8V5a2 2 0 00-2-2h-3M3 16v3a2 2 0 002 2h3M16 21h3a2 2 0 002-2v-3"/></svg>
+        Fullscreen
+      </button>
+    </div>
+
+    <div class="editor-container" id="editorContainer">
       <!-- Editor Panel -->
       <div class="editor-panel">
         <div class="panel-head">Editor</div>
         <div class="panel-toolbar">
-          <button class="toolbar-btn" data-insert="# ">H1</button>
-          <button class="toolbar-btn" data-insert="## ">H2</button>
-          <button class="toolbar-btn" data-insert="### ">H3</button>
-          <button class="toolbar-btn" data-insert="**bold**">Bold</button>
-          <button class="toolbar-btn" data-insert="*italic*">Italic</button>
-          <button class="toolbar-btn" data-insert="`code`">Code</button>
-          <button class="toolbar-btn" data-insert="- ">List</button>
-          <button class="toolbar-btn" data-insert="1. ">Num List</button>
-          <button class="toolbar-btn" data-insert="[link](url)">Link</button>
-          <button class="toolbar-btn" data-insert="> ">Quote</button>
-          <button class="toolbar-btn" data-insert="```\n\n```">Code Block</button>
-          <button class="toolbar-btn" data-insert="| col | col |\n|--|--|\n| | |">Table</button>
+          <button class="toolbar-btn" data-action="bold" title="Bold">B</button>
+          <button class="toolbar-btn" data-action="italic" title="Italic"><i>I</i></button>
+          <button class="toolbar-btn" data-action="strikethrough" title="Strikethrough"><s>S</s></button>
+          <span class="toolbar-sep"></span>
+          <button class="toolbar-btn" data-action="h1" title="Heading 1">H1</button>
+          <button class="toolbar-btn" data-action="h2" title="Heading 2">H2</button>
+          <button class="toolbar-btn" data-action="h3" title="Heading 3">H3</button>
+          <span class="toolbar-sep"></span>
+          <button class="toolbar-btn" data-action="link" title="Link">Link</button>
+          <button class="toolbar-btn" data-action="image" title="Image">Img</button>
+          <button class="toolbar-btn" data-action="code" title="Inline code">Code</button>
+          <button class="toolbar-btn" data-action="codeblock" title="Code block">{ }</button>
+          <span class="toolbar-sep"></span>
+          <button class="toolbar-btn" data-action="quote" title="Blockquote">&gt;</button>
+          <button class="toolbar-btn" data-action="ul" title="Unordered list">- List</button>
+          <button class="toolbar-btn" data-action="ol" title="Ordered list">1. List</button>
+          <button class="toolbar-btn" data-action="task" title="Task list">[ ]</button>
+          <span class="toolbar-sep"></span>
+          <button class="toolbar-btn" data-action="table" title="Insert simple table">Table</button>
+          <button class="toolbar-btn" data-action="table-gen" title="Table generator">Table+</button>
+          <button class="toolbar-btn" data-action="hr" title="Horizontal rule">---</button>
         </div>
         <div class="editor-area">
           <textarea id="editor" placeholder="# Write markdown here...&#10;&#10;This is a **markdown** editor with live preview.&#10;&#10;## Features&#10;- Formatting toolbar&#10;- Real-time preview&#10;- Auto-save&#10;- Export options&#10;&#10;[Visit AfroTools](https://afrotools.com)"></textarea>
         </div>
         <div class="stats-section">
-          <span id="wordCount">Words: 0</span>
-          <span id="readTime">Read: ~0 min</span>
+          <div class="stats-left">
+            <span id="wordCount">Words: 0</span>
+            <span id="charCount">Chars: 0</span>
+            <span id="readTime">Read: ~0 min</span>
+          </div>
+          <span id="autoSaveStatus" style="color:#9ca3af">Auto-saved</span>
         </div>
       </div>
 
       <!-- Preview Panel -->
-      <div class="editor-panel">
+      <div class="editor-panel" id="previewPanel">
         <div class="panel-head">Preview</div>
         <div class="preview-area">
           <div id="preview"></div>
@@ -483,14 +941,56 @@
       </div>
     </div>
 
+    <div class="fullscreen-exit-hint">Press <kbd>Esc</kbd> to exit fullscreen</div>
+
     <!-- Export Section -->
     <div class="export-section">
-      <button class="export-btn" id="downloadMdBtn">📥 Download .md</button>
-      <button class="export-btn" id="downloadHtmlBtn">📥 Download .html</button>
-      <button class="export-btn" id="copyHtmlBtn">📋 Copy HTML</button>
+      <button class="export-btn" id="downloadMdBtn">Download .md</button>
+      <button class="export-btn" id="downloadHtmlBtn">Download .html</button>
+      <button class="export-btn" id="copyHtmlBtn">Copy HTML</button>
+    </div>
+
+    <!-- AI Advisor Panel -->
+    <div class="ai-panel" id="aiPanel">
+      <button class="ai-panel-toggle" id="aiToggle">
+        <span>&#10022; Ask AI</span>
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="margin-left:auto"><path d="M3 5l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+      <div class="ai-panel-body">
+        <div class="ai-suggestions">
+          <button class="ai-suggestion-btn" data-prompt="Fix the formatting in my markdown">Fix formatting</button>
+          <button class="ai-suggestion-btn" data-prompt="Convert this text to well-structured markdown">Convert to markdown</button>
+          <button class="ai-suggestion-btn" data-prompt="Generate a markdown table from this data">Generate table</button>
+          <button class="ai-suggestion-btn" data-prompt="Improve the readability and structure of my markdown">Improve readability</button>
+        </div>
+        <div class="ai-input-row">
+          <input type="text" id="aiInput" placeholder="Ask about your markdown..." maxlength="500">
+          <button id="aiSendBtn">Send</button>
+        </div>
+        <div class="ai-messages" id="aiMessages"></div>
+        <div class="ai-footer">Powered by Claude &middot; Max 3 exchanges per session</div>
+      </div>
     </div>
   </div>
 </div>
+
+<!-- Table Generator Modal -->
+<div class="table-modal-overlay" id="tableModal">
+  <div class="table-modal">
+    <h3>Generate Markdown Table</h3>
+    <label for="tableRows">Rows (excluding header)</label>
+    <input type="number" id="tableRows" min="1" max="20" value="3">
+    <label for="tableCols">Columns</label>
+    <input type="number" id="tableCols" min="1" max="10" value="3">
+    <div class="table-modal-actions">
+      <button class="tm-cancel" id="tableCancel">Cancel</button>
+      <button class="tm-insert" id="tableInsert">Insert Table</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="md-toast" id="mdToast"></div>
 
 <section class="faq-section" style="max-width:1200px;margin:40px auto;padding:0 24px">
   <h2 style="font-size:1.3rem;font-weight:800;color:#111;margin-bottom:20px;font-family:'DM Sans',sans-serif">Frequently Asked Questions</h2>
@@ -501,7 +1001,7 @@
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
       </summary>
       <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
-        Yes. The editor uses the marked.js library which supports GitHub Flavored Markdown (GFM) including tables, fenced code blocks, strikethrough, task lists, and autolinks.
+        Yes. The editor uses the marked.js library with GFM mode enabled, supporting tables, fenced code blocks, strikethrough, task lists, and autolinks out of the box.
       </div>
     </details>
     <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
@@ -528,7 +1028,16 @@
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
       </summary>
       <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
-        Yes. Once the page loads, all editing, preview rendering, and export features work without an internet connection. The live preview updates instantly as you type, with no server requests required.
+        Yes. Once the page loads, all editing, preview rendering, and export features work without an internet connection. The AI advisor feature requires an internet connection, but everything else works fully offline.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        How do I create a markdown table quickly?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        Click the "Table+" button in the toolbar to open the table generator. Enter the number of rows and columns, and a properly formatted markdown table template will be inserted at your cursor position. You can also use the AI advisor to convert data into a markdown table.
       </div>
     </details>
   </div>
@@ -539,35 +1048,89 @@
 <afro-footer></afro-footer>
 
 <script>
+(function() {
+  /* ── Configure marked.js with GFM ─────────────────────────────── */
+  marked.setOptions({
+    gfm: true,
+    breaks: true,
+    tables: true
+  });
+
+  /* ── DOM refs ──────────────────────────────────────────────────── */
   const editor = document.getElementById('editor');
   const preview = document.getElementById('preview');
+  const previewPanel = document.getElementById('previewPanel');
+  const editorContainer = document.getElementById('editorContainer');
   const downloadMdBtn = document.getElementById('downloadMdBtn');
   const downloadHtmlBtn = document.getElementById('downloadHtmlBtn');
   const copyHtmlBtn = document.getElementById('copyHtmlBtn');
-  const toolbarBtns = document.querySelectorAll('.toolbar-btn');
   const wordCountEl = document.getElementById('wordCount');
+  const charCountEl = document.getElementById('charCount');
   const readTimeEl = document.getElementById('readTime');
+  const autoSaveEl = document.getElementById('autoSaveStatus');
+  const themeToggleBtn = document.getElementById('themeToggleBtn');
+  const fullscreenBtn = document.getElementById('fullscreenBtn');
+  const toolMainInner = document.querySelector('.tool-main-inner');
 
   const STORAGE_KEY = 'md-editor-content';
+  let scrollSyncEnabled = true;
+  let isFullscreen = false;
 
+  /* ── Toast helper ──────────────────────────────────────────────── */
+  function showToast(msg) {
+    const t = document.getElementById('mdToast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2200);
+  }
+
+  /* ── Mermaid init ─────────────────────────────────────────────── */
+  let mermaidReady = false;
+  function initMermaid() {
+    if (mermaidReady || typeof mermaid === 'undefined') return;
+    mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose' });
+    mermaidReady = true;
+  }
+
+  /* ── Update preview ────────────────────────────────────────────── */
   function updatePreview() {
     const markdown = editor.value;
     const html = marked.parse(markdown);
-    preview.innerHTML = DOMPurify.sanitize(html);
+    preview.innerHTML = DOMPurify.sanitize(html, { ADD_TAGS: ['pre', 'code'], ADD_ATTR: ['class'] });
+    // Render mermaid diagrams
+    const mermaidBlocks = preview.querySelectorAll('code.language-mermaid');
+    if (mermaidBlocks.length > 0) {
+      initMermaid();
+      if (mermaidReady) {
+        mermaidBlocks.forEach((block, i) => {
+          const pre = block.parentElement;
+          const container = document.createElement('div');
+          container.className = 'mermaid';
+          container.textContent = block.textContent;
+          pre.replaceWith(container);
+        });
+        try { mermaid.run({ nodes: preview.querySelectorAll('.mermaid') }); } catch(e) {}
+      }
+    }
     updateStats();
     saveToLocalStorage();
   }
 
+  /* ── Stats ─────────────────────────────────────────────────────── */
   function updateStats() {
     const text = editor.value;
     const words = text.trim().split(/\s+/).filter(w => w.length > 0).length;
-    const readTimeMinutes = Math.ceil(words / 200);
-    wordCountEl.textContent = `Words: ${words}`;
-    readTimeEl.textContent = `Read: ~${readTimeMinutes} min`;
+    const chars = text.length;
+    const readMin = Math.max(1, Math.ceil(words / 200));
+    wordCountEl.textContent = 'Words: ' + words;
+    charCountEl.textContent = 'Chars: ' + chars;
+    readTimeEl.textContent = 'Read: ~' + (words === 0 ? 0 : readMin) + ' min';
   }
 
+  /* ── LocalStorage ──────────────────────────────────────────────── */
   function saveToLocalStorage() {
     localStorage.setItem(STORAGE_KEY, editor.value);
+    autoSaveEl.textContent = 'Auto-saved';
   }
 
   function loadFromLocalStorage() {
@@ -578,23 +1141,126 @@
     }
   }
 
-  editor.addEventListener('input', updatePreview);
+  /* ── Toolbar actions ───────────────────────────────────────────── */
+  function insertAtCursor(before, after, placeholder) {
+    const start = editor.selectionStart;
+    const end = editor.selectionEnd;
+    const selected = editor.value.substring(start, end);
+    const insert = selected || placeholder || '';
+    const val = editor.value;
+    after = after || '';
+    editor.value = val.substring(0, start) + before + insert + after + val.substring(end);
+    editor.focus();
+    if (selected) {
+      editor.selectionStart = start + before.length;
+      editor.selectionEnd = start + before.length + insert.length;
+    } else {
+      editor.selectionStart = start + before.length;
+      editor.selectionEnd = start + before.length + insert.length;
+    }
+    updatePreview();
+  }
 
-  toolbarBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const text = btn.dataset.insert;
-      const start = editor.selectionStart;
-      const end = editor.selectionEnd;
-      const selectedText = editor.value.substring(start, end);
-      const newText = editor.value.substring(0, start) + text + selectedText + editor.value.substring(end);
-      editor.value = newText;
-      editor.focus();
-      editor.selectionStart = start + text.length;
-      updatePreview();
-    });
+  const toolbarActions = {
+    bold:          () => insertAtCursor('**', '**', 'bold text'),
+    italic:        () => insertAtCursor('*', '*', 'italic text'),
+    strikethrough: () => insertAtCursor('~~', '~~', 'strikethrough'),
+    h1:            () => insertAtCursor('# ', '', 'Heading 1'),
+    h2:            () => insertAtCursor('## ', '', 'Heading 2'),
+    h3:            () => insertAtCursor('### ', '', 'Heading 3'),
+    link:          () => insertAtCursor('[', '](url)', 'link text'),
+    image:         () => insertAtCursor('![', '](image-url)', 'alt text'),
+    code:          () => insertAtCursor('`', '`', 'code'),
+    codeblock:     () => insertAtCursor('```\n', '\n```', 'code here'),
+    quote:         () => insertAtCursor('> ', '', 'quote'),
+    ul:            () => insertAtCursor('- ', '', 'item'),
+    ol:            () => insertAtCursor('1. ', '', 'item'),
+    task:          () => insertAtCursor('- [ ] ', '', 'task'),
+    hr:            () => insertAtCursor('\n---\n', '', ''),
+    table:         () => insertAtCursor('| Column 1 | Column 2 | Column 3 |\n|----------|----------|----------|\n| cell     | cell     | cell     |\n', '', ''),
+    'table-gen':   () => openTableModal()
+  };
+
+  document.querySelector('.panel-toolbar').addEventListener('click', function(e) {
+    const btn = e.target.closest('.toolbar-btn');
+    if (!btn) return;
+    const action = btn.dataset.action;
+    if (action && toolbarActions[action]) {
+      toolbarActions[action]();
+    }
   });
 
-  downloadMdBtn.addEventListener('click', () => {
+  /* ── Table Generator Modal ─────────────────────────────────────── */
+  const tableModal = document.getElementById('tableModal');
+  const tableRowsInput = document.getElementById('tableRows');
+  const tableColsInput = document.getElementById('tableCols');
+
+  function openTableModal() {
+    tableRowsInput.value = 3;
+    tableColsInput.value = 3;
+    tableModal.classList.add('open');
+    tableRowsInput.focus();
+  }
+
+  document.getElementById('tableCancel').addEventListener('click', () => {
+    tableModal.classList.remove('open');
+  });
+
+  tableModal.addEventListener('click', function(e) {
+    if (e.target === tableModal) tableModal.classList.remove('open');
+  });
+
+  document.getElementById('tableInsert').addEventListener('click', function() {
+    const rows = Math.min(20, Math.max(1, parseInt(tableRowsInput.value) || 3));
+    const cols = Math.min(10, Math.max(1, parseInt(tableColsInput.value) || 3));
+    let md = '| ' + Array.from({length: cols}, (_, i) => 'Header ' + (i + 1)).join(' | ') + ' |\n';
+    md += '| ' + Array.from({length: cols}, () => '---').join(' | ') + ' |\n';
+    for (let r = 0; r < rows; r++) {
+      md += '| ' + Array.from({length: cols}, () => '   ').join(' | ') + ' |\n';
+    }
+    tableModal.classList.remove('open');
+    insertAtCursor(md, '', '');
+    showToast('Table inserted');
+  });
+
+  /* ── Scroll Sync ───────────────────────────────────────────────── */
+  editor.addEventListener('scroll', function() {
+    if (!scrollSyncEnabled) return;
+    const pct = editor.scrollTop / (editor.scrollHeight - editor.clientHeight || 1);
+    preview.scrollTop = pct * (preview.scrollHeight - preview.clientHeight);
+  });
+
+  /* ── Theme Toggle ──────────────────────────────────────────────── */
+  let darkPreview = false;
+  themeToggleBtn.addEventListener('click', function() {
+    darkPreview = !darkPreview;
+    previewPanel.classList.toggle('preview-dark', darkPreview);
+    themeToggleBtn.classList.toggle('active', darkPreview);
+    showToast(darkPreview ? 'Dark preview enabled' : 'Light preview enabled');
+  });
+
+  /* ── Fullscreen ────────────────────────────────────────────────── */
+  fullscreenBtn.addEventListener('click', toggleFullscreen);
+
+  function toggleFullscreen() {
+    isFullscreen = !isFullscreen;
+    toolMainInner.classList.toggle('fullscreen-mode', isFullscreen);
+    fullscreenBtn.classList.toggle('active', isFullscreen);
+    if (isFullscreen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && isFullscreen) {
+      toggleFullscreen();
+    }
+  });
+
+  /* ── Export handlers ───────────────────────────────────────────── */
+  downloadMdBtn.addEventListener('click', function() {
     const blob = new Blob([editor.value], { type: 'text/markdown' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -602,39 +1268,25 @@
     a.download = 'document.md';
     a.click();
     URL.revokeObjectURL(url);
+    showToast('Markdown file downloaded');
   });
 
-  downloadHtmlBtn.addEventListener('click', () => {
+  downloadHtmlBtn.addEventListener('click', function() {
     const exportBody = DOMPurify.sanitize(marked.parse(editor.value));
-    const html = `<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-      line-height: 1.6;
-      color: #333;
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-    h1, h2, h3 { color: var(--color-primary); }
-    code { background: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-family: 'Courier New', monospace; }
-    pre { background: #f0f0f0; padding: 12px; border-radius: 6px; overflow-x: auto; }
-    pre code { background: none; padding: 0; }
-    blockquote { border-left: 3px solid var(--color-primary); margin: 12px 0; padding-left: 12px; }
-    table { border-collapse: collapse; width: 100%; }
-    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-    th { background: #f0f0f0; }
-  </style>
-</head>
-<body>
-${exportBody}
-</body>
-</html>`;
+    const html = '<!DOCTYPE html>\n<html>\n<head>\n  <meta charset="UTF-8">\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n  <title>Document</title>\n  <style>\n    body { font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 20px; }\n    h1, h2, h3 { color: #0a4018; }\n    code { background: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-family: \'Courier New\', monospace; }\n    pre { background: #f0f0f0; padding: 12px; border-radius: 6px; overflow-x: auto; }\n    pre code { background: none; padding: 0; }\n    blockquote { border-left: 3px solid #008751; margin: 12px 0; padding-left: 12px; }\n    table { border-collapse: collapse; width: 100%; }\n    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }\n    th { background: #f0f0f0; }\n    del { text-decoration: line-through; color: #999; }\n  </style>\n</head>\n<body>\n' + exportBody + '\n
+<script>
+// Save/Share buttons — manual placement needed
+(function(){
+  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
+  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
+  div.innerHTML = '<share-result-button tool-name="Markdown Editor" tool-slug="markdown-editor"></share-result-button>';
+  target.appendChild(div);
+})();
+</script>
+</body>\n</html>';
     const blob = new Blob([html], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -642,17 +1294,102 @@ ${exportBody}
     a.download = 'document.html';
     a.click();
     URL.revokeObjectURL(url);
+    showToast('HTML file downloaded');
   });
 
-  copyHtmlBtn.addEventListener('click', () => {
+  copyHtmlBtn.addEventListener('click', function() {
     const cleanHtml = DOMPurify.sanitize(marked.parse(editor.value));
-    navigator.clipboard.writeText(cleanHtml);
-    copyHtmlBtn.textContent = '✓ Copied!';
-    setTimeout(() => copyHtmlBtn.textContent = '📋 Copy HTML', 2000);
+    navigator.clipboard.writeText(cleanHtml).then(function() {
+      showToast('HTML copied to clipboard');
+    });
   });
 
+  /* ── AI Advisor ────────────────────────────────────────────────── */
+  const aiPanel = document.getElementById('aiPanel');
+  const aiToggle = document.getElementById('aiToggle');
+  const aiInput = document.getElementById('aiInput');
+  const aiSendBtn = document.getElementById('aiSendBtn');
+  const aiMessages = document.getElementById('aiMessages');
+  let aiExchanges = 0;
+  const MAX_AI_EXCHANGES = 3;
+  let aiHistory = [];
+
+  aiToggle.addEventListener('click', function() {
+    aiPanel.classList.toggle('open');
+  });
+
+  document.querySelectorAll('.ai-suggestion-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      aiInput.value = btn.dataset.prompt;
+      sendAiMessage();
+    });
+  });
+
+  aiSendBtn.addEventListener('click', sendAiMessage);
+  aiInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') sendAiMessage();
+  });
+
+  function sendAiMessage() {
+    const question = aiInput.value.trim();
+    if (!question) return;
+    if (aiExchanges >= MAX_AI_EXCHANGES) {
+      showToast('AI limit reached (3 exchanges). Refresh to reset.');
+      return;
+    }
+
+    aiExchanges++;
+    aiInput.value = '';
+    aiSendBtn.disabled = true;
+
+    // Show user message
+    addAiMsg('user', question);
+
+    // Build context from editor content
+    const editorContent = editor.value.substring(0, 1000);
+    const context = 'Current markdown content (first 1000 chars): ' + editorContent;
+
+    aiHistory.push({ role: 'user', content: question });
+
+    fetch('/.netlify/functions/ai-advisor', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        tool: 'markdown-editor',
+        message: question,
+        context: context,
+        history: aiHistory.slice(-4),
+        maxTokens: 500
+      })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      const reply = data.reply || data.message || 'No response received.';
+      aiHistory.push({ role: 'assistant', content: reply });
+      addAiMsg('assistant', reply);
+      aiSendBtn.disabled = false;
+    })
+    .catch(function(err) {
+      addAiMsg('error', 'Failed to reach AI advisor. Check your connection.');
+      aiSendBtn.disabled = false;
+    });
+  }
+
+  function addAiMsg(type, text) {
+    const div = document.createElement('div');
+    div.className = 'ai-msg ' + type;
+    div.textContent = text;
+    aiMessages.appendChild(div);
+    aiMessages.scrollTop = aiMessages.scrollHeight;
+  }
+
+  /* ── Input handler ─────────────────────────────────────────────── */
+  editor.addEventListener('input', updatePreview);
+
+  /* ── Init ───────────────────────────────────────────────────────── */
   loadFromLocalStorage();
   updatePreview();
+})();
 </script>
 <script src="/assets/js/components/tool-registry.js" defer></script>
 <script src="/assets/js/components/related-tools.min.js" defer></script>

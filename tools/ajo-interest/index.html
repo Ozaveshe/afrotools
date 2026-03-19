@@ -76,6 +76,11 @@ h1 em{color:#6ee7b7;font-style:normal}
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How does an Ajo or Esusu rotating savings group work?","acceptedAnswer":{"@type":"Answer","text":"Members contribute a fixed amount at regular intervals (daily, weekly, or monthly). Each cycle, one member receives the entire pool. The rotation continues until everyone has received their payout. It is essentially a zero-interest rotating credit facility built on trust and social accountability."}},{"@type":"Question","name":"Is it better to receive your Ajo payout first or last?","acceptedAnswer":{"@type":"Answer","text":"Receiving first is like getting an interest-free loan — you get the full pool after just one contribution. Receiving last is like saving without interest — you pay everything before your payout. First position is financially more valuable but may come with higher scrutiny or obligations."}},{"@type":"Question","name":"What happens if a member defaults on their Ajo contributions?","acceptedAnswer":{"@type":"Answer","text":"Defaults are the biggest risk in rotating savings groups. If a member receives their payout and stops contributing, remaining members lose money. Mitigation strategies include joining only trusted groups, requiring guarantors, keeping groups small, collecting post-dated cheques, and having written agreements with penalty clauses."}},{"@type":"Question","name":"How much does the Ajo collector or admin typically charge?","acceptedAnswer":{"@type":"Answer","text":"Fees vary by region and type. In traditional Susu (Ghana), the collector keeps one cycle's contribution as their fee. In a 30-day daily collection, you contribute 30 times but receive 29 contributions worth. Modern groups often have no fee or charge 2-5% for administration."}}]}
 </script>
+<script src="/assets/js/lib/toast.js" defer></script>
+<script src="/assets/js/afro-history.js" defer></script>
+<script src="/assets/js/components/save-result-button.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js" defer></script>
+<script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -253,6 +258,18 @@ el.addEventListener('focus',()=>{el.value=el.value.replace(/,/g,'')});
 
 // Default date
 document.getElementById('startDate').value=new Date().toISOString().split('T')[0];
+</script>
+
+<script>
+(function(){
+  var target = document.getElementById('results');
+  if (!target) return;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
+  div.innerHTML = '<save-result-button tool-slug="ajo-interest" tool-name="Ajo Interest"></save-result-button><share-result-button tool-name="Ajo Interest" tool-slug="ajo-interest"></share-result-button>';
+  target.appendChild(div);
+})();
 </script>
 </body>
 </html>

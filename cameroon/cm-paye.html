@@ -78,6 +78,11 @@
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What are Cameroon DGI tax bands?","acceptedAnswer":{"@type":"Answer","text":"10% on first XAF 2,000,000; 15% on XAF 2,000,001–3,000,000; 25% on XAF 3,000,001–5,000,000; 35% above XAF 5,000,000. Applied annually to taxable income after CNPS deduction."}},{"@type":"Question","name":"Is CNPS deductible from DGI?","acceptedAnswer":{"@type":"Answer","text":"Yes — employee CNPS (4.2%) is fully tax-deductible. Employer CNPS (11.2%) is a separate employer cost."}}]}
 </script>
 <script src="/assets/js/lib/chart-config.js"></script>
+
+  <script src="/assets/js/afro-history.js" defer></script>
+  <script src="/assets/js/components/save-result-button.js" defer></script>
+  <script src="/assets/js/components/share-card-generator.js" defer></script>
+  <script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body class="tool-page">
 <afro-navbar active="tools"></afro-navbar>
@@ -176,6 +181,22 @@
           <button class="act-btn act-pdf" onclick="openPdfModal()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Download PDF</button>
           <button class="act-btn act-share" id="cmShareBtn" onclick="shareResult()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Share Result</button>
         </div>
+
+          <!-- Save & Share -->
+          <div class="save-share-row">
+            <save-result-button
+              tool-slug="cm-paye"
+              tool-name="Cameroon PAYE Calculator"
+              country-code="CM"
+              currency="XAF">
+            </save-result-button>
+            <share-result-button
+              tool-name="Cameroon PAYE Calculator"
+              tool-slug="cm-paye"
+              country-flag="🇨🇲">
+            </share-result-button>
+          </div>
+          <salary-benchmark country-code="CM" currency="XAF"></salary-benchmark>
       </div>
     </div>
     <div class="sidebar">
@@ -377,7 +398,29 @@ return{tax,bandBreakdown:bands.filter(b=>b.income>0)};}
 
   function calculate(){const gross=parseFloat(document.getElementById('grossSalary').value)||0;if(!gross||gross<=0){const el=document.getElementById('grossSalary');el.focus();el.style.borderColor='#e53e3e';el.setAttribute('placeholder','Enter a valid salary');setTimeout(()=>{el.style.borderColor='';el.removeAttribute('placeholder')},3000);return;}
 const hasCNPS=isOn('cnps');const cnps=gross*(hasCNPS?0.042:0);const empCNPS=gross*0.112;const taxableIncome=Math.max(0,gross-cnps);const result=calcAnnualDGI(taxableIncome);const annualDGI=result.tax;const totalDed=cnps+annualDGI;const net=gross-totalDed;const eff=gross>0?annualDGI/gross:0;RESULT={gross,cnps,empCNPS,annualDGI,bandBreakdown:result.bandBreakdown,totalDed,net,effectiveRate:eff,empCost:gross+empCNPS};document.getElementById('resAmount').textContent=fmt(net);document.getElementById('resGross').textContent=`Gross: ${fmt(gross)}/year`;document.getElementById('resContent').innerHTML=`<div class="res-section"><div class="res-section-title">Gross</div><div class="res-row"><span class="res-row-lbl">Annual Gross</span><span class="res-row-val">${fmt(gross)}</span></div></div><div class="res-section"><div class="res-section-title">Deductions</div>${hasCNPS?`<div class="res-row"><span class="res-row-lbl">CNPS (4.2%)</span><span class="res-row-val c-red">${fmt(cnps)}</span></div>`:''}
-<div class="res-row"><span class="res-row-lbl">Net Taxable</span><span class="res-row-val c-mut">${fmt(gross-cnps)}</span></div></div><div class="res-section"><div class="res-section-title">DGI Tax</div><div class="res-row"><span class="res-row-lbl">Annual DGI</span><span class="res-row-val c-red">${fmt(annualDGI)}</span></div></div><div class="res-section"><div class="res-row"><span class="res-row-lbl">Total Deductions</span><span class="res-row-val c-red">${fmt(totalDed)}</span></div><div class="res-row total"><span class="res-row-lbl">Take-Home Pay</span><span class="res-row-val c-grn">${fmt(net)}</span></div></div>`;document.getElementById('effRateDisplay').textContent=pct(eff);setTimeout(()=>{document.getElementById('rateFill').style.width=Math.min(eff*200,100)+'%';},80);document.getElementById('hiddenGross').value=gross;const strip=document.getElementById('employerStrip');strip.innerHTML=`<strong>Total Employer Cost: ${fmt(RESULT.empCost)}/year</strong><br>Gross + CNPS ${fmt(empCNPS)}/yr.`;strip.classList.add('on');document.getElementById('resultsCard').classList.add('on');renderChart(CHART_TYPE);document.getElementById('aiBtn').disabled=false;document.getElementById('aiBtn').textContent='Get AI Tax Analysis →';}
+<div class="res-row"><span class="res-row-lbl">Net Taxable</span><span class="res-row-val c-mut">${fmt(gross-cnps)}</span></div></div><div class="res-section"><div class="res-section-title">DGI Tax</div><div class="res-row"><span class="res-row-lbl">Annual DGI</span><span class="res-row-val c-red">${fmt(annualDGI)}</span></div></div><div class="res-section"><div class="res-row"><span class="res-row-lbl">Total Deductions</span><span class="res-row-val c-red">${fmt(totalDed)}</span></div><div class="res-row total"><span class="res-row-lbl">Take-Home Pay</span><span class="res-row-val c-grn">${fmt(net)}</span></div></div>`;document.getElementById('effRateDisplay').textContent=pct(eff);setTimeout(()=>{document.getElementById('rateFill').style.width=Math.min(eff*200,100)+'%';},80);document.getElementById('hiddenGross').value=gross;const strip=document.getElementById('employerStrip');strip.innerHTML=`<strong>Total Employer Cost: ${fmt(RESULT.empCost)}/year</strong><br>Gross + CNPS ${fmt(empCNPS)}/yr.`;strip.classList.add('on');document.getElementById('resultsCard').classList.add('on');
+  // Save/Share/Benchmark wiring
+  var _saveBtn = document.querySelector('save-result-button');
+  if (_saveBtn) _saveBtn.setData({
+    inputs: { grossSalary: RESULT.gross },
+    outputs: {
+      netPay: RESULT.netMonthly || RESULT.net,
+      tax: RESULT.monthlyPAYE || RESULT.tax || RESULT.paye,
+      effectiveRate: RESULT.effectiveRate
+    }
+  });
+  var _shareBtn = document.querySelector('share-result-button');
+  if (_shareBtn) _shareBtn.setResult({
+    headline: 'My Take-Home Pay',
+    mainValue: fmt(RESULT.netMonthly || RESULT.net) + '/mo',
+    subValues: [
+      { label: 'Gross', value: fmt(RESULT.gross) + '/mo' },
+      { label: 'Tax', value: fmt(RESULT.monthlyPAYE || RESULT.tax || RESULT.paye) + '/mo' },
+      { label: 'Effective Rate', value: pct(RESULT.effectiveRate) }
+    ]
+  });
+  var _bmWidget = document.querySelector('salary-benchmark');
+  if (_bmWidget) { _bmWidget.setAttribute('user-gross', RESULT.gross); _bmWidget.setAttribute('user-net', RESULT.netMonthly || RESULT.net); }renderChart(CHART_TYPE);document.getElementById('aiBtn').disabled=false;document.getElementById('aiBtn').textContent='Get AI Tax Analysis →';}
 function toggleBands(h){const b=h.nextElementSibling;b.classList.toggle('open');h.querySelector('.tog-arrow').classList.toggle('open');}
 function setChart(t,b){CHART_TYPE=t;document.querySelectorAll('.chart-tab').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderChart(t);}
 function renderChart(type){if(!RESULT)return;const R=RESULT;const canvas=document.getElementById('mainChart');if(CHART){CHART.destroy();CHART=null;}
@@ -403,5 +446,6 @@ window._grossToNet = function(g) {
 <script src="/assets/js/lib/auto-email-gate.js" defer></script>
 <script src="/assets/js/share-image-inject.js" defer></script>
 <script src="/assets/js/lib/net-to-gross.js" defer></script>
+<script src="/assets/js/components/salary-benchmark-widget.js" defer></script>
 </body>
 </html>

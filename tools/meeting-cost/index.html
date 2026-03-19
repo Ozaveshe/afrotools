@@ -64,6 +64,11 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
 {"@type":"Question","name":"Does it include overhead costs?","acceptedAnswer":{"@type":"Answer","text":"You can optionally add an overhead multiplier (typically 1.3x-2x) to account for benefits, office space, equipment, and other employer costs beyond salary."}},
 {"@type":"Question","name":"How can I reduce meeting costs?","acceptedAnswer":{"@type":"Answer","text":"Key strategies: reduce meeting duration (30 min instead of 60), invite fewer people, have a clear agenda, use async communication for updates, and eliminate recurring meetings that have lost their purpose."}}
 ]}</script>
+<script src="/assets/js/lib/toast.js" defer></script>
+<script src="/assets/js/afro-history.js" defer></script>
+<script src="/assets/js/components/save-result-button.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js" defer></script>
+<script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
@@ -225,5 +230,17 @@ calculate();
 <script src="/assets/js/components/related-tools.min.js" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js" defer></script>
 <afro-newsletter-cta></afro-newsletter-cta>
+
+<script>
+(function(){
+  var target = document.getElementById('results');
+  if (!target) return;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
+  div.innerHTML = '<save-result-button tool-slug="meeting-cost" tool-name="Meeting Cost"></save-result-button><share-result-button tool-name="Meeting Cost" tool-slug="meeting-cost"></share-result-button>';
+  target.appendChild(div);
+})();
+</script>
 </body>
 </html>

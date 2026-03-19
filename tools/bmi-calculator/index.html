@@ -789,6 +789,11 @@
   ]
 }
 </script>
+<script src="/assets/js/lib/toast.js" defer></script>
+<script src="/assets/js/afro-history.js" defer></script>
+<script src="/assets/js/components/save-result-button.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js" defer></script>
+<script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
     <!-- Navbar -->
@@ -1950,5 +1955,17 @@
 <script src="/assets/js/favorites-widget.js" defer></script>
 <script src="/assets/js/components/tool-registry.js" defer></script>
 <script src="/assets/js/components/related-tools.min.js" defer></script>
+
+<script>
+(function(){
+  var target = document.getElementById('resultsCard');
+  if (!target) return;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
+  div.innerHTML = '<save-result-button tool-slug="bmi-calculator" tool-name="BMI Calculator"></save-result-button><share-result-button tool-name="BMI Calculator" tool-slug="bmi-calculator"></share-result-button>';
+  target.appendChild(div);
+})();
+</script>
 </body>
 </html>

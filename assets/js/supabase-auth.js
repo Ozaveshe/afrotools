@@ -15,6 +15,13 @@
   if (window._afroSupaAuthLoaded) return;
   window._afroSupaAuthLoaded = true;
 
+  function _withTimeout(promise, ms) {
+    return Promise.race([
+      promise,
+      new Promise(function(_, reject) { setTimeout(function() { reject(new Error('timeout')); }, ms); })
+    ]);
+  }
+
   var SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
   var SUPABASE_PROXY = (window.location.origin || '') + '/supabase-proxy';
   var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpwY2xhZ3RnY3pzeWdyZ3p0bHRzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0NTg4MzIsImV4cCI6MjA4OTAzNDgzMn0._G-677vi2UTAhcU3t0aquvmd8lnQUBil53ok_Z623F0';
@@ -123,6 +130,14 @@
 
         refreshNavbar();
         fire('afro-auth-change', { user: _user, profile: _profile, event: event });
+
+        // Show onboarding modal if profile exists but onboarding not completed
+        if (_user && _profile && !_profile.onboarding_completed && (event === 'SIGNED_IN' || event === 'INITIAL_SESSION')) {
+          setTimeout(function () {
+            var modal = document.querySelector('onboarding-modal');
+            if (modal && modal.show) modal.show();
+          }, 600);
+        }
 
         // Mark ready after initial session resolution
         if (!_ready) {
@@ -820,9 +835,9 @@
     async updateProfile(updates) {
       if (!_user || !_sb) return { ok: false, error: 'Not logged in' };
       try {
-        var res = await _sb.from('profiles').update(updates).eq('id', _user.id);
+        var res = await _withTimeout(_sb.from('profiles').update(updates).eq('id', _user.id), 8000);
         if (res.error) return { ok: false, error: friendlyError(res.error.message) };
-        await fetchProfile();
+        await _withTimeout(fetchProfile(), 6000);
         return { ok: true, user: this.getUser() };
       } catch (e) {
         return { ok: false, error: friendlyError(e.message) };

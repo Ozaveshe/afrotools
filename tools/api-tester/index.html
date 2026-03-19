@@ -47,6 +47,9 @@ textarea{font-family:'Courier New',monospace;font-size:.78rem;resize:vertical}
 .seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
 .faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
 </style>
+<script src="/assets/js/lib/toast.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js" defer></script>
+<script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -215,6 +218,19 @@ async function sendRequest(){
 
   document.getElementById('responseCard').scrollIntoView({behavior:'smooth'});
 }
+</script>
+
+<script>
+// Save/Share buttons — manual placement needed
+(function(){
+  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
+  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
+  div.innerHTML = '<share-result-button tool-name="API Tester" tool-slug="api-tester"></share-result-button>';
+  target.appendChild(div);
+})();
 </script>
 </body>
 </html>
