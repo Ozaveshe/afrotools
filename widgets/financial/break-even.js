@@ -1,62 +1,44 @@
 (function(){
+  'use strict';
   window.AfroWidgets = window.AfroWidgets || {};
   window.AfroWidgets.break_even = function(container, opts) {
     opts = opts || {};
-    var theme = opts.theme || 'light';
-    var isDark = theme === 'dark';
-    var bg = isDark ? '#1e1e1e' : '#fff';
-    var fg = isDark ? '#f0f0f0' : '#1a1a1a';
-    var muted = isDark ? '#aaa' : '#666';
-    var border = isDark ? '#333' : '#e0e0e0';
-    var accent = '#E8590C';
+    container.innerHTML =
+      '<div class="aw-title">Break-Even Calculator</div>' +
+      '<div class="aw-field"><label class="aw-label">Fixed Costs</label><input class="aw-input" id="aw-fixed" type="number" min="0" inputmode="decimal" placeholder="e.g. 500000"></div>' +
+      '<div class="aw-row">' +
+        '<div class="aw-field"><label class="aw-label">Variable Cost / Unit</label><input class="aw-input" id="aw-var" type="number" min="0" inputmode="decimal" placeholder="e.g. 200"></div>' +
+        '<div class="aw-field"><label class="aw-label">Selling Price / Unit</label><input class="aw-input" id="aw-price" type="number" min="0" inputmode="decimal" placeholder="e.g. 500"></div>' +
+      '</div>' +
+      '<button class="aw-btn aw-btn--primary" id="aw-calc">Calculate</button>' +
+      '<div class="aw-result-box" id="aw-res" style="display:none"></div>' +
+      (opts.footerHTML || '');
 
-    var uid = 'aw_be_' + Math.random().toString(36).substr(2,6);
+    var fmt = function(n) { return n.toLocaleString('en', {minimumFractionDigits: 2, maximumFractionDigits: 2}); };
 
-    function inp(id, label, placeholder, type) {
-      type = type || 'text';
-      var im = type === 'text' ? ' inputmode="decimal"' : '';
-      return '<div class="aw-field" style="margin-bottom:12px;"><label class="aw-label" style="display:block;font-size:0.85rem;color:'+muted+';margin-bottom:4px;">'+label+'</label><input class="aw-input" id="'+id+'"'+im+' type="'+type+'" placeholder="'+placeholder+'" style="width:100%;padding:10px;border:1px solid '+border+';border-radius:8px;font-size:1rem;background:'+bg+';color:'+fg+';box-sizing:border-box;" /></div>';
-    }
-
-    var html = '<div id="'+uid+'" style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:'+bg+';color:'+fg+';padding:20px;border-radius:12px;border:1px solid '+border+';max-width:420px;">';
-    html += '<h3 style="margin:0 0 16px;font-size:1.1rem;">Break-Even Calculator</h3>';
-    html += inp(uid+'_fixed', 'Total Fixed Costs', '500,000');
-    html += inp(uid+'_var', 'Variable Cost per Unit', '200');
-    html += inp(uid+'_price', 'Selling Price per Unit', '500');
-    html += '<button class="aw-btn aw-btn--primary" id="'+uid+'_calc" style="width:100%;padding:12px;background:'+accent+';color:#fff;border:none;border-radius:8px;font-size:1rem;cursor:pointer;font-weight:600;">Calculate Break-Even</button>';
-
-    html += '<div id="'+uid+'_result" class="aw-result-box" style="display:none;margin-top:16px;padding:16px;background:'+(isDark?'#2a2a2a':'#f7f7f7')+';border-radius:10px;">';
-    html += '<div class="aw-result-label" style="font-size:0.8rem;color:'+muted+';">Break-Even Point</div>';
-    html += '<div class="aw-result-main" id="'+uid+'_units" style="font-size:1.6rem;font-weight:700;margin:4px 0;color:'+accent+';"></div>';
-    html += '<div class="aw-divider" style="border-top:1px solid '+border+';margin:12px 0;"></div>';
-    html += '<div class="aw-result-row" style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="color:'+muted+';font-size:0.85rem;">Break-Even Revenue</span><strong id="'+uid+'_revenue" style="font-size:0.95rem;"></strong></div>';
-    html += '<div class="aw-result-row" style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="color:'+muted+';font-size:0.85rem;">Contribution Margin</span><strong id="'+uid+'_margin" style="font-size:0.95rem;color:'+accent+';"></strong></div>';
-    html += '<div class="aw-result-row" style="display:flex;justify-content:space-between;"><span style="color:'+muted+';font-size:0.85rem;">Contribution Margin %</span><strong id="'+uid+'_pct" style="font-size:0.95rem;"></strong></div>';
-    html += '</div>';
-
-    if (opts.footerHTML) html += '<div style="margin-top:12px;font-size:0.75rem;color:'+muted+';">'+opts.footerHTML+'</div>';
-    html += '</div>';
-    container.innerHTML = html;
-
-    function fmt(v) { return v.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
-    function parseAmt(s) { return parseFloat((s||'').replace(/,/g,'')) || 0; }
-
-    document.getElementById(uid+'_calc').onclick = function() {
-      var fixed = parseAmt(document.getElementById(uid+'_fixed').value);
-      var varCost = parseAmt(document.getElementById(uid+'_var').value);
-      var price = parseAmt(document.getElementById(uid+'_price').value);
+    function calc() {
+      var fixed = parseFloat(container.querySelector('#aw-fixed').value) || 0;
+      var varCost = parseFloat(container.querySelector('#aw-var').value) || 0;
+      var price = parseFloat(container.querySelector('#aw-price').value) || 0;
       if (fixed <= 0 || price <= varCost) return;
 
-      var contribMargin = price - varCost;
-      var contribPct = (contribMargin / price) * 100;
-      var beUnits = Math.ceil(fixed / contribMargin);
-      var beRevenue = beUnits * price;
+      var margin = price - varCost;
+      var marginPct = (margin / price) * 100;
+      var units = Math.ceil(fixed / margin);
+      var revenue = units * price;
 
-      document.getElementById(uid+'_result').style.display = 'block';
-      document.getElementById(uid+'_units').textContent = beUnits.toLocaleString() + ' units';
-      document.getElementById(uid+'_revenue').textContent = fmt(beRevenue);
-      document.getElementById(uid+'_margin').textContent = fmt(contribMargin) + ' / unit';
-      document.getElementById(uid+'_pct').textContent = contribPct.toFixed(1) + '%';
-    };
+      var res = container.querySelector('#aw-res');
+      res.style.display = 'block';
+      res.innerHTML =
+        '<div class="aw-result-label">Break-Even Point</div>' +
+        '<div class="aw-result-main">' + units.toLocaleString('en') + ' units</div>' +
+        '<hr class="aw-divider">' +
+        '<div class="aw-result-row"><span class="aw-result-label">Break-Even Revenue</span><span>' + fmt(revenue) + '</span></div>' +
+        '<div class="aw-result-row"><span class="aw-result-label">Contribution Margin</span><span>' + fmt(margin) + ' / unit</span></div>' +
+        '<div class="aw-result-row"><span class="aw-result-label">Contribution Margin %</span><span>' + marginPct.toFixed(1) + '%</span></div>';
+    }
+
+    container.querySelector('#aw-calc').addEventListener('click', calc);
+    container.querySelectorAll('input').forEach(function(i) { i.addEventListener('keyup', function(e) { if (e.key === 'Enter') calc(); }); });
   };
 })();

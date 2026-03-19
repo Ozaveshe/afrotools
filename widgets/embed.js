@@ -136,15 +136,26 @@
   function loadCSS() {
     if (CSS_CACHE) return Promise.resolve(CSS_CACHE);
     return fetch(BASE + 'css/widget-base.css')
-      .then(function(r) { return r.text(); })
+      .then(function(r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status + ' loading widget CSS');
+        return r.text();
+      })
       .then(function(css) { CSS_CACHE = css; return css; });
   }
 
   function loadScript(url) {
     if (loaded[url]) return loaded[url];
-    loaded[url] = fetch(url).then(function(r) { return r.text(); }).then(function(code) {
-      var fn = new Function(code);
-      fn();
+    loaded[url] = fetch(url).then(function(r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status + ' loading ' + url);
+      return r.text();
+    }).then(function(code) {
+      try {
+        var fn = new Function(code);
+        fn();
+      } catch (e) {
+        console.error('[AfroWidgets] Script eval error:', url, e);
+        throw e;
+      }
     });
     return loaded[url];
   }
@@ -221,7 +232,8 @@
           shadow.innerHTML = '<div style="padding:16px;text-align:center;color:#888;font-size:13px;">Widget loading error. <a href="https://afrotools.com" target="_blank">Visit AfroTools</a></div>';
         }
       });
-    }).catch(function() {
+    }).catch(function(err) {
+      console.error('[AfroWidgets] Failed to load widget "' + widgetId + '":', err);
       shadow.innerHTML = '<div style="padding:16px;text-align:center;color:#888;font-size:13px;">Widget unavailable. <a href="https://afrotools.com" target="_blank">Visit AfroTools</a></div>';
     });
 

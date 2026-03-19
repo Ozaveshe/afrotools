@@ -1,75 +1,53 @@
 (function(){
+  'use strict';
   window.AfroWidgets = window.AfroWidgets || {};
   window.AfroWidgets.savings_goal = function(container, opts) {
     opts = opts || {};
-    var theme = opts.theme || 'light';
-    var isDark = theme === 'dark';
-    var bg = isDark ? '#1e1e1e' : '#fff';
-    var fg = isDark ? '#f0f0f0' : '#1a1a1a';
-    var muted = isDark ? '#aaa' : '#666';
-    var border = isDark ? '#333' : '#e0e0e0';
-    var accent = '#E8590C';
+    container.innerHTML =
+      '<div class="aw-title">Savings Goal Calculator</div>' +
+      '<div class="aw-field"><label class="aw-label">Target Amount</label><input class="aw-input" id="aw-target" type="number" min="0" inputmode="decimal" placeholder="e.g. 1000000"></div>' +
+      '<div class="aw-field"><label class="aw-label">Current Savings</label><input class="aw-input" id="aw-current" type="number" min="0" inputmode="decimal" placeholder="0" value="0"></div>' +
+      '<div class="aw-row">' +
+        '<div class="aw-field"><label class="aw-label">Interest Rate (%)</label><input class="aw-input" id="aw-rate" type="number" min="0" step="0.1" inputmode="decimal" value="5"></div>' +
+        '<div class="aw-field"><label class="aw-label">Time (months)</label><input class="aw-input" id="aw-months" type="number" min="1" inputmode="numeric" value="12"></div>' +
+      '</div>' +
+      '<button class="aw-btn aw-btn--primary" id="aw-calc">Calculate</button>' +
+      '<div class="aw-result-box" id="aw-res" style="display:none"></div>' +
+      (opts.footerHTML || '');
 
-    var uid = 'aw_sav_' + Math.random().toString(36).substr(2,6);
-    var html = '<div id="'+uid+'" style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:'+bg+';color:'+fg+';padding:20px;border-radius:12px;border:1px solid '+border+';max-width:420px;">';
-    html += '<h3 style="margin:0 0 16px;font-size:1.1rem;">Savings Goal Calculator</h3>';
+    var fmt = function(n) { return n.toLocaleString('en', {minimumFractionDigits: 2, maximumFractionDigits: 2}); };
 
-    html += '<div class="aw-field" style="margin-bottom:12px;"><label class="aw-label" style="display:block;font-size:0.85rem;color:'+muted+';margin-bottom:4px;">Target Amount</label><input class="aw-input" id="'+uid+'_target" type="text" inputmode="decimal" placeholder="1,000,000" style="width:100%;padding:10px;border:1px solid '+border+';border-radius:8px;font-size:1rem;background:'+bg+';color:'+fg+';box-sizing:border-box;" /></div>';
-    html += '<div class="aw-field" style="margin-bottom:12px;"><label class="aw-label" style="display:block;font-size:0.85rem;color:'+muted+';margin-bottom:4px;">Current Savings</label><input class="aw-input" id="'+uid+'_current" type="text" inputmode="decimal" placeholder="0" style="width:100%;padding:10px;border:1px solid '+border+';border-radius:8px;font-size:1rem;background:'+bg+';color:'+fg+';box-sizing:border-box;" /></div>';
-    html += '<div class="aw-field" style="margin-bottom:12px;"><label class="aw-label" style="display:block;font-size:0.85rem;color:'+muted+';margin-bottom:4px;">Timeframe (months)</label><input class="aw-input" id="'+uid+'_months" type="number" value="12" style="width:100%;padding:10px;border:1px solid '+border+';border-radius:8px;font-size:1rem;background:'+bg+';color:'+fg+';box-sizing:border-box;" /></div>';
-    html += '<div class="aw-field" style="margin-bottom:12px;"><label class="aw-label" style="display:block;font-size:0.85rem;color:'+muted+';margin-bottom:4px;">Annual Interest Rate (%)</label><input class="aw-input" id="'+uid+'_rate" type="number" step="0.1" value="5" style="width:100%;padding:10px;border:1px solid '+border+';border-radius:8px;font-size:1rem;background:'+bg+';color:'+fg+';box-sizing:border-box;" /></div>';
-    html += '<div class="aw-field" style="margin-bottom:12px;"><label class="aw-label" style="display:block;font-size:0.85rem;color:'+muted+';margin-bottom:4px;">Annual Inflation Rate (%)</label><input class="aw-input" id="'+uid+'_inflation" type="number" step="0.1" value="0" style="width:100%;padding:10px;border:1px solid '+border+';border-radius:8px;font-size:1rem;background:'+bg+';color:'+fg+';box-sizing:border-box;" /></div>';
-
-    html += '<button class="aw-btn aw-btn--primary" id="'+uid+'_calc" style="width:100%;padding:12px;background:'+accent+';color:#fff;border:none;border-radius:8px;font-size:1rem;cursor:pointer;font-weight:600;">Calculate</button>';
-
-    html += '<div id="'+uid+'_result" class="aw-result-box" style="display:none;margin-top:16px;padding:16px;background:'+(isDark?'#2a2a2a':'#f7f7f7')+';border-radius:10px;">';
-    html += '<div class="aw-result-label" style="font-size:0.8rem;color:'+muted+';">Monthly Savings Needed</div>';
-    html += '<div class="aw-result-main" id="'+uid+'_monthly" style="font-size:1.6rem;font-weight:700;margin:4px 0;color:'+accent+';"></div>';
-    html += '<div class="aw-divider" style="border-top:1px solid '+border+';margin:12px 0;"></div>';
-    html += '<div class="aw-result-row" style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="color:'+muted+';font-size:0.85rem;">Total Deposits</span><strong id="'+uid+'_deposits" style="font-size:0.95rem;"></strong></div>';
-    html += '<div class="aw-result-row" style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="color:'+muted+';font-size:0.85rem;">Interest Earned</span><strong id="'+uid+'_interest" style="font-size:0.95rem;color:'+accent+';"></strong></div>';
-    html += '<div class="aw-result-row" style="display:flex;justify-content:space-between;"><span style="color:'+muted+';font-size:0.85rem;">Adjusted Goal (inflation)</span><strong id="'+uid+'_adjusted" style="font-size:0.95rem;"></strong></div>';
-    html += '</div>';
-
-    if (opts.footerHTML) html += '<div style="margin-top:12px;font-size:0.75rem;color:'+muted+';">'+opts.footerHTML+'</div>';
-    html += '</div>';
-    container.innerHTML = html;
-
-    function fmt(v) { return v.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
-    function parseAmt(s) { return parseFloat((s||'').replace(/,/g,'')) || 0; }
-
-    document.getElementById(uid+'_calc').onclick = function() {
-      var target = parseAmt(document.getElementById(uid+'_target').value);
-      var current = parseAmt(document.getElementById(uid+'_current').value);
-      var months = parseInt(document.getElementById(uid+'_months').value) || 12;
-      var annualRate = parseFloat(document.getElementById(uid+'_rate').value) || 0;
-      var annualInflation = parseFloat(document.getElementById(uid+'_inflation').value) || 0;
+    function calc() {
+      var target = parseFloat(container.querySelector('#aw-target').value) || 0;
+      var current = parseFloat(container.querySelector('#aw-current').value) || 0;
+      var rate = parseFloat(container.querySelector('#aw-rate').value) || 0;
+      var months = parseInt(container.querySelector('#aw-months').value) || 0;
       if (target <= 0 || months <= 0) return;
 
-      var monthlyRate = annualRate / 100 / 12;
-      var monthlyInflation = annualInflation / 100 / 12;
-
-      // Adjust goal for inflation
-      var adjustedGoal = target * Math.pow(1 + monthlyInflation, months);
-      var needed = adjustedGoal - current * Math.pow(1 + monthlyRate, months);
-
-      // Monthly deposit using future value of annuity formula
-      var monthlyDeposit;
-      if (monthlyRate > 0) {
-        monthlyDeposit = needed * monthlyRate / (Math.pow(1 + monthlyRate, months) - 1);
+      var r = rate / 100 / 12;
+      var monthly;
+      if (r > 0) {
+        var growthFactor = Math.pow(1 + r, months);
+        monthly = (target - current * growthFactor) / ((growthFactor - 1) / r);
       } else {
-        monthlyDeposit = needed / months;
+        monthly = (target - current) / months;
       }
-      if (monthlyDeposit < 0) monthlyDeposit = 0;
+      if (monthly < 0) monthly = 0;
 
-      var totalDeposits = monthlyDeposit * months + current;
-      var interestEarned = adjustedGoal - totalDeposits;
+      var totalDeposits = monthly * months + current;
+      var interestEarned = target - totalDeposits;
 
-      document.getElementById(uid+'_result').style.display = 'block';
-      document.getElementById(uid+'_monthly').textContent = fmt(monthlyDeposit);
-      document.getElementById(uid+'_deposits').textContent = fmt(totalDeposits);
-      document.getElementById(uid+'_interest').textContent = fmt(Math.max(0, interestEarned));
-      document.getElementById(uid+'_adjusted').textContent = fmt(adjustedGoal);
-    };
+      var res = container.querySelector('#aw-res');
+      res.style.display = 'block';
+      res.innerHTML =
+        '<div class="aw-result-label">Monthly Savings Needed</div>' +
+        '<div class="aw-result-main">' + fmt(monthly) + '</div>' +
+        '<hr class="aw-divider">' +
+        '<div class="aw-result-row"><span class="aw-result-label">Total Deposits</span><span>' + fmt(totalDeposits) + '</span></div>' +
+        '<div class="aw-result-row"><span class="aw-result-label">Interest Earned</span><span>' + fmt(Math.max(0, interestEarned)) + '</span></div>';
+    }
+
+    container.querySelector('#aw-calc').addEventListener('click', calc);
+    container.querySelectorAll('input').forEach(function(i) { i.addEventListener('keyup', function(e) { if (e.key === 'Enter') calc(); }); });
   };
 })();

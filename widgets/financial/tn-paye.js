@@ -1,8 +1,78 @@
-/** AfroTools — Tunisia PAYE (DGF 2025). Annual (millimes): 0% first 300k; 2% 300k-600k; 5% 600k-1.2M; 10% 1.2M-2.4M; 15% 2.4M-4.8M; 20% 4.8M-9.6M; 25% above 9.6M. CNSS 9.18% (deductible). */
-(function(){'use strict';window.AfroWidgets=window.AfroWidgets||{};
-window.AfroWidgets.tn_paye=function(c,opts){opts=opts||{};var fmt=function(n){return'TND '+Math.round(n).toLocaleString('en')};var pct=function(r){return r.toFixed(1)+'%'};
-var B=[{l:300000,r:0},{l:300000,r:0.02},{l:600000,r:0.05},{l:1200000,r:0.10},{l:2400000,r:0.15},{l:4800000,r:0.20},{l:Infinity,r:0.25}];
-function calc(g){var ss=g*0.0918,tx=Math.max(0,g-ss),t=0,rm=tx;for(var i=0;i<B.length;i++){if(rm<=0)break;var ch=Math.min(rm,isFinite(B[i].l)?B[i].l:rm);t+=ch*B[i].r;rm-=ch;}return{g:g,ss:ss,tx:tx,t:t,n:g-ss-t,er:g>0?t/g*100:0}}
-c.innerHTML='<div class="aw-title">\uD83C\uDDF9\uD83C\uDDF3 Tunisia PAYE Calculator</div><div class="aw-field"><label class="aw-label">Annual Gross (TND millimes)</label><input class="aw-input" id="awTnG" type="text" inputmode="numeric" placeholder="e.g. 30,000"></div><button class="aw-btn aw-btn--primary" id="awTnC">Calculate</button><div id="awTnR"></div>'+(opts.footerHTML||'');
-c.querySelector('#awTnC').addEventListener('click',function(){var g=parseFloat((c.querySelector('#awTnG').value||'').replace(/[^0-9.]/g,''))||0;if(!g)return;var R=calc(g);c.querySelector('#awTnR').innerHTML='<div class="aw-result-box"><div class="aw-result-label">Monthly Take-Home (DGF 2025)</div><div class="aw-result-main">'+fmt(R.n/12)+'</div></div><div style="margin-top:12px"><div class="aw-result-row"><span>Annual Gross</span><span>'+fmt(R.g)+'</span></div><div class="aw-result-row"><span>CNSS (9.18%)</span><span>-'+fmt(R.ss)+'</span></div><div class="aw-result-row"><span>Taxable</span><span>'+fmt(R.tx)+'</span></div><hr class="aw-divider"><div class="aw-result-row"><span>IRPP Tax</span><span style="color:#dc2626">-'+fmt(R.t)+'</span></div><div class="aw-result-row"><span>Eff. Rate</span><span>'+pct(R.er)+'</span></div><hr class="aw-divider"><div class="aw-result-row" style="font-weight:700"><span>Annual Net</span><span style="color:#007AFF">'+fmt(R.n)+'</span></div><div class="aw-result-row" style="font-weight:700"><span>Monthly Net</span><span style="color:#007AFF">'+fmt(R.n/12)+'</span></div></div>'});
-c.querySelector('#awTnG').addEventListener('keydown',function(e){if(e.key==='Enter')c.querySelector('#awTnC').click()})};})();
+/**
+ * AfroTools — Tunisia PAYE Widget (DGI 2025)
+ * Annual bands (DT): 0% ≤5k, 26% 5-20k, 28% 20-30k, 32% 30-50k, 35% above 50k
+ * CNSS 9.18% (deductible)
+ */
+(function() {
+  'use strict';
+  window.AfroWidgets = window.AfroWidgets || {};
+
+  window.AfroWidgets.tn_paye = function(container, opts) {
+    opts = opts || {};
+    var fmt = function(n) { return 'DT ' + n.toFixed(3); };
+    var pct = function(r) { return r.toFixed(1) + '%'; };
+
+    // DGI annual progressive bands (IRPP)
+    var BANDS = [
+      { limit: 5000, rate: 0 },
+      { limit: 15000, rate: 0.26 },
+      { limit: 10000, rate: 0.28 },
+      { limit: 20000, rate: 0.32 },
+      { limit: Infinity, rate: 0.35 }
+    ];
+
+    function calculate(grossAnnual) {
+      var cnss = grossAnnual * 0.0918;
+      var taxable = Math.max(0, grossAnnual - cnss);
+      var tax = 0, rem = taxable;
+      for (var i = 0; i < BANDS.length; i++) {
+        if (rem <= 0) break;
+        var b = BANDS[i];
+        var chunk = Math.min(rem, isFinite(b.limit) ? b.limit : rem);
+        tax += chunk * b.rate;
+        rem -= chunk;
+      }
+      var net = grossAnnual - cnss - tax;
+      return {
+        gross: grossAnnual, cnss: cnss, taxable: taxable,
+        tax: tax, net: net,
+        effectiveRate: grossAnnual > 0 ? tax / grossAnnual * 100 : 0
+      };
+    }
+
+    container.innerHTML =
+      '<div class="aw-title">\uD83C\uDDF9\uD83C\uDDF3 Tunisia PAYE Calculator</div>' +
+      '<div class="aw-field"><label class="aw-label">Monthly Gross Salary (DT)</label>' +
+        '<input class="aw-input" id="awTnGross" type="text" inputmode="numeric" placeholder="e.g. 3,000">' +
+      '</div>' +
+      '<button class="aw-btn aw-btn--primary" id="awTnCalc">Calculate PAYE</button>' +
+      '<div id="awTnResult"></div>' +
+      (opts.footerHTML || '');
+
+    container.querySelector('#awTnCalc').addEventListener('click', function() {
+      var monthly = parseFloat((container.querySelector('#awTnGross').value || '').replace(/[^0-9.]/g, '')) || 0;
+      if (!monthly) return;
+      var R = calculate(monthly * 12);
+      container.querySelector('#awTnResult').innerHTML =
+        '<div class="aw-result-box">' +
+          '<div class="aw-result-label">Monthly Take-Home (DGI 2025)</div>' +
+          '<div class="aw-result-main">' + fmt(R.net / 12) + '</div>' +
+        '</div>' +
+        '<div style="margin-top:12px">' +
+          '<div class="aw-result-row"><span>Monthly Gross</span><span>' + fmt(monthly) + '</span></div>' +
+          '<div class="aw-result-row"><span>CNSS (9.18%)</span><span>-' + fmt(R.cnss / 12) + '</span></div>' +
+          '<div class="aw-result-row"><span>Taxable Income</span><span>' + fmt(R.taxable / 12) + '</span></div>' +
+          '<hr class="aw-divider">' +
+          '<div class="aw-result-row"><span>IRPP Tax</span><span style="color:#dc2626">-' + fmt(R.tax / 12) + '</span></div>' +
+          '<div class="aw-result-row"><span>Effective Rate</span><span>' + pct(R.effectiveRate) + '</span></div>' +
+          '<hr class="aw-divider">' +
+          '<div class="aw-result-row" style="font-weight:700"><span>Net Salary</span><span style="color:#007AFF">' + fmt(R.net / 12) + '</span></div>' +
+          '<div class="aw-result-row" style="font-weight:700"><span>Annual Net</span><span style="color:#007AFF">' + fmt(R.net) + '</span></div>' +
+        '</div>';
+    });
+
+    container.querySelector('#awTnGross').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') container.querySelector('#awTnCalc').click();
+    });
+  };
+})();
