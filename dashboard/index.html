@@ -1851,14 +1851,9 @@
 
             // Try Netlify function first (bypasses ad-blockers)
             try {
-                var token = AfroAuth.getSessionToken ? AfroAuth.getSessionToken() : null;
-                if (!token) {
-                    var sb = AfroAuth.getSupabase();
-                    if (sb) {
-                        var sess = await sb.auth.getSession();
-                        token = sess && sess.data && sess.data.session ? sess.data.session.access_token : null;
-                    }
-                }
+                var token = null;
+                try { if (AfroAuth.getSessionTokenAsync) token = await AfroAuth.getSessionTokenAsync(); } catch (e) {}
+                if (!token) { try { token = AfroAuth.getSessionToken ? AfroAuth.getSessionToken() : null; } catch (e) {} }
                 if (token) {
                     var res = await withTimeout(
                         fetch('/api/profile', {
@@ -1909,16 +1904,15 @@
             // Use Netlify function to save — bypasses ad-blocker/proxy timeout issues
             var dbSynced = false;
             try {
-                var token = AfroAuth.getSessionToken ? AfroAuth.getSessionToken() : null;
-                if (!token) {
-                    // Try getting token from Supabase session directly
-                    var sb = AfroAuth.getSupabase();
-                    if (sb) {
-                        try {
-                            var sess = await sb.auth.getSession();
-                            token = sess && sess.data && sess.data.session ? sess.data.session.access_token : null;
-                        } catch (e) {}
+                // Get auth token — try async method first (Supabase v2), then sync fallback
+                var token = null;
+                try {
+                    if (AfroAuth.getSessionTokenAsync) {
+                        token = await AfroAuth.getSessionTokenAsync();
                     }
+                } catch (e) {}
+                if (!token) {
+                    try { token = AfroAuth.getSessionToken ? AfroAuth.getSessionToken() : null; } catch (e) {}
                 }
 
                 if (!token) {

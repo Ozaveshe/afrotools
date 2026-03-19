@@ -8,7 +8,7 @@
  * DELETE /api/alerts?id=UUID    — deactivate alert (admin only)
  */
 
-const SUPABASE_DATA_URL = 'https://jbmhfpkzbgyeodsqhprx.supabase.co';
+const SUPABASE_DATA_URL = process.env.SUPABASE_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
