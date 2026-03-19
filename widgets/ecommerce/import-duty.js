@@ -84,10 +84,10 @@
     function fmtLocal(n, sym) { return sym + ' ' + Math.round(n).toLocaleString(); }
 
     function calculate() {
-      var dest = document.getElementById(uid + '-country').value;
-      var cat = document.getElementById(uid + '-cat').value;
-      var fob = parseFloat(document.getElementById(uid + '-fob').value) || 0;
-      var ship = parseFloat(document.getElementById(uid + '-ship').value) || 0;
+      var dest = container.querySelector('#' + uid + '-country').value;
+      var cat = container.querySelector('#' + uid + '-cat').value;
+      var fob = parseFloat(container.querySelector('#' + uid + '-fob').value) || 0;
+      var ship = parseFloat(container.querySelector('#' + uid + '-ship').value) || 0;
       if (fob <= 0) { alert('Enter a goods value'); return; }
 
       var c = COUNTRIES[dest];
@@ -129,10 +129,13 @@
 
       html += '<div style="display:flex;justify-content:space-between;padding:10px 12px;background:' + accent + ';border-radius:8px;margin-top:10px;"><span style="font-size:.82rem;font-weight:800;color:#fff;">TOTAL LANDED COST</span><span style="font-size:.95rem;font-weight:800;color:#fff;">' + fmtUSD(totalUSD) + '</span></div>';
 
-      document.getElementById(uid + '-results').innerHTML = html;
-      document.getElementById(uid + '-results').style.display = 'block';
+      container.querySelector('#' + uid + '-results').innerHTML = html;
+      container.querySelector('#' + uid + '-results').style.display = 'block';
     }
 
-    document.getElementById(uid + '-btn').addEventListener('click', calculate);
+    container.querySelector('#' + uid + '-btn').addEventListener('click', calculate);
+    container.querySelector('#' + uid + '-fob').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') calculate();
+    });
   };
 })();

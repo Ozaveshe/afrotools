@@ -114,14 +114,14 @@
         (opts.footerHTML ? '<div style="padding:10px 18px;border-top:1px solid ' + border + ';font-size:.72rem;color:' + muted + ';">' + opts.footerHTML + '</div>' : '') +
       '</div>';
 
-    var root = document.getElementById(uid);
+    var root = container.querySelector('#' + uid);
     var tabs = root.querySelectorAll('.aw-uc-tab');
-    var fromVal = document.getElementById(uid + '-fromVal');
-    var toVal = document.getElementById(uid + '-toVal');
-    var fromU = document.getElementById(uid + '-fromU');
-    var toU = document.getElementById(uid + '-toU');
-    var formula = document.getElementById(uid + '-formula');
-    var swapBtn = document.getElementById(uid + '-swap');
+    var fromVal = container.querySelector('#' + uid + '-fromVal');
+    var toVal = container.querySelector('#' + uid + '-toVal');
+    var fromU = container.querySelector('#' + uid + '-fromU');
+    var toU = container.querySelector('#' + uid + '-toU');
+    var formula = container.querySelector('#' + uid + '-formula');
+    var swapBtn = container.querySelector('#' + uid + '-swap');
     var curCat = 'length';
 
     // Style tabs

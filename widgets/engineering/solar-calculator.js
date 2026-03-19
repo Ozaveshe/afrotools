@@ -82,7 +82,7 @@
           '<input type="number" value="' + a.hrs + '" data-idx="' + i + '" data-f="hrs" style="' + fieldStyle + 'padding:5px 6px;font-size:.75rem;" placeholder="hrs">' +
           '<button data-del="' + i + '" style="padding:4px 8px;background:rgba(239,68,68,.1);color:#ef4444;border:1px solid rgba(239,68,68,.2);border-radius:4px;cursor:pointer;font-size:.72rem;font-weight:700;">X</button></div>';
       });
-      document.getElementById(uid + '-apps').innerHTML = html;
+      container.querySelector('#' + uid + '-apps').innerHTML = html;
       updateTotals();
     }
 
@@ -90,13 +90,13 @@
       var totalWh = 0, peakW = 0;
       appliances.forEach(function(a) { totalWh += a.watts * a.hrs; peakW += a.watts; });
       var boxStyle = 'flex:1;background:' + inputBg + ';border:1px solid ' + border + ';border-radius:6px;padding:6px;text-align:center;';
-      document.getElementById(uid + '-totals').innerHTML =
+      container.querySelector('#' + uid + '-totals').innerHTML =
         '<div style="' + boxStyle + '"><div style="font-size:.58rem;font-weight:700;color:' + muted + ';text-transform:uppercase;">Daily</div><div style="font-size:.88rem;font-weight:800;color:' + accent + ';">' + totalWh.toLocaleString() + ' Wh</div></div>' +
         '<div style="' + boxStyle + '"><div style="font-size:.58rem;font-weight:700;color:' + muted + ';text-transform:uppercase;">Peak</div><div style="font-size:.88rem;font-weight:800;color:' + accent + ';">' + peakW + ' W</div></div>' +
         '<div style="' + boxStyle + '"><div style="font-size:.58rem;font-weight:700;color:' + muted + ';text-transform:uppercase;">+25% Buffer</div><div style="font-size:.88rem;font-weight:800;color:' + accent + ';">' + Math.round(totalWh * 1.25).toLocaleString() + ' Wh</div></div>';
     }
 
-    var appsEl = document.getElementById(uid + '-apps');
+    var appsEl = container.querySelector('#' + uid + '-apps');
     appsEl.addEventListener('change', function(e) {
       var idx = e.target.dataset.idx;
       var f = e.target.dataset.f;
@@ -110,18 +110,18 @@
       var del = e.target.dataset.del;
       if (del !== undefined) { appliances.splice(parseInt(del), 1); renderApps(); }
     });
-    document.getElementById(uid + '-addApp').addEventListener('click', function() {
+    container.querySelector('#' + uid + '-addApp').addEventListener('click', function() {
       appliances.push({name:'New Appliance', watts:0, hrs:0}); renderApps();
     });
 
     function calculate() {
-      var countryCode = document.getElementById(uid + '-country').value;
+      var countryCode = container.querySelector('#' + uid + '-country').value;
       var country = null;
       for (var i = 0; i < COUNTRIES.length; i++) { if (COUNTRIES[i].code === countryCode) { country = COUNTRIES[i]; break; } }
       if (!country) country = COUNTRIES[0];
-      var battType = document.getElementById(uid + '-batt').value;
-      var panelW = parseInt(document.getElementById(uid + '-panel').value) || 400;
-      var backupDays = parseInt(document.getElementById(uid + '-days').value) || 1;
+      var battType = container.querySelector('#' + uid + '-batt').value;
+      var panelW = parseInt(container.querySelector('#' + uid + '-panel').value) || 400;
+      var backupDays = parseInt(container.querySelector('#' + uid + '-days').value) || 1;
 
       var totalWh = 0, peakW = 0;
       appliances.forEach(function(a) { totalWh += a.watts * a.hrs; peakW += a.watts; });
@@ -177,11 +177,11 @@
           '<span style="color:' + text + ';">' + it[0] + '</span><span style="font-weight:700;color:' + text + ';">$' + Math.round(it[1]).toLocaleString() + '</span></div>';
       });
 
-      document.getElementById(uid + '-results').innerHTML = html;
-      document.getElementById(uid + '-results').style.display = 'block';
+      container.querySelector('#' + uid + '-results').innerHTML = html;
+      container.querySelector('#' + uid + '-results').style.display = 'block';
     }
 
-    document.getElementById(uid + '-btn').addEventListener('click', calculate);
+    container.querySelector('#' + uid + '-btn').addEventListener('click', calculate);
     renderApps();
   };
 })();

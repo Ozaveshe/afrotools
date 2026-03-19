@@ -137,22 +137,22 @@
     function fmt(n, sym) { return sym + ' ' + (n < 0.01 && n > 0 ? n.toFixed(4) : n.toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2})); }
 
     function updateDocs() {
-      var c = COUNTRIES[document.getElementById(uid + '-country').value];
-      var sel = document.getElementById(uid + '-doc');
+      var c = COUNTRIES[container.querySelector('#' + uid + '-country').value];
+      var sel = container.querySelector('#' + uid + '-doc');
       sel.innerHTML = c.docs.map(function(d) { return '<option value="' + d.id + '">' + d.label + '</option>'; }).join('');
-      var isKE = document.getElementById(uid + '-country').value === 'KE';
-      document.getElementById(uid + '-keFields').style.display = isKE ? 'grid' : 'none';
+      var isKE = container.querySelector('#' + uid + '-country').value === 'KE';
+      container.querySelector('#' + uid + '-keFields').style.display = isKE ? 'grid' : 'none';
     }
 
     function calculate() {
-      var countryCode = document.getElementById(uid + '-country').value;
+      var countryCode = container.querySelector('#' + uid + '-country').value;
       var c = COUNTRIES[countryCode];
-      var docId = document.getElementById(uid + '-doc').value;
-      var val = parseFloat(document.getElementById(uid + '-value').value) || 0;
+      var docId = container.querySelector('#' + uid + '-doc').value;
+      var val = parseFloat(container.querySelector('#' + uid + '-value').value) || 0;
       if (val <= 0) { alert('Enter a value'); return; }
 
-      var loc = document.getElementById(uid + '-loc').value;
-      var buyerType = document.getElementById(uid + '-buyer').value;
+      var loc = container.querySelector('#' + uid + '-loc').value;
+      var buyerType = container.querySelector('#' + uid + '-buyer').value;
 
       var items = c.calc(docId, val, loc, buyerType);
       if (!items || items.length === 0) return;
@@ -173,12 +173,15 @@
           '<span style="font-size:.82rem;font-weight:700;color:' + text + ';">' + fmt(it.amount, c.sym) + '</span></div>';
       });
 
-      document.getElementById(uid + '-results').innerHTML = html;
-      document.getElementById(uid + '-results').style.display = 'block';
+      container.querySelector('#' + uid + '-results').innerHTML = html;
+      container.querySelector('#' + uid + '-results').style.display = 'block';
     }
 
-    document.getElementById(uid + '-country').addEventListener('change', updateDocs);
-    document.getElementById(uid + '-btn').addEventListener('click', calculate);
+    container.querySelector('#' + uid + '-country').addEventListener('change', updateDocs);
+    container.querySelector('#' + uid + '-btn').addEventListener('click', calculate);
+    container.querySelector('#' + uid + '-value').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') calculate();
+    });
     updateDocs();
   };
 })();

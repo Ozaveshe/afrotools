@@ -97,12 +97,12 @@
     function fmtUSD(n) { return '$' + Math.round(n).toLocaleString(); }
 
     function calculate() {
-      var origin = document.getElementById(uid + '-origin').value;
-      var dest = document.getElementById(uid + '-dest').value;
-      var needIelts = document.getElementById(uid + '-ielts').checked;
-      var hasSpouse = document.getElementById(uid + '-spouse').checked;
-      var hasKids = document.getElementById(uid + '-kids').checked;
-      var hasConsult = document.getElementById(uid + '-consult').checked;
+      var origin = container.querySelector('#' + uid + '-origin').value;
+      var dest = container.querySelector('#' + uid + '-dest').value;
+      var needIelts = container.querySelector('#' + uid + '-ielts').checked;
+      var hasSpouse = container.querySelector('#' + uid + '-spouse').checked;
+      var hasKids = container.querySelector('#' + uid + '-kids').checked;
+      var hasConsult = container.querySelector('#' + uid + '-consult').checked;
 
       var visa = VISA_FEES[dest] || {fee:500,processing:500};
       var settle = SETTLEMENT[dest] || {rent:1500,deposit:3000,groceries:350,transport:80};
@@ -151,8 +151,8 @@
       items.forEach(function(it) { total += it.usd; });
       var localTotal = total * fx;
 
-      document.getElementById(uid + '-usd').textContent = fmtUSD(total) + ' USD';
-      document.getElementById(uid + '-local').textContent = sym + ' ' + Math.round(localTotal).toLocaleString() + ' ' + (CUR[origin]||'');
+      container.querySelector('#' + uid + '-usd').textContent = fmtUSD(total) + ' USD';
+      container.querySelector('#' + uid + '-local').textContent = sym + ' ' + Math.round(localTotal).toLocaleString() + ' ' + (CUR[origin]||'');
 
       // Build breakdown by category
       var catOrder = ['Pre-Departure','Visa & Immigration','Travel','Settlement'];
@@ -179,10 +179,10 @@
         '<span style="font-size:.82rem;font-weight:800;color:#fff;">TOTAL</span>' +
         '<span style="font-size:.95rem;font-weight:800;color:#fff;">' + fmtUSD(total) + '</span></div>';
 
-      document.getElementById(uid + '-breakdown').innerHTML = html;
-      document.getElementById(uid + '-results').style.display = 'block';
+      container.querySelector('#' + uid + '-breakdown').innerHTML = html;
+      container.querySelector('#' + uid + '-results').style.display = 'block';
     }
 
-    document.getElementById(uid + '-btn').addEventListener('click', calculate);
+    container.querySelector('#' + uid + '-btn').addEventListener('click', calculate);
   };
 })();
