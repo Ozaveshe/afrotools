@@ -601,12 +601,17 @@
     preview.innerHTML = '';
     modal.classList.add('show');
 
-    // Inject widget div after modal is visible (slight delay for layout)
+    // Inject widget div and trigger embed.js to initialize it
     setTimeout(function() {
       var widgetDiv = document.createElement('div');
       widgetDiv.setAttribute('data-afrotools', wid);
       preview.appendChild(widgetDiv);
-    }, 50);
+
+      // Directly init the widget (bypasses IntersectionObserver)
+      if (window.AfroWidgets && window.AfroWidgets.init) {
+        window.AfroWidgets.init();
+      }
+    }, 100);
   }
 
   // FAQ toggles

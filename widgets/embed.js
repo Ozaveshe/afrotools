@@ -292,4 +292,9 @@
   window.AfroWidgets._BASE = BASE;
   window.AfroWidgets._MAP = WIDGET_MAP;
   window.AfroWidgets._getFooter = getFooterHTML;
+  window.AfroWidgets.scan = scanAndInit;
+  window.AfroWidgets.init = function() {
+    var els = document.querySelectorAll('[data-afrotools]');
+    els.forEach(initWidget);
+  };
 })();
