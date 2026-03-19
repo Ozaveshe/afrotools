@@ -110,6 +110,14 @@
   .btn-cta{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:10px;background:var(--accent);color:#fff;font-weight:700;font-size:15px;border:none;cursor:pointer;transition:background .15s}
   .btn-cta:hover{background:var(--accent-hover);color:#fff;text-decoration:none}
 
+  /* Search */
+  .search-bar{position:relative;margin-bottom:20px}
+  .search-bar input{width:100%;height:48px;border-radius:10px;border:1.5px solid var(--border);background:var(--surface);color:var(--text);font-size:15px;padding:0 16px 0 44px;transition:border-color .15s,box-shadow .15s;font-family:var(--font-sans)}
+  .search-bar input:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px rgba(0,122,255,.12)}
+  .search-bar input::placeholder{color:var(--muted)}
+  .search-bar svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--muted);pointer-events:none}
+  .search-count{font-size:13px;color:var(--muted);margin-bottom:16px}
+
   @media(max-width:640px){
     .stats-bar{gap:24px}
     .customizer{grid-template-columns:1fr}
@@ -162,6 +170,12 @@
 <section class="section" id="gallery">
   <h2 class="section-title">Widget Gallery</h2>
   <p class="section-desc">Click any widget to preview it and get the embed code.</p>
+
+  <div class="search-bar">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+    <input type="text" id="widget-search" placeholder="Search 200+ widgets... e.g. PAYE, VAT, BMI, JSON, mortgage">
+  </div>
+  <div class="search-count" id="search-count"></div>
 
   <div class="cat-tabs" id="cat-tabs">
     <button class="cat-tab cat-tab--active" data-cat="all">All</button>
@@ -421,9 +435,29 @@
   // Render widget cards
   var grid = document.getElementById('widget-grid');
   var activeCat = 'all';
+  var searchQuery = '';
+  var searchInput = document.getElementById('widget-search');
+  var searchCount = document.getElementById('search-count');
 
   function renderGrid() {
-    var filtered = activeCat === 'all' ? WIDGETS : WIDGETS.filter(function(w) { return w.cat === activeCat; });
+    var filtered = WIDGETS;
+
+    // Apply category filter
+    if (activeCat !== 'all') {
+      filtered = filtered.filter(function(w) { return w.cat === activeCat; });
+    }
+
+    // Apply search filter
+    if (searchQuery) {
+      var q = searchQuery.toLowerCase();
+      filtered = filtered.filter(function(w) {
+        return w.name.toLowerCase().indexOf(q) !== -1 ||
+               w.desc.toLowerCase().indexOf(q) !== -1 ||
+               w.id.toLowerCase().indexOf(q) !== -1 ||
+               w.cat.toLowerCase().indexOf(q) !== -1;
+      });
+    }
+
     grid.innerHTML = filtered.map(function(w) {
       return '<div class="widget-card" data-wid="' + w.id + '">' +
         '<div class="widget-card-name"><span>' + w.icon + '</span> ' + w.name + '</div>' +
@@ -435,9 +469,22 @@
     }).join('');
 
     document.getElementById('total-widgets').textContent = WIDGETS.length + '+';
+
+    // Show result count when searching
+    if (searchQuery) {
+      searchCount.textContent = filtered.length + ' widget' + (filtered.length !== 1 ? 's' : '') + ' found';
+    } else {
+      searchCount.textContent = '';
+    }
   }
 
   renderGrid();
+
+  // Search
+  searchInput.addEventListener('input', function() {
+    searchQuery = this.value.trim();
+    renderGrid();
+  });
 
   // Category tabs
   document.getElementById('cat-tabs').addEventListener('click', function(e) {
@@ -446,6 +493,8 @@
     document.querySelectorAll('.cat-tab').forEach(function(t) { t.classList.remove('cat-tab--active'); });
     tab.classList.add('cat-tab--active');
     activeCat = tab.dataset.cat;
+    searchInput.value = '';
+    searchQuery = '';
     renderGrid();
   });
 
