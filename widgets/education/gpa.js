@@ -13,34 +13,61 @@
 
     var SYSTEMS = {
       'nigerian-5': {
-        name: 'Nigerian Federal (5.0)',
+        name: '\u{1F1F3}\u{1F1EC} Nigerian Federal (5.0)',
         scale: 5.0,
         grades: { 'A': 5.0, 'B': 4.0, 'C': 3.0, 'D': 2.0, 'E': 1.0, 'F': 0.0 },
         classes: [{ name: 'First Class', min: 4.50 }, { name: '2nd Upper', min: 3.50 }, { name: '2nd Lower', min: 2.40 }, { name: 'Third', min: 1.50 }, { name: 'Pass', min: 1.00 }, { name: 'Fail', min: 0 }]
       },
       'nigerian-4': {
-        name: 'Nigerian Private (4.0)',
+        name: '\u{1F1F3}\u{1F1EC} Nigerian Private (4.0)',
         scale: 4.0,
-        grades: { 'A': 4.0, 'B+': 3.5, 'B': 3.0, 'C': 2.5, 'D': 2.0, 'F': 0.0 },
-        classes: [{ name: 'First Class', min: 3.60 }, { name: '2.1', min: 3.00 }, { name: '2.2', min: 2.50 }, { name: 'Third', min: 2.00 }, { name: 'Pass', min: 0 }]
+        grades: { 'A': 4.0, 'B+': 3.5, 'B': 3.0, 'C+': 2.5, 'C': 2.0, 'D': 1.0, 'F': 0.0 },
+        classes: [{ name: 'First Class', min: 3.60 }, { name: '2.1', min: 3.00 }, { name: '2.2', min: 2.50 }, { name: 'Third', min: 2.00 }, { name: 'Pass', min: 1.00 }, { name: 'Fail', min: 0 }]
       },
       'kenyan': {
-        name: 'Kenyan (4.0)',
+        name: '\u{1F1F0}\u{1F1EA} Kenyan (4.0 +/-)',
         scale: 4.0,
-        grades: { 'A': 4.0, 'A-': 3.7, 'B+': 3.3, 'B': 3.0, 'B-': 2.7, 'C+': 2.3, 'C': 2.0, 'D': 1.0, 'F': 0.0 },
+        grades: { 'A': 4.0, 'A-': 3.7, 'B+': 3.3, 'B': 3.0, 'B-': 2.7, 'C+': 2.3, 'C': 2.0, 'C-': 1.7, 'D+': 1.3, 'D': 1.0, 'D-': 0.7, 'E': 0.0 },
         classes: [{ name: 'First Class', min: 3.60 }, { name: '2.1', min: 3.00 }, { name: '2.2', min: 2.50 }, { name: 'Pass', min: 2.00 }, { name: 'Fail', min: 0 }]
       },
       'ghanaian': {
-        name: 'Ghanaian (4.0)',
+        name: '\u{1F1EC}\u{1F1ED} Ghanaian (4.0)',
         scale: 4.0,
         grades: { 'A': 4.0, 'B+': 3.5, 'B': 3.0, 'C+': 2.5, 'C': 2.0, 'D+': 1.5, 'D': 1.0, 'F': 0.0 },
-        classes: [{ name: 'First Class', min: 3.60 }, { name: '2.1', min: 3.00 }, { name: '2.2', min: 2.50 }, { name: 'Third', min: 2.00 }, { name: 'Pass', min: 0 }]
+        classes: [{ name: 'First Class', min: 3.60 }, { name: '2.1', min: 3.00 }, { name: '2.2', min: 2.50 }, { name: 'Third', min: 2.00 }, { name: 'Fail', min: 0 }]
       },
       'sa': {
-        name: 'South African (7.0)',
-        scale: 7.0,
-        grades: { 'A+': 7.0, 'A': 6.0, 'B': 5.0, 'C': 4.0, 'D': 3.0, 'E': 2.0, 'F': 1.0, 'FF': 0.0 },
-        classes: [{ name: 'First Class', min: 5.60 }, { name: '2.1', min: 4.50 }, { name: '2.2', min: 3.50 }, { name: 'Third', min: 2.50 }, { name: 'Pass', min: 0 }]
+        name: '\u{1F1FF}\u{1F1E6} South African (%)',
+        scale: 100,
+        inputType: 'percentage',
+        grades: null,
+        classes: [{ name: 'Distinction', min: 75 }, { name: 'Merit', min: 70 }, { name: 'Credit', min: 60 }, { name: 'Pass', min: 50 }, { name: 'Fail', min: 0 }]
+      },
+      'east-african': {
+        name: '\u{1F30D} East African (5.0)',
+        scale: 5.0,
+        grades: { 'A': 5.0, 'B+': 4.0, 'B': 3.5, 'C+': 3.0, 'C': 2.5, 'C-': 2.0, 'D': 1.5, 'F': 0.0 },
+        classes: [{ name: 'First Class', min: 4.40 }, { name: '2.1', min: 3.60 }, { name: '2.2', min: 2.80 }, { name: 'Pass', min: 2.00 }, { name: 'Fail', min: 0 }]
+      },
+      'ethiopian': {
+        name: '\u{1F1EA}\u{1F1F9} Ethiopian (4.0)',
+        scale: 4.0,
+        grades: { 'A+': 4.0, 'A': 4.0, 'A-': 3.75, 'B+': 3.5, 'B': 3.0, 'B-': 2.75, 'C+': 2.5, 'C': 2.0, 'C-': 1.75, 'D': 1.0, 'F': 0.0 },
+        classes: [{ name: 'Great Distinction', min: 3.75 }, { name: 'Distinction', min: 3.50 }, { name: 'Very Great Credit', min: 3.00 }, { name: 'Great Credit', min: 2.50 }, { name: 'Pass', min: 2.00 }, { name: 'Fail', min: 0 }]
+      },
+      'francophone': {
+        name: '\u{1F30D} Francophone (/20)',
+        scale: 20,
+        inputType: 'score',
+        grades: null,
+        classes: [{ name: 'Tr\u00e8s Bien', min: 16 }, { name: 'Bien', min: 14 }, { name: 'Assez Bien', min: 12 }, { name: 'Passable', min: 10 }, { name: 'Fail', min: 0 }]
+      },
+      'egyptian': {
+        name: '\u{1F1EA}\u{1F1EC} Egyptian (%)',
+        scale: 100,
+        inputType: 'percentage',
+        grades: null,
+        classes: [{ name: 'Excellent', min: 85 }, { name: 'Very Good', min: 75 }, { name: 'Good', min: 65 }, { name: 'Pass', min: 50 }, { name: 'Fail', min: 0 }]
       }
     };
 
@@ -48,11 +75,16 @@
     var s = 'style="width:100%;padding:9px 12px;border:1.5px solid '+border+';border-radius:7px;font-size:.82rem;background:'+inputBg+';color:'+text+';font-family:inherit;box-sizing:border-box"';
     var lbl = 'style="display:block;font-size:.72rem;font-weight:600;color:#64748b;margin-bottom:5px"';
 
-    function buildGradeOptions(systemKey) {
+    function buildGradeInput(systemKey, idx) {
       var sys = SYSTEMS[systemKey];
-      var h = '<option value="">Grade</option>';
+      if (sys.inputType === 'percentage' || sys.inputType === 'score') {
+        var placeholder = sys.inputType === 'score' ? '/20' : '%';
+        var max = sys.inputType === 'score' ? '20' : '100';
+        return '<input type="number" class="aw-gpa-grade" placeholder="'+placeholder+'" min="0" max="'+max+'" step="0.5" '+s+'>';
+      }
+      var h = '<select class="aw-gpa-grade" '+s+'><option value="">Grade</option>';
       for (var g in sys.grades) h += '<option value="'+g+'">'+g+' ('+sys.grades[g]+')</option>';
-      return h;
+      return h + '</select>';
     }
 
     function buildCourseRows(systemKey) {
@@ -61,7 +93,7 @@
         h += '<div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;margin-bottom:8px;padding:8px;background:'+cardBg+';border-radius:6px">' +
           '<input type="text" class="aw-gpa-name" placeholder="Course '+(i+1)+'" '+s+'>' +
           '<input type="number" class="aw-gpa-credits" placeholder="Units" min="1" max="12" step="1" '+s+'>' +
-          '<select class="aw-gpa-grade" '+s+'>' + buildGradeOptions(systemKey) + '</select>' +
+          buildGradeInput(systemKey, i) +
         '</div>';
       }
       return h;
@@ -104,11 +136,21 @@
       var totalPoints = 0, totalCredits = 0;
 
       for (var i = 0; i < gradeEls.length; i++) {
-        var grade = gradeEls[i].value;
         var credits = parseFloat(creditEls[i].value) || 0;
-        if (grade && credits > 0 && sys.grades[grade] !== undefined) {
-          totalPoints += sys.grades[grade] * credits;
-          totalCredits += credits;
+        if (credits <= 0) continue;
+
+        if (sys.inputType === 'percentage' || sys.inputType === 'score') {
+          var val = parseFloat(gradeEls[i].value);
+          if (!isNaN(val) && val >= 0) {
+            totalPoints += Math.min(val, sys.scale) * credits;
+            totalCredits += credits;
+          }
+        } else {
+          var grade = gradeEls[i].value;
+          if (grade && sys.grades[grade] !== undefined) {
+            totalPoints += sys.grades[grade] * credits;
+            totalCredits += credits;
+          }
         }
       }
 
