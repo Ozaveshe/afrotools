@@ -7,13 +7,25 @@
 <meta name="description" content="Track your Ajo, Esusu, Chama, or Stokvel rotating savings group. Add members, set contribution schedules, track payouts, and never miss a payment.">
 <link rel="canonical" href="https://afrotools.com/tools/ajo-tracker/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta name="robots" content="index, follow">
 <meta property="og:title" content="Ajo/Chama Savings Tracker | AfroTools">
 <meta property="og:description" content="Track rotating savings group contributions, payouts, and schedules. Free, works offline.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:url" content="https://afrotools.com/tools/ajo-tracker/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ajo/Chama Savings Tracker | AfroTools">
+<meta name="twitter:description" content="Track rotating savings group contributions, payouts, and schedules. Free, works offline.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
 <link rel="stylesheet" href="/assets/css/tool-landing.css">
+<script src="/assets/js/components/tool-registry.js"></script>
 <script src="/assets/js/lib/save-state.js"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Ajo/Chama Savings Tracker","url":"https://afrotools.com/tools/ajo-tracker/","applicationCategory":"FinanceApplication","operatingSystem":"All","description":"Track your rotating savings group — Ajo, Esusu, Chama, Stokvel, Tontine. Add members, set contribution schedules, and track payouts.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is Ajo/Esusu/Chama?","acceptedAnswer":{"@type":"Answer","text":"These are traditional rotating savings groups common across Africa. A group of people each contribute a fixed amount regularly, and the total pool is given to one member each cycle."}},{"@type":"Question","name":"How many members can I track?","acceptedAnswer":{"@type":"Answer","text":"Up to 30 members per savings group, and you can create multiple groups."}},{"@type":"Question","name":"Does this handle the money?","acceptedAnswer":{"@type":"Answer","text":"No. This is a tracking tool, not a payment platform. It helps you organise schedules, track who has paid, and generate reports."}},{"@type":"Question","name":"What contribution frequencies are supported?","acceptedAnswer":{"@type":"Answer","text":"Weekly, bi-weekly (fortnightly), and monthly. You set the start date and the tool calculates all payout dates automatically."}},{"@type":"Question","name":"Is this free?","acceptedAnswer":{"@type":"Answer","text":"Completely free. No registration, no limits, no ads."}}]}</script>
 <style>
   :root{--color-primary:#FFAA00;--color-bg:#FAFAF8}
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -29,7 +41,7 @@
 <afro-navbar></afro-navbar>
 <div class="landing-page">
 
-  <section class="landing-hero" style="background:linear-gradient(135deg,#1a0f00 0%,#2d1800 40%,#0A1628 100%)">
+  <section class="landing-hero" style="background:linear-gradient(135deg, #0f1419 0%, #1a1f2e 100%)">
     <div class="landing-hero-inner">
       <div class="landing-hero-text">
         <nav class="landing-breadcrumb" aria-label="breadcrumb"><a href="/">AfroTools</a><span>/</span><a href="/african/">African</a><span>/</span><span>Ajo Tracker</span></nav>
@@ -112,6 +124,27 @@
     </div>
   </section>
 
+  <!-- AI Advisor -->
+  <section style="max-width:800px;margin:0 auto;padding:32px 24px">
+  <div style="background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:22px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;flex-wrap:wrap;gap:8px">
+      <h3 style="font-size:15px;font-weight:800;color:#111;display:flex;align-items:center;gap:8px;margin:0">🤖 Ajo Advisor <span style="padding:3px 9px;background:#EFF6FF;border:1px solid rgba(0,122,255,.2);border-radius:100px;font-size:10px;color:var(--color-primary);font-weight:700">AI</span></h3>
+      <span style="font-size:11px;color:#9ca3af">Powered by Claude</span>
+    </div>
+    <div style="font-size:11px;color:#9ca3af;margin-bottom:12px;line-height:1.5">Ask any question about rotating savings groups. Max 3 exchanges per session.</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px">
+      <div class="ai-prompt-btn" onclick="askAI(this.textContent)" style="padding:7px 12px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:7px;font-size:12px;color:#4b5563;cursor:pointer;font-weight:600;transition:.15s">Is our rotation order fair?</div>
+      <div class="ai-prompt-btn" onclick="askAI(this.textContent)" style="padding:7px 12px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:7px;font-size:12px;color:#4b5563;cursor:pointer;font-weight:600;transition:.15s">What penalty for late payment?</div>
+      <div class="ai-prompt-btn" onclick="askAI(this.textContent)" style="padding:7px 12px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:7px;font-size:12px;color:#4b5563;cursor:pointer;font-weight:600;transition:.15s">How much should each person contribute?</div>
+    </div>
+    <div id="aiChat" style="display:flex;flex-direction:column;gap:8px;max-height:320px;overflow-y:auto;margin-bottom:12px;scroll-behavior:smooth"></div>
+    <div style="display:flex;gap:8px">
+      <input type="text" id="aiQ" placeholder="Ask anything..." onkeydown="if(event.key==='Enter'&&!aiLoading)askAI()" style="flex:1;min-width:0;padding:10px 14px;border:1.5px solid #e5e7eb;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;outline:none">
+      <button id="aiBtn" onclick="askAI()" style="padding:10px 20px;background:var(--color-primary);color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap">Ask →</button>
+    </div>
+  </div>
+  </section>
+
   <section class="landing-seo">
     <h2>Ajo & Rotating Savings Group Tracker for Africa</h2>
     <p>Rotating savings groups are one of Africa's oldest and most powerful financial traditions. Known as Ajo or Esusu in Nigeria, Chama in Kenya, Stokvel in South Africa, and Tontine in West and Central Africa, these groups allow members to save collectively and access larger sums of money than they could save individually. Despite being a cornerstone of informal finance across the continent, most groups still track contributions with notebooks, WhatsApp messages, or memory alone.</p>
@@ -128,6 +161,35 @@
 <script type="module">
   import { renderSavedItems } from '/assets/js/lib/save-state.js';
   renderSavedItems('ajo-tracker', 'saved-groups', { appUrl: 'app.html', itemNoun: 'group' });
+</script>
+<script>
+var aiLoading=false,chatHistory=[],aiExchanges=0;
+async function askAI(preset){
+  var q=(preset||document.getElementById('aiQ').value||'').trim();
+  if(!q||aiLoading||aiExchanges>=3)return;
+  aiLoading=true;
+  document.getElementById('aiBtn').disabled=true;
+  document.getElementById('aiQ').value='';
+  var chat=document.getElementById('aiChat');
+  var uMsg=document.createElement('div');uMsg.style.cssText='padding:10px 14px;border-radius:10px;font-size:13px;line-height:1.65;max-width:88%;background:#EFF6FF;color:#111;border:1px solid rgba(0,122,255,.12);align-self:flex-end;font-weight:500';uMsg.textContent=q;chat.appendChild(uMsg);
+  var typing=document.createElement('div');typing.style.cssText='padding:10px 14px;border-radius:10px;font-size:13px;color:#9ca3af;font-style:italic;background:#f9fafb;border:1px solid #f3f4f6;align-self:flex-start';typing.textContent='Thinking…';chat.appendChild(typing);chat.scrollTop=9999;
+  var msgs=chatHistory.concat([{role:'user',content:q}]);
+  try{
+    var res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tool:'ajo-chama',system:'',messages:msgs,maxTokens:500})});
+    typing.remove();
+    if(!res.ok)throw new Error();
+    var data=await res.json();
+    var reply=data.reply||data.content||'Sorry, something went wrong.';
+    chatHistory.push({role:'user',content:q});chatHistory.push({role:'assistant',content:reply});
+    aiExchanges++;
+    var bMsg=document.createElement('div');bMsg.style.cssText='padding:10px 14px;border-radius:10px;font-size:13px;line-height:1.65;max-width:88%;background:#f9fafb;color:#374151;border:1px solid #f3f4f6;align-self:flex-start;white-space:pre-wrap';bMsg.textContent=reply;chat.appendChild(bMsg);
+    if(aiExchanges>=3){document.getElementById('aiQ').placeholder='Session limit reached (3/3)';document.getElementById('aiQ').disabled=true;document.getElementById('aiBtn').disabled=true;}
+  }catch(e){
+    typing.remove();
+    var eMsg=document.createElement('div');eMsg.style.cssText='padding:10px 14px;border-radius:10px;font-size:13px;background:#fef3cd;color:#92400e;border:1px solid #fde68a;align-self:flex-start';eMsg.textContent='AI advisor is currently unavailable. Please try again later.';chat.appendChild(eMsg);
+  }
+  aiLoading=false;if(aiExchanges<3)document.getElementById('aiBtn').disabled=false;chat.scrollTop=9999;
+}
 </script>
 </body>
 </html>

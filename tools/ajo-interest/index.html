@@ -8,6 +8,7 @@
 <title>Ajo / Esusu / Stokvel Calculator — Group Savings Rotation | AfroTools</title>
 <meta name="description" content="Calculate your Ajo, Esusu, Chama, or Stokvel group savings. See rotation schedule, total contributions, and when you receive your payout. African savings groups.">
 <link rel="canonical" href="https://afrotools.com/tools/ajo-interest/">
+<meta name="robots" content="index, follow">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Ajo / Esusu / Stokvel Calculator | AfroTools">
 <meta property="og:description" content="African group savings calculator. Rotation schedule and payout timing.">
@@ -19,6 +20,7 @@
 <link rel="stylesheet" href="/assets/css/global.min.css">
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
+<script src="/assets/js/components/tool-registry.js" defer></script>
 <style>
 :root{--afro-blue:var(--color-primary);--afro-dark:#0f1419;--green:#059669}
 .tool-hero{background:linear-gradient(135deg,#064e3b 0%,#059669 100%);padding:44px 0 36px;overflow:hidden}
@@ -70,6 +72,9 @@ h1 em{color:#6ee7b7;font-style:normal}
 </style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebApplication","name":"Ajo / Esusu / Stokvel Calculator","url":"https://afrotools.com/tools/ajo-interest/","description":"Calculate African group savings (Ajo, Esusu, Chama, Stokvel) rotation schedules and payout timing.","applicationCategory":"FinanceApplication","operatingSystem":"All","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How does an Ajo or Esusu rotating savings group work?","acceptedAnswer":{"@type":"Answer","text":"Members contribute a fixed amount at regular intervals (daily, weekly, or monthly). Each cycle, one member receives the entire pool. The rotation continues until everyone has received their payout. It is essentially a zero-interest rotating credit facility built on trust and social accountability."}},{"@type":"Question","name":"Is it better to receive your Ajo payout first or last?","acceptedAnswer":{"@type":"Answer","text":"Receiving first is like getting an interest-free loan — you get the full pool after just one contribution. Receiving last is like saving without interest — you pay everything before your payout. First position is financially more valuable but may come with higher scrutiny or obligations."}},{"@type":"Question","name":"What happens if a member defaults on their Ajo contributions?","acceptedAnswer":{"@type":"Answer","text":"Defaults are the biggest risk in rotating savings groups. If a member receives their payout and stops contributing, remaining members lose money. Mitigation strategies include joining only trusted groups, requiring guarantors, keeping groups small, collecting post-dated cheques, and having written agreements with penalty clauses."}},{"@type":"Question","name":"How much does the Ajo collector or admin typically charge?","acceptedAnswer":{"@type":"Answer","text":"Fees vary by region and type. In traditional Susu (Ghana), the collector keeps one cycle's contribution as their fee. In a 30-day daily collection, you contribute 30 times but receive 29 contributions worth. Modern groups often have no fee or charge 2-5% for administration."}}]}
 </script>
 </head>
 <body>
@@ -165,12 +170,26 @@ h1 em{color:#6ee7b7;font-style:normal}
 <h2>The Mathematics of Group Savings</h2>
 <p>In a group of 10 members each contributing NGN 50,000 monthly, the pool is NGN 500,000 per month. Each member receives NGN 500,000 once during the 10-month cycle. Their total contribution over 10 months is also NGN 500,000. The key benefit isn't interest — it's the lump sum. Getting NGN 500,000 in month 3 means you effectively borrowed NGN 350,000 interest-free (you'd only contributed NGN 150,000 at that point).</p>
 
-<div class="faq">
-<h2>Frequently Asked Questions</h2>
-<details><summary>Is being first or last better?</summary><div>Being first is like getting an interest-free loan — you receive the full amount after just one contribution. Being last is like saving without interest — you've paid everything before receiving your payout. First position is more valuable but may come with obligations or higher scrutiny.</div></details>
-<details><summary>What happens if someone defaults?</summary><div>This is the biggest risk. Once a member receives their payout and stops contributing, remaining members lose money. Mitigation strategies include: only joining trusted groups, requiring guarantors, keeping membership small, collecting post-dated cheques, and having written agreements with penalty clauses.</div></details>
-<details><summary>How does the collector's fee work?</summary><div>In traditional Susu (Ghana) and some Ajo systems, the collector keeps one cycle's contribution as their fee. In a 30-day daily Ajo, you contribute 30 times but receive only 29 contributions worth. Modern groups often have no fee or charge a small percentage for administration.</div></details>
-</div>
+</section>
+
+<section style="max-width:800px;margin:0 auto;padding:48px 24px">
+<h2 style="font-size:1.3rem;font-weight:800;margin-bottom:16px">Frequently Asked Questions</h2>
+<details style="border:1.5px solid #e2e8f0;border-radius:10px;margin-bottom:10px;overflow:hidden" open>
+  <summary style="padding:16px 20px;font-size:.92rem;font-weight:700;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between">How does an Ajo or Esusu rotating savings group work?<span style="font-size:.8rem;color:#64748b">&#8595;</span></summary>
+  <div style="padding:0 20px 16px;font-size:.87rem;color:#64748b;line-height:1.7;border-top:1px solid #e2e8f0;padding-top:14px">Members contribute a fixed amount at regular intervals (daily, weekly, or monthly). Each cycle, one member receives the entire pool. The rotation continues until everyone has received their payout. It is essentially a zero-interest rotating credit facility built on trust and social accountability.</div>
+</details>
+<details style="border:1.5px solid #e2e8f0;border-radius:10px;margin-bottom:10px;overflow:hidden">
+  <summary style="padding:16px 20px;font-size:.92rem;font-weight:700;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between">Is it better to receive your Ajo payout first or last?<span style="font-size:.8rem;color:#64748b">&#8595;</span></summary>
+  <div style="padding:0 20px 16px;font-size:.87rem;color:#64748b;line-height:1.7;border-top:1px solid #e2e8f0;padding-top:14px">Receiving first is like getting an interest-free loan — you get the full pool after just one contribution. Receiving last is like saving without interest — you pay everything before your payout. First position is financially more valuable but may come with higher scrutiny or obligations.</div>
+</details>
+<details style="border:1.5px solid #e2e8f0;border-radius:10px;margin-bottom:10px;overflow:hidden">
+  <summary style="padding:16px 20px;font-size:.92rem;font-weight:700;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between">What happens if a member defaults on their contributions?<span style="font-size:.8rem;color:#64748b">&#8595;</span></summary>
+  <div style="padding:0 20px 16px;font-size:.87rem;color:#64748b;line-height:1.7;border-top:1px solid #e2e8f0;padding-top:14px">Defaults are the biggest risk in rotating savings groups. If a member receives their payout and stops contributing, remaining members lose money. Mitigation strategies include joining only trusted groups, requiring guarantors, keeping groups small, collecting post-dated cheques, and having written agreements with penalty clauses.</div>
+</details>
+<details style="border:1.5px solid #e2e8f0;border-radius:10px;margin-bottom:10px;overflow:hidden">
+  <summary style="padding:16px 20px;font-size:.92rem;font-weight:700;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between">How much does the Ajo collector or admin typically charge?<span style="font-size:.8rem;color:#64748b">&#8595;</span></summary>
+  <div style="padding:0 20px 16px;font-size:.87rem;color:#64748b;line-height:1.7;border-top:1px solid #e2e8f0;padding-top:14px">Fees vary by region and type. In traditional Susu (Ghana), the collector keeps one cycle's contribution as their fee. In a 30-day daily collection, you contribute 30 times but receive 29 contributions worth. Modern groups often have no fee or charge 2-5% for administration.</div>
+</details>
 </section>
 
 <afro-related-tools></afro-related-tools>
