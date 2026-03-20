@@ -1957,7 +1957,7 @@
         function calculateCompleteness(user, profile) {
             var pct = 0;
             if (user && user.name) pct += 10;
-            if (user && user.country) pct += 10;
+            if ((user && user.country) || profile.country) pct += 10;
             if (profile.bio) pct += 10;
             if (profile.phone) pct += 5;
             if (profile.city) pct += 5;
@@ -2063,7 +2063,7 @@
             document.getElementById('editEmail').value = currentUser.email || '';
             document.getElementById('editPhone').value = p.phone || '';
             document.getElementById('editCity').value = p.city || '';
-            document.getElementById('editCountry').value = currentUser.country || '';
+            document.getElementById('editCountry').value = currentUser.country || (p && p.country) || '';
             document.getElementById('editBio').value = p.bio || '';
             updateBioCounter();
             document.getElementById('editJobTitle').value = p.job_title || '';
@@ -2432,7 +2432,7 @@
             }
 
             document.getElementById('profileEmail').textContent = currentUser.email || '-';
-            document.getElementById('profileCountry').textContent = currentUser.country || '-';
+            document.getElementById('profileCountry').textContent = currentUser.country || (extendedProfile && extendedProfile.country) || '-';
 
             var createdDate = new Date(currentUser.createdAt);
             document.getElementById('profileMemberSince').textContent = isNaN(createdDate.getTime()) ? '-' : createdDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
@@ -2550,7 +2550,7 @@
             container.style.display = '';
             var missing = [];
             var p = extendedProfile || {};
-            if (!currentUser || !currentUser.country) missing.push('country');
+            if ((!currentUser || !currentUser.country) && !p.country) missing.push('country');
             if (!p.job_title) missing.push('job title');
             if (!p.industry) missing.push('industry');
             var interests = p.interests || [];
