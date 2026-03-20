@@ -1898,8 +1898,10 @@
             var user = AfroAuth.getUser();
             if (!user || !user.id) return { ok: false, error: 'Not logged in' };
 
-            // Always persist locally for instant display
-            localStorage.setItem('afro_profile_extended', JSON.stringify(profileData));
+            // Always persist locally for instant display — merge into existing profile
+            // so we keep fields like id, email, avatar_url, tier, created_at
+            var merged = Object.assign({}, extendedProfile || {}, profileData);
+            localStorage.setItem('afro_profile_extended', JSON.stringify(merged));
 
             // Use Netlify function to save — bypasses ad-blocker/proxy timeout issues
             var dbSynced = false;
@@ -2158,7 +2160,9 @@
             btn.disabled = false;
 
             if (result.ok) {
-                extendedProfile = Object.assign(extendedProfile, profileData);
+                extendedProfile = Object.assign(extendedProfile || {}, profileData);
+                // Update localStorage with merged profile (keeps id, email, tier etc.)
+                localStorage.setItem('afro_profile_extended', JSON.stringify(extendedProfile));
                 currentUser = AfroAuth.getUser() || currentUser;
                 // Update currentUser with new name/country in case AfroAuth.updateProfile updated it
                 currentUser.name = name;
