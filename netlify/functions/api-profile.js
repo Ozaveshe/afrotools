@@ -89,16 +89,17 @@ exports.handler = async function (event) {
       return jsonResponse(400, { error: 'No valid fields to update' });
     }
 
-    // Try full update first
+    // Use UPSERT (POST with on_conflict) so it works whether the row exists or not
+    profileData.id = user.id;
     const res = await fetch(
-      `${SUPABASE_AUTH_URL}/rest/v1/profiles?id=eq.${user.id}`,
+      `${SUPABASE_AUTH_URL}/rest/v1/profiles`,
       {
-        method: 'PATCH',
+        method: 'POST',
         headers: {
           apikey: serviceKey,
           Authorization: `Bearer ${serviceKey}`,
           'Content-Type': 'application/json',
-          Prefer: 'return=representation',
+          Prefer: 'return=representation,resolution=merge-duplicates',
         },
         body: JSON.stringify(profileData),
       }
@@ -109,21 +110,21 @@ exports.handler = async function (event) {
       return jsonResponse(200, { ok: true, synced: true, profile: updated[0] || null });
     }
 
-    // If full update fails (columns don't exist), try basic fields only
-    const basic = {};
+    // If full upsert fails (columns don't exist), try basic fields only
+    const basic = { id: user.id };
     if (profileData.name) basic.name = profileData.name;
     if (profileData.country) basic.country = profileData.country;
 
-    if (Object.keys(basic).length > 0) {
+    if (Object.keys(basic).length > 1) {
       const fallback = await fetch(
-        `${SUPABASE_AUTH_URL}/rest/v1/profiles?id=eq.${user.id}`,
+        `${SUPABASE_AUTH_URL}/rest/v1/profiles`,
         {
-          method: 'PATCH',
+          method: 'POST',
           headers: {
             apikey: serviceKey,
             Authorization: `Bearer ${serviceKey}`,
             'Content-Type': 'application/json',
-            Prefer: 'return=representation',
+            Prefer: 'return=representation,resolution=merge-duplicates',
           },
           body: JSON.stringify(basic),
         }

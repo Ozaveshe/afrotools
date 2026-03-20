@@ -2,8 +2,11 @@
 // Source: Federal Inland Revenue Service (FIRS)
 // Supports PITA 2025 (old law) and NTA 2026 (new law)
 
+// PITA 2025 bands (width-based progressive)
 const BANDS_PITA = [[300000,0.07],[300000,0.11],[500000,0.15],[500000,0.19],[1600000,0.21],[Infinity,0.24]];
-const BANDS_NTA  = [[800000,0],[3000000,0.15],[1200000,0.18],[1200000,0.21],[1600000,0.24],[Infinity,0.28]];
+
+// NTA 2026 bands: 0% first 800K → 15% to 3M → 18% to 12M → 21% to 25M → 23% to 50M → 25% above
+const BANDS_NTA = [[800000,0],[2200000,0.15],[9000000,0.18],[13000000,0.21],[25000000,0.23],[Infinity,0.25]];
 
 function calcBands(taxable, bands) {
   let tax = 0, rem = taxable, detail = [], cumFrom = 0;
@@ -28,37 +31,99 @@ module.exports = {
   source: 'Federal Inland Revenue Service (FIRS)',
 
   calculate(params) {
-    const { grossAnnual, regime = 'NTA_2026', pension: inclPension = true, nhf: inclNhf = true, nhis: inclNhis = false } = params;
-    const pensionAmt = inclPension ? grossAnnual * 0.08 : 0;
-    const nhfAmt = inclNhf ? grossAnnual * 0.025 : 0;
-    const nhisAmt = inclNhis ? grossAnnual * 0.01 : 0;
+    const {
+      grossAnnual,
+      regime = 'NTA_2026',
+      pension: inclPension = true,
+      nhf: inclNhf = true,
+      nhis: inclNhis = false,
+      pensionableEmoluments,
+      annualRent = 0,
+      lifeAssurance = 0
+    } = params;
 
     const bands = regime === 'NTA_2026' ? BANDS_NTA : BANDS_PITA;
-    let taxableIncome, cra = 0;
+    let taxableIncome, cra = 0, rentRelief = 0;
 
     if (regime === 'NTA_2026') {
-      taxableIncome = Math.max(0, grossAnnual - pensionAmt - nhfAmt - nhisAmt);
+      // NTA 2026: CRA abolished. Pension on pensionable emoluments (Basic+Housing+Transport), not total gross
+      const pensionBase = pensionableEmoluments || grossAnnual;
+      const pensionAmt = inclPension ? pensionBase * 0.08 : 0;
+      const nhfAmt = inclNhf ? grossAnnual * 0.025 : 0;
+      const nhisAmt = inclNhis ? grossAnnual * 0.0175 : 0;
+
+      // Rent relief: lower of 20% of annual rent or ₦500,000
+      if (annualRent > 0) {
+        rentRelief = Math.min(annualRent * 0.20, 500000);
+      }
+
+      taxableIncome = Math.max(0, grossAnnual - pensionAmt - nhfAmt - nhisAmt - rentRelief);
+
+      const { tax: grossTax, bands: bandDetail } = calcBands(taxableIncome, bands);
+      const netTax = Math.round(grossTax);
+      const totalDeductions = pensionAmt + nhfAmt + nhisAmt + netTax;
+      const netAnnual = grossAnnual - totalDeductions;
+      const empPension = pensionBase * 0.10;
+      const empNhf = grossAnnual * 0.025;
+
+      return {
+        input: { country: 'NG', grossAnnual, regime },
+        deductions: {
+          pension: Math.round(pensionAmt),
+          nhf: Math.round(nhfAmt),
+          nhis: Math.round(nhisAmt),
+          rentRelief: Math.round(rentRelief),
+          totalDeductions: Math.round(totalDeductions)
+        },
+        tax: { taxableIncome: Math.round(taxableIncome), bands: bandDetail, grossTax: Math.round(grossTax), reliefs: {}, netTax },
+        result: {
+          netAnnual: Math.round(netAnnual),
+          netMonthly: Math.round(netAnnual / 12),
+          effectiveRate: (netTax / grossAnnual * 100).toFixed(2) + '%',
+          marginalRate: (bandDetail.filter(b => b.taxInBand > 0).pop()?.rate * 100 || 0) + '%'
+        },
+        employer: { pension: Math.round(empPension), nhf: Math.round(empNhf), totalCostAnnual: Math.round(grossAnnual + empPension + empNhf), totalCostMonthly: Math.round((grossAnnual + empPension + empNhf) / 12) },
+        meta: { regime, currency: 'NGN', lastUpdated: this.lastUpdated, source: this.source }
+      };
     } else {
-      cra = 200000 + grossAnnual * 0.01;
+      // PITA 2025: CRA = higher of ₦200,000 or 1% of gross, PLUS 20% of gross
+      const pensionAmt = inclPension ? grossAnnual * 0.08 : 0;
+      const nhfAmt = inclNhf ? grossAnnual * 0.025 : 0;
+      const nhisAmt = inclNhis ? grossAnnual * 0.0175 : 0;
+
+      cra = Math.max(200000, grossAnnual * 0.01) + grossAnnual * 0.20;
       taxableIncome = Math.max(0, grossAnnual - cra - pensionAmt);
+
+      // Minimum tax: 1% of gross income
+      const { tax: grossTax, bands: bandDetail } = calcBands(taxableIncome, bands);
+      const minTax = grossAnnual * 0.01;
+      const actualTax = Math.max(grossTax, minTax);
+      const netTax = Math.round(actualTax);
+      const totalDeductions = pensionAmt + nhfAmt + nhisAmt + netTax;
+      const netAnnual = grossAnnual - totalDeductions;
+      const empPension = grossAnnual * 0.10;
+      const empNhf = grossAnnual * 0.025;
+
+      return {
+        input: { country: 'NG', grossAnnual, regime },
+        deductions: {
+          pension: Math.round(pensionAmt),
+          nhf: Math.round(nhfAmt),
+          nhis: Math.round(nhisAmt),
+          cra: Math.round(cra),
+          totalDeductions: Math.round(totalDeductions)
+        },
+        tax: { taxableIncome: Math.round(taxableIncome), bands: bandDetail, grossTax: Math.round(grossTax), reliefs: { cra: Math.round(cra) }, netTax },
+        result: {
+          netAnnual: Math.round(netAnnual),
+          netMonthly: Math.round(netAnnual / 12),
+          effectiveRate: (netTax / grossAnnual * 100).toFixed(2) + '%',
+          marginalRate: (bandDetail.filter(b => b.taxInBand > 0).pop()?.rate * 100 || 0) + '%'
+        },
+        employer: { pension: Math.round(empPension), nhf: Math.round(empNhf), totalCostAnnual: Math.round(grossAnnual + empPension + empNhf), totalCostMonthly: Math.round((grossAnnual + empPension + empNhf) / 12) },
+        meta: { regime, currency: 'NGN', lastUpdated: this.lastUpdated, source: this.source }
+      };
     }
-
-    const { tax: grossTax, bands: bandDetail } = calcBands(taxableIncome, bands);
-    const reliefs = regime === 'PITA_2025' ? { cra: Math.round(cra) } : {};
-    const netTax = Math.round(grossTax);
-    const totalDeductions = pensionAmt + nhfAmt + nhisAmt + netTax;
-    const netAnnual = grossAnnual - totalDeductions;
-    const empPension = grossAnnual * 0.10;
-    const empNhf = grossAnnual * 0.025;
-
-    return {
-      input: { country: 'NG', grossAnnual, regime },
-      deductions: { pension: Math.round(pensionAmt), nhf: Math.round(nhfAmt), nhis: Math.round(nhisAmt), totalDeductions: Math.round(totalDeductions) },
-      tax: { taxableIncome: Math.round(taxableIncome), bands: bandDetail, grossTax: Math.round(grossTax), reliefs, netTax },
-      result: { netAnnual: Math.round(netAnnual), netMonthly: Math.round(netAnnual / 12), effectiveRate: (netTax / grossAnnual * 100).toFixed(2) + '%', marginalRate: bandDetail.filter(b => b.taxInBand > 0).pop()?.rate * 100 + '%' || '0%' },
-      employer: { pension: Math.round(empPension), nhf: Math.round(empNhf), totalCostAnnual: Math.round(grossAnnual + empPension + empNhf), totalCostMonthly: Math.round((grossAnnual + empPension + empNhf) / 12) },
-      meta: { regime, currency: 'NGN', lastUpdated: this.lastUpdated, source: this.source }
-    };
   },
 
   reverseCalculate(params) {
@@ -78,7 +143,7 @@ module.exports = {
       deductions: [
         { key: 'pension', label: 'Pension (8%)', default: true },
         { key: 'nhf', label: 'NHF (2.5%)', default: true },
-        { key: 'nhis', label: 'NHIS (1%)', default: false }
+        { key: 'nhis', label: 'NHIS (1.75%)', default: false }
       ],
       regimes: [
         { key: 'PITA_2025', label: 'PITA 2025 (Old Law)' },

@@ -54,7 +54,7 @@ exports.handler = async function(event) {
   var keyData = {
     email: email,
     name: (body.name || '').trim().slice(0, 100) || 'API User',
-    useCase: (body.useCase || 'other').slice(0, 50),
+    useCase: (body.useCase || body.use_case || 'other').slice(0, 50),
     tier: 'free',
     createdAt: new Date().toISOString(),
     lastUsed: null,

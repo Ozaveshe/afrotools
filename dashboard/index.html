@@ -2478,11 +2478,17 @@
         // ===================== NEW DASHBOARD FUNCTIONS =====================
 
         async function fetchDashboardData() {
+            function timedFetch(url) {
+                return withTimeout(
+                    fetch(url).then(function(r){return r.json()}),
+                    8000
+                ).catch(function(){return null});
+            }
             try {
                 var results = await Promise.all([
-                    fetch('/api/forex').then(function(r){return r.json()}).catch(function(){return null}),
-                    fetch('/api/fuel').then(function(r){return r.json()}).catch(function(){return null}),
-                    fetch('/api/rates').then(function(r){return r.json()}).catch(function(){return null})
+                    timedFetch('/api/forex'),
+                    timedFetch('/api/fuel'),
+                    timedFetch('/api/rates')
                 ]);
                 dashboardCache.forex = results[0];
                 dashboardCache.fuel = results[1];

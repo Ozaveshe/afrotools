@@ -1,5 +1,5 @@
 -- Fuel prices table for admin-managed fuel price updates
--- Run on DATA instance: jbmhfpkzbgyeodsqhprx.supabase.co
+-- Run on Supabase project: zpclagtgczsygrgztlts.supabase.co
 
 CREATE TABLE IF NOT EXISTS fuel_prices (
   id SERIAL PRIMARY KEY,

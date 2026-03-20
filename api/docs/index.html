@@ -426,6 +426,7 @@ X-RateLimit-Remaining: <span class="num">87</span></code></pre>
       </form>
       <div class="key-result" id="keyResult">
         <span id="keyValue"></span>
+        <button id="keyCopyBtn" style="display:inline-block;margin-top:10px;padding:6px 16px;background:#008751;color:#fff;border:none;border-radius:6px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer">Copy</button>
         <span class="warn">Save this key now. It will not be shown in full again.</span>
       </div>
     </div>
@@ -467,6 +468,18 @@ X-RateLimit-Remaining: <span class="num">87</span></code></pre>
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
+  // Copy button
+  var copyBtn = document.getElementById('keyCopyBtn');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', function() {
+      var key = document.getElementById('keyValue').textContent;
+      navigator.clipboard.writeText(key).then(function() {
+        copyBtn.textContent = 'Copied!';
+        setTimeout(function() { copyBtn.textContent = 'Copy'; }, 1500);
+      });
+    });
+  }
+
   // API Key form
   var form = document.getElementById('apiKeyForm');
   if (form) {
@@ -477,13 +490,13 @@ X-RateLimit-Remaining: <span class="num">87</span></code></pre>
       btn.textContent = 'Creating key...';
 
       try {
-        var res = await fetch('/api/keys/create', {
+        var res = await fetch('/api/get-key', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             email: document.getElementById('keyEmail').value,
             name: document.getElementById('keyName').value,
-            useCase: document.getElementById('keyUseCase').value
+            use_case: document.getElementById('keyUseCase').value
           })
         });
         var data = await res.json();

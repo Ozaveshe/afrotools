@@ -862,8 +862,9 @@ function calculate() {
   if (!rawInput || rawInput <= 0) {
     const el = document.getElementById('grossSalary');
     el.focus(); el.style.borderColor = '#e53e3e';
+    var origPlaceholder = el.getAttribute('placeholder') || '3,600,000';
     el.setAttribute('placeholder', 'Enter a valid salary');
-    setTimeout(() => { el.style.borderColor = ''; el.removeAttribute('placeholder'); }, 3000);
+    setTimeout(() => { el.style.borderColor = ''; el.setAttribute('placeholder', origPlaceholder); }, 3000);
     return;
   }
 

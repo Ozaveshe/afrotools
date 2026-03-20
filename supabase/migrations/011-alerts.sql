@@ -1,5 +1,5 @@
 -- Alerts table for admin-managed regulatory/tax alerts
--- Run on DATA instance: jbmhfpkzbgyeodsqhprx.supabase.co
+-- Run on Supabase project: zpclagtgczsygrgztlts.supabase.co
 
 CREATE TABLE IF NOT EXISTS alerts (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
