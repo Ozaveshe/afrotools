@@ -78,7 +78,7 @@ exports.handler = async function (event) {
     const allowed = [
       'name', 'country', 'phone', 'city', 'bio', 'job_title', 'company',
       'industry', 'company_size', 'experience_level', 'linkedin_url',
-      'website_url', 'interests', 'email_digest_enabled'
+      'website_url', 'interests'
     ];
     const profileData = {};
     allowed.forEach(function (key) {
