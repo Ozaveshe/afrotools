@@ -1,5 +1,5 @@
 /**
- * Saved Tools — Supabase for logged-in users, localStorage as fallback
+ * Saved Tools — /api/favorites for logged-in users, localStorage as fallback
  *
  * Usage on any tool page:
  *   const saved = new SavedTools();
@@ -13,9 +13,47 @@
 
   var LOCAL_KEY = 'afro_favs_v2'; // unified with existing system
 
+  function _getToken() {
+    if (!window.AfroAuth) return null;
+    if (AfroAuth.getSessionToken) return AfroAuth.getSessionToken();
+    // Fallback: read directly from localStorage
+    try {
+      var stored = localStorage.getItem('sb-zpclagtgczsygrgztlts-auth-token');
+      if (stored) {
+        var parsed = JSON.parse(stored);
+        if (parsed && parsed.access_token) return parsed.access_token;
+      }
+    } catch (e) {}
+    return null;
+  }
+
+  function _loggedIn() {
+    return window.AfroAuth && AfroAuth.isLoggedIn && AfroAuth.isLoggedIn();
+  }
+
+  async function _apiFetch(url, options) {
+    var token;
+    if (window.AfroAuth && AfroAuth.getSessionTokenAsync) {
+      token = await AfroAuth.getSessionTokenAsync();
+    } else {
+      token = _getToken();
+    }
+    if (!token) return null;
+    options = options || {};
+    options.headers = Object.assign({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token
+    }, options.headers || {});
+    try {
+      var res = await fetch(url, options);
+      return await res.json();
+    } catch (e) {
+      console.warn('[SavedTools] API error:', e);
+      return null;
+    }
+  }
+
   function SavedTools() {
-    this._supabase = null;
-    this._user = null;
     this._ready = false;
     this._readyPromise = this._init();
   }
@@ -26,10 +64,7 @@
       function connectAuth() {
         window.AfroAuth.onReady(function () {
           if (window.AfroAuth.isLoggedIn()) {
-            self._user = window.AfroAuth.getUser();
-            self._supabase = window.AfroAuth.getSupabase();
-
-            // Migrate localStorage favorites to Supabase on first login
+            // Migrate localStorage favorites to API on first login
             self._migrateLocalToCloud().then(function () {
               self._ready = true;
               resolve();
@@ -41,8 +76,6 @@
         });
       }
 
-      // AfroAuth may not be loaded yet (navbar injects it dynamically).
-      // Poll for it instead of giving up immediately.
       if (window.AfroAuth && typeof window.AfroAuth.onReady === 'function') {
         connectAuth();
       } else {
@@ -53,7 +86,6 @@
             clearInterval(poll);
             connectAuth();
           } else if (attempts >= 40) {
-            // 8 seconds — give up, localStorage only
             clearInterval(poll);
             self._ready = true;
             resolve();
@@ -61,7 +93,6 @@
         }, 200);
       }
 
-      // Safety timeout — don't block forever (10s absolute max)
       setTimeout(function () {
         if (!self._ready) {
           self._ready = true;
@@ -76,26 +107,17 @@
   };
 
   // ── SAVE ──────────────────────────────────────────────
-  SavedTools.prototype.save = async function (slug, name, url, icon) {
+  SavedTools.prototype.save = async function (slug) {
     await this._ensureReady();
-    icon = icon || '';
 
-    if (this._user && this._supabase) {
-      try {
-        var res = await this._supabase
-          .from('favorites')
-          .upsert({
-            user_id: this._user.id,
-            tool_id: slug
-          }, { onConflict: 'user_id,tool_id' });
-
-        if (!res.error) {
-          // Also keep in localStorage for offline access
-          this._addLocal(slug);
-          return;
-        }
-      } catch (e) {
-        console.warn('[SavedTools] Supabase save failed, using localStorage:', e);
+    if (_loggedIn()) {
+      var result = await _apiFetch('/api/favorites', {
+        method: 'POST',
+        body: JSON.stringify({ tool_id: slug })
+      });
+      if (result && result.saved) {
+        this._addLocal(slug);
+        return;
       }
     }
 
@@ -107,19 +129,12 @@
   SavedTools.prototype.remove = async function (slug) {
     await this._ensureReady();
 
-    if (this._user && this._supabase) {
-      try {
-        await this._supabase
-          .from('favorites')
-          .delete()
-          .eq('user_id', this._user.id)
-          .eq('tool_id', slug);
-      } catch (e) {
-        console.warn('[SavedTools] Supabase remove failed:', e);
-      }
+    if (_loggedIn()) {
+      await _apiFetch('/api/favorites?tool_id=' + encodeURIComponent(slug), {
+        method: 'DELETE'
+      });
     }
 
-    // Always remove from localStorage too
     this._removeLocal(slug);
   };
 
@@ -127,21 +142,12 @@
   SavedTools.prototype.getAll = async function () {
     await this._ensureReady();
 
-    if (this._user && this._supabase) {
-      try {
-        var res = await this._supabase
-          .from('favorites')
-          .select('tool_id, created_at')
-          .eq('user_id', this._user.id)
-          .order('created_at', { ascending: false });
-
-        if (!res.error && res.data) {
-          return res.data.map(function (d) {
-            return { slug: d.tool_id, savedAt: d.created_at };
-          });
-        }
-      } catch (e) {
-        console.warn('[SavedTools] Supabase getAll failed, using localStorage:', e);
+    if (_loggedIn()) {
+      var result = await _apiFetch('/api/favorites');
+      if (result && result.data) {
+        return result.data.map(function (d) {
+          return { slug: d.tool_id, savedAt: d.created_at };
+        });
       }
     }
 
@@ -154,38 +160,26 @@
 
   // ── IS SAVED ──────────────────────────────────────────
   SavedTools.prototype.isSaved = async function (slug) {
-    // Fast local check first (no network needed)
+    // Fast local check first
     if (this._getLocal().indexOf(slug) >= 0) return true;
 
-    // If logged in, also check Supabase (in case migrated on another device)
-    if (this._user && this._supabase) {
-      try {
-        var res = await this._supabase
-          .from('favorites')
-          .select('tool_id')
-          .eq('user_id', this._user.id)
-          .eq('tool_id', slug)
-          .maybeSingle();
-
-        if (!res.error && res.data) {
-          // Also add to local cache
-          this._addLocal(slug);
-          return true;
-        }
-      } catch (e) { /* fall through */ }
+    // If logged in, check via API
+    if (_loggedIn()) {
+      var all = await this.getAll();
+      return all.some(function (item) { return item.slug === slug; });
     }
 
     return false;
   };
 
   // ── TOGGLE (convenience) ──────────────────────────────
-  SavedTools.prototype.toggle = async function (slug, name, url, icon) {
+  SavedTools.prototype.toggle = async function (slug) {
     var saved = await this.isSaved(slug);
     if (saved) {
       await this.remove(slug);
       return false;
     } else {
-      await this.save(slug, name, url, icon);
+      await this.save(slug);
       return true;
     }
   };
@@ -193,16 +187,7 @@
   // ── CLEAR ALL ─────────────────────────────────────────
   SavedTools.prototype.clearAll = async function () {
     await this._ensureReady();
-
-    if (this._user && this._supabase) {
-      try {
-        await this._supabase
-          .from('favorites')
-          .delete()
-          .eq('user_id', this._user.id);
-      } catch (e) { /* silent */ }
-    }
-
+    // Clear local only — API doesn't support bulk delete
     localStorage.setItem(LOCAL_KEY, JSON.stringify([]));
   };
 
@@ -213,22 +198,20 @@
 
   // ── MIGRATE LOCAL TO CLOUD ────────────────────────────
   SavedTools.prototype._migrateLocalToCloud = async function () {
-    if (!this._user || !this._supabase) return;
+    if (!_loggedIn()) return;
 
     var local = this._getLocal();
     if (local.length === 0) return;
 
     try {
-      // Batch upsert all local favorites to Supabase
-      var rows = local.map(function (slug) {
-        return { user_id: this._user.id, tool_id: slug };
-      }.bind(this));
-
-      await this._supabase
-        .from('favorites')
-        .upsert(rows, { onConflict: 'user_id,tool_id' });
-
-      console.log('[SavedTools] Migrated ' + local.length + ' favorites to Supabase');
+      // Save each local favorite via API
+      for (var i = 0; i < local.length; i++) {
+        await _apiFetch('/api/favorites', {
+          method: 'POST',
+          body: JSON.stringify({ tool_id: local[i] })
+        });
+      }
+      console.log('[SavedTools] Migrated ' + local.length + ' favorites to cloud');
     } catch (e) {
       console.warn('[SavedTools] Migration failed:', e);
     }
@@ -254,7 +237,6 @@
   };
 
   // ── BACKWARD COMPAT: sync afroFavs API ────────────────
-  // Keep the old afroFavs API working but backed by SavedTools
   var _instance = new SavedTools();
 
   window.afroFavs = {
@@ -263,10 +245,10 @@
     toggle: function (id) {
       var favs = _instance._getLocal();
       if (favs.indexOf(id) >= 0) {
-        _instance.remove(id); // async, but fire-and-forget for compat
+        _instance.remove(id);
         return false;
       } else {
-        _instance.save(id, '', '', ''); // async, fire-and-forget
+        _instance.save(id);
         return true;
       }
     },

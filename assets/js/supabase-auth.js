@@ -841,11 +841,19 @@
       }
       _user = null;
       _profile = null;
-      // Clear any cached profile/auth data
+      // Clear ALL cached auth/profile data including Supabase session token
       try {
         localStorage.removeItem('afro_profile_extended');
         localStorage.removeItem('afro_favs_v2');
         localStorage.removeItem('afrotools-recent-tools');
+        localStorage.removeItem('sb-zpclagtgczsygrgztlts-auth-token');
+        // Clear any other sb- keys that may hold session data
+        var keysToRemove = [];
+        for (var i = 0; i < localStorage.length; i++) {
+          var k = localStorage.key(i);
+          if (k && k.startsWith('sb-') && k.endsWith('-auth-token')) keysToRemove.push(k);
+        }
+        keysToRemove.forEach(function (k) { localStorage.removeItem(k); });
       } catch (e) {}
       refreshNavbar();
       fire('afro-auth-change', { user: null, profile: null, event: 'SIGNED_OUT' });
