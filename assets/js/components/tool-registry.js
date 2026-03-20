@@ -1,6 +1,6 @@
 // /assets/js/components/tool-registry.js
 // ═══════════════════════════════════════════════════════════
-// AFROTOOLS — Single source of truth for all tools (540+)
+// AFROTOOLS — Single source of truth for all tools (400+)
 // Add a tool here ONCE → it appears on every relevant page
 // Supports `lang` field: 'en' (default) or 'fr' for French tools
 // ═══════════════════════════════════════════════════════════

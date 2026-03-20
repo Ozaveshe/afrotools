@@ -844,7 +844,7 @@
                   </div>
                 </a>`).join('') +
               '<div class="search-section-label" style="padding-top:16px">All Tools</div>' +
-              '<div class="search-empty" style="padding:16px"><div class="search-empty-hint">Type to search 540+ tools</div></div>';
+              '<div class="search-empty" style="padding:16px"><div class="search-empty-hint">Type to search 400+ tools</div></div>';
             _activeIdx = 0;
             container.querySelector('#clearRecent')?.addEventListener('click', e => {
               e.preventDefault(); e.stopPropagation();
