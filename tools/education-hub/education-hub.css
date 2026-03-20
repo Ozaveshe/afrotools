@@ -1,13 +1,13 @@
 /* ── Education Hub ── */
 :root {
-  --eh-accent: #7c3aed;
-  --eh-accent-light: #ede9fe;
+  --eh-accent: #007AFF;
+  --eh-accent-light: #E8F2FF;
   --eh-green: #16a34a;
   --eh-dark: #0f1419;
 }
 
 .eh-hero {
-  background: linear-gradient(135deg, #3b0764 0%, #7c3aed 50%, #6d28d9 100%);
+  background: linear-gradient(135deg, #002D6B 0%, #007AFF 50%, #0063D1 100%);
   padding: 44px 0 36px;
 }
 .eh-hero-inner {
@@ -17,7 +17,7 @@
   font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; color: #fff;
   letter-spacing: -.02em; line-height: 1.1; margin-bottom: 10px;
 }
-.eh-hero h1 em { color: #c4b5fd; font-style: normal; }
+.eh-hero h1 em { color: #4DA3FF; font-style: normal; }
 .eh-hero .sub {
   font-size: .88rem; color: rgba(255,255,255,.45); line-height: 1.6; max-width: 560px;
 }
@@ -159,6 +159,73 @@
   text-align: center; padding: 24px; color: #94a3b8; font-size: .82rem;
 }
 
+/* Profile completeness bar */
+.eh-completeness {
+  margin-bottom: 16px;
+}
+.eh-completeness-label {
+  font-size: .72rem; font-weight: 600; color: #64748b; margin-bottom: 6px;
+}
+.eh-completeness-label span { color: var(--eh-accent); font-weight: 800; }
+.eh-completeness-track {
+  height: 6px; background: #f1f5f9; border-radius: 3px; overflow: hidden;
+}
+.eh-completeness-fill {
+  height: 100%; background: var(--eh-accent); border-radius: 3px;
+  transition: width .6s ease;
+}
+
+/* Profile editor */
+.eh-edit-toggle {
+  display: block; margin-top: 14px; padding: 8px 16px;
+  background: none; border: 1px solid #e2e8f0; border-radius: 8px;
+  font-size: .78rem; font-weight: 600; color: var(--eh-accent);
+  cursor: pointer; font-family: inherit; transition: all .2s;
+}
+.eh-edit-toggle:hover { background: var(--eh-accent-light); border-color: var(--eh-accent); }
+.eh-editor-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px;
+}
+.eh-editor-field label {
+  display: block; font-size: .72rem; font-weight: 600; color: #64748b;
+  margin-bottom: 4px; letter-spacing: .03em;
+}
+.eh-editor-field input,
+.eh-editor-field select {
+  width: 100%; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 8px;
+  font-size: .82rem; font-family: inherit; color: var(--eh-dark);
+  transition: border-color .2s;
+}
+.eh-editor-field input:focus,
+.eh-editor-field select:focus {
+  outline: none; border-color: var(--eh-accent); box-shadow: 0 0 0 3px rgba(0,122,255,.08);
+}
+.eh-save-btn {
+  display: block; width: 100%; margin-top: 14px; padding: 10px;
+  background: var(--eh-accent); color: #fff; border: none; border-radius: 8px;
+  font-size: .82rem; font-weight: 700; cursor: pointer; font-family: inherit;
+  transition: background .2s;
+}
+.eh-save-btn:hover { background: #0063D1; }
+
+/* Activity feed */
+.eh-activity-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 0; border-bottom: 1px solid #f1f5f9;
+}
+.eh-activity-item:last-child { border-bottom: none; }
+.eh-activity-text { font-size: .82rem; font-weight: 500; color: var(--eh-dark); }
+.eh-activity-time { font-size: .72rem; color: #94a3b8; flex-shrink: 0; }
+
+/* Flashcard streak */
+.eh-streak-row {
+  display: flex; align-items: center; gap: 8px;
+  padding: 12px 0; margin-top: 8px; border-top: 1px solid #f1f5f9;
+}
+.eh-streak-icon { font-size: 1.2rem; }
+.eh-streak-text { font-size: .82rem; color: var(--eh-dark); }
+.eh-streak-text strong { color: var(--eh-accent); }
+
 /* Responsive */
 @media (max-width: 768px) {
   .eh-grid { grid-template-columns: 1fr; }
@@ -170,4 +237,5 @@
 }
 @media (max-width: 480px) {
   .eh-profile-grid { grid-template-columns: 1fr; }
+  .eh-editor-grid { grid-template-columns: 1fr; }
 }

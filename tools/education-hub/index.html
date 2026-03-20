@@ -23,7 +23,7 @@
 <afro-navbar></afro-navbar>
 
 <section class="eh-hero"><div class="eh-hero-inner">
-<div style="font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px"><a href="/" style="color:inherit;text-decoration:none">Home</a> / <a href="/education/" style="color:inherit;text-decoration:none">Education</a> / <span style="color:#c4b5fd">Education Hub</span></div>
+<div style="font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px"><a href="/" style="color:inherit;text-decoration:none">Home</a> / <a href="/education/" style="color:inherit;text-decoration:none">Education</a> / <span style="color:#4DA3FF">Education Hub</span></div>
 <h1>Your <em>Education</em> Journey</h1>
 <p class="sub">Track your academic profile, calculate scores, and discover scholarships matched to your qualifications — all in one place.</p>
 </div></section>
@@ -69,10 +69,15 @@
     <div class="eh-card">
       <div class="eh-card-head">
         <span>Your Academic Profile</span>
-        <a href="/tools/scholarship-finder/" style="font-size:.68rem;font-weight:700;color:#7c3aed;text-decoration:none">See Matches &rarr;</a>
+        <a href="/tools/scholarship-finder/" style="font-size:.68rem;font-weight:700;color:#007AFF;text-decoration:none">See Matches &rarr;</a>
       </div>
       <div class="eh-card-body" id="profileBody">
         <div id="profileLoggedIn" style="display:none">
+          <!-- Profile completeness bar -->
+          <div class="eh-completeness" id="completenessBar">
+            <div class="eh-completeness-label"><span id="completenessText">0%</span> profile complete</div>
+            <div class="eh-completeness-track"><div class="eh-completeness-fill" id="completenessFill" style="width:0%"></div></div>
+          </div>
           <div class="eh-profile-grid">
             <div class="eh-stat">
               <div class="icon">&#x1F4CA;</div>
@@ -91,6 +96,33 @@
             </div>
           </div>
           <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap" id="profileTags"></div>
+          <!-- Inline profile editor toggle -->
+          <button class="eh-edit-toggle" id="editProfileToggle" onclick="toggleProfileEditor()">Edit Profile</button>
+          <div class="eh-profile-editor" id="profileEditor" style="display:none">
+            <div class="eh-editor-grid">
+              <div class="eh-editor-field">
+                <label for="edLevel">Education Level</label>
+                <select id="edLevel"><option value="">Select...</option><option value="secondary">Secondary</option><option value="undergraduate">Undergraduate</option><option value="postgraduate">Postgraduate (Masters)</option><option value="phd">PhD</option></select>
+              </div>
+              <div class="eh-editor-field">
+                <label for="edInstitution">Institution</label>
+                <input type="text" id="edInstitution" placeholder="e.g. University of Lagos">
+              </div>
+              <div class="eh-editor-field">
+                <label for="edGradDate">Graduation Date</label>
+                <input type="month" id="edGradDate">
+              </div>
+              <div class="eh-editor-field">
+                <label for="edCountries">Target Countries</label>
+                <input type="text" id="edCountries" placeholder="UK, Canada, USA...">
+              </div>
+              <div class="eh-editor-field">
+                <label for="edFields">Fields of Study</label>
+                <input type="text" id="edFields" placeholder="Engineering, Medicine...">
+              </div>
+            </div>
+            <button class="eh-save-btn" onclick="saveProfileEdits()">Save Changes</button>
+          </div>
         </div>
         <div id="profileLoggedOut">
           <div class="eh-login-cta">
@@ -101,11 +133,27 @@
       </div>
     </div>
 
+    <!-- Activity Feed + Flashcard Streak -->
+    <div class="eh-card" style="margin-top:18px">
+      <div class="eh-card-head"><span>Recent Activity</span></div>
+      <div class="eh-card-body">
+        <div id="activityFeed" class="eh-activity-feed">
+          <div class="eh-empty">No recent activity yet. Use education tools to see your activity here.</div>
+        </div>
+        <div id="flashcardStreak" style="display:none">
+          <div class="eh-streak-row">
+            <span class="eh-streak-icon">&#x1F525;</span>
+            <span class="eh-streak-text"><strong id="streakCount">0</strong> day study streak</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Top Scholarships -->
     <div class="eh-card" style="margin-top:18px">
       <div class="eh-card-head">
         <span>Recommended Scholarships</span>
-        <a href="/tools/scholarship-finder/" style="font-size:.68rem;font-weight:700;color:#7c3aed;text-decoration:none">View All &rarr;</a>
+        <a href="/tools/scholarship-finder/" style="font-size:.68rem;font-weight:700;color:#007AFF;text-decoration:none">View All &rarr;</a>
       </div>
       <div class="eh-card-body" id="scholarshipsBody">
         <div class="eh-empty" id="scholarshipsEmpty">
@@ -151,6 +199,20 @@
               <div class="desc">120+ scholarships with personalized match scoring</div>
             </div>
           </a>
+          <a class="eh-tool-link" href="/tools/flashcard-maker/">
+            <span class="icon">&#x1F4DD;</span>
+            <div>
+              <div class="name">Flashcard Maker</div>
+              <div class="desc">JAMB, WAEC, KCSE packs with spaced repetition</div>
+            </div>
+          </a>
+          <a class="eh-tool-link" href="/tools/study-planner/">
+            <span class="icon">&#x1F4C5;</span>
+            <div>
+              <div class="name">Study Planner</div>
+              <div class="desc">Personalized timetables with Pomodoro timer</div>
+            </div>
+          </a>
         </div>
       </div>
     </div>
@@ -175,143 +237,220 @@
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
 
+<script src="/assets/js/lib/toast.js" defer></script>
 <script>
-(function () {
-  'use strict';
+var profile = null;
 
-  var profile = null;
+function init() {
+  setTimeout(loadProfile, 500);
+  loadActivityFeed();
+  loadFlashcardStreak();
+}
 
-  function init() {
-    // Wait for auth to be ready
-    setTimeout(loadProfile, 500);
+function loadProfile() {
+  if (typeof EduProfileSync === 'undefined' || typeof EduProfileSync.getProfile !== 'function') {
+    document.getElementById('profileLoggedOut').style.display = '';
+    document.getElementById('profileLoggedIn').style.display = 'none';
+    return;
   }
 
-  function loadProfile() {
-    if (typeof EduProfileSync === 'undefined' || typeof EduProfileSync.getProfile !== 'function') {
-      // Not logged in or auth not loaded
+  EduProfileSync.getProfile().then(function (p) {
+    if (!p) {
       document.getElementById('profileLoggedOut').style.display = '';
       document.getElementById('profileLoggedIn').style.display = 'none';
       return;
     }
 
-    EduProfileSync.getProfile().then(function (p) {
-      if (!p) {
-        document.getElementById('profileLoggedOut').style.display = '';
-        document.getElementById('profileLoggedIn').style.display = 'none';
-        return;
-      }
+    profile = p;
+    document.getElementById('profileLoggedOut').style.display = 'none';
+    document.getElementById('profileLoggedIn').style.display = '';
 
-      profile = p;
-      document.getElementById('profileLoggedOut').style.display = 'none';
-      document.getElementById('profileLoggedIn').style.display = '';
+    var gpaEl = document.getElementById('dispGPA');
+    var ieltsEl = document.getElementById('dispIELTS');
+    var jambEl = document.getElementById('dispJAMB');
 
-      // Fill profile display
-      var gpaEl = document.getElementById('dispGPA');
-      var ieltsEl = document.getElementById('dispIELTS');
-      var jambEl = document.getElementById('dispJAMB');
-
-      if (p.gpa_value) {
-        gpaEl.textContent = parseFloat(p.gpa_value).toFixed(2) + (p.gpa_scale ? ' / ' + p.gpa_scale : '');
-        gpaEl.classList.remove('empty');
-        markStep('stepGPA', 'valGPA', gpaEl.textContent);
-      }
-      if (p.ielts_overall) {
-        ieltsEl.textContent = parseFloat(p.ielts_overall).toFixed(1);
-        ieltsEl.classList.remove('empty');
-        markStep('stepIELTS', 'valIELTS', ieltsEl.textContent);
-      }
-      if (p.jamb_score) {
-        jambEl.textContent = p.jamb_score;
-        jambEl.classList.remove('empty');
-        markStep('stepJAMB', 'valJAMB', String(p.jamb_score));
-      }
-
-      // Tags
-      var tags = '';
-      if (p.target_study_level) tags += '<span style="display:inline-block;padding:3px 10px;border-radius:4px;font-size:.66rem;font-weight:700;background:#f5f3ff;color:#7c3aed">' + p.target_study_level + '</span>';
-      if (p.institution) tags += '<span style="display:inline-block;padding:3px 10px;border-radius:4px;font-size:.66rem;font-weight:700;background:#f1f5f9;color:#475569">' + p.institution + '</span>';
-      if (p.target_countries && p.target_countries.length) {
-        p.target_countries.forEach(function (c) {
-          tags += '<span style="display:inline-block;padding:3px 10px;border-radius:4px;font-size:.66rem;font-weight:700;background:#dbeafe;color:#2563eb">' + c + '</span>';
-        });
-      }
-      document.getElementById('profileTags').innerHTML = tags;
-
-      // Load scholarships if we have profile data
-      if (p.gpa_value || p.ielts_overall || p.target_study_level) {
-        loadRecommendedScholarships();
-      }
-    });
-  }
-
-  function markStep(stepId, valId, value) {
-    var step = document.getElementById(stepId);
-    var val = document.getElementById(valId);
-    if (step) {
-      step.classList.add('done');
-      step.classList.remove('active');
+    if (p.gpa_value) {
+      gpaEl.textContent = parseFloat(p.gpa_value).toFixed(2) + (p.gpa_scale ? ' / ' + p.gpa_scale : '');
+      gpaEl.classList.remove('empty');
+      markStep('stepGPA', 'valGPA', gpaEl.textContent);
     }
-    if (val) {
-      val.textContent = value;
-      val.classList.remove('empty');
+    if (p.ielts_overall) {
+      ieltsEl.textContent = parseFloat(p.ielts_overall).toFixed(1);
+      ieltsEl.classList.remove('empty');
+      markStep('stepIELTS', 'valIELTS', ieltsEl.textContent);
     }
-  }
+    if (p.jamb_score) {
+      jambEl.textContent = p.jamb_score;
+      jambEl.classList.remove('empty');
+      markStep('stepJAMB', 'valJAMB', String(p.jamb_score));
+    }
 
-  function loadRecommendedScholarships() {
-    fetch('/api/scholarships')
-      .then(function (res) { return res.json(); })
-      .then(function (data) {
-        if (!data.scholarships || !data.scholarships.length) return;
+    // Tags — use textContent to prevent XSS
+    var tagsEl = document.getElementById('profileTags');
+    tagsEl.innerHTML = '';
+    function addTag(text, bg, color) {
+      var span = document.createElement('span');
+      span.style.cssText = 'display:inline-block;padding:3px 10px;border-radius:4px;font-size:.66rem;font-weight:700;background:' + bg + ';color:' + color;
+      span.textContent = text;
+      tagsEl.appendChild(span);
+    }
+    if (p.target_study_level) addTag(p.target_study_level, '#EEF2FF', '#007AFF');
+    if (p.institution) addTag(p.institution, '#f1f5f9', '#475569');
+    if (p.target_countries && p.target_countries.length) {
+      p.target_countries.forEach(function (c) { addTag(c, '#dbeafe', '#2563eb'); });
+    }
 
-        var studentData = {
-          gpa_value: profile.gpa_value,
-          gpa_scale: profile.gpa_scale,
-          ielts_overall: profile.ielts_overall,
-          target_study_level: profile.target_study_level,
-          target_countries: profile.target_countries || [],
-          target_fields: profile.target_fields || []
-        };
+    // Profile completeness
+    updateCompleteness(p);
 
-        if (typeof ScholarshipMatcher === 'undefined') return;
+    // Prefill editor
+    if (p.education_level) document.getElementById('edLevel').value = p.education_level;
+    if (p.institution) document.getElementById('edInstitution').value = p.institution;
+    if (p.graduation_date) document.getElementById('edGradDate').value = p.graduation_date;
+    if (p.target_countries && p.target_countries.length) document.getElementById('edCountries').value = p.target_countries.join(', ');
+    if (p.target_fields && p.target_fields.length) document.getElementById('edFields').value = p.target_fields.join(', ');
 
-        var matches = ScholarshipMatcher.match(data.scholarships, studentData);
-        if (!matches.length) return;
+    if (p.gpa_value || p.ielts_overall || p.target_study_level) {
+      loadRecommendedScholarships();
+    }
+  });
+}
 
-        // Show top 5
-        var top5 = matches.slice(0, 5);
-        var html = '';
-        top5.forEach(function (m) {
-          var s = m.scholarship;
-          var fundClass = s.funding === 'full' ? 'full' : 'partial';
-          var fundLabel = s.funding === 'full' ? 'FULL' : 'PARTIAL';
-          html += '<div class="eh-sch-item">' +
-            '<div class="eh-sch-score ' + m.categoryClass + '">' + m.percent + '%</div>' +
-            '<div class="eh-sch-info">' +
-              '<div class="eh-sch-name">' + s.name + '</div>' +
-              '<div class="eh-sch-provider">' + s.provider + '</div>' +
-            '</div>' +
-            '<span class="eh-sch-badge ' + fundClass + '">' + fundLabel + '</span>' +
-          '</div>';
-        });
+function updateCompleteness(p) {
+  var fields = ['gpa_value', 'ielts_overall', 'jamb_score', 'education_level', 'institution', 'target_countries', 'target_fields', 'target_study_level'];
+  var filled = 0;
+  fields.forEach(function (f) {
+    var v = p[f];
+    if (v && (!Array.isArray(v) || v.length > 0)) filled++;
+  });
+  var pct = Math.round((filled / fields.length) * 100);
+  document.getElementById('completenessText').textContent = pct + '%';
+  document.getElementById('completenessFill').style.width = pct + '%';
+}
 
-        document.getElementById('scholarshipsEmpty').style.display = 'none';
-        var list = document.getElementById('scholarshipsList');
-        list.innerHTML = html;
-        list.style.display = '';
-
-        // Update scholarship step
-        document.getElementById('valScholar').textContent = matches.filter(function (m) { return m.percent >= 60; }).length + ' good matches';
-        document.getElementById('valScholar').classList.remove('empty');
-      })
-      .catch(function () { });
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+function toggleProfileEditor() {
+  var editor = document.getElementById('profileEditor');
+  var btn = document.getElementById('editProfileToggle');
+  if (editor.style.display === 'none') {
+    editor.style.display = '';
+    btn.textContent = 'Cancel';
   } else {
-    init();
+    editor.style.display = 'none';
+    btn.textContent = 'Edit Profile';
   }
-})();
+}
+
+function saveProfileEdits() {
+  if (typeof EduProfileSync === 'undefined') return;
+  var countriesRaw = document.getElementById('edCountries').value;
+  var fieldsRaw = document.getElementById('edFields').value;
+  var data = {
+    education_level: document.getElementById('edLevel').value || undefined,
+    institution: document.getElementById('edInstitution').value || undefined,
+    graduation_date: document.getElementById('edGradDate').value || undefined,
+    target_countries: countriesRaw ? countriesRaw.split(',').map(function(s) { return s.trim(); }).filter(Boolean) : undefined,
+    target_fields: fieldsRaw ? fieldsRaw.split(',').map(function(s) { return s.trim(); }).filter(Boolean) : undefined
+  };
+  EduProfileSync.update(data);
+  document.getElementById('profileEditor').style.display = 'none';
+  document.getElementById('editProfileToggle').textContent = 'Edit Profile';
+  if (typeof AfroToast !== 'undefined') AfroToast.show('Profile updated', 'success');
+  setTimeout(loadProfile, 600);
+}
+
+function loadActivityFeed() {
+  try {
+    var history = JSON.parse(localStorage.getItem('afro_tool_history') || '[]');
+    var eduTools = { 'gpa-calculator': 'Calculated GPA', 'ielts-calculator': 'Calculated IELTS score', 'jamb-aggregate': 'Calculated JAMB aggregate', 'scholarship-finder': 'Browsed scholarships', 'flashcard-maker': 'Studied flashcards', 'study-planner': 'Generated study plan' };
+    var eduHistory = history.filter(function (h) { return eduTools[h.tool]; }).slice(0, 5);
+    if (!eduHistory.length) return;
+    var feedEl = document.getElementById('activityFeed');
+    var html = '';
+    eduHistory.forEach(function (h) {
+      var ago = timeAgo(new Date(h.timestamp || h.date));
+      html += '<div class="eh-activity-item"><span class="eh-activity-text">' + escapeHtml(eduTools[h.tool]) + '</span><span class="eh-activity-time">' + ago + '</span></div>';
+    });
+    feedEl.innerHTML = html;
+  } catch (e) { /* silent */ }
+}
+
+function loadFlashcardStreak() {
+  try {
+    var streak = JSON.parse(localStorage.getItem('fc_streak') || '{}');
+    if (streak.count && streak.count > 0) {
+      document.getElementById('flashcardStreak').style.display = '';
+      document.getElementById('streakCount').textContent = streak.count;
+    }
+  } catch (e) { /* silent */ }
+}
+
+function timeAgo(date) {
+  var diff = Math.floor((Date.now() - date.getTime()) / 1000);
+  if (diff < 60) return 'just now';
+  if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
+  if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
+  var days = Math.floor(diff / 86400);
+  if (days === 1) return 'yesterday';
+  if (days < 30) return days + ' days ago';
+  return Math.floor(days / 30) + 'mo ago';
+}
+
+function escapeHtml(str) {
+  var d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+function markStep(stepId, valId, value) {
+  var step = document.getElementById(stepId);
+  var val = document.getElementById(valId);
+  if (step) { step.classList.add('done'); step.classList.remove('active'); }
+  if (val) { val.textContent = value; val.classList.remove('empty'); }
+}
+
+function loadRecommendedScholarships() {
+  fetch('/api/scholarships')
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
+      if (!data.scholarships || !data.scholarships.length) return;
+      var studentData = {
+        gpa_value: profile.gpa_value, gpa_scale: profile.gpa_scale,
+        ielts_overall: profile.ielts_overall, target_study_level: profile.target_study_level,
+        target_countries: profile.target_countries || [], target_fields: profile.target_fields || []
+      };
+      if (typeof ScholarshipMatcher === 'undefined') return;
+      var matches = ScholarshipMatcher.match(data.scholarships, studentData);
+      if (!matches.length) return;
+      var top5 = matches.slice(0, 5);
+      var html = '';
+      top5.forEach(function (m) {
+        var s = m.scholarship;
+        var fundClass = s.funding === 'full' ? 'full' : 'partial';
+        var fundLabel = s.funding === 'full' ? 'FULL' : 'PARTIAL';
+        html += '<div class="eh-sch-item">' +
+          '<div class="eh-sch-score ' + m.categoryClass + '">' + m.percent + '%</div>' +
+          '<div class="eh-sch-info">' +
+            '<div class="eh-sch-name">' + escapeHtml(s.name) + '</div>' +
+            '<div class="eh-sch-provider">' + escapeHtml(s.provider) + '</div>' +
+          '</div>' +
+          '<span class="eh-sch-badge ' + fundClass + '">' + fundLabel + '</span>' +
+        '</div>';
+      });
+      document.getElementById('scholarshipsEmpty').style.display = 'none';
+      var list = document.getElementById('scholarshipsList');
+      list.innerHTML = html;
+      list.style.display = '';
+      document.getElementById('valScholar').textContent = matches.filter(function (m) { return m.percent >= 60; }).length + ' good matches';
+      document.getElementById('valScholar').classList.remove('empty');
+    })
+    .catch(function () { });
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
 </script>
 </body>
 </html>

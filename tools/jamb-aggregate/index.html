@@ -81,7 +81,7 @@
     <header class="jamb-header">
         <nav class="jamb-breadcrumb" aria-label="Breadcrumb">
             <a href="/">Home</a><span class="sep">/</span>
-            <a href="/education/">Education</a><span class="sep">/</span>
+            <a href="/tools/education-hub/">Education Hub</a><span class="sep">/</span>
             <span>JAMB Aggregate</span>
         </nav>
         <div class="jamb-badge">Education Tool</div>
@@ -188,6 +188,7 @@
                     <tbody></tbody>
                 </table>
             </div>
+            <p class="jamb-source-note">Cutoff data sourced from JAMB official publications and university admission offices. Data may vary by year — verify with your institution.</p>
         </div>
 
         <!-- FAQ -->
@@ -487,9 +488,9 @@
         function calculate() {
             var utme = parseFloat(document.getElementById('utme').value);
             var postUtme = parseFloat(document.getElementById('postUtme').value);
-            if (isNaN(utme) || isNaN(postUtme)) { alert('Please enter both UTME and Post-UTME scores.'); return; }
-            if (utme < 0 || utme > 400) { alert('UTME score must be between 0 and 400.'); return; }
-            if (postUtme < 0 || postUtme > 100) { alert('Post-UTME score must be between 0 and 100.'); return; }
+            if (isNaN(utme) || isNaN(postUtme)) { AfroTools.toast.error('Please enter both UTME and Post-UTME scores.'); return; }
+            if (utme < 0 || utme > 400) { AfroTools.toast.error('UTME score must be between 0 and 400.'); return; }
+            if (postUtme < 0 || postUtme > 100) { AfroTools.toast.error('Post-UTME score must be between 0 and 100.'); return; }
 
             var aggregate = 0, steps = '';
             var olevel = getOlevelTotal();
@@ -504,7 +505,11 @@
                     steps = 'UTME: (' + utme + ' / 4) × 0.5 = ' + ((utme/4)*0.5).toFixed(2) + '\nPost-UTME: ' + postUtme + ' × 0.5 = ' + (postUtme*0.5).toFixed(2) + '\nAggregate: ' + ((utme/4)*0.5).toFixed(2) + ' + ' + (postUtme*0.5).toFixed(2) + ' = ' + aggregate.toFixed(2);
                     break;
                 case 'ui':
-                    if (olevel === 0) { alert('Please enter O\'Level grades for the UI formula.'); return; }
+                    var hasEmptyOlevel = false;
+                    for (var j = 0; j < 5; j++) {
+                        if (document.getElementById('subj' + j).value === '') { hasEmptyOlevel = true; break; }
+                    }
+                    if (hasEmptyOlevel) { AfroTools.toast.error('Please select a grade for all 5 O\'Level subjects.'); return; }
                     aggregate = ((utme / 4) * 0.375) + (postUtme * 0.25) + (olevel * 0.375);
                     steps = 'UTME: (' + utme + ' / 4) × 0.375 = ' + ((utme/4)*0.375).toFixed(2) + '\nPost-UTME: ' + postUtme + ' × 0.25 = ' + (postUtme*0.25).toFixed(2) + '\nO\'Level: ' + olevel + ' × 0.375 = ' + (olevel*0.375).toFixed(2) + '\nAggregate: ' + ((utme/4)*0.375).toFixed(2) + ' + ' + (postUtme*0.25).toFixed(2) + ' + ' + (olevel*0.375).toFixed(2) + ' = ' + aggregate.toFixed(2);
                     break;

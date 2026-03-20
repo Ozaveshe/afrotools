@@ -76,7 +76,7 @@
 <header class="ielts-header">
     <nav class="ielts-breadcrumb" aria-label="Breadcrumb">
         <a href="/">Home</a><span class="sep">/</span>
-        <a href="/education/">Education</a><span class="sep">/</span>
+        <a href="/tools/education-hub/">Education Hub</a><span class="sep">/</span>
         <span>IELTS Calculator</span>
     </nav>
     <div class="ielts-badge">Education Tool</div>
@@ -114,6 +114,7 @@
         </div>
         <div class="ielts-btn-group">
             <button class="ielts-btn ielts-btn-primary" onclick="calculate()">Calculate Overall Score</button>
+            <button class="ielts-btn ielts-btn-secondary" onclick="resetCalc()">Reset</button>
         </div>
     </div>
 
@@ -126,9 +127,24 @@
             <div class="ielts-result-desc" id="levelDesc"></div>
         </div>
         <div class="ielts-components" id="componentScores"></div>
-        <div class="ielts-toefl-box">
-            <div class="ielts-toefl-label">TOEFL iBT Equivalent</div>
-            <div class="ielts-toefl-value" id="toeflScore"></div>
+        <div class="ielts-equiv-row">
+            <div class="ielts-toefl-box">
+                <div class="ielts-toefl-label">TOEFL iBT</div>
+                <div class="ielts-toefl-value" id="toeflScore"></div>
+            </div>
+            <div class="ielts-toefl-box">
+                <div class="ielts-toefl-label">PTE Academic</div>
+                <div class="ielts-toefl-value" id="pteScore"></div>
+            </div>
+            <div class="ielts-toefl-box">
+                <div class="ielts-toefl-label">Duolingo English</div>
+                <div class="ielts-toefl-value" id="duolingoScore"></div>
+            </div>
+        </div>
+        <!-- Study tips based on scores -->
+        <div class="ielts-tips-box hidden" id="studyTips">
+            <h3 style="font-size:.85rem;font-weight:700;margin-bottom:10px">Study Tips Based on Your Scores</h3>
+            <div id="studyTipsContent"></div>
         </div>
     </div>
 
@@ -263,7 +279,29 @@ var REQUIREMENTS = [
   { dest: 'Average UK University', overall: 6.0, min: 5.5 },
   { dest: 'Canadian University', overall: 6.5, min: 6.0 },
   { dest: 'Nursing (UK NMC)', overall: 7.0, min: 7.0 },
+  { dest: 'US Top University (Ivy League)', overall: 7.0, min: 6.5 },
+  { dest: 'US State University', overall: 6.0, min: 5.5 },
+  { dest: 'US Graduate School', overall: 6.5, min: 6.0 },
 ];
+
+var IELTS_TO_PTE = {
+  '9.0': '86-90', '8.5': '83-85', '8.0': '79-82', '7.5': '73-78',
+  '7.0': '65-72', '6.5': '58-64', '6.0': '50-57', '5.5': '43-49',
+  '5.0': '36-42', '4.5': '30-35', '4.0': '0-29'
+};
+
+var IELTS_TO_DET = {
+  '9.0': '145-160', '8.5': '135-144', '8.0': '125-134', '7.5': '115-124',
+  '7.0': '105-114', '6.5': '95-104', '6.0': '85-94', '5.5': '75-84',
+  '5.0': '65-74', '4.5': '55-64', '4.0': '0-54'
+};
+
+var STUDY_TIPS = {
+  listening: { low: 'Practice with BBC podcasts and IELTS listening drills daily. Focus on note-taking skills.', mid: 'Listen to academic lectures. Practice identifying paraphrased information.', high: 'You\'re strong here. Maintain with TED Talks and varied accents.' },
+  reading: { low: 'Read English newspapers daily. Practice skimming and scanning techniques.', mid: 'Focus on True/False/Not Given questions. Time yourself strictly.', high: 'Great reading skills. Practice matching headings for the last push.' },
+  writing: { low: 'Study essay structures. Practice Task 2 essays and get feedback. Learn linking phrases.', mid: 'Focus on Task 1 data descriptions. Work on vocabulary range and complex sentences.', high: 'Polish your coherence and cohesion. Aim for varied sentence structures.' },
+  speaking: { low: 'Practice speaking English daily. Record yourself and listen back. Join speaking clubs.', mid: 'Work on extending answers with examples. Practice Part 2 cue cards with a timer.', high: 'Focus on idiomatic language and complex grammar for band 8+.' }
+};
 
 function calculate() {
   var l = +document.getElementById('listening').value;
@@ -286,6 +324,19 @@ function calculate() {
 
   var toeflKey = overall.toFixed(1);
   document.getElementById('toeflScore').textContent = IELTS_TO_TOEFL[toeflKey] || 'N/A';
+  document.getElementById('pteScore').textContent = IELTS_TO_PTE[toeflKey] || 'N/A';
+  document.getElementById('duolingoScore').textContent = IELTS_TO_DET[toeflKey] || 'N/A';
+
+  // Component-specific study tips
+  var tips = '';
+  var compsArr = [{ key: 'listening', name: 'Listening', val: l }, { key: 'reading', name: 'Reading', val: r }, { key: 'writing', name: 'Writing', val: w }, { key: 'speaking', name: 'Speaking', val: s }];
+  compsArr.forEach(function(c) {
+    if (c.val < 6.0) tips += '<div class="ielts-tip-item"><strong>' + c.name + ' (' + c.val.toFixed(1) + '):</strong> ' + STUDY_TIPS[c.key].low + '</div>';
+    else if (c.val < 7.0) tips += '<div class="ielts-tip-item"><strong>' + c.name + ' (' + c.val.toFixed(1) + '):</strong> ' + STUDY_TIPS[c.key].mid + '</div>';
+    else tips += '<div class="ielts-tip-item"><strong>' + c.name + ' (' + c.val.toFixed(1) + '):</strong> ' + STUDY_TIPS[c.key].high + '</div>';
+  });
+  document.getElementById('studyTipsContent').innerHTML = tips;
+  document.getElementById('studyTips').classList.remove('hidden');
 
   var table = '<tr><th>Destination / Purpose</th><th style="text-align:center">Required</th><th style="text-align:center">Status</th></tr>';
   REQUIREMENTS.forEach(function(req) {
@@ -307,7 +358,42 @@ function calculate() {
       ielts_components: { listening: l, reading: r, writing: w, speaking: s }
     });
   }
+
+  // Wire up share + save buttons with result data
+  var shareBtn = document.querySelector('share-result-button');
+  if (shareBtn && typeof shareBtn.setResult === 'function') {
+    shareBtn.setResult({
+      title: 'IELTS Score',
+      value: overall.toFixed(1),
+      details: 'L:' + l.toFixed(1) + ' R:' + r.toFixed(1) + ' W:' + w.toFixed(1) + ' S:' + s.toFixed(1) + ' | TOEFL: ' + (IELTS_TO_TOEFL[toeflKey] || 'N/A'),
+      url: window.location.href
+    });
+  }
+  var saveBtn = document.querySelector('save-result-button');
+  if (saveBtn && typeof saveBtn.setResult === 'function') {
+    saveBtn.setResult({
+      title: 'IELTS Score',
+      value: overall.toFixed(1),
+      details: 'L:' + l.toFixed(1) + ' R:' + r.toFixed(1) + ' W:' + w.toFixed(1) + ' S:' + s.toFixed(1)
+    });
+  }
 }
+
+function resetCalc() {
+  ['listening', 'reading', 'writing', 'speaking'].forEach(function(id) {
+    document.getElementById(id).value = '6.5';
+  });
+  document.getElementById('resultCard').classList.add('hidden');
+  document.getElementById('reqCard').classList.add('hidden');
+  document.getElementById('studyTips').classList.add('hidden');
+}
+
+// Real-time auto-calculate on select change
+['listening', 'reading', 'writing', 'speaking'].forEach(function(id) {
+  document.getElementById(id).addEventListener('change', function() {
+    calculate();
+  });
+});
 </script>
 
 <script>

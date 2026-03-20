@@ -19,13 +19,15 @@
 <link rel="stylesheet" href="/assets/css/global.min.css">
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
+<script src="/assets/js/lib/toast.js" defer></script>
+<script src="/assets/js/edu-cloud-sync.js" defer></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--green:#008751;--green-light:#5ddb9e;--green-pale:#e6f7ef;--dark:#0c1a10;--text:#0f172a;--muted:#64748b;--border:#e2e8f0;--bg:#FAFAF8;--card:#fff;--radius:14px;--shadow:0 2px 12px rgba(0,0,0,.06)}
+:root{--green:#007AFF;--green-light:#4DA3FF;--green-pale:#E8F2FF;--dark:#0A1628;--text:#0f172a;--muted:#64748b;--border:#e2e8f0;--bg:#FAFAF8;--card:#fff;--radius:14px;--shadow:0 2px 12px rgba(0,0,0,.06)}
 
 /* ── Hero ── */
 .sp-hero{background:var(--dark);padding:48px 0 40px;position:relative;overflow:hidden}
-.sp-hero::before{content:'';position:absolute;top:-60%;right:-10%;width:500px;height:500px;background:radial-gradient(circle,rgba(0,135,81,.15) 0%,transparent 70%);pointer-events:none}
+.sp-hero::before{content:'';position:absolute;top:-60%;right:-10%;width:500px;height:500px;background:radial-gradient(circle,rgba(0,122,255,.15) 0%,transparent 70%);pointer-events:none}
 .sp-hero-inner{max-width:900px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
 .sp-breadcrumb{font-size:.75rem;font-weight:500;color:rgba(255,255,255,.35);letter-spacing:.06em;margin-bottom:16px}
 .sp-breadcrumb a{color:rgba(255,255,255,.35);text-decoration:none;transition:color .2s}
@@ -35,7 +37,7 @@
 .sp-hero h1 span{color:var(--green-light);font-style:italic}
 .sp-hero-sub{font-size:.95rem;color:rgba(255,255,255,.5);line-height:1.6;max-width:540px;margin-bottom:20px}
 .sp-tags{display:flex;flex-wrap:wrap;gap:8px}
-.sp-tag{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border-radius:100px;font-size:.75rem;font-weight:600;background:rgba(93,219,158,.1);color:var(--green-light);border:1px solid rgba(93,219,158,.2);letter-spacing:.02em}
+.sp-tag{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border-radius:100px;font-size:.75rem;font-weight:600;background:rgba(77,163,255,.1);color:var(--green-light);border:1px solid rgba(77,163,255,.2);letter-spacing:.02em}
 
 /* ── Layout ── */
 .sp-app{max-width:900px;margin:0 auto;padding:32px 24px 80px}
@@ -87,11 +89,11 @@
 .sp-prefs{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .sp-field label{display:block;font-size:.72rem;font-weight:600;color:var(--muted);letter-spacing:.03em;margin-bottom:6px}
 .sp-field input,.sp-field select{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:.85rem;font-family:inherit;background:var(--card);color:var(--text);transition:border .2s}
-.sp-field input:focus,.sp-field select:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(0,135,81,.1)}
+.sp-field input:focus,.sp-field select:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(0,122,255,.1)}
 
 /* ── Generate button ── */
-.sp-generate{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px 24px;border:none;border-radius:12px;font-size:.92rem;font-weight:700;cursor:pointer;font-family:inherit;background:var(--green);color:#fff;transition:all .2s;margin-top:24px;box-shadow:0 4px 16px rgba(0,135,81,.25)}
-.sp-generate:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,135,81,.3)}
+.sp-generate{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px 24px;border:none;border-radius:12px;font-size:.92rem;font-weight:700;cursor:pointer;font-family:inherit;background:var(--green);color:#fff;transition:all .2s;margin-top:24px;box-shadow:0 4px 16px rgba(0,122,255,.25)}
+.sp-generate:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,122,255,.3)}
 .sp-generate:active{transform:translateY(0)}
 
 /* ── Results ── */
@@ -128,13 +130,13 @@
 .sp-action-btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border:1.5px solid var(--border);border-radius:10px;background:var(--card);cursor:pointer;font-size:.8rem;font-weight:600;color:var(--text);font-family:inherit;transition:all .2s}
 .sp-action-btn:hover{border-color:var(--green);color:var(--green)}
 .sp-action-btn.primary{background:var(--green);color:#fff;border-color:var(--green)}
-.sp-action-btn.primary:hover{background:#006d42}
+.sp-action-btn.primary:hover{background:#0063D1}
 
 /* ── Tips section ── */
 .sp-tips{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:24px}
-.sp-tip{padding:16px;background:var(--green-pale);border-radius:var(--radius);border:1px solid rgba(0,135,81,.12)}
+.sp-tip{padding:16px;background:var(--green-pale);border-radius:var(--radius);border:1px solid rgba(0,122,255,.12)}
 .sp-tip-title{font-size:.78rem;font-weight:700;color:var(--green);margin-bottom:4px;display:flex;align-items:center;gap:6px}
-.sp-tip-text{font-size:.78rem;color:#1a5c38;line-height:1.5}
+.sp-tip-text{font-size:.78rem;color:#0A1628;line-height:1.5}
 
 /* ── SEO ── */
 .sp-seo{max-width:700px;margin:0 auto;padding:56px 24px}
@@ -167,9 +169,32 @@
   .sp-action-btn{justify-content:center}
 }
 
+/* ── Pomodoro Timer ── */
+.sp-pomodoro{margin-top:20px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.sp-pomodoro-head{padding:16px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #f1f5f9}
+.sp-pomodoro-label{font-size:.78rem;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px}
+.sp-pomodoro-phase{font-size:.72rem;font-weight:600;padding:4px 10px;border-radius:100px}
+.sp-pomodoro-phase.work{background:var(--green-pale);color:var(--green)}
+.sp-pomodoro-phase.break{background:#dcfce7;color:#16a34a}
+.sp-pomodoro-body{padding:28px 20px;text-align:center}
+.sp-pomo-display{font-family:'Instrument Serif',serif;font-size:4rem;color:var(--text);line-height:1;margin-bottom:6px;font-variant-numeric:tabular-nums}
+.sp-pomo-status{font-size:.8rem;font-weight:500;color:var(--muted);margin-bottom:20px}
+.sp-pomo-progress{width:100%;height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden;margin-bottom:20px}
+.sp-pomo-bar{height:100%;background:var(--green);border-radius:3px;transition:width .5s ease}
+.sp-pomo-controls{display:flex;gap:8px;justify-content:center}
+.sp-pomo-btn{padding:10px 20px;border:1.5px solid var(--border);border-radius:10px;background:var(--card);cursor:pointer;font-size:.82rem;font-weight:600;color:var(--text);font-family:inherit;transition:all .2s;display:inline-flex;align-items:center;gap:6px}
+.sp-pomo-btn:hover{border-color:var(--green);color:var(--green)}
+.sp-pomo-btn.primary{background:var(--green);color:#fff;border-color:var(--green)}
+.sp-pomo-btn.primary:hover{background:#0063D1}
+.sp-pomo-btn:disabled{opacity:.4;cursor:not-allowed}
+.sp-pomo-rounds{display:flex;gap:6px;justify-content:center;margin-top:16px}
+.sp-pomo-dot{width:10px;height:10px;border-radius:50%;background:#e2e8f0;transition:background .2s}
+.sp-pomo-dot.done{background:var(--green)}
+.sp-pomo-dot.active{background:var(--green);box-shadow:0 0 0 3px rgba(0,122,255,.2)}
+
 /* ── Print ── */
 @media print{
-  .sp-hero,.sp-tabs,.sp-seo,afro-navbar,afro-footer,afro-related-tools,afro-newsletter-cta,.sp-actions,.sp-tips,.sp-presets,.sp-add-btn,.sp-generate,.sp-card:has(.sp-subjects),.sp-card:has(.sp-prefs){display:none!important}
+  .sp-hero,.sp-tabs,.sp-seo,afro-navbar,afro-footer,afro-related-tools,afro-newsletter-cta,.sp-actions,.sp-tips,.sp-presets,.sp-add-btn,.sp-generate,.sp-card:has(.sp-subjects),.sp-card:has(.sp-prefs),.sp-pomodoro{display:none!important}
   .sp-results{display:block!important}
   .sp-app{padding:0}
   .sp-table-wrap{border:1px solid #ccc}
@@ -183,7 +208,7 @@
 <!-- Hero -->
 <section class="sp-hero">
 <div class="sp-hero-inner">
-  <div class="sp-breadcrumb"><a href="/">Home</a> &middot; <a href="/education/">Education</a> &middot; <span class="current">Study Planner</span></div>
+  <div class="sp-breadcrumb"><a href="/">Home</a> &middot; <a href="/tools/education-hub/">Education Hub</a> &middot; <span class="current">Study Planner</span></div>
   <h1>Plan your study. <span>Ace your exams.</span></h1>
   <p class="sp-hero-sub">Drop in your subjects, set how much time you have, and get a balanced weekly timetable that gives harder subjects more attention.</p>
   <div class="sp-tags">
@@ -293,6 +318,30 @@
       <button class="sp-action-btn primary" onclick="printTable()">&#128424; Print / PDF</button>
       <button class="sp-action-btn" onclick="switchTab('setup')">&#9998; Edit subjects</button>
       <button class="sp-action-btn" onclick="regenerate()">&#8635; Shuffle</button>
+      <button class="sp-action-btn" onclick="showPomodoro()">&#127813; Start Pomodoro</button>
+    </div>
+    <!-- Pomodoro Timer -->
+    <div class="sp-pomodoro" id="pomodoroTimer" style="display:none">
+      <div class="sp-pomodoro-head">
+        <span class="sp-pomodoro-label"><span class="icon">&#127813;</span> Pomodoro Timer</span>
+        <span class="sp-pomodoro-phase work" id="pomoPhaseLabel">Work</span>
+      </div>
+      <div class="sp-pomodoro-body">
+        <div class="sp-pomo-display" id="pomoDisplay">25:00</div>
+        <div class="sp-pomo-status" id="pomoStatus">Ready to focus</div>
+        <div class="sp-pomo-progress"><div class="sp-pomo-bar" id="pomoBar" style="width:100%"></div></div>
+        <div class="sp-pomo-controls">
+          <button class="sp-pomo-btn primary" id="pomoStartBtn" onclick="pomoStartPause()">&#9654; Start</button>
+          <button class="sp-pomo-btn" id="pomoResetBtn" onclick="pomoReset()">&#8635; Reset</button>
+          <button class="sp-pomo-btn" id="pomoSkipBtn" onclick="pomoSkip()">&#9197; Skip</button>
+        </div>
+        <div class="sp-pomo-rounds" id="pomoRounds">
+          <span class="sp-pomo-dot active"></span>
+          <span class="sp-pomo-dot"></span>
+          <span class="sp-pomo-dot"></span>
+          <span class="sp-pomo-dot"></span>
+        </div>
+      </div>
     </div>
   </div>
   <div id="emptyTimetable" style="text-align:center;padding:60px 20px">
@@ -432,7 +481,7 @@ function getSubjects() {
 
 function generate() {
   var subjects = getSubjects();
-  if (subjects.length === 0) { alert('Add at least one subject'); return; }
+  if (subjects.length === 0) { AfroTools.toast.error('Add at least one subject'); return; }
 
   var hoursPerDay = +document.getElementById('hoursPerDay').value;
   var daysPerWeek = +document.getElementById('daysPerWeek').value;
@@ -568,6 +617,15 @@ function saveToLocal() {
     };
     localStorage.setItem('sp_subjects', JSON.stringify(subjects));
     localStorage.setItem('sp_prefs', JSON.stringify(prefs));
+    // Cloud sync
+    if (window.EduCloudSync) {
+      EduCloudSync.save('studyplan', {
+        planName: 'My Plan',
+        subjects: subjects,
+        preferences: prefs,
+        updated_at: new Date().toISOString()
+      });
+    }
   } catch (e) {}
 }
 
@@ -594,6 +652,151 @@ function loadFromLocal() {
     }
   } catch (e) {}
   return false;
+}
+
+// ── Exam date validation ──
+document.getElementById('subjectList').addEventListener('change', function(e) {
+  if (e.target && e.target.classList.contains('sp-exam-date')) {
+    var val = e.target.value;
+    if (val) {
+      var today = new Date();
+      today.setHours(0, 0, 0, 0);
+      var picked = new Date(val + 'T00:00:00');
+      if (picked < today) {
+        AfroTools.toast.error('Exam date cannot be in the past');
+        e.target.value = '';
+      }
+    }
+  }
+});
+
+// ── Pomodoro Timer ──
+var POMO_WORK = 25 * 60;   // 25 minutes in seconds
+var POMO_BREAK = 5 * 60;   // 5 minutes in seconds
+var POMO_LONG_BREAK = 15 * 60; // 15 minutes after 4 rounds
+var pomoTime = POMO_WORK;
+var pomoTotal = POMO_WORK;
+var pomoRunning = false;
+var pomoInterval = null;
+var pomoIsBreak = false;
+var pomoRound = 0; // 0-based, current round index
+
+function showPomodoro() {
+  var el = document.getElementById('pomodoroTimer');
+  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+  if (el.style.display === 'block') {
+    el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+function pomoUpdateDisplay() {
+  var mins = Math.floor(pomoTime / 60);
+  var secs = pomoTime % 60;
+  document.getElementById('pomoDisplay').textContent =
+    String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+  var pct = pomoTotal > 0 ? (pomoTime / pomoTotal) * 100 : 0;
+  document.getElementById('pomoBar').style.width = pct + '%';
+}
+
+function pomoUpdateRounds() {
+  var dots = '';
+  for (var i = 0; i < 4; i++) {
+    var cls = 'sp-pomo-dot';
+    if (i < pomoRound) cls += ' done';
+    if (i === pomoRound) cls += ' active';
+    dots += '<span class="' + cls + '"></span>';
+  }
+  document.getElementById('pomoRounds').innerHTML = dots;
+}
+
+function pomoTick() {
+  if (pomoTime <= 0) {
+    clearInterval(pomoInterval);
+    pomoInterval = null;
+    pomoRunning = false;
+    document.getElementById('pomoStartBtn').innerHTML = '&#9654; Start';
+
+    if (!pomoIsBreak) {
+      // Work session complete
+      pomoRound++;
+      pomoUpdateRounds();
+      AfroTools.toast.success('Work session complete! Time for a break.');
+      // Switch to break
+      pomoIsBreak = true;
+      if (pomoRound >= 4) {
+        pomoTime = POMO_LONG_BREAK;
+        pomoTotal = POMO_LONG_BREAK;
+        document.getElementById('pomoStatus').textContent = 'Long break — you earned it!';
+      } else {
+        pomoTime = POMO_BREAK;
+        pomoTotal = POMO_BREAK;
+        document.getElementById('pomoStatus').textContent = 'Short break — relax';
+      }
+      var phaseLabel = document.getElementById('pomoPhaseLabel');
+      phaseLabel.textContent = 'Break';
+      phaseLabel.className = 'sp-pomodoro-phase break';
+    } else {
+      // Break complete
+      AfroTools.toast.info('Break over! Ready for the next session.');
+      if (pomoRound >= 4) {
+        pomoRound = 0;
+      }
+      pomoIsBreak = false;
+      pomoTime = POMO_WORK;
+      pomoTotal = POMO_WORK;
+      document.getElementById('pomoStatus').textContent = 'Ready to focus';
+      var phaseLabel2 = document.getElementById('pomoPhaseLabel');
+      phaseLabel2.textContent = 'Work';
+      phaseLabel2.className = 'sp-pomodoro-phase work';
+    }
+    pomoUpdateDisplay();
+    pomoUpdateRounds();
+    return;
+  }
+  pomoTime--;
+  pomoUpdateDisplay();
+}
+
+function pomoStartPause() {
+  if (pomoRunning) {
+    // Pause
+    clearInterval(pomoInterval);
+    pomoInterval = null;
+    pomoRunning = false;
+    document.getElementById('pomoStartBtn').innerHTML = '&#9654; Resume';
+    document.getElementById('pomoStatus').textContent = 'Paused';
+  } else {
+    // Start
+    pomoRunning = true;
+    document.getElementById('pomoStartBtn').innerHTML = '&#10074;&#10074; Pause';
+    document.getElementById('pomoStatus').textContent = pomoIsBreak ? 'Break time — relax' : 'Stay focused!';
+    pomoInterval = setInterval(pomoTick, 1000);
+  }
+}
+
+function pomoReset() {
+  clearInterval(pomoInterval);
+  pomoInterval = null;
+  pomoRunning = false;
+  pomoIsBreak = false;
+  pomoTime = POMO_WORK;
+  pomoTotal = POMO_WORK;
+  pomoRound = 0;
+  document.getElementById('pomoStartBtn').innerHTML = '&#9654; Start';
+  document.getElementById('pomoStatus').textContent = 'Ready to focus';
+  var phaseLabel = document.getElementById('pomoPhaseLabel');
+  phaseLabel.textContent = 'Work';
+  phaseLabel.className = 'sp-pomodoro-phase work';
+  pomoUpdateDisplay();
+  pomoUpdateRounds();
+}
+
+function pomoSkip() {
+  clearInterval(pomoInterval);
+  pomoInterval = null;
+  pomoRunning = false;
+  pomoTime = 0;
+  pomoTick();
 }
 
 // Init

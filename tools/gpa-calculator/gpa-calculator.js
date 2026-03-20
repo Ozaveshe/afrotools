@@ -1704,6 +1704,16 @@
         semesterCount: state.semesterCount
       }));
     } catch (e) { /* quota exceeded, silent fail */ }
+    // Cloud sync
+    if (window.EduCloudSync) {
+      EduCloudSync.save('gpa', {
+        system: state.system,
+        semesters: state.semesters,
+        cgpa: state.cgpa || null,
+        totalCredits: state.totalCredits || 0,
+        updated_at: new Date().toISOString()
+      });
+    }
   }
 
   function loadState() {

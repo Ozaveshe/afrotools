@@ -26,6 +26,7 @@
 <script src="/assets/js/favorites.js"></script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Flashcard Study Tool","url":"https://afrotools.com/tools/flashcard-maker/","applicationCategory":"EducationalApplication","operatingSystem":"All","description":"Free flashcard maker with pre-made exam packs, flip/quiz/match modes, and spaced repetition.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
 <script src="/assets/js/lib/toast.js" defer></script>
+<script src="/assets/js/edu-cloud-sync.js" defer></script>
 <script src="/assets/js/components/share-card-generator.js" defer></script>
 <script src="/assets/js/components/share-button.js" defer></script>
 </head>
@@ -35,7 +36,7 @@
 <!-- Hero -->
 <section class="fc-hero">
 <div class="fc-hero-inner">
-  <div class="fc-breadcrumb"><a href="/">Home</a> &middot; <a href="/education/">Education</a> &middot; <span class="current">Flashcard Study Tool</span></div>
+  <div class="fc-breadcrumb"><a href="/">Home</a> &middot; <a href="/tools/education-hub/">Education Hub</a> &middot; <span class="current">Flashcard Study Tool</span></div>
   <h1>Study smarter. <span>Remember more.</span></h1>
   <p class="fc-hero-sub">Create your own flashcards or use pre-made exam decks. Study with flip cards, quizzes, and matching games — powered by spaced repetition.</p>
   <div class="fc-tags">
@@ -478,7 +479,8 @@ var state = {
   mode: 'flip',
   studyIndex: 0,
   studyOrder: [],
-  stats: { correct: 0, incorrect: 0, sessionCards: 0 }
+  stats: { correct: 0, incorrect: 0, sessionCards: 0 },
+  matchPairCount: 6
 };
 var matchState = { selected: null, pairs: [], matched: 0, total: 0 };
 
@@ -488,6 +490,7 @@ function load() {
     var d = JSON.parse(localStorage.getItem(STORAGE_KEY));
     if (d && d.decks) state.decks = d.decks;
     if (d && d.activeDeck !== undefined) state.activeDeck = d.activeDeck;
+    if (d && d.matchPairCount) state.matchPairCount = d.matchPairCount;
   } catch(e) {}
   if (state.activeDeck !== null && state.activeDeck >= state.decks.length) state.activeDeck = state.decks.length > 0 ? 0 : null;
   renderDecks();
@@ -498,7 +501,11 @@ function load() {
 }
 
 function save() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({ decks: state.decks, activeDeck: state.activeDeck }));
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({ decks: state.decks, activeDeck: state.activeDeck, matchPairCount: state.matchPairCount }));
+  // Cloud sync
+  if (window.EduCloudSync) {
+    EduCloudSync.save('flashcards', { decks: state.decks, updated_at: new Date().toISOString() });
+  }
 }
 
 /* ── Tab switching ── */
@@ -538,11 +545,12 @@ function renderCards() {
     var status = c.mastered ? '<span class="fc-card-status fc-card-mastered" title="Mastered">&#9989;</span>' :
                  c.reviewCount > 0 ? '<span class="fc-card-status fc-card-review" title="Needs review">&#128260;</span>' :
                  '<span class="fc-card-status fc-card-new" title="Not studied yet">&#11044;</span>';
-    return '<div class="fc-card-item">' +
+    return '<div class="fc-card-item" id="cardItem' + i + '">' +
       status +
       '<span class="fc-card-item-front">' + escHtml(c.front) + '</span>' +
       '<span class="fc-card-item-sep">&rarr;</span>' +
       '<span class="fc-card-item-back">' + escHtml(c.back) + '</span>' +
+      '<button class="fc-card-item-edit" onclick="editCard(' + i + ')" title="Edit">&#9998;</button>' +
       '<button class="fc-card-item-del" onclick="deleteCard(' + i + ')" title="Delete">&times;</button></div>';
   }).join('');
 }
@@ -558,6 +566,7 @@ function createDeck() {
 
 function selectDeck(i) {
   state.activeDeck = i;
+  currentFilter = 'all';
   state.studyIndex = 0;
   save(); renderDecks(); renderCards(); updateStats();
 }
@@ -585,6 +594,41 @@ function addCard() {
 function deleteCard(i) {
   getDeck().cards.splice(i, 1);
   save(); renderCards(); updateStats();
+}
+
+function editCard(i) {
+  var deck = getDeck();
+  if (!deck) return;
+  var c = deck.cards[i];
+  var el = document.getElementById('cardItem' + i);
+  if (!el) return;
+  el.innerHTML =
+    '<div class="fc-card-edit-form">' +
+    '<div class="fc-card-edit-fields">' +
+    '<input type="text" id="editFront' + i + '" class="fc-card-edit-input" value="' + escHtml(c.front).replace(/"/g, '&quot;') + '" placeholder="Front">' +
+    '<span class="fc-card-item-sep">&rarr;</span>' +
+    '<input type="text" id="editBack' + i + '" class="fc-card-edit-input" value="' + escHtml(c.back).replace(/"/g, '&quot;') + '" placeholder="Back">' +
+    '</div>' +
+    '<div class="fc-card-edit-actions">' +
+    '<button class="fc-btn sm primary" onclick="saveCardEdit(' + i + ')">Save</button>' +
+    '<button class="fc-btn sm" onclick="cancelCardEdit()">Cancel</button>' +
+    '</div></div>';
+  document.getElementById('editFront' + i).focus();
+}
+
+function saveCardEdit(i) {
+  var deck = getDeck();
+  if (!deck) return;
+  var front = document.getElementById('editFront' + i).value.trim();
+  var back = document.getElementById('editBack' + i).value.trim();
+  if (!front || !back) return;
+  deck.cards[i].front = front;
+  deck.cards[i].back = back;
+  save(); renderCards(); updateStats();
+}
+
+function cancelCardEdit() {
+  renderCards();
 }
 
 function toggleBulk() {
@@ -779,7 +823,7 @@ function checkQuiz() {
   var answer = document.getElementById('quizAnswer').value.trim().toLowerCase();
   if (!answer) return;
   var correct = card.back.toLowerCase();
-  var isCorrect = answer === correct || (correct.includes(answer) && answer.length > 2);
+  var isCorrect = answer === correct || (correct.includes(answer) && answer.length >= Math.ceil(correct.length * 0.8));
   var deck = getDeck();
   var idx = state.studyOrder[state.studyIndex % state.studyOrder.length];
   var fb = document.getElementById('quizFeedback');
@@ -799,9 +843,20 @@ function checkQuiz() {
 }
 
 /* ── Match mode ── */
+function setMatchPairCount(n) {
+  state.matchPairCount = n;
+  save();
+  startStudy();
+}
+
 function renderMatch(area, controls, deck) {
-  var count = Math.min(6, deck.cards.length);
-  var cards = deck.cards.slice(0, count);
+  var count = Math.min(state.matchPairCount, deck.cards.length);
+  var shuffled = deck.cards.slice();
+  for (var s = shuffled.length - 1; s > 0; s--) {
+    var r = Math.floor(Math.random() * (s + 1));
+    var t = shuffled[s]; shuffled[s] = shuffled[r]; shuffled[r] = t;
+  }
+  var cards = shuffled.slice(0, count);
   var terms = cards.map(function(c, i) { return { text: c.front, id: i }; });
   var defs = cards.map(function(c, i) { return { text: c.back, id: i }; });
   // Shuffle defs
@@ -810,7 +865,15 @@ function renderMatch(area, controls, deck) {
     var tmp = defs[i]; defs[i] = defs[j]; defs[j] = tmp;
   }
   matchState = { selected: null, matched: 0, total: count };
-  area.innerHTML =
+  var pairOptions = [4, 6, 8, 10];
+  var pairBtns = '<div class="fc-match-pair-selector"><span class="fc-match-pair-label">Pairs:</span>';
+  pairOptions.forEach(function(n) {
+    var active = state.matchPairCount === n ? ' active' : '';
+    var disabled = n > deck.cards.length ? ' disabled' : '';
+    pairBtns += '<button class="fc-match-pair-btn' + active + '"' + disabled + ' onclick="setMatchPairCount(' + n + ')">' + n + '</button>';
+  });
+  pairBtns += '</div>';
+  area.innerHTML = pairBtns +
     '<div class="fc-match-score" id="matchScore">Matched: 0 / ' + count + '</div>' +
     '<div class="fc-match-grid">' +
     '<div class="fc-match-col"><div class="fc-match-col-label">Terms</div>' +
