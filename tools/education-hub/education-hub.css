@@ -1,0 +1,173 @@
+/* ── Education Hub ── */
+:root {
+  --eh-accent: #7c3aed;
+  --eh-accent-light: #ede9fe;
+  --eh-green: #16a34a;
+  --eh-dark: #0f1419;
+}
+
+.eh-hero {
+  background: linear-gradient(135deg, #3b0764 0%, #7c3aed 50%, #6d28d9 100%);
+  padding: 44px 0 36px;
+}
+.eh-hero-inner {
+  max-width: 1100px; margin: 0 auto; padding: 0 24px;
+}
+.eh-hero h1 {
+  font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; color: #fff;
+  letter-spacing: -.02em; line-height: 1.1; margin-bottom: 10px;
+}
+.eh-hero h1 em { color: #c4b5fd; font-style: normal; }
+.eh-hero .sub {
+  font-size: .88rem; color: rgba(255,255,255,.45); line-height: 1.6; max-width: 560px;
+}
+
+/* ── Progress Tracker ── */
+.eh-main { padding: 28px 0 72px; }
+.eh-inner { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+.eh-progress {
+  display: flex; gap: 0; margin-bottom: 28px;
+  background: #fff; border: 1px solid #e2e8f0; border-radius: 10px;
+  overflow: hidden; box-shadow: 0 1px 8px rgba(0,0,0,.05);
+}
+.eh-step {
+  flex: 1; padding: 18px 16px; text-align: center; position: relative;
+  border-right: 1px solid #f1f5f9; text-decoration: none; color: inherit;
+  transition: background .2s;
+}
+.eh-step:last-child { border-right: none; }
+.eh-step:hover { background: #f8fafc; }
+.eh-step .num {
+  width: 32px; height: 32px; border-radius: 50%; display: inline-flex;
+  align-items: center; justify-content: center; font-size: .78rem;
+  font-weight: 800; margin-bottom: 8px;
+  background: #f1f5f9; color: #94a3b8;
+}
+.eh-step.done .num { background: #dcfce7; color: var(--eh-green); }
+.eh-step.active .num { background: var(--eh-accent); color: #fff; }
+.eh-step .label {
+  display: block; font-size: .74rem; font-weight: 700; color: var(--eh-dark);
+}
+.eh-step .val {
+  display: block; font-size: .82rem; font-weight: 800; color: var(--eh-accent);
+  margin-top: 4px;
+}
+.eh-step .val.empty { color: #94a3b8; font-weight: 500; font-style: italic; }
+.eh-step .check {
+  position: absolute; top: 8px; right: 10px; font-size: .72rem; color: var(--eh-green);
+}
+
+/* ── Grid ── */
+.eh-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 18px;
+}
+
+/* ── Cards ── */
+.eh-card {
+  background: #fff; border: 1px solid #e2e8f0; border-radius: 10px;
+  overflow: hidden; box-shadow: 0 1px 8px rgba(0,0,0,.05);
+}
+.eh-card-head {
+  padding: 14px 20px; border-bottom: 1px solid #f1f5f9; background: #f8fafc;
+  font-size: .72rem; font-weight: 700; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--eh-dark);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.eh-card-body { padding: 20px; }
+
+/* Profile summary */
+.eh-profile-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;
+}
+.eh-stat {
+  text-align: center; padding: 14px 8px;
+  background: #f8fafc; border-radius: 8px;
+}
+.eh-stat .icon { font-size: 1.2rem; margin-bottom: 4px; }
+.eh-stat .val {
+  font-size: 1.1rem; font-weight: 800; color: var(--eh-dark);
+}
+.eh-stat .val.empty { color: #cbd5e1; font-size: .82rem; font-weight: 500; }
+.eh-stat .lbl {
+  font-size: .66rem; font-weight: 600; color: #94a3b8;
+  text-transform: uppercase; letter-spacing: .06em; margin-top: 2px;
+}
+
+/* Scholarship list in hub */
+.eh-sch-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 0; border-bottom: 1px solid #f1f5f9;
+}
+.eh-sch-item:last-child { border-bottom: none; }
+.eh-sch-score {
+  min-width: 48px; height: 48px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .78rem; font-weight: 800; flex-shrink: 0;
+}
+.eh-sch-score.match-strong { background: #dcfce7; color: #16a34a; }
+.eh-sch-score.match-good { background: #dbeafe; color: #2563eb; }
+.eh-sch-score.match-possible { background: #fef9c3; color: #a16207; }
+.eh-sch-score.match-unlikely { background: #fee2e2; color: #dc2626; }
+.eh-sch-info { flex: 1; min-width: 0; }
+.eh-sch-name {
+  font-size: .82rem; font-weight: 700; color: var(--eh-dark);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.eh-sch-provider {
+  font-size: .68rem; color: #64748b; margin-top: 2px;
+}
+.eh-sch-badge {
+  padding: 3px 8px; border-radius: 4px; font-size: .62rem;
+  font-weight: 800; flex-shrink: 0;
+}
+.eh-sch-badge.full { background: #dcfce7; color: #16a34a; }
+.eh-sch-badge.partial { background: #fef9c3; color: #a16207; }
+
+/* Tool cards */
+.eh-tools {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+}
+.eh-tool-link {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px; background: #f8fafc; border-radius: 8px;
+  text-decoration: none; color: inherit; transition: all .2s;
+  border: 1px solid transparent;
+}
+.eh-tool-link:hover {
+  border-color: var(--eh-accent); background: var(--eh-accent-light);
+}
+.eh-tool-link .icon { font-size: 1.4rem; }
+.eh-tool-link .name {
+  font-size: .78rem; font-weight: 700; color: var(--eh-dark);
+}
+.eh-tool-link .desc {
+  font-size: .68rem; color: #64748b; margin-top: 2px;
+}
+
+/* Login CTA */
+.eh-login-cta {
+  text-align: center; padding: 24px; color: #64748b; font-size: .82rem;
+}
+.eh-login-cta a {
+  color: var(--eh-accent); font-weight: 700; text-decoration: none;
+}
+.eh-login-cta a:hover { text-decoration: underline; }
+
+/* Empty state */
+.eh-empty {
+  text-align: center; padding: 24px; color: #94a3b8; font-size: .82rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .eh-grid { grid-template-columns: 1fr; }
+  .eh-progress { flex-direction: column; }
+  .eh-step { border-right: none; border-bottom: 1px solid #f1f5f9; padding: 14px 16px; text-align: left; display: flex; align-items: center; gap: 12px; }
+  .eh-step .num { margin-bottom: 0; }
+  .eh-profile-grid { grid-template-columns: 1fr 1fr 1fr; }
+  .eh-tools { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+  .eh-profile-grid { grid-template-columns: 1fr; }
+}

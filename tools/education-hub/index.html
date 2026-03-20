@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'education-hub'});</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Education Hub | AfroTools</title>
+<meta name="description" content="Your complete education journey — GPA calculator, JAMB aggregate, IELTS scores, and personalized scholarship matching for African students.">
+<link rel="canonical" href="https://afrotools.com/tools/education-hub/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Education Hub | AfroTools"><meta property="og:description" content="Your complete education journey with personalized scholarship matching.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png"><meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/education-hub/">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css"><link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="education-hub.css">
+<script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script>
+<script src="/assets/js/supabase-auth.js" defer></script>
+<script src="/assets/js/edu-profile-sync.js" defer></script>
+<script src="/engines/scholarship-matcher.js" defer></script>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<section class="eh-hero"><div class="eh-hero-inner">
+<div style="font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px"><a href="/" style="color:inherit;text-decoration:none">Home</a> / <a href="/education/" style="color:inherit;text-decoration:none">Education</a> / <span style="color:#c4b5fd">Education Hub</span></div>
+<h1>Your <em>Education</em> Journey</h1>
+<p class="sub">Track your academic profile, calculate scores, and discover scholarships matched to your qualifications — all in one place.</p>
+</div></section>
+
+<section class="eh-main"><div class="eh-inner">
+
+<!-- Progress Tracker -->
+<div class="eh-progress" id="progressTracker">
+  <a class="eh-step" href="/tools/gpa-calculator/" id="stepGPA">
+    <span class="num">1</span>
+    <div>
+      <span class="label">Calculate GPA</span>
+      <span class="val empty" id="valGPA">Not set</span>
+    </div>
+  </a>
+  <a class="eh-step" href="/tools/jamb-aggregate/" id="stepJAMB">
+    <span class="num">2</span>
+    <div>
+      <span class="label">JAMB Aggregate</span>
+      <span class="val empty" id="valJAMB">Not set</span>
+    </div>
+  </a>
+  <a class="eh-step" href="/tools/ielts-calculator/" id="stepIELTS">
+    <span class="num">3</span>
+    <div>
+      <span class="label">IELTS / TOEFL</span>
+      <span class="val empty" id="valIELTS">Not set</span>
+    </div>
+  </a>
+  <a class="eh-step active" href="/tools/scholarship-finder/" id="stepScholar">
+    <span class="num">4</span>
+    <div>
+      <span class="label">Find Scholarships</span>
+      <span class="val empty" id="valScholar">Browse all</span>
+    </div>
+  </a>
+</div>
+
+<div class="eh-grid">
+  <!-- Left column -->
+  <div>
+    <!-- Profile Summary -->
+    <div class="eh-card">
+      <div class="eh-card-head">
+        <span>Your Academic Profile</span>
+        <a href="/tools/scholarship-finder/" style="font-size:.68rem;font-weight:700;color:#7c3aed;text-decoration:none">See Matches &rarr;</a>
+      </div>
+      <div class="eh-card-body" id="profileBody">
+        <div id="profileLoggedIn" style="display:none">
+          <div class="eh-profile-grid">
+            <div class="eh-stat">
+              <div class="icon">&#x1F4CA;</div>
+              <div class="val" id="dispGPA">—</div>
+              <div class="lbl">GPA</div>
+            </div>
+            <div class="eh-stat">
+              <div class="icon">&#x1F5E3;</div>
+              <div class="val" id="dispIELTS">—</div>
+              <div class="lbl">IELTS</div>
+            </div>
+            <div class="eh-stat">
+              <div class="icon">&#x1F3AF;</div>
+              <div class="val" id="dispJAMB">—</div>
+              <div class="lbl">JAMB</div>
+            </div>
+          </div>
+          <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap" id="profileTags"></div>
+        </div>
+        <div id="profileLoggedOut">
+          <div class="eh-login-cta">
+            <p>Sign in to save your academic profile and get personalized scholarship recommendations.</p>
+            <p style="margin-top:10px"><a href="#" onclick="if(typeof AfroAuthModal!=='undefined')AfroAuthModal.open();return false;">Sign in</a> to get started</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Top Scholarships -->
+    <div class="eh-card" style="margin-top:18px">
+      <div class="eh-card-head">
+        <span>Recommended Scholarships</span>
+        <a href="/tools/scholarship-finder/" style="font-size:.68rem;font-weight:700;color:#7c3aed;text-decoration:none">View All &rarr;</a>
+      </div>
+      <div class="eh-card-body" id="scholarshipsBody">
+        <div class="eh-empty" id="scholarshipsEmpty">
+          Complete your academic profile to see personalized scholarship recommendations.
+        </div>
+        <div id="scholarshipsList" style="display:none"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right column -->
+  <div>
+    <!-- Education Tools -->
+    <div class="eh-card">
+      <div class="eh-card-head"><span>Education Tools</span></div>
+      <div class="eh-card-body">
+        <div class="eh-tools">
+          <a class="eh-tool-link" href="/tools/gpa-calculator/">
+            <span class="icon">&#x1F4CA;</span>
+            <div>
+              <div class="name">GPA / CGPA Calculator</div>
+              <div class="desc">9 African grading systems, converter, what-if analysis</div>
+            </div>
+          </a>
+          <a class="eh-tool-link" href="/tools/jamb-aggregate/">
+            <span class="icon">&#x1F393;</span>
+            <div>
+              <div class="name">JAMB Aggregate Calculator</div>
+              <div class="desc">5 university formulas, 22+ cutoff comparisons</div>
+            </div>
+          </a>
+          <a class="eh-tool-link" href="/tools/ielts-calculator/">
+            <span class="icon">&#x1F5E3;</span>
+            <div>
+              <div class="name">IELTS / TOEFL Calculator</div>
+              <div class="desc">Band scores, TOEFL equivalent, visa requirements</div>
+            </div>
+          </a>
+          <a class="eh-tool-link" href="/tools/scholarship-finder/">
+            <span class="icon">&#x1F3C6;</span>
+            <div>
+              <div class="name">Scholarship Finder</div>
+              <div class="desc">120+ scholarships with personalized match scoring</div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tips -->
+    <div class="eh-card" style="margin-top:18px">
+      <div class="eh-card-head"><span>Scholarship Tips</span></div>
+      <div class="eh-card-body" style="font-size:.78rem;color:#475569;line-height:1.7">
+        <p style="margin-bottom:10px"><strong>1. Start early.</strong> Most major scholarships have deadlines 9-12 months before the start date.</p>
+        <p style="margin-bottom:10px"><strong>2. Apply widely.</strong> Target 5-10 scholarships that match your profile. Don't put all eggs in one basket.</p>
+        <p style="margin-bottom:10px"><strong>3. Tell your story.</strong> Focus on leadership, community impact, and how you'll use education to contribute to Africa.</p>
+        <p style="margin-bottom:10px"><strong>4. Meet minimums.</strong> If a scholarship requires IELTS 6.5 and you have 6.0, take the test again before applying.</p>
+        <p><strong>5. Use our tools.</strong> Calculate your GPA accurately, check your IELTS band, and use match scoring to find your best-fit scholarships.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div></section>
+
+<afro-related-tools category="education" current="education-hub"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+(function () {
+  'use strict';
+
+  var profile = null;
+
+  function init() {
+    // Wait for auth to be ready
+    setTimeout(loadProfile, 500);
+  }
+
+  function loadProfile() {
+    if (typeof EduProfileSync === 'undefined' || typeof EduProfileSync.getProfile !== 'function') {
+      // Not logged in or auth not loaded
+      document.getElementById('profileLoggedOut').style.display = '';
+      document.getElementById('profileLoggedIn').style.display = 'none';
+      return;
+    }
+
+    EduProfileSync.getProfile().then(function (p) {
+      if (!p) {
+        document.getElementById('profileLoggedOut').style.display = '';
+        document.getElementById('profileLoggedIn').style.display = 'none';
+        return;
+      }
+
+      profile = p;
+      document.getElementById('profileLoggedOut').style.display = 'none';
+      document.getElementById('profileLoggedIn').style.display = '';
+
+      // Fill profile display
+      var gpaEl = document.getElementById('dispGPA');
+      var ieltsEl = document.getElementById('dispIELTS');
+      var jambEl = document.getElementById('dispJAMB');
+
+      if (p.gpa_value) {
+        gpaEl.textContent = parseFloat(p.gpa_value).toFixed(2) + (p.gpa_scale ? ' / ' + p.gpa_scale : '');
+        gpaEl.classList.remove('empty');
+        markStep('stepGPA', 'valGPA', gpaEl.textContent);
+      }
+      if (p.ielts_overall) {
+        ieltsEl.textContent = parseFloat(p.ielts_overall).toFixed(1);
+        ieltsEl.classList.remove('empty');
+        markStep('stepIELTS', 'valIELTS', ieltsEl.textContent);
+      }
+      if (p.jamb_score) {
+        jambEl.textContent = p.jamb_score;
+        jambEl.classList.remove('empty');
+        markStep('stepJAMB', 'valJAMB', String(p.jamb_score));
+      }
+
+      // Tags
+      var tags = '';
+      if (p.target_study_level) tags += '<span style="display:inline-block;padding:3px 10px;border-radius:4px;font-size:.66rem;font-weight:700;background:#f5f3ff;color:#7c3aed">' + p.target_study_level + '</span>';
+      if (p.institution) tags += '<span style="display:inline-block;padding:3px 10px;border-radius:4px;font-size:.66rem;font-weight:700;background:#f1f5f9;color:#475569">' + p.institution + '</span>';
+      if (p.target_countries && p.target_countries.length) {
+        p.target_countries.forEach(function (c) {
+          tags += '<span style="display:inline-block;padding:3px 10px;border-radius:4px;font-size:.66rem;font-weight:700;background:#dbeafe;color:#2563eb">' + c + '</span>';
+        });
+      }
+      document.getElementById('profileTags').innerHTML = tags;
+
+      // Load scholarships if we have profile data
+      if (p.gpa_value || p.ielts_overall || p.target_study_level) {
+        loadRecommendedScholarships();
+      }
+    });
+  }
+
+  function markStep(stepId, valId, value) {
+    var step = document.getElementById(stepId);
+    var val = document.getElementById(valId);
+    if (step) {
+      step.classList.add('done');
+      step.classList.remove('active');
+    }
+    if (val) {
+      val.textContent = value;
+      val.classList.remove('empty');
+    }
+  }
+
+  function loadRecommendedScholarships() {
+    fetch('/api/scholarships')
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        if (!data.scholarships || !data.scholarships.length) return;
+
+        var studentData = {
+          gpa_value: profile.gpa_value,
+          gpa_scale: profile.gpa_scale,
+          ielts_overall: profile.ielts_overall,
+          target_study_level: profile.target_study_level,
+          target_countries: profile.target_countries || [],
+          target_fields: profile.target_fields || []
+        };
+
+        if (typeof ScholarshipMatcher === 'undefined') return;
+
+        var matches = ScholarshipMatcher.match(data.scholarships, studentData);
+        if (!matches.length) return;
+
+        // Show top 5
+        var top5 = matches.slice(0, 5);
+        var html = '';
+        top5.forEach(function (m) {
+          var s = m.scholarship;
+          var fundClass = s.funding === 'full' ? 'full' : 'partial';
+          var fundLabel = s.funding === 'full' ? 'FULL' : 'PARTIAL';
+          html += '<div class="eh-sch-item">' +
+            '<div class="eh-sch-score ' + m.categoryClass + '">' + m.percent + '%</div>' +
+            '<div class="eh-sch-info">' +
+              '<div class="eh-sch-name">' + s.name + '</div>' +
+              '<div class="eh-sch-provider">' + s.provider + '</div>' +
+            '</div>' +
+            '<span class="eh-sch-badge ' + fundClass + '">' + fundLabel + '</span>' +
+          '</div>';
+        });
+
+        document.getElementById('scholarshipsEmpty').style.display = 'none';
+        var list = document.getElementById('scholarshipsList');
+        list.innerHTML = html;
+        list.style.display = '';
+
+        // Update scholarship step
+        document.getElementById('valScholar').textContent = matches.filter(function (m) { return m.percent >= 60; }).length + ' good matches';
+        document.getElementById('valScholar').classList.remove('empty');
+      })
+      .catch(function () { });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>

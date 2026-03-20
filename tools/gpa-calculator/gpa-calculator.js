@@ -516,6 +516,14 @@
       system: state.system,
       courses: grandTotalCredits > 0 ? state.semesters.reduce(function (n, s) { return n + s.courses.length; }, 0) : 0
     });
+
+    // Sync GPA to education profile
+    if (typeof EduProfileSync !== 'undefined' && cgpa > 0) {
+      EduProfileSync.update({
+        gpa_value: parseFloat(cgpa.toFixed(2)),
+        gpa_scale: String(sys.scale)
+      });
+    }
   }
 
   function getCoursePoints(grade, sys) {
@@ -556,15 +564,15 @@
     if (badge) {
       if (cls) {
         badge.textContent = (cls.icon || '') + ' ' + cls.name;
-        badge.style.background = hexToRgba(cls.color, 0.15);
+        badge.style.background = hexToRgba(cls.color, 0.1);
         badge.style.color = cls.color;
       } else if (totalCredits > 0) {
         badge.textContent = 'Calculating...';
-        badge.style.background = 'rgba(148,163,184,0.1)';
+        badge.style.background = 'rgba(148,163,184,0.08)';
         badge.style.color = 'var(--gpa-text-muted)';
       } else {
         badge.textContent = 'Enter grades to see your class';
-        badge.style.background = 'rgba(148,163,184,0.1)';
+        badge.style.background = 'rgba(148,163,184,0.08)';
         badge.style.color = 'var(--gpa-text-muted)';
       }
     }
@@ -618,11 +626,11 @@
 
     // Color based on ratio
     var color;
-    if (ratio >= 0.9) color = '#00C9A7';
+    if (ratio >= 0.9) color = '#059669';
     else if (ratio >= 0.7) color = '#10B981';
-    else if (ratio >= 0.5) color = '#F59E0B';
-    else if (ratio >= 0.3) color = '#F97316';
-    else color = '#EF4444';
+    else if (ratio >= 0.5) color = '#D97706';
+    else if (ratio >= 0.3) color = '#EA580C';
+    else color = '#DC2626';
 
     fill.style.stroke = color;
   }
@@ -721,11 +729,11 @@
     if (gpaEl) gpaEl.textContent = cgpa.toFixed(2);
     if (classEl && cls) {
       classEl.textContent = cls.name;
-      classEl.style.background = hexToRgba(cls.color, 0.15);
+      classEl.style.background = hexToRgba(cls.color, 0.1);
       classEl.style.color = cls.color;
     } else if (classEl) {
       classEl.textContent = '\u2014';
-      classEl.style.background = 'rgba(148,163,184,0.1)';
+      classEl.style.background = 'rgba(148,163,184,0.08)';
       classEl.style.color = 'var(--gpa-text-muted)';
     }
   }
@@ -793,6 +801,58 @@
     });
   })();
 
+  // Try to normalize a grade string to match the current grading system
+  function normalizeGrade(gradeStr, sys) {
+    if (!gradeStr) return '';
+    gradeStr = gradeStr.trim();
+
+    // For percentage/score systems, just return the numeric value
+    if (sys && (sys.inputType === 'percentage' || sys.inputType === 'score')) {
+      var num = parseFloat(gradeStr.replace('%', ''));
+      return isNaN(num) ? '' : String(num);
+    }
+
+    // For letter grade systems, try matching
+    if (!sys || !sys.grades) return gradeStr;
+
+    // Direct match (case-sensitive)
+    if (sys.grades[gradeStr]) return gradeStr;
+
+    // Case-insensitive match
+    var upper = gradeStr.toUpperCase();
+    for (var g in sys.grades) {
+      if (sys.grades.hasOwnProperty(g) && g.toUpperCase() === upper) return g;
+    }
+
+    // Try without spaces
+    var cleaned = upper.replace(/\s/g, '');
+    for (var g2 in sys.grades) {
+      if (sys.grades.hasOwnProperty(g2) && g2.toUpperCase().replace(/\s/g, '') === cleaned) return g2;
+    }
+
+    // If it looks like a percentage, try to map it to a letter grade
+    var pctVal = parseFloat(gradeStr.replace('%', ''));
+    if (!isNaN(pctVal) && pctVal >= 0 && pctVal <= 100) {
+      for (var g3 in sys.grades) {
+        if (sys.grades.hasOwnProperty(g3)) {
+          var info = sys.grades[g3];
+          if (pctVal >= info.min && pctVal <= info.max) return g3;
+        }
+      }
+    }
+
+    return gradeStr; // return as-is, will show as invalid
+  }
+
+  function isValidGrade(grade, sys) {
+    if (!grade || !sys) return false;
+    if (sys.inputType === 'percentage' || sys.inputType === 'score') {
+      var val = parseFloat(grade);
+      return !isNaN(val) && val >= 0 && val <= sys.scale;
+    }
+    return sys.grades && sys.grades.hasOwnProperty(grade);
+  }
+
   function parseTranscript() {
     var text = ($('transcriptText') || {}).value || '';
     if (!text.trim()) {
@@ -800,43 +860,101 @@
       return;
     }
 
+    var sys = getSystem();
     var courses = [];
     var lines = text.split('\n');
     lines.forEach(function (line) {
       line = line.trim();
       if (!line) return;
 
-      // Try various formats
-      // Tab-separated: "ENG 101\tEngineering Mathematics I\t3\tA"
-      var parts = line.split('\t');
-      if (parts.length >= 3) {
-        var name = parts.length >= 4 ? parts[0] + ' ' + parts[1] : parts[0];
-        var credits = parts.length >= 4 ? parts[2] : parts[1];
-        var grade = parts.length >= 4 ? parts[3] : parts[2];
-        courses.push({ name: name.trim(), credits: credits.trim(), grade: grade.trim() });
-        return;
+      // Skip header-like lines
+      if (/^(course|subject|code|name|credit|grade|unit|score)/i.test(line)) return;
+      if (/^[-=]+$/.test(line)) return;
+
+      var parsed = null;
+
+      // Tab-separated: "ENG 101\tEngineering Mathematics I\t3\tA" or "Course Name\t3\tA"
+      var tabParts = line.split('\t');
+      if (tabParts.length >= 3) {
+        if (tabParts.length >= 4) {
+          parsed = { name: (tabParts[0] + ' ' + tabParts[1]).trim(), credits: tabParts[2].trim(), grade: tabParts[3].trim() };
+        } else {
+          parsed = { name: tabParts[0].trim(), credits: tabParts[1].trim(), grade: tabParts[2].trim() };
+        }
       }
 
       // Comma-separated
-      parts = line.split(',');
-      if (parts.length >= 3) {
-        courses.push({ name: parts[0].trim(), credits: parts[1].trim(), grade: parts[2].trim() });
-        return;
+      if (!parsed) {
+        var commaParts = line.split(',').map(function(p) { return p.trim().replace(/^["']|["']$/g, ''); });
+        if (commaParts.length >= 3 && commaParts[0]) {
+          // Handle "Code, Name, Credits, Grade" (4 cols) or "Name, Credits, Grade" (3 cols)
+          if (commaParts.length >= 4 && !isNaN(parseFloat(commaParts[2]))) {
+            parsed = { name: (commaParts[0] + ' ' + commaParts[1]).trim(), credits: commaParts[2].trim(), grade: commaParts[3].trim() };
+          } else {
+            parsed = { name: commaParts[0].trim(), credits: commaParts[1].trim(), grade: commaParts[2].trim() };
+          }
+        }
       }
 
-      // Space-separated with regex: "Course Name 3 A"
-      var match = line.match(/^(.+?)\s+(\d+(?:\.\d+)?)\s+([A-Fa-f][+-]?|[\d.]+%?)$/);
-      if (match) {
-        courses.push({ name: match[1].trim(), credits: match[2], grade: match[3].trim() });
+      // Pipe-separated: "Course Name | 3 | A"
+      if (!parsed && line.indexOf('|') !== -1) {
+        var pipeParts = line.split('|').map(function(p) { return p.trim(); });
+        if (pipeParts.length >= 3) {
+          parsed = { name: pipeParts[0], credits: pipeParts[1], grade: pipeParts[2] };
+        }
+      }
+
+      // Space-separated with regex: "Course Name 3 A" or "ENG 101 Engineering Mathematics 3 B+"
+      if (!parsed) {
+        var match = line.match(/^(.+?)\s+(\d+(?:\.\d+)?)\s+([A-Fa-f][+-]?|[\d.]+%?)$/);
+        if (match) {
+          parsed = { name: match[1].trim(), credits: match[2], grade: match[3].trim() };
+        }
+      }
+
+      if (parsed) {
+        // Clean up credits
+        var cr = parseFloat(parsed.credits);
+        if (isNaN(cr) || cr <= 0 || cr > 30) return;
+        parsed.credits = String(cr);
+
+        // Normalize grade
+        parsed.grade = normalizeGrade(parsed.grade, sys);
+
+        courses.push(parsed);
       }
     });
 
     if (courses.length === 0) {
-      showToast('No courses found. Try format: "Course Name, 3, A" or "Course Name\\t3\\tA"');
+      showToast('No courses found. Try format: "Course Name, 3, A" or tab-separated.');
       return;
     }
 
     renderTranscriptPreview(courses, 'transcriptPreview');
+  }
+
+  function parseCsvLine(line) {
+    var fields = [];
+    var current = '';
+    var inQuotes = false;
+    for (var i = 0; i < line.length; i++) {
+      var ch = line[i];
+      if (ch === '"') {
+        if (inQuotes && i + 1 < line.length && line[i + 1] === '"') {
+          current += '"';
+          i++;
+        } else {
+          inQuotes = !inQuotes;
+        }
+      } else if (ch === ',' && !inQuotes) {
+        fields.push(current.trim());
+        current = '';
+      } else {
+        current += ch;
+      }
+    }
+    fields.push(current.trim());
+    return fields;
   }
 
   function handleCsvFile(file) {
@@ -847,16 +965,75 @@
 
     var reader = new FileReader();
     reader.onload = function (e) {
-      var lines = e.target.result.split('\n');
+      var sys = getSystem();
+      var lines = e.target.result.split(/\r?\n/);
       var courses = [];
-      for (var i = 1; i < lines.length; i++) {
-        var parts = lines[i].split(',').map(function (p) { return p.trim(); });
-        if (parts.length >= 3 && parts[0]) {
-          courses.push({ name: parts[0], credits: parts[1], grade: parts[2] });
-        }
+
+      // Detect header
+      var headerLine = lines[0] || '';
+      var headers = parseCsvLine(headerLine.toLowerCase());
+      var nameCol = -1, creditCol = -1, gradeCol = -1, codeCol = -1, semesterCol = -1;
+
+      headers.forEach(function(h, i) {
+        h = h.replace(/^["']|["']$/g, '').trim();
+        if (/^(course\s*name|name|subject|title)$/i.test(h)) nameCol = i;
+        else if (/^(course\s*code|code|id)$/i.test(h)) codeCol = i;
+        else if (/^(credit|credits|units?|credit\s*units?|hours?)$/i.test(h)) creditCol = i;
+        else if (/^(grade|score|mark|result)$/i.test(h)) gradeCol = i;
+        else if (/^(semester|sem|term|level)$/i.test(h)) semesterCol = i;
+      });
+
+      // If no headers detected, assume: Name/Code, Credits, Grade (or Code, Name, Credits, Grade)
+      var startRow = 1;
+      if (nameCol === -1 && creditCol === -1 && gradeCol === -1) {
+        startRow = 0; // No header row
       }
+
+      for (var i = startRow; i < lines.length; i++) {
+        var line = lines[i].trim();
+        if (!line) continue;
+
+        var parts = parseCsvLine(line);
+        if (parts.length < 3) continue;
+
+        var name, credits, grade;
+
+        if (nameCol !== -1 || creditCol !== -1 || gradeCol !== -1) {
+          // Use detected column mapping
+          var codePart = codeCol !== -1 && parts[codeCol] ? parts[codeCol] : '';
+          var namePart = nameCol !== -1 && parts[nameCol] ? parts[nameCol] : '';
+          name = codePart ? (codePart + ' ' + namePart).trim() : namePart;
+          credits = creditCol !== -1 ? parts[creditCol] : parts[1];
+          grade = gradeCol !== -1 ? parts[gradeCol] : parts[parts.length - 1];
+        } else {
+          // Fallback: try to detect layout
+          if (parts.length >= 4 && !isNaN(parseFloat(parts[2]))) {
+            // Code, Name, Credits, Grade
+            name = (parts[0] + ' ' + parts[1]).trim();
+            credits = parts[2];
+            grade = parts[3];
+          } else {
+            // Name, Credits, Grade
+            name = parts[0];
+            credits = parts[1];
+            grade = parts[2];
+          }
+        }
+
+        // Clean values
+        name = (name || '').replace(/^["']|["']$/g, '').trim();
+        credits = (credits || '').replace(/^["']|["']$/g, '').trim();
+        grade = (grade || '').replace(/^["']|["']$/g, '').trim();
+
+        var cr = parseFloat(credits);
+        if (!name || isNaN(cr) || cr <= 0 || cr > 30) continue;
+
+        grade = normalizeGrade(grade, sys);
+        courses.push({ name: name, credits: String(cr), grade: grade });
+      }
+
       if (courses.length === 0) {
-        showToast('No valid courses found in CSV');
+        showToast('No valid courses found in CSV. Check format: Course Name, Credits, Grade');
         return;
       }
       renderTranscriptPreview(courses, 'csvPreview');
@@ -867,43 +1044,111 @@
   function renderTranscriptPreview(courses, containerId) {
     var container = $(containerId);
     if (!container) return;
+    var sys = getSystem();
+
+    var validCount = 0;
+    var invalidCount = 0;
+    courses.forEach(function(c) {
+      if (isValidGrade(c.grade, sys)) validCount++;
+      else invalidCount++;
+    });
 
     var html = '<div style="margin-top:16px;">' +
-      '<h3 style="font-size:0.9rem; color:var(--gpa-text); margin-bottom:8px;">Parsed ' + courses.length + ' courses</h3>' +
-      '<table class="gpa-preview-table"><thead><tr><th>Course</th><th>Credits</th><th>Grade</th></tr></thead><tbody>';
+      '<h3 style="font-size:0.9rem; color:var(--gpa-text); margin-bottom:4px;">Parsed ' + courses.length + ' courses</h3>';
+
+    if (invalidCount > 0) {
+      html += '<p style="font-size:0.8rem; color:var(--gpa-error); margin-bottom:8px;">' +
+        invalidCount + ' course(s) have unrecognized grades for the current grading system. They will be imported but you may need to fix the grade.</p>';
+    }
+
+    html += '<table class="gpa-preview-table"><thead><tr><th>Course</th><th>Credits</th><th>Grade</th><th>Status</th></tr></thead><tbody>';
 
     courses.forEach(function (c) {
-      html += '<tr><td>' + escHtml(c.name) + '</td><td>' + escHtml(String(c.credits)) + '</td><td>' + escHtml(c.grade) + '</td></tr>';
+      var valid = isValidGrade(c.grade, sys);
+      var statusHtml = valid
+        ? '<span style="color:var(--gpa-success);">&#x2713;</span>'
+        : '<span style="color:var(--gpa-error);">&#x2717;</span>';
+      html += '<tr><td>' + escHtml(c.name) + '</td><td>' + escHtml(String(c.credits)) + '</td>' +
+        '<td class="' + (valid ? 'grade-valid' : 'grade-invalid') + '">' + escHtml(c.grade || '—') + '</td>' +
+        '<td style="text-align:center;">' + statusHtml + '</td></tr>';
     });
 
     html += '</tbody></table>' +
-      '<button class="gpa-btn gpa-btn-primary" style="margin-top:12px;" id="confirmParsed-' + containerId + '">Add as New Semester</button>' +
-      '</div>';
+      '<div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">' +
+      '<button class="gpa-btn gpa-btn-primary" id="confirmParsed-' + containerId + '">Add as New Semester</button>';
+
+    if (invalidCount > 0) {
+      html += '<button class="gpa-btn gpa-btn-secondary" id="fixGrades-' + containerId + '">Add Valid Only (' + validCount + ')</button>';
+    }
+
+    html += '</div></div>';
 
     container.innerHTML = html;
 
+    // Add all courses
     var confirmBtn = $('confirmParsed-' + containerId);
     if (confirmBtn) {
       confirmBtn.addEventListener('click', function () {
-        var sem = {
-          id: state.semesterCount++,
-          label: 'Imported Semester',
-          courses: courses.map(function (c) {
-            return { name: c.name, credits: c.credits, grade: c.grade };
-          }),
-          collapsed: false
-        };
-        state.semesters.push(sem);
-        renderAllSemesters();
-        saveState();
-        switchTab('tab-semester');
-        showToast('Semester added with ' + courses.length + ' courses!');
+        addParsedSemester(courses);
+      });
+    }
+
+    // Add valid only
+    var fixBtn = $('fixGrades-' + containerId);
+    if (fixBtn) {
+      fixBtn.addEventListener('click', function () {
+        var validCourses = courses.filter(function(c) { return isValidGrade(c.grade, sys); });
+        if (validCourses.length === 0) {
+          showToast('No valid courses to add.');
+          return;
+        }
+        addParsedSemester(validCourses);
       });
     }
   }
 
+  function addParsedSemester(courses) {
+    var sem = {
+      id: state.semesterCount++,
+      label: 'Imported Semester',
+      courses: courses.map(function (c) {
+        return { name: c.name, credits: c.credits, grade: c.grade };
+      }),
+      collapsed: false
+    };
+    state.semesters.push(sem);
+    renderAllSemesters();
+    saveState();
+    switchTab('tab-semester');
+    showToast('Semester added with ' + courses.length + ' courses!');
+  }
+
   function downloadSampleCsv() {
-    var csv = 'Course Name,Credits,Grade\nEngineering Mathematics I,3,A\nEngineering Physics,3,B+\nEngineering Drawing,2,A\nWorkshop Practice,1,B\nGeneral English,2,A';
+    var sys = getSystem();
+    var csv;
+
+    if (sys && (sys.inputType === 'percentage' || sys.inputType === 'score')) {
+      var maxLabel = sys.inputType === 'score' ? '/20' : '%';
+      csv = 'Course Name,Credits,Grade\n' +
+        'Engineering Mathematics I,3,78\n' +
+        'Engineering Physics,3,65\n' +
+        'Engineering Drawing,2,82\n' +
+        'Workshop Practice,1,71\n' +
+        'General English,2,88';
+    } else if (sys && sys.grades) {
+      // Use actual grades from the system
+      var gradeKeys = Object.keys(sys.grades);
+      var sampleGrades = [gradeKeys[0] || 'A', gradeKeys[1] || 'B', gradeKeys[0] || 'A', gradeKeys[2] || 'B', gradeKeys[0] || 'A'];
+      csv = 'Course Name,Credits,Grade\n' +
+        'Engineering Mathematics I,3,' + sampleGrades[0] + '\n' +
+        'Engineering Physics,3,' + sampleGrades[1] + '\n' +
+        'Engineering Drawing,2,' + sampleGrades[2] + '\n' +
+        'Workshop Practice,1,' + sampleGrades[3] + '\n' +
+        'General English,2,' + sampleGrades[4];
+    } else {
+      csv = 'Course Name,Credits,Grade\nEngineering Mathematics I,3,A\nEngineering Physics,3,B\nEngineering Drawing,2,A\nWorkshop Practice,1,B\nGeneral English,2,A';
+    }
+
     var blob = new Blob([csv], { type: 'text/csv' });
     var url = URL.createObjectURL(blob);
     var a = document.createElement('a');
@@ -914,22 +1159,70 @@
   }
 
   // ─── GPA CONVERTER (TAB 3) ──────────────────────────────────────
+
+  // Conversion tables: define proper non-linear mappings
+  // Each entry maps a normalized ratio (0-1) to specific scale values
+  var CONVERSION_TABLE = [
+    // ratio,   5.0,   4.0,   pct,   /20,   us4.0,  uk-desc
+    { ratio: 1.00, n5: 5.00, n4: 4.00, pct: 95, fr: 19, us: 4.00, uk: 'First Class' },
+    { ratio: 0.90, n5: 4.50, n4: 3.60, pct: 85, fr: 17, us: 3.70, uk: 'First Class' },
+    { ratio: 0.80, n5: 4.00, n4: 3.20, pct: 75, fr: 15, us: 3.30, uk: 'Upper Second (2:1)' },
+    { ratio: 0.70, n5: 3.50, n4: 2.80, pct: 65, fr: 13, us: 3.00, uk: 'Upper Second (2:1)' },
+    { ratio: 0.60, n5: 3.00, n4: 2.40, pct: 57, fr: 11, us: 2.50, uk: 'Lower Second (2:2)' },
+    { ratio: 0.50, n5: 2.40, n4: 2.00, pct: 50, fr: 10, us: 2.00, uk: 'Lower Second (2:2)' },
+    { ratio: 0.35, n5: 1.50, n4: 1.50, pct: 45, fr: 8,  us: 1.50, uk: 'Third Class' },
+    { ratio: 0.20, n5: 1.00, n4: 1.00, pct: 40, fr: 6,  us: 1.00, uk: 'Pass' },
+    { ratio: 0.00, n5: 0.00, n4: 0.00, pct: 0,  fr: 0,  us: 0.00, uk: 'Fail' }
+  ];
+
   var CONVERTER_SCALES = [
-    { id: '5.0', label: 'Nigerian Federal (5.0)', max: 5.0 },
-    { id: '4.0', label: 'Nigerian Private / Kenyan / Ghanaian (4.0)', max: 4.0 },
-    { id: 'pct', label: 'Percentage (South African / Egyptian)', max: 100 },
-    { id: '20', label: 'Francophone (/20)', max: 20 },
-    { id: 'us4', label: 'US GPA (4.0)', max: 4.0 },
-    { id: 'uk', label: 'UK Classification', max: 4.0 }
+    { id: '5.0', label: 'Nigerian Federal (5.0)', max: 5.0, key: 'n5' },
+    { id: '4.0', label: 'Nigerian Private / Kenyan / Ghanaian (4.0)', max: 4.0, key: 'n4' },
+    { id: 'pct', label: 'Percentage (South African / Egyptian)', max: 100, key: 'pct' },
+    { id: '20', label: 'Francophone (/20)', max: 20, key: 'fr' },
+    { id: 'us4', label: 'US GPA (4.0)', max: 4.0, key: 'us' },
+    { id: 'uk', label: 'UK Classification', max: 100, key: 'uk' }
   ];
 
   function setupConverterScales() {
-    document.addEventListener('DOMContentLoaded', function () {
-      populateConverterScales();
-      var btn = $('convertBtn');
-      if (btn) btn.addEventListener('click', convertGPA);
-      renderReferenceTable();
+    populateConverterScales();
+    var btn = $('convertBtn');
+    if (btn) btn.addEventListener('click', convertGPA);
+
+    // Auto-convert on input change
+    var fromVal = $('convertFromValue');
+    if (fromVal) fromVal.addEventListener('input', function() { convertGPA(); });
+    var fromSel = $('convertFrom');
+    if (fromSel) fromSel.addEventListener('change', function() {
+      updateConverterPlaceholder();
+      convertGPA();
     });
+    var toSel = $('convertTo');
+    if (toSel) toSel.addEventListener('change', function() { convertGPA(); });
+
+    renderReferenceTable();
+    updateConverterPlaceholder();
+  }
+
+  function updateConverterPlaceholder() {
+    var fromScale = ($('convertFrom') || {}).value;
+    var input = $('convertFromValue');
+    if (!input) return;
+    var scale = CONVERTER_SCALES.find(function(s) { return s.id === fromScale; });
+    if (!scale) return;
+    if (fromScale === 'uk') {
+      input.placeholder = 'e.g. 70';
+      input.step = '1';
+    } else if (fromScale === 'pct') {
+      input.placeholder = 'e.g. 75';
+      input.step = '1';
+    } else if (fromScale === '20') {
+      input.placeholder = 'e.g. 15.5';
+      input.step = '0.5';
+    } else {
+      input.placeholder = 'e.g. ' + (scale.max * 0.8).toFixed(2);
+      input.step = '0.01';
+    }
   }
 
   function populateConverterScales() {
@@ -940,6 +1233,8 @@
     [from, to].forEach(function (sel) {
       sel.innerHTML = '';
       CONVERTER_SCALES.forEach(function (s) {
+        // Skip UK as a "from" option — it's categorical, not numeric
+        if (sel === from && s.id === 'uk') return;
         sel.innerHTML += '<option value="' + s.id + '">' + s.label + '</option>';
       });
     });
@@ -948,38 +1243,87 @@
     to.value = 'us4';
   }
 
+  function interpolateInTable(value, fromKey, toKey) {
+    // Find the two rows that bracket the value
+    for (var i = 0; i < CONVERSION_TABLE.length - 1; i++) {
+      var upper = CONVERSION_TABLE[i];
+      var lower = CONVERSION_TABLE[i + 1];
+      var upperVal = upper[fromKey];
+      var lowerVal = lower[fromKey];
+
+      if (typeof upperVal === 'string' || typeof lowerVal === 'string') continue;
+
+      if (value >= lowerVal && value <= upperVal) {
+        // Linear interpolation between the two rows
+        var range = upperVal - lowerVal;
+        var t = range > 0 ? (value - lowerVal) / range : 0;
+
+        if (typeof upper[toKey] === 'string') {
+          // UK classification — return the string for the bracket
+          return value >= upper[fromKey] ? upper[toKey] : lower[toKey];
+        }
+
+        return lower[toKey] + t * (upper[toKey] - lower[toKey]);
+      }
+    }
+
+    // Value above max or below min
+    if (value >= CONVERSION_TABLE[0][fromKey]) {
+      return CONVERSION_TABLE[0][toKey];
+    }
+    return CONVERSION_TABLE[CONVERSION_TABLE.length - 1][toKey];
+  }
+
   function convertGPA() {
     var fromScale = ($('convertFrom') || {}).value;
     var toScale = ($('convertTo') || {}).value;
     var value = parseFloat(($('convertFromValue') || {}).value);
 
-    if (isNaN(value)) { showToast('Enter a valid GPA or score.'); return; }
+    var output = $('conversionOutput');
+    if (!output) return;
 
-    // Normalize to 0-1 range
-    var fromMax = CONVERTER_SCALES.find(function (s) { return s.id === fromScale; });
-    var toMax = CONVERTER_SCALES.find(function (s) { return s.id === toScale; });
-    if (!fromMax || !toMax) return;
-
-    var normalized = clamp(value / fromMax.max, 0, 1);
-    var converted = normalized * toMax.max;
-
-    // UK classification text
-    var ukClass = '';
-    if (toScale === 'uk') {
-      if (normalized >= 0.9) ukClass = 'First Class';
-      else if (normalized >= 0.7) ukClass = 'Upper Second (2:1)';
-      else if (normalized >= 0.5) ukClass = 'Lower Second (2:2)';
-      else if (normalized >= 0.4) ukClass = 'Third Class';
-      else ukClass = 'Fail';
+    if (isNaN(value)) {
+      output.style.display = 'none';
+      return;
     }
 
-    var output = $('conversionOutput');
-    if (output) {
-      output.style.display = '';
-      output.innerHTML = '<div class="from-val">' + value.toFixed(2) + ' <span style="font-size:0.8rem;color:var(--gpa-text-muted);">' + fromMax.label + '</span></div>' +
+    var fromInfo = CONVERTER_SCALES.find(function (s) { return s.id === fromScale; });
+    var toInfo = CONVERTER_SCALES.find(function (s) { return s.id === toScale; });
+    if (!fromInfo || !toInfo) return;
+
+    // Clamp input
+    value = clamp(value, 0, fromInfo.max);
+
+    // Use table interpolation for accurate conversion
+    var converted = interpolateInTable(value, fromInfo.key, toInfo.key);
+
+    // Get UK classification for any conversion
+    var ukClass = '';
+    if (toScale === 'uk') {
+      ukClass = interpolateInTable(value, fromInfo.key, 'uk');
+    }
+
+    output.style.display = '';
+
+    if (toScale === 'uk') {
+      // Show classification instead of number
+      var ukPct = interpolateInTable(value, fromInfo.key, 'pct');
+      output.innerHTML = '<div class="from-val">' + value.toFixed(2) + ' <span style="font-size:0.8rem;color:var(--gpa-text-muted);">' + fromInfo.label + '</span></div>' +
         '<div style="font-size:1.2rem; color:var(--gpa-accent); margin:8px 0;">\u2192</div>' +
-        '<div class="to-val" style="color:var(--gpa-accent);">' + converted.toFixed(2) + ' <span style="font-size:0.8rem;color:var(--gpa-text-muted);">' + toMax.label + '</span></div>' +
-        (ukClass ? '<div style="margin-top:8px; font-size:0.85rem; color:var(--gpa-amber);">' + ukClass + '</div>' : '');
+        '<div class="to-val" style="color:var(--gpa-accent);">' + ukClass + '</div>' +
+        '<div style="margin-top:6px; font-size:0.82rem; color:var(--gpa-text-secondary);">\u2248 ' + Math.round(ukPct) + '% equivalent</div>';
+    } else {
+      var displayVal = typeof converted === 'number' ? converted.toFixed(2) : converted;
+      var suffix = toScale === 'pct' ? '%' : '';
+      output.innerHTML = '<div class="from-val">' + value.toFixed(2) + ' <span style="font-size:0.8rem;color:var(--gpa-text-muted);">' + fromInfo.label + '</span></div>' +
+        '<div style="font-size:1.2rem; color:var(--gpa-accent); margin:8px 0;">\u2192</div>' +
+        '<div class="to-val" style="color:var(--gpa-accent);">' + displayVal + suffix + ' <span style="font-size:0.8rem;color:var(--gpa-text-muted);">' + toInfo.label + '</span></div>';
+
+      // Also show UK classification for context
+      var ukForContext = interpolateInTable(value, fromInfo.key, 'uk');
+      if (ukForContext && ukForContext !== 'Fail') {
+        output.innerHTML += '<div style="margin-top:6px; font-size:0.82rem; color:var(--gpa-text-secondary);">UK equivalent: ' + ukForContext + '</div>';
+      }
     }
   }
 
@@ -1008,31 +1352,60 @@
 
   // ─── WHAT-IF CALCULATOR (TAB 4) ─────────────────────────────────
   function setupWhatIfModes() {
-    document.addEventListener('DOMContentLoaded', function () {
-      // Mode switcher
-      qsa('.gpa-whatif-mode').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          qsa('.gpa-whatif-mode').forEach(function (b) { b.classList.remove('active'); });
-          qsa('.gpa-whatif-form').forEach(function (f) { f.classList.remove('active'); });
-          this.classList.add('active');
-          var formId = 'whatif-' + this.getAttribute('data-mode');
-          var form = $(formId);
-          if (form) form.classList.add('active');
-        });
+    // Mode switcher
+    qsa('.gpa-whatif-mode').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        qsa('.gpa-whatif-mode').forEach(function (b) { b.classList.remove('active'); });
+        qsa('.gpa-whatif-form').forEach(function (f) { f.classList.remove('active'); });
+        this.classList.add('active');
+        var formId = 'whatif-' + this.getAttribute('data-mode');
+        var form = $(formId);
+        if (form) form.classList.add('active');
       });
-
-      // Buttons
-      var tgBtn = $('calcTargetGpaBtn');
-      if (tgBtn) tgBtn.addEventListener('click', calcTargetGPA);
-
-      var tcBtn = $('calcTargetClassBtn');
-      if (tcBtn) tcBtn.addEventListener('click', calcTargetClass);
-
-      var grBtn = $('calcReplaceBtn');
-      if (grBtn) grBtn.addEventListener('click', calcGradeReplace);
-
-      populateWhatIfClasses();
     });
+
+    // Buttons
+    var tgBtn = $('calcTargetGpaBtn');
+    if (tgBtn) tgBtn.addEventListener('click', calcTargetGPA);
+
+    var tcBtn = $('calcTargetClassBtn');
+    if (tcBtn) tcBtn.addEventListener('click', calcTargetClass);
+
+    var grBtn = $('calcReplaceBtn');
+    if (grBtn) grBtn.addEventListener('click', calcGradeReplace);
+
+    populateWhatIfClasses();
+
+    // Auto-fill current CGPA/credits from calculation state
+    setupWhatIfAutoFill();
+  }
+
+  function setupWhatIfAutoFill() {
+    // Auto-fill when switching to what-if tab
+    var origSwitchTab = switchTab;
+    // We can't override switchTab easily, so use mutation on the tab
+    // Instead, add a click handler to what-if tab that fills in current values
+    var whatifTabBtn = $('tabBtn-whatif');
+    if (whatifTabBtn) {
+      whatifTabBtn.addEventListener('click', function() {
+        autoFillWhatIf();
+      });
+    }
+  }
+
+  function autoFillWhatIf() {
+    if (state.totalCredits > 0) {
+      var fields = [
+        { id: 'wfCurrentCgpa', val: state.cgpa.toFixed(2) },
+        { id: 'wfCurrentCredits', val: state.totalCredits.toFixed(0) },
+        { id: 'wfClassCurrentCgpa', val: state.cgpa.toFixed(2) },
+        { id: 'wfClassCurrentCredits', val: state.totalCredits.toFixed(0) }
+      ];
+      fields.forEach(function(f) {
+        var el = $(f.id);
+        if (el && !el.value) el.value = f.val;
+      });
+    }
   }
 
   function populateWhatIfClasses() {
@@ -1043,7 +1416,7 @@
 
     sel.innerHTML = '<option value="">Select target class</option>';
     sys.classes.forEach(function (c) {
-      if (c.name.toLowerCase() !== 'fail') {
+      if (c.name.toLowerCase() !== 'fail' && c.name.toLowerCase().indexOf('fail') === -1) {
         sel.innerHTML += '<option value="' + c.min + '">' + c.name + ' (' + c.min.toFixed(2) + '+)</option>';
       }
     });
@@ -1055,16 +1428,22 @@
     if (!sel) return;
 
     sel.innerHTML = '<option value="">Select a course</option>';
+    var hasCourses = false;
     state.semesters.forEach(function (sem, sIdx) {
       sem.courses.forEach(function (c, cIdx) {
         if (c.name && c.credits && c.grade) {
+          hasCourses = true;
           sel.innerHTML += '<option value="' + sIdx + '-' + cIdx + '">' +
             escHtml(c.name) + ' (Grade: ' + c.grade + ', ' + c.credits + ' cr)</option>';
         }
       });
     });
 
-    // Populate grade select
+    if (!hasCourses) {
+      sel.innerHTML = '<option value="">Enter courses in Semester GPA tab first</option>';
+    }
+
+    // Populate grade select — handle both letter grade and percentage/score systems
     if (gradeSel) {
       var sys = getSystem();
       gradeSel.innerHTML = '<option value="">Select new grade</option>';
@@ -1074,6 +1453,23 @@
             gradeSel.innerHTML += '<option value="' + g + '">' + g + ' (' + sys.grades[g].points.toFixed(1) + ')</option>';
           }
         }
+      } else if (sys && (sys.inputType === 'percentage' || sys.inputType === 'score')) {
+        // For percentage/score systems, replace the select with an input
+        var parent = gradeSel.parentNode;
+        var label = parent.querySelector('label');
+        if (label) label.setAttribute('for', 'wfReplaceGradeInput');
+
+        var input = document.createElement('input');
+        input.type = 'number';
+        input.id = 'wfReplaceGradeInput';
+        input.className = 'gpa-course-input';
+        input.placeholder = sys.inputType === 'score' ? 'New score /20' : 'New score %';
+        input.min = '0';
+        input.max = String(sys.scale);
+        input.step = '0.5';
+        input.style.padding = '10px 12px';
+        input.style.fontSize = '0.9rem';
+        gradeSel.replaceWith(input);
       }
     }
   }
@@ -1091,6 +1487,17 @@
 
     var sys = getSystem();
     var maxGpa = sys ? sys.scale : 5.0;
+
+    // Validate inputs against scale
+    if (currentCgpa > maxGpa) {
+      showToast('Current CGPA cannot exceed ' + maxGpa.toFixed(2));
+      return;
+    }
+    if (targetCgpa > maxGpa) {
+      showToast('Target CGPA cannot exceed ' + maxGpa.toFixed(2));
+      return;
+    }
+
     var needed = (targetCgpa * (currentCredits + upcomingCredits) - currentCgpa * currentCredits) / upcomingCredits;
 
     var resultEl = $('whatifResult');
@@ -1130,6 +1537,12 @@
 
     var sys = getSystem();
     var maxGpa = sys ? sys.scale : 5.0;
+
+    if (currentCgpa > maxGpa) {
+      showToast('Current CGPA cannot exceed ' + maxGpa.toFixed(2));
+      return;
+    }
+
     var needed = (targetMin * (currentCredits + upcomingCredits) - currentCgpa * currentCredits) / upcomingCredits;
 
     // Find class name
@@ -1146,7 +1559,13 @@
     if (needed > maxGpa) {
       resultEl.innerHTML = '<div class="gpa-whatif-result impossible">' +
         '<div style="font-size:1.5rem; margin-bottom:4px;">\u274C Cannot Reach ' + escHtml(className) + '</div>' +
-        '<p style="font-size:0.85rem;">You would need <strong>' + needed.toFixed(2) + '</strong>, but max is <strong>' + maxGpa.toFixed(2) + '</strong>.</p></div>';
+        '<p style="font-size:0.85rem;">You would need <strong>' + needed.toFixed(2) + '</strong>, but max is <strong>' + maxGpa.toFixed(2) + '</strong>.</p>' +
+        '<p style="font-size:0.82rem; color:var(--gpa-text-muted); margin-top:8px;">Consider taking more credits to spread the requirement.</p></div>';
+    } else if (needed > maxGpa * 0.9) {
+      resultEl.innerHTML = '<div class="gpa-whatif-result difficult">' +
+        '<div style="font-size:1.5rem; margin-bottom:4px;">\u26A0\uFE0F Challenging Target</div>' +
+        '<p style="font-size:0.85rem;">To reach <strong>' + escHtml(className) + '</strong>, you need <strong style="font-family:var(--gpa-mono);">' + needed.toFixed(2) + '</strong> across ' + upcomingCredits + ' credits.</p>' +
+        '<p style="font-size:0.82rem; color:var(--gpa-text-muted); margin-top:4px;">That\'s ' + (needed / maxGpa * 100).toFixed(0) + '% of max \u2014 difficult but achievable.</p></div>';
     } else if (needed <= 0) {
       resultEl.innerHTML = '<div class="gpa-whatif-result possible">' +
         '<div style="font-size:1.5rem; margin-bottom:4px;">\u2705 Already ' + escHtml(className) + '!</div>' +
@@ -1160,7 +1579,11 @@
 
   function calcGradeReplace() {
     var courseKey = ($('wfReplaceCourse') || {}).value;
-    var newGrade = ($('wfReplaceGrade') || {}).value;
+    // Check for either select or input for new grade
+    var gradeSelect = $('wfReplaceGrade');
+    var gradeInput = $('wfReplaceGradeInput');
+    var newGrade = gradeSelect ? gradeSelect.value : (gradeInput ? gradeInput.value : '');
+
     if (!courseKey || !newGrade) { showToast('Select a course and new grade.'); return; }
 
     var parts = courseKey.split('-');
@@ -1189,7 +1612,10 @@
     var oldPts = getCoursePoints(course.grade, sys);
     var newPts = getCoursePoints(newGrade, sys);
     var cr = parseFloat(course.credits);
-    if (oldPts === null || newPts === null || isNaN(cr)) return;
+    if (oldPts === null || newPts === null || isNaN(cr)) {
+      showToast('Invalid grade value.');
+      return;
+    }
 
     var newTotalPoints = currentTotal.points - (oldPts * cr) + (newPts * cr);
     var newCgpa = currentTotal.credits > 0 ? newTotalPoints / currentTotal.credits : 0;
@@ -1199,32 +1625,40 @@
     var resultEl = $('whatifResult');
     if (!resultEl) return;
 
+    // Get classifications
+    var oldClass = getClassification(oldCgpa, sys);
+    var newClass = getClassification(newCgpa, sys);
+    var classChange = '';
+    if (oldClass && newClass && oldClass.name !== newClass.name) {
+      classChange = '<div style="margin-top:8px; font-size:0.82rem; font-weight:600; color:var(--gpa-accent);">' +
+        'Classification: ' + oldClass.name + ' \u2192 ' + newClass.name + '</div>';
+    }
+
     var cls = diff > 0 ? 'possible' : diff < 0 ? 'impossible' : 'difficult';
     resultEl.innerHTML = '<div class="gpa-whatif-result ' + cls + '">' +
-      '<div style="font-size:0.85rem; margin-bottom:8px;">If you retake <strong>' + escHtml(course.name) + '</strong> and get <strong>' + newGrade + '</strong>:</div>' +
+      '<div style="font-size:0.85rem; margin-bottom:8px;">If you retake <strong>' + escHtml(course.name) + '</strong> and get <strong>' + escHtml(newGrade) + '</strong>:</div>' +
       '<div style="display:flex; justify-content:center; gap:24px; font-family:var(--gpa-mono);">' +
       '<div><div style="font-size:0.7rem; color:var(--gpa-text-muted);">OLD CGPA</div><div style="font-size:1.3rem;">' + oldCgpa.toFixed(2) + '</div></div>' +
       '<div style="font-size:1.3rem; align-self:center;">\u2192</div>' +
       '<div><div style="font-size:0.7rem; color:var(--gpa-text-muted);">NEW CGPA</div><div style="font-size:1.3rem; color:var(--gpa-accent);">' + newCgpa.toFixed(2) + '</div></div>' +
       '</div>' +
-      '<div style="margin-top:8px; font-size:0.82rem; color:var(--gpa-text-secondary);">Change: ' + (diff >= 0 ? '+' : '') + diff.toFixed(3) + '</div></div>';
+      '<div style="margin-top:8px; font-size:0.82rem; color:var(--gpa-text-secondary);">Change: ' + (diff >= 0 ? '+' : '') + diff.toFixed(3) + '</div>' +
+      classChange + '</div>';
   }
 
   // ─── SHARING ─────────────────────────────────────────────────────
   function setupSharing() {
-    document.addEventListener('DOMContentLoaded', function () {
-      var waBtn = $('shareWhatsapp');
-      if (waBtn) waBtn.addEventListener('click', shareWhatsApp);
+    var waBtn = $('shareWhatsapp');
+    if (waBtn) waBtn.addEventListener('click', shareWhatsApp);
 
-      var twBtn = $('shareTwitter');
-      if (twBtn) twBtn.addEventListener('click', shareTwitter);
+    var twBtn = $('shareTwitter');
+    if (twBtn) twBtn.addEventListener('click', shareTwitter);
 
-      var cpBtn = $('shareCopy');
-      if (cpBtn) cpBtn.addEventListener('click', shareCopy);
+    var cpBtn = $('shareCopy');
+    if (cpBtn) cpBtn.addEventListener('click', shareCopy);
 
-      var pdfBtn = $('sharePdf');
-      if (pdfBtn) pdfBtn.addEventListener('click', sharePdf);
-    });
+    var pdfBtn = $('sharePdf');
+    if (pdfBtn) pdfBtn.addEventListener('click', sharePdf);
   }
 
   function getShareText() {
@@ -1426,7 +1860,7 @@
       // Fallback: simple toast
       var t = document.createElement('div');
       t.textContent = msg;
-      t.style.cssText = 'position:fixed;bottom:72px;left:50%;transform:translateX(-50%);background:#111D2E;color:#E2E8F0;padding:10px 20px;border-radius:8px;font-size:0.85rem;z-index:9999;border:1px solid rgba(0,201,167,0.2);';
+      t.style.cssText = 'position:fixed;bottom:72px;left:50%;transform:translateX(-50%);background:#0f172a;color:#E2E8F0;padding:10px 20px;border-radius:8px;font-size:0.85rem;z-index:9999;border:1px solid rgba(0,135,81,0.3);box-shadow:0 4px 12px rgba(0,0,0,0.15);';
       document.body.appendChild(t);
       setTimeout(function () { t.remove(); }, 3000);
     }

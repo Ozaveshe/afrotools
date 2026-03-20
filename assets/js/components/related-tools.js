@@ -58,13 +58,13 @@ class AfroRelatedTools extends HTMLElement {
       const cs   = this._cat(t.category);
       const img  = `/assets/img/tools/${t.id}.webp`;
       const imgFallback = `/assets/img/tool-icons/${t.id}.png`;
-      const desc = t.desc && t.desc.length > 68 ? t.desc.slice(0,66)+'…' : (t.desc||'');
+      const desc = t.desc && t.desc.length > 50 ? t.desc.slice(0,48)+'…' : (t.desc||'');
       return `
         <a class="card" href="${t.href}" aria-label="${t.name}">
           <div class="card-visual" style="background:${cs.gradient}">
             <img class="card-img" src="${img}" alt="${t.name} icon"
-                 width="56" height="56" loading="lazy"
-                 onerror="this.onerror=function(){this.style.display='none';this.nextElementSibling.style.display='flex'};this.src='${imgFallback}'">
+                 loading="lazy"
+                 onerror="this.onerror=function(){this.style.display='none';this.nextElementSibling.style.display='flex'};this.classList.add('card-img--icon');this.src='${imgFallback}'">
             <div class="card-emoji" style="display:none" aria-hidden="true">${t.icon||'🔧'}</div>
           </div>
           <div class="card-body">
@@ -89,7 +89,7 @@ class AfroRelatedTools extends HTMLElement {
           display: block;
           font-family: -apple-system, 'SF Pro Display', 'DM Sans', system-ui, sans-serif;
           background: #f5f5f7;
-          padding: 56px 0 60px;
+          padding: 40px 0 80px !important;
         }
 
         /* ── Section wrapper ── */
@@ -104,7 +104,7 @@ class AfroRelatedTools extends HTMLElement {
           display: flex;
           align-items: flex-end;
           justify-content: space-between;
-          margin-bottom: 32px;
+          margin-bottom: 20px;
           gap: 16px;
         }
         .header-left {}
@@ -117,7 +117,7 @@ class AfroRelatedTools extends HTMLElement {
           margin-bottom: 6px;
         }
         .title {
-          font-size: 1.65rem;
+          font-size: 1.35rem;
           font-weight: 700;
           color: #1d1d1f;
           letter-spacing: -0.025em;
@@ -142,8 +142,8 @@ class AfroRelatedTools extends HTMLElement {
         /* ── Card grid ── */
         .grid {
           display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 18px;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 14px;
         }
 
         /* ── Card ── */
@@ -151,20 +151,19 @@ class AfroRelatedTools extends HTMLElement {
           display: flex;
           flex-direction: column;
           background: #ffffff;
-          border-radius: 18px;
+          border-radius: 14px;
           overflow: hidden;
           text-decoration: none;
           color: inherit;
-          /* Apple-style lifted card */
-          box-shadow: 0 2px 8px rgba(0,0,0,.06), 0 0 0 .5px rgba(0,0,0,.06);
+          box-shadow: 0 1px 4px rgba(0,0,0,.06), 0 0 0 .5px rgba(0,0,0,.05);
           transition:
             transform .28s cubic-bezier(.34,1.56,.64,1),
             box-shadow .28s ease;
           will-change: transform;
         }
         .card:hover {
-          transform: translateY(-6px) scale(1.01);
-          box-shadow: 0 16px 40px rgba(0,0,0,.12), 0 2px 8px rgba(0,0,0,.06);
+          transform: translateY(-4px) scale(1.01);
+          box-shadow: 0 12px 28px rgba(0,0,0,.1), 0 1px 4px rgba(0,0,0,.06);
         }
 
         /* ── Visual header (image area) ── */
@@ -186,55 +185,63 @@ class AfroRelatedTools extends HTMLElement {
           pointer-events: none;
         }
         .card-img {
-          width: 60px;
-          height: 60px;
-          object-fit: contain;
-          border-radius: 14px;
-          background: rgba(255,255,255,.15);
-          box-shadow: 0 4px 20px rgba(0,0,0,.22), 0 0 0 1px rgba(255,255,255,.12);
-          position: relative;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          position: absolute;
+          inset: 0;
           z-index: 1;
         }
+        .card-img--icon {
+          width: 48px;
+          height: 48px;
+          object-fit: contain;
+          position: relative;
+          inset: auto;
+          border-radius: 12px;
+          background: rgba(255,255,255,.15);
+          box-shadow: 0 2px 12px rgba(0,0,0,.2);
+        }
         .card-emoji {
-          width: 60px;
-          height: 60px;
-          border-radius: 14px;
+          width: 48px;
+          height: 48px;
+          border-radius: 12px;
           background: rgba(255,255,255,.18);
           align-items: center;
           justify-content: center;
-          font-size: 1.9rem;
-          box-shadow: 0 4px 20px rgba(0,0,0,.2);
+          font-size: 1.6rem;
+          box-shadow: 0 2px 12px rgba(0,0,0,.18);
           position: relative;
           z-index: 1;
         }
 
         /* ── Card body ── */
         .card-body {
-          padding: 16px 18px 10px;
+          padding: 10px 14px 8px;
           flex: 1;
         }
         .pill {
           display: inline-block;
-          font-size: 0.65rem;
+          font-size: 0.6rem;
           font-weight: 700;
-          letter-spacing: .05em;
+          letter-spacing: .04em;
           text-transform: uppercase;
-          padding: 3px 9px;
+          padding: 2px 7px;
           border-radius: 100px;
-          margin-bottom: 8px;
-        }
-        .card-name {
-          font-size: 0.95rem;
-          font-weight: 700;
-          color: #1d1d1f;
-          letter-spacing: -0.015em;
-          line-height: 1.3;
           margin-bottom: 5px;
         }
+        .card-name {
+          font-size: 0.82rem;
+          font-weight: 700;
+          color: #1d1d1f;
+          letter-spacing: -0.01em;
+          line-height: 1.25;
+          margin-bottom: 3px;
+        }
         .card-desc {
-          font-size: 0.78rem;
+          font-size: 0.72rem;
           color: #6e6e73;
-          line-height: 1.55;
+          line-height: 1.45;
         }
 
         /* ── CTA strip ── */
@@ -242,11 +249,11 @@ class AfroRelatedTools extends HTMLElement {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 10px 18px 14px;
+          padding: 7px 14px 10px;
           border-top: 1px solid rgba(0,0,0,.05);
         }
         .cta-btn {
-          font-size: 0.78rem;
+          font-size: 0.72rem;
           font-weight: 600;
           color: var(--color-primary);
         }
@@ -254,36 +261,27 @@ class AfroRelatedTools extends HTMLElement {
           color: var(--color-primary);
           transition: transform .2s;
         }
-        .card:hover .cta-arrow { transform: translateX(4px); }
+        .card:hover .cta-arrow { transform: translateX(3px); }
 
         /* ── Responsive ── */
         @media (max-width: 960px) {
           .grid { grid-template-columns: repeat(2,1fr); }
-          .title { font-size: 1.4rem; }
+          .title { font-size: 1.3rem; }
         }
         @media (max-width: 600px) {
-          :host { padding: 40px 0 48px; }
+          :host { padding: 32px 0 40px; }
           .wrap { padding: 0 16px; }
-          .header { flex-direction: column; align-items: flex-start; gap: 12px; }
-          .grid { grid-template-columns: 1fr; gap: 14px; }
-          .title { font-size: 1.25rem; }
-          /* Horizontal scroll on mobile for better UX */
-          .grid {
-            display: flex;
-            flex-wrap: nowrap;
-            overflow-x: auto;
-            gap: 14px;
-            scroll-snap-type: x mandatory;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
-            padding-bottom: 4px;
-          }
-          .grid::-webkit-scrollbar { display: none; }
-          .card {
-            min-width: 260px;
-            scroll-snap-align: start;
-            flex-shrink: 0;
-          }
+          .header { flex-direction: column; align-items: flex-start; gap: 10px; margin-bottom: 20px; }
+          .grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+          .title { font-size: 1.15rem; }
+          .card-visual { height: 90px; }
+          .card-emoji { width: 36px; height: 36px; border-radius: 8px; }
+          .card-emoji { font-size: 1.1rem; }
+          .card-name { font-size: 0.76rem; }
+          .card-desc { font-size: 0.68rem; }
+          .card-body { padding: 8px 10px 6px; }
+          .card-cta { padding: 6px 10px 8px; }
+          .cta-btn { font-size: 0.68rem; }
         }
       </style>
 

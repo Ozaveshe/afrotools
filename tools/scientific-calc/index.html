@@ -47,7 +47,12 @@
   /* Display */
   .calc-display { background: linear-gradient(135deg, #1a1f2e 0%, var(--afro-dark) 100%); padding: 16px 20px 12px; }
   .calc-expr { font-size: 0.78rem; color: #6B8CAE; min-height: 20px; font-family: 'Courier New', monospace; text-align: right; word-break: break-all; }
-  .calc-result { font-size: 2.2rem; font-weight: 800; color: var(--afro-green); text-align: right; font-family: 'Courier New', monospace; word-break: break-all; min-height: 44px; line-height: 1.2; }
+  .calc-result { font-size: 2.2rem; font-weight: 800; color: var(--afro-green); text-align: right; font-family: 'Courier New', monospace; word-break: break-all; min-height: 44px; line-height: 1.2; cursor: pointer; position: relative; }
+  .calc-result:hover { opacity: 0.85; }
+  .copy-hint { position: absolute; left: 0; top: 50%; transform: translateY(-50%); font-size: 0.6rem; color: rgba(255,255,255,0.25); font-family: 'DM Sans', sans-serif; font-weight: 500; letter-spacing: 0.04em; opacity: 0; transition: opacity 0.2s; pointer-events: none; }
+  .calc-result:hover .copy-hint { opacity: 1; }
+  .copied-flash { animation: flashGreen 0.6s ease; }
+  @keyframes flashGreen { 0% { color: #5ddb9e; } 100% { color: var(--afro-green); } }
   .calc-status { display: flex; justify-content: space-between; margin-top: 6px; }
   .calc-mode { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.06em; padding: 2px 8px; border-radius: 3px; }
   .mode-deg { background: rgba(0, 113, 227, 0.2); color: var(--color-primary); }
@@ -68,7 +73,11 @@
   .btn-span2 { grid-column: span 2; }
   /* History */
   .history-section { border-top: 1px solid #EFF6FF; padding: 12px; background: #fff; max-height: 180px; overflow-y: auto; }
-  .hist-item { display: flex; justify-content: space-between; padding: 6px 8px; font-size: 0.72rem; border-radius: 4px; cursor: pointer; transition: background 0.1s; }
+  .hist-item { display: flex; justify-content: space-between; align-items: center; padding: 6px 8px; font-size: 0.72rem; border-radius: 4px; cursor: pointer; transition: background 0.1s; gap: 6px; }
+  .hist-copy { background: none; border: 1px solid #DBEAFE; border-radius: 3px; padding: 2px 6px; font-size: 0.58rem; font-weight: 700; color: #6B8CAE; cursor: pointer; font-family: 'DM Sans', sans-serif; opacity: 0; transition: opacity 0.15s; flex-shrink: 0; }
+  .hist-item:hover .hist-copy { opacity: 1; }
+  .hist-copy:hover { background: #EFF6FF; color: #0a4018; }
+  .btn-ans { background: rgba(93,219,158,0.12); color: #0a4018; font-size: 0.7rem; }
   .hist-item:hover { background: #EFF6FF; }
   .hist-expr { color: #6B8CAE; }
   .hist-result { font-weight: 800; color: #0d2813; }
@@ -167,9 +176,6 @@
 </script>
 <script src="/assets/js/lib/toast.js" defer></script>
 <script src="/assets/js/afro-history.js" defer></script>
-<script src="/assets/js/components/save-result-button.js" defer></script>
-<script src="/assets/js/components/share-card-generator.js" defer></script>
-<script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
@@ -194,7 +200,7 @@
       <div class="calc-wrap">
         <div class="calc-display">
           <div class="calc-expr" id="exprDisplay" aria-label="Expression" aria-live="polite"></div>
-          <div class="calc-result" id="resultDisplay" aria-label="Result" aria-live="polite">0</div>
+          <div class="calc-result" id="resultDisplay" aria-label="Result" aria-live="polite" onclick="copyResult()" title="Click to copy result"><span class="copy-hint">click to copy</span>0</div>
           <div class="calc-status">
             <span class="calc-mode mode-deg" id="modeBtn" style="cursor:pointer;" title="Click to toggle DEG/RAD" role="button" aria-pressed="true" aria-label="Angle mode: Degrees">DEG</span>
             <span class="mem-indicator" id="memIndicator"></span>
@@ -257,10 +263,10 @@
           <button class="btn btn-op" onclick="toggleSign()">+/−</button>
           <button class="btn btn-eq btn-span2" onclick="evaluate()">=</button>
 
-          <!-- Row 8: 0, dot -->
+          <!-- Row 8: 0, dot, Ans -->
           <button class="btn btn-num btn-span2" onclick="addText('0')">0</button>
           <button class="btn btn-num" onclick="addText('.')">.</button>
-          <button class="btn btn-func" onclick="addText('²')">x²</button>
+          <button class="btn btn-ans" onclick="useAns()">Ans</button>
           <button class="btn btn-func" onclick="addFunc('cbrt(')">∛</button>
           <button class="btn btn-func" onclick="addFunc('1/(')">1/x</button>
         </div>
@@ -306,7 +312,8 @@
       <div class="info-card">
         <div class="info-title">Tips</div>
         <div class="info-text">
-          &bull; Use parentheses for complex expressions<br>
+          &bull; Click the result to copy it to clipboard<br>
+          &bull; Use <strong>Ans</strong> to reuse the last result<br>
           &bull; Type expressions naturally: 2+3×(4−1)<br>
           &bull; Click history items to reuse values<br>
           &bull; Memory persists until you clear it<br>
@@ -386,7 +393,27 @@
 
   function updateDisplay() {
     exprDisplay.textContent = expression || '';
-    resultDisplay.textContent = lastResult;
+    resultDisplay.innerHTML = '<span class="copy-hint">click to copy</span>' + escapeHtml(lastResult);
+  }
+
+  function copyResult() {
+    if (lastResult === '0' && expression === '') return;
+    const val = lastResult;
+    navigator.clipboard.writeText(val).then(function() {
+      resultDisplay.classList.add('copied-flash');
+      resultDisplay.innerHTML = '<span class="copy-hint" style="opacity:1;color:rgba(93,219,158,0.7)">copied!</span>' + escapeHtml(val);
+      setTimeout(function() {
+        resultDisplay.classList.remove('copied-flash');
+        updateDisplay();
+      }, 800);
+    });
+  }
+
+  function useAns() {
+    if (lastResult !== '0' && lastResult !== 'Error') {
+      expression += lastResult;
+      updateDisplay();
+    }
   }
 
   function addText(t) {
@@ -586,11 +613,22 @@
     const el = document.getElementById('historyList');
     if (history.length === 0) { el.innerHTML = '<div class="empty-hist">No history yet</div>'; return; }
     el.innerHTML = history.map(h =>
-      `<div class="hist-item" onclick="useHistoryResult('${h.result}')">
-        <span class="hist-expr">${escapeHtml(h.expr)}</span>
-        <span class="hist-result">= ${h.result}</span>
+      `<div class="hist-item">
+        <span class="hist-expr" onclick="useHistoryResult('${escapeHtml(h.result)}')" style="flex:1">${escapeHtml(h.expr)}</span>
+        <span class="hist-result" onclick="useHistoryResult('${escapeHtml(h.result)}')" style="flex-shrink:0">= ${escapeHtml(h.result)}</span>
+        <button class="hist-copy" onclick="event.stopPropagation();copyHistVal('${escapeHtml(h.result)}')" title="Copy result">copy</button>
       </div>`
     ).join('');
+  }
+
+  function copyHistVal(val) {
+    navigator.clipboard.writeText(val).then(function() {
+      var btn = event.target;
+      btn.textContent = 'copied!';
+      btn.style.opacity = '1';
+      btn.style.color = '#0a4018';
+      setTimeout(function() { btn.textContent = 'copy'; btn.style.opacity = ''; btn.style.color = ''; }, 800);
+    });
   }
 
   function useHistoryResult(val) {
@@ -627,18 +665,5 @@
 </script>
 <script src="/assets/js/components/tool-registry.js" defer></script>
 <script src="/assets/js/components/related-tools.min.js" defer></script>
-
-<script>
-// Save/Share buttons — manual placement needed
-(function(){
-  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
-  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
-  div.innerHTML = '<save-result-button tool-slug="scientific-calc" tool-name="Scientific Calc"></save-result-button><share-result-button tool-name="Scientific Calc" tool-slug="scientific-calc"></share-result-button>';
-  target.appendChild(div);
-})();
-</script>
 </body>
 </html>

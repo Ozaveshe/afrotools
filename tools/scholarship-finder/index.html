@@ -6,10 +6,10 @@
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'scholarship-finder'});</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>African Scholarship Finder | AfroTools</title>
-<meta name="description" content="Find scholarships for African students — undergraduate, postgraduate, and PhD. Filter by country, field of study, level, and funding type. 80+ scholarships.">
+<meta name="description" content="Find scholarships for African students — undergraduate, postgraduate, and PhD. Filter by country, field of study, level, and funding type. 120+ scholarships with match scoring.">
 <link rel="canonical" href="https://afrotools.com/tools/scholarship-finder/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="African Scholarship Finder | AfroTools"><meta property="og:description" content="Find scholarships for African students.">
+<meta property="og:title" content="African Scholarship Finder | AfroTools"><meta property="og:description" content="Find scholarships for African students. 120+ opportunities with personalized match scores.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png"><meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/scholarship-finder/">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css"><link rel="stylesheet" href="/assets/css/global.min.css">
@@ -29,9 +29,15 @@ input,select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radiu
 input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,58,237,.15)}
 .filter-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:14px}.field{margin-bottom:14px}
 .btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border:none;border-radius:8px;font-size:.78rem;font-weight:700;cursor:pointer}.btn-primary{background:linear-gradient(135deg,#6d28d9,#7c3aed);color:#fff}
+.btn-outline{background:transparent;border:1.5px solid #cbd5e1;color:#475569}.btn-outline:hover{border-color:var(--accent);color:var(--accent)}
+.btn-sm{padding:7px 14px;font-size:.72rem}
 .btn-block{display:block;width:100%;text-align:center;justify-content:center;margin-top:14px}
 .stat{display:inline-block;padding:4px 10px;border-radius:4px;font-size:.72rem;font-weight:700;background:#f5f3ff;color:#7c3aed}
-.scholarship-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;margin-top:18px}
+.sort-row{display:flex;align-items:center;gap:10px;margin-top:18px;margin-bottom:4px}
+.sort-row label{margin:0;white-space:nowrap}
+.sort-row select{width:auto;min-width:180px}
+/* Scholarship grid */
+.scholarship-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;margin-top:14px}
 .sch-card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:18px;transition:all .2s;position:relative}
 .sch-card:hover{border-color:#7c3aed;box-shadow:0 4px 16px rgba(124,58,237,.1)}
 .sch-card h3{font-size:.88rem;font-weight:700;color:var(--afro-dark);margin-bottom:6px;padding-right:60px}
@@ -43,15 +49,44 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 .sch-card .funding-badge{position:absolute;top:14px;right:14px;padding:4px 10px;border-radius:4px;font-size:.66rem;font-weight:800}
 .sch-card .funding-badge.full{background:#dcfce7;color:#16a34a}.sch-card .funding-badge.partial{background:#fef9c3;color:#a16207}
 .sch-card .deadline{font-size:.72rem;color:#dc2626;font-weight:700;margin-top:8px}
-.sch-card a{display:inline-block;margin-top:10px;font-size:.76rem;font-weight:700;color:#7c3aed;text-decoration:none}
-.sch-card a:hover{text-decoration:underline}
+.sch-card a.sch-link{display:inline-block;margin-top:10px;font-size:.76rem;font-weight:700;color:#7c3aed;text-decoration:none}
+.sch-card a.sch-link:hover{text-decoration:underline}
+/* Match badge */
+.match-badge{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:4px;font-size:.66rem;font-weight:800;margin-bottom:8px}
+.match-strong{background:#dcfce7;color:#16a34a}.match-good{background:#dbeafe;color:#2563eb}
+.match-possible{background:#fef9c3;color:#a16207}.match-unlikely{background:#fee2e2;color:#dc2626}
+.match-details{font-size:.68rem;color:#64748b;margin-top:6px;line-height:1.5}
+.match-details .met{color:#16a34a}.match-details .unmet{color:#dc2626}
+/* Quick profile card */
+.profile-card{margin-bottom:18px}
+.profile-card .card-body{padding:18px 22px}
+.profile-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+.profile-grid .field{margin-bottom:0}
+.profile-actions{display:flex;gap:8px;margin-top:14px;align-items:center}
+.profile-status{font-size:.72rem;color:#16a34a;font-weight:600}
+.profile-cta{font-size:.76rem;color:var(--accent);font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:4px}
+.profile-cta:hover{text-decoration:underline}
+/* Loading skeleton */
+.skeleton{animation:pulse 1.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.skel-card{background:#f1f5f9;border-radius:10px;height:200px}
+/* SEO section */
 .seo-section{max-width:800px;margin:0 auto;padding:48px 24px}.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
 .seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
 .faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
-@media(max-width:768px){.filter-row{grid-template-columns:1fr 1fr}.scholarship-grid{grid-template-columns:1fr}}
+/* Workflow CTA */
+.workflow-cta{background:linear-gradient(135deg,#f5f3ff,#ede9fe);border:1.5px solid #c4b5fd;border-radius:10px;padding:18px 22px;margin-top:18px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.workflow-cta h3{font-size:.88rem;font-weight:700;color:#3b0764;margin:0}
+.workflow-cta p{font-size:.76rem;color:#6d28d9;margin:4px 0 0;line-height:1.5}
+.workflow-cta .links{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto}
+@media(max-width:768px){.filter-row{grid-template-columns:1fr 1fr}.scholarship-grid{grid-template-columns:1fr}.profile-grid{grid-template-columns:1fr 1fr}.workflow-cta{flex-direction:column;align-items:flex-start}.workflow-cta .links{margin-left:0}}
+@media(max-width:480px){.filter-row{grid-template-columns:1fr}.profile-grid{grid-template-columns:1fr}}
 </style>
 <script src="/assets/js/lib/toast.js" defer></script>
+<script src="/assets/js/supabase-auth.js" defer></script>
 <script src="/assets/js/afro-history.js" defer></script>
+<script src="/assets/js/edu-profile-sync.js" defer></script>
+<script src="/engines/scholarship-matcher.js" defer></script>
 <script src="/assets/js/components/save-result-button.js" defer></script>
 <script src="/assets/js/components/share-card-generator.js" defer></script>
 <script src="/assets/js/components/share-button.js" defer></script>
@@ -61,17 +96,82 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <section class="tool-hero"><div class="tool-hero-inner">
 <div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Scholarship Finder</span></div>
 <h1>African <em>Scholarship</em> Finder</h1>
-<p class="hero-sub">Discover scholarships available to African students for undergraduate, Master's, and PhD studies. Filter by destination, field, funding level, and eligibility.</p>
-<div class="hero-badges"><span class="badge b-em">80+ Scholarships</span><span class="badge b-em">All Levels</span><span class="badge b-em">Global Destinations</span></div>
+<p class="hero-sub">Discover 120+ scholarships for African students with personalized match scoring based on your GPA, IELTS, and study goals.</p>
+<div class="hero-badges"><span class="badge b-em" id="totalBadge">120+ Scholarships</span><span class="badge b-em">Match Scoring</span><span class="badge b-em">All Levels</span><span class="badge b-em">Global Destinations</span></div>
 </div></section>
 
 <section class="tool-main"><div class="tool-main-inner">
+
+<!-- Quick Profile Card -->
+<div class="card profile-card" id="profileCard">
+<div class="card-head">
+  <span class="card-title">Your Academic Profile</span>
+  <span class="profile-status" id="profileStatus"></span>
+</div>
+<div class="card-body">
+  <p style="font-size:.78rem;color:#64748b;margin-bottom:12px" id="profileDesc">Enter your details to see personalized scholarship match scores.</p>
+  <div class="profile-grid">
+    <div class="field"><label>GPA / Score</label><input type="number" id="profileGPA" step="0.01" min="0" max="100" placeholder="e.g. 3.50"></div>
+    <div class="field"><label>GPA Scale</label>
+      <select id="profileScale">
+        <option value="">Select scale</option>
+        <option value="4.0">4.0 scale</option>
+        <option value="5.0">5.0 scale (Nigeria)</option>
+        <option value="percentage">Percentage (0-100)</option>
+        <option value="20">/20 (Francophone)</option>
+        <option value="7.0">7.0 scale (Australia)</option>
+      </select>
+    </div>
+    <div class="field"><label>IELTS Overall</label><input type="number" id="profileIELTS" step="0.5" min="0" max="9" placeholder="e.g. 7.0"></div>
+    <div class="field"><label>Target Level</label>
+      <select id="profileLevel">
+        <option value="">Select level</option>
+        <option value="undergrad">Undergraduate</option>
+        <option value="masters">Master's</option>
+        <option value="phd">PhD / Doctoral</option>
+        <option value="postdoc">Postdoctoral</option>
+      </select>
+    </div>
+    <div class="field"><label>Target Field</label>
+      <select id="profileField">
+        <option value="">Any field</option>
+        <option value="stem">STEM / Engineering</option>
+        <option value="business">Business / Economics</option>
+        <option value="health">Health / Medicine</option>
+        <option value="law">Law / Governance</option>
+        <option value="arts">Arts / Humanities</option>
+        <option value="agric">Agriculture / Environment</option>
+      </select>
+    </div>
+    <div class="field"><label>Target Destination</label>
+      <select id="profileDest">
+        <option value="">Any destination</option>
+        <option value="uk">United Kingdom</option>
+        <option value="us">United States</option>
+        <option value="eu">Europe</option>
+        <option value="canada">Canada</option>
+        <option value="australia">Australia</option>
+        <option value="africa">Within Africa</option>
+        <option value="global">Global / Multiple</option>
+      </select>
+    </div>
+  </div>
+  <div class="profile-actions">
+    <button class="btn btn-primary btn-sm" onclick="applyProfile()">Show My Matches</button>
+    <button class="btn btn-outline btn-sm" onclick="clearProfile()">Clear</button>
+    <a class="profile-cta" href="/tools/gpa-calculator/" id="gpaLink" style="display:none">Calculate your GPA first &rarr;</a>
+    <a class="profile-cta" href="/tools/ielts-calculator/" id="ieltsLink" style="display:none">Check your IELTS score &rarr;</a>
+  </div>
+</div>
+</div>
+
+<!-- Filter Card -->
 <div class="card">
 <div class="card-head"><span class="card-title">Filter Scholarships</span><span class="stat" id="countBadge"></span></div>
 <div class="card-body">
 <div class="filter-row field">
 <div><label>Study Level</label>
-<select id="level" onchange="filter()">
+<select id="level" onchange="applyFilters()">
 <option value="all">All Levels</option>
 <option value="undergrad">Undergraduate</option>
 <option value="masters">Master's</option>
@@ -79,7 +179,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <option value="postdoc">Postdoctoral</option>
 </select></div>
 <div><label>Destination</label>
-<select id="destination" onchange="filter()">
+<select id="destination" onchange="applyFilters()">
 <option value="all">All Destinations</option>
 <option value="uk">United Kingdom</option>
 <option value="us">United States</option>
@@ -90,7 +190,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <option value="global">Global / Multiple</option>
 </select></div>
 <div><label>Field of Study</label>
-<select id="field" onchange="filter()">
+<select id="field" onchange="applyFilters()">
 <option value="all">All Fields</option>
 <option value="stem">STEM / Engineering</option>
 <option value="business">Business / Economics</option>
@@ -101,16 +201,49 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <option value="any">Open to Any Field</option>
 </select></div>
 <div><label>Funding</label>
-<select id="funding" onchange="filter()">
+<select id="funding" onchange="applyFilters()">
 <option value="all">All Types</option>
 <option value="full">Fully Funded</option>
 <option value="partial">Partial / Tuition Only</option>
 </select></div>
 </div>
-<div class="field"><label>Search by Name</label><input type="text" id="search" placeholder="e.g., Chevening, Mastercard, DAAD..." oninput="filter()"></div>
+<div class="field"><label>Search by Name</label><input type="text" id="search" placeholder="e.g., Chevening, Mastercard, DAAD..." oninput="applyFilters()"></div>
 </div></div>
 
-<div class="scholarship-grid" id="scholarshipGrid"></div>
+<!-- Sort row -->
+<div class="sort-row">
+  <label>Sort by:</label>
+  <select id="sortBy" onchange="applyFilters()">
+    <option value="match">Best Match</option>
+    <option value="name">Name (A-Z)</option>
+    <option value="deadline">Nearest Deadline</option>
+  </select>
+</div>
+
+<div class="scholarship-grid" id="scholarshipGrid">
+  <!-- Loading skeletons -->
+  <div class="skel-card skeleton"></div>
+  <div class="skel-card skeleton"></div>
+  <div class="skel-card skeleton"></div>
+  <div class="skel-card skeleton"></div>
+  <div class="skel-card skeleton"></div>
+  <div class="skel-card skeleton"></div>
+</div>
+
+<!-- Workflow CTA -->
+<div class="workflow-cta" id="workflowCta">
+  <div>
+    <h3>Complete Your Education Journey</h3>
+    <p>Use our education tools to build your profile and get better scholarship matches.</p>
+  </div>
+  <div class="links">
+    <a href="/tools/gpa-calculator/" class="btn btn-primary btn-sm">Calculate GPA</a>
+    <a href="/tools/ielts-calculator/" class="btn btn-outline btn-sm">IELTS Score</a>
+    <a href="/tools/jamb-aggregate/" class="btn btn-outline btn-sm">JAMB Aggregate</a>
+    <a href="/tools/education-hub/" class="btn btn-outline btn-sm">Education Hub</a>
+  </div>
+</div>
+
 </div></section>
 
 <section class="seo-section">
@@ -123,6 +256,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <h2>Frequently Asked Questions</h2>
 <details class="faq-item"><summary>What is the easiest fully-funded scholarship to get?</summary><p>No scholarship is "easy," but some have higher acceptance rates: DAAD (Germany) accepts ~25% of applicants, compared to Chevening (~3%) and Rhodes (~1%). Country-specific scholarships (Hungarian Government, Turkish Government, Chinese Government scholarships) tend to have higher acceptance rates and less competition. Focus on fit rather than prestige — apply where your profile matches the scholarship's values.</p></details>
 <details class="faq-item"><summary>Can I apply for multiple scholarships?</summary><p>Yes! In fact, you should. Apply to 5-10 scholarships that match your profile. However, be aware that some scholarships (like Chevening) require you to declare if you hold other awards. You generally cannot accept two fully-funded scholarships simultaneously, so choose the best offer if you receive multiple awards.</p></details>
+<details class="faq-item"><summary>How does the match score work?</summary><p>Our match scoring compares your academic profile (GPA, IELTS score, target field, destination, and study level) against each scholarship's requirements. It weights GPA (40%), IELTS (25%), field match (15%), destination (10%), and level (10%). A "Strong Match" means you meet or exceed most requirements. Even an "Unlikely" match doesn't mean you can't apply — many scholarships consider factors beyond grades.</p></details>
 </section>
 
 <afro-related-tools category="education" current="scholarship-finder"></afro-related-tools>
@@ -130,81 +264,307 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <afro-footer></afro-footer>
 
 <script>
-const SCHOLARSHIPS=[
-  {name:'Chevening Scholarship',provider:'UK Government (FCDO)',level:['masters'],dest:'uk',field:['any'],funding:'full',desc:'Fully funded Master\'s in the UK. Covers tuition, living, flights, visa. Open to all African countries. Must have 2+ years work experience.',deadline:'Nov (annual)',url:'https://www.chevening.org'},
-  {name:'Rhodes Scholarship',provider:'Rhodes Trust',level:['masters','phd'],dest:'uk',field:['any'],funding:'full',desc:'Study at University of Oxford. Fully funded. Africa has dedicated slots for Nigeria, Kenya, East/West/Southern Africa.',deadline:'Jul-Oct (varies by country)',url:'https://www.rhodeshouse.ox.ac.uk'},
-  {name:'Gates Cambridge Scholarship',provider:'Gates Foundation',level:['masters','phd'],dest:'uk',field:['any'],funding:'full',desc:'Full-cost scholarship at University of Cambridge. Open to all countries outside UK. ~100 awards per year globally.',deadline:'Oct/Dec',url:'https://www.gatescambridge.org'},
-  {name:'Mastercard Foundation Scholars',provider:'Mastercard Foundation',level:['undergrad','masters'],dest:'global',field:['any'],funding:'full',desc:'Study at partner universities worldwide (including African ones). Targets academically talented but economically disadvantaged Africans.',deadline:'Varies by partner university',url:'https://mastercardfdn.org/all/scholars'},
-  {name:'Fulbright Foreign Student Program',provider:'US Department of State',level:['masters','phd'],dest:'us',field:['any'],funding:'full',desc:'Graduate study in the US. Available in most African countries. Covers tuition, living, flights, health insurance.',deadline:'Feb-Oct (varies by country)',url:'https://foreign.fulbrightonline.org'},
-  {name:'DAAD Scholarship',provider:'German Academic Exchange Service',level:['masters','phd','postdoc'],dest:'eu',field:['any'],funding:'full',desc:'Study in Germany. Multiple programmes including Development-Related Postgraduate Courses (EPOS). Taught in English or German.',deadline:'Oct-Nov',url:'https://www.daad.de'},
-  {name:'Commonwealth Scholarship',provider:'Commonwealth Secretariat',level:['masters','phd'],dest:'uk',field:['any'],funding:'full',desc:'For citizens of Commonwealth African countries. Master\'s or PhD at UK universities. Strong development focus.',deadline:'Dec',url:'https://cscuk.fcdo.gov.uk'},
-  {name:'Erasmus Mundus Joint Masters',provider:'European Commission',level:['masters'],dest:'eu',field:['stem','arts','any'],funding:'full',desc:'Study at multiple European universities. Tuition + living + travel. Many programmes available. Excellent for networking.',deadline:'Jan-Feb',url:'https://www.eacea.ec.europa.eu/scholarships/erasmus-mundus'},
-  {name:'Australia Awards',provider:'Australian Government (DFAT)',level:['masters','phd'],dest:'australia',field:['any'],funding:'full',desc:'Fully funded study in Australia. Available for select African countries. Strong development outcomes focus.',deadline:'Apr-May',url:'https://www.dfat.gov.au/people-to-people/australia-awards'},
-  {name:'Vanier Canada Graduate',provider:'Government of Canada',level:['phd'],dest:'canada',field:['stem','health','arts'],funding:'full',desc:'$50,000/year for 3 years for PhD study in Canada. Open to international students including Africans.',deadline:'Nov',url:'https://vanier.gc.ca'},
-  {name:'MO Ibrahim Foundation Scholarship',provider:'Mo Ibrahim Foundation',level:['masters'],dest:'uk',field:['business','law'],funding:'full',desc:'Governance and leadership focused. MBA at SOAS or governance programme at partner universities.',deadline:'Jan',url:'https://mo.ibrahim.foundation/fellowships'},
-  {name:'African Development Bank Scholarship',provider:'AfDB / Japan',level:['masters'],dest:'global',field:['stem','business','agric'],funding:'full',desc:'Japan-Africa Dream Scholarship (JADS) for Master\'s in Japan. KOAFEC for study in Korea. Multiple programmes.',deadline:'Varies',url:'https://www.afdb.org'},
-  {name:'Aga Khan Foundation Scholarship',provider:'Aga Khan Foundation',level:['masters','phd'],dest:'global',field:['any'],funding:'partial',desc:'50% grant / 50% loan for postgraduate study. Available for students from select African countries (Kenya, Uganda, Tanzania, Mozambique, Madagascar, Egypt).',deadline:'Mar',url:'https://www.akdn.org/our-agencies/aga-khan-foundation'},
-  {name:'ETH Zurich Excellence Scholarship',provider:'ETH Zurich',level:['masters'],dest:'eu',field:['stem'],funding:'full',desc:'For outstanding Master\'s students at ETH Zurich. Covers tuition + living. Extremely competitive.',deadline:'Dec',url:'https://ethz.ch/en/studies/financial/scholarships'},
-  {name:'Mwalimu Nyerere AU Scholarship',provider:'African Union',level:['masters','phd'],dest:'africa',field:['any'],funding:'full',desc:'Study at African universities. Promotes intra-Africa academic mobility. Covers tuition and stipend.',deadline:'Varies',url:'https://www.au.int'},
-  {name:'PTDF Scholarship Nigeria',provider:'Nigerian Government (PTDF)',level:['masters','phd'],dest:'global',field:['stem','business'],funding:'full',desc:'For Nigerians only. Overseas and local postgraduate scholarships. Petroleum-related fields preferred but not exclusive.',deadline:'Mar-May',url:'https://ptdf.gov.ng'},
-  {name:'Mandela Rhodes Scholarship',provider:'Mandela Rhodes Foundation',level:['masters'],dest:'africa',field:['any'],funding:'full',desc:'For Africans studying at South African universities. Leadership development + academic funding.',deadline:'Jun',url:'https://www.mandelarhodes.org'},
-  {name:'AIMS Scholarship',provider:'African Institute for Mathematical Sciences',level:['masters'],dest:'africa',field:['stem'],funding:'full',desc:'Fully funded Master\'s in Mathematical Sciences at AIMS centres across Africa (South Africa, Ghana, Cameroon, Rwanda, Senegal).',deadline:'Mar',url:'https://nexteinstein.org'},
-  {name:'Turkish Government Scholarship',provider:'Republic of Turkey',level:['undergrad','masters','phd'],dest:'eu',field:['any'],funding:'full',desc:'Study in Turkey. Covers tuition, accommodation, living, health, flights, Turkish language course. High acceptance rate.',deadline:'Jan-Feb',url:'https://turkiyeburslari.gov.tr'},
-  {name:'Hungarian Government Scholarship',provider:'Tempus Public Foundation',level:['undergrad','masters','phd'],dest:'eu',field:['any'],funding:'full',desc:'Study in Hungary. Covers tuition, living, health insurance. Available for most African countries. Stipendium Hungaricum.',deadline:'Jan',url:'https://stipendiumhungaricum.hu'},
-  {name:'Chinese Government Scholarship',provider:'China Scholarship Council',level:['undergrad','masters','phd'],dest:'global',field:['any'],funding:'full',desc:'Study in China. Multiple types: bilateral, university, Great Wall, EU. Covers everything. Apply through Chinese embassy.',deadline:'Jan-Apr',url:'https://www.campuschina.org'},
-  {name:'Schwarzman Scholars',provider:'Schwarzman Foundation',level:['masters'],dest:'global',field:['business','law'],funding:'full',desc:'One-year Master\'s at Tsinghua University, Beijing. Full funding. Focus on global affairs, economics, business.',deadline:'Sep',url:'https://www.schwarzmanscholars.org'},
-  {name:'Skoll Scholarship (Oxford)',provider:'Skoll Foundation',level:['masters'],dest:'uk',field:['business'],funding:'full',desc:'MBA at Said Business School, Oxford. For social entrepreneurs. Covers full tuition + stipend.',deadline:'Jan',url:'https://www.sbs.ox.ac.uk/skoll-scholarships'},
-  {name:'KAAD Scholarship (Germany)',provider:'Catholic Academic Exchange Service',level:['masters','phd'],dest:'eu',field:['any'],funding:'full',desc:'For students from developing countries. Study in Germany. Monthly stipend + tuition + allowances.',deadline:'Jun/Dec',url:'https://www.kaad.de'},
-];
+(function () {
+  'use strict';
 
-function filter(){
-  const level=document.getElementById('level').value;
-  const dest=document.getElementById('destination').value;
-  const field=document.getElementById('field').value;
-  const funding=document.getElementById('funding').value;
-  const search=document.getElementById('search').value.toLowerCase();
+  var allScholarships = [];
+  var matchResults = [];
+  var studentProfile = null;
+  var isLoading = true;
 
-  let results=SCHOLARSHIPS.filter(s=>{
-    if(level!=='all'&&!s.level.includes(level))return false;
-    if(dest!=='all'&&s.dest!==dest)return false;
-    if(field!=='all'&&!s.field.includes(field)&&!s.field.includes('any'))return false;
-    if(funding!=='all'&&s.funding!==funding)return false;
-    if(search&&!s.name.toLowerCase().includes(search)&&!s.provider.toLowerCase().includes(search)&&!s.desc.toLowerCase().includes(search))return false;
-    return true;
-  });
+  // ── Fallback data (top 30 for offline) ──
+  var FALLBACK = [
+    {name:'Chevening Scholarship',provider:'UK Government (FCDO)',levels:['masters'],destinations:['uk'],fields:['any'],funding:'full',description:'Fully funded Master\'s in the UK. Covers tuition, living, flights, visa. Must have 2+ years work experience.',min_gpa_4:3.0,min_gpa_5:3.5,min_ielts:6.5,deadline_text:'Nov (annual)',info_url:'https://www.chevening.org'},
+    {name:'Rhodes Scholarship',provider:'Rhodes Trust',levels:['masters','phd'],destinations:['uk'],fields:['any'],funding:'full',description:'Study at University of Oxford. Fully funded. Africa has dedicated slots.',min_gpa_4:3.7,min_gpa_5:4.5,min_ielts:7.0,deadline_text:'Jul-Oct',info_url:'https://www.rhodeshouse.ox.ac.uk'},
+    {name:'Gates Cambridge Scholarship',provider:'Gates Foundation',levels:['masters','phd'],destinations:['uk'],fields:['any'],funding:'full',description:'Full-cost scholarship at University of Cambridge. ~100 awards per year.',min_gpa_4:3.7,min_gpa_5:4.5,min_ielts:7.5,deadline_text:'Oct/Dec',info_url:'https://www.gatescambridge.org'},
+    {name:'Fulbright Foreign Student Program',provider:'US Department of State',levels:['masters','phd'],destinations:['us'],fields:['any'],funding:'full',description:'Graduate study in the US. Covers tuition, living, flights, health insurance.',min_gpa_4:3.0,min_gpa_5:3.5,min_ielts:6.5,deadline_text:'Feb-Oct',info_url:'https://foreign.fulbrightonline.org'},
+    {name:'DAAD Scholarship',provider:'German Academic Exchange Service',levels:['masters','phd','postdoc'],destinations:['eu'],fields:['any'],funding:'full',description:'Study in Germany. Multiple programmes. ~25% acceptance rate.',min_gpa_4:3.0,min_gpa_5:3.5,min_ielts:6.0,deadline_text:'Oct-Nov',info_url:'https://www.daad.de'},
+    {name:'Erasmus Mundus Joint Masters',provider:'European Commission',levels:['masters'],destinations:['eu'],fields:['stem','arts','any'],funding:'full',description:'Study at multiple European universities. Tuition + living + travel.',min_gpa_4:3.0,min_gpa_5:3.5,min_ielts:6.5,deadline_text:'Jan-Feb',info_url:'https://www.eacea.ec.europa.eu/scholarships/erasmus-mundus'},
+    {name:'Mastercard Foundation Scholars',provider:'Mastercard Foundation',levels:['undergrad','masters'],destinations:['global'],fields:['any'],funding:'full',description:'Study at partner universities worldwide. For economically disadvantaged Africans.',min_gpa_4:3.0,min_gpa_5:3.5,min_ielts:6.0,deadline_text:'Varies',info_url:'https://mastercardfdn.org/all/scholars'},
+    {name:'Commonwealth Scholarship',provider:'Commonwealth Secretariat',levels:['masters','phd'],destinations:['uk'],fields:['any'],funding:'full',description:'For Commonwealth African countries. Master\'s or PhD at UK universities.',min_gpa_4:3.0,min_gpa_5:3.5,min_ielts:6.5,deadline_text:'Dec',info_url:'https://cscuk.fcdo.gov.uk'},
+    {name:'Turkish Government Scholarship',provider:'Republic of Turkey',levels:['undergrad','masters','phd'],destinations:['eu'],fields:['any'],funding:'full',description:'Study in Turkey. High acceptance rate. Covers everything.',min_gpa_4:2.5,min_gpa_5:3.0,min_ielts:null,deadline_text:'Jan-Feb',info_url:'https://turkiyeburslari.gov.tr'},
+    {name:'Hungarian Government Scholarship',provider:'Tempus Public Foundation',levels:['undergrad','masters','phd'],destinations:['eu'],fields:['any'],funding:'full',description:'Study in Hungary. Stipendium Hungaricum.',min_gpa_4:2.5,min_gpa_5:3.0,min_ielts:5.5,deadline_text:'Jan',info_url:'https://stipendiumhungaricum.hu'},
+  ];
 
-  document.getElementById('countBadge').textContent=results.length+' scholarships found';
+  // ── Load scholarships from API ──
+  function loadScholarships() {
+    fetch('/api/scholarships')
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        if (data.scholarships && data.scholarships.length > 0) {
+          allScholarships = data.scholarships;
+        } else {
+          allScholarships = FALLBACK;
+        }
+        isLoading = false;
+        document.getElementById('totalBadge').textContent = allScholarships.length + '+ Scholarships';
+        tryLoadProfile();
+        applyFilters();
+      })
+      .catch(function () {
+        allScholarships = FALLBACK;
+        isLoading = false;
+        applyFilters();
+      });
+  }
 
-  let html='';
-  results.forEach(s=>{
-    const fundBadge=s.funding==='full'?'<span class="funding-badge full">FULLY FUNDED</span>':'<span class="funding-badge partial">PARTIAL</span>';
-    const levels=s.level.map(l=>({undergrad:'UG',masters:'MSc',phd:'PhD',postdoc:'PostDoc'}[l]||l)).join(', ');
-    const destLabel={uk:'UK',us:'USA',eu:'Europe',africa:'Africa',canada:'Canada',australia:'Australia',global:'Global'}[s.dest];
-    html+=`<div class="sch-card">
-      ${fundBadge}
-      <h3>${s.name}</h3>
-      <div class="provider">${s.provider}</div>
-      <div class="details">${s.desc}</div>
-      <div class="tags">
-        <span class="tag">${levels}</span>
-        <span class="tag">${destLabel}</span>
-        ${s.field.map(f=>`<span class="tag">${f}</span>`).join('')}
-      </div>
-      <div class="deadline">Deadline: ${s.deadline}</div>
-      <a href="${s.url}" target="_blank" rel="noopener">Visit Official Website &rarr;</a>
-    </div>`;
-  });
+  // ── Load student profile if logged in ──
+  function tryLoadProfile() {
+    // First check sessionStorage quick profile
+    if (typeof ScholarshipMatcher !== 'undefined') {
+      var quick = ScholarshipMatcher.getQuickProfile();
+      if (quick) {
+        populateProfileForm(quick);
+        studentProfile = quick;
+        runMatcher();
+        return;
+      }
+    }
 
-  if(!results.length)html='<p style="text-align:center;color:#94a3b8;padding:40px;font-size:.88rem">No scholarships match your filters. Try broadening your search.</p>';
-  document.getElementById('scholarshipGrid').innerHTML=html;
-}
+    // Then try logged-in profile
+    if (typeof EduProfileSync !== 'undefined' && typeof EduProfileSync.getProfile === 'function') {
+      EduProfileSync.getProfile().then(function (profile) {
+        if (!profile) return;
+        var eduProfile = {
+          gpa_value: profile.gpa_value,
+          gpa_scale: profile.gpa_scale,
+          ielts_overall: profile.ielts_overall,
+          target_study_level: profile.target_study_level,
+          target_countries: profile.target_countries || [],
+          target_fields: profile.target_fields || []
+        };
+        // Only use if has some data
+        if (eduProfile.gpa_value || eduProfile.ielts_overall || eduProfile.target_study_level) {
+          populateProfileForm(eduProfile);
+          studentProfile = eduProfile;
+          document.getElementById('profileDesc').textContent = 'Loaded from your account. Adjust if needed.';
+          document.getElementById('profileStatus').textContent = 'Profile loaded';
+          runMatcher();
+        } else {
+          showProfileHints(profile);
+        }
+      });
+    }
+  }
 
-// Initial load
-filter();
+  function populateProfileForm(p) {
+    if (p.gpa_value) document.getElementById('profileGPA').value = p.gpa_value;
+    if (p.gpa_scale) document.getElementById('profileScale').value = p.gpa_scale;
+    if (p.ielts_overall) document.getElementById('profileIELTS').value = p.ielts_overall;
+    if (p.target_study_level) document.getElementById('profileLevel').value = p.target_study_level;
+    if (p.target_fields && p.target_fields[0]) document.getElementById('profileField').value = p.target_fields[0];
+    if (p.target_countries && p.target_countries[0]) document.getElementById('profileDest').value = p.target_countries[0];
+  }
+
+  function showProfileHints(profile) {
+    if (!profile || !profile.gpa_value) {
+      document.getElementById('gpaLink').style.display = 'inline-flex';
+    }
+    if (!profile || !profile.ielts_overall) {
+      document.getElementById('ieltsLink').style.display = 'inline-flex';
+    }
+  }
+
+  // ── Apply Profile ──
+  window.applyProfile = function () {
+    var gpa = parseFloat(document.getElementById('profileGPA').value);
+    var scale = document.getElementById('profileScale').value;
+    var ielts = parseFloat(document.getElementById('profileIELTS').value);
+    var level = document.getElementById('profileLevel').value;
+    var field = document.getElementById('profileField').value;
+    var dest = document.getElementById('profileDest').value;
+
+    studentProfile = {
+      gpa_value: isNaN(gpa) ? null : gpa,
+      gpa_scale: scale || null,
+      ielts_overall: isNaN(ielts) ? null : ielts,
+      target_study_level: level || null,
+      target_fields: field ? [field] : [],
+      target_countries: dest ? [dest] : []
+    };
+
+    // Save to sessionStorage
+    if (typeof ScholarshipMatcher !== 'undefined') {
+      ScholarshipMatcher.saveQuickProfile(studentProfile);
+    }
+
+    // Also sync to profile if logged in
+    if (typeof EduProfileSync !== 'undefined') {
+      var syncData = {};
+      if (studentProfile.gpa_value) syncData.gpa_value = studentProfile.gpa_value;
+      if (studentProfile.gpa_scale) syncData.gpa_scale = studentProfile.gpa_scale;
+      if (studentProfile.ielts_overall) syncData.ielts_overall = studentProfile.ielts_overall;
+      if (studentProfile.target_study_level) syncData.target_study_level = studentProfile.target_study_level;
+      if (studentProfile.target_fields.length) syncData.target_fields = studentProfile.target_fields;
+      if (studentProfile.target_countries.length) syncData.target_countries = studentProfile.target_countries;
+      EduProfileSync.update(syncData);
+    }
+
+    document.getElementById('profileStatus').textContent = 'Profile applied';
+    runMatcher();
+    applyFilters();
+  };
+
+  window.clearProfile = function () {
+    studentProfile = null;
+    matchResults = [];
+    document.getElementById('profileGPA').value = '';
+    document.getElementById('profileScale').value = '';
+    document.getElementById('profileIELTS').value = '';
+    document.getElementById('profileLevel').value = '';
+    document.getElementById('profileField').value = '';
+    document.getElementById('profileDest').value = '';
+    document.getElementById('profileStatus').textContent = '';
+    if (typeof ScholarshipMatcher !== 'undefined') {
+      ScholarshipMatcher.clearQuickProfile();
+    }
+    applyFilters();
+  };
+
+  // ── Run matcher ──
+  function runMatcher() {
+    if (!studentProfile || typeof ScholarshipMatcher === 'undefined') {
+      matchResults = [];
+      return;
+    }
+    matchResults = ScholarshipMatcher.match(allScholarships, studentProfile);
+  }
+
+  // ── Filter & Render ──
+  window.applyFilters = function () {
+    if (isLoading) return;
+
+    var level = document.getElementById('level').value;
+    var dest = document.getElementById('destination').value;
+    var field = document.getElementById('field').value;
+    var funding = document.getElementById('funding').value;
+    var search = document.getElementById('search').value.toLowerCase();
+    var sortBy = document.getElementById('sortBy').value;
+
+    // Get the right data source
+    var source;
+    if (matchResults.length > 0) {
+      source = matchResults.map(function (r) {
+        return Object.assign({}, r.scholarship, { _match: r });
+      });
+    } else {
+      source = allScholarships.map(function (s) {
+        return Object.assign({}, s, { _match: null });
+      });
+    }
+
+    // Apply filters
+    var results = source.filter(function (s) {
+      if (level !== 'all' && s.levels && s.levels.indexOf(level) === -1) return false;
+      if (dest !== 'all' && s.destinations && s.destinations.indexOf(dest) === -1) return false;
+      if (field !== 'all' && s.fields && s.fields.indexOf(field) === -1 && s.fields.indexOf('any') === -1) return false;
+      if (funding !== 'all' && s.funding !== funding) return false;
+      if (search && (s.name || '').toLowerCase().indexOf(search) === -1 &&
+        (s.provider || '').toLowerCase().indexOf(search) === -1 &&
+        (s.description || '').toLowerCase().indexOf(search) === -1) return false;
+      return true;
+    });
+
+    // Sort
+    if (sortBy === 'match' && matchResults.length > 0) {
+      results.sort(function (a, b) {
+        var sa = a._match ? a._match.score : 0;
+        var sb = b._match ? b._match.score : 0;
+        return sb - sa;
+      });
+    } else if (sortBy === 'name') {
+      results.sort(function (a, b) { return (a.name || '').localeCompare(b.name || ''); });
+    } else if (sortBy === 'deadline') {
+      var now = new Date().getMonth() + 1;
+      results.sort(function (a, b) {
+        var da = a.deadline_month || 13;
+        var db = b.deadline_month || 13;
+        // Sort by months until deadline
+        var diffA = da >= now ? da - now : da + 12 - now;
+        var diffB = db >= now ? db - now : db + 12 - now;
+        return diffA - diffB;
+      });
+    }
+
+    document.getElementById('countBadge').textContent = results.length + ' scholarships found';
+    renderGrid(results);
+  };
+
+  function renderGrid(results) {
+    var grid = document.getElementById('scholarshipGrid');
+    if (!results.length) {
+      grid.innerHTML = '<p style="text-align:center;color:#94a3b8;padding:40px;font-size:.88rem;grid-column:1/-1">No scholarships match your filters. Try broadening your search.</p>';
+      return;
+    }
+
+    var html = '';
+    var DEST_LABELS = {uk:'UK',us:'USA',eu:'Europe',africa:'Africa',canada:'Canada',australia:'Australia',global:'Global'};
+    var LEVEL_SHORT = {undergrad:'UG',masters:'MSc',phd:'PhD',postdoc:'PostDoc'};
+
+    results.forEach(function (s) {
+      var fundClass = s.funding === 'full' ? 'full' : 'partial';
+      var fundLabel = s.funding === 'full' ? 'FULLY FUNDED' : 'PARTIAL';
+      var levels = (s.levels || []).map(function (l) { return LEVEL_SHORT[l] || l; }).join(', ');
+      var destLabels = (s.destinations || []).map(function (d) { return DEST_LABELS[d] || d; }).join(', ');
+      var url = s.application_url || s.info_url || '#';
+
+      // Match badge
+      var matchHtml = '';
+      if (s._match && s._match.percent !== undefined) {
+        var m = s._match;
+        matchHtml = '<div class="match-badge ' + m.categoryClass + '">' + m.category + ' &middot; ' + m.percent + '%</div>';
+
+        // Show unmet requirements
+        if (m.unmet.length > 0) {
+          matchHtml += '<div class="match-details">';
+          m.unmet.forEach(function (key) {
+            var d = m.details[key];
+            if (key === 'gpa' && d.required && d.yours) {
+              matchHtml += '<span class="unmet">GPA: yours ' + d.yours + ' / need ' + d.required + '</span> ';
+            } else if (key === 'ielts' && d.required && d.yours) {
+              matchHtml += '<span class="unmet">IELTS: yours ' + d.yours + ' / need ' + d.required + '</span> ';
+            } else if (key === 'field') {
+              matchHtml += '<span class="unmet">Field mismatch</span> ';
+            } else if (key === 'destination') {
+              matchHtml += '<span class="unmet">Different destination</span> ';
+            } else if (key === 'level') {
+              matchHtml += '<span class="unmet">Level mismatch</span> ';
+            }
+          });
+          matchHtml += '</div>';
+        }
+      }
+
+      html += '<div class="sch-card">' +
+        '<span class="funding-badge ' + fundClass + '">' + fundLabel + '</span>' +
+        matchHtml +
+        '<h3>' + (s.name || '') + '</h3>' +
+        '<div class="provider">' + (s.provider || '') + '</div>' +
+        '<div class="details">' + (s.description || '') + '</div>' +
+        '<div class="tags">' +
+          '<span class="tag">' + levels + '</span>' +
+          '<span class="tag">' + destLabels + '</span>' +
+          (s.fields || []).filter(function (f) { return f !== 'any'; }).map(function (f) { return '<span class="tag">' + f + '</span>'; }).join('') +
+        '</div>' +
+        (s.deadline_text ? '<div class="deadline">Deadline: ' + s.deadline_text + '</div>' : '') +
+        '<a class="sch-link" href="' + url + '" target="_blank" rel="noopener">Visit Official Website &rarr;</a>' +
+      '</div>';
+    });
+
+    grid.innerHTML = html;
+  }
+
+  // ── Init ──
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadScholarships);
+  } else {
+    loadScholarships();
+  }
+})();
 </script>
 
 <script>
-// Save/Share buttons — manual placement needed
+// Save/Share buttons
 (function(){
   var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
   var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;

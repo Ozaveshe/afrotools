@@ -78,7 +78,11 @@ exports.handler = async function (event) {
     const allowed = [
       'name', 'country', 'phone', 'city', 'bio', 'job_title', 'company',
       'industry', 'company_size', 'experience_level', 'linkedin_url',
-      'website_url', 'interests'
+      'website_url', 'interests',
+      // Education fields
+      'education_level', 'institution', 'gpa_value', 'gpa_scale',
+      'target_study_level', 'target_countries', 'target_fields',
+      'ielts_overall', 'ielts_components', 'jamb_score', 'nationality'
     ];
     const profileData = {};
     allowed.forEach(function (key) {

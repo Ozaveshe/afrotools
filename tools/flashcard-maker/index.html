@@ -1,515 +1,1007 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-<!-- Google Analytics 4 -->
+<meta charset="UTF-8">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-D859CGF391');
-</script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flashcard Study Tool | AfroTools</title>
-    <meta name="description" content="Free flashcard maker with flip, quiz, and match study modes. Spaced repetition, deck management, import/export CSV, and progress tracking.">
-    <link rel="canonical" href="https://afrotools.com/tools/flashcard-maker">
-    <meta property="og:title" content="Flashcard Study Tool | AfroTools">
-    <meta property="og:description" content="Free flashcard maker with flip, quiz, and match study modes. Spaced repetition, deck management, import/export CSV, and progress tracking.">
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'flashcard-maker'});</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flashcard Study Tool — Flip, Quiz &amp; Match | AfroTools</title>
+<meta name="description" content="Free flashcard maker with pre-made JAMB, WAEC, KCSE and Matric exam packs. Study with flip cards, quizzes, and matching games. Spaced repetition and progress tracking.">
+<link rel="canonical" href="https://afrotools.com/tools/flashcard-maker/">
+<meta property="og:title" content="Flashcard Study Tool — Flip, Quiz &amp; Match | AfroTools">
+<meta property="og:description" content="Free flashcard maker with pre-made JAMB, WAEC, KCSE and Matric exam packs. Flip, quiz, match study modes with spaced repetition.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
-    <meta property="og:site_name" content="AfroTools">
-    <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/css/tokens.min.css">
-    <link rel="stylesheet" href="/assets/css/global.min.css">
-    <script src="/assets/js/components/navbar.min.js" defer></script>
-    <script src="/assets/js/components/footer.min.js" defer></script>
-    <meta name="tool-id" content="flashcard-maker">
-    <script src="/assets/js/favorites.js"></script>
-    <style>
-        *,*::before,*::after{box-sizing:border-box}
-        :root{--green:var(--color-primary);--green-dark:#0047AB;--dark:#0f1419;--border:#e5e7eb;--light:#f9fafb;--radius:14px;--shadow:0 1px 3px rgba(0,0,0,.08);--shadow-md:0 4px 12px rgba(0,0,0,.1)}
-        body{font-family:'DM Sans',sans-serif;background:#fff;color:var(--dark);line-height:1.6}
-        .container{max-width:960px;margin:0 auto;padding:1.5rem}
-        .hero{background:linear-gradient(135deg,var(--green),var(--green-dark));color:#fff;padding:3rem 1.5rem;text-align:center;border-radius:var(--radius);margin-bottom:2rem}
-        .hero h1{font-size:2.2rem;font-weight:700;margin:0 0 .5rem}
-        .hero p{font-size:1.05rem;opacity:.95;margin:0}
-        .card{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-bottom:1.5rem;box-shadow:var(--shadow)}
-        .card h2{font-size:1.25rem;font-weight:700;margin:0 0 1rem}
-        label{display:block;font-weight:500;margin-bottom:.35rem;font-size:.95rem}
-        input[type="text"],textarea,select{width:100%;padding:.65rem .85rem;border:1.5px solid var(--border);border-radius:10px;font-family:inherit;font-size:.95rem;background:#fff;transition:border-color .2s}
-        input:focus,textarea:focus,select:focus{outline:none;border-color:var(--green)}
-        textarea{resize:vertical;min-height:60px}
-        .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.7rem 1.3rem;background:var(--green);color:#fff;border:none;border-radius:10px;font-family:inherit;font-size:.95rem;font-weight:600;cursor:pointer;transition:background .2s}
-        .btn:hover{background:var(--green-dark)}
-        .btn-sm{padding:.5rem 1rem;font-size:.85rem}
-        .btn-outline{background:transparent;color:var(--green);border:1.5px solid var(--green)}
-        .btn-outline:hover{background:var(--green);color:#fff}
-        .btn-danger{background:#ef4444}.btn-danger:hover{background:#dc2626}
-        .btn-group{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.75rem}
-        .tabs{display:flex;gap:.25rem;background:var(--light);border-radius:10px;padding:4px;margin-bottom:1.25rem}
-        .tab{flex:1;padding:.6rem .5rem;text-align:center;border-radius:8px;cursor:pointer;font-weight:500;font-size:.85rem;border:none;background:transparent;font-family:inherit;transition:all .2s}
-        .tab.active{background:var(--green);color:#fff}
-        .form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
-        .form-group{margin-bottom:1rem}
-        .deck-list{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem}
-        .deck-chip{padding:.4rem .8rem;border-radius:20px;border:1.5px solid var(--border);cursor:pointer;font-size:.85rem;font-weight:500;transition:all .2s}
-        .deck-chip.active{background:var(--green);color:#fff;border-color:var(--green)}
-        .deck-chip .del{margin-left:.3rem;opacity:.6;cursor:pointer}
-        .deck-chip .del:hover{opacity:1}
-        .flashcard-container{perspective:1000px;margin:1.5rem auto;max-width:500px}
-        .flashcard{position:relative;width:100%;min-height:250px;cursor:pointer;transform-style:preserve-3d;transition:transform .5s}
-        .flashcard.flipped{transform:rotateY(180deg)}
-        .flashcard-face{position:absolute;inset:0;backface-visibility:hidden;display:flex;align-items:center;justify-content:center;padding:2rem;border-radius:var(--radius);border:1.5px solid var(--border);font-size:1.2rem;font-weight:500;text-align:center;word-break:break-word}
-        .flashcard-front{background:#fff}
-        .flashcard-back{background:var(--light);transform:rotateY(180deg)}
-        .card-counter{text-align:center;font-size:.9rem;color:#666;margin-bottom:.5rem}
-        .progress-bar{width:100%;height:8px;background:var(--border);border-radius:4px;overflow:hidden;margin:.75rem 0}
-        .progress-fill{height:100%;background:var(--green);border-radius:4px;transition:width .3s}
-        .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:.75rem}
-        .stat-box{background:var(--light);border-radius:10px;padding:1rem;text-align:center}
-        .stat-val{font-size:1.5rem;font-weight:700;color:var(--green)}
-        .stat-label{font-size:.8rem;color:#666}
-        .quiz-input{display:flex;gap:.5rem;margin-top:1rem}
-        .quiz-input input{flex:1}
-        .quiz-feedback{margin-top:.75rem;padding:.75rem;border-radius:10px;font-weight:500}
-        .correct{background:#DBEAFE;color:#1E40AF}
-        .incorrect{background:#fee2e2;color:#991b1b}
-        .match-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin:1rem 0}
-        .match-item{padding:.75rem;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;text-align:center;font-size:.9rem;transition:all .2s;word-break:break-word}
-        .match-item.selected{border-color:var(--green);background:#EFF6FF}
-        .match-item.matched{background:#DBEAFE;border-color:var(--color-primary);opacity:.6;pointer-events:none}
-        .match-item.wrong{background:#fee2e2;border-color:#ef4444}
-        .card-list-item{display:flex;justify-content:space-between;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--border);font-size:.9rem}
-        .card-list-item:last-child{border-bottom:none}
-        .hidden{display:none}
-        .kbd{display:inline-block;padding:2px 6px;background:#eee;border:1px solid #ccc;border-radius:4px;font-size:.75rem;font-family:monospace}
-        .faq-section{margin-top:2rem}
-        .faq-item{border-bottom:1px solid var(--border)}
-        .faq-q{display:flex;justify-content:space-between;align-items:center;padding:1rem 0;cursor:pointer;font-weight:600}
-        .faq-q::after{content:'+';font-size:1.3rem;transition:transform .2s}
-        .faq-item.open .faq-q::after{transform:rotate(45deg)}
-        .faq-a{max-height:0;overflow:hidden;transition:max-height .3s;font-size:.95rem;color:#555}
-        .faq-item.open .faq-a{max-height:300px}
-        .faq-a p{margin:0 0 1rem}
-        @media(max-width:640px){.hero h1{font-size:1.6rem}.form-row{grid-template-columns:1fr}.match-grid{grid-template-columns:1fr}.flashcard-face{font-size:1rem;min-height:200px}}
-    </style>
-    <script type="application/ld+json">
-    {"@context":"https://schema.org","@type":"WebApplication","name":"Flashcard Study Tool","url":"https://afrotools.com/tools/flashcard-maker","description":"Free flashcard maker with flip, quiz, and match study modes, spaced repetition, and progress tracking.","applicationCategory":"EducationalApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
-    </script>
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/flashcard-maker/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="flashcard-maker.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<meta name="tool-id" content="flashcard-maker">
+<script src="/assets/js/favorites.js"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Flashcard Study Tool","url":"https://afrotools.com/tools/flashcard-maker/","applicationCategory":"EducationalApplication","operatingSystem":"All","description":"Free flashcard maker with pre-made exam packs, flip/quiz/match modes, and spaced repetition.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
 <script src="/assets/js/lib/toast.js" defer></script>
 <script src="/assets/js/components/share-card-generator.js" defer></script>
 <script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
-    <afro-navbar></afro-navbar>
-    <main class="container">
-        <div class="hero">
-            <h1>Flashcard Study Tool</h1>
-            <p>Create, study, and master flashcards with spaced repetition</p>
-        </div>
+<afro-navbar></afro-navbar>
 
-        <!-- Deck Management -->
-        <div class="card">
-            <h2>Your Decks</h2>
-            <div class="deck-list" id="deckList"></div>
-            <div style="display:flex;gap:.5rem;align-items:end;flex-wrap:wrap">
-                <div style="flex:1;min-width:180px"><label for="newDeckName">New Deck</label><input type="text" id="newDeckName" placeholder="Deck name"></div>
-                <button class="btn btn-sm" onclick="createDeck()">Create Deck</button>
-            </div>
-        </div>
+<!-- Hero -->
+<section class="fc-hero">
+<div class="fc-hero-inner">
+  <div class="fc-breadcrumb"><a href="/">Home</a> &middot; <a href="/education/">Education</a> &middot; <span class="current">Flashcard Study Tool</span></div>
+  <h1>Study smarter. <span>Remember more.</span></h1>
+  <p class="fc-hero-sub">Create your own flashcards or use pre-made exam decks. Study with flip cards, quizzes, and matching games — powered by spaced repetition.</p>
+  <div class="fc-tags">
+    <span class="fc-tag">JAMB / UTME</span>
+    <span class="fc-tag">WAEC / SSCE</span>
+    <span class="fc-tag">KCSE</span>
+    <span class="fc-tag">SA Matric</span>
+    <span class="fc-tag">University</span>
+  </div>
+</div>
+</section>
 
-        <!-- Add Cards -->
-        <div class="card" id="addCardSection">
-            <h2>Add Cards</h2>
-            <div class="form-row">
-                <div class="form-group"><label for="cardFront">Front (Question/Term)</label><input type="text" id="cardFront" placeholder="e.g. What is photosynthesis?"></div>
-                <div class="form-group"><label for="cardBack">Back (Answer/Definition)</label><input type="text" id="cardBack" placeholder="e.g. Process by which plants convert light to energy"></div>
-            </div>
-            <div class="btn-group">
-                <button class="btn btn-sm" onclick="addCard()">Add Card</button>
-                <button class="btn btn-sm btn-outline" onclick="toggleBulk()">Bulk Import</button>
-                <button class="btn btn-sm btn-outline" onclick="exportDeck()">Export CSV</button>
-            </div>
-            <div class="hidden" id="bulkSection" style="margin-top:1rem">
-                <label for="bulkInput">Paste tab-separated or CSV data (front\\tback per line)</label>
-                <textarea id="bulkInput" rows="5" placeholder="Term1\tDefinition1&#10;Term2\tDefinition2"></textarea>
-                <button class="btn btn-sm" style="margin-top:.5rem" onclick="bulkImport()">Import</button>
-            </div>
-            <div id="cardsList" style="margin-top:1rem;max-height:250px;overflow-y:auto"></div>
-        </div>
+<!-- Study ecosystem link -->
+<div class="fc-study-bar">
+  <a href="/tools/study-planner/" class="fc-study-link">
+    <span class="fc-study-link-icon">&#128197;</span>
+    <div class="fc-study-link-text">
+      <div class="fc-study-link-title">Need a study timetable?</div>
+      <div class="fc-study-link-desc">Use the Study Planner to organise your revision schedule</div>
+    </div>
+    <span class="fc-study-link-arrow">&rarr;</span>
+  </a>
+</div>
 
-        <!-- Study Mode -->
-        <div class="card" id="studySection">
-            <h2>Study</h2>
-            <div class="tabs" id="modeTabs">
-                <button class="tab active" data-mode="flip">Flip</button>
-                <button class="tab" data-mode="quiz">Quiz</button>
-                <button class="tab" data-mode="match">Match</button>
-            </div>
-            <div id="studyArea">
-                <p style="color:#666;text-align:center">Create a deck and add cards to start studying.</p>
-            </div>
-            <div class="btn-group" id="studyControls" style="justify-content:center"></div>
-            <p style="font-size:.8rem;color:#999;margin-top:.75rem;text-align:center">
-                Keyboard: <span class="kbd">Space</span> flip &middot; <span class="kbd">&larr;</span> review again &middot; <span class="kbd">&rarr;</span> got it
-            </p>
-        </div>
+<!-- App -->
+<div class="fc-app">
 
-        <!-- Stats -->
-        <div class="card">
-            <h2>Progress</h2>
-            <div class="progress-bar"><div class="progress-fill" id="masteryBar" style="width:0%"></div></div>
-            <div style="text-align:center;font-size:.85rem;color:#666;margin-bottom:1rem"><span id="masteryPct">0</span>% mastered</div>
-            <div class="stats-grid">
-                <div class="stat-box"><div class="stat-val" id="statTotal">0</div><div class="stat-label">Total Cards</div></div>
-                <div class="stat-box"><div class="stat-val" id="statMastered">0</div><div class="stat-label">Mastered</div></div>
-                <div class="stat-box"><div class="stat-val" id="statReview">0</div><div class="stat-label">To Review</div></div>
-                <div class="stat-box"><div class="stat-val" id="statAccuracy">0%</div><div class="stat-label">Accuracy</div></div>
-            </div>
-        </div>
+<!-- Tabs -->
+<div class="fc-tabs">
+  <button class="fc-tab active" data-tab="decks" onclick="switchTab('decks')">Decks</button>
+  <button class="fc-tab" data-tab="study" onclick="switchTab('study')">Study</button>
+  <button class="fc-tab" data-tab="progress" onclick="switchTab('progress')">Progress</button>
+</div>
 
-        <div class="card faq-section">
-            <h2>Frequently Asked Questions</h2>
-            <div class="faq-item" onclick="this.classList.toggle('open')">
-                <div class="faq-q">How does spaced repetition work?</div>
-                <div class="faq-a"><p>Cards you mark as "Review Again" appear more frequently in your study sessions. Cards you mark as "Got It" are shown less often, focusing your study time on material you find challenging.</p></div>
-            </div>
-            <div class="faq-item" onclick="this.classList.toggle('open')">
-                <div class="faq-q">Is my data saved?</div>
-                <div class="faq-a"><p>Yes, all decks and cards are saved to your browser's local storage. Your data stays on your device and persists between sessions. Clearing browser data will remove your flashcards.</p></div>
-            </div>
-            <div class="faq-item" onclick="this.classList.toggle('open')">
-                <div class="faq-q">How do I import cards in bulk?</div>
-                <div class="faq-a"><p>Click "Bulk Import" and paste your data with one card per line. Use a tab character or comma to separate the front (term) from the back (definition). You can also export from spreadsheet apps as CSV.</p></div>
-            </div>
-            <div class="faq-item" onclick="this.classList.toggle('open')">
-                <div class="faq-q">What study modes are available?</div>
-                <div class="faq-a"><p>Flip mode lets you see the front and reveal the back. Quiz mode asks you to type the answer. Match mode gives you a set of terms and definitions to pair together.</p></div>
-            </div>
-        </div>
-    </main>
+<!-- ==================== DECKS PANEL ==================== -->
+<div class="fc-panel active" id="panel-decks">
 
-    <afro-related-tools category="education" current="flashcard-maker"></afro-related-tools>
-    <afro-newsletter-cta></afro-newsletter-cta>
-    <afro-footer></afro-footer>
+<!-- Pre-made decks -->
+<div class="fc-card">
+  <div class="fc-card-head">
+    <span class="fc-card-label"><span class="icon">&#128218;</span> Ready-Made Exam Packs</span>
+    <span class="fc-card-badge">Free</span>
+  </div>
+  <div class="fc-card-body">
+    <div class="fc-presets" id="presetGrid"></div>
+  </div>
+</div>
 
-    <script>
-        const STORAGE_KEY = 'afro_flashcards';
-        let state = { decks: [], activeDeck: null, mode: 'flip', studyIndex: 0, studyOrder: [], stats: { correct: 0, incorrect: 0 } };
-        let matchState = { selected: null, pairs: [], matched: 0 };
+<!-- Your decks -->
+<div class="fc-card">
+  <div class="fc-card-head">
+    <span class="fc-card-label"><span class="icon">&#128451;</span> Your Decks</span>
+    <span id="deckCount" style="font-size:.72rem;color:var(--muted)">0 decks</span>
+  </div>
+  <div class="fc-card-body">
+    <div class="fc-deck-list" id="deckList"></div>
+    <div class="fc-create-row">
+      <div class="fc-field"><label for="newDeckName">New deck name</label><input type="text" id="newDeckName" placeholder="e.g. Biology Chapter 3" onkeydown="if(event.key==='Enter')createDeck()"></div>
+      <button class="fc-btn primary sm" onclick="createDeck()">+ Create</button>
+    </div>
+  </div>
+</div>
 
-        function load() {
-            try { const d = JSON.parse(localStorage.getItem(STORAGE_KEY)); if (d && d.decks) state.decks = d.decks; } catch(e) {}
-            if (state.decks.length > 0) state.activeDeck = 0;
-            render();
-        }
+<!-- Add cards -->
+<div class="fc-card" id="addCardSection">
+  <div class="fc-card-head">
+    <span class="fc-card-label"><span class="icon">&#10133;</span> Add Cards</span>
+  </div>
+  <div class="fc-card-body">
+    <div class="fc-form-row">
+      <div class="fc-field"><label for="cardFront">Front (question / term)</label><input type="text" id="cardFront" placeholder="e.g. What is photosynthesis?" onkeydown="if(event.key==='Enter')document.getElementById('cardBack').focus()"></div>
+      <div class="fc-field"><label for="cardBack">Back (answer / definition)</label><input type="text" id="cardBack" placeholder="e.g. Process by which plants convert light to energy" onkeydown="if(event.key==='Enter')addCard()"></div>
+    </div>
+    <div class="fc-btn-group">
+      <button class="fc-btn primary sm" onclick="addCard()">Add Card</button>
+      <button class="fc-btn sm" onclick="toggleBulk()">Bulk Import</button>
+      <button class="fc-btn sm" onclick="exportDeck()">Export CSV</button>
+    </div>
+    <div class="fc-bulk" id="bulkSection">
+      <div class="fc-field">
+        <label for="bulkInput">Paste tab-separated or CSV data (one card per line)</label>
+        <textarea id="bulkInput" rows="5" placeholder="Photosynthesis&#9;Process by which plants convert light to energy&#10;Mitosis&#9;Cell division producing two identical daughter cells"></textarea>
+      </div>
+      <button class="fc-btn primary sm" style="margin-top:8px" onclick="bulkImport()">Import Cards</button>
+    </div>
+    <div class="fc-card-scroll" id="cardsList"></div>
+  </div>
+</div>
 
-        function save() {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify({ decks: state.decks }));
-        }
+</div><!-- end decks panel -->
 
-        function render() {
-            renderDecks(); renderCards(); updateStats();
-            if (state.activeDeck !== null && getDeck().cards.length > 0) startStudy();
-            else document.getElementById('studyArea').innerHTML = '<p style="color:#666;text-align:center">Create a deck and add cards to start studying.</p>';
-        }
+<!-- ==================== STUDY PANEL ==================== -->
+<div class="fc-panel" id="panel-study">
 
-        function getDeck() { return state.activeDeck !== null ? state.decks[state.activeDeck] : null; }
+<div class="fc-card">
+  <div class="fc-card-head">
+    <span class="fc-card-label"><span class="icon">&#127891;</span> Study Session</span>
+    <span id="activeDeckName" style="font-size:.72rem;color:var(--muted)"></span>
+  </div>
+  <div class="fc-card-body">
+    <!-- Mode selector -->
+    <div class="fc-study-modes" id="modeTabs">
+      <button class="fc-mode-btn active" data-mode="flip" onclick="setMode('flip')">&#128195; Flip</button>
+      <button class="fc-mode-btn" data-mode="quiz" onclick="setMode('quiz')">&#9999;&#65039; Quiz</button>
+      <button class="fc-mode-btn" data-mode="match" onclick="setMode('match')">&#129518; Match</button>
+    </div>
 
-        function renderDecks() {
-            const el = document.getElementById('deckList');
-            el.innerHTML = state.decks.map((d, i) =>
-                `<span class="deck-chip ${i === state.activeDeck ? 'active' : ''}" onclick="selectDeck(${i})">${d.name} (${d.cards.length}) <span class="del" onclick="event.stopPropagation();deleteDeck(${i})">&times;</span></span>`
-            ).join('');
-        }
+    <!-- Study content area -->
+    <div id="studyArea">
+      <div class="fc-study-empty">
+        <div class="fc-study-empty-icon">&#128218;</div>
+        <div class="fc-study-empty-title">No deck selected</div>
+        <div class="fc-study-empty-desc">Select a deck from the Decks tab to start studying</div>
+        <button class="fc-btn primary" onclick="switchTab('decks')">Go to Decks</button>
+      </div>
+    </div>
 
-        function renderCards() {
-            const el = document.getElementById('cardsList');
-            const deck = getDeck();
-            if (!deck) { el.innerHTML = ''; return; }
-            el.innerHTML = deck.cards.map((c, i) =>
-                `<div class="card-list-item"><span><strong>${c.front}</strong> &mdash; ${c.back}</span><button class="btn btn-sm btn-danger" onclick="deleteCard(${i})">&times;</button></div>`
-            ).join('');
-        }
+    <!-- Controls -->
+    <div class="fc-study-controls" id="studyControls"></div>
 
-        function createDeck() {
-            const name = document.getElementById('newDeckName').value.trim();
-            if (!name) return;
-            state.decks.push({ name, cards: [] });
-            state.activeDeck = state.decks.length - 1;
-            document.getElementById('newDeckName').value = '';
-            save(); render();
-        }
+    <!-- Keyboard hints -->
+    <div class="fc-kbd-hints" id="kbdHints">
+      <span class="fc-kbd">Space</span> flip &middot; <span class="fc-kbd">&larr;</span> review &middot; <span class="fc-kbd">&rarr;</span> got it
+    </div>
+  </div>
+</div>
 
-        function selectDeck(i) { state.activeDeck = i; state.studyIndex = 0; save(); render(); }
+</div><!-- end study panel -->
 
-        function deleteDeck(i) {
-            if (!confirm(`Delete deck "${state.decks[i].name}"?`)) return;
-            state.decks.splice(i, 1);
-            state.activeDeck = state.decks.length > 0 ? 0 : null;
-            save(); render();
-        }
+<!-- ==================== PROGRESS PANEL ==================== -->
+<div class="fc-panel" id="panel-progress">
 
-        function addCard() {
-            const deck = getDeck();
-            if (!deck) { alert('Create a deck first.'); return; }
-            const front = document.getElementById('cardFront').value.trim();
-            const back = document.getElementById('cardBack').value.trim();
-            if (!front || !back) { alert('Both front and back are required.'); return; }
-            deck.cards.push({ front, back, mastered: false, reviewCount: 0 });
-            document.getElementById('cardFront').value = '';
-            document.getElementById('cardBack').value = '';
-            save(); render();
-        }
+<!-- Streak -->
+<div class="fc-streak-bar" id="streakBar" style="display:none">
+  <span class="fc-streak-flame">&#128293;</span>
+  <span class="fc-streak-text">Study streak:</span>
+  <span class="fc-streak-count" id="streakCount">0 days</span>
+</div>
 
-        function deleteCard(i) {
-            getDeck().cards.splice(i, 1);
-            save(); render();
-        }
+<div class="fc-card">
+  <div class="fc-card-head">
+    <span class="fc-card-label"><span class="icon">&#128200;</span> Your Progress</span>
+  </div>
+  <div class="fc-card-body">
+    <div class="fc-progress-bar"><div class="fc-progress-fill" id="masteryBar" style="width:0%"></div></div>
+    <div class="fc-progress-label"><span id="masteryPct">0</span>% mastered</div>
+    <div class="fc-stats">
+      <div class="fc-stat"><div class="fc-stat-num" id="statTotal">0</div><div class="fc-stat-label">Total</div></div>
+      <div class="fc-stat"><div class="fc-stat-num" id="statMastered">0</div><div class="fc-stat-label">Mastered</div></div>
+      <div class="fc-stat"><div class="fc-stat-num" id="statReview">0</div><div class="fc-stat-label">To Review</div></div>
+      <div class="fc-stat"><div class="fc-stat-num" id="statAccuracy">0%</div><div class="fc-stat-label">Accuracy</div></div>
+    </div>
+  </div>
+</div>
 
-        function toggleBulk() { document.getElementById('bulkSection').classList.toggle('hidden'); }
+<!-- Session history -->
+<div class="fc-card" style="margin-top:16px">
+  <div class="fc-card-head">
+    <span class="fc-card-label"><span class="icon">&#128336;</span> Session Summary</span>
+  </div>
+  <div class="fc-card-body" id="sessionSummary">
+    <div class="fc-study-empty" style="padding:24px 20px">
+      <div class="fc-study-empty-desc">Start a study session to see your results here</div>
+    </div>
+  </div>
+</div>
 
-        function bulkImport() {
-            const deck = getDeck();
-            if (!deck) { alert('Create a deck first.'); return; }
-            const text = document.getElementById('bulkInput').value.trim();
-            if (!text) return;
-            const lines = text.split('\n');
-            let count = 0;
-            lines.forEach(line => {
-                let parts = line.includes('\t') ? line.split('\t') : line.split(',');
-                if (parts.length >= 2) {
-                    deck.cards.push({ front: parts[0].trim(), back: parts.slice(1).join(',').trim(), mastered: false, reviewCount: 0 });
-                    count++;
-                }
-            });
-            document.getElementById('bulkInput').value = '';
-            document.getElementById('bulkSection').classList.add('hidden');
-            alert(`Imported ${count} cards.`);
-            save(); render();
-        }
+<!-- Card breakdown: mastered vs needs review -->
+<div class="fc-card" style="margin-top:16px">
+  <div class="fc-card-head">
+    <span class="fc-card-label"><span class="icon">&#128203;</span> Card Breakdown</span>
+    <div style="display:flex;gap:6px">
+      <button class="fc-btn sm fc-filter-btn active" data-filter="all" onclick="filterCards('all',this)">All</button>
+      <button class="fc-btn sm fc-filter-btn" data-filter="mastered" onclick="filterCards('mastered',this)">&#9989; Mastered</button>
+      <button class="fc-btn sm fc-filter-btn" data-filter="review" onclick="filterCards('review',this)">&#128260; Needs Review</button>
+    </div>
+  </div>
+  <div class="fc-card-body">
+    <div class="fc-card-scroll" id="cardBreakdown">
+      <div class="fc-study-empty" style="padding:24px 20px">
+        <div class="fc-study-empty-desc">Select a deck to see card status</div>
+      </div>
+    </div>
+  </div>
+</div>
 
-        function exportDeck() {
-            const deck = getDeck();
-            if (!deck || deck.cards.length === 0) { alert('No cards to export.'); return; }
-            const csv = 'Front,Back\n' + deck.cards.map(c => `"${c.front.replace(/"/g, '""')}","${c.back.replace(/"/g, '""')}"`).join('\n');
-            const blob = new Blob([csv], { type: 'text/csv' });
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = `${deck.name}.csv`;
-            a.click();
-        }
+</div><!-- end progress panel -->
 
-        function buildStudyOrder() {
-            const deck = getDeck();
-            if (!deck) return [];
-            const cards = deck.cards.map((c, i) => ({ ...c, idx: i }));
-            // Spaced repetition: cards needing review appear more
-            const order = [];
-            cards.forEach(c => {
-                const repeats = c.mastered ? 1 : Math.max(1, 2 + c.reviewCount);
-                for (let r = 0; r < repeats; r++) order.push(c.idx);
-            });
-            // Shuffle
-            for (let i = order.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [order[i], order[j]] = [order[j], order[i]];
-            }
-            return order;
-        }
+</div><!-- end fc-app -->
 
-        function startStudy() {
-            state.studyOrder = buildStudyOrder();
-            state.studyIndex = 0;
-            state.stats = { correct: 0, incorrect: 0 };
-            renderStudy();
-        }
+<!-- SEO content -->
+<section class="fc-seo">
+<h2>Free Flashcard Study Tool for African Students</h2>
+<p>Whether you're preparing for JAMB UTME, WAEC/SSCE, KCSE, South African Matric, or university exams, flashcards are one of the most effective study techniques. This tool uses spaced repetition to help you focus on the cards you struggle with, while spending less time on material you already know.</p>
+<p>Choose from pre-made exam packs or create your own decks. Study with three modes: flip cards for traditional review, quiz mode for active recall, and match mode for a fun challenge. Import cards from spreadsheets or export your decks as CSV. All data stays in your browser — no signup required.</p>
 
-        function renderStudy() {
-            const deck = getDeck();
-            if (!deck || deck.cards.length === 0) return;
-            const area = document.getElementById('studyArea');
-            const controls = document.getElementById('studyControls');
+<h2>Frequently Asked Questions</h2>
+<details class="fc-faq"><summary>How does spaced repetition work?</summary><p>Cards you mark as "Review Again" appear more frequently in your study sessions. Cards you mark as "Got It" are shown less often, focusing your study time on material you find challenging. This technique is proven to move information from short-term to long-term memory.</p></details>
+<details class="fc-faq"><summary>Are the pre-made decks accurate?</summary><p>Our exam packs are curated with key terms, formulas, and concepts commonly tested in JAMB, WAEC, KCSE, and Matric exams. They're a great starting point — you can also add your own cards to any deck.</p></details>
+<details class="fc-faq"><summary>Is my data saved?</summary><p>Yes, all decks and cards are saved to your browser's local storage. Your data stays on your device and persists between sessions. Clearing browser data will remove your flashcards, so use "Export CSV" to back up important decks.</p></details>
+<details class="fc-faq"><summary>How do I import cards in bulk?</summary><p>Click "Bulk Import" and paste your data with one card per line. Use a tab character or comma to separate the front (term) from the back (definition). You can also export from spreadsheet apps as CSV.</p></details>
+<details class="fc-faq"><summary>What study modes are available?</summary><p>Flip mode lets you see the front and reveal the back by clicking. Quiz mode asks you to type the answer for active recall practice. Match mode gives you a set of terms and definitions to pair together.</p></details>
+</section>
 
-            if (state.mode === 'flip') renderFlip(area, controls, deck);
-            else if (state.mode === 'quiz') renderQuiz(area, controls, deck);
-            else if (state.mode === 'match') renderMatch(area, controls, deck);
-        }
-
-        function currentCard() {
-            const deck = getDeck();
-            const idx = state.studyOrder[state.studyIndex % state.studyOrder.length];
-            return deck.cards[idx];
-        }
-
-        function renderFlip(area, controls, deck) {
-            const card = currentCard();
-            const total = state.studyOrder.length;
-            const pos = (state.studyIndex % total) + 1;
-            area.innerHTML = `
-                <div class="card-counter">${pos} / ${total}</div>
-                <div class="flashcard-container">
-                    <div class="flashcard" id="flashcard" onclick="this.classList.toggle('flipped')">
-                        <div class="flashcard-face flashcard-front">${card.front}</div>
-                        <div class="flashcard-face flashcard-back">${card.back}</div>
-                    </div>
-                </div>`;
-            controls.innerHTML = `
-                <button class="btn btn-outline" onclick="markCard(false)">Review Again</button>
-                <button class="btn" onclick="markCard(true)">Got It</button>`;
-        }
-
-        function markCard(gotIt) {
-            const deck = getDeck();
-            const idx = state.studyOrder[state.studyIndex % state.studyOrder.length];
-            if (gotIt) { deck.cards[idx].mastered = true; state.stats.correct++; }
-            else { deck.cards[idx].reviewCount++; state.stats.incorrect++; }
-            state.studyIndex++;
-            save(); updateStats(); renderStudy();
-        }
-
-        function renderQuiz(area, controls, deck) {
-            const card = currentCard();
-            const total = state.studyOrder.length;
-            const pos = (state.studyIndex % total) + 1;
-            area.innerHTML = `
-                <div class="card-counter">${pos} / ${total}</div>
-                <div style="text-align:center;padding:2rem;background:var(--light);border-radius:var(--radius);font-size:1.2rem;font-weight:500">${card.front}</div>
-                <div class="quiz-input">
-                    <input type="text" id="quizAnswer" placeholder="Type your answer..." onkeydown="if(event.key==='Enter')checkQuiz()">
-                    <button class="btn" onclick="checkQuiz()">Check</button>
-                </div>
-                <div id="quizFeedback"></div>`;
-            controls.innerHTML = '';
-            setTimeout(() => document.getElementById('quizAnswer')?.focus(), 100);
-        }
-
-        function checkQuiz() {
-            const card = currentCard();
-            const answer = document.getElementById('quizAnswer').value.trim().toLowerCase();
-            const correct = card.back.toLowerCase();
-            const fb = document.getElementById('quizFeedback');
-            const isCorrect = answer === correct || correct.includes(answer) && answer.length > 2;
-            const deck = getDeck();
-            const idx = state.studyOrder[state.studyIndex % state.studyOrder.length];
-            if (isCorrect) {
-                fb.innerHTML = `<div class="quiz-feedback correct">Correct! The answer is: ${card.back}</div>`;
-                deck.cards[idx].mastered = true;
-                state.stats.correct++;
-            } else {
-                fb.innerHTML = `<div class="quiz-feedback incorrect">Not quite. The answer is: ${card.back}</div>`;
-                deck.cards[idx].reviewCount++;
-                state.stats.incorrect++;
-            }
-            save(); updateStats();
-            setTimeout(() => { state.studyIndex++; renderStudy(); }, 1500);
-        }
-
-        function renderMatch(area, controls, deck) {
-            const cards = deck.cards.slice(0, Math.min(6, deck.cards.length));
-            const terms = cards.map((c, i) => ({ text: c.front, id: i, type: 'term' }));
-            const defs = cards.map((c, i) => ({ text: c.back, id: i, type: 'def' }));
-            // Shuffle defs
-            for (let i = defs.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [defs[i], defs[j]] = [defs[j], defs[i]];
-            }
-            matchState = { selected: null, pairs: cards.map((_, i) => i), matched: 0, total: cards.length };
-            area.innerHTML = `
-                <div class="card-counter">Match the terms with their definitions</div>
-                <div class="match-grid">
-                    <div>${terms.map(t => `<div class="match-item" data-id="${t.id}" data-type="term" onclick="matchClick(this)">${t.text}</div>`).join('')}</div>
-                    <div>${defs.map(d => `<div class="match-item" data-id="${d.id}" data-type="def" onclick="matchClick(this)">${d.text}</div>`).join('')}</div>
-                </div>`;
-            controls.innerHTML = `<button class="btn btn-outline" onclick="startStudy()">Shuffle & Restart</button>`;
-        }
-
-        function matchClick(el) {
-            if (el.classList.contains('matched')) return;
-            const id = parseInt(el.dataset.id);
-            const type = el.dataset.type;
-            if (matchState.selected === null) {
-                matchState.selected = { id, type, el };
-                el.classList.add('selected');
-            } else {
-                if (matchState.selected.type === type) {
-                    matchState.selected.el.classList.remove('selected');
-                    matchState.selected = { id, type, el };
-                    el.classList.add('selected');
-                    return;
-                }
-                if (matchState.selected.id === id) {
-                    matchState.selected.el.classList.add('matched');
-                    el.classList.add('matched');
-                    matchState.matched++;
-                    state.stats.correct++;
-                    if (matchState.matched === matchState.total) {
-                        setTimeout(() => alert('All matched! Great job!'), 300);
-                    }
-                } else {
-                    el.classList.add('wrong');
-                    matchState.selected.el.classList.add('wrong');
-                    state.stats.incorrect++;
-                    const prev = matchState.selected.el;
-                    setTimeout(() => { el.classList.remove('wrong'); prev.classList.remove('wrong'); }, 600);
-                }
-                matchState.selected.el.classList.remove('selected');
-                matchState.selected = null;
-                save(); updateStats();
-            }
-        }
-
-        function updateStats() {
-            const deck = getDeck();
-            if (!deck) return;
-            const total = deck.cards.length;
-            const mastered = deck.cards.filter(c => c.mastered).length;
-            const review = total - mastered;
-            const pct = total > 0 ? Math.round((mastered / total) * 100) : 0;
-            const attempts = state.stats.correct + state.stats.incorrect;
-            const accuracy = attempts > 0 ? Math.round((state.stats.correct / attempts) * 100) : 0;
-            document.getElementById('statTotal').textContent = total;
-            document.getElementById('statMastered').textContent = mastered;
-            document.getElementById('statReview').textContent = review;
-            document.getElementById('statAccuracy').textContent = accuracy + '%';
-            document.getElementById('masteryPct').textContent = pct;
-            document.getElementById('masteryBar').style.width = pct + '%';
-        }
-
-        // Tab switching
-        document.querySelectorAll('#modeTabs .tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                document.querySelectorAll('#modeTabs .tab').forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                state.mode = tab.dataset.mode;
-                state.studyIndex = 0;
-                if (getDeck()?.cards.length > 0) startStudy();
-            });
-        });
-
-        // Keyboard shortcuts
-        document.addEventListener('keydown', e => {
-            if (state.mode !== 'flip' || !getDeck()?.cards.length) return;
-            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-            if (e.code === 'Space') { e.preventDefault(); document.getElementById('flashcard')?.classList.toggle('flipped'); }
-            if (e.code === 'ArrowRight') { e.preventDefault(); markCard(true); }
-            if (e.code === 'ArrowLeft') { e.preventDefault(); markCard(false); }
-        });
-
-        load();
-    </script>
-    <script src="/assets/js/lib/saved-tools.js" defer></script>
-<script src="/assets/js/favorites-widget.js" defer></script>
-    <script src="/assets/js/components/tool-registry.js" defer></script>
-    <script src="/assets/js/components/related-tools.min.js" defer></script>
+<afro-related-tools category="education" current="flashcard-maker"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
 
 <script>
-// Save/Share buttons — manual placement needed
+/* ── Pre-made Deck Data ── */
+var PRESET_DECKS = {
+  'jamb-english': {
+    name: 'JAMB English',
+    emoji: '&#128214;',
+    desc: 'Vocabulary & comprehension',
+    cards: [
+      ['Ephemeral','Lasting for a very short time'],
+      ['Ubiquitous','Present, appearing, or found everywhere'],
+      ['Pragmatic','Dealing with things sensibly and realistically'],
+      ['Ambiguous','Open to more than one interpretation'],
+      ['Benevolent','Well meaning and kindly; generous'],
+      ['Cacophony','A harsh, discordant mixture of sounds'],
+      ['Diligent','Having or showing care and effort in one\'s work'],
+      ['Eloquent','Fluent or persuasive in speaking or writing'],
+      ['Gregarious','Fond of company; sociable'],
+      ['Inevitable','Certain to happen; unavoidable'],
+      ['Meticulous','Showing great attention to detail; very careful'],
+      ['Nostalgia','A sentimental longing for the past'],
+      ['Paradox','A statement that contradicts itself but contains truth'],
+      ['Resilient','Able to recover quickly from difficulties'],
+      ['Verbose','Using more words than needed']
+    ]
+  },
+  'jamb-maths': {
+    name: 'JAMB Mathematics',
+    emoji: '&#128290;',
+    desc: 'Key formulas & concepts',
+    cards: [
+      ['Quadratic formula','x = (-b ± √(b²-4ac)) / 2a'],
+      ['Pythagoras theorem','a² + b² = c² (right-angled triangle)'],
+      ['Area of a circle','A = πr²'],
+      ['Circumference of a circle','C = 2πr'],
+      ['Slope of a line','m = (y₂ - y₁) / (x₂ - x₁)'],
+      ['Distance formula','d = √((x₂-x₁)² + (y₂-y₁)²)'],
+      ['Sum of arithmetic series','S = n/2 × (2a + (n-1)d)'],
+      ['Sum of geometric series','S = a(1-rⁿ) / (1-r), where r ≠ 1'],
+      ['Logarithm rule: log(ab)','log(a) + log(b)'],
+      ['Logarithm rule: log(a/b)','log(a) - log(b)'],
+      ['Sin²θ + Cos²θ','= 1 (Pythagorean identity)'],
+      ['Differentiation: d/dx(xⁿ)','nxⁿ⁻¹ (Power rule)'],
+      ['Integration: ∫xⁿdx','xⁿ⁺¹/(n+1) + C, where n ≠ -1'],
+      ['Permutation formula','nPr = n! / (n-r)!'],
+      ['Combination formula','nCr = n! / (r!(n-r)!)']
+    ]
+  },
+  'jamb-physics': {
+    name: 'JAMB Physics',
+    emoji: '&#9889;',
+    desc: 'Laws, formulas & units',
+    cards: [
+      ['Newton\'s First Law','A body at rest stays at rest unless acted upon by a force'],
+      ['Newton\'s Second Law','F = ma (Force = mass × acceleration)'],
+      ['Newton\'s Third Law','Every action has an equal and opposite reaction'],
+      ['Ohm\'s Law','V = IR (Voltage = Current × Resistance)'],
+      ['Kinetic energy','KE = ½mv²'],
+      ['Potential energy','PE = mgh'],
+      ['Work done','W = Fd (Force × distance in direction of force)'],
+      ['Power','P = W/t (Work done / time taken)'],
+      ['Speed of light','3 × 10⁸ m/s'],
+      ['Acceleration due to gravity','g ≈ 9.8 m/s² (≈ 10 m/s² in JAMB)'],
+      ['Snell\'s Law','n₁sinθ₁ = n₂sinθ₂'],
+      ['Hooke\'s Law','F = ke (Force = spring constant × extension)'],
+      ['Wave equation','v = fλ (velocity = frequency × wavelength)'],
+      ['Pressure','P = F/A (Force per unit area)'],
+      ['Boyle\'s Law','P₁V₁ = P₂V₂ (at constant temperature)']
+    ]
+  },
+  'jamb-chemistry': {
+    name: 'JAMB Chemistry',
+    emoji: '&#129514;',
+    desc: 'Elements, reactions & bonds',
+    cards: [
+      ['Avogadro\'s number','6.022 × 10²³ particles per mole'],
+      ['pH of a neutral solution','7'],
+      ['Atomic number','Number of protons in an atom\'s nucleus'],
+      ['Mass number','Total protons + neutrons in the nucleus'],
+      ['Isotopes','Atoms of same element with different mass numbers'],
+      ['Covalent bond','Bond formed by sharing of electron pairs'],
+      ['Ionic bond','Bond formed by transfer of electrons'],
+      ['Electronegativity','Ability of an atom to attract shared electrons'],
+      ['Oxidation','Loss of electrons (increase in oxidation state)'],
+      ['Reduction','Gain of electrons (decrease in oxidation state)'],
+      ['Halogens','Group VII elements: F, Cl, Br, I, At'],
+      ['Alkali metals','Group I elements: Li, Na, K, Rb, Cs, Fr'],
+      ['Molar mass of water (H₂O)','18 g/mol'],
+      ['Charles\' Law','V₁/T₁ = V₂/T₂ (at constant pressure)'],
+      ['Ideal gas equation','PV = nRT']
+    ]
+  },
+  'waec-biology': {
+    name: 'WAEC Biology',
+    emoji: '&#129516;',
+    desc: 'Cell biology & ecology',
+    cards: [
+      ['Photosynthesis equation','6CO₂ + 6H₂O → C₆H₁₂O₆ + 6O₂'],
+      ['Respiration equation','C₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O + Energy'],
+      ['Mitosis','Cell division producing 2 identical diploid cells'],
+      ['Meiosis','Cell division producing 4 haploid cells (gametes)'],
+      ['DNA full form','Deoxyribonucleic Acid'],
+      ['Ecosystem','Community of organisms + their physical environment'],
+      ['Food chain','Linear pathway of energy transfer between organisms'],
+      ['Osmosis','Movement of water from dilute to concentrated solution through a semi-permeable membrane'],
+      ['Diffusion','Movement of molecules from high to low concentration'],
+      ['Enzyme','Biological catalyst that speeds up chemical reactions'],
+      ['Chloroplast','Organelle where photosynthesis occurs'],
+      ['Mitochondria','Organelle where aerobic respiration occurs (powerhouse)'],
+      ['Dominant allele','Allele that is expressed in heterozygous condition'],
+      ['Recessive allele','Allele expressed only in homozygous condition'],
+      ['Genotype','Genetic makeup of an organism (e.g., Aa, BB)']
+    ]
+  },
+  'kcse-kiswahili': {
+    name: 'KCSE Kiswahili',
+    emoji: '&#127468;&#127466;',
+    desc: 'Msamiati & sarufi',
+    cards: [
+      ['Methali: Asiyesikia la mkuu','...huvunjika guu (He who ignores elders\' advice suffers)'],
+      ['Methali: Haraka haraka','...haina baraka (Haste has no blessing)'],
+      ['Methali: Mchelea mwana','...kulia hulia yeye (One who fears a child crying will cry themselves)'],
+      ['Nomino','Jina la kitu, mtu, mahali au hali (Noun)'],
+      ['Kitenzi','Neno linaloeleza kitendo (Verb)'],
+      ['Kivumishi','Neno linalofafanua nomino (Adjective)'],
+      ['Kielezi','Neno linaloeleza kitenzi (Adverb)'],
+      ['Ngeli za Kiswahili','M-WA, M-MI, KI-VI, N-N, U-U, A-PA, KU, MU'],
+      ['Methali: Mwacha mila','...ni mtumwa (One who abandons culture is a slave)'],
+      ['Methali: Penye nia','...pana njia (Where there is a will, there is a way)'],
+      ['Ushairi: Kibwagizo','Kipande cha mwisho katika ubeti (Last part of a stanza)'],
+      ['Ushairi: Mshororo','Mstari mmoja wa shairi (A single line of a poem)'],
+      ['Tamathali: Tashbiha','Kulinganisha vitu viwili kwa kutumia "kama" (Simile)'],
+      ['Tamathali: Sitiari','Kulinganisha moja kwa moja bila "kama" (Metaphor)'],
+      ['Tamathali: Takriri','Kurudia neno au sauti kwa msisitizo (Repetition)']
+    ]
+  },
+  'kcse-history': {
+    name: 'KCSE History',
+    emoji: '&#127758;',
+    desc: 'African & world history',
+    cards: [
+      ['Berlin Conference','1884-1885: European powers divided Africa (Scramble for Africa)'],
+      ['Mau Mau uprising','1952-1960: Kenyan rebellion against British colonial rule'],
+      ['Organization of African Unity (OAU)','Founded 1963 in Addis Ababa (now African Union)'],
+      ['Apartheid in South Africa','1948-1994: System of racial segregation'],
+      ['Nelson Mandela released','11 February 1990, after 27 years in prison'],
+      ['Kenya independence','12 December 1963, from Britain. Jomo Kenyatta first PM'],
+      ['Ghana independence','6 March 1957: First sub-Saharan African country to gain independence'],
+      ['Scramble for Africa','Late 1800s European colonization and annexation of African territory'],
+      ['Treaty of Versailles','1919: Ended WWI, imposed penalties on Germany'],
+      ['Cold War','1947-1991: Geopolitical tension between USA and USSR'],
+      ['African Union (AU)','Established 2002, replaced OAU. HQ: Addis Ababa'],
+      ['Transatlantic slave trade','16th-19th century: Forced transport of Africans to the Americas'],
+      ['Decolonization of Africa','1950s-1970s: Most African nations gained independence'],
+      ['Rwandan Genocide','1994: Approximately 800,000 Tutsis killed in 100 days'],
+      ['Industrial Revolution','Late 1700s-1800s: Shift from agrarian to industrial economies']
+    ]
+  },
+  'matric-life-sciences': {
+    name: 'Matric Life Sciences',
+    emoji: '&#129464;',
+    desc: 'Grade 12 biology (SA)',
+    cards: [
+      ['DNA replication','Semi-conservative: each strand serves as a template'],
+      ['Protein synthesis steps','Transcription (DNA→mRNA) then Translation (mRNA→protein)'],
+      ['mRNA','Messenger RNA: carries genetic code from nucleus to ribosome'],
+      ['tRNA','Transfer RNA: brings amino acids to ribosome during translation'],
+      ['Natural selection','Organisms with favourable traits survive and reproduce more'],
+      ['Speciation','Formation of new species through evolutionary processes'],
+      ['Homeostasis','Maintaining a stable internal environment despite external changes'],
+      ['Hypothalamus','Brain region that controls body temperature, hunger, thirst'],
+      ['Insulin','Hormone from pancreas that lowers blood glucose levels'],
+      ['Glucagon','Hormone from pancreas that raises blood glucose levels'],
+      ['Meiosis significance','Produces genetic variation through crossing over and independent assortment'],
+      ['Mendel\'s Law of Segregation','Two alleles separate during gamete formation'],
+      ['Codominance','Both alleles are fully expressed in heterozygous condition'],
+      ['Nervous system pathway','Stimulus → Receptor → Sensory neuron → CNS → Motor neuron → Effector'],
+      ['Endocrine vs Nervous system','Endocrine: slow, long-lasting, chemical. Nervous: fast, short, electrical']
+    ]
+  },
+  'matric-physical-sciences': {
+    name: 'Matric Physical Sciences',
+    emoji: '&#9878;&#65039;',
+    desc: 'Grade 12 physics & chem (SA)',
+    cards: [
+      ['Newton\'s Universal Gravitation','F = Gm₁m₂/r² (G = 6.67 × 10⁻¹¹)'],
+      ['Doppler effect','Change in frequency/wavelength due to relative motion'],
+      ['Electrostatic force (Coulomb)','F = kQ₁Q₂/r² (k = 9 × 10⁹)'],
+      ['Electromagnetic induction','Changing magnetic flux induces an EMF (Faraday\'s Law)'],
+      ['Photoelectric effect','Light ejects electrons from metal surface (E = W + Ek max)'],
+      ['de Broglie wavelength','λ = h/mv (matter has wave properties)'],
+      ['Organic: Alkanes','CₙH₂ₙ₊₂ — single bonds only, saturated hydrocarbons'],
+      ['Organic: Alkenes','CₙH₂ₙ — contain C=C double bond, unsaturated'],
+      ['Esterification','Alcohol + Carboxylic acid → Ester + Water (acid catalyst)'],
+      ['Galvanic cell','Converts chemical energy to electrical energy (spontaneous)'],
+      ['Electrolytic cell','Uses electrical energy to drive non-spontaneous reaction'],
+      ['Rate of reaction factors','Concentration, temperature, surface area, catalyst'],
+      ['Le Chatelier\'s Principle','System at equilibrium shifts to oppose any change'],
+      ['Hess\'s Law','Total enthalpy change is independent of the route taken'],
+      ['Acids and bases (Brønsted-Lowry)','Acid: proton donor. Base: proton acceptor']
+    ]
+  },
+  'uni-study-skills': {
+    name: 'University Study Skills',
+    emoji: '&#127979;',
+    desc: 'Study techniques & tips',
+    cards: [
+      ['Active recall','Testing yourself instead of re-reading (3x more effective)'],
+      ['Spaced repetition','Review at increasing intervals: 1, 3, 7, 14, 30 days'],
+      ['Pomodoro technique','25 min focus + 5 min break, repeat 4x then long break'],
+      ['Feynman technique','Explain concept simply as if teaching a child'],
+      ['Mind mapping','Visual diagram linking related concepts from a central idea'],
+      ['SQ3R method','Survey, Question, Read, Recite, Review'],
+      ['Interleaving','Mixing different topics in one study session for better retention'],
+      ['Elaborative interrogation','Asking "why" and "how" to deepen understanding'],
+      ['Dual coding','Combining words with visuals to strengthen memory'],
+      ['Retrieval practice','Pulling information from memory strengthens neural pathways'],
+      ['Cornell note-taking','Divide page into notes, cues, and summary sections'],
+      ['Bloom\'s Taxonomy levels','Remember, Understand, Apply, Analyze, Evaluate, Create'],
+      ['Growth mindset','Intelligence can be developed through effort and learning'],
+      ['Chunking','Grouping information into meaningful units for easier recall'],
+      ['Leitner system','Flashcard sorting system using boxes for spaced repetition']
+    ]
+  }
+};
+
+/* ── State ── */
+var STORAGE_KEY = 'afro_flashcards';
+var STREAK_KEY = 'afro_fc_streak';
+var state = {
+  decks: [],
+  activeDeck: null,
+  mode: 'flip',
+  studyIndex: 0,
+  studyOrder: [],
+  stats: { correct: 0, incorrect: 0, sessionCards: 0 }
+};
+var matchState = { selected: null, pairs: [], matched: 0, total: 0 };
+
+/* ── Persistence ── */
+function load() {
+  try {
+    var d = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if (d && d.decks) state.decks = d.decks;
+    if (d && d.activeDeck !== undefined) state.activeDeck = d.activeDeck;
+  } catch(e) {}
+  if (state.activeDeck !== null && state.activeDeck >= state.decks.length) state.activeDeck = state.decks.length > 0 ? 0 : null;
+  renderDecks();
+  renderCards();
+  updateStats();
+  updateStreak();
+  renderPresets();
+}
+
+function save() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({ decks: state.decks, activeDeck: state.activeDeck }));
+}
+
+/* ── Tab switching ── */
+function switchTab(tab) {
+  document.querySelectorAll('.fc-tab').forEach(function(t) { t.classList.toggle('active', t.dataset.tab === tab); });
+  document.querySelectorAll('.fc-panel').forEach(function(p) { p.classList.toggle('active', p.id === 'panel-' + tab); });
+  if (tab === 'study') {
+    var deck = getDeck();
+    if (deck && deck.cards.length > 0) startStudy();
+    else renderStudyEmpty();
+  }
+  if (tab === 'progress') { updateStats(); renderBreakdown(); }
+}
+
+/* ── Deck management ── */
+function getDeck() { return state.activeDeck !== null ? state.decks[state.activeDeck] : null; }
+
+function renderDecks() {
+  var el = document.getElementById('deckList');
+  if (state.decks.length === 0) {
+    el.innerHTML = '<p style="font-size:.82rem;color:var(--muted)">No decks yet. Load a preset or create your own!</p>';
+  } else {
+    el.innerHTML = state.decks.map(function(d, i) {
+      return '<span class="fc-deck-chip' + (i === state.activeDeck ? ' active' : '') + '" onclick="selectDeck(' + i + ')">' +
+        d.name + ' <span class="count">(' + d.cards.length + ')</span>' +
+        '<span class="del" onclick="event.stopPropagation();deleteDeck(' + i + ')">&times;</span></span>';
+    }).join('');
+  }
+  document.getElementById('deckCount').textContent = state.decks.length + ' deck' + (state.decks.length !== 1 ? 's' : '');
+}
+
+function renderCards() {
+  var el = document.getElementById('cardsList');
+  var deck = getDeck();
+  if (!deck || deck.cards.length === 0) { el.innerHTML = ''; return; }
+  el.innerHTML = deck.cards.map(function(c, i) {
+    var status = c.mastered ? '<span class="fc-card-status fc-card-mastered" title="Mastered">&#9989;</span>' :
+                 c.reviewCount > 0 ? '<span class="fc-card-status fc-card-review" title="Needs review">&#128260;</span>' :
+                 '<span class="fc-card-status fc-card-new" title="Not studied yet">&#11044;</span>';
+    return '<div class="fc-card-item">' +
+      status +
+      '<span class="fc-card-item-front">' + escHtml(c.front) + '</span>' +
+      '<span class="fc-card-item-sep">&rarr;</span>' +
+      '<span class="fc-card-item-back">' + escHtml(c.back) + '</span>' +
+      '<button class="fc-card-item-del" onclick="deleteCard(' + i + ')" title="Delete">&times;</button></div>';
+  }).join('');
+}
+
+function createDeck() {
+  var name = document.getElementById('newDeckName').value.trim();
+  if (!name) return;
+  state.decks.push({ name: name, cards: [] });
+  state.activeDeck = state.decks.length - 1;
+  document.getElementById('newDeckName').value = '';
+  save(); renderDecks(); renderCards(); updateStats();
+}
+
+function selectDeck(i) {
+  state.activeDeck = i;
+  state.studyIndex = 0;
+  save(); renderDecks(); renderCards(); updateStats();
+}
+
+function deleteDeck(i) {
+  if (!confirm('Delete "' + state.decks[i].name + '"? This cannot be undone.')) return;
+  state.decks.splice(i, 1);
+  if (state.activeDeck >= state.decks.length) state.activeDeck = state.decks.length > 0 ? 0 : null;
+  save(); renderDecks(); renderCards(); updateStats();
+}
+
+function addCard() {
+  var deck = getDeck();
+  if (!deck) { alert('Select or create a deck first.'); return; }
+  var front = document.getElementById('cardFront').value.trim();
+  var back = document.getElementById('cardBack').value.trim();
+  if (!front || !back) return;
+  deck.cards.push({ front: front, back: back, mastered: false, reviewCount: 0 });
+  document.getElementById('cardFront').value = '';
+  document.getElementById('cardBack').value = '';
+  document.getElementById('cardFront').focus();
+  save(); renderCards(); updateStats();
+}
+
+function deleteCard(i) {
+  getDeck().cards.splice(i, 1);
+  save(); renderCards(); updateStats();
+}
+
+function toggleBulk() {
+  document.getElementById('bulkSection').classList.toggle('show');
+}
+
+function bulkImport() {
+  var deck = getDeck();
+  if (!deck) { alert('Select or create a deck first.'); return;  }
+  var text = document.getElementById('bulkInput').value.trim();
+  if (!text) return;
+  var lines = text.split('\n');
+  var count = 0;
+  lines.forEach(function(line) {
+    var parts = line.indexOf('\t') >= 0 ? line.split('\t') : line.split(',');
+    if (parts.length >= 2) {
+      deck.cards.push({ front: parts[0].trim(), back: parts.slice(1).join(',').trim(), mastered: false, reviewCount: 0 });
+      count++;
+    }
+  });
+  document.getElementById('bulkInput').value = '';
+  document.getElementById('bulkSection').classList.remove('show');
+  if (count > 0) alert('Imported ' + count + ' cards!');
+  save(); renderCards(); updateStats();
+}
+
+function exportDeck() {
+  var deck = getDeck();
+  if (!deck || deck.cards.length === 0) { alert('No cards to export.'); return; }
+  var csv = 'Front,Back\n' + deck.cards.map(function(c) {
+    return '"' + c.front.replace(/"/g, '""') + '","' + c.back.replace(/"/g, '""') + '"';
+  }).join('\n');
+  var blob = new Blob([csv], { type: 'text/csv' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = deck.name + '.csv';
+  a.click();
+}
+
+/* ── Presets ── */
+function renderPresets() {
+  var grid = document.getElementById('presetGrid');
+  var html = '';
+  var keys = Object.keys(PRESET_DECKS);
+  keys.forEach(function(key) {
+    var p = PRESET_DECKS[key];
+    var exists = state.decks.some(function(d) { return d.name === p.name; });
+    html += '<button class="fc-preset' + (exists ? ' selected' : '') + '" onclick="loadPreset(\'' + key + '\')">' +
+      '<div class="fc-preset-emoji">' + p.emoji + '</div>' +
+      '<div class="fc-preset-name">' + p.name + '</div>' +
+      '<div class="fc-preset-desc">' + p.desc + '</div>' +
+      '<span class="fc-preset-count">' + p.cards.length + '</span></button>';
+  });
+  grid.innerHTML = html;
+}
+
+function loadPreset(key) {
+  var p = PRESET_DECKS[key];
+  if (!p) return;
+  // Check if deck already exists
+  var existsIdx = -1;
+  state.decks.forEach(function(d, i) { if (d.name === p.name) existsIdx = i; });
+  if (existsIdx >= 0) {
+    // Select existing deck
+    state.activeDeck = existsIdx;
+  } else {
+    // Create new deck from preset
+    var cards = p.cards.map(function(c) { return { front: c[0], back: c[1], mastered: false, reviewCount: 0 }; });
+    state.decks.push({ name: p.name, cards: cards });
+    state.activeDeck = state.decks.length - 1;
+  }
+  save(); renderDecks(); renderCards(); renderPresets(); updateStats();
+  // Auto-switch to study
+  switchTab('study');
+}
+
+/* ── Study engine ── */
+function buildStudyOrder() {
+  var deck = getDeck();
+  if (!deck) return [];
+  var order = [];
+  deck.cards.forEach(function(c, i) {
+    var repeats = c.mastered ? 1 : Math.max(1, 2 + c.reviewCount);
+    for (var r = 0; r < repeats; r++) order.push(i);
+  });
+  // Shuffle
+  for (var i = order.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = order[i]; order[i] = order[j]; order[j] = tmp;
+  }
+  return order;
+}
+
+function startStudy() {
+  state.studyOrder = buildStudyOrder();
+  state.studyIndex = 0;
+  state.stats = { correct: 0, incorrect: 0, sessionCards: 0 };
+  document.getElementById('activeDeckName').textContent = getDeck() ? getDeck().name : '';
+  renderStudy();
+}
+
+function renderStudyEmpty() {
+  document.getElementById('studyArea').innerHTML =
+    '<div class="fc-study-empty">' +
+    '<div class="fc-study-empty-icon">&#128218;</div>' +
+    '<div class="fc-study-empty-title">No deck selected</div>' +
+    '<div class="fc-study-empty-desc">Select a deck from the Decks tab to start studying</div>' +
+    '<button class="fc-btn primary" onclick="switchTab(\'decks\')">Go to Decks</button></div>';
+  document.getElementById('studyControls').innerHTML = '';
+  document.getElementById('activeDeckName').textContent = '';
+}
+
+function setMode(mode) {
+  state.mode = mode;
+  state.studyIndex = 0;
+  document.querySelectorAll('.fc-mode-btn').forEach(function(b) { b.classList.toggle('active', b.dataset.mode === mode); });
+  // Show/hide keyboard hints
+  document.getElementById('kbdHints').style.display = mode === 'flip' ? '' : 'none';
+  var deck = getDeck();
+  if (deck && deck.cards.length > 0) startStudy();
+}
+
+function renderStudy() {
+  var deck = getDeck();
+  if (!deck || deck.cards.length === 0) { renderStudyEmpty(); return; }
+  var area = document.getElementById('studyArea');
+  var controls = document.getElementById('studyControls');
+  if (state.mode === 'flip') renderFlip(area, controls, deck);
+  else if (state.mode === 'quiz') renderQuiz(area, controls, deck);
+  else if (state.mode === 'match') renderMatch(area, controls, deck);
+}
+
+function currentCard() {
+  var deck = getDeck();
+  var idx = state.studyOrder[state.studyIndex % state.studyOrder.length];
+  return deck.cards[idx];
+}
+
+/* ── Flip mode ── */
+function renderFlip(area, controls, deck) {
+  var card = currentCard();
+  var total = state.studyOrder.length;
+  var pos = (state.studyIndex % total) + 1;
+  var pct = Math.round((pos / total) * 100);
+  area.innerHTML =
+    '<div class="fc-card-counter">' + pos + ' / ' + total + '</div>' +
+    '<div class="fc-card-progress"><div class="fc-card-progress-fill" style="width:' + pct + '%"></div></div>' +
+    '<div class="fc-flashcard-wrap">' +
+    '<div class="fc-flashcard" id="flashcard" onclick="this.classList.toggle(\'flipped\')">' +
+    '<div class="fc-flashcard-face fc-flashcard-front">' +
+    '<div class="fc-flashcard-label">Question</div>' +
+    '<div class="fc-flashcard-text">' + escHtml(card.front) + '</div>' +
+    '<div class="fc-flashcard-hint">Tap to flip</div></div>' +
+    '<div class="fc-flashcard-face fc-flashcard-back">' +
+    '<div class="fc-flashcard-label">Answer</div>' +
+    '<div class="fc-flashcard-text">' + escHtml(card.back) + '</div></div>' +
+    '</div></div>';
+  controls.innerHTML =
+    '<button class="fc-btn danger" onclick="markCard(false)">&#128260; Review Again</button>' +
+    '<button class="fc-btn primary" onclick="markCard(true)">&#9989; Got It</button>';
+}
+
+function markCard(gotIt) {
+  var deck = getDeck();
+  var idx = state.studyOrder[state.studyIndex % state.studyOrder.length];
+  if (gotIt) { deck.cards[idx].mastered = true; state.stats.correct++; }
+  else { deck.cards[idx].reviewCount++; state.stats.incorrect++; }
+  state.stats.sessionCards++;
+  state.studyIndex++;
+  recordStreak();
+  save(); updateStats(); renderStudy();
+}
+
+/* ── Quiz mode ── */
+function renderQuiz(area, controls, deck) {
+  var card = currentCard();
+  var total = state.studyOrder.length;
+  var pos = (state.studyIndex % total) + 1;
+  var pct = Math.round((pos / total) * 100);
+  area.innerHTML =
+    '<div class="fc-card-counter">' + pos + ' / ' + total + '</div>' +
+    '<div class="fc-card-progress"><div class="fc-card-progress-fill" style="width:' + pct + '%"></div></div>' +
+    '<div class="fc-quiz-prompt"><div class="fc-flashcard-label">What is the answer?</div><div class="fc-quiz-prompt-text">' + escHtml(card.front) + '</div></div>' +
+    '<div class="fc-quiz-input"><input type="text" id="quizAnswer" placeholder="Type your answer..." onkeydown="if(event.key===\'Enter\')checkQuiz()"><button class="fc-btn primary" onclick="checkQuiz()">Check</button></div>' +
+    '<div id="quizFeedback"></div>';
+  controls.innerHTML = '';
+  setTimeout(function() { var el = document.getElementById('quizAnswer'); if (el) el.focus(); }, 100);
+}
+
+function checkQuiz() {
+  var card = currentCard();
+  var answer = document.getElementById('quizAnswer').value.trim().toLowerCase();
+  if (!answer) return;
+  var correct = card.back.toLowerCase();
+  var isCorrect = answer === correct || (correct.includes(answer) && answer.length > 2);
+  var deck = getDeck();
+  var idx = state.studyOrder[state.studyIndex % state.studyOrder.length];
+  var fb = document.getElementById('quizFeedback');
+  if (isCorrect) {
+    fb.innerHTML = '<div class="fc-quiz-feedback fc-quiz-correct">&#9989; Correct! ' + escHtml(card.back) + '</div>';
+    deck.cards[idx].mastered = true;
+    state.stats.correct++;
+  } else {
+    fb.innerHTML = '<div class="fc-quiz-feedback fc-quiz-incorrect">&#10060; Answer: ' + escHtml(card.back) + '</div>';
+    deck.cards[idx].reviewCount++;
+    state.stats.incorrect++;
+  }
+  state.stats.sessionCards++;
+  recordStreak();
+  save(); updateStats();
+  setTimeout(function() { state.studyIndex++; renderStudy(); }, 1500);
+}
+
+/* ── Match mode ── */
+function renderMatch(area, controls, deck) {
+  var count = Math.min(6, deck.cards.length);
+  var cards = deck.cards.slice(0, count);
+  var terms = cards.map(function(c, i) { return { text: c.front, id: i }; });
+  var defs = cards.map(function(c, i) { return { text: c.back, id: i }; });
+  // Shuffle defs
+  for (var i = defs.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = defs[i]; defs[i] = defs[j]; defs[j] = tmp;
+  }
+  matchState = { selected: null, matched: 0, total: count };
+  area.innerHTML =
+    '<div class="fc-match-score" id="matchScore">Matched: 0 / ' + count + '</div>' +
+    '<div class="fc-match-grid">' +
+    '<div class="fc-match-col"><div class="fc-match-col-label">Terms</div>' +
+    terms.map(function(t) { return '<div class="fc-match-item" data-id="' + t.id + '" data-type="term" onclick="matchClick(this)">' + escHtml(t.text) + '</div>'; }).join('') +
+    '</div><div class="fc-match-col"><div class="fc-match-col-label">Definitions</div>' +
+    defs.map(function(d) { return '<div class="fc-match-item" data-id="' + d.id + '" data-type="def" onclick="matchClick(this)">' + escHtml(d.text) + '</div>'; }).join('') +
+    '</div></div>';
+  controls.innerHTML = '<button class="fc-btn" onclick="startStudy()">&#128260; Shuffle &amp; Restart</button>';
+}
+
+function matchClick(el) {
+  if (el.classList.contains('matched')) return;
+  var id = parseInt(el.dataset.id);
+  var type = el.dataset.type;
+  if (matchState.selected === null) {
+    matchState.selected = { id: id, type: type, el: el };
+    el.classList.add('selected');
+  } else {
+    if (matchState.selected.type === type) {
+      matchState.selected.el.classList.remove('selected');
+      matchState.selected = { id: id, type: type, el: el };
+      el.classList.add('selected');
+      return;
+    }
+    if (matchState.selected.id === id) {
+      matchState.selected.el.classList.add('matched');
+      el.classList.add('matched');
+      matchState.matched++;
+      state.stats.correct++;
+      state.stats.sessionCards++;
+      document.getElementById('matchScore').textContent = 'Matched: ' + matchState.matched + ' / ' + matchState.total;
+      if (matchState.matched === matchState.total) {
+        recordStreak();
+        setTimeout(function() {
+          document.getElementById('studyControls').innerHTML =
+            '<button class="fc-btn primary" onclick="startStudy()">&#127881; Play Again</button>' +
+            '<button class="fc-btn" onclick="switchTab(\'progress\')">View Progress</button>';
+        }, 400);
+      }
+    } else {
+      el.classList.add('wrong');
+      matchState.selected.el.classList.add('wrong');
+      state.stats.incorrect++;
+      state.stats.sessionCards++;
+      var prev = matchState.selected.el;
+      setTimeout(function() { el.classList.remove('wrong'); prev.classList.remove('wrong'); }, 500);
+    }
+    matchState.selected.el.classList.remove('selected');
+    matchState.selected = null;
+    save(); updateStats();
+  }
+}
+
+/* ── Stats ── */
+function updateStats() {
+  var deck = getDeck();
+  var total = deck ? deck.cards.length : 0;
+  var mastered = deck ? deck.cards.filter(function(c) { return c.mastered; }).length : 0;
+  var review = total - mastered;
+  var pct = total > 0 ? Math.round((mastered / total) * 100) : 0;
+  var attempts = state.stats.correct + state.stats.incorrect;
+  var accuracy = attempts > 0 ? Math.round((state.stats.correct / attempts) * 100) : 0;
+
+  document.getElementById('statTotal').textContent = total;
+  document.getElementById('statMastered').textContent = mastered;
+  document.getElementById('statReview').textContent = review;
+  document.getElementById('statAccuracy').textContent = accuracy + '%';
+  document.getElementById('masteryPct').textContent = pct;
+  document.getElementById('masteryBar').style.width = pct + '%';
+
+  // Session summary
+  if (state.stats.sessionCards > 0) {
+    document.getElementById('sessionSummary').innerHTML =
+      '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;text-align:center">' +
+      '<div><div style="font-family:Instrument Serif,serif;font-size:1.5rem;color:var(--brand)">' + state.stats.sessionCards + '</div><div style="font-size:.7rem;color:var(--muted);font-weight:600">CARDS STUDIED</div></div>' +
+      '<div><div style="font-family:Instrument Serif,serif;font-size:1.5rem;color:#1E40AF">' + state.stats.correct + '</div><div style="font-size:.7rem;color:var(--muted);font-weight:600">CORRECT</div></div>' +
+      '<div><div style="font-family:Instrument Serif,serif;font-size:1.5rem;color:#dc2626">' + state.stats.incorrect + '</div><div style="font-size:.7rem;color:var(--muted);font-weight:600">TO REVIEW</div></div></div>';
+  }
+}
+
+/* ── Streak tracking ── */
+function recordStreak() {
+  try {
+    var data = JSON.parse(localStorage.getItem(STREAK_KEY) || '{}');
+    var today = new Date().toISOString().slice(0, 10);
+    if (!data.dates) data.dates = [];
+    if (data.dates.indexOf(today) < 0) data.dates.push(today);
+    // Keep only last 60 days
+    if (data.dates.length > 60) data.dates = data.dates.slice(-60);
+    localStorage.setItem(STREAK_KEY, JSON.stringify(data));
+    updateStreak();
+  } catch(e) {}
+}
+
+function updateStreak() {
+  try {
+    var data = JSON.parse(localStorage.getItem(STREAK_KEY) || '{}');
+    var dates = (data.dates || []).sort();
+    if (dates.length === 0) { document.getElementById('streakBar').style.display = 'none'; return; }
+    // Calculate consecutive days ending today or yesterday
+    var streak = 0;
+    var d = new Date();
+    for (var i = 0; i < 365; i++) {
+      var ds = d.toISOString().slice(0, 10);
+      if (dates.indexOf(ds) >= 0) { streak++; d.setDate(d.getDate() - 1); }
+      else if (i === 0) { d.setDate(d.getDate() - 1); } // allow missing today
+      else break;
+    }
+    if (streak > 0) {
+      document.getElementById('streakBar').style.display = 'flex';
+      document.getElementById('streakCount').textContent = streak + ' day' + (streak !== 1 ? 's' : '');
+    } else {
+      document.getElementById('streakBar').style.display = 'none';
+    }
+  } catch(e) {}
+}
+
+/* ── Keyboard shortcuts ── */
+document.addEventListener('keydown', function(e) {
+  if (state.mode !== 'flip' || !getDeck() || !getDeck().cards.length) return;
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  if (e.code === 'Space') { e.preventDefault(); var fc = document.getElementById('flashcard'); if (fc) fc.classList.toggle('flipped'); }
+  if (e.code === 'ArrowRight') { e.preventDefault(); markCard(true); }
+  if (e.code === 'ArrowLeft') { e.preventDefault(); markCard(false); }
+});
+
+/* ── Card breakdown ── */
+var currentFilter = 'all';
+
+function renderBreakdown() {
+  var el = document.getElementById('cardBreakdown');
+  var deck = getDeck();
+  if (!deck || deck.cards.length === 0) {
+    el.innerHTML = '<div class="fc-study-empty" style="padding:24px 20px"><div class="fc-study-empty-desc">Select a deck to see card status</div></div>';
+    return;
+  }
+  var cards = deck.cards;
+  if (currentFilter === 'mastered') cards = cards.filter(function(c) { return c.mastered; });
+  else if (currentFilter === 'review') cards = cards.filter(function(c) { return !c.mastered && c.reviewCount > 0; });
+
+  if (cards.length === 0) {
+    el.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted);font-size:.82rem">No cards match this filter</div>';
+    return;
+  }
+
+  el.innerHTML = cards.map(function(c) {
+    var badge = c.mastered ? '<span class="badge badge-mastered">Mastered</span>' :
+                c.reviewCount > 0 ? '<span class="badge badge-review">Review (' + c.reviewCount + 'x)</span>' :
+                '<span class="badge badge-new">New</span>';
+    return '<div class="fc-breakdown-item">' +
+      '<span class="front">' + escHtml(c.front) + '</span>' +
+      '<span class="back">' + escHtml(c.back) + '</span>' +
+      badge + '</div>';
+  }).join('') +
+  '<button class="fc-reset-btn" onclick="resetDeckProgress()">Reset all progress for this deck</button>';
+}
+
+function filterCards(filter, btn) {
+  currentFilter = filter;
+  document.querySelectorAll('.fc-filter-btn').forEach(function(b) { b.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+  renderBreakdown();
+}
+
+function resetDeckProgress() {
+  var deck = getDeck();
+  if (!deck) return;
+  if (!confirm('Reset progress for "' + deck.name + '"? All cards will be marked as unlearned.')) return;
+  deck.cards.forEach(function(c) { c.mastered = false; c.reviewCount = 0; });
+  save(); updateStats(); renderBreakdown(); renderCards();
+}
+
+/* ── Helpers ── */
+function escHtml(str) {
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+/* ── Init ── */
+load();
+</script>
+
+<script src="/assets/js/lib/saved-tools.js" defer></script>
+<script src="/assets/js/favorites-widget.js" defer></script>
+<script src="/assets/js/components/tool-registry.js" defer></script>
+<script src="/assets/js/components/related-tools.min.js" defer></script>
+
+<script>
 (function(){
-  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
+  var containers = document.querySelectorAll('.fc-card, [class*="result"]');
   var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
   var div = document.createElement('div');
   div.className = 'result-actions';

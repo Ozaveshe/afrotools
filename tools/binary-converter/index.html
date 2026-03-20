@@ -36,13 +36,21 @@
 <script src="/assets/js/components/footer.min.js" defer></script>
 <style>
 :root {
-  --afro-green: var(--color-primary);
-  --afro-dark: #0f1419;
-  --afro-light: #f5f7fa;
+  --bc-green: #008751;
+  --bc-green-light: #5ddb9e;
+  --bc-dark: #0c1a10;
+  --bc-bg: #f0f5f1;
+  --bc-card-bg: #fff;
+  --bc-border: #d4e5d9;
+  --bc-border-light: #e8f0eb;
+  --bc-text: #0f172a;
+  --bc-text-muted: #5a7265;
+  --bc-accent-bg: #edf7f0;
 }
 
+/* ── Hero ── */
 .tool-hero {
-  background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
+  background: linear-gradient(135deg, var(--bc-dark) 0%, #132a19 50%, #0c1a10 100%);
   padding: 44px 0 36px;
   position: relative;
   overflow: hidden;
@@ -59,6 +67,7 @@
   pointer-events: none;
   font-family: 'Courier New', monospace;
   font-weight: 900;
+  color: var(--bc-green-light);
 }
 
 .tool-hero-inner {
@@ -78,7 +87,8 @@
 }
 
 .breadcrumb a { color: rgba(255,255,255,0.3); text-decoration: none; }
-.breadcrumb span { color: var(--afro-green); }
+.breadcrumb a:hover { color: rgba(255,255,255,0.5); }
+.breadcrumb span { color: var(--bc-green-light); }
 
 h1 {
   font-size: clamp(1.6rem, 4vw, 2.4rem);
@@ -89,7 +99,7 @@ h1 {
   margin-bottom: 10px;
 }
 
-h1 em { color: var(--afro-green); font-style: normal; }
+h1 em { color: var(--bc-green-light); font-style: normal; }
 
 .hero-sub {
   font-size: 0.88rem;
@@ -113,12 +123,13 @@ h1 em { color: var(--afro-green); font-style: normal; }
 }
 
 .b-green {
-  background: rgba(0,113,227,0.18);
-  color: var(--color-primary);
-  border: 1px solid rgba(0,113,227,0.38);
+  background: rgba(0,135,81,0.2);
+  color: var(--bc-green-light);
+  border: 1px solid rgba(93,219,158,0.3);
 }
 
-.tool-main { padding: 28px 0 72px; }
+/* ── Layout ── */
+.tool-main { padding: 28px 0 72px; background: var(--bc-bg); }
 
 .tool-main-inner {
   max-width: 1200px;
@@ -130,23 +141,24 @@ h1 em { color: var(--afro-green); font-style: normal; }
   align-items: start;
 }
 
+/* ── Cards ── */
 .card {
-  background: #fff;
-  border: 1px solid #DBEAFE;
+  background: var(--bc-card-bg);
+  border: 1px solid var(--bc-border);
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 1px 8px rgba(0,0,0,0.05);
+  box-shadow: 0 1px 8px rgba(0,0,0,0.04);
 }
 
 .card + .card { margin-top: 18px; }
 
 .card-head {
   padding: 15px 22px;
-  border-bottom: 1px solid #EFF6FF;
+  border-bottom: 1px solid var(--bc-border-light);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #F5F9FF;
+  background: var(--bc-accent-bg);
 }
 
 .card-title {
@@ -159,6 +171,7 @@ h1 em { color: var(--afro-green); font-style: normal; }
 
 .card-body { padding: 22px; }
 
+/* ── Fields ── */
 .field { margin-bottom: 18px; }
 .field:last-child { margin-bottom: 0; }
 
@@ -173,79 +186,132 @@ h1 em { color: var(--afro-green); font-style: normal; }
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.04em;
-  color: #0d2813;
+  color: var(--bc-text);
 }
 
 .f-input, .f-select {
   width: 100%;
   padding: 11px 13px;
-  background: #EFF6FF;
-  border: 1.5px solid #BFDBFE;
+  background: var(--bc-accent-bg);
+  border: 1.5px solid var(--bc-border);
   border-radius: 7px;
   font-size: 1rem;
   font-weight: 600;
-  color: #0d2813;
+  color: var(--bc-text);
   outline: none;
   transition: border-color 0.18s, box-shadow 0.18s;
   font-family: 'Courier New', monospace;
 }
 
 .f-input:focus, .f-select:focus {
-  border-color: var(--afro-green);
+  border-color: var(--bc-green);
   background: #fff;
-  box-shadow: 0 0 0 3px rgba(0,113,227,0.1);
+  box-shadow: 0 0 0 3px rgba(0,135,81,0.1);
 }
 
 .f-select { font-family: 'DM Sans', sans-serif; cursor: pointer; }
 
 .input-row { display: grid; grid-template-columns: 160px 1fr; gap: 10px; }
 
-.custom-base-row {
-  display: none;
-  margin-top: 10px;
-}
-
+.custom-base-row { display: none; margin-top: 10px; }
 .custom-base-row.visible { display: block; }
 
 .custom-base-input {
   width: 80px;
   padding: 8px 10px;
-  background: #EFF6FF;
-  border: 1.5px solid #BFDBFE;
+  background: var(--bc-accent-bg);
+  border: 1.5px solid var(--bc-border);
   border-radius: 7px;
   font-size: 0.9rem;
   font-weight: 600;
-  color: #0d2813;
+  color: var(--bc-text);
   outline: none;
   font-family: 'DM Sans', sans-serif;
 }
 
+/* ── Action buttons row ── */
+.action-row {
+  display: flex;
+  gap: 8px;
+  margin: 14px 0 4px;
+  flex-wrap: wrap;
+}
+
+.btn-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 14px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: all 0.15s;
+  border: 1.5px solid var(--bc-border);
+  background: var(--bc-accent-bg);
+  color: var(--bc-text);
+}
+
+.btn-action:hover { border-color: var(--bc-green); color: var(--bc-green); }
+.btn-action svg { width: 14px; height: 14px; }
+
+.btn-action.primary {
+  background: var(--bc-green);
+  color: #fff;
+  border-color: var(--bc-green);
+}
+
+.btn-action.primary:hover { background: #006d42; border-color: #006d42; }
+
+.group-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--bc-text-muted);
+  cursor: pointer;
+  user-select: none;
+}
+
+.group-toggle input { accent-color: var(--bc-green); cursor: pointer; }
+
+/* ── Error ── */
 .error-msg {
   color: #dc3545;
   font-size: 0.8rem;
   font-weight: 600;
   margin-top: 8px;
   display: none;
+  padding: 8px 12px;
+  background: #fff5f5;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
 }
 
+/* ── Output grid ── */
 .output-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
 .output-box {
-  background: #EFF6FF;
-  border: 1.5px solid #BFDBFE;
+  background: var(--bc-accent-bg);
+  border: 1.5px solid var(--bc-border);
   border-radius: 8px;
   padding: 12px;
   position: relative;
+  transition: border-color 0.15s, background 0.15s;
 }
 
-.output-box.active { border-color: var(--afro-green); background: #f0fdf4; }
+.output-box:hover { border-color: var(--bc-green); }
+.output-box.active { border-color: var(--bc-green); background: #edfff5; }
 
 .base-label {
   font-size: 0.68rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #6B8CAE;
+  color: var(--bc-text-muted);
   margin-bottom: 4px;
 }
 
@@ -254,7 +320,7 @@ h1 em { color: var(--afro-green); font-style: normal; }
   font-weight: 700;
   font-family: 'Courier New', monospace;
   word-break: break-all;
-  color: #0d2813;
+  color: var(--bc-text);
   min-height: 1.4em;
 }
 
@@ -262,9 +328,9 @@ h1 em { color: var(--afro-green); font-style: normal; }
   position: absolute;
   top: 10px;
   right: 10px;
-  background: rgba(0,113,227,0.1);
-  border: 1px solid rgba(0,113,227,0.35);
-  color: #1a5c3a;
+  background: rgba(0,135,81,0.08);
+  border: 1px solid rgba(0,135,81,0.25);
+  color: var(--bc-green);
   border-radius: 4px;
   cursor: pointer;
   font-size: 0.62rem;
@@ -274,23 +340,26 @@ h1 em { color: var(--afro-green); font-style: normal; }
   transition: all 0.15s;
 }
 
-.copy-btn:hover { background: rgba(0,113,227,0.2); }
+.copy-btn:hover { background: rgba(0,135,81,0.15); }
+.copy-btn.copied { background: var(--bc-green); color: #fff; border-color: var(--bc-green); }
 
+/* ── ASCII box ── */
 .ascii-box {
-  background: #EFF6FF;
-  border: 1.5px solid #BFDBFE;
+  background: var(--bc-accent-bg);
+  border: 1.5px solid var(--bc-border);
   border-radius: 8px;
   padding: 12px;
   text-align: center;
   margin-top: 10px;
 }
 
-.ascii-box .char { font-size: 2rem; font-weight: 700; color: var(--afro-green); }
-.ascii-box .desc { font-size: 0.78rem; color: #6B8CAE; }
+.ascii-box .char { font-size: 2rem; font-weight: 700; color: var(--bc-green); }
+.ascii-box .desc { font-size: 0.78rem; color: var(--bc-text-muted); }
 
+/* ── Bit length ── */
 .bit-length-box {
-  background: #EFF6FF;
-  border: 1.5px solid #BFDBFE;
+  background: var(--bc-accent-bg);
+  border: 1.5px solid var(--bc-border);
   border-radius: 8px;
   padding: 12px;
   margin-top: 10px;
@@ -300,47 +369,48 @@ h1 em { color: var(--afro-green); font-style: normal; }
 }
 
 .bit-info { text-align: center; }
-.bit-info-val { font-size: 1.4rem; font-weight: 800; color: var(--afro-green); }
-.bit-info-label { font-size: 0.68rem; color: #6B8CAE; font-weight: 600; }
+.bit-info-val { font-size: 1.4rem; font-weight: 800; color: var(--bc-green); }
+.bit-info-label { font-size: 0.68rem; color: var(--bc-text-muted); font-weight: 600; }
 
+/* ── Steps ── */
 .steps-box {
-  background: #EFF6FF;
-  border: 1.5px solid #BFDBFE;
+  background: var(--bc-accent-bg);
+  border: 1.5px solid var(--bc-border);
   border-radius: 8px;
   padding: 14px;
   font-size: 0.84rem;
   line-height: 1.8;
 }
 
-.steps-box h3 { font-size: 0.9rem; margin: 0 0 8px; color: #0d2813; }
+.steps-box h3 { font-size: 0.9rem; margin: 0 0 8px; color: var(--bc-text); }
 .steps-box code {
-  background: #dbeafe;
+  background: #d4e5d9;
   padding: 2px 6px;
   border-radius: 4px;
   font-size: 0.82rem;
   font-family: 'Courier New', monospace;
 }
 
-/* Two's Complement */
+/* ── Two's Complement ── */
 .twos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 .twos-item {
-  background: #EFF6FF;
-  border: 1.5px solid #BFDBFE;
+  background: var(--bc-accent-bg);
+  border: 1.5px solid var(--bc-border);
   border-radius: 8px;
   padding: 10px;
   position: relative;
 }
 
-.twos-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; color: #6B8CAE; margin-bottom: 4px; }
+.twos-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; color: var(--bc-text-muted); margin-bottom: 4px; }
 .twos-val {
   font-family: 'Courier New', monospace;
   font-size: 0.82rem;
   font-weight: 700;
   word-break: break-all;
-  color: #0d2813;
+  color: var(--bc-text);
 }
 
-/* IEEE 754 */
+/* ── IEEE 754 ── */
 .ieee-row { margin-bottom: 14px; }
 .ieee-row:last-child { margin-bottom: 0; }
 .ieee-label { font-size: 0.72rem; font-weight: 700; color: #0a4018; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
@@ -375,24 +445,24 @@ h1 em { color: var(--afro-green); font-style: normal; }
 .ieee-legend-item { display: flex; align-items: center; gap: 4px; }
 .ieee-legend-dot { width: 10px; height: 10px; border-radius: 2px; }
 
-/* Bitwise operations */
+/* ── Bitwise operations ── */
 .bitwise-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .bitwise-result {
-  background: #EFF6FF;
-  border: 1.5px solid #BFDBFE;
+  background: var(--bc-accent-bg);
+  border: 1.5px solid var(--bc-border);
   border-radius: 8px;
   padding: 10px;
   position: relative;
 }
 
-.bitwise-op { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; color: #6B8CAE; margin-bottom: 2px; }
-.bitwise-dec { font-size: 0.9rem; font-weight: 700; color: #0d2813; }
-.bitwise-bin { font-size: 0.75rem; font-family: 'Courier New', monospace; color: #6B8CAE; word-break: break-all; }
+.bitwise-op { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; color: var(--bc-text-muted); margin-bottom: 2px; }
+.bitwise-dec { font-size: 0.9rem; font-weight: 700; color: var(--bc-text); }
+.bitwise-bin { font-size: 0.75rem; font-family: 'Courier New', monospace; color: var(--bc-text-muted); word-break: break-all; }
 
-/* Binary Arithmetic */
+/* ── Binary Arithmetic ── */
 .arith-display {
-  background: #EFF6FF;
-  border: 1.5px solid #BFDBFE;
+  background: var(--bc-accent-bg);
+  border: 1.5px solid var(--bc-border);
   border-radius: 8px;
   padding: 14px;
   font-family: 'Courier New', monospace;
@@ -400,16 +470,16 @@ h1 em { color: var(--afro-green); font-style: normal; }
   line-height: 1.8;
 }
 
-.arith-carry { color: var(--afro-green); font-size: 0.75rem; }
-.arith-line { border-top: 2px solid #93c5fd; margin: 4px 0; }
-.arith-result { font-weight: 800; color: #0d2813; }
+.arith-carry { color: var(--bc-green); font-size: 0.75rem; }
+.arith-line { border-top: 2px solid var(--bc-border); margin: 4px 0; }
+.arith-result { font-weight: 800; color: var(--bc-text); }
 
-/* Sidebar */
+/* ── Sidebar ── */
 .sidebar { display: flex; flex-direction: column; gap: 16px; }
 
 .info-card {
-  background: #F5F9FF;
-  border: 1px solid #DBEAFE;
+  background: var(--bc-accent-bg);
+  border: 1px solid var(--bc-border);
   border-radius: 10px;
   padding: 16px;
 }
@@ -427,16 +497,16 @@ h1 em { color: var(--afro-green); font-style: normal; }
 .info-text li { margin-bottom: 6px; }
 
 .ref-table { width: 100%; font-size: 0.75rem; border-collapse: collapse; }
-.ref-table th { text-align: left; font-weight: 700; color: #0a4018; padding: 6px 4px; border-bottom: 1px solid #DBEAFE; font-size: 0.68rem; text-transform: uppercase; }
-.ref-table td { padding: 5px 4px; color: #244d2c; border-bottom: 1px solid #EFF6FF; }
+.ref-table th { text-align: left; font-weight: 700; color: #0a4018; padding: 6px 4px; border-bottom: 1px solid var(--bc-border); font-size: 0.68rem; text-transform: uppercase; }
+.ref-table td { padding: 5px 4px; color: #244d2c; border-bottom: 1px solid var(--bc-border-light); }
 .ref-table td:first-child { font-weight: 700; }
 
-/* Toast */
+/* ── Toast ── */
 .copy-toast {
   position: fixed;
   bottom: 2rem;
   right: 2rem;
-  background: #1e293b;
+  background: var(--bc-dark);
   color: #fff;
   padding: 10px 20px;
   border-radius: 8px;
@@ -452,17 +522,18 @@ h1 em { color: var(--afro-green); font-style: normal; }
 
 .copy-toast.show { opacity: 1; transform: translateY(0); }
 
-/* FAQ */
+/* ── FAQ ── */
 .faq-section { max-width: 1200px; margin: 0 auto 40px; padding: 0 24px; }
-.faq-section h2 { font-size: 1.3rem; font-weight: 800; color: #111; margin-bottom: 20px; }
+.faq-section h2 { font-size: 1.3rem; font-weight: 800; color: var(--bc-text); margin-bottom: 20px; }
 
-details { border: 1px solid #e5e7eb; border-radius: 10px; margin-bottom: 8px; background: #fff; }
-details summary { padding: 14px 18px; font-size: 0.88rem; font-weight: 600; color: #111; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; font-family: 'DM Sans', sans-serif; }
+details { border: 1px solid var(--bc-border); border-radius: 10px; margin-bottom: 8px; background: #fff; }
+details summary { padding: 14px 18px; font-size: 0.88rem; font-weight: 600; color: var(--bc-text); cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; font-family: 'DM Sans', sans-serif; }
 details summary::-webkit-details-marker { display: none; }
 details[open] summary svg { transform: rotate(180deg); }
 details .faq-answer { padding: 0 18px 14px; font-size: 0.84rem; color: #4b5563; line-height: 1.7; font-family: 'DM Sans', sans-serif; }
 
-.tab-bar { display: flex; gap: 0; border-bottom: 2px solid #EFF6FF; margin-bottom: 16px; }
+/* ── Tabs ── */
+.tab-bar { display: flex; gap: 0; border-bottom: 2px solid var(--bc-border-light); margin-bottom: 16px; }
 .tab-btn {
   padding: 8px 16px;
   background: none;
@@ -470,19 +541,20 @@ details .faq-answer { padding: 0 18px 14px; font-size: 0.84rem; color: #4b5563; 
   font-family: 'DM Sans', sans-serif;
   font-size: 0.78rem;
   font-weight: 700;
-  color: #6B8CAE;
+  color: var(--bc-text-muted);
   cursor: pointer;
   border-bottom: 2px solid transparent;
   margin-bottom: -2px;
   transition: all 0.15s;
 }
 
-.tab-btn.active { color: var(--afro-green); border-bottom-color: var(--afro-green); }
-.tab-btn:hover { color: var(--afro-green); }
+.tab-btn.active { color: var(--bc-green); border-bottom-color: var(--bc-green); }
+.tab-btn:hover { color: var(--bc-green); }
 
 .tab-panel { display: none; }
 .tab-panel.active { display: block; }
 
+/* ── Responsive ── */
 @media (max-width: 768px) {
   .tool-main-inner { grid-template-columns: 1fr; }
   .output-grid { grid-template-columns: 1fr; }
@@ -490,6 +562,8 @@ details .faq-answer { padding: 0 18px 14px; font-size: 0.84rem; color: #4b5563; 
   .twos-grid { grid-template-columns: 1fr; }
   .bitwise-grid { grid-template-columns: 1fr; }
   .ieee-bits span { padding: 3px 3px; min-width: 14px; font-size: 0.72rem; }
+  .action-row { flex-direction: column; }
+  .group-toggle { margin-left: 0; }
 }
 </style>
 <script type="application/ld+json">
@@ -610,6 +684,22 @@ details .faq-answer { padding: 0 18px 14px; font-size: 0.84rem; color: #4b5563; 
               <input type="number" class="custom-base-input" id="customBaseInput" min="2" max="36" value="5" oninput="liveConvert()">
             </div>
           </div>
+
+          <div class="action-row">
+            <button class="btn-action" onclick="swapBases()" title="Swap input base with binary">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
+              Swap
+            </button>
+            <button class="btn-action" onclick="clearAll()" title="Clear all fields">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+              Clear
+            </button>
+            <label class="group-toggle">
+              <input type="checkbox" id="digitGroup" onchange="liveConvert()" checked>
+              Group digits
+            </label>
+          </div>
+
           <div id="errorMsg" class="error-msg"></div>
 
           <div id="outputSection" style="display:none">
@@ -772,21 +862,21 @@ details .faq-answer { padding: 0 18px 14px; font-size: 0.84rem; color: #4b5563; 
 
 <script>
 /* ── Globals ── */
-const BASES = [
+var BASES = [
   { value: 10, label: 'Decimal', prefix: 'Base 10' },
   { value: 2, label: 'Binary', prefix: 'Base 2' },
   { value: 16, label: 'Hexadecimal', prefix: 'Base 16' },
   { value: 8, label: 'Octal', prefix: 'Base 8' }
 ];
 
-const ASCII_NAMES = {
+var ASCII_NAMES = {
   0:'NUL',1:'SOH',2:'STX',3:'ETX',4:'EOT',5:'ENQ',6:'ACK',7:'BEL',8:'BS',9:'TAB',
   10:'LF',11:'VT',12:'FF',13:'CR',14:'SO',15:'SI',16:'DLE',17:'DC1',18:'DC2',19:'DC3',
   20:'DC4',21:'NAK',22:'SYN',23:'ETB',24:'CAN',25:'EM',26:'SUB',27:'ESC',28:'FS',
   29:'GS',30:'RS',31:'US',32:'Space',127:'DEL'
 };
 
-let arithOp = 'add';
+var arithOp = 'add';
 
 /* ── Toast ── */
 function showToast(msg) {
@@ -796,8 +886,80 @@ function showToast(msg) {
   setTimeout(function() { t.classList.remove('show'); }, 2000);
 }
 
-function copyText(text) {
-  navigator.clipboard.writeText(text).then(function() { showToast('Copied!'); });
+function copyText(text, btn) {
+  navigator.clipboard.writeText(text).then(function() {
+    showToast('Copied!');
+    if (btn) {
+      btn.classList.add('copied');
+      var orig = btn.textContent;
+      btn.textContent = 'Copied';
+      setTimeout(function() { btn.classList.remove('copied'); btn.textContent = orig; }, 1500);
+    }
+  });
+}
+
+/* ── Swap & Clear ── */
+function swapBases() {
+  var sel = document.getElementById('inputBase');
+  var val = document.getElementById('inputValue').value.trim();
+  if (!val || sel.value === 'custom') return;
+
+  var currentBase = parseInt(sel.value);
+  // Cycle through: 10 -> 2 -> 16 -> 8 -> 10
+  var order = [10, 2, 16, 8];
+  var idx = order.indexOf(currentBase);
+  var nextBase = order[(idx + 1) % order.length];
+  sel.value = String(nextBase);
+
+  // Try to convert current value to the new base
+  if (isValidForBase(val.replace('-','').replace('.',''), currentBase)) {
+    var isNeg = val.charAt(0) === '-';
+    var abs = isNeg ? val.slice(1) : val;
+    var parts = abs.split('.');
+    var intPart = parts[0] || '0';
+    var decInt = parseInt(intPart, currentBase);
+    if (!isNaN(decInt)) {
+      var newVal = convertIntBase(decInt, nextBase);
+      document.getElementById('inputValue').value = (isNeg ? '-' : '') + newVal;
+    }
+  }
+
+  liveConvert();
+}
+
+function clearAll() {
+  document.getElementById('inputValue').value = '';
+  document.getElementById('ieeeInput').value = '';
+  document.getElementById('bitA').value = '';
+  document.getElementById('bitB').value = '';
+  document.getElementById('arithA').value = '';
+  document.getElementById('arithB').value = '';
+  document.getElementById('outputSection').style.display = 'none';
+  document.getElementById('stepsCard').style.display = 'none';
+  document.getElementById('twosCard').style.display = 'none';
+  document.getElementById('ieeeOutput').style.display = 'none';
+  document.getElementById('bitwiseOutput').style.display = 'none';
+  document.getElementById('arithOutput').style.display = 'none';
+  document.getElementById('errorMsg').style.display = 'none';
+}
+
+/* ── Digit grouping ── */
+function groupDigits(str, base) {
+  if (!document.getElementById('digitGroup').checked) return str;
+  // Group binary by 4, octal by 3, hex by 4, decimal by 3, others by 4
+  var groupSize = base === 10 ? 3 : (base === 8 ? 3 : 4);
+  var parts = str.split('.');
+  var intPart = parts[0];
+  var sep = base === 10 ? ',' : ' ';
+
+  // Group from right
+  var grouped = '';
+  for (var i = intPart.length - 1, count = 0; i >= 0; i--, count++) {
+    if (count > 0 && count % groupSize === 0) grouped = sep + grouped;
+    grouped = intPart[i] + grouped;
+  }
+
+  return parts.length > 1 ? grouped + '.' + parts[1] : grouped;
 }
 
 /* ── Base dropdown ── */
@@ -880,9 +1042,9 @@ function liveConvert() {
 
   var intPart = abs, fracPart = '';
   if (abs.indexOf('.') !== -1) {
-    var parts = abs.split('.');
-    intPart = parts[0] || '0';
-    fracPart = parts[1] || '';
+    var splitParts = abs.split('.');
+    intPart = splitParts[0] || '0';
+    fracPart = splitParts[1] || '';
   }
 
   if (!isValidForBase(intPart, base) || (fracPart && !isValidForBase(fracPart, base))) {
@@ -918,13 +1080,14 @@ function liveConvert() {
     var label = baseMeta[b] || 'Base ' + b;
     var intStr = convertIntBase(decInt, b);
     var fracStr = fracToBase(decFrac, b);
-    var val = sign + intStr + fracStr;
+    var rawVal = sign + intStr + fracStr;
+    var displayVal = sign + groupDigits(intStr + fracStr, b);
     var activeClass = b === base ? ' active' : '';
     var id = 'val-' + b;
     gridHTML += '<div class="output-box' + activeClass + '">' +
-      '<button class="copy-btn" onclick="copyText(document.getElementById(\'' + id + '\').textContent)">Copy</button>' +
+      '<button class="copy-btn" onclick="copyText(\'' + rawVal.replace(/'/g, "\\'") + '\', this)">Copy</button>' +
       '<div class="base-label">' + label + ' (Base ' + b + ')</div>' +
-      '<div class="base-value" id="' + id + '">' + val + '</div>' +
+      '<div class="base-value" id="' + id + '">' + displayVal + '</div>' +
       '</div>';
   });
 
@@ -988,7 +1151,7 @@ function generateSteps(input, fromBase, decInt, hasFrac, sign) {
       var pos = (i < intLen ? intLen - 1 - i : -(i - intLen + 1));
       var val = parseInt(digits[i], fromBase);
       var pv = val * Math.pow(fromBase, pos);
-      parts.push('<code>' + digits[i].toUpperCase() + ' x ' + fromBase + '^' + pos + ' = ' + (Math.round(pv * 1e8) / 1e8) + '</code>');
+      parts.push('<code>' + digits[i].toUpperCase() + ' &times; ' + fromBase + '<sup>' + pos + '</sup> = ' + (Math.round(pv * 1e8) / 1e8) + '</code>');
     }
     html += parts.join(' + ') + ' = <code>' + decInt + '</code></p>';
   }
@@ -997,9 +1160,9 @@ function generateSteps(input, fromBase, decInt, hasFrac, sign) {
     html += '<p><strong>' + (fromBase !== 10 ? 'Step 2' : 'Step 1') + ': To Binary</strong></p>';
     html += '<p>Divide by 2, read remainders bottom-up:</p><p>';
     var n = decInt, divSteps = [];
-    if (n === 0) { divSteps.push('0 / 2 = 0 remainder <strong>0</strong>'); }
+    if (n === 0) { divSteps.push('0 &divide; 2 = 0 remainder <strong>0</strong>'); }
     while (n > 0) {
-      divSteps.push(n + ' / 2 = ' + Math.floor(n / 2) + ' remainder <strong>' + (n % 2) + '</strong>');
+      divSteps.push(n + ' &divide; 2 = ' + Math.floor(n / 2) + ' remainder <strong>' + (n % 2) + '</strong>');
       n = Math.floor(n / 2);
     }
     html += divSteps.map(function(s) { return '<code>' + s + '</code>'; }).join('<br>');
@@ -1031,7 +1194,7 @@ function showTwosComplement(absVal) {
         grouped += binStr[i];
         if ((i + 1) % 4 === 0 && i + 1 < binStr.length) grouped += ' ';
       }
-      html += '<div class="twos-item"><button class="copy-btn" onclick="copyText(\'' + binStr + '\')">Copy</button><div class="twos-label">' + bits + '-bit</div><div class="twos-val">' + grouped + '</div></div>';
+      html += '<div class="twos-item"><button class="copy-btn" onclick="copyText(\'' + binStr + '\', this)">Copy</button><div class="twos-label">' + bits + '-bit</div><div class="twos-val">' + grouped + '</div></div>';
     }
   });
   grid.innerHTML = html;
@@ -1064,15 +1227,15 @@ function updateIEEE() {
   html += '<div class="ieee-row"><div class="ieee-label">32-bit Float (Single Precision)</div><div class="ieee-bits">';
   html += '<span class="ieee-sign" title="Sign">' + bits32[0] + '</span>';
   for (var k = 1; k <= 8; k++) html += '<span class="ieee-exp" title="Exponent">' + bits32[k] + '</span>';
-  for (var k = 9; k < 32; k++) html += '<span class="ieee-man" title="Mantissa">' + bits32[k] + '</span>';
-  html += '</div><button class="copy-btn" style="position:static;margin-top:6px" onclick="copyText(\'' + bits32 + '\')">Copy</button></div>';
+  for (var k2 = 9; k2 < 32; k2++) html += '<span class="ieee-man" title="Mantissa">' + bits32[k2] + '</span>';
+  html += '</div><button class="copy-btn" style="position:static;margin-top:6px" onclick="copyText(\'' + bits32 + '\', this)">Copy</button></div>';
 
   // 64-bit display
   html += '<div class="ieee-row"><div class="ieee-label">64-bit Double (Double Precision)</div><div class="ieee-bits">';
   html += '<span class="ieee-sign" title="Sign">' + bits64[0] + '</span>';
   for (var m = 1; m <= 11; m++) html += '<span class="ieee-exp" title="Exponent">' + bits64[m] + '</span>';
-  for (var m = 12; m < 64; m++) html += '<span class="ieee-man" title="Mantissa">' + bits64[m] + '</span>';
-  html += '</div><button class="copy-btn" style="position:static;margin-top:6px" onclick="copyText(\'' + bits64 + '\')">Copy</button></div>';
+  for (var m2 = 12; m2 < 64; m2++) html += '<span class="ieee-man" title="Mantissa">' + bits64[m2] + '</span>';
+  html += '</div><button class="copy-btn" style="position:static;margin-top:6px" onclick="copyText(\'' + bits64 + '\', this)">Copy</button></div>';
 
   // Legend
   html += '<div class="ieee-legend">' +
@@ -1108,7 +1271,7 @@ function updateBitwise() {
   ops.forEach(function(op) {
     var binStr = (op.val >>> 0).toString(2);
     html += '<div class="bitwise-result">' +
-      '<button class="copy-btn" onclick="copyText(\'' + op.val + '\')">Copy</button>' +
+      '<button class="copy-btn" onclick="copyText(\'' + op.val + '\', this)">Copy</button>' +
       '<div class="bitwise-op">' + op.name + '</div>' +
       '<div class="bitwise-dec">' + op.val + '</div>' +
       '<div class="bitwise-bin">' + binStr + '</div>' +
@@ -1184,9 +1347,9 @@ function updateArith() {
     '<div style="text-align:right;letter-spacing:2px">' + opSymbol + ' ' + bPad + '</div>' +
     '<div class="arith-line"></div>' +
     '<div class="arith-result" style="text-align:right;letter-spacing:2px">&nbsp;&nbsp;' + resultPad + '</div>' +
-    '<div style="margin-top:8px;font-size:0.78rem;color:#6B8CAE">Decimal: ' + aVal + ' ' + opSymbol + ' ' + bVal + ' = ' + resultVal + '</div>' +
+    '<div style="margin-top:8px;font-size:0.78rem;color:var(--bc-text-muted)">Decimal: ' + aVal + ' ' + opSymbol + ' ' + bVal + ' = ' + resultVal + '</div>' +
     '</div>' +
-    '<button class="copy-btn" style="position:static;margin-top:8px" onclick="copyText(\'' + resultBin + '\')">Copy Result</button>';
+    '<button class="copy-btn" style="position:static;margin-top:8px" onclick="copyText(\'' + resultBin + '\', this)">Copy Result</button>';
 
   output.innerHTML = html;
   output.style.display = '';
@@ -1194,7 +1357,7 @@ function updateArith() {
 </script>
 
 <script>
-// Save/Share buttons — manual placement needed
+// Share button placement
 (function(){
   var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
   var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;

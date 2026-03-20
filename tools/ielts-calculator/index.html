@@ -3,7 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'ielts-calculator'});</script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-D859CGF391');
+  gtag('event', 'tool_view', {tool_name: 'ielts-calculator'});
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>IELTS & TOEFL Score Calculator — Band Score Estimator | AfroTools</title>
 <meta name="description" content="Calculate your overall IELTS band score, convert between IELTS and TOEFL, and check requirements for UK, Canada, Australia, and New Zealand immigration and universities.">
@@ -12,165 +18,198 @@
 <meta property="og:title" content="IELTS & TOEFL Score Calculator | AfroTools">
 <meta property="og:description" content="Calculate IELTS band score and check visa/university requirements.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
-<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/ielts-calculator/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/ielts-calculator/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
 <link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/tools/ielts-calculator/ielts-calculator.css">
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
-<style>
-:root{--afro-blue:var(--color-primary);--afro-dark:#0f1419;--accent:#7c3aed}
-.tool-hero{background:linear-gradient(135deg,#4c1d95 0%,#7c3aed 100%);padding:44px 0 36px}
-.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
-.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
-.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#ddd6fe}
-h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
-h1 em{color:#ddd6fe;font-style:normal}
-.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
-.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
-.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
-.b-purple{background:rgba(221,214,254,.2);color:#ddd6fe;border:1px solid rgba(221,214,254,.4)}
-.tool-main{padding:28px 0 72px}
-.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
-.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
-.card+.card{margin-top:18px}
-.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc;display:flex;justify-content:space-between;align-items:center}
-.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
-.card-body{padding:22px}
-label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
-select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;transition:border .2s}
-select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,58,237,.15)}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.row4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px}
-.btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;margin-top:18px;transition:transform .1s}
-.btn-primary{background:linear-gradient(135deg,#6d28d9,#7c3aed);color:#fff}
-.btn-primary:hover{transform:translateY(-1px)}
-.score-display{text-align:center;padding:24px;background:linear-gradient(135deg,#f5f3ff,#ede9fe);border-radius:10px;margin-top:14px}
-.score-display .big{font-size:3.2rem;font-weight:900;color:#6d28d9;line-height:1}
-.score-display .label{font-size:.72rem;color:#7c3aed;font-weight:600;margin-top:6px;text-transform:uppercase;letter-spacing:.08em}
-.score-display .desc{font-size:.82rem;color:#475569;margin-top:8px}
-.component-scores{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-top:14px}
-.comp{text-align:center;padding:12px 6px;background:#f8fafc;border-radius:8px;border:1px solid #e2e8f0}
-.comp .val{font-size:1.2rem;font-weight:800;color:#6d28d9}
-.comp .name{font-size:.65rem;color:#64748b;font-weight:600;text-transform:uppercase;margin-top:3px}
-.req-table{width:100%;border-collapse:collapse;margin-top:14px;font-size:.78rem}
-.req-table th{text-align:left;padding:8px;background:#f5f3ff;color:#6d28d9;font-weight:700;font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;border-bottom:2px solid #ddd6fe}
-.req-table td{padding:8px;border-bottom:1px solid #f1f5f9;color:#475569}
-.req-table .pass{color:#16a34a;font-weight:700}.req-table .fail{color:#dc2626;font-weight:700}
-.sidebar .info-card{background:#f5f3ff;border:1px solid #ddd6fe;border-radius:8px;padding:16px;margin-top:14px}
-.info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#6d28d9;margin-bottom:8px}
-.info-card p,.info-card li{font-size:.78rem;color:#6d28d9;line-height:1.6}
-.info-card ul{padding-left:16px;margin:6px 0}
-.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
-.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
-.seo-section p{font-size:.88rem;color:#475569;line-height:1.75}
-.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
-.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
-.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
-@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.row4,.component-scores{grid-template-columns:1fr 1fr}}
-</style>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"IELTS & TOEFL Score Calculator","url":"https://afrotools.com/tools/ielts-calculator/","applicationCategory":"EducationalApplication","operatingSystem":"All","description":"Calculate IELTS band score, convert to TOEFL, check visa and university requirements.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<meta name="tool-id" content="ielts-calculator">
+<script src="/assets/js/favorites.js"></script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org","@type":"WebApplication",
+  "name":"IELTS & TOEFL Score Calculator",
+  "url":"https://afrotools.com/tools/ielts-calculator/",
+  "applicationCategory":"EducationalApplication","operatingSystem":"All",
+  "description":"Calculate IELTS band score, convert to TOEFL, check visa and university requirements.",
+  "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},
+  "author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org","@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},
+    {"@type":"ListItem","position":2,"name":"Education Tools","item":"https://afrotools.com/education/"},
+    {"@type":"ListItem","position":3,"name":"IELTS Calculator"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org","@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"How is the IELTS overall band score calculated?","acceptedAnswer":{"@type":"Answer","text":"The overall band score is the average of your four component scores (Listening, Reading, Writing, Speaking), rounded to the nearest whole or half band."}},
+    {"@type":"Question","name":"What IELTS score do I need for UK Skilled Worker visa?","acceptedAnswer":{"@type":"Answer","text":"The minimum is IELTS 6.0 overall with no component below 5.5 (CEFR Level B1). Some professions like healthcare require higher scores (7.0-7.5)."}},
+    {"@type":"Question","name":"How much does IELTS cost in Nigeria?","acceptedAnswer":{"@type":"Answer","text":"As of 2025, the IELTS test fee in Nigeria is approximately NGN 120,000-130,000. Prices may vary between test centres."}},
+    {"@type":"Question","name":"Can I take IELTS multiple times?","acceptedAnswer":{"@type":"Answer","text":"Yes, there is no limit on retakes. You can book your next test as soon as you receive your results."}}
+  ]
+}
+</script>
 <script src="/assets/js/lib/toast.js" defer></script>
 <script src="/assets/js/afro-history.js" defer></script>
+<script src="/assets/js/edu-profile-sync.js" defer></script>
 <script src="/assets/js/components/save-result-button.js" defer></script>
 <script src="/assets/js/components/share-card-generator.js" defer></script>
 <script src="/assets/js/components/share-button.js" defer></script>
 </head>
-<body>
-<afro-navbar></afro-navbar>
-<section class="tool-hero"><div class="tool-hero-inner">
-<div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>IELTS Calculator</span></div>
-<h1>IELTS & TOEFL <em>Score Calculator</em></h1>
-<p class="hero-sub">Calculate your overall IELTS band score, convert to TOEFL, and check if you meet requirements for immigration, work visas, and university admission.</p>
-<div class="hero-badges"><span class="badge b-purple">IELTS Band Score</span><span class="badge b-purple">TOEFL Conversion</span><span class="badge b-purple">Visa Requirements</span></div>
-</div></section>
+<body class="ielts-page">
+<afro-navbar active="tools"></afro-navbar>
 
-<section class="tool-main"><div class="tool-main-inner">
-<div class="calculator">
-<div class="card">
-<div class="card-head"><span class="card-title">Your IELTS Scores</span></div>
-<div class="card-body">
-<p style="font-size:.78rem;color:#64748b;margin-bottom:14px">Enter your band score for each component (0.0 - 9.0)</p>
-<div class="row4">
-<div><label>Listening</label><select id="listening"></select></div>
-<div><label>Reading</label><select id="reading"></select></div>
-<div><label>Writing</label><select id="writing"></select></div>
-<div><label>Speaking</label><select id="speaking"></select></div>
-</div>
-<button class="btn btn-primary" onclick="calculate()">Calculate Overall Score</button>
-</div></div>
+<!-- ===== HEADER ===== -->
+<header class="ielts-header">
+    <nav class="ielts-breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a><span class="sep">/</span>
+        <a href="/education/">Education</a><span class="sep">/</span>
+        <span>IELTS Calculator</span>
+    </nav>
+    <div class="ielts-badge">Education Tool</div>
+    <h1>IELTS & TOEFL <span class="accent">Score Calculator</span></h1>
+    <p class="ielts-subtitle">Calculate your overall IELTS band score, convert to TOEFL, and check if you meet requirements for immigration, work visas, and university admission.</p>
+    <div class="ielts-stats">
+        <span class="ielts-stat-pill"><span class="dot"></span> IELTS Band Score</span>
+        <span class="ielts-stat-pill"><span class="dot"></span> TOEFL Conversion</span>
+        <span class="ielts-stat-pill"><span class="dot"></span> Visa Requirements</span>
+    </div>
+</header>
 
-<div class="card" id="resultCard" style="display:none">
-<div class="card-head"><span class="card-title">Your Results</span></div>
-<div class="card-body">
-<div class="score-display">
-<div class="big" id="overallScore"></div>
-<div class="label">Overall Band Score</div>
-<div class="desc" id="levelDesc"></div>
-</div>
-<div class="component-scores" id="componentScores"></div>
-<div style="margin-top:14px;padding:12px;background:#f8fafc;border-radius:8px;text-align:center">
-<div style="font-size:.68rem;color:#64748b;text-transform:uppercase;font-weight:600;letter-spacing:.06em">TOEFL iBT Equivalent</div>
-<div id="toeflScore" style="font-size:1.4rem;font-weight:800;color:#7c3aed;margin-top:3px"></div>
-</div>
-</div></div>
+<main class="ielts-container">
+    <!-- Score Entry -->
+    <div class="ielts-card">
+        <h2>Your IELTS Scores</h2>
+        <p class="ielts-hint">Enter your band score for each component (0.0 - 9.0)</p>
+        <div class="ielts-form-row">
+            <div class="ielts-form-group">
+                <label for="listening">Listening</label>
+                <select class="ielts-select" id="listening"></select>
+            </div>
+            <div class="ielts-form-group">
+                <label for="reading">Reading</label>
+                <select class="ielts-select" id="reading"></select>
+            </div>
+            <div class="ielts-form-group">
+                <label for="writing">Writing</label>
+                <select class="ielts-select" id="writing"></select>
+            </div>
+            <div class="ielts-form-group">
+                <label for="speaking">Speaking</label>
+                <select class="ielts-select" id="speaking"></select>
+            </div>
+        </div>
+        <div class="ielts-btn-group">
+            <button class="ielts-btn ielts-btn-primary" onclick="calculate()">Calculate Overall Score</button>
+        </div>
+    </div>
 
-<div class="card" id="reqCard" style="display:none">
-<div class="card-head"><span class="card-title">Do You Qualify?</span></div>
-<div class="card-body">
-<table class="req-table" id="reqTable"></table>
-</div></div>
-</div>
+    <!-- Results -->
+    <div class="ielts-card hidden" id="resultCard">
+        <h2>Your Results</h2>
+        <div class="ielts-result-box">
+            <div class="ielts-result-label">Overall Band Score</div>
+            <div class="ielts-result-value" id="overallScore">--</div>
+            <div class="ielts-result-desc" id="levelDesc"></div>
+        </div>
+        <div class="ielts-components" id="componentScores"></div>
+        <div class="ielts-toefl-box">
+            <div class="ielts-toefl-label">TOEFL iBT Equivalent</div>
+            <div class="ielts-toefl-value" id="toeflScore"></div>
+        </div>
+    </div>
 
-<div class="sidebar">
-<div class="card">
-<div class="card-head"><span class="card-title">Band Score Scale</span></div>
-<div class="card-body" style="font-size:.75rem;color:#475569">
-<table style="width:100%;border-collapse:collapse;font-size:.72rem">
-<tr style="border-bottom:1px solid #f1f5f9"><td style="padding:5px;font-weight:700;color:#6d28d9">9.0</td><td style="padding:5px">Expert user</td></tr>
-<tr style="border-bottom:1px solid #f1f5f9"><td style="padding:5px;font-weight:700;color:#6d28d9">8.0-8.5</td><td style="padding:5px">Very good user</td></tr>
-<tr style="border-bottom:1px solid #f1f5f9"><td style="padding:5px;font-weight:700;color:#6d28d9">7.0-7.5</td><td style="padding:5px">Good user</td></tr>
-<tr style="border-bottom:1px solid #f1f5f9"><td style="padding:5px;font-weight:700;color:#6d28d9">6.0-6.5</td><td style="padding:5px">Competent user</td></tr>
-<tr style="border-bottom:1px solid #f1f5f9"><td style="padding:5px;font-weight:700;color:#6d28d9">5.0-5.5</td><td style="padding:5px">Modest user</td></tr>
-<tr><td style="padding:5px;font-weight:700;color:#6d28d9">4.0-4.5</td><td style="padding:5px">Limited user</td></tr>
-</table>
-</div></div>
-<div class="info-card">
-<h4>Popular Destinations</h4>
-<ul>
-<li><strong>UK Skilled Worker:</strong> 6.0+ (each component 5.5+)</li>
-<li><strong>Canada Express Entry:</strong> CLB 7 = IELTS 6.0+</li>
-<li><strong>Australia PR:</strong> 7.0+ overall</li>
-<li><strong>New Zealand:</strong> 6.5+ overall</li>
-</ul>
-</div>
-<div class="info-card" style="margin-top:10px">
-<h4>IELTS Test Centres in Africa</h4>
-<ul>
-<li>Nigeria: Lagos, Abuja, Port Harcourt</li>
-<li>Kenya: Nairobi, Mombasa</li>
-<li>Ghana: Accra, Kumasi</li>
-<li>South Africa: JHB, Cape Town, Durban</li>
-<li>Ethiopia: Addis Ababa</li>
-</ul>
-</div>
-</div>
-</div></section>
+    <!-- Requirements -->
+    <div class="ielts-card hidden" id="reqCard">
+        <h2>Do You Qualify?</h2>
+        <div class="ielts-table-wrap">
+            <table class="ielts-req-table" id="reqTable"></table>
+        </div>
+    </div>
 
-<section class="seo-section">
-<h2>IELTS Score Calculator for African Test Takers</h2>
-<p>The International English Language Testing System (IELTS) is the most widely accepted English proficiency test for African professionals seeking to study, work, or migrate abroad. Thousands of Nigerians, Kenyans, Ghanaians, and South Africans take the IELTS each month to meet visa and admission requirements for the UK, Canada, Australia, New Zealand, and Ireland.</p>
-<p>Your overall IELTS band score is calculated as the <strong>average of your four component scores</strong> (Listening, Reading, Writing, Speaking), rounded to the nearest half band. For example, if you score L:7.0, R:6.5, W:6.0, S:7.0, your average is 6.625, which rounds to <strong>6.5</strong>.</p>
+    <!-- Info Cards -->
+    <div class="ielts-info-grid">
+        <div class="ielts-info-card">
+            <h3>Band Score Scale</h3>
+            <table>
+                <tr><td>9.0</td><td>Expert user</td></tr>
+                <tr><td>8.0-8.5</td><td>Very good user</td></tr>
+                <tr><td>7.0-7.5</td><td>Good user</td></tr>
+                <tr><td>6.0-6.5</td><td>Competent user</td></tr>
+                <tr><td>5.0-5.5</td><td>Modest user</td></tr>
+                <tr><td>4.0-4.5</td><td>Limited user</td></tr>
+            </table>
+        </div>
+        <div class="ielts-info-card">
+            <h3>Popular Destinations</h3>
+            <ul>
+                <li><strong>UK Skilled Worker:</strong> 6.0+ (each component 5.5+)</li>
+                <li><strong>Canada Express Entry:</strong> CLB 7 = IELTS 6.0+</li>
+                <li><strong>Australia PR:</strong> 7.0+ overall</li>
+                <li><strong>New Zealand:</strong> 6.5+ overall</li>
+            </ul>
+        </div>
+    </div>
 
-<h2>IELTS vs TOEFL: Which Should Africans Take?</h2>
-<p>IELTS is preferred for UK, Australian, and Canadian applications. TOEFL is more common for US university admissions. Many institutions now accept both. The approximate conversion is: IELTS 7.0 = TOEFL 94-101, IELTS 6.5 = TOEFL 79-93, IELTS 6.0 = TOEFL 60-78.</p>
+    <div class="ielts-info-card" style="margin-bottom:16px;">
+        <h3>IELTS Test Centres in Africa</h3>
+        <ul>
+            <li><strong>Nigeria:</strong> Lagos, Abuja, Port Harcourt</li>
+            <li><strong>Kenya:</strong> Nairobi, Mombasa</li>
+            <li><strong>Ghana:</strong> Accra, Kumasi</li>
+            <li><strong>South Africa:</strong> JHB, Cape Town, Durban</li>
+            <li><strong>Ethiopia:</strong> Addis Ababa</li>
+        </ul>
+    </div>
 
-<h2>Frequently Asked Questions</h2>
-<details class="faq-item"><summary>How is the IELTS overall band score calculated?</summary><p>The overall band score is the average of your four component scores (Listening, Reading, Writing, Speaking), rounded to the nearest whole or half band. If the average ends in .25, it rounds up to .5; if it ends in .75, it rounds up to the next whole number.</p></details>
-<details class="faq-item"><summary>What IELTS score do I need for UK Skilled Worker visa?</summary><p>The minimum is IELTS 6.0 overall with no component below 5.5 (CEFR Level B1). However, some professions like healthcare require higher scores (7.0-7.5).</p></details>
-<details class="faq-item"><summary>How much does IELTS cost in Nigeria?</summary><p>As of 2025, the IELTS test fee in Nigeria is approximately NGN 120,000-130,000. Prices may vary between test centres. Computer-delivered tests are slightly cheaper than paper-based.</p></details>
-<details class="faq-item"><summary>Can I take IELTS multiple times?</summary><p>Yes, there is no limit on retakes. You can book your next test as soon as you receive your results. Many candidates retake to improve specific component scores, especially Writing.</p></details>
+    <!-- FAQ -->
+    <div class="ielts-card ielts-faq">
+        <h2>Frequently Asked Questions</h2>
+        <div class="ielts-faq-grid">
+            <details class="ielts-faq-item">
+                <summary>How is the IELTS overall band score calculated?</summary>
+                <p>The overall band score is the average of your four component scores (Listening, Reading, Writing, Speaking), rounded to the nearest whole or half band. If the average ends in .25, it rounds up to .5; if it ends in .75, it rounds up to the next whole number.</p>
+            </details>
+            <details class="ielts-faq-item">
+                <summary>What IELTS score do I need for UK Skilled Worker visa?</summary>
+                <p>The minimum is IELTS 6.0 overall with no component below 5.5 (CEFR Level B1). However, some professions like healthcare require higher scores (7.0-7.5).</p>
+            </details>
+            <details class="ielts-faq-item">
+                <summary>How much does IELTS cost in Nigeria?</summary>
+                <p>As of 2025, the IELTS test fee in Nigeria is approximately NGN 120,000-130,000. Prices may vary between test centres. Computer-delivered tests are slightly cheaper than paper-based.</p>
+            </details>
+            <details class="ielts-faq-item">
+                <summary>Can I take IELTS multiple times?</summary>
+                <p>Yes, there is no limit on retakes. You can book your next test as soon as you receive your results. Many candidates retake to improve specific component scores, especially Writing.</p>
+            </details>
+            <details class="ielts-faq-item">
+                <summary>IELTS vs TOEFL: Which should Africans take?</summary>
+                <p>IELTS is preferred for UK, Australian, and Canadian applications. TOEFL is more common for US university admissions. Many institutions now accept both. The approximate conversion is: IELTS 7.0 = TOEFL 94-101, IELTS 6.5 = TOEFL 79-93, IELTS 6.0 = TOEFL 60-78.</p>
+            </details>
+        </div>
+    </div>
+</main>
+
+<!-- SEO Content -->
+<section class="ielts-seo">
+    <h2>IELTS Score Calculator for African Test Takers</h2>
+    <p>The International English Language Testing System (IELTS) is the most widely accepted English proficiency test for African professionals seeking to study, work, or migrate abroad. Thousands of Nigerians, Kenyans, Ghanaians, and South Africans take the IELTS each month to meet visa and admission requirements for the UK, Canada, Australia, New Zealand, and Ireland.</p>
+    <p>Your overall IELTS band score is calculated as the <strong>average of your four component scores</strong> (Listening, Reading, Writing, Speaking), rounded to the nearest half band. For example, if you score L:7.0, R:6.5, W:6.0, S:7.0, your average is 6.625, which rounds to <strong>6.5</strong>.</p>
+    <h2>IELTS vs TOEFL: Which Should Africans Take?</h2>
+    <p>IELTS is preferred for UK, Australian, and Canadian applications. TOEFL is more common for US university admissions. Many institutions now accept both. The approximate conversion is: IELTS 7.0 = TOEFL 94-101, IELTS 6.5 = TOEFL 79-93, IELTS 6.0 = TOEFL 60-78.</p>
 </section>
 
 <afro-related-tools category="education" current="ielts-calculator"></afro-related-tools>
@@ -179,25 +218,25 @@ select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(1
 
 <script>
 // Populate score selects
-const scores = [];
-for (let i = 0; i <= 9; i += 0.5) scores.push(i.toFixed(1));
-['listening', 'reading', 'writing', 'speaking'].forEach(id => {
-  const sel = document.getElementById(id);
-  scores.forEach(s => {
-    const opt = document.createElement('option');
+var scores = [];
+for (var i = 0; i <= 9; i += 0.5) scores.push(i.toFixed(1));
+['listening', 'reading', 'writing', 'speaking'].forEach(function(id) {
+  var sel = document.getElementById(id);
+  scores.forEach(function(s) {
+    var opt = document.createElement('option');
     opt.value = s; opt.textContent = s;
     if (s === '6.5') opt.selected = true;
     sel.appendChild(opt);
   });
 });
 
-const IELTS_TO_TOEFL = {
+var IELTS_TO_TOEFL = {
   '9.0': '118-120', '8.5': '115-117', '8.0': '110-114', '7.5': '102-109',
   '7.0': '94-101', '6.5': '79-93', '6.0': '60-78', '5.5': '46-59',
   '5.0': '35-45', '4.5': '32-34', '4.0': '0-31'
 };
 
-const LEVEL_DESC = {
+var LEVEL_DESC = {
   9: 'Expert User — You have full command of English.',
   8.5: 'Very Good User — Very occasional inaccuracies.',
   8: 'Very Good User — Handles complex language well.',
@@ -211,7 +250,7 @@ const LEVEL_DESC = {
   4: 'Limited User — Basic competence in familiar situations.'
 };
 
-const REQUIREMENTS = [
+var REQUIREMENTS = [
   { dest: 'UK Skilled Worker Visa', overall: 6.0, min: 5.5 },
   { dest: 'UK Student Visa (Tier 4)', overall: 5.5, min: 5.5 },
   { dest: 'Canada Express Entry (CLB 7)', overall: 6.0, min: 6.0 },
@@ -227,41 +266,47 @@ const REQUIREMENTS = [
 ];
 
 function calculate() {
-  const l = +document.getElementById('listening').value;
-  const r = +document.getElementById('reading').value;
-  const w = +document.getElementById('writing').value;
-  const s = +document.getElementById('speaking').value;
+  var l = +document.getElementById('listening').value;
+  var r = +document.getElementById('reading').value;
+  var w = +document.getElementById('writing').value;
+  var s = +document.getElementById('speaking').value;
 
-  const avg = (l + r + w + s) / 4;
-  // IELTS rounding: round to nearest 0.5
-  const overall = Math.round(avg * 2) / 2;
-  const minComp = Math.min(l, r, w, s);
+  var avg = (l + r + w + s) / 4;
+  var overall = Math.round(avg * 2) / 2;
+  var minComp = Math.min(l, r, w, s);
 
   document.getElementById('overallScore').textContent = overall.toFixed(1);
   document.getElementById('levelDesc').textContent = LEVEL_DESC[overall] || LEVEL_DESC[Math.floor(overall)] || '';
 
-  let comps = '';
-  [{ name: 'Listening', val: l }, { name: 'Reading', val: r }, { name: 'Writing', val: w }, { name: 'Speaking', val: s }].forEach(c => {
-    comps += `<div class="comp"><div class="val">${c.val.toFixed(1)}</div><div class="name">${c.name}</div></div>`;
+  var comps = '';
+  [{ name: 'Listening', val: l }, { name: 'Reading', val: r }, { name: 'Writing', val: w }, { name: 'Speaking', val: s }].forEach(function(c) {
+    comps += '<div class="ielts-comp"><div class="ielts-comp-val">' + c.val.toFixed(1) + '</div><div class="ielts-comp-name">' + c.name + '</div></div>';
   });
   document.getElementById('componentScores').innerHTML = comps;
 
-  const toeflKey = overall.toFixed(1);
+  var toeflKey = overall.toFixed(1);
   document.getElementById('toeflScore').textContent = IELTS_TO_TOEFL[toeflKey] || 'N/A';
 
-  // Requirements check
-  let table = '<tr><th>Destination / Purpose</th><th style="text-align:center">Required</th><th style="text-align:center">Status</th></tr>';
-  REQUIREMENTS.forEach(req => {
-    const meetsOverall = overall >= req.overall;
-    const meetsMin = minComp >= req.min;
-    const pass = meetsOverall && meetsMin;
-    table += `<tr><td>${req.dest}</td><td style="text-align:center">${req.overall}+ (min ${req.min})</td><td class="${pass ? 'pass' : 'fail'}" style="text-align:center">${pass ? 'MEETS' : 'BELOW'}</td></tr>`;
+  var table = '<tr><th>Destination / Purpose</th><th style="text-align:center">Required</th><th style="text-align:center">Status</th></tr>';
+  REQUIREMENTS.forEach(function(req) {
+    var meetsOverall = overall >= req.overall;
+    var meetsMin = minComp >= req.min;
+    var pass = meetsOverall && meetsMin;
+    table += '<tr><td>' + req.dest + '</td><td style="text-align:center">' + req.overall + '+ (min ' + req.min + ')</td><td class="' + (pass ? 'pass' : 'fail') + '" style="text-align:center">' + (pass ? 'MEETS' : 'BELOW') + '</td></tr>';
   });
   document.getElementById('reqTable').innerHTML = table;
 
-  document.getElementById('resultCard').style.display = 'block';
-  document.getElementById('reqCard').style.display = 'block';
+  document.getElementById('resultCard').classList.remove('hidden');
+  document.getElementById('reqCard').classList.remove('hidden');
   document.getElementById('resultCard').scrollIntoView({ behavior: 'smooth' });
+
+  // Sync to education profile
+  if (typeof EduProfileSync !== 'undefined') {
+    EduProfileSync.update({
+      ielts_overall: overall,
+      ielts_components: { listening: l, reading: r, writing: w, speaking: s }
+    });
+  }
 }
 </script>
 
@@ -270,8 +315,7 @@ function calculate() {
   var target = document.getElementById('resultCard');
   if (!target) return;
   var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap';
   div.innerHTML = '<save-result-button tool-slug="ielts-calculator" tool-name="IELTS Score Calculator"></save-result-button><share-result-button tool-name="IELTS Score Calculator" tool-slug="ielts-calculator"></share-result-button>';
   target.appendChild(div);
 })();

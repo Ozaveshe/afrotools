@@ -1,0 +1,601 @@
+/* ===================================================================
+   AfroTools IELTS Calculator — Clean White Theme
+   Follows JAMB Aggregate Calculator design patterns
+   =================================================================== */
+
+:root {
+  --ielts-primary: #FAFAF8;
+  --ielts-primary-mid: #F3F4F6;
+  --ielts-accent: #008751;
+  --ielts-accent-dim: rgba(0, 135, 81, 0.08);
+  --ielts-accent-glow: rgba(0, 135, 81, 0.2);
+  --ielts-success: #059669;
+  --ielts-error: #DC2626;
+  --ielts-text: #0f172a;
+  --ielts-text-secondary: #475569;
+  --ielts-text-muted: #94A3B8;
+  --ielts-border: #E2E8F0;
+  --ielts-card: #ffffff;
+  --ielts-radius: 12px;
+  --ielts-radius-sm: 8px;
+  --ielts-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --ielts-transition: 200ms ease;
+  --ielts-font: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --ielts-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+}
+
+/* --- Base --- */
+.ielts-page {
+  background: var(--ielts-primary);
+  color: var(--ielts-text);
+  font-family: var(--ielts-font);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+.ielts-page *, .ielts-page *::before, .ielts-page *::after {
+  box-sizing: border-box;
+}
+
+.ielts-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 20px 40px;
+}
+
+/* --- Header --- */
+.ielts-header {
+  text-align: center;
+  padding: 48px 20px 32px;
+  background: linear-gradient(180deg, rgba(0, 135, 81, 0.04) 0%, transparent 100%);
+}
+
+.ielts-breadcrumb {
+  font-size: 0.8rem;
+  color: var(--ielts-text-muted);
+  margin-bottom: 16px;
+}
+
+.ielts-breadcrumb a {
+  color: var(--ielts-text-muted);
+  text-decoration: none;
+}
+
+.ielts-breadcrumb a:hover {
+  color: var(--ielts-accent);
+}
+
+.ielts-breadcrumb .sep {
+  margin: 0 8px;
+  opacity: 0.5;
+}
+
+.ielts-badge {
+  display: inline-block;
+  padding: 4px 14px;
+  background: var(--ielts-accent-dim);
+  color: var(--ielts-accent);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border-radius: 20px;
+  margin-bottom: 16px;
+}
+
+.ielts-header h1 {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 700;
+  color: var(--ielts-text);
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+
+.ielts-header h1 .accent {
+  color: var(--ielts-accent);
+}
+
+.ielts-subtitle {
+  font-size: 1.05rem;
+  color: var(--ielts-text-secondary);
+  max-width: 600px;
+  margin: 0 auto 20px;
+}
+
+.ielts-stats {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.ielts-stat-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: var(--ielts-card);
+  border: 1px solid var(--ielts-border);
+  border-radius: 20px;
+  font-size: 0.8rem;
+  color: var(--ielts-text-secondary);
+}
+
+.ielts-stat-pill .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ielts-accent);
+}
+
+/* --- Cards --- */
+.ielts-card {
+  background: var(--ielts-card);
+  border: 1px solid var(--ielts-border);
+  border-radius: var(--ielts-radius);
+  padding: 24px;
+  margin-bottom: 16px;
+  box-shadow: var(--ielts-shadow);
+  animation: ieltsFadeIn 250ms ease;
+}
+
+.ielts-card h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ielts-text);
+  margin: 0 0 16px;
+}
+
+.ielts-card h3 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ielts-text);
+  margin: 0 0 12px;
+}
+
+/* --- Form Elements --- */
+.ielts-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.ielts-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ielts-form-group label {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--ielts-text-secondary);
+  font-weight: 500;
+}
+
+.ielts-select {
+  width: 100%;
+  padding: 10px 14px;
+  background: var(--ielts-card);
+  color: var(--ielts-text);
+  border: 1px solid var(--ielts-border);
+  border-radius: var(--ielts-radius-sm);
+  font-family: var(--ielts-font);
+  font-size: 0.9rem;
+  appearance: none;
+  padding-right: 36px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='%2394A3B8'%3E%3Cpath d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  cursor: pointer;
+  transition: border-color var(--ielts-transition);
+}
+
+.ielts-select:focus {
+  border-color: var(--ielts-accent);
+  outline: none;
+  box-shadow: 0 0 0 3px var(--ielts-accent-dim);
+}
+
+.ielts-hint {
+  font-size: 0.82rem;
+  color: var(--ielts-text-muted);
+  margin-bottom: 14px;
+}
+
+/* --- Buttons --- */
+.ielts-btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.ielts-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  font-family: var(--ielts-font);
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: var(--ielts-radius-sm);
+  border: none;
+  cursor: pointer;
+  transition: all var(--ielts-transition);
+}
+
+.ielts-btn-primary {
+  background: var(--ielts-accent);
+  color: #fff;
+  width: 100%;
+}
+
+.ielts-btn-primary:hover {
+  background: #006e42;
+  box-shadow: 0 2px 8px var(--ielts-accent-glow);
+  transform: translateY(-1px);
+}
+
+.ielts-btn-secondary {
+  background: var(--ielts-card);
+  color: var(--ielts-text);
+  border: 1px solid var(--ielts-border);
+}
+
+.ielts-btn-secondary:hover {
+  border-color: var(--ielts-accent);
+  color: var(--ielts-accent);
+}
+
+/* --- Result Card --- */
+.ielts-result-box {
+  text-align: center;
+  padding: 24px;
+  background: var(--ielts-primary-mid);
+  border: 1px solid var(--ielts-border);
+  border-radius: var(--ielts-radius);
+  margin-bottom: 16px;
+}
+
+.ielts-result-label {
+  font-size: 0.8rem;
+  color: var(--ielts-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+
+.ielts-result-value {
+  font-family: var(--ielts-mono);
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--ielts-accent);
+  line-height: 1;
+}
+
+.ielts-result-desc {
+  font-size: 0.85rem;
+  color: var(--ielts-text-secondary);
+  margin-top: 8px;
+}
+
+/* --- Component Scores --- */
+.ielts-components {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.ielts-comp {
+  text-align: center;
+  padding: 14px 8px;
+  background: var(--ielts-card);
+  border: 1px solid var(--ielts-border);
+  border-radius: var(--ielts-radius-sm);
+}
+
+.ielts-comp-val {
+  font-family: var(--ielts-mono);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--ielts-accent);
+}
+
+.ielts-comp-name {
+  font-size: 0.7rem;
+  color: var(--ielts-text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: 4px;
+}
+
+/* --- TOEFL Box --- */
+.ielts-toefl-box {
+  text-align: center;
+  padding: 14px;
+  background: var(--ielts-primary-mid);
+  border: 1px solid var(--ielts-border);
+  border-radius: var(--ielts-radius-sm);
+}
+
+.ielts-toefl-label {
+  font-size: 0.72rem;
+  color: var(--ielts-text-muted);
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.ielts-toefl-value {
+  font-family: var(--ielts-mono);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--ielts-accent);
+  margin-top: 4px;
+}
+
+/* --- Requirements Table --- */
+.ielts-table-wrap {
+  max-height: 480px;
+  overflow-y: auto;
+  border: 1px solid var(--ielts-border);
+  border-radius: var(--ielts-radius);
+}
+
+.ielts-table-wrap::-webkit-scrollbar {
+  width: 4px;
+}
+
+.ielts-table-wrap::-webkit-scrollbar-thumb {
+  background: var(--ielts-border);
+  border-radius: 2px;
+}
+
+.ielts-req-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.ielts-req-table th {
+  padding: 10px 14px;
+  text-align: left;
+  background: var(--ielts-primary-mid);
+  color: var(--ielts-text-secondary);
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  position: sticky;
+  top: 0;
+}
+
+.ielts-req-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--ielts-border);
+  color: var(--ielts-text);
+}
+
+.ielts-req-table tr:hover td {
+  background: var(--ielts-accent-dim);
+}
+
+.ielts-req-table .pass {
+  color: var(--ielts-success);
+  font-weight: 700;
+}
+
+.ielts-req-table .fail {
+  color: var(--ielts-error);
+  font-weight: 700;
+}
+
+/* --- Info Cards (sidebar replacement) --- */
+.ielts-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.ielts-info-card {
+  background: var(--ielts-card);
+  border: 1px solid var(--ielts-border);
+  border-radius: var(--ielts-radius);
+  padding: 20px;
+  box-shadow: var(--ielts-shadow);
+}
+
+.ielts-info-card h3 {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--ielts-text);
+  margin: 0 0 12px;
+}
+
+.ielts-info-card table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+
+.ielts-info-card table td {
+  padding: 6px 0;
+  border-bottom: 1px solid var(--ielts-border);
+}
+
+.ielts-info-card table td:first-child {
+  font-family: var(--ielts-mono);
+  font-weight: 700;
+  color: var(--ielts-accent);
+  width: 70px;
+}
+
+.ielts-info-card table td:last-child {
+  color: var(--ielts-text-secondary);
+}
+
+.ielts-info-card table tr:last-child td {
+  border-bottom: none;
+}
+
+.ielts-info-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.ielts-info-card li {
+  padding: 6px 0;
+  font-size: 0.82rem;
+  color: var(--ielts-text-secondary);
+  border-bottom: 1px solid var(--ielts-border);
+  line-height: 1.5;
+}
+
+.ielts-info-card li:last-child {
+  border-bottom: none;
+}
+
+.ielts-info-card li strong {
+  color: var(--ielts-text);
+}
+
+/* --- FAQ --- */
+.ielts-faq h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--ielts-text);
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.ielts-faq-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.ielts-faq-item {
+  background: var(--ielts-card);
+  border: 1px solid var(--ielts-border);
+  border-radius: var(--ielts-radius);
+  overflow: hidden;
+}
+
+.ielts-faq-item summary {
+  padding: 14px 18px;
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: var(--ielts-text);
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ielts-faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.ielts-faq-item summary::after {
+  content: '+';
+  font-size: 1.1rem;
+  color: var(--ielts-accent);
+  transition: transform var(--ielts-transition);
+}
+
+.ielts-faq-item[open] summary::after {
+  content: '\2212';
+}
+
+.ielts-faq-item p {
+  padding: 0 18px 16px;
+  font-size: 0.84rem;
+  color: var(--ielts-text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* --- SEO Section --- */
+.ielts-seo {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.ielts-seo h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--ielts-text);
+  margin: 24px 0 10px;
+}
+
+.ielts-seo h2:first-child {
+  margin-top: 0;
+}
+
+.ielts-seo p {
+  font-size: 0.88rem;
+  color: var(--ielts-text-secondary);
+  line-height: 1.75;
+  margin-bottom: 12px;
+}
+
+/* --- Animations --- */
+@keyframes ieltsFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Utility --- */
+.hidden { display: none !important; }
+
+/* --- Responsive --- */
+@media (max-width: 640px) {
+  .ielts-header {
+    padding: 32px 16px 24px;
+  }
+
+  .ielts-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .ielts-form-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .ielts-components {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .ielts-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ielts-result-value {
+    font-size: 2.4rem;
+  }
+}
+
+/* --- Reduced Motion --- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* --- Print --- */
+@media print {
+  .ielts-page { background: #fff; color: #000; }
+  afro-navbar, afro-footer, afro-chat, afro-related-tools, afro-newsletter-cta,
+  .ielts-btn-group { display: none !important; }
+  .ielts-card { border: 1px solid #ccc; }
+}

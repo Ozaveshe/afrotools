@@ -20,6 +20,8 @@ const STATIC_PATHS = {
   'forex-history-usd-ghs-30d': '/data/forex/history/usd-ghs-30d.json',
   'forex-history-usd-egp-30d': '/data/forex/history/usd-egp-30d.json',
   'fuel-history-ng-12m': '/data/fuel/history/ng-12m.json',
+  // Education
+  'scholarships-latest': null, // No static fallback — API-only
 };
 
 /**

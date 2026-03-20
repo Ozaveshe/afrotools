@@ -1,35 +1,31 @@
 /* ===================================================================
-   AfroTools GPA Calculator — Academic Dashboard Theme
+   AfroTools GPA Calculator — Clean White Theme
    =================================================================== */
 
-/* --- Google Fonts (loaded in HTML <head>) ---
-   DM Sans: body/headings
-   JetBrains Mono: numbers/results
-*/
-
 :root {
-  --gpa-primary: #0A1628;
-  --gpa-primary-light: #111D2E;
-  --gpa-primary-mid: #162236;
-  --gpa-accent: #00C9A7;
-  --gpa-accent-dim: rgba(0, 201, 167, 0.15);
-  --gpa-accent-glow: rgba(0, 201, 167, 0.3);
-  --gpa-amber: #F59E0B;
-  --gpa-amber-dim: rgba(245, 158, 11, 0.15);
-  --gpa-success: #10B981;
-  --gpa-error: #EF4444;
-  --gpa-orange: #F97316;
-  --gpa-blue: #3B82F6;
-  --gpa-text: #E2E8F0;
-  --gpa-text-secondary: #94A3B8;
-  --gpa-text-muted: #64748B;
-  --gpa-border: rgba(0, 201, 167, 0.15);
-  --gpa-card: #111D2E;
-  --gpa-card-hover: #162236;
+  --gpa-primary: #FAFAF8;
+  --gpa-primary-light: #ffffff;
+  --gpa-primary-mid: #F3F4F6;
+  --gpa-accent: #008751;
+  --gpa-accent-dim: rgba(0, 135, 81, 0.08);
+  --gpa-accent-glow: rgba(0, 135, 81, 0.2);
+  --gpa-amber: #D97706;
+  --gpa-amber-dim: rgba(217, 119, 6, 0.08);
+  --gpa-success: #059669;
+  --gpa-error: #DC2626;
+  --gpa-orange: #EA580C;
+  --gpa-blue: #2563EB;
+  --gpa-text: #0f172a;
+  --gpa-text-secondary: #475569;
+  --gpa-text-muted: #94A3B8;
+  --gpa-border: #E2E8F0;
+  --gpa-card: #ffffff;
+  --gpa-card-hover: #F8FAFC;
   --gpa-radius: 12px;
   --gpa-radius-sm: 8px;
   --gpa-radius-lg: 16px;
-  --gpa-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  --gpa-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --gpa-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06);
   --gpa-transition: 200ms ease;
   --gpa-font: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --gpa-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
@@ -56,11 +52,11 @@
   padding: 0 20px;
 }
 
-/* --- Tool Header Card --- */
+/* --- Tool Header --- */
 .gpa-header {
   text-align: center;
   padding: 48px 20px 32px;
-  background: linear-gradient(180deg, rgba(0, 201, 167, 0.06) 0%, transparent 100%);
+  background: linear-gradient(180deg, rgba(0, 135, 81, 0.04) 0%, transparent 100%);
 }
 
 .gpa-breadcrumb {
@@ -99,7 +95,7 @@
 .gpa-header h1 {
   font-size: clamp(1.75rem, 4vw, 2.5rem);
   font-weight: 700;
-  color: #fff;
+  color: var(--gpa-text);
   margin-bottom: 8px;
   line-height: 1.2;
 }
@@ -127,7 +123,7 @@
   align-items: center;
   gap: 6px;
   padding: 6px 14px;
-  background: var(--gpa-primary-light);
+  background: var(--gpa-card);
   border: 1px solid var(--gpa-border);
   border-radius: 20px;
   font-size: 0.8rem;
@@ -168,7 +164,7 @@
 .gpa-select {
   width: 100%;
   padding: 10px 36px 10px 14px;
-  background: var(--gpa-primary-light);
+  background: var(--gpa-card);
   color: var(--gpa-text);
   border: 1px solid var(--gpa-border);
   border-radius: var(--gpa-radius-sm);
@@ -219,13 +215,13 @@
 
 .gpa-tab:hover {
   color: var(--gpa-text);
-  background: var(--gpa-primary-light);
+  background: var(--gpa-primary-mid);
 }
 
 .gpa-tab[aria-selected="true"],
 .gpa-tab.active {
   background: var(--gpa-accent);
-  color: var(--gpa-primary);
+  color: #fff;
   font-weight: 600;
   border-color: var(--gpa-accent);
 }
@@ -270,6 +266,7 @@
   border-radius: var(--gpa-radius);
   margin-bottom: 16px;
   overflow: hidden;
+  box-shadow: var(--gpa-shadow);
 }
 
 .gpa-semester-header {
@@ -335,7 +332,7 @@
   align-items: center;
   padding: 10px 14px;
   background: var(--gpa-primary-mid);
-  border: 1px solid rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--gpa-border);
   border-radius: var(--gpa-radius-sm);
   margin-bottom: 8px;
   transition: border-color var(--gpa-transition);
@@ -343,15 +340,15 @@
 }
 
 .gpa-course-card:hover {
-  border-color: var(--gpa-border);
+  border-color: #CBD5E1;
 }
 
 .gpa-course-input {
   width: 100%;
   padding: 8px 10px;
-  background: var(--gpa-primary);
+  background: var(--gpa-card);
   color: var(--gpa-text);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--gpa-border);
   border-radius: 6px;
   font-family: var(--gpa-font);
   font-size: 0.85rem;
@@ -361,6 +358,7 @@
 .gpa-course-input:focus {
   border-color: var(--gpa-accent);
   outline: none;
+  box-shadow: 0 0 0 3px var(--gpa-accent-dim);
 }
 
 .gpa-course-input[type="number"] {
@@ -371,9 +369,9 @@
 .gpa-grade-select {
   width: 100%;
   padding: 8px 28px 8px 10px;
-  background: var(--gpa-primary);
+  background: var(--gpa-card);
   color: var(--gpa-text);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--gpa-border);
   border-radius: 6px;
   font-family: var(--gpa-font);
   font-size: 0.85rem;
@@ -388,6 +386,7 @@
 .gpa-grade-select:focus {
   border-color: var(--gpa-accent);
   outline: none;
+  box-shadow: 0 0 0 3px var(--gpa-accent-dim);
 }
 
 .gpa-course-delete {
@@ -406,7 +405,7 @@
 }
 
 .gpa-course-delete:hover {
-  background: rgba(239, 68, 68, 0.15);
+  background: rgba(220, 38, 38, 0.08);
   color: var(--gpa-error);
 }
 
@@ -458,16 +457,17 @@
 
 .gpa-btn-primary {
   background: var(--gpa-accent);
-  color: var(--gpa-primary);
+  color: #fff;
 }
 
 .gpa-btn-primary:hover {
-  box-shadow: 0 0 20px var(--gpa-accent-glow);
+  background: #006e42;
+  box-shadow: 0 2px 8px var(--gpa-accent-glow);
   transform: translateY(-1px);
 }
 
 .gpa-btn-secondary {
-  background: var(--gpa-primary-light);
+  background: var(--gpa-card);
   color: var(--gpa-text);
   border: 1px solid var(--gpa-border);
 }
@@ -478,12 +478,12 @@
 }
 
 .gpa-btn-danger {
-  background: rgba(239, 68, 68, 0.1);
+  background: rgba(220, 38, 38, 0.06);
   color: var(--gpa-error);
 }
 
 .gpa-btn-danger:hover {
-  background: rgba(239, 68, 68, 0.2);
+  background: rgba(220, 38, 38, 0.12);
 }
 
 .gpa-semester-actions {
@@ -495,12 +495,11 @@
 
 /* --- Results Panel / Glass Card --- */
 .gpa-glass-card {
-  background: linear-gradient(135deg, rgba(17, 29, 46, 0.9) 0%, rgba(22, 34, 54, 0.9) 100%);
+  background: var(--gpa-card);
   border: 1px solid var(--gpa-border);
   border-radius: var(--gpa-radius-lg);
   padding: 24px;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  box-shadow: var(--gpa-shadow-md);
 }
 
 .gpa-result-main {
@@ -520,7 +519,7 @@
   font-family: var(--gpa-mono);
   font-size: 3rem;
   font-weight: 700;
-  color: #fff;
+  color: var(--gpa-text);
   line-height: 1;
   font-variant-numeric: tabular-nums;
 }
@@ -608,6 +607,7 @@
   border: 1px solid var(--gpa-border);
   border-radius: var(--gpa-radius);
   padding: 16px;
+  box-shadow: var(--gpa-shadow);
 }
 
 .gpa-scholarships h3 {
@@ -625,7 +625,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 8px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid var(--gpa-border);
   font-size: 0.82rem;
 }
 
@@ -648,7 +648,7 @@
 }
 
 .gpa-scholarship-status.eligible {
-  background: rgba(16, 185, 129, 0.15);
+  background: rgba(5, 150, 105, 0.1);
   color: var(--gpa-success);
 }
 
@@ -658,8 +658,8 @@
 }
 
 .gpa-scholarship-status.ineligible {
-  background: rgba(239, 68, 68, 0.1);
-  color: #F87171;
+  background: rgba(220, 38, 38, 0.06);
+  color: #DC2626;
 }
 
 /* --- Share Buttons --- */
@@ -677,7 +677,7 @@
   padding: 9px 12px;
   background: var(--gpa-primary-mid);
   color: var(--gpa-text-secondary);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--gpa-border);
   border-radius: var(--gpa-radius-sm);
   font-family: var(--gpa-font);
   font-size: 0.78rem;
@@ -727,6 +727,7 @@
   border: 1px solid var(--gpa-border);
   border-radius: var(--gpa-radius);
   padding: 16px;
+  box-shadow: var(--gpa-shadow);
 }
 
 .gpa-dyk h3 {
@@ -759,13 +760,13 @@
   right: 0;
   max-height: 200px;
   overflow-y: auto;
-  background: var(--gpa-primary);
+  background: var(--gpa-card);
   border: 1px solid var(--gpa-accent);
   border-top: none;
   border-radius: 0 0 6px 6px;
   z-index: 50;
   display: none;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
 .gpa-autocomplete-list.show {
@@ -778,7 +779,7 @@
   color: var(--gpa-text);
   cursor: pointer;
   transition: background 100ms ease;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid var(--gpa-border);
 }
 
 .gpa-autocomplete-item:hover,
@@ -798,7 +799,7 @@
 }
 
 .gpa-autocomplete-list::-webkit-scrollbar-thumb {
-  background: var(--gpa-accent-dim);
+  background: var(--gpa-border);
   border-radius: 2px;
 }
 
@@ -809,7 +810,7 @@
   width: 100%;
   min-height: 160px;
   padding: 14px;
-  background: var(--gpa-primary-light);
+  background: var(--gpa-card);
   color: var(--gpa-text);
   border: 1px solid var(--gpa-border);
   border-radius: var(--gpa-radius-sm);
@@ -821,6 +822,7 @@
 .gpa-transcript-area:focus {
   border-color: var(--gpa-accent);
   outline: none;
+  box-shadow: 0 0 0 3px var(--gpa-accent-dim);
 }
 
 .gpa-drop-zone {
@@ -868,14 +870,24 @@
 
 .gpa-preview-table td {
   padding: 8px 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid var(--gpa-border);
   color: var(--gpa-text);
+}
+
+.gpa-preview-table .grade-valid {
+  color: var(--gpa-success);
+  font-weight: 600;
+}
+
+.gpa-preview-table .grade-invalid {
+  color: var(--gpa-error);
+  font-weight: 600;
 }
 
 .gpa-coming-soon {
   padding: 24px;
   text-align: center;
-  background: var(--gpa-primary-light);
+  background: var(--gpa-primary-mid);
   border: 1px solid var(--gpa-border);
   border-radius: var(--gpa-radius);
   margin-top: 16px;
@@ -916,7 +928,7 @@
 .gpa-conversion-result {
   margin-top: 20px;
   padding: 20px;
-  background: var(--gpa-primary-light);
+  background: var(--gpa-primary-mid);
   border: 1px solid var(--gpa-border);
   border-radius: var(--gpa-radius);
   text-align: center;
@@ -949,7 +961,7 @@
 
 .gpa-ref-table td {
   padding: 8px 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid var(--gpa-border);
 }
 
 .gpa-ref-table tr:hover td {
@@ -970,7 +982,7 @@
   flex: 1;
   min-width: 140px;
   padding: 12px 16px;
-  background: var(--gpa-primary-light);
+  background: var(--gpa-card);
   border: 1px solid var(--gpa-border);
   border-radius: var(--gpa-radius-sm);
   cursor: pointer;
@@ -1021,7 +1033,7 @@
 .gpa-form-group input,
 .gpa-form-group select {
   padding: 10px 12px;
-  background: var(--gpa-primary);
+  background: var(--gpa-card);
   color: var(--gpa-text);
   border: 1px solid var(--gpa-border);
   border-radius: 6px;
@@ -1033,6 +1045,7 @@
 .gpa-form-group select:focus {
   border-color: var(--gpa-accent);
   outline: none;
+  box-shadow: 0 0 0 3px var(--gpa-accent-dim);
 }
 
 .gpa-whatif-result {
@@ -1043,18 +1056,18 @@
 }
 
 .gpa-whatif-result.possible {
-  background: rgba(16, 185, 129, 0.1);
-  border: 1px solid rgba(16, 185, 129, 0.3);
+  background: rgba(5, 150, 105, 0.06);
+  border: 1px solid rgba(5, 150, 105, 0.2);
 }
 
 .gpa-whatif-result.impossible {
-  background: rgba(239, 68, 68, 0.1);
-  border: 1px solid rgba(239, 68, 68, 0.3);
+  background: rgba(220, 38, 38, 0.06);
+  border: 1px solid rgba(220, 38, 38, 0.2);
 }
 
 .gpa-whatif-result.difficult {
   background: var(--gpa-amber-dim);
-  border: 1px solid rgba(245, 158, 11, 0.3);
+  border: 1px solid rgba(217, 119, 6, 0.2);
 }
 
 /* ===============================================
@@ -1069,7 +1082,7 @@
 .gpa-faq h2 {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #fff;
+  color: var(--gpa-text);
   text-align: center;
   margin-bottom: 32px;
 }
@@ -1241,15 +1254,14 @@
   left: 0;
   right: 0;
   height: 52px;
-  background: var(--gpa-primary-light);
+  background: var(--gpa-card);
   border-top: 1px solid var(--gpa-border);
   z-index: 100;
   padding: 0 16px;
   align-items: center;
   justify-content: space-between;
   font-family: var(--gpa-font);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.06);
 }
 
 @media (max-width: 900px) {
@@ -1266,7 +1278,7 @@
   font-family: var(--gpa-mono);
   font-size: 1.2rem;
   font-weight: 700;
-  color: #fff;
+  color: var(--gpa-text);
 }
 
 .gpa-mobile-bar .bar-class {

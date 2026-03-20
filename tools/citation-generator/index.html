@@ -48,7 +48,7 @@
             --border-color: #e0e0e0;
             --text-dark: #2c3e50;
             --text-light: #666;
-            --success: #2563EB;
+            --success: #008751;
             --warning: #f39c12;
             --error: #e74c3c;
         }
@@ -172,7 +172,7 @@
         .source-card:hover {
             border-color: var(--primary-green);
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 113, 227, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 135, 81, 0.15);
         }
 
         .source-card.active {
@@ -224,7 +224,7 @@
         .auto-fill-box input:focus {
             outline: none;
             border-color: var(--primary-green);
-            box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+            box-shadow: 0 0 0 3px rgba(0, 135, 81, 0.15);
         }
 
         .btn {
@@ -244,7 +244,7 @@
         }
 
         .btn-primary:hover:not(:disabled) {
-            background: #0059B3;
+            background: #006b43;
             transform: translateX(2px);
         }
 
@@ -313,7 +313,7 @@
         .form-group textarea:focus {
             outline: none;
             border-color: var(--primary-green);
-            box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+            box-shadow: 0 0 0 3px rgba(0, 135, 81, 0.15);
         }
 
         .form-row {
@@ -530,7 +530,7 @@
         .advisor-input-group input:focus {
             outline: none;
             border-color: var(--primary-green);
-            box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+            box-shadow: 0 0 0 3px rgba(0, 135, 81, 0.15);
         }
 
         .bibliography-builder {
@@ -661,7 +661,7 @@
         .checker-textarea:focus {
             outline: none;
             border-color: var(--primary-green);
-            box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+            box-shadow: 0 0 0 3px rgba(0, 135, 81, 0.15);
         }
 
         .feedback-box {
@@ -780,7 +780,7 @@
         }
 
         .alert-success {
-            background: rgba(37, 99, 235, 0.1);
+            background: rgba(0, 135, 81, 0.1);
             border-color: var(--success);
             color: var(--success);
         }
@@ -795,6 +795,64 @@
             background: rgba(243, 156, 18, 0.1);
             border-color: var(--warning);
             color: var(--warning);
+        }
+
+        .citation-box-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn-copy-cite {
+            padding: 0.3rem 0.7rem;
+            font-size: 0.75rem;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 3px;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .btn-copy-cite:hover {
+            background: var(--primary-green);
+            color: white;
+            border-color: var(--primary-green);
+        }
+
+        .in-text-citation {
+            background: #f0faf5;
+            border: 1px dashed var(--primary-green);
+            border-radius: 4px;
+            padding: 0.75rem 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .in-text-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-light);
+            margin-bottom: 0.3rem;
+        }
+
+        .in-text-value {
+            font-family: 'DM Sans', monospace;
+            color: var(--text-dark);
+            cursor: pointer;
+        }
+
+        .in-text-value:hover {
+            color: var(--primary-green);
+        }
+
+        /* Custom city input with datalist */
+        input[list] {
+            width: 100%;
         }
 
         @media (max-width: 768px) {
@@ -1196,7 +1254,7 @@
                 { name: 'title', label: 'Book Title', type: 'text', required: true, helper: '(will be italicized)' },
                 { name: 'edition', label: 'Edition (if not 1st)', type: 'text', required: false },
                 { name: 'publisher', label: 'Publisher', type: 'text', required: true },
-                { name: 'city', label: 'City of Publication', type: 'select', required: true, options: africanCities },
+                { name: 'city', label: 'City of Publication', type: 'select', required: true, options: africanCities, allowCustom: true },
                 { name: 'country', label: 'Country', type: 'text', required: false },
                 { name: 'pages', label: 'Total Pages (optional)', type: 'number', required: false },
                 { name: 'chapter', label: 'Chapter (if applicable)', type: 'text', required: false }
@@ -1227,7 +1285,7 @@
                 { name: 'author_first', label: 'Reporter First Name', type: 'text', required: false },
                 { name: 'year', label: 'Year Published', type: 'number', required: true },
                 { name: 'article_title', label: 'Article Title', type: 'text', required: true },
-                { name: 'newspaper_name', label: 'Newspaper Name', type: 'select', required: true, options: africanNewspapers },
+                { name: 'newspaper_name', label: 'Newspaper Name', type: 'select', required: true, options: africanNewspapers, allowCustom: true },
                 { name: 'pub_date', label: 'Date Published', type: 'date', required: true },
                 { name: 'page', label: 'Page/Section or URL', type: 'text', required: false }
             ],
@@ -1237,7 +1295,7 @@
                 { name: 'title', label: 'Report Title', type: 'text', required: true },
                 { name: 'report_number', label: 'Report Number (optional)', type: 'text', required: false },
                 { name: 'publisher', label: 'Publisher/Department', type: 'text', required: true },
-                { name: 'city', label: 'City', type: 'select', required: true, options: africanCities },
+                { name: 'city', label: 'City', type: 'select', required: true, options: africanCities, allowCustom: true },
                 { name: 'url', label: 'URL (optional)', type: 'text', required: false }
             ],
             thesis: [
@@ -1246,8 +1304,8 @@
                 { name: 'year', label: 'Year Completed', type: 'number', required: true },
                 { name: 'title', label: 'Thesis Title', type: 'text', required: true },
                 { name: 'degree_type', label: 'Degree Type', type: 'select', required: true, options: ['PhD', 'Masters', 'Undergrad'] },
-                { name: 'institution', label: 'Institution', type: 'select', required: true, options: africanUniversities },
-                { name: 'city', label: 'City', type: 'select', required: true, options: africanCities },
+                { name: 'institution', label: 'Institution', type: 'select', required: true, options: africanUniversities, allowCustom: true },
+                { name: 'city', label: 'City', type: 'select', required: true, options: africanCities, allowCustom: true },
                 { name: 'country', label: 'Country', type: 'text', required: false },
                 { name: 'url', label: 'URL (optional)', type: 'text', required: false }
             ],
@@ -1390,7 +1448,19 @@
             let html = '';
 
             fields.forEach((field, index) => {
-                if (field.type === 'select') {
+                if (field.type === 'select' && field.allowCustom) {
+                    // Text input with datalist for custom + suggested values
+                    const listId = `${field.name}_list`;
+                    html += `
+                        <div class="form-group">
+                            <label for="${field.name}">${field.label}</label>
+                            <input type="text" id="${field.name}" name="${field.name}" list="${listId}" ${field.required ? 'required' : ''} placeholder="Type or select...">
+                            <datalist id="${listId}">
+                                ${field.options.map(opt => `<option value="${opt}">`).join('')}
+                            </datalist>
+                        </div>
+                    `;
+                } else if (field.type === 'select') {
                     html += `
                         <div class="form-group">
                             <label for="${field.name}">${field.label}</label>
@@ -1448,34 +1518,52 @@
             }
         }
 
+        var coAuthorCounter = 0;
+
         function addCoAuthorField() {
             const coAuthorList = document.getElementById('coAuthorList');
-            const index = (state.formData.coAuthors || []).length;
-
             if (!state.formData.coAuthors) {
                 state.formData.coAuthors = [];
             }
 
-            const html = `
-                <div class="co-author-item">
-                    <input type="text" placeholder="Co-author Last Name" id="coAuthor_${index}_last" style="width: 45%; padding: 0.5rem;">
-                    <input type="text" placeholder="Co-author First Name" id="coAuthor_${index}_first" style="width: 45%; padding: 0.5rem;">
-                    <button type="button">Remove</button>
-                </div>
+            const idx = coAuthorCounter++;
+            const item = document.createElement('div');
+            item.className = 'co-author-item';
+            item.innerHTML = `
+                <input type="text" placeholder="Co-author Last Name" data-ca-idx="${idx}" data-ca-part="last" style="width: 45%; padding: 0.5rem;">
+                <input type="text" placeholder="Co-author First Name" data-ca-idx="${idx}" data-ca-part="first" style="width: 45%; padding: 0.5rem;">
+                <button type="button">Remove</button>
             `;
 
-            coAuthorList.innerHTML += html;
-
-            const inputs = coAuthorList.querySelectorAll(`#coAuthor_${index}_last, #coAuthor_${index}_first`);
-            inputs.forEach(input => {
-                input.addEventListener('change', updateCitationPreview);
-                input.addEventListener('input', updateCitationPreview);
-            });
-
-            coAuthorList.querySelector('.co-author-item button').addEventListener('click', function() {
-                this.parentElement.remove();
+            // Bind remove
+            item.querySelector('button').addEventListener('click', function() {
+                item.remove();
+                collectCoAuthors();
                 updateCitationPreview();
             });
+
+            // Bind inputs
+            item.querySelectorAll('input').forEach(function(input) {
+                input.addEventListener('input', function() {
+                    collectCoAuthors();
+                    updateCitationPreview();
+                });
+            });
+
+            coAuthorList.appendChild(item);
+        }
+
+        function collectCoAuthors() {
+            var coAuthors = [];
+            var items = document.querySelectorAll('.co-author-item');
+            items.forEach(function(item) {
+                var last = item.querySelector('[data-ca-part="last"]');
+                var first = item.querySelector('[data-ca-part="first"]');
+                if (last && first && (last.value.trim() || first.value.trim())) {
+                    coAuthors.push({ last: last.value.trim(), first: first.value.trim() });
+                }
+            });
+            state.formData.coAuthors = coAuthors;
         }
 
         function updateFormatInfo() {
@@ -1488,26 +1576,60 @@
         }
 
         function updateCitationPreview() {
-            const preview = generateCitations();
-            const container = document.getElementById('previewContainer');
+            var preview = generateCitations();
+            var container = document.getElementById('previewContainer');
 
             if (!preview) {
                 container.innerHTML = '<div class="placeholder">Fill in the form to generate citations</div>';
                 return;
             }
 
-            let html = '';
-            Object.entries(preview).forEach(([format, citation]) => {
-                html += `
-                    <div class="citation-box">
-                        <div class="citation-format-name">${format}</div>
-                        <div class="citation-text hanging-indent">${citation.text}</div>
-                        ${citation.note ? `<div class="citation-note">${citation.note}</div>` : ''}
-                    </div>
-                `;
+            // In-text citations
+            var inText = generateInTextCitation(state.formData, state.sourceType);
+            var selectedInText = inText[state.format] || inText.apa;
+
+            var html = '<div class="in-text-citation">' +
+                '<div class="in-text-label">In-text citation (' + state.format.toUpperCase() + ')</div>' +
+                '<div class="in-text-value" title="Click to copy">' + selectedInText + '</div>' +
+                '</div>';
+
+            Object.entries(preview).forEach(function(entry) {
+                var format = entry[0];
+                var citation = entry[1];
+                var plainText = citation.text.replace(/<[^>]*>/g, '');
+                html += '<div class="citation-box">' +
+                    '<div class="citation-box-header">' +
+                        '<div class="citation-format-name">' + format + '</div>' +
+                        '<button class="btn-copy-cite" data-cite="' + plainText.replace(/"/g, '&quot;') + '">Copy</button>' +
+                    '</div>' +
+                    '<div class="citation-text hanging-indent">' + citation.text + '</div>' +
+                    (citation.note ? '<div class="citation-note">' + citation.note + '</div>' : '') +
+                '</div>';
             });
 
             container.innerHTML = html;
+
+            // Bind copy buttons
+            container.querySelectorAll('.btn-copy-cite').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var text = this.getAttribute('data-cite');
+                    navigator.clipboard.writeText(text).then(function() {
+                        if (window.AfroToast) AfroToast.success('Citation copied!');
+                        else btn.textContent = 'Copied!';
+                        setTimeout(function() { btn.textContent = 'Copy'; }, 2000);
+                    });
+                });
+            });
+
+            // Bind in-text copy
+            var inTextEl = container.querySelector('.in-text-value');
+            if (inTextEl) {
+                inTextEl.addEventListener('click', function() {
+                    navigator.clipboard.writeText(this.textContent).then(function() {
+                        if (window.AfroToast) AfroToast.success('In-text citation copied!');
+                    });
+                });
+            }
         }
 
         function generateCitations() {
@@ -1552,323 +1674,420 @@
             return citations;
         }
 
+        // ── Helper: build author string with co-authors ──
+        function buildAuthorsAPA(data) {
+            var primary = data.author_last + ', ' + (data.author_first ? data.author_first.charAt(0) + '.' : '');
+            var coAuthors = data.coAuthors || [];
+            if (coAuthors.length === 0) return primary;
+            if (coAuthors.length === 1) return primary + ', & ' + coAuthors[0].last + ', ' + (coAuthors[0].first ? coAuthors[0].first.charAt(0) + '.' : '');
+            if (coAuthors.length <= 18) {
+                var parts = [primary];
+                coAuthors.forEach(function(ca, i) {
+                    var name = ca.last + ', ' + (ca.first ? ca.first.charAt(0) + '.' : '');
+                    if (i === coAuthors.length - 1) parts.push('& ' + name);
+                    else parts.push(name);
+                });
+                return parts.join(', ');
+            }
+            return primary + ', et al.';
+        }
+
+        function buildAuthorsMLA(data) {
+            var primary = data.author_last + ', ' + (data.author_first || '');
+            var coAuthors = data.coAuthors || [];
+            if (coAuthors.length === 0) return primary;
+            if (coAuthors.length === 1) return primary + ', and ' + (coAuthors[0].first || '') + ' ' + coAuthors[0].last;
+            return primary + ', et al.';
+        }
+
+        function buildAuthorsVancouver(data) {
+            var primary = data.author_last + ' ' + (data.author_first ? data.author_first.charAt(0) : '') + '.';
+            var coAuthors = data.coAuthors || [];
+            if (coAuthors.length === 0) return primary;
+            var parts = [primary];
+            coAuthors.slice(0, 5).forEach(function(ca) {
+                parts.push(ca.last + ' ' + (ca.first ? ca.first.charAt(0) : '') + '.');
+            });
+            if (coAuthors.length > 5) parts.push('et al.');
+            return parts.join(', ');
+        }
+
+        function buildAuthorsIEEE(data) {
+            var primary = (data.author_first ? data.author_first.charAt(0) + '. ' : '') + data.author_last;
+            var coAuthors = data.coAuthors || [];
+            if (coAuthors.length === 0) return primary;
+            if (coAuthors.length === 1) return primary + ' and ' + (coAuthors[0].first ? coAuthors[0].first.charAt(0) + '. ' : '') + coAuthors[0].last;
+            var parts = [primary];
+            coAuthors.forEach(function(ca, i) {
+                var name = (ca.first ? ca.first.charAt(0) + '. ' : '') + ca.last;
+                if (i === coAuthors.length - 1) parts.push('and ' + name);
+                else parts.push(name);
+            });
+            return parts.join(', ');
+        }
+
+        function cityName(data) {
+            return (data.city || '').split(',')[0].trim();
+        }
+
+        // ── In-text citation helper ──
+        function generateInTextCitation(data, source) {
+            var author = data.author_last || data.author_org || data.org || data.creator || data.username || data.interviewee_name || data.case_name || data.act_name || '';
+            var year = data.year || '';
+            var coAuthors = data.coAuthors || [];
+
+            var result = {};
+
+            // APA in-text
+            if (coAuthors.length === 0) result.apa = '(' + author + ', ' + year + ')';
+            else if (coAuthors.length === 1) result.apa = '(' + author + ' & ' + coAuthors[0].last + ', ' + year + ')';
+            else result.apa = '(' + author + ' et al., ' + year + ')';
+
+            // MLA in-text
+            if (coAuthors.length === 0) result.mla = '(' + author + (data.pages ? ' ' + data.pages : '') + ')';
+            else if (coAuthors.length === 1) result.mla = '(' + author + ' and ' + coAuthors[0].last + (data.pages ? ' ' + data.pages : '') + ')';
+            else result.mla = '(' + author + ' et al.' + (data.pages ? ' ' + data.pages : '') + ')';
+
+            // Harvard in-text
+            result.harvard = result.apa;
+
+            // Chicago in-text
+            result.chicago = result.apa;
+
+            // Vancouver in-text (numeric)
+            result.vancouver = '[1]';
+
+            // IEEE in-text (numeric)
+            result.ieee = '[1]';
+
+            // OSCOLA in-text (footnote marker)
+            result.oscola = '(see footnote)';
+
+            // Turabian in-text
+            result.turabian = result.apa;
+
+            return result;
+        }
+
+        // ── APA 7th Edition ──
         function generateAPA(data, source) {
-            let text = '';
+            var text = '';
 
             if (source === 'book') {
-                const author = `${data.author_last}, ${data.author_first?.charAt(0)}.`;
-                const year = `(${data.year})`;
-                const title = `<em>${data.title}</em>`;
-                const edition = data.edition ? ` (${data.edition})` : '';
-                const publisher = `${data.publisher}`;
-                text = `${author} ${year}. ${title}${edition}. ${publisher}.`;
+                var author = buildAuthorsAPA(data);
+                var edition = data.edition ? ' (' + data.edition + ')' : '';
+                text = author + ' (' + data.year + '). <em>' + data.title + '</em>' + edition + '. ' + data.publisher + '.';
             } else if (source === 'journal') {
-                const author = `${data.author_last}, ${data.author_first?.charAt(0)}.`;
-                const year = `(${data.year})`;
-                const title = `${data.article_title}`;
-                const journal = `<em>${data.journal_name}</em>`;
-                const volume = `<strong>${data.volume}</strong>`;
-                const issue = data.issue ? `(${data.issue})` : '';
-                const pages = `, ${data.pages}`;
-                const doi = data.doi ? `. https://doi.org/${data.doi}` : '';
-                text = `${author} ${year}. ${title}. ${journal}, ${volume}${issue}${pages}${doi}.`;
+                var author = buildAuthorsAPA(data);
+                var issue = data.issue ? '(' + data.issue + ')' : '';
+                var doi = data.doi ? ' https://doi.org/' + data.doi : '';
+                text = author + ' (' + data.year + '). ' + data.article_title + '. <em>' + data.journal_name + '</em>, <strong>' + data.volume + '</strong>' + issue + ', ' + data.pages + '.' + doi;
             } else if (source === 'website') {
-                const author = data.author_org;
-                const year = `(${data.year})`;
-                const title = `${data.page_title}`;
-                const website = `<em>${data.website_name}</em>`;
-                const accessed = data.date_accessed ? ` Retrieved ${data.date_accessed}` : '';
-                text = `${author} ${year}. ${title}. ${website}. Retrieved from ${data.url}${accessed}`;
+                text = data.author_org + '. (' + data.year + '). ' + data.page_title + '. <em>' + data.website_name + '</em>. ' + data.url;
             } else if (source === 'newspaper') {
-                const author = data.author_last + (data.author_first ? `, ${data.author_first?.charAt(0)}.` : '');
-                const year = `(${data.year})`;
-                const title = `${data.article_title}`;
-                const newspaper = `<em>${data.newspaper_name}</em>`;
-                text = `${author} ${year}. ${title}. ${newspaper}.`;
-            } else if (source === 'thesis') {
-                const author = `${data.author_last}, ${data.author_first?.charAt(0)}.`;
-                const year = `(${data.year})`;
-                const title = `<em>${data.title}</em>`;
-                const degree = `[${data.degree_type} dissertation]`;
-                const institution = data.institution.split(',')[0];
-                text = `${author} ${year}. ${title} ${degree}. ${institution}.`;
-            } else if (source === 'conference') {
-                const author = `${data.author_last}, ${data.author_first?.charAt(0)}.`;
-                const year = `(${data.year})`;
-                const title = `${data.paper_title}`;
-                const conference = `Paper presented at the ${data.conference_name}, ${data.conference_location}`;
-                text = `${author} ${year}. ${title}. ${conference}.`;
-            } else if (source === 'legal') {
-                const caseName = `<em>${data.case_name}</em>`;
-                const year = data.year;
-                const court = data.court;
-                text = `${caseName}, ${year}. ${court}.`;
-            } else if (source === 'legislation') {
-                const actName = `<em>${data.act_name}</em>`;
-                const year = data.year;
-                text = `${actName}, ${year}.`;
+                var author = data.author_last + (data.author_first ? ', ' + data.author_first.charAt(0) + '.' : '');
+                text = author + ' (' + data.year + ', ' + (data.pub_date || '') + '). ' + data.article_title + '. <em>' + data.newspaper_name + '</em>.' + (data.page ? ' ' + data.page : '');
             } else if (source === 'government') {
-                const org = data.org;
-                const year = data.year;
-                const title = `<em>${data.title}</em>`;
-                const city = data.city.split(',')[0];
-                text = `${org} (${year}). ${title}. ${city}.`;
-            } else if (source === 'interview') {
-                const interviewee = data.interviewee_name;
-                const role = data.interviewee_title;
-                const date = data.date_conducted;
-                const type = data.interview_type;
-                text = `${interviewee} (${role}). (${date}). [${type} interview].`;
-            } else if (source === 'social') {
-                const username = data.username;
-                const platform = data.platform;
-                const date = data.post_date;
-                text = `${username}. (${date}). Post. <em>${platform}</em>. Retrieved from ${data.url}`;
-            } else if (source === 'video') {
-                const creator = data.creator;
-                const year = data.year;
-                const title = `${data.title}`;
-                const platform = data.platform;
-                text = `${creator} (${year}). <em>${title}</em>. ${platform}. Retrieved from ${data.url}`;
-            }
-
-            return { text, note: '(Hanging indent applied)' };
-        }
-
-        function generateMLA(data, source) {
-            let text = '';
-
-            if (source === 'book') {
-                const author = `${data.author_last}, ${data.author_first}`;
-                const title = `<em>${data.title}</em>`;
-                const publisher = data.publisher;
-                const year = data.year;
-                text = `${author}. ${title}. ${publisher}, ${year}.`;
-            } else if (source === 'journal') {
-                const author = `${data.author_last}, ${data.author_first}`;
-                const title = `"${data.article_title}"`;
-                const journal = `<em>${data.journal_name}</em>`;
-                const volume = data.volume;
-                const issue = data.issue ? `, no. ${data.issue}` : '';
-                const year = data.year;
-                const pages = `, pp. ${data.pages}`;
-                const doi = data.doi ? `, https://doi.org/${data.doi}` : '';
-                text = `${author}. ${title}. ${journal}, vol. ${volume}${issue}, ${year}${pages}${doi}.`;
-            } else if (source === 'website') {
-                const author = data.author_org;
-                const title = `"${data.page_title}"`;
-                const website = `<em>${data.website_name}</em>`;
-                const accessed = data.date_accessed;
-                text = `${author}. ${title}. <em>${data.website_name}</em>, ${data.year}, ${data.url}. Accessed ${accessed}.`;
-            } else if (source === 'newspaper') {
-                const author = `${data.author_last}${data.author_first ? ', ' + data.author_first : ''}`;
-                const title = `"${data.article_title}"`;
-                const newspaper = `<em>${data.newspaper_name}</em>`;
-                text = `${author}. ${title}. ${newspaper}, ${data.year}.`;
+                text = data.org + '. (' + data.year + '). <em>' + data.title + '</em>' + (data.report_number ? ' (Report No. ' + data.report_number + ')' : '') + '. ' + data.publisher + '.' + (data.url ? ' ' + data.url : '');
             } else if (source === 'thesis') {
-                const author = `${data.author_last}, ${data.author_first}`;
-                const title = `<em>${data.title}</em>`;
-                const degree = data.degree_type;
-                const institution = data.institution.split(',')[0];
-                text = `${author}. ${title}. ${degree} dissertation, ${institution}, ${data.year}.`;
+                var author = buildAuthorsAPA(data);
+                var degreeLabel = data.degree_type === 'PhD' ? 'Doctoral dissertation' : data.degree_type + "'s thesis";
+                text = author + ' (' + data.year + '). <em>' + data.title + '</em> [' + degreeLabel + ', ' + data.institution.split(',')[0] + '].' + (data.url ? ' ' + data.url : '');
             } else if (source === 'conference') {
-                const author = `${data.author_last}, ${data.author_first}`;
-                const title = `"${data.paper_title}"`;
-                const conference = data.conference_name;
-                text = `${author}. ${title}. <em>${conference}</em>, ${data.year}.`;
-            } else if (source === 'interview') {
-                const interviewee = data.interviewee_name;
-                const type = data.interview_type;
-                const date = data.date_conducted;
-                text = `${interviewee}. Interview. ${type}, ${date}.`;
-            } else if (source === 'social') {
-                const username = data.username;
-                const platform = data.platform;
-                const date = data.post_date;
-                text = `${username}. "${data.post_text || 'Post'}" ${platform}, ${date}, ${data.url}.`;
-            } else if (source === 'video') {
-                const creator = data.creator;
-                const title = `"${data.title}"`;
-                const platform = data.platform;
-                const year = data.year;
-                text = `${creator}. ${title}. <em>${platform}</em>, ${year}, ${data.url}.`;
-            }
-
-            return { text, note: '(Works with Works Cited page)' };
-        }
-
-        function generateChicago(data, source) {
-            let text = '';
-
-            if (source === 'book') {
-                const author = `${data.author_last}, ${data.author_first}`;
-                const title = `<em>${data.title}</em>`;
-                const publisher = data.publisher;
-                const city = data.city.split(',')[0];
-                const year = data.year;
-                text = `${author}. ${title}. ${city}: ${publisher}, ${year}.`;
-            } else if (source === 'journal') {
-                const author = `${data.author_last}, ${data.author_first}`;
-                const title = `"${data.article_title}"`;
-                const journal = `<em>${data.journal_name}</em>`;
-                const volume = data.volume;
-                const issue = data.issue ? `, no. ${data.issue}` : '';
-                const year = data.year;
-                const pages = ` (${data.year}): ${data.pages}`;
-                text = `${author}. ${title}. ${journal} ${volume}${issue}${pages}.`;
-            } else if (source === 'website') {
-                const author = data.author_org;
-                const title = `"${data.page_title}"`;
-                const website = data.website_name;
-                const accessed = data.date_accessed;
-                text = `${author}. "${data.page_title}." <em>${website}</em>. Accessed ${accessed}. ${data.url}.`;
+                var author = buildAuthorsAPA(data);
+                text = author + ' (' + data.year + '). ' + data.paper_title + '. In <em>' + data.conference_name + '</em>, ' + data.conference_location + '.' + (data.pages ? ' pp. ' + data.pages + '.' : '') + (data.doi ? ' https://doi.org/' + data.doi : '');
             } else if (source === 'legal') {
-                const caseName = `<em>${data.case_name}</em>`;
-                const year = data.year;
-                const court = data.court;
-                const report = data.report_volume ? ` ${data.report_volume}` : '';
-                text = `${caseName}, ${year}${report}. ${court}.`;
+                text = '<em>' + data.case_name + '</em> (' + data.year + '). ' + data.court + (data.jurisdiction ? ' (' + data.jurisdiction + ')' : '') + '.';
             } else if (source === 'legislation') {
-                const actName = data.act_name;
-                const year = data.year;
-                const chapter = data.chapter_number ? ` c. ${data.chapter_number}` : '';
-                text = `${actName}, ${year}${chapter}.`;
+                text = data.act_name + ', ' + data.year + (data.chapter_number ? ' (Act ' + data.chapter_number + ')' : '') + ' (' + data.jurisdiction + ').';
+            } else if (source === 'interview') {
+                text = data.interviewee_name + '. (' + data.date_conducted + '). [' + data.interview_type + ' interview].' + (data.interviewer_name ? ' Interviewed by ' + data.interviewer_name + '.' : '');
+            } else if (source === 'social') {
+                var excerpt = data.post_text ? data.post_text.substring(0, 20) : 'Post';
+                text = data.username + '. (' + data.post_date + '). <em>' + excerpt + '</em> [' + data.platform + ' post]. ' + data.url;
+            } else if (source === 'video') {
+                text = data.creator + '. (' + data.year + '). <em>' + data.title + '</em> [Video]. ' + data.platform + '. ' + data.url;
             }
 
-            return { text, note: '(Author-Date system; use footnotes for Notes-Bibliography)' };
+            return { text: text, note: 'Hanging indent applied' };
         }
 
-        function generateHarvard(data, source) {
-            let text = '';
+        // ── MLA 9th Edition ──
+        function generateMLA(data, source) {
+            var text = '';
 
             if (source === 'book') {
-                const author = `${data.author_last}, ${data.author_first?.charAt(0)}.`;
-                const year = `${data.year}`;
-                const title = `<em>${data.title}</em>`;
-                const city = data.city.split(',')[0];
-                const publisher = data.publisher;
-                text = `${author} ${year}. ${title}. ${city}: ${publisher}.`;
+                var author = buildAuthorsMLA(data);
+                text = author + '. <em>' + data.title + '</em>. ' + data.publisher + ', ' + data.year + '.';
             } else if (source === 'journal') {
-                const author = `${data.author_last}, ${data.author_first?.charAt(0)}.`;
-                const year = `${data.year}`;
-                const title = `${data.article_title}`;
-                const journal = `<em>${data.journal_name}</em>`;
-                const volume = `${data.volume}`;
-                const issue = data.issue ? `(${data.issue})` : '';
-                const pages = `, pp.${data.pages}`;
-                text = `${author} ${year}. ${title}. ${journal}, ${volume}${issue}${pages}.`;
+                var author = buildAuthorsMLA(data);
+                var issue = data.issue ? ', no. ' + data.issue : '';
+                var doi = data.doi ? ' https://doi.org/' + data.doi + '.' : '';
+                text = author + '. "' + data.article_title + '." <em>' + data.journal_name + '</em>, vol. ' + data.volume + issue + ', ' + data.year + ', pp. ' + data.pages + '.' + doi;
             } else if (source === 'website') {
-                const author = data.author_org;
-                const year = data.year;
-                const title = data.page_title;
-                const website = `<em>${data.website_name}</em>`;
-                const accessed = data.date_accessed;
-                text = `${author} ${year}. <em>${title}</em>. Available at: ${data.url} (Accessed: ${accessed}).`;
+                text = data.author_org + '. "' + data.page_title + '." <em>' + data.website_name + '</em>, ' + data.year + ', ' + data.url + '. Accessed ' + data.date_accessed + '.';
+            } else if (source === 'newspaper') {
+                var author = data.author_last + (data.author_first ? ', ' + data.author_first : '');
+                text = author + '. "' + data.article_title + '." <em>' + data.newspaper_name + '</em>, ' + (data.pub_date || data.year) + '.' + (data.page ? ' ' + data.page + '.' : '');
+            } else if (source === 'government') {
+                text = data.org + '. <em>' + data.title + '</em>. ' + data.publisher + ', ' + data.year + '.' + (data.url ? ' ' + data.url + '.' : '');
+            } else if (source === 'thesis') {
+                var author = buildAuthorsMLA(data);
+                text = author + '. <em>' + data.title + '</em>. ' + data.degree_type + ' dissertation, ' + data.institution.split(',')[0] + ', ' + data.year + '.';
+            } else if (source === 'conference') {
+                var author = buildAuthorsMLA(data);
+                text = author + '. "' + data.paper_title + '." <em>' + data.conference_name + '</em>, ' + data.conference_location + ', ' + data.year + '.';
             } else if (source === 'legal') {
-                const caseName = data.case_name;
-                const year = data.year;
-                const report = data.report_volume ? ` ${data.report_volume}` : '';
-                text = `<em>${caseName}</em> ${year}${report}. ${data.court}.`;
+                text = '<em>' + data.case_name + '</em>. ' + data.court + ', ' + data.year + '.';
+            } else if (source === 'legislation') {
+                text = '<em>' + data.act_name + '</em>. ' + data.jurisdiction + ', ' + data.year + '.';
+            } else if (source === 'interview') {
+                text = data.interviewee_name + '. ' + data.interview_type + ' interview. ' + data.date_conducted + '.';
+            } else if (source === 'social') {
+                var excerpt = data.post_text ? '"' + data.post_text.substring(0, 40) + '..."' : '"Post."';
+                text = data.username + '. ' + excerpt + ' <em>' + data.platform + '</em>, ' + data.post_date + ', ' + data.url + '.';
+            } else if (source === 'video') {
+                text = '"' + data.title + '." <em>' + data.platform + '</em>, uploaded by ' + data.creator + ', ' + data.year + ', ' + data.url + '.';
             }
 
-            return { text, note: '(Alphabetical order by author surname)' };
+            return { text: text, note: 'Works Cited page' };
         }
 
+        // ── Chicago (Author-Date) ──
+        function generateChicago(data, source) {
+            var text = '';
+
+            if (source === 'book') {
+                var author = data.author_last + ', ' + (data.author_first || '');
+                text = author + '. <em>' + data.title + '</em>. ' + cityName(data) + ': ' + data.publisher + ', ' + data.year + '.';
+            } else if (source === 'journal') {
+                var author = data.author_last + ', ' + (data.author_first || '');
+                var issue = data.issue ? ', no. ' + data.issue : '';
+                text = author + '. "' + data.article_title + '." <em>' + data.journal_name + '</em> ' + data.volume + issue + ' (' + data.year + '): ' + data.pages + '.';
+            } else if (source === 'website') {
+                text = data.author_org + '. "' + data.page_title + '." <em>' + data.website_name + '</em>. Accessed ' + data.date_accessed + '. ' + data.url + '.';
+            } else if (source === 'newspaper') {
+                var author = data.author_last + (data.author_first ? ', ' + data.author_first : '');
+                text = author + '. "' + data.article_title + '." <em>' + data.newspaper_name + '</em>, ' + (data.pub_date || data.year) + '.';
+            } else if (source === 'government') {
+                text = data.org + '. <em>' + data.title + '</em>. ' + cityName(data) + ': ' + data.publisher + ', ' + data.year + '.';
+            } else if (source === 'thesis') {
+                var author = data.author_last + ', ' + (data.author_first || '');
+                text = author + '. "' + data.title + '." ' + data.degree_type + ' diss., ' + data.institution.split(',')[0] + ', ' + data.year + '.';
+            } else if (source === 'conference') {
+                var author = data.author_last + ', ' + (data.author_first || '');
+                text = author + '. "' + data.paper_title + '." Paper presented at ' + data.conference_name + ', ' + data.conference_location + ', ' + data.year + '.';
+            } else if (source === 'legal') {
+                text = '<em>' + data.case_name + '</em>' + (data.report_volume ? ', ' + data.report_volume : '') + (data.report_series ? ' ' + data.report_series : '') + ' (' + data.court + ' ' + data.year + ').';
+            } else if (source === 'legislation') {
+                text = data.act_name + ', ' + data.year + (data.chapter_number ? ', c. ' + data.chapter_number : '') + '.';
+            } else if (source === 'interview') {
+                text = data.interviewee_name + ', interview by ' + (data.interviewer_name || 'author') + ', ' + data.interview_type + ', ' + data.date_conducted + '.';
+            } else if (source === 'social') {
+                var excerpt = data.post_text ? '"' + data.post_text.substring(0, 40) + '..."' : '';
+                text = data.username + '. ' + excerpt + ' ' + data.platform + ', ' + data.post_date + '. ' + data.url + '.';
+            } else if (source === 'video') {
+                text = data.creator + '. "' + data.title + '." ' + data.platform + ' video, ' + (data.duration || '') + ', ' + data.year + '. ' + data.url + '.';
+            }
+
+            return { text: text, note: 'Author-Date system' };
+        }
+
+        // ── Harvard ──
+        function generateHarvard(data, source) {
+            var text = '';
+
+            if (source === 'book') {
+                var author = buildAuthorsAPA(data);
+                text = author + ' (' + data.year + ') <em>' + data.title + '</em>. ' + cityName(data) + ': ' + data.publisher + '.';
+            } else if (source === 'journal') {
+                var author = buildAuthorsAPA(data);
+                var issue = data.issue ? '(' + data.issue + ')' : '';
+                text = author + ' (' + data.year + ') \'' + data.article_title + '\', <em>' + data.journal_name + '</em>, ' + data.volume + issue + ', pp. ' + data.pages + '.';
+            } else if (source === 'website') {
+                text = data.author_org + ' (' + data.year + ') <em>' + data.page_title + '</em>. Available at: ' + data.url + ' (Accessed: ' + data.date_accessed + ').';
+            } else if (source === 'newspaper') {
+                var author = data.author_last + ', ' + (data.author_first ? data.author_first.charAt(0) + '.' : '');
+                text = author + ' (' + data.year + ') \'' + data.article_title + '\', <em>' + data.newspaper_name + '</em>, ' + (data.pub_date || '') + '.' + (data.page ? ' p. ' + data.page + '.' : '');
+            } else if (source === 'government') {
+                text = data.org + ' (' + data.year + ') <em>' + data.title + '</em>. ' + cityName(data) + ': ' + data.publisher + '.';
+            } else if (source === 'thesis') {
+                var author = buildAuthorsAPA(data);
+                text = author + ' (' + data.year + ') <em>' + data.title + '</em>. ' + data.degree_type + ' thesis. ' + data.institution.split(',')[0] + '.';
+            } else if (source === 'conference') {
+                var author = buildAuthorsAPA(data);
+                text = author + ' (' + data.year + ') \'' + data.paper_title + '\', <em>' + data.conference_name + '</em>, ' + data.conference_location + '.' + (data.pages ? ' pp. ' + data.pages + '.' : '');
+            } else if (source === 'legal') {
+                text = '<em>' + data.case_name + '</em> (' + data.year + ')' + (data.report_volume ? ' ' + data.report_volume : '') + (data.report_series ? ' ' + data.report_series : '') + '. ' + data.court + '.';
+            } else if (source === 'legislation') {
+                text = data.act_name + ' ' + data.year + (data.chapter_number ? ' (c. ' + data.chapter_number + ')' : '') + '.';
+            } else if (source === 'interview') {
+                text = data.interviewee_name + ' (' + data.date_conducted + ') ' + data.interview_type + ' interview with ' + (data.interviewer_name || 'the author') + '.';
+            } else if (source === 'social') {
+                text = data.username + ' (' + data.post_date + ') ' + (data.post_text ? '\'' + data.post_text.substring(0, 40) + '...\'' : '[' + data.platform + ' post]') + '. Available at: ' + data.url + '.';
+            } else if (source === 'video') {
+                text = data.creator + ' (' + data.year + ') <em>' + data.title + '</em> [Video]. Available at: ' + data.url + ' (Accessed: ' + (data.year) + ').';
+            }
+
+            return { text: text, note: 'Alphabetical order by author surname' };
+        }
+
+        // ── Vancouver ──
         function generateVancouver(data, source) {
-            let text = '';
+            var text = '';
 
             if (source === 'book') {
-                const author = `${data.author_last} ${data.author_first?.charAt(0)}.`;
-                const title = `${data.title}`;
-                const publisher = data.publisher;
-                const year = data.year;
-                const city = data.city.split(',')[0];
-                text = `${author} ${title}. ${city}: ${publisher}; ${year}.`;
+                var author = buildAuthorsVancouver(data);
+                text = author + ' ' + data.title + '. ' + cityName(data) + ': ' + data.publisher + '; ' + data.year + '.';
             } else if (source === 'journal') {
-                const author = `${data.author_last} ${data.author_first?.charAt(0)}.`;
-                const title = `${data.article_title}`;
-                const journal = `${data.journal_name}`;
-                const year = data.year;
-                const volume = data.volume;
-                const issue = data.issue || '';
-                const pages = data.pages;
-                text = `${author} ${title}. ${journal}. ${year};${volume}(${issue}):${pages}.`;
+                var author = buildAuthorsVancouver(data);
+                var issue = data.issue ? '(' + data.issue + ')' : '';
+                text = author + ' ' + data.article_title + '. ' + data.journal_name + '. ' + data.year + ';' + data.volume + issue + ':' + data.pages + '.';
             } else if (source === 'website') {
-                const author = data.author_org;
-                const title = data.page_title;
-                const year = data.year;
-                text = `${author}. ${title}. Available from: ${data.url}. [Accessed ${data.date_accessed}].`;
+                text = data.author_org + '. ' + data.page_title + ' [Internet]. ' + data.website_name + '; ' + data.year + ' [cited ' + data.date_accessed + ']. Available from: ' + data.url;
+            } else if (source === 'newspaper') {
+                var author = data.author_last + ' ' + (data.author_first ? data.author_first.charAt(0) + '.' : '');
+                text = author + ' ' + data.article_title + '. ' + data.newspaper_name + '. ' + (data.pub_date || data.year) + '.';
+            } else if (source === 'government') {
+                text = data.org + '. ' + data.title + '. ' + cityName(data) + ': ' + data.publisher + '; ' + data.year + '.';
+            } else if (source === 'thesis') {
+                var author = buildAuthorsVancouver(data);
+                text = author + ' ' + data.title + ' [dissertation]. ' + data.institution.split(',')[0] + '; ' + data.year + '.';
+            } else if (source === 'conference') {
+                var author = buildAuthorsVancouver(data);
+                text = author + ' ' + data.paper_title + '. In: ' + data.conference_name + '; ' + data.conference_date + '; ' + data.conference_location + '.' + (data.pages ? ' p. ' + data.pages + '.' : '');
+            } else if (source === 'legal') {
+                text = data.case_name + ', ' + data.court + ' (' + data.year + ').';
+            } else if (source === 'legislation') {
+                text = data.act_name + ' ' + data.year + (data.chapter_number ? ' (c ' + data.chapter_number + ')' : '') + '.';
+            } else if (source === 'interview') {
+                text = data.interviewee_name + '. [' + data.interview_type + ' interview]. ' + data.date_conducted + '.';
+            } else if (source === 'social') {
+                text = data.username + '. ' + (data.post_text ? data.post_text.substring(0, 40) : 'Post') + ' [Internet]. ' + data.platform + '. ' + data.post_date + ' [cited ' + data.post_date + ']. Available from: ' + data.url;
+            } else if (source === 'video') {
+                text = data.creator + '. ' + data.title + ' [Video]. ' + data.platform + '; ' + data.year + '. Available from: ' + data.url;
             }
 
-            return { text, note: '[1] Numbers in brackets indicate citation order' };
+            return { text: text, note: '[1] Numbers in brackets indicate citation order' };
         }
 
+        // ── IEEE ──
         function generateIEEE(data, source) {
-            let text = '';
+            var text = '';
 
             if (source === 'book') {
-                const author = `${data.author_last}, ${data.author_first?.charAt(0)}.`;
-                const title = `<em>${data.title}</em>`;
-                const publisher = data.publisher;
-                const year = data.year;
-                text = `${author} <em>${data.title}</em>. ${publisher}, ${year}.`;
+                var author = buildAuthorsIEEE(data);
+                text = author + ', <em>' + data.title + '</em>. ' + cityName(data) + ': ' + data.publisher + ', ' + data.year + '.';
             } else if (source === 'journal') {
-                const author = `${data.author_last}, ${data.author_first?.charAt(0)}.`;
-                const title = `"${data.article_title},"`;
-                const journal = `<em>${data.journal_name}</em>`;
-                const volume = data.volume;
-                const issue = data.issue ? `no. ${data.issue}` : '';
-                const pages = data.pages;
-                const month = '';
-                text = `${author} ${title} ${journal}, vol. ${volume}, ${issue}, pp. ${pages}, ${data.year}.`;
+                var author = buildAuthorsIEEE(data);
+                var issue = data.issue ? ', no. ' + data.issue : '';
+                text = author + ', "' + data.article_title + '," <em>' + data.journal_name + '</em>, vol. ' + data.volume + issue + ', pp. ' + data.pages + ', ' + data.year + '.';
             } else if (source === 'website') {
-                const author = data.author_org;
-                const title = `"${data.page_title},"`;
-                text = `${author} ${title} [Online]. Available: ${data.url}. [Accessed: ${data.date_accessed}].`;
+                text = data.author_org + ', "' + data.page_title + '," <em>' + data.website_name + '</em>. [Online]. Available: ' + data.url + '. [Accessed: ' + data.date_accessed + '].';
+            } else if (source === 'newspaper') {
+                var author = buildAuthorsIEEE(data);
+                text = author + ', "' + data.article_title + '," <em>' + data.newspaper_name + '</em>, ' + (data.pub_date || data.year) + '.';
+            } else if (source === 'government') {
+                text = data.org + ', "' + data.title + ',"' + (data.report_number ? ' Rep. ' + data.report_number + ',' : '') + ' ' + data.year + '.';
+            } else if (source === 'thesis') {
+                var author = buildAuthorsIEEE(data);
+                text = author + ', "' + data.title + '," ' + data.degree_type + ' thesis, ' + data.institution.split(',')[0] + ', ' + data.year + '.';
+            } else if (source === 'conference') {
+                var author = buildAuthorsIEEE(data);
+                text = author + ', "' + data.paper_title + '," in <em>Proc. ' + data.conference_name + '</em>, ' + data.conference_location + ', ' + data.year + (data.pages ? ', pp. ' + data.pages : '') + '.';
+            } else if (source === 'legal') {
+                text = '<em>' + data.case_name + '</em>, ' + data.court + ', ' + data.year + '.';
+            } else if (source === 'legislation') {
+                text = data.act_name + ', ' + data.jurisdiction + ', ' + data.year + '.';
+            } else if (source === 'interview') {
+                text = data.interviewee_name + ', ' + data.interview_type + ' interview, ' + data.date_conducted + '.';
+            } else if (source === 'social') {
+                text = data.username + ', "' + (data.post_text ? data.post_text.substring(0, 30) : 'Post') + '," ' + data.platform + ', ' + data.post_date + '. [Online]. Available: ' + data.url;
+            } else if (source === 'video') {
+                text = data.creator + ', "' + data.title + '," ' + data.platform + ', ' + data.year + '. [Online]. Available: ' + data.url;
             }
 
-            return { text, note: '[1] Numeric system, order of appearance in text' };
+            return { text: text, note: '[1] Numeric system, order of appearance' };
         }
 
+        // ── OSCOLA ──
         function generateOSCOLA(data, source) {
-            let text = '';
+            var text = '';
 
             if (source === 'legal') {
-                const caseName = `<em>${data.case_name}</em>`;
-                const year = `[${data.year}]`;
-                const volume = data.report_volume ? `${data.report_volume} ` : '';
-                const series = data.report_series || '';
-                const page = data.page ? ` ${data.page}` : '';
-                text = `${caseName} ${year} ${volume}${series}${page}`;
+                var volume = data.report_volume ? data.report_volume + ' ' : '';
+                var series = data.report_series || '';
+                var page = data.page ? ' ' + data.page : '';
+                text = '<em>' + data.case_name + '</em> [' + data.year + '] ' + volume + series + page;
             } else if (source === 'legislation') {
-                const actName = data.act_name;
-                const year = data.year;
-                const chapter = data.chapter_number ? ` c ${data.chapter_number}` : '';
-                text = `${actName} ${year}${chapter}`;
+                text = data.act_name + ' ' + data.year + (data.chapter_number ? ', c ' + data.chapter_number : '');
             } else if (source === 'book') {
-                const author = `${data.author_last}, ${data.author_first}`;
-                const title = `<em>${data.title}</em>`;
-                const publisher = data.publisher;
-                const city = data.city.split(',')[0];
-                const year = data.year;
-                text = `${author}, ${title} (${city}: ${publisher}, ${year})`;
+                var author = data.author_last + (data.author_first ? ' ' + data.author_first.charAt(0) : '');
+                var coAuthors = data.coAuthors || [];
+                if (coAuthors.length > 0) {
+                    coAuthors.forEach(function(ca) { author += ' and ' + ca.last + (ca.first ? ' ' + ca.first.charAt(0) : ''); });
+                }
+                text = author + ', <em>' + data.title + '</em> (' + data.publisher + ' ' + data.year + ')';
             } else if (source === 'journal') {
-                const author = `${data.author_last}`;
-                const title = `"${data.article_title}"`;
-                const journal = `<em>${data.journal_name}</em>`;
-                const volume = data.volume;
-                const issue = data.issue ? `(${data.issue})` : '';
-                const year = data.year;
-                const pages = ` ${data.pages}`;
-                text = `${author}, ${title} (${year}) ${volume}${issue}${pages}`;
+                text = data.author_last + ', \'' + data.article_title + '\' [' + data.year + '] ' + (data.volume || '') + (data.issue ? '(' + data.issue + ')' : '') + ' <em>' + data.journal_name + '</em> ' + (data.pages || '');
+            } else if (source === 'website') {
+                text = data.author_org + ', \'' + data.page_title + '\' (<em>' + data.website_name + '</em>, ' + data.year + ') &lt;' + data.url + '&gt; accessed ' + data.date_accessed;
+            } else if (source === 'newspaper') {
+                var author = data.author_last + (data.author_first ? ', ' + data.author_first : '');
+                text = author + ', \'' + data.article_title + '\' <em>' + data.newspaper_name + '</em> (' + (data.pub_date || data.year) + ')';
+            } else if (source === 'government') {
+                text = data.org + ', <em>' + data.title + '</em> (' + data.publisher + ' ' + data.year + ')';
+            } else if (source === 'thesis') {
+                text = data.author_last + (data.author_first ? ' ' + data.author_first.charAt(0) : '') + ', \'' + data.title + '\' (' + data.degree_type + ' thesis, ' + data.institution.split(',')[0] + ' ' + data.year + ')';
+            } else if (source === 'conference') {
+                text = data.author_last + (data.author_first ? ' ' + data.author_first.charAt(0) : '') + ', \'' + data.paper_title + '\' (' + data.conference_name + ', ' + data.conference_location + ', ' + data.year + ')';
+            } else if (source === 'interview') {
+                text = 'Interview with ' + data.interviewee_name + ' (' + data.interviewee_title + ') (' + data.interview_type + ', ' + data.date_conducted + ')';
+            } else if (source === 'social') {
+                text = data.username + ', \'' + (data.post_text ? data.post_text.substring(0, 30) : 'Post') + '\' (' + data.platform + ', ' + data.post_date + ') &lt;' + data.url + '&gt;';
+            } else if (source === 'video') {
+                text = data.creator + ', \'' + data.title + '\' (' + data.platform + ', ' + data.year + ') &lt;' + data.url + '&gt;';
             }
 
-            return { text, note: '(Essential for African legal citations)' };
+            return { text: text, note: 'Footnote-based; essential for African legal citations' };
         }
 
+        // ── Turabian ──
         function generateTurabian(data, source) {
-            // Turabian is derived from Chicago, use simplified version
-            return generateChicago(data, source);
+            var text = '';
+
+            if (source === 'book') {
+                var author = data.author_last + ', ' + (data.author_first || '');
+                text = author + '. <em>' + data.title + '</em>. ' + cityName(data) + ': ' + data.publisher + ', ' + data.year + '.';
+            } else if (source === 'journal') {
+                var author = data.author_last + ', ' + (data.author_first || '');
+                text = author + '. "' + data.article_title + '." <em>' + data.journal_name + '</em> ' + data.volume + (data.issue ? ', no. ' + data.issue : '') + ' (' + data.year + '): ' + data.pages + '.';
+            } else if (source === 'website') {
+                text = data.author_org + '. "' + data.page_title + '." ' + data.website_name + '. Last modified ' + data.year + '. ' + data.url + '.';
+            } else if (source === 'newspaper') {
+                var author = data.author_last + (data.author_first ? ', ' + data.author_first : '');
+                text = author + '. "' + data.article_title + '." <em>' + data.newspaper_name + '</em>, ' + (data.pub_date || data.year) + '.';
+            } else if (source === 'government') {
+                text = data.org + '. <em>' + data.title + '</em>. ' + cityName(data) + ': ' + data.publisher + ', ' + data.year + '.';
+            } else if (source === 'thesis') {
+                var author = data.author_last + ', ' + (data.author_first || '');
+                text = author + '. "' + data.title + '." ' + data.degree_type + ' diss., ' + data.institution.split(',')[0] + ', ' + data.year + '.';
+            } else if (source === 'conference') {
+                var author = data.author_last + ', ' + (data.author_first || '');
+                text = author + '. "' + data.paper_title + '." Paper presented at ' + data.conference_name + ', ' + data.conference_location + ', ' + data.year + '.';
+            } else if (source === 'legal') {
+                text = '<em>' + data.case_name + '</em>, ' + data.court + ' (' + data.year + ').';
+            } else if (source === 'legislation') {
+                text = data.act_name + ' of ' + data.year + (data.chapter_number ? ', c. ' + data.chapter_number : '') + '.';
+            } else if (source === 'interview') {
+                text = data.interviewee_name + ', interview by ' + (data.interviewer_name || 'author') + ', ' + data.date_conducted + '.';
+            } else if (source === 'social') {
+                text = data.username + '. "' + (data.post_text ? data.post_text.substring(0, 40) : 'Post') + '." ' + data.platform + ', ' + data.post_date + '. ' + data.url + '.';
+            } else if (source === 'video') {
+                text = data.creator + '. "' + data.title + '." ' + data.platform + ' video' + (data.duration ? ', ' + data.duration : '') + '. ' + data.year + '. ' + data.url + '.';
+            }
+
+            return { text: text, note: 'Simplified Chicago; Notes-Bibliography style' };
         }
 
         function handleAutoFill() {
@@ -1954,17 +2173,21 @@
                 .map(f => f.label);
 
             if (missingFields.length > 0) {
-                alert('Please fill in required fields: ' + missingFields.join(', '));
+                if (window.AfroTools && AfroTools.toast) AfroTools.toast.error('Missing: ' + missingFields.join(', '));
                 return;
             }
 
             const preview = generateCitations();
             if (!preview) {
-                alert('Please fill in all required fields first');
+                if (window.AfroTools && AfroTools.toast) AfroTools.toast.error('Please fill in all required fields first');
                 return;
             }
 
-            const citationText = preview[Object.keys(preview)[0]].text.replace(/<[^>]*>/g, '');
+            // Map state.format key to preview key
+            var formatKeyMap = { apa: 'APA 7', mla: 'MLA 9', chicago: 'Chicago', harvard: 'Harvard', vancouver: 'Vancouver', ieee: 'IEEE', oscola: 'OSCOLA', turabian: 'Turabian' };
+            var previewKey = formatKeyMap[state.format] || Object.keys(preview)[0];
+            var selectedCitation = preview[previewKey] || preview[Object.keys(preview)[0]];
+            const citationText = selectedCitation.text.replace(/<[^>]*>/g, '');
             const entry = {
                 id: Date.now(),
                 citation: citationText,
@@ -2026,14 +2249,15 @@
                 .join('\n\n');
 
             if (!text) {
-                alert('No citations in bibliography');
+                if (window.AfroTools && AfroTools.toast) AfroTools.toast.info('No citations in bibliography');
+
                 return;
             }
 
-            navigator.clipboard.writeText(text).then(() => {
-                alert('Bibliography copied to clipboard!');
-            }).catch(() => {
-                alert('Failed to copy. Try exporting instead.');
+            navigator.clipboard.writeText(text).then(function() {
+                if (window.AfroTools && AfroTools.toast) AfroTools.toast.success('Bibliography copied to clipboard!');
+            }).catch(function() {
+                if (window.AfroTools && AfroTools.toast) AfroTools.toast.error('Failed to copy. Try exporting instead.');
             });
         }
 
@@ -2043,7 +2267,8 @@
                 .join('\n\n');
 
             if (!text) {
-                alert('No citations in bibliography');
+                if (window.AfroTools && AfroTools.toast) AfroTools.toast.info('No citations in bibliography');
+
                 return;
             }
 
@@ -2067,7 +2292,7 @@
         function checkCitation() {
             const citationText = document.getElementById('checkerInput').value.trim();
             if (!citationText) {
-                alert('Please paste a citation to check');
+                if (window.AfroTools && AfroTools.toast) AfroTools.toast.info('Please paste a citation to check');
                 return;
             }
 
