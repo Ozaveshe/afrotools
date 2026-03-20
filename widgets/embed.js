@@ -145,17 +145,12 @@
 
   function loadScript(url) {
     if (loaded[url]) return loaded[url];
-    loaded[url] = fetch(url).then(function(r) {
-      if (!r.ok) throw new Error('HTTP ' + r.status + ' loading ' + url);
-      return r.text();
-    }).then(function(code) {
-      try {
-        var fn = new Function(code);
-        fn();
-      } catch (e) {
-        console.error('[AfroWidgets] Script eval error:', url, e);
-        throw e;
-      }
+    loaded[url] = new Promise(function(resolve, reject) {
+      var script = document.createElement('script');
+      script.src = url;
+      script.onload = function() { resolve(); };
+      script.onerror = function() { reject(new Error('Failed to load ' + url)); };
+      document.head.appendChild(script);
     });
     return loaded[url];
   }
