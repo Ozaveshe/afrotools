@@ -771,18 +771,37 @@
     isPro: function () { return _profile && _profile.tier === 'pro'; },
 
     getSessionToken: function () {
-      if (!_sb) return null;
+      // Try Supabase v2 client first
+      if (_sb) {
+        try {
+          var s = _sb.auth.session && _sb.auth.session();
+          if (s && s.access_token) return s.access_token;
+        } catch (e) {}
+      }
+      // Fallback: read directly from localStorage (bypasses lock issues)
       try {
-        var s = _sb.auth.session && _sb.auth.session();
-        if (s && s.access_token) return s.access_token;
+        var stored = localStorage.getItem('sb-zpclagtgczsygrgztlts-auth-token');
+        if (stored) {
+          var parsed = JSON.parse(stored);
+          if (parsed && parsed.access_token) return parsed.access_token;
+        }
       } catch (e) {}
       return null;
     },
     getSessionTokenAsync: async function () {
-      if (!_sb) return null;
+      if (_sb) {
+        try {
+          var res = await _sb.auth.getSession();
+          if (res.data && res.data.session) return res.data.session.access_token;
+        } catch (e) {}
+      }
+      // Fallback: read directly from localStorage (bypasses lock issues)
       try {
-        var res = await _sb.auth.getSession();
-        if (res.data && res.data.session) return res.data.session.access_token;
+        var stored = localStorage.getItem('sb-zpclagtgczsygrgztlts-auth-token');
+        if (stored) {
+          var parsed = JSON.parse(stored);
+          if (parsed && parsed.access_token) return parsed.access_token;
+        }
       } catch (e) {}
       return null;
     },
