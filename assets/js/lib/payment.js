@@ -2,87 +2,74 @@
  * AfroTools Payment Integration
  * Handles Paystack (African cards/mobile money) and Stripe (international cards)
  *
- * Dependencies:
- *   - Paystack inline JS: <script src="https://js.paystack.co/v2/inline.js"></script>
- *   - Supabase client: window.supabase (from afro-auth.js)
+ * All payment logic is server-side. This client simply calls:
+ *   - /.netlify/functions/create-subscription  (Paystack)
+ *   - /.netlify/functions/create-checkout       (Stripe)
  */
 (function(window) {
   'use strict';
 
-  // TODO: Replace with live Paystack public key
-  const PAYSTACK_PUBLIC_KEY = 'pk_test_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
-
-  // Plan configuration
+  // Plan configuration (display purposes only — pricing enforced server-side)
   const PLANS = {
     monthly: {
       name: 'AfroTools Pro Monthly',
       amount_usd: 500,       // $5.00 in cents
-      amount_ngn: 500000,    // NGN 5,000 in kobo (approx)
-      interval: 'monthly',
-      stripe_price_id: 'price_XXXXXXXXXXXXXXXX', // TODO: Replace with live Stripe price ID
-      paystack_plan_code: 'PLN_XXXXXXXXXXXXXXXX'  // TODO: Replace with live Paystack plan code
+      amount_ngn: 400000,    // NGN 4,000 in kobo
+      interval: 'monthly'
     },
     annual: {
       name: 'AfroTools Pro Annual',
-      amount_usd: 4900,      // $49.00 in cents
-      amount_ngn: 4900000,   // NGN 49,000 in kobo (approx)
-      interval: 'annually',
-      stripe_price_id: 'price_YYYYYYYYYYYYYYYY', // TODO: Replace with live Stripe price ID
-      paystack_plan_code: 'PLN_YYYYYYYYYYYYYYYY'  // TODO: Replace with live Paystack plan code
+      amount_usd: 3000,      // $30.00 in cents
+      amount_ngn: 2200000,   // NGN 22,000 in kobo
+      interval: 'annually'
     }
   };
 
   const AfroPayment = {
 
     /**
-     * Initialize Paystack payment for African cards and mobile money
+     * Pay via Paystack by calling the server-side create-subscription endpoint.
+     * The server initializes a Paystack transaction and returns an authorization URL.
      * @param {string} email - Customer email
-     * @param {string} plan - 'monthly' or 'annual'
-     * @returns {Promise<object>} Payment result
+     * @param {string} plan - Plan key (e.g. 'monthly', 'annual', 'monthly_ngn', 'annual_ngn')
+     * @returns {Promise<object>} Payment result with redirect
      */
-    payWithPaystack(email, plan) {
-      return new Promise((resolve, reject) => {
-        const planConfig = PLANS[plan];
-        if (!planConfig) {
-          reject(new Error('Invalid plan: ' + plan));
-          return;
-        }
-
-        if (typeof PaystackPop === 'undefined') {
-          reject(new Error('Paystack SDK not loaded. Include https://js.paystack.co/v2/inline.js'));
-          return;
-        }
-
-        const handler = PaystackPop.setup({
-          key: PAYSTACK_PUBLIC_KEY,
-          email: email,
-          amount: planConfig.amount_ngn,
-          currency: 'NGN',
-          plan: planConfig.paystack_plan_code,
-          metadata: {
+    async payWithPaystack(email, plan) {
+      try {
+        const response = await fetch('/.netlify/functions/create-subscription', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: email,
             plan: plan,
-            source: 'afrotools-pro'
-          },
-          onClose: function() {
-            reject(new Error('Payment cancelled by user'));
-          },
-          callback: function(response) {
-            // response.reference contains the transaction reference
-            AfroPayment.updateSubscription(email, plan, response.reference, 'paystack')
-              .then(function() {
-                resolve({
-                  status: 'success',
-                  reference: response.reference,
-                  provider: 'paystack',
-                  plan: plan
-                });
-              })
-              .catch(reject);
-          }
+            callbackUrl: window.location.origin + '/dashboard/?payment=success&plan=' + plan
+          })
         });
 
-        handler.openIframe();
-      });
+        if (!response.ok) {
+          const err = await response.json();
+          throw new Error(err.error || 'Failed to initialize Paystack transaction');
+        }
+
+        const data = await response.json();
+
+        if (data.authorization_url) {
+          // Store reference locally so we can verify after redirect
+          localStorage.setItem('afro_payment_ref', JSON.stringify({
+            reference: data.reference,
+            plan: plan,
+            provider: 'paystack',
+            timestamp: Date.now()
+          }));
+          window.location.href = data.authorization_url;
+          return { status: 'redirecting', reference: data.reference, provider: 'paystack' };
+        } else {
+          throw new Error('No authorization URL returned from Paystack');
+        }
+      } catch (error) {
+        console.error('[AfroPayment] Paystack error:', error);
+        throw error;
+      }
     },
 
     /**
@@ -92,11 +79,6 @@
      * @returns {Promise<void>} Redirects to Stripe
      */
     async payWithStripe(email, plan) {
-      const planConfig = PLANS[plan];
-      if (!planConfig) {
-        throw new Error('Invalid plan: ' + plan);
-      }
-
       try {
         const response = await fetch('/.netlify/functions/create-checkout', {
           method: 'POST',
@@ -104,7 +86,6 @@
           body: JSON.stringify({
             email: email,
             plan: plan,
-            price_id: planConfig.stripe_price_id,
             success_url: window.location.origin + '/dashboard/?payment=success&plan=' + plan,
             cancel_url: window.location.origin + '/pro/?payment=cancelled'
           })
@@ -117,9 +98,17 @@
 
         const data = await response.json();
 
+        // Server may redirect to Paystack if Stripe isn't configured
+        if (data.redirect && data.url) {
+          window.location.href = data.url;
+          return;
+        }
+
         // Redirect to Stripe-hosted checkout page
         if (data.url) {
           window.location.href = data.url;
+        } else if (data.fallback_url) {
+          window.location.href = data.fallback_url;
         } else {
           throw new Error('No checkout URL returned');
         }
@@ -156,7 +145,7 @@
         }
 
         const now = new Date().toISOString();
-        const expiresAt = plan === 'annual'
+        const expiresAt = plan.startsWith('annual')
           ? new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString()
           : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
 
@@ -191,7 +180,9 @@
     },
 
     /**
-     * Start checkout flow — auto-detects best provider based on user location
+     * Start checkout flow — auto-detects best provider based on user location.
+     * African users get Paystack (with local currency when detectable),
+     * international users get Stripe.
      * @param {string} plan - 'monthly' or 'annual'
      */
     async startCheckout(plan) {
@@ -213,11 +204,17 @@
 
         // For African users, prefer Paystack; otherwise use Stripe
         // Simple heuristic: check timezone offset for African timezones (UTC-1 to UTC+4)
-        const offset = new Date().getTimezoneOffset() / -60;
-        const isLikelyAfrican = offset >= -1 && offset <= 4;
+        var offset = new Date().getTimezoneOffset() / -60;
+        var isLikelyAfrican = offset >= -1 && offset <= 4;
 
-        if (isLikelyAfrican && typeof PaystackPop !== 'undefined') {
-          await this.payWithPaystack(email, plan);
+        if (isLikelyAfrican) {
+          // Detect NGN currency for Nigerian users (WAT = UTC+1)
+          var paystackPlan = plan;
+          if (offset === 1) {
+            // Likely Nigeria/West Africa — use NGN pricing
+            paystackPlan = plan + '_ngn';
+          }
+          await this.payWithPaystack(email, paystackPlan);
         } else {
           await this.payWithStripe(email, plan);
         }
@@ -233,9 +230,9 @@
     },
 
     /**
-     * Get plan configuration
+     * Get plan configuration for display purposes
      * @param {string} plan - 'monthly' or 'annual'
-     * @returns {object} Plan details
+     * @returns {object|null} Plan details
      */
     getPlan(plan) {
       return PLANS[plan] || null;

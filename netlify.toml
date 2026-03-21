@@ -153,3 +153,61 @@
   from = "/api/crypto/*"
   to = "/.netlify/functions/api-crypto"
   status = 200
+
+# --- Audit Fix Redirects (2026-03-21) ---
+
+# Fix: Homepage links to /nigeria/ng-paye which doesn't exist
+[[redirects]]
+  from = "/nigeria/ng-paye"
+  to = "/nigeria/ng-salary-tax"
+  status = 301
+
+# Fix: Every PAYE tool links to /tools/paye-calculator/ which doesn't exist
+[[redirects]]
+  from = "/tools/paye-calculator/"
+  to = "/salary-tax/"
+  status = 301
+
+[[redirects]]
+  from = "/tools/paye-calculator/*"
+  to = "/salary-tax/"
+  status = 301
+
+# Fix: French Côte d'Ivoire hub doesn't exist
+[[redirects]]
+  from = "/fr/cote-divoire/"
+  to = "/cote-divoire/"
+  status = 302
+
+# Fix: /categories/financial/ doesn't exist
+[[redirects]]
+  from = "/categories/financial/"
+  to = "/salary-tax/"
+  status = 301
+
+[[redirects]]
+  from = "/categories/financial/*"
+  to = "/salary-tax/"
+  status = 301
+
+# Fix: favicon.ico 404
+[[redirects]]
+  from = "/favicon.ico"
+  to = "/assets/img/logo-mark.svg"
+  status = 200
+
+[[redirects]]
+  from = "/assets/img/favicon.ico"
+  to = "/assets/img/logo-mark.svg"
+  status = 200
+
+# Fix: /developer/ doesn't exist, category page is at /developer-tools/
+[[redirects]]
+  from = "/developer/"
+  to = "/developer-tools/"
+  status = 301
+
+[[redirects]]
+  from = "/developer/*"
+  to = "/developer-tools/"
+  status = 301
