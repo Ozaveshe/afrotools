@@ -341,7 +341,7 @@ function formatSQL(){
     const trimmed=line.trim();
     if(!trimmed)continue;
     const firstWord=trimmed.split(/\s/)[0].toUpperCase();
-    if(MAJOR_CLAUSES.includes(firstWord)||JOIN_CLAUSES.some(j=>trimmed.toUpperCase().startsWith(j))){
+    if(MAJOR_CLAUSES.includes(firstWord)||MAJOR_CLAUSES.some(m=>trimmed.toUpperCase().startsWith(m))||JOIN_CLAUSES.some(j=>trimmed.toUpperCase().startsWith(j))){
       formatted.push(trimmed);
     }else if(SUB_CLAUSES.includes(firstWord)){
       formatted.push(indent+trimmed);
