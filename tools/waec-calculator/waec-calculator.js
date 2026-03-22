@@ -486,6 +486,12 @@
     var uniGroupKey = ($('admUniGroup') || {}).value;
     var uniKey = ($('admUniversity') || {}).value;
     var jambScore = parseInt(($('admJamb') || {}).value) || 0;
+    if (jambScore > 400) {
+      jambScore = 400;
+      var jambInput = $('admJamb');
+      if (jambInput) jambInput.value = 400;
+      showToast('Maximum JAMB score is 400');
+    }
 
     if (!courseGroupKey || !courseKey) { showToast('Select a course first.'); return; }
 
@@ -635,12 +641,10 @@
 
   // ─── SHARING ─────────────────────────────────────────────────────
   function setupSharing() {
-    document.addEventListener('DOMContentLoaded', function () {
-      var wa = $('shareWhatsapp'); if (wa) wa.addEventListener('click', function () { window.open('https://wa.me/?text=' + encodeURIComponent(getShareText()), '_blank'); track('result_shared', { method: 'whatsapp' }); });
-      var tw = $('shareTwitter'); if (tw) tw.addEventListener('click', function () { window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(getShareText()), '_blank'); track('result_shared', { method: 'twitter' }); });
-      var cp = $('shareCopy'); if (cp) cp.addEventListener('click', function () { if (navigator.clipboard) navigator.clipboard.writeText(getShareText()).then(function () { showToast('Copied!'); }); track('result_shared', { method: 'copy' }); });
-      var pdf = $('sharePdf'); if (pdf) pdf.addEventListener('click', function () { window.print(); track('result_shared', { method: 'pdf' }); });
-    });
+    var wa = $('shareWhatsapp'); if (wa) wa.addEventListener('click', function () { window.open('https://wa.me/?text=' + encodeURIComponent(getShareText()), '_blank'); track('result_shared', { method: 'whatsapp' }); });
+    var tw = $('shareTwitter'); if (tw) tw.addEventListener('click', function () { window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(getShareText()), '_blank'); track('result_shared', { method: 'twitter' }); });
+    var cp = $('shareCopy'); if (cp) cp.addEventListener('click', function () { if (navigator.clipboard) navigator.clipboard.writeText(getShareText()).then(function () { showToast('Copied!'); }); track('result_shared', { method: 'copy' }); });
+    var pdf = $('sharePdf'); if (pdf) pdf.addEventListener('click', function () { window.print(); track('result_shared', { method: 'pdf' }); });
   }
 
   function getShareText() {

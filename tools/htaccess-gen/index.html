@@ -254,10 +254,17 @@ function generate(){
 }
 
 function copyOutput(){
-  const el=document.getElementById('output');
-  el.select();
-  document.execCommand('copy');
-  alert('Copied to clipboard!');
+  const text=document.getElementById('output').value;
+  navigator.clipboard.writeText(text).then(function(){
+    var btn=event.target;
+    var orig=btn.textContent;
+    btn.textContent='Copied!';
+    setTimeout(function(){btn.textContent=orig;},2000);
+  }).catch(function(){
+    var el=document.getElementById('output');
+    el.select();
+    document.execCommand('copy');
+  });
 }
 
 function downloadFile(){

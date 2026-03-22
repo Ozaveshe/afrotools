@@ -491,8 +491,8 @@ ${raw.slice(0, 4000)}`;
       if (restoreBtn && selected) {
         restoreBtn.addEventListener('click', () => {
           _applyImportedData(selected.data);
-          CVApp.updateData('template', selected.template);
-          CVApp.updateData('country', selected.country);
+          CVApp.setTopState('template', selected.template);
+          CVApp.setTopState('country', selected.country);
           CVApp.renderEditor();
           CVApp.renderPreview();
           closeOverlay(overlay);

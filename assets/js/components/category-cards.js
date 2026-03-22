@@ -58,7 +58,7 @@
     var cc = (t.countries && t.countries[0]) || 'ALL';
     var bg = COUNTRY_BG[cc] || DEFAULT_BG;
     var imgSrc = '/assets/img/tools/' + t.id + '.webp';
-    var imgFb = '/assets/img/tool-icons/' + t.id + '.png';
+    var imgFb = '/assets/img/tools/' + t.id + '.svg';
     var badgeClass = t.status === 'new' ? 'badge-new' : (ok ? 'badge-live' : 'badge-soon');
     var badgeText = t.status === 'new' ? 'New' : (ok ? 'Live' : 'Coming Soon');
     var tag = ok ? 'a' : 'div';

@@ -235,14 +235,30 @@ const COSTS = {
   },
 };
 
-function updateCurrency() {}
+function updateCurrency() {
+  var country = document.getElementById('country').value;
+  var currency = COSTS[country].currency;
+  document.getElementById('resultCard').style.display = 'none';
+  document.getElementById('resultGrid').innerHTML = '';
+  document.getElementById('costTable').innerHTML = '';
+  var lbl = document.getElementById('currencyLabel');
+  if (!lbl) {
+    lbl = document.createElement('span');
+    lbl.id = 'currencyLabel';
+    lbl.style.cssText = 'font-size:.72rem;font-weight:600;color:#64748b';
+    document.querySelector('.card-head').appendChild(lbl);
+  }
+  lbl.textContent = 'Currency: ' + currency;
+}
 
 function calculate() {
   const country = document.getElementById('country').value;
   const budget = document.getElementById('budget').value;
   const guests = +document.getElementById('guests').value;
+  const location = document.getElementById('location').value;
   const data = COSTS[country][budget];
   const currency = COSTS[country].currency;
+  const locationMultiplier = (location === 'hometown') ? 0.7 : 1.0;
 
   const items = [];
   const checkboxes = document.querySelectorAll('[data-item]');
@@ -251,6 +267,7 @@ function calculate() {
       const item = cb.dataset.item;
       let cost = data[item];
       if (item === 'catering') cost = cost * guests; // per-guest
+      cost = Math.round(cost * locationMultiplier);
       items.push({ name: cb.parentElement.textContent.trim(), cost });
     }
   });

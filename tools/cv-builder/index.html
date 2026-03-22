@@ -37,12 +37,15 @@
 <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" as="script">
 <script>
 window._pdfLibsLoaded=false;
+window._pdfLibsPromise=null;
 window.loadPdfLibs=function(){
   if(window._pdfLibsLoaded)return Promise.resolve();
-  return Promise.all([
-    new Promise(function(r){var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';s.onload=r;document.head.appendChild(s);}),
-    new Promise(function(r){var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';s.onload=r;document.head.appendChild(s);})
-  ]).then(function(){window._pdfLibsLoaded=true;});
+  if(window._pdfLibsPromise)return window._pdfLibsPromise;
+  window._pdfLibsPromise=Promise.all([
+    new Promise(function(r,j){var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';s.onload=r;s.onerror=j;document.head.appendChild(s);}),
+    new Promise(function(r,j){var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';s.onload=r;s.onerror=j;document.head.appendChild(s);})
+  ]).then(function(){window._pdfLibsLoaded=true;}).catch(function(e){window._pdfLibsPromise=null;throw e;});
+  return window._pdfLibsPromise;
 };
 </script>
 

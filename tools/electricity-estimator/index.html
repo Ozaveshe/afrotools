@@ -74,18 +74,18 @@
   .card { background: #fff; border: 1.5px solid #e5e7eb; border-radius: 14px; overflow: hidden; box-shadow: 0 1px 8px rgba(0,0,0,0.05); }
   .card + .card { margin-top: 18px; }
   .card-head { padding: 15px 22px; border-bottom: 1px solid #EFF6FF; background: #F5F9FF; display: flex; justify-content: space-between; align-items: center; }
-  .card-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #0a4018; }
+  .card-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #0A1628; }
   .card-body { padding: 22px; }
   .field { margin-bottom: 16px; }
-  .f-label { font-size: 0.75rem; font-weight: 700; color: #0d2813; margin-bottom: 6px; display: block; }
-  .f-input, .f-select { width: 100%; padding: 11px 13px; background: #EFF6FF; border: 1.5px solid #BFDBFE; border-radius: 7px; font-size: 0.92rem; font-weight: 600; color: #0d2813; outline: none; font-family: 'DM Sans', sans-serif; }
-  .f-select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23008751' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; cursor: pointer; }
+  .f-label { font-size: 0.75rem; font-weight: 700; color: #0A1628; margin-bottom: 6px; display: block; }
+  .f-input, .f-select { width: 100%; padding: 11px 13px; background: #EFF6FF; border: 1.5px solid #BFDBFE; border-radius: 7px; font-size: 0.92rem; font-weight: 600; color: #0A1628; outline: none; font-family: 'DM Sans', sans-serif; }
+  .f-select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23007AFF' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; cursor: pointer; }
   .f-input:focus, .f-select:focus { border-color: var(--afro-green); box-shadow: 0 0 0 3px rgba(0,122,255,0.1); }
   .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   .appliance-list { max-height: 320px; overflow-y: auto; }
   .app-item { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-bottom: 1px solid #EFF6FF; font-size: 0.8rem; }
   .app-item:last-child { border-bottom: none; }
-  .app-name { flex: 1; font-weight: 600; color: #0d2813; }
+  .app-name { flex: 1; font-weight: 600; color: #0A1628; }
   .app-watts { color: #6B8CAE; font-size: 0.72rem; min-width: 60px; }
   .app-hrs { width: 50px; padding: 5px 6px; border: 1.5px solid #BFDBFE; border-radius: 5px; font-size: 0.8rem; text-align: center; font-family: 'DM Sans', sans-serif; background: #EFF6FF; outline: none; }
   .app-hrs:focus { border-color: var(--afro-green); }
@@ -109,10 +109,10 @@
   .solar-text { font-size: 0.82rem; color: #78350f; line-height: 1.6; }
   .solar-savings { font-size: 1.4rem; font-weight: 800; color: #b45309; }
   .sidebar .info-card { background: #fff; border: 1.5px solid #e5e7eb; border-radius: 14px; padding: 20px; margin-bottom: 16px; }
-  .sidebar .info-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #0a4018; margin-bottom: 10px; }
+  .sidebar .info-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #0A1628; margin-bottom: 10px; }
   .sidebar .info-text { font-size: 0.78rem; color: #4b5563; line-height: 1.7; }
   .tariff-table { width: 100%; border-collapse: collapse; font-size: 0.72rem; margin-top: 8px; }
-  .tariff-table th { text-align: left; padding: 6px 8px; background: #F5F9FF; color: #0a4018; font-weight: 700; border-bottom: 1px solid #BFDBFE; }
+  .tariff-table th { text-align: left; padding: 6px 8px; background: #F5F9FF; color: #0A1628; font-weight: 700; border-bottom: 1px solid #BFDBFE; }
   .tariff-table td { padding: 5px 8px; border-bottom: 1px solid #EFF6FF; color: #333; }
   @media(max-width:680px) {
     .tool-main-inner { grid-template-columns: 1fr; }
@@ -369,9 +369,9 @@
         var cost = 0; var rem = kwh;
         var tiers = [
           { limit: 30, rate: 0.44 },
-          { limit: 70, rate: 0.66 },
-          { limit: 200, rate: 0.92 },
-          { limit: 300, rate: 1.02 }
+          { limit: 40, rate: 0.66 },
+          { limit: 130, rate: 0.92 },
+          { limit: 100, rate: 1.02 }
         ];
         for (var i = 0; i < tiers.length && rem > 0; i++) {
           var chunk = Math.min(rem, tiers[i].limit);

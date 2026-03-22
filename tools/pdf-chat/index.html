@@ -1020,11 +1020,15 @@
       }).join('\n\n');
 
       if (!fullText.trim() || fullText.replace(/\s/g, '').length < 30) {
-        showUploadError('This PDF appears to be scanned or image-only. Try our <a href="/tools/pdf-ocr/" style="color:var(--afro-green);font-weight:700">OCR tool</a> first to extract text.');
+        showUploadError('This PDF appears to be scanned or image-only. Try our <a href="/tools/pdf-ocr/" style="color:var(--color-primary);font-weight:700">OCR tool</a> first to extract text.');
         uploadLoading.classList.remove('show');
+        if (pdfDoc && pdfDoc.destroy) pdfDoc.destroy();
+        pdfDoc = null;
+        pdfData = null;
         return;
       }
 
+      var truncated = fullText.length > 8000;
       context = fullText.substring(0, 8000);
 
       /* Switch to workspace */
@@ -1045,7 +1049,9 @@
       /* Welcome message */
       chatHistory = [];
       messagesEl.innerHTML = '';
-      addMessage('ai', "I've analyzed your PDF (" + totalPages + " page" + (totalPages > 1 ? 's' : '') + "). What would you like to know? You can ask questions, request a summary, or find key points.");
+      var welcomeMsg = "I've analyzed your PDF (" + totalPages + " page" + (totalPages > 1 ? 's' : '') + "). What would you like to know? You can ask questions, request a summary, or find key points.";
+      if (truncated) welcomeMsg += "\n\nNote: This is a large document. I'm working with the first ~8,000 characters for best results.";
+      addMessage('ai', welcomeMsg);
 
     } catch (err) {
       console.error('PDF load error:', err);
@@ -1082,18 +1088,27 @@
     nextPageBtn.disabled = currentPage >= totalPages;
   }
 
+  var isRendering = false;
   prevPageBtn.addEventListener('click', async function() {
-    if (currentPage > 1) {
+    if (currentPage > 1 && !isRendering) {
+      isRendering = true;
+      prevPageBtn.disabled = true;
+      nextPageBtn.disabled = true;
       currentPage--;
       await renderCurrentPage();
+      isRendering = false;
       updatePageNav();
     }
   });
 
   nextPageBtn.addEventListener('click', async function() {
-    if (currentPage < totalPages) {
+    if (currentPage < totalPages && !isRendering) {
+      isRendering = true;
+      prevPageBtn.disabled = true;
+      nextPageBtn.disabled = true;
       currentPage++;
       await renderCurrentPage();
+      isRendering = false;
       updatePageNav();
     }
   });
@@ -1311,8 +1326,9 @@
   });
 
   function updateSendBtn() {
-    sendBtn.disabled = !chatInput.value.trim() || isSending;
+    sendBtn.disabled = !chatInput.value.trim() || isSending || !context;
   }
+  updateSendBtn(); /* initial state */
 
   /* ── Quick Actions ── */
   quickActions.addEventListener('click', function(e) {

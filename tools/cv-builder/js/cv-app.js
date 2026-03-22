@@ -86,7 +86,7 @@ const CVApp = (function() {
       }
     }
     state.dirty = true;
-    renderPreview();
+    renderPreviewDebounced();
     updateScore();
     scheduleAutoSave();
   }
@@ -690,7 +690,12 @@ const CVApp = (function() {
     });
   }
 
-  // ── Render Preview ────────────────────────────────────────
+  // ── Render Preview (debounced for typing perf) ──────────
+  let _previewTimer = null;
+  function renderPreviewDebounced() {
+    clearTimeout(_previewTimer);
+    _previewTimer = setTimeout(renderPreview, 80);
+  }
   function renderPreview() {
     const preview = document.getElementById('cvpreview');
     if (!preview) return;
@@ -1089,6 +1094,7 @@ const CVApp = (function() {
     aiAnalyzeCV,
     aiOpenChat,
     saveCVToList,
+    setTopState: function(key, val) { if (key in state) { state[key] = val; } },
     esc,
     fmtMonth,
     fmtDOB,

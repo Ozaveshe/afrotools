@@ -13,7 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Generator fuel consumption calculator for diesel and petrol. Compare costs, track expenses, African fuel prices.">
     <meta name="robots" content="index, follow">
-    <meta name="theme-color" content="#f59e0b">
+    <meta name="theme-color" content="#007AFF">
     <link rel="canonical" href="https://afrotools.com/tools/generator-fuel">
     <title>Generator Fuel Calculator — Diesel & Petrol Cost Tracking | AfroTools</title>
     <meta property="og:type" content="website">
@@ -42,9 +42,9 @@
         *, *::before, *::after { box-sizing: border-box; }
 
         :root {
-            --color-accent: #f59e0b;
-            --color-accent-light: #fef3c7;
-            --color-accent-lighter: #fffbeb;
+            --color-accent: #007AFF;
+            --color-accent-light: #DBEAFE;
+            --color-accent-lighter: #E8F2FF;
             --color-dark: #1e293b;
             --color-bg: #f8fafc;
             --color-text: #1f2937;
@@ -71,7 +71,7 @@
             padding: 40px 32px;
             text-align: center;
             margin-bottom: 32px;
-            border: 1px solid rgba(245, 158, 11, 0.2);
+            border: 1px solid rgba(0, 122, 255, 0.2);
             color: var(--color-white);
         }
 
@@ -144,7 +144,7 @@
         .gf-input-group select:focus {
             outline: none;
             border-color: var(--color-accent);
-            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
         }
 
         .gf-presets {
@@ -180,7 +180,7 @@
 
         .gf-btn {
             padding: 14px 28px;
-            background: linear-gradient(135deg, var(--color-accent) 0%, #d97706 100%);
+            background: linear-gradient(135deg, var(--color-accent) 0%, #0063D1 100%);
             color: var(--color-white);
             border: none;
             border-radius: 8px;
@@ -194,13 +194,13 @@
 
         .gf-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(245, 158, 11, 0.3);
+            box-shadow: 0 8px 16px rgba(0, 122, 255, 0.3);
         }
 
         .gf-results {
             display: none;
             background: var(--color-accent-lighter);
-            border: 2px solid rgba(245, 158, 11, 0.3);
+            border: 2px solid rgba(0, 122, 255, 0.3);
             border-radius: 12px;
             padding: 24px;
             margin-bottom: 24px;
@@ -284,7 +284,7 @@
 
         .gf-tips {
             background: var(--color-accent-lighter);
-            border: 1px solid rgba(245, 158, 11, 0.2);
+            border: 1px solid rgba(0, 122, 255, 0.2);
             border-radius: 12px;
             padding: 16px;
             margin-top: 20px;
@@ -349,11 +349,6 @@
 </div></section>
 
     <div class="gf-container">
-        <div class="gf-hero">
-            <h1>Generator Fuel <span>Calculator</span></h1>
-            <p>Calculate fuel consumption, costs, and compare with grid electricity</p>
-        </div>
-
         <div class="gf-grid">
             <div class="gf-card">
                 <h2>Generator Settings</h2>
@@ -361,14 +356,14 @@
                 <div class="gf-input-group">
                     <label>Generator Capacity (kVA)</label>
                     <div class="gf-presets">
-                        <button class="gf-preset-btn" onclick="setKVA(2.5)">2.5</button>
-                        <button class="gf-preset-btn" onclick="setKVA(5)">5</button>
-                        <button class="gf-preset-btn" onclick="setKVA(7.5)">7.5</button>
-                        <button class="gf-preset-btn" onclick="setKVA(10)">10</button>
-                        <button class="gf-preset-btn" onclick="setKVA(15)">15</button>
-                        <button class="gf-preset-btn" onclick="setKVA(20)">20</button>
-                        <button class="gf-preset-btn" onclick="setKVA(50)">50</button>
-                        <button class="gf-preset-btn" onclick="setKVA(100)">100</button>
+                        <button class="gf-preset-btn" onclick="setKVA(2.5, this)">2.5</button>
+                        <button class="gf-preset-btn" onclick="setKVA(5, this)">5</button>
+                        <button class="gf-preset-btn" onclick="setKVA(7.5, this)">7.5</button>
+                        <button class="gf-preset-btn" onclick="setKVA(10, this)">10</button>
+                        <button class="gf-preset-btn" onclick="setKVA(15, this)">15</button>
+                        <button class="gf-preset-btn" onclick="setKVA(20, this)">20</button>
+                        <button class="gf-preset-btn" onclick="setKVA(50, this)">50</button>
+                        <button class="gf-preset-btn" onclick="setKVA(100, this)">100</button>
                     </div>
                     <input type="number" id="kva" value="5.0" min="1" max="500" step="0.5" placeholder="Custom kVA">
                 </div>
@@ -463,7 +458,7 @@
                     <span class="gf-comparison-label">Grid Monthly Cost</span>
                     <span class="gf-comparison-value" id="gridMonthlyCost">0</span>
                 </div>
-                <div class="gf-comparison-row" style="background: rgba(245, 158, 11, 0.1); margin: 8px -16px; padding: 10px 16px;">
+                <div class="gf-comparison-row" style="background: rgba(0, 122, 255, 0.1); margin: 8px -16px; padding: 10px 16px;">
                     <span class="gf-comparison-label" style="font-weight: 700;">Monthly Difference</span>
                     <span class="gf-comparison-value" id="difference" style="font-size: 20px;">0</span>
                 </div>
@@ -487,10 +482,10 @@
     <!-- auth handled by navbar (supabase-auth.js) -->
 
     <script>
-        function setKVA(val) {
+        function setKVA(val, btn) {
             document.getElementById('kva').value = val;
-            document.querySelectorAll('.gf-preset-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            btn.closest('.gf-presets').querySelectorAll('.gf-preset-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
         }
 
         function setPrice(curr, price) {

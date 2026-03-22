@@ -250,11 +250,14 @@ function formatSQL(){
         let endPos=j;
         let ok=true;
         for(let p=1;p<parts.length;p++){
-          rest=sql.slice(endPos).replace(/^\s+/,'');
+          rest=sql.slice(endPos);
+          const ws=rest.match(/^\s+/);
+          if(ws)endPos+=ws[0].length;
+          rest=sql.slice(endPos);
           const nextWord=rest.match(/^[a-zA-Z_]+/);
           if(nextWord&&nextWord[0].toUpperCase()===parts[p]){
             fullMatch+=' '+nextWord[0];
-            endPos+=sql.slice(endPos).indexOf(nextWord[0])+nextWord[0].length;
+            endPos+=nextWord[0].length;
           }else{ok=false;break;}
         }
         if(ok){
@@ -329,9 +332,7 @@ function formatSQL(){
   // Clean up
   result=result.replace(/\n\s*\n/g,'\n').replace(/^\s+/,'').replace(/ +/g,' ');
   // Fix indent after major clauses
-  result=result.replace(/^(SELECT|INSERT INTO|UPDATE|DELETE FROM|CREATE TABLE|ALTER TABLE|DROP TABLE|WITH)\s/gm,(m)=>{
-    return m;
-  });
+  // Dead code removed — re-indent handles clause alignment below
 
   // Re-indent properly
   const lines=result.split('\n');

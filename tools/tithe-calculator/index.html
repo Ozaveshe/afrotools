@@ -206,6 +206,7 @@ function calculate() {
   const income = +document.getElementById('income').value;
   const otherIncome = +document.getElementById('otherIncome').value;
   const currency = document.getElementById('currency').value;
+  const basis = document.getElementById('basis').value;
   const tithePct = +document.getElementById('tithePct').value / 100;
   const offering = +document.getElementById('offering').value;
 
@@ -216,10 +217,14 @@ function calculate() {
   const annualTotal = monthlyTotal * 12;
   const weeklyTithe = monthlyTithe / 4.33;
 
+  const basisLabel = basis === 'gross' ? 'Gross Income (before tax)' : 'Net Income (after tax)';
   const fmt = n => currency + ' ' + Math.round(n).toLocaleString('en');
 
   let html = '';
-  html += `<div class="result-box"><div class="num">${fmt(monthlyTithe)}</div><div class="lbl">Monthly Tithe</div></div>`;
+  if (basis === 'net') {
+    html += `<div class="result-box" style="grid-column:1/-1;background:#f5f3ff;border-color:#ddd6fe"><div style="font-size:.78rem;color:#6d28d9;line-height:1.5">Calculating on <strong>net income</strong> (take-home pay). Enter the amount you receive after PAYE, pension, and other deductions.</div></div>`;
+  }
+  html += `<div class="result-box"><div class="num">${fmt(monthlyTithe)}</div><div class="lbl">Monthly Tithe (${basisLabel})</div></div>`;
   html += `<div class="result-box"><div class="num">${fmt(monthlyTotal)}</div><div class="lbl">Total Monthly Giving</div></div>`;
   html += `<div class="result-box"><div class="num">${fmt(annualTithe)}</div><div class="lbl">Annual Tithe</div></div>`;
   html += `<div class="result-box"><div class="num">${fmt(annualTotal)}</div><div class="lbl">Annual Total Giving</div></div>`;
@@ -227,7 +232,7 @@ function calculate() {
 
   let plan = '';
   plan += `<div class="plan-row"><span class="label">Weekly tithe</span><span class="amount">${fmt(weeklyTithe)}</span></div>`;
-  plan += `<div class="plan-row"><span class="label">Monthly tithe (${(tithePct * 100)}% of ${fmt(totalIncome)})</span><span class="amount">${fmt(monthlyTithe)}</span></div>`;
+  plan += `<div class="plan-row"><span class="label">Monthly tithe (${(tithePct * 100)}% of ${basisLabel.toLowerCase()}: ${fmt(totalIncome)})</span><span class="amount">${fmt(monthlyTithe)}</span></div>`;
   if (offering > 0) plan += `<div class="plan-row"><span class="label">Monthly offering</span><span class="amount">${fmt(offering)}</span></div>`;
   plan += `<div class="plan-row"><span class="label">Quarterly giving</span><span class="amount">${fmt(monthlyTotal * 3)}</span></div>`;
   plan += `<div class="plan-row"><span class="label">Annual total</span><span class="amount" style="font-size:1rem">${fmt(annualTotal)}</span></div>`;

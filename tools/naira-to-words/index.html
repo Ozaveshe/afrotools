@@ -174,7 +174,7 @@ function numToWords(n) {
     n = Math.floor(n / 1000);
     scaleIdx++;
   }
-  return parts.join(', ');
+  return parts.join(' ');
 }
 
 function chunkToWords(n) {
@@ -196,7 +196,7 @@ function amountToWords(amount, currOpt) {
   if (main === 0 && sub === 0) return 'Zero ' + mainUnit + ' Only';
   if (main > 0) result = numToWords(main) + ' ' + mainUnit;
   if (sub > 0) {
-    if (main > 0) result += ', ';
+    if (main > 0) result += ' and ';
     result += numToWords(sub) + ' ' + subUnit;
   }
   return result + ' Only';

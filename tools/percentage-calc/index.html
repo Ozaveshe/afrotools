@@ -25,8 +25,11 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
 <link rel="stylesheet" href="/assets/css/global.min.css">
+<meta name="tool-id" content="percentage-calc">
+<script src="/assets/js/components/tool-registry.min.js"></script>
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js" defer></script>
 <style>
   :root { --pc-blue: #2563EB; --afro-dark: #0f1419; }
   .tool-hero { background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%); padding: 44px 0 36px; position: relative; overflow: hidden; }
@@ -163,7 +166,7 @@
 
 <div class="tool-hero">
   <div class="tool-hero-inner">
-    <div class="breadcrumb"><a href="/">AfroTools</a> / <span>Tools</span></div>
+    <div class="breadcrumb"><a href="/">Home</a> / <a href="/education/">Education</a> / <span>Percentage Calculator</span></div>
     <h1>Percentage <em>Calculator</em></h1>
     <p class="hero-sub">Calculate percentages with 6 modes: basic percentage, what %, percentage change, discount, tip calculator, and profit margin.</p>
     <div class="hero-badges">
@@ -433,7 +436,7 @@
 </section>
 
 <afro-related-tools category="education" current="percentage-calc"></afro-related-tools>
-
+<afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
 
 <script>
@@ -543,10 +546,15 @@
   ];
   bindings.forEach(([id, fn]) => document.getElementById(id).addEventListener('input', fn));
 
-  // History
+  // History (persisted in localStorage)
+  var HIST_KEY = 'afro_pctcalc_history';
+  function saveHist() { try { localStorage.setItem(HIST_KEY, JSON.stringify(historyArr)); } catch(e) {} }
+  function loadHist() { try { var d = localStorage.getItem(HIST_KEY); if (d) historyArr = JSON.parse(d); } catch(e) {} }
+
   function addHist(expr, result) {
     historyArr.unshift({ expr, result });
     if (historyArr.length > 15) historyArr.pop();
+    saveHist();
     renderHist();
   }
 
@@ -557,7 +565,7 @@
     el.innerHTML = historyArr.map(h => `<div class="hist-item"><span class="hist-expr">${esc(h.expr)}</span><span class="hist-result">${esc(h.result)}</span></div>`).join('');
   }
 
-  function clearHist() { historyArr = []; renderHist(); }
+  function clearHist() { historyArr = []; saveHist(); renderHist(); }
 
   // Copy
   function copyResult(mode) {
@@ -574,10 +582,12 @@
   // Init
   calc1(); calc2(); calc3(); calc4(); calc5(); calc6();
   historyArr = [];
+  loadHist();
   renderHist();
 </script>
-<script src="/assets/js/components/tool-registry.js" defer></script>
 <script src="/assets/js/components/related-tools.min.js" defer></script>
+<script src="/assets/js/favorites.js" defer></script>
+<script src="/assets/js/lib/saved-tools.js" defer></script>
 
 </body>
 </html>
