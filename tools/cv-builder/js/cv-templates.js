@@ -17,10 +17,10 @@ const CVTemplates = (function() {
     const title = d.title || 'Professional Title';
     const contact = [
       d.email && '\u2709 ' + esc(d.email),
-      d.phone && '\uD83D\uDCF1 ' + esc((d.phoneCode||'') + ' ' + d.phone),
-      d.loc && '\uD83D\uDCCD ' + esc(d.loc),
-      d.linkedin && '\uD83D\uDD17 ' + esc(d.linkedin),
-      d.web && '\uD83C\uDF10 ' + esc(d.web),
+      d.phone && '📱 ' + esc((d.phoneCode||'') + ' ' + d.phone),
+      d.loc && '📍 ' + esc(d.loc),
+      d.linkedin && '🔗 ' + esc(d.linkedin),
+      d.web && '🌐 ' + esc(d.web),
     ].filter(Boolean);
     const personal = d.sp ? [
       d.dob && ('DOB: ' + fmtDOB(d.dob)),
@@ -91,7 +91,7 @@ const CVTemplates = (function() {
     return projs.map(p => {
       if (!p.n) return '';
       return `<div style="margin-bottom:8px">
-        <div style="font-weight:700;font-size:9.5px">${esc(p.n)}${p.url ? '<span style="font-weight:400;color:#007AFF;margin-left:5px;font-size:8px">\uD83D\uDD17 ' + esc(p.url) + '</span>' : ''}</div>
+        <div style="font-weight:700;font-size:9.5px">${esc(p.n)}${p.url ? '<span style="font-weight:400;color:#007AFF;margin-left:5px;font-size:8px">🔗 ' + esc(p.url) + '</span>' : ''}</div>
         ${p.tech ? '<div style="font-size:7.5px;color:#888;margin-top:1px">' + esc(p.tech) + '</div>' : ''}
         ${p.d ? '<div style="font-size:8.5px;color:#666;line-height:1.4;margin-top:2px">' + esc(p.d) + '</div>' : ''}
       </div>`;
@@ -612,7 +612,7 @@ const CVTemplates = (function() {
       <div style="flex:1;padding:20px 18px;background:#fff">
         ${sec('About', d.summary ? '<div style="font-size:8.5px;color:#444;line-height:1.65">' + esc(d.summary) + '</div>' : '')}
         ${sec('Experience', p.hasExp ? expHTML(d.exps) : '')}
-        ${sec('Projects', p.hasProj ? d.projs.filter(pp => pp.n).map(pp => `<div style="margin-bottom:8px;padding:6px 8px;background:#f8fafc;border-radius:6px;border:1px solid #e2e8f0"><div style="font-weight:700;font-size:9.5px">${esc(pp.n)}${pp.url ? '<span style="font-weight:400;color:' + blue + ';margin-left:5px;font-size:8px">\uD83D\uDD17 ' + esc(pp.url) + '</span>' : ''}</div>${pp.tech ? '<div style="margin-top:2px">' + pp.tech.split(',').map(t => `<span style="display:inline-block;padding:1px 5px;border-radius:3px;font-size:7px;font-weight:600;margin:1px;background:#E8F2FF;color:${blue};font-family:\'JetBrains Mono\',monospace">${esc(t.trim())}</span>`).join('') + '</div>' : ''}${pp.d ? '<div style="font-size:8px;color:#666;margin-top:2px">' + esc(pp.d) + '</div>' : ''}</div>`).join('') : '')}
+        ${sec('Projects', p.hasProj ? d.projs.filter(pp => pp.n).map(pp => `<div style="margin-bottom:8px;padding:6px 8px;background:#f8fafc;border-radius:6px;border:1px solid #e2e8f0"><div style="font-weight:700;font-size:9.5px">${esc(pp.n)}${pp.url ? '<span style="font-weight:400;color:' + blue + ';margin-left:5px;font-size:8px">🔗 ' + esc(pp.url) + '</span>' : ''}</div>${pp.tech ? '<div style="margin-top:2px">' + pp.tech.split(',').map(t => `<span style="display:inline-block;padding:1px 5px;border-radius:3px;font-size:7px;font-weight:600;margin:1px;background:#E8F2FF;color:${blue};font-family:\'JetBrains Mono\',monospace">${esc(t.trim())}</span>`).join('') + '</div>' : ''}${pp.d ? '<div style="font-size:8px;color:#666;margin-top:2px">' + esc(pp.d) + '</div>' : ''}</div>`).join('') : '')}
         ${sec('Education', p.hasEdu ? eduHTML(d.edus) : '')}
         ${sec('Certifications', p.hasCert ? certHTML(d.certs) : '')}
         ${customSectionsHTML(d, sec)}
@@ -730,7 +730,7 @@ const CVTemplates = (function() {
           <div style="font-family:'Instrument Serif',Georgia,serif;font-size:20px;font-weight:700;margin-bottom:2px;font-style:italic">${p.name}</div>
           <div style="font-size:9px;color:${blue};font-weight:600;margin-bottom:8px">${p.title}</div>
           <div style="display:flex;flex-wrap:wrap;gap:8px;font-size:8px;color:#666">${p.contact.map(c => `<span>${c}</span>`).join('')}</div>
-          ${d.linkedin ? `<div style="margin-top:4px;font-size:8px;color:${blue}">\uD83D\uDD17 ${esc(d.linkedin)}</div>` : ''}
+          ${d.linkedin ? `<div style="margin-top:4px;font-size:8px;color:${blue}">🔗 ${esc(d.linkedin)}</div>` : ''}
         </div>
       </div>
       ${sec('Professional Summary', d.summary ? '<div style="font-size:8.5px;color:#444;line-height:1.65">' + esc(d.summary) + '</div>' : '')}
