@@ -38,9 +38,48 @@ const staticPages = [
   { url: '/all-tools/',        priority: '0.9', changefreq: 'weekly' },
   { url: '/pricing/',          priority: '0.7', changefreq: 'monthly' },
   { url: '/developers/',       priority: '0.6', changefreq: 'monthly' },
-  { url: '/style-guide.html',  priority: '0.3', changefreq: 'monthly' },
   { url: '/search/',           priority: '0.5', changefreq: 'weekly' },
+  { url: '/about/',            priority: '0.5', changefreq: 'monthly' },
+  { url: '/privacy/',          priority: '0.3', changefreq: 'yearly' },
+  { url: '/terms/',            priority: '0.3', changefreq: 'yearly' },
+  { url: '/contact/',          priority: '0.5', changefreq: 'monthly' },
+  { url: '/suggest-tool/',     priority: '0.4', changefreq: 'monthly' },
+  { url: '/faq/',              priority: '0.5', changefreq: 'monthly' },
+  { url: '/advertise/',        priority: '0.4', changefreq: 'monthly' },
+  { url: '/api/',              priority: '0.6', changefreq: 'monthly' },
+  { url: '/tools/paye-calculator/', priority: '0.9', changefreq: 'weekly' },
 ];
+
+// Pages to exclude from sitemap (redirects, non-canonical, private, etc.)
+const EXCLUDED_URLS = new Set([
+  '/dashboard/', '/admin/', '/offline.html', '/pro/', '/salary-tax/',
+]);
+
+// ── FRENCH / FRANCOPHONE PAGES ────────────────────────
+const frDir = path.join(__dirname, '..', 'fr');
+const frenchPages = [];
+if (fs.existsSync(frDir)) {
+  const walkFr = (dir, base) => {
+    fs.readdirSync(dir, { withFileTypes: true }).forEach(entry => {
+      if (entry.isDirectory()) {
+        walkFr(path.join(dir, entry.name), `${base}/${entry.name}`);
+      } else if (entry.name === 'index.html') {
+        frenchPages.push({ url: `${base}/`, priority: '0.7', changefreq: 'weekly' });
+      } else if (entry.name.endsWith('.html')) {
+        frenchPages.push({ url: `${base}/${entry.name.replace('.html', '')}`, priority: '0.7', changefreq: 'weekly' });
+      }
+    });
+  };
+  // Add fr hub
+  if (fs.existsSync(path.join(frDir, 'index.html'))) {
+    frenchPages.push({ url: '/fr/', priority: '0.8', changefreq: 'weekly' });
+  }
+  fs.readdirSync(frDir, { withFileTypes: true }).forEach(entry => {
+    if (entry.isDirectory()) {
+      walkFr(path.join(frDir, entry.name), `/fr/${entry.name}`);
+    }
+  });
+}
 
 // ── CATEGORY PAGES ──────────────────────────────────────
 
@@ -96,14 +135,19 @@ if (fs.existsSync(blogDir)) {
 
 // ── DEDUPLICATE & GENERATE ─────────────────────────────
 
-const allPages = [...staticPages, ...categoryPages, ...countryHubs, ...toolPages, ...blogPages];
+const allPages = [...staticPages, ...categoryPages, ...countryHubs, ...toolPages, ...blogPages, ...frenchPages];
 
-// Deduplicate by URL
+// Deduplicate by URL and exclude non-canonical pages
 const seen = new Set();
 const uniquePages = allPages.filter(p => {
-  const key = p.url.replace(/\/$/, ''); // normalize
+  // Normalize URL to trailing-slash version
+  const normalized = p.url.endsWith('/') || p.url.includes('.') ? p.url : p.url + '/';
+  const key = normalized.replace(/\/$/, '');
   if (seen.has(key)) return false;
+  if (EXCLUDED_URLS.has(normalized) || EXCLUDED_URLS.has(key + '/')) return false;
   seen.add(key);
+  // Ensure trailing slash on directory URLs
+  if (!p.url.endsWith('/') && !p.url.includes('.')) p.url = p.url + '/';
   return true;
 });
 
@@ -136,3 +180,4 @@ console.log(`  Categories: ${categoryPages.length}`);
 console.log(`  Country hubs: ${countryHubs.length}`);
 console.log(`  Tool pages: ${toolPages.length}`);
 console.log(`  Blog posts: ${blogPages.length}`);
+console.log(`  French pages: ${frenchPages.length}`);

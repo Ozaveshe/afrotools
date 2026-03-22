@@ -29,9 +29,7 @@
 /vault    /dashboard/vault/  301
 /vault/   /dashboard/vault/  301
 
-# VAT Calculator — serve vat-calc.html at /tools/vat-calculator/ (avoids meta refresh SEO penalty)
-/tools/vat-calculator        /tools/vat-calculator/vat-calc.html  200
-/tools/vat-calculator/       /tools/vat-calculator/vat-calc.html  200
+# VAT Calculator (index.html served by default — vat-calc.html removed)
 
 # AfroKitchen — SEO-friendly recipe URLs
 /tools/afrokitchen/recipe/:slug/  /tools/afrokitchen/recipe.html?slug=:slug  200
@@ -157,6 +155,64 @@
 /fr/congo/calculateur-tva                   /fr/congo/calculateur-tva.html                     200
 /fr/gabon/calculateur-tva                   /fr/gabon/calculateur-tva.html                     200
 /fr/togo/calculateur-tva                    /fr/togo/calculateur-tva.html                      200
+
+# Country ISO shortcode redirects → canonical paths
+/bf/*  /burkina-faso/:splat  301
+/cd/*  /dr-congo/:splat  301
+/cg/*  /congo/:splat  301
+/ci/*  /cote-divoire/:splat  301
+/cm/*  /cameroon/:splat  301
+/dz/*  /algeria/:splat  301
+/ga/*  /gabon/:splat  301
+/gn/*  /guinea/:splat  301
+/ma/*  /morocco/:splat  301
+/ml/*  /mali/:splat  301
+/ne/*  /niger/:splat  301
+/sn/*  /senegal/:splat  301
+/tg/*  /togo/:splat  301
+/tn/*  /tunisia/:splat  301
+
+# Old category aliases → canonical paths
+/categories/african/*  /african/  301
+/finance-economy/*  /categories/  301
+
+# VAT calculator meta-refresh fix
+/tools/vat-calculator/vat-calc  /tools/vat-calculator/  301
+/tools/vat-calculator/vat-calc/  /tools/vat-calculator/  301
+
+# French country hubs
+/fr/algerie        /fr/algerie/index.html        200
+/fr/algerie/       /fr/algerie/index.html        200
+/fr/burkina-faso   /fr/burkina-faso/index.html   200
+/fr/burkina-faso/  /fr/burkina-faso/index.html   200
+/fr/cameroun       /fr/cameroun/index.html       200
+/fr/cameroun/      /fr/cameroun/index.html       200
+/fr/congo          /fr/congo/index.html          200
+/fr/congo/         /fr/congo/index.html          200
+/fr/cote-divoire   /fr/cote-divoire/index.html   200
+/fr/cote-divoire/  /fr/cote-divoire/index.html   200
+/fr/gabon          /fr/gabon/index.html          200
+/fr/gabon/         /fr/gabon/index.html          200
+/fr/guinee         /fr/guinee/index.html         200
+/fr/guinee/        /fr/guinee/index.html         200
+/fr/mali           /fr/mali/index.html           200
+/fr/mali/          /fr/mali/index.html           200
+/fr/maroc          /fr/maroc/index.html          200
+/fr/maroc/         /fr/maroc/index.html          200
+/fr/niger          /fr/niger/index.html          200
+/fr/niger/         /fr/niger/index.html          200
+/fr/rdc            /fr/rdc/index.html            200
+/fr/rdc/           /fr/rdc/index.html            200
+/fr/senegal        /fr/senegal/index.html        200
+/fr/senegal/       /fr/senegal/index.html        200
+/fr/togo           /fr/togo/index.html           200
+/fr/togo/          /fr/togo/index.html           200
+/fr/tunisie        /fr/tunisie/index.html        200
+/fr/tunisie/       /fr/tunisie/index.html        200
+
+# PAYE Calculator hub
+/tools/paye-calculator         /tools/paye-calculator/index.html  200
+/tools/paye-calculator/        /tools/paye-calculator/index.html  200
 
 # SEO — prevent trailing-slash 301 redirects (catches all directory index pages)
 # These catch-all rules MUST stay at the bottom. Netlify uses first-match-wins,

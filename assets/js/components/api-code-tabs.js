@@ -1,16 +1,1 @@
-/* AfroTools API Docs — Code Tab Switcher */
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.code-block-wrapper').forEach(wrapper => {
-    const tabs = wrapper.querySelectorAll('.code-tab');
-    const panels = wrapper.querySelectorAll('.code-panel');
-    tabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        tabs.forEach(t => t.classList.remove('code-tab--active'));
-        panels.forEach(p => p.classList.remove('code-panel--active'));
-        tab.classList.add('code-tab--active');
-        const target = wrapper.querySelector(`[data-lang="${tab.dataset.lang}"]`);
-        if (target) target.classList.add('code-panel--active');
-      });
-    });
-  });
-});
+document.addEventListener("DOMContentLoaded",()=>{document.querySelectorAll(".code-block-wrapper").forEach(e=>{const a=e.querySelectorAll(".code-tab"),c=e.querySelectorAll(".code-panel");a.forEach(t=>{t.addEventListener("click",()=>{a.forEach(e=>e.classList.remove("code-tab--active")),c.forEach(e=>e.classList.remove("code-panel--active")),t.classList.add("code-tab--active");const o=e.querySelector(`[data-lang="${t.dataset.lang}"]`);o&&o.classList.add("code-panel--active")})})})});
