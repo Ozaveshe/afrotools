@@ -118,7 +118,7 @@
       });
 
       _sb.auth.onAuthStateChange(async function (event, session) {
-        console.log('[AfroAuth] Event:', event, session ? '(session found)' : '(no session)');
+        if (window.__AFRO_DEBUG) console.log('[AfroAuth] Event:', event, session ? '(session found)' : '(no session)');
 
         if (session && session.user) {
           _user = session.user;
@@ -186,7 +186,13 @@
       if (loginBtn) {
         loginBtn.href = '/dashboard/';
         if (avatar) {
-          loginBtn.innerHTML = '<img src="' + avatar + '" style="width:26px;height:26px;border-radius:50%;object-fit:cover;" alt=""> ' + first;
+          loginBtn.textContent = '';
+          var img = document.createElement('img');
+          img.src = avatar;
+          img.alt = '';
+          img.style.cssText = 'width:26px;height:26px;border-radius:50%;object-fit:cover;';
+          loginBtn.appendChild(img);
+          loginBtn.appendChild(document.createTextNode(' ' + first));
           loginBtn.style.display = 'inline-flex';
           loginBtn.style.alignItems = 'center';
           loginBtn.style.gap = '8px';
@@ -418,7 +424,7 @@
       btn.style.opacity = '0.6';
       hideMsg();
       try {
-        console.log('[AfroAuth] Starting ' + provider + ' OAuth...');
+        if (window.__AFRO_DEBUG) console.log('[AfroAuth] Starting ' + provider + ' OAuth...');
         var opts = {
           provider: provider,
           options: { redirectTo: window.location.origin + '/dashboard/' }
@@ -609,7 +615,7 @@
           var country = document.getElementById('afroAuthCountry').value;
           if (!name) { showMsg('Please enter your name.', 'error'); submitBtn.disabled = false; submitBtn.textContent = submitLabel; return; }
 
-          console.log('[AfroAuth] Signing up:', email);
+          if (window.__AFRO_DEBUG) console.log('[AfroAuth] Signing up:', email);
           var res = await _sb.auth.signUp({
             email: email,
             password: password,
@@ -623,7 +629,7 @@
 
           // Auto-confirm disabled? Session returned immediately
           if (res.data.session) {
-            console.log('[AfroAuth] Signup success, session active');
+            if (window.__AFRO_DEBUG) console.log('[AfroAuth] Signup success, session active');
             _user = res.data.session.user;
             await fetchProfile();
             closeModal();
@@ -645,11 +651,11 @@
           }
 
         } else {
-          console.log('[AfroAuth] Signing in:', email);
+          if (window.__AFRO_DEBUG) console.log('[AfroAuth] Signing in:', email);
           var res2 = await _sb.auth.signInWithPassword({ email: email, password: password });
           if (res2.error) throw res2.error;
 
-          console.log('[AfroAuth] Sign-in success');
+          if (window.__AFRO_DEBUG) console.log('[AfroAuth] Sign-in success');
           _user = res2.data.session.user;
           await fetchProfile();
           closeModal();

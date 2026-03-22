@@ -541,7 +541,17 @@
       this._megaOpen = false;
     }
 
-    connectedCallback() { this._render(); this._bind(); }
+    connectedCallback() {
+      // P4-03: Inject favicon if not already present
+      if (!document.querySelector('link[rel="icon"]')) {
+        var link = document.createElement('link');
+        link.rel = 'icon';
+        link.type = 'image/svg+xml';
+        link.href = '/assets/img/logo-mark.svg';
+        document.head.appendChild(link);
+      }
+      this._render(); this._bind();
+    }
     get active() { return this.getAttribute('active') || ''; }
 
     _megaContent() {

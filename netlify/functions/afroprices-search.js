@@ -4,6 +4,16 @@
 
 const { createClient } = require("@supabase/supabase-js");
 
+// Sanitize search query to prevent PostgREST operator injection
+function sanitizeQuery(raw) {
+  if (typeof raw !== 'string') return '';
+  return raw
+    .replace(/[(),.]/g, '')   // strip PostgREST operators
+    .replace(/[^\w\s-]/g, '') // allow only alphanumeric, spaces, hyphens
+    .trim()
+    .slice(0, 100);           // max 100 chars
+}
+
 const SUPABASE_URL = process.env.SUPABASE_URL || "https://jbmhfpkzbgyeodsqhprx.supabase.co";
 const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpibWhmcGt6Ymd5ZW9kc3FocHJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIxMTY2MDcsImV4cCI6MjA1NzY5MjYwN30.gVLMsMVjqEMOCMCFnPBHaf8njEhNPGUB2v3XnDnlqSM";
 
@@ -45,7 +55,8 @@ exports.handler = async function (event) {
   try { body = JSON.parse(event.body); }
   catch { return { statusCode: 400, headers, body: JSON.stringify({ error: "Invalid JSON" }) }; }
 
-  const { query, country_code, category } = body;
+  const { query: rawQuery, country_code, category } = body;
+  const query = sanitizeQuery(rawQuery);
 
   if (!query || !country_code) {
     return {

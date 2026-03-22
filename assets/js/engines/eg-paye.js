@@ -74,7 +74,7 @@
     const excludedBands = [];
     for (const rule of EXCLUSION_RULES) {
       if (nati > rule.threshold) {
-        exclusionExtra += rule.extraTax;
+        exclusionExtra = rule.extraTax;
         excludedBands.push(rule.bandIdx);
       }
     }

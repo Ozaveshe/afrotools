@@ -30,7 +30,7 @@
   ];
 
   // SSNIT constants (monthly caps → used on annual values)
-  const SSNIT_CAP           = 61000;   // Monthly basic salary cap
+  const SSNIT_CAP           = 61000 * 12;   // Annual basic salary cap (61,000/month × 12)
   const SSNIT_EMP_RATE      = 0.055;   // Employee 5.5%
   const SSNIT_EMPLOYER_RATE = 0.13;    // Employer 13%
   const TIER3_CAP_RATE      = 0.165;   // Max Tier 3: 16.5% of basic
@@ -87,7 +87,7 @@
     const ssnit = opts.ssnit !== false ? ssnitBase * SSNIT_EMP_RATE : 0;
 
     // Tier 3 voluntary
-    const tier3Cap = basic * TIER3_CAP_RATE;
+    const tier3Cap = (basic / 12) * TIER3_CAP_RATE;
     const tier3Raw = opts.tier3Amount || 0;
     const tier3 = opts.tier3 ? Math.min(tier3Raw, tier3Cap) : 0;
 

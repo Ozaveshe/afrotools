@@ -13,7 +13,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Break Even Calculator | Charts, Sensitivity Analysis, PDF Report | AfroTools</title>
 <meta name="description" content="Professional break-even calculator with interactive charts, sensitivity analysis, margin of safety, PDF report download. For African entrepreneurs.">
-<link rel="canonical" href="https://afrotools.com/tools/break-even">
+<link rel="canonical" href="https://afrotools.com/tools/break-even/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Break Even Calculator | AfroTools">
 <meta property="og:description" content="Calculate break-even point with charts, sensitivity analysis, profit zone visualization, and PDF reports.">
@@ -724,7 +724,7 @@
 
 <!-- auth handled by navbar (supabase-auth.js) -->
 <script>
-  let beChart = null;
+  var beChart = null;
 
   // Update costs list
   function updateCostsList() {
@@ -926,21 +926,22 @@
 
       if (s.change === 'selling') {
         newPrice = sp * (1 + (s.amount / 100));
-        newBe = Math.ceil(fc / (newPrice - vc));
+        if (newPrice <= vc) { newBe = '∞'; } else { newBe = Math.ceil(fc / (newPrice - vc)); }
       } else {
         newFixed = fc * (1 + (s.amount / 100));
-        newBe = Math.ceil(newFixed / (sp - vc));
+        if (sp <= vc) { newBe = '∞'; } else { newBe = Math.ceil(newFixed / (sp - vc)); }
       }
 
-      const change = newBe - baseBeUnits;
+      const isInf = newBe === '∞';
+      const change = isInf ? Infinity : newBe - baseBeUnits;
       const changeClass = change >= 0 ? 'color: var(--afro-red);' : 'color: var(--afro-green);';
 
       const tr = document.createElement('tr');
       tr.innerHTML = `
         <td>${s.label}</td>
         <td>${s.amount > 0 ? '+' : ''}${s.amount}%</td>
-        <td><strong>${newBe.toLocaleString()}</strong> units</td>
-        <td style="${changeClass} font-weight: 700;">${change >= 0 ? '+' : ''}${change.toLocaleString()} units</td>
+        <td><strong>${isInf ? '∞' : newBe.toLocaleString()}</strong> units</td>
+        <td style="${changeClass} font-weight: 700;">${isInf ? '∞' : (change >= 0 ? '+' : '') + change.toLocaleString() + ' units'}</td>
       `;
       tbody.appendChild(tr);
     });

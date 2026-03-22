@@ -20,15 +20,18 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
 <link rel="stylesheet" href="/assets/css/global.min.css">
 <link rel="stylesheet" href="flashcard-maker.css">
+<meta name="tool-id" content="flashcard-maker">
+<script src="/assets/js/components/tool-registry.min.js"></script>
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
-<meta name="tool-id" content="flashcard-maker">
-<script src="/assets/js/favorites.js"></script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Flashcard Study Tool","url":"https://afrotools.com/tools/flashcard-maker/","applicationCategory":"EducationalApplication","operatingSystem":"All","description":"Free flashcard maker with pre-made exam packs, flip/quiz/match modes, and spaced repetition.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Flashcard Study Tool | AfroTools">
+<meta name="twitter:description" content="Free flashcard maker with pre-made JAMB, WAEC, KCSE and Matric exam packs. Flip, quiz, match modes with spaced repetition.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Flashcard Study Tool","url":"https://afrotools.com/tools/flashcard-maker/","applicationCategory":"EducationalApplication","operatingSystem":"All","description":"Free flashcard maker with pre-made exam packs, flip/quiz/match modes, and spaced repetition.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com"},{"@type":"ListItem","position":2,"name":"Education","item":"https://afrotools.com/education"},{"@type":"ListItem","position":3,"name":"Flashcard Study Tool","item":"https://afrotools.com/tools/flashcard-maker/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How does spaced repetition work?","acceptedAnswer":{"@type":"Answer","text":"Cards you mark as Review Again appear more frequently in study sessions. Cards you mark as Got It are shown less often, focusing study time on challenging material."}},{"@type":"Question","name":"How do I import cards in bulk?","acceptedAnswer":{"@type":"Answer","text":"Click Bulk Import and paste your data with one card per line. Use a tab character or comma to separate the front (term) from the back (definition). You can also export from spreadsheet apps as CSV."}},{"@type":"Question","name":"Is my data saved?","acceptedAnswer":{"@type":"Answer","text":"Yes, all decks and cards are saved to your browser's local storage. Your data stays on your device and persists between sessions."}}]}</script>
 <script src="/assets/js/lib/toast.js" defer></script>
 <script src="/assets/js/edu-cloud-sync.js" defer></script>
-<script src="/assets/js/components/share-card-generator.js" defer></script>
-<script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -36,7 +39,7 @@
 <!-- Hero -->
 <section class="fc-hero">
 <div class="fc-hero-inner">
-  <div class="fc-breadcrumb"><a href="/">Home</a> &middot; <a href="/education/">Education</a> &middot; <span class="current">Flashcard Study Tool</span></div>
+  <div class="fc-breadcrumb"><a href="/">Home</a> / <a href="/education/">Education</a> / <span class="current">Flashcard Study Tool</span></div>
   <h1>Study smarter. <span>Remember more.</span></h1>
   <p class="fc-hero-sub">Create your own flashcards or use pre-made exam decks. Study with flip cards, quizzes, and matching games — powered by spaced repetition.</p>
   <div class="fc-tags">
@@ -569,6 +572,19 @@ function selectDeck(i) {
   currentFilter = 'all';
   state.studyIndex = 0;
   save(); renderDecks(); renderCards(); updateStats();
+  // Show study prompt if deck has cards
+  var deck = state.decks[i];
+  if (deck && deck.cards.length > 0) {
+    var el = document.getElementById('deckStudyPrompt');
+    if (el) el.remove();
+    var prompt = document.createElement('div');
+    prompt.id = 'deckStudyPrompt';
+    prompt.style.cssText = 'display:flex;align-items:center;gap:12px;padding:14px 18px;background:var(--brand-pale,#E8F2FF);border:1px solid rgba(0,122,255,.15);border-radius:10px;margin-top:12px';
+    prompt.innerHTML = '<span style="font-size:1.2rem">&#128218;</span>' +
+      '<span style="flex:1;font-size:.85rem;font-weight:600;color:var(--text)">' + escHtml(deck.name) + ' &mdash; ' + deck.cards.length + ' cards ready</span>' +
+      '<button class="fc-btn primary sm" onclick="switchTab(\'study\')" style="white-space:nowrap">Study Now &rarr;</button>';
+    document.getElementById('deckList').parentNode.appendChild(prompt);
+  }
 }
 
 function deleteDeck(i) {
@@ -1057,22 +1073,7 @@ function escHtml(str) {
 load();
 </script>
 
-<script src="/assets/js/lib/saved-tools.js" defer></script>
-<script src="/assets/js/favorites-widget.js" defer></script>
-<script src="/assets/js/components/tool-registry.min.js" defer></script>
 <script src="/assets/js/components/related-tools.min.js" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js" defer></script>
-
-<script>
-(function(){
-  var containers = document.querySelectorAll('.fc-card, [class*="result"]');
-  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
-  div.innerHTML = '<share-result-button tool-name="Flashcard Maker" tool-slug="flashcard-maker"></share-result-button>';
-  target.appendChild(div);
-})();
-</script>
 </body>
 </html>

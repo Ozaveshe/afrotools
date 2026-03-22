@@ -14,6 +14,10 @@
 <meta property="og:description" content="African group savings calculator. Rotation schedule and payout timing.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/ajo-interest/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ajo / Esusu / Stokvel Calculator | AfroTools">
+<meta name="twitter:description" content="African group savings calculator. Rotation schedule and payout timing.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
@@ -69,6 +73,23 @@ h1 em{color:#93c5fd;font-style:normal}
 .faq details[open] summary{border-bottom:1px solid #e2e8f0}
 .faq details div{padding:14px 18px;font-size:.85rem;color:#475569;line-height:1.7}
 @media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.field-row{grid-template-columns:1fr}}
+.afun{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.afun-card{padding:16px;border-radius:10px;text-align:center}
+.afun-card.gold{background:#FFF8E7;border:1.5px solid rgba(212,168,67,.3)}
+.afun-card.blue{background:#E8F2FF;border:1.5px solid rgba(0,122,255,.2)}
+.afun-card.rose{background:#fff1f2;border:1.5px solid rgba(225,29,72,.2)}
+.afun-card.green{background:#f0fdf4;border:1.5px solid #86efac}
+.afun-emoji{font-size:2rem;margin-bottom:6px}
+.afun-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.afun-card.gold .afun-title{color:#92400e}
+.afun-card.blue .afun-title{color:#1e40af}
+.afun-card.rose .afun-title{color:#be123c}
+.afun-card.green .afun-title{color:#166534}
+.afun-text{font-size:.78rem;font-weight:600;color:#1e293b;line-height:1.5}
+.afun-dyk{margin-top:16px;background:linear-gradient(135deg,#faf5ff,#f3e8ff);border:1.5px solid #c4b5fd;border-radius:12px;padding:18px}
+.afun-dyk-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6d28d9;margin-bottom:8px}
+.afun-dyk-text{font-size:.82rem;color:#4c1d95;line-height:1.7}
+@media(max-width:500px){.afun{grid-template-columns:1fr}}
 </style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebApplication","name":"Ajo / Esusu / Stokvel Calculator","url":"https://afrotools.com/tools/ajo-interest/","description":"Calculate African group savings (Ajo, Esusu, Chama, Stokvel) rotation schedules and payout timing.","applicationCategory":"FinanceApplication","operatingSystem":"All","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
@@ -78,9 +99,6 @@ h1 em{color:#93c5fd;font-style:normal}
 </script>
 <script src="/assets/js/lib/toast.js" defer></script>
 <script src="/assets/js/afro-history.js" defer></script>
-<script src="/assets/js/components/save-result-button.js" defer></script>
-<script src="/assets/js/components/share-card-generator.js" defer></script>
-<script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -146,6 +164,8 @@ h1 em{color:#93c5fd;font-style:normal}
 <div class="result-box"><div class="r-label">Full Rotation Duration</div><div class="r-value" id="rDuration">--</div></div>
 </div>
 <table class="rotation-table" id="rotationTable"></table>
+<div id="funComparisons"></div>
+<div id="funDyk"></div>
 </div></div>
 </div>
 
@@ -197,9 +217,11 @@ h1 em{color:#93c5fd;font-style:normal}
 </details>
 </section>
 
-<afro-related-tools></afro-related-tools>
+<afro-related-tools category="african" current="ajo-interest"></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
+<script src="/assets/js/components/related-tools.min.js" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js" defer></script>
 
 <script>
 function parseNum(s){return parseFloat(String(s).replace(/[^0-9.\-]/g,''))||0}
@@ -247,6 +269,35 @@ function calculate(){
   html+='</tbody>';
   document.getElementById('rotationTable').innerHTML=html;
 
+  // Fun comparisons based on payout amount
+  var payoutNGN=payout;
+  // rough currency conversion to NGN for comparisons
+  var toNGN={NGN:1,KES:11.5,ZAR:90,GHS:120,XOF:2.5,USD:1550};
+  payoutNGN=payout*(toNGN[cur]||1);
+  var coffees=Math.floor(payoutNGN/2500);
+  var fuel=Math.floor(payoutNGN/700);
+  var movies=Math.floor(payoutNGN/5000);
+  var suya=Math.floor(payoutNGN/500);
+  document.getElementById('funComparisons').innerHTML=
+    '<div class="afun">'+
+    '<div class="afun-card gold"><div class="afun-emoji">\u2615</div><div class="afun-title">In Coffee</div><div class="afun-text">'+coffees.toLocaleString()+' cups at a Lagos caf\u00e9</div></div>'+
+    '<div class="afun-card blue"><div class="afun-emoji">\u26FD</div><div class="afun-title">Fuel</div><div class="afun-text">'+fuel.toLocaleString()+' litres of petrol</div></div>'+
+    '<div class="afun-card rose"><div class="afun-emoji">\uD83C\uDFAC</div><div class="afun-title">Nollywood</div><div class="afun-text">'+movies.toLocaleString()+' movie tickets</div></div>'+
+    '<div class="afun-card green"><div class="afun-emoji">\uD83C\uDF55</div><div class="afun-title">Suya</div><div class="afun-text">'+suya.toLocaleString()+' sticks of suya</div></div>'+
+    '</div>';
+
+  // Did You Know facts — rotate randomly
+  var dykFacts=[
+    '\uD83C\uDFE6 Ajo groups have existed in Nigeria for over 500 years! They predate modern banking by centuries. Ancient fintech!',
+    '\uD83C\uDF0D In Kenya it\u2019s called \u201CChama\u201D, in South Africa \u201CStokvel\u201D, in Cameroon \u201CNjangi\u201D, and in West Africa \u201CEsusu\u201D or \u201CSusu\u201D. Same genius idea, different names!',
+    '\uD83D\uDCB0 Over 11 million South Africans belong to Stokvels, collectively saving over R50 billion per year. That\u2019s bigger than some banks!',
+    '\uD83D\uDCDA The word \u201CTontine\u201D comes from Lorenzo de Tonti, a 17th-century Italian banker. But Africans were doing it long before he named it!',
+    '\uD83E\uDD1D In many communities, Ajo groups double as social support networks \u2014 helping with weddings, funerals, and school fees beyond just savings.'
+  ];
+  var fact=dykFacts[Math.floor(Math.random()*dykFacts.length)];
+  document.getElementById('funDyk').innerHTML=
+    '<div class="afun-dyk"><div class="afun-dyk-title">\uD83D\uDCA1 Did You Know?</div><div class="afun-dyk-text">'+fact+'</div></div>';
+
   document.getElementById('results').style.display='block';
   document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
 }
@@ -260,16 +311,5 @@ el.addEventListener('focus',()=>{el.value=el.value.replace(/,/g,'')});
 document.getElementById('startDate').value=new Date().toISOString().split('T')[0];
 </script>
 
-<script>
-(function(){
-  var target = document.getElementById('results');
-  if (!target) return;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
-  div.innerHTML = '<save-result-button tool-slug="ajo-interest" tool-name="Ajo Interest"></save-result-button><share-result-button tool-name="Ajo Interest" tool-slug="ajo-interest"></share-result-button>';
-  target.appendChild(div);
-})();
-</script>
 </body>
 </html>

@@ -1,8 +1,7 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-<!-- Google Analytics 4 -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -11,16 +10,16 @@
   gtag('config', 'G-D859CGF391');
 </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Generator fuel consumption calculator for diesel and petrol. Compare costs, track expenses, African fuel prices.">
+    <meta name="description" content="Generator fuel consumption calculator for diesel and petrol. Compare costs vs grid and solar, monthly spreads, interactive charts. African fuel prices.">
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#007AFF">
-    <link rel="canonical" href="https://afrotools.com/tools/generator-fuel">
+    <link rel="canonical" href="https://afrotools.com/tools/generator-fuel/">
     <title>Generator Fuel Calculator — Diesel & Petrol Cost Tracking | AfroTools</title>
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="AfroTools">
     <meta property="og:title" content="Generator Fuel Calculator — Diesel & Petrol Cost Tracking | AfroTools">
     <meta property="og:description" content="Generator fuel consumption calculator for diesel and petrol. Compare costs, track expenses, African fuel prices.">
-<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+    <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
     <meta property="og:url" content="https://afrotools.com/tools/generator-fuel/">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Generator Fuel Calculator — Diesel & Petrol Cost Tracking | AfroTools">
@@ -29,313 +28,158 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
 
     <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
     <link rel="stylesheet" href="/assets/css/tokens.min.css">
     <link rel="stylesheet" href="/assets/css/global.min.css">
     <script src="/assets/js/components/tool-registry.min.js"></script>
-<script src="/assets/js/components/navbar.min.js" defer></script>
+    <script src="/assets/js/components/navbar.min.js" defer></script>
     <script src="/assets/js/components/footer.min.js" defer></script>
+    <script src="/assets/js/components/newsletter-cta.min.js" defer></script>
 
     <style>
-        *, *::before, *::after { box-sizing: border-box; }
-
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         :root {
-            --color-accent: #007AFF;
-            --color-accent-light: #DBEAFE;
-            --color-accent-lighter: #E8F2FF;
-            --color-dark: #1e293b;
-            --color-bg: #f8fafc;
-            --color-text: #1f2937;
-            --color-text-light: #6b7280;
-            --color-white: #fff;
-            --color-border: #e5e7eb;
+            --accent: #007AFF;
+            --accent-dark: #0063D1;
+            --accent-light: #DBEAFE;
+            --accent-pale: #E8F2FF;
+            --red: #ef4444;
+            --red-light: #fef2f2;
+            --green: #10b981;
+            --green-light: #ecfdf5;
+            --amber: #f59e0b;
+            --amber-light: #fffbeb;
+            --dark: #0f172a;
+            --text: #1e293b;
+            --muted: #64748b;
+            --border: #e2e8f0;
+            --bg: #f8fafc;
+            --card: #fff;
+            --radius: 12px;
         }
+        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); }
 
-        body {
-            background: var(--color-bg);
-            color: var(--color-text);
-            font-family: 'DM Sans', sans-serif;
-        }
+        .wrap { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
 
-        .gf-container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+        /* ── CALCULATOR INPUTS ── */
+        .calc-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+        .card { background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 22px; }
+        .card-title { font-size: 14px; font-weight: 800; color: var(--text); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+        .card-title span { font-size: 16px; }
+        .field { margin-bottom: 14px; }
+        .field:last-child { margin-bottom: 0; }
+        .field label { display: block; font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 5px; }
+        .field input, .field select { width: 100%; padding: 10px 12px; border: 1.5px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 14px; color: var(--text); transition: border-color 0.2s; }
+        .field input:focus, .field select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,122,255,0.08); }
+        .preset-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+        .preset-btn { padding: 7px 12px; background: var(--bg); border: 1.5px solid var(--border); border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; font-family: inherit; color: var(--text); transition: all 0.15s; }
+        .preset-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .preset-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+        .calc-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: #fff; border: none; border-radius: 10px; font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.2s; margin-bottom: 24px; }
+        .calc-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,122,255,0.25); }
 
-        .gf-hero {
-            background: linear-gradient(135deg, var(--color-dark) 0%, #2d3748 100%);
-            border-radius: 16px;
-            padding: 40px 32px;
-            text-align: center;
-            margin-bottom: 32px;
-            border: 1px solid rgba(0, 122, 255, 0.2);
-            color: var(--color-white);
-        }
+        /* ── RESULTS DASHBOARD ── */
+        .results { display: none; }
+        .results.show { display: block; }
 
-        .gf-hero h1 {
-            font-size: clamp(28px, 5vw, 40px);
-            font-weight: 700;
-            color: var(--color-white);
-            margin: 0 0 12px 0;
-            line-height: 1.2;
-        }
+        /* Stat cards row */
+        .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+        .stat-card { background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 16px; text-align: center; }
+        .stat-card.highlight { border-color: var(--accent); background: var(--accent-pale); }
+        .stat-card.warn { border-color: var(--red); background: var(--red-light); }
+        .stat-label { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+        .stat-value { font-size: 24px; font-weight: 800; color: var(--text); line-height: 1; }
+        .stat-card.highlight .stat-value { color: var(--accent); }
+        .stat-card.warn .stat-value { color: var(--red); }
+        .stat-sub { font-size: 11px; color: var(--muted); margin-top: 4px; }
 
-        .gf-hero h1 span {
-            color: var(--color-accent);
-        }
+        /* Charts row */
+        .chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+        .chart-card { background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 20px; }
+        .chart-title { font-size: 13px; font-weight: 800; color: var(--text); margin-bottom: 14px; }
+        canvas { width: 100%; display: block; }
 
-        .gf-hero p {
-            font-size: 16px;
-            color: #cbd5e1;
-            margin: 0;
-        }
+        /* Comparison bar */
+        .compare-section { background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 22px; margin-bottom: 20px; }
+        .compare-title { font-size: 14px; font-weight: 800; color: var(--text); margin-bottom: 16px; }
+        .compare-bars { display: flex; flex-direction: column; gap: 14px; }
+        .compare-item { }
+        .compare-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+        .compare-name { font-size: 13px; font-weight: 600; color: var(--text); }
+        .compare-cost { font-size: 13px; font-weight: 800; }
+        .compare-track { height: 28px; background: #f1f5f9; border-radius: 6px; overflow: hidden; position: relative; }
+        .compare-fill { height: 100%; border-radius: 6px; transition: width 0.6s ease; display: flex; align-items: center; padding-left: 10px; font-size: 11px; font-weight: 700; color: #fff; min-width: 40px; }
+        .compare-fill.gen { background: linear-gradient(90deg, #ef4444, #dc2626); }
+        .compare-fill.grid { background: linear-gradient(90deg, var(--accent), var(--accent-dark)); }
+        .compare-fill.solar { background: linear-gradient(90deg, var(--green), #059669); }
+        .compare-verdict { margin-top: 16px; padding: 14px 18px; border-radius: 10px; font-size: 13px; font-weight: 600; line-height: 1.6; }
+        .compare-verdict.savings { background: var(--green-light); color: #065f46; border: 1px solid #a7f3d0; }
+        .compare-verdict.warning { background: var(--amber-light); color: #92400e; border: 1px solid #fde68a; }
 
-        .gf-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 24px;
-        }
+        /* Monthly breakdown table */
+        .monthly-section { background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 22px; margin-bottom: 20px; overflow-x: auto; }
+        .monthly-title { font-size: 14px; font-weight: 800; color: var(--text); margin-bottom: 14px; }
+        .monthly-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        .monthly-table th { padding: 10px 12px; text-align: left; font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 2px solid var(--border); }
+        .monthly-table td { padding: 10px 12px; border-bottom: 1px solid #f1f5f9; color: var(--text); font-weight: 500; }
+        .monthly-table tr:last-child td { border-bottom: none; font-weight: 800; background: var(--accent-pale); }
+        .monthly-table .gen-col { color: var(--red); font-weight: 700; }
+        .monthly-table .grid-col { color: var(--accent); font-weight: 700; }
+        .monthly-table .save-col { color: var(--green); font-weight: 700; }
 
-        .gf-card {
-            background: var(--color-white);
-            border: 1px solid var(--color-border);
-            border-radius: 12px;
-            padding: 24px;
-        }
+        /* Solar comparison */
+        .solar-section { background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 22px; margin-bottom: 20px; }
+        .solar-title { font-size: 14px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+        .solar-sub { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+        .solar-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+        .solar-metric { text-align: center; padding: 14px; background: var(--bg); border-radius: 8px; }
+        .solar-metric-label { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; margin-bottom: 4px; }
+        .solar-metric-value { font-size: 20px; font-weight: 800; color: var(--green); }
+        .solar-metric-sub { font-size: 11px; color: var(--muted); }
 
-        .gf-card h2 {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--color-text);
-            margin: 0 0 16px 0;
-        }
+        /* Tips */
+        .tips-card { background: var(--accent-pale); border: 1px solid rgba(0,122,255,0.15); border-radius: var(--radius); padding: 18px; margin-bottom: 20px; }
+        .tips-card h3 { font-size: 13px; font-weight: 700; margin-bottom: 10px; }
+        .tips-card li { font-size: 12px; color: var(--muted); margin-bottom: 6px; padding-left: 18px; position: relative; list-style: none; line-height: 1.5; }
+        .tips-card li::before { content: '⚡'; position: absolute; left: 0; font-size: 11px; }
 
-        .gf-input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            margin-bottom: 16px;
-        }
-
-        .gf-input-group label {
-            font-size: 12px;
-            font-weight: 700;
-            color: #6b7280;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .gf-input-group input,
-        .gf-input-group select {
-            padding: 11px 12px;
-            border: 1.5px solid var(--color-border);
-            border-radius: 8px;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 14px;
-            color: var(--color-text);
-            transition: all 0.2s;
-        }
-
-        .gf-input-group input:focus,
-        .gf-input-group select:focus {
-            outline: none;
-            border-color: var(--color-accent);
-            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
-        }
-
-        .gf-presets {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-            gap: 8px;
-            margin-bottom: 16px;
-        }
-
-        .gf-preset-btn {
-            padding: 8px 10px;
-            background: transparent;
-            border: 1.5px solid var(--color-border);
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 12px;
-            color: var(--color-text);
-            font-weight: 600;
-            font-family: 'DM Sans', sans-serif;
-            transition: all 0.2s;
-        }
-
-        .gf-preset-btn:hover {
-            border-color: var(--color-accent);
-            background: var(--color-accent-lighter);
-        }
-
-        .gf-preset-btn.active {
-            background: var(--color-accent);
-            color: var(--color-white);
-            border-color: var(--color-accent);
-        }
-
-        .gf-btn {
-            padding: 14px 28px;
-            background: linear-gradient(135deg, var(--color-accent) 0%, #0063D1 100%);
-            color: var(--color-white);
-            border: none;
-            border-radius: 8px;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 15px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s;
-            width: 100%;
-        }
-
-        .gf-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(0, 122, 255, 0.3);
-        }
-
-        .gf-results {
-            display: none;
-            background: var(--color-accent-lighter);
-            border: 2px solid rgba(0, 122, 255, 0.3);
-            border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 24px;
-        }
-
-        .gf-results.show {
-            display: block;
-        }
-
-        .gf-result-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-
-        .gf-result-item {
-            background: var(--color-white);
-            border-radius: 8px;
-            padding: 16px;
-            text-align: center;
-        }
-
-        .gf-result-label {
-            font-size: 11px;
-            font-weight: 700;
-            color: #6b7280;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 8px;
-        }
-
-        .gf-result-value {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--color-accent);
-            line-height: 1;
-            margin-bottom: 4px;
-        }
-
-        .gf-result-sub {
-            font-size: 12px;
-            color: var(--color-text-light);
-        }
-
-        .gf-comparison {
-            background: var(--color-white);
-            border: 1.5px solid var(--color-border);
-            border-radius: 10px;
-            padding: 16px;
-        }
-
-        .gf-comparison h3 {
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--color-text);
-            margin: 0 0 12px 0;
-        }
-
-        .gf-comparison-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid var(--color-border);
-            font-size: 13px;
-        }
-
-        .gf-comparison-row:last-child {
-            border-bottom: none;
-        }
-
-        .gf-comparison-label {
-            color: var(--color-text-light);
-        }
-
-        .gf-comparison-value {
-            font-weight: 700;
-            color: var(--color-accent);
-        }
-
-        .gf-tips {
-            background: var(--color-accent-lighter);
-            border: 1px solid rgba(0, 122, 255, 0.2);
-            border-radius: 12px;
-            padding: 16px;
-            margin-top: 20px;
-        }
-
-        .gf-tips h3 {
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--color-text);
-            margin: 0 0 12px 0;
-        }
-
-        .gf-tips ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .gf-tips li {
-            font-size: 13px;
-            color: var(--color-text-light);
-            margin-bottom: 8px;
-            padding-left: 20px;
-            position: relative;
-        }
-
-        .gf-tips li:before {
-            content: '⚡';
-            position: absolute;
-            left: 0;
-        }
-
+        /* ── RESPONSIVE ── */
         @media (max-width: 768px) {
-            .gf-grid { grid-template-columns: 1fr; }
-            .gf-result-grid { grid-template-columns: 1fr 1fr; }
-            .gf-presets { grid-template-columns: repeat(3, 1fr); }
+            .calc-layout { grid-template-columns: 1fr; }
+            .stat-row { grid-template-columns: 1fr 1fr; }
+            .chart-row { grid-template-columns: 1fr; }
+            .solar-grid { grid-template-columns: 1fr; }
         }
-
-        @media (max-width: 600px) {
-            .gf-hero { padding: 24px 16px; }
-            .gf-result-grid { grid-template-columns: 1fr; }
+        @media (max-width: 480px) {
+            .stat-row { grid-template-columns: 1fr; }
+            .preset-row { gap: 4px; }
+            .preset-btn { padding: 6px 10px; font-size: 11px; }
         }
+.xfun{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.xfun-card{padding:16px;border-radius:10px;text-align:center}
+.xfun-card.gold{background:#FFF8E7;border:1.5px solid rgba(212,168,67,.3)}
+.xfun-card.blue{background:#E8F2FF;border:1.5px solid rgba(0,122,255,.2)}
+.xfun-card.rose{background:#fff1f2;border:1.5px solid rgba(225,29,72,.2)}
+.xfun-card.green{background:#f0fdf4;border:1.5px solid #86efac}
+.xfun-emoji{font-size:2rem;margin-bottom:6px}
+.xfun-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.xfun-card.gold .xfun-title{color:#92400e}
+.xfun-card.blue .xfun-title{color:#1e40af}
+.xfun-card.rose .xfun-title{color:#be123c}
+.xfun-card.green .xfun-title{color:#166534}
+.xfun-text{font-size:.78rem;font-weight:600;color:#1e293b;line-height:1.5}
+.xfun-dyk{margin-top:16px;background:linear-gradient(135deg,#faf5ff,#f3e8ff);border:1.5px solid #c4b5fd;border-radius:12px;padding:18px}
+.xfun-dyk-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6d28d9;margin-bottom:8px}
+.xfun-dyk-text{font-size:.82rem;color:#4c1d95;line-height:1.7}
+@media(max-width:500px){.xfun{grid-template-columns:1fr}}
     </style>
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Generator Fuel Calculator","url":"https://afrotools.com/tools/generator-fuel/","applicationCategory":"UtilityApplication","operatingSystem":"All","description":"Calculate generator running cost per hour. Compare generator vs solar panel investment over time.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Generator Fuel Calculator","url":"https://afrotools.com/tools/generator-fuel/","applicationCategory":"UtilityApplication","operatingSystem":"All","description":"Calculate generator running cost per hour. Compare generator vs grid vs solar panel investment over time with charts and monthly breakdowns.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How much does it cost to run a generator per hour in Nigeria?","acceptedAnswer":{"@type":"Answer","text":"The cost depends on your generator size and fuel type. A typical 3.5KVA petrol generator in Nigeria costs approximately ₦500-800 per hour based on current fuel prices. Use our calculator for exact figures."}},{"@type":"Question","name":"Is solar cheaper than a generator in the long run?","acceptedAnswer":{"@type":"Answer","text":"In most cases, yes. A solar panel system typically pays for itself within 2-4 years when compared to ongoing generator fuel costs, especially in Nigeria where fuel prices are high."}},{"@type":"Question","name":"What size generator do I need for my home?","acceptedAnswer":{"@type":"Answer","text":"A typical 3-bedroom Nigerian home needs a 3.5-5KVA generator. Factor in your essential appliances: AC units (1-1.5KVA each), refrigerator (200W), lights, and fans."}},{"@type":"Question","name":"How can I reduce generator fuel consumption?","acceptedAnswer":{"@type":"Answer","text":"Use energy-efficient appliances, avoid running the generator at low load, maintain it regularly (oil changes, air filters), and consider an inverter generator which adjusts output to load."}}]}</script>
 <script src="/assets/js/lib/toast.js" defer></script>
 <script src="/assets/js/afro-history.js" defer></script>
-<script src="/assets/js/components/save-result-button.js" defer></script>
-<script src="/assets/js/components/share-card-generator.js" defer></script>
-<script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
@@ -343,211 +187,550 @@
 <section class="tool-hero" style="background:linear-gradient(135deg,#0f1419 0%,#1a1f2e 100%);padding:44px 0 36px">
 <div style="max-width:1200px;margin:0 auto;padding:0 24px">
 <div class="breadcrumb" style="font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px"><a href="/" style="color:rgba(255,255,255,.3);text-decoration:none">AfroTools</a> / <a href="/uniquely-african/" style="color:rgba(255,255,255,.3);text-decoration:none">Uniquely African</a> / <span style="color:#93c5fd">Generator Fuel Calculator</span></div>
-<h1 style="font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px">Generator Fuel <em style="color:var(--color-primary);font-style:normal">Calculator</em></h1>
-<p style="font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px">Calculate your generator running cost per hour. Compare generator vs solar panel investment over time.</p>
-<div style="display:flex;flex-wrap:wrap;gap:7px"><span style="display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em;background:rgba(147,197,253,.2);color:#93c5fd;border:1px solid rgba(147,197,253,.4)">🌍 Pan-African</span><span style="display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em;background:rgba(147,197,253,.2);color:#93c5fd;border:1px solid rgba(147,197,253,.4)">Client-side</span><span style="display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em;background:rgba(147,197,253,.2);color:#93c5fd;border:1px solid rgba(147,197,253,.4)">Free</span></div>
+<h1 style="font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px">Generator Fuel <em style="color:#007AFF;font-style:normal">Calculator</em></h1>
+<p style="font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px">Calculate running costs, compare generator vs grid vs solar, view monthly breakdowns with interactive charts.</p>
+<div style="display:flex;flex-wrap:wrap;gap:7px"><span style="display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em;background:rgba(147,197,253,.2);color:#93c5fd;border:1px solid rgba(147,197,253,.4)">Charts</span><span style="display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em;background:rgba(147,197,253,.2);color:#93c5fd;border:1px solid rgba(147,197,253,.4)">Grid vs Gen vs Solar</span><span style="display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em;background:rgba(147,197,253,.2);color:#93c5fd;border:1px solid rgba(147,197,253,.4)">Free</span></div>
 </div></section>
 
-    <div class="gf-container">
-        <div class="gf-grid">
-            <div class="gf-card">
-                <h2>Generator Settings</h2>
-                
-                <div class="gf-input-group">
-                    <label>Generator Capacity (kVA)</label>
-                    <div class="gf-presets">
-                        <button class="gf-preset-btn" onclick="setKVA(2.5, this)">2.5</button>
-                        <button class="gf-preset-btn" onclick="setKVA(5, this)">5</button>
-                        <button class="gf-preset-btn" onclick="setKVA(7.5, this)">7.5</button>
-                        <button class="gf-preset-btn" onclick="setKVA(10, this)">10</button>
-                        <button class="gf-preset-btn" onclick="setKVA(15, this)">15</button>
-                        <button class="gf-preset-btn" onclick="setKVA(20, this)">20</button>
-                        <button class="gf-preset-btn" onclick="setKVA(50, this)">50</button>
-                        <button class="gf-preset-btn" onclick="setKVA(100, this)">100</button>
-                    </div>
-                    <input type="number" id="kva" value="5.0" min="1" max="500" step="0.5" placeholder="Custom kVA">
-                </div>
+<div class="wrap" style="padding-top:24px;padding-bottom:40px">
 
-                <div class="gf-input-group">
-                    <label>Fuel Type</label>
-                    <select id="fuelType" onchange="updateCalc()">
-                        <option value="diesel" selected>Diesel</option>
-                        <option value="petrol">Petrol</option>
-                    </select>
+    <!-- ── CALCULATOR INPUTS ── -->
+    <div class="calc-layout">
+        <div class="card">
+            <div class="card-title"><span>⚙️</span> Generator Settings</div>
+            <div class="field">
+                <label>Generator Capacity (kVA)</label>
+                <div class="preset-row">
+                    <button class="preset-btn" onclick="setKVA(2.5,this)">2.5</button>
+                    <button class="preset-btn" onclick="setKVA(3.5,this)">3.5</button>
+                    <button class="preset-btn active" onclick="setKVA(5,this)">5</button>
+                    <button class="preset-btn" onclick="setKVA(7.5,this)">7.5</button>
+                    <button class="preset-btn" onclick="setKVA(10,this)">10</button>
+                    <button class="preset-btn" onclick="setKVA(15,this)">15</button>
+                    <button class="preset-btn" onclick="setKVA(20,this)">20</button>
+                    <button class="preset-btn" onclick="setKVA(50,this)">50</button>
                 </div>
-
-                <div class="gf-input-group">
-                    <label>Load Percentage</label>
-                    <select id="loadPercent" onchange="updateCalc()">
-                        <option value="25">25% Light Load</option>
-                        <option value="50" selected>50% Moderate Load</option>
-                        <option value="75">75% Heavy Load</option>
-                        <option value="100">100% Full Load</option>
-                    </select>
-                </div>
+                <input type="number" id="kva" value="5" min="1" max="500" step="0.5" placeholder="Custom kVA">
             </div>
-
-            <div class="gf-card">
-                <h2>Usage Parameters</h2>
-                
-                <div class="gf-input-group">
-                    <label>Hours Per Day</label>
-                    <input type="number" id="hoursDay" value="6" min="1" max="24" onchange="updateCalc()">
-                </div>
-
-                <div class="gf-input-group">
-                    <label>Days Per Month</label>
-                    <input type="number" id="daysMonth" value="25" min="1" max="31" onchange="updateCalc()">
-                </div>
-
-                <div class="gf-input-group">
-                    <label>Fuel Price (per liter)</label>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
-                        <button class="gf-preset-btn" onclick="setPrice('NGN', 1100)">NG: ₦1,100</button>
-                        <button class="gf-preset-btn" onclick="setPrice('KES', 193)">KE: 193</button>
-                        <button class="gf-preset-btn" onclick="setPrice('ZAR', 24.5)">ZA: R24.50</button>
-                        <button class="gf-preset-btn" onclick="setPrice('GHS', 16.8)">GH: 16.80</button>
-                    </div>
-                    <input type="number" id="fuelPrice" value="1100" min="0" step="1" placeholder="Custom price" onchange="updateCalc()">
-                    <input type="text" id="currencyCode" value="NGN" placeholder="Currency" maxlength="3" style="margin-top: 6px;">
-                </div>
+            <div class="field">
+                <label>Fuel Type</label>
+                <select id="fuelType">
+                    <option value="diesel" selected>Diesel</option>
+                    <option value="petrol">Petrol (PMS)</option>
+                </select>
+            </div>
+            <div class="field">
+                <label>Load Level</label>
+                <select id="loadPercent">
+                    <option value="25">25% — Light (fans, lights)</option>
+                    <option value="50" selected>50% — Moderate (fridge, TV)</option>
+                    <option value="75">75% — Heavy (AC unit)</option>
+                    <option value="100">100% — Full load</option>
+                </select>
             </div>
         </div>
 
-        <div class="gf-results" id="results">
-            <div class="gf-result-grid">
-                <div class="gf-result-item">
-                    <div class="gf-result-label">Liters Per Hour</div>
-                    <div class="gf-result-value" id="literHour">0</div>
-                </div>
-                <div class="gf-result-item">
-                    <div class="gf-result-label">Liters Per Day</div>
-                    <div class="gf-result-value" id="literDay">0</div>
-                </div>
-                <div class="gf-result-item">
-                    <div class="gf-result-label">Liters Per Month</div>
-                    <div class="gf-result-value" id="literMonth">0</div>
-                </div>
-                <div class="gf-result-item">
-                    <div class="gf-result-label">Monthly Cost</div>
-                    <div class="gf-result-value" id="monthlyCost">0</div>
-                    <div class="gf-result-sub" id="costCurrency">NGN</div>
-                </div>
-                <div class="gf-result-item">
-                    <div class="gf-result-label">Annual Cost</div>
-                    <div class="gf-result-value" id="annualCost">0</div>
-                </div>
-                <div class="gf-result-item">
-                    <div class="gf-result-label">Cost Per kWh</div>
-                    <div class="gf-result-value" id="costKwh">0</div>
-                </div>
+        <div class="card">
+            <div class="card-title"><span>📊</span> Usage & Pricing</div>
+            <div class="field">
+                <label>Hours Per Day</label>
+                <input type="number" id="hoursDay" value="8" min="1" max="24">
             </div>
-
-            <div class="gf-comparison">
-                <h3>Generator vs Grid Power Comparison</h3>
-                <div class="gf-input-group" style="margin-bottom: 12px;">
-                    <label>Grid Electricity Rate (per kWh)</label>
-                    <input type="number" id="gridRate" value="68" min="0" step="0.1" onchange="updateComparison()">
-                </div>
-                
-                <div class="gf-comparison-row">
-                    <span class="gf-comparison-label">Generator Monthly Cost</span>
-                    <span class="gf-comparison-value" id="genMonthlyCost">0</span>
-                </div>
-                <div class="gf-comparison-row">
-                    <span class="gf-comparison-label">Grid Monthly Cost</span>
-                    <span class="gf-comparison-value" id="gridMonthlyCost">0</span>
-                </div>
-                <div class="gf-comparison-row" style="background: rgba(0, 122, 255, 0.1); margin: 8px -16px; padding: 10px 16px;">
-                    <span class="gf-comparison-label" style="font-weight: 700;">Monthly Difference</span>
-                    <span class="gf-comparison-value" id="difference" style="font-size: 20px;">0</span>
-                </div>
+            <div class="field">
+                <label>Days Per Month</label>
+                <input type="number" id="daysMonth" value="26" min="1" max="31">
             </div>
-
-            <div class="gf-tips">
-                <h3>Generator Fuel Efficiency Tips</h3>
-                <ul>
-                    <li>Avoid running at 100% load; 50-75% is optimal for fuel efficiency</li>
-                    <li>Regular maintenance (oil changes, filter cleaning) improves efficiency by 5-15%</li>
-                    <li>Quality fuel extends engine life and reduces consumption</li>
-                    <li>Modern inverter generators consume 20-30% less fuel than conventional models</li>
-                    <li>Right-sizing your generator prevents wasted fuel on oversized units</li>
-                </ul>
+            <div class="field">
+                <label>Fuel Price (per litre)</label>
+                <div class="preset-row">
+                    <button class="preset-btn active" onclick="setPrice('NGN',1100,68,this)">Nigeria</button>
+                    <button class="preset-btn" onclick="setPrice('KES',193,27,this)">Kenya</button>
+                    <button class="preset-btn" onclick="setPrice('ZAR',24.5,3.5,this)">South Africa</button>
+                    <button class="preset-btn" onclick="setPrice('GHS',16.8,2.2,this)">Ghana</button>
+                </div>
+                <input type="number" id="fuelPrice" value="1100" min="0" step="1" placeholder="Fuel price/litre">
+            </div>
+            <div class="field">
+                <label>Grid Rate (per kWh)</label>
+                <input type="number" id="gridRate" value="68" min="0" step="0.1" placeholder="Electricity rate/kWh">
+            </div>
+            <div class="field">
+                <label>Currency</label>
+                <input type="text" id="currencyCode" value="NGN" maxlength="3" placeholder="e.g. NGN">
             </div>
         </div>
-
-        <button class="gf-btn" onclick="calculateFuel()">Calculate Fuel Costs</button>
     </div>
 
-    <!-- auth handled by navbar (supabase-auth.js) -->
+    <button class="calc-btn" onclick="calculate()">Calculate & Compare</button>
 
-    <script>
-        function setKVA(val, btn) {
-            document.getElementById('kva').value = val;
-            btn.closest('.gf-presets').querySelectorAll('.gf-preset-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+    <!-- ── RESULTS DASHBOARD ── -->
+    <div class="results" id="results">
+
+        <!-- Stat cards -->
+        <div class="stat-row">
+            <div class="stat-card">
+                <div class="stat-label">Litres / Hour</div>
+                <div class="stat-value" id="rLitresHr">—</div>
+                <div class="stat-sub">fuel burn rate</div>
+            </div>
+            <div class="stat-card highlight">
+                <div class="stat-label">Monthly Cost</div>
+                <div class="stat-value" id="rMonthly">—</div>
+                <div class="stat-sub" id="rCurrency">NGN</div>
+            </div>
+            <div class="stat-card warn">
+                <div class="stat-label">Annual Cost</div>
+                <div class="stat-value" id="rAnnual">—</div>
+                <div class="stat-sub">12 months</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Cost / kWh</div>
+                <div class="stat-value" id="rCostKwh">—</div>
+                <div class="stat-sub">vs grid rate</div>
+            </div>
+        </div>
+
+        <!-- Generator vs Grid Comparison Bars -->
+        <div class="compare-section">
+            <div class="compare-title">Monthly Cost Comparison — Generator vs Grid vs Solar</div>
+            <div class="compare-bars">
+                <div class="compare-item">
+                    <div class="compare-head">
+                        <span class="compare-name">Generator (Fuel)</span>
+                        <span class="compare-cost" id="cGenCost" style="color:var(--red)">—</span>
+                    </div>
+                    <div class="compare-track"><div class="compare-fill gen" id="cGenBar" style="width:0%"></div></div>
+                </div>
+                <div class="compare-item">
+                    <div class="compare-head">
+                        <span class="compare-name">Grid Power (NEPA/PHCN)</span>
+                        <span class="compare-cost" id="cGridCost" style="color:var(--accent)">—</span>
+                    </div>
+                    <div class="compare-track"><div class="compare-fill grid" id="cGridBar" style="width:0%"></div></div>
+                </div>
+                <div class="compare-item">
+                    <div class="compare-head">
+                        <span class="compare-name">Solar (amortised/month)</span>
+                        <span class="compare-cost" id="cSolarCost" style="color:var(--green)">—</span>
+                    </div>
+                    <div class="compare-track"><div class="compare-fill solar" id="cSolarBar" style="width:0%"></div></div>
+                </div>
+            </div>
+            <div class="compare-verdict" id="cVerdict"></div>
+        </div>
+
+        <!-- Charts -->
+        <div class="chart-row">
+            <div class="chart-card">
+                <div class="chart-title">12-Month Cumulative Cost</div>
+                <canvas id="chartCumulative" height="260"></canvas>
+            </div>
+            <div class="chart-card">
+                <div class="chart-title">Monthly Cost Breakdown</div>
+                <canvas id="chartMonthly" height="260"></canvas>
+            </div>
+        </div>
+
+        <!-- Monthly Breakdown Table -->
+        <div class="monthly-section">
+            <div class="monthly-title">12-Month Cost Spread</div>
+            <table class="monthly-table">
+                <thead>
+                    <tr>
+                        <th>Month</th>
+                        <th>Litres Used</th>
+                        <th>Generator Cost</th>
+                        <th>Grid Cost</th>
+                        <th>You Save (Grid)</th>
+                        <th>Cumulative Gen</th>
+                    </tr>
+                </thead>
+                <tbody id="monthlyBody"></tbody>
+            </table>
+        </div>
+
+        <!-- Solar ROI Section -->
+        <div class="solar-section">
+            <div class="solar-title">Solar Panel ROI Analysis</div>
+            <div class="solar-sub">Based on a solar+inverter+battery system sized for your usage</div>
+            <div class="solar-grid">
+                <div class="solar-metric">
+                    <div class="solar-metric-label">Estimated System Cost</div>
+                    <div class="solar-metric-value" id="sSysCost">—</div>
+                </div>
+                <div class="solar-metric">
+                    <div class="solar-metric-label">Payback Period</div>
+                    <div class="solar-metric-value" id="sPayback">—</div>
+                    <div class="solar-metric-sub">months</div>
+                </div>
+                <div class="solar-metric">
+                    <div class="solar-metric-label">5-Year Savings</div>
+                    <div class="solar-metric-value" id="s5Year">—</div>
+                </div>
+            </div>
+            <canvas id="chartSolar" height="220"></canvas>
+        </div>
+
+        <!-- Tips -->
+        <div class="tips-card">
+            <h3>Fuel Efficiency Tips</h3>
+            <ul>
+                <li>Run at 50-75% load — this is the sweet spot for fuel efficiency</li>
+                <li>Regular maintenance (oil, filters) improves efficiency by 5-15%</li>
+                <li>Inverter generators use 20-30% less fuel than conventional models</li>
+                <li>Right-size your generator — oversized units waste fuel at low load</li>
+                <li>Consider a hybrid setup: solar for daytime, generator as backup</li>
+            </ul>
+        </div>
+
+        <div id="xfunSection"></div>
+    </div>
+</div>
+
+<script>
+var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+// Solar cost multiplier per kVA (in local currency, based on NGN reference)
+var SOLAR_COST_PER_KVA = { NGN: 350000, KES: 45000, ZAR: 6500, GHS: 4500, USD: 280 };
+
+function setKVA(val, btn) {
+    document.getElementById('kva').value = val;
+    btn.closest('.preset-row').querySelectorAll('.preset-btn').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+}
+
+function setPrice(curr, price, gridRate, btn) {
+    document.getElementById('fuelPrice').value = price;
+    document.getElementById('gridRate').value = gridRate;
+    document.getElementById('currencyCode').value = curr;
+    btn.closest('.preset-row').querySelectorAll('.preset-btn').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+}
+
+function fmt(n) { return n.toLocaleString('en-US', { maximumFractionDigits: 0 }); }
+
+function calculate() {
+    var kva = parseFloat(document.getElementById('kva').value) || 5;
+    var fuelType = document.getElementById('fuelType').value;
+    var load = parseFloat(document.getElementById('loadPercent').value) / 100;
+    var hrsDay = parseFloat(document.getElementById('hoursDay').value) || 8;
+    var daysMonth = parseFloat(document.getElementById('daysMonth').value) || 26;
+    var fuelPrice = parseFloat(document.getElementById('fuelPrice').value) || 1100;
+    var gridRate = parseFloat(document.getElementById('gridRate').value) || 68;
+    var currency = document.getElementById('currencyCode').value || 'NGN';
+
+    // Fuel consumption: diesel ~0.21 L/kVA/hr, petrol ~0.30 L/kVA/hr
+    var rate = fuelType === 'diesel' ? 0.21 : 0.30;
+    var litresHr = kva * rate * load;
+    var litresDay = litresHr * hrsDay;
+    var litresMonth = litresDay * daysMonth;
+    var genMonthly = litresMonth * fuelPrice;
+    var genAnnual = genMonthly * 12;
+    var kwhMonth = kva * 0.8 * hrsDay * daysMonth;
+    var costKwh = genMonthly / kwhMonth;
+    var gridMonthly = kwhMonth * gridRate;
+
+    // Solar estimate
+    var solarPerKva = SOLAR_COST_PER_KVA[currency] || SOLAR_COST_PER_KVA.NGN;
+    var solarSystem = kva * solarPerKva;
+    var solarMaintMonthly = solarSystem * 0.005; // 0.5% monthly maintenance
+    var solarAmortised = (solarSystem / 60) + solarMaintMonthly; // 5-year amortisation
+    var paybackMonths = Math.ceil(solarSystem / (genMonthly - solarMaintMonthly));
+    var fiveYearGen = genAnnual * 5;
+    var fiveYearSolar = solarSystem + (solarMaintMonthly * 60);
+    var fiveYearSavings = fiveYearGen - fiveYearSolar;
+
+    // ── Stat cards ──
+    document.getElementById('rLitresHr').textContent = litresHr.toFixed(2);
+    document.getElementById('rMonthly').textContent = fmt(genMonthly);
+    document.getElementById('rAnnual').textContent = fmt(genAnnual);
+    document.getElementById('rCostKwh').textContent = costKwh.toFixed(1);
+    document.getElementById('rCurrency').textContent = currency;
+
+    // ── Comparison bars ──
+    var maxCost = Math.max(genMonthly, gridMonthly, solarAmortised);
+    document.getElementById('cGenCost').textContent = currency + ' ' + fmt(genMonthly);
+    document.getElementById('cGridCost').textContent = currency + ' ' + fmt(gridMonthly);
+    document.getElementById('cSolarCost').textContent = currency + ' ' + fmt(Math.round(solarAmortised));
+    document.getElementById('cGenBar').style.width = (genMonthly / maxCost * 100) + '%';
+    document.getElementById('cGridBar').style.width = (gridMonthly / maxCost * 100) + '%';
+    document.getElementById('cSolarBar').style.width = (solarAmortised / maxCost * 100) + '%';
+
+    // Verdict
+    var verdict = document.getElementById('cVerdict');
+    var gridSave = genMonthly - gridMonthly;
+    if (gridSave > 0) {
+        verdict.className = 'compare-verdict savings';
+        verdict.innerHTML = 'Grid power saves you <strong>' + currency + ' ' + fmt(gridSave) + '/month</strong> (' + currency + ' ' + fmt(gridSave * 12) + '/year) compared to running your generator. Generator costs <strong>' + (genMonthly / gridMonthly).toFixed(1) + 'x</strong> more than grid power per kWh.';
+    } else {
+        verdict.className = 'compare-verdict warning';
+        verdict.innerHTML = 'Your generator is actually cheaper than grid power by <strong>' + currency + ' ' + fmt(Math.abs(gridSave)) + '/month</strong>. This is unusual — check your grid rate input.';
+    }
+
+    // ── Solar ROI ──
+    document.getElementById('sSysCost').textContent = currency + ' ' + fmt(solarSystem);
+    document.getElementById('sPayback').textContent = paybackMonths > 0 && paybackMonths < 120 ? paybackMonths : '60+';
+    document.getElementById('s5Year').textContent = fiveYearSavings > 0 ? currency + ' ' + fmt(fiveYearSavings) : 'N/A';
+
+    // ── Monthly breakdown table ──
+    var tbody = document.getElementById('monthlyBody');
+    tbody.innerHTML = '';
+    var cumGen = 0;
+    var now = new Date();
+    for (var i = 0; i < 12; i++) {
+        var mIdx = (now.getMonth() + i) % 12;
+        cumGen += genMonthly;
+        var saved = gridMonthly < genMonthly ? genMonthly - gridMonthly : 0;
+        var tr = document.createElement('tr');
+        if (i === 11) tr.style.fontWeight = '800';
+        tr.innerHTML = '<td>' + MONTHS[mIdx] + (i === 0 ? ' (now)' : '') + '</td>' +
+            '<td>' + litresMonth.toFixed(0) + ' L</td>' +
+            '<td class="gen-col">' + currency + ' ' + fmt(genMonthly) + '</td>' +
+            '<td class="grid-col">' + currency + ' ' + fmt(gridMonthly) + '</td>' +
+            '<td class="save-col">' + (saved > 0 ? currency + ' ' + fmt(saved) : '—') + '</td>' +
+            '<td style="font-weight:700">' + currency + ' ' + fmt(cumGen) + '</td>';
+        tbody.appendChild(tr);
+    }
+    // Total row
+    var totTr = document.createElement('tr');
+    totTr.innerHTML = '<td>TOTAL (12 mo)</td><td>' + fmt(litresMonth * 12) + ' L</td>' +
+        '<td class="gen-col">' + currency + ' ' + fmt(genAnnual) + '</td>' +
+        '<td class="grid-col">' + currency + ' ' + fmt(gridMonthly * 12) + '</td>' +
+        '<td class="save-col">' + (gridSave > 0 ? currency + ' ' + fmt(gridSave * 12) : '—') + '</td>' +
+        '<td style="font-weight:800">' + currency + ' ' + fmt(genAnnual) + '</td>';
+    tbody.appendChild(totTr);
+
+    // Fun comparisons
+    var jollofPlates = Math.round(genMonthly / 1500);
+    var dataPlans = (genMonthly / 3000).toFixed(1);
+    var solarPayoffMo = paybackMonths > 0 && paybackMonths < 120 ? paybackMonths : 60;
+    var uberRides = Math.round(genMonthly / 3000);
+    var xfunEl = document.getElementById('xfunSection');
+    xfunEl.innerHTML = '<div class="xfun">' +
+      '<div class="xfun-card gold"><div class="xfun-emoji">\uD83C\uDF5A</div><div class="xfun-title">In Jollof</div><div class="xfun-text">' + fmt(jollofPlates) + ' plates of party jollof</div></div>' +
+      '<div class="xfun-card blue"><div class="xfun-emoji">\uD83D\uDCF1</div><div class="xfun-title">Airtime</div><div class="xfun-text">' + dataPlans + ' months of data plans</div></div>' +
+      '<div class="xfun-card green"><div class="xfun-emoji">\u2600\uFE0F</div><div class="xfun-title">Solar Panels</div><div class="xfun-text">' + solarPayoffMo + ' months until solar pays for itself</div></div>' +
+      '<div class="xfun-card rose"><div class="xfun-emoji">\uD83D\uDE97</div><div class="xfun-title">Uber Rides</div><div class="xfun-text">' + fmt(uberRides) + ' rides across Lagos</div></div>' +
+    '</div>' +
+    '<div class="xfun-dyk"><div class="xfun-dyk-title">\uD83D\uDCA1 Did You Know?</div><div class="xfun-dyk-text">Nigeria has over 60 million generators! If they were all turned on at once, the noise would be louder than a rocket launch. Gen boys run this country! \u26A1\uD83D\uDD25</div></div>';
+
+    // Show results first so canvas has dimensions, then draw charts
+    document.getElementById('results').classList.add('show');
+    drawCumulativeChart(genMonthly, gridMonthly, solarAmortised, currency);
+    drawMonthlyBarChart(genMonthly, gridMonthly, solarAmortised, currency);
+    drawSolarChart(genMonthly, solarSystem, solarMaintMonthly, currency);
+    document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ── CHART: Cumulative 12-month line chart ──
+function drawCumulativeChart(genM, gridM, solarM, curr) {
+    var c = document.getElementById('chartCumulative');
+    var ctx = c.getContext('2d');
+    var W = c.offsetWidth; var H = 260;
+    c.width = W * 2; c.height = H * 2; ctx.scale(2, 2);
+    ctx.clearRect(0, 0, W, H);
+
+    var pad = { t: 20, r: 20, b: 40, l: 60 };
+    var cW = W - pad.l - pad.r;
+    var cH = H - pad.t - pad.b;
+
+    // Data
+    var genData = [], gridData = [], solarData = [];
+    for (var i = 0; i <= 12; i++) {
+        genData.push(genM * i);
+        gridData.push(gridM * i);
+        solarData.push(solarM * i);
+    }
+    var maxVal = Math.max.apply(null, genData);
+    if (maxVal === 0) maxVal = 1;
+
+    // Grid lines
+    ctx.strokeStyle = '#f1f5f9'; ctx.lineWidth = 1;
+    for (var g = 0; g <= 4; g++) {
+        var gy = pad.t + (cH / 4) * g;
+        ctx.beginPath(); ctx.moveTo(pad.l, gy); ctx.lineTo(W - pad.r, gy); ctx.stroke();
+        ctx.fillStyle = '#94a3b8'; ctx.font = '10px DM Sans'; ctx.textAlign = 'right';
+        var lbl = fmt(maxVal - (maxVal / 4) * g);
+        ctx.fillText(lbl, pad.l - 8, gy + 3);
+    }
+
+    // X labels
+    ctx.fillStyle = '#94a3b8'; ctx.font = '10px DM Sans'; ctx.textAlign = 'center';
+    for (var m = 0; m <= 12; m++) {
+        var x = pad.l + (cW / 12) * m;
+        if (m % 2 === 0) ctx.fillText('M' + m, x, H - pad.b + 16);
+    }
+
+    function drawLine(data, color) {
+        ctx.beginPath(); ctx.strokeStyle = color; ctx.lineWidth = 2.5; ctx.lineJoin = 'round';
+        for (var i = 0; i <= 12; i++) {
+            var x = pad.l + (cW / 12) * i;
+            var y = pad.t + cH - (data[i] / maxVal * cH);
+            if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
         }
+        ctx.stroke();
+        // End dot
+        var lastX = pad.l + cW;
+        var lastY = pad.t + cH - (data[12] / maxVal * cH);
+        ctx.beginPath(); ctx.arc(lastX, lastY, 4, 0, Math.PI * 2); ctx.fillStyle = color; ctx.fill();
+    }
 
-        function setPrice(curr, price) {
-            document.getElementById('fuelPrice').value = price;
-            document.getElementById('currencyCode').value = curr;
-            updateCalc();
-        }
+    drawLine(solarData, '#10b981');
+    drawLine(gridData, '#007AFF');
+    drawLine(genData, '#ef4444');
 
-        function calculateFuel() {
-            const kva = parseFloat(document.getElementById('kva').value) || 5;
-            const fuelType = document.getElementById('fuelType').value;
-            const loadPercent = parseFloat(document.getElementById('loadPercent').value) / 100;
-            const hoursDay = parseFloat(document.getElementById('hoursDay').value) || 6;
-            const daysMonth = parseFloat(document.getElementById('daysMonth').value) || 25;
-            const fuelPrice = parseFloat(document.getElementById('fuelPrice').value) || 1100;
-            const currency = document.getElementById('currencyCode').value || 'NGN';
+    // Legend
+    var lx = pad.l + 10; var ly = pad.t + 10;
+    [['Generator', '#ef4444'], ['Grid', '#007AFF'], ['Solar', '#10b981']].forEach(function(item, i) {
+        ctx.fillStyle = item[1]; ctx.fillRect(lx, ly + i * 16, 10, 10);
+        ctx.fillStyle = '#475569'; ctx.font = '11px DM Sans'; ctx.textAlign = 'left';
+        ctx.fillText(item[0], lx + 14, ly + i * 16 + 9);
+    });
+}
 
-            const consumptionRate = fuelType === 'diesel' ? 0.21 : 0.30;
-            const literHour = kva * consumptionRate * loadPercent;
-            const literDay = literHour * hoursDay;
-            const literMonth = literDay * daysMonth;
-            const monthlyCost = literMonth * fuelPrice;
-            const annualCost = monthlyCost * 12;
-            const kwhMonth = kva * 0.8 * hoursDay * daysMonth;
-            const costKwh = monthlyCost / kwhMonth;
+// ── CHART: Monthly bar chart ──
+function drawMonthlyBarChart(genM, gridM, solarM, curr) {
+    var c = document.getElementById('chartMonthly');
+    var ctx = c.getContext('2d');
+    var W = c.offsetWidth; var H = 260;
+    c.width = W * 2; c.height = H * 2; ctx.scale(2, 2);
+    ctx.clearRect(0, 0, W, H);
 
-            document.getElementById('literHour').textContent = literHour.toFixed(2);
-            document.getElementById('literDay').textContent = literDay.toFixed(2);
-            document.getElementById('literMonth').textContent = literMonth.toFixed(1);
-            document.getElementById('monthlyCost').textContent = monthlyCost.toLocaleString('en-US', { maximumFractionDigits: 0 });
-            document.getElementById('annualCost').textContent = annualCost.toLocaleString('en-US', { maximumFractionDigits: 0 });
-            document.getElementById('costKwh').textContent = costKwh.toFixed(2);
-            document.getElementById('costCurrency').textContent = currency;
-            document.getElementById('genMonthlyCost').textContent = monthlyCost.toLocaleString('en-US', { maximumFractionDigits: 0 });
+    var pad = { t: 20, r: 20, b: 50, l: 20 };
+    var cW = W - pad.l - pad.r;
+    var cH = H - pad.t - pad.b;
+    var maxVal = Math.max(genM, gridM, solarM);
+    if (maxVal === 0) maxVal = 1;
 
-            updateComparison();
-            document.getElementById('results').classList.add('show');
-        }
+    var items = [
+        { label: 'Generator', val: genM, color: '#ef4444', light: '#fecaca' },
+        { label: 'Grid Power', val: gridM, color: '#007AFF', light: '#bfdbfe' },
+        { label: 'Solar (amort.)', val: solarM, color: '#10b981', light: '#a7f3d0' }
+    ];
 
-        function updateComparison() {
-            const monthlyCost = parseFloat(document.getElementById('monthlyCost').textContent.replace(/,/g, '')) || 0;
-            const gridRate = parseFloat(document.getElementById('gridRate').value) || 68;
-            const kva = parseFloat(document.getElementById('kva').value) || 5;
-            const hoursDay = parseFloat(document.getElementById('hoursDay').value) || 6;
-            const daysMonth = parseFloat(document.getElementById('daysMonth').value) || 25;
-            const kwhMonth = kva * 0.8 * hoursDay * daysMonth;
-            const gridCost = kwhMonth * gridRate;
-            const diff = gridCost - monthlyCost;
+    var barW = cW / 5;
+    var gap = barW * 0.3;
 
-            document.getElementById('gridMonthlyCost').textContent = gridCost.toLocaleString('en-US', { maximumFractionDigits: 0 });
-            document.getElementById('difference').textContent = (diff > 0 ? '+' : '') + diff.toLocaleString('en-US', { maximumFractionDigits: 0 });
-            document.getElementById('difference').style.color = diff > 0 ? '#2563EB' : '#dc2626';
-        }
+    items.forEach(function(item, i) {
+        var x = pad.l + (cW / 4) * (i + 0.5) - barW / 2;
+        var barH = (item.val / maxVal) * cH;
+        var y = pad.t + cH - barH;
 
-        function updateCalc() { if (document.getElementById('results').classList.contains('show')) calculateFuel(); }
-    </script>
+        // Bar
+        ctx.fillStyle = item.color;
+        ctx.beginPath();
+        var r = 6;
+        ctx.moveTo(x + r, y);
+        ctx.lineTo(x + barW - r, y);
+        ctx.quadraticCurveTo(x + barW, y, x + barW, y + r);
+        ctx.lineTo(x + barW, pad.t + cH);
+        ctx.lineTo(x, pad.t + cH);
+        ctx.lineTo(x, y + r);
+        ctx.quadraticCurveTo(x, y, x + r, y);
+        ctx.fill();
+
+        // Value on top
+        ctx.fillStyle = item.color; ctx.font = 'bold 12px DM Sans'; ctx.textAlign = 'center';
+        ctx.fillText(fmt(Math.round(item.val)), x + barW / 2, y - 6);
+
+        // Label below
+        ctx.fillStyle = '#64748b'; ctx.font = '10px DM Sans';
+        ctx.fillText(item.label, x + barW / 2, pad.t + cH + 16);
+    });
+
+    // Savings callout
+    if (genM > gridM) {
+        var savePercent = Math.round((1 - gridM / genM) * 100);
+        ctx.fillStyle = '#065f46'; ctx.font = 'bold 12px DM Sans'; ctx.textAlign = 'center';
+        ctx.fillText('Grid saves ' + savePercent + '%', W / 2, H - 10);
+    }
+}
+
+// ── CHART: Solar breakeven ──
+function drawSolarChart(genM, solarSys, solarMaint, curr) {
+    var c = document.getElementById('chartSolar');
+    var ctx = c.getContext('2d');
+    var W = c.offsetWidth; var H = 220;
+    c.width = W * 2; c.height = H * 2; ctx.scale(2, 2);
+    ctx.clearRect(0, 0, W, H);
+
+    var pad = { t: 20, r: 20, b: 40, l: 60 };
+    var cW = W - pad.l - pad.r;
+    var cH = H - pad.t - pad.b;
+    var months = 60; // 5 years
+
+    var genData = [], solarData = [];
+    for (var i = 0; i <= months; i++) {
+        genData.push(genM * i);
+        solarData.push(solarSys + solarMaint * i);
+    }
+    var maxVal = Math.max(genData[months], solarData[months]);
+    if (maxVal === 0) maxVal = 1;
+
+    // Grid
+    ctx.strokeStyle = '#f1f5f9'; ctx.lineWidth = 1;
+    for (var g = 0; g <= 4; g++) {
+        var gy = pad.t + (cH / 4) * g;
+        ctx.beginPath(); ctx.moveTo(pad.l, gy); ctx.lineTo(W - pad.r, gy); ctx.stroke();
+        ctx.fillStyle = '#94a3b8'; ctx.font = '9px DM Sans'; ctx.textAlign = 'right';
+        ctx.fillText(fmt(maxVal - (maxVal / 4) * g), pad.l - 6, gy + 3);
+    }
+
+    // X labels (years)
+    ctx.fillStyle = '#94a3b8'; ctx.font = '10px DM Sans'; ctx.textAlign = 'center';
+    for (var yr = 0; yr <= 5; yr++) {
+        var x = pad.l + (cW / 5) * yr;
+        ctx.fillText('Yr ' + yr, x, H - pad.b + 16);
+    }
+
+    // Gen line
+    ctx.beginPath(); ctx.strokeStyle = '#ef4444'; ctx.lineWidth = 2;
+    for (var i = 0; i <= months; i++) {
+        var x = pad.l + (cW / months) * i;
+        var y = pad.t + cH - (genData[i] / maxVal * cH);
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+
+    // Solar line
+    ctx.beginPath(); ctx.strokeStyle = '#10b981'; ctx.lineWidth = 2;
+    for (var i = 0; i <= months; i++) {
+        var x = pad.l + (cW / months) * i;
+        var y = pad.t + cH - (solarData[i] / maxVal * cH);
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+
+    // Find breakeven point
+    var breakMonth = -1;
+    for (var i = 1; i <= months; i++) {
+        if (genData[i] >= solarData[i]) { breakMonth = i; break; }
+    }
+
+    if (breakMonth > 0) {
+        var bx = pad.l + (cW / months) * breakMonth;
+        var by = pad.t + cH - (genData[breakMonth] / maxVal * cH);
+        ctx.beginPath(); ctx.arc(bx, by, 6, 0, Math.PI * 2);
+        ctx.fillStyle = '#f59e0b'; ctx.fill();
+        ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
+        ctx.fillStyle = '#92400e'; ctx.font = 'bold 11px DM Sans'; ctx.textAlign = 'center';
+        ctx.fillText('Break-even: Month ' + breakMonth, bx, by - 12);
+    }
+
+    // Legend
+    ctx.fillStyle = '#ef4444'; ctx.fillRect(pad.l + 10, pad.t + 6, 10, 10);
+    ctx.fillStyle = '#475569'; ctx.font = '11px DM Sans'; ctx.textAlign = 'left';
+    ctx.fillText('Generator cumulative', pad.l + 24, pad.t + 15);
+    ctx.fillStyle = '#10b981'; ctx.fillRect(pad.l + 10, pad.t + 22, 10, 10);
+    ctx.fillStyle = '#475569'; ctx.fillText('Solar (system + maintenance)', pad.l + 24, pad.t + 31);
+}
+</script>
 
 <!-- AI Advisor -->
 <section style="max-width:800px;margin:0 auto;padding:32px 24px">
 <div style="background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:22px">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;flex-wrap:wrap;gap:8px">
-    <h3 style="font-size:15px;font-weight:800;color:#111;display:flex;align-items:center;gap:8px;margin:0">🤖 Energy Advisor <span style="padding:3px 9px;background:#EFF6FF;border:1px solid rgba(0,122,255,.2);border-radius:100px;font-size:10px;color:var(--color-primary);font-weight:700">AI</span></h3>
+    <h3 style="font-size:15px;font-weight:800;color:#111;display:flex;align-items:center;gap:8px;margin:0">🤖 Energy Advisor <span style="padding:3px 9px;background:#EFF6FF;border:1px solid rgba(0,122,255,.2);border-radius:100px;font-size:10px;color:#007AFF;font-weight:700">AI</span></h3>
     <span style="font-size:11px;color:#9ca3af">Powered by Claude</span>
   </div>
   <div style="font-size:11px;color:#9ca3af;margin-bottom:12px;line-height:1.5">Ask any question about generators, solar panels, and energy costs. Max 3 exchanges per session.</div>
@@ -559,7 +742,7 @@
   <div id="aiChat" style="display:flex;flex-direction:column;gap:8px;max-height:320px;overflow-y:auto;margin-bottom:12px;scroll-behavior:smooth"></div>
   <div style="display:flex;gap:8px">
     <input type="text" id="aiQ" placeholder="Ask anything..." onkeydown="if(event.key==='Enter'&&!aiLoading)askAI()" style="flex:1;min-width:0;padding:10px 14px;border:1.5px solid #e5e7eb;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;outline:none">
-    <button id="aiBtn" onclick="askAI()" style="padding:10px 20px;background:var(--color-primary);color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap">Ask →</button>
+    <button id="aiBtn" onclick="askAI()" style="padding:10px 20px;background:#007AFF;color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap">Ask</button>
   </div>
 </div>
 </section>
@@ -574,7 +757,7 @@ async function askAI(preset){
   document.getElementById('aiQ').value='';
   var chat=document.getElementById('aiChat');
   var uMsg=document.createElement('div');uMsg.style.cssText='padding:10px 14px;border-radius:10px;font-size:13px;line-height:1.65;max-width:88%;background:#EFF6FF;color:#111;border:1px solid rgba(0,122,255,.12);align-self:flex-end;font-weight:500';uMsg.textContent=q;chat.appendChild(uMsg);
-  var typing=document.createElement('div');typing.style.cssText='padding:10px 14px;border-radius:10px;font-size:13px;color:#9ca3af;font-style:italic;background:#f9fafb;border:1px solid #f3f4f6;align-self:flex-start';typing.textContent='Thinking…';chat.appendChild(typing);chat.scrollTop=9999;
+  var typing=document.createElement('div');typing.style.cssText='padding:10px 14px;border-radius:10px;font-size:13px;color:#9ca3af;font-style:italic;background:#f9fafb;border:1px solid #f3f4f6;align-self:flex-start';typing.textContent='Thinking\u2026';chat.appendChild(typing);chat.scrollTop=9999;
   var msgs=chatHistory.concat([{role:'user',content:q}]);
   try{
     var res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tool:'generator-fuel',system:'',messages:msgs,maxTokens:500})});
@@ -596,22 +779,18 @@ async function askAI(preset){
 
 <section style="max-width:800px;margin:40px auto 0;padding:0 24px 40px">
 <h2 style="font-size:1.35rem;font-weight:800;color:#0f172a;margin-bottom:20px;letter-spacing:-.01em">Frequently Asked Questions</h2>
-
 <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:10px;background:#fff">
 <summary style="padding:16px 20px;font-weight:700;font-size:.92rem;color:#1e293b;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">How much does it cost to run a generator per hour in Nigeria?</summary>
 <div style="padding:0 20px 16px;font-size:.85rem;color:#64748b;line-height:1.7">The cost depends on your generator size and fuel type. A typical 3.5KVA petrol generator in Nigeria costs approximately &#8358;500-800 per hour based on current fuel prices. Use our calculator above for exact figures based on your specific setup.</div>
 </details>
-
 <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:10px;background:#fff">
 <summary style="padding:16px 20px;font-weight:700;font-size:.92rem;color:#1e293b;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">Is solar cheaper than a generator in the long run?</summary>
-<div style="padding:0 20px 16px;font-size:.85rem;color:#64748b;line-height:1.7">In most cases, yes. A solar panel system typically pays for itself within 2-4 years when compared to ongoing generator fuel costs, especially in Nigeria where fuel prices are high.</div>
+<div style="padding:0 20px 16px;font-size:.85rem;color:#64748b;line-height:1.7">In most cases, yes. A solar panel system typically pays for itself within 2-4 years when compared to ongoing generator fuel costs, especially in Nigeria where fuel prices are high. Use the Solar ROI chart above to see the exact breakeven point for your setup.</div>
 </details>
-
 <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:10px;background:#fff">
 <summary style="padding:16px 20px;font-weight:700;font-size:.92rem;color:#1e293b;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">What size generator do I need for my home?</summary>
 <div style="padding:0 20px 16px;font-size:.85rem;color:#64748b;line-height:1.7">A typical 3-bedroom Nigerian home needs a 3.5-5KVA generator. Factor in your essential appliances: AC units (1-1.5KVA each), refrigerator (200W), lights, and fans.</div>
 </details>
-
 <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:10px;background:#fff">
 <summary style="padding:16px 20px;font-weight:700;font-size:.92rem;color:#1e293b;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">How can I reduce generator fuel consumption?</summary>
 <div style="padding:0 20px 16px;font-size:.85rem;color:#64748b;line-height:1.7">Use energy-efficient appliances, avoid running the generator at low load, maintain it regularly (oil changes, air filters), and consider an inverter generator which adjusts output to load.</div>
@@ -619,18 +798,8 @@ async function askAI(preset){
 </section>
 
 <afro-related-tools category="african" current="generator-fuel"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
 
-<script>
-(function(){
-  var target = document.getElementById('results');
-  if (!target) return;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
-  div.innerHTML = '<save-result-button tool-slug="generator-fuel" tool-name="Generator Fuel"></save-result-button><share-result-button tool-name="Generator Fuel" tool-slug="generator-fuel"></share-result-button>';
-  target.appendChild(div);
-})();
-</script>
 </body>
 </html>

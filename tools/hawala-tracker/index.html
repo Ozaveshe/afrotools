@@ -12,6 +12,7 @@
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Remittance Cost Tracker | AfroTools"><meta property="og:description" content="Compare money transfer costs to Africa.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png"><meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/hawala-tracker/">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Remittance Cost Tracker | AfroTools"><meta name="twitter:description" content="Compare money transfer costs to Africa."><meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css"><link rel="stylesheet" href="/assets/css/global.min.css">
 <script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script>
@@ -48,6 +49,23 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 .seo-section{max-width:800px;margin:0 auto;padding:48px 24px}.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
 .seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
 .faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
+.zfun{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.zfun-card{padding:16px;border-radius:10px;text-align:center}
+.zfun-card.gold{background:#FFF8E7;border:1.5px solid rgba(212,168,67,.3)}
+.zfun-card.blue{background:#E8F2FF;border:1.5px solid rgba(0,122,255,.2)}
+.zfun-card.rose{background:#fff1f2;border:1.5px solid rgba(225,29,72,.2)}
+.zfun-card.green{background:#f0fdf4;border:1.5px solid #86efac}
+.zfun-emoji{font-size:2rem;margin-bottom:6px}
+.zfun-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.zfun-card.gold .zfun-title{color:#92400e}
+.zfun-card.blue .zfun-title{color:#1e40af}
+.zfun-card.rose .zfun-title{color:#be123c}
+.zfun-card.green .zfun-title{color:#166534}
+.zfun-text{font-size:.78rem;font-weight:600;color:#1e293b;line-height:1.5}
+.zfun-dyk{margin-top:16px;background:linear-gradient(135deg,#faf5ff,#f3e8ff);border:1.5px solid #c4b5fd;border-radius:12px;padding:18px}
+.zfun-dyk-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6d28d9;margin-bottom:8px}
+.zfun-dyk-text{font-size:.82rem;color:#4c1d95;line-height:1.7}
+@media(max-width:500px){.zfun{grid-template-columns:1fr}}
 @media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.compare-grid{grid-template-columns:1fr}}
 </style>
 <script type="application/ld+json">
@@ -58,9 +76,6 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 </script>
 <script src="/assets/js/lib/toast.js" defer></script>
 <script src="/assets/js/afro-history.js" defer></script>
-<script src="/assets/js/components/save-result-button.js" defer></script>
-<script src="/assets/js/components/share-card-generator.js" defer></script>
-<script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -110,6 +125,13 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div class="card-body">
 <div class="compare-grid" id="compareGrid"></div>
 <p style="font-size:.72rem;color:#94a3b8;margin-top:14px">* Estimates based on typical 2026 rates. Actual costs vary by provider, amount, payment method, and exchange rate at time of transfer. FX margin = difference between mid-market rate and offered rate. Always check exact costs before sending.</p>
+<div id="funZone" style="display:none">
+  <div class="zfun" id="funCards"></div>
+  <div class="zfun-dyk">
+    <div class="zfun-dyk-title">Did You Know?</div>
+    <div class="zfun-dyk-text">The hawala system has been used for over 1,000 years! It originated on the Silk Road and spread across Africa through trade routes. Ancient blockchain!</div>
+  </div>
+</div>
 </div></div>
 </div>
 
@@ -168,6 +190,8 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <afro-related-tools category="african" current="hawala-tracker"></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
+<script src="/assets/js/components/related-tools.min.js" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js" defer></script>
 
 <script>
 // Approximate cost data: [flatFee%, fxMargin%, speed, name]
@@ -224,19 +248,31 @@ function compare(){
   document.getElementById('compareGrid').innerHTML=html;
   document.getElementById('resultCard').style.display='block';
   document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
+
+  // Fun comparisons based on savings (cheapest vs most expensive)
+  var maxCost=results[results.length-1].totalCost;
+  var saved=maxCost-minCost;
+  var funZone=document.getElementById('funZone');
+  var funCards=document.getElementById('funCards');
+  if(saved>0){
+    funZone.style.display='block';
+    // Convert saved amount to NGN for fun comparisons
+    var toNGN={us:1600,uk:2000,eu:1750,ae:435,ca:1150,ng:1,ke:12,za:85};
+    var savedNGN=saved*(toNGN[from]||1600);
+    var suyaSticks=Math.round(savedNGN/500);
+    var airtimeGB=(savedNGN/1000).toFixed(1);
+    var spotifyMonths=(savedNGN/4900).toFixed(1);
+    var annualSaved=saved*12;
+    funCards.innerHTML=
+      '<div class="zfun-card gold"><div class="zfun-emoji">&#127830;</div><div class="zfun-title">Suya Sticks</div><div class="zfun-text">'+suyaSticks.toLocaleString()+' sticks of suya</div></div>'+
+      '<div class="zfun-card blue"><div class="zfun-emoji">&#128241;</div><div class="zfun-title">Mobile Data</div><div class="zfun-text">'+airtimeGB+' GB of data</div></div>'+
+      '<div class="zfun-card rose"><div class="zfun-emoji">&#127925;</div><div class="zfun-title">Spotify Months</div><div class="zfun-text">'+spotifyMonths+' months streaming</div></div>'+
+      '<div class="zfun-card green"><div class="zfun-emoji">&#128176;</div><div class="zfun-title">Saved Over a Year</div><div class="zfun-text">'+cur+annualSaved.toFixed(2)+' per year</div></div>';
+  } else {
+    funZone.style.display='none';
+  }
 }
 </script>
 
-<script>
-(function(){
-  var target = document.getElementById('resultCard');
-  if (!target) return;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
-  div.innerHTML = '<save-result-button tool-slug="hawala-tracker" tool-name="Hawala Tracker"></save-result-button><share-result-button tool-name="Hawala Tracker" tool-slug="hawala-tracker"></share-result-button>';
-  target.appendChild(div);
-})();
-</script>
 </body>
 </html>

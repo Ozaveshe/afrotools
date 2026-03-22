@@ -135,10 +135,10 @@
         </div>
 
         <div class="presets" style="margin-top:14px">
-          <button class="preset-btn" onclick="setPreset(500000,25000,12,5)">Conservative</button>
-          <button class="preset-btn" onclick="setPreset(1000000,50000,15,10)">Moderate</button>
-          <button class="preset-btn" onclick="setPreset(2000000,100000,20,15)">Aggressive</button>
-          <button class="preset-btn" onclick="setPreset(5000000,200000,25,20)">High Growth</button>
+          <button class="preset-btn" onclick="setPreset(event,500000,25000,12,5)">Conservative</button>
+          <button class="preset-btn" onclick="setPreset(event,1000000,50000,15,10)">Moderate</button>
+          <button class="preset-btn" onclick="setPreset(event,2000000,100000,20,15)">Aggressive</button>
+          <button class="preset-btn" onclick="setPreset(event,5000000,200000,25,20)">High Growth</button>
         </div>
 
         <button class="calc-btn" onclick="calculate()">Calculate Returns →</button>
@@ -306,7 +306,7 @@ function setCurrency() {
   document.getElementById('currencyLabel').textContent = sel.options[sel.selectedIndex].dataset.code;
 }
 
-function setPreset(init, monthly, rate, years) {
+function setPreset(event, init, monthly, rate, years) {
   document.getElementById('initial').value = init;
   document.getElementById('monthly').value = monthly;
   document.getElementById('rate').value = rate;
@@ -362,7 +362,7 @@ function calculate() {
 
   var totalInterest = balance - totalDeposits;
   var roi = totalDeposits > 0 ? ((balance - totalDeposits) / totalDeposits * 100) : 0;
-  var cagr = initial > 0 ? (Math.pow(balance / initial, 1 / years) - 1) * 100 : 0;
+  var cagr = initial > 0 ? (Math.pow(balance / initial, 1 / years) - 1) * 100 : 'N/A';
   var doubling = rate > 0 ? (72 / rate).toFixed(1) : '∞';
 
   // Inflation-adjusted
@@ -385,7 +385,7 @@ function calculate() {
   document.getElementById('totalInvested').textContent = fmt(totalDeposits);
   document.getElementById('totalInterest').textContent = fmt(totalInterest);
   document.getElementById('roi').textContent = roi.toFixed(1) + '%';
-  document.getElementById('cagr').textContent = cagr.toFixed(1) + '%';
+  document.getElementById('cagr').textContent = cagr === 'N/A' ? 'N/A' : cagr.toFixed(1) + '%';
   document.getElementById('rule72').textContent = doubling + ' yrs';
 
   if (useInflation && inflationRate > 0) {
@@ -476,12 +476,12 @@ async function downloadPdf() {
     subtitle: fmt(R.initial) + ' initial · ' + R.rate + '% for ' + R.years + ' years',
     toolId: 'investment-return',
     country: 'Africa',
-    effectiveRate: R.cagr / 100,
+    effectiveRate: R.cagr === 'N/A' ? 0 : R.cagr / 100,
     heroStats: [
       { label: 'Final Value', value: fmt(R.balance), highlight: true },
       { label: 'Total Invested', value: fmt(R.totalDeposits) },
       { label: 'Interest Earned', value: fmt(R.totalInterest), color: 'green' },
-      { label: 'CAGR', value: R.cagr.toFixed(1) + '%' }
+      { label: 'CAGR', value: R.cagr === 'N/A' ? 'N/A' : R.cagr.toFixed(1) + '%' }
     ],
     sections: [
       { title: 'Investment Parameters', rows: [
@@ -494,7 +494,7 @@ async function downloadPdf() {
         { label: 'Total Invested', value: fmt(R.totalDeposits) },
         { label: 'Total Interest Earned', value: fmt(R.totalInterest), color: 'green' },
         { label: 'ROI', value: R.roi.toFixed(1) + '%' },
-        { label: 'CAGR', value: R.cagr.toFixed(1) + '%' },
+        { label: 'CAGR', value: R.cagr === 'N/A' ? 'N/A' : R.cagr.toFixed(1) + '%' },
         { label: 'Doubling Time (Rule of 72)', value: R.doubling + ' years' },
         { label: 'Final Value', value: fmt(R.balance), type: 'total' }
       ]},
@@ -509,7 +509,8 @@ async function downloadPdf() {
 // ── SHARE ─────────────────────────────────────────────
 function shareResult() {
   if (!RESULT) return;
-  var text = 'My investment projection: ' + fmt(RESULT.initial) + ' initial + ' + fmt(RESULT.monthly) + '/mo at ' + RESULT.rate + '% for ' + RESULT.years + ' years = ' + fmt(RESULT.balance) + ' (' + RESULT.cagr.toFixed(1) + '% CAGR). Calculate yours at afrotools.com/tools/investment-return/';
+  var cagrText = RESULT.cagr === 'N/A' ? 'N/A' : RESULT.cagr.toFixed(1) + '%';
+  var text = 'My investment projection: ' + fmt(RESULT.initial) + ' initial + ' + fmt(RESULT.monthly) + '/mo at ' + RESULT.rate + '% for ' + RESULT.years + ' years = ' + fmt(RESULT.balance) + ' (' + cagrText + ' CAGR). Calculate yours at afrotools.com/tools/investment-return/';
   if (navigator.share) {
     navigator.share({ title: 'My Investment Projection', text: text, url: 'https://afrotools.com/tools/investment-return/' });
   } else if (navigator.clipboard) {

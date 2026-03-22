@@ -167,12 +167,13 @@ h1 em{color:var(--afro-blue);font-style:normal}
 <script>
 const COLORS=['#3b82f6','#10b981','#f59e0b','#8b5cf6'];
 let loanCount=0;
+function visibleLoans(){return document.querySelectorAll('#loansGrid .loan-card').length}
 
 function parseNum(s){return parseFloat(String(s).replace(/[^0-9.\-]/g,''))||0}
 function fmt(n,cur){const symbols={NGN:'\u20A6',KES:'KSh ',ZAR:'R',GHS:'GH\u20B5',USD:'$',GBP:'\u00A3'};return(symbols[cur]||'')+n.toLocaleString('en',{minimumFractionDigits:0,maximumFractionDigits:0})}
 
 function addLoan(name){
-  if(loanCount>=4)return;
+  if(visibleLoans()>=4)return;
   const i=loanCount;
   const grid=document.getElementById('loansGrid');
   const card=document.createElement('div');
@@ -191,7 +192,7 @@ function addLoan(name){
   `;
   grid.appendChild(card);
   loanCount++;
-  if(loanCount>=4)document.getElementById('addLoanBtn').style.display='none';
+  if(visibleLoans()>=4)document.getElementById('addLoanBtn').style.display='none';
   // Format amount fields
   ['lAmt'+i,'lFees'+i].forEach(fid=>{
     const el=document.getElementById(fid);
@@ -203,8 +204,7 @@ function addLoan(name){
 function removeLoan(i){
   const el=document.getElementById('loan'+i);
   if(el)el.remove();
-  // Don't decrement loanCount to keep IDs unique
-  document.getElementById('addLoanBtn').style.display='block';
+  if(visibleLoans()<4)document.getElementById('addLoanBtn').style.display='block';
 }
 
 function compare(){
@@ -268,7 +268,7 @@ function compare(){
     const maxVal=Math.max(...vals);
     loans.forEach(l=>{
       let cls='';
-      if(m.best==='min'){
+      if(m.best==='min' && minVal !== maxVal){
         if(l[m.key]===minVal)cls='best-cell';
         else if(l[m.key]===maxVal)cls='worst-cell';
       }

@@ -6,7 +6,7 @@
 <title>Mobile Money Fee Checker – Compare M-Pesa, MTN MoMo, Airtel | AfroTools</title>
 <meta name="description" content="Compare mobile money transfer fees across M-Pesa, MTN MoMo, Airtel Money, Orange Money for Nigeria, Kenya, Ghana, Uganda, Tanzania, Rwanda and all African countries.">
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="https://afrotools.com/tools/mobile-money-fees">
+<link rel="canonical" href="https://afrotools.com/tools/mobile-money-fees/">
 <meta property="og:title" content="Mobile Money Fee Calculator — M-Pesa, MoMo">
 <meta property="og:description" content="Compare mobile money fees across M-Pesa, MTN MoMo, Airtel Money, Wave. See exact charges before sending.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
@@ -106,6 +106,23 @@
 .mm-hist-item .hi-cheapest{color:#2563EB;font-weight:700;}
 .mm-hist-item .hi-del{color:#d1d5db;font-size:.9rem;cursor:pointer;padding:2px 4px;}
 .mm-hist-item .hi-del:hover{color:#ef4444;}
+.mfun{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.mfun-card{padding:16px;border-radius:10px;text-align:center}
+.mfun-card.gold{background:#FFF8E7;border:1.5px solid rgba(212,168,67,.3)}
+.mfun-card.blue{background:#E8F2FF;border:1.5px solid rgba(0,122,255,.2)}
+.mfun-card.rose{background:#fff1f2;border:1.5px solid rgba(225,29,72,.2)}
+.mfun-card.green{background:#f0fdf4;border:1.5px solid #86efac}
+.mfun-emoji{font-size:2rem;margin-bottom:6px}
+.mfun-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.mfun-card.gold .mfun-title{color:#92400e}
+.mfun-card.blue .mfun-title{color:#1e40af}
+.mfun-card.rose .mfun-title{color:#be123c}
+.mfun-card.green .mfun-title{color:#166534}
+.mfun-text{font-size:.78rem;font-weight:600;color:#1e293b;line-height:1.5}
+.mfun-dyk{margin-top:16px;background:linear-gradient(135deg,#faf5ff,#f3e8ff);border:1.5px solid #c4b5fd;border-radius:12px;padding:18px}
+.mfun-dyk-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6d28d9;margin-bottom:8px}
+.mfun-dyk-text{font-size:.82rem;color:#4c1d95;line-height:1.7}
+@media(max-width:500px){.mfun{grid-template-columns:1fr}}
 </style>
 
 <script type="application/ld+json">
@@ -340,6 +357,7 @@
 </section>
 
 <afro-related-tools category="african" current="mobile-money-fees"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
 
 <script>
@@ -847,6 +865,35 @@ function compare(){
       <p>Always confirm recipient number before sending. Mobile money transfers cannot be reversed once confirmed. Use PIN never share it.</p>
     </div>
   `;
+
+  // Fun comparisons based on savings
+  var funTarget = document.getElementById('mmFunComparisons');
+  if (!funTarget) {
+    funTarget = document.createElement('div');
+    funTarget.id = 'mmFunComparisons';
+    document.getElementById('mmTips').parentElement.appendChild(funTarget);
+  }
+  if (savingsVsWorst > 0) {
+    var coffeePrice = code === 'KE' ? 350 : code === 'NG' ? 1500 : code === 'GH' ? 25 : code === 'UG' ? 8000 : code === 'TZ' ? 4000 : code === 'SN' || code === 'CI' ? 1000 : 500;
+    var moviePrice = code === 'KE' ? 800 : code === 'NG' ? 5000 : code === 'GH' ? 50 : code === 'UG' ? 20000 : code === 'TZ' ? 10000 : code === 'SN' || code === 'CI' ? 3000 : 1000;
+    var streetFoodPrice = code === 'KE' ? 200 : code === 'NG' ? 1000 : code === 'GH' ? 15 : code === 'UG' ? 5000 : code === 'TZ' ? 3000 : code === 'SN' || code === 'CI' ? 500 : 300;
+    var kwhPrice = code === 'KE' ? 25 : code === 'NG' ? 68 : code === 'GH' ? 1.5 : code === 'UG' ? 820 : code === 'TZ' ? 350 : code === 'SN' || code === 'CI' ? 120 : 50;
+
+    var coffees = Math.floor(savingsVsWorst / coffeePrice);
+    var movies = Math.floor(savingsVsWorst / moviePrice);
+    var meals = Math.floor(savingsVsWorst / streetFoodPrice);
+    var kwh = Math.floor(savingsVsWorst / kwhPrice);
+
+    funTarget.innerHTML = '<div class="mfun">'
+      + '<div class="mfun-card gold"><div class="mfun-emoji">\u2615</div><div class="mfun-title">Caf\u00E9 Visits</div><div class="mfun-text">' + coffees + ' cups of coffee</div></div>'
+      + '<div class="mfun-card blue"><div class="mfun-emoji">\uD83C\uDFAC</div><div class="mfun-title">Movies</div><div class="mfun-text">' + movies + ' movie tickets</div></div>'
+      + '<div class="mfun-card rose"><div class="mfun-emoji">\uD83C\uDF55</div><div class="mfun-title">Street Food</div><div class="mfun-text">' + meals + ' plates of street food</div></div>'
+      + '<div class="mfun-card green"><div class="mfun-emoji">\uD83D\uDCA1</div><div class="mfun-title">Electricity</div><div class="mfun-text">' + kwh + ' kWh of power</div></div>'
+      + '</div>'
+      + '<div class="mfun-dyk"><div class="mfun-dyk-title">\uD83D\uDCA1 Did You Know?</div><div class="mfun-dyk-text">M-Pesa launched in Kenya in 2007 and now processes more transactions per day than PayPal does globally! Over 50 million Africans use mobile money daily. Africa invented fintech. \uD83D\uDCF1\uD83D\uDC9A</div></div>';
+  } else {
+    funTarget.innerHTML = '<div class="mfun-dyk" style="margin-top:16px"><div class="mfun-dyk-title">\uD83D\uDCA1 Did You Know?</div><div class="mfun-dyk-text">M-Pesa launched in Kenya in 2007 and now processes more transactions per day than PayPal does globally! Over 50 million Africans use mobile money daily. Africa invented fintech. \uD83D\uDCF1\uD83D\uDC9A</div></div>';
+  }
 
   // Save to history
   saveHistory(code, countryData.name, amount, sym, cheapest.name, cheapest.fee);

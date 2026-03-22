@@ -12,6 +12,7 @@
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Susu / Savings Group Tracker | AfroTools"><meta property="og:description" content="Track rotating savings group contributions and payouts.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png"><meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/susu-tracker/">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Susu / Savings Group Tracker | AfroTools"><meta name="twitter:description" content="Track rotating savings group contributions and payouts."><meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css"><link rel="stylesheet" href="/assets/css/global.min.css">
 <script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script>
@@ -50,6 +51,23 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 .seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
 .faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
 @media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.result-grid{grid-template-columns:1fr 1fr}.row3{grid-template-columns:1fr}}
+.mfun{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.mfun-card{padding:16px;border-radius:10px;text-align:center}
+.mfun-card.gold{background:#FFF8E7;border:1.5px solid rgba(212,168,67,.3)}
+.mfun-card.blue{background:#E8F2FF;border:1.5px solid rgba(0,122,255,.2)}
+.mfun-card.rose{background:#fff1f2;border:1.5px solid rgba(225,29,72,.2)}
+.mfun-card.green{background:#f0fdf4;border:1.5px solid #86efac}
+.mfun-emoji{font-size:2rem;margin-bottom:6px}
+.mfun-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.mfun-card.gold .mfun-title{color:#92400e}
+.mfun-card.blue .mfun-title{color:#1e40af}
+.mfun-card.rose .mfun-title{color:#be123c}
+.mfun-card.green .mfun-title{color:#166534}
+.mfun-text{font-size:.78rem;font-weight:600;color:#1e293b;line-height:1.5}
+.mfun-dyk{margin-top:16px;background:linear-gradient(135deg,#faf5ff,#f3e8ff);border:1.5px solid #c4b5fd;border-radius:12px;padding:18px}
+.mfun-dyk-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6d28d9;margin-bottom:8px}
+.mfun-dyk-text{font-size:.82rem;color:#4c1d95;line-height:1.7}
+@media(max-width:500px){.mfun{grid-template-columns:1fr}}
 </style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebApplication","name":"Susu / Esusu / Chama Group Tracker","url":"https://afrotools.com/tools/susu-tracker/","applicationCategory":"FinanceApplication","operatingSystem":"All","description":"Track contributions, payouts, and members for rotating savings groups including Susu, Esusu, Ajo, Chama, Stokvel, and Tontine.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
@@ -59,9 +77,6 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 </script>
 <script src="/assets/js/lib/toast.js" defer></script>
 <script src="/assets/js/afro-history.js" defer></script>
-<script src="/assets/js/components/save-result-button.js" defer></script>
-<script src="/assets/js/components/share-card-generator.js" defer></script>
-<script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -243,6 +258,32 @@ function generate(){
   document.getElementById('scheduleTable').innerHTML=tbl;
   document.getElementById('resultCard').style.display='block';
   document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
+
+  // Fun comparisons
+  var totalSaved = potSize;
+  var ricePrice = cur === 'GH\u20B5' ? 450 : cur === 'KSh ' ? 6500 : cur === 'R ' ? 600 : cur === 'UGX ' ? 180000 : cur === 'FCFA ' ? 25000 : 80000;
+  var rentPrice = cur === 'GH\u20B5' ? 3000 : cur === 'KSh ' ? 35000 : cur === 'R ' ? 8000 : cur === 'UGX ' ? 800000 : cur === 'FCFA ' ? 150000 : 150000;
+  var phonePrice = cur === 'GH\u20B5' ? 2500 : cur === 'KSh ' ? 25000 : cur === 'R ' ? 4000 : cur === 'UGX ' ? 600000 : cur === 'FCFA ' ? 100000 : 120000;
+  var tuitionPrice = cur === 'GH\u20B5' ? 5000 : cur === 'KSh ' ? 60000 : cur === 'R ' ? 25000 : cur === 'UGX ' ? 2000000 : cur === 'FCFA ' ? 300000 : 250000;
+
+  var riceBags = Math.floor(totalSaved / ricePrice);
+  var rentMonths = (totalSaved / rentPrice).toFixed(1);
+  var phones = Math.floor(totalSaved / phonePrice);
+  var semesters = (totalSaved / tuitionPrice).toFixed(1);
+
+  var funDiv = document.getElementById('susuFunComparisons');
+  if (!funDiv) {
+    funDiv = document.createElement('div');
+    funDiv.id = 'susuFunComparisons';
+    document.getElementById('resultCard').querySelector('.card-body').appendChild(funDiv);
+  }
+  funDiv.innerHTML = '<div class="mfun">'
+    + '<div class="mfun-card gold"><div class="mfun-emoji">\uD83C\uDF5A</div><div class="mfun-title">Bags of Rice</div><div class="mfun-text">' + riceBags + ' bags of 50kg rice</div></div>'
+    + '<div class="mfun-card blue"><div class="mfun-emoji">\uD83C\uDFE0</div><div class="mfun-title">Rent</div><div class="mfun-text">' + rentMonths + ' months of rent</div></div>'
+    + '<div class="mfun-card rose"><div class="mfun-emoji">\uD83D\uDCF1</div><div class="mfun-title">Phones</div><div class="mfun-text">' + phones + ' mid-range smartphones</div></div>'
+    + '<div class="mfun-card green"><div class="mfun-emoji">\uD83C\uDF93</div><div class="mfun-title">Tuition</div><div class="mfun-text">' + semesters + ' semesters at public uni</div></div>'
+    + '</div>'
+    + '<div class="mfun-dyk"><div class="mfun-dyk-title">\uD83D\uDCA1 Did You Know?</div><div class="mfun-dyk-text">The word \u201CSusu\u201D comes from the Akan people of Ghana. Susu collectors have operated for over 300 years, walking door-to-door to collect daily savings. The original mobile banking! \uD83D\uDEB6\u200D\u2642\uFE0F\uD83D\uDCB0</div></div>';
 }
 
 function downloadCSV(){
@@ -259,16 +300,5 @@ function downloadCSV(){
 }
 </script>
 
-<script>
-(function(){
-  var target = document.getElementById('resultCard');
-  if (!target) return;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
-  div.innerHTML = '<save-result-button tool-slug="susu-tracker" tool-name="Susu Tracker"></save-result-button><share-result-button tool-name="Susu Tracker" tool-slug="susu-tracker"></share-result-button>';
-  target.appendChild(div);
-})();
-</script>
 </body>
 </html>

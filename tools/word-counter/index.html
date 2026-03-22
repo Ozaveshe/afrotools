@@ -13,7 +13,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Word Counter — Characters, Words, Readability, Keyword Density | AfroTools</title>
 <meta name="description" content="Free word counter with readability scores, keyword density, social media limits, case converter. Real-time analysis — 100% private, nothing leaves your browser.">
-<link rel="canonical" href="https://afrotools.com/tools/word-counter">
+<link rel="canonical" href="https://afrotools.com/tools/word-counter/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Word Counter | AfroTools">
 <meta property="og:description" content="Count words, characters, sentences. Readability scores, keyword density, social media limits — all in real-time.">
@@ -21,14 +21,21 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/word-counter">
 <meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Word Counter | AfroTools">
+<meta name="twitter:description" content="Count words, characters, sentences. Readability scores, keyword density, social media limits — all in real-time.">
+<meta name="tool-id" content="word-counter">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
 <link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/tool-registry.min.js"></script>
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
+<script src="/assets/js/components/related-tools.min.js" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js" defer></script>
 <style>
-  :root { --afro-green: var(--color-primary); --afro-dark: #0f1419; }
+  :root { --afro-blue: #007AFF; --afro-dark: #0f1419; }
   * { box-sizing: border-box; }
 
   /* ── Hero ── */
@@ -37,13 +44,13 @@
   .tool-hero-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; }
   .breadcrumb { font-size: 0.72rem; font-weight: 500; color: rgba(255,255,255,0.3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
   .breadcrumb a { color: rgba(255,255,255,0.3); text-decoration: none; }
-  .breadcrumb span { color: var(--afro-green); }
+  .breadcrumb span { color: var(--afro-blue); }
   h1 { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; color: #fff; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 10px; }
-  h1 em { color: var(--afro-green); font-style: normal; }
+  h1 em { color: var(--afro-blue); font-style: normal; }
   .hero-sub { font-size: 0.88rem; color: rgba(255,255,255,0.45); line-height: 1.6; max-width: 560px; margin-bottom: 14px; }
   .hero-badges { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 6px; }
   .badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 11px; border-radius: 4px; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.05em; }
-  .b-green { background: rgba(0,113,227,0.18); color: var(--color-primary); border: 1px solid rgba(0,113,227,0.38); }
+  .b-blue { background: rgba(0,113,227,0.18); color: var(--color-primary); border: 1px solid rgba(0,113,227,0.38); }
 
   /* ── Layout ── */
   .tool-main { padding: 28px 0 48px; }
@@ -51,20 +58,20 @@
   .card { background: #fff; border: 1px solid #DBEAFE; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 8px rgba(0,0,0,0.05); }
   .card + .card { margin-top: 18px; }
   .card-head { padding: 15px 22px; border-bottom: 1px solid #EFF6FF; background: #F5F9FF; display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
-  .card-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #0a4018; }
+  .card-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #1e3a5f; }
   .card-body { padding: 22px; }
 
   /* ── Textarea & toolbar ── */
   .input-toolbar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
-  .input-toolbar .tb-btn { padding: 6px 12px; background: #F5F9FF; border: 1px solid #BFDBFE; border-radius: 5px; font-size: 0.7rem; font-weight: 600; color: #0a4018; cursor: pointer; transition: all 0.15s; font-family: 'DM Sans', sans-serif; }
+  .input-toolbar .tb-btn { padding: 6px 12px; background: #F5F9FF; border: 1px solid #BFDBFE; border-radius: 5px; font-size: 0.7rem; font-weight: 600; color: #1e3a5f; cursor: pointer; transition: all 0.15s; font-family: 'DM Sans', sans-serif; }
   .input-toolbar .tb-btn:hover { background: #DBEAFE; }
-  .input-toolbar .tb-btn.active { background: var(--afro-green); color: #fff; border-color: var(--afro-green); }
+  .input-toolbar .tb-btn.active { background: var(--afro-blue); color: #fff; border-color: var(--afro-blue); }
   .tb-sep { width: 1px; height: 20px; background: #DBEAFE; }
-  .file-input-label { padding: 6px 12px; background: #F5F9FF; border: 1px solid #BFDBFE; border-radius: 5px; font-size: 0.7rem; font-weight: 600; color: #0a4018; cursor: pointer; transition: all 0.15s; font-family: 'DM Sans', sans-serif; }
+  .file-input-label { padding: 6px 12px; background: #F5F9FF; border: 1px solid #BFDBFE; border-radius: 5px; font-size: 0.7rem; font-weight: 600; color: #1e3a5f; cursor: pointer; transition: all 0.15s; font-family: 'DM Sans', sans-serif; }
   .file-input-label:hover { background: #DBEAFE; }
   .file-input-label input { display: none; }
-  .f-textarea { width: 100%; min-height: 240px; padding: 13px; background: #EFF6FF; border: 1.5px solid #BFDBFE; border-radius: 7px; font-size: 0.95rem; font-weight: 500; color: #0d2813; outline: none; resize: vertical; font-family: 'DM Sans', sans-serif; }
-  .f-textarea:focus { border-color: var(--afro-green); box-shadow: 0 0 0 3px rgba(0,113,227,0.1); }
+  .f-textarea { width: 100%; min-height: 240px; padding: 13px; background: #EFF6FF; border: 1.5px solid #BFDBFE; border-radius: 7px; font-size: 0.95rem; font-weight: 500; color: #0f172a; outline: none; resize: vertical; font-family: 'DM Sans', sans-serif; }
+  .f-textarea:focus { border-color: var(--afro-blue); box-shadow: 0 0 0 3px rgba(0,113,227,0.1); }
 
   /* ── Writing goal ── */
   .goal-bar-wrap { margin-top: 12px; display: none; }
@@ -72,20 +79,20 @@
   .goal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
   .goal-header span { font-size: 0.72rem; font-weight: 600; color: #374151; font-family: 'DM Sans', sans-serif; }
   .goal-track { height: 8px; background: #E5E7EB; border-radius: 99px; overflow: hidden; }
-  .goal-fill { height: 100%; background: var(--afro-green); border-radius: 99px; transition: width 0.3s; }
+  .goal-fill { height: 100%; background: var(--afro-blue); border-radius: 99px; transition: width 0.3s; }
   .goal-fill.over { background: #ef4444; }
 
   /* ── Stats grid ── */
   .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; margin-top: 18px; }
   .stat-box { background: #F5F9FF; border: 1px solid #BFDBFE; border-radius: 8px; padding: 12px 10px; text-align: center; }
-  .stat-label { font-size: 0.65rem; font-weight: 700; color: #0a4018; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 4px; white-space: nowrap; }
-  .stat-value { font-size: 1.5rem; font-weight: 800; color: var(--afro-green); }
+  .stat-label { font-size: 0.65rem; font-weight: 700; color: #1e3a5f; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 4px; white-space: nowrap; }
+  .stat-value { font-size: 1.5rem; font-weight: 800; color: var(--afro-blue); }
   .stat-value.sm { font-size: 1.1rem; }
 
   /* ── Action buttons row ── */
   .action-row { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
   .action-row button { flex: 1; min-width: 120px; padding: 10px; border-radius: 7px; cursor: pointer; font-size: 0.72rem; font-weight: 700; transition: all 0.15s; font-family: 'DM Sans', sans-serif; }
-  .copy-btn { background: rgba(0,113,227,0.1); border: 1.5px solid rgba(0,113,227,0.35); color: #0a4018; }
+  .copy-btn { background: rgba(0,113,227,0.1); border: 1.5px solid rgba(0,113,227,0.35); color: #1e3a5f; }
   .copy-btn:hover { background: rgba(0,113,227,0.2); }
   .clear-btn { background: rgba(192,57,43,0.1); border: 1.5px solid rgba(192,57,43,0.35); color: #8b2e1f; }
   .clear-btn:hover { background: rgba(192,57,43,0.2); }
@@ -93,17 +100,17 @@
   /* ── Readability card ── */
   .readability-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   .read-score-box { background: #F5F9FF; border: 1px solid #BFDBFE; border-radius: 10px; padding: 18px; text-align: center; }
-  .read-score-val { font-size: 2rem; font-weight: 800; color: var(--afro-green); }
-  .read-score-label { font-size: 0.72rem; font-weight: 700; color: #0a4018; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px; }
+  .read-score-val { font-size: 2rem; font-weight: 800; color: var(--afro-blue); }
+  .read-score-label { font-size: 0.72rem; font-weight: 700; color: #1e3a5f; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px; }
   .read-score-desc { font-size: 0.78rem; color: #6B7280; margin-top: 6px; line-height: 1.4; font-family: 'DM Sans', sans-serif; }
   @media (max-width: 520px) { .readability-grid { grid-template-columns: 1fr; } }
 
   /* ── Social media limits ── */
   .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(145px, 1fr)); gap: 10px; }
   .social-item { background: #F5F9FF; border: 1px solid #BFDBFE; border-radius: 8px; padding: 12px; }
-  .social-name { font-size: 0.72rem; font-weight: 700; color: #0a4018; margin-bottom: 6px; }
+  .social-name { font-size: 0.72rem; font-weight: 700; color: #1e3a5f; margin-bottom: 6px; }
   .social-bar { height: 6px; background: #E5E7EB; border-radius: 99px; overflow: hidden; margin-bottom: 6px; }
-  .social-fill { height: 100%; border-radius: 99px; transition: width 0.3s; background: var(--afro-green); }
+  .social-fill { height: 100%; border-radius: 99px; transition: width 0.3s; background: var(--afro-blue); }
   .social-fill.warn { background: #f59e0b; }
   .social-fill.over { background: #ef4444; }
   .social-count { font-size: 0.68rem; color: #6B7280; font-family: 'DM Sans', sans-serif; }
@@ -111,14 +118,14 @@
 
   /* ── Keyword density ── */
   .kw-tabs { display: flex; gap: 4px; margin-bottom: 14px; }
-  .kw-tab { padding: 5px 14px; border-radius: 5px; border: 1px solid #BFDBFE; background: #F5F9FF; font-size: 0.7rem; font-weight: 600; cursor: pointer; color: #0a4018; font-family: 'DM Sans', sans-serif; transition: all 0.15s; }
-  .kw-tab.active { background: var(--afro-green); color: #fff; border-color: var(--afro-green); }
+  .kw-tab { padding: 5px 14px; border-radius: 5px; border: 1px solid #BFDBFE; background: #F5F9FF; font-size: 0.7rem; font-weight: 600; cursor: pointer; color: #1e3a5f; font-family: 'DM Sans', sans-serif; transition: all 0.15s; }
+  .kw-tab.active { background: var(--afro-blue); color: #fff; border-color: var(--afro-blue); }
   .kw-list { list-style: none; padding: 0; margin: 0; }
   .kw-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #F3F4F6; }
   .kw-item:last-child { border-bottom: none; }
   .kw-word { font-size: 0.82rem; font-weight: 600; color: #111; min-width: 100px; font-family: 'DM Sans', sans-serif; }
   .kw-bar-wrap { flex: 1; height: 6px; background: #E5E7EB; border-radius: 99px; overflow: hidden; }
-  .kw-bar { height: 100%; background: var(--afro-green); border-radius: 99px; transition: width 0.3s; }
+  .kw-bar { height: 100%; background: var(--afro-blue); border-radius: 99px; transition: width 0.3s; }
   .kw-pct { font-size: 0.7rem; font-weight: 700; color: #6B7280; min-width: 38px; text-align: right; font-family: 'DM Sans', sans-serif; }
   .kw-count { font-size: 0.68rem; color: #9CA3AF; min-width: 22px; text-align: right; font-family: 'DM Sans', sans-serif; }
   .kw-empty { font-size: 0.82rem; color: #9CA3AF; text-align: center; padding: 24px 0; font-family: 'DM Sans', sans-serif; }
@@ -128,12 +135,12 @@
   .switch input { opacity: 0; width: 0; height: 0; }
   .switch .slider { position: absolute; inset: 0; background: #D1D5DB; border-radius: 99px; transition: 0.2s; cursor: pointer; }
   .switch .slider::before { content: ''; position: absolute; left: 2px; top: 2px; width: 14px; height: 14px; background: #fff; border-radius: 50%; transition: 0.2s; }
-  .switch input:checked + .slider { background: var(--afro-green); }
+  .switch input:checked + .slider { background: var(--afro-blue); }
   .switch input:checked + .slider::before { transform: translateX(16px); }
 
   /* ── Case converter ── */
   .case-btns { display: flex; gap: 6px; flex-wrap: wrap; }
-  .case-btn { padding: 8px 16px; background: #F5F9FF; border: 1px solid #BFDBFE; border-radius: 6px; font-size: 0.76rem; font-weight: 600; cursor: pointer; color: #0a4018; font-family: 'DM Sans', sans-serif; transition: all 0.15s; }
+  .case-btn { padding: 8px 16px; background: #F5F9FF; border: 1px solid #BFDBFE; border-radius: 6px; font-size: 0.76rem; font-weight: 600; cursor: pointer; color: #1e3a5f; font-family: 'DM Sans', sans-serif; transition: all 0.15s; }
   .case-btn:hover { background: #DBEAFE; }
 
   /* ── FAQ ── */
@@ -147,7 +154,7 @@
   "name": "Word Counter",
   "description": "Free word counter with readability scores, keyword density analysis, social media character limits, case converter. 100% private — all processing happens in your browser.",
   "url": "https://afrotools.com/tools/word-counter/",
-  "applicationCategory": "UtilitiesApplication",
+  "applicationCategory": "EducationalApplication",
   "operatingSystem": "Any",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
   "provider": { "@type": "Organization", "name": "AfroTools", "url": "https://afrotools.com" }
@@ -166,9 +173,18 @@
   ]
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://afrotools.com/" },
+    { "@type": "ListItem", "position": 2, "name": "Education", "item": "https://afrotools.com/education/" },
+    { "@type": "ListItem", "position": 3, "name": "Word Counter", "item": "https://afrotools.com/tools/word-counter/" }
+  ]
+}
+</script>
 <script src="/assets/js/lib/toast.js" defer></script>
-<script src="/assets/js/components/share-card-generator.js" defer></script>
-<script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
@@ -179,9 +195,9 @@
     <h1>Word <em>Counter</em></h1>
     <p class="hero-sub">Count words, characters, sentences. Readability scores, keyword density, social media limits, case converter — all in real-time.</p>
     <div class="hero-badges">
-      <span class="badge b-green">Real-time</span>
-      <span class="badge b-green">100% Private</span>
-      <span class="badge b-green">No Sign-up</span>
+      <span class="badge b-blue">Real-time</span>
+      <span class="badge b-blue">100% Private</span>
+      <span class="badge b-blue">No Sign-up</span>
     </div>
   </div>
 </div>
@@ -620,21 +636,6 @@
 
   // Init
   updateStats();
-})();
-</script>
-<script src="/assets/js/components/tool-registry.min.js" defer></script>
-<script src="/assets/js/components/related-tools.min.js" defer></script>
-<script src="/assets/js/components/newsletter-cta.min.js" defer></script>
-
-<script>
-(function(){
-  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
-  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
-  div.innerHTML = '<share-result-button tool-name="Word Counter" tool-slug="word-counter"></share-result-button>';
-  target.appendChild(div);
 })();
 </script>
 </body>

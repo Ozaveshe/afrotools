@@ -21,6 +21,9 @@ const CORS_HEADERS = {
 };
 
 // Simple rate limiting
+// LIMITATION: In-memory Map resets on each cold start / new Lambda instance.
+// This means rate limits are per-instance, not global. For persistent rate
+// limiting, migrate to Netlify Blobs or an external store (e.g. Supabase).
 const rateLimitMap = new Map();
 const RATE_LIMIT = 200; // per day per IP
 const RATE_LIMIT_WINDOW = 24 * 60 * 60 * 1000;

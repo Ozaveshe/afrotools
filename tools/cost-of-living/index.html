@@ -14,6 +14,7 @@
 <meta property="og:description" content="Compare living costs between major African cities side by side.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/cost-of-living/">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="African Cost of Living Comparator | AfroTools"><meta name="twitter:description" content="Compare living costs between major African cities side by side."><meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
@@ -64,6 +65,23 @@ select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(0
 .faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
 .faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
 @media(max-width:768px){.sel-row{grid-template-columns:1fr}.summary{grid-template-columns:1fr}}
+.mfun{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.mfun-card{padding:16px;border-radius:10px;text-align:center}
+.mfun-card.gold{background:#FFF8E7;border:1.5px solid rgba(212,168,67,.3)}
+.mfun-card.blue{background:#E8F2FF;border:1.5px solid rgba(0,122,255,.2)}
+.mfun-card.rose{background:#fff1f2;border:1.5px solid rgba(225,29,72,.2)}
+.mfun-card.green{background:#f0fdf4;border:1.5px solid #86efac}
+.mfun-emoji{font-size:2rem;margin-bottom:6px}
+.mfun-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.mfun-card.gold .mfun-title{color:#92400e}
+.mfun-card.blue .mfun-title{color:#1e40af}
+.mfun-card.rose .mfun-title{color:#be123c}
+.mfun-card.green .mfun-title{color:#166534}
+.mfun-text{font-size:.78rem;font-weight:600;color:#1e293b;line-height:1.5}
+.mfun-dyk{margin-top:16px;background:linear-gradient(135deg,#faf5ff,#f3e8ff);border:1.5px solid #c4b5fd;border-radius:12px;padding:18px}
+.mfun-dyk-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6d28d9;margin-bottom:8px}
+.mfun-dyk-text{font-size:.82rem;color:#4c1d95;line-height:1.7}
+@media(max-width:500px){.mfun{grid-template-columns:1fr}}
 </style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebApplication","name":"African Cost of Living Comparator","url":"https://afrotools.com/tools/cost-of-living/","description":"Compare cost of living between African cities. Rent, food, transport, utilities, and lifestyle costs for Lagos, Nairobi, Johannesburg, Accra, Cairo, and more.","applicationCategory":"FinanceApplication","operatingSystem":"All","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
@@ -73,9 +91,6 @@ select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(0
 </script>
 <script src="/assets/js/lib/toast.js" defer></script>
 <script src="/assets/js/afro-history.js" defer></script>
-<script src="/assets/js/components/save-result-button.js" defer></script>
-<script src="/assets/js/components/share-card-generator.js" defer></script>
-<script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -264,22 +279,37 @@ function compare() {
   });
   html += '</tbody>';
   document.getElementById('table').innerHTML = html;
+
+  // Fun comparisons
+  var funDiv = document.getElementById('colFunComparisons');
+  if (!funDiv) {
+    funDiv = document.createElement('div');
+    funDiv.id = 'colFunComparisons';
+    document.getElementById('table').parentElement.parentElement.appendChild(funDiv);
+  }
+
+  var rentDiff = Math.abs(c1.rent1bed - c2.rent1bed);
+  var groceryC1 = c1.grocery;
+  var groceryC2 = c2.grocery;
+  var taxiC1 = c1.uber5km;
+  var taxiC2 = c2.uber5km;
+  var nightOutC1 = c1.restaurant + c1.beer * 3;
+  var nightOutC2 = c2.restaurant + c2.beer * 3;
+  var cheaperCity = monthly1 <= monthly2 ? c1.name : c2.name;
+  var moreExpCity = monthly1 > monthly2 ? c1.name : c2.name;
+  var absDiff = Math.abs(diff).toFixed(0);
+
+  funDiv.innerHTML = '<div class="mfun">'
+    + '<div class="mfun-card gold"><div class="mfun-emoji">\uD83C\uDFE0</div><div class="mfun-title">Rent Difference</div><div class="mfun-text">$' + rentDiff + '/mo for a 1-bed apartment</div></div>'
+    + '<div class="mfun-card blue"><div class="mfun-emoji">\uD83C\uDF5A</div><div class="mfun-title">Grocery Basket</div><div class="mfun-text">$' + groceryC1 + ' vs $' + groceryC2 + '/mo</div></div>'
+    + '<div class="mfun-card rose"><div class="mfun-emoji">\uD83D\uDE95</div><div class="mfun-title">Taxi Rides</div><div class="mfun-text">5km: $' + taxiC1.toFixed(1) + ' vs $' + taxiC2.toFixed(1) + '</div></div>'
+    + '<div class="mfun-card green"><div class="mfun-emoji">\uD83C\uDF7A</div><div class="mfun-title">Social Life</div><div class="mfun-text">Night out: $' + nightOutC1.toFixed(0) + ' vs $' + nightOutC2.toFixed(0) + '</div></div>'
+    + '</div>'
+    + '<div class="mfun-dyk"><div class="mfun-dyk-title">\uD83D\uDCA1 Did You Know?</div><div class="mfun-dyk-text">Luanda, Angola was once ranked the MOST expensive city in the world \u2014 more expensive than Tokyo, London, and New York! A simple lunch could cost $100. Oil money changed everything. \uD83C\uDDE6\uD83C\uDDF4\uD83D\uDCB0</div></div>';
 }
 
 compare();
 </script>
 
-<script>
-// Save/Share buttons — manual placement needed
-(function(){
-  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
-  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
-  div.innerHTML = '<save-result-button tool-slug="cost-of-living" tool-name="Cost Of Living"></save-result-button><share-result-button tool-name="Cost Of Living" tool-slug="cost-of-living"></share-result-button>';
-  target.appendChild(div);
-})();
-</script>
 </body>
 </html>

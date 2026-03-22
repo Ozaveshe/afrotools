@@ -916,7 +916,7 @@ function calcLoan(principal,annualRate,months,balloonPct){
   let monthly,totalPaid,totalInterest;
   if(r===0){
     monthly=loanForCalc/months;
-    totalPaid=loanForCalc;
+    totalPaid=loanForCalc+balloonAmt;
     totalInterest=0;
   }else{
     // With balloon: we still accrue interest on full principal, but repay (principal-balloon) over term

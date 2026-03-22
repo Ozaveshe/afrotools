@@ -163,6 +163,9 @@ function calculate(){
   const retireAge=+document.getElementById('retireAge').value;
   const annualReturn=(+document.getElementById('returnRate').value)/100;
 
+  if(gross<=0){document.getElementById('results').innerHTML='<p style="color:#94A3B8;text-align:center;padding:2rem">Enter a positive gross salary to calculate.</p>';return;}
+  if(currentAge<=0||retireAge<=currentAge){document.getElementById('results').innerHTML='<p style="color:#94A3B8;text-align:center;padding:2rem">Enter valid current and retirement ages.</p>';return;}
+
   let empTier1=0,empTier2=0,erTier1=0,erTier2=0;
 
   if(regime==='new'){

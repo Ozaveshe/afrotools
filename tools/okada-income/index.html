@@ -12,6 +12,10 @@
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Okada / Boda Boda Income Calculator | AfroTools"><meta property="og:description" content="Track motorcycle taxi income and expenses.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png"><meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/okada-income/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Okada / Boda Boda Income Calculator | AfroTools">
+<meta name="twitter:description" content="Calculate daily, weekly, and monthly income for Okada and Boda Boda motorcycle riders.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css"><link rel="stylesheet" href="/assets/css/global.min.css">
 <script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script>
@@ -52,6 +56,23 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 .seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
 .faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
 @media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.row{grid-template-columns:1fr}.row3{grid-template-columns:1fr}}
+.xfun{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.xfun-card{padding:16px;border-radius:10px;text-align:center}
+.xfun-card.gold{background:#FFF8E7;border:1.5px solid rgba(212,168,67,.3)}
+.xfun-card.blue{background:#E8F2FF;border:1.5px solid rgba(0,122,255,.2)}
+.xfun-card.rose{background:#fff1f2;border:1.5px solid rgba(225,29,72,.2)}
+.xfun-card.green{background:#f0fdf4;border:1.5px solid #86efac}
+.xfun-emoji{font-size:2rem;margin-bottom:6px}
+.xfun-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.xfun-card.gold .xfun-title{color:#92400e}
+.xfun-card.blue .xfun-title{color:#1e40af}
+.xfun-card.rose .xfun-title{color:#be123c}
+.xfun-card.green .xfun-title{color:#166534}
+.xfun-text{font-size:.78rem;font-weight:600;color:#1e293b;line-height:1.5}
+.xfun-dyk{margin-top:16px;background:linear-gradient(135deg,#faf5ff,#f3e8ff);border:1.5px solid #c4b5fd;border-radius:12px;padding:18px}
+.xfun-dyk-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6d28d9;margin-bottom:8px}
+.xfun-dyk-text{font-size:.82rem;color:#4c1d95;line-height:1.7}
+@media(max-width:500px){.xfun{grid-template-columns:1fr}}
 </style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebApplication","name":"Okada / Boda Boda Income Calculator","url":"https://afrotools.com/tools/okada-income/","description":"Calculate daily, weekly, and monthly income for Okada and Boda Boda motorcycle riders. Track fuel costs, maintenance, and net profit.","applicationCategory":"FinanceApplication","operatingSystem":"All","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
@@ -61,9 +82,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 </script>
 <script src="/assets/js/lib/toast.js" defer></script>
 <script src="/assets/js/afro-history.js" defer></script>
-<script src="/assets/js/components/save-result-button.js" defer></script>
-<script src="/assets/js/components/share-card-generator.js" defer></script>
-<script src="/assets/js/components/share-button.js" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -121,6 +140,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div class="result-grid" id="resultGrid"></div>
 <div class="profit-bar" id="profitBar"></div>
 <table class="breakdown-table" id="breakdownTable"></table>
+<div id="xfunSection"></div>
 </div></div>
 </div>
 
@@ -180,7 +200,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 </details>
 </section>
 
-<afro-related-tools category="financial" current="okada-income"></afro-related-tools>
+<afro-related-tools category="african" current="okada-income"></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
 
@@ -278,21 +298,27 @@ function calculate(){
   tbl+=`<tr style="font-size:.72rem;color:#64748b"><td>Annual Projection</td><td colspan="3" style="text-align:right;font-weight:700;color:#007AFF">${fmt(monthlyProfit*12)}/year</td></tr>`;
 
   document.getElementById('breakdownTable').innerHTML=tbl;
+
+  // Fun comparisons based on daily profit
+  var eggTrays=Math.round(dailyProfit/3500*10)/10;
+  var fuelPrice_l=c==='ng'?700:c==='ke'?217:c==='ug'?5300:16;
+  var fuelLitres=fuel>0?Math.round(dailyProfit/fuelPrice_l):0;
+  var dataDays=(dailyProfit/100).toFixed(1);
+  var monthRent=c==='ng'?150000:c==='ke'?25000:c==='ug'?500000:800;
+  var rentPct=(dailyProfit/(monthRent/30)*100).toFixed(0);
+  document.getElementById('xfunSection').innerHTML=
+    '<div class="xfun">'+
+    '<div class="xfun-card gold"><div class="xfun-emoji">\uD83C\uDF73</div><div class="xfun-title">Eggs</div><div class="xfun-text">'+eggTrays+' trays of eggs</div></div>'+
+    '<div class="xfun-card blue"><div class="xfun-emoji">\u26FD</div><div class="xfun-title">Fuel Litres</div><div class="xfun-text">'+fuelLitres+' litres of fuel</div></div>'+
+    '<div class="xfun-card rose"><div class="xfun-emoji">\uD83D\uDCF1</div><div class="xfun-title">Airtime</div><div class="xfun-text">'+dataDays+' days of unlimited data</div></div>'+
+    '<div class="xfun-card green"><div class="xfun-emoji">\uD83C\uDFE0</div><div class="xfun-title">Rent Progress</div><div class="xfun-text">'+rentPct+'% of monthly rent earned today</div></div>'+
+    '</div>'+
+    '<div class="xfun-dyk"><div class="xfun-dyk-title">\uD83D\uDCA1 Did You Know?</div><div class="xfun-dyk-text">There are over 18 million okada/boda-boda riders across Africa. In Lagos alone, before the ban, okadas carried more passengers daily than the BRT, ferries, and trains combined! \uD83C\uDFCD\uFE0F</div></div>';
+
   document.getElementById('resultCard').style.display='block';
   document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
 }
 </script>
 
-<script>
-(function(){
-  var target = document.getElementById('resultCard');
-  if (!target) return;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
-  div.innerHTML = '<save-result-button tool-slug="okada-income" tool-name="Okada Income"></save-result-button><share-result-button tool-name="Okada Income" tool-slug="okada-income"></share-result-button>';
-  target.appendChild(div);
-})();
-</script>
 </body>
 </html>

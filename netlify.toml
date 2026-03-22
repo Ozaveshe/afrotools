@@ -2,17 +2,6 @@
   publish = "."
   functions = "netlify/functions"
 
-# --- Security Headers ---
-[[headers]]
-  for = "/*"
-  [headers.values]
-    X-Frame-Options = "SAMEORIGIN"
-    X-Content-Type-Options = "nosniff"
-    X-XSS-Protection = "1; mode=block"
-    Referrer-Policy = "strict-origin-when-cross-origin"
-    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
-    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
-
 [functions]
   node_bundler = "esbuild"
 
@@ -26,9 +15,6 @@
 
 [functions."scheduled-fetch-central-bank-rates"]
   schedule = "0 */12 * * *"
-
-[functions."scheduled-fetch-crypto-p2p"]
-  schedule = "*/5 * * * *"
 
 [functions."scrape-fx-rates"]
   schedule = "0 6 * * *"
@@ -200,6 +186,27 @@
   from = "/assets/img/favicon.ico"
   to = "/assets/img/logo-mark.svg"
   status = 200
+
+# Fix: Duplicate privacy/terms pages — canonical is /privacy/ and /terms/
+[[redirects]]
+  from = "/privacy-policy"
+  to = "/privacy/"
+  status = 301
+
+[[redirects]]
+  from = "/privacy-policy.html"
+  to = "/privacy/"
+  status = 301
+
+[[redirects]]
+  from = "/terms-of-use"
+  to = "/terms/"
+  status = 301
+
+[[redirects]]
+  from = "/terms-of-use.html"
+  to = "/terms/"
+  status = 301
 
 # Fix: /developer/ doesn't exist, category page is at /developer-tools/
 [[redirects]]

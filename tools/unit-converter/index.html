@@ -223,8 +223,6 @@ body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:var(--b
 }
 </script>
 <script src="/assets/js/lib/toast.js" defer></script>
-<script src="/assets/js/components/share-card-generator.js" defer></script>
-<script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
@@ -1117,19 +1115,6 @@ document.addEventListener('change', e => {
 cvtTemp();
 cvtFuel();
 ['len','wgt','area','vol','spd','data','engy','pwr','pres','time','ang','freq','cook'].forEach(cvt);
-</script>
-
-<script>
-// Save/Share buttons — manual placement needed
-(function(){
-  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
-  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
-  div.innerHTML = '<share-result-button tool-name="Unit Converter" tool-slug="unit-converter"></share-result-button>';
-  target.appendChild(div);
-})();
 </script>
 </body>
 </html>

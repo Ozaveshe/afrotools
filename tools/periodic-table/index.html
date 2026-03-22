@@ -13,6 +13,10 @@
 <meta property="og:description" content="Explore all 118 elements with properties, trends, quiz mode, and Africa's role in global mineral supply.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/periodic-table/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Interactive Periodic Table | AfroTools">
+<meta name="twitter:description" content="Explore all 118 elements with properties, trends, quiz mode, and Africa's role in global mineral supply.">
+<meta name="tool-id" content="periodic-table">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
@@ -23,7 +27,7 @@
 <script src="/assets/js/components/related-tools.min.js" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js" defer></script>
 <style>
-:root{--afro-dark:#0f1419;--accent:#7c3aed;--green:#008751;--green-light:#5ddb9e}
+:root{--afro-dark:#0f1419;--accent:#7c3aed;--afro-blue:#007AFF;--afro-blue-light:#4DA3FF}
 *{box-sizing:border-box}
 
 /* Hero */
@@ -49,7 +53,7 @@ h1 em{color:#e9d5ff;font-style:normal}
 .tb-btn{padding:6px 14px;border-radius:6px;font-size:.75rem;font-weight:600;cursor:pointer;border:1.5px solid #cbd5e1;background:#fff;transition:all .15s;font-family:inherit;white-space:nowrap}
 .tb-btn:hover{border-color:var(--accent);color:var(--accent)}
 .tb-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
-.tb-btn.africa-btn.active{background:var(--green);border-color:var(--green)}
+.tb-btn.africa-btn.active{background:var(--afro-blue);border-color:var(--afro-blue)}
 .tb-select{padding:6px 10px;border:1.5px solid #cbd5e1;border-radius:6px;font-size:.75rem;font-weight:600;font-family:inherit;cursor:pointer;background:#fff}
 .tb-select:focus{outline:none;border-color:var(--accent)}
 .tb-sep{width:1px;height:24px;background:#e2e8f0;margin:0 2px}
@@ -70,7 +74,7 @@ h1 em{color:#e9d5ff;font-style:normal}
 .el .name{font-size:.42rem;color:rgba(0,0,0,.6);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .el.empty{background:transparent!important;cursor:default;border-bottom-color:transparent!important}
 .el.empty:hover{transform:none;box-shadow:none}
-.el.africa-hl{outline:2px solid var(--green);outline-offset:-1px;z-index:2}
+.el.africa-hl{outline:2px solid var(--afro-blue);outline-offset:-1px;z-index:2}
 .el.dimmed{opacity:.12}
 .cat-nonmetal{background:#a7f3d0}.cat-noble{background:#c4b5fd}.cat-alkali{background:#fecaca}.cat-alkaline{background:#fed7aa}
 .cat-transition{background:#fde68a}.cat-post{background:#bae6fd}.cat-metalloid{background:#99f6e4}.cat-halogen{background:#fbcfe8}
@@ -93,7 +97,7 @@ h1 em{color:#e9d5ff;font-style:normal}
 .detail-item{background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:10px}
 .detail-item .val{font-size:.92rem;font-weight:700;color:var(--afro-dark)}
 .detail-item .lbl{font-size:.65rem;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
-.africa-note{margin-top:14px;background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:12px;font-size:.8rem;color:#14532d;line-height:1.6;display:none}
+.africa-note{margin-top:14px;background:#E8F2FF;border:1px solid #93c5fd;border-radius:8px;padding:12px;font-size:.8rem;color:#1e3a5f;line-height:1.6;display:none}
 .africa-note.show{display:block}
 .conflict-badge{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:4px;font-size:.7rem;font-weight:600;background:#fef3c7;color:#92400e;border:1px solid #fcd34d}
 .green-badge{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:4px;font-size:.7rem;font-weight:600;background:#dcfce7;color:#166534;border:1px solid #86efac}
@@ -102,16 +106,16 @@ h1 em{color:#e9d5ff;font-style:normal}
 .scientist-card.show{display:block}
 
 /* Africa Spotlight */
-.africa-spotlight{background:#0c1a10;padding:56px 0;color:#fff}
+.africa-spotlight{background:#0A1628;padding:56px 0;color:#fff}
 .africa-inner{max-width:1000px;margin:0 auto;padding:0 24px}
 .africa-spotlight h2{font-size:1.5rem;font-weight:800;margin-bottom:8px;color:#fff}
 .africa-spotlight .subtitle{font-size:.88rem;color:rgba(255,255,255,.5);margin-bottom:28px;line-height:1.6}
 .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:36px}
 .stat-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:20px;text-align:center}
-.stat-val{font-size:2rem;font-weight:800;color:var(--green-light);line-height:1;margin-bottom:6px}
+.stat-val{font-size:2rem;font-weight:800;color:var(--afro-blue-light);line-height:1;margin-bottom:6px}
 .stat-lbl{font-size:.78rem;color:rgba(255,255,255,.6);line-height:1.4}
 .story-block{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:24px;margin-bottom:20px}
-.story-block h3{font-size:1rem;font-weight:700;color:var(--green-light);margin-bottom:8px}
+.story-block h3{font-size:1rem;font-weight:700;color:var(--afro-blue-light);margin-bottom:8px}
 .story-block p{font-size:.84rem;color:rgba(255,255,255,.65);line-height:1.7}
 
 /* SEO & FAQ */
@@ -162,6 +166,44 @@ h1 em{color:#e9d5ff;font-style:normal}
   .stat-grid{grid-template-columns:1fr}
 }
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Interactive Periodic Table",
+  "description": "Interactive periodic table with atomic mass, electron configuration, trend visualizations, quiz mode, and African mining context.",
+  "url": "https://afrotools.com/tools/periodic-table/",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "provider": { "@type": "Organization", "name": "AfroTools", "url": "https://afrotools.com" }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://afrotools.com/" },
+    { "@type": "ListItem", "position": 2, "name": "Education", "item": "https://afrotools.com/education/" },
+    { "@type": "ListItem", "position": 3, "name": "Periodic Table", "item": "https://afrotools.com/tools/periodic-table/" }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "Which elements are predominantly mined in Africa?", "acceptedAnswer": { "@type": "Answer", "text": "Africa leads global production for over 15 elements including cobalt (76% from DRC), chromium (90% reserves in South Africa), platinum group metals (80% from South Africa), bauxite (Guinea), and phosphate (Morocco)." } },
+    { "@type": "Question", "name": "Why is Africa critical to the green energy transition?", "acceptedAnswer": { "@type": "Answer", "text": "The global shift to renewable energy depends heavily on African minerals. Cobalt and lithium for EV batteries, platinum for hydrogen fuel cells, manganese for battery cathodes, and copper for electric motors all come significantly from Africa." } },
+    { "@type": "Question", "name": "Has any element ever been named after Africa?", "acceptedAnswer": { "@type": "Answer", "text": "No. Despite Africa's unmatched contribution to global mineral supply, no element bears the continent's name. Africa remains the only inhabited continent without an element named after it." } },
+    { "@type": "Question", "name": "Which African scientists contributed to element discovery?", "acceptedAnswer": { "@type": "Answer", "text": "James Andrew Harris was the first African American to co-discover new chemical elements (Rutherfordium and Dubnium). Other notable African chemists include Thomas O. Mensah (Ghana) and Richmond Sarpong (Ghana)." } },
+    { "@type": "Question", "name": "What is electronegativity and why does it trend across the periodic table?", "acceptedAnswer": { "@type": "Answer", "text": "Electronegativity measures an atom's ability to attract shared electrons. It increases across a period and decreases down a group. Fluorine (3.98) is the most electronegative element." } },
+    { "@type": "Question", "name": "How many elements occur naturally vs. are synthetic?", "acceptedAnswer": { "@type": "Answer", "text": "Of the 118 confirmed elements, 94 occur naturally on Earth. Elements 95-118 are synthetic, created in particle accelerators and nuclear reactors." } }
+  ]
+}
+</script>
 </head>
 <body>
 <afro-navbar></afro-navbar>

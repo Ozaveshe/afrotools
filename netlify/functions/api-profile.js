@@ -139,7 +139,7 @@ exports.handler = async function (event) {
     }
 
     const errText = await res.text();
-    return jsonResponse(200, { ok: true, synced: false, error: errText });
+    return jsonResponse(200, { ok: false, synced: false, error: errText });
   }
 
   return jsonResponse(405, { error: 'Method not allowed' });

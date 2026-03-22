@@ -403,7 +403,7 @@
       var band = config.incomeTaxBands[i];
       if (taxableAnnual > band.min) {
         var top = (band.max === Infinity) ? taxableAnnual : Math.min(taxableAnnual, band.max);
-        var taxableInBand = top - band.min;
+        var taxableInBand = top - band.min + 1;
         var bandTax = taxableInBand * band.rate;
         taxAnnual += bandTax;
         bandBreakdown.push({ rate: band.rate, income: taxableInBand, tax: bandTax });

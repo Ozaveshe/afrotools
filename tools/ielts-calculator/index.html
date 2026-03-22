@@ -29,7 +29,6 @@
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
 <meta name="tool-id" content="ielts-calculator">
-<script src="/assets/js/favorites.js"></script>
 <script type="application/ld+json">
 {
   "@context":"https://schema.org","@type":"WebApplication",
@@ -65,9 +64,6 @@
 <script src="/assets/js/lib/toast.js" defer></script>
 <script src="/assets/js/afro-history.js" defer></script>
 <script src="/assets/js/edu-profile-sync.js" defer></script>
-<script src="/assets/js/components/save-result-button.js" defer></script>
-<script src="/assets/js/components/share-card-generator.js" defer></script>
-<script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body class="ielts-page">
 <afro-navbar active="tools"></afro-navbar>
@@ -359,24 +355,6 @@ function calculate() {
     });
   }
 
-  // Wire up share + save buttons with result data
-  var shareBtn = document.querySelector('share-result-button');
-  if (shareBtn && typeof shareBtn.setResult === 'function') {
-    shareBtn.setResult({
-      title: 'IELTS Score',
-      value: overall.toFixed(1),
-      details: 'L:' + l.toFixed(1) + ' R:' + r.toFixed(1) + ' W:' + w.toFixed(1) + ' S:' + s.toFixed(1) + ' | TOEFL: ' + (IELTS_TO_TOEFL[toeflKey] || 'N/A'),
-      url: window.location.href
-    });
-  }
-  var saveBtn = document.querySelector('save-result-button');
-  if (saveBtn && typeof saveBtn.setResult === 'function') {
-    saveBtn.setResult({
-      title: 'IELTS Score',
-      value: overall.toFixed(1),
-      details: 'L:' + l.toFixed(1) + ' R:' + r.toFixed(1) + ' W:' + w.toFixed(1) + ' S:' + s.toFixed(1)
-    });
-  }
 }
 
 function resetCalc() {
@@ -394,17 +372,6 @@ function resetCalc() {
     calculate();
   });
 });
-</script>
-
-<script>
-(function(){
-  var target = document.getElementById('resultCard');
-  if (!target) return;
-  var div = document.createElement('div');
-  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap';
-  div.innerHTML = '<save-result-button tool-slug="ielts-calculator" tool-name="IELTS Score Calculator"></save-result-button><share-result-button tool-name="IELTS Score Calculator" tool-slug="ielts-calculator"></share-result-button>';
-  target.appendChild(div);
-})();
 </script>
 <script src="/assets/js/components/tool-registry.min.js" defer></script>
 <script src="/assets/js/components/related-tools.min.js" defer></script>

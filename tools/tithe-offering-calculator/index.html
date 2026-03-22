@@ -20,6 +20,9 @@
     <meta property="og:description" content="Plan your tithes, offerings, first fruits and giving budget with Africa's most trusted financial calculator. All 54 African currencies supported.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
     <meta property="og:url" content="https://afrotools.com/tools/tithe-offering-calculator/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Tithe & Offering Calculator | AfroTools">
+    <meta name="twitter:description" content="Plan your tithes, offerings, first fruits and giving budget. 54 African currencies supported.">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -40,10 +43,10 @@
 
     <style>
         :root {
-            --green: var(--color-primary);
-            --green-light: #007AFF;
-            --green-dark: #0063D1;
-            --green-bg: #EFF6FF;
+            --brand: var(--color-primary);
+            --brand-light: #007AFF;
+            --brand-dark: #0063D1;
+            --brand-bg: #EFF6FF;
             --gold: #D4A843;
             --gold-light: #f5ecd4;
             --navy: #1a1a2e;
@@ -151,7 +154,7 @@
             flex-shrink: 0;
         }
         .card-header-icon svg { width: 20px; height: 20px; }
-        .card-header-icon.green { background: var(--green-bg); color: var(--green); }
+        .card-header-icon.green { background: var(--brand-bg); color: var(--brand); }
         .card-header-icon.gold { background: var(--gold-light); color: var(--gold); }
         .card-header-icon.navy { background: #eef0f6; color: var(--navy); }
         .card-header h2 {
@@ -201,7 +204,7 @@
             outline: none;
         }
         select:focus, input:focus {
-            border-color: var(--green);
+            border-color: var(--brand);
             box-shadow: 0 0 0 3px rgba(0,122,255,0.1);
         }
         select {
@@ -218,7 +221,7 @@
             width: 100%;
             height: 6px;
             border-radius: 3px;
-            background: linear-gradient(to right, var(--green) 0%, var(--green) 50%, var(--border) 50%);
+            background: linear-gradient(to right, var(--brand) 0%, var(--brand) 50%, var(--border) 50%);
             outline: none;
             margin: 8px 0;
         }
@@ -226,7 +229,7 @@
             -webkit-appearance: none;
             width: 22px; height: 22px;
             border-radius: 50%;
-            background: var(--green);
+            background: var(--brand);
             cursor: pointer;
             box-shadow: 0 2px 6px rgba(0,122,255,0.3);
             border: 3px solid var(--white);
@@ -234,7 +237,7 @@
         .income-slider::-moz-range-thumb {
             width: 22px; height: 22px;
             border-radius: 50%;
-            background: var(--green);
+            background: var(--brand);
             cursor: pointer;
             box-shadow: 0 2px 6px rgba(0,122,255,0.3);
             border: 3px solid var(--white);
@@ -259,14 +262,14 @@
             transition: all 0.2s;
             position: relative;
         }
-        .giving-option:hover { border-color: var(--green); background: var(--green-bg); }
+        .giving-option:hover { border-color: var(--brand); background: var(--brand-bg); }
         .giving-option.active {
-            border-color: var(--green);
-            background: var(--green-bg);
+            border-color: var(--brand);
+            background: var(--brand-bg);
         }
         .giving-option input[type="checkbox"] {
             width: 18px; height: 18px;
-            accent-color: var(--green);
+            accent-color: var(--brand);
             flex-shrink: 0;
         }
         .giving-option-info { flex: 1; }
@@ -310,7 +313,7 @@
         }
         .period-tab.active {
             background: var(--white);
-            color: var(--green);
+            color: var(--brand);
             font-weight: 600;
             box-shadow: 0 1px 3px rgba(0,0,0,0.08);
         }
@@ -319,7 +322,7 @@
         .btn-calculate {
             width: 100%;
             padding: 14px 24px;
-            background: var(--green);
+            background: var(--brand);
             color: var(--white);
             border: none;
             border-radius: 10px;
@@ -334,7 +337,7 @@
             gap: 8px;
             margin-top: 24px;
         }
-        .btn-calculate:hover { background: var(--green-dark); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+        .btn-calculate:hover { background: var(--brand-dark); transform: translateY(-1px); box-shadow: var(--shadow-md); }
         .btn-calculate:active { transform: translateY(0); }
         .btn-calculate svg { width: 18px; height: 18px; }
 
@@ -354,11 +357,11 @@
             text-align: center;
         }
         .result-box.total-giving {
-            background: linear-gradient(135deg, var(--green), var(--green-dark));
+            background: linear-gradient(135deg, var(--brand), var(--brand-dark));
             color: var(--white);
             grid-column: 1 / -1;
         }
-        .result-box.tithe { background: var(--green-bg); }
+        .result-box.tithe { background: var(--brand-bg); }
         .result-box.offering { background: #fef9ee; }
         .result-box.firstfruit { background: #f0f0ff; }
         .result-box.remaining { background: #f8f8f8; }
@@ -412,7 +415,7 @@
         .breakdown-table tr:last-child td {
             border-bottom: none;
             font-weight: 700;
-            color: var(--green);
+            color: var(--brand);
             border-top: 2px solid var(--border);
         }
         .type-dot {
@@ -421,7 +424,7 @@
             border-radius: 50%;
             margin-right: 8px;
         }
-        .type-dot.tithe { background: var(--green); }
+        .type-dot.tithe { background: var(--brand); }
         .type-dot.offering { background: var(--gold); }
         .type-dot.firstfruit { background: #6366f1; }
 
@@ -434,7 +437,7 @@
 
         /* Annual projection */
         .annual-projection {
-            background: var(--green-bg);
+            background: var(--brand-bg);
             border-radius: 10px;
             padding: 16px;
             margin-top: 16px;
@@ -442,7 +445,7 @@
         .annual-projection h4 {
             font-size: 13px;
             font-weight: 600;
-            color: var(--green-dark);
+            color: var(--brand-dark);
             margin-bottom: 8px;
         }
         .annual-grid {
@@ -480,7 +483,7 @@
             color: var(--white);
             transition: width 0.6s ease;
         }
-        .budget-segment.giving { background: var(--green); }
+        .budget-segment.giving { background: var(--brand); }
         .budget-segment.remaining { background: #94a3b8; }
         .budget-legend {
             display: flex;
@@ -515,7 +518,7 @@
         }
         .ai-avatar {
             width: 32px; height: 32px;
-            background: var(--green);
+            background: var(--brand);
             border-radius: 8px;
             display: flex; align-items: center; justify-content: center;
         }
@@ -525,7 +528,7 @@
         }
         .ai-card-header .ai-badge {
             font-size: 10px; font-weight: 700;
-            background: var(--green);
+            background: var(--brand);
             color: var(--white);
             padding: 2px 8px;
             border-radius: 4px;
@@ -547,7 +550,7 @@
         }
         .ai-dot-pulse span {
             width: 6px; height: 6px;
-            background: var(--green);
+            background: var(--brand);
             border-radius: 50%;
             animation: dotPulse 1.2s ease-in-out infinite;
         }
@@ -594,7 +597,7 @@
             flex-shrink: 0;
             font-size: 12px;
         }
-        .chat-message.ai .chat-avatar { background: var(--green); color: var(--white); }
+        .chat-message.ai .chat-avatar { background: var(--brand); color: var(--white); }
         .chat-message.user .chat-avatar { background: var(--navy); color: var(--white); }
         .chat-bubble {
             max-width: 80%;
@@ -624,10 +627,10 @@
             font-size: 13px;
             outline: none;
         }
-        .ai-chat-input input:focus { border-color: var(--green); }
+        .ai-chat-input input:focus { border-color: var(--brand); }
         .ai-chat-input button {
             padding: 10px 16px;
-            background: var(--green);
+            background: var(--brand);
             color: var(--white);
             border: none;
             border-radius: 8px;
@@ -637,7 +640,7 @@
             cursor: pointer;
             transition: background 0.2s;
         }
-        .ai-chat-input button:hover { background: var(--green-dark); }
+        .ai-chat-input button:hover { background: var(--brand-dark); }
         .ai-chat-input button:disabled { opacity: 0.6; cursor: not-allowed; }
 
         /* ============ SCRIPTURE SIDEBAR ============ */
@@ -695,16 +698,16 @@
         }
         .btn-action svg { width: 16px; height: 16px; }
         .btn-action.primary {
-            background: var(--green);
+            background: var(--brand);
             color: var(--white);
         }
-        .btn-action.primary:hover { background: var(--green-dark); }
+        .btn-action.primary:hover { background: var(--brand-dark); }
         .btn-action.secondary {
             background: var(--white);
             color: var(--text);
             border: 1.5px solid var(--border);
         }
-        .btn-action.secondary:hover { border-color: var(--green); color: var(--green); }
+        .btn-action.secondary:hover { border-color: var(--brand); color: var(--brand); }
 
         /* ============ MODAL ============ */
         .modal-overlay {
@@ -758,7 +761,7 @@
         .btn-modal-submit {
             width: 100%;
             padding: 12px;
-            background: var(--green);
+            background: var(--brand);
             color: var(--white);
             border: none;
             border-radius: 8px;
@@ -769,13 +772,13 @@
             transition: background 0.2s;
             margin-top: 8px;
         }
-        .btn-modal-submit:hover { background: var(--green-dark); }
+        .btn-modal-submit:hover { background: var(--brand-dark); }
         .btn-modal-done {
             width: 100%;
             padding: 12px;
             background: transparent;
-            color: var(--green);
-            border: 1.5px solid var(--green);
+            color: var(--brand);
+            border: 1.5px solid var(--brand);
             border-radius: 8px;
             font-family: 'DM Sans', sans-serif;
             font-size: 14px;
@@ -785,7 +788,7 @@
             margin-top: 8px;
             display: none;
         }
-        .btn-modal-done:hover { background: var(--green-bg); }
+        .btn-modal-done:hover { background: var(--brand-bg); }
 
         /* Netlify hidden form */
         .netlify-hidden-form { display: none; }
@@ -811,12 +814,10 @@
             gap: 6px;
             transition: all 0.2s;
         }
-        .share-btn:hover { border-color: var(--green); color: var(--green); }
+        .share-btn:hover { border-color: var(--brand); color: var(--brand); }
         .share-btn svg { width: 14px; height: 14px; }
 
-        /* ============ FOOTER (uses 
-<afro-related-tools category="data-productivity" current="tithe-offering-calculator"></afro-related-tools>
-<afro-footer>) ============ */
+        /* ============ FOOTER (uses <afro-footer>) ============ */
 
         /* ============ RESPONSIVE ============ */
         @media (max-width: 900px) {
@@ -877,14 +878,14 @@
         {
           "@type": "ListItem",
           "position": 1,
-          "name": "AfroTools",
+          "name": "Home",
           "item": "https://afrotools.com"
         },
         {
           "@type": "ListItem",
           "position": 2,
-          "name": "All Tools",
-          "item": "https://afrotools.com/all-tools"
+          "name": "Uniquely African",
+          "item": "https://afrotools.com/uniquely-african/"
         },
         {
           "@type": "ListItem",
@@ -900,9 +901,8 @@
 <script src="/assets/js/lib/chart-config.js"></script>
 <script src="/assets/js/lib/toast.js" defer></script>
 <script src="/assets/js/afro-history.js" defer></script>
-<script src="/assets/js/components/save-result-button.js" defer></script>
-<script src="/assets/js/components/share-card-generator.js" defer></script>
-<script src="/assets/js/components/share-button.js" defer></script>
+<script src="/assets/js/components/related-tools.min.js" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js" defer></script>
 </head>
 <body>
 
@@ -923,6 +923,13 @@
 <!-- ===== HERO ===== -->
 <section class="hero">
     <div class="hero-content">
+        <nav class="breadcrumb" style="font-size:13px;margin-bottom:12px;">
+            <a href="/" style="color:rgba(255,255,255,0.6);text-decoration:none;">Home</a>
+            <span style="color:rgba(255,255,255,0.35);margin:0 6px;">/</span>
+            <a href="/uniquely-african/" style="color:rgba(255,255,255,0.6);text-decoration:none;">Uniquely African</a>
+            <span style="color:rgba(255,255,255,0.35);margin:0 6px;">/</span>
+            <span style="color:rgba(255,255,255,0.9);">Tithe & Offering Calculator</span>
+        </nav>
         <div class="hero-badge">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
             Pan-African · All 54 Currencies
@@ -1009,7 +1016,7 @@
                             <input type="range" id="incomeSlider" class="income-slider" min="0" max="50000000" step="1000" value="500000" oninput="syncInput()">
                             <div class="slider-labels">
                                 <span id="sliderMin">₦0</span>
-                                <span id="sliderCurrent" style="font-weight:600;color:var(--green);">₦500,000</span>
+                                <span id="sliderCurrent" style="font-weight:600;color:var(--brand);">₦500,000</span>
                                 <span id="sliderMax">₦50,000,000</span>
                             </div>
                         </div>
@@ -1056,7 +1063,7 @@
                                 <div class="name">Tithe</div>
                                 <div class="desc">The biblical tenth — 10% of your income</div>
                             </div>
-                            <span style="font-size:14px;font-weight:700;color:var(--green);">10%</span>
+                            <span style="font-size:14px;font-weight:700;color:var(--brand);">10%</span>
                         </label>
 
                         <!-- Offering -->
@@ -1168,7 +1175,7 @@
                             <div class="budget-bar-container" id="budgetBar"></div>
                             <div class="budget-legend">
                                 <div class="budget-legend-item">
-                                    <div class="budget-legend-dot" style="background:var(--green);"></div>
+                                    <div class="budget-legend-dot" style="background:var(--brand);"></div>
                                     <span id="givingPctLabel">Giving: 10%</span>
                                 </div>
                                 <div class="budget-legend-item">
@@ -1262,6 +1269,9 @@
     </div>
 </div>
 
+<afro-related-tools category="african" current="tithe-offering-calculator"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+
 <!-- ===== FOOTER ===== -->
 <afro-footer></afro-footer>
 
@@ -1346,7 +1356,7 @@
         const slider = document.getElementById('incomeSlider');
         const val = parseInt(slider.value);
         const pct = (val / parseInt(slider.max)) * 100;
-        slider.style.background = `linear-gradient(to right, var(--green) ${pct}%, var(--border) ${pct}%)`;
+        slider.style.background = `linear-gradient(to right, var(--brand) ${pct}%, var(--border) ${pct}%)`;
 
         document.getElementById('sliderMin').textContent = info.symbol + '0';
         document.getElementById('sliderCurrent').textContent = formatMoney(val, info.symbol);
@@ -1914,18 +1924,6 @@ Keep total response under 200 words. Use paragraphs, not bullet points. Be warm 
     </div>
 </div>
 
-<script>
-// Save/Share buttons — manual placement needed
-(function(){
-  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
-  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
-  div.innerHTML = '<save-result-button tool-slug="tithe-offering-calculator" tool-name="Tithe Offering Calculator"></save-result-button><share-result-button tool-name="Tithe Offering Calculator" tool-slug="tithe-offering-calculator"></share-result-button>';
-  target.appendChild(div);
-})();
-</script>
 </body>
 </html>`;
     }

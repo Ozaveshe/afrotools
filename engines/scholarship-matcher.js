@@ -246,7 +246,7 @@ var ScholarshipMatcher = (function () {
   function saveQuickProfile(profile) {
     try {
       sessionStorage.setItem('afro-quick-edu-profile', JSON.stringify(profile));
-    } catch (e) { }
+    } catch (e) { console.warn('[ScholarshipMatcher] Failed to save profile:', e.message); }
   }
 
   function clearQuickProfile() {

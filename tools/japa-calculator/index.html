@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Japa Cost Calculator — Total Relocation Cost from Africa | AfroTools</title>
   <meta name="description" content="Calculate the REAL total cost to relocate from any African country. 36 origins, 21 destinations, 55+ visa pathways, 100+ cost items.">
-  <link rel="canonical" href="https://afrotools.com/tools/japa-calculator">
+  <link rel="canonical" href="https://afrotools.com/tools/japa-calculator/">
   <meta property="og:title" content="Japa Cost Calculator — Africa's Most Comprehensive Relocation Planner">
   <meta property="og:description" content="36 African origins. 21 global destinations. 55+ visa pathways. 100+ cost items. Nothing hidden. Africa's #1 relocation cost calculator.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
@@ -33,7 +33,25 @@
   <script src="/assets/js/components/tool-registry.min.js"></script>
 <script src="/assets/js/components/navbar.min.js" defer></script>
   <script src="/assets/js/components/footer.min.js" defer></script>
-<style>:root { --color-brand: var(--color-primary); }</style>
+<style>:root { --color-brand: var(--color-primary); }
+.japa-fun{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.japa-fun-card{padding:16px;border-radius:10px;text-align:center}
+.japa-fun-card.gold{background:#FFF8E7;border:1.5px solid rgba(212,168,67,.3)}
+.japa-fun-card.blue{background:#E8F2FF;border:1.5px solid rgba(0,122,255,.2)}
+.japa-fun-card.rose{background:#fff1f2;border:1.5px solid rgba(225,29,72,.2)}
+.japa-fun-card.green{background:#f0fdf4;border:1.5px solid #86efac}
+.japa-fun-emoji{font-size:2rem;margin-bottom:6px}
+.japa-fun-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.japa-fun-card.gold .japa-fun-title{color:#92400e}
+.japa-fun-card.blue .japa-fun-title{color:#1e40af}
+.japa-fun-card.rose .japa-fun-title{color:#be123c}
+.japa-fun-card.green .japa-fun-title{color:#166534}
+.japa-fun-text{font-size:.78rem;font-weight:600;color:#1e293b;line-height:1.5}
+.japa-dyk{margin-top:16px;background:linear-gradient(135deg,#faf5ff,#f3e8ff);border:1.5px solid #c4b5fd;border-radius:12px;padding:18px}
+.japa-dyk-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6d28d9;margin-bottom:8px}
+.japa-dyk-text{font-size:.82rem;color:#4c1d95;line-height:1.7}
+@media(max-width:500px){.japa-fun{grid-template-columns:1fr}}
+</style>
 <meta name="tool-id" content="japa-calculator">
 <script src="/assets/js/favorites.js"></script>
 
@@ -391,6 +409,7 @@
         <div id="ciAccordion"></div>
       </div>
     </div>
+    <div id="japaFunSection" style="display:none"></div>
     <div class="sh-row">
       <button class="sh-btn" onclick="shareX()">𝕏 Share on X</button>
       <button class="sh-btn" onclick="shareWA()">💬 WhatsApp</button>
@@ -464,6 +483,7 @@
 
 </section>
 
+<afro-newsletter-cta></afro-newsletter-cta>
 <afro-related-tools category="african" current="japa-calculator"></afro-related-tools>
 <afro-footer></afro-footer>
 <div class="toast" id="toast"></div>
@@ -1368,6 +1388,38 @@ function renderResults(){
   syncPlanInputs();
   document.getElementById('bkTotalLbl').textContent='$'+Math.round(tot).toLocaleString();
   document.getElementById('aiCtx').textContent='Ready: '+o.name+' → '+d.name+' · '+pw.name+' · $'+Math.round(tot).toLocaleString()+' total. Ask me anything.';
+
+  // ── FUN COMPARISONS & DID YOU KNOW ──────────────────────────────
+  var funSec=document.getElementById('japaFunSection');
+  if(funSec){
+    var usdTotal=Math.round(tot);
+    var iphones=Math.max(1,Math.round(usdTotal/1199));
+    var lagosRent=Math.max(1,Math.round(usdTotal*1580/500000));
+    var jollof=Math.max(1,Math.round(usdTotal*1580/1500));
+    var flights=Math.max(1,Math.round(usdTotal/600));
+
+    var dykFacts=[
+      "Nigeria has the largest diaspora in Africa \u2014 over 17 million Nigerians live abroad! That\u2019s more than the population of some African countries. \ud83c\udf0d",
+      "The word \u2018Japa\u2019 comes from Yoruba, meaning \u2018to run\u2019 or \u2018to flee\u2019. It became popular slang for emigrating from Nigeria around 2020. \ud83c\udfc3\u200d\u2642\ufe0f",
+      "Africans in the diaspora sent home $100+ billion in remittances in 2023 \u2014 more than all foreign aid to Africa combined! \ud83d\udcb0",
+      "Canada welcomed over 200,000 African immigrants in 2023 alone, making it the fastest-growing African diaspora destination. \ud83c\udde8\ud83c\udde6",
+      "The average Nigerian spends 6\u201318 months preparing for Japa, including visa applications, medical checks, and credential verification. \u23f0",
+      "South Africa has Africa\u2019s largest immigrant population \u2014 over 2.9 million foreign-born residents call it home. \ud83c\uddff\ud83c\udde6",
+      "The African diaspora is the 6th largest economy in the world when measured by spending power \u2014 over $700 billion annually. \ud83d\udcca",
+      "Ghana\u2019s \u2018Year of Return\u2019 in 2019 attracted over 750,000 visitors from the diaspora and sparked a reverse-migration movement. \ud83c\uddec\ud83c\udded"
+    ];
+    var dyk=dykFacts[Math.floor(Math.random()*dykFacts.length)];
+
+    funSec.innerHTML=
+      '<div class="japa-fun">'+
+        '<div class="japa-fun-card gold"><div class="japa-fun-emoji">\ud83d\udcf1</div><div class="japa-fun-title">In iPhones</div><div class="japa-fun-text">'+iphones.toLocaleString()+' iPhone 16 Pro'+(iphones!==1?'s':'')+'</div></div>'+
+        '<div class="japa-fun-card blue"><div class="japa-fun-emoji">\ud83c\udfe0</div><div class="japa-fun-title">Rent in Lagos</div><div class="japa-fun-text">'+lagosRent.toLocaleString()+' month'+(lagosRent!==1?'s':'')+' of rent</div></div>'+
+        '<div class="japa-fun-card rose"><div class="japa-fun-emoji">\ud83c\udf5a</div><div class="japa-fun-title">Jollof Rice</div><div class="japa-fun-text">'+jollof.toLocaleString()+' plate'+(jollof!==1?'s':'')+' of jollof</div></div>'+
+        '<div class="japa-fun-card green"><div class="japa-fun-emoji">\u2708\ufe0f</div><div class="japa-fun-title">Flight Tickets</div><div class="japa-fun-text">'+flights.toLocaleString()+' Lagos\u2013London flight'+(flights!==1?'s':'')+'</div></div>'+
+      '</div>'+
+      '<div class="japa-dyk"><div class="japa-dyk-title">\ud83d\udca1 Did You Know?</div><div class="japa-dyk-text">'+dyk+'</div></div>';
+    funSec.style.display='';
+  }
 }
 
 function renderBreakdown(items,o,tot,local){
@@ -1878,6 +1930,7 @@ calculate=function(silent){
   if(!silent)ga4('calculation_complete',{tool:'japa-calculator',origin:document.getElementById('oCtry').value,destination:document.getElementById('dCtry').value});
 };
 </script>
+<script src="/assets/js/components/newsletter-cta.min.js" defer></script>
 <script src="/assets/js/lib/saved-tools.js" defer></script>
 <script src="/assets/js/favorites-widget.js" defer></script>
 <script src="/assets/js/lib/auto-email-gate.js" defer></script>

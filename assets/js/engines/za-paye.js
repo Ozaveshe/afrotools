@@ -51,7 +51,7 @@
     for (const b of SARS_BANDS) {
       if (taxableIncome < b.from) break;
       const upper = isFinite(b.to) ? b.to : taxableIncome;
-      const incomeInBand = Math.min(taxableIncome, upper) - (b.from - 1);
+      const incomeInBand = Math.min(taxableIncome, upper) - b.from + 1;
       const taxInBand = incomeInBand * b.rate;
       grossTax += taxInBand;
       breakdown.push({

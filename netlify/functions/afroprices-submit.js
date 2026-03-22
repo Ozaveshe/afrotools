@@ -14,6 +14,9 @@ function getSupabase() {
 }
 
 // In-memory rate limiter (per instance)
+// LIMITATION: This object resets on each cold start / new Lambda instance.
+// Rate limits are per-instance, not global. For persistent rate limiting,
+// migrate to Netlify Blobs or an external store (e.g. Supabase).
 const rateLimits = {};
 const RATE_LIMIT = 5;
 

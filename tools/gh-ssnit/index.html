@@ -134,6 +134,9 @@ function calculate(){
   const retireAge=+document.getElementById('retireAge').value;
   const tier3Pct=(+document.getElementById('tier3').value)/100;
 
+  if(basic<=0){document.getElementById('results').innerHTML='<p style="color:#94A3B8;text-align:center;padding:2rem">Enter a positive basic salary to calculate.</p>';return;}
+  if(currentAge<=0||retireAge<=currentAge){document.getElementById('results').innerHTML='<p style="color:#94A3B8;text-align:center;padding:2rem">Enter valid current and retirement ages.</p>';return;}
+
   // Monthly contributions
   const tier1Emp=basic*0.055;
   const tier1Er=basic*0.13;

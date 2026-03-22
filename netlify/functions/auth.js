@@ -65,8 +65,8 @@ export default async function handler(event) {
   /* ── SIGNUP ── */
   if (action === 'signup') {
     const { email, name, password, country } = body;
-    if (!email || !password || password.length < 4) {
-      return json(200, { ok: false, error: 'Email and password (min 4 chars) required' });
+    if (!email || !password || password.length < 8) {
+      return json(200, { ok: false, error: 'Email and password (min 8 chars) required' });
     }
     const emailKey = email.trim().toLowerCase();
 

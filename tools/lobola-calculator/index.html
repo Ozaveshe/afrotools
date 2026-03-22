@@ -2,140 +2,177 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-<!-- Google Analytics 4 -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-D859CGF391');
-</script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lobola / Bride Price Calculator | AfroTools</title>
-  <meta name="description" content="Estimate lobola (bride price) for South Africa, Zimbabwe, Eswatini, Lesotho, Botswana, and Namibia. Understand cattle counts, cash equivalents, and cultural traditions.">
+  <meta name="description" content="Estimate lobola (bride price) for South Africa, Zimbabwe, Eswatini, Lesotho, Botswana, and Namibia. Interactive charts, payment plans, country comparisons.">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://afrotools.com/tools/lobola-calculator">
+  <link rel="canonical" href="https://afrotools.com/tools/lobola-calculator/">
   <meta property="og:title" content="Lobola / Bride Price Calculator | AfroTools">
-  <meta property="og:description" content="Estimate lobola (bride price) for South Africa, Zimbabwe, Eswatini, Lesotho, Botswana, and Namibia. Understand cattle counts, cash equivalents, and cultural traditions.">
-<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+  <meta property="og:description" content="Estimate lobola (bride price) for South Africa, Zimbabwe, Eswatini, Lesotho, Botswana, and Namibia. Interactive charts, payment plans, country comparisons.">
+  <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
   <meta property="og:site_name" content="AfroTools">
   <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/tokens.min.css">
   <link rel="stylesheet" href="/assets/css/global.min.css">
   <script src="/assets/js/components/tool-registry.min.js"></script>
-<script src="/assets/js/components/navbar.min.js" defer></script>
+  <script src="/assets/js/components/navbar.min.js" defer></script>
   <script src="/assets/js/components/footer.min.js" defer></script>
   <meta name="tool-id" content="lobola-calculator">
-  <script src="/assets/js/favorites.js"></script>
   <style>
-    *, *::before, *::after { box-sizing: border-box; }
-    :root {
-      --accent: var(--color-primary); --accent-dark: #0047AB; --dark: #0f1419; --border: #e5e7eb;
-      --light: #f9fafb; --radius: 14px; --shadow: 0 2px 8px rgba(0,0,0,0.06);
-      --amber: #92400e; --amber-bg: #fffbeb; --amber-border: #fde68a;
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--accent:#007AFF;--accent-dark:#0063D1;--accent-pale:#E8F2FF;--dark:#0f172a;--text:#1e293b;--muted:#64748b;--border:#e2e8f0;--bg:#f8fafc;--card:#fff;--radius:12px;--green:#10b981;--red:#ef4444;--amber:#f59e0b}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text)}
+    .wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+
+    .disclaimer{background:#fffbeb;border:1.5px solid #fde68a;border-radius:var(--radius);padding:16px 18px;margin-bottom:20px;color:#92400e;font-size:13px;line-height:1.6}
+    .disclaimer strong{color:#78350f}
+
+    /* Cards */
+    .card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:22px;margin-bottom:16px}
+    .card-title{font-size:15px;font-weight:800;color:var(--text);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:12px}
+    .field{margin-bottom:10px}
+    .field label{display:block;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+    .field input,.field select{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:14px;color:var(--text)}
+    .field input:focus,.field select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,122,255,.08)}
+    .btn-row{display:flex;gap:10px;margin-top:14px}
+    .btn{padding:12px 24px;border:none;border-radius:10px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s}
+    .btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;flex:1}
+    .btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,122,255,.25)}
+    .btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--text)}
+    .hidden{display:none}
+
+    /* Results */
+    .results{display:none}
+    .results.show{display:block}
+
+    /* Cattle visual */
+    .cattle-visual{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:22px;margin-bottom:16px;text-align:center}
+    .cattle-visual h3{font-size:14px;font-weight:800;margin-bottom:12px}
+    .cattle-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:4px;margin-bottom:14px}
+    .cow{font-size:28px;transition:all .3s;animation:cowPop .3s ease-out both}
+    @keyframes cowPop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+    .cattle-count{font-size:42px;font-weight:800;color:var(--accent);line-height:1}
+    .cattle-label{font-size:13px;color:var(--muted);margin-top:4px}
+
+    /* Stat row */
+    .stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+    .stat-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center}
+    .stat-card.primary{border-color:var(--accent);background:var(--accent-pale)}
+    .stat-val{font-size:22px;font-weight:800;color:var(--text);line-height:1}
+    .stat-card.primary .stat-val{color:var(--accent)}
+    .stat-lbl{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+    .stat-sub{font-size:11px;color:var(--muted);margin-top:3px}
+
+    /* Lobola meter */
+    .meter-section{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:22px;margin-bottom:16px}
+    .meter-title{font-size:14px;font-weight:800;margin-bottom:14px}
+    .meter-track{height:24px;background:#f1f5f9;border-radius:12px;overflow:hidden;position:relative;margin-bottom:8px}
+    .meter-fill{height:100%;border-radius:12px;transition:width .8s ease;background:linear-gradient(90deg,var(--green),var(--accent),var(--amber),var(--red))}
+    .meter-labels{display:flex;justify-content:space-between;font-size:11px;color:var(--muted)}
+    .meter-indicator{font-size:14px;font-weight:700;text-align:center;margin-top:8px}
+
+    /* Charts */
+    .chart-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+    .chart-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:20px}
+    .chart-title{font-size:13px;font-weight:800;margin-bottom:14px}
+    canvas{width:100%;display:block}
+
+    /* Breakdown */
+    .breakdown{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:22px;margin-bottom:16px}
+    .breakdown h3{font-size:14px;font-weight:800;margin-bottom:12px}
+    .breakdown-list{list-style:none}
+    .breakdown-list li{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f1f5f9;font-size:13px}
+    .breakdown-list li:last-child{border-bottom:none;font-weight:800;background:var(--accent-pale);margin:8px -10px 0;padding:12px 10px;border-radius:8px}
+
+    /* Payment plan */
+    .payment-section{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:22px;margin-bottom:16px}
+    .payment-title{font-size:14px;font-weight:800;margin-bottom:14px}
+    .payment-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .payment-option{text-align:center;padding:18px 14px;border:1.5px solid var(--border);border-radius:10px;transition:all .2s;cursor:pointer}
+    .payment-option:hover{border-color:var(--accent);background:var(--accent-pale)}
+    .payment-option.recommended{border-color:var(--accent);background:var(--accent-pale)}
+    .payment-option .po-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:6px}
+    .payment-option .po-value{font-size:20px;font-weight:800;color:var(--accent);line-height:1}
+    .payment-option .po-sub{font-size:11px;color:var(--muted);margin-top:4px}
+    .po-badge{display:inline-block;padding:2px 8px;background:var(--accent);color:#fff;border-radius:4px;font-size:9px;font-weight:700;margin-bottom:6px}
+
+    /* Cultural context */
+    .context-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:22px;margin-bottom:16px}
+    .context-card h3{font-size:14px;font-weight:800;margin-bottom:8px}
+    .context-card p{font-size:13px;color:var(--muted);line-height:1.7}
+    .tips{background:var(--accent-pale);border:1px solid rgba(0,122,255,.15);border-radius:10px;padding:16px;margin-top:14px}
+    .tips h4{font-size:13px;font-weight:700;margin-bottom:8px}
+    .tips li{font-size:12px;color:var(--muted);margin-bottom:5px;line-height:1.5}
+
+    /* FAQ */
+    .faq{margin-top:24px;margin-bottom:24px}
+    .faq h2{font-size:1.2rem;font-weight:800;margin-bottom:14px}
+    .faq details{border:1.5px solid var(--border);border-radius:var(--radius);margin-bottom:8px;background:var(--card)}
+    .faq summary{padding:14px 18px;font-weight:700;font-size:14px;cursor:pointer;list-style:none}
+    .faq summary::-webkit-details-marker{display:none}
+    .faq details[open] summary{border-bottom:1px solid var(--border)}
+    .faq .faq-a{padding:12px 18px;font-size:13px;color:var(--muted);line-height:1.7}
+
+    /* Fun Comparisons */
+    .fun-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+    .fun-card{padding:16px;border-radius:10px;text-align:center}
+    .fun-card.gold{background:#FFF8E7;border:1.5px solid rgba(212,168,67,.3)}
+    .fun-card.blue{background:#E8F2FF;border:1.5px solid rgba(0,122,255,.2)}
+    .fun-card.rose{background:#fff1f2;border:1.5px solid rgba(225,29,72,.2)}
+    .fun-card.green{background:#f0fdf4;border:1.5px solid #86efac}
+    .fun-emoji{font-size:2rem;margin-bottom:6px}
+    .fun-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+    .fun-card.gold .fun-title{color:#92400e}
+    .fun-card.blue .fun-title{color:#1e40af}
+    .fun-card.rose .fun-title{color:#be123c}
+    .fun-card.green .fun-title{color:#166534}
+    .fun-text{font-size:13px;font-weight:600;color:#1e293b;line-height:1.5}
+    .dyk-box{background:linear-gradient(135deg,#faf5ff,#f3e8ff);border:1.5px solid #c4b5fd;border-radius:var(--radius);padding:18px;margin-bottom:16px}
+    .dyk-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6d28d9;margin-bottom:8px}
+    .dyk-text{font-size:13px;color:#4c1d95;line-height:1.7}
+    @media(max-width:480px){.fun-grid{grid-template-columns:1fr}}
+
+    @media(max-width:768px){
+      .form-row,.chart-row{grid-template-columns:1fr}
+      .stat-row{grid-template-columns:1fr 1fr}
+      .payment-grid{grid-template-columns:1fr}
     }
-    body { font-family: 'DM Sans', sans-serif; background: #fff; color: var(--dark); line-height: 1.6; margin: 0; }
-    .container { max-width: 1100px; margin: 0 auto; padding: 2rem 1.25rem; }
-    .hero { background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%); color: #fff; padding: 3rem 1.5rem; border-radius: var(--radius); text-align: center; margin-bottom: 2rem; }
-    .hero h1 { font-size: 2.2rem; font-weight: 700; margin: 0 0 .5rem; }
-    .hero p { font-size: 1.05rem; opacity: .93; margin: 0; }
-    .card { background: #fff; border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.75rem; margin-bottom: 1.5rem; box-shadow: var(--shadow); }
-    .card h2 { font-size: 1.35rem; font-weight: 700; margin: 0 0 1.25rem; }
-    .disclaimer { background: var(--amber-bg); border: 1.5px solid var(--amber-border); border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1.5rem; color: var(--amber); font-size: .93rem; line-height: 1.7; }
-    .disclaimer strong { color: #78350f; }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
-    .form-group { margin-bottom: 1rem; }
-    label { display: block; font-weight: 500; margin-bottom: .35rem; font-size: .93rem; }
-    input, select { width: 100%; padding: .65rem .85rem; border: 1.5px solid var(--border); border-radius: 10px; font-family: inherit; font-size: .95rem; background: #fff; }
-    input:focus, select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,122,255,.12); }
-    .btn { padding: .7rem 1.5rem; border: none; border-radius: 10px; font-family: inherit; font-weight: 600; font-size: .95rem; cursor: pointer; transition: all .2s; }
-    .btn-primary { background: var(--accent); color: #fff; }
-    .btn-primary:hover { background: var(--accent-dark); }
-    .btn-secondary { background: var(--light); color: var(--dark); border: 1.5px solid var(--border); }
-    .actions { display: flex; gap: .75rem; flex-wrap: wrap; margin-top: 1rem; }
-    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
-    .stat-card { background: var(--light); border-radius: 12px; padding: 1.15rem; text-align: center; border: 1px solid var(--border); }
-    .stat-card .value { font-size: 1.4rem; font-weight: 700; color: var(--accent); }
-    .stat-card .label { font-size: .82rem; color: #666; margin-top: .15rem; }
-    .breakdown-list { list-style: none; padding: 0; margin: 0; }
-    .breakdown-list li { display: flex; justify-content: space-between; padding: .65rem 0; border-bottom: 1px solid var(--border); font-size: .93rem; }
-    .breakdown-list li:last-child { border-bottom: none; font-weight: 700; background: var(--light); margin: .5rem -.5rem 0; padding: .75rem .5rem; border-radius: 8px; }
-    .context-section { background: var(--light); border-radius: 12px; padding: 1.25rem; margin-top: 1rem; font-size: .93rem; line-height: 1.7; }
-    .context-section h3 { font-size: 1.05rem; margin: 0 0 .5rem; color: var(--accent); }
-    .tips { background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 12px; padding: 1.25rem; margin-top: 1rem; }
-    .tips h3 { margin: 0 0 .5rem; font-size: 1.05rem; color: var(--accent-dark); }
-    .tips ul { margin: 0; padding-left: 1.25rem; }
-    .tips li { margin-bottom: .35rem; font-size: .93rem; }
-    .hidden { display: none; }
-    .faq { margin-top: 2rem; }
-    .faq h2 { font-size: 1.35rem; font-weight: 700; margin-bottom: 1rem; }
-    .faq-item { border: 1.5px solid var(--border); border-radius: var(--radius); margin-bottom: .75rem; overflow: hidden; }
-    .faq-q { padding: 1rem 1.25rem; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
-    .faq-q:hover { background: var(--light); }
-    .faq-a { padding: 0 1.25rem; max-height: 0; overflow: hidden; transition: all .3s; font-size: .93rem; color: #555; }
-    .faq-item.open .faq-a { padding: .75rem 1.25rem; max-height: 500px; }
-    .arrow { transition: transform .3s; }
-    .faq-item.open .arrow { transform: rotate(180deg); }
-    @media (max-width: 640px) {
-      .form-row { grid-template-columns: 1fr; }
-      .hero h1 { font-size: 1.6rem; }
-      .stat-grid { grid-template-columns: 1fr 1fr; }
-    }
+    @media(max-width:480px){.stat-row{grid-template-columns:1fr}}
   </style>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      { "@type": "Question", "name": "What is lobola?", "acceptedAnswer": { "@type": "Answer", "text": "Lobola (also called bride price, bogadi, or mahadi) is a traditional practice in Southern Africa where the groom's family pays the bride's family as a sign of respect, gratitude, and to formalize the union between two families." }},
-      { "@type": "Question", "name": "How many cattle are typically paid for lobola?", "acceptedAnswer": { "@type": "Answer", "text": "In South Africa, the typical range is 8-12 cattle for a first marriage, though this varies by culture, region, and family. Factors like the bride's education and family status may influence negotiations." }},
-      { "@type": "Question", "name": "Can lobola be paid in cash?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, many modern families accept cash equivalents. The cash value is typically calculated based on the current market price of cattle in the region." }}
-    ]
-  }
-  </script>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "Lobola / Bride Price Calculator",
-    "url": "https://afrotools.com/tools/lobola-calculator",
-    "description": "Estimate lobola (bride price) for South Africa, Zimbabwe, Eswatini, Lesotho, Botswana, and Namibia. Understand cattle counts, cash equivalents, and cultural traditions.",
-    "applicationCategory": "FinanceApplication",
-    "operatingSystem": "Any",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-    "author": { "@type": "Organization", "name": "AfroTools", "url": "https://afrotools.com" }
-  }
-  </script>
-<script src="/assets/js/lib/toast.js" defer></script>
-<script src="/assets/js/afro-history.js" defer></script>
-<script src="/assets/js/components/save-result-button.js" defer></script>
-<script src="/assets/js/components/share-card-generator.js" defer></script>
-<script src="/assets/js/components/share-button.js" defer></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Lobola / Bride Price Calculator","url":"https://afrotools.com/tools/lobola-calculator","description":"Estimate lobola (bride price) for South Africa, Zimbabwe, Eswatini, Lesotho, Botswana, and Namibia. Interactive charts, payment plans, country comparisons.","applicationCategory":"FinanceApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is lobola?","acceptedAnswer":{"@type":"Answer","text":"Lobola (also called bride price, bogadi, or mahadi) is a traditional practice in Southern Africa where the groom's family pays the bride's family as a sign of respect, gratitude, and to formalize the union between two families."}},{"@type":"Question","name":"How many cattle are typically paid for lobola?","acceptedAnswer":{"@type":"Answer","text":"In South Africa, the typical range is 8-12 cattle for a first marriage, though this varies by culture, region, and family. Factors like the bride's education and family status may influence negotiations."}},{"@type":"Question","name":"Can lobola be paid in cash?","acceptedAnswer":{"@type":"Answer","text":"Yes, many modern families accept cash equivalents. The cash value is typically calculated based on the current market price of cattle in the region."}}]}</script>
+<script src="/assets/js/components/related-tools.min.js" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js" defer></script>
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Lobola Calculator | AfroTools">
+<meta name="twitter:description" content="Estimate lobola for SA, Zimbabwe, Eswatini, Lesotho, Botswana, Namibia. Charts, payment plans, fun comparisons.">
 </head>
 <body>
 <afro-navbar></afro-navbar>
+
 <section class="tool-hero" style="background:linear-gradient(135deg,#0f1419 0%,#1a1f2e 100%);padding:44px 0 36px">
 <div style="max-width:1200px;margin:0 auto;padding:0 24px">
 <div class="breadcrumb" style="font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px"><a href="/" style="color:rgba(255,255,255,.3);text-decoration:none">AfroTools</a> / <a href="/uniquely-african/" style="color:rgba(255,255,255,.3);text-decoration:none">Uniquely African</a> / <span style="color:#93c5fd">Lobola Calculator</span></div>
-<h1 style="font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px">Lobola / Bride Price <em style="color:var(--color-primary);font-style:normal">Calculator</em></h1>
-<p style="font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px">Estimate lobola in cattle, cash, or ZAR/ZWG equivalents. Covers South Africa, Zimbabwe, Botswana, Lesotho, and Eswatini traditions.</p>
-<div style="display:flex;flex-wrap:wrap;gap:7px"><span style="display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em;background:rgba(147,197,253,.2);color:#93c5fd;border:1px solid rgba(147,197,253,.4)">🌍 Southern Africa</span><span style="display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em;background:rgba(147,197,253,.2);color:#93c5fd;border:1px solid rgba(147,197,253,.4)">Client-side</span><span style="display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em;background:rgba(147,197,253,.2);color:#93c5fd;border:1px solid rgba(147,197,253,.4)">Free</span></div>
+<h1 style="font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px">Lobola / Bride Price <em style="color:#007AFF;font-style:normal">Calculator</em></h1>
+<p style="font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px">Interactive lobola estimator with cattle visuals, payment plans, country comparisons, and cultural context.</p>
+<div style="display:flex;flex-wrap:wrap;gap:7px"><span style="display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em;background:rgba(147,197,253,.2);color:#93c5fd;border:1px solid rgba(147,197,253,.4)">Charts</span><span style="display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em;background:rgba(147,197,253,.2);color:#93c5fd;border:1px solid rgba(147,197,253,.4)">6 Countries</span><span style="display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em;background:rgba(147,197,253,.2);color:#93c5fd;border:1px solid rgba(147,197,253,.4)">Free</span></div>
 </div></section>
-<div class="container">
 
-  <div class="disclaimer">
-    <strong>Cultural Sensitivity Notice:</strong> This calculator is an educational estimation tool only. Lobola is a deeply meaningful cultural practice rooted in respect and family unity. Actual lobola negotiations are private family matters and vary greatly by culture, clan, and individual circumstances. This tool is not intended to reduce the practice to a financial transaction. Please approach the subject with the respect it deserves.
-  </div>
+<div class="wrap" style="padding-top:20px;padding-bottom:40px">
+  <div class="disclaimer"><strong>Cultural Sensitivity Notice:</strong> This is an educational estimation tool. Lobola is a deeply meaningful cultural practice. Actual negotiations are private family matters and vary greatly. This tool is not intended to reduce the practice to a financial transaction.</div>
 
-  <!-- Input Card -->
+  <!-- ── INPUT FORM ── -->
   <div class="card">
-    <h2>Estimation Details</h2>
+    <div class="card-title"><span>💍</span> Estimation Details</div>
     <div class="form-row">
-      <div class="form-group">
-        <label for="country">Country</label>
+      <div class="field">
+        <label>Country</label>
         <select id="country" onchange="updateCountryFields()">
           <option value="za">South Africa</option>
           <option value="zw">Zimbabwe</option>
@@ -145,26 +182,26 @@
           <option value="na">Namibia</option>
         </select>
       </div>
-      <div class="form-group">
-        <label for="region">Region / Province</label>
+      <div class="field">
+        <label>Region / Province</label>
         <select id="region"></select>
       </div>
     </div>
     <div class="form-row">
-      <div class="form-group">
-        <label for="education">Bride's Education Level</label>
+      <div class="field">
+        <label>Bride's Education</label>
         <select id="education">
           <option value="none">No formal qualification</option>
           <option value="matric">Matric / High School</option>
           <option value="diploma">Diploma / Certificate</option>
           <option value="degree" selected>Bachelor's Degree</option>
-          <option value="honours">Honours / Postgrad Diploma</option>
+          <option value="honours">Honours / Postgrad</option>
           <option value="masters">Master's Degree</option>
           <option value="doctorate">Doctorate / PhD</option>
         </select>
       </div>
-      <div class="form-group">
-        <label for="profession">Bride's Profession</label>
+      <div class="field">
+        <label>Bride's Profession</label>
         <select id="profession">
           <option value="unemployed">Unemployed</option>
           <option value="entry">Entry-level Employee</option>
@@ -178,225 +215,398 @@
       </div>
     </div>
     <div class="form-row">
-      <div class="form-group">
-        <label for="familyStatus">Family Status</label>
+      <div class="field">
+        <label>Family Status</label>
         <select id="familyStatus">
           <option value="regular" selected>Regular family</option>
+          <option value="prominent">Prominent / Well-known</option>
           <option value="chief">Chief / Royal family</option>
-          <option value="prominent">Prominent / Well-known family</option>
         </select>
       </div>
-      <div class="form-group">
-        <label for="marriageType">Marriage Type</label>
+      <div class="field">
+        <label>Marriage Type</label>
         <select id="marriageType">
           <option value="first" selected>First marriage</option>
           <option value="second">Second marriage</option>
-          <option value="hasChildren">Has children from prior relationship</option>
+          <option value="hasChildren">Has children (prior)</option>
         </select>
       </div>
     </div>
-
-    <!-- Zimbabwe-specific -->
-    <div id="zwFields" class="hidden">
-      <div class="form-row">
-        <div class="form-group">
-          <label for="zwCattlePrice">Current Cattle Price (USD per head)</label>
-          <input type="number" id="zwCattlePrice" value="500" min="100">
-        </div>
-        <div class="form-group">
-          <label for="zwCustom">Additional Money Component (USD)</label>
-          <input type="number" id="zwCustom" value="0" min="0">
-        </div>
+    <div class="form-row" id="priceFields">
+      <div class="field">
+        <label>Current Cattle Price (per head)</label>
+        <input type="number" id="cattlePrice" value="18000" min="1000">
+      </div>
+      <div class="field">
+        <label>Custom Cattle Count (optional)</label>
+        <input type="number" id="customCattle" placeholder="Leave blank for estimate" min="1" max="100">
       </div>
     </div>
-
-    <!-- SA / General -->
-    <div id="cattlePriceGroup">
-      <div class="form-row">
-        <div class="form-group">
-          <label for="cattlePrice">Current Cattle Price (per head)</label>
-          <input type="number" id="cattlePrice" value="18000" min="1000">
-        </div>
-        <div class="form-group">
-          <label for="customCattle">Custom Cattle Count (optional)</label>
-          <input type="number" id="customCattle" placeholder="Leave blank for estimate" min="1" max="100">
-        </div>
+    <div class="form-row hidden" id="zwFields">
+      <div class="field">
+        <label>Cattle Price (USD per head)</label>
+        <input type="number" id="zwCattlePrice" value="500" min="100">
+      </div>
+      <div class="field">
+        <label>Additional Money Component (USD)</label>
+        <input type="number" id="zwCustom" value="0" min="0">
       </div>
     </div>
-
-    <div class="actions">
-      <button class="btn btn-primary" onclick="calculate()">Calculate Estimate</button>
-      <button class="btn btn-secondary" onclick="resetCalc()">Reset</button>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="calculate()">Calculate Lobola Estimate</button>
+      <button class="btn btn-outline" onclick="resetCalc()">Reset</button>
     </div>
   </div>
 
-  <!-- Results -->
-  <div class="card hidden" id="resultsCard">
-    <h2>Lobola Estimate</h2>
-    <div class="stat-grid" id="statGrid"></div>
-    <h3 style="margin:1.25rem 0 .75rem;">Breakdown</h3>
-    <ul class="breakdown-list" id="breakdown"></ul>
-  </div>
+  <!-- ── RESULTS ── -->
+  <div class="results" id="results">
 
-  <!-- Cultural Context -->
-  <div class="card hidden" id="contextCard">
-    <h2>Cultural Context</h2>
-    <div class="context-section" id="culturalContext"></div>
-    <div class="tips">
-      <h3>Negotiation Guidance</h3>
-      <ul>
-        <li>Lobola negotiations are conducted between families, not individuals. Bring respected elders.</li>
-        <li>The groom's family typically sends a formal letter of intent before negotiations begin.</li>
-        <li>It is customary to negotiate respectfully. The process is about building relationships, not bargaining.</li>
-        <li>Payment can often be arranged in instalments if both families agree.</li>
-        <li>Some families allow partial payment in cattle and partial in cash.</li>
-        <li>In many cultures, the groom's family also covers additional costs like travel and catering for the ceremony.</li>
-        <li>Always research the specific customs of the bride's culture and clan before negotiations.</li>
-      </ul>
+    <!-- Cattle Visual -->
+    <div class="cattle-visual">
+      <h3>Your Lobola Estimate</h3>
+      <div class="cattle-grid" id="cattleGrid"></div>
+      <div class="cattle-count" id="cattleCountDisplay">0</div>
+      <div class="cattle-label">cattle estimated</div>
     </div>
+
+    <!-- Stat Cards -->
+    <div class="stat-row">
+      <div class="stat-card primary">
+        <div class="stat-lbl">Cash Equivalent</div>
+        <div class="stat-val" id="rTotal">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-lbl">Per Head</div>
+        <div class="stat-val" id="rPerHead">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-lbl">Cattle Count</div>
+        <div class="stat-val" id="rCattle">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-lbl">Country</div>
+        <div class="stat-val" id="rCountry">—</div>
+        <div class="stat-sub" id="rCurrency"></div>
+      </div>
+    </div>
+
+    <!-- Lobola Meter -->
+    <div class="meter-section">
+      <div class="meter-title">Lobola Level Meter</div>
+      <div class="meter-track"><div class="meter-fill" id="meterFill" style="width:0%"></div></div>
+      <div class="meter-labels"><span>Low (4-6)</span><span>Average (8-10)</span><span>High (12-15)</span><span>Royal (16+)</span></div>
+      <div class="meter-indicator" id="meterLabel"></div>
+    </div>
+
+    <!-- Charts -->
+    <div class="chart-row">
+      <div class="chart-card">
+        <div class="chart-title">Country Comparison (same profile)</div>
+        <canvas id="chartCountry" height="260"></canvas>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">How Education Affects Lobola</div>
+        <canvas id="chartEducation" height="260"></canvas>
+      </div>
+    </div>
+
+    <!-- Breakdown -->
+    <div class="breakdown">
+      <h3>Detailed Breakdown</h3>
+      <ul class="breakdown-list" id="breakdownList"></ul>
+    </div>
+
+    <!-- Payment Plan -->
+    <div class="payment-section">
+      <div class="payment-title">Payment Plan Options</div>
+      <div class="payment-grid" id="paymentGrid"></div>
+    </div>
+
+    <!-- Fun Comparisons -->
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-title"><span>😂</span> Fun Comparisons</div>
+      <div class="fun-grid" id="funGrid"></div>
+    </div>
+
+    <!-- Did You Know -->
+    <div class="dyk-box" id="dykBox"></div>
+
+    <!-- Cultural Context -->
+    <div class="context-card">
+      <h3 id="contextTitle">Cultural Context</h3>
+      <p id="contextText"></p>
+      <div class="tips">
+        <h4>Negotiation Guidance</h4>
+        <ul>
+          <li>Bring respected elders — negotiations are between families, not individuals</li>
+          <li>Send a formal letter of intent before negotiations begin</li>
+          <li>The process is about building relationships, not bargaining</li>
+          <li>Payment can be arranged in instalments if both families agree</li>
+          <li>Some families allow partial cattle + partial cash payment</li>
+          <li>Research the bride's specific culture and clan customs beforehand</li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="resultActions"></div>
   </div>
 
   <!-- FAQ -->
   <div class="faq">
     <h2>Frequently Asked Questions</h2>
-    <div class="faq-item" onclick="this.classList.toggle('open')">
-      <div class="faq-q">What is lobola?<span class="arrow">&#9660;</span></div>
-      <div class="faq-a">Lobola (also called bride price, bogadi, or mahadi) is a traditional practice in Southern Africa where the groom's family pays the bride's family as a sign of respect, gratitude, and to formalize the union between two families. It is not a purchase but a symbol of appreciation.</div>
-    </div>
-    <div class="faq-item" onclick="this.classList.toggle('open')">
-      <div class="faq-q">How many cattle are typically paid?<span class="arrow">&#9660;</span></div>
-      <div class="faq-a">In South Africa, the typical range is 8-12 cattle for a first marriage. In Zimbabwe, 6-10 cattle is common. The number varies by culture, region, family status, and the bride's qualifications. Royal families may request significantly more.</div>
-    </div>
-    <div class="faq-item" onclick="this.classList.toggle('open')">
-      <div class="faq-q">Can lobola be paid in cash?<span class="arrow">&#9660;</span></div>
-      <div class="faq-a">Yes, many modern families accept cash equivalents. The cash value is typically based on the current market price of cattle in the region. Some families accept a combination of cattle and cash.</div>
-    </div>
-    <div class="faq-item" onclick="this.classList.toggle('open')">
-      <div class="faq-q">Does education level affect lobola?<span class="arrow">&#9660;</span></div>
-      <div class="faq-a">In many families, a bride's education and professional status may be considered during negotiations, though practices vary. Some view higher education as warranting additional cattle, while others consider it irrelevant. This calculator includes it as one of many factors families might consider.</div>
-    </div>
-    <div class="faq-item" onclick="this.classList.toggle('open')">
-      <div class="faq-q">Is this calculator accurate?<span class="arrow">&#9660;</span></div>
-      <div class="faq-a">This is an educational estimation tool only. Actual lobola is determined through private family negotiations and varies greatly. The estimates provided are based on general ranges and should not be taken as definitive figures.</div>
-    </div>
+    <details><summary>What is lobola?</summary><div class="faq-a">Lobola (also called bride price, bogadi, or mahadi) is a traditional practice in Southern Africa where the groom's family pays the bride's family as a sign of respect, gratitude, and to formalize the union. It is not a purchase but a symbol of appreciation and family bonding.</div></details>
+    <details><summary>How many cattle are typically paid?</summary><div class="faq-a">In South Africa, 8-12 cattle is typical for a first marriage. In Zimbabwe, 6-10 cattle is common. The number varies by culture, region, family status, and the bride's qualifications. Royal families may request significantly more.</div></details>
+    <details><summary>Can lobola be paid in cash?</summary><div class="faq-a">Yes, many modern families accept cash equivalents. The cash value is typically based on the current market price of cattle in the region. Some families accept a combination of cattle and cash.</div></details>
+    <details><summary>Does education level affect lobola?</summary><div class="faq-a">In many families, a bride's education and professional status may be considered, though practices vary. Some view higher education as warranting additional cattle, while others consider it irrelevant.</div></details>
+    <details><summary>Is this calculator accurate?</summary><div class="faq-a">This is an educational estimation tool only. Actual lobola is determined through private family negotiations and varies greatly. Use these estimates as a starting conversation point, not definitive figures.</div></details>
   </div>
 </div>
 
-<afro-related-tools category="african"></afro-related-tools>
+<afro-related-tools category="african" current="lobola-calculator"></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
 
 <script>
-const countryData = {
-  za: {
-    currency: 'ZAR', symbol: 'R', baseCattle: 10, cattlePrice: 18000,
-    regions: ['Gauteng','KwaZulu-Natal','Eastern Cape','Limpopo','Mpumalanga','North West','Free State','Western Cape','Northern Cape'],
-    context: 'In South Africa, lobola (ilobolo in Zulu/Xhosa, magadi in Sotho/Tswana) is a well-established tradition practiced across most ethnic groups. The process typically involves the groom\'s family sending "abakhongi" (negotiators) to the bride\'s family. Cattle remain the traditional unit, though cash equivalents are widely accepted. The typical range is 8-15 cattle. Additional payments may include "umembeso" (gifts to the bride\'s family) and "umabo" (gifts from the bride to the groom\'s family).'
+var COUNTRIES = {
+  za: { name:'South Africa', currency:'ZAR', symbol:'R', baseCattle:10, cattlePrice:18000,
+    regions:['Gauteng','KwaZulu-Natal','Eastern Cape','Limpopo','Mpumalanga','North West','Free State','Western Cape','Northern Cape'],
+    context:'In South Africa, lobola (ilobolo in Zulu/Xhosa, magadi in Sotho/Tswana) is a well-established tradition. The groom\'s family sends "abakhongi" (negotiators). Cattle remain the traditional unit, though cash equivalents are widely accepted. Additional payments may include "umembeso" (gifts to the bride\'s family) and "umabo" (gifts from the bride to the groom\'s family).',
+    usdRate: 18.5
   },
-  zw: {
-    currency: 'USD', symbol: '$', baseCattle: 8, cattlePrice: 500,
-    regions: ['Harare','Bulawayo','Manicaland','Mashonaland','Matabeleland','Midlands','Masvingo'],
-    context: 'In Zimbabwe, lobola (roora in Shona, lobola in Ndebele) involves several components: "mombe yeumai" (cow for the mother), "mombe yechimanda" (cow for the father), "danga" (general cattle payment), and additional cash components. The Shona tradition includes "rutsambo" (a goat to ask for the daughter\'s hand). Negotiations are led by appointed intermediaries called "munyai".'
+  zw: { name:'Zimbabwe', currency:'USD', symbol:'$', baseCattle:8, cattlePrice:500,
+    regions:['Harare','Bulawayo','Manicaland','Mashonaland','Matabeleland','Midlands','Masvingo'],
+    context:'In Zimbabwe, lobola (roora in Shona, lobola in Ndebele) involves "mombe yeumai" (cow for the mother), "mombe yechimanda" (cow for the father), and "danga" (general cattle payment). The Shona tradition includes "rutsambo" (a goat to ask for the daughter\'s hand). Negotiations are led by "munyai" (appointed intermediaries).',
+    usdRate: 1
   },
-  sz: {
-    currency: 'SZL', symbol: 'E', baseCattle: 12, cattlePrice: 12000,
-    regions: ['Hhohho','Manzini','Lubombo','Shiselweni'],
-    context: 'In Eswatini (Swaziland), lobola ("emalobo" or "lilobolo") is central to Swazi culture. The practice typically involves the payment of cattle, though cash equivalents are accepted. Royal families and families of higher social standing may require higher lobola. The process is guided by strict cultural protocols and the extended family plays a key role.'
+  sz: { name:'Eswatini', currency:'SZL', symbol:'E', baseCattle:12, cattlePrice:12000,
+    regions:['Hhohho','Manzini','Lubombo','Shiselweni'],
+    context:'In Eswatini, "emalobo" or "lilobolo" is central to Swazi culture. Royal and prominent families typically require higher lobola. The process follows strict cultural protocols with the extended family playing a key role.',
+    usdRate: 18.5
   },
-  ls: {
-    currency: 'LSL', symbol: 'M', baseCattle: 10, cattlePrice: 10000,
-    regions: ['Maseru','Leribe','Berea','Butha-Buthe','Mokhotlong','Qacha\'s Nek','Quthing','Mafeteng','Mohale\'s Hoek','Thaba-Tseka'],
-    context: 'In Lesotho, "bohali" (lobola) is a fundamental part of Basotho marriage customs. The payment is made in cattle, with a typical expectation of 8-12 cows. The process involves formal delegations ("batsoali") from the groom\'s family visiting the bride\'s family. The negotiations also include blankets and other symbolic gifts.'
+  ls: { name:'Lesotho', currency:'LSL', symbol:'M', baseCattle:10, cattlePrice:10000,
+    regions:['Maseru','Leribe','Berea','Butha-Buthe','Mokhotlong','Quthing','Mafeteng'],
+    context:'In Lesotho, "bohali" involves formal delegations from the groom\'s family visiting the bride\'s family. The negotiations also include blankets and other symbolic gifts. The typical expectation is 8-12 cows.',
+    usdRate: 18.5
   },
-  bw: {
-    currency: 'BWP', symbol: 'P', baseCattle: 8, cattlePrice: 8000,
-    regions: ['Gaborone','Francistown','Central','North-West','Southern','Kgalagadi','Kgatleng','Kweneng','South-East','North-East'],
-    context: 'In Botswana, "bogadi" is the term for bride price. The Tswana tradition typically involves 6-10 cattle, though this varies by family. The groom\'s uncles and elders lead the negotiations. Bogadi is seen as compensation and thanksgiving to the bride\'s family and establishes the legitimacy of the marriage and rights over children.'
+  bw: { name:'Botswana', currency:'BWP', symbol:'P', baseCattle:8, cattlePrice:8000,
+    regions:['Gaborone','Francistown','Central','North-West','Southern','Kgalagadi','Kgatleng','Kweneng'],
+    context:'In Botswana, "bogadi" involves 6-10 cattle typically. The groom\'s uncles and elders lead negotiations. Bogadi establishes marriage legitimacy and rights over children.',
+    usdRate: 13.5
   },
-  na: {
-    currency: 'NAD', symbol: 'N$', baseCattle: 10, cattlePrice: 15000,
-    regions: ['Windhoek','Oshana','Ohangwena','Omusati','Kavango','Zambezi','Erongo','Khomas','Otjozondjupa','Kunene'],
-    context: 'In Namibia, lobola practices vary by ethnic group. The Owambo, Herero, and Kavango peoples each have distinct traditions. Among the Herero, cattle are central to the lobola process, with 8-15 cattle being common. The Owambo tradition may involve cattle, goats, and cash. Modern urban families often negotiate primarily in cash terms.'
+  na: { name:'Namibia', currency:'NAD', symbol:'N$', baseCattle:10, cattlePrice:15000,
+    regions:['Windhoek','Oshana','Ohangwena','Omusati','Kavango','Zambezi','Erongo'],
+    context:'In Namibia, lobola practices vary by ethnic group. The Owambo, Herero, and Kavango peoples each have distinct traditions. Among the Herero, 8-15 cattle is common. Modern urban families often negotiate primarily in cash.',
+    usdRate: 18.5
   }
 };
 
-const eduMultiplier = { none: 0.8, matric: 0.9, diploma: 1.0, degree: 1.1, honours: 1.2, masters: 1.3, doctorate: 1.5 };
-const profMultiplier = { unemployed: 0.85, entry: 0.95, skilled: 1.0, senior: 1.1, executive: 1.2, doctor: 1.3, lawyer: 1.25, engineer: 1.2 };
-const familyMultiplier = { regular: 1.0, chief: 1.5, prominent: 1.3 };
-const marriageMultiplier = { first: 1.0, second: 0.75, hasChildren: 0.85 };
+var EDU = { none:0.8, matric:0.9, diploma:1.0, degree:1.1, honours:1.2, masters:1.3, doctorate:1.5 };
+var PROF = { unemployed:0.85, entry:0.95, skilled:1.0, senior:1.1, executive:1.2, doctor:1.3, lawyer:1.25, engineer:1.2 };
+var FAMILY = { regular:1.0, chief:1.5, prominent:1.3 };
+var MARRIAGE = { first:1.0, second:0.75, hasChildren:0.85 };
+var EDU_LABELS = { none:'No Qual', matric:'Matric', diploma:'Diploma', degree:'Degree', honours:'Honours', masters:'Masters', doctorate:'PhD' };
+
+function fmt(n) { return n.toLocaleString('en-US',{maximumFractionDigits:0}); }
 
 function updateCountryFields() {
-  const country = document.getElementById('country').value;
-  const data = countryData[country];
-  const regionSel = document.getElementById('region');
-  regionSel.innerHTML = data.regions.map(r => `<option value="${r}">${r}</option>`).join('');
-  document.getElementById('cattlePrice').value = data.cattlePrice;
-  document.getElementById('zwFields').classList.toggle('hidden', country !== 'zw');
-  document.getElementById('cattlePriceGroup').classList.toggle('hidden', country === 'zw');
-  if (country === 'zw') document.getElementById('zwCattlePrice').value = data.cattlePrice;
+  var c = document.getElementById('country').value;
+  var d = COUNTRIES[c];
+  var sel = document.getElementById('region');
+  sel.innerHTML = d.regions.map(function(r){return '<option value="'+r+'">'+r+'</option>';}).join('');
+  document.getElementById('cattlePrice').value = d.cattlePrice;
+  document.getElementById('zwFields').classList.toggle('hidden', c !== 'zw');
+  document.getElementById('priceFields').classList.toggle('hidden', c === 'zw');
+  if (c === 'zw') document.getElementById('zwCattlePrice').value = d.cattlePrice;
+}
+
+function getCattleCount(countryKey, edu, prof, fam, mar) {
+  var d = COUNTRIES[countryKey];
+  var count = Math.round(d.baseCattle * EDU[edu] * PROF[prof] * FAMILY[fam] * MARRIAGE[mar]);
+  return Math.max(4, count);
 }
 
 function calculate() {
-  const country = document.getElementById('country').value;
-  const data = countryData[country];
-  const edu = document.getElementById('education').value;
-  const prof = document.getElementById('profession').value;
-  const family = document.getElementById('familyStatus').value;
-  const marriage = document.getElementById('marriageType').value;
-  const customCattle = parseInt(document.getElementById('customCattle').value);
+  var countryKey = document.getElementById('country').value;
+  var d = COUNTRIES[countryKey];
+  var edu = document.getElementById('education').value;
+  var prof = document.getElementById('profession').value;
+  var fam = document.getElementById('familyStatus').value;
+  var mar = document.getElementById('marriageType').value;
+  var customCattle = parseInt(document.getElementById('customCattle').value);
 
-  let cattleCount = customCattle || data.baseCattle;
-  if (!customCattle) {
-    cattleCount = Math.round(data.baseCattle * eduMultiplier[edu] * profMultiplier[prof] * familyMultiplier[family] * marriageMultiplier[marriage]);
-    cattleCount = Math.max(4, cattleCount);
-  }
+  var cattleCount = customCattle || getCattleCount(countryKey, edu, prof, fam, mar);
+  var cattlePrice, totalValue, breakdown = [];
 
-  let cattlePrice, totalCattle, breakdown = [], extras = 0;
-
-  if (country === 'zw') {
+  if (countryKey === 'zw') {
     cattlePrice = parseFloat(document.getElementById('zwCattlePrice').value) || 500;
-    const customMoney = parseFloat(document.getElementById('zwCustom').value) || 0;
-    const mombeYeumai = 1;
-    const mombeYechimanda = 1;
-    const danga = Math.max(2, cattleCount - 2);
-    totalCattle = mombeYeumai + mombeYechimanda + danga;
-    const cattleValue = totalCattle * cattlePrice;
-    extras = customMoney;
+    var extra = parseFloat(document.getElementById('zwCustom').value) || 0;
+    var mom = 1, dad = 1, danga = Math.max(2, cattleCount - 2);
+    cattleCount = mom + dad + danga;
+    totalValue = cattleCount * cattlePrice + extra;
     breakdown = [
-      ['Mombe Yeumai (Mother\'s cow)', `${mombeYeumai} head = ${data.symbol} ${(mombeYeumai * cattlePrice).toLocaleString()}`],
-      ['Mombe Yechimanda (Father\'s cow)', `${mombeYechimanda} head = ${data.symbol} ${(mombeYechimanda * cattlePrice).toLocaleString()}`],
-      ['Danga (General payment)', `${danga} head = ${data.symbol} ${(danga * cattlePrice).toLocaleString()}`],
-      ['Additional Money Component', `${data.symbol} ${customMoney.toLocaleString()}`],
-      ['Total Estimated Lobola', `${data.symbol} ${(cattleValue + extras).toLocaleString()}`]
+      ["Mombe Yeumai (Mother's cow)", mom+' head = '+d.symbol+' '+fmt(mom*cattlePrice)],
+      ["Mombe Yechimanda (Father's cow)", dad+' head = '+d.symbol+' '+fmt(dad*cattlePrice)],
+      ['Danga (General payment)', danga+' head = '+d.symbol+' '+fmt(danga*cattlePrice)],
+      ['Additional Money', d.symbol+' '+fmt(extra)],
+      ['Total Estimated Lobola', d.symbol+' '+fmt(totalValue)]
     ];
   } else {
-    cattlePrice = parseFloat(document.getElementById('cattlePrice').value) || data.cattlePrice;
-    totalCattle = cattleCount;
-    const cattleValue = totalCattle * cattlePrice;
+    cattlePrice = parseFloat(document.getElementById('cattlePrice').value) || d.cattlePrice;
+    totalValue = cattleCount * cattlePrice;
     breakdown = [
-      ['Cattle Count', `${totalCattle} head`],
-      ['Price per Head', `${data.symbol} ${cattlePrice.toLocaleString()}`],
-      ['Cattle Value', `${data.symbol} ${cattleValue.toLocaleString()}`],
-      ['Total Cash Equivalent', `${data.symbol} ${cattleValue.toLocaleString()}`]
+      ['Cattle Count', cattleCount + ' head'],
+      ['Price per Head', d.symbol+' '+fmt(cattlePrice)],
+      ['Cattle Value', d.symbol+' '+fmt(totalValue)],
+      ['Total Cash Equivalent', d.symbol+' '+fmt(totalValue)]
     ];
   }
 
-  const totalValue = country === 'zw' ? (totalCattle * cattlePrice + extras) : (totalCattle * cattlePrice);
-  const statGrid = document.getElementById('statGrid');
-  statGrid.innerHTML = `
-    <div class="stat-card"><div class="value">${totalCattle}</div><div class="label">Estimated Cattle</div></div>
-    <div class="stat-card"><div class="value">${data.symbol} ${cattlePrice.toLocaleString()}</div><div class="label">Per Head</div></div>
-    <div class="stat-card"><div class="value">${data.symbol} ${totalValue.toLocaleString()}</div><div class="label">Cash Equivalent</div></div>
-  `;
+  // ── Cattle visual ──
+  var grid = document.getElementById('cattleGrid');
+  grid.innerHTML = '';
+  for (var i = 0; i < cattleCount; i++) {
+    var span = document.createElement('span');
+    span.className = 'cow';
+    span.textContent = '\uD83D\uDC02';
+    span.style.animationDelay = (i * 0.05) + 's';
+    grid.appendChild(span);
+  }
+  document.getElementById('cattleCountDisplay').textContent = cattleCount;
 
-  const bList = document.getElementById('breakdown');
-  bList.innerHTML = breakdown.map(b => `<li><span>${b[0]}</span><span>${b[1]}</span></li>`).join('');
+  // ── Stats ──
+  document.getElementById('rTotal').textContent = d.symbol+' '+fmt(totalValue);
+  document.getElementById('rPerHead').textContent = d.symbol+' '+fmt(cattlePrice);
+  document.getElementById('rCattle').textContent = cattleCount;
+  document.getElementById('rCountry').textContent = d.name;
+  document.getElementById('rCurrency').textContent = d.currency;
 
-  document.getElementById('culturalContext').innerHTML = `<h3>${document.getElementById('country').selectedOptions[0].text}</h3><p>${data.context}</p>`;
+  // ── Meter ──
+  var pct = Math.min(100, (cattleCount / 20) * 100);
+  document.getElementById('meterFill').style.width = pct + '%';
+  var level = cattleCount <= 6 ? 'Low Range' : cattleCount <= 10 ? 'Average Range' : cattleCount <= 15 ? 'High Range' : 'Royal Range';
+  document.getElementById('meterLabel').textContent = cattleCount + ' cattle — ' + level;
+  document.getElementById('meterLabel').style.color = cattleCount <= 6 ? '#10b981' : cattleCount <= 10 ? '#007AFF' : cattleCount <= 15 ? '#f59e0b' : '#ef4444';
 
-  document.getElementById('resultsCard').classList.remove('hidden');
-  document.getElementById('contextCard').classList.remove('hidden');
-  document.getElementById('resultsCard').scrollIntoView({ behavior: 'smooth' });
+  // ── Breakdown ──
+  var bList = document.getElementById('breakdownList');
+  bList.innerHTML = breakdown.map(function(b){return '<li><span>'+b[0]+'</span><span style="font-weight:700">'+b[1]+'</span></li>';}).join('');
+
+  // ── Payment plan ──
+  var pg = document.getElementById('paymentGrid');
+  pg.innerHTML = [
+    { label:'Full Payment', months:1, badge:false },
+    { label:'6 Months', months:6, badge:true },
+    { label:'12 Months', months:12, badge:false }
+  ].map(function(p){
+    var amt = Math.ceil(totalValue / p.months);
+    return '<div class="payment-option'+(p.badge?' recommended':'')+'">'+
+      (p.badge?'<div class="po-badge">POPULAR</div>':'')+
+      '<div class="po-label">'+p.label+'</div>'+
+      '<div class="po-value">'+d.symbol+' '+fmt(amt)+'</div>'+
+      '<div class="po-sub">'+(p.months===1?'one-time':'per month for '+p.months+' months')+'</div></div>';
+  }).join('');
+
+  // ── Fun comparisons ──
+  var usdVal = totalValue / d.usdRate;
+  var funItems = [
+    {emoji:'📱',title:'In iPhones',text:'Could buy ~'+Math.round(usdVal/1200)+' iPhone 16 Pros',color:'blue'},
+    {emoji:'🍖',title:'In Braais/BBQs',text:'Could fund '+Math.round(usdVal/30)+' legendary braais',color:'rose'},
+    {emoji:'⛽',title:'Petrol',text:'About '+Math.round(usdVal/1.3)+' litres of fuel',color:'green'},
+    {emoji:'🐄',title:'Fun Fact',text:cattleCount+' cows eat ~'+Math.round(cattleCount*25)+' kg of grass per day!',color:'gold'}
+  ];
+  document.getElementById('funGrid').innerHTML = funItems.map(function(f){
+    return '<div class="fun-card '+f.color+'"><div class="fun-emoji">'+f.emoji+'</div><div class="fun-title">'+f.title+'</div><div class="fun-text">'+f.text+'</div></div>';
+  }).join('');
+
+  // ── Did you know ──
+  var dyks = {
+    za:'In Zulu tradition, the groom must pay an extra cow called "Inkomo Kamama" specifically for the bride\'s mother — because she carried the bride for 9 months! Respect. 🫡',
+    zw:'In Shona culture, the groom\'s family must pay "rutsambo" (a goat) just to ask permission to START the lobola negotiation. Think of it as a "cover charge" for the conversation! 🐐',
+    sz:'In Eswatini, some royal families have demanded up to 100 cattle for lobola! That\'s a whole farm. King Mswati III reportedly paid 170 cattle for one of his wives. 👑🐄',
+    ls:'In Lesotho, the traditional blanket (Seanamarena) is as important as the cattle. A Basotho man without his blanket at a lobola ceremony is like showing up to a job interview in pyjamas! 🧣',
+    bw:'Botswana set a legal maximum of 8 cattle for bogadi in some communities to prevent families from demanding excessive amounts. Progressive! ⚖️',
+    na:'Among the Herero people of Namibia, the groom\'s cattle are inspected by the bride\'s family to ensure quality. No skinny cows allowed! They want the thicc ones. 🐄💪'
+  };
+  document.getElementById('dykBox').innerHTML = '<div class="dyk-title">🤓 Did You Know?</div><div class="dyk-text">'+(dyks[countryKey]||dyks.za)+'</div>';
+
+  // ── Context ──
+  document.getElementById('contextTitle').textContent = d.name + ' — Cultural Context';
+  document.getElementById('contextText').textContent = d.context;
+
+  // Show results first so canvas has dimensions, then draw charts
+  document.getElementById('results').classList.add('show');
+  drawCountryChart(edu, prof, fam, mar, cattlePrice);
+  drawEducationChart(countryKey, prof, fam, mar);
+  document.getElementById('results').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+function drawCountryChart(edu, prof, fam, mar) {
+  var c = document.getElementById('chartCountry');
+  var ctx = c.getContext('2d');
+  var W = c.offsetWidth, H = 260;
+  c.width = W*2; c.height = H*2; ctx.scale(2,2);
+  ctx.clearRect(0,0,W,H);
+
+  var pad = {t:20,r:20,b:50,l:20};
+  var cW = W-pad.l-pad.r, cH = H-pad.t-pad.b;
+  var keys = ['za','zw','sz','ls','bw','na'];
+  var data = keys.map(function(k){ return getCattleCount(k,edu,prof,fam,mar); });
+  var maxVal = Math.max.apply(null, data);
+  if (maxVal === 0) maxVal = 1;
+  var colors = ['#007AFF','#10b981','#f59e0b','#8b5cf6','#ef4444','#06b6d4'];
+  var barW = cW / (keys.length * 1.8);
+
+  keys.forEach(function(k,i){
+    var x = pad.l + (cW/(keys.length))*(i+0.5) - barW/2;
+    var barH = (data[i]/maxVal)*cH;
+    var y = pad.t+cH-barH;
+    ctx.fillStyle = colors[i];
+    ctx.beginPath();
+    var r=5;
+    ctx.moveTo(x+r,y); ctx.lineTo(x+barW-r,y); ctx.quadraticCurveTo(x+barW,y,x+barW,y+r);
+    ctx.lineTo(x+barW,pad.t+cH); ctx.lineTo(x,pad.t+cH); ctx.lineTo(x,y+r); ctx.quadraticCurveTo(x,y,x+r,y);
+    ctx.fill();
+    // Value
+    ctx.fillStyle=colors[i]; ctx.font='bold 13px DM Sans'; ctx.textAlign='center';
+    ctx.fillText(data[i]+' head',x+barW/2,y-6);
+    // Label
+    ctx.fillStyle='#64748b'; ctx.font='10px DM Sans';
+    ctx.fillText(COUNTRIES[k].name.split(' ')[0],x+barW/2,pad.t+cH+14);
+  });
+}
+
+function drawEducationChart(countryKey, prof, fam, mar) {
+  var c = document.getElementById('chartEducation');
+  var ctx = c.getContext('2d');
+  var W = c.offsetWidth, H = 260;
+  c.width = W*2; c.height = H*2; ctx.scale(2,2);
+  ctx.clearRect(0,0,W,H);
+
+  var pad = {t:20,r:20,b:50,l:20};
+  var cW = W-pad.l-pad.r, cH = H-pad.t-pad.b;
+  var eduKeys = ['none','matric','diploma','degree','honours','masters','doctorate'];
+  var data = eduKeys.map(function(e){ return getCattleCount(countryKey,e,prof,fam,mar); });
+  var maxVal = Math.max.apply(null, data);
+  if (maxVal === 0) maxVal = 1;
+  var barW = cW / (eduKeys.length * 1.6);
+
+  eduKeys.forEach(function(e,i){
+    var x = pad.l + (cW/eduKeys.length)*(i+0.5) - barW/2;
+    var barH = (data[i]/maxVal)*cH;
+    var y = pad.t+cH-barH;
+    var isSelected = e === document.getElementById('education').value;
+    ctx.fillStyle = isSelected ? '#007AFF' : '#94a3b8';
+    ctx.beginPath();
+    var r=4;
+    ctx.moveTo(x+r,y); ctx.lineTo(x+barW-r,y); ctx.quadraticCurveTo(x+barW,y,x+barW,y+r);
+    ctx.lineTo(x+barW,pad.t+cH); ctx.lineTo(x,pad.t+cH); ctx.lineTo(x,y+r); ctx.quadraticCurveTo(x,y,x+r,y);
+    ctx.fill();
+    ctx.fillStyle = isSelected ? '#007AFF' : '#94a3b8';
+    ctx.font = 'bold 11px DM Sans'; ctx.textAlign='center';
+    ctx.fillText(data[i],x+barW/2,y-5);
+    ctx.fillStyle='#64748b'; ctx.font='9px DM Sans';
+    ctx.fillText(EDU_LABELS[e],x+barW/2,pad.t+cH+14);
+  });
 }
 
 function resetCalc() {
@@ -407,25 +617,11 @@ function resetCalc() {
   document.getElementById('marriageType').value = 'first';
   document.getElementById('customCattle').value = '';
   updateCountryFields();
-  document.getElementById('resultsCard').classList.add('hidden');
-  document.getElementById('contextCard').classList.add('hidden');
+  document.getElementById('results').classList.remove('show');
 }
 
 document.addEventListener('DOMContentLoaded', updateCountryFields);
 </script>
-<script src="/assets/js/lib/saved-tools.js" defer></script>
-<script src="/assets/js/favorites-widget.js" defer></script>
 
-<script>
-(function(){
-  var target = document.getElementById('resultsCard');
-  if (!target) return;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
-  div.innerHTML = '<save-result-button tool-slug="lobola-calculator" tool-name="Lobola Calculator"></save-result-button><share-result-button tool-name="Lobola Calculator" tool-slug="lobola-calculator"></share-result-button>';
-  target.appendChild(div);
-})();
-</script>
 </body>
 </html>

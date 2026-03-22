@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Fuel Cost Calculator | AfroTools</title>
   <meta name="description" content="Calculate fuel costs for trips and generators in Africa. Pre-filled fuel prices for Nigeria, Kenya, Ghana, South Africa, Egypt. Supports PMS, AGO, DPK.">
-  <link rel="canonical" href="https://afrotools.com/tools/fuel-cost">
+  <link rel="canonical" href="https://afrotools.com/tools/fuel-cost/">
   <meta name="robots" content="index, follow">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://afrotools.com/tools/fuel-cost">
@@ -134,12 +134,27 @@
       .input-row { flex-direction: column; }
       .result-grid { grid-template-columns: 1fr 1fr; }
     }
+.xfun{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.xfun-card{padding:16px;border-radius:10px;text-align:center}
+.xfun-card.gold{background:#FFF8E7;border:1.5px solid rgba(212,168,67,.3)}
+.xfun-card.blue{background:#E8F2FF;border:1.5px solid rgba(0,122,255,.2)}
+.xfun-card.rose{background:#fff1f2;border:1.5px solid rgba(225,29,72,.2)}
+.xfun-card.green{background:#f0fdf4;border:1.5px solid #86efac}
+.xfun-emoji{font-size:2rem;margin-bottom:6px}
+.xfun-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.xfun-card.gold .xfun-title{color:#92400e}
+.xfun-card.blue .xfun-title{color:#1e40af}
+.xfun-card.rose .xfun-title{color:#be123c}
+.xfun-card.green .xfun-title{color:#166534}
+.xfun-text{font-size:.78rem;font-weight:600;color:#1e293b;line-height:1.5}
+.xfun-dyk{margin-top:16px;background:linear-gradient(135deg,#faf5ff,#f3e8ff);border:1.5px solid #c4b5fd;border-radius:12px;padding:18px}
+.xfun-dyk-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6d28d9;margin-bottom:8px}
+.xfun-dyk-text{font-size:.82rem;color:#4c1d95;line-height:1.7}
+@media(max-width:500px){.xfun{grid-template-columns:1fr}}
   </style>
 <script src="/assets/js/lib/toast.js" defer></script>
 <script src="/assets/js/afro-history.js" defer></script>
-<script src="/assets/js/components/save-result-button.js" defer></script>
-<script src="/assets/js/components/share-card-generator.js" defer></script>
-<script src="/assets/js/components/share-button.js" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -278,6 +293,7 @@
   <div id="resultCard" class="card" style="display:none;">
     <h2>Results</h2>
     <div class="result-grid" id="resultGrid"></div>
+    <div id="xfunSection"></div>
   </div>
 
   <div class="faq-section">
@@ -307,7 +323,7 @@
 
 <div class="copy-toast" id="toast">Copied!</div>
 
-<afro-related-tools category="african"></afro-related-tools>
+<afro-related-tools category="african" current="fuel-cost"></afro-related-tools>
 <afro-chat
   tool="fuel-cost"
   system="You are a practical African fuel and transport cost advisor. Help users optimise fuel costs, understand fuel prices across Africa, advise on fuel-efficient driving, compare petrol vs diesel vs CNG vehicles, and calculate trip costs. Be specific about fuel prices and subsidy situations in Nigeria, Kenya, South Africa, Ghana, and other African countries."
@@ -371,6 +387,7 @@ function calcTrip() {
     { label: 'Total Cost', value: sym + totalCost.toLocaleString('en', {minimumFractionDigits:0, maximumFractionDigits:0}), sub: curr },
     { label: 'Cost per km', value: sym + (totalCost / distKm).toFixed(1), sub: '' }
   ]);
+  showFunComparisons(totalCost);
 }
 
 function calcGen() {
@@ -399,6 +416,7 @@ function calcGen() {
     { label: 'Total Cost', value: sym + totalCost.toLocaleString('en', {minimumFractionDigits:0, maximumFractionDigits:0}), sub: curr },
     { label: 'Cost per Hour', value: sym + (totalCost / hours).toFixed(0), sub: '' }
   ]);
+  showFunComparisons(totalCost);
 }
 
 function showResults(stats) {
@@ -417,6 +435,21 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 2000);
 }
 
+function showFunComparisons(cost) {
+  var suya = Math.round(cost / 500);
+  var danfo = Math.round(cost / 200);
+  var spotify = (cost / 1800).toFixed(1);
+  var dataGB = (cost / 375).toFixed(1);
+  document.getElementById('xfunSection').innerHTML =
+    '<div class="xfun">' +
+    '<div class="xfun-card gold"><div class="xfun-emoji">\uD83C\uDF55</div><div class="xfun-title">In Suya</div><div class="xfun-text">' + suya + ' sticks of suya</div></div>' +
+    '<div class="xfun-card blue"><div class="xfun-emoji">\uD83D\uDE8C</div><div class="xfun-title">Danfo Rides</div><div class="xfun-text">' + danfo + ' danfo/matatu trips</div></div>' +
+    '<div class="xfun-card rose"><div class="xfun-emoji">\uD83C\uDFB5</div><div class="xfun-title">Spotify</div><div class="xfun-text">' + spotify + ' months of Premium</div></div>' +
+    '<div class="xfun-card green"><div class="xfun-emoji">\uD83D\uDCF1</div><div class="xfun-title">Data</div><div class="xfun-text">' + dataGB + ' GB of mobile data</div></div>' +
+    '</div>' +
+    '<div class="xfun-dyk"><div class="xfun-dyk-title">\uD83D\uDCA1 Did You Know?</div><div class="xfun-dyk-text">Lagos-Abuja is 960km. In 1960, it took 3 days by road. Today it takes 8-12 hours... or 8-12 hours. Nigerian roads haven\'t changed much! \uD83D\uDEE3\uFE0F\uD83D\uDE02</div></div>';
+}
+
 // Init
 updateFuelPrice();
 updateGenPrice();
@@ -425,16 +458,5 @@ updateGenPrice();
 <script src="/assets/js/lib/saved-tools.js" defer></script>
 <script src="/assets/js/favorites-widget.js" defer></script>
 
-<script>
-(function(){
-  var target = document.getElementById('resultCard');
-  if (!target) return;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
-  div.innerHTML = '<save-result-button tool-slug="fuel-cost" tool-name="Fuel Cost"></save-result-button><share-result-button tool-name="Fuel Cost" tool-slug="fuel-cost"></share-result-button>';
-  target.appendChild(div);
-})();
-</script>
 </body>
 </html>

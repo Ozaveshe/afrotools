@@ -269,8 +269,8 @@ function calculate() {
       tax = gain * t.marginalRates[bracket]; // mining = full income, no exemption
       method = `Income tax: ${(t.marginalRates[bracket]*100)}% (mining = income)`;
     } else {
-      tax = Math.min(cgtTax, incomeTax);
-      method = cgtTax < incomeTax ? `CGT: up to ${(t.cgtRate*100)}%` : `Income tax: ${(t.marginalRates[bracket]*100)}%`;
+      tax = Math.max(cgtTax, incomeTax);
+      method = cgtTax > incomeTax ? `CGT: up to ${(t.cgtRate*100)}%` : `Income tax: ${(t.marginalRates[bracket]*100)}%`;
       if (t.exclusion > 0) method += ` (after ${t.symbol}${t.exclusion.toLocaleString('en')} exemption)`;
     }
     effectiveRate = gain > 0 ? (tax / gain * 100) : 0;

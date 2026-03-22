@@ -14,7 +14,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Advanced BMI calculator with body fat %, macro targets, goal timeline, waist-to-hip ratio, and health risk assessment. Metric & imperial. Free for Africa.">
     <meta name="theme-color" content="var(--color-primary)">
-    <link rel="canonical" href="https://afrotools.com/tools/bmi-calculator">
+    <link rel="canonical" href="https://afrotools.com/tools/bmi-calculator/">
     <title>BMI Calculator — Body Fat, Macros, Goal Calculator & Health Profile | AfroTools</title>
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="AfroTools">
@@ -1458,6 +1458,7 @@
         function calculate() {
             const heightCm = state.unit === 'metric' ? state.height : state.height * 2.54;
             const heightM = heightCm / 100;
+            if (heightM <= 0) return;
             const weightKg = state.unit === 'metric' ? state.weight : state.weight * 0.453592;
 
             const bmi = weightKg / (heightM * heightM);

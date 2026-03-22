@@ -63,10 +63,16 @@ async function checkRateLimit(event) {
     return { allowed: false, remaining: 0, limit, resetAt: today + 'T23:59:59Z' };
   }
 
-  // Increment
-  try { await store.set(key, String(count + 1), { metadata: { ttl: 86400 } }); } catch {}
+  // Don't increment here — increment after a successful AI call via commitRateLimit()
+  return { allowed: true, remaining: limit - count - 1, limit, _key: key, _count: count };
+}
 
-  return { allowed: true, remaining: limit - count - 1, limit };
+// Increment the rate limit counter after a successful API call
+async function commitRateLimit(rateResult) {
+  if (!rateResult || !rateResult._key) return;
+  const store = await getRateStore();
+  if (!store) return;
+  try { await store.set(rateResult._key, String(rateResult._count + 1), { metadata: { ttl: 86400 } }); } catch {}
 }
 
 // Extract user_id from Supabase JWT (decode without verification — Supabase handles auth)
@@ -560,6 +566,9 @@ exports.handler = async function(event) {
 
     const data = await response.json();
     const reply = data?.content?.[0]?.text ?? "Sorry, I could not generate a response. Please try again.";
+
+    // Only count against rate limit after a successful AI call
+    await commitRateLimit(rateResult);
 
     // Cross-tool suggestions based on affinity map
     const suggestedTools = tool && TOOL_AFFINITY[tool] ? TOOL_AFFINITY[tool].slice(0, 3) : [];

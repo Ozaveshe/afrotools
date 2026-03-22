@@ -16,8 +16,8 @@ const PRECACHE = [
   '/assets/js/utils.js',
   '/assets/js/lib/error-boundary.js',
   '/assets/img/logo-mark.svg',
-  '/assets/img/icon-192.png',
-  '/assets/img/icon-512.png'
+  '/assets/img/icon-192.svg',
+  '/assets/img/icon-512.svg'
 ];
 
 /* ── Install ── */

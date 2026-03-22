@@ -101,7 +101,7 @@
 
     // Statutory deductions
     const nssf    = opts.nssf !== false    ? calcNSSF(gross) : 0;
-    const shif    = opts.shif !== false    ? Math.max(300, gross * 0.0275) : 0;
+    const shif    = opts.shif !== false    ? (gross > 0 ? Math.max(300, gross * 0.0275) : 0) : 0;
     const ahl     = opts.ahl              ? gross * 0.015 : 0;
     const pension = opts.voluntaryPension ? Math.min(30000, opts.voluntaryPension) : 0;
     const prmf    = opts.prmf             ? Math.min(15000, opts.prmf) : 0;

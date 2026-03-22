@@ -25,6 +25,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Ajo/Chama Savings Tracker | AfroTools">
 <meta name="twitter:description" content="Track rotating savings group contributions, payouts, and schedules. Free, works offline.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
@@ -43,12 +44,26 @@
   .landing-cta-primary:hover{background:#0063D1}
   .landing-stat-val.gold{color:#007AFF}
   .landing-cta-banner{background:linear-gradient(135deg,#0A1628 0%,#1a1f2e 100%)}
+  .afun{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+  .afun-card{padding:16px;border-radius:10px;text-align:center}
+  .afun-card.gold{background:#FFF8E7;border:1.5px solid rgba(212,168,67,.3)}
+  .afun-card.blue{background:#E8F2FF;border:1.5px solid rgba(0,122,255,.2)}
+  .afun-card.rose{background:#fff1f2;border:1.5px solid rgba(225,29,72,.2)}
+  .afun-card.green{background:#f0fdf4;border:1.5px solid #86efac}
+  .afun-emoji{font-size:2rem;margin-bottom:6px}
+  .afun-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+  .afun-card.gold .afun-title{color:#92400e}
+  .afun-card.blue .afun-title{color:#1e40af}
+  .afun-card.rose .afun-title{color:#be123c}
+  .afun-card.green .afun-title{color:#166534}
+  .afun-text{font-size:.78rem;font-weight:600;color:#1e293b;line-height:1.5}
+  .afun-dyk{margin-top:16px;background:linear-gradient(135deg,#faf5ff,#f3e8ff);border:1.5px solid #c4b5fd;border-radius:12px;padding:18px}
+  .afun-dyk-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6d28d9;margin-bottom:8px}
+  .afun-dyk-text{font-size:.82rem;color:#4c1d95;line-height:1.7}
+  @media(max-width:500px){.afun{grid-template-columns:1fr}}
 </style>
 <script src="/assets/js/lib/toast.js" defer></script>
 <script src="/assets/js/afro-history.js" defer></script>
-<script src="/assets/js/components/save-result-button.js" defer></script>
-<script src="/assets/js/components/share-card-generator.js" defer></script>
-<script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -127,6 +142,26 @@
     </div>
   </section>
 
+  <section class="landing-section" id="fun-facts">
+    <div class="landing-container" style="max-width:800px">
+      <div class="landing-section-head"><div class="landing-section-eyebrow" style="color:#6d28d9">Fun Facts</div><h2 class="landing-section-title">Ajo by the Numbers</h2></div>
+      <div class="afun">
+        <div class="afun-card gold"><div class="afun-emoji">&#x1F35A;</div><div class="afun-title">In Rice</div><div class="afun-text">A typical 10-person Ajo at &#x20A6;50K/month collects &#x20A6;500K per cycle &mdash; that's 6 bags of 50kg rice!</div></div>
+        <div class="afun-card blue"><div class="afun-emoji">&#x1F4F1;</div><div class="afun-title">In Phones</div><div class="afun-text">A 20-person Ajo at &#x20A6;100K/month pools &#x20A6;2M &mdash; enough for an iPhone 16 Pro!</div></div>
+        <div class="afun-card rose"><div class="afun-emoji">&#x1F3E0;</div><div class="afun-title">Rent Power</div><div class="afun-text">A 10-member group at &#x20A6;200K/month pools &#x20A6;2M per cycle &mdash; 4 months of Lagos rent!</div></div>
+        <div class="afun-card green"><div class="afun-emoji">&#x1F393;</div><div class="afun-title">School Fees</div><div class="afun-text">A 15-person group at &#x20A6;150K pools &#x20A6;2.25M &mdash; more than a semester at a private uni!</div></div>
+      </div>
+      <div class="afun-dyk">
+        <div class="afun-dyk-title">&#x1F4A1; Did You Know?</div>
+        <div class="afun-dyk-text">
+          &#x1F3E6; Ajo groups have existed in Nigeria for over 500 years! They predate modern banking by centuries. Ancient fintech!<br><br>
+          &#x1F30D; In Kenya it's called "Chama", in South Africa "Stokvel", in Cameroon "Njangi", and in West Africa "Esusu" or "Susu". Same genius idea, different names!<br><br>
+          &#x1F4B0; Over 11 million South Africans belong to Stokvels, collectively saving over R50 billion per year. That's bigger than some banks!
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="landing-section">
     <div class="landing-container">
       <div class="landing-cta-banner">
@@ -168,9 +203,13 @@
   </section>
 
 </div>
+<afro-related-tools category="african" current="ajo-tracker"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
 <script src="/assets/js/components/navbar.js" type="module"></script>
 <script src="/assets/js/components/footer.js" type="module"></script>
+<script src="/assets/js/components/related-tools.min.js" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js" defer></script>
 <script type="module">
   import { renderSavedItems } from '/assets/js/lib/save-state.js';
   renderSavedItems('ajo-tracker', 'saved-groups', { appUrl: 'app.html', itemNoun: 'group' });
@@ -205,17 +244,5 @@ async function askAI(preset){
 }
 </script>
 
-<script>
-// Save/Share buttons — manual placement needed
-(function(){
-  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
-  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
-  div.innerHTML = '<save-result-button tool-slug="ajo-tracker" tool-name="Ajo Tracker"></save-result-button><share-result-button tool-name="Ajo Tracker" tool-slug="ajo-tracker"></share-result-button>';
-  target.appendChild(div);
-})();
-</script>
 </body>
 </html>

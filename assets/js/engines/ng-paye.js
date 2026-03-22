@@ -116,7 +116,7 @@
       // Employer costs
       employerPension: opts.pension ? gross * 0.10 : 0,
       employerNHIS: nhisRate > 0 ? gross * nhisRate : 0,
-      employerNHF: opts.nhf ? gross * 0.025 : 0,
+      employerNHF: 0,
     };
   }
 
@@ -138,7 +138,7 @@
 
     const { tax, breakdown } = applyBands(taxable, NTA_BANDS);
 
-    const isExempt = taxable <= 800000 && tax === 0;
+    const isExempt = taxable <= 800000;
     const netAnnual = gross - statutory - tax;
 
     return {
@@ -158,7 +158,7 @@
       // Employer costs
       employerPension: opts.pension ? (opts.pensionableAmount || gross) * 0.10 : 0,
       employerNHIS: nhisRate > 0 ? gross * nhisRate : 0,
-      employerNHF: opts.nhf ? gross * 0.025 : 0,
+      employerNHF: 0,
     };
   }
 

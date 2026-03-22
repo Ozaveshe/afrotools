@@ -11,15 +11,20 @@
 const crypto = require('crypto');
 const { createClient } = require('@supabase/supabase-js');
 
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY
-);
-
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method not allowed' };
   }
+
+  if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_KEY) {
+    console.error('Missing SUPABASE_URL or SUPABASE_SERVICE_KEY');
+    return { statusCode: 500, body: 'Server misconfigured' };
+  }
+
+  const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_KEY
+  );
 
   // Verify Paystack signature
   const hash = crypto
@@ -32,7 +37,12 @@ exports.handler = async (event) => {
     return { statusCode: 401, body: 'Unauthorized' };
   }
 
-  const payload = JSON.parse(event.body);
+  let payload;
+  try {
+    payload = JSON.parse(event.body);
+  } catch (e) {
+    return { statusCode: 400, body: 'Invalid JSON' };
+  }
   const eventType = payload.event;
   const data = payload.data;
 
@@ -56,7 +66,7 @@ exports.handler = async (event) => {
 
         // Upsert user profile with Pro status
         const { error } = await supabase
-          .from('user_profiles')
+          .from('profiles')
           .upsert({
             email: email,
             plan: isAnnual ? 'pro_annual' : 'pro_monthly',
@@ -85,7 +95,7 @@ exports.handler = async (event) => {
         const email = data.customer?.email;
         if (email) {
           await supabase
-            .from('user_profiles')
+            .from('profiles')
             .update({ plan_status: 'cancelled', updated_at: new Date().toISOString() })
             .eq('email', email);
           console.log(`Pro cancelled for ${email}`);
@@ -97,7 +107,7 @@ exports.handler = async (event) => {
         const email = data.customer?.email;
         if (email) {
           await supabase
-            .from('user_profiles')
+            .from('profiles')
             .update({ plan_status: 'past_due', updated_at: new Date().toISOString() })
             .eq('email', email);
           console.log(`Payment failed for ${email}`);
