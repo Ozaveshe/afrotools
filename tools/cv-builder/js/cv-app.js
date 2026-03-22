@@ -575,6 +575,15 @@ const CVApp = (function() {
       updateData(path, val);
     });
 
+    // Scroll preview when user focuses a form field
+    form.addEventListener('focusin', e => {
+      const sec = e.target.closest('.cv-section');
+      if (sec && sec.dataset.section) {
+        clearTimeout(state._scrollTimer);
+        state._scrollTimer = setTimeout(() => scrollPreviewToSection(sec.dataset.section), 200);
+      }
+    });
+
     form.addEventListener('change', e => {
       const path = e.target.dataset.path;
       if (!path) return;
@@ -594,12 +603,13 @@ const CVApp = (function() {
       }
     });
 
-    // Section toggles
+    // Section toggles — scroll preview to matching section
     form.querySelectorAll('[data-toggle]').forEach(el => {
       el.addEventListener('click', () => {
         const key = el.dataset.toggle;
         state.colOpen[key] = !state.colOpen[key];
         renderEditor();
+        if (state.colOpen[key]) scrollPreviewToSection(key);
       });
     });
 
@@ -710,6 +720,41 @@ const CVApp = (function() {
       // Fallback to Slate if template not found
       if (typeof CVTemplates !== 'undefined' && CVTemplates.slate) {
         preview.innerHTML = CVTemplates.slate(d, norms, ac);
+      }
+    }
+  }
+
+  // ── Scroll preview to match form section ──────────────────
+  function scrollPreviewToSection(key) {
+    const scrollContainer = document.querySelector('.cv-preview-scroll');
+    const preview = document.getElementById('cvpreview');
+    if (!scrollContainer || !preview) return;
+    // Map form section keys to preview heading text patterns
+    const map = {
+      personal: null, // always at top
+      summary: /summary|profile|objective/i,
+      exp: /experience|employment/i,
+      edu: /education/i,
+      skills: /skills/i,
+      langs: /language/i,
+      projs: /project/i,
+      certs: /certification|membership/i,
+      refs: /reference/i,
+      extras: /award|volunteer|interest|hobbi/i,
+      nysc: /nysc|national service/i,
+      custom: /custom/i
+    };
+    if (key === 'personal') { scrollContainer.scrollTop = 0; return; }
+    const pattern = map[key];
+    if (!pattern) return;
+    // Search headings in the preview
+    const headings = preview.querySelectorAll('h2, h3, [class*="sec-title"], [class*="section-title"]');
+    for (const h of headings) {
+      if (pattern.test(h.textContent)) {
+        const rect = h.getBoundingClientRect();
+        const containerRect = scrollContainer.getBoundingClientRect();
+        scrollContainer.scrollTop += rect.top - containerRect.top - 20;
+        return;
       }
     }
   }

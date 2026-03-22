@@ -76,7 +76,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
   <div class="topbar-title">Cover Letter Generator</div>
   <div class="topbar-actions">
     <button class="btn" onclick="saveLetter()">Save</button>
-    <button class="btn btn-pri" onclick="exportPDF()">Export PDF</button>
+    <button class="btn btn-pri" onclick="exportPDF()">Download Cover Letter</button>
   </div>
 </div>
 
@@ -302,24 +302,38 @@ function loadFromUrl() {
   generate();
 }
 
-// PDF export
+// PDF export — proper letter format
 function exportPDF() {
   const preview = document.getElementById('preview');
-  const w = window.open('', '_blank');
-  w.document.write(`<!DOCTYPE html><html><head><title>Cover Letter - ${getVal('fullName') || 'Cover Letter'}</title>
+  const name = getVal('fullName') || 'Cover Letter';
+  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Cover Letter - ${name}</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Georgia,'Times New Roman',serif;color:#333;padding:48px;line-height:1.8;font-size:14px}
-.sender{margin-bottom:24px}.sender div{font-size:14px}
-.date{color:#666;font-size:14px;margin-bottom:24px}
-.recipient{margin-bottom:24px}.recipient div{font-size:14px}
-.greeting{font-weight:600;margin-bottom:16px}
-.body-para{margin-bottom:14px;text-align:justify}
-.closing{margin-top:24px}.closing .sign{font-weight:600;margin-top:16px}
-@media print{body{padding:0}}
-</style></head><body>${preview.innerHTML}</body></html>`);
-  w.document.close();
-  setTimeout(() => { w.print(); }, 300);
+body{font-family:Georgia,'Times New Roman',serif;color:#333;padding:60px 64px;line-height:1.8;font-size:13px;max-width:800px;margin:0 auto}
+.sender{margin-bottom:28px}.sender div{font-size:13px;line-height:1.6}
+.date{color:#555;font-size:13px;margin-bottom:28px}
+.recipient{margin-bottom:28px}.recipient div{font-size:13px;line-height:1.6}
+.greeting{font-weight:600;margin-bottom:18px;font-size:14px}
+.body-para{margin-bottom:16px;text-align:justify}
+.closing{margin-top:28px}.closing .sign{font-weight:600;margin-top:20px}
+.footer{text-align:center;font-size:9px;color:#bbb;margin-top:48px;border-top:1px solid #eee;padding-top:10px}
+@media print{body{padding:40px 48px}.footer{display:none}}
+</style></head><body>${preview.innerHTML}<div class="footer">Generated with AfroTools.com</div></body></html>`;
+
+  const blob = new Blob([html], {type:'text/html'});
+  const url = URL.createObjectURL(blob);
+  const w = window.open(url, '_blank');
+  if (w) {
+    w.addEventListener('load', () => { setTimeout(() => { w.print(); }, 400); });
+  } else {
+    // Popup blocked fallback
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = name.replace(/[^a-zA-Z0-9 ]/g,'').replace(/ /g,'_') + '_Cover_Letter.html';
+    a.click();
+    alert('Your cover letter has been downloaded. Open it in a browser and use Print > Save as PDF.');
+  }
+  setTimeout(() => URL.revokeObjectURL(url), 30000);
 }
 
 loadFromUrl();

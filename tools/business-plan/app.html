@@ -178,11 +178,15 @@ function goSection(i) {
   renderTabs();
   renderSection(i);
   document.getElementById('prevBtn').style.visibility = i===0?'hidden':'visible';
-  document.getElementById('nextBtn').textContent = i===SECTIONS.length-1?'Finish':'Next Section';
+  document.getElementById('nextBtn').textContent = i===SECTIONS.length-1?'Download Business Plan':'Next Section';
+  document.getElementById('nextBtn').style.background = i===SECTIONS.length-1?'linear-gradient(135deg,#059669,#10b981)':'';
 }
 
 function prevSection(){ if(currentSec>0) goSection(currentSec-1); }
-function nextSection(){ if(currentSec<SECTIONS.length-1) goSection(currentSec+1); }
+function nextSection(){
+  if(currentSec<SECTIONS.length-1) goSection(currentSec+1);
+  else exportPDF(); // Finish → download the business plan
+}
 
 function renderSection(i) {
   var sec = SECTIONS[i];
@@ -318,28 +322,37 @@ function loadPlan(id) {
 }
 
 function exportPDF() {
-  if (window.afroEmailGate && !window.afroEmailGate.check()) return;
-  var w = window.open('','_blank');
-  var html = '<html><head><title>Business Plan</title><style>body{font-family:Arial,sans-serif;max-width:700px;margin:40px auto;color:#333;font-size:12px;line-height:1.7}h1{font-size:22px;color:#111;border-bottom:2px solid #007AFF;padding-bottom:8px;margin-bottom:20px}h2{font-size:16px;color:#007AFF;margin:24px 0 8px;border-bottom:1px solid #eee;padding-bottom:4px}p{margin-bottom:12px;white-space:pre-wrap}table{width:100%;border-collapse:collapse;margin:12px 0}th,td{border:1px solid #ddd;padding:6px 10px;font-size:11px}th{background:#f0f0f0;text-align:left}.calc{font-weight:700;text-align:right}@media print{body{margin:20px}}</style></head><body>';
-  html += '<h1>'+(DATA.legalName||'Business Plan')+'</h1>';
+  var planName = DATA.legalName || 'Business Plan';
+  var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>' + esc(planName) + '</title><style>'
+    + 'body{font-family:Georgia,"Times New Roman",serif;max-width:700px;margin:40px auto;color:#333;font-size:13px;line-height:1.8;padding:40px}'
+    + 'h1{font-size:24px;color:#111;border-bottom:3px solid #007AFF;padding-bottom:10px;margin-bottom:24px;text-align:center}'
+    + 'h2{font-size:16px;color:#007AFF;margin:28px 0 10px;border-bottom:1px solid #ddd;padding-bottom:6px}'
+    + 'p{margin-bottom:14px;white-space:pre-wrap;text-align:justify}'
+    + 'strong{color:#111}'
+    + 'table{width:100%;border-collapse:collapse;margin:14px 0}th,td{border:1px solid #ccc;padding:8px 12px;font-size:12px}th{background:#f0f4f8;text-align:left;font-weight:700}'
+    + '.calc{font-weight:700;text-align:right;color:#007AFF}'
+    + '.footer{text-align:center;font-size:10px;color:#999;margin-top:40px;border-top:1px solid #eee;padding-top:12px}'
+    + '@media print{body{margin:20px;padding:0}}'
+    + '</style></head><body>';
+  html += '<h1>' + esc(planName) + '</h1>';
 
   SECTIONS.forEach(function(sec){
-    html += '<h2>'+sec.name+'</h2>';
+    html += '<h2>' + esc(sec.name) + '</h2>';
     if (sec.fields === 'FINANCIAL_TABLE') {
       html += '<table><tr><th>Item</th><th>Year 1</th><th>Year 2</th><th>Year 3</th></tr>';
       ['revenue','cogs','grossProfit','opex','marketing_cost','salaries','netProfit'].forEach(function(r){
         var label = r.replace(/_/g,' ').replace(/\b\w/g,function(c){return c.toUpperCase();});
         var isCalc = r==='grossProfit'||r==='netProfit';
-        html += '<tr><td>'+label+'</td>';
+        html += '<tr><td>' + label + '</td>';
         for(var y=1;y<=3;y++){
           var val = DATA['fin_'+r+'_y'+y]||'';
           if(isCalc){
             var rev=parseFloat(DATA['fin_revenue_y'+y])||0,cogs=parseFloat(DATA['fin_cogs_y'+y])||0;
             var opex=parseFloat(DATA['fin_opex_y'+y])||0,mkt=parseFloat(DATA['fin_marketing_cost_y'+y])||0,sal=parseFloat(DATA['fin_salaries_y'+y])||0;
             val = r==='grossProfit'?(rev-cogs):(rev-cogs-opex-mkt-sal);
-            html += '<td class="calc">'+val.toLocaleString()+'</td>';
+            html += '<td class="calc">' + val.toLocaleString() + '</td>';
           } else {
-            html += '<td style="text-align:right">'+(val?parseFloat(val).toLocaleString():'')+'</td>';
+            html += '<td style="text-align:right">' + (val?parseFloat(val).toLocaleString():'') + '</td>';
           }
         }
         html += '</tr>';
@@ -347,13 +360,28 @@ function exportPDF() {
       html += '</table>';
     } else {
       sec.fields.forEach(function(f){
-        if(DATA[f.id]) html += '<p><strong>'+f.label+':</strong><br>'+esc(DATA[f.id])+'</p>';
+        if(DATA[f.id]) html += '<p><strong>' + esc(f.label) + ':</strong><br>' + esc(DATA[f.id]) + '</p>';
       });
     }
   });
+  html += '<div class="footer">Generated with AfroTools.com &mdash; Business Plan Builder</div>';
   html += '</body></html>';
-  w.document.write(html); w.document.close();
-  setTimeout(function(){w.print();},500);
+
+  // Create downloadable HTML file, then auto-trigger print for PDF save
+  var blob = new Blob([html], {type:'text/html'});
+  var url = URL.createObjectURL(blob);
+  var w = window.open(url, '_blank');
+  if (w) {
+    w.addEventListener('load', function(){ setTimeout(function(){ w.print(); }, 400); });
+  } else {
+    // Popup blocked — fallback to download
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = (planName.replace(/[^a-zA-Z0-9 ]/g,'').replace(/ /g,'_') || 'Business_Plan') + '.html';
+    a.click();
+    alert('Your business plan has been downloaded. Open it in a browser and use Print > Save as PDF.');
+  }
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 30000);
 }
 
 function esc(s){return s?String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'):'';}

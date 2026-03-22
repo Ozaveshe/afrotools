@@ -1401,21 +1401,23 @@
         } catch (e) { /* use white fallback */ }
 
         matchesByPage[pageNum].forEach(function(match) {
+          var h = match.height || 12;
           // Cover original text with background-matched rectangle
+          // match.y is PDF baseline (bottom-up coords from pdf.js transform[5])
           page.drawRectangle({
             x: match.x - 1,
-            y: pageSize.height - match.y - 1,
+            y: match.y - 2,
             width: match.width + 2,
-            height: (match.height || 12) + 2,
+            height: h + 4,
             color: window.PDFLib.rgb(bgColor.r, bgColor.g, bgColor.b),
             opacity: 1
           });
 
-          // Draw replacement text
-          var fontSize = Math.max((match.height || 12) * 0.8, 8);
+          // Draw replacement text at baseline position
+          var fontSize = Math.max(h * 0.85, 8);
           page.drawText(replaceText, {
             x: match.x,
-            y: pageSize.height - match.y,
+            y: match.y,
             size: fontSize,
             font: font,
             color: window.PDFLib.rgb(0, 0, 0)
