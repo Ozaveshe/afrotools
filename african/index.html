@@ -137,7 +137,7 @@ a{text-decoration:none;color:inherit;}
 .tool-row{background:#fff;border:1.5px solid #e5e7eb;border-radius:12px;padding:16px;display:flex;align-items:center;gap:12px;transition:border-color .15s,box-shadow .15s,transform .15s;}
 .tool-row:hover{border-color:var(--color-primary);box-shadow:0 4px 16px rgba(0,122,255,.08);transform:translateY(-1px);}
 .tool-row.coming{opacity:.7;}
-.tr-icon{width:42px;height:42px;border-radius:10px;background:#fef9ec;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;}
+.tr-icon{width:42px;height:42px;border-radius:10px;background:#fef9ec;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;overflow:hidden;}
 .tr-body{flex:1;min-width:0;}
 .tr-name{font-size:.85rem;font-weight:700;color:#111;margin-bottom:2px;}
 .tr-desc{font-size:.72rem;color:#9ca3af;line-height:1.4;}
@@ -200,8 +200,8 @@ a{text-decoration:none;color:inherit;}
   <!-- FEATURED / FLAGSHIP AFRICAN TOOLS -->
   <div class="featured-section">
     <div class="sec-eyebrow">Flagship African Tools</div>
-    <h2 class="sec-title">Our Signature Builds</h2>
-    <p class="sec-sub">The most uniquely African tools on the internet. Calculators that solve problems no one else is solving.</p>
+    <h2 class="sec-title" style="opacity:1;transform:none;">Our Signature Builds</h2>
+    <p class="sec-sub" style="opacity:1;transform:none;">The most uniquely African tools on the internet. Calculators that solve problems no one else is solving.</p>
     <div class="featured-grid" id="featuredGrid"></div>
   </div>
 
@@ -311,7 +311,7 @@ document.addEventListener('DOMContentLoaded', function init(){
     var tImg = '/assets/img/tools/'+t.id+'.webp';
     var tFb = '/assets/img/tools/'+t.id+'.svg';
     allHtml += '<a href="'+t.href+'" class="tool-row">'
-      + '<div class="tr-icon"><img src="'+tImg+'" alt="" width="28" height="28" style="width:28px;height:28px;object-fit:contain;border-radius:6px;" loading="lazy" onerror="this.onerror=function(){this.outerHTML=\''+t.icon.replace(/'/g,"\\'")+'\';};this.src=\''+tFb+'\';"></div>'
+      + '<div class="tr-icon"><img src="'+tImg+'" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:10px;" loading="lazy" onerror="this.onerror=function(){this.outerHTML=\''+t.icon.replace(/'/g,"\\'")+'\';};this.src=\''+tFb+'\';"></div>'
       + '<div class="tr-body"><div class="tr-name">'+t.name+'</div>'
       + '<div class="tr-desc">'+(t.desc||'').substring(0,60)+(t.desc&&t.desc.length>60?'...':'')+'</div>'
       + '<span class="tr-badge live">Live</span></div>'
