@@ -1,14 +1,18 @@
 /**
  * AFROTOOLS SERVICE WORKER
- * Cache-first for static assets, network-first for pages, network-only for API
+ * Stale-while-revalidate for assets, network-first for pages, network-only for API
+ *
+ * CACHE_VERSION is stamped by `npm run build` — changing it purges old caches.
  */
-const CACHE_NAME = 'afrotools-v6';
+const CACHE_VERSION = '7982a630';  /* ← bumped by scripts/stamp-sw.js */
+const CACHE_NAME = `afrotools-v${CACHE_VERSION}`;
 const OFFLINE_URL = '/offline.html';
 
 const PRECACHE = [
   '/',
   '/offline.html',
-  '/assets/css/design-system.css',
+  '/assets/css/design-system.min.css',
+  '/assets/css/tokens.min.css',
   '/assets/css/skeleton.css',
   '/assets/js/components/tool-registry.js',
   '/assets/js/components/navbar.min.js',
@@ -54,18 +58,20 @@ self.addEventListener('fetch', e => {
   // Skip cross-origin requests
   if (url.origin !== self.location.origin) return;
 
-  // Cache-first: static assets (CSS, JS, images, fonts)
+  // Stale-while-revalidate: static assets (CSS, JS, images, fonts)
+  // Serves cached version instantly, fetches update in background for next visit
   if (/^\/(assets)\//i.test(url.pathname) || /\.(css|js|woff2?|svg|png|jpg|webp|ico)$/i.test(url.pathname)) {
     e.respondWith(
       caches.match(request).then(cached => {
-        if (cached) return cached;
-        return fetch(request).then(response => {
+        const fetchPromise = fetch(request).then(response => {
           if (response.ok) {
             const clone = response.clone();
             caches.open(CACHE_NAME).then(cache => cache.put(request, clone));
           }
           return response;
-        });
+        }).catch(() => cached);
+
+        return cached || fetchPromise;
       })
     );
     return;
