@@ -43,8 +43,9 @@
 <script src="/assets/js/components/tool-registry.min.js"></script>
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js" crossorigin="anonymous"></script>
+<script>if(!window.PDFLib){document.write('<scr'+'ipt src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"><\/scr'+'ipt>')}</script>
 <style>
   :root {
     --afro-green: var(--color-primary);
@@ -200,7 +201,7 @@
     font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.04em;
-    color: #0d2813;
+    color: #1e293b;
     margin-bottom: 6px;
     display: block;
   }
@@ -213,7 +214,7 @@
     border-radius: 7px;
     font-size: 1rem;
     font-weight: 600;
-    color: #0d2813;
+    color: #1e293b;
     outline: none;
     transition: border-color 0.18s, box-shadow 0.18s;
     font-family: 'DM Sans', sans-serif;
@@ -245,7 +246,7 @@
     text-align: center;
     transition: all 0.2s;
     font-size: 0.9rem;
-    color: #244d2c;
+    color: #334155;
     font-weight: 600;
   }
 
@@ -276,7 +277,7 @@
     user-select: none;
     font-size: 0.7rem;
     font-weight: 700;
-    color: #244d2c;
+    color: #334155;
     font-family: 'DM Sans', sans-serif;
     text-align: center;
   }
@@ -339,7 +340,7 @@
 
   .size-info {
     font-size: 0.85rem;
-    color: #0d2813;
+    color: #1e293b;
     margin-bottom: 12px;
     line-height: 1.6;
   }
@@ -416,7 +417,7 @@
 
   .info-text {
     font-size: 0.8rem;
-    color: #244d2c;
+    color: #334155;
     line-height: 1.6;
   }
 
@@ -566,7 +567,7 @@
   </share-result-button>
 </div>
           </div>
-          <div id="processingText" style="display:none;text-align:center;color:#244d2c;">
+          <div id="processingText" style="display:none;text-align:center;color:#334155;">
             <div style="margin-bottom:12px;">Compressing...</div>
             <div class="progress-bar">
               <div class="progress-fill" id="progressFill"></div>
@@ -606,8 +607,13 @@
 <script src="/assets/js/favorites-widget.js" defer></script>
 
 <script>
-  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-  const { PDFDocument } = PDFLib;
+  if (window.pdfjsLib) {
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  }
+  function getPDFDocument() {
+    if (!window.PDFLib) throw new Error('PDF library failed to load. Please refresh the page.');
+    return window.PDFLib.PDFDocument;
+  }
 
   let currentPreset = 'screen';
   let currentFile = null;
@@ -698,7 +704,7 @@
       batchFileList.innerHTML = files.map((f, i) => {
         totalSize += f.size;
         return '<div style="display:flex;justify-content:space-between;padding:6px 10px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:5px;margin-bottom:4px;font-size:0.78rem;">' +
-          '<span style="font-weight:600;color:#0d2813;">' + f.name + '</span>' +
+          '<span style="font-weight:600;color:#1e293b;">' + f.name + '</span>' +
           '<span style="color:#9ca3af;">' + formatFileSize(f.size) + '</span></div>';
       }).join('') + '<div style="font-size:0.72rem;color:#6b7280;margin-top:6px;font-weight:600;">' + files.length + ' files — Total: ' + formatFileSize(totalSize) + '</div>';
       compressBtn.disabled = false;
@@ -741,7 +747,7 @@
       batchFileList.innerHTML = files.map(f => {
         totalSize += f.size;
         return '<div style="display:flex;justify-content:space-between;padding:6px 10px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:5px;margin-bottom:4px;font-size:0.78rem;">' +
-          '<span style="font-weight:600;color:#0d2813;">' + f.name + '</span>' +
+          '<span style="font-weight:600;color:#1e293b;">' + f.name + '</span>' +
           '<span style="color:#9ca3af;">' + formatFileSize(f.size) + '</span></div>';
       }).join('') + '<div style="font-size:0.72rem;color:#6b7280;margin-top:6px;font-weight:600;">' + files.length + ' files — Total: ' + formatFileSize(totalSize) + '</div>';
       compressBtn.disabled = false;
@@ -754,7 +760,7 @@
     const arrayBuffer = await file.arrayBuffer();
     const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
     const scale = dpi / 72;
-    const pdfDoc = await PDFDocument.create();
+    const pdfDoc = await getPDFDocument().create();
     const pageCount = pdf.numPages;
 
     for (let i = 1; i <= pageCount; i++) {

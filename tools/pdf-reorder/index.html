@@ -112,7 +112,7 @@
   .upload-zone:hover, .upload-zone.dragover { border-color: var(--afro-green); background: rgba(0,122,255,0.08); }
   .upload-zone input[type="file"] { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; }
   .upload-icon { font-size: 2.5rem; margin-bottom: 10px; opacity: 0.6; }
-  .upload-title { font-size: 0.95rem; font-weight: 700; color: #0d2813; margin-bottom: 4px; }
+  .upload-title { font-size: 0.95rem; font-weight: 700; color: #1e293b; margin-bottom: 4px; }
   .upload-hint { font-size: 0.78rem; color: #9ca3af; }
 
   /* ── Toolbar ── */
@@ -162,17 +162,17 @@
   .loading-text { font-size: 0.78rem; font-weight: 600; color: #6b7280; margin-top: 8px; }
 
   /* ── Result ── */
-  .result-bar { display: none; padding: 16px 22px; background: #f0fdf4; border-top: 1px solid #bbf7d0; }
+  .result-bar { display: none; padding: 16px 22px; background: #eff6ff; border-top: 1px solid #bfdbfe; }
   .result-bar.on { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
   .result-bar.error { background: #fef2f2; border-top-color: #fecaca; }
-  .result-msg { font-size: 0.82rem; font-weight: 600; color: #166534; }
+  .result-msg { font-size: 0.82rem; font-weight: 600; color: #1e40af; }
   .result-bar.error .result-msg { color: #991b1b; }
 
   /* ── Tips ── */
   .tips-section { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px; padding: 20px 24px; margin-top: 8px; }
   .tips-title { font-size: 0.72rem; font-weight: 700; color: #374151; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
   .tips-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .tip-item { display: flex; align-items: flex-start; gap: 8px; font-size: 0.78rem; color: #244d2c; font-weight: 600; padding: 8px 12px; background: #fff; border: 1px solid #e5e7eb; border-radius: 6px; line-height: 1.4; }
+  .tip-item { display: flex; align-items: flex-start; gap: 8px; font-size: 0.78rem; color: #334155; font-weight: 600; padding: 8px 12px; background: #fff; border: 1px solid #e5e7eb; border-radius: 6px; line-height: 1.4; }
 
   /* ── Delete modal ── */
   .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; }
@@ -328,7 +328,8 @@
 <script src="/assets/js/favorites-widget.js" defer></script>
 
 <script src="/assets/js/lib/pdf-utils.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js" crossorigin="anonymous"></script>
+<script>if(!window.PDFLib){document.write('<scr'+'ipt src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"><\/scr'+'ipt>')}</script>
 
 <script>
 (function() {
@@ -650,7 +651,8 @@
     resultBar.classList.remove('on');
 
     try {
-      const { PDFDocument, degrees } = PDFLib;
+      if (!window.PDFLib) throw new Error('PDF library failed to load. Please refresh the page.');
+      const { PDFDocument, degrees } = window.PDFLib;
 
       // Load original PDF with pdf-lib
       const srcDoc = await PDFDocument.load(originalBytes.slice(0));

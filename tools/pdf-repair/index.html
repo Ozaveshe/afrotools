@@ -49,7 +49,8 @@
 <script src="/assets/js/components/tool-registry.min.js"></script>
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js" crossorigin="anonymous"></script>
+<script>if(!window.PDFLib){document.write('<scr'+'ipt src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"><\/scr'+'ipt>')}</script>
 <style>
   :root {
     --afro-green: var(--color-primary);
@@ -213,7 +214,7 @@
     text-align: center;
     transition: all 0.2s;
     font-size: 0.9rem;
-    color: #244d2c;
+    color: #334155;
     font-weight: 600;
   }
 
@@ -245,7 +246,7 @@
   .file-info-name {
     font-size: 0.82rem;
     font-weight: 700;
-    color: #0d2813;
+    color: #1e293b;
   }
 
   .file-info-size {
@@ -357,7 +358,7 @@
 
   .report-value {
     font-weight: 700;
-    color: #0d2813;
+    color: #1e293b;
   }
 
   .status-badge {
@@ -435,7 +436,7 @@
 
   .info-text {
     font-size: 0.8rem;
-    color: #244d2c;
+    color: #334155;
     line-height: 1.6;
   }
 
@@ -453,7 +454,7 @@
   .seo-section h2 {
     font-size: 1.3rem;
     font-weight: 800;
-    color: #0d2813;
+    color: #1e293b;
     margin-bottom: 24px;
     letter-spacing: -0.01em;
   }
@@ -474,7 +475,7 @@
     text-align: left;
     font-size: 0.85rem;
     font-weight: 700;
-    color: #0d2813;
+    color: #1e293b;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -664,7 +665,10 @@
 (function() {
   'use strict';
 
-  const { PDFDocument } = PDFLib;
+  function getPDFDocument() {
+    if (!window.PDFLib) throw new Error('PDF library failed to load. Please refresh the page.');
+    return window.PDFLib.PDFDocument;
+  }
 
   let currentFile = null;
   let repairedBytes = null;
@@ -771,7 +775,7 @@
 
       // Attempt 1: standard load with lenient options
       try {
-        pdfDoc = await PDFDocument.load(uint8, {
+        pdfDoc = await getPDFDocument().load(uint8, {
           ignoreEncryption: true,
           updateMetadata: false
         });
@@ -781,7 +785,7 @@
 
         // Attempt 2: try with capNumbers + parseSpeed for lenient parsing
         try {
-          pdfDoc = await PDFDocument.load(uint8, {
+          pdfDoc = await getPDFDocument().load(uint8, {
             ignoreEncryption: true,
             updateMetadata: false,
             capNumbers: true
@@ -799,7 +803,7 @@
             }
             if (headerIdx > 0) {
               var trimmed = uint8.slice(headerIdx);
-              pdfDoc = await PDFDocument.load(trimmed, { ignoreEncryption: true, updateMetadata: false, capNumbers: true });
+              pdfDoc = await getPDFDocument().load(trimmed, { ignoreEncryption: true, updateMetadata: false, capNumbers: true });
               errors.push('Recovered by trimming ' + headerIdx + ' corrupt bytes from header');
             }
           } catch (err3) {

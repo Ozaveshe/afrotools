@@ -33,7 +33,8 @@
 <script src="/assets/js/components/tool-registry.min.js"></script>
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js" crossorigin="anonymous"></script>
+<script>if(!window.PDFLib){document.write('<scr'+'ipt src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"><\/scr'+'ipt>')}</script>
 <style>
   :root {
     --afro-green: var(--color-primary);
@@ -185,7 +186,7 @@
     font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.04em;
-    color: #0d2813;
+    color: #1e293b;
     margin-bottom: 6px;
     display: block;
   }
@@ -198,7 +199,7 @@
     border-radius: 7px;
     font-size: 1rem;
     font-weight: 600;
-    color: #0d2813;
+    color: #1e293b;
     outline: none;
     transition: border-color 0.18s;
     font-family: 'DM Sans', sans-serif;
@@ -220,7 +221,7 @@
     text-align: center;
     transition: all 0.2s;
     font-size: 0.9rem;
-    color: #244d2c;
+    color: #334155;
     font-weight: 600;
   }
 
@@ -281,7 +282,7 @@
 
   .result-text {
     font-size: 0.85rem;
-    color: #0d2813;
+    color: #1e293b;
     margin-bottom: 12px;
   }
 
@@ -336,7 +337,7 @@
 
   .info-text {
     font-size: 0.8rem;
-    color: #244d2c;
+    color: #334155;
     line-height: 1.6;
   }
 
@@ -487,7 +488,7 @@
             <label class="f-label-text">Color</label>
             <div style="display:flex;align-items:center;gap:12px;">
               <input type="color" id="numColor" value="#000000" style="width:60px;height:40px;border:1.5px solid #e5e7eb;border-radius:7px;cursor:pointer;background:#EFF6FF;">
-              <span id="numColorHex" style="font-size:0.75rem;font-weight:700;color:#0d2813;">#000000</span>
+              <span id="numColorHex" style="font-size:0.75rem;font-weight:700;color:#1e293b;">#000000</span>
             </div>
           </div>
 
@@ -548,7 +549,10 @@
 <script src="/assets/js/favorites-widget.js" defer></script>
 
 <script>
-  const PDFLib = window.PDFLib;
+  function getPDFLib() {
+    if (!window.PDFLib) throw new Error('PDF library failed to load. Please refresh the page.');
+    return window.PDFLib;
+  }
   let currentFile = null;
   let resultPdf = null;
 
@@ -631,7 +635,7 @@
 
     try {
       const arrayBuffer = await currentFile.arrayBuffer();
-      const pdf = await PDFLib.PDFDocument.load(arrayBuffer);
+      const pdf = await getPDFLib().PDFDocument.load(arrayBuffer);
       const pages = pdf.getPages();
       const format = document.getElementById('formatSelect').value;
       const position = document.getElementById('positionSelect').value;
@@ -646,7 +650,7 @@
       const shouldSkipFirst = skipFirst.checked;
 
       // Embed font for proper text width calculation
-      const font = await pdf.embedFont(PDFLib.StandardFonts.Helvetica);
+      const font = await pdf.embedFont(getPDFLib().StandardFonts.Helvetica);
 
       pages.forEach((page, index) => {
         if (shouldSkipFirst && index === 0) return;
@@ -684,7 +688,7 @@
           y: y,
           size: fontSize,
           font: font,
-          color: PDFLib.rgb(cr, cg, cb),
+          color: getPDFLib().rgb(cr, cg, cb),
           opacity: 0.85
         });
       });

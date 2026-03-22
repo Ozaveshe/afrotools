@@ -37,7 +37,8 @@
 <script src="/assets/js/components/newsletter-cta.min.js" defer></script>
 <script src="/assets/js/lib/saved-tools.js" defer></script>
 <script src="/assets/js/favorites-widget.js" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js" crossorigin="anonymous"></script>
+<script>if(!window.PDFLib){document.write('<scr'+'ipt src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"><\/scr'+'ipt>')}</script>
 <style>
   :root {
     --afro-green: var(--color-primary);
@@ -189,7 +190,7 @@
     font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.04em;
-    color: #0d2813;
+    color: #1e293b;
     margin-bottom: 6px;
     display: block;
   }
@@ -202,7 +203,7 @@
     border-radius: 7px;
     font-size: 1rem;
     font-weight: 600;
-    color: #0d2813;
+    color: #1e293b;
     outline: none;
     transition: border-color 0.18s;
     font-family: 'DM Sans', sans-serif;
@@ -229,7 +230,7 @@
     text-align: center;
     transition: all 0.2s;
     font-size: 0.9rem;
-    color: #244d2c;
+    color: #334155;
     font-weight: 600;
     min-height: 80px;
   }
@@ -484,7 +485,7 @@
 
   .result-text {
     font-size: 0.85rem;
-    color: #0d2813;
+    color: #1e293b;
     margin-bottom: 12px;
     font-weight: 600;
   }
@@ -530,7 +531,7 @@
 
   .info-text {
     font-size: 0.8rem;
-    color: #244d2c;
+    color: #334155;
     line-height: 1.6;
   }
 
@@ -558,7 +559,7 @@
   .how-to h2 {
     font-size: 1.4rem;
     font-weight: 800;
-    color: #0d2813;
+    color: #1e293b;
     margin-bottom: 28px;
     text-align: center;
   }
@@ -594,7 +595,7 @@
   .step-card h3 {
     font-size: 0.9rem;
     font-weight: 700;
-    color: #0d2813;
+    color: #1e293b;
     margin-bottom: 6px;
   }
 
@@ -618,7 +619,7 @@
   .faq-section h2 {
     font-size: 1.4rem;
     font-weight: 800;
-    color: #0d2813;
+    color: #1e293b;
     margin-bottom: 24px;
     text-align: center;
   }
@@ -634,7 +635,7 @@
     padding: 16px 20px;
     font-size: 0.88rem;
     font-weight: 700;
-    color: #0d2813;
+    color: #1e293b;
     cursor: pointer;
     display: flex;
     justify-content: space-between;
@@ -1033,7 +1034,10 @@
     return pdfjsLib;
   }
 
-  const PDFLib = window.PDFLib;
+  function getPDFLib() {
+    if (!window.PDFLib) throw new Error('PDF library failed to load. Please refresh the page.');
+    return window.PDFLib;
+  }
 
   // State
   let currentFile = null;
@@ -1240,7 +1244,7 @@
 
     try {
       const arrayBuffer = await currentFile.arrayBuffer();
-      const pdf = await PDFLib.PDFDocument.load(arrayBuffer);
+      const pdf = await getPDFLib().PDFDocument.load(arrayBuffer);
       const pages = pdf.getPages();
       const totalPages = pages.length;
       const fontSize = parseInt(fontSizeSlider.value);
@@ -1250,7 +1254,7 @@
       const shouldSkipFirst = skipFirst.checked;
       const filename = currentFile.name.replace(/\.pdf$/i, '');
 
-      const font = await pdf.embedFont(PDFLib.StandardFonts.Helvetica);
+      const font = await pdf.embedFont(getPDFLib().StandardFonts.Helvetica);
 
       pages.forEach((page, index) => {
         if (shouldSkipFirst && index === 0) return;
@@ -1277,7 +1281,7 @@
             y: y,
             size: fontSize,
             font: font,
-            color: PDFLib.rgb(0.15, 0.15, 0.15),
+            color: getPDFLib().rgb(0.15, 0.15, 0.15),
           });
         }
 
@@ -1300,7 +1304,7 @@
             y: y,
             size: fontSize,
             font: font,
-            color: PDFLib.rgb(0.15, 0.15, 0.15),
+            color: getPDFLib().rgb(0.15, 0.15, 0.15),
           });
         }
       });

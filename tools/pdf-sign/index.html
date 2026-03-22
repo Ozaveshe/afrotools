@@ -45,7 +45,8 @@
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js" crossorigin="anonymous"></script>
+<script>if(!window.PDFLib){document.write('<scr'+'ipt src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"><\/scr'+'ipt>')}</script>
 <style>
   :root {
     --afro-green: var(--color-primary);
@@ -171,7 +172,7 @@
     border-radius: 50%;
     background: #EFF6FF;
     border: 2px solid #e5e7eb;
-    color: #244d2c;
+    color: #334155;
     font-weight: 700;
     font-size: 0.85rem;
   }
@@ -234,7 +235,7 @@
     font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.04em;
-    color: #0d2813;
+    color: #1e293b;
     margin-bottom: 6px;
     display: block;
   }
@@ -247,7 +248,7 @@
     border-radius: 7px;
     font-size: 1rem;
     font-weight: 600;
-    color: #0d2813;
+    color: #1e293b;
     outline: none;
     transition: border-color 0.18s;
     font-family: 'DM Sans', sans-serif;
@@ -283,7 +284,7 @@
     text-align: center;
     transition: all 0.2s;
     font-size: 0.9rem;
-    color: #244d2c;
+    color: #334155;
     font-weight: 600;
   }
 
@@ -304,7 +305,7 @@
     border: 1px solid #e5e7eb;
     border-radius: 6px;
     font-size: 0.75rem;
-    color: #244d2c;
+    color: #334155;
     display: none;
   }
 
@@ -329,7 +330,7 @@
     user-select: none;
     font-size: 0.7rem;
     font-weight: 700;
-    color: #244d2c;
+    color: #334155;
     font-family: 'DM Sans', sans-serif;
   }
 
@@ -378,7 +379,7 @@
     cursor: pointer;
     font-size: 0.7rem;
     font-weight: 700;
-    color: #244d2c;
+    color: #334155;
     font-family: 'DM Sans', sans-serif;
     transition: all 0.15s;
   }
@@ -429,7 +430,7 @@
     cursor: pointer;
     font-size: 0.65rem;
     font-weight: 700;
-    color: #244d2c;
+    color: #334155;
     font-family: 'DM Sans', sans-serif;
     transition: all 0.15s;
   }
@@ -556,7 +557,7 @@
     cursor: pointer;
     font-size: 0.7rem;
     font-weight: 700;
-    color: #244d2c;
+    color: #334155;
     font-family: 'DM Sans', sans-serif;
     transition: all 0.15s;
   }
@@ -572,7 +573,7 @@
 
   .page-info {
     font-size: 0.75rem;
-    color: #244d2c;
+    color: #334155;
     font-weight: 600;
   }
 
@@ -591,7 +592,7 @@
     cursor: pointer;
     font-size: 0.65rem;
     font-weight: 700;
-    color: #244d2c;
+    color: #334155;
     text-align: center;
     transition: all 0.15s;
   }
@@ -620,7 +621,7 @@
   .date-checkbox label {
     cursor: pointer;
     font-size: 0.8rem;
-    color: #244d2c;
+    color: #334155;
   }
 
   .result-card {
@@ -637,7 +638,7 @@
 
   .result-text {
     font-size: 0.85rem;
-    color: #0d2813;
+    color: #1e293b;
     margin-bottom: 12px;
   }
 
@@ -692,7 +693,7 @@
 
   .info-text {
     font-size: 0.8rem;
-    color: #244d2c;
+    color: #334155;
     line-height: 1.6;
   }
 
@@ -914,7 +915,10 @@
 
 <script>
   pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-  const { PDFDocument, rgb } = PDFLib;
+  function getPDFLib() {
+    if (!window.PDFLib) throw new Error('PDF library failed to load. Please refresh the page.');
+    return window.PDFLib;
+  }
 
   // State
   let currentPdfFile = null;
@@ -1371,6 +1375,7 @@
 
     try {
       const arrayBuffer = await currentPdfFile.arrayBuffer();
+      const { PDFDocument, rgb } = getPDFLib();
       const pdfDoc = await PDFDocument.load(arrayBuffer);
       const placement = document.querySelector('.placement-option.active').dataset.placement;
       const addDate = document.getElementById('addDateCheckbox').checked;

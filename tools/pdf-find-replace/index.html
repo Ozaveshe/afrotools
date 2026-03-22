@@ -960,7 +960,8 @@
 <afro-footer></afro-footer>
 
 <script src="/assets/js/lib/pdf-utils.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js" crossorigin="anonymous"></script>
+<script>if(!window.PDFLib){document.write('<scr'+'ipt src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"><\/scr'+'ipt>')}</script>
 <script>
 (function() {
   'use strict';
@@ -1373,9 +1374,9 @@
     replaceAllBtn.disabled = true;
 
     try {
-      var PDFLib = window.PDFLib;
-      var pdfLibDoc = await PDFLib.PDFDocument.load(state.arrayBuffer);
-      var font = await pdfLibDoc.embedFont(PDFLib.StandardFonts.Helvetica);
+      if (!window.PDFLib) throw new Error('PDF library failed to load. Please refresh the page.');
+      var pdfLibDoc = await window.PDFLib.PDFDocument.load(state.arrayBuffer);
+      var font = await pdfLibDoc.embedFont(window.PDFLib.StandardFonts.Helvetica);
 
       // Group matches by page for background sampling
       var matchesByPage = {};
@@ -1406,7 +1407,7 @@
             y: pageSize.height - match.y - 1,
             width: match.width + 2,
             height: (match.height || 12) + 2,
-            color: PDFLib.rgb(bgColor.r, bgColor.g, bgColor.b),
+            color: window.PDFLib.rgb(bgColor.r, bgColor.g, bgColor.b),
             opacity: 1
           });
 
@@ -1417,7 +1418,7 @@
             y: pageSize.height - match.y,
             size: fontSize,
             font: font,
-            color: PDFLib.rgb(0, 0, 0)
+            color: window.PDFLib.rgb(0, 0, 0)
           });
         });
       }

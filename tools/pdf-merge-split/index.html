@@ -33,7 +33,8 @@
 <script src="/assets/js/components/tool-registry.min.js"></script>
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js" crossorigin="anonymous"></script>
+<script>if(!window.PDFLib){document.write('<scr'+'ipt src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"><\/scr'+'ipt>')}</script>
 <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
 <style>
   :root { --afro-green: var(--color-primary); --afro-dark: #0f1419; --afro-light: #f5f7fa; }
@@ -58,22 +59,22 @@
   .card-body { padding: 22px; }
 
   .mode-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 18px; }
-  .mode-btn { padding: 12px 16px; background: #EFF6FF; border: 1.5px solid #e5e7eb; border-radius: 7px; cursor: pointer; transition: all 0.15s; font-size: 0.78rem; font-weight: 700; color: #244d2c; font-family: 'DM Sans', sans-serif; }
+  .mode-btn { padding: 12px 16px; background: #EFF6FF; border: 1.5px solid #e5e7eb; border-radius: 7px; cursor: pointer; transition: all 0.15s; font-size: 0.78rem; font-weight: 700; color: #334155; font-family: 'DM Sans', sans-serif; }
   .mode-btn:hover { border-color: var(--afro-green); }
   .mode-btn.on { border-color: var(--afro-green); background: var(--color-primary); color: #fff; }
 
   .file-input-wrapper { position: relative; display: inline-block; width: 100%; }
   .file-input-wrapper input[type="file"] { position:absolute;width:1px;height:1px;opacity:0;overflow:hidden; }
-  .file-input-label { display: block; padding: 20px; background: #EFF6FF; border: 2px dashed #e5e7eb; border-radius: 8px; cursor: pointer; text-align: center; transition: all 0.2s; font-size: 0.9rem; color: #244d2c; font-weight: 600; }
+  .file-input-label { display: block; padding: 20px; background: #EFF6FF; border: 2px dashed #e5e7eb; border-radius: 8px; cursor: pointer; text-align: center; transition: all 0.2s; font-size: 0.9rem; color: #334155; font-weight: 600; }
   .file-input-label:hover { border-color: var(--afro-green); background: #EFF6FF; }
   .file-input-label.dragover { border-color: var(--afro-green); background: rgba(0,122,255,0.1); }
 
   .file-list { margin-top: 16px; }
   .file-item { display: flex; align-items: center; justify-content: space-between; padding: 12px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; margin-bottom: 8px; cursor: move; }
   .file-item.dragging { opacity: 0.5; }
-  .file-item-name { flex: 1; font-size: 0.85rem; color: #0d2813; font-weight: 600; }
+  .file-item-name { flex: 1; font-size: 0.85rem; color: #1e293b; font-weight: 600; }
   .file-item-size { font-size: 0.7rem; color: #9ca3af; margin: 0 12px; }
-  .file-item-remove { background: #EFF6FF; border: 1px solid #e5e7eb; color: #244d2c; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 0.7rem; font-weight: 700; transition: all 0.15s; }
+  .file-item-remove { background: #EFF6FF; border: 1px solid #e5e7eb; color: #334155; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 0.7rem; font-weight: 700; transition: all 0.15s; }
   .file-item-remove:hover { background: #EFF6FF; border-color: #BFDBFE; }
 
   .calc-btn { width: 100%; padding: 14px; background: var(--color-primary); color: #fff; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.03em; cursor: pointer; transition: all 0.18s; margin-top: 8px; font-family: 'DM Sans', sans-serif; }
@@ -82,7 +83,7 @@
 
   .result-card { background: #f9fafb; border: 1.5px solid #e5e7eb; border-radius: 10px; padding: 20px; display: none; margin-bottom: 18px; }
   .result-card.on { display: block; }
-  .result-text { font-size: 0.85rem; color: #0d2813; margin-bottom: 12px; font-weight: 600; }
+  .result-text { font-size: 0.85rem; color: #1e293b; margin-bottom: 12px; font-weight: 600; }
   .action-row { display: grid; grid-template-columns: 1fr; gap: 8px; }
   .act-btn { padding: 12px; font-size: 0.78rem; font-weight: 700; border-radius: 6px; cursor: pointer; transition: all 0.15s; display: flex; align-items: center; justify-content: center; gap: 6px; font-family: 'DM Sans', sans-serif; border: none; }
   .act-download { background: rgba(0,122,255,0.1); border: 1.5px solid rgba(0,122,255,0.35); color: #1e40af; }
@@ -111,7 +112,7 @@
   .tips-section { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px; padding: 20px 24px; margin-top: 8px; }
   .tips-title { font-size: 0.72rem; font-weight: 700; color: #374151; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
   .tips-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .tip-item { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; color: #244d2c; font-weight: 600; padding: 8px 12px; background: #fff; border: 1px solid #e5e7eb; border-radius: 6px; }
+  .tip-item { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; color: #334155; font-weight: 600; padding: 8px 12px; background: #fff; border: 1px solid #e5e7eb; border-radius: 6px; }
 
   @media (max-width: 768px) {
     .mode-row { grid-template-columns: 1fr; }
@@ -227,7 +228,7 @@
         </label>
       </div>
       <div id="splitInfo" style="display:none; margin-top:12px;">
-        <div style="font-size:0.82rem;font-weight:700;color:#0d2813;">File: <span id="splitFileName"></span> — <span id="splitPageCount">0</span> pages</div>
+        <div style="font-size:0.82rem;font-weight:700;color:#1e293b;">File: <span id="splitFileName"></span> — <span id="splitPageCount">0</span> pages</div>
         <div class="sp-info">Click the <span style="color:#dc2626;font-weight:700">✂ scissors</span> between pages to set split points. Pages between cuts become separate PDF files.</div>
         <div class="sp-grid" id="splitGrid"></div>
         <div id="splitSummary" style="margin-top:10px;font-size:0.78rem;color:#4b5563;font-weight:600;"></div>
@@ -273,7 +274,11 @@
 <script src="/assets/js/favorites-widget.js" defer></script>
 
 <script>
-const PDFLib = window.PDFLib;
+function getPDFLib() {
+  const lib = window.PDFLib || (window['pdf-lib'] && window['pdf-lib']);
+  if (!lib) throw new Error('PDF library failed to load. Please refresh the page.');
+  return lib;
+}
 let currentMode = 'merge';
 let mergedPdf = null;
 let splitPages = [];
@@ -383,10 +388,10 @@ mergeBtn.addEventListener('click', async () => {
   actionRow.style.display = 'none';
   resultText.textContent = 'Merging PDFs...'; resultCard.classList.add('on');
   try {
-    const mergedPdfDoc = await PDFLib.PDFDocument.create();
+    const mergedPdfDoc = await getPDFLib().PDFDocument.create();
     for (let i = 0; i < mergeFiles.length; i++) {
       const ab = await mergeFiles[i].arrayBuffer();
-      const pdf = await PDFLib.PDFDocument.load(ab, { ignoreEncryption: true });
+      const pdf = await getPDFLib().PDFDocument.load(ab, { ignoreEncryption: true });
       const pages = await mergedPdfDoc.copyPages(pdf, pdf.getPageIndices());
       pages.forEach(page => mergedPdfDoc.addPage(page));
       progressFill.style.width = ((i + 1) / mergeFiles.length * 100) + '%';
@@ -424,7 +429,7 @@ async function loadSplitFile(file) {
     return;
   }
   try {
-    splitPdfDoc = await PDFLib.PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+    splitPdfDoc = await getPDFLib().PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
   } catch (err) {
     resultText.textContent = '✗ Error loading PDF: ' + err.message;
     resultCard.classList.add('on');
@@ -545,7 +550,7 @@ splitBtn.addEventListener('click', async () => {
 
     for (let r = 0; r < ranges.length; r++) {
       progressFill.style.width = ((r + 1) / ranges.length * 80) + '%';
-      const nd = await PDFLib.PDFDocument.create();
+      const nd = await getPDFLib().PDFDocument.create();
       const idx = [];
       for (let p = ranges[r][0]; p <= ranges[r][1]; p++) idx.push(p);
       const cp = await nd.copyPages(splitPdfDoc, idx);
