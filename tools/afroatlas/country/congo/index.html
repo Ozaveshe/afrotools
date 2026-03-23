@@ -130,13 +130,13 @@
   /* ── Build HTML ── */
   var html = '';
 
-  /* ── 1. Hero Section ── */
-  html += '<section class="aa-hero aa-rv">';
-  html += '<div class="aa-hero-inner aa-wrap">';
-  html += '<div style="font-size:3rem;line-height:1;margin-bottom:12px">' + country.flag + '</div>';
-  html += '<h1 class="aa-h1">' + country.name + '</h1>';
-  html += '<p class="aa-hero-sub" style="font-style:italic">' + (country.tagline || '') + '</p>';
-  html += '<p style="font-size:0.82rem;color:var(--color-text-muted,#64748b);margin-bottom:20px">';
+  /* ── 1. Hero Section (light variant for country pages) ── */
+  html += '<section class="aa-country-hero">';
+  html += '<div class="aa-wrap">';
+  html += '<div class="aa-hero-flag">' + country.flag + '</div>';
+  html += '<h1>' + country.name + '</h1>';
+  if (country.tagline) html += '<p class="aa-hero-tagline">' + country.tagline + '</p>';
+  html += '<p class="aa-hero-meta">';
   html += regionName(country.region) + ' &middot; Capital: ' + (country.capital || 'N/A');
   html += ' &middot; Currency: ' + (country.currency ? country.currency.name + ' (' + country.currency.sym + ')' : 'N/A');
   html += '</p>';
@@ -154,48 +154,42 @@
   html += '<div class="aa-wrap">';
   html += '<h2 class="aa-section-title">Natural Resources</h2>';
   if (country.resources && country.resources.length > 0) {
-    html += '<div class="aa-grid" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr))">';
+    html += '<div class="aa-res-grid">';
     for (var ri = 0; ri < country.resources.length; ri++) {
       var r = country.resources[ri];
       var rInfo = RT[r.type] || { emoji: '', label: r.type };
-      var rankBadgeStyle = r.rank <= 3
-        ? 'background:var(--color-primary,#007AFF);color:#fff'
-        : 'background:var(--color-bg-subtle,#F1F5F9);color:var(--color-text-muted,#64748b)';
-      html += '<div class="aa-country-card" style="cursor:default">';
-      html += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">';
-      html += '<span style="font-size:1.6rem">' + rInfo.emoji + '</span>';
-      html += '<span class="aa-card-name">' + rInfo.label + '</span>';
+      var rankCls = r.rank && r.rank <= 3 ? 'aa-res-rank aa-res-rank-top' : 'aa-res-rank aa-res-rank-other';
+      html += '<div class="aa-res-card">';
+      html += '<div class="aa-res-header">';
+      html += '<span class="aa-res-icon">' + rInfo.emoji + '</span>';
+      html += '<span class="aa-res-label">' + rInfo.label + '</span>';
+      if (r.rank) html += '<span class="' + rankCls + '">#' + r.rank + ' in Africa</span>';
       html += '</div>';
-      html += '<span style="display:inline-block;padding:3px 10px;border-radius:var(--radius-pill,100px);font-size:0.7rem;font-weight:700;' + rankBadgeStyle + '">#' + r.rank + ' in Africa</span>';
-      html += '<p style="font-size:0.82rem;color:var(--color-text,#0f172a);margin:8px 0 4px;font-weight:600">' + (r.prod || '') + '</p>';
+      if (r.prod) html += '<p class="aa-res-prod">' + r.prod + '</p>';
       if (r.share > 0) {
-        html += '<div style="background:var(--color-bg-subtle,#F1F5F9);border-radius:6px;height:8px;overflow:hidden;margin-bottom:6px">';
-        html += '<div style="height:100%;width:' + Math.min(r.share, 100) + '%;background:var(--color-primary,#007AFF);border-radius:6px;transition:width 0.6s ease"></div>';
-        html += '</div>';
-        html += '<p style="font-size:0.68rem;color:var(--color-text-muted,#64748b)">' + r.share + '% of Africa\'s output</p>';
+        html += '<div class="aa-res-bar-wrap"><div class="aa-res-bar-fill" style="width:' + Math.min(r.share, 100) + '%"></div></div>';
+        html += '<p class="aa-res-share">' + r.share + '% of Africa\'s output</p>';
       }
-      if (r.note) {
-        html += '<p style="font-size:0.75rem;color:var(--color-text-muted,#64748b);margin-top:6px;line-height:1.45">' + r.note + '</p>';
-      }
+      if (r.note) html += '<p class="aa-res-note">' + r.note + '</p>';
       html += '</div>';
     }
     html += '</div>';
   } else {
-    html += '<p style="color:var(--color-text-muted,#64748b);text-align:center;padding:32px 0">Limited resource data available.</p>';
+    html += '<p class="aa-empty">Limited resource data available.</p>';
   }
   html += '</div>';
   html += '</section>';
 
   /* ── 3. Trade Snapshot ── */
-  html += '<section class="aa-section aa-rv">';
+  html += '<section class="aa-section aa-rv" style="background:#f8fafc">';
   html += '<div class="aa-wrap">';
   html += '<h2 class="aa-section-title">Trade Snapshot</h2>';
-  html += '<div class="aa-stats-row" style="margin-bottom:28px">';
-  html += '<span class="aa-stat-pill"><strong>' + fmtMoney(country.totalExports) + '</strong> <span>Total Exports</span></span>';
-  html += '<span class="aa-stat-pill"><strong>' + fmtMoney(country.totalImports) + '</strong> <span>Total Imports</span></span>';
   var balance = (country.totalExports || 0) - (country.totalImports || 0);
-  var balColor = balance >= 0 ? 'var(--aa-forest,#2D6A4F)' : 'var(--aa-terra,#E76F51)';
-  html += '<span class="aa-stat-pill"><strong style="color:' + balColor + '">' + (balance >= 0 ? '+' : '') + fmtMoney(balance) + '</strong> <span>Trade Balance</span></span>';
+  var balColor = balance >= 0 ? 'var(--aa-forest)' : 'var(--aa-terra)';
+  html += '<div style="display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-bottom:28px">';
+  html += '<span class="aa-stat-pill" style="background:#fff;border:1.5px solid #e2e8f0;color:#0f172a;backdrop-filter:none"><strong style="color:#2D6A4F">' + fmtMoney(country.totalExports) + '</strong> <span style="color:#64748b">Exports</span></span>';
+  html += '<span class="aa-stat-pill" style="background:#fff;border:1.5px solid #e2e8f0;color:#0f172a;backdrop-filter:none"><strong style="color:#E76F51">' + fmtMoney(country.totalImports) + '</strong> <span style="color:#64748b">Imports</span></span>';
+  html += '<span class="aa-stat-pill" style="background:#fff;border:1.5px solid #e2e8f0;color:#0f172a;backdrop-filter:none"><strong style="color:' + balColor + '">' + (balance >= 0 ? '+' : '') + fmtMoney(balance) + '</strong> <span style="color:#64748b">Balance</span></span>';
   html += '</div>';
   html += '<div style="max-width:700px;margin:0 auto"><canvas id="aa-trade-chart" height="320"></canvas></div>';
   html += '</div>';
@@ -210,7 +204,7 @@
   html += '</section>';
 
   /* ── 5. Key Indicators ── */
-  html += '<section class="aa-section aa-rv">';
+  html += '<section class="aa-section aa-rv" style="background:#f8fafc">';
   html += '<div class="aa-wrap">';
   html += '<h2 class="aa-section-title">Key Indicators</h2>';
   var indicators = [
@@ -225,19 +219,17 @@
     { label: 'Life Expectancy', value: country.lifeExp != null ? fmtNum(country.lifeExp, ' yrs') : 'N/A', sub: '', bar: country.lifeExp != null ? Math.min((country.lifeExp / 85) * 100, 100) : 0 },
     { label: 'Literacy Rate', value: fmtPct(country.literacy), sub: '', bar: country.literacy || 0 }
   ];
-  html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px">';
+  html += '<div class="aa-ind-grid">';
   for (var ki = 0; ki < indicators.length; ki++) {
     var ind = indicators[ki];
-    html += '<div class="aa-country-card" style="cursor:default;gap:4px">';
-    html += '<span style="font-size:0.7rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-text-subtle,#94a3af)">' + ind.label + '</span>';
-    html += '<span style="font-size:1.25rem;font-weight:800;color:var(--color-text,#0f172a)">' + ind.value + '</span>';
-    if (ind.sub) {
-      html += '<span style="font-size:0.72rem;color:var(--color-text-muted,#64748b)">' + ind.sub + '</span>';
-    }
+    html += '<div class="aa-ind-card">';
+    html += '<div class="aa-ind-top">';
+    html += '<span class="aa-ind-label">' + ind.label + '</span>';
+    html += '<span class="aa-ind-value">' + ind.value + '</span>';
+    html += '</div>';
+    if (ind.sub) html += '<span class="aa-ind-sub">' + ind.sub + '</span>';
     if (ind.bar > 0) {
-      html += '<div style="background:var(--color-bg-subtle,#F1F5F9);border-radius:6px;height:6px;overflow:hidden;margin-top:4px">';
-      html += '<div style="height:100%;width:' + Math.min(ind.bar, 100) + '%;background:var(--color-primary,#007AFF);border-radius:6px;transition:width 0.6s ease"></div>';
-      html += '</div>';
+      html += '<div class="aa-ind-bar"><div class="aa-ind-bar-fill" style="width:' + Math.min(ind.bar, 100) + '%"></div></div>';
     }
     html += '</div>';
   }
@@ -249,10 +241,8 @@
   if (country.paradox) {
     html += '<section class="aa-section aa-rv">';
     html += '<div class="aa-wrap">';
-    html += '<div class="aa-country-card" style="cursor:default;border-left:4px solid var(--aa-gold,#F4A261);background:linear-gradient(135deg,#fffbf0 0%,#fff 100%)">';
-    html += '<span style="font-size:0.68rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--aa-gold,#F4A261);margin-bottom:4px">Resource Paradox</span>';
-    html += '<p style="font-style:italic;font-size:0.9rem;line-height:1.6;color:var(--color-text,#0f172a)">' + country.paradox + '</p>';
-    html += '<span class="aa-stat-pill" style="margin-top:10px;align-self:flex-start"><strong>' + (country.rrs != null ? country.rrs + '/100' : 'N/A') + '</strong> <span>Resource Richness Score</span></span>';
+    html += '<div class="aa-paradox-callout">';
+    html += '<p>' + country.paradox + '</p>';
     html += '</div>';
     html += '</div>';
     html += '</section>';
@@ -260,9 +250,10 @@
 
   /* ── 7. Compare CTA ── */
   html += '<section class="aa-section aa-compare-section aa-rv">';
+  html += '<div class="aa-wrap" style="text-align:center">';
   html += '<h2 class="aa-section-title">Compare ' + country.name + ' with&hellip;</h2>';
   html += '<div class="aa-compare-row">';
-  html += '<select id="aa-cmp-select" class="aa-compare-select">';
+  html += '<select id="aa-cmp-select" class="aa-select">';
   html += '<option value="">Select a country</option>';
   for (var ci = 0; ci < allCountries.length; ci++) {
     var oc = allCountries[ci];
@@ -271,7 +262,8 @@
     html += '<option value="' + ocCode + '">' + oc.flag + ' ' + oc.name + '</option>';
   }
   html += '</select>';
-  html += '<button id="aa-cmp-btn" class="aa-btn" style="padding:12px 28px;background:var(--color-primary,#007AFF);color:#fff;border:none;border-radius:var(--radius-md,10px);font-family:var(--font-body,\'DM Sans\',system-ui,sans-serif);font-size:0.88rem;font-weight:700;cursor:pointer;transition:background 150ms ease" onmouseover="this.style.background=\'var(--color-primary-dark,#0063D1)\'" onmouseout="this.style.background=\'var(--color-primary,#007AFF)\'">Compare</button>';
+  html += '<button id="aa-cmp-btn" class="aa-btn">Compare &rarr;</button>';
+  html += '</div>';
   html += '</div>';
   html += '</section>';
 
@@ -280,13 +272,10 @@
     html += '<section class="aa-section aa-rv">';
     html += '<div class="aa-wrap">';
     html += '<h2 class="aa-section-title">AfroTools for ' + country.name + '</h2>';
-    html += '<div class="aa-grid" style="grid-template-columns:repeat(auto-fill,minmax(240px,1fr))">';
+    html += '<div class="aa-tools-grid">';
     for (var ti = 0; ti < country.tools.length; ti++) {
       var tool = country.tools[ti];
-      html += '<a href="' + tool.p + '" class="aa-country-card" style="text-decoration:none">';
-      html += '<span class="aa-card-name">' + tool.n + '</span>';
-      html += '<span style="font-size:0.75rem;color:var(--color-primary,#007AFF);font-weight:600">Open tool &rarr;</span>';
-      html += '</a>';
+      html += '<a href="' + tool.p + '" class="aa-tool-link">' + tool.n + ' &rarr;</a>';
     }
     html += '</div>';
     html += '</div>';
@@ -294,53 +283,52 @@
   }
 
   /* ── 9. FAQ Section ── */
-  html += '<section class="aa-section aa-rv">';
+  html += '<section class="aa-section aa-rv" style="background:#f8fafc">';
   html += '<div class="aa-wrap">';
   html += '<h2 class="aa-section-title">Frequently Asked Questions</h2>';
-  html += '<div style="max-width:700px;margin:0 auto;display:flex;flex-direction:column;gap:10px">';
+  html += '<div class="aa-faq-list">';
 
-  /* FAQ 1 — Main natural resources */
-  var faq1Answer = '';
+  var faqs = [];
+  /* FAQ 1 — Resources */
+  var faq1 = '';
   if (country.resources && country.resources.length > 0) {
     var resNames = [];
     for (var fi = 0; fi < country.resources.length; fi++) {
       var rr = country.resources[fi];
       var rrInfo = RT[rr.type] || { label: rr.type };
-      resNames.push(rrInfo.label + ' (#' + rr.rank + ' in Africa)');
+      resNames.push(rrInfo.label + (rr.rank ? ' (#' + rr.rank + ' in Africa)' : ''));
     }
-    faq1Answer = country.name + '\'s main natural resources include ' + resNames.join(', ') + '.';
+    faq1 = country.name + '\'s main natural resources include ' + resNames.join(', ') + '.';
   } else {
-    faq1Answer = 'Limited natural resource data is currently available for ' + country.name + '.';
+    faq1 = 'Limited natural resource data is currently available for ' + country.name + '.';
   }
-  html += '<details class="aa-faq-item">';
-  html += '<summary class="aa-faq-q">What are ' + country.name + '\'s main natural resources?</summary>';
-  html += '<p class="aa-faq-a">' + faq1Answer + '</p>';
-  html += '</details>';
+  faqs.push({ q: 'What are ' + country.name + '\'s main natural resources?', a: faq1 });
 
   /* FAQ 2 — GDP */
-  var faq2Answer = country.name + '\'s GDP is ' + fmtGdp(country.gdp);
-  faq2Answer += ', with a GDP per capita of ' + fmtGdp(country.gdpPC);
-  faq2Answer += (country.gdpGrowth != null ? ' and a growth rate of ' + country.gdpGrowth + '%.' : '.');
-  html += '<details class="aa-faq-item">';
-  html += '<summary class="aa-faq-q">What is ' + country.name + '\'s GDP?</summary>';
-  html += '<p class="aa-faq-a">' + faq2Answer + '</p>';
-  html += '</details>';
+  var faq2 = country.name + '\'s GDP is ' + fmtGdp(country.gdp);
+  faq2 += ', with a GDP per capita of ' + fmtGdp(country.gdpPC);
+  faq2 += (country.gdpGrowth != null ? ' and a growth rate of ' + country.gdpGrowth + '%.' : '.');
+  faqs.push({ q: 'What is ' + country.name + '\'s GDP?', a: faq2 });
 
   /* FAQ 3 — Exports */
-  var faq3Answer = '';
+  var faq3 = '';
   if (country.exports && country.exports.length > 0) {
     var expNames = [];
     for (var ei = 0; ei < Math.min(country.exports.length, 5); ei++) {
       expNames.push(country.exports[ei].p + ' (' + fmtMoney(country.exports[ei].v) + ')');
     }
-    faq3Answer = country.name + '\'s top exports are ' + expNames.join(', ') + '. Total exports are valued at ' + fmtMoney(country.totalExports) + '.';
+    faq3 = country.name + '\'s top exports are ' + expNames.join(', ') + '. Total exports: ' + fmtMoney(country.totalExports) + '.';
   } else {
-    faq3Answer = 'Detailed export data is not currently available for ' + country.name + '.';
+    faq3 = 'Detailed export data is not currently available for ' + country.name + '.';
   }
-  html += '<details class="aa-faq-item">';
-  html += '<summary class="aa-faq-q">What does ' + country.name + ' export?</summary>';
-  html += '<p class="aa-faq-a">' + faq3Answer + '</p>';
-  html += '</details>';
+  faqs.push({ q: 'What does ' + country.name + ' export?', a: faq3 });
+
+  for (var fqi = 0; fqi < faqs.length; fqi++) {
+    html += '<div class="aa-faq-item">';
+    html += '<button class="aa-faq-q" onclick="this.parentElement.classList.toggle(\'open\')">' + faqs[fqi].q + '</button>';
+    html += '<div class="aa-faq-a"><p>' + faqs[fqi].a + '</p></div>';
+    html += '</div>';
+  }
 
   html += '</div>';
   html += '</div>';
@@ -483,24 +471,12 @@
     }
   }
 
-  /* ── Scroll Reveal ── */
+  /* ── Scroll Reveal — make all sections visible with staggered delay ── */
   var rvEls = document.querySelectorAll('.aa-rv');
-  if (rvEls.length > 0 && 'IntersectionObserver' in window) {
-    var rvObs = new IntersectionObserver(function(entries) {
-      for (var ei = 0; ei < entries.length; ei++) {
-        if (entries[ei].isIntersecting) {
-          entries[ei].target.classList.add('visible');
-          rvObs.unobserve(entries[ei].target);
-        }
-      }
-    }, { threshold: 0.1 });
-    for (var rvi = 0; rvi < rvEls.length; rvi++) {
-      rvObs.observe(rvEls[rvi]);
-    }
-  } else {
-    for (var rvj = 0; rvj < rvEls.length; rvj++) {
-      rvEls[rvj].classList.add('visible');
-    }
+  for (var rvi = 0; rvi < rvEls.length; rvi++) {
+    (function(el, delay) {
+      setTimeout(function() { el.classList.add('aa-visible'); }, delay);
+    })(rvEls[rvi], 80 + rvi * 120);
   }
 
 })();
