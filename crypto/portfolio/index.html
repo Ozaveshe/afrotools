@@ -27,6 +27,7 @@
 <link rel="stylesheet" href="/assets/css/global.min.css">
 <link rel="stylesheet" href="/assets/css/crypto.css">
 <script src="/assets/js/components/tool-registry.js"></script>
+<script src="/assets/js/supabase-auth.js" defer></script>
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
 <script src="/assets/js/components/cookie-consent.js" defer></script>
@@ -517,6 +518,37 @@
   </div>
 </section>
 
+<!-- ── AI Portfolio Advisor ──────────────────────── -->
+<section class="crypto-section" id="advisorSection" style="display:none">
+  <div style="background:var(--color-bg-card);border:1px solid var(--color-border);border-radius:var(--radius-lg);overflow:hidden;">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--color-border);cursor:pointer;" id="advisorToggle">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span style="font-size:24px;">&#129302;</span>
+        <div>
+          <div style="font-weight:800;font-size:var(--text-base);color:var(--color-text);">AI Portfolio Advisor</div>
+          <div style="font-size:var(--text-xs);color:var(--color-text-muted);">Powered by Claude AI</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px;">
+        <div id="scoreDisplay" style="display:none;text-align:center;">
+          <div id="scoreValue" style="font-size:var(--text-2xl);font-weight:900;line-height:1;">--</div>
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--color-text-muted);">Score</div>
+        </div>
+        <span id="advisorChevron" style="font-size:12px;color:var(--color-text-muted);transition:transform .2s;">&#9660;</span>
+      </div>
+    </div>
+    <div id="advisorBody" style="display:none;padding:24px;">
+      <div id="advisorContent" style="font-size:var(--text-sm);line-height:var(--leading-relaxed);color:var(--color-text);margin-bottom:16px;">
+        <p style="color:var(--color-text-muted);">Click the button below to get personalized portfolio analysis.</p>
+      </div>
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+        <button id="btnAdvisor" style="background:var(--color-primary);color:#fff;border:none;padding:10px 24px;border-radius:var(--radius-sm);font-family:var(--font-body);font-size:var(--text-sm);font-weight:700;cursor:pointer;transition:opacity .2s;">Get AI Advice</button>
+        <span id="advisorLoginCta" style="display:none;font-size:var(--text-sm);color:var(--color-text-muted);">Sign in to use the AI advisor</span>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ── Export Modal ───────────────────────────────── -->
 <div class="modal-overlay" id="exportModal">
   <div class="modal-box">
@@ -640,7 +672,7 @@
   ];
 
   /* ── State ───────────────────────────────────────── */
-  var portfolio = [];       // [{id, symbol, name, thumb, qty, buyPrice, buyDate}]
+  var portfolio = [];       // [{id, symbol, name, thumb, qty, buyPrice, buyCurrency, buyDate}]
   var marketData = {};      // coinId -> market data from CoinGecko
   var selectedCoin = null;  // currently selected coin from search
   var currency = 'ngn';
@@ -649,6 +681,13 @@
   var allocationChart = null;
   var historyChart = null;
   var refreshTimer = null;
+
+  /* ── Auth & Cloud Sync ──────────────────────────── */
+  var isLoggedIn = false;
+  var authSession = null;
+  var syncDebounce = null;
+  var exchangeRates = {};   // cross-rates for currency conversion
+  var PORTFOLIO_API = '/.netlify/functions/crypto-portfolio';
 
   /* ── DOM refs ────────────────────────────────────── */
   var $search = document.getElementById('coinSearch');
@@ -665,14 +704,150 @@
   var $charts = document.getElementById('chartsSection');
   var $modal = document.getElementById('exportModal');
 
+  /* ── Auth & Cloud Sync Functions ─────────────────── */
+  function initAuth() {
+    if (typeof AfroAuth === 'undefined') return;
+    var user = AfroAuth.getCurrentUser ? AfroAuth.getCurrentUser() : null;
+    if (user) {
+      isLoggedIn = true;
+      authSession = AfroAuth.getSession ? AfroAuth.getSession() : null;
+      loadCloudPortfolio();
+    }
+    // Listen for auth changes
+    if (AfroAuth.onAuthStateChange) {
+      AfroAuth.onAuthStateChange(function(event, session) {
+        if (event === 'SIGNED_IN' && session) {
+          isLoggedIn = true;
+          authSession = session;
+          loadCloudPortfolio();
+        } else if (event === 'SIGNED_OUT') {
+          isLoggedIn = false;
+          authSession = null;
+        }
+        updateSyncIndicator();
+      });
+    }
+    updateSyncIndicator();
+  }
+
+  function loadCloudPortfolio() {
+    if (!isLoggedIn || !authSession) return;
+    fetch(PORTFOLIO_API, {
+      headers: { Authorization: 'Bearer ' + authSession.access_token }
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.holdings && data.holdings.length > 0) {
+        mergePortfolios(data.holdings);
+        fetchAndRender();
+      }
+    })
+    .catch(function(err) { console.warn('Cloud sync failed:', err); });
+  }
+
+  function mergePortfolios(cloudHoldings) {
+    var localMap = {};
+    portfolio.forEach(function(p) { localMap[p.id] = p; });
+    // Cloud wins for conflicts
+    cloudHoldings.forEach(function(cp) {
+      localMap[cp.id] = cp;
+    });
+    portfolio = Object.keys(localMap).map(function(k) { return localMap[k]; }).slice(0, MAX_COINS);
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(portfolio)); } catch(e) {}
+  }
+
+  function saveToCloud() {
+    if (!isLoggedIn || !authSession) return;
+    if (syncDebounce) clearTimeout(syncDebounce);
+    syncDebounce = setTimeout(function() {
+      fetch(PORTFOLIO_API, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + authSession.access_token
+        },
+        body: JSON.stringify({ holdings: portfolio })
+      }).catch(function(err) { console.warn('Cloud save failed:', err); });
+    }, 500);
+  }
+
+  function updateSyncIndicator() {
+    // Add a small sync badge near the portfolio title if logged in
+    var existing = document.getElementById('sync-badge');
+    if (existing) existing.remove();
+    var title = document.querySelector('h1') || document.querySelector('.crypto-hero h1');
+    if (!title) return;
+    var badge = document.createElement('span');
+    badge.id = 'sync-badge';
+    badge.style.cssText = 'display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;margin-left:12px;vertical-align:middle;';
+    if (isLoggedIn) {
+      badge.style.background = 'rgba(52,199,89,0.1)';
+      badge.style.color = '#34C759';
+      badge.innerHTML = '&#9729; Synced';
+    } else {
+      badge.style.background = 'rgba(148,163,184,0.1)';
+      badge.style.color = '#94A3B8';
+      badge.innerHTML = '&#9729; Local only';
+    }
+    title.appendChild(badge);
+  }
+
+  /* ── Exchange rate conversion ───────────────────── */
+  function fetchExchangeRates() {
+    return fetch(COINGECKO_BASE + '/simple/price?ids=tether&vs_currencies=' + getAllCurrencyCodes())
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data && data.tether) {
+          var usdRate = data.tether.usd || 1;
+          for (var code in data.tether) {
+            exchangeRates[code] = data.tether[code] / usdRate;
+          }
+        }
+      })
+      .catch(function() {});
+  }
+
+  function getAllCurrencyCodes() {
+    var codes = CryptoData.AFRICAN_CURRENCIES.map(function(c) { return c.code; });
+    codes.push('usd');
+    return codes.join(',');
+  }
+
+  function convertCurrency(amount, fromCurrency, toCurrency) {
+    if (!amount || fromCurrency === toCurrency) return amount;
+    var fromRate = exchangeRates[fromCurrency] || 1;
+    var toRate = exchangeRates[toCurrency] || 1;
+    return amount * (toRate / fromRate);
+  }
+
+  /* ── Portfolio Score (client-side) ──────────────── */
+  function calculateScore() {
+    if (portfolio.length === 0) return 0;
+    var diversification = Math.min(40, portfolio.length * 7);
+    var allocations = portfolio.map(function(p) {
+      var md = marketData[p.id] || {};
+      return p.qty * (md.current_price || 0);
+    });
+    var total = allocations.reduce(function(a, b) { return a + b; }, 0);
+    var maxAlloc = total > 0 ? Math.max.apply(null, allocations) / total * 100 : 100;
+    var riskScore = maxAlloc > 60 ? 5 : maxAlloc > 40 ? 15 : 30;
+    var hhi = 0;
+    allocations.forEach(function(a) { var s = total > 0 ? a / total * 100 : 0; hhi += s * s; });
+    var allocationScore = hhi < 2000 ? 30 : hhi < 4000 ? 20 : hhi < 6000 ? 10 : 5;
+    return diversification + riskScore + allocationScore;
+  }
+
   /* ── Init ────────────────────────────────────────── */
   function init() {
     buildCurrencySelector();
     loadPortfolio();
     bindEvents();
+    fetchExchangeRates();
     if (portfolio.length > 0) {
       fetchAndRender();
     }
+    // Init auth after a short delay to let supabase-auth.js load
+    setTimeout(initAuth, 500);
     // GA4 event
     if (typeof gtag === 'function') {
       gtag('event', 'portfolio_view');
@@ -836,7 +1011,10 @@
     var existing = portfolio.find(function (p) { return p.id === selectedCoin.id; });
     if (existing) {
       existing.qty += parseFloat($qty.value);
-      if ($buyPrice.value) existing.buyPrice = parseFloat($buyPrice.value);
+      if ($buyPrice.value) {
+        existing.buyPrice = parseFloat($buyPrice.value);
+        existing.buyCurrency = currency;
+      }
       if ($buyDate.value) existing.buyDate = $buyDate.value;
     } else {
       portfolio.push({
@@ -846,6 +1024,7 @@
         thumb: selectedCoin.thumb,
         qty: parseFloat($qty.value),
         buyPrice: $buyPrice.value ? parseFloat($buyPrice.value) : null,
+        buyCurrency: $buyPrice.value ? currency : null,
         buyDate: $buyDate.value || null
       });
     }
@@ -874,6 +1053,7 @@
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(portfolio));
     } catch (e) { /* full */ }
+    saveToCloud();
   }
 
   function loadPortfolio() {
@@ -915,6 +1095,8 @@
     $empty.style.display = hasHoldings ? 'none' : '';
     $charts.style.display = hasHoldings ? '' : 'none';
 
+    if (typeof window._showAdvisor === 'function') window._showAdvisor();
+
     if (hasHoldings) {
       renderSummary();
       renderTable();
@@ -944,7 +1126,8 @@
       totalValue += val;
 
       if (p.buyPrice) {
-        totalCost += p.qty * p.buyPrice;
+        var convertedBuy = convertCurrency(p.buyPrice, p.buyCurrency || currency, currency);
+        totalCost += p.qty * convertedBuy;
         hasCost = true;
       }
 
@@ -1013,7 +1196,8 @@
       var val = p.qty * price;
       totalValue += val;
       var change = md.price_change_percentage_24h || 0;
-      var pnl = p.buyPrice ? (price - p.buyPrice) * p.qty : null;
+      var convertedBuyPrice = p.buyPrice ? convertCurrency(p.buyPrice, p.buyCurrency || currency, currency) : null;
+      var pnl = convertedBuyPrice ? (price - convertedBuyPrice) * p.qty : null;
       rows.push({
         p: p, md: md, price: price, value: val, change: change, pnl: pnl
       });
@@ -1053,7 +1237,7 @@
 
       html += '<tr>' +
         '<td><div class="coin-cell">' +
-          '<img class="coin-icon" src="' + (row.md.image || row.p.thumb || '') + '" alt="" onerror="this.style.display=\'none\'">' +
+          '<img class="coin-icon" src="/.netlify/functions/crypto-image?url=' + encodeURIComponent(row.md.image || row.p.thumb || '') + '" alt="" onerror="this.onerror=null;this.style.display=\'none\'">' +
           '<div><span class="coin-symbol">' + row.p.symbol.toUpperCase() + '</span><br>' +
           '<span class="coin-name-sub">' + row.p.name + '</span></div>' +
         '</div></td>' +
@@ -1252,10 +1436,108 @@
   }
 
   /* ── Start ───────────────────────────────────────── */
+  /* ── AI Advisor Panel ──────────────────────────── */
+  function initAdvisorPanel() {
+    var section = document.getElementById('advisorSection');
+    var toggle = document.getElementById('advisorToggle');
+    var body = document.getElementById('advisorBody');
+    var chevron = document.getElementById('advisorChevron');
+    var btn = document.getElementById('btnAdvisor');
+    var content = document.getElementById('advisorContent');
+    var scoreDis = document.getElementById('scoreDisplay');
+    var scoreVal = document.getElementById('scoreValue');
+    var loginCta = document.getElementById('advisorLoginCta');
+
+    if (!toggle || !btn) return;
+
+    // Show advisor section when portfolio has coins
+    function showAdvisorIfReady() {
+      if (portfolio.length > 0 && section) section.style.display = '';
+    }
+
+    // Toggle expand/collapse
+    toggle.addEventListener('click', function() {
+      var isOpen = body.style.display !== 'none';
+      body.style.display = isOpen ? 'none' : '';
+      chevron.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+    });
+
+    // Get advice
+    btn.addEventListener('click', function() {
+      if (!isLoggedIn || !authSession) {
+        loginCta.style.display = '';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Analyzing...';
+      content.innerHTML = '<p style="color:var(--color-text-muted);">Analyzing your portfolio...</p>';
+
+      var holdings = portfolio.map(function(p) {
+        var md = marketData[p.id] || {};
+        var val = p.qty * (md.current_price || 0);
+        var convertedBuy = p.buyPrice ? convertCurrency(p.buyPrice, p.buyCurrency || currency, currency) : null;
+        return {
+          symbol: p.symbol, name: p.name, qty: p.qty,
+          value: val,
+          pnl: convertedBuy ? (md.current_price - convertedBuy) * p.qty : null,
+          allocation: 0
+        };
+      });
+      var total = holdings.reduce(function(s, h) { return s + h.value; }, 0);
+      holdings.forEach(function(h) { h.allocation = total > 0 ? h.value / total * 100 : 0; });
+
+      fetch('/.netlify/functions/crypto-portfolio-advisor', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + authSession.access_token
+        },
+        body: JSON.stringify({
+          holdings: holdings,
+          marketSummary: { totalValue: total, numCoins: holdings.length },
+          currency: currency
+        })
+      })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        btn.disabled = false;
+        btn.textContent = 'Refresh Analysis';
+
+        if (data.error) {
+          content.innerHTML = '<p style="color:#FF3B30;font-weight:600;">' + data.error + '</p>';
+          return;
+        }
+
+        // Render advice with basic formatting
+        var adviceHtml = (data.advice || 'Unable to analyze.')
+          .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+          .replace(/\n/g, '<br>');
+        content.innerHTML = adviceHtml;
+
+        if (data.score) {
+          scoreVal.textContent = data.score;
+          scoreDis.style.display = '';
+          var color = data.score >= 70 ? '#34C759' : data.score >= 40 ? '#FF9500' : '#FF3B30';
+          scoreVal.style.color = color;
+        }
+      })
+      .catch(function() {
+        btn.disabled = false;
+        btn.textContent = 'Get AI Advice';
+        content.innerHTML = '<p style="color:#FF3B30;">Network error. Please try again.</p>';
+      });
+    });
+
+    // Expose for renderAll to call
+    window._showAdvisor = showAdvisorIfReady;
+  }
+
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+    document.addEventListener('DOMContentLoaded', function() { init(); initAdvisorPanel(); });
   } else {
     init();
+    initAdvisorPanel();
   }
 })();
 </script>

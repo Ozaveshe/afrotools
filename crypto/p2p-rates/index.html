@@ -377,27 +377,15 @@
 
 <script>
 /* ═══════════════════════════════════════════════════════════
-   P2P Rate Comparator — Core Logic
+   P2P Rate Comparator — Core Logic (Real API + Supabase)
    ═══════════════════════════════════════════════════════════ */
 (function () {
   'use strict';
 
-  /* ── Platform data ─────────────────────────────────── */
-  var P2P_PLATFORMS = [
-    { id:'binance', name:'Binance P2P', url:'https://p2p.binance.com', countries:['NG','KE','ZA','GH','TZ','UG','EG'], methods:['Bank Transfer','Mobile Money'], fees:{maker:0,taker:0}, trust:95, spreadFactor:0.005 },
-    { id:'bybit', name:'Bybit P2P', url:'https://www.bybit.com/fiat/trade/otc', countries:['NG','KE','ZA','GH'], methods:['Bank Transfer'], fees:{maker:0,taker:0}, trust:90, spreadFactor:0.007 },
-    { id:'kucoin', name:'KuCoin P2P', url:'https://www.kucoin.com/otc', countries:['NG','KE','ZA'], methods:['Bank Transfer'], fees:{maker:0,taker:0}, trust:88, spreadFactor:0.008 },
-    { id:'luno', name:'Luno', url:'https://www.luno.com', countries:['NG','ZA','UG','MW','ZM'], methods:['Bank Transfer','Card'], fees:{maker:0,taker:0.1}, trust:92, spreadFactor:0.012 },
-    { id:'quidax', name:'Quidax', url:'https://www.quidax.com', countries:['NG'], methods:['Bank Transfer'], fees:{maker:0.1,taker:0.2}, trust:85, spreadFactor:0.015 },
-    { id:'yellowcard', name:'Yellow Card', url:'https://yellowcard.io', countries:['NG','KE','ZA','GH','TZ','CM','BW','CI'], methods:['Bank Transfer','Mobile Money'], fees:{maker:0,taker:1.5}, trust:82, spreadFactor:0.018 },
-    { id:'noones', name:'Noones (ex-Paxful)', url:'https://noones.com', countries:['NG','KE','ZA','GH'], methods:['Bank Transfer','Gift Cards','Mobile Money'], fees:{maker:0,taker:1}, trust:78, spreadFactor:0.02 },
-    { id:'roqqu', name:'Roqqu', url:'https://roqqu.com', countries:['NG'], methods:['Bank Transfer'], fees:{maker:0,taker:0.5}, trust:80, spreadFactor:0.014 }
-  ];
-
-  /* Map currency codes to country codes */
-  var CURRENCY_TO_COUNTRY = {
-    ngn:'NG', kes:'KE', zar:'ZA', ghs:'GH', egp:'EG',
-    tzs:'TZ', ugx:'UG', xof:'SN', etb:'ET', rwf:'RW'
+  /* ── Coin ID → symbol map ───────────────────────────── */
+  var COIN_TO_ASSET = {
+    tether: 'USDT', bitcoin: 'BTC', ethereum: 'ETH',
+    binancecoin: 'BNB', 'usd-coin': 'USDC'
   };
 
   /* ── State ─────────────────────────────────────────── */
@@ -406,8 +394,7 @@
     crypto: 'tether',
     currency: 'ngn',
     amount: 100000,
-    prices: null,
-    platformResults: [],
+    apiData: null,
     chartInstance: null,
     countdownTimer: null,
     countdownValue: 60
@@ -430,7 +417,6 @@
 
   /* ── Control bindings ──────────────────────────────── */
   function bindControls() {
-    // Side toggle
     var toggleBtns = document.querySelectorAll('#sideToggle button');
     toggleBtns.forEach(function (btn) {
       btn.addEventListener('click', function () {
@@ -441,39 +427,44 @@
       });
     });
 
-    // Crypto select
     document.getElementById('cryptoSelect').addEventListener('change', function () {
       state.crypto = this.value;
       fetchAndRender();
     });
 
-    // Currency select
     document.getElementById('currencySelect').addEventListener('change', function () {
       state.currency = this.value;
       fetchAndRender();
     });
 
-    // Amount input
     document.getElementById('amountInput').addEventListener('input', function () {
       state.amount = parseFloat(this.value) || 0;
       renderResults();
     });
   }
 
-  /* ── Fetch prices and render ───────────────────────── */
+  /* ── Fetch from real API ─────────────────────────────── */
   window.fetchAndRender = function () {
     state.countdownValue = 60;
     showLoading();
 
-    CryptoData.getPrices(state.currency).then(function (data) {
-      if (!data) {
-        $results.innerHTML = '<p style="text-align:center;color:var(--color-text-muted);padding:40px 0;">Unable to fetch prices. Please try again.</p>';
-        return;
-      }
-      state.prices = data;
-      renderResults();
-      checkPriceAlerts(data);
-    });
+    var asset = COIN_TO_ASSET[state.crypto] || 'USDT';
+    var fiat = state.currency.toUpperCase();
+    var url = '/.netlify/functions/crypto-p2p?asset=' + asset + '&fiat=' + fiat;
+
+    fetch(url)
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        if (data.error) {
+          $results.innerHTML = '<p style="text-align:center;color:var(--color-text-muted);padding:40px 0;">' + (data.error || 'Unable to fetch P2P rates.') + '</p>';
+          return;
+        }
+        state.apiData = data;
+        renderResults();
+      })
+      .catch(function () {
+        $results.innerHTML = '<p style="text-align:center;color:var(--color-text-muted);padding:40px 0;">Network error. Please try again.</p>';
+      });
   };
 
   function showLoading() {
@@ -487,100 +478,121 @@
 
   /* ── Render results ────────────────────────────────── */
   function renderResults() {
-    if (!state.prices) return;
+    if (!state.apiData || !state.apiData.platforms) return;
 
-    var coinData = state.prices[state.crypto];
-    if (!coinData) {
-      $results.innerHTML = '<p style="text-align:center;color:var(--color-text-muted);padding:40px 0;">No price data available for this pair.</p>';
-      return;
-    }
-
-    var basePrice = coinData[state.currency];
-    if (!basePrice) {
-      $results.innerHTML = '<p style="text-align:center;color:var(--color-text-muted);padding:40px 0;">Currency not supported by CoinGecko for this pair. Try NGN or ZAR.</p>';
-      return;
-    }
-
-    var countryCode = CURRENCY_TO_COUNTRY[state.currency] || 'NG';
     var currencyUpper = state.currency.toUpperCase();
-    var coinSymbol = (CryptoData.COIN_META[state.crypto] || {}).symbol || state.crypto.toUpperCase();
+    var coinSymbol = COIN_TO_ASSET[state.crypto] || state.crypto.toUpperCase();
 
-    // Filter platforms that serve this country
-    var available = P2P_PLATFORMS.filter(function (p) {
-      return p.countries.indexOf(countryCode) !== -1;
-    });
+    // Map API platforms into display rows
+    var results = [];
+    state.apiData.platforms.forEach(function (p) {
+      var price = state.side === 'buy' ? p.buyPrice : p.sellPrice;
+      if (!price) return;
 
-    // Generate simulated P2P prices with realistic spreads
-    var results = available.map(function (platform) {
-      // Each platform gets a deterministic but varied spread
-      var seed = hashCode(platform.id + state.crypto + state.currency + new Date().toDateString());
-      var variance = (pseudoRandom(seed) - 0.5) * 0.4; // +/-20% of spread factor
-      var spreadPct = platform.spreadFactor * (1 + variance);
-
-      var buyPrice, sellPrice;
-      if (state.side === 'buy') {
-        // Buyer pays more than mid-market
-        buyPrice = basePrice * (1 + spreadPct);
-        return {
-          platform: platform,
-          price: buyPrice,
-          spread: spreadPct * 100,
-          cryptoAmount: state.amount / buyPrice
-        };
-      } else {
-        // Seller gets less than mid-market
-        sellPrice = basePrice * (1 - spreadPct);
-        return {
-          platform: platform,
-          price: sellPrice,
-          spread: spreadPct * 100,
-          cryptoAmount: state.amount / sellPrice
-        };
+      var spread = 0;
+      if (p.buyPrice && p.sellPrice) {
+        var mid = (p.buyPrice + p.sellPrice) / 2;
+        spread = Math.abs(price - mid) / mid * 100;
       }
+
+      results.push({
+        id: p.id,
+        name: p.name,
+        source: p.source,
+        price: price,
+        buyPrice: p.buyPrice,
+        sellPrice: p.sellPrice,
+        spread: spread,
+        cryptoAmount: state.amount / price,
+        methods: p.methods || [],
+        trust: p.trust || 80,
+        fees: p.fees || { maker: 0, taker: 0 },
+        url: p.url || '#',
+        lastUpdated: p.lastUpdated
+      });
     });
 
-    // Sort: buy = lowest price first (cheapest to buy), sell = highest price first (best return)
+    // Sort: buy = lowest price first, sell = highest price first
     results.sort(function (a, b) {
       return state.side === 'buy' ? a.price - b.price : b.price - a.price;
     });
 
-    state.platformResults = results;
+    if (results.length === 0) {
+      $results.innerHTML = '<p style="text-align:center;color:var(--color-text-muted);padding:40px 0;">No P2P rates available for this pair. Try USDT/NGN.</p>';
+      $resultCount.textContent = '';
+      return;
+    }
 
     // Build HTML
     var html = '';
     results.forEach(function (r, i) {
       var isBest = i === 0;
       var spreadClass = r.spread < 1 ? 'good' : r.spread < 2 ? 'mid' : 'bad';
+      var sourceLabel = r.source === 'live' ? 'LIVE' : r.source === 'manual' ? 'UPDATED' : 'SPOT';
+      var sourceColor = r.source === 'live' ? '#34C759' : r.source === 'manual' ? '#FF9500' : '#94A3B8';
 
       html += '<div class="platform-card' + (isBest ? ' best-deal' : '') + '">';
-      html += '<img class="platform-logo" src="/assets/img/crypto/' + r.platform.id + '.svg" alt="' + r.platform.name + '" onerror="this.src=\'/assets/img/logo-mark.svg\'">';
+      html += '<img class="platform-logo" src="/assets/img/crypto/' + r.id + '.svg" alt="' + r.name + '" onerror="this.style.display=\'none\'">';
       html += '<div class="platform-info">';
-      html += '<div class="platform-name">' + r.platform.name;
+      html += '<div class="platform-name">' + r.name;
       if (isBest) html += ' <span class="best-deal-badge">Best Deal</span>';
+      html += ' <span style="font-size:10px;font-weight:700;color:' + sourceColor + ';background:' + sourceColor + '15;padding:2px 6px;border-radius:4px;margin-left:6px;vertical-align:middle;">' + sourceLabel + '</span>';
       html += '</div>';
       html += '<div class="platform-meta">';
-      html += '<span class="trust-score"><span class="bar"><span class="bar-fill" style="width:' + r.platform.trust + '%;background:' + trustColor(r.platform.trust) + '"></span></span> ' + r.platform.trust + '/100</span>';
-      html += ' &middot; Fees: ' + r.platform.fees.taker + '%';
+      html += '<span class="trust-score"><span class="bar"><span class="bar-fill" style="width:' + r.trust + '%;background:' + trustColor(r.trust) + '"></span></span> ' + r.trust + '/100</span>';
+      html += ' &middot; Fees: ' + (r.fees.taker || 0) + '%';
+      if (r.lastUpdated) {
+        var ago = timeSince(r.lastUpdated);
+        html += ' &middot; <span style="font-size:11px;color:var(--color-text-muted);">' + ago + '</span>';
+      }
       html += '</div>';
       html += '<div class="platform-methods">';
-      r.platform.methods.forEach(function (m) {
+      r.methods.forEach(function (m) {
         html += '<span class="method-tag">' + m + '</span>';
       });
       html += '</div>';
       html += '</div>';
       html += '<div class="right-col">';
-      html += '<div class="platform-price">' + CryptoData.formatPrice(r.price, currencyUpper) + '</div>';
+      html += '<div class="platform-price">' + formatPrice(r.price, currencyUpper) + '</div>';
       html += '<div class="spread ' + spreadClass + '">' + (state.side === 'buy' ? '+' : '-') + r.spread.toFixed(2) + '% spread</div>';
-      html += '<div style="font-size:12px;color:var(--color-text-muted);">You ' + (state.side === 'buy' ? 'get' : 'sell') + ': ' + r.cryptoAmount.toFixed(state.crypto === 'bitcoin' ? 6 : 4) + ' ' + coinSymbol + '</div>';
-      html += '<a href="' + r.platform.url + '" target="_blank" rel="noopener noreferrer" class="trade-btn">Trade</a>';
+      html += '<div style="font-size:12px;color:var(--color-text-muted);">You ' + (state.side === 'buy' ? 'get' : 'sell') + ': ' + r.cryptoAmount.toFixed(coinSymbol === 'BTC' ? 6 : 4) + ' ' + coinSymbol + '</div>';
+      html += '<a href="' + r.url + '" target="_blank" rel="noopener noreferrer" class="trade-btn">Trade</a>';
       html += '</div>';
       html += '</div>';
     });
 
     $results.innerHTML = html;
-    $resultCount.textContent = results.length + ' platform' + (results.length !== 1 ? 's' : '') + ' available for ' + coinSymbol + '/' + currencyUpper;
+
+    var liveCount = results.filter(function (r) { return r.source === 'live'; }).length;
+    var manualCount = results.filter(function (r) { return r.source === 'manual'; }).length;
+    var countText = results.length + ' platform' + (results.length !== 1 ? 's' : '') + ' for ' + coinSymbol + '/' + currencyUpper;
+    if (liveCount > 0) countText += ' (' + liveCount + ' live';
+    if (manualCount > 0) countText += (liveCount > 0 ? ', ' : '(') + manualCount + ' admin-updated';
+    if (liveCount > 0 || manualCount > 0) countText += ')';
+    $resultCount.textContent = countText;
 
     renderSpreadChart(results, currencyUpper, coinSymbol);
+  }
+
+  /* ── Price formatting (standalone, no CryptoData dependency) ── */
+  function formatPrice(val, currency) {
+    var symbols = {
+      NGN:'\u20A6', KES:'KSh', ZAR:'R', GHS:'GH\u20B5', EGP:'E\u00A3',
+      TZS:'TSh', UGX:'USh', XOF:'CFA', ETB:'Br', RWF:'FRw', USD:'$'
+    };
+    var sym = symbols[currency] || currency + ' ';
+    if (val >= 1000000) return sym + (val / 1000000).toFixed(1) + 'M';
+    if (val >= 1000) return sym + Number(val).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+    return sym + Number(val).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  /* ── Time since helper ─────────────────────────────── */
+  function timeSince(dateStr) {
+    var seconds = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000);
+    if (seconds < 60) return 'just now';
+    if (seconds < 3600) return Math.floor(seconds / 60) + 'm ago';
+    if (seconds < 86400) return Math.floor(seconds / 3600) + 'h ago';
+    return Math.floor(seconds / 86400) + 'd ago';
   }
 
   /* ── Spread chart ──────────────────────────────────── */
@@ -592,9 +604,12 @@
       state.chartInstance.destroy();
     }
 
-    var labels = results.map(function (r) { return r.platform.name; });
+    var labels = results.map(function (r) {
+      return r.name + (r.source === 'live' ? ' (Live)' : '');
+    });
     var spreads = results.map(function (r) { return r.spread; });
     var colors = results.map(function (r, i) {
+      if (r.source === 'live') return '#34C759';
       return window.AfroChartColors ? AfroChartColors.series[i % AfroChartColors.series.length] : '#007AFF';
     });
 
@@ -624,8 +639,8 @@
             cornerRadius: 8,
             padding: 12,
             callbacks: {
-              label: function (ctx) {
-                return ctx.parsed.x.toFixed(2) + '% spread from mid-market';
+              label: function (c) {
+                return c.parsed.x.toFixed(2) + '% spread from mid-market';
               }
             }
           }
@@ -676,7 +691,6 @@
         html += '</span>';
       });
 
-      // Duplicate for seamless loop
       $tickerInner.innerHTML = html + html;
     });
   }
@@ -749,36 +763,11 @@
     alerts.forEach(function (a) {
       var coinMeta = CryptoData.COIN_META[a.crypto] || { symbol: a.crypto.toUpperCase() };
       html += '<div class="alert-item">';
-      html += '<span>' + coinMeta.symbol + '/' + a.currency.toUpperCase() + ' drops below <strong>' + CryptoData.formatPrice(a.threshold, a.currency.toUpperCase()) + '</strong></span>';
+      html += '<span>' + coinMeta.symbol + '/' + a.currency.toUpperCase() + ' drops below <strong>' + formatPrice(a.threshold, a.currency.toUpperCase()) + '</strong></span>';
       html += '<button class="remove-alert" onclick="removeAlert(' + a.id + ')" title="Remove alert">&times;</button>';
       html += '</div>';
     });
     container.innerHTML = html;
-  }
-
-  function checkPriceAlerts(priceData) {
-    var alerts = getAlerts();
-    var banner = document.getElementById('alertTriggered');
-    var triggered = [];
-
-    alerts.forEach(function (a) {
-      var coinData = priceData[a.crypto];
-      if (!coinData) return;
-      var currentPrice = coinData[a.currency];
-      if (!currentPrice) return;
-
-      if (currentPrice <= a.threshold) {
-        var coinMeta = CryptoData.COIN_META[a.crypto] || { symbol: a.crypto.toUpperCase() };
-        triggered.push(coinMeta.symbol + '/' + a.currency.toUpperCase() + ' is now at ' + CryptoData.formatPrice(currentPrice, a.currency.toUpperCase()) + ' (target: ' + CryptoData.formatPrice(a.threshold, a.currency.toUpperCase()) + ')');
-      }
-    });
-
-    if (triggered.length > 0) {
-      banner.style.display = 'block';
-      banner.innerHTML = 'Price Alert Triggered! ' + triggered.join(' | ');
-    } else {
-      banner.style.display = 'none';
-    }
   }
 
   /* ── Helpers ───────────────────────────────────────── */
@@ -786,21 +775,6 @@
     if (score >= 90) return '#34C759';
     if (score >= 80) return '#FF9500';
     return '#FF3B30';
-  }
-
-  function hashCode(str) {
-    var hash = 0;
-    for (var i = 0; i < str.length; i++) {
-      var ch = str.charCodeAt(i);
-      hash = ((hash << 5) - hash) + ch;
-      hash |= 0;
-    }
-    return Math.abs(hash);
-  }
-
-  function pseudoRandom(seed) {
-    var x = Math.sin(seed) * 10000;
-    return x - Math.floor(x);
   }
 
 })();

@@ -1,27 +1,30 @@
 /**
  * AfroTools AfroCrypto — P2P Rate Aggregator
  *
- * GET /.netlify/functions/crypto-p2p?asset=USDT&fiat=NGN&action=buy
+ * GET /.netlify/functions/crypto-p2p?asset=USDT&fiat=NGN
  *
- * Fetches P2P rate data from multiple exchanges:
- *  1. Binance P2P (primary)
- *  2. Bybit P2P (secondary)
- *  3. CoinGecko exchange tickers (fallback)
+ * Data sources:
+ *  1. Binance P2P API  (live, real ads)
+ *  2. Bybit P2P API    (live, real ads)
+ *  3. Supabase p2p_rates table (admin-managed manual rates)
+ *  4. CoinGecko spot   (fallback if all above fail)
  *
- * Caches results for 5 minutes using global cache object.
+ * Caches results for 2 minutes using global cache object.
  */
+
+const { createClient } = require('@supabase/supabase-js');
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'Content-Type, x-api-key',
   'Access-Control-Allow-Methods': 'GET, OPTIONS',
   'Content-Type': 'application/json',
-  'Cache-Control': 'public, max-age=60, s-maxage=300',
+  'Cache-Control': 'public, max-age=60, s-maxage=120',
 };
 
 // In-memory cache (persists across warm invocations)
 const cache = {};
-const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+const CACHE_TTL = 2 * 60 * 1000; // 2 minutes
 
 function getCached(key) {
   const entry = cache[key];
@@ -43,16 +46,23 @@ function jsonResponse(statusCode, body, extraHeaders = {}) {
   };
 }
 
-/**
- * Fetch Binance P2P ads
- * Public endpoint, no auth needed.
- */
+/* ── Supabase client ──────────────────────────────────────── */
+const SUPABASE_URL = process.env.SUPABASE_URL_AUTH || 'https://zpclagtgczsygrgztlts.supabase.co';
+const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY_AUTH || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpwY2xhZ3RnY3pzeWdyZ3p0bHRzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0NTg4MzIsImV4cCI6MjA4OTAzNDgzMn0._G-677vi2UTAhcU3t0aquvmd8lnQUBil53ok_Z623F0';
+
+let supabase;
+function getSupabase() {
+  if (!supabase) supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  return supabase;
+}
+
+/* ── Binance P2P ──────────────────────────────────────────── */
 async function fetchBinanceP2P(asset, fiat, tradeType) {
   const url = 'https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search';
   const body = {
     asset: asset.toUpperCase(),
     fiat: fiat.toUpperCase(),
-    tradeType: tradeType.toUpperCase(), // "BUY" or "SELL"
+    tradeType: tradeType.toUpperCase(),
     page: 1,
     rows: 10,
     publisherType: null,
@@ -85,9 +95,7 @@ async function fetchBinanceP2P(asset, fiat, tradeType) {
   }));
 }
 
-/**
- * Fetch Bybit P2P ads
- */
+/* ── Bybit P2P ────────────────────────────────────────────── */
 async function fetchBybitP2P(asset, fiat, side) {
   const url = 'https://api2.bybit.com/fiat/otc/item/online';
   const body = {
@@ -124,18 +132,29 @@ async function fetchBybitP2P(asset, fiat, side) {
   }));
 }
 
-/**
- * Fallback: CoinGecko exchange tickers for approximate pricing
- */
+/* ── Supabase manual rates ────────────────────────────────── */
+async function fetchManualRates(asset, fiat) {
+  const sb = getSupabase();
+  const { data, error } = await sb
+    .from('p2p_rates')
+    .select('*')
+    .eq('asset', asset.toUpperCase())
+    .eq('fiat', fiat.toUpperCase())
+    .eq('is_active', true);
+
+  if (error) {
+    console.error('[crypto-p2p] Supabase error:', error.message);
+    return [];
+  }
+  return data || [];
+}
+
+/* ── CoinGecko fallback ───────────────────────────────────── */
 async function fetchCoinGeckoFallback(asset, fiat) {
   const coinMap = {
-    USDT: 'tether',
-    BTC: 'bitcoin',
-    ETH: 'ethereum',
-    USDC: 'usd-coin',
-    BNB: 'binancecoin',
+    USDT: 'tether', BTC: 'bitcoin', ETH: 'ethereum',
+    USDC: 'usd-coin', BNB: 'binancecoin',
   };
-
   const coinId = coinMap[asset.toUpperCase()] || asset.toLowerCase();
   const url = `https://api.coingecko.com/api/v3/simple/price?ids=${coinId}&vs_currencies=${fiat.toLowerCase()}`;
 
@@ -144,15 +163,11 @@ async function fetchCoinGeckoFallback(asset, fiat) {
 
   const json = await res.json();
   const price = json[coinId]?.[fiat.toLowerCase()];
-
   if (!price) throw new Error('CoinGecko fallback: price not found');
-
   return price;
 }
 
-/**
- * Compute summary from ads list
- */
+/* ── Helpers ──────────────────────────────────────────────── */
 function computeSummary(ads) {
   if (!ads || ads.length === 0) return null;
   const prices = ads.map(a => a.price);
@@ -164,12 +179,11 @@ function computeSummary(ads) {
   };
 }
 
+/* ── Handler ──────────────────────────────────────────────── */
 exports.handler = async function (event) {
-  // Handle CORS preflight
   if (event.httpMethod === 'OPTIONS') {
     return { statusCode: 204, headers: CORS_HEADERS, body: '' };
   }
-
   if (event.httpMethod !== 'GET') {
     return jsonResponse(405, { error: 'Method not allowed' });
   }
@@ -177,9 +191,7 @@ exports.handler = async function (event) {
   const params = event.queryStringParameters || {};
   const asset = (params.asset || 'USDT').toUpperCase();
   const fiat = (params.fiat || 'NGN').toUpperCase();
-  const action = (params.action || 'buy').toUpperCase();
 
-  // Validate
   const validAssets = ['USDT', 'BTC', 'ETH', 'USDC', 'BNB'];
   if (!validAssets.includes(asset)) {
     return jsonResponse(400, {
@@ -187,90 +199,138 @@ exports.handler = async function (event) {
     });
   }
 
-  const cacheKey = `p2p-${asset}-${fiat}-${action}`;
+  const cacheKey = `p2p-${asset}-${fiat}`;
   const cached = getCached(cacheKey);
   if (cached) {
     return jsonResponse(200, { ...cached, cached: true });
   }
 
   const platforms = [];
-  let source = 'live';
 
-  // --- Binance P2P ---
-  try {
-    const buyAds = await fetchBinanceP2P(asset, fiat, 'BUY');
-    const sellAds = await fetchBinanceP2P(asset, fiat, 'SELL');
+  // --- Fetch all sources in parallel ---
+  const [binanceResult, bybitResult, manualResult] = await Promise.allSettled([
+    // Binance: fetch both buy and sell
+    (async () => {
+      const [buyAds, sellAds] = await Promise.all([
+        fetchBinanceP2P(asset, fiat, 'BUY'),
+        fetchBinanceP2P(asset, fiat, 'SELL'),
+      ]);
+      return { buyAds, sellAds };
+    })(),
+    // Bybit: fetch both buy and sell
+    (async () => {
+      const [buyAds, sellAds] = await Promise.all([
+        fetchBybitP2P(asset, fiat, 'BUY'),
+        fetchBybitP2P(asset, fiat, 'SELL'),
+      ]);
+      return { buyAds, sellAds };
+    })(),
+    // Supabase manual rates
+    fetchManualRates(asset, fiat),
+  ]);
 
-    const buyPrices = buyAds.map(a => a.price);
-    const sellPrices = sellAds.map(a => a.price);
-
-    const buyPrice = buyPrices.length > 0 ? buyPrices[0] : null;
-    const sellPrice = sellPrices.length > 0 ? sellPrices[0] : null;
-
-    const allMethods = new Set();
-    [...buyAds, ...sellAds].forEach(ad =>
-      ad.methods.forEach(m => allMethods.add(m))
-    );
-
-    platforms.push({
-      name: 'Binance P2P',
-      buyPrice,
-      sellPrice,
-      spread: buyPrice && sellPrice ? Math.round((buyPrice - sellPrice) * 100) / 100 : null,
-      methods: [...allMethods],
-      ads: action === 'BUY' ? buyAds.slice(0, 5) : sellAds.slice(0, 5),
-      buySummary: computeSummary(buyAds),
-      sellSummary: computeSummary(sellAds),
-      lastUpdated: new Date().toISOString(),
-    });
-  } catch (err) {
-    console.error(`[crypto-p2p] Binance failed: ${err.message}`);
-  }
-
-  // --- Bybit P2P ---
-  try {
-    const buyAds = await fetchBybitP2P(asset, fiat, 'BUY');
-    const sellAds = await fetchBybitP2P(asset, fiat, 'SELL');
-
+  // --- Process Binance ---
+  if (binanceResult.status === 'fulfilled') {
+    const { buyAds, sellAds } = binanceResult.value;
     const buyPrice = buyAds.length > 0 ? buyAds[0].price : null;
     const sellPrice = sellAds.length > 0 ? sellAds[0].price : null;
-
     const allMethods = new Set();
-    [...buyAds, ...sellAds].forEach(ad =>
-      ad.methods.forEach(m => allMethods.add(m))
-    );
+    [...buyAds, ...sellAds].forEach(ad => ad.methods.forEach(m => allMethods.add(m)));
 
     platforms.push({
-      name: 'Bybit P2P',
+      id: 'binance',
+      name: 'Binance P2P',
+      source: 'live',
       buyPrice,
       sellPrice,
       spread: buyPrice && sellPrice ? Math.round((buyPrice - sellPrice) * 100) / 100 : null,
       methods: [...allMethods],
-      ads: action === 'BUY' ? buyAds.slice(0, 5) : sellAds.slice(0, 5),
+      trust: 95,
+      fees: { maker: 0, taker: 0 },
+      url: 'https://p2p.binance.com',
+      ads: { buy: buyAds.slice(0, 5), sell: sellAds.slice(0, 5) },
       buySummary: computeSummary(buyAds),
       sellSummary: computeSummary(sellAds),
       lastUpdated: new Date().toISOString(),
     });
-  } catch (err) {
-    console.error(`[crypto-p2p] Bybit failed: ${err.message}`);
+  } else {
+    console.error(`[crypto-p2p] Binance failed: ${binanceResult.reason?.message}`);
   }
 
-  // --- Fallback: CoinGecko if no P2P data ---
+  // --- Process Bybit ---
+  if (bybitResult.status === 'fulfilled') {
+    const { buyAds, sellAds } = bybitResult.value;
+    const buyPrice = buyAds.length > 0 ? buyAds[0].price : null;
+    const sellPrice = sellAds.length > 0 ? sellAds[0].price : null;
+    const allMethods = new Set();
+    [...buyAds, ...sellAds].forEach(ad => ad.methods.forEach(m => allMethods.add(m)));
+
+    platforms.push({
+      id: 'bybit',
+      name: 'Bybit P2P',
+      source: 'live',
+      buyPrice,
+      sellPrice,
+      spread: buyPrice && sellPrice ? Math.round((buyPrice - sellPrice) * 100) / 100 : null,
+      methods: [...allMethods],
+      trust: 90,
+      fees: { maker: 0, taker: 0 },
+      url: 'https://www.bybit.com/fiat/trade/otc',
+      ads: { buy: buyAds.slice(0, 5), sell: sellAds.slice(0, 5) },
+      buySummary: computeSummary(buyAds),
+      sellSummary: computeSummary(sellAds),
+      lastUpdated: new Date().toISOString(),
+    });
+  } else {
+    console.error(`[crypto-p2p] Bybit failed: ${bybitResult.reason?.message}`);
+  }
+
+  // --- Process Supabase manual rates ---
+  if (manualResult.status === 'fulfilled' && manualResult.value.length > 0) {
+    for (const row of manualResult.value) {
+      platforms.push({
+        id: row.platform,
+        name: formatPlatformName(row.platform),
+        source: 'manual',
+        buyPrice: parseFloat(row.buy_price),
+        sellPrice: parseFloat(row.sell_price),
+        spread: Math.round((parseFloat(row.buy_price) - parseFloat(row.sell_price)) * 100) / 100,
+        methods: row.methods || [],
+        trust: row.trust_score || 80,
+        fees: { maker: parseFloat(row.fees_maker) || 0, taker: parseFloat(row.fees_taker) || 0 },
+        url: row.platform_url || '',
+        countries: row.countries || [],
+        ads: { buy: [], sell: [] },
+        buySummary: null,
+        sellSummary: null,
+        lastUpdated: row.updated_at,
+        notes: row.notes,
+      });
+    }
+  } else if (manualResult.status === 'rejected') {
+    console.error(`[crypto-p2p] Supabase failed: ${manualResult.reason?.message}`);
+  }
+
+  // --- Fallback: CoinGecko if nothing else worked ---
   if (platforms.length === 0) {
     try {
       const price = await fetchCoinGeckoFallback(asset, fiat);
       platforms.push({
+        id: 'coingecko',
         name: 'CoinGecko (spot)',
+        source: 'fallback',
         buyPrice: price,
         sellPrice: price,
         spread: 0,
         methods: [],
-        ads: [],
+        trust: 70,
+        fees: { maker: 0, taker: 0 },
+        url: 'https://www.coingecko.com',
+        ads: { buy: [], sell: [] },
         buySummary: null,
         sellSummary: null,
         lastUpdated: new Date().toISOString(),
       });
-      source = 'fallback';
     } catch (err) {
       console.error(`[crypto-p2p] CoinGecko fallback failed: ${err.message}`);
     }
@@ -287,13 +347,23 @@ exports.handler = async function (event) {
   const result = {
     asset,
     fiat,
-    action,
     platforms,
-    source,
     timestamp: new Date().toISOString(),
   };
 
   setCache(cacheKey, result);
-
   return jsonResponse(200, result);
 };
+
+/* ── Platform name formatter ──────────────────────────────── */
+function formatPlatformName(slug) {
+  const names = {
+    kucoin: 'KuCoin P2P',
+    luno: 'Luno',
+    quidax: 'Quidax',
+    yellowcard: 'Yellow Card',
+    noones: 'Noones',
+    roqqu: 'Roqqu',
+  };
+  return names[slug] || slug.charAt(0).toUpperCase() + slug.slice(1);
+}

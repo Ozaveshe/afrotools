@@ -32,6 +32,15 @@
       "provider": { "@type": "Organization", "name": "AfroTools", "url": "https://afrotools.com" }
     },
     {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {"@type":"Question","name":"Is it legal to send money to Africa using crypto?","acceptedAnswer":{"@type":"Answer","text":"In most corridors, using crypto for remittance is legal, though regulations vary by country. Nigeria, Kenya, and South Africa have growing crypto regulatory frameworks."}},
+        {"@type":"Question","name":"How long does a crypto remittance take?","acceptedAnswer":{"@type":"Answer","text":"The blockchain transfer itself takes 1-5 minutes. The total process typically takes 30-60 minutes for experienced users."}},
+        {"@type":"Question","name":"What if the recipient does not have a crypto wallet?","acceptedAnswer":{"@type":"Answer","text":"Traditional services like Wise or Remitly are better options. Alternatively, you can sell on a P2P platform that delivers directly to the recipient's bank account."}},
+        {"@type":"Question","name":"Are these calculations exact?","acceptedAnswer":{"@type":"Answer","text":"The fees and exchange rates shown are estimates based on typical rates. Actual costs may vary depending on payment method, market conditions, and specific providers."}}
+      ]
+    },
+    {
       "@type": "BreadcrumbList",
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "AfroTools", "item": "https://afrotools.com" },
@@ -512,6 +521,10 @@
     html += '<div class="total-label">Best Traditional (Wise)</div>';
     html += '<div class="total-amount">' + dest.symbol + formatNum(wiseReceived) + '</div>';
     html += '<div class="total-time">&#x23F1; 1-2 business days</div>';
+    html += '<div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;justify-content:center;">';
+    html += '<a href="https://wise.com/send" target="_blank" rel="noopener noreferrer" style="font-size:12px;font-weight:700;color:var(--color-primary);text-decoration:none;">Wise &rarr;</a>';
+    html += '<a href="https://www.remitly.com" target="_blank" rel="noopener noreferrer" style="font-size:12px;font-weight:700;color:var(--color-primary);text-decoration:none;">Remitly &rarr;</a>';
+    html += '</div>';
     html += '</div></div>';
 
     // Crypto P2P card
@@ -529,6 +542,7 @@
     html += '<div class="total-label">Recipient Receives</div>';
     html += '<div class="total-amount">' + dest.symbol + formatNum(cryptoReceived) + '</div>';
     html += '<div class="total-time">&#x23F1; 30-60 minutes</div>';
+    html += '<a href="/crypto/p2p-rates/" style="display:inline-block;margin-top:10px;font-size:12px;font-weight:700;color:var(--color-primary);text-decoration:none;">Compare P2P Rates &rarr;</a>';
     html += '</div></div>';
 
     // Stablecoin Direct card
@@ -546,6 +560,7 @@
     html += '<div class="total-label">Recipient Receives</div>';
     html += '<div class="total-amount">' + dest.symbol + formatNum(stableReceived) + '</div>';
     html += '<div class="total-time">&#x23F1; 1-5 minutes</div>';
+    html += '<a href="/crypto/stablecoins/" style="display:inline-block;margin-top:10px;font-size:12px;font-weight:700;color:var(--color-primary);text-decoration:none;">Compare Stablecoins &rarr;</a>';
     html += '</div></div>';
 
     channelsContainer.innerHTML = html;
@@ -595,7 +610,7 @@
           backgroundColor: [
             colors.series[0],
             colors.series[1],
-            colors.series[5] || '#FF3B30',
+            '#FF3B30',
             colors.series[2],
             colors.series[4]
           ],
@@ -645,7 +660,8 @@
           USD_TO_LOCAL[dest.currency] = prices['tether'][dest.cryptoCurrency];
         }
         calculate();
-      }).catch(function() {
+      }).catch(function(err) {
+        console.warn('[remittance] Live rates unavailable, using estimates:', err && err.message);
         calculate();
       });
     } else {

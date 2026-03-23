@@ -4,22 +4,45 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AfroCrypto -- Crypto Tools for Africa | AfroTools</title>
-<meta name="description" content="P2P rate comparator, live crypto prices, stablecoin tracker, remittance calculator, arbitrage spotter. Crypto tools built for 54 African countries. Free forever.">
-<link rel="canonical" href="https://afrotools.com/crypto">
+<meta name="description" content="15 free crypto tools for Africa. P2P rate comparator, live prices in 15+ currencies, stablecoin tracker, remittance calculator, portfolio tracker, tax calculator, scam checker and more.">
+<link rel="canonical" href="https://afrotools.com/crypto/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="AfroCrypto -- Crypto Tools for Africa | AfroTools">
 <meta property="og:description" content="P2P rates, portfolio tracker, scam checker, tax calculator -- built for 54 African countries. Because $59 billion in Nigerian crypto transactions deserves better tools.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
-<meta property="og:url" content="https://afrotools.com/crypto">
+<meta property="og:url" content="https://afrotools.com/crypto/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="robots" content="index, follow">
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+  {"@type":"CollectionPage","name":"AfroCrypto — Crypto Tools for Africa","description":"15 free crypto tools built for 54 African countries. P2P rates, live prices, portfolio tracker, tax calculator, scam checker and more.","url":"https://afrotools.com/crypto/","provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}},
+  {"@type":"BreadcrumbList","itemListElement":[
+    {"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com"},
+    {"@type":"ListItem","position":2,"name":"Categories","item":"https://afrotools.com/categories/"},
+    {"@type":"ListItem","position":3,"name":"Crypto & Web3","item":"https://afrotools.com/crypto/"}
+  ]},
+  {"@type":"FAQPage","mainEntity":[
+    {"@type":"Question","name":"Is crypto legal in Africa?","acceptedAnswer":{"@type":"Answer","text":"It varies by country. Nigeria legalized and began regulating crypto after the SEC took over oversight. South Africa treats crypto as a financial asset under the FSCA. Kenya has no specific prohibition. The trend is toward regulation rather than prohibition."}},
+    {"@type":"Question","name":"Which P2P platform has the best rates?","acceptedAnswer":{"@type":"Answer","text":"Rates change constantly. Use our P2P Rate Comparator to compare real-time prices across Binance P2P, Bybit, Luno, Quidax, and 4+ more platforms."}},
+    {"@type":"Question","name":"Are stablecoins safe for savings?","acceptedAnswer":{"@type":"Answer","text":"USDT and USDC are backed 1:1 to the US dollar. USDC is audited monthly. For most African savers, the risk of a stablecoin depegging is lower than the risk of their local currency losing 20-40% annually."}},
+    {"@type":"Question","name":"How does crypto remittance work?","acceptedAnswer":{"@type":"Answer","text":"Buy a stablecoin on an exchange, send it to the recipient's wallet in Africa via a low-fee network like Tron, then sell for local currency on P2P. Takes 5-15 minutes, costs under $2."}}
+  ]}
+]}
+</script>
+
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&family=Fraunces:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&family=Instrument+Serif&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
 <link rel="stylesheet" href="/assets/css/global.min.css">
 <link rel="stylesheet" href="/assets/css/crypto.css">
 <script src="/assets/js/components/tool-registry.js"></script>
+<script src="/assets/js/components/category-cards.js"></script>
 <script src="/assets/js/lib/crypto-data.js"></script>
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
@@ -31,167 +54,79 @@
 body{font-family:'DM Sans',sans-serif;background:var(--color-bg);color:var(--color-text);-webkit-font-smoothing:antialiased;}
 a{text-decoration:none;color:inherit;}
 
-/* ══════ HERO ══════ */
+/* ══════ LAYOUT ══════ */
 .wrap{max-width:1000px;margin:0 auto;padding:0 24px}
 .bc{font-size:.72rem;font-weight:500;color:#9ca3af;letter-spacing:.06em;padding:14px 0}
 .bc a{color:#9ca3af;transition:color .15s}
-.bc a:hover{color:#AF52DE}
+.bc a:hover{color:var(--color-primary)}
 .bc .cur{color:#374151}
-.hero{background:linear-gradient(135deg,#1a0a2e 0%,#2d1545 40%,#1a1040 100%);padding:56px 0 48px;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 30% 50%,rgba(175,82,222,.12) 0%,transparent 50%),radial-gradient(circle at 70% 30%,rgba(175,82,222,.08) 0%,transparent 40%);animation:heroGlow 8s ease-in-out infinite alternate;pointer-events:none}
-.hero::after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background-image:radial-gradient(2px 2px at 20% 30%,rgba(255,255,255,.08),transparent),radial-gradient(2px 2px at 60% 70%,rgba(255,255,255,.05),transparent),radial-gradient(1px 1px at 80% 20%,rgba(255,255,255,.06),transparent),radial-gradient(1px 1px at 40% 80%,rgba(255,255,255,.04),transparent);animation:heroDots 12s linear infinite;pointer-events:none}
-@keyframes heroGlow{0%{transform:translate(0,0) rotate(0deg)}100%{transform:translate(2%,-2%) rotate(3deg)}}
-@keyframes heroDots{0%{transform:translateY(0)}100%{transform:translateY(-20px)}}
+
+/* ══════ HERO ══════ */
+.hero{background:linear-gradient(135deg,#0A1628 0%,#1a1040 40%,#0A1628 100%);padding:56px 0 48px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 30% 50%,rgba(0,122,255,.10) 0%,transparent 50%),radial-gradient(circle at 70% 30%,rgba(0,122,255,.06) 0%,transparent 40%);animation:heroGlow 8s ease-in-out infinite alternate;pointer-events:none}
+@keyframes heroGlow{0%{transform:translate(0,0)}100%{transform:translate(2%,-2%)}}
 .hero-z{position:relative;z-index:1}
 .hero-ey{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:6px;font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.82);margin-bottom:16px}
 .hero h1{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;color:#fff;line-height:1.08;letter-spacing:-.025em;margin-bottom:12px}
-.hero h1 b{color:#d8b4fe}
+.hero h1 b{color:#4DA3FF}
 .hero-sub{font-size:.95rem;color:rgba(255,255,255,.85);line-height:1.6;max-width:480px;margin-bottom:24px}
 .hero-stats{display:flex;gap:32px}
-.hs-n{font-size:2.2rem;font-weight:800;color:#c084fc;line-height:1}
+.hs-n{font-size:2.2rem;font-weight:800;color:#4DA3FF;line-height:1}
 .hs-l{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-top:4px}
 @media(max-width:640px){.hero-stats{gap:20px}.hs-n{font-size:1.6rem}}
 
-/* ══════ FEATURED TOOLS ══════ */
-.page-main{max-width:1000px;margin:0 auto;padding:40px 24px 80px;}
-.featured-section{margin-bottom:48px;}
-.featured-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
-  gap:16px;margin-top:24px;
-}
-.feat-card{
-  background:var(--color-bg-card);border:1.5px solid var(--color-border);
-  border-radius:var(--radius-lg);overflow:hidden;
-  transition:border-color .18s,box-shadow .18s,transform .18s;
-  display:block;color:inherit;
-}
-.feat-card:hover{
-  border-color:#AF52DE;
-  box-shadow:0 8px 28px rgba(175,82,222,.12);
-  transform:translateY(-3px);
-}
-.feat-banner{
-  height:100px;display:flex;align-items:center;justify-content:center;
-  position:relative;overflow:hidden;
-}
-.feat-icon{font-size:2.6rem;position:relative;z-index:1;filter:drop-shadow(0 4px 8px rgba(0,0,0,.2));}
-.feat-body{padding:18px 18px 20px;}
-.feat-name{font-size:.95rem;font-weight:800;color:var(--color-text);margin-bottom:5px;line-height:1.2;}
-.feat-desc{font-size:.78rem;color:var(--color-text-muted);line-height:1.65;margin-bottom:12px;}
-.feat-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
-.feat-badge{
-  font-size:.6rem;font-weight:800;padding:3px 8px;
-  border-radius:8px;text-transform:uppercase;letter-spacing:.04em;
-}
-.feat-badge--live{background:rgba(175,82,222,0.1);border:1px solid rgba(175,82,222,0.25);color:#AF52DE;}
-.feat-badge--crypto{background:rgba(52,199,89,0.1);border:1px solid rgba(52,199,89,0.2);color:#34C759;}
-.feat-arrow{margin-left:auto;color:var(--color-text-subtle);font-size:.9rem;transition:color .15s,transform .15s;}
-.feat-card:hover .feat-arrow{color:#AF52DE;transform:translateX(3px);}
-
-/* ══════ SECTION CHROME ══════ */
-.sec-eyebrow{
-  display:inline-flex;align-items:center;gap:8px;
-  font-size:.65rem;font-weight:800;text-transform:uppercase;
-  letter-spacing:.1em;color:#AF52DE;margin-bottom:8px;
-}
-.sec-eyebrow::before{content:'';width:14px;height:2px;background:#AF52DE;border-radius:2px;}
-.sec-title{font-size:clamp(1.3rem,2.5vw,1.8rem);font-weight:900;color:var(--color-text);margin-bottom:6px;letter-spacing:-.025em;}
-.sec-sub{font-size:.88rem;color:var(--color-text-muted);line-height:1.7;max-width:500px;margin-bottom:24px;}
-
-/* ══════ ALL TOOLS GRID ══════ */
-.tools-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
-  gap:12px;
-}
-.tool-row{
-  background:var(--color-bg-card);border:1.5px solid var(--color-border);
-  border-radius:12px;padding:16px;display:flex;align-items:center;gap:12px;
-  transition:border-color .15s,box-shadow .15s,transform .15s;
-}
-.tool-row:hover{border-color:#AF52DE;box-shadow:0 4px 16px rgba(175,82,222,.08);transform:translateY(-1px);}
-.tr-icon{
-  width:42px;height:42px;border-radius:10px;
-  background:rgba(175,82,222,0.08);
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.3rem;flex-shrink:0;
-}
-.tr-body{flex:1;min-width:0;}
-.tr-name{font-size:.85rem;font-weight:700;color:var(--color-text);margin-bottom:2px;}
-.tr-desc{font-size:.72rem;color:var(--color-text-muted);line-height:1.4;}
-.tr-badge{
-  font-size:.58rem;font-weight:800;padding:2px 7px;border-radius:6px;
-  text-transform:uppercase;letter-spacing:.04em;margin-top:4px;display:inline-block;
-  background:rgba(175,82,222,0.1);color:#AF52DE;
-}
-.tr-badge--new{background:rgba(52,199,89,0.1);color:#34C759;}
-
-/* ══════ SECTION DIVIDER ══════ */
-.sec-div{height:1px;background:linear-gradient(90deg,#AF52DE,#6B21A8,#007AFF);border-radius:2px;margin:40px 0;}
-
-/* ══════ WHY / CONTENT SECTION ══════ */
-.why-section{
-  background:var(--color-bg-card);border:1.5px solid var(--color-border);
-  border-radius:var(--radius-lg);padding:36px 32px;margin-bottom:40px;
-}
-.why-section h2{font-size:1.3rem;font-weight:900;color:var(--color-text);margin-bottom:16px;letter-spacing:-.02em;}
-.why-section h3{font-size:1rem;font-weight:800;color:var(--color-text);margin:20px 0 8px;}
-.why-section p{font-size:.88rem;color:var(--color-text-muted);line-height:1.75;margin-bottom:12px;}
-.why-section .highlight{color:#AF52DE;font-weight:700;}
-
-/* ══════ FAQ (override crypto.css for consistency) ══════ */
-.crypto-faq{max-width:1000px;margin:0 auto;padding:0 24px 48px;}
-.crypto-faq h2{font-size:1.3rem;font-weight:900;color:var(--color-text);margin-bottom:24px;letter-spacing:-.02em;}
+/* ══════ SECTIONS ══════ */
+.sec{padding:40px 0 56px}
+.sec-alt{background:var(--color-bg-subtle);border-top:1px solid var(--color-border);border-bottom:1px solid var(--color-border)}
+.quote{font-size:.88rem;color:var(--color-text-muted);line-height:1.75;border-left:3px solid var(--color-primary);padding:16px 0 16px 20px;margin:32px 0 0;max-width:720px}
+.ey{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--color-primary);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.ey::before{content:'';width:14px;height:2px;background:var(--color-primary);border-radius:2px}
+.st{font-size:clamp(1.3rem,2.5vw,1.8rem);font-weight:900;color:var(--color-text);margin-bottom:6px;letter-spacing:-.025em}
+.ss{font-size:.88rem;color:var(--color-text-muted);line-height:1.7;max-width:500px;margin-bottom:24px}
 
 /* ══════ CTA ══════ */
-.cta-block{
-  background:linear-gradient(135deg,#0A0E1A,#1A1040,#0A1628);
-  border-radius:18px;padding:44px 40px;text-align:center;
-  position:relative;overflow:hidden;margin-top:40px;
-}
-.cta-block::before{
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(circle at 30% 50%,rgba(175,82,222,.12),transparent 60%),
-    radial-gradient(circle at 70% 30%,rgba(175,82,222,.08),transparent 50%);
-  pointer-events:none;
-}
-.cta-block h3{font-size:1.2rem;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:.03em;margin-bottom:10px;position:relative;}
-.cta-block p{font-size:.88rem;color:rgba(255,255,255,.65);line-height:1.7;margin-bottom:20px;max-width:400px;margin-left:auto;margin-right:auto;position:relative;}
-.cta-link{
-  display:inline-flex;align-items:center;gap:8px;padding:12px 28px;
-  background:#AF52DE;color:#fff;border-radius:10px;font-weight:800;
-  font-size:.88rem;transition:background .15s,transform .15s;
-  position:relative;text-transform:uppercase;letter-spacing:.05em;
-}
-.cta-link:hover{background:#9333EA;transform:translateY(-2px);}
+.cta{background:linear-gradient(135deg,#0A1628,#1A1040,#0A1628);border-radius:18px;padding:44px 40px;text-align:center;position:relative;overflow:hidden}
+.cta h3{font-size:1.2rem;font-weight:900;color:#fff;margin-bottom:10px}
+.cta p{font-size:.88rem;color:rgba(255,255,255,.65);line-height:1.7;margin-bottom:20px;max-width:400px;margin-left:auto;margin-right:auto}
+.cta a{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;background:var(--color-primary);color:#fff;border-radius:10px;font-weight:800;font-size:.88rem;transition:background .15s,transform .15s;text-transform:uppercase;letter-spacing:.05em}
+.cta a:hover{background:#0063D1;transform:translateY(-2px)}
+
+/* ══════ WHY SECTION ══════ */
+.why-section{background:var(--color-bg-card);border:1.5px solid var(--color-border);border-radius:var(--radius-lg);padding:36px 32px;margin:40px 0}
+.why-section h2{font-size:1.3rem;font-weight:900;color:var(--color-text);margin-bottom:16px}
+.why-section h3{font-size:1rem;font-weight:800;color:var(--color-text);margin:20px 0 8px}
+.why-section p{font-size:.88rem;color:var(--color-text-muted);line-height:1.75;margin-bottom:12px}
+.why-section .hl{color:var(--color-primary);font-weight:700}
+
+/* ══════ FAQ ══════ */
+.crypto-faq{max-width:1000px;margin:0 auto;padding:0 24px 48px}
+.crypto-faq h2{font-size:1.3rem;font-weight:900;color:var(--color-text);margin-bottom:24px}
 
 /* ══════ RESPONSIVE ══════ */
 @media(max-width:640px){
-  .crypto-hero{min-height:auto;}
-  .page-main{padding:28px 16px 60px;}
-  .featured-grid{grid-template-columns:1fr;}
-  .why-section{padding:24px 20px;}
-  .cta-block{padding:32px 24px;}
-  .crypto-faq{padding:0 16px 40px;}
+  .sec{padding:28px 0 40px}
+  .why-section{padding:24px 20px}
+  .cta{padding:32px 24px}
+  .crypto-faq{padding:0 16px 40px}
 }
 </style>
 </head>
 <body>
 <afro-navbar></afro-navbar>
 
-<!-- ══════ CRYPTO HERO ══════ -->
+<!-- ══════ BREADCRUMBS ══════ -->
 <div class="wrap"><nav class="bc"><a href="/">AfroTools</a> › <a href="/categories/">Categories</a> › <span class="cur">Crypto & Web3</span></nav></div>
 
+<!-- ══════ HERO ══════ -->
 <section class="hero">
   <div class="wrap hero-z">
-    <div class="hero-ey"><span>🪙</span> CRYPTO & WEB3</div>
+    <div class="hero-ey"><span>₿</span> CRYPTO & WEB3</div>
     <h1><b>Crypto & Web3</b></h1>
     <p class="hero-sub">P2P rates, portfolio tracker, scam checker, tax calculator — built for 54 African countries. $59 billion in Nigerian crypto transactions deserves better tools.</p>
     <div class="hero-stats">
-      <div><div class="hs-n">15</div><div class="hs-l">Tools</div></div>
-      <div><div class="hs-n">54</div><div class="hs-l">Countries</div></div>
-      <div><div class="hs-n">8+</div><div class="hs-l">P2P Platforms</div></div>
+      <div><div class="hs-n" id="s-total">—</div><div class="hs-l">Tools planned</div></div>
+      <div><div class="hs-n" id="s-live">—</div><div class="hs-l">Live now</div></div>
+      <div><div class="hs-n" id="s-pipe">—</div><div class="hs-l">In pipeline</div></div>
     </div>
   </div>
 </section>
@@ -203,366 +138,128 @@ a{text-decoration:none;color:inherit;}
   </div>
 </div>
 
-<!-- ══════ MAIN CONTENT ══════ -->
-<main class="page-main" id="tools">
+<!-- ══════ DESCRIPTION ══════ -->
+<div class="wrap"><p class="quote">Crypto tools built for African traders, investors, and remittance users. P2P rate comparison, live prices in 15+ African currencies, stablecoin tracking, portfolio management, mining profitability, tax calculations, scam checking, and more.</p></div>
 
-  <!-- FEATURED TOOLS -->
-  <div class="featured-section">
-    <div class="sec-eyebrow">Featured Crypto Tools</div>
-    <h2 class="sec-title">Top 5 Tools</h2>
-    <p class="sec-sub">The most powerful crypto tools built specifically for African traders, investors, and remittance users.</p>
-    <div class="featured-grid" id="featuredGrid">
+<!-- ══════ ALL TOOLS (from tool-registry.js) ══════ -->
+<section class="sec"><div class="wrap">
+  <div class="ey">All Tools</div>
+  <h2 class="st">Crypto & Web3 Tools</h2>
+  <p class="ss">Live tools, queued builds, and planned additions — all from the tool registry.</p>
+  <div id="tool-grid"></div>
+</div></section>
 
-      <a href="/crypto/p2p-rates/" class="feat-card">
-        <div class="feat-banner" style="background:linear-gradient(135deg,#1A0E2E,#0D0619);">
-          <span class="feat-icon">&#x20BF;</span>
-        </div>
-        <div class="feat-body">
-          <div class="feat-name">P2P Rate Comparator</div>
-          <div class="feat-desc">Compare buy/sell rates across 8+ P2P platforms in your currency. Find the best deal instantly.</div>
-          <div class="feat-meta">
-            <span class="feat-badge feat-badge--live">Live</span>
-            <span class="feat-badge feat-badge--crypto">Crypto</span>
-            <span class="feat-arrow">&rarr;</span>
-          </div>
-        </div>
-      </a>
-
-      <a href="/crypto/prices/" class="feat-card">
-        <div class="feat-banner" style="background:linear-gradient(135deg,#0A1628,#1A1040);">
-          <span class="feat-icon">&#128200;</span>
-        </div>
-        <div class="feat-body">
-          <div class="feat-name">Live Crypto Prices</div>
-          <div class="feat-desc">Real-time prices for 50+ coins in Nigerian Naira, Kenyan Shilling, Rand and more.</div>
-          <div class="feat-meta">
-            <span class="feat-badge feat-badge--live">Live</span>
-            <span class="feat-badge feat-badge--crypto">Crypto</span>
-            <span class="feat-arrow">&rarr;</span>
-          </div>
-        </div>
-      </a>
-
-      <a href="/crypto/stablecoins/" class="feat-card">
-        <div class="feat-banner" style="background:linear-gradient(135deg,#002E1A,#001A0E);">
-          <span class="feat-icon">&#128181;</span>
-        </div>
-        <div class="feat-body">
-          <div class="feat-name">Stablecoin Tracker</div>
-          <div class="feat-desc">Compare USDT, USDC, DAI rates across platforms. Best for savings & remittance.</div>
-          <div class="feat-meta">
-            <span class="feat-badge feat-badge--live">Live</span>
-            <span class="feat-badge feat-badge--crypto">Crypto</span>
-            <span class="feat-arrow">&rarr;</span>
-          </div>
-        </div>
-      </a>
-
-      <a href="/crypto/remittance/" class="feat-card">
-        <div class="feat-banner" style="background:linear-gradient(135deg,#1A2E00,#0D1A00);">
-          <span class="feat-icon">&#127760;</span>
-        </div>
-        <div class="feat-body">
-          <div class="feat-name">Crypto Remittance Calculator</div>
-          <div class="feat-desc">Compare crypto vs Wise vs Western Union for sending money to Africa.</div>
-          <div class="feat-meta">
-            <span class="feat-badge feat-badge--live">Live</span>
-            <span class="feat-badge feat-badge--crypto">Crypto</span>
-            <span class="feat-arrow">&rarr;</span>
-          </div>
-        </div>
-      </a>
-
-      <a href="/crypto/arbitrage/" class="feat-card">
-        <div class="feat-banner" style="background:linear-gradient(135deg,#2E1A00,#1A0E00);">
-          <span class="feat-icon">&#9889;</span>
-        </div>
-        <div class="feat-body">
-          <div class="feat-name">Naira Arbitrage Spotter</div>
-          <div class="feat-desc">Find price gaps across Nigerian platforms. Buy low, sell high.</div>
-          <div class="feat-meta">
-            <span class="feat-badge feat-badge--live">Live</span>
-            <span class="feat-badge feat-badge--crypto">Crypto</span>
-            <span class="feat-arrow">&rarr;</span>
-          </div>
-        </div>
-      </a>
-
-    </div>
-  </div>
-
-  <div class="sec-div"></div>
-
-  <!-- ALL TOOLS GRID -->
-  <div>
-    <div class="sec-eyebrow">All Crypto Tools</div>
-    <h2 class="sec-title">Every AfroCrypto Tool</h2>
-    <p class="sec-sub">All 15 tools in one view -- 10 live and ready to use, 5 brand new.</p>
-    <div class="tools-grid" id="allToolsGrid">
-
-      <a href="/crypto/p2p-rates/" class="tool-row">
-        <div class="tr-icon">&#x20BF;</div>
-        <div class="tr-body">
-          <div class="tr-name">P2P Rate Comparator</div>
-          <div class="tr-desc">Compare buy/sell rates across 8+ P2P platforms</div>
-          <span class="tr-badge">Live</span>
-        </div>
-        <span style="color:var(--color-text-subtle);font-size:.85rem;">&rarr;</span>
-      </a>
-
-      <a href="/crypto/prices/" class="tool-row">
-        <div class="tr-icon">&#128200;</div>
-        <div class="tr-body">
-          <div class="tr-name">Live Crypto Prices</div>
-          <div class="tr-desc">50+ coins in Naira, Shilling, Rand and more</div>
-          <span class="tr-badge">Live</span>
-        </div>
-        <span style="color:var(--color-text-subtle);font-size:.85rem;">&rarr;</span>
-      </a>
-
-      <a href="/crypto/portfolio/" class="tool-row">
-        <div class="tr-icon">&#128193;</div>
-        <div class="tr-body">
-          <div class="tr-name">Portfolio Tracker</div>
-          <div class="tr-desc">Track your crypto holdings in African currencies</div>
-          <span class="tr-badge">Live</span>
-        </div>
-        <span style="color:var(--color-text-subtle);font-size:.85rem;">&rarr;</span>
-      </a>
-
-      <a href="/crypto/dca-calculator/" class="tool-row">
-        <div class="tr-icon">&#128200;</div>
-        <div class="tr-body">
-          <div class="tr-name">DCA Calculator</div>
-          <div class="tr-desc">Dollar-cost averaging simulator for any coin</div>
-          <span class="tr-badge">Live</span>
-        </div>
-        <span style="color:var(--color-text-subtle);font-size:.85rem;">&rarr;</span>
-      </a>
-
-      <a href="/crypto/tax-calculator/" class="tool-row">
-        <div class="tr-icon">&#129534;</div>
-        <div class="tr-body">
-          <div class="tr-name">Crypto Tax Calculator</div>
-          <div class="tr-desc">Calculate crypto taxes for Nigeria, Kenya, South Africa</div>
-          <span class="tr-badge">Live</span>
-        </div>
-        <span style="color:var(--color-text-subtle);font-size:.85rem;">&rarr;</span>
-      </a>
-
-      <a href="/crypto/profit-calculator/" class="tool-row">
-        <div class="tr-icon">&#128176;</div>
-        <div class="tr-body">
-          <div class="tr-name">Profit Calculator</div>
-          <div class="tr-desc">Calculate your crypto profit/loss in local currency</div>
-          <span class="tr-badge">Live</span>
-        </div>
-        <span style="color:var(--color-text-subtle);font-size:.85rem;">&rarr;</span>
-      </a>
-
-      <a href="/crypto/mining-calculator/" class="tool-row">
-        <div class="tr-icon">&#9935;</div>
-        <div class="tr-body">
-          <div class="tr-name">Mining Calculator</div>
-          <div class="tr-desc">Mining profitability with African electricity costs</div>
-          <span class="tr-badge">Live</span>
-        </div>
-        <span style="color:var(--color-text-subtle);font-size:.85rem;">&rarr;</span>
-      </a>
-
-      <a href="/crypto/stablecoins/" class="tool-row">
-        <div class="tr-icon">&#128181;</div>
-        <div class="tr-body">
-          <div class="tr-name">Stablecoin Tracker</div>
-          <div class="tr-desc">USDT, USDC, DAI rates for savings & remittance</div>
-          <span class="tr-badge">Live</span>
-        </div>
-        <span style="color:var(--color-text-subtle);font-size:.85rem;">&rarr;</span>
-      </a>
-
-      <a href="/crypto/remittance/" class="tool-row">
-        <div class="tr-icon">&#127760;</div>
-        <div class="tr-body">
-          <div class="tr-name">Crypto Remittance Calculator</div>
-          <div class="tr-desc">Crypto vs Wise vs Western Union compared</div>
-          <span class="tr-badge">Live</span>
-        </div>
-        <span style="color:var(--color-text-subtle);font-size:.85rem;">&rarr;</span>
-      </a>
-
-      <a href="/crypto/arbitrage/" class="tool-row">
-        <div class="tr-icon">&#9889;</div>
-        <div class="tr-body">
-          <div class="tr-name">Naira Arbitrage Spotter</div>
-          <div class="tr-desc">Find price gaps across Nigerian platforms</div>
-          <span class="tr-badge">Live</span>
-        </div>
-        <span style="color:var(--color-text-subtle);font-size:.85rem;">&rarr;</span>
-      </a>
-
-      <a href="/crypto/scam-checker/" class="tool-row">
-        <div class="tr-icon">&#128737;</div>
-        <div class="tr-body">
-          <div class="tr-name">Scam Checker</div>
-          <div class="tr-desc">Verify wallets, platforms, and projects for red flags</div>
-          <span class="tr-badge tr-badge--new">New</span>
-        </div>
-        <span style="color:var(--color-text-subtle);font-size:.85rem;">&rarr;</span>
-      </a>
-
-      <a href="/crypto/address-validator/" class="tool-row">
-        <div class="tr-icon">&#128269;</div>
-        <div class="tr-body">
-          <div class="tr-name">Address Validator</div>
-          <div class="tr-desc">Validate crypto addresses before sending funds</div>
-          <span class="tr-badge tr-badge--new">New</span>
-        </div>
-        <span style="color:var(--color-text-subtle);font-size:.85rem;">&rarr;</span>
-      </a>
-
-      <a href="/crypto/exchange-ratings/" class="tool-row">
-        <div class="tr-icon">&#11088;</div>
-        <div class="tr-body">
-          <div class="tr-name">Exchange Ratings</div>
-          <div class="tr-desc">Compare African crypto exchanges by fees, trust & features</div>
-          <span class="tr-badge tr-badge--new">New</span>
-        </div>
-        <span style="color:var(--color-text-subtle);font-size:.85rem;">&rarr;</span>
-      </a>
-
-      <a href="/crypto/contract-scanner/" class="tool-row">
-        <div class="tr-icon">&#128220;</div>
-        <div class="tr-body">
-          <div class="tr-name">Contract Scanner</div>
-          <div class="tr-desc">Scan smart contracts for common vulnerabilities</div>
-          <span class="tr-badge tr-badge--new">New</span>
-        </div>
-        <span style="color:var(--color-text-subtle);font-size:.85rem;">&rarr;</span>
-      </a>
-
-      <a href="/crypto/quiz/" class="tool-row">
-        <div class="tr-icon">&#129504;</div>
-        <div class="tr-body">
-          <div class="tr-name">Crypto Quiz</div>
-          <div class="tr-desc">Test your crypto knowledge with African context</div>
-          <span class="tr-badge tr-badge--new">New</span>
-        </div>
-        <span style="color:var(--color-text-subtle);font-size:.85rem;">&rarr;</span>
-      </a>
-
-    </div>
-  </div>
-
-  <div class="sec-div"></div>
-
-  <!-- WHY CRYPTO TOOLS FOR AFRICA? -->
+<!-- ══════ WHY SECTION ══════ -->
+<section class="sec"><div class="wrap">
   <div class="why-section">
     <h2>Why Crypto Tools for Africa?</h2>
 
     <h3>The Fastest-Growing Crypto Market on Earth</h3>
-    <p>Africa is not catching up to the crypto revolution -- it is leading it. Nigeria alone processed an estimated <span class="highlight">$59 billion in crypto transactions</span> in a single year, placing it among the top countries globally for peer-to-peer crypto volume. Kenya, South Africa, Ghana, Tanzania, and Egypt are all in the top 20 for crypto adoption when measured by purchasing power parity. The continent's young, mobile-first population has embraced digital assets faster than legacy financial institutions can adapt.</p>
+    <p>Africa is not catching up to the crypto revolution -- it is leading it. Nigeria alone processed an estimated <span class="hl">$59 billion in crypto transactions</span> in a single year, placing it among the top countries globally for peer-to-peer crypto volume. Kenya, South Africa, Ghana, Tanzania, and Egypt are all in the top 20 for crypto adoption when measured by purchasing power parity.</p>
 
     <h3>Stablecoins as a Savings Strategy</h3>
-    <p>In countries where the local currency can lose 30-50% of its value in a year -- the Nigerian Naira depreciated from 460 to 1,600 against the dollar in just 18 months -- stablecoins are not speculation. They are survival. Millions of Africans now hold <span class="highlight">USDT and USDC</span> as a dollar-denominated savings account, bypassing the banking system entirely. A teacher in Lagos holding $500 in USDT preserved more purchasing power than a banker holding five million Naira in a fixed deposit. Yet there is no good tool to compare stablecoin rates across platforms and find the best price to buy or sell.</p>
+    <p>In countries where the local currency can lose 30-50% of its value in a year, stablecoins are not speculation. They are survival. Millions of Africans now hold <span class="hl">USDT and USDC</span> as a dollar-denominated savings account, bypassing the banking system entirely.</p>
 
     <h3>P2P Trading Dominates Because It Must</h3>
-    <p>When the Central Bank of Nigeria banned banks from servicing crypto exchanges in 2021, the market did not die. It moved underground -- or rather, it moved to <span class="highlight">peer-to-peer platforms</span>. Binance P2P, Paxful, Bybit P2P, KuCoin P2P, Luno, Quidax, and local OTC desks became the default way Nigerians buy and sell crypto. The same pattern plays out across East and Southern Africa. But P2P rates vary wildly between platforms, sometimes by 5-10% on the same coin at the same moment. Without a rate comparison tool, traders leave money on the table with every single transaction.</p>
+    <p>When the Central Bank of Nigeria banned banks from servicing crypto exchanges in 2021, the market moved to <span class="hl">peer-to-peer platforms</span>. Binance P2P, Bybit P2P, Luno, Quidax, and local OTC desks became the default way Nigerians buy and sell crypto. P2P rates vary wildly between platforms, sometimes by 5-10%. Without a rate comparison tool, traders leave money on the table.</p>
 
     <h3>The Remittance Corridor Opportunity</h3>
-    <p>Africa receives over <span class="highlight">$100 billion annually</span> in diaspora remittances. Traditional corridors like Western Union and MoneyGram charge 7-12% fees. Wise (formerly TransferWise) brought that down to 1-3%, but crypto remittances can reduce costs to under 1% using stablecoins. A worker in London can buy USDT on Coinbase, send it to a relative's Binance wallet in Lagos, who then sells for Naira on P2P -- all in under 10 minutes, with fees under $2 on most chains. Our remittance calculator compares these routes side by side so families can keep more of what they earn.</p>
-
-    <h3>Price Transparency Across Platforms</h3>
-    <p>Crypto prices in Africa are not the same as prices on Coinbase or Binance international. Local demand, payment method friction, liquidity depth, and regulatory pressure create persistent price premiums and discounts. <span class="highlight">Bitcoin can trade at a 3-8% premium</span> on Nigerian P2P markets compared to the global spot price. This premium fluctuates hourly. Arbitrage opportunities appear and vanish. Without real-time, multi-platform price tracking in local currencies, African traders are flying blind.</p>
-
-    <h3>Mobile Money Integration and the Next Billion Users</h3>
-    <p>Africa has over <span class="highlight">800 million mobile money accounts</span> -- more than any other continent. M-Pesa in Kenya, MTN MoMo in West Africa, and Airtel Money across East Africa are the primary financial rails for hundreds of millions of people who never had a bank account. The intersection of mobile money and crypto is where the next wave of financial inclusion happens. Our tools are built for this reality: mobile-first, lightweight, and designed for the payment methods Africans actually use. No credit card forms. No SWIFT codes. Just the tools the continent needs, built by people who understand why it needs them.</p>
+    <p>Africa receives over <span class="hl">$100 billion annually</span> in diaspora remittances. Traditional corridors charge 7-12% fees. Crypto remittances can reduce costs to under 1% using stablecoins. Our remittance calculator compares these routes side by side so families can keep more of what they earn.</p>
   </div>
+</div></section>
 
-  <div class="sec-div"></div>
+<!-- ══════ FAQ ══════ -->
+<div class="crypto-faq">
+  <h2>Frequently Asked Questions</h2>
+  <details class="faq-item">
+    <summary>Is crypto legal in Africa?</summary>
+    <p>It varies by country. Nigeria legalized and began regulating crypto after the SEC took over oversight from the CBN in mid-2023. South Africa treats crypto as a financial asset under the FSCA. Kenya has no specific prohibition. The trend across the continent is toward regulation rather than prohibition.</p>
+  </details>
+  <details class="faq-item">
+    <summary>Which P2P platform has the best rates?</summary>
+    <p>It changes constantly -- that is exactly why we built the P2P Rate Comparator. At any given moment, Binance P2P might offer the best USDT buy rate while Bybit has a better sell rate. The only reliable answer is to compare in real time, which is what our tool does across 8+ platforms.</p>
+  </details>
+  <details class="faq-item">
+    <summary>Are stablecoins safe for savings?</summary>
+    <p>USDT and USDC are backed 1:1 to the US dollar. USDC is audited monthly by a Big Four accounting firm. For most African savers, the risk of a major stablecoin depegging is significantly lower than the risk of their local currency losing 20-40% of its value in a year. Diversifying across multiple stablecoins is prudent.</p>
+  </details>
+  <details class="faq-item">
+    <summary>How does crypto remittance work?</summary>
+    <p>Buy a stablecoin (USDT or USDC) on an exchange, send it to the recipient's wallet in Africa using a low-fee network like Tron (TRC-20), then sell for local currency on P2P. Takes 5-15 minutes, costs under $2. Our remittance calculator shows the total cost comparison across all methods.</p>
+  </details>
+  <details class="faq-item">
+    <summary>What fees do P2P platforms charge?</summary>
+    <p>Most P2P platforms charge zero maker fees. Taker fees are typically 0-0.1%. The real "fee" is the spread -- the difference between buy and sell price. Our comparator shows effective spreads across platforms so you can minimize this hidden cost.</p>
+  </details>
+  <details class="faq-item">
+    <summary>Why are crypto prices different across platforms?</summary>
+    <p>Prices differ due to liquidity, demand, payment methods, and regulatory environment. Bitcoin can trade at a 3-8% premium on Nigerian P2P markets compared to the global spot price. Without real-time, multi-platform price tracking in local currencies, African traders are flying blind.</p>
+  </details>
+</div>
 
-  <!-- FAQ -->
-  <div class="crypto-faq">
-    <h2>Frequently Asked Questions</h2>
-
-    <details class="faq-item">
-      <summary>Is crypto legal in Africa?</summary>
-      <p>It varies by country. Nigeria recently legalized and began regulating crypto after the SEC took over oversight from the CBN in mid-2023, issuing licenses to exchanges like Quidax and Busha. South Africa treats crypto as a financial asset and has established regulatory frameworks under the FSCA. Kenya has no specific crypto legislation but does not prohibit it. Countries like Algeria and Morocco have historically restricted crypto, though Morocco is now exploring regulation. The trend across the continent is toward regulation rather than prohibition -- governments recognize they cannot stop adoption, so they are building frameworks to tax and monitor it.</p>
-    </details>
-
-    <details class="faq-item">
-      <summary>Which P2P platform has the best rates?</summary>
-      <p>It changes constantly -- that is exactly why we built the P2P Rate Comparator. At any given moment, Binance P2P might offer the best USDT buy rate while Bybit has a better sell rate. Luno might beat everyone on BTC for small amounts while OTC desks win for large volumes. Rates depend on the coin, the fiat currency, the payment method (bank transfer vs mobile money vs cash), and the time of day. The only reliable answer is to compare in real time, which is what our tool does across 8+ platforms.</p>
-    </details>
-
-    <details class="faq-item">
-      <summary>Are stablecoins safe for savings?</summary>
-      <p>USDT (Tether) and USDC (Circle) are backed 1:1 to the US dollar, though the quality of their reserves differs. USDC is audited monthly by a Big Four accounting firm and holds reserves primarily in US Treasuries and cash. USDT has faced scrutiny over its reserve composition but has always honored redemptions. DAI is algorithmically overcollateralized. For most African savers, the risk of a major stablecoin depegging is significantly lower than the risk of their local currency losing 20-40% of its value in a year. That said, do not hold all savings in any single asset -- diversification matters.</p>
-    </details>
-
-    <details class="faq-item">
-      <summary>How does crypto remittance work?</summary>
-      <p>The sender buys a stablecoin (USDT or USDC) on an exchange in their country -- for example, Coinbase in the UK or US. They send the stablecoin to the recipient's wallet address in Africa, using a low-fee network like Tron (TRC-20) or Polygon. The recipient then sells the stablecoin for local currency on a P2P platform like Binance or directly at an OTC desk. The entire process takes 5-15 minutes and costs under $2 in network fees. Compare that to Western Union's $15-25 fees and 2-3 day wait times. Our remittance calculator shows the total cost comparison across all these methods.</p>
-    </details>
-
-    <details class="faq-item">
-      <summary>What fees do P2P platforms charge?</summary>
-      <p>Most P2P platforms charge zero maker fees -- meaning if you post an ad to buy or sell, you pay nothing. Taker fees (when you accept someone else's ad) are typically 0-0.1% on Binance P2P and similar platforms. The real "fee" in P2P trading is the spread: the difference between the buy and sell price. A merchant might buy USDT at 1,580 NGN and sell at 1,620 NGN -- that 40 NGN spread (about 2.5%) is their profit and your cost. Our comparator shows you the effective spread across platforms so you can minimize this hidden fee.</p>
-    </details>
-
-    <details class="faq-item">
-      <summary>Why are crypto prices different across platforms?</summary>
-      <p>Crypto prices differ across platforms due to liquidity, demand, payment methods, and regulatory environment. A platform with fewer sellers will have higher buy prices because demand outstrips supply. Payment methods matter too -- buying with bank transfer is cheaper than buying with mobile money because of different processing costs. Regulatory restrictions create market fragmentation: when Nigerian banks cannot directly service crypto, the extra friction of P2P trading adds a premium. International platforms also quote different prices because arbitrage between them is not instant or free -- moving money between platforms takes time and incurs fees, which keeps price gaps alive.</p>
-    </details>
-  </div>
-
-  <!-- CTA -->
-  <div class="cta-block">
+<!-- ══════ CTA ══════ -->
+<section class="sec sec-alt"><div class="wrap">
+  <div class="cta">
     <h3>Need a Crypto Tool We Don't Have?</h3>
     <p>15 tools live and growing. DeFi yield finder, gas tracker, token launcher -- tell us what you need next.</p>
-    <a href="/contact/" class="cta-link">Request a Tool</a>
+    <a href="/contact/">Request a Tool</a>
   </div>
-</main>
+</div></section>
 
 <afro-footer></afro-footer>
 
 <script>
-// ── LIVE TICKER: BTC, ETH, USDT, SOL, BNB in NGN ──
+// ── Init crypto category tools ──
+function _initCrypto(){
+  var key='crypto';
+  var tools=AFRO_TOOLS.filter(function(t){return t.category===key;});
+  var live=tools.filter(function(t){return t.status==='live'||t.status==='new';});
+  var pipe=tools.filter(function(t){return t.status==='queued'||t.status==='planned';});
+  var e;
+  e=document.getElementById('s-total');if(e)e.textContent=tools.length;
+  e=document.getElementById('s-live');if(e)e.textContent=live.length;
+  e=document.getElementById('s-pipe');if(e)e.textContent=pipe.length;
+
+  var container=document.getElementById('tool-grid');if(!container)return;
+  var html='';
+  if(live.length){
+    html+='<h2 style="font-size:20px;font-weight:800;color:#111;margin:0 0 16px;display:flex;align-items:center;gap:10px;font-family:\'DM Sans\',sans-serif"><span style="width:8px;height:8px;border-radius:50%;background:var(--color-primary)"></span> Available Now</h2>';
+    html+='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:32px">';
+    live.forEach(function(t){html+=afroCard(t,true);});html+='</div>';
+  }
+  if(pipe.length){
+    html+='<h2 style="font-size:20px;font-weight:800;color:#111;margin:0 0 16px;display:flex;align-items:center;gap:10px;font-family:\'DM Sans\',sans-serif"><span style="width:8px;height:8px;border-radius:50%;background:#d1d5db"></span> Coming Soon</h2>';
+    html+='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px">';
+    pipe.forEach(function(t){html+=afroCard(t,false);});html+='</div>';
+  }
+  container.innerHTML=html||'<p style="color:#9ca3af">No tools yet.</p>';
+}
+if(typeof onRegistryReady==='function'){onRegistryReady(_initCrypto);}
+else{document.addEventListener('DOMContentLoaded',function(){if(typeof AFRO_TOOLS!=='undefined')_initCrypto();else document.addEventListener('afrotools:registry-ready',_initCrypto);});}
+
+// ── LIVE TICKER ──
 (function(){
   function buildTicker(){
-    if(typeof CryptoData === 'undefined'){ setTimeout(buildTicker, 200); return; }
-
+    if(typeof CryptoData==='undefined'){setTimeout(buildTicker,200);return;}
     CryptoData.getPrices('ngn').then(function(data){
-      if(!data) return;
-
-      var coins = [
-        { id:'bitcoin',     symbol:'BTC',  name:'Bitcoin' },
-        { id:'ethereum',    symbol:'ETH',  name:'Ethereum' },
-        { id:'tether',      symbol:'USDT', name:'Tether' },
-        { id:'solana',      symbol:'SOL',  name:'Solana' },
-        { id:'binancecoin', symbol:'BNB',  name:'BNB' }
+      if(!data)return;
+      var coins=[
+        {id:'bitcoin',symbol:'BTC'},{id:'ethereum',symbol:'ETH'},{id:'tether',symbol:'USDT'},
+        {id:'solana',symbol:'SOL'},{id:'binancecoin',symbol:'BNB'}
       ];
-
-      var items = '';
+      var items='';
       coins.forEach(function(c){
-        var d = data[c.id];
-        if(!d) return;
-        var price = CryptoData.formatPrice(d.ngn, 'NGN', d.ngn > 10000 ? 0 : 2);
-        var change = d.ngn_24h_change;
-        var changeStr = CryptoData.formatChange(change);
-        items += '<span class="ticker-item">'
-          + '<span class="coin-name">' + c.symbol + '</span> '
-          + price + ' ' + changeStr
-          + '</span>';
+        var d=data[c.id];if(!d)return;
+        var price=CryptoData.formatPrice(d.ngn,'NGN',d.ngn>10000?0:2);
+        var change=CryptoData.formatChange(d.ngn_24h_change);
+        items+='<span class="ticker-item"><span class="coin-name">'+c.symbol+'</span> '+price+' '+change+'</span>';
       });
-
-      // Duplicate for seamless scroll
-      var inner = document.getElementById('tickerInner');
-      if(inner) inner.innerHTML = items + items;
+      var inner=document.getElementById('tickerInner');
+      if(inner)inner.innerHTML=items+items;
     });
   }
   buildTicker();
-  // Refresh every 60s
-  setInterval(buildTicker, 60000);
+  setInterval(buildTicker,60000);
 })();
 </script>
 </body>

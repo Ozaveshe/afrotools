@@ -527,9 +527,7 @@
     <h2>Submit Your Review</h2>
     <p style="color:var(--color-text-muted); margin-bottom:20px;">Share your experience with a crypto exchange. Your review helps the African crypto community make safer choices.</p>
 
-    <form name="exchange-review" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thank-you/">
-      <input type="hidden" name="form-name" value="exchange-review">
-      <p style="display:none"><label>Don't fill this out: <input name="bot-field"></label></p>
+    <form id="exchange-review-form">
 
       <div class="review-form-grid">
         <div class="review-group">
@@ -657,7 +655,34 @@
 (function() {
   'use strict';
 
-  /* ── Exchange Data ─────────────────────────────────── */
+  var SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
+  var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpwY2xhZ3RnY3pzeWdyZ3p0bHRzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0NTg4MzIsImV4cCI6MjA4OTAzNDgzMn0._G-677vi2UTAhcU3t0aquvmd8lnQUBil53ok_Z623F0';
+
+  /* Try loading exchange data from Supabase, fallback to hardcoded */
+  function loadExchangesFromSupabase() {
+    return fetch(SUPABASE_URL + '/rest/v1/crypto_exchanges?is_active=eq.true&select=*', {
+      headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY }
+    })
+    .then(function(r) { return r.ok ? r.json() : null; })
+    .then(function(data) {
+      if (!data || !Array.isArray(data) || data.length === 0) return null;
+      return data.map(function(ex) {
+        return {
+          id: ex.id, name: ex.name, logo: '/assets/img/crypto/' + (ex.logo_id || ex.id) + '.svg',
+          trust: ex.trust_score, countries: ex.countries || [], fees: { maker: parseFloat(ex.fees_maker) || 0, taker: parseFloat(ex.fees_taker) || 0 },
+          deposit: ex.deposit_methods || [], features: ex.features || [],
+          pros: ex.pros || [], cons: ex.cons || [], description: ex.description || '',
+          url: ex.url, kyc: true, p2p: (ex.features || []).indexOf('P2P Trading') !== -1,
+          insurance: ex.trust_score >= 90, reserves: ex.trust_score >= 88,
+          regulatory: '', breaches: 'None reported', founded: 2017,
+          scores: { regulatory: Math.floor(ex.trust_score * 0.3), history: Math.floor(ex.trust_score * 0.2), community: Math.floor(ex.trust_score * 0.2), reserves: Math.floor(ex.trust_score * 0.15), insurance: Math.floor(ex.trust_score * 0.15) }
+        };
+      });
+    })
+    .catch(function() { return null; });
+  }
+
+  /* ── Exchange Data (hardcoded fallback) ─────────────── */
   var EXCHANGES = [
     { id:'binance', name:'Binance', logo:'/assets/img/crypto/binance.svg', founded:2017, trust:95, countries:['NG','KE','ZA','GH','TZ','UG','EG'], fees:{maker:0.1,taker:0.1}, deposit:['Bank Transfer','Mobile Money','Card'], kyc:true, p2p:true, insurance:true, reserves:true, regulatory:'Registered in multiple jurisdictions', breaches:'None reported', url:'https://www.binance.com',
       scores:{ regulatory:28, history:18, community:20, reserves:15, insurance:14 },
@@ -993,9 +1018,96 @@
     });
   });
 
-  /* ── Initial render ────────────────────────────────── */
-  renderTable();
-  updateSortArrows();
+  /* ── Review form submission (Supabase) ────────────────── */
+  var reviewForm = document.getElementById('exchange-review-form');
+  if (reviewForm) {
+    reviewForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      var btn = reviewForm.querySelector('.review-submit');
+      var exchangeId = document.getElementById('reviewExchange').value;
+      var rating = reviewForm.querySelector('input[name="rating"]:checked');
+      var country = document.getElementById('reviewCountry').value;
+      var reviewText = document.getElementById('reviewText').value;
+
+      if (!exchangeId || !rating || !country || !reviewText) {
+        alert('Please fill in all fields.');
+        return;
+      }
+
+      // Check if user is logged in
+      var user = window.AfroAuth && AfroAuth.getCurrentUser ? AfroAuth.getCurrentUser() : null;
+      if (!user) {
+        alert('Please sign in to submit a review.');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Submitting...';
+
+      var session = window.AfroAuth.getSession ? AfroAuth.getSession() : null;
+      var token = session ? session.access_token : '';
+
+      fetch(SUPABASE_URL + '/rest/v1/crypto_exchange_reviews', {
+        method: 'POST',
+        headers: {
+          apikey: SUPABASE_KEY,
+          Authorization: 'Bearer ' + token,
+          'Content-Type': 'application/json',
+          Prefer: 'return=minimal'
+        },
+        body: JSON.stringify({
+          exchange_id: exchangeId,
+          user_id: user.id,
+          rating: parseInt(rating.value),
+          review_text: reviewText.trim().slice(0, 1000),
+          country: country
+        })
+      })
+      .then(function(r) {
+        btn.disabled = false;
+        btn.textContent = 'Submit Review';
+        if (r.ok || r.status === 201) {
+          reviewForm.innerHTML = '<div style="text-align:center;padding:24px;color:#34C759;font-weight:700;">Thank you! Your review has been submitted.</div>';
+        } else {
+          return r.text().then(function(t) {
+            if (t.indexOf('duplicate') !== -1 || t.indexOf('unique') !== -1) {
+              alert('You have already reviewed this exchange.');
+            } else {
+              alert('Submission failed. Please try again.');
+            }
+          });
+        }
+      })
+      .catch(function() {
+        btn.disabled = false;
+        btn.textContent = 'Submit Review';
+        alert('Network error. Please try again.');
+      });
+    });
+  }
+
+  /* ── Initial render (try Supabase first) ─────────────── */
+  loadExchangesFromSupabase().then(function(sbData) {
+    if (sbData && sbData.length > 0) {
+      // Merge: Supabase data overrides hardcoded where ids match, adds new ones
+      var idMap = {};
+      EXCHANGES.forEach(function(ex) { idMap[ex.id] = ex; });
+      sbData.forEach(function(ex) {
+        if (idMap[ex.id]) {
+          // Override trust score and basic fields from Supabase
+          idMap[ex.id].trust = ex.trust;
+          idMap[ex.id].countries = ex.countries.length > 0 ? ex.countries : idMap[ex.id].countries;
+          if (ex.pros.length > 0) idMap[ex.id].pros = ex.pros;
+          if (ex.cons.length > 0) idMap[ex.id].cons = ex.cons;
+          if (ex.description) idMap[ex.id].description = ex.description;
+        } else {
+          EXCHANGES.push(ex);
+        }
+      });
+    }
+    renderTable();
+    updateSortArrows();
+  });
 
   /* ── Twemoji parse after render ────────────────────── */
   if (window.twemoji) {

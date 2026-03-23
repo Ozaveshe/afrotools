@@ -6,10 +6,10 @@
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Stablecoin Rate Tracker — Compare USDT, USDC, DAI, BUSD Rates | AfroTools</title>
-<meta name="description" content="Compare USDT, USDC, DAI, BUSD rates across African platforms. Find the best stablecoin deal for savings, trading, or remittance in NGN, KES, ZAR, GHS, EGP.">
+<title>Stablecoin Rate Tracker — Compare USDT, USDC, DAI Rates | AfroTools</title>
+<meta name="description" content="Compare USDT, USDC, DAI rates across African platforms. Find the best stablecoin deal for savings, trading, or remittance in NGN, KES, ZAR, GHS, EGP.">
 <link rel="canonical" href="https://afrotools.com/crypto/stablecoins/">
-<meta property="og:title" content="Stablecoin Rate Tracker — Compare USDT, USDC, DAI, BUSD Rates">
+<meta property="og:title" content="Stablecoin Rate Tracker — Compare USDT, USDC, DAI Rates">
 <meta property="og:description" content="Compare stablecoin rates across African platforms. Find the best deal for savings, trading, or remittance.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:url" content="https://afrotools.com/crypto/stablecoins/">
@@ -24,12 +24,21 @@
     {
       "@type": "WebApplication",
       "name": "Stablecoin Rate Tracker",
-      "description": "Compare USDT, USDC, DAI, BUSD rates across African platforms. Find the best stablecoin deal for savings, trading, or remittance.",
+      "description": "Compare USDT, USDC, DAI rates across African platforms. Find the best stablecoin deal for savings, trading, or remittance.",
       "url": "https://afrotools.com/crypto/stablecoins/",
       "applicationCategory": "FinanceApplication",
       "operatingSystem": "Any",
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
       "provider": { "@type": "Organization", "name": "AfroTools", "url": "https://afrotools.com" }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {"@type":"Question","name":"Which stablecoin has the best rate in Nigeria?","acceptedAnswer":{"@type":"Answer","text":"USDT typically has the tightest buy/sell spread in Nigeria due to its high liquidity on P2P markets. However, rates vary by platform and time of day."}},
+        {"@type":"Question","name":"Is it safe to hold USDT long-term?","acceptedAnswer":{"@type":"Answer","text":"USDT is widely used but has faced scrutiny over its reserves. For long-term holdings, consider diversifying between USDT and USDC, which has more transparent auditing."}},
+        {"@type":"Question","name":"What network should I use for stablecoin transfers?","acceptedAnswer":{"@type":"Answer","text":"TRC-20 (Tron network) is the most popular for USDT in Africa due to low fees (usually under $1). For USDC, Solana and Polygon offer cheap alternatives to Ethereum."}},
+        {"@type":"Question","name":"Can I earn interest on stablecoins in Africa?","acceptedAnswer":{"@type":"Answer","text":"Some platforms offer stablecoin savings products. However, always verify the platform's credibility and understand that yields come with risk."}}
+      ]
     },
     {
       "@type": "BreadcrumbList",
@@ -249,7 +258,7 @@
 <section class="crypto-hero">
   <span class="crypto-badge">Stablecoins</span>
   <h1>Stablecoin Rate Tracker</h1>
-  <p>Compare USDT, USDC, DAI, BUSD rates across platforms. Find the best deal for savings, trading, or remittance.</p>
+  <p>Compare USDT, USDC, DAI rates across platforms. Find the best deal for savings, trading, or remittance.</p>
 </section>
 
 <!-- Controls -->
@@ -300,7 +309,7 @@
 
   <p>DAI stands out as a decentralized stablecoin. Instead of being backed by dollars in a bank account, DAI is backed by over-collateralized crypto assets locked in smart contracts on Ethereum. This means no single company can freeze your DAI or block your transactions. For users who value censorship resistance and decentralization, DAI is the clear choice, though it comes with slightly wider spreads on African platforms due to lower liquidity.</p>
 
-  <p>BUSD (Binance USD) was once the third-largest stablecoin but has seen declining volume since Paxos stopped minting new tokens in 2023. While existing BUSD remains redeemable, Nigerian traders should be cautious about holding large amounts long-term. Most platforms now recommend converting BUSD to USDT or USDC.</p>
+  <p>When choosing between stablecoins, consider your use case. For active P2P trading, USDT wins on liquidity. For long-term savings, USDC offers better transparency. For DeFi enthusiasts who value decentralization and censorship resistance, DAI is the strongest option. Many experienced African crypto users hold a mix of all three to balance convenience, trust, and risk.</p>
 
   <h2>Stablecoin Safety Tips for African Users</h2>
   <p>Security is paramount when dealing with stablecoins in Africa. First, always verify the platform you are using. Check that the exchange is registered and has a track record in your country. In Nigeria, platforms like Quidax and Roqqu have established local presence and customer support.</p>
@@ -339,23 +348,22 @@
 (function() {
   'use strict';
 
-  // Platform data with simulated variations
+  // Platform data
   var PLATFORMS = [
-    { id: 'binance',   name: 'Binance P2P',   trust: 5, methods: ['bank','mobile','card'], withdrawFee: 0.80, processingTime: '5-30 min',  spreadFactor: 1.005, bestFor: 'trading' },
-    { id: 'bybit',     name: 'Bybit P2P',     trust: 4, methods: ['bank','card'],          withdrawFee: 1.00, processingTime: '5-30 min',  spreadFactor: 1.008, bestFor: 'trading' },
-    { id: 'quidax',    name: 'Quidax',        trust: 4, methods: ['bank','mobile'],        withdrawFee: 0.50, processingTime: '10-60 min', spreadFactor: 1.012, bestFor: 'savings' },
-    { id: 'luno',      name: 'Luno',          trust: 5, methods: ['bank','card'],           withdrawFee: 0.00, processingTime: '15-60 min', spreadFactor: 1.015, bestFor: 'savings' },
-    { id: 'paxful',    name: 'Paxful',        trust: 3, methods: ['bank','mobile','card'],  withdrawFee: 1.50, processingTime: '5-45 min',  spreadFactor: 1.020, bestFor: 'remittance' },
-    { id: 'roqqu',     name: 'Roqqu',         trust: 4, methods: ['bank','mobile'],         withdrawFee: 0.30, processingTime: '5-20 min',  spreadFactor: 1.010, bestFor: 'remittance' },
-    { id: 'yellowcard',name: 'Yellow Card',   trust: 4, methods: ['bank','mobile','card'],  withdrawFee: 0.00, processingTime: '10-30 min', spreadFactor: 1.018, bestFor: 'remittance' },
-    { id: 'okx',       name: 'OKX P2P',       trust: 4, methods: ['bank','card'],           withdrawFee: 0.80, processingTime: '5-30 min',  spreadFactor: 1.007, bestFor: 'trading' }
+    { id: 'binance',   name: 'Binance P2P',   url: 'https://p2p.binance.com',              trust: 5, methods: ['bank','mobile','card'], withdrawFee: 0.80, processingTime: '5-30 min',  spreadFactor: 1.005, bestFor: 'trading' },
+    { id: 'bybit',     name: 'Bybit P2P',     url: 'https://www.bybit.com/fiat/trade/otc',  trust: 4, methods: ['bank','card'],          withdrawFee: 1.00, processingTime: '5-30 min',  spreadFactor: 1.008, bestFor: 'trading' },
+    { id: 'quidax',    name: 'Quidax',        url: 'https://www.quidax.com',                trust: 4, methods: ['bank','mobile'],        withdrawFee: 0.50, processingTime: '10-60 min', spreadFactor: 1.012, bestFor: 'savings' },
+    { id: 'luno',      name: 'Luno',          url: 'https://www.luno.com',                   trust: 5, methods: ['bank','card'],           withdrawFee: 0.00, processingTime: '15-60 min', spreadFactor: 1.015, bestFor: 'savings' },
+    { id: 'noones',    name: 'Noones',        url: 'https://noones.com',                     trust: 3, methods: ['bank','mobile','card'],  withdrawFee: 1.50, processingTime: '5-45 min',  spreadFactor: 1.020, bestFor: 'remittance' },
+    { id: 'roqqu',     name: 'Roqqu',         url: 'https://roqqu.com',                      trust: 4, methods: ['bank','mobile'],         withdrawFee: 0.30, processingTime: '5-20 min',  spreadFactor: 1.010, bestFor: 'remittance' },
+    { id: 'yellowcard',name: 'Yellow Card',   url: 'https://yellowcard.io',                  trust: 4, methods: ['bank','mobile','card'],  withdrawFee: 0.00, processingTime: '10-30 min', spreadFactor: 1.018, bestFor: 'remittance' },
+    { id: 'kucoin',    name: 'KuCoin P2P',    url: 'https://www.kucoin.com/otc',             trust: 4, methods: ['bank','card'],           withdrawFee: 0.80, processingTime: '5-30 min',  spreadFactor: 1.007, bestFor: 'trading' }
   ];
 
   var STABLECOINS = [
     { id: 'tether',   symbol: 'USDT', name: 'Tether',   color: '#26A17B' },
     { id: 'usd-coin', symbol: 'USDC', name: 'USD Coin', color: '#2775CA' },
-    { id: 'dai',      symbol: 'DAI',  name: 'Dai',      color: '#F5AC37' },
-    { id: 'binance-usd', symbol: 'BUSD', name: 'Binance USD', color: '#F0B90B' }
+    { id: 'dai',      symbol: 'DAI',  name: 'Dai',      color: '#F5AC37' }
   ];
 
   var selectedCurrency = 'ngn';
@@ -420,7 +428,7 @@
 
       // Table header
       html += '<div class="table-header">';
-      html += '<span>Platform</span><span>Buy Price</span><span>Sell Price</span><span>Spread</span><span>Deposit</span><span>Withdraw Fee</span><span>Time</span><span>Trust / Badge</span>';
+      html += '<span>Platform</span><span>Buy Price</span><span>Sell Price</span><span>Spread</span><span>Deposit</span><span>Withdraw Fee</span><span>Time</span><span>Trust / Action</span>';
       html += '</div>';
 
       // Filter and render platforms
@@ -454,7 +462,7 @@
 
         html += '<div class="plat-name">';
         html += '<img src="/assets/img/crypto/' + plat.id + '.svg" alt="' + plat.name + '" onerror="this.style.display=\'none\'">';
-        html += plat.name;
+        html += '<a href="' + plat.url + '" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:none;">' + plat.name + '</a>';
         if (isCheapest) html += ' <span class="best-deal-badge">Best Price</span>';
         html += '</div>';
 
@@ -472,11 +480,9 @@
         html += '<div><span class="cell-label">Withdraw Fee</span>' + (plat.withdrawFee === 0 ? '<span style="color:#34C759;font-weight:600;">Free</span>' : '$' + plat.withdrawFee.toFixed(2)) + '</div>';
         html += '<div><span class="cell-label">Time</span>' + plat.processingTime + '</div>';
 
-        html += '<div><span class="cell-label">Trust / Badge</span>';
-        html += renderTrust(plat.trust) + ' ';
-        var badgeClass = plat.bestFor;
-        var badgeLabels = { savings: 'Best for Savings', trading: 'Best for Trading', remittance: 'Best for Remittance' };
-        html += '<span class="use-badge ' + badgeClass + '">' + badgeLabels[badgeClass] + '</span>';
+        html += '<div style="display:flex;flex-direction:column;gap:6px;align-items:flex-start;"><span class="cell-label">Trust / Action</span>';
+        html += renderTrust(plat.trust) + '<br>';
+        html += '<a href="' + plat.url + '" target="_blank" rel="noopener noreferrer" style="display:inline-block;background:var(--color-primary);color:#fff;padding:5px 14px;border-radius:var(--radius-sm);font-size:12px;font-weight:700;text-decoration:none;">Trade</a>';
         html += '</div>';
 
         html += '</div>'; // .platform-row
@@ -518,14 +524,14 @@
       });
       if (!best) best = filteredPlatforms[0];
 
-      html += '<div class="rec-card">';
+      html += '<a href="' + best.url + '" target="_blank" rel="noopener noreferrer" class="rec-card" style="text-decoration:none;color:inherit;transition:transform 0.2s,box-shadow 0.2s;" onmouseover="this.style.transform=\'translateY(-2px)\';this.style.boxShadow=\'0 4px 12px rgba(0,0,0,0.08)\'" onmouseout="this.style.transform=\'none\';this.style.boxShadow=\'none\'">';
       html += '<h4>' + cat.icon + ' ' + cat.title + '</h4>';
       html += '<div class="rec-platform">' + best.name + '</div>';
       html += '<p class="rec-reason">' + cat.desc + '. ' + best.name + ' offers ';
       if (cat.key === 'savings') html += 'zero or low withdrawal fees with strong trust ratings.';
       else if (cat.key === 'trading') html += 'the tightest spreads at ' + ((best.spreadFactor - 1) * 100).toFixed(1) + '% markup.';
       else html += 'wide deposit method support including mobile money and bank transfers.';
-      html += '</p></div>';
+      html += '</p></a>';
     });
 
     recsContainer.innerHTML = html;

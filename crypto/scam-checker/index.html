@@ -32,6 +32,16 @@
       "provider": { "@type": "Organization", "name": "AfroTools", "url": "https://afrotools.com" }
     },
     {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {"@type":"Question","name":"How do I check if a wallet address is a scam?","acceptedAnswer":{"@type":"Answer","text":"Paste the wallet address into the Check tab and click Check. The tool searches our community scam database for matching reports."}},
+        {"@type":"Question","name":"Can I report a scam anonymously?","acceptedAnswer":{"@type":"Answer","text":"Yes. When submitting a report, check the Submit anonymously box. Your report will be reviewed and published without identifying information."}},
+        {"@type":"Question","name":"How are reports verified?","acceptedAnswer":{"@type":"Answer","text":"Every submitted report is reviewed by our team before being published. We cross-reference wallet addresses with blockchain explorers and look for patterns."}},
+        {"@type":"Question","name":"What should I do if I have been scammed?","acceptedAnswer":{"@type":"Answer","text":"Report the scam here to warn others. File a report with your local authorities. Contact your exchange if funds were sent from an exchange wallet. Preserve all evidence."}},
+        {"@type":"Question","name":"Is my data safe?","acceptedAnswer":{"@type":"Answer","text":"Reports are stored securely and reviewed before publication. If you choose to submit anonymously, no personal details are stored."}}
+      ]
+    },
+    {
       "@type": "BreadcrumbList",
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "AfroTools", "item": "https://afrotools.com" },
@@ -504,8 +514,7 @@
 
   <!-- ═══ TAB 2: REPORT ═══ -->
   <div id="panel-report" class="scam-panel">
-    <form class="report-form" name="crypto-scam-report" method="POST" data-netlify="true" id="scam-report-form">
-      <input type="hidden" name="form-name" value="crypto-scam-report">
+    <form class="report-form" id="scam-report-form">
       <div class="report-grid">
         <div class="report-group">
           <label for="rpt-address">Wallet Address</label>
@@ -740,39 +749,41 @@
 (function() {
   'use strict';
 
-  /* ── Helpers ──────────────────────────────────────── */
-  const SCAM_LABELS = {
-    'ponzi': 'Ponzi / Pyramid',
-    'rug-pull': 'Rug Pull',
-    'fake-exchange': 'Fake Exchange',
-    'romance-scam': 'Romance Scam',
-    'phishing': 'Phishing',
-    'sim-swap': 'SIM Swap',
-    'fake-investment': 'Fake Investment',
-    'fake-airdrop': 'Fake Airdrop',
-    'impersonation': 'Impersonation',
+  var API = '/.netlify/functions/crypto-scam';
+
+  var SCAM_LABELS = {
+    'ponzi': 'Ponzi / Pyramid', 'rug-pull': 'Rug Pull', 'fake-exchange': 'Fake Exchange',
+    'romance-scam': 'Romance Scam', 'phishing': 'Phishing', 'sim-swap': 'SIM Swap',
+    'fake-investment': 'Fake Investment', 'fake-airdrop': 'Fake Airdrop',
+    'impersonation': 'Impersonation', 'mining-scam': 'Mining Scam', 'fake-nft': 'Fake NFT',
     'other': 'Other'
   };
 
-  const COUNTRY_NAMES = {
+  var COUNTRY_NAMES = {
     'NG': 'Nigeria', 'KE': 'Kenya', 'ZA': 'South Africa',
     'GH': 'Ghana', 'EG': 'Egypt', 'TZ': 'Tanzania', 'UG': 'Uganda'
   };
 
-  const CURRENCY_SYMBOLS = {
+  var CURRENCY_SYMBOLS = {
     'NGN': '\u20A6', 'KES': 'KSh', 'ZAR': 'R',
     'GHS': 'GH\u20B5', 'EGP': 'E\u00A3', 'USD': '$'
   };
 
   function fmtAmount(amount, currency) {
-    var sym = CURRENCY_SYMBOLS[currency] || currency;
-    return sym + Number(amount).toLocaleString();
+    var sym = CURRENCY_SYMBOLS[currency] || currency + ' ';
+    return sym + Number(amount || 0).toLocaleString();
   }
 
   function fmtDate(dateStr) {
     if (!dateStr) return '-';
     var d = new Date(dateStr + 'T00:00:00');
     return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+
+  function escHtml(s) {
+    var d = document.createElement('div');
+    d.textContent = s || '';
+    return d.innerHTML;
   }
 
   var reportsData = [];
@@ -788,68 +799,64 @@
     });
   });
 
-  /* ── Fetch reports ────────────────────────────────── */
-  function loadReports() {
-    return fetch('/data/crypto/scam-reports.json')
-      .then(function(r) { return r.json(); })
-      .then(function(data) {
-        reportsData = data.reports || [];
-        return reportsData;
-      })
-      .catch(function() {
-        reportsData = [];
-        return [];
-      });
-  }
+  /* ── TAB 1: CHECK (via API) ────────────────────────── */
+  var btnCheck = document.getElementById('btn-check');
+  var queryInput = document.getElementById('check-query');
+  var resultEl = document.getElementById('check-result');
 
-  /* ── TAB 1: CHECK ────────────────────────────────── */
-  document.getElementById('btn-check').addEventListener('click', function() {
-    var query = document.getElementById('check-query').value.trim().toLowerCase();
-    var resultEl = document.getElementById('check-result');
-    if (!query) {
+  btnCheck.addEventListener('click', function() {
+    var query = queryInput.value.trim();
+    if (!query || query.length < 2) {
       resultEl.className = 'check-result';
       resultEl.style.display = 'none';
       return;
     }
 
-    loadReports().then(function(reports) {
-      var matches = reports.filter(function(r) {
-        var addr = (r.address || '').toLowerCase();
-        var plat = (r.platform || '').toLowerCase();
-        return (addr && addr.indexOf(query) !== -1) ||
-               plat.indexOf(query) !== -1 ||
-               query.indexOf(plat) !== -1 ||
-               (addr && query.indexOf(addr) !== -1);
-      });
+    btnCheck.disabled = true;
+    btnCheck.textContent = 'Checking...';
+    resultEl.className = 'check-result';
+    resultEl.style.display = 'none';
 
-      if (matches.length === 0) {
-        resultEl.className = 'check-result safe';
-        resultEl.innerHTML = '<h3>No reports found</h3><p>This address or platform has not been reported in our database. This does not guarantee it is safe &mdash; always do your own research.</p>';
-      } else {
-        var html = '<h3>WARNING: ' + matches.length + ' scam report' + (matches.length > 1 ? 's' : '') + ' found</h3>';
-        matches.forEach(function(m) {
+    fetch(API + '?q=' + encodeURIComponent(query))
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        btnCheck.disabled = false;
+        btnCheck.textContent = 'Check';
+
+        if (!data.reports || data.reports.length === 0) {
+          resultEl.className = 'check-result safe';
+          resultEl.innerHTML = '<h3>No reports found</h3><p>This address or platform has not been reported in our database (' + (data.found || 0) + ' matches). This does not guarantee it is safe &mdash; always do your own research.</p>';
+          return;
+        }
+
+        var html = '<h3>WARNING: ' + data.reports.length + ' scam report' + (data.reports.length > 1 ? 's' : '') + ' found</h3>';
+        data.reports.forEach(function(m) {
           html += '<div class="match-card">';
           html += '<div class="match-meta">';
-          html += '<span>Type: ' + (SCAM_LABELS[m.scamType] || m.scamType) + '</span>';
-          html += '<span>Lost: ' + fmtAmount(m.amountLost, m.currency) + '</span>';
-          html += '<span>Date: ' + fmtDate(m.date) + '</span>';
-          html += '<span>Platform: ' + m.platform + '</span>';
+          html += '<span>Type: ' + (SCAM_LABELS[m.scam_type] || m.scam_type) + '</span>';
+          html += '<span>Lost: ' + fmtAmount(m.amount_lost, m.currency) + '</span>';
+          html += '<span>Date: ' + fmtDate(m.date_occurred) + '</span>';
+          html += '<span>Platform: ' + escHtml(m.platform) + '</span>';
           html += '</div>';
-          html += '<div class="match-story">' + m.story + '</div>';
+          html += '<div class="match-story">' + escHtml(m.story) + '</div>';
           html += '</div>';
         });
         resultEl.className = 'check-result danger';
         resultEl.innerHTML = html;
-      }
-    });
+      })
+      .catch(function() {
+        btnCheck.disabled = false;
+        btnCheck.textContent = 'Check';
+        resultEl.className = 'check-result danger';
+        resultEl.innerHTML = '<h3>Error</h3><p>Unable to search the database. Please try again.</p>';
+      });
   });
 
-  // Allow Enter key to trigger check
-  document.getElementById('check-query').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') document.getElementById('btn-check').click();
+  queryInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') btnCheck.click();
   });
 
-  /* ── TAB 2: REPORT ───────────────────────────────── */
+  /* ── TAB 2: REPORT (via API) ───────────────────────── */
   var storyField = document.getElementById('rpt-story');
   var charCount = document.getElementById('story-chars');
   storyField.addEventListener('input', function() {
@@ -859,52 +866,89 @@
   document.getElementById('scam-report-form').addEventListener('submit', function(e) {
     e.preventDefault();
     var form = e.target;
-    var formData = new FormData(form);
+    var submitBtn = form.querySelector('.btn-submit');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting...';
 
-    fetch('/', {
+    var body = {
+      address: document.getElementById('rpt-address').value,
+      platform: document.getElementById('rpt-platform').value,
+      scam_type: document.getElementById('rpt-type').value,
+      amount_lost: document.getElementById('rpt-amount').value,
+      currency: document.getElementById('rpt-currency').value,
+      country: document.getElementById('rpt-country').value,
+      date_occurred: document.getElementById('rpt-date').value,
+      story: document.getElementById('rpt-story').value
+    };
+
+    fetch(API, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams(formData).toString()
-    }).then(function() {
-      form.style.display = 'none';
-      document.getElementById('report-success').style.display = 'block';
-    }).catch(function() {
-      form.style.display = 'none';
-      document.getElementById('report-success').style.display = 'block';
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.success) {
+        form.style.display = 'none';
+        document.getElementById('report-success').style.display = 'block';
+      } else {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit Report';
+        alert(data.error || 'Submission failed. Please try again.');
+      }
+    })
+    .catch(function() {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit Report';
+      alert('Network error. Please try again.');
     });
   });
 
-  /* ── TAB 3: DATABASE ─────────────────────────────── */
-  var sortCol = 'date';
+  /* ── TAB 3: DATABASE (via API) ─────────────────────── */
+  var sortCol = 'reported_at';
   var sortAsc = false;
 
-  function renderStats(reports) {
-    var total = reports.length;
-    var totalLost = {};
-    var typeCounts = {};
+  function loadStats() {
+    fetch(API + '?stats=true')
+      .then(function(r) { return r.json(); })
+      .then(function(stats) {
+        var topType = '';
+        var topCount = 0;
+        if (stats.byType) {
+          Object.keys(stats.byType).forEach(function(t) {
+            if (stats.byType[t] > topCount) { topType = t; topCount = stats.byType[t]; }
+          });
+        }
 
-    reports.forEach(function(r) {
-      if (!totalLost[r.currency]) totalLost[r.currency] = 0;
-      totalLost[r.currency] += r.amountLost;
-      var t = r.scamType;
-      typeCounts[t] = (typeCounts[t] || 0) + 1;
-    });
+        var countriesCount = stats.byCountry ? Object.keys(stats.byCountry).length : 0;
 
-    var topType = '';
-    var topCount = 0;
-    Object.keys(typeCounts).forEach(function(t) {
-      if (typeCounts[t] > topCount) { topType = t; topCount = typeCounts[t]; }
-    });
+        document.getElementById('db-stats').innerHTML =
+          '<div class="db-stat-card"><div class="stat-value">' + (stats.total || 0) + '</div><div class="stat-label">Verified Reports</div></div>' +
+          '<div class="db-stat-card"><div class="stat-value">' + fmtAmount(stats.totalLostNGN || 0, 'NGN') + '</div><div class="stat-label">Total Lost (est.)</div></div>' +
+          '<div class="db-stat-card"><div class="stat-value">' + countriesCount + '</div><div class="stat-label">Countries Affected</div></div>' +
+          '<div class="db-stat-card"><div class="stat-value">' + (SCAM_LABELS[topType] || '-') + '</div><div class="stat-label">Most Common Type</div></div>';
+      });
+  }
 
-    var lostParts = [];
-    Object.keys(totalLost).forEach(function(cur) {
-      lostParts.push(fmtAmount(totalLost[cur], cur));
-    });
-
-    document.getElementById('db-stats').innerHTML =
-      '<div class="db-stat-card"><div class="stat-value">' + total + '</div><div class="stat-label">Total Reports</div></div>' +
-      '<div class="db-stat-card"><div class="stat-value">' + (lostParts.join(', ') || '-') + '</div><div class="stat-label">Total Amount Lost</div></div>' +
-      '<div class="db-stat-card"><div class="stat-value">' + (SCAM_LABELS[topType] || '-') + '</div><div class="stat-label">Most Common Type</div></div>';
+  function loadAllReports() {
+    fetch(API + '?recent=50')
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        reportsData = (data.reports || []).map(function(r) {
+          return {
+            platform: r.platform,
+            scam_type: r.scam_type,
+            amount_lost: r.amount_lost,
+            currency: r.currency,
+            country: r.country,
+            date_occurred: r.date_occurred,
+            reported_at: r.reported_at,
+            story: r.story,
+            address: r.address
+          };
+        });
+        renderTable(reportsData);
+      });
   }
 
   function renderTable(reports) {
@@ -915,20 +959,18 @@
     var fFrom = document.getElementById('filter-from').value;
     var fTo = document.getElementById('filter-to').value;
 
-    if (fType) filtered = filtered.filter(function(r) { return r.scamType === fType; });
+    if (fType) filtered = filtered.filter(function(r) { return r.scam_type === fType; });
     if (fCountry) filtered = filtered.filter(function(r) { return r.country === fCountry; });
-    if (fFrom) filtered = filtered.filter(function(r) { return r.date >= fFrom; });
-    if (fTo) filtered = filtered.filter(function(r) { return r.date <= fTo; });
+    if (fFrom) filtered = filtered.filter(function(r) { return (r.date_occurred || '') >= fFrom; });
+    if (fTo) filtered = filtered.filter(function(r) { return (r.date_occurred || '') <= fTo; });
 
     filtered.sort(function(a, b) {
       var va = a[sortCol], vb = b[sortCol];
-      if (sortCol === 'amountLost') { va = Number(va); vb = Number(vb); }
+      if (sortCol === 'amount_lost') { va = Number(va) || 0; vb = Number(vb) || 0; }
       if (va < vb) return sortAsc ? -1 : 1;
       if (va > vb) return sortAsc ? 1 : -1;
       return 0;
     });
-
-    renderStats(filtered);
 
     var tbody = document.getElementById('db-tbody');
     if (filtered.length === 0) {
@@ -938,20 +980,21 @@
 
     tbody.innerHTML = filtered.map(function(r) {
       return '<tr>' +
-        '<td><strong>' + r.platform + '</strong></td>' +
-        '<td>' + (SCAM_LABELS[r.scamType] || r.scamType) + '</td>' +
-        '<td>' + fmtAmount(r.amountLost, r.currency) + '</td>' +
+        '<td><strong>' + escHtml(r.platform) + '</strong></td>' +
+        '<td>' + (SCAM_LABELS[r.scam_type] || r.scam_type) + '</td>' +
+        '<td>' + fmtAmount(r.amount_lost, r.currency) + '</td>' +
         '<td>' + (COUNTRY_NAMES[r.country] || r.country) + '</td>' +
-        '<td>' + fmtDate(r.date) + '</td>' +
-        '<td><span class="status-badge ' + r.status + '">' + r.status + '</span></td>' +
+        '<td>' + fmtDate(r.date_occurred) + '</td>' +
+        '<td><span class="status-badge verified">Verified</span></td>' +
         '</tr>';
     }).join('');
   }
 
-  // Sort on header click
+  // Sort headers
   document.querySelectorAll('.db-table th[data-sort]').forEach(function(th) {
     th.addEventListener('click', function() {
-      var col = th.dataset.sort;
+      var colMap = { platform: 'platform', scamType: 'scam_type', amountLost: 'amount_lost', country: 'country', date: 'date_occurred', status: 'status' };
+      var col = colMap[th.dataset.sort] || th.dataset.sort;
       if (sortCol === col) { sortAsc = !sortAsc; } else { sortCol = col; sortAsc = true; }
       renderTable(reportsData);
     });
@@ -964,10 +1007,9 @@
     });
   });
 
-  // Init database tab
-  loadReports().then(function(reports) {
-    renderTable(reports);
-  });
+  // Init
+  loadStats();
+  loadAllReports();
 
 })();
 </script>

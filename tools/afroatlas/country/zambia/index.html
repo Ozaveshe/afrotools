@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-D859CGF391');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zambia Economy &amp; Natural Resources | AfroAtlas | AfroTools</title>
+<meta name="description" content="Explore Zambia's natural resources, GDP ($29 billion), top exports including Copper, Cobalt, Gold, trade data, and economic indicators. Africa's Copper Heartland.">
+<link rel="canonical" href="https://afrotools.com/tools/afroatlas/country/zambia/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta name="tool-id" content="afroatlas">
+<meta property="og:title" content="Zambia Economy &amp; Natural Resources | AfroAtlas | AfroTools">
+<meta property="og:description" content="Explore Zambia's natural resources, GDP ($29 billion), top exports including Copper, Cobalt, Gold, trade data, and economic indicators. Africa's Copper Heartland.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/afroatlas/country/zambia/">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Zambia Economy &amp; Natural Resources | AfroAtlas | AfroTools">
+<meta name="twitter:description" content="Explore Zambia's natural resources, GDP ($29 billion), top exports including Copper, Cobalt, Gold, trade data, and economic indicators. Africa's Copper Heartland.">
+<meta name="robots" content="index, follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Serif&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/tools/afroatlas/style.css">
+<script src="/assets/js/components/tool-registry.js"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"AfroAtlas","item":"https://afrotools.com/tools/afroatlas/"},{"@type":"ListItem","position":4,"name":"Zambia","item":"https://afrotools.com/tools/afroatlas/country/zambia/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What are Zambia's main natural resources?","acceptedAnswer":{"@type":"Answer","text":"Zambia's key natural resources include: Copper (830K tonnes/yr), Cobalt (5000 tonnes/yr)."}},{"@type":"Question","name":"What is Zambia's GDP?","acceptedAnswer":{"@type":"Answer","text":"Zambia has a nominal GDP of $29 billion (GDP per capita: $1,410) with a growth rate of 4.3%."}},{"@type":"Question","name":"What are Zambia's top exports?","acceptedAnswer":{"@type":"Answer","text":"Zambia's top exports are: Copper ($8.5 billion), Cobalt ($400 million), Gold ($300 million). Total exports: $12.2 billion."}}]}</script>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<nav class="crumb" aria-label="breadcrumb">
+  <a href="/">Home</a> <span>/</span> <a href="/tools/">Tools</a> <span>/</span> <a href="/tools/afroatlas/">AfroAtlas</a> <span>/</span> <span>Zambia</span>
+</nav>
+
+<!-- The rest is rendered dynamically by JS from the engine -->
+<div class="aa-page" id="aa-country-page">
+  <!-- JS fills this -->
+</div>
+
+<afro-footer></afro-footer>
+
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<script src="/engines/afroatlas-engine.js"></script>
+<script>
+(function() {
+  'use strict';
+
+  /* ── Slug extraction ── */
+  var slug = window.location.pathname.split('/').filter(Boolean).pop();
+  var country = AfroAtlas.getCountry(slug);
+  var page = document.getElementById('aa-country-page');
+
+  if (!country) {
+    page.innerHTML = '<div class="aa-wrap" style="padding:80px 20px;text-align:center">' +
+      '<h1 style="font-family:var(--font-heading,\'Instrument Serif\',Georgia,serif);font-size:2rem;margin-bottom:12px">Country not found</h1>' +
+      '<p style="color:var(--color-text-muted,#64748b)">We couldn\'t find data for "<strong>' + slug + '</strong>".</p>' +
+      '<a href="/tools/afroatlas/" style="display:inline-block;margin-top:24px;padding:10px 28px;background:var(--color-primary,#007AFF);color:#fff;border-radius:var(--radius-pill,100px);text-decoration:none;font-weight:600;font-size:0.88rem">Browse All Countries</a>' +
+      '</div>';
+    return;
+  }
+
+  /* ── Helpers ── */
+  var RT = AfroAtlas.RESOURCE_TYPES;
+  var REGIONS = AfroAtlas.REGIONS;
+  var allCountries = AfroAtlas.getAllCountries();
+
+  function fmtGdp(v) {
+    if (v == null) return 'N/A';
+    if (v >= 1e12) return '$' + (v / 1e12).toFixed(2) + 'T';
+    if (v >= 1e9) return '$' + (v / 1e9).toFixed(1) + 'B';
+    if (v >= 1e6) return '$' + (v / 1e6).toFixed(0) + 'M';
+    return '$' + v.toLocaleString();
+  }
+
+  function fmtPop(v) {
+    if (v == null) return 'N/A';
+    if (v >= 1e9) return (v / 1e9).toFixed(2) + 'B';
+    if (v >= 1e6) return (v / 1e6).toFixed(1) + 'M';
+    if (v >= 1e3) return (v / 1e3).toFixed(0) + 'K';
+    return String(v);
+  }
+
+  function fmtMoney(v) {
+    if (v == null) return 'N/A';
+    if (v >= 1e12) return '$' + (v / 1e12).toFixed(2) + 'T';
+    if (v >= 1e9) return '$' + (v / 1e9).toFixed(1) + 'B';
+    if (v >= 1e6) return '$' + (v / 1e6).toFixed(0) + 'M';
+    return '$' + v.toLocaleString();
+  }
+
+  function fmtPct(v) {
+    if (v == null) return 'N/A';
+    return v.toFixed(1) + '%';
+  }
+
+  function fmtNum(v, suffix) {
+    if (v == null) return 'N/A';
+    return v.toFixed(1) + (suffix || '');
+  }
+
+  function regionName(key) {
+    return (REGIONS[key] && REGIONS[key].name) ? REGIONS[key].name : key;
+  }
+
+  function findCode(c) {
+    var keys = Object.keys(AfroAtlas.COUNTRIES);
+    for (var i = 0; i < keys.length; i++) {
+      if (AfroAtlas.COUNTRIES[keys[i]] === c) return keys[i];
+    }
+    return '';
+  }
+
+  var code = findCode(country);
+
+  /* ── Build HTML ── */
+  var html = '';
+
+  /* ── 1. Hero Section ── */
+  html += '<section class="aa-hero aa-rv">';
+  html += '<div class="aa-hero-inner aa-wrap">';
+  html += '<div style="font-size:3rem;line-height:1;margin-bottom:12px">' + country.flag + '</div>';
+  html += '<h1 class="aa-h1">' + country.name + '</h1>';
+  html += '<p class="aa-hero-sub" style="font-style:italic">' + (country.tagline || '') + '</p>';
+  html += '<p style="font-size:0.82rem;color:var(--color-text-muted,#64748b);margin-bottom:20px">';
+  html += regionName(country.region) + ' &middot; Capital: ' + (country.capital || 'N/A');
+  html += ' &middot; Currency: ' + (country.currency ? country.currency.name + ' (' + country.currency.sym + ')' : 'N/A');
+  html += '</p>';
+  html += '<div class="aa-stats-row">';
+  html += '<span class="aa-stat-pill"><strong>' + fmtGdp(country.gdp) + '</strong> <span>GDP</span></span>';
+  html += '<span class="aa-stat-pill"><strong>' + fmtPop(country.population) + '</strong> <span>Population</span></span>';
+  html += '<span class="aa-stat-pill"><strong>' + fmtGdp(country.gdpPC) + '</strong> <span>GDP/Capita</span></span>';
+  html += '<span class="aa-stat-pill"><strong>' + (country.rrs != null ? country.rrs + '/100' : 'N/A') + '</strong> <span>Resource Score</span></span>';
+  html += '</div>';
+  html += '</div>';
+  html += '</section>';
+
+  /* ── 2. Natural Resources ── */
+  html += '<section class="aa-section aa-rv">';
+  html += '<div class="aa-wrap">';
+  html += '<h2 class="aa-section-title">Natural Resources</h2>';
+  if (country.resources && country.resources.length > 0) {
+    html += '<div class="aa-grid" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr))">';
+    for (var ri = 0; ri < country.resources.length; ri++) {
+      var r = country.resources[ri];
+      var rInfo = RT[r.type] || { emoji: '', label: r.type };
+      var rankBadgeStyle = r.rank <= 3
+        ? 'background:var(--color-primary,#007AFF);color:#fff'
+        : 'background:var(--color-bg-subtle,#F1F5F9);color:var(--color-text-muted,#64748b)';
+      html += '<div class="aa-country-card" style="cursor:default">';
+      html += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">';
+      html += '<span style="font-size:1.6rem">' + rInfo.emoji + '</span>';
+      html += '<span class="aa-card-name">' + rInfo.label + '</span>';
+      html += '</div>';
+      html += '<span style="display:inline-block;padding:3px 10px;border-radius:var(--radius-pill,100px);font-size:0.7rem;font-weight:700;' + rankBadgeStyle + '">#' + r.rank + ' in Africa</span>';
+      html += '<p style="font-size:0.82rem;color:var(--color-text,#0f172a);margin:8px 0 4px;font-weight:600">' + (r.prod || '') + '</p>';
+      if (r.share > 0) {
+        html += '<div style="background:var(--color-bg-subtle,#F1F5F9);border-radius:6px;height:8px;overflow:hidden;margin-bottom:6px">';
+        html += '<div style="height:100%;width:' + Math.min(r.share, 100) + '%;background:var(--color-primary,#007AFF);border-radius:6px;transition:width 0.6s ease"></div>';
+        html += '</div>';
+        html += '<p style="font-size:0.68rem;color:var(--color-text-muted,#64748b)">' + r.share + '% of Africa\'s output</p>';
+      }
+      if (r.note) {
+        html += '<p style="font-size:0.75rem;color:var(--color-text-muted,#64748b);margin-top:6px;line-height:1.45">' + r.note + '</p>';
+      }
+      html += '</div>';
+    }
+    html += '</div>';
+  } else {
+    html += '<p style="color:var(--color-text-muted,#64748b);text-align:center;padding:32px 0">Limited resource data available.</p>';
+  }
+  html += '</div>';
+  html += '</section>';
+
+  /* ── 3. Trade Snapshot ── */
+  html += '<section class="aa-section aa-rv">';
+  html += '<div class="aa-wrap">';
+  html += '<h2 class="aa-section-title">Trade Snapshot</h2>';
+  html += '<div class="aa-stats-row" style="margin-bottom:28px">';
+  html += '<span class="aa-stat-pill"><strong>' + fmtMoney(country.totalExports) + '</strong> <span>Total Exports</span></span>';
+  html += '<span class="aa-stat-pill"><strong>' + fmtMoney(country.totalImports) + '</strong> <span>Total Imports</span></span>';
+  var balance = (country.totalExports || 0) - (country.totalImports || 0);
+  var balColor = balance >= 0 ? 'var(--aa-forest,#2D6A4F)' : 'var(--aa-terra,#E76F51)';
+  html += '<span class="aa-stat-pill"><strong style="color:' + balColor + '">' + (balance >= 0 ? '+' : '') + fmtMoney(balance) + '</strong> <span>Trade Balance</span></span>';
+  html += '</div>';
+  html += '<div style="max-width:700px;margin:0 auto"><canvas id="aa-trade-chart" height="320"></canvas></div>';
+  html += '</div>';
+  html += '</section>';
+
+  /* ── 4. GDP Timeline ── */
+  html += '<section class="aa-section aa-rv">';
+  html += '<div class="aa-wrap">';
+  html += '<h2 class="aa-section-title">GDP Over Time</h2>';
+  html += '<div style="max-width:700px;margin:0 auto"><canvas id="aa-gdp-chart" height="280"></canvas></div>';
+  html += '</div>';
+  html += '</section>';
+
+  /* ── 5. Key Indicators ── */
+  html += '<section class="aa-section aa-rv">';
+  html += '<div class="aa-wrap">';
+  html += '<h2 class="aa-section-title">Key Indicators</h2>';
+  var indicators = [
+    { label: 'Human Development Index', value: country.hdi != null ? country.hdi.toFixed(3) : 'N/A', sub: country.hdiRank ? 'Rank #' + country.hdiRank : '', bar: country.hdi != null ? country.hdi * 100 : 0 },
+    { label: 'Gini Coefficient', value: country.gini != null ? country.gini.toFixed(1) : 'N/A', sub: '', bar: country.gini || 0 },
+    { label: 'Inflation Rate', value: fmtPct(country.inflation), sub: '', bar: country.inflation != null ? Math.min(country.inflation, 100) : 0 },
+    { label: 'Unemployment', value: fmtPct(country.unemployment), sub: '', bar: country.unemployment != null ? Math.min(country.unemployment, 100) : 0 },
+    { label: 'Debt-to-GDP', value: fmtPct(country.debtGdp), sub: '', bar: country.debtGdp != null ? Math.min(country.debtGdp, 100) : 0 },
+    { label: 'Foreign Direct Investment', value: fmtMoney(country.fdi), sub: '', bar: 0 },
+    { label: 'Electricity Access', value: fmtPct(country.electricity), sub: '', bar: country.electricity || 0 },
+    { label: 'Internet Penetration', value: fmtPct(country.internet), sub: '', bar: country.internet || 0 },
+    { label: 'Life Expectancy', value: country.lifeExp != null ? fmtNum(country.lifeExp, ' yrs') : 'N/A', sub: '', bar: country.lifeExp != null ? Math.min((country.lifeExp / 85) * 100, 100) : 0 },
+    { label: 'Literacy Rate', value: fmtPct(country.literacy), sub: '', bar: country.literacy || 0 }
+  ];
+  html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px">';
+  for (var ki = 0; ki < indicators.length; ki++) {
+    var ind = indicators[ki];
+    html += '<div class="aa-country-card" style="cursor:default;gap:4px">';
+    html += '<span style="font-size:0.7rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-text-subtle,#94a3af)">' + ind.label + '</span>';
+    html += '<span style="font-size:1.25rem;font-weight:800;color:var(--color-text,#0f172a)">' + ind.value + '</span>';
+    if (ind.sub) {
+      html += '<span style="font-size:0.72rem;color:var(--color-text-muted,#64748b)">' + ind.sub + '</span>';
+    }
+    if (ind.bar > 0) {
+      html += '<div style="background:var(--color-bg-subtle,#F1F5F9);border-radius:6px;height:6px;overflow:hidden;margin-top:4px">';
+      html += '<div style="height:100%;width:' + Math.min(ind.bar, 100) + '%;background:var(--color-primary,#007AFF);border-radius:6px;transition:width 0.6s ease"></div>';
+      html += '</div>';
+    }
+    html += '</div>';
+  }
+  html += '</div>';
+  html += '</div>';
+  html += '</section>';
+
+  /* ── 6. Resource Paradox ── */
+  if (country.paradox) {
+    html += '<section class="aa-section aa-rv">';
+    html += '<div class="aa-wrap">';
+    html += '<div class="aa-country-card" style="cursor:default;border-left:4px solid var(--aa-gold,#F4A261);background:linear-gradient(135deg,#fffbf0 0%,#fff 100%)">';
+    html += '<span style="font-size:0.68rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--aa-gold,#F4A261);margin-bottom:4px">Resource Paradox</span>';
+    html += '<p style="font-style:italic;font-size:0.9rem;line-height:1.6;color:var(--color-text,#0f172a)">' + country.paradox + '</p>';
+    html += '<span class="aa-stat-pill" style="margin-top:10px;align-self:flex-start"><strong>' + (country.rrs != null ? country.rrs + '/100' : 'N/A') + '</strong> <span>Resource Richness Score</span></span>';
+    html += '</div>';
+    html += '</div>';
+    html += '</section>';
+  }
+
+  /* ── 7. Compare CTA ── */
+  html += '<section class="aa-section aa-compare-section aa-rv">';
+  html += '<h2 class="aa-section-title">Compare ' + country.name + ' with&hellip;</h2>';
+  html += '<div class="aa-compare-row">';
+  html += '<select id="aa-cmp-select" class="aa-compare-select">';
+  html += '<option value="">Select a country</option>';
+  for (var ci = 0; ci < allCountries.length; ci++) {
+    var oc = allCountries[ci];
+    if (oc.slug === country.slug) continue;
+    var ocCode = findCode(oc);
+    html += '<option value="' + ocCode + '">' + oc.flag + ' ' + oc.name + '</option>';
+  }
+  html += '</select>';
+  html += '<button id="aa-cmp-btn" class="aa-btn" style="padding:12px 28px;background:var(--color-primary,#007AFF);color:#fff;border:none;border-radius:var(--radius-md,10px);font-family:var(--font-body,\'DM Sans\',system-ui,sans-serif);font-size:0.88rem;font-weight:700;cursor:pointer;transition:background 150ms ease" onmouseover="this.style.background=\'var(--color-primary-dark,#0063D1)\'" onmouseout="this.style.background=\'var(--color-primary,#007AFF)\'">Compare</button>';
+  html += '</div>';
+  html += '</section>';
+
+  /* ── 8. AfroTools Links ── */
+  if (country.tools && country.tools.length > 0) {
+    html += '<section class="aa-section aa-rv">';
+    html += '<div class="aa-wrap">';
+    html += '<h2 class="aa-section-title">AfroTools for ' + country.name + '</h2>';
+    html += '<div class="aa-grid" style="grid-template-columns:repeat(auto-fill,minmax(240px,1fr))">';
+    for (var ti = 0; ti < country.tools.length; ti++) {
+      var tool = country.tools[ti];
+      html += '<a href="' + tool.p + '" class="aa-country-card" style="text-decoration:none">';
+      html += '<span class="aa-card-name">' + tool.n + '</span>';
+      html += '<span style="font-size:0.75rem;color:var(--color-primary,#007AFF);font-weight:600">Open tool &rarr;</span>';
+      html += '</a>';
+    }
+    html += '</div>';
+    html += '</div>';
+    html += '</section>';
+  }
+
+  /* ── 9. FAQ Section ── */
+  html += '<section class="aa-section aa-rv">';
+  html += '<div class="aa-wrap">';
+  html += '<h2 class="aa-section-title">Frequently Asked Questions</h2>';
+  html += '<div style="max-width:700px;margin:0 auto;display:flex;flex-direction:column;gap:10px">';
+
+  /* FAQ 1 — Main natural resources */
+  var faq1Answer = '';
+  if (country.resources && country.resources.length > 0) {
+    var resNames = [];
+    for (var fi = 0; fi < country.resources.length; fi++) {
+      var rr = country.resources[fi];
+      var rrInfo = RT[rr.type] || { label: rr.type };
+      resNames.push(rrInfo.label + ' (#' + rr.rank + ' in Africa)');
+    }
+    faq1Answer = country.name + '\'s main natural resources include ' + resNames.join(', ') + '.';
+  } else {
+    faq1Answer = 'Limited natural resource data is currently available for ' + country.name + '.';
+  }
+  html += '<details class="aa-faq-item">';
+  html += '<summary class="aa-faq-q">What are ' + country.name + '\'s main natural resources?</summary>';
+  html += '<p class="aa-faq-a">' + faq1Answer + '</p>';
+  html += '</details>';
+
+  /* FAQ 2 — GDP */
+  var faq2Answer = country.name + '\'s GDP is ' + fmtGdp(country.gdp);
+  faq2Answer += ', with a GDP per capita of ' + fmtGdp(country.gdpPC);
+  faq2Answer += (country.gdpGrowth != null ? ' and a growth rate of ' + country.gdpGrowth + '%.' : '.');
+  html += '<details class="aa-faq-item">';
+  html += '<summary class="aa-faq-q">What is ' + country.name + '\'s GDP?</summary>';
+  html += '<p class="aa-faq-a">' + faq2Answer + '</p>';
+  html += '</details>';
+
+  /* FAQ 3 — Exports */
+  var faq3Answer = '';
+  if (country.exports && country.exports.length > 0) {
+    var expNames = [];
+    for (var ei = 0; ei < Math.min(country.exports.length, 5); ei++) {
+      expNames.push(country.exports[ei].p + ' (' + fmtMoney(country.exports[ei].v) + ')');
+    }
+    faq3Answer = country.name + '\'s top exports are ' + expNames.join(', ') + '. Total exports are valued at ' + fmtMoney(country.totalExports) + '.';
+  } else {
+    faq3Answer = 'Detailed export data is not currently available for ' + country.name + '.';
+  }
+  html += '<details class="aa-faq-item">';
+  html += '<summary class="aa-faq-q">What does ' + country.name + ' export?</summary>';
+  html += '<p class="aa-faq-a">' + faq3Answer + '</p>';
+  html += '</details>';
+
+  html += '</div>';
+  html += '</div>';
+  html += '</section>';
+
+  /* ── Inject HTML ── */
+  page.innerHTML = html;
+
+  /* ── Compare button handler ── */
+  var cmpBtn = document.getElementById('aa-cmp-btn');
+  var cmpSel = document.getElementById('aa-cmp-select');
+  if (cmpBtn && cmpSel) {
+    cmpBtn.addEventListener('click', function() {
+      var sel = cmpSel.value;
+      if (sel) {
+        window.location.href = '/tools/afroatlas/compare.html?a=' + code + '&b=' + sel;
+      }
+    });
+  }
+
+  /* ── Charts (graceful degradation) ── */
+  if (typeof Chart !== 'undefined') {
+
+    /* Trade chart */
+    var tradeCanvas = document.getElementById('aa-trade-chart');
+    if (tradeCanvas && country.exports && country.imports) {
+      var expLabels = [];
+      var expValues = [];
+      var impLabels = [];
+      var impValues = [];
+      var expSlice = country.exports.slice(0, 5);
+      var impSlice = country.imports.slice(0, 5);
+      for (var te = 0; te < expSlice.length; te++) {
+        expLabels.push(expSlice[te].p);
+        expValues.push(expSlice[te].v / 1e9);
+      }
+      for (var tm = 0; tm < impSlice.length; tm++) {
+        impLabels.push(impSlice[tm].p);
+        impValues.push(impSlice[tm].v / 1e9);
+      }
+      var tradeLabels = expLabels.concat(impLabels);
+      var tradeData = expValues.map(function(v) { return v; }).concat(impValues.map(function(v) { return -v; }));
+      var tradeColors = [];
+      for (var tc = 0; tc < expValues.length; tc++) tradeColors.push('rgba(45,106,79,0.8)');
+      for (var tc2 = 0; tc2 < impValues.length; tc2++) tradeColors.push('rgba(231,111,81,0.8)');
+
+      new Chart(tradeCanvas, {
+        type: 'bar',
+        data: {
+          labels: tradeLabels,
+          datasets: [{
+            data: tradeData,
+            backgroundColor: tradeColors,
+            borderRadius: 4,
+            barThickness: 22
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: function(ctx) {
+                  var v = Math.abs(ctx.raw);
+                  return (ctx.raw >= 0 ? 'Export: ' : 'Import: ') + '$' + v.toFixed(1) + 'B';
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: {
+                callback: function(v) { return '$' + Math.abs(v).toFixed(0) + 'B'; },
+                font: { size: 11 }
+              },
+              grid: { color: 'rgba(0,0,0,0.04)' }
+            },
+            y: {
+              ticks: { font: { size: 11 } },
+              grid: { display: false }
+            }
+          }
+        }
+      });
+    }
+
+    /* GDP timeline chart */
+    var gdpCanvas = document.getElementById('aa-gdp-chart');
+    if (gdpCanvas && country.gdpHist) {
+      var gdpYears = Object.keys(country.gdpHist).sort();
+      var gdpVals = [];
+      for (var gy = 0; gy < gdpYears.length; gy++) {
+        gdpVals.push(country.gdpHist[gdpYears[gy]] / 1e9);
+      }
+      new Chart(gdpCanvas, {
+        type: 'line',
+        data: {
+          labels: gdpYears,
+          datasets: [{
+            label: 'GDP ($B)',
+            data: gdpVals,
+            borderColor: '#007AFF',
+            backgroundColor: 'rgba(0,122,255,0.08)',
+            fill: true,
+            tension: 0.35,
+            pointRadius: 4,
+            pointBackgroundColor: '#007AFF',
+            borderWidth: 2.5
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: function(ctx) { return '$' + ctx.raw.toFixed(1) + 'B'; }
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: { font: { size: 11 } },
+              grid: { color: 'rgba(0,0,0,0.04)' }
+            },
+            y: {
+              ticks: {
+                callback: function(v) { return '$' + v + 'B'; },
+                font: { size: 11 }
+              },
+              grid: { color: 'rgba(0,0,0,0.04)' }
+            }
+          }
+        }
+      });
+    }
+  }
+
+  /* ── Scroll Reveal ── */
+  var rvEls = document.querySelectorAll('.aa-rv');
+  if (rvEls.length > 0 && 'IntersectionObserver' in window) {
+    var rvObs = new IntersectionObserver(function(entries) {
+      for (var ei = 0; ei < entries.length; ei++) {
+        if (entries[ei].isIntersecting) {
+          entries[ei].target.classList.add('visible');
+          rvObs.unobserve(entries[ei].target);
+        }
+      }
+    }, { threshold: 0.1 });
+    for (var rvi = 0; rvi < rvEls.length; rvi++) {
+      rvObs.observe(rvEls[rvi]);
+    }
+  } else {
+    for (var rvj = 0; rvj < rvEls.length; rvj++) {
+      rvEls[rvj].classList.add('visible');
+    }
+  }
+
+})();
+</script>
+</body>
+</html>

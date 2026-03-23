@@ -32,6 +32,15 @@
       "provider": { "@type": "Organization", "name": "AfroTools", "url": "https://afrotools.com" }
     },
     {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {"@type":"Question","name":"Is crypto arbitrage legal in Nigeria?","acceptedAnswer":{"@type":"Answer","text":"Yes, crypto arbitrage is legal in Nigeria. The SEC has issued regulations recognizing digital assets, and buying and selling crypto across platforms is permitted."}},
+        {"@type":"Question","name":"How much capital do I need for arbitrage?","acceptedAnswer":{"@type":"Answer","text":"Most profitable arbitrage requires at least 500,000 to 1,000,000 NGN to make the fees and effort worthwhile."}},
+        {"@type":"Question","name":"Why do prices differ between platforms?","acceptedAnswer":{"@type":"Answer","text":"Price differences arise from different liquidity levels, user bases, payment methods, and market-making strategies."}},
+        {"@type":"Question","name":"How quickly do arbitrage opportunities close?","acceptedAnswer":{"@type":"Answer","text":"Most significant price gaps (>2%) close within minutes. Smaller gaps (1-2%) may persist for hours. Speed is critical."}}
+      ]
+    },
+    {
       "@type": "BreadcrumbList",
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "AfroTools", "item": "https://afrotools.com" },
@@ -336,10 +345,11 @@
           <th>vs Cheapest</th>
           <th>Trading Fee</th>
           <th>Withdraw Fee</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody id="arb-tbody">
-        <tr><td colspan="7"><div class="loading-spinner">Fetching platform prices...</div></td></tr>
+        <tr><td colspan="8"><div class="loading-spinner">Fetching platform prices...</div></td></tr>
       </tbody>
     </table>
   </div>
@@ -437,14 +447,14 @@
 
   // Nigerian platforms with simulated data
   var PLATFORMS = [
-    { id: 'binance',    name: 'Binance P2P',   tradingFee: 0.001, withdrawFeeNGN: 500,  spreadFactor: 0.012 },
-    { id: 'bybit',      name: 'Bybit P2P',     tradingFee: 0.001, withdrawFeeNGN: 600,  spreadFactor: 0.015 },
-    { id: 'okx',        name: 'OKX P2P',       tradingFee: 0.001, withdrawFeeNGN: 550,  spreadFactor: 0.013 },
-    { id: 'quidax',     name: 'Quidax',        tradingFee: 0.005, withdrawFeeNGN: 300,  spreadFactor: 0.020 },
-    { id: 'luno',       name: 'Luno',          tradingFee: 0.005, withdrawFeeNGN: 0,    spreadFactor: 0.025 },
-    { id: 'roqqu',      name: 'Roqqu',         tradingFee: 0.003, withdrawFeeNGN: 200,  spreadFactor: 0.018 },
-    { id: 'yellowcard', name: 'Yellow Card',   tradingFee: 0.003, withdrawFeeNGN: 0,    spreadFactor: 0.022 },
-    { id: 'kucoin',     name: 'KuCoin P2P',    tradingFee: 0.001, withdrawFeeNGN: 700,  spreadFactor: 0.016 }
+    { id: 'binance',    name: 'Binance P2P',   url: 'https://p2p.binance.com',              tradingFee: 0.001, withdrawFeeNGN: 500,  spreadFactor: 0.012 },
+    { id: 'bybit',      name: 'Bybit P2P',     url: 'https://www.bybit.com/fiat/trade/otc',  tradingFee: 0.001, withdrawFeeNGN: 600,  spreadFactor: 0.015 },
+    { id: 'noones',     name: 'Noones',         url: 'https://noones.com',                    tradingFee: 0.001, withdrawFeeNGN: 550,  spreadFactor: 0.013 },
+    { id: 'quidax',     name: 'Quidax',         url: 'https://www.quidax.com',                tradingFee: 0.005, withdrawFeeNGN: 300,  spreadFactor: 0.020 },
+    { id: 'luno',       name: 'Luno',            url: 'https://www.luno.com',                  tradingFee: 0.005, withdrawFeeNGN: 0,    spreadFactor: 0.025 },
+    { id: 'roqqu',      name: 'Roqqu',           url: 'https://roqqu.com',                     tradingFee: 0.003, withdrawFeeNGN: 200,  spreadFactor: 0.018 },
+    { id: 'yellowcard', name: 'Yellow Card',     url: 'https://yellowcard.io',                 tradingFee: 0.003, withdrawFeeNGN: 0,    spreadFactor: 0.022 },
+    { id: 'kucoin',     name: 'KuCoin P2P',      url: 'https://www.kucoin.com/otc',             tradingFee: 0.001, withdrawFeeNGN: 700,  spreadFactor: 0.016 }
   ];
 
   var CRYPTO_MAP = {
@@ -471,11 +481,11 @@
   tradeAmountInput.addEventListener('input', updateCalculator);
 
   function loadData() {
-    arbTbody.innerHTML = '<tr><td colspan="7"><div class="loading-spinner">Fetching platform prices...</div></td></tr>';
+    arbTbody.innerHTML = '<tr><td colspan="8"><div class="loading-spinner">Fetching platform prices...</div></td></tr>';
 
     CryptoData.getPrices('ngn').then(function(prices) {
       if (!prices) {
-        arbTbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--color-text-muted);">Unable to fetch prices. Please try again.</td></tr>';
+        arbTbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--color-text-muted);">Unable to fetch prices. Please try again.</td></tr>';
         return;
       }
 
@@ -534,13 +544,14 @@
       var gapClass = parseFloat(vsCheapest) > 2 ? 'hot' : parseFloat(vsCheapest) > 1 ? 'warm' : 'cool';
 
       html += '<tr>';
-      html += '<td><div class="plat-cell"><img src="/assets/img/crypto/' + plat.id + '.svg" alt="' + plat.name + '" onerror="this.style.display=\'none\'"> ' + plat.name + '</div></td>';
+      html += '<td><div class="plat-cell"><img src="/assets/img/crypto/' + plat.id + '.svg" alt="' + plat.name + '" onerror="this.style.display=\'none\'"> <a href="' + plat.url + '" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:none;">' + plat.name + '</a></div></td>';
       html += '<td class="' + buyClass + '">' + formatNGN(pd.buyPrice) + '</td>';
       html += '<td class="' + sellClass + '">' + formatNGN(pd.sellPrice) + '</td>';
       html += '<td>' + spread + '%</td>';
       html += '<td><span class="gap-highlight ' + gapClass + '">' + (parseFloat(vsCheapest) > 0 ? '+' : '') + vsCheapest + '%</span></td>';
       html += '<td>' + (plat.tradingFee * 100).toFixed(1) + '%</td>';
       html += '<td>' + (plat.withdrawFeeNGN === 0 ? '<span style="color:#34C759;font-weight:600;">Free</span>' : '\u20A6' + plat.withdrawFeeNGN.toLocaleString()) + '</td>';
+      html += '<td><a href="' + plat.url + '" target="_blank" rel="noopener noreferrer" style="display:inline-block;background:var(--color-primary);color:#fff;padding:5px 14px;border-radius:var(--radius-sm);font-size:12px;font-weight:700;text-decoration:none;">Trade</a></td>';
       html += '</tr>';
     });
 

@@ -12,11 +12,11 @@
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Crypto Live Prices in African Currencies — Bitcoin, ETH, USDT | AfroTools</title>
-<meta name="description" content="Real-time Bitcoin, Ethereum, USDT and 50+ crypto prices in Naira, Shilling, Rand, Cedi and more African currencies. Live market cap, volume, sparkline charts.">
+<meta name="description" content="Real-time Bitcoin, Ethereum, USDT and 100+ crypto prices in Naira, Shilling, Rand, Cedi and more African currencies. Live market cap, volume, sparkline charts.">
 <link rel="canonical" href="https://afrotools.com/crypto/prices">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Crypto Live Prices in African Currencies | AfroTools">
-<meta property="og:description" content="Real-time Bitcoin, Ethereum, USDT and 50+ coins in Naira, Shilling, Rand, Cedi and more.">
+<meta property="og:description" content="Real-time Bitcoin, Ethereum, USDT and 100+ coins in Naira, Shilling, Rand, Cedi and more.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/crypto/prices">
@@ -237,7 +237,7 @@
   /* ── Load data ─────────────────────────────────────── */
   function loadData() {
     showSkeleton();
-    CryptoData.getMarkets(currency, 50).then(function (data) {
+    CryptoData.getMarkets(currency, 100).then(function (data) {
       if (!data || !Array.isArray(data)) {
         $body.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--color-text-muted)">Unable to load data. Try again shortly.</td></tr>';
         return;
@@ -303,7 +303,7 @@
       html += '<tr data-coin="' + coin.id + '"' + (isExpanded ? ' style="background:var(--color-bg-subtle)"' : '') + '>';
       html += '<td>' + coin.market_cap_rank + '</td>';
       html += '<td><div class="coin-cell">';
-      html += '<img class="coin-icon" src="' + coin.image + '" alt="' + coin.name + '" loading="lazy">';
+      html += '<img class="coin-icon" src="/.netlify/functions/crypto-image?url=' + encodeURIComponent(coin.image) + '" alt="' + coin.name + '" loading="lazy" onerror="this.onerror=null;this.src=\'/assets/img/logo-mark.svg\'">';
       html += '<div><span class="coin-symbol">' + coin.symbol.toUpperCase() + '</span><br><span class="coin-name-sub">' + coin.name + '</span></div>';
       html += '</div></td>';
       html += '<td style="font-weight:700">' + CryptoData.formatPrice(coin.current_price, currency) + '</td>';
