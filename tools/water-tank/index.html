@@ -12,9 +12,17 @@
 <meta property="og:title" content="Water Tank Size Calculator | AfroTools">
 <meta property="og:description" content="What size water tank does your household need? Calculate by family size and usage.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
-<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/water-tank/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/water-tank/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Water Tank Size Calculator | AfroTools">
+<meta name="twitter:description" content="Size your water tank. African brands, pump sizing, pipe recommendation, rainwater harvesting.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Engineering Tools","item":"https://afrotools.com/engineering/"},{"@type":"ListItem","position":3,"name":"Water Tank Calculator","item":"https://afrotools.com/tools/water-tank/"}]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
 <link rel="stylesheet" href="/assets/css/global.min.css">
 <script src="/assets/js/components/navbar.min.js" defer></script>
@@ -123,6 +131,32 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <label style="display:flex;align-items:center;gap:6px;font-size:.78rem;color:#475569;cursor:pointer"><input type="checkbox" id="laundry" value="40"> Heavy Laundry</label>
 <label style="display:flex;align-items:center;gap:6px;font-size:.78rem;color:#475569;cursor:pointer"><input type="checkbox" id="cooking" value="20"> Large Kitchen</label>
 </div>
+<div class="row" style="margin-top:14px">
+<div><label>Country (for tank pricing)</label>
+<select id="country">
+<option value="NG" selected>Nigeria</option>
+<option value="KE">Kenya</option>
+<option value="ZA">South Africa</option>
+<option value="GH">Ghana</option>
+</select></div>
+<div><label>Tank Position</label>
+<select id="tankPosition">
+<option value="elevated">Elevated Stand (gravity-fed)</option>
+<option value="ground" selected>Ground Level (needs pump)</option>
+<option value="underground">Underground</option>
+</select></div>
+</div>
+<div class="row" style="margin-top:14px">
+<div><label>Rainwater Harvesting?</label>
+<select id="rainwater">
+<option value="no" selected>No</option>
+<option value="yes">Yes — calculate roof catchment</option>
+</select></div>
+<div id="rainFields" style="display:none">
+<label>Roof Area (m²)</label>
+<input type="number" id="roofArea" value="100" min="10" placeholder="100">
+</div>
+</div>
 <button class="btn btn-primary" onclick="calculate()">Calculate Tank Size</button>
 </div></div>
 
@@ -134,6 +168,24 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div style="text-align:center"><div class="tank-viz" id="tankViz"></div><div class="tank-label" id="tankLabel"></div></div>
 <h4 style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--afro-dark);margin-top:18px">Standard Tank Options</h4>
 <div class="tank-options" id="tankOptions"></div>
+
+<div id="pumpSection" style="display:none;margin-top:14px;padding:14px;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:8px">
+<h4 style="font-size:.78rem;font-weight:700;color:#1E40AF;margin-bottom:6px">Pump & Pipe Recommendation</h4>
+<div id="pumpText" style="font-size:.82rem;color:#475569;line-height:1.6"></div>
+</div>
+
+<div id="priceSection" style="display:none;margin-top:14px;padding:14px;background:#ECFDF5;border:1px solid #A7F3D0;border-radius:8px">
+<h4 style="font-size:.78rem;font-weight:700;color:#065F46;margin-bottom:6px">Estimated Tank Cost</h4>
+<div id="priceText" style="font-size:.82rem;color:#475569;line-height:1.6"></div>
+</div>
+
+<div id="rainSection" style="display:none;margin-top:14px;padding:14px;background:#FFFBEB;border:1px solid #FDE68A;border-radius:8px">
+<h4 style="font-size:.78rem;font-weight:700;color:#92400E;margin-bottom:6px">Rainwater Harvesting Potential</h4>
+<div id="rainText" style="font-size:.82rem;color:#475569;line-height:1.6"></div>
+</div>
+
+<div id="multiTankNote" style="display:none;margin-top:14px;padding:14px;background:#FEF2F2;border:1px solid #FECACA;border-radius:8px;font-size:.82rem;color:#991B1B;line-height:1.5"></div>
+
 </div></div>
 </div>
 
@@ -196,6 +248,22 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 const STANDARD_TANKS = [500, 750, 1000, 1500, 2000, 3000, 5000, 10000];
 const USAGE_BY_TYPE = { flat: 120, bungalow: 150, duplex: 150, compound: 130, office: 50, school: 30 };
 
+// Tank prices (approximate, local currency)
+var TANK_PRICES = {
+  NG: {sym:'\u20A6', 500:35000, 750:50000, 1000:65000, 1500:90000, 2000:120000, 3000:180000, 5000:280000, 10000:500000},
+  KE: {sym:'KSh ', 500:5000, 750:7000, 1000:9000, 1500:13000, 2000:17000, 3000:25000, 5000:40000, 10000:75000},
+  ZA: {sym:'R', 500:1200, 750:1600, 1000:2100, 1500:3000, 2000:3800, 3000:5500, 5000:8500, 10000:15000},
+  GH: {sym:'GHS ', 500:400, 750:550, 1000:700, 1500:1000, 2000:1300, 3000:1900, 5000:3000, 10000:5500}
+};
+
+// Rainfall data (mm/year approximate)
+var RAINFALL = {lagos:1500,abuja:1200,nairobi:900,mombasa:1100,joburg:700,capetown:500,accra:800,kumasi:1400,dar:1100,cairo:25};
+
+// Show/hide rain fields
+document.getElementById('rainwater').addEventListener('change', function(){
+  document.getElementById('rainFields').style.display = this.value==='yes'?'':'none';
+});
+
 function calculate() {
   const people = +document.getElementById('people').value;
   const type = document.getElementById('propertyType').value;
@@ -242,6 +310,60 @@ function calculate() {
     opts += `<div class="tank-opt${active}"><div class="size">${s >= 1000 ? (s/1000) + ',000' : s}L</div><div class="desc">${days} days backup</div></div>`;
   });
   document.getElementById('tankOptions').innerHTML = opts;
+
+  // ── Pump & Pipe ──
+  var pos = document.getElementById('tankPosition').value;
+  var pumpText = '';
+  if (pos === 'ground') {
+    var pumpHP = dailyTotal <= 1000 ? '0.5 HP' : dailyTotal <= 2000 ? '0.75 HP' : dailyTotal <= 5000 ? '1.0 HP' : '1.5 HP';
+    var pipeSize = dailyTotal <= 1000 ? '\u00BD inch (15mm)' : dailyTotal <= 3000 ? '\u00BE inch (20mm)' : '1 inch (25mm)';
+    pumpText = '<strong>Pump:</strong> ' + pumpHP + ' surface or submersible pump (flow rate ~30-50 L/min)<br>' +
+      '<strong>Pipe:</strong> ' + pipeSize + ' PPR or HDPE from tank to building<br>' +
+      '<strong>Note:</strong> Ground-level tanks need a pump to push water to overhead distribution. Consider a pressure tank for consistent pressure.';
+  } else if (pos === 'elevated') {
+    pumpText = '<strong>Pump:</strong> Not required (gravity-fed at ~0.1 bar per metre of height)<br>' +
+      '<strong>Pipe:</strong> \u00BE inch (20mm) PPR from tank to building<br>' +
+      '<strong>Stand height:</strong> Minimum 3m for adequate shower pressure. 5m+ recommended for multi-storey.';
+  } else {
+    pumpText = '<strong>Pump:</strong> 0.75-1.5 HP submersible or transfer pump required<br>' +
+      '<strong>Note:</strong> Underground tanks protect water from heat and theft but need pumping to any point of use.';
+  }
+  document.getElementById('pumpText').innerHTML = pumpText;
+  document.getElementById('pumpSection').style.display = '';
+
+  // ── Tank Pricing ──
+  var country = document.getElementById('country').value;
+  var prices = TANK_PRICES[country];
+  if (prices && prices[recTank]) {
+    document.getElementById('priceText').innerHTML = '<strong>' + recTank.toLocaleString() + 'L tank:</strong> ' + prices.sym + prices[recTank].toLocaleString() + ' (approximate)<br>' +
+      '<span style="font-size:.72rem;color:#94a3b8">Brands: ' + (country==='NG'?'Geepee, Sintex, Polytank, Roto':country==='KE'?'Roto, Kentank, Jumbo, Toptank':country==='ZA'?'JoJo, Nel, Ecotank':'Polytank, Duraplast') + '. Prices vary by brand and location.</span>';
+    document.getElementById('priceSection').style.display = '';
+  }
+
+  // ── Multiple tank suggestion ──
+  if (recTank > 10000 || totalNeeded > 10000) {
+    var numTanks = Math.ceil(totalNeeded / 5000);
+    document.getElementById('multiTankNote').innerHTML = '<strong>Multiple tanks recommended:</strong> Your storage need of ' + totalNeeded.toLocaleString() + 'L exceeds standard single-tank sizes. Consider ' + numTanks + ' × 5,000L tanks instead. This also provides redundancy — one tank can be cleaned while others remain in service.';
+    document.getElementById('multiTankNote').style.display = '';
+  } else {
+    document.getElementById('multiTankNote').style.display = 'none';
+  }
+
+  // ── Rainwater Harvesting ──
+  if (document.getElementById('rainwater').value === 'yes') {
+    var roofArea = parseFloat(document.getElementById('roofArea').value) || 100;
+    var rainfall = 1000; // default mm/year
+    var catchmentLitres = Math.round(roofArea * (rainfall / 1000) * 0.8 * 1000); // 80% efficiency
+    var monthlyRain = Math.round(catchmentLitres / 12);
+    var pctCovered = Math.min(100, Math.round((monthlyRain / (dailyTotal * 30)) * 100));
+    document.getElementById('rainText').innerHTML = '<strong>Annual catchment:</strong> ' + catchmentLitres.toLocaleString() + ' litres/year (~' + monthlyRain.toLocaleString() + ' L/month)<br>' +
+      '<strong>Roof area:</strong> ' + roofArea + ' m² × ~1,000mm average rainfall × 80% efficiency<br>' +
+      '<strong>Coverage:</strong> Rainwater could supply ~' + pctCovered + '% of your monthly water need.<br>' +
+      '<span style="font-size:.72rem;color:#94a3b8">Actual catchment depends on local rainfall. Install first-flush diverter and filters for best water quality.</span>';
+    document.getElementById('rainSection').style.display = '';
+  } else {
+    document.getElementById('rainSection').style.display = 'none';
+  }
 
   document.getElementById('resultCard').style.display = 'block';
   document.getElementById('resultCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
