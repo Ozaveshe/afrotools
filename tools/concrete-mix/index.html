@@ -5,14 +5,19 @@
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'concrete-mix'});</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Concrete Mix Calculator — Cement, Sand & Gravel Quantities | AfroTools</title>
-<meta name="description" content="Calculate cement bags, sand, and gravel needed for your concrete project. Supports common mix ratios (1:2:4, 1:3:6). Bags of Dangote, BUA, Lafarge cement.">
+<title>Concrete Mix Calculator — Cement, Sand, Gravel | AfroTools</title>
+<meta name="description" content="Calculate cement bags, sand, gravel for M5-M30 concrete. Volume helpers for slabs, columns, beams, footings. African cement brand prices (Dangote, BUA, PPC). Free.">
 <link rel="canonical" href="https://afrotools.com/tools/concrete-mix/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Concrete Mix Calculator | AfroTools">
-<meta property="og:description" content="Cement bags, sand, gravel needed. Common African mix ratios.">
+<meta property="og:description" content="Cement, sand, gravel for M5-M30 concrete. Slab/column/beam helpers. African cement prices.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
-<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/concrete-mix/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/concrete-mix/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Concrete Mix Calculator | AfroTools">
+<meta name="twitter:description" content="Cement bags, sand, gravel for M5-M30. African cement brand prices.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
@@ -20,56 +25,83 @@
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
 <style>
-:root{--afro-blue:var(--color-primary);--afro-dark:#0f1419;--stone:#78716c}
-.tool-hero{background:linear-gradient(135deg,#44403c 0%,#78716c 100%);padding:44px 0 36px;overflow:hidden}
+:root{--accent:#007AFF;--accent-dark:#0059B3;--green:#008751;--dark:#0f1419;--bg:#f8fafc;--card:#fff;--border:#e2e8f0;--muted:#64748b}
+.tool-hero{background:linear-gradient(135deg,#0A1628 0%,#1e3a5f 100%);padding:44px 0 36px;overflow:hidden}
 .tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
 .breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
-.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#d6d3d1}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#4DA3FF}
 h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
-h1 em{color:#fbbf24;font-style:normal}
+h1 em{color:#4DA3FF;font-style:normal}
 .hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
 .hero-badges{display:flex;flex-wrap:wrap;gap:7px}
 .badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
-.b-stone{background:rgba(214,211,209,.2);color:#d6d3d1;border:1px solid rgba(214,211,209,.4)}
+.b-blue{background:rgba(77,163,255,.2);color:#4DA3FF;border:1px solid rgba(77,163,255,.4)}
 .tool-main{padding:28px 0 72px}
 .tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
-.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
 .card+.card{margin-top:18px}
 .card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
-.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dark)}
 .card-body{padding:22px}
 .field{margin-bottom:16px}
-.f-label{font-size:.75rem;font-weight:700;color:var(--afro-dark);margin-bottom:6px;display:block}
-.f-input,.f-select{width:100%;padding:11px 13px;background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:7px;font-size:1rem;font-weight:600;color:var(--afro-dark);outline:none;font-family:'DM Sans',sans-serif;box-sizing:border-box}
-.f-input:focus,.f-select:focus{border-color:#78716c;box-shadow:0 0 0 3px rgba(120,113,108,.12)}
+.f-label{font-size:.75rem;font-weight:700;color:var(--dark);margin-bottom:6px;display:block}
+.f-hint{font-size:.7rem;color:var(--muted);margin-top:2px}
+.f-input,.f-select{width:100%;padding:11px 13px;background:var(--bg);border:1.5px solid #cbd5e1;border-radius:7px;font-size:1rem;font-weight:600;color:var(--dark);outline:none;font-family:'DM Sans',sans-serif;box-sizing:border-box}
+.f-input:focus,.f-select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,122,255,.12)}
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .field-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
-.calc-btn{width:100%;padding:13px;background:#78716c;color:#fff;border:none;border-radius:8px;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .18s;font-family:'DM Sans',sans-serif}
-.calc-btn:hover{background:#57534e;transform:translateY(-1px)}
+.field-row-4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px}
+.calc-btn{width:100%;padding:13px;background:var(--accent);color:#fff;border:none;border-radius:980px;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .18s;font-family:'DM Sans',sans-serif}
+.calc-btn:hover{background:var(--accent-dark);transform:translateY(-1px)}
+.reset-btn{width:100%;padding:10px;background:transparent;color:var(--muted);border:1.5px solid var(--border);border-radius:980px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:8px}
 #results{display:none}
 .result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
-.result-box{background:#fafaf9;border:1px solid #e7e5e4;border-radius:8px;padding:18px;text-align:center}
+.result-box{background:#EFF6FF;border:1px solid #BFDBFE;border-radius:8px;padding:18px;text-align:center}
 .result-box.wide{grid-column:1/-1}
+.result-box.green{background:#ECFDF5;border-color:#A7F3D0}
 .r-icon{font-size:2rem;margin-bottom:6px}
-.r-label{font-size:.68rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#64748b;margin-bottom:4px}
-.r-value{font-size:1.4rem;font-weight:800;color:var(--afro-dark)}
+.r-label{font-size:.68rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.r-value{font-size:1.4rem;font-weight:800;color:var(--dark)}
 .r-sub{font-size:.72rem;color:#94a3b8;margin-top:2px}
+.cost-table{width:100%;border-collapse:collapse;margin-top:14px;font-size:.82rem}
+.cost-table th{text-align:left;font-size:.7rem;font-weight:700;color:var(--muted);text-transform:uppercase;padding:6px 8px;border-bottom:1px solid var(--border)}
+.cost-table td{padding:6px 8px;border-bottom:1px solid #f1f5f9}
+.cost-table .num{text-align:right;font-weight:700}
+.cost-total{font-weight:800;color:var(--accent)}
+.curing-note{margin-top:14px;padding:12px 16px;background:#FEF3C7;border:1px solid #FDE68A;border-radius:8px;font-size:.8rem;color:#92400E;line-height:1.5}
+.rebar-note{margin-top:10px;padding:12px 16px;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:8px;font-size:.8rem;color:#1E40AF;line-height:1.5}
 .sidebar .card-body{font-size:.82rem;color:#475569;line-height:1.7}
 .mix-table{width:100%;border-collapse:collapse;margin:10px 0}
 .mix-table td{padding:6px 8px;border-bottom:1px solid #f1f5f9;font-size:.78rem}
-.mix-table td:first-child{font-weight:600;color:var(--afro-dark)}
+.mix-table td:first-child{font-weight:700;color:var(--dark)}
+.mix-table td:nth-child(2){font-weight:600;color:var(--accent);font-size:.72rem}
+.price-table{width:100%;border-collapse:collapse;margin:8px 0}
+.price-table td{padding:5px 6px;border-bottom:1px solid #f1f5f9;font-size:.78rem}
+.price-table td:first-child{font-weight:600;color:var(--dark)}
+.price-table td:last-child{font-weight:700;color:var(--accent);text-align:right}
 .seo-content{max-width:800px;margin:0 auto;padding:48px 24px}
-.seo-content h2{font-size:1.4rem;font-weight:800;color:var(--afro-dark);margin:32px 0 12px}
+.seo-content h2{font-size:1.4rem;font-weight:800;color:var(--dark);margin:32px 0 12px}
+.seo-content h3{font-size:1.1rem;font-weight:700;color:var(--dark);margin:24px 0 8px}
 .seo-content p,.seo-content li{font-size:.92rem;color:#475569;line-height:1.8}
 .seo-content ul{padding-left:20px}
-.faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:10px;overflow:hidden}
-.faq summary{padding:14px 18px;font-weight:700;font-size:.88rem;cursor:pointer;background:#f8fafc;color:var(--afro-dark)}
-.faq details[open] summary{border-bottom:1px solid #e2e8f0}
+.faq details{border:1px solid var(--border);border-radius:8px;margin-bottom:10px;overflow:hidden}
+.faq summary{padding:14px 18px;font-weight:700;font-size:.88rem;cursor:pointer;background:#f8fafc;color:var(--dark)}
+.faq details[open] summary{border-bottom:1px solid var(--border)}
 .faq details div{padding:14px 18px;font-size:.85rem;color:#475569;line-height:1.7}
-@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.result-grid{grid-template-columns:1fr 1fr 1fr}.field-row-3{grid-template-columns:1fr 1fr 1fr}}
+.related-section{max-width:1200px;margin:0 auto;padding:0 24px 60px}
+.related-section h2{font-size:1.2rem;font-weight:800;color:var(--dark);margin-bottom:16px}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.related-card{display:block;padding:18px;background:var(--card);border:1px solid var(--border);border-radius:10px;text-decoration:none;color:inherit;transition:.15s}
+.related-card:hover{border-color:var(--accent);box-shadow:0 2px 12px rgba(0,122,255,.1)}
+.related-card .rc-name{font-weight:700;font-size:.9rem;color:var(--dark);margin-bottom:4px}
+.related-card .rc-desc{font-size:.78rem;color:var(--muted);line-height:1.5}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.result-grid{grid-template-columns:1fr 1fr 1fr}.field-row-3,.field-row-4{grid-template-columns:1fr 1fr}}
 </style>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"Concrete Mix Calculator","url":"https://afrotools.com/tools/concrete-mix/","description":"Calculate cement, sand, and gravel quantities for concrete projects using common African mix ratios.","applicationCategory":"UtilitiesApplication","operatingSystem":"All","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
+{"@context":"https://schema.org","@type":"WebApplication","name":"Concrete Mix Calculator","url":"https://afrotools.com/tools/concrete-mix/","description":"Calculate cement, sand, and gravel for M5-M30 concrete grades. Volume helpers for slabs, columns, beams, footings. African cement brand pricing.","applicationCategory":"UtilitiesApplication","operatingSystem":"All","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Engineering Tools","item":"https://afrotools.com/engineering/"},{"@type":"ListItem","position":3,"name":"Concrete Mix Calculator","item":"https://afrotools.com/tools/concrete-mix/"}]}
 </script>
 <script src="/assets/js/lib/toast.js" defer></script>
 <script src="/assets/js/afro-history.js" defer></script>
@@ -80,198 +112,401 @@ h1 em{color:#fbbf24;font-style:normal}
 <body>
 <afro-navbar></afro-navbar>
 <section class="tool-hero"><div class="tool-hero-inner">
-<div class="breadcrumb"><a href="/">Home</a> / <a href="/categories/engineering/">Engineering</a> / <span>Concrete Mix</span></div>
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/engineering/">Engineering</a> / <span>Concrete Mix</span></div>
 <h1>Concrete Mix <em>Calculator</em></h1>
-<p class="hero-sub">Calculate how many bags of cement, wheelbarrows of sand, and gravel you need. Common African construction mix ratios included.</p>
-<div class="hero-badges"><span class="badge b-stone">Mix Ratios</span><span class="badge b-stone">Cement Bags</span><span class="badge b-stone">Wheelbarrows</span></div>
+<p class="hero-sub">Calculate cement bags, sand, and gravel for any mix grade from M5 to M30. Volume helpers for slabs, columns, beams, and footings. African cement brand prices included.</p>
+<div class="hero-badges"><span class="badge b-blue">M5 to M30</span><span class="badge b-blue">Shape Presets</span><span class="badge b-blue">Cost Estimate</span><span class="badge b-blue">African Brands</span></div>
 </div></section>
 
 <section class="tool-main"><div class="tool-main-inner">
 <div class="calc-area">
-<div class="card"><div class="card-head"><span class="card-title">Project Details</span></div>
+
+<div class="card"><div class="card-head"><span class="card-title">Mix Grade & Volume</span></div>
 <div class="card-body">
-<div class="field"><label class="f-label">Project Type</label>
-<select id="project" class="f-select" onchange="updateRatio()">
-<option value="slab">Floor Slab / Foundation</option>
-<option value="column">Columns & Beams</option>
-<option value="block">Block Laying / Mortar</option>
-<option value="plaster">Plastering / Rendering</option>
-<option value="custom">Custom</option>
+
+<div class="field"><label class="f-label" for="grade">Concrete Grade</label>
+<select id="grade" class="f-select" onchange="updateGrade()">
+<option value="M5" data-ratio="1:5:10" data-wc="0.60">M5 (1:5:10) — Lean concrete, bedding</option>
+<option value="M7.5" data-ratio="1:4:8" data-wc="0.55">M7.5 (1:4:8) — PCC, levelling</option>
+<option value="M10" data-ratio="1:3:6" data-wc="0.55">M10 (1:3:6) — PCC foundations</option>
+<option value="M15" data-ratio="1:2:4" data-wc="0.50" selected>M15 (1:2:4) — General construction, floors</option>
+<option value="M20" data-ratio="1:1.5:3" data-wc="0.45">M20 (1:1.5:3) — RCC slabs, beams</option>
+<option value="M25" data-ratio="1:1:2" data-wc="0.44">M25 (1:1:2) — RCC columns, heavy structures</option>
+<option value="M30" data-ratio="1:0.75:1.5" data-wc="0.40">M30 (1:0.75:1.5) — Special structures</option>
+<option value="mortar4" data-ratio="1:4:0" data-wc="0.50">Mortar 1:4 — Block laying</option>
+<option value="mortar6" data-ratio="1:6:0" data-wc="0.55">Mortar 1:6 — Plastering</option>
+<option value="custom" data-ratio="1:2:4" data-wc="0.50">Custom Ratio</option>
 </select></div>
-<div class="field"><label class="f-label">Mix Ratio (Cement : Sand : Aggregate)</label>
-<select id="ratio" class="f-select">
-<option value="1:2:4">1:2:4 (Standard structural — slabs, beams)</option>
-<option value="1:1.5:3">1:1.5:3 (High strength — columns, lintels)</option>
-<option value="1:3:6">1:3:6 (Lean mix — mass concrete, blinding)</option>
-<option value="1:4:0">1:4 (Mortar — block laying)</option>
-<option value="1:6:0">1:6 (Plastering mortar)</option>
-</select></div>
-<div class="field"><label class="f-label">Dimensions</label></div>
-<div class="field-row-3">
-<div class="field"><label class="f-label">Length (m)</label><input type="number" id="length" class="f-input" placeholder="6" step="0.1" min="0"></div>
-<div class="field"><label class="f-label">Width (m)</label><input type="number" id="width" class="f-input" placeholder="4" step="0.1" min="0"></div>
-<div class="field"><label class="f-label">Depth/Thickness (m)</label><input type="number" id="depth" class="f-input" placeholder="0.15" step="0.01" min="0" value="0.15"></div>
+
+<div id="customRatioRow" style="display:none" class="field-row-3">
+<div class="field"><label class="f-label" for="cRatio1">Cement</label><input type="number" id="cRatio1" class="f-input" value="1" min="0.1" step="0.1"></div>
+<div class="field"><label class="f-label" for="cRatio2">Sand</label><input type="number" id="cRatio2" class="f-input" value="2" min="0" step="0.1"></div>
+<div class="field"><label class="f-label" for="cRatio3">Aggregate</label><input type="number" id="cRatio3" class="f-input" value="4" min="0" step="0.1"></div>
 </div>
-<div class="field"><label class="f-label">Cement Bag Size</label>
+
+<div class="field"><label class="f-label" for="shape">Volume Input Method</label>
+<select id="shape" class="f-select" onchange="toggleShape()">
+<option value="slab">Slab — Length x Width x Thickness</option>
+<option value="column">Column — Width x Depth x Height x Qty</option>
+<option value="beam">Beam — Width x Depth x Length x Qty</option>
+<option value="footing">Footing — Length x Width x Depth x Qty</option>
+<option value="circular">Circular — Diameter x Height</option>
+<option value="direct">Direct m³ Input</option>
+</select></div>
+
+<div id="dimSlab" class="field-row-3">
+<div class="field"><label class="f-label" for="sLen">Length (m)</label><input type="number" id="sLen" class="f-input" placeholder="6" step="0.1" min="0"></div>
+<div class="field"><label class="f-label" for="sWid">Width (m)</label><input type="number" id="sWid" class="f-input" placeholder="4" step="0.1" min="0"></div>
+<div class="field"><label class="f-label" for="sDep">Thickness (m)</label><input type="number" id="sDep" class="f-input" placeholder="0.15" step="0.01" min="0" value="0.15"></div>
+</div>
+<div id="dimColumn" style="display:none" class="field-row-4">
+<div class="field"><label class="f-label" for="cW">Width (m)</label><input type="number" id="cW" class="f-input" placeholder="0.23" step="0.01" value="0.23"></div>
+<div class="field"><label class="f-label" for="cD">Depth (m)</label><input type="number" id="cD" class="f-input" placeholder="0.23" step="0.01" value="0.23"></div>
+<div class="field"><label class="f-label" for="cH">Height (m)</label><input type="number" id="cH" class="f-input" placeholder="3" step="0.1" value="3"></div>
+<div class="field"><label class="f-label" for="cQ">Quantity</label><input type="number" id="cQ" class="f-input" value="4" min="1"></div>
+</div>
+<div id="dimBeam" style="display:none" class="field-row-4">
+<div class="field"><label class="f-label" for="bW">Width (m)</label><input type="number" id="bW" class="f-input" placeholder="0.23" step="0.01" value="0.23"></div>
+<div class="field"><label class="f-label" for="bD">Depth (m)</label><input type="number" id="bD" class="f-input" placeholder="0.45" step="0.01" value="0.45"></div>
+<div class="field"><label class="f-label" for="bL">Length (m)</label><input type="number" id="bL" class="f-input" placeholder="5" step="0.1" value="5"></div>
+<div class="field"><label class="f-label" for="bQ">Quantity</label><input type="number" id="bQ" class="f-input" value="2" min="1"></div>
+</div>
+<div id="dimFoot" style="display:none" class="field-row-4">
+<div class="field"><label class="f-label" for="fL">Length (m)</label><input type="number" id="fL" class="f-input" placeholder="1.2" step="0.1" value="1.2"></div>
+<div class="field"><label class="f-label" for="fW">Width (m)</label><input type="number" id="fW" class="f-input" placeholder="1.2" step="0.1" value="1.2"></div>
+<div class="field"><label class="f-label" for="fD">Depth (m)</label><input type="number" id="fD" class="f-input" placeholder="0.3" step="0.01" value="0.3"></div>
+<div class="field"><label class="f-label" for="fQ">Quantity</label><input type="number" id="fQ" class="f-input" value="6" min="1"></div>
+</div>
+<div id="dimCirc" style="display:none" class="field-row-3">
+<div class="field"><label class="f-label" for="ciDia">Diameter (m)</label><input type="number" id="ciDia" class="f-input" placeholder="0.3" step="0.01" value="0.3"></div>
+<div class="field"><label class="f-label" for="ciH">Height (m)</label><input type="number" id="ciH" class="f-input" placeholder="3" step="0.1" value="3"></div>
+<div class="field"><label class="f-label" for="ciQ">Quantity</label><input type="number" id="ciQ" class="f-input" value="4" min="1"></div>
+</div>
+<div id="dimDirect" style="display:none">
+<div class="field"><label class="f-label" for="directVol">Volume (m³)</label><input type="number" id="directVol" class="f-input" placeholder="3.6" step="0.1" min="0"></div>
+</div>
+
+<div class="field-row">
+<div class="field"><label class="f-label" for="bagSize">Cement Bag Size</label>
 <select id="bagSize" class="f-select">
-<option value="50" selected>50 kg (Standard - Dangote, BUA, Lafarge)</option>
+<option value="50" selected>50 kg (Standard — Dangote, BUA, PPC)</option>
 <option value="32">32 kg (Smaller bag)</option>
 <option value="25">25 kg</option>
 </select></div>
-<div class="field"><label class="f-label">Wastage Factor (%)</label>
+<div class="field"><label class="f-label" for="wastage">Wastage Factor</label>
 <select id="wastage" class="f-select">
-<option value="5">5% (Experienced workers)</option>
+<option value="5">5% (Experienced)</option>
 <option value="10" selected>10% (Standard)</option>
-<option value="15">15% (First-time / complex shapes)</option>
+<option value="15">15% (Complex shapes)</option>
 </select></div>
+</div>
+
+<div class="field"><label class="f-label" for="country">Country (for cost estimate)</label>
+<select id="country" class="f-select">
+<option value="NG">Nigeria</option>
+<option value="KE">Kenya</option>
+<option value="ZA">South Africa</option>
+<option value="GH">Ghana</option>
+<option value="none">Skip cost estimate</option>
+</select></div>
+
 <button class="calc-btn" onclick="calculate()">Calculate Materials</button>
+<button class="reset-btn" onclick="resetCalc()">Reset</button>
 </div></div>
 
+<!-- RESULTS -->
 <div class="card" id="results">
 <div class="card-head"><span class="card-title">Materials Needed</span></div>
 <div class="card-body">
 <div class="result-grid">
 <div class="result-box"><div class="r-icon">🧱</div><div class="r-label">Cement</div><div class="r-value" id="rCement">--</div><div class="r-sub" id="rCementKg">--</div></div>
 <div class="result-box"><div class="r-icon">🏖️</div><div class="r-label">Sand</div><div class="r-value" id="rSand">--</div><div class="r-sub" id="rSandTrips">--</div></div>
-<div class="result-box"><div class="r-icon">🪨</div><div class="r-label">Aggregate/Gravel</div><div class="r-value" id="rGravel">--</div><div class="r-sub" id="rGravelTrips">--</div></div>
+<div class="result-box"><div class="r-icon">🪨</div><div class="r-label">Aggregate</div><div class="r-value" id="rGravel">--</div><div class="r-sub" id="rGravelTrips">--</div></div>
 </div>
-<div class="result-grid" style="margin-top:12px;grid-template-columns:1fr 1fr">
+<div class="result-grid" style="margin-top:12px;grid-template-columns:1fr 1fr 1fr">
 <div class="result-box"><div class="r-label">Wet Volume</div><div class="r-value" id="rVolume">--</div></div>
-<div class="result-box"><div class="r-label">Water (approx)</div><div class="r-value" id="rWater">--</div></div>
-</div>
-</div></div>
+<div class="result-box"><div class="r-label">Dry Volume (×1.54)</div><div class="r-value" id="rDryVol">--</div></div>
+<div class="result-box"><div class="r-label">Water (W/C: <span id="rWC">0.50</span>)</div><div class="r-value" id="rWater">--</div></div>
 </div>
 
+<!-- Cost breakdown -->
+<div id="costSection" style="display:none">
+<table class="cost-table">
+<thead><tr><th>Item</th><th>Qty</th><th class="num">Unit Price</th><th class="num">Total</th></tr></thead>
+<tbody id="costBody"></tbody>
+<tfoot><tr style="border-top:2px solid #111"><td colspan="3" style="font-weight:800">Estimated Material Cost</td><td class="num cost-total" id="costTotal">--</td></tr></tfoot>
+</table>
+<div style="font-size:.72rem;color:#94a3b8;margin-top:4px">Prices are indicative. Labour, transport, and formwork not included. Prices change — always verify locally.</div>
+</div>
+
+<div class="curing-note" id="curingNote" style="display:none">
+<strong>Curing required:</strong> <span id="curingText"></span>
+</div>
+<div class="rebar-note" id="rebarNote" style="display:none">
+<strong>Reinforcement needed:</strong> M20+ grades require steel reinforcement. Use our <a href="/tools/rebar-calculator/" style="color:#1E40AF;font-weight:700">Rebar Calculator</a> to determine bar sizes and quantities.
+</div>
+
+<div style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
+<button onclick="window.print()" style="padding:8px 16px;border-radius:980px;border:1px solid #e2e8f0;background:#fff;font-weight:700;font-size:.82rem;cursor:pointer;font-family:'DM Sans',sans-serif">Print</button>
+<button onclick="shareResult()" style="padding:8px 16px;border-radius:980px;border:1px solid #e2e8f0;background:#fff;font-weight:700;font-size:.82rem;cursor:pointer;font-family:'DM Sans',sans-serif">Share</button>
+</div>
+</div></div>
+
+</div>
+
+<!-- SIDEBAR -->
 <div class="sidebar">
-<div class="card"><div class="card-head"><span class="card-title">Common Mix Ratios</span></div>
+<div class="card"><div class="card-head"><span class="card-title">Mix Grade Reference</span></div>
 <div class="card-body">
 <table class="mix-table">
-<tr><td>1:1.5:3</td><td>High strength (columns, beams, lintels)</td></tr>
-<tr><td>1:2:4</td><td>Standard (slabs, foundations, walls)</td></tr>
-<tr><td>1:3:6</td><td>Lean/mass (blinding, non-structural)</td></tr>
-<tr><td>1:4</td><td>Block-laying mortar</td></tr>
-<tr><td>1:6</td><td>Plastering / rendering</td></tr>
+<tr><td>M5 (1:5:10)</td><td>5 N/mm²</td><td>Bedding, lean</td></tr>
+<tr><td>M7.5 (1:4:8)</td><td>7.5 N/mm²</td><td>PCC, levelling</td></tr>
+<tr><td>M10 (1:3:6)</td><td>10 N/mm²</td><td>Foundations</td></tr>
+<tr><td>M15 (1:2:4)</td><td>15 N/mm²</td><td>Floors, general</td></tr>
+<tr><td>M20 (1:1.5:3)</td><td>20 N/mm²</td><td>RCC slabs, beams</td></tr>
+<tr><td>M25 (1:1:2)</td><td>25 N/mm²</td><td>Columns, heavy</td></tr>
+<tr><td>M30</td><td>30 N/mm²</td><td>Special structures</td></tr>
+</table>
+<p style="font-size:.72rem;color:#94a3b8;margin-top:8px">N/mm² = characteristic compressive strength at 28 days. Higher grade = more cement per m³ = higher cost.</p>
+</div></div>
+
+<div class="card"><div class="card-head"><span class="card-title">Cement Prices (Indicative)</span></div>
+<div class="card-body">
+<p style="font-size:.72rem;color:#94a3b8;margin-bottom:8px">Per 50kg bag. Prices fluctuate — always verify.</p>
+<h4 style="font-size:.78rem;font-weight:700;margin:8px 0 4px">Nigeria</h4>
+<table class="price-table">
+<tr><td>Dangote</td><td>&#8358;6,500</td></tr>
+<tr><td>BUA</td><td>&#8358;5,800</td></tr>
+<tr><td>Lafarge</td><td>&#8358;6,200</td></tr>
+<tr><td>ARM</td><td>&#8358;5,500</td></tr>
+</table>
+<h4 style="font-size:.78rem;font-weight:700;margin:8px 0 4px">Kenya</h4>
+<table class="price-table">
+<tr><td>Bamburi</td><td>KSh 850</td></tr>
+<tr><td>Savanna</td><td>KSh 800</td></tr>
+<tr><td>National</td><td>KSh 780</td></tr>
+</table>
+<h4 style="font-size:.78rem;font-weight:700;margin:8px 0 4px">South Africa</h4>
+<table class="price-table">
+<tr><td>PPC</td><td>R95</td></tr>
+<tr><td>AfriSam</td><td>R90</td></tr>
+<tr><td>Natal Portland</td><td>R92</td></tr>
+</table>
+<h4 style="font-size:.78rem;font-weight:700;margin:8px 0 4px">Ghana</h4>
+<table class="price-table">
+<tr><td>Diamond</td><td>GHS 85</td></tr>
+<tr><td>GHACEM</td><td>GHS 82</td></tr>
 </table>
 </div></div>
-<div class="card"><div class="card-head"><span class="card-title">Cement Brands in Africa</span></div>
+
+<div class="card"><div class="card-head"><span class="card-title">Key Facts</span></div>
 <div class="card-body">
-<p><strong>Dangote Cement:</strong> Africa's largest. 50kg bags. Available across NG, GH, KE, TZ, SA, and 10+ countries.</p>
-<p style="margin-top:6px"><strong>BUA Cement:</strong> Nigeria. 50kg bags. Competitive pricing.</p>
-<p style="margin-top:6px"><strong>Lafarge Africa:</strong> Part of Holcim group. NG, ZA, KE.</p>
-<p style="margin-top:6px"><strong>ARM Cement:</strong> East Africa. Kenya, Tanzania.</p>
-<p style="margin-top:6px"><strong>PPC Cement:</strong> Southern Africa leader.</p>
-<p style="margin-top:10px;font-size:.75rem;color:#94a3b8">Standard bag: 50kg. 1 bag = ~0.035 m&sup3; of cement. Always use fresh cement — avoid lumpy or expired bags.</p>
+<p><strong>1 bag cement (50kg):</strong> ~0.035 m³</p>
+<p style="margin-top:4px"><strong>1 wheelbarrow sand:</strong> ~0.065 m³</p>
+<p style="margin-top:4px"><strong>1 tipper load (5-ton):</strong> ~3.8 m³</p>
+<p style="margin-top:4px"><strong>Dry volume factor:</strong> ×1.54 (concrete shrinks during mixing — dry materials take 54% more volume than final wet concrete)</p>
+<p style="margin-top:4px"><strong>Cement density:</strong> 1,440 kg/m³</p>
+<p style="margin-top:4px"><strong>Sand density:</strong> 1,600 kg/m³</p>
+<p style="margin-top:4px"><strong>Gravel density:</strong> 1,750 kg/m³</p>
 </div></div>
 </div>
 </div></section>
 
+<!-- SEO -->
 <section class="seo-content">
-<h2>How to Calculate Concrete Materials</h2>
-<p>Whether you're casting a floor slab in Lagos, building a column in Nairobi, or laying blocks in Accra, getting the right quantities of cement, sand, and aggregate saves money and ensures structural integrity. This calculator uses standard volumetric ratios used across African construction to determine exact quantities.</p>
+<h2>How to Calculate Concrete Mix Materials in Africa</h2>
+<p>Getting concrete quantities right is critical for any construction project. Too little cement means weak concrete that fails under load. Too much is wasteful and expensive. This calculator uses standard volumetric mix ratios from M5 through M30 — the grades most commonly used across African construction — to determine exact quantities of cement, sand, and aggregate for your project.</p>
 
-<h2>Understanding Mix Ratios</h2>
-<p>A mix ratio of 1:2:4 means 1 part cement, 2 parts sand, and 4 parts aggregate by volume. The total parts are 7, so cement constitutes 1/7th of the dry volume. Since dry materials compact when mixed with water, we apply a bulking factor of 1.54 (the dry volume is about 54% more than the wet/final volume) to calculate actual materials needed.</p>
+<h3>Understanding Concrete Grades</h3>
+<p>Concrete grades are classified by their characteristic compressive strength at 28 days, measured in N/mm² (Newtons per square millimetre). M15 (1:2:4) is the most widely used grade in African residential construction — suitable for floor slabs, strip foundations, and general structural work. M20 (1:1.5:3) is required for reinforced concrete (RCC) elements like suspended slabs, beams, and columns. M25 and above are used for high-rise buildings, bridges, and structures bearing heavy loads.</p>
 
-<h2>Key Measurements</h2>
-<ul>
-<li><strong>1 bag of cement (50kg):</strong> Approximately 0.035 m&sup3;</li>
-<li><strong>1 wheelbarrow of sand:</strong> Approximately 0.065 m&sup3;</li>
-<li><strong>1 tipper load of sand:</strong> Approximately 3.8 m&sup3; (standard 5-ton)</li>
-<li><strong>Water-cement ratio:</strong> Typically 0.45-0.55 for workable concrete</li>
-</ul>
+<h3>The Dry Volume Factor (1.54)</h3>
+<p>When cement, sand, and gravel are mixed with water, the resulting concrete volume is less than the sum of the individual dry materials. This is because the fine particles of cement and sand fill the voids between larger aggregate particles. The industry-standard factor is 1.54 — meaning you need 54% more dry material by volume than the final wet concrete volume. This calculator applies this factor automatically.</p>
+
+<h3>Water-Cement Ratio</h3>
+<p>The water-cement ratio (W/C) directly affects concrete strength. A lower W/C ratio means stronger concrete but harder workability. For M15 concrete, a W/C ratio of 0.50 is standard. For M20, use 0.45. For M25, use 0.44. Too much water is the most common cause of weak concrete on African construction sites — workers often add extra water for easier pouring, but this dramatically reduces strength.</p>
+
+<h3>Curing in Hot African Climates</h3>
+<p>Concrete gains strength through hydration, which requires moisture. In the hot African sun, exposed concrete dries out quickly, halting the curing process and resulting in weak, cracked surfaces. Always cure concrete for a minimum of 7 days (14 days for structural elements). Cover with wet hessian sacks, plastic sheeting, or apply curing compound. Water curing in extreme heat (above 35°C) should be done 3-4 times daily. Failure to cure properly can reduce concrete strength by up to 40%.</p>
+
+<h3>African Cement Brands</h3>
+<p>Dangote Cement is Africa's largest manufacturer, producing 51 million tonnes per annum across plants in Nigeria, Ethiopia, Tanzania, South Africa, and other countries. BUA Cement and Lafarge Africa are major competitors in Nigeria. In East Africa, Bamburi Cement (part of Holcim) and ARM Cement dominate. PPC and AfriSam lead the South African market. Ghana is served by GHACEM and Diamond Cement. All produce standard Portland cement in 50kg bags — the universal unit of measurement on African construction sites.</p>
 
 <div class="faq">
 <h2>Frequently Asked Questions</h2>
-<details><summary>How many bags of cement for a 1:2:4 slab?</summary><div>For a 1:2:4 mix, you need approximately 6.5 bags of 50kg cement per cubic metre of concrete. A typical room slab of 6m x 4m x 0.15m (3.6 m&sup3;) needs about 24 bags of cement, with 10% wastage factored in.</div></details>
-<details><summary>What's the difference between 1:2:4 and 1:3:6?</summary><div>1:2:4 is stronger (about 20 N/mm&sup2;) and used for structural elements like slabs, beams, and foundations. 1:3:6 is weaker (about 10 N/mm&sup2;) and used for non-structural work like blinding, lean concrete, and mass fills. Using 1:3:6 for structural work is dangerous.</div></details>
-<details><summary>How many wheelbarrows of sand per bag of cement?</summary><div>For a 1:2:4 mix, you need approximately 2 headpans (or about 1 wheelbarrow) of sand per bag of cement. For block-laying (1:4), you need about 2 wheelbarrows of sand per bag.</div></details>
+<details><summary>How many bags of cement per cubic metre of M15 (1:2:4) concrete?</summary><div>Approximately 6.5 bags of 50kg cement per cubic metre. A typical room slab of 6m x 4m x 0.15m (3.6 m³) needs about 24 bags with 10% wastage. The exact number depends on your wastage factor and aggregate quality.</div></details>
+<details><summary>What is the difference between M15 and M20 concrete?</summary><div>M15 (1:2:4) has a strength of 15 N/mm² and is used for general construction — floors, strip foundations, and non-structural walls. M20 (1:1.5:3) is stronger at 20 N/mm² and is required for all reinforced concrete (RCC) — suspended slabs, beams, columns, and lintels. Using M15 for RCC elements is structurally inadequate.</div></details>
+<details><summary>Why does the calculator multiply volume by 1.54?</summary><div>The 1.54 factor accounts for the difference between dry and wet volumes. When you mix dry cement, sand, and gravel with water, the resulting concrete is about 35% less in volume than the total dry ingredients, because fine particles fill the voids. So you need 1.54× more dry material than the final concrete volume.</div></details>
+<details><summary>How many wheelbarrows of sand equal one tipper load?</summary><div>A standard wheelbarrow holds about 0.065 m³. A 5-ton tipper load is approximately 3.8 m³. So one tipper load equals roughly 58 wheelbarrows of sand.</div></details>
+<details><summary>Should I add more water for easier pouring?</summary><div>No — this is the most common mistake on African construction sites. Adding excess water reduces concrete strength dramatically. If workability is needed, use a plasticiser (admixture) rather than more water. The water-cement ratio should stay within the recommended range for your grade (0.40-0.55).</div></details>
+<details><summary>How long should I cure concrete?</summary><div>Minimum 7 days for general work, 14 days for structural elements like slabs and beams. In hot African climates (above 30°C), water the concrete 3-4 times daily and keep it covered with wet hessian or plastic sheets. Proper curing can improve strength by up to 40% compared to uncured concrete.</div></details>
 </div>
 </section>
 
-<afro-related-tools></afro-related-tools>
-<afro-newsletter-cta></afro-newsletter-cta>
+<section class="related-section">
+<h2>Related Engineering Tools</h2>
+<div class="related-grid">
+<a href="/tools/rebar-calculator/" class="related-card"><div class="rc-name">Rebar Calculator</div><div class="rc-desc">Bar bending schedules, cutting lengths, lap lengths, and rebar cost for African construction.</div></a>
+<a href="/tools/boq-builder/" class="related-card"><div class="rc-name">BOQ Builder</div><div class="rc-desc">Create Bills of Quantities with 11 categories, templates, and multi-currency support.</div></a>
+<a href="/tools/water-tank/" class="related-card"><div class="rc-name">Water Tank Calculator</div><div class="rc-desc">Size your water tank based on household needs and municipal supply reliability.</div></a>
+<a href="/tools/unit-converter/" class="related-card"><div class="rc-name">Unit Converter</div><div class="rc-desc">Convert between metric, imperial, and African-specific units across 20 categories.</div></a>
+</div>
+</section>
+
 <afro-footer></afro-footer>
 
 <script>
-function updateRatio(){
-  const project=document.getElementById('project').value;
-  const ratio=document.getElementById('ratio');
-  const depth=document.getElementById('depth');
-  if(project==='slab'){ratio.value='1:2:4';depth.value='0.15'}
-  else if(project==='column'){ratio.value='1:1.5:3';depth.value='0.3'}
-  else if(project==='block'){ratio.value='1:4:0';depth.value='0.015'}
-  else if(project==='plaster'){ratio.value='1:6:0';depth.value='0.015'}
+/* ── Prices per 50kg bag & per m³ sand/gravel by country ── */
+var PRICES = {
+  NG: {sym:'\u20A6', cement:6000, sand:3500, gravel:5500, sandUnit:'per m\u00B3', gravelUnit:'per m\u00B3'},
+  KE: {sym:'KSh ', cement:850, sand:2500, gravel:3500, sandUnit:'per m\u00B3', gravelUnit:'per m\u00B3'},
+  ZA: {sym:'R', cement:95, sand:400, gravel:550, sandUnit:'per m\u00B3', gravelUnit:'per m\u00B3'},
+  GH: {sym:'GHS ', cement:82, sand:350, gravel:500, sandUnit:'per m\u00B3', gravelUnit:'per m\u00B3'}
+};
+
+function updateGrade() {
+  var sel = document.getElementById('grade');
+  var opt = sel.options[sel.selectedIndex];
+  document.getElementById('customRatioRow').style.display = sel.value==='custom'?'grid':'none';
 }
 
-function calculate(){
-  const l=parseFloat(document.getElementById('length').value)||0;
-  const w=parseFloat(document.getElementById('width').value)||0;
-  const d=parseFloat(document.getElementById('depth').value)||0;
-  const bagSize=parseInt(document.getElementById('bagSize').value);
-  const wastage=1+parseInt(document.getElementById('wastage').value)/100;
-  const ratioStr=document.getElementById('ratio').value;
+function toggleShape() {
+  var shapes = ['dimSlab','dimColumn','dimBeam','dimFoot','dimCirc','dimDirect'];
+  var map = {slab:'dimSlab',column:'dimColumn',beam:'dimBeam',footing:'dimFoot',circular:'dimCirc',direct:'dimDirect'};
+  var val = document.getElementById('shape').value;
+  shapes.forEach(function(s){document.getElementById(s).style.display='none';});
+  if(map[val]) document.getElementById(map[val]).style.display='';
+}
 
-  if(l<=0||w<=0||d<=0){alert('Please enter all dimensions.');return}
+function getVolume() {
+  var shape = document.getElementById('shape').value;
+  if(shape==='slab'){
+    return (parseFloat(document.getElementById('sLen').value)||0)*(parseFloat(document.getElementById('sWid').value)||0)*(parseFloat(document.getElementById('sDep').value)||0);
+  } else if(shape==='column'){
+    return (parseFloat(document.getElementById('cW').value)||0)*(parseFloat(document.getElementById('cD').value)||0)*(parseFloat(document.getElementById('cH').value)||0)*(parseInt(document.getElementById('cQ').value)||1);
+  } else if(shape==='beam'){
+    return (parseFloat(document.getElementById('bW').value)||0)*(parseFloat(document.getElementById('bD').value)||0)*(parseFloat(document.getElementById('bL').value)||0)*(parseInt(document.getElementById('bQ').value)||1);
+  } else if(shape==='footing'){
+    return (parseFloat(document.getElementById('fL').value)||0)*(parseFloat(document.getElementById('fW').value)||0)*(parseFloat(document.getElementById('fD').value)||0)*(parseInt(document.getElementById('fQ').value)||1);
+  } else if(shape==='circular'){
+    var r = (parseFloat(document.getElementById('ciDia').value)||0)/2;
+    return Math.PI*r*r*(parseFloat(document.getElementById('ciH').value)||0)*(parseInt(document.getElementById('ciQ').value)||1);
+  } else {
+    return parseFloat(document.getElementById('directVol').value)||0;
+  }
+}
 
-  const parts=ratioStr.split(':').map(Number);
-  const cement=parts[0];
-  const sand=parts[1];
-  const agg=parts[2]||0;
-  const totalParts=cement+sand+agg;
+function getRatio() {
+  var sel = document.getElementById('grade');
+  if(sel.value==='custom'){
+    return [parseFloat(document.getElementById('cRatio1').value)||1,parseFloat(document.getElementById('cRatio2').value)||2,parseFloat(document.getElementById('cRatio3').value)||4];
+  }
+  var opt = sel.options[sel.selectedIndex];
+  return opt.dataset.ratio.split(':').map(Number);
+}
 
-  const wetVolume=l*w*d;
-  const bulkingFactor=1.54;
-  const dryVolume=wetVolume*bulkingFactor;
+function getWC() {
+  var sel = document.getElementById('grade');
+  var opt = sel.options[sel.selectedIndex];
+  return parseFloat(opt.dataset.wc)||0.50;
+}
 
-  // Cement volume
-  const cementVol=(cement/totalParts)*dryVolume;
-  const cementKg=cementVol*1440; // density of cement ~1440 kg/m3
-  const cementBags=Math.ceil((cementKg/bagSize)*wastage);
+function calculate() {
+  var wetVol = getVolume();
+  if(wetVol<=0){alert('Please enter valid dimensions.');return;}
 
-  // Sand volume
-  const sandVol=(sand/totalParts)*dryVolume*wastage;
-  const sandWheelbarrows=Math.ceil(sandVol/0.065);
-  const sandTippers=(sandVol/3.8).toFixed(1);
+  var parts = getRatio();
+  var cement = parts[0], sand = parts[1], agg = parts[2]||0;
+  var totalParts = cement + sand + agg;
+  var bagSize = parseInt(document.getElementById('bagSize').value);
+  var wastage = 1 + parseInt(document.getElementById('wastage').value)/100;
+  var wc = getWC();
+  var bulking = 1.54;
 
-  // Aggregate volume
-  const aggVol=(agg/totalParts)*dryVolume*wastage;
-  const aggWheelbarrows=Math.ceil(aggVol/0.065);
-  const aggTippers=(aggVol/3.8).toFixed(1);
+  var dryVol = wetVol * bulking;
 
-  // Water (approximate: 0.5 x cement weight)
-  const waterLitres=Math.round(cementKg*0.5);
+  // Materials
+  var cementVol = (cement/totalParts)*dryVol;
+  var cementKg = cementVol * 1440;
+  var cementBags = Math.ceil((cementKg/bagSize)*wastage);
 
-  document.getElementById('rCement').textContent=cementBags+' bags';
-  document.getElementById('rCementKg').textContent=Math.round(cementBags*bagSize)+' kg total';
-  document.getElementById('rSand').textContent=sandVol.toFixed(2)+' m\u00B3';
-  document.getElementById('rSandTrips').textContent=sandWheelbarrows+' wheelbarrows / '+sandTippers+' tipper loads';
+  var sandVol = (sand/totalParts)*dryVol*wastage;
+  var sandTonnes = sandVol*1.6;
+  var sandWB = Math.ceil(sandVol/0.065);
 
+  var aggVol = (agg/totalParts)*dryVol*wastage;
+  var aggTonnes = aggVol*1.75;
+  var aggWB = Math.ceil(aggVol/0.065);
+
+  var waterLitres = Math.round(cementKg*wc);
+
+  // Display
+  document.getElementById('rCement').textContent = cementBags + ' bags';
+  document.getElementById('rCementKg').textContent = Math.round(cementBags*bagSize) + ' kg (' + cementVol.toFixed(2) + ' m\u00B3)';
+  document.getElementById('rSand').textContent = sandVol.toFixed(2) + ' m\u00B3';
+  document.getElementById('rSandTrips').textContent = sandTonnes.toFixed(1) + ' tonnes | ' + sandWB + ' wheelbarrows';
   if(agg>0){
-    document.getElementById('rGravel').textContent=aggVol.toFixed(2)+' m\u00B3';
-    document.getElementById('rGravelTrips').textContent=aggWheelbarrows+' wheelbarrows / '+aggTippers+' tipper loads';
+    document.getElementById('rGravel').textContent = aggVol.toFixed(2) + ' m\u00B3';
+    document.getElementById('rGravelTrips').textContent = aggTonnes.toFixed(1) + ' tonnes | ' + aggWB + ' wheelbarrows';
   }else{
-    document.getElementById('rGravel').textContent='N/A';
-    document.getElementById('rGravelTrips').textContent='Not required for mortar';
+    document.getElementById('rGravel').textContent = 'N/A';
+    document.getElementById('rGravelTrips').textContent = 'Not required for mortar';
+  }
+  document.getElementById('rVolume').textContent = wetVol.toFixed(2) + ' m\u00B3';
+  document.getElementById('rDryVol').textContent = dryVol.toFixed(2) + ' m\u00B3';
+  document.getElementById('rWC').textContent = wc.toFixed(2);
+  document.getElementById('rWater').textContent = waterLitres + ' litres';
+
+  // Cost
+  var country = document.getElementById('country').value;
+  if(country!=='none' && PRICES[country]){
+    var p = PRICES[country];
+    var cCost = cementBags * p.cement;
+    var sCost = sandVol * p.sand;
+    var gCost = aggVol * p.gravel;
+    var total = cCost + sCost + gCost;
+    var html = '<tr><td>Cement ('+bagSize+'kg bags)</td><td>'+cementBags+'</td><td class="num">'+p.sym+p.cement.toLocaleString()+'</td><td class="num">'+p.sym+Math.round(cCost).toLocaleString()+'</td></tr>';
+    html += '<tr><td>Sand</td><td>'+sandVol.toFixed(2)+' m\u00B3</td><td class="num">'+p.sym+p.sand.toLocaleString()+' /m\u00B3</td><td class="num">'+p.sym+Math.round(sCost).toLocaleString()+'</td></tr>';
+    if(agg>0) html += '<tr><td>Aggregate / Gravel</td><td>'+aggVol.toFixed(2)+' m\u00B3</td><td class="num">'+p.sym+p.gravel.toLocaleString()+' /m\u00B3</td><td class="num">'+p.sym+Math.round(gCost).toLocaleString()+'</td></tr>';
+    document.getElementById('costBody').innerHTML = html;
+    document.getElementById('costTotal').textContent = p.sym + Math.round(total).toLocaleString();
+    document.getElementById('costSection').style.display = '';
+  } else {
+    document.getElementById('costSection').style.display = 'none';
   }
 
-  document.getElementById('rVolume').textContent=wetVolume.toFixed(2)+' m\u00B3';
-  document.getElementById('rWater').textContent=waterLitres+' litres';
+  // Curing note
+  var grade = document.getElementById('grade').value;
+  document.getElementById('curingNote').style.display = '';
+  if(grade.startsWith('M2')||grade.startsWith('M3')){
+    document.getElementById('curingText').textContent = 'This grade requires minimum 14 days of curing. Keep concrete moist with wet hessian, plastic sheeting, or curing compound. In hot weather (>35\u00B0C), water 3-4 times daily.';
+  } else {
+    document.getElementById('curingText').textContent = 'Cure for minimum 7 days. Keep concrete moist — cover with wet hessian or plastic sheeting. Avoid direct sun exposure in the first 24 hours.';
+  }
 
-  document.getElementById('results').style.display='block';
+  // Rebar note for M20+
+  var gradeNum = parseInt(grade.replace('M',''));
+  document.getElementById('rebarNote').style.display = gradeNum>=20?'':'none';
+
+  document.getElementById('results').style.display = 'block';
   document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
 }
-</script>
 
-<script>
-(function(){
-  var target = document.getElementById('results');
-  if (!target) return;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
-  div.innerHTML = '<save-result-button tool-slug="concrete-mix" tool-name="Concrete Mix"></save-result-button><share-result-button tool-name="Concrete Mix" tool-slug="concrete-mix"></share-result-button>';
-  target.appendChild(div);
-})();
+function resetCalc(){
+  document.getElementById('results').style.display='none';
+  document.getElementById('sLen').value='';
+  document.getElementById('sWid').value='';
+  document.getElementById('sDep').value='0.15';
+}
+
+function shareResult(){
+  var bags = document.getElementById('rCement').textContent;
+  var sand = document.getElementById('rSand').textContent;
+  var vol = document.getElementById('rVolume').textContent;
+  var text = 'Concrete: '+vol+' wet volume\nCement: '+bags+'\nSand: '+sand+'\nCalculated with AfroTools\nhttps://afrotools.com/tools/concrete-mix/';
+  if(navigator.share){navigator.share({title:'Concrete Mix | AfroTools',text:text}).catch(function(){});}
+  else{navigator.clipboard.writeText(text).then(function(){alert('Copied!');});}
+}
 </script>
 </body>
 </html>
