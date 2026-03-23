@@ -54,8 +54,10 @@
   </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <script src="/assets/js/components/tool-registry.js"></script>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap"></noscript></noscript>
+  <script src="/assets/js/components/tool-registry.js" defer></script>
   <script src="/assets/js/components/navbar.min.js" defer></script>
   <script src="/assets/js/components/footer.min.js" defer></script>
 
@@ -199,6 +201,50 @@
     .btn-outline { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: rgba(255,255,255,0.7); padding: 13px 26px; border-radius: 8px; font-weight: 600; font-size: 0.9rem; border: 1.5px solid rgba(255,255,255,0.15); margin-left: 12px; transition: all 0.15s; }
     .btn-outline:hover { background: rgba(255,255,255,0.06); color: #fff; }
 
+    /* ── AFROATLAS FEATURED BANNER ── */
+    .atlas-feature {
+      background: linear-gradient(135deg, #0A1628 0%, #1a2744 50%, #0f2040 100%);
+      border-radius: 18px; padding: 32px 36px; margin: 32px 0 12px;
+      display: flex; align-items: center; gap: 28px;
+      border: 1.5px solid rgba(255,255,255,0.08);
+      position: relative; overflow: hidden;
+    }
+    .atlas-feature::before {
+      content: ''; position: absolute; top: -60px; right: -60px;
+      width: 200px; height: 200px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,122,255,0.15), transparent 70%);
+    }
+    .atlas-feature-icon { font-size: 3rem; flex-shrink: 0; position: relative; z-index: 1; }
+    .atlas-feature-body { flex: 1; min-width: 0; position: relative; z-index: 1; }
+    .atlas-feature-badge {
+      display: inline-block; background: #007AFF; color: #fff; font-size: 0.6rem;
+      font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 3px 10px; border-radius: 4px; margin-bottom: 8px;
+    }
+    .atlas-feature-body h3 { color: #fff; font-size: 1.2rem; font-weight: 700; margin-bottom: 6px; }
+    .atlas-feature-body p { color: rgba(255,255,255,0.6); font-size: 0.85rem; line-height: 1.5; margin: 0; }
+    .atlas-feature-stats {
+      display: flex; gap: 18px; margin-top: 12px; flex-wrap: wrap;
+    }
+    .atlas-feature-stat {
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px; padding: 6px 14px; text-align: center;
+    }
+    .atlas-feature-stat strong { display: block; color: #4DA3FF; font-size: 0.95rem; font-weight: 800; }
+    .atlas-feature-stat span { display: block; color: rgba(255,255,255,0.45); font-size: 0.65rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+    .atlas-feature-cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #007AFF; color: #fff; padding: 12px 24px;
+      border-radius: 980px; font-weight: 700; font-size: 0.85rem;
+      transition: all 0.15s; flex-shrink: 0; position: relative; z-index: 1;
+      white-space: nowrap;
+    }
+    .atlas-feature-cta:hover { background: #0063D1; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,122,255,0.3); }
+    @media (max-width: 768px) {
+      .atlas-feature { flex-direction: column; text-align: center; padding: 28px 24px; gap: 16px; }
+      .atlas-feature-stats { justify-content: center; }
+    }
+
     /* ── REVEAL ── */
     .rv { opacity: 0; transform: translateY(14px); transition: opacity 0.4s ease-out, transform 0.4s ease-out; }
     .rv.visible { opacity: 1; transform: none; }
@@ -253,6 +299,25 @@
 <!-- ── INTRO ── -->
 <div class="wrap" style="padding-top:32px;padding-bottom:8px">
   <p style="font-size:1rem;color:#334155;line-height:1.8;max-width:720px;border-left:3px solid #818cf8;padding-left:18px">No other tool platform has these. Generator fuel cost vs solar ROI. Japa relocation budgeter. Ajo and Chama savings group tracker. Lobola calculator. Mobile money fee comparator. Built for problems the rest of the world doesn't have.</p>
+</div>
+
+<!-- ── AFROATLAS FEATURED BANNER ── -->
+<div class="wrap">
+  <a href="/tools/afroatlas/" class="atlas-feature rv">
+    <div class="atlas-feature-icon">🌍</div>
+    <div class="atlas-feature-body">
+      <div class="atlas-feature-badge">NEW — FLAGSHIP TOOL</div>
+      <h3>AfroAtlas — Africa's Resource Intelligence Explorer</h3>
+      <p>Explore natural resources, GDP, trade data, and economic indicators for all 54 African countries. Compare any two countries side-by-side and discover resource paradox stories.</p>
+      <div class="atlas-feature-stats">
+        <div class="atlas-feature-stat"><strong>54</strong><span>Countries</span></div>
+        <div class="atlas-feature-stat"><strong>$2.8T</strong><span>Total GDP</span></div>
+        <div class="atlas-feature-stat"><strong>1.4B</strong><span>People</span></div>
+        <div class="atlas-feature-stat"><strong>30%</strong><span>World's Minerals</span></div>
+      </div>
+    </div>
+    <div class="atlas-feature-cta">Explore Africa →</div>
+  </a>
 </div>
 
 <!-- ── FLAGSHIP TOOLS ── -->

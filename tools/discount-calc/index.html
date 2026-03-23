@@ -14,7 +14,9 @@
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/discount-calc/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
 <link rel="stylesheet" href="/assets/css/global.min.css">
 <script src="/assets/js/components/navbar.min.js" defer></script>
@@ -116,6 +118,10 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
           <div class="result-sub"><div class="result-sub-lbl">You Save</div><div class="result-sub-val savings-highlight" id="savings">₦2,000</div></div>
           <div class="result-sub"><div class="result-sub-lbl">Effective Discount</div><div class="result-sub-val" id="effectiveDisc">20%</div></div>
         </div>
+        <div style="display:flex;gap:8px;margin-top:18px;flex-wrap:wrap;justify-content:center">
+          <save-result-button tool-slug="discount-calc" tool-name="Discount Calc"></save-result-button>
+          <share-result-button tool-name="Discount Calc" tool-slug="discount-calc"></share-result-button>
+        </div>
       </div>
     </div>
   </div>
@@ -196,6 +202,32 @@ function calc(){
   document.getElementById('finalPrice').textContent=fmt(current);
   document.getElementById('savings').textContent=fmt(savings);
   document.getElementById('effectiveDisc').textContent=effectivePct.toFixed(1)+'%';
+
+  // Collect discount values
+  var discounts=[];
+  discInputs.forEach(function(inp,i){ discounts.push({label:'Discount '+(i+1),value:(parseFloat(inp.value)||0)+'%'}); });
+
+  // Wire save button
+  var saveBtn=document.querySelector('save-result-button[tool-slug="discount-calc"]');
+  if(saveBtn){
+    saveBtn.setData({
+      inputs:{originalPrice:price,currency:cur,discounts:discounts.map(function(d){return d.value}).join(', '),taxRate:tax+'%'},
+      outputs:{finalPrice:fmt(current),savings:fmt(savings),effectiveDiscount:effectivePct.toFixed(1)+'%'}
+    });
+  }
+
+  // Wire share button
+  var shareBtn=document.querySelector('share-result-button[tool-slug="discount-calc"]');
+  if(shareBtn){
+    shareBtn.setResult({
+      headline:discounts.map(function(d){return d.value}).join(' + ')+' off '+fmt(price),
+      mainValue:fmt(current),
+      subValues:[
+        {label:'You Save',value:fmt(savings)},
+        {label:'Effective Discount',value:effectivePct.toFixed(1)+'%'}
+      ]
+    });
+  }
 }
 
 // Bind all inputs
@@ -211,17 +243,5 @@ calc();
 <script src="/assets/js/components/newsletter-cta.min.js" defer></script>
 <afro-newsletter-cta></afro-newsletter-cta>
 
-<script>
-// Save/Share buttons — manual placement needed
-(function(){
-  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
-  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
-  div.innerHTML = '<save-result-button tool-slug="discount-calc" tool-name="Discount Calc"></save-result-button><share-result-button tool-name="Discount Calc" tool-slug="discount-calc"></share-result-button>';
-  target.appendChild(div);
-})();
-</script>
 </body>
 </html>

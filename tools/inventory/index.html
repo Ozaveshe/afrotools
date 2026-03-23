@@ -75,6 +75,10 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <section class="hero"><h1>Inventory Tracker</h1><p>Simple stock management for African small businesses. Track products, costs, and stock levels. All data stays in your browser.</p></section>
 <div class="container">
 <div class="stats-grid" id="statsGrid"></div>
+<div class="result-actions" style="display:flex;gap:8px;flex-wrap:wrap;padding:0 0 8px">
+<save-result-button tool-slug="inventory" tool-name="Inventory"></save-result-button>
+<share-result-button tool-name="Inventory" tool-slug="inventory"></share-result-button>
+</div>
 <div class="card">
 <div class="toolbar">
 <button class="btn btn-primary" onclick="openModal()">+ Add Product</button>
@@ -137,6 +141,11 @@ function renderStats(){
     <div class="stat-card ${low>0?'warning':''}"><div class="stat-label">Low Stock</div><div class="stat-value" style="color:${low>0?'#dc2626':'#16a34a'}">${low}</div></div>
     <div class="stat-card"><div class="stat-label">Stock Value (Cost)</div><div class="stat-value" style="font-size:1.1rem">${totalValue.toLocaleString()}</div></div>
     <div class="stat-card"><div class="stat-label">Potential Revenue</div><div class="stat-value" style="font-size:1.1rem">${totalRevenue.toLocaleString()}</div></div>`;
+
+  var saveBtn=document.querySelector('save-result-button[tool-slug="inventory"]');
+  var shareBtn=document.querySelector('share-result-button[tool-slug="inventory"]');
+  if(saveBtn){saveBtn.setData({inputs:{totalProducts:total,lowStockItems:low},outputs:{stockValueCost:totalValue,potentialRevenue:totalRevenue,potentialProfit:totalRevenue-totalValue}});}
+  if(shareBtn){shareBtn.setResult({headline:'Inventory Summary',mainValue:total+' Products',subValues:[{label:'Stock Value',value:totalValue.toLocaleString()},{label:'Potential Revenue',value:totalRevenue.toLocaleString()},{label:'Low Stock',value:String(low)}],inputs:{totalProducts:total,lowStockItems:low}});}
 }
 function renderTable(){
   const search=document.getElementById('searchInput').value.toLowerCase();
@@ -196,19 +205,6 @@ function exportCSV(){
 }
 document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
 renderTable();
-</script>
-
-<script>
-// Save/Share buttons — manual placement needed
-(function(){
-  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
-  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
-  div.innerHTML = '<save-result-button tool-slug="inventory" tool-name="Inventory"></save-result-button><share-result-button tool-name="Inventory" tool-slug="inventory"></share-result-button>';
-  target.appendChild(div);
-})();
 </script>
 </body>
 </html>

@@ -14,7 +14,9 @@
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/forex-profit/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
 <link rel="stylesheet" href="/assets/css/global.min.css">
 <script src="/assets/js/components/navbar.min.js" defer></script>
@@ -182,6 +184,10 @@ h1 em{color:var(--afro-blue);font-style:normal}
 <div class="result-box"><div class="r-label">Position Size</div><div class="r-value" id="rPosSize">--</div></div>
 <div class="result-box"><div class="r-label">Return on Position</div><div class="r-value" id="rReturn">--</div></div>
 </div>
+<div style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
+<save-result-button tool-slug="forex-profit" tool-name="Forex Profit"></save-result-button>
+<share-result-button tool-name="Forex Profit" tool-slug="forex-profit"></share-result-button>
+</div>
 </div>
 </div>
 
@@ -302,19 +308,26 @@ function calculate(){
 
   document.getElementById('results').style.display='block';
   document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+
+  var pnlStr=(profitAcct>=0?'+':'')+sym+profitAcct.toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2});
+  var lotLabel=lotSize===100000?'Standard':lotSize===10000?'Mini':'Micro';
+  var saveBtn=document.querySelector('save-result-button[tool-slug="forex-profit"]');
+  if(saveBtn&&saveBtn.setData) saveBtn.setData({
+    inputs:{pair:pair.value,direction:direction,entry:entry,exit:exit,lotType:lotLabel,lots:lots,accountCurrency:acctCur},
+    outputs:{profitLoss:pnlStr,pips:pips.toFixed(1),pipValue:sym+pipValueAcct.toFixed(2),positionSize:positionSize,returnPct:returnPct.toFixed(3)+'%'}
+  });
+  var shareBtn=document.querySelector('share-result-button[tool-slug="forex-profit"]');
+  if(shareBtn&&shareBtn.setResult) shareBtn.setResult({
+    headline:pair.value+' '+direction.toUpperCase()+' Trade',
+    mainValue:pnlStr,
+    subValues:[
+      {label:'Pips',value:(pips>=0?'+':'')+pips.toFixed(1)},
+      {label:'Pip Value',value:sym+pipValueAcct.toFixed(2)},
+      {label:'Return',value:(returnPct>=0?'+':'')+returnPct.toFixed(3)+'%'}
+    ]
+  });
 }
 </script>
 
-<script>
-(function(){
-  var target = document.getElementById('results');
-  if (!target) return;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
-  div.innerHTML = '<save-result-button tool-slug="forex-profit" tool-name="Forex Profit"></save-result-button><share-result-button tool-name="Forex Profit" tool-slug="forex-profit"></share-result-button>';
-  target.appendChild(div);
-})();
-</script>
 </body>
 </html>

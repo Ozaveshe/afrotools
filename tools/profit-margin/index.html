@@ -22,10 +22,12 @@
 <meta property="og:url" content="https://afrotools.com/tools/profit-margin">
 <meta property="og:site_name" content="AfroTools">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
 <link rel="stylesheet" href="/assets/css/global.min.css">
-<script src="/assets/js/components/tool-registry.min.js"></script>
+<script src="/assets/js/components/tool-registry.min.js" defer></script>
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
 <style>
@@ -673,6 +675,11 @@
                 <strong>Selling Price:</strong> <span id="sliderValue">150</span>
               </div>
             </div>
+
+            <div class="result-actions" id="singleActions" style="display:none;gap:8px;margin-top:16px;flex-wrap:wrap;">
+              <save-result-button tool-slug="profit-margin" tool-name="Profit Margin"></save-result-button>
+              <share-result-button tool-name="Profit Margin" tool-slug="profit-margin"></share-result-button>
+            </div>
           </div>
         </div>
 
@@ -764,6 +771,11 @@
             </div>
 
             <button class="calc-btn" style="margin-top: 12px;" onclick="calculateMulti()">Calculate All Products</button>
+
+            <div class="result-actions" id="multiActions" style="display:none;gap:8px;margin-top:16px;flex-wrap:wrap;">
+              <save-result-button tool-slug="profit-margin" tool-name="Profit Margin"></save-result-button>
+              <share-result-button tool-name="Profit Margin" tool-slug="profit-margin"></share-result-button>
+            </div>
           </div>
         </div>
       </div>
@@ -866,6 +878,11 @@
                   At 100% markup: <span id="suggestSelling100" style="font-weight: 700; color: var(--afro-green);"></span>
                 </div>
               </div>
+            </div>
+
+            <div class="result-actions" id="importActions" style="display:none;gap:8px;margin-top:16px;flex-wrap:wrap;">
+              <save-result-button tool-slug="profit-margin" tool-name="Profit Margin"></save-result-button>
+              <share-result-button tool-name="Profit Margin" tool-slug="profit-margin"></share-result-button>
             </div>
           </div>
         </div>
@@ -1026,6 +1043,24 @@
 
     // Setup slider
     setupPriceSlider(cost, selling);
+
+    // Save & Share wiring
+    document.getElementById('singleActions').style.display = 'flex';
+    var _saveBtn = document.querySelector('#single save-result-button');
+    if (_saveBtn) _saveBtn.setData({
+      inputs: { costPrice: cost, sellingPrice: selling, currency: currency },
+      outputs: { profit: profit.toFixed(2), margin: margin + '%', markup: markup + '%', roi: roi + '%' }
+    });
+    var _shareBtn = document.querySelector('#single share-result-button');
+    if (_shareBtn) _shareBtn.setResult({
+      headline: 'Profit Margin Analysis',
+      mainValue: margin + '% margin',
+      subValues: [
+        { label: 'Profit', value: currency + profit.toFixed(2) },
+        { label: 'Markup', value: markup + '%' },
+        { label: 'ROI', value: roi + '%' }
+      ]
+    });
   }
 
   let _sliderHandler = null;
@@ -1154,6 +1189,24 @@
     document.getElementById('multiTotalProfit').textContent = `${currency}${totalProfit.toLocaleString('en', {maximumFractionDigits: 0})}`;
     document.getElementById('multiAvgMargin').textContent = avgMargin + '%';
     document.getElementById('multiTotals').style.display = 'block';
+
+    // Save & Share wiring
+    document.getElementById('multiActions').style.display = 'flex';
+    var _saveBtnM = document.querySelector('#multi save-result-button');
+    if (_saveBtnM) _saveBtnM.setData({
+      inputs: { currency: currency, productCount: rows.length },
+      outputs: { totalRevenue: totalRevenue.toFixed(0), totalCost: totalCost.toFixed(0), totalProfit: totalProfit.toFixed(0), avgMargin: avgMargin + '%' }
+    });
+    var _shareBtnM = document.querySelector('#multi share-result-button');
+    if (_shareBtnM) _shareBtnM.setResult({
+      headline: 'Multi-Product Profitability',
+      mainValue: currency + totalProfit.toLocaleString('en', {maximumFractionDigits: 0}) + ' profit',
+      subValues: [
+        { label: 'Revenue', value: currency + totalRevenue.toLocaleString('en', {maximumFractionDigits: 0}) },
+        { label: 'Avg Margin', value: avgMargin + '%' },
+        { label: 'Products', value: String(rows.length) }
+      ]
+    });
   }
 
   // Import Costs
@@ -1207,6 +1260,24 @@
     document.getElementById('suggestSelling100').textContent = `${destCurrency}${suggest100.toFixed(2)}`;
 
     document.getElementById('importResults').style.display = 'block';
+
+    // Save & Share wiring
+    document.getElementById('importActions').style.display = 'flex';
+    var _saveBtnI = document.querySelector('#import save-result-button');
+    if (_saveBtnI) _saveBtnI.setData({
+      inputs: { productCost: cost, shipping: shipping, dutyPct: duty, agentFeePct: agent, forexRate: rate, forexSpread: spread, destCurrency: destCurrency },
+      outputs: { landedCost: landedCost.toFixed(2), beforeForex: beforeForex.toFixed(2), forexImpact: forexMargin.toFixed(2), suggest50: suggest50.toFixed(2), suggest100: suggest100.toFixed(2) }
+    });
+    var _shareBtnI = document.querySelector('#import share-result-button');
+    if (_shareBtnI) _shareBtnI.setResult({
+      headline: 'Import Landed Cost',
+      mainValue: destCurrency + landedCost.toFixed(2),
+      subValues: [
+        { label: 'Before FOREX', value: destCurrency + beforeForex.toFixed(2) },
+        { label: 'FOREX Impact', value: destCurrency + forexMargin.toFixed(2) },
+        { label: 'Sell at 50% markup', value: destCurrency + suggest50.toFixed(2) }
+      ]
+    });
   }
 
   document.getElementById('calcImport').addEventListener('click', calculateImport);
@@ -1264,17 +1335,5 @@
 <script src="/assets/js/components/newsletter-cta.min.js" defer></script>
 <afro-newsletter-cta></afro-newsletter-cta>
 
-<script>
-// Save/Share buttons — manual placement needed
-(function(){
-  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
-  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
-  div.innerHTML = '<save-result-button tool-slug="profit-margin" tool-name="Profit Margin"></save-result-button><share-result-button tool-name="Profit Margin" tool-slug="profit-margin"></share-result-button>';
-  target.appendChild(div);
-})();
-</script>
 </body>
 </html>

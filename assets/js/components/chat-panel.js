@@ -136,6 +136,20 @@
             box-shadow: 0 1px 3px rgba(0,0,0,.04), 0 4px 12px rgba(0,0,0,.03);
           }
 
+          /* ── Collapsed by default ── */
+          .chat-card .chat-messages,
+          .chat-card .chat-input-area,
+          .chat-card .chat-disclaimer {
+            display: none;
+          }
+          .chat-card.expanded .chat-messages {
+            display: flex;
+          }
+          .chat-card.expanded .chat-input-area,
+          .chat-card.expanded .chat-disclaimer {
+            display: block;
+          }
+
           /* ── Header ── */
           .chat-header {
             padding: 12px 16px;
@@ -144,6 +158,25 @@
             align-items: center;
             gap: 10px;
             border-bottom: 1px solid var(--ac-border);
+            cursor: pointer;
+            user-select: none;
+            transition: background .15s;
+          }
+          .chat-header:hover {
+            background: var(--ac-bg);
+          }
+          .chat-toggle {
+            font-size: .72rem;
+            font-weight: 600;
+            color: var(--ac-primary);
+            margin-left: auto;
+            white-space: nowrap;
+          }
+          .chat-card.expanded .chat-header {
+            border-bottom: 1px solid var(--ac-border);
+          }
+          .chat-card:not(.expanded) .chat-header {
+            border-bottom: none;
           }
           .bot-icon {
             flex-shrink: 0;
@@ -467,12 +500,13 @@
         </style>
 
         <div class="chat-card">
-          <div class="chat-header">
+          <div class="chat-header" id="chatToggle">
             <div class="bot-icon">${AFROBOT_SVG}</div>
             <div class="header-text">
               <div class="chat-title">AI Advisor</div>
               <div class="chat-sub">Powered by Claude</div>
             </div>
+            <span class="chat-toggle" id="toggleLabel">Open chat ▾</span>
             <div class="live-dot"></div>
           </div>
 
@@ -505,6 +539,15 @@
       const input = $('#input');
       const send  = $('#send');
       const cc    = $('#charcount');
+
+      // Toggle chat open/closed
+      $('#chatToggle').addEventListener('click', () => {
+        const card = this.shadowRoot.querySelector('.chat-card');
+        const label = $('#toggleLabel');
+        card.classList.toggle('expanded');
+        label.textContent = card.classList.contains('expanded') ? 'Close ▴' : 'Open chat ▾';
+        if (card.classList.contains('expanded')) input.focus();
+      });
 
       send.addEventListener('click', () => this._sendMessage());
 
@@ -606,6 +649,13 @@
       if (this._loading) return;
       const ctx = this.context;
       if (!ctx) return;
+      // Auto-expand when analysis runs
+      const card = this.shadowRoot.querySelector('.chat-card');
+      const label = this.shadowRoot.querySelector('#toggleLabel');
+      if (card && !card.classList.contains('expanded')) {
+        card.classList.add('expanded');
+        if (label) label.textContent = 'Close \u25B4';
+      }
       const prompt = `Based on this calculation: ${ctx}. Give a brief, helpful summary and key tips for an African user.`;
       this._messages = [{ role: 'user', content: prompt }];
       this._clearMessages();

@@ -32,7 +32,9 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Côte d'Ivoire VAT Calculator 2026","url":"https://afrotools.com/cote-divoire/ci-vat","description":"Calculate Côte d'Ivoire VAT: standard 18%. Zero-rated exports. Exempt: Unprocessed food, Medical services, Educational services. Multi-item invoice mode.","applicationCategory":"FinanceApplication","operatingSystem":"Web","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"XOF"},"provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the standard VAT rate in Côte d'Ivoire?","acceptedAnswer":{"@type":"Answer","text":"The standard VAT rate in Côte d'Ivoire is 18% as of 2026. This is levied on most goods and services sold within Côte d'Ivoire."}},{"@type":"Question","name":"How do I add VAT to a price in Côte d'Ivoire?","acceptedAnswer":{"@type":"Answer","text":"Multiply the pre-tax price by 1.1800 (i.e., price × (1 + 0.18)). Example: CFA10,000 × 1.1800 = CFA11,800 including VAT."}},{"@type":"Question","name":"How do I remove VAT from a price in Côte d'Ivoire?","acceptedAnswer":{"@type":"Answer","text":"Divide the VAT-inclusive price by 1.1800. Example: CFA11,800 ÷ 1.1800 = CFA10,000 pre-tax."}}]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
 <link rel="stylesheet" href="/assets/css/global.min.css">
 <script src="/assets/js/components/navbar.min.js" defer></script>
@@ -905,7 +907,7 @@ function getEffectiveRate() {
     const vat = document.getElementById('resVat')?.textContent || '';
     const text = `Côte d'Ivoire VAT Calculator | Amount: ${amt} | VAT: ${vat} | Rate: ${(currentRate*100).toFixed(1)}% | AfroTools.com`;
     if (navigator.share) {
-      navigator.share({ title: 'Côte d'Ivoire VAT Result', text, url: window.location.href });
+      navigator.share({ title: "Côte d'Ivoire VAT Result", text, url: window.location.href });
     } else {
       navigator.clipboard.writeText(text).then(() => alert('Result copied to clipboard!'));
     }

@@ -54,7 +54,9 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif&display=swap"></noscript></noscript>
 
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
 <link rel="stylesheet" href="/assets/css/global.min.css">
@@ -64,7 +66,7 @@
 <script src="/assets/js/lib/chart-config.js"></script>
 <script src="/assets/js/lib/crypto-data.js"></script>
 
-<script src="/assets/js/components/tool-registry.js"></script>
+<script src="/assets/js/components/tool-registry.js" defer></script>
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
 <script src="/assets/js/components/cookie-consent.js" defer></script>
@@ -242,12 +244,39 @@
   .platform-row {
     grid-template-columns: 1fr 1fr;
     gap: 12px;
+    padding: 16px;
   }
   .platform-row .cell-label { display: block; }
   .table-header { display: none; }
+  .stable-coin-header { flex-wrap: wrap; gap: 8px; }
+  .stable-coin-header .base-price { margin-left: 0; width: 100%; }
+  .recommendation-cards { grid-template-columns: 1fr; }
 }
-@media (max-width: 480px) {
-  .platform-row { grid-template-columns: 1fr; }
+@media (max-width: 600px) {
+  .crypto-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .crypto-controls .toggle-group {
+    width: 100%;
+    justify-content: center;
+  }
+  .crypto-controls select { width: 100%; }
+  .platform-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    border-left: 3px solid var(--color-border-subtle);
+    padding: 14px 16px;
+  }
+  .platform-row .plat-name {
+    font-size: var(--text-base);
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--color-border-subtle);
+    margin-bottom: 4px;
+  }
+  .rec-card { padding: 16px; }
+  .rec-card .rec-platform { font-size: var(--text-lg); }
 }
 </style>
 </head>
