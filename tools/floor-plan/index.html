@@ -2,30 +2,423 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'floor-plan-cost'});</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Building Cost Estimator — Construction Cost per m² | AfroTools</title>
+<meta name="description" content="Estimate building construction cost by city in Africa. Input rooms, finish quality, get cost breakdown for foundation, walls, roofing, finishes, M&E. Lagos, Nairobi, Joburg prices.">
+<link rel="canonical" href="https://afrotools.com/tools/floor-plan/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta http-equiv="refresh" content="0;url=/engineering/floor-planner/">
-<title>Redirecting to AfroPlan Floor Planner</title>
-<link rel="canonical" href="/engineering/floor-planner/">
+<meta property="og:title" content="Building Cost Estimator | AfroTools">
+<meta property="og:description" content="Estimate construction cost per m² by African city. Rooms, finish quality, full cost breakdown.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/floor-plan/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Building Cost Estimator | AfroTools">
+<meta name="twitter:description" content="Construction cost per m² by African city. Full breakdown.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+:root{--accent:#007AFF;--accent-dark:#0059B3;--green:#008751;--dark:#0f1419;--bg:#f8fafc;--card:#fff;--border:#e2e8f0;--muted:#64748b}
+.tool-hero{background:linear-gradient(135deg,#0A1628 0%,#0063D1 100%);padding:44px 0 36px}
+.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#4DA3FF}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+h1 em{color:#4DA3FF;font-style:normal}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{display:inline-flex;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
+.b-blue{background:rgba(77,163,255,.2);color:#4DA3FF;border:1px solid rgba(77,163,255,.4)}
+.container{max-width:900px;margin:0 auto;padding:28px 24px 72px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05);margin-bottom:18px}
+.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dark)}
+.card-body{padding:22px}
+.field{margin-bottom:16px}
+.f-label{font-size:.75rem;font-weight:700;color:var(--dark);margin-bottom:6px;display:block}
+.f-hint{font-size:.7rem;color:var(--muted);margin-top:2px}
+.f-input,.f-select{width:100%;padding:11px 13px;background:var(--bg);border:1.5px solid #cbd5e1;border-radius:7px;font-size:1rem;font-weight:600;color:var(--dark);outline:none;font-family:'DM Sans',sans-serif}
+.f-input:focus,.f-select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,122,255,.12)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.room-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-top:10px}
+.room-card{padding:12px;border:1.5px solid var(--border);border-radius:8px;text-align:center}
+.room-card .room-name{font-weight:700;font-size:.82rem;color:var(--dark);margin-bottom:4px}
+.room-card .room-dim{font-size:.72rem;color:var(--muted)}
+.room-card .room-area{font-size:1rem;font-weight:800;color:var(--accent);margin-top:4px}
+.room-add{display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:8px;margin-top:10px;align-items:end}
+.room-add input,.room-add select{padding:8px 10px;border:1.5px solid #cbd5e1;border-radius:6px;font-size:.82rem;font-family:inherit}
+.room-add button{padding:8px 14px;border-radius:6px;border:none;background:var(--accent);color:#fff;font-weight:700;font-size:.82rem;cursor:pointer;font-family:inherit}
+.calc-btn{width:100%;padding:13px;background:var(--accent);color:#fff;border:none;border-radius:980px;font-size:.92rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:16px}
+.calc-btn:hover{background:var(--accent-dark)}
+#results{display:none}
+.total-card{background:var(--accent);color:#fff;border-radius:10px;padding:24px;text-align:center;margin-bottom:18px}
+.total-card .total-label{font-size:.82rem;opacity:.8;font-weight:600}
+.total-card .total-value{font-size:2rem;font-weight:900;margin:4px 0}
+.total-card .total-sub{font-size:.78rem;opacity:.7}
+.breakdown-table{width:100%;border-collapse:collapse;font-size:.85rem}
+.breakdown-table th{text-align:left;font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border)}
+.breakdown-table td{padding:8px 12px;border-bottom:1px solid #f1f5f9}
+.breakdown-table .num{text-align:right;font-weight:700}
+.breakdown-table .cat-row td{font-weight:800;color:var(--dark);background:#f8fafc}
+.breakdown-table .total-row td{font-weight:800;border-top:2px solid var(--dark);font-size:.9rem}
+.timeline-card{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-top:12px}
+.tl-item{padding:12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;text-align:center}
+.tl-item .tl-label{font-size:.7rem;font-weight:600;color:var(--muted);text-transform:uppercase}
+.tl-item .tl-value{font-size:1.1rem;font-weight:800;color:var(--dark);margin-top:2px}
+.seo-content{max-width:800px;margin:0 auto;padding:48px 24px}
+.seo-content h2{font-size:1.4rem;font-weight:800;color:var(--dark);margin:32px 0 12px}
+.seo-content h3{font-size:1.1rem;font-weight:700;color:var(--dark);margin:24px 0 8px}
+.seo-content p{font-size:.92rem;color:#475569;line-height:1.8;margin-bottom:12px}
+.faq details{border:1px solid var(--border);border-radius:8px;margin-bottom:10px;overflow:hidden}
+.faq summary{padding:14px 18px;font-weight:700;font-size:.88rem;cursor:pointer;background:#f8fafc;color:var(--dark)}
+.faq details[open] summary{border-bottom:1px solid var(--border)}
+.faq details div{padding:14px 18px;font-size:.85rem;color:#475569;line-height:1.7}
+.related-section{max-width:900px;margin:0 auto;padding:0 24px 60px}
+.related-section h2{font-size:1.2rem;font-weight:800;color:var(--dark);margin-bottom:16px}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.related-card{display:block;padding:18px;background:#fff;border:1px solid var(--border);border-radius:10px;text-decoration:none;color:inherit;transition:.15s}
+.related-card:hover{border-color:var(--accent)}
+.related-card .rc-name{font-weight:700;font-size:.9rem;color:var(--dark);margin-bottom:4px}
+.related-card .rc-desc{font-size:.78rem;color:var(--muted);line-height:1.5}
+@media(max-width:768px){.field-row,.field-row-3{grid-template-columns:1fr}.room-add{grid-template-columns:1fr 1fr}}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Building Cost Estimator","url":"https://afrotools.com/tools/floor-plan/","description":"Estimate building construction cost per square metre by African city. Rooms, finish quality, full cost breakdown.","applicationCategory":"UtilitiesApplication","operatingSystem":"All","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Engineering Tools","item":"https://afrotools.com/engineering/"},{"@type":"ListItem","position":3,"name":"Building Cost Estimator","item":"https://afrotools.com/tools/floor-plan/"}]}</script>
 <script src="/assets/js/lib/toast.js" defer></script>
-<script src="/assets/js/afro-history.js" defer></script>
-<script src="/assets/js/components/save-result-button.js" defer></script>
 <script src="/assets/js/components/share-card-generator.js" defer></script>
 <script src="/assets/js/components/share-button.js" defer></script>
 </head>
 <body>
-<p>This tool has moved to <a href="/engineering/floor-planner/">AfroPlan Floor Planner</a>.</p>
+<afro-navbar></afro-navbar>
+<section class="tool-hero"><div class="tool-hero-inner">
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/engineering/">Engineering</a> / <span>Building Cost Estimator</span></div>
+<h1>Building Cost <em>Estimator</em></h1>
+<p class="hero-sub">Estimate construction cost for your building project. Select rooms, finish quality, and African city — get a full cost breakdown with timeline estimate.</p>
+<div class="hero-badges"><span class="badge b-blue">10 African Cities</span><span class="badge b-blue">4 Finish Tiers</span><span class="badge b-blue">Full Breakdown</span><span class="badge b-blue">PDF Report</span></div>
+</div></section>
+
+<div class="container">
+
+<div class="card"><div class="card-head"><span class="card-title">Building Type & Location</span></div>
+<div class="card-body">
+<div class="field-row-3">
+<div class="field"><label class="f-label" for="buildType">Building Type</label>
+<select id="buildType" class="f-select" onchange="suggestRooms()">
+<option value="bungalow">Bungalow (single storey)</option>
+<option value="duplex">Duplex (2 storeys)</option>
+<option value="storey">Storey Building (2+ floors)</option>
+<option value="apartment">Apartment Block</option>
+<option value="commercial">Commercial / Office</option>
+</select></div>
+<div class="field"><label class="f-label" for="finishQuality">Finish Quality</label>
+<select id="finishQuality" class="f-select">
+<option value="economy">Economy — Basic finishes</option>
+<option value="standard" selected>Standard — Good quality</option>
+<option value="premium">Premium — High-end</option>
+<option value="luxury">Luxury — Top specification</option>
+</select></div>
+<div class="field"><label class="f-label" for="location">City / Location</label>
+<select id="location" class="f-select">
+<optgroup label="Nigeria">
+<option value="lagos" selected>Lagos</option>
+<option value="abuja">Abuja</option>
+</optgroup>
+<optgroup label="Kenya">
+<option value="nairobi">Nairobi</option>
+<option value="mombasa">Mombasa</option>
+</optgroup>
+<optgroup label="South Africa">
+<option value="joburg">Johannesburg</option>
+<option value="capetown">Cape Town</option>
+</optgroup>
+<optgroup label="Ghana">
+<option value="accra">Accra</option>
+<option value="kumasi">Kumasi</option>
+</optgroup>
+<optgroup label="Tanzania">
+<option value="dar">Dar es Salaam</option>
+</optgroup>
+<optgroup label="Egypt">
+<option value="cairo">Cairo</option>
+</optgroup>
+</select></div>
+</div>
+</div></div>
+
+<!-- Rooms -->
+<div class="card"><div class="card-head"><span class="card-title">Rooms</span></div>
+<div class="card-body">
+<p style="font-size:.78rem;color:var(--muted);margin-bottom:10px">Add rooms to calculate total floor area. Default sizes are suggestions — adjust as needed.</p>
+<div class="room-grid" id="roomGrid"></div>
+<div class="room-add">
+<select id="addRoomType">
+<option value="Living Room,5,5">Living Room (5×5m)</option>
+<option value="Master Bedroom,4,4">Master Bedroom (4×4m)</option>
+<option value="Bedroom,3.5,3.5">Bedroom (3.5×3.5m)</option>
+<option value="Kitchen,3,3">Kitchen (3×3m)</option>
+<option value="Bathroom,2.5,2">Bathroom (2.5×2m)</option>
+<option value="Toilet,1.5,1.5">Toilet (1.5×1.5m)</option>
+<option value="Dining,4,3.5">Dining Room (4×3.5m)</option>
+<option value="Store,2,2">Store Room (2×2m)</option>
+<option value="Garage,6,3.5">Garage (6×3.5m)</option>
+<option value="Laundry,2.5,2.5">Laundry (2.5×2.5m)</option>
+<option value="Study,3,3">Study / Home Office (3×3m)</option>
+<option value="Corridor,6,1.5">Corridor / Passage (6×1.5m)</option>
+</select>
+<input type="number" id="addRoomW" placeholder="Width" step="0.5" min="1" style="width:100%">
+<input type="number" id="addRoomL" placeholder="Length" step="0.5" min="1" style="width:100%">
+<button onclick="addRoom()">+ Add</button>
+</div>
+<div style="margin-top:12px;padding:12px;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:8px;display:flex;justify-content:space-between;align-items:center">
+<span style="font-size:.85rem;font-weight:700;color:var(--dark)">Total Floor Area</span>
+<span style="font-size:1.2rem;font-weight:900;color:var(--accent)" id="totalArea">0 m²</span>
+</div>
+<button class="calc-btn" onclick="calculate()">Estimate Construction Cost</button>
+</div></div>
+
+<!-- Results -->
+<div id="results">
+<div class="total-card">
+<div class="total-label">Estimated Total Construction Cost</div>
+<div class="total-value" id="grandTotal">--</div>
+<div class="total-sub" id="costPerSqm">--</div>
+</div>
+
+<div class="card"><div class="card-head"><span class="card-title">Cost Breakdown</span></div>
+<div class="card-body">
+<table class="breakdown-table" id="breakdownTable"></table>
+</div></div>
+
+<div class="card"><div class="card-head"><span class="card-title">Timeline Estimate</span></div>
+<div class="card-body">
+<div class="timeline-card" id="timelineCards"></div>
+<p style="font-size:.72rem;color:var(--muted);margin-top:10px">Timelines assume normal weather conditions and continuous work. Rainy season, material shortages, and funding gaps typically add 30-50% to these estimates in practice.</p>
+</div></div>
+
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px">
+<button onclick="exportPDF()" class="calc-btn" style="width:auto;padding:12px 28px">Download PDF Report</button>
+<button onclick="shareResult()" class="calc-btn" style="width:auto;padding:12px 28px;background:transparent;color:var(--accent);border:1.5px solid var(--accent)">Share</button>
+</div>
+
+<div style="padding:14px 18px;background:#ECFDF5;border:1px solid #A7F3D0;border-radius:8px;font-size:.85rem;color:#065F46;margin-bottom:18px">
+<strong>Want a detailed line-by-line cost?</strong> Use our <a href="/tools/boq-builder/" style="color:#065F46;font-weight:700">BOQ Builder</a> to create a professional Bill of Quantities with 11 categories and PDF export.
+</div>
+</div>
+
+</div>
+
+<!-- SEO -->
+<section class="seo-content">
+<h2>How Much Does It Cost to Build in Africa?</h2>
+<p>Building costs vary enormously across African cities, driven by material prices, labour rates, land regulations, and finish quality. In Lagos, a standard-quality 3-bedroom bungalow costs approximately ₦25-45 million (2024 prices). In Nairobi, a similar build runs KSh 5-10 million. In Johannesburg, expect R800,000-1.5 million. This estimator gives you a realistic baseline for budgeting your project.</p>
+
+<h3>Understanding Cost per Square Metre</h3>
+<p>The construction industry prices buildings by cost per square metre of gross floor area. Economy finishes (basic tiles, simple paint, standard fixtures) cost significantly less than premium or luxury finishes (imported tiles, designer fittings, smart home systems). The cost per m² also varies by building type — bungalows are cheaper per m² than duplexes because duplexes require structural columns, suspended slabs, and staircases.</p>
+
+<h3>What's Included in the Estimate</h3>
+<p>This estimate covers: site preparation and foundations, structural frame (columns, beams, slabs where applicable), walls and blockwork, roofing, doors and windows, floor and wall finishes, plumbing and drainage, electrical installation, painting, external works, professional fees (architect, structural engineer, quantity surveyor), and a 10% contingency. It does not include land purchase, demolition of existing structures, or furniture and appliances.</p>
+
+<h3>Common Budget Mistakes</h3>
+<p>The biggest mistake is underestimating finishes — tiling, painting, kitchen fittings, and bathroom fixtures often cost more than the structural work. Another common error is forgetting professional fees (typically 10-15% of construction cost) and external works (gates, fencing, paving, landscaping). Always add at least 10% contingency for unexpected costs, material price increases, and design changes during construction.</p>
+
+<h3>Tips for Cost Control</h3>
+<p>Get a proper BOQ before construction starts — this prevents disputes and cost overruns. Buy materials in bulk where possible. Use local materials (sandcrete blocks, local timber) instead of imported alternatives. Phase your construction if budget is tight — complete the structure and roof first, then finish rooms gradually. Monitor material deliveries and keep daily site records.</p>
+
+<div class="faq">
+<h2>Frequently Asked Questions</h2>
+<details><summary>How accurate is this estimate?</summary><div>This tool provides a ±20% budget estimate based on average construction costs in each city. For a precise cost, you need a detailed Bill of Quantities (BOQ) prepared by a quantity surveyor based on your architectural drawings. Use our BOQ Builder for that.</div></details>
+<details><summary>Does this include land cost?</summary><div>No. This estimates construction cost only. Land prices vary dramatically even within the same city. In Lagos, land in Lekki costs 5-10× more than in Ikorodu. Add your actual land purchase cost separately.</div></details>
+<details><summary>What's the difference between economy and luxury?</summary><div>Economy uses basic materials (local tiles, simple paint, wooden doors). Standard uses mid-range materials. Premium uses imported tiles, aluminium windows, and good fittings. Luxury includes top-grade everything — imported marble, smart home systems, designer fixtures, and premium landscaping.</div></details>
+<details><summary>How long does construction take?</summary><div>A standard 3-bedroom bungalow takes 4-8 months with consistent funding and good weather. A duplex takes 8-14 months. These timelines assume no significant delays from rain, material shortages, or funding gaps — which in practice add 30-50% to the timeline across Africa.</div></details>
+<details><summary>Why are building costs different across cities?</summary><div>Material transport costs, labour rates, local regulations, and material availability drive price differences. Coastal cities like Lagos and Mombasa have higher transport costs for inland materials (granite, sand). Cities with booming construction (Abuja, Nairobi) have higher labour rates due to demand.</div></details>
+<details><summary>Should I budget for professional fees?</summary><div>Yes — always. Architect fees (5-8%), structural engineer (2-3%), quantity surveyor (2-3%), and project management (3-5%) are standard. This tool includes a 12% allocation for professional fees, but actual fees vary by project complexity and negotiation.</div></details>
+</div>
+</section>
+
+<section class="related-section">
+<h2>Related Engineering Tools</h2>
+<div class="related-grid">
+<a href="/tools/boq-builder/" class="related-card"><div class="rc-name">BOQ Builder</div><div class="rc-desc">Create a detailed Bill of Quantities with 11 categories and PDF export.</div></a>
+<a href="/tools/concrete-mix/" class="related-card"><div class="rc-name">Concrete Mix Calculator</div><div class="rc-desc">Calculate cement, sand, gravel for your foundation and structural work.</div></a>
+<a href="/tools/paint-calculator/" class="related-card"><div class="rc-name">Paint Calculator</div><div class="rc-desc">Estimate paint quantities with African brand coverage rates.</div></a>
+<a href="/tools/roof-calculator/" class="related-card"><div class="rc-name">Roof Calculator</div><div class="rc-desc">Calculate roofing materials, pitch, and truss sizing.</div></a>
+</div>
+</section>
+
+<afro-footer></afro-footer>
 
 <script>
-// Save/Share buttons — manual placement needed
-(function(){
-  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
-  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
-  div.innerHTML = '<save-result-button tool-slug="floor-plan" tool-name="Floor Plan"></save-result-button><share-result-button tool-name="Floor Plan" tool-slug="floor-plan"></share-result-button>';
-  target.appendChild(div);
-})();
+/* ── Cost Data (per m² in local currency) by city, finish quality ── */
+var COSTS = {
+  lagos:    {sym:'\u20A6',curr:'NGN',economy:180000,standard:280000,premium:420000,luxury:650000,labor:0.35},
+  abuja:    {sym:'\u20A6',curr:'NGN',economy:200000,standard:300000,premium:450000,luxury:700000,labor:0.35},
+  nairobi:  {sym:'KSh ',curr:'KES',economy:35000,standard:55000,premium:85000,luxury:130000,labor:0.30},
+  mombasa:  {sym:'KSh ',curr:'KES',economy:30000,standard:48000,premium:75000,luxury:115000,labor:0.30},
+  joburg:   {sym:'R',curr:'ZAR',economy:8000,standard:12000,premium:18000,luxury:28000,labor:0.30},
+  capetown: {sym:'R',curr:'ZAR',economy:9000,standard:14000,premium:21000,luxury:32000,labor:0.30},
+  accra:    {sym:'GHS ',curr:'GHS',economy:4000,standard:6500,premium:10000,luxury:15000,labor:0.30},
+  kumasi:   {sym:'GHS ',curr:'GHS',economy:3500,standard:5500,premium:8500,luxury:13000,labor:0.30},
+  dar:      {sym:'TSh ',curr:'TZS',economy:600000,standard:950000,premium:1400000,luxury:2200000,labor:0.30},
+  cairo:    {sym:'E\u00A3',curr:'EGP',economy:12000,standard:18000,premium:28000,luxury:45000,labor:0.25}
+};
+
+/* Type multipliers (duplex costs more per m² than bungalow) */
+var TYPE_MULT = {bungalow:1.0, duplex:1.15, storey:1.2, apartment:1.1, commercial:1.25};
+
+/* Cost breakdown percentages */
+var BREAKDOWN = [
+  {cat:'Foundation & Substructure', pct:0.15},
+  {cat:'Walls & Blockwork', pct:0.12},
+  {cat:'Concrete Frame (columns, beams, slabs)', pct:0.10},
+  {cat:'Roofing', pct:0.10},
+  {cat:'Doors & Windows', pct:0.07},
+  {cat:'Floor Finishes', pct:0.08},
+  {cat:'Wall Finishes & Painting', pct:0.06},
+  {cat:'Plumbing & Drainage', pct:0.06},
+  {cat:'Electrical Installation', pct:0.06},
+  {cat:'External Works (fence, gate, paving)', pct:0.05},
+  {cat:'Professional Fees (architect, QS, engineer)', pct:0.05},
+  {cat:'Contingency (10%)', pct:0.10}
+];
+
+/* ── Rooms ── */
+var rooms = [];
+
+function suggestRooms() {
+  var type = document.getElementById('buildType').value;
+  rooms = [];
+  if (type === 'bungalow') {
+    rooms = [{name:'Living Room',w:5,l:5},{name:'Master Bedroom',w:4,l:4},{name:'Bedroom 2',w:3.5,l:3.5},{name:'Bedroom 3',w:3.5,l:3.5},{name:'Kitchen',w:3,l:3},{name:'Bathroom',w:2.5,l:2},{name:'Toilet',w:1.5,l:1.5},{name:'Corridor',w:6,l:1.5}];
+  } else if (type === 'duplex') {
+    rooms = [{name:'Living Room',w:5.5,l:5},{name:'Dining',w:4,l:3.5},{name:'Kitchen',w:3.5,l:3},{name:'Master Bedroom',w:4.5,l:4},{name:'Bedroom 2',w:3.5,l:3.5},{name:'Bedroom 3',w:3.5,l:3.5},{name:'Bedroom 4',w:3.5,l:3},{name:'Master Bath',w:3,l:2.5},{name:'Bathroom 2',w:2.5,l:2},{name:'Toilet (GF)',w:1.5,l:1.5},{name:'Staircase',w:3,l:1.5},{name:'Corridor',w:8,l:1.5}];
+  } else if (type === 'commercial') {
+    rooms = [{name:'Reception',w:6,l:4},{name:'Open Office',w:10,l:8},{name:'Manager Office',w:4,l:4},{name:'Meeting Room',w:5,l:4},{name:'Kitchenette',w:3,l:2.5},{name:'Server Room',w:3,l:2},{name:'Toilet Block',w:4,l:3},{name:'Corridor',w:10,l:2}];
+  } else {
+    rooms = [{name:'Living Room',w:5,l:5},{name:'Master Bedroom',w:4,l:4},{name:'Bedroom 2',w:3.5,l:3.5},{name:'Kitchen',w:3,l:3},{name:'Bathroom',w:2.5,l:2},{name:'Corridor',w:5,l:1.5}];
+  }
+  renderRooms();
+}
+
+function renderRooms() {
+  var grid = document.getElementById('roomGrid');
+  var totalArea = 0;
+  grid.innerHTML = rooms.map(function(r, i) {
+    var area = r.w * r.l;
+    totalArea += area;
+    return '<div class="room-card"><div class="room-name">' + r.name + '</div><div class="room-dim">' + r.w + ' × ' + r.l + ' m</div><div class="room-area">' + area.toFixed(1) + ' m²</div><button onclick="removeRoom(' + i + ')" style="font-size:.68rem;color:#dc2626;border:none;background:none;cursor:pointer;margin-top:4px">Remove</button></div>';
+  }).join('');
+  document.getElementById('totalArea').textContent = totalArea.toFixed(0) + ' m²';
+  // Pre-fill add room inputs
+  var sel = document.getElementById('addRoomType');
+  var parts = sel.value.split(',');
+  document.getElementById('addRoomW').value = parts[1];
+  document.getElementById('addRoomL').value = parts[2];
+}
+
+function addRoom() {
+  var sel = document.getElementById('addRoomType');
+  var name = sel.value.split(',')[0];
+  var w = parseFloat(document.getElementById('addRoomW').value) || 3;
+  var l = parseFloat(document.getElementById('addRoomL').value) || 3;
+  rooms.push({name: name, w: w, l: l});
+  renderRooms();
+}
+
+function removeRoom(i) { rooms.splice(i, 1); renderRooms(); }
+
+// Update add-room dimensions when room type changes
+document.getElementById('addRoomType').addEventListener('change', function() {
+  var parts = this.value.split(',');
+  document.getElementById('addRoomW').value = parts[1];
+  document.getElementById('addRoomL').value = parts[2];
+});
+
+/* ── Calculate ── */
+function calculate() {
+  if (!rooms.length) { alert('Please add at least one room.'); return; }
+
+  var totalArea = rooms.reduce(function(s, r) { return s + r.w * r.l; }, 0);
+  var loc = document.getElementById('location').value;
+  var quality = document.getElementById('finishQuality').value;
+  var bType = document.getElementById('buildType').value;
+  var c = COSTS[loc];
+  if (!c) { alert('Location data not found.'); return; }
+
+  var baseCostPerM2 = c[quality];
+  var typeMult = TYPE_MULT[bType] || 1;
+  var costPerM2 = Math.round(baseCostPerM2 * typeMult);
+  var totalCost = Math.round(totalArea * costPerM2);
+
+  // Grand total
+  document.getElementById('grandTotal').textContent = c.sym + totalCost.toLocaleString();
+  document.getElementById('costPerSqm').textContent = c.sym + costPerM2.toLocaleString() + ' per m² × ' + totalArea.toFixed(0) + ' m² (' + quality + ' finish, ' + bType + ')';
+
+  // Breakdown table
+  var html = '<thead><tr><th>Category</th><th>%</th><th class="num">Estimated Cost (' + c.curr + ')</th></tr></thead><tbody>';
+  BREAKDOWN.forEach(function(b) {
+    var cost = Math.round(totalCost * b.pct);
+    html += '<tr><td>' + b.cat + '</td><td>' + Math.round(b.pct * 100) + '%</td><td class="num">' + c.sym + cost.toLocaleString() + '</td></tr>';
+  });
+  html += '<tr class="total-row"><td>TOTAL</td><td>100%</td><td class="num">' + c.sym + totalCost.toLocaleString() + '</td></tr>';
+  html += '</tbody>';
+  document.getElementById('breakdownTable').innerHTML = html;
+
+  // Timeline
+  var monthsBase = {bungalow:6, duplex:10, storey:12, apartment:14, commercial:8};
+  var qualityMult = {economy:0.8, standard:1, premium:1.2, luxury:1.5};
+  var months = Math.round((monthsBase[bType] || 8) * (qualityMult[quality] || 1));
+  document.getElementById('timelineCards').innerHTML =
+    '<div class="tl-item"><div class="tl-label">Foundation</div><div class="tl-value">' + Math.max(1, Math.round(months * 0.15)) + ' months</div></div>' +
+    '<div class="tl-item"><div class="tl-label">Structure</div><div class="tl-value">' + Math.max(1, Math.round(months * 0.30)) + ' months</div></div>' +
+    '<div class="tl-item"><div class="tl-label">Roofing</div><div class="tl-value">' + Math.max(1, Math.round(months * 0.10)) + ' months</div></div>' +
+    '<div class="tl-item"><div class="tl-label">Finishes</div><div class="tl-value">' + Math.max(1, Math.round(months * 0.30)) + ' months</div></div>' +
+    '<div class="tl-item"><div class="tl-label">M&E + External</div><div class="tl-value">' + Math.max(1, Math.round(months * 0.15)) + ' months</div></div>' +
+    '<div class="tl-item" style="background:#EFF6FF;border-color:#BFDBFE"><div class="tl-label">Total Duration</div><div class="tl-value" style="color:#007AFF">' + months + ' months</div></div>';
+
+  document.getElementById('results').style.display = '';
+  document.getElementById('results').scrollIntoView({behavior:'smooth'});
+}
+
+/* ── PDF ── */
+function exportPDF() {
+  var w = window.open('','_blank');
+  var sym = COSTS[document.getElementById('location').value].sym;
+  var total = document.getElementById('grandTotal').textContent;
+  var sub = document.getElementById('costPerSqm').textContent;
+  var table = document.getElementById('breakdownTable').outerHTML;
+  w.document.write('<html><head><title>Building Cost Estimate | AfroTools</title><style>body{font-family:Arial,sans-serif;margin:40px;font-size:11px;color:#333}h1{font-size:18px;color:#007AFF}h2{font-size:14px;margin-top:20px}.meta{color:#666;font-size:10px;margin-bottom:16px}table{width:100%;border-collapse:collapse;margin:12px 0}th{background:#f0f0f0;text-align:left;padding:6px 8px;border:1px solid #ddd;font-size:10px}td{padding:5px 8px;border:1px solid #eee}.num{text-align:right;font-weight:700}.total-row td{font-weight:700;border-top:2px solid #333}.footer{margin-top:30px;font-size:9px;color:#999;border-top:1px solid #ddd;padding-top:8px}</style></head><body>');
+  w.document.write('<h1>Building Cost Estimate</h1>');
+  w.document.write('<div class="meta">' + sub + '</div>');
+  w.document.write('<h2>Estimated Total: ' + total + '</h2>');
+  w.document.write('<h2>Cost Breakdown</h2>' + table);
+  // Rooms
+  w.document.write('<h2>Rooms (' + rooms.length + ')</h2><ul>');
+  rooms.forEach(function(r) { w.document.write('<li>' + r.name + ': ' + r.w + ' × ' + r.l + ' m (' + (r.w * r.l).toFixed(1) + ' m²)</li>'); });
+  w.document.write('</ul>');
+  w.document.write('<div class="footer">Generated by AfroTools.com/tools/floor-plan/ on ' + new Date().toLocaleDateString('en-GB') + '. This is a budget estimate (±20%). For accurate costing, commission a professional Bill of Quantities.</div>');
+  w.document.write('</body></html>');
+  w.document.close();
+  setTimeout(function(){w.print();},500);
+}
+
+function shareResult() {
+  var total = document.getElementById('grandTotal').textContent;
+  var sub = document.getElementById('costPerSqm').textContent;
+  var text = 'Building Cost Estimate: ' + total + '\n' + sub + '\nEstimated with AfroTools\nhttps://afrotools.com/tools/floor-plan/';
+  if (navigator.share) { navigator.share({title:'Building Cost | AfroTools',text:text}).catch(function(){}); }
+  else { navigator.clipboard.writeText(text).then(function(){alert('Copied!');}); }
+}
+
+// Init with default bungalow
+suggestRooms();
 </script>
 </body>
 </html>
