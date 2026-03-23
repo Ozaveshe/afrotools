@@ -12,9 +12,17 @@
 <meta property="og:title" content="Roofing Sheet Calculator | AfroTools">
 <meta property="og:description" content="How many roofing sheets do you need? Calculate by roof area and material type.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
-<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/roof-calculator/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/roof-calculator/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Roof Calculator | AfroTools">
+<meta name="twitter:description" content="Calculate roofing sheets, trusses, timber, ridge caps. African roofing materials and brands.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Engineering Tools","item":"https://afrotools.com/engineering/"},{"@type":"ListItem","position":3,"name":"Roof Calculator","item":"https://afrotools.com/tools/roof-calculator/"}]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
 <link rel="stylesheet" href="/assets/css/global.min.css">
 <script src="/assets/js/components/navbar.min.js" defer></script>
@@ -252,7 +260,31 @@ function calculate() {
   const fasciaM = Math.ceil((2 * (bL + bW)) + 2);
   table += `<tr><td>Fascia Board</td><td style="text-align:right">${fasciaM}m</td><td style="text-align:right">Building perimeter</td></tr>`;
   table += `<tr><td><strong>Summary</strong></td><td style="text-align:right"><strong>${totalSheets} sheets</strong></td><td style="text-align:right"><strong>${roofArea.toFixed(0)} m2</strong></td></tr>`;
+
+  // ── Truss Calculation ──
+  const trussSpacing = 0.9; // 900mm standard
+  const numTrusses = Math.ceil(bL / trussSpacing) + 1;
+  const trussSpan = bW + (overhang * 2); // total span including overhangs
+  const rafterLen = slopeLength + 0.3; // rafter + bird's mouth
+  const timberPerTruss = (rafterLen * 2) + trussSpan + (trussSpan * 0.5); // 2 rafters + bottom chord + web members
+  const totalTimberM = timberPerTruss * numTrusses;
+  const purlinsM = bL * Math.ceil(slopeLength / 1.2) * sections; // purlins at 1.2m spacing
+
+  table += `<tr><td colspan="3" style="background:#f8fafc;font-weight:800;color:#1e293b;padding-top:12px">Timber / Truss Estimate</td></tr>`;
+  table += `<tr><td>Trusses (at ${(trussSpacing*1000).toFixed(0)}mm spacing)</td><td style="text-align:right">${numTrusses} trusses</td><td style="text-align:right">Span: ${trussSpan.toFixed(1)}m</td></tr>`;
+  table += `<tr><td>Timber per truss (2×6 or 50×150mm)</td><td style="text-align:right">${timberPerTruss.toFixed(1)}m</td><td style="text-align:right">2 rafters + chord + web</td></tr>`;
+  table += `<tr><td>Total truss timber</td><td style="text-align:right">${totalTimberM.toFixed(0)}m</td><td style="text-align:right">${(totalTimberM * 0.05 * 0.15).toFixed(2)} m³</td></tr>`;
+  table += `<tr><td>Purlins (2×4 or 50×100mm)</td><td style="text-align:right">${purlinsM.toFixed(0)}m</td><td style="text-align:right">At 1.2m spacing on slope</td></tr>`;
+  table += `<tr><td>Fascia Board</td><td style="text-align:right">${fasciaM}m</td><td style="text-align:right">Building perimeter</td></tr>`;
+  table += `<tr><td>Gutter (PVC)</td><td style="text-align:right">${fasciaM}m</td><td style="text-align:right">Same as fascia run</td></tr>`;
+
   document.getElementById('materialsTable').innerHTML = table;
+
+  // ── Truss results in grid ──
+  var existingHtml = document.getElementById('resultGrid').innerHTML;
+  existingHtml += `<div class="result-box"><div class="num">${numTrusses}</div><div class="lbl">Trusses</div></div>`;
+  existingHtml += `<div class="result-box"><div class="num">${totalTimberM.toFixed(0)}m</div><div class="lbl">Truss Timber</div></div>`;
+  document.getElementById('resultGrid').innerHTML = existingHtml;
 
   document.getElementById('resultCard').style.display = 'block';
   document.getElementById('resultCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
