@@ -22,18 +22,25 @@
     <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
     <meta property="og:url" content="https://afrotools.com/tools/generator-fuel/">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Generator Fuel Calculator | AfroTools">
+    <meta name="twitter:description" content="Calculate running costs, compare generator vs grid vs solar, maintenance schedule, carbon footprint.">
+    <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Engineering Tools","item":"https://afrotools.com/engineering/"},{"@type":"ListItem","position":3,"name":"Generator Fuel Calculator","item":"https://afrotools.com/tools/generator-fuel/"}]}</script>
+    <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Generator Fuel Calculator — Diesel & Petrol Cost Tracking | AfroTools">
     <meta name="twitter:description" content="Generator fuel consumption calculator for diesel and petrol. Compare costs, track expenses, African fuel prices.">
     <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript></noscript>
 
     <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
     <link rel="stylesheet" href="/assets/css/tokens.min.css">
     <link rel="stylesheet" href="/assets/css/global.min.css">
-    <script src="/assets/js/components/tool-registry.min.js"></script>
+    <script src="/assets/js/components/tool-registry.min.js" defer></script>
     <script src="/assets/js/components/navbar.min.js" defer></script>
     <script src="/assets/js/components/footer.min.js" defer></script>
     <script src="/assets/js/components/newsletter-cta.min.js" defer></script>
@@ -198,6 +205,31 @@
     <div class="calc-layout">
         <div class="card">
             <div class="card-title"><span>⚙️</span> Generator Settings</div>
+            <div class="field">
+                <label>Generator Model (optional — auto-fills kVA & consumption)</label>
+                <select id="genModel" onchange="loadGenModel()">
+                    <option value="">— Select a model or enter custom below —</option>
+                    <optgroup label="Small (Residential)">
+                        <option value="2.5,1.0,petrol,68">Sumec Firman (2.5 kVA, 1.0 L/hr, Petrol)</option>
+                        <option value="2.5,0.8,petrol,70">Tiger TG3000 (2.5 kVA, 0.8 L/hr, Petrol)</option>
+                        <option value="3.5,1.2,petrol,72">Elepaq SV6800 (3.5 kVA, 1.2 L/hr, Petrol)</option>
+                        <option value="3.5,1.0,petrol,69">Lutian LT3990E (3.5 kVA, 1.0 L/hr, Petrol)</option>
+                        <option value="5.0,1.5,petrol,73">Sumec Firman ECO (5 kVA, 1.5 L/hr, Petrol)</option>
+                        <option value="6.5,1.8,petrol,75">Elepaq 7.5kVA (6.5 kVA, 1.8 L/hr, Petrol)</option>
+                    </optgroup>
+                    <optgroup label="Medium (Commercial)">
+                        <option value="10,2.5,diesel,78">Lister Petter 10kVA (2.5 L/hr, Diesel)</option>
+                        <option value="15,3.5,diesel,82">Mikano 15kVA (3.5 L/hr, Diesel)</option>
+                        <option value="20,4.0,diesel,85">Mantrac/CAT 20kVA (4.0 L/hr, Diesel)</option>
+                        <option value="25,5.5,diesel,86">Perkins 25kVA (5.5 L/hr, Diesel)</option>
+                    </optgroup>
+                    <optgroup label="Large (Industrial)">
+                        <option value="50,10,diesel,92">Jubaili Bros 50kVA (10 L/hr, Diesel)</option>
+                        <option value="100,20,diesel,95">Perkins 100kVA (20 L/hr, Diesel)</option>
+                        <option value="150,28,diesel,98">Cummins 150kVA (28 L/hr, Diesel)</option>
+                    </optgroup>
+                </select>
+            </div>
             <div class="field">
                 <label>Generator Capacity (kVA)</label>
                 <div class="preset-row">
@@ -371,6 +403,19 @@
             <canvas id="chartSolar" height="220"></canvas>
         </div>
 
+        <!-- Maintenance, Noise & Carbon -->
+        <div class="stat-row" id="extraStats" style="display:none">
+            <div class="stat-card"><div class="stat-label">Maintenance / Year</div><div class="stat-value" id="rMaint">—</div></div>
+            <div class="stat-card"><div class="stat-label">Noise Level</div><div class="stat-value" id="rNoise">—</div></div>
+            <div class="stat-card"><div class="stat-label">CO₂ Emissions / Month</div><div class="stat-value" id="rCarbon">—</div></div>
+            <div class="stat-card"><div class="stat-label">Total Monthly (fuel + maintenance)</div><div class="stat-value" id="rTotalWithMaint">—</div></div>
+        </div>
+
+        <div id="maintDetails" style="display:none;background:#fff;border:1.5px solid #e2e8f0;border-radius:10px;padding:18px;margin-bottom:20px">
+            <div style="font-size:13px;font-weight:800;color:#1e293b;margin-bottom:10px">Maintenance Schedule</div>
+            <div id="maintSchedule" style="font-size:.82rem;color:#475569;line-height:1.7"></div>
+        </div>
+
         <!-- Tips -->
         <div class="tips-card">
             <h3>Fuel Efficiency Tips</h3>
@@ -405,6 +450,16 @@ function setPrice(curr, price, gridRate, btn) {
     document.getElementById('currencyCode').value = curr;
     btn.closest('.preset-row').querySelectorAll('.preset-btn').forEach(function(b) { b.classList.remove('active'); });
     btn.classList.add('active');
+}
+
+function loadGenModel() {
+    var sel = document.getElementById('genModel');
+    if (!sel.value) return;
+    var parts = sel.value.split(',');
+    document.getElementById('kva').value = parts[0];
+    document.getElementById('fuelType').value = parts[2];
+    // Clear preset active states
+    document.querySelectorAll('#kva').forEach(function(){});
 }
 
 function fmt(n) { return n.toLocaleString('en-US', { maximumFractionDigits: 0 }); }
@@ -499,6 +554,45 @@ function calculate() {
         '<td class="save-col">' + (gridSave > 0 ? currency + ' ' + fmt(gridSave * 12) : '—') + '</td>' +
         '<td style="font-weight:800">' + currency + ' ' + fmt(genAnnual) + '</td>';
     tbody.appendChild(totTr);
+
+    // ── Maintenance, Noise & Carbon ──
+    var hrsMonth = hrsDay * daysMonth;
+    var hrsYear = hrsMonth * 12;
+    // Oil change every 250 hrs, filters every 500 hrs, major service every 1000 hrs
+    var oilChangesYr = Math.ceil(hrsYear / 250);
+    var filterChangesYr = Math.ceil(hrsYear / 500);
+    var majorServicesYr = Math.ceil(hrsYear / 1000);
+    // Cost estimates (scaled by kVA)
+    var oilChangeCost = kva < 10 ? 5000 : kva < 30 ? 15000 : 40000;
+    var filterCost = kva < 10 ? 3000 : kva < 30 ? 8000 : 20000;
+    var majorCost = kva < 10 ? 20000 : kva < 30 ? 50000 : 120000;
+    // Scale for non-NGN
+    if (currency === 'KES') { oilChangeCost *= 0.14; filterCost *= 0.14; majorCost *= 0.14; }
+    else if (currency === 'ZAR') { oilChangeCost *= 0.02; filterCost *= 0.02; majorCost *= 0.02; }
+    else if (currency === 'GHS') { oilChangeCost *= 0.013; filterCost *= 0.013; majorCost *= 0.013; }
+    var maintYearly = (oilChangesYr * oilChangeCost) + (filterChangesYr * filterCost) + (majorServicesYr * majorCost);
+    var maintMonthly = maintYearly / 12;
+
+    // Noise (dB)
+    var noisedB = kva < 3 ? '65-72 dB' : kva < 8 ? '72-80 dB' : kva < 20 ? '75-85 dB' : kva < 50 ? '80-90 dB' : '85-100 dB';
+
+    // CO2 emissions: diesel ~2.68 kg CO2/litre, petrol ~2.31 kg CO2/litre
+    var co2Factor = fuelType === 'diesel' ? 2.68 : 2.31;
+    var co2Monthly = Math.round(litresMonth * co2Factor);
+
+    document.getElementById('rMaint').textContent = currency + ' ' + fmt(Math.round(maintYearly));
+    document.getElementById('rNoise').textContent = noisedB;
+    document.getElementById('rCarbon').textContent = fmt(co2Monthly) + ' kg CO\u2082';
+    document.getElementById('rTotalWithMaint').textContent = currency + ' ' + fmt(Math.round(genMonthly + maintMonthly));
+    document.getElementById('extraStats').style.display = '';
+
+    // Maintenance schedule
+    document.getElementById('maintSchedule').innerHTML =
+      '<strong>Oil change:</strong> Every 250 hrs (' + oilChangesYr + '×/year) — ' + currency + ' ' + fmt(Math.round(oilChangeCost)) + ' each<br>' +
+      '<strong>Filters (oil + air):</strong> Every 500 hrs (' + filterChangesYr + '×/year) — ' + currency + ' ' + fmt(Math.round(filterCost)) + ' each<br>' +
+      '<strong>Major service:</strong> Every 1,000 hrs (' + majorServicesYr + '×/year) — ' + currency + ' ' + fmt(Math.round(majorCost)) + ' each<br>' +
+      '<strong>Your runtime:</strong> ' + fmt(Math.round(hrsYear)) + ' hrs/year | <strong>Annual maintenance:</strong> ' + currency + ' ' + fmt(Math.round(maintYearly));
+    document.getElementById('maintDetails').style.display = '';
 
     // Fun comparisons
     var jollofPlates = Math.round(genMonthly / 1500);
