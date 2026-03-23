@@ -27,9 +27,8 @@
 <meta name="twitter:description" content="Interactive explorer of Africa's natural resources, GDP, trade data, and economic indicators for all 54 countries.">
 <meta name="robots" content="index, follow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Serif&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Serif&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&family=Instrument+Serif&display=swap"></noscript></noscript>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
 <link rel="stylesheet" href="/assets/css/global.min.css">
 <link rel="stylesheet" href="style.css">
@@ -40,82 +39,108 @@
 <body>
 <afro-navbar></afro-navbar>
 
-<nav class="crumb" aria-label="breadcrumb">
-  <a href="/">Home</a> <span>/</span> <a href="/tools/">Tools</a> <span>/</span> <span>AfroAtlas</span>
-</nav>
+<div class="aa-page">
 
-<!-- HERO -->
-<section class="aa-hero">
-  <div class="aa-hero-inner">
-    <div style="display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap">
-      <span class="aa-badge aa-badge-live">LIVE</span>
-      <span class="aa-badge aa-badge-count">54 COUNTRIES</span>
+  <!-- ══ DARK HERO ══ -->
+  <section class="aa-hero">
+    <div class="aa-wrap">
+      <nav class="aa-crumb" aria-label="breadcrumb">
+        <a href="/">Home</a> <span>/</span> <a href="/tools/">Tools</a> <span>/</span> <span>AfroAtlas</span>
+      </nav>
+
+      <div class="aa-hero-badges">
+        <span class="aa-badge aa-badge--live"><span class="aa-pulse"></span>LIVE</span>
+        <span class="aa-badge">54 COUNTRIES</span>
+        <span class="aa-badge">FREE</span>
+      </div>
+
+      <h1>Africa's Resource<br><em>Intelligence Explorer</em></h1>
+      <p class="aa-hero-sub">GDP, natural resources, trade data, and economic indicators for every African country. Compare any two countries. Discover resource paradox stories.</p>
+
+      <div class="aa-stats-row" id="aa-stats">
+        <div class="aa-stat-pill"><strong>54</strong><span>Countries</span></div>
+        <div class="aa-stat-pill"><strong>$2.8T</strong><span>Combined GDP</span></div>
+        <div class="aa-stat-pill"><strong>1.4B</strong><span>People</span></div>
+        <div class="aa-stat-pill"><strong>30%</strong><span>World's Minerals</span></div>
+      </div>
+
+      <div class="aa-search-wrap">
+        <div class="aa-search-bar">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input type="search" id="aa-search" placeholder="Search countries, resources, or type 'Nigeria vs Kenya'..." autocomplete="off">
+        </div>
+      </div>
     </div>
-    <h1 class="aa-h1">Explore Africa's Wealth. <em>Discover the Numbers.</em></h1>
-    <p class="aa-hero-sub">The most comprehensive open explorer of Africa's natural resources, GDP, trade data, and economic indicators. Dive into every country's story.</p>
-  </div>
-</section>
+  </section>
 
-<!-- Stats Row -->
-<div class="aa-stats-row" id="aa-stats"></div>
+  <!-- ══ COUNTRIES ══ -->
+  <section class="aa-section aa-countries-section">
+    <div class="aa-wrap">
+      <div class="aa-region-tabs" id="aa-region-tabs"></div>
+      <div class="aa-grid" id="aa-grid"></div>
+    </div>
+  </section>
 
-<!-- Search -->
-<div class="aa-search-section">
-  <div class="aa-search-bar">
-    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
-    <input type="search" id="aa-search" class="aa-search-input" placeholder="Search countries, resources, or compare..." autocomplete="off">
-  </div>
+  <!-- ══ COMPARE ══ -->
+  <section class="aa-section aa-compare-section aa-rv">
+    <div class="aa-wrap">
+      <div class="aa-section-header">
+        <span class="aa-eyebrow">Compare</span>
+        <h2 class="aa-section-title">How Does Your Country Stack Up?</h2>
+      </div>
+      <div class="aa-compare-row">
+        <select id="aa-compare-a" class="aa-compare-select" aria-label="First country"></select>
+        <div class="aa-vs-badge">VS</div>
+        <select id="aa-compare-b" class="aa-compare-select" aria-label="Second country"></select>
+      </div>
+      <div style="text-align:center">
+        <button class="aa-btn aa-btn--primary" id="aa-compare-go">Compare &rarr;</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ RANKINGS ══ -->
+  <section class="aa-section aa-rankings aa-rv">
+    <div class="aa-wrap">
+      <div class="aa-section-header">
+        <span class="aa-eyebrow">Rankings</span>
+        <h2 class="aa-section-title">Who Has the Most?</h2>
+      </div>
+      <div class="aa-resource-tabs" id="aa-res-tabs"></div>
+      <div class="aa-chart-wrap">
+        <canvas id="aa-rank-chart"></canvas>
+      </div>
+      <div style="text-align:center">
+        <a href="rankings.html" class="aa-link">See Full Rankings &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ PARADOXES ══ -->
+  <section class="aa-section aa-paradox-section aa-rv">
+    <div class="aa-wrap">
+      <div class="aa-section-header">
+        <span class="aa-eyebrow">Stories</span>
+        <h2 class="aa-section-title">Resource Paradoxes</h2>
+        <p class="aa-section-sub">The stories the numbers tell</p>
+      </div>
+    </div>
+    <div class="aa-paradox-track" id="aa-paradoxes"></div>
+  </section>
+
 </div>
-
-<!-- Region Filter Tabs -->
-<div class="aa-region-tabs" id="aa-region-tabs"></div>
-
-<!-- Country Card Grid -->
-<div class="aa-wrap">
-  <div class="aa-grid" id="aa-grid"></div>
-</div>
-
-<!-- Compare Section -->
-<section class="aa-compare-section aa-section aa-rv">
-  <h2 class="aa-section-title">Compare Countries</h2>
-  <p class="aa-section-sub">How does your country stack up?</p>
-  <div class="aa-compare-row">
-    <select id="aa-compare-a" class="aa-select" aria-label="First country to compare"></select>
-    <div class="aa-vs-badge">VS</div>
-    <select id="aa-compare-b" class="aa-select" aria-label="Second country to compare"></select>
-    <button class="aa-compare-btn" id="aa-compare-go">Compare &rarr;</button>
-  </div>
-</section>
-
-<!-- Resource Rankings Preview -->
-<section class="aa-section aa-rankings aa-rv">
-  <h2 class="aa-section-title">Resource Rankings</h2>
-  <p class="aa-section-sub">Who has the most?</p>
-  <div class="aa-resource-tabs" id="aa-res-tabs"></div>
-  <div class="aa-chart-container">
-    <canvas id="aa-rank-chart"></canvas>
-  </div>
-  <a href="rankings.html" class="aa-see-all">See Full Rankings &rarr;</a>
-</section>
-
-<!-- Resource Paradoxes -->
-<section class="aa-section aa-paradox-section aa-rv">
-  <h2 class="aa-section-title">Resource Paradoxes</h2>
-  <p class="aa-section-sub">The stories the numbers tell</p>
-  <div class="aa-paradox-track" id="aa-paradoxes"></div>
-</section>
 
 <afro-footer></afro-footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
 <script src="/engines/afroatlas-engine.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
 <script>
 (function() {
   'use strict';
 
-  /* ── Utilities ─────────────────────────────────────── */
+  /* ── Utilities ── */
   function fmtGDP(n) {
     if (!n) return 'N/A';
     if (n >= 1e12) return '$' + (n / 1e12).toFixed(1) + 'T';
@@ -127,16 +152,16 @@
   function fmtPop(n) {
     if (n >= 1e9) return (n / 1e9).toFixed(1) + 'B';
     if (n >= 1e6) return (n / 1e6).toFixed(0) + 'M';
-    return n.toLocaleString();
+    return String(n);
   }
 
   function esc(s) {
-    return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
 
   function $(id) { return document.getElementById(id); }
 
-  /* ── Wait for engine ───────────────────────────────── */
+  /* ── Wait for engine ── */
   function ready(fn) {
     if (typeof AfroAtlas !== 'undefined') { fn(); return; }
     var t = setInterval(function() {
@@ -146,38 +171,47 @@
 
   ready(function() {
 
-    /* ── 1. Stats Row ──────────────────────────────────── */
+    var regions = AfroAtlas.getRegions();
+    var resTypes = AfroAtlas.RESOURCE_TYPES;
+    var allCountries = AfroAtlas.getAllCountries();
+    var activeRegion = 'all';
+
+    allCountries.sort(function(a, b) { return (b.gdp || 0) - (a.gdp || 0); });
+
+    function _findCode(country) {
+      var keys = Object.keys(AfroAtlas.COUNTRIES);
+      for (var i = 0; i < keys.length; i++) {
+        if (AfroAtlas.COUNTRIES[keys[i]] === country) return keys[i];
+      }
+      return '';
+    }
+
+    /* ── 1. Stats Row (live data) ── */
     var stats = AfroAtlas.getAggregateStats();
     var statsEl = $('aa-stats');
     if (statsEl && stats) {
       var items = [
-        { icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v3M12 14v3M16 14v3"/></svg>', label: 'Countries', value: stats.totalCountries },
-        { icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 100 7h5a3.5 3.5 0 110 7H6"/></svg>', label: 'Total GDP', value: fmtGDP(stats.totalGDP) },
-        { icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>', label: 'People', value: fmtPop(stats.totalPopulation) },
-        { icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>', label: "World's Minerals", value: '30%' }
+        { val: String(stats.totalCountries), lbl: 'Countries' },
+        { val: fmtGDP(stats.totalGDP), lbl: 'Combined GDP' },
+        { val: fmtPop(stats.totalPopulation), lbl: 'People' },
+        { val: '30%', lbl: "World's Minerals" }
       ];
-      var statsHTML = '';
+      var shtml = '';
       for (var si = 0; si < items.length; si++) {
-        statsHTML += '<div class="aa-stat-pill">' +
-          '<span class="aa-stat-icon">' + items[si].icon + '</span>' +
-          '<span class="aa-stat-val">' + esc(String(items[si].value)) + '</span>' +
-          '<span class="aa-stat-lbl">' + esc(items[si].label) + '</span>' +
-          '</div>';
+        shtml += '<div class="aa-stat-pill"><strong>' + esc(items[si].val) + '</strong><span>' + esc(items[si].lbl) + '</span></div>';
       }
-      statsEl.innerHTML = statsHTML;
+      statsEl.innerHTML = shtml;
     }
 
-    /* ── 2. Region Tabs ────────────────────────────────── */
-    var regions = AfroAtlas.getRegions();
+    /* ── 2. Region Tabs ── */
     var regionTabsEl = $('aa-region-tabs');
-    var activeRegion = 'all';
     if (regionTabsEl && regions) {
-      var tabsHTML = '<button class="aa-tab aa-tab-active" data-region="all">All</button>';
+      var thtml = '<button class="aa-tab aa-tab-active" data-region="all">All</button>';
       var rKeys = Object.keys(regions);
       for (var ri = 0; ri < rKeys.length; ri++) {
-        tabsHTML += '<button class="aa-tab" data-region="' + rKeys[ri] + '">' + esc(regions[rKeys[ri]].name) + '</button>';
+        thtml += '<button class="aa-tab" data-region="' + rKeys[ri] + '">' + esc(regions[rKeys[ri]].name) + '</button>';
       }
-      regionTabsEl.innerHTML = tabsHTML;
+      regionTabsEl.innerHTML = thtml;
       regionTabsEl.addEventListener('click', function(e) {
         var btn = e.target.closest('.aa-tab');
         if (!btn) return;
@@ -190,13 +224,8 @@
       });
     }
 
-    /* ── 3. Country Grid ───────────────────────────────── */
-    var allCountries = AfroAtlas.getAllCountries();
-    var resTypes = AfroAtlas.RESOURCE_TYPES;
+    /* ── 3. Country Grid ── */
     var gridEl = $('aa-grid');
-
-    // Sort by GDP descending
-    allCountries.sort(function(a, b) { return (b.gdp || 0) - (a.gdp || 0); });
 
     function renderGrid() {
       if (!gridEl) return;
@@ -208,10 +237,8 @@
       for (var ci = 0; ci < allCountries.length; ci++) {
         var c = allCountries[ci];
 
-        // Region filter
         if (activeRegion !== 'all' && c.region !== activeRegion) continue;
 
-        // Search filter
         if (q) {
           var match = false;
           if (c.name.toLowerCase().indexOf(q) !== -1) match = true;
@@ -226,7 +253,6 @@
           if (!match) continue;
         }
 
-        // Top 3 resource pills
         var resPills = '';
         if (c.resources) {
           var top3 = c.resources.slice(0, 3);
@@ -238,7 +264,6 @@
           }
         }
 
-        // Region label
         var regionLabel = '';
         var rKeys2 = Object.keys(regions);
         for (var rk = 0; rk < rKeys2.length; rk++) {
@@ -248,12 +273,19 @@
           }
         }
 
+        var ccode = _findCode(c);
+        var flagSrc = 'https://flagcdn.com/w80/' + ccode.toLowerCase() + '.png';
+
         html += '<a href="country/' + esc(c.slug) + '/" class="aa-card aa-rv">' +
-          '<div class="aa-card-flag">' + (c.flag || '') + '</div>' +
-          '<h3 class="aa-card-name">' + esc(c.name) + '</h3>' +
-          '<div class="aa-card-gdp">' + fmtGDP(c.gdp) + '</div>' +
-          '<div class="aa-card-res">' + resPills + '</div>' +
-          '<span class="aa-card-region">' + esc(regionLabel) + '</span>' +
+          '<div class="aa-card-top">' +
+            '<img class="aa-card-flag" src="' + flagSrc + '" alt="' + esc(c.flag || '') + '" width="40" height="30" loading="lazy" onerror="this.outerHTML=\'<span class=aa-flag-emoji>\' + this.alt + \'</span>\'">' +
+            '<div class="aa-card-info">' +
+              '<h3 class="aa-card-name">' + esc(c.name) + '</h3>' +
+              '<span class="aa-card-region">' + esc(regionLabel) + '</span>' +
+            '</div>' +
+            '<span class="aa-card-gdp">' + fmtGDP(c.gdp) + '</span>' +
+          '</div>' +
+          (resPills ? '<div class="aa-card-res">' + resPills + '</div>' : '') +
           '</a>';
         count++;
       }
@@ -265,17 +297,9 @@
       initScrollReveal();
     }
 
-    function _findCode(country) {
-      var keys = Object.keys(AfroAtlas.COUNTRIES);
-      for (var fi = 0; fi < keys.length; fi++) {
-        if (AfroAtlas.COUNTRIES[keys[fi]] === country) return keys[fi];
-      }
-      return '';
-    }
-
     renderGrid();
 
-    /* ── 4. Search with debounce ───────────────────────── */
+    /* ── 4. Search ── */
     var searchInput = $('aa-search');
     var debounceTimer = null;
     if (searchInput) {
@@ -285,7 +309,7 @@
       });
     }
 
-    /* ── 5. Compare Selects ────────────────────────────── */
+    /* ── 5. Compare Selects ── */
     var selA = $('aa-compare-a');
     var selB = $('aa-compare-b');
     var compareBtn = $('aa-compare-go');
@@ -315,7 +339,6 @@
       selA.innerHTML = optHTML;
       selB.innerHTML = optHTML;
 
-      // Default selections
       if (sorted.length > 1) {
         selA.value = _findCode(sorted[0]);
         selB.value = _findCode(sorted[1]);
@@ -332,7 +355,7 @@
       });
     }
 
-    /* ── 6. Rankings Chart ─────────────────────────────── */
+    /* ── 6. Rankings Chart ── */
     var resTabsEl = $('aa-res-tabs');
     var chartCanvas = $('aa-rank-chart');
     var chartInstance = null;
@@ -370,14 +393,12 @@
 
       var labels = [];
       var values = [];
-      var bgColors = [];
+      var bgColors = ['#007AFF', '#4DA3FF', '#7BBFFF', '#A8D4FF', '#D0E8FF'];
       var resInfo = resTypes[activeRes];
-      var baseColor = resInfo ? resInfo.color : '#007AFF';
 
       for (var di = 0; di < top5.length; di++) {
         labels.push(top5[di].country.flag + ' ' + top5[di].country.name);
         values.push(top5[di].resource.share || top5[di].resource.rank || 1);
-        bgColors.push(baseColor);
       }
 
       if (chartInstance) {
@@ -392,8 +413,8 @@
             label: resInfo ? resInfo.label + ' (Africa Share %)' : 'Rank',
             data: values,
             backgroundColor: bgColors,
-            borderRadius: 6,
-            barThickness: 28
+            borderRadius: 8,
+            barThickness: 32
           }]
         },
         options: {
@@ -403,9 +424,14 @@
           plugins: {
             legend: { display: false },
             tooltip: {
+              backgroundColor: '#0A1628',
+              titleFont: { family: 'DM Sans', weight: '700' },
+              bodyFont: { family: 'DM Sans' },
+              cornerRadius: 8,
+              padding: 12,
               callbacks: {
                 label: function(ctx) {
-                  return ctx.raw + '%';
+                  return ' ' + ctx.raw + '%';
                 }
               }
             }
@@ -413,12 +439,12 @@
           scales: {
             x: {
               beginAtZero: true,
-              grid: { color: 'rgba(0,0,0,0.05)' },
-              ticks: { font: { family: 'DM Sans', size: 12 } }
+              grid: { color: 'rgba(0,0,0,0.04)', drawBorder: false },
+              ticks: { font: { family: 'DM Sans', size: 12 }, color: '#94a3b8' }
             },
             y: {
               grid: { display: false },
-              ticks: { font: { family: 'DM Sans', size: 13 } }
+              ticks: { font: { family: 'DM Sans', size: 13, weight: '600' }, color: '#0f172a' }
             }
           }
         }
@@ -428,14 +454,13 @@
     if (chartAvailable) {
       renderChart();
     } else {
-      // Graceful degradation: hide chart container if Chart.js fails
       var chartContainer = chartCanvas ? chartCanvas.parentNode : null;
       if (chartContainer) {
         chartContainer.innerHTML = '<p class="aa-chart-fallback">Chart library unavailable. <a href="rankings.html">View rankings instead &rarr;</a></p>';
       }
     }
 
-    /* ── 7. Paradox Carousel ───────────────────────────── */
+    /* ── 7. Paradox Carousel ── */
     var paradoxEl = $('aa-paradoxes');
     if (paradoxEl) {
       var paradoxes = AfroAtlas.getParadoxes();
@@ -443,9 +468,21 @@
       var pHTML = '';
       for (var pi = 0; pi < top6.length; pi++) {
         var p = top6[pi];
+        var pcode = '';
+        var ckeys = Object.keys(AfroAtlas.COUNTRIES);
+        for (var pk = 0; pk < ckeys.length; pk++) {
+          if (AfroAtlas.COUNTRIES[ckeys[pk]].name === p.name) { pcode = ckeys[pk]; break; }
+        }
+        var pflagHTML = '';
+        if (pcode) {
+          pflagHTML = '<img src="https://flagcdn.com/w80/' + pcode.toLowerCase() + '.png" alt="' + esc(p.flag || '') + '" width="40" height="30" loading="lazy" onerror="this.outerHTML=\'<span style=font-size:1.8rem>\' + this.alt + \'</span>\'">';
+        } else {
+          pflagHTML = '<span style="font-size:1.8rem">' + (p.flag || '') + '</span>';
+        }
+
         pHTML += '<div class="aa-paradox-card">' +
           '<div class="aa-paradox-head">' +
-            '<span class="aa-paradox-flag">' + (p.flag || '') + '</span>' +
+            '<span class="aa-paradox-flag">' + pflagHTML + '</span>' +
             '<span class="aa-paradox-name">' + esc(p.name) + '</span>' +
             '<span class="aa-paradox-rrs" title="Resource Richness Score">' + (p.rrs || 0) + '</span>' +
           '</div>' +
@@ -455,18 +492,27 @@
       paradoxEl.innerHTML = pHTML;
     }
 
-    /* ── 8. Scroll Reveal ──────────────────────────────── */
+    /* ── 8. Scroll Reveal ── */
     function initScrollReveal() {
       if (!('IntersectionObserver' in window)) return;
-      var els = document.querySelectorAll('.aa-rv');
+      var els = document.querySelectorAll('.aa-rv:not(.aa-visible)');
       var observer = new IntersectionObserver(function(entries) {
         for (var ei = 0; ei < entries.length; ei++) {
           if (entries[ei].isIntersecting) {
-            entries[ei].target.classList.add('aa-visible');
-            observer.unobserve(entries[ei].target);
+            var el = entries[ei].target;
+            /* Stagger grid children */
+            var parent = el.parentNode;
+            if (parent && parent.classList && parent.classList.contains('aa-grid')) {
+              var siblings = parent.querySelectorAll('.aa-rv:not(.aa-visible)');
+              for (var si2 = 0; si2 < siblings.length; si2++) {
+                siblings[si2].style.transitionDelay = (si2 * 30) + 'ms';
+              }
+            }
+            el.classList.add('aa-visible');
+            observer.unobserve(el);
           }
         }
-      }, { threshold: 0.08 });
+      }, { threshold: 0.06, rootMargin: '0px 0px -40px 0px' });
       for (var oi2 = 0; oi2 < els.length; oi2++) {
         observer.observe(els[oi2]);
       }
