@@ -243,20 +243,8 @@ body{font-family:-apple-system,'DM Sans',system-ui,sans-serif;background:#f5f5f7
         </div>
         <div class="field">
           <label for="startMonth">Start Month</label>
-          <select id="startMonth">
-            <option value="1">January 2025</option>
-            <option value="2">February 2025</option>
-            <option value="3">March 2025</option>
-            <option value="4">April 2025</option>
-            <option value="5">May 2025</option>
-            <option value="6">June 2025</option>
-            <option value="7">July 2025</option>
-            <option value="8">August 2025</option>
-            <option value="9">September 2025</option>
-            <option value="10">October 2025</option>
-            <option value="11">November 2025</option>
-            <option value="12" selected>December 2025</option>
-          </select>
+          <select id="startMonth"></select>
+          <script>!function(){var s=document.getElementById('startMonth'),y=new Date().getFullYear(),m=new Date().getMonth(),mn=['January','February','March','April','May','June','July','August','September','October','November','December'];for(var i=0;i<12;i++){var o=document.createElement('option');o.value=i+1;o.textContent=mn[i]+' '+y;if(i===m)o.selected=true;s.appendChild(o)}}()</script>
         </div>
       </div>
 
@@ -558,10 +546,10 @@ function calculate() {
   const svc  = parseFloat(document.getElementById('serviceCharge').value) || 0;
   const sm   = parseInt(document.getElementById('startMonth').value) || 1;
 
-  if (P <= 0 || r <= 0 || n <= 0) { alert('Please fill all required fields.'); return; }
+  if (P <= 0 || n <= 0) { alert('Please fill all required fields.'); return; }
 
   // Monthly payment formula: P*r*(1+r)^n / ((1+r)^n - 1)
-  const monthly = P * r * Math.pow(1+r, n) / (Math.pow(1+r, n) - 1);
+  const monthly = r === 0 ? P / n : P * r * Math.pow(1+r, n) / (Math.pow(1+r, n) - 1);
   const totalPaid = monthly * n;
   const totalInterest = totalPaid - P;
   const totalMonthly = monthly + ins + svc;
@@ -569,7 +557,8 @@ function calculate() {
   // End date
   const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   const endM = ((sm - 1 + (n % 12)) % 12);
-  const endY = 2025 + Math.floor((sm - 1 + n) / 12);
+  const startYear = new Date().getFullYear();
+  const endY = startYear + Math.floor((sm - 1 + n) / 12);
   const endDate = months[endM] + ' ' + endY;
 
   // Update results

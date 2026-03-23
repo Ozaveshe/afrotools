@@ -30,6 +30,7 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
 <script src="/assets/js/components/tool-registry.min.js"></script>
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
@@ -435,8 +436,14 @@ function calculate(){
   let cumulNetIncome=0;
   let mortBalance=loanAmount;
 
-  // Calculate mortgage amortization (approximate)
-  let monthlyMort=annualMortgage/12;
+  // Derive approximate annual interest rate from inputs
+  // If annual payment > 0 and loanAmount > 0, estimate rate using payment/balance ratio
+  var estAnnualRate=0;
+  if(loanAmount>0&&annualMortgage>0){
+    // Newton approximation: rate ≈ (annualMortgage/loanAmount - 1/25) for typical 20-25yr loans
+    // Simpler: use interest-only approximation then refine
+    estAnnualRate=Math.max(0.01,Math.min(0.35,(annualMortgage/loanAmount)-0.04));
+  }
 
   for(let y=1;y<=holdYears;y++){
     propValue=buyPrice*Math.pow(1+appreciation,y);
@@ -446,10 +453,11 @@ function calculate(){
     totalCashFlow+=yearCashFlow;
     cumulNetIncome+=yearCashFlow;
 
-    // Approximate remaining mortgage balance
+    // Proper remaining mortgage balance: interest accrues, principal reduces
     if(loanAmount>0&&annualMortgage>0){
-      const r=0.1/12; // approximate rate
-      mortBalance=Math.max(0,mortBalance-annualMortgage+(mortBalance*0.1));
+      var yearInterest=mortBalance*estAnnualRate;
+      var yearPrincipal=Math.min(annualMortgage-yearInterest,mortBalance);
+      mortBalance=Math.max(0,mortBalance-Math.max(0,yearPrincipal));
     }
 
     const totalReturnSoFar=(propValue-buyPrice)+cumulNetIncome-(buyCosts+sellCosts);
@@ -458,7 +466,7 @@ function calculate(){
     yearData.push({y,propValue,yearRentalNet,cumulNetIncome,totalReturnSoFar,roiSoFar});
   }
 
-  const finalMortBalance=loanAmount>0?Math.max(0,loanAmount-annualMortgage*holdYears*0.3):0; // simplified
+  const finalMortBalance=mortBalance;
   const netProceeds=exitNet-finalMortBalance;
   const totalProfit=netProceeds+totalRentalNet-totalCashIn;
   const totalROI=(totalProfit/totalCashIn)*100;

@@ -10,13 +10,13 @@
 <meta name="description" content="Calculate stamp duty on property purchases, tenancy agreements, loan documents and more across Nigeria, Kenya, South Africa, Ghana, Zimbabwe and other African countries.">
 <link rel="canonical" href="https://afrotools.com/tools/stamp-duty/">
 <meta property="og:title" content="African Stamp Duty Calculator — Nigeria, Kenya, SA, Ghana">
-<meta property="og:description" content="Calculate stamp duty payable on property transfers, rental agreements, mortgage deeds and other legal documents across 10 African countries.">
+<meta property="og:description" content="Calculate stamp duty payable on property transfers, rental agreements, mortgage deeds and other legal documents across 11 African countries.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
 <meta property="og:url" content="https://afrotools.com/tools/stamp-duty/">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"African Stamp Duty Calculator","description":"Calculate stamp duty on property purchases, tenancy agreements and legal documents across 10 African countries","url":"https://afrotools.com/tools/stamp-duty/","applicationCategory":"FinanceApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com"},{"@type":"ListItem","position":2,"name":"Mortgage & Property","item":"https://afrotools.com/mortgage-property"},{"@type":"ListItem","position":3,"name":"Stamp Duty Calculator","item":"https://afrotools.com/tools/stamp-duty/"}]}]}
+{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"African Stamp Duty Calculator","description":"Calculate stamp duty on property purchases, tenancy agreements and legal documents across 11 African countries","url":"https://afrotools.com/tools/stamp-duty/","applicationCategory":"FinanceApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com"},{"@type":"ListItem","position":2,"name":"Mortgage & Property","item":"https://afrotools.com/mortgage-property"},{"@type":"ListItem","position":3,"name":"Stamp Duty Calculator","item":"https://afrotools.com/tools/stamp-duty/"}]}]}
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
@@ -155,7 +155,7 @@ select:focus,input[type=number]:focus{outline:none;border-color:var(--color-prim
     </nav>
     <div class="hero-eyebrow">🏛️ Mortgage &amp; Property</div>
     <h1>African <span>Stamp Duty</span> Calculator</h1>
-    <p class="hero-sub">Calculate stamp duty and transfer levies on property purchases, rental agreements, mortgage deeds and other legal documents across 10 African countries.</p>
+    <p class="hero-sub">Calculate stamp duty and transfer levies on property purchases, rental agreements, mortgage deeds and other legal documents across 11 African countries.</p>
     <div class="hero-chips">
       <span class="hero-chip">🇳🇬 Nigeria</span>
       <span class="hero-chip">🇰🇪 Kenya</span>
@@ -190,7 +190,8 @@ select:focus,input[type=number]:focus{outline:none;border-color:var(--color-prim
           <label class="form-label">Country</label>
           <select id="country" onchange="onCountryChange()">
             <option value="NG">🇳🇬 Nigeria</option>
-            <option value="KE" selected>🇰🇪 Kenya</option>
+            <option value="KE">🇰🇪 Kenya</option>
+            <option value="ZA" selected>🇿🇦 South Africa</option>
             <option value="GH">🇬🇭 Ghana</option>
             <option value="ZW">🇿🇼 Zimbabwe</option>
             <option value="TZ">🇹🇿 Tanzania</option>
@@ -301,6 +302,7 @@ select:focus,input[type=number]:focus{outline:none;border-color:var(--color-prim
       <div class="info-card-body">
         <table class="rate-table">
           <tr><th>Country</th><th>Property Rate</th></tr>
+          <tr><td>🇿🇦 South Africa</td><td>0–13% <span class="rate-badge">progressive</span></td></tr>
           <tr><td>🇰🇪 Kenya</td><td>4% urban <span class="rate-badge">2% rural</span></td></tr>
           <tr><td>🇬🇭 Ghana</td><td>0.5% + 3% levy</td></tr>
           <tr><td>🇳🇬 Nigeria</td><td>0.75% (FG)</td></tr>
@@ -319,6 +321,7 @@ select:focus,input[type=number]:focus{outline:none;border-color:var(--color-prim
       <div class="info-card-header">💡 Key Facts</div>
       <div class="info-card-body">
         <ul class="tip-list">
+          <li>South Africa charges Transfer Duty on a progressive scale — properties under R1.1M are exempt (0%).</li>
           <li>Kenya first-time buyers are exempt from stamp duty on residential property under KES 4M (urban).</li>
           <li>Nigeria's stamp duty of 0.75% applies to instruments of transfer under the Stamp Duties Act.</li>
           <li>Ghana charges a 3% Transfer Levy separately from the 0.5% stamp duty.</li>
@@ -429,6 +432,50 @@ const COUNTRIES = {
         items.push({ name: 'Charge / Mortgage Duty (0.1%)', amount: val * 0.001 });
       } else if (docId === 'shares') {
         items.push({ name: 'Share Transfer Duty (1%)', amount: val * 0.01 });
+      }
+      return items;
+    }
+  },
+  ZA: {
+    name: 'South Africa', sym: 'R', flag: '🇿🇦',
+    docs: [
+      { id: 'property', label: 'Property Transfer (Transfer Duty)', type: 'value' },
+      { id: 'mortgage', label: 'Mortgage Bond Registration', type: 'value' },
+      { id: 'lease', label: 'Lease Agreement', type: 'value' },
+      { id: 'shares', label: 'Securities Transfer Tax', type: 'value' },
+    ],
+    note: 'South Africa\'s Transfer Duty Act charges progressive rates on property purchases. SARS administers the duty. Natural persons pay 0% up to R1,100,000 then 3–13% on higher bands (2024/25 rates). Properties under R1.1M pay zero transfer duty.',
+    calc: function(docId, val) {
+      var items = [];
+      if (docId === 'property') {
+        // 2024/25 SARS Transfer Duty rates for natural persons
+        var duty = 0;
+        if (val <= 1100000) {
+          duty = 0;
+        } else if (val <= 1512500) {
+          duty = (val - 1100000) * 0.03;
+        } else if (val <= 2117500) {
+          duty = 12375 + (val - 1512500) * 0.06;
+        } else if (val <= 2722500) {
+          duty = 48675 + (val - 2117500) * 0.08;
+        } else if (val <= 12100000) {
+          duty = 97075 + (val - 2722500) * 0.11;
+        } else {
+          duty = 1128600 + (val - 12100000) * 0.13;
+        }
+        items.push({ name: 'Transfer Duty (SARS Progressive Scale)', amount: duty, note: '0% up to R1.1M, 3–13% above' });
+      } else if (docId === 'mortgage') {
+        // Bond registration: deeds office fee + bond attorney
+        var deedsFee = val <= 100000 ? 250 : val <= 300000 ? 570 : val <= 600000 ? 1140 : val <= 1000000 ? 1710 : val <= 2000000 ? 2250 : 3990;
+        items.push({ name: 'Deeds Office Registration Fee', amount: deedsFee, note: 'Fixed scale based on bond value' });
+        items.push({ name: 'Bond Stamp Duty (est.)', amount: 0, note: 'No stamp duty on mortgage bonds since 2009' });
+      } else if (docId === 'lease') {
+        // No stamp duty on leases in SA since Stamp Duties Act repeal
+        items.push({ name: 'Stamp Duty on Lease', amount: 0, note: 'Stamp Duties Act was repealed in 2009 — leases no longer attract stamp duty in SA' });
+      } else if (docId === 'shares') {
+        // Securities Transfer Tax: 0.25%
+        var stt = val * 0.0025;
+        items.push({ name: 'Securities Transfer Tax (0.25%)', amount: stt, note: 'STT Act, 2007 — payable by buyer' });
       }
       return items;
     }
