@@ -93,7 +93,8 @@
       desc: 'Japa, generator, ajo, mobile money',
       href: '/african/', color: '#fef2f2', accent: '#dc2626',
       tools: [
-        { label: 'AfroKitchen Recipes', href: '/tools/afrokitchen/', emoji: '🍲', badge: 'NEW' },
+        { label: 'AfroAtlas Explorer', href: '/tools/afroatlas/', emoji: '🌍', badge: 'NEW' },
+        { label: 'AfroKitchen Recipes', href: '/tools/afrokitchen/', emoji: '🍲' },
       ]
     },
     {
@@ -119,14 +120,14 @@
       ]
     },
     {
-      id: 'engineering', label: 'Engineering & CAD', icon: '🔧',
-      desc: 'Solar, structural, borehole, CAD',
+      id: 'engineering', label: 'Engineering', icon: '🔧',
+      desc: 'BOQ, concrete, electrical, rebar, roofing',
       href: '/engineering/', color: '#f5f5f4', accent: '#78716c',
       tools: [
-        { label: 'AfroDraft 2D CAD', href: '/engineering/afrodraft/', emoji: '📐', badge: 'LIVE' },
-        { label: 'Solar Calculator', href: '/tools/solar-calculator/', emoji: '☀️', badge: 'Soon' },
-        { label: 'AfroPlan Floor Planner', href: '/engineering/floor-planner/', emoji: '🏗️', badge: 'NEW' },
-        { label: 'Bill of Quantities', href: '/tools/boq-generator/', emoji: '📋', badge: 'Soon' },
+        { label: 'BOQ Builder', href: '/tools/boq-builder/', emoji: '📋', badge: 'LIVE' },
+        { label: 'Concrete Mix', href: '/tools/concrete-mix/', emoji: '🏗️', badge: 'LIVE' },
+        { label: 'Electrical Load', href: '/tools/electrical-load/', emoji: '⚡', badge: 'LIVE' },
+        { label: 'Rebar Calculator', href: '/tools/rebar-calculator/', emoji: '🔩', badge: 'NEW' },
       ]
     },
   ];
