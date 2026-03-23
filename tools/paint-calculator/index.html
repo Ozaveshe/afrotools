@@ -5,14 +5,19 @@
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'paint-calculator'});</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Wall Paint Calculator — How Many Litres Do You Need? | AfroTools</title>
-<meta name="description" content="Calculate how much paint you need for your walls. Enter room dimensions, get litres required. Supports Dulux, Berger, CAP Plc African brands. Free paint estimator.">
+<title>Paint Calculator — How Many Litres for Your Walls? | AfroTools</title>
+<meta name="description" content="Calculate paint needed for walls and ceilings. African paint brands (Dulux, Berger, Plascon, Crown), surface types, primer, cost estimation. Free multi-room calculator.">
 <link rel="canonical" href="https://afrotools.com/tools/paint-calculator/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="Wall Paint Calculator | AfroTools">
-<meta property="og:description" content="How many litres of paint for your walls? Room dimensions to litres.">
+<meta property="og:title" content="Paint Calculator — How Many Litres? | AfroTools">
+<meta property="og:description" content="Calculate paint for walls & ceilings. African brands, surface types, primer, cost estimation.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
-<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/paint-calculator/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/paint-calculator/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Paint Calculator — How Many Litres? | AfroTools">
+<meta name="twitter:description" content="Calculate paint for walls & ceilings. African brands, surface types, primer, cost estimation.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
@@ -20,57 +25,87 @@
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
 <style>
-:root{--afro-blue:var(--color-primary);--afro-dark:#0f1419;--teal:#0d9488}
-.tool-hero{background:linear-gradient(135deg,#134e4a 0%,#0d9488 100%);padding:44px 0 36px;overflow:hidden}
+:root{--accent:#007AFF;--accent-dark:#0059B3;--green:#008751;--dark:#0f1419;--bg:#f8fafc;--card:#fff;--border:#e2e8f0;--muted:#64748b;--light-accent:#EFF6FF}
+.tool-hero{background:linear-gradient(135deg,#0A1628 0%,#0063D1 100%);padding:44px 0 36px;overflow:hidden}
 .tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
 .breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
-.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#5eead4}
+.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#4DA3FF}
 h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
-h1 em{color:#5eead4;font-style:normal}
+h1 em{color:#4DA3FF;font-style:normal}
 .hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
 .hero-badges{display:flex;flex-wrap:wrap;gap:7px}
 .badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
-.b-teal{background:rgba(94,234,212,.2);color:#5eead4;border:1px solid rgba(94,234,212,.4)}
+.b-blue{background:rgba(77,163,255,.2);color:#4DA3FF;border:1px solid rgba(77,163,255,.4)}
 .tool-main{padding:28px 0 72px}
 .tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
-.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
 .card+.card{margin-top:18px}
 .card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
-.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dark)}
 .card-body{padding:22px}
 .field{margin-bottom:16px}
-.f-label{font-size:.75rem;font-weight:700;color:var(--afro-dark);margin-bottom:6px;display:block}
-.f-input,.f-select{width:100%;padding:11px 13px;background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:7px;font-size:1rem;font-weight:600;color:var(--afro-dark);outline:none;font-family:'DM Sans',sans-serif;box-sizing:border-box}
-.f-input:focus,.f-select:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(13,148,136,.12)}
+.f-label{font-size:.75rem;font-weight:700;color:var(--dark);margin-bottom:6px;display:block}
+.f-input,.f-select{width:100%;padding:11px 13px;background:var(--bg);border:1.5px solid #cbd5e1;border-radius:7px;font-size:1rem;font-weight:600;color:var(--dark);outline:none;font-family:'DM Sans',sans-serif;box-sizing:border-box}
+.f-input:focus,.f-select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,122,255,.12)}
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .field-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
-.calc-btn{width:100%;padding:13px;background:var(--teal);color:#fff;border:none;border-radius:8px;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .18s;font-family:'DM Sans',sans-serif}
-.calc-btn:hover{background:#0f766e;transform:translateY(-1px)}
+.calc-btn{width:100%;padding:13px;background:var(--accent);color:#fff;border:none;border-radius:980px;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .18s;font-family:'DM Sans',sans-serif}
+.calc-btn:hover{background:var(--accent-dark);transform:translateY(-1px)}
+.reset-btn{width:100%;padding:10px;background:transparent;color:var(--muted);border:1.5px solid var(--border);border-radius:980px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:8px}
+.reset-btn:hover{border-color:var(--accent);color:var(--accent)}
 #results{display:none}
 .result-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:18px}
-.result-box{background:#f0fdfa;border:1px solid #99f6e4;border-radius:8px;padding:16px;text-align:center}
+.result-box{background:var(--light-accent);border:1px solid #BFDBFE;border-radius:8px;padding:16px;text-align:center}
 .result-box.wide{grid-column:1/-1}
-.r-label{font-size:.68rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#64748b;margin-bottom:4px}
-.r-value{font-size:1.4rem;font-weight:800;color:var(--afro-dark)}
-.r-value.teal{color:var(--teal)}
+.result-box.green{background:#ECFDF5;border-color:#A7F3D0}
+.r-label{font-size:.68rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.r-value{font-size:1.4rem;font-weight:800;color:var(--dark)}
+.r-value.blue{color:var(--accent)}
+.r-value.green{color:var(--green)}
+.result-tins{margin-top:14px;padding:14px;background:#f8fafc;border-radius:8px}
+.result-tins h4{font-size:.8rem;font-weight:700;margin-bottom:8px;color:var(--dark)}
+.tin-row{display:flex;justify-content:space-between;padding:4px 0;font-size:.82rem;border-bottom:1px solid #f1f5f9}
+.tin-row:last-child{border-bottom:none}
+.tin-qty{font-weight:700;color:var(--accent)}
 .room-summary{margin-top:14px;padding:14px;background:#f8fafc;border-radius:8px;font-size:.82rem;color:#475569;line-height:1.7}
-.add-room-btn{padding:8px 14px;background:transparent;border:2px dashed #cbd5e1;border-radius:6px;color:#64748b;font-size:.78rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:8px}
-.add-room-btn:hover{border-color:var(--teal);color:var(--teal)}
-.room-tag{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:#f0fdfa;border:1px solid #99f6e4;border-radius:4px;font-size:.72rem;font-weight:600;color:var(--teal);margin:3px}
+.room-preview{margin-top:14px;display:flex;justify-content:center}
+.room-preview svg{max-width:260px;width:100%}
+.add-room-btn{padding:8px 14px;background:transparent;border:2px dashed #cbd5e1;border-radius:6px;color:var(--muted);font-size:.78rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:8px}
+.add-room-btn:hover{border-color:var(--accent);color:var(--accent)}
+.room-tag{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:var(--light-accent);border:1px solid #BFDBFE;border-radius:4px;font-size:.72rem;font-weight:600;color:var(--accent);margin:3px}
 .room-tag button{background:none;border:none;color:#ef4444;cursor:pointer;font-size:.8rem;font-weight:700}
+.primer-note{margin-top:10px;padding:10px 14px;background:#FEF3C7;border:1px solid #FDE68A;border-radius:6px;font-size:.78rem;color:#92400E;line-height:1.5}
 .sidebar .card-body{font-size:.82rem;color:#475569;line-height:1.7}
+.brand-list{list-style:none;padding:0}
+.brand-list li{padding:6px 0;border-bottom:1px solid #f1f5f9;display:flex;justify-content:space-between}
+.brand-list li:last-child{border-bottom:none}
+.brand-name{font-weight:700;color:var(--dark)}
+.brand-rate{font-weight:600;color:var(--accent);font-size:.8rem}
 .seo-content{max-width:800px;margin:0 auto;padding:48px 24px}
-.seo-content h2{font-size:1.4rem;font-weight:800;color:var(--afro-dark);margin:32px 0 12px}
+.seo-content h2{font-size:1.4rem;font-weight:800;color:var(--dark);margin:32px 0 12px}
+.seo-content h3{font-size:1.1rem;font-weight:700;color:var(--dark);margin:24px 0 8px}
 .seo-content p,.seo-content li{font-size:.92rem;color:#475569;line-height:1.8}
 .seo-content ul{padding-left:20px}
-.faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:10px;overflow:hidden}
-.faq summary{padding:14px 18px;font-weight:700;font-size:.88rem;cursor:pointer;background:#f8fafc;color:var(--afro-dark)}
-.faq details[open] summary{border-bottom:1px solid #e2e8f0}
+.faq{margin-top:24px}
+.faq details{border:1px solid var(--border);border-radius:8px;margin-bottom:10px;overflow:hidden}
+.faq summary{padding:14px 18px;font-weight:700;font-size:.88rem;cursor:pointer;background:#f8fafc;color:var(--dark)}
+.faq details[open] summary{border-bottom:1px solid var(--border)}
 .faq details div{padding:14px 18px;font-size:.85rem;color:#475569;line-height:1.7}
-@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.field-row{grid-template-columns:1fr}.field-row-3{grid-template-columns:1fr 1fr 1fr}}
+.related-section{max-width:1200px;margin:0 auto;padding:0 24px 60px}
+.related-section h2{font-size:1.2rem;font-weight:800;color:var(--dark);margin-bottom:16px}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.related-card{display:block;padding:18px;background:var(--card);border:1px solid var(--border);border-radius:10px;text-decoration:none;color:inherit;transition:.15s}
+.related-card:hover{border-color:var(--accent);box-shadow:0 2px 12px rgba(0,122,255,.1)}
+.related-card .rc-icon{font-size:1.3rem;margin-bottom:6px}
+.related-card .rc-name{font-weight:700;font-size:.9rem;color:var(--dark);margin-bottom:4px}
+.related-card .rc-desc{font-size:.78rem;color:var(--muted);line-height:1.5}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.field-row{grid-template-columns:1fr}.field-row-3{grid-template-columns:1fr}}
 </style>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"Wall Paint Calculator","url":"https://afrotools.com/tools/paint-calculator/","description":"Calculate how much paint you need for walls and ceilings based on room dimensions.","applicationCategory":"UtilitiesApplication","operatingSystem":"All","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
+{"@context":"https://schema.org","@type":"WebApplication","name":"Paint Calculator","url":"https://afrotools.com/tools/paint-calculator/","description":"Calculate how much paint you need for walls and ceilings. African paint brands, surface types, primer calculation, cost estimation.","applicationCategory":"UtilitiesApplication","operatingSystem":"All","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Engineering Tools","item":"https://afrotools.com/engineering/"},{"@type":"ListItem","position":3,"name":"Paint Calculator","item":"https://afrotools.com/tools/paint-calculator/"}]}
 </script>
 <script src="/assets/js/lib/toast.js" defer></script>
 <script src="/assets/js/afro-history.js" defer></script>
@@ -81,197 +116,603 @@ h1 em{color:#5eead4;font-style:normal}
 <body>
 <afro-navbar></afro-navbar>
 <section class="tool-hero"><div class="tool-hero-inner">
-<div class="breadcrumb"><a href="/">Home</a> / <a href="/categories/engineering/">Engineering</a> / <span>Paint Calculator</span></div>
-<h1>Wall Paint <em>Calculator</em></h1>
-<p class="hero-sub">Calculate exactly how many litres of paint you need. Enter room dimensions, select number of coats, and get an accurate estimate. Works for popular African paint brands.</p>
-<div class="hero-badges"><span class="badge b-teal">Multi-Room</span><span class="badge b-teal">Doors & Windows</span><span class="badge b-teal">Brand Coverage</span></div>
+<div class="breadcrumb"><a href="/">Home</a> / <a href="/engineering/">Engineering</a> / <span>Paint Calculator</span></div>
+<h1>Paint <em>Calculator</em></h1>
+<p class="hero-sub">Calculate exactly how many litres of paint you need. Multiple rooms, surface types, African paint brands, primer calculation, and cost estimation — all free.</p>
+<div class="hero-badges"><span class="badge b-blue">Multi-Room</span><span class="badge b-blue">15+ African Brands</span><span class="badge b-blue">Primer Calc</span><span class="badge b-blue">Cost Estimate</span></div>
 </div></section>
 
 <section class="tool-main"><div class="tool-main-inner">
 <div class="calc-area">
+
+<!-- HOW TO USE -->
+<div class="card">
+<div class="card-head"><span class="card-title">How to Use This Tool</span></div>
+<div class="card-body" style="font-size:.82rem;color:#475569;line-height:1.7">
+<p>1. Enter your room dimensions (length, width, height). 2. Set doors and windows to deduct from wall area. 3. Choose surface type and paint brand for accurate coverage. 4. Click "Add Another Room" for multi-room totals. 5. Hit Calculate to see litres needed, tin sizes, and cost.</p>
+</div>
+</div>
+
+<!-- ROOM INPUTS -->
 <div class="card"><div class="card-head"><span class="card-title">Room Dimensions</span></div>
 <div class="card-body">
-<div class="field"><label class="f-label">Unit</label>
+<div class="field-row">
+<div class="field"><label class="f-label" for="unit">Measurement Unit</label>
 <select id="unit" class="f-select"><option value="m">Metres</option><option value="ft">Feet</option></select></div>
+<div class="field"><label class="f-label" for="roomShape">Room Shape</label>
+<select id="roomShape" class="f-select"><option value="rect">Rectangle</option><option value="lshape">L-Shape</option><option value="custom">Custom Wall Area</option></select></div>
+</div>
+
+<div id="rectInputs">
 <div class="field-row-3">
-<div class="field"><label class="f-label">Room Length</label><input type="number" id="length" class="f-input" placeholder="5" step="0.1" min="0"></div>
-<div class="field"><label class="f-label">Room Width</label><input type="number" id="width" class="f-input" placeholder="4" step="0.1" min="0"></div>
-<div class="field"><label class="f-label">Wall Height</label><input type="number" id="height" class="f-input" placeholder="3" step="0.1" min="0" value="3"></div>
+<div class="field"><label class="f-label" for="length">Room Length</label><input type="number" id="length" class="f-input" placeholder="5" step="0.1" min="0"></div>
+<div class="field"><label class="f-label" for="width">Room Width</label><input type="number" id="width" class="f-input" placeholder="4" step="0.1" min="0"></div>
+<div class="field"><label class="f-label" for="height">Wall Height</label><input type="number" id="height" class="f-input" placeholder="3" step="0.1" min="0" value="3"></div>
+</div>
+</div>
+
+<div id="lshapeInputs" style="display:none">
+<p style="font-size:.78rem;color:#94a3b8;margin-bottom:10px">Enter the two sections of your L-shaped room.</p>
+<div class="field-row-3">
+<div class="field"><label class="f-label" for="lLen1">Section 1 Length</label><input type="number" id="lLen1" class="f-input" placeholder="5" step="0.1" min="0"></div>
+<div class="field"><label class="f-label" for="lWid1">Section 1 Width</label><input type="number" id="lWid1" class="f-input" placeholder="3" step="0.1" min="0"></div>
+<div class="field"><label class="f-label" for="lHeight">Wall Height</label><input type="number" id="lHeight" class="f-input" placeholder="3" step="0.1" min="0" value="3"></div>
 </div>
 <div class="field-row">
-<div class="field"><label class="f-label">Number of Doors</label><input type="number" id="doors" class="f-input" value="1" min="0" max="20"></div>
-<div class="field"><label class="f-label">Number of Windows</label><input type="number" id="windows" class="f-input" value="2" min="0" max="20"></div>
+<div class="field"><label class="f-label" for="lLen2">Section 2 Length</label><input type="number" id="lLen2" class="f-input" placeholder="3" step="0.1" min="0"></div>
+<div class="field"><label class="f-label" for="lWid2">Section 2 Width</label><input type="number" id="lWid2" class="f-input" placeholder="2" step="0.1" min="0"></div>
+</div>
+</div>
+
+<div id="customInputs" style="display:none">
+<div class="field-row">
+<div class="field"><label class="f-label" for="customWallArea">Total Wall Area (m&sup2;)</label><input type="number" id="customWallArea" class="f-input" placeholder="120" step="0.1" min="0"></div>
+<div class="field"><label class="f-label" for="customCeilArea">Ceiling Area (m&sup2;, optional)</label><input type="number" id="customCeilArea" class="f-input" placeholder="0" step="0.1" min="0"></div>
+</div>
+</div>
+
+<div class="field-row">
+<div class="field"><label class="f-label" for="doors">Number of Doors</label><input type="number" id="doors" class="f-input" value="1" min="0" max="20"></div>
+<div class="field"><label class="f-label" for="windows">Number of Windows</label><input type="number" id="windows" class="f-input" value="2" min="0" max="20"></div>
 </div>
 <div class="field-row">
-<div class="field"><label class="f-label">Include Ceiling?</label>
-<select id="ceiling" class="f-select"><option value="no">No</option><option value="yes">Yes</option></select></div>
-<div class="field"><label class="f-label">Number of Coats</label>
-<select id="coats" class="f-select"><option value="1">1 Coat</option><option value="2" selected>2 Coats</option><option value="3">3 Coats</option></select></div>
+<div class="field"><label class="f-label" for="doorSize">Door Size</label>
+<select id="doorSize" class="f-select"><option value="1.68">Standard (0.8 x 2.1m)</option><option value="1.89">Wide (0.9 x 2.1m)</option><option value="2.52">Double (1.2 x 2.1m)</option></select></div>
+<div class="field"><label class="f-label" for="windowSize">Window Size</label>
+<select id="windowSize" class="f-select"><option value="1.44">Standard (1.2 x 1.2m)</option><option value="0.72">Small (0.6 x 1.2m)</option><option value="2.16">Large (1.8 x 1.2m)</option></select></div>
 </div>
-<div class="field"><label class="f-label">Paint Coverage</label>
-<select id="coverage" class="f-select">
-<option value="10">Standard emulsion (10 m&sup2;/litre) — Dulux, Berger</option>
-<option value="12" selected>Premium emulsion (12 m&sup2;/litre) — Dulux Weathershield</option>
-<option value="8">Textured paint (8 m&sup2;/litre)</option>
-<option value="14">Silk/gloss (14 m&sup2;/litre)</option>
-<option value="custom">Custom coverage rate</option>
-</select></div>
-<div class="field" id="customCoverageField" style="display:none">
-<label class="f-label">Custom Coverage (m&sup2; per litre)</label>
-<input type="number" id="customCoverage" class="f-input" placeholder="12" step="0.5" min="1">
-</div>
+<div class="field"><label class="f-label" for="ceiling">Include Ceiling?</label>
+<select id="ceiling" class="f-select"><option value="no">No — Walls Only</option><option value="yes">Yes — Walls + Ceiling</option></select></div>
+
 <div id="roomTags" style="margin-bottom:12px"></div>
 <button class="add-room-btn" onclick="addRoom()">+ Add Another Room</button>
-<button class="calc-btn" onclick="calculate()" style="margin-top:14px">Calculate Paint Needed</button>
 </div></div>
 
+<!-- PAINT OPTIONS -->
+<div class="card"><div class="card-head"><span class="card-title">Paint Options</span></div>
+<div class="card-body">
+<div class="field-row">
+<div class="field"><label class="f-label" for="paintType">Paint Type</label>
+<select id="paintType" class="f-select" onchange="updateBrandOptions()">
+<option value="emulsion">Emulsion (Interior Walls)</option>
+<option value="weathercoat">Weathercoat (Exterior)</option>
+<option value="gloss">Gloss / Enamel (Woodwork)</option>
+<option value="textured">Textured Coating</option>
+</select></div>
+<div class="field"><label class="f-label" for="surfaceType">Surface Type</label>
+<select id="surfaceType" class="f-select">
+<option value="smooth">Smooth Plastered Wall (10-12 m&sup2;/L)</option>
+<option value="rough">Textured / Rough Wall (8-10 m&sup2;/L)</option>
+<option value="new">New / Bare Plaster (6-8 m&sup2;/L)</option>
+<option value="repaint">Previously Painted (10-14 m&sup2;/L)</option>
+</select></div>
+</div>
+<div class="field-row">
+<div class="field"><label class="f-label" for="coats">Number of Coats</label>
+<select id="coats" class="f-select"><option value="1">1 Coat</option><option value="2" selected>2 Coats</option><option value="3">3 Coats</option></select></div>
+<div class="field"><label class="f-label" for="brandCountry">Country / Region</label>
+<select id="brandCountry" class="f-select" onchange="updateBrandOptions()">
+<option value="NG">Nigeria</option>
+<option value="ZA">South Africa</option>
+<option value="KE">Kenya</option>
+<option value="GH">Ghana</option>
+<option value="pan">Pan-African / Other</option>
+</select></div>
+</div>
+<div class="field"><label class="f-label" for="brand">Paint Brand</label>
+<select id="brand" class="f-select"></select></div>
+
+<div class="field-row">
+<div class="field"><label class="f-label" for="pricePerLitre">Price per Litre (optional, for cost estimate)</label>
+<input type="number" id="pricePerLitre" class="f-input" placeholder="e.g., 2500" step="10" min="0"></div>
+<div class="field"><label class="f-label" for="priceCurrency">Currency</label>
+<select id="priceCurrency" class="f-select">
+<option value="NGN">NGN (&#8358;)</option>
+<option value="ZAR">ZAR (R)</option>
+<option value="KES">KES (KSh)</option>
+<option value="GHS">GHS (GH&#8373;)</option>
+<option value="USD">USD ($)</option>
+</select></div>
+</div>
+
+<button class="calc-btn" onclick="calculate()">Calculate Paint Needed</button>
+<button class="reset-btn" onclick="resetCalc()">Reset All</button>
+</div></div>
+
+<!-- RESULTS -->
 <div class="card" id="results">
 <div class="card-head"><span class="card-title">Paint Estimate</span></div>
 <div class="card-body">
 <div class="result-grid">
 <div class="result-box"><div class="r-label">Total Wall Area</div><div class="r-value" id="rArea">--</div></div>
 <div class="result-box"><div class="r-label">Paintable Area</div><div class="r-value" id="rPaintable">--</div></div>
-<div class="result-box wide"><div class="r-label">Paint Required</div><div class="r-value teal" id="rLitres" style="font-size:2rem">--</div></div>
-<div class="result-box"><div class="r-label">4L Tins Needed</div><div class="r-value" id="r4L">--</div></div>
-<div class="result-box"><div class="r-label">20L Drums Needed</div><div class="r-value" id="r20L">--</div></div>
-</div>
-<div class="room-summary" id="summary"></div>
-</div></div>
+<div class="result-box wide"><div class="r-label">Paint Required (incl. 10% wastage)</div><div class="r-value blue" id="rLitres" style="font-size:2rem">--</div></div>
 </div>
 
-<div class="sidebar">
-<div class="card"><div class="card-head"><span class="card-title">Popular African Paint Brands</span></div>
-<div class="card-body">
-<p><strong>Dulux (AkzoNobel):</strong> 10-14 m&sup2;/L depending on product. Premium Weathershield for exterior.</p>
-<p style="margin-top:6px"><strong>Berger Paints:</strong> 10-12 m&sup2;/L. Popular across West Africa. Butterfly and Texcote ranges.</p>
-<p style="margin-top:6px"><strong>CAP Plc:</strong> Nigeria's oldest paint company. 10-12 m&sup2;/L coverage.</p>
-<p style="margin-top:6px"><strong>Plascon (Kansai):</strong> Dominant in East and Southern Africa. 10-14 m&sup2;/L.</p>
-<p style="margin-top:6px"><strong>Crown Paints:</strong> Kenya market leader. 10-12 m&sup2;/L.</p>
-<p style="margin-top:10px;font-size:.75rem;color:#94a3b8">Always check the tin label for specific coverage. Surface condition affects coverage significantly.</p>
+<div id="primerNote" class="primer-note" style="display:none">
+<strong>Primer recommended:</strong> New/bare plaster needs a primer coat first. Primer coverage is ~8 m&sup2;/litre. <span id="primerQty"></span>
+</div>
+
+<div class="result-tins" id="tinSection">
+<h4>Recommended Tin Sizes</h4>
+<div id="tinRows"></div>
+</div>
+
+<div id="costSection" style="display:none;margin-top:14px;padding:14px;background:#ECFDF5;border:1px solid #A7F3D0;border-radius:8px">
+<h4 style="font-size:.8rem;font-weight:700;margin-bottom:4px;color:#065F46">Estimated Paint Cost</h4>
+<div style="font-size:1.3rem;font-weight:900;color:#065F46" id="costEstimate">--</div>
+<div style="font-size:.75rem;color:#6B7280;margin-top:2px" id="costNote"></div>
+</div>
+
+<div class="room-preview" id="roomPreview"></div>
+<div class="room-summary" id="summary"></div>
+
+<div style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
+<button onclick="printResults()" style="padding:8px 16px;border-radius:980px;border:1px solid #e2e8f0;background:#fff;font-weight:700;font-size:.82rem;cursor:pointer;font-family:'DM Sans',sans-serif">Print Results</button>
+<button onclick="shareResults()" style="padding:8px 16px;border-radius:980px;border:1px solid #e2e8f0;background:#fff;font-weight:700;font-size:.82rem;cursor:pointer;font-family:'DM Sans',sans-serif">Share Results</button>
+</div>
 </div></div>
-<div class="card"><div class="card-head"><span class="card-title">Painting Tips</span></div>
+
+</div>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+<div class="card"><div class="card-head"><span class="card-title">African Paint Brands</span></div>
 <div class="card-body">
-<p><strong>Surface prep:</strong> Fill cracks, sand rough areas, and apply primer. This ensures better coverage and adhesion.</p>
+<p style="font-size:.75rem;color:#94a3b8;margin-bottom:10px">Coverage rates (m&sup2;/litre) for standard emulsion. Actual rates vary by product line.</p>
+<h4 style="font-size:.78rem;font-weight:700;margin:10px 0 4px;color:var(--dark)">Nigeria</h4>
+<ul class="brand-list">
+<li><span class="brand-name">Dulux</span><span class="brand-rate">12 m&sup2;/L</span></li>
+<li><span class="brand-name">Berger Paints</span><span class="brand-rate">10 m&sup2;/L</span></li>
+<li><span class="brand-name">CAP Plc</span><span class="brand-rate">10 m&sup2;/L</span></li>
+<li><span class="brand-name">Sandtex</span><span class="brand-rate">11 m&sup2;/L</span></li>
+</ul>
+<h4 style="font-size:.78rem;font-weight:700;margin:10px 0 4px;color:var(--dark)">South Africa</h4>
+<ul class="brand-list">
+<li><span class="brand-name">Plascon</span><span class="brand-rate">12 m&sup2;/L</span></li>
+<li><span class="brand-name">Dulux SA</span><span class="brand-rate">12 m&sup2;/L</span></li>
+<li><span class="brand-name">Prominent Paints</span><span class="brand-rate">10 m&sup2;/L</span></li>
+</ul>
+<h4 style="font-size:.78rem;font-weight:700;margin:10px 0 4px;color:var(--dark)">Kenya</h4>
+<ul class="brand-list">
+<li><span class="brand-name">Crown Paints</span><span class="brand-rate">11 m&sup2;/L</span></li>
+<li><span class="brand-name">Basco Paints</span><span class="brand-rate">10 m&sup2;/L</span></li>
+<li><span class="brand-name">Sadolin</span><span class="brand-rate">12 m&sup2;/L</span></li>
+</ul>
+<h4 style="font-size:.78rem;font-weight:700;margin:10px 0 4px;color:var(--dark)">Ghana</h4>
+<ul class="brand-list">
+<li><span class="brand-name">Azar Chemical</span><span class="brand-rate">10 m&sup2;/L</span></li>
+<li><span class="brand-name">Dolphin Paints</span><span class="brand-rate">9 m&sup2;/L</span></li>
+</ul>
+<h4 style="font-size:.78rem;font-weight:700;margin:10px 0 4px;color:var(--dark)">Pan-African</h4>
+<ul class="brand-list">
+<li><span class="brand-name">Kansai Paint</span><span class="brand-rate">11 m&sup2;/L</span></li>
+</ul>
+</div></div>
+
+<div class="card"><div class="card-head"><span class="card-title">Painting Tips for Africa</span></div>
+<div class="card-body">
+<p><strong>Surface prep:</strong> Fill cracks, sand rough areas, apply primer on new surfaces. This ensures better adhesion and coverage.</p>
 <p style="margin-top:6px"><strong>Buy 10% extra:</strong> Always add 10% for wastage, touch-ups, and future repairs.</p>
-<p style="margin-top:6px"><strong>Two coats minimum:</strong> For colour change or unpainted walls, always apply 2 coats minimum.</p>
-<p style="margin-top:6px"><strong>Climate:</strong> In hot African climates, paint early morning or late afternoon when walls are cooler.</p>
+<p style="margin-top:6px"><strong>Coastal cities:</strong> In Lagos, Mombasa, Dar es Salaam, and Cape Town, use anti-mould or marine-grade exterior paints to resist salt air and humidity.</p>
+<p style="margin-top:6px"><strong>Hot climates:</strong> Paint early morning or late afternoon when walls are cooler. Avoid painting in direct sunlight — it causes bubbling and poor adhesion.</p>
+<p style="margin-top:6px"><strong>Two coats minimum:</strong> For colour changes or bare surfaces, 2 coats is the minimum. Use 3 for dark-to-light transitions.</p>
 </div></div>
 </div>
 </div></section>
 
+<!-- SEO CONTENT -->
 <section class="seo-content">
-<h2>How to Calculate Paint for Your Walls</h2>
-<p>Whether you're painting a new build in Lagos, renovating a flat in Nairobi, or refreshing your Johannesburg home, knowing exactly how much paint to buy saves money and avoids the frustration of running short mid-project. This calculator accounts for room dimensions, doors, windows, number of coats, and paint coverage rates to give you an accurate estimate.</p>
+<h2>How to Calculate Paint for Your Walls in Africa</h2>
+<p>Whether you're painting a new build in Lagos, renovating a flat in Nairobi, or refreshing your Johannesburg home, knowing exactly how much paint to buy saves money and avoids running short mid-project. This calculator accounts for room dimensions, doors, windows, surface type, paint brand coverage rates, number of coats, and even primer requirements to give you the most accurate estimate possible.</p>
 
-<h2>Understanding Paint Coverage</h2>
-<p>Paint coverage (also called spreading rate) varies by product type. Standard emulsion paints cover approximately 10 m&sup2; per litre, while premium paints may cover up to 14 m&sup2;. Textured paints cover less due to their thicker consistency. Coverage also depends on wall surface — rough or porous walls absorb more paint than smooth, previously painted surfaces. Always check the coverage rate on the tin.</p>
+<h3>Understanding Paint Coverage Rates</h3>
+<p>Paint coverage (spreading rate) varies by product and surface. Standard emulsion paints cover approximately 10-12 m&sup2; per litre on smooth plastered walls. Textured or rough walls absorb more paint, reducing coverage to 8-10 m&sup2; per litre. New bare plaster is the most absorbent at 6-8 m&sup2; per litre, which is why a primer coat is essential. Previously painted surfaces in good condition offer the best coverage at 10-14 m&sup2; per litre.</p>
 
-<h2>Standard Dimensions Used</h2>
-<ul>
-<li><strong>Standard door:</strong> 0.8m x 2.1m = 1.68 m&sup2; (deducted from wall area)</li>
-<li><strong>Standard window:</strong> 1.2m x 1.2m = 1.44 m&sup2; (deducted from wall area)</li>
-<li><strong>Standard ceiling height:</strong> 3m in most African buildings (2.7m in some apartments)</li>
-</ul>
+<h3>African Paint Brand Guide</h3>
+<p>Africa has a thriving paint manufacturing industry. In Nigeria, Dulux, Berger Paints, and CAP Plc dominate the market. South Africa's Plascon (owned by Kansai Paint of Japan) and Dulux SA are the leading brands. Kenya is served by Crown Paints, Basco, and Sadolin. Ghana has Azar Chemical Industries and Dolphin Paints. The Japanese firm Kansai Paint has expanded across the continent, making it the most truly pan-African brand.</p>
+
+<h3>Paint Types and When to Use Them</h3>
+<p>Emulsion paint is the standard choice for interior walls — it's water-based, low-odour, and easy to apply. Weathercoat or exterior paint is formulated to resist UV, rain, and temperature fluctuations common in African climates. Gloss or enamel paint is used for woodwork, doors, and window frames. Textured coatings provide a decorative raised finish and can hide minor wall imperfections.</p>
+
+<h3>Primer: When You Need It</h3>
+<p>Primer is essential on new bare plaster, concrete block walls that have never been painted, and when making drastic colour changes. Primer seals the porous surface, improves paint adhesion, and reduces the amount of topcoat needed. In Africa, where many construction projects involve painting newly plastered walls, skipping primer is one of the most common and costly mistakes.</p>
+
+<h3>Tropical Climate Considerations</h3>
+<p>African climates present unique challenges for painting. High humidity in coastal cities like Lagos, Mombasa, and Dar es Salaam promotes mould growth — use anti-fungal paint or add mould inhibitor to your paint. Extreme heat in Saharan and interior regions causes paint to dry too quickly, leading to cracking. In these areas, paint during cooler hours. Heavy seasonal rains in tropical regions mean exterior paint must be truly weatherproof — always use manufacturer-recommended exterior-grade products.</p>
 
 <div class="faq">
 <h2>Frequently Asked Questions</h2>
-<details><summary>How many coats of paint do I need?</summary><div>Minimum 2 coats for a good finish. Use 3 coats when painting over a dark colour with a light one, or on new/unpainted walls. Apply primer first on bare surfaces for best results.</div></details>
-<details><summary>Should I buy 4-litre tins or 20-litre drums?</summary><div>Drums (20L) are more economical per litre and better for large areas. Tins (4L) are better for small rooms or touch-ups. For a typical 3-bedroom flat, you'll likely need 1-2 drums.</div></details>
-<details><summary>How do I estimate paint for irregular walls?</summary><div>Break the wall into rectangular sections and calculate each separately. Add areas together. For triangular sections (gable walls), use: Area = 0.5 x base x height.</div></details>
+<details><summary>How many coats of paint do I need?</summary><div>Minimum 2 coats for a good finish. Use 3 coats when painting over a dark colour with a light one, on new/unpainted walls, or when using lower-coverage brands. Always apply primer first on bare surfaces.</div></details>
+<details><summary>Should I buy 4-litre tins or 20-litre drums?</summary><div>20L drums are more economical per litre and better for large areas (2+ rooms). 4L tins are ideal for single rooms or touch-ups. This calculator shows the optimal combination to minimise waste and cost.</div></details>
+<details><summary>How do I calculate paint for an L-shaped room?</summary><div>Use this calculator's L-Shape option. Enter the dimensions of both rectangular sections separately. The tool calculates the total wall perimeter and area automatically, accounting for the shared internal wall.</div></details>
+<details><summary>Do I need primer on previously painted walls?</summary><div>Usually not, unless the existing paint is in poor condition (peeling, chalky) or you're making a drastic colour change (dark to light). On previously painted walls in good condition, 2 coats of your chosen paint is sufficient.</div></details>
+<details><summary>Which paint brands are best for African climates?</summary><div>For exterior walls, Dulux Weathershield, Plascon SunCare, and Crown Weathercoat are formulated for harsh UV and tropical rain. For interior walls, any reputable brand's emulsion works well. In coastal areas, choose paints with anti-mould properties.</div></details>
+<details><summary>How much does painting cost in Africa?</summary><div>Costs vary widely. In Nigeria, expect to pay &#8358;1,500-4,000 per litre for quality emulsion. In South Africa, R150-400 per litre. In Kenya, KSh 800-2,500 per litre. Labour costs are separate and typically charged per square metre or per room.</div></details>
+<details><summary>What's the standard door and window size for deduction?</summary><div>Standard African door: 0.8m x 2.1m (1.68 m&sup2;). Standard window: 1.2m x 1.2m (1.44 m&sup2;). This calculator lets you select standard, small, or large sizes for more accuracy.</div></details>
 </div>
 </section>
 
-<afro-related-tools></afro-related-tools>
-<afro-newsletter-cta></afro-newsletter-cta>
+<!-- RELATED TOOLS -->
+<section class="related-section">
+<h2>Related Engineering Tools</h2>
+<div class="related-grid">
+<a href="/tools/boq-builder/" class="related-card"><div class="rc-icon">📋</div><div class="rc-name">BOQ Builder</div><div class="rc-desc">Create a full Bill of Quantities with 11 categories, templates, and PDF export.</div></a>
+<a href="/tools/tiles-calc/" class="related-card"><div class="rc-icon">🔲</div><div class="rc-name">Tiles Calculator</div><div class="rc-desc">Calculate tiles needed for floors and walls with wastage and grout estimation.</div></a>
+<a href="/tools/concrete-mix/" class="related-card"><div class="rc-icon">🏗️</div><div class="rc-name">Concrete Mix Calculator</div><div class="rc-desc">Cement bags, sand, and aggregate for any mix grade with African brand pricing.</div></a>
+<a href="/tools/unit-converter/" class="related-card"><div class="rc-icon">📐</div><div class="rc-name">Unit Converter</div><div class="rc-desc">Convert between metric, imperial, and African-specific construction units.</div></a>
+</div>
+</section>
+
 <afro-footer></afro-footer>
 
 <script>
-let rooms=[];
-const DOOR_AREA=1.68; // m2
-const WINDOW_AREA=1.44; // m2
+/* ── Brand Database ── */
+var BRANDS = {
+  NG: {
+    emulsion: [
+      {name:'Dulux Vinyl Matt',rate:12,price:3500},
+      {name:'Dulux Weathershield',rate:11,price:4200},
+      {name:'Berger Butterfly Emulsion',rate:10,price:2800},
+      {name:'Berger Texcote',rate:8,price:3200},
+      {name:'CAP Plc Emulsion',rate:10,price:2500},
+      {name:'Sandtex Emulsion',rate:11,price:2600}
+    ],
+    weathercoat: [
+      {name:'Dulux Weathershield Max',rate:10,price:4500},
+      {name:'Berger Weathercoat',rate:9,price:3500},
+      {name:'CAP Gloss',rate:14,price:3000},
+      {name:'Sandtex Weatherguard',rate:10,price:3200}
+    ],
+    gloss: [
+      {name:'Dulux Gloss',rate:14,price:4000},
+      {name:'Berger High Gloss',rate:13,price:3200},
+      {name:'CAP Gloss Enamel',rate:14,price:2800}
+    ],
+    textured: [
+      {name:'Berger Texcote',rate:6,price:4000},
+      {name:'Dulux Textured',rate:7,price:4500},
+      {name:'Sandtex Textured',rate:6,price:3800}
+    ]
+  },
+  ZA: {
+    emulsion: [
+      {name:'Plascon Wall & All',rate:12,price:350},
+      {name:'Plascon Double Velvet',rate:11,price:420},
+      {name:'Dulux Wash & Wear',rate:12,price:380},
+      {name:'Prominent Paints Interior',rate:10,price:280}
+    ],
+    weathercoat: [
+      {name:'Plascon SunCare',rate:10,price:450},
+      {name:'Dulux Weatherguard',rate:11,price:480},
+      {name:'Prominent Exterior',rate:9,price:340}
+    ],
+    gloss: [
+      {name:'Plascon Velvaglo',rate:14,price:400},
+      {name:'Dulux Enamel Gloss',rate:13,price:420}
+    ],
+    textured: [
+      {name:'Plascon Micatex',rate:5,price:500},
+      {name:'Dulux AcraTeX',rate:4,price:520}
+    ]
+  },
+  KE: {
+    emulsion: [
+      {name:'Crown Vinyl Matt',rate:11,price:1800},
+      {name:'Crown Silk Vinyl',rate:12,price:2200},
+      {name:'Basco Emulsion',rate:10,price:1500},
+      {name:'Sadolin Emulsion',rate:12,price:2400}
+    ],
+    weathercoat: [
+      {name:'Crown Weathercoat',rate:10,price:2500},
+      {name:'Sadolin Exterior',rate:11,price:2800},
+      {name:'Basco Exterior',rate:9,price:2000}
+    ],
+    gloss: [
+      {name:'Crown Gloss',rate:13,price:2200},
+      {name:'Sadolin Gloss',rate:14,price:2600}
+    ],
+    textured: [
+      {name:'Crown Textured',rate:6,price:2800},
+      {name:'Basco Textured',rate:5,price:2200}
+    ]
+  },
+  GH: {
+    emulsion: [
+      {name:'Azar Chemical Emulsion',rate:10,price:120},
+      {name:'Dolphin Paints Emulsion',rate:9,price:100}
+    ],
+    weathercoat: [
+      {name:'Azar Weathercoat',rate:9,price:150},
+      {name:'Dolphin Exterior',rate:8,price:130}
+    ],
+    gloss: [
+      {name:'Azar Gloss',rate:13,price:140},
+      {name:'Dolphin Gloss',rate:12,price:120}
+    ],
+    textured: [
+      {name:'Azar Textured',rate:5,price:160}
+    ]
+  },
+  pan: {
+    emulsion: [
+      {name:'Kansai Paint Emulsion',rate:11,price:0},
+      {name:'Generic Emulsion (10 m\u00B2/L)',rate:10,price:0},
+      {name:'Premium Emulsion (12 m\u00B2/L)',rate:12,price:0}
+    ],
+    weathercoat: [
+      {name:'Generic Exterior (9 m\u00B2/L)',rate:9,price:0},
+      {name:'Premium Exterior (11 m\u00B2/L)',rate:11,price:0}
+    ],
+    gloss: [
+      {name:'Generic Gloss (13 m\u00B2/L)',rate:13,price:0},
+      {name:'Premium Gloss (14 m\u00B2/L)',rate:14,price:0}
+    ],
+    textured: [
+      {name:'Generic Textured (6 m\u00B2/L)',rate:6,price:0}
+    ]
+  }
+};
 
-document.getElementById('coverage').addEventListener('change',function(){
-  document.getElementById('customCoverageField').style.display=this.value==='custom'?'block':'none';
+var CURR_SYM = {NGN:'\u20A6',ZAR:'R',KES:'KSh ',GHS:'GH\u20B5',USD:'$'};
+var SURFACE_FACTOR = {smooth:1,rough:0.8,new:0.6,repaint:1.15};
+var rooms = [];
+
+/* ── Init ── */
+updateBrandOptions();
+document.getElementById('roomShape').addEventListener('change',function(){
+  document.getElementById('rectInputs').style.display = this.value==='rect'?'':'none';
+  document.getElementById('lshapeInputs').style.display = this.value==='lshape'?'':'none';
+  document.getElementById('customInputs').style.display = this.value==='custom'?'':'none';
 });
 
+/* ── Brand Options ── */
+function updateBrandOptions(){
+  var country = document.getElementById('brandCountry').value;
+  var type = document.getElementById('paintType').value;
+  var sel = document.getElementById('brand');
+  var list = (BRANDS[country]&&BRANDS[country][type])||[];
+  sel.innerHTML = list.map(function(b,i){
+    return '<option value="'+i+'">'+b.name+' ('+b.rate+' m\u00B2/L)'+'</option>';
+  }).join('');
+  // Auto-set currency
+  var currMap = {NG:'NGN',ZA:'ZAR',KE:'KES',GH:'GHS',pan:'USD'};
+  if(currMap[country]) document.getElementById('priceCurrency').value = currMap[country];
+}
+
+/* ── Room Management ── */
+function getRoomData(){
+  var shape = document.getElementById('roomShape').value;
+  var u = document.getElementById('unit').value;
+  var conv = u==='ft'?0.3048:1;
+  var doorArea = parseFloat(document.getElementById('doorSize').value);
+  var windowArea = parseFloat(document.getElementById('windowSize').value);
+  var doors = parseInt(document.getElementById('doors').value)||0;
+  var windows = parseInt(document.getElementById('windows').value)||0;
+  var ceil = document.getElementById('ceiling').value==='yes';
+  var wallArea=0, floorArea=0, h=0;
+
+  if(shape==='rect'){
+    var l = (parseFloat(document.getElementById('length').value)||0)*conv;
+    var w = (parseFloat(document.getElementById('width').value)||0)*conv;
+    h = (parseFloat(document.getElementById('height').value)||3)*conv;
+    if(l<=0||w<=0) return null;
+    wallArea = 2*(l+w)*h;
+    floorArea = l*w;
+  } else if(shape==='lshape'){
+    var l1 = (parseFloat(document.getElementById('lLen1').value)||0)*conv;
+    var w1 = (parseFloat(document.getElementById('lWid1').value)||0)*conv;
+    h = (parseFloat(document.getElementById('lHeight').value)||3)*conv;
+    var l2 = (parseFloat(document.getElementById('lLen2').value)||0)*conv;
+    var w2 = (parseFloat(document.getElementById('lWid2').value)||0)*conv;
+    if(l1<=0||w1<=0||l2<=0||w2<=0) return null;
+    // L-shape perimeter: outer perimeter of combined shape
+    var perim = 2*(l1+w1) + 2*(l2+w2) - 2*Math.min(w1,w2);
+    wallArea = perim*h;
+    floorArea = l1*w1 + l2*w2;
+  } else {
+    wallArea = (parseFloat(document.getElementById('customWallArea').value)||0);
+    floorArea = (parseFloat(document.getElementById('customCeilArea').value)||0);
+    if(wallArea<=0) return null;
+  }
+
+  var openings = doors*doorArea + windows*windowArea;
+  var ceilingArea = ceil?floorArea:0;
+  var paintable = Math.max(0,wallArea-openings)+ceilingArea;
+
+  return {wallArea:wallArea,openings:openings,ceilingArea:ceilingArea,paintable:paintable,doors:doors,windows:windows,ceil:ceil,shape:shape};
+}
+
 function addRoom(){
-  const u=document.getElementById('unit').value;
-  let l=parseFloat(document.getElementById('length').value)||0;
-  let w=parseFloat(document.getElementById('width').value)||0;
-  let h=parseFloat(document.getElementById('height').value)||3;
-  const doors=parseInt(document.getElementById('doors').value)||0;
-  const windows=parseInt(document.getElementById('windows').value)||0;
-  const ceiling=document.getElementById('ceiling').value==='yes';
-
-  if(l<=0||w<=0){alert('Please enter room dimensions.');return}
-  if(u==='ft'){l*=0.3048;w*=0.3048;h*=0.3048}
-
-  const wallArea=2*(l+w)*h;
-  const openings=doors*DOOR_AREA+windows*WINDOW_AREA;
-  const ceilingArea=ceiling?l*w:0;
-  const paintable=wallArea-openings+ceilingArea;
-
-  rooms.push({l:l.toFixed(1),w:w.toFixed(1),h:h.toFixed(1),doors,windows,ceiling,wallArea,openings,ceilingArea,paintable});
+  var data = getRoomData();
+  if(!data){alert('Please enter valid room dimensions.');return;}
+  rooms.push(data);
   renderRoomTags();
-  // Clear inputs
+  // Clear rect inputs
   document.getElementById('length').value='';
   document.getElementById('width').value='';
 }
 
-function removeRoom(i){rooms.splice(i,1);renderRoomTags()}
+function removeRoom(i){rooms.splice(i,1);renderRoomTags();}
 
 function renderRoomTags(){
-  const el=document.getElementById('roomTags');
-  el.innerHTML=rooms.map((r,i)=>`<span class="room-tag">Room ${i+1}: ${r.l}x${r.w}m (${r.paintable.toFixed(1)} m&sup2;) <button onclick="removeRoom(${i})">&times;</button></span>`).join('');
+  document.getElementById('roomTags').innerHTML = rooms.map(function(r,i){
+    return '<span class="room-tag">Room '+(i+1)+': '+r.paintable.toFixed(1)+' m\u00B2 <button onclick="removeRoom('+i+')">&times;</button></span>';
+  }).join('');
 }
 
+/* ── Calculate ── */
 function calculate(){
-  // Add current room if not already added
-  const l=parseFloat(document.getElementById('length').value)||0;
-  const w=parseFloat(document.getElementById('width').value)||0;
-  if(l>0&&w>0)addRoom();
+  // Add current room if fields are filled
+  var current = getRoomData();
+  if(current && (parseFloat(document.getElementById('length').value)>0 || document.getElementById('roomShape').value==='custom')){
+    rooms.push(current);
+    renderRoomTags();
+    document.getElementById('length').value='';
+    document.getElementById('width').value='';
+  }
 
-  if(rooms.length===0){alert('Please enter at least one room.');return}
+  if(rooms.length===0){alert('Please enter at least one room.');return;}
 
-  const coats=parseInt(document.getElementById('coats').value);
-  let coverage=parseFloat(document.getElementById('coverage').value);
-  if(isNaN(coverage))coverage=parseFloat(document.getElementById('customCoverage').value)||12;
+  var country = document.getElementById('brandCountry').value;
+  var type = document.getElementById('paintType').value;
+  var brandIdx = parseInt(document.getElementById('brand').value)||0;
+  var brandList = (BRANDS[country]&&BRANDS[country][type])||[];
+  var brand = brandList[brandIdx]||{rate:10,price:0,name:'Generic'};
+  var baseCoverage = brand.rate;
 
-  let totalWall=0,totalPaintable=0;
-  rooms.forEach(r=>{totalWall+=r.wallArea;totalPaintable+=r.paintable});
+  var surface = document.getElementById('surfaceType').value;
+  var surfaceFactor = SURFACE_FACTOR[surface]||1;
+  var effectiveCoverage = baseCoverage * surfaceFactor;
 
-  const litresNeeded=(totalPaintable*coats)/coverage;
-  const withWaste=litresNeeded*1.10; // 10% wastage
+  var coats = parseInt(document.getElementById('coats').value)||2;
+  var needsPrimer = surface==='new';
 
-  const u=document.getElementById('unit').value;
-  const areaUnit=u==='ft'?'ft&sup2;':'m&sup2;';
-  document.getElementById('rArea').innerHTML=totalWall.toFixed(1)+' '+areaUnit;
-  document.getElementById('rPaintable').innerHTML=totalPaintable.toFixed(1)+' '+areaUnit;
-  document.getElementById('rLitres').textContent=Math.ceil(withWaste)+' litres';
-  document.getElementById('r4L').textContent=Math.ceil(withWaste/4)+' tins';
-  document.getElementById('r20L').textContent=withWaste>=20?Math.ceil(withWaste/20)+' drums':'Not needed';
+  var totalWall=0, totalPaintable=0;
+  rooms.forEach(function(r){totalWall+=r.wallArea;totalPaintable+=r.paintable;});
 
-  let summary=`<strong>${rooms.length} room(s)</strong> | ${coats} coat(s) | Coverage: ${coverage} m&sup2;/L | 10% wastage included<br>`;
-  rooms.forEach((r,i)=>{
-    summary+=`Room ${i+1}: ${r.l}x${r.w}x${r.h}m, ${r.doors} door(s), ${r.windows} window(s)${r.ceiling?', ceiling':''}. Paintable: ${r.paintable.toFixed(1)} m&sup2;<br>`;
-  });
-  document.getElementById('summary').innerHTML=summary;
+  var litresRaw = (totalPaintable*coats)/effectiveCoverage;
+  var litresWithWaste = litresRaw*1.10;
+  var litresNeeded = Math.ceil(litresWithWaste);
+
+  // Primer
+  var primerLitres = 0;
+  if(needsPrimer){
+    primerLitres = Math.ceil((totalPaintable/8)*1.10);
+  }
+
+  // Display results
+  document.getElementById('rArea').textContent = totalWall.toFixed(1)+' m\u00B2';
+  document.getElementById('rPaintable').textContent = totalPaintable.toFixed(1)+' m\u00B2';
+  document.getElementById('rLitres').textContent = litresNeeded+' litres';
+
+  // Primer note
+  if(needsPrimer){
+    document.getElementById('primerNote').style.display='block';
+    document.getElementById('primerQty').textContent='You need approximately '+primerLitres+' litres of primer.';
+  }else{
+    document.getElementById('primerNote').style.display='none';
+  }
+
+  // Tin recommendations — optimal combination
+  var tinHtml = '';
+  var remaining = litresNeeded;
+  var tins20 = Math.floor(remaining/20);
+  remaining -= tins20*20;
+  var tins4 = Math.floor(remaining/4);
+  remaining -= tins4*4;
+  var tins1 = remaining>0?Math.ceil(remaining):0;
+
+  // Optimize: if 5+ tins of 4L, suggest one more 20L instead
+  if(tins4>=5){tins20++;tins4-=5;}
+
+  if(tins20>0) tinHtml+='<div class="tin-row"><span>20-litre drums</span><span class="tin-qty">'+tins20+'</span></div>';
+  if(tins4>0) tinHtml+='<div class="tin-row"><span>4-litre tins</span><span class="tin-qty">'+tins4+'</span></div>';
+  if(tins1>0) tinHtml+='<div class="tin-row"><span>1-litre tins</span><span class="tin-qty">'+tins1+'</span></div>';
+  tinHtml+='<div class="tin-row" style="font-size:.72rem;color:#94a3b8;border:none;padding-top:6px"><span>Total: '+litresNeeded+'L ('+brand.name+', '+effectiveCoverage.toFixed(1)+' m\u00B2/L effective)</span></div>';
+  document.getElementById('tinRows').innerHTML = tinHtml;
+
+  // Cost
+  var pricePerL = parseFloat(document.getElementById('pricePerLitre').value) || brand.price || 0;
+  if(pricePerL>0){
+    var curr = document.getElementById('priceCurrency').value;
+    var sym = CURR_SYM[curr]||'';
+    var totalCost = litresNeeded * pricePerL;
+    var primerCost = primerLitres * pricePerL * 0.7; // Primer ~70% of topcoat price
+    document.getElementById('costEstimate').textContent = sym + totalCost.toLocaleString('en',{minimumFractionDigits:0,maximumFractionDigits:0});
+    document.getElementById('costNote').textContent = 'Based on '+sym+pricePerL.toLocaleString('en')+'/litre for '+brand.name+(needsPrimer?'. Primer adds ~'+sym+Math.round(primerCost).toLocaleString('en'):'')+'. Labour costs not included.';
+    document.getElementById('costSection').style.display='block';
+  }else{
+    document.getElementById('costSection').style.display='none';
+  }
+
+  // Room SVG preview
+  drawRoomPreview(rooms);
+
+  // Summary
+  var sumHtml = '<strong>'+rooms.length+' room(s)</strong> | '+coats+' coat(s) | '+brand.name+' ('+effectiveCoverage.toFixed(1)+' m\u00B2/L effective) | Surface: '+surface+' | 10% wastage included';
+  document.getElementById('summary').innerHTML = sumHtml;
 
   document.getElementById('results').style.display='block';
   document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
 }
-</script>
 
-<script>
-(function(){
-  var target = document.getElementById('results');
-  if (!target) return;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
-  div.innerHTML = '<save-result-button tool-slug="paint-calculator" tool-name="Paint Calculator"></save-result-button><share-result-button tool-name="Paint Calculator" tool-slug="paint-calculator"></share-result-button>';
-  target.appendChild(div);
-})();
+/* ── SVG Room Preview ── */
+function drawRoomPreview(roomList){
+  if(!roomList.length){document.getElementById('roomPreview').innerHTML='';return;}
+  var r = roomList[0]; // Show first room
+  var w=200,h=150;
+  var wallColor='#BFDBFE';
+  var floorColor='#EFF6FF';
+  var svg = '<svg viewBox="0 0 260 180" xmlns="http://www.w3.org/2000/svg">'+
+    '<rect x="30" y="20" width="'+w+'" height="'+h+'" fill="'+floorColor+'" stroke="'+wallColor+'" stroke-width="3" rx="2"/>'+
+    // Left wall
+    '<rect x="30" y="20" width="8" height="'+h+'" fill="'+wallColor+'"/>'+
+    // Right wall
+    '<rect x="'+(222)+'" y="20" width="8" height="'+h+'" fill="'+wallColor+'"/>'+
+    // Top wall
+    '<rect x="30" y="20" width="'+w+'" height="8" fill="'+wallColor+'"/>'+
+    // Bottom wall with door gap
+    '<rect x="30" y="'+(162)+'" width="70" height="8" fill="'+wallColor+'"/>'+
+    '<rect x="120" y="'+(162)+'" width="110" height="8" fill="'+wallColor+'"/>'+
+    // Door
+    '<rect x="100" y="'+(162)+'" width="20" height="8" fill="#FDE68A" stroke="#F59E0B" stroke-width="1"/>'+
+    // Window on top wall
+    '<rect x="100" y="20" width="40" height="8" fill="#A5F3FC" stroke="#06B6D4" stroke-width="1"/>'+
+    // Area label
+    '<text x="130" y="105" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="14" font-weight="700" fill="#007AFF">'+r.paintable.toFixed(0)+' m\u00B2</text>'+
+    '<text x="130" y="120" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#64748b">paintable area</text>'+
+    '</svg>';
+  document.getElementById('roomPreview').innerHTML = svg;
+}
+
+/* ── Reset ── */
+function resetCalc(){
+  rooms = [];
+  document.getElementById('roomTags').innerHTML = '';
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('length').value = '';
+  document.getElementById('width').value = '';
+  document.getElementById('height').value = '3';
+  document.getElementById('doors').value = '1';
+  document.getElementById('windows').value = '2';
+  document.getElementById('pricePerLitre').value = '';
+}
+
+/* ── Print ── */
+function printResults(){window.print();}
+
+/* ── Share ── */
+function shareResults(){
+  var litres = document.getElementById('rLitres').textContent;
+  var area = document.getElementById('rPaintable').textContent;
+  var text = 'Paint needed: '+litres+' for '+area+' paintable area ('+rooms.length+' room(s)).\nCalculated with AfroTools Paint Calculator\nhttps://afrotools.com/tools/paint-calculator/';
+  if(navigator.share){
+    navigator.share({title:'Paint Estimate | AfroTools',text:text}).catch(function(){});
+  }else{
+    navigator.clipboard.writeText(text).then(function(){alert('Copied to clipboard!');});
+  }
+}
 </script>
 </body>
 </html>
