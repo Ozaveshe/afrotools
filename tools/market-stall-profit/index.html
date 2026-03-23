@@ -14,6 +14,12 @@
 <meta property="og:description" content="Calculate daily profit for your market stall. Track stock costs, sales revenue, and expenses. Built for African traders.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/market-stall-profit/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Market Stall Profit Calculator | AfroTools">
+<meta name="twitter:description" content="Track daily sales, costs, and profit margins for your market stall. Built for African traders.">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Market Stall Profit Calculator","item":"https://afrotools.com/tools/market-stall-profit/"}]}
+</script>
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
 <style>
 :root{--green:#16a34a;--green-light:#f0fdf4;--green-dark:#15803d}
@@ -77,6 +83,32 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 
 .profit-bar{height:24px;border-radius:12px;background:#e2e8f0;overflow:hidden;margin-top:.5rem}
 .profit-bar-fill{height:100%;border-radius:12px;transition:width .5s ease}
+
+.best-worst{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem}
+.bw-card{padding:1rem;border-radius:8px;font-size:.85rem}
+.bw-card.best{background:#f0fdf4;border:1px solid #86efac}
+.bw-card.worst{background:#fef2f2;border:1px solid #fecaca}
+.bw-card .bw-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.bw-card.best .bw-label{color:#15803d}
+.bw-card.worst .bw-label{color:#dc2626}
+.bw-card .bw-name{font-weight:700;font-size:1rem}
+.bw-card .bw-detail{color:#64748b;font-size:.8rem;margin-top:2px}
+
+.profit-chart{margin-top:1rem}
+.chart-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.chart-label{font-size:.78rem;font-weight:600;color:#475569;width:80px;text-align:right;flex-shrink:0}
+.chart-bar-wrap{flex:1;height:28px;background:#f1f5f9;border-radius:6px;overflow:hidden;position:relative}
+.chart-bar{height:100%;border-radius:6px;transition:width .4s ease;display:flex;align-items:center;justify-content:flex-end;padding-right:8px}
+.chart-bar span{font-size:.72rem;font-weight:700;color:#fff;white-space:nowrap}
+
+.history-section{margin-top:1.5rem;padding:1rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px}
+.history-section h3{font-size:.85rem;font-weight:700;color:#14532d;margin-bottom:.75rem}
+.history-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f1f5f9;font-size:.82rem}
+.history-row:last-child{border-bottom:none}
+.history-date{color:#64748b}
+.history-profit{font-weight:700}
+.history-profit.positive{color:#16a34a}
+.history-profit.negative{color:#dc2626}
 
 .preset-btns{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem}
 .preset-btn{padding:.35rem .75rem;border:1px solid #bbf7d0;background:#f0fdf4;color:#15803d;border-radius:5px;font-size:.8rem;cursor:pointer;font-weight:500;transition:all .2s}
@@ -142,6 +174,25 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 </select>
 </div>
 </div>
+<div class="form-grid" style="margin-top:.75rem">
+<div class="form-group">
+<label for="marketDays">Market Days per Month</label>
+<select id="marketDays">
+<option value="26" selected>26 days (6 days/week)</option>
+<option value="22">22 days (5 days/week)</option>
+<option value="30">30 days (every day)</option>
+<option value="13">13 days (3 days/week, e.g. Eke market)</option>
+</select>
+</div>
+<div class="form-group">
+<label for="paymentSplit">Payment Method</label>
+<select id="paymentSplit">
+<option value="cash">All Cash</option>
+<option value="mixed">Mixed (Cash + Mobile Money)</option>
+<option value="mobile">Mostly Mobile Money</option>
+</select>
+</div>
+</div>
 <div class="preset-btns" id="presetBtns" style="margin-top:1rem">
 <span style="font-size:.85rem;color:#64748b;font-weight:600;margin-right:.25rem">Quick presets:</span>
 <button class="preset-btn" onclick="loadPreset('food')">Food Seller</button>
@@ -190,12 +241,36 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 </div>
 
 <div class="card">
-<h2>Monthly Projection (26 market days)</h2>
+<h2>Best & Worst Performers</h2>
+<div class="best-worst" id="bestWorst"></div>
+</div>
+
+<div class="card">
+<h2>Visual Breakdown</h2>
+<div class="profit-chart" id="profitChart"></div>
+</div>
+
+<div class="card">
+<h2 id="monthlyTitle">Monthly Projection (26 market days)</h2>
 <div class="results-grid" id="monthlyCards"></div>
 </div>
 
+<div class="card" id="historyCard">
+<h2>Saved History</h2>
+<div class="history-section" id="historySection">
+<div id="historyList"><p style="font-size:.82rem;color:#94a3b8">No saved records yet. Calculate and save to start tracking.</p></div>
+</div>
+</div>
+
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem">
+<save-result-button tool-slug="market-stall-profit" tool-name="Market Stall Profit"></save-result-button>
+<share-result-button tool-name="Market Stall Profit" tool-slug="market-stall-profit"></share-result-button>
+</div>
+
 <div class="actions" style="justify-content:center;margin-bottom:1.5rem">
-<button class="btn btn-outline" onclick="downloadReport()">Download Report</button>
+<button class="btn btn-primary" onclick="saveToHistory()">Save Today's Record</button>
+<button class="btn btn-outline" onclick="downloadReport()">Download TXT</button>
+<button class="btn btn-outline" onclick="downloadCSV()">Download CSV</button>
 <button class="btn btn-outline" onclick="resetAll()">Start Over</button>
 </div>
 </div>
@@ -222,6 +297,9 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <details><summary>What about items sold on credit?</summary><p>You can still enter credit sales as items sold, since the revenue is expected. However, track credit separately in your records. If a customer defaults, add the amount as a "Bad Debt" expense on a future day.</p></details>
 <details><summary>Can I track multiple days?</summary><p>This calculator is designed for single-day analysis. For ongoing tracking, we recommend downloading the report each day and keeping a weekly record. This helps you compare daily performance and identify your most profitable market days.</p></details>
 <details><summary>What profit margin should I aim for?</summary><p>Healthy profit margins vary by trade. Food and provisions typically have 15-25% margins, clothing and fabrics 30-50%, electronics 20-35%, and vegetables 25-40%. If your margin is consistently below 15%, review your pricing or look for cheaper suppliers.</p></details>
+<details><summary>Can I save my records to compare day by day?</summary><p>Yes! After calculating, click "Save Today's Record" to store the day's results in your browser. You can view your last 30 days of records, see average daily profit, and track trends over time. Records persist even after closing the browser.</p></details>
+<details><summary>How do I account for mobile money charges?</summary><p>If you receive payments via mobile money (M-Pesa, OPay, MTN MoMo), add the transaction charges as a daily expense. Typical fees are 0.5-1.5% per transaction. You can estimate the total daily mobile money fees and add a single "Mobile money charges" expense.</p></details>
+<details><summary>What if my prices change during the day?</summary><p>Enter separate line items for the same product at different prices. For example, if you sold tomatoes at two different prices in the morning and afternoon, add them as two items with different sell prices. This gives you accurate profit tracking.</p></details>
 </section>
 
 <afro-related-tools></afro-related-tools>
@@ -447,7 +525,7 @@ function calculate() {
   document.getElementById('breakdownTable').innerHTML = tableHTML;
 
   // Monthly projection
-  const marketDays = 26;
+  const marketDays = parseInt(document.getElementById('marketDays').value) || 26;
   document.getElementById('monthlyCards').innerHTML = `
     <div class="result-card"><div class="result-label">Monthly Revenue</div><div class="result-value" style="color:#0369a1">${sym}${(totalRevenue * marketDays).toLocaleString()}</div></div>
     <div class="result-card"><div class="result-label">Monthly Costs</div><div class="result-value" style="color:#dc2626">${sym}${((totalCost + totalExpenses) * marketDays).toLocaleString()}</div></div>
@@ -455,8 +533,59 @@ function calculate() {
     <div class="result-card"><div class="result-label">Annual Projection</div><div class="result-value" style="color:#334155">${sym}${Math.abs(netProfit * marketDays * 12).toLocaleString()}</div></div>
   `;
 
+  // Best & worst performers
+  if (itemData.length >= 2) {
+    const sorted = [...itemData].sort((a, b) => {
+      const mA = a.sell > 0 ? ((a.sell - a.cost) / a.sell * 100) : 0;
+      const mB = b.sell > 0 ? ((b.sell - b.cost) / b.sell * 100) : 0;
+      return mB - mA;
+    });
+    const best = sorted[0];
+    const worst = sorted[sorted.length - 1];
+    const bestMargin = best.sell > 0 ? ((best.sell - best.cost) / best.sell * 100).toFixed(0) : 0;
+    const worstMargin = worst.sell > 0 ? ((worst.sell - worst.cost) / worst.sell * 100).toFixed(0) : 0;
+    document.getElementById('bestWorst').innerHTML = `
+      <div class="bw-card best"><div class="bw-label">Most Profitable</div><div class="bw-name">${best.name}</div><div class="bw-detail">${bestMargin}% margin | ${sym}${best.profit.toLocaleString()} profit</div></div>
+      <div class="bw-card worst"><div class="bw-label">Least Profitable</div><div class="bw-name">${worst.name}</div><div class="bw-detail">${worstMargin}% margin | ${sym}${worst.profit.toLocaleString()} profit</div></div>
+    `;
+  } else {
+    document.getElementById('bestWorst').innerHTML = '<p style="font-size:.82rem;color:#94a3b8;grid-column:1/-1">Add 2+ items to see best/worst performers.</p>';
+  }
+
+  // Visual bar chart
+  const maxVal = Math.max(totalRevenue, totalCost + totalExpenses, 1);
+  document.getElementById('profitChart').innerHTML = `
+    <div class="chart-bar-row"><span class="chart-label">Revenue</span><div class="chart-bar-wrap"><div class="chart-bar" style="width:${(totalRevenue/maxVal*100).toFixed(0)}%;background:linear-gradient(90deg,#0ea5e9,#0369a1)"><span>${sym}${totalRevenue.toLocaleString()}</span></div></div></div>
+    <div class="chart-bar-row"><span class="chart-label">Stock Cost</span><div class="chart-bar-wrap"><div class="chart-bar" style="width:${(totalCost/maxVal*100).toFixed(0)}%;background:linear-gradient(90deg,#f87171,#dc2626)"><span>${sym}${totalCost.toLocaleString()}</span></div></div></div>
+    <div class="chart-bar-row"><span class="chart-label">Expenses</span><div class="chart-bar-wrap"><div class="chart-bar" style="width:${(totalExpenses/maxVal*100).toFixed(0)}%;background:linear-gradient(90deg,#fbbf24,#d97706)"><span>${sym}${totalExpenses.toLocaleString()}</span></div></div></div>
+    <div class="chart-bar-row"><span class="chart-label">Net Profit</span><div class="chart-bar-wrap"><div class="chart-bar" style="width:${(Math.abs(netProfit)/maxVal*100).toFixed(0)}%;background:${isProfit?'linear-gradient(90deg,#22c55e,#16a34a)':'#dc2626'}"><span>${isProfit?'':'-'}${sym}${Math.abs(netProfit).toLocaleString()}</span></div></div></div>
+  `;
+
+  // Update monthly title with actual market days
+  document.getElementById('monthlyTitle').textContent = `Monthly Projection (${marketDays} market days)`;
+
   document.getElementById('resultsSection').style.display = 'block';
   document.getElementById('resultsSection').scrollIntoView({behavior:'smooth'});
+
+  // Store last calculation for save
+  window._lastCalc = {totalRevenue, totalCost, totalExpenses, grossProfit, netProfit, margin, itemData, expenseData, marketDays};
+
+  // Wire up save/share buttons
+  var _saveBtn = document.querySelector('save-result-button');
+  if (_saveBtn) _saveBtn.setData({
+    inputs: { currency: document.getElementById('currency').value, businessType: document.getElementById('businessType').value, marketDays: marketDays, items: itemData.length, expenses: expenseData.length },
+    outputs: { totalRevenue: totalRevenue, totalCost: totalCost, totalExpenses: totalExpenses, grossProfit: grossProfit, netProfit: netProfit, margin: margin.toFixed(1) + '%', monthlyProfit: netProfit * marketDays }
+  });
+  var _shareBtn = document.querySelector('share-result-button');
+  if (_shareBtn) _shareBtn.setResult({
+    headline: 'Market Stall Profit',
+    mainValue: (isProfit ? '' : '-') + sym + Math.abs(netProfit).toLocaleString() + ' net ' + (isProfit ? 'profit' : 'loss'),
+    subValues: [
+      { label: 'Revenue', value: sym + totalRevenue.toLocaleString() },
+      { label: 'Margin', value: margin.toFixed(1) + '%' },
+      { label: 'Monthly', value: sym + Math.abs(netProfit * marketDays).toLocaleString() }
+    ]
+  });
 }
 
 function downloadReport() {
@@ -506,23 +635,76 @@ function resetAll() {
   addExpense({name:'Stall rent',amount:''});
 }
 
+// ── Save to LocalStorage History ──
+function saveToHistory() {
+  if (!window._lastCalc) { alert('Please calculate first.'); return; }
+  var c = window._lastCalc;
+  var curr = document.getElementById('currency').value;
+  var history = JSON.parse(localStorage.getItem('msp-history') || '[]');
+  history.unshift({
+    date: new Date().toISOString().split('T')[0],
+    currency: curr,
+    revenue: c.totalRevenue,
+    costs: c.totalCost,
+    expenses: c.totalExpenses,
+    netProfit: c.netProfit,
+    margin: c.margin,
+    items: c.itemData.length
+  });
+  if (history.length > 30) history.length = 30;
+  localStorage.setItem('msp-history', JSON.stringify(history));
+  renderHistory();
+  alert('Record saved! You now have ' + history.length + ' day(s) of data.');
+}
+
+function renderHistory() {
+  var history = JSON.parse(localStorage.getItem('msp-history') || '[]');
+  var el = document.getElementById('historyList');
+  if (!history.length) {
+    el.innerHTML = '<p style="font-size:.82rem;color:#94a3b8">No saved records yet. Calculate and save to start tracking.</p>';
+    return;
+  }
+  var sym = getCurrSymbol();
+  el.innerHTML = history.slice(0, 10).map(function(h) {
+    var isP = h.netProfit >= 0;
+    var hSym = CURRENCIES[h.currency] || sym;
+    return '<div class="history-row"><span class="history-date">' + h.date + ' (' + h.items + ' items)</span><span class="history-profit ' + (isP ? 'positive' : 'negative') + '">' + (isP ? '+' : '-') + hSym + Math.abs(h.netProfit).toLocaleString() + ' (' + h.margin.toFixed(0) + '%)</span></div>';
+  }).join('');
+  if (history.length > 1) {
+    var avg = history.reduce(function(s, h) { return s + h.netProfit; }, 0) / history.length;
+    el.innerHTML += '<div style="margin-top:8px;padding-top:8px;border-top:1px solid #e2e8f0;font-size:.82rem"><strong>Average daily profit:</strong> <span style="font-weight:700;color:' + (avg >= 0 ? '#16a34a' : '#dc2626') + '">' + sym + Math.abs(Math.round(avg)).toLocaleString() + '</span> over ' + history.length + ' days</div>';
+  }
+}
+
+// ── CSV Export ──
+function downloadCSV() {
+  if (!window._lastCalc) { alert('Please calculate first.'); return; }
+  var c = window._lastCalc;
+  var rows = [['Type','Name','Qty','Cost Price','Sell Price','Revenue','Profit']];
+  c.itemData.forEach(function(it) {
+    rows.push(['Item', it.name, it.qty, it.cost, it.sell, it.revenue, it.profit]);
+  });
+  c.expenseData.forEach(function(ex) {
+    rows.push(['Expense', ex.name, '', ex.amount, '', '', -ex.amount]);
+  });
+  rows.push([]);
+  rows.push(['','','','','Total Revenue','', c.totalRevenue]);
+  rows.push(['','','','','Total Costs','', c.totalCost + c.totalExpenses]);
+  rows.push(['','','','','Net Profit','', c.netProfit]);
+  var csv = rows.map(function(r) { return r.map(function(v) { return '"' + String(v).replace(/"/g, '""') + '"'; }).join(','); }).join('\n');
+  var blob = new Blob([csv], {type: 'text/csv'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'market-profit-' + new Date().toISOString().split('T')[0] + '.csv';
+  a.click();
+}
+
 // Initialize with 3 empty item rows and 2 expense rows
 addItem(); addItem(); addItem();
 addExpense({name:'Transport',amount:''});
 addExpense({name:'Stall rent',amount:''});
+renderHistory();
 </script>
 
-<script>
-// Save/Share buttons — manual placement needed
-(function(){
-  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
-  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
-  div.innerHTML = '<save-result-button tool-slug="market-stall-profit" tool-name="Market Stall Profit"></save-result-button><share-result-button tool-name="Market Stall Profit" tool-slug="market-stall-profit"></share-result-button>';
-  target.appendChild(div);
-})();
-</script>
 </body>
 </html>
