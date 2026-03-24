@@ -348,8 +348,9 @@
     });
   }
 
-  /* ── Charts (graceful degradation) ── */
-  if (typeof Chart !== 'undefined') {
+  /* ── Charts (wait for Chart.js CDN to load) ── */
+  function renderCharts() {
+    if (typeof Chart === 'undefined') return;
 
     /* Trade chart */
     var tradeCanvas = document.getElementById('aa-trade-chart');
@@ -468,6 +469,19 @@
         }
       });
     }
+  }
+
+  /* Poll for Chart.js (CDN may still be loading) */
+  if (typeof Chart !== 'undefined') {
+    renderCharts();
+  } else {
+    var chartPoll = setInterval(function() {
+      if (typeof Chart !== 'undefined') {
+        clearInterval(chartPoll);
+        renderCharts();
+      }
+    }, 100);
+    setTimeout(function() { clearInterval(chartPoll); }, 8000);
   }
 
   /* ── Scroll Reveal — make all sections visible with staggered delay ── */
