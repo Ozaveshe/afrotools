@@ -25,8 +25,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap"></noscript></noscript>
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap"></noscript>
 
     <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
     <link rel="stylesheet" href="/assets/css/tokens.min.css">
@@ -448,7 +447,7 @@
       "name": "Pomodoro Timer",
       "description": "Advanced Pomodoro timer with session tracking, daily goals, statistics, and focus time management. Save your progress with AfroData.",
       "url": "https://afrotools.com/tools/pomodoro",
-      "applicationCategory": "FinanceApplication",
+      "applicationCategory": "ProductivityApplication",
       "operatingSystem": "Any",
       "offers": {
         "@type": "Offer",
@@ -518,6 +517,7 @@
         </div>
 
         <input type="text" class="pom-task-input" id="taskInput" placeholder="What are you working on?">
+        <div style="font-size:.68rem;color:var(--color-text-muted);text-align:center;margin:-12px 0 16px;opacity:.6">Keyboard: Space = start/pause, R = reset, 1/2/3 = work/break/long</div>
 
         <div class="pom-toggle">
             <input type="checkbox" id="autoBreak" checked>
@@ -700,6 +700,7 @@
             document.title = 'Time for ' + (currentSession === 'work' ? 'a break' : 'work') + '!';
             
             if (currentSession === 'work') {
+                sendNotification('Pomodoro Complete!', 'Time for a break. You\'ve completed ' + (sessionsCompleted + 1) + ' sessions today.');
                 sessionsCompleted++;
                 stats.today.count++;
                 stats.today.minutes += config.work / 60;
@@ -718,6 +719,7 @@
                     setTimeout(() => toggleTimer(), 1000);
                 }
             } else {
+                sendNotification('Break Over!', 'Time to get back to work. Focus session starting.');
                 if (document.getElementById('autoBreak').checked) {
                     setSessionType('work');
                     setTimeout(() => toggleTimer(), 1000);
@@ -777,21 +779,48 @@
 
         function playSound() {
             try {
-                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                const oscillator = audioContext.createOscillator();
-                const gain = audioContext.createGain();
-                oscillator.connect(gain);
-                gain.connect(audioContext.destination);
-                oscillator.frequency.value = 800;
-                oscillator.type = 'sine';
-                gain.gain.setValueAtTime(0.3, audioContext.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
-                oscillator.start(audioContext.currentTime);
-                oscillator.stop(audioContext.currentTime + 0.2);
-            } catch (e) {
-                // Web Audio API not available or blocked by browser policy
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                // Play a pleasant 3-note chime
+                const notes = [523, 659, 784];
+                notes.forEach((freq, i) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.frequency.value = freq;
+                    osc.type = 'sine';
+                    gain.gain.setValueAtTime(0.25, ctx.currentTime + i * 0.2);
+                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + i * 0.2 + 0.4);
+                    osc.start(ctx.currentTime + i * 0.2);
+                    osc.stop(ctx.currentTime + i * 0.2 + 0.4);
+                });
+            } catch (e) {}
+        }
+
+        // Browser notifications
+        function sendNotification(title, body) {
+            if ('Notification' in window && Notification.permission === 'granted') {
+                new Notification(title, { body: body, icon: '/assets/img/logo-mark.svg' });
             }
         }
+
+        // Request notification permission on first interaction
+        document.addEventListener('click', function requestNotifPerm() {
+            if ('Notification' in window && Notification.permission === 'default') {
+                Notification.requestPermission();
+            }
+            document.removeEventListener('click', requestNotifPerm);
+        }, { once: true });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            if (e.code === 'Space') { e.preventDefault(); toggleTimer(); }
+            if (e.code === 'KeyR') { resetTimer(); }
+            if (e.code === 'Digit1') { setSessionType('work'); }
+            if (e.code === 'Digit2') { setSessionType('break'); }
+            if (e.code === 'Digit3') { setSessionType('long'); }
+        });
 
         loadStats();
         updateDisplay();

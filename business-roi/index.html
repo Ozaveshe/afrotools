@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -12,7 +12,7 @@
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Business & ROI Calculators for Africa | AfroTools</title>
-<meta name="description" content="Free business calculators for Africa: break-even analysis, profit margin, ROI, budget planner, and productivity tools. Built for African entrepreneurs.">
+<meta name="description" content="Free business calculators for Africa: break-even analysis, profit margin, ROI, budget planner, meeting cost, and productivity tools. Built for African entrepreneurs.">
 <link rel="canonical" href="https://afrotools.com/business-roi">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <link rel="apple-touch-icon" href="/assets/img/logo-mark.svg">
@@ -27,11 +27,10 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript></noscript>
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
 <link rel="stylesheet" href="/assets/css/global.min.css">
-<script src="/assets/js/components/tool-registry.js" defer></script>
+<script src="/assets/js/components/tool-registry.min.js" defer></script>
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
 <style>
@@ -40,38 +39,55 @@
   .wrap{max-width:1000px;margin:0 auto;padding:0 24px}
   .bc{font-size:.72rem;font-weight:500;color:#9ca3af;letter-spacing:.06em;padding:14px 0}
   .bc a{color:#9ca3af;transition:color .15s}
-  .bc a:hover{color:#6366f1}
+  .bc a:hover{color:var(--color-primary)}
   .bc .cur{color:#374151}
-  .hero{background:linear-gradient(135deg,var(--color-text) 0%,#1e293b 50%,#334155 100%);padding:56px 0 48px;position:relative;overflow:hidden}
-  .hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 30% 50%,rgba(99,102,241,.08) 0%,transparent 50%),radial-gradient(circle at 70% 30%,rgba(168,85,247,.06) 0%,transparent 40%);animation:heroGlow 8s ease-in-out infinite alternate;pointer-events:none}
+
+  /* Hero */
+  .hero{background:linear-gradient(135deg,#0A1628 0%,#0f2847 50%,#1a3a5c 100%);padding:56px 0 48px;position:relative;overflow:hidden}
+  .hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 30% 50%,rgba(0,122,255,.1) 0%,transparent 50%),radial-gradient(circle at 70% 30%,rgba(77,163,255,.06) 0%,transparent 40%);animation:heroGlow 8s ease-in-out infinite alternate;pointer-events:none}
   .hero::after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background-image:radial-gradient(2px 2px at 20% 30%,rgba(255,255,255,.08),transparent),radial-gradient(2px 2px at 60% 70%,rgba(255,255,255,.05),transparent),radial-gradient(1px 1px at 80% 20%,rgba(255,255,255,.06),transparent),radial-gradient(1px 1px at 40% 80%,rgba(255,255,255,.04),transparent);animation:heroDots 12s linear infinite;pointer-events:none}
   @keyframes heroGlow{0%{transform:translate(0,0) rotate(0deg)}100%{transform:translate(2%,-2%) rotate(3deg)}}
   @keyframes heroDots{0%{transform:translateY(0)}100%{transform:translateY(-20px)}}
   .hero-z{position:relative;z-index:1}
-  .hero-ey{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:6px;font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:16px}
+  .hero-ey{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;background:rgba(0,122,255,.1);border:1px solid rgba(0,122,255,.2);border-radius:6px;font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:16px}
   .hero h1{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;color:#fff;line-height:1.08;letter-spacing:-.025em;margin-bottom:12px}
-  .hero h1 b{color:#c7d2fe}
-  .hero-sub{font-size:.95rem;color:rgba(255,255,255,.55);line-height:1.6;max-width:480px;margin-bottom:24px}
+  .hero h1 b{color:#4DA3FF}
+  .hero-sub{font-size:.95rem;color:rgba(255,255,255,.65);line-height:1.6;max-width:520px;margin-bottom:24px}
   .hero-stats{display:flex;gap:32px}
-  .hs-n{font-size:2.2rem;font-weight:800;color:#818cf8;line-height:1}
-  .hs-l{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-top:4px}
-  .quote{font-size:1rem;color:#334155;line-height:1.8;max-width:720px;border-left:3px solid #818cf8;padding-left:18px;margin:32px 0}
+  .hs-n{font-size:2.2rem;font-weight:800;color:var(--color-primary);line-height:1}
+  .hs-l{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:4px}
+
+  /* Content */
+  .quote{font-size:1rem;color:#334155;line-height:1.8;max-width:720px;border-left:3px solid var(--color-primary);padding-left:18px;margin:32px 0}
+  .content{font-size:.92rem;color:#374151;line-height:1.8;max-width:720px;margin-bottom:28px}
   .sec{padding:48px 0}
   .sec-alt{background:#f3f4f6}
-  .ey{display:inline-flex;align-items:center;gap:7px;font-size:.65rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#6366f1;margin-bottom:8px}
-  .ey::before{content:'';width:14px;height:2px;background:#6366f1;border-radius:2px}
+  .ey{display:inline-flex;align-items:center;gap:7px;font-size:.65rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--color-primary);margin-bottom:8px}
+  .ey::before{content:'';width:14px;height:2px;background:var(--color-primary);border-radius:2px}
   .st{font-size:clamp(1.4rem,2.5vw,1.75rem);font-weight:800;color:#111827;letter-spacing:-.025em;line-height:1.15;margin-bottom:6px}
   .ss{font-size:.88rem;color:#6b7280;line-height:1.7;max-width:520px;margin-bottom:28px}
+
+  /* Tool grid */
   #tool-grid{min-height:120px}
   #tool-grid a[style*="border:1.5px"],#tool-grid a[style*="border: 1.5px"]{transition:border-color .2s,box-shadow .2s,transform .2s}
-  #tool-grid a[style*="border:1.5px"]:hover,#tool-grid a[style*="border: 1.5px"]:hover{border-color:#6366f1!important;box-shadow:0 8px 24px rgba(99,102,241,.1);transform:translateY(-2px)}
-  .cta{background:#6366f1;border-radius:14px;padding:36px 32px;color:#fff;text-align:center;margin-top:32px}
+  #tool-grid a[style*="border:1.5px"]:hover,#tool-grid a[style*="border: 1.5px"]:hover{border-color:var(--color-primary)!important;box-shadow:0 8px 24px rgba(0,122,255,.1);transform:translateY(-2px)}
+
+  /* CTA */
+  .cta{background:var(--color-primary);border-radius:14px;padding:36px 32px;color:#fff;text-align:center;margin-top:32px}
   .cta h3{font-size:1.15rem;font-weight:800;margin-bottom:8px}
   .cta p{font-size:.88rem;color:rgba(255,255,255,.8);margin-bottom:16px}
-  .cta a{display:inline-block;padding:11px 24px;background:#fff;color:#6366f1;border-radius:8px;font-weight:700;font-size:.88rem;transition:transform .15s}
+  .cta a{display:inline-block;padding:11px 24px;background:#fff;color:var(--color-primary);border-radius:8px;font-weight:700;font-size:.88rem;transition:transform .15s}
   .cta a:hover{transform:translateY(-2px)}
-  .content{font-size:.92rem;color:#374151;line-height:1.8;max-width:720px;margin-bottom:28px}
-  @media(max-width:640px){.hero-stats{gap:20px}.hs-n{font-size:1.6rem}}
+
+  /* Feature highlights */
+  .highlights{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin:28px 0 0}
+  .hl-card{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:20px;text-align:center;transition:border-color .2s,box-shadow .2s}
+  .hl-card:hover{border-color:var(--color-primary);box-shadow:0 4px 16px rgba(0,122,255,.08)}
+  .hl-icon{font-size:28px;margin-bottom:10px}
+  .hl-title{font-size:.82rem;font-weight:700;color:#111827;margin-bottom:4px}
+  .hl-desc{font-size:.75rem;color:#6b7280;line-height:1.5}
+
+  @media(max-width:640px){.hero-stats{gap:20px}.hs-n{font-size:1.6rem}.highlights{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
@@ -80,20 +96,27 @@
 
 <section class="hero">
   <div class="wrap hero-z">
-    <div class="hero-ey"><span>📈</span> BUSINESS & ROI</div>
-    <h1><b>Business & ROI</b></h1>
-    <p class="hero-sub">Break-even analysis, profit margin, ROI calculators, budget planners, and productivity tools built for African businesses.</p>
+    <div class="hero-ey"><span>📊</span> BUSINESS & ROI</div>
+    <h1>Business & <b>ROI Tools</b></h1>
+    <p class="hero-sub">Budget planners, meeting cost calculators, productivity timers, and business tools designed for African entrepreneurs and professionals.</p>
     <div class="hero-stats">
-      <div><div class="hs-n" id="s-total">—</div><div class="hs-l">Tools planned</div></div>
+      <div><div class="hs-n" id="s-total">—</div><div class="hs-l">Total tools</div></div>
       <div><div class="hs-n" id="s-live">—</div><div class="hs-l">Live now</div></div>
-      <div><div class="hs-n" id="s-pipe">—</div><div class="hs-l">In pipeline</div></div>
+      <div><div class="hs-n" id="s-pipe">—</div><div class="hs-l">Coming soon</div></div>
     </div>
   </div>
 </section>
 
 <div class="wrap">
   <p class="quote">Running a business in Africa means working with different cost structures, currency fluctuations, and market dynamics. Our tools account for these realities instead of assuming Western defaults.</p>
-  <p class="content">African entrepreneurs face unique financial challenges: multi-currency operations, mobile money transaction costs, variable inflation rates across regions, and import duty considerations that differ by country. AfroTools provides free business calculators designed for these realities. Calculate break-even points in local currencies, estimate profit margins accounting for VAT structures specific to your country, plan budgets using the 50/30/20 rule adapted for African income patterns, and track ROI on investments denominated in Naira, Shilling, Rand, or any of 54 African currencies. From solo traders in Accra to startups in Cape Town, our tools help you make smarter financial decisions with numbers that reflect your actual operating environment.</p>
+  <p class="content">African entrepreneurs face unique financial challenges: multi-currency operations, mobile money transaction costs, variable inflation rates across regions, and import duty considerations that differ by country. From solo traders in Accra to startups in Cape Town, these tools help you make smarter decisions with numbers that reflect your actual operating environment.</p>
+
+  <div class="highlights">
+    <div class="hl-card"><div class="hl-icon">💰</div><div class="hl-title">Multi-Currency</div><div class="hl-desc">NGN, KES, ZAR, GHS, and more African currencies</div></div>
+    <div class="hl-card"><div class="hl-icon">📱</div><div class="hl-title">Works Offline</div><div class="hl-desc">Tools run in your browser — no internet needed after load</div></div>
+    <div class="hl-card"><div class="hl-icon">🔒</div><div class="hl-title">Private</div><div class="hl-desc">Your data stays on your device. Nothing sent to servers</div></div>
+    <div class="hl-card"><div class="hl-icon">🆓</div><div class="hl-title">100% Free</div><div class="hl-desc">No sign-up, no subscription, no hidden fees</div></div>
+  </div>
 </div>
 
 <section class="sec"><div class="wrap">

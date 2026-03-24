@@ -12,11 +12,12 @@
 <meta property="og:title" content="Event Countdown Timer | AfroTools">
 <meta property="og:description" content="Count down to any event. Days, hours, minutes, seconds. Free.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/countdown-timer/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript></noscript>
+    
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
 <link rel="stylesheet" href="/assets/css/global.min.css">
 <script src="/assets/js/components/navbar.min.js" defer></script>
@@ -27,8 +28,8 @@
 .tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px;position:relative}
 .breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
 .breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:var(--afro-blue)}
-h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
-h1 em{color:var(--afro-blue);font-style:normal}
+.tool-hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+.tool-hero h1 em{color:var(--afro-blue);font-style:normal}
 .hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
 .hero-badges{display:flex;flex-wrap:wrap;gap:7px}
 .badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
@@ -155,7 +156,7 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
       </div>
     </div>
 
-    <section style="margin-top:18px">
+    
 <section style="max-width:900px;margin:32px auto;padding:0 20px;">
   <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
     <p>This countdown timer lets you set a target date and watch the days, hours, minutes, and seconds tick away in real time. It is ideal for tracking upcoming events like birthdays, weddings, product launches, exams, holidays, or any milestone that matters to you. The timer saves your countdowns to local storage so they persist across browser sessions. You can create multiple countdowns and switch between them as needed. Whether you are building anticipation for a personal celebration or keeping a team aligned on a project deadline, this simple and visually engaging timer keeps your target date front and centre.</p>
@@ -238,7 +239,26 @@ function tick(){
     document.getElementById('cdMins').textContent='0';
     document.getElementById('cdSecs').textContent='0';
     banner.style.display='block';
-    if(intervalId){clearInterval(intervalId);intervalId=null;}
+    banner.textContent='This event has arrived!';
+    if(intervalId){
+      clearInterval(intervalId);intervalId=null;
+      // Play celebration sound
+      try{
+        var ctx=new(window.AudioContext||window.webkitAudioContext)();
+        [523,659,784,1047].forEach(function(freq,i){
+          var osc=ctx.createOscillator();var gain=ctx.createGain();
+          osc.connect(gain);gain.connect(ctx.destination);
+          osc.frequency.value=freq;osc.type='sine';
+          gain.gain.setValueAtTime(0.2,ctx.currentTime+i*0.2);
+          gain.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+i*0.2+0.4);
+          osc.start(ctx.currentTime+i*0.2);osc.stop(ctx.currentTime+i*0.2+0.4);
+        });
+      }catch(e){}
+      // Browser notification
+      if('Notification' in window&&Notification.permission==='granted'){
+        new Notification('Countdown Complete!',{body:document.getElementById('eventName').value+' has arrived!',icon:'/assets/img/logo-mark.svg'});
+      }
+    }
     return;
   }
   banner.style.display='none';

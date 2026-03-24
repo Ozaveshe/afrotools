@@ -138,6 +138,15 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <h2>Grading Scale Reference</h2>
 <table class="grade-table" id="scaleTable"></table>
 </div>
+<div class="card">
+<h2>What GPA Do I Need?</h2>
+<p style="font-size:.82rem;color:#64748b;margin-bottom:12px">Find out what GPA you need next semester to reach your target CGPA.</p>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+<div><label style="font-size:.72rem;font-weight:700;color:#334155;display:block;margin-bottom:4px">Target CGPA</label><input type="number" class="f-input" id="targetGpa" value="3.5" step="0.1" min="0" max="5" onchange="calculate()"></div>
+<div><label style="font-size:.72rem;font-weight:700;color:#334155;display:block;margin-bottom:4px">Future Credits</label><input type="number" class="f-input" id="futureCredits" value="18" min="1" onchange="calculate()"></div>
+</div>
+<div id="whatIfResult" style="font-size:.85rem;color:#475569;line-height:1.7;padding:12px;background:#f8fafc;border-radius:8px"></div>
+</div>
 </div>
 </div>
 
@@ -270,10 +279,60 @@ function calculate(){
 
   document.getElementById('results').style.display='block';
   document.getElementById('results').scrollIntoView({behavior:'smooth'});
+
+  // What-if calculator
+  var whatIfEl=document.getElementById('whatIfResult');
+  if(whatIfEl){
+    var targetGpa=parseFloat(document.getElementById('targetGpa').value)||0;
+    var futureCredits=parseInt(document.getElementById('futureCredits').value)||0;
+    var currentTotalCredits=totalCredits+(prevCredits||0);
+    var currentTotalQP=totalQP+(prevGpa*prevCredits||0);
+    if(futureCredits>0&&targetGpa>0){
+      var neededQP=(targetGpa*(currentTotalCredits+futureCredits))-currentTotalQP;
+      var neededGpa=neededQP/futureCredits;
+      var sys2=getSystem();
+      if(neededGpa>sys2.max){
+        whatIfEl.innerHTML='<span style="color:#ef4444;font-weight:700">Not achievable.</span> You would need a GPA of '+neededGpa.toFixed(2)+' which exceeds the maximum of '+sys2.max+'.';
+      } else if(neededGpa<=0){
+        whatIfEl.innerHTML='<span style="color:#10b981;font-weight:700">Already achieved!</span> Even with 0.0 next semester, your CGPA stays above '+targetGpa.toFixed(2)+'.';
+      } else {
+        whatIfEl.innerHTML='You need a GPA of <strong style="color:var(--color-primary)">'+neededGpa.toFixed(2)+'</strong> over the next '+futureCredits+' credits to reach a CGPA of '+targetGpa.toFixed(2)+'.';
+      }
+    }
+  }
+
+  // Save to localStorage
+  try{
+    var saveData={courses:[],system:document.getElementById('system').value,prevGpa:prevGpa,prevCredits:prevCredits};
+    courses.forEach(function(id){
+      var row=document.getElementById('course-'+id);
+      if(!row)return;
+      var inputs=row.querySelectorAll('input');
+      var sel=row.querySelector('select');
+      saveData.courses.push({name:inputs[0].value,credits:inputs[1].value,grade:sel.value});
+    });
+    localStorage.setItem('afro_grades',JSON.stringify(saveData));
+  }catch(e){}
 }
 
-// Init with 5 empty rows
-for(let i=0;i<5;i++) addCourse();
+// Load saved data or init with empty rows
+(function(){
+  try{
+    var saved=JSON.parse(localStorage.getItem('afro_grades'));
+    if(saved&&saved.courses&&saved.courses.length){
+      if(saved.system)document.getElementById('system').value=saved.system;
+      updateGradeOptions();
+      if(saved.prevGpa)document.getElementById('prevGpa').value=saved.prevGpa;
+      if(saved.prevCredits)document.getElementById('prevCredits').value=saved.prevCredits;
+      saved.courses.forEach(function(c){
+        addCourse({name:c.name||'',credits:c.credits||3,grade:c.grade||0});
+      });
+      return;
+    }
+  }catch(e){}
+  // Default: 5 empty rows
+  for(var i=0;i<5;i++) addCourse();
+})();
 </script>
 </body>
 </html>

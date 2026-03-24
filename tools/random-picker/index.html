@@ -6,17 +6,17 @@
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'random-picker'});</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Random Name & Number Picker — Spin the Wheel | AfroTools</title>
-<meta name="description" content="Pick random names, numbers, or items from any list. Perfect for giveaways, classroom picks, team assignments, and decision making. Free, instant, and fair.">
+<meta name="description" content="Pick random names, numbers, or items from any list. Animated spinner, sound effects. Perfect for giveaways, classroom picks, team assignments. Cryptographically fair.">
 <link rel="canonical" href="https://afrotools.com/tools/random-picker/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Random Name & Number Picker | AfroTools">
-<meta property="og:description" content="Pick random names or numbers fairly. Great for giveaways, classrooms. Free.">
+<meta property="og:description" content="Pick random names or numbers fairly. Animated spinner. Free.">
 <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/random-picker/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript></noscript>
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
 <link rel="stylesheet" href="/assets/css/global.min.css">
 <script src="/assets/js/components/navbar.min.js" defer></script>
@@ -27,12 +27,13 @@
 .tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px;position:relative}
 .breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
 .breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:var(--afro-blue)}
-h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
-h1 em{color:var(--afro-blue);font-style:normal}
+.tool-hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+.tool-hero h1 em{color:var(--afro-blue);font-style:normal}
 .hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
 .hero-badges{display:flex;flex-wrap:wrap;gap:7px}
 .badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
 .b-blue{background:rgba(0,113,227,.18);color:var(--color-primary);border:1px solid rgba(0,113,227,.38)}
+.b-green{background:rgba(16,185,129,.12);color:#10b981;border:1px solid rgba(16,185,129,.3)}
 .tool-main{padding:28px 0 72px}
 .tool-main-inner{max-width:900px;margin:0 auto;padding:0 24px}
 .card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
@@ -40,42 +41,69 @@ h1 em{color:var(--afro-blue);font-style:normal}
 .card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc;display:flex;justify-content:space-between;align-items:center}
 .card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
 .card-body{padding:22px}
-.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px}
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:18px}
 .tab-btn{padding:10px;background:#f1f5f9;border:1.5px solid #cbd5e1;border-radius:7px;cursor:pointer;font-size:.78rem;font-weight:700;color:#475569;transition:all .15s;font-family:'DM Sans',sans-serif;text-align:center}
 .tab-btn.active{background:var(--afro-blue);color:#fff;border-color:var(--afro-blue)}
 .tab-content{display:none}.tab-content.active{display:block}
 .field{margin-bottom:16px}
 .f-label{font-size:.75rem;font-weight:700;color:var(--afro-dark);margin-bottom:6px;display:block}
-.f-input,.f-textarea{width:100%;padding:11px 13px;background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:7px;font-size:1rem;font-weight:600;color:var(--afro-dark);outline:none;font-family:'DM Sans',sans-serif}
+.f-input,.f-textarea{width:100%;padding:11px 13px;background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:7px;font-size:1rem;font-weight:600;color:var(--afro-dark);outline:none;font-family:'DM Sans',sans-serif;box-sizing:border-box}
 .f-textarea{min-height:120px;resize:vertical;font-size:.9rem}
 .f-input:focus,.f-textarea:focus{border-color:var(--afro-blue);box-shadow:0 0 0 3px rgba(0,113,227,.1)}
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .pick-btn{width:100%;padding:16px;background:var(--afro-blue);color:#fff;border:none;border-radius:8px;font-size:1.1rem;font-weight:800;cursor:pointer;transition:all .18s;font-family:'DM Sans',sans-serif}
 .pick-btn:hover{background:#0059B3;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,113,227,.3)}
 .pick-btn:active{transform:translateY(0)}
-.result-display{margin-top:20px;text-align:center;padding:32px;background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:12px;display:none}
-.result-text{font-size:2.2rem;font-weight:800;color:#38bdf8;word-break:break-word}
+.pick-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+/* Animated result display */
+.result-display{margin-top:20px;text-align:center;padding:32px;background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:12px;display:none;position:relative;overflow:hidden}
+.result-display.spinning .result-text{animation:slotSpin .1s linear infinite}
+@keyframes slotSpin{0%{transform:translateY(-100%);opacity:0}50%{transform:translateY(0);opacity:1}100%{transform:translateY(100%);opacity:0}}
+.result-display.reveal .result-text{animation:revealBounce .4s cubic-bezier(.34,1.56,.64,1) forwards}
+@keyframes revealBounce{0%{transform:scale(0.5);opacity:0}100%{transform:scale(1);opacity:1}}
+.result-text{font-size:2.2rem;font-weight:800;color:#38bdf8;word-break:break-word;white-space:pre-line}
 .result-sub{font-size:.78rem;color:rgba(255,255,255,.4);margin-top:8px}
+
+/* Confetti */
+.confetti-piece{position:absolute;width:8px;height:8px;border-radius:2px;animation:confettiFall 1.5s ease-out forwards;pointer-events:none}
+@keyframes confettiFall{0%{transform:translateY(0) rotate(0deg) scale(1);opacity:1}100%{transform:translateY(200px) rotate(720deg) scale(0);opacity:0}}
+
+/* Options row */
+.options-row{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;align-items:center}
+.opt-toggle{display:flex;align-items:center;gap:6px;font-size:.78rem;color:#475569;cursor:pointer}
+.opt-toggle input{width:16px;height:16px;cursor:pointer}
+
+/* History */
 .history{margin-top:14px}
+.hist-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.hist-title{font-size:.72rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.05em}
+.hist-clear{padding:4px 10px;background:#fee2e2;color:#ef4444;border:1px solid #fecaca;border-radius:5px;font-size:.68rem;font-weight:700;cursor:pointer;font-family:inherit}
+.hist-clear:hover{background:#ef4444;color:#fff}
 .hist-item{display:inline-block;padding:4px 12px;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:20px;font-size:.75rem;font-weight:600;color:#1e40af;margin:3px}
 .count-badge{font-size:.72rem;background:#e2e8f0;padding:2px 8px;border-radius:4px;color:#64748b;font-weight:700}
-@media(max-width:600px){.tabs{grid-template-columns:1fr 1fr 1fr}.field-row{grid-template-columns:1fr}.result-text{font-size:1.6rem}}
+
+/* Coin flip animation */
+.coin-container{width:120px;height:120px;margin:0 auto 20px;perspective:400px}
+.coin{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .1s}
+.coin.flipping{animation:coinFlip 1s ease-out}
+@keyframes coinFlip{0%{transform:rotateY(0)}100%{transform:rotateY(1800deg)}}
+.coin-face{position:absolute;width:100%;height:100%;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:48px;font-weight:800;backface-visibility:hidden}
+.coin-heads{background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#78350f;border:4px solid #d97706}
+.coin-tails{background:linear-gradient(135deg,#94a3b8,#64748b);color:#1e293b;border:4px solid #475569;transform:rotateY(180deg)}
+
+@media(max-width:600px){.tabs{grid-template-columns:1fr 1fr}.field-row{grid-template-columns:1fr}.result-text{font-size:1.6rem}}
 details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-details-marker{display:none}
 </style>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Random Name & Number Picker","description":"Pick random names, numbers, or items from any list. Fair and cryptographically random.","url":"https://afrotools.com/tools/random-picker/","applicationCategory":"UtilityApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
-{"@type":"Question","name":"Is the random picker truly random?","acceptedAnswer":{"@type":"Answer","text":"Yes. It uses the Web Crypto API (crypto.getRandomValues) which provides cryptographically secure random numbers, making results unpredictable and fair."}},
-{"@type":"Question","name":"Can I pick multiple items at once?","acceptedAnswer":{"@type":"Answer","text":"Yes. In the Name Picker mode, you can set how many names to pick at once. The picker ensures no duplicates in a single draw."}},
-{"@type":"Question","name":"Is this suitable for giveaways and competitions?","acceptedAnswer":{"@type":"Answer","text":"Yes. The cryptographic randomness makes it fair for giveaways, raffles, classroom selection, team assignments, and any scenario requiring unbiased random selection."}}
-]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Random Name & Number Picker","description":"Pick random names, numbers, or items with animated spinner and sound effects. Cryptographically fair.","url":"https://afrotools.com/tools/random-picker/","applicationCategory":"UtilityApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}</script>
 </head>
 <body>
 <afro-navbar active="tools"></afro-navbar>
 <div class="tool-hero"><div class="tool-hero-inner">
   <div class="breadcrumb"><a href="/">AfroTools</a> / <a href="/all-tools">Tools</a> / <span>Random Picker</span></div>
   <h1>Random <em>Picker</em></h1>
-  <p class="hero-sub">Fairly pick random names, numbers, or items from any list. Uses cryptographic randomness for truly unbiased results. Perfect for giveaways, classrooms, and decisions.</p>
-  <div class="hero-badges"><span class="badge b-blue">Crypto Random</span><span class="badge b-blue">Names & Numbers</span><span class="badge b-blue">No Signup</span></div>
+  <p class="hero-sub">Fairly pick random names, numbers, or items. Animated spinner with sound effects. Uses cryptographic randomness for truly unbiased results.</p>
+  <div class="hero-badges"><span class="badge b-blue">Crypto Random</span><span class="badge b-green">Animated</span><span class="badge b-blue">No Signup</span></div>
 </div></div>
 
 <div class="tool-main"><div class="tool-main-inner">
@@ -83,9 +111,10 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
     <div class="card-head"><span class="card-title">Pick Something Random</span><span class="count-badge" id="countBadge">0 items</span></div>
     <div class="card-body">
       <div class="tabs">
-        <button class="tab-btn active" data-tab="names">Name Picker</button>
-        <button class="tab-btn" data-tab="numbers">Number Generator</button>
+        <button class="tab-btn active" data-tab="names">Names</button>
+        <button class="tab-btn" data-tab="numbers">Numbers</button>
         <button class="tab-btn" data-tab="coin">Coin Flip</button>
+        <button class="tab-btn" data-tab="teams">Teams</button>
       </div>
 
       <!-- Name Picker -->
@@ -101,11 +130,14 @@ Fatima
 Sipho
 Ngozi</textarea>
         </div>
-        <div class="field">
-          <label class="f-label">How many to pick?</label>
-          <input type="number" class="f-input" id="pickCount" value="1" min="1" max="100">
+        <div class="field-row">
+          <div class="field"><label class="f-label">How many to pick?</label><input type="number" class="f-input" id="pickCount" value="1" min="1" max="100"></div>
+          <div class="field">
+            <label class="f-label">Options</label>
+            <label class="opt-toggle" style="margin-top:8px"><input type="checkbox" id="removePicked"> Remove picked items from list</label>
+          </div>
         </div>
-        <button class="pick-btn" onclick="pickNames()">Pick Random Name(s)</button>
+        <button class="pick-btn" id="namePickBtn" onclick="pickNames()">Pick Random Name(s)</button>
       </div>
 
       <!-- Number Generator -->
@@ -114,17 +146,33 @@ Ngozi</textarea>
           <div class="field"><label class="f-label">Minimum</label><input type="number" class="f-input" id="numMin" value="1"></div>
           <div class="field"><label class="f-label">Maximum</label><input type="number" class="f-input" id="numMax" value="100"></div>
         </div>
-        <div class="field">
-          <label class="f-label">How many numbers?</label>
-          <input type="number" class="f-input" id="numCount" value="1" min="1" max="100">
+        <div class="field-row">
+          <div class="field"><label class="f-label">How many numbers?</label><input type="number" class="f-input" id="numCount" value="1" min="1" max="100"></div>
+          <div class="field"><label class="f-label">Allow duplicates?</label>
+            <label class="opt-toggle" style="margin-top:8px"><input type="checkbox" id="allowDupes"> Yes, allow repeats</label>
+          </div>
         </div>
         <button class="pick-btn" onclick="pickNumbers()">Generate Random Number(s)</button>
       </div>
 
       <!-- Coin Flip -->
       <div class="tab-content" id="coin">
-        <p style="font-size:.88rem;color:#475569;margin-bottom:16px;line-height:1.6">Flip a fair coin. 50/50 chance. Uses cryptographic randomness.</p>
+        <div class="coin-container"><div class="coin" id="coinEl">
+          <div class="coin-face coin-heads">H</div>
+          <div class="coin-face coin-tails">T</div>
+        </div></div>
+        <p style="font-size:.88rem;color:#475569;margin-bottom:16px;line-height:1.6;text-align:center">Flip a fair coin. 50/50 chance. Uses cryptographic randomness.</p>
         <button class="pick-btn" onclick="flipCoin()">Flip Coin</button>
+      </div>
+
+      <!-- Team Assigner -->
+      <div class="tab-content" id="teams">
+        <div class="field">
+          <label class="f-label">Enter names (one per line)</label>
+          <textarea class="f-textarea" id="teamList" placeholder="Chinedu&#10;Amina&#10;Thabo&#10;Ama&#10;Kwame&#10;Fatima&#10;Sipho&#10;Ngozi"></textarea>
+        </div>
+        <div class="field"><label class="f-label">Number of teams</label><input type="number" class="f-input" id="teamCount" value="2" min="2" max="20"></div>
+        <button class="pick-btn" onclick="assignTeams()">Assign Teams Randomly</button>
       </div>
 
       <div class="result-display" id="resultDisplay">
@@ -132,44 +180,39 @@ Ngozi</textarea>
         <div class="result-sub" id="resultSub"></div>
       </div>
 
-      <div class="history" id="history"></div>
+      <div class="history" id="historySection" style="display:none">
+        <div class="hist-header">
+          <span class="hist-title">History</span>
+          <button class="hist-clear" onclick="clearHistory()">Clear</button>
+        </div>
+        <div id="history"></div>
+      </div>
     </div>
   </div>
 
   <div class="card">
-    <div class="card-head"><span class="card-title">About This Tool</span></div>
+    <div class="card-head"><span class="card-title">About</span></div>
     <div class="card-body">
-      <h2 style="font-size:1.1rem;font-weight:800;color:#111;margin-bottom:12px">How the Random Picker Works</h2>
+      <h2 style="font-size:1.1rem;font-weight:800;color:#111;margin-bottom:12px">How It Works</h2>
       <p style="font-size:.85rem;color:#475569;line-height:1.7;margin-bottom:12px">
-        The AfroTools Random Picker uses the <strong>Web Crypto API</strong> (<code>crypto.getRandomValues()</code>) to generate cryptographically secure random selections. Unlike <code>Math.random()</code> which uses a pseudo-random algorithm, our picker produces truly unpredictable results suitable for competitions and giveaways.
+        Uses the <strong>Web Crypto API</strong> (<code>crypto.getRandomValues()</code>) for cryptographically secure random selections — unlike <code>Math.random()</code> which is predictable.
       </p>
       <h3 style="font-size:.95rem;font-weight:700;color:#111;margin-bottom:8px">Common Uses</h3>
-      <ul style="font-size:.85rem;color:#475569;line-height:1.8;padding-left:20px;margin-bottom:12px">
-        <li><strong>Social media giveaways:</strong> Paste comment names and pick a winner fairly</li>
-        <li><strong>Classroom selection:</strong> Pick students to answer questions randomly</li>
-        <li><strong>Team assignments:</strong> Randomly assign people to groups</li>
-        <li><strong>Decision making:</strong> Let fate decide between options</li>
-        <li><strong>Raffle draws:</strong> Pick winning ticket numbers</li>
+      <ul style="font-size:.85rem;color:#475569;line-height:1.8;padding-left:20px">
+        <li><strong>Giveaways:</strong> Paste comment names and pick a winner</li>
+        <li><strong>Classrooms:</strong> Pick students to answer questions</li>
+        <li><strong>Team building:</strong> Randomly assign people to groups</li>
+        <li><strong>Decisions:</strong> Let fate decide between options</li>
+        <li><strong>Raffles:</strong> Pick winning ticket numbers</li>
       </ul>
-      <p style="font-size:.85rem;color:#475569;line-height:1.7;margin-bottom:12px">
-        According to <a href="https://en.wikipedia.org/wiki/Cryptographically_secure_pseudorandom_number_generator" target="_blank" rel="noopener" style="color:var(--afro-blue)">cryptographic standards</a>, the Web Crypto API meets the requirements for unpredictability that simple random functions do not.
-      </p>
-      <p style="font-size:.85rem;color:#475569;line-height:1.7">
-        For other useful utilities, try the <a href="/tools/password-generator/" style="color:var(--afro-blue)">Password Generator</a> or <a href="/tools/uuid-generator/" style="color:var(--afro-blue)">UUID Generator</a>.
-      </p>
     </div>
   </div>
 
   <section style="margin-top:18px">
-<section style="max-width:900px;margin:32px auto;padding:0 20px;">
-  <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
-    <p>The Random Picker uses cryptographically secure randomness to select items from any list you provide. Enter names, options, or numbers and the tool picks one or more winners with guaranteed fairness. It is perfect for classroom activities, giveaway draws, team assignments, decision making when you cannot choose, and any situation that calls for an unbiased random selection. The picker includes a visual spinner animation for added engagement and supports picking multiple items without duplicates. Teachers, event hosts, content creators running competitions, and managers assigning tasks all use this tool to keep selections transparent and fun.</p>
-  </div>
-</section>
     <h2 style="font-size:1.15rem;font-weight:800;color:#111;margin-bottom:14px">Frequently Asked Questions</h2>
-    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">Is the random picker truly random?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">Yes. It uses the Web Crypto API for cryptographically secure random numbers.</div></details>
-    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">Can I pick multiple items at once?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">Yes. Set how many to pick and the tool ensures no duplicates in a single draw.</div></details>
-    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">Is this suitable for giveaways?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">Yes. The cryptographic randomness makes it fair for giveaways, raffles, classroom selection, and any scenario requiring unbiased random selection.</div></details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">Is the random picker truly random?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">Yes. It uses the Web Crypto API for cryptographically secure random numbers, making results unpredictable and provably fair.</div></details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">Can I remove picked items from the list?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">Yes. Check the "Remove picked items from list" option and each picked name will be automatically removed from the textarea, so they cannot be picked again.</div></details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff"><summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center">What is the Team Assigner?<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary><div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">The Team Assigner randomly distributes a list of names into groups. Enter names, choose how many teams, and the tool shuffles and assigns everyone fairly. Great for group projects, sports, or team-building exercises.</div></details>
   </section>
 </div></div>
 
@@ -177,86 +220,272 @@ Ngozi</textarea>
 
 <script>
 // Tabs
-document.querySelectorAll('.tab-btn').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+document.querySelectorAll('.tab-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+    document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
     btn.classList.add('active');
     document.getElementById(btn.dataset.tab).classList.add('active');
   });
 });
 
-let historyArr=[];
+var historyArr = [];
+var isAnimating = false;
 
-function cryptoRandom(max){
-  const arr=new Uint32Array(1);
+function cryptoRandom(max) {
+  var arr = new Uint32Array(1);
   crypto.getRandomValues(arr);
-  return arr[0]%max;
+  return arr[0] % max;
 }
 
-function showResult(text,sub){
-  const el=document.getElementById('resultDisplay');
-  el.style.display='block';
-  document.getElementById('resultText').textContent=text;
-  document.getElementById('resultSub').textContent=sub||'';
-  // Animation
-  el.style.transform='scale(0.95)';
-  setTimeout(()=>el.style.transform='scale(1)',50);
+function playSound(type) {
+  try {
+    var ctx = new (window.AudioContext || window.webkitAudioContext)();
+    var osc = ctx.createOscillator();
+    var gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    if (type === 'tick') {
+      osc.frequency.value = 600 + cryptoRandom(400);
+      osc.type = 'sine';
+      gain.gain.setValueAtTime(0.08, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.05);
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 0.05);
+    } else if (type === 'win') {
+      osc.frequency.value = 523;
+      osc.type = 'sine';
+      gain.gain.setValueAtTime(0.2, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 0.3);
+      // Second note
+      var osc2 = ctx.createOscillator();
+      var gain2 = ctx.createGain();
+      osc2.connect(gain2);
+      gain2.connect(ctx.destination);
+      osc2.frequency.value = 659;
+      osc2.type = 'sine';
+      gain2.gain.setValueAtTime(0.2, ctx.currentTime + 0.15);
+      gain2.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.45);
+      osc2.start(ctx.currentTime + 0.15);
+      osc2.stop(ctx.currentTime + 0.45);
+      // Third note
+      var osc3 = ctx.createOscillator();
+      var gain3 = ctx.createGain();
+      osc3.connect(gain3);
+      gain3.connect(ctx.destination);
+      osc3.frequency.value = 784;
+      osc3.type = 'sine';
+      gain3.gain.setValueAtTime(0.2, ctx.currentTime + 0.3);
+      gain3.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.6);
+      osc3.start(ctx.currentTime + 0.3);
+      osc3.stop(ctx.currentTime + 0.6);
+    }
+  } catch (e) {}
 }
 
-function addHistory(text){
-  const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+function spawnConfetti() {
+  var el = document.getElementById('resultDisplay');
+  var colors = ['#007AFF', '#4DA3FF', '#fbbf24', '#ef4444', '#10b981', '#8b5cf6', '#f97316'];
+  for (var i = 0; i < 30; i++) {
+    var piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.left = cryptoRandom(100) + '%';
+    piece.style.top = '-10px';
+    piece.style.background = colors[cryptoRandom(colors.length)];
+    piece.style.animationDelay = (cryptoRandom(500)) + 'ms';
+    piece.style.animationDuration = (1000 + cryptoRandom(1000)) + 'ms';
+    el.appendChild(piece);
+    setTimeout(function(p) { p.remove(); }, 3000, piece);
+  }
+}
+
+function animateResult(items, finalText, sub, onDone) {
+  if (isAnimating) return;
+  isAnimating = true;
+  var el = document.getElementById('resultDisplay');
+  var textEl = document.getElementById('resultText');
+  el.style.display = 'block';
+  el.classList.add('spinning');
+  el.classList.remove('reveal');
+
+  var iterations = 15;
+  var count = 0;
+
+  function tick() {
+    textEl.textContent = items[cryptoRandom(items.length)];
+    playSound('tick');
+    count++;
+    if (count >= iterations) {
+      el.classList.remove('spinning');
+      el.classList.add('reveal');
+      textEl.textContent = finalText;
+      document.getElementById('resultSub').textContent = sub || '';
+      playSound('win');
+      spawnConfetti();
+      isAnimating = false;
+      if (onDone) onDone();
+      return;
+    }
+    var delay = count > iterations * 0.8 ? 200 : count > iterations * 0.6 ? 120 : 60;
+    setTimeout(tick, delay);
+  }
+  tick();
+}
+
+function showResultDirect(text, sub) {
+  var el = document.getElementById('resultDisplay');
+  el.style.display = 'block';
+  el.classList.remove('spinning');
+  el.classList.add('reveal');
+  document.getElementById('resultText').textContent = text;
+  document.getElementById('resultSub').textContent = sub || '';
+}
+
+function addHistory(text) {
+  var esc = function(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;'); };
   historyArr.unshift(text);
-  if(historyArr.length>20) historyArr.pop();
-  document.getElementById('history').innerHTML=historyArr.map(h=>`<span class="hist-item">${esc(h)}</span>`).join('');
+  if (historyArr.length > 20) historyArr.pop();
+  document.getElementById('historySection').style.display = 'block';
+  document.getElementById('history').innerHTML = historyArr.map(function(h) { return '<span class="hist-item">' + esc(h) + '</span>'; }).join('');
 }
 
-function pickNames(){
-  const raw=document.getElementById('nameList').value.trim();
-  if(!raw){alert('Enter some names first');return;}
-  const names=raw.split('\n').map(n=>n.trim()).filter(Boolean);
-  const count=Math.min(parseInt(document.getElementById('pickCount').value)||1,names.length);
-  document.getElementById('countBadge').textContent=names.length+' items';
+function clearHistory() {
+  historyArr = [];
+  document.getElementById('history').innerHTML = '';
+  document.getElementById('historySection').style.display = 'none';
+}
 
-  if(count>names.length){alert('Not enough names for that many picks');return;}
+function getNames() {
+  var raw = document.getElementById('nameList').value.trim();
+  if (!raw) return [];
+  return raw.split('\n').map(function(n) { return n.trim(); }).filter(Boolean);
+}
+
+function pickNames() {
+  if (isAnimating) return;
+  var names = getNames();
+  if (!names.length) { alert('Enter some names first'); return; }
+  var count = Math.min(parseInt(document.getElementById('pickCount').value) || 1, names.length);
+  document.getElementById('countBadge').textContent = names.length + ' items';
 
   // Fisher-Yates shuffle with crypto random
-  const shuffled=[...names];
-  for(let i=shuffled.length-1;i>0;i--){
-    const j=cryptoRandom(i+1);
-    [shuffled[i],shuffled[j]]=[shuffled[j],shuffled[i]];
+  var shuffled = names.slice();
+  for (var i = shuffled.length - 1; i > 0; i--) {
+    var j = cryptoRandom(i + 1);
+    var tmp = shuffled[i]; shuffled[i] = shuffled[j]; shuffled[j] = tmp;
   }
-  const picked=shuffled.slice(0,count);
-  showResult(picked.join(', '),count===1?'Selected from '+names.length+' items':'Picked '+count+' from '+names.length+' items');
-  picked.forEach(p=>addHistory(p));
+  var picked = shuffled.slice(0, count);
+  var finalText = picked.join(', ');
+  var sub = count === 1 ? 'Selected from ' + names.length + ' items' : 'Picked ' + count + ' from ' + names.length + ' items';
+
+  animateResult(names, finalText, sub, function() {
+    picked.forEach(function(p) { addHistory(p); });
+    // Remove picked if option enabled
+    if (document.getElementById('removePicked').checked) {
+      var remaining = names.slice();
+      picked.forEach(function(p) {
+        var idx = remaining.indexOf(p);
+        if (idx !== -1) remaining.splice(idx, 1);
+      });
+      document.getElementById('nameList').value = remaining.join('\n');
+      document.getElementById('countBadge').textContent = remaining.length + ' items';
+    }
+  });
 }
 
-function pickNumbers(){
-  const min=parseInt(document.getElementById('numMin').value)||0;
-  const max=parseInt(document.getElementById('numMax').value)||100;
-  const count=parseInt(document.getElementById('numCount').value)||1;
-  if(min>=max){alert('Minimum must be less than maximum');return;}
-  const range=max-min+1;
-  if(count>range){alert('Range too small for that many unique numbers');return;}
+function pickNumbers() {
+  if (isAnimating) return;
+  var min = parseInt(document.getElementById('numMin').value) || 0;
+  var max = parseInt(document.getElementById('numMax').value) || 100;
+  var count = parseInt(document.getElementById('numCount').value) || 1;
+  var allowDupes = document.getElementById('allowDupes').checked;
+  if (min >= max) { alert('Minimum must be less than maximum'); return; }
+  var range = max - min + 1;
+  if (!allowDupes && count > range) { alert('Range too small for that many unique numbers'); return; }
 
-  const picked=new Set();
-  while(picked.size<count){
-    picked.add(min+cryptoRandom(range));
+  var picked;
+  if (allowDupes) {
+    picked = [];
+    for (var i = 0; i < count; i++) picked.push(min + cryptoRandom(range));
+  } else {
+    var set = {};
+    picked = [];
+    while (picked.length < count) {
+      var n = min + cryptoRandom(range);
+      if (!set[n]) { set[n] = true; picked.push(n); }
+    }
   }
-  const arr=[...picked].sort((a,b)=>a-b);
-  showResult(arr.join(', '),count===1?'Random number between '+min+' and '+max:'Picked '+count+' unique numbers');
-  arr.forEach(n=>addHistory(String(n)));
+  picked.sort(function(a, b) { return a - b; });
+
+  var pool = [];
+  var range2 = max - min + 1;
+  for (var k = 0; k < Math.min(20, range2); k++) pool.push(String(min + cryptoRandom(range2)));
+
+  animateResult(pool, picked.join(', '),
+    count === 1 ? 'Random number between ' + min + ' and ' + max : 'Picked ' + count + (allowDupes ? '' : ' unique') + ' numbers',
+    function() { picked.forEach(function(n) { addHistory(String(n)); }); }
+  );
 }
 
-function flipCoin(){
-  const result=cryptoRandom(2)===0?'Heads':'Tails';
-  showResult(result,result==='Heads'?'The coin landed on heads':'The coin landed on tails');
-  addHistory(result);
+function flipCoin() {
+  if (isAnimating) return;
+  isAnimating = true;
+  var coinEl = document.getElementById('coinEl');
+  var result = cryptoRandom(2) === 0 ? 'Heads' : 'Tails';
+
+  coinEl.classList.remove('flipping');
+  void coinEl.offsetWidth; // force reflow
+  coinEl.classList.add('flipping');
+  playSound('tick');
+
+  setTimeout(function() {
+    coinEl.classList.remove('flipping');
+    coinEl.style.transform = result === 'Tails' ? 'rotateY(180deg)' : 'rotateY(0)';
+    showResultDirect(result, result === 'Heads' ? 'The coin landed on heads' : 'The coin landed on tails');
+    playSound('win');
+    spawnConfetti();
+    addHistory(result);
+    isAnimating = false;
+  }, 1000);
 }
+
+function assignTeams() {
+  if (isAnimating) return;
+  var raw = document.getElementById('teamList').value.trim();
+  if (!raw) { alert('Enter names first'); return; }
+  var names = raw.split('\n').map(function(n) { return n.trim(); }).filter(Boolean);
+  var teamCount = parseInt(document.getElementById('teamCount').value) || 2;
+
+  // Shuffle
+  for (var i = names.length - 1; i > 0; i--) {
+    var j = cryptoRandom(i + 1);
+    var tmp = names[i]; names[i] = names[j]; names[j] = tmp;
+  }
+
+  // Distribute
+  var teams = [];
+  for (var t = 0; t < teamCount; t++) teams.push([]);
+  names.forEach(function(name, idx) { teams[idx % teamCount].push(name); });
+
+  var resultLines = teams.map(function(team, idx) {
+    return 'Team ' + (idx + 1) + ': ' + team.join(', ');
+  }).join('\n');
+
+  animateResult(names, resultLines, names.length + ' people into ' + teamCount + ' teams', function() {
+    addHistory(teamCount + ' teams from ' + names.length + ' people');
+  });
+}
+
+// Update count badge on textarea input
+document.getElementById('nameList').addEventListener('input', function() {
+  var names = getNames();
+  document.getElementById('countBadge').textContent = names.length + ' items';
+});
 </script>
 <script src="/assets/js/components/tool-registry.min.js" defer></script>
 <script src="/assets/js/components/related-tools.min.js" defer></script>
-<script src="/assets/js/components/newsletter-cta.min.js" defer></script>
-<afro-newsletter-cta></afro-newsletter-cta>
+<afro-related-tools category="data-productivity" current="random-picker"></afro-related-tools>
 </body>
 </html>
