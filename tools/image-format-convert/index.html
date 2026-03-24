@@ -19,7 +19,7 @@
 <meta name="twitter:title" content="Image Format Converter | AfroTools">
 <meta name="twitter:description" content="Convert images between PNG, JPG, WebP, and BMP formats instantly in your browser. Adjust quality, resize, and batch convert. Files never leave your device.">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"Image Format Converter — AfroTools","description":"Convert images between PNG, JPG, WebP, and BMP formats instantly in your browser. Adjust quality, resize, and batch convert.","url":"https://afrotools.com/tools/image-format-convert/","applicationCategory":"MultimediaApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
+{"@context":"https://schema.org","@type":"WebPage","name":"Image Format Converter \u2014 AfroTools","url":"https://afrotools.com/tools/image-format-convert/","description":"Convert images between PNG, JPG, WebP, and BMP formats instantly in your browser. Adjust quality, resize, and batch convert.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com"}}
 </script>
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
 <style>
@@ -113,7 +113,7 @@ function handleFile(f){
   reader.onload=e=>{
     const img=new Image();
     img.onload=()=>{origImg=img;document.getElementById('convertCard').style.display='block';
-      document.getElementById('preview').innerHTML=`<div class="preview-box"><img src="${e.target.result}"><div class="info">Original: ${img.width}x${img.height} | ${f.type} | ${fmt(f.size)}</div></div><div class="preview-box" id="outputPreview"><div style="padding:3rem;color:#94a3b8">Click "Convert" to see result</div></div>`;
+      document.getElementById('preview').innerHTML=`<div class="preview-box"><img src="${e.target.result}" alt=""><div class="info">Original: ${img.width}x${img.height} | ${f.type} | ${fmt(f.size)}</div></div><div class="preview-box" id="outputPreview"><div style="padding:3rem;color:#94a3b8">Click "Convert" to see result</div></div>`;
     };
     img.src=e.target.result;
   };
@@ -135,7 +135,7 @@ function convert(){
   const ext={['image/png']:'png',['image/jpeg']:'jpg',['image/webp']:'webp',['image/bmp']:'bmp'}[format];
   canvas.toBlob(blob=>{
     const url=URL.createObjectURL(blob);
-    document.getElementById('outputPreview').innerHTML=`<img src="${url}"><div class="info">Converted: ${w}x${h} | ${ext.toUpperCase()} | ${fmt(blob.size)} <a href="${url}" download="${origName.replace(/\.[^.]+$/,'')}.${ext}" style="color:var(--sky);font-weight:600;margin-left:.5rem">Download</a></div>`;
+    document.getElementById('outputPreview').innerHTML=`<img src="${url}" alt=""><div class="info">Converted: ${w}x${h} | ${ext.toUpperCase()} | ${fmt(blob.size)} <a href="${url}" download="${origName.replace(/\.[^.]+$/,'')}.${ext}" style="color:var(--sky);font-weight:600;margin-left:.5rem">Download</a></div>`;
   },format,quality);
 }
 

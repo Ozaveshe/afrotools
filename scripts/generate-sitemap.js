@@ -53,7 +53,35 @@ const staticPages = [
 // Pages to exclude from sitemap (redirects, non-canonical, private, etc.)
 const EXCLUDED_URLS = new Set([
   '/dashboard/', '/admin/', '/offline.html', '/pro/', '/salary-tax/',
+  // Audit fix: exclude redirect sources (non-canonical)
+  '/nigeria/ng-paye', '/nigeria/ng-paye/',
+  '/tools/paye-calculator/', '/tools/paye-calculator',
+  '/fr/cote-divoire/', '/fr/cote-divoire',
+  '/categories/financial/', '/categories/financial',
+  '/privacy-policy', '/privacy-policy/', '/privacy-policy.html',
+  '/terms-of-use', '/terms-of-use/', '/terms-of-use.html',
+  '/developer/', '/developer',
+  // Audit fix: exclude non-canonical country hub aliases
+  '/central-african-republic/', '/central-african-republic',
+  // Audit fix: exclude admin/internal pages
+  '/afrotools-mission-control.html', '/style-guide.html', '/logo-system.html',
+  '/nigeria/index_old.html',
 ]);
+
+// Also parse netlify.toml for 301/302 redirect sources
+const netlifyTomlPath = path.join(__dirname, '..', 'netlify.toml');
+if (fs.existsSync(netlifyTomlPath)) {
+  const tomlContent = fs.readFileSync(netlifyTomlPath, 'utf8');
+  const redirectPattern = /from\s*=\s*"([^"]+)"[\s\S]*?status\s*=\s*(301|302)/g;
+  let match;
+  while ((match = redirectPattern.exec(tomlContent)) !== null) {
+    const from = match[1].replace(/\*/g, '').replace(/\/+$/, '');
+    if (from) {
+      EXCLUDED_URLS.add(from);
+      EXCLUDED_URLS.add(from + '/');
+    }
+  }
+}
 
 // ── FRENCH / FRANCOPHONE PAGES ────────────────────────
 const frDir = path.join(__dirname, '..', 'fr');
@@ -137,14 +165,31 @@ if (fs.existsSync(blogDir)) {
 
 const allPages = [...staticPages, ...categoryPages, ...countryHubs, ...toolPages, ...blogPages, ...frenchPages];
 
-// Deduplicate by URL and exclude non-canonical pages
+// Deduplicate by URL, exclude non-canonical pages, and verify files exist
+const rootDir = path.join(__dirname, '..');
 const seen = new Set();
+let excludedCount = 0;
 const uniquePages = allPages.filter(p => {
   // Normalize URL to trailing-slash version
   const normalized = p.url.endsWith('/') || p.url.includes('.') ? p.url : p.url + '/';
   const key = normalized.replace(/\/$/, '');
   if (seen.has(key)) return false;
-  if (EXCLUDED_URLS.has(normalized) || EXCLUDED_URLS.has(key + '/')) return false;
+  if (EXCLUDED_URLS.has(normalized) || EXCLUDED_URLS.has(key) || EXCLUDED_URLS.has(key + '/')) {
+    excludedCount++;
+    return false;
+  }
+  // Verify the actual file exists on disk
+  const urlPath = key.replace(/^\//, '');
+  const possiblePaths = [
+    path.join(rootDir, urlPath, 'index.html'),
+    path.join(rootDir, urlPath + '.html'),
+    path.join(rootDir, urlPath),
+  ];
+  const fileExists = possiblePaths.some(p => fs.existsSync(p) && fs.statSync(p).isFile());
+  if (!fileExists && key !== '') {
+    excludedCount++;
+    return false;
+  }
   seen.add(key);
   // Ensure trailing slash on directory URLs
   if (!p.url.endsWith('/') && !p.url.includes('.')) p.url = p.url + '/';
@@ -181,3 +226,4 @@ console.log(`  Country hubs: ${countryHubs.length}`);
 console.log(`  Tool pages: ${toolPages.length}`);
 console.log(`  Blog posts: ${blogPages.length}`);
 console.log(`  French pages: ${frenchPages.length}`);
+console.log(`  Excluded (redirects/missing): ${excludedCount}`);
