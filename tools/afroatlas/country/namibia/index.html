@@ -348,140 +348,59 @@
     });
   }
 
-  /* ── Charts (wait for Chart.js CDN to load) ── */
+  /* ── Charts ── */
   function renderCharts() {
-    if (typeof Chart === 'undefined') return;
-
-    /* Trade chart */
-    var tradeCanvas = document.getElementById('aa-trade-chart');
-    if (tradeCanvas && country.exports && country.imports) {
-      var expLabels = [];
-      var expValues = [];
-      var impLabels = [];
-      var impValues = [];
-      var expSlice = country.exports.slice(0, 5);
-      var impSlice = country.imports.slice(0, 5);
-      for (var te = 0; te < expSlice.length; te++) {
-        expLabels.push(expSlice[te].p);
-        expValues.push(expSlice[te].v / 1e9);
-      }
-      for (var tm = 0; tm < impSlice.length; tm++) {
-        impLabels.push(impSlice[tm].p);
-        impValues.push(impSlice[tm].v / 1e9);
-      }
-      var tradeLabels = expLabels.concat(impLabels);
-      var tradeData = expValues.map(function(v) { return v; }).concat(impValues.map(function(v) { return -v; }));
-      var tradeColors = [];
-      for (var tc = 0; tc < expValues.length; tc++) tradeColors.push('rgba(45,106,79,0.8)');
-      for (var tc2 = 0; tc2 < impValues.length; tc2++) tradeColors.push('rgba(231,111,81,0.8)');
-
-      new Chart(tradeCanvas, {
-        type: 'bar',
-        data: {
-          labels: tradeLabels,
-          datasets: [{
-            data: tradeData,
-            backgroundColor: tradeColors,
-            borderRadius: 4,
-            barThickness: 22
-          }]
-        },
-        options: {
-          indexAxis: 'y',
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { display: false },
-            tooltip: {
-              callbacks: {
-                label: function(ctx) {
-                  var v = Math.abs(ctx.raw);
-                  return (ctx.raw >= 0 ? 'Export: ' : 'Import: ') + '$' + v.toFixed(1) + 'B';
-                }
-              }
-            }
-          },
-          scales: {
-            x: {
-              ticks: {
-                callback: function(v) { return '$' + Math.abs(v).toFixed(0) + 'B'; },
-                font: { size: 11 }
-              },
-              grid: { color: 'rgba(0,0,0,0.04)' }
-            },
-            y: {
-              ticks: { font: { size: 11 } },
-              grid: { display: false }
-            }
+    try {
+      /* Trade chart */
+      var tradeCanvas = document.getElementById('aa-trade-chart');
+      if (tradeCanvas && country.exports && country.imports) {
+        var expLabels = [], expValues = [], impLabels = [], impValues = [];
+        var expSlice = country.exports.slice(0, 5);
+        var impSlice = country.imports.slice(0, 5);
+        for (var te = 0; te < expSlice.length; te++) { expLabels.push(expSlice[te].p); expValues.push(expSlice[te].v / 1e9); }
+        for (var tm = 0; tm < impSlice.length; tm++) { impLabels.push(impSlice[tm].p); impValues.push(impSlice[tm].v / 1e9); }
+        var tradeLabels = expLabels.concat(impLabels);
+        var tradeData = expValues.map(function(v) { return v; }).concat(impValues.map(function(v) { return -v; }));
+        var tradeColors = [];
+        for (var tc = 0; tc < expValues.length; tc++) tradeColors.push('rgba(45,106,79,0.8)');
+        for (var tc2 = 0; tc2 < impValues.length; tc2++) tradeColors.push('rgba(231,111,81,0.8)');
+        new Chart(tradeCanvas.getContext('2d'), {
+          type: 'bar',
+          data: { labels: tradeLabels, datasets: [{ data: tradeData, backgroundColor: tradeColors, borderRadius: 4, barThickness: 22 }] },
+          options: {
+            indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(ctx) { var v = Math.abs(ctx.raw); return (ctx.raw >= 0 ? 'Export: ' : 'Import: ') + '$' + v.toFixed(1) + 'B'; } } } },
+            scales: { x: { ticks: { callback: function(v) { return '$' + Math.abs(v).toFixed(0) + 'B'; }, font: { size: 11 } }, grid: { color: 'rgba(0,0,0,0.04)' } }, y: { ticks: { font: { size: 11 } }, grid: { display: false } } }
           }
-        }
-      });
-    }
-
-    /* GDP timeline chart */
-    var gdpCanvas = document.getElementById('aa-gdp-chart');
-    if (gdpCanvas && country.gdpHist) {
-      var gdpYears = Object.keys(country.gdpHist).sort();
-      var gdpVals = [];
-      for (var gy = 0; gy < gdpYears.length; gy++) {
-        gdpVals.push(country.gdpHist[gdpYears[gy]] / 1e9);
+        });
       }
-      new Chart(gdpCanvas, {
-        type: 'line',
-        data: {
-          labels: gdpYears,
-          datasets: [{
-            label: 'GDP ($B)',
-            data: gdpVals,
-            borderColor: '#007AFF',
-            backgroundColor: 'rgba(0,122,255,0.08)',
-            fill: true,
-            tension: 0.35,
-            pointRadius: 4,
-            pointBackgroundColor: '#007AFF',
-            borderWidth: 2.5
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { display: false },
-            tooltip: {
-              callbacks: {
-                label: function(ctx) { return '$' + ctx.raw.toFixed(1) + 'B'; }
-              }
-            }
-          },
-          scales: {
-            x: {
-              ticks: { font: { size: 11 } },
-              grid: { color: 'rgba(0,0,0,0.04)' }
-            },
-            y: {
-              ticks: {
-                callback: function(v) { return '$' + v + 'B'; },
-                font: { size: 11 }
-              },
-              grid: { color: 'rgba(0,0,0,0.04)' }
-            }
+
+      /* GDP timeline chart */
+      var gdpCanvas = document.getElementById('aa-gdp-chart');
+      if (gdpCanvas && country.gdpHist) {
+        var gdpYears = Object.keys(country.gdpHist).sort();
+        var gdpVals = [];
+        for (var gy = 0; gy < gdpYears.length; gy++) { gdpVals.push(country.gdpHist[gdpYears[gy]] / 1e9); }
+        new Chart(gdpCanvas.getContext('2d'), {
+          type: 'line',
+          data: { labels: gdpYears, datasets: [{ label: 'GDP ($B)', data: gdpVals, borderColor: '#007AFF', backgroundColor: 'rgba(0,122,255,0.08)', fill: true, tension: 0.35, pointRadius: 4, pointBackgroundColor: '#007AFF', borderWidth: 2.5 }] },
+          options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(ctx) { return '$' + ctx.raw.toFixed(1) + 'B'; } } } },
+            scales: { x: { ticks: { font: { size: 11 } }, grid: { color: 'rgba(0,0,0,0.04)' } }, y: { ticks: { callback: function(v) { return '$' + v + 'B'; }, font: { size: 11 } }, grid: { color: 'rgba(0,0,0,0.04)' } } }
           }
-        }
-      });
-    }
+        });
+      }
+    } catch(e) { console.error('AfroAtlas chart error:', e); }
   }
 
-  /* Poll for Chart.js (CDN may still be loading) */
+  /* Run charts — Chart.js loads synchronously (no defer/async) so it should be ready */
   if (typeof Chart !== 'undefined') {
     renderCharts();
   } else {
-    var chartPoll = setInterval(function() {
-      if (typeof Chart !== 'undefined') {
-        clearInterval(chartPoll);
-        renderCharts();
-      }
-    }, 100);
-    setTimeout(function() { clearInterval(chartPoll); }, 8000);
+    /* Fallback: poll in case CDN was slow */
+    var _cp = setInterval(function() { if (typeof Chart !== 'undefined') { clearInterval(_cp); renderCharts(); } }, 150);
+    setTimeout(function() { clearInterval(_cp); }, 10000);
   }
 
   /* ── Scroll Reveal — make all sections visible with staggered delay ── */
