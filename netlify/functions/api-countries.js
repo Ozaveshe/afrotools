@@ -15,8 +15,16 @@ var CORS = {
   'Content-Type': 'application/json'
 };
 
+// Static data — cache aggressively: CDN 24hr, browser 12hr
+var CACHE_HDRS = {
+  'Cache-Control': 'public, max-age=43200, s-maxage=86400, stale-while-revalidate=86400',
+  'CDN-Cache-Control': 'public, max-age=86400',
+  'Vary': 'Accept-Encoding'
+};
+
 function respond(status, body, extra) {
-  return { statusCode: status, headers: Object.assign({}, CORS, extra || {}), body: JSON.stringify(body) };
+  var hdrs = status === 200 ? Object.assign({}, CORS, CACHE_HDRS, extra || {}) : Object.assign({}, CORS, extra || {});
+  return { statusCode: status, headers: hdrs, body: JSON.stringify(body) };
 }
 
 /* ---- Country database ---- */

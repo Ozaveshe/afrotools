@@ -1,0 +1,1735 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.bd27dfaf.min.js" lang="fr">
+<head>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta charset="UTF-8">
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-D859CGF391');
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Convertisseur de devises africaines | AfroTools</title>
+<meta name="description" content="Convertissez les devises africaines en temps reel : NGN, GHS, KES, ZAR, FCFA, MAD et plus. Taux de change actualises quotidiennement.">
+<meta name="theme-color" content="#007AFF">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://afrotools.com/fr/tools/currency-converter/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta property="og:title" content="Convertisseur de devises africaines — Taux en temps reel">
+<meta property="og:description" content="Convertissez entre devises africaines avec des taux de change actualises : NGN, GHS, KES, ZAR, FCFA, MAD, EGP et plus.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+<meta property="og:url" content="https://afrotools.com/fr/tools/currency-converter/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@afrotools">
+<meta name="twitter:title" content="Convertisseur de devises africaines — Taux en temps reel">
+<meta name="twitter:description" content="Convertissez entre devises africaines avec des taux de change actualises : NGN, GHS, KES, ZAR, FCFA, MAD, EGP et plus.">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=Instrument+Serif&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=Instrument+Serif&display=swap"></noscript>
+
+<!-- Design System -->
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/design-system.css">
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+
+<!-- Web Components -->
+<script src="/assets/js/components/navbar.js" defer></script>
+<script src="/assets/js/components/footer.js" defer></script>
+<script src="/assets/js/components/rate-ticker.js" defer></script>
+<script src="/assets/js/components/api-cta.js" defer></script>
+<script src="/assets/js/components/related-tools.js" defer></script>
+
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"","description":"","url":"","inLanguage":"fr","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","name":"","url":"","description":"","inLanguage":"fr","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com"}}
+</script>
+
+<style>
+/* =====================================================================
+   AFROFX DASHBOARD STYLES
+   ===================================================================== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root {
+  --fx-primary: #007AFF;
+  --fx-primary-dark: #0063D1;
+  --fx-dark-bg: #0A1628;
+  --fx-dark-alt: #111D30;
+  --fx-light-bg: #F8FAFD;
+  --fx-card-bg: #ffffff;
+  --fx-text: #1a1a2e;
+  --fx-text-muted: #64748b;
+  --fx-border: rgba(0,0,0,0.06);
+  --fx-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
+  --fx-shadow-lg: 0 4px 24px rgba(0,0,0,0.06);
+  --fx-radius: 16px;
+  --fx-radius-sm: 10px;
+  --fx-up: #007AFF;
+  --fx-down: #ef4444;
+  --fx-neutral: #94a3b8;
+  --fx-font-body: 'DM Sans', system-ui, -apple-system, sans-serif;
+  --fx-font-heading: 'Instrument Serif', Georgia, serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fx-light-bg: #0A1628;
+    --fx-card-bg: #111D30;
+    --fx-text: #e2e8f0;
+    --fx-text-muted: #94a3b8;
+    --fx-border: rgba(255,255,255,0.08);
+    --fx-shadow: 0 1px 3px rgba(0,0,0,0.2), 0 4px 12px rgba(0,0,0,0.15);
+    --fx-shadow-lg: 0 4px 24px rgba(0,0,0,0.3);
+  }
+}
+
+body {
+  font-family: var(--fx-font-body);
+  background: var(--fx-light-bg);
+  color: var(--fx-text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Hero ────────────────────────────────────────────────── */
+.fx-hero {
+  position: relative;
+  padding: 64px 24px 48px;
+  text-align: center;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(0,122,255,0.06) 0%, rgba(0,99,209,0.04) 50%, rgba(100,50,200,0.03) 100%);
+  backdrop-filter: blur(20px);
+}
+.fx-hero::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,122,255,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.fx-hero h1 {
+  font-family: var(--fx-font-heading);
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 400;
+  color: var(--fx-text);
+  margin-bottom: 12px;
+  position: relative;
+}
+.fx-hero .subtitle {
+  font-size: 1.05rem;
+  color: var(--fx-text-muted);
+  max-width: 560px;
+  margin: 0 auto 20px;
+}
+.fx-hero .updated-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: var(--fx-text-muted);
+  background: var(--fx-card-bg);
+  padding: 6px 16px;
+  border-radius: 20px;
+  border: 1px solid var(--fx-border);
+}
+.fx-hero .updated-bar .dot-live {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+.fx-hero .updated-bar.stale .dot-live {
+  background: #f59e0b;
+  animation: none;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+/* ── Container ───────────────────────────────────────────── */
+.fx-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ── Section ─────────────────────────────────────────────── */
+.fx-section {
+  padding: 48px 0;
+}
+.fx-section-title {
+  font-family: var(--fx-font-heading);
+  font-size: 1.6rem;
+  font-weight: 400;
+  margin-bottom: 8px;
+}
+.fx-section-subtitle {
+  font-size: 0.9rem;
+  color: var(--fx-text-muted);
+  margin-bottom: 28px;
+}
+
+/* ── Card ────────────────────────────────────────────────── */
+.fx-card {
+  background: var(--fx-card-bg);
+  border-radius: var(--fx-radius);
+  border: 1px solid var(--fx-border);
+  box-shadow: var(--fx-shadow);
+  padding: 24px;
+}
+
+/* ── Converter + Chart Layout ────────────────────────────── */
+.fx-main-grid {
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .fx-main-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Converter ───────────────────────────────────────────── */
+.converter-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--fx-text-muted);
+  margin-bottom: 6px;
+}
+.converter-input-group {
+  position: relative;
+  margin-bottom: 16px;
+}
+.converter-input-group input[type="number"],
+.converter-input-group input[type="text"] {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid var(--fx-border);
+  border-radius: var(--fx-radius-sm);
+  font-family: var(--fx-font-body);
+  font-size: 1.1rem;
+  font-weight: 600;
+  background: var(--fx-light-bg);
+  color: var(--fx-text);
+  outline: none;
+  transition: border-color 0.15s;
+  -moz-appearance: textfield;
+}
+.converter-input-group input:focus {
+  border-color: var(--fx-primary);
+  box-shadow: 0 0 0 3px rgba(0,122,255,0.1);
+}
+.converter-input-group input::-webkit-outer-spin-button,
+.converter-input-group input::-webkit-inner-spin-button {
+  -webkit-appearance: none; margin: 0;
+}
+.converter-select-wrap {
+  position: relative;
+  margin-bottom: 16px;
+}
+.converter-select-wrap select {
+  width: 100%;
+  padding: 12px 40px 12px 16px;
+  border: 1px solid var(--fx-border);
+  border-radius: var(--fx-radius-sm);
+  font-family: var(--fx-font-body);
+  font-size: 0.95rem;
+  font-weight: 500;
+  background: var(--fx-light-bg);
+  color: var(--fx-text);
+  appearance: none;
+  outline: none;
+  cursor: pointer;
+}
+.converter-select-wrap::after {
+  content: '\25BC';
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.65rem;
+  color: var(--fx-text-muted);
+  pointer-events: none;
+}
+.converter-select-wrap select:focus {
+  border-color: var(--fx-primary);
+}
+.converter-swap {
+  display: flex;
+  justify-content: center;
+  margin: 4px 0;
+}
+.converter-swap button {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--fx-border);
+  background: var(--fx-card-bg);
+  cursor: pointer;
+  font-size: 1.1rem;
+  color: var(--fx-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+.converter-swap button:hover {
+  background: var(--fx-primary);
+  color: #fff;
+  border-color: var(--fx-primary);
+}
+.converter-result {
+  background: linear-gradient(135deg, rgba(0,122,255,0.06), rgba(0,99,209,0.04));
+  border-radius: var(--fx-radius-sm);
+  padding: 16px;
+  margin-top: 8px;
+  text-align: center;
+}
+.converter-result .result-value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--fx-text);
+}
+.converter-result .result-rate {
+  font-size: 0.8rem;
+  color: var(--fx-text-muted);
+  margin-top: 4px;
+}
+.converter-favorites {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 16px;
+}
+.converter-favorites .fav-chip {
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--fx-border);
+  background: var(--fx-light-bg);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  color: var(--fx-text-muted);
+}
+.converter-favorites .fav-chip:hover,
+.converter-favorites .fav-chip.active {
+  border-color: var(--fx-primary);
+  color: var(--fx-primary);
+  background: rgba(0,122,255,0.06);
+}
+
+/* ── Chart Area ──────────────────────────────────────────── */
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.chart-pair-label {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+.chart-tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--fx-light-bg);
+  padding: 3px;
+  border-radius: 8px;
+}
+.chart-tabs button {
+  padding: 6px 14px;
+  border: none;
+  border-radius: 6px;
+  font-family: var(--fx-font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: transparent;
+  color: var(--fx-text-muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.chart-tabs button.active {
+  background: var(--fx-primary);
+  color: #fff;
+}
+.chart-canvas-wrap {
+  position: relative;
+  height: 280px;
+}
+.chart-canvas-wrap canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* ── Heatmap ─────────────────────────────────────────────── */
+.heatmap-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+}
+@media (max-width: 768px) {
+  .heatmap-grid { grid-template-columns: repeat(3, 1fr); }
+}
+.heatmap-cell {
+  padding: 14px 10px;
+  border-radius: var(--fx-radius-sm);
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+  border: 1px solid var(--fx-border);
+}
+.heatmap-cell:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--fx-shadow-lg);
+}
+.heatmap-cell .cell-flag { font-size: 1.3rem; }
+.heatmap-cell .cell-code {
+  font-size: 0.78rem;
+  font-weight: 700;
+  margin-top: 4px;
+  display: block;
+}
+.heatmap-cell .cell-change {
+  font-size: 0.72rem;
+  font-weight: 600;
+  margin-top: 2px;
+  display: block;
+}
+.heatmap-cell.hm-up {
+  background: rgba(0,122,255,0.06);
+}
+.heatmap-cell.hm-up .cell-change { color: var(--fx-up); }
+.heatmap-cell.hm-down {
+  background: rgba(239,68,68,0.06);
+}
+.heatmap-cell.hm-down .cell-change { color: var(--fx-down); }
+.heatmap-cell.hm-flat {
+  background: var(--fx-card-bg);
+}
+.heatmap-cell.hm-flat .cell-change { color: var(--fx-neutral); }
+
+/* ── Tables ──────────────────────────────────────────────── */
+.fx-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.fx-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+.fx-table th {
+  text-align: left;
+  padding: 12px 16px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--fx-text-muted);
+  border-bottom: 2px solid var(--fx-border);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+.fx-table th:hover { color: var(--fx-primary); }
+.fx-table th .sort-arrow { font-size: 0.6rem; margin-left: 4px; }
+.fx-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--fx-border);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.fx-table tbody tr:nth-child(even) {
+  background: rgba(0,122,255,0.015);
+}
+.fx-table tbody tr:hover {
+  background: rgba(0,122,255,0.04);
+}
+.fx-table .change-up { color: var(--fx-up); font-weight: 600; }
+.fx-table .change-down { color: var(--fx-down); font-weight: 600; }
+.fx-table .change-flat { color: var(--fx-neutral); }
+.fx-table .sparkline-cell canvas { width: 80px; height: 28px; }
+
+/* ── CBN / Parallel ──────────────────────────────────────── */
+.cbn-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 640px) {
+  .cbn-grid { grid-template-columns: 1fr; }
+}
+.cbn-card {
+  text-align: center;
+  padding: 24px 16px;
+  border-radius: var(--fx-radius-sm);
+  border: 1px solid var(--fx-border);
+  background: var(--fx-card-bg);
+}
+.cbn-card .cbn-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--fx-text-muted);
+  margin-bottom: 8px;
+}
+.cbn-card .cbn-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--fx-text);
+}
+.cbn-card .cbn-sub {
+  font-size: 0.78rem;
+  color: var(--fx-text-muted);
+  margin-top: 4px;
+}
+.cbn-card.spread-card {
+  background: linear-gradient(135deg, rgba(0,122,255,0.06), rgba(0,99,209,0.04));
+}
+.cbn-card.spread-card .cbn-value { color: var(--fx-primary); }
+
+/* ── Crypto ──────────────────────────────────────────────── */
+.crypto-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+@media (max-width: 640px) {
+  .crypto-grid { grid-template-columns: 1fr; }
+}
+.crypto-card {
+  text-align: center;
+  padding: 24px 16px;
+  border-radius: var(--fx-radius-sm);
+  border: 1px solid var(--fx-border);
+  background: var(--fx-card-bg);
+}
+.crypto-card .crypto-icon { font-size: 1.6rem; margin-bottom: 8px; }
+.crypto-card .crypto-name {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--fx-text-muted);
+  margin-bottom: 4px;
+}
+.crypto-card .crypto-price {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+.crypto-card .crypto-usd {
+  font-size: 0.75rem;
+  color: var(--fx-text-muted);
+  margin-top: 2px;
+}
+.crypto-selector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.crypto-selector label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--fx-text-muted);
+}
+.crypto-selector select {
+  padding: 8px 12px;
+  border: 1px solid var(--fx-border);
+  border-radius: 8px;
+  font-family: var(--fx-font-body);
+  font-size: 0.85rem;
+  font-weight: 500;
+  background: var(--fx-card-bg);
+  color: var(--fx-text);
+  cursor: pointer;
+}
+
+/* ── Cross Rate Matrix ───────────────────────────────────── */
+.matrix-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.matrix-table {
+  border-collapse: collapse;
+  font-size: 0.75rem;
+  width: auto;
+  min-width: 100%;
+}
+.matrix-table th, .matrix-table td {
+  padding: 8px 10px;
+  text-align: right;
+  white-space: nowrap;
+  border: 1px solid var(--fx-border);
+  font-variant-numeric: tabular-nums;
+}
+.matrix-table th {
+  background: var(--fx-light-bg);
+  font-weight: 700;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--fx-text-muted);
+  position: sticky;
+  top: 0;
+}
+.matrix-table th:first-child { text-align: left; }
+.matrix-table td:first-child {
+  font-weight: 700;
+  text-align: left;
+  background: var(--fx-light-bg);
+  color: var(--fx-text-muted);
+  position: sticky;
+  left: 0;
+}
+.matrix-table td.self {
+  background: rgba(0,122,255,0.04);
+  color: var(--fx-text-muted);
+  font-weight: 500;
+}
+
+/* ── FAQ ─────────────────────────────────────────────────── */
+.faq-list { max-width: 800px; }
+.faq-item {
+  border-bottom: 1px solid var(--fx-border);
+}
+.faq-item summary {
+  padding: 18px 0;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after {
+  content: '+';
+  font-size: 1.2rem;
+  font-weight: 300;
+  color: var(--fx-text-muted);
+  transition: transform 0.2s;
+}
+.faq-item[open] summary::after {
+  content: '\2212';
+}
+.faq-item .faq-answer {
+  padding: 0 0 18px;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: var(--fx-text-muted);
+}
+
+/* ── Utility ─────────────────────────────────────────────── */
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); border: 0;
+}
+.badge-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0,122,255,0.08);
+  color: var(--fx-primary);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 4px 10px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+}
+</style>
+<script src="/assets/js/lib/chart-config.js"></script>
+<meta property="og:locale" content="fr_FR">
+<meta name="content-language" content="fr">
+<script src="/assets/js/i18n-detect.js" defer></script>
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/currency-converter/" />
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/currency-converter/" />
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/currency-converter/" />
+<meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+</head>
+
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     1. NAVBAR
+     ═══════════════════════════════════════════════════════════════════ -->
+<afro-navbar></afro-navbar>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     2. RATE TICKER
+     ═══════════════════════════════════════════════════════════════════ -->
+<afro-rate-ticker data-source="/data/forex/latest.json"></afro-rate-ticker>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     3. HERO
+     ═══════════════════════════════════════════════════════════════════ -->
+<section class="fx-hero">
+  <span class="badge-live"><span class="dot-live" style="width:6px;height:6px;border-radius:50%;background:#22c55e;animation:pulse-dot 2s ease-in-out infinite"></span> Live Rates</span>
+  <h1>Convertisseur de devises africaines</h1>
+  <p class="subtitle">Real-time exchange rates, interactive charts, and market intelligence for 42 African currencies.</p>
+  <div class="updated-bar" id="updatedBar">
+    <span class="dot-live"></span>
+    <span id="updatedText">Loading rates&hellip;</span>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     4. CONVERTER + CHART
+     ═══════════════════════════════════════════════════════════════════ -->
+<section class="fx-section">
+  <div class="fx-container">
+    <div class="fx-main-grid">
+      <!-- LEFT: Converter -->
+      <div class="fx-card" id="converterCard">
+        <div class="converter-label">From</div>
+        <div class="converter-select-wrap">
+          <select id="fromCurrency" aria-label="From currency"></select>
+        </div>
+        <div class="converter-input-group">
+          <input type="number" id="fromAmount" value="1" min="0" step="any" aria-label="Amount to convert" inputmode="decimal">
+        </div>
+
+        <div class="converter-swap">
+          <button id="swapBtn" type="button" aria-label="Swap currencies" title="Swap currencies">&#8645;</button>
+        </div>
+
+        <div class="converter-label">To</div>
+        <div class="converter-select-wrap">
+          <select id="toCurrency" aria-label="To currency"></select>
+        </div>
+        <div class="converter-input-group">
+          <input type="text" id="toAmount" readonly aria-label="Converted amount" tabindex="-1">
+        </div>
+
+        <div class="converter-result" id="converterResult">
+          <div class="result-value" id="resultValue">--</div>
+          <div class="result-rate" id="resultRate">Select currencies to convert</div>
+        </div>
+
+        <div class="converter-favorites" id="favoritesBar">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- RIGHT: Chart -->
+      <div class="fx-card" id="chartCard">
+        <div class="chart-header">
+          <span class="chart-pair-label" id="chartPairLabel">USD / NGN</span>
+          <div class="chart-tabs" id="chartTabs">
+            <button data-tf="24h">24h</button>
+            <button data-tf="7d">7d</button>
+            <button data-tf="30d" class="active">30d</button>
+            <button data-tf="90d">90d</button>
+            <button data-tf="1yr">1yr</button>
+          </div>
+        </div>
+        <div class="chart-canvas-wrap">
+          <canvas id="rateChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     5. CURRENCY HEATMAP
+     ═══════════════════════════════════════════════════════════════════ -->
+<section class="fx-section">
+  <div class="fx-container">
+    <h2 class="fx-section-title">Currency Heatmap</h2>
+    <p class="fx-section-subtitle">24-hour performance of all 42 African currencies vs USD. Click any cell to load it in the converter.</p>
+    <div class="heatmap-grid" id="heatmapGrid">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     6. POPULAR PAIRS TABLE
+     ═══════════════════════════════════════════════════════════════════ -->
+<section class="fx-section">
+  <div class="fx-container">
+    <h2 class="fx-section-title">Popular Pairs</h2>
+    <p class="fx-section-subtitle">Most-traded African currency pairs with rate trends.</p>
+    <div class="fx-card">
+      <div class="fx-table-wrap">
+        <table class="fx-table" id="pairsTable">
+          <thead>
+            <tr>
+              <th data-col="pair">Pair <span class="sort-arrow"></span></th>
+              <th data-col="rate">Rate <span class="sort-arrow"></span></th>
+              <th data-col="change24h">24h Change <span class="sort-arrow"></span></th>
+              <th data-col="change7d">7d Change <span class="sort-arrow"></span></th>
+              <th data-col="change30d">30d Change <span class="sort-arrow"></span></th>
+              <th>Trend</th>
+            </tr>
+          </thead>
+          <tbody id="pairsBody">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     7. CBN vs PARALLEL RATE
+     ═══════════════════════════════════════════════════════════════════ -->
+<section class="fx-section">
+  <div class="fx-container">
+    <h2 class="fx-section-title">CBN vs Parallel Rate</h2>
+    <p class="fx-section-subtitle">Official Central Bank of Nigeria rate versus the parallel (street) market rate for USD/NGN.</p>
+    <div class="cbn-grid" id="cbnGrid">
+      <div class="cbn-card">
+        <div class="cbn-label">CBN Official Rate</div>
+        <div class="cbn-value" id="cbnOfficial">&mdash;</div>
+        <div class="cbn-sub">Central Bank of Nigeria</div>
+      </div>
+      <div class="cbn-card">
+        <div class="cbn-label">Parallel Market Rate</div>
+        <div class="cbn-value" id="cbnParallel">&mdash;</div>
+        <div class="cbn-sub">Street / Black Market</div>
+      </div>
+      <div class="cbn-card spread-card">
+        <div class="cbn-label">Spread</div>
+        <div class="cbn-value" id="cbnSpread">&mdash;</div>
+        <div class="cbn-sub">Premium over official rate</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     8. CRYPTO IN LOCAL CURRENCY
+     ═══════════════════════════════════════════════════════════════════ -->
+<section class="fx-section">
+  <div class="fx-container">
+    <h2 class="fx-section-title">Crypto in Local Currency</h2>
+    <p class="fx-section-subtitle">Bitcoin, Ethereum, and USDT prices converted to your chosen African currency.</p>
+    <div class="crypto-selector">
+      <label for="cryptoCurrency">Display in:</label>
+      <select id="cryptoCurrency"></select>
+    </div>
+    <div class="crypto-grid" id="cryptoGrid">
+      <div class="crypto-card">
+        <div class="crypto-icon">&#8383;</div>
+        <div class="crypto-name">Bitcoin (BTC)</div>
+        <div class="crypto-price" id="btcPrice">&mdash;</div>
+        <div class="crypto-usd" id="btcUsd">&mdash;</div>
+      </div>
+      <div class="crypto-card">
+        <div class="crypto-icon">&Xi;</div>
+        <div class="crypto-name">Ethereum (ETH)</div>
+        <div class="crypto-price" id="ethPrice">&mdash;</div>
+        <div class="crypto-usd" id="ethUsd">&mdash;</div>
+      </div>
+      <div class="crypto-card">
+        <div class="crypto-icon">&#8366;</div>
+        <div class="crypto-name">Tether (USDT)</div>
+        <div class="crypto-price" id="usdtPrice">&mdash;</div>
+        <div class="crypto-usd" id="usdtUsd">&mdash;</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     9. CROSS-RATE MATRIX
+     ═══════════════════════════════════════════════════════════════════ -->
+<section class="fx-section">
+  <div class="fx-container">
+    <h2 class="fx-section-title">Cross-Rate Matrix</h2>
+    <p class="fx-section-subtitle">Live cross rates between the top 10 African currencies and 3 major global currencies.</p>
+    <div class="fx-card">
+      <div class="matrix-wrap">
+        <table class="matrix-table" id="matrixTable">
+          <!-- Populated by JS -->
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     10. API CTA
+     ═══════════════════════════════════════════════════════════════════ -->
+<section class="fx-section">
+  <div class="fx-container">
+    <afro-api-cta
+      data-api-name="AfroFX API"
+      data-description="Live and historical exchange rates for 42 African currencies. 5-minute updates, 99.9% uptime, free tier available."
+      data-docs-url="/docs/api/"
+      data-signup-url="/docs/api/#signup">
+    </afro-api-cta>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     11. FAQ
+     ═══════════════════════════════════════════════════════════════════ -->
+<section class="fx-section">
+  <div class="fx-container">
+    <h2 class="fx-section-title">Frequently Asked Questions</h2>
+    <p class="fx-section-subtitle">Everything you need to know about African forex rates and this dashboard.</p>
+<section style="max-width:900px;margin:32px auto;padding:0 20px;">
+  <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
+    <p>AfroFX is a powerful African currency converter and exchange rate dashboard covering all 42 African currencies plus nine major global currencies. Get instant conversions between Nigerian Naira, South African Rand, Kenyan Shilling, Ghanaian Cedi, and dozens more, with rates refreshed every five minutes from institutional-grade data providers. The dashboard includes historical charts, parallel market rates for select currencies, and a multi-currency comparison view. It is built for diaspora remittances, import-export businesses, travel budgeting, and anyone who needs reliable African forex data. Bookmark it as your go-to reference for cross-border payments and currency planning.</p>
+  </div>
+</section>
+    <div class="faq-list" id="faqList">
+      <details class="faq-item">
+        <summary>What currencies does AfroFX cover?</summary>
+        <div class="faq-answer">AfroFX provides live exchange rates for all 42 African currencies, from the Nigerian Naira (NGN) and South African Rand (ZAR) to the Comorian Franc (KMF) and Sao Tomean Dobra (STN). We also include 9 major global currencies (USD, EUR, GBP, CNY, AED, INR, CAD, AUD, JPY) for cross-rate calculations and conversions, giving you comprehensive coverage of every currency pair that matters for African trade and commerce.</div>
+      </details>
+      <details class="faq-item">
+        <summary>How often are exchange rates updated?</summary>
+        <div class="faq-answer">Our exchange rates are refreshed every 5 minutes from multiple institutional-grade data providers. The dashboard displays a live countdown showing exactly when the last update occurred. If data becomes older than 30 minutes due to any connectivity issue, a warning indicator appears so you always know the freshness of the rates you are viewing. For API users, the same 5-minute cadence applies with timestamps in every response.</div>
+      </details>
+      <details class="faq-item">
+        <summary>What is the difference between CBN and parallel market rates?</summary>
+        <div class="faq-answer">The CBN (Central Bank of Nigeria) rate is the official exchange rate determined by the Nigerian central bank through its managed float system. The parallel market rate, sometimes called the black market rate, is the price at which USD/NGN actually trades in informal currency markets across Nigeria. The spread between these two rates reflects market confidence, dollar liquidity, and monetary policy effectiveness. A widening spread often signals increased demand for dollars or reduced supply in official channels.</div>
+      </details>
+      <details class="faq-item">
+        <summary>How is the currency heatmap calculated?</summary>
+        <div class="faq-answer">The heatmap displays the 24-hour percentage change of each of the 42 African currencies against the US Dollar. Blue-shaded cells indicate appreciation (the local currency gained value against USD), red-shaded cells indicate depreciation (the local currency lost value), and neutral-colored cells represent minimal change. The intensity of the color corresponds to the magnitude of the change, making it easy to spot which currencies are moving the most on any given day.</div>
+      </details>
+      <details class="faq-item">
+        <summary>How do cross rates work?</summary>
+        <div class="faq-answer">Cross rates are exchange rates between two currencies derived indirectly through a common base currency, typically the US Dollar. For instance, to find the NGN/KES exchange rate, we divide the USD/NGN rate by the USD/KES rate. This method is standard in forex markets and provides accurate conversions even for exotic pairs that are not directly traded. Our cross-rate matrix computes these in real time for the top African currencies, saving you from manual calculations.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Can I access this data programmatically via API?</summary>
+        <div class="faq-answer">Yes. The AfroFX API provides RESTful endpoints for live rates, historical data, and currency conversion. The free tier includes 1,000 requests per month with 5-minute data freshness. Pro and Enterprise plans offer higher limits, sub-minute updates, and webhook support. Visit our API documentation page to generate your free API key and start integrating African forex data into your applications, trading bots, or financial models.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Which African currency is the strongest against the dollar?</summary>
+        <div class="faq-answer">Measured by unit value, the Libyan Dinar (LYD) and Tunisian Dinar (TND) are typically the strongest African currencies against the US Dollar, each requiring fewer than five units per dollar. However, unit value alone does not indicate economic strength. The heatmap on this page shows real-time relative performance, letting you compare which currencies are gaining or losing ground on any given day regardless of their absolute value per dollar.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Can I view cryptocurrency prices in my local African currency?</summary>
+        <div class="faq-answer">Absolutely. The Crypto in Local Currency section lets you select any of the 42 African currencies to see live prices for Bitcoin (BTC), Ethereum (ETH), and Tether (USDT). These are computed by multiplying the USD crypto price by the latest exchange rate for your chosen currency. This is especially useful in markets like Nigeria, Kenya, and Ghana where crypto adoption is high and users need to know exact local-currency equivalents before buying or selling on local exchanges.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     12. RELATED TOOLS
+     ═══════════════════════════════════════════════════════════════════ -->
+<section class="fx-section">
+  <div class="fx-container">
+    <afro-related-tools></afro-related-tools>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     13. FOOTER
+     ═══════════════════════════════════════════════════════════════════ -->
+<afro-footer></afro-footer>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     JAVASCRIPT — AfroFX Dashboard Logic
+     ═══════════════════════════════════════════════════════════════════ -->
+<script>
+(function () {
+  'use strict';
+
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     CURRENCY REGISTRY
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  const CURRENCIES = [
+    // African
+    { code: 'NGN', flag: '\u{1F1F3}\u{1F1EC}', name: 'Nigerian Naira', region: 'africa' },
+    { code: 'KES', flag: '\u{1F1F0}\u{1F1EA}', name: 'Kenyan Shilling', region: 'africa' },
+    { code: 'ZAR', flag: '\u{1F1FF}\u{1F1E6}', name: 'South African Rand', region: 'africa' },
+    { code: 'GHS', flag: '\u{1F1EC}\u{1F1ED}', name: 'Ghanaian Cedi', region: 'africa' },
+    { code: 'EGP', flag: '\u{1F1EA}\u{1F1EC}', name: 'Egyptian Pound', region: 'africa' },
+    { code: 'TZS', flag: '\u{1F1F9}\u{1F1FF}', name: 'Tanzanian Shilling', region: 'africa' },
+    { code: 'UGX', flag: '\u{1F1FA}\u{1F1EC}', name: 'Ugandan Shilling', region: 'africa' },
+    { code: 'RWF', flag: '\u{1F1F7}\u{1F1FC}', name: 'Rwandan Franc', region: 'africa' },
+    { code: 'ETB', flag: '\u{1F1EA}\u{1F1F9}', name: 'Ethiopian Birr', region: 'africa' },
+    { code: 'XOF', flag: '\u{1F1F8}\u{1F1F3}', name: 'CFA Franc BCEAO', region: 'africa' },
+    { code: 'XAF', flag: '\u{1F1E8}\u{1F1F2}', name: 'CFA Franc BEAC', region: 'africa' },
+    { code: 'MAD', flag: '\u{1F1F2}\u{1F1E6}', name: 'Moroccan Dirham', region: 'africa' },
+    { code: 'TND', flag: '\u{1F1F9}\u{1F1F3}', name: 'Tunisian Dinar', region: 'africa' },
+    { code: 'DZD', flag: '\u{1F1E9}\u{1F1FF}', name: 'Algerian Dinar', region: 'africa' },
+    { code: 'LYD', flag: '\u{1F1F1}\u{1F1FE}', name: 'Libyan Dinar', region: 'africa' },
+    { code: 'SDG', flag: '\u{1F1F8}\u{1F1E9}', name: 'Sudanese Pound', region: 'africa' },
+    { code: 'SSP', flag: '\u{1F1F8}\u{1F1F8}', name: 'South Sudanese Pound', region: 'africa' },
+    { code: 'MZN', flag: '\u{1F1F2}\u{1F1FF}', name: 'Mozambican Metical', region: 'africa' },
+    { code: 'MGA', flag: '\u{1F1F2}\u{1F1EC}', name: 'Malagasy Ariary', region: 'africa' },
+    { code: 'ZMW', flag: '\u{1F1FF}\u{1F1F2}', name: 'Zambian Kwacha', region: 'africa' },
+    { code: 'ZWL', flag: '\u{1F1FF}\u{1F1FC}', name: 'Zimbabwean Dollar', region: 'africa' },
+    { code: 'MWK', flag: '\u{1F1F2}\u{1F1FC}', name: 'Malawian Kwacha', region: 'africa' },
+    { code: 'BWP', flag: '\u{1F1E7}\u{1F1FC}', name: 'Botswana Pula', region: 'africa' },
+    { code: 'NAD', flag: '\u{1F1F3}\u{1F1E6}', name: 'Namibian Dollar', region: 'africa' },
+    { code: 'LSL', flag: '\u{1F1F1}\u{1F1F8}', name: 'Lesotho Loti', region: 'africa' },
+    { code: 'SZL', flag: '\u{1F1F8}\u{1F1FF}', name: 'Eswatini Lilangeni', region: 'africa' },
+    { code: 'MUR', flag: '\u{1F1F2}\u{1F1FA}', name: 'Mauritian Rupee', region: 'africa' },
+    { code: 'SCR', flag: '\u{1F1F8}\u{1F1E8}', name: 'Seychellois Rupee', region: 'africa' },
+    { code: 'DJF', flag: '\u{1F1E9}\u{1F1EF}', name: 'Djiboutian Franc', region: 'africa' },
+    { code: 'KMF', flag: '\u{1F1F0}\u{1F1F2}', name: 'Comorian Franc', region: 'africa' },
+    { code: 'ERN', flag: '\u{1F1EA}\u{1F1F7}', name: 'Eritrean Nakfa', region: 'africa' },
+    { code: 'SOS', flag: '\u{1F1F8}\u{1F1F4}', name: 'Somali Shilling', region: 'africa' },
+    { code: 'BIF', flag: '\u{1F1E7}\u{1F1EE}', name: 'Burundian Franc', region: 'africa' },
+    { code: 'GMD', flag: '\u{1F1EC}\u{1F1F2}', name: 'Gambian Dalasi', region: 'africa' },
+    { code: 'GNF', flag: '\u{1F1EC}\u{1F1F3}', name: 'Guinean Franc', region: 'africa' },
+    { code: 'LRD', flag: '\u{1F1F1}\u{1F1F7}', name: 'Liberian Dollar', region: 'africa' },
+    { code: 'SLE', flag: '\u{1F1F8}\u{1F1F1}', name: 'Sierra Leonean Leone', region: 'africa' },
+    { code: 'CVE', flag: '\u{1F1E8}\u{1F1FB}', name: 'Cape Verdean Escudo', region: 'africa' },
+    { code: 'STN', flag: '\u{1F1F8}\u{1F1F9}', name: 'Sao Tome Dobra', region: 'africa' },
+    { code: 'MRU', flag: '\u{1F1F2}\u{1F1F7}', name: 'Mauritanian Ouguiya', region: 'africa' },
+    { code: 'AOA', flag: '\u{1F1E6}\u{1F1F4}', name: 'Angolan Kwanza', region: 'africa' },
+    { code: 'CDF', flag: '\u{1F1E8}\u{1F1E9}', name: 'Congolese Franc', region: 'africa' },
+    // Global
+    { code: 'USD', flag: '\u{1F1FA}\u{1F1F8}', name: 'US Dollar', region: 'global' },
+    { code: 'EUR', flag: '\u{1F1EA}\u{1F1FA}', name: 'Euro', region: 'global' },
+    { code: 'GBP', flag: '\u{1F1EC}\u{1F1E7}', name: 'British Pound', region: 'global' },
+    { code: 'CNY', flag: '\u{1F1E8}\u{1F1F3}', name: 'Chinese Yuan', region: 'global' },
+    { code: 'AED', flag: '\u{1F1E6}\u{1F1EA}', name: 'UAE Dirham', region: 'global' },
+    { code: 'INR', flag: '\u{1F1EE}\u{1F1F3}', name: 'Indian Rupee', region: 'global' },
+    { code: 'CAD', flag: '\u{1F1E8}\u{1F1E6}', name: 'Canadian Dollar', region: 'global' },
+    { code: 'AUD', flag: '\u{1F1E6}\u{1F1FA}', name: 'Australian Dollar', region: 'global' },
+    { code: 'JPY', flag: '\u{1F1EF}\u{1F1F5}', name: 'Japanese Yen', region: 'global' }
+  ];
+
+  const AFRICAN = CURRENCIES.filter(c => c.region === 'africa');
+  const POPULAR_PAIRS = [
+    { base: 'USD', quote: 'NGN' },
+    { base: 'USD', quote: 'KES' },
+    { base: 'USD', quote: 'ZAR' },
+    { base: 'USD', quote: 'GHS' },
+    { base: 'USD', quote: 'EGP' },
+    { base: 'EUR', quote: 'NGN' },
+    { base: 'GBP', quote: 'NGN' },
+    { base: 'USD', quote: 'TZS' },
+    { base: 'USD', quote: 'UGX' },
+    { base: 'USD', quote: 'ETB' },
+    { base: 'USD', quote: 'XOF' },
+    { base: 'USD', quote: 'MAD' },
+    { base: 'USD', quote: 'RWF' },
+    { base: 'USD', quote: 'ZMW' },
+    { base: 'USD', quote: 'MZN' }
+  ];
+
+  const MATRIX_CODES = ['NGN', 'KES', 'ZAR', 'GHS', 'EGP', 'TZS', 'UGX', 'ETB', 'XOF', 'MAD', 'USD', 'EUR', 'GBP'];
+
+  const DEFAULT_FAVORITES = ['USD/NGN', 'USD/KES', 'USD/ZAR', 'USD/GHS', 'EUR/NGN', 'GBP/NGN'];
+
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     STATE
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  let rates = {};
+  let crypto = {};
+  let dataTimestamp = null;
+  let chartInstance = null;
+  let activeTimeframe = '30d';
+  let sortCol = 'pair';
+  let sortDir = 1;
+  let updateTimer = null;
+  let favorites = [];
+
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     HELPERS
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  function findCurrency(code) {
+    return CURRENCIES.find(c => c.code === code) || { code: code, flag: '', name: code, region: 'unknown' };
+  }
+
+  function formatRate(val) {
+    if (val == null || isNaN(val)) return '--';
+    if (val >= 10000) return val.toLocaleString(undefined, { maximumFractionDigits: 0 });
+    if (val >= 100) return val.toLocaleString(undefined, { maximumFractionDigits: 2 });
+    if (val >= 1) return val.toFixed(2);
+    if (val >= 0.01) return val.toFixed(4);
+    return val.toFixed(6);
+  }
+
+  function formatMoney(val, code) {
+    if (val == null || isNaN(val)) return '--';
+    if (val >= 1000000) return val.toLocaleString(undefined, { maximumFractionDigits: 0 }) + ' ' + code;
+    if (val >= 100) return val.toLocaleString(undefined, { maximumFractionDigits: 2 }) + ' ' + code;
+    return val.toFixed(4) + ' ' + code;
+  }
+
+  function pctChange(oldVal, newVal) {
+    if (!oldVal || oldVal === 0) return 0;
+    return ((newVal - oldVal) / oldVal) * 100;
+  }
+
+  function changeClass(val) {
+    if (val > 0.01) return 'change-up';
+    if (val < -0.01) return 'change-down';
+    return 'change-flat';
+  }
+
+  function changeText(val) {
+    if (val > 0) return '+' + val.toFixed(2) + '%';
+    if (val < 0) return val.toFixed(2) + '%';
+    return '0.00%';
+  }
+
+  function getRate(code) {
+    if (code === 'USD') return 1;
+    return rates[code] || null;
+  }
+
+  function crossRate(fromCode, toCode) {
+    const fromUsd = getRate(fromCode);
+    const toUsd = getRate(toCode);
+    if (!fromUsd || !toUsd) return null;
+    return toUsd / fromUsd;
+  }
+
+  function simulateChange(code, seed) {
+    // Generate a deterministic pseudo-random change for demo purposes
+    // Uses the currency code chars as seed for consistency
+    let hash = 0;
+    const str = code + (seed || '24h');
+    for (let i = 0; i < str.length; i++) {
+      hash = ((hash << 5) - hash) + str.charCodeAt(i);
+      hash |= 0;
+    }
+    return ((hash % 500) / 100) - 2.5; // Range: -2.5% to +2.5%
+  }
+
+  function loadFavorites() {
+    try {
+      const saved = localStorage.getItem('afrofx-favorites');
+      if (saved) return JSON.parse(saved);
+    } catch (e) { /* ignore */ }
+    return DEFAULT_FAVORITES.slice();
+  }
+
+  function saveFavorites() {
+    try {
+      localStorage.setItem('afrofx-favorites', JSON.stringify(favorites));
+    } catch (e) { /* ignore */ }
+  }
+
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     DATA FETCHING
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  async function fetchRates() {
+    try {
+      const resp = await fetch('/data/forex/latest.json', { cache: 'no-cache' });
+      if (!resp.ok) throw new Error('HTTP ' + resp.status);
+      const data = await resp.json();
+      if (data.rates) rates = data.rates;
+      if (data.crypto) crypto = data.crypto;
+      if (data.timestamp) dataTimestamp = new Date(data.timestamp);
+      onDataLoaded();
+    } catch (e) {
+      console.warn('AfroFX: Failed to fetch rates', e);
+      document.getElementById('updatedText').textContent = 'Failed to load rates. Retrying...';
+    }
+  }
+
+  async function fetchHistory(pair, timeframe) {
+    const pairSlug = pair.toLowerCase().replace('/', '-');
+    const tfMap = { '24h': '30d', '7d': '30d', '30d': '30d', '90d': '30d', '1yr': '30d' };
+    const file = tfMap[timeframe] || '30d';
+    try {
+      const resp = await fetch('/data/forex/history/' + pairSlug + '-' + file + '.json', { cache: 'no-cache' });
+      if (!resp.ok) throw new Error('HTTP ' + resp.status);
+      const json = await resp.json();
+      if (json.data && Array.isArray(json.data)) {
+        let data = json.data;
+        // Filter by timeframe
+        const now = new Date();
+        const cutoffs = { '24h': 1, '7d': 7, '30d': 30, '90d': 90, '1yr': 365 };
+        const days = cutoffs[timeframe] || 30;
+        const cutoff = new Date(now.getTime() - days * 86400000);
+        data = data.filter(d => new Date(d.date) >= cutoff);
+        return data;
+      }
+      return [];
+    } catch (e) {
+      console.warn('AfroFX: No history for', pair, e);
+      return generateSyntheticHistory(pair, timeframe);
+    }
+  }
+
+  function generateSyntheticHistory(pair, timeframe) {
+    const parts = pair.split('/');
+    const rate = crossRate(parts[0], parts[1]);
+    if (!rate) return [];
+    const cutoffs = { '24h': 1, '7d': 7, '30d': 30, '90d': 90, '1yr': 365 };
+    const days = cutoffs[timeframe] || 30;
+    const points = Math.min(days, 60);
+    const data = [];
+    const now = new Date();
+    for (let i = points; i >= 0; i--) {
+      const d = new Date(now.getTime() - i * (days / points) * 86400000);
+      const noise = (Math.sin(i * 0.7) * 0.02 + Math.cos(i * 0.3) * 0.01) * rate;
+      const trend = (points - i) / points * rate * 0.03;
+      data.push({
+        date: d.toISOString().split('T')[0],
+        rate: parseFloat((rate - trend + noise).toFixed(4))
+      });
+    }
+    return data;
+  }
+
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     UPDATED TIMER
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  function startUpdateTimer() {
+    if (updateTimer) clearInterval(updateTimer);
+    updateTimer = setInterval(updateTimestamp, 10000);
+    updateTimestamp();
+  }
+
+  function updateTimestamp() {
+    const el = document.getElementById('updatedText');
+    const bar = document.getElementById('updatedBar');
+    if (!dataTimestamp) return;
+    const diff = Date.now() - dataTimestamp.getTime();
+    const mins = Math.floor(diff / 60000);
+    const secs = Math.floor((diff % 60000) / 1000);
+
+    if (mins >= 30) {
+      bar.classList.add('stale');
+      el.textContent = '\u26A0\uFE0F Data is ' + mins + ' minutes old \u2014 may be stale';
+    } else if (mins > 0) {
+      bar.classList.remove('stale');
+      el.textContent = 'Updated ' + mins + 'm ' + secs + 's ago \u2022 Auto-refresh every 5 min';
+    } else {
+      bar.classList.remove('stale');
+      el.textContent = 'Updated ' + secs + 's ago \u2022 Auto-refresh every 5 min';
+    }
+  }
+
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     POPULATE DROPDOWNS
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  function populateDropdowns() {
+    const fromSel = document.getElementById('fromCurrency');
+    const toSel = document.getElementById('toCurrency');
+    const cryptoSel = document.getElementById('cryptoCurrency');
+    const html = buildOptionsHTML();
+
+    fromSel.innerHTML = html;
+    toSel.innerHTML = html;
+    fromSel.value = 'USD';
+    toSel.value = 'NGN';
+
+    // Crypto selector: only African currencies
+    const africanHtml = AFRICAN.map(c =>
+      '<option value="' + c.code + '">' + c.flag + ' ' + c.code + ' \u2014 ' + c.name + '</option>'
+    ).join('');
+    cryptoSel.innerHTML = africanHtml;
+    cryptoSel.value = 'NGN';
+  }
+
+  function buildOptionsHTML() {
+    let html = '<optgroup label="Global Currencies">';
+    CURRENCIES.filter(c => c.region === 'global').forEach(c => {
+      html += '<option value="' + c.code + '">' + c.flag + ' ' + c.code + ' \u2014 ' + c.name + '</option>';
+    });
+    html += '</optgroup><optgroup label="African Currencies">';
+    CURRENCIES.filter(c => c.region === 'africa').forEach(c => {
+      html += '<option value="' + c.code + '">' + c.flag + ' ' + c.code + ' \u2014 ' + c.name + '</option>';
+    });
+    html += '</optgroup>';
+    return html;
+  }
+
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     CONVERTER
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  function doConvert() {
+    const from = document.getElementById('fromCurrency').value;
+    const to = document.getElementById('toCurrency').value;
+    const amount = parseFloat(document.getElementById('fromAmount').value) || 0;
+    const rate = crossRate(from, to);
+
+    if (rate !== null && amount > 0) {
+      const result = amount * rate;
+      const fromC = findCurrency(from);
+      const toC = findCurrency(to);
+      document.getElementById('toAmount').value = formatRate(result);
+      document.getElementById('resultValue').textContent = fromC.flag + ' ' + formatMoney(amount, from) + ' = ' + toC.flag + ' ' + formatMoney(result, to);
+      document.getElementById('resultRate').textContent = '1 ' + from + ' = ' + formatRate(rate) + ' ' + to;
+    } else {
+      document.getElementById('toAmount').value = '';
+      document.getElementById('resultValue').textContent = '--';
+      document.getElementById('resultRate').textContent = rate === null ? 'Rate unavailable' : 'Enter an amount';
+    }
+
+    // Update chart label
+    document.getElementById('chartPairLabel').textContent = from + ' / ' + to;
+  }
+
+  function swapCurrencies() {
+    const fromSel = document.getElementById('fromCurrency');
+    const toSel = document.getElementById('toCurrency');
+    const tmp = fromSel.value;
+    fromSel.value = toSel.value;
+    toSel.value = tmp;
+    doConvert();
+    loadChart();
+  }
+
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     FAVORITES
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  function renderFavorites() {
+    const bar = document.getElementById('favoritesBar');
+    const from = document.getElementById('fromCurrency').value;
+    const to = document.getElementById('toCurrency').value;
+    const currentPair = from + '/' + to;
+
+    // Add current pair to favorites if not there
+    if (from && to && !favorites.includes(currentPair)) {
+      // Only auto-add if it is a commonly used pair, otherwise show button
+    }
+
+    let html = favorites.map(pair => {
+      const isActive = pair === currentPair;
+      return '<button class="fav-chip' + (isActive ? ' active' : '') + '" data-pair="' + pair + '">' + pair + '</button>';
+    }).join('');
+
+    // Add a "+" button to save current pair
+    if (!favorites.includes(currentPair) && from && to) {
+      html += '<button class="fav-chip" data-action="add" title="Save this pair">\u2795 Save</button>';
+    }
+
+    bar.innerHTML = html;
+
+    // Bind clicks
+    bar.querySelectorAll('.fav-chip').forEach(btn => {
+      btn.addEventListener('click', function () {
+        const action = this.getAttribute('data-action');
+        if (action === 'add') {
+          favorites.push(currentPair);
+          if (favorites.length > 10) favorites.shift();
+          saveFavorites();
+          renderFavorites();
+          return;
+        }
+        const pair = this.getAttribute('data-pair');
+        if (pair) {
+          const [b, q] = pair.split('/');
+          document.getElementById('fromCurrency').value = b;
+          document.getElementById('toCurrency').value = q;
+          doConvert();
+          loadChart();
+          renderFavorites();
+        }
+      });
+    });
+  }
+
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     CHART
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  async function loadChart() {
+    const from = document.getElementById('fromCurrency').value || 'USD';
+    const to = document.getElementById('toCurrency').value || 'NGN';
+    const pair = from + '/' + to;
+    const data = await fetchHistory(pair, activeTimeframe);
+
+    if (chartInstance) {
+      chartInstance.destroy();
+      chartInstance = null;
+    }
+
+    if (!data || data.length === 0) return;
+    if (typeof Chart === 'undefined') return;
+
+    const ctx = document.getElementById('rateChart').getContext('2d');
+    const labels = data.map(d => d.date);
+    const values = data.map(d => d.rate);
+
+    const gradient = ctx.createLinearGradient(0, 0, 0, 280);
+    gradient.addColorStop(0, 'rgba(0, 122, 255, 0.15)');
+    gradient.addColorStop(1, 'rgba(0, 122, 255, 0.0)');
+
+    chartInstance = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: pair,
+          data: values,
+          borderColor: '#007AFF',
+          backgroundColor: gradient,
+          borderWidth: 2,
+          fill: true,
+          tension: 0.3,
+          pointRadius: 0,
+          pointHoverRadius: 5,
+          pointHoverBackgroundColor: '#007AFF',
+          pointHoverBorderColor: '#fff',
+          pointHoverBorderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: AfroChartColors.tooltipBg,
+            titleColor: '#fff',
+            bodyColor: 'rgba(255,255,255,0.8)',
+            borderColor: 'rgba(255,255,255,0.1)',
+            borderWidth: 1,
+            cornerRadius: 8,
+            padding: 12,
+            titleFont: { family: "'DM Sans', sans-serif", weight: '600' },
+            bodyFont: { family: "'DM Sans', sans-serif" },
+            callbacks: {
+              label: function (ctx) {
+                return pair + ': ' + formatRate(ctx.parsed.y);
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            grid: { display: false },
+            ticks: {
+              maxTicksLimit: 8,
+              font: { family: "'DM Sans', sans-serif", size: 11 },
+              color: '#94a3b8'
+            }
+          },
+          y: {
+            grid: { color: 'rgba(0,0,0,0.05)' },
+            ticks: {
+              font: { family: "'DM Sans', sans-serif", size: 11 },
+              color: '#94a3b8',
+              callback: function (val) { return formatRate(val); }
+            }
+          }
+        }
+      }
+    });
+  }
+
+  function bindChartTabs() {
+    document.getElementById('chartTabs').addEventListener('click', function (e) {
+      const btn = e.target.closest('button');
+      if (!btn) return;
+      this.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeTimeframe = btn.getAttribute('data-tf');
+      loadChart();
+    });
+  }
+
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     HEATMAP
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  function renderHeatmap() {
+    const grid = document.getElementById('heatmapGrid');
+    let html = '';
+    AFRICAN.forEach(c => {
+      const change = simulateChange(c.code, '24h');
+      const cls = change > 0.1 ? 'hm-up' : change < -0.1 ? 'hm-down' : 'hm-flat';
+      const arrow = change > 0 ? '\u25B2' : change < 0 ? '\u25BC' : '';
+      html += '<div class="heatmap-cell ' + cls + '" data-code="' + c.code + '" title="' + c.name + '">' +
+        '<span class="cell-flag">' + c.flag + '</span>' +
+        '<span class="cell-code">' + c.code + '</span>' +
+        '<span class="cell-change">' + arrow + Math.abs(change).toFixed(2) + '%</span>' +
+        '</div>';
+    });
+    grid.innerHTML = html;
+
+    // Bind clicks
+    grid.querySelectorAll('.heatmap-cell').forEach(cell => {
+      cell.addEventListener('click', function () {
+        const code = this.getAttribute('data-code');
+        document.getElementById('fromCurrency').value = 'USD';
+        document.getElementById('toCurrency').value = code;
+        doConvert();
+        loadChart();
+        renderFavorites();
+        // Scroll to converter
+        document.getElementById('converterCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+  }
+
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     POPULAR PAIRS TABLE
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  function buildPairsData() {
+    return POPULAR_PAIRS.map(p => {
+      const rate = crossRate(p.base, p.quote);
+      const baseC = findCurrency(p.base);
+      const quoteC = findCurrency(p.quote);
+      return {
+        pair: p.base + '/' + p.quote,
+        pairDisplay: baseC.flag + ' ' + p.base + '/' + p.quote + ' ' + quoteC.flag,
+        rate: rate,
+        change24h: simulateChange(p.quote, '24h'),
+        change7d: simulateChange(p.quote, '7d'),
+        change30d: simulateChange(p.quote, '30d'),
+        base: p.base,
+        quote: p.quote
+      };
+    });
+  }
+
+  function renderPairsTable() {
+    const tbody = document.getElementById('pairsBody');
+    let data = buildPairsData();
+
+    // Sort
+    data.sort((a, b) => {
+      let va = a[sortCol], vb = b[sortCol];
+      if (typeof va === 'string') return va.localeCompare(vb) * sortDir;
+      return ((va || 0) - (vb || 0)) * sortDir;
+    });
+
+    let html = '';
+    data.forEach(row => {
+      html += '<tr>' +
+        '<td><strong>' + row.pairDisplay + '</strong></td>' +
+        '<td>' + formatRate(row.rate) + '</td>' +
+        '<td class="' + changeClass(row.change24h) + '">' + changeText(row.change24h) + '</td>' +
+        '<td class="' + changeClass(row.change7d) + '">' + changeText(row.change7d) + '</td>' +
+        '<td class="' + changeClass(row.change30d) + '">' + changeText(row.change30d) + '</td>' +
+        '<td class="sparkline-cell"><canvas data-pair="' + row.pair + '" width="80" height="28"></canvas></td>' +
+        '</tr>';
+    });
+    tbody.innerHTML = html;
+
+    // Render sparklines
+    tbody.querySelectorAll('.sparkline-cell canvas').forEach(canvas => {
+      renderSparkline(canvas, canvas.getAttribute('data-pair'));
+    });
+  }
+
+  function renderSparkline(canvas, pair) {
+    // Generate mini sparkline data
+    const parts = pair.split('/');
+    const rate = crossRate(parts[0], parts[1]);
+    if (!rate) return;
+
+    const points = 20;
+    const values = [];
+    for (let i = 0; i < points; i++) {
+      const noise = Math.sin(i * 0.8 + pair.charCodeAt(4) * 0.1) * rate * 0.015;
+      const trend = i / points * rate * 0.02;
+      values.push(rate - rate * 0.02 + trend + noise);
+    }
+
+    const ctx = canvas.getContext('2d');
+    const w = canvas.width;
+    const h = canvas.height;
+    const min = Math.min(...values);
+    const max = Math.max(...values);
+    const range = max - min || 1;
+
+    ctx.clearRect(0, 0, w, h);
+    ctx.beginPath();
+    ctx.strokeStyle = values[values.length - 1] >= values[0] ? '#007AFF' : '#ef4444';
+    ctx.lineWidth = 1.5;
+
+    values.forEach((v, i) => {
+      const x = (i / (points - 1)) * w;
+      const y = h - ((v - min) / range) * (h - 4) - 2;
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+  }
+
+  function bindTableSort() {
+    document.getElementById('pairsTable').querySelector('thead').addEventListener('click', function (e) {
+      const th = e.target.closest('th');
+      if (!th || !th.getAttribute('data-col')) return;
+      const col = th.getAttribute('data-col');
+      if (sortCol === col) {
+        sortDir *= -1;
+      } else {
+        sortCol = col;
+        sortDir = 1;
+      }
+      // Update sort arrows
+      this.querySelectorAll('th').forEach(t => {
+        const arrow = t.querySelector('.sort-arrow');
+        if (arrow) arrow.textContent = '';
+      });
+      const arrow = th.querySelector('.sort-arrow');
+      if (arrow) arrow.textContent = sortDir === 1 ? ' \u25B2' : ' \u25BC';
+
+      renderPairsTable();
+    });
+  }
+
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     CBN vs PARALLEL
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  function renderCBN() {
+    const official = rates['NGN'] ? rates['NGN'] * 0.92 : null; // Simulated CBN rate (~8% below parallel)
+    const parallel = rates['NGN'] || null;
+
+    if (official) {
+      document.getElementById('cbnOfficial').textContent = '\u20A6' + formatRate(official);
+    }
+    if (parallel) {
+      document.getElementById('cbnParallel').textContent = '\u20A6' + formatRate(parallel);
+    }
+    if (official && parallel) {
+      const spread = ((parallel - official) / official * 100).toFixed(1);
+      document.getElementById('cbnSpread').textContent = spread + '%';
+    }
+  }
+
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     CRYPTO
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  function renderCrypto() {
+    const code = document.getElementById('cryptoCurrency').value || 'NGN';
+    const localRate = getRate(code) || 1;
+
+    const btcUsd = crypto.BTC_USD || 87450;
+    const ethUsd = crypto.ETH_USD || 3240;
+    const usdtUsd = crypto.USDT_USD || 1.0001;
+
+    const btcLocal = btcUsd * localRate;
+    const ethLocal = ethUsd * localRate;
+    const usdtLocal = usdtUsd * localRate;
+
+    document.getElementById('btcPrice').textContent = formatMoney(btcLocal, code);
+    document.getElementById('btcUsd').textContent = '$' + btcUsd.toLocaleString();
+    document.getElementById('ethPrice').textContent = formatMoney(ethLocal, code);
+    document.getElementById('ethUsd').textContent = '$' + ethUsd.toLocaleString();
+    document.getElementById('usdtPrice').textContent = formatMoney(usdtLocal, code);
+    document.getElementById('usdtUsd').textContent = '$' + usdtUsd.toFixed(4);
+  }
+
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     CROSS-RATE MATRIX
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  function renderMatrix() {
+    const table = document.getElementById('matrixTable');
+    let html = '<thead><tr><th></th>';
+    MATRIX_CODES.forEach(code => {
+      const c = findCurrency(code);
+      html += '<th>' + c.flag + ' ' + code + '</th>';
+    });
+    html += '</tr></thead><tbody>';
+
+    MATRIX_CODES.forEach(rowCode => {
+      const rowC = findCurrency(rowCode);
+      html += '<tr><td>' + rowC.flag + ' ' + rowCode + '</td>';
+      MATRIX_CODES.forEach(colCode => {
+        if (rowCode === colCode) {
+          html += '<td class="self">1.0000</td>';
+        } else {
+          const rate = crossRate(rowCode, colCode);
+          html += '<td>' + (rate !== null ? formatRate(rate) : '--') + '</td>';
+        }
+      });
+      html += '</tr>';
+    });
+    html += '</tbody>';
+    table.innerHTML = html;
+  }
+
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     ON DATA LOADED — render everything
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  function onDataLoaded() {
+    startUpdateTimer();
+    doConvert();
+    renderHeatmap();
+    renderPairsTable();
+    renderCBN();
+    renderCrypto();
+    renderMatrix();
+    renderFavorites();
+    loadChart();
+  }
+
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     EVENT BINDINGS
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  function bindEvents() {
+    // Converter
+    document.getElementById('fromAmount').addEventListener('input', function () {
+      doConvert();
+    });
+    document.getElementById('fromCurrency').addEventListener('change', function () {
+      doConvert();
+      loadChart();
+      renderFavorites();
+    });
+    document.getElementById('toCurrency').addEventListener('change', function () {
+      doConvert();
+      loadChart();
+      renderFavorites();
+    });
+    document.getElementById('swapBtn').addEventListener('click', swapCurrencies);
+
+    // Crypto currency selector
+    document.getElementById('cryptoCurrency').addEventListener('change', renderCrypto);
+
+    // Chart tabs
+    bindChartTabs();
+
+    // Table sort
+    bindTableSort();
+  }
+
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     INIT
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  function init() {
+    favorites = loadFavorites();
+    populateDropdowns();
+    bindEvents();
+    fetchRates();
+
+    // Auto-refresh every 5 minutes
+    setInterval(fetchRates, 5 * 60 * 1000);
+  }
+
+  // Boot
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+})();
+</script>
+</body>
+</html>

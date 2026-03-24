@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.bd27dfaf.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fertilizer Calculator for South Africa &mdash; NPK Ratios &amp; Cost | AfroTools</title>
+<meta name="description" content="Calculate exact NPK fertilizer needs for maize, sugar_cane, wheat in South Africa. Get product recommendations with local prices and subsidy information.">
+<link rel="canonical" href="https://afrotools.com/agriculture/fertilizer/south-africa">
+
+<meta property="og:title" content="South Africa Fertilizer Calculator &mdash; AfroTools">
+<meta property="og:description" content="Calculate NPK fertilizer needs for maize, sugar_cane, wheat in South Africa. Local prices and subsidy info.">
+<meta property="og:url" content="https://afrotools.com/agriculture/fertilizer/south-africa">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="South Africa Fertilizer Calculator &mdash; AfroTools">
+<meta name="twitter:description" content="Calculate exact NPK fertilizer needs for cassava, maize, rice, yam in Nigeria.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"South Africa Fertilizer Calculator","url":"https://afrotools.com/agriculture/fertilizer/south-africa","applicationCategory":"UtilityApplication","operatingSystem":"All","description":"Calculate exact NPK fertilizer needs for crops in South Africa with local product recommendations.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+
+<style>
+:root{--calc-accent:#008751;--calc-accent-rgb:0,135,81;--calc-accent-dark:#006B3F;--calc-accent-light:#E6F5ED;--calc-accent-pale:#F0FAF5}
+
+.tool-hero{background:var(--color-bg-dark,#0A1628);padding:36px 0 32px;border-bottom:1px solid rgba(var(--calc-accent-rgb),.15);position:relative;overflow:hidden}
+.tool-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(var(--calc-accent-rgb),.12) 0%,transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(var(--calc-accent-rgb),.08) 0%,transparent 50%);pointer-events:none}
+.tool-hero .container{position:relative;z-index:1}
+.breadcrumb{font-size:var(--text-xs,.75rem);font-weight:500;color:rgba(255,255,255,.4);margin-bottom:var(--space-md,16px)}.breadcrumb a{color:rgba(255,255,255,.5);text-decoration:none}.breadcrumb a:hover{color:#fff;text-decoration:underline}.breadcrumb span{margin:0 6px;opacity:.4}
+.tool-hero h1{font-family:var(--font-display);font-size:clamp(1.6rem,3vw,2.2rem);font-weight:var(--weight-black,800);color:var(--color-text-inverse,#fff);margin:0 0 var(--space-sm,8px);letter-spacing:-.02em}.tool-hero h1 em{color:var(--calc-accent);font-style:normal}.tool-hero h1 .flag{font-size:1.1em;margin-right:.3em}
+.tool-hero-sub{font-size:var(--text-sm,.875rem);color:rgba(255,255,255,.65);max-width:600px;line-height:1.6;margin:0 0 var(--space-md,16px)}
+.hero-badges{display:flex;flex-wrap:wrap;gap:var(--space-sm,8px)}
+.badge{padding:4px 10px;border-radius:var(--radius-pill,100px);font-size:.72rem;font-weight:700;display:inline-flex;align-items:center;gap:4px}
+.badge-grey{background:rgba(255,255,255,.07);color:rgba(255,255,255,.6)}
+
+.tool-main{max-width:var(--max-width-tool,1100px);margin:-20px auto 48px;padding:0 var(--space-lg,24px);position:relative;z-index:2}
+.card{background:var(--color-bg-card,#fff);border:1px solid var(--color-border,#e2e8f0);border-radius:var(--radius-md,10px);box-shadow:var(--shadow-sm);margin-bottom:var(--space-lg,24px)}
+.card-head{padding:var(--space-md,16px) 22px;background:var(--color-bg-subtle,#F8FAFD);border-bottom:1px solid var(--color-border-subtle,#f1f5f9);border-radius:var(--radius-md,10px) var(--radius-md,10px) 0 0}
+.card-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#3D5A80;margin:0;display:flex;align-items:center;gap:6px}
+.card-body{padding:22px}
+.field{margin-bottom:var(--space-md,16px)}.field.full{grid-column:1/-1}
+.f-label-text{display:block;font-size:.75rem;font-weight:700;color:#2D3A5A;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em}
+.f-input,.f-select{font-family:var(--font-body);font-size:.9rem;padding:11px 13px;border:1.5px solid var(--color-border-strong,#CBD5E1);border-radius:var(--radius-sm,6px);background:#F4F7FA;color:var(--color-text);outline:none;width:100%;transition:border-color var(--transition-fast,150ms ease),background var(--transition-fast)}
+.f-input:focus,.f-select:focus{border-color:var(--calc-accent);background:#fff;box-shadow:0 0 0 3px rgba(var(--calc-accent-rgb),.1)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-md,16px)}
+@media(max-width:640px){.form-grid{grid-template-columns:1fr}}
+
+.calc-btn{width:100%;padding:14px;font-family:var(--font-body);font-size:.88rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;background:var(--calc-accent);color:#fff;border:none;border-radius:var(--radius-pill,100px);cursor:pointer;transition:filter var(--transition-fast),transform var(--transition-fast);margin-top:var(--space-sm,8px)}
+.calc-btn:hover{filter:brightness(.85);transform:translateY(-1px);box-shadow:0 4px 12px rgba(var(--calc-accent-rgb),.3)}
+
+.collapse-toggle{font-size:.82rem;font-weight:600;color:var(--calc-accent);cursor:pointer;background:none;border:none;padding:8px 0;display:flex;align-items:center;gap:4px;font-family:var(--font-body)}
+.collapse-body{display:none;padding-top:8px}.collapse-body.open{display:block}
+
+.results-wrap{display:none}.results-wrap.on{display:block;animation:resFade .4s ease}
+@keyframes resFade{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+/* NPK cards */
+.npk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:var(--space-md,16px) 0}
+.npk-card{text-align:center;border-radius:var(--radius-sm,6px);padding:14px}
+.npk-card.n{background:#DBEAFE;border:2px solid var(--color-info,#3B82F6)}.npk-card.p{background:#FEF3C7;border:2px solid var(--color-warning,#F59E0B)}.npk-card.k{background:#D1FAE5;border:2px solid var(--color-success,#22c55e)}
+.npk-val{font-size:1.4rem;font-weight:800}.npk-label{font-size:.72rem;font-weight:600;color:var(--color-text-muted);margin-top:3px}
+
+/* Shopping table */
+.shop-table{width:100%;border-collapse:collapse;font-size:.85rem;margin:var(--space-md) 0}
+.shop-table th,.shop-table td{padding:8px 6px;text-align:left;border-bottom:1px solid var(--color-border-subtle,#f1f5f9)}
+.shop-table th{font-weight:600;color:var(--color-text-muted);font-size:.72rem;text-transform:uppercase}
+.shop-table .total-row{font-weight:700;border-top:2px solid var(--calc-accent)}.shop-table .subsidy-row{color:var(--calc-accent);font-style:italic}
+
+/* Cost grid */
+.cost-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:var(--space-md) 0}
+.cost-card{background:var(--color-bg-subtle);border-radius:var(--radius-sm,6px);padding:14px;text-align:center}
+.cost-card.highlight{background:var(--calc-accent-light);border:1.5px solid var(--calc-accent)}
+.cost-val{font-size:1.2rem;font-weight:800}.cost-label{font-size:.72rem;color:var(--color-text-muted);margin-top:3px}
+
+/* Schedule */
+.sched-item{display:flex;gap:12px;padding:12px;background:var(--calc-accent-pale);border-radius:var(--radius-sm,6px);margin-bottom:8px;border-left:3px solid var(--calc-accent)}
+.sched-num{width:28px;height:28px;border-radius:50%;background:var(--calc-accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.78rem;flex-shrink:0}
+.sched-stage{font-weight:700;font-size:.85rem}.sched-timing{font-size:.75rem;color:var(--color-text-muted);margin-top:2px}.sched-detail{font-size:.78rem;margin-top:4px;line-height:1.5}
+
+/* Organic */
+.org-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin:var(--space-md) 0}
+.org-card{background:var(--color-bg-subtle);border-radius:var(--radius-sm,6px);padding:14px;text-align:center}
+.org-val{font-size:1.1rem;font-weight:800;color:var(--calc-accent)}.org-label{font-size:.72rem;color:var(--color-text-muted);margin-top:3px}
+
+/* Subsidy */
+.subsidy-banner{background:var(--calc-accent-light);border:1.5px solid var(--calc-accent);border-radius:var(--radius-sm,6px);padding:14px;margin:var(--space-md) 0}
+.subsidy-title{font-weight:700;font-size:.88rem;color:var(--calc-accent)}.subsidy-text{font-size:.82rem;color:var(--color-text);line-height:1.5;margin-top:4px}
+.savings-amount{font-size:1rem;font-weight:800;color:var(--calc-accent)}
+
+/* FAQ */
+.faq-section details{border-bottom:1px solid var(--color-border,#e2e8f0);padding:10px 0}
+.faq-section summary{font-weight:600;font-size:.85rem;cursor:pointer;list-style:none}.faq-section summary::before{content:'+ ';color:var(--calc-accent);font-weight:800}.faq-section details[open] summary::before{content:'- '}
+.faq-section p{font-size:.82rem;color:var(--color-text-muted);line-height:1.6;margin:6px 0 0}
+
+.sources-footer{font-size:.72rem;color:var(--color-text-subtle,#94a3af);text-align:center;padding:var(--space-lg,24px) 0;line-height:1.6}
+@media print{.tool-hero,afro-navbar,afro-footer,.calc-btn{display:none!important}.results-wrap{display:block!important}.card{box-shadow:none;border:1px solid #ddd;break-inside:avoid}}
+</style>
+</head>
+
+<body class="tool-page">
+<afro-navbar theme="dark" active="tools"></afro-navbar>
+
+<section class="tool-hero">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a><span>/</span>
+      <a href="/agriculture/fertilizer/">Fertilizer Calculators</a><span>/</span>
+      <span aria-current="page">Nigeria</span>
+    </nav>
+    <h1><span class="flag" aria-hidden="true">&#127487;&#127462;</span> Nigeria <em>Fertilizer Calculator</em></h1>
+    <p class="tool-hero-sub">Calculate NPK fertilizer needs for your crops with local product recommendations, prices, and subsidy information.</p>
+    <div class="hero-badges" id="statsBar"></div>
+  </div>
+</section>
+
+<main class="tool-main">
+
+  <div class="card">
+    <div class="card-head"><span class="card-title">&#129514; Calculate Fertilizer Needs</span></div>
+    <div class="card-body">
+      <div class="form-grid">
+        <div class="field"><label class="f-label-text" for="selCrop">Crop</label><select class="f-select" id="selCrop"></select></div>
+        <div class="field"><label class="f-label-text" for="selRegion">Region</label><select class="f-select" id="selRegion"></select></div>
+        <div class="field"><label class="f-label-text" for="inpFarm">Farm Size (hectares)</label><input class="f-input" id="inpFarm" type="number" min="0.1" step="0.1" value="1"></div>
+        <div class="field"><label class="f-label-text" for="inpTarget">Target Yield (tonnes/ha)</label><input class="f-input" id="inpTarget" type="number" min="0.1" step="0.1" placeholder="Auto"></div>
+        <div class="field"><label class="f-label-text" for="selSoil">Soil Type</label><select class="f-select" id="selSoil"></select></div>
+        <div class="field"><label class="f-label-text" for="selPrevCrop">Previous Crop (N credit)</label>
+          <select class="f-select" id="selPrevCrop">
+            <option value="none">None / cereal / other</option>
+            <option value="cowpea">Cowpea</option><option value="groundnut">Groundnut</option><option value="soybean">Soybean</option>
+            <option value="common_bean">Beans</option><option value="pigeon_pea">Pigeon Pea</option><option value="chickpea">Chickpea</option>
+            <option value="lentils">Lentils</option><option value="fallow_grass">Fallow / grass</option>
+          </select>
+        </div>
+        <div class="field full">
+          <button class="collapse-toggle" type="button" onclick="toggleSoilTest()">&#128300; Have soil test results? (optional) &#8595;</button>
+          <div class="collapse-body" id="soilTestPanel">
+            <p style="font-size:.78rem;color:var(--color-text-muted);margin:0 0 12px;">Enter values for a more accurate recommendation. Leave blank for regional estimates.</p>
+            <div class="form-grid">
+              <div class="field"><label class="f-label-text">Soil pH</label><input class="f-input" id="inpPH" type="number" step="0.1" placeholder="e.g. 6.5"></div>
+              <div class="field"><label class="f-label-text">Organic Matter (%)</label><input class="f-input" id="inpOM" type="number" step="0.1" placeholder="e.g. 2.5"></div>
+              <div class="field"><label class="f-label-text">Available N (ppm)</label><input class="f-input" id="inpN" type="number" step="1" placeholder="e.g. 20"></div>
+              <div class="field"><label class="f-label-text">Olsen P (ppm)</label><input class="f-input" id="inpP" type="number" step="1" placeholder="e.g. 15"></div>
+              <div class="field"><label class="f-label-text">Available K (ppm)</label><input class="f-input" id="inpK" type="number" step="1" placeholder="e.g. 100"></div>
+            </div>
+          </div>
+        </div>
+        <div class="field full"><button class="calc-btn" onclick="calculate()">&#129514; Calculate Fertilizer Needs</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Results -->
+  <div class="results-wrap" id="resultsPanel">
+
+    <div class="card">
+      <div class="card-head"><span class="card-title">&#127793; NPK Requirement (per hectare)</span></div>
+      <div class="card-body">
+        <div class="npk-grid">
+          <div class="npk-card n"><div class="npk-val" id="rN">--</div><div class="npk-label">Nitrogen (N) kg/ha</div></div>
+          <div class="npk-card p"><div class="npk-val" id="rP">--</div><div class="npk-label">Phosphorus (P&#8322;O&#8325;) kg/ha</div></div>
+          <div class="npk-card k"><div class="npk-val" id="rK">--</div><div class="npk-label">Potassium (K&#8322;O) kg/ha</div></div>
+        </div>
+        <p style="font-size:.75rem;color:var(--color-text-muted);text-align:center;">For <span id="rCrop">--</span> targeting <span id="rTarget">--</span> t/ha on <span id="rFarm">--</span> ha</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><span class="card-title">&#128722; Fertilizer Shopping List</span></div>
+      <div class="card-body">
+        <table class="shop-table" id="shopTable"><thead><tr><th>Product</th><th>Bags</th><th>Price/Bag</th><th>Total</th></tr></thead><tbody></tbody></table>
+        <div class="cost-grid">
+          <div class="cost-card"><div class="cost-val" id="rCostMarket">--</div><div class="cost-label">Market price total</div></div>
+          <div class="cost-card highlight" id="costSubsidyCard" style="display:none"><div class="cost-val" id="rCostSubsidy">--</div><div class="cost-label">With subsidy</div></div>
+        </div>
+        <p style="font-size:.75rem;color:var(--color-text-muted);text-align:center;" id="rCostPerHa"></p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><span class="card-title">&#128197; Application Schedule</span></div>
+      <div class="card-body" id="scheduleContainer"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><span class="card-title">&#127807; Organic Alternatives</span></div>
+      <div class="card-body">
+        <p style="font-size:.78rem;color:var(--color-text-muted);margin:0 0 8px;">Equivalent organic inputs to supply the same nitrogen. Organic sources also improve soil structure.</p>
+        <div class="org-grid" id="organicGrid"></div>
+      </div>
+    </div>
+
+    <div class="card" id="subsidyCard" style="display:none">
+      <div class="card-head"><span class="card-title">&#128176; Fertilizer Subsidy Information</span></div>
+      <div class="card-body"><div class="subsidy-banner" id="subsidyBanner"></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><span class="card-title">&#128161; Why Soil Testing Matters</span></div>
+    <div class="card-body faq-section">
+      <details><summary>Why should I test my soil?</summary><p>Soil testing reveals exactly what nutrients your soil already has. Without it, you might over-apply (wasting money) or under-apply (limiting yields).</p></details>
+      <details><summary>When NOT to apply fertilizer</summary><p>Avoid applying on waterlogged soil, during heavy rain, or when crops are drought-stressed. Do not apply urea on hot, dry surfaces.</p></details>
+      <details><summary>Fertilizer safety tips</summary><p>Store in dry, cool places away from children and animals. Wear gloves. Never mix different fertilizers unless recommended.</p></details>
+    </div>
+  </div>
+
+  <div class="sources-footer">
+    Data Sources: FAOSTAT (FAO), South Africa National Statistics, World Bank, CGIAR.<br>
+    Fertilizer recommendations are indicative &mdash; consult your local extension officer. Last updated: 2026.
+  </div>
+</main>
+
+<afro-footer></afro-footer>
+
+<script src="/data/agriculture/crop-database.js"></script>
+<script src="/data/agriculture/za-agri-data.js"></script>
+<script src="/engines/fertilizer-engine.js"></script>
+
+<script>
+(function(){
+  'use strict';
+  var CD=window.AfroTools.countryData,CDB=window.AfroTools.cropDatabase,ENG=window.AfroTools.FertilizerEngine;
+  function $(id){return document.getElementById(id)}
+  function fmtN(n){return typeof n==='number'?n.toLocaleString('en-NG',{maximumFractionDigits:1}):'0'}
+  function fmtC(n){return CD.currencySymbol+fmtN(n)}
+
+  // Stats badges
+  (function(){var s=CD.agriStats;$('statsBar').innerHTML=['Agriculture: '+s.gdpSharePercent+'% of GDP',s.irrigatedPercent+'% irrigated',(CD.fertilizers||[]).length+' fertilizer products'].map(function(t){return'<span class="badge badge-grey">'+t+'</span>'}).join('')})();
+
+  // Crops
+  (function(){var sel=$('selCrop');CD.crops.forEach(function(c){var o=document.createElement('option');o.value=c.id;o.textContent=c.name+(c.localNames&&c.localNames.length?' ('+c.localNames[0]+')':'');sel.appendChild(o)});sel.addEventListener('change',updateTarget);updateTarget()})();
+  function updateTarget(){var c=CD.crops.find(function(c){return c.id===$('selCrop').value});if(c)$('inpTarget').placeholder=(c.baseYieldPerHa*1.3).toFixed(1)+' (default)'}
+
+  // Regions
+  (function(){var sel=$('selRegion');CD.regions.forEach(function(r){var o=document.createElement('option');o.value=r.id;o.textContent=r.name;sel.appendChild(o)});sel.addEventListener('change',updateSoils);updateSoils()})();
+  function updateSoils(){var rg=CD.regions.find(function(r){return r.id===$('selRegion').value}),ss=$('selSoil'),lb={loamy:'Loamy',clay:'Clay',sandy:'Sandy',sandy_loam:'Sandy Loam',clay_loam:'Clay Loam',volcanic:'Volcanic',laterite:'Laterite',alluvial:'Alluvial',black_cotton:'Black Cotton',red_soil:'Red Soil'};ss.innerHTML='';if(rg&&rg.soilTypes)rg.soilTypes.forEach(function(st){var o=document.createElement('option');o.value=st;o.textContent=lb[st]||st;ss.appendChild(o)})}
+
+  $('inpFarm').value=CD.agriStats.avgFarmSizeHa||1;
+  window.toggleSoilTest=function(){$('soilTestPanel').classList.toggle('open')};
+
+  window.calculate=function(){
+    var st=null;if($('soilTestPanel').classList.contains('open'))st={pH:parseFloat($('inpPH').value)||null,organicMatter:parseFloat($('inpOM').value)||null,N_ppm:parseFloat($('inpN').value)||null,P_ppm:parseFloat($('inpP').value)||null,K_ppm:parseFloat($('inpK').value)||null};
+    var r=ENG.calculate({cropId:$('selCrop').value,regionId:$('selRegion').value,farmSizeHa:parseFloat($('inpFarm').value)||1,targetYieldPerHa:parseFloat($('inpTarget').value)||null,soilType:$('selSoil').value,previousCrop:$('selPrevCrop').value,soilTest:st},CD,CDB);
+    if(r.error){alert(r.message);return}
+    var p=$('resultsPanel');p.classList.add('on');p.scrollIntoView({behavior:'smooth',block:'start'});
+
+    $('rN').textContent=fmtN(r.perHa.N);$('rP').textContent=fmtN(r.perHa.P);$('rK').textContent=fmtN(r.perHa.K);
+    $('rCrop').textContent=r.cropName;$('rTarget').textContent=fmtN(r.targetYieldPerHa);$('rFarm').textContent=r.farmSizeHa;
+
+    var tb=document.querySelector('#shopTable tbody');tb.innerHTML='';
+    r.products.forEach(function(p){var tr=document.createElement('tr');tr.innerHTML='<td>'+p.name+' <small>('+p.bagSize_kg+'kg)</small></td><td>'+p.bags+'</td><td>'+fmtC(p.pricePerBag)+'</td><td>'+fmtC(p.totalCostMarket)+'</td>';tb.appendChild(tr)});
+    var t1=document.createElement('tr');t1.className='total-row';t1.innerHTML='<td colspan="3">Total (market)</td><td>'+fmtC(r.costMarket)+'</td>';tb.appendChild(t1);
+    if(r.costSubsidy!==null){var t2=document.createElement('tr');t2.className='subsidy-row';t2.innerHTML='<td colspan="3">Total (subsidized)</td><td>'+fmtC(r.costSubsidy)+'</td>';tb.appendChild(t2)}
+
+    $('rCostMarket').textContent=fmtC(r.costMarket);
+    if(r.costSubsidy!==null){$('costSubsidyCard').style.display='block';$('rCostSubsidy').textContent=fmtC(r.costSubsidy)}else{$('costSubsidyCard').style.display='none'}
+    $('rCostPerHa').textContent='Cost per hectare: '+fmtC(r.costPerHaMarket)+(r.costPerHaSubsidy!==null?' (or '+fmtC(r.costPerHaSubsidy)+' with subsidy)':'');
+
+    $('scheduleContainer').innerHTML=r.schedule.map(function(s,i){var n=[];if(s.nutrients.N>0)n.push(fmtN(s.nutrients.N)+' kg N');if(s.nutrients.P>0)n.push(fmtN(s.nutrients.P)+' kg P\u2082O\u2085');if(s.nutrients.K>0)n.push(fmtN(s.nutrients.K)+' kg K\u2082O');return'<div class="sched-item"><div class="sched-num">'+(i+1)+'</div><div><div class="sched-stage">'+s.stage+'</div><div class="sched-timing">'+s.timing+'</div><div class="sched-detail"><strong>'+n.join(' + ')+'</strong><br>'+s.note+'</div></div></div>'}).join('');
+
+    $('organicGrid').innerHTML=r.organic.map(function(o){return'<div class="org-card"><div class="org-val">'+fmtN(o.tonnes)+' t</div><div class="org-label">'+o.label+'<br><small>'+fmtN(o.kgNeeded)+' kg</small></div></div>'}).join('');
+
+    var sc=$('subsidyCard');
+    if(r.subsidyInfo&&r.subsidyInfo.active){sc.style.display='block';$('subsidyBanner').innerHTML='<div class="subsidy-title">'+r.subsidyInfo.programName+'</div><div class="subsidy-text"><strong>Eligibility:</strong> '+(r.subsidyInfo.eligibility||'Check locally')+'<br><strong>Subsidy:</strong> '+(r.subsidyInfo.subsidyPercent||0)+'% off'+(r.savings>0?'<br><strong>Your savings: <span class="savings-amount">'+fmtC(r.savings)+'</span></strong>':'')+(r.subsidyInfo.notes?'<br><small>'+r.subsidyInfo.notes+'</small>':'')+'</div>'}else{sc.style.display='none'}
+  };
+})();
+</script>
+</body>
+</html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.bd27dfaf.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
@@ -79,6 +79,12 @@
   }
   .report-link:hover { color: var(--color-primary, #007aff); }
 </style>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Page Not Found — AfroTools">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 </head>
 <body>
 <afro-navbar></afro-navbar>
@@ -118,6 +124,27 @@
   var reportLink = document.getElementById('report-link');
   if (reportLink) {
     reportLink.href = '/contact/?subject=Broken+Link&message=' + encodeURIComponent('I found a broken link at: ' + window.location.href);
+  }
+
+  // Capture 404-page searches for product intelligence
+  var searchForm = document.getElementById('search-form');
+  if (searchForm) {
+    searchForm.addEventListener('submit', function() {
+      var q = searchForm.querySelector('.search-input');
+      if (q && q.value.trim().length >= 2 && navigator.sendBeacon) {
+        try {
+          var sid = sessionStorage.getItem('_afro_search_sid');
+          if (!sid) { sid = crypto.randomUUID(); sessionStorage.setItem('_afro_search_sid', sid); }
+          navigator.sendBeacon('/api/capture-search', JSON.stringify({
+            query: q.value.trim().slice(0, 200),
+            results_count: 0,
+            source: '404-page',
+            page_url: location.href,
+            session_id: sid
+          }));
+        } catch {}
+      }
+    });
   }
 </script>
 </body>

@@ -124,12 +124,47 @@
         if (!inp.value || !inp.checkValidity()) return;
         btn.disabled = true;
         btn.textContent = '…';
+
+        const email = inp.value.trim();
+
+        // 1. Netlify Forms (backup)
         try {
           const formData = new URLSearchParams();
           formData.append('form-name', 'newsletter');
-          formData.append('email', inp.value);
+          formData.append('email', email);
           await fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: formData.toString() });
         } catch(err) {}
+
+        // 2. Enriched API capture (attribution, device, UTM, referrer)
+        try {
+          if (typeof window.AfroTools !== 'undefined' && typeof window.AfroTools.captureLeadEnriched === 'function') {
+            window.AfroTools.captureLeadEnriched({
+              email: email,
+              source: 'newsletter-cta',
+              optInDigest: true
+            });
+          } else {
+            // Fallback: send basic enriched data inline
+            const params = new URLSearchParams(window.location.search);
+            fetch('/api/capture-lead', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                email: email,
+                source: 'newsletter-cta',
+                optInDigest: true,
+                utmSource:   params.get('utm_source')   || null,
+                utmMedium:   params.get('utm_medium')   || null,
+                utmCampaign: params.get('utm_campaign') || null,
+                utmContent:  params.get('utm_content')  || null,
+                referrerUrl: document.referrer || null,
+                pageUrl:     window.location.origin + window.location.pathname,
+                deviceType:  window.innerWidth < 768 ? 'mobile' : window.innerWidth < 1024 ? 'tablet' : 'desktop'
+              })
+            }).catch(function() {});
+          }
+        } catch(err) {}
+
         btn.textContent = '✓ Done!';
         inp.value = '';
         setTimeout(dismiss, 2000);

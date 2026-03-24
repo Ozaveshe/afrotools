@@ -9,14 +9,44 @@
 
   const YEAR = new Date().getFullYear();
 
+  /* i18n: all 5 languages */
+  const L = {
+    tools:      { en: 'Tools', fr: 'Outils', sw: 'Zana', yo: 'Àwọn Iṣẹ́', ha: 'Kayan Aiki' },
+    countries:  { en: 'Countries', fr: 'Pays', sw: 'Nchi', yo: 'Orílẹ̀-èdè', ha: 'Ƙasashe' },
+    company:    { en: 'Company', fr: 'Entreprise', sw: 'Kampuni', yo: 'Ilé-iṣẹ́', ha: 'Kamfani' },
+    legal:      { en: 'Legal', fr: 'Légal', sw: 'Sheria', yo: 'Òfin', ha: 'Doka' },
+    nlEyebrow:  { en: 'Stay Updated', fr: 'Restez informé', sw: 'Pata Habari', yo: 'Ṣe Àjọjú', ha: 'Kasance Cikin Labari' },
+    nlTitle:    { en: 'New tools. Every week. Free.', fr: 'Nouveaux outils. Gratuit.', sw: 'Zana mpya. Kila wiki. Bure.', yo: 'Iṣẹ́ tuntun. Ọ̀fẹ́.', ha: 'Sababbin kayan aiki. Kyauta.' },
+    placeholder:{ en: 'your@email.com', fr: 'votre@email.com', sw: 'barua@pepe.com', yo: 'imeeli@rẹ.com', ha: 'imel@ka.com' },
+    btnLabel:   { en: 'Notify Me →', fr: "M'inscrire →", sw: 'Nijulishe →', yo: 'Fara mọ́ →', ha: 'Sanar da ni →' },
+    note:       { en: 'No spam. Unsubscribe anytime.', fr: 'Pas de spam. Désinscription facile.', sw: 'Hakuna taka. Jiondoe wakati wowote.', yo: 'Kò sí àdàlù. Yọ ara rẹ nígbàkígbà.', ha: "Babu spam. Soke a kowane lokaci." },
+    tagline:    { en: 'Tax calculators, PDF tools, CV builder, currency tools and more — built for all 54 African nations. Free forever.',
+                  fr: 'Calculateurs, outils PDF, CV, devises — pour les 54 nations africaines. Gratuit à jamais.',
+                  sw: 'Vikokotoo vya kodi, zana za PDF, sarafu na zaidi — kwa mataifa yote 54 ya Afrika. Bure milele.',
+                  yo: 'Àṣeàṣe owó-orí, iṣẹ́ PDF, owó — fún gbogbo orílẹ̀-èdè 54 Áfíríkà. Ọ̀fẹ́.',
+                  ha: "Na'urorin haraji, kayan aikin PDF, kuɗi — don duk ƙasashe 54 na Afirka. Kyauta har abada." },
+    disc:       { en: 'AfroTools tools are for informational purposes only and do not constitute financial, tax, or legal advice. Always verify with a qualified professional or your country\'s revenue authority before making financial decisions.',
+                  fr: "AfroTools est à titre informatif uniquement. Vérifiez auprès d'un professionnel qualifié avant toute décision financière.",
+                  sw: 'Zana za AfroTools ni kwa madhumuni ya taarifa pekee. Hakikisha na mtaalamu aliyeidhinishwa kabla ya maamuzi ya kifedha.',
+                  yo: 'Àwọn iṣẹ́ AfroTools jẹ́ fún ìfitónilétí nìkan. Ṣe ìjẹ́rìísí pẹ̀lú ọ̀jọ̀gbọ́n kí o tó ṣe ìpinnu owó.',
+                  ha: "Kayan aikin AfroTools don bayani ne kawai. Tabbatar da ƙwararru kafin yanke shawarar kuɗi." },
+    stats:      { countries: { en: 'African countries', fr: 'Pays africains', sw: 'Nchi za Afrika', yo: 'Orílẹ̀-èdè Áfíríkà', ha: 'Ƙasashen Afirka' },
+                  categories: { en: 'Tool categories', fr: 'Catégories', sw: 'Kategoria', yo: 'Ẹ̀ka', ha: 'Rukunoni' },
+                  paye:       { en: 'PAYE calculators', fr: 'Calculateurs PAYE', sw: 'Vikokotoo vya PAYE', yo: 'Àṣeàṣe PAYE', ha: "Na'urorin PAYE" },
+                  free:       { en: 'Always, forever', fr: 'Toujours gratuit', sw: 'Bure milele', yo: 'Ọ̀fẹ́ títí', ha: 'Kyauta har abada' } },
+    privacy:    { en: 'Privacy', fr: 'Confidentialité', sw: 'Faragha', yo: 'Aṣírí', ha: 'Sirri' },
+    terms:      { en: 'Terms', fr: 'Conditions', sw: 'Masharti', yo: 'Òfin', ha: 'Sharuɗɗa' },
+    builtWith:  { en: 'Built with ♥ for Africa', fr: 'Fait avec ♥ pour l\'Afrique', sw: 'Imejengwa kwa ♥ kwa Afrika', yo: 'A kọ́ pẹ̀lú ♥ fún Áfíríkà', ha: 'An gina da ♥ don Afirka' },
+  };
+
   const LINKS = {
     tools: [
-      { en: 'Salary & Tax',        fr: 'Salaire & Impôts',   href: '/salary-tax/' },
-      { en: 'PDF Workspace',       fr: 'Espace PDF',          href: '/tools/pdf-workspace/' },
-      { en: 'Currency Converter',  fr: 'Convertisseur',       href: '/tools/currency-converter/' },
-      { en: 'CV Builder',          fr: 'Créer un CV',         href: '/tools/cv-builder/' },
-      { en: 'Invoice Generator',   fr: 'Facture',             href: '/tools/invoice-generator/' },
-      { en: 'VAT Calculator',      fr: 'Calculateur TVA',     href: '/tools/vat-calculator/' },
+      { en: 'Salary & Tax',        fr: 'Salaire & Impôts', sw: 'Mshahara & Kodi', yo: 'Owó Oṣù & Owó-Orí', ha: 'Albashi & Haraji', href: '/salary-tax/' },
+      { en: 'PDF Workspace',       fr: 'Espace PDF',       sw: 'Eneo la PDF',     yo: 'Ibùdó PDF',          ha: 'Wurin PDF',       href: '/tools/pdf-workspace/' },
+      { en: 'Currency Converter',  fr: 'Convertisseur',    sw: 'Kubadili Sarafu',  yo: 'Iyípadà Owó',       ha: 'Mai Canji Kuɗi', href: '/tools/currency-converter/' },
+      { en: 'CV Builder',          fr: 'Créer un CV',      sw: 'Tengeneza CV',     yo: 'Kọ CV',             ha: 'Gina CV',         href: '/tools/cv-builder/' },
+      { en: 'Invoice Generator',   fr: 'Facture',          sw: 'Ankara',           yo: 'Iṣẹ́ Ìwé-Owó',      ha: 'Resiti',          href: '/tools/invoice-generator/' },
+      { en: 'VAT Calculator',      fr: 'Calculateur TVA',  sw: 'Kikokotoo VAT',    yo: 'Àṣeàṣe VAT',       ha: "Na'urar VAT",    href: '/tools/vat-calculator/' },
     ],
     countries: [
       { en: '🇳🇬 Nigeria',      href: '/nigeria/' },
@@ -27,17 +57,17 @@
       { en: '🇹🇿 Tanzania',     href: '/tanzania/' },
     ],
     company: [
-      { en: 'About',       fr: '\u00C0 propos',   href: '/about/' },
-      { en: 'Blog',        fr: 'Blog',        href: '/blog/' },
-      { en: 'Contact',     fr: 'Contact',    href: '/contact/' },
-      { en: 'Changelog',   fr: 'Mises \u00e0 jour', href: '/changelog/' },
-      { en: 'All Tools',   fr: 'Tous les outils', href: '/all-tools/' },
-      { en: 'API Docs',    fr: 'API Docs',    href: '/api/' },
+      { en: 'About',       fr: 'À propos',        sw: 'Kuhusu',        yo: 'Nípa Wa',          ha: 'Game da Mu',    href: '/about/' },
+      { en: 'Blog',        fr: 'Blog',             sw: 'Blogu',         yo: 'Blọ́ọ̀gì',          ha: 'Blog',          href: '/blog/' },
+      { en: 'Contact',     fr: 'Contact',          sw: 'Wasiliana',     yo: 'Kan Sí Wa',        ha: 'Tuntube Mu',    href: '/contact/' },
+      { en: 'Changelog',   fr: 'Mises à jour',     sw: 'Mabadiliko',    yo: 'Àwọn Àyípadà',    ha: 'Canje-canje',   href: '/changelog/' },
+      { en: 'All Tools',   fr: 'Tous les outils',  sw: 'Zana Zote',     yo: 'Gbogbo Iṣẹ́',      ha: 'Duk Kayan Aiki',href: '/all-tools/' },
+      { en: 'API Docs',    fr: 'API Docs',         sw: 'API Docs',      yo: 'API Docs',         ha: 'API Docs',      href: '/api/' },
     ],
     legal: [
-      { en: 'Privacy Policy', fr: 'Confidentialit\u00e9', href: '/privacy/' },
-      { en: 'Terms of Use',   fr: 'Conditions',           href: '/terms/' },
-      { en: 'Sitemap',        fr: 'Plan du site',         href: '/sitemap.xml' },
+      { en: 'Privacy Policy', fr: 'Confidentialité', sw: 'Sera ya Faragha', yo: 'Ìlànà Aṣírí',  ha: 'Manufar Sirri', href: '/privacy/' },
+      { en: 'Terms of Use',   fr: 'Conditions',      sw: 'Masharti',        yo: 'Òfin Lílò',     ha: 'Sharuɗɗa',     href: '/terms/' },
+      { en: 'Sitemap',        fr: 'Plan du site',    sw: 'Ramani',          yo: 'Àtòjọ Ojú-ìwé', ha: 'Taswirar Shafi',href: '/sitemap.xml' },
     ],
   };
 
@@ -251,38 +281,42 @@
       super();
       this.attachShadow({ mode: 'open' });
       this._lang = 'en';
-      try { this._lang = localStorage.getItem('afrotools_lang') || 'en'; } catch(e) {}
     }
 
     connectedCallback() {
+      // Detect language from URL prefix (matches i18n-detect.js logic)
+      var segs = window.location.pathname.split('/');
+      var first = segs[1];
+      if (['fr','sw','yo','ha'].indexOf(first) !== -1) this._lang = first;
+      else this._lang = document.documentElement.lang || 'en';
       this._render(); this._bind();
       document.addEventListener('afrotools:langchange', e => {
         this._lang = e.detail.lang; this._render(); this._bind();
       });
     }
 
-    get fr() { return this._lang === 'fr'; }
-    _t(item)  { return this.fr && item.fr ? item.fr : item.en; }
+    _l(obj) { return obj[this._lang] || obj.en; }
+    _t(item) { return item[this._lang] || item.en; }
 
-    _col(titleEn, titleFr, items) {
-      const t     = this.fr && titleFr ? titleFr : titleEn;
-      const links = items.map(i => `<a href="${i.href}" class="col-link">${this._t(i)}</a>`).join('');
+    _col(titleObj, items) {
+      const t = this._l(titleObj);
+      const links = items.map(i => `<a href="${this._prefixHref(i.href)}" class="col-link">${this._t(i)}</a>`).join('');
       return `<div><div class="col-title">${t}</div>${links}</div>`;
     }
 
+    _prefixHref(href) {
+      if (this._lang === 'en' || href.startsWith('http') || href.startsWith('/sitemap')) return href;
+      return '/' + this._lang + href;
+    }
+
     _render() {
-      const fr = this.fr;
-      const nlEyebrow = fr ? 'Restez informé'            : 'Stay Updated';
-      const nlTitle   = fr ? 'Nouveaux outils. Gratuit.' : 'New tools. Every week. Free.';
-      const ph        = fr ? 'votre@email.com'            : 'your@email.com';
-      const btnLbl    = fr ? "M'inscrire →"               : 'Notify Me →';
-      const note      = fr ? 'Pas de spam. Désinscription facile.' : 'No spam. Unsubscribe anytime.';
-      const tagline   = fr
-        ? 'Calculateurs, outils PDF, CV, devises — pour les 54 nations africaines. Gratuit à jamais.'
-        : 'Tax calculators, PDF tools, CV builder, currency tools and more — built for all 54 African nations. Free forever.';
-      const disc = fr
-        ? "AfroTools est à titre informatif uniquement. Vérifiez auprès d'un professionnel qualifié avant toute décision financière."
-        : 'AfroTools tools are for informational purposes only and do not constitute financial, tax, or legal advice. Always verify with a qualified professional or your country\'s revenue authority before making financial decisions.';
+      const nlEyebrow = this._l(L.nlEyebrow);
+      const nlTitle   = this._l(L.nlTitle);
+      const ph        = this._l(L.placeholder);
+      const btnLbl    = this._l(L.btnLabel);
+      const note      = this._l(L.note);
+      const tagline   = this._l(L.tagline);
+      const disc      = this._l(L.disc);
 
       this.shadowRoot.innerHTML = `
         <style>${CSS}</style>
@@ -291,7 +325,7 @@
 
             <div class="top">
               <div>
-                <a href="/" class="logo-row" aria-label="AfroTools home">
+                <a href="${this._prefixHref('/')}" class="logo-row" aria-label="AfroTools home">
                   ${MARK}
                   <div>
                     <span class="logo-name">AFRO<b>TOOLS</b></span>
@@ -304,7 +338,7 @@
                   <a href="https://linkedin.com/company/afrotools" target="_blank" rel="noopener" aria-label="LinkedIn">in</a>
                   <a href="https://github.com/Ozaveshe/afrotools" target="_blank" rel="noopener" aria-label="GitHub">GH</a>
                 </div>
-                <p class="built-with">Built with &#9829; for Africa</p>
+                <p class="built-with">${this._l(L.builtWith)}</p>
               </div>
               <div>
                 <div class="nl-eyebrow">${nlEyebrow}</div>
@@ -321,26 +355,26 @@
             </div>
 
             <div class="links">
-              ${this._col('Tools', 'Outils', LINKS.tools)}
-              ${this._col('Countries', 'Pays', LINKS.countries)}
-              ${this._col('Company', 'Entreprise', LINKS.company)}
-              ${this._col('Legal', 'L\u00e9gal', LINKS.legal)}
+              ${this._col(L.tools, LINKS.tools)}
+              ${this._col(L.countries, LINKS.countries)}
+              ${this._col(L.company, LINKS.company)}
+              ${this._col(L.legal, LINKS.legal)}
             </div>
 
             <div class="stats">
-              <div><div class="stat-n">54</div><div class="stat-l">${fr ? 'Pays africains' : 'African countries'}</div></div>
-              <div><div class="stat-n">12</div><div class="stat-l">${fr ? 'Catégories' : 'Tool categories'}</div></div>
-              <div><div class="stat-n">8</div><div class="stat-l">${fr ? 'Calculateurs PAYE' : 'PAYE calculators'}</div></div>
-              <div><div class="stat-n">Free</div><div class="stat-l">${fr ? 'Toujours gratuit' : 'Always, forever'}</div></div>
+              <div><div class="stat-n">54</div><div class="stat-l">${this._l(L.stats.countries)}</div></div>
+              <div><div class="stat-n">12</div><div class="stat-l">${this._l(L.stats.categories)}</div></div>
+              <div><div class="stat-n">8</div><div class="stat-l">${this._l(L.stats.paye)}</div></div>
+              <div><div class="stat-n">Free</div><div class="stat-l">${this._l(L.stats.free)}</div></div>
             </div>
 
             <div class="bottom">
               <p class="copy">© ${YEAR} AfroTools.com</p>
               <div class="legal">
-                <a href="/privacy/">${fr ? 'Confidentialité' : 'Privacy'}</a>
-                <a href="/terms/">${fr ? 'Conditions' : 'Terms'}</a>
+                <a href="${this._prefixHref('/privacy/')}">${this._l(L.privacy)}</a>
+                <a href="${this._prefixHref('/terms/')}">${this._l(L.terms)}</a>
                 <a href="/sitemap.xml">Sitemap</a>
-                <a href="/contact/">Contact</a>
+                <a href="${this._prefixHref('/contact/')}">Contact</a>
               </div>
               <p class="disc">${disc}</p>
             </div>
@@ -370,7 +404,7 @@
             inp.value = '';
           }
           btn.disabled = false;
-          setTimeout(() => { btn.textContent = this.fr ? "M'inscrire →" : 'Notify Me →'; }, 3000);
+          setTimeout(() => { btn.textContent = this._l(L.btnLabel); }, 3000);
         }
       });
     }
@@ -379,11 +413,14 @@
   if (!customElements.get('afro-footer')) customElements.define('afro-footer', AfroFooter);
 
   /* ── Auto-load site-wide AI advisor (deferred until idle) ── */
+  /* Uses chat bundle if available (from manifest), falls back to individual file */
   var _idle = window.requestIdleCallback || function(cb) { setTimeout(cb, 2000); };
   _idle(function() {
-    if (document.querySelector('script[src*="site-assistant"]')) return;
+    if (document.querySelector('script[src*="site-assistant"]') || document.querySelector('script[src*="chat."]')) return;
     const s = document.createElement('script');
-    s.src   = '/assets/js/components/site-assistant.min.js';
+    // Try chat bundle first, fall back to individual file
+    var bundlePath = document.documentElement.getAttribute('data-chat-bundle');
+    s.src = bundlePath || '/assets/js/components/site-assistant.min.js';
     s.defer = true;
     document.head.appendChild(s);
   });

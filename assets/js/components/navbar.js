@@ -277,6 +277,32 @@
     .cta:hover  { background: #005BBF; transform: translateY(-1px); }
     .cta:active { transform: translateY(0); }
 
+    /* LANGUAGE SWITCHER */
+    .lang-switch { position: relative; display: flex; align-items: center; }
+    .lang-btn {
+      display: flex; align-items: center; gap: 4px;
+      padding: 5px 10px; border-radius: 980px;
+      font-size: 0.73rem; font-weight: 700; color: #374151;
+      border: 1.5px solid rgba(0,0,0,0.1); background: rgba(0,0,0,0.02);
+      cursor: pointer; white-space: nowrap; transition: all 0.13s;
+      font-family: 'DM Sans', system-ui, sans-serif;
+    }
+    .lang-btn:hover { border-color: #0062CC; color: #0062CC; background: #EEF4FF; }
+    .lang-drop {
+      display: none; position: absolute; top: calc(100% + 6px); right: 0;
+      background: #fff; border-radius: 10px; border: 1px solid #e5e7eb;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12); min-width: 150px; z-index: 600;
+      overflow: hidden;
+    }
+    .lang-drop.open { display: block; }
+    .lang-opt {
+      display: flex; align-items: center; gap: 8px;
+      padding: 10px 14px; font-size: 0.82rem; font-weight: 500; color: #374151;
+      text-decoration: none; transition: background 0.1s; cursor: pointer;
+    }
+    .lang-opt:hover { background: #EEF4FF; }
+    .lang-opt.active { font-weight: 700; color: #0062CC; background: #f0f7ff; }
+
     /* HAMBURGER */
     .burger {
       display: none; flex-direction: column; justify-content: center; gap: 5px;
@@ -555,6 +581,35 @@
     }
     get active() { return this.getAttribute('active') || ''; }
 
+    _getLang() {
+      var segs = window.location.pathname.split('/');
+      var first = segs[1];
+      if (['fr','sw','yo','ha'].indexOf(first) !== -1) return first;
+      return document.documentElement.lang || 'en';
+    }
+
+    _langSwitcherHTML() {
+      var cur = this._getLang();
+      var LANGS = [
+        { code: 'en', label: 'English' },
+        { code: 'fr', label: 'Français' },
+        { code: 'sw', label: 'Kiswahili' },
+        { code: 'yo', label: 'Yorùbá' },
+        { code: 'ha', label: 'Hausa' },
+      ];
+      var curObj = LANGS.find(function(l){ return l.code === cur; }) || LANGS[0];
+      var opts = LANGS.map(function(l) {
+        var active = l.code === cur ? ' active' : '';
+        var check = l.code === cur ? '✓' : '';
+        // Build URL for this language
+        var p = window.location.pathname;
+        if (cur !== 'en') p = p.replace(new RegExp('^/' + cur + '(/|$)'), '/');
+        var href = l.code !== 'en' ? '/' + l.code + (p.startsWith('/') ? '' : '/') + p : p;
+        return '<a href="' + href + '" class="lang-opt' + active + '"><span class="lang-opt-check">' + check + '</span>' + l.label + '</a>';
+      }).join('');
+      return '<div class="lang-switch"><button class="lang-btn" id="langBtn" type="button" aria-label="Change language">🌐 ' + curObj.label + '</button><div class="lang-drop" id="langDrop">' + opts + '</div></div>';
+    }
+
     _megaContent() {
       return NAV_ITEMS.map(cat => `
         <a href="${cat.href}" class="mega-col" style="--col-accent:${cat.accent}">
@@ -617,6 +672,7 @@
                 </svg>
                 <span class="search-kbd">Ctrl K</span>
               </button>
+              ${this._langSwitcherHTML()}
               <span class="pill-54">🌍 54 countries</span>
               <a href="/dashboard/" class="btn-login">Sign in</a>
               <a href="/widgets/demo/" class="cta cta-embed" style="background:transparent;border:1.5px solid var(--clr-accent,#0062CC);color:var(--clr-accent,#0062CC);font-size:12px;padding:7px 14px">Embed Tools</a>
@@ -716,9 +772,18 @@
       this._outsideFn = e => { if (!this.contains(e.target)) closeMega(); };
       document.addEventListener('click', this._outsideFn);
 
+      // Language switcher toggle
+      const langBtn = sr.querySelector('#langBtn');
+      const langDrop = sr.querySelector('#langDrop');
+      langBtn?.addEventListener('click', e => {
+        e.stopPropagation();
+        langDrop.classList.toggle('open');
+      });
+      document.addEventListener('click', () => langDrop?.classList.remove('open'));
+
       // Escape
       document.addEventListener('keydown', e => {
-        if (e.key === 'Escape') { closeMega(); if (this._menuOpen) burger?.click(); }
+        if (e.key === 'Escape') { closeMega(); langDrop?.classList.remove('open'); if (this._menuOpen) burger?.click(); }
       });
 
       // Mobile hamburger
@@ -837,6 +902,37 @@
         return scored.slice(0, 8).map(s => s.tool);
       };
 
+      // ── Search capture: send queries to /api/capture-search for product intelligence ──
+      let _captureTimer = null;
+      let _captureCount = 0;
+      const _captureSessionId = (() => {
+        try {
+          let sid = sessionStorage.getItem('_afro_search_sid');
+          if (!sid) { sid = crypto.randomUUID(); sessionStorage.setItem('_afro_search_sid', sid); }
+          return sid;
+        } catch { return null; }
+      })();
+
+      const captureSearch = (query, resultsCount, source) => {
+        clearTimeout(_captureTimer);
+        if (!query || query.length < 2 || _captureCount >= 20) return;
+        _captureTimer = setTimeout(() => {
+          _captureCount++;
+          try {
+            const payload = JSON.stringify({
+              query: query.slice(0, 200),
+              results_count: resultsCount,
+              source: source || 'navbar',
+              page_url: location.href,
+              session_id: _captureSessionId
+            });
+            if (navigator.sendBeacon) {
+              navigator.sendBeacon('/api/capture-search', payload);
+            }
+          } catch {}
+        }, 500);
+      };
+
       const renderResults = (tools, query, container) => {
         if (tools === null) {
           container.innerHTML = '<div class="search-empty"><div class="search-empty-icon">⏳</div><div class="search-empty-text">Loading tools…</div><div class="search-empty-hint">Tool registry not loaded yet</div></div>';
@@ -913,6 +1009,16 @@
           const q = searchInput.value.trim();
           const results = searchTools(q);
           renderResults(results, q, searchResults);
+          // Analytics: track search events
+          if (q && q.length >= 2 && window.AfroTools?.analytics) {
+            const count = results ? results.length : 0;
+            window.AfroTools.analytics.trackSearch(q, count, 'navbar');
+            if (count === 0) {
+              window.AfroTools.analytics.trackSearchNoResults(q, 'navbar');
+            }
+          }
+          // Capture search for product intelligence (debounced 500ms in captureSearch)
+          captureSearch(q, results ? results.length : 0, 'navbar');
         }, 80);
       });
 
@@ -981,6 +1087,12 @@
           if (results.length === 0) {
             mobSearchResults.innerHTML = '<div class="mob-search-empty">No tools found</div>';
             mobCategoriesWrap.style.display = 'none';
+            // Analytics: track mobile search no results
+            if (q && q.length >= 2 && window.AfroTools?.analytics) {
+              window.AfroTools.analytics.trackSearch(q, 0, 'navbar');
+              window.AfroTools.analytics.trackSearchNoResults(q, 'navbar');
+            }
+            captureSearch(q, 0, 'navbar');
             return;
           }
           mobCategoriesWrap.style.display = 'none';
@@ -992,6 +1104,11 @@
                 <div class="search-result-desc">${escapeHtml(t.desc)}</div>
               </div>
             </a>`).join('');
+          // Analytics: track mobile search
+          if (q && q.length >= 2 && window.AfroTools?.analytics) {
+            window.AfroTools.analytics.trackSearch(q, results.length, 'navbar');
+          }
+          captureSearch(q, results.length, 'navbar');
         }, 100);
       });
 
@@ -1071,6 +1188,12 @@
   /* ── DEFERRED SCRIPTS: load after main thread is idle ── */
   var _idle = window.requestIdleCallback || function(cb) { setTimeout(cb, 1500); };
 
+  /* Analytics: load early (not idle-deferred) so auto-tracking initializes on DOMContentLoaded */
+  if (!document.getElementById('afro-analytics-js')) {
+    var _as = document.createElement('script'); _as.id = 'afro-analytics-js';
+    _as.src = '/assets/js/lib/analytics.js'; document.head.appendChild(_as);
+  }
+
   _idle(function() {
     /* Animations */
     if (!document.getElementById('afro-animations-css')) {
@@ -1096,12 +1219,12 @@
     }
   });
 
-  /* Supabase auth: defer — only needed for sign-in UI */
+  /* Auth: load afro-auth.js (consolidated Supabase auth) */
   _idle(function() {
-    if (window._afroSupaAuthLoaded) return;
-    if (!document.getElementById('afro-supabase-auth-js')) {
-      var s = document.createElement('script'); s.id = 'afro-supabase-auth-js';
-      s.src = '/assets/js/supabase-auth.js?v=5'; document.head.appendChild(s);
+    if (window._afroAuthLoaded) return;
+    if (!document.getElementById('afro-auth-js')) {
+      var s = document.createElement('script'); s.id = 'afro-auth-js';
+      s.src = '/assets/js/afro-auth.js?v=6'; document.head.appendChild(s);
     }
   });
 })();

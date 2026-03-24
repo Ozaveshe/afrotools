@@ -12,14 +12,17 @@
  */
 
 const { getData } = require('./_shared/data-store');
+const { getOrFetch, cacheHeaders } = require('./_lib/cache');
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'Content-Type, x-api-key',
   'Access-Control-Allow-Methods': 'GET, OPTIONS',
   'Content-Type': 'application/json',
-  'Cache-Control': 'public, max-age=1800, s-maxage=3600',
 };
+
+// Cache TTLs: CDN 2hr, browser 1hr, stale 3hr
+const CACHE_OPTS = { browserTTL: 3600, cdnTTL: 7200, staleTTL: 10800 };
 
 const rateLimitMap = new Map();
 const RATE_LIMIT = 100;
@@ -36,10 +39,13 @@ function checkRateLimit(ip) {
   return record.count <= RATE_LIMIT;
 }
 
+var _reqCacheHdrs = null;
+
 function jsonResponse(statusCode, body, extraHeaders = {}) {
+  var base = (statusCode === 200 && _reqCacheHdrs) ? _reqCacheHdrs : CORS_HEADERS;
   return {
     statusCode,
-    headers: { ...CORS_HEADERS, ...extraHeaders },
+    headers: { ...base, ...extraHeaders },
     body: JSON.stringify(body),
   };
 }
@@ -81,11 +87,12 @@ exports.handler = async function (event) {
     return jsonResponse(200, historyData, { 'Cache-Control': 'public, max-age=3600, s-maxage=7200' });
   }
 
-  // --- Load latest fuel data ---
-  const data = await getData('fuel-latest');
+  // --- Load latest fuel data (with in-memory + Blobs cache) ---
+  const { data, fromCache } = await getOrFetch('fuel-latest', 7200000); // 2hr memory TTL
   if (!data || !data.countries) {
     return jsonResponse(503, { error: 'Fuel data unavailable. Please try again later.' });
   }
+  _reqCacheHdrs = cacheHeaders(CACHE_OPTS, fromCache, CORS_HEADERS);
 
   let countries = data.countries;
 

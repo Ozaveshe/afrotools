@@ -11,14 +11,17 @@
  */
 
 const { getData } = require('./_shared/data-store');
+const { getOrFetch, cacheHeaders } = require('./_lib/cache');
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'Content-Type, x-api-key',
   'Access-Control-Allow-Methods': 'GET, OPTIONS',
   'Content-Type': 'application/json',
-  'Cache-Control': 'public, max-age=300, s-maxage=900',
 };
+
+// Cache TTLs: CDN 10min, browser 5min, stale 15min
+const CACHE_OPTS = { browserTTL: 300, cdnTTL: 600, staleTTL: 900 };
 
 // Simple in-memory rate limiting (resets per function cold start)
 const rateLimitMap = new Map();
@@ -41,10 +44,14 @@ function checkRateLimit(ip) {
   return true;
 }
 
+// _reqCacheHdrs is set per-request after data fetch; success responses include cache headers
+var _reqCacheHdrs = null;
+
 function jsonResponse(statusCode, body, extraHeaders = {}) {
+  var base = (statusCode === 200 && _reqCacheHdrs) ? _reqCacheHdrs : CORS_HEADERS;
   return {
     statusCode,
-    headers: { ...CORS_HEADERS, ...extraHeaders },
+    headers: { ...base, ...extraHeaders },
     body: JSON.stringify(body),
   };
 }
@@ -80,11 +87,14 @@ exports.handler = async function (event) {
     return await handleHistorical(params.pair, params.history);
   }
 
-  // --- Load latest rates ---
-  const data = await getData('forex-latest');
+  // --- Load latest rates (with in-memory + Blobs cache) ---
+  const { data, fromCache } = await getOrFetch('forex-latest', 600000); // 10min memory TTL
   if (!data || !data.rates) {
     return jsonResponse(503, { error: 'Forex data unavailable. Please try again later.' });
   }
+
+  // Set cache headers for all 200 responses
+  _reqCacheHdrs = cacheHeaders(CACHE_OPTS, fromCache, CORS_HEADERS);
 
   // --- Single pair: ?from=USD&to=NGN ---
   if (params.from && params.to) {

@@ -11,7 +11,14 @@
     "sitemap": "node scripts/generate-sitemap.js",
     "check-links": "node scripts/check-links.js",
     "audit": "node scripts/audit-tools.js",
-    "build": "node scripts/minify.js && node scripts/generate-sitemap.js && node scripts/stamp-sw.js",
+    "bundle": "node scripts/bundle.js && node scripts/update-html-bundles.js",
+    "build": "node scripts/minify.js && node scripts/bundle.js && node scripts/update-html-bundles.js && node scripts/generate-sitemap.js && node scripts/stamp-sw.js",
+    "build:i18n": "node scripts/build-i18n.js --all",
+    "build:i18n:fr": "node scripts/build-i18n.js --lang fr",
+    "build:i18n:validate": "node scripts/build-i18n.js --validate",
+    "build:i18n:dry-run": "node scripts/build-i18n.js --dry-run",
+    "validate:hreflang": "node scripts/validate-hreflang.js",
+    "build:i18n:full": "npm run build:i18n -- --all && npm run validate:hreflang",
     "test": "node scripts/check-links.js && node scripts/audit-tools.js"
   },
   "repository": {

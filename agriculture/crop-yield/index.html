@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.bd27dfaf.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crop Yield Estimators for Africa &mdash; 54 Countries | AfroTools</title>
+<meta name="description" content="Free crop yield calculators for all 54 African countries. Estimate cassava, maize, rice, sorghum, millet yields by region with country-specific agricultural data.">
+<link rel="canonical" href="https://afrotools.com/agriculture/crop-yield/">
+
+<meta property="og:title" content="Crop Yield Estimators for Africa &mdash; AfroTools">
+<meta property="og:description" content="Free crop yield calculators for all 54 African countries. Estimate yields by region with country-specific agricultural data.">
+<meta property="og:url" content="https://afrotools.com/agriculture/crop-yield/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Crop Yield Estimators for Africa",
+  "url": "https://afrotools.com/agriculture/crop-yield/",
+  "description": "Free crop yield calculators for all 54 African countries.",
+  "author": { "@type": "Organization", "name": "AfroTools", "url": "https://afrotools.com" }
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+
+<style>
+:root {
+  --calc-accent: #008751;
+  --calc-accent-dark: #006B3F;
+  --calc-accent-light: #E6F5ED;
+  --color-bg: #F8F9FA;
+  --color-bg-card: #FFFFFF;
+  --color-text: #1A1A2E;
+  --color-text-muted: #6B7280;
+  --radius-md: 18px;
+}
+*, *::before, *::after { box-sizing: border-box; }
+body { font-family: 'DM Sans', sans-serif; background: var(--color-bg); color: var(--color-text); margin: 0; }
+
+.hub-hero {
+  background: var(--color-bg-dark, #0A1628);
+  color: #fff;
+  padding: 3rem 1rem 2.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hub-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 30% 50%, rgba(0,135,81,0.12) 0%, transparent 60%);
+  pointer-events: none;
+}
+.hub-hero-inner { max-width: 720px; margin: 0 auto; }
+.hub-hero .breadcrumb { font-size: 0.85rem; opacity: 0.7; margin-bottom: 0.75rem; }
+.hub-hero .breadcrumb a { color: #fff; text-decoration: none; }
+.hub-hero .breadcrumb a:hover { text-decoration: underline; }
+.hub-hero h1 {
+  font-size: clamp(1.8rem, 4.5vw, 2.6rem);
+  font-weight: 800;
+  text-transform: uppercase;
+  margin: 0 0 0.75rem;
+  letter-spacing: -0.02em;
+}
+.hub-hero p { font-size: 1.05rem; opacity: 0.85; line-height: 1.6; max-width: 600px; margin: 0 auto; }
+.hub-hero .badge-row { display: flex; justify-content: center; gap: 0.75rem; margin-top: 1rem; flex-wrap: wrap; }
+.hub-badge {
+  background: rgba(255,255,255,0.15);
+  border-radius: 980px;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.hub-main { max-width: 1100px; margin: -1.5rem auto 3rem; padding: 0 1rem; }
+
+.region-section { margin-bottom: 2rem; }
+.region-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 2px solid var(--calc-accent-light);
+}
+
+.country-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.75rem;
+}
+.country-card {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--color-bg-card);
+  border: 1.5px solid #E5E7EB;
+  border-radius: 14px;
+  padding: 0.85rem 1rem;
+  text-decoration: none;
+  color: var(--color-text);
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+.country-card:hover {
+  border-color: var(--calc-accent);
+  box-shadow: 0 4px 12px rgba(0,135,81,0.12);
+  transform: translateY(-2px);
+}
+.country-card .flag { font-size: 1.5rem; flex-shrink: 0; }
+.country-card .name { flex: 1; }
+.country-card .arrow { color: var(--color-text-muted); font-size: 1.1rem; }
+
+/* SEO content */
+.seo-content {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+.seo-content h2 {
+  font-size: 1.2rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin: 2rem 0 0.75rem;
+  color: var(--color-text);
+}
+.seo-content p {
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: var(--color-text-muted);
+}
+.faq details {
+  border-bottom: 1px solid #E5E7EB;
+  padding: 0.85rem 0;
+}
+.faq summary {
+  font-weight: 600;
+  font-size: 0.92rem;
+  cursor: pointer;
+  list-style: none;
+}
+.faq summary::before { content: '+ '; color: var(--calc-accent); font-weight: 800; }
+.faq details[open] summary::before { content: '- '; }
+.faq p { font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.6; margin: 0.5rem 0 0; }
+</style>
+<link rel="alternate" hreflang="en" href="https://afrotools.com/agriculture/crop-yield/" />
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/agriculture/crop-yield/" />
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:title" content="Crop Yield Estimators for Africa &mdash; AfroTools">
+<meta name="twitter:description" content="Free crop yield calculators for all 54 African countries. Estimate yields by region with country-specific agricultural data.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+</head>
+
+<body>
+<afro-navbar theme="dark" active="tools"></afro-navbar>
+
+<section class="hub-hero">
+  <div class="hub-hero-inner">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">AfroTools</a> &rsaquo; Agriculture &rsaquo; Crop Yield Estimators
+    </nav>
+    <h1>&#127807; Crop Yield Estimators for Africa</h1>
+    <p>Free yield estimation tools for all 54 African countries. Select a country below to estimate crop yields using region-specific agricultural data.</p>
+    <div class="badge-row">
+      <span class="hub-badge">&#127758; 54 Countries</span>
+      <span class="hub-badge">&#127793; 40+ Crops</span>
+      <span class="hub-badge">&#128202; FAOSTAT Data</span>
+      <span class="hub-badge">&#127760; 100% Free</span>
+    </div>
+  </div>
+</section>
+
+<div class="hub-main" id="hubMain"></div>
+
+<section class="seo-content">
+  <h2>About the Crop Yield Estimator</h2>
+  <p>AfroTools' Crop Yield Estimator helps African farmers, agricultural advisors, and researchers estimate expected crop yields based on their specific conditions. Each country tool uses region-specific data including agroecological zones, soil types, growing seasons, and local market prices.</p>
+
+  <h2>How It Works</h2>
+  <p>Select your crop, region, farm size, and farming practices (irrigation, fertilizer, seed type). The calculator applies research-backed multipliers to national average yield data, producing an estimate with low, mid, and high ranges. You also get revenue projections in local currency and actionable recommendations.</p>
+
+  <h2>Frequently Asked Questions</h2>
+  <div class="faq">
+    <details>
+      <summary>How accurate are the yield estimates?</summary>
+      <p>Estimates are based on national average yields from FAOSTAT adjusted by research-backed multipliers for region, soil, irrigation, fertilizer, and seed type. They provide a reasonable range but actual yields depend on many factors including weather, pests, and management practices.</p>
+    </details>
+    <details>
+      <summary>What crops are covered?</summary>
+      <p>Over 40 crop types are in our database, including cereals (maize, rice, sorghum, millet, wheat, teff), roots and tubers (cassava, yam, sweet potato), legumes (cowpea, groundnut, soybean), cash crops (cocoa, coffee, tea, cotton), fruits, and vegetables. Each country page shows only the crops grown in that country.</p>
+    </details>
+    <details>
+      <summary>Where does the data come from?</summary>
+      <p>Primary sources include FAOSTAT (FAO), HarvestStat Africa, World Bank, national statistics bureaus, and CGIAR research centers. Yield data uses 3-5 year averages to smooth out weather variability.</p>
+    </details>
+    <details>
+      <summary>Can I use this for farm planning?</summary>
+      <p>Yes. The tool is designed to help with pre-season planning, input budgeting, and revenue forecasting. However, consult your local agricultural extension office for specific advice on your farm conditions.</p>
+    </details>
+  </div>
+</section>
+
+<afro-footer></afro-footer>
+
+<script src="/data/agriculture/country-index.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var countries = window.AfroTools.countryIndex;
+  var regionLabels = window.AfroTools.regionLabels;
+  var hub = document.getElementById('hubMain');
+
+  var regionOrder = ['west_africa', 'east_africa', 'central_africa', 'southern_africa', 'north_africa', 'island_nations'];
+
+  regionOrder.forEach(function (regionKey) {
+    var info = regionLabels[regionKey];
+    var group = countries.filter(function (c) { return c.region === regionKey; });
+    if (!group.length) return;
+
+    var section = document.createElement('div');
+    section.className = 'region-section';
+
+    var label = document.createElement('div');
+    label.className = 'region-label';
+    label.textContent = info.name + ' (' + group.length + ')';
+    section.appendChild(label);
+
+    var grid = document.createElement('div');
+    grid.className = 'country-grid';
+
+    group.forEach(function (c) {
+      var a = document.createElement('a');
+      a.className = 'country-card';
+      a.href = '/agriculture/crop-yield/' + c.slug;
+      a.innerHTML = '<span class="flag">' + c.flag + '</span><span class="name">' + c.name + '</span><span class="arrow">&rsaquo;</span>';
+      grid.appendChild(a);
+    });
+
+    section.appendChild(grid);
+    hub.appendChild(section);
+  });
+})();
+</script>
+</body>
+</html>

@@ -13,14 +13,17 @@
  */
 
 const { getData } = require('./_shared/data-store');
+const { getOrFetch, cacheHeaders } = require('./_lib/cache');
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'Content-Type, x-api-key',
   'Access-Control-Allow-Methods': 'GET, OPTIONS',
   'Content-Type': 'application/json',
-  'Cache-Control': 'public, max-age=1800, s-maxage=3600',
 };
+
+// Cache TTLs: CDN 6hr, browser 3hr, stale 9hr
+const CACHE_OPTS = { browserTTL: 10800, cdnTTL: 21600, staleTTL: 32400 };
 
 const rateLimitMap = new Map();
 const RATE_LIMIT = 100;
@@ -37,10 +40,13 @@ function checkRateLimit(ip) {
   return record.count <= RATE_LIMIT;
 }
 
+var _reqCacheHdrs = null;
+
 function jsonResponse(statusCode, body, extraHeaders = {}) {
+  var base = (statusCode === 200 && _reqCacheHdrs) ? _reqCacheHdrs : CORS_HEADERS;
   return {
     statusCode,
-    headers: { ...CORS_HEADERS, ...extraHeaders },
+    headers: { ...base, ...extraHeaders },
     body: JSON.stringify(body),
   };
 }
@@ -69,11 +75,12 @@ exports.handler = async function (event) {
 
   const params = event.queryStringParameters || {};
 
-  // --- Load latest rates data ---
-  const data = await getData('rates-latest');
+  // --- Load latest rates data (with in-memory + Blobs cache) ---
+  const { data, fromCache } = await getOrFetch('rates-latest', 21600000); // 6hr memory TTL
   if (!data || !data.countries) {
     return jsonResponse(503, { error: 'Rates data unavailable. Please try again later.' });
   }
+  _reqCacheHdrs = cacheHeaders(CACHE_OPTS, fromCache, CORS_HEADERS);
 
   let countries = data.countries;
 

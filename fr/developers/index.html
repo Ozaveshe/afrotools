@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.bd27dfaf.min.js" lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AfroTools API — Developer Portal | AfroTools</title>
+  <meta name="description" content="Build payroll, HR, and fintech products with accurate PAYE, VAT, and compliance data for 54 African countries. Free API access available.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+  <link rel="canonical" href="https://afrotools.com/fr/developers/">
+  <link rel="icon" href="/assets/img/logo-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap"></noscript>
+  <link rel="stylesheet" href="/assets/css/tokens.min.css">
+  <link rel="stylesheet" href="/assets/css/global.min.css">
+
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-D859CGF391');
+  </script>
+
+  <style>
+    :root {
+      --dev-dark: var(--color-bg-dark);
+      --dev-green: #3B82F6;
+      --dev-green-dim: #2563EB;
+      --dev-card: #162117;
+      --dev-border: #1e3a24;
+      --dev-text: #d1d5db;
+      --dev-heading: #f9fafb;
+      --dev-code-bg: #0d1117;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'DM Sans', sans-serif; color: var(--dev-text); background: #fff; }
+
+    /* Hero */
+    .dev-hero {
+      background: var(--dev-dark);
+      padding: 5rem 1.5rem 4rem;
+      text-align: center;
+    }
+    .dev-hero h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--dev-heading);
+      margin-bottom: 1rem;
+    }
+    .dev-hero h1 span { color: var(--dev-green); }
+    .dev-hero p {
+      font-size: 1.2rem;
+      color: var(--dev-text);
+      max-width: 640px;
+      margin: 0 auto 2rem;
+      line-height: 1.7;
+    }
+    .dev-hero .badge {
+      display: inline-block;
+      background: rgba(59,130,246,.15);
+      color: var(--dev-green);
+      font-size: .85rem;
+      font-weight: 600;
+      padding: .35rem 1rem;
+      border-radius: 20px;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Sections */
+    .dev-section {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 4rem 1.5rem;
+    }
+    .dev-section h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #111;
+      margin-bottom: .5rem;
+    }
+    .dev-section .subtitle {
+      color: #6b7280;
+      font-size: 1.05rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .dark-section {
+      background: var(--dev-dark);
+      color: var(--dev-text);
+    }
+    .dark-section h2 { color: var(--dev-heading); }
+    .dark-section .subtitle { color: var(--dev-text); }
+
+    /* Getting Started Steps */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2rem;
+    }
+    .step {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 2rem;
+    }
+    .step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      background: var(--dev-green);
+      color: #fff;
+      font-weight: 700;
+      border-radius: 50%;
+      margin-bottom: 1rem;
+      font-size: .95rem;
+    }
+    .step h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #111;
+      margin-bottom: .5rem;
+    }
+    .step p { color: #6b7280; line-height: 1.6; font-size: .95rem; }
+
+    /* Code Tabs */
+    .code-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 2px solid var(--dev-border);
+      margin-bottom: 0;
+    }
+    .code-tab {
+      padding: .75rem 1.5rem;
+      background: transparent;
+      border: none;
+      color: var(--dev-text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: .95rem;
+      font-weight: 500;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      transition: color .2s, border-color .2s;
+    }
+    .code-tab:hover { color: var(--dev-green); }
+    .code-tab.active {
+      color: var(--dev-green);
+      border-bottom-color: var(--dev-green);
+    }
+
+    .code-block {
+      background: var(--dev-code-bg);
+      border-radius: 0 0 12px 12px;
+      padding: 1.5rem;
+      overflow-x: auto;
+      border: 1px solid var(--dev-border);
+      border-top: none;
+    }
+    .code-block pre {
+      margin: 0;
+      font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+      font-size: .875rem;
+      line-height: 1.6;
+      color: #e6edf3;
+      white-space: pre;
+    }
+    .code-block .kw { color: #ff7b72; }
+    .code-block .str { color: #a5d6ff; }
+    .code-block .fn { color: #d2a8ff; }
+    .code-block .cm { color: #8b949e; }
+    .code-block .num { color: #79c0ff; }
+    .code-panel { display: none; }
+    .code-panel.active { display: block; }
+
+    /* Pricing */
+    .tier-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 1.5rem;
+    }
+    .tier-card {
+      background: var(--dev-card);
+      border: 1px solid var(--dev-border);
+      border-radius: 12px;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+    }
+    .tier-card.featured {
+      border-color: var(--dev-green);
+      position: relative;
+    }
+    .tier-card.featured::before {
+      content: 'Popular';
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--dev-green);
+      color: #fff;
+      font-size: .75rem;
+      font-weight: 700;
+      padding: .25rem .75rem;
+      border-radius: 10px;
+    }
+    .tier-card h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--dev-heading);
+      margin-bottom: .5rem;
+    }
+    .tier-price {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--dev-green);
+      margin-bottom: 1.5rem;
+    }
+    .tier-price span { font-size: .9rem; font-weight: 400; color: var(--dev-text); }
+    .tier-features {
+      list-style: none;
+      flex: 1;
+      margin-bottom: 1.5rem;
+    }
+    .tier-features li {
+      padding: .4rem 0;
+      font-size: .95rem;
+      color: var(--dev-text);
+    }
+    .tier-features li::before {
+      content: '\2713';
+      color: var(--dev-green);
+      font-weight: 700;
+      margin-right: .5rem;
+    }
+    .tier-btn {
+      display: inline-block;
+      text-align: center;
+      padding: .75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: .95rem;
+      text-decoration: none;
+      transition: background .2s;
+    }
+    .tier-btn-primary {
+      background: var(--dev-green);
+      color: #fff;
+    }
+    .tier-btn-primary:hover { background: var(--dev-green-dim); }
+    .tier-btn-outline {
+      background: transparent;
+      color: var(--dev-green);
+      border: 1px solid var(--dev-green);
+    }
+    .tier-btn-outline:hover { background: rgba(59,130,246,.1); }
+
+    /* Endpoint Reference */
+    .endpoint-box {
+      background: var(--dev-code-bg);
+      border: 1px solid var(--dev-border);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    .endpoint-method {
+      display: inline-block;
+      background: var(--dev-green);
+      color: #fff;
+      font-weight: 700;
+      font-size: .8rem;
+      padding: .25rem .6rem;
+      border-radius: 4px;
+      margin-right: .5rem;
+    }
+    .endpoint-path {
+      font-family: 'SFMono-Regular', Consolas, monospace;
+      color: #e6edf3;
+      font-size: 1rem;
+    }
+    .endpoint-box h4 {
+      color: var(--dev-heading);
+      margin: 1.5rem 0 .75rem;
+      font-size: 1rem;
+    }
+    .endpoint-box pre {
+      background: #161b22;
+      padding: 1rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-family: 'SFMono-Regular', Consolas, monospace;
+      font-size: .85rem;
+      line-height: 1.6;
+      color: #e6edf3;
+    }
+
+    /* CTA */
+    .dev-cta {
+      background: var(--dev-green);
+      text-align: center;
+      padding: 4rem 1.5rem;
+    }
+    .dev-cta h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: .75rem;
+    }
+    .dev-cta p {
+      color: rgba(255,255,255,.85);
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+    }
+    .dev-cta a {
+      display: inline-block;
+      background: #fff;
+      color: var(--dev-green-dim);
+      font-weight: 700;
+      padding: .85rem 2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 1.05rem;
+      transition: transform .15s;
+    }
+    .dev-cta a:hover { transform: translateY(-2px); }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .dev-hero h1 { font-size: 2rem; }
+      .dev-hero p { font-size: 1rem; }
+      .dev-section h2 { font-size: 1.5rem; }
+      .tier-price { font-size: 1.8rem; }
+      .code-tab { padding: .6rem 1rem; font-size: .85rem; }
+    }
+  </style>
+<meta property="og:locale" content="fr_FR">
+<meta name="content-language" content="fr">
+<script src="/assets/js/i18n-detect.js" defer></script>
+<link rel="alternate" hreflang="en" href="https://afrotools.com/developers/" />
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/developers/" />
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/developers/" />
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AfroTools API — Developer Portal | AfroTools">
+<meta name="twitter:description" content="Build payroll, HR, and fintech products with accurate PAYE, VAT, and compliance data for 54 African countries. Free API access available.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+</head>
+<body>
+
+<!-- Navbar -->
+<div id="navbar"></div>
+
+<!-- Hero -->
+<section class="dev-hero">
+  <div class="badge">Beta - Now Available</div>
+  <h1>Afro<span>Tools</span> API</h1>
+  <p>Tax calculation infrastructure for 54 African countries. Build payroll, HR, and fintech products with accurate PAYE, VAT, and compliance data.</p>
+</section>
+
+<!-- Getting Started -->
+<section class="dev-section">
+  <h2>Getting Started</h2>
+  <p class="subtitle">Go from zero to production in minutes.</p>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <h3>Get Your API Key</h3>
+      <p>Sign up for a free account and generate an API key from your dashboard. No credit card required.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <h3>Make Your First Call</h3>
+      <p>Send a POST request to our calculate endpoint with your tool ID and inputs. Get structured JSON results instantly.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <h3>Go to Production</h3>
+      <p>Upgrade to Pro or Enterprise when you need higher limits, SLA guarantees, and dedicated support.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Code Examples -->
+<section class="dark-section">
+  <div class="dev-section" style="padding-top:4rem;padding-bottom:4rem;">
+    <h2>Code Examples</h2>
+    <p class="subtitle">Calculate Nigerian PAYE tax in one API call.</p>
+    <div>
+      <div class="code-tabs">
+        <button class="code-tab active" data-tab="curl" onclick="switchTab('curl')">cURL</button>
+        <button class="code-tab" data-tab="javascript" onclick="switchTab('javascript')">JavaScript</button>
+        <button class="code-tab" data-tab="python" onclick="switchTab('python')">Python</button>
+      </div>
+      <div class="code-block">
+        <div class="code-panel active" id="panel-curl"><pre><span class="fn">curl</span> <span class="kw">-X</span> POST https://afrotools.com/api/v1/calculate \
+  <span class="kw">-H</span> <span class="str">"Content-Type: application/json"</span> \
+  <span class="kw">-H</span> <span class="str">"x-api-key: YOUR_API_KEY"</span> \
+  <span class="kw">-d</span> <span class="str">'{"tool":"ng-paye","inputs":{"grossAnnual":5000000,"pension":true}}'</span></pre></div>
+        <div class="code-panel" id="panel-javascript"><pre><span class="kw">const</span> res = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">'https://afrotools.com/api/v1/calculate'</span>, {
+  <span class="fn">method</span>: <span class="str">'POST'</span>,
+  <span class="fn">headers</span>: {
+    <span class="str">'Content-Type'</span>: <span class="str">'application/json'</span>,
+    <span class="str">'x-api-key'</span>: <span class="str">'YOUR_API_KEY'</span>
+  },
+  <span class="fn">body</span>: JSON.<span class="fn">stringify</span>({
+    <span class="fn">tool</span>: <span class="str">'ng-paye'</span>,
+    <span class="fn">inputs</span>: { <span class="fn">grossAnnual</span>: <span class="num">5000000</span>, <span class="fn">pension</span>: <span class="num">true</span> }
+  })
+});
+<span class="kw">const</span> data = <span class="kw">await</span> res.<span class="fn">json</span>();
+console.<span class="fn">log</span>(data.result);</pre></div>
+        <div class="code-panel" id="panel-python"><pre><span class="kw">import</span> requests
+
+resp = requests.<span class="fn">post</span>(<span class="str">'https://afrotools.com/api/v1/calculate'</span>,
+    <span class="fn">headers</span>={<span class="str">'x-api-key'</span>: <span class="str">'YOUR_API_KEY'</span>},
+    <span class="fn">json</span>={<span class="str">'tool'</span>: <span class="str">'ng-paye'</span>, <span class="str">'inputs'</span>: {<span class="str">'grossAnnual'</span>: <span class="num">5000000</span>, <span class="str">'pension'</span>: <span class="num">True</span>}}
+)
+<span class="fn">print</span>(resp.<span class="fn">json</span>()[<span class="str">'result'</span>])</pre></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- API Tiers -->
+<section class="dark-section" style="background:#111;">
+  <div class="dev-section" style="padding-top:4rem;padding-bottom:4rem;">
+    <h2 style="text-align:center;">API Tiers</h2>
+    <p class="subtitle" style="text-align:center;">Simple, transparent pricing. Start free, scale as you grow.</p>
+    <div class="tier-grid">
+      <!-- Free -->
+      <div class="tier-card">
+        <h3>Free</h3>
+        <div class="tier-price">$0<span> /month</span></div>
+        <ul class="tier-features">
+          <li>100 API calls / month</li>
+          <li>PAYE calculators</li>
+          <li>Community support</li>
+        </ul>
+        <a href="/fr/dashboard/" class="tier-btn tier-btn-outline">Get Started</a>
+      </div>
+      <!-- Pro -->
+      <div class="tier-card featured">
+        <h3>Pro</h3>
+        <div class="tier-price">$29<span> /month</span></div>
+        <ul class="tier-features">
+          <li>10,000 API calls / month</li>
+          <li>All tools</li>
+          <li>Email support</li>
+        </ul>
+        <a href="/fr/dashboard/" class="tier-btn tier-btn-primary">Get Started</a>
+      </div>
+      <!-- Enterprise -->
+      <div class="tier-card">
+        <h3>Enterprise</h3>
+        <div class="tier-price">Custom</div>
+        <ul class="tier-features">
+          <li>Unlimited API calls</li>
+          <li>All tools + SLA</li>
+          <li>Dedicated support</li>
+        </ul>
+        <a href="/fr/contact/" class="tier-btn tier-btn-outline">Contact Us</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Endpoints Reference -->
+<section class="dark-section">
+  <div class="dev-section" style="padding-top:4rem;padding-bottom:4rem;">
+    <h2>Endpoints Reference</h2>
+    <p class="subtitle">All calculations go through a single, unified endpoint.</p>
+    <div class="endpoint-box">
+      <div>
+        <span class="endpoint-method">POST</span>
+        <span class="endpoint-path">/api/v1/calculate</span>
+      </div>
+      <h4>Request Body</h4>
+      <pre>{
+  "tool": "ng-paye",
+  "inputs": {
+    "grossAnnual": 5000000,
+    "pension": true
+  }
+}</pre>
+      <h4>Response</h4>
+      <pre>{
+  "result": {
+    "tax": 374550,
+    "netAnnual": 4225450,
+    "effectiveRate": "7.49%"
+  },
+  "meta": {
+    "tool": "ng-paye",
+    "version": "0.1.0-beta",
+    "timestamp": "2026-03-13T12:00:00.000Z",
+    "usage": {
+      "current": 42,
+      "limit": 100,
+      "tier": "free"
+    }
+  }
+}</pre>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="dev-cta">
+  <h2>Get Your API Key</h2>
+  <p>Start building with AfroTools API today. Free tier available, no credit card required.</p>
+  <a href="/fr/dashboard/">Sign Up for Free</a>
+</section>
+
+<!-- Footer -->
+<div id="footer"></div>
+
+<script src="/assets/js/components/navbar.min.js"></script>
+<script src="/assets/js/components/footer.min.js"></script>
+<script>
+function switchTab(tab) {
+  document.querySelectorAll('.code-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.code-panel').forEach(p => p.classList.remove('active'));
+  document.querySelector(`.code-tab[data-tab="${tab}"]`).classList.add('active');
+  document.getElementById('panel-' + tab).classList.add('active');
+}
+</script>
+</body>
+</html>

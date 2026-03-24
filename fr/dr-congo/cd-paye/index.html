@@ -1,0 +1,977 @@
+﻿<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.bd27dfaf.min.js" lang="fr">
+<head>
+<meta charset="UTF-8">
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-D859CGF391');
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DR Congo PAYE Calculator 2026 — DGI Income Tax, INSS</title>
+<meta name="description" content="DR Congo PAYE calculator 2026. DGI progressive tax 0%–40%, INSS social security 5% employee + 5% employer (capped). Monthly calculations per DGI bands. Free PDF download.">
+<link rel="canonical" href="https://afrotools.com/fr/dr-congo/cd-paye/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title"       content="DR Congo PAYE Calculator 2026 | AfroTools">
+<meta property="og:description" content="Accurate DGI PAYE: 0%–40% progressive tax, INSS 5% employee + 5% employer. Monthly bands per DGI. Free PDF.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:type"        content="website">
+<meta property="og:url" content="https://afrotools.com/fr/dr-congo/cd-paye/">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name"   content="AfroTools">
+<meta name="twitter:card"       content="summary_large_image">
+<meta name="twitter:title"      content="DR Congo PAYE Calculator 2026 | AfroTools">
+<meta name="twitter:description" content="DGI progressive tax 0%–40%, INSS 5% employee + 5% employer. 2026 rates.">
+<meta name="robots"             content="index, follow">
+<meta name="author"             content="AfroTools">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com"},{"@type":"ListItem","position":2,"name":"DR Congo","item":"https://afrotools.com/dr-congo"},{"@type":"ListItem","position":3,"name":"DR Congo PAYE Calculator","item":"https://afrotools.com/dr-congo/cd-paye"}]}</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","name":"DR Congo PAYE Calculator 2026","url":"https://afrotools.com/dr-congo/cd-paye","description":"Calculate DR Congo take-home pay using 2026 DGI PAYE rates and INSS contributions.","inLanguage":"fr","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com"}}
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What are the DR Congo DGI PAYE tax bands for 2026?","acceptedAnswer":{"@type":"Answer","text":"Ten annual bands: CDF 0–524,160 at 0%; CDF 524,161–1,428,000 at 3%; CDF 1,428,001–2,700,000 at 5%; CDF 2,700,001–4,620,000 at 10%; CDF 4,620,001–7,260,000 at 15%; CDF 7,260,001–10,260,000 at 20%; CDF 10,260,001–13,908,000 at 25%; CDF 13,908,001–16,824,000 at 30%; CDF 16,824,001–21,168,000 at 35%; above CDF 21,168,000 at 40%."}},{"@type":"Question","name":"What is INSS in DR Congo?","acceptedAnswer":{"@type":"Answer","text":"The Institut National de Sécurité Sociale (INSS) provides social security coverage. Total contribution is 10% of gross salary — employee pays 5% and employer pays 5%. Employee INSS contribution is capped on the base salary component and is fully deductible from taxable income before PAYE is calculated."}},{"@type":"Question","name":"How are tax bands applied in DR Congo?","acceptedAnswer":{"@type":"Answer","text":"DGI tax bands are applied on an annual basis on taxable income (after INSS deduction). The progressive rates range from 0% on the first CDF 524,160 to 40% on income above CDF 21,168,000."}}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/assets/css/calculator.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --calc-accent: #007FFF;
+    --calc-accent-rgb: 0,127,255;
+    --calc-accent-subtle: #007FFF12;
+    --calc-gold: #f5d76e;
+    --calc-gold-rgb: 245,215,110;
+    --cd-blue:   #007FFF;   /* DR Congo flag blue */
+    --cd-gold:   #FFB81C;   /* DR Congo flag gold */
+    --cd-red:    #CE1126;   /* DR Congo flag red */
+    --cd-black:  #111827;
+    --cd-dark:   #0a1929;
+  }
+  .tool-hero::after { content: '🇨🇩'; position: absolute; right: 5%; top: 50%; transform: translateY(-50%); font-size: 8rem; opacity: .06; pointer-events: none; }
+  .tool-hero { background: #0a1929; }
+
+  .tool-info-card{background:#fff;border:1px solid #DBEAFE;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+  .tool-info-header{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid #EFF6FF;background:#F5F9FF}
+  .tool-info-img{width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0}
+  .tool-info-meta{flex:1;min-width:0}
+  .tool-info-name{font-size:.82rem;font-weight:700;color:#0f172a;line-height:1.2;margin-bottom:2px}
+  .tool-info-cat{font-size:.62rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B8CAE}
+  .tool-info-body{padding:14px 18px}
+  .tool-info-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
+  .tool-stat{text-align:center}
+  .tool-stat-val{font-size:1rem;font-weight:800;color:#007AFF;line-height:1}
+  .tool-stat-lbl{font-size:.6rem;font-weight:500;color:#6B8CAE;text-transform:uppercase;letter-spacing:.04em;margin-top:3px}
+  .tool-info-features{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+  .tool-feat{font-size:.62rem;font-weight:600;padding:3px 8px;background:#EFF6FF;border:1px solid #DBEAFE;border-radius:3px;color:#0f172a}
+  .tool-info-footer{display:flex;justify-content:space-between;align-items:center;padding:10px 18px;border-top:1px solid #EFF6FF;background:#FAFBFF}
+  .tool-info-updated{font-size:.62rem;color:#6B8CAE}
+  .tool-info-actions{display:flex;gap:6px}
+  .tool-info-action{font-size:.62rem;font-weight:600;color:#007AFF;text-decoration:none;padding:3px 8px;border:1px solid #DBEAFE;border-radius:4px;background:#fff;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
+  .tool-info-action:hover{background:#EFF6FF;border-color:#007AFF}
+  @media(max-width:900px){.tool-info-card{order:1}}
+  @media(max-width:480px){.tool-info-stats{grid-template-columns:1fr 1fr 1fr}.tool-info-header{padding:12px 14px}.tool-info-body{padding:10px 14px}}
+</style>
+<script src="/assets/js/lib/chart-config.js"></script>
+
+  <script src="/assets/js/afro-history.js" defer></script>
+  <script src="/assets/js/components/save-result-button.js" defer></script>
+  <script src="/assets/js/components/share-card-generator.js" defer></script>
+  <script src="/assets/js/components/share-button.js" defer></script>
+<meta name="content-language" content="fr">
+<script src="/assets/js/i18n-detect.js" defer></script>
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/dr-congo/cd-paye/" />
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/fr/dr-congo/cd-paye/" />
+<meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+</head>
+<body class="tool-page">
+<afro-navbar active="tools"></afro-navbar>
+
+<!-- HERO -->
+<section class="tool-hero">
+  <div class="tool-hero-inner">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/fr/">Home</a> / <a href="/fr/dr-congo/">🇨🇩 DR Congo</a> / <span>PAYE Calculator</span>
+    </nav>
+    <h1>DR Congo PAYE<br><em>Calculator 2026</em></h1>
+    <p class="hero-sub">DGI progressive tax (0%–40%), INSS social security (5% employee + 5% employer, capped). Annual computation per DGI bands.</p>
+    <div class="hero-badges">
+      <span class="badge b-gold">✦ Includes AI Advisor</span>
+      <span class="badge b-blue">DGI 2026 Verified</span>
+      <span class="badge b-red">INSS · Capped</span>
+      <span class="badge b-grey">CDF · Congolese Franc</span>
+    </div>
+    <p class="hero-meta">Last verified: 2026 · Source: DGI (dgimpots.cd) · Tax Code (Code des Impôts) · INSS Regulations</p>
+    <p style="font-size:0.8rem;color:#64748b;margin-top:8px;">Also see: <a href="/fr/dr-congo/cd-vat" style="color:#007AFF;font-weight:600;">DR Congo VAT Calculator</a></p>
+  </div>
+</section>
+
+<!-- UPDATE BAR -->
+<div class="amendment-bar">
+  <div class="amendment-bar-inner">
+    <p><strong>2026 Key Facts:</strong> PAYE bands: CDF 0–524,160 at 0%; 3%–5% bands CDF 524,161–2,700,000; 10%–15% bands CDF 2,700,001–7,260,000; 20%–25% bands CDF 7,260,001–13,908,000; 30%–35% bands CDF 13,908,001–21,168,000; 40% above CDF 21,168,000. INSS total 10% (employee 5% + employer 5%), capped on base salary component. Employee INSS contribution is fully deductible from taxable income.</p>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="tool-main">
+  <div class="tool-main-inner">
+
+    <!-- LEFT COLUMN -->
+    <div>
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Enter Your Details</span>
+          <span class="card-sub">Congolese Franc · CDF</span>
+        </div>
+        <div class="card-body">
+
+          <!-- SALARY SLIDER -->
+          <div class="slider-wrap">
+            <div class="slider-row">
+              <span class="slider-label">Annual Gross Salary</span>
+              <span class="slider-val" id="sliderVal">CDF 18,000,000</span>
+            </div>
+            <input type="range" id="salarySlider" min="1000000" max="300000000" step="1000000" value="18000000" oninput="onSlider(this)">
+            <div class="slider-limits"><span>CDF 1,000,000</span><span>CDF 300,000,000</span></div>
+          </div>
+
+          <!-- INPUT -->
+          <div class="field">
+            <div class="f-label"><span class="f-label-text">Or type exact annual amount</span><span class="f-hint">Before any deductions</span></div>
+            <div class="f-wrap">
+              <span class="f-prefix">CDF</span>
+              <input type="number" class="f-input" id="grossSalary" placeholder="18,000,000" min="0" step="1000000" value="18000000" oninput="onInput(this)">
+            </div>
+          </div>
+          <!-- Quick Presets -->
+          <div class="presets">
+            <button class="preset-btn" onclick="setPreset(5000000, this)">CDF 5M</button>
+            <button class="preset-btn" onclick="setPreset(18000000, this)">CDF 18M</button>
+            <button class="preset-btn" onclick="setPreset(36000000, this)">CDF 36M</button>
+            <button class="preset-btn" onclick="setPreset(72000000, this)">CDF 72M</button>
+            <button class="preset-btn" onclick="setPreset(150000000, this)">CDF 150M</button>
+          </div>
+
+
+          <!-- CONTRIBUTION TOGGLES -->
+          <div class="field">
+            <div class="f-label"><span class="f-label-text">Active Deductions</span><span class="f-hint">Toggle to include / exclude</span></div>
+            <div class="toggles">
+              <div class="tog on" data-tog="inss" onclick="togItem(this)">
+                <div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div><div class="tog-label">INSS (employee)</div><div class="tog-rate">5% — capped, tax-deductible</div></div>
+              </div>
+            </div>
+            <p class="f-note">INSS employee contribution (5%, capped) is fully deductible from taxable income before PAYE is calculated. Employer INSS (5%, capped) is an additional cost shown in employer chart.</p>
+          </div>
+
+          <button class="calc-btn" onclick="calculate()">Calculate My Take-Home Pay →</button>
+        </div>
+      </div>
+
+      <!-- RESULTS -->
+      <div class="card results-card" id="resultsCard">
+        <div class="res-hero">
+          <div class="res-hero-label">Annual Take-Home Pay</div>
+          <div class="res-hero-amount" id="resAmount">CDF 0</div>
+          <div class="res-hero-period">After PAYE, INSS &amp; all deductions</div>
+          <div class="res-hero-gross" id="resGross"></div>
+        </div>
+        <div class="res-body">
+          <div id="resContent"></div>
+          <div class="rate-bar-wrap">
+            <div class="rate-bar-hdr">
+              <span class="rate-bar-lbl">Effective Tax Rate</span>
+              <span class="rate-bar-pct" id="effRateDisplay">0%</span>
+            </div>
+            <div class="rate-track"><div class="rate-fill" id="rateFill"></div></div>
+          </div>
+          <div class="employer-strip" id="employerStrip"></div>
+        </div>
+
+        <div class="chart-section">
+          <div class="chart-tabs">
+            <button class="chart-tab on" onclick="setChart('donut',this)">Breakdown</button>
+            <button class="chart-tab" onclick="setChart('bar',this)">Tax Bands</button>
+            <button class="chart-tab" onclick="setChart('employer',this)">Employer Cost</button>
+          </div>
+          <div class="chart-canvas-wrap"><canvas id="mainChart"></canvas></div>
+        </div>
+
+        <div class="action-row">
+          <button class="act-btn act-pdf" onclick="openPdfModal()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Download PDF
+          </button>
+          <button class="act-btn act-share" id="cdShareBtn" onclick="shareResult()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            Share Result
+          </button>
+        </div>
+
+          <!-- Save & Share -->
+          <div class="save-share-row">
+            <save-result-button
+              tool-slug="cd-paye"
+              tool-name="DR Congo PAYE Calculator"
+              country-code="CD"
+              currency="CDF">
+            </save-result-button>
+            <share-result-button
+              tool-name="DR Congo PAYE Calculator"
+              tool-slug="cd-paye"
+              country-flag="🇨🇩">
+            </share-result-button>
+          </div>
+          <salary-benchmark country-code="CD" currency="CDF"></salary-benchmark>
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+
+      <!-- AI ADVISOR -->
+      <div class="ai-card">
+        <div class="ai-head">
+          <div class="ai-dot"></div>
+          <span class="ai-head-title">AI Tax Advisor</span>
+          <span class="ai-head-by">Powered by Claude</span>
+        </div>
+        <div class="ai-body">
+          <p class="ai-status" id="aiStatus">Calculate your salary first — I'll analyse your DGI PAYE position, explain INSS deductibility, and give specific optimisation tips for DR Congo.</p>
+          <div class="ai-response" id="aiResp"></div>
+          <button class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Calculate first to unlock →</button>
+          <div class="ai-chat" id="aiChat">
+            <div class="chat-msgs" id="chatMsgs"></div>
+            <div class="chat-row">
+              <input class="chat-in" id="chatIn" placeholder="Ask a follow-up…" onkeydown="if(event.key==='Enter')sendChat()">
+              <button class="chat-send" onclick="sendChat()">→</button>
+            </div>
+          </div>
+
+
+              </div>
+      </div>
+
+<!-- DGI TAX BANDS -->
+      <div class="card bands-card">
+        <div class="card-head" onclick="toggleBands(this)">
+          <span class="card-title">DGI 2026 Annual Bands</span>
+          <span class="tog-arrow">▾</span>
+        </div>
+        <div class="bands-body">
+          <div class="band-row"><span class="band-range">CDF 0 – 524,160</span><span class="band-zero">0% — exempt</span></div>
+          <div class="band-row"><span class="band-range">CDF 524,161 – 1,428,000</span><span class="band-rate">3% on excess above 524,160</span></div>
+          <div class="band-row"><span class="band-range">CDF 1,428,001 – 2,700,000</span><span class="band-rate">5% on excess above 1,428,000</span></div>
+          <div class="band-row"><span class="band-range">CDF 2,700,001 – 4,620,000</span><span class="band-rate">10% on excess above 2,700,000</span></div>
+          <div class="band-row"><span class="band-range">CDF 4,620,001 – 7,260,000</span><span class="band-rate">15% on excess above 4,620,000</span></div>
+          <div class="band-row"><span class="band-range">CDF 7,260,001 – 10,260,000</span><span class="band-rate">20% on excess above 7,260,000</span></div>
+          <div class="band-row"><span class="band-range">CDF 10,260,001 – 13,908,000</span><span class="band-rate">25% on excess above 10,260,000</span></div>
+          <div class="band-row"><span class="band-range">CDF 13,908,001 – 16,824,000</span><span class="band-rate">30% on excess above 13,908,000</span></div>
+          <div class="band-row"><span class="band-range">CDF 16,824,001 – 21,168,000</span><span class="band-rate">35% on excess above 16,824,000</span></div>
+          <div class="band-row"><span class="band-range">Above CDF 21,168,000</span><span class="band-rate">40% on excess above 21,168,000</span></div>
+          <p class="band-note">Calculated annually on taxable income (gross minus INSS). INSS employee contribution capped on base salary component.</p>
+        </div>
+      </div>
+
+      <!-- INSS -->
+      <div class="card bands-card">
+        <div class="card-head" onclick="toggleBands(this)">
+          <span class="card-title">INSS Rates 2026</span>
+          <span class="tog-arrow">▾</span>
+        </div>
+        <div class="bands-body">
+          <div class="band-row"><span class="band-range">Employee INSS</span><span class="band-rate">5% of base salary (capped)</span></div>
+          <div class="band-row"><span class="band-range">Employer INSS</span><span class="band-rate">5% of base salary (capped)</span></div>
+          <p class="band-note">INSS employee contribution (5%) is capped on the base salary component and is fully deductible from taxable income before PAYE. Employer contribution is a separate employer cost. Total INSS is 10% (employee 5% + employer 5%).</p>
+        </div>
+      </div>
+
+      <div class="disclaimer">
+        <strong>Disclaimer:</strong> For informational purposes only. Not professional tax or legal advice. Rates based on DGI regulations and Code des Impôts. Verify with DGI (dgimpots.cd) or a qualified Congolese tax advisor.
+      </div>
+
+      <div class="tool-info-card">
+        <div class="tool-info-header">
+          <img src="/assets/img/tools/cd-vat.webp" alt="DR Congo PAYE Calculator" class="tool-info-img" loading="lazy">
+          <div class="tool-info-meta">
+            <div class="tool-info-name">DR Congo PAYE Calculator</div>
+            <div class="tool-info-cat">Tax &amp; Finance</div>
+          </div>
+        </div>
+        <div class="tool-info-body">
+          <div class="tool-info-stats">
+            <div class="tool-stat"><div class="tool-stat-val">2.4K</div><div class="tool-stat-lbl">Calculations</div></div>
+            <div class="tool-stat"><div class="tool-stat-val">4.8</div><div class="tool-stat-lbl">Rating</div></div>
+            <div class="tool-stat"><div class="tool-stat-val">Free</div><div class="tool-stat-lbl">Forever</div></div>
+          </div>
+          <div class="tool-info-features">
+            <span class="tool-feat">Net Pay Calc</span>
+            <span class="tool-feat">Tax Bands</span>
+            <span class="tool-feat">PDF Export</span>
+            <span class="tool-feat">AI Advisor</span>
+            <span class="tool-feat">Deductions</span>
+          </div>
+        </div>
+        <div class="tool-info-footer">
+          <span class="tool-info-updated">Updated: Mar 2026</span>
+          <div class="tool-info-actions">
+            <button class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Share</button>
+            <a class="tool-info-action" href="/fr/tools/paye-calculator/">All Countries</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<section class="faq-sec">
+  <div class="faq-inner">
+    <span class="eyebrow">DR Congo Tax FAQ</span>
+    <h2 class="sec-title">Common PAYE Questions</h2>
+    <div class="faq-grid">
+      <div class="faq-item">
+        <div class="faq-q">What are the DR Congo DGI PAYE tax bands for 2026?</div>
+        <p class="faq-a">Ten annual bands: 0% on first CDF 524,160; 3%–5% on CDF 524,161–2,700,000; 10%–15% on CDF 2,700,001–7,260,000; 20%–25% on CDF 7,260,001–13,908,000; 30%–35% on CDF 13,908,001–21,168,000; 40% above CDF 21,168,000. Applied on an annual basis to taxable income (after INSS deduction).</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Is INSS contribution deductible from PAYE taxable income?</div>
+        <p class="faq-a">Yes — the employee's mandatory 5% INSS contribution (capped on base salary) is fully deductible from gross pay before calculating PAYE. This reduces your taxable income and therefore your PAYE tax. The employer's matching 5% contribution is a separate employer cost, not deducted from your pay.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What does INSS cover in DR Congo?</div>
+        <p class="faq-a">The Institut National de Sécurité Sociale (INSS) provides social security coverage for employees in the Democratic Republic of Congo, including pension, disability, and survivor benefits. Total contribution is 10% (employee 5% + employer 5%), with employee contribution capped on the base salary component.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Are there additional employer payroll taxes in DR Congo?</div>
+        <p class="faq-a">Beyond INSS employer contribution (5%), employers may also face additional taxes depending on sector and organisation type. Always consult with a Congolese tax professional for comprehensive employer cost calculations.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">How is the effective tax rate calculated?</div>
+        <p class="faq-a">Effective tax rate = (Total PAYE tax / Gross salary) × 100%. This shows the average percentage of gross salary paid in income tax. The marginal rate (on the next CDF earned) may be higher due to progressive tax bands.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What is the difference between marginal and effective tax rates?</div>
+        <p class="faq-a">Marginal rate is the tax rate on your next CDF of income (the highest band you're in). Effective rate is your total tax divided by total income. Because of progressive bands, your marginal rate is typically higher than your effective rate. Both matter for tax planning.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PDF MODAL -->
+<div class="modal-bg" id="pdfModal">
+  <div class="modal">
+    <div id="modalForm">
+      <h3>📄 Download Your PAYE Summary</h3>
+      <p>Enter your email to get a detailed PDF — we'll notify you when DR Congo tax rates change.</p>
+      <form name="pdf-leads" data-netlify="true" netlify-honeypot="bot-field" id="leadForm" onsubmit="submitPdf(event)">
+        <input type="hidden" name="form-name" value="pdf-leads">
+      <p style="display:none"><input name="bot-field"></p>
+        <input type="hidden" name="country"      value="DR Congo">
+        <input type="hidden" name="country_code" value="CD">
+        <input type="hidden" name="tool"         value="paye">
+        <input type="hidden" name="tool_id"      value="cd-paye">
+        <input type="hidden" name="currency"     value="CDF">
+        <input type="hidden" name="gross_salary" id="hiddenGross" value="">
+        <input class="modal-input" type="text"  name="name"  id="pdfName"  placeholder="Your name (optional)" autocomplete="name">
+        <input class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Your email address" autocomplete="email" required>
+        <button class="modal-submit" type="submit">Get My PDF →</button>
+      </form>
+      <button class="modal-cancel" onclick="closePdfModal()">No thanks</button>
+    </div>
+    <div class="modal-success" id="modalSuccess">
+      <button onclick="closePdfModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#9ca3af;line-height:1;" aria-label="Close">✕</button>
+      <div class="big-check">✅</div>
+      <h4>PDF opening now</h4>
+      <p>Click <strong>Save as PDF</strong> in the print dialog.</p>
+      <button class="modal-submit" onclick="closePdfModal()" style="margin-top:14px">Done →</button>
+    </div>
+  </div>
+</div>
+
+<section class="more-tools-sec">
+  <div class="more-tools-inner">
+    <h2 class="more-tools-title">More African Tax Tools</h2>
+    <div class="more-tools-grid">
+      <a href="/fr/nigeria/ng-salary-tax" class="more-tool-link">Nigeria PAYE Calculator</a>
+      <a href="/fr/kenya/ke-paye" class="more-tool-link">Kenya PAYE Calculator</a>
+      <a href="/fr/ghana/gh-paye" class="more-tool-link">Ghana PAYE Calculator</a>
+      <a href="/fr/south-africa/za-paye" class="more-tool-link">South Africa PAYE Calculator</a>
+      <a href="/fr/egypt/eg-paye" class="more-tool-link">Egypt PAYE Calculator</a>
+      <a href="/fr/tools/vat-calculator/vat-calc" class="more-tool-link">Pan-African VAT Calculator</a>
+      <a href="/fr/tools/currency-converter/" class="more-tool-link">African Currency Converter</a>
+    </div>
+  </div>
+</section>
+
+<section style="max-width:900px;margin:32px auto;padding:0 20px 40px;">
+  <h2 style="font-size:1.1rem;font-weight:700;color:#0f172a;margin-bottom:16px;">Related African Tax Tools</h2>
+  <div style="display:flex;flex-wrap:wrap;gap:10px;">
+    <a href="/fr/dr-congo/cd-vat" style="padding:8px 16px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:8px;color:#007AFF;font-size:0.82rem;font-weight:600;text-decoration:none;">DR Congo VAT Calculator</a>
+    <a href="/fr/congo/cg-paye" style="padding:8px 16px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:8px;color:#007AFF;font-size:0.82rem;font-weight:600;text-decoration:none;">Congo PAYE</a>
+    <a href="/fr/rwanda/rw-paye" style="padding:8px 16px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:8px;color:#007AFF;font-size:0.82rem;font-weight:600;text-decoration:none;">Rwanda PAYE</a>
+    <a href="/fr/tools/paye-calculator/" style="padding:8px 16px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:8px;color:#007AFF;font-size:0.82rem;font-weight:600;text-decoration:none;">All PAYE Calculators</a>
+    <a href="/fr/tools/vat-calculator/" style="padding:8px 16px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:8px;color:#007AFF;font-size:0.82rem;font-weight:600;text-decoration:none;">VAT Calculator Africa</a>
+  </div>
+</section>
+<afro-footer></afro-footer>
+
+<script>
+// ══════════════════════════════════════════════════════════════════
+//  DR CONGO PAYE CALCULATOR 2026
+//  DGI Progressive Annual Tax · INSS (capped)
+//  Source: Code des Impôts · DGI regulations
+// ══════════════════════════════════════════════════════════════════
+
+var RESULT=null;
+let CHART        = null;
+let CHART_TYPE   = 'donut';
+let CHAT_HISTORY = [];
+
+const fmt = n => 'CDF\u00A0' + Math.round(Math.abs(n)).toLocaleString('en-CD');
+const pct = r => { const v = r * 100; return (v % 1 === 0 ? v.toFixed(0) : parseFloat(v.toFixed(2)).toString()) + '%'; };
+
+// ── SLIDER ────────────────────────────────────────────────────
+function onSlider(el) {
+  const v = parseInt(el.value);
+  document.getElementById('grossSalary').value = v;
+  document.getElementById('sliderVal').textContent = fmt(v);
+  updateSliderFill(el);
+}
+function onInput(el) {
+  const v = Math.min(Math.max(parseInt(el.value) || 0, 1000000), 300000000);
+  const s = document.getElementById('salarySlider');
+  s.value = v;
+  document.getElementById('sliderVal').textContent = fmt(parseInt(el.value) || 0);
+  updateSliderFill(s);
+}
+function updateSliderFill(el) {
+  var p = ((parseInt(el.value) - parseInt(el.min)) / (parseInt(el.max) - parseInt(el.min))) * 100;
+  var c = getComputedStyle(document.documentElement).getPropertyValue('--calc-accent');
+  c = c ? c.trim() : 'var(--color-primary)';
+  el.style.background = 'linear-gradient(to right, ' + c + ' 0%, ' + c + ' ' + p + '%, #e2e8f0 ' + p + '%, #e2e8f0 100%)';
+}
+updateSliderFill(document.getElementById('salarySlider'));
+
+// ── TOGGLES ───────────────────────────────────────────────────
+function togItem(el) { el.classList.toggle('on'); }
+function isOn(tog) { return !!document.querySelector(`[data-tog="${tog}"]`)?.classList.contains('on'); }
+
+// ══════════════════════════════════════════════════════════════
+//  DGI PAYE TAX ENGINE (ANNUAL)
+//  Bands on ANNUAL TAXABLE INCOME (gross minus INSS):
+//  0%    on first  CDF 524,160
+//  3%    on CDF 524,161–1,428,000
+//  5%    on CDF 1,428,001–2,700,000
+//  10%   on CDF 2,700,001–4,620,000
+//  15%   on CDF 4,620,001–7,260,000
+//  20%   on CDF 7,260,001–10,260,000
+//  25%   on CDF 10,260,001–13,908,000
+//  30%   on CDF 13,908,001–16,824,000
+//  35%   on CDF 16,824,001–21,168,000
+//  40%   above CDF 21,168,000
+// ══════════════════════════════════════════════════════════════
+
+function calcAnnualPAYE(annualTaxableIncome) {
+  const income = Math.max(0, annualTaxableIncome);
+  const bandBreakdown = [];
+
+  if (income <= 524160) {
+    bandBreakdown.push({ rate: 0, income, tax: 0 });
+    return { tax: 0, bandBreakdown };
+  }
+
+  let tax = 0;
+
+  // Band 1: 0% on first 524,160
+  bandBreakdown.push({ rate: 0, income: 524160, tax: 0 });
+
+  // Band 2: 3% on 524,161–1,428,000
+  if (income > 524160) {
+    const chunk = Math.min(income - 524160, 903840);
+    const t = chunk * 0.03;
+    tax += t;
+    bandBreakdown.push({ rate: 0.03, income: chunk, tax: t });
+  }
+
+  // Band 3: 5% on 1,428,001–2,700,000
+  if (income > 1428000) {
+    const chunk = Math.min(income - 1428000, 1272000);
+    const t = chunk * 0.05;
+    tax += t;
+    bandBreakdown.push({ rate: 0.05, income: chunk, tax: t });
+  }
+
+  // Band 4: 10% on 2,700,001–4,620,000
+  if (income > 2700000) {
+    const chunk = Math.min(income - 2700000, 1920000);
+    const t = chunk * 0.10;
+    tax += t;
+    bandBreakdown.push({ rate: 0.10, income: chunk, tax: t });
+  }
+
+  // Band 5: 15% on 4,620,001–7,260,000
+  if (income > 4620000) {
+    const chunk = Math.min(income - 4620000, 2640000);
+    const t = chunk * 0.15;
+    tax += t;
+    bandBreakdown.push({ rate: 0.15, income: chunk, tax: t });
+  }
+
+  // Band 6: 20% on 7,260,001–10,260,000
+  if (income > 7260000) {
+    const chunk = Math.min(income - 7260000, 3000000);
+    const t = chunk * 0.20;
+    tax += t;
+    bandBreakdown.push({ rate: 0.20, income: chunk, tax: t });
+  }
+
+  // Band 7: 25% on 10,260,001–13,908,000
+  if (income > 10260000) {
+    const chunk = Math.min(income - 10260000, 3648000);
+    const t = chunk * 0.25;
+    tax += t;
+    bandBreakdown.push({ rate: 0.25, income: chunk, tax: t });
+  }
+
+  // Band 8: 30% on 13,908,001–16,824,000
+  if (income > 13908000) {
+    const chunk = Math.min(income - 13908000, 2916000);
+    const t = chunk * 0.30;
+    tax += t;
+    bandBreakdown.push({ rate: 0.30, income: chunk, tax: t });
+  }
+
+  // Band 9: 35% on 16,824,001–21,168,000
+  if (income > 16824000) {
+    const chunk = Math.min(income - 16824000, 4344000);
+    const t = chunk * 0.35;
+    tax += t;
+    bandBreakdown.push({ rate: 0.35, income: chunk, tax: t });
+  }
+
+  // Band 10: 40% above 21,168,000
+  if (income > 21168000) {
+    const chunk = income - 21168000;
+    const t = chunk * 0.40;
+    tax += t;
+    bandBreakdown.push({ rate: 0.40, income: chunk, tax: t });
+  }
+
+  return { tax, bandBreakdown: bandBreakdown.filter(b => b.income > 0) };
+}
+
+// ── MAIN CALCULATE ────────────────────────────────────────────
+  function setPreset(val, btn) {
+    document.getElementById('grossSalary').value = val;
+    document.getElementById('salarySlider').value = val;
+    onSlider(document.getElementById('salarySlider'));
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+    if(btn) btn.classList.add('active');
+    calculate();
+  }
+
+  function calculate() {
+  const gross = parseFloat(document.getElementById('grossSalary').value) || 0;
+  if (!gross || gross <= 0) {
+    const el = document.getElementById('grossSalary');
+    el.focus(); el.style.borderColor = '#e53e3e';
+    el.setAttribute('placeholder', 'Enter a valid salary');
+    setTimeout(() => { el.style.borderColor = ''; el.removeAttribute('placeholder'); }, 3000);
+    return;
+  }
+
+  const hasINSS = isOn('inss');
+
+  // INSS calculation (capped)
+  const inssRate = hasINSS ? 0.05 : 0;
+  const inss = gross * inssRate;
+  const empINSS = gross * 0.05;
+
+  // PAYE
+  const taxableIncome = Math.max(0, gross - inss);
+  const result = calcAnnualPAYE(taxableIncome);
+  const annualPAYE = result.tax;
+  const bandBreakdown = result.bandBreakdown;
+
+  // Net pay
+  const totalEmployeeDeductions = inss + annualPAYE;
+  const netAnnual = gross - totalEmployeeDeductions;
+  const effectiveRate = gross > 0 ? annualPAYE / gross : 0;
+
+  RESULT = {
+    gross, annual: gross, inss, inssRate, empINSS,
+    annualPAYE, bandBreakdown,
+    totalEmployeeDeductions, netAnnual, effectiveRate,
+    totalEmployerCostAnnual: gross + empINSS,
+  };
+
+  document.getElementById('resAmount').textContent      = fmt(netAnnual);
+  document.getElementById('resGross').textContent       = `Gross: ${fmt(gross)}/year`;
+  document.getElementById('resContent').innerHTML       = renderRows(RESULT);
+  document.getElementById('effRateDisplay').textContent = pct(effectiveRate);
+  setTimeout(() => { document.getElementById('rateFill').style.width = Math.min(effectiveRate * 150, 100) + '%'; }, 80);
+  document.getElementById('hiddenGross').value = gross;
+
+  const strip = document.getElementById('employerStrip');
+  strip.innerHTML = `<strong>Total Employer Cost: ${fmt(RESULT.totalEmployerCostAnnual)}/year</strong><br>Gross + INSS employer ${fmt(empINSS)}/yr.`;
+  strip.classList.add('on');
+
+  document.getElementById('resultsCard').classList.add('on');
+  // Save/Share/Benchmark wiring
+  var _saveBtn = document.querySelector('save-result-button');
+  if (_saveBtn) _saveBtn.setData({
+    inputs: { grossSalary: RESULT.gross },
+    outputs: {
+      netPay: RESULT.netMonthly || RESULT.net,
+      tax: RESULT.monthlyPAYE || RESULT.tax || RESULT.paye,
+      effectiveRate: RESULT.effectiveRate
+    }
+  });
+  var _shareBtn = document.querySelector('share-result-button');
+  if (_shareBtn) _shareBtn.setResult({
+    headline: 'My Take-Home Pay',
+    mainValue: fmt(RESULT.netMonthly || RESULT.net) + '/mo',
+    subValues: [
+      { label: 'Gross', value: fmt(RESULT.gross) + '/mo' },
+      { label: 'Tax', value: fmt(RESULT.monthlyPAYE || RESULT.tax || RESULT.paye) + '/mo' },
+      { label: 'Effective Rate', value: pct(RESULT.effectiveRate) }
+    ]
+  });
+  var _bmWidget = document.querySelector('salary-benchmark');
+  if (_bmWidget) { _bmWidget.setAttribute('user-gross', RESULT.gross); _bmWidget.setAttribute('user-net', RESULT.netMonthly || RESULT.net); }
+  renderChart(CHART_TYPE);
+  document.getElementById('resultsCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  document.getElementById('aiBtn').disabled = false;
+  document.getElementById('aiBtn').textContent = 'Get AI Tax Analysis →';
+  document.getElementById('aiStatus').textContent = `Gross: ${fmt(gross)}/yr · Take-home: ${fmt(netAnnual)}/yr · PAYE: ${fmt(annualPAYE)}/yr · Effective: ${pct(effectiveRate)}`;
+}
+
+// ── RENDER ROWS ───────────────────────────────────────────────
+function renderRows(R) {
+  const gross  = R.gross;
+  const inss   = R.inss;
+  const paye   = R.annualPAYE;
+  const net    = R.netAnnual;
+  const totalDeductions = R.totalEmployeeDeductions;
+
+  const row = (l, v, cls='') => `<div class="res-row"><span class="res-row-lbl">${l}</span><span class="res-row-val ${cls}">${v}</span></div>`;
+
+  return `
+    <div class="res-section">
+      <div class="res-section-title">Gross Income</div>
+      ${row(`Annual Gross Salary`, fmt(gross))}
+    </div>
+    <div class="res-section">
+      <div class="res-section-title">Deductions</div>
+      ${R.inss > 0 ? row(`INSS (${pct(R.inssRate)}, capped)`, fmt(inss), 'c-red') : ''}
+      ${row(`Net taxable income`, fmt(gross - inss), 'c-mut')}
+    </div>
+    <div class="res-section">
+      <div class="res-section-title">PAYE (DGI)</div>
+      ${row(`Income tax (PAYE)`, fmt(paye), 'c-red')}
+    </div>
+    <div class="res-section">
+      ${row('Total Deductions', fmt(totalDeductions), 'c-red')}
+      <div class="res-row total"><span class="res-row-lbl">Take-Home Pay</span><span class="res-row-val c-blu">${fmt(net)}</span></div>
+    </div>`;
+}
+
+// ── BANDS TOGGLE ──────────────────────────────────────────────
+function toggleBands(header) {
+  const body = header.nextElementSibling;
+  const arr  = header.querySelector('.tog-arrow');
+  body.classList.toggle('open');
+  arr.classList.toggle('open');
+}
+
+// ── CHARTS ────────────────────────────────────────────────────
+function setChart(type, btn) {
+  CHART_TYPE = type;
+  document.querySelectorAll('.chart-tab').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  renderChart(type);
+}
+
+function renderChart(type) {
+  if (!RESULT) return;
+  const R = RESULT;
+  const canvas = document.getElementById('mainChart');
+  if (CHART) { CHART.destroy(); CHART = null; }
+
+  if (type === 'donut') {
+    CHART = new Chart(canvas, {
+      type: 'doughnut',
+      data: {
+        labels: ['Take-Home', 'PAYE Tax', 'INSS'],
+        datasets: [{ data: [R.netAnnual, R.annualPAYE, R.inss], backgroundColor: AfroChartColors.doughnut.slice(0, 3), borderWidth: 2, borderColor: '#fff' }]
+      },
+      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{size:11,weight:'600'}, padding:12 } } } }
+    });
+  } else if (type === 'bar') {
+    const bands = R.bandBreakdown.filter(b => b.tax > 0);
+    if (!bands.length) return;
+    CHART = new Chart(canvas, {
+      type: 'bar',
+      data: {
+        labels: bands.map(b => (b.rate*100)+'%'),
+        datasets: [{ label:'Tax (CDF)', data: bands.map(b=>b.tax), backgroundColor: AfroChartColors.series.slice(0, bands.length), borderRadius:5 }]
+      },
+      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'CDF'+(v/1000000).toFixed(1)+'M',font:{size:10,weight:'600'}},grid:{color:'#e8f1fb'} }, x:{ticks:{font:{size:10,weight:'600'}}} } }
+    });
+  } else if (type === 'employer') {
+    CHART = new Chart(canvas, {
+      type: 'bar',
+      data: {
+        labels: ['Take-Home', 'PAYE', 'Emp INSS'],
+        datasets: [{ label:'CDF', data:[R.netAnnual, R.annualPAYE, R.empINSS], backgroundColor: AfroChartColors.doughnut.slice(0, 3), borderRadius:5 }]
+      },
+      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'CDF'+(v/1000000).toFixed(1)+'M',font:{size:10,weight:'600'}},grid:{color:'#e8f1fb'} }, x:{ticks:{font:{size:9,weight:'600'}}} } }
+    });
+  }
+}
+
+// ── PDF MODAL ─────────────────────────────────────────────────
+function openPdfModal()  { if(!RESULT) return; document.getElementById('pdfModal').classList.add('on'); document.getElementById('modalForm').style.display='block'; document.getElementById('modalSuccess').style.display='none'; }
+function closePdfModal() { document.getElementById('pdfModal').classList.remove('on'); }
+document.getElementById('pdfModal').addEventListener('click', e => { if(e.target===document.getElementById('pdfModal')) closePdfModal(); });
+
+async function submitPdf(e) {
+  e.preventDefault();
+  const email = document.getElementById('pdfEmail').value;
+  if (!email) return;
+  try {
+    await fetch('/', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body: new URLSearchParams({'form-name':'pdf-leads',email,country:'DR Congo',country_code:'CD',tool:'paye',tool_id:'cd-paye',currency:'CDF',gross_salary:RESULT.gross}).toString() });
+  } catch(e){}
+  document.getElementById('modalForm').style.display  = 'none';
+  document.getElementById('modalSuccess').style.display = 'block';
+  generatePdf();
+}
+
+function generatePdf() {
+  if (!RESULT) return;
+  const R      = RESULT;
+  const dateStr= new Date().toLocaleDateString('en-CD',{day:'numeric',month:'long',year:'numeric'});
+  const refNo  = 'AFT-CD-PAYE-' + Date.now().toString(36).toUpperCase().slice(-6);
+
+  const bandRows = R.bandBreakdown.filter(b => b.tax > 0).map(b =>
+    `<tr><td style="padding-left:14px;color:#4b5563">Rate ${(b.rate*100)}% on CDF ${Math.round(b.income).toLocaleString()}</td><td class="num red">(CDF ${Math.round(b.tax).toLocaleString()})</td></tr>`
+  ).join('');
+
+  const html = `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8">
+<title>AfroTools DR Congo PAYE — ${refNo}</title>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'DM Sans',Arial,sans-serif;background:#fff;color:#111827;font-size:9pt;line-height:1.5}@page{size:A4;margin:0}
+.cover{background:linear-gradient(135deg,#0a1929 0%,#001f4d 100%);padding:28px 36px 22px;color:#fff}
+.cover-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.brand{font-size:13pt;font-weight:800;color:#fff}.brand b{color:#007FFF}
+.brand-sub{font-size:6pt;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.32);margin-top:2px}
+.ref-label{font-size:6pt;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.32);text-align:right}
+.ref-val{font-size:8pt;font-weight:700;color:rgba(255,255,255,.65);margin-top:2px;text-align:right}
+.doc-title{font-size:18pt;font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1}
+.doc-title span{color:#FFB81C}.doc-meta{margin-top:8px;font-size:7.5pt;color:rgba(255,255,255,.4)}
+.badge{display:inline-block;margin-top:10px;padding:3px 10px;border-radius:3px;font-size:7pt;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:rgba(0,127,255,.22);color:#80d4ff;border:1px solid rgba(0,127,255,.4)}
+.body{padding:24px 36px 28px}
+.sh{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.shi{text-align:center;flex:1}.sh-lbl{font-size:6pt;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#9ca3af;margin-bottom:3px}
+.sh-val{font-size:13pt;font-weight:800;color:#111827}.sh-val.gold{color:#9a7a00}.sh-val.red{color:#c0392b}
+.sh-div{width:1px;height:40px;background:#e5e7eb;flex-shrink:0}
+.sec-head{font-size:6.5pt;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#9ca3af;padding:0 0 5px;border-bottom:1.5px solid #e5e7eb;margin:16px 0 8px}
+table{width:100%;border-collapse:collapse}tr{border-bottom:1px solid #f3f4f6}td{padding:5.5px 4px;font-size:8.5pt;vertical-align:middle}
+td.num{text-align:right;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.red{color:#c0392b}.blue{color:#007FFF}.muted{color:#9ca3af}
+tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-size:9.5pt}
+.src{display:inline-block;padding:2px 7px;background:#f3f4f6;border-radius:3px;font-size:6.5pt;font-weight:600;color:#6b7280;margin-right:4px}
+</style></head><body>
+<div class="cover">
+  <div class="cover-top">
+    <div><div class="brand">AFRO<b>TOOLS</b></div><div class="brand-sub">Africa's Everything Platform</div></div>
+    <div><div class="ref-label">Reference</div><div class="ref-val">${refNo}</div></div>
+  </div>
+  <div class="doc-title">DR Congo PAYE<br><span>Summary 2026</span></div>
+  <div class="doc-meta">Generated ${dateStr} · afrotools.com/dr-congo/cd-paye</div>
+  <div class="badge">DGI 2026 · Code des Impôts</div>
+</div>
+<div class="body">
+  <div class="sh">
+    <div class="shi"><div class="sh-lbl">Annual Take-Home</div><div class="sh-val gold">CDF ${Math.round(R.netAnnual).toLocaleString()}</div></div>
+    <div class="sh-div"></div>
+    <div class="shi"><div class="sh-lbl">Annual Gross</div><div class="sh-val">CDF ${Math.round(R.gross).toLocaleString()}</div></div>
+    <div class="sh-div"></div>
+    <div class="shi"><div class="sh-lbl">Annual PAYE</div><div class="sh-val red">CDF ${Math.round(R.annualPAYE).toLocaleString()}</div></div>
+    <div class="sh-div"></div>
+    <div class="shi"><div class="sh-lbl">Effective Rate</div><div class="sh-val red">${pct(R.effectiveRate)}</div></div>
+  </div>
+
+  <div class="sec-head">Section 1 — Annual Income &amp; Deductions</div>
+  <table>
+    <tr><td>Annual Gross Salary</td><td class="num">CDF ${Math.round(R.gross).toLocaleString()}</td></tr>
+    ${R.inss > 0 ? `<tr><td style="padding-left:14px;color:#4b5563">INSS employee contribution (${pct(R.inssRate)}, capped)</td><td class="num red">(CDF ${Math.round(R.inss).toLocaleString()})</td></tr>` : ''}
+    <tr><td style="font-weight:600">Annual Taxable Income</td><td class="num muted">CDF ${Math.round(R.gross - R.inss).toLocaleString()}</td></tr>
+  </table>
+
+  <div class="sec-head">Section 2 — PAYE Computation (DGI 2026)</div>
+  <table>
+    ${bandRows || '<tr><td colspan="2" style="color:#94A3B8;padding-left:14px">Income in 0% band — no PAYE due</td></tr>'}
+    <tr class="total"><td>Annual PAYE</td><td class="num red">CDF ${Math.round(R.annualPAYE).toLocaleString()}</td></tr>
+  </table>
+
+  <div class="sec-head">Section 3 — Annual Net Pay Summary</div>
+  <table>
+    ${R.inss > 0 ? `<tr><td>INSS (employee)</td><td class="num red">(CDF ${Math.round(R.inss).toLocaleString()})</td></tr>` : ''}
+    <tr><td>PAYE income tax</td><td class="num red">(CDF ${Math.round(R.annualPAYE).toLocaleString()})</td></tr>
+    <tr><td style="font-weight:700">Total Annual Deductions</td><td class="num red">(CDF ${Math.round(R.totalEmployeeDeductions).toLocaleString()})</td></tr>
+    <tr class="total"><td style="color:#007FFF;font-weight:800">Annual Take-Home Pay</td><td class="num blue">CDF ${Math.round(R.netAnnual).toLocaleString()}</td></tr>
+  </table>
+
+  <div class="sec-head">Section 4 — Employer Cost (Annual)</div>
+  <table>
+    <tr><td>Employee gross salary</td><td class="num">CDF ${Math.round(R.gross).toLocaleString()}</td></tr>
+    <tr><td>Employer INSS (5%, capped)</td><td class="num red">CDF ${Math.round(R.empINSS).toLocaleString()}</td></tr>
+    <tr class="total"><td style="font-weight:800">Total Employer Annual Cost</td><td class="num red">CDF ${Math.round(R.totalEmployerCostAnnual).toLocaleString()}</td></tr>
+  </table>
+
+  <div class="sec-head">Section 5 — Legal Basis &amp; Sources</div>
+  <table>
+    <tr><td style="width:30%"><span class="src">Code</span>Code des Impôts</td><td style="color:#6b7280;font-size:8pt">DGI progressive PAYE on employment income. INSS employee contribution (5%, capped) fully deductible.</td></tr>
+    <tr><td><span class="src">INSS</span>Social Security</td><td style="color:#6b7280;font-size:8pt">Total 10% (employee 5% + employer 5%), capped on base salary component. Due monthly to INSS.</td></tr>
+  </table>
+</div>
+<div style="background:#f9fafb;border-top:1px solid #e5e7eb;padding:14px 36px">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start">
+    <div>
+      <div style="font-size:7pt;font-weight:700;color:#111827">AFRO<b style="color:#007FFF">TOOLS</b>.COM — Africa's Financial Calculator Platform</div>
+      <div style="font-size:6.5pt;color:#9ca3af;max-width:440px;line-height:1.4;margin-top:4px">Informational only. Not professional tax advice. Verify with DGI or a qualified Congolese tax advisor.</div>
+    </div>
+    <div style="text-align:right;font-size:7pt;color:#9ca3af;white-space:nowrap;margin-left:20px">
+      <div>Ref: ${refNo}</div><div style="margin-top:2px">${dateStr}</div><div style="margin-top:2px">afrotools.com</div>
+    </div>
+  </div>
+</div>
+
+<script src="/assets/js/components/salary-benchmark-widget.js" defer></script>
+</body></html>`;
+
+  const blob = new Blob([html],{type:'text/html;charset=utf-8'});
+  const url  = URL.createObjectURL(blob);
+  const w    = window.open(url,'_blank');
+  if(w){
+    w.addEventListener('load',()=>{setTimeout(()=>{w.print();setTimeout(()=>URL.revokeObjectURL(url),3000)},600)});
+    setTimeout(()=>{try{w.print()}catch(e){}},1200);
+  }
+}
+
+// ── SHARE ─────────────────────────────────────────────────────
+function shareResult() {
+  if (!RESULT) return;
+  const text = `My DR Congo PAYE breakdown: Gross CDF ${Math.round(RESULT.gross).toLocaleString()}/yr → Take-home CDF ${Math.round(RESULT.netAnnual).toLocaleString()}/yr (${pct(RESULT.effectiveRate)} effective rate). Calculated at afrotools.com/dr-congo/cd-paye`;
+  if (navigator.share) {
+    navigator.share({title:'My DR Congo PAYE',text,url:'https://afrotools.com/dr-congo/cd-paye'});
+  } else if (navigator.clipboard) {
+    navigator.clipboard.writeText(text);
+    const btn = document.getElementById('cdShareBtn');
+    btn.textContent = '✓ Copied!';
+    setTimeout(()=>btn.innerHTML=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share Result`,2500);
+  }
+}
+
+// ── AI ADVISOR ────────────────────────────────────────────────
+async function getAI() {
+  if (!RESULT) return;
+  const R   = RESULT;
+  const btn = document.getElementById('aiBtn');
+  const respEl = document.getElementById('aiResp');
+
+  btn.disabled = true; btn.textContent = 'Analysing…';
+  respEl.style.display = 'block'; respEl.className = 'ai-response typing'; respEl.textContent = '';
+  document.getElementById('aiStatus').style.display = 'none';
+
+  const prompt = `DR Congo PAYE analysis (2026, DGI):
+- Annual gross: CDF ${Math.round(R.gross).toLocaleString()}
+- INSS employee (${pct(R.inssRate)}, capped): CDF ${Math.round(R.inss).toLocaleString()}/yr
+- Taxable income after INSS: CDF ${Math.round(R.gross - R.inss).toLocaleString()}/yr
+- Annual PAYE: CDF ${Math.round(R.annualPAYE).toLocaleString()}
+- Annual take-home: CDF ${Math.round(R.netAnnual).toLocaleString()}
+- Effective tax rate: ${pct(R.effectiveRate)}
+- Employer INSS (5%, capped): CDF ${Math.round(R.empINSS).toLocaleString()}/yr
+- Total employer cost: CDF ${Math.round(R.totalEmployerCostAnnual).toLocaleString()}/yr
+
+Give: 1) Plain English summary of PAYE position 2) Two specific legal ways to reduce DR Congo tax liability 3) One DGI compliance point to know 4) One thing most Congolese employees get wrong about INSS deductibility. Under 200 words. No markdown, no asterisks, no bullet symbols.`;
+
+  try {
+    const res = await fetch('/.netlify/functions/ai-advisor', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        system:'You are AfroTools AI Tax Advisor specialising in DR Congo PAYE — DGI progressive tax, INSS, Code des Impôts. Be concise, specific, practical. No markdown, no asterisks.',
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const data = await res.json();
+    const text = data.text || 'Unable to generate analysis.';
+    respEl.className = 'ai-response'; respEl.textContent = '';
+    let i = 0;
+    const type = () => {
+      if(i<text.length){respEl.textContent+=text[i++];setTimeout(type,12);}
+      else{document.getElementById('aiChat').classList.add('on');CHAT_HISTORY=[{role:'user',content:prompt},{role:'assistant',content:text}];}
+    };
+    type();
+    btn.textContent = 'Ask a follow-up below ↓';
+  } catch(err) {
+    respEl.className='ai-response';respEl.textContent='AI analysis temporarily unavailable.';
+    btn.disabled=false;btn.textContent='Try Again';
+  }
+}
+
+async function sendChat() {
+  const input = document.getElementById('chatIn');
+  const msg   = input.value.trim();
+  if(!msg||!RESULT) return;
+  input.value = '';
+  const R = RESULT;
+  const msgs = document.getElementById('chatMsgs');
+  msgs.innerHTML += `<div class="msg u">${msg.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`;
+  const aiEl = document.createElement('div');
+  aiEl.className = 'msg a'; aiEl.textContent = '…';
+  msgs.appendChild(aiEl); msgs.scrollTop = msgs.scrollHeight;
+  CHAT_HISTORY.push({role:'user',content:msg});
+  try {
+    const res = await fetch('/.netlify/functions/ai-advisor',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        system:`AfroTools AI Tax Advisor, DR Congo. User: gross CDF ${Math.round(R.gross).toLocaleString()}/yr, take-home CDF ${Math.round(R.netAnnual).toLocaleString()}/yr, effective rate ${pct(R.effectiveRate)}. Concise. No markdown.`,
+        messages:CHAT_HISTORY
+      })
+    });
+    const data = await res.json();
+    const text = data.text || 'Unable to respond.';
+    aiEl.textContent = text;
+    CHAT_HISTORY.push({role:'assistant',content:text});
+    msgs.scrollTop = msgs.scrollHeight;
+  } catch { aiEl.textContent='Network error. Please try again.'; }
+}
+
+document.getElementById('grossSalary').addEventListener('keydown',e=>{if(e.key==='Enter')calculate();});
+
+
+// Net-to-Gross: register forward function
+window._grossToNet = function(g) {
+  var d=isOn('inss')?g*0.05:0;return g-(d+calcAnnualPAYE(Math.max(0,g-d)).tax);
+};
+</script>
+<script src="/assets/js/bundles/tool-page.4701dd1d.min.js" defer></script><script src="/assets/js/share-image-inject.js" defer></script>
+<script src="/assets/js/lib/net-to-gross.js" defer></script>
+</body>
+</html>

@@ -246,6 +246,23 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
+# --- Static Data File Caching ---
+
+[[headers]]
+  for = "/data/forex/*"
+  [headers.values]
+    Cache-Control = "public, max-age=600, stale-while-revalidate=900"
+
+[[headers]]
+  for = "/data/fuel/*"
+  [headers.values]
+    Cache-Control = "public, max-age=7200, stale-while-revalidate=10800"
+
+[[headers]]
+  for = "/data/rates/*"
+  [headers.values]
+    Cache-Control = "public, max-age=21600, stale-while-revalidate=32400"
+
 # --- Content Security Policy (allow Twemoji CDN) ---
 
 [[headers]]
@@ -255,3 +272,52 @@
     X-Frame-Options = "DENY"
     Referrer-Policy = "strict-origin-when-cross-origin"
     Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://cdn.jsdelivr.net https://js.stripe.com https://*.supabase.co; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://cdn.jsdelivr.net https://*.googleapis.com https://*.supabase.co https://*.googletagmanager.com blob:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://*.supabase.co https://www.google-analytics.com https://*.googleapis.com https://api.anthropic.com https://*.netlify.app wss://*.supabase.co; frame-src https://js.stripe.com; object-src 'none'; base-uri 'self';"
+
+# --- i18n Language-Based Redirects ---
+# Netlify reads Accept-Language header at CDN edge (302 = temporary, user may change preference)
+
+[[redirects]]
+  from = "/"
+  to = "/fr/"
+  status = 302
+  conditions = {Language = ["fr"]}
+
+[[redirects]]
+  from = "/"
+  to = "/sw/"
+  status = 302
+  conditions = {Language = ["sw"]}
+
+[[redirects]]
+  from = "/"
+  to = "/yo/"
+  status = 302
+  conditions = {Language = ["yo"]}
+
+[[redirects]]
+  from = "/"
+  to = "/ha/"
+  status = 302
+  conditions = {Language = ["ha"]}
+
+# --- i18n Content-Language Headers ---
+
+[[headers]]
+  for = "/fr/*"
+  [headers.values]
+    Content-Language = "fr"
+
+[[headers]]
+  for = "/sw/*"
+  [headers.values]
+    Content-Language = "sw"
+
+[[headers]]
+  for = "/yo/*"
+  [headers.values]
+    Content-Language = "yo"
+
+[[headers]]
+  for = "/ha/*"
+  [headers.values]
+    Content-Language = "ha"
