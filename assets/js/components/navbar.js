@@ -1054,8 +1054,8 @@
     customElements.define('afro-navbar', AfroNavbar);
   }
 
-  /* ── PWA: inject manifest + theme-color immediately (no JS), defer install script ── */
-  (function _pwaMeta() {
+  /* ── PWA: inject manifest, theme-color & service worker from navbar (every page) ── */
+  (function _pwa() {
     if (!document.querySelector('link[rel="manifest"]')) {
       const l = document.createElement('link'); l.rel = 'manifest'; l.href = '/manifest.json';
       document.head.appendChild(l);
@@ -1064,6 +1064,8 @@
       const m = document.createElement('meta'); m.name = 'theme-color'; m.content = '#0062CC';
       document.head.appendChild(m);
     }
+    const s = document.createElement('script'); s.src = '/assets/js/pwa-install.js'; s.defer = true;
+    document.head.appendChild(s);
   })();
 
   /* ── DEFERRED SCRIPTS: load after main thread is idle ── */
@@ -1092,13 +1094,9 @@
       si.src = '/assets/js/share-image-inject.js'; si.defer = true;
       document.head.appendChild(si);
     }
-
-    /* PWA install */
-    var pw = document.createElement('script'); pw.src = '/assets/js/pwa-install.js'; pw.defer = true;
-    document.head.appendChild(pw);
   });
 
-  /* Supabase auth: defer further — only needed for sign-in UI */
+  /* Supabase auth: defer — only needed for sign-in UI */
   _idle(function() {
     if (window._afroSupaAuthLoaded) return;
     if (!document.getElementById('afro-supabase-auth-js')) {
