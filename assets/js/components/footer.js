@@ -90,11 +90,11 @@
       font-size: 1.1rem; font-weight: 800;
       letter-spacing: 0.02em; color: #ffffff;
     }
-    .logo-name b { color: var(--color-primary); }
+    .logo-name b { color: #3B8AE5; }
     .logo-tagline {
       font-size: 0.46rem; font-weight: 600;
       letter-spacing: 0.2em; text-transform: uppercase;
-      color: #6b7280; display: block; margin-top: 3px;
+      color: #8B95A3; display: block; margin-top: 3px;
     }
 
     /* Tagline under logo — readable, not ghost */
@@ -108,7 +108,7 @@
     .nl-eyebrow {
       font-size: 0.6rem; font-weight: 700;
       letter-spacing: 0.18em; text-transform: uppercase;
-      color: var(--color-primary); margin-bottom: 6px;
+      color: #3B8AE5; margin-bottom: 6px;
     }
     .nl-title {
       font-size: 1.25rem; font-weight: 800;
@@ -139,7 +139,7 @@
     .nl-btn:hover { background: #005BBF; }
     .nl-note {
       margin-top: 10px; font-size: 0.72rem;
-      font-weight: 500; color: #6b7280;
+      font-weight: 500; color: #8B95A3;
     }
 
     /* ─────────────────────────────────────────────
@@ -155,7 +155,7 @@
     .col-title {
       font-size: 0.6rem; font-weight: 700;
       letter-spacing: 0.16em; text-transform: uppercase;
-      color: var(--color-primary); margin-bottom: 14px;
+      color: #3B8AE5; margin-bottom: 14px;
     }
     .col-link {
       display: block; padding: 4px 0;
@@ -182,7 +182,7 @@
     }
     .stat-l {
       font-size: 0.72rem; font-weight: 500;
-      color: #6b7280; margin-top: 5px;
+      color: #8B95A3; margin-top: 5px;
     }
 
     /* ─────────────────────────────────────────────
@@ -195,12 +195,12 @@
     }
     .copy {
       font-size: 0.75rem; font-weight: 500;
-      color: #6b7280;
+      color: #8B95A3;
     }
     .legal { display: flex; gap: 20px; flex-wrap: wrap; }
     .legal a {
       font-size: 0.75rem; font-weight: 500;
-      color: #6b7280; text-decoration: none;
+      color: #8B95A3; text-decoration: none;
       transition: color 0.13s;
     }
     .legal a:hover { color: #9ca3af; }
@@ -210,7 +210,7 @@
       width: 100%; padding-top: 14px;
       border-top: 1px solid #1f2937;
       font-size: 0.7rem; font-weight: 400;
-      color: #6b7280; line-height: 1.7;
+      color: #8B95A3; line-height: 1.7;
     }
 
     /* ─────────────────────────────────────────────
@@ -228,7 +228,7 @@
     .social a:hover { background: var(--color-primary); color: #fff; border-color: var(--color-primary); }
 
     .built-with {
-      font-size: 0.78rem; font-weight: 500; color: #6b7280;
+      font-size: 0.78rem; font-weight: 500; color: #8B95A3;
       margin-top: 18px;
     }
 
@@ -378,13 +378,14 @@
 
   if (!customElements.get('afro-footer')) customElements.define('afro-footer', AfroFooter);
 
-  /* ── Auto-load site-wide AI advisor ── */
-  (function loadSiteAssistant() {
+  /* ── Auto-load site-wide AI advisor (deferred until idle) ── */
+  var _idle = window.requestIdleCallback || function(cb) { setTimeout(cb, 2000); };
+  _idle(function() {
     if (document.querySelector('script[src*="site-assistant"]')) return;
     const s = document.createElement('script');
     s.src   = '/assets/js/components/site-assistant.min.js';
     s.defer = true;
     document.head.appendChild(s);
-  })();
+  });
 
 })();

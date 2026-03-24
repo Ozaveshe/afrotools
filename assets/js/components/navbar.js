@@ -1054,8 +1054,23 @@
     customElements.define('afro-navbar', AfroNavbar);
   }
 
-  /* ── ANIMATIONS: inject CSS + JS on every page for modern UI ── */
-  (function _animations() {
+  /* ── PWA: inject manifest + theme-color immediately (no JS), defer install script ── */
+  (function _pwaMeta() {
+    if (!document.querySelector('link[rel="manifest"]')) {
+      const l = document.createElement('link'); l.rel = 'manifest'; l.href = '/manifest.json';
+      document.head.appendChild(l);
+    }
+    if (!document.querySelector('meta[name="theme-color"]')) {
+      const m = document.createElement('meta'); m.name = 'theme-color'; m.content = '#0062CC';
+      document.head.appendChild(m);
+    }
+  })();
+
+  /* ── DEFERRED SCRIPTS: load after main thread is idle ── */
+  var _idle = window.requestIdleCallback || function(cb) { setTimeout(cb, 1500); };
+
+  _idle(function() {
+    /* Animations */
     if (!document.getElementById('afro-animations-css')) {
       var l = document.createElement('link'); l.id = 'afro-animations-css';
       l.rel = 'stylesheet'; l.href = '/assets/css/animations.css';
@@ -1066,47 +1081,29 @@
       s.src = '/assets/js/animations.js'; s.defer = true;
       document.head.appendChild(s);
     }
-  })();
 
-  /* ── PRO GATE: inject on tool pages for upsell banners ── */
-  (function _proGate() {
-    const s = document.createElement('script'); s.src = '/assets/js/pro-gate.js'; s.defer = true;
-    document.head.appendChild(s);
-  })();
+    /* Pro gate */
+    var pg = document.createElement('script'); pg.src = '/assets/js/pro-gate.js'; pg.defer = true;
+    document.head.appendChild(pg);
 
-  /* ── SHARE IMAGE: auto-inject on tool pages with .action-row ── */
-  (function _shareImage() {
-    function tryInject() {
-      if (document.querySelector('.action-row') && !document.getElementById('afro-share-img-js')) {
-        const s = document.createElement('script'); s.id = 'afro-share-img-js';
-        s.src = '/assets/js/share-image-inject.js'; s.defer = true;
-        document.head.appendChild(s);
-      }
+    /* Share image (tool pages only) */
+    if (document.querySelector('.action-row') && !document.getElementById('afro-share-img-js')) {
+      var si = document.createElement('script'); si.id = 'afro-share-img-js';
+      si.src = '/assets/js/share-image-inject.js'; si.defer = true;
+      document.head.appendChild(si);
     }
-    if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', tryInject); }
-    else { tryInject(); }
-  })();
 
-  /* ── PWA: inject manifest, theme-color & service worker from navbar (every page) ── */
-  (function _pwa() {
-    if (!document.querySelector('link[rel="manifest"]')) {
-      const l = document.createElement('link'); l.rel = 'manifest'; l.href = '/manifest.json';
-      document.head.appendChild(l);
-    }
-    if (!document.querySelector('meta[name="theme-color"]')) {
-      const m = document.createElement('meta'); m.name = 'theme-color'; m.content = '#0062CC';
-      document.head.appendChild(m);
-    }
-    const s = document.createElement('script'); s.src = '/assets/js/pwa-install.js'; s.defer = true;
-    document.head.appendChild(s);
-  })();
+    /* PWA install */
+    var pw = document.createElement('script'); pw.src = '/assets/js/pwa-install.js'; pw.defer = true;
+    document.head.appendChild(pw);
+  });
 
-  /* ── SUPABASE AUTH: inject on every page for auth modal + session ── */
-  (function _auth() {
+  /* Supabase auth: defer further — only needed for sign-in UI */
+  _idle(function() {
     if (window._afroSupaAuthLoaded) return;
     if (!document.getElementById('afro-supabase-auth-js')) {
-      const s = document.createElement('script'); s.id = 'afro-supabase-auth-js';
+      var s = document.createElement('script'); s.id = 'afro-supabase-auth-js';
       s.src = '/assets/js/supabase-auth.js?v=5'; document.head.appendChild(s);
     }
-  })();
+  });
 })();
