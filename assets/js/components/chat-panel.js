@@ -13,15 +13,15 @@
     <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <!-- Antenna -->
       <line x1="16" y1="2" x2="16" y2="6" stroke="#60b5ff" stroke-width="1.5" stroke-linecap="round"/>
-      <circle cx="16" cy="1.5" r="1.5" fill="#007AFF"/>
+      <circle cx="16" cy="1.5" r="1.5" fill="#0062CC"/>
       <!-- Head -->
       <rect x="5" y="6" width="22" height="18" rx="5" fill="#1a2e4a"/>
       <rect x="5" y="6" width="22" height="18" rx="5" stroke="#2a4a6e" stroke-width="1"/>
       <!-- Left eye -->
-      <rect x="8.5" y="11" width="5" height="5" rx="1.5" fill="#007AFF" opacity=".9"/>
+      <rect x="8.5" y="11" width="5" height="5" rx="1.5" fill="#0062CC" opacity=".9"/>
       <rect x="9.5" y="12" width="2" height="2" rx=".5" fill="#60b5ff"/>
       <!-- Right eye -->
-      <rect x="18.5" y="11" width="5" height="5" rx="1.5" fill="#007AFF" opacity=".9"/>
+      <rect x="18.5" y="11" width="5" height="5" rx="1.5" fill="#0062CC" opacity=".9"/>
       <rect x="19.5" y="12" width="2" height="2" rx=".5" fill="#60b5ff"/>
       <!-- Mouth / signal indicator -->
       <rect x="10" y="19.5" width="12" height="1.5" rx=".75" fill="#60b5ff" opacity=".6"/>
@@ -29,8 +29,8 @@
       <rect x="2" y="12" width="3" height="4" rx="1" fill="#1a2e4a" stroke="#2a4a6e" stroke-width=".8"/>
       <rect x="27" y="12" width="3" height="4" rx="1" fill="#1a2e4a" stroke="#2a4a6e" stroke-width=".8"/>
       <!-- Circuit dots -->
-      <circle cx="9" cy="9" r=".8" fill="#007AFF" opacity=".4"/>
-      <circle cx="23" cy="9" r=".8" fill="#007AFF" opacity=".4"/>
+      <circle cx="9" cy="9" r=".8" fill="#0062CC" opacity=".4"/>
+      <circle cx="23" cy="9" r=".8" fill="#0062CC" opacity=".4"/>
     </svg>`;
 
   /* ── Copy icon SVG ── */
@@ -92,7 +92,7 @@
           *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
           :host {
-            --ac-primary: #007AFF;
+            --ac-primary: #0062CC;
             --ac-bg: #F8FAFD;
             --ac-card: #ffffff;
             --ac-border: #E2E8F0;

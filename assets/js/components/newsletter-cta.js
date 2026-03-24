@@ -42,7 +42,7 @@
       font-size:.78rem;font-weight:700;cursor:pointer;white-space:nowrap;
       transition:background .15s;
     }
-    .btn:hover{background:#007AFF}
+    .btn:hover{background:#0062CC}
     .close{
       background:none;border:none;color:#6b7280;cursor:pointer;padding:6px;
       font-size:1.1rem;line-height:1;transition:color .15s;flex-shrink:0;

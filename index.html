@@ -235,7 +235,7 @@
     .ticker-text strong { color: var(--color-primary); font-weight: 700; }
 
     /* ── SECTION SHELL ── */
-    .sec { padding: 80px 20px; }
+    .sec { padding: 80px 20px; content-visibility: auto; contain-intrinsic-size: auto 800px; }
     .sec--grey { background: #F5F5F7; }
     .sec--white { background: #ffffff; }
     .sec--dark { background: var(--color-text); padding: 64px 20px; }
@@ -630,10 +630,10 @@
     /* ── LIVE DATA CARDS ── */
     .ld-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:20px }
     .ld-card { background:#fff;border:1.5px solid #E5E7EB;border-radius:18px;padding:28px 24px;text-decoration:none;color:inherit;transition:all .2s;position:relative;overflow:hidden;display:flex;flex-direction:column }
-    .ld-card:hover { transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,.08);border-color:#007AFF }
+    .ld-card:hover { transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,.08);border-color:#0062CC }
     .ld-top { display:flex;align-items:center;justify-content:space-between;margin-bottom:16px }
     .ld-icon { font-size:2rem }
-    .ld-badge { display:inline-flex;align-items:center;gap:5px;font-size:.68rem;font-weight:700;color:#007AFF;background:rgba(0,122,255,.08);padding:4px 10px;border-radius:100px }
+    .ld-badge { display:inline-flex;align-items:center;gap:5px;font-size:.68rem;font-weight:700;color:#0062CC;background:rgba(0,122,255,.08);padding:4px 10px;border-radius:100px }
     .ld-badge .live-dot { width:6px;height:6px }
     .ld-title { font-family:'DM Sans',sans-serif;font-size:1.15rem;font-weight:800;color:#111827;margin:0 0 8px;letter-spacing:-0.02em }
     .ld-desc { font-size:.82rem;color:#6B7280;line-height:1.6;margin:0 0 16px;flex:1 }
@@ -749,6 +749,8 @@
     .platform-features {
       padding: 80px 20px 60px;
       background: var(--color-bg, #F8FAFD);
+      content-visibility: auto;
+      contain-intrinsic-size: auto 600px;
     }
     .pf-grid {
       display: grid;
@@ -786,7 +788,7 @@
     .pf-card a {
       font-size: 0.82rem;
       font-weight: 600;
-      color: var(--color-primary, #007AFF);
+      color: var(--color-primary, #0062CC);
     }
     @media (max-width: 768px) {
       .pf-grid { grid-template-columns: 1fr; }
@@ -808,10 +810,10 @@
     .my-tools-inner{max-width:1200px;margin:0 auto;padding:0 24px;background:var(--color-bg-subtle,#F1F5F9);border-radius:16px;padding:20px 24px;}
     .my-tools-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
     .my-tools-title{font-size:1.1rem;font-weight:800;color:#111827;display:flex;align-items:center;gap:8px}
-    .my-tools-clear{font-size:.72rem;color:#6B7280;background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;padding:4px 8px;border-radius:4px;transition:color .15s}
+    .my-tools-clear{font-size:.72rem;color:#4B5563;background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;padding:4px 8px;border-radius:4px;transition:color .15s}
     .my-tools-clear:hover{color:#dc2626}
     .my-tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
-    .my-tools-empty{font-size:.85rem;color:#6B7280;padding:12px 0;}
+    .my-tools-empty{font-size:.85rem;color:#4B5563;padding:12px 0;}
     .my-tools-empty a{color:var(--color-primary);font-weight:600;}
     .my-tool-card{background:#fff;border:1.5px solid #e5e7eb;border-radius:12px;padding:16px;text-decoration:none;color:inherit;display:flex;align-items:center;gap:12px;transition:all .18s;position:relative}
     .my-tool-card:hover{border-color:var(--color-primary);box-shadow:0 4px 16px rgba(0,122,255,.1);transform:translateY(-1px)}
@@ -821,7 +823,7 @@
     .my-tool-unfav:hover{color:#dc2626}
   </style>
   <script src="/assets/js/favorites.js" defer></script>
-  <script src="/assets/js/lib/saved-tools.js"></script>
+  <script src="/assets/js/lib/saved-tools.js" defer></script>
 </head>
 <body>
 
@@ -1022,7 +1024,7 @@
       <a href="/nigeria/ng-salary-tax" class="tc rv" data-country="ng" data-tier="tier1" data-status="live">
         <div class="tc-thumb">
           <div class="tc-thumb-ph">🇳🇬</div>
-          <img src="/assets/img/tools/ng-paye.webp" alt="Nigeria PAYE Calculator" width="600" height="400" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block">
+          <img src="/assets/img/tools/ng-paye.webp" alt="Nigeria PAYE Calculator" width="600" height="400" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block">
         </div>
         <div class="tc-body">
           <div class="tc-row1">
@@ -1042,7 +1044,7 @@
       <a href="/kenya/ke-paye" class="tc rv d1" data-country="ke" data-tier="tier1" data-status="live">
         <div class="tc-thumb">
           <div class="tc-thumb-ph">🇰🇪</div>
-          <img src="/assets/img/tools/ke-paye.webp" alt="Kenya PAYE Calculator" width="600" height="400" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block">
+          <img src="/assets/img/tools/ke-paye.webp" alt="Kenya PAYE Calculator" width="600" height="400" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block">
         </div>
         <div class="tc-body">
           <div class="tc-row1">
@@ -1062,7 +1064,7 @@
       <a href="/ghana/gh-paye" class="tc rv d2" data-country="gh" data-tier="tier1" data-status="live">
         <div class="tc-thumb">
           <div class="tc-thumb-ph">🇬🇭</div>
-          <img src="/assets/img/tools/gh-paye.webp" alt="Ghana PAYE Calculator" width="600" height="400" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block">
+          <img src="/assets/img/tools/gh-paye.webp" alt="Ghana PAYE Calculator" width="600" height="400" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block">
         </div>
         <div class="tc-body">
           <div class="tc-row1">
@@ -1446,7 +1448,7 @@
       </a>
       <a href="/tools/education-hub/" style="background:#EFF6FF;border:1.5px solid #BFDBFE;border-radius:14px;padding:22px 18px;text-decoration:none;transition:border-color .2s,box-shadow .2s,transform .2s">
         <div style="font-size:1.6rem;margin-bottom:10px">📚</div>
-        <div style="font-size:0.88rem;font-weight:700;color:#007AFF;margin-bottom:4px">Education Hub</div>
+        <div style="font-size:0.88rem;font-weight:700;color:#0062CC;margin-bottom:4px">Education Hub</div>
         <div style="font-size:0.78rem;color:#6B7280;line-height:1.5">All education tools in one place. University rankings, admission guides, exam prep and career resources.</div>
       </a>
     </div>
@@ -1639,8 +1641,8 @@
           <span class="ld-tag">API Access</span>
         </div>
         <div id="fx-preview" style="display:flex;gap:16px;margin-top:14px;font-size:.78rem;font-weight:600;color:#374151">
-          <span>USD/NGN <strong style="color:#007AFF">--</strong></span>
-          <span>USD/KES <strong style="color:#007AFF">--</strong></span>
+          <span>USD/NGN <strong style="color:#0062CC">--</strong></span>
+          <span>USD/KES <strong style="color:#0062CC">--</strong></span>
         </div>
       </a>
 
@@ -1783,7 +1785,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if(fx && d.rates){
       var ngn = Math.round(d.rates.NGN).toLocaleString();
       var kes = Math.round(d.rates.KES);
-      fx.innerHTML = '<span>USD/NGN <strong style="color:#007AFF">' + ngn + '</strong></span><span>USD/KES <strong style="color:#007AFF">KSh' + kes + '</strong></span>';
+      fx.innerHTML = '<span>USD/NGN <strong style="color:#0062CC">' + ngn + '</strong></span><span>USD/KES <strong style="color:#0062CC">KSh' + kes + '</strong></span>';
     }
   }).catch(function(){});
 
@@ -2110,7 +2112,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var isLoggedIn = typeof AfroAuth !== 'undefined' && AfroAuth.isLoggedIn();
     if (!isLoggedIn) {
       section.classList.add('has-favs');
-      grid.innerHTML = '<div class="my-tools-empty"><a href="/dashboard/" style="color:#007AFF;font-weight:600;text-decoration:none;">Sign in</a> to save and sync your favourite tools across devices.</div>';
+      grid.innerHTML = '<div class="my-tools-empty"><a href="/dashboard/" style="color:#0062CC;font-weight:600;text-decoration:none;">Sign in</a> to save and sync your favourite tools across devices.</div>';
       if (countEl) countEl.textContent = '';
       return;
     }
