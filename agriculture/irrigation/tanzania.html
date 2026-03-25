@@ -79,11 +79,11 @@ body { font-family: 'DM Sans', sans-serif; background: var(--ir-bg); color: var(
 .ir-breadcrumb a { color: #fff; text-decoration: none; }
 .ir-breadcrumb a:hover { text-decoration: underline; }
 .ir-hero h1 {
-  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  font-size: clamp(1.35rem, 5.5vw, 2.2rem);
   font-weight: 800;
   margin: 0 0 0.5rem;
-  text-transform: uppercase;
   letter-spacing: -0.02em;
+  line-height: 1.15;
 }
 .ir-hero h1 .flag { font-size: 1.1em; margin-right: 0.3em; }
 .ir-hero-sub { font-size: 1rem; opacity: 0.85; max-width: 600px; line-height: 1.5; }
@@ -229,6 +229,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--ir-bg); color: var(
 @media (max-width: 600px) {
   .ir-table { font-size: 0.72rem; }
   .ir-table th, .ir-table td { padding: 0.4rem 0.3rem; }
+  #seasonTableWrap::after { content: '← scroll →'; display: block; text-align: center; font-size: 0.65rem; color: #94a3b8; padding: 4px 0 0; letter-spacing: .04em; }
 }
 
 /* Method comparison */
@@ -472,7 +473,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--ir-bg); color: var(
       <!-- Monthly breakdown table -->
       <div class="ir-card">
         <h3 class="ir-card-title">&#128202; Season Water Budget</h3>
-        <div style="overflow-x:auto;">
+        <div style="overflow-x:auto;" id="seasonTableWrap">
           <table class="ir-table" id="seasonTable">
             <thead>
               <tr>

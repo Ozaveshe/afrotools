@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.bd27dfaf.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Greenhouse Cost Estimator &mdash; 15 African Countries | AfroTools</title>
+<meta name="description" content="Free greenhouse farming cost estimator for 15 African countries. Calculate setup costs, running expenses, ROI and payback period for tomato, pepper, cucumber greenhouses.">
+<link rel="canonical" href="https://afrotools.com/agriculture/greenhouse/">
+
+<meta property="og:title" content="Greenhouse Cost Estimator for Africa &mdash; AfroTools">
+<meta property="og:description" content="Calculate greenhouse setup costs, running expenses and ROI across 15 African countries. 5 greenhouse types, 6 crops, full financial analysis.">
+<meta property="og:url" content="https://afrotools.com/agriculture/greenhouse/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Greenhouse Cost Estimator for Africa &mdash; AfroTools">
+<meta name="twitter:description" content="Calculate greenhouse setup costs, running expenses and ROI across 15 African countries.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Greenhouse Cost Estimator for Africa",
+  "url": "https://afrotools.com/agriculture/greenhouse/",
+  "description": "Greenhouse farming cost estimators for 15 African countries. Calculate setup costs, ROI and payback period.",
+  "author": { "@type": "Organization", "name": "AfroTools", "url": "https://afrotools.com" }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "AfroTools", "item": "https://afrotools.com/" },
+    { "@type": "ListItem", "position": 2, "name": "Agriculture", "item": "https://afrotools.com/agriculture/" },
+    { "@type": "ListItem", "position": 3, "name": "Greenhouse Cost Estimator", "item": "https://afrotools.com/agriculture/greenhouse/" }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+
+<style>
+:root {
+  --calc-accent: #007AFF;
+  --calc-accent-dark: #0063D1;
+  --calc-accent-light: #E8F2FF;
+  --color-bg: #F8F9FA;
+  --color-bg-card: #FFFFFF;
+  --color-text: #1A1A2E;
+  --color-text-muted: #6B7280;
+  --radius-md: 18px;
+}
+*, *::before, *::after { box-sizing: border-box; }
+body { font-family: 'DM Sans', sans-serif; background: var(--color-bg); color: var(--color-text); margin: 0; }
+
+.hub-hero {
+  background: #0A1628;
+  color: #fff;
+  padding: 3rem 1rem 2.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hub-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 30% 50%, rgba(0,122,255,0.12) 0%, transparent 60%);
+  pointer-events: none;
+}
+.hub-hero-inner { max-width: 720px; margin: 0 auto; position: relative; z-index: 1; }
+.hub-hero .breadcrumb { font-size: 0.85rem; opacity: 0.7; margin-bottom: 0.75rem; }
+.hub-hero .breadcrumb a { color: #fff; text-decoration: none; }
+.hub-hero .breadcrumb a:hover { text-decoration: underline; }
+.hub-hero h1 { font-size: clamp(1.5rem, 5.5vw, 2.6rem); font-weight: 800; margin: 0 0 0.75rem; letter-spacing: -0.02em; line-height: 1.15; }
+.hub-hero p { font-size: 1.05rem; opacity: 0.85; line-height: 1.6; max-width: 600px; margin: 0 auto; }
+.hub-hero .badge-row { display: flex; justify-content: center; gap: 0.75rem; margin-top: 1rem; flex-wrap: wrap; }
+.hub-badge { background: rgba(255,255,255,0.15); border-radius: 980px; padding: 0.35rem 0.9rem; font-size: 0.82rem; font-weight: 600; }
+
+.hub-main { max-width: 1100px; margin: -1.5rem auto 3rem; padding: 0 1rem; }
+
+/* Greenhouse type strip */
+.type-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.9rem; margin-bottom: 2.5rem; }
+.type-card { background: #fff; border: 1.5px solid #E5E7EB; border-radius: var(--radius-md); padding: 1.1rem 1.3rem; display: flex; align-items: flex-start; gap: 0.8rem; }
+.type-icon { font-size: 1.8rem; flex-shrink: 0; }
+.type-name { font-weight: 800; font-size: 0.9rem; color: var(--color-text); }
+.type-note { font-size: 0.75rem; color: var(--color-text-muted); margin-top: 0.2rem; line-height: 1.45; }
+
+.region-section { margin-bottom: 2rem; }
+.region-label { font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-text-muted); margin-bottom: 0.75rem; padding-bottom: 0.4rem; border-bottom: 2px solid var(--calc-accent-light); }
+
+.country-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.75rem; }
+.country-card { display: flex; align-items: center; gap: 0.6rem; background: var(--color-bg-card); border: 1.5px solid #E5E7EB; border-radius: 14px; padding: 0.85rem 1rem; text-decoration: none; color: var(--color-text); transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s; font-weight: 600; font-size: 0.92rem; }
+.country-card:hover { border-color: var(--calc-accent); box-shadow: 0 4px 12px rgba(0,122,255,0.12); transform: translateY(-2px); }
+.country-card .flag { font-size: 1.5rem; flex-shrink: 0; }
+.country-card .name { flex: 1; }
+.country-card .arr { color: var(--color-text-muted); }
+
+.seo-content { max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
+.seo-content h2 { font-size: 1.2rem; font-weight: 800; text-transform: uppercase; margin: 2rem 0 0.75rem; color: var(--color-text); }
+.seo-content p { font-size: 0.92rem; line-height: 1.7; color: var(--color-text-muted); }
+.faq details { border-bottom: 1px solid #E5E7EB; padding: 0.85rem 0; }
+.faq summary { font-weight: 600; font-size: 0.92rem; cursor: pointer; list-style: none; }
+.faq summary::before { content: '+ '; color: var(--calc-accent); font-weight: 800; }
+.faq details[open] summary::before { content: '- '; }
+.faq p { font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.6; margin: 0.5rem 0 0; }
+</style>
+</head>
+
+<body>
+<afro-navbar theme="dark" active="tools"></afro-navbar>
+
+<section class="hub-hero">
+  <div class="hub-hero-inner">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">AfroTools</a> &rsaquo; <a href="/agriculture/">Agriculture</a> &rsaquo; Greenhouse Cost Estimator
+    </nav>
+    <h1>&#127968; Greenhouse Cost Estimator</h1>
+    <p>Calculate greenhouse setup costs, annual running expenses, ROI and payback period. 5 greenhouse types, 6 crops — with country-specific material costs and market prices.</p>
+    <div class="badge-row">
+      <span class="hub-badge">&#127758; 15 Countries</span>
+      <span class="hub-badge">&#127968; 5 Greenhouse Types</span>
+      <span class="hub-badge">&#128200; Full ROI Analysis</span>
+      <span class="hub-badge">&#127760; 100% Free</span>
+    </div>
+  </div>
+</section>
+
+<div class="hub-main">
+
+  <!-- Greenhouse type overview -->
+  <div class="type-strip" id="typeStrip"></div>
+
+  <!-- Country cards by region -->
+  <div id="countryHub"></div>
+
+</div>
+
+<section class="seo-content">
+  <h2>About the Greenhouse Cost Estimator</h2>
+  <p>AfroTools' Greenhouse Cost Estimator calculates the complete financial picture of greenhouse farming in Africa. Enter your planned greenhouse size and type, choose a crop and number of growing cycles, and get a full cost breakdown — from structure and irrigation to annual running costs, revenue projections, ROI, and payback period. Each country tool uses current local material costs and crop market prices.</p>
+
+  <h2>Greenhouse Types Covered</h2>
+  <p>The calculator covers five greenhouse types common in Africa: wooden frame with polythene (budget option for smallholders), galvanized steel with polythene (the most popular commercial choice), shade net houses (ideal for nurseries and leafy vegetables), steel frame with polycarbonate panels (premium, 12+ year cover life), and hydroponic tunnels (highest yields, export-quality crops). Each type has different setup costs, lifespans, and suitability for African climates.</p>
+
+  <h2>Crops Covered</h2>
+  <p>Tomato, capsicum/bell pepper, cucumber, lettuce/leafy greens, fresh herbs (basil, coriander), and strawberry — the six highest-value greenhouse crops in Africa. The calculator shows yield per m² per cycle, number of cycles per year, price range, and production cost, giving you a complete profitability picture.</p>
+
+  <h2>Frequently Asked Questions</h2>
+  <div class="faq">
+    <details>
+      <summary>What greenhouse size should I start with?</summary>
+      <p>For a first greenhouse, 120–240 m² (an 8×15m or 8×30m tunnel) is a manageable starting point that limits capital risk while generating real commercial output. At 240 m² with steel/polythene and tomatoes, a Kenyan farmer can expect around 3,600 kg/year — worth KSh 288,000 at mid-market prices. Scale up after the first full cycle.</p>
+    </details>
+    <details>
+      <summary>Which greenhouse type gives the best ROI?</summary>
+      <p>Steel-frame with polythene is typically the best value in Africa — good structural life (15 years), manageable setup cost, and familiar to local contractors. Wooden polythene has lower setup cost but frequent maintenance. Polycarbonate and hydroponic have higher setup costs but longer cover life and premium yields for export markets.</p>
+    </details>
+    <details>
+      <summary>How accurate are the cost estimates?</summary>
+      <p>Costs are based on current market data from supplier quotes, government agricultural ministry publications, and FAOSTAT data. Prices vary by location, season and supplier — use these figures as a planning baseline, then get 2–3 quotes from local greenhouse suppliers before committing.</p>
+    </details>
+    <details>
+      <summary>Is greenhouse farming profitable in Africa?</summary>
+      <p>Yes — greenhouse farming in Africa can generate 3–10× the yield of open-field production, plus a quality premium for off-season supply. Kenya's export flower and horticulture sector is built on greenhouses. Morocco's Souss-Massa region (30,000+ ha of greenhouses) is Africa's most successful example of large-scale greenhouse farming. The key success factors are consistent water supply, proximity to markets or export channels, and good crop management.</p>
+    </details>
+    <details>
+      <summary>What data sources are used?</summary>
+      <p>Greenhouse construction costs: local supplier catalogues (Aqua Hub Kenya, Netafim, Richel Group), KALRO data, and FOFIFA publications. Crop yields: FAOSTAT, CGIAR protected agriculture research, and national horticultural boards. Market prices: national commodity price bulletins updated annually.</p>
+    </details>
+  </div>
+</section>
+
+<afro-footer></afro-footer>
+
+<script src="/data/agriculture/greenhouse-data.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  // ── Greenhouse type strip ──────────────────────────────────
+  var typeStrip = document.getElementById('typeStrip');
+  var typeOrder = ['wooden_polythene', 'steel_polythene', 'shade_house', 'steel_polycarbonate', 'hydroponic_tunnel'];
+  typeOrder.forEach(function (k) {
+    var t = GREENHOUSE_DATA.types[k];
+    var el = document.createElement('div');
+    el.className = 'type-card';
+    el.innerHTML =
+      '<div class="type-icon">' + t.icon + '</div>' +
+      '<div><div class="type-name">' + t.name + '</div>' +
+      '<div class="type-note">' + t.desc + '</div></div>';
+    typeStrip.appendChild(el);
+  });
+
+  // ── Country cards ─────────────────────────────────────────
+  var countries = [
+    // West Africa
+    { code: 'NG', name: 'Nigeria',        flag: '🇳🇬', slug: 'nigeria',       region: 'West Africa' },
+    { code: 'GH', name: 'Ghana',          flag: '🇬🇭', slug: 'ghana',         region: 'West Africa' },
+    { code: 'CI', name: "Côte d'Ivoire",  flag: '🇨🇮', slug: 'cote-d-ivoire', region: 'West Africa' },
+    { code: 'SN', name: 'Senegal',        flag: '🇸🇳', slug: 'senegal',       region: 'West Africa' },
+    // East Africa
+    { code: 'KE', name: 'Kenya',          flag: '🇰🇪', slug: 'kenya',         region: 'East Africa' },
+    { code: 'ET', name: 'Ethiopia',       flag: '🇪🇹', slug: 'ethiopia',      region: 'East Africa' },
+    { code: 'TZ', name: 'Tanzania',       flag: '🇹🇿', slug: 'tanzania',      region: 'East Africa' },
+    { code: 'UG', name: 'Uganda',         flag: '🇺🇬', slug: 'uganda',        region: 'East Africa' },
+    { code: 'RW', name: 'Rwanda',         flag: '🇷🇼', slug: 'rwanda',        region: 'East Africa' },
+    // Central Africa
+    { code: 'CM', name: 'Cameroon',       flag: '🇨🇲', slug: 'cameroon',      region: 'Central Africa' },
+    // Southern Africa
+    { code: 'ZA', name: 'South Africa',   flag: '🇿🇦', slug: 'south-africa',  region: 'Southern Africa' },
+    { code: 'AO', name: 'Angola',         flag: '🇦🇴', slug: 'angola',        region: 'Southern Africa' },
+    // North Africa
+    { code: 'EG', name: 'Egypt',          flag: '🇪🇬', slug: 'egypt',         region: 'North Africa' },
+    { code: 'MA', name: 'Morocco',        flag: '🇲🇦', slug: 'morocco',       region: 'North Africa' },
+    { code: 'TN', name: 'Tunisia',        flag: '🇹🇳', slug: 'tunisia',       region: 'North Africa' }
+  ];
+
+  var hub = document.getElementById('countryHub');
+  var regions = ['West Africa', 'East Africa', 'Central Africa', 'Southern Africa', 'North Africa'];
+
+  regions.forEach(function (region) {
+    var group = countries.filter(function (c) { return c.region === region; });
+    if (!group.length) return;
+
+    var section = document.createElement('div');
+    section.className = 'region-section';
+
+    var label = document.createElement('div');
+    label.className = 'region-label';
+    label.textContent = region + ' (' + group.length + ')';
+    section.appendChild(label);
+
+    var grid = document.createElement('div');
+    grid.className = 'country-grid';
+
+    group.forEach(function (c) {
+      var a = document.createElement('a');
+      a.className = 'country-card';
+      a.href = '/agriculture/greenhouse/' + c.slug;
+      a.innerHTML =
+        '<span class="flag">' + c.flag + '</span>' +
+        '<span class="name">' + c.name + '</span>' +
+        '<span class="arr">&rsaquo;</span>';
+      grid.appendChild(a);
+    });
+
+    section.appendChild(grid);
+    hub.appendChild(section);
+  });
+}());
+</script>
+</body>
+</html>

@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.bd27dfaf.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crop Rotation Planner for Africa &mdash; Free Farm Planning Tool | AfroTools</title>
+<meta name="description" content="Plan optimal crop rotation sequences for your African farm. Get season-by-season recommendations based on soil science. Works for all 54 African countries.">
+<link rel="canonical" href="https://afrotools.com/agriculture/crop-rotation/">
+
+<meta property="og:title" content="African Crop Rotation Planner &mdash; AfroTools">
+<meta property="og:description" content="Plan optimal crop rotation sequences for your African farm. Season-by-season recommendations based on soil science for all 54 African countries.">
+<meta property="og:url" content="https://afrotools.com/agriculture/crop-rotation/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="African Crop Rotation Planner &mdash; AfroTools">
+<meta name="twitter:description" content="Plan optimal crop rotation sequences for your African farm. Works for all 54 countries.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "African Crop Rotation Planner",
+  "url": "https://afrotools.com/agriculture/crop-rotation/",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "All",
+  "description": "Plan optimal multi-season crop rotation sequences for African farms. Based on documented agronomic research. Works for all 54 African countries.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "author": { "@type": "Organization", "name": "AfroTools", "url": "https://afrotools.com" },
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com"},
+      {"@type":"ListItem","position":2,"name":"Agriculture","item":"https://afrotools.com/agriculture/"},
+      {"@type":"ListItem","position":3,"name":"Crop Rotation Planner","item":"https://afrotools.com/agriculture/crop-rotation/"}
+    ]
+  }
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+
+<style>
+:root {
+  --acc: #007AFF;
+  --acc-dark: #0063D1;
+  --acc-light: #E8F2FF;
+  --acc-rgb: 0,122,255;
+  --bg: #F8F9FA;
+  --card-bg: #ffffff;
+  --text: #0f172a;
+  --text-muted: #64748b;
+  --border: #E2E8F0;
+  --radius-card: 18px;
+  --radius-pill: 980px;
+}
+*, *::before, *::after { box-sizing: border-box; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); margin: 0; }
+
+/* ── HERO ── */
+.tool-hero {
+  background: #0A1628;
+  padding: 40px 0 36px;
+  position: relative;
+  overflow: hidden;
+}
+.tool-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 25% 50%, rgba(0,122,255,0.14) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 20%, rgba(0,122,255,0.07) 0%, transparent 50%);
+  pointer-events: none;
+}
+.hero-inner { max-width: 1100px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+.breadcrumb { font-size: 0.75rem; color: rgba(255,255,255,0.4); margin-bottom: 14px; }
+.breadcrumb a { color: rgba(255,255,255,0.5); text-decoration: none; }
+.breadcrumb a:hover { color: #fff; }
+.breadcrumb span { margin: 0 6px; opacity: 0.4; }
+.tool-hero h1 { font-size: clamp(1.6rem,3.5vw,2.4rem); font-weight: 800; color: #fff; margin: 0 0 10px; letter-spacing: -0.02em; }
+.tool-hero h1 em { color: var(--acc); font-style: normal; }
+.hero-sub { font-size: 0.9rem; color: rgba(255,255,255,0.62); max-width: 580px; line-height: 1.65; margin: 0 0 18px; }
+.hero-badges { display: flex; flex-wrap: wrap; gap: 8px; }
+.hbadge { padding: 4px 12px; border-radius: var(--radius-pill); font-size: 0.72rem; font-weight: 700; background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.12); }
+.hbadge-blue { background: rgba(0,122,255,0.2); color: #60A5FA; border-color: rgba(0,122,255,0.3); }
+
+/* ── LAYOUT ── */
+.tool-wrap { max-width: 1100px; margin: -16px auto 60px; padding: 0 24px; position: relative; z-index: 2; }
+.tool-grid { display: grid; grid-template-columns: 400px 1fr; gap: 24px; align-items: start; }
+@media (max-width: 860px) { .tool-grid { grid-template-columns: 1fr; } }
+
+/* ── CARDS ── */
+.card { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius-card); box-shadow: 0 2px 8px rgba(0,0,0,0.04); overflow: hidden; }
+.card-head { padding: 14px 20px; background: #F8FAFD; border-bottom: 1px solid #F1F5F9; display: flex; align-items: center; gap: 8px; }
+.card-title { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #3D5A80; margin: 0; }
+.card-body { padding: 20px; }
+
+/* ── FORM FIELDS ── */
+.field { margin-bottom: 16px; }
+.f-label { display: block; font-size: 0.72rem; font-weight: 700; color: #2D3A5A; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
+.f-hint { font-size: 0.68rem; font-weight: 400; color: var(--text-muted); margin-left: 6px; text-transform: none; letter-spacing: 0; }
+.f-select, .f-input {
+  font-family: 'DM Sans', sans-serif; font-size: 0.875rem;
+  padding: 10px 12px; border: 1.5px solid #CBD5E1; border-radius: 8px;
+  background: #F4F7FA; color: var(--text); width: 100%; outline: none;
+}
+.f-select:focus, .f-input:focus {
+  border-color: var(--acc); background: #fff;
+  box-shadow: 0 0 0 3px rgba(var(--acc-rgb),0.1);
+}
+
+/* ── RADIO PILLS ── */
+.radio-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+.radio-pill input { display: none; }
+.radio-pill label {
+  padding: 6px 14px; border-radius: var(--radius-pill); border: 1.5px solid var(--border);
+  font-size: 0.78rem; font-weight: 600; color: var(--text-muted); cursor: pointer;
+  transition: all 0.15s; background: #F8FAFD; white-space: nowrap;
+}
+.radio-pill input:checked + label {
+  background: var(--acc); color: #fff; border-color: var(--acc);
+}
+.radio-pill label:hover { border-color: var(--acc); color: var(--acc); }
+
+/* ── BUTTON ── */
+.btn-calc {
+  width: 100%; padding: 14px; background: var(--acc); color: #fff;
+  border: none; border-radius: var(--radius-pill); font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem; font-weight: 800; cursor: pointer; transition: background 0.2s, transform 0.1s;
+  letter-spacing: 0.01em; margin-top: 4px;
+}
+.btn-calc:hover { background: var(--acc-dark); }
+.btn-calc:active { transform: scale(0.98); }
+
+/* ── RESULTS ── */
+#results { display: none; }
+#results.show { display: block; }
+
+/* ── SUMMARY STATS ── */
+.stats-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 20px; }
+@media (max-width: 560px) { .stats-row { grid-template-columns: 1fr 1fr; } }
+.stat-box { background: var(--acc-light); border-radius: 12px; padding: 14px 12px; text-align: center; }
+.stat-val { font-size: 1.5rem; font-weight: 800; color: var(--acc); line-height: 1; }
+.stat-lbl { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--acc-dark); margin-top: 4px; }
+
+/* ── ROTATION TIMELINE ── */
+.rotation-timeline { display: flex; gap: 0; overflow-x: auto; padding-bottom: 4px; margin-bottom: 20px; }
+.season-block {
+  flex: 1; min-width: 110px; padding: 14px 12px 12px; text-align: center;
+  border-right: 2px solid var(--bg); position: relative;
+  cursor: pointer; transition: filter 0.15s;
+}
+.season-block:last-child { border-right: none; }
+.season-block:hover { filter: brightness(0.95); }
+.season-block.active-block { box-shadow: inset 0 -3px 0 var(--acc); }
+.sb-num { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.65; margin-bottom: 6px; }
+.sb-icon { font-size: 1.8rem; line-height: 1; margin-bottom: 4px; }
+.sb-name { font-size: 0.72rem; font-weight: 700; line-height: 1.3; }
+.sb-tag { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 4px; opacity: 0.7; }
+
+/* ── SEASON DETAIL ── */
+.season-detail { border-radius: 14px; padding: 18px; margin-bottom: 16px; border: 1.5px solid transparent; }
+.sd-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.sd-icon { font-size: 2rem; }
+.sd-title { font-size: 1.1rem; font-weight: 800; }
+.sd-subtitle { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
+
+.sd-section { margin-bottom: 12px; }
+.sd-section-title { font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); margin-bottom: 6px; }
+.sd-reason { font-size: 0.85rem; line-height: 1.6; color: var(--text); }
+
+.intercrop-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.intercrop-tag { background: rgba(var(--acc-rgb),0.08); color: var(--acc-dark); border-radius: 8px; padding: 4px 10px; font-size: 0.75rem; font-weight: 600; }
+.intercrop-tag small { display: block; font-size: 0.65rem; font-weight: 400; color: var(--text-muted); margin-top: 1px; }
+
+.alt-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.alt-tag { background: #F1F5F9; color: var(--text-muted); border-radius: 8px; padding: 4px 10px; font-size: 0.75rem; font-weight: 600; }
+
+.nfix-badge { display: inline-flex; align-items: center; gap: 5px; background: #F0FDF4; color: #15803D; border-radius: var(--radius-pill); padding: 4px 12px; font-size: 0.75rem; font-weight: 700; }
+
+/* ── SOIL HEALTH ── */
+.soil-bar-wrap { margin: 8px 0; }
+.soil-bar-track { background: #E2E8F0; border-radius: var(--radius-pill); height: 10px; overflow: hidden; }
+.soil-bar-fill { height: 100%; border-radius: var(--radius-pill); transition: width 0.8s ease; }
+.soil-labels { display: flex; justify-content: space-between; font-size: 0.68rem; font-weight: 600; color: var(--text-muted); margin-top: 4px; }
+
+/* ── PROVEN ROTATION ── */
+.proven-box { background: #FFFBEB; border: 1.5px solid #FDE68A; border-radius: 12px; padding: 14px 16px; margin-bottom: 16px; }
+.proven-box h4 { font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: #92400E; margin: 0 0 6px; }
+.proven-box p { font-size: 0.82rem; color: #78350F; margin: 0 0 8px; line-height: 1.5; }
+.proven-seq { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+.proven-crop { background: #FEF3C7; border-radius: 8px; padding: 3px 8px; font-size: 0.75rem; font-weight: 700; color: #92400E; }
+.proven-arrow { color: #D97706; font-size: 0.75rem; font-weight: 700; }
+
+/* ── WARNINGS ── */
+.warning-box { background: #FEF2F2; border: 1.5px solid #FECACA; border-radius: 10px; padding: 10px 14px; margin-bottom: 10px; font-size: 0.8rem; color: #991B1B; }
+.warning-box strong { display: block; margin-bottom: 2px; }
+
+/* ── CROSS-LINKS ── */
+.cross-links { display: grid; grid-template-columns: repeat(auto-fit,minmax(180px,1fr)); gap: 10px; margin-top: 24px; }
+.cross-link {
+  background: #F8FAFD; border: 1.5px solid var(--border); border-radius: 12px;
+  padding: 12px 14px; text-decoration: none; color: var(--text);
+  display: flex; align-items: center; gap: 10px; transition: border-color 0.15s, box-shadow 0.15s;
+}
+.cross-link:hover { border-color: var(--acc); box-shadow: 0 3px 12px rgba(var(--acc-rgb),0.1); }
+.cl-icon { font-size: 1.4rem; flex-shrink: 0; }
+.cl-name { font-size: 0.8rem; font-weight: 700; }
+.cl-desc { font-size: 0.68rem; color: var(--text-muted); margin-top: 1px; }
+
+/* ── INFO SECTION ── */
+.info-section { max-width: 1100px; margin: 0 auto 60px; padding: 0 24px; }
+.info-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap: 16px; }
+.info-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius-card); padding: 20px; }
+.info-card h3 { font-size: 0.85rem; font-weight: 800; margin: 0 0 8px; }
+.info-card p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.6; margin: 0; }
+
+/* ── LOADING ── */
+.loading-spinner { display: none; width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto; }
+.btn-calc.loading .btn-text { display: none; }
+.btn-calc.loading .loading-spinner { display: block; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── EMPTY STATE ── */
+.empty-state { text-align: center; padding: 60px 24px; color: var(--text-muted); }
+.empty-state .es-icon { font-size: 3rem; margin-bottom: 12px; }
+.empty-state h3 { font-size: 1rem; font-weight: 700; color: var(--text); margin: 0 0 6px; }
+.empty-state p { font-size: 0.85rem; line-height: 1.6; max-width: 320px; margin: 0 auto; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 600px) {
+  .card-body { padding: 16px; }
+  .stats-row { grid-template-columns: 1fr 1fr; }
+  .hero-inner { padding: 0 16px; }
+  .tool-wrap { padding: 0 16px; }
+}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<!-- ── HERO ── -->
+<section class="tool-hero">
+  <div class="hero-inner">
+    <div class="breadcrumb">
+      <a href="/">Home</a><span>›</span>
+      <a href="/agriculture/">Agriculture</a><span>›</span>
+      Crop Rotation Planner
+    </div>
+    <h1>African <em>Crop Rotation</em> Planner</h1>
+    <p class="hero-sub">Plan multi-season crop sequences for better yields, healthier soil, and lower input costs. Built on documented African agronomic research.</p>
+    <div class="hero-badges">
+      <span class="hbadge hbadge-blue">🔄 All 54 Countries</span>
+      <span class="hbadge">🌱 Soil Science</span>
+      <span class="hbadge">🧪 N-Fixation Data</span>
+      <span class="hbadge">📊 Yield Boost Estimates</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── MAIN ── -->
+<div class="tool-wrap">
+  <div class="tool-grid">
+
+    <!-- LEFT: FORM -->
+    <div>
+      <div class="card">
+        <div class="card-head">
+          <span>🔄</span>
+          <span class="card-title">Plan Your Rotation</span>
+        </div>
+        <div class="card-body">
+          <!-- Country -->
+          <div class="field">
+            <label class="f-label" for="sel-country">Country <span class="f-hint">Loads local crop list</span></label>
+            <select id="sel-country" class="f-select">
+              <option value="">— Select your country —</option>
+            </select>
+          </div>
+
+          <!-- Previous/Current Crop -->
+          <div class="field">
+            <label class="f-label" for="sel-prev-crop">Current / Last Crop Grown <span class="f-hint">What's in the ground (or was last season)</span></label>
+            <select id="sel-prev-crop" class="f-select" disabled>
+              <option value="">— Select country first —</option>
+            </select>
+          </div>
+
+          <!-- Seasons -->
+          <div class="field">
+            <label class="f-label">Seasons to Plan</label>
+            <div class="radio-pills">
+              <div class="radio-pill"><input type="radio" name="seasons" id="s2" value="2"><label for="s2">2 Seasons</label></div>
+              <div class="radio-pill"><input type="radio" name="seasons" id="s3" value="3"><label for="s3">3 Seasons</label></div>
+              <div class="radio-pill"><input type="radio" name="seasons" id="s4" value="4" checked><label for="s4">4 Seasons</label></div>
+              <div class="radio-pill"><input type="radio" name="seasons" id="s6" value="6"><label for="s6">6 Seasons</label></div>
+              <div class="radio-pill"><input type="radio" name="seasons" id="s8" value="8"><label for="s8">8 Seasons</label></div>
+            </div>
+          </div>
+
+          <!-- Farm Goal -->
+          <div class="field">
+            <label class="f-label">Farm Goal</label>
+            <div class="radio-pills">
+              <div class="radio-pill"><input type="radio" name="goal" id="g-yield" value="maximize_yield" checked><label for="g-yield">🌽 Max Yield</label></div>
+              <div class="radio-pill"><input type="radio" name="goal" id="g-soil" value="restore_soil"><label for="g-soil">🌱 Restore Soil</label></div>
+              <div class="radio-pill"><input type="radio" name="goal" id="g-pests" value="minimize_pests"><label for="g-pests">🐛 Fewer Pests</label></div>
+              <div class="radio-pill"><input type="radio" name="goal" id="g-profit" value="maximize_profit"><label for="g-profit">💰 Max Profit</label></div>
+            </div>
+          </div>
+
+          <!-- Soil Condition -->
+          <div class="field">
+            <label class="f-label">Current Soil Condition</label>
+            <div class="radio-pills">
+              <div class="radio-pill"><input type="radio" name="soil" id="soil-dep" value="depleted"><label for="soil-dep">😟 Depleted</label></div>
+              <div class="radio-pill"><input type="radio" name="soil" id="soil-avg" value="average" checked><label for="soil-avg">😐 Average</label></div>
+              <div class="radio-pill"><input type="radio" name="soil" id="soil-good" value="good"><label for="soil-good">🙂 Good</label></div>
+              <div class="radio-pill"><input type="radio" name="soil" id="soil-exc" value="excellent"><label for="soil-exc">😄 Excellent</label></div>
+            </div>
+          </div>
+
+          <button class="btn-calc" id="btn-calc" onclick="calcRotation()">
+            <span class="btn-text">🔄 Generate Rotation Plan</span>
+            <div class="loading-spinner"></div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Cross-links to other agri tools -->
+      <div style="margin-top:16px;">
+        <div style="font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-muted);margin-bottom:10px;">Other Agriculture Tools</div>
+        <div class="cross-links">
+          <a href="/agriculture/crop-yield/" class="cross-link">
+            <span class="cl-icon">🌾</span>
+            <div><div class="cl-name">Crop Yield Estimator</div><div class="cl-desc">54 countries</div></div>
+          </a>
+          <a href="/agriculture/fertilizer/" class="cross-link">
+            <span class="cl-icon">🧪</span>
+            <div><div class="cl-name">Fertilizer Calculator</div><div class="cl-desc">NPK requirements</div></div>
+          </a>
+          <a href="/agriculture/irrigation/" class="cross-link">
+            <span class="cl-icon">💧</span>
+            <div><div class="cl-name">Irrigation Calculator</div><div class="cl-desc">Water scheduling</div></div>
+          </a>
+          <a href="/agriculture/farm-profit/" class="cross-link">
+            <span class="cl-icon">📊</span>
+            <div><div class="cl-name">Farm Profit/Loss</div><div class="cl-desc">Full cost analysis</div></div>
+          </a>
+          <a href="/agriculture/seed-rate/" class="cross-link">
+            <span class="cl-icon">🌱</span>
+            <div><div class="cl-name">Seed Rate Calculator</div><div class="cl-desc">Planting quantities</div></div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: RESULTS -->
+    <div>
+      <!-- Empty state -->
+      <div class="card" id="empty-card">
+        <div class="card-body">
+          <div class="empty-state">
+            <div class="es-icon">🔄</div>
+            <h3>Your Rotation Plan Will Appear Here</h3>
+            <p>Select your country, current crop, goals, and click "Generate Rotation Plan" to get your season-by-season schedule.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div id="results">
+        <!-- Stats row -->
+        <div class="card" style="margin-bottom:16px;">
+          <div class="card-body" style="padding:16px;">
+            <div class="stats-row">
+              <div class="stat-box">
+                <div class="stat-val" id="stat-boost">—</div>
+                <div class="stat-lbl">Yield Boost Est.</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-val" id="stat-nfix">—</div>
+                <div class="stat-lbl">N Fixed (kg/ha)</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-val" id="stat-diversity">—</div>
+                <div class="stat-lbl">Crop Types Used</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Proven rotation notice -->
+        <div id="proven-box" class="proven-box" style="display:none;">
+          <h4>✅ Proven Rotation for Your Region</h4>
+          <p id="proven-desc"></p>
+          <div class="proven-seq" id="proven-seq"></div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="card" style="margin-bottom:16px;">
+          <div class="card-head">
+            <span>📅</span>
+            <span class="card-title">Season-by-Season Plan</span>
+          </div>
+          <div id="timeline-wrap" class="rotation-timeline"></div>
+        </div>
+
+        <!-- Detail panel -->
+        <div class="card" style="margin-bottom:16px;">
+          <div class="card-head">
+            <span>🔍</span>
+            <span class="card-title">Season Details — <span id="detail-title">click a season above</span></span>
+          </div>
+          <div class="card-body" id="detail-panel">
+            <p style="color:var(--text-muted);font-size:0.85rem;text-align:center;padding:20px 0;">Click any season block above to see details.</p>
+          </div>
+        </div>
+
+        <!-- Soil Health -->
+        <div class="card" style="margin-bottom:16px;">
+          <div class="card-head">
+            <span>🌍</span>
+            <span class="card-title">Soil Health Projection</span>
+          </div>
+          <div class="card-body">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+              <div>
+                <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-muted);">Start</div>
+                <div style="font-size:1.2rem;font-weight:800;" id="soil-start">—</div>
+              </div>
+              <div style="font-size:1.5rem;">→</div>
+              <div style="text-align:right;">
+                <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-muted);">After Rotation</div>
+                <div style="font-size:1.2rem;font-weight:800;" id="soil-end">—</div>
+              </div>
+            </div>
+            <div class="soil-bar-wrap">
+              <div class="soil-bar-track"><div class="soil-bar-fill" id="soil-bar" style="width:0%;background:#34D399;"></div></div>
+              <div class="soil-labels"><span>0</span><span>Soil Health Score</span><span>100</span></div>
+            </div>
+            <div id="soil-change-note" style="font-size:0.82rem;color:var(--text-muted);margin-top:8px;"></div>
+          </div>
+        </div>
+
+        <!-- Warnings -->
+        <div id="warnings-section" style="display:none;">
+          <div class="card-head" style="background:#FEF2F2;border:1px solid #FECACA;border-radius:12px 12px 0 0;padding:12px 16px;">
+            <span>⚠️</span>
+            <span class="card-title" style="color:#991B1B;">Rotation Warnings</span>
+          </div>
+          <div id="warnings-list" style="background:#fff;border:1px solid #FECACA;border-radius:0 0 12px 12px;border-top:none;padding:12px 16px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── EDUCATIONAL SECTION ── -->
+<section class="info-section">
+  <div style="margin-bottom:20px;">
+    <h2 style="font-size:1.2rem;font-weight:800;margin:0 0 6px;">Why Crop Rotation Matters in Africa</h2>
+    <p style="font-size:0.88rem;color:var(--text-muted);margin:0;">Research-backed benefits from African field trials across 20+ countries.</p>
+  </div>
+  <div class="info-grid">
+    <div class="info-card">
+      <h3>🌱 Nitrogen Fixation</h3>
+      <p>Legumes like cowpea (32 kg N/ha), soybean (80 kg N/ha), and groundnut (67 kg N/ha) fix atmospheric nitrogen into soil — reducing or eliminating the need for expensive N fertilizer in the following season.</p>
+    </div>
+    <div class="info-card">
+      <h3>🐛 Pest & Disease Breaks</h3>
+      <p>Many pests and pathogens are crop-specific. Planting different families in sequence starves pest populations. A simple maize–cowpea rotation can reduce Striga weed infestation by up to 90% within two seasons.</p>
+    </div>
+    <div class="info-card">
+      <h3>📈 Yield Improvements</h3>
+      <p>Field trials across Africa show maize after soybean yields 52% more than continuous maize. Wheat after chickpea yields 30% more. These are documented averages — better soil structure and N availability drive the gains.</p>
+    </div>
+    <div class="info-card">
+      <h3>💰 Lower Input Costs</h3>
+      <p>A season of legumes can save 40–60 kg/ha of urea in the next cereal crop. At $0.50–0.80/kg for fertilizer across Africa, that's $20–50/ha saved every other season — significant for smallholder budgets.</p>
+    </div>
+    <div class="info-card">
+      <h3>🌊 Soil Structure</h3>
+      <p>Alternating deep-rooted crops (cassava, pigeon pea) with shallow-rooted cereals breaks hardpan layers, improves water infiltration, and accesses nutrients at different soil depths.</p>
+    </div>
+    <div class="info-card">
+      <h3>🌍 African Research Base</h3>
+      <p>The rotation data in this tool draws on studies by Dakora, Sanginga, Vanlauwe, and the IITA/CIMMYT African trial networks spanning Ethiopia, Kenya, Nigeria, Burkina Faso, Malawi, Zambia, and more.</p>
+    </div>
+  </div>
+</section>
+
+<afro-footer></afro-footer>
+
+<!-- Scripts -->
+<script src="/data/agriculture/country-index.js"></script>
+<script src="/engines/crop-rotation-engine.js"></script>
+<script>
+(function() {
+  "use strict";
+  var engine, countryIndex, currentResult, activeSeasonIdx;
+
+  // ── INIT ──────────────────────────────────────────────────────
+  function init() {
+    engine = window.AfroTools && window.AfroTools.CropRotationEngine;
+    countryIndex = window.AfroTools && window.AfroTools.countryIndex;
+
+    if (!engine || !countryIndex) {
+      console.warn("AfroTools engine or country index not loaded");
+      return;
+    }
+    populateCountries();
+  }
+
+  function populateCountries() {
+    var sel = document.getElementById("sel-country");
+    // Group by region
+    var regions = {};
+    countryIndex.forEach(function(c) {
+      if (!regions[c.region]) regions[c.region] = [];
+      regions[c.region].push(c);
+    });
+    var regionOrder = ["west_africa","east_africa","central_africa","southern_africa","north_africa","island_nations"];
+    var regionNames = { west_africa:"West Africa", east_africa:"East Africa", central_africa:"Central Africa", southern_africa:"Southern Africa", north_africa:"North Africa", island_nations:"Island Nations" };
+    regionOrder.forEach(function(r) {
+      if (!regions[r]) return;
+      var og = document.createElement("optgroup");
+      og.label = regionNames[r] || r;
+      regions[r].forEach(function(c) {
+        var o = document.createElement("option");
+        o.value = c.code;
+        o.textContent = c.flag + " " + c.name;
+        og.appendChild(o);
+      });
+      sel.appendChild(og);
+    });
+    sel.addEventListener("change", onCountryChange);
+  }
+
+  function onCountryChange() {
+    var code = document.getElementById("sel-country").value;
+    var cropSel = document.getElementById("sel-prev-crop");
+    cropSel.innerHTML = "";
+
+    if (!code) {
+      cropSel.innerHTML = "<option>— Select country first —</option>";
+      cropSel.disabled = true;
+      return;
+    }
+
+    var country = countryIndex.find(function(c) { return c.code === code; });
+    if (!country) return;
+
+    var crops = engine.getAvailableCrops(country.topCrops);
+    // Add all known crops not in topCrops but available in engine
+    var allCrops = engine.getAllCrops();
+    var topSet = new Set(crops);
+    var others = allCrops.filter(function(c) { return !topSet.has(c.id); });
+
+    var topOg = document.createElement("optgroup");
+    topOg.label = "Common crops in " + country.name;
+    crops.forEach(function(id) {
+      var o = document.createElement("option");
+      o.value = id;
+      o.textContent = engine.getCropIcon(id) + " " + engine.getCropName(id);
+      topOg.appendChild(o);
+    });
+    cropSel.appendChild(topOg);
+
+    if (others.length) {
+      var otherOg = document.createElement("optgroup");
+      otherOg.label = "Other crops";
+      others.forEach(function(c) {
+        var o = document.createElement("option");
+        o.value = c.id;
+        o.textContent = engine.getCropIcon(c.id) + " " + engine.getCropName(c.id);
+        otherOg.appendChild(o);
+      });
+      cropSel.appendChild(otherOg);
+    }
+    cropSel.disabled = false;
+  }
+
+  // ── CALCULATE ─────────────────────────────────────────────────
+  window.calcRotation = function() {
+    var countryCode = document.getElementById("sel-country").value;
+    var prevCrop    = document.getElementById("sel-prev-crop").value;
+    var seasons     = document.querySelector('input[name="seasons"]:checked');
+    var goal        = document.querySelector('input[name="goal"]:checked');
+    var soil        = document.querySelector('input[name="soil"]:checked');
+
+    if (!countryCode) return alert("Please select your country.");
+    if (!prevCrop) return alert("Please select your current or last crop grown.");
+    if (!seasons || !goal || !soil) return alert("Please complete all fields.");
+
+    var btn = document.getElementById("btn-calc");
+    btn.classList.add("loading");
+
+    // Get available crops for this country
+    var country = countryIndex.find(function(c) { return c.code === countryCode; });
+    var availCrops = engine.getAvailableCrops(country ? country.topCrops : []);
+    // Include all engine crops as fallback
+    var allCropIds = engine.getAllCrops().map(function(c) { return c.id; });
+
+    setTimeout(function() {
+      var result = engine.calculate({
+        countryCode:    countryCode,
+        prevCrop:       prevCrop,
+        seasons:        parseInt(seasons.value),
+        goal:           goal.value,
+        soilCondition:  soil.value,
+        availableCrops: availCrops.length ? availCrops : allCropIds
+      });
+
+      btn.classList.remove("loading");
+
+      if (result.error) {
+        alert("Error: " + result.message);
+        return;
+      }
+
+      currentResult = result;
+      renderResults(result);
+    }, 300);
+  };
+
+  // ── RENDER ────────────────────────────────────────────────────
+  function renderResults(r) {
+    document.getElementById("empty-card").style.display = "none";
+    var res = document.getElementById("results");
+    res.classList.add("show");
+
+    // Stats
+    document.getElementById("stat-boost").textContent = "+" + r.yieldBoost + "%";
+    document.getElementById("stat-nfix").textContent   = r.totalNFixed > 0 ? r.totalNFixed : "0";
+    document.getElementById("stat-diversity").textContent = r.summary.rotationDiversity;
+
+    // Proven rotation
+    var pBox = document.getElementById("proven-box");
+    if (r.provenRotation) {
+      pBox.style.display = "block";
+      document.getElementById("proven-desc").textContent = r.provenRotation.name + ": " + r.provenRotation.desc;
+      var seqEl = document.getElementById("proven-seq");
+      seqEl.innerHTML = "";
+      r.provenRotation.sequence.forEach(function(c, i) {
+        var span = document.createElement("span");
+        span.className = "proven-crop";
+        span.textContent = engine.getCropIcon(c) + " " + engine.getCropName(c);
+        seqEl.appendChild(span);
+        if (i < r.provenRotation.sequence.length - 1) {
+          var arr = document.createElement("span");
+          arr.className = "proven-arrow";
+          arr.textContent = "→";
+          seqEl.appendChild(arr);
+        }
+      });
+    } else {
+      pBox.style.display = "none";
+    }
+
+    // Timeline
+    renderTimeline(r.sequence);
+
+    // Soil health
+    var sh = r.soilHealth;
+    var startPct = sh.start;
+    var endPct   = sh.end;
+    var change   = sh.end - sh.start;
+    document.getElementById("soil-start").textContent = sh.start + "/100";
+    document.getElementById("soil-end").textContent   = sh.end   + "/100";
+    document.getElementById("soil-bar").style.width = endPct + "%";
+    document.getElementById("soil-bar").style.background = endPct >= 60 ? "#34D399" : endPct >= 40 ? "#FBBF24" : "#F87171";
+    var noteEl = document.getElementById("soil-change-note");
+    if (change > 0) {
+      noteEl.textContent = "🟢 Your rotation is projected to improve soil health by " + change + " points. " + (r.legumeSeasonsCount > 0 ? r.legumeSeasonsCount + " legume season(s) driving N fixation." : "");
+      noteEl.style.color = "#15803D";
+    } else if (change < 0) {
+      noteEl.textContent = "🔴 Soil health projected to decline " + Math.abs(change) + " points. Consider adding a legume season.";
+      noteEl.style.color = "#DC2626";
+    } else {
+      noteEl.textContent = "🟡 Soil health is projected to remain stable.";
+      noteEl.style.color = "#D97706";
+    }
+
+    // Warnings
+    var warnSec = document.getElementById("warnings-section");
+    var warnList = document.getElementById("warnings-list");
+    warnList.innerHTML = "";
+    if (r.warnings && r.warnings.length) {
+      warnSec.style.display = "block";
+      r.warnings.forEach(function(w) {
+        var div = document.createElement("div");
+        div.className = "warning-box";
+        div.innerHTML = "<strong>⚠️ Season " + w.season + " — Avoid: " + engine.getCropName(w.crop1) + " → " + engine.getCropName(w.crop2) + "</strong>" + w.message;
+        warnList.appendChild(div);
+      });
+    } else {
+      warnSec.style.display = "none";
+    }
+
+    // Auto-show first season detail
+    activeSeasonIdx = 0;
+    showSeasonDetail(0, r.sequence[0]);
+
+    // Scroll to results on mobile
+    if (window.innerWidth < 860) {
+      setTimeout(function() {
+        document.getElementById("results").scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 100);
+    }
+  }
+
+  function renderTimeline(sequence) {
+    var wrap = document.getElementById("timeline-wrap");
+    wrap.innerHTML = "";
+    sequence.forEach(function(s, i) {
+      var col = s.groupColor;
+      var div = document.createElement("div");
+      div.className = "season-block" + (i === 0 ? " active-block" : "");
+      div.style.background = col.bg;
+      div.dataset.idx = i;
+      div.innerHTML =
+        "<div class='sb-num'>Season " + s.season + "</div>" +
+        "<div class='sb-icon'>" + s.cropIcon + "</div>" +
+        "<div class='sb-name' style='color:" + col.text + "'>" + s.cropName + "</div>" +
+        "<div class='sb-tag' style='color:" + col.text + "'>" + col.label + "</div>" +
+        (s.nFixer ? "<div style='font-size:0.6rem;margin-top:4px;color:#15803D;font-weight:700;'>N-Fixer ✓</div>" : "");
+      div.addEventListener("click", function() {
+        // Update active
+        wrap.querySelectorAll(".season-block").forEach(function(b) { b.classList.remove("active-block"); });
+        div.classList.add("active-block");
+        activeSeasonIdx = i;
+        showSeasonDetail(i, sequence[i]);
+      });
+      wrap.appendChild(div);
+    });
+  }
+
+  function showSeasonDetail(idx, s) {
+    var panel = document.getElementById("detail-panel");
+    var titleEl = document.getElementById("detail-title");
+    titleEl.textContent = "Season " + s.season + " — " + s.cropName;
+
+    var col = s.groupColor;
+    var intercropsHtml = "";
+    if (s.intercrops && s.intercrops.length) {
+      intercropsHtml = "<div class='sd-section'>" +
+        "<div class='sd-section-title'>🤝 Intercropping Options</div>" +
+        "<div class='intercrop-tags'>" +
+        s.intercrops.map(function(ic) {
+          return "<div class='intercrop-tag'>" + engine.getCropIcon(ic.crop) + " " + engine.getCropName(ic.crop) + "<small>" + ic.note + "</small></div>";
+        }).join("") +
+        "</div></div>";
+    } else {
+      intercropsHtml = "<div class='sd-section'><div class='sd-section-title'>🤝 Intercropping</div><div style='font-size:0.82rem;color:var(--text-muted);'>This crop is typically grown as a sole crop.</div></div>";
+    }
+
+    var altsHtml = "";
+    if (s.alternatives && s.alternatives.length) {
+      altsHtml = "<div class='sd-section'>" +
+        "<div class='sd-section-title'>🔀 Alternative Crops for This Season</div>" +
+        "<div class='alt-tags'>" +
+        s.alternatives.map(function(a) {
+          return "<span class='alt-tag'>" + a.icon + " " + a.name + "</span>";
+        }).join("") +
+        "</div></div>";
+    }
+
+    var nFixHtml = "";
+    if (s.nFixer && s.nFixed) {
+      nFixHtml = "<span class='nfix-badge'>🌱 N-Fixer: ~" + s.nFixed + " kg N/ha fixed</span>";
+    }
+
+    panel.innerHTML =
+      "<div class='season-detail' style='background:" + col.bg + ";border-color:" + col.border + "'>" +
+        "<div class='sd-header'>" +
+          "<div class='sd-icon'>" + s.cropIcon + "</div>" +
+          "<div>" +
+            "<div class='sd-title' style='color:" + col.text + "'>" + s.cropName + "</div>" +
+            "<div class='sd-subtitle'>After: " + engine.getCropIcon(s.prevCrop) + " " + engine.getCropName(s.prevCrop) + " &nbsp;|&nbsp; Group: " + col.label + "</div>" +
+          "</div>" +
+          (nFixHtml ? "<div style='margin-left:auto'>" + nFixHtml + "</div>" : "") +
+        "</div>" +
+        "<div class='sd-section'>" +
+          "<div class='sd-section-title'>✅ Why This Crop?</div>" +
+          "<div class='sd-reason'>" + s.reason + "</div>" +
+        "</div>" +
+        intercropsHtml +
+        altsHtml +
+      "</div>";
+  }
+
+  // ── BOOT ─────────────────────────────────────────────────────
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>

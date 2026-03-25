@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.bd27dfaf.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cassava Processing Profit Calculator &mdash; 15 African Countries | AfroTools</title>
+<meta name="description" content="Calculate profits from processing cassava into garri, fufu flour, HQCF, chips, or starch. Compare all processing pathways with local costs and prices. 15 African countries.">
+<link rel="canonical" href="https://afrotools.com/agriculture/cassava-processing/">
+
+<meta property="og:title" content="Cassava Processing Profit Calculator &mdash; AfroTools">
+<meta property="og:description" content="Calculate profits from processing cassava into garri, flour, starch or chips. Compare processing pathways with local costs and prices across 15 African countries.">
+<meta property="og:url" content="https://afrotools.com/agriculture/cassava-processing/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:title" content="Cassava Processing Profit Calculator &mdash; AfroTools">
+<meta name="twitter:description" content="Calculate profits from cassava processing in 15 African countries. Garri, HQCF, starch, chips, fufu flour.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Cassava Processing Profit Calculators for Africa",
+  "url": "https://afrotools.com/agriculture/cassava-processing/",
+  "description": "Calculate profitability of cassava processing into garri, fufu flour, HQCF, chips and starch for 15 African countries.",
+  "author": { "@type": "Organization", "name": "AfroTools", "url": "https://afrotools.com" }
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+
+<style>
+:root {
+  --cp-accent: #007AFF;
+  --cp-accent-dark: #0063D1;
+  --cp-accent-light: #E8F2FF;
+  --cp-bg: #F8F9FA;
+  --cp-card: #FFFFFF;
+  --cp-text: #1A1A2E;
+  --cp-muted: #6B7280;
+  --cp-radius: 18px;
+}
+*, *::before, *::after { box-sizing: border-box; }
+body { font-family: 'DM Sans', sans-serif; background: var(--cp-bg); color: var(--cp-text); margin: 0; }
+
+/* Hero */
+.hub-hero {
+  background: linear-gradient(135deg, #001836 0%, var(--cp-accent-dark) 50%, var(--cp-accent) 100%);
+  color: #fff;
+  padding: 3rem 1rem 2.5rem;
+  text-align: center;
+}
+.hub-hero-inner { max-width: 760px; margin: 0 auto; }
+.breadcrumb { font-size: 0.85rem; opacity: 0.7; margin-bottom: 0.75rem; }
+.breadcrumb a { color: #fff; text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+.hub-hero h1 {
+  color: #fff;
+  font-size: clamp(1.5rem, 5.5vw, 2.6rem);
+  font-weight: 800;
+  margin: 0 0 0.75rem;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+.hub-hero p { font-size: 1.05rem; opacity: 0.85; line-height: 1.6; max-width: 640px; margin: 0 auto; }
+.badge-row { display: flex; justify-content: center; gap: 0.75rem; margin-top: 1rem; flex-wrap: wrap; }
+.hub-badge {
+  background: rgba(255,255,255,0.15);
+  border-radius: 980px;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+/* Pathway pills */
+.pathways-bar {
+  max-width: 1100px;
+  margin: 2rem auto 0;
+  padding: 0 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+.pathway-pill {
+  background: #fff;
+  border: 1.5px solid #E5E7EB;
+  border-radius: 980px;
+  padding: 0.4rem 1rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--cp-text);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+.pathway-pill .pill-multiplier { color: var(--cp-accent); font-size: 0.78rem; }
+
+/* Main */
+.hub-main { max-width: 1100px; margin: 2rem auto 3rem; padding: 0 1rem; }
+
+.region-section { margin-bottom: 2rem; }
+.region-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--cp-muted);
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 2px solid var(--cp-accent-light);
+}
+
+.country-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 0.75rem;
+}
+.country-card {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--cp-card);
+  border: 1.5px solid #E5E7EB;
+  border-radius: 14px;
+  padding: 0.85rem 1rem;
+  text-decoration: none;
+  color: var(--cp-text);
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+.country-card:hover {
+  border-color: var(--cp-accent);
+  box-shadow: 0 4px 12px rgba(0,122,255,0.12);
+  transform: translateY(-2px);
+}
+.country-card .flag { font-size: 1.5rem; flex-shrink: 0; }
+.country-card .name { flex: 1; }
+.country-card .arrow { color: var(--cp-muted); font-size: 1.1rem; }
+.country-card .tag {
+  font-size: 0.65rem;
+  font-weight: 700;
+  background: var(--cp-accent-light);
+  color: var(--cp-accent);
+  border-radius: 4px;
+  padding: 1px 5px;
+}
+
+/* Why process */
+.why-section {
+  max-width: 900px;
+  margin: 0 auto 3rem;
+  padding: 0 1rem;
+}
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+.why-card {
+  background: #fff;
+  border-radius: var(--cp-radius);
+  padding: 1.25rem;
+  border: 1.5px solid #E5E7EB;
+  text-align: center;
+}
+.why-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+.why-title { font-size: 0.88rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.4rem; color: var(--cp-text); }
+.why-desc { font-size: 0.82rem; color: var(--cp-muted); line-height: 1.5; }
+
+/* SEO content */
+.seo-content { max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
+.seo-content h2 {
+  font-size: 1.2rem; font-weight: 800; text-transform: uppercase;
+  margin: 2rem 0 0.75rem; color: var(--cp-text);
+}
+.seo-content p { font-size: 0.92rem; line-height: 1.7; color: var(--cp-muted); }
+.faq details { border-bottom: 1px solid #E5E7EB; padding: 0.85rem 0; }
+.faq summary { font-weight: 600; font-size: 0.92rem; cursor: pointer; list-style: none; }
+.faq summary::before { content: '+ '; color: var(--cp-accent); font-weight: 800; }
+.faq details[open] summary::before { content: '- '; }
+.faq p { font-size: 0.88rem; color: var(--cp-muted); line-height: 1.6; margin: 0.5rem 0 0; }
+
+/* Comparison table */
+.compare-table-wrap { overflow-x: auto; margin: 1.25rem 0; }
+.compare-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+.compare-table th { background: #F8FAFD; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #3D5A80; padding: 8px 12px; text-align: left; border-bottom: 2px solid #e2e8f0; white-space: nowrap; }
+.compare-table td { padding: 8px 12px; border-bottom: 1px solid #f1f5f9; }
+.compare-table tr:hover td { background: #FAFBFF; }
+.compare-table .best { color: #16a34a; font-weight: 700; }
+.compare-table .warn { color: #f59e0b; font-size: 0.72rem; }
+
+section-title {
+  font-size: 1.15rem; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 0.04em; color: var(--cp-text); margin: 0 0 1rem;
+  display: block;
+}
+</style>
+
+<link rel="alternate" hreflang="en" href="https://afrotools.com/agriculture/cassava-processing/" />
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/agriculture/cassava-processing/" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Which cassava processing pathway is most profitable?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Cassava starch and HQCF offer the highest price multiples (3–5× over raw cassava), but require more capital investment. For small-scale entry, garri processing offers the best balance of low startup cost, established market, and fast payback period — particularly in West Africa."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does cassava need to be processed quickly?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Fresh cassava undergoes Post-Harvest Physiological Deterioration (PPD) within 24–48 hours of harvest, turning the flesh blue-black and making it inedible. Processing into garri, flour, or chips extends shelf life from 2 days to 6–12+ months, reducing post-harvest losses from ~30% to under 5%."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is HQCF and why is it valuable?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "High Quality Cassava Flour (HQCF) is unfermented, white, odourless cassava flour that can substitute 10–40% of wheat flour in bread, biscuits and pasta. It commands 3–4× the price of raw cassava and serves industrial bakery markets. A flash dryer is required to achieve the quality standard."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What equipment do I need to start processing cassava?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "For garri, basic entry requires knives, basins, a grater, pressing sacks, and frying pans — around USD 100. Semi-mechanised with a motorised grater and hydraulic press costs USD 1,000–1,500. For HQCF at commercial scale, a flash dryer is essential and costs USD 5,000–20,000."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "AfroTools", "item": "https://afrotools.com/" },
+    { "@type": "ListItem", "position": 2, "name": "Agriculture", "item": "https://afrotools.com/agriculture/" },
+    { "@type": "ListItem", "position": 3, "name": "Cassava Processing Calculator", "item": "https://afrotools.com/agriculture/cassava-processing/" }
+  ]
+}
+</script>
+</head>
+
+<body>
+<afro-navbar theme="dark" active="tools"></afro-navbar>
+
+<section class="hub-hero">
+  <div class="hub-hero-inner">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">AfroTools</a> &rsaquo; <a href="/agriculture/">Agriculture</a> &rsaquo; Cassava Processing Calculator
+    </nav>
+    <h1>&#127981; Cassava Processing Profit Calculator</h1>
+    <p>Calculate the profitability of processing cassava into garri, fufu flour, HQCF, chips, or starch. Compare all pathways with local prices, labor costs, and equipment ROI.</p>
+    <div class="badge-row">
+      <span class="hub-badge">&#127981; 5 Processing Pathways</span>
+      <span class="hub-badge">&#127758; 15 Countries</span>
+      <span class="hub-badge">&#128202; ROI & Payback</span>
+      <span class="hub-badge">&#127760; 100% Free</span>
+    </div>
+  </div>
+</section>
+
+<!-- Processing Pathways Summary -->
+<div class="pathways-bar" role="list" aria-label="Processing pathways">
+  <div class="pathway-pill" role="listitem">&#127866; Garri <span class="pill-multiplier">2.5–3× revenue</span></div>
+  <div class="pathway-pill" role="listitem">&#127853; Fufu Flour <span class="pill-multiplier">2–2.5× revenue</span></div>
+  <div class="pathway-pill" role="listitem">&#127806; HQCF <span class="pill-multiplier">3–4× revenue</span></div>
+  <div class="pathway-pill" role="listitem">&#128993; Cassava Chips <span class="pill-multiplier">1.5–2× revenue</span></div>
+  <div class="pathway-pill" role="listitem">&#9879;&#65039; Cassava Starch <span class="pill-multiplier">4–5× revenue</span></div>
+</div>
+
+<!-- Country Grid by Region -->
+<div class="hub-main" id="hubMain"></div>
+
+<!-- Why process cassava -->
+<section class="why-section">
+  <span class="section-title" style="display:block;font-size:1.15rem;font-weight:800;text-transform:uppercase;letter-spacing:0.04em;color:#1A1A2E;margin-bottom:1rem;">&#128161; Why Process Cassava?</span>
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="why-icon">&#9203;</div>
+      <div class="why-title">48-Hour Spoilage</div>
+      <div class="why-desc">Fresh cassava deteriorates in 24–48 hours due to Post-Harvest Physiological Deterioration (PPD). Processing is essential to preserve value.</div>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">&#128200;</div>
+      <div class="why-title">2–5× Revenue</div>
+      <div class="why-desc">Processing multiplies revenue: cassava chips (1.8×), garri (2.8×), HQCF (3.5×), starch (5×). Same roots — far greater income.</div>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">&#128230;</div>
+      <div class="why-title">6–12 Month Shelf Life</div>
+      <div class="why-desc">Processed cassava stores for 6–12+ months, allowing farmers to sell when prices are high rather than immediately after harvest.</div>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">&#127981;</div>
+      <div class="why-title">Low Entry Cost</div>
+      <div class="why-desc">Manual garri processing requires as little as USD 100 in equipment. Semi-mechanised setups pay back in 3–6 months at scale.</div>
+    </div>
+  </div>
+</section>
+
+<!-- Pathway Comparison Table -->
+<section class="seo-content">
+  <h2>Processing Pathway Comparison</h2>
+  <div class="compare-table-wrap">
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Conversion Rate</th>
+          <th>Shelf Life</th>
+          <th>Revenue Multiplier</th>
+          <th>Entry Cost (USD)</th>
+          <th>Best For</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>&#127866; <strong>Garri</strong></td>
+          <td>4.5 kg roots → 1 kg</td>
+          <td>6–12 months</td>
+          <td class="best">2.5–3.5×</td>
+          <td>$100 manual</td>
+          <td>West Africa</td>
+        </tr>
+        <tr>
+          <td>&#127853; <strong>Fufu Flour</strong></td>
+          <td>3.5 kg roots → 1 kg</td>
+          <td>3–6 months</td>
+          <td>2–2.5×</td>
+          <td>$80 manual</td>
+          <td>West &amp; Central Africa</td>
+        </tr>
+        <tr>
+          <td>&#127806; <strong>HQCF</strong></td>
+          <td>4 kg roots → 1 kg</td>
+          <td>12+ months</td>
+          <td class="best">3–4×</td>
+          <td>$3,000+ <span class="warn">(flash dryer)</span></td>
+          <td>Industrial bakeries</td>
+        </tr>
+        <tr>
+          <td>&#128993; <strong>Cassava Chips</strong></td>
+          <td>3 kg roots → 1 kg</td>
+          <td>6–12 months</td>
+          <td>1.5–2×</td>
+          <td>$50 manual</td>
+          <td>East &amp; Southern Africa</td>
+        </tr>
+        <tr>
+          <td>&#9879;&#65039; <strong>Cassava Starch</strong></td>
+          <td>5.5 kg roots → 1 kg</td>
+          <td>12+ months</td>
+          <td class="best">4–5×</td>
+          <td>$2,500+ <span class="warn">(water-intensive)</span></td>
+          <td>Industrial use</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>About the Calculator</h2>
+  <p>The AfroTools Cassava Processing Profit Calculator estimates the profitability of transforming fresh cassava roots into value-added products. Enter your batch volume, processing method, local costs, and selling prices — and get a full breakdown of revenue, cost components, profit per batch, monthly income, annual projection, and equipment ROI.</p>
+
+  <h2>Frequently Asked Questions</h2>
+  <div class="faq">
+    <details>
+      <summary>Which cassava processing pathway is most profitable?</summary>
+      <p>Cassava starch and HQCF offer the highest price multiples (3–5× over raw cassava), but require more capital. For small-scale entry, garri processing has the lowest startup cost, established markets, and fastest payback — particularly in West Africa.</p>
+    </details>
+    <details>
+      <summary>Why does cassava need to be processed quickly?</summary>
+      <p>Fresh cassava undergoes Post-Harvest Physiological Deterioration (PPD) within 24–48 hours. The flesh turns blue-black and becomes inedible. Processing into garri, flour, or chips extends shelf life from 2 days to 6–12+ months, reducing post-harvest losses from ~30% to under 5%.</p>
+    </details>
+    <details>
+      <summary>What is HQCF and why is it valuable?</summary>
+      <p>High Quality Cassava Flour (HQCF) is unfermented, white, odourless cassava flour that can substitute 10–40% of wheat flour in bread, biscuits, and pasta. It commands 3–4× the price of raw cassava and targets industrial bakery markets. A flash dryer is required for the quality standard.</p>
+    </details>
+    <details>
+      <summary>What equipment is needed to start?</summary>
+      <p>For garri, basic manual entry requires knives, basins, a grater, pressing sacks, and frying pans — around USD 100. Semi-mechanised with motorised grater and hydraulic press costs USD 1,000–1,500. For commercial HQCF, a flash dryer is essential at USD 5,000–20,000.</p>
+    </details>
+  </div>
+</section>
+
+<afro-footer></afro-footer>
+
+<script src="/data/agriculture/cassava-processing-data.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var data = window.AfroTools && window.AfroTools.cassavaProcessing;
+  if (!data) return;
+
+  var countries = data.countryList;
+  var hub = document.getElementById('hubMain');
+
+  var regionConfig = {
+    west_africa:    { name: 'West Africa' },
+    east_africa:    { name: 'East Africa' },
+    central_africa: { name: 'Central Africa' },
+    southern_africa:{ name: 'Southern Africa' },
+    island_nations: { name: 'Island Nations' }
+  };
+
+  var regionOrder = ['west_africa','east_africa','central_africa','southern_africa','island_nations'];
+
+  regionOrder.forEach(function (regionKey) {
+    var group = countries.filter(function (c) { return c.region === regionKey; });
+    if (!group.length) return;
+
+    var info = regionConfig[regionKey];
+
+    var section = document.createElement('div');
+    section.className = 'region-section';
+
+    var label = document.createElement('div');
+    label.className = 'region-label';
+    label.textContent = info.name + ' (' + group.length + ')';
+    section.appendChild(label);
+
+    var grid = document.createElement('div');
+    grid.className = 'country-grid';
+
+    group.forEach(function (c) {
+      var cd = data.countries[c.code];
+      // Determine top pathway for this country
+      var garriTag = (cd && cd.garri_per_kg > 0) ? 'Garri' : '';
+      var chipsTag = (!garriTag && cd) ? 'Chips/Flour' : '';
+
+      var a = document.createElement('a');
+      a.className = 'country-card';
+      a.href = '/agriculture/cassava-processing/' + c.slug;
+      a.innerHTML =
+        '<span class="flag">' + c.flag + '</span>' +
+        '<span class="name">' + c.name + '</span>' +
+        (garriTag ? '<span class="tag">' + garriTag + '</span>' : '') +
+        (chipsTag ? '<span class="tag">' + chipsTag + '</span>' : '') +
+        '<span class="arrow">&rsaquo;</span>';
+      grid.appendChild(a);
+    });
+
+    section.appendChild(grid);
+    hub.appendChild(section);
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.bd27dfaf.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cassava Processing Profit Calculator &mdash; Garri, Flour, Starch | Mozambique | AfroTools</title>
+<meta name="description" content="Calculate profits from processing cassava into Cassava Chips, Fufu Flour, HQCF in Mozambique. Compare all processing pathways with local costs, labor rates, and selling prices.">
+<link rel="canonical" href="https://afrotools.com/agriculture/cassava-processing/mozambique">
+
+<meta property="og:title" content="Mozambique Cassava Processing Profit Calculator &mdash; AfroTools">
+<meta property="og:description" content="Calculate profits from processing cassava into Cassava Chips, Fufu Flour, HQCF in Mozambique. Full cost breakdown: raw material, labour, energy, packaging, equipment ROI.">
+<meta property="og:url" content="https://afrotools.com/agriculture/cassava-processing/mozambique">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:title" content="Mozambique Cassava Processing Profit Calculator &mdash; AfroTools">
+<meta name="twitter:description" content="Calculate cassava processing profits in Mozambique. Cassava Chips, Fufu Flour, HQCF. Local prices pre-filled.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Mozambique Cassava Processing Profit Calculator",
+  "url": "https://afrotools.com/agriculture/cassava-processing/mozambique",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "All",
+  "description": "Calculate profits from processing cassava into Cassava Chips, Fufu Flour, HQCF in Mozambique. Full cost analysis including raw material, labour, energy, packaging, and equipment depreciation.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "author": { "@type": "Organization", "name": "AfroTools", "url": "https://afrotools.com" }
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+
+<style>
+:root {
+  --calc-accent: #007AFF;
+  --calc-accent-rgb: 0,122,255;
+  --calc-accent-dark: #0063D1;
+  --calc-accent-light: #E8F2FF;
+  --calc-accent-pale: #EBF4FF;
+}
+*, *::before, *::after { box-sizing: border-box; }
+body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; margin: 0; }
+
+.tool-hero {
+  background: #0A1628;
+  padding: 36px 0 32px;
+  position: relative; overflow: hidden;
+}
+.tool-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 20% 50%, rgba(0,122,255,0.12) 0%, transparent 60%);
+  pointer-events: none;
+}
+.tool-hero .container { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+.breadcrumb { font-size: 0.75rem; font-weight: 500; color: rgba(255,255,255,0.4); margin-bottom: 16px; }
+.breadcrumb a { color: rgba(255,255,255,0.5); text-decoration: none; }
+.breadcrumb a:hover { color: #fff; }
+.breadcrumb span { margin: 0 6px; opacity: 0.4; }
+.tool-hero h1 { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 800; color: #fff; margin: 0 0 8px; letter-spacing: -0.02em; }
+.tool-hero h1 em { color: var(--calc-accent); font-style: normal; }
+.tool-hero-sub { font-size: 0.875rem; color: rgba(255,255,255,0.65); max-width: 620px; line-height: 1.6; margin: 0 0 16px; }
+.hero-badges { display: flex; flex-wrap: wrap; gap: 8px; }
+.badge { padding: 4px 10px; border-radius: 100px; font-size: 0.72rem; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; }
+.badge-blue { background: rgba(0,122,255,0.15); color: var(--calc-accent); }
+.badge-grey { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.6); }
+
+.tool-main { max-width: 1100px; margin: -20px auto 48px; padding: 0 24px; position: relative; z-index: 2; }
+
+.card { background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 20px; }
+.card-head { padding: 14px 20px; background: #F8FAFD; border-bottom: 1px solid #f1f5f9; border-radius: 10px 10px 0 0; display: flex; align-items: center; justify-content: space-between; }
+.card-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #3D5A80; margin: 0; display: flex; align-items: center; gap: 6px; }
+.card-body { padding: 20px; }
+.card-toggle { background: none; border: 1px solid #CBD5E1; border-radius: 6px; padding: 4px 10px; font-size: 0.72rem; font-weight: 600; color: #64748b; cursor: pointer; }
+.card-toggle:hover { background: #f1f5f9; }
+.section-body.collapsed { display: none; }
+
+.field { margin-bottom: 14px; }
+.field.full { grid-column: 1 / -1; }
+.f-label { display: block; font-size: 0.75rem; font-weight: 700; color: #2D3A5A; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.04em; }
+.f-hint { font-size: 0.7rem; font-weight: 400; color: #64748b; margin-left: 6px; text-transform: none; }
+.f-input, .f-select { font-family: 'DM Sans', sans-serif; font-size: 0.9rem; padding: 10px 12px; border: 1.5px solid #CBD5E1; border-radius: 6px; background: #F4F7FA; color: #0f172a; outline: none; width: 100%; }
+.f-input:focus, .f-select:focus { border-color: var(--calc-accent); background: #fff; box-shadow: 0 0 0 3px rgba(0,122,255,0.1); }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media(max-width:640px) { .form-grid { grid-template-columns: 1fr; } }
+
+.pathway-info-box {
+  background: var(--calc-accent-pale);
+  border: 1px solid var(--calc-accent-light);
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 0.82rem;
+  color: #1e3a5f;
+  line-height: 1.5;
+  margin-top: 10px;
+  display: none;
+}
+
+.calc-btn { width: 100%; padding: 14px; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; background: var(--calc-accent); color: #fff; border: none; border-radius: 100px; cursor: pointer; margin-top: 4px; transition: filter 0.15s, transform 0.15s; }
+.calc-btn:hover { filter: brightness(0.85); transform: translateY(-1px); }
+
+/* Results */
+.results-wrap { display: none; }
+.results-wrap.on { display: block; animation: rFade 0.4s ease; }
+@keyframes rFade { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+
+.profit-hero { text-align: center; padding: 28px 16px; border-radius: 10px 10px 0 0; }
+.profit-hero.positive { background: linear-gradient(135deg, #0A3E1A 0%, #1a5e30 100%); }
+.profit-hero.negative { background: linear-gradient(135deg, #3E0A0A 0%, #5e1a1a 100%); }
+.profit-hero.neutral  { background: linear-gradient(135deg, #1a2540 0%, #0063D1 100%); }
+.profit-amount { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; color: #fff; }
+.profit-label  { font-size: 0.78rem; color: rgba(255,255,255,0.6); margin-top: 6px; }
+.profit-sub    { font-size: 0.85rem; color: rgba(255,255,255,0.75); margin-top: 6px; }
+
+.summary-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+.summary-table td { padding: 7px 10px; border-bottom: 1px solid #f1f5f9; }
+.summary-table .sec-head td { font-weight: 700; font-size: 0.72rem; text-transform: uppercase; color: #3D5A80; background: #F8FAFD; padding: 10px 10px 6px; }
+.summary-table .total-row td { font-weight: 800; border-top: 2px solid #e2e8f0; padding-top: 10px; }
+.summary-table .indent { padding-left: 22px; color: #64748b; }
+.summary-table .amt { text-align: right; font-weight: 600; }
+.summary-table .pct { text-align: right; font-size: 0.72rem; color: #94a3b8; }
+.pos { color: #16a34a; font-weight: 700; }
+.neg { color: #ef4444; font-weight: 700; }
+
+.metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 14px 0; }
+.metric-card { background: #F8FAFD; border-radius: 8px; padding: 12px; text-align: center; }
+.metric-val { font-size: 1.1rem; font-weight: 800; color: var(--calc-accent); }
+.metric-label { font-size: 0.68rem; color: #64748b; margin-top: 3px; line-height: 1.3; }
+
+/* Profit bar */
+.bar-track { height: 28px; background: #f1f5f9; border-radius: 6px; overflow: hidden; display: flex; margin: 12px 0 6px; }
+.bar-cost   { height: 100%; background: #ef4444; display:flex; align-items:center; justify-content:center; font-size:0.68rem; font-weight:700; color:#fff; padding:0 6px; white-space:nowrap; overflow:hidden; }
+.bar-profit { height: 100%; background: #16a34a; display:flex; align-items:center; justify-content:center; font-size:0.68rem; font-weight:700; color:#fff; padding:0 6px; white-space:nowrap; overflow:hidden; }
+.bar-loss   { height: 100%; background: #f97316; display:flex; align-items:center; justify-content:center; font-size:0.68rem; font-weight:700; color:#fff; padding:0 6px; white-space:nowrap; overflow:hidden; }
+
+/* Compare table */
+.compare-tbl-wrap { overflow-x: auto; margin-top: 12px; }
+.compare-tbl { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+.compare-tbl th { background: #F8FAFD; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #3D5A80; padding: 8px 10px; text-align: left; border-bottom: 2px solid #e2e8f0; white-space: nowrap; }
+.compare-tbl td { padding: 8px 10px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+.compare-tbl tr:hover td { background: #fafbff; }
+.compare-tbl .rank-1 td:first-child { font-weight: 800; color: var(--calc-accent); }
+.compare-tbl .pos-val { color: #16a34a; font-weight: 700; }
+.compare-tbl .neg-val { color: #ef4444; font-weight: 700; }
+.compare-tbl .badge-best { display: inline-block; background: #dcfce7; color: #15803d; border-radius: 4px; font-size: 0.65rem; font-weight: 700; padding: 1px 6px; margin-left: 4px; }
+.compare-tbl .badge-warn { display: inline-block; background: #fef9c3; color: #854d0e; border-radius: 4px; font-size: 0.65rem; font-weight: 700; padding: 1px 6px; margin-left: 4px; }
+
+/* Cross-tools */
+.cross-tools { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 10px; }
+.cross-card { background: var(--calc-accent-pale); border: 1px solid var(--calc-accent-light); border-radius: 8px; padding: 12px; text-decoration: none; color: #1A1A2E; display: flex; align-items: center; gap: 10px; transition: box-shadow 0.2s; }
+.cross-card:hover { box-shadow: 0 4px 12px rgba(0,122,255,0.12); }
+.cross-icon { font-size: 1.4rem; flex-shrink: 0; }
+.cross-name { font-size: 0.8rem; font-weight: 700; color: var(--calc-accent); }
+.cross-desc { font-size: 0.72rem; color: #64748b; margin-top: 2px; }
+
+.why-box { background: #F8FAFD; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; margin-top: 12px; font-size: 0.83rem; color: #374151; line-height: 1.65; }
+.why-box strong { color: #0A1628; }
+
+.sources { font-size: 0.72rem; color: #94a3af; text-align: center; padding: 20px 0; line-height: 1.6; }
+
+@media print {
+  .tool-hero, afro-navbar, afro-footer, .calc-btn, .card-toggle { display: none !important; }
+  .results-wrap { display: block !important; }
+  .section-body.collapsed { display: block !important; }
+}
+</style>
+</head>
+
+<body class="tool-page">
+<afro-navbar theme="dark" active="tools"></afro-navbar>
+
+<section class="tool-hero">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a><span>/</span>
+      <a href="/agriculture/cassava-processing/">Cassava Processing</a><span>/</span>
+      <span aria-current="page">Mozambique</span>
+    </nav>
+    <h1><span aria-hidden="true">🇲🇿</span> Mozambique <em>Cassava Processing Profit Calculator</em></h1>
+    <p class="tool-hero-sub">Calculate the profitability of processing cassava into Cassava Chips, Fufu Flour, HQCF in Mozambique. Full cost breakdown with local prices, labour rates, and equipment ROI.</p>
+    <div class="hero-badges">
+      <span class="badge badge-blue">&#127981; 5 Pathways</span>
+      <span class="badge badge-grey">MZN prices pre-filled</span>
+      <span class="badge badge-grey">&#128200; ROI &amp; Payback Period</span>
+    </div>
+  </div>
+</section>
+
+<main class="tool-main">
+
+<!-- Section 1: Processing Setup -->
+<div class="card">
+  <div class="card-head">
+    <span class="card-title">&#127981; Section 1: Processing Setup</span>
+  </div>
+  <div class="card-body section-body" id="sec1Body">
+    <div class="form-grid">
+      <div class="field full">
+        <label class="f-label" for="selPathway">Processing Pathway</label>
+        <select class="f-select" id="selPathway" onchange="onPathwayChange()">
+          
+          <option value="fufu_flour">&#127853; Fufu / Cassava Flour (Fermented, dried, milled)</option>
+          <option value="hqcf">&#127806; HQCF — High Quality Cassava Flour (Unfermented)</option>
+          <option value="cassava_chips">&#128993; Cassava Chips (Sun-dried, animal feed / export)</option>
+          <option value="cassava_starch">&#9879;&#65039; Cassava Starch (Industrial extraction)</option>
+          <option value="compare">&#128202; Compare All Pathways</option>
+        </select>
+        <div class="pathway-info-box" id="pathwayInfo"></div>
+      </div>
+      <div class="field">
+        <label class="f-label" for="inpRawTonnes">Raw Cassava per Batch <span class="f-hint">(tonnes)</span></label>
+        <input class="f-input" id="inpRawTonnes" type="number" min="0.1" step="0.1" value="1">
+      </div>
+      <div class="field">
+        <label class="f-label" for="selBatches">Batches per Month</label>
+        <select class="f-select" id="selBatches">
+          <option value="4">4 batches / month (weekly)</option>
+          <option value="8">8 batches / month (twice/week)</option>
+          <option value="12" selected>12 batches / month (3×/week)</option>
+          <option value="20">20 batches / month (daily, 5 days)</option>
+          <option value="30">30 batches / month (daily)</option>
+        </select>
+      </div>
+      <div class="field full">
+        <label class="f-label" for="selLevel">Processing Level</label>
+        <select class="f-select" id="selLevel" onchange="onLevelChange()">
+          <option value="manual">Manual (low capital, labour-intensive)</option>
+          <option value="semi_mechanized" selected>Semi-mechanised (recommended for small business)</option>
+          <option value="mechanized">Fully mechanised (high capacity, industrial)</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Section 2: Prices -->
+<div class="card">
+  <div class="card-head">
+    <span class="card-title">&#128176; Section 2: Prices &amp; Revenue</span>
+    <button class="card-toggle" onclick="toggleSection('sec2Body', this)">Collapse</button>
+  </div>
+  <div class="card-body section-body" id="sec2Body">
+    <div class="form-grid">
+      <div class="field">
+        <label class="f-label" for="inpCassavaPrice">Raw Cassava Price <span class="f-hint">(MT per tonne)</span></label>
+        <input class="f-input" id="inpCassavaPrice" type="number" min="1" step="1" value="3000">
+      </div>
+      <div class="field">
+        <label class="f-label" for="inpSellPrice">Selling Price of Product <span class="f-hint">(MT per kg)</span></label>
+        <input class="f-input" id="inpSellPrice" type="number" min="1" step="1" value="15">
+        <div style="font-size:0.72rem;color:#64748b;margin-top:4px;" id="priceHint">Pre-filled with typical Mozambique market price. Adjust for your location.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Section 3: Other Costs -->
+<div class="card">
+  <div class="card-head">
+    <span class="card-title">&#128203; Section 3: Other Costs</span>
+    <button class="card-toggle" onclick="toggleSection('sec3Body', this)">Collapse</button>
+  </div>
+  <div class="card-body section-body" id="sec3Body">
+    <div class="form-grid">
+      <div class="field">
+        <label class="f-label" for="inpLaborDay">Labour Rate <span class="f-hint">(MT per day)</span></label>
+        <input class="f-input" id="inpLaborDay" type="number" min="1" step="1" value="300">
+      </div>
+      <div class="field">
+        <label class="f-label" for="inpDistanceKm">Distance to Market <span class="f-hint">(km, 0 = exclude)</span></label>
+        <input class="f-input" id="inpDistanceKm" type="number" min="0" step="1" value="0">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Calculate Button -->
+<div class="card">
+  <div class="card-body">
+    <button class="calc-btn" onclick="calculate()">&#128202; Calculate Processing Profit</button>
+  </div>
+</div>
+
+<!-- Results -->
+<div class="results-wrap" id="resultsPanel">
+
+  <!-- Profit Hero -->
+  <div class="card" style="overflow:hidden;" id="profitHeroCard">
+    <div class="profit-hero" id="profitHero">
+      <div class="profit-amount" id="rNetProfit">--</div>
+      <div class="profit-label" id="rProfitLabel">NET PROFIT PER BATCH</div>
+      <div class="profit-sub" id="rProfitSub"></div>
+    </div>
+    <div class="card-body">
+      <div class="card-title" style="margin-bottom:10px;">&#128200; Profit &amp; Loss Summary</div>
+      <table class="summary-table" id="summaryTable"><tbody></tbody></table>
+    </div>
+  </div>
+
+  <!-- Revenue vs Cost Bar -->
+  <div class="card" id="barCard">
+    <div class="card-head"><span class="card-title">&#128202; Revenue vs Total Cost</span></div>
+    <div class="card-body">
+      <div class="bar-track" id="profitBar"></div>
+      <div style="display:flex;gap:14px;font-size:0.72rem;color:#64748b;">
+        <span><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:#ef4444;margin-right:3px;"></span>Costs</span>
+        <span><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:#16a34a;margin-right:3px;"></span>Profit</span>
+        <span><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:#f97316;margin-right:3px;"></span>Loss</span>
+      </div>
+      <div id="barStats" style="margin-top:6px;font-size:0.78rem;font-weight:600;color:#374151;"></div>
+    </div>
+  </div>
+
+  <!-- Key Metrics -->
+  <div class="card" id="metricsCard">
+    <div class="card-head"><span class="card-title">&#128269; Key Metrics</span></div>
+    <div class="card-body"><div class="metrics-grid" id="metricsGrid"></div></div>
+  </div>
+
+  <!-- Compare All Table (shown when Compare All is selected) -->
+  <div class="card" id="compareCard" style="display:none;">
+    <div class="card-head"><span class="card-title">&#128202; All Pathways Compared</span></div>
+    <div class="card-body">
+      <p style="font-size:0.8rem;color:#64748b;margin:0 0 8px;">Ranked by profit per batch. Same raw cassava volume and processing level applied to all.</p>
+      <div class="compare-tbl-wrap"><table class="compare-tbl" id="compareTable">
+        <thead><tr>
+          <th>#</th><th>Product</th><th>Output (kg)</th>
+          <th>Revenue</th><th>Total Cost</th><th>Profit/Batch</th>
+          <th>Margin %</th><th>Monthly Profit</th><th>Notes</th>
+        </tr></thead>
+        <tbody id="compareTbody"></tbody>
+      </table></div>
+      <p style="font-size:0.75rem;color:#94a3b8;margin-top:10px;" id="compareReco"></p>
+    </div>
+  </div>
+
+  <!-- Processing Steps -->
+  <div class="card" id="stepsCard">
+    <div class="card-head"><span class="card-title">&#128221; Processing Steps &amp; Labour Breakdown</span></div>
+    <div class="card-body"><div id="stepsContent"></div></div>
+  </div>
+
+  <!-- Equipment info -->
+  <div class="card" id="equipCard">
+    <div class="card-head"><span class="card-title">&#9881;&#65039; Equipment &amp; Investment</span></div>
+    <div class="card-body"><div id="equipContent"></div></div>
+  </div>
+
+  <!-- Cross-tool Links -->
+  <div class="card">
+    <div class="card-head"><span class="card-title">&#128279; Related Agriculture Tools for Mozambique</span></div>
+    <div class="card-body">
+      <div class="cross-tools">
+        <a class="cross-card" href="/agriculture/farm-profit/mozambique">
+          <span class="cross-icon">&#128200;</span>
+          <div><div class="cross-name">Farm Profit/Loss Calculator</div><div class="cross-desc">Calculate whole-farm profitability for Mozambique</div></div>
+        </a>
+        <a class="cross-card" href="/agriculture/crop-yield/mozambique">
+          <span class="cross-icon">&#127807;</span>
+          <div><div class="cross-name">Crop Yield Estimator</div><div class="cross-desc">Estimate cassava yield per hectare in Mozambique</div></div>
+        </a>
+        <a class="cross-card" href="/agriculture/fertilizer/mozambique">
+          <span class="cross-icon">&#128138;</span>
+          <div><div class="cross-name">Fertilizer Calculator</div><div class="cross-desc">Optimise NPK for cassava in Mozambique</div></div>
+        </a>
+        <a class="cross-card" href="/agriculture/irrigation/mozambique">
+          <span class="cross-icon">&#128167;</span>
+          <div><div class="cross-name">Irrigation Calculator</div><div class="cross-desc">Plan water needs for cassava in Mozambique</div></div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Print -->
+  <div style="text-align:center;margin-bottom:8px;">
+    <button onclick="window.print()" style="background:none;border:1px solid #CBD5E1;border-radius:100px;padding:8px 20px;font-size:0.78rem;font-weight:600;color:#64748b;cursor:pointer;font-family:'DM Sans',sans-serif;">&#128438; Print Results</button>
+  </div>
+</div><!-- end results-wrap -->
+
+<!-- Why Process Cassava -->
+<div class="card">
+  <div class="card-head"><span class="card-title">&#127981; Why Process Cassava in Mozambique?</span></div>
+  <div class="card-body">
+    <div class="why-box" id="countryNote">
+      <strong>About cassava processing in Mozambique:</strong> Loading...
+    </div>
+    <details style="margin-top:14px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;list-style:none;">+ Why does cassava spoil so fast?</summary>
+      <p style="font-size:0.82rem;color:#64748b;line-height:1.6;margin-top:8px;">Fresh cassava undergoes Post-Harvest Physiological Deterioration (PPD) within 24–48 hours of harvest — the roots turn blue-black and become inedible. This is the #1 reason cassava must be processed quickly. Processing extends shelf life from 2 days to 6–12+ months.</p>
+    </details>
+    <details style="margin-top:8px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;list-style:none;">+ What is the best pathway for small-scale farmers?</summary>
+      <p style="font-size:0.82rem;color:#64748b;line-height:1.6;margin-top:8px;">For low-capital entry, cassava chips and garri (in West Africa) have the lowest equipment requirements. A basic garri setup costs USD 100–200 and can pay back within weeks. Semi-mechanised garri or HQCF production is ideal for groups of 5–10 farmers pooling resources.</p>
+    </details>
+    <details style="margin-top:8px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;list-style:none;">+ What is HQCF and who buys it?</summary>
+      <p style="font-size:0.82rem;color:#64748b;line-height:1.6;margin-top:8px;">High Quality Cassava Flour (HQCF) is unfermented, white, neutral-smelling flour that substitutes 10–40% of wheat flour in bread, biscuits and pasta. Industrial bakeries and food manufacturers are the buyers. Quality standards: moisture &lt;12%, HCN &lt;10 ppm, neutral odour. A flash dryer is required.</p>
+    </details>
+  </div>
+</div>
+
+<p class="sources">Price data for Mozambique: FAO, IITA cassava post-harvest reports, regional market surveys 2024–2025. For planning only — verify local prices before investing.</p>
+
+</main>
+
+<afro-footer></afro-footer>
+
+<script src="/data/agriculture/cassava-processing-data.js"></script>
+<script src="/engines/cassava-processing-engine.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var COUNTRY_CODE = 'MZ';
+  var Eng  = window.AfroTools.CassavaProcessingEngine;
+  var data = window.AfroTools.cassavaProcessing;
+
+  // ── Pathway descriptions (brief) ──
+  var PW_DESCS = {
+    garri:         '4.5 kg roots → 1 kg garri | Shelf life: 6–12 months | Best for: West Africa',
+    fufu_flour:    '3.5 kg roots → 1 kg flour | Shelf life: 3–6 months | Fermented, sun-dried, milled',
+    hqcf:          '4 kg roots → 1 kg flour | Shelf life: 12+ months | Flash dryer required. Industrial market.',
+    cassava_chips: '3 kg roots → 1 kg chips | Shelf life: 6–12 months | Simplest processing — sun-dried',
+    cassava_starch:'5.5 kg roots → 1 kg starch | Shelf life: 12+ months | Water-intensive. Industrial use.'
+  };
+
+  // ── Price defaults per pathway ──
+  var PW_PRICE_DEFAULTS = {
+    garri:          0,
+    fufu_flour:     35,
+    hqcf:           45,
+    cassava_chips:  15,
+    cassava_starch: 120
+  };
+
+  var PW_NAMES = {
+    garri: 'Garri', fufu_flour: 'Fufu/Cassava Flour', hqcf: 'HQCF',
+    cassava_chips: 'Cassava Chips', cassava_starch: 'Cassava Starch'
+  };
+
+  function fmt(n, sym) {
+    sym = sym || 'MT';
+    if (!isFinite(n)) return sym + '0';
+    return sym + Math.round(n).toLocaleString();
+  }
+
+  function toggleSection(id, btn) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.classList.toggle('collapsed');
+    btn.textContent = el.classList.contains('collapsed') ? 'Expand' : 'Collapse';
+  }
+  window.toggleSection = toggleSection;
+
+  function onPathwayChange() {
+    var pw = document.getElementById('selPathway').value;
+    var box = document.getElementById('pathwayInfo');
+    if (pw === 'compare') {
+      box.style.display = 'none';
+    } else {
+      box.style.display = 'block';
+      box.textContent = PW_DESCS[pw] || '';
+      // Update selling price hint
+      var sp = document.getElementById('inpSellPrice');
+      if (sp && PW_PRICE_DEFAULTS[pw] > 0) {
+        sp.value = PW_PRICE_DEFAULTS[pw];
+      } else if (sp) {
+        sp.value = PW_PRICE_DEFAULTS['fufu_flour'];
+      }
+      document.getElementById('priceHint').textContent =
+        'Pre-filled with typical Mozambique market price for ' + (PW_NAMES[pw] || pw) + '. Adjust for your location.';
+    }
+  }
+  window.onPathwayChange = onPathwayChange;
+
+  function onLevelChange() { /* reserved for future enhancement */ }
+  window.onLevelChange = onLevelChange;
+
+  function calculate() {
+    var pw      = document.getElementById('selPathway').value;
+    var rawT    = parseFloat(document.getElementById('inpRawTonnes').value)  || 1;
+    var batches = parseFloat(document.getElementById('selBatches').value)     || 12;
+    var level   = document.getElementById('selLevel').value;
+    var rawPx   = parseFloat(document.getElementById('inpCassavaPrice').value)|| 3000;
+    var sellPx  = parseFloat(document.getElementById('inpSellPrice').value)   || 0;
+    var laborD  = parseFloat(document.getElementById('inpLaborDay').value)    || 300;
+    var distKm  = parseFloat(document.getElementById('inpDistanceKm').value)  || 0;
+
+    // Patch country data with user-adjusted labour
+    var cdCopy = Object.assign({}, data.countries[COUNTRY_CODE], { labor_per_day: laborD });
+
+    var isCompare = pw === 'compare';
+
+    document.getElementById('resultsPanel').classList.add('on');
+    document.getElementById('compareCard').style.display = 'none';
+    document.getElementById('barCard').style.display = 'block';
+    document.getElementById('metricsCard').style.display = 'block';
+    document.getElementById('stepsCard').style.display = 'block';
+    document.getElementById('equipCard').style.display = 'block';
+    document.getElementById('profitHeroCard').style.display = 'block';
+
+    if (isCompare) {
+      runCompare(rawT, batches, level, rawPx, distKm, cdCopy);
+    } else {
+      runSingle(pw, rawT, batches, level, rawPx, sellPx, distKm, cdCopy);
+    }
+  }
+  window.calculate = calculate;
+
+  function runSingle(pw, rawT, batches, level, rawPx, sellPx, distKm, cdCopy) {
+    var inputs = {
+      pathwayId: pw,
+      rawTonnes: rawT,
+      batchesPerMonth: batches,
+      processingLevel: level,
+      rawPricePerTonne: rawPx,
+      sellingPricePerKg: sellPx,
+      includeTransport: distKm > 0,
+      distanceKm: distKm
+    };
+
+    // Temporarily override country data labour
+    var origCD = data.countries[COUNTRY_CODE];
+    data.countries[COUNTRY_CODE] = cdCopy;
+    var r = Eng.calculate(inputs, COUNTRY_CODE);
+    data.countries[COUNTRY_CODE] = origCD;
+
+    if (r.error) { alert('Calculation error: ' + r.message); return; }
+
+    renderSingleResult(r, batches);
+    renderSteps(pw);
+    renderEquip(pw, level, r.sym);
+  }
+
+  function runCompare(rawT, batches, level, rawPx, distKm, cdCopy) {
+    var origCD = data.countries[COUNTRY_CODE];
+    data.countries[COUNTRY_CODE] = cdCopy;
+    var results = Eng.compareAll({
+      rawTonnes: rawT, batchesPerMonth: batches,
+      processingLevel: level, rawPricePerTonne: rawPx,
+      includeTransport: distKm > 0, distanceKm: distKm
+    }, COUNTRY_CODE);
+    data.countries[COUNTRY_CODE] = origCD;
+
+    if (!results.length) { alert('No pathway data available for this country.'); return; }
+
+    renderCompareTable(results, batches);
+
+    // Hide single-result panels
+    document.getElementById('profitHeroCard').style.display = 'none';
+    document.getElementById('barCard').style.display = 'none';
+    document.getElementById('metricsCard').style.display = 'none';
+    document.getElementById('stepsCard').style.display = 'none';
+    document.getElementById('equipCard').style.display = 'none';
+    document.getElementById('compareCard').style.display = 'block';
+  }
+
+  function renderSingleResult(r, batches) {
+    var sym = r.sym;
+    var hero = document.getElementById('profitHero');
+    hero.className = 'profit-hero ' + (r.isProfit ? 'positive' : 'negative');
+    document.getElementById('rNetProfit').textContent = fmt(r.profitPerBatch, sym);
+    document.getElementById('rProfitLabel').textContent = 'NET PROFIT PER BATCH — ' + (PW_NAMES[r.pathway] || r.pathway).toUpperCase();
+    document.getElementById('rProfitSub').textContent =
+      'Monthly: ' + fmt(r.monthlyProfit, sym) + ' (' + batches + ' batches) | Annual: ' + fmt(r.annualProfit, sym);
+
+    // Summary table
+    var C = r.costs;
+    var rows = [
+      { section: 'Revenue' },
+      { label: 'Output: ' + r.outputKg.toLocaleString() + ' kg of ' + (PW_NAMES[r.pathway]||r.pathway), amt: r.revenue, pct: '100%', cls: 'pos' },
+      { section: 'Processing Costs' },
+      { label: 'Raw cassava (' + r.rawKg.toLocaleString() + ' kg roots)', amt: C.rawMaterial, pct: pct(C.rawMaterial, r.revenue) },
+      { label: 'Labour',             amt: C.labor,       pct: pct(C.labor, r.revenue) },
+      { label: 'Fuel / Energy',      amt: C.fuel,        pct: pct(C.fuel, r.revenue),   hidden: C.fuel === 0 },
+      { label: 'Water',              amt: C.water,       pct: pct(C.water, r.revenue),  hidden: C.water === 0 },
+      { label: 'Packaging',          amt: C.packaging,   pct: pct(C.packaging, r.revenue) },
+      { label: 'Equipment (deprec.)',amt: C.equipment,   pct: pct(C.equipment, r.revenue) },
+      { label: 'Transport',          amt: C.transport,   pct: pct(C.transport, r.revenue), hidden: C.transport === 0 },
+      { total: true, label: 'TOTAL COST', amt: C.total, pct: pct(C.total, r.revenue) },
+      { section: 'Profit' },
+      { label: 'Net Profit / (Loss)', amt: r.profitPerBatch, pct: r.profitMarginPct.toFixed(1) + '%', cls: r.isProfit ? 'pos' : 'neg' }
+    ];
+
+    var tbody = document.querySelector('#summaryTable tbody');
+    tbody.innerHTML = '';
+    rows.forEach(function (row) {
+      if (row.hidden) return;
+      var tr = document.createElement('tr');
+      if (row.section) {
+        tr.className = 'sec-head';
+        tr.innerHTML = '<td colspan="3">' + row.section + '</td>';
+      } else if (row.total) {
+        tr.className = 'total-row';
+        tr.innerHTML = '<td>' + row.label + '</td><td class="amt">' + fmt(row.amt, sym) + '</td><td class="pct">' + row.pct + '</td>';
+      } else {
+        tr.innerHTML = '<td class="indent">' + row.label + '</td>' +
+          '<td class="amt ' + (row.cls || '') + '">' + fmt(row.amt, sym) + '</td>' +
+          '<td class="pct">' + (row.pct || '') + '</td>';
+      }
+      tbody.appendChild(tr);
+    });
+
+    // Bar
+    var bar = document.getElementById('profitBar');
+    bar.innerHTML = '';
+    var totalForBar = r.revenue;
+    if (r.isProfit) {
+      var costPct = (C.total / totalForBar * 100);
+      var profPct = (r.profitPerBatch / totalForBar * 100);
+      bar.innerHTML =
+        '<div class="bar-cost" style="width:' + costPct + '%">Costs ' + Math.round(costPct) + '%</div>' +
+        '<div class="bar-profit" style="width:' + profPct + '%">Profit ' + Math.round(profPct) + '%</div>';
+    } else {
+      bar.innerHTML = '<div class="bar-loss" style="width:100%">Loss — Revenue covers ' + Math.round(r.revenue / C.total * 100) + '% of costs</div>';
+    }
+    document.getElementById('barStats').textContent =
+      'Revenue: ' + fmt(r.revenue, sym) + ' | Total Cost: ' + fmt(C.total, sym) + ' | Margin: ' + r.profitMarginPct + '%';
+
+    // Metrics
+    var mg = document.getElementById('metricsGrid');
+    var metrics = [
+      { val: fmt(r.profitPerBatch, sym), label: 'Profit per Batch' },
+      { val: fmt(r.monthlyProfit, sym),  label: 'Monthly Profit (' + batches + ' batches)' },
+      { val: fmt(r.annualProfit, sym),   label: 'Annual Profit' },
+      { val: r.roi + '%',               label: 'ROI per Batch' },
+      { val: r.outputKg.toLocaleString() + ' kg', label: 'Product Output per Batch' },
+      { val: r.profitMarginPct + '%',   label: 'Profit Margin' },
+      { val: fmt(r.profitPerKgOutput, sym) + '/kg', label: 'Profit per kg Output' },
+      { val: r.paybackMonths ? r.paybackMonths + ' months' : 'N/A', label: 'Equipment Payback Period' }
+    ];
+    mg.innerHTML = '';
+    metrics.forEach(function (m) {
+      var div = document.createElement('div');
+      div.className = 'metric-card';
+      div.innerHTML = '<div class="metric-val">' + m.val + '</div><div class="metric-label">' + m.label + '</div>';
+      mg.appendChild(div);
+    });
+  }
+
+  function renderCompareTable(results, batches) {
+    var tbody = document.getElementById('compareTbody');
+    tbody.innerHTML = '';
+    results.forEach(function (r, i) {
+      var tr = document.createElement('tr');
+      if (i === 0) tr.className = 'rank-1';
+      var notes = '';
+      if (r.pathway === 'hqcf') notes = '<span class="badge-warn">Flash dryer needed</span>';
+      else if (r.pathway === 'cassava_starch') notes = '<span class="badge-warn">Water-intensive</span>';
+      else if (i === 0) notes = '<span class="badge-best">Best ROI</span>';
+      tr.innerHTML =
+        '<td>' + (i + 1) + '</td>' +
+        '<td>' + (PW_NAMES[r.pathway]||r.pathway) + notes + '</td>' +
+        '<td>' + r.outputKg.toLocaleString() + '</td>' +
+        '<td>' + fmt(r.revenue, r.sym) + '</td>' +
+        '<td>' + fmt(r.costs.total, r.sym) + '</td>' +
+        '<td class="' + (r.isProfit ? 'pos-val' : 'neg-val') + '">' + fmt(r.profitPerBatch, r.sym) + '</td>' +
+        '<td>' + r.profitMarginPct + '%</td>' +
+        '<td class="' + (r.isProfit ? 'pos-val' : 'neg-val') + '">' + fmt(r.monthlyProfit, r.sym) + '</td>' +
+        '<td>' + notes + '</td>';
+      tbody.appendChild(tr);
+    });
+
+    var best = results[0];
+    document.getElementById('compareReco').textContent =
+      '&#128204; Recommendation: ' + (PW_NAMES[best.pathway]||best.pathway) + ' offers the highest profit at this volume and processing level (' +
+      best.profitMarginPct + '% margin). ' +
+      (best.pathway === 'garri' ? 'Garri has an established local market and low equipment requirements — ideal for small-scale entry.' :
+       best.pathway === 'cassava_chips' ? 'Chips have the simplest processing steps and low equipment cost — good entry point for new processors.' :
+       best.pathway === 'hqcf' ? 'HQCF commands a premium but requires flash dryer investment and consistent quality for industrial buyers.' :
+       best.pathway === 'cassava_starch' ? 'Starch offers highest margins but requires significant capital and clean water supply.' :
+       'A solid, established processing pathway with good market demand.');
+  }
+
+  function renderSteps(pw) {
+    if (!data || !data.pathways[pw]) { document.getElementById('stepsContent').innerHTML = ''; return; }
+    var steps = data.pathways[pw].processingSteps;
+    if (!steps) return;
+    var html = '<table style="width:100%;border-collapse:collapse;font-size:0.82rem;">' +
+      '<thead><tr style="background:#F8FAFD;"><th style="padding:7px 10px;text-align:left;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.05em;color:#3D5A80;border-bottom:2px solid #e2e8f0;">Step</th>' +
+      '<th style="padding:7px 10px;text-align:right;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.05em;color:#3D5A80;border-bottom:2px solid #e2e8f0;">Labour (hrs/tonne roots)</th>' +
+      '<th style="padding:7px 10px;text-align:left;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.05em;color:#3D5A80;border-bottom:2px solid #e2e8f0;">Notes</th></tr></thead><tbody>';
+    steps.forEach(function (s, i) {
+      html += '<tr style="' + (i % 2 === 0 ? '' : 'background:#fafbff') + '">' +
+        '<td style="padding:7px 10px;">' + s.step + '</td>' +
+        '<td style="padding:7px 10px;text-align:right;font-weight:600;">' + s.hrs + '</td>' +
+        '<td style="padding:7px 10px;color:#64748b;">' + (s.note || '') + '</td></tr>';
+    });
+    html += '</tbody></table>';
+    document.getElementById('stepsContent').innerHTML = html;
+  }
+
+  function renderEquip(pw, level, sym) {
+    if (!data || !data.pathways[pw]) return;
+    var equip = data.pathways[pw].equipment;
+    if (!equip) return;
+    var levels = ['manual','semi_mechanized','mechanized'];
+    var labels = { manual:'Manual', semi_mechanized:'Semi-mechanised', mechanized:'Fully mechanised' };
+    var html = '<table style="width:100%;border-collapse:collapse;font-size:0.82rem;">' +
+      '<thead><tr style="background:#F8FAFD;"><th style="padding:7px 10px;text-align:left;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.05em;color:#3D5A80;border-bottom:2px solid #e2e8f0;">Level</th>' +
+      '<th style="padding:7px 10px;text-align:right;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.05em;color:#3D5A80;border-bottom:2px solid #e2e8f0;">Cost (USD)</th>' +
+      '<th style="padding:7px 10px;text-align:right;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.05em;color:#3D5A80;border-bottom:2px solid #e2e8f0;">Daily Capacity (kg)</th>' +
+      '<th style="padding:7px 10px;text-align:left;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.05em;color:#3D5A80;border-bottom:2px solid #e2e8f0;">Equipment</th></tr></thead><tbody>';
+    levels.forEach(function (lv, i) {
+      var e = equip[lv];
+      if (!e) return;
+      var isSelected = lv === level;
+      html += '<tr style="' + (isSelected ? 'background:#EBF4FF;font-weight:600;' : i % 2 === 0 ? '' : 'background:#fafbff') + '">' +
+        '<td style="padding:7px 10px;">' + labels[lv] + (isSelected ? ' &#9654;' : '') + '</td>' +
+        '<td style="padding:7px 10px;text-align:right;">$' + e.cost_usd.toLocaleString() + '</td>' +
+        '<td style="padding:7px 10px;text-align:right;">' + e.capacity_kg_day.toLocaleString() + '</td>' +
+        '<td style="padding:7px 10px;color:#64748b;font-size:0.78rem;">' + (e.items || '') + '</td></tr>';
+    });
+    html += '</tbody></table>';
+    if (equip[level] && equip[level].note) {
+      html += '<p style="font-size:0.78rem;color:#f59e0b;margin-top:8px;font-weight:600;">&#9888;&#65039; ' + equip[level].note + '</p>';
+    }
+    document.getElementById('equipContent').innerHTML = html;
+  }
+
+  function pct(val, total) {
+    if (!total) return '';
+    return Math.round(val / total * 100) + '%';
+  }
+
+  // ── Init ──────────────────────────────────────────────────────────────────────
+  window.addEventListener('DOMContentLoaded', function () {
+    // Set default pathway selection
+    var sel = document.getElementById('selPathway');
+    if (sel) { sel.value = 'cassava_chips'; onPathwayChange(); }
+
+    // Load country note
+    var cdNote = data && data.countries[COUNTRY_CODE] && data.countries[COUNTRY_CODE].note;
+    if (cdNote) {
+      document.getElementById('countryNote').innerHTML =
+        '<strong>About cassava processing in Mozambique:</strong> ' + cdNote;
+    }
+  });
+
+})();
+</script>
+</body>
+</html>

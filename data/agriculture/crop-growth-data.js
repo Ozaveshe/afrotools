@@ -1,0 +1,498 @@
+!function(){"use strict";
+window.AfroTools = window.AfroTools || {};
+
+// ═══════════════════════════════════════════════════════════
+// CROP GROWTH DATA — Harvest Date Estimator
+// Sources: FAO, CGIAR, national extension services
+// ═══════════════════════════════════════════════════════════
+window.AfroTools.cropGrowthData = {
+
+  "maize": {
+    name: "Maize (Corn)",
+    icon: "🌽",
+    category: "cereal",
+    totalDays: { early: 85, medium: 120, late: 150 },
+    stages: {
+      emergence:           { early: [0,8],    medium: [0,8],    late: [0,8]    },
+      vegetative:          { early: [8,35],   medium: [8,45],   late: [8,55]   },
+      tasseling_silking:   { early: [35,50],  medium: [45,65],  late: [55,80]  },
+      grain_fill:          { early: [50,70],  medium: [65,95],  late: [80,120] },
+      maturity:            { early: [70,85],  medium: [95,120], late: [120,150]}
+    },
+    stageLabels: ["Emergence", "Vegetative", "Tasseling/Silking", "Grain Fill", "Maturity"],
+    stageColors: ["#34d399","#22c55e","#f59e0b","#f97316","#007AFF"],
+    keyActivities: [
+      { dayOffset: 7,   label: "Check germination — replant gaps" },
+      { dayOffset: 14,  label: "First weeding (critical — maize loses 30–50% yield if weeded late)" },
+      { dayOffset: 21,  label: "Apply first N top-dress (⅓ of total N)" },
+      { dayOffset: 35,  label: "Second weeding" },
+      { dayOffset: 55,  label: "Apply second N top-dress at tasseling" },
+      { dayOffset: 70,  label: "Scout for stem borer and fall armyworm" },
+      { fromHarvest: -14, label: "Check for physiological maturity (black layer on kernel)" }
+    ],
+    harvestSigns: "Husks dry and brown. Kernels hard. Black layer visible at base of kernel. Moisture 20–25%.",
+    lateHarvestRisk: "Every week delay after maturity = 2–5% loss to birds, insects, mould. Rain on mature cobs causes aflatoxin.",
+    tempAdjustment: { above32: -0.10, t28_32: 0, t22_28: 0.08, t18_22: 0.15, below18: 0.25 }
+  },
+
+  "rice": {
+    name: "Rice",
+    icon: "🌾",
+    category: "cereal",
+    totalDays: { early: 100, medium: 130, late: 160 },
+    stages: {
+      emergence:           { early: [0,8],    medium: [0,8],    late: [0,8]    },
+      tillering:           { early: [8,40],   medium: [8,50],   late: [8,60]   },
+      booting_heading:     { early: [40,60],  medium: [50,75],  late: [60,90]  },
+      flowering:           { early: [60,70],  medium: [75,90],  late: [90,110] },
+      grain_fill_maturity: { early: [70,100], medium: [90,130], late: [110,160]}
+    },
+    stageLabels: ["Emergence", "Tillering", "Booting/Heading", "Flowering", "Grain Fill/Maturity"],
+    stageColors: ["#34d399","#22c55e","#a3e635","#f59e0b","#007AFF"],
+    keyActivities: [
+      { dayOffset: 14,  label: "First weeding" },
+      { dayOffset: 28,  label: "Apply N top-dress at tillering" },
+      { dayOffset: 60,  label: "Drain field 7–10 days before harvest" },
+      { fromHarvest: -7, label: "Check grain: 80% golden panicles = harvest time" }
+    ],
+    transplantNote: "If transplanting: add 21–30 days nursery period before these counts.",
+    harvestSigns: "80% of grains on panicle are golden/straw-coloured. Grain is hard when bitten. Cut 5–7 days after this point.",
+    lateHarvestRisk: "Shattering — grains fall off panicle. Birds eat ripe grain. Lodging in rain.",
+    tempAdjustment: { above32: -0.08, t28_32: 0, t22_28: 0.07, t18_22: 0.12, below18: 0.20 }
+  },
+
+  "sorghum": {
+    name: "Sorghum",
+    icon: "🌾",
+    category: "cereal",
+    totalDays: { early: 95, medium: 120, late: 180 },
+    stages: {
+      emergence:    { early: [0,8],   medium: [0,8],   late: [0,8]    },
+      vegetative:   { early: [8,40],  medium: [8,55],  late: [8,75]   },
+      heading:      { early: [40,65], medium: [55,85], late: [75,130] },
+      grain_fill:   { early: [65,95], medium: [85,120],late: [130,180]}
+    },
+    stageLabels: ["Emergence", "Vegetative", "Heading", "Grain Fill/Maturity"],
+    stageColors: ["#34d399","#22c55e","#f59e0b","#007AFF"],
+    keyActivities: [
+      { dayOffset: 14,  label: "First weeding" },
+      { dayOffset: 28,  label: "Thin to 1–2 plants per hill" },
+      { dayOffset: 35,  label: "Second weeding + fertilizer top-dress" },
+      { dayOffset: 60,  label: "Head emergence — watch for grain mould if rains continue" },
+      { fromHarvest: -7, label: "Bird scaring begins (most critical labour period)" }
+    ],
+    harvestSigns: "Grain hard and dry on head. Thumbnail test — no dent. Head slightly drooping.",
+    lateHarvestRisk: "Bird damage can wipe out entire crop if left too long. Heads droop and grain shatters.",
+    tempAdjustment: { above32: -0.08, t28_32: 0, t22_28: 0.08, t18_22: 0.15, below18: 0.22 }
+  },
+
+  "millet": {
+    name: "Millet (Pearl/Finger)",
+    icon: "🌾",
+    category: "cereal",
+    totalDays: { early: 65, medium: 85, late: 120 },
+    stages: {
+      emergence:  { early: [0,6],   medium: [0,6],   late: [0,6]   },
+      vegetative: { early: [6,30],  medium: [6,40],  late: [6,55]  },
+      heading:    { early: [30,50], medium: [40,65], late: [55,90] },
+      maturity:   { early: [50,65], medium: [65,85], late: [90,120]}
+    },
+    stageLabels: ["Emergence", "Vegetative", "Heading", "Maturity"],
+    stageColors: ["#34d399","#22c55e","#f59e0b","#007AFF"],
+    keyActivities: [
+      { dayOffset: 14, label: "First weeding" },
+      { dayOffset: 30, label: "Second weeding + thinning" },
+      { fromHarvest: -5, label: "Bird scaring — millet is highly palatable to birds" }
+    ],
+    harvestSigns: "Head turns brown. Seeds hard. Shake head — seeds should not fall easily.",
+    lateHarvestRisk: "Heavy bird pressure on ripe heads. Shattering loss if delayed.",
+    tempAdjustment: { above32: -0.07, t28_32: 0, t22_28: 0.08, t18_22: 0.15, below18: 0.25 }
+  },
+
+  "wheat": {
+    name: "Wheat",
+    icon: "🌾",
+    category: "cereal",
+    totalDays: { early: 90, medium: 115, late: 150 },
+    stages: {
+      germination:  { early: [0,10],  medium: [0,10],  late: [0,12]  },
+      tillering:    { early: [10,45], medium: [10,55], late: [12,70] },
+      stem_ext:     { early: [45,65], medium: [55,80], late: [70,105]},
+      heading:      { early: [65,80], medium: [80,100],late: [105,130]},
+      grain_fill:   { early: [80,90], medium: [100,115],late:[130,150]}
+    },
+    stageLabels: ["Germination", "Tillering", "Stem Extension", "Heading", "Grain Fill/Maturity"],
+    stageColors: ["#34d399","#22c55e","#a3e635","#f59e0b","#007AFF"],
+    keyActivities: [
+      { dayOffset: 14,  label: "Check emergence and weed pressure" },
+      { dayOffset: 30,  label: "Apply N top-dress at tillering" },
+      { dayOffset: 60,  label: "Apply fungicide if rust risk" },
+      { fromHarvest: -10, label: "Check moisture — target <20% for harvest" }
+    ],
+    harvestSigns: "Straw is golden. Grain is hard — thumbnail cannot dent it. Moisture below 20%.",
+    lateHarvestRisk: "Shattering and quality loss. Rain on ripe wheat causes sprouting (pre-harvest germination).",
+    tempAdjustment: { above30: -0.10, t25_30: 0, t15_25: 0.10, below15: 0.20 }
+  },
+
+  "teff": {
+    name: "Teff",
+    icon: "🌾",
+    category: "cereal",
+    totalDays: { early: 60, medium: 90, late: 130 },
+    stages: {
+      emergence:  { early: [0,5],   medium: [0,5],   late: [0,5]   },
+      vegetative: { early: [5,30],  medium: [5,45],  late: [5,65]  },
+      heading:    { early: [30,50], medium: [45,70], late: [65,100]},
+      maturity:   { early: [50,60], medium: [70,90], late: [100,130]}
+    },
+    stageLabels: ["Emergence", "Vegetative", "Heading", "Maturity"],
+    stageColors: ["#34d399","#22c55e","#f59e0b","#007AFF"],
+    keyActivities: [
+      { dayOffset: 14, label: "Thin if sown broadcast — critical for yield" },
+      { dayOffset: 30, label: "Weeding (hand-weed carefully — teff plants are tiny)" },
+      { fromHarvest: -3, label: "Harvest immediately — lodging and shattering risk is extreme" }
+    ],
+    harvestSigns: "Panicle changes from green to straw/red colour. Seed hard when squeezed between fingernails.",
+    lateHarvestRisk: "Lodging + shattering. Teff seeds are tiny — massive losses if harvest delayed even 3–4 days.",
+    tempAdjustment: { above32: -0.08, t28_32: 0, t22_28: 0.08, t18_22: 0.15, below18: 0.22 }
+  },
+
+  "barley": {
+    name: "Barley",
+    icon: "🌾",
+    category: "cereal",
+    totalDays: { early: 80, medium: 105, late: 140 },
+    stages: {
+      germination: { early: [0,8],   medium: [0,8],   late: [0,10]  },
+      tillering:   { early: [8,40],  medium: [8,50],  late: [10,65] },
+      heading:     { early: [40,65], medium: [50,85], late: [65,115]},
+      maturity:    { early: [65,80], medium: [85,105],late: [115,140]}
+    },
+    stageLabels: ["Germination", "Tillering", "Heading", "Maturity"],
+    stageColors: ["#34d399","#22c55e","#f59e0b","#007AFF"],
+    keyActivities: [
+      { dayOffset: 14,  label: "Check establishment and apply herbicide if needed" },
+      { dayOffset: 35,  label: "Apply N top-dress at tillering" },
+      { fromHarvest: -7, label: "Monitor moisture — harvest at 14–16% for storage" }
+    ],
+    harvestSigns: "Head droops. Grain hard and dry. Straw golden.",
+    lateHarvestRisk: "Shattering and lodging. Grain quality loss due to weather.",
+    tempAdjustment: { above30: -0.10, t22_30: 0, t15_22: 0.10, below15: 0.18 }
+  },
+
+  "cassava": {
+    name: "Cassava",
+    icon: "🥔",
+    category: "root_tuber",
+    totalDays: { early: 240, medium: 300, late: 420 },
+    stages: {
+      establishment: { early: [0,60],    medium: [0,60],    late: [0,60]    },
+      canopy:        { early: [60,150],  medium: [60,180],  late: [60,200]  },
+      tuber_bulking: { early: [150,210], medium: [180,270], late: [200,360] },
+      maturity:      { early: [210,240], medium: [270,300], late: [360,420] }
+    },
+    stageLabels: ["Establishment", "Canopy Development", "Tuber Bulking", "Maturity"],
+    stageColors: ["#34d399","#22c55e","#f59e0b","#007AFF"],
+    keyActivities: [
+      { dayOffset: 21,  label: "Check cutting establishment — re-plant failed stands" },
+      { dayOffset: 30,  label: "First weeding (critical in first 3 months)" },
+      { dayOffset: 60,  label: "Second weeding + apply N fertilizer if soils poor" },
+      { dayOffset: 120, label: "Canopy closes — weed pressure reduces" },
+      { fromHarvest: -30, label: "Sample-dig to check tuber size and starch content" }
+    ],
+    harvestSigns: "Leaves at base begin yellowing and dropping. Stems crack when bent. Dig sample tuber to check size.",
+    lateHarvestRisk: "Quality declines after 12–14 months — tubers get woody and HCN increases. Can be used as living storage but monitor.",
+    tempAdjustment: { above32: -0.07, t28_32: 0, t22_28: 0.08, t18_22: 0.15, below18: 0.25 }
+  },
+
+  "yam": {
+    name: "Yam",
+    icon: "🥔",
+    category: "root_tuber",
+    totalDays: { early: 210, medium: 270, late: 365 },
+    stages: {
+      sprouting:   { early: [0,30],   medium: [0,30],   late: [0,30]  },
+      vine_growth: { early: [30,120], medium: [30,150], late: [30,180]},
+      tuber_bulking:{ early:[120,180],medium: [150,230],late: [180,310]},
+      maturity:    { early: [180,210],medium: [230,270],late: [310,365]}
+    },
+    stageLabels: ["Sprouting", "Vine Growth", "Tuber Bulking", "Maturity"],
+    stageColors: ["#34d399","#22c55e","#f59e0b","#007AFF"],
+    keyActivities: [
+      { dayOffset: 14,  label: "Provide stakes/trellises for vine climbing" },
+      { dayOffset: 30,  label: "First weeding + mulching" },
+      { dayOffset: 60,  label: "Second weeding" },
+      { dayOffset: 120, label: "Milking harvest possible (early varieties) — partial careful harvest" },
+      { fromHarvest: -14, label: "Vine die-back signals approaching maturity" }
+    ],
+    harvestSigns: "Vine dies back. Leaves yellow. Tuber tops visible above ground. Dig carefully to avoid damage.",
+    lateHarvestRisk: "Tubers may rot in wet soils after maturity. Quality declines with over-maturity.",
+    tempAdjustment: { above32: -0.07, t28_32: 0, t22_28: 0.08, t18_22: 0.15, below18: 0.25 }
+  },
+
+  "sweet_potato": {
+    name: "Sweet Potato",
+    icon: "🍠",
+    category: "root_tuber",
+    totalDays: { early: 90, medium: 120, late: 150 },
+    stages: {
+      establishment: { early: [0,20],  medium: [0,20],  late: [0,20]  },
+      vine_spread:   { early: [20,60], medium: [20,75], late: [20,90] },
+      tuber_bulking: { early: [60,80], medium: [75,105],late: [90,130]},
+      maturity:      { early: [80,90], medium: [105,120],late:[130,150]}
+    },
+    stageLabels: ["Establishment", "Vine Spread", "Tuber Bulking", "Maturity"],
+    stageColors: ["#34d399","#22c55e","#f59e0b","#007AFF"],
+    keyActivities: [
+      { dayOffset: 14,  label: "Check cutting establishment — replace failed slips" },
+      { dayOffset: 30,  label: "First weeding and vine training" },
+      { dayOffset: 60,  label: "Weed once more before canopy closes" },
+      { fromHarvest: -14, label: "Sample-dig to check tuber size (target 200–300g)" }
+    ],
+    harvestSigns: "Vines begin yellowing. Soil cracks around base of plant. Dig sample to check tuber size.",
+    lateHarvestRisk: "Over-mature tubers become fibrous and less sweet. Risk of tuber damage from continued growth.",
+    tempAdjustment: { above32: -0.07, t28_32: 0, t22_28: 0.07, t18_22: 0.12, below18: 0.20 }
+  },
+
+  "potato": {
+    name: "Potato (Irish)",
+    icon: "🥔",
+    category: "root_tuber",
+    totalDays: { early: 75, medium: 95, late: 130 },
+    stages: {
+      emergence:     { early: [0,14],  medium: [0,14],  late: [0,16]  },
+      vegetative:    { early: [14,40], medium: [14,50], late: [16,65] },
+      tuber_set:     { early: [40,60], medium: [50,75], late: [65,100]},
+      tuber_bulking: { early: [60,75], medium: [75,95], late: [100,130]}
+    },
+    stageLabels: ["Emergence", "Vegetative", "Tuber Set", "Bulking/Maturity"],
+    stageColors: ["#34d399","#22c55e","#f59e0b","#007AFF"],
+    keyActivities: [
+      { dayOffset: 14,  label: "First earthing up (hilling) — critical to prevent green tubers" },
+      { dayOffset: 28,  label: "Second earthing up" },
+      { dayOffset: 42,  label: "Apply fungicide if late blight risk (rain + cool weather)" },
+      { fromHarvest: -14, label: "Dehaulm (cut vines) 2 weeks before harvest to let skin set" }
+    ],
+    harvestSigns: "Vines die back and dry. Skin sets — cannot be rubbed off with thumb. Wait 2 weeks after vine death.",
+    lateHarvestRisk: "Tubers continue to grow but quality drops. Wet soils cause rotting and skin damage.",
+    tempAdjustment: { above28: -0.10, t22_28: 0, t15_22: 0.08, below15: 0.18 }
+  },
+
+  "groundnut": {
+    name: "Groundnut (Peanut)",
+    icon: "🥜",
+    category: "legume",
+    totalDays: { early: 90, medium: 115, late: 150 },
+    stages: {
+      emergence:   { early: [0,8],   medium: [0,8],   late: [0,8]   },
+      vegetative:  { early: [8,35],  medium: [8,45],  late: [8,55]  },
+      flowering:   { early: [35,55], medium: [45,70], late: [55,90] },
+      pod_fill:    { early: [55,90], medium: [70,115],late: [90,150]}
+    },
+    stageLabels: ["Emergence", "Vegetative", "Flowering/Pegging", "Pod Fill/Maturity"],
+    stageColors: ["#34d399","#22c55e","#f59e0b","#007AFF"],
+    keyActivities: [
+      { dayOffset: 14,  label: "First weeding" },
+      { dayOffset: 30,  label: "Apply gypsum (calcium) at flowering for pod fill" },
+      { dayOffset: 45,  label: "Second weeding — avoid deep cultivation near pegs" },
+      { fromHarvest: -7, label: "Pull sample plant to check pod maturity (inner shell darkens)" }
+    ],
+    harvestSigns: "Inner shell darkens. Leaves turn yellow. Pull sample plant — pods should be full and dark inside.",
+    lateHarvestRisk: "Aflatoxin risk increases dramatically if pods stay in wet soil after maturity.",
+    tempAdjustment: { above32: -0.08, t28_32: 0, t22_28: 0.08, t18_22: 0.15, below18: 0.25 }
+  },
+
+  "cowpea": {
+    name: "Cowpea",
+    icon: "🫘",
+    category: "legume",
+    totalDays: { early: 60, medium: 75, late: 110 },
+    stages: {
+      emergence:  { early: [0,6],   medium: [0,6],   late: [0,6]   },
+      vegetative: { early: [6,25],  medium: [6,30],  late: [6,40]  },
+      flowering:  { early: [25,45], medium: [30,55], late: [40,80] },
+      pod_fill:   { early: [45,60], medium: [55,75], late: [80,110]}
+    },
+    stageLabels: ["Emergence", "Vegetative", "Flowering", "Pod Fill/Maturity"],
+    stageColors: ["#34d399","#22c55e","#f59e0b","#007AFF"],
+    keyActivities: [
+      { dayOffset: 14, label: "First weeding" },
+      { dayOffset: 30, label: "Second weeding — avoid disturbing nodules" },
+      { fromHarvest: -5, label: "Pick dry brown pods or cut whole plant for drying" }
+    ],
+    harvestSigns: "Pods turn brown/dry. Seeds rattle in pod when shaken. Pick dried pods or cut whole plant.",
+    lateHarvestRisk: "Pods shatter and split at over-maturity. Insect damage to dry pods.",
+    tempAdjustment: { above32: -0.07, t28_32: 0, t22_28: 0.07, t18_22: 0.12, below18: 0.20 }
+  },
+
+  "soybean": {
+    name: "Soybean",
+    icon: "🫘",
+    category: "legume",
+    totalDays: { early: 90, medium: 110, late: 140 },
+    stages: {
+      emergence:  { early: [0,8],   medium: [0,8],   late: [0,8]   },
+      vegetative: { early: [8,40],  medium: [8,50],  late: [8,60]  },
+      flowering:  { early: [40,65], medium: [50,80], late: [60,100]},
+      pod_fill:   { early: [65,90], medium: [80,110],late: [100,140]}
+    },
+    stageLabels: ["Emergence", "Vegetative", "Flowering/Pod Set", "Pod Fill/Maturity"],
+    stageColors: ["#34d399","#22c55e","#f59e0b","#007AFF"],
+    keyActivities: [
+      { dayOffset: 14,  label: "First weeding" },
+      { dayOffset: 30,  label: "Check for nodule formation (nitrogen fixation)" },
+      { dayOffset: 50,  label: "Inoculate soil for next season if nodules poor" },
+      { fromHarvest: -7, label: "Monitor: leaves drop, pods turn brown, seeds rattle" }
+    ],
+    harvestSigns: "Leaves drop. Pods turn brown. Seeds rattle in pods. Harvest at 13–14% moisture.",
+    lateHarvestRisk: "Shattering loss. Pods open and seeds fall to ground in hot dry conditions.",
+    tempAdjustment: { above32: -0.08, t28_32: 0, t22_28: 0.08, t18_22: 0.15, below18: 0.22 }
+  },
+
+  "common_bean": {
+    name: "Common Bean",
+    icon: "🫘",
+    category: "legume",
+    totalDays: { early: 70, medium: 90, late: 120 },
+    stages: {
+      emergence:  { early: [0,7],   medium: [0,7],   late: [0,7]   },
+      vegetative: { early: [7,28],  medium: [7,35],  late: [7,45]  },
+      flowering:  { early: [28,50], medium: [35,65], late: [45,90] },
+      pod_fill:   { early: [50,70], medium: [65,90], late: [90,120]}
+    },
+    stageLabels: ["Emergence", "Vegetative", "Flowering", "Pod Fill/Maturity"],
+    stageColors: ["#34d399","#22c55e","#f59e0b","#007AFF"],
+    keyActivities: [
+      { dayOffset: 14, label: "First weeding — beans are very sensitive to weed competition" },
+      { dayOffset: 30, label: "Second weeding" },
+      { fromHarvest: -7, label: "Pull sample plants for drying if rain expected" }
+    ],
+    harvestSigns: "Pods turn yellow/brown. Seeds hard. Whole plant can be pulled for drying.",
+    lateHarvestRisk: "Pod shattering and mould in wet weather. Quality loss.",
+    tempAdjustment: { above30: -0.08, t22_30: 0, t16_22: 0.08, below16: 0.18 }
+  },
+
+  "cotton": {
+    name: "Cotton",
+    icon: "🌿",
+    category: "cash_crop",
+    totalDays: { early: 140, medium: 175, late: 220 },
+    stages: {
+      emergence:    { early: [0,10],   medium: [0,10],   late: [0,10]  },
+      vegetative:   { early: [10,50],  medium: [10,65],  late: [10,80] },
+      flowering:    { early: [50,90],  medium: [65,110], late: [80,140]},
+      boll_develop: { early: [90,140], medium: [110,175],late: [140,220]}
+    },
+    stageLabels: ["Emergence", "Vegetative", "Flowering/Squaring", "Boll Development/Opening"],
+    stageColors: ["#34d399","#22c55e","#f59e0b","#007AFF"],
+    keyActivities: [
+      { dayOffset: 21,  label: "First weeding + thinning" },
+      { dayOffset: 42,  label: "Second weeding" },
+      { dayOffset: 60,  label: "Apply insecticide for bollworm at square/flower stage" },
+      { dayOffset: 90,  label: "Second insecticide if needed" },
+      { dayOffset: 120, label: "First bolls opening — begin picking" }
+    ],
+    harvestSigns: "Bolls open showing white lint. Pick by hand when 60% of bolls are open. Multiple pickings needed.",
+    lateHarvestRisk: "Lint quality degrades with rain and sun exposure. Insect damage to open bolls.",
+    tempAdjustment: { above35: -0.07, t28_35: 0, t22_28: 0.08, below22: 0.18 }
+  },
+
+  "sesame": {
+    name: "Sesame",
+    icon: "🌿",
+    category: "oil_crop",
+    totalDays: { early: 80, medium: 100, late: 130 },
+    stages: {
+      emergence:  { early: [0,6],   medium: [0,6],   late: [0,6]   },
+      vegetative: { early: [6,35],  medium: [6,45],  late: [6,60]  },
+      flowering:  { early: [35,60], medium: [45,75], late: [60,100]},
+      maturity:   { early: [60,80], medium: [75,100],late: [100,130]}
+    },
+    stageLabels: ["Emergence", "Vegetative", "Flowering", "Maturity"],
+    stageColors: ["#34d399","#22c55e","#f59e0b","#007AFF"],
+    keyActivities: [
+      { dayOffset: 14,  label: "First weeding + thinning to stand" },
+      { dayOffset: 30,  label: "Second weeding" },
+      { fromHarvest: -3, label: "URGENT: Cut plants and stack upside down on tarp — shattering imminent" }
+    ],
+    harvestSigns: "Lower capsules turn brown. Leaves begin dropping. Harvest BEFORE capsules open (shattering loss is huge).",
+    lateHarvestRisk: "Sesame shatters easily — even 2–3 day delay can lose 30%+ of seed. Cut plants and stack upside down on tarp.",
+    tempAdjustment: { above32: -0.07, t28_32: 0, t22_28: 0.08, t18_22: 0.15, below18: 0.25 }
+  },
+
+  "tomato": {
+    name: "Tomato",
+    icon: "🍅",
+    category: "vegetable",
+    totalDays: { early: 60, medium: 75, late: 100 },
+    stages: {
+      emergence:   { early: [0,8],   medium: [0,8],   late: [0,8]  },
+      vegetative:  { early: [8,30],  medium: [8,35],  late: [8,45] },
+      flowering:   { early: [30,50], medium: [35,60], late: [45,75]},
+      fruit_dev:   { early: [50,60], medium: [60,75], late: [75,100]}
+    },
+    stageLabels: ["Seedling/Emergence", "Vegetative", "Flowering/Fruit Set", "Fruit Development/Ripening"],
+    stageColors: ["#34d399","#22c55e","#f59e0b","#007AFF"],
+    keyActivities: [
+      { dayOffset: 14,  label: "Transplant seedlings (if started in nursery — add 21 days nursery)" },
+      { dayOffset: 21,  label: "Stake plants + first weeding" },
+      { dayOffset: 35,  label: "Apply fertilizer top-dress + scout for pests/blight" },
+      { dayOffset: 50,  label: "First harvest pick possible for early varieties" }
+    ],
+    transplantNote: "If transplanting from nursery: add 21 days nursery period to total.",
+    harvestSigns: "Fruits turn red/orange (or mature colour for variety). Slight give when squeezed.",
+    lateHarvestRisk: "Over-ripe tomatoes split and rot quickly, especially in heat. Pick at breaker stage for transport.",
+    tempAdjustment: { above35: -0.10, t25_35: 0, t18_25: 0.08, below18: 0.18 }
+  },
+
+  "onion": {
+    name: "Onion",
+    icon: "🧅",
+    category: "vegetable",
+    totalDays: { early: 100, medium: 140, late: 180 },
+    stages: {
+      emergence:   { early: [0,14],  medium: [0,14],  late: [0,14]  },
+      vegetative:  { early: [14,60], medium: [14,80], late: [14,100]},
+      bulbing:     { early: [60,90], medium: [80,120],late: [100,160]},
+      maturity:    { early: [90,100],medium: [120,140],late:[160,180]}
+    },
+    stageLabels: ["Emergence/Transplant", "Vegetative (leaf formation)", "Bulbing", "Maturity"],
+    stageColors: ["#34d399","#22c55e","#f59e0b","#007AFF"],
+    keyActivities: [
+      { dayOffset: 21,  label: "Transplant from nursery if transplanting method" },
+      { dayOffset: 35,  label: "First weeding + N top-dress" },
+      { dayOffset: 70,  label: "Reduce irrigation as bulbs approach maturity" },
+      { fromHarvest: -7, label: "Stop irrigation 7–10 days before harvest to aid skin set" }
+    ],
+    harvestSigns: "Tops fall over (neck softens). Pull and cure in shade for 7–14 days before storage.",
+    lateHarvestRisk: "Bulbs resprout and soften. Disease entry through open necks.",
+    tempAdjustment: { above32: -0.08, t25_32: 0, t18_25: 0.07, below18: 0.15 }
+  }
+
+};
+
+// Altitude adjustment factors (applied on top of temp adjustment)
+window.AfroTools.altitudeAdjustment = {
+  "lowland":      0,      // < 500m — standard
+  "mid_altitude": 0.07,   // 500–1500m — +7%
+  "highland":     0.15,   // 1500–2500m — +15%
+  "very_high":    0.22    // > 2500m — +22%
+};
+
+// Climate zone to altitude mapping
+window.AfroTools.climateZoneAltitude = {
+  "lowland":       "lowland",
+  "semi_arid":     "lowland",
+  "arid":          "lowland",
+  "coastal":       "lowland",
+  "sub_humid":     "lowland",
+  "humid":         "lowland",
+  "tropical":      "lowland",
+  "mid_altitude":  "mid_altitude",
+  "sub_tropical":  "mid_altitude",
+  "highland":      "highland",
+  "very_highland": "very_high",
+  "alpine":        "very_high"
+};
+
+}();

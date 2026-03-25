@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.bd27dfaf.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Livestock Feed Calculator for Africa &mdash; 15 Countries | AfroTools</title>
+<meta name="description" content="Formulate balanced livestock feed rations for cattle, goats and sheep in 15 African countries. Calculate daily feed costs using locally available ingredients — maize, cottonseed cake, Napier grass and more.">
+<link rel="canonical" href="https://afrotools.com/agriculture/livestock-feed/">
+
+<meta property="og:title" content="Livestock Feed Calculator for Africa &mdash; AfroTools">
+<meta property="og:description" content="Formulate balanced livestock feed rations for cattle, goats and sheep in 15 African countries. Calculate daily feed costs using locally available ingredients.">
+<meta property="og:url" content="https://afrotools.com/agriculture/livestock-feed/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:title" content="Livestock Feed Calculator for Africa &mdash; AfroTools">
+<meta name="twitter:description" content="Formulate balanced livestock feed rations for cattle, goats and sheep in 15 African countries.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Livestock Feed Calculators for Africa",
+  "url": "https://afrotools.com/agriculture/livestock-feed/",
+  "description": "Formulate balanced livestock feed rations for cattle, goats and sheep across 15 African countries.",
+  "author": { "@type": "Organization", "name": "AfroTools", "url": "https://afrotools.com" }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How does the livestock feed calculator work?",
+      "acceptedAnswer": {"@type": "Answer","text": "The calculator uses NRC (National Research Council) nutrient requirements adapted for African tropical breeds. You select your animal type, production class, body weight, and locally available feed ingredients. The engine calculates daily dry matter intake, allocates feeds to meet crude protein and TDN targets, and provides a complete daily ration with costs in local currency."}
+    },
+    {
+      "@type": "Question",
+      "name": "What animals does the calculator support?",
+      "acceptedAnswer": {"@type": "Answer","text": "The calculator supports cattle (dairy cows, beef cattle, calves), goats (does, bucks, kids), and sheep (ewes, rams, lambs). Each has multiple production classes — e.g., dairy cow lactating high/medium/low, beef growing, fattening, or maintenance."}
+    },
+    {
+      "@type": "Question",
+      "name": "Can I use local/free feed ingredients?",
+      "acceptedAnswer": {"@type": "Answer","text": "Yes. The calculator includes many free or very cheap African feeds: Napier grass, Leucaena leaf meal, Moringa leaf meal, sweet potato vines, cassava peel, maize stover, cowpea haulm, and groundnut haulm. These tree and crop byproduct feeds can significantly cut feed costs."}
+    },
+    {
+      "@type": "Question",
+      "name": "Which countries are supported?",
+      "acceptedAnswer": {"@type": "Answer","text": "This Tier 3 release covers Africa's 15 largest livestock economies: Nigeria, Kenya, South Africa, Ghana, Egypt, Ethiopia, Tanzania, Uganda, Rwanda, Côte d'Ivoire, Cameroon, Senegal, Morocco, Tunisia, and Angola. Feed prices are in local currency for each country."}
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem","position": 1,"name": "AfroTools","item": "https://afrotools.com/"},
+    {"@type": "ListItem","position": 2,"name": "Agriculture","item": "https://afrotools.com/agriculture/"},
+    {"@type": "ListItem","position": 3,"name": "Livestock Feed Calculator","item": "https://afrotools.com/agriculture/livestock-feed/"}
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+
+<style>
+:root{
+  --lf-blue:#007AFF;--lf-blue-dark:#0063D1;--lf-blue-light:#E8F2FF;
+  --lf-bg:#F8F9FA;--lf-card:#FFFFFF;--lf-text:#1A1A2E;--lf-muted:#6B7280;--lf-radius:18px;
+}
+*,*::before,*::after{box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--lf-bg);color:var(--lf-text);margin:0;}
+
+.hub-hero{
+  background:linear-gradient(135deg,#001836 0%,var(--lf-blue-dark) 50%,var(--lf-blue) 100%);
+  color:#fff;padding:3rem 1rem 2.5rem;text-align:center;
+}
+.hub-hero-inner{max-width:720px;margin:0 auto;}
+.hub-hero .breadcrumb{font-size:0.85rem;opacity:0.7;margin-bottom:0.75rem;}
+.hub-hero .breadcrumb a{color:#fff;text-decoration:none;}
+.hub-hero .breadcrumb a:hover{text-decoration:underline;}
+.hub-hero h1{color:#fff;font-size:clamp(1.5rem,5.5vw,2.6rem);font-weight:800;margin:0 0 0.75rem;letter-spacing:-0.02em;line-height:1.15;}
+.hub-hero p{font-size:1.05rem;opacity:0.85;line-height:1.6;max-width:600px;margin:0 auto;}
+.hub-hero .badge-row{display:flex;justify-content:center;gap:0.75rem;margin-top:1rem;flex-wrap:wrap;}
+.hub-badge{background:rgba(255,255,255,0.15);border-radius:980px;padding:0.35rem 0.9rem;font-size:0.82rem;font-weight:600;}
+
+.hub-main{max-width:1100px;margin:-1.5rem auto 3rem;padding:0 1rem;}
+
+.region-section{margin-bottom:2rem;}
+.region-label{font-size:0.82rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--lf-muted);margin-bottom:0.75rem;padding-bottom:0.4rem;border-bottom:2px solid var(--lf-blue-light);}
+
+.country-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0.75rem;}
+.country-card{display:flex;align-items:center;gap:0.6rem;background:var(--lf-card);border:1.5px solid #E5E7EB;border-radius:14px;padding:0.85rem 1rem;text-decoration:none;color:var(--lf-text);transition:border-color 0.2s,box-shadow 0.2s,transform 0.15s;font-weight:600;font-size:0.92rem;}
+.country-card:hover{border-color:var(--lf-blue);box-shadow:0 4px 12px rgba(0,122,255,0.12);transform:translateY(-2px);}
+.country-card .flag{font-size:1.5rem;flex-shrink:0;}
+.country-card .name{flex:1;}
+.country-card .arrow{color:var(--lf-muted);font-size:1.1rem;}
+
+.seo-content{max-width:800px;margin:2rem auto;padding:0 1rem;}
+.seo-content h2{font-size:1.2rem;font-weight:800;text-transform:uppercase;margin:2rem 0 0.75rem;color:var(--lf-text);}
+.seo-content p{font-size:0.92rem;line-height:1.7;color:var(--lf-muted);}
+.faq details{border-bottom:1px solid #E5E7EB;padding:0.85rem 0;}
+.faq summary{font-weight:600;font-size:0.92rem;cursor:pointer;list-style:none;}
+.faq summary::before{content:'+ ';color:var(--lf-blue);font-weight:800;}
+.faq details[open] summary::before{content:'- ';}
+.faq p{font-size:0.88rem;color:var(--lf-muted);line-height:1.6;margin:0.5rem 0 0;}
+
+.how-it-works{max-width:1100px;margin:0 auto 2rem;padding:0 1rem;}
+.steps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-top:1rem;}
+.step-card{background:#fff;border:1px solid #E5E7EB;border-radius:var(--lf-radius);padding:1.25rem;text-align:center;}
+.step-num{width:36px;height:36px;border-radius:50%;background:var(--lf-blue-light);color:var(--lf-blue);font-weight:800;font-size:1rem;display:flex;align-items:center;justify-content:center;margin:0 auto 0.6rem;}
+.step-title{font-weight:700;font-size:0.88rem;margin-bottom:0.4rem;}
+.step-desc{font-size:0.78rem;color:var(--lf-muted);line-height:1.5;}
+</style>
+<link rel="alternate" hreflang="en" href="https://afrotools.com/agriculture/livestock-feed/" />
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/agriculture/livestock-feed/" />
+</head>
+
+<body>
+<afro-navbar theme="dark" active="tools"></afro-navbar>
+
+<section class="hub-hero">
+  <div class="hub-hero-inner">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">AfroTools</a> &rsaquo; <a href="/agriculture/">Agriculture</a> &rsaquo; Livestock Feed Calculator
+    </nav>
+    <h1>&#x1F404; Livestock Feed Calculator for Africa</h1>
+    <p>Formulate balanced feed rations for cattle, goats and sheep using locally available African ingredients. Calculate daily feed costs in your local currency.</p>
+    <div class="badge-row">
+      <span class="hub-badge">&#127940; 15 Countries</span>
+      <span class="hub-badge">&#x1F404; Cattle &bull; Goats &bull; Sheep</span>
+      <span class="hub-badge">&#127807; 30+ Feed Ingredients</span>
+      <span class="hub-badge">&#127760; 100% Free</span>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works -->
+<div class="how-it-works">
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-num">1</div>
+      <div class="step-title">Select Country</div>
+      <div class="step-desc">Pick your country below. Feed prices load automatically in local currency.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">2</div>
+      <div class="step-title">Set Up Animal</div>
+      <div class="step-desc">Choose animal type, class (dairy/beef/fattening), breed, and body weight.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">3</div>
+      <div class="step-title">Pick Local Feeds</div>
+      <div class="step-desc">Select feeds available near you. Locally available feeds are pre-checked.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">4</div>
+      <div class="step-title">Get Your Ration</div>
+      <div class="step-desc">Receive daily ration, nutritional balance check, cost summary, and feeding schedule.</div>
+    </div>
+  </div>
+</div>
+
+<div class="hub-main" id="hubMain">
+
+  <div class="region-section">
+    <div class="region-label">West Africa (4)</div>
+    <div class="country-grid">
+      <a class="country-card" href="/agriculture/livestock-feed/nigeria"><span class="flag">&#x1F1F3;&#x1F1EC;</span><span class="name">Nigeria</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/livestock-feed/ghana"><span class="flag">&#x1F1EC;&#x1F1ED;</span><span class="name">Ghana</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/livestock-feed/cote-d-ivoire"><span class="flag">&#x1F1E8;&#x1F1EE;</span><span class="name">C&ocirc;te d&rsquo;Ivoire</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/livestock-feed/senegal"><span class="flag">&#x1F1F8;&#x1F1F3;</span><span class="name">Senegal</span><span class="arrow">&rsaquo;</span></a>
+    </div>
+  </div>
+
+  <div class="region-section">
+    <div class="region-label">East Africa (5)</div>
+    <div class="country-grid">
+      <a class="country-card" href="/agriculture/livestock-feed/kenya"><span class="flag">&#x1F1F0;&#x1F1EA;</span><span class="name">Kenya</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/livestock-feed/ethiopia"><span class="flag">&#x1F1EA;&#x1F1F9;</span><span class="name">Ethiopia</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/livestock-feed/tanzania"><span class="flag">&#x1F1F9;&#x1F1FF;</span><span class="name">Tanzania</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/livestock-feed/uganda"><span class="flag">&#x1F1FA;&#x1F1EC;</span><span class="name">Uganda</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/livestock-feed/rwanda"><span class="flag">&#x1F1F7;&#x1F1FC;</span><span class="name">Rwanda</span><span class="arrow">&rsaquo;</span></a>
+    </div>
+  </div>
+
+  <div class="region-section">
+    <div class="region-label">Central Africa (1)</div>
+    <div class="country-grid">
+      <a class="country-card" href="/agriculture/livestock-feed/cameroon"><span class="flag">&#x1F1E8;&#x1F1F2;</span><span class="name">Cameroon</span><span class="arrow">&rsaquo;</span></a>
+    </div>
+  </div>
+
+  <div class="region-section">
+    <div class="region-label">Southern Africa (2)</div>
+    <div class="country-grid">
+      <a class="country-card" href="/agriculture/livestock-feed/south-africa"><span class="flag">&#x1F1FF;&#x1F1E6;</span><span class="name">South Africa</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/livestock-feed/angola"><span class="flag">&#x1F1E6;&#x1F1F4;</span><span class="name">Angola</span><span class="arrow">&rsaquo;</span></a>
+    </div>
+  </div>
+
+  <div class="region-section">
+    <div class="region-label">North Africa (3)</div>
+    <div class="country-grid">
+      <a class="country-card" href="/agriculture/livestock-feed/egypt"><span class="flag">&#x1F1EA;&#x1F1EC;</span><span class="name">Egypt</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/livestock-feed/morocco"><span class="flag">&#x1F1F2;&#x1F1E6;</span><span class="name">Morocco</span><span class="arrow">&rsaquo;</span></a>
+      <a class="country-card" href="/agriculture/livestock-feed/tunisia"><span class="flag">&#x1F1F9;&#x1F1F3;</span><span class="name">Tunisia</span><span class="arrow">&rsaquo;</span></a>
+    </div>
+  </div>
+
+</div>
+
+<section class="seo-content">
+  <h2>About the Livestock Feed Calculator</h2>
+  <p>AfroTools' Livestock Feed Calculator helps African farmers, veterinary officers, and livestock advisors formulate balanced feed rations using locally available ingredients. The tool uses NRC (National Research Council) nutrient standards adapted for African tropical breeds, covering cattle, goats, and sheep across all major production classes.</p>
+
+  <h2>How It Works</h2>
+  <p>Select your country, animal type and production class (e.g., dairy cow producing 10L/day), breed and body weight. The calculator determines daily dry matter intake (DMI), crude protein (CP) and total digestible nutrients (TDN) requirements. You then choose available feed ingredients — the engine allocates roughage (40–70% of DMI) and concentrates (energy + protein feeds) to meet nutritional targets, converting to fresh weights and calculating daily and monthly costs in local currency.</p>
+
+  <h2>Frequently Asked Questions</h2>
+  <div class="faq">
+    <details>
+      <summary>How does the livestock feed calculator work?</summary>
+      <p>The calculator uses NRC nutrient requirements adapted for African tropical breeds. You select your animal type, production class, body weight, and locally available feed ingredients. The engine calculates daily dry matter intake, allocates feeds to meet crude protein and TDN targets, and provides a complete daily ration with costs in local currency.</p>
+    </details>
+    <details>
+      <summary>What animals does the calculator support?</summary>
+      <p>The calculator supports cattle (dairy cows, beef cattle, calves), goats (does, bucks, kids), and sheep (ewes, rams, lambs). Each has multiple production classes — e.g., dairy cow lactating high/medium/low, beef growing, fattening, or maintenance.</p>
+    </details>
+    <details>
+      <summary>Can I use local or free feed ingredients?</summary>
+      <p>Yes. The calculator includes many free or very cheap African feeds: Napier grass, Leucaena leaf meal, Moringa leaf meal, sweet potato vines, cassava peel, maize stover, cowpea haulm, and groundnut haulm. These tree and crop byproduct feeds can significantly cut feed costs.</p>
+    </details>
+    <details>
+      <summary>What is dry matter (DM) and why does it matter?</summary>
+      <p>Dry matter is the weight of feed after all water is removed. Animals require a certain amount of nutrients per day, and nutrient content is expressed on a DM basis. Fresh feeds like Napier grass are 80% water (20% DM), so you need 5 kg of fresh grass to provide 1 kg of DM. The calculator converts all results to fresh (as-fed) weights for easy measurement.</p>
+    </details>
+    <details>
+      <summary>Is the calculator free to use?</summary>
+      <p>Yes, 100% free. No registration required. All calculations happen in your browser — no data is sent to any server.</p>
+    </details>
+  </div>
+</section>
+
+<afro-footer></afro-footer>
+</body>
+</html>

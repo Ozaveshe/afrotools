@@ -221,9 +221,9 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
 /* Profit bar */
 .profit-bar-wrap { margin: 16px 0; }
 .profit-bar-track { height: 32px; background: #f1f5f9; border-radius: 8px; overflow: hidden; display: flex; }
-.profit-bar-cost { height: 100%; background: #ef4444; display: flex; align-items: center; padding: 0 8px; font-size: 0.72rem; font-weight: 700; color: #fff; min-width: 50px; }
-.profit-bar-profit { height: 100%; background: #16a34a; display: flex; align-items: center; padding: 0 8px; font-size: 0.72rem; font-weight: 700; color: #fff; }
-.profit-bar-loss { height: 100%; background: #f97316; display: flex; align-items: center; padding: 0 8px; font-size: 0.72rem; font-weight: 700; color: #fff; }
+.profit-bar-cost { height: 100%; background: #ef4444; display: flex; align-items: center; justify-content: center; padding: 0 6px; font-size: 0.7rem; font-weight: 700; color: #fff; overflow: hidden; white-space: nowrap; }
+.profit-bar-profit { height: 100%; background: #16a34a; display: flex; align-items: center; justify-content: center; padding: 0 6px; font-size: 0.7rem; font-weight: 700; color: #fff; overflow: hidden; white-space: nowrap; }
+.profit-bar-loss { height: 100%; background: #f97316; display: flex; align-items: center; justify-content: center; padding: 0 6px; font-size: 0.7rem; font-weight: 700; color: #fff; overflow: hidden; white-space: nowrap; }
 
 /* Key metrics */
 .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin: 16px 0; }
@@ -522,6 +522,7 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
         <span><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:#16a34a;margin-right:4px;"></span>Profit</span>
         <span><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:#f97316;margin-right:4px;"></span>Loss</span>
       </div>
+      <div id="barStats" style="margin-top:6px;font-size:0.78rem;font-weight:600;color:#374151;"></div>
     </div>
   </div>
 
@@ -846,16 +847,18 @@ body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; 
     var costDiv = document.createElement('div');
     costDiv.className = 'profit-bar-cost';
     costDiv.style.width = costWidth + '%';
-    costDiv.textContent = 'Costs ' + fmtPct(costWidth);
+    costDiv.textContent = costWidth > 20 ? 'Costs ' + fmtPct(costWidth) : fmtPct(costWidth);
     bar.appendChild(costDiv);
 
     if (leftWidth > 0) {
       var gapDiv = document.createElement('div');
       gapDiv.className = r.isProfitable ? 'profit-bar-profit' : 'profit-bar-loss';
       gapDiv.style.width = leftWidth + '%';
-      gapDiv.textContent = r.isProfitable ? 'Profit ' + fmtPct(leftWidth) : 'Loss';
+      gapDiv.textContent = leftWidth > 20 ? (r.isProfitable ? 'Profit ' + fmtPct(leftWidth) : 'Loss') : fmtPct(leftWidth);
       bar.appendChild(gapDiv);
     }
+    var statsEl = $('barStats');
+    if (statsEl) statsEl.textContent = 'Costs: ' + fmtPct(costWidth) + (leftWidth > 0 ? (r.isProfitable ? ' \u00b7 Profit: ' : ' \u00b7 Loss: ') + fmtPct(leftWidth) : '');
 
     // Metrics
     var mg = $('metricsGrid');

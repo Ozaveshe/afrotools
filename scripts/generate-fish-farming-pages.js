@@ -1,0 +1,764 @@
+// scripts/generate-fish-farming-pages.js
+// Generates 15 country pages for /agriculture/fish-farming/
+// Run: node scripts/generate-fish-farming-pages.js
+
+const fs = require('fs');
+const path = require('path');
+
+const COUNTRIES = [
+  { code: 'NG', name: 'Nigeria',        flag: '🇳🇬', slug: 'nigeria',        species: ['catfish', 'tilapia'],        speciesLabel: 'Catfish &amp; Tilapia' },
+  { code: 'KE', name: 'Kenya',          flag: '🇰🇪', slug: 'kenya',          species: ['tilapia', 'catfish', 'trout'], speciesLabel: 'Tilapia, Catfish &amp; Trout' },
+  { code: 'ZA', name: 'South Africa',   flag: '🇿🇦', slug: 'south-africa',   species: ['tilapia', 'trout', 'catfish'], speciesLabel: 'Tilapia, Trout &amp; Catfish' },
+  { code: 'GH', name: 'Ghana',          flag: '🇬🇭', slug: 'ghana',          species: ['tilapia', 'catfish'],        speciesLabel: 'Tilapia &amp; Catfish' },
+  { code: 'EG', name: 'Egypt',          flag: '🇪🇬', slug: 'egypt',          species: ['tilapia', 'catfish'],        speciesLabel: 'Tilapia &amp; Catfish' },
+  { code: 'ET', name: 'Ethiopia',       flag: '🇪🇹', slug: 'ethiopia',       species: ['tilapia', 'trout'],          speciesLabel: 'Tilapia &amp; Trout' },
+  { code: 'TZ', name: 'Tanzania',       flag: '🇹🇿', slug: 'tanzania',       species: ['tilapia', 'catfish'],        speciesLabel: 'Tilapia &amp; Catfish' },
+  { code: 'UG', name: 'Uganda',         flag: '🇺🇬', slug: 'uganda',         species: ['tilapia', 'catfish'],        speciesLabel: 'Tilapia &amp; Catfish' },
+  { code: 'RW', name: 'Rwanda',         flag: '🇷🇼', slug: 'rwanda',         species: ['tilapia', 'catfish'],        speciesLabel: 'Tilapia &amp; Catfish' },
+  { code: 'CI', name: "Côte d'Ivoire",  flag: '🇨🇮', slug: 'cote-d-ivoire',  species: ['tilapia', 'catfish'],        speciesLabel: 'Tilapia &amp; Catfish' },
+  { code: 'CM', name: 'Cameroon',       flag: '🇨🇲', slug: 'cameroon',       species: ['catfish', 'tilapia'],        speciesLabel: 'Catfish &amp; Tilapia' },
+  { code: 'SN', name: 'Senegal',        flag: '🇸🇳', slug: 'senegal',        species: ['tilapia', 'catfish'],        speciesLabel: 'Tilapia &amp; Catfish' },
+  { code: 'MA', name: 'Morocco',        flag: '🇲🇦', slug: 'morocco',        species: ['tilapia', 'trout'],          speciesLabel: 'Tilapia &amp; Trout' },
+  { code: 'TN', name: 'Tunisia',        flag: '🇹🇳', slug: 'tunisia',        species: ['tilapia', 'catfish'],        speciesLabel: 'Tilapia &amp; Catfish' },
+  { code: 'AO', name: 'Angola',         flag: '🇦🇴', slug: 'angola',         species: ['tilapia', 'catfish'],        speciesLabel: 'Tilapia &amp; Catfish' },
+];
+
+function buildSpeciesOptions(country) {
+  const speciesNames = { catfish: 'African Catfish', tilapia: 'Nile Tilapia', trout: 'Rainbow Trout' };
+  return country.species.map((s, i) =>
+    `<option value="${s}"${i === 0 ? ' selected' : ''}>${speciesNames[s]}</option>`
+  ).join('\n              ');
+}
+
+function generatePage(c) {
+  const speciesOpts = buildSpeciesOptions(c);
+  const hasThreeSpecies = c.species.length >= 3;
+
+  return `<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.bd27dfaf.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fish Farming ROI Calculator for ${c.name} &mdash; Catfish &amp; Tilapia | AfroTools</title>
+<meta name="description" content="Calculate fish farming profitability in ${c.name}. Full ROI for catfish, tilapia${c.species.includes('trout') ? ' and trout' : ''} with local feed prices, fingerling costs, and pond/tank setup costs.">
+<link rel="canonical" href="https://afrotools.com/agriculture/fish-farming/${c.slug}">
+
+<meta property="og:title" content="${c.name} Fish Farming ROI Calculator &mdash; AfroTools">
+<meta property="og:description" content="Calculate fish farming profitability in ${c.name}. Full ROI for ${c.speciesLabel.replace(/&amp;/g, '&')} with local feed prices, fingerling costs, and pond setup costs.">
+<meta property="og:url" content="https://afrotools.com/agriculture/fish-farming/${c.slug}">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${c.name} Fish Farming ROI Calculator &mdash; AfroTools">
+<meta name="twitter:description" content="Calculate fish farming profitability in ${c.name}. Full ROI for ${c.speciesLabel.replace(/&amp;/g, '&')} with local feed prices and pond setup costs.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "${c.name} Fish Farming ROI Calculator",
+  "url": "https://afrotools.com/agriculture/fish-farming/${c.slug}",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "All",
+  "description": "Calculate fish farming profitability in ${c.name}. Full ROI for ${c.speciesLabel.replace(/&amp;/g, '&')} with local feed prices, fingerling costs, and pond setup costs.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "author": { "@type": "Organization", "name": "AfroTools", "url": "https://afrotools.com" }
+}
+<\/script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "AfroTools", "item": "https://afrotools.com/" },
+    { "@type": "ListItem", "position": 2, "name": "Agriculture", "item": "https://afrotools.com/agriculture/" },
+    { "@type": "ListItem", "position": 3, "name": "Fish Farming ROI Calculator", "item": "https://afrotools.com/agriculture/fish-farming/" },
+    { "@type": "ListItem", "position": 4, "name": "${c.name}", "item": "https://afrotools.com/agriculture/fish-farming/${c.slug}" }
+  ]
+}
+<\/script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer><\/script>
+<script src="/assets/js/components/footer.min.js" defer><\/script>
+
+<style>
+:root {
+  --calc-accent: #007AFF;
+  --calc-accent-rgb: 0, 122, 255;
+  --calc-accent-dark: #0063D1;
+  --calc-accent-light: #E8F2FF;
+  --calc-accent-pale: #EBF4FF;
+}
+*, *::before, *::after { box-sizing: border-box; }
+body { font-family: 'DM Sans', sans-serif; background: #F8F9FA; color: #1A1A2E; margin: 0; }
+
+.tool-hero { background: #0A1628; padding: 36px 0 32px; position: relative; overflow: hidden; }
+.tool-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 20% 50%, rgba(0,122,255,0.12) 0%, transparent 60%); pointer-events: none; }
+.tool-hero .container { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+.breadcrumb { font-size: 0.75rem; font-weight: 500; color: rgba(255,255,255,0.4); margin-bottom: 16px; }
+.breadcrumb a { color: rgba(255,255,255,0.5); text-decoration: none; }
+.breadcrumb a:hover { color: #fff; }
+.breadcrumb span { margin: 0 6px; opacity: 0.4; }
+.tool-hero h1 { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 800; color: #fff; margin: 0 0 8px; letter-spacing: -0.02em; }
+.tool-hero h1 em { color: var(--calc-accent); font-style: normal; }
+.tool-hero-sub { font-size: 0.875rem; color: rgba(255,255,255,0.65); max-width: 600px; line-height: 1.6; margin: 0 0 16px; }
+.hero-badges { display: flex; flex-wrap: wrap; gap: 8px; }
+.badge { padding: 4px 10px; border-radius: 100px; font-size: 0.72rem; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; }
+.badge-blue { background: rgba(0,122,255,0.15); color: var(--calc-accent); }
+.badge-grey { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.6); }
+
+.tool-main { max-width: 1100px; margin: -20px auto 48px; padding: 0 24px; position: relative; z-index: 2; }
+
+.card { background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 20px; }
+.card-head { padding: 14px 20px; background: #F8FAFD; border-bottom: 1px solid #f1f5f9; border-radius: 10px 10px 0 0; display: flex; align-items: center; justify-content: space-between; }
+.card-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #3D5A80; margin: 0; display: flex; align-items: center; gap: 6px; }
+.card-body { padding: 20px; }
+.card-toggle { background: none; border: 1px solid #CBD5E1; border-radius: 6px; padding: 4px 10px; font-size: 0.72rem; font-weight: 600; color: #64748b; cursor: pointer; }
+.card-toggle:hover { background: #f1f5f9; }
+.section-body { display: block; }
+.section-body.collapsed { display: none; }
+
+.field { margin-bottom: 14px; }
+.field.full { grid-column: 1 / -1; }
+.f-label-text { display: block; font-size: 0.75rem; font-weight: 700; color: #2D3A5A; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.04em; }
+.f-label-hint { font-size: 0.7rem; font-weight: 400; color: #64748b; margin-left: 5px; text-transform: none; }
+.f-input, .f-select { font-family: 'DM Sans', sans-serif; font-size: 0.9rem; padding: 10px 12px; border: 1.5px solid #CBD5E1; border-radius: 6px; background: #F4F7FA; color: #0f172a; outline: none; width: 100%; }
+.f-input:focus, .f-select:focus { border-color: var(--calc-accent); background: #fff; box-shadow: 0 0 0 3px rgba(0,122,255,0.1); }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media(max-width:600px) { .form-grid { grid-template-columns: 1fr; } }
+
+.f-radio-group { display: flex; flex-wrap: wrap; gap: 8px; }
+.f-radio { display: none; }
+.f-radio-label { padding: 7px 14px; border: 1.5px solid #CBD5E1; border-radius: 980px; font-size: 0.8rem; font-weight: 600; color: #64748b; cursor: pointer; transition: all 0.15s; }
+.f-radio:checked + .f-radio-label { background: var(--calc-accent); border-color: var(--calc-accent); color: #fff; }
+
+.range-wrap { display: flex; align-items: center; gap: 10px; }
+.range-wrap input[type=range] { flex: 1; accent-color: var(--calc-accent); }
+.range-val { font-size: 0.85rem; font-weight: 700; color: var(--calc-accent); min-width: 40px; text-align: right; }
+
+.calc-btn { width: 100%; padding: 14px; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; background: var(--calc-accent); color: #fff; border: none; border-radius: 980px; cursor: pointer; margin-top: 6px; transition: filter 0.15s, transform 0.15s; }
+.calc-btn:hover { filter: brightness(0.88); transform: translateY(-1px); }
+
+/* Results */
+.results-wrap { display: none; }
+.results-wrap.on { display: block; animation: rFade 0.4s ease; }
+@keyframes rFade { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+
+.profit-hero { text-align: center; padding: 28px 16px; border-radius: 10px 10px 0 0; }
+.profit-hero.positive { background: linear-gradient(135deg, #0A3E1A 0%, #1a5e30 100%); }
+.profit-hero.negative { background: linear-gradient(135deg, #3E0A0A 0%, #5e1a1a 100%); }
+.profit-amount { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; color: #fff; }
+.profit-label { font-size: 0.78rem; color: rgba(255,255,255,0.6); margin-top: 4px; }
+.profit-sub { font-size: 0.85rem; color: rgba(255,255,255,0.75); margin-top: 6px; }
+
+.metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(155px, 1fr)); gap: 10px; margin: 14px 0; }
+.metric-card { background: #F8FAFD; border-radius: 8px; padding: 12px; text-align: center; }
+.metric-val { font-size: 1.1rem; font-weight: 800; color: var(--calc-accent); }
+.metric-label { font-size: 0.7rem; color: #64748b; margin-top: 3px; line-height: 1.3; }
+
+.summary-table { width: 100%; border-collapse: collapse; font-size: 0.84rem; }
+.summary-table tr td { padding: 6px 10px; border-bottom: 1px solid #f1f5f9; }
+.summary-table .section-head td { font-weight: 700; font-size: 0.72rem; text-transform: uppercase; color: #3D5A80; background: #F8FAFD; padding: 9px 10px 5px; }
+.summary-table .total-row td { font-weight: 800; border-top: 2px solid #e2e8f0; padding-top: 9px; }
+.summary-table .indent { padding-left: 20px; color: #64748b; }
+.summary-table .amount { text-align: right; font-weight: 600; }
+.summary-table .pct { text-align: right; font-size: 0.7rem; color: #94a3b8; }
+.positive-val { color: #16a34a; font-weight: 700; }
+.negative-val { color: #ef4444; font-weight: 700; }
+
+/* Donut */
+.donut-wrap { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin-top: 14px; }
+.donut-svg { flex-shrink: 0; }
+.donut-legend { flex: 1; min-width: 180px; }
+.legend-item { display: flex; align-items: center; gap: 7px; font-size: 0.76rem; margin-bottom: 4px; }
+.legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.legend-label { flex: 1; color: #64748b; }
+.legend-pct { font-weight: 700; color: #1A1A2E; }
+
+/* Bar */
+.profit-bar-track { height: 30px; background: #f1f5f9; border-radius: 8px; overflow: hidden; display: flex; margin: 12px 0; }
+.profit-bar-cost   { height: 100%; background: #ef4444; display: flex; align-items: center; justify-content: center; padding: 0 6px; font-size: 0.7rem; font-weight: 700; color: #fff; overflow: hidden; white-space: nowrap; }
+.profit-bar-profit { height: 100%; background: #16a34a; display: flex; align-items: center; justify-content: center; padding: 0 6px; font-size: 0.7rem; font-weight: 700; color: #fff; overflow: hidden; white-space: nowrap; }
+.profit-bar-loss   { height: 100%; background: #f97316; display: flex; align-items: center; justify-content: center; padding: 0 6px; font-size: 0.7rem; font-weight: 700; color: #fff; overflow: hidden; white-space: nowrap; }
+
+/* Scenarios */
+.scenario-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; margin-top: 10px; }
+.scenario-card { background: #F8FAFD; border-radius: 8px; padding: 12px; border-left: 3px solid #CBD5E1; }
+.scenario-card.positive { border-left-color: #16a34a; }
+.scenario-card.negative { border-left-color: #ef4444; }
+.scenario-label { font-size: 0.76rem; font-weight: 600; color: #3D5A80; margin-bottom: 5px; }
+.scenario-profit { font-size: 1rem; font-weight: 800; }
+.scenario-change { font-size: 0.7rem; margin-top: 2px; }
+
+/* Feed tip */
+.feed-tip { background: #EBF4FF; border: 1px solid var(--calc-accent-light); border-radius: 8px; padding: 14px 16px; font-size: 0.82rem; margin-top: 12px; }
+.feed-tip strong { color: var(--calc-accent); }
+
+/* Growth table */
+.growth-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+.growth-table th { background: #F8FAFD; padding: 7px 10px; text-align: left; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; color: #3D5A80; }
+.growth-table td { padding: 6px 10px; border-bottom: 1px solid #f1f5f9; }
+.growth-table tr:last-child td { border-bottom: none; font-weight: 700; }
+
+/* Cross-tools */
+.cross-tools { display: grid; grid-template-columns: repeat(auto-fit, minmax(195px, 1fr)); gap: 8px; margin-top: 10px; }
+.cross-tool-card { background: var(--calc-accent-pale); border: 1px solid var(--calc-accent-light); border-radius: 8px; padding: 11px; text-decoration: none; color: #1A1A2E; display: flex; align-items: center; gap: 9px; transition: box-shadow 0.2s; }
+.cross-tool-card:hover { box-shadow: 0 4px 12px rgba(0,122,255,0.12); }
+.cross-tool-icon { font-size: 1.3rem; flex-shrink: 0; }
+.cross-tool-name { font-size: 0.8rem; font-weight: 700; color: var(--calc-accent); }
+.cross-tool-desc { font-size: 0.7rem; color: #64748b; margin-top: 1px; }
+
+.sources-footer { font-size: 0.72rem; color: #94a3af; text-align: center; padding: 24px 0; line-height: 1.6; }
+
+@media print {
+  .tool-hero, afro-navbar, afro-footer, .calc-btn, .card-toggle { display: none !important; }
+  .results-wrap { display: block !important; }
+  .section-body.collapsed { display: block !important; }
+}
+</style>
+</head>
+
+<body class="tool-page">
+<afro-navbar theme="dark" active="tools"></afro-navbar>
+
+<section class="tool-hero">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a><span>/</span>
+      <a href="/agriculture/">Agriculture</a><span>/</span>
+      <a href="/agriculture/fish-farming/">Fish Farming ROI</a><span>/</span>
+      <span aria-current="page">${c.name}</span>
+    </nav>
+    <h1><span aria-hidden="true">${c.flag}</span> ${c.name} <em>Fish Farming ROI Calculator</em></h1>
+    <p class="tool-hero-sub">Calculate the full profitability of your fish farm in ${c.name}. ${c.speciesLabel} — with local feed prices, fingerling costs, pond setup and sensitivity analysis.</p>
+    <div class="hero-badges">
+      <span class="badge badge-blue">&#128031; ${c.speciesLabel}</span>
+      <span class="badge badge-grey">&#128200; Full ROI Analysis</span>
+      <span class="badge badge-grey">&#127760; Free Tool</span>
+    </div>
+  </div>
+</section>
+
+<main class="tool-main">
+
+<!-- ── SECTION 1: Species & System ── -->
+<div class="card">
+  <div class="card-head">
+    <span class="card-title">&#128031; Section 1: Species &amp; Production System</span>
+  </div>
+  <div class="card-body section-body" id="sec1Body">
+    <div class="form-grid">
+      <div class="field">
+        <label class="f-label-text" for="selSpecies">Species</label>
+        <select class="f-select" id="selSpecies" onchange="updateSpeciesDefaults()">
+              ${speciesOpts}
+        </select>
+      </div>
+      <div class="field">
+        <label class="f-label-text" for="selSystem">Production System</label>
+        <select class="f-select" id="selSystem" onchange="updateSystemDefaults()">
+          <option value="earthen_pond">Earthen Pond (m²)</option>
+          <option value="concrete_tank" selected>Concrete Tank (m²)</option>
+          <option value="tarpaulin_tank">Tarpaulin Tank (litres)</option>
+          <option value="cage">Lake / Pond Cage (m²)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="f-label-text" for="inpArea">Pond / Tank Size <span class="f-label-hint" id="areaUnit">(m²)</span></label>
+        <input class="f-input" id="inpArea" type="number" min="1" step="1" value="100">
+      </div>
+      <div class="field">
+        <label class="f-label-text" for="selDensity">Stocking Density</label>
+        <select class="f-select" id="selDensity">
+          <option value="low">Low (conservative)</option>
+          <option value="medium" selected>Medium (recommended)</option>
+          <option value="high">High (intensive)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="f-label-text" for="selManagement">Management Level</label>
+        <select class="f-select" id="selManagement">
+          <option value="good">Good (experienced farmer)</option>
+          <option value="average" selected>Average</option>
+          <option value="poor">Poor (first-time farmer)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="f-label-text" for="selTargetSize">Harvest Size Target</label>
+        <select class="f-select" id="selTargetSize">
+          <option value="min">Minimum market size</option>
+          <option value="typical" selected>Typical market size</option>
+          <option value="premium">Premium / table size</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="f-label-text" for="selGrowPeriod">Grow-out Period <span class="f-label-hint">(months)</span></label>
+        <select class="f-select" id="selGrowPeriod">
+          <option value="5">5 months</option>
+          <option value="6" selected>6 months</option>
+          <option value="8">8 months</option>
+          <option value="10">10 months</option>
+          <option value="12">12 months</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="f-label-text" for="selCycles">Cycles per Year</label>
+        <select class="f-select" id="selCycles">
+          <option value="1" selected>1 cycle per year</option>
+          <option value="2">2 cycles per year</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SECTION 2: Feed & Inputs ── -->
+<div class="card">
+  <div class="card-head">
+    <span class="card-title">&#127812; Section 2: Feed &amp; Input Costs</span>
+    <button class="card-toggle" onclick="toggleSection('sec2Body',this)">Collapse</button>
+  </div>
+  <div class="card-body section-body" id="sec2Body">
+    <div class="form-grid">
+      <div class="field">
+        <label class="f-label-text" for="selFeedType">Feed Type</label>
+        <select class="f-select" id="selFeedType">
+          <option value="imported">Imported Commercial (best FCR)</option>
+          <option value="local_float" selected>Local Commercial Floating</option>
+          <option value="local_sink">Local Commercial Sinking</option>
+          <option value="farm_made">Farm-made / Self-formulated</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="f-label-text" for="selProcessing">Selling / Processing Method</label>
+        <select class="f-select" id="selProcessing">
+          <option value="none">Sell fresh / live (no processing)</option>
+          <option value="smoked">Smoke fish before selling</option>
+          <option value="dried">Dry fish before selling</option>
+          <option value="fillet">Fillet before selling</option>
+        </select>
+      </div>
+    </div>
+    <p style="font-size:0.78rem;color:#64748b;margin:8px 0 0;">All feed prices and fingerling costs are pre-filled with ${c.name} 2024–2025 market data.</p>
+  </div>
+</div>
+
+<!-- ── SECTION 3: Infrastructure ── -->
+<div class="card">
+  <div class="card-head">
+    <span class="card-title">&#127968; Section 3: Infrastructure</span>
+    <button class="card-toggle" onclick="toggleSection('sec3Body',this)">Collapse</button>
+  </div>
+  <div class="card-body section-body" id="sec3Body">
+    <div class="form-grid">
+      <div class="field full">
+        <label class="f-label-text">Existing Infrastructure?</label>
+        <div class="f-radio-group">
+          <input type="radio" class="f-radio" name="hasInfra" id="infraNo" value="0" checked>
+          <label class="f-radio-label" for="infraNo">No — new setup (include infrastructure cost)</label>
+          <input type="radio" class="f-radio" name="hasInfra" id="infraYes" value="1">
+          <label class="f-radio-label" for="infraYes">Yes — pond/tank already built</label>
+        </div>
+      </div>
+      <div class="field full">
+        <label class="f-label-text">Water Source</label>
+        <div class="f-radio-group">
+          <input type="radio" class="f-radio" name="waterSrc" id="waterSurface" value="0" checked>
+          <label class="f-radio-label" for="waterSurface">Surface water / tap (no borehole needed)</label>
+          <input type="radio" class="f-radio" name="waterSrc" id="waterBorehole" value="1">
+          <label class="f-radio-label" for="waterBorehole">Need to drill borehole</label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SECTION 4: Labor ── -->
+<div class="card">
+  <div class="card-head">
+    <span class="card-title">&#128104;&#8205;&#127806; Section 4: Labor</span>
+    <button class="card-toggle" onclick="toggleSection('sec4Body',this)">Collapse</button>
+  </div>
+  <div class="card-body section-body" id="sec4Body">
+    <div class="form-grid">
+      <div class="field">
+        <label class="f-label-text" for="inpLaborDays">Labor Days per Cycle</label>
+        <input class="f-input" id="inpLaborDays" type="number" min="0" step="1" value="90">
+      </div>
+      <div class="field full">
+        <label class="f-label-text" for="rangeFamily">Family Labor: <span id="familyPctDisplay">0%</span>
+          <span class="f-label-hint">(family valued at 50% of hired rate)</span>
+        </label>
+        <div class="range-wrap">
+          <span style="font-size:0.75rem;color:#64748b;">0%</span>
+          <input type="range" id="rangeFamily" min="0" max="100" step="5" value="0"
+            oninput="document.getElementById('familyPctDisplay').textContent=this.value+'%'">
+          <span style="font-size:0.75rem;color:#64748b;">100%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Calculate button -->
+<div class="card">
+  <div class="card-body">
+    <button class="calc-btn" onclick="calculate()">&#128200; Calculate Fish Farm ROI</button>
+  </div>
+</div>
+
+<!-- ── RESULTS ── -->
+<div class="results-wrap" id="resultsWrap">
+
+  <!-- Headline profit -->
+  <div class="card" id="profitCard">
+    <div class="profit-hero" id="profitHero">
+      <div class="profit-amount" id="profitAmount"></div>
+      <div class="profit-label" id="profitLabel"></div>
+      <div class="profit-sub" id="profitSub"></div>
+    </div>
+    <!-- Profit bar -->
+    <div style="padding:0 20px 16px;">
+      <div class="profit-bar-track" id="profitBar"></div>
+    </div>
+  </div>
+
+  <!-- Key metrics -->
+  <div class="card">
+    <div class="card-head"><span class="card-title">&#128200; Key Metrics</span></div>
+    <div class="card-body">
+      <div class="metrics-grid" id="metricsGrid"></div>
+    </div>
+  </div>
+
+  <!-- Financial summary -->
+  <div class="card">
+    <div class="card-head"><span class="card-title">&#128181; Financial Summary</span></div>
+    <div class="card-body">
+      <table class="summary-table" id="summaryTable"></table>
+    </div>
+  </div>
+
+  <!-- Cost breakdown donut -->
+  <div class="card">
+    <div class="card-head"><span class="card-title">&#128200; Cost Breakdown</span></div>
+    <div class="card-body">
+      <div class="donut-wrap">
+        <svg class="donut-svg" width="160" height="160" viewBox="0 0 160 160" id="donutSvg"></svg>
+        <div class="donut-legend" id="donutLegend"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Feed calculator tip -->
+  <div class="card">
+    <div class="card-head"><span class="card-title">&#127812; Feed Calculator</span></div>
+    <div class="card-body">
+      <div class="feed-tip" id="feedTip"></div>
+    </div>
+  </div>
+
+  <!-- Sensitivity scenarios -->
+  <div class="card">
+    <div class="card-head"><span class="card-title">&#128260; What-If Scenarios</span></div>
+    <div class="card-body">
+      <div class="scenario-grid" id="scenarioGrid"></div>
+    </div>
+  </div>
+
+  <!-- Growth timeline -->
+  <div class="card">
+    <div class="card-head"><span class="card-title">&#128200; Monthly Growth &amp; Feed Cost Timeline</span></div>
+    <div class="card-body" style="overflow-x:auto;">
+      <table class="growth-table" id="growthTable"></table>
+    </div>
+  </div>
+
+</div><!-- /results -->
+
+<!-- Cross-tool links -->
+<div class="card">
+  <div class="card-head"><span class="card-title">&#127807; Other ${c.name} Agriculture Tools</span></div>
+  <div class="card-body">
+    <div class="cross-tools">
+      <a class="cross-tool-card" href="/agriculture/farm-profit/${c.slug}">
+        <span class="cross-tool-icon">&#128202;</span>
+        <div><div class="cross-tool-name">Farm Profit/Loss</div><div class="cross-tool-desc">Crop farming profitability for ${c.name}</div></div>
+      </a>
+      <a class="cross-tool-card" href="/agriculture/crop-yield/${c.slug}">
+        <span class="cross-tool-icon">&#127807;</span>
+        <div><div class="cross-tool-name">Crop Yield Estimator</div><div class="cross-tool-desc">Estimate crop yields in ${c.name}</div></div>
+      </a>
+      <a class="cross-tool-card" href="/agriculture/fertilizer/${c.slug}">
+        <span class="cross-tool-icon">&#129514;</span>
+        <div><div class="cross-tool-name">Fertilizer Calculator</div><div class="cross-tool-desc">NPK fertilizer needs for ${c.name} crops</div></div>
+      </a>
+      <a class="cross-tool-card" href="/agriculture/irrigation/${c.slug}">
+        <span class="cross-tool-icon">&#128167;</span>
+        <div><div class="cross-tool-name">Irrigation Calculator</div><div class="cross-tool-desc">Water requirements for ${c.name}</div></div>
+      </a>
+      <a class="cross-tool-card" href="/agriculture/fish-farming/">
+        <span class="cross-tool-icon">&#128031;</span>
+        <div><div class="cross-tool-name">All Fish Farming Countries</div><div class="cross-tool-desc">15-country aquaculture ROI hub</div></div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<p class="sources-footer">Data sources: FAO SOFIA (State of World Fisheries 2024), WorldFish Center, national hatchery price surveys, country agricultural ministries, ILO labor statistics. Costs reflect 2024–2025 market conditions.</p>
+
+</main>
+
+<afro-footer></afro-footer>
+
+<script src="/data/agriculture/aquaculture-data.js"><\/script>
+<script src="/engines/aquaculture-roi-engine.js"><\/script>
+<script>
+(function () {
+  'use strict';
+
+  var COUNTRY_CODE = '${c.code}';
+  var D = null; // loaded from AquaData after DOMContentLoaded
+  var DONUT_COLORS = ['#007AFF','#0063D1','#4DA3FF','#34D399','#F59E0B','#EF4444','#8B5CF6','#EC4899'];
+
+  // ── helpers ──────────────────────────────────────────────────────
+  function $(id) { return document.getElementById(id); }
+  function fmtN(n) { return Math.round(n).toLocaleString(); }
+
+  function toggleSection(id, btn) {
+    var el = $(id);
+    if (!el) return;
+    var collapsed = el.classList.toggle('collapsed');
+    btn.textContent = collapsed ? 'Expand' : 'Collapse';
+  }
+
+  // ── species defaults ──────────────────────────────────────────────
+  function updateSpeciesDefaults() {
+    if (!D) return;
+    var sp = $('selSpecies').value;
+    var months = D.SPECIES[sp].growOutPeriod_months.typical;
+    $('selGrowPeriod').value = months;
+    if (sp === 'trout') {
+      $('selSystem').value = 'concrete_tank';
+      updateSystemDefaults();
+    }
+  }
+
+  function updateSystemDefaults() {
+    var sys = $('selSystem').value;
+    var hint = $('areaUnit');
+    if (sys === 'tarpaulin_tank') { hint.textContent = '(litres)'; $('inpArea').value = 5000; }
+    else if (sys === 'earthen_pond') { hint.textContent = '(m²)'; $('inpArea').value = 500; }
+    else if (sys === 'cage') { hint.textContent = '(m²)'; $('inpArea').value = 200; }
+    else { hint.textContent = '(m²)'; $('inpArea').value = 100; }
+  }
+
+  // ── main calculate ─────────────────────────────────────────────────
+  function calculate() {
+    D = window.AquaData;
+    var E = window.AquaROI;
+    if (!D || !E) { alert('Data not loaded yet — please wait a moment and try again.'); return; }
+
+    var inputs = {
+      countryCode:     COUNTRY_CODE,
+      speciesId:       $('selSpecies').value,
+      system:          $('selSystem').value,
+      pondArea:        parseFloat($('inpArea').value) || 100,
+      densityLevel:    $('selDensity').value,
+      managementLevel: $('selManagement').value,
+      targetSizeLevel: $('selTargetSize').value,
+      growPeriodMonths:parseInt($('selGrowPeriod').value),
+      cyclesPerYear:   parseInt($('selCycles').value),
+      feedType:        $('selFeedType').value,
+      processingLevel: $('selProcessing').value,
+      sellingMethod:   'fresh',
+      hasExistingInfra:$('infraYes').checked,
+      needsBorehole:   $('waterBorehole').checked,
+      familyLaborPct:  parseInt($('rangeFamily').value),
+      laborDays:       parseInt($('inpLaborDays').value)
+    };
+
+    var r = E.calculate(inputs);
+    if (r.error) { alert('Error: ' + r.error); return; }
+
+    renderResults(r);
+    $('resultsWrap').classList.add('on');
+    $('resultsWrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // ── render ─────────────────────────────────────────────────────────
+  function renderResults(r) {
+    var sym = r.sym;
+
+    // Profit hero
+    var hero = $('profitHero');
+    hero.className = 'profit-hero ' + (r.isProfit ? 'positive' : 'negative');
+    $('profitAmount').textContent = r.fmt(r.profitPerCycle);
+    $('profitLabel').textContent = r.isProfit ? 'PROFIT PER CYCLE' : 'LOSS PER CYCLE';
+    $('profitSub').textContent = 'Annual: ' + r.fmt(r.annualProfit) + ' (' + r.cyclesPerYear + ' cycle' + (r.cyclesPerYear > 1 ? 's' : '') + '/year)';
+
+    // Profit bar
+    var total = r.totalCostPerCycle + Math.max(0, r.profitPerCycle);
+    var costW = total > 0 ? Math.round((r.totalCostPerCycle / total) * 100) : 100;
+    var profW = 100 - costW;
+    $('profitBar').innerHTML = '<div class="profit-bar-cost" style="width:' + costW + '%">Costs ' + costW + '%</div>'
+      + (r.isProfit ? '<div class="profit-bar-profit" style="width:' + profW + '%">Profit ' + profW + '%</div>'
+                    : '<div class="profit-bar-loss" style="width:' + profW + '%">Loss ' + profW + '%</div>');
+
+    // Key metrics
+    var metrics = [
+      { val: fmtN(r.fishStocked),     label: 'Fish Stocked' },
+      { val: r.survivalPct + '%',     label: 'Survival Rate' },
+      { val: fmtN(r.fishHarvested),   label: 'Fish Harvested' },
+      { val: fmtN(r.harvestKg) + ' kg', label: 'Total Harvest' },
+      { val: r.fmt(r.sellingPrice) + '/kg', label: 'Selling Price' },
+      { val: r.fmt(r.costPerKg) + '/kg',    label: 'Cost per kg' },
+      { val: (r.roiPct !== null ? r.roiPct.toFixed(1) + '%' : 'N/A'), label: 'ROI (on setup)' },
+      { val: (r.paybackMonths !== null ? r.paybackMonths.toFixed(1) + ' mo' : 'N/A'), label: 'Payback Period' }
+    ];
+    $('metricsGrid').innerHTML = metrics.map(function (m) {
+      return '<div class="metric-card"><div class="metric-val">' + m.val + '</div><div class="metric-label">' + m.label + '</div></div>';
+    }).join('');
+
+    // Summary table
+    var rows = [
+      { head: 'REVENUE' },
+      { label: 'Gross revenue', amount: r.fmt(r.revenue) },
+      { label: 'Processing cost', amount: r.fmt(-r.processingCost), indent: true },
+      { label: 'Net revenue', amount: r.fmt(r.netRevenue), bold: true },
+      { head: 'OPERATING COSTS' },
+      { label: 'Feed (' + fmtN(r.feedKg) + ' kg)', amount: r.fmt(r.feedCost), pct: r.breakdown.find(function(b){return b.label==='Feed';}) ? r.breakdown.find(function(b){return b.label==='Feed';}).pct + '%' : '', indent: true },
+      { label: 'Fingerlings (' + fmtN(r.fishStocked) + ' fish)', amount: r.fmt(r.fingerlingCost), pct: '', indent: true },
+      { label: 'Labor', amount: r.fmt(r.laborCost), indent: true },
+      { label: 'Electricity + Water', amount: r.fmt(r.electricityCost + r.waterCost), indent: true },
+      { label: 'Medications & Lime', amount: r.fmt(r.medicationsCost), indent: true },
+      { label: 'Transport', amount: r.fmt(r.transportCost), indent: true },
+      { label: 'Infrastructure (amortized)', amount: r.fmt(r.infraAmortized), indent: true },
+      { label: 'Total cost per cycle', amount: r.fmt(r.totalCostPerCycle), bold: true },
+      { head: 'PROFITABILITY' },
+      { label: 'Profit / (Loss) per cycle', amount: r.fmt(r.profitPerCycle), color: r.isProfit ? 'positive' : 'negative' },
+      { label: 'Annual profit (' + r.cyclesPerYear + ' cycles)', amount: r.fmt(r.annualProfit), color: r.isProfit ? 'positive' : 'negative' },
+      { label: 'Profit margin', amount: r.profitMargin.toFixed(1) + '%' },
+      { label: 'Break-even selling price', amount: r.fmt(r.breakEvenPrice) + '/kg' },
+      { label: 'Infrastructure setup cost', amount: r.fmt(r.infraTotal) }
+    ];
+    var html = '';
+    rows.forEach(function (row) {
+      if (row.head) {
+        html += '<tr class="section-head"><td colspan="3">' + row.head + '</td></tr>';
+      } else {
+        var cls = row.indent ? ' class="indent"' : '';
+        var amtCls = row.color === 'positive' ? ' class="amount positive-val"'
+                   : row.color === 'negative' ? ' class="amount negative-val"'
+                   : ' class="amount"';
+        var bold = row.bold ? ' style="font-weight:800"' : '';
+        html += '<tr' + bold + '><td' + cls + '>' + row.label + '</td><td' + amtCls + '>' + row.amount + '</td><td class="pct">' + (row.pct || '') + '</td></tr>';
+      }
+    });
+    $('summaryTable').innerHTML = html;
+
+    // Donut
+    renderDonut(r.breakdown);
+
+    // Feed tip
+    var feedTypeLabels = { imported: 'imported commercial', local_float: 'local floating pellets', local_sink: 'local sinking pellets', farm_made: 'farm-made feed' };
+    var feedLabel = feedTypeLabels[$('selFeedType').value] || 'feed';
+    $('feedTip').innerHTML = '<strong>Feed needed this cycle:</strong> ' + fmtN(r.feedKg) + ' kg (' + fmtN(r.feedBags) + ' bags of 25 kg)'
+      + ' — buying <strong>' + feedLabel + '</strong> at <strong>' + r.fmt(r.feedPricePerKg) + '/kg</strong>.'
+      + '<br><span style="color:#64748b;font-size:0.78rem;">FCR (Feed Conversion Ratio): ' + (r.feedKg / r.harvestKg).toFixed(2) + ' — ' + fmtN(r.feedKg) + ' kg feed → ' + fmtN(r.harvestKg) + ' kg fish.</span>';
+
+    // Scenarios
+    var sgHtml = r.scenarios.map(function (s) {
+      var cls = s.negative ? 'scenario-card negative' : 'scenario-card positive';
+      var arrow = s.change > 0 ? '&#9650; ' : '&#9660; ';
+      return '<div class="' + cls + '">'
+        + '<div class="scenario-label">' + s.label + '</div>'
+        + '<div class="scenario-profit ' + (s.profit >= 0 ? 'positive-val' : 'negative-val') + '">' + r.fmt(s.profit) + '</div>'
+        + '<div class="scenario-change" style="color:' + (s.negative ? '#ef4444' : '#16a34a') + '">' + arrow + r.fmt(Math.abs(s.change)) + ' vs base</div>'
+        + '</div>';
+    }).join('');
+    $('scenarioGrid').innerHTML = sgHtml;
+
+    // Growth timeline
+    var gHtml = '<thead><tr><th>Month</th><th>Fish Weight</th><th>Feed Cost (month)</th></tr></thead><tbody>';
+    r.growth.forEach(function (g) {
+      gHtml += '<tr><td>Month ' + g.month + '</td><td>' + (g.weightKg >= 1 ? g.weightKg.toFixed(2) + ' kg' : g.weightG + ' g') + '</td><td>' + r.fmt(g.feedCostMonth) + '</td></tr>';
+    });
+    gHtml += '</tbody>';
+    $('growthTable').innerHTML = gHtml;
+  }
+
+  function renderDonut(breakdown) {
+    var total = breakdown.reduce(function (s, b) { return s + b.value; }, 0);
+    if (!total) return;
+    var cx = 80, cy = 80, r = 60, r2 = 35;
+    var angle = -Math.PI / 2;
+    var paths = '';
+
+    breakdown.forEach(function (b, i) {
+      var slice = (b.value / total) * 2 * Math.PI;
+      var x1 = cx + r * Math.cos(angle);
+      var y1 = cy + r * Math.sin(angle);
+      angle += slice;
+      var x2 = cx + r * Math.cos(angle);
+      var y2 = cy + r * Math.sin(angle);
+      var large = slice > Math.PI ? 1 : 0;
+      var ix1 = cx + r2 * Math.cos(angle - slice);
+      var iy1 = cy + r2 * Math.sin(angle - slice);
+      var ix2 = cx + r2 * Math.cos(angle);
+      var iy2 = cy + r2 * Math.sin(angle);
+      var color = DONUT_COLORS[i % DONUT_COLORS.length];
+      paths += '<path d="M ' + x1 + ' ' + y1 + ' A ' + r + ' ' + r + ' 0 ' + large + ' 1 ' + x2 + ' ' + y2
+        + ' L ' + ix2 + ' ' + iy2 + ' A ' + r2 + ' ' + r2 + ' 0 ' + large + ' 0 ' + ix1 + ' ' + iy1 + ' Z"'
+        + ' fill="' + color + '" />';
+    });
+
+    $('donutSvg').innerHTML = paths;
+
+    var legendHtml = breakdown.map(function (b, i) {
+      return '<div class="legend-item"><div class="legend-dot" style="background:' + DONUT_COLORS[i % DONUT_COLORS.length] + '"></div>'
+        + '<span class="legend-label">' + b.label + '</span>'
+        + '<span class="legend-pct">' + b.pct + '%</span></div>';
+    }).join('');
+    $('donutLegend').innerHTML = legendHtml;
+  }
+
+  // expose globals for onclick attrs
+  window.calculate = calculate;
+  window.toggleSection = toggleSection;
+  window.updateSpeciesDefaults = updateSpeciesDefaults;
+  window.updateSystemDefaults = updateSystemDefaults;
+
+  // init defaults on load
+  document.addEventListener('DOMContentLoaded', function () {
+    D = window.AquaData;
+    updateSystemDefaults();
+  });
+
+})();
+<\/script>
+</body>
+</html>`;
+}
+
+const outDir = path.join(__dirname, '..', 'agriculture', 'fish-farming');
+if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
+
+let created = 0;
+COUNTRIES.forEach(function (c) {
+  const html = generatePage(c);
+  const outPath = path.join(outDir, c.slug + '.html');
+  fs.writeFileSync(outPath, html, 'utf8');
+  console.log('  ✓ ' + c.slug + '.html');
+  created++;
+});
+
+console.log('\n✅ Generated ' + created + ' fish farming country pages → agriculture/fish-farming/');

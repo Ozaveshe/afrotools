@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.bd27dfaf.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Poultry Farm ROI Calculator — 15 African Countries | AfroTools</title>
+<meta name="description" content="Free poultry farming ROI calculator for 15 African countries. Full profitability analysis for broilers and layers — local chick prices, feed costs, selling prices. Calculate your payback period and annual profit.">
+<link rel="canonical" href="https://afrotools.com/agriculture/poultry-roi/">
+
+<meta property="og:title" content="Poultry Farm ROI Calculator for Africa — AfroTools">
+<meta property="og:description" content="Calculate broiler and layer farming profitability across 15 African countries with real local costs.">
+<meta property="og:url" content="https://afrotools.com/agriculture/poultry-roi/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Poultry Farm ROI Calculator for Africa — AfroTools">
+<meta name="twitter:description" content="Calculate broiler and layer farming profitability across 15 African countries with real local costs.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Poultry Farm ROI Calculator for Africa",
+  "url": "https://afrotools.com/agriculture/poultry-roi/",
+  "description": "Poultry farming ROI calculators for 15 African countries — broilers, layers, and indigenous chickens.",
+  "author": { "@type": "Organization", "name": "AfroTools", "url": "https://afrotools.com" }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "AfroTools", "item": "https://afrotools.com/" },
+    { "@type": "ListItem", "position": 2, "name": "Agriculture", "item": "https://afrotools.com/agriculture/" },
+    { "@type": "ListItem", "position": 3, "name": "Poultry Farm ROI Calculator", "item": "https://afrotools.com/agriculture/poultry-roi/" }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+
+<style>
+:root {
+  --calc-accent: #007AFF;
+  --calc-accent-dark: #0063D1;
+  --calc-accent-light: #E8F2FF;
+  --color-bg: #F8F9FA;
+  --color-bg-card: #FFFFFF;
+  --color-text: #1A1A2E;
+  --color-text-muted: #6B7280;
+}
+*, *::before, *::after { box-sizing: border-box; }
+body { font-family: 'DM Sans', sans-serif; background: var(--color-bg); color: var(--color-text); margin: 0; }
+
+.hub-hero {
+  background: #0A1628;
+  color: #fff;
+  padding: 3rem 1rem 2.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hub-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 30% 50%, rgba(0,122,255,0.14) 0%, transparent 60%);
+  pointer-events: none;
+}
+.hub-hero-inner { max-width: 720px; margin: 0 auto; position: relative; z-index: 1; }
+.hub-hero .breadcrumb { font-size: 0.82rem; opacity: 0.65; margin-bottom: 0.75rem; }
+.hub-hero .breadcrumb a { color: #fff; text-decoration: none; }
+.hub-hero .breadcrumb a:hover { text-decoration: underline; }
+.hub-hero h1 { font-size: clamp(1.5rem, 5.5vw, 2.6rem); font-weight: 800; margin: 0 0 0.75rem; letter-spacing: -0.02em; line-height: 1.15; }
+.hub-hero p { font-size: 1.0rem; opacity: 0.85; line-height: 1.6; max-width: 600px; margin: 0 auto 1rem; }
+.badge-row { display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap; }
+.hub-badge { background: rgba(255,255,255,0.14); border-radius: 980px; padding: 0.35rem 0.9rem; font-size: 0.82rem; font-weight: 600; }
+
+.hub-main { max-width: 1100px; margin: -1.5rem auto 3rem; padding: 0 1rem; }
+
+.region-section { margin-bottom: 2.5rem; }
+.region-label {
+  font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--color-text-muted); margin-bottom: 0.75rem;
+  padding-bottom: 0.4rem; border-bottom: 2px solid var(--calc-accent-light);
+}
+.country-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.75rem; }
+.country-card {
+  display: flex; align-items: center; gap: 0.6rem;
+  background: var(--color-bg-card); border: 1.5px solid #E5E7EB; border-radius: 14px;
+  padding: 0.85rem 1rem; text-decoration: none; color: var(--color-text);
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+  font-weight: 600; font-size: 0.92rem;
+}
+.country-card:hover { border-color: var(--calc-accent); box-shadow: 0 4px 12px rgba(0,122,255,0.12); transform: translateY(-2px); }
+.country-card .flag { font-size: 1.5rem; flex-shrink: 0; }
+.country-card .name { flex: 1; }
+.country-card .arrow { color: var(--color-text-muted); font-size: 1.1rem; }
+
+.seo-content { max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
+.seo-content h2 { font-size: 1.2rem; font-weight: 800; text-transform: uppercase; margin: 2rem 0 0.75rem; color: var(--color-text); }
+.seo-content p { font-size: 0.92rem; line-height: 1.7; color: var(--color-text-muted); }
+
+.faq details { border-bottom: 1px solid #E5E7EB; padding: 0.85rem 0; }
+.faq summary { font-weight: 600; font-size: 0.92rem; cursor: pointer; list-style: none; }
+.faq summary::before { content: '+ '; color: var(--calc-accent); font-weight: 800; }
+.faq details[open] summary::before { content: '- '; }
+.faq p { font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.6; margin: 0.5rem 0 0; }
+
+.agri-nav { max-width: 1100px; margin: 0 auto 2rem; padding: 0 1rem; }
+.agri-nav-inner { background: #fff; border: 1.5px solid #E5E7EB; border-radius: 14px; padding: 1rem 1.25rem; }
+.agri-nav-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #64748b; margin-bottom: 0.6rem; }
+.agri-nav-links { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.agri-nav-link { padding: 0.3rem 0.85rem; border-radius: 980px; border: 1.5px solid #E5E7EB; font-size: 0.82rem; font-weight: 600; text-decoration: none; color: #3D5A80; transition: border-color 0.2s, background 0.2s; }
+.agri-nav-link:hover { border-color: var(--calc-accent); background: var(--calc-accent-light); color: var(--calc-accent); }
+.agri-nav-link.active { border-color: var(--calc-accent); background: var(--calc-accent); color: #fff; }
+</style>
+</head>
+
+<body>
+<afro-navbar theme="dark" active="tools"></afro-navbar>
+
+<section class="hub-hero">
+  <div class="hub-hero-inner">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">AfroTools</a> &rsaquo; <a href="/agriculture/">Agriculture</a> &rsaquo; Poultry Farm ROI Calculator
+    </nav>
+    <h1>&#x1F413; Poultry Farm ROI Calculator</h1>
+    <p>Calculate broiler and layer farming profitability with real local costs. Full ROI analysis, cash flow timeline, payback period, and risk scenarios for 15 African countries.</p>
+    <div class="badge-row">
+      <span class="hub-badge">&#x1F30D; 15 Countries</span>
+      <span class="hub-badge">&#x1F423; Broilers &amp; Layers</span>
+      <span class="hub-badge">&#x1F4C8; Full ROI Analysis</span>
+      <span class="hub-badge">&#x1F4B0; Free Tool</span>
+    </div>
+  </div>
+</section>
+
+<div class="hub-main">
+  <!-- Agriculture suite nav -->
+  <div class="agri-nav" style="margin-top:2rem;">
+    <div class="agri-nav-inner">
+      <div class="agri-nav-label">&#x1F33F; Agriculture Suite</div>
+      <div class="agri-nav-links">
+        <a class="agri-nav-link" href="/agriculture/crop-yield/">Crop Yield</a>
+        <a class="agri-nav-link" href="/agriculture/fertilizer/">Fertilizer</a>
+        <a class="agri-nav-link" href="/agriculture/irrigation/">Irrigation</a>
+        <a class="agri-nav-link" href="/agriculture/seed-rate/">Seed Rate</a>
+        <a class="agri-nav-link" href="/agriculture/farm-profit/">Farm Profit</a>
+        <a class="agri-nav-link active" href="/agriculture/poultry-roi/">Poultry ROI</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="hubMain"></div>
+</div>
+
+<section class="seo-content">
+  <h2>About the Poultry Farm ROI Calculator</h2>
+  <p>AfroTools' Poultry Farm ROI Calculator is built specifically for African poultry farmers. It uses real local prices for day-old chicks, feed (starter, grower, finisher, and layer mash), labor, and selling prices for broiler meat and eggs. Enter your flock size and management level and instantly see your annual profit, ROI, and payback period.</p>
+
+  <h2>Broilers vs Layers — Which Is More Profitable?</h2>
+  <p>Broilers are fast — a cycle takes just 7 weeks, with up to 6 cycles per year for commercial operations. Layers are slower — 18 weeks of rearing before any revenue — but generate ongoing income for 54 weeks per cycle. The calculator's Compare All mode lets you run both analyses side by side for your specific country and flock size.</p>
+
+  <h2>About Indigenous / Kienyeji Chickens</h2>
+  <p>Indigenous and improved breeds like the Kenyan Kienyeji command 50–80% price premiums over commercial broilers. They require less feed (scavenging supplements), have lower setup costs, and suit smallholder contexts. The calculator handles all three production types with country-specific premiums.</p>
+
+  <h2>Frequently Asked Questions</h2>
+  <div class="faq">
+    <details>
+      <summary>What is FCR and why does it matter?</summary>
+      <p>Feed Conversion Ratio (FCR) is the kg of feed required to produce 1 kg of live weight gain. An FCR of 1.8 means 1.8 kg of feed produces 1 kg of growth. Commercial operations achieve FCR 1.6–1.8; smallholders average 2.0–2.5. Lower FCR = lower feed cost = higher profit. Feed is 60–70% of poultry production costs.</p>
+    </details>
+    <details>
+      <summary>How many broiler cycles can I do per year?</summary>
+      <p>A standard broiler cycle is 7 weeks of growing plus 1 week of cleanup = 8 weeks total. That's 6.5 possible cycles per year. Commercial operations do 6; smallholders typically manage 4 due to labour and cash constraints. The calculator uses management-level-appropriate cycle counts as defaults.</p>
+    </details>
+    <details>
+      <summary>When do layers start generating revenue?</summary>
+      <p>Layers start producing eggs at around 18–20 weeks of age (Point of Lay). Before that, you have 4+ months of feed, chick, and labour costs with zero income — this is why the cash flow chart is so important for layer planning. Peak production (90%) is reached at 24 weeks and gradually declines to 60% by 72 weeks.</p>
+    </details>
+    <details>
+      <summary>What data sources are used?</summary>
+      <p>Day-old chick and feed prices from country poultry associations and commercial hatcheries. Selling prices from market surveys and commodity boards. Labor rates from national statistics bureaus and ILO. Production parameters from FAO and AVEC (Association of Poultry Processors and Traders in the EU).</p>
+    </details>
+  </div>
+</section>
+
+<afro-footer></afro-footer>
+
+<script src="/data/agriculture/poultry-data.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var COUNTRIES = window.AfroTools.PoultryCosts;
+
+  var regions = {
+    'West Africa':     ['NG', 'GH', 'CI', 'SN', 'CM'],
+    'East Africa':     ['KE', 'ET', 'TZ', 'UG', 'RW'],
+    'North Africa':    ['EG', 'MA', 'TN'],
+    'Southern Africa': ['ZA', 'AO']
+  };
+
+  var hub = document.getElementById('hubMain');
+  var html = '';
+
+  Object.keys(regions).forEach(function (region) {
+    var codes = regions[region];
+    html += '<div class="region-section">';
+    html += '<div class="region-label">' + region + ' &#x2014; ' + codes.length + ' Countries</div>';
+    html += '<div class="country-grid">';
+    codes.forEach(function (code) {
+      var c = COUNTRIES[code];
+      if (!c) return;
+      html += '<a class="country-card" href="/agriculture/poultry-roi/' + c.slug + '">' +
+        '<span class="flag">' + c.flag + '</span>' +
+        '<span class="name">' + c.name + '</span>' +
+        '<span class="arrow">&rsaquo;</span>' +
+        '</a>';
+    });
+    html += '</div></div>';
+  });
+
+  hub.innerHTML = html;
+}());
+</script>
+</body>
+</html>

@@ -44,12 +44,14 @@
     },
     {
       id: 'agriculture', label: 'Agriculture', icon: '🌾',
-      desc: 'Crop yield, fertilizer, irrigation — 54 countries',
+      desc: 'Crop yield, seed rate, fertilizer, irrigation, farm profit — 54 countries',
       href: '/agriculture/', color: '#E8F2FF', accent: '#007AFF',
       tools: [
         { label: 'Crop Yield Estimators', href: '/agriculture/crop-yield/', emoji: '🌱', badge: 'LIVE' },
+        { label: 'Seed Rate Calculators', href: '/agriculture/seed-rate/', emoji: '🌿', badge: 'LIVE' },
         { label: 'Fertilizer Calculators', href: '/agriculture/fertilizer/', emoji: '🧪', badge: 'LIVE' },
         { label: 'Irrigation Calculators', href: '/agriculture/irrigation/', emoji: '💧', badge: 'LIVE' },
+        { label: 'Farm Profit/Loss Calculator', href: '/agriculture/farm-profit/', emoji: '📊', badge: 'LIVE' },
       ]
     },
     {
