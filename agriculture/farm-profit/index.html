@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.bd27dfaf.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Farm Profit/Loss Calculator — 54 African Countries | AfroTools</title>
+<meta name="description" content="Free farm profitability calculator for all 54 African countries. Analyze complete farm economics: seeds, fertilizer, labor, transport, post-harvest losses. Calculate ROI, break-even yield, and profit per hectare.">
+<link rel="canonical" href="https://afrotools.com/agriculture/farm-profit/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/agriculture/farm-profit/" />
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/agriculture/farm-profit/" />
+
+<meta property="og:title" content="Farm Profit/Loss Calculator for Africa — AfroTools">
+<meta property="og:description" content="Free farm profitability analysis for all 54 African countries. Full cost breakdown and ROI calculator.">
+<meta property="og:url" content="https://afrotools.com/agriculture/farm-profit/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Farm Profit/Loss Calculator for Africa — AfroTools">
+<meta name="twitter:description" content="Free farm profitability analysis for all 54 African countries. Full cost breakdown and ROI calculator.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Farm Profit/Loss Calculator for Africa",
+  "url": "https://afrotools.com/agriculture/farm-profit/",
+  "description": "Free farm profitability calculators for all 54 African countries.",
+  "author": { "@type": "Organization", "name": "AfroTools", "url": "https://afrotools.com" }
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+
+<style>
+:root {
+  --calc-accent: #007AFF;
+  --calc-accent-dark: #0063D1;
+  --calc-accent-light: #E8F2FF;
+  --color-bg: #F8F9FA;
+  --color-bg-card: #FFFFFF;
+  --color-text: #1A1A2E;
+  --color-text-muted: #6B7280;
+  --radius-md: 18px;
+}
+*, *::before, *::after { box-sizing: border-box; }
+body { font-family: 'DM Sans', sans-serif; background: var(--color-bg); color: var(--color-text); margin: 0; }
+
+.hub-hero {
+  background: var(--color-bg-dark, #0A1628);
+  color: #fff;
+  padding: 3rem 1rem 2.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hub-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 30% 50%, rgba(0,122,255,0.12) 0%, transparent 60%);
+  pointer-events: none;
+}
+.hub-hero-inner { max-width: 720px; margin: 0 auto; }
+.hub-hero .breadcrumb { font-size: 0.85rem; opacity: 0.7; margin-bottom: 0.75rem; }
+.hub-hero .breadcrumb a { color: #fff; text-decoration: none; }
+.hub-hero .breadcrumb a:hover { text-decoration: underline; }
+.hub-hero h1 {
+  font-size: clamp(1.8rem, 4.5vw, 2.6rem);
+  font-weight: 800;
+  text-transform: uppercase;
+  margin: 0 0 0.75rem;
+  letter-spacing: -0.02em;
+}
+.hub-hero p { font-size: 1.05rem; opacity: 0.85; line-height: 1.6; max-width: 600px; margin: 0 auto; }
+.hub-hero .badge-row { display: flex; justify-content: center; gap: 0.75rem; margin-top: 1rem; flex-wrap: wrap; }
+.hub-badge {
+  background: rgba(255,255,255,0.15);
+  border-radius: 980px;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.hub-main { max-width: 1100px; margin: -1.5rem auto 3rem; padding: 0 1rem; }
+
+.region-section { margin-bottom: 2rem; }
+.region-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 2px solid var(--calc-accent-light);
+}
+
+.country-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.75rem;
+}
+.country-card {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--color-bg-card);
+  border: 1.5px solid #E5E7EB;
+  border-radius: 14px;
+  padding: 0.85rem 1rem;
+  text-decoration: none;
+  color: var(--color-text);
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+.country-card:hover {
+  border-color: var(--calc-accent);
+  box-shadow: 0 4px 12px rgba(0,122,255,0.12);
+  transform: translateY(-2px);
+}
+.country-card .flag { font-size: 1.5rem; flex-shrink: 0; }
+.country-card .name { flex: 1; }
+.country-card .arrow { color: var(--color-text-muted); font-size: 1.1rem; }
+
+.seo-content {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+.seo-content h2 {
+  font-size: 1.2rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin: 2rem 0 0.75rem;
+  color: var(--color-text);
+}
+.seo-content p {
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: var(--color-text-muted);
+}
+.faq details {
+  border-bottom: 1px solid #E5E7EB;
+  padding: 0.85rem 0;
+}
+.faq summary {
+  font-weight: 600;
+  font-size: 0.92rem;
+  cursor: pointer;
+  list-style: none;
+}
+.faq summary::before { content: '+ '; color: var(--calc-accent); font-weight: 800; }
+.faq details[open] summary::before { content: '- '; }
+.faq p { font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.6; margin: 0.5rem 0 0; }
+</style>
+<link rel="alternate" hreflang="en" href="https://afrotools.com/agriculture/farm-profit/" />
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/agriculture/farm-profit/" />
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:title" content="Farm Profit/Loss Calculator for Africa — AfroTools">
+<meta name="twitter:description" content="Free farm profitability analysis for all 54 African countries.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+</head>
+
+<body>
+<afro-navbar theme="dark" active="tools"></afro-navbar>
+
+<section class="hub-hero">
+  <div class="hub-hero-inner">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">AfroTools</a> &rsaquo; Agriculture &rsaquo; Farm Profit/Loss Calculator
+    </nav>
+    <h1>&#128202; Farm Profit/Loss Calculator</h1>
+    <p>The capstone agriculture tool. Analyze complete farm economics for all 54 African countries — revenue, all input costs, ROI, and break-even analysis.</p>
+    <div class="badge-row">
+      <span class="hub-badge">&#127758; 54 Countries</span>
+      <span class="hub-badge">&#127793; All Major Crops</span>
+      <span class="hub-badge">&#128181; Full Cost Analysis</span>
+      <span class="hub-badge">&#127760; 100% Free</span>
+    </div>
+  </div>
+</section>
+
+<div class="hub-main" id="hubMain"></div>
+
+<section class="seo-content">
+  <h2>About the Farm Profit/Loss Calculator</h2>
+  <p>AfroTools' Farm Profit/Loss Calculator is the most comprehensive farm economics tool for Africa. It brings together all agricultural costs — seeds, fertilizer, agrochemicals, labor, land, mechanization, irrigation, transport, storage, and finance — into a single profitability analysis. Calculate your net profit, ROI, and break-even yield before the season starts.</p>
+
+  <h2>What Makes This Different</h2>
+  <p>Unlike basic profit calculators, this tool accounts for Africa-specific realities: post-harvest losses (which can wipe out 20-40% of revenue), the choice between family and hired labor, communal versus rented land, and the option to process crops before selling for higher revenue. All data uses country-specific costs for accuracy.</p>
+
+  <h2>Frequently Asked Questions</h2>
+  <div class="faq">
+    <details>
+      <summary>What costs does the calculator include?</summary>
+      <p>Seeds, fertilizer, herbicides/pesticides/fungicides, labor (hired and family), land (rent or opportunity cost), mechanization (tractor hire or animal traction), irrigation, transport to market, market fees, middleman commission, storage, loan interest, and crop insurance. All 11 cost categories are pre-filled with country-specific data.</p>
+    </details>
+    <details>
+      <summary>What is post-harvest loss and why does it matter?</summary>
+      <p>Post-harvest losses occur between harvest and sale — from spoilage, pests, improper storage, and handling. In Africa, these losses average 20-40% for roots and vegetables, and 15-25% for cereals. This calculator accounts for post-harvest losses as a revenue reduction, not a cost, which is the correct way to model it.</p>
+    </details>
+    <details>
+      <summary>Can I see what-if scenarios?</summary>
+      <p>Yes. After calculating, you can see the impact of: increasing yield by 25%, raising your selling price by 20%, halving post-harvest losses, switching to 100% family labor, and processing your crop before selling (e.g., cassava into garri, paddy into milled rice).</p>
+    </details>
+    <details>
+      <summary>How is family labor valued?</summary>
+      <p>Family labor is valued at 50% of the hired labor daily wage rate — this represents the opportunity cost (what family members could earn doing other work). It is counted as a real cost because it is a real economic sacrifice, even if no cash changes hands.</p>
+    </details>
+    <details>
+      <summary>What data sources are used?</summary>
+      <p>Labor wage rates from ILO and national labor ministries. Land rental rates from country agricultural surveys. Transport costs from World Food Programme and national data. Post-harvest loss rates from APHLIS (African Postharvest Losses Information System). Market prices from FAO GIEWS and national commodity boards.</p>
+    </details>
+  </div>
+</section>
+
+<afro-footer></afro-footer>
+
+<script src="/data/agriculture/country-index.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var countries = window.AfroTools.countryIndex;
+  var regionLabels = window.AfroTools.regionLabels;
+  var hub = document.getElementById('hubMain');
+
+  var regionOrder = ['west_africa', 'east_africa', 'central_africa', 'southern_africa', 'north_africa', 'island_nations'];
+
+  regionOrder.forEach(function (regionKey) {
+    var info = regionLabels[regionKey];
+    var group = countries.filter(function (c) { return c.region === regionKey; });
+    if (!group.length) return;
+
+    var section = document.createElement('div');
+    section.className = 'region-section';
+
+    var label = document.createElement('div');
+    label.className = 'region-label';
+    label.textContent = info.name + ' (' + group.length + ')';
+    section.appendChild(label);
+
+    var grid = document.createElement('div');
+    grid.className = 'country-grid';
+
+    group.forEach(function (c) {
+      var a = document.createElement('a');
+      a.className = 'country-card';
+      a.href = '/agriculture/farm-profit/' + c.slug;
+      a.innerHTML = '<span class="flag">' + c.flag + '</span><span class="name">' + c.name + '</span><span class="arrow">&rsaquo;</span>';
+      grid.appendChild(a);
+    });
+
+    section.appendChild(grid);
+    hub.appendChild(section);
+  });
+})();
+</script>
+</body>
+</html>

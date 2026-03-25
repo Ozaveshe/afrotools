@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.bd27dfaf.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seed Rate Calculator for Chad — Planting Guide | AfroTools</title>
+<meta name="description" content="Calculate seed rates for sorghum, millet, groundnut in Chad. Get exact seed quantities, planting spacing, and local seed prices for your farm.">
+<link rel="canonical" href="https://afrotools.com/agriculture/seed-rate/chad">
+
+<meta property="og:title" content="Chad Seed Rate Calculator — AfroTools">
+<meta property="og:description" content="Calculate seed rates for sorghum, millet, groundnut in Chad. Get exact seed quantities, planting spacing, and local seed prices for your farm.">
+<meta property="og:url" content="https://afrotools.com/agriculture/seed-rate/chad">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Chad Seed Rate Calculator — AfroTools">
+<meta name="twitter:description" content="Calculate seed rates for sorghum, millet, groundnut in Chad. Get exact seed quantities, planting spacing, and local seed prices.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Chad Seed Rate Calculator",
+  "url": "https://afrotools.com/agriculture/seed-rate/chad",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "All",
+  "description": "Calculate exact seed quantities, planting spacing, and local seed prices for farms in Chad.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "author": { "@type": "Organization", "name": "AfroTools", "url": "https://afrotools.com" }
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+
+<style>
+/* ── Agriculture tool accent ── */
+:root {
+  --calc-accent: #007AFF;
+  --calc-accent-rgb: 0, 122, 255;
+  --calc-accent-dark: #0063D1;
+  --calc-accent-light: #E8F2FF;
+  --calc-accent-pale: #EBF4FF;
+}
+
+/* ── Hero ── */
+.tool-hero {
+  background: var(--color-bg-dark, #0A1628);
+  padding: 36px 0 32px;
+  border-bottom: 1px solid rgba(var(--calc-accent-rgb), 0.15);
+  position: relative;
+  overflow: hidden;
+}
+.tool-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 20% 50%, rgba(var(--calc-accent-rgb), 0.1) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 80%, rgba(var(--calc-accent-rgb), 0.07) 0%, transparent 50%);
+  pointer-events: none;
+}
+.tool-hero .container { position: relative; z-index: 1; }
+.breadcrumb { font-size: 0.75rem; font-weight: 500; color: rgba(255,255,255,0.4); margin-bottom: 16px; }
+.breadcrumb a { color: rgba(255,255,255,0.5); text-decoration: none; }
+.breadcrumb a:hover { color: #fff; }
+.breadcrumb span { margin: 0 6px; opacity: 0.4; }
+.tool-hero h1 { font-family: 'DM Sans', sans-serif; font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 800; color: #fff; margin: 0 0 8px; letter-spacing: -0.02em; }
+.tool-hero h1 em { color: var(--calc-accent); font-style: normal; }
+.tool-hero h1 .flag { font-size: 1.1em; margin-right: 0.3em; }
+.tool-hero-sub { font-size: 0.875rem; color: rgba(255,255,255,0.65); max-width: 600px; line-height: 1.6; margin: 0 0 16px; }
+.hero-badges { display: flex; flex-wrap: wrap; gap: 8px; }
+.badge { padding: 4px 10px; border-radius: 100px; font-size: 0.72rem; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; }
+.badge-blue { background: rgba(var(--calc-accent-rgb), 0.15); color: #4DA3FF; }
+.badge-grey { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.6); }
+
+/* ── Main layout ── */
+.tool-main { max-width: 1100px; margin: -20px auto 48px; padding: 0 24px; position: relative; z-index: 2; }
+
+/* ── Cards ── */
+.card { background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 24px; }
+.card-head { padding: 16px 22px; background: #F8FAFD; border-bottom: 1px solid #f1f5f9; border-radius: 10px 10px 0 0; }
+.card-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #3D5A80; margin: 0; display: flex; align-items: center; gap: 6px; }
+.card-body { padding: 22px; }
+
+/* ── Form ── */
+.field { margin-bottom: 16px; }
+.field.full { grid-column: 1 / -1; }
+.f-label-text { display: block; font-size: 0.75rem; font-weight: 700; color: #2D3A5A; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.04em; }
+.f-label-hint { font-size: 0.7rem; font-weight: 400; color: #64748b; text-transform: none; letter-spacing: 0; }
+.f-input, .f-select { font-family: 'DM Sans', sans-serif; font-size: 0.9rem; padding: 11px 13px; border: 1.5px solid #CBD5E1; border-radius: 6px; background: #F4F7FA; color: #0f172a; outline: none; width: 100%; transition: border-color 150ms ease, background 150ms ease; }
+.f-input:focus, .f-select:focus { border-color: var(--calc-accent); background: #fff; box-shadow: 0 0 0 3px rgba(var(--calc-accent-rgb), 0.1); }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media(max-width:640px) { .form-grid { grid-template-columns: 1fr; } }
+
+/* ── Calculate button ── */
+.calc-btn { width: 100%; padding: 14px; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; background: var(--calc-accent); color: #fff; border: none; border-radius: 100px; cursor: pointer; transition: filter 150ms ease, transform 150ms ease; margin-top: 8px; }
+.calc-btn:hover { filter: brightness(0.85); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(var(--calc-accent-rgb), 0.3); }
+.calc-btn:active { transform: translateY(0); }
+
+/* ── Results ── */
+.results-wrap { display: none; }
+.results-wrap.on { display: block; animation: fadeUp 0.4s ease; }
+@keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+
+.res-hero { text-align: center; padding: 24px 16px; background: linear-gradient(135deg, #0A1628 0%, #1a2d42 100%); border-radius: 10px 10px 0 0; }
+.res-hero-amount { font-size: clamp(2rem, 4.5vw, 2.8rem); font-weight: 800; color: #fff; }
+.res-hero-label { font-size: 0.78rem; color: rgba(255,255,255,0.55); margin-top: 4px; }
+
+.rates-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 16px 0; }
+.rate-card { background: #F4F7FA; border-radius: 6px; padding: 12px 14px; text-align: center; }
+.rate-card-val { font-size: 1.2rem; font-weight: 800; color: var(--calc-accent); }
+.rate-card-label { font-size: 0.72rem; color: #64748b; margin-top: 3px; }
+
+.cost-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 16px 0; }
+.cost-card { background: #F4F7FA; border-radius: 6px; padding: 12px; text-align: center; }
+.cost-card.mid { background: var(--calc-accent-light); border: 1.5px solid var(--calc-accent); }
+.cost-label { font-size: 0.72rem; text-transform: uppercase; color: #64748b; font-weight: 600; }
+.cost-value { font-size: 1rem; font-weight: 800; margin-top: 3px; }
+.cost-card.mid .cost-value { color: var(--calc-accent); }
+
+/* ── Spacing diagram ── */
+.spacing-diagram { background: #F4F7FA; border-radius: 8px; padding: 16px; margin: 12px 0; text-align: center; }
+.spacing-grid-visual { display: inline-grid; gap: 4px; margin: 8px auto; }
+.seed-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--calc-accent); }
+.spacing-labels { display: flex; justify-content: space-between; font-size: 0.72rem; color: #64748b; margin-top: 8px; }
+
+/* ── Info list ── */
+.info-list { list-style: none; padding: 0; margin: 0; }
+.info-list li { display: flex; gap: 10px; padding: 8px 0; border-bottom: 1px solid #f1f5f9; font-size: 0.85rem; }
+.info-list li:last-child { border-bottom: none; }
+.info-list .il-label { font-weight: 600; color: #3D5A80; min-width: 140px; flex-shrink: 0; }
+.info-list .il-val { color: #0f172a; }
+
+/* ── Tip box ── */
+.tip-box { background: #FFF8E1; border-left: 3px solid #F59E0B; border-radius: 6px; padding: 12px 14px; margin: 12px 0; font-size: 0.83rem; line-height: 1.5; color: #78350F; }
+.warn-box { background: #FEF2F2; border-left: 3px solid #EF4444; border-radius: 6px; padding: 12px 14px; margin: 12px 0; font-size: 0.83rem; line-height: 1.5; color: #7F1D1D; }
+.info-box { background: var(--calc-accent-pale); border-left: 3px solid var(--calc-accent); border-radius: 6px; padding: 12px 14px; margin: 12px 0; font-size: 0.83rem; line-height: 1.5; color: #1e3a5f; }
+
+/* ── Section within card ── */
+.card-section { border-top: 1px solid #f1f5f9; padding-top: 16px; margin-top: 16px; }
+.card-section-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #3D5A80; margin: 0 0 10px; }
+
+/* ── Step list ── */
+.step-list { list-style: none; padding: 0; margin: 0; counter-reset: steps; }
+.step-list li { counter-increment: steps; display: flex; gap: 10px; margin-bottom: 8px; font-size: 0.83rem; line-height: 1.5; }
+.step-list li::before { content: counter(steps); background: var(--calc-accent); color: #fff; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+
+/* ── Sources ── */
+.sources-footer { font-size: 0.72rem; color: #94a3af; text-align: center; padding: 24px 0; line-height: 1.6; }
+
+/* ── Print ── */
+@media print {
+  .tool-hero, afro-navbar, afro-footer, .calc-btn { display: none !important; }
+  .results-wrap { display: block !important; }
+  .card { box-shadow: none; border: 1px solid #ddd; break-inside: avoid; }
+}
+</style>
+</head>
+
+<body class="tool-page">
+<afro-navbar theme="dark" active="tools"></afro-navbar>
+
+<!-- ─── HERO ─── -->
+<section class="tool-hero">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a><span>/</span>
+      <a href="/agriculture/seed-rate/">Seed Rate Calculators</a><span>/</span>
+      <span aria-current="page">Chad</span>
+    </nav>
+    <h1><span class="flag" aria-hidden="true">&#127481;&#127465;</span> Chad <em>Seed Rate Calculator</em></h1>
+    <p class="tool-hero-sub">Calculate exact seed quantities for your Chad farm. Get country-specific planting spacing, germination adjustments, and local seed pricing.</p>
+    <div class="hero-badges" id="statsBar">
+      <span class="badge badge-blue">&#127807; 20+ Crops</span>
+      <span class="badge badge-grey">&#127481;&#127465; Chad-specific data</span>
+      <span class="badge badge-grey">&#127760; 100% Free</span>
+    </div>
+  </div>
+</section>
+
+<!-- ─── MAIN ─── -->
+<main class="tool-main">
+
+  <!-- ─── CALCULATOR CARD ─── -->
+  <div class="card">
+    <div class="card-head"><span class="card-title">&#127807; Calculate Your Seed Requirement</span></div>
+    <div class="card-body">
+      <div class="form-grid">
+
+        <!-- Crop -->
+        <div class="field">
+          <label class="f-label-text" for="selCrop">Crop</label>
+          <select class="f-select" id="selCrop"></select>
+        </div>
+
+        <!-- Planting method -->
+        <div class="field" id="fldMethod">
+          <label class="f-label-text" for="selMethod">Planting Method</label>
+          <select class="f-select" id="selMethod"></select>
+        </div>
+
+        <!-- Seed quality (hidden for vegetative) -->
+        <div class="field" id="fldQuality">
+          <label class="f-label-text" for="selQuality">Seed Quality <span class="f-label-hint">(sets germination rate)</span></label>
+          <select class="f-select" id="selQuality">
+            <option value="certified">Certified seed (90% germination)</option>
+            <option value="improved" selected>Improved / farm-saved (78%)</option>
+            <option value="local">Local variety / farm-saved (68%)</option>
+            <option value="old">Old or poorly stored seed (50%)</option>
+          </select>
+        </div>
+
+        <!-- Field conditions -->
+        <div class="field">
+          <label class="f-label-text" for="selConditions">Field Conditions <span class="f-label-hint">(establishment factor)</span></label>
+          <select class="f-select" id="selConditions">
+            <option value="excellent">Excellent conditions (90%)</option>
+            <option value="good">Good conditions (80%)</option>
+            <option value="average" selected>Average conditions (70%)</option>
+            <option value="poor">Poor / harsh conditions (60%)</option>
+            <option value="harsh">Very harsh / arid / pest-prone (50%)</option>
+          </select>
+        </div>
+
+        <!-- Farm size -->
+        <div class="field">
+          <label class="f-label-text" for="inpFarm">Farm Size (hectares)</label>
+          <input class="f-input" id="inpFarm" type="number" min="0.1" step="0.1" value="0.5">
+        </div>
+
+        <!-- Intercropping -->
+        <div class="field">
+          <label class="f-label-text" for="selIntercrop">Cropping System</label>
+          <select class="f-select" id="selIntercrop">
+            <option value="sole" selected>Sole crop (100% seed rate)</option>
+            <option value="primary">Intercrop — primary crop (75%)</option>
+            <option value="secondary">Intercrop — secondary / relay (50%)</option>
+          </select>
+        </div>
+
+        <!-- Row spacing (seed crops only) -->
+        <div class="field" id="fldRowSpacing">
+          <label class="f-label-text" for="inpRowSpacing">Row Spacing (cm) <span class="f-label-hint">pre-filled, editable</span></label>
+          <input class="f-input" id="inpRowSpacing" type="number" min="5" max="500" value="75">
+        </div>
+
+        <!-- Plant spacing (seed crops only) -->
+        <div class="field" id="fldPlantSpacing">
+          <label class="f-label-text" for="inpPlantSpacing">Plant Spacing (cm) <span class="f-label-hint">within-row</span></label>
+          <input class="f-input" id="inpPlantSpacing" type="number" min="5" max="300" value="25">
+        </div>
+
+        <!-- Seeds per hole (seed crops only) -->
+        <div class="field" id="fldSeedsHole">
+          <label class="f-label-text" for="inpSeedsHole">Seeds per Hole / Station</label>
+          <input class="f-input" id="inpSeedsHole" type="number" min="1" max="10" value="2">
+        </div>
+
+        <!-- Calculate button -->
+        <div class="field full">
+          <button class="calc-btn" onclick="calculate()">&#127807; Calculate Seed Rate</button>
+        </div>
+
+      </div><!-- /form-grid -->
+    </div><!-- /card-body -->
+  </div><!-- /card -->
+
+  <!-- ─── RESULTS ─── -->
+  <div class="results-wrap" id="resultsPanel">
+
+    <!-- Main result card -->
+    <div class="card" style="overflow:hidden;">
+      <div class="res-hero">
+        <div class="res-hero-amount" id="rMainAmount">--</div>
+        <div class="res-hero-label" id="rMainLabel">kg of seed per hectare</div>
+      </div>
+      <div class="card-body">
+
+        <!-- Stats grid -->
+        <div class="rates-grid" id="rStatsGrid">
+          <div class="rate-card"><div class="rate-card-val" id="rTotal">--</div><div class="rate-card-label" id="rTotalLabel">Total seed needed (kg)</div></div>
+          <div class="rate-card" id="rBagsCard"><div class="rate-card-val" id="rBags">--</div><div class="rate-card-label" id="rBagsLabel">Bags needed</div></div>
+          <div class="rate-card" id="rPopCard"><div class="rate-card-val" id="rPop">--</div><div class="rate-card-label">Plant population / ha</div></div>
+        </div>
+
+        <!-- Cost section (seed crops only) -->
+        <div id="costSection">
+          <div class="card-section-title">&#128176; Seed Cost Estimate (Chad)</div>
+          <div class="cost-grid">
+            <div class="cost-card"><div class="cost-label">Certified Seed</div><div class="cost-value" id="rCostCert">--</div></div>
+            <div class="cost-card mid"><div class="cost-label">Farm-Saved (est.)</div><div class="cost-value" id="rCostSaved">--</div></div>
+            <div class="cost-card"><div class="cost-label">You Save</div><div class="cost-value" id="rSavings">--</div></div>
+          </div>
+          <p style="font-size:0.72rem;color:#64748b;text-align:center;margin-top:4px;" id="rCostNote"></p>
+        </div>
+
+        <!-- Planting guide (seed crops only) -->
+        <div class="card-section" id="plantingGuide">
+          <div class="card-section-title">&#128204; Planting Guide</div>
+          <ul class="info-list" id="plantingInfoList"></ul>
+
+          <!-- Spacing diagram -->
+          <div class="spacing-diagram" id="spacingDiagram">
+            <div style="font-size:0.75rem;font-weight:600;color:#3D5A80;margin-bottom:6px;">Spacing Layout (not to scale)</div>
+            <div class="spacing-grid-visual" id="spacingGrid"></div>
+            <div class="spacing-labels">
+              <span id="rowSpacingLabel">← row spacing →</span>
+              <span id="plantSpacingLabel">↑ plant spacing ↑</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vegetative planting guide -->
+        <div class="card-section" id="vegGuide" style="display:none;">
+          <div class="card-section-title">&#127807; Planting Material Guide</div>
+          <ul class="info-list" id="vegInfoList"></ul>
+        </div>
+
+        <!-- Notes -->
+        <div id="notesBox" style="display:none; margin-top:12px;"></div>
+
+      </div>
+    </div>
+
+    <!-- Calculation breakdown -->
+    <div class="card" id="breakdownCard">
+      <div class="card-head"><span class="card-title">&#128295; Calculation Breakdown</span></div>
+      <div class="card-body">
+        <ul class="info-list" id="breakdownList"></ul>
+      </div>
+    </div>
+
+    <!-- Storage tips -->
+    <div class="card" id="storageCard">
+      <div class="card-head"><span class="card-title">&#128179; Seed Storage Tips</span></div>
+      <div class="card-body">
+        <div class="info-box" id="storageNotes"></div>
+        <div class="card-section">
+          <div class="card-section-title">&#128270; Simple On-Farm Germination Test</div>
+          <p style="font-size:0.83rem;color:#64748b;margin:0 0 8px;">Before planting, test your seed lot — takes only 7 days:</p>
+          <ol class="step-list">
+            <li>Count out exactly 100 seeds from your seed lot.</li>
+            <li>Spread on a damp cloth or paper towel. Fold over and keep moist (not waterlogged) in a warm place (25-30°C).</li>
+            <li>Check daily for 7-10 days. Count sprouted seeds each day.</li>
+            <li>Calculate: <strong>Germination % = sprouted ÷ 100 × 100</strong></li>
+            <li>If germination is below 70%, increase your seed rate by 20-30% or source fresh certified seed.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <!-- Print button -->
+    <div style="text-align:center;margin-bottom:8px;">
+      <button onclick="window.print()" style="background:none;border:1px solid #CBD5E1;border-radius:100px;padding:8px 20px;font-size:0.78rem;font-weight:600;color:#64748b;cursor:pointer;font-family:'DM Sans',sans-serif;" aria-label="Print results">&#128438; Print Results</button>
+    </div>
+
+  </div><!-- /results-wrap -->
+
+  <!-- ─── SEED PROGRAMS IN NIGERIA ─── -->
+  <div class="card">
+    <div class="card-head"><span class="card-title">&#127481;&#127465; Seed Programs &amp; Sources in Chad</span></div>
+    <div class="card-body">
+      <div class="info-box"><strong>Local Seed Programs:</strong> Contact your national seed certification authority or agricultural extension service for information on subsidised seed programs and certified seed suppliers in Chad.</div>
+      <ul class="info-list">
+        <li><span class="il-label">Certification Body</span><span class="il-val">Contact the national seed certification authority in Chad for certified seed sources.</span></li>
+        <li><span class="il-label">Key Suppliers</span><span class="il-val">Consult your local agro-dealer network or agricultural extension office for certified seed suppliers in Chad.</span></li>
+        <li><span class="il-label">Research Support</span><span class="il-val">CGIAR centers (CIMMYT, IITA, CIP, ICRISAT, IRRI) provide improved varieties and technical support across Africa.</span></li>
+        <li><span class="il-label">Extension Service</span><span class="il-val">Contact your district or county agricultural extension office for local variety recommendations and seed sources.</span></li>
+        <li><span class="il-label">Hybrid Seed Warning</span><span class="il-val">Second-generation hybrid seed loses 20-30% yield potential. Buy fresh hybrid seed each season.</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ─── SEED TREATMENT ─── -->
+  <div class="card">
+    <div class="card-head"><span class="card-title">&#129514; Seed Treatment Recommendations</span></div>
+    <div class="card-body">
+      <p style="font-size:0.85rem;color:#64748b;margin:0 0 12px;">Proper seed treatment protects your investment and improves germination:</p>
+      <ul class="info-list">
+        <li><span class="il-label">Cereals (maize, rice, sorghum)</span><span class="il-val">Fungicide dressing: Thiram + Metalaxyl (Apron Star). Protects against seed-borne diseases and soil fungi. Apply 2-3 g per kg of seed.</span></li>
+        <li><span class="il-label">Legumes (soybean, cowpea)</span><span class="il-val">Rhizobium inoculant (for soybean: Bradyrhizobium japonicum). Improves nitrogen fixation. Never use with systemic fungicides — apply inoculant 30 min before planting.</span></li>
+        <li><span class="il-label">Groundnut</span><span class="il-val">Check for aflatoxin. Never plant mouldy or discoloured seed. Thiram dressing reduces soil-borne diseases.</span></li>
+        <li><span class="il-label">Vegetative crops</span><span class="il-val">Cassava: dip cuttings in Mancozeb solution (2g/L) for 5 min to control mosaic virus vectors. Yam: treat minisetts with Apron Star + copper fungicide.</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ─── SOURCES ─── -->
+  <div class="sources-footer">
+    Data sources: FAO, CGIAR, Chad national agricultural authority, World Bank.<br>
+    Seed rates are indicative &mdash; actual requirements vary by variety, soil, and season. Always verify with your local extension agent. Last updated: 2026.
+  </div>
+
+</main>
+
+<afro-footer></afro-footer>
+
+<!-- ─── DATA & ENGINE ─── -->
+<script src="/data/agriculture/td-agri-data.js"></script>
+<script src="/data/agriculture/seed-data.js"></script>
+<script src="/engines/seed-rate-engine.js"></script>
+
+<script>
+(function () {
+  'use strict';
+
+  var CD   = window.AfroTools.countryData;
+  var SD   = window.AfroTools.seedData;
+  var ENG  = window.AfroTools.SeedRateEngine;
+  if (!CD || !SD || !ENG) { console.error('AfroTools: required data files not loaded'); return; }
+  var CC   = CD.countryCode;
+
+  function $(id) { return document.getElementById(id); }
+
+  function fmtN(n, dec) {
+    if (typeof n !== 'number' || isNaN(n)) return '—';
+    return n.toLocaleString(undefined, { maximumFractionDigits: dec !== undefined ? dec : 1 });
+  }
+  function fmtC(n) {
+    if (!n && n !== 0) return '—';
+    return CD.currencySymbol + fmtN(n, 0);
+  }
+
+  // ── Method labels ──
+  var METHOD_LABELS = {
+    drilling: 'Drilling (row planting)',
+    dibbling: 'Dibbling (holes/stations)',
+    broadcasting: 'Broadcasting (scatter)',
+    direct_seeding_broadcast: 'Direct seeding — broadcast',
+    direct_seeding_drill: 'Direct seeding — drilled rows',
+    transplanting: 'Transplanting (nursery first)'
+  };
+
+  // ── Build crop list ──
+  var crops = [];
+  (CD.crops || []).forEach(function (c) {
+    if (SD[c.id]) crops.push(c);
+  });
+
+  // Populate crop selector
+  (function () {
+    var sel = $('selCrop');
+    crops.forEach(function (c) {
+      var o = document.createElement('option');
+      o.value = c.id;
+      o.textContent = c.name + (c.localNames && c.localNames.length ? ' (' + c.localNames[0] + ')' : '');
+      sel.appendChild(o);
+    });
+    sel.addEventListener('change', onCropChange);
+    if (crops.length) onCropChange();
+  })();
+
+  function onCropChange() {
+    var cropId = $('selCrop').value;
+    var cropData = SD[cropId];
+    if (!cropData) return;
+
+    var override = (cropData.countryOverrides && cropData.countryOverrides[CC]) || {};
+    var isVeg = cropData.propagation === 'vegetative';
+
+    // Show/hide seed-specific fields
+    var seedFields = ['fldQuality', 'fldRowSpacing', 'fldPlantSpacing', 'fldSeedsHole'];
+    seedFields.forEach(function (id) {
+      var el = $(id);
+      if (el) el.style.display = isVeg ? 'none' : '';
+    });
+
+    // Update planting method options
+    var methodSel = $('selMethod');
+    methodSel.innerHTML = '';
+    var methods = (override.method ? [override.method] : null) ||
+                  cropData.plantingMethod ||
+                  ['drilling'];
+    if (typeof methods === 'string') methods = [methods];
+    methods.forEach(function (m) {
+      var o = document.createElement('option');
+      o.value = m;
+      o.textContent = METHOD_LABELS[m] || m;
+      methodSel.appendChild(o);
+    });
+
+    if (!isVeg) {
+      // Pre-fill spacing
+      var spacing = override.spacing || cropData.defaultSpacing || {};
+      if (spacing.row_cm) $('inpRowSpacing').value = spacing.row_cm;
+      if (spacing.plant_cm && spacing.plant_cm !== 'continuous') $('inpPlantSpacing').value = spacing.plant_cm;
+
+      // Pre-fill seeds per hole
+      var sph = override.seedsPerHole || cropData.seedsPerHole || 1;
+      $('inpSeedsHole').value = sph;
+    }
+
+    // Set default farm size
+    $('inpFarm').value = (CD.agriStats && CD.agriStats.avgFarmSizeHa) || 0.5;
+  }
+
+  // ── Calculate ──
+  window.calculate = function () {
+    var cropId = $('selCrop').value;
+    var inputs = {
+      cropId: cropId,
+      plantingMethod: $('selMethod').value,
+      seedQuality: $('selQuality').value,
+      fieldConditions: $('selConditions').value,
+      farmSizeHa: parseFloat($('inpFarm').value) || 1,
+      intercrop: $('selIntercrop').value,
+      rowSpacing_cm: parseFloat($('inpRowSpacing').value) || null,
+      plantSpacing_cm: parseFloat($('inpPlantSpacing').value) || null,
+      seedsPerHole: parseInt($('inpSeedsHole').value) || null
+    };
+
+    var r = ENG.calculate(inputs, SD, CC, CD);
+    if (r.error) { alert(r.message); return; }
+
+    // Show results
+    var panel = $('resultsPanel');
+    panel.classList.add('on');
+    panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    if (r.propagation === 'seed') {
+      displaySeedResults(r);
+    } else {
+      displayVegResults(r);
+    }
+  };
+
+  function displaySeedResults(r) {
+    $('rMainAmount').textContent = fmtN(r.seedRateKgHa, 1);
+    $('rMainLabel').textContent = 'kg of seed per hectare';
+
+    $('rTotal').textContent = fmtN(r.totalSeedKg, 1) + ' kg';
+    $('rTotalLabel').textContent = 'Total seed for ' + r.farmSizeHa + ' ha';
+    $('rBags').textContent = r.numBags;
+    $('rBagsLabel').textContent = 'Bags of ' + r.bagSize_kg + ' kg';
+    $('rPopCard').style.display = r.targetPopHa ? '' : 'none';
+    if (r.targetPopHa) {
+      $('rPop').textContent = fmtN(r.targetPopHa, 0);
+    }
+
+    // Cost section
+    var hasCost = r.costCertified !== null;
+    $('costSection').style.display = hasCost ? '' : 'none';
+    if (hasCost) {
+      $('rCostCert').textContent = fmtC(r.costCertified);
+      $('rCostSaved').textContent = fmtC(r.costFarmSaved);
+      $('rSavings').textContent = fmtC(r.costSavings);
+      $('rCostNote').textContent = 'Based on certified seed price: ' + r.currencySymbol + fmtN(r.pricePerKg, 0) + '/kg. Farm-saved ≈ 45% of certified price.';
+    }
+
+    // Planting guide
+    $('plantingGuide').style.display = '';
+    $('vegGuide').style.display = 'none';
+    var il = $('plantingInfoList');
+    il.innerHTML = '';
+    var items = [
+      ['Row spacing', r.rowSpacing_cm + ' cm'],
+      ['Plant spacing', r.isBroadcast ? 'N/A (broadcast)' : r.plantSpacing_cm + ' cm'],
+      ['Seeds per hole', r.isBroadcast ? 'N/A' : r.seedsPerHole],
+      ['Plant population', r.targetPopHa ? fmtN(r.targetPopHa, 0) + ' plants/ha (' + fmtN(r.targetPopm2, 1) + ' plants/m²)' : 'N/A (broadcast)'],
+      ['Days to emergence', r.daysToEmergence ? r.daysToEmergence[0] + '–' + r.daysToEmergence[1] + ' days' : '—'],
+      ['Shelf life', r.shelfLife_months ? r.shelfLife_months + ' months' : '—']
+    ];
+    items.forEach(function (item) {
+      var li = document.createElement('li');
+      li.innerHTML = '<span class="il-label">' + item[0] + '</span><span class="il-val">' + item[1] + '</span>';
+      il.appendChild(li);
+    });
+
+    // Spacing diagram (for non-broadcast crops with row × plant spacing)
+    if (!r.isBroadcast && r.rowSpacing_cm && r.plantSpacing_cm) {
+      $('spacingDiagram').style.display = '';
+      buildSpacingDiagram(r.rowSpacing_cm, r.plantSpacing_cm);
+    } else {
+      $('spacingDiagram').style.display = 'none';
+    }
+
+    // Notes
+    if (r.overrideNotes || r.notes) {
+      $('notesBox').style.display = '';
+      $('notesBox').innerHTML = '<div class="tip-box">&#128161; ' + (r.overrideNotes || r.notes) + '</div>';
+    } else {
+      $('notesBox').style.display = 'none';
+    }
+
+    // Storage tips
+    $('storageCard').style.display = r.storageNotes ? '' : 'none';
+    if (r.storageNotes) {
+      $('storageNotes').textContent = r.storageNotes;
+    }
+
+    // Breakdown
+    var bl = $('breakdownList');
+    bl.innerHTML = '';
+    var bItems = [
+      ['Seed quality (germination)', r.germRatePct + '% germination rate'],
+      ['Field conditions (establishment)', r.fieldFactorPct + '% field establishment factor'],
+      ['Intercrop adjustment', r.intercropFactor < 1 ? (r.intercropFactor * 100) + '% of sole-crop rate' : 'Sole crop — no adjustment'],
+      ['Base seed rate (unadjusted)', fmtN(r.seedRateKgHaBase, 1) + ' kg/ha'],
+      ['Adjusted seed rate', fmtN(r.seedRateKgHa, 1) + ' kg/ha'],
+      ['Farm size', r.farmSizeHa + ' ha'],
+      ['Total seed required', fmtN(r.totalSeedKg, 1) + ' kg']
+    ];
+    bItems.forEach(function (item) {
+      var li = document.createElement('li');
+      li.innerHTML = '<span class="il-label">' + item[0] + '</span><span class="il-val">' + item[1] + '</span>';
+      bl.appendChild(li);
+    });
+  }
+
+  function displayVegResults(r) {
+    var matLabel = r.materialLabel || 'planting units';
+    $('rMainAmount').textContent = fmtN(r.plantsPerHa, 0);
+    $('rMainLabel').textContent = matLabel + ' per hectare';
+
+    $('rTotal').textContent = fmtN(r.totalPlants, 0);
+    $('rTotalLabel').textContent = 'Total ' + matLabel + ' for your farm';
+
+    if (r.materialWeight) {
+      $('rBagsCard').style.display = '';
+      $('rBags').textContent = fmtN(r.materialWeight.total, 0) + ' ' + r.materialWeight.unit;
+      $('rBagsLabel').textContent = 'Total material weight';
+    } else {
+      $('rBagsCard').style.display = 'none';
+    }
+
+    $('rPopCard').style.display = '';
+    $('rPop').textContent = fmtN(r.spacingArea_m2, 1) + ' m²';
+    document.querySelector('#rPopCard .rate-card-label').textContent = 'Area per plant';
+
+    $('costSection').style.display = 'none';
+    $('plantingGuide').style.display = 'none';
+    $('vegGuide').style.display = '';
+    var il = $('vegInfoList');
+    il.innerHTML = '';
+    var vItems = [
+      ['Planting material', matLabel],
+      ['Row spacing', r.rowSpacing_cm + ' cm'],
+      ['Plant spacing', r.plantSpacing_cm + ' cm'],
+      ['Plants per hectare', fmtN(r.plantsPerHa, 0)],
+      ['Total for ' + r.farmSizeHa + ' ha', fmtN(r.totalPlants, 0) + ' ' + matLabel]
+    ];
+    if (r.materialWeight && r.materialWeight.unit === 'kg') {
+      vItems.push(['Total weight needed', fmtN(r.materialWeight.total, 0) + ' kg']);
+      vItems.push(['Weight per hectare', fmtN(r.materialWeight.perHa, 0) + ' kg/ha']);
+    }
+    vItems.forEach(function (item) {
+      var li = document.createElement('li');
+      li.innerHTML = '<span class="il-label">' + item[0] + '</span><span class="il-val">' + item[1] + '</span>';
+      il.appendChild(li);
+    });
+
+    // Notes
+    if (r.overrideNotes || r.notes) {
+      $('notesBox').style.display = '';
+      $('notesBox').innerHTML = '<div class="info-box">&#128161; ' + (r.overrideNotes || r.notes) + '</div>';
+    } else {
+      $('notesBox').style.display = 'none';
+    }
+
+    $('storageCard').style.display = 'none';
+
+    // Breakdown
+    var bl = $('breakdownList');
+    bl.innerHTML = '';
+    [
+      ['Planting material', matLabel],
+      ['Farm size', r.farmSizeHa + ' ha'],
+      ['Spacing', r.rowSpacing_cm + ' × ' + r.plantSpacing_cm + ' cm'],
+      ['Plants per hectare', fmtN(r.plantsPerHa, 0)],
+      ['Total plants needed', fmtN(r.totalPlants, 0)]
+    ].forEach(function (item) {
+      var li = document.createElement('li');
+      li.innerHTML = '<span class="il-label">' + item[0] + '</span><span class="il-val">' + item[1] + '</span>';
+      bl.appendChild(li);
+    });
+  }
+
+  function buildSpacingDiagram(rowCm, plantCm) {
+    var grid = $('spacingGrid');
+    grid.innerHTML = '';
+    var cols = 4, rows = 3;
+    grid.style.gridTemplateColumns = 'repeat(' + cols + ', 10px)';
+    grid.style.columnGap = Math.min(24, Math.round(rowCm / 10)) + 'px';
+    grid.style.rowGap = Math.min(20, Math.round(plantCm / 8)) + 'px';
+    for (var i = 0; i < rows * cols; i++) {
+      var dot = document.createElement('div');
+      dot.className = 'seed-dot';
+      grid.appendChild(dot);
+    }
+    $('rowSpacingLabel').textContent = '← ' + rowCm + ' cm row spacing →';
+    $('plantSpacingLabel').textContent = '↑ ' + plantCm + ' cm →';
+  }
+
+})();
+</script>
+</body>
+</html>

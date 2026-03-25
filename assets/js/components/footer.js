@@ -63,6 +63,7 @@
       { en: 'Changelog',   fr: 'Mises à jour',     sw: 'Mabadiliko',    yo: 'Àwọn Àyípadà',    ha: 'Canje-canje',   href: '/changelog/' },
       { en: 'All Tools',   fr: 'Tous les outils',  sw: 'Zana Zote',     yo: 'Gbogbo Iṣẹ́',      ha: 'Duk Kayan Aiki',href: '/all-tools/' },
       { en: 'API Docs',    fr: 'API Docs',         sw: 'API Docs',      yo: 'API Docs',         ha: 'API Docs',      href: '/api/' },
+      { en: 'Embed Tools', fr: 'Intégrer',         sw: 'Chomeka Zana',  yo: 'Fi Iṣẹ́ Sínú',     ha: 'Saka Kayan Aiki', href: '/widgets/demo/' },
     ],
     legal: [
       { en: 'Privacy Policy', fr: 'Confidentialité', sw: 'Sera ya Faragha', yo: 'Ìlànà Aṣírí',  ha: 'Manufar Sirri', href: '/privacy/' },
@@ -334,9 +335,9 @@
                 </a>
                 <p class="tagline">${tagline}</p>
                 <div class="social">
-                  <a href="https://twitter.com/afrotools" target="_blank" rel="noopener" aria-label="Twitter / X">&#120143;</a>
-                  <a href="https://linkedin.com/company/afrotools" target="_blank" rel="noopener" aria-label="LinkedIn">in</a>
-                  <a href="https://github.com/Ozaveshe/afrotools" target="_blank" rel="noopener" aria-label="GitHub">GH</a>
+                  <a href="https://twitter.com/afrotools" target="_blank" rel="noopener noreferrer" aria-label="Twitter / X">&#120143;</a>
+                  <a href="https://linkedin.com/company/afrotools" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">in</a>
+                  <a href="https://github.com/Ozaveshe/afrotools" target="_blank" rel="noopener noreferrer" aria-label="GitHub">GH</a>
                 </div>
                 <p class="built-with">${this._l(L.builtWith)}</p>
               </div>
