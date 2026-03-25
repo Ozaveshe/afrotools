@@ -45,11 +45,11 @@
 <style>
 /* ── Agriculture tool accent ── */
 :root {
-  --calc-accent: #008751;
+  --calc-accent: #007AFF;
   --calc-accent-rgb: 0, 135, 81;
-  --calc-accent-dark: #006B3F;
-  --calc-accent-light: #E6F5ED;
-  --calc-accent-pale: #F0FAF5;
+  --calc-accent-dark: #0063D1;
+  --calc-accent-light: #E8F2FF;
+  --calc-accent-pale: #EBF4FF;
 }
 
 /* ── Hero (matches .tool-hero pattern) ── */
@@ -283,9 +283,9 @@
     <nav class="breadcrumb" aria-label="Breadcrumb">
       <a href="/">Home</a><span>/</span>
       <a href="/agriculture/crop-yield/">Crop Yield Estimators</a><span>/</span>
-      <span aria-current="page">Nigeria</span>
+      <span aria-current="page">Benin</span>
     </nav>
-    <h1><span class="flag" aria-hidden="true">&#127463;&#127471;</span> Nigeria <em>Crop Yield Estimator</em></h1>
+    <h1><span class="flag" aria-hidden="true">&#127463;&#127471;</span> Benin <em>Crop Yield Estimator</em></h1>
     <p class="tool-hero-sub">Estimate crop yields for cotton, maize, cassava, yam, rice and more across Benin's 3 agroecological zones. Uses FAOSTAT &amp; national data.</p>
     <div class="hero-badges" id="statsBar"></div>
   </div>
@@ -461,7 +461,7 @@
   var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
   function $(id) { return document.getElementById(id); }
-  function fmtN(n) { return typeof n === 'number' && !isNaN(n) ? n.toLocaleString('en-NG', { maximumFractionDigits: 2 }) : '0'; }
+  function fmtN(n) { return typeof n === 'number' && !isNaN(n) ? n.toLocaleString('en', { maximumFractionDigits: 2 }) : '0'; }
   function fmtCurr(n) { return CD.currencySymbol + fmtN(n); }
 
   // Stats badges
@@ -537,7 +537,7 @@
   // Country info
   (function () {
     var s = CD.agriStats;
-    $('countryInfo').textContent = 'Agriculture contributes ' + s.gdpSharePercent + "% to Nigeria's GDP and employs " + s.laborForcePercent + '% of the workforce. With approximately ' + fmtN(s.arableLandHectares/1e6) + ' million hectares of arable land and only ' + s.irrigatedPercent + '% irrigated, the country has significant potential for yield improvement. Main food crops include ' + s.mainFoodCrops.join(', ') + '. Key export crops are ' + s.mainExportCrops.join(', ') + '.';
+    $('countryInfo').textContent = 'Agriculture contributes ' + s.gdpSharePercent + "% to Benin's GDP and employs " + s.laborForcePercent + '% of the workforce. With approximately ' + fmtN(s.arableLandHectares/1e6) + ' million hectares of arable land and only ' + s.irrigatedPercent + '% irrigated, the country has significant potential for yield improvement. Main food crops include ' + s.mainFoodCrops.join(', ') + '. Key export crops are ' + s.mainExportCrops.join(', ') + '.';
   })();
 
   $('inpFarm').value = CD.agriStats.avgFarmSizeHa || 0.5;

@@ -37,10 +37,20 @@
       tools: []
     },
     {
-      id: 'health', label: 'Health & Agriculture', icon: '🏥',
-      desc: 'BMI, SHIF, pregnancy, crops',
+      id: 'health', label: 'Health & Fitness', icon: '🏥',
+      desc: 'BMI, SHIF, pregnancy, calories',
       href: '/health/', color: '#fce8e8', accent: '#dc2626',
       tools: []
+    },
+    {
+      id: 'agriculture', label: 'Agriculture', icon: '🌾',
+      desc: 'Crop yield, fertilizer, irrigation — 54 countries',
+      href: '/agriculture/', color: '#E8F2FF', accent: '#007AFF',
+      tools: [
+        { label: 'Crop Yield Estimators', href: '/agriculture/crop-yield/', emoji: '🌱', badge: 'LIVE' },
+        { label: 'Fertilizer Calculators', href: '/agriculture/fertilizer/', emoji: '🧪', badge: 'LIVE' },
+        { label: 'Irrigation Calculators', href: '/agriculture/irrigation/', emoji: '💧', badge: 'LIVE' },
+      ]
     },
     {
       id: 'ecommerce', label: 'VAT & Business Tax', icon: '🧾',
@@ -281,12 +291,13 @@
     .lang-switch { position: relative; display: flex; align-items: center; }
     .lang-btn {
       display: flex; align-items: center; gap: 4px;
-      padding: 5px 10px; border-radius: 980px;
+      padding: 4px 8px; border-radius: 980px;
       font-size: 0.73rem; font-weight: 700; color: #374151;
       border: 1.5px solid rgba(0,0,0,0.1); background: rgba(0,0,0,0.02);
       cursor: pointer; white-space: nowrap; transition: all 0.13s;
       font-family: 'DM Sans', system-ui, sans-serif;
     }
+    .lang-btn-label { transition: width 0.15s, opacity 0.15s; }
     .lang-btn:hover { border-color: #0062CC; color: #0062CC; background: #EEF4FF; }
     .lang-drop {
       display: none; position: absolute; top: calc(100% + 6px); right: 0;
@@ -364,14 +375,14 @@
 
     /* RESPONSIVE — progressive collapse */
     .pill-54 { display: none; }
-    @media (max-width: 1280px) {
-      .cta-embed { display: none; }
-    }
     @media (max-width: 1100px) {
       .cta { display: none; }
+      .lang-btn-label { display: none; }
+      .lang-btn { padding: 5px 7px; font-size: 0.9rem; }
     }
     @media (max-width: 940px) {
       .nav-links, .pill-54, .cta { display: none; }
+      .lang-switch { display: none; }
       .btn-login { border: none; padding: 4px 8px; max-width: none; overflow: hidden; font-size: 0.75rem; }
       .btn-login .nav-user-name, .btn-login .user-menu-name { display: none !important; width: 0 !important; height: 0 !important; overflow: hidden !important; font-size: 0 !important; }
       .btn-login span:first-child { margin-right: 0 !important; }
@@ -558,6 +569,21 @@
       padding: 20px 16px; text-align: center;
       font-size: 0.8rem; color: #9ca3af; font-weight: 500;
     }
+
+    /* MOBILE LANGUAGE PICKER */
+    .mob-lang-section { padding: 6px 16px 2px; }
+    .mob-lang-row {
+      display: flex; flex-wrap: wrap; gap: 8px;
+    }
+    .mob-lang-opt {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 8px 14px; border-radius: 980px;
+      font-size: 0.82rem; font-weight: 600; color: #374151;
+      text-decoration: none; border: 1.5px solid #e5e7eb;
+      background: #f9fafb; transition: all 0.13s;
+    }
+    .mob-lang-opt:hover { border-color: #0062CC; color: #0062CC; background: #EEF4FF; }
+    .mob-lang-opt.active { border-color: #0062CC; color: #0062CC; background: #EEF4FF; font-weight: 700; }
   `;
 
   class AfroNavbar extends HTMLElement {
@@ -607,11 +633,16 @@
         var href = l.code !== 'en' ? '/' + l.code + (p.startsWith('/') ? '' : '/') + p : p;
         return '<a href="' + href + '" class="lang-opt' + active + '"><span class="lang-opt-check">' + check + '</span>' + l.label + '</a>';
       }).join('');
-      return '<div class="lang-switch"><button class="lang-btn" id="langBtn" type="button" aria-label="Change language">🌐 ' + curObj.label + '</button><div class="lang-drop" id="langDrop">' + opts + '</div></div>';
+      return '<div class="lang-switch"><button class="lang-btn" id="langBtn" type="button" aria-label="Change language">🌐 <span class="lang-btn-label">' + curObj.label + '</span></button><div class="lang-drop" id="langDrop">' + opts + '</div></div>';
+    }
+
+    _navItems() {
+      var isFr = (document.documentElement.lang || 'en') === 'fr';
+      return isFr ? NAV_ITEMS.filter(c => c.id !== 'francophone') : NAV_ITEMS;
     }
 
     _megaContent() {
-      return NAV_ITEMS.map(cat => `
+      return this._navItems().map(cat => `
         <a href="${cat.href}" class="mega-col" style="--col-accent:${cat.accent}">
           <div class="mega-col-icon" style="background:${cat.color}">${cat.icon}</div>
           <div>
@@ -622,7 +653,7 @@
     }
 
     _mobileContent() {
-      return NAV_ITEMS.map(cat => `
+      return this._navItems().map(cat => `
         <a href="${cat.href}" class="mob-cat">
           <div class="mob-cat-icon" style="background:${cat.color}">${cat.icon}</div>
           <div>
@@ -631,6 +662,25 @@
           </div>
           <span class="mob-arr">›</span>
         </a>`).join('');
+    }
+
+    _mobileLangHTML() {
+      var cur = this._getLang();
+      var LANGS = [
+        { code: 'en', label: 'English', flag: '🇬🇧' },
+        { code: 'fr', label: 'Français', flag: '🇫🇷' },
+        { code: 'sw', label: 'Kiswahili', flag: '🇰🇪' },
+        { code: 'yo', label: 'Yorùbá', flag: '🇳🇬' },
+        { code: 'ha', label: 'Hausa', flag: '🇳🇬' },
+      ];
+      var opts = LANGS.map(function(l) {
+        var active = l.code === cur ? ' active' : '';
+        var p = window.location.pathname;
+        if (cur !== 'en') p = p.replace(new RegExp('^/' + cur + '(/|$)'), '/');
+        var href = l.code !== 'en' ? '/' + l.code + (p.startsWith('/') ? '' : '/') + p : p;
+        return '<a href="' + href + '" class="mob-lang-opt' + active + '">' + l.flag + ' ' + l.label + '</a>';
+      }).join('');
+      return '<div class="mob-lang-section"><div class="mob-section-label">Language</div><div class="mob-lang-row">' + opts + '</div></div>';
     }
 
     _render() {
@@ -675,7 +725,6 @@
               ${this._langSwitcherHTML()}
               <span class="pill-54">🌍 54 countries</span>
               <a href="/dashboard/" class="btn-login">Sign in</a>
-              <a href="/widgets/demo/" class="cta cta-embed" style="background:transparent;border:1.5px solid var(--clr-accent,#0062CC);color:var(--clr-accent,#0062CC);font-size:12px;padding:7px 14px">Embed Tools</a>
               <button class="burger" type="button" aria-label="Open menu" aria-expanded="false">
                 <span></span><span></span><span></span>
               </button>
@@ -705,6 +754,7 @@
             <div class="mob-section-label">All Categories</div>
             ${this._mobileContent()}
           </div>
+          ${this._mobileLangHTML()}
           <div class="mob-footer">
             <a href="/dashboard/" class="mob-login">Sign In</a>
             <a href="/dashboard/vault/" class="mob-vault-link" style="display:none;padding:10px 13px;border-radius:8px;font-size:0.85rem;font-weight:600;text-decoration:none;color:#0062CC;border:1.5px solid #0062CC;text-align:center;">📁 My Vault</a>
