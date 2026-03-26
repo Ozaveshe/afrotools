@@ -1,7 +1,12 @@
 [build]
   publish = "."
   functions = "netlify/functions"
+  edge_functions = "netlify/edge-functions"
   command = "node scripts/indexnow.js --git || true"
+
+[[edge_functions]]
+  function = "og-image"
+  path = "/og-image"
 
 [functions]
   node_bundler = "esbuild"
