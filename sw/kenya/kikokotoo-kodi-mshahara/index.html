@@ -44,29 +44,24 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
 <link rel="stylesheet" href="/assets/css/global.min.css">
-<link rel="stylesheet" href="/assets/css/paye-tool.css">
+<link rel="stylesheet" href="/assets/css/calculator.min.css">
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="/assets/js/lib/chart-config.js"></script>
 <script src="/assets/js/bundles/tool-page.4701dd1d.min.js" defer></script>
-<script src="/assets/js/bundles/core.5473a555.min.js" defer></script>
 <link rel="stylesheet" href="/assets/css/print.css" media="print">
 <script>window.PAYE_SAVE_SLUG='ke-paye-sw';</script>
 
 <style>
-  :root { --color-brand: #BB0000; }
-  .grn { color: #2563EB !important; }
+  :root {
+    --calc-accent: #BB0000;
+    --calc-accent-rgb: 187,0,0;
+    --calc-accent-subtle: rgba(187,0,0,0.08);
+  }
+  .grn { color: #16a34a !important; }
+  .tool-hero::after { content: '\1F1F0\1F1EA'; position: absolute; right: 5%; top: 50%; transform: translateY(-50%); font-size: 8rem; opacity: .06; pointer-events: none; }
   .tool-hero { background: #1a1210; }
-  .res-hero { background: #1a1210; }
-  .ai-card { background: #1a1210; }
-  .rate-fill.brand { background: #BB0000; }
-  .calc-btn { background: #BB0000; }
-  .calc-btn:hover { background: #990000; box-shadow: 0 5px 18px rgba(187,0,0,0.28); }
-  .chart-tab.on { background: #BB0000; border-color: #BB0000; }
-  .tog.on .tog-box { background: #BB0000; border-color: #BB0000; }
-  .badge-green { background: rgba(187,0,0,0.12); color: #BB0000; border-color: rgba(187,0,0,0.3); }
-  .per-btn.on { color: #BB0000; }
-  .preset-btn.active { background: #BB0000; border-color: #BB0000; }
-  .rate-card-value { color: #BB0000; }
   .tool-info-card{background:#fff;border:1px solid #DBEAFE;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
   .tool-info-header{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid #EFF6FF;background:#F5F9FF}
   .tool-info-img{width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0}
@@ -93,21 +88,17 @@
 
 <!-- HERO -->
 <section class="tool-hero">
-  <div class="container">
-    <div>
-      <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="/sw/">Nyumbani</a><span>/</span>
-        <a href="/sw/kenya/">&#127472;&#127466; Kenya</a><span>/</span>
-        <span aria-current="page">Kikokotoo cha Kodi ya Mshahara</span>
-      </nav>
-      <h1>Kodi ya Mshahara<br><em>Kenya 2025/26</em></h1>
-      <p class="tool-hero-sub">Mabanda ya kodi ya KRA 10%&#8211;35%, NSSF Daraja I+II (Feb 2025), SHIF 2.75% (imechukua nafasi ya NHIF Okt 2024), Tozo ya Nyumba Nafuu 1.5%, punguzo la kibinafsi KES 2,400/mwezi.</p>
-      <div class="hero-badges">
-        <span class="badge badge-gold">Mshauri wa AI Umejumuishwa</span>
-        <span class="badge badge-green">KRA 2025/26 Imethibitishwa</span>
-        <span class="badge badge-blue">SHIF 2.75%</span>
-        <span class="badge badge-grey">NSSF Feb 2025</span>
-      </div>
+  <div class="tool-hero-inner">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/sw/">Nyumbani</a> / <a href="/sw/kenya/">&#127472;&#127466; Kenya</a> / <span>Kikokotoo cha Kodi ya Mshahara</span>
+    </nav>
+    <h1>Kodi ya Mshahara<br><em>Kenya 2025/26</em></h1>
+    <p class="hero-sub">Mabanda ya kodi ya KRA 10%&#8211;35%, NSSF Daraja I+II (Feb 2025), SHIF 2.75% (imechukua nafasi ya NHIF Okt 2024), Tozo ya Nyumba Nafuu 1.5%, punguzo la kibinafsi KES 2,400/mwezi.</p>
+    <div class="hero-badges">
+      <span class="badge b-gold">&#10022; Mshauri wa AI Umejumuishwa</span>
+      <span class="badge b-green">KRA 2025/26 Imethibitishwa</span>
+      <span class="badge b-blue">SHIF 2.75%</span>
+      <span class="badge b-grey">NSSF Feb 2025</span>
     </div>
     <p class="hero-meta">Imethibitishwa mwisho: Machi 2026 &middot; Chanzo: KRA, Sheria ya Fedha 2024</p>
     <p style="font-size:0.8rem;color:#64748b;margin-top:8px;">Angalia pia: <a href="/sw/tanzania/kikokotoo-kodi-mshahara/" style="color:#007AFF;font-weight:600;">Kikokotoo Tanzania &rarr;</a></p>
@@ -115,19 +106,18 @@
 </section>
 
 <!-- UPDATE NOTICE -->
-<div style="background:rgba(187,0,0,0.06);border-bottom:1px solid rgba(187,0,0,0.15);padding:10px 0;">
-  <div class="container">
-    <p style="font-size:0.78rem;color:#92400e;line-height:1.5;"><strong>Mabadiliko 2025/26:</strong> UEL wa NSSF uliongezeka hadi KES 72,000 (Feb 2025). SHIF ilichukua nafasi ya NHIF (Okt 2024) &mdash; 2.75% ya ghafi, kiwango cha chini KES 300, bila kikomo. <strong>Punguzo la kodi la AHL LIMEONDOLEWA</strong> (Des 2024). SHIF + AHL ni makato ya kabla ya kodi.</p>
+<div class="amendment-bar">
+  <div class="amendment-bar-inner">
+    <p><strong>Mabadiliko 2025/26:</strong> UEL wa NSSF uliongezeka hadi KES 72,000 (Feb 2025). SHIF ilichukua nafasi ya NHIF (Okt 2024) &mdash; 2.75% ya ghafi, kiwango cha chini KES 300, bila kikomo. <strong>Punguzo la kodi la AHL LIMEONDOLEWA</strong> (Des 2024). SHIF + AHL ni makato ya kabla ya kodi.</p>
   </div>
 </div>
 
 <!-- MAIN -->
-<main class="tool-main">
-  <div class="container">
-    <div class="tool-grid">
+<div class="tool-main">
+  <div class="tool-main-inner">
 
-      <!-- LEFT COL -->
-      <div>
+    <!-- LEFT COL -->
+    <div>
         <div class="card">
           <div class="card-head">
             <span class="card-title">Ingiza Maelezo Yako</span>
@@ -193,74 +183,63 @@
           </div>
         </div>
 
-        <!-- RESULTS CARD -->
-        <div class="card" id="resultsCard" style="display:none;">
-          <div class="res-hero">
-            <div style="font-size:0.75rem;font-weight:600;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px;">Mshahara Halisi wa Kwenda Nyumbani</div>
-            <div style="font-size:2.2rem;font-weight:800;color:#fff;letter-spacing:-0.02em;" id="resAmount">KES 0</div>
-            <div style="font-size:0.78rem;color:rgba(255,255,255,0.5);margin-top:4px;" id="resGross">Ghafi: KES 0</div>
+      <!-- RESULTS -->
+      <div class="card results-card" id="resultsCard">
+        <div class="res-hero">
+          <div class="res-hero-label">Mshahara Halisi wa Kwenda Nyumbani</div>
+          <div class="res-hero-amount" id="resAmount">KES 0</div>
+          <div class="res-hero-period">Baada ya PAYE, NSSF na makato yote</div>
+          <div class="res-hero-gross" id="resGross"></div>
+        </div>
+        <div class="res-body">
+          <div class="period-row">
+            <button class="per-btn on" onclick="setPeriod('monthly',this)">Kwa Mwezi</button>
+            <button class="per-btn" onclick="setPeriod('annual',this)">Kwa Mwaka</button>
           </div>
-          <div style="padding:20px 24px;">
-            <!-- Period Toggle -->
-            <div style="display:flex;gap:8px;margin-bottom:16px;">
-              <button class="per-btn on" onclick="setPeriod('monthly',this)">Kwa Mwezi</button>
-              <button class="per-btn" onclick="setPeriod('annual',this)">Kwa Mwaka</button>
+          <div id="resContent"></div>
+          <div class="rate-bar-wrap">
+            <div class="rate-bar-hdr">
+              <span class="rate-bar-lbl">Kiwango Halisi cha Kodi</span>
+              <span class="rate-bar-pct" id="effRateDisplay">0%</span>
             </div>
-            <div id="resContent"></div>
-            <!-- Rate Bar -->
-            <div style="margin-top:16px;">
-              <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
-                <span style="font-size:0.75rem;color:#64748b;font-weight:600;">Kiwango Halisi cha Kodi</span>
-                <span style="font-size:0.75rem;font-weight:700;color:#BB0000;" id="effRateDisplay">0%</span>
-              </div>
-              <div style="height:6px;background:#f1f5f9;border-radius:3px;overflow:hidden;">
-                <div id="rateFill" style="height:100%;background:#BB0000;border-radius:3px;width:0%;transition:width 0.6s ease;"></div>
-              </div>
-            </div>
-            <!-- Employer strip -->
-            <div id="employerCard" style="display:none;margin-top:16px;padding:14px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;">
-              <div style="font-size:0.72rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">Gharama za Mwajiri</div>
-              <div id="employerContent"></div>
-            </div>
+            <div class="rate-track"><div class="rate-fill" id="rateFill"></div></div>
           </div>
-
-          <!-- Chart section -->
-          <div style="padding:0 24px 20px;">
-            <div style="display:flex;gap:6px;margin-bottom:12px;">
-              <button class="chart-tab on" onclick="setChart('donut',this)">Mgawanyo</button>
-              <button class="chart-tab" onclick="setChart('bar',this)">Mabanda</button>
-              <button class="chart-tab" onclick="setChart('employer',this)">Mwajiri</button>
-            </div>
-            <div style="height:220px;position:relative;"><canvas id="mainChart"></canvas></div>
-          </div>
-
-          <!-- Band detail -->
-          <div style="padding:0 24px 20px;">
-            <div style="display:flex;justify-content:space-between;align-items:center;cursor:pointer;padding:10px 0;border-top:1px solid #f1f5f9;" onclick="toggleBands(this)">
+          <div class="employer-strip" id="employerStrip"></div>
+          <div style="margin-top:12px;border-top:1px solid #f1f5f9;padding-top:4px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;cursor:pointer;padding:8px 0;" onclick="toggleBands(this)">
               <span style="font-size:0.78rem;font-weight:600;color:#374151;">Maelezo ya Mabanda ya Kodi</span>
-              <span class="tog-arrow" style="color:#9ca3af;transition:transform 0.2s;">&#9662;</span>
+              <span class="tog-arrow" style="font-size:0.8rem;color:#9ca3af;">&#9662;</span>
             </div>
             <div id="bandDetailContent" style="display:none;"></div>
           </div>
-
-          <!-- Action row -->
-          <div style="padding:0 24px 24px;display:flex;gap:8px;flex-wrap:wrap;">
-            <button onclick="openPdfModal()" style="flex:1;min-width:120px;padding:10px 16px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;font-size:0.8rem;font-weight:600;color:#374151;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .15s;">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-              Pakua PDF
-            </button>
-            <button onclick="whatsappShare()" style="flex:1;min-width:120px;padding:10px 16px;background:rgba(37,211,102,0.1);border:1px solid #25D366;border-radius:8px;font-size:0.8rem;font-weight:600;color:#25D366;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;">
-              WhatsApp
-            </button>
-            <button onclick="shareCalc()" style="flex:1;min-width:100px;padding:10px 16px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;font-size:0.8rem;font-weight:600;color:#374151;cursor:pointer;">
-              Shiriki
-            </button>
+        </div>
+        <div class="chart-section">
+          <div class="chart-tabs">
+            <button class="chart-tab on" onclick="setChart('donut',this)">Mgawanyo</button>
+            <button class="chart-tab" onclick="setChart('bar',this)">Mabanda ya Kodi</button>
+            <button class="chart-tab" onclick="setChart('employer',this)">Gharama za Mwajiri</button>
           </div>
+          <div class="chart-canvas-wrap"><canvas id="mainChart"></canvas></div>
+        </div>
+        <div class="action-row">
+          <button class="act-btn act-pdf" onclick="openPdfModal()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Pakua PDF
+          </button>
+          <button class="act-btn" onclick="whatsappShare()" style="background:rgba(37,211,102,0.1);border-color:#25D366;color:#25D366">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492l4.618-1.462A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75c-2.171 0-4.2-.695-5.856-1.873l-.42-.277-2.735.867.87-2.664-.305-.44A9.72 9.72 0 012.25 12c0-5.385 4.365-9.75 9.75-9.75S21.75 6.615 21.75 12s-4.365 9.75-9.75 9.75z"/></svg>
+            WhatsApp
+          </button>
+          <button class="act-btn act-share" onclick="shareCalc()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            Shiriki
+          </button>
         </div>
       </div>
+    </div>
 
-      <!-- SIDEBAR -->
-      <div class="sidebar">
+    <!-- SIDEBAR -->
+    <div class="sidebar">
         <!-- AI ADVISOR -->
         <div class="ai-card">
           <div class="ai-head">
@@ -351,7 +330,7 @@
       </div>
     </div>
   </div>
-</main>
+</div>
 
 <!-- FAQ SECTION -->
 <section class="faq-sec">
@@ -506,7 +485,6 @@ var PERIOD = 'monthly';
 var CHART = null;
 var CHART_TYPE = 'donut';
 var CHAT_HISTORY = [];
-var _chartLoaded = false;
 
 var fmt = function(n) { return 'KES\u00A0' + Math.round(Math.abs(n)).toLocaleString('en-KE'); };
 var pct = function(r) { var v = typeof r === 'number' && r <= 1 ? r * 100 : r; return (v % 1 === 0 ? (+v).toFixed(0) : parseFloat((+v).toFixed(2)).toString()) + '%'; };
@@ -624,7 +602,7 @@ function calculate() {
   };
 
   renderResults();
-  loadChartAndRender();
+  renderChart(CHART_TYPE);
 
   document.getElementById('hiddenGross').value = gross;
   if (window.gtag) gtag('event', 'calculation_complete', { tool_name: 'ke-paye-sw', country: 'Kenya' });
@@ -665,13 +643,13 @@ function renderResults() {
   // Employer
   var empTotal = r.gross + r.employerNSSF + r.employerAHL;
   function empRow(l, v) { return '<div class="res-row"><span class="res-row-lbl">' + l + '</span><span class="res-row-val">' + v + '</span></div>'; }
-  document.getElementById('employerContent').innerHTML =
+  document.getElementById('employerStrip').innerHTML =
+    '<div class="employer-strip-head">Gharama za Mwajiri</div>' +
     empRow('Mshahara Ghafi wa Mfanyakazi', fmt(r.gross * d)) +
     empRow('NSSF ya Mwajiri (inalingana)', fmt(r.employerNSSF * d)) +
     empRow('AHL ya Mwajiri (1.5%)', fmt(r.employerAHL * d)) +
     '<div class="res-row total"><span class="res-row-lbl">Gharama Jumla za Mwajiri</span><span class="res-row-val grn">' + fmt(empTotal * d) + '</span></div>';
-  document.getElementById('employerCard').style.display = 'block';
-  document.getElementById('resultsCard').style.display = 'block';
+  document.getElementById('resultsCard').classList.add('on');
 
   document.getElementById('aiBtn').disabled = false;
   document.getElementById('aiBtn').textContent = 'Changanua Nafasi Yangu ya Kodi Kenya \u2192';
@@ -683,22 +661,6 @@ function setPeriod(p, btn) {
   document.querySelectorAll('.per-btn').forEach(function(b) { b.classList.remove('on'); });
   btn.classList.add('on');
   if (RESULT) renderResults();
-}
-
-function loadChartAndRender() {
-  if (_chartLoaded) { renderChart(CHART_TYPE); return; }
-  var s = document.createElement('script');
-  s.src = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js';
-  s.onload = function() {
-    _chartLoaded = true;
-    if (!window.AfroChartColors) {
-      var cfg = document.createElement('script');
-      cfg.src = '/assets/js/lib/chart-config.js';
-      cfg.onload = function() { renderChart(CHART_TYPE); };
-      document.head.appendChild(cfg);
-    } else { renderChart(CHART_TYPE); }
-  };
-  document.head.appendChild(s);
 }
 
 function setChart(type, btn) {
