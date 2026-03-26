@@ -308,6 +308,24 @@ p {
   color: var(--color-text-muted);
   margin-top: 1px;
 }
+/* ── RESPONSIVE TABLE UTILITY ──────────────────────────── */
+/* Wrap any <table> in .table-wrap for horizontal scroll on mobile */
+.table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+}
+/* Auto-wrap bare tables inside tool cards/sections on mobile */
+@media (max-width: 768px) {
+  table:not([class]) {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
 /* ── NAVBAR MOBILE OVERFLOW FIX ────────────────────────── */
 @media (max-width: 900px) {
   .user-name, .nav-user-name, [class*="user-name"],

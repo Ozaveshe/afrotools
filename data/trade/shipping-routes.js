@@ -1,0 +1,120 @@
+/* AfroTools — Shipping Routes Data /data/trade/shipping-routes.js */
+const SHIPPING_ROUTES = {
+  originPorts: [
+    { code:"CNSHA", name:"Shanghai", country:"China", flag:"🇨🇳", region:"Asia" },
+    { code:"CNGZU", name:"Guangzhou / Nansha", country:"China", flag:"🇨🇳", region:"Asia" },
+    { code:"CNNGB", name:"Ningbo", country:"China", flag:"🇨🇳", region:"Asia" },
+    { code:"AEJEA", name:"Dubai (Jebel Ali)", country:"UAE", flag:"🇦🇪", region:"Middle East" },
+    { code:"INNSA", name:"Mumbai (JNPT)", country:"India", flag:"🇮🇳", region:"Asia" },
+    { code:"NLRTM", name:"Rotterdam", country:"Netherlands", flag:"🇳🇱", region:"Europe" },
+    { code:"DEHAM", name:"Hamburg", country:"Germany", flag:"🇩🇪", region:"Europe" },
+    { code:"ITGOA", name:"Genoa", country:"Italy", flag:"🇮🇹", region:"Europe" },
+    { code:"USNYC", name:"New York / New Jersey", country:"USA", flag:"🇺🇸", region:"Americas" },
+    { code:"TRIST", name:"Istanbul (Ambarli)", country:"Turkey", flag:"🇹🇷", region:"Middle East" },
+    { code:"ZADUR", name:"Durban", country:"South Africa", flag:"🇿🇦", region:"Intra-Africa" },
+    { code:"NGAPP", name:"Lagos (Apapa)", country:"Nigeria", flag:"🇳🇬", region:"Intra-Africa" }
+  ],
+  destPorts: [
+    { code:"NGAPP", name:"Lagos (Apapa)", country:"Nigeria", flag:"🇳🇬", countryCode:"NG" },
+    { code:"NGTCN", name:"Tin Can Island (Lagos)", country:"Nigeria", flag:"🇳🇬", countryCode:"NG" },
+    { code:"KEMBA", name:"Mombasa", country:"Kenya", flag:"🇰🇪", countryCode:"KE" },
+    { code:"ZADUR", name:"Durban", country:"South Africa", flag:"🇿🇦", countryCode:"ZA" },
+    { code:"ZACPT", name:"Cape Town", country:"South Africa", flag:"🇿🇦", countryCode:"ZA" },
+    { code:"GHTMA", name:"Tema", country:"Ghana", flag:"🇬🇭", countryCode:"GH" },
+    { code:"TZDAR", name:"Dar es Salaam", country:"Tanzania", flag:"🇹🇿", countryCode:"TZ" },
+    { code:"EGALX", name:"Alexandria", country:"Egypt", flag:"🇪🇬", countryCode:"EG" },
+    { code:"EGPSD", name:"Port Said", country:"Egypt", flag:"🇪🇬", countryCode:"EG" },
+    { code:"MACAS", name:"Casablanca", country:"Morocco", flag:"🇲🇦", countryCode:"MA" },
+    { code:"CIABJ", name:"Abidjan", country:"Côte d'Ivoire", flag:"🇨🇮", countryCode:"CI" },
+    { code:"CMDLA", name:"Douala", country:"Cameroon", flag:"🇨🇲", countryCode:"CM" },
+    { code:"DJJIB", name:"Djibouti", country:"Djibouti", flag:"🇩🇯", countryCode:"DJ" },
+    { code:"MZMPM", name:"Maputo", country:"Mozambique", flag:"🇲🇿", countryCode:"MZ" },
+    { code:"TNTUN", name:"Tunis (Rades)", country:"Tunisia", flag:"🇹🇳", countryCode:"TN" },
+    { code:"DAKAR", name:"Dakar", country:"Senegal", flag:"🇸🇳", countryCode:"SN" }
+  ],
+  corridors: [
+    // CHINA → AFRICA
+    { originCode:"CNSHA", destinations:[
+      { destCode:"NGAPP", sea:{ "20ft":{min:1800,max:3500},"40ft":{min:2800,max:5500},"40ftHC":{min:3200,max:6000},"LCL_cbm":{min:55,max:110}, transitDays:{min:35,max:50} }, air:{ perKg:{min:3.5,max:6.0}, transitDays:{min:5,max:10} } },
+      { destCode:"KEMBA", sea:{ "20ft":{min:1200,max:2500},"40ft":{min:2000,max:4000},"40ftHC":{min:2300,max:4500},"LCL_cbm":{min:40,max:80}, transitDays:{min:25,max:40} }, air:{ perKg:{min:3.0,max:5.5}, transitDays:{min:4,max:8} } },
+      { destCode:"ZADUR", sea:{ "20ft":{min:1500,max:3000},"40ft":{min:2500,max:5000},"40ftHC":{min:2800,max:5500},"LCL_cbm":{min:45,max:90}, transitDays:{min:30,max:45} }, air:{ perKg:{min:3.0,max:5.0}, transitDays:{min:4,max:8} } },
+      { destCode:"GHTMA", sea:{ "20ft":{min:1500,max:3000},"40ft":{min:2500,max:5000},"40ftHC":{min:2800,max:5500},"LCL_cbm":{min:48,max:95}, transitDays:{min:35,max:50} }, air:{ perKg:{min:3.5,max:6.0}, transitDays:{min:5,max:9} } },
+      { destCode:"TZDAR", sea:{ "20ft":{min:1200,max:2500},"40ft":{min:2000,max:4000},"LCL_cbm":{min:40,max:80}, transitDays:{min:25,max:40} }, air:{ perKg:{min:3.0,max:5.5}, transitDays:{min:4,max:8} } },
+      { destCode:"EGALX", sea:{ "20ft":{min:800,max:1800},"40ft":{min:1500,max:3000},"LCL_cbm":{min:30,max:65}, transitDays:{min:20,max:30} }, air:{ perKg:{min:2.5,max:4.5}, transitDays:{min:3,max:7} } },
+      { destCode:"MACAS", sea:{ "20ft":{min:900,max:2000},"40ft":{min:1600,max:3200},"LCL_cbm":{min:35,max:70}, transitDays:{min:25,max:35} }, air:{ perKg:{min:2.8,max:5.0}, transitDays:{min:4,max:8} } },
+      { destCode:"DJJIB", sea:{ "20ft":{min:900,max:1800},"40ft":{min:1500,max:3000}, transitDays:{min:20,max:30} } },
+      { destCode:"CIABJ", sea:{ "20ft":{min:1500,max:3000},"40ft":{min:2500,max:5000}, transitDays:{min:35,max:50} } }
+    ]},
+    { originCode:"CNGZU", destinations:[
+      { destCode:"NGAPP", sea:{ "20ft":{min:1700,max:3300},"40ft":{min:2700,max:5300},"LCL_cbm":{min:52,max:105}, transitDays:{min:35,max:52} } },
+      { destCode:"KEMBA", sea:{ "20ft":{min:1100,max:2300},"40ft":{min:1900,max:3800},"LCL_cbm":{min:38,max:76}, transitDays:{min:26,max:42} } },
+      { destCode:"GHTMA", sea:{ "20ft":{min:1400,max:2900},"40ft":{min:2400,max:4800}, transitDays:{min:36,max:52} } }
+    ]},
+    // UAE → AFRICA
+    { originCode:"AEJEA", destinations:[
+      { destCode:"KEMBA", sea:{ "20ft":{min:800,max:1500},"40ft":{min:1200,max:2500},"40ftHC":{min:1400,max:2800},"LCL_cbm":{min:28,max:55}, transitDays:{min:12,max:20} }, air:{ perKg:{min:2.0,max:4.0}, transitDays:{min:2,max:5} } },
+      { destCode:"TZDAR", sea:{ "20ft":{min:800,max:1500},"40ft":{min:1200,max:2500},"LCL_cbm":{min:28,max:55}, transitDays:{min:12,max:20} } },
+      { destCode:"NGAPP", sea:{ "20ft":{min:1500,max:2800},"40ft":{min:2200,max:4000},"LCL_cbm":{min:48,max:90}, transitDays:{min:25,max:35} }, air:{ perKg:{min:2.5,max:5.0}, transitDays:{min:3,max:7} } },
+      { destCode:"DJJIB", sea:{ "20ft":{min:500,max:1000},"40ft":{min:800,max:1500}, transitDays:{min:5,max:10} } },
+      { destCode:"ZADUR", sea:{ "20ft":{min:1200,max:2200},"40ft":{min:2000,max:3800}, transitDays:{min:18,max:28} } },
+      { destCode:"EGALX", sea:{ "20ft":{min:400,max:900},"40ft":{min:700,max:1600}, transitDays:{min:4,max:8} } },
+      { destCode:"GHTMA", sea:{ "20ft":{min:1400,max:2600},"40ft":{min:2200,max:4000}, transitDays:{min:22,max:35} } }
+    ]},
+    // INDIA → AFRICA
+    { originCode:"INNSA", destinations:[
+      { destCode:"KEMBA", sea:{ "20ft":{min:600,max:1200},"40ft":{min:1000,max:2000},"LCL_cbm":{min:22,max:45}, transitDays:{min:12,max:18} }, air:{ perKg:{min:2.0,max:3.5}, transitDays:{min:2,max:5} } },
+      { destCode:"TZDAR", sea:{ "20ft":{min:600,max:1200},"40ft":{min:1000,max:2000},"LCL_cbm":{min:22,max:45}, transitDays:{min:12,max:18} } },
+      { destCode:"ZADUR", sea:{ "20ft":{min:800,max:1800},"40ft":{min:1400,max:3000},"LCL_cbm":{min:30,max:60}, transitDays:{min:18,max:28} } },
+      { destCode:"NGAPP", sea:{ "20ft":{min:1200,max:2500},"40ft":{min:2000,max:4000},"LCL_cbm":{min:40,max:80}, transitDays:{min:28,max:40} } },
+      { destCode:"DJJIB", sea:{ "20ft":{min:400,max:800},"40ft":{min:700,max:1400}, transitDays:{min:8,max:14} } }
+    ]},
+    // EUROPE → AFRICA
+    { originCode:"NLRTM", destinations:[
+      { destCode:"NGAPP", sea:{ "20ft":{min:1500,max:3000},"40ft":{min:2500,max:5000},"40ftHC":{min:2800,max:5500},"LCL_cbm":{min:48,max:95}, transitDays:{min:18,max:28} }, air:{ perKg:{min:3.0,max:5.5}, transitDays:{min:3,max:6} } },
+      { destCode:"GHTMA", sea:{ "20ft":{min:1200,max:2500},"40ft":{min:2000,max:4000},"LCL_cbm":{min:40,max:80}, transitDays:{min:15,max:25} } },
+      { destCode:"ZADUR", sea:{ "20ft":{min:1800,max:3500},"40ft":{min:3000,max:6000},"LCL_cbm":{min:55,max:110}, transitDays:{min:22,max:35} } },
+      { destCode:"MACAS", sea:{ "20ft":{min:600,max:1200},"40ft":{min:1000,max:2000},"LCL_cbm":{min:22,max:45}, transitDays:{min:5,max:10} } },
+      { destCode:"KEMBA", sea:{ "20ft":{min:1600,max:3200},"40ft":{min:2600,max:5200}, transitDays:{min:22,max:35} } },
+      { destCode:"EGALX", sea:{ "20ft":{min:700,max:1500},"40ft":{min:1200,max:2500}, transitDays:{min:8,max:15} } }
+    ]},
+    { originCode:"DEHAM", destinations:[
+      { destCode:"NGAPP", sea:{ "20ft":{min:1400,max:2900},"40ft":{min:2400,max:4800},"LCL_cbm":{min:45,max:90}, transitDays:{min:18,max:30} } },
+      { destCode:"KEMBA", sea:{ "20ft":{min:1500,max:3000},"40ft":{min:2500,max:5000}, transitDays:{min:22,max:36} } },
+      { destCode:"ZADUR", sea:{ "20ft":{min:1700,max:3300},"40ft":{min:2800,max:5500}, transitDays:{min:22,max:35} } }
+    ]},
+    // USA → AFRICA
+    { originCode:"USNYC", destinations:[
+      { destCode:"NGAPP", sea:{ "20ft":{min:2000,max:4000},"40ft":{min:3500,max:6500},"LCL_cbm":{min:65,max:130}, transitDays:{min:25,max:40} }, air:{ perKg:{min:4.0,max:7.0}, transitDays:{min:4,max:8} } },
+      { destCode:"ZADUR", sea:{ "20ft":{min:2500,max:5000},"40ft":{min:4000,max:8000}, transitDays:{min:30,max:45} } },
+      { destCode:"GHTMA", sea:{ "20ft":{min:2000,max:4000},"40ft":{min:3500,max:6500}, transitDays:{min:22,max:35} } }
+    ]},
+    // TURKEY → AFRICA
+    { originCode:"TRIST", destinations:[
+      { destCode:"NGAPP", sea:{ "20ft":{min:1200,max:2500},"40ft":{min:2000,max:4000},"LCL_cbm":{min:40,max:80}, transitDays:{min:18,max:30} } },
+      { destCode:"EGALX", sea:{ "20ft":{min:400,max:800},"40ft":{min:700,max:1400},"LCL_cbm":{min:18,max:35}, transitDays:{min:3,max:7} } },
+      { destCode:"MACAS", sea:{ "20ft":{min:500,max:1000},"40ft":{min:900,max:1800}, transitDays:{min:4,max:8} } },
+      { destCode:"GHTMA", sea:{ "20ft":{min:1100,max:2200},"40ft":{min:1800,max:3600}, transitDays:{min:15,max:25} } }
+    ]},
+    // INTRA-AFRICA
+    { originCode:"ZADUR", destinations:[
+      { destCode:"MZMPM", sea:{ "20ft":{min:300,max:600},"40ft":{min:500,max:1000}, transitDays:{min:2,max:5} } },
+      { destCode:"TZDAR", sea:{ "20ft":{min:600,max:1200},"40ft":{min:1000,max:2000}, transitDays:{min:7,max:14} } },
+      { destCode:"KEMBA", sea:{ "20ft":{min:700,max:1500},"40ft":{min:1200,max:2500}, transitDays:{min:10,max:18} } },
+      { destCode:"NGAPP", sea:{ "20ft":{min:1200,max:2500},"40ft":{min:2000,max:4000}, transitDays:{min:15,max:25} } }
+    ]},
+    { originCode:"NGAPP", destinations:[
+      { destCode:"GHTMA", sea:{ "20ft":{min:400,max:800},"40ft":{min:700,max:1400}, transitDays:{min:3,max:7} } },
+      { destCode:"CIABJ", sea:{ "20ft":{min:500,max:1000},"40ft":{min:800,max:1600}, transitDays:{min:5,max:10} } },
+      { destCode:"CMDLA", sea:{ "20ft":{min:600,max:1200},"40ft":{min:1000,max:2000}, transitDays:{min:5,max:10} } }
+    ]}
+  ],
+  containerTypes: [
+    { code:"20ft", name:"20ft Standard", cbm:25, maxWeight:21770 },
+    { code:"40ft", name:"40ft Standard", cbm:55, maxWeight:26480 },
+    { code:"40ftHC", name:"40ft High Cube", cbm:67, maxWeight:26300 },
+    { code:"LCL", name:"LCL (per CBM)", cbm:1, maxWeight:null, note:"Less than Container Load — shared container" }
+  ],
+  notes:"Rates are indicative market averages (March 2026). Actual rates vary by shipping line, season, and availability. Peak season (Aug–Nov) can be 30–50% higher. Rates exclude origin charges, documentation fees, and destination charges."
+};
+
+if (typeof module !== 'undefined') module.exports = { SHIPPING_ROUTES };

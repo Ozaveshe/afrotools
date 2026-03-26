@@ -1,0 +1,187 @@
+# AfroTools Sentinel + DataPipe CI/CD
+# ====================================
+# Runs QA tests on every push to main, and data monitoring daily.
+
+name: AfroTools Sentinel
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    # Daily at 06:00 UTC (7am WAT)
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Run mode'
+        required: true
+        default: 'full'
+        type: choice
+        options:
+          - full        # Sentinel + DataPipe
+          - sentinel    # QA tests only
+          - datapipe    # Data monitoring only
+          - sitemap     # Regenerate sitemap only
+
+jobs:
+  # ==================== SENTINEL QA TESTS ====================
+  sentinel:
+    name: '🛡️ Sentinel QA'
+    runs-on: ubuntu-latest
+    if: >
+      github.event_name == 'push' ||
+      github.event.inputs.mode == 'full' ||
+      github.event.inputs.mode == 'sentinel' ||
+      github.event_name == 'schedule'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: |
+          cd sentinel
+          npm install puppeteer
+
+      - name: Run Sentinel
+        run: node sentinel/sentinel.js
+        env:
+          AFROTOOLS_BASE_URL: https://afrotools.com
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sentinel-report-${{ github.sha }}
+          path: |
+            sentinel/reports/sentinel-report.json
+            sentinel/reports/sentinel-report.html
+          retention-days: 30
+
+      - name: Comment on PR (if applicable)
+        if: github.event_name == 'pull_request' && failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = JSON.parse(fs.readFileSync('sentinel/reports/sentinel-report.json', 'utf-8'));
+            const fails = report.results.filter(r => r.summary.fail > 0);
+            
+            let body = '## 🛡️ Sentinel QA Report\n\n';
+            body += `**${report.results.length} tools tested** | `;
+            body += `❌ ${fails.length} with failures\n\n`;
+            
+            for (const f of fails.slice(0, 10)) {
+              body += `### ${f.tool}\n`;
+              const failTests = f.tests.filter(t => t.status === 'FAIL');
+              for (const t of failTests) {
+                body += `- ❌ \`${t.name}\`: ${t.message}\n`;
+              }
+              body += '\n';
+            }
+            
+            github.rest.issues.createComment({
+              ...context.repo,
+              issue_number: context.issue.number,
+              body
+            });
+
+  # ==================== DATAPIPE MONITORING ====================
+  datapipe:
+    name: '📡 DataPipe Monitor'
+    runs-on: ubuntu-latest
+    if: >
+      github.event_name == 'schedule' ||
+      github.event.inputs.mode == 'full' ||
+      github.event.inputs.mode == 'datapipe'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run DataPipe Monitor
+        run: node datapipe/monitor.js
+
+      - name: Check for data changes
+        id: changes
+        run: |
+          if [ -f datapipe/pending-issue.md ]; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Issue for data changes
+        if: steps.changes.outputs.has_changes == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const body = fs.readFileSync('datapipe/pending-issue.md', 'utf-8');
+            
+            github.rest.issues.create({
+              ...context.repo,
+              title: `🔴 Data Change Detected — ${new Date().toISOString().split('T')[0]}`,
+              body,
+              labels: ['data-update', 'needs-review']
+            });
+
+      - name: Commit updated source timestamps
+        run: |
+          git config user.name "AfroTools DataPipe"
+          git config user.email "datapipe@afrotools.com"
+          git add datapipe/sources.json datapipe/monitor-report.json
+          git diff --cached --quiet || git commit -m "datapipe: update source check timestamps"
+          git push || echo "No changes to push"
+
+  # ==================== SITEMAP GENERATION ====================
+  sitemap:
+    name: '🗺️ Sitemap'
+    runs-on: ubuntu-latest
+    if: >
+      github.event_name == 'push' ||
+      github.event.inputs.mode == 'sitemap'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate sitemap
+        run: node scripts/generate-sitemap.js --out sitemap.xml
+
+      - name: Commit sitemap
+        run: |
+          git config user.name "AfroTools CI"
+          git config user.email "ci@afrotools.com"
+          git add sitemap.xml
+          git diff --cached --quiet || git commit -m "ci: regenerate sitemap"
+          git push || echo "No changes to push"
+
+  # ==================== NOTIFY ====================
+  notify:
+    name: '📢 Notify'
+    runs-on: ubuntu-latest
+    needs: [sentinel]
+    if: always() && needs.sentinel.result == 'failure'
+
+    steps:
+      - name: Send alert
+        run: |
+          # Slack webhook (replace with your actual webhook URL)
+          curl -X POST "${{ secrets.SLACK_WEBHOOK_URL }}" \
+            -H 'Content-Type: application/json' \
+            -d '{
+              "text": "🛡️ AfroTools Sentinel: QA tests FAILED on commit ${{ github.sha }}. Check the report: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            }' || echo "Slack notification failed (webhook not configured)"
+          
+          # Telegram (optional)
+          # curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+          #   -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
+          #   -d "text=🛡️ AfroTools Sentinel FAILED. Check: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"

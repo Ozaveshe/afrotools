@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<title>Bill of Lading Template Generator — Draft B/L for African Trade | AfroTools</title>
+<meta name="description" content="Generate draft Bill of Lading templates for reference. Understand B/L types (original, seawaybill, combined). Educational tool for African importers and exporters.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://afrotools.com/tools/bol-generator/">
+<meta property="og:title" content="Bill of Lading Template Generator — Draft B/L for African Trade | AfroTools">
+<meta property="og:description" content="Generate draft Bill of Lading templates for reference. Understand B/L types (original, seawaybill, combined). Educational tool for African importers and exporters.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/bol-generator/">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Bill of Lading Template Generator | AfroTools">
+<meta name="twitter:description" content="Generate draft B/L templates for African trade. Educational tool for importers and exporters.">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'Bill of Lading Generator'});</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&display=swap"></noscript>
+<link rel="stylesheet" href="../../assets/css/tokens.min.css">
+<link rel="stylesheet" href="../../assets/css/global.min.css">
+<link rel="stylesheet" href="../../assets/css/tool-landing.css">
+<script src="../../assets/js/components/navbar.min.js" defer></script>
+<script src="../../assets/js/components/footer.js" defer></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;line-height:1.6}
+/* Disclaimer */
+.disclaimer-banner{background:#fff7ed;border:2px solid #f97316;padding:14px 20px;text-align:center;font-size:.9rem;font-weight:700;color:#7c2d12;display:flex;align-items:center;justify-content:center;gap:.5rem;flex-wrap:wrap}
+.disclaimer-banner strong{color:#9a3412}
+/* Hero */
+.bol-hero{background:linear-gradient(135deg,#0A1628 0%,#0f2040 100%);color:#fff;padding:2.5rem 1.5rem 2rem;text-align:center}
+.bol-hero h1{font-size:clamp(1.5rem,3.5vw,2.2rem);font-weight:800;margin-bottom:.4rem;color:#fff!important}
+.bol-hero p{font-size:1rem;opacity:.85;max-width:600px;margin:0 auto .75rem}
+.breadcrumb{font-size:.8rem;color:rgba(255,255,255,.5);margin-bottom:12px}
+.breadcrumb a{color:rgba(255,255,255,.6);text-decoration:none}
+.breadcrumb a:hover{color:#fff}
+.breadcrumb span{margin:0 6px}
+.badges{display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap}
+.badge{padding:.25rem .75rem;border-radius:99px;font-size:.75rem;font-weight:700;letter-spacing:.3px}
+.badge-blue{background:#007AFF;color:#fff}
+.badge-amber{background:#f59e0b;color:#fff}
+.badge-gray{background:rgba(255,255,255,.12);color:#fff}
+/* Tabs */
+.bol-tabs-bar{background:#fff;border-bottom:2px solid #e2e8f0;padding:0 1rem;display:flex;gap:0;max-width:1300px;margin:0 auto;position:sticky;top:0;z-index:10;box-shadow:0 2px 8px rgba(0,0,0,.06);overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.bol-tabs-bar::-webkit-scrollbar{display:none}
+.tab-btn{padding:.875rem 1rem;border:none;background:none;font-size:.9rem;font-weight:700;color:#64748b;cursor:pointer;border-bottom:2.5px solid transparent;margin-bottom:-2px;transition:all .2s;white-space:nowrap;flex-shrink:0}
+.tab-btn.active{color:#007AFF;border-bottom-color:#007AFF}
+.tab-btn:hover:not(.active){color:#0f172a}
+.tab-content{display:none}
+.tab-content.active{display:block}
+/* Wrap */
+.bol-wrap{max-width:1300px;margin:0 auto;padding:1.5rem}
+/* Form panel */
+.bol-grid{display:grid;grid-template-columns:42% 1fr;gap:1.5rem;align-items:start}
+@media(max-width:900px){.bol-grid{grid-template-columns:1fr}}
+.form-panel{background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:1.5rem;position:sticky;top:56px;max-height:calc(100vh - 70px);overflow-y:auto}
+@media(max-width:900px){.form-panel{position:static;max-height:none}}
+.form-section{margin-bottom:1.25rem}
+.section-title{font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:#007AFF;margin-bottom:.75rem;padding-bottom:.4rem;border-bottom:1.5px solid #E8F2FF}
+.form-row{display:grid;gap:.6rem;margin-bottom:.6rem}
+.form-row-2{grid-template-columns:1fr 1fr}
+.form-row-3{grid-template-columns:1fr 1fr 1fr}
+@media(max-width:600px){.form-row-2,.form-row-3{grid-template-columns:1fr}}
+.fg{display:flex;flex-direction:column;gap:.25rem}
+.fg label{font-size:.78rem;font-weight:700;color:#475569}
+.fg input,.fg select,.fg textarea{padding:.5rem .7rem;border:1.5px solid #cbd5e1;border-radius:9px;font-size:.88rem;font-family:inherit;background:#F8FAFD;color:#0f172a;transition:border-color .2s,box-shadow .2s}
+.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:#007AFF;box-shadow:0 0 0 3px rgba(0,122,255,.12)}
+.fg textarea{resize:vertical;min-height:56px}
+.fg .hint{font-size:.72rem;color:#94a3b8;font-style:italic}
+/* BL type selector */
+.bl-type-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.5rem}
+@media(max-width:500px){.bl-type-grid{grid-template-columns:1fr}}
+.bl-type-card{border:2px solid #e2e8f0;border-radius:10px;padding:.6rem .75rem;cursor:pointer;transition:all .2s;background:#fff}
+.bl-type-card:hover{border-color:#4DA3FF;background:#E8F2FF}
+.bl-type-card.selected{border-color:#007AFF;background:#E8F2FF}
+.bl-type-card input[type="radio"]{display:none}
+.bl-type-name{font-weight:800;font-size:.85rem;color:#0A1628;display:block}
+.bl-type-desc{font-size:.74rem;color:#64748b;display:block;margin-top:1px}
+.bl-neg-badge{display:inline-block;border-radius:4px;font-size:.67rem;font-weight:800;padding:.1rem .35rem;margin-top:3px}
+.neg-yes{background:#dcfce7;color:#166534}
+.neg-no{background:#fef2f2;color:#991b1b}
+/* Items table */
+.items-table-wrap{overflow-x:auto}
+.items-table{width:100%;border-collapse:collapse;font-size:.78rem;min-width:650px}
+.items-table th{background:#F8FAFD;padding:.4rem .4rem;text-align:left;font-weight:700;color:#475569;border-bottom:1.5px solid #e2e8f0;white-space:nowrap;font-size:.74rem}
+.items-table td{padding:.3rem .35rem;border-bottom:1px solid #f1f5f9;vertical-align:middle}
+.items-table td input,.items-table td select{width:100%;padding:.28rem .35rem;border:1.5px solid #e2e8f0;border-radius:6px;font-size:.76rem;font-family:inherit;background:#fff}
+.items-table td input:focus,.items-table td select:focus{outline:none;border-color:#007AFF}
+.btn-remove{background:none;border:none;color:#ef4444;cursor:pointer;font-size:.95rem;padding:.15rem .3rem;border-radius:4px;line-height:1}
+.btn-remove:hover{background:#fef2f2}
+.btn-add{display:inline-flex;align-items:center;gap:.3rem;padding:.45rem 1rem;border:1.5px solid #007AFF;border-radius:99px;background:#fff;color:#007AFF;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .2s;margin-top:.5rem}
+.btn-add:hover{background:#E8F2FF}
+.action-bar{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1rem}
+.btn-primary{padding:.6rem 1.25rem;background:#007AFF;color:#fff;border:none;border-radius:99px;font-weight:700;font-size:.88rem;cursor:pointer;transition:background .2s}
+.btn-primary:hover{background:#0063D1}
+.btn-secondary{padding:.6rem 1.25rem;background:#fff;color:#475569;border:1.5px solid #e2e8f0;border-radius:99px;font-weight:700;font-size:.88rem;cursor:pointer;transition:all .2s}
+.btn-secondary:hover{background:#f8fafc;border-color:#cbd5e1}
+/* Document preview */
+.doc-panel{background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.06)}
+.doc-preview{background:#fff;padding:24px;font-family:'DM Sans',system-ui,sans-serif;font-size:10pt;color:#0f172a;min-height:600px;position:relative;overflow:hidden}
+.doc-watermark{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-40deg);font-size:52pt;font-weight:900;color:rgba(239,68,68,.12);white-space:nowrap;pointer-events:none;letter-spacing:-2px;z-index:0;user-select:none}
+.doc-content{position:relative;z-index:1}
+.doc-top-warning{background:#fef3c7;border:1.5px solid #f59e0b;border-radius:7px;padding:8px 12px;font-size:8pt;font-weight:700;color:#92400e;margin-bottom:14px;text-align:center}
+.doc-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;padding-bottom:12px;border-bottom:2.5px solid #0A1628}
+.doc-header h2{font-size:16pt;font-weight:900;color:#0A1628;letter-spacing:-0.5px}
+.doc-header-sub{font-size:7.5pt;color:#64748b;text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+.doc-meta-right{text-align:right;font-size:8.5pt;color:#475569}
+.doc-meta-right strong{display:block;font-size:9.5pt;color:#0f172a}
+.doc-fields-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1.5px solid #cbd5e1;border-radius:8px;overflow:hidden;margin-bottom:12px;font-size:8.5pt}
+.doc-field{padding:7px 10px;border-right:1px solid #e2e8f0;border-bottom:1px solid #e2e8f0}
+.doc-field:nth-child(even){border-right:none}
+.doc-field-label{font-size:6.5pt;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:#64748b;display:block;margin-bottom:2px}
+.doc-field-value{font-weight:600;color:#0f172a;word-break:break-word}
+.doc-cargo-table{width:100%;border-collapse:collapse;font-size:8pt;margin-bottom:12px}
+.doc-cargo-table th{background:#0A1628;color:#fff;padding:5px 6px;text-align:left;font-size:7.5pt;font-weight:700}
+.doc-cargo-table td{padding:4px 6px;border-bottom:1px solid #f1f5f9;vertical-align:top}
+.doc-cargo-table tr:nth-child(even) td{background:#fafbfc}
+.doc-freight-box{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;font-size:8.5pt}
+.doc-freight-panel{background:#F8FAFD;border:1px solid #e2e8f0;border-radius:7px;padding:10px 12px}
+.doc-freight-panel h4{font-size:8pt;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:#475569;margin-bottom:6px}
+.doc-freight-row{display:flex;justify-content:space-between;padding:2px 0;border-bottom:1px solid #f1f5f9}
+.doc-sig-area{display:grid;grid-template-columns:1fr 1fr;gap:16px;font-size:8.5pt}
+.doc-sig-box{text-align:center}
+.doc-sig-line{border-top:1.5px solid #0f172a;margin-top:28px;margin-bottom:4px}
+.doc-sig-label{font-size:8pt;color:#475569}
+/* Tab 2 — B/L Types */
+.bl-types-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem}
+.bl-type-info-card{background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:1.25rem;transition:box-shadow .2s}
+.bl-type-info-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.08)}
+.bl-type-info-card h3{font-size:1rem;font-weight:800;color:#0A1628;margin-bottom:.4rem;display:flex;align-items:center;gap:.5rem}
+.neg-pill{font-size:.68rem;padding:.15rem .45rem;border-radius:99px;font-weight:800}
+.bl-type-info-card .bl-what{font-size:.875rem;color:#475569;margin-bottom:.75rem}
+.bl-type-info-card .bl-when{font-size:.82rem}
+.bl-type-info-card .bl-when strong{color:#0f172a;display:block;margin-bottom:.2rem;font-size:.8rem;text-transform:uppercase;letter-spacing:.3px;color:#007AFF}
+.bl-africa-context{background:#E8F2FF;border-radius:8px;padding:.6rem .75rem;font-size:.8rem;color:#0A1628;margin-top:.75rem}
+.bl-africa-context strong{color:#007AFF}
+/* Tab 3 — Field Explainer */
+.explainer-list{display:flex;flex-direction:column;gap:0}
+.explainer-item{border-bottom:1px solid #e2e8f0}
+.explainer-item summary{padding:1rem 1.25rem;font-weight:700;cursor:pointer;color:#334155;list-style:none;display:flex;justify-content:space-between;align-items:center;font-size:.95rem}
+.explainer-item summary::-webkit-details-marker{display:none}
+.explainer-item summary::after{content:'+';font-size:1.2rem;color:#94a3b8;font-weight:300}
+.explainer-item[open] summary::after{content:'−'}
+.explainer-body{padding:.75rem 1.25rem 1.25rem;color:#475569;font-size:.9rem;line-height:1.7}
+.explainer-body .key-term{background:#E8F2FF;color:#0063D1;padding:.15rem .5rem;border-radius:5px;font-weight:700;font-size:.82rem;display:inline-block;margin-bottom:.5rem}
+.explainer-card{background:#fff;border:1px solid #e2e8f0;border-radius:14px;overflow:hidden}
+.explainer-title{background:#0A1628;color:#fff;padding:1rem 1.25rem;font-size:1rem;font-weight:800}
+
+@media print{
+  .navbar-wrapper,.afro-navbar,.afro-footer,footer,.form-panel,.action-bar,.bol-hero,.bol-tabs-bar,.disclaimer-banner,.tab-content:not(.active){display:none!important}
+  .tab-content.active{display:block!important}
+  .bol-wrap{padding:0!important}
+  .bol-grid{display:block!important}
+  .doc-panel{border:none!important;border-radius:0!important;box-shadow:none!important}
+  .doc-preview{padding:15mm!important}
+  .doc-watermark{color:rgba(239,68,68,.18)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  @page{size:A4 portrait;margin:15mm}
+  body{background:#fff!important}
+}
+</style>
+</head>
+<body>
+<afro-navbar active="trade"></afro-navbar>
+
+<!-- Disclaimer -->
+<div class="disclaimer-banner">
+  &#9888; This tool generates a <strong>DRAFT TEMPLATE for reference and educational purposes only.</strong>
+  An actual Bill of Lading must be issued by the shipping line or their authorized agent. This document has <strong>NO legal standing</strong> as a transport document.
+</div>
+
+<!-- Hero -->
+<div class="bol-hero">
+  <div class="breadcrumb">
+    <a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span>Bill of Lading Generator
+  </div>
+  <h1>Bill of Lading Template Generator</h1>
+  <p>Draft B/L templates for reference, learning B/L types, and understanding trade document fields</p>
+  <div class="badges">
+    <span class="badge badge-amber">DRAFT / EDUCATIONAL</span>
+    <span class="badge badge-blue">6 B/L TYPES</span>
+    <span class="badge badge-gray">FIELD EXPLAINER</span>
+    <span class="badge badge-gray">PDF EXPORT</span>
+  </div>
+</div>
+
+<!-- Tabs bar -->
+<div class="bol-tabs-bar">
+  <button class="tab-btn active" onclick="switchTab('generate',this)">Generate Draft B/L</button>
+  <button class="tab-btn" onclick="switchTab('types',this)">B/L Types Guide</button>
+  <button class="tab-btn" onclick="switchTab('explainer',this)">Field Explainer</button>
+</div>
+
+<!-- ── TAB 1: Generate ── -->
+<div class="tab-content active" id="tab-generate">
+<div class="bol-wrap">
+  <div class="bol-grid">
+
+    <!-- FORM -->
+    <div class="form-panel">
+      <div class="action-bar">
+        <button class="btn-primary" onclick="window.print()">&#8595; Download PDF</button>
+        <button class="btn-secondary" onclick="resetBLForm()">Reset</button>
+      </div>
+
+      <!-- B/L Type -->
+      <div class="form-section">
+        <div class="section-title">B/L Type</div>
+        <div class="bl-type-grid" id="blTypeGrid">
+          <label class="bl-type-card selected" onclick="selectBLType('original',this)">
+            <input type="radio" name="blType" value="original" checked>
+            <span class="bl-type-name">Original B/L</span>
+            <span class="bl-type-desc">3 originals, carrier signs</span>
+            <span class="bl-neg-badge neg-yes">Negotiable</span>
+          </label>
+          <label class="bl-type-card" onclick="selectBLType('seawaybill',this)">
+            <input type="radio" name="blType" value="seawaybill">
+            <span class="bl-type-name">Seawaybill</span>
+            <span class="bl-type-desc">No original required</span>
+            <span class="bl-neg-badge neg-no">Non-negotiable</span>
+          </label>
+          <label class="bl-type-card" onclick="selectBLType('combined',this)">
+            <input type="radio" name="blType" value="combined">
+            <span class="bl-type-name">Combined Transport</span>
+            <span class="bl-type-desc">Multi-modal, landlocked routes</span>
+            <span class="bl-neg-badge neg-yes">Negotiable</span>
+          </label>
+          <label class="bl-type-card" onclick="selectBLType('multimodal',this)">
+            <input type="radio" name="blType" value="multimodal">
+            <span class="bl-type-name">Multimodal B/L</span>
+            <span class="bl-type-desc">Door-to-door with inland leg</span>
+            <span class="bl-neg-badge neg-yes">Negotiable</span>
+          </label>
+          <label class="bl-type-card" onclick="selectBLType('straight',this)">
+            <input type="radio" name="blType" value="straight">
+            <span class="bl-type-name">Straight B/L</span>
+            <span class="bl-type-desc">Named consignee, simpler</span>
+            <span class="bl-neg-badge neg-no">Non-negotiable</span>
+          </label>
+          <label class="bl-type-card" onclick="selectBLType('order',this)">
+            <input type="radio" name="blType" value="order">
+            <span class="bl-type-name">Order B/L</span>
+            <span class="bl-type-desc">To order of shipper, endorsed</span>
+            <span class="bl-neg-badge neg-yes">Negotiable</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- B/L & Booking Ref -->
+      <div class="form-section">
+        <div class="section-title">References</div>
+        <div class="form-row form-row-2">
+          <div class="fg"><label>B/L Number</label><input type="text" id="blNumber" oninput="renderBL()" placeholder="BL-XXXXXXXX-001"></div>
+          <div class="fg"><label>Booking Reference</label><input type="text" id="blBookRef" oninput="renderBL()" placeholder="BOOK-12345"></div>
+        </div>
+      </div>
+
+      <!-- Parties -->
+      <div class="form-section">
+        <div class="section-title">Parties</div>
+        <div class="form-row"><div class="fg"><label>Shipper Name</label><input type="text" id="blShipperName" oninput="renderBL()" placeholder="Exporting company"></div></div>
+        <div class="form-row form-row-2">
+          <div class="fg"><label>Shipper Address</label><textarea id="blShipperAddr" rows="2" oninput="renderBL()" placeholder="Street, City, Country"></textarea></div>
+          <div class="fg"><label>Shipper Country</label><select id="blShipperCountry" onchange="renderBL()"></select></div>
+        </div>
+        <div class="form-row"><div class="fg"><label>Consignee</label><input type="text" id="blConsigneeName" oninput="renderBL()" placeholder="Company name or TO ORDER"></div><span class="hint" style="font-size:.72rem;color:#94a3b8">Use "TO ORDER" or "TO ORDER OF [BANK]" for negotiable B/L</span></div>
+        <div class="form-row"><div class="fg"><label>Consignee Address</label><textarea id="blConsigneeAddr" rows="2" oninput="renderBL()" placeholder="Street, City, Country"></textarea></div></div>
+        <div class="form-row form-row-2">
+          <div class="fg"><label>Notify Party Name</label><input type="text" id="blNotifyName" oninput="renderBL()" placeholder="Buyer's freight agent"></div>
+          <div class="fg"><label>Notify Party Phone</label><input type="text" id="blNotifyPhone" oninput="renderBL()" placeholder="+254 700 000 000"></div>
+        </div>
+        <div class="form-row"><div class="fg"><label>Notify Party Address</label><input type="text" id="blNotifyAddr" oninput="renderBL()" placeholder="City, Country"></div></div>
+      </div>
+
+      <!-- Shipment -->
+      <div class="form-section">
+        <div class="section-title">Shipment Details</div>
+        <div class="form-row form-row-2">
+          <div class="fg"><label>Vessel Name</label><input type="text" id="blVessel" oninput="renderBL()" placeholder="MV African Star"></div>
+          <div class="fg"><label>Voyage Number</label><input type="text" id="blVoyage" oninput="renderBL()" placeholder="142N"></div>
+        </div>
+        <div class="form-row form-row-2">
+          <div class="fg"><label>Port of Loading</label><input type="text" id="blPOL" oninput="renderBL()" placeholder="Apapa, Lagos"></div>
+          <div class="fg"><label>Port of Discharge</label><input type="text" id="blPOD" oninput="renderBL()" placeholder="Mombasa, Kenya"></div>
+        </div>
+        <div class="form-row form-row-2">
+          <div class="fg"><label>Place of Receipt</label><input type="text" id="blPOR" oninput="renderBL()" placeholder="Kano, Nigeria (if inland)"></div>
+          <div class="fg"><label>Place of Delivery</label><input type="text" id="blPlaceDelivery" oninput="renderBL()" placeholder="Nairobi, Kenya (if inland)"></div>
+        </div>
+        <div class="form-row"><div class="fg"><label>On Board Date</label><input type="date" id="blOnBoardDate" onchange="renderBL()"><span class="hint" style="font-size:.72rem;color:#94a3b8">Critical for LC compliance. Must be on or before LC expiry.</span></div></div>
+      </div>
+
+      <!-- Cargo -->
+      <div class="form-section">
+        <div class="section-title">Cargo Details</div>
+        <div class="items-table-wrap">
+          <table class="items-table" id="blCargoTable">
+            <thead>
+              <tr>
+                <th>Container No.</th>
+                <th>Seal No.</th>
+                <th>Marks &amp; Nos.</th>
+                <th>Pkgs</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Gross Wt (kg)</th>
+                <th>CBM</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="blCargoBody"></tbody>
+          </table>
+        </div>
+        <button class="btn-add" onclick="addCargo()">+ Add Cargo</button>
+      </div>
+
+      <!-- Freight -->
+      <div class="form-section">
+        <div class="section-title">Freight</div>
+        <div class="form-row form-row-3">
+          <div class="fg"><label>Freight Payable</label>
+            <select id="blFreightPayable" onchange="renderBL()">
+              <option value="Prepaid">Prepaid</option>
+              <option value="Collect">Collect</option>
+            </select>
+          </div>
+          <div class="fg"><label>Freight Amount</label><input type="number" id="blFreightAmt" oninput="renderBL()" placeholder="0.00" min="0"></div>
+          <div class="fg"><label>Currency</label>
+            <select id="blFreightCur" onchange="renderBL()">
+              <option>USD</option><option>EUR</option><option>GBP</option><option>KES</option><option>NGN</option><option>ZAR</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row form-row-2">
+          <div class="fg"><label>Number of Originals</label>
+            <select id="blOriginals" onchange="renderBL()">
+              <option>1</option><option value="2">2</option><option value="3" selected>3</option>
+            </select>
+          </div>
+          <div class="fg"><label>Jurisdiction / Governing Law</label><input type="text" id="blJurisdiction" oninput="renderBL()" placeholder="English Law"></div>
+        </div>
+      </div>
+    </div><!-- /form-panel -->
+
+    <!-- DOCUMENT PREVIEW -->
+    <div class="doc-panel">
+      <div class="doc-preview" id="blDocPreview">
+        <div class="doc-watermark">DRAFT — NOT A TRANSPORT DOCUMENT</div>
+        <div class="doc-content" id="blDocContent"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div><!-- /tab-generate -->
+
+<!-- ── TAB 2: B/L Types Guide ── -->
+<div class="tab-content" id="tab-types">
+<div class="bol-wrap">
+  <h2 style="font-size:1.4rem;font-weight:800;color:#0A1628;margin-bottom:1.25rem">Bill of Lading Types — Complete Guide</h2>
+  <div class="bl-types-grid">
+
+    <div class="bl-type-info-card">
+      <h3>Original B/L <span class="neg-pill neg-yes">Negotiable</span></h3>
+      <p class="bl-what">The classic, full-title transport document. Three originals are typically issued; surrendering any one original at the destination cancels the others. The consignee must present an original to claim the cargo.</p>
+      <div class="bl-when"><strong>When to Use</strong>The standard for international trade where the seller needs assurance of payment before releasing the goods. Required for Letter of Credit (LC) settlements.</div>
+      <div class="bl-africa-context"><strong>African Trade Context:</strong> Dominant in West Africa (Nigeria, Ghana, Senegal) for LC transactions. Ports like Apapa and Tema handle high volumes of original B/L cargo. Delays in original B/L arrival are a leading cause of demurrage in African ports.</div>
+    </div>
+
+    <div class="bl-type-info-card">
+      <h3>Seawaybill <span class="neg-pill neg-no">Non-negotiable</span></h3>
+      <p class="bl-what">A receipt for cargo and evidence of contract of carriage. No original document needed for delivery — the consignee is identified by name and can collect using ID only. Faster and simpler, but not negotiable.</p>
+      <div class="bl-when"><strong>When to Use</strong>For trusted trading partners (intra-group shipments, subsidiaries), open account trade, or where speed matters. Banks may require original B/L for LC, but seawaybills are fine for T/T and open account.</div>
+      <div class="bl-africa-context"><strong>African Trade Context:</strong> Increasingly used for South Africa–UK, Nigeria–China, and intra-ECOWAS trade. Preferred by large multinational companies shipping to their own African operations. Reduces risk of documents being lost in transit.</div>
+    </div>
+
+    <div class="bl-type-info-card">
+      <h3>Combined Transport B/L <span class="neg-pill neg-yes">Negotiable</span></h3>
+      <p class="bl-what">Covers multimodal transport including sea and inland legs. The carrier takes responsibility from point of receipt (which may be inland) to point of delivery (also potentially inland). One document for the entire journey.</p>
+      <div class="bl-when"><strong>When to Use</strong>When cargo originates from or is destined for landlocked countries. The carrier issues one document covering truck/rail + sea legs.</div>
+      <div class="bl-africa-context"><strong>African Trade Context:</strong> Essential for Uganda, Rwanda, Zambia, Malawi, and other landlocked countries. The Northern Corridor (Mombasa–Kampala–Kigali) and Beira Corridor (Beira–Lusaka) are major combined transport routes.</div>
+    </div>
+
+    <div class="bl-type-info-card">
+      <h3>Multimodal B/L <span class="neg-pill neg-yes">Negotiable</span></h3>
+      <p class="bl-what">Similar to Combined Transport but specifically covering door-to-door movement including road, rail, sea, and air legs under one contract. The Multimodal Transport Operator (MTO) issues the document.</p>
+      <div class="bl-when"><strong>When to Use</strong>Complex supply chains where cargo passes through multiple transport modes. Buyer wants a single point of responsibility for the entire journey.</div>
+      <div class="bl-africa-context"><strong>African Trade Context:</strong> Growing adoption under AfCFTA as African corridors improve. Used by major logistics operators on the Dar es Salaam Corridor and LAPSSET routes.</div>
+    </div>
+
+    <div class="bl-type-info-card">
+      <h3>Straight B/L <span class="neg-pill neg-no">Non-negotiable</span></h3>
+      <p class="bl-what">Consigned directly to a named consignee. Cannot be endorsed or transferred to a third party. Simpler than original B/L — carrier may release cargo to the named consignee without surrender of original in some jurisdictions.</p>
+      <div class="bl-when"><strong>When to Use</strong>When seller has already been paid and trusts the buyer. Also used for personal effects, gift shipments, or where the importer is both buyer and end receiver.</div>
+      <div class="bl-africa-context"><strong>African Trade Context:</strong> Used for diaspora shipments to Nigeria, Kenya, Ghana. Also common for intra-African trade between known partners who have a long-term relationship.</div>
+    </div>
+
+    <div class="bl-type-info-card">
+      <h3>Order B/L <span class="neg-pill neg-yes">Negotiable</span></h3>
+      <p class="bl-what">Made out "To Order" of the shipper or a bank. Can be endorsed (blank or specific endorsement) to transfer title of goods. The holder of the endorsed original can claim the cargo — making it a negotiable instrument.</p>
+      <div class="bl-when"><strong>When to Use</strong>Commodity trading (oil, cocoa, coffee, cotton) where the cargo may be bought and sold multiple times while in transit. Also used in documentary credit (LC) transactions as collateral.</div>
+      <div class="bl-africa-context"><strong>African Trade Context:</strong> Heavily used in West African commodity exports — cocoa from Ivory Coast and Ghana, coffee from Ethiopia, cotton from Mali. Banks hold Order B/Ls as security for trade finance facilities.</div>
+    </div>
+
+  </div>
+</div>
+</div><!-- /tab-types -->
+
+<!-- ── TAB 3: Field Explainer ── -->
+<div class="tab-content" id="tab-explainer">
+<div class="bol-wrap">
+  <h2 style="font-size:1.4rem;font-weight:800;color:#0A1628;margin-bottom:1.25rem">Bill of Lading — Field-by-Field Explainer</h2>
+  <div class="explainer-card">
+    <div class="explainer-title">Understanding Each Field on a Bill of Lading</div>
+    <div class="explainer-list">
+
+      <details class="explainer-item" open>
+        <summary>Shipper</summary>
+        <div class="explainer-body">
+          <span class="key-term">Also called: Exporter, Consignor</span>
+          The party who ships the goods — typically the seller or exporter. The shipper enters into the contract of carriage with the shipping line and is responsible for the accuracy of the cargo description. The shipper's name and address appear in the top-left box of the B/L. In documentary credit (LC) transactions, the shipper must match the beneficiary named in the LC.
+        </div>
+      </details>
+
+      <details class="explainer-item">
+        <summary>Consignee</summary>
+        <div class="explainer-body">
+          <span class="key-term">Also called: Receiver, Importer</span>
+          Who is to receive the cargo. For a <strong>straight B/L</strong>, this is a named company or person. For a <strong>negotiable B/L</strong>, the consignee field reads "TO ORDER" or "TO ORDER OF [ISSUING BANK]" — meaning whoever holds and presents the endorsed original B/L is entitled to the cargo. Never write a specific consignee name when using an Order B/L for LC payment.
+        </div>
+      </details>
+
+      <details class="explainer-item">
+        <summary>Notify Party</summary>
+        <div class="explainer-body">
+          <span class="key-term">Not the cargo owner</span>
+          The party to be notified when the vessel arrives at the port of discharge. Usually the buyer, buyer's customs broker, or freight forwarder at destination. Important: the Notify Party has no automatic right to the cargo — they are just informed of the arrival. The actual right to cargo belongs to the person who surrenders the original B/L (or is the named consignee for straight B/Ls).
+        </div>
+      </details>
+
+      <details class="explainer-item">
+        <summary>Port of Loading vs Place of Receipt</summary>
+        <div class="explainer-body">
+          <span class="key-term">Two different concepts</span>
+          <strong>Port of Loading (POL)</strong> is where the cargo is physically loaded onto the ocean vessel — e.g., Apapa, Lagos. <strong>Place of Receipt (POR)</strong> is where the carrier takes custody of the cargo, which may be an inland depot or dry port — e.g., Kano Inland Container Depot. For CY/CY (container yard to container yard) shipments, POR = POL. For combined transport shipments to landlocked destinations, POR may be hundreds of kilometers from the seaport.
+        </div>
+      </details>
+
+      <details class="explainer-item">
+        <summary>On Board Date</summary>
+        <div class="explainer-body">
+          <span class="key-term">Critical for LC compliance</span>
+          The date the cargo was physically loaded onto the vessel. This is the most important date on the B/L for Letter of Credit compliance. The on board date must be on or before the <strong>latest shipment date</strong> specified in the LC. If the B/L shows an on board date after the LC's shipment deadline, the documents will be rejected by the bank — even if cargo is already on its way.
+        </div>
+      </details>
+
+      <details class="explainer-item">
+        <summary>Marks and Numbers</summary>
+        <div class="explainer-body">
+          <span class="key-term">Package identification</span>
+          The markings on each package or container used to identify the cargo. Typically includes: the buyer's reference number, port of destination, package numbers (e.g., "1/50" = package 1 of 50), and any special handling marks. The marks on the B/L must exactly match the marks physically marked on the packages. Discrepancies can cause customs delays and LC document rejection.
+        </div>
+      </details>
+
+      <details class="explainer-item">
+        <summary>Freight Prepaid vs Collect</summary>
+        <div class="explainer-body">
+          <span class="key-term">Who pays the shipping line</span>
+          <strong>Freight Prepaid</strong>: the shipper (seller) has already paid the ocean freight charges. Common when the Incoterm is CIF, CFR, or CPT — where the seller bears freight cost. <strong>Freight Collect</strong>: the consignee (buyer) pays freight at destination. Common with FOB, EXW, or FCA Incoterms. Note: some ports and carriers in Africa will not release cargo if freight is "Collect" and the consignee refuses to pay — leading to cargo being held at the terminal.
+        </div>
+      </details>
+
+      <details class="explainer-item">
+        <summary>Number of Originals</summary>
+        <div class="explainer-body">
+          <span class="key-term">Usually 3, all equal standing</span>
+          The number of original B/L copies issued. Traditionally three originals are issued — one for the shipper, one for the bank, and one for the consignee. All originals have equal legal standing. When one original is surrendered to the carrier at the port of discharge to claim the cargo, the other originals automatically become void. This "first original wins" principle is a key feature of the B/L system.
+        </div>
+      </details>
+
+      <details class="explainer-item">
+        <summary>Negotiable vs Non-Negotiable</summary>
+        <div class="explainer-body">
+          <span class="key-term">Title transfer capability</span>
+          A <strong>negotiable B/L</strong> can be bought, sold, or endorsed to transfer ownership of the goods while they are in transit. This makes it a "document of title." An Order B/L is negotiable — the holder of the endorsed original controls the cargo. A <strong>non-negotiable B/L</strong> (straight B/L or seawaybill) cannot be traded. The consignee is fixed and cannot be changed once the document is issued. Banks require negotiable B/Ls as collateral for trade finance because they can be held as security.
+        </div>
+      </details>
+
+    </div>
+  </div>
+</div>
+</div><!-- /tab-explainer -->
+
+<afro-footer></afro-footer>
+
+<script>
+const AFRICAN_COUNTRIES = ["Algeria","Angola","Benin","Botswana","Burkina Faso","Burundi","Cabo Verde","Cameroon","Central African Republic","Chad","Comoros","Congo (Brazzaville)","Congo (DRC)","Djibouti","Egypt","Equatorial Guinea","Eritrea","Eswatini","Ethiopia","Gabon","Gambia","Ghana","Guinea","Guinea-Bissau","Ivory Coast","Kenya","Lesotho","Liberia","Libya","Madagascar","Malawi","Mali","Mauritania","Mauritius","Morocco","Mozambique","Namibia","Niger","Nigeria","Rwanda","São Tomé & Príncipe","Senegal","Seychelles","Sierra Leone","Somalia","South Africa","South Sudan","Sudan","Tanzania","Togo","Tunisia","Uganda","Zambia","Zimbabwe"];
+
+function buildCountryOptions(selected){
+  return AFRICAN_COUNTRIES.map(c=>`<option value="${c}"${c===selected?' selected':''}>${c}</option>`).join('');
+}
+
+function switchTab(name, btn){
+  document.querySelectorAll('.tab-content').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el=>el.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  btn.classList.add('active');
+}
+
+var currentBLType = 'original';
+
+function selectBLType(type, card){
+  currentBLType = type;
+  document.querySelectorAll('.bl-type-card').forEach(c=>c.classList.remove('selected'));
+  card.classList.add('selected');
+  renderBL();
+}
+
+function genBLNumber(){
+  const d = new Date().toISOString().slice(0,10).replace(/-/g,'');
+  return `BL-${d}-001`;
+}
+
+function initBL(){
+  document.getElementById('blShipperCountry').innerHTML = buildCountryOptions('Nigeria');
+  document.getElementById('blNumber').value = genBLNumber();
+  document.getElementById('blOnBoardDate').value = new Date().toISOString().slice(0,10);
+  addCargo();
+  renderBL();
+}
+
+var cargoCounter = 0;
+
+function addCargo(){
+  cargoCounter++;
+  const id = cargoCounter;
+  const tbody = document.getElementById('blCargoBody');
+  const tr = document.createElement('tr');
+  tr.id = `bl-cargo-${id}`;
+  tr.innerHTML = `
+    <td><input type="text" placeholder="TCKU1234567" oninput="renderBL()"></td>
+    <td><input type="text" placeholder="SL123456" oninput="renderBL()"></td>
+    <td><input type="text" placeholder="MARK-01" oninput="renderBL()"></td>
+    <td><input type="number" placeholder="1" min="0" value="1" style="width:48px" oninput="renderBL()"></td>
+    <td><select onchange="renderBL()"><option>x20GP</option><option>x40GP</option><option>x40HC</option><option>Cartons</option><option>Pallets</option><option>Bags</option></select></td>
+    <td><input type="text" placeholder="Description of goods" oninput="renderBL()"></td>
+    <td><input type="number" placeholder="0" min="0" step="any" value="0" style="width:72px" oninput="renderBL()"></td>
+    <td><input type="number" placeholder="0.000" min="0" step="any" value="0" style="width:64px" oninput="renderBL()"></td>
+    <td><button class="btn-remove" onclick="removeCargo(${id})">&#10005;</button></td>
+  `;
+  tbody.appendChild(tr);
+  renderBL();
+}
+
+function removeCargo(id){
+  const el = document.getElementById(`bl-cargo-${id}`);
+  if(el) el.remove();
+  renderBL();
+}
+
+function v(id){return(document.getElementById(id)||{}).value||''}
+
+var BL_TYPE_LABELS = {
+  original: 'ORIGINAL BILL OF LADING',
+  seawaybill: 'SEA WAYBILL (NON-NEGOTIABLE)',
+  combined: 'COMBINED TRANSPORT BILL OF LADING',
+  multimodal: 'MULTIMODAL TRANSPORT BILL OF LADING',
+  straight: 'STRAIGHT BILL OF LADING (NON-NEGOTIABLE)',
+  order: 'ORDER BILL OF LADING'
+};
+
+function renderBL(){
+  const blLabel = BL_TYPE_LABELS[currentBLType] || 'BILL OF LADING';
+  const isNegotiable = ['original','combined','multimodal','order'].includes(currentBLType);
+  const originals = v('blOriginals') || '3';
+
+  // Cargo rows
+  const cargoRows = [];
+  let totalPkgs=0, totalWt=0, totalCBM=0;
+  document.querySelectorAll('#blCargoBody tr').forEach(tr=>{
+    const inputs = tr.querySelectorAll('input');
+    const sel = tr.querySelector('select');
+    if(!inputs.length) return;
+    const containerNo = inputs[0]?.value||'';
+    const sealNo = inputs[1]?.value||'';
+    const marks = inputs[2]?.value||'';
+    const pkgs = parseFloat(inputs[3]?.value)||0;
+    const pkgType = sel?.value||'';
+    const desc = inputs[4]?.value||'';
+    const grossWt = parseFloat(inputs[5]?.value)||0;
+    const cbm = parseFloat(inputs[6]?.value)||0;
+    totalPkgs+=pkgs; totalWt+=grossWt; totalCBM+=cbm;
+    cargoRows.push({containerNo,sealNo,marks,pkgs,pkgType,desc,grossWt,cbm});
+  });
+
+  const tableRows = cargoRows.map(r=>`
+    <tr>
+      <td>${r.containerNo||'—'}</td>
+      <td>${r.sealNo||'—'}</td>
+      <td>${r.marks||'—'}</td>
+      <td style="text-align:right">${r.pkgs}</td>
+      <td>${r.pkgType}</td>
+      <td>${r.desc||'—'}</td>
+      <td style="text-align:right">${r.grossWt.toFixed(3)}</td>
+      <td style="text-align:right">${r.cbm.toFixed(3)}</td>
+    </tr>`).join('');
+
+  const freightAmt = parseFloat(v('blFreightAmt'))||0;
+  const onboardDate = v('blOnBoardDate');
+
+  const html = `
+<div class="doc-top-warning">&#9888; DRAFT DOCUMENT — FOR REFERENCE ONLY — NOT A VALID TRANSPORT DOCUMENT</div>
+
+<div class="doc-header">
+  <div>
+    <h2>${blLabel}</h2>
+    <div class="doc-header-sub">${isNegotiable?'Negotiable Document of Title':'Non-Negotiable Transport Document'}</div>
+  </div>
+  <div class="doc-meta-right">
+    <strong>B/L No: ${v('blNumber')||'BL-XXXXXXXX-001'}</strong>
+    <div>Booking Ref: ${v('blBookRef')||'—'}</div>
+    <div>Originals: ${originals} (${originals} original${originals>1?'s':''} issued)</div>
+  </div>
+</div>
+
+<div class="doc-fields-grid">
+  <div class="doc-field">
+    <span class="doc-field-label">Shipper / Exporter</span>
+    <div class="doc-field-value">
+      <strong>${v('blShipperName')||'—'}</strong><br>
+      <span style="font-size:8pt;color:#475569">${(v('blShipperAddr')||'').replace(/\n/g,'<br>')}${v('blShipperCountry')?'<br>'+v('blShipperCountry'):''}</span>
+    </div>
+  </div>
+  <div class="doc-field">
+    <span class="doc-field-label">Consignee ${isNegotiable?'(or TO ORDER)':''}</span>
+    <div class="doc-field-value">
+      <strong>${v('blConsigneeName')||'—'}</strong><br>
+      <span style="font-size:8pt;color:#475569">${(v('blConsigneeAddr')||'').replace(/\n/g,'<br>')}</span>
+    </div>
+  </div>
+  <div class="doc-field">
+    <span class="doc-field-label">Notify Party</span>
+    <div class="doc-field-value">
+      ${v('blNotifyName')||'—'}<br>
+      <span style="font-size:8pt;color:#475569">${v('blNotifyAddr')||''}${v('blNotifyPhone')?'<br>Tel: '+v('blNotifyPhone'):''}</span>
+    </div>
+  </div>
+  <div class="doc-field">
+    <span class="doc-field-label">Ocean Vessel / Voyage</span>
+    <div class="doc-field-value">${v('blVessel')||'—'} / ${v('blVoyage')||'—'}</div>
+  </div>
+  <div class="doc-field">
+    <span class="doc-field-label">Place of Receipt</span>
+    <div class="doc-field-value">${v('blPOR')||v('blPOL')||'—'}</div>
+  </div>
+  <div class="doc-field">
+    <span class="doc-field-label">Port of Loading</span>
+    <div class="doc-field-value">${v('blPOL')||'—'}</div>
+  </div>
+  <div class="doc-field">
+    <span class="doc-field-label">Port of Discharge</span>
+    <div class="doc-field-value">${v('blPOD')||'—'}</div>
+  </div>
+  <div class="doc-field">
+    <span class="doc-field-label">Place of Delivery</span>
+    <div class="doc-field-value">${v('blPlaceDelivery')||v('blPOD')||'—'}</div>
+  </div>
+  <div class="doc-field" style="grid-column:1/-1">
+    <span class="doc-field-label">On Board Date — ${onboardDate?'<strong style="color:#166534">'+onboardDate+'</strong>':'<em style="color:#94a3b8">Not entered</em>'}</span>
+    <div class="doc-field-value" style="font-size:8pt;color:#64748b">Shipped on board the vessel named above in apparent good order and condition unless otherwise stated herein.</div>
+  </div>
+</div>
+
+<table class="doc-cargo-table">
+  <thead>
+    <tr>
+      <th>Container No.</th>
+      <th>Seal No.</th>
+      <th>Marks &amp; Nos.</th>
+      <th style="text-align:right">Pkgs</th>
+      <th>Type</th>
+      <th>Description of Goods</th>
+      <th style="text-align:right">Gross Wt (kg)</th>
+      <th style="text-align:right">CBM</th>
+    </tr>
+  </thead>
+  <tbody>
+    ${tableRows||'<tr><td colspan="8" style="text-align:center;color:#94a3b8;padding:10px">Add cargo using the form on the left</td></tr>'}
+    <tr style="background:#f1f5f9;font-weight:800">
+      <td colspan="3">TOTALS</td>
+      <td style="text-align:right">${totalPkgs}</td>
+      <td></td>
+      <td></td>
+      <td style="text-align:right">${totalWt.toFixed(3)}</td>
+      <td style="text-align:right">${totalCBM.toFixed(3)}</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="doc-freight-box">
+  <div class="doc-freight-panel">
+    <h4>Freight &amp; Charges</h4>
+    <div class="doc-freight-row"><span>Freight Payable:</span><span style="font-weight:800;color:${v('blFreightPayable')==='Prepaid'?'#166534':'#b91c1c'}">${v('blFreightPayable')||'Prepaid'}</span></div>
+    <div class="doc-freight-row"><span>Freight Amount:</span><span>${v('blFreightCur')||'USD'} ${freightAmt.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}</span></div>
+    <div class="doc-freight-row"><span>Jurisdiction:</span><span>${v('blJurisdiction')||'English Law'}</span></div>
+  </div>
+  <div class="doc-freight-panel">
+    <h4>B/L Details</h4>
+    <div class="doc-freight-row"><span>Type:</span><span style="font-weight:700">${currentBLType.charAt(0).toUpperCase()+currentBLType.slice(1)}</span></div>
+    <div class="doc-freight-row"><span>Negotiable:</span><span style="font-weight:700;color:${isNegotiable?'#166534':'#b91c1c'}">${isNegotiable?'Yes':'No'}</span></div>
+    <div class="doc-freight-row"><span>Originals Issued:</span><span>${originals}</span></div>
+  </div>
+</div>
+
+<div class="doc-sig-area">
+  <div style="font-size:7.5pt;color:#475569;line-height:1.5;border:1px solid #e2e8f0;border-radius:6px;padding:8px 10px">
+    <strong style="color:#0f172a;display:block;margin-bottom:4px">Conditions of Carriage</strong>
+    Cargo received and shipped subject to all terms and conditions of the Carrier's applicable bill of lading, including those on the reverse hereof, to which the Merchant agrees by accepting this Bill of Lading. In witness whereof, <strong>${originals}</strong> original Bill(s) of Lading have been signed, one of which being accomplished, the others to stand void.
+  </div>
+  <div>
+    <div class="doc-sig-box">
+      <div class="doc-sig-line"></div>
+      <div class="doc-sig-label">Signed for the Carrier</div>
+      <div style="font-size:8pt;color:#94a3b8;margin-top:2px">[Shipping Line / Agent Name &amp; Stamp]</div>
+      <div style="font-size:7.5pt;color:#94a3b8;margin-top:4px">As Agent for and on behalf of the Carrier</div>
+    </div>
+  </div>
+</div>
+`;
+  document.getElementById('blDocContent').innerHTML = html;
+}
+
+function resetBLForm(){
+  if(!confirm('Reset all form data?')) return;
+  document.querySelectorAll('#blCargoBody tr').forEach(tr=>tr.remove());
+  cargoCounter=0;
+  ['blNumber','blBookRef','blShipperName','blShipperAddr','blConsigneeName','blConsigneeAddr',
+   'blNotifyName','blNotifyPhone','blNotifyAddr','blVessel','blVoyage','blPOL','blPOD',
+   'blPOR','blPlaceDelivery','blFreightAmt','blJurisdiction'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.value='';
+  });
+  document.getElementById('blNumber').value=genBLNumber();
+  document.getElementById('blOnBoardDate').value=new Date().toISOString().slice(0,10);
+  document.getElementById('blShipperCountry').innerHTML=buildCountryOptions('Nigeria');
+  currentBLType='original';
+  document.querySelectorAll('.bl-type-card').forEach((c,i)=>{c.classList.remove('selected');if(i===0) c.classList.add('selected');});
+  addCargo();
+  renderBL();
+}
+
+window.addEventListener('load', initBL);
+</script>
+</body>
+</html>

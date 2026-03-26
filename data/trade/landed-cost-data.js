@@ -1,0 +1,114 @@
+/* AfroTools — Landed Cost Data /data/trade/landed-cost-data.js */
+const LANDED_COST_DATA = {
+  NG: { name:"Nigeria", flag:"🇳🇬", currency:"NGN", symbol:"₦",
+    ports:[
+      { code:"NGAPP", name:"Apapa Port (Lagos)", type:"sea", clearingDays:{min:14,max:45}, terminalHandling:{"20ft":75000,"40ft":130000,currency:"NGN"}, shippingLineCharges:{"20ft":120000,"40ft":200000,currency:"NGN"}, haulageToWarehouse:{min:80000,max:250000,currency:"NGN",notes:"Depends on distance from port"} },
+      { code:"NGTCN", name:"Tin Can Island Port (Lagos)", type:"sea", clearingDays:{min:10,max:30}, terminalHandling:{"20ft":70000,"40ft":125000,currency:"NGN"} },
+      { code:"NGLOS", name:"Lagos Airport (MMIA)", type:"air", clearingDays:{min:3,max:10}, handlingPerKg:850 },
+      { code:"NGPHC", name:"Port Harcourt (Onne)", type:"sea", clearingDays:{min:10,max:30} }
+    ],
+    customsBrokerFee:{min:150000,max:500000,currency:"NGN",notes:"Depends on cargo value/complexity"},
+    dutyStructure:{ method:"CIF", vatRate:7.5, levies:[
+      { name:"CISS", rate:1.0, base:"FOB", description:"Comprehensive Import Supervision Scheme" },
+      { name:"ETLS", rate:0.5, base:"CIF", description:"ECOWAS Trade Liberalisation Scheme" },
+      { name:"Surcharge", rate:7.0, base:"duty", description:"Import surcharge on duty amount" }
+    ]},
+    insuranceRate:{min:0.5,max:2.0,notes:"% of CIF, depends on cargo type"},
+    otherFees:{ formM:5000, bankLCCommission:1.5 },
+    fxSource:"CBN official rate (parallel market 3–8% higher)"
+  },
+  KE: { name:"Kenya", flag:"🇰🇪", currency:"KES", symbol:"KSh",
+    ports:[
+      { code:"KEMBA", name:"Mombasa Port", type:"sea", clearingDays:{min:7,max:21}, terminalHandling:{"20ft":18500,"40ft":28000,currency:"KES"} },
+      { code:"KENBO", name:"JKIA Airport (Nairobi)", type:"air", clearingDays:{min:2,max:7} },
+      { code:"KEICD", name:"ICD Nairobi (Embakasi)", type:"inland", clearingDays:{min:5,max:14}, notes:"Container railed from Mombasa via SGR" }
+    ],
+    customsBrokerFee:{min:15000,max:50000,currency:"KES"},
+    dutyStructure:{ method:"CIF", vatRate:16, levies:[
+      { name:"IDF", rate:3.5, base:"CIF", description:"Import Declaration Fee" },
+      { name:"RDL", rate:2.5, base:"CIF", description:"Railway Development Levy" }
+    ]}
+  },
+  ZA: { name:"South Africa", flag:"🇿🇦", currency:"ZAR", symbol:"R",
+    ports:[
+      { code:"ZADUR", name:"Durban Port", type:"sea", clearingDays:{min:3,max:10}, notes:"Africa's busiest container port" },
+      { code:"ZACPT", name:"Cape Town Port", type:"sea", clearingDays:{min:3,max:10} },
+      { code:"ZAJNB", name:"OR Tambo Airport (Johannesburg)", type:"air", clearingDays:{min:1,max:5} }
+    ],
+    customsBrokerFee:{min:2500,max:10000,currency:"ZAR"},
+    dutyStructure:{ method:"CIF", vatRate:15, levies:[] }
+  },
+  GH: { name:"Ghana", flag:"🇬🇭", currency:"GHS", symbol:"GH₵",
+    ports:[
+      { code:"GHTMA", name:"Tema Port", type:"sea", clearingDays:{min:7,max:21}, terminalHandling:{"20ft":1200,"40ft":1800,currency:"GHS"} },
+      { code:"GHTKD", name:"Takoradi Port", type:"sea", clearingDays:{min:7,max:21} },
+      { code:"GHKIA", name:"Kotoka Airport (Accra)", type:"air", clearingDays:{min:2,max:7} }
+    ],
+    dutyStructure:{ method:"CIF", vatRate:15, levies:[
+      { name:"NHIL", rate:2.5, base:"CIF+duty", description:"National Health Insurance Levy" },
+      { name:"GETFund", rate:2.5, base:"CIF+duty", description:"Ghana Education Trust Fund" },
+      { name:"AU Levy", rate:0.2, base:"CIF", description:"African Union Levy" },
+      { name:"ECOWAS Levy", rate:0.5, base:"CIF", description:"ECOWAS Community Levy" },
+      { name:"Exam Levy", rate:1.0, base:"CIF", description:"Examination Levy" },
+      { name:"Processing", rate:1.0, base:"CIF", description:"Import Processing Fee" }
+    ]}
+  },
+  TZ: { name:"Tanzania", flag:"🇹🇿", currency:"TZS", symbol:"TSh",
+    ports:[
+      { code:"TZDAR", name:"Dar es Salaam Port", type:"sea", clearingDays:{min:7,max:21} },
+      { code:"TZJRO", name:"Julius Nyerere Airport (Dar)", type:"air", clearingDays:{min:2,max:7} }
+    ],
+    dutyStructure:{ method:"CIF", vatRate:18, levies:[
+      { name:"IDF", rate:1.0, base:"CIF", description:"Import Declaration Fee" },
+      { name:"RDL", rate:1.5, base:"CIF", description:"Railway Development Levy" }
+    ]}
+  },
+  EG: { name:"Egypt", flag:"🇪🇬", currency:"EGP", symbol:"E£",
+    ports:[
+      { code:"EGALX", name:"Alexandria Port", type:"sea", clearingDays:{min:5,max:15} },
+      { code:"EGPSD", name:"Port Said", type:"sea", clearingDays:{min:5,max:15} },
+      { code:"EGCAI", name:"Cairo Airport", type:"air", clearingDays:{min:2,max:7} }
+    ],
+    dutyStructure:{ method:"CIF", vatRate:14, levies:[
+      { name:"Services Fee", rate:1.0, base:"CIF", description:"Customs services fee" }
+    ]}
+  },
+  RW: { name:"Rwanda", flag:"🇷🇼", currency:"RWF", symbol:"FRw",
+    ports:[
+      { code:"RWKGL", name:"Kigali (via Mombasa/Dar)", type:"inland", clearingDays:{min:10,max:21} },
+      { code:"RWKIA", name:"Kigali Airport", type:"air", clearingDays:{min:2,max:7} }
+    ],
+    dutyStructure:{ method:"CIF", vatRate:18, levies:[
+      { name:"IDSL", rate:1.5, base:"CIF", description:"Infrastructure Development Surcharge Levy" },
+      { name:"AU Levy", rate:0.2, base:"CIF", description:"African Union Levy" }
+    ]}
+  },
+  MA: { name:"Morocco", flag:"🇲🇦", currency:"MAD", symbol:"DH",
+    ports:[
+      { code:"MACAS", name:"Casablanca Port", type:"sea", clearingDays:{min:3,max:10} },
+      { code:"MATNG", name:"Tanger Med", type:"sea", clearingDays:{min:3,max:10} },
+      { code:"MARAB", name:"Mohammed V Airport (Casablanca)", type:"air", clearingDays:{min:1,max:5} }
+    ],
+    dutyStructure:{ method:"CIF", vatRate:20, levies:[] }
+  },
+  CI: { name:"Côte d'Ivoire", flag:"🇨🇮", currency:"XOF", symbol:"CFA",
+    ports:[
+      { code:"CIABJ", name:"Abidjan Port", type:"sea", clearingDays:{min:5,max:15} }
+    ],
+    dutyStructure:{ method:"CIF", vatRate:18, levies:[
+      { name:"PCS", rate:0.75, base:"CIF", description:"Prélèvement Communautaire de Solidarité" },
+      { name:"PCO", rate:0.5, base:"CIF", description:"ECOWAS Community Levy" },
+      { name:"Redevance Statistique", rate:1.0, base:"CIF", description:"Statistical fee" }
+    ]}
+  },
+  CM: { name:"Cameroon", flag:"🇨🇲", currency:"XAF", symbol:"FCFA",
+    ports:[
+      { code:"CMDLA", name:"Douala Port", type:"sea", clearingDays:{min:7,max:21} }
+    ],
+    dutyStructure:{ method:"CIF", vatRate:19.25, levies:[
+      { name:"CAC", rate:0.25, base:"CIF", description:"Customs Automation Charge" }
+    ]}
+  }
+};
+
+if (typeof module !== 'undefined') module.exports = { LANDED_COST_DATA };
