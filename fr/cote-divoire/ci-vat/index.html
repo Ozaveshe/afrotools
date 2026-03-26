@@ -533,7 +533,7 @@
     <span class="ai-by">Powered by Claude</span>
   </div>
   <div class="ai-advisor-body">
-    <div class="ai-status" id="aiStatus">Ask me anything about VAT in Côte d'Ivoire — registration thresholds, exempt categories, filing deadlines, how to calculate VAT on mixed supplies.</div>
+    <div class="ai-status" id="aiStatus">Posez-moi des questions sur la TVA en Côte d'Ivoire — registration thresholds, exempt categories, filing deadlines, how to calculate VAT on mixed supplies.</div>
     <div class="ai-chat" id="aiChat">
       <div class="ai-msgs" id="aiMsgs"></div>
       <div class="ai-input-row">
@@ -558,7 +558,7 @@
           <div style="margin-top:12px">
             <div class="info-row"><span>Standard Rate</span><span class="val">18%</span></div>
             <div class="info-row"><span>Tax Authority</span><span class="val">DGI</span></div>
-            <div class="info-row"><span>Currency</span><span class="val">XOF (CFA)</span></div>
+            <div class="info-row"><span>Devise</span><span class="val">XOF (CFA)</span></div>
             <div class="info-row"><span>Tax Year</span><span class="val">2026</span></div>
           </div>
         </div>
@@ -607,14 +607,14 @@
             <span class="tool-feat">Add / Extract VAT</span>
             <span class="tool-feat">Custom Rates</span>
             <span class="tool-feat">PDF Export</span>
-            <span class="tool-feat">AI Advisor</span>
+            <span class="tool-feat">Conseiller IA</span>
             <span class="tool-feat">Withholding</span>
           </div>
         </div>
         <div class="tool-info-footer">
           <span class="tool-info-updated">Updated: Mar 2026</span>
           <div class="tool-info-actions">
-            <button class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Share</button>
+            <button class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Partager</button>
             <a class="tool-info-action" href="/fr/tools/vat-calculator/">All Countries</a>
           </div>
         </div>
@@ -839,7 +839,7 @@ function getEffectiveRate() {
       headline: currentDir === 'add' ? 'VAT Inclusive Total' : 'VAT Extracted',
       mainValue: fmtD(total),
       subValues: [
-        { label: 'Net Amount', value: fmtD(pretax) },
+        { label: 'Montant net', value: fmtD(pretax) },
         { label: 'VAT', value: fmtD(vat) },
         { label: 'Rate', value: (effRate * 100).toFixed(1) + '%' }
       ]
@@ -1063,7 +1063,7 @@ function renderChart(type) {
     CHART = new Chart(canvas, {
       type: 'doughnut',
       data: {
-        labels: ['Net Amount', 'VAT (' + rateStr + ')'],
+        labels: ['Montant net', 'TVA (' + rateStr + ')'],
         datasets: [{ data: [R.netAmount, R.vatAmount], backgroundColor: [AfroChartColors.series[0], AfroChartColors.series[3]], borderWidth: 2, borderColor: '#fff', hoverOffset: 6 }]
       },
       options: { responsive:true, maintainAspectRatio:false, cutout:'60%', plugins:{ legend:{ position:'bottom', labels:{ font:{family:"'DM Sans',sans-serif",size:11,weight:'600'}, padding:14, usePointStyle:true, pointStyle:'circle' } }, tooltip:{ backgroundColor:AfroChartColors.tooltipBg, cornerRadius:8, padding:12, callbacks:{ label:function(ctx){ return ' ' + ctx.label + ': ' + fmtC(ctx.raw); } } } } }
@@ -1073,10 +1073,10 @@ function renderChart(type) {
     CHART = new Chart(canvas, {
       type: 'bar',
       data: {
-        labels: ['Breakdown'],
+        labels: ['Répartition'],
         datasets: [
-          { label: 'Net Amount', data: [R.netAmount], backgroundColor: AfroChartColors.series[0], borderRadius: { topLeft:6, bottomLeft:6 }, barPercentage: 0.6, categoryPercentage: 0.7 },
-          { label: 'VAT (' + rateStr + ')', data: [R.vatAmount], backgroundColor: AfroChartColors.series[3], borderRadius: { topRight:6, bottomRight:6 }, barPercentage: 0.6, categoryPercentage: 0.7 }
+          { label: 'Montant net', data: [R.netAmount], backgroundColor: AfroChartColors.series[0], borderRadius: { topLeft:6, bottomLeft:6 }, barPercentage: 0.6, categoryPercentage: 0.7 },
+          { label: 'TVA (' + rateStr + ')', data: [R.vatAmount], backgroundColor: AfroChartColors.series[3], borderRadius: { topRight:6, bottomRight:6 }, barPercentage: 0.6, categoryPercentage: 0.7 }
         ]
       },
       options: {

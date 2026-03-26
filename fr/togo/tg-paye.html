@@ -166,7 +166,7 @@
             <p class="f-note">CNPS employee contribution (2.5%) is fully deductible from taxable income before OTR tax is calculated. Employer CNPS (9.5%) is an additional cost shown in employer chart.</p>
           </div>
 
-          <button class="calc-btn" onclick="calculate()">Calculate My Take-Home Pay →</button>
+          <button class="calc-btn" onclick="calculate()">Calculer mon salaire net →</button>
         </div>
       </div>
 
@@ -180,13 +180,13 @@
         </div>
         <div class="res-body">
           <div class="period-row">
-            <button class="per-btn on" onclick="setPeriod('annual',this)">Annual</button>
+            <button class="per-btn on" onclick="setPeriod('annual',this)">Annuel</button>
             <button class="per-btn" onclick="setPeriod('monthly',this)">Monthly Equivalent</button>
           </div>
           <div id="resContent"></div>
           <div class="rate-bar-wrap">
             <div class="rate-bar-hdr">
-              <span class="rate-bar-lbl">Effective Tax Rate</span>
+              <span class="rate-bar-lbl">Taux effectif d'imposition</span>
               <span class="rate-bar-pct" id="effRateDisplay">0%</span>
             </div>
             <div class="rate-track"><div class="rate-fill" id="rateFill"></div></div>
@@ -206,7 +206,7 @@
         <div class="action-row">
           <button class="act-btn act-pdf" onclick="openPdfModal()">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-            Download PDF
+            Télécharger PDF
           </button>
           <button class="act-btn act-share" id="tgShareBtn" onclick="shareResult()">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
@@ -239,17 +239,17 @@
       <div class="ai-card">
         <div class="ai-head">
           <div class="ai-dot"></div>
-          <span class="ai-head-title">AI Tax Advisor</span>
+          <span class="ai-head-title">Conseiller fiscal IA</span>
           <span class="ai-head-by">Powered by Claude</span>
         </div>
         <div class="ai-body">
-          <p class="ai-status" id="aiStatus">Calculate your salary first — I'll analyse your OTR PAYE position, explain CNPS deductibility, and give specific optimisation tips for Togo.</p>
+          <p class="ai-status" id="aiStatus">Calculez votre salaire d'abord — j'analyserai votre situation OTR PAYE, expliquerai la déductibilité CNPS et vous donnerai des conseils d'optimisation tips for Togo.</p>
           <div class="ai-response" id="aiResp"></div>
-          <button class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Calculate first to unlock →</button>
+          <button class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Calculez d'abord pour déverrouiller →</button>
           <div class="ai-chat" id="aiChat">
             <div class="chat-msgs" id="chatMsgs"></div>
             <div class="chat-row">
-              <input class="chat-in" id="chatIn" placeholder="Ask a follow-up…" onkeydown="if(event.key==='Enter')sendChat()">
+              <input class="chat-in" id="chatIn" placeholder="Posez une question de suivi…" onkeydown="if(event.key==='Enter')sendChat()">
               <button class="chat-send" onclick="sendChat()">→</button>
             </div>
           </div>
@@ -311,14 +311,14 @@
             <span class="tool-feat">Net Pay Calc</span>
             <span class="tool-feat">Tax Bands</span>
             <span class="tool-feat">PDF Export</span>
-            <span class="tool-feat">AI Advisor</span>
-            <span class="tool-feat">Deductions</span>
+            <span class="tool-feat">Conseiller IA</span>
+            <span class="tool-feat">Déductions</span>
           </div>
         </div>
         <div class="tool-info-footer">
           <span class="tool-info-updated">Updated: Mar 2026</span>
           <div class="tool-info-actions">
-            <button class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Share</button>
+            <button class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Partager</button>
             <a class="tool-info-action" href="/fr/tools/paye-calculator/">All Countries</a>
           </div>
         </div>
@@ -612,10 +612,10 @@ function calcAnnualDGI(annualTaxableIncome) {
   });
   var _shareBtn = document.querySelector('share-result-button');
   if (_shareBtn) _shareBtn.setResult({
-    headline: 'My Take-Home Pay',
+    headline: 'Mon salaire net',
     mainValue: fmt(RESULT.netMonthly || RESULT.net) + '/mo',
     subValues: [
-      { label: 'Gross', value: fmt(RESULT.gross) + '/mo' },
+      { label: 'Brut', value: fmt(RESULT.gross) + '/mo' },
       { label: 'Tax', value: fmt(RESULT.monthlyPAYE || RESULT.tax || RESULT.paye) + '/mo' },
       { label: 'Effective Rate', value: pct(RESULT.effectiveRate) }
     ]
@@ -626,7 +626,7 @@ function calcAnnualDGI(annualTaxableIncome) {
   document.getElementById('resultsCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
   document.getElementById('aiBtn').disabled = false;
-  document.getElementById('aiBtn').textContent = 'Get AI Tax Analysis →';
+  document.getElementById('aiBtn').textContent = 'Obtenir l'analyse fiscale IA →';
   document.getElementById('aiStatus').textContent = `Gross: ${fmt(gross)}/year · Take-home: ${fmt(netAnnual)}/year · OTR: ${fmt(annualDGI)}/year · Effective: ${pct(effectiveRate)}`;
 }
 
@@ -643,11 +643,11 @@ function renderRows(R, period) {
 
   return `
     <div class="res-section">
-      <div class="res-section-title">Gross Income</div>
+      <div class="res-section-title">Revenu brut</div>
       ${row(`Gross Salary${lbl}`, fmt(gross))}
     </div>
     <div class="res-section">
-      <div class="res-section-title">Deductions</div>
+      <div class="res-section-title">Déductions</div>
       ${R.cnps > 0 ? row(`CNPS (${pct(R.cnpsRate)}, no cap)`, fmt(cnps), 'c-red') : ''}
       ${row(`Net taxable income${lbl}`, fmt(gross - (R.cnps > 0 ? R.cnps/12 : 0)), 'c-mut')}
     </div>
@@ -657,7 +657,7 @@ function renderRows(R, period) {
     </div>
     <div class="res-section">
       ${row('Total Deductions', fmt(cnps + dgi), 'c-red')}
-      <div class="res-row total"><span class="res-row-lbl">Take-Home Pay</span><span class="res-row-val c-grn">${fmt(net)}</span></div>
+      <div class="res-row total"><span class="res-row-lbl">Salaire net</span><span class="res-row-val c-grn">${fmt(net)}</span></div>
     </div>`;
 }
 
@@ -705,7 +705,7 @@ function renderChart(type) {
     CHART = new Chart(canvas, {
       type: 'doughnut',
       data: {
-        labels: ['Take-Home', 'OTR Tax', 'CNPS'],
+        labels: ['Salaire net', 'OTR Tax', 'CNPS'],
         datasets: [{ data: [R.netAnnual, R.annualDGI, R.cnps], backgroundColor: AfroChartColors.doughnut.slice(0, 3), borderWidth: 2, borderColor: '#fff' }]
       },
       options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{size:11,weight:'600'}, padding:12 } } } }
@@ -725,7 +725,7 @@ function renderChart(type) {
     CHART = new Chart(canvas, {
       type: 'bar',
       data: {
-        labels: ['Take-Home', 'OTR', 'CNPS', 'Emp CNPS'],
+        labels: ['Salaire net', 'OTR', 'CNPS', 'Emp CNPS'],
         datasets: [{ label:'XOF', data:[R.netAnnual, R.annualDGI, R.cnps, R.empCNPSCost], backgroundColor: AfroChartColors.doughnut.slice(0, 4), borderRadius:5 }]
       },
       options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'XOF'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid: { color: AfroChartColors.grid} }, x:{ticks:{font:{size:9,weight:'600'}}} } }
@@ -803,7 +803,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
     <div class="sh-div"></div>
     <div class="shi"><div class="sh-lbl">Annual OTR Tax</div><div class="sh-val red">XOF ${Math.round(R.annualDGI).toLocaleString()}</div></div>
     <div class="sh-div"></div>
-    <div class="shi"><div class="sh-lbl">Effective Rate</div><div class="sh-val red">${pct(R.effectiveRate)}</div></div>
+    <div class="shi"><div class="sh-lbl">Taux effectif</div><div class="sh-val red">${pct(R.effectiveRate)}</div></div>
   </div>
 
   <div class="sec-head">Section 1 — Annual Income &amp; Deductions</div>
@@ -886,7 +886,7 @@ async function getAI() {
   const btn = document.getElementById('aiBtn');
   const respEl = document.getElementById('aiResp');
 
-  btn.disabled = true; btn.textContent = 'Analysing…';
+  btn.disabled = true; btn.textContent = 'Analyse en cours…';
   respEl.style.display = 'block'; respEl.className = 'ai-response typing'; respEl.textContent = '';
   document.getElementById('aiStatus').style.display = 'none';
 
@@ -920,10 +920,10 @@ Give: 1) Plain English summary of Togo PAYE position 2) Two specific legal ways 
       else{document.getElementById('aiChat').classList.add('on');CHAT_HISTORY=[{role:'user',content:prompt},{role:'assistant',content:text}];}
     };
     type();
-    btn.textContent = 'Ask a follow-up below ↓';
+    btn.textContent = 'Posez une question ci-dessous ↓';
   } catch(err) {
-    respEl.className='ai-response';respEl.textContent='AI analysis temporarily unavailable.';
-    btn.disabled=false;btn.textContent='Try Again';
+    respEl.className='ai-response';respEl.textContent='Analyse IA temporairement indisponible.';
+    btn.disabled=false;btn.textContent='Réessayer';
   }
 }
 
@@ -952,7 +952,7 @@ async function sendChat() {
     aiEl.textContent = text;
     CHAT_HISTORY.push({role:'assistant',content:text});
     msgs.scrollTop = msgs.scrollHeight;
-  } catch { aiEl.textContent='Network error. Please try again.'; }
+  } catch { aiEl.textContent='Erreur réseau. Veuillez réessayer.'; }
 }
 
 document.getElementById('grossSalary').addEventListener('keydown',e=>{if(e.key==='Enter')calculate();});

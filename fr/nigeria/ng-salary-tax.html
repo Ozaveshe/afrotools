@@ -173,15 +173,15 @@
                 <label class="f-label-text" for="salaryPeriod">Entry Period</label>
               </div>
               <div class="mode-toggle">
-                <button class="mode-btn on" id="periodAnnual" onclick="setSalaryPeriod('annual',this)">Annual</button>
-                <button class="mode-btn" id="periodMonthly" onclick="setSalaryPeriod('monthly',this)">Monthly</button>
+                <button class="mode-btn on" id="periodAnnual" onclick="setSalaryPeriod('annual',this)">Annuel</button>
+                <button class="mode-btn" id="periodMonthly" onclick="setSalaryPeriod('monthly',this)">Mensuel</button>
               </div>
             </div>
 
             <!-- DEDUCTIONS -->
             <div class="field">
               <div class="f-label">
-                <span class="f-label-text">Deductions</span>
+                <span class="f-label-text">Déductions</span>
                 <span class="f-hint">Select all that apply</span>
               </div>
               <div class="toggles">
@@ -269,7 +269,7 @@
               <p class="f-note">Relief = lower of 20% of rent or &#8358;500,000. Leave blank if you own your home.</p>
             </div>
 
-            <button class="calc-btn" id="calcBtn" onclick="calculate()">Calculate My Take-Home Pay &rarr;</button>
+            <button class="calc-btn" id="calcBtn" onclick="calculate()">Calculer mon salaire net &rarr;</button>
           </div>
         </div>
 
@@ -284,8 +284,8 @@
           <div class="res-body">
             <!-- Period Toggle -->
             <div class="period-row">
-              <button class="per-btn on" onclick="setPeriod('monthly',this)">Monthly</button>
-              <button class="per-btn" onclick="setPeriod('annual',this)">Annual</button>
+              <button class="per-btn on" onclick="setPeriod('monthly',this)">Mensuel</button>
+              <button class="per-btn" onclick="setPeriod('annual',this)">Annuel</button>
             </div>
 
             <!-- Result Content -->
@@ -294,7 +294,7 @@
             <!-- Effective + Marginal Rate -->
             <div class="rates-grid" id="ratesGrid">
               <div class="rate-card">
-                <div class="rate-card-label">Effective Rate</div>
+                <div class="rate-card-label">Taux effectif</div>
                 <div class="rate-card-value" id="effRateCard">0%</div>
                 <div class="rate-card-desc">Tax / Gross</div>
               </div>
@@ -308,7 +308,7 @@
             <!-- Rate Bar -->
             <div class="rate-bar-wrap">
               <div class="rate-bar-hdr">
-                <span class="rate-bar-lbl">Effective Tax Rate</span>
+                <span class="rate-bar-lbl">Taux effectif d'imposition</span>
                 <span class="rate-bar-pct" id="effRateDisplay">0%</span>
               </div>
               <div class="rate-track"><div class="rate-fill brand" id="rateFill"></div></div>
@@ -346,7 +346,7 @@
           <div class="action-row">
             <button class="act-btn act-pdf" onclick="downloadPdf()">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-              Download PDF
+              Télécharger PDF
             </button>
             <button class="act-btn" onclick="whatsappShare()" style="background:rgba(37,211,102,0.1);border-color:#25D366;color:#25D366">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492l4.618-1.462A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75c-2.171 0-4.2-.695-5.856-1.873l-.42-.277-2.735.867.87-2.664-.305-.44A9.72 9.72 0 012.25 12c0-5.385 4.365-9.75 9.75-9.75S21.75 6.615 21.75 12s-4.365 9.75-9.75 9.75z"/></svg>
@@ -383,13 +383,13 @@
         <div class="ai-card">
           <div class="ai-head">
             <div class="ai-dot"></div>
-            <span class="ai-head-title">AI Tax Advisor</span>
+            <span class="ai-head-title">Conseiller fiscal IA</span>
             <span class="ai-head-by">Powered by Claude</span>
           </div>
           <div class="ai-body">
-            <p class="ai-status" id="aiStatus">Calculate your salary first &mdash; then I'll analyse your position, show legal ways to reduce your tax, and tell you which regime wins for you.</p>
+            <p class="ai-status" id="aiStatus">Calculez votre salaire d'abord &mdash; j'analyserai votre situation, vous montrerai des moyens légaux de réduire votre impôt et vous indiquerai which regime wins for you.</p>
             <div class="ai-response" id="aiResp"></div>
-            <button class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Calculate first to unlock &rarr;</button>
+            <button class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Calculez d'abord pour déverrouiller &rarr;</button>
             <div class="ai-suggestions" id="aiSuggestions" style="display:none">
               <button class="ai-suggest-btn" onclick="askSuggestion(this)">How can I pay less tax?</button>
               <button class="ai-suggest-btn" onclick="askSuggestion(this)">Which regime is better for me?</button>
@@ -443,14 +443,14 @@
               <span class="tool-feat">PITA &amp; NTA</span>
               <span class="tool-feat">Net-to-Gross</span>
               <span class="tool-feat">PDF Export</span>
-              <span class="tool-feat">AI Advisor</span>
+              <span class="tool-feat">Conseiller IA</span>
               <span class="tool-feat">Employer Cost</span>
             </div>
           </div>
           <div class="tool-info-footer">
             <span class="tool-info-updated">Updated: Mar 2026</span>
             <div class="tool-info-actions">
-              <button class="tool-info-action" onclick="typeof shareCalc==='function'?shareCalc():navigator.share?.({title:document.title,url:location.href})">Share</button>
+              <button class="tool-info-action" onclick="typeof shareCalc==='function'?shareCalc():navigator.share?.({title:document.title,url:location.href})">Partager</button>
               <a class="tool-info-action" href="/fr/tools/paye-calculator/">All Countries</a>
             </div>
           </div>
@@ -850,7 +850,7 @@ function renderRows(r, period) {
   const row = (lbl, val, cls = '') => `<div class="res-row"><span class="res-row-lbl">${lbl}</span><span class="res-row-val ${cls}">${val}</span></div>`;
   let html = `
     <div class="res-section">
-      <div class="res-section-title">Gross Income</div>
+      <div class="res-section-title">Revenu brut</div>
       ${row('Gross Salary', fmt(r.gross / d))}
     </div>
     <div class="res-section">
@@ -880,7 +880,7 @@ function renderRows(r, period) {
     </div>
     <div class="res-section">
       ${row('Total Deductions', fmt((r.statutory + r.tax) / d), 'red')}
-      <div class="res-row total"><span class="res-row-lbl">Take-Home Pay</span><span class="res-row-val grn">${fmt(r.netAnnual / d)}</span></div>
+      <div class="res-row total"><span class="res-row-lbl">Salaire net</span><span class="res-row-val grn">${fmt(r.netAnnual / d)}</span></div>
     </div>`;
   return html;
 }
@@ -1009,7 +1009,7 @@ function calculate() {
 
   // AI unlock
   document.getElementById('aiBtn').disabled = false;
-  document.getElementById('aiBtn').textContent = 'Get AI Tax Analysis →';
+  document.getElementById('aiBtn').textContent = 'Obtenir l'analyse fiscale IA →';
   document.getElementById('aiStatus').textContent = `Gross: ${fmt(gross)}/yr · Take-home: ${fmt(RESULT.netMonthly)}/mo · Rate: ${pct(RESULT.effectiveRate)}`;
 
   // GA4 tracking
@@ -1113,7 +1113,7 @@ function renderChart(type) {
     CHART = new Chart(canvas, {
       type: 'doughnut',
       data: {
-        labels: ['Take-Home', 'PAYE Tax', 'Pension', 'NHF', 'NHIS', 'Other Deductions'],
+        labels: ['Salaire net', 'PAYE Tax', 'Retraite', 'NHF', 'NHIS', 'Autres déductions'],
         datasets: [{ data: [RESULT.netAnnual, RESULT.tax, RESULT.pension, RESULT.nhf, RESULT.nhis, RESULT.life + RESULT.homeloan], backgroundColor: CHART_COLORS, borderWidth: 2, borderColor: '#fff' }]
       },
       options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { font: { size: 11, weight: '600', family: 'DM Sans' }, padding: 12, filter: (item, data) => data.datasets[0].data[item.index] > 0 } } } }
@@ -1139,7 +1139,7 @@ function renderChart(type) {
     CHART = new Chart(canvas, {
       type: 'bar',
       data: {
-        labels: ['Take-Home', 'Income Tax', 'Statutory'],
+        labels: ['Salaire net', 'Impôt sur le revenu', 'Statutory'],
         datasets: [
           { label: 'PITA 2025', data: [pitaR.netAnnual, pitaR.tax, pitaR.statutory], backgroundColor: AfroChartColors.series[3], borderRadius: 4 },
           { label: 'NTA 2026', data: [ntaR.netAnnual, ntaR.tax, ntaR.statutory], backgroundColor: AfroChartColors.series[0], borderRadius: 4 }
@@ -1288,10 +1288,10 @@ function shareCalc() {
 function whatsappShare() {
   if (!RESULT) return;
   AfroTools.shareState.whatsappShare({
-    headline: 'My Take-Home Pay',
+    headline: 'Mon salaire net',
     mainValue: fmt(RESULT.netMonthly) + '/mo',
     subValues: [
-      { label: 'Gross', value: fmt(RESULT.gross) + '/yr' },
+      { label: 'Brut', value: fmt(RESULT.gross) + '/yr' },
       { label: 'Tax', value: fmt(RESULT.tax) + '/yr' },
       { label: 'Effective Rate', value: pct(RESULT.effectiveRate) }
     ],
@@ -1384,8 +1384,8 @@ Give: 1) Plain-English summary 2) Two specific legal ways to reduce tax 3) Which
     btn.textContent = 'Ask a follow-up below';
   } catch (err) {
     respEl.className = 'ai-response on';
-    respEl.textContent = err.message.includes('Rate') ? err.message : 'AI analysis temporarily unavailable. Your calculation results above are accurate.';
-    btn.disabled = false; btn.textContent = 'Try Again';
+    respEl.textContent = err.message.includes('Rate') ? err.message : 'Analyse IA temporairement indisponible. Your calculation results above are accurate.';
+    btn.disabled = false; btn.textContent = 'Réessayer';
   }
 }
 
@@ -1422,7 +1422,7 @@ async function sendChat() {
     aiEl.textContent = text;
     CHAT_HISTORY.push({ role: 'assistant', content: text });
     msgs.scrollTop = msgs.scrollHeight;
-  } catch { aiEl.textContent = 'Network error. Please try again.'; }
+  } catch { aiEl.textContent = 'Erreur réseau. Veuillez réessayer.'; }
 }
 
 // ── KEYBOARD SHORTCUTS ───────────────────────
