@@ -22,7 +22,7 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6}
 .hero{background:linear-gradient(135deg,#3b0764 0%,#6d28d9 50%,#8b5cf6 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}
-.hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}
+.hero h1{color:#fff;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}
 .hero p{font-size:1.05rem;opacity:.9;max-width:600px;margin:0 auto}
 .container{max-width:1100px;margin:0 auto;padding:1.5rem}
 .card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:1.5rem}
@@ -114,6 +114,8 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <div class="filter-group"><label>Country</label><select id="countryFilter" onchange="filterAndRender()"><option value="">All Countries</option></select></div>
 <div class="filter-group"><label>Type</label><select id="typeFilter" onchange="filterAndRender()"><option value="">All</option><option value="Public">Public</option><option value="Private">Private</option></select></div>
 <div class="filter-group"><label>Strength</label><select id="strengthFilter" onchange="filterAndRender()"><option value="">All Fields</option><option value="Engineering">Engineering</option><option value="Medicine">Medicine</option><option value="Business">Business</option><option value="Law">Law</option><option value="Science">Science</option><option value="Technology">Technology</option><option value="Agriculture">Agriculture</option><option value="Arts">Arts</option></select></div>
+<div class="filter-group"><label>Annual Fees (USD)</label><select id="budgetFilter" onchange="filterAndRender()"><option value="">Any Budget</option><option value="500">Under $500/yr</option><option value="2000">$500 – $2,000/yr</option><option value="5000">$2,000 – $5,000/yr</option><option value="99999">$5,000+/yr</option></select></div>
+<div class="filter-group"><label>Scholarships</label><select id="scholarshipFilter" onchange="filterAndRender()"><option value="">All</option><option value="yes">Has Scholarships</option></select></div>
 <span class="count-badge" id="countBadge">0 universities</span>
 </div>
 <div style="overflow-x:auto">
@@ -123,8 +125,9 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <th onclick="sortBy('name')">University</th>
 <th onclick="sortBy('country')">Country</th>
 <th onclick="sortBy('type')">Type</th>
+<th onclick="sortBy('fees')">Fees/yr (USD) <span class="sort-arrow">v</span></th>
 <th onclick="sortBy('students')">Students</th>
-<th onclick="sortBy('founded')">Founded</th>
+<th>Scholarship</th>
 <th>Strengths</th>
 </tr></thead>
 <tbody id="uniBody"></tbody>
@@ -148,87 +151,99 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <details><summary>Why isn't my university listed?</summary><p>This tool focuses on universities that appear in international ranking systems. Many excellent African universities, particularly newer private institutions, may not yet be ranked internationally. Not being listed doesn't reflect the quality of education — it often reflects the university's research output volume or age.</p></details>
 <details><summary>Can I compare tuition fees?</summary><p>Tuition fees vary enormously between public and private universities and between programmes. We include approximate fee ranges where available. For exact current fees, always check directly with the university's admissions office.</p></details>
 <details><summary>Which African country has the best universities?</summary><p>South Africa, Egypt, and Nigeria have the most internationally ranked universities. However, universities in Kenya, Ghana, Morocco, and Tanzania also feature prominently. The "best" university depends on your specific field of study and career goals.</p></details>
+<details><summary>What scholarships are available for African students?</summary><p>Many universities in the database offer institutional scholarships for high-achieving students. Beyond university scholarships, major external opportunities include: the Mastercard Foundation Scholars Program (partnered with 18 African universities), the African Development Bank's Japan Fund Scholarship, the MasterCard Scholars Program, DAAD scholarships for study in Germany, and the Chevening Scholarship for study in the UK. Use the "Has Scholarships" filter to see which universities in our list have scholarship programmes.</p></details>
+<details><summary>How do QS and Times Higher Education rankings work for African universities?</summary><p>QS World University Rankings score universities on academic reputation (40%), employer reputation (10%), faculty-to-student ratio (20%), citations per faculty (20%), international faculty and students (10%). Times Higher Education uses teaching, research, citations, international outlook, and industry income. African universities often score lower on citation metrics because research publications may be in local journals not tracked internationally — not because the research quality is poor. This is a known bias in global ranking systems.</p></details>
 </section>
 <afro-related-tools category="education" current="university-ranking"></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
-<script src="/assets/js/components/navbar.js" defer></script>
-<script src="/assets/js/components/footer.js" defer></script>
-<script src="/assets/js/components/related-tools.js" defer></script>
-<script src="/assets/js/components/newsletter-cta.js" defer></script>
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<script src="/assets/js/components/related-tools.min.js" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js" defer></script>
 <script>
-const UNIVERSITIES=[
-{rank:1,name:'University of Cape Town',country:'South Africa',flag:'🇿🇦',type:'Public',students:29000,founded:1829,strengths:['Medicine','Law','Science','Engineering','Business']},
-{rank:2,name:'University of the Witwatersrand',country:'South Africa',flag:'🇿🇦',type:'Public',students:38000,founded:1896,strengths:['Engineering','Medicine','Science','Law','Business']},
-{rank:3,name:'Stellenbosch University',country:'South Africa',flag:'🇿🇦',type:'Public',students:32000,founded:1866,strengths:['Agriculture','Engineering','Science','Business']},
-{rank:4,name:'Cairo University',country:'Egypt',flag:'🇪🇬',type:'Public',students:155000,founded:1908,strengths:['Medicine','Engineering','Arts','Law','Science']},
-{rank:5,name:'University of Pretoria',country:'South Africa',flag:'🇿🇦',type:'Public',students:56000,founded:1908,strengths:['Engineering','Business','Law','Agriculture','Science']},
-{rank:6,name:'University of KwaZulu-Natal',country:'South Africa',flag:'🇿🇦',type:'Public',students:47000,founded:1910,strengths:['Medicine','Agriculture','Science','Engineering']},
-{rank:7,name:'American University in Cairo',country:'Egypt',flag:'🇪🇬',type:'Private',students:6500,founded:1919,strengths:['Business','Engineering','Arts','Science']},
-{rank:8,name:'University of Johannesburg',country:'South Africa',flag:'🇿🇦',type:'Public',students:50000,founded:2005,strengths:['Technology','Business','Engineering','Science']},
-{rank:9,name:'University of Lagos',country:'Nigeria',flag:'🇳🇬',type:'Public',students:57000,founded:1962,strengths:['Business','Law','Medicine','Engineering','Science']},
-{rank:10,name:'University of Ghana',country:'Ghana',flag:'🇬🇭',type:'Public',students:38000,founded:1948,strengths:['Medicine','Business','Arts','Law','Agriculture']},
-{rank:11,name:'University of Nairobi',country:'Kenya',flag:'🇰🇪',type:'Public',students:84000,founded:1956,strengths:['Medicine','Engineering','Business','Law','Science']},
-{rank:12,name:'Makerere University',country:'Uganda',flag:'🇺🇬',type:'Public',students:36000,founded:1922,strengths:['Medicine','Agriculture','Technology','Arts','Science']},
-{rank:13,name:'University of Ibadan',country:'Nigeria',flag:'🇳🇬',type:'Public',students:31000,founded:1948,strengths:['Medicine','Agriculture','Arts','Science','Education']},
-{rank:14,name:'Covenant University',country:'Nigeria',flag:'🇳🇬',type:'Private',students:9000,founded:2002,strengths:['Engineering','Business','Technology','Science']},
-{rank:15,name:'Kwame Nkrumah Uni. of Sci & Tech',country:'Ghana',flag:'🇬🇭',type:'Public',students:35000,founded:1952,strengths:['Engineering','Medicine','Science','Technology','Agriculture']},
-{rank:16,name:'University of Dar es Salaam',country:'Tanzania',flag:'🇹🇿',type:'Public',students:20000,founded:1961,strengths:['Science','Engineering','Arts','Law','Medicine']},
-{rank:17,name:'Addis Ababa University',country:'Ethiopia',flag:'🇪🇹',type:'Public',students:48000,founded:1950,strengths:['Medicine','Science','Engineering','Arts','Agriculture']},
-{rank:18,name:'Rhodes University',country:'South Africa',flag:'🇿🇦',type:'Public',students:8500,founded:1904,strengths:['Arts','Science','Law','Business']},
-{rank:19,name:'Obafemi Awolowo University',country:'Nigeria',flag:'🇳🇬',type:'Public',students:35000,founded:1962,strengths:['Agriculture','Engineering','Medicine','Science','Technology']},
-{rank:20,name:'University of Free State',country:'South Africa',flag:'🇿🇦',type:'Public',students:39000,founded:1904,strengths:['Agriculture','Medicine','Law','Science']},
-{rank:21,name:'Strathmore University',country:'Kenya',flag:'🇰🇪',type:'Private',students:7000,founded:1961,strengths:['Business','Technology','Law']},
-{rank:22,name:'Ahmadu Bello University',country:'Nigeria',flag:'🇳🇬',type:'Public',students:40000,founded:1962,strengths:['Agriculture','Engineering','Medicine','Science']},
-{rank:23,name:'University of Cape Coast',country:'Ghana',flag:'🇬🇭',type:'Public',students:20000,founded:1962,strengths:['Education','Science','Agriculture','Business']},
-{rank:24,name:'Kenyatta University',country:'Kenya',flag:'🇰🇪',type:'Public',students:73000,founded:1985,strengths:['Education','Business','Science','Technology']},
-{rank:25,name:'University of Zimbabwe',country:'Zimbabwe',flag:'🇿🇼',type:'Public',students:20000,founded:1952,strengths:['Medicine','Engineering','Law','Arts','Science']},
-{rank:26,name:'Mohammed V University',country:'Morocco',flag:'🇲🇦',type:'Public',students:83000,founded:1957,strengths:['Medicine','Engineering','Law','Science']},
-{rank:27,name:'University of Rwanda',country:'Rwanda',flag:'🇷🇼',type:'Public',students:30000,founded:2013,strengths:['Technology','Science','Medicine','Agriculture']},
-{rank:28,name:'Ashesi University',country:'Ghana',flag:'🇬🇭',type:'Private',students:1200,founded:2002,strengths:['Technology','Business','Engineering']},
-{rank:29,name:'Bayero University Kano',country:'Nigeria',flag:'🇳🇬',type:'Public',students:48000,founded:1975,strengths:['Science','Engineering','Medicine','Agriculture']},
-{rank:30,name:'University of Zambia',country:'Zambia',flag:'🇿🇲',type:'Public',students:30000,founded:1966,strengths:['Medicine','Engineering','Agriculture','Law','Science']},
-{rank:31,name:'Nelson Mandela University',country:'South Africa',flag:'🇿🇦',type:'Public',students:27000,founded:2005,strengths:['Engineering','Business','Science','Arts']},
-{rank:32,name:'Jomo Kenyatta Uni. of Agri & Tech',country:'Kenya',flag:'🇰🇪',type:'Public',students:36000,founded:1981,strengths:['Agriculture','Engineering','Technology','Science']},
-{rank:33,name:'University of Mauritius',country:'Mauritius',flag:'🇲🇺',type:'Public',students:12000,founded:1965,strengths:['Science','Engineering','Business','Agriculture']},
-{rank:34,name:'University of Benin',country:'Nigeria',flag:'🇳🇬',type:'Public',students:42000,founded:1970,strengths:['Medicine','Engineering','Law','Science']},
-{rank:35,name:'University of Botswana',country:'Botswana',flag:'🇧🇼',type:'Public',students:18000,founded:1982,strengths:['Science','Business','Engineering','Medicine']},
-{rank:36,name:'Université Cheikh Anta Diop',country:'Senegal',flag:'🇸🇳',type:'Public',students:88000,founded:1957,strengths:['Medicine','Science','Law','Arts']},
-{rank:37,name:'North-West University',country:'South Africa',flag:'🇿🇦',type:'Public',students:64000,founded:2004,strengths:['Education','Engineering','Science','Business']},
-{rank:38,name:'University of Port Harcourt',country:'Nigeria',flag:'🇳🇬',type:'Public',students:36000,founded:1975,strengths:['Engineering','Science','Medicine']},
-{rank:39,name:'Moi University',country:'Kenya',flag:'🇰🇪',type:'Public',students:42000,founded:1984,strengths:['Medicine','Agriculture','Engineering','Education']},
-{rank:40,name:'University of Abuja',country:'Nigeria',flag:'🇳🇬',type:'Public',students:25000,founded:1988,strengths:['Law','Business','Science','Medicine']},
-{rank:41,name:'Tshwane University of Technology',country:'South Africa',flag:'🇿🇦',type:'Public',students:60000,founded:2004,strengths:['Technology','Engineering','Business']},
-{rank:42,name:'Pan African University',country:'Nigeria',flag:'🇳🇬',type:'Private',students:5000,founded:2002,strengths:['Technology','Business','Engineering','Science']},
-{rank:43,name:'University of Nairobi',country:'Kenya',flag:'🇰🇪',type:'Public',students:84000,founded:1956,strengths:['Medicine','Engineering','Business','Law']},
-{rank:44,name:'Egerton University',country:'Kenya',flag:'🇰🇪',type:'Public',students:15000,founded:1939,strengths:['Agriculture','Science','Engineering','Education']},
-{rank:45,name:'Alex Ekwueme Federal Uni. Ndufu-Alike',country:'Nigeria',flag:'🇳🇬',type:'Public',students:12000,founded:2011,strengths:['Science','Engineering','Medicine']},
-{rank:46,name:'Copperbelt University',country:'Zambia',flag:'🇿🇲',type:'Public',students:11000,founded:1987,strengths:['Engineering','Business','Science','Medicine']},
-{rank:47,name:'National University of Science & Tech',country:'Zimbabwe',flag:'🇿🇼',type:'Public',students:8000,founded:1991,strengths:['Engineering','Technology','Science']},
-{rank:48,name:'Sokoine University of Agriculture',country:'Tanzania',flag:'🇹🇿',type:'Public',students:10000,founded:1984,strengths:['Agriculture','Science','Engineering']},
-{rank:49,name:'University of Energy & Natural Resources',country:'Ghana',flag:'🇬🇭',type:'Public',students:8000,founded:2012,strengths:['Engineering','Science','Agriculture']},
-{rank:50,name:'Lagos Business School (Pan-Atlantic)',country:'Nigeria',flag:'🇳🇬',type:'Private',students:1500,founded:1991,strengths:['Business']}
+var UNIVERSITIES=[
+{rank:1,name:'University of Cape Town',country:'South Africa',flag:'🇿🇦',type:'Public',students:29000,founded:1829,fees:3000,feesLabel:'~USD 2,500–4,000',scholarship:true,strengths:['Medicine','Law','Science','Engineering','Business']},
+{rank:2,name:'University of the Witwatersrand',country:'South Africa',flag:'🇿🇦',type:'Public',students:38000,founded:1896,fees:2800,feesLabel:'~USD 2,500–4,100',scholarship:true,strengths:['Engineering','Medicine','Science','Law','Business']},
+{rank:3,name:'Stellenbosch University',country:'South Africa',flag:'🇿🇦',type:'Public',students:32000,founded:1866,fees:3200,feesLabel:'~USD 2,700–4,700',scholarship:true,strengths:['Agriculture','Engineering','Science','Business']},
+{rank:4,name:'Cairo University',country:'Egypt',flag:'🇪🇬',type:'Public',students:155000,founded:1908,fees:100,feesLabel:'~USD 100–500 (Egyptians)',scholarship:true,strengths:['Medicine','Engineering','Arts','Law','Science']},
+{rank:5,name:'University of Pretoria',country:'South Africa',flag:'🇿🇦',type:'Public',students:56000,founded:1908,fees:2800,feesLabel:'~USD 2,200–4,100',scholarship:true,strengths:['Engineering','Business','Law','Agriculture','Science']},
+{rank:6,name:'University of KwaZulu-Natal',country:'South Africa',flag:'🇿🇦',type:'Public',students:47000,founded:1910,fees:2300,feesLabel:'~USD 1,900–3,600',scholarship:true,strengths:['Medicine','Agriculture','Science','Engineering']},
+{rank:7,name:'American University in Cairo',country:'Egypt',flag:'🇪🇬',type:'Private',students:6500,founded:1919,fees:22000,feesLabel:'~USD 20,000–30,000',scholarship:true,strengths:['Business','Engineering','Arts','Science']},
+{rank:8,name:'University of Johannesburg',country:'South Africa',flag:'🇿🇦',type:'Public',students:50000,founded:2005,fees:2300,feesLabel:'~USD 1,900–3,600',scholarship:true,strengths:['Technology','Business','Engineering','Science']},
+{rank:9,name:'University of Lagos',country:'Nigeria',flag:'🇳🇬',type:'Public',students:57000,founded:1962,fees:80,feesLabel:'~USD 60–130 (Nigerians)',scholarship:false,strengths:['Business','Law','Medicine','Engineering','Science']},
+{rank:10,name:'University of Ghana',country:'Ghana',flag:'🇬🇭',type:'Public',students:38000,founded:1948,fees:300,feesLabel:'~USD 200–550',scholarship:true,strengths:['Medicine','Business','Arts','Law','Agriculture']},
+{rank:11,name:'University of Nairobi',country:'Kenya',flag:'🇰🇪',type:'Public',students:84000,founded:1956,fees:350,feesLabel:'~USD 220–930',scholarship:true,strengths:['Medicine','Engineering','Business','Law','Science']},
+{rank:12,name:'Makerere University',country:'Uganda',flag:'🇺🇬',type:'Public',students:36000,founded:1922,fees:500,feesLabel:'~USD 260–920',scholarship:true,strengths:['Medicine','Agriculture','Technology','Arts','Science']},
+{rank:13,name:'University of Ibadan',country:'Nigeria',flag:'🇳🇬',type:'Public',students:31000,founded:1948,fees:60,feesLabel:'~USD 30–90 (Nigerians)',scholarship:true,strengths:['Medicine','Agriculture','Arts','Science','Education']},
+{rank:14,name:'Covenant University',country:'Nigeria',flag:'🇳🇬',type:'Private',students:9000,founded:2002,fees:350,feesLabel:'~USD 240–480',scholarship:true,strengths:['Engineering','Business','Technology','Science']},
+{rank:15,name:'Kwame Nkrumah Uni. of Sci & Tech',country:'Ghana',flag:'🇬🇭',type:'Public',students:35000,founded:1952,fees:250,feesLabel:'~USD 140–420',scholarship:true,strengths:['Engineering','Medicine','Science','Technology','Agriculture']},
+{rank:16,name:'University of Dar es Salaam',country:'Tanzania',flag:'🇹🇿',type:'Public',students:20000,founded:1961,fees:350,feesLabel:'~USD 260–740',scholarship:false,strengths:['Science','Engineering','Arts','Law','Medicine']},
+{rank:17,name:'Addis Ababa University',country:'Ethiopia',flag:'🇪🇹',type:'Public',students:48000,founded:1950,fees:80,feesLabel:'~USD 50–100 (subsidised)',scholarship:true,strengths:['Medicine','Science','Engineering','Arts','Agriculture']},
+{rank:18,name:'Rhodes University',country:'South Africa',flag:'🇿🇦',type:'Public',students:8500,founded:1904,fees:3000,feesLabel:'~USD 2,700–4,400',scholarship:true,strengths:['Arts','Science','Law','Business']},
+{rank:19,name:'Obafemi Awolowo University',country:'Nigeria',flag:'🇳🇬',type:'Public',students:35000,founded:1962,fees:50,feesLabel:'~USD 30–60 (Nigerians)',scholarship:false,strengths:['Agriculture','Engineering','Medicine','Science','Technology']},
+{rank:20,name:'University of Free State',country:'South Africa',flag:'🇿🇦',type:'Public',students:39000,founded:1904,fees:2500,feesLabel:'~USD 2,200–4,100',scholarship:true,strengths:['Agriculture','Medicine','Law','Science']},
+{rank:21,name:'Strathmore University',country:'Kenya',flag:'🇰🇪',type:'Private',students:7000,founded:1961,fees:1500,feesLabel:'~USD 1,160–2,300',scholarship:true,strengths:['Business','Technology','Law']},
+{rank:22,name:'Ahmadu Bello University',country:'Nigeria',flag:'🇳🇬',type:'Public',students:40000,founded:1962,fees:50,feesLabel:'~USD 30–60 (Nigerians)',scholarship:false,strengths:['Agriculture','Engineering','Medicine','Science']},
+{rank:23,name:'University of Cape Coast',country:'Ghana',flag:'🇬🇭',type:'Public',students:20000,founded:1962,fees:200,feesLabel:'~USD 140–350',scholarship:false,strengths:['Education','Science','Agriculture','Business']},
+{rank:24,name:'Kenyatta University',country:'Kenya',flag:'🇰🇪',type:'Public',students:73000,founded:1985,fees:500,feesLabel:'~USD 310–775',scholarship:true,strengths:['Education','Business','Science','Technology']},
+{rank:25,name:'University of Zimbabwe',country:'Zimbabwe',flag:'🇿🇼',type:'Public',students:20000,founded:1952,fees:1500,feesLabel:'~USD 1,500–3,000',scholarship:false,strengths:['Medicine','Engineering','Law','Arts','Science']},
+{rank:26,name:'Mohammed V University',country:'Morocco',flag:'🇲🇦',type:'Public',students:83000,founded:1957,fees:100,feesLabel:'~USD 50–200 (Moroccans)',scholarship:true,strengths:['Medicine','Engineering','Law','Science']},
+{rank:27,name:'University of Rwanda',country:'Rwanda',flag:'🇷🇼',type:'Public',students:30000,founded:2013,fees:300,feesLabel:'~USD 215–430',scholarship:true,strengths:['Technology','Science','Medicine','Agriculture']},
+{rank:28,name:'Ashesi University',country:'Ghana',flag:'🇬🇭',type:'Private',students:1200,founded:2002,fees:12000,feesLabel:'~USD 10,000–15,000',scholarship:true,strengths:['Technology','Business','Engineering']},
+{rank:29,name:'Bayero University Kano',country:'Nigeria',flag:'🇳🇬',type:'Public',students:48000,founded:1975,fees:50,feesLabel:'~USD 30–60 (Nigerians)',scholarship:false,strengths:['Science','Engineering','Medicine','Agriculture']},
+{rank:30,name:'University of Zambia',country:'Zambia',flag:'🇿🇲',type:'Public',students:30000,founded:1966,fees:600,feesLabel:'~USD 360–910',scholarship:true,strengths:['Medicine','Engineering','Agriculture','Law','Science']},
+{rank:31,name:'Nelson Mandela University',country:'South Africa',flag:'🇿🇦',type:'Public',students:27000,founded:2005,fees:2300,feesLabel:'~USD 2,200–3,800',scholarship:true,strengths:['Engineering','Business','Science','Arts']},
+{rank:32,name:'Jomo Kenyatta Uni. of Agri & Tech',country:'Kenya',flag:'🇰🇪',type:'Public',students:36000,founded:1981,fees:450,feesLabel:'~USD 310–775',scholarship:true,strengths:['Agriculture','Engineering','Technology','Science']},
+{rank:33,name:'University of Mauritius',country:'Mauritius',flag:'🇲🇺',type:'Public',students:12000,founded:1965,fees:600,feesLabel:'~USD 330–770',scholarship:true,strengths:['Science','Engineering','Business','Agriculture']},
+{rank:34,name:'University of Benin',country:'Nigeria',flag:'🇳🇬',type:'Public',students:42000,founded:1970,fees:80,feesLabel:'~USD 30–90 (Nigerians)',scholarship:false,strengths:['Medicine','Engineering','Law','Science']},
+{rank:35,name:'University of Botswana',country:'Botswana',flag:'🇧🇼',type:'Public',students:18000,founded:1982,fees:800,feesLabel:'~USD 360–1,450',scholarship:true,strengths:['Science','Business','Engineering','Medicine']},
+{rank:36,name:'Université Cheikh Anta Diop',country:'Senegal',flag:'🇸🇳',type:'Public',students:88000,founded:1957,fees:50,feesLabel:'~USD 30–100 (Senegalese)',scholarship:true,strengths:['Medicine','Science','Law','Arts']},
+{rank:37,name:'North-West University',country:'South Africa',flag:'🇿🇦',type:'Public',students:64000,founded:2004,fees:2200,feesLabel:'~USD 1,900–3,600',scholarship:true,strengths:['Education','Engineering','Science','Business']},
+{rank:38,name:'University of Port Harcourt',country:'Nigeria',flag:'🇳🇬',type:'Public',students:36000,founded:1975,fees:70,feesLabel:'~USD 30–90 (Nigerians)',scholarship:false,strengths:['Engineering','Science','Medicine']},
+{rank:39,name:'Moi University',country:'Kenya',flag:'🇰🇪',type:'Public',students:42000,founded:1984,fees:600,feesLabel:'~USD 390–930',scholarship:false,strengths:['Medicine','Agriculture','Engineering','Education']},
+{rank:40,name:'University of Abuja',country:'Nigeria',flag:'🇳🇬',type:'Public',students:25000,founded:1988,fees:70,feesLabel:'~USD 30–90 (Nigerians)',scholarship:false,strengths:['Law','Business','Science','Medicine']},
+{rank:41,name:'Tshwane University of Technology',country:'South Africa',flag:'🇿🇦',type:'Public',students:60000,founded:2004,fees:2000,feesLabel:'~USD 1,650–3,300',scholarship:true,strengths:['Technology','Engineering','Business']},
+{rank:42,name:'Pan African University',country:'Nigeria',flag:'🇳🇬',type:'Private',students:5000,founded:2002,fees:350,feesLabel:'~USD 240–420',scholarship:true,strengths:['Technology','Business','Engineering','Science']},
+{rank:43,name:'Egerton University',country:'Kenya',flag:'🇰🇪',type:'Public',students:15000,founded:1939,fees:500,feesLabel:'~USD 390–775',scholarship:false,strengths:['Agriculture','Science','Engineering','Education']},
+{rank:44,name:'Alex Ekwueme Federal Uni. Ndufu-Alike',country:'Nigeria',flag:'🇳🇬',type:'Public',students:12000,founded:2011,fees:70,feesLabel:'~USD 30–90 (Nigerians)',scholarship:false,strengths:['Science','Engineering','Medicine']},
+{rank:45,name:'Copperbelt University',country:'Zambia',flag:'🇿🇲',type:'Public',students:11000,founded:1987,fees:700,feesLabel:'~USD 360–910',scholarship:true,strengths:['Engineering','Business','Science','Medicine']},
+{rank:46,name:'National University of Science & Tech',country:'Zimbabwe',flag:'🇿🇼',type:'Public',students:8000,founded:1991,fees:1800,feesLabel:'~USD 1,500–2,500',scholarship:false,strengths:['Engineering','Technology','Science']},
+{rank:47,name:'Sokoine University of Agriculture',country:'Tanzania',flag:'🇹🇿',type:'Public',students:10000,founded:1984,fees:400,feesLabel:'~USD 300–665',scholarship:true,strengths:['Agriculture','Science','Engineering']},
+{rank:48,name:'University of Energy & Natural Resources',country:'Ghana',flag:'🇬🇭',type:'Public',students:8000,founded:2012,fees:280,feesLabel:'~USD 210–490',scholarship:false,strengths:['Engineering','Science','Agriculture']},
+{rank:49,name:'Lagos Business School (Pan-Atlantic)',country:'Nigeria',flag:'🇳🇬',type:'Private',students:1500,founded:1991,fees:4000,feesLabel:'~USD 3,000–8,000 (MBA)',scholarship:true,strengths:['Business']},
+{rank:50,name:'African Leadership University',country:'Rwanda',flag:'🇷🇼',type:'Private',students:3000,founded:2015,fees:5000,feesLabel:'~USD 4,000–7,000',scholarship:true,strengths:['Business','Technology','Arts']}
 ];
 
-let sortField='rank';
-let sortAsc=true;
+var sortField='rank';
+var sortAsc=true;
 
 function filterAndRender(){
-  const search=document.getElementById('searchInput').value.toLowerCase();
-  const country=document.getElementById('countryFilter').value;
-  const type=document.getElementById('typeFilter').value;
-  const strength=document.getElementById('strengthFilter').value;
+  var search=document.getElementById('searchInput').value.toLowerCase();
+  var country=document.getElementById('countryFilter').value;
+  var type=document.getElementById('typeFilter').value;
+  var strength=document.getElementById('strengthFilter').value;
+  var budget=document.getElementById('budgetFilter').value;
+  var scholFilter=document.getElementById('scholarshipFilter').value;
 
-  let filtered=UNIVERSITIES.filter(u=>{
-    if(search&&!u.name.toLowerCase().includes(search)&&!u.country.toLowerCase().includes(search)) return false;
+  var filtered=UNIVERSITIES.filter(function(u){
+    if(search&&u.name.toLowerCase().indexOf(search)===-1&&u.country.toLowerCase().indexOf(search)===-1) return false;
     if(country&&u.country!==country) return false;
     if(type&&u.type!==type) return false;
-    if(strength&&!u.strengths.includes(strength)) return false;
+    if(strength&&u.strengths.indexOf(strength)===-1) return false;
+    if(scholFilter==='yes'&&!u.scholarship) return false;
+    if(budget){
+      var b=parseInt(budget);
+      if(b===500&&u.fees>=500) return false;
+      if(b===2000&&(u.fees<500||u.fees>=2000)) return false;
+      if(b===5000&&(u.fees<2000||u.fees>=5000)) return false;
+      if(b===99999&&u.fees<5000) return false;
+    }
     return true;
   });
 
-  filtered.sort((a,b)=>{
-    let va=a[sortField],vb=b[sortField];
+  filtered.sort(function(a,b){
+    var va=a[sortField],vb=b[sortField];
     if(typeof va==='string') va=va.toLowerCase();
     if(typeof vb==='string') vb=vb.toLowerCase();
     if(va<vb) return sortAsc?-1:1;
@@ -238,18 +253,24 @@ function filterAndRender(){
 
   document.getElementById('countBadge').textContent=filtered.length+' universit'+(filtered.length===1?'y':'ies');
 
-  document.getElementById('uniBody').innerHTML=filtered.map(u=>{
-    const rc=u.rank<=3?`rank-${u.rank}`:'rank-other';
-    return `<tr>
-      <td><span class="rank-badge ${rc}">${u.rank}</span></td>
-      <td style="font-weight:600">${u.name}</td>
-      <td><span class="country-flag">${u.flag}</span>${u.country}</td>
-      <td><span class="type-badge type-${u.type.toLowerCase()}">${u.type}</span></td>
-      <td>${u.students.toLocaleString()}</td>
-      <td>${u.founded}</td>
-      <td><div class="strength-tags">${u.strengths.map(s=>`<span class="strength-tag">${s}</span>`).join('')}</div></td>
-    </tr>`;
-  }).join('');
+  var rows='';
+  filtered.forEach(function(u){
+    var rc=u.rank<=3?'rank-'+u.rank:'rank-other';
+    var scholBadge=u.scholarship?'<span style="color:#16a34a;font-weight:700" title="Scholarships available">&#10003; Yes</span>':'<span style="color:#94a3b8">&ndash;</span>';
+    var tags='';
+    u.strengths.forEach(function(s){tags+='<span class="strength-tag">'+s+'</span>';});
+    rows+='<tr>'+
+      '<td><span class="rank-badge '+rc+'">'+u.rank+'</span></td>'+
+      '<td style="font-weight:600">'+u.name+'</td>'+
+      '<td><span class="country-flag">'+u.flag+'</span>'+u.country+'</td>'+
+      '<td><span class="type-badge type-'+u.type.toLowerCase()+'">'+u.type+'</span></td>'+
+      '<td style="font-size:.8rem;color:#475569">'+(u.feesLabel||'&ndash;')+'</td>'+
+      '<td>'+u.students.toLocaleString()+'</td>'+
+      '<td style="text-align:center">'+scholBadge+'</td>'+
+      '<td><div class="strength-tags">'+tags+'</div></td>'+
+      '</tr>';
+  });
+  document.getElementById('uniBody').innerHTML=rows;
 }
 
 function sortBy(field){
@@ -259,8 +280,12 @@ function sortBy(field){
 }
 
 // Populate country filter
-const countries=[...new Set(UNIVERSITIES.map(u=>u.country))].sort();
-document.getElementById('countryFilter').innerHTML='<option value="">All Countries</option>'+countries.map(c=>`<option>${c}</option>`).join('');
+var countrySet={};
+UNIVERSITIES.forEach(function(u){countrySet[u.country]=true;});
+var countries=Object.keys(countrySet).sort();
+var countryOpts='<option value="">All Countries</option>';
+countries.forEach(function(c){countryOpts+='<option>'+c+'</option>';});
+document.getElementById('countryFilter').innerHTML=countryOpts;
 
 filterAndRender();
 </script>

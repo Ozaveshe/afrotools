@@ -152,7 +152,7 @@ select.field-input{cursor:pointer;}
     <h1>Solar System Sizer<br>for Africa</h1>
     <p>Country-specific irradiance data. Size your panels, batteries, inverter, and cable — and see your ROI vs running a generator.</p>
     <div class="solar-hero-tags">
-      <span>🌍 50+ African Countries</span>
+      <span>🌍 33 African Countries</span>
       <span>🔋 Battery Bank Sizing</span>
       <span>💰 Generator ROI Comparison</span>
       <span>⚡ Off-Grid & Hybrid</span>
@@ -240,6 +240,10 @@ select.field-input{cursor:pointer;}
     <!-- RIGHT: APPLIANCES -->
     <div class="solar-panel">
       <h2><span>🔌</span> Your Appliances</h2>
+      <div style="margin-bottom:12px;">
+        <div style="font-size:.68rem;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">Quick Load Presets</div>
+        <div id="presetBtns" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
+      </div>
       <table class="appliance-table">
         <thead>
           <tr>
@@ -396,26 +400,45 @@ select.field-input{cursor:pointer;}
 // ── COUNTRY DATA ──
 // Peak Sun Hours (PSH) = average daily irradiance in kWh/m²/day
 const COUNTRIES = [
-  {code:'NG',name:'Nigeria',flag:'🇳🇬',psh:5.0,curr:'NGN',sym:'₦',sysPrice:1500000},
-  {code:'KE',name:'Kenya',flag:'🇰🇪',psh:5.5,curr:'KES',sym:'KSh',sysPrice:180000},
-  {code:'GH',name:'Ghana',flag:'🇬🇭',psh:5.2,curr:'GHS',sym:'₵',sysPrice:28000},
-  {code:'ZA',name:'South Africa',flag:'🇿🇦',psh:5.8,curr:'ZAR',sym:'R',sysPrice:85000},
-  {code:'UG',name:'Uganda',flag:'🇺🇬',psh:5.3,curr:'UGX',sym:'USh',sysPrice:4500000},
-  {code:'TZ',name:'Tanzania',flag:'🇹🇿',psh:5.4,curr:'TZS',sym:'TSh',sysPrice:3200000},
-  {code:'EG',name:'Egypt',flag:'🇪🇬',psh:6.2,curr:'EGP',sym:'E£',sysPrice:120000},
-  {code:'ET',name:'Ethiopia',flag:'🇪🇹',psh:5.6,curr:'ETB',sym:'Br',sysPrice:65000},
-  {code:'RW',name:'Rwanda',flag:'🇷🇼',psh:5.2,curr:'RWF',sym:'RF',sysPrice:1200000},
-  {code:'SN',name:'Senegal',flag:'🇸🇳',psh:5.8,curr:'XOF',sym:'CFA',sysPrice:850000},
-  {code:'CI',name:"Côte d'Ivoire",flag:'🇨🇮',psh:5.2,curr:'XOF',sym:'CFA',sysPrice:900000},
-  {code:'CM',name:'Cameroon',flag:'🇨🇲',psh:4.9,curr:'XAF',sym:'FCFA',sysPrice:820000},
-  {code:'ZM',name:'Zambia',flag:'🇿🇲',psh:5.5,curr:'ZMW',sym:'K',sysPrice:7200},
-  {code:'ZW',name:'Zimbabwe',flag:'🇿🇼',psh:5.7,curr:'ZWL',sym:'Z$',sysPrice:200000},
-  {code:'MW',name:'Malawi',flag:'🇲🇼',psh:5.4,curr:'MWK',sym:'MK',sysPrice:1800000},
-  {code:'MZ',name:'Mozambique',flag:'🇲🇿',psh:5.6,curr:'MZN',sym:'MT',sysPrice:38000},
-  {code:'AO',name:'Angola',flag:'🇦🇴',psh:5.3,curr:'AOA',sym:'Kz',sysPrice:620000},
-  {code:'SD',name:'Sudan',flag:'🇸🇩',psh:6.0,curr:'SDG',sym:'£S',sysPrice:72000},
-  {code:'MA',name:'Morocco',flag:'🇲🇦',psh:5.5,curr:'MAD',sym:'DH',sysPrice:9500},
-  {code:'TN',name:'Tunisia',flag:'🇹🇳',psh:5.2,curr:'TND',sym:'DT',sysPrice:11000},
+  // West Africa
+  {code:'NG',name:'Nigeria',        flag:'🇳🇬',psh:5.0,curr:'NGN',sym:'₦',   lat:9},
+  {code:'GH',name:'Ghana',          flag:'🇬🇭',psh:5.2,curr:'GHS',sym:'₵',   lat:8},
+  {code:'SN',name:'Senegal',        flag:'🇸🇳',psh:5.8,curr:'XOF',sym:'CFA', lat:15},
+  {code:'CI',name:"Côte d'Ivoire",  flag:'🇨🇮',psh:5.2,curr:'XOF',sym:'CFA', lat:6},
+  {code:'ML',name:'Mali',           flag:'🇲🇱',psh:6.1,curr:'XOF',sym:'CFA', lat:17},
+  {code:'BF',name:'Burkina Faso',   flag:'🇧🇫',psh:5.9,curr:'XOF',sym:'CFA', lat:12},
+  {code:'NE',name:'Niger',          flag:'🇳🇪',psh:6.2,curr:'XOF',sym:'CFA', lat:17},
+  {code:'BJ',name:'Benin',          flag:'🇧🇯',psh:5.3,curr:'XOF',sym:'CFA', lat:9},
+  {code:'GM',name:'Gambia',         flag:'🇬🇲',psh:5.5,curr:'GMD',sym:'D',   lat:13},
+  // Central Africa
+  {code:'CM',name:'Cameroon',       flag:'🇨🇲',psh:4.9,curr:'XAF',sym:'FCFA',lat:4},
+  {code:'CD',name:'DR Congo',       flag:'🇨🇩',psh:5.0,curr:'CDF',sym:'FC',  lat:-4},
+  // East Africa
+  {code:'KE',name:'Kenya',          flag:'🇰🇪',psh:5.5,curr:'KES',sym:'KSh', lat:-1},
+  {code:'TZ',name:'Tanzania',       flag:'🇹🇿',psh:5.4,curr:'TZS',sym:'TSh', lat:-6},
+  {code:'UG',name:'Uganda',         flag:'🇺🇬',psh:5.3,curr:'UGX',sym:'USh', lat:1},
+  {code:'RW',name:'Rwanda',         flag:'🇷🇼',psh:5.2,curr:'RWF',sym:'RF',  lat:-2},
+  {code:'ET',name:'Ethiopia',       flag:'🇪🇹',psh:5.6,curr:'ETB',sym:'Br',  lat:9},
+  {code:'SD',name:'Sudan',          flag:'🇸🇩',psh:6.0,curr:'SDG',sym:'£S',  lat:15},
+  {code:'DJ',name:'Djibouti',       flag:'🇩🇯',psh:6.3,curr:'DJF',sym:'Fr',  lat:12},
+  // Southern Africa
+  {code:'ZA',name:'South Africa',   flag:'🇿🇦',psh:5.8,curr:'ZAR',sym:'R',   lat:-29},
+  {code:'ZM',name:'Zambia',         flag:'🇿🇲',psh:5.5,curr:'ZMW',sym:'K',   lat:-15},
+  {code:'ZW',name:'Zimbabwe',       flag:'🇿🇼',psh:5.7,curr:'ZWL',sym:'Z$',  lat:-20},
+  {code:'MW',name:'Malawi',         flag:'🇲🇼',psh:5.4,curr:'MWK',sym:'MK',  lat:-14},
+  {code:'MZ',name:'Mozambique',     flag:'🇲🇿',psh:5.6,curr:'MZN',sym:'MT',  lat:-18},
+  {code:'AO',name:'Angola',         flag:'🇦🇴',psh:5.3,curr:'AOA',sym:'Kz',  lat:-11},
+  {code:'NA',name:'Namibia',        flag:'🇳🇦',psh:6.0,curr:'NAD',sym:'N$',  lat:-22},
+  {code:'BW',name:'Botswana',       flag:'🇧🇼',psh:6.1,curr:'BWP',sym:'P',   lat:-22},
+  // Island nations
+  {code:'MG',name:'Madagascar',     flag:'🇲🇬',psh:5.5,curr:'MGA',sym:'Ar',  lat:-20},
+  {code:'MU',name:'Mauritius',      flag:'🇲🇺',psh:4.8,curr:'MUR',sym:'Rs',  lat:-20},
+  // North Africa
+  {code:'EG',name:'Egypt',          flag:'🇪🇬',psh:6.2,curr:'EGP',sym:'E£',  lat:27},
+  {code:'MA',name:'Morocco',        flag:'🇲🇦',psh:5.5,curr:'MAD',sym:'DH',  lat:32},
+  {code:'TN',name:'Tunisia',        flag:'🇹🇳',psh:5.2,curr:'TND',sym:'DT',  lat:34},
+  {code:'DZ',name:'Algeria',        flag:'🇩🇿',psh:6.0,curr:'DZD',sym:'DA',  lat:28},
+  {code:'LY',name:'Libya',          flag:'🇱🇾',psh:6.5,curr:'LYD',sym:'LD',  lat:27},
 ];
 
 // DOD (Depth of Discharge) by battery type
@@ -434,6 +457,50 @@ const DEFAULT_APPLIANCES = [
   {name:'Fan (ceiling/standing)',watts:75,qty:2,hrs:8},
   {name:'Fridge (Energy Star)',watts:150,qty:1,hrs:24},
   {name:'WiFi Router',watts:15,qty:1,hrs:24},
+];
+
+// Quick load presets for common African home types
+const HOME_PRESETS = [
+  {label:'🏠 Small Flat', apps:[
+    {name:'LED Lights (×3)',watts:30,qty:1,hrs:5},
+    {name:'Standing Fan',watts:75,qty:1,hrs:8},
+    {name:'32″ TV',watts:80,qty:1,hrs:5},
+    {name:'Phone Chargers (×2)',watts:15,qty:1,hrs:4},
+    {name:'WiFi Router',watts:15,qty:1,hrs:24},
+  ]},
+  {label:'👨‍👩‍👧 Family Home', apps:[
+    {name:'LED Lights (×6)',watts:60,qty:1,hrs:6},
+    {name:'Ceiling Fans (×2)',watts:75,qty:2,hrs:10},
+    {name:'43″ Smart TV',watts:120,qty:1,hrs:6},
+    {name:'Fridge (Energy Star)',watts:150,qty:1,hrs:24},
+    {name:'Phone Chargers (×4)',watts:20,qty:1,hrs:4},
+    {name:'Laptop',watts:65,qty:1,hrs:6},
+    {name:'WiFi Router',watts:15,qty:1,hrs:24},
+    {name:'Water Pump (small)',watts:500,qty:1,hrs:1},
+  ]},
+  {label:'🏪 Small Shop', apps:[
+    {name:'LED Shop Lights (×6)',watts:60,qty:1,hrs:10},
+    {name:'Ceiling Fans (×2)',watts:75,qty:2,hrs:10},
+    {name:'CCTV (4 cameras)',watts:20,qty:1,hrs:24},
+    {name:'POS Terminal',watts:15,qty:1,hrs:10},
+    {name:'Computer / Laptop',watts:65,qty:1,hrs:8},
+    {name:'Fridge (drinks)',watts:150,qty:1,hrs:24},
+  ]},
+  {label:'🌾 Rural Homestead', apps:[
+    {name:'LED Lights (×4)',watts:40,qty:1,hrs:5},
+    {name:'Radio / Small TV',watts:50,qty:1,hrs:4},
+    {name:'Phone Chargers (×3)',watts:15,qty:1,hrs:3},
+    {name:'Water Pump (motor)',watts:250,qty:1,hrs:2},
+    {name:'Electric Kettle (1L)',watts:1000,qty:1,hrs:0.3},
+  ]},
+  {label:'🏢 Small Office', apps:[
+    {name:'LED Lights (×8)',watts:80,qty:1,hrs:9},
+    {name:'Ceiling Fans (×3)',watts:75,qty:3,hrs:9},
+    {name:'Desktop PCs (×3)',watts:120,qty:3,hrs:8},
+    {name:'Laser Printer',watts:400,qty:1,hrs:1},
+    {name:'Router + Switch',watts:25,qty:1,hrs:24},
+    {name:'CCTV (4 cameras)',watts:20,qty:1,hrs:24},
+  ]},
 ];
 
 let selectedCountry = COUNTRIES[0];
@@ -456,6 +523,18 @@ let appliances = JSON.parse(JSON.stringify(DEFAULT_APPLIANCES));
   showIrradiance(selectedCountry);
   renderAppliances();
   updateTotals();
+
+  // Build preset buttons
+  var presetBtnsEl = document.getElementById('presetBtns');
+  HOME_PRESETS.forEach(function(p) {
+    var btn = document.createElement('button');
+    btn.style.cssText = 'padding:5px 10px;border:1.5px solid #e5e7eb;border-radius:6px;background:#fafafa;cursor:pointer;font-size:.72rem;font-weight:600;color:#374151;transition:all .15s;font-family:inherit;';
+    btn.textContent = p.label;
+    btn.onmouseover = function(){ this.style.borderColor='#ffc800'; this.style.background='#fffbeb'; };
+    btn.onmouseout = function(){ this.style.borderColor='#e5e7eb'; this.style.background='#fafafa'; };
+    btn.onclick = function(){ appliances = JSON.parse(JSON.stringify(p.apps)); renderAppliances(); };
+    presetBtnsEl.appendChild(btn);
+  });
 })();
 
 function selectCountry(c, btn){
@@ -472,7 +551,10 @@ function selectCountry(c, btn){
 function showIrradiance(c){
   const badge = document.getElementById('irrBadge');
   const val = document.getElementById('irrVal');
-  val.textContent = `${c.name}: ${c.psh} Peak Sun Hours/day — Good solar potential`;
+  let quality = c.psh >= 6 ? '☀️☀️ Exceptional' : c.psh >= 5.5 ? '☀️ Very Good' : c.psh >= 5 ? '☀️ Good' : '⛅ Moderate';
+  const tilt = Math.min(35, Math.abs(c.lat || 5) + 10);
+  const facing = (c.lat || 0) < 0 ? 'north-facing' : 'south-facing';
+  val.textContent = `${c.name}: ${c.psh} PSH/day — ${quality} · Tilt panels ${tilt}° ${facing}`;
   badge.style.display = 'inline-flex';
 }
 
@@ -571,7 +653,12 @@ function calculate(){
   const annualGenCost = monthlyGenCost * 12;
 
   // Currency conversion (rough)
-  const USD_RATES = {NGN:1600,KES:130,GHS:15,ZAR:19,UGX:3800,TZS:2700,EGP:50,ETB:110,RWF:1300,XOF:620,XAF:620,ZMW:26,ZWL:350,MWK:1700,MZN:64,AOA:850,SDG:600,MAD:10,TND:3.1,USD:1};
+  const USD_RATES = {
+    NGN:1600,KES:130,GHS:15,ZAR:19,UGX:3800,TZS:2700,EGP:50,ETB:110,
+    RWF:1300,XOF:620,XAF:620,ZMW:26,ZWL:350,MWK:1700,MZN:64,AOA:850,
+    SDG:600,MAD:10,TND:3.1,GMD:68,CDF:2800,DJF:178,NAD:19,BWP:13.5,
+    MGA:4600,MUR:46,DZD:135,LYD:4.8,USD:1
+  };
   const rate = USD_RATES[curr] || 1;
   const sysLocalCost = totalCostUSD * rate;
 
@@ -673,14 +760,14 @@ function buildSpecs(nPanels, pW, kWp, nBatt, bType, bKWh, invKVA, mpptA){
     ['MPPT Controller', `${mpptA}A`, 'Victron SmartSolar or EPever MPPT'],
     ['DC Cable (Panels→MPPT)', `Panels in series → MPPT input`, '6mm² or 10mm² DC solar cable (TÜV certified)'],
     ['AC Cable (Inv→DB)', `AC distribution board`, '6mm² for runs under 10m, 10mm² for longer'],
-    ['Mounting', `Roof/ground mount`, 'Tilt 10–25° facing north (South Africa) or south (Nigeria)'],
+    ['Mounting', `Roof/ground mount`, (function(){ const tilt = Math.min(35, Math.abs(selectedCountry.lat||5)+10); const dir = (selectedCountry.lat||0)<0?'north':'south'; return `Tilt ${tilt}° ${dir}-facing for ${selectedCountry.name}. Fixed mount on IBR/concrete roof.`; })()],
   ];
 
   const tbody = document.getElementById('specsBody');
   tbody.innerHTML = '';
   specs.forEach(([comp,spec,rec]) => {
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td style="font-weight:700;">${comp}</td><td style="color:var(--color-primary);font-weight:600;">${spec}</td><td>${rec}</td>`;
+    tr.innerHTML = `<td style="font-weight:700;">${comp}</td><td style="color:#2563EB;font-weight:600;">${spec}</td><td>${rec}</td>`;
     tbody.appendChild(tr);
   });
 }

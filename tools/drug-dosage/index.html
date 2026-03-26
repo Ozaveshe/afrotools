@@ -6,7 +6,7 @@
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'drug-dosage'});</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Medication Dosage Calculator | AfroTools</title>
-<meta name="description" content="Calculate medication dosages based on body weight. Covers common drugs like paracetamol, ibuprofen, amoxicillin, and more. Paediatric and adult dosing.">
+<meta name="description" content="Calculate medication dosages by weight. Covers paracetamol, amoxicillin, antimalarials (Coartem), deworming (mebendazole), zinc, cotrimoxazole, erythromycin, and more. Paediatric and adult dosing for African medicines.">
 <link rel="canonical" href="https://afrotools.com/tools/drug-dosage/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Medication Dosage Calculator | AfroTools">
@@ -144,6 +144,11 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <option value="cetirizine">Cetirizine (Allergy)</option>
 <option value="omeprazole">Omeprazole</option>
 <option value="ors">ORS (Oral Rehydration Salts)</option>
+<option value="zinc">Zinc Sulfate (Diarrhoea)</option>
+<option value="mebendazole">Mebendazole / Albendazole (Deworming)</option>
+<option value="cotrimoxazole">Cotrimoxazole (Bactrim / Septrin)</option>
+<option value="erythromycin">Erythromycin</option>
+<option value="chloroquine">Chloroquine (Malaria Prophylaxis)</option>
 </select>
 </div>
 <div id="drugDesc" style="font-size:.78rem;color:#64748b;margin-bottom:14px;line-height:1.6;background:#f8fafc;padding:10px;border-radius:6px"></div>
@@ -166,6 +171,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <p style="margin-top:6px"><strong>Maximum doses</strong> should never be exceeded regardless of body weight.</p>
 <p style="margin-top:6px"><strong>Allergies:</strong> Check for known drug allergies before taking any medication.</p>
 <p style="margin-top:6px"><strong>Interactions:</strong> Some drugs interact with each other. Tell your pharmacist about all medications you're taking.</p>
+<p style="margin-top:6px"><strong>Nigeria (NAFDAC):</strong> Only purchase medications with a valid NAFDAC registration number on the packaging. Counterfeit medicines are a serious risk.</p>
 </div></div>
 <div class="info-card">
 <h4>Common African Brands</h4>
@@ -173,8 +179,12 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <li><strong>Paracetamol:</strong> Panadol, Emzor, Tylenol</li>
 <li><strong>Ibuprofen:</strong> Brufen, Ibucap</li>
 <li><strong>Amoxicillin:</strong> Amoxil, Augmentin</li>
-<li><strong>Artemether:</strong> Coartem, Lonart</li>
+<li><strong>Artemether:</strong> Coartem, Lonart, Artefan</li>
 <li><strong>Metronidazole:</strong> Flagyl, Trogyl</li>
+<li><strong>Cotrimoxazole:</strong> Septrin, Bactrim, Sulprin</li>
+<li><strong>Erythromycin:</strong> Eritrocin, Erymax</li>
+<li><strong>Mebendazole:</strong> Vermox, Mebex, Wormin</li>
+<li><strong>Albendazole:</strong> Zentel, Albenza</li>
 </ul>
 </div>
 <div class="info-card" style="margin-top:10px">
@@ -201,6 +211,9 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <h2>Frequently Asked Questions</h2>
 <details class="faq-item"><summary>Can I give adult medication to children?</summary><p>It depends on the medication. Some adult formulations (like paracetamol and ibuprofen) can be given to children at weight-appropriate doses, but the tablet strengths are usually too high. Use paediatric formulations (syrups/suspensions) for children. NEVER give aspirin to children under 16 (risk of Reye's syndrome). Some antibiotics also have different paediatric formulations.</p></details>
 <details class="faq-item"><summary>What if I miss a dose?</summary><p>Take the missed dose as soon as you remember, unless it's almost time for your next dose. Never take a double dose to make up for a missed one. For antibiotics, try to maintain regular intervals. If you miss multiple doses, contact your healthcare provider for guidance on whether to restart or continue the course.</p></details>
+<details class="faq-item"><summary>How often should children be dewormed in Africa?</summary><p>WHO recommends preventive deworming every 6-12 months for school-age children (5-15 years) in areas where intestinal worm prevalence exceeds 20%. Sub-Saharan Africa has some of the highest worm burden globally. Many countries run mass drug administration (MDA) programmes through schools. At home, mebendazole 500mg or albendazole 400mg as a single dose is standard treatment. Children under 2 should NOT be dewormed without a doctor's advice.</p></details>
+<details class="faq-item"><summary>Is cotrimoxazole (Septrin) available over the counter in Africa?</summary><p>Yes. Cotrimoxazole (Septrin, Bactrim) is widely available at pharmacies and patent medicine stores across Africa without a prescription. It is heavily used for UTIs, respiratory infections, and childhood diarrhoea. Importantly, it is also used as daily prophylaxis for HIV-positive patients and children exposed to HIV, under national ART guidelines in Kenya, Nigeria, Uganda, Tanzania, and most other African countries.</p></details>
+<details class="faq-item"><summary>Why give zinc WITH oral rehydration salts (ORS)?</summary><p>ORS replaces fluids and electrolytes lost during diarrhoea. Zinc supplements, given alongside ORS, have been shown in clinical trials to reduce the duration of diarrhoea by up to 25% and severity by up to 40%. Zinc also helps restore gut lining integrity. WHO and UNICEF strongly recommend the combination for children under 5 in developing countries. Zinc alone does not treat dehydration — both are needed together.</p></details>
 </section>
 
 <afro-related-tools category="health" current="drug-dosage"></afro-related-tools>
@@ -288,6 +301,46 @@ const DRUGS = {
     child: { dose: 0, unit: 'ml', freq: 'after each loose stool', maxDaily: 0, maxSingle: 0, perKg: false, ageBased: true },
     infant: { dose: 0, unit: 'ml', freq: 'after each loose stool', maxDaily: 0, maxSingle: 0, fixed: true, fixedDose: '50-100ml after each loose stool' },
     warnings: 'Sip slowly and frequently. Continue breastfeeding for infants. Seek medical attention if dehydration is severe, if there is blood in stool, or if symptoms persist beyond 24-48 hours.'
+  },
+  zinc: {
+    name: 'Zinc Sulfate (Diarrhoea)',
+    desc: 'WHO-recommended zinc supplementation for childhood diarrhoea. Dispersible tablets (10mg, 20mg). Reduces duration and severity by up to 40%.',
+    adult: { dose: 0, unit: 'mg', freq: 'once daily for 10 days', maxDaily: 40, maxSingle: 40, fixed: true, fixedDose: '20-40mg once daily for 10 days' },
+    child: { dose: 0, unit: 'mg', freq: 'once daily for 10 days', maxDaily: 0, maxSingle: 0, perKg: false, ageBased: true },
+    infant: { dose: 0, unit: 'mg', freq: 'once daily for 10 days', maxDaily: 10, maxSingle: 10, fixed: true, fixedDose: '10mg once daily for 10 days (infants 6-12 months)' },
+    warnings: 'Always give WITH ORS — zinc alone does not treat dehydration. Dissolve tablet in breast milk or water. WHO recommends zinc for ALL children with acute diarrhoea in developing countries. Can significantly reduce child mortality from diarrhoea.'
+  },
+  mebendazole: {
+    name: 'Mebendazole / Albendazole (Deworming)',
+    desc: 'Antiparasitic for intestinal worms (roundworm, hookworm, tapeworm, whipworm). WHO Essential Medicine. Tablets: mebendazole 100mg/500mg, albendazole 200mg/400mg.',
+    adult: { dose: 0, unit: 'mg', freq: 'single dose', maxDaily: 500, maxSingle: 500, fixed: true, fixedDose: 'Mebendazole 500mg OR Albendazole 400mg — single dose' },
+    child: { dose: 0, unit: 'mg', freq: 'single dose', maxDaily: 500, maxSingle: 500, fixed: true, fixedDose: 'Mebendazole 500mg OR Albendazole 400mg (children ≥ 2 years — same dose as adult)' },
+    infant: { dose: 0, unit: 'mg', freq: '', maxDaily: 0, maxSingle: 0, contraindicated: true },
+    warnings: 'NOT for children under 2 years or during first trimester of pregnancy. For heavy hookworm infections: mebendazole 100mg twice daily × 3 days is more effective. WHO recommends school-age deworming every 6-12 months in endemic areas across Africa.'
+  },
+  cotrimoxazole: {
+    name: 'Cotrimoxazole (Bactrim / Septrin)',
+    desc: 'Sulfonamide antibiotic (trimethoprim + sulfamethoxazole). Tablets (480mg, 960mg DS), syrup (240mg/5ml). Extensively used across Africa for UTIs, chest infections, HIV prophylaxis.',
+    adult: { dose: 0, unit: 'mg', freq: 'twice daily for 5-7 days', maxDaily: 1920, maxSingle: 960, fixed: true, fixedDose: '960mg (1 DS tablet) twice daily for 5-7 days' },
+    child: { dose: 36, unit: 'mg', freq: 'twice daily for 5-7 days', maxDaily: 36, maxSingle: 18, perKg: true },
+    infant: { dose: 36, unit: 'mg', freq: 'twice daily for 5-7 days', maxDaily: 36, maxSingle: 18, perKg: true },
+    warnings: 'Avoid in G6PD deficiency (risk of haemolysis). Avoid in late pregnancy and for newborns under 6 weeks. Drink plenty of water. Used as daily prophylaxis for HIV-positive children under national ART guidelines in sub-Saharan Africa.'
+  },
+  erythromycin: {
+    name: 'Erythromycin',
+    desc: 'Macrolide antibiotic, preferred alternative for penicillin-allergic patients. Tablets (250mg, 500mg), syrup (125mg/5ml, 250mg/5ml). Used for chest, skin, ear, and STI infections.',
+    adult: { dose: 0, unit: 'mg', freq: 'every 6 hours for 5-7 days', maxDaily: 2000, maxSingle: 500, fixed: true, fixedDose: '500mg every 6 hours (250mg for mild infections)' },
+    child: { dose: 30, unit: 'mg', freq: 'divided every 6-8 hours', maxDaily: 50, maxSingle: 12.5, perKg: true },
+    infant: { dose: 30, unit: 'mg', freq: 'divided every 6-8 hours', maxDaily: 50, maxSingle: 12.5, perKg: true },
+    warnings: 'Best absorbed on empty stomach (1 hour before food). May cause nausea and stomach pain — take with a small amount of food if necessary. Key use in Africa: whooping cough (pertussis), chlamydia, and atypical pneumonia.'
+  },
+  chloroquine: {
+    name: 'Chloroquine (Malaria Prophylaxis)',
+    desc: 'For malaria prevention in chloroquine-sensitive areas. Tablets (150mg base, 250mg salt). Resistance is widespread — confirm sensitivity with local health authority before use.',
+    adult: { dose: 0, unit: 'mg base', freq: 'once weekly (start 1 week before travel, continue 4 weeks after)', maxDaily: 300, maxSingle: 300, fixed: true, fixedDose: '300mg base (2 tablets) once weekly for prophylaxis' },
+    child: { dose: 5, unit: 'mg base', freq: 'once weekly', maxDaily: 5, maxSingle: 5, perKg: true },
+    infant: { dose: 5, unit: 'mg base', freq: 'once weekly', maxDaily: 5, maxSingle: 5, perKg: true },
+    warnings: '⚠️ Chloroquine resistance is widespread in most of Africa. NOT recommended for treatment in most sub-Saharan countries — use Coartem (artemether-lumefantrine) for treatment. Prophylaxis only in confirmed sensitive areas (parts of North Africa, Central America). Consult a travel clinic or doctor before use.'
   }
 };
 
@@ -355,6 +408,9 @@ function calculate() {
     } else if (drugKey === 'ors') {
       const dose = weight < 10 ? '50-100ml' : weight < 20 ? '100-200ml' : '200-400ml';
       html += `<div class="result-box highlight"><div class="num">${dose} per stool</div><div class="lbl">After Each Loose Stool</div></div>`;
+    } else if (drugKey === 'zinc') {
+      const dose = weight < 10 ? '10mg' : '20mg';
+      html += `<div class="result-box highlight"><div class="num">${dose} once daily × 10 days</div><div class="lbl">Zinc Dose (With ORS)</div></div>`;
     }
     html += `<div class="result-box"><div class="num">${weight} kg</div><div class="lbl">Body Weight</div></div>`;
   }

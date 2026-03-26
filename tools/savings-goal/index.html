@@ -263,9 +263,12 @@ h1 em{color:var(--accent-light);font-style:normal}
               <option value="house">House Down Payment (20%)</option>
               <option value="wedding">Wedding</option>
               <option value="car">Car Purchase</option>
-              <option value="education">Education Fund</option>
-              <option value="vacation">Vacation</option>
+              <option value="education">Education Fund (1 year)</option>
+              <option value="vacation">Vacation / Travel</option>
               <option value="business">Business Start-up</option>
+              <option value="hajj">Hajj / Umrah Savings</option>
+              <option value="generator">Generator / Solar System</option>
+              <option value="land">Land Purchase Deposit</option>
             </select>
           </div>
         </div>
@@ -617,7 +620,10 @@ function onCountryChange(){
   rhtml+='<div class="rate-item"><span class="rate-name">Inflation</span><span class="rate-val">'+c.inflation+'%</span></div>';
   rhtml+='<div class="rate-item"><span class="rate-name">Real Return</span><span class="rate-val">'+(avg-c.inflation).toFixed(1)+'%</span></div>';
   document.getElementById('countryRates').innerHTML=rhtml;
-  document.getElementById('countryInflation').innerHTML='<div style="font-size:2rem;font-weight:800;color:'+(c.inflation>10?'#ef4444':'var(--accent)')+'">'+c.inflation+'%</div><div style="font-size:.78rem;color:var(--sg-muted);margin-top:4px">Annual inflation rate for '+c.name+'</div>';
+  var realRet = avg - c.inflation;
+  var inflColor = c.inflation > 20 ? '#dc2626' : c.inflation > 10 ? '#f59e0b' : 'var(--accent)';
+  var realWarning = realRet < 0 ? '<div style="margin-top:8px;padding:6px 10px;background:#fef2f2;border:1px solid #fecaca;border-radius:6px;font-size:.75rem;color:#991b1b;font-weight:600;">⚠️ Real return is negative ('+realRet.toFixed(1)+'%). Savings lose value in real terms — consider higher-yield instruments like T-Bills or Money Market Funds.</div>' : '';
+  document.getElementById('countryInflation').innerHTML='<div style="font-size:2rem;font-weight:800;color:'+inflColor+'">'+c.inflation+'%</div><div style="font-size:.78rem;color:var(--sg-muted);margin-top:4px">Annual inflation for '+c.name+' — Savings rate: '+c.savingsLow+'-'+c.savingsHigh+'%</div>'+realWarning;
   var ihtml='';
   (c.instruments||[]).forEach(function(inst){ihtml+='<div class="rate-item"><span class="rate-name">'+inst+'</span></div>';});
   document.getElementById('countryInstruments').innerHTML=ihtml;
@@ -631,16 +637,31 @@ function onPresetChange(){
   var p=document.getElementById('goalPreset').value;
   var goalEl=document.getElementById('goal');
   var hint=document.getElementById('goalHint');
-  var multipliers={NGN:1,KES:0.003,ZAR:0.003,GHS:0.015,EGP:0.06,ETB:0.07,TZS:3.2,UGX:4.8,RWF:1.6,MAD:0.013,GHC:0.015,USD:0.0013,GBP:0.001,EUR:0.0012};
+  // Multipliers: convert NGN base amounts to target currency
+  // Based on: 1 USD = 1600 NGN. m = target_units_per_USD / 1600
+  var multipliers={
+    NGN:1,
+    KES:0.081,GHS:0.0094,ZAR:0.012,EGP:0.031,ETB:0.069,
+    TZS:1.69,UGX:2.375,RWF:0.813,
+    XOF:0.388,XAF:0.388,
+    ZMW:0.016,ZWL:0.219,MWK:1.063,MZN:0.04,
+    BWP:0.0084,NAD:0.012,MUR:0.029,AOA:0.531,
+    SDG:0.375,MAD:0.00625,TND:0.00194,DZD:0.0844,
+    GNF:5.375,GMD:0.0425,
+    USD:0.000625,GBP:0.000494,EUR:0.000575
+  };
   var m=multipliers[c.code]||1;
   var presets={
-    emergency:{amount:Math.round(1500000*m),label:'3-6 months of expenses'},
-    house:{amount:Math.round(10000000*m),label:'20% down payment on a property'},
-    wedding:{amount:Math.round(5000000*m),label:'Average wedding cost'},
-    car:{amount:Math.round(8000000*m),label:'Mid-range vehicle'},
-    education:{amount:Math.round(3000000*m),label:'1 year university tuition'},
-    vacation:{amount:Math.round(1000000*m),label:'Holiday trip budget'},
-    business:{amount:Math.round(5000000*m),label:'Small business start-up capital'}
+    emergency:{amount:Math.round(1500000*m),label:'3-6 months of essential expenses (liquid savings)'},
+    house:{amount:Math.round(10000000*m),label:'20% down payment on a mid-range property'},
+    wedding:{amount:Math.round(5000000*m),label:'Average wedding / traditional ceremony cost'},
+    car:{amount:Math.round(8000000*m),label:'Mid-range used vehicle (Camry, RAV4 equivalent)'},
+    education:{amount:Math.round(3000000*m),label:'1 year university tuition + living costs'},
+    vacation:{amount:Math.round(1000000*m),label:'Holiday trip budget (flights + hotel)'},
+    business:{amount:Math.round(5000000*m),label:'Small business start-up capital'},
+    hajj:{amount:Math.round(4500000*m),label:'Hajj or Umrah package (flights + accommodation)'},
+    generator:{amount:Math.round(2000000*m),label:'Generator or solar system installation'},
+    land:{amount:Math.round(7000000*m),label:'Land purchase deposit (plot in growing area)'}
   };
   if(p==='custom'){hint.textContent='';return;}
   var pr=presets[p];

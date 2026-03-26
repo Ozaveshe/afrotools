@@ -26,7 +26,7 @@
 </script>
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
 <style>
-:root{--sky:#0ea5e9;--sky-light:#f0f9ff;--sky-dark:#0284c7}*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6}.hero{background:linear-gradient(135deg,#0c4a6e 0%,#0284c7 50%,#38bdf8 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}.hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}.hero p{font-size:1.05rem;opacity:.9;max-width:600px;margin:0 auto}.container{max-width:1000px;margin:0 auto;padding:1.5rem}.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:1.5rem}.card h2{font-size:1.1rem;font-weight:700;margin-bottom:1rem;color:#0c4a6e}
+:root{--sky:#0ea5e9;--sky-light:#f0f9ff;--sky-dark:#0284c7}*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6}.hero{background:linear-gradient(135deg,#0c4a6e 0%,#0284c7 50%,#38bdf8 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}.hero h1{color:#fff;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}.hero p{font-size:1.05rem;opacity:.9;max-width:600px;margin:0 auto}.container{max-width:1000px;margin:0 auto;padding:1.5rem}.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:1.5rem}.card h2{font-size:1.1rem;font-weight:700;margin-bottom:1rem;color:#0c4a6e}
 .cats{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.25rem}
 .cat-btn{padding:.4rem .85rem;border:1.5px solid #e2e8f0;border-radius:20px;background:#fff;font-size:.82rem;font-weight:600;cursor:pointer;color:#64748b;transition:all .2s}
 .cat-btn:hover,.cat-btn.active{background:var(--sky);color:#fff;border-color:var(--sky)}
@@ -90,7 +90,12 @@
 <div class="container">
 <div class="card">
 <h2>Browse Palettes</h2>
-<div class="random-bar"><button class="btn" onclick="randomPalette()">Random Palette</button><span style="font-size:.85rem;color:#94a3b8">Click any hex code to copy</span></div>
+<div class="random-bar">
+  <button class="btn" onclick="randomPalette()">🎲 Random Palette</button>
+  <button class="btn" style="background:#1e293b" onclick="exportAllCSS()">Export All as CSS</button>
+  <button class="btn" style="background:#166534" onclick="exportAllJSON()">Export as JSON</button>
+  <span style="font-size:.85rem;color:#94a3b8">Click hex code to copy • Click Export on a palette to download</span>
+</div>
 <div class="cats" id="cats"></div>
 <div class="palette-grid" id="grid"></div>
 </div>
@@ -156,6 +161,20 @@ const PALETTES=[
 {name:'Zanzibar Door',origin:'Tanzania — Carved Doorways',cat:'Culture',colors:['#00838F','#006064','#B2EBF2','#3E2723','#FFC107']},
 {name:'Timbuktu Sand',origin:'Mali — Ancient City',cat:'Landscapes',colors:['#D7CCC8','#BCAAA4','#8D6E63','#3E2723','#FFF8E1']},
 {name:'Congo Rainforest',origin:'Central Africa — Tropical Forest',cat:'Landscapes',colors:['#1B5E20','#2E7D32','#4CAF50','#81C784','#33691E']},
+// More Modern/Urban palettes
+{name:'Afropunk Lagos',origin:'Nigeria — Street Fashion & Music',cat:'Modern',colors:['#0D0D0D','#FF2D55','#FFFF00','#7B2FBE','#00E5FF']},
+{name:'Kigali Clean',origin:'Rwanda — Green City',cat:'Modern',colors:['#0F5132','#198754','#75B798','#D1E7DD','#0A3622']},
+{name:'Addis Ababa Rise',origin:'Ethiopia — Modern Capital',cat:'Modern',colors:['#1B2A4A','#2563EB','#3B82F6','#DBEAFE','#F59E0B']},
+{name:'Abidjan Sunset',origin:"Côte d'Ivoire — Harbour City",cat:'Modern',colors:['#FF6B35','#F7931E','#FFD700','#1A1A2E','#FF4500']},
+{name:'Casablanca White',origin:'Morocco — Coastal Elegance',cat:'Culture',colors:['#FFFFFF','#2D3A8C','#C8A96E','#1C1C1C','#F5F0E8']},
+// More Traditional
+{name:'Tuareg Silver',origin:'Sahel — Tuareg Jewellery',cat:'Culture',colors:['#C0C0C0','#708090','#2F4F4F','#1C1C1C','#B8860B']},
+{name:'Fulani Blue',origin:'Sahel — Fulani Embroidery',cat:'Textiles',colors:['#1E3A5F','#2E6DA4','#7EC8E3','#F0F4F8','#B8860B']},
+{name:'Igbo Odinala',origin:'Nigeria — Igbo Cultural Art',cat:'Culture',colors:['#8B0000','#FFFFFF','#1C1C1C','#228B22','#FFD700']},
+{name:'Zulu Warriors',origin:'South Africa — Zulu Beadwork',cat:'Textiles',colors:['#CC0000','#000000','#FFFFFF','#228B22','#FFD700']},
+{name:'Great Zimbabwe',origin:'Zimbabwe — Stone City Heritage',cat:'Culture',colors:['#8B7355','#5C4033','#D2B48C','#556B2F','#1C1C1C']},
+{name:'Lamu Old Town',origin:'Kenya — Swahili Architecture',cat:'Culture',colors:['#F5DEB3','#8B7355','#2E8B57','#4169E1','#FFFFF0']},
+{name:'Atlas Mountains',origin:'Morocco — Mountain Landscape',cat:'Landscapes',colors:['#708090','#B0C4DE','#FFFFFF','#8B7355','#4682B4']},
 ];
 
 let activeCat='All';
@@ -165,17 +184,57 @@ function init(){
   render();
 }
 function setCat(c){activeCat=c;document.querySelectorAll('.cat-btn').forEach(b=>b.classList.toggle('active',b.textContent===c));render();}
+function hexToRgb(hex){const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return `rgb(${r},${g},${b})`;}
+
 function render(){
   const list=activeCat==='All'?PALETTES:PALETTES.filter(p=>p.cat===activeCat);
-  document.getElementById('grid').innerHTML=list.map(p=>`
+  document.getElementById('grid').innerHTML=list.map((p,idx)=>`
     <div class="palette-card">
-      <div class="palette-colors">${p.colors.map(c=>`<div style="background:${c}" title="${c}"></div>`).join('')}</div>
+      <div class="palette-colors">${p.colors.map(c=>`<div style="background:${c}" title="${c}" onclick="copyHex('${c}')"></div>`).join('')}</div>
       <div class="palette-info">
         <div class="name">${p.name}</div>
         <div class="origin">${p.origin}</div>
-        <div class="codes">${p.colors.map(c=>`<span class="hex-tag" onclick="copyHex('${c}')">${c}</span>`).join('')}</div>
+        <div class="codes">${p.colors.map(c=>`<span class="hex-tag" onclick="copyHex('${c}')" title="Click to copy">${c}</span>`).join('')}</div>
+        <div style="display:flex;gap:.4rem;margin-top:.6rem">
+          <button onclick="exportPaletteCSS(${idx})" style="padding:.2rem .5rem;border:1px solid #e2e8f0;border-radius:4px;font-size:.7rem;cursor:pointer;background:#f8fafc">CSS vars</button>
+          <button onclick="copyAllHex(${idx})" style="padding:.2rem .5rem;border:1px solid #e2e8f0;border-radius:4px;font-size:.7rem;cursor:pointer;background:#f8fafc">Copy all</button>
+        </div>
       </div>
     </div>`).join('');
+}
+
+function exportPaletteCSS(idx){
+  const p=PALETTES[idx];
+  const varName=p.name.toLowerCase().replace(/[^a-z0-9]+/g,'-');
+  let css=`/* ${p.name} — ${p.origin} */\n:root {\n`;
+  p.colors.forEach((c,i)=>{css+=`  --${varName}-${i+1}: ${c}; /* ${hexToRgb(c)} */\n`;});
+  css+=`}\n`;
+  const blob=new Blob([css],{type:'text/css'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`${varName}.css`;a.click();
+}
+
+function copyAllHex(idx){
+  const p=PALETTES[idx];
+  navigator.clipboard.writeText(p.colors.join(', '));
+  const t=document.getElementById('toast');t.textContent='Copied '+p.colors.length+' colors!';t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1500);
+}
+
+function exportAllCSS(){
+  let css=`/* African Colour Palettes — AfroTools.com */\n\n`;
+  PALETTES.forEach(p=>{
+    const varName=p.name.toLowerCase().replace(/[^a-z0-9]+/g,'-');
+    css+=`/* ${p.name} — ${p.origin} */\n`;
+    p.colors.forEach((c,i)=>{css+=`.${varName}-${i+1} { color: ${c}; background: ${c}; }\n`;});
+    css+=`\n`;
+  });
+  const blob=new Blob([css],{type:'text/css'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='african-colour-palettes.css';a.click();
+}
+
+function exportAllJSON(){
+  const json=JSON.stringify(PALETTES,null,2);
+  const blob=new Blob([json],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='african-colour-palettes.json';a.click();
 }
 function copyHex(hex){
   navigator.clipboard.writeText(hex);

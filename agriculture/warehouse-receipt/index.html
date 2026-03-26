@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Warehouse Receipt Financing Calculator — Borrow Against Stored Grain | AfroTools</title>
+<meta name="description" content="Calculate how much you can borrow against stored grain using a warehouse receipt. Compare selling at harvest vs. storing and financing. Nigeria AFEX, Kenya EAGC, Ethiopia ECX, Ghana GCX and more.">
+<link rel="canonical" href="https://afrotools.com/agriculture/warehouse-receipt/">
+<meta property="og:title" content="Warehouse Receipt Financing Calculator | AfroTools">
+<meta property="og:description" content="Calculate your loan against stored grain, cost of financing, and projected profits when grain prices rise. Covers AFEX, EAGC, ECX, GCX and other African warehouse receipt systems.">
+<meta property="og:url" content="https://afrotools.com/agriculture/warehouse-receipt/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Warehouse Receipt Financing Calculator | AfroTools">
+<meta name="twitter:description" content="Calculate how much you can borrow against stored grain and project WRS profits for Africa.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Warehouse Receipt Financing Calculator",
+  "url": "https://afrotools.com/agriculture/warehouse-receipt/",
+  "description": "Calculate how much you can borrow against stored grain using a warehouse receipt. Project profits when selling in the lean season vs. selling at harvest.",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web",
+  "author": {"@type": "Organization", "name": "AfroTools", "url": "https://afrotools.com"},
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "AfroTools", "item": "https://afrotools.com/"},
+    {"@type": "ListItem", "position": 2, "name": "Agriculture", "item": "https://afrotools.com/agriculture/"},
+    {"@type": "ListItem", "position": 3, "name": "Warehouse Receipt Financing Calculator", "item": "https://afrotools.com/agriculture/warehouse-receipt/"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is a Warehouse Receipt System (WRS)?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A Warehouse Receipt System allows farmers to deposit grain at a certified warehouse and receive a receipt (a legal document proving ownership). The farmer can then use this receipt as collateral to get a bank loan, allowing them to avoid selling at harvest when prices are lowest, and instead sell months later during the lean season when prices are typically 20-40% higher."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much can I borrow against stored grain?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Most African warehouse receipt systems offer loans of 60-75% of the grain's current market value. Nigeria's AFEX offers up to 70%, Kenya's EAGC WRS typically offers 65-70%, and South Africa's SAFEX offers up to 75%. The remainder is a safety buffer for the lender in case grain prices fall."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the grain the collateral — what if prices fall?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes — the stored grain IS the collateral. If grain prices fall sharply, the value of your collateral decreases but you still owe the full loan amount. This is the main risk of WRS financing. The system works best for commodities with reliable seasonal price patterns (maize, sorghum, millet, rice) where lean-season prices are consistently higher than harvest prices."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which countries have active warehouse receipt systems?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The most active WRS in Africa include: Nigeria (AFEX — Africa Exchange, electronic WRS), Kenya (EAGC — Eastern Africa Grain Council, Kenya Warehouse Receipt Authority), Ethiopia (ECX — Ethiopian Commodity Exchange, mandatory for coffee and sesame), Ghana (GCX — Ghana Commodity Exchange, since 2018), Tanzania (TWLB — Tanzania Warehouse Licensing Board), Zambia (ZAMACE — Zambia Agricultural Commodity Exchange), South Africa (SAFEX/JSE — most sophisticated, exchange-traded), and Egypt (Egyptian Commodity Exchange)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the break-even price increase needed for WRS to be profitable?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "WRS is profitable only if the expected price increase exceeds the total financing costs (interest + storage + insurance + handling). For a 4-month storage period at typical African rates, you generally need grain prices to rise by at least 8-15% for WRS to generate a net profit compared to selling at harvest."
+      }
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+
+<style>
+:root {
+  --acc: #007AFF;
+  --acc-dk: #0063D1;
+  --acc-lt: #E8F2FF;
+  --acc-pale: #F0F7FF;
+  --bg: #F8FAFD;
+  --bg-card: #FFF;
+  --text: #0f172a;
+  --muted: #6B7280;
+  --r: 18px;
+  --border: #E5E7EB;
+  --green: #16A34A;
+  --green-bg: #DCFCE7;
+  --green-border: #86EFAC;
+  --red: #DC2626;
+  --red-bg: #FEE2E2;
+  --red-border: #FCA5A5;
+  --amber: #D97706;
+  --amber-bg: #FEF3C7;
+  --amber-border: #FDE68A;
+}
+*, *::before, *::after { box-sizing: border-box; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); margin: 0; }
+
+/* HERO */
+.hero { background: #0A1628; color: #fff; padding: 3rem 1rem 2rem; text-align: center; position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, rgba(0,122,255,.15) 0%, transparent 60%); pointer-events: none; }
+.hero-inner { max-width: 700px; margin: 0 auto; position: relative; }
+.breadcrumb { font-size: .82rem; opacity: .65; margin-bottom: .75rem; }
+.breadcrumb a { color: #fff; text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+.hero h1 { color: #fff; font-size: clamp(1.6rem, 5vw, 2.5rem); font-weight: 800; margin: 0 0 .75rem; letter-spacing: -.02em; line-height: 1.15; text-transform: uppercase; }
+.hero p { font-size: 1rem; opacity: .85; line-height: 1.6; max-width: 580px; margin: 0 auto; }
+.badge-row { display: flex; justify-content: center; gap: .6rem; margin-top: 1.1rem; flex-wrap: wrap; }
+.badge { background: rgba(255,255,255,.15); border-radius: 980px; padding: .3rem .85rem; font-size: .8rem; font-weight: 600; }
+
+/* LAYOUT */
+.main { max-width: 900px; margin: 0 auto; padding: 2rem 1rem 3rem; }
+
+/* HOW IT WORKS */
+.how-steps { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: .75rem; margin-bottom: 1.5rem; }
+.step { background: var(--bg-card); border: 1.5px solid var(--border); border-radius: 14px; padding: 1rem; text-align: center; }
+.step .step-num { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; background: var(--acc); color: #fff; border-radius: 50%; font-size: .78rem; font-weight: 800; margin-bottom: .5rem; }
+.step .step-icon { font-size: 1.3rem; margin-bottom: .3rem; }
+.step .step-text { font-size: .8rem; font-weight: 600; color: var(--muted); line-height: 1.4; }
+
+/* CARD */
+.card { background: var(--bg-card); border: 1.5px solid var(--border); border-radius: var(--r); padding: 1.5rem; margin-bottom: 1.25rem; }
+.card-title { font-size: .8rem; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); margin: 0 0 1.1rem; }
+
+/* FORM */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+@media (max-width: 580px) { .form-grid { grid-template-columns: 1fr; } }
+.field { display: flex; flex-direction: column; gap: .4rem; }
+.field label { font-size: .82rem; font-weight: 700; color: var(--text); }
+.field input, .field select { width: 100%; padding: .65rem .9rem; border: 1.5px solid var(--border); border-radius: 12px; font-family: inherit; font-size: .92rem; color: var(--text); background: #fff; transition: border-color .2s; }
+.field input:focus, .field select:focus { outline: none; border-color: var(--acc); }
+.field .hint { font-size: .75rem; color: var(--muted); line-height: 1.4; }
+.full-width { grid-column: 1 / -1; }
+
+/* INFO BOX */
+.info-box { background: var(--acc-pale); border: 1.5px solid var(--acc-lt); border-radius: 12px; padding: .9rem 1.1rem; font-size: .84rem; line-height: 1.6; color: #0063D1; margin-bottom: 1rem; display: none; }
+.info-box strong { color: var(--acc-dk); }
+.info-box.show { display: block; }
+
+/* BUTTON */
+.btn-calc { display: block; width: 100%; margin-top: 1.25rem; padding: .85rem 1.5rem; background: var(--acc); color: #fff; border: none; border-radius: 980px; font-family: inherit; font-size: 1rem; font-weight: 800; cursor: pointer; letter-spacing: .01em; transition: background .2s, transform .1s; }
+.btn-calc:hover { background: var(--acc-dk); transform: translateY(-1px); }
+.btn-calc:active { transform: translateY(0); }
+
+/* RESULTS */
+#results { display: none; }
+
+/* STAT GRID */
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); gap: .85rem; margin-top: .25rem; }
+.stat { background: var(--acc-pale); border: 1.5px solid var(--acc-lt); border-radius: 14px; padding: 1rem; text-align: center; }
+.stat .sv { font-size: 1.25rem; font-weight: 800; color: var(--acc); word-break: break-all; line-height: 1.2; }
+.stat .sl { font-size: .75rem; color: var(--muted); font-weight: 600; margin-top: .2rem; line-height: 1.3; }
+.stat.green { background: var(--green-bg); border-color: var(--green-border); }
+.stat.green .sv { color: var(--green); }
+.stat.red { background: var(--red-bg); border-color: var(--red-border); }
+.stat.red .sv { color: var(--red); }
+.stat.amber { background: var(--amber-bg); border-color: var(--amber-border); }
+.stat.amber .sv { color: var(--amber); }
+.stat.big { background: linear-gradient(135deg, var(--acc) 0%, var(--acc-dk) 100%); border: none; }
+.stat.big .sv { color: #fff; font-size: 1.5rem; }
+.stat.big .sl { color: rgba(255,255,255,.8); }
+
+/* COST BREAKDOWN */
+.cost-rows { margin-top: .5rem; }
+.cost-row { display: flex; justify-content: space-between; align-items: center; padding: .55rem 0; border-bottom: 1px solid var(--border); font-size: .9rem; }
+.cost-row:last-child { border-bottom: none; font-weight: 800; padding-top: .75rem; }
+.cost-row .cr-label { font-weight: 600; color: var(--text); }
+.cost-row .cr-sub { font-size: .75rem; color: var(--muted); }
+.cost-row .cr-val { font-weight: 700; text-align: right; }
+.cost-row.total .cr-label { color: var(--red); }
+.cost-row.total .cr-val { color: var(--red); font-size: 1rem; }
+
+/* COMPARISON */
+.comparison-box { border-radius: 14px; padding: 1.25rem; margin-top: .25rem; }
+.comparison-box.positive { background: var(--green-bg); border: 1.5px solid var(--green-border); }
+.comparison-box.negative { background: var(--red-bg); border: 1.5px solid var(--red-border); }
+.comparison-box .cb-label { font-size: .78rem; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; margin-bottom: .75rem; }
+.comparison-box.positive .cb-label { color: var(--green); }
+.comparison-box.negative .cb-label { color: var(--red); }
+.compare-rows { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: .65rem; }
+.cr-box { background: rgba(255,255,255,.7); border-radius: 10px; padding: .65rem .85rem; }
+.cr-box .crv { font-size: 1.1rem; font-weight: 800; }
+.cr-box .crl { font-size: .75rem; color: var(--muted); margin-top: .15rem; }
+.premium-tag { display: inline-block; padding: .3rem .85rem; border-radius: 980px; font-size: .88rem; font-weight: 800; margin-top: .65rem; }
+.premium-tag.positive { background: var(--green); color: #fff; }
+.premium-tag.negative { background: var(--red); color: #fff; }
+.premium-tag.neutral { background: var(--amber); color: #fff; }
+
+/* WARNING BOX */
+.warning-box { background: var(--amber-bg); border: 1.5px solid var(--amber-border); border-radius: 12px; padding: 1rem 1.1rem; font-size: .84rem; line-height: 1.6; color: #92400e; margin-top: .25rem; }
+.warning-box strong { color: var(--amber); }
+
+/* BREAKEVEN */
+.breakeven-box { background: var(--acc-pale); border: 1.5px solid var(--acc-lt); border-radius: 14px; padding: 1rem 1.1rem; font-size: .88rem; line-height: 1.7; }
+.breakeven-box strong { color: var(--acc); }
+
+/* RECALC */
+.btn-recalc { display: inline-flex; align-items: center; gap: .4rem; padding: .55rem 1.2rem; background: transparent; border: 1.5px solid var(--acc); color: var(--acc); border-radius: 980px; font-family: inherit; font-size: .88rem; font-weight: 700; cursor: pointer; transition: all .2s; margin-top: 1rem; }
+.btn-recalc:hover { background: var(--acc-lt); }
+
+/* CROSS-LINKS */
+.agri-links { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: .75rem; margin-top: 1rem; }
+.agri-link { display: flex; align-items: center; gap: .6rem; background: var(--bg-card); border: 1.5px solid var(--border); border-radius: 14px; padding: .75rem 1rem; text-decoration: none; color: var(--text); font-weight: 600; font-size: .88rem; transition: border-color .2s, box-shadow .2s; }
+.agri-link:hover { border-color: var(--acc); box-shadow: 0 3px 10px rgba(0,122,255,.1); }
+.agri-link .al-arr { color: var(--muted); margin-left: auto; }
+
+/* FAQ */
+.faq details { border-bottom: 1px solid var(--border); padding: .85rem 0; }
+.faq summary { font-weight: 700; font-size: .9rem; cursor: pointer; list-style: none; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::before { content: '+ '; color: var(--acc); font-weight: 800; }
+.faq details[open] summary::before { content: '&#8722; '; }
+.faq p { font-size: .85rem; color: var(--muted); line-height: 1.65; margin: .5rem 0 0; }
+
+/* SEO PROSE */
+.seo-prose { max-width: 720px; margin: 0 auto; }
+.seo-prose h2 { font-size: 1.05rem; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; margin: 1.75rem 0 .6rem; }
+.seo-prose p { font-size: .88rem; line-height: 1.7; color: var(--muted); }
+
+/* ERROR */
+.err-msg { background: var(--red-bg); border: 1.5px solid var(--red-border); color: var(--red); border-radius: 12px; padding: .65rem 1rem; font-size: .85rem; font-weight: 600; margin-top: .75rem; display: none; }
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<section class="hero">
+  <div class="hero-inner">
+    <p class="breadcrumb"><a href="/">AfroTools</a> &#8250; <a href="/agriculture/">Agriculture</a> &#8250; Warehouse Receipt Financing</p>
+    <h1>&#127981; Warehouse Receipt Financing Calculator</h1>
+    <p>Calculate how much you can borrow against stored grain, the full cost of financing, and exactly how much more you earn by selling in the lean season instead of at harvest.</p>
+    <div class="badge-row">
+      <span class="badge">&#127881; Pan-African</span>
+      <span class="badge">&#127979; AFEX · EAGC · ECX · GCX</span>
+      <span class="badge">&#128181; Loan vs. Profit Analysis</span>
+      <span class="badge">&#127760; 100% Free</span>
+    </div>
+  </div>
+</section>
+
+<main class="main">
+
+  <!-- HOW IT WORKS -->
+  <div class="how-steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-icon">&#127777;&#65039;</div>
+      <div class="step-text">Deposit grain at a certified warehouse at harvest</div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-icon">&#128196;</div>
+      <div class="step-text">Warehouse issues a receipt proving your ownership</div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-icon">&#127981;</div>
+      <div class="step-text">Use receipt as collateral — get a loan (60–75% of grain value)</div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-icon">&#128198;</div>
+      <div class="step-text">Wait for lean season when grain prices rise 20–40%</div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-icon">&#128176;</div>
+      <div class="step-text">Sell grain, repay loan + costs, keep the extra profit</div>
+    </div>
+  </div>
+
+  <!-- CALCULATOR -->
+  <div class="card">
+    <p class="card-title">Grain &amp; Country Details</p>
+    <div class="form-grid">
+
+      <div class="field">
+        <label for="inp-country">Country / WRS Platform</label>
+        <select id="inp-country" onchange="onCountryChange()">
+          <option value="">— Select Country —</option>
+          <option value="NG">&#127475;&#127468; Nigeria (AFEX)</option>
+          <option value="KE">&#127472;&#127466; Kenya (EAGC WRS)</option>
+          <option value="ET">&#127466;&#127481; Ethiopia (ECX)</option>
+          <option value="GH">&#127468;&#127469; Ghana (GCX)</option>
+          <option value="TZ">&#127481;&#127487; Tanzania (TWLB)</option>
+          <option value="ZM">&#127487;&#127474; Zambia (ZAMACE)</option>
+          <option value="ZA">&#127487;&#127462; South Africa (SAFEX/JSE)</option>
+          <option value="EG">&#127466;&#127468; Egypt (Egyptian Commodity Exchange)</option>
+          <option value="UG">&#127482;&#127468; Uganda</option>
+          <option value="RW">&#127479;&#127484; Rwanda</option>
+          <option value="MW">&#127474;&#127484; Malawi</option>
+          <option value="ZW">&#127487;&#127484; Zimbabwe (USD)</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="inp-commodity">Commodity</label>
+        <select id="inp-commodity" onchange="onCommodityChange()">
+          <option value="maize">Maize (Corn)</option>
+          <option value="rice">Rice (paddy)</option>
+          <option value="sorghum">Sorghum</option>
+          <option value="millet">Millet</option>
+          <option value="soybeans">Soybeans</option>
+          <option value="sesame">Sesame</option>
+          <option value="groundnuts">Groundnuts (Peanuts)</option>
+          <option value="cowpeas">Cowpeas (Beans)</option>
+          <option value="wheat">Wheat</option>
+          <option value="coffee">Coffee (green)</option>
+          <option value="cocoa">Cocoa (dry beans)</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="inp-quantity">Quantity Deposited (tonnes)</label>
+        <input type="number" id="inp-quantity" min="0.1" step="0.1" placeholder="e.g. 20" inputmode="decimal">
+        <span class="hint">Minimum deposit is typically 5–10 tonnes at most certified warehouses.</span>
+      </div>
+
+      <div class="field">
+        <label for="inp-price">Current Harvest Price (<span id="lbl-currency">local currency</span> per tonne)</label>
+        <input type="number" id="inp-price" min="0" step="1" placeholder="e.g. 85000" inputmode="decimal">
+        <span class="hint">The prevailing market price when you deposit your grain.</span>
+      </div>
+
+    </div>
+
+    <div id="country-info" class="info-box"></div>
+  </div>
+
+  <div class="card">
+    <p class="card-title">Financing Parameters</p>
+    <div class="form-grid">
+
+      <div class="field">
+        <label for="inp-ltv">Loan-to-Value Ratio (%)</label>
+        <input type="number" id="inp-ltv" min="40" max="85" step="1" value="70" inputmode="decimal">
+        <span class="hint">Bank lends this % of grain value. AFEX: 70%, SAFEX: 75%, most others: 60–70%.</span>
+      </div>
+
+      <div class="field">
+        <label for="inp-rate">Annual Interest Rate (%)</label>
+        <input type="number" id="inp-rate" min="0" max="60" step="0.1" value="22" inputmode="decimal">
+        <span class="hint">Varies: Nigeria ~22–28%, Kenya ~16%, Ethiopia ~15%, South Africa ~11–13%.</span>
+      </div>
+
+      <div class="field">
+        <label for="inp-period">Storage Period (months)</label>
+        <input type="number" id="inp-period" min="1" max="12" step="1" value="4" inputmode="numeric">
+        <span class="hint">Typical WRS storage: 3–6 months. Maximum is usually 12 months.</span>
+      </div>
+
+      <div class="field">
+        <label for="inp-storage-cost">Storage Cost (<span id="lbl-currency2">local currency</span> per tonne per month)</label>
+        <input type="number" id="inp-storage-cost" min="0" step="1" placeholder="e.g. 2000" inputmode="decimal">
+        <span class="hint">Warehouse fee charged per tonne stored per month.</span>
+      </div>
+
+      <div class="field">
+        <label for="inp-insurance">Insurance Cost (% of grain value per year)</label>
+        <input type="number" id="inp-insurance" min="0" max="10" step="0.1" value="1.5" inputmode="decimal">
+        <span class="hint">Mandatory at most certified warehouses. Typically 1–2% per annum.</span>
+      </div>
+
+      <div class="field">
+        <label for="inp-handling">Handling &amp; Grading Fee (<span id="lbl-currency3">local currency</span> per tonne)</label>
+        <input type="number" id="inp-handling" min="0" step="1" placeholder="e.g. 1500" inputmode="decimal">
+        <span class="hint">One-time fee for intake, grading, and bagging at the warehouse.</span>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="card">
+    <p class="card-title">Expected Sale (Lean Season)</p>
+    <div class="form-grid">
+
+      <div class="field">
+        <label for="inp-price-increase">Expected Price Increase (%)</label>
+        <input type="number" id="inp-price-increase" min="0" max="200" step="1" value="30" inputmode="decimal">
+        <span class="hint">Historical seasonal increase for this commodity. Maize/sorghum: 25–40%. Coffee/cocoa: 10–20%.</span>
+      </div>
+
+      <div class="field" style="display:flex;flex-direction:column;justify-content:center;">
+        <div style="background:var(--acc-pale);border:1.5px solid var(--acc-lt);border-radius:12px;padding:.85rem 1rem;font-size:.85rem;line-height:1.6;">
+          <strong style="color:var(--acc)">Seasonal Price Pattern</strong><br>
+          <span id="seasonal-hint" style="color:var(--muted)">Select a commodity to see typical price patterns.</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="calc-error" class="err-msg"></div>
+
+  <button class="btn-calc" onclick="calculate()">&#128200; Calculate Warehouse Receipt Financing</button>
+
+  <!-- RESULTS -->
+  <div id="results">
+
+    <div class="card" style="margin-top:1.5rem">
+      <p class="card-title">&#127981; Financing Summary</p>
+      <div class="stat-grid">
+        <div class="stat">
+          <div class="sv" id="res-grain-value"></div>
+          <div class="sl">Grain Value at Deposit</div>
+        </div>
+        <div class="stat big">
+          <div class="sv" id="res-loan-amount"></div>
+          <div class="sl">Loan Amount (Cash Now)</div>
+        </div>
+        <div class="stat">
+          <div class="sv" id="res-ltv-pct"></div>
+          <div class="sl">Loan-to-Value</div>
+        </div>
+        <div class="stat">
+          <div class="sv" id="res-quantity"></div>
+          <div class="sl">Tonnes Stored</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="card-title">&#128722; Cost of Financing</p>
+      <div class="cost-rows" id="cost-rows"></div>
+    </div>
+
+    <div class="card">
+      <p class="card-title">&#128198; Projected Sale (Lean Season)</p>
+      <div class="stat-grid">
+        <div class="stat">
+          <div class="sv" id="res-expected-price"></div>
+          <div class="sl">Expected Price per Tonne</div>
+        </div>
+        <div class="stat">
+          <div class="sv" id="res-sale-revenue"></div>
+          <div class="sl">Gross Sale Revenue</div>
+        </div>
+        <div class="stat">
+          <div class="sv" id="res-repayment"></div>
+          <div class="sl">Total Financing Costs</div>
+        </div>
+        <div class="stat green">
+          <div class="sv" id="res-net-proceeds"></div>
+          <div class="sl">Your Net Proceeds</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="card-title">&#9878;&#65039; WRS vs. Selling at Harvest</p>
+      <div id="comparison-output"></div>
+    </div>
+
+    <div class="card">
+      <p class="card-title">&#8987; Break-Even Analysis</p>
+      <div id="breakeven-output" class="breakeven-box"></div>
+    </div>
+
+    <div class="warning-box">
+      <strong>&#9888;&#65039; Risk Warning:</strong> Warehouse receipt financing works best when commodity prices have reliable seasonal patterns. If market prices <em>fall</em> during your storage period, you still owe the full loan amount — the grain is your collateral but price risk is yours. WRS is NOT suitable for commodities with unpredictable or volatile prices. Always check current market conditions before depositing.
+    </div>
+
+    <button class="btn-recalc" onclick="resetForm()">&#8592; Recalculate</button>
+
+  </div>
+
+  <!-- RELATED TOOLS -->
+  <div class="card" style="margin-top:2rem">
+    <p class="card-title">Related Agriculture Tools</p>
+    <div class="agri-links">
+      <a href="/agriculture/commodity-prices/" class="agri-link">&#128200; Commodity Prices <span class="al-arr">&#8250;</span></a>
+      <a href="/agriculture/storage-loss/" class="agri-link">&#128722; Storage Loss Calculator <span class="al-arr">&#8250;</span></a>
+      <a href="/agriculture/farm-profit/" class="agri-link">&#128202; Farm Profit/Loss <span class="al-arr">&#8250;</span></a>
+      <a href="/agriculture/cooperative-calculator/" class="agri-link">&#129309; Cooperative Dividend <span class="al-arr">&#8250;</span></a>
+      <a href="/agriculture/export-docs/" class="agri-link">&#128196; Export Documents <span class="al-arr">&#8250;</span></a>
+      <a href="/agriculture/" class="agri-link">&#127807; All Agri Tools <span class="al-arr">&#8250;</span></a>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="card" style="margin-top:1.5rem">
+    <p class="card-title">Frequently Asked Questions</p>
+    <div class="faq">
+      <details open>
+        <summary>What is a Warehouse Receipt System (WRS)?</summary>
+        <p>A WRS allows farmers to deposit grain at a certified, regulated warehouse and receive an official receipt proving ownership. This receipt acts like a financial instrument — banks accept it as collateral for loans, enabling farmers to access cash without selling their grain. The system decouples the timing of production from the timing of sale, allowing farmers to wait for better prices.</p>
+      </details>
+      <details>
+        <summary>How much can I borrow against my grain?</summary>
+        <p>Most African WRS offer loans of 60–75% of the grain's current market value (the loan-to-value ratio). Nigeria's AFEX offers up to 70%, Kenya's EAGC typically 65–70%, and South Africa's SAFEX/JSE up to 75%. The 25–40% buffer protects the lender if prices fall slightly. You receive cash immediately — typically within 24–48 hours of depositing grain.</p>
+      </details>
+      <details>
+        <summary>Which countries have the most developed WRS?</summary>
+        <p>Nigeria (AFEX — Africa Exchange, fully electronic), Ethiopia (ECX — mandatory for coffee and sesame exports), Kenya (EAGC + Kenya Warehouse Receipt Authority), Ghana (GCX since 2018), Tanzania (TWLB — Tanzania Warehouse Licensing Board), Zambia (ZAMACE), South Africa (SAFEX/JSE — most sophisticated, exchange-traded futures and WRS), and Egypt (Egyptian Commodity Exchange).</p>
+      </details>
+      <details>
+        <summary>What happens if grain prices fall during storage?</summary>
+        <p>This is the primary risk of WRS financing. If prices fall below your harvest price, you still owe the full loan amount, but you may sell the grain for less than expected. In extreme cases, if prices fall below the loan amount divided by your quantity, you could end up with a loss. This calculator shows you the break-even price increase needed — WRS works best when seasonal price patterns are consistent and predictable.</p>
+      </details>
+      <details>
+        <summary>What is the minimum grain quantity I can deposit?</summary>
+        <p>Most certified warehouses require a minimum deposit of 5–10 tonnes. AFEX in Nigeria has a minimum of 5 tonnes, while some Kenyan EAGC facilities accept as little as 3 tonnes. Smaller farmers often form groups to aggregate their grain and jointly access WRS financing, sharing the costs proportionally.</p>
+      </details>
+    </div>
+  </div>
+
+  <div class="seo-prose" style="margin-top:1.5rem">
+    <h2>What Is Warehouse Receipt Financing?</h2>
+    <p>Warehouse Receipt Financing (WRF) is one of the most powerful financial tools available to African farmers. The system allows you to deposit your grain at harvest — when prices are lowest — and receive an official warehouse receipt. You take that receipt to a bank as collateral and get a loan worth 60–75% of the grain's value. You use the cash for household expenses or to buy inputs for the next season. Three to six months later, when the lean season drives prices 20–40% higher, you sell your grain, repay the loan, pay the storage and interest costs, and keep the difference as pure profit.</p>
+
+    <h2>Why Harvest Prices Are Low</h2>
+    <p>In most African countries, harvest coincides with peak supply — everyone brings their produce to market at the same time. This seasonal glut depresses prices. Meanwhile, the lean season (just before the next harvest) sees dwindling supply and rising prices. Traders and large-scale buyers exploit this seasonal price variation, buying cheap at harvest and selling expensive 4–6 months later. Warehouse receipt systems allow smallholder farmers to capture this same seasonal premium instead of surrendering it to middlemen.</p>
+
+    <h2>AFEX, EAGC, ECX and Other African WRS Platforms</h2>
+    <p>Nigeria's AFEX (Africa Exchange) is West Africa's largest electronic warehouse receipt platform, operating over 100 silos and certified warehouses across 19 states. Kenya's Eastern Africa Grain Council (EAGC) runs a WRS serving Kenya, Tanzania, Uganda, and Rwanda. Ethiopia's ECX (Ethiopian Commodity Exchange) makes WRS mandatory for coffee and sesame exports, stabilizing prices for millions of farmers. Ghana's GCX (Ghana Commodity Exchange) launched in 2018 with government support. Each platform has different loan-to-value ratios, interest rates, and storage costs — this calculator pre-fills typical parameters for each country.</p>
+
+    <h2>How to Use This Calculator</h2>
+    <p>Select your country and the local WRS platform's typical parameters will be auto-filled. Enter your commodity, quantity deposited, and current harvest price. Adjust the loan-to-value ratio, interest rate, storage costs, and insurance to match your specific lender's terms. Set the expected price increase based on historical seasonal data for your commodity. The calculator then shows you: how much cash you receive now, the total cost of financing, your projected sale proceeds, and exactly how much more you earn compared to selling at harvest.</p>
+  </div>
+
+</main>
+
+<afro-footer></afro-footer>
+
+<script>
+// ── COUNTRY DATA ─────────────────────────────────────────────────────────────
+var COUNTRIES = {
+  NG: { name: 'Nigeria', currency: 'NGN', symbol: '&#8358;', ltv: 70, rate: 24, storage: 2000,  insurance: 1.5, handling: 1200,
+        wrs: 'AFEX (Africa Exchange)',
+        info: '<strong>AFEX (Africa Exchange)</strong> is Nigeria\'s leading electronic WRS. Over 100 silos across 19 states. Electronic receipts accepted by Sterling Bank, GTBank, and Zenith Bank. Loan disbursement in 24 hrs. NIRSAL Microfinance Bank offers concessionary rates under the CBN Anchor Borrowers\' Programme.' },
+  KE: { name: 'Kenya', currency: 'KES', symbol: 'KSh', ltv: 70, rate: 16, storage: 200,   insurance: 1.5, handling: 150,
+        wrs: 'EAGC WRS / KWRA',
+        info: '<strong>EAGC (Eastern Africa Grain Council) WRS</strong> operates certified warehouses across Kenya. The Kenya Warehouse Receipt Authority (KWRA) licenses and regulates facilities. KCB, Equity Bank, and Co-operative Bank accept EAGC receipts as collateral at preferential rates.' },
+  ET: { name: 'Ethiopia', currency: 'ETB', symbol: 'Br', ltv: 65, rate: 15, storage: 120,   insurance: 1.5, handling: 80,
+        wrs: 'ECX (Ethiopian Commodity Exchange)',
+        info: '<strong>ECX (Ethiopian Commodity Exchange)</strong> is mandatory for all coffee and sesame exports. Storage in ECX-certified warehouses is required before grading. The government provides subsidised WRS financing through the Development Bank of Ethiopia for smallholders.' },
+  GH: { name: 'Ghana', currency: 'GHS', symbol: 'GH&#8373;', ltv: 65, rate: 28, storage: 18,    insurance: 1.5, handling: 12,
+        wrs: 'GCX (Ghana Commodity Exchange)',
+        info: '<strong>GCX (Ghana Commodity Exchange)</strong> launched in 2018 with government support. Accredited warehouses in Tamale, Techiman, and Kumasi. Agricultural Development Bank (ADB) offers WRS-linked loans. Main commodities: maize, soybeans, groundnuts.' },
+  TZ: { name: 'Tanzania', currency: 'TZS', symbol: 'TSh', ltv: 65, rate: 18, storage: 6000,  insurance: 1.5, handling: 5000,
+        wrs: 'TWLB (Tanzania Warehouse Licensing Board)',
+        info: '<strong>TWLB (Tanzania Warehouse Licensing Board)</strong> under the Ministry of Industry and Trade licenses and inspects all certified warehouses. CRDB Bank and NBC offer WRS-linked financing. The Warehouse Receipts Act 2005 governs the system.' },
+  ZM: { name: 'Zambia', currency: 'ZMW', symbol: 'K', ltv: 65, rate: 25, storage: 55,    insurance: 1.5, handling: 35,
+        wrs: 'ZAMACE (Zambia Agricultural Commodity Exchange)',
+        info: '<strong>ZAMACE</strong> operates Zambia\'s WRS with certified warehouses in Lusaka, Kabwe, Chipata, and Mongu. Zanaco and Indo Zambia Bank offer WRS-linked financing. Focus commodities: maize, soybeans, groundnuts. Minimum deposit: 5 tonnes.' },
+  ZA: { name: 'South Africa', currency: 'ZAR', symbol: 'R', ltv: 75, rate: 12, storage: 160,   insurance: 1.0, handling: 90,
+        wrs: 'SAFEX / JSE Agri',
+        info: '<strong>SAFEX (now JSE Agri)</strong> operates Africa\'s most sophisticated agricultural commodity exchange. Silo certificates (the South African equivalent of warehouse receipts) are exchange-traded instruments. ABSA AgriBusiness, Nedbank, and Standard Bank accept JSE Agri silo certificates. Main crops: white/yellow maize, wheat, sunflower, soybeans.' },
+  EG: { name: 'Egypt', currency: 'EGP', symbol: 'E&#163;', ltv: 70, rate: 18, storage: 90,    insurance: 1.5, handling: 60,
+        wrs: 'Egyptian Commodity Exchange',
+        info: '<strong>Egyptian Commodity Exchange</strong> covers wheat, rice, and cotton. The government\'s silo system stores millions of tonnes annually. The Agricultural Bank of Egypt (ABE) offers WRS-linked loans. Cotton WRS is particularly active through the Egyptian Cotton Exchange.' },
+  UG: { name: 'Uganda', currency: 'UGX', symbol: 'USh', ltv: 60, rate: 20, storage: 18000, insurance: 1.5, handling: 12000,
+        wrs: 'EAGC WRS (Uganda)',
+        info: '<strong>EAGC WRS</strong> also covers Uganda through certified facilities in Kampala, Gulu, and Mbarara. DFCU Bank and Stanbic Uganda accept EAGC receipts. The WRS is developing rapidly supported by government and USAID.' },
+  RW: { name: 'Rwanda', currency: 'RWF', symbol: 'RF', ltv: 60, rate: 18, storage: 3500,  insurance: 1.5, handling: 2500,
+        wrs: 'RBA / EAGC WRS',
+        info: '<strong>Rwanda BRD (Business Development Fund)</strong> and EAGC WRS cover Rwanda. The National Warehouse Receipt System is under the Ministry of Agriculture. Main commodities: maize, beans, rice, sorghum. Bank of Kigali and Equity Bank Rwanda offer WRS financing.' },
+  MW: { name: 'Malawi', currency: 'MWK', symbol: 'MK', ltv: 60, rate: 22, storage: 5500,  insurance: 1.5, handling: 4000,
+        wrs: 'ACE (Agricultural Commodity Exchange)',
+        info: '<strong>ACE (Agricultural Commodity Exchange)</strong> operates Malawi\'s WRS with facilities in Lilongwe, Blantyre, and Mzuzu. NBS Bank and National Bank of Malawi offer WRS-linked financing. Main commodities: maize, soybeans, groundnuts, tobacco (separate system).' },
+  ZW: { name: 'Zimbabwe', currency: 'USD', symbol: '$', ltv: 65, rate: 18, storage: 8,     insurance: 1.5, handling: 5,
+        wrs: 'Grain Marketing Board / CBZ WRS',
+        info: '<strong>Grain Marketing Board (GMB)</strong> and CBZ Holdings operate Zimbabwe\'s WRS in USD. Main facilities in Harare, Bulawayo, and Gweru. CBZ Bank offers WRS-linked financing. Main commodities: white maize, soya, wheat, tobacco.' }
+};
+
+// ── COMMODITY DATA ───────────────────────────────────────────────────────────
+var COMMODITIES = {
+  maize:      { name: 'Maize',      increase: 30, pattern: 'Consistent 25–40% lean-season premium. Peak scarcity: March–May (East Africa), Aug–Oct (West Africa). Most reliable WRS commodity.' },
+  rice:       { name: 'Rice',       increase: 25, pattern: 'Moderate 20–30% seasonal increase. Two seasons in many countries reduce volatility. Best for WRS in single-season areas.' },
+  sorghum:    { name: 'Sorghum',    increase: 28, pattern: 'Reliable 20–35% seasonal price increase. Drought-resistant storage makes quality maintenance easier. Strong WRS candidate.' },
+  millet:     { name: 'Millet',     increase: 25, pattern: 'Similar to sorghum — 20–30% seasonal premium. Very long shelf life makes extended storage possible.' },
+  soybeans:   { name: 'Soybeans',   increase: 20, pattern: 'Moderate 15–25% seasonal increase. Export demand from crushing industry supports lean-season prices. Popular on ZAMACE/SAFEX.' },
+  sesame:     { name: 'Sesame',     increase: 18, pattern: 'Lower but stable 15–22% seasonal increase. High value per tonne makes even small increases profitable. ECX mandatory crop.' },
+  groundnuts: { name: 'Groundnuts', increase: 25, pattern: 'Good 20–30% lean-season premium. High oil content means storage quality is critical — ensure aflatoxin control.' },
+  cowpeas:    { name: 'Cowpeas',    increase: 28, pattern: 'High seasonal variation — 22–35% increase. Very popular in West Africa (Nigeria, Ghana, Burkina Faso). Short shelf life requires good storage.' },
+  wheat:      { name: 'Wheat',      increase: 15, pattern: 'Moderate 12–20% seasonal increase in domestic markets. Import parity pricing limits upside in countries with high imports (Egypt, Nigeria).' },
+  coffee:     { name: 'Coffee',     increase: 15, pattern: 'Lower seasonal variation but high absolute value per tonne. ECX mandatory. International prices (NYMEX) matter more than domestic seasonality.' },
+  cocoa:      { name: 'Cocoa',      increase: 12, pattern: 'Limited domestic seasonality — prices driven more by international markets (ICE). Best for WRS through GCX (Ghana) or AFEX cocoa product.' }
+};
+
+// ── STATE ────────────────────────────────────────────────────────────────────
+var selectedCountry = null;
+
+function fmt(n, sym) {
+  if (n === undefined || isNaN(n)) return '—';
+  var abs = Math.abs(n);
+  var str;
+  if (abs >= 1e9)      str = (n/1e9).toFixed(2) + 'B';
+  else if (abs >= 1e6) str = (n/1e6).toFixed(2) + 'M';
+  else if (abs >= 1e3) str = (n/1e3).toFixed(1) + 'K';
+  else                 str = n.toLocaleString('en', {maximumFractionDigits: 0});
+  return (sym || '') + str;
+}
+
+function fmtFull(n, sym) {
+  if (n === undefined || isNaN(n)) return '—';
+  return (sym || '') + Math.round(n).toLocaleString('en');
+}
+
+function onCountryChange() {
+  var code = document.getElementById('inp-country').value;
+  selectedCountry = code ? COUNTRIES[code] : null;
+  var sym = selectedCountry ? selectedCountry.symbol : 'local currency';
+  document.getElementById('lbl-currency').innerHTML = sym;
+  document.getElementById('lbl-currency2').innerHTML = sym;
+  document.getElementById('lbl-currency3').innerHTML = sym;
+
+  var infoBox = document.getElementById('country-info');
+  if (selectedCountry) {
+    document.getElementById('inp-ltv').value = selectedCountry.ltv;
+    document.getElementById('inp-rate').value = selectedCountry.rate;
+    document.getElementById('inp-storage-cost').value = selectedCountry.storage;
+    document.getElementById('inp-insurance').value = selectedCountry.insurance;
+    document.getElementById('inp-handling').value = selectedCountry.handling;
+    infoBox.innerHTML = '&#127981; <strong>' + selectedCountry.wrs + '</strong> — ' + selectedCountry.info;
+    infoBox.classList.add('show');
+  } else {
+    infoBox.classList.remove('show');
+  }
+}
+
+function onCommodityChange() {
+  var code = document.getElementById('inp-commodity').value;
+  var c = COMMODITIES[code];
+  if (c) {
+    document.getElementById('inp-price-increase').value = c.increase;
+    document.getElementById('seasonal-hint').textContent = c.pattern;
+  }
+}
+
+function calculate() {
+  var errEl = document.getElementById('calc-error');
+  errEl.style.display = 'none';
+
+  var countryCode = document.getElementById('inp-country').value;
+  if (!countryCode) { showErr('Please select a country.'); return; }
+  var country = COUNTRIES[countryCode];
+
+  var qty        = parseFloat(document.getElementById('inp-quantity').value);
+  var price      = parseFloat(document.getElementById('inp-price').value);
+  var ltv        = parseFloat(document.getElementById('inp-ltv').value) / 100;
+  var rate       = parseFloat(document.getElementById('inp-rate').value) / 100;
+  var period     = parseFloat(document.getElementById('inp-period').value);
+  var storagePmt = parseFloat(document.getElementById('inp-storage-cost').value);
+  var ins        = parseFloat(document.getElementById('inp-insurance').value) / 100;
+  var handling   = parseFloat(document.getElementById('inp-handling').value);
+  var priceInc   = parseFloat(document.getElementById('inp-price-increase').value) / 100;
+
+  if (!qty || qty <= 0)    { showErr('Please enter the quantity deposited (tonnes).'); return; }
+  if (!price || price <= 0){ showErr('Please enter the current harvest price per tonne.'); return; }
+  if (isNaN(storagePmt))   { showErr('Please enter the storage cost per tonne per month.'); return; }
+  if (isNaN(handling))     { showErr('Please enter the handling fee per tonne.'); return; }
+
+  // ── CORE CALCULATIONS ─────────────────────────────────────────────
+  var sym = country.symbol;
+
+  var grainValue   = qty * price;                                        // Value at deposit
+  var loanAmount   = grainValue * ltv;                                   // Cash received now
+  var interest     = loanAmount * rate * (period / 12);                  // Interest on loan
+  var storageCost  = qty * storagePmt * period;                          // Storage fees
+  var insuranceCost= grainValue * ins * (period / 12);                   // Insurance (pro-rata)
+  var handlingCost = qty * handling;                                     // One-time handling
+  var totalCost    = interest + storageCost + insuranceCost + handlingCost;
+
+  var expectedPrice   = price * (1 + priceInc);                          // Price at sale
+  var saleRevenue     = qty * expectedPrice;                             // Gross revenue
+  // The loan is received now and repaid from sale proceeds — it cancels out.
+  // True net income from WRS = sale revenue minus real costs only (interest, storage, insurance, handling).
+  var netProceeds     = saleRevenue - totalCost;                         // Net to farmer (loan repayment is a wash)
+
+  var harvestValue    = qty * price;                                     // If sold at harvest
+  var wrsGain         = netProceeds - harvestValue;                      // WRS premium over harvest
+  var wrsGainPct      = (wrsGain / harvestValue) * 100;
+
+  // Break-even: minimum price increase so that netProceeds >= harvestValue
+  // qty*price*(1+be) - totalCost = qty*price
+  // be = totalCost / harvestValue
+  var beIncrease = (totalCost / harvestValue) * 100;
+
+  // ── RENDER ─────────────────────────────────────────────────────────
+  document.getElementById('res-grain-value').innerHTML = fmtFull(grainValue, sym);
+  document.getElementById('res-loan-amount').innerHTML = fmtFull(loanAmount, sym);
+  document.getElementById('res-ltv-pct').innerHTML = Math.round(ltv * 100) + '%';
+  document.getElementById('res-quantity').innerHTML = qty.toLocaleString('en', {maximumFractionDigits:1}) + ' t';
+
+  // Cost rows
+  var costHtml = '';
+  costHtml += costRow('Interest (' + period + ' months at ' + (rate*100).toFixed(1) + '%)', '(' + Math.round(loanAmount/1e3) + 'K loan × ' + (rate*100).toFixed(1) + '% ÷ 12 × ' + period + ')', fmtFull(interest, sym));
+  costHtml += costRow('Storage fees', qty.toFixed(1) + ' t × ' + storagePmt.toLocaleString() + ' × ' + period + ' months', fmtFull(storageCost, sym));
+  costHtml += costRow('Insurance', ins*100 + '% p.a. for ' + (period/12).toFixed(2) + ' yr', fmtFull(insuranceCost, sym));
+  costHtml += costRow('Handling &amp; grading', qty.toFixed(1) + ' t × ' + handling.toLocaleString(), fmtFull(handlingCost, sym));
+  costHtml += '<div class="cost-row total"><div><div class="cr-label">&#9888; Total Cost of Financing</div></div><div class="cr-val">' + fmtFull(totalCost, sym) + '</div></div>';
+  document.getElementById('cost-rows').innerHTML = costHtml;
+
+  document.getElementById('res-expected-price').innerHTML = fmtFull(expectedPrice, sym);
+  document.getElementById('res-sale-revenue').innerHTML   = fmtFull(saleRevenue, sym);
+  document.getElementById('res-repayment').innerHTML      = fmtFull(totalCost, sym);
+  document.getElementById('res-net-proceeds').innerHTML   = fmtFull(netProceeds, sym);
+  if (netProceeds < 0) {
+    document.getElementById('res-net-proceeds').parentElement.classList.remove('green');
+    document.getElementById('res-net-proceeds').parentElement.classList.add('red');
+  }
+
+  // Comparison
+  var compHtml = '';
+  var isPositive = wrsGain > 0;
+  var tagClass = isPositive ? 'positive' : (wrsGain === 0 ? 'neutral' : 'negative');
+  compHtml += '<div class="comparison-box ' + (isPositive ? 'positive' : 'negative') + '">';
+  compHtml += '<div class="cb-label">' + (isPositive ? '&#9989; WRS earns you MORE than selling at harvest' : '&#10060; WRS earns you LESS than selling at harvest') + '</div>';
+  compHtml += '<div class="compare-rows">';
+  compHtml += '<div class="cr-box"><div class="crv">' + fmtFull(harvestValue, sym) + '</div><div class="crl">Selling at harvest today</div></div>';
+  compHtml += '<div class="cr-box"><div class="crv">' + fmtFull(netProceeds, sym) + '</div><div class="crl">With WRS financing</div></div>';
+  var gainStr = (wrsGain >= 0 ? '+' : '') + fmtFull(wrsGain, sym) + ' (' + (wrsGainPct >= 0 ? '+' : '') + wrsGainPct.toFixed(1) + '%)';
+  compHtml += '<div class="cr-box"><div class="crv" style="color:' + (isPositive ? 'var(--green)' : 'var(--red)') + '">' + gainStr + '</div><div class="crl">WRS advantage / disadvantage</div></div>';
+  compHtml += '</div>';
+  compHtml += '<span class="premium-tag ' + tagClass + '">' + (isPositive ? '&#127881; WRS earns you ' + fmtFull(Math.abs(wrsGain), sym) + ' MORE (+' + Math.abs(wrsGainPct).toFixed(1) + '%)' : '&#128549; WRS costs you ' + fmtFull(Math.abs(wrsGain), sym) + ' MORE than selling now') + '</span>';
+  compHtml += '</div>';
+  document.getElementById('comparison-output').innerHTML = compHtml;
+
+  // Break-even
+  var beHtml = '';
+  beHtml += 'With a <strong>' + period + '-month</strong> storage period and total financing costs of <strong>' + fmtFull(totalCost, sym) + '</strong>, WRS financing is only profitable if the grain price rises by at least <strong>' + beIncrease.toFixed(1) + '%</strong>.';
+  beHtml += '<br><br>';
+  if (priceInc * 100 > beIncrease) {
+    beHtml += '&#9989; Your expected price increase of <strong>' + (priceInc*100).toFixed(0) + '%</strong> is above the break-even threshold of <strong>' + beIncrease.toFixed(1) + '%</strong>. WRS is projected to be profitable.';
+  } else if (priceInc * 100 === beIncrease) {
+    beHtml += '&#9888;&#65039; Your expected price increase of <strong>' + (priceInc*100).toFixed(0) + '%</strong> is exactly at break-even. Any price shortfall will result in a loss.';
+  } else {
+    beHtml += '&#10060; Your expected price increase of <strong>' + (priceInc*100).toFixed(0) + '%</strong> is <em>below</em> the break-even threshold of <strong>' + beIncrease.toFixed(1) + '%</strong>. At the expected price, WRS financing is NOT profitable. Consider a shorter storage period or negotiating lower interest/storage rates.';
+  }
+  document.getElementById('breakeven-output').innerHTML = beHtml;
+
+  document.getElementById('results').style.display = 'block';
+  document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function costRow(label, sub, val) {
+  return '<div class="cost-row"><div><div class="cr-label">' + label + '</div><div class="cr-sub">' + sub + '</div></div><div class="cr-val">' + val + '</div></div>';
+}
+
+function showErr(msg) {
+  var el = document.getElementById('calc-error');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+function resetForm() {
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('calc-error').style.display = 'none';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Init commodity hint on load
+onCommodityChange();
+</script>
+
+</body>
+</html>

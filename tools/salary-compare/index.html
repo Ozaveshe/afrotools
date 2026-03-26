@@ -261,6 +261,9 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;color:var(--sb-dar
 <option value="data-scientist">Data Scientist</option>
 <option value="pharmacist">Pharmacist</option>
 <option value="architect">Architect</option>
+<option value="mobile-developer">Mobile Developer</option>
+<option value="supply-chain">Supply Chain Manager</option>
+<option value="social-media-mgr">Social Media Manager</option>
 </select>
 </div>
 <div>
@@ -303,14 +306,20 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;color:var(--sb-dar
 </div>
 <div>
 <label>Skills (select all that apply)</label>
-<select id="selSkills" multiple style="height:72px">
+<select id="selSkills" multiple style="height:100px">
 <option value="python">Python</option>
+<option value="react">React / Node.js</option>
+<option value="mobile">Mobile Dev (Flutter/React Native)</option>
+<option value="aiml">AI / Machine Learning</option>
+<option value="aws">AWS / Cloud</option>
+<option value="sqlbi">SQL / Power BI / Tableau</option>
 <option value="cpa">CPA Certification</option>
+<option value="acca">ACCA / ICAN / ICAG</option>
+<option value="cfa">CFA (Financial Analyst)</option>
 <option value="pmp">PMP Certification</option>
 <option value="mba">MBA Degree</option>
-<option value="aws">AWS / Cloud</option>
-<option value="aiml">AI / Machine Learning</option>
 <option value="agile">Agile / Scrum</option>
+<option value="french">French Language (Bilingual)</option>
 </select>
 </div>
 </div>
@@ -413,11 +422,11 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;color:var(--sb-dar
 
 const COUNTRIES = {
   ng: { name:'Nigeria', cur:'\u20A6', flag:'\uD83C\uDDF3\uD83C\uDDEC', rate:1600, ppp:2.8, col:0.35 },
-  ke: { name:'Kenya', cur:'KSh', flag:'\uD83C\uDDF0\uD83C\uDDEA', rate:155, ppp:2.2, col:0.40 },
+  ke: { name:'Kenya', cur:'KSh', flag:'\uD83C\uDDF0\uD83C\uDDEA', rate:130, ppp:2.2, col:0.40 },
   za: { name:'South Africa', cur:'R', flag:'\uD83C\uDDFF\uD83C\uDDE6', rate:18.5, ppp:1.8, col:0.55 },
   gh: { name:'Ghana', cur:'GH\u20B5', flag:'\uD83C\uDDEC\uD83C\uDDED', rate:15, ppp:2.5, col:0.32 },
   eg: { name:'Egypt', cur:'E\u00A3', flag:'\uD83C\uDDEA\uD83C\uDDEC', rate:50, ppp:3.2, col:0.28 },
-  tz: { name:'Tanzania', cur:'TSh', flag:'\uD83C\uDDF9\uD83C\uDDFF', rate:2600, ppp:2.8, col:0.30 },
+  tz: { name:'Tanzania', cur:'TSh', flag:'\uD83C\uDDF9\uD83C\uDDFF', rate:2700, ppp:2.8, col:0.30 },
   ma: { name:'Morocco', cur:'MAD', flag:'\uD83C\uDDF2\uD83C\uDDE6', rate:10, ppp:2.5, col:0.45 },
   ug: { name:'Uganda', cur:'USh', flag:'\uD83C\uDDFA\uD83C\uDDEC', rate:3750, ppp:3.0, col:0.28 },
   rw: { name:'Rwanda', cur:'RWF', flag:'\uD83C\uDDF7\uD83C\uDDFC', rate:1350, ppp:3.0, col:0.30 },
@@ -570,6 +579,27 @@ const BASE_SALARIES = {
     ma:[5000,10000,20000,32000], ug:[3500,7000,13000,20000], rw:[3500,7000,14000,22000],
     et:[3000,6000,12000,20000], sn:[4000,8000,16000,26000], ci:[4000,8000,15000,24000],
     cm:[3500,7000,14000,22000], bw:[8000,16000,28000,44000], mu:[9000,18000,30000,46000]
+  },
+  'mobile-developer': {
+    ng:[7000,14000,26000,40000], ke:[6500,13000,24000,37000], za:[14000,26000,44000,64000],
+    gh:[5500,11000,20000,33000], eg:[5000,9000,17000,27000], tz:[4000,7500,14000,22000],
+    ma:[5500,11000,20000,32000], ug:[3500,7000,13000,20000], rw:[4000,8000,15000,23000],
+    et:[3000,6000,12000,18000], sn:[4500,9000,17000,26000], ci:[4500,9000,16000,25000],
+    cm:[3500,7000,13000,21000], bw:[7500,15000,26000,40000], mu:[8000,16000,28000,44000]
+  },
+  'supply-chain': {
+    ng:[5000,10000,18000,30000], ke:[5000,9000,16000,27000], za:[12000,22000,36000,52000],
+    gh:[4000,8000,15000,25000], eg:[3500,7000,13000,22000], tz:[3000,6000,11000,18000],
+    ma:[4500,9000,16000,26000], ug:[3000,6000,10000,16000], rw:[3000,6000,11000,18000],
+    et:[2500,5000,9000,15000], sn:[4000,8000,14000,22000], ci:[4000,7500,13000,21000],
+    cm:[3000,6000,11000,17000], bw:[7000,13000,22000,34000], mu:[7500,15000,26000,38000]
+  },
+  'social-media-mgr': {
+    ng:[3000,6000,12000,20000], ke:[3000,6000,11000,18000], za:[7000,14000,24000,36000],
+    gh:[2500,5000,10000,17000], eg:[2500,5000,10000,17000], tz:[2000,4000,8000,13000],
+    ma:[3000,6000,11000,18000], ug:[2000,4000,7500,12000], rw:[2500,5000,9000,14000],
+    et:[1800,3500,7000,11000], sn:[2500,5000,9000,15000], ci:[2500,5000,9000,14000],
+    cm:[2000,4000,8000,13000], bw:[4500,9000,16000,24000], mu:[5000,10000,18000,26000]
   }
 };
 
@@ -582,11 +612,17 @@ const INDUSTRY_MULT = {
 const SKILL_PREMIUMS = {
   python:    { name:'Python', mult:1.15, desc:'+10-20%' },
   cpa:       { name:'CPA Certification', mult:1.20, desc:'+15-25%' },
+  acca:      { name:'ACCA / ICAN / ICAG', mult:1.18, desc:'+12-22% — widely recognized in Africa' },
   pmp:       { name:'PMP Certification', mult:1.18, desc:'+12-22%' },
   mba:       { name:'MBA Degree', mult:1.25, desc:'+20-30%' },
   aws:       { name:'AWS / Cloud', mult:1.20, desc:'+15-25%' },
   aiml:      { name:'AI / Machine Learning', mult:1.28, desc:'+20-35%' },
-  agile:     { name:'Agile / Scrum', mult:1.10, desc:'+8-15%' }
+  agile:     { name:'Agile / Scrum', mult:1.10, desc:'+8-15%' },
+  react:     { name:'React / Node.js', mult:1.15, desc:'+10-20% — high demand in African tech' },
+  mobile:    { name:'Mobile Dev (Flutter/React Native)', mult:1.18, desc:'+12-22% — Africa is mobile-first' },
+  french:    { name:'French Language (Bilingual)', mult:1.12, desc:'+8-18% — premium in Francophone Africa' },
+  cfa:       { name:'CFA (Chartered Financial Analyst)', mult:1.22, desc:'+15-28% — rare and valued' },
+  sqlbi:     { name:'SQL / Power BI / Tableau', mult:1.12, desc:'+8-18%' }
 };
 
 // Total comp allowance percentages by component

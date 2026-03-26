@@ -224,6 +224,8 @@ h1 em{color:#4DA3FF;font-style:normal}
 <option value="ZA">South Africa</option>
 <option value="KE">Kenya</option>
 <option value="GH">Ghana</option>
+<option value="TZ">Tanzania</option>
+<option value="UG">Uganda</option>
 <option value="pan">Pan-African / Other</option>
 </select></div>
 </div>
@@ -239,6 +241,8 @@ h1 em{color:#4DA3FF;font-style:normal}
 <option value="ZAR">ZAR (R)</option>
 <option value="KES">KES (KSh)</option>
 <option value="GHS">GHS (GH&#8373;)</option>
+<option value="TZS">TZS (TSh)</option>
+<option value="UGX">UGX (USh)</option>
 <option value="USD">USD ($)</option>
 </select></div>
 </div>
@@ -311,6 +315,16 @@ h1 em{color:#4DA3FF;font-style:normal}
 <ul class="brand-list">
 <li><span class="brand-name">Azar Chemical</span><span class="brand-rate">10 m&sup2;/L</span></li>
 <li><span class="brand-name">Dolphin Paints</span><span class="brand-rate">9 m&sup2;/L</span></li>
+</ul>
+<h4 style="font-size:.78rem;font-weight:700;margin:10px 0 4px;color:var(--dark)">Tanzania</h4>
+<ul class="brand-list">
+<li><span class="brand-name">Crown Paints EA</span><span class="brand-rate">11 m&sup2;/L</span></li>
+<li><span class="brand-name">Shield Paints</span><span class="brand-rate">10 m&sup2;/L</span></li>
+</ul>
+<h4 style="font-size:.78rem;font-weight:700;margin:10px 0 4px;color:var(--dark)">Uganda</h4>
+<ul class="brand-list">
+<li><span class="brand-name">Crown Paints EA</span><span class="brand-rate">11 m&sup2;/L</span></li>
+<li><span class="brand-name">Sadolin</span><span class="brand-rate">12 m&sup2;/L</span></li>
 </ul>
 <h4 style="font-size:.78rem;font-weight:700;margin:10px 0 4px;color:var(--dark)">Pan-African</h4>
 <ul class="brand-list">
@@ -462,6 +476,46 @@ var BRANDS = {
       {name:'Azar Textured',rate:5,price:160}
     ]
   },
+  TZ: {
+    emulsion: [
+      {name:'Crown Paints EA Emulsion',rate:11,price:65000},
+      {name:'Crown Silk Vinyl',rate:12,price:80000},
+      {name:'Shield Emulsion',rate:10,price:55000},
+      {name:'Kansai Paint Emulsion',rate:11,price:70000}
+    ],
+    weathercoat: [
+      {name:'Crown Weathercoat',rate:10,price:90000},
+      {name:'Shield Exterior',rate:9,price:75000}
+    ],
+    gloss: [
+      {name:'Crown Gloss',rate:13,price:85000},
+      {name:'Shield Gloss',rate:12,price:70000}
+    ],
+    textured: [
+      {name:'Crown Textured',rate:6,price:95000},
+      {name:'Shield Textured',rate:5,price:80000}
+    ]
+  },
+  UG: {
+    emulsion: [
+      {name:'Crown Paints EA Emulsion',rate:11,price:28000},
+      {name:'Crown Silk Vinyl',rate:12,price:34000},
+      {name:'Sadolin Emulsion',rate:12,price:36000},
+      {name:'Kansai Paint Emulsion',rate:11,price:25000}
+    ],
+    weathercoat: [
+      {name:'Crown Weathercoat',rate:10,price:38000},
+      {name:'Sadolin Exterior',rate:11,price:42000}
+    ],
+    gloss: [
+      {name:'Crown Gloss',rate:13,price:32000},
+      {name:'Sadolin Gloss',rate:14,price:38000}
+    ],
+    textured: [
+      {name:'Crown Textured',rate:6,price:42000},
+      {name:'Kansai Textured',rate:5,price:36000}
+    ]
+  },
   pan: {
     emulsion: [
       {name:'Kansai Paint Emulsion',rate:11,price:0},
@@ -482,7 +536,7 @@ var BRANDS = {
   }
 };
 
-var CURR_SYM = {NGN:'\u20A6',ZAR:'R',KES:'KSh ',GHS:'GH\u20B5',USD:'$'};
+var CURR_SYM = {NGN:'\u20A6',ZAR:'R',KES:'KSh ',GHS:'GH\u20B5',TZS:'TSh ',UGX:'USh ',USD:'$'};
 var SURFACE_FACTOR = {smooth:1,rough:0.8,new:0.6,repaint:1.15};
 var rooms = [];
 
@@ -504,7 +558,7 @@ function updateBrandOptions(){
     return '<option value="'+i+'">'+b.name+' ('+b.rate+' m\u00B2/L)'+'</option>';
   }).join('');
   // Auto-set currency
-  var currMap = {NG:'NGN',ZA:'ZAR',KE:'KES',GH:'GHS',pan:'USD'};
+  var currMap = {NG:'NGN',ZA:'ZAR',KE:'KES',GH:'GHS',TZ:'TZS',UG:'UGX',pan:'USD'};
   if(currMap[country]) document.getElementById('priceCurrency').value = currMap[country];
 }
 

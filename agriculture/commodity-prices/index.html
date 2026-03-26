@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>African Commodity Price Tracker — Maize, Rice, Cocoa, Coffee Prices | AfroTools</title>
+<meta name="description" content="Track current prices for maize, rice, sorghum, millet, cocoa, coffee and more across African markets. Compare farm-gate prices and calculate revenue.">
+<link rel="canonical" href="https://afrotools.com/agriculture/commodity-prices/">
+<meta property="og:title" content="African Commodity Price Tracker — Maize, Rice, Cocoa, Coffee | AfroTools">
+<meta property="og:description" content="Track current prices for maize, rice, sorghum, millet, cocoa, coffee and more across African markets. Compare farm-gate prices and calculate farmer revenue.">
+<meta property="og:url" content="https://afrotools.com/agriculture/commodity-prices/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="African Commodity Price Tracker | AfroTools">
+<meta name="twitter:description" content="Track current prices for maize, rice, sorghum, millet, cocoa, coffee and more across African markets.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "African Agricultural Commodity Price Tracker",
+  "url": "https://afrotools.com/agriculture/commodity-prices/",
+  "description": "Track current prices for maize, rice, sorghum, millet, cocoa, coffee and more across African markets. Compare farm-gate prices and calculate farmer revenue.",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web",
+  "author": {"@type": "Organization", "name": "AfroTools", "url": "https://afrotools.com"},
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Where does AfroTools get its commodity price data?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Prices are sourced from FEWS NET (Famine Early Warning Systems Network), FAO FPMA (Food Price Monitoring and Analysis), WFP VAM (Vulnerability Analysis and Mapping), and national market information systems. Data is updated monthly — see the 'Last Updated' date on the dashboard."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why do African commodity prices differ so much from global benchmark prices?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "African farm-gate and wholesale prices diverge from global benchmarks due to: transport costs to port, export taxes and levies, currency depreciation, domestic supply-demand gaps, government price controls (e.g. cocoa in Côte d'Ivoire and Ghana), and infrastructure gaps. In some cases (e.g. cocoa, coffee) farmers receive only 30–60% of the international price."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the lean season and how does it affect food prices?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The lean season (or hunger gap) is the period just before the new harvest when food stocks from the previous harvest are depleted. In Sahel and unimodal rainfall zones this is typically May–August. Cereal prices during the lean season can be 40–80% higher than post-harvest lows. Farmers who can store grain and sell during the lean season earn significantly more."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How can I use this tool as a farmer?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Use the dashboard to: (1) Check current prices in your country before selling; (2) Compare your price against neighbouring countries; (3) See if prices are rising or falling so you can time your sale; (4) Use the Revenue Estimator to calculate your expected income from a harvest; (5) Understand seasonal patterns to decide when to sell vs store."
+      }
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+
+<style>
+:root {
+  --acc: #007AFF;
+  --acc-dk: #0063D1;
+  --acc-lt: #E8F2FF;
+  --acc-pale: #F0F7FF;
+  --bg: #F8FAFD;
+  --bg-card: #FFF;
+  --text: #0f172a;
+  --muted: #6B7280;
+  --border: #E5E7EB;
+  --r: 18px;
+}
+*, *::before, *::after { box-sizing: border-box; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); margin: 0; }
+
+/* HERO */
+.hero { background: #0A1628; color: #fff; padding: 3rem 1rem 2rem; text-align: center; position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, rgba(0,122,255,.15) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(0,122,255,.08) 0%, transparent 50%); pointer-events: none; }
+.hero-inner { max-width: 720px; margin: 0 auto; position: relative; }
+.breadcrumb { font-size: .82rem; opacity: .65; margin-bottom: .75rem; }
+.breadcrumb a { color: #fff; text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+.hero h1 { color: #fff; font-size: clamp(1.6rem, 5vw, 2.6rem); font-weight: 800; margin: 0 0 .75rem; letter-spacing: -.02em; line-height: 1.15; text-transform: uppercase; }
+.hero h1 em { color: var(--acc); font-style: normal; }
+.hero p { font-size: 1rem; opacity: .85; line-height: 1.6; max-width: 600px; margin: 0 auto; }
+.badge-row { display: flex; justify-content: center; gap: .6rem; margin-top: 1.1rem; flex-wrap: wrap; }
+.badge { background: rgba(255,255,255,.15); border-radius: 980px; padding: .3rem .85rem; font-size: .8rem; font-weight: 600; }
+
+/* TICKER BAR */
+.ticker-bar { background: #0a2240; color: #93C5FD; padding: .55rem 1rem; text-align: center; font-size: .8rem; font-weight: 600; letter-spacing: .01em; }
+.ticker-bar span { opacity: .65; margin: 0 .4rem; }
+
+/* MAIN */
+.main { max-width: 920px; margin: 0 auto; padding: 2rem 1rem 3rem; }
+
+/* CARD */
+.card { background: var(--bg-card); border: 1.5px solid var(--border); border-radius: var(--r); padding: 1.5rem; margin-bottom: 1.25rem; }
+.card-title { font-size: .78rem; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); margin: 0 0 1.1rem; }
+
+/* FORM */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+@media (max-width: 560px) { .form-grid { grid-template-columns: 1fr; } }
+.field { display: flex; flex-direction: column; gap: .4rem; }
+.field label { font-size: .82rem; font-weight: 700; color: var(--text); }
+.field select, .field input[type="number"] { width: 100%; padding: .65rem .9rem; border: 1.5px solid var(--border); border-radius: 12px; font-family: inherit; font-size: .92rem; color: var(--text); background: #fff; transition: border-color .2s; }
+.field select:focus, .field input:focus { outline: none; border-color: var(--acc); }
+.full-width { grid-column: 1 / -1; }
+
+/* VIEW TABS */
+.view-tabs { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+.view-tab { padding: .45rem 1rem; border: 1.5px solid var(--border); border-radius: 980px; font-size: .82rem; font-weight: 700; cursor: pointer; background: #fff; color: var(--muted); transition: all .2s; }
+.view-tab.active { background: var(--acc); border-color: var(--acc); color: #fff; }
+.view-tab:hover:not(.active) { border-color: var(--acc); color: var(--acc); }
+
+/* BTN */
+.btn-primary { display: block; width: 100%; margin-top: 1.25rem; padding: .85rem 1.5rem; background: var(--acc); color: #fff; border: none; border-radius: 980px; font-family: inherit; font-size: 1rem; font-weight: 800; cursor: pointer; transition: background .2s, transform .1s; letter-spacing: .01em; }
+.btn-primary:hover { background: var(--acc-dk); transform: translateY(-1px); }
+.btn-primary:active { transform: translateY(0); }
+
+/* RESULTS */
+#results { display: none; }
+
+/* STATS ROW */
+.stats-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: .85rem; margin-bottom: 1.25rem; }
+.stat-box { background: var(--acc-pale); border: 1.5px solid var(--acc-lt); border-radius: 14px; padding: 1rem; text-align: center; }
+.stat-box .sv { font-size: 1.35rem; font-weight: 800; color: var(--acc); line-height: 1.1; word-break: break-word; }
+.stat-box .sl { font-size: .72rem; color: var(--muted); font-weight: 600; margin-top: .25rem; text-transform: uppercase; letter-spacing: .04em; }
+.stat-box.up .sv { color: #166534; }
+.stat-box.up { background: #DCFCE7; border-color: #86EFAC; }
+.stat-box.down .sv { color: #991B1B; }
+.stat-box.down { background: #FEF2F2; border-color: #FECACA; }
+.stat-box.warn .sv { color: #92400E; }
+.stat-box.warn { background: #FFF7ED; border-color: #FDE68A; }
+
+/* TREND BADGE */
+.trend { display: inline-block; border-radius: 980px; padding: .2rem .7rem; font-size: .75rem; font-weight: 700; }
+.trend-declining { background: #DCFCE7; color: #166534; }
+.trend-rising { background: #FEF2F2; color: #991B1B; }
+.trend-stable { background: #EFF6FF; color: #1E40AF; }
+.trend-elevated { background: #FFF7ED; color: #92400E; }
+
+/* COMPARISON TABLE */
+.cmp-table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+.cmp-table th { font-size: .72rem; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); padding: .5rem .75rem; border-bottom: 2px solid var(--border); text-align: left; }
+.cmp-table td { padding: .5rem .75rem; border-bottom: 1px solid var(--border); }
+.cmp-table tr:last-child td { border-bottom: none; }
+.cmp-table tr.highlight td { background: var(--acc-pale); font-weight: 700; }
+.price-bar-wrap { display: flex; align-items: center; gap: .6rem; }
+.price-bar-outer { flex: 1; min-width: 60px; background: #F1F5F9; border-radius: 980px; height: 10px; overflow: hidden; }
+.price-bar-fill { height: 100%; border-radius: 980px; background: var(--acc); }
+.usd-price { font-size: .78rem; color: var(--muted); white-space: nowrap; }
+
+/* SEASONAL CHART */
+.season-chart { margin-top: .75rem; }
+.season-months { display: grid; grid-template-columns: repeat(12, 1fr); gap: 4px; }
+.season-col { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.season-bar-outer { width: 100%; background: #F1F5F9; border-radius: 4px; overflow: hidden; display: flex; flex-direction: column-reverse; }
+.season-bar-fill { width: 100%; border-radius: 4px; transition: height .5s; }
+.season-month-lbl { font-size: .65rem; color: var(--muted); font-weight: 600; text-align: center; }
+.season-val-lbl { font-size: .65rem; font-weight: 700; color: var(--text); text-align: center; }
+.season-legend { display: flex; gap: 1rem; margin-top: .75rem; flex-wrap: wrap; }
+.legend-item { display: flex; align-items: center; gap: .4rem; font-size: .78rem; color: var(--muted); }
+.legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+/* TRADE FLOWS */
+.flow-list { display: flex; flex-direction: column; gap: .75rem; }
+.flow-item { display: flex; gap: .75rem; padding: .85rem 1rem; background: var(--acc-pale); border: 1.5px solid var(--acc-lt); border-radius: 14px; align-items: flex-start; }
+.flow-icon { font-size: 1.3rem; flex-shrink: 0; line-height: 1; }
+.flow-body .ft { font-weight: 700; font-size: .88rem; margin: 0 0 .2rem; }
+.flow-body .fd { font-size: .82rem; color: var(--muted); line-height: 1.5; margin: 0; }
+
+/* REVENUE ESTIMATOR */
+.rev-result { background: var(--acc); color: #fff; border-radius: 14px; padding: 1.25rem 1.5rem; text-align: center; margin-top: 1rem; }
+.rev-main { font-size: 1.6rem; font-weight: 800; line-height: 1.1; }
+.rev-sub { font-size: .85rem; opacity: .85; margin-top: .35rem; }
+.rev-compare { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; margin-top: .85rem; }
+.rev-cmp-box { background: rgba(255,255,255,.15); border-radius: 10px; padding: .75rem; text-align: center; }
+.rev-cmp-box .rv { font-size: 1.1rem; font-weight: 800; }
+.rev-cmp-box .rl { font-size: .72rem; opacity: .8; margin-top: .15rem; }
+
+/* DATA SOURCE */
+.data-source { font-size: .78rem; color: var(--muted); display: flex; align-items: center; gap: .4rem; margin-top: .75rem; }
+.data-source .ds-icon { font-size: .9rem; }
+
+/* CROSS LINKS */
+.agri-links { display: grid; grid-template-columns: repeat(auto-fill, minmax(175px, 1fr)); gap: .75rem; margin-top: .85rem; }
+.agri-link { display: flex; align-items: center; gap: .6rem; background: var(--bg-card); border: 1.5px solid var(--border); border-radius: 14px; padding: .75rem 1rem; text-decoration: none; color: var(--text); font-weight: 600; font-size: .88rem; transition: border-color .2s, box-shadow .2s; }
+.agri-link:hover { border-color: var(--acc); box-shadow: 0 3px 10px rgba(0,122,255,.1); }
+.agri-link .al-icon { font-size: 1.2rem; flex-shrink: 0; }
+.agri-link .al-arr { color: var(--muted); margin-left: auto; }
+
+/* FAQ */
+.faq details { border-bottom: 1px solid var(--border); padding: .85rem 0; }
+.faq summary { font-weight: 700; font-size: .9rem; cursor: pointer; list-style: none; }
+.faq summary::before { content: '+ '; color: var(--acc); font-weight: 800; }
+.faq details[open] summary::before { content: '− '; }
+.faq p { font-size: .85rem; color: var(--muted); line-height: 1.65; margin: .5rem 0 0; }
+
+/* SEO PROSE */
+.seo-prose h2 { font-size: 1.05rem; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; margin: 1.75rem 0 .6rem; }
+.seo-prose p { font-size: .88rem; line-height: 1.7; color: var(--muted); }
+
+/* INFO ALERT */
+.info-alert { background: var(--acc-pale); border: 1.5px solid var(--acc-lt); border-radius: 12px; padding: .85rem 1rem; font-size: .85rem; line-height: 1.5; display: flex; gap: .65rem; align-items: flex-start; }
+.info-alert .ia-icon { font-size: 1rem; flex-shrink: 0; margin-top: .1rem; }
+
+@media (max-width: 480px) {
+  .stats-row { grid-template-columns: 1fr 1fr; }
+  .rev-compare { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="breadcrumb">
+      <a href="/">Home</a> &rsaquo;
+      <a href="/agriculture/">Agriculture</a> &rsaquo;
+      Commodity Prices
+    </div>
+    <h1>African Agricultural<br><em>Commodity Price</em> Tracker</h1>
+    <p>Current farm-gate and wholesale prices for maize, rice, cocoa, coffee and more — across major African markets.</p>
+    <div class="badge-row">
+      <span class="badge">📈 10 Commodities</span>
+      <span class="badge">🌍 20 Countries</span>
+      <span class="badge">💰 Revenue Estimator</span>
+      <span class="badge">🗓️ Updated Monthly</span>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-bar" id="tickerBar">
+  Loading global benchmarks…
+</div>
+
+<div class="main">
+
+  <!-- CONTROLS CARD -->
+  <div class="card">
+    <div class="card-title">Select Commodity &amp; Country</div>
+    <div class="form-grid">
+      <div class="field">
+        <label for="selCommodity">Commodity</label>
+        <select id="selCommodity">
+          <option value="">— Choose commodity —</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="selCountry">Country</label>
+        <select id="selCountry" disabled>
+          <option value="">— Choose country —</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- View Tabs -->
+    <div class="view-tabs" id="viewTabs" style="margin-top:1rem;margin-bottom:0;">
+      <button class="view-tab active" data-view="current">Current Price</button>
+      <button class="view-tab" data-view="compare">Compare Countries</button>
+      <button class="view-tab" data-view="seasonal">Seasonal Pattern</button>
+      <button class="view-tab" data-view="revenue">Revenue Estimator</button>
+    </div>
+
+    <button class="btn-primary" id="btnShow">Show Price Data</button>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="results">
+
+    <!-- VIEW: CURRENT PRICE -->
+    <div id="viewCurrent" class="view-panel">
+      <div class="card">
+        <div class="card-title" id="currentTitle">Current Price</div>
+        <div class="stats-row" id="currentStats"></div>
+        <div id="currentNotes"></div>
+        <div class="data-source">
+          <span class="ds-icon">📊</span>
+          <span id="sourceText"></span>
+        </div>
+      </div>
+      <div class="card" id="globalBenchCard" style="display:none">
+        <div class="card-title">Global Benchmark</div>
+        <div id="globalBenchContent"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">About This Commodity</div>
+        <div id="commodityInfo" style="font-size:.88rem;line-height:1.7;color:var(--muted)"></div>
+      </div>
+    </div>
+
+    <!-- VIEW: COMPARE -->
+    <div id="viewCompare" class="view-panel" style="display:none">
+      <div class="card">
+        <div class="card-title" id="compareTitle">Price Comparison Across Africa</div>
+        <div class="info-alert" style="margin-bottom:1rem;">
+          <span class="ia-icon">💡</span>
+          <span>Prices converted to USD for comparison using approximate exchange rates. Local currency prices reflect actual market conditions better.</span>
+        </div>
+        <table class="cmp-table" id="compareTable">
+          <thead><tr><th>Country</th><th>Market</th><th>Local Price</th><th>≈ USD/tonne</th><th>vs Benchmark</th><th>Trend</th></tr></thead>
+          <tbody id="compareBody"></tbody>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-title">Trade Flows</div>
+        <div class="flow-list" id="tradeFlows"></div>
+      </div>
+    </div>
+
+    <!-- VIEW: SEASONAL -->
+    <div id="viewSeasonal" class="view-panel" style="display:none">
+      <div class="card">
+        <div class="card-title" id="seasonTitle">Typical Seasonal Price Pattern</div>
+        <div class="info-alert" style="margin-bottom:1rem;">
+          <span class="ia-icon">📅</span>
+          <span id="seasonDesc">Index: 100 = average price. Months above 100 = above-average price (sell if possible). Below 100 = below-average price (lean buying season).</span>
+        </div>
+        <div class="season-chart" id="seasonChart"></div>
+        <div class="season-legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#007AFF"></div> High price / lean season</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#86EFAC"></div> Low price / post-harvest</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#93C5FD"></div> Average price</div>
+        </div>
+        <div style="margin-top:1rem;font-size:.85rem;line-height:1.6;color:var(--muted)" id="seasonPattern"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Timing Your Sale: Key Insight</div>
+        <div style="font-size:.88rem;line-height:1.7;color:var(--muted)">
+          <p style="margin:0 0 .75rem">In most African cereal markets, the gap between the post-harvest low and the lean-season high is <strong>30–80%</strong>. Farmers with storage can earn significantly more by holding grain 3–5 months after harvest.</p>
+          <p style="margin:0">Use the <strong>Revenue Estimator</strong> tab to compare your potential income at different price points.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW: REVENUE ESTIMATOR -->
+    <div id="viewRevenue" class="view-panel" style="display:none">
+      <div class="card">
+        <div class="card-title">Farmer Revenue Estimator</div>
+        <div class="form-grid">
+          <div class="field full-width">
+            <label for="inputVolume">Volume you plan to sell (tonnes)</label>
+            <input type="number" id="inputVolume" placeholder="e.g. 5" min="0.1" step="0.1" value="5">
+          </div>
+        </div>
+        <button class="btn-primary" id="btnCalcRevenue" style="margin-top:1rem">Calculate Revenue</button>
+      </div>
+      <div id="revenueResult" style="display:none">
+        <div class="card">
+          <div class="card-title" id="revTitle">Revenue Calculation</div>
+          <div class="rev-result" id="revMain">
+            <div class="rev-main" id="revMainNum">—</div>
+            <div class="rev-sub" id="revMainSub">—</div>
+          </div>
+          <div class="rev-compare" id="revCompare"></div>
+          <div class="info-alert" style="margin-top:1rem">
+            <span class="ia-icon">⚠️</span>
+            <span>These are wholesale/farm-gate prices before transport, processing, storage, and trading costs are deducted. Actual net revenue will be lower.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /results -->
+
+  <!-- EMPTY STATE (initial) -->
+  <div id="emptyState" class="card" style="text-align:center;padding:2.5rem 1rem">
+    <div style="font-size:2.5rem;margin-bottom:.75rem">📈</div>
+    <div style="font-weight:800;font-size:1.1rem;margin-bottom:.5rem">Select a Commodity &amp; Country</div>
+    <div style="font-size:.88rem;color:var(--muted);max-width:400px;margin:0 auto">Choose a commodity and country above, then click <strong>Show Price Data</strong> to see current prices, comparisons, and seasonal patterns.</div>
+  </div>
+
+  <!-- TRADE FLOWS (always visible) -->
+  <div class="card" style="margin-top:1.25rem">
+    <div class="card-title">Pan-African Trade Flow Overview</div>
+    <div class="flow-list" id="allTradeFlows"></div>
+  </div>
+
+  <!-- CROSS LINKS -->
+  <div class="card">
+    <div class="card-title">Related Agriculture Tools</div>
+    <div class="agri-links">
+      <a href="/agriculture/farm-profit/" class="agri-link"><span class="al-icon">📊</span> Farm Profit Calculator <span class="al-arr">›</span></a>
+      <a href="/agriculture/cocoa-tracker/" class="agri-link"><span class="al-icon">🍫</span> Cocoa Price Tracker <span class="al-arr">›</span></a>
+      <a href="/agriculture/coffee-calculator/" class="agri-link"><span class="al-icon">☕</span> Coffee Grade Calculator <span class="al-arr">›</span></a>
+      <a href="/agriculture/crop-yield/" class="agri-link"><span class="al-icon">🌾</span> Crop Yield Estimator <span class="al-arr">›</span></a>
+      <a href="/agriculture/fertilizer/" class="agri-link"><span class="al-icon">🧪</span> Fertilizer Calculator <span class="al-arr">›</span></a>
+      <a href="/agriculture/seed-rate/" class="agri-link"><span class="al-icon">🌿</span> Seed Rate Calculator <span class="al-arr">›</span></a>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="card">
+    <div class="card-title">Frequently Asked Questions</div>
+    <div class="faq">
+      <details open>
+        <summary>Where does AfroTools get its commodity price data?</summary>
+        <p>Prices are sourced from FEWS NET (Famine Early Warning Systems Network), FAO FPMA (Food Price Monitoring and Analysis), WFP VAM (Vulnerability Analysis and Mapping), and national market information systems. Data is updated monthly — see the "Last Updated" date on the dashboard.</p>
+      </details>
+      <details>
+        <summary>Why do African commodity prices differ so much from global benchmarks?</summary>
+        <p>African farm-gate and wholesale prices diverge from global benchmarks due to: transport costs to port, export taxes and levies, currency depreciation, domestic supply-demand gaps, government price controls (e.g. cocoa in Côte d'Ivoire and Ghana), and infrastructure gaps. In some cases (cocoa, coffee) farmers receive only 30–60% of the international price.</p>
+      </details>
+      <details>
+        <summary>What is the lean season and how does it affect food prices?</summary>
+        <p>The lean season (or "hunger gap") is the period just before the new harvest when food stocks are depleted. In Sahel and unimodal rainfall zones this is typically May–August. Cereal prices during the lean season can be 40–80% higher than post-harvest lows. Farmers who store grain and sell during the lean season earn significantly more.</p>
+      </details>
+      <details>
+        <summary>How can I use this tool as a farmer or trader?</summary>
+        <p>Use the dashboard to: (1) Check current prices before selling; (2) Compare your price against neighbouring countries; (3) See whether prices are rising or falling; (4) Use the Revenue Estimator to calculate expected income from a harvest; (5) Understand seasonal patterns to decide when to sell vs store.</p>
+      </details>
+    </div>
+  </div>
+
+  <!-- SEO PROSE -->
+  <div class="seo-prose">
+    <h2>About This Commodity Price Dashboard</h2>
+    <p>This dashboard tracks current and historical prices for Africa's key agricultural commodities — maize, rice, sorghum, millet, cowpea, cassava/garri, cocoa, coffee, sesame, and groundnut — across major producing and trading countries. Prices reflect farm-gate or wholesale market levels, not retail consumer prices.</p>
+    <h2>Why Commodity Price Transparency Matters for African Farmers</h2>
+    <p>The majority of Africa's 60+ million smallholder farmers lack access to real-time market price information. Without this, they often sell at low post-harvest prices to traders who hold and resell at much higher lean-season prices. Market information tools like this one can help farmers make better sell/store decisions, negotiate fairer prices, and plan their production around market demand.</p>
+    <h2>Data Sources &amp; Methodology</h2>
+    <p>Price data is compiled monthly from FEWS NET market monitoring bulletins, FAO's Food Price Monitoring and Analysis (FPMA) tool, WFP VAM (Vulnerability Analysis and Mapping) market dashboards, and official national market information systems where available. Prices are typically wholesale market prices at major trading hubs. USD conversion uses approximate monthly exchange rates from IMF data. Data is updated on the 1st of each month.</p>
+  </div>
+
+</div><!-- /main -->
+
+<afro-footer></afro-footer>
+
+<!-- DATA FILE -->
+<script src="/data/agriculture/commodity-prices.js"></script>
+
+<script>
+(function() {
+  'use strict';
+
+  // === APPROX USD CONVERSION RATES (update monthly) ===
+  var FX = {
+    NGN: 1600, KES: 130, ETB: 57, GHS: 15, ZAR: 18.5,
+    TZS: 2600, MWK: 1730, ZMW: 27, UGX: 3730, MZN: 64,
+    XOF: 610, XAF: 610, EGP: 48, MGA: 4500, SDG: 580, RWF: 1400
+  };
+
+  var data = (typeof COMMODITY_PRICES !== 'undefined') ? COMMODITY_PRICES : null;
+  if (!data) { document.getElementById('emptyState').innerHTML = '<div style="color:#991B1B;padding:1rem">⚠️ Error loading commodity data. Please refresh the page.</div>'; return; }
+
+  var activeCommodityKey = '';
+  var activeCountryCode = '';
+  var activeView = 'current';
+
+  // === POPULATE TICKER ===
+  function buildTicker() {
+    var parts = [];
+    Object.keys(data.commodities).forEach(function(k) {
+      var c = data.commodities[k];
+      if (c.globalBenchmark && c.globalBenchmark.price_USD) {
+        parts.push(c.icon + ' ' + c.name + ': $' + c.globalBenchmark.price_USD.toLocaleString() + '/t (' + c.globalBenchmark.exchange + ')');
+      }
+    });
+    document.getElementById('tickerBar').innerHTML =
+      '🌐 Global Benchmarks &nbsp;<span>|</span>&nbsp; ' + parts.join('&nbsp; <span>|</span>&nbsp; ') +
+      '&nbsp; <span>|</span>&nbsp; Updated: ' + data.lastUpdated;
+  }
+  buildTicker();
+
+  // === POPULATE COMMODITY SELECT ===
+  var selCommodity = document.getElementById('selCommodity');
+  var selCountry = document.getElementById('selCountry');
+  Object.keys(data.commodities).forEach(function(k) {
+    var c = data.commodities[k];
+    var opt = document.createElement('option');
+    opt.value = k;
+    opt.textContent = c.icon + ' ' + c.name;
+    selCommodity.appendChild(opt);
+  });
+
+  selCommodity.addEventListener('change', function() {
+    activeCommodityKey = this.value;
+    selCountry.innerHTML = '<option value="">— Choose country —</option>';
+    selCountry.disabled = true;
+    if (!activeCommodityKey) return;
+    var prices = data.commodities[activeCommodityKey].countryPrices;
+    Object.keys(prices).forEach(function(cc) {
+      var opt = document.createElement('option');
+      opt.value = cc;
+      opt.textContent = (data.countryNames[cc] || cc);
+      selCountry.appendChild(opt);
+    });
+    selCountry.disabled = false;
+  });
+
+  selCountry.addEventListener('change', function() {
+    activeCountryCode = this.value;
+  });
+
+  // === VIEW TABS ===
+  document.querySelectorAll('.view-tab').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.view-tab').forEach(function(b) { b.classList.remove('active'); });
+      this.classList.add('active');
+      activeView = this.dataset.view;
+    });
+  });
+
+  // === SHOW PRICE DATA ===
+  document.getElementById('btnShow').addEventListener('click', function() {
+    if (!activeCommodityKey) { alert('Please select a commodity.'); return; }
+    if (!activeCountryCode) { alert('Please select a country.'); return; }
+
+    document.getElementById('emptyState').style.display = 'none';
+    document.getElementById('results').style.display = 'block';
+
+    renderCurrentView();
+    renderCompareView();
+    renderSeasonalView();
+    showActiveView();
+  });
+
+  function showActiveView() {
+    document.querySelectorAll('.view-panel').forEach(function(p) { p.style.display = 'none'; });
+    var panel = document.getElementById('view' + activeView.charAt(0).toUpperCase() + activeView.slice(1));
+    if (panel) panel.style.display = 'block';
+  }
+
+  // Also bind tab clicks to re-render after results are shown
+  document.querySelectorAll('.view-tab').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      if (document.getElementById('results').style.display === 'block') {
+        showActiveView();
+        if (activeView === 'revenue') document.getElementById('revenueResult').style.display = 'none';
+      }
+    });
+  });
+
+  function fmt(num) {
+    return num.toLocaleString();
+  }
+  function fmtCurrency(sym, num) {
+    return sym + fmt(num);
+  }
+  function toUSD(amount, currency) {
+    var rate = FX[currency] || 1;
+    return Math.round(amount / rate);
+  }
+  function pctChange(current, previous) {
+    if (!previous) return null;
+    return ((current - previous) / previous * 100);
+  }
+  function pctStr(pct) {
+    if (pct === null) return '—';
+    var sign = pct >= 0 ? '+' : '';
+    return sign + pct.toFixed(1) + '%';
+  }
+
+  // === RENDER: CURRENT PRICE ===
+  function renderCurrentView() {
+    var commodity = data.commodities[activeCommodityKey];
+    var price = commodity.countryPrices[activeCountryCode];
+    var sym = data.currencySymbols[price.currency] || price.currency + ' ';
+    var countryName = data.countryNames[activeCountryCode] || activeCountryCode;
+
+    document.getElementById('currentTitle').textContent = commodity.icon + ' ' + commodity.name + ' — ' + countryName;
+
+    var moPct = pctChange(price.price, price.monthAgo);
+    var yrPct = pctChange(price.price, price.yearAgo);
+    var usdPrice = toUSD(price.price, price.currency);
+    var benchPct = null;
+    if (commodity.globalBenchmark && commodity.globalBenchmark.price_USD) {
+      benchPct = (usdPrice / commodity.globalBenchmark.price_USD * 100).toFixed(0);
+    }
+
+    var moCls = moPct === null ? '' : (moPct > 0 ? 'up' : (moPct < 0 ? 'down' : ''));
+    var yrCls = yrPct === null ? '' : (yrPct > 0 ? 'up' : (yrPct < 0 ? 'down' : ''));
+
+    var statsHTML = [
+      '<div class="stat-box"><div class="sv">' + fmtCurrency(sym, price.price) + '</div><div class="sl">Current price / tonne</div></div>',
+      '<div class="stat-box ' + moCls + '"><div class="sv">' + pctStr(moPct) + '</div><div class="sl">vs Last Month</div></div>',
+      '<div class="stat-box ' + yrCls + '"><div class="sv">' + pctStr(yrPct) + '</div><div class="sl">vs Last Year</div></div>',
+      '<div class="stat-box"><div class="sv">$' + usdPrice.toLocaleString() + '</div><div class="sl">≈ USD / tonne</div></div>'
+    ];
+    if (benchPct) {
+      statsHTML.push('<div class="stat-box"><div class="sv">' + benchPct + '%</div><div class="sl">of World Price</div></div>');
+    }
+    document.getElementById('currentStats').innerHTML = statsHTML.join('');
+
+    var notesHTML = '';
+    if (price.notes) {
+      notesHTML += '<div class="info-alert" style="margin:.75rem 0 0"><span class="ia-icon">💬</span><span>' + price.notes + '</span></div>';
+    }
+    notesHTML += '<div style="margin-top:.75rem;font-size:.82rem;color:var(--muted)">Market: <strong>' + price.market + '</strong> &nbsp;|&nbsp; Trend: <span class="trend trend-' + price.trend + '">' + (price.trend.charAt(0).toUpperCase() + price.trend.slice(1)) + '</span></div>';
+    document.getElementById('currentNotes').innerHTML = notesHTML;
+
+    document.getElementById('sourceText').textContent = 'Source: ' + data.source + ' · Last updated: ' + data.lastUpdated;
+
+    // Global benchmark card
+    if (commodity.globalBenchmark && commodity.globalBenchmark.price_USD) {
+      document.getElementById('globalBenchCard').style.display = 'block';
+      var gb = commodity.globalBenchmark;
+      document.getElementById('globalBenchContent').innerHTML =
+        '<div class="stats-row" style="margin-bottom:.5rem">' +
+        '<div class="stat-box"><div class="sv">$' + gb.price_USD.toLocaleString() + '</div><div class="sl">World price / tonne</div></div>' +
+        '<div class="stat-box"><div class="sv">' + benchPct + '%</div><div class="sl">' + countryName + ' vs World</div></div>' +
+        '</div>' +
+        '<div style="font-size:.82rem;color:var(--muted)">' + gb.exchange + (gb.notes ? ' — ' + gb.notes : '') + '</div>';
+    } else {
+      document.getElementById('globalBenchCard').style.display = 'none';
+    }
+
+    // Commodity info
+    document.getElementById('commodityInfo').innerHTML =
+      '<p style="margin:0 0 .5rem"><strong>Seasonal pattern:</strong> ' + commodity.seasonalPattern + '</p>' +
+      '<p style="margin:0"><strong>Regional trade:</strong> ' + commodity.regionalFlows + '</p>';
+  }
+
+  // === RENDER: COMPARE ===
+  function renderCompareView() {
+    var commodity = data.commodities[activeCommodityKey];
+    document.getElementById('compareTitle').textContent = commodity.icon + ' ' + commodity.name + ' — Price Comparison Across Africa';
+
+    var prices = commodity.countryPrices;
+    var rows = Object.keys(prices).map(function(cc) {
+      var p = prices[cc];
+      var usd = toUSD(p.price, p.currency);
+      return { cc: cc, p: p, usd: usd };
+    }).sort(function(a, b) { return b.usd - a.usd; });
+
+    var maxUSD = rows[0] ? rows[0].usd : 1;
+    var benchUSD = (commodity.globalBenchmark && commodity.globalBenchmark.price_USD) ? commodity.globalBenchmark.price_USD : null;
+
+    var tbody = '';
+    rows.forEach(function(r) {
+      var sym = data.currencySymbols[r.p.currency] || r.p.currency + ' ';
+      var pct = benchUSD ? Math.round(r.usd / benchUSD * 100) + '%' : '—';
+      var barW = Math.round(r.usd / maxUSD * 100);
+      var isCurrent = (r.cc === activeCountryCode);
+      tbody += '<tr' + (isCurrent ? ' class="highlight"' : '') + '>' +
+        '<td>' + (isCurrent ? '📍 ' : '') + (data.countryNames[r.cc] || r.cc) + '</td>' +
+        '<td style="font-size:.82rem;color:var(--muted)">' + r.p.market + '</td>' +
+        '<td><strong>' + sym + fmt(r.p.price) + '</strong></td>' +
+        '<td><div class="price-bar-wrap"><div class="price-bar-outer"><div class="price-bar-fill" style="width:' + barW + '%"></div></div><span class="usd-price">$' + r.usd.toLocaleString() + '</span></div></td>' +
+        '<td>' + pct + '</td>' +
+        '<td><span class="trend trend-' + r.p.trend + '">' + r.p.trend + '</span></td>' +
+        '</tr>';
+    });
+    document.getElementById('compareBody').innerHTML = tbody;
+
+    // Trade flows for this commodity
+    var relFlows = data.tradeFlows.filter(function(f) {
+      return f.commodity.toLowerCase().includes(activeCommodityKey.split('_')[0].toLowerCase());
+    });
+    var flowHTML = '';
+    if (relFlows.length === 0) flowHTML = '<div style="font-size:.85rem;color:var(--muted)">No specific trade flow data for this commodity.</div>';
+    relFlows.forEach(function(f) {
+      flowHTML += '<div class="flow-item"><span class="flow-icon">🔄</span><div class="flow-body"><p class="ft">' + f.from + ' → ' + f.to + ' (' + f.commodity + ')</p><p class="fd">' + f.notes + '</p></div></div>';
+    });
+    document.getElementById('tradeFlows').innerHTML = flowHTML;
+  }
+
+  // === RENDER: SEASONAL ===
+  function renderSeasonalView() {
+    var commodity = data.commodities[activeCommodityKey];
+    document.getElementById('seasonTitle').textContent = commodity.icon + ' ' + commodity.name + ' — Seasonal Price Pattern';
+    document.getElementById('seasonPattern').textContent = commodity.seasonalPattern;
+
+    // Pick appropriate pattern
+    var patternKey = 'cereals_unimodal';
+    if (activeCommodityKey === 'coffee_arabica') patternKey = 'coffee_arabica';
+    else if (activeCommodityKey === 'cocoa') patternKey = 'cocoa_westafrica';
+    else if (['rice','sorghum','millet','cowpea','groundnut','cassava_garri','sesame','maize'].includes(activeCommodityKey)) {
+      var bimodalCountries = ['KE','ET','UG','RW','NG'];
+      if (bimodalCountries.includes(activeCountryCode)) patternKey = 'cereals_bimodal';
+    }
+
+    var pattern = data.seasonalPatterns[patternKey];
+    var vals = pattern.indexValues;
+    var maxVal = Math.max.apply(null, vals);
+    var minVal = Math.min.apply(null, vals);
+
+    document.getElementById('seasonDesc').textContent = 'Index: 100 = average annual price. ' + pattern.description + '. Months above 100 = higher than average; below 100 = lower than average.';
+
+    var chartHTML = '<div class="season-months">';
+    vals.forEach(function(v, i) {
+      var barHeight = Math.round((v - minVal + 5) / (maxVal - minVal + 5) * 140);
+      var barColor = v >= 120 ? '#3B82F6' : v >= 105 ? '#93C5FD' : '#86EFAC';
+      chartHTML += '<div class="season-col">' +
+        '<div class="season-val-lbl">' + v + '</div>' +
+        '<div class="season-bar-outer" style="height:160px"><div class="season-bar-fill" style="height:' + barHeight + 'px;background:' + barColor + '"></div></div>' +
+        '<div class="season-month-lbl">' + pattern.months[i] + '</div>' +
+        '</div>';
+    });
+    chartHTML += '</div>';
+    document.getElementById('seasonChart').innerHTML = chartHTML;
+  }
+
+  // === REVENUE ESTIMATOR ===
+  document.getElementById('btnCalcRevenue').addEventListener('click', function() {
+    if (!activeCommodityKey || !activeCountryCode) { alert('Please show price data first.'); return; }
+    var volStr = document.getElementById('inputVolume').value;
+    var vol = parseFloat(volStr);
+    if (!vol || vol <= 0) { alert('Please enter a valid volume.'); return; }
+
+    var commodity = data.commodities[activeCommodityKey];
+    var price = commodity.countryPrices[activeCountryCode];
+    var sym = data.currencySymbols[price.currency] || price.currency + ' ';
+    var countryName = data.countryNames[activeCountryCode] || activeCountryCode;
+
+    var revenueNow = price.price * vol;
+    var revMonthAgo = price.monthAgo * vol;
+    var revYearAgo = price.yearAgo * vol;
+
+    document.getElementById('revTitle').textContent = 'Revenue for ' + vol + ' tonne' + (vol !== 1 ? 's' : '') + ' of ' + commodity.name + ' in ' + countryName;
+    document.getElementById('revMainNum').textContent = sym + fmt(Math.round(revenueNow));
+    document.getElementById('revMainSub').textContent = 'At current price of ' + sym + fmt(price.price) + ' per tonne';
+
+    var comparisons = [
+      { label: 'At last month\'s price', val: sym + fmt(Math.round(revMonthAgo)) },
+      { label: 'At last year\'s price', val: sym + fmt(Math.round(revYearAgo)) }
+    ];
+    if (commodity.globalBenchmark && commodity.globalBenchmark.price_USD) {
+      var fxRate = FX[price.currency] || 1;
+      var revAtWorld = commodity.globalBenchmark.price_USD * fxRate * vol;
+      comparisons.push({ label: 'At world price (' + sym + ')', val: sym + fmt(Math.round(revAtWorld)) });
+    }
+    var cmpHTML = comparisons.map(function(c) {
+      return '<div class="rev-cmp-box"><div class="rv">' + c.val + '</div><div class="rl">' + c.label + '</div></div>';
+    }).join('');
+    document.getElementById('revCompare').innerHTML = cmpHTML;
+    document.getElementById('revenueResult').style.display = 'block';
+  });
+
+  // === ALL TRADE FLOWS ===
+  function buildAllTradeFlows() {
+    var html = '';
+    data.tradeFlows.forEach(function(f) {
+      html += '<div class="flow-item"><span class="flow-icon">🔄</span><div class="flow-body"><p class="ft">' + f.from + ' → ' + f.to + ' · <em>' + f.commodity + '</em></p><p class="fd">' + f.notes + '</p></div></div>';
+    });
+    document.getElementById('allTradeFlows').innerHTML = html;
+  }
+  buildAllTradeFlows();
+
+})();
+</script>
+</body>
+</html>

@@ -6,7 +6,7 @@
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'payslip-generator'});</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>African Payslip Generator | AfroTools</title>
-<meta name="description" content="Generate professional payslips for Nigerian, Kenyan, South African, and Ghanaian employees. Includes PAYE, pension, NHF, NHIF, UIF deductions. Print-ready.">
+<meta name="description" content="Generate professional payslips for Nigerian, Kenyan, South African, Ghanaian, Tanzanian, and Ugandan employees. Includes PAYE, pension, NHF, NHIF, UIF, NSSF deductions. Print-ready.">
 <link rel="canonical" href="https://afrotools.com/tools/payslip-generator/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Payslip Generator | AfroTools">
@@ -113,8 +113,8 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <section class="tool-hero"><div class="tool-hero-inner">
 <div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Payslip Generator</span></div>
 <h1>African <em>Payslip Generator</em></h1>
-<p class="hero-sub">Generate professional payslips with automatic PAYE, pension, and statutory deductions for Nigeria, Kenya, South Africa, and Ghana.</p>
-<div class="hero-badges"><span class="badge b-em">4 Countries</span><span class="badge b-em">Auto Deductions</span><span class="badge b-em">Print Ready</span></div>
+<p class="hero-sub">Generate professional payslips with automatic PAYE, pension, and statutory deductions for Nigeria, Kenya, South Africa, Ghana, Tanzania, and Uganda.</p>
+<div class="hero-badges"><span class="badge b-em">6 Countries</span><span class="badge b-em">Auto Deductions</span><span class="badge b-em">Print Ready</span></div>
 </div></section>
 
 <section class="tool-main"><div class="tool-main-inner">
@@ -125,11 +125,13 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div class="row" style="margin-bottom:14px">
 <div><label>Company Name</label><input type="text" id="company" value="ABC Company Ltd" oninput="gen()"></div>
 <div><label>Country</label>
-<select id="country" onchange="gen()">
+<select id="country" onchange="setCountryDefaults();gen()">
 <option value="NG">Nigeria</option>
 <option value="KE">Kenya</option>
 <option value="ZA">South Africa</option>
 <option value="GH">Ghana</option>
+<option value="TZ">Tanzania</option>
+<option value="UG">Uganda</option>
 </select></div>
 </div>
 <div class="row" style="margin-bottom:14px">
@@ -139,12 +141,24 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div class="row" style="margin-bottom:14px">
 <div><label>Pay Period</label>
 <select id="period" onchange="gen()">
-<option value="Jan 2025">January 2025</option>
-<option value="Feb 2025">February 2025</option>
-<option value="Mar 2025" selected>March 2025</option>
-<option value="Apr 2025">April 2025</option>
+<option value="Jan 2026">January 2026</option>
+<option value="Feb 2026">February 2026</option>
+<option value="Mar 2026" selected>March 2026</option>
+<option value="Apr 2026">April 2026</option>
+<option value="May 2026">May 2026</option>
+<option value="Jun 2026">June 2026</option>
+<option value="Jul 2026">July 2026</option>
+<option value="Aug 2026">August 2026</option>
+<option value="Sep 2026">September 2026</option>
+<option value="Oct 2026">October 2026</option>
+<option value="Nov 2026">November 2026</option>
+<option value="Dec 2026">December 2026</option>
 </select></div>
 <div><label>Department</label><input type="text" id="dept" value="Operations" oninput="gen()"></div>
+</div>
+<div class="row" style="margin-bottom:14px">
+<div><label>Job Title / Position</label><input type="text" id="jobTitle" value="Staff" oninput="gen()"></div>
+<div><label>Tax / ID Number</label><input type="text" id="taxId" value="" placeholder="Optional" oninput="gen()"></div>
 </div>
 </div></div>
 
@@ -188,7 +202,10 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <afro-footer></afro-footer>
 
 <script>
-const SYMS = {NG:'₦',KE:'KES',ZA:'R',GH:'GH₵'};
+const SYMS = {NG:'₦',KE:'KES',ZA:'R',GH:'GH₵',TZ:'TSh',UG:'USh'};
+// Default basic salaries by country (approximate median formal sector)
+const DEFAULTS_PAY = {NG:{basic:500000,housing:100000,transport:50000},KE:{basic:80000,housing:20000,transport:10000},ZA:{basic:25000,housing:5000,transport:2500},GH:{basic:4000,housing:800,transport:400},TZ:{basic:1200000,housing:300000,transport:150000},UG:{basic:1800000,housing:400000,transport:200000}};
+function setCountryDefaults(){var c=document.getElementById('country').value;var d=DEFAULTS_PAY[c];if(!d)return;document.getElementById('basic').value=d.basic;document.getElementById('housing').value=d.housing;document.getElementById('transport').value=d.transport;}
 const TAX = {
   NG: { // Nigeria simplified PAYE
     calcPAYE: function(annual) {
@@ -268,6 +285,42 @@ const TAX = {
       { name: 'PAYE Tax', amount: TAX.GH.calcPAYE(gross) },
       { name: 'SSNIT Tier 1 (5.5%)', amount: gross * 0.055 }
     ]
+  },
+  TZ: {
+    calcPAYE: function(monthly) {
+      // Tanzania PAYE bands (TSh/month, 2024)
+      let tax = 0, rem = monthly;
+      const bands = [[270000,0],[250000,.08],[240000,.20],[240000,.25],[Infinity,.30]];
+      for (const [width, rate] of bands) {
+        const t = Math.min(rem, width);
+        tax += t * rate;
+        rem -= t;
+        if (rem <= 0) break;
+      }
+      return tax;
+    },
+    deductions: (gross) => [
+      { name: 'PAYE Tax', amount: TAX.TZ.calcPAYE(gross) },
+      { name: 'NSSF (10%)', amount: Math.min(gross * 0.10, 7200000/12) }
+    ]
+  },
+  UG: {
+    calcPAYE: function(monthly) {
+      // Uganda PAYE bands (UGX/month, 2024)
+      let tax = 0, rem = monthly;
+      const bands = [[235000,0],[100000,.10],[75000,.20],[13423333,.30],[Infinity,.40]];
+      for (const [width, rate] of bands) {
+        const t = Math.min(rem, width);
+        tax += t * rate;
+        rem -= t;
+        if (rem <= 0) break;
+      }
+      return tax;
+    },
+    deductions: (gross) => [
+      { name: 'PAYE Tax', amount: TAX.UG.calcPAYE(gross) },
+      { name: 'NSSF (5%)', amount: gross * 0.05 }
+    ]
   }
 };
 
@@ -302,8 +355,8 @@ function gen() {
     <div class="ps-title">PAYSLIP — ${document.getElementById('period').value}</div>
   </div>
   <div class="ps-info">
-    <div><strong>Employee:</strong> ${document.getElementById('empName').value}<br><strong>Staff No:</strong> ${document.getElementById('empId').value}</div>
-    <div><strong>Department:</strong> ${document.getElementById('dept').value}<br><strong>Pay Date:</strong> ${new Date().toLocaleDateString('en-GB')}</div>
+    <div><strong>Employee:</strong> ${document.getElementById('empName').value}<br><strong>Staff No:</strong> ${document.getElementById('empId').value}<br><strong>Position:</strong> ${document.getElementById('jobTitle').value}</div>
+    <div><strong>Department:</strong> ${document.getElementById('dept').value}<br><strong>Pay Date:</strong> ${new Date().toLocaleDateString('en-GB')}${document.getElementById('taxId').value?'<br><strong>Tax ID:</strong> '+document.getElementById('taxId').value:''}</div>
   </div>
   <table class="ps-table">
     <thead><tr><th>Earnings</th><th>Amount</th></tr></thead>

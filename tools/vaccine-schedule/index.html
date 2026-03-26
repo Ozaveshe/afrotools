@@ -107,7 +107,7 @@ input,select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radiu
 <div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Vaccine Schedule</span></div>
 <h1>Child <em>Vaccination Schedule</em></h1>
 <p class="hero-sub">Complete immunisation schedule for children in Africa based on WHO Expanded Programme on Immunisation (EPI). Track your child's vaccines from birth to 5 years.</p>
-<div class="hero-badges"><span class="badge b-em">WHO EPI</span><span class="badge b-em">Birth to 5 Years</span><span class="badge b-em">Tracker</span></div>
+<div class="hero-badges"><span class="badge b-em">WHO EPI</span><span class="badge b-em">Birth to 14 Years</span><span class="badge b-em">Due Date Tracker</span><span class="badge b-em">Malaria &amp; HPV Vaccines</span></div>
 </div></section>
 
 <section class="tool-main"><div class="tool-main-inner">
@@ -115,8 +115,12 @@ input,select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radiu
 <div class="card">
 <div class="card-head"><span class="card-title">Vaccination Progress</span></div>
 <div class="card-body">
-<div class="progress-text" id="progressText">0 of 18 vaccines completed</div>
+<div class="progress-text" id="progressText">0 of 24 vaccines completed</div>
 <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+<div style="display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;margin-top:14px">
+  <div><label>Child's Date of Birth (shows due dates)</label><input type="date" id="childDob" onchange="render()" style="width:auto;max-width:180px;margin-top:4px"></div>
+  <button onclick="clearTracker()" style="padding:8px 14px;border-radius:6px;border:1.5px solid #e2e8f0;background:#fff;font-size:.78rem;font-weight:600;cursor:pointer;color:#64748b;font-family:inherit">🔄 Reset Tracker</button>
+</div>
 </div></div>
 
 <div class="card">
@@ -135,6 +139,7 @@ input,select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radiu
 <div class="card-body" style="font-size:.78rem;color:#475569;line-height:1.7">
 <p>Vaccines are the <strong>most effective way</strong> to protect children from deadly diseases. In Africa, vaccination prevents an estimated <strong>2-3 million child deaths</strong> every year.</p>
 <p style="margin-top:8px">All vaccines in the EPI schedule are <strong>free</strong> at government health facilities across Africa.</p>
+<p style="margin-top:8px"><strong>★ Country-specific vaccines</strong> (malaria, meningitis A) may not be in your country's schedule yet. Ask your health worker.</p>
 </div></div>
 <div class="info-card">
 <h4>Where to Vaccinate</h4>
@@ -170,6 +175,9 @@ input,select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radiu
 <h2>Frequently Asked Questions</h2>
 <details class="faq-item"><summary>Are vaccines safe for my child?</summary><p>Yes. All vaccines in the EPI schedule have been rigorously tested and approved by the WHO. Side effects are typically mild (slight fever, redness at injection site) and resolve within 1-2 days. The risk of serious side effects is extremely rare — far lower than the risk of the diseases they prevent. Millions of African children receive these vaccines safely every year.</p></details>
 <details class="faq-item"><summary>What if my child missed a vaccine?</summary><p>Visit your nearest health facility as soon as possible. Most vaccines can be given later than scheduled — it's called "catch-up vaccination." Your healthcare worker will adjust the schedule. The important thing is to complete all vaccinations, even if they're delayed. Don't restart the series — just continue where you left off.</p></details>
+<details class="faq-item"><summary>Is the malaria vaccine available in my country?</summary><p>The RTS,S (Mosquirix) and R21/Matrix-M malaria vaccines are being rolled out across Africa. As of 2024-2025, they are available in national immunisation programmes in Ghana, Kenya, Malawi, Cameroon, Burkina Faso, Sierra Leone, and Liberia, with more countries joining. The vaccines reduce malaria cases in children by approximately 40-75%. Ask at your local health facility if the malaria vaccine is available in your area — it's free at government facilities in participating countries.</p></details>
+<details class="faq-item"><summary>Should my daughter receive the HPV vaccine?</summary><p>Yes. The HPV (Human Papillomavirus) vaccine protects against the types of HPV that cause over 70% of cervical cancers. Cervical cancer is the fourth most common cancer among women globally and has especially high incidence in sub-Saharan Africa. The WHO recommends vaccinating girls aged 9-14 years with 2 doses (6 months apart). Most African countries now include HPV in their national immunisation schedules — it's free at government health facilities for eligible age groups. The vaccine is most effective when given before sexual debut.</p></details>
+<details class="faq-item"><summary>What is the meningitis belt and the MenAfriVac vaccine?</summary><p>The "meningitis belt" stretches across sub-Saharan Africa from Senegal to Ethiopia — including Mali, Burkina Faso, Niger, Nigeria (north), Chad, Sudan, and Ethiopia. This region has the world's highest rates of bacterial meningitis (mainly Neisseria meningitidis serogroup A). The MenAfriVac vaccine, developed specifically for Africa, provides long-lasting protection with a single dose and has reduced meningitis A cases in the belt by over 99% since its introduction in 2010. If you live in or travel to this region, confirm your child has received this vaccine.</p></details>
 </section>
 
 <afro-related-tools category="health" current="vaccine-schedule"></afro-related-tools>
@@ -206,11 +214,60 @@ const VACCINES = [
     { id: 'yf', name: 'Yellow Fever', disease: 'Yellow Fever' }
   ]},
   { age: '15-18 Months', items: [
-    { id: 'measles2', name: 'Measles-Rubella-2 (MR-2)', disease: 'Measles, Rubella (booster)' }
+    { id: 'measles2', name: 'Measles-Rubella-2 (MR-2)', disease: 'Measles, Rubella (booster)' },
+    { id: 'mena', name: 'Meningitis A (MenAfriVac) ★', disease: 'Meningococcal meningitis — Sahel belt / meningitis belt countries' }
+  ]},
+  { age: '18-24 Months', items: [
+    { id: 'rtss4', name: 'Malaria Vaccine Booster (RTS,S / R21) ★', disease: 'Malaria — Ghana, Kenya, Malawi, Cameroon and expanding countries' }
+  ]},
+  { age: '4-6 Years', items: [
+    { id: 'opv4', name: 'OPV Booster', disease: 'Polio (final booster dose)' },
+    { id: 'measles3', name: 'Measles-Rubella Booster (catch-up)', disease: 'Measles, Rubella' }
+  ]},
+  { age: '9-14 Years (Girls)', items: [
+    { id: 'hpv1', name: 'HPV Dose 1 (Gardasil / Cervarix)', disease: 'Cervical cancer — HPV types 16, 18. Now in national schedules across Africa' },
+    { id: 'hpv2', name: 'HPV Dose 2 (6 months after dose 1)', disease: 'Cervical cancer (booster)' }
   ]}
 ];
+// ★ = country-specific — may not be in your national schedule
 
 const saved = JSON.parse(localStorage.getItem('vax_done') || '{}');
+
+// Age offset map: days from birth for each age group
+const AGE_DAYS = {
+  'At Birth': 0,
+  '6 Weeks': 42,
+  '10 Weeks': 70,
+  '14 Weeks': 98,
+  '9 Months': 274,
+  '15-18 Months': 488,
+  '18-24 Months': 640,
+  '4-6 Years': 1825,
+  '9-14 Years (Girls)': 4015
+};
+
+function getDueDate(ageGroup) {
+  var dobVal = document.getElementById('childDob').value;
+  if (!dobVal) return null;
+  var dob = new Date(dobVal);
+  var days = AGE_DAYS[ageGroup];
+  if (days === undefined) return null;
+  var due = new Date(dob.getTime() + days * 86400000);
+  return due;
+}
+
+function dueDateLabel(dueDate) {
+  if (!dueDate) return '';
+  var today = new Date(); today.setHours(0,0,0,0);
+  var due = new Date(dueDate); due.setHours(0,0,0,0);
+  var diffDays = Math.round((due - today) / 86400000);
+  var fmt = due.toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'});
+  if (diffDays < -7) return '<span style="color:#dc2626;font-weight:700;font-size:.7rem">⚠️ Overdue (' + fmt + ')</span>';
+  if (diffDays < 0) return '<span style="color:#f97316;font-weight:700;font-size:.7rem">⚠️ Due recently (' + fmt + ')</span>';
+  if (diffDays === 0) return '<span style="color:#f97316;font-weight:700;font-size:.7rem">📅 Due today</span>';
+  if (diffDays <= 14) return '<span style="color:#d97706;font-weight:700;font-size:.7rem">🔔 Due soon (' + fmt + ')</span>';
+  return '<span style="color:#64748b;font-size:.7rem">🗓 ' + fmt + '</span>';
+}
 
 function render() {
   const total = VACCINES.reduce((s, g) => s + g.items.length, 0);
@@ -221,7 +278,9 @@ function render() {
 
   let html = '';
   VACCINES.forEach(group => {
-    html += `<tr class="age-group"><td colspan="4">${group.age}</td></tr>`;
+    var due = getDueDate(group.age);
+    var dueHtml = due ? ' — ' + dueDateLabel(due) : '';
+    html += `<tr class="age-group"><td colspan="4">${group.age}${dueHtml}</td></tr>`;
     group.items.forEach(v => {
       const isDone = saved[v.id];
       html += `<tr class="${isDone?'done':''}">
@@ -239,6 +298,14 @@ function toggle(id) {
   saved[id] = !saved[id];
   localStorage.setItem('vax_done', JSON.stringify(saved));
   render();
+}
+
+function clearTracker() {
+  if (confirm('Reset all vaccination checkmarks?')) {
+    Object.keys(saved).forEach(k => delete saved[k]);
+    localStorage.removeItem('vax_done');
+    render();
+  }
 }
 
 render();

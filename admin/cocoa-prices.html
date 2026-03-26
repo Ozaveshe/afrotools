@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Cocoa Prices — AfroTools Admin</title>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', -apple-system, sans-serif; background: #F5F9FF; color: #1a2e22; line-height: 1.6; }
+  .dash { max-width: 1300px; margin: 0 auto; padding: 32px 24px; }
+  .dash-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+  .dash-header h1 { font-size: 1.4rem; font-weight: 800; }
+  .dash-header .badge { background: #fef3cd; color: #92400e; font-size: .65rem; font-weight: 700; padding: 3px 10px; border-radius: 12px; text-transform: uppercase; }
+  .back-link { font-size: .82rem; color: #007AFF; text-decoration: none; margin-bottom: 16px; display: inline-block; }
+  .back-link:hover { text-decoration: underline; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin-bottom: 24px; }
+  .stat-card { background: #fff; border: 1px solid #E8F0FE; border-radius: 12px; padding: 16px; text-align: center; }
+  .stat-value { font-size: 1.5rem; font-weight: 800; color: #007AFF; }
+  .stat-value.warn { color: #d97706; }
+  .stat-label { font-size: .72rem; color: #6B7F99; margin-top: 2px; }
+  .section { background: #fff; border: 1px solid #E8F0FE; border-radius: 12px; padding: 24px; margin-bottom: 20px; overflow-x: auto; }
+  .section h2 { font-size: 1rem; font-weight: 700; margin-bottom: 16px; }
+  table { width: 100%; border-collapse: collapse; font-size: .79rem; min-width: 1100px; }
+  th { text-align: left; font-weight: 600; color: #6B7F99; padding: 8px; border-bottom: 2px solid #E8F0FE; white-space: nowrap; }
+  td { padding: 5px 8px; border-bottom: 1px solid #EFF6FF; }
+  tr:hover td { background: #F5F9FF; }
+  td input[type="number"] { width: 90px; padding: 4px 6px; border: 1.5px solid #E5E7EB; border-radius: 6px; font-size: .8rem; text-align: right; }
+  td input[type="text"] { width: 140px; padding: 4px 6px; border: 1.5px solid #E5E7EB; border-radius: 6px; font-size: .78rem; }
+  td input.wide { width: 200px; }
+  td input:focus { border-color: #007AFF; outline: none; }
+  .btn { padding: 5px 13px; border: none; border-radius: 6px; font-family: inherit; font-size: .78rem; font-weight: 600; cursor: pointer; }
+  .btn-save { background: #059669; color: #fff; }
+  .btn-save:hover { background: #047857; }
+  .stale { background: #FEF2F2; }
+  .stale-badge { font-size: .6rem; font-weight: 700; background: #FEE2E2; color: #991B1B; padding: 2px 6px; border-radius: 4px; }
+  .fresh-badge { font-size: .6rem; font-weight: 700; background: #ECFDF5; color: #059669; padding: 2px 6px; border-radius: 4px; }
+  .source-note { font-size: .72rem; color: #94a3b8; margin-top: 12px; }
+  .toast { position: fixed; top: 20px; right: 20px; padding: 12px 20px; border-radius: 8px; color: #fff;
+    font-size: .85rem; font-weight: 500; z-index: 999; transform: translateY(-20px); opacity: 0; transition: all .3s; }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast.success { background: #059669; }
+  .toast.error { background: #dc2626; }
+  .icco-bar { background: #FFF7ED; border: 1px solid #FED7AA; border-radius: 8px; padding: 10px 16px;
+    margin-bottom: 16px; font-size: .8rem; display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+  .icco-bar strong { color: #92400e; }
+</style>
+</head>
+<body>
+<div class="dash">
+  <a href="/admin/dashboard.html" class="back-link">&larr; Admin Dashboard</a>
+  <div class="dash-header">
+    <h1>🍫 Cocoa Prices</h1>
+    <span class="badge">Admin</span>
+  </div>
+  <div class="stats" id="cocoaStats"></div>
+
+  <div class="icco-bar">
+    <strong>🌍 ICCO World Price (London):</strong>
+    <span>USD/tonne: <input type="number" id="icco-price" step="1" placeholder="e.g. 9800" style="width:110px;padding:4px 6px;border:1.5px solid #FED7AA;border-radius:6px;font-size:.8rem"></span>
+    <span>USD/kg: <input type="number" id="icco-kg" step="0.01" placeholder="e.g. 9.80" style="width:90px;padding:4px 6px;border:1.5px solid #FED7AA;border-radius:6px;font-size:.8rem"></span>
+    <button class="btn btn-save" onclick="saveICCO()" style="padding:4px 12px">Save ICCO Price</button>
+    <span id="icco-note" style="color:#94a3b8;font-size:.72rem">Source: ICCO — update weekly</span>
+  </div>
+
+  <div class="section">
+    <h2>Farm-Gate & Export Prices — 6 Major Producers</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Country</th>
+          <th>Currency</th>
+          <th>Farm Gate (local/kg)</th>
+          <th>Export Price (USD/kg)</th>
+          <th>Avg Yield (kg/ha)</th>
+          <th>Grade 1 Premium %</th>
+          <th>Grade 2 Discount %</th>
+          <th>Rainforest Premium %</th>
+          <th>Fairtrade Premium %</th>
+          <th>Organic Premium %</th>
+          <th>Notes</th>
+          <th>Updated</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="cocoaTable">
+        <tr><td colspan="14" style="text-align:center;color:#94a3b8;padding:24px">Loading cocoa data…</td></tr>
+      </tbody>
+    </table>
+    <div class="source-note">Sources: ICCO, Cocoa Barometer, national cocoa boards (CCC, COCOBOD, CODEX). Update monthly.</div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var adminKey = sessionStorage.getItem('admin_key');
+if (!adminKey) { adminKey = prompt('Enter admin password:'); if (adminKey) sessionStorage.setItem('admin_key', adminKey); }
+var SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
+var tableData = [];
+
+var COCOA_COUNTRIES = [
+  { code: 'CI', name: "Côte d'Ivoire", currency: 'XOF' },
+  { code: 'GH', name: 'Ghana',         currency: 'GHS' },
+  { code: 'NG', name: 'Nigeria',        currency: 'NGN' },
+  { code: 'CM', name: 'Cameroon',       currency: 'XAF' },
+  { code: 'TG', name: 'Togo',           currency: 'XOF' },
+  { code: 'SL', name: 'Sierra Leone',   currency: 'SLL' },
+];
+
+function showToast(msg, type) {
+  var t = document.getElementById('toast'); t.textContent = msg;
+  t.className = 'toast ' + (type || 'success'); t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, 3000);
+}
+function timeAgo(dateStr) {
+  if (!dateStr) return 'Never';
+  var days = Math.floor((Date.now() - new Date(dateStr).getTime()) / 86400000);
+  if (days === 0) return 'Today'; if (days === 1) return 'Yesterday';
+  if (days < 30) return days + 'd ago'; return Math.floor(days / 30) + 'mo ago';
+}
+function isStale(d) { return !d || (Date.now() - new Date(d).getTime()) > 30 * 86400000; }
+
+async function loadData() {
+  try {
+    var res = await fetch(SUPABASE_URL + '/rest/v1/cocoa_prices?select=*&order=country_name.asc', {
+      headers: { apikey: adminKey, Authorization: 'Bearer ' + adminKey }
+    });
+    var dbRows = res.ok ? await res.json() : [];
+    var dbMap = {};
+    dbRows.forEach(function(r) { dbMap[r.country_code] = r; });
+    tableData = COCOA_COUNTRIES.map(function(c) {
+      return dbMap[c.code] || { country_code: c.code, country_name: c.name, currency: c.currency,
+        farm_gate_per_kg: null, export_price_per_kg_usd: null, avg_yield_kg_ha: null,
+        grade1_premium_pct: 0, grade2_discount_pct: 0, rainforest_premium_pct: 0,
+        fairtrade_premium_pct: 0, organic_premium_pct: 0, notes: '', updated_at: null };
+    });
+    renderTable(); renderStats();
+  } catch(e) { showToast('Load error: ' + e.message, 'error'); }
+}
+
+function renderStats() {
+  var stale = tableData.filter(function(r) { return isStale(r.updated_at); }).length;
+  var fresh = tableData.length - stale;
+  document.getElementById('cocoaStats').innerHTML =
+    '<div class="stat-card"><div class="stat-value">' + tableData.length + '</div><div class="stat-label">Countries</div></div>' +
+    '<div class="stat-card"><div class="stat-value">' + fresh + '</div><div class="stat-label">Up to Date</div></div>' +
+    '<div class="stat-card"><div class="stat-value' + (stale > 0 ? ' warn' : '') + '">' + stale + '</div><div class="stat-label">Stale (>30d)</div></div>';
+}
+
+function renderTable() {
+  var n = function(v) { return v !== null && v !== undefined ? v : ''; };
+  document.getElementById('cocoaTable').innerHTML = tableData.map(function(r, i) {
+    var stale = isStale(r.updated_at);
+    return '<tr class="' + (stale ? 'stale' : '') + '" data-idx="' + i + '">' +
+      '<td><strong>' + r.country_code + '</strong> ' + r.country_name + '</td>' +
+      '<td><input type="text" value="' + n(r.currency) + '" data-field="currency" style="width:55px"></td>' +
+      '<td><input type="number" step="1"    value="' + n(r.farm_gate_per_kg) + '" data-field="farm_gate_per_kg"></td>' +
+      '<td><input type="number" step="0.01" value="' + n(r.export_price_per_kg_usd) + '" data-field="export_price_per_kg_usd"></td>' +
+      '<td><input type="number" step="1"    value="' + n(r.avg_yield_kg_ha) + '" data-field="avg_yield_kg_ha"></td>' +
+      '<td><input type="number" step="0.1"  value="' + n(r.grade1_premium_pct) + '" data-field="grade1_premium_pct"></td>' +
+      '<td><input type="number" step="0.1"  value="' + n(r.grade2_discount_pct) + '" data-field="grade2_discount_pct"></td>' +
+      '<td><input type="number" step="0.1"  value="' + n(r.rainforest_premium_pct) + '" data-field="rainforest_premium_pct"></td>' +
+      '<td><input type="number" step="0.1"  value="' + n(r.fairtrade_premium_pct) + '" data-field="fairtrade_premium_pct"></td>' +
+      '<td><input type="number" step="0.1"  value="' + n(r.organic_premium_pct) + '" data-field="organic_premium_pct"></td>' +
+      '<td><input type="text" class="wide" value="' + (r.notes||'').replace(/"/g,'&quot;') + '" data-field="notes" placeholder="Notes…"></td>' +
+      '<td style="font-size:.72rem;color:#94a3b8;white-space:nowrap">' + timeAgo(r.updated_at) + '</td>' +
+      '<td>' + (stale ? '<span class="stale-badge">STALE</span>' : '<span class="fresh-badge">OK</span>') + '</td>' +
+      '<td><button class="btn btn-save" onclick="saveRow(' + i + ')">Save</button></td>' +
+    '</tr>';
+  }).join('');
+}
+
+async function saveRow(idx) {
+  var r = tableData[idx];
+  var row = document.querySelector('tr[data-idx="' + idx + '"]');
+  var f = function(f) { return parseFloat(row.querySelector('[data-field="' + f + '"]').value) || null; };
+  var payload = {
+    country_code: r.country_code, country_name: r.country_name,
+    currency:               row.querySelector('[data-field="currency"]').value,
+    farm_gate_per_kg:        f('farm_gate_per_kg'),
+    export_price_per_kg_usd: f('export_price_per_kg_usd'),
+    avg_yield_kg_ha:         f('avg_yield_kg_ha'),
+    grade1_premium_pct:      f('grade1_premium_pct') || 0,
+    grade2_discount_pct:     f('grade2_discount_pct') || 0,
+    rainforest_premium_pct:  f('rainforest_premium_pct') || 0,
+    fairtrade_premium_pct:   f('fairtrade_premium_pct') || 0,
+    organic_premium_pct:     f('organic_premium_pct') || 0,
+    notes:     row.querySelector('[data-field="notes"]').value,
+    updated_at: new Date().toISOString(), updated_by: 'admin'
+  };
+  try {
+    var res = await fetch(SUPABASE_URL + '/rest/v1/cocoa_prices', {
+      method: 'POST',
+      headers: { apikey: adminKey, Authorization: 'Bearer ' + adminKey,
+        'Content-Type': 'application/json', Prefer: 'resolution=merge-duplicates,return=representation' },
+      body: JSON.stringify(payload)
+    });
+    if (res.ok) { tableData[idx] = Object.assign(r, payload); showToast(r.country_name + ' cocoa updated'); renderTable(); renderStats(); }
+    else showToast('Save failed: ' + await res.text(), 'error');
+  } catch(e) { showToast('Network error', 'error'); }
+}
+
+async function saveICCO() {
+  var price = parseFloat(document.getElementById('icco-price').value) || null;
+  var payload = { commodity: 'cocoa', exchange: 'ICCO London', price_usd: price,
+    notes: document.getElementById('icco-kg').value ? 'USD/kg: ' + document.getElementById('icco-kg').value : '',
+    updated_at: new Date().toISOString() };
+  try {
+    var res = await fetch(SUPABASE_URL + '/rest/v1/commodity_benchmarks', {
+      method: 'POST',
+      headers: { apikey: adminKey, Authorization: 'Bearer ' + adminKey,
+        'Content-Type': 'application/json', Prefer: 'resolution=merge-duplicates,return=representation' },
+      body: JSON.stringify(payload)
+    });
+    if (res.ok) showToast('ICCO price saved');
+    else showToast('ICCO save failed', 'error');
+  } catch(e) { showToast('Network error', 'error'); }
+}
+
+loadData();
+</script>
+</body>
+</html>

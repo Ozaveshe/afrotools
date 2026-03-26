@@ -6,7 +6,7 @@
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'visa-cost'});</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>African Visa Cost Checker | AfroTools</title>
-<meta name="description" content="Check visa requirements and costs for travel between African countries. Visa-free, visa on arrival, and e-visa information for African passport holders.">
+<meta name="description" content="Check visa requirements and costs for travel between 33 African countries. Visa-free, visa on arrival, e-visa, and document requirements for African passport holders.">
 <link rel="canonical" href="https://afrotools.com/tools/visa-cost/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="African Visa Cost Checker | AfroTools">
@@ -49,23 +49,34 @@ select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(5
 .result-display.evisa{background:linear-gradient(135deg,#eff6ff,#dbeafe);border:2px solid #93c5fd}
 .result-display.required{background:linear-gradient(135deg,#fef2f2,#fee2e2);border:2px solid #fecaca}
 .result-display .big{font-size:1.6rem;font-weight:900;line-height:1.2}
-.result-display .sub{font-size:.82rem;margin-top:6px;opacity:.7}
+.result-display .sub{font-size:.82rem;margin-top:6px;opacity:.75}
 .result-display .cost{font-size:1.2rem;font-weight:800;margin-top:8px}
-.dest-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-top:18px}
-.dest-card{border:1px solid #e2e8f0;border-radius:8px;padding:12px;text-align:center;font-size:.78rem}
-.dest-card .country{font-weight:800;color:#1e293b;font-size:.88rem}
-.dest-card .type{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-top:4px;padding:2px 8px;border-radius:10px;display:inline-block}
+.info-pills{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:10px}
+.info-pill{background:rgba(255,255,255,.8);border-radius:20px;padding:4px 12px;font-size:.72rem;font-weight:600;color:#334155}
+.docs-box{margin-top:14px;text-align:left;background:rgba(255,255,255,.7);border-radius:8px;padding:10px 14px}
+.docs-box .docs-title{font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#64748b;margin-bottom:6px}
+.docs-box ul{margin:0;padding-left:16px;font-size:.78rem;color:#334155;line-height:1.8}
+.filter-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.filter-btn{padding:4px 12px;border-radius:20px;border:1px solid #e2e8f0;background:#f8fafc;font-size:.72rem;font-weight:600;cursor:pointer;color:#64748b;transition:all .15s;font-family:inherit}
+.filter-btn.active,.filter-btn:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.dest-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.dest-card{border:1px solid #e2e8f0;border-radius:8px;padding:10px 8px;text-align:center;font-size:.75rem;cursor:pointer;transition:box-shadow .15s}
+.dest-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.dest-card .country{font-weight:800;color:#1e293b;font-size:.82rem}
+.dest-card .cflag{font-size:1.2rem;margin-bottom:2px}
+.dest-card .type{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-top:4px;padding:2px 8px;border-radius:10px;display:inline-block}
 .type-free{background:#dcfce7;color:#166534}
 .type-voa{background:#fef9c3;color:#854d0e}
 .type-evisa{background:#dbeafe;color:#1e40af}
 .type-required{background:#fee2e2;color:#991b1b}
+.no-results{text-align:center;color:#94a3b8;font-size:.82rem;padding:20px}
 .seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
 .seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
 .seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
 .faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
 .faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
 .faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
-@media(max-width:768px){.sel-row{grid-template-columns:1fr}}
+@media(max-width:768px){.sel-row{grid-template-columns:1fr}.dest-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}}
 </style>
 <script src="/assets/js/bundles/core.5473a555.min.js" defer></script><script src="/assets/js/afro-history.js" defer></script>
 <script src="/assets/js/components/save-result-button.js" defer></script>
@@ -85,24 +96,9 @@ select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(5
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "AfroTools",
-      "item": "https://afrotools.com/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Tools",
-      "item": "https://afrotools.com/tools/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "African Visa Cost Checker",
-      "item": "https://afrotools.com/tools/visa-cost/"
-    }
+    {"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},
+    {"@type":"ListItem","position":2,"name":"Tools","item":"https://afrotools.com/tools/"},
+    {"@type":"ListItem","position":3,"name":"African Visa Cost Checker","item":"https://afrotools.com/tools/visa-cost/"}
   ]
 }
 </script>
@@ -112,8 +108,13 @@ select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(5
 <section class="tool-hero"><div class="tool-hero-inner">
 <div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Visa Cost</span></div>
 <h1>African <em>Visa Cost Checker</em></h1>
-<p class="hero-sub">Check visa requirements, costs, and entry conditions for travel between African countries. Find out if you need a visa, can get one on arrival, or travel visa-free.</p>
-<div class="hero-badges"><span class="badge b-em">Intra-Africa Travel</span><span class="badge b-em">2025 Data</span><span class="badge b-em">ECOWAS/EAC/SADC</span></div>
+<p class="hero-sub">Check visa requirements, costs, and document needs for travel between African countries. Find out if you need a visa, can arrive visa-free, or apply online before you travel.</p>
+<div class="hero-badges">
+  <span class="badge b-em">✈ 33 Countries</span>
+  <span class="badge b-em">2025 Data</span>
+  <span class="badge b-em">ECOWAS · EAC · SADC</span>
+  <span class="badge b-em">Docs & Processing Time</span>
+</div>
 </div></section>
 
 <section class="tool-main"><div class="tool-main-inner">
@@ -128,22 +129,36 @@ select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(5
 </div></div>
 
 <div class="card" style="margin-top:18px">
-<div class="card-head"><span class="card-title" id="overviewTitle">All Destinations</span></div>
+<div class="card-head">
+  <span class="card-title" id="overviewTitle">All Destinations</span>
+</div>
 <div class="card-body">
-<div class="dest-grid" id="destGrid"></div>
+  <div class="filter-row">
+    <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
+    <button class="filter-btn" onclick="setFilter('free',this)">🟢 Visa-Free</button>
+    <button class="filter-btn" onclick="setFilter('voa',this)">🟡 On Arrival</button>
+    <button class="filter-btn" onclick="setFilter('evisa',this)">🔵 E-Visa</button>
+    <button class="filter-btn" onclick="setFilter('required',this)">🔴 Visa Required</button>
+  </div>
+  <div class="dest-grid" id="destGrid"></div>
 </div></div>
 </div></section>
 
 <section class="seo-section">
 <h2>Visa Requirements for African Travel</h2>
-<p>Travelling within Africa often requires navigating complex visa requirements. Despite the African Union's Agenda 2063 vision of visa-free travel across the continent, many African passport holders still need visas to visit other African countries. However, significant progress has been made through regional blocs like ECOWAS, EAC, and SADC.</p>
-<p>ECOWAS citizens (Nigeria, Ghana, Senegal, Cote d'Ivoire, and 11 other West African nations) enjoy visa-free travel within the bloc. East African Community (EAC) members — Kenya, Tanzania, Uganda, Rwanda, Burundi, DRC, and South Sudan — have similar arrangements. SADC countries offer easier travel for regional citizens, though not all SADC member states participate equally.</p>
-<p>The African Union launched the Africa Visa Openness Index (AVOI) to rank countries by how open they are to African travellers. Countries like Seychelles, Benin, Gambia, and Rwanda are among the most open, offering visa-free or visa-on-arrival access to all African passport holders. At the other end, countries like Equatorial Guinea, Eritrea, and Libya remain among the most restrictive.</p>
-<p>The African Union's Single African Air Transport Market (SAATM) and the Protocol on Free Movement of Persons are gradually expanding visa-free access. The goal is an African passport that allows free movement across the continent by 2063. Until then, check requirements carefully before travelling.</p>
+<p>Travelling within Africa often means navigating complex visa rules. Despite the African Union's Agenda 2063 vision of visa-free movement across the continent, many passport holders still need visas to visit neighbouring countries. Progress has been made through regional blocs — ECOWAS (West Africa), the EAC (East Africa), and SADC (Southern Africa) — but gaps remain.</p>
+<p>ECOWAS citizens (Nigeria, Ghana, Senegal, Côte d'Ivoire, Gambia, Sierra Leone, Togo, Benin, and 7 other West African nations) enjoy visa-free travel within the bloc. East African Community members enjoy similar free movement. Rwanda, Benin, and Seychelles stand out as the continent's most open destinations — offering visa-free or free visa-on-arrival to nearly all Africans.</p>
+<p>The African Union's Visa Openness Index ranks countries annually. Leading open nations include Seychelles (visa-free for all), Rwanda (visa-free for all AU members), Mauritius (visa-free for all Africans), and Benin (free e-visa). At the restrictive end: Angola, Algeria, and DR Congo require advance visas with significant processing time and documentation.</p>
+<p>Always carry a passport valid for at least 6 months beyond your travel dates. For countries requiring a yellow fever certificate, you must show your International Certificate of Vaccination (yellow card) at entry. Verify requirements with the destination embassy before booking — policies can change.</p>
 
 <h2>Frequently Asked Questions</h2>
-<details class="faq-item"><summary>Can Nigerians travel visa-free in Africa?</summary><p>Nigerian passport holders can travel visa-free to all 15 ECOWAS member states (Ghana, Senegal, Gambia, etc.). They also enjoy visa-free or visa-on-arrival access to about 20 other African countries including Seychelles, Mozambique, Madagascar, Comoros, and Mauritius. However, a visa is required for most Southern and North African countries.</p></details>
-<details class="faq-item"><summary>What is visa on arrival?</summary><p>Visa on arrival (VOA) means you don't need to apply before travelling — you obtain the visa at the airport or border when you arrive. You'll typically need a valid passport (6+ months), return ticket, proof of accommodation, and the visa fee in cash (usually USD). Processing takes 15-60 minutes at the port of entry.</p></details>
+<details class="faq-item"><summary>Can Nigerians travel visa-free in Africa?</summary><p>Nigerian passport holders travel visa-free within all 15 ECOWAS states (Ghana, Senegal, Gambia, Togo, Benin, etc.) and to open destinations like Seychelles, Mauritius, Rwanda, and Mozambique (VOA). For southern Africa (South Africa, Botswana, Namibia), a full embassy visa is required. Morocco and select West African states have bilateral exemptions with Nigeria. For East Africa, Kenya requires an eTA ($30), while Tanzania and Uganda require visas. Angola remains particularly difficult — apply well in advance.</p></details>
+<details class="faq-item"><summary>What is visa on arrival?</summary><p>Visa on arrival (VOA) means you collect the visa at the airport or border when you arrive — no advance application needed. You'll typically need: a valid passport (6+ months), return/onward ticket, proof of accommodation, and the visa fee in cash (USD is usually accepted). Processing takes 15–60 minutes at most ports of entry. Countries like Mozambique, Zambia, Zimbabwe, Madagascar, and Sierra Leone commonly offer VOA to many Africans.</p></details>
+<details class="faq-item"><summary>Which African countries are visa-free for all Africans?</summary><p>Three destinations stand out: <strong>Seychelles</strong> (visa-free for all nationalities worldwide), <strong>Rwanda</strong> (visa-free for all African Union member states since 2018), and <strong>Mauritius</strong> (visa-free for all African passport holders). Benin offers a free e-visa on arrival via the SVI system. These countries are the easiest to enter on an African passport regardless of where you are from.</p></details>
+<details class="faq-item"><summary>Do I need a yellow fever vaccination card in Africa?</summary><p>Yes — many African countries require proof of yellow fever vaccination for entry, especially if you are arriving from or have transited through a yellow fever endemic country. Countries that commonly require the certificate include: Nigeria, Ghana, Kenya, Uganda, Tanzania, Rwanda, Cameroon, Angola, DRC, Gabon, and Senegal. The International Certificate of Vaccination (ICVP, or "yellow card") must be carried alongside your passport. Some airlines may deny boarding if you cannot present it for certain routes.</p></details>
+<details class="faq-item"><summary>Can Kenyans travel freely in East Africa?</summary><p>Yes. As an EAC member, Kenya passport holders enjoy visa-free travel to Tanzania, Uganda, Rwanda, and Burundi — all fellow EAC members. No visa is needed, and stays of up to 90 days are typically allowed. For Ethiopia, a bilateral exemption exists. For South Africa, a full visa is required. For Egypt, an e-visa ($25) is needed.</p></details>
+<details class="faq-item"><summary>How hard is it to get a South Africa visa?</summary><p>South Africa has one of the stricter visa processes on the continent for non-SADC passport holders. West and East Africans (Nigerians, Ghanaians, Kenyans, etc.) must apply at the South African High Commission in their country. Requirements include: 3 months of bank statements, employment/business letter, proof of accommodation, return ticket, and a completed BI-84 form. Processing can take 4–8 weeks. SADC nationals (Botswana, Namibia, Mozambique, Zimbabwe, Zambia, Malawi, Mauritius) enter visa-free for up to 90 days.</p></details>
+<details class="faq-item"><summary>What is the ECOWAS travel certificate and who can use it?</summary><p>The ECOWAS Travel Certificate is a supplementary travel document issued to citizens of the 15 ECOWAS member states. It can be used instead of a passport for travel within the ECOWAS region. Eligible countries: Nigeria, Ghana, Senegal, Côte d'Ivoire, Gambia, Sierra Leone, Liberia, Guinea, Guinea-Bissau, Mali, Burkina Faso, Niger, Togo, Benin, and Cape Verde. Note: Cameroon is NOT an ECOWAS member — it belongs to ECCAS/CEMAC.</p></details>
 </section>
 
 <afro-related-tools category="legal" current="visa-cost"></afro-related-tools>
@@ -151,100 +166,549 @@ select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(5
 <afro-footer></afro-footer>
 
 <script>
-const COUNTRIES = ['Nigeria','Ghana','Kenya','South Africa','Egypt','Tanzania','Ethiopia','Rwanda','Uganda','Senegal',
-  'Cote d\'Ivoire','Cameroon','Morocco','DR Congo','Mozambique','Zambia','Zimbabwe','Botswana','Namibia','Mauritius'];
+var COUNTRIES = [
+  // West Africa (ECOWAS)
+  {code:'NG', name:'Nigeria',        flag:'🇳🇬'},
+  {code:'GH', name:'Ghana',          flag:'🇬🇭'},
+  {code:'SN', name:'Senegal',        flag:'🇸🇳'},
+  {code:'CI', name:"Côte d'Ivoire",  flag:'🇨🇮'},
+  {code:'GM', name:'Gambia',         flag:'🇬🇲'},
+  {code:'SL', name:'Sierra Leone',   flag:'🇸🇱'},
+  {code:'TG', name:'Togo',           flag:'🇹🇬'},
+  {code:'BJ', name:'Benin',          flag:'🇧🇯'},
+  // Central & West Africa (non-ECOWAS)
+  {code:'CM', name:'Cameroon',       flag:'🇨🇲'},
+  {code:'GA', name:'Gabon',          flag:'🇬🇦'},
+  // East Africa (EAC)
+  {code:'KE', name:'Kenya',          flag:'🇰🇪'},
+  {code:'TZ', name:'Tanzania',       flag:'🇹🇿'},
+  {code:'UG', name:'Uganda',         flag:'🇺🇬'},
+  {code:'RW', name:'Rwanda',         flag:'🇷🇼'},
+  {code:'BI', name:'Burundi',        flag:'🇧🇮'},
+  // East Africa (non-EAC)
+  {code:'ET', name:'Ethiopia',       flag:'🇪🇹'},
+  {code:'SD', name:'Sudan',          flag:'🇸🇩'},
+  // Southern Africa
+  {code:'ZA', name:'South Africa',   flag:'🇿🇦'},
+  {code:'MZ', name:'Mozambique',     flag:'🇲🇿'},
+  {code:'ZM', name:'Zambia',         flag:'🇿🇲'},
+  {code:'ZW', name:'Zimbabwe',       flag:'🇿🇼'},
+  {code:'BW', name:'Botswana',       flag:'🇧🇼'},
+  {code:'NA', name:'Namibia',        flag:'🇳🇦'},
+  {code:'MW', name:'Malawi',         flag:'🇲🇼'},
+  {code:'AO', name:'Angola',         flag:'🇦🇴'},
+  // Island nations
+  {code:'MG', name:'Madagascar',     flag:'🇲🇬'},
+  {code:'MU', name:'Mauritius',      flag:'🇲🇺'},
+  {code:'SC', name:'Seychelles',     flag:'🇸🇨'},
+  // Central Africa
+  {code:'CD', name:'DR Congo',       flag:'🇨🇩'},
+  // North Africa
+  {code:'EG', name:'Egypt',          flag:'🇪🇬'},
+  {code:'MA', name:'Morocco',        flag:'🇲🇦'},
+  {code:'TN', name:'Tunisia',        flag:'🇹🇳'},
+  {code:'DZ', name:'Algeria',        flag:'🇩🇿'},
+];
 
-// Simplified visa matrix (from → to): 'free', 'voa', 'evisa', 'required'
-const ECOWAS = ['Nigeria','Ghana','Senegal','Cote d\'Ivoire','Cameroon'];
-const EAC = ['Kenya','Tanzania','Rwanda','Uganda'];
+// Regional blocs (correct membership)
+var ECOWAS = ['NG','GH','SN','CI','GM','SL','TG','BJ']; // Cameroon is NOT ECOWAS
+var EAC    = ['KE','TZ','UG','RW','BI'];
+// SADC bilateral visa-free pairs (core members with free movement)
+var SADC_FREE = ['ZA','BW','NA','MZ','ZM','ZW','MW','MU','TZ','LS','SZ'];
+// North Africa bilateral exemptions
+var MAGHREB = ['MA','TN','DZ','EG'];
+
+function getCName(code) {
+  var c = COUNTRIES.find(function(x){return x.code===code;});
+  return c ? c.name : code;
+}
+function getCFlag(code) {
+  var c = COUNTRIES.find(function(x){return x.code===code;});
+  return c ? c.flag : '';
+}
 
 function getVisa(from, to) {
-  if (from === to) return { type: 'free', cost: 0, note: 'No visa needed — your home country', days: 'Unlimited' };
+  if (from === to) return {
+    type:'free', cost:0,
+    note:'Your home country — no visa needed.',
+    days:'Unlimited', time:'N/A', docs:[]
+  };
 
-  // ECOWAS free movement
-  if (ECOWAS.includes(from) && ECOWAS.includes(to)) return { type: 'free', cost: 0, note: 'ECOWAS free movement protocol', days: '90 days' };
+  // ── Universal open destinations ──────────────────────────────────────────
+  if (to === 'SC') return {
+    type:'free', cost:0,
+    note:'Seychelles is visa-free for all nationalities worldwide.',
+    days:'90 days', time:'N/A',
+    docs:['Valid passport','Return/onward ticket','Proof of accommodation or funds']
+  };
+  if (to === 'MU') return {
+    type:'free', cost:0,
+    note:'Mauritius is visa-free for all African passport holders.',
+    days:'90 days', time:'N/A',
+    docs:['Valid passport (6+ months)','Return ticket','Proof of accommodation']
+  };
+  if (to === 'RW') return {
+    type:'free', cost:0,
+    note:'Rwanda is visa-free for all African Union member states (policy since 2018).',
+    days:'30 days', time:'N/A',
+    docs:['Valid passport']
+  };
 
-  // EAC free movement
-  if (EAC.includes(from) && EAC.includes(to)) return { type: 'free', cost: 0, note: 'East African Community free movement', days: '90 days' };
+  // ── ECOWAS free movement ──────────────────────────────────────────────────
+  if (ECOWAS.includes(from) && ECOWAS.includes(to)) return {
+    type:'free', cost:0,
+    note:'ECOWAS Free Movement Protocol — no visa needed within West Africa.',
+    days:'90 days', time:'N/A',
+    docs:['Valid passport or ECOWAS Travel Certificate']
+  };
 
-  // Mauritius & Seychelles visa-free for all Africans
-  if (to === 'Mauritius') return { type: 'free', cost: 0, note: 'Mauritius is visa-free for all African nationals', days: '90 days' };
+  // ── EAC free movement ─────────────────────────────────────────────────────
+  if (EAC.includes(from) && EAC.includes(to)) return {
+    type:'free', cost:0,
+    note:'East African Community free movement protocol.',
+    days:'90 days', time:'N/A',
+    docs:['Valid passport']
+  };
 
-  // Rwanda visa-free/VOA for all Africans
-  if (to === 'Rwanda') return { type: 'voa', cost: 30, note: 'Rwanda offers visa on arrival to all African passport holders', days: '30 days' };
+  // ── SADC bilateral free movement ─────────────────────────────────────────
+  if (SADC_FREE.includes(from) && SADC_FREE.includes(to) &&
+      (to==='ZA'||to==='BW'||to==='NA'||to==='MZ'||to==='ZM'||to==='ZW'||to==='MW'||to==='MU')) {
+    return {
+      type:'free', cost:0,
+      note:'SADC bilateral visa exemption between southern African states.',
+      days:'90 days', time:'N/A',
+      docs:['Valid passport']
+    };
+  }
 
-  // Mozambique VOA for most
-  if (to === 'Mozambique') return { type: 'voa', cost: 50, note: 'Visa on arrival at main ports of entry', days: '30 days' };
+  // ── Specific destination rules ────────────────────────────────────────────
 
-  // Ethiopia e-visa
-  if (to === 'Ethiopia') return { type: 'evisa', cost: 52, note: 'Apply online at evisa.gov.et', days: '30 days' };
+  // Benin — free e-visa on arrival (SVI system, one of Africa's most open)
+  if (to === 'BJ') return {
+    type:'evisa', cost:0,
+    note:'Benin offers a free e-visa through its SVI system — apply at svi.gouv.bj before travel or on arrival.',
+    days:'30 days', time:'Instant (on arrival) or 24 hrs online',
+    docs:['Valid passport','Return/onward ticket','Photo']
+  };
 
-  // Kenya visa for most (now e-visa/ETA)
-  if (to === 'Kenya' && !EAC.includes(from)) return { type: 'evisa', cost: 30, note: 'Kenya Electronic Travel Authorization (eTA)', days: '90 days' };
+  // Togo — e-visa
+  if (to === 'TG') return {
+    type:'evisa', cost:50,
+    note:'Togo e-visa available online at evisa.gouv.tg — ECOWAS nationals enter free.',
+    days:'30 days', time:'24–72 hours',
+    docs:['Valid passport','Passport-size photo','Return ticket','Proof of accommodation']
+  };
 
-  // South Africa — strict visa requirements
-  if (to === 'South Africa') {
-    if (['Botswana','Namibia','Mozambique','Zimbabwe','Zambia'].includes(from)) return { type: 'free', cost: 0, note: 'SADC bilateral visa exemption', days: '90 days' };
-    if (['Kenya','Uganda','Tanzania'].includes(from)) return { type: 'required', cost: 100, note: 'Visa required — apply at SA embassy/consulate', days: '30-90 days' };
-    return { type: 'required', cost: 100, note: 'Visa required — apply at nearest SA mission', days: '30 days' };
+  // Gambia — open VOA for most Africans
+  if (to === 'GM') return {
+    type:'voa', cost:20,
+    note:'Gambia offers visa on arrival for most African nationalities at Banjul airport.',
+    days:'28 days', time:'15–30 min',
+    docs:['Valid passport','Return ticket','USD cash for fee']
+  };
+
+  // Sierra Leone — VOA
+  if (to === 'SL') return {
+    type:'voa', cost:80,
+    note:'Visa on arrival available at Lungi International Airport. ECOWAS nationals enter free.',
+    days:'30 days', time:'15–30 min',
+    docs:['Valid passport','Return ticket','USD cash','Yellow fever certificate']
+  };
+
+  // Ethiopia
+  if (to === 'ET') {
+    if (['KE','UG','TZ','RW','BI','SD','ER','SO','DJ'].includes(from)) return {
+      type:'free', cost:0,
+      note:'Bilateral visa exemption between Ethiopia and East African nations.',
+      days:'90 days', time:'N/A',
+      docs:['Valid passport']
+    };
+    return {
+      type:'evisa', cost:52,
+      note:'Apply for Ethiopia e-visa at evisa.gov.et — available to most nationalities.',
+      days:'30 days', time:'3–5 business days',
+      docs:['Valid passport (6+ months)','Passport-size photo','Return/onward ticket']
+    };
+  }
+
+  // Kenya — eTA (replaced visa on arrival in 2023)
+  if (to === 'KE') return {
+    type:'evisa', cost:30,
+    note:'Kenya Electronic Travel Authorization (eTA) — apply at etakenya.go.ke before travel.',
+    days:'90 days', time:'72 hours (up to 5 business days)',
+    docs:['Valid passport','Passport-size photo','Return/onward ticket','Proof of accommodation','Yellow fever cert (if applicable)']
+  };
+
+  // Uganda
+  if (to === 'UG') return {
+    type:'evisa', cost:50,
+    note:'Uganda e-visa — apply at visas.immigration.go.ug before travel. EAC nationals enter free.',
+    days:'30 days', time:'3–5 business days',
+    docs:['Valid passport','Passport-size photo','Return/onward ticket','Yellow fever certificate']
+  };
+
+  // Tanzania
+  if (to === 'TZ') return {
+    type:'evisa', cost:50,
+    note:'Tanzania e-visa — apply at eservices.immigration.go.tz before travel. EAC nationals enter free.',
+    days:'90 days', time:'5–10 business days',
+    docs:['Valid passport','Photo','Return ticket','Yellow fever certificate']
+  };
+
+  // South Africa
+  if (to === 'ZA') {
+    if (SADC_FREE.includes(from)) return {
+      type:'free', cost:0,
+      note:'SADC bilateral visa exemption — southern African nationals enter South Africa visa-free.',
+      days:'90 days', time:'N/A',
+      docs:['Valid passport']
+    };
+    if (ECOWAS.includes(from) || EAC.includes(from) || from==='ET') return {
+      type:'required', cost:100,
+      note:'Visa required — apply at South African High Commission in your country. Start early: this is one of the harder visa processes in Africa.',
+      days:'Up to 90 days', time:'4–8 weeks',
+      docs:['Passport (6+ months validity, 2 blank pages)','Bank statements (3 months)','Employment/business letter','Return ticket','Proof of accommodation','BI-84 application form','Yellow fever cert (if applicable)']
+    };
+    return {
+      type:'required', cost:100,
+      note:'Visa required — apply at nearest South African mission. Apply well in advance.',
+      days:'Up to 30 days', time:'2–4 weeks',
+      docs:['Valid passport','Bank statements','Return ticket','BI-84 form']
+    };
   }
 
   // Egypt
-  if (to === 'Egypt') return { type: 'evisa', cost: 25, note: 'Egypt e-visa for most African nationalities', days: '30 days' };
-
-  // Morocco
-  if (to === 'Morocco') {
-    if (['Nigeria','Ghana','Senegal','Cote d\'Ivoire'].includes(from)) return { type: 'free', cost: 0, note: 'Morocco visa exemption for select African countries', days: '90 days' };
-    return { type: 'evisa', cost: 25, note: 'E-visa or visa on arrival may be available', days: '30 days' };
+  if (to === 'EG') {
+    if (MAGHREB.includes(from) || from==='SD') return {
+      type:'free', cost:0,
+      note:'Bilateral exemption between Egypt and North African / Arab League neighbours.',
+      days:'30 days', time:'N/A',
+      docs:['Valid passport']
+    };
+    return {
+      type:'evisa', cost:25,
+      note:'Egypt e-visa at visa2egypt.gov.eg — available to most African nationalities.',
+      days:'30 days', time:'5–7 business days',
+      docs:['Valid passport','Photo','Return ticket']
+    };
   }
 
-  // SADC region
-  if (['Botswana','Namibia','Zimbabwe','Zambia'].includes(to) && ['South Africa','Botswana','Namibia','Zimbabwe','Zambia','Mozambique'].includes(from))
-    return { type: 'free', cost: 0, note: 'SADC visa exemption', days: '90 days' };
+  // Morocco
+  if (to === 'MA') {
+    if (ECOWAS.includes(from) || ['TN','DZ','EG','GA','SN'].includes(from)) return {
+      type:'free', cost:0,
+      note:'Morocco has bilateral visa exemption agreements with many African nations.',
+      days:'90 days', time:'N/A',
+      docs:['Valid passport']
+    };
+    if (EAC.includes(from) || from==='ET') return {
+      type:'required', cost:50,
+      note:'Visa required for East Africans — apply at Moroccan Embassy/Consulate.',
+      days:'30 days', time:'2–3 weeks',
+      docs:['Passport','Bank statements','Hotel booking or invitation','Employment proof']
+    };
+    return {
+      type:'evisa', cost:25,
+      note:'Morocco e-visa or embassy visa may be available — check with Moroccan consulate.',
+      days:'30 days', time:'2–3 weeks',
+      docs:['Valid passport','Proof of accommodation','Return ticket','Bank statements']
+    };
+  }
 
-  // Default for intra-Africa
-  if (['DR Congo'].includes(to)) return { type: 'required', cost: 50, note: 'Visa required — apply at embassy', days: '30 days' };
+  // Tunisia
+  if (to === 'TN') {
+    if (MAGHREB.includes(from)) return {
+      type:'free', cost:0,
+      note:'Maghreb bilateral visa exemption — North African nationals enter Tunisia visa-free.',
+      days:'90 days', time:'N/A',
+      docs:['Valid passport']
+    };
+    return {
+      type:'required', cost:30,
+      note:'Visa required for Sub-Saharan Africans — apply at Tunisian embassy.',
+      days:'30 days', time:'1–2 weeks',
+      docs:['Valid passport','Bank statements','Hotel booking','Employment letter or proof of ties']
+    };
+  }
 
-  return { type: 'voa', cost: 50, note: 'Visa on arrival or e-visa may be available — verify with embassy', days: '30 days' };
+  // Algeria
+  if (to === 'DZ') {
+    if (['MA','TN','EG','MR','LY'].includes(from)) return {
+      type:'free', cost:0,
+      note:'Bilateral exemption with some Arab League/Maghreb members — confirm with embassy.',
+      days:'30 days', time:'N/A',
+      docs:['Valid passport']
+    };
+    return {
+      type:'required', cost:50,
+      note:'⚠️ Algeria has one of Africa\'s most restrictive visa policies — apply well in advance at Algerian embassy.',
+      days:'30 days', time:'3–6 weeks',
+      docs:['Passport (6+ months)','3 months bank statements','Invitation letter or hotel booking','Employment letter or proof of purpose','2 passport photos','Flight itinerary']
+    };
+  }
+
+  // Mozambique
+  if (to === 'MZ') {
+    if (SADC_FREE.includes(from)) return {
+      type:'free', cost:0,
+      note:'SADC bilateral visa exemption.',
+      days:'90 days', time:'N/A',
+      docs:['Valid passport']
+    };
+    return {
+      type:'voa', cost:50,
+      note:'Visa on arrival at Maputo International Airport and major land borders.',
+      days:'30 days', time:'15–30 min',
+      docs:['Valid passport','Return ticket','USD cash','Proof of accommodation','Yellow fever cert (if applicable)']
+    };
+  }
+
+  // Zambia
+  if (to === 'ZM') {
+    if (SADC_FREE.includes(from)) return {
+      type:'free', cost:0,
+      note:'SADC bilateral visa exemption.',
+      days:'90 days', time:'N/A',
+      docs:['Valid passport']
+    };
+    return {
+      type:'voa', cost:50,
+      note:'Visa on arrival available. KAZA UNIVISA ($50) also covers Zimbabwe — useful for Victoria Falls.',
+      days:'30 days', time:'15–30 min',
+      docs:['Valid passport','Return ticket','USD cash','Proof of accommodation','Yellow fever cert']
+    };
+  }
+
+  // Zimbabwe
+  if (to === 'ZW') {
+    if (SADC_FREE.includes(from)) return {
+      type:'free', cost:0,
+      note:'SADC bilateral visa exemption.',
+      days:'90 days', time:'N/A',
+      docs:['Valid passport']
+    };
+    return {
+      type:'voa', cost:55,
+      note:'Visa on arrival at Harare airport and major border posts. KAZA UNIVISA ($55) shared with Zambia.',
+      days:'30 days', time:'15–30 min',
+      docs:['Valid passport','Return ticket','USD cash']
+    };
+  }
+
+  // Botswana
+  if (to === 'BW') {
+    if (SADC_FREE.includes(from)) return {
+      type:'free', cost:0,
+      note:'SADC bilateral visa exemption.',
+      days:'90 days', time:'N/A',
+      docs:['Valid passport']
+    };
+    return {
+      type:'required', cost:30,
+      note:'Visa required — apply at Botswana High Commission or Embassy.',
+      days:'30 days', time:'1–2 weeks',
+      docs:['Passport','Bank statements','Return ticket','Purpose of visit letter']
+    };
+  }
+
+  // Namibia
+  if (to === 'NA') {
+    if (SADC_FREE.includes(from)) return {
+      type:'free', cost:0,
+      note:'SADC bilateral visa exemption.',
+      days:'90 days', time:'N/A',
+      docs:['Valid passport']
+    };
+    return {
+      type:'required', cost:60,
+      note:'Visa required — apply at Namibian Embassy or High Commission.',
+      days:'30 days', time:'2–3 weeks',
+      docs:['Passport','Bank statements','Return ticket','Hotel confirmation']
+    };
+  }
+
+  // Malawi
+  if (to === 'MW') {
+    if (SADC_FREE.includes(from)) return {
+      type:'free', cost:0,
+      note:'SADC bilateral visa exemption.',
+      days:'90 days', time:'N/A',
+      docs:['Valid passport']
+    };
+    return {
+      type:'voa', cost:75,
+      note:'Visa on arrival at Kamuzu International Airport and main land borders.',
+      days:'30 days', time:'15–30 min',
+      docs:['Valid passport','Return ticket','USD cash','Yellow fever cert (if required)']
+    };
+  }
+
+  // Angola
+  if (to === 'AO') {
+    if (['ZA','ZM','NA','BW'].includes(from)) return {
+      type:'voa', cost:80,
+      note:'Limited VOA for select SADC nationals at Luanda (FNLA) airport — confirm before travel.',
+      days:'30 days', time:'30–60 min',
+      docs:['Passport','Return ticket','USD cash','Yellow fever certificate']
+    };
+    return {
+      type:'required', cost:120,
+      note:'⚠️ Angola has strict visa requirements. Apply well in advance at Angolan Embassy.',
+      days:'30 days', time:'4–6 weeks',
+      docs:['Passport (6+ months, 2+ blank pages)','3 months bank statements','Yellow fever certificate','Hotel booking or invitation letter','Employment letter','Criminal record clearance (some nationalities)']
+    };
+  }
+
+  // Madagascar
+  if (to === 'MG') return {
+    type:'voa', cost:35,
+    note:'Visa on arrival at Ivato International Airport (Antananarivo) for most African passport holders.',
+    days:'30 days (extendable)', time:'15–30 min',
+    docs:['Valid passport','Return/onward ticket','USD or EUR cash','Proof of accommodation']
+  };
+
+  // DR Congo
+  if (to === 'CD') return {
+    type:'required', cost:80,
+    note:'⚠️ Visa required for DRC — apply at Congolese Embassy. Apply early, process can be unpredictable.',
+    days:'30 days', time:'2–4 weeks',
+    docs:['Passport (6+ months)','Yellow fever certificate','Bank statements','Invitation letter or hotel booking','2 passport photos']
+  };
+
+  // Gabon
+  if (to === 'GA') {
+    if (['CM','CD','CG','CF','TD','GQ'].includes(from)) return {
+      type:'free', cost:0,
+      note:'CEMAC/ECCAS bilateral exemption for Central African nationals.',
+      days:'90 days', time:'N/A',
+      docs:['Valid passport']
+    };
+    return {
+      type:'evisa', cost:55,
+      note:'Gabon e-visa at evisa.interieur.gouv.ga — required for most non-CEMAC nationalities.',
+      days:'30 days', time:'3–5 business days',
+      docs:['Valid passport','Passport photo','Return ticket','Yellow fever certificate','Proof of accommodation']
+    };
+  }
+
+  // Cameroon
+  if (to === 'CM') {
+    if (['GA','CG','CF','TD','GQ','CD'].includes(from)) return {
+      type:'free', cost:0,
+      note:'CEMAC bilateral exemption — Central African nationals enter Cameroon visa-free.',
+      days:'90 days', time:'N/A',
+      docs:['Valid passport']
+    };
+    return {
+      type:'required', cost:90,
+      note:'Visa required — apply at Cameroonian Embassy or High Commission.',
+      days:'30 days', time:'2–3 weeks',
+      docs:['Passport (6+ months)','2 passport photos','Bank statements','Return ticket','Yellow fever certificate','Hotel confirmation or invitation']
+    };
+  }
+
+  // Sudan
+  if (to === 'SD') {
+    if (['EG','ET'].includes(from)) return {
+      type:'free', cost:0,
+      note:'Bilateral visa exemption with Egypt and Ethiopia.',
+      days:'30 days', time:'N/A',
+      docs:['Valid passport']
+    };
+    return {
+      type:'required', cost:100,
+      note:'Visa required — apply at Sudanese Embassy. The process can be slow given current instability.',
+      days:'30 days', time:'2–6 weeks',
+      docs:['Passport','Bank statements','Invitation letter or purpose letter','2 passport photos']
+    };
+  }
+
+  // Default fallback
+  return {
+    type:'voa', cost:50,
+    note:'Visa on arrival or e-visa may be available — always verify with the destination embassy before booking.',
+    days:'30 days', time:'Verify with embassy',
+    docs:['Valid passport (6+ months validity)','Return/onward ticket','Proof of accommodation or funds']
+  };
 }
 
-// Populate selects
-['from','to'].forEach((id, i) => {
-  const sel = document.getElementById(id);
-  COUNTRIES.forEach(c => {
-    const opt = document.createElement('option');
-    opt.value = c; opt.textContent = c;
+// ── Populate selects ──────────────────────────────────────────────────────────
+['from','to'].forEach(function(id, i) {
+  var sel = document.getElementById(id);
+  COUNTRIES.forEach(function(c) {
+    var opt = document.createElement('option');
+    opt.value = c.code;
+    opt.textContent = c.flag + ' ' + c.name;
     sel.appendChild(opt);
   });
-  sel.value = i === 0 ? 'Nigeria' : 'Kenya';
+  sel.value = i === 0 ? 'NG' : 'KE';
 });
 
-function check() {
-  const from = document.getElementById('from').value;
-  const to = document.getElementById('to').value;
-  const v = getVisa(from, to);
+var activeFilter = 'all';
+function setFilter(f, btn) {
+  activeFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  renderGrid(document.getElementById('from').value);
+}
 
-  const labels = { free: 'Visa Free', voa: 'Visa on Arrival', evisa: 'E-Visa', required: 'Visa Required' };
-  const colors = { free: '#166534', voa: '#854d0e', evisa: '#1e40af', required: '#991b1b' };
-
-  document.getElementById('result').innerHTML = `
-    <div class="result-display ${v.type}">
-      <div class="big" style="color:${colors[v.type]}">${labels[v.type]}</div>
-      <div class="sub">${from} → ${to}</div>
-      ${v.cost > 0 ? `<div class="cost">Estimated Cost: $${v.cost} USD</div>` : '<div class="cost">No visa fee</div>'}
-      <div class="sub" style="margin-top:8px">${v.note}</div>
-      <div class="sub"><strong>Stay:</strong> ${v.days}</div>
-    </div>`;
-
-  // Show all destinations
-  document.getElementById('overviewTitle').textContent = `All Destinations for ${from} Passport`;
-  let grid = '';
-  COUNTRIES.filter(c => c !== from).forEach(c => {
-    const r = getVisa(from, c);
-    const cls = 'type-' + r.type;
-    grid += `<div class="dest-card"><div class="country">${c}</div><span class="type ${cls}">${labels[r.type]}</span>${r.cost > 0 ? `<div style="font-size:.72rem;color:#64748b;margin-top:4px">~$${r.cost}</div>`:''}</div>`;
+function renderGrid(fromCode) {
+  var labels = {free:'Visa-Free', voa:'On Arrival', evisa:'E-Visa', required:'Visa Required'};
+  var grid = '';
+  var count = 0;
+  COUNTRIES.forEach(function(c) {
+    if (c.code === fromCode) return;
+    var r = getVisa(fromCode, c.code);
+    if (activeFilter !== 'all' && r.type !== activeFilter) return;
+    count++;
+    grid += '<div class="dest-card" onclick="jumpTo(\''+c.code+'\')">'
+      + '<div class="cflag">'+c.flag+'</div>'
+      + '<div class="country">'+c.name+'</div>'
+      + '<span class="type type-'+r.type+'">'+labels[r.type]+'</span>'
+      + (r.cost > 0 ? '<div style="font-size:.7rem;color:#64748b;margin-top:3px">~$'+r.cost+'</div>' : '')
+      + '</div>';
   });
-  document.getElementById('destGrid').innerHTML = grid;
+  document.getElementById('destGrid').innerHTML = count ? grid : '<div class="no-results">No destinations match this filter.</div>';
+}
+
+function jumpTo(toCode) {
+  document.getElementById('to').value = toCode;
+  check();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function check() {
+  var fromCode = document.getElementById('from').value;
+  var toCode   = document.getElementById('to').value;
+  var fromC = COUNTRIES.find(function(x){return x.code===fromCode;});
+  var toC   = COUNTRIES.find(function(x){return x.code===toCode;});
+  var v = getVisa(fromCode, toCode);
+
+  var labels = {free:'✅ Visa Free', voa:'🟡 Visa on Arrival', evisa:'🔵 E-Visa', required:'🔴 Visa Required'};
+  var colors = {free:'#166534', voa:'#854d0e', evisa:'#1e40af', required:'#991b1b'};
+
+  var docsHtml = '';
+  if (v.docs && v.docs.length) {
+    docsHtml = '<div class="docs-box"><div class="docs-title">Documents Needed</div><ul>'
+      + v.docs.map(function(d){return '<li>'+d+'</li>';}).join('')
+      + '</ul></div>';
+  }
+
+  document.getElementById('result').innerHTML =
+    '<div class="result-display '+v.type+'">'
+    + '<div class="big" style="color:'+colors[v.type]+'">'+labels[v.type]+'</div>'
+    + '<div class="sub">'+fromC.flag+' '+fromC.name+' &rarr; '+toC.flag+' '+toC.name+'</div>'
+    + '<div class="info-pills">'
+    + '<span class="info-pill">'+(v.cost > 0 ? '$'+v.cost+' USD' : 'No fee')+'</span>'
+    + '<span class="info-pill">📅 Stay: '+v.days+'</span>'
+    + '<span class="info-pill">⏱ Processing: '+v.time+'</span>'
+    + '</div>'
+    + '<div class="sub" style="margin-top:10px">'+v.note+'</div>'
+    + docsHtml
+    + '</div>';
+
+  document.getElementById('overviewTitle').textContent = 'All Destinations for ' + fromC.flag + ' ' + fromC.name + ' Passport';
+  renderGrid(fromCode);
 }
 
 check();

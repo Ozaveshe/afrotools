@@ -220,6 +220,94 @@ p {
   .section--lg { padding-block: var(--space-16); }
 }
 
+/* ── SKELETON LOADING ───────────────────────────────────── */
+@keyframes skeleton-shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, #f0f4f8 25%, #e2e8f0 37%, #f0f4f8 63%);
+  background-size: 800px 100%;
+  animation: skeleton-shimmer 1.6s ease infinite;
+  border-radius: var(--radius-md);
+  color: transparent !important;
+  pointer-events: none;
+}
+.skeleton * { visibility: hidden; }
+.skeleton-text  { height: 1em; border-radius: var(--radius-sm); }
+.skeleton-title { height: 1.5em; border-radius: var(--radius-sm); width: 60%; }
+.skeleton-card  { height: 120px; border-radius: var(--radius-lg); }
+@media (prefers-color-scheme: dark) {
+  .skeleton {
+    background: linear-gradient(90deg, #1e2d40 25%, #2a3d55 37%, #1e2d40 63%);
+    background-size: 800px 100%;
+  }
+}
+
+/* ── CROSS-TOOL NAVIGATION STRIP ────────────────────────── */
+/* Used by cross-tool-nav.js to surface related tools at the
+   bottom of every calculator / tool page.                    */
+.cross-tool-strip {
+  background: var(--color-bg-subtle, #F1F5F9);
+  border-top: 1px solid var(--color-border, #e2e8f0);
+  padding: 28px 0;
+  margin-top: 48px;
+}
+.cross-tool-strip .cts-inner {
+  max-width: var(--max-width-content);
+  margin-inline: auto;
+  padding-inline: var(--space-6);
+}
+.cross-tool-strip .cts-label {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-black);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-4);
+}
+.cross-tool-strip .cts-grid {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.cross-tool-strip .cts-card {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: var(--color-bg-card, #fff);
+  border: 1.5px solid var(--color-border, #e2e8f0);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: var(--color-text);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
+  white-space: nowrap;
+}
+.cross-tool-strip .cts-card:hover {
+  border-color: var(--color-brand);
+  box-shadow: 0 2px 10px rgba(0,98,204,0.12);
+  transform: translateY(-1px);
+  will-change: transform;
+}
+.cross-tool-strip .cts-card-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+.cross-tool-strip .cts-card-body {}
+.cross-tool-strip .cts-card-name {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+  color: var(--color-text);
+  line-height: 1.2;
+}
+.cross-tool-strip .cts-card-meta {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin-top: 1px;
+}
 /* ── NAVBAR MOBILE OVERFLOW FIX ────────────────────────── */
 @media (max-width: 900px) {
   .user-name, .nav-user-name, [class*="user-name"],

@@ -90,6 +90,8 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <option value="ke">Kenya</option>
 <option value="za">South Africa</option>
 <option value="gh">Ghana</option>
+<option value="tz">Tanzania</option>
+<option value="ug">Uganda</option>
 </select></div>
 <div><label>Purpose</label>
 <select id="purpose">
@@ -145,6 +147,8 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <p style="margin-top:6px"><strong>Kenya:</strong> KSh 300K - 1.5M. Nairobi area typically 80-120m deep.</p>
 <p style="margin-top:6px"><strong>South Africa:</strong> R30K - R150K. Requires NWRA licence for large boreholes.</p>
 <p style="margin-top:6px"><strong>Ghana:</strong> GH₵15K - GH₵80K. Shallow in coastal areas, deeper inland.</p>
+<p style="margin-top:6px"><strong>Tanzania:</strong> TSh 50M - 200M+. Hard basement rock common in central/southern regions. EWURA regulates water utilities.</p>
+<p style="margin-top:6px"><strong>Uganda:</strong> USh 40M - 150M. Ministry of Water issues permits. Kampala area has good shallow aquifers.</p>
 </div></div>
 <div class="info-card">
 <h4>Before You Drill</h4>
@@ -192,7 +196,15 @@ const COSTS={
   gh:{cur:'GH₵',drillingPerM:{soft:200,medium:350,hard:500},casing:80,screen:100,gravel:50,
     pump:{submersible:8000,solar:18000,hand:5000,none:0},
     tank:{0:0,1000:2000,2000:3500,5000:7000,10000:12000},
-    survey:2000,mobilization:3000,development:1500,plumbing:2500,waterTest:500}
+    survey:2000,mobilization:3000,development:1500,plumbing:2500,waterTest:500},
+  tz:{cur:'TSh',drillingPerM:{soft:300000,medium:500000,hard:750000},casing:80000,screen:100000,gravel:40000,
+    pump:{submersible:3500000,solar:8000000,hand:2000000,none:0},
+    tank:{0:0,1000:1200000,2000:2000000,5000:4000000,10000:7500000},
+    survey:1500000,mobilization:2500000,development:800000,plumbing:1500000,waterTest:400000},
+  ug:{cur:'USh',drillingPerM:{soft:900000,medium:1500000,hard:2200000},casing:250000,screen:300000,gravel:120000,
+    pump:{submersible:8000000,solar:20000000,hand:5000000,none:0},
+    tank:{0:0,1000:3500000,2000:5500000,5000:11000000,10000:20000000},
+    survey:4000000,mobilization:6000000,development:2000000,plumbing:3500000,waterTest:1000000}
 };
 
 function estimate(){

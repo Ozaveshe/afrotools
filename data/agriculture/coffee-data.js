@@ -1,0 +1,344 @@
+/**
+ * coffee-data.js
+ * AfroTools Coffee Grade & Price Calculator — Pan-African Data
+ * Covers 8 major African coffee-producing nations with full grading systems,
+ * regional profiles, agronomic benchmarks, and export price references.
+ */
+
+var COFFEE_DATA = {
+
+  // ── GRADING SYSTEMS BY COUNTRY ──────────────────────────────────────────────
+
+  gradingSystems: {
+
+    'ET': {
+      name: 'Ethiopia',
+      flag: '🇪🇹',
+      currency: 'ETB',
+      species: ['arabica'],
+      system: 'defect_and_cup',
+      description: 'Unique system based on defect count per 300g sample combined with cup quality score (SCA). Grades 1–9. Managed by the Ethiopian Coffee and Tea Authority (ECTA/CLU) since 2017. Specialty coffees (G1–G2) require cupping certification.',
+      grades: [
+        { grade: 'G1', name: 'Grade 1 — Specialty', defects: '0–3 per 300g', cupScore: '85+',  price_premium_pct: 50,  description: 'Near-perfect. Intense floral and fruity notes. Rare and commands top prices at specialty auctions.' },
+        { grade: 'G2', name: 'Grade 2 — Specialty', defects: '4–12 per 300g', cupScore: '80–84', price_premium_pct: 25,  description: 'High-quality specialty. Complex flavors. Most specialty Ethiopian export goes out as G2.' },
+        { grade: 'G3', name: 'Grade 3 — Premium Commercial', defects: '13–25 per 300g', cupScore: '75–79', price_premium_pct: 5,   description: 'Naturals only at this grade. Still flavorful but less clean. Traded on ECX.' },
+        { grade: 'G4', name: 'Grade 4 — Commercial', defects: '26–45 per 300g', cupScore: '70–74', price_premium_pct: 0,   description: 'Standard commercial. Some defects noticeable. Bulk export grade.' },
+        { grade: 'G5', name: 'Grade 5 — Below Standard', defects: '46–100 per 300g', cupScore: '<70', price_premium_pct: -15,  description: 'Low quality. Domestic use or discounted export.' }
+      ],
+      regions: [
+        { name: 'Yirgacheffe',       type: 'washed',          profile: 'Floral, citrus, bergamot, tea-like', premium_pct: 30 },
+        { name: 'Sidamo / Sidama',   type: 'washed/natural',  profile: 'Berry, stone fruit, chocolate',      premium_pct: 20 },
+        { name: 'Guji',              type: 'washed/natural',  profile: 'Complex fruit, floral, wine-like',   premium_pct: 25 },
+        { name: 'Limu',              type: 'washed',          profile: 'Wine-like, spicy, balanced',         premium_pct: 10 },
+        { name: 'Jimma / Kaffa',     type: 'natural',         profile: 'Wild, fruity, earthy — origin of coffee', premium_pct: 5 },
+        { name: 'Harrar',            type: 'natural',         profile: 'Blueberry, wine, heavy body',        premium_pct: 15 }
+      ],
+      production_tonnes: 500000,
+      area_ha: 700000,
+      avgYield_kg_ha: 700,
+      potentialYield_kg_ha: 2500,
+      exportPrice_per_kg_USD: { G1: 8.00, G2: 5.50, G3: 4.00, G4: 3.00 },
+      farmGatePrice_per_kg_local: { G1: 200, G2: 150, G3: 100, G4: 70 },
+      govBody: 'Ethiopian Coffee and Tea Authority (ECTA)',
+      exchange: 'Ethiopian Commodity Exchange (ECX)'
+    },
+
+    'KE': {
+      name: 'Kenya',
+      flag: '🇰🇪',
+      currency: 'KES',
+      species: ['arabica'],
+      system: 'screen_size_and_cup',
+      description: 'Screen size + density grading followed by cup quality assessment at the weekly NCE auction. Africa\'s most transparent and competitive auction system. Buyers bid on individual lots.',
+      grades: [
+        { grade: 'PB',    name: 'PB — Peaberry',      screenSize: 'Single round bean',      price_premium_pct: 20,  description: 'Single oval bean forming where normally two halves would grow. Concentrated flavor. Prized by specialty roasters.' },
+        { grade: 'AA',    name: 'AA',                  screenSize: 'Screen 17–18 (6.70–7.14mm)', price_premium_pct: 30,  description: 'Kenya\'s flagship grade. Bright acidity, complex blackcurrant fruit. Commands highest auction prices.' },
+        { grade: 'AB',    name: 'AB',                  screenSize: 'Screen 15–16 (5.95–6.35mm)', price_premium_pct: 15,  description: 'Mix of A and B screens. Often matches AA quality. Better value for roasters.' },
+        { grade: 'C',     name: 'C',                   screenSize: 'Screen 14–15',           price_premium_pct: 0,   description: 'Smaller beans. Standard commercial grade.' },
+        { grade: 'TT',    name: 'TT',                  screenSize: 'Light beans (AA/AB)',     price_premium_pct: -10, description: 'Separated by air density. Lighter beans from premium lots.' },
+        { grade: 'T',     name: 'T',                   screenSize: 'Smallest + fragments',   price_premium_pct: -30, description: 'Low quality. Mostly domestic consumption.' },
+        { grade: 'MH/ML', name: 'MH/ML — Mbuni',      screenSize: 'Mixed dry-processed',    price_premium_pct: -40, description: 'Natural (dry) processed. Lowest grade. Heavy body but defects.' },
+        { grade: 'E',     name: 'E — Elephant',        screenSize: 'Screen >19 (>7.54mm)',   price_premium_pct: -5,  description: 'Two beans fused together. Largest but not necessarily best quality.' }
+      ],
+      regions: [
+        { name: 'Nyeri',                    profile: 'Blackcurrant, tomato, bright acidity', premium_pct: 25 },
+        { name: 'Kirinyaga',                profile: 'Citrus, berry, clean',                 premium_pct: 20 },
+        { name: 'Murang\'a',               profile: 'Chocolate, berry, balanced',            premium_pct: 15 },
+        { name: 'Kiambu',                   profile: 'Classic Kenyan profile, winey',         premium_pct: 10 },
+        { name: 'Embu / Meru',              profile: 'Fruity, mild acidity',                  premium_pct: 5  },
+        { name: 'Bungoma (Western Kenya)',  profile: 'Mild, nutty, lower acidity',            premium_pct: 0  }
+      ],
+      production_tonnes: 50000,
+      area_ha: 110000,
+      avgYield_kg_ha: 450,
+      potentialYield_kg_ha: 1500,
+      exportPrice_per_kg_USD: { AA: 6.50, AB: 5.00, C: 3.50, PB: 7.00 },
+      farmGatePrice_per_kg_local: { AA: 600, AB: 450, C: 300 },
+      govBody: 'Coffee Directorate (under AFA)',
+      exchange: 'Nairobi Coffee Exchange (NCE) — weekly Tuesday auction'
+    },
+
+    'TZ': {
+      name: 'Tanzania',
+      flag: '🇹🇿',
+      currency: 'TZS',
+      species: ['arabica', 'robusta'],
+      system: 'screen_size',
+      description: 'Screen size classification. Arabica from Kilimanjaro/Arusha and Mbeya highlands (southern). Robusta from Kagera region (Lake Victoria shore). Sold via Tanzania Coffee Board (TCB) auction in Moshi.',
+      grades: [
+        { grade: 'AA', name: 'AA (Screen 18+)',         price_premium_pct: 25,  description: 'Largest beans. Top Kilimanjaro arabica. Bright acidity, complex fruit.' },
+        { grade: 'A',  name: 'A (Screen 16–17)',        price_premium_pct: 15,  description: 'Premium grade. Good cup quality from highland regions.' },
+        { grade: 'AB', name: 'AB (Mixed A+B)',          price_premium_pct: 10,  description: 'Common commercial export grade. Balanced profile.' },
+        { grade: 'B',  name: 'B (Screen 14–15)',        price_premium_pct: 0,   description: 'Standard commercial grade.' },
+        { grade: 'PB', name: 'PB (Peaberry)',           price_premium_pct: 20,  description: 'Kilimanjaro and Arusha peaberry is particularly prized.' },
+        { grade: 'C',  name: 'C (Screen 12–13)',        price_premium_pct: -10, description: 'Small beans. Lower quality, often blended.' }
+      ],
+      regions: [
+        { name: 'Kilimanjaro / Arusha',       species: 'arabica', profile: 'Wine-like, bright, medium body',      premium_pct: 15 },
+        { name: 'Mbeya / Songwe (S. Highlands)', species: 'arabica', profile: 'Chocolate, nutty, balanced',      premium_pct: 10 },
+        { name: 'Kagera (Bukoba)',             species: 'robusta', profile: 'Full body, earthy, low acidity',     premium_pct: 0  },
+        { name: 'Kigoma',                     species: 'robusta', profile: 'Neutral, blending grade',            premium_pct: -5 }
+      ],
+      production_tonnes: 55000,
+      area_ha: 160000,
+      avgYield_kg_ha: 350,
+      potentialYield_kg_ha: 1200,
+      exportPrice_per_kg_USD: { AA: 5.00, A: 4.20, AB: 3.80, B: 3.20, PB: 5.50 },
+      farmGatePrice_per_kg_local: { AA: 3000, AB: 2400, B: 1800 },
+      govBody: 'Tanzania Coffee Board (TCB)',
+      exchange: 'TCB Auction — Moshi'
+    },
+
+    'UG': {
+      name: 'Uganda',
+      flag: '🇺🇬',
+      currency: 'UGX',
+      species: ['robusta', 'arabica'],
+      system: 'lettered',
+      description: 'Robusta dominant (~70% of production). Arabica from Mt Elgon (Bugisu), Rwenzori, and Sipi Falls areas. Robusta graded by screen size and defects. Uganda is Africa\'s 2nd largest coffee exporter.',
+      grades: [
+        { grade: 'AA',       name: 'Arabica AA',                  price_premium_pct: 20,  description: 'Top grade Bugisu arabica. Bright acidity, wine-like, full body.' },
+        { grade: 'A',        name: 'Arabica A',                   price_premium_pct: 10,  description: 'Good quality arabica. Mt Elgon highland profile.' },
+        { grade: 'AB',       name: 'Arabica AB',                  price_premium_pct: 5,   description: 'Mixed arabica grade. Standard export quality.' },
+        { grade: 'Drugar',   name: 'Drugar (Dry Uganda Arabica)', price_premium_pct: -5,  description: 'Natural-processed arabica. Heavy body, earthy, rustic character.' },
+        { grade: 'Screen 18', name: 'Robusta Screen 18',          price_premium_pct: 10,  description: 'Top robusta grade. Lake Victoria basin. Used in premium espresso blends.' },
+        { grade: 'Screen 15', name: 'Robusta Screen 15',          price_premium_pct: 0,   description: 'Standard robusta export. Good body and bitterness for blending.' },
+        { grade: 'FAQ',      name: 'FAQ (Fair Average Quality)',   price_premium_pct: -5,  description: 'Commercial grade robusta. Minimum export standard.' }
+      ],
+      regions: [
+        { name: 'Bugisu / Mt Elgon (Arabica)', species: 'arabica', profile: 'Winey, blackcurrant, bright acidity', premium_pct: 15 },
+        { name: 'Rwenzori (Arabica)',           species: 'arabica', profile: 'Chocolate, nutty, medium body',       premium_pct: 10 },
+        { name: 'Central / Buganda (Robusta)',  species: 'robusta', profile: 'Full body, earthy, low acidity',      premium_pct: 5  },
+        { name: 'Western (Robusta)',            species: 'robusta', profile: 'Neutral, consistent quality',         premium_pct: 0  }
+      ],
+      production_tonnes: 370000,
+      area_ha: 300000,
+      avgYield_kg_ha: 600,
+      potentialYield_kg_ha: 2000,
+      exportPrice_per_kg_USD: { AA: 5.50, A: 4.50, 'Screen 18': 3.50, FAQ: 2.80 },
+      farmGatePrice_per_kg_local: { AA: 12000, A: 9000, 'Screen 15': 5500, FAQ: 4000 },
+      govBody: 'Uganda Coffee Development Authority (UCDA)',
+      exchange: 'Kampala Coffee Exchange'
+    },
+
+    'RW': {
+      name: 'Rwanda',
+      flag: '🇷🇼',
+      currency: 'RWF',
+      species: ['arabica'],
+      system: 'lettered_and_cup',
+      description: 'Rwanda transformed from low-value commodity to specialty origin after the 1990s through Cup of Excellence competitions, washing station infrastructure, and NAEB oversight. Fully washed process dominates.',
+      grades: [
+        { grade: 'A1',      name: 'Fully Washed A1 (Specialty)', price_premium_pct: 40,  description: 'Top specialty grade. SCA cup score 84+. Sold through specialty auctions and direct trade.' },
+        { grade: 'A2',      name: 'Fully Washed A2',             price_premium_pct: 20,  description: 'Good quality washed. Main export grade. Citrus, red fruit, bright acidity.' },
+        { grade: 'A3',      name: 'Fully Washed A3',             price_premium_pct: 5,   description: 'Standard washed grade. Decent cup quality.' },
+        { grade: 'Ordinary', name: 'Ordinary (natural/semi-washed)', price_premium_pct: -10, description: 'Lower quality. Natural or semi-washed process. Less consistent.' }
+      ],
+      regions: [
+        { name: 'Northern Province (Musanze)', profile: 'Floral, citrus, bright',         premium_pct: 20 },
+        { name: 'Western Province (Nyamasheke)', profile: 'Chocolate, plum, full body',   premium_pct: 15 },
+        { name: 'Southern Province',            profile: 'Red fruit, clean, balanced',    premium_pct: 10 },
+        { name: 'Eastern Province',             profile: 'Mild, nutty, lower complexity', premium_pct: 0  }
+      ],
+      production_tonnes: 20000,
+      area_ha: 35000,
+      avgYield_kg_ha: 600,
+      potentialYield_kg_ha: 1800,
+      exportPrice_per_kg_USD: { A1: 6.00, A2: 4.50, A3: 3.20, Ordinary: 2.50 },
+      farmGatePrice_per_kg_local: { A1: 4000, A2: 2800, A3: 1800 },
+      govBody: 'National Agricultural Export Development Board (NAEB)',
+      exchange: 'Rwanda Stock Exchange commodity platform'
+    },
+
+    'BI': {
+      name: 'Burundi',
+      flag: '🇧🇮',
+      currency: 'BIF',
+      species: ['arabica'],
+      system: 'lettered',
+      description: 'Similar profile and system to Rwanda. Fully washed arabica from highland washing stations. Growing specialty reputation. Historically undervalued due to political instability but quality rivals Rwanda and Ethiopia.',
+      grades: [
+        { grade: 'AA', name: 'AA (Specialty)',   price_premium_pct: 20,  description: 'Top specialty lots from best washing stations. Cup score 83+. Rare but excellent.' },
+        { grade: 'A',  name: 'A (Premium)',      price_premium_pct: 10,  description: 'Good quality washed. Main export grade. Stone fruit, floral notes.' },
+        { grade: 'B',  name: 'B (Commercial)',   price_premium_pct: 0,   description: 'Standard commercial. Consistent, mild acidity.' }
+      ],
+      regions: [
+        { name: 'Kayanza (Ngozi Province)',   profile: 'Bright, floral, peach',           premium_pct: 20 },
+        { name: 'Kirundo',                   profile: 'Red fruit, citrus, clean',          premium_pct: 15 },
+        { name: 'Muyinga',                   profile: 'Chocolate, balanced',               premium_pct: 5  },
+        { name: 'Bujumbura Province',        profile: 'Mild, nutty, commercial profile',   premium_pct: 0  }
+      ],
+      production_tonnes: 12000,
+      area_ha: 60000,
+      avgYield_kg_ha: 200,
+      potentialYield_kg_ha: 800,
+      exportPrice_per_kg_USD: { AA: 5.50, A: 4.00, B: 3.00 },
+      farmGatePrice_per_kg_local: { AA: 5000, A: 3500, B: 2500 },
+      govBody: 'Institut du Café et du Thé (ICT)',
+      exchange: 'OTB (Office du Thé du Burundi) auctions'
+    },
+
+    'CI': {
+      name: "Côte d'Ivoire",
+      flag: '🇨🇮',
+      currency: 'XOF',
+      species: ['robusta'],
+      system: 'commercial_grade',
+      description: "Africa's 3rd largest coffee producer. Almost entirely Robusta. Commodity-grade coffee focused on volume rather than specialty. Traded through the Bourse du Café et du Cacao (BCC) in Abidjan.",
+      grades: [
+        { grade: 'Grade 1',    name: 'Export Grade 1', price_premium_pct: 5,   description: 'Best commercial robusta. Low defects. Used in mainstream espresso blends.' },
+        { grade: 'Grade 2',    name: 'Export Grade 2', price_premium_pct: 0,   description: 'Standard commercial export. Main traded grade.' },
+        { grade: 'Substandard', name: 'Substandard',   price_premium_pct: -15, description: 'Below export minimum. Domestic or discounted market.' }
+      ],
+      regions: [
+        { name: 'Man / Biankouma (West)',    species: 'robusta', profile: 'Full body, earthy, classic robusta',  premium_pct: 5 },
+        { name: 'Daloa (Central-West)',      species: 'robusta', profile: 'Neutral, consistent quality',         premium_pct: 0 },
+        { name: 'Abengourou (East)',         species: 'robusta', profile: 'Slightly fruity, medium body',        premium_pct: 0 }
+      ],
+      production_tonnes: 100000,
+      area_ha: 400000,
+      avgYield_kg_ha: 250,
+      potentialYield_kg_ha: 800,
+      exportPrice_per_kg_USD: { 'Grade 1': 3.25, 'Grade 2': 3.10, Substandard: 2.50 },
+      farmGatePrice_per_kg_local: { 'Grade 1': 1300, 'Grade 2': 1200 },
+      govBody: 'Conseil Café-Cacao (CCC)',
+      exchange: 'Bourse du Café et du Cacao (BCC), Abidjan'
+    },
+
+    'CM': {
+      name: 'Cameroon',
+      flag: '🇨🇲',
+      currency: 'XAF',
+      species: ['robusta', 'arabica'],
+      system: 'commercial_grade',
+      description: 'Robusta from Littoral and South regions, small arabica from Northwestern highlands (Bamenda). UCCAO (Union Centrale des Coopératives Agricoles de l\'Ouest) is the main cooperative system for arabica.',
+      grades: [
+        { grade: 'Grade 1', name: 'Grade 1 (Robusta Export)', price_premium_pct: 5,   description: 'Top export grade robusta. Low defects, consistent quality.' },
+        { grade: 'Grade 2', name: 'Grade 2 (Standard Export)', price_premium_pct: 0,   description: 'Standard commercial grade. Main export volume.' },
+        { grade: 'Arabica', name: 'NW Arabica (Highlands)',    price_premium_pct: 30,  description: 'Rare highland arabica from Bamenda area. Good cup quality. Niche specialty market.' }
+      ],
+      regions: [
+        { name: 'Bamenda / NW Highlands (Arabica)', species: 'arabica', profile: 'Nutty, chocolate, mild acidity',   premium_pct: 25 },
+        { name: 'Littoral / Mungo (Robusta)',        species: 'robusta', profile: 'Full body, earthy, classic',       premium_pct: 5  },
+        { name: 'South Province (Robusta)',           species: 'robusta', profile: 'Neutral, commodity grade',         premium_pct: 0  }
+      ],
+      production_tonnes: 30000,
+      area_ha: 400000,
+      avgYield_kg_ha: 75,
+      potentialYield_kg_ha: 400,
+      exportPrice_per_kg_USD: { 'Grade 1': 3.25, 'Grade 2': 3.10, Arabica: 4.50 },
+      farmGatePrice_per_kg_local: { 'Grade 1': 1500, 'Grade 2': 1300, Arabica: 2000 },
+      govBody: 'Office National du Cacao et du Café (ONCC)',
+      exchange: 'Douala Commodity Exchange'
+    }
+  },
+
+  // ── AGRONOMY BENCHMARKS ────────────────────────────────────────────────────
+
+  agronomy: {
+    arabica: {
+      altitude_m:     { min: 1000, optimal: 1500, max: 2200 },
+      temperature_C:  { min: 15,   optimal: 20,   max: 25   },
+      rainfall_mm:    { min: 1200, optimal: 1800, max: 2500  },
+      yearsToFirstHarvest: 3,
+      peakProductionYears: '6–15',
+      cherryToGreen_ratio:   5,    // 5 kg cherry → 1 kg green (washed)
+      cherryToGreen_natural: 3.5,  // 3.5 kg cherry → 1 kg green (natural)
+      treesPerHa: { traditional: 1300, semi_intensive: 2500, intensive: 5000 },
+      yieldPerTree_kg_cherry: { low: 2, average: 5, good: 8, excellent: 12 }
+    },
+    robusta: {
+      altitude_m:     { min: 0,  optimal: 800,  max: 1500  },
+      temperature_C:  { min: 22, optimal: 26,   max: 30    },
+      rainfall_mm:    { min: 1500, optimal: 2000, max: 3000 },
+      yearsToFirstHarvest: 2,
+      peakProductionYears: '5–20',
+      cherryToGreen_ratio:   5,
+      cherryToGreen_natural: 5,    // robusta is mostly natural-processed
+      treesPerHa: { traditional: 1100, semi_intensive: 1800, intensive: 3000 },
+      yieldPerTree_kg_cherry: { low: 3, average: 8, good: 12, excellent: 20 }
+    }
+  },
+
+  // ── PRICE REFERENCES ──────────────────────────────────────────────────────
+
+  prices: {
+    arabica_ICE_per_lb_USD: 2.50,    // ICE Futures US — highly volatile
+    robusta_ICE_per_lb_USD: 1.40,    // ICE Futures Europe
+    arabica_per_kg_USD:  5.50,
+    robusta_per_kg_USD:  3.10,
+    specialtyPremium_per_kg_USD: { min: 2.00, max: 10.00 },
+    priceNotes: 'Arabica traded on ICE Futures US (New York). Robusta on ICE Futures Europe (London). Farm-gate prices vary by 30–60% from export prices due to middlemen, cooperative margins, and government levies.',
+    lastUpdated: '2026'
+  },
+
+  // ── PROCESSING COST ESTIMATES (USD) ────────────────────────────────────────
+  // Per kg cherry (wet stages) or per kg green (dry stages)
+
+  processingCosts: {
+    washed: {
+      wetMillPerKgCherry:       0.20,  // Water, fermentation tanks, washing channels
+      parchmentDryingPerKgParch: 0.08,  // Raised beds, labor
+      hullingPerKgGreen:         0.10,  // Hulling machine hire
+      gradingPerKgGreen:         0.06,  // Density sorting, color sorting
+      transportPerKgGreen:       0.15   // Average to export port (varies widely)
+    },
+    natural: {
+      dryingBedsPerKgCherry:    0.10,  // Cherry sorting and drying
+      hullingSkinPerKgGreen:    0.08,  // Dry hulling
+      gradingPerKgGreen:        0.06,
+      transportPerKgGreen:      0.15
+    },
+    honey: {
+      pulpingPerKgCherry:       0.12,
+      dryingPerKgParch:         0.10,
+      hullingPerKgGreen:        0.09,
+      gradingPerKgGreen:        0.06,
+      transportPerKgGreen:      0.15
+    }
+  },
+
+  // ── QUALITY IMPROVEMENT STEPS ──────────────────────────────────────────────
+
+  qualitySteps: {
+    general: [
+      { action: 'Selective picking', detail: 'Harvest only fully red (ripe) cherries. Reject green and overripe. Can improve grade by 1–2 levels.' },
+      { action: 'Same-day processing', detail: 'Process cherries within 6–12 hours of picking to avoid fermentation defects.' },
+      { action: 'Flotation sorting', detail: 'Float cherries in water — defective, hollow beans float and can be removed cheaply.' },
+      { action: 'Extended fermentation control', detail: 'For washed: ferment 36–48 hours at altitude. Over-fermentation (sour notes) is the #1 defect cause.' },
+      { action: 'Raised bed drying', detail: 'Dry on African raised beds (not ground), turn frequently. Target moisture: 10.5–11.5%.' },
+      { action: 'Proper storage', detail: 'Store parchment in grain bags at <12% RH. Re-mill within 3 months of harvest for best cup quality.' }
+    ],
+    defectReduction: {
+      ET: 'In Ethiopia, most defects are black beans (over-fermented), insect-damaged, and withered. Key: selective picking + fermentation control.',
+      KE: 'Kenyan defects: full blacks and browns from late picking, and stinkers from improper fermentation. Factory (wet mill) quality control critical.',
+      TZ: 'Tanzania: insect damage (CBD — Coffee Berry Disease) is major issue in wetter areas. Spray schedule + resistant varieties help.',
+      UG: 'Uganda robusta: focus on uniform drying. Clumped wet cherries create mold. Arabica: same as Kenya — fermentation control.',
+      RW: 'Rwanda: "potato defect" from Antestia bug is unique regional issue. IPM and quarantine at washing stations can reduce by 50–80%.',
+      BI: 'Burundi: similar to Rwanda. Potato defect + insect damage from Antestia. Washing station hygiene and pest control critical.',
+      CI: 'Côte d\'Ivoire robusta: focus on drying uniformity and moisture control. Moldy/fermented beans are main defect category.',
+      CM: 'Cameroon: focus on harvesting timing. Arabica — similar to other washed origins. Robusta — uniform drying on concrete or raised beds.'
+    }
+  }
+
+};

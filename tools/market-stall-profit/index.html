@@ -28,7 +28,7 @@
 body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6}
 
 .hero{background:linear-gradient(135deg,#14532d 0%,#15803d 50%,#22c55e 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}
-.hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}
+.hero h1{color:#fff;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}
 .hero p{font-size:1.05rem;opacity:.9;max-width:600px;margin:0 auto}
 
 .container{max-width:900px;margin:0 auto;padding:1.5rem}
@@ -165,6 +165,11 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <option value="TZS">Tanzania Shilling (TZS)</option>
 <option value="XOF">CFA Franc (XOF)</option>
 <option value="EGP">Egyptian Pound (EGP)</option>
+<option value="ETB">Ethiopian Birr (ETB)</option>
+<option value="MAD">Moroccan Dirham (MAD)</option>
+<option value="ZMW">Zambian Kwacha (ZMW)</option>
+<option value="RWF">Rwandan Franc (RWF)</option>
+<option value="XAF">CFA Franc BEAC (XAF)</option>
 </select>
 </div>
 <div class="form-group">
@@ -187,7 +192,8 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <option value="26" selected>26 days (6 days/week)</option>
 <option value="22">22 days (5 days/week)</option>
 <option value="30">30 days (every day)</option>
-<option value="13">13 days (3 days/week, e.g. Eke market)</option>
+<option value="16">16 days/month (4-day Igbo cycle: Eke/Afor/Nkwo/Orie)</option>
+<option value="13">13 days (3 days/week)</option>
 </select>
 </div>
 <div class="form-group">
@@ -201,11 +207,12 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 </div>
 <div class="preset-btns" id="presetBtns" style="margin-top:1rem">
 <span style="font-size:.85rem;color:#64748b;font-weight:600;margin-right:.25rem">Quick presets:</span>
-<button class="preset-btn" onclick="loadPreset('food')">Food Seller</button>
-<button class="preset-btn" onclick="loadPreset('clothing')">Fabric Trader</button>
-<button class="preset-btn" onclick="loadPreset('vegetables')">Vegetable Seller</button>
-<button class="preset-btn" onclick="loadPreset('electronics')">Phone Accessories</button>
-<button class="preset-btn" onclick="loadPreset('cosmetics')">Beauty Products</button>
+<button class="preset-btn" onclick="loadPreset('food',this)">Food Seller</button>
+<button class="preset-btn" onclick="loadPreset('clothing',this)">Fabric Trader</button>
+<button class="preset-btn" onclick="loadPreset('vegetables',this)">Vegetable Seller</button>
+<button class="preset-btn" onclick="loadPreset('electronics',this)">Phone Accessories</button>
+<button class="preset-btn" onclick="loadPreset('cosmetics',this)">Beauty Products</button>
+<button class="preset-btn" onclick="loadPreset('household',this)">Household Items</button>
 </div>
 </div>
 
@@ -306,6 +313,8 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <details><summary>Can I save my records to compare day by day?</summary><p>Yes! After calculating, click "Save Today's Record" to store the day's results in your browser. You can view your last 30 days of records, see average daily profit, and track trends over time. Records persist even after closing the browser.</p></details>
 <details><summary>How do I account for mobile money charges?</summary><p>If you receive payments via mobile money (M-Pesa, OPay, MTN MoMo), add the transaction charges as a daily expense. Typical fees are 0.5-1.5% per transaction. You can estimate the total daily mobile money fees and add a single "Mobile money charges" expense.</p></details>
 <details><summary>What if my prices change during the day?</summary><p>Enter separate line items for the same product at different prices. For example, if you sold tomatoes at two different prices in the morning and afternoon, add them as two items with different sell prices. This gives you accurate profit tracking.</p></details>
+<details><summary>What expenses should I include beyond transport and stall rent?</summary><p>Common expenses for African market traders include: loading/carrying fees (agbero fees in Lagos, porter fees), market association or cooperative dues, generator/electricity charges if you use power, mobile money transaction fees (automatically calculated when you select "Mobile Money" payment), spoilage or waste for perishable goods, packaging materials (bags, wrapping), and security/watch-man fees. Adding all expenses gives you a true picture of your real profit.</p></details>
+<details><summary>I trade in CFA Franc — which option should I pick?</summary><p>If you are in West Africa (Senegal, Côte d'Ivoire, Mali, Burkina Faso, Togo, Benin, Guinea-Bissau, Niger), select XOF (CFA Franc BCEAO). If you are in Central Africa (Cameroon, Chad, CAR, Republic of Congo, Gabon, Equatorial Guinea), select XAF (CFA Franc BEAC). Both currencies trade at the same rate to the Euro (1 EUR = 655.96 CFA) but are separate currencies.</p></details>
 </section>
 
 <afro-related-tools></afro-related-tools>
@@ -317,9 +326,9 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <script src="/assets/js/components/related-tools.js" defer></script>
 <script src="/assets/js/components/newsletter-cta.js" defer></script>
 <script>
-const CURRENCIES = {NGN:'\u20a6',GHS:'GH\u20b5',KES:'KSh',ZAR:'R',UGX:'USh',TZS:'TSh',XOF:'CFA',EGP:'E\u00a3'};
+var CURRENCIES = {NGN:'\u20a6',GHS:'GH\u20b5',KES:'KSh',ZAR:'R',UGX:'USh',TZS:'TSh',XOF:'CFA',XAF:'FCFA',EGP:'E\u00a3',ETB:'Br',MAD:'MAD',ZMW:'K',RWF:'RF'};
 
-const PRESETS = {
+var PRESETS = {
   food: {
     items: [
       {name:'Rice (50kg bag, sold in cups)',costPrice:42000,sellPrice:56000,qty:1},
@@ -368,22 +377,33 @@ const PRESETS = {
       {name:'Perfume oil (small)',costPrice:500,sellPrice:1200,qty:5}
     ],
     expenses:[{name:'Stall rent',amount:800},{name:'Transport',amount:500},{name:'Display/packaging',amount:200}]
+  },
+  household: {
+    items: [
+      {name:'Bar soap (bundle x10)',costPrice:1500,sellPrice:2500,qty:4},
+      {name:'Washing powder (500g)',costPrice:600,sellPrice:900,qty:8},
+      {name:'Plastic bucket',costPrice:800,sellPrice:1400,qty:3},
+      {name:'Broom (sweeping)',costPrice:300,sellPrice:600,qty:6},
+      {name:'Candles (pack of 12)',costPrice:400,sellPrice:700,qty:5},
+      {name:'Matches (carton x12)',costPrice:600,sellPrice:1000,qty:2}
+    ],
+    expenses:[{name:'Stall rent',amount:600},{name:'Transport',amount:700},{name:'Market levy',amount:100}]
   }
 };
 
-let items = [];
-let expenses = [];
-let itemIdCounter = 0;
-let expenseIdCounter = 0;
+var items = [];
+var expenses = [];
+var itemIdCounter = 0;
+var expenseIdCounter = 0;
 
 function getCurrSymbol() { return CURRENCIES[document.getElementById('currency').value] || ''; }
 
 function addItem(data) {
-  const id = itemIdCounter++;
+  var id = itemIdCounter++;
   items.push(id);
-  const d = data || {name:'',costPrice:'',sellPrice:'',qty:1};
-  const container = document.getElementById('itemsContainer');
-  const div = document.createElement('div');
+  var d = data || {name:'',costPrice:'',sellPrice:'',qty:1};
+  var container = document.getElementById('itemsContainer');
+  var div = document.createElement('div');
   div.className = 'item-row';
   div.id = `item-${id}`;
   div.innerHTML = `
@@ -397,28 +417,28 @@ function addItem(data) {
   container.appendChild(div);
 
   // Auto-calc item profit
-  const row = div;
-  const calc = () => {
-    const cost = parseFloat(row.querySelector('[data-field="cost"]').value) || 0;
-    const sell = parseFloat(row.querySelector('[data-field="sell"]').value) || 0;
-    const qty = parseInt(row.querySelector('[data-field="qty"]').value) || 0;
-    row.querySelector('[data-field="itemprofit"]').value = getCurrSymbol() + ((sell - cost) * qty).toLocaleString();
+  var rowEl = div;
+  var calc = function() {
+    var cost = parseFloat(rowEl.querySelector('[data-field="cost"]').value) || 0;
+    var sell = parseFloat(rowEl.querySelector('[data-field="sell"]').value) || 0;
+    var qty = parseInt(rowEl.querySelector('[data-field="qty"]').value) || 0;
+    rowEl.querySelector('[data-field="itemprofit"]').value = getCurrSymbol() + ((sell - cost) * qty).toLocaleString();
   };
-  row.querySelectorAll('input[type="number"]').forEach(inp => inp.addEventListener('input', calc));
+  rowEl.querySelectorAll('input[type="number"]').forEach(function(inp){ inp.addEventListener('input', calc); });
   calc();
 }
 
 function removeItem(id) {
-  items = items.filter(i => i !== id);
+  items = items.filter(function(i){ return i !== id; });
   document.getElementById(`item-${id}`)?.remove();
 }
 
 function addExpense(data) {
-  const id = expenseIdCounter++;
+  var id = expenseIdCounter++;
   expenses.push(id);
-  const d = data || {name:'',amount:''};
-  const container = document.getElementById('expensesContainer');
-  const div = document.createElement('div');
+  var d = data || {name:'',amount:''};
+  var container = document.getElementById('expensesContainer');
+  var div = document.createElement('div');
   div.className = 'expense-row';
   div.id = `expense-${id}`;
   div.innerHTML = `
@@ -430,12 +450,12 @@ function addExpense(data) {
 }
 
 function removeExpense(id) {
-  expenses = expenses.filter(i => i !== id);
+  expenses = expenses.filter(function(i){ return i !== id; });
   document.getElementById(`expense-${id}`)?.remove();
 }
 
-function loadPreset(type) {
-  const preset = PRESETS[type];
+function loadPreset(type, btn) {
+  var preset = PRESETS[type];
   if (!preset) return;
 
   document.getElementById('currency').value = 'NGN';
@@ -447,134 +467,162 @@ function loadPreset(type) {
   items = []; expenses = [];
   itemIdCounter = 0; expenseIdCounter = 0;
 
-  preset.items.forEach(i => addItem(i));
-  preset.expenses.forEach(e => addExpense(e));
+  preset.items.forEach(function(i){ addItem(i); });
+  preset.expenses.forEach(function(e){ addExpense(e); });
 
-  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
+  document.querySelectorAll('.preset-btn').forEach(function(b){ b.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
 }
 
 function calculate() {
-  const sym = getCurrSymbol();
-  let totalRevenue = 0, totalCost = 0, totalExpenses = 0;
-  const itemData = [];
+  var sym = getCurrSymbol();
+  var totalRevenue = 0, totalCost = 0, totalExpenses = 0;
+  var itemData = [];
 
-  items.forEach(id => {
-    const row = document.getElementById(`item-${id}`);
+  items.forEach(function(id) {
+    var row = document.getElementById('item-' + id);
     if (!row) return;
-    const name = row.querySelector('[data-field="name"]').value || 'Unnamed item';
-    const cost = parseFloat(row.querySelector('[data-field="cost"]').value) || 0;
-    const sell = parseFloat(row.querySelector('[data-field="sell"]').value) || 0;
-    const qty = parseInt(row.querySelector('[data-field="qty"]').value) || 0;
-    const revenue = sell * qty;
-    const totalItemCost = cost * qty;
-    const profit = revenue - totalItemCost;
+    var name = row.querySelector('[data-field="name"]').value || 'Unnamed item';
+    var cost = parseFloat(row.querySelector('[data-field="cost"]').value) || 0;
+    var sell = parseFloat(row.querySelector('[data-field="sell"]').value) || 0;
+    var qty = parseInt(row.querySelector('[data-field="qty"]').value) || 0;
+    var revenue = sell * qty;
+    var totalItemCost = cost * qty;
+    var profit = revenue - totalItemCost;
     totalRevenue += revenue;
     totalCost += totalItemCost;
-    itemData.push({name, cost, sell, qty, revenue, totalItemCost, profit});
+    itemData.push({name:name, cost:cost, sell:sell, qty:qty, revenue:revenue, totalItemCost:totalItemCost, profit:profit});
   });
 
-  const expenseData = [];
-  expenses.forEach(id => {
-    const row = document.getElementById(`expense-${id}`);
+  var expenseData = [];
+  expenses.forEach(function(id) {
+    var row = document.getElementById('expense-' + id);
     if (!row) return;
-    const name = row.querySelector('[data-field="ename"]').value || 'Unnamed expense';
-    const amount = parseFloat(row.querySelector('[data-field="eamount"]').value) || 0;
+    var name = row.querySelector('[data-field="ename"]').value || 'Unnamed expense';
+    var amount = parseFloat(row.querySelector('[data-field="eamount"]').value) || 0;
     totalExpenses += amount;
-    expenseData.push({name, amount});
+    expenseData.push({name:name, amount:amount});
   });
 
-  const grossProfit = totalRevenue - totalCost;
-  const netProfit = grossProfit - totalExpenses;
-  const margin = totalRevenue > 0 ? (netProfit / totalRevenue * 100) : 0;
-  const isProfit = netProfit >= 0;
-
-  // Summary cards
-  document.getElementById('summaryCards').innerHTML = `
-    <div class="result-card"><div class="result-label">Total Revenue</div><div class="result-value" style="color:#0369a1">${sym}${totalRevenue.toLocaleString()}</div></div>
-    <div class="result-card"><div class="result-label">Stock Cost</div><div class="result-value" style="color:#dc2626">${sym}${totalCost.toLocaleString()}</div></div>
-    <div class="result-card"><div class="result-label">Expenses</div><div class="result-value" style="color:#d97706">${sym}${totalExpenses.toLocaleString()}</div></div>
-    <div class="result-card ${isProfit ? 'profit' : 'loss'}"><div class="result-label">Net ${isProfit ? 'Profit' : 'Loss'}</div><div class="result-value">${sym}${Math.abs(netProfit).toLocaleString()}</div></div>
-  `;
-
-  // Profit bar
-  const bar = document.getElementById('profitBar');
-  const barPct = totalRevenue > 0 ? Math.min(Math.max((netProfit / totalRevenue) * 100, 0), 100) : 0;
-  bar.style.width = barPct + '%';
-  bar.style.background = isProfit ? 'linear-gradient(90deg,#22c55e,#16a34a)' : '#dc2626';
-  document.getElementById('profitBarLabel').textContent = `Profit margin: ${margin.toFixed(1)}% of revenue`;
-
-  // Breakdown table
-  let tableHTML = '<thead><tr><th>Description</th><th style="text-align:right">Amount</th></tr></thead><tbody>';
-  itemData.forEach(item => {
-    tableHTML += `<tr><td>${item.name} (${item.qty} x ${sym}${item.sell.toLocaleString()})</td><td style="text-align:right">${sym}${item.revenue.toLocaleString()}</td></tr>`;
-  });
-  tableHTML += `<tr class="total-row"><td>Total Revenue</td><td style="text-align:right">${sym}${totalRevenue.toLocaleString()}</td></tr>`;
-  tableHTML += `<tr><td colspan="2" style="padding:.25rem;background:#fff"></td></tr>`;
-
-  itemData.forEach(item => {
-    tableHTML += `<tr><td>Cost: ${item.name} (${item.qty} x ${sym}${item.cost.toLocaleString()})</td><td style="text-align:right;color:#dc2626">-${sym}${item.totalItemCost.toLocaleString()}</td></tr>`;
-  });
-  tableHTML += `<tr class="total-row"><td>Total Stock Cost</td><td style="text-align:right;color:#dc2626">-${sym}${totalCost.toLocaleString()}</td></tr>`;
-  tableHTML += `<tr style="background:#f0fdf4"><td style="font-weight:600">Gross Profit</td><td style="text-align:right;font-weight:600;color:${grossProfit >= 0 ? '#16a34a' : '#dc2626'}">${sym}${grossProfit.toLocaleString()}</td></tr>`;
-
-  if (expenseData.length > 0) {
-    tableHTML += `<tr><td colspan="2" style="padding:.25rem;background:#fff"></td></tr>`;
-    expenseData.forEach(exp => {
-      tableHTML += `<tr><td>${exp.name}</td><td style="text-align:right;color:#d97706">-${sym}${exp.amount.toLocaleString()}</td></tr>`;
-    });
-    tableHTML += `<tr class="total-row"><td>Total Expenses</td><td style="text-align:right;color:#d97706">-${sym}${totalExpenses.toLocaleString()}</td></tr>`;
+  // Auto-add mobile money transaction fees based on payment method
+  var paymentMethod = document.getElementById('paymentSplit').value;
+  var mmFeeRate = paymentMethod === 'mobile' ? 0.010 : paymentMethod === 'mixed' ? 0.005 : 0;
+  if (mmFeeRate > 0 && totalRevenue > 0) {
+    var mmFees = Math.round(totalRevenue * mmFeeRate);
+    if (mmFees > 0) {
+      totalExpenses += mmFees;
+      expenseData.push({name: 'Mobile money charges (' + (mmFeeRate * 100).toFixed(1) + '% of revenue)', amount: mmFees});
+    }
   }
 
-  tableHTML += `<tr class="${isProfit ? 'profit-row' : 'loss-row'}"><td>NET ${isProfit ? 'PROFIT' : 'LOSS'}</td><td style="text-align:right">${isProfit ? '' : '-'}${sym}${Math.abs(netProfit).toLocaleString()}</td></tr>`;
+  var grossProfit = totalRevenue - totalCost;
+  var netProfit = grossProfit - totalExpenses;
+  var margin = totalRevenue > 0 ? (netProfit / totalRevenue * 100) : 0;
+  var isProfit = netProfit >= 0;
+  var breakEvenRevenue = totalCost + totalExpenses;
+
+  // Summary cards
+  document.getElementById('summaryCards').innerHTML =
+    '<div class="result-card"><div class="result-label">Total Revenue</div><div class="result-value" style="color:#0369a1">' + sym + totalRevenue.toLocaleString() + '</div></div>' +
+    '<div class="result-card"><div class="result-label">Stock Cost</div><div class="result-value" style="color:#dc2626">' + sym + totalCost.toLocaleString() + '</div></div>' +
+    '<div class="result-card"><div class="result-label">Expenses</div><div class="result-value" style="color:#d97706">' + sym + totalExpenses.toLocaleString() + '</div></div>' +
+    '<div class="result-card ' + (isProfit ? 'profit' : 'loss') + '"><div class="result-label">Net ' + (isProfit ? 'Profit' : 'Loss') + '</div><div class="result-value">' + sym + Math.abs(netProfit).toLocaleString() + '</div></div>';
+
+  // Profit bar
+  var bar = document.getElementById('profitBar');
+  var barPct = totalRevenue > 0 ? Math.min(Math.max((netProfit / totalRevenue) * 100, 0), 100) : 0;
+  bar.style.width = barPct + '%';
+  bar.style.background = isProfit ? 'linear-gradient(90deg,#22c55e,#16a34a)' : '#dc2626';
+  var marginAdvice = margin >= 30 ? {color:'#16a34a',bg:'#f0fdf4',border:'#86efac',msg:'Strong margin (' + margin.toFixed(1) + '%). Your pricing is healthy. Consider saving 20% of today\'s profit.'}
+    : margin >= 15 ? {color:'#ca8a04',bg:'#fefce8',border:'#fde047',msg:'Fair margin (' + margin.toFixed(1) + '%). Try to reduce costs or increase prices slightly on your best-sellers.'}
+    : {color:'#dc2626',bg:'#fef2f2',border:'#fecaca',msg:'Low margin (' + margin.toFixed(1) + '%). Below 15% is risky. Review your stock costs and overhead, or raise prices.'};
+  document.getElementById('profitBarLabel').innerHTML =
+    '<span style="color:#64748b">Net margin: <b style="color:' + marginAdvice.color + '">' + margin.toFixed(1) + '%</b> of revenue</span>' +
+    '<div style="margin-top:8px;padding:10px 14px;background:' + marginAdvice.bg + ';border:1px solid ' + marginAdvice.border + ';border-radius:8px;font-size:.82rem;color:' + marginAdvice.color + '">' + marginAdvice.msg + '</div>';
+
+  // Breakdown table
+  var tableHTML = '<thead><tr><th>Description</th><th style="text-align:right">Amount</th></tr></thead><tbody>';
+  itemData.forEach(function(item) {
+    tableHTML += '<tr><td>' + item.name + ' (' + item.qty + ' x ' + sym + item.sell.toLocaleString() + ')</td><td style="text-align:right">' + sym + item.revenue.toLocaleString() + '</td></tr>';
+  });
+  tableHTML += '<tr class="total-row"><td>Total Revenue</td><td style="text-align:right">' + sym + totalRevenue.toLocaleString() + '</td></tr>';
+  tableHTML += '<tr><td colspan="2" style="padding:.25rem;background:#fff"></td></tr>';
+
+  itemData.forEach(function(item) {
+    tableHTML += '<tr><td>Cost: ' + item.name + ' (' + item.qty + ' x ' + sym + item.cost.toLocaleString() + ')</td><td style="text-align:right;color:#dc2626">-' + sym + item.totalItemCost.toLocaleString() + '</td></tr>';
+  });
+  tableHTML += '<tr class="total-row"><td>Total Stock Cost</td><td style="text-align:right;color:#dc2626">-' + sym + totalCost.toLocaleString() + '</td></tr>';
+  tableHTML += '<tr style="background:#f0fdf4"><td style="font-weight:600">Gross Profit</td><td style="text-align:right;font-weight:600;color:' + (grossProfit >= 0 ? '#16a34a' : '#dc2626') + '">' + sym + grossProfit.toLocaleString() + '</td></tr>';
+
+  if (expenseData.length > 0) {
+    tableHTML += '<tr><td colspan="2" style="padding:.25rem;background:#fff"></td></tr>';
+    expenseData.forEach(function(exp) {
+      tableHTML += '<tr><td>' + exp.name + '</td><td style="text-align:right;color:#d97706">-' + sym + exp.amount.toLocaleString() + '</td></tr>';
+    });
+    tableHTML += '<tr class="total-row"><td>Total Expenses</td><td style="text-align:right;color:#d97706">-' + sym + totalExpenses.toLocaleString() + '</td></tr>';
+  }
+
+  tableHTML += '<tr class="' + (isProfit ? 'profit-row' : 'loss-row') + '"><td>NET ' + (isProfit ? 'PROFIT' : 'LOSS') + '</td><td style="text-align:right">' + (isProfit ? '' : '-') + sym + Math.abs(netProfit).toLocaleString() + '</td></tr>';
   tableHTML += '</tbody>';
   document.getElementById('breakdownTable').innerHTML = tableHTML;
 
   // Monthly projection
-  const marketDays = parseInt(document.getElementById('marketDays').value) || 26;
-  document.getElementById('monthlyCards').innerHTML = `
-    <div class="result-card"><div class="result-label">Monthly Revenue</div><div class="result-value" style="color:#0369a1">${sym}${(totalRevenue * marketDays).toLocaleString()}</div></div>
-    <div class="result-card"><div class="result-label">Monthly Costs</div><div class="result-value" style="color:#dc2626">${sym}${((totalCost + totalExpenses) * marketDays).toLocaleString()}</div></div>
-    <div class="result-card ${isProfit ? 'profit' : 'loss'}"><div class="result-label">Monthly ${isProfit ? 'Profit' : 'Loss'}</div><div class="result-value">${sym}${Math.abs(netProfit * marketDays).toLocaleString()}</div></div>
-    <div class="result-card"><div class="result-label">Annual Projection</div><div class="result-value" style="color:#334155">${sym}${Math.abs(netProfit * marketDays * 12).toLocaleString()}</div></div>
-  `;
+  var marketDays = parseInt(document.getElementById('marketDays').value) || 26;
+  var monthlyProfit = netProfit * marketDays;
+  var annualProfit = monthlyProfit * 12;
+  var breakEvenDaysNote = '';
+  if (isProfit && netProfit > 0) {
+    var daysToRestock = Math.ceil(totalCost / netProfit);
+    breakEvenDaysNote = '<p style="font-size:.78rem;color:#64748b;margin-top:.75rem;padding:.5rem .75rem;background:#f8fafc;border-radius:6px;border:1px solid #e2e8f0">' +
+      '<strong>Break-even:</strong> You need at least ' + sym + breakEvenRevenue.toLocaleString() + ' in daily revenue to cover costs. ' +
+      'Stock replenishment budget: ' + sym + (totalCost * marketDays).toLocaleString() + '/month.</p>';
+  } else if (!isProfit) {
+    breakEvenDaysNote = '<p style="font-size:.78rem;color:#dc2626;margin-top:.75rem;padding:.5rem .75rem;background:#fef2f2;border-radius:6px;border:1px solid #fecaca">' +
+      'You are losing ' + sym + Math.abs(netProfit).toLocaleString() + ' per market day. Review stock costs or raise prices to become profitable.</p>';
+  }
+  document.getElementById('monthlyCards').innerHTML =
+    '<div class="result-card"><div class="result-label">Monthly Revenue</div><div class="result-value" style="color:#0369a1">' + sym + (totalRevenue * marketDays).toLocaleString() + '</div></div>' +
+    '<div class="result-card"><div class="result-label">Monthly Costs</div><div class="result-value" style="color:#dc2626">' + sym + ((totalCost + totalExpenses) * marketDays).toLocaleString() + '</div></div>' +
+    '<div class="result-card ' + (isProfit ? 'profit' : 'loss') + '"><div class="result-label">Monthly ' + (isProfit ? 'Profit' : 'Loss') + '</div><div class="result-value">' + sym + Math.abs(monthlyProfit).toLocaleString() + '</div></div>' +
+    '<div class="result-card"><div class="result-label">Annual Projection</div><div class="result-value" style="color:#334155">' + sym + Math.abs(annualProfit).toLocaleString() + '</div></div>' +
+    breakEvenDaysNote;
 
   // Best & worst performers
   if (itemData.length >= 2) {
-    const sorted = [...itemData].sort((a, b) => {
-      const mA = a.sell > 0 ? ((a.sell - a.cost) / a.sell * 100) : 0;
-      const mB = b.sell > 0 ? ((b.sell - b.cost) / b.sell * 100) : 0;
+    var sorted = itemData.slice().sort(function(a, b) {
+      var mA = a.sell > 0 ? ((a.sell - a.cost) / a.sell * 100) : 0;
+      var mB = b.sell > 0 ? ((b.sell - b.cost) / b.sell * 100) : 0;
       return mB - mA;
     });
-    const best = sorted[0];
-    const worst = sorted[sorted.length - 1];
-    const bestMargin = best.sell > 0 ? ((best.sell - best.cost) / best.sell * 100).toFixed(0) : 0;
-    const worstMargin = worst.sell > 0 ? ((worst.sell - worst.cost) / worst.sell * 100).toFixed(0) : 0;
-    document.getElementById('bestWorst').innerHTML = `
-      <div class="bw-card best"><div class="bw-label">Most Profitable</div><div class="bw-name">${best.name}</div><div class="bw-detail">${bestMargin}% margin | ${sym}${best.profit.toLocaleString()} profit</div></div>
-      <div class="bw-card worst"><div class="bw-label">Least Profitable</div><div class="bw-name">${worst.name}</div><div class="bw-detail">${worstMargin}% margin | ${sym}${worst.profit.toLocaleString()} profit</div></div>
-    `;
+    var best = sorted[0];
+    var worst = sorted[sorted.length - 1];
+    var bestMargin = best.sell > 0 ? ((best.sell - best.cost) / best.sell * 100).toFixed(0) : 0;
+    var worstMargin = worst.sell > 0 ? ((worst.sell - worst.cost) / worst.sell * 100).toFixed(0) : 0;
+    var bestPPU = best.qty > 0 ? Math.round(best.profit / best.qty) : best.profit;
+    var worstPPU = worst.qty > 0 ? Math.round(worst.profit / worst.qty) : worst.profit;
+    document.getElementById('bestWorst').innerHTML =
+      '<div class="bw-card best"><div class="bw-label">Most Profitable</div><div class="bw-name">' + best.name + '</div><div class="bw-detail">' + bestMargin + '% margin | ' + sym + best.profit.toLocaleString() + ' profit (' + sym + bestPPU.toLocaleString() + '/unit)</div></div>' +
+      '<div class="bw-card worst"><div class="bw-label">Least Profitable</div><div class="bw-name">' + worst.name + '</div><div class="bw-detail">' + worstMargin + '% margin | ' + sym + worst.profit.toLocaleString() + ' profit (' + sym + worstPPU.toLocaleString() + '/unit)</div></div>';
   } else {
     document.getElementById('bestWorst').innerHTML = '<p style="font-size:.82rem;color:#94a3b8;grid-column:1/-1">Add 2+ items to see best/worst performers.</p>';
   }
 
   // Visual bar chart
-  const maxVal = Math.max(totalRevenue, totalCost + totalExpenses, 1);
-  document.getElementById('profitChart').innerHTML = `
-    <div class="chart-bar-row"><span class="chart-label">Revenue</span><div class="chart-bar-wrap"><div class="chart-bar" style="width:${(totalRevenue/maxVal*100).toFixed(0)}%;background:linear-gradient(90deg,#0ea5e9,#0369a1)"><span>${sym}${totalRevenue.toLocaleString()}</span></div></div></div>
-    <div class="chart-bar-row"><span class="chart-label">Stock Cost</span><div class="chart-bar-wrap"><div class="chart-bar" style="width:${(totalCost/maxVal*100).toFixed(0)}%;background:linear-gradient(90deg,#f87171,#dc2626)"><span>${sym}${totalCost.toLocaleString()}</span></div></div></div>
-    <div class="chart-bar-row"><span class="chart-label">Expenses</span><div class="chart-bar-wrap"><div class="chart-bar" style="width:${(totalExpenses/maxVal*100).toFixed(0)}%;background:linear-gradient(90deg,#fbbf24,#d97706)"><span>${sym}${totalExpenses.toLocaleString()}</span></div></div></div>
-    <div class="chart-bar-row"><span class="chart-label">Net Profit</span><div class="chart-bar-wrap"><div class="chart-bar" style="width:${(Math.abs(netProfit)/maxVal*100).toFixed(0)}%;background:${isProfit?'linear-gradient(90deg,#22c55e,#16a34a)':'#dc2626'}"><span>${isProfit?'':'-'}${sym}${Math.abs(netProfit).toLocaleString()}</span></div></div></div>
-  `;
+  var maxVal = Math.max(totalRevenue, totalCost + totalExpenses, 1);
+  document.getElementById('profitChart').innerHTML =
+    '<div class="chart-bar-row"><span class="chart-label">Revenue</span><div class="chart-bar-wrap"><div class="chart-bar" style="width:' + (totalRevenue/maxVal*100).toFixed(0) + '%;background:linear-gradient(90deg,#0ea5e9,#0369a1)"><span>' + sym + totalRevenue.toLocaleString() + '</span></div></div></div>' +
+    '<div class="chart-bar-row"><span class="chart-label">Stock Cost</span><div class="chart-bar-wrap"><div class="chart-bar" style="width:' + (totalCost/maxVal*100).toFixed(0) + '%;background:linear-gradient(90deg,#f87171,#dc2626)"><span>' + sym + totalCost.toLocaleString() + '</span></div></div></div>' +
+    '<div class="chart-bar-row"><span class="chart-label">Expenses</span><div class="chart-bar-wrap"><div class="chart-bar" style="width:' + (totalExpenses/maxVal*100).toFixed(0) + '%;background:linear-gradient(90deg,#fbbf24,#d97706)"><span>' + sym + totalExpenses.toLocaleString() + '</span></div></div></div>' +
+    '<div class="chart-bar-row"><span class="chart-label">Net Profit</span><div class="chart-bar-wrap"><div class="chart-bar" style="width:' + (Math.abs(netProfit)/maxVal*100).toFixed(0) + '%;background:' + (isProfit ? 'linear-gradient(90deg,#22c55e,#16a34a)' : '#dc2626') + '"><span>' + (isProfit ? '' : '-') + sym + Math.abs(netProfit).toLocaleString() + '</span></div></div></div>';
 
   // Update monthly title with actual market days
-  document.getElementById('monthlyTitle').textContent = `Monthly Projection (${marketDays} market days)`;
+  document.getElementById('monthlyTitle').textContent = 'Monthly Projection (' + marketDays + ' market days)';
 
   document.getElementById('resultsSection').style.display = 'block';
   document.getElementById('resultsSection').scrollIntoView({behavior:'smooth'});
 
   // Store last calculation for save
-  window._lastCalc = {totalRevenue, totalCost, totalExpenses, grossProfit, netProfit, margin, itemData, expenseData, marketDays};
+  window._lastCalc = {totalRevenue:totalRevenue, totalCost:totalCost, totalExpenses:totalExpenses, grossProfit:grossProfit, netProfit:netProfit, margin:margin, itemData:itemData, expenseData:expenseData, marketDays:marketDays};
 
   // Wire up save/share buttons
   var _saveBtn = document.querySelector('save-result-button');
@@ -595,38 +643,54 @@ function calculate() {
 }
 
 function downloadReport() {
-  const sym = getCurrSymbol();
-  const curr = document.getElementById('currency').value;
-  let text = `MARKET STALL PROFIT REPORT\n`;
-  text += `Date: ${new Date().toLocaleDateString()}\n`;
-  text += `Currency: ${curr}\n\n`;
-  text += `ITEMS SOLD\n${'='.repeat(50)}\n`;
+  var sym = getCurrSymbol();
+  var curr = document.getElementById('currency').value;
+  var sep = '='.repeat(50);
+  var text = 'MARKET STALL PROFIT REPORT\n';
+  text += 'Date: ' + new Date().toLocaleDateString() + '\n';
+  text += 'Currency: ' + curr + '\n\n';
+  text += 'ITEMS SOLD\n' + sep + '\n';
 
-  items.forEach(id => {
-    const row = document.getElementById(`item-${id}`);
+  items.forEach(function(id) {
+    var row = document.getElementById('item-' + id);
     if (!row) return;
-    const name = row.querySelector('[data-field="name"]').value || 'Item';
-    const cost = parseFloat(row.querySelector('[data-field="cost"]').value) || 0;
-    const sell = parseFloat(row.querySelector('[data-field="sell"]').value) || 0;
-    const qty = parseInt(row.querySelector('[data-field="qty"]').value) || 0;
-    text += `${name}: ${qty} x ${sym}${sell} = ${sym}${(sell*qty).toLocaleString()} (cost: ${sym}${(cost*qty).toLocaleString()})\n`;
+    var name = row.querySelector('[data-field="name"]').value || 'Item';
+    var cost = parseFloat(row.querySelector('[data-field="cost"]').value) || 0;
+    var sell = parseFloat(row.querySelector('[data-field="sell"]').value) || 0;
+    var qty = parseInt(row.querySelector('[data-field="qty"]').value) || 0;
+    var itemMargin = sell > 0 ? (((sell-cost)/sell)*100).toFixed(0) : 0;
+    text += name + ': ' + qty + ' x ' + sym + sell + ' = ' + sym + (sell*qty).toLocaleString() + ' (cost: ' + sym + (cost*qty).toLocaleString() + ', margin: ' + itemMargin + '%)\n';
   });
 
-  text += `\nEXPENSES\n${'='.repeat(50)}\n`;
-  expenses.forEach(id => {
-    const row = document.getElementById(`expense-${id}`);
+  text += '\nEXPENSES\n' + sep + '\n';
+  expenses.forEach(function(id) {
+    var row = document.getElementById('expense-' + id);
     if (!row) return;
-    const name = row.querySelector('[data-field="ename"]').value || 'Expense';
-    const amount = parseFloat(row.querySelector('[data-field="eamount"]').value) || 0;
-    text += `${name}: ${sym}${amount.toLocaleString()}\n`;
+    var name = row.querySelector('[data-field="ename"]').value || 'Expense';
+    var amount = parseFloat(row.querySelector('[data-field="eamount"]').value) || 0;
+    text += name + ': ' + sym + amount.toLocaleString() + '\n';
   });
 
-  text += `\nGenerated by AfroTools — https://afrotools.com/tools/market-stall-profit/\n`;
+  if (window._lastCalc) {
+    var c = window._lastCalc;
+    var isP = c.netProfit >= 0;
+    text += '\nSUMMARY\n' + sep + '\n';
+    text += 'Total Revenue:   ' + sym + c.totalRevenue.toLocaleString() + '\n';
+    text += 'Total Stock Cost:' + sym + c.totalCost.toLocaleString() + '\n';
+    text += 'Gross Profit:    ' + sym + c.grossProfit.toLocaleString() + '\n';
+    text += 'Total Expenses:  ' + sym + c.totalExpenses.toLocaleString() + '\n';
+    text += 'NET ' + (isP ? 'PROFIT' : 'LOSS') + ':      ' + sym + Math.abs(c.netProfit).toLocaleString() + '\n';
+    text += 'Net Margin:      ' + c.margin.toFixed(1) + '%\n';
+    text += 'Monthly (x' + c.marketDays + ' days): ' + sym + Math.abs(c.netProfit * c.marketDays).toLocaleString() + '\n';
+    text += 'Annual Projection: ' + sym + Math.abs(c.netProfit * c.marketDays * 12).toLocaleString() + '\n';
+  }
 
-  const blob = new Blob([text], {type:'text/plain'});
-  const a = document.createElement('a');
+  text += '\nGenerated by AfroTools — https://afrotools.com/tools/market-stall-profit/\n';
+
+  var blob = new Blob([text], {type:'text/plain'});
+  var a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = `market-profit-${new Date().toISOString().split('T')[0]}.txt`;
+  a.download = 'market-profit-' + new Date().toISOString().split('T')[0] + '.txt';
   a.click();
 }
 

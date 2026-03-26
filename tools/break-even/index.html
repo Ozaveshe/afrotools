@@ -507,6 +507,14 @@
 <div class="tool-main">
   <div class="tool-main-inner">
     <div>
+      <!-- Quick Example Presets -->
+      <div class="card" style="margin-bottom:18px">
+        <div class="card-head"><span class="card-title">🚀 African Business Examples (click to fill)</span></div>
+        <div class="card-body" style="padding:16px">
+          <div style="display:flex;flex-wrap:wrap;gap:8px;" id="bizPresets"></div>
+        </div>
+      </div>
+
       <!-- Input Section -->
       <div class="card">
         <div class="card-head"><span class="card-title">Business Cost Information</span></div>
@@ -565,9 +573,15 @@
             <select class="f-select" id="currency">
               <option value="$">USD ($)</option>
               <option value="₦">NGN (₦)</option>
-              <option value="KSh">KES (KSh)</option>
+              <option value="KSh ">KES (KSh)</option>
               <option value="R">ZAR (R)</option>
               <option value="GH₵">GHS (GH₵)</option>
+              <option value="TSh ">TZS (TSh)</option>
+              <option value="USh ">UGX (USh)</option>
+              <option value="Br ">ETB (Birr)</option>
+              <option value="CFA ">XOF/XAF (CFA)</option>
+              <option value="RF ">RWF (RF)</option>
+              <option value="E£">EGP (E£)</option>
               <option value="£">GBP (£)</option>
               <option value="€">EUR (€)</option>
             </select>
@@ -702,7 +716,7 @@
       <div class="info-card">
         <div class="info-title">Why It Matters</div>
         <div class="info-text">
-          Most Nigerian SMEs don't calculate break-even. Knowing your break-even gives you:<br><br>
+          Most African SMEs never calculate break-even. Knowing your break-even gives you:<br><br>
           ✓ Pricing confidence<br>
           ✓ Sales targets<br>
           ✓ Risk awareness<br>
@@ -752,6 +766,40 @@
 
 <!-- auth handled by navbar (supabase-auth.js) -->
 <script>
+var BIZ_PRESETS = [
+  {label:'🧵 Tailoring (Lagos)',name:'Tailoring Shop',rent:40000,salary:60000,util:15000,ins:5000,other:10000,varCost:1200,price:4500,sales:60,curr:'₦'},
+  {label:'🍽️ Food Stall (Nairobi)',name:'Food Stall',rent:8000,salary:15000,util:3000,ins:1000,other:2000,varCost:200,price:600,sales:300,curr:'KSh '},
+  {label:'💈 Barbershop (Accra)',name:'Barbershop',rent:400,salary:600,util:150,ins:50,other:100,varCost:5,price:30,sales:200,curr:'GH₵'},
+  {label:'🥗 Restaurant (Lagos)',name:'Restaurant',rent:200000,salary:300000,util:80000,ins:20000,other:50000,varCost:1800,price:5500,sales:180,curr:'₦'},
+  {label:'🛒 Mini-Mart (Johannesburg)',name:'Mini-Mart',rent:8000,salary:12000,util:3000,ins:1500,other:2500,varCost:15,price:35,sales:1500,curr:'R'},
+  {label:'💻 Freelance Dev (Remote)',name:'Web Dev Freelance',rent:1000,salary:0,util:500,ins:200,other:300,varCost:0,price:50000,sales:3,curr:'₦'},
+  {label:'🏫 Tutorial Centre (Abuja)',name:'Tutorial Centre',rent:60000,salary:120000,util:20000,ins:5000,other:10000,varCost:0,price:15000,sales:25,curr:'₦'},
+  {label:'🐔 Poultry Farm (Ibadan)',name:'Poultry Farm',rent:30000,salary:40000,util:25000,ins:10000,other:15000,varCost:1800,price:4200,sales:120,curr:'₦'}
+];
+
+function initPresets() {
+  var el = document.getElementById('bizPresets');
+  el.innerHTML = BIZ_PRESETS.map(function(p,i){
+    return '<button onclick="loadPreset('+i+')" style="padding:6px 12px;border-radius:6px;border:1.5px solid #e2e8f0;background:#f8fafc;font-size:.78rem;font-weight:600;cursor:pointer;font-family:\'DM Sans\',sans-serif;color:#0f172a;transition:all .15s" onmouseover="this.style.borderColor=\'var(--afro-green)\';this.style.color=\'var(--afro-green)\'" onmouseout="this.style.borderColor=\'#e2e8f0\';this.style.color=\'#0f172a\'">'+p.label+'</button>';
+  }).join('');
+}
+
+function loadPreset(i) {
+  var p = BIZ_PRESETS[i];
+  document.getElementById('businessName').value = p.name;
+  var inputs = document.querySelectorAll('.cost-input');
+  var vals = [p.rent, p.salary, p.util, p.ins, p.other];
+  inputs.forEach(function(inp, idx){ if(vals[idx]!==undefined) inp.value = vals[idx]; });
+  document.getElementById('varCost').value = p.varCost;
+  document.getElementById('sellingPrice').value = p.price;
+  document.getElementById('currentSales').value = p.sales;
+  var curr = document.getElementById('currency');
+  for(var j=0; j<curr.options.length; j++){
+    if(curr.options[j].value === p.curr){ curr.selectedIndex = j; break; }
+  }
+  updateCostsList();
+}
+
   var beChart = null;
 
   // Update costs list
@@ -1077,6 +1125,7 @@
 
   // Initial update
   updateCostsList();
+  initPresets();
 </script>
 <script src="/assets/js/components/newsletter-cta.min.js" defer></script>
 <afro-newsletter-cta></afro-newsletter-cta>

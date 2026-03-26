@@ -21,7 +21,7 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6}
 .hero{background:linear-gradient(135deg,#3b0764 0%,#6d28d9 50%,#8b5cf6 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}
-.hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}
+.hero h1{color:#fff;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}
 .hero p{font-size:1.05rem;opacity:.9;max-width:600px;margin:0 auto}
 .container{max-width:900px;margin:0 auto;padding:1.5rem}
 .card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:1.5rem}
@@ -134,6 +134,8 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <option value="ke">Kenyan (4.0 scale)</option>
 <option value="za">South African (% based)</option>
 <option value="gh">Ghanaian (4.0 scale)</option>
+<option value="et">Ethiopian (4.0 scale)</option>
+<option value="rw">Rwandan (4.0 scale)</option>
 <option value="uk">UK Classification</option>
 </select>
 </div>
@@ -142,6 +144,12 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem">
 <input type="number" id="prevGpa" placeholder="CGPA" step="0.01" min="0" max="5">
 <input type="number" id="prevCredits" placeholder="Total credits" step="1" min="0">
+</div>
+</div>
+<div class="form-group" style="grid-column:1/-1">
+<label>CA / Exam Split <span style="font-weight:400;color:#94a3b8;font-size:.78rem">(Nigerian-style: 40% CA + 60% Exam)</span></label>
+<div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap">
+<label style="font-weight:400;font-size:.9rem"><input type="checkbox" id="caSplitMode" onchange="toggleCASplit()" style="width:auto;margin-right:.3rem"> Enable CA/Exam split entry</label>
 </div>
 </div>
 </div>
@@ -216,6 +224,8 @@ const SYSTEMS={
   ke:{name:'Kenyan 4.0',max:4,grades:[{label:'A (70-100%)',gp:4},{label:'B+ (65-69%)',gp:3.5},{label:'B (60-64%)',gp:3},{label:'B- (55-59%)',gp:2.67},{label:'C+ (50-54%)',gp:2.33},{label:'C (45-49%)',gp:2},{label:'C- (40-44%)',gp:1.67},{label:'D (35-39%)',gp:1},{label:'E (0-34%)',gp:0}],classes:[{name:'First Class Honours',min:3.6,css:'class-first'},{name:'Second Class Upper',min:3.0,css:'class-second-upper'},{name:'Second Class Lower',min:2.5,css:'class-second-lower'},{name:'Pass',min:2.0,css:'class-pass'},{name:'Fail',min:0,css:'class-pass'}]},
   za:{name:'South African %',max:100,grades:[{label:'Distinction (75-100%)',gp:82},{label:'Merit (70-74%)',gp:72},{label:'First Class Pass (60-69%)',gp:65},{label:'Second Class Pass (50-59%)',gp:55},{label:'Third Class Pass (40-49%)',gp:45},{label:'Fail (0-39%)',gp:0}],classes:[{name:'Summa Cum Laude',min:75,css:'class-first'},{name:'Magna Cum Laude',min:70,css:'class-second-upper'},{name:'Cum Laude',min:60,css:'class-second-lower'},{name:'Pass',min:50,css:'class-pass'},{name:'Fail',min:0,css:'class-pass'}]},
   gh:{name:'Ghanaian 4.0',max:4,grades:[{label:'A (80-100%)',gp:4},{label:'B+ (75-79%)',gp:3.5},{label:'B (70-74%)',gp:3},{label:'C+ (65-69%)',gp:2.5},{label:'C (60-64%)',gp:2},{label:'D (55-59%)',gp:1.5},{label:'E (50-54%)',gp:1},{label:'F (0-49%)',gp:0}],classes:[{name:'First Class',min:3.6,css:'class-first'},{name:'Second Class Upper',min:3.0,css:'class-second-upper'},{name:'Second Class Lower',min:2.5,css:'class-second-lower'},{name:'Third Class',min:2.0,css:'class-third'},{name:'Pass',min:1.0,css:'class-pass'},{name:'Fail',min:0,css:'class-pass'}]},
+  et:{name:'Ethiopian 4.0',max:4,grades:[{label:'A (85-100%)',gp:4},{label:'A- (80-84%)',gp:3.75},{label:'B+ (75-79%)',gp:3.5},{label:'B (70-74%)',gp:3},{label:'B- (65-69%)',gp:2.75},{label:'C+ (60-64%)',gp:2.5},{label:'C (55-59%)',gp:2},{label:'C- (50-54%)',gp:1.75},{label:'D (45-49%)',gp:1},{label:'F (<45%)',gp:0}],classes:[{name:'First Class (Distinction)',min:3.75,css:'class-first'},{name:'Second Class Upper',min:3.0,css:'class-second-upper'},{name:'Second Class Lower',min:2.0,css:'class-second-lower'},{name:'Pass',min:1.0,css:'class-pass'},{name:'Fail',min:0,css:'class-pass'}]},
+  rw:{name:'Rwandan 4.0',max:4,grades:[{label:'A (80-100%)',gp:4},{label:'B+ (70-79%)',gp:3.5},{label:'B (60-69%)',gp:3},{label:'C (50-59%)',gp:2},{label:'D (40-49%)',gp:1},{label:'F (<40%)',gp:0}],classes:[{name:'First Class',min:3.5,css:'class-first'},{name:'Second Class Upper',min:3.0,css:'class-second-upper'},{name:'Second Class Lower',min:2.0,css:'class-second-lower'},{name:'Pass',min:1.0,css:'class-pass'},{name:'Fail',min:0,css:'class-pass'}]},
   uk:{name:'UK Classification',max:4,grades:[{label:'First (70%+)',gp:4},{label:'2:1 (60-69%)',gp:3.3},{label:'2:2 (50-59%)',gp:2.7},{label:'Third (40-49%)',gp:2},{label:'Fail (<40%)',gp:0}],classes:[{name:'First Class Honours',min:3.5,css:'class-first'},{name:'Upper Second (2:1)',min:3.0,css:'class-second-upper'},{name:'Lower Second (2:2)',min:2.5,css:'class-second-lower'},{name:'Third Class',min:2.0,css:'class-third'},{name:'Fail',min:0,css:'class-pass'}]}
 };
 
@@ -227,11 +237,16 @@ function getSystem(){return SYSTEMS[document.getElementById('system').value];}
 function updateGradeOptions(){
   const sys=getSystem();
   document.querySelectorAll('.grade-select').forEach(sel=>{
-    const cur=sel.value;
     sel.innerHTML=sys.grades.map(g=>`<option value="${g.gp}">${g.label}</option>`).join('');
   });
   document.getElementById('prevGpa').max=sys.max;
   document.getElementById('prevGpa').placeholder=`CGPA (max ${sys.max})`;
+}
+
+function toggleCASplit(){
+  const on=document.getElementById('caSplitMode').checked;
+  document.querySelectorAll('.ca-split-fields').forEach(el=>el.style.display=on?'contents':'none');
+  document.querySelectorAll('.normal-grade-field').forEach(el=>el.style.display=on?'none':'block');
 }
 
 function addCourse(data){
@@ -239,15 +254,28 @@ function addCourse(data){
   courses.push(id);
   const sys=getSystem();
   const d=data||{name:'',credits:3,grade:sys.grades[0].gp};
+  const caMode=document.getElementById('caSplitMode').checked;
   const div=document.createElement('div');
   div.className='course-row';
   div.id=`course-${id}`;
-  div.innerHTML=`
-    <div><label>Course Name</label><input type="text" value="${d.name}" placeholder="e.g. MTH 101"></div>
-    <div><label>Credit Hours</label><input type="number" value="${d.credits}" min="1" max="12" step="1"></div>
-    <div><label>Grade</label><select class="grade-select">${sys.grades.map(g=>`<option value="${g.gp}"${g.gp==d.grade?' selected':''}>${g.label}</option>`).join('')}</select></div>
-    <div><label>&nbsp;</label><button class="btn-danger" onclick="removeCourse(${id})">Remove</button></div>
-  `;
+  if(caMode){
+    div.innerHTML=`
+      <div><label>Course Name</label><input type="text" value="${d.name}" placeholder="e.g. MTH 101"></div>
+      <div><label>Credit Hours</label><input type="number" value="${d.credits}" min="1" max="12" step="1"></div>
+      <div class="ca-split-fields" style="display:contents">
+        <div><label>CA Score (40%)</label><input type="number" class="ca-score" min="0" max="40" step="0.5" placeholder="0-40"></div>
+        <div><label>Exam Score (60%)</label><input type="number" class="exam-score" min="0" max="60" step="0.5" placeholder="0-60"></div>
+      </div>
+      <div><label>&nbsp;</label><button class="btn-danger" onclick="removeCourse(${id})">Remove</button></div>
+    `;
+  } else {
+    div.innerHTML=`
+      <div><label>Course Name</label><input type="text" value="${d.name}" placeholder="e.g. MTH 101"></div>
+      <div><label>Credit Hours</label><input type="number" value="${d.credits}" min="1" max="12" step="1"></div>
+      <div><label>Grade</label><select class="grade-select">${sys.grades.map(g=>`<option value="${g.gp}"${g.gp==d.grade?' selected':''}>${g.label}</option>`).join('')}</select></div>
+      <div><label>&nbsp;</label><button class="btn-danger" onclick="removeCourse(${id})">Remove</button></div>
+    `;
+  }
   document.getElementById('coursesContainer').appendChild(div);
 }
 
@@ -258,6 +286,7 @@ function removeCourse(id){
 
 function calculate(){
   const sys=getSystem();
+  const caMode=document.getElementById('caSplitMode').checked;
   let totalQP=0,totalCredits=0;
   const courseData=[];
 
@@ -265,14 +294,27 @@ function calculate(){
     const row=document.getElementById(`course-${id}`);
     if(!row) return;
     const inputs=row.querySelectorAll('input');
-    const sel=row.querySelector('select');
     const name=inputs[0].value||'Course';
     const credits=parseInt(inputs[1].value)||0;
-    const gp=parseFloat(sel.value);
+    let gp, gradeLabel;
+    if(caMode){
+      const caScore=parseFloat(row.querySelector('.ca-score')?.value)||0;
+      const examScore=parseFloat(row.querySelector('.exam-score')?.value)||0;
+      const totalPct=caScore+examScore; // out of 100
+      // Map percentage to grade point using current system
+      const matched=sys.grades.slice().reverse().find(g=>g.gp>0)||(sys.grades[0]);
+      // simple mapping: % to gp proportionally
+      gp=parseFloat((totalPct/100*sys.max).toFixed(2));
+      gradeLabel=`CA:${caScore} + Exam:${examScore} = ${totalPct.toFixed(1)}%`;
+    } else {
+      const sel=row.querySelector('select');
+      gp=parseFloat(sel.value);
+      gradeLabel=sel.options[sel.selectedIndex].text;
+    }
     const qp=gp*credits;
     totalQP+=qp;
     totalCredits+=credits;
-    courseData.push({name,credits,grade:sel.options[sel.selectedIndex].text,gp,qp});
+    courseData.push({name,credits,grade:gradeLabel,gp,qp});
   });
 
   if(totalCredits===0) return;

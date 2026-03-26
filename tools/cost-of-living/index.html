@@ -22,7 +22,7 @@
 <link rel="stylesheet" href="/assets/css/global.min.css">
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
-<script src="/assets/js/components/tool-registry.js" defer></script>
+<script src="/assets/js/components/tool-registry.min.js" defer></script>
 <style>
 :root{--afro-dark:#0f1419;--accent:#007AFF}
 .tool-hero{background:linear-gradient(135deg,#0A1628 0%,#0063D1 50%,#007AFF 100%);padding:44px 0 36px}
@@ -181,6 +181,14 @@ select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(0
   <summary style="padding:16px 20px;font-size:.92rem;font-weight:700;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between">Are these cost of living figures accurate and up to date?<span style="font-size:.8rem;color:#64748b">&#8595;</span></summary>
   <div style="padding:0 20px 16px;font-size:.87rem;color:#64748b;line-height:1.7;border-top:1px solid #e2e8f0;padding-top:14px">The figures are estimated averages based on 2024-2025 data from multiple sources. Actual costs vary based on neighbourhood, lifestyle, and exchange rates. Expat-oriented areas can cost 2-3x more than local neighbourhoods. Use these as directional guides rather than exact figures.</div>
 </details>
+<details style="border:1.5px solid #e2e8f0;border-radius:10px;margin-bottom:10px;overflow:hidden">
+  <summary style="padding:16px 20px;font-size:.92rem;font-weight:700;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between">How does remote work affect cost of living comparisons in African cities?<span style="font-size:.8rem;color:#64748b">&#8595;</span></summary>
+  <div style="padding:0 20px 16px;font-size:.87rem;color:#64748b;line-height:1.7;border-top:1px solid #e2e8f0;padding-top:14px">Remote workers earning in USD or EUR can live very comfortably in most African cities. A $2,000/month remote salary goes roughly 3-4x further in Kampala or Addis Ababa than in London. Key factors to consider: internet reliability (Nairobi and Kigali lead with fast, affordable fibre), visa requirements, and co-working space costs. Nairobi, Accra, Cape Town, and Kigali have emerged as major African hubs for remote workers and digital nomads.</div>
+</details>
+<details style="border:1.5px solid #e2e8f0;border-radius:10px;margin-bottom:10px;overflow:hidden">
+  <summary style="padding:16px 20px;font-size:.92rem;font-weight:700;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between">Which African city has the best value for families?<span style="font-size:.8rem;color:#64748b">&#8595;</span></summary>
+  <div style="padding:0 20px 16px;font-size:.87rem;color:#64748b;line-height:1.7;border-top:1px solid #e2e8f0;padding-top:14px">Kigali (Rwanda) consistently ranks as the best value for families: clean streets, low crime, affordable healthcare, good international schools, and reliable power. Accra and Nairobi also score well for family living with established international school systems and expat communities. Cairo offers exceptional affordability with good private healthcare, though traffic and pollution are considerations. Cape Town and Johannesburg offer the most developed infrastructure but higher costs.</div>
+</details>
 </section>
 
 <afro-related-tools category="african" current="cost-of-living"></afro-related-tools>
@@ -188,7 +196,7 @@ select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(0
 <afro-footer></afro-footer>
 
 <script>
-const CITIES = {
+var CITIES = {
   lagos: { name: 'Lagos, Nigeria', currency: 'NGN', rate: 1550,
     rent1bed: 350, rent3bed: 800, meal: 3, restaurant: 12, coffee: 2.5, beer: 1.5,
     grocery: 150, transport: 40, uber5km: 3, internet: 25, electricity: 30, gym: 25,
@@ -239,7 +247,7 @@ const CITIES = {
     cinema: 5, water: 8, phone: 10, domestic: 70 }
 };
 
-const ITEMS = [
+var ITEMS = [
   { key: 'rent1bed', label: '1-Bedroom Apartment (centre)', cat: 'Housing', monthly: true },
   { key: 'rent3bed', label: '3-Bedroom Apartment (centre)', cat: 'Housing', monthly: true },
   { key: 'meal', label: 'Local Restaurant Meal', cat: 'Food' },
@@ -259,57 +267,57 @@ const ITEMS = [
 ];
 
 // Populate selects
-const keys = Object.keys(CITIES);
-['city1','city2'].forEach((id, i) => {
-  const sel = document.getElementById(id);
-  keys.forEach(k => {
-    const opt = document.createElement('option');
+var cityKeys = Object.keys(CITIES);
+['city1','city2'].forEach(function(id, i) {
+  var sel = document.getElementById(id);
+  cityKeys.forEach(function(k) {
+    var opt = document.createElement('option');
     opt.value = k; opt.textContent = CITIES[k].name;
     sel.appendChild(opt);
   });
-  sel.value = keys[i === 0 ? 0 : 2]; // Lagos vs Joburg default
+  sel.value = cityKeys[i === 0 ? 0 : 2]; // Lagos vs Joburg default
 });
 
-function compare() {
-  const c1 = CITIES[document.getElementById('city1').value];
-  const c2 = CITIES[document.getElementById('city2').value];
-  const useLocal = document.getElementById('curr').value === 'local';
+function fmtVal(v, city, useLocal) {
+  if (useLocal) return city.currency + ' ' + Math.round(v * city.rate).toLocaleString('en');
+  return '$' + v.toLocaleString('en', {minimumFractionDigits: v < 10 ? 1 : 0, maximumFractionDigits: v < 10 ? 1 : 0});
+}
 
-  const fmt = (v, city) => {
-    if (useLocal) return city.currency + ' ' + Math.round(v * city.rate).toLocaleString('en');
-    return '$' + v.toLocaleString('en', {minimumFractionDigits: v < 10 ? 1 : 0, maximumFractionDigits: v < 10 ? 1 : 0});
-  };
+function compare() {
+  var c1 = CITIES[document.getElementById('city1').value];
+  var c2 = CITIES[document.getElementById('city2').value];
+  var useLocal = document.getElementById('curr').value === 'local';
 
   // Summary
-  const monthly1 = ITEMS.filter(i => i.monthly).reduce((s,i) => s + c1[i.key], 0);
-  const monthly2 = ITEMS.filter(i => i.monthly).reduce((s,i) => s + c2[i.key], 0);
-  const diff = ((monthly2 - monthly1) / monthly1 * 100);
+  var monthly1 = 0, monthly2 = 0;
+  ITEMS.forEach(function(itm) { if (itm.monthly) { monthly1 += c1[itm.key]; monthly2 += c2[itm.key]; } });
+  var diff = ((monthly2 - monthly1) / monthly1 * 100);
 
-  let sumHtml = `<div class="sum-box"><div class="num">${fmt(monthly1, c1)}/mo</div><div class="lbl">${c1.name} Total Monthly</div></div>`;
-  sumHtml += `<div class="sum-box"><div class="num">${fmt(monthly2, c2)}/mo</div><div class="lbl">${c2.name} Total Monthly</div></div>`;
+  var sumHtml = '<div class="sum-box"><div class="num">' + fmtVal(monthly1, c1, useLocal) + '/mo</div><div class="lbl">' + c1.name + ' Total Monthly</div></div>';
+  sumHtml += '<div class="sum-box"><div class="num">' + fmtVal(monthly2, c2, useLocal) + '/mo</div><div class="lbl">' + c2.name + ' Total Monthly</div></div>';
   document.getElementById('summary').innerHTML = sumHtml;
 
   // Table
-  let html = `<thead><tr><th>Item</th><th>${c1.name}</th><th>${c2.name}</th><th>Difference</th></tr></thead><tbody>`;
-  let lastCat = '';
-  ITEMS.forEach(item => {
+  var html = '<thead><tr><th>Item</th><th>' + c1.name + '</th><th>' + c2.name + '</th><th>Difference</th></tr></thead><tbody>';
+  var lastCat = '';
+  ITEMS.forEach(function(item) {
     if (item.cat !== lastCat) {
-      html += `<tr><td class="cat" colspan="4">${item.cat}</td></tr>`;
+      html += '<tr><td class="cat" colspan="4">' + item.cat + '</td></tr>';
       lastCat = item.cat;
     }
-    const v1 = c1[item.key], v2 = c2[item.key];
-    const pctDiff = ((v2 - v1) / v1 * 100);
-    const cheaper = v1 <= v2 ? 'cheaper' : '';
-    const cheaper2 = v2 <= v1 ? 'cheaper' : '';
-    const diffStr = pctDiff > 0 ? `+${pctDiff.toFixed(0)}%` : `${pctDiff.toFixed(0)}%`;
-    const diffClr = pctDiff > 5 ? 'expensive' : pctDiff < -5 ? 'cheaper' : '';
-    const maxV = Math.max(v1, v2);
-    html += `<tr>
-      <td>${item.label}${item.monthly ? '' : ''}</td>
-      <td class="val ${cheaper}">${fmt(v1, c1)}<div class="bar"><div class="bar-fill" style="width:${v1/maxV*100}%"></div></div></td>
-      <td class="val ${cheaper2}">${fmt(v2, c2)}<div class="bar"><div class="bar-fill" style="width:${v2/maxV*100}%;background:${v2>v1?'#dc2626':'#007AFF'}"></div></div></td>
-      <td class="${diffClr}" style="font-weight:700;font-size:.78rem">${diffStr}</td>
-    </tr>`;
+    var v1 = c1[item.key], v2 = c2[item.key];
+    var pctDiff = ((v2 - v1) / v1 * 100);
+    var cheaper = v1 <= v2 ? 'cheaper' : '';
+    var cheaper2 = v2 <= v1 ? 'cheaper' : '';
+    var diffStr = pctDiff > 0 ? ('+' + pctDiff.toFixed(0) + '%') : (pctDiff.toFixed(0) + '%');
+    var diffClr = pctDiff > 5 ? 'expensive' : pctDiff < -5 ? 'cheaper' : '';
+    var maxV = Math.max(v1, v2);
+    html += '<tr>' +
+      '<td>' + item.label + '</td>' +
+      '<td class="val ' + cheaper + '">' + fmtVal(v1, c1, useLocal) + '<div class="bar"><div class="bar-fill" style="width:' + (v1/maxV*100) + '%"></div></div></td>' +
+      '<td class="val ' + cheaper2 + '">' + fmtVal(v2, c2, useLocal) + '<div class="bar"><div class="bar-fill" style="width:' + (v2/maxV*100) + '%;background:' + (v2>v1?'#dc2626':'#007AFF') + '"></div></div></td>' +
+      '<td class="' + diffClr + '" style="font-weight:700;font-size:.78rem">' + diffStr + '</td>' +
+      '</tr>';
   });
   html += '</tbody>';
   document.getElementById('table').innerHTML = html;

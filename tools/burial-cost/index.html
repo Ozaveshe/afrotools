@@ -173,7 +173,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--fc-bg);color:var(--fc-tex
   <h1>Funeral Cost <em>Estimator</em></h1>
   <p class="fc-hero-sub">Estimate the total cost of a funeral and burial in Africa. Plan ahead — includes mortuary, casket, venue, catering, transport, and cultural ceremony costs.</p>
   <div class="fc-badges">
-    <span class="fc-badge">6 Countries</span>
+    <span class="fc-badge">8 Countries</span>
     <span class="fc-badge">Real Cost Data</span>
     <span class="fc-badge">Insurance Tips</span>
   </div>
@@ -351,7 +351,11 @@ var COUNTRIES = {
   TZ:{name:'Tanzania',flag:'🇹🇿',curr:'TZS',sym:'TZS ',insuranceRange:'TZS 2M-10M',insurancePremium:'TZS 10K-50K/mo',
     avg:{basic:'TZS 1M-2M',standard:'TZS 3M-6M',premium:'TZS 8M+'}},
   UG:{name:'Uganda',flag:'🇺🇬',curr:'UGX',sym:'UGX ',insuranceRange:'UGX 3M-15M',insurancePremium:'UGX 15K-80K/mo',
-    avg:{basic:'UGX 2M-4M',standard:'UGX 5M-10M',premium:'UGX 15M+'}}
+    avg:{basic:'UGX 2M-4M',standard:'UGX 5M-10M',premium:'UGX 15M+'}},
+  ET:{name:'Ethiopia',flag:'🇪🇹',curr:'ETB',sym:'Br ',insuranceRange:'Br 50K-500K',insurancePremium:'Br 200-2,000/mo',
+    avg:{basic:'Br 15K-30K',standard:'Br 50K-100K',premium:'Br 150K+'}},
+  CI:{name:"Côte d'Ivoire",flag:'🇨🇮',curr:'XOF',sym:'CFA ',insuranceRange:'CFA 500K-5M',insurancePremium:'CFA 5K-30K/mo',
+    avg:{basic:'CFA 500K-1M',standard:'CFA 2M-4M',premium:'CFA 6M+'}}
 };
 
 var ITEMS = [
@@ -375,7 +379,9 @@ var COSTS = {
   ZA:{basic:{mortuary:3000,casket:3500,venue:2000,catering:80,transport:3000,cemetery:4000,program:1500,music:3000,canopy:2500,asoebi:5000,video:2000,obituary:1500},standard:{mortuary:6000,casket:8000,venue:4000,catering:150,transport:5000,cemetery:8000,program:3000,music:6000,canopy:5000,asoebi:10000,video:4000,obituary:3000},premium:{mortuary:12000,casket:20000,venue:8000,catering:300,transport:10000,cemetery:15000,program:5000,music:12000,canopy:10000,asoebi:20000,video:8000,obituary:5000}},
   GH:{basic:{mortuary:2000,casket:2500,venue:1500,catering:50,transport:2000,cemetery:3000,program:800,music:2000,canopy:1500,asoebi:4000,video:1500,obituary:1000},standard:{mortuary:5000,casket:6000,venue:3000,catering:100,transport:4000,cemetery:6000,program:2000,music:4000,canopy:3000,asoebi:8000,video:3000,obituary:2000},premium:{mortuary:10000,casket:15000,venue:6000,catering:200,transport:8000,cemetery:12000,program:4000,music:8000,canopy:6000,asoebi:15000,video:6000,obituary:4000}},
   TZ:{basic:{mortuary:200000,casket:300000,venue:150000,catering:10000,transport:200000,cemetery:250000,program:50000,music:200000,canopy:150000,asoebi:400000,video:150000,obituary:80000},standard:{mortuary:500000,casket:700000,venue:300000,catering:20000,transport:400000,cemetery:500000,program:100000,music:400000,canopy:300000,asoebi:800000,video:300000,obituary:150000},premium:{mortuary:1000000,casket:1500000,venue:600000,catering:40000,transport:800000,cemetery:1000000,program:200000,music:800000,canopy:600000,asoebi:1500000,video:600000,obituary:300000}},
-  UG:{basic:{mortuary:300000,casket:400000,venue:200000,catering:15000,transport:300000,cemetery:400000,program:80000,music:300000,canopy:200000,asoebi:600000,video:200000,obituary:100000},standard:{mortuary:700000,casket:1000000,venue:400000,catering:30000,transport:600000,cemetery:800000,program:150000,music:600000,canopy:400000,asoebi:1200000,video:400000,obituary:200000},premium:{mortuary:1500000,casket:2500000,venue:800000,catering:60000,transport:1200000,cemetery:1500000,program:300000,music:1200000,canopy:800000,asoebi:2500000,video:800000,obituary:400000}}
+  UG:{basic:{mortuary:300000,casket:400000,venue:200000,catering:15000,transport:300000,cemetery:400000,program:80000,music:300000,canopy:200000,asoebi:600000,video:200000,obituary:100000},standard:{mortuary:700000,casket:1000000,venue:400000,catering:30000,transport:600000,cemetery:800000,program:150000,music:600000,canopy:400000,asoebi:1200000,video:400000,obituary:200000},premium:{mortuary:1500000,casket:2500000,venue:800000,catering:60000,transport:1200000,cemetery:1500000,program:300000,music:1200000,canopy:800000,asoebi:2500000,video:800000,obituary:400000}},
+  ET:{basic:{mortuary:2000,casket:3000,venue:2000,catering:100,transport:3000,cemetery:5000,program:500,music:3000,canopy:2000,asoebi:8000,video:2000,obituary:1000},standard:{mortuary:5000,casket:8000,venue:5000,catering:200,transport:6000,cemetery:10000,program:1500,music:6000,canopy:4000,asoebi:20000,video:5000,obituary:2500},premium:{mortuary:10000,casket:20000,venue:10000,catering:400,transport:12000,cemetery:20000,program:3000,music:12000,canopy:8000,asoebi:40000,video:10000,obituary:5000}},
+  CI:{basic:{mortuary:100000,casket:120000,venue:80000,catering:3000,transport:100000,cemetery:150000,program:30000,music:100000,canopy:80000,asoebi:200000,video:80000,obituary:40000},standard:{mortuary:250000,casket:350000,venue:200000,catering:6000,transport:250000,cemetery:300000,program:70000,music:250000,canopy:200000,asoebi:500000,video:200000,obituary:100000},premium:{mortuary:500000,casket:800000,venue:400000,catering:12000,transport:500000,cemetery:600000,program:150000,music:500000,canopy:400000,asoebi:1000000,video:400000,obituary:200000}}
 };
 
 var selectedCountry = 'NG';

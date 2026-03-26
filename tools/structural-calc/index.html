@@ -21,7 +21,7 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6}
 .hero{background:linear-gradient(135deg,#0c4a6e 0%,#0369a1 50%,#0ea5e9 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}
-.hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}
+.hero h1{color:#fff;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}
 .hero p{font-size:1.05rem;opacity:.9;max-width:600px;margin:0 auto}
 .container{max-width:900px;margin:0 auto;padding:1.5rem}
 .card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:1.5rem}
@@ -61,6 +61,11 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 .faq summary::after{content:'+';font-size:1.3rem;color:#94a3b8;font-weight:300}
 .faq details[open] summary::after{content:'-'}
 .faq details p{padding:0 1.25rem 1rem;color:#64748b;font-size:.95rem}
+.currency-bar{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:.75rem 1rem;margin-bottom:1.25rem;display:flex;align-items:center;gap:.75rem;flex-wrap:wrap}
+.currency-bar label{font-weight:600;font-size:.85rem;color:#475569;white-space:nowrap}
+.currency-bar select{padding:.4rem .7rem;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.9rem;background:#f8fafc;font-family:inherit;flex:1;min-width:180px}
+.cost-box{background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:.9rem 1rem;font-size:.88rem;color:#78350f;margin-top:.75rem;line-height:1.7}
+.cost-box strong{color:#92400e}
 </style>
 <script src="/assets/js/bundles/core.5473a555.min.js" defer></script><script src="/assets/js/afro-history.js" defer></script>
 <script src="/assets/js/components/save-result-button.js" defer></script>
@@ -109,6 +114,19 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <p>Calculate beam sizes, column reinforcement, and slab thickness for building projects. Based on BS 8110 and Eurocode standards used across Africa.</p>
 </section>
 <div class="container">
+<div class="currency-bar">
+<label>🌍 Country / Currency</label>
+<select id="sc-currency">
+<option value="NGN">Nigeria (₦ Naira)</option>
+<option value="KES">Kenya (KSh)</option>
+<option value="GHS">Ghana (GH₵)</option>
+<option value="ZAR">South Africa (R)</option>
+<option value="TZS">Tanzania (TSh)</option>
+<option value="UGX">Uganda (USh)</option>
+<option value="ETB">Ethiopia (Br)</option>
+<option value="USD">USD (Reference)</option>
+</select>
+</div>
 <div class="tabs">
 <button class="tab active" onclick="switchTab('beam')">Beam Design</button>
 <button class="tab" onclick="switchTab('column')">Column Design</button>
@@ -131,7 +149,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <div style="text-align:center;margin-top:1.25rem"><button class="btn" onclick="calcBeam()">Calculate Beam</button></div>
 </div>
 <div id="beam-results" style="display:none">
-<div class="card"><h2>Beam Results</h2><div id="beam-summary" class="results-grid"></div><table class="rec-table" id="beam-table"></table><div class="warning-box">This is a preliminary design tool. All structural designs must be verified by a registered structural engineer before construction.</div></div>
+<div class="card"><h2>Beam Results</h2><div id="beam-summary" class="results-grid"></div><table class="rec-table" id="beam-table"></table><div id="beam-cost"></div><div class="warning-box">This is a preliminary design tool. All structural designs must be verified by a registered structural engineer before construction.</div></div>
 </div>
 </div>
 
@@ -149,7 +167,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <div style="text-align:center;margin-top:1.25rem"><button class="btn" onclick="calcColumn()">Calculate Column</button></div>
 </div>
 <div id="col-results" style="display:none">
-<div class="card"><h2>Column Results</h2><div id="col-summary" class="results-grid"></div><table class="rec-table" id="col-table"></table><div class="warning-box">This is a preliminary design tool. All structural designs must be verified by a registered structural engineer before construction.</div></div>
+<div class="card"><h2>Column Results</h2><div id="col-summary" class="results-grid"></div><table class="rec-table" id="col-table"></table><div id="col-cost"></div><div class="warning-box">This is a preliminary design tool. All structural designs must be verified by a registered structural engineer before construction.</div></div>
 </div>
 </div>
 
@@ -166,7 +184,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <div style="text-align:center;margin-top:1.25rem"><button class="btn" onclick="calcSlab()">Calculate Slab</button></div>
 </div>
 <div id="slab-results" style="display:none">
-<div class="card"><h2>Slab Results</h2><div id="slab-summary" class="results-grid"></div><table class="rec-table" id="slab-table"></table><div class="warning-box">This is a preliminary design tool. All structural designs must be verified by a registered structural engineer before construction.</div></div>
+<div class="card"><h2>Slab Results</h2><div id="slab-summary" class="results-grid"></div><table class="rec-table" id="slab-table"></table><div id="slab-cost"></div><div class="warning-box">This is a preliminary design tool. All structural designs must be verified by a registered structural engineer before construction.</div></div>
 </div>
 </div>
 
@@ -183,7 +201,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <div style="text-align:center;margin-top:1.25rem"><button class="btn" onclick="calcFooting()">Calculate Footing</button></div>
 </div>
 <div id="foot-results" style="display:none">
-<div class="card"><h2>Footing Results</h2><div id="foot-summary" class="results-grid"></div><table class="rec-table" id="foot-table"></table><div class="warning-box">This is a preliminary design tool. All structural designs must be verified by a registered structural engineer before construction.</div></div>
+<div class="card"><h2>Footing Results</h2><div id="foot-summary" class="results-grid"></div><table class="rec-table" id="foot-table"></table><div id="foot-cost"></div><div class="warning-box">This is a preliminary design tool. All structural designs must be verified by a registered structural engineer before construction.</div></div>
 </div>
 </div>
 </div>
@@ -213,6 +231,30 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <script src="/assets/js/components/related-tools.js" defer></script>
 <script src="/assets/js/components/newsletter-cta.js" defer></script>
 <script>
+var MATERIAL_COSTS={
+  NGN:{concrete:85000,rebar:950,symbol:'\u20a6',name:'Nigeria'},
+  KES:{concrete:15000,rebar:180,symbol:'KSh',name:'Kenya'},
+  GHS:{concrete:1400,rebar:18,symbol:'GH\u20b5',name:'Ghana'},
+  ZAR:{concrete:3000,rebar:22,symbol:'R',name:'South Africa'},
+  TZS:{concrete:300000,rebar:4000,symbol:'TSh',name:'Tanzania'},
+  UGX:{concrete:380000,rebar:5200,symbol:'USh',name:'Uganda'},
+  ETB:{concrete:7000,rebar:90,symbol:'Br',name:'Ethiopia'},
+  USD:{concrete:120,rebar:0.90,symbol:'$',name:'USD'}
+};
+function matCost(concreteM3,rebarKg,note){
+  var cur=document.getElementById('sc-currency').value;
+  var c=MATERIAL_COSTS[cur];
+  var concCost=concreteM3*c.concrete;
+  var rebarCost=rebarKg*c.rebar;
+  var total=concCost+rebarCost;
+  var fmt=function(n){return c.symbol+Math.round(n).toLocaleString();};
+  return '<div class="cost-box"><strong>\ud83d\udcb0 Estimated Material Cost \u2014 '+c.name+'</strong><br>'
+    +'Concrete ('+concreteM3.toFixed(2)+' m\u00b3): '+fmt(concCost)+'<br>'
+    +'Rebar (~'+Math.round(rebarKg)+' kg): '+fmt(rebarCost)+'<br>'
+    +'<strong>Total: '+fmt(total)+'</strong>'+(note?'<br><em>'+note+'</em>':'')+'<br>'
+    +'<span style="font-size:.78rem;color:#92400e">Indicative rates only. Prices vary by region and supplier. Select another currency above to compare.</span></div>';
+}
+
 function switchTab(tab){
   document.querySelectorAll('.calc-section').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
@@ -281,6 +323,9 @@ function calcBeam(){
     <tr><td>Links</td><td>R8 @ ${Math.min(Math.floor(0.75*d),300)} mm c/c</td></tr>
     </tbody>`;
   document.getElementById('beam-results').style.display='block';
+  var beamConc=(b/1000)*(h/1000)*L;
+  var beamRebar=As*1e-6*L*7850*1.3;
+  document.getElementById('beam-cost').innerHTML=matCost(beamConc,beamRebar,'Per beam element (section \xd7 span)');
 }
 
 function calcColumn(){
@@ -339,6 +384,10 @@ function calcColumn(){
     <tr><td>Capacity check</td><td>${(0.4*fcu*(actualAg-Asc)/1000+0.8*fy*Asc/1000).toFixed(0)} kN ${(0.4*fcu*(actualAg-Asc)/1000+0.8*fy*Asc/1000)>=N?'> '+N+' OK':'< '+N+' INCREASE SIZE'}</td></tr>
     </tbody>`;
   document.getElementById('col-results').style.display='block';
+  var colH=3.0;
+  var colConc=(actualAg/1e6)*colH;
+  var colRebar=Asc*1e-6*colH*7850*1.15;
+  document.getElementById('col-cost').innerHTML=matCost(colConc,colRebar,'Based on 3 m storey height. Adjust for actual height.');
 }
 
 function calcSlab(){
@@ -396,6 +445,9 @@ function calcSlab(){
     <tr><td>Distribution steel</td><td>Y10 @ 300 mm c/c (min)</td></tr>
     </tbody>`;
   document.getElementById('slab-results').style.display='block';
+  var slabConcPerM2=h/1000;
+  var slabRebarPerM2=AsDesign*1e-6*7850*1.5;
+  document.getElementById('slab-cost').innerHTML=matCost(slabConcPerM2,slabRebarPerM2,'Cost per m\u00b2 of slab \u2014 multiply by total floor area');
 }
 
 function calcFooting(){
@@ -454,6 +506,10 @@ function calcFooting(){
     <tr><td>Concrete volume</td><td>${(actualArea*Math.ceil(h/25)*25/1000).toFixed(2)} m3</td></tr>
     </tbody>`;
   document.getElementById('foot-results').style.display='block';
+  var footDepth=Math.ceil(h/25)*25/1000;
+  var footConc=actualArea*footDepth;
+  var footRebar=AsDesign*1e-6*sideM*7850*2*1.1;
+  document.getElementById('foot-cost').innerHTML=matCost(footConc,footRebar,'Per footing pad');
 }
 </script>
 

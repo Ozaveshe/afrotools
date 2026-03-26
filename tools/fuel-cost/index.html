@@ -196,6 +196,13 @@
     <button class="tab" onclick="switchMode('generator')">Generator Mode</button>
   </div>
 
+  <!-- Popular Routes -->
+  <div id="routePresets" class="card" style="margin-bottom:1.5rem;">
+    <h2 style="margin-bottom:.5rem;">Popular African Routes</h2>
+    <p style="font-size:.8rem;color:#888;margin-bottom:.85rem;">Click a route to auto-fill distance and set country</p>
+    <div id="routeBtns" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+  </div>
+
   <!-- Trip Mode -->
   <div id="tripMode" class="card">
     <h2>Trip Fuel Cost</h2>
@@ -277,6 +284,11 @@
       <option value="KE" data-currency="KES" data-symbol="KSh" data-pms="217" data-ago="204">Kenya</option>
       <option value="GH" data-currency="GHS" data-symbol="GH₵" data-pms="15.50" data-ago="15.80">Ghana</option>
       <option value="ZA" data-currency="ZAR" data-symbol="R" data-pms="24.50" data-ago="22.80">South Africa</option>
+      <option value="EG" data-currency="EGP" data-symbol="E£" data-pms="12.50" data-ago="10.25">Egypt</option>
+      <option value="TZ" data-currency="TZS" data-symbol="TSh" data-pms="3377" data-ago="3315">Tanzania</option>
+      <option value="UG" data-currency="UGX" data-symbol="USh" data-pms="5300" data-ago="5100">Uganda</option>
+      <option value="CM" data-currency="XAF" data-symbol="FCFA" data-pms="730" data-ago="720">Cameroon</option>
+      <option value="RW" data-currency="RWF" data-symbol="FRw" data-pms="1549" data-ago="1524">Rwanda</option>
       <option value="custom" data-currency="" data-symbol="" data-pms="" data-ago="">Custom</option>
     </select>
 
@@ -310,6 +322,16 @@
       </div>
     </div>
 
+    <div class="check-row">
+      <input type="checkbox" id="monthlyGen" onchange="toggleMonthly()">
+      <label for="monthlyGen" style="margin:0; font-weight:500;">Show monthly cost (days/month)</label>
+    </div>
+    <div id="monthlyRow" style="display:none;margin-bottom:1rem;">
+      <div class="input-group">
+        <label>Days per month generator runs</label>
+        <input type="number" id="genDays" placeholder="e.g. 25" min="1" max="31" step="1" value="25">
+      </div>
+    </div>
     <button class="btn btn-primary" onclick="calcGen()">Calculate Cost</button>
   </div>
 
@@ -361,6 +383,71 @@
 <afro-footer></afro-footer>
 
 <script>
+/* Popular African road routes */
+var ROUTES = [
+  {label:'Lagos → Abuja',km:760,country:'NG',flag:'🇳🇬'},
+  {label:'Lagos → Port Harcourt',km:540,country:'NG',flag:'🇳🇬'},
+  {label:'Accra → Kumasi',km:250,country:'GH',flag:'🇬🇭'},
+  {label:'Nairobi → Mombasa',km:480,country:'KE',flag:'🇰🇪'},
+  {label:'Nairobi → Kisumu',km:340,country:'KE',flag:'🇰🇪'},
+  {label:'Johannesburg → Cape Town',km:1400,country:'ZA',flag:'🇿🇦'},
+  {label:'Durban → Johannesburg',km:570,country:'ZA',flag:'🇿🇦'},
+  {label:'Cairo → Alexandria',km:220,country:'EG',flag:'🇪🇬'},
+  {label:'Dar es Salaam → Dodoma',km:450,country:'TZ',flag:'🇹🇿'},
+  {label:'Kampala → Jinja',km:80,country:'UG',flag:'🇺🇬'},
+  {label:'Kigali → Gisenyi',km:160,country:'RW',flag:'🇷🇼'},
+  {label:'Yaoundé → Douala',km:240,country:'CM',flag:'🇨🇲'}
+];
+
+function initRoutes() {
+  var el = document.getElementById('routeBtns');
+  el.innerHTML = ROUTES.map(function(r) {
+    return '<button class="btn btn-outline" style="font-size:.8rem;padding:.45rem .9rem;" onclick="fillRoute('+JSON.stringify(r.km)+',\''+r.country+'\')">'
+      + r.flag + ' ' + r.label + ' <span style="color:#888;font-weight:400;">(' + r.km + 'km)</span></button>';
+  }).join('');
+}
+
+function fillRoute(km, country) {
+  switchMode('trip');
+  document.getElementById('distance').value = km;
+  document.getElementById('distUnit').value = 'km';
+  var sel = document.getElementById('country');
+  for (var i = 0; i < sel.options.length; i++) {
+    if (sel.options[i].value === country) { sel.selectedIndex = i; break; }
+  }
+  updateFuelPrice();
+}
+
+function toggleMonthly() {
+  document.getElementById('monthlyRow').style.display = document.getElementById('monthlyGen').checked ? '' : 'none';
+}
+
+/* Country-aware fun comparisons */
+var FUN_DATA = {
+  NG:{food:{emoji:'🍢',label:'Suya (sticks)',unit:500},transit:{emoji:'🚌',label:'Danfo rides',unit:200},sub:{emoji:'🎵',label:'Showmax months',unit:1800},data:{emoji:'📱',label:'1GB data (Airtel)',unit:375}},
+  KE:{food:{emoji:'🍗',label:'Nyama choma (100g)',unit:300},transit:{emoji:'🚐',label:'Matatu rides',unit:50},sub:{emoji:'🎵',label:'Showmax months',unit:700},data:{emoji:'📱',label:'1GB data (Safaricom)',unit:100}},
+  GH:{food:{emoji:'🍲',label:'Jollof rice packs',unit:35},transit:{emoji:'🚌',label:'Trotro rides',unit:5},sub:{emoji:'🎵',label:'Audiomack months',unit:25},data:{emoji:'📱',label:'1GB data (MTN GH)',unit:10}},
+  ZA:{food:{emoji:'🌭',label:'Gatsby rolls',unit:80},transit:{emoji:'🚌',label:'Taxi rides',unit:20},sub:{emoji:'🎵',label:'DStv days (Compact)',unit:15},data:{emoji:'📱',label:'1GB data (Vodacom)',unit:90}},
+  EG:{food:{emoji:'🥙',label:'Koshary bowls',unit:25},transit:{emoji:'🚇',label:'Metro rides',unit:7},sub:{emoji:'🎵',label:'Anghami months',unit:60},data:{emoji:'📱',label:'1GB data',unit:30}},
+  TZ:{food:{emoji:'🍖',label:'Mishkaki skewers',unit:1500},transit:{emoji:'🚐',label:'Daladala rides',unit:600},sub:{emoji:'🎵',label:'Baze music months',unit:3000},data:{emoji:'📱',label:'1GB data (Vodacom TZ)',unit:2000}},
+  UG:{food:{emoji:'🍌',label:'Rolex (egg roll)',unit:3000},transit:{emoji:'🛵',label:'Boda-boda rides',unit:2000},sub:{emoji:'🎵',label:'DStv days',unit:3500},data:{emoji:'📱',label:'1GB data (Airtel UG)',unit:2000}},
+  CM:{food:{emoji:'🍗',label:'Poulet DG',unit:2500},transit:{emoji:'🚕',label:'Moto-taxi rides',unit:300},sub:{emoji:'🎵',label:'Canal+ days',unit:500},data:{emoji:'📱',label:'1GB data (MTN CM)',unit:500}},
+  RW:{food:{emoji:'🍢',label:'Brochettes',unit:2000},transit:{emoji:'🚌',label:'Bus rides',unit:600},sub:{emoji:'🎵',label:'Netflix days',unit:600},data:{emoji:'📱',label:'1GB data (MTN RW)',unit:700}}
+};
+
+/* DYK facts */
+var DYK_FACTS = {
+  NG:'Lagos–Abuja (760km) was once a 3-day journey by road. Today it\'s 8-12 hours... thanks to fuel prices, not road upgrades! 🛣😂',
+  KE:'Kenya\'s Nairobi-Mombasa SGR train uses no petrol at all — it runs on electricity, covering 480km in under 5 hours. 🚆',
+  GH:'Ghana removed fuel subsidies in 2022, leading to pump prices nearly doubling in a year. Fuel now reflects true import cost. ⛽',
+  ZA:'South Africa\'s fuel price includes a Road Accident Fund levy and a General Fuel Levy — about 35% of what you pay is tax. 💸',
+  TZ:'Tanzania\'s fuel pump prices are set by EWURA (the energy regulator) monthly. Prices vary by zone — coastal is slightly cheaper. 🌊',
+  UG:'Uganda is landlocked — all petroleum is imported overland from Mombasa or Dar es Salaam, which adds significantly to costs. 🏔',
+  RW:'Rwanda has Africa\'s most comprehensive EV charging network per capita, with plans to electrify 30% of public transport by 2030. 🔋',
+  EG:'Egypt has one of Africa\'s cheapest petrol prices due to government subsidies — though reforms have raised them over recent years. 🏛',
+  CM:'Cameroon is an oil producer, yet most fuel is imported due to limited domestic refinery capacity. The Sonara refinery is being rebuilt. 🛢'
+};
+
 function switchMode(mode) {
   document.querySelectorAll('.tab').forEach((t, i) => {
     t.classList.toggle('active', (mode === 'trip' && i === 0) || (mode === 'generator' && i === 1));
@@ -409,14 +496,15 @@ function calcTrip() {
   const opt = getOpt(document.getElementById('country'));
   const sym = opt.dataset.symbol || '';
   const curr = opt.dataset.currency || '';
+  const countryCode = opt.value;
 
   showResults([
-    { label: 'Total Distance', value: (rt ? distKm : distKm).toFixed(1) + ' km', sub: rt ? '(round trip)' : '' },
+    { label: 'Total Distance', value: distKm.toFixed(1) + ' km', sub: rt ? '(round trip)' : '' },
     { label: 'Fuel Needed', value: totalLitres.toFixed(1) + ' L', sub: '' },
     { label: 'Total Cost', value: sym + totalCost.toLocaleString('en', {minimumFractionDigits:0, maximumFractionDigits:0}), sub: curr },
     { label: 'Cost per km', value: sym + (totalCost / distKm).toFixed(1), sub: '' }
   ]);
-  showFunComparisons(totalCost);
+  showFunComparisons(totalCost, countryCode);
 }
 
 function calcGen() {
@@ -436,16 +524,27 @@ function calcGen() {
   const opt = getOpt(document.getElementById('genCountry'));
   const sym = opt.dataset.symbol || '';
   const curr = opt.dataset.currency || '';
+  const countryCode = opt.value;
 
-  showResults([
+  var stats = [
     { label: 'Generator', value: kva + ' kVA', sub: fuelType.toUpperCase() },
-    { label: 'Run Time', value: hours + ' hours', sub: '' },
+    { label: 'Run Time', value: hours + ' hours', sub: 'per day' },
     { label: 'Burn Rate', value: burnRate.toFixed(2) + ' L/hr', sub: '' },
-    { label: 'Fuel Needed', value: totalLitres.toFixed(1) + ' L', sub: '' },
-    { label: 'Total Cost', value: sym + totalCost.toLocaleString('en', {minimumFractionDigits:0, maximumFractionDigits:0}), sub: curr },
+    { label: 'Fuel Needed', value: totalLitres.toFixed(1) + ' L', sub: 'per day' },
+    { label: 'Daily Cost', value: sym + totalCost.toLocaleString('en', {minimumFractionDigits:0, maximumFractionDigits:0}), sub: curr },
     { label: 'Cost per Hour', value: sym + (totalCost / hours).toFixed(0), sub: '' }
-  ]);
-  showFunComparisons(totalCost);
+  ];
+
+  if (document.getElementById('monthlyGen').checked) {
+    var days = parseInt(document.getElementById('genDays').value) || 25;
+    var monthlyCost = totalCost * days;
+    var monthlyLitres = totalLitres * days;
+    stats.push({ label: 'Monthly Fuel', value: monthlyLitres.toFixed(0) + ' L', sub: days + ' days' });
+    stats.push({ label: 'Monthly Cost', value: sym + monthlyCost.toLocaleString('en', {minimumFractionDigits:0, maximumFractionDigits:0}), sub: curr, highlight: true });
+  }
+
+  showResults(stats);
+  showFunComparisons(totalCost, countryCode);
 }
 
 function showResults(stats) {
@@ -464,24 +563,28 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 2000);
 }
 
-function showFunComparisons(cost) {
-  var suya = Math.round(cost / 500);
-  var danfo = Math.round(cost / 200);
-  var spotify = (cost / 1800).toFixed(1);
-  var dataGB = (cost / 375).toFixed(1);
+function showFunComparisons(cost, country) {
+  var c = country || 'NG';
+  var d = FUN_DATA[c] || FUN_DATA['NG'];
+  var dyk = DYK_FACTS[c] || DYK_FACTS['NG'];
+  var v1 = Math.round(cost / d.food.unit) || 0;
+  var v2 = Math.round(cost / d.transit.unit) || 0;
+  var v3 = (cost / d.sub.unit).toFixed(1);
+  var v4 = (cost / d.data.unit).toFixed(1);
   document.getElementById('xfunSection').innerHTML =
     '<div class="xfun">' +
-    '<div class="xfun-card gold"><div class="xfun-emoji">🍕</div><div class="xfun-title">In Suya</div><div class="xfun-text">' + suya + ' sticks of suya</div></div>' +
-    '<div class="xfun-card blue"><div class="xfun-emoji">🚌</div><div class="xfun-title">Danfo Rides</div><div class="xfun-text">' + danfo + ' danfo/matatu trips</div></div>' +
-    '<div class="xfun-card rose"><div class="xfun-emoji">🎵</div><div class="xfun-title">Spotify</div><div class="xfun-text">' + spotify + ' months of Premium</div></div>' +
-    '<div class="xfun-card green"><div class="xfun-emoji">📱</div><div class="xfun-title">Data</div><div class="xfun-text">' + dataGB + ' GB of mobile data</div></div>' +
+    '<div class="xfun-card gold"><div class="xfun-emoji">' + d.food.emoji + '</div><div class="xfun-title">In ' + d.food.label + '</div><div class="xfun-text">' + v1.toLocaleString() + ' ' + d.food.label + '</div></div>' +
+    '<div class="xfun-card blue"><div class="xfun-emoji">' + d.transit.emoji + '</div><div class="xfun-title">' + d.transit.label + '</div><div class="xfun-text">' + v2.toLocaleString() + ' ' + d.transit.label + '</div></div>' +
+    '<div class="xfun-card rose"><div class="xfun-emoji">' + d.sub.emoji + '</div><div class="xfun-title">' + d.sub.label + '</div><div class="xfun-text">' + v3 + ' months</div></div>' +
+    '<div class="xfun-card green"><div class="xfun-emoji">' + d.data.emoji + '</div><div class="xfun-title">' + d.data.label + '</div><div class="xfun-text">' + v4 + ' GB data</div></div>' +
     '</div>' +
-    '<div class="xfun-dyk"><div class="xfun-dyk-title">💡 Did You Know?</div><div class="xfun-dyk-text">Lagos-Abuja is 960km. In 1960, it took 3 days by road. Today it takes 8-12 hours... or 8-12 hours. Nigerian roads haven\'t changed much! 🛣\uFE0F😂</div></div>';
+    '<div class="xfun-dyk"><div class="xfun-dyk-title">💡 Did You Know?</div><div class="xfun-dyk-text">' + dyk + '</div></div>';
 }
 
 // Init
 updateFuelPrice();
 updateGenPrice();
+initRoutes();
 </script>
 <script src="/assets/js/favorites.js" defer></script>
 <script src="/assets/js/lib/saved-tools.js" defer></script>

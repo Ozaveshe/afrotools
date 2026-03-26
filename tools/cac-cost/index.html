@@ -46,7 +46,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 .btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;margin-top:18px;transition:transform .1s}
 .btn-primary{background:linear-gradient(135deg,#1e40af,#1d4ed8);color:#fff}
 .btn-primary:hover{transform:translateY(-1px)}
-.type-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.type-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
 .type-card{border:2px solid #e2e8f0;border-radius:8px;padding:14px;cursor:pointer;transition:.2s;text-align:center}
 .type-card.active{border-color:#1d4ed8;background:#eff6ff}
 .type-card .icon{font-size:1.6rem}
@@ -70,7 +70,8 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 .faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
 .faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
 .faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
-@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.type-cards{grid-template-columns:1fr 1fr}}
+@media(max-width:900px){.type-cards{grid-template-columns:1fr 1fr}}
+@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.type-cards{grid-template-columns:1fr 1fr}.row{grid-template-columns:1fr}}
 </style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebApplication","name":"Nigeria CAC Registration Cost Calculator","description":"Calculate CAC registration cost for business name, LLC, LLP, and company in Nigeria.","url":"https://afrotools.com/tools/cac-cost/","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
@@ -133,10 +134,11 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div class="card-head"><span class="card-title">Registration Type</span></div>
 <div class="card-body">
 <div class="type-cards" id="typeCards">
-<div class="type-card active" data-type="bn" onclick="selectType('bn')"><div class="icon">📋</div><div class="name">Business Name</div><div class="price">From NGN 13,500</div></div>
-<div class="type-card" data-type="llc" onclick="selectType('llc')"><div class="icon">🏢</div><div class="name">Limited Company (LLC/LTD)</div><div class="price">From NGN 25,000</div></div>
-<div class="type-card" data-type="llp" onclick="selectType('llp')"><div class="icon">🤝</div><div class="name">Limited Liability Partnership</div><div class="price">From NGN 25,000</div></div>
-<div class="type-card" data-type="ngo" onclick="selectType('ngo')"><div class="icon">💚</div><div class="name">NGO / Foundation (CAC/IT)</div><div class="price">From NGN 20,000</div></div>
+<div class="type-card active" data-type="bn" onclick="selectType('bn')"><div class="icon">📋</div><div class="name">Business Name</div><div class="price">From ₦14,000</div></div>
+<div class="type-card" data-type="llc" onclick="selectType('llc')"><div class="icon">🏢</div><div class="name">Private Company (LLC/LTD)</div><div class="price">From ₦25,000 + stamp duty</div></div>
+<div class="type-card" data-type="llp" onclick="selectType('llp')"><div class="icon">🤝</div><div class="name">Limited Liability Partnership</div><div class="price">From ₦25,000</div></div>
+<div class="type-card" data-type="ngo" onclick="selectType('ngo')"><div class="icon">💚</div><div class="name">NGO / Incorporated Trustee</div><div class="price">From ₦20,000</div></div>
+<div class="type-card" data-type="plc" onclick="selectType('plc')"><div class="icon">📈</div><div class="name">Public Company (PLC)</div><div class="price">From ₦100,000+</div></div>
 </div>
 </div></div>
 
@@ -164,7 +166,13 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <input type="checkbox" id="addTin" checked> Include TIN Registration (free)
 </label>
 <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:.78rem;color:#475569;margin-top:6px">
-<input type="checkbox" id="addScuml"> SCUML Registration (for NGOs)
+<input type="checkbox" id="addScuml"> SCUML Registration (for NGOs, free)
+</label>
+<label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:.78rem;color:#475569;margin-top:6px">
+<input type="checkbox" id="addAnnualReturns" checked> Include 1st Year Annual Returns Filing
+</label>
+<label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:.78rem;color:#475569;margin-top:6px">
+<input type="checkbox" id="addStatusReport"> Company Status Report (for bank account)
 </label>
 </div>
 <button class="btn btn-primary" onclick="calculate()">Calculate Total Cost</button>
@@ -173,7 +181,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div class="card" id="resultCard" style="display:none">
 <div class="card-head"><span class="card-title">Cost Breakdown</span></div>
 <div class="card-body">
-<div class="total-display"><div class="amount" id="totalAmount"></div><div class="label">Estimated Total Cost</div></div>
+<div class="total-display"><div class="amount" id="totalAmount"></div><div class="label">Estimated Total Cost</div><div id="usdAmount" style="font-size:.78rem;color:#3b82f6;margin-top:6px;font-weight:600"></div></div>
 <table class="cost-table" id="costTable"></table>
 <p style="font-size:.72rem;color:#94a3b8;margin-top:12px;line-height:1.5">* Estimates based on 2025 CAC fee schedule. Agent fees vary by location and service provider. Prices may change — verify on <a href="https://pre.cac.gov.ng" target="_blank" style="color:#3b82f6">cac.gov.ng</a></p>
 </div></div>
@@ -207,8 +215,20 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <ul>
 <li>Business Name: 2-7 days</li>
 <li>LLC/LTD: 5-14 days</li>
-<li>NGO (CAC/IT): 14-28 days</li>
-<li>Express: +NGN 5,000-15,000</li>
+<li>NGO (IT): 14-28 days</li>
+<li>PLC: 21-45 days</li>
+<li>Express: +₦5,000–15,000</li>
+</ul>
+</div>
+<div class="info-card" style="margin-top:10px">
+<h4>After CAC Registration — Next Steps</h4>
+<ul>
+<li>✅ Get TIN from FIRS (free, automatic for new businesses)</li>
+<li>✅ Open corporate bank account (need CAC cert + CTC)</li>
+<li>✅ Register for VAT if turnover will exceed ₦25M/year</li>
+<li>✅ PENCOM registration for employee pensions</li>
+<li>✅ File annual returns every year to avoid penalties</li>
+<li>⚠️ Annual return late penalty: ₦5,000–10,000/year</li>
 </ul>
 </div>
 </div>
@@ -226,7 +246,11 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <details class="faq-item"><summary>Can I register CAC myself without a lawyer?</summary><p>Yes, you can register directly on the CAC portal (pre.cac.gov.ng). Business name registration is straightforward. However, LLC registration involves preparing Memorandum and Articles of Association, which most people hire a lawyer for (NGN 30,000-80,000).</p></details>
 <details class="faq-item"><summary>What is the minimum share capital for a Nigerian company?</summary><p>There is no legally mandated minimum share capital for private companies in Nigeria. However, most companies register with NGN 1,000,000 (1 million) as it's the standard for opening corporate bank accounts and bidding for contracts.</p></details>
 <details class="faq-item"><summary>How long does CAC registration take?</summary><p>Business name: 2-7 working days. Limited company: 5-14 working days. NGO (CAC/IT): 14-28 working days. Express processing is available for an additional fee.</p></details>
-<details class="faq-item"><summary>Do I need CAC registration to open a business bank account?</summary><p>Yes, all Nigerian commercial banks require a CAC certificate (business name or company) to open a business bank account. You'll also need your TIN (Tax Identification Number), which is now issued automatically during CAC registration.</p></details>
+<details class="faq-item"><summary>Do I need CAC registration to open a business bank account?</summary><p>Yes, all Nigerian commercial banks require a CAC certificate (business name or company) to open a business bank account. You'll also need your TIN (Tax Identification Number), which is now issued automatically during CAC registration. Some banks also require a Company Status Report (obtained from CAC portal for ~₦5,000).</p></details>
+<details class="faq-item"><summary>What is the difference between a Business Name and an LLC?</summary><p>A Business Name (sole proprietorship or partnership) is cheap and simple but creates no separate legal entity — you are personally liable for all business debts. A Limited Liability Company (LLC/LTD) creates a separate legal entity. Your personal assets are protected, and you can raise investment, bid for government contracts, and bring in shareholders. Most serious businesses should register as an LLC.</p></details>
+<details class="faq-item"><summary>What is stamp duty and how is it calculated?</summary><p>Stamp duty is a government tax of 0.75% of your company's authorized share capital. For example, if you register with ₦1,000,000 share capital, stamp duty is ₦7,500. This is paid to the Federal Inland Revenue Service (FIRS) during company registration. It's separate from the CAC registration fee.</p></details>
+<details class="faq-item"><summary>What happens if I don't file annual returns?</summary><p>CAC imposes late filing penalties of ₦5,000–10,000 per year for companies and ₦1,000–3,000 for business names. After 3 years of non-filing, CAC may strike off your company from the register, making it legally non-existent. You must then apply for re-instatement (an expensive process). Always file annual returns — it's cheap (₦3,000–10,000/year) compared to penalties.</p></details>
+<details class="faq-item"><summary>Can a foreigner register a company in Nigeria?</summary><p>Yes, foreigners can register a private limited company in Nigeria. However, to operate, foreign companies must also obtain a Business Permit from the Ministry of Interior (₦500,000–1,000,000 in government fees) and register with NIPC (Nigerian Investment Promotion Commission). The CAC registration process itself is the same as for Nigerians.</p></details>
 </section>
 
 <afro-related-tools category="legal" current="cac-cost"></afro-related-tools>
@@ -234,75 +258,113 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <afro-footer></afro-footer>
 
 <script>
-let selectedType = 'bn';
+var selectedType = 'bn';
+var USD_RATE = 1620; // approximate NGN/USD rate
 
 function selectType(type) {
   selectedType = type;
-  document.querySelectorAll('.type-card').forEach(c => c.classList.remove('active'));
-  document.querySelector(`[data-type="${type}"]`).classList.add('active');
-
-  const capRow = document.getElementById('shareCapital').closest('.row');
-  capRow.style.display = (type === 'bn') ? 'none' : 'grid';
+  document.querySelectorAll('.type-card').forEach(function(c){c.classList.remove('active');});
+  document.querySelector('[data-type="'+type+'"]').classList.add('active');
+  var capRow = document.getElementById('shareCapital').closest('.row');
+  // Share capital only relevant for LLC, LLP, PLC
+  capRow.style.display = (type === 'bn' || type === 'ngo') ? 'none' : 'grid';
+  // Directors label change
+  var dirLabel = document.querySelector('label[for="directors"]') || document.getElementById('directors').previousElementSibling;
+  if (dirLabel) dirLabel.textContent = (type === 'llp') ? 'Number of Partners' : 'Number of Directors';
 }
 
 function calculate() {
-  const type = selectedType;
-  const shareCapital = +document.getElementById('shareCapital').value;
-  const directors = +document.getElementById('directors').value;
-  const useAgent = document.getElementById('useAgent').value;
-  const express = document.getElementById('express').value === 'yes';
+  var type = selectedType;
+  var shareCapital = +document.getElementById('shareCapital').value || 1000000;
+  var directors = +document.getElementById('directors').value || 2;
+  var useAgent = document.getElementById('useAgent').value;
+  var express = document.getElementById('express').value === 'yes';
+  var addAnnualReturns = document.getElementById('addAnnualReturns').checked;
+  var addStatusReport = document.getElementById('addStatusReport').checked;
+  var addScuml = document.getElementById('addScuml').checked;
 
-  const items = [];
+  var items = [];
 
   if (type === 'bn') {
-    items.push({ item: 'Business Name Registration Fee', amount: 13500 });
-    items.push({ item: 'Name Reservation', amount: 500 });
-    if (useAgent === 'agent') items.push({ item: 'Agent / Lawyer Fee', amount: 25000 });
-    if (express) items.push({ item: 'Express Processing', amount: 5000 });
+    items.push({item:'Business Name Registration Fee (CAC)',amount:13500});
+    items.push({item:'Name Reservation Fee',amount:500});
+    if (useAgent === 'agent') items.push({item:'Agent / Accredited Lawyer Fee',amount:25000});
+    if (express) items.push({item:'Express Processing',amount:5000});
+    if (addAnnualReturns) items.push({item:'Annual Returns Filing (Year 1)',amount:3000});
   } else if (type === 'llc') {
-    let regFee = 25000;
+    var regFee = 25000;
     if (shareCapital > 1000000 && shareCapital <= 5000000) regFee = 35000;
     else if (shareCapital > 5000000 && shareCapital <= 25000000) regFee = 50000;
     else if (shareCapital > 25000000 && shareCapital <= 100000000) regFee = 100000;
     else if (shareCapital > 100000000) regFee = 200000;
 
-    items.push({ item: 'Company Registration Fee', amount: regFee });
-    items.push({ item: 'Name Reservation', amount: 500 });
-    items.push({ item: 'Stamp Duty (0.75% of share capital)', amount: Math.round(shareCapital * 0.0075) });
-    items.push({ item: 'Certified True Copy (CTC)', amount: 3000 });
-    items.push({ item: 'Filing Fee (MEMART)', amount: 5000 });
-    if (directors > 2) items.push({ item: `Extra Director Forms (${directors - 2} x 2,000)`, amount: (directors - 2) * 2000 });
-    if (useAgent === 'agent') items.push({ item: 'Agent / Lawyer Fee (MEMART prep + filing)', amount: 50000 });
-    if (express) items.push({ item: 'Express Processing', amount: 15000 });
+    items.push({item:'Company Registration Fee (CAC)',amount:regFee});
+    items.push({item:'Name Reservation Fee',amount:500});
+    items.push({item:'Stamp Duty on Share Capital (0.75%)',amount:Math.round(shareCapital*0.0075)});
+    items.push({item:'CAC Filing Fee (MEMART)',amount:5000});
+    items.push({item:'Certified True Copy (CTC) of Certificate',amount:3000});
+    if (directors > 2) items.push({item:'Extra Director Forms ('+(directors-2)+' × ₦2,000)',amount:(directors-2)*2000});
+    if (useAgent === 'agent') items.push({item:'Lawyer Fee (MEMART drafting + filing)',amount:55000});
+    if (express) items.push({item:'Express Processing',amount:15000});
+    if (addStatusReport) items.push({item:'Company Status Report (for bank account)',amount:5000});
+    if (addAnnualReturns) items.push({item:'Annual Returns Filing (Year 1)',amount:5000});
   } else if (type === 'llp') {
-    items.push({ item: 'LLP Registration Fee', amount: 25000 });
-    items.push({ item: 'Name Reservation', amount: 500 });
-    items.push({ item: 'Partnership Deed Filing', amount: 5000 });
-    if (useAgent === 'agent') items.push({ item: 'Agent / Lawyer Fee', amount: 40000 });
-    if (express) items.push({ item: 'Express Processing', amount: 10000 });
+    var llpRegFee = 25000;
+    if (shareCapital > 1000000 && shareCapital <= 5000000) llpRegFee = 35000;
+    else if (shareCapital > 5000000) llpRegFee = 50000;
+
+    items.push({item:'LLP Registration Fee (CAC)',amount:llpRegFee});
+    items.push({item:'Name Reservation Fee',amount:500});
+    items.push({item:'Partnership Deed Filing',amount:5000});
+    if (useAgent === 'agent') items.push({item:'Lawyer Fee (Deed drafting + filing)',amount:45000});
+    if (express) items.push({item:'Express Processing',amount:10000});
+    if (addAnnualReturns) items.push({item:'Annual Returns Filing (Year 1)',amount:5000});
   } else if (type === 'ngo') {
-    items.push({ item: 'CAC/IT Registration Fee', amount: 20000 });
-    items.push({ item: 'Name Reservation', amount: 500 });
-    items.push({ item: 'Trustees Declaration Filing', amount: 5000 });
-    if (document.getElementById('addScuml').checked) items.push({ item: 'SCUML Registration', amount: 0 });
-    if (useAgent === 'agent') items.push({ item: 'Agent / Lawyer Fee', amount: 45000 });
-    if (express) items.push({ item: 'Express Processing', amount: 10000 });
+    items.push({item:'Incorporated Trustee / NGO Registration (CAC)',amount:20000});
+    items.push({item:'Name Reservation Fee',amount:500});
+    items.push({item:'Trustees Declaration Filing',amount:5000});
+    items.push({item:'Newspaper Publication (required by law)',amount:15000});
+    if (addScuml) items.push({item:'SCUML Registration',amount:0});
+    if (useAgent === 'agent') items.push({item:'Lawyer Fee (Constitution + filing)',amount:50000});
+    if (express) items.push({item:'Express Processing',amount:10000});
+    if (addAnnualReturns) items.push({item:'Annual Returns Filing (Year 1)',amount:3000});
+  } else if (type === 'plc') {
+    var plcRegFee = 200000;
+    if (shareCapital > 100000000 && shareCapital <= 500000000) plcRegFee = 350000;
+    else if (shareCapital > 500000000) plcRegFee = 500000;
+
+    items.push({item:'PLC Registration Fee (CAC)',amount:plcRegFee});
+    items.push({item:'Name Reservation Fee',amount:500});
+    items.push({item:'Stamp Duty on Share Capital (0.75%)',amount:Math.round(shareCapital*0.0075)});
+    items.push({item:'CAC Filing Fee (MEMART)',amount:15000});
+    items.push({item:'Certified True Copy (CTC)',amount:5000});
+    if (directors > 2) items.push({item:'Extra Director Forms ('+(directors-2)+' × ₦2,000)',amount:(directors-2)*2000});
+    if (useAgent === 'agent') items.push({item:'Lawyer Fee (MEMART + SEC filing)',amount:150000});
+    if (addStatusReport) items.push({item:'Company Status Report',amount:5000});
+    if (addAnnualReturns) items.push({item:'Annual Returns Filing (Year 1)',amount:10000});
   }
 
-  const total = items.reduce((s, i) => s + i.amount, 0);
+  var total = items.reduce(function(s,i){return s+i.amount;}, 0);
+  var usdEquiv = Math.round(total / USD_RATE);
 
-  document.getElementById('totalAmount').textContent = 'NGN ' + total.toLocaleString('en-NG');
+  document.getElementById('totalAmount').textContent = '₦' + total.toLocaleString('en-NG');
+  document.getElementById('usdAmount').textContent = '≈ $' + usdEquiv.toLocaleString('en') + ' USD (at ₦' + USD_RATE + '/USD)';
 
-  let table = '<tr><th>Item</th><th style="text-align:right">Amount (NGN)</th></tr>';
-  items.forEach(i => {
-    table += `<tr><td>${i.item}</td><td style="text-align:right">${i.amount === 0 ? 'Free' : i.amount.toLocaleString('en-NG')}</td></tr>`;
+  var table = '<tr><th>Item</th><th style="text-align:right">Amount (NGN)</th></tr>';
+  items.forEach(function(i){
+    table += '<tr><td>'+i.item+'</td><td style="text-align:right">'+(i.amount===0?'Free':'₦'+i.amount.toLocaleString('en-NG'))+'</td></tr>';
   });
-  table += `<tr><td>Total Estimated Cost</td><td style="text-align:right">NGN ${total.toLocaleString('en-NG')}</td></tr>`;
+  table += '<tr><td><strong>Total Estimated Cost</strong></td><td style="text-align:right"><strong>₦'+total.toLocaleString('en-NG')+'</strong></td></tr>';
   document.getElementById('costTable').innerHTML = table;
 
   document.getElementById('resultCard').style.display = 'block';
-  document.getElementById('resultCard').scrollIntoView({ behavior: 'smooth' });
+  document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
 }
+
+// Init: hide share capital for business name on load
+document.addEventListener('DOMContentLoaded', function(){
+  selectType('bn');
+});
 </script>
 
 <script>

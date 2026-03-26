@@ -50,7 +50,7 @@
     body { font-family: 'DM Sans', sans-serif; background: #fff; color: var(--dark); line-height: 1.6; }
     .container { max-width: 800px; margin: 0 auto; padding: 1.5rem; }
     .hero { background: linear-gradient(135deg, var(--green) 0%, #0047AB 100%); color: #fff; padding: 3rem 1.5rem; text-align: center; border-radius: var(--radius); margin-bottom: 2rem; }
-    .hero h1 { font-size: 2.2rem; font-weight: 700; margin: 0 0 .5rem; }
+    .hero h1 { color: #fff; font-size: 2.2rem; font-weight: 700; margin: 0 0 .5rem; }
     .hero p { font-size: 1.05rem; opacity: .93; margin: 0; }
     .card { background: #fff; border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
     .card h2 { font-size: 1.25rem; font-weight: 700; margin: 0 0 1rem; }
@@ -137,14 +137,23 @@
     <h2>Enter Amount</h2>
     <div class="input-row">
       <select id="currency" style="max-width:200px;" onchange="convert()">
-        <option value="NGN" data-main="Naira" data-sub="Kobo">NGN - Naira</option>
-        <option value="KES" data-main="Shillings" data-sub="Cents">KES - Shilling</option>
-        <option value="GHS" data-main="Cedis" data-sub="Pesewas">GHS - Cedi</option>
-        <option value="ZAR" data-main="Rand" data-sub="Cents">ZAR - Rand</option>
-        <option value="EGP" data-main="Pounds" data-sub="Piastres">EGP - Pound</option>
-        <option value="USD" data-main="Dollars" data-sub="Cents">USD - Dollar</option>
-        <option value="GBP" data-main="Pounds" data-sub="Pence">GBP - Pound</option>
-        <option value="EUR" data-main="Euros" data-sub="Cents">EUR - Euro</option>
+        <option value="NGN" data-main="Naira" data-sub="Kobo">🇳🇬 NGN - Naira</option>
+        <option value="KES" data-main="Shillings" data-sub="Cents">🇰🇪 KES - Shilling</option>
+        <option value="GHS" data-main="Cedis" data-sub="Pesewas">🇬🇭 GHS - Cedi</option>
+        <option value="ZAR" data-main="Rand" data-sub="Cents">🇿🇦 ZAR - Rand</option>
+        <option value="EGP" data-main="Pounds" data-sub="Piastres">🇪🇬 EGP - Pound</option>
+        <option value="ETB" data-main="Birr" data-sub="Santim">🇪🇹 ETB - Birr</option>
+        <option value="UGX" data-main="Shillings" data-sub="Cents">🇺🇬 UGX - Shilling</option>
+        <option value="TZS" data-main="Shillings" data-sub="Senti">🇹🇿 TZS - Shilling</option>
+        <option value="XOF" data-main="Francs" data-sub="Centimes">🌍 XOF - CFA Franc (West)</option>
+        <option value="XAF" data-main="Francs" data-sub="Centimes">🌍 XAF - CFA Franc (Central)</option>
+        <option value="MAD" data-main="Dirhams" data-sub="Centimes">🇲🇦 MAD - Dirham</option>
+        <option value="RWF" data-main="Francs" data-sub="Centimes">🇷🇼 RWF - Franc</option>
+        <option value="MWK" data-main="Kwacha" data-sub="Tambala">🇲🇼 MWK - Kwacha</option>
+        <option value="ZMW" data-main="Kwacha" data-sub="Ngwee">🇿🇲 ZMW - Kwacha</option>
+        <option value="USD" data-main="Dollars" data-sub="Cents">🇺🇸 USD - Dollar</option>
+        <option value="GBP" data-main="Pounds" data-sub="Pence">🇬🇧 GBP - Pound</option>
+        <option value="EUR" data-main="Euros" data-sub="Cents">🇪🇺 EUR - Euro</option>
       </select>
       <input type="text" id="amount" placeholder="e.g. 250000.50" oninput="convert()" inputmode="decimal">
     </div>
@@ -187,6 +196,14 @@
       <summary style="padding:1rem 1.25rem;font-weight:600;cursor:pointer;background:#f9fafb;font-size:.95rem;list-style:none;display:flex;justify-content:space-between;align-items:center">Why do I need to write amounts in words?</summary>
       <div style="padding:.75rem 1.25rem 1rem;font-size:.93rem;color:#555;line-height:1.6">Nigerian banks require cheque amounts to be written in both figures and words to prevent fraud and alteration. The words serve as verification of the numerical amount.</div>
     </details>
+    <details style="border:1.5px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden">
+      <summary style="padding:1rem 1.25rem;font-weight:600;cursor:pointer;background:#f9fafb;font-size:.95rem;list-style:none;display:flex;justify-content:space-between;align-items:center">Which other African currencies are supported?</summary>
+      <div style="padding:.75rem 1.25rem 1rem;font-size:.93rem;color:#555;line-height:1.6">Beyond Nigerian Naira, the tool supports Kenyan Shilling (with Cents), Ghanaian Cedi (with Pesewas), South African Rand (with Cents), Egyptian Pound (with Piastres), Ethiopian Birr (with Santim), Ugandan Shilling, Tanzanian Shilling (with Senti), CFA Franc West Africa (XOF), CFA Franc Central Africa (XAF), Moroccan Dirham, Rwandan Franc, Malawian Kwacha, Zambian Kwacha, plus US Dollar, British Pound, and Euro.</div>
+    </details>
+    <details style="border:1.5px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden">
+      <summary style="padding:1rem 1.25rem;font-weight:600;cursor:pointer;background:#f9fafb;font-size:.95rem;list-style:none;display:flex;justify-content:space-between;align-items:center">Can I use this for official government payment vouchers?</summary>
+      <div style="padding:.75rem 1.25rem 1rem;font-size:.93rem;color:#555;line-height:1.6">Yes. Government payment vouchers, procurement receipts, and official approvals in Nigeria, Kenya, Ghana, and other African countries frequently require written-word amounts. The output follows standard financial writing conventions (capitalised words, "and" before sub-units, "Only" at the end) accepted across most African public institutions.</div>
+    </details>
   </section>
 
   <section style="margin-top:2rem;padding:2rem 0;border-top:1.5px solid #e5e7eb;">
@@ -217,20 +234,20 @@
 <afro-footer></afro-footer>
 
 <script>
-const ones = ['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten',
+var ones = ['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten',
   'Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen'];
-const tens = ['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];
-const scales = ['','Thousand','Million','Billion'];
+var tens = ['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];
+var scales = ['','Thousand','Million','Billion'];
 
 function numToWords(n) {
   if (n === 0) return 'Zero';
   if (n < 0) return 'Negative ' + numToWords(-n);
-  let parts = [];
-  let scaleIdx = 0;
+  var parts = [];
+  var scaleIdx = 0;
   while (n > 0) {
-    const chunk = n % 1000;
+    var chunk = n % 1000;
     if (chunk > 0) {
-      let w = chunkToWords(chunk);
+      var w = chunkToWords(chunk);
       if (scales[scaleIdx]) w += ' ' + scales[scaleIdx];
       parts.unshift(w);
     }
@@ -244,18 +261,18 @@ function chunkToWords(n) {
   if (n === 0) return '';
   if (n < 20) return ones[n];
   if (n < 100) return tens[Math.floor(n / 10)] + (n % 10 ? '-' + ones[n % 10] : '');
-  const h = ones[Math.floor(n / 100)] + ' Hundred';
-  const rem = n % 100;
+  var h = ones[Math.floor(n / 100)] + ' Hundred';
+  var rem = n % 100;
   return rem ? h + ' and ' + chunkToWords(rem) : h;
 }
 
 function amountToWords(amount, currOpt) {
-  const mainUnit = currOpt.dataset.main;
-  const subUnit = currOpt.dataset.sub;
-  const parts = amount.toFixed(2).split('.');
-  const main = parseInt(parts[0], 10);
-  const sub = parseInt(parts[1], 10);
-  let result = '';
+  var mainUnit = currOpt.dataset.main;
+  var subUnit = currOpt.dataset.sub;
+  var parts = amount.toFixed(2).split('.');
+  var main = parseInt(parts[0], 10);
+  var sub = parseInt(parts[1], 10);
+  var result = '';
   if (main === 0 && sub === 0) return 'Zero ' + mainUnit + ' Only';
   if (main > 0) result = numToWords(main) + ' ' + mainUnit;
   if (sub > 0) {
@@ -266,33 +283,33 @@ function amountToWords(amount, currOpt) {
 }
 
 function convert() {
-  const raw = document.getElementById('amount').value.replace(/,/g, '').trim();
-  const card = document.getElementById('resultCard');
-  const formatted = document.getElementById('formatted');
+  var raw = document.getElementById('amount').value.replace(/,/g, '').trim();
+  var card = document.getElementById('resultCard');
+  var formatted = document.getElementById('formatted');
   if (!raw || isNaN(raw) || parseFloat(raw) < 0) {
     card.style.display = 'none';
     formatted.textContent = '';
     return;
   }
-  const amount = parseFloat(raw);
+  var amount = parseFloat(raw);
   if (amount > 999999999999.99) {
     document.getElementById('result').innerHTML = '<span style="color:#ef4444;">Amount too large. Maximum is 999,999,999,999.99</span>';
     card.style.display = '';
     return;
   }
-  const sel = document.getElementById('currency');
-  const opt = sel.options[sel.selectedIndex];
-  const code = sel.value;
+  var sel = document.getElementById('currency');
+  var opt = sel.options[sel.selectedIndex];
+  var code = sel.value;
   formatted.textContent = code + ' ' + amount.toLocaleString('en', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  const words = amountToWords(amount, opt);
+  var words = amountToWords(amount, opt);
   document.getElementById('result').innerHTML = '<span class="currency-label">' + code + ' Amount in Words</span>' + words;
   card.style.display = '';
 }
 
 function copyResult() {
-  const el = document.getElementById('result');
-  const text = el.textContent.replace(/^[A-Z]{3} Amount in Words/i, '').trim();
-  navigator.clipboard.writeText(text).then(() => showToast('Copied!'));
+  var el = document.getElementById('result');
+  var text = el.textContent.replace(/^[A-Z]{3} Amount in Words/i, '').trim();
+  navigator.clipboard.writeText(text).then(function(){ showToast('Copied!'); });
 }
 
 function clearAll() {
@@ -302,10 +319,10 @@ function clearAll() {
 }
 
 function showToast(msg) {
-  const t = document.getElementById('toast');
+  var t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2000);
+  setTimeout(function(){ t.classList.remove('show'); }, 2000);
 }
 </script>
 </body>

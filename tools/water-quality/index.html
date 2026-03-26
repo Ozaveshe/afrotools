@@ -21,7 +21,7 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6}
 .hero{background:linear-gradient(135deg,#0c4a6e 0%,#0369a1 50%,#0ea5e9 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}
-.hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}
+.hero h1{color:#fff;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}
 .hero p{font-size:1.05rem;opacity:.9;max-width:600px;margin:0 auto}
 .container{max-width:900px;margin:0 auto;padding:1.5rem}
 .card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:1.5rem}
@@ -128,6 +128,8 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <button class="preset-btn" onclick="loadPreset('tap')">Treated Tap</button>
 <button class="preset-btn" onclick="loadPreset('river')">River/Stream</button>
 <button class="preset-btn" onclick="loadPreset('rainwater')">Rainwater</button>
+<button class="preset-btn" onclick="loadPreset('sachet')">Sachet Water</button>
+<button class="preset-btn" onclick="loadPreset('tank')">Water Tank</button>
 </div>
 <div class="form-grid">
 <div class="form-group"><label for="ph">pH Level</label><input type="number" id="ph" step="0.1" min="0" max="14" placeholder="6.5-8.5"><div class="hint">WHO standard: 6.5 - 8.5</div></div>
@@ -138,6 +140,8 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <div class="form-group"><label for="fluoride">Fluoride (mg/L)</label><input type="number" id="fluoride" step="0.1" min="0" placeholder="<1.5"><div class="hint">WHO standard: &lt; 1.5 mg/L</div></div>
 <div class="form-group"><label for="iron">Iron (mg/L)</label><input type="number" id="iron" step="0.01" min="0" placeholder="<0.3"><div class="hint">WHO standard: &lt; 0.3 mg/L</div></div>
 <div class="form-group"><label for="chlorine">Residual Chlorine (mg/L)</label><input type="number" id="chlorine" step="0.1" min="0" placeholder="0.2-5"><div class="hint">WHO standard: 0.2 - 5.0 mg/L</div></div>
+<div class="form-group"><label for="arsenic">Arsenic (µg/L) <span style="font-size:.72rem;color:#94a3b8">optional</span></label><input type="number" id="arsenic" step="0.5" min="0" placeholder="<10"><div class="hint">WHO standard: &lt; 10 µg/L (Ghana, SA risk areas)</div></div>
+<div class="form-group"><label for="manganese">Manganese (mg/L) <span style="font-size:.72rem;color:#94a3b8">optional</span></label><input type="number" id="manganese" step="0.01" min="0" placeholder="<0.4"><div class="hint">WHO standard: &lt; 0.4 mg/L (causes black staining)</div></div>
 </div>
 <div style="text-align:center;margin-top:1.25rem">
 <button class="btn" onclick="assess()">Assess Water Quality</button>
@@ -175,6 +179,8 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <details><summary>Is borehole water always safe?</summary><p>No. While boreholes are generally safer than surface water because the soil acts as a natural filter, they can still contain elevated minerals (iron, fluoride, manganese), chemical contaminants from nearby agriculture, or bacterial contamination if the borehole is poorly constructed or too shallow. Always test borehole water before drinking.</p></details>
 <details><summary>How often should I test my water?</summary><p>For private boreholes and wells, test at least once a year for basic parameters and after any flooding event. For community water systems, monthly testing is recommended. If you notice changes in taste, colour, or smell, test immediately.</p></details>
 <details><summary>Can I drink rainwater?</summary><p>Rainwater is generally low in minerals and contaminants, but can pick up pollutants from roofing materials and the atmosphere. Use a first-flush diverter to discard the initial rain, keep gutters and tanks clean, and consider basic filtration. In urban industrial areas, rainwater may contain higher pollutant levels.</p></details>
+<details><summary>Is sachet water (pure water / tunde water) safe to drink in West Africa?</summary><p>Sachet water is widely consumed across West Africa, particularly in Nigeria, Ghana, and Senegal. Studies show significant variation in quality. While reputable brands treated under NAFDAC (Nigeria) or FDA (Ghana) oversight meet basic standards, many unregistered sachet water producers have been found with bacterial contamination, high TDS, or chemical contaminants. Always buy from registered brands with visible regulatory stamps. If in doubt, boil sachet water before drinking, especially for infants and immunocompromised individuals. In Nigeria, look for NAFDAC registration number; in Ghana, look for FDA approval. Water stored in sachets can also pick up contaminants from the plastic if exposed to heat or sunlight.</p></details>
+<details><summary>How should I maintain a water storage tank safely?</summary><p>Water tanks can become breeding grounds for bacteria, algae, and mosquitoes if not properly maintained. Best practices: 1) Clean the tank every 6-12 months with a dilute bleach solution (1 cup per 100L, drain after 2 hours). 2) Keep the tank covered at all times to prevent mosquito breeding and contamination. 3) In hot climates, insulate or shade the tank — heat accelerates bacterial growth. 4) Don't overflow water back into the tank. 5) Keep the inlet and outlet pipes clear of contamination. 6) Add a small amount of chlorine (WaterGuard/Aquatabs) if stored water will be used beyond 24-48 hours without further treatment.</p></details>
 </section>
 <afro-related-tools></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
@@ -189,12 +195,16 @@ const PRESETS={
   well:{ph:6.8,turbidity:8,tds:280,ecoli:15,nitrate:25,fluoride:0.3,iron:0.5,chlorine:0},
   tap:{ph:7.5,turbidity:2,tds:200,ecoli:0,nitrate:8,fluoride:0.8,iron:0.1,chlorine:0.5},
   river:{ph:7.0,turbidity:25,tds:150,ecoli:200,nitrate:5,fluoride:0.2,iron:0.3,chlorine:0},
-  rainwater:{ph:6.2,turbidity:3,tds:20,ecoli:2,nitrate:2,fluoride:0,iron:0.05,chlorine:0}
+  rainwater:{ph:6.2,turbidity:3,tds:20,ecoli:2,nitrate:2,fluoride:0,iron:0.05,chlorine:0},
+  sachet:{ph:7.0,turbidity:2,tds:150,ecoli:0,nitrate:5,fluoride:0.4,iron:0.05,chlorine:0.1},
+  tank:{ph:7.3,turbidity:4,tds:220,ecoli:8,nitrate:12,fluoride:0.3,iron:0.2,chlorine:0.05}
 };
 
 function loadPreset(type){
   const p=PRESETS[type];
-  Object.keys(p).forEach(k=>{document.getElementById(k).value=p[k];});
+  Object.keys(p).forEach(k=>{const el=document.getElementById(k);if(el)el.value=p[k];});
+  document.getElementById('arsenic').value='';
+  document.getElementById('manganese').value='';
   document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));
   event.target.classList.add('active');
 }
@@ -264,6 +274,22 @@ function assess(){
     else{checks.push({name:'Iron',value:vals.iron+' mg/L',standard:'< 0.3 mg/L',status:'fail'});score-=8;recs.push({title:'High Iron Content',text:'Very high iron gives water a strong metallic taste and stains everything. Install an iron removal system (aeration + manganese greensand or birm filter).',urgent:false});}
   }
 
+  // Arsenic (optional)
+  const arsenicVal=parseFloat(document.getElementById('arsenic').value);
+  if(!isNaN(arsenicVal)&&arsenicVal>=0){
+    if(arsenicVal<10){checks.push({name:'Arsenic',value:arsenicVal+' µg/L',standard:'< 10 µg/L',status:'ok'});}
+    else if(arsenicVal<50){checks.push({name:'Arsenic',value:arsenicVal+' µg/L',standard:'< 10 µg/L',status:'warning'});score-=12;recs.push({title:'Elevated Arsenic Detected',text:'Arsenic above WHO guideline. Long-term exposure causes skin lesions, cancer, and cardiovascular disease. Common in parts of Ghana, South Africa mining regions, and East Africa volcanic areas. Use reverse osmosis, coagulation-filtration, or iron-based filter to remove arsenic.',urgent:true});}
+    else{checks.push({name:'Arsenic',value:arsenicVal+' µg/L',standard:'< 10 µg/L',status:'fail'});score-=25;recs.push({title:'DANGEROUS: High Arsenic — Do Not Drink',text:'Extremely high arsenic — this is a serious long-term health hazard. Do NOT drink or cook with this water. Contact your state water authority or WASH NGO immediately. Find an alternative source.',urgent:true});}
+  }
+
+  // Manganese (optional)
+  const manganeseVal=parseFloat(document.getElementById('manganese').value);
+  if(!isNaN(manganeseVal)&&manganeseVal>=0){
+    if(manganeseVal<0.4){checks.push({name:'Manganese',value:manganeseVal+' mg/L',standard:'< 0.4 mg/L',status:'ok'});}
+    else if(manganeseVal<1.0){checks.push({name:'Manganese',value:manganeseVal+' mg/L',standard:'< 0.4 mg/L',status:'warning'});score-=5;recs.push({title:'Elevated Manganese',text:'Manganese causes black staining on clothes, fixtures, and has neurotoxic effects at high doses. Use a manganese-specific filter (greensand, birm media) or oxidation + filtration.',urgent:false});}
+    else{checks.push({name:'Manganese',value:manganeseVal+' mg/L',standard:'< 0.4 mg/L',status:'fail'});score-=12;recs.push({title:'High Manganese — Neurological Risk',text:'High manganese in drinking water is linked to neurological effects especially in children. Install a proper treatment system and seek expert advice.',urgent:true});}
+  }
+
   // Chlorine
   if(!isNaN(vals.chlorine)){
     if(vals.chlorine>=0.2&&vals.chlorine<=5){checks.push({name:'Residual Chlorine',value:vals.chlorine+' mg/L',standard:'0.2 - 5.0 mg/L',status:'ok'});}
@@ -293,7 +319,11 @@ function assess(){
     </div>
   `).join('');
 
-  if(recs.length===0){recs.push({title:'Water Appears Safe',text:'All tested parameters are within WHO drinking water guidelines. Continue regular testing (at least annually) to monitor for changes.',urgent:false});}
+  if(recs.length===0){recs.push({title:'Water Appears Safe',text:'All tested parameters are within WHO drinking water guidelines. Continue regular testing (at least annually) and after any flooding event.',urgent:false});}
+
+  // Africa-specific advisory
+  recs.push({title:'African Water Safety Tips',text:'🦟 Bilharzia risk: Avoid using untreated river or dam water for bathing/washing in East/Central Africa — schistosomiasis is waterborne. ⛏️ Mining areas: If near gold, diamond, or coal mines, test for heavy metals (mercury, cyanide, lead) beyond basic parameters. 🌊 Coastal areas: Test for salinity/salinity intrusion annually. ☀️ Store treated water in covered containers away from sunlight.',urgent:false});
+
   document.getElementById('recommendations').innerHTML=recs.map(r=>`
     <div class="rec-card${r.urgent?' urgent':''}"><h3>${r.title}</h3><p>${r.text}</p></div>
   `).join('');

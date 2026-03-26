@@ -7,44 +7,45 @@
 
   const NAV_ITEMS = [
     {
-      id: 'financial', label: 'Salary & Tax', icon: '💰',
-      desc: 'PAYE, income tax, take-home pay',
-      href: '/salary-tax/', color: '#e8f0fd', accent: '#0062CC',
+      id: 'financial', label: 'Salary & Tax', labelFr: 'Salaire & Impôts', icon: '💰',
+      desc: 'PAYE, income tax, take-home pay', descFr: 'PAYE, impôt sur le revenu, salaire net',
+      href: '/salary-tax/', hrefFr: '/fr/', color: '#e8f0fd', accent: '#0062CC',
       tools: []
     },
     {
-      id: 'document-pdf', label: 'Document & PDF', icon: '📄',
-      desc: 'Merge, split, compress, convert',
+      id: 'document-pdf', label: 'Document & PDF', labelFr: 'Documents & PDF', icon: '📄',
+      desc: 'Merge, split, compress, convert', descFr: 'Fusionner, diviser, compresser, convertir',
       href: '/document-pdf/', color: '#eff6ff', accent: '#3b82f6',
       tools: []
     },
     {
-      id: 'image-design', label: 'Image & Design', icon: '🖼️',
-      desc: 'Compress, resize, QR codes',
+      id: 'image-design', label: 'Image & Design', labelFr: 'Image & Design', icon: '🖼️',
+      desc: 'Compress, resize, QR codes', descFr: 'Compresser, redimensionner, codes QR',
       href: '/image-design/', color: '#fdf2f8', accent: '#ec4899',
       tools: []
     },
     {
-      id: 'developer', label: 'Developer Tools', icon: '⌨️',
-      desc: 'JSON, Base64, hash, regex',
+      id: 'developer', label: 'Developer Tools', labelFr: 'Outils Dev', icon: '⌨️',
+      desc: 'JSON, Base64, hash, regex', descFr: 'JSON, Base64, hachage, regex',
       href: '/developer-tools/', color: '#ede9fe', accent: '#8b5cf6',
       tools: []
     },
     {
-      id: 'education', label: 'Education', icon: '🎓',
-      desc: 'GPA, WAEC, loans, fees',
+      id: 'education', label: 'Education', labelFr: 'Éducation', icon: '🎓',
+      desc: 'GPA, WAEC, loans, fees', descFr: 'GPA, WAEC, prêts, frais scolaires',
       href: '/education/', color: '#EEF4FF', accent: '#3B82F6',
       tools: []
     },
     {
-      id: 'health', label: 'Health & Fitness', icon: '🏥',
-      desc: 'BMI, SHIF, pregnancy, calories',
+      id: 'health', label: 'Health & Fitness', labelFr: 'Santé & Fitness', icon: '🏥',
+      desc: 'BMI, SHIF, pregnancy, calories', descFr: 'IMC, grossesse, calories',
       href: '/health/', color: '#fce8e8', accent: '#dc2626',
       tools: []
     },
     {
-      id: 'agriculture', label: 'Agriculture', icon: '🌾',
+      id: 'agriculture', label: 'Agriculture', labelFr: 'Agriculture', icon: '🌾',
       desc: 'Crop yield, seed rate, fertilizer, irrigation, farm profit — 54 countries',
+      descFr: 'Rendement, semences, engrais, irrigation, profit agricole — 54 pays',
       href: '/agriculture/', color: '#E8F2FF', accent: '#007AFF',
       tools: [
         { label: 'Crop Yield Estimators', href: '/agriculture/crop-yield/', emoji: '🌱', badge: 'LIVE' },
@@ -55,32 +56,32 @@
       ]
     },
     {
-      id: 'ecommerce', label: 'VAT & Business Tax', icon: '🧾',
-      desc: 'VAT, margins, break-even',
-      href: '/vat-business-tax/', color: '#fff7ed', accent: '#f59e0b',
+      id: 'ecommerce', label: 'VAT & Business Tax', labelFr: 'TVA & Fiscalité', icon: '🧾',
+      desc: 'VAT, margins, break-even', descFr: 'TVA, marges, seuil de rentabilité',
+      href: '/vat-business-tax/', hrefFr: '/fr/', color: '#fff7ed', accent: '#f59e0b',
       tools: []
     },
     {
-      id: 'legal', label: 'Mortgage & Property', icon: '🏠',
-      desc: 'Registration, compliance, property',
+      id: 'legal', label: 'Mortgage & Property', labelFr: 'Immobilier', icon: '🏠',
+      desc: 'Registration, compliance, property', descFr: 'Enregistrement, conformité, propriété',
       href: '/legal/', color: '#e0f2fe', accent: '#0ea5e9',
       tools: []
     },
     {
-      id: 'data-productivity', label: 'Business & ROI', icon: '📊',
-      desc: 'Productivity, data, investment',
+      id: 'data-productivity', label: 'Business & ROI', labelFr: 'Business & ROI', icon: '📊',
+      desc: 'Productivity, data, investment', descFr: 'Productivité, données, investissement',
       href: '/data-productivity/', color: '#eef2ff', accent: '#6366f1',
       tools: []
     },
     {
-      id: 'language', label: 'Language & Translation', icon: '🗣️',
-      desc: 'Yoruba, Swahili, Hausa, Amharic',
+      id: 'language', label: 'Language & Translation', labelFr: 'Langues & Traduction', icon: '🗣️',
+      desc: 'Yoruba, Swahili, Hausa, Amharic', descFr: 'Yoruba, Swahili, Haoussa, Amharique',
       href: '/language/', color: '#faf5ff', accent: '#a855f7',
       tools: []
     },
     {
-      id: 'crypto', label: 'Crypto & Web3', icon: '₿',
-      desc: 'P2P rates, prices, stablecoins, arbitrage',
+      id: 'crypto', label: 'Crypto & Web3', labelFr: 'Crypto & Web3', icon: '₿',
+      desc: 'P2P rates, prices, stablecoins, arbitrage', descFr: 'Taux P2P, prix, stablecoins, arbitrage',
       href: '/crypto/', color: '#fff7ed', accent: '#f97316',
       tools: [
         { label: 'P2P Rate Comparator', href: '/crypto/p2p-rates/', emoji: '₿', badge: 'LIVE' },
@@ -101,8 +102,8 @@
       ]
     },
     {
-      id: 'african', label: 'Uniquely African', icon: '🌍',
-      desc: 'Japa, generator, ajo, mobile money',
+      id: 'african', label: 'Uniquely African', labelFr: 'Spécialités Africaines', icon: '🌍',
+      desc: 'Japa, generator, ajo, mobile money', descFr: 'Épargne collective, mobile money, recettes',
       href: '/african/', color: '#fef2f2', accent: '#dc2626',
       tools: [
         { label: 'AfroAtlas Explorer', href: '/tools/afroatlas/', emoji: '🌍', badge: 'NEW' },
@@ -132,8 +133,8 @@
       ]
     },
     {
-      id: 'engineering', label: 'Engineering', icon: '🔧',
-      desc: 'BOQ, concrete, electrical, rebar, roofing',
+      id: 'engineering', label: 'Engineering', labelFr: 'Ingénierie', icon: '🔧',
+      desc: 'BOQ, concrete, electrical, rebar, roofing', descFr: 'Métré, béton, électrique, ferraillage',
       href: '/engineering/', color: '#f5f5f4', accent: '#78716c',
       tools: [
         { label: 'BOQ Builder', href: '/tools/boq-builder/', emoji: '📋', badge: 'LIVE' },
@@ -644,26 +645,38 @@
     }
 
     _megaContent() {
-      return this._navItems().map(cat => `
-        <a href="${cat.href}" class="mega-col" style="--col-accent:${cat.accent}">
+      var isFr = this._getLang() === 'fr';
+      return this._navItems().map(cat => {
+        var href = isFr && cat.hrefFr ? cat.hrefFr : cat.href;
+        var label = isFr && cat.labelFr ? cat.labelFr : cat.label;
+        var desc = isFr && cat.descFr ? cat.descFr : cat.desc;
+        return `
+        <a href="${href}" class="mega-col" style="--col-accent:${cat.accent}">
           <div class="mega-col-icon" style="background:${cat.color}">${cat.icon}</div>
           <div>
-            <div class="mega-col-name">${cat.label}</div>
-            <div class="mega-col-desc">${cat.desc}</div>
+            <div class="mega-col-name">${label}</div>
+            <div class="mega-col-desc">${desc}</div>
           </div>
-        </a>`).join('');
+        </a>`;
+      }).join('');
     }
 
     _mobileContent() {
-      return this._navItems().map(cat => `
-        <a href="${cat.href}" class="mob-cat">
+      var isFr = this._getLang() === 'fr';
+      return this._navItems().map(cat => {
+        var href = isFr && cat.hrefFr ? cat.hrefFr : cat.href;
+        var label = isFr && cat.labelFr ? cat.labelFr : cat.label;
+        var desc = isFr && cat.descFr ? cat.descFr : cat.desc;
+        return `
+        <a href="${href}" class="mob-cat">
           <div class="mob-cat-icon" style="background:${cat.color}">${cat.icon}</div>
           <div>
-            <div class="mob-cat-label">${cat.label}</div>
-            <div class="mob-cat-desc">${cat.desc}</div>
+            <div class="mob-cat-label">${label}</div>
+            <div class="mob-cat-desc">${desc}</div>
           </div>
           <span class="mob-arr">›</span>
-        </a>`).join('');
+        </a>`;
+      }).join('');
     }
 
     _mobileLangHTML() {
@@ -682,51 +695,77 @@
         var href = l.code !== 'en' ? '/' + l.code + (p.startsWith('/') ? '' : '/') + p : p;
         return '<a href="' + href + '" class="mob-lang-opt' + active + '">' + l.flag + ' ' + l.label + '</a>';
       }).join('');
-      return '<div class="mob-lang-section"><div class="mob-section-label">Language</div><div class="mob-lang-row">' + opts + '</div></div>';
+      var langLabel = cur === 'fr' ? 'Langue' : 'Language';
+      return '<div class="mob-lang-section"><div class="mob-section-label">' + langLabel + '</div><div class="mob-lang-row">' + opts + '</div></div>';
     }
 
     _render() {
+      var isFr = this._getLang() === 'fr';
+      var T = {
+        tag:          isFr ? 'La plateforme africaine'                          : "Africa's Everything Platform",
+        allTools:     isFr ? 'Tous les outils'                                  : 'All Tools',
+        salaryTax:    isFr ? 'Salaire &amp; Impôts'                             : 'Salary &amp; Tax',
+        salaryHref:   isFr ? '/fr/'                                             : '/salary-tax/',
+        pdfTools:     isFr ? 'Outils PDF'                                       : 'PDF Tools',
+        devTools:     isFr ? 'Outils Dev'                                       : 'Dev Tools',
+        african:      isFr ? 'Africain'                                         : 'African',
+        education:    isFr ? 'Éducation'                                        : 'Education',
+        countries54:  isFr ? '🌍 54 pays'                                       : '🌍 54 countries',
+        signIn:       isFr ? 'Connexion'                                        : 'Sign in',
+        ariaNav:      isFr ? 'Navigation principale'                            : 'Main navigation',
+        ariaMenu:     isFr ? 'Menu de navigation'                               : 'Navigation menu',
+        ariaSearch:   isFr ? 'Rechercher des outils'                            : 'Search tools',
+        megaNote:     isFr ? '🌍 54 pays africains · gratuit · sans inscription': '🌍 54 African countries · free forever · no sign-up required',
+        browseAll:    isFr ? 'Voir tous les outils →'                           : 'Browse all tools →',
+        browseHref:   isFr ? '/fr/all-tools/'                                   : '/all-tools/',
+        allCats:      isFr ? 'Toutes les catégories'                            : 'All Categories',
+        searchPh:     isFr ? 'Rechercher des outils...'                         : 'Search tools...',
+        mobSignIn:    isFr ? 'Connexion'                                        : 'Sign In',
+        mobNote:      isFr ? '🌍 54 pays · gratuit · sans inscription'          : '🌍 54 countries · always free · no sign-up required',
+        srchEmpty:    isFr ? '100+ outils africains'                            : 'Search 100+ African tools',
+        srchHint:     isFr ? 'Essayez "PAYE", "salaire", "TVA"…'               : 'Try "PAYE", "PDF", "japa", "BMI"…',
+      };
       this.shadowRoot.innerHTML = `
         <style>${CSS}</style>
-        <nav role="navigation" aria-label="Main navigation">
+        <nav role="navigation" aria-label="${T.ariaNav}">
           <div class="inner">
             <a href="/" class="logo" aria-label="AfroTools home">
               ${MARK}
               <div>
                 <span class="logo-name">AFRO<b>TOOLS</b></span>
-                <span class="logo-tag">Africa's Everything Platform</span>
+                <span class="logo-tag">${T.tag}</span>
               </div>
             </a>
 
             <ul class="nav-links">
               <li>
                 <button class="lnk" id="allBtn" type="button" aria-haspopup="true" aria-expanded="false">
-                  All Tools
+                  ${T.allTools}
                   <svg class="chev" viewBox="0 0 7 4" fill="none">
                     <polyline points="0.5,0.5 3.5,3.5 6.5,0.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
                 </button>
               </li>
-              <li><a href="/salary-tax/" class="lnk">Salary &amp; Tax</a></li>
-              <li><a href="/document-pdf/" class="lnk">PDF Tools</a></li>
-              <li><a href="/developer-tools/" class="lnk">Dev Tools</a></li>
-              <li><a href="/african/" class="lnk">African</a></li>
-              <li><a href="/education/" class="lnk">Education</a></li>
-              <li><a href="/blog/" class="lnk">Blog</a></li>
+              <li><a href="${T.salaryHref}" class="lnk">${T.salaryTax}</a></li>
+              <li><a href="/document-pdf/" class="lnk">${T.pdfTools}</a></li>
+              <li><a href="/developer-tools/" class="lnk">${T.devTools}</a></li>
+              <li><a href="/african/" class="lnk">${T.african}</a></li>
+              <li><a href="/education/" class="lnk">${T.education}</a></li>
+              <li><a href="${isFr ? '/fr/blog/' : '/blog/'}" class="lnk">Blog</a></li>
               <li><a href="/api/" class="lnk">API</a></li>
               <li><a href="/pro/" class="lnk" style="color:#F5A623;font-weight:700">Pro</a></li>
             </ul>
 
             <div class="right">
-              <button class="search-btn" id="searchBtn" type="button" aria-label="Search tools">
+              <button class="search-btn" id="searchBtn" type="button" aria-label="${T.ariaSearch}">
                 <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <circle cx="8.5" cy="8.5" r="5.5"/><line x1="13" y1="13" x2="18" y2="18"/>
                 </svg>
                 <span class="search-kbd">Ctrl K</span>
               </button>
               ${this._langSwitcherHTML()}
-              <span class="pill-54">🌍 54 countries</span>
-              <a href="/dashboard/" class="btn-login">Sign in</a>
+              <span class="pill-54">${T.countries54}</span>
+              <a href="/dashboard/" class="btn-login">${T.signIn}</a>
               <button class="burger" type="button" aria-label="Open menu" aria-expanded="false">
                 <span></span><span></span><span></span>
               </button>
@@ -734,50 +773,50 @@
           </div>
         </nav>
 
-        <div class="mega" id="mega" role="menu" aria-label="All tools">
+        <div class="mega" id="mega" role="menu" aria-label="${T.allTools}">
           <div class="mega-inner">
             ${this._megaContent()}
           </div>
           <div class="mega-footer">
-            <span class="mega-footer-note">🌍 54 African countries · free forever · no sign-up required</span>
-            <a href="/all-tools/" class="mega-footer-lnk">Browse all tools →</a>
+            <span class="mega-footer-note">${T.megaNote}</span>
+            <a href="${T.browseHref}" class="mega-footer-lnk">${T.browseAll}</a>
           </div>
         </div>
 
-        <div class="mob" role="dialog" aria-modal="true" aria-label="Navigation menu">
+        <div class="mob" role="dialog" aria-modal="true" aria-label="${T.ariaMenu}">
           <div class="mob-search-bar">
             <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="8.5" cy="8.5" r="5.5"/><line x1="13" y1="13" x2="18" y2="18"/>
             </svg>
-            <input class="mob-search-input" type="text" placeholder="Search tools..." aria-label="Search tools" autocomplete="off"/>
+            <input class="mob-search-input" type="text" placeholder="${T.searchPh}" aria-label="${T.ariaSearch}" autocomplete="off"/>
           </div>
           <div class="mob-search-results" id="mobSearchResults"></div>
           <div id="mobCategoriesWrap">
-            <div class="mob-section-label">All Categories</div>
+            <div class="mob-section-label">${T.allCats}</div>
             ${this._mobileContent()}
           </div>
           ${this._mobileLangHTML()}
           <div class="mob-footer">
-            <a href="/dashboard/" class="mob-login">Sign In</a>
+            <a href="/dashboard/" class="mob-login">${T.mobSignIn}</a>
             <a href="/dashboard/vault/" class="mob-vault-link" style="display:none;padding:10px 13px;border-radius:8px;font-size:0.85rem;font-weight:600;text-decoration:none;color:#0062CC;border:1.5px solid #0062CC;text-align:center;">📁 My Vault</a>
-            <p class="mob-note">🌍 54 countries · always free · no sign-up required</p>
+            <p class="mob-note">${T.mobNote}</p>
           </div>
         </div>
 
-        <div class="search-overlay" id="searchOverlay" role="dialog" aria-modal="true" aria-label="Search tools">
+        <div class="search-overlay" id="searchOverlay" role="dialog" aria-modal="true" aria-label="${T.ariaSearch}">
           <div class="search-modal">
             <div class="search-input-wrap">
               <svg viewBox="0 0 20 20" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="8.5" cy="8.5" r="5.5"/><line x1="13" y1="13" x2="18" y2="18"/>
               </svg>
-              <input class="search-input" id="searchInput" type="text" placeholder="Search tools…" aria-label="Search tools" autocomplete="off"/>
+              <input class="search-input" id="searchInput" type="text" placeholder="${T.searchPh}" aria-label="${T.ariaSearch}" autocomplete="off"/>
               <span class="search-esc" id="searchEsc">ESC</span>
             </div>
             <div class="search-results" id="searchResults">
               <div class="search-empty">
                 <div class="search-empty-icon">🔍</div>
-                <div class="search-empty-text">Search 100+ African tools</div>
-                <div class="search-empty-hint">Try "PAYE", "PDF", "japa", "BMI"…</div>
+                <div class="search-empty-text">${T.srchEmpty}</div>
+                <div class="search-empty-hint">${T.srchHint}</div>
               </div>
             </div>
             <div class="search-footer">

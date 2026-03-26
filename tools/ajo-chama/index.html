@@ -41,7 +41,7 @@
     body { font-family: 'DM Sans', sans-serif; background: #fff; color: var(--dark); line-height: 1.6; margin: 0; }
     .container { max-width: 1100px; margin: 0 auto; padding: 2rem 1.25rem; }
     .hero { background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%); color: #fff; padding: 3rem 1.5rem; border-radius: var(--radius); text-align: center; margin-bottom: 2rem; }
-    .hero h1 { font-size: 2.2rem; font-weight: 700; margin: 0 0 .5rem; }
+    .hero h1 { color: #fff; font-size: 2.2rem; font-weight: 700; margin: 0 0 .5rem; }
     .hero p { font-size: 1.05rem; opacity: .93; margin: 0; }
     .card { background: #fff; border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.75rem; margin-bottom: 1.5rem; box-shadow: var(--shadow); }
     .card h2 { font-size: 1.35rem; font-weight: 700; margin: 0 0 1.25rem; display: flex; align-items: center; gap: .5rem; }
@@ -178,8 +178,14 @@
           <option value="TZS">TZS - Tanzanian Shilling</option>
           <option value="XOF">XOF - CFA Franc (West)</option>
           <option value="XAF">XAF - CFA Franc (Central)</option>
+          <option value="RWF">RWF - Rwandan Franc</option>
+          <option value="ETB">ETB - Ethiopian Birr</option>
+          <option value="MAD">MAD - Moroccan Dirham</option>
+          <option value="EGP">EGP - Egyptian Pound</option>
+          <option value="ZMW">ZMW - Zambian Kwacha</option>
           <option value="USD">USD - US Dollar</option>
           <option value="GBP">GBP - British Pound</option>
+          <option value="EUR">EUR - Euro</option>
         </select>
       </div>
     </div>
@@ -205,6 +211,37 @@
       <div class="form-group">
         <label for="penaltyRate">Late Payment Penalty (%)</label>
         <input type="number" id="penaltyRate" min="0" max="50" value="5" step="1">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="rotationMode">Rotation Order</label>
+        <select id="rotationMode">
+          <option value="sequential">Sequential (fixed order)</option>
+          <option value="lottery">Lottery (random each cycle)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="interestRate">Group Interest Rate (% per round, optional)</label>
+        <input type="number" id="interestRate" min="0" max="20" value="0" step="0.5" placeholder="0 = no interest">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="numCycles">Number of Cycles</label>
+        <select id="numCycles">
+          <option value="1" selected>1 cycle (standard)</option>
+          <option value="2">2 cycles</option>
+          <option value="3">3 cycles</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="cycleSeparator">Between Cycles</label>
+        <select id="cycleSeparator">
+          <option value="0">Continue immediately</option>
+          <option value="1">1 round gap</option>
+          <option value="2">2 rounds gap</option>
+        </select>
       </div>
     </div>
 
@@ -239,6 +276,7 @@
     <div class="actions no-print">
       <button class="btn btn-primary btn-sm" onclick="printSchedule()">Print Schedule</button>
       <button class="btn btn-secondary btn-sm" onclick="shareWhatsApp()">Share via WhatsApp</button>
+      <button class="btn btn-secondary btn-sm" onclick="exportCSV()">Download CSV</button>
     </div>
   </div>
 
@@ -271,6 +309,22 @@
       <div class="faq-q">Is my data saved?<span class="arrow">&#9660;</span></div>
       <div class="faq-a">Your data stays in your browser only. Nothing is sent to any server. You can print or share the schedule via WhatsApp for your records.</div>
     </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">What is the difference between Ajo, Chama, Stokvel, and Tontine?<span class="arrow">&#9660;</span></div>
+      <div class="faq-a">These are all names for the same concept — a rotating savings and credit association (ROSCA) — adapted by different African cultures. Ajo is the Yoruba term used in Nigeria. Esusu is used among Igbo communities. Chama is the Swahili term widely used in Kenya and East Africa. Stokvel is the South African term, often with a more structured constitution and formal rules. Tontine is the French term used in West and Central African countries. The core mechanism is the same: all members pool their money each round, and one member receives the full pot.</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">How does the group interest rate work?<span class="arrow">&#9660;</span></div>
+      <div class="faq-a">In some Chamas, members who receive the pool earlier in the cycle pay a small interest into a group fund as compensation for receiving money earlier. The interest accumulates and is paid out to later recipients or kept as a group reserve. This calculator adds the interest as a bonus on top of the standard pool amount. If you set 5% interest on a NGN 50,000 pool, recipients receive NGN 52,500. The group should agree on who funds this interest — typically it comes from a small extra contribution each round.</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Can I run multiple cycles without stopping?<span class="arrow">&#9660;</span></div>
+      <div class="faq-a">Yes. Use the "Number of Cycles" field to generate a multi-cycle schedule. In lottery mode, each new cycle generates a fresh random order so every member has a different position in the next cycle. In sequential mode, the same order repeats. You can also add a gap between cycles (e.g. one round off for celebration or stock-taking).</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Is it fair that some members receive the pool much later?<span class="arrow">&#9660;</span></div>
+      <div class="faq-a">This is a common concern. The person who receives last has effectively given an interest-free loan to earlier recipients. To address this, many groups either use lottery mode (so no one can game the order) or use the interest rate feature to compensate later recipients with a slightly larger pool. Some Chamas also allow members to bid or negotiate their position in the rotation, with earlier slots requiring higher contributions. Transparency and trust among members is the foundation of a healthy ROSCA.</div>
+    </div>
   </div>
 </div>
 
@@ -279,52 +333,51 @@
 <afro-footer></afro-footer>
 
 <script>
-const currencySymbols = { NGN:'\u20A6', KES:'KSh', GHS:'GH\u20B5', ZAR:'R', UGX:'USh', TZS:'TSh', XOF:'CFA', XAF:'FCFA', USD:'$', GBP:'\u00A3' };
+var currencySymbols = { NGN:'\u20A6', KES:'KSh', GHS:'GH\u20B5', ZAR:'R', UGX:'USh', TZS:'TSh', XOF:'CFA', XAF:'FCFA', RWF:'RWF', ETB:'ETB', MAD:'MAD', EGP:'E\u00A3', ZMW:'K', USD:'$', GBP:'\u00A3', EUR:'\u20AC' };
 
 function init() {
-  const today = new Date();
+  var today = new Date();
   document.getElementById('startDate').value = today.toISOString().split('T')[0];
   updateMemberList();
   document.getElementById('numMembers').addEventListener('change', updateMemberList);
 }
 
 function updateMemberList() {
-  const n = parseInt(document.getElementById('numMembers').value) || 5;
-  const list = document.getElementById('memberList');
-  const existing = list.querySelectorAll('input');
-  const names = [];
-  existing.forEach((inp, i) => names.push(inp.value));
+  var n = parseInt(document.getElementById('numMembers').value) || 5;
+  var list = document.getElementById('memberList');
+  var existing = list.querySelectorAll('input');
+  var names = [];
+  existing.forEach(function(inp){ names.push(inp.value); });
   list.innerHTML = '';
-  for (let i = 0; i < n; i++) {
-    const div = document.createElement('div');
+  for (var i = 0; i < n; i++) {
+    var div = document.createElement('div');
     div.className = 'member-item';
-    div.innerHTML = `<span class="num">${i + 1}</span><input type="text" value="${names[i] || 'Member ' + (i + 1)}" placeholder="Member name"><button class="btn btn-danger btn-sm" onclick="removeMember(this)" title="Remove">&times;</button>`;
+    div.innerHTML = '<span class="num">' + (i + 1) + '</span><input type="text" value="' + (names[i] || 'Member ' + (i + 1)) + '" placeholder="Member name"><button class="btn btn-danger btn-sm" onclick="removeMember(this)" title="Remove">&times;</button>';
     list.appendChild(div);
   }
 }
 
 function removeMember(btn) {
-  const list = document.getElementById('memberList');
+  var list = document.getElementById('memberList');
   if (list.children.length <= 2) return alert('Minimum 2 members required.');
   btn.closest('.member-item').remove();
   document.getElementById('numMembers').value = list.children.length;
-  // re-number
-  list.querySelectorAll('.num').forEach((s, i) => s.textContent = i + 1);
+  list.querySelectorAll('.num').forEach(function(s, i){ s.textContent = i + 1; });
 }
 
 function getMembers() {
-  const inputs = document.querySelectorAll('#memberList input');
-  return Array.from(inputs).map(i => i.value.trim() || 'Unnamed');
+  var inputs = document.querySelectorAll('#memberList input');
+  return Array.from(inputs).map(function(i){ return i.value.trim() || 'Unnamed'; });
 }
 
 function fmt(amount, cur) {
-  const sym = currencySymbols[cur] || cur;
+  var sym = currencySymbols[cur] || cur;
   return sym + ' ' + Number(amount).toLocaleString('en', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
 }
 
-function addDays(date, days) { const d = new Date(date); d.setDate(d.getDate() + days); return d; }
+function addDays(date, days) { var d = new Date(date); d.setDate(d.getDate() + days); return d; }
 function addWeeks(date, weeks) { return addDays(date, weeks * 7); }
-function addMonths(date, months) { const d = new Date(date); d.setMonth(d.getMonth() + months); return d; }
+function addMonths(date, months) { var d = new Date(date); d.setMonth(d.getMonth() + months); return d; }
 
 function getNextDate(start, frequency, round) {
   if (frequency === 'weekly') return addWeeks(start, round);
@@ -336,63 +389,100 @@ function formatDate(d) {
   return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
+function shuffleArray(arr) {
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+  }
+  return a;
+}
+
 function generateSchedule() {
-  const members = getMembers();
-  const contribution = parseFloat(document.getElementById('contribution').value);
-  const currency = document.getElementById('currency').value;
-  const frequency = document.getElementById('frequency').value;
-  const startDate = new Date(document.getElementById('startDate').value);
-  const penaltyRate = parseFloat(document.getElementById('penaltyRate').value) || 0;
+  var members = getMembers();
+  var contribution = parseFloat(document.getElementById('contribution').value);
+  var currency = document.getElementById('currency').value;
+  var frequency = document.getElementById('frequency').value;
+  var startDate = new Date(document.getElementById('startDate').value);
+  var penaltyRate = parseFloat(document.getElementById('penaltyRate').value) || 0;
+  var rotationMode = document.getElementById('rotationMode').value;
+  var interestRate = parseFloat(document.getElementById('interestRate').value) || 0;
+  var numCycles = parseInt(document.getElementById('numCycles').value) || 1;
+  var cycleSeparator = parseInt(document.getElementById('cycleSeparator').value) || 0;
 
   if (!contribution || contribution <= 0) return alert('Enter a valid contribution amount.');
   if (members.length < 2) return alert('At least 2 members are needed.');
   if (isNaN(startDate.getTime())) return alert('Enter a valid start date.');
 
-  const n = members.length;
-  const poolPerRound = contribution * n;
-  const totalCycle = poolPerRound * n;
-  const penaltyAmount = (penaltyRate / 100) * contribution;
-  const freqLabel = frequency === 'weekly' ? 'Week' : frequency === 'biweekly' ? 'Fortnight' : 'Month';
-  const endDate = getNextDate(startDate, frequency, n - 1);
+  var n = members.length;
+  var poolPerRound = contribution * n;
+  var interestBonus = (interestRate / 100) * poolPerRound;
+  var payoutPerRound = interestRate > 0 ? poolPerRound + interestBonus : poolPerRound;
+  var penaltyAmount = (penaltyRate / 100) * contribution;
+  var freqLabel = frequency === 'weekly' ? 'Week' : frequency === 'biweekly' ? 'Fortnight' : 'Month';
+  var totalRounds = n * numCycles;
+  var totalCycleValue = payoutPerRound * totalRounds;
+  var totalEachPays = contribution * totalRounds;
+  var totalEachReceives = payoutPerRound * numCycles;
+  var endDate = getNextDate(startDate, frequency, totalRounds - 1 + (numCycles - 1) * cycleSeparator);
+
+  // Build all-cycles member order
+  var allOrdered = [];
+  for (var c = 0; c < numCycles; c++) {
+    var cycleMembers = rotationMode === 'lottery' ? shuffleArray(members) : members.slice();
+    allOrdered = allOrdered.concat(cycleMembers);
+  }
 
   // Stats
-  const statGrid = document.getElementById('statGrid');
-  statGrid.innerHTML = `
-    <div class="stat-card"><div class="value">${n}</div><div class="label">Members</div></div>
-    <div class="stat-card"><div class="value">${fmt(contribution, currency)}</div><div class="label">Contribution / ${freqLabel}</div></div>
-    <div class="stat-card"><div class="value">${fmt(poolPerRound, currency)}</div><div class="label">Pool per Round</div></div>
-    <div class="stat-card"><div class="value">${fmt(totalCycle, currency)}</div><div class="label">Total Cycle Value</div></div>
-    <div class="stat-card"><div class="value">${n}</div><div class="label">Rounds in Cycle</div></div>
-    <div class="stat-card"><div class="value">${formatDate(endDate)}</div><div class="label">Cycle Ends</div></div>
-  `;
+  var statHTML =
+    '<div class="stat-card"><div class="value">' + n + '</div><div class="label">Members</div></div>' +
+    '<div class="stat-card"><div class="value">' + fmt(contribution, currency) + '</div><div class="label">Contribution / ' + freqLabel + '</div></div>' +
+    '<div class="stat-card"><div class="value">' + fmt(poolPerRound, currency) + '</div><div class="label">Pool per Round</div></div>' +
+    (interestRate > 0 ? '<div class="stat-card"><div class="value">' + fmt(payoutPerRound, currency) + '</div><div class="label">Payout + Interest (' + interestRate + '%)</div></div>' : '') +
+    '<div class="stat-card"><div class="value">' + fmt(totalEachPays, currency) + '</div><div class="label">Each Member Pays (Total)</div></div>' +
+    '<div class="stat-card"><div class="value">' + fmt(totalEachReceives, currency) + '</div><div class="label">Each Member Receives (Total)</div></div>' +
+    '<div class="stat-card"><div class="value">' + totalRounds + '</div><div class="label">Total Rounds (' + numCycles + ' cycle' + (numCycles > 1 ? 's' : '') + ')</div></div>' +
+    '<div class="stat-card"><div class="value">' + formatDate(endDate) + '</div><div class="label">Schedule Ends</div></div>' +
+    (rotationMode === 'lottery' ? '<div class="stat-card" style="background:#fffbeb;border-color:#fde68a"><div class="value" style="font-size:.95rem;font-weight:700">Lottery</div><div class="label">Order Applied</div></div>' : '');
+  document.getElementById('statGrid').innerHTML = statHTML;
+
   document.getElementById('penaltyInfo').textContent = penaltyRate > 0
-    ? `Late payment penalty: ${penaltyRate}% of contribution = ${fmt(penaltyAmount, currency)} per late payment.`
+    ? 'Late payment penalty: ' + penaltyRate + '% of contribution = ' + fmt(penaltyAmount, currency) + ' per late payment.'
     : 'No late payment penalty has been set for this group.';
 
   // Schedule Table
-  const head = document.getElementById('scheduleHead');
-  head.innerHTML = '<th>Round</th><th>Date</th><th>Recipient</th><th>Pool Amount</th><th>Each Pays</th>';
-  const body = document.getElementById('scheduleBody');
+  document.getElementById('scheduleHead').innerHTML = '<th>Round</th><th>Cycle</th><th>Date</th><th>Recipient</th><th>Pool Amount</th><th>Each Pays</th>';
+  var body = document.getElementById('scheduleBody');
   body.innerHTML = '';
-  const scheduleData = [];
-  for (let i = 0; i < n; i++) {
-    const date = getNextDate(startDate, frequency, i);
-    const row = document.createElement('tr');
+  var scheduleData = [];
+  var roundOffset = 0;
+  for (var i = 0; i < totalRounds; i++) {
+    var cycleNum = Math.floor(i / n) + 1;
+    var roundInCycle = i % n;
+    var separatorOffset = (cycleNum - 1) * cycleSeparator;
+    var date = getNextDate(startDate, frequency, i + separatorOffset);
+    var row = document.createElement('tr');
     if (i % 2 === 0) row.className = 'highlight-row';
-    row.innerHTML = `<td>${i + 1}</td><td>${formatDate(date)}</td><td><strong>${members[i]}</strong></td><td>${fmt(poolPerRound, currency)}</td><td>${fmt(contribution, currency)}</td>`;
+    var cycleLabel = numCycles > 1 ? ('<span style="font-size:.75rem;color:#64748b">C' + cycleNum + '</span>') : '';
+    row.innerHTML = '<td>' + (i + 1) + '</td><td>' + cycleLabel + '</td><td>' + formatDate(date) + '</td><td><strong>' + allOrdered[i] + '</strong></td><td>' + fmt(payoutPerRound, currency) + '</td><td>' + fmt(contribution, currency) + '</td>';
     body.appendChild(row);
-    scheduleData.push({ round: i + 1, date: formatDate(date), recipient: members[i], pool: poolPerRound });
+    scheduleData.push({ round: i + 1, cycle: cycleNum, date: formatDate(date), recipient: allOrdered[i], pool: payoutPerRound });
   }
 
-  // Timeline
-  const timeline = document.getElementById('timeline');
+  // Timeline (show first 20 to avoid overflow)
+  var timeline = document.getElementById('timeline');
   timeline.innerHTML = '';
-  scheduleData.forEach(s => {
-    const item = document.createElement('div');
+  var displayCount = Math.min(scheduleData.length, 20);
+  for (var j = 0; j < displayCount; j++) {
+    var s = scheduleData[j];
+    var item = document.createElement('div');
     item.className = 'timeline-item';
-    item.innerHTML = `<div class="round-num">R${s.round}</div><div class="details"><strong>${s.recipient}</strong><br><span style="color:#666;font-size:.85rem">${s.date}</span></div><div class="amount">${fmt(s.pool, currency)}</div>`;
+    item.innerHTML = '<div class="round-num">R' + s.round + '</div><div class="details"><strong>' + s.recipient + '</strong>' + (numCycles > 1 ? ' <span style="color:#94a3b8;font-size:.8rem">(Cycle ' + s.cycle + ')</span>' : '') + '<br><span style="color:#666;font-size:.85rem">' + s.date + '</span></div><div class="amount">' + fmt(s.pool, currency) + '</div>';
     timeline.appendChild(item);
-  });
+  }
+  if (scheduleData.length > 20) {
+    timeline.innerHTML += '<div style="text-align:center;color:#94a3b8;font-size:.82rem;padding:.75rem">+ ' + (scheduleData.length - 20) + ' more rounds in the full schedule above</div>';
+  }
 
   // Show sections
   document.getElementById('resultsCard').classList.remove('hidden');
@@ -400,24 +490,42 @@ function generateSchedule() {
   document.getElementById('timelineCard').classList.remove('hidden');
   document.getElementById('resultsCard').scrollIntoView({ behavior: 'smooth' });
 
-  // Store for sharing
-  window._ajoData = { members, contribution, currency, frequency, startDate, poolPerRound, scheduleData, penaltyRate, penaltyAmount };
+  // Store for sharing/export
+  window._ajoData = { members: members, allOrdered: allOrdered, contribution: contribution, currency: currency, frequency: frequency, startDate: startDate, poolPerRound: payoutPerRound, scheduleData: scheduleData, penaltyRate: penaltyRate, penaltyAmount: penaltyAmount, interestRate: interestRate, numCycles: numCycles };
 }
 
 function printSchedule() { window.print(); }
 
 function shareWhatsApp() {
-  const d = window._ajoData;
+  var d = window._ajoData;
   if (!d) return;
-  let msg = `*Ajo/Chama Rotation Schedule*\n\n`;
-  msg += `Members: ${d.members.length}\nContribution: ${fmt(d.contribution, d.currency)}\nPool per round: ${fmt(d.poolPerRound, d.currency)}\nFrequency: ${d.frequency}\n\n`;
-  msg += `*Schedule:*\n`;
-  d.scheduleData.forEach(s => {
-    msg += `Round ${s.round}: ${s.recipient} - ${s.date} (${fmt(s.pool, d.currency)})\n`;
+  var msg = '*Ajo/Chama Rotation Schedule*\n\n';
+  msg += 'Members: ' + d.members.length + '\nContribution: ' + fmt(d.contribution, d.currency) + '\nPool per round: ' + fmt(d.poolPerRound, d.currency) + '\nFrequency: ' + d.frequency + '\nCycles: ' + d.numCycles + '\n\n';
+  msg += '*Schedule:*\n';
+  d.scheduleData.slice(0, 30).forEach(function(s) {
+    msg += 'Round ' + s.round + ': ' + s.recipient + ' - ' + s.date + ' (' + fmt(s.pool, d.currency) + ')\n';
   });
-  if (d.penaltyRate > 0) msg += `\nLate penalty: ${d.penaltyRate}% = ${fmt(d.penaltyAmount, d.currency)}`;
-  msg += `\n\nGenerated at AfroTools.com`;
+  if (d.scheduleData.length > 30) msg += '...(+ ' + (d.scheduleData.length - 30) + ' more rounds)\n';
+  if (d.penaltyRate > 0) msg += '\nLate penalty: ' + d.penaltyRate + '% = ' + fmt(d.penaltyAmount, d.currency);
+  msg += '\n\nGenerated at AfroTools.com';
   window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+}
+
+function exportCSV() {
+  var d = window._ajoData;
+  if (!d) return;
+  var sym = currencySymbols[d.currency] || d.currency;
+  var csv = 'Round,Cycle,Date,Recipient,Pool Amount,Each Contribution\n';
+  d.scheduleData.forEach(function(s) {
+    csv += s.round + ',' + s.cycle + ',"' + s.date + '","' + s.recipient + '","' + sym + ' ' + s.pool.toLocaleString() + '","' + sym + ' ' + d.contribution.toLocaleString() + '"\n';
+  });
+  if (d.penaltyRate > 0) csv += '\nLate Penalty,' + d.penaltyRate + '%,' + sym + ' ' + (d.penaltyRate/100*d.contribution).toLocaleString() + ',,,\n';
+  if (d.interestRate > 0) csv += 'Interest Rate,' + d.interestRate + '% per round,,,,\n';
+  var blob = new Blob([csv], {type:'text/csv'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = 'ajo-chama-schedule.csv'; a.click();
+  URL.revokeObjectURL(url);
 }
 
 function resetForm() {
@@ -426,8 +534,10 @@ function resetForm() {
   document.getElementById('frequency').value = 'monthly';
   document.getElementById('penaltyRate').value = 5;
   document.getElementById('currency').value = 'NGN';
+  document.getElementById('numCycles').value = '1';
+  document.getElementById('cycleSeparator').value = '0';
   updateMemberList();
-  ['resultsCard', 'scheduleCard', 'timelineCard'].forEach(id => document.getElementById(id).classList.add('hidden'));
+  ['resultsCard', 'scheduleCard', 'timelineCard'].forEach(function(id){ document.getElementById(id).classList.add('hidden'); });
 }
 
 document.addEventListener('DOMContentLoaded', init);

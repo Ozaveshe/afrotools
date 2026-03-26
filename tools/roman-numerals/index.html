@@ -43,7 +43,7 @@
     body { font-family: 'DM Sans', sans-serif; background: #fff; color: var(--dark); line-height: 1.6; }
     .container { max-width: 860px; margin: 0 auto; padding: 1.5rem; }
     .hero { background: linear-gradient(135deg, var(--green) 0%, #0047AB 100%); color: #fff; padding: 3rem 1.5rem; text-align: center; border-radius: var(--radius); margin-bottom: 2rem; }
-    .hero h1 { font-size: 2.2rem; font-weight: 700; margin: 0 0 .5rem; }
+    .hero h1 { color: #fff; font-size: 2.2rem; font-weight: 700; margin: 0 0 .5rem; }
     .hero p { font-size: 1.05rem; opacity: .93; margin: 0; }
     .card { background: #fff; border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
     .card h2 { font-size: 1.25rem; font-weight: 700; margin: 0 0 1rem; }
@@ -179,6 +179,15 @@
   <!-- Quiz -->
   <div id="quizTab" class="card" style="display:none;">
     <h2>Quiz Mode</h2>
+    <div style="display:flex;gap:.75rem;margin-bottom:1rem;flex-wrap:wrap;align-items:center">
+      <label style="font-weight:600;font-size:.85rem">Difficulty:</label>
+      <select id="quizDifficulty" style="padding:.35rem .65rem;border:1.5px solid #e5e7eb;border-radius:7px;font-size:.85rem" onchange="newQuiz()">
+        <option value="easy">Easy (1–99)</option>
+        <option value="medium" selected>Medium (1–499)</option>
+        <option value="hard">Hard (1–3999)</option>
+        <option value="years">Year Mode (1000–2026)</option>
+      </select>
+    </div>
     <div class="quiz-box">
       <div id="quizDirection" class="detect-label">Convert to Roman</div>
       <div class="prompt" id="quizPrompt">42</div>
@@ -187,6 +196,7 @@
       <button class="btn btn-primary" onclick="checkQuiz()">Check Answer</button>
       <button class="btn btn-outline btn-sm" onclick="newQuiz()">Skip</button>
       <div class="quiz-feedback" id="quizFeedback"></div>
+      <div id="quizFact" style="margin-top:.5rem;font-size:.8rem;color:#64748b;min-height:1em"></div>
       <div class="quiz-stats">
         <span>Score: <strong id="quizScore">0</strong></span>
         <span>Total: <strong id="quizTotal">0</strong></span>
@@ -236,6 +246,14 @@
       <div class="faq-q">Where are Roman numerals still used today?</div>
       <div class="faq-a">Roman numerals are commonly used in clock faces, book chapters, movie sequels, Super Bowl numbering, copyright dates, outlines, and formal document numbering.</div>
     </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Why are Roman numerals used in African education and official documents?</div>
+      <div class="faq-a">In African schools, Roman numerals appear in textbook chapter numbering, exam question sections, and formal academic writing. They are also used in legal documents, legislation numbering (e.g. Part III, Section IV), and in church and school certificates. Understanding Roman numerals is often tested in African national examinations including WAEC, NECO, KCPE, and similar exams.</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">What numbers cannot be written in standard Roman numerals?</div>
+      <div class="faq-a">Standard Roman numerals cannot represent: zero (the Romans had no concept of zero), negative numbers, fractions, or numbers greater than 3,999. Numbers above 3,999 historically used a bar (vinculum) placed over a numeral to multiply it by 1,000 — so a bar over V would mean 5,000. This extended system is not commonly used today.</div>
+    </div>
   </div>
 </div>
 
@@ -248,16 +266,17 @@
 <script src="/assets/js/components/related-tools.min.js" defer></script>
 
 <script>
-const romanMap = [
+var romanMap = [
   [1000,'M'],[900,'CM'],[500,'D'],[400,'CD'],[100,'C'],[90,'XC'],
   [50,'L'],[40,'XL'],[10,'X'],[9,'IX'],[5,'V'],[4,'IV'],[1,'I']
 ];
-const romanVals = {I:1,V:5,X:10,L:50,C:100,D:500,M:1000};
+var romanVals = {I:1,V:5,X:10,L:50,C:100,D:500,M:1000};
 
 function toRoman(n) {
   if (n < 1 || n > 3999) return null;
-  let result = '';
-  for (const [val, sym] of romanMap) {
+  var result = '';
+  for (var ri = 0; ri < romanMap.length; ri++) {
+    var val = romanMap[ri][0], sym = romanMap[ri][1];
     while (n >= val) { result += sym; n -= val; }
   }
   return result;
@@ -266,14 +285,13 @@ function toRoman(n) {
 function fromRoman(s) {
   s = s.toUpperCase().trim();
   if (!s || !/^[IVXLCDM]+$/.test(s)) return null;
-  let total = 0;
-  for (let i = 0; i < s.length; i++) {
-    const curr = romanVals[s[i]];
-    const next = romanVals[s[i + 1]] || 0;
+  var total = 0;
+  for (var i = 0; i < s.length; i++) {
+    var curr = romanVals[s[i]];
+    var next = romanVals[s[i + 1]] || 0;
     if (curr < next) { total -= curr; } else { total += curr; }
   }
   if (total < 1 || total > 3999) return null;
-  // Validate by re-encoding
   if (toRoman(total) !== s.toUpperCase()) return null;
   return total;
 }
@@ -281,22 +299,22 @@ function fromRoman(s) {
 function isRoman(s) { return /^[IVXLCDMivxlcdm]+$/.test(s.trim()); }
 
 function autoConvert() {
-  const raw = document.getElementById('input').value.trim();
-  const box = document.getElementById('resultBox');
-  const lbl = document.getElementById('detectLabel');
+  var raw = document.getElementById('input').value.trim();
+  var box = document.getElementById('resultBox');
+  var lbl = document.getElementById('detectLabel');
   if (!raw) { box.style.display = 'none'; lbl.style.display = 'none'; return; }
 
   if (isRoman(raw)) {
-    const val = fromRoman(raw);
+    var val = fromRoman(raw);
     if (val === null) { showResult('Invalid Roman numeral', '', 'Roman Numeral Detected'); return; }
     showResult(val.toLocaleString(), raw.toUpperCase() + ' = ' + val, 'Roman Numeral Detected');
   } else {
-    const num = parseInt(raw, 10);
+    var num = parseInt(raw, 10);
     if (isNaN(num) || num < 1 || num > 3999) {
       showResult(num > 3999 ? 'Max is 3999' : 'Enter 1-3999', '', 'Number Detected');
       return;
     }
-    const roman = toRoman(num);
+    var roman = toRoman(num);
     showResult(roman, num + ' = ' + roman, 'Decimal Number Detected');
   }
 }
@@ -305,48 +323,46 @@ function showResult(big, sub, label) {
   document.getElementById('resultValue').textContent = big;
   document.getElementById('resultSub').textContent = sub;
   document.getElementById('resultBox').style.display = '';
-  const lbl = document.getElementById('detectLabel');
+  var lbl = document.getElementById('detectLabel');
   lbl.textContent = label;
   lbl.style.display = '';
 }
 
 function copyResult() {
-  const t = document.getElementById('resultValue').textContent;
-  if (t) navigator.clipboard.writeText(t).then(() => showToast('Copied!'));
+  var t = document.getElementById('resultValue').textContent;
+  if (t) navigator.clipboard.writeText(t).then(function(){ showToast('Copied!'); });
 }
 
 function swapResult() {
-  const v = document.getElementById('resultValue').textContent;
+  var v = document.getElementById('resultValue').textContent;
   if (v) { document.getElementById('input').value = v; autoConvert(); }
 }
 
-// Tabs
 function switchTab(tab) {
-  const tabs = ['convert', 'batch', 'quiz'];
-  document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', tabs[i] === tab));
-  tabs.forEach(t => {
-    const el = document.getElementById(t + 'Tab');
+  var tabs = ['convert', 'batch', 'quiz'];
+  document.querySelectorAll('.tab').forEach(function(t, i){ t.classList.toggle('active', tabs[i] === tab); });
+  tabs.forEach(function(t) {
+    var el = document.getElementById(t + 'Tab');
     if (el) el.style.display = t === tab ? '' : 'none';
   });
   if (tab === 'quiz' && !quizActive) newQuiz();
 }
 
-// Batch
 function batchConvert() {
-  const lines = document.getElementById('batchInput').value.trim().split('\n').filter(Boolean);
-  const container = document.getElementById('batchResults');
+  var lines = document.getElementById('batchInput').value.trim().split('\n').filter(Boolean);
+  var container = document.getElementById('batchResults');
   container.innerHTML = '';
-  lines.forEach(line => {
-    const s = line.trim();
-    let result = '';
+  lines.forEach(function(line) {
+    var s = line.trim();
+    var result = '';
     if (isRoman(s)) {
-      const v = fromRoman(s);
+      var v = fromRoman(s);
       result = v !== null ? v.toString() : 'Invalid';
     } else {
-      const n = parseInt(s, 10);
+      var n = parseInt(s, 10);
       result = (!isNaN(n) && n >= 1 && n <= 3999) ? toRoman(n) : 'Invalid (1-3999)';
     }
-    const div = document.createElement('div');
+    var div = document.createElement('div');
     div.className = 'batch-row';
     div.innerHTML = '<span>' + s + '</span><strong>' + result + '</strong>';
     container.appendChild(div);
@@ -354,34 +370,64 @@ function batchConvert() {
 }
 
 function copyBatch() {
-  const rows = [...document.querySelectorAll('#batchResults .batch-row')];
+  var rows = Array.from(document.querySelectorAll('#batchResults .batch-row'));
   if (!rows.length) { showToast('Convert first'); return; }
-  const text = rows.map(r => r.children[0].textContent + ' = ' + r.children[1].textContent).join('\n');
-  navigator.clipboard.writeText(text).then(() => showToast('Copied!'));
+  var text = rows.map(function(r){ return r.children[0].textContent + ' = ' + r.children[1].textContent; }).join('\n');
+  navigator.clipboard.writeText(text).then(function(){ showToast('Copied!'); });
 }
 
-// Quiz
-let quizActive = false, quizNum = 0, quizDir = 'toRoman', score = 0, total = 0, streak = 0;
+var quizActive = false, quizNum = 0, quizDir = 'toRoman', score = 0, total = 0, streak = 0;
+var QUIZ_FACTS = {
+  1999:'MCMXCIX — the last year of the 20th century.',
+  2000:'MM — the turn of the millennium.',
+  1994:'MCMXCIV — South Africa held its first democratic elections.',
+  1963:'MCMLXIII — the Organisation of African Unity (OAU) was founded in Addis Ababa.',
+  1957:'MCMLVII — Ghana became the first sub-Saharan country to gain independence, under Kwame Nkrumah.',
+  2024:'MMXXIV — Paris hosted the Summer Olympics.',
+  1966:'MCMLXVI — First military coup in Nigeria.',
+  1990:'MCMXC — Nelson Mandela was released from prison after 27 years.',
+  1960:'MCMLX — The Year of Africa: 17 countries gained independence in one year.',
+  1884:'MDCCCLXXXIV — The Berlin Conference began, carving up Africa between European powers.',
+  2010:'MMX — South Africa hosted the FIFA World Cup, the first African country to do so.',
+  2002:'MMII — The African Union (AU) was established, replacing the OAU.',
+  1948:'MCMXLVIII — Apartheid was formally introduced in South Africa.',
+  1962:'MCMLXII — Algeria gained independence after the Algerian War.',
+  1975:'MCMLXXV — Angola and Mozambique gained independence.',
+  42:'The answer to life, the universe, and everything (according to The Hitchhiker\'s Guide).',
+  100:'C — the Roman symbol for 100, also a popular school exam score.',
+  500:'D — the Roman symbol for 500.',
+  1000:'M — the Roman symbol for 1000.',
+  1776:'MDCCLXXVI — American Declaration of Independence.',
+  1066:'MLXVI — Battle of Hastings.',
+  1492:'MCDXCII — Columbus reached the Americas.',
+};
 
 function newQuiz() {
   quizActive = true;
-  quizNum = Math.floor(Math.random() * 3999) + 1;
+  var diff = document.getElementById('quizDifficulty') ? document.getElementById('quizDifficulty').value : 'medium';
+  var max, min;
+  if (diff === 'easy') { min = 1; max = 99; }
+  else if (diff === 'medium') { min = 1; max = 499; }
+  else if (diff === 'years') { min = 1000; max = 2026; }
+  else { min = 1; max = 3999; }
+  quizNum = Math.floor(Math.random() * (max - min + 1)) + min;
   quizDir = Math.random() > 0.5 ? 'toRoman' : 'toDecimal';
-  const prompt = quizDir === 'toRoman' ? quizNum.toString() : toRoman(quizNum);
+  var prompt = quizDir === 'toRoman' ? quizNum.toString() : toRoman(quizNum);
   document.getElementById('quizDirection').textContent = quizDir === 'toRoman' ? 'Convert to Roman' : 'Convert to Decimal';
   document.getElementById('quizPrompt').textContent = prompt;
   document.getElementById('quizAnswer').value = '';
   document.getElementById('quizFeedback').textContent = '';
   document.getElementById('quizFeedback').className = 'quiz-feedback';
+  document.getElementById('quizFact').textContent = '';
   document.getElementById('quizAnswer').focus();
 }
 
 function checkQuiz() {
-  const answer = document.getElementById('quizAnswer').value.trim();
+  var answer = document.getElementById('quizAnswer').value.trim();
   if (!answer) return;
   total++;
-  const fb = document.getElementById('quizFeedback');
-  let correct = false;
+  var fb = document.getElementById('quizFeedback');
+  var correct = false;
   if (quizDir === 'toRoman') {
     correct = answer.toUpperCase() === toRoman(quizNum);
     if (!correct) fb.textContent = 'Incorrect. Answer: ' + toRoman(quizNum);
@@ -389,19 +435,24 @@ function checkQuiz() {
     correct = parseInt(answer, 10) === quizNum;
     if (!correct) fb.textContent = 'Incorrect. Answer: ' + quizNum;
   }
-  if (correct) { score++; streak++; fb.textContent = 'Correct!'; fb.className = 'quiz-feedback correct'; }
-  else { streak = 0; fb.className = 'quiz-feedback wrong'; }
+  if (correct) {
+    score++; streak++;
+    fb.textContent = streak >= 3 ? 'Correct! ' + streak + '-answer streak!' : 'Correct!';
+    fb.className = 'quiz-feedback correct';
+  } else { streak = 0; fb.className = 'quiz-feedback wrong'; }
   document.getElementById('quizScore').textContent = score;
   document.getElementById('quizTotal').textContent = total;
   document.getElementById('quizStreak').textContent = streak;
-  setTimeout(newQuiz, 1500);
+  var fact = QUIZ_FACTS[quizNum];
+  if (fact) document.getElementById('quizFact').textContent = 'Fact: ' + fact;
+  setTimeout(newQuiz, correct ? 1800 : 2200);
 }
 
 function showToast(msg) {
-  const t = document.getElementById('toast');
+  var t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2000);
+  setTimeout(function(){ t.classList.remove('show'); }, 2000);
 }
 </script>
 </body>

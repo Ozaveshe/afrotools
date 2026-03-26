@@ -177,12 +177,17 @@ select:focus,input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <option value="5" selected>Yes — parent, sibling, or child</option>
 </select></div>
 </div>
-<div class="field">
-<label>Blood Pressure Medication</label>
+<div class="row field">
+<div><label>Blood Pressure Medication</label>
 <select id="bpMeds">
 <option value="0">No</option>
 <option value="2">Yes</option>
-</select>
+</select></div>
+<div><label>Gestational Diabetes History (women)</label>
+<select id="gestDiab">
+<option value="0">No / Not applicable</option>
+<option value="4">Yes — had diabetes during pregnancy</option>
+</select></div>
 </div>
 <button class="btn btn-primary" onclick="calculate()">Assess My Risk</button>
 </div></div>
@@ -223,6 +228,17 @@ select:focus,input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <h4>Prevention Works</h4>
 <p>Studies show <strong>58% reduction</strong> in Type 2 diabetes risk through moderate weight loss (5-7%) and 150 min/week of physical activity. Diet changes — more vegetables, whole grains, and traditional foods — significantly reduce risk.</p>
 </div>
+<div class="info-card" style="margin-top:10px">
+<h4>💉 Blood Test Costs in Africa</h4>
+<ul>
+<li><strong>Nigeria:</strong> HbA1c ₦4,000-8,000 | Fasting glucose ₦1,000-2,500</li>
+<li><strong>Kenya:</strong> HbA1c KES 1,500-3,000 | Fasting glucose KES 500-1,000</li>
+<li><strong>Ghana:</strong> HbA1c GH₵80-150 | Fasting glucose GH₵20-40</li>
+<li><strong>South Africa:</strong> HbA1c R200-400 | Fasting glucose R80-150</li>
+<li><strong>Tanzania:</strong> HbA1c TSh 30,000-60,000 | Fasting glucose TSh 10,000-20,000</li>
+</ul>
+<p style="margin-top:6px;font-size:.72rem">Many government hospitals offer free diabetes screening during health campaigns.</p>
+</div>
 </div>
 </div></section>
 
@@ -238,6 +254,9 @@ select:focus,input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <details class="faq-item"><summary>How accurate is this risk calculator?</summary><p>This calculator is based on the FINDRISC (Finnish Diabetes Risk Score), which has been validated in multiple populations and adapted for African contexts. It provides a risk estimate, not a diagnosis. A score of moderate or higher should prompt clinical screening with blood glucose or HbA1c testing.</p></details>
 <details class="faq-item"><summary>Can Type 2 diabetes be prevented?</summary><p>Yes! Research shows that 58% of Type 2 diabetes cases can be prevented through lifestyle changes — moderate weight loss (5-7% of body weight), regular physical activity (150 min/week), and a healthy diet. Even small changes make a significant difference.</p></details>
 <details class="faq-item"><summary>What blood tests should I get?</summary><p>Ask your doctor for a fasting blood glucose test (normal: below 5.6 mmol/L) or an HbA1c test (normal: below 5.7%). These tests can detect both diabetes and pre-diabetes, giving you the opportunity to act early.</p></details>
+<details class="faq-item"><summary>Does gestational diabetes increase future diabetes risk?</summary><p>Yes, significantly. Women who had gestational diabetes (diabetes during pregnancy) have a 7-10 times higher risk of developing Type 2 diabetes later in life compared to women without this history. In Africa, gestational diabetes is often under-screened and under-diagnosed. If you had gestational diabetes, you should get an HbA1c or fasting glucose test every 1-2 years and make lifestyle changes to delay or prevent progression. Your children also have a higher risk of developing diabetes.</p></details>
+<details class="faq-item"><summary>Is diabetes different in African vs. European populations?</summary><p>Research shows that people of sub-Saharan African descent tend to develop Type 2 diabetes at lower BMI thresholds compared to Europeans. The typical Western "obese" BMI cutoff of 30 kg/m² may not fully apply — African populations can develop diabetes at BMIs as low as 24-27 kg/m². Central (abdominal) obesity is a particularly strong predictor in African populations. Additionally, conditions common in Africa like malnutrition-related diabetes, tropical chronic pancreatitis, and fibrocalculous pancreatic diabetes represent unique forms of the disease not commonly seen elsewhere.</p></details>
+<details class="faq-item"><summary>What traditional African foods help prevent diabetes?</summary><p>Traditional African diets are generally protective against diabetes. Foods like bitter leaf (Vernonia amygdalina), garden egg (African eggplant), okra, moringa, millet, sorghum, plantain (unripe), cowpeas/beans, and African yam all have low glycaemic indices or demonstrated blood-sugar lowering properties. Studies have shown that Nigerian and Ghanaian populations who maintain traditional diets have significantly lower rates of obesity and Type 2 diabetes than those who switch to westernised diets. Reducing fizzy drinks, white bread, and ultra-processed foods is the single biggest dietary change you can make.</p></details>
 </section>
 
 <afro-related-tools category="health" current="diabetes-risk"></afro-related-tools>
@@ -254,7 +273,8 @@ function calculate(){
     +document.getElementById('diet').value,
     +document.getElementById('bloodSugar').value,
     +document.getElementById('family').value,
-    +document.getElementById('bpMeds').value
+    +document.getElementById('bpMeds').value,
+    +document.getElementById('gestDiab').value
   ].reduce((a,b)=>a+b,0);
 
   let level,color,pct,desc,advice=[];
@@ -281,7 +301,7 @@ function calculate(){
     advice=['Seek medical screening as soon as possible','You may already have undiagnosed diabetes or pre-diabetes','Discuss metformin or other preventive medication with your doctor','Adopt a structured diet and exercise programme immediately','Get regular HbA1c monitoring','Join a diabetes support group'];
   }
 
-  document.getElementById('riskResult').innerHTML=`<div class="risk-score" style="color:${color}">${score}/26</div><div class="risk-label" style="color:${color}">${level}</div><div class="risk-desc">${desc}</div>`;
+  document.getElementById('riskResult').innerHTML=`<div class="risk-score" style="color:${color}">${score}/30</div><div class="risk-label" style="color:${color}">${level}</div><div class="risk-desc">${desc}</div>`;
   document.getElementById('riskMarker').style.left=`${pct}%`;
 
   document.getElementById('adviceList').innerHTML=advice.map(a=>`<li>${a}</li>`).join('');

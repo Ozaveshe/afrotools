@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Input Prices — AfroTools Admin</title>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', -apple-system, sans-serif; background: #F5F9FF; color: #1a2e22; line-height: 1.6; }
+  .dash { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
+  .dash-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+  .dash-header h1 { font-size: 1.4rem; font-weight: 800; }
+  .dash-header .badge { background: #fef3cd; color: #92400e; font-size: .65rem; font-weight: 700; padding: 3px 10px; border-radius: 12px; text-transform: uppercase; }
+  .back-link { font-size: .82rem; color: #007AFF; text-decoration: none; margin-bottom: 16px; display: inline-block; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; margin-bottom: 20px; }
+  .stat-card { background: #fff; border: 1px solid #E8F0FE; border-radius: 12px; padding: 14px; text-align: center; }
+  .stat-value { font-size: 1.4rem; font-weight: 800; color: #007AFF; }
+  .stat-value.warn { color: #d97706; }
+  .stat-label { font-size: .72rem; color: #6B7F99; margin-top: 2px; }
+  /* Filters row */
+  .filter-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-bottom: 16px; }
+  .filter-row label { font-size: .78rem; color: #374151; font-weight: 600; }
+  .filter-row select { padding: 7px 12px; border: 1.5px solid #E5E7EB; border-radius: 8px; font-family: inherit; font-size: .82rem; background: #fff; }
+  .filter-row select:focus { border-color: #007AFF; outline: none; }
+  /* Type tabs */
+  .type-tabs { display: flex; gap: 6px; margin-bottom: 16px; }
+  .tab-btn { padding: 6px 16px; border: 1.5px solid #E5E7EB; border-radius: 20px; background: #fff;
+    font-family: inherit; font-size: .78rem; font-weight: 600; cursor: pointer; color: #374151; transition: all .15s; }
+  .tab-btn:hover { border-color: #007AFF; color: #007AFF; }
+  .tab-btn.active { background: #007AFF; border-color: #007AFF; color: #fff; }
+  /* Add row */
+  .add-row-bar { background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 8px;
+    padding: 10px 16px; margin-bottom: 16px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .add-row-bar label { font-size: .75rem; color: #374151; }
+  .add-row-bar input, .add-row-bar select { padding: 4px 8px; border: 1.5px solid #BFDBFE; border-radius: 6px; font-size: .8rem; }
+  .add-row-bar input { width: 140px; }
+  .section { background: #fff; border: 1px solid #E8F0FE; border-radius: 12px; padding: 24px; margin-bottom: 20px; overflow-x: auto; }
+  .section h2 { font-size: 1rem; font-weight: 700; margin-bottom: 16px; }
+  table { width: 100%; border-collapse: collapse; font-size: .79rem; min-width: 800px; }
+  th { text-align: left; font-weight: 600; color: #6B7F99; padding: 8px; border-bottom: 2px solid #E8F0FE; white-space: nowrap; }
+  td { padding: 5px 8px; border-bottom: 1px solid #EFF6FF; }
+  tr:hover td { background: #F5F9FF; }
+  td input[type="number"] { width: 100px; padding: 4px 6px; border: 1.5px solid #E5E7EB; border-radius: 6px; font-size: .8rem; text-align: right; }
+  td input[type="text"] { width: 140px; padding: 4px 6px; border: 1.5px solid #E5E7EB; border-radius: 6px; font-size: .78rem; }
+  td input.wide { width: 200px; }
+  td input:focus, .add-row-bar input:focus { border-color: #007AFF; outline: none; }
+  .btn { padding: 5px 13px; border: none; border-radius: 6px; font-family: inherit; font-size: .78rem; font-weight: 600; cursor: pointer; }
+  .btn-save { background: #059669; color: #fff; }
+  .btn-save:hover { background: #047857; }
+  .btn-primary { background: #007AFF; color: #fff; }
+  .btn-primary:hover { background: #0063D1; }
+  .stale { background: #FEF2F2; }
+  .stale-badge { font-size: .6rem; font-weight: 700; background: #FEE2E2; color: #991B1B; padding: 2px 6px; border-radius: 4px; }
+  .fresh-badge { font-size: .6rem; font-weight: 700; background: #ECFDF5; color: #059669; padding: 2px 6px; border-radius: 4px; }
+  .source-note { font-size: .72rem; color: #94a3b8; margin-top: 12px; }
+  .toast { position: fixed; top: 20px; right: 20px; padding: 12px 20px; border-radius: 8px; color: #fff;
+    font-size: .85rem; font-weight: 500; z-index: 999; transform: translateY(-20px); opacity: 0; transition: all .3s; }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast.success { background: #059669; }
+  .toast.error { background: #dc2626; }
+</style>
+</head>
+<body>
+<div class="dash">
+  <a href="/admin/dashboard.html" class="back-link">&larr; Admin Dashboard</a>
+  <div class="dash-header">
+    <h1>🌱 Input Prices</h1>
+    <span class="badge">Admin</span>
+  </div>
+  <div class="stats" id="ipStats"></div>
+
+  <div class="filter-row">
+    <label>Country:</label>
+    <select id="countrySelect" onchange="loadCountry()">
+      <option value="">— Select country —</option>
+    </select>
+    <div class="type-tabs" id="typeTabs" style="margin-bottom:0">
+      <button class="tab-btn active" onclick="selectType('fertilizer',this)">🌿 Fertilizer</button>
+      <button class="tab-btn" onclick="selectType('seed',this)">🌾 Seeds</button>
+      <button class="tab-btn" onclick="selectType('pesticide',this)">🧪 Pesticides</button>
+    </div>
+  </div>
+
+  <div class="add-row-bar" id="addRow" style="display:none">
+    <strong style="font-size:.8rem">+ Add Input:</strong>
+    <span><label>Name</label><input type="text" id="new-name" placeholder="e.g. NPK 20-10-10"></span>
+    <span><label>Unit</label><input type="text" id="new-unit" placeholder="per 50kg bag" style="width:120px"></span>
+    <span><label>Price</label><input type="number" id="new-price" step="0.01" placeholder="0.00" style="width:100px"></span>
+    <span><label>Currency</label><input type="text" id="new-currency" placeholder="NGN" style="width:65px"></span>
+    <span><label>Notes</label><input type="text" id="new-notes" placeholder="Subsidies, availability…" style="width:160px"></span>
+    <button class="btn btn-primary" onclick="addInput()">Add Row</button>
+  </div>
+
+  <div class="section">
+    <h2 id="tableTitle">Select a country to begin</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Input Name</th>
+          <th>Unit</th>
+          <th>Price</th>
+          <th>Currency</th>
+          <th>Notes / Subsidies</th>
+          <th>Updated</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="ipTable">
+        <tr><td colspan="8" style="text-align:center;color:#94a3b8;padding:24px">Select a country above</td></tr>
+      </tbody>
+    </table>
+    <div class="source-note">Sources: Fertilizer dealer surveys, IFDC, national extension services. Update quarterly.</div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var adminKey = sessionStorage.getItem('admin_key');
+if (!adminKey) { adminKey = prompt('Enter admin password:'); if (adminKey) sessionStorage.setItem('admin_key', adminKey); }
+var SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
+var currentCountryCode = null;
+var currentCountryName = null;
+var currentType = 'fertilizer';
+var tableData = [];
+var allData = [];
+
+var COUNTRIES = [
+  ['NG','Nigeria'],['KE','Kenya'],['ET','Ethiopia'],['GH','Ghana'],['ZA','South Africa'],
+  ['TZ','Tanzania'],['MW','Malawi'],['ZM','Zambia'],['UG','Uganda'],['MZ','Mozambique'],
+  ['SN','Senegal'],['EG','Egypt'],['ML','Mali'],['BF','Burkina Faso'],['CM','Cameroon']
+];
+
+function showToast(msg, type) {
+  var t = document.getElementById('toast'); t.textContent = msg;
+  t.className = 'toast ' + (type || 'success'); t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, 3000);
+}
+function timeAgo(dateStr) {
+  if (!dateStr) return 'Never';
+  var days = Math.floor((Date.now() - new Date(dateStr).getTime()) / 86400000);
+  if (days === 0) return 'Today'; if (days === 1) return 'Yesterday';
+  if (days < 30) return days + 'd ago'; return Math.floor(days / 30) + 'mo ago';
+}
+function isStale(d) { return !d || (Date.now() - new Date(d).getTime()) > 60 * 86400000; } // 60d for quarterly
+
+// Populate country select
+(function() {
+  var sel = document.getElementById('countrySelect');
+  COUNTRIES.forEach(function(c) {
+    var opt = document.createElement('option');
+    opt.value = c[0]; opt.textContent = c[0] + ' — ' + c[1];
+    sel.appendChild(opt);
+  });
+})();
+
+function selectType(type, btn) {
+  currentType = type;
+  document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+  filterAndRender();
+}
+
+async function loadCountry() {
+  var sel = document.getElementById('countrySelect');
+  currentCountryCode = sel.value;
+  currentCountryName = sel.options[sel.selectedIndex].text.split(' — ')[1] || '';
+  if (!currentCountryCode) return;
+  document.getElementById('addRow').style.display = 'flex';
+
+  try {
+    var res = await fetch(
+      SUPABASE_URL + '/rest/v1/input_prices?country_code=eq.' + currentCountryCode + '&select=*&order=input_type.asc,input_name.asc',
+      { headers: { apikey: adminKey, Authorization: 'Bearer ' + adminKey } }
+    );
+    allData = res.ok ? await res.json() : [];
+    filterAndRender(); renderStats();
+  } catch(e) { showToast('Load error: ' + e.message, 'error'); }
+}
+
+function filterAndRender() {
+  if (!currentCountryCode) return;
+  tableData = allData.filter(function(r) { return r.input_type === currentType; });
+  document.getElementById('tableTitle').textContent =
+    currentCountryName + ' — ' + currentType.charAt(0).toUpperCase() + currentType.slice(1) + ' Prices';
+  renderTable();
+}
+
+function renderStats() {
+  var total = allData.length;
+  var stale = allData.filter(function(r) { return isStale(r.updated_at); }).length;
+  document.getElementById('ipStats').innerHTML =
+    '<div class="stat-card"><div class="stat-value">' + total + '</div><div class="stat-label">Total Inputs</div></div>' +
+    '<div class="stat-card"><div class="stat-value">' + (total - stale) + '</div><div class="stat-label">Up to Date</div></div>' +
+    '<div class="stat-card"><div class="stat-value' + (stale > 0 ? ' warn' : '') + '">' + stale + '</div><div class="stat-label">Stale (>60d)</div></div>';
+}
+
+function renderTable() {
+  var n = function(v) { return v !== null && v !== undefined ? v : ''; };
+  if (!tableData.length) {
+    document.getElementById('ipTable').innerHTML =
+      '<tr><td colspan="8" style="text-align:center;color:#94a3b8;padding:24px">No ' + currentType + ' entries yet — use Add Row above</td></tr>';
+    return;
+  }
+  document.getElementById('ipTable').innerHTML = tableData.map(function(r, i) {
+    var stale = isStale(r.updated_at);
+    return '<tr class="' + (stale ? 'stale' : '') + '" data-idx="' + i + '">' +
+      '<td><strong>' + r.input_name + '</strong></td>' +
+      '<td><input type="text" value="' + n(r.unit) + '" data-field="unit" placeholder="per 50kg bag"></td>' +
+      '<td><input type="number" step="0.01" value="' + n(r.price) + '" data-field="price"></td>' +
+      '<td><input type="text" value="' + n(r.currency) + '" data-field="currency" style="width:65px"></td>' +
+      '<td><input type="text" class="wide" value="' + (r.notes||'').replace(/"/g,'&quot;') + '" data-field="notes" placeholder="Subsidy notes…"></td>' +
+      '<td style="font-size:.72rem;color:#94a3b8;white-space:nowrap">' + timeAgo(r.updated_at) + '</td>' +
+      '<td>' + (stale ? '<span class="stale-badge">STALE</span>' : '<span class="fresh-badge">OK</span>') + '</td>' +
+      '<td><button class="btn btn-save" onclick="saveRow(' + i + ')">Save</button></td>' +
+    '</tr>';
+  }).join('');
+}
+
+async function saveRow(idx) {
+  var r = tableData[idx];
+  var row = document.querySelector('tr[data-idx="' + idx + '"]');
+  var payload = {
+    country_code: r.country_code, country_name: r.country_name,
+    input_type: r.input_type, input_name: r.input_name,
+    unit:     row.querySelector('[data-field="unit"]').value,
+    price:    parseFloat(row.querySelector('[data-field="price"]').value) || null,
+    currency: row.querySelector('[data-field="currency"]').value,
+    notes:    row.querySelector('[data-field="notes"]').value,
+    updated_at: new Date().toISOString(), updated_by: 'admin'
+  };
+  try {
+    var res = await fetch(SUPABASE_URL + '/rest/v1/input_prices', {
+      method: 'POST',
+      headers: { apikey: adminKey, Authorization: 'Bearer ' + adminKey,
+        'Content-Type': 'application/json', Prefer: 'resolution=merge-duplicates,return=representation' },
+      body: JSON.stringify(payload)
+    });
+    if (res.ok) {
+      var saved = (await res.json())[0] || payload;
+      var ai = allData.findIndex(function(x) { return x.id === saved.id || (x.country_code === saved.country_code && x.input_type === saved.input_type && x.input_name === saved.input_name); });
+      if (ai >= 0) allData[ai] = saved; else allData.push(saved);
+      filterAndRender(); renderStats();
+      showToast(r.input_name + ' saved');
+    } else showToast('Save failed: ' + await res.text(), 'error');
+  } catch(e) { showToast('Network error', 'error'); }
+}
+
+function addInput() {
+  var name = document.getElementById('new-name').value.trim();
+  if (!name || !currentCountryCode) { showToast('Enter an input name and select a country', 'error'); return; }
+  var newRow = {
+    country_code: currentCountryCode, country_name: currentCountryName,
+    input_type: currentType, input_name: name,
+    unit: document.getElementById('new-unit').value,
+    price: parseFloat(document.getElementById('new-price').value) || null,
+    currency: document.getElementById('new-currency').value,
+    notes: document.getElementById('new-notes').value,
+    updated_at: null
+  };
+  allData.push(newRow);
+  ['name','unit','price','currency','notes'].forEach(function(f) { document.getElementById('new-' + f).value = ''; });
+  filterAndRender();
+}
+</script>
+</body>
+</html>

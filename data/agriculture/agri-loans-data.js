@@ -1,0 +1,1457 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// AfroTools — Agricultural Loan Programs Data
+// 15 Top African Economies | Tool 26: Farm Loan Eligibility Calculator
+// ─────────────────────────────────────────────────────────────────────────────
+window.AfroTools = window.AfroTools || {};
+
+window.AfroTools.AgriLoansData = {
+  "NG": {
+    country: "Nigeria", flag: "🇳🇬", currency: "NGN", symbol: "₦",
+    programs: [
+      {
+        id: "boa",
+        name: "Bank of Agriculture (BOA)",
+        type: "Government Development Bank",
+        typeBadge: "Gov Bank",
+        interestRate_pct: 5,
+        maxAmount: 10000000,
+        minAmount: 100000,
+        tenor_months: { min: 12, max: 60 },
+        eligibility: {
+          minAge: 18, maxAge: 65,
+          cooperative_required: false,
+          bankAccount_required: true,
+          mustHave: ["Valid ID (NIN/BVN)", "Business plan", "Farm records", "Guarantor(s)"]
+        },
+        targetFarmers: "Smallholder and medium-scale farmers",
+        commodities: ["All agricultural commodities"],
+        notes: "Nigeria's primary government agri-lender. Recently recapitalized with ₦250B. Subsidized 5% rate is the best available for smallholders.",
+        applyAt: "Visit nearest Bank of Agriculture branch"
+      },
+      {
+        id: "abp",
+        name: "Anchor Borrowers Programme (ABP)",
+        type: "Government Scheme",
+        typeBadge: "CBN Scheme",
+        interestRate_pct: 9,
+        maxAmount: 5000000,
+        minAmount: 50000,
+        tenor_months: { min: 6, max: 12 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: true,
+          bankAccount_required: true,
+          mustHave: ["BVN", "Bank account", "Member of farmer group linked to anchor company", "GPS-verified farm location"]
+        },
+        targetFarmers: "Smallholder farmers growing specific commodities under contract",
+        commodities: ["Rice", "Maize", "Wheat", "Sorghum", "Soybean", "Cotton", "Cassava", "Tomato", "Groundnut", "Oil palm", "Cocoa", "Poultry", "Fish"],
+        disbursement: "In-kind (seed, fertilizer) + cash. Anchor company purchases harvest.",
+        notes: "CBN's most impactful agri-scheme. Must be in a group linked to a buyer/processor. Repayment deducted from harvest proceeds.",
+        applyAt: "Via participating commercial banks or your farmer cooperative"
+      },
+      {
+        id: "agsmeis",
+        name: "AGSMEIS (Agri-Business/SME Investment Scheme)",
+        type: "Government Scheme",
+        typeBadge: "Gov Scheme",
+        interestRate_pct: 9,
+        maxAmount: 10000000,
+        minAmount: 100000,
+        tenor_months: { min: 12, max: 60 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: true,
+          training_required: true,
+          mustHave: ["SMEDAN/EDI entrepreneurship training certificate", "Business plan", "BVN", "Bank account"]
+        },
+        targetFarmers: "Youth and first-time agri-entrepreneurs",
+        notes: "Accessed through NMFB (Nigeria Microfinance Bank). Mandatory 3-5 day training required before application.",
+        applyAt: "Nigeria Microfinance Bank (NMFB) branches"
+      },
+      {
+        id: "commercial_banks",
+        name: "Commercial Bank Agri-Loans (Access, First Bank, Zenith)",
+        type: "Commercial Bank",
+        typeBadge: "Commercial",
+        interestRate_pct: { min: 15, max: 25 },
+        maxAmount: null,
+        maxAmountLabel: "Based on collateral & turnover",
+        tenor_months: { min: 12, max: 60 },
+        eligibility: {
+          cooperative_required: false,
+          bankAccount_required: true,
+          collateral_required: true,
+          mustHave: ["Business registration", "Audited financials (1-3 years)", "Collateral (land, property, equipment)", "Existing bank relationship"]
+        },
+        targetFarmers: "Established agribusinesses with track record",
+        notes: "Higher rates but faster approval. Best for agribusinesses with existing bank relationships.",
+        applyAt: "Your commercial bank branch"
+      },
+      {
+        id: "microfinance",
+        name: "Microfinance Bank Agri-Loans",
+        type: "Microfinance",
+        typeBadge: "Microfinance",
+        interestRate_pct: { min: 20, max: 36 },
+        maxAmount: 1000000,
+        minAmount: 10000,
+        tenor_months: { min: 3, max: 18 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: false,
+          mustHave: ["Valid ID", "Guarantor or group membership"]
+        },
+        targetFarmers: "Smallholders, women farmers, informal sector",
+        notes: "Fastest and most accessible credit. Higher interest rates. Group lending reduces collateral requirements.",
+        applyAt: "Local microfinance bank or MFI branch"
+      },
+      {
+        id: "agritech",
+        name: "Agritech Platform Loans (ThriveAgric, GoGetta)",
+        type: "Fintech / Agritech",
+        typeBadge: "Fintech",
+        interestRate_pct: { min: 15, max: 25 },
+        maxAmount: 5000000,
+        minAmount: 50000,
+        tenor_months: { min: 4, max: 12 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: true,
+          mustHave: ["Smartphone", "GPS-mapped farm", "Harvest records", "BVN"]
+        },
+        targetFarmers: "Tech-literate farmers with smartphones",
+        disbursement: "Usually in-kind (inputs) with guaranteed market for harvest.",
+        notes: "Growing fast. Digital-first application. Mostly for rice, maize, soybean, poultry. Platform buys harvest at guaranteed price.",
+        applyAt: "ThriveAgric, GoGetta, or FarmCrowdy apps/websites"
+      }
+    ]
+  },
+
+  "KE": {
+    country: "Kenya", flag: "🇰🇪", currency: "KES", symbol: "KSh",
+    programs: [
+      {
+        id: "afc",
+        name: "Agricultural Finance Corporation (AFC)",
+        type: "Government Development Bank",
+        typeBadge: "Gov Bank",
+        interestRate_pct: 8,
+        maxAmount: 50000000,
+        minAmount: 50000,
+        tenor_months: { min: 12, max: 180 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: true,
+          mustHave: ["National ID", "Title deed or land lease", "Farm business plan"]
+        },
+        products: [
+          { name: "Seasonal crop loan", maxAmount: 2000000, tenor: "12 months" },
+          { name: "Livestock development loan", maxAmount: 5000000, tenor: "5 years" },
+          { name: "Farm improvement loan", maxAmount: 10000000, tenor: "7 years" },
+          { name: "Land purchase loan", maxAmount: 50000000, tenor: "15 years" }
+        ],
+        targetFarmers: "All farmers — smallholder to commercial",
+        notes: "Kenya's primary government agricultural lender. Reasonable rates but slower processing (4-12 weeks).",
+        applyAt: "AFC offices or agrifinance.org"
+      },
+      {
+        id: "youth_agri_ke",
+        name: "Youth Agribusiness Credit Scheme",
+        type: "Government Scheme",
+        typeBadge: "Youth Scheme",
+        interestRate_pct: 8,
+        maxAmount: 5000000,
+        minAmount: 50000,
+        tenor_months: { min: 12, max: 60 },
+        eligibility: {
+          minAge: 18, maxAge: 35,
+          cooperative_required: true,
+          bankAccount_required: true,
+          mustHave: ["Youth group registration", "Business plan", "County government recommendation"]
+        },
+        targetFarmers: "Youth aged 18-35 in farmer groups",
+        notes: "Group lending preferred. County agricultural officer can assist with county recommendation letter.",
+        applyAt: "County agricultural offices or AFC branches"
+      },
+      {
+        id: "saccos_ke",
+        name: "SACCO Agri-Loans",
+        type: "Cooperative / SACCO",
+        typeBadge: "SACCO",
+        interestRate_pct: { min: 10, max: 15 },
+        maxAmount: null,
+        maxAmountLabel: "3× your savings (typical)",
+        tenor_months: { min: 12, max: 36 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: true,
+          bankAccount_required: false,
+          mustHave: ["SACCO membership (min 6 months)", "Regular savings deposits", "Guarantors from SACCO"]
+        },
+        targetFarmers: "Farmers who are SACCO members",
+        notes: "Over 5,000 SACCOs in Kenya — most accessible credit for smallholders. Join a SACCO 6+ months before applying.",
+        applyAt: "Your local SACCO or farmers' cooperative"
+      },
+      {
+        id: "equity_ke",
+        name: "Equity Bank BizAfrica Agri-Loan",
+        type: "Commercial Bank",
+        typeBadge: "Commercial",
+        interestRate_pct: 13,
+        maxAmount: 10000000,
+        minAmount: 50000,
+        tenor_months: { min: 12, max: 60 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: true,
+          mustHave: ["6+ months Equity Bank relationship", "Farm records", "Collateral or crop insurance"]
+        },
+        targetFarmers: "Farmers with Equity Bank accounts",
+        notes: "Equity Bank is Kenya's most agri-friendly commercial bank. Mobile-first application via Equity Mobile app.",
+        applyAt: "Equity Bank branches or Equity Mobile app"
+      },
+      {
+        id: "one_acre",
+        name: "One Acre Fund Input Loan",
+        type: "NGO / Social Enterprise",
+        typeBadge: "NGO",
+        interestRate_pct: null,
+        interestRate_label: "~10-15% effective (embedded in input price)",
+        maxAmount: null,
+        maxAmountLabel: "Up to KSh 30,000 in inputs",
+        tenor_months: { min: 6, max: 9 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: false,
+          farmSize_max_ha: 1,
+          mustHave: ["Smallholder farm (<1 ha)", "Located in One Acre Fund service areas"]
+        },
+        targetFarmers: "Smallholder farmers with less than 1 hectare",
+        disbursement: "In-kind: seed, fertilizer, training delivered to farm. No cash.",
+        notes: "Serves 1.5M+ farmers across East Africa. Repayment after harvest. Includes free training and crop insurance.",
+        applyAt: "One Acre Fund local field officer in your area"
+      },
+      {
+        id: "ke_microfinance",
+        name: "Microfinance Institutions (Kenya Women Finance, KWFT)",
+        type: "Microfinance",
+        typeBadge: "Microfinance",
+        interestRate_pct: { min: 18, max: 30 },
+        maxAmount: 500000,
+        minAmount: 10000,
+        tenor_months: { min: 3, max: 18 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: false,
+          mustHave: ["ID", "Group membership or guarantor"]
+        },
+        targetFarmers: "Smallholders, women farmers, informal sector",
+        notes: "Fastest approval (1-7 days). Highest rates. Group lending common. KWFT focuses on women farmers.",
+        applyAt: "Kenya Women Finance Trust or local MFI offices"
+      }
+    ]
+  },
+
+  "ZA": {
+    country: "South Africa", flag: "🇿🇦", currency: "ZAR", symbol: "R",
+    programs: [
+      {
+        id: "land_bank",
+        name: "Land Bank of South Africa",
+        type: "Government Development Bank",
+        typeBadge: "Gov Bank",
+        interestRate_pct: 10,
+        maxAmount: 50000000,
+        minAmount: 10000,
+        tenor_months: { min: 12, max: 240 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: true,
+          mustHave: ["ID / company registration", "Business plan", "Land title or lease"]
+        },
+        products: [
+          { name: "Emerging Farmer Loan", interestRate_label: "Prime - 2%", notes: "Previously disadvantaged farmers — best available rate" },
+          { name: "Commercial Farmer Loan", interestRate_label: "Prime + 1%", notes: "Established commercial farmers" },
+          { name: "Agri-business Development Loan", tenor: "Up to 20 years" }
+        ],
+        targetFarmers: "All farmers — emerging to commercial",
+        notes: "Provides 28% of all South African agricultural debt. Emerging farmer rates subsidized below prime.",
+        applyAt: "Land Bank branches or landbank.co.za"
+      },
+      {
+        id: "casp",
+        name: "CASP / DALRRD Emerging Farmer Support",
+        type: "Government Grant / Loan",
+        typeBadge: "Gov Grant",
+        interestRate_pct: 0,
+        maxAmount: 5000000,
+        minAmount: 0,
+        tenor_months: { min: 0, max: 0 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: true,
+          mustHave: ["Previously disadvantaged (BEE category)", "Business plan", "Provincial Department of Agriculture approval"]
+        },
+        targetFarmers: "Previously disadvantaged emerging farmers",
+        notes: "CASP (Comprehensive Agricultural Support Programme) provides grants — not loans — for infrastructure, training, and input support.",
+        applyAt: "Provincial Department of Agriculture offices"
+      },
+      {
+        id: "absa_agri",
+        name: "ABSA AgriBusiness",
+        type: "Commercial Bank",
+        typeBadge: "Commercial",
+        interestRate_pct: 11,
+        maxAmount: 50000000,
+        minAmount: 50000,
+        tenor_months: { min: 12, max: 120 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: true,
+          collateral_required: true,
+          mustHave: ["ABSA account", "Farm financials (2+ years)", "Collateral"]
+        },
+        targetFarmers: "Commercial and emerging commercial farmers",
+        notes: "Most active commercial agri-lender in SA. Full range: production, equipment, livestock, processing.",
+        applyAt: "ABSA AgriBusiness advisors at any branch"
+      },
+      {
+        id: "standard_bank_za",
+        name: "Standard Bank Agriculture",
+        type: "Commercial Bank",
+        typeBadge: "Commercial",
+        interestRate_pct: 11.5,
+        maxAmount: 50000000,
+        minAmount: 50000,
+        tenor_months: { min: 12, max: 120 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: true,
+          collateral_required: true,
+          mustHave: ["Standard Bank account", "Farm financials", "Collateral or crop insurance"]
+        },
+        targetFarmers: "Commercial farmers and agribusinesses",
+        notes: "Full agri-finance range including weather derivatives and export financing.",
+        applyAt: "Standard Bank Agriculture specialists"
+      },
+      {
+        id: "nedbank_agri",
+        name: "Nedbank Agri-Finance",
+        type: "Commercial Bank",
+        typeBadge: "Commercial",
+        interestRate_pct: 11,
+        maxAmount: 30000000,
+        minAmount: 50000,
+        tenor_months: { min: 12, max: 84 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: true,
+          collateral_required: true,
+          mustHave: ["Nedbank account or willingness to bank with Nedbank", "Farm business plan", "Collateral"]
+        },
+        targetFarmers: "Established and emerging commercial farmers",
+        notes: "Strong focus on sustainable and green agriculture. Agri-advisors with sector specialization.",
+        applyAt: "Nedbank Agri-Finance advisors"
+      }
+    ]
+  },
+
+  "GH": {
+    country: "Ghana", flag: "🇬🇭", currency: "GHS", symbol: "GH₵",
+    programs: [
+      {
+        id: "girsal",
+        name: "GIRSAL Loan Guarantee (via banks)",
+        type: "Government Guarantee Scheme",
+        typeBadge: "Guarantee",
+        interestRate_pct: { min: 18, max: 24 },
+        maxAmount: 10000000,
+        minAmount: 5000,
+        tenor_months: { min: 6, max: 60 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: true,
+          mustHave: ["Ghanaian citizenship", "Farm/business records", "Bank account", "Loan application at participating bank"]
+        },
+        targetFarmers: "Any farmer or agribusiness using a participating bank",
+        notes: "GIRSAL guarantees up to 80% of agri-loans from participating banks. You apply to your bank; the bank applies for GIRSAL guarantee — making approval easier. Ask your bank if they use GIRSAL.",
+        applyAt: "Any participating commercial bank (ask about GIRSAL guarantee)"
+      },
+      {
+        id: "adf_gh",
+        name: "Agricultural Development Fund (ADF)",
+        type: "Government Fund",
+        typeBadge: "Gov Fund",
+        interestRate_pct: 10,
+        maxAmount: 5000000,
+        minAmount: 5000,
+        tenor_months: { min: 12, max: 60 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: true,
+          mustHave: ["Ghanaian citizen", "Registered farmer/agribusiness", "Business plan"]
+        },
+        targetFarmers: "Farmers and agribusinesses in mechanization, processing, marketing",
+        notes: "Under Ministry of Food & Agriculture. Annual application window. Focused on value chain development.",
+        applyAt: "Ministry of Food & Agriculture (MOFA) district offices"
+      },
+      {
+        id: "pfj",
+        name: "Planting for Food and Jobs (PFJ) Input Credit",
+        type: "Government Scheme",
+        typeBadge: "Gov Scheme",
+        interestRate_pct: 0,
+        maxAmount: null,
+        maxAmountLabel: "Inputs in-kind (seed + fertilizer)",
+        tenor_months: { min: 4, max: 8 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: false,
+          mustHave: ["Ghanaian farmer", "Registration with MOFA district office", "Willingness to repay after harvest"]
+        },
+        targetFarmers: "Smallholder food crop farmers (maize, rice, soybean, sorghum)",
+        disbursement: "In-kind: subsidized seed + fertilizer distributed through government channels. Repayment after harvest.",
+        notes: "50% subsidy on fertilizer. Farmer pays 50% of input cost after harvest. No interest charged.",
+        applyAt: "MOFA district offices or registered agrochemical dealers"
+      },
+      {
+        id: "rural_banks_gh",
+        name: "Rural/Community Banks Agri-Loans",
+        type: "Microfinance / Rural Bank",
+        typeBadge: "Rural Bank",
+        interestRate_pct: { min: 24, max: 36 },
+        maxAmount: 200000,
+        minAmount: 500,
+        tenor_months: { min: 3, max: 12 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: true,
+          mustHave: ["Account with rural/community bank (min 3 months)", "Guarantor or group membership"]
+        },
+        targetFarmers: "Rural smallholder farmers",
+        notes: "Over 140 rural and community banks in Ghana. Most accessible for rural farmers. Short tenor matched to crop cycles.",
+        applyAt: "Your nearest rural or community bank"
+      },
+      {
+        id: "ecobank_gh",
+        name: "Ecobank Ghana Agri-Finance",
+        type: "Commercial Bank",
+        typeBadge: "Commercial",
+        interestRate_pct: { min: 22, max: 28 },
+        maxAmount: 2000000,
+        minAmount: 10000,
+        tenor_months: { min: 12, max: 36 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: true,
+          collateral_required: true,
+          mustHave: ["Ecobank account", "Business plan or farm records", "Collateral or guarantors"]
+        },
+        targetFarmers: "Small to medium-scale commercial farmers",
+        notes: "Best for farmers with track record and some collateral. Ecobank has wide rural branch network.",
+        applyAt: "Ecobank Ghana branches"
+      }
+    ]
+  },
+
+  "EG": {
+    country: "Egypt", flag: "🇪🇬", currency: "EGP", symbol: "E£",
+    programs: [
+      {
+        id: "pbdac",
+        name: "PBDAC — Agricultural Development Credit Bank",
+        type: "Government Development Bank",
+        typeBadge: "Gov Bank",
+        interestRate_pct: 5,
+        maxAmount: 5000000,
+        minAmount: 500,
+        tenor_months: { min: 6, max: 84 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: false,
+          mustHave: ["Egyptian national ID", "Agricultural land or lease", "Farm registration"]
+        },
+        targetFarmers: "All Egyptian farmers — smallholder to commercial",
+        notes: "Egypt's main agricultural bank with 1,200+ rural branches. Lowest rates available. Both in-kind (fertilizer, seed) and cash loans. Often subsidized further by government.",
+        applyAt: "Any PBDAC branch (formerly known as CAPMAS credit)"
+      },
+      {
+        id: "nbe_eg",
+        name: "National Bank of Egypt (NBE) Agri-Loans",
+        type: "Government Commercial Bank",
+        typeBadge: "Gov Bank",
+        interestRate_pct: 8,
+        maxAmount: 10000000,
+        minAmount: 5000,
+        tenor_months: { min: 12, max: 60 },
+        eligibility: {
+          minAge: 21,
+          cooperative_required: false,
+          bankAccount_required: true,
+          mustHave: ["National ID", "Land document or lease", "Business plan for large loans"]
+        },
+        targetFarmers: "Farmers and agribusinesses with larger operations",
+        notes: "Special agri-products including seasonal loans and equipment finance. Supports export crops.",
+        applyAt: "National Bank of Egypt branches"
+      },
+      {
+        id: "banque_misr",
+        name: "Banque Misr Agricultural Loan",
+        type: "Government Commercial Bank",
+        typeBadge: "Gov Bank",
+        interestRate_pct: 9,
+        maxAmount: 5000000,
+        minAmount: 5000,
+        tenor_months: { min: 6, max: 60 },
+        eligibility: {
+          minAge: 21,
+          cooperative_required: false,
+          bankAccount_required: true,
+          mustHave: ["National ID", "Agricultural land or facility", "Business records"]
+        },
+        targetFarmers: "Farmers, greenhouse operators, livestock producers",
+        notes: "Banque Misr is second-largest Egyptian bank. Good for greenhouse and horticulture finance.",
+        applyAt: "Banque Misr branches"
+      },
+      {
+        id: "social_fund_eg",
+        name: "Social Fund for Development (SFD) Agri-Loans",
+        type: "Government Social Fund",
+        typeBadge: "Gov Fund",
+        interestRate_pct: { min: 5, max: 12 },
+        maxAmount: 300000,
+        minAmount: 1000,
+        tenor_months: { min: 6, max: 36 },
+        eligibility: {
+          minAge: 18, maxAge: 65,
+          cooperative_required: false,
+          bankAccount_required: false,
+          mustHave: ["Egyptian national ID", "Project plan", "Located in eligible rural area"]
+        },
+        targetFarmers: "Small farmers, rural youth, women entrepreneurs",
+        notes: "Specifically targets rural poor and small enterprises. Social development mandate means relaxed collateral requirements.",
+        applyAt: "SFD offices or associated NGOs in rural areas"
+      }
+    ]
+  },
+
+  "ET": {
+    country: "Ethiopia", flag: "🇪🇹", currency: "ETB", symbol: "Br",
+    programs: [
+      {
+        id: "cbe_et",
+        name: "Commercial Bank of Ethiopia (CBE) Agri-Loan",
+        type: "Government Bank",
+        typeBadge: "Gov Bank",
+        interestRate_pct: 10,
+        maxAmount: 10000000,
+        minAmount: 5000,
+        tenor_months: { min: 12, max: 60 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: true,
+          mustHave: ["Ethiopian ID / Kebele ID", "Farm or business registration", "Collateral or guarantor for large loans"]
+        },
+        targetFarmers: "Medium to large-scale commercial farmers",
+        notes: "CBE is Ethiopia's largest bank. Seasonal crop and investment loans. Processes in Amharic and local languages.",
+        applyAt: "Commercial Bank of Ethiopia branches nationwide"
+      },
+      {
+        id: "dbe_et",
+        name: "Development Bank of Ethiopia (DBE)",
+        type: "Government Development Bank",
+        typeBadge: "Dev Bank",
+        interestRate_pct: 8,
+        maxAmount: 100000000,
+        minAmount: 500000,
+        tenor_months: { min: 24, max: 180 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: true,
+          mustHave: ["Business registration", "Detailed project feasibility study", "Environmental impact assessment", "Collateral"]
+        },
+        targetFarmers: "Large agri-investment projects — irrigation, processing, commercial farms",
+        notes: "DBE focuses on large agricultural investments. Minimum loan is higher. Best for commercial agribusiness projects.",
+        applyAt: "Development Bank of Ethiopia headquarters or regional offices"
+      },
+      {
+        id: "coop_bank_et",
+        name: "Cooperative Bank of Oromia / Regional Coop Banks",
+        type: "Cooperative Bank",
+        typeBadge: "Coop Bank",
+        interestRate_pct: 12,
+        maxAmount: 2000000,
+        minAmount: 1000,
+        tenor_months: { min: 6, max: 36 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: true,
+          bankAccount_required: true,
+          mustHave: ["Cooperative membership", "Regular savings with coop bank", "Approved by cooperative management"]
+        },
+        targetFarmers: "Farmers who are members of agricultural cooperatives",
+        notes: "Cooperative-based lending. Members of farmer cooperatives access credit through regional cooperative banks. Very strong in Oromia, Amhara, and SNNP regions.",
+        applyAt: "Your farming cooperative or Cooperative Bank of Oromia branches"
+      },
+      {
+        id: "mfi_et",
+        name: "Microfinance Institutions (ACSI, DECSI, Omo MFI)",
+        type: "Microfinance",
+        typeBadge: "Microfinance",
+        interestRate_pct: { min: 15, max: 18 },
+        maxAmount: 200000,
+        minAmount: 500,
+        tenor_months: { min: 4, max: 24 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: false,
+          mustHave: ["Regional ID or Kebele ID", "Group membership (for group loans)"]
+        },
+        targetFarmers: "Smallholder farmers, rural poor, women",
+        notes: "Ethiopia has Africa's largest MFI sector. ACSI (Amhara), DECSI (Tigray), Omo MFI (Southern). Group lending reduces collateral needs. Millions of smallholders served.",
+        applyAt: "ACSI, DECSI, Omo MFI or local MFI offices in your region"
+      },
+      {
+        id: "sharia_et",
+        name: "Sharia-Compliant Agricultural Finance",
+        type: "Islamic Finance",
+        typeBadge: "Islamic Finance",
+        interestRate_pct: null,
+        interestRate_label: "Profit-sharing (no interest — Halal)",
+        maxAmount: 1000000,
+        minAmount: 5000,
+        tenor_months: { min: 6, max: 36 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: false,
+          mustHave: ["ID", "Farm registration or description", "Located in Muslim-majority region"]
+        },
+        targetFarmers: "Muslim farmers preferring Sharia-compliant financing",
+        notes: "Growing in Muslim-majority regions (Harar, Afar, Dire Dawa, Somali). Murabaha (cost-plus) and Salam (forward sale) structures. Offered by Zemen Bank, Abay Bank and specialized units.",
+        applyAt: "Zemen Bank or Abay Bank Islamic finance windows"
+      }
+    ]
+  },
+
+  "TZ": {
+    country: "Tanzania", flag: "🇹🇿", currency: "TZS", symbol: "TSh",
+    programs: [
+      {
+        id: "tadb",
+        name: "Tanzania Agricultural Development Bank (TADB)",
+        type: "Government Development Bank",
+        typeBadge: "Gov Bank",
+        interestRate_pct: 8,
+        maxAmount: 500000000,
+        minAmount: 500000,
+        tenor_months: { min: 12, max: 120 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: true,
+          mustHave: ["Tanzanian citizenship / business registration", "Business plan", "Land document or lease", "Environmental compliance (for large loans)"]
+        },
+        targetFarmers: "Smallholder groups, cooperatives, and commercial farmers",
+        notes: "Tanzania's dedicated agricultural development bank. Finances cooperatives, irrigation schemes, agro-processing, and smallholder groups. Competitive government rates.",
+        applyAt: "TADB offices in Dar es Salaam, Dodoma, and regional offices"
+      },
+      {
+        id: "crdb_kilimo",
+        name: "CRDB Kilimo Loan",
+        type: "Commercial Bank",
+        typeBadge: "Commercial",
+        interestRate_pct: 14,
+        maxAmount: 100000000,
+        minAmount: 1000000,
+        tenor_months: { min: 12, max: 60 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: true,
+          mustHave: ["CRDB account (or willing to open)", "Farm business plan", "Collateral or crop insurance", "Valid ID"]
+        },
+        targetFarmers: "Smallholder to medium commercial farmers",
+        notes: "CRDB Bank's flagship agri-product. 'Kilimo' means 'agriculture' in Swahili. Strong rural branch network.",
+        applyAt: "CRDB Bank branches nationwide or Tembo app"
+      },
+      {
+        id: "nmb_tz",
+        name: "NMB Bank Agricultural Loans",
+        type: "Commercial Bank",
+        typeBadge: "Commercial",
+        interestRate_pct: 15,
+        maxAmount: 50000000,
+        minAmount: 500000,
+        tenor_months: { min: 6, max: 36 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: true,
+          mustHave: ["NMB account", "Farm records", "Collateral or guarantor"]
+        },
+        targetFarmers: "Registered farmers and agri-SMEs",
+        notes: "NMB has widest rural branch network in Tanzania (180+ branches). Mobile banking via NMB Mkononi.",
+        applyAt: "Any NMB Bank branch or NMB Mkononi app"
+      },
+      {
+        id: "saccos_tz",
+        name: "SACCOS (Savings & Credit Cooperatives)",
+        type: "Cooperative / SACCO",
+        typeBadge: "SACCO",
+        interestRate_pct: { min: 10, max: 18 },
+        maxAmount: null,
+        maxAmountLabel: "2-3× your savings",
+        tenor_months: { min: 6, max: 36 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: true,
+          bankAccount_required: false,
+          mustHave: ["SACCO membership (min 6 months)", "Regular monthly savings", "Guarantors from fellow members"]
+        },
+        targetFarmers: "Farmers in rural SACCO cooperatives",
+        notes: "Thousands of SACCOs across Tanzania. Most accessible community credit. Rates lower than MFIs. Must save before borrowing.",
+        applyAt: "Your local SACCOS or VICO (Village Community Bank)"
+      },
+      {
+        id: "mfi_tz",
+        name: "Microfinance Institutions (PRIDE, FINCA Tanzania)",
+        type: "Microfinance",
+        typeBadge: "Microfinance",
+        interestRate_pct: { min: 18, max: 30 },
+        maxAmount: 5000000,
+        minAmount: 100000,
+        tenor_months: { min: 3, max: 18 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: false,
+          mustHave: ["National ID", "Group membership or guarantor"]
+        },
+        targetFarmers: "Smallholder farmers, rural women, informal sector",
+        notes: "PRIDE Tanzania and FINCA Tanzania are major MFIs. Group lending standard. Fast approval (3-7 days). Higher rates reflect higher risk.",
+        applyAt: "PRIDE Tanzania or FINCA Tanzania offices"
+      }
+    ]
+  },
+
+  "UG": {
+    country: "Uganda", flag: "🇺🇬", currency: "UGX", symbol: "USh",
+    programs: [
+      {
+        id: "udb",
+        name: "Uganda Development Bank (UDB) Agri-Loan",
+        type: "Government Development Bank",
+        typeBadge: "Dev Bank",
+        interestRate_pct: 12,
+        maxAmount: 5000000000,
+        minAmount: 10000000,
+        tenor_months: { min: 24, max: 120 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: true,
+          mustHave: ["Business registration", "Project feasibility study", "Collateral (land, buildings, equipment)", "Environmental compliance certificate"]
+        },
+        targetFarmers: "Medium to large-scale farmers and agribusinesses",
+        notes: "UDB supports long-term agricultural investment. Best for processing, irrigation infrastructure, commercial farms. Minimum loan is higher — not suitable for smallholders.",
+        applyAt: "Uganda Development Bank headquarters, Kampala"
+      },
+      {
+        id: "dfcu_ug",
+        name: "DFCU Bank AgriBusiness Loan",
+        type: "Commercial Bank",
+        typeBadge: "Commercial",
+        interestRate_pct: 18,
+        maxAmount: 500000000,
+        minAmount: 5000000,
+        tenor_months: { min: 12, max: 60 },
+        eligibility: {
+          minAge: 21,
+          cooperative_required: false,
+          bankAccount_required: true,
+          collateral_required: true,
+          mustHave: ["DFCU account", "Business registration", "2+ years farm records", "Collateral"]
+        },
+        targetFarmers: "Commercial farmers with financial track record",
+        notes: "DFCU has specialized agribusiness unit. Good for established commercial operations.",
+        applyAt: "DFCU Bank branches or dfcubank.com"
+      },
+      {
+        id: "centenary_ug",
+        name: "Centenary Bank Agri-Loan",
+        type: "Commercial Bank",
+        typeBadge: "Commercial",
+        interestRate_pct: 18,
+        maxAmount: 100000000,
+        minAmount: 1000000,
+        tenor_months: { min: 6, max: 36 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: true,
+          mustHave: ["Centenary Bank account", "Farm records or business plan", "Guarantor or collateral"]
+        },
+        targetFarmers: "Rural smallholder to medium farmers",
+        notes: "Centenary Bank is Uganda's largest rural/community bank. Specifically designed for smallholders with flexible collateral.",
+        applyAt: "Centenary Bank branches nationwide"
+      },
+      {
+        id: "saccos_ug",
+        name: "SACCOs and Farmer Cooperatives",
+        type: "Cooperative / SACCO",
+        typeBadge: "SACCO",
+        interestRate_pct: { min: 15, max: 24 },
+        maxAmount: null,
+        maxAmountLabel: "3× your savings",
+        tenor_months: { min: 6, max: 24 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: true,
+          bankAccount_required: false,
+          mustHave: ["SACCO or cooperative membership", "Regular savings (6+ months)", "Fellow member guarantors"]
+        },
+        targetFarmers: "All rural farmers in cooperatives",
+        notes: "Government supports SACCOs through SACCOS Regulatory Authority. Best community-level credit access. Many SACCOs operate at parish/village level.",
+        applyAt: "Your local SACCO, VSLA, or farmer cooperative"
+      },
+      {
+        id: "mfi_ug",
+        name: "Microfinance Institutions (PRIDE, FINCA Uganda, ENCOT)",
+        type: "Microfinance",
+        typeBadge: "Microfinance",
+        interestRate_pct: { min: 24, max: 40 },
+        maxAmount: 10000000,
+        minAmount: 200000,
+        tenor_months: { min: 3, max: 18 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: false,
+          mustHave: ["National ID", "Group membership or guarantor"]
+        },
+        targetFarmers: "Smallholder farmers, women, informal sector",
+        notes: "PRIDE Uganda, FINCA Uganda, and ENCOT are major MFIs. Group solidarity lending common. Fast (3-7 days) but expensive.",
+        applyAt: "PRIDE Uganda, FINCA Uganda, or ENCOT offices"
+      }
+    ]
+  },
+
+  "RW": {
+    country: "Rwanda", flag: "🇷🇼", currency: "RWF", symbol: "RF",
+    programs: [
+      {
+        id: "brd",
+        name: "Development Bank of Rwanda (BRD) Agri-Loan",
+        type: "Government Development Bank",
+        typeBadge: "Dev Bank",
+        interestRate_pct: 14,
+        maxAmount: 200000000,
+        minAmount: 5000000,
+        tenor_months: { min: 24, max: 120 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: true,
+          mustHave: ["Business registration (RDB certificate)", "Business plan with financial projections", "Collateral (land title, equipment)", "Environmental and Social Management Plan"]
+        },
+        targetFarmers: "Medium to large agricultural businesses and cooperatives",
+        notes: "BRD offers seasonal crop loans, agro-processing, and farm infrastructure finance. Key lender for Rwanda's export crops (tea, coffee, horticulture).",
+        applyAt: "BRD headquarters in Kigali or brd.rw"
+      },
+      {
+        id: "bk_agri",
+        name: "Bank of Kigali Agri-Loan",
+        type: "Commercial Bank",
+        typeBadge: "Commercial",
+        interestRate_pct: 16,
+        maxAmount: 100000000,
+        minAmount: 1000000,
+        tenor_months: { min: 12, max: 60 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: true,
+          collateral_required: true,
+          mustHave: ["Bank of Kigali account", "Farm/business records", "Collateral or crop insurance"]
+        },
+        targetFarmers: "Commercial farmers and agri-SMEs",
+        notes: "Rwanda's largest commercial bank. Mobile banking via BK App. BK TecHouse for digital agri-finance.",
+        applyAt: "Bank of Kigali branches or BK App"
+      },
+      {
+        id: "umurenge_sacco",
+        name: "Umurenge SACCO",
+        type: "Government-Supported Cooperative",
+        typeBadge: "Gov SACCO",
+        interestRate_pct: { min: 12, max: 18 },
+        maxAmount: null,
+        maxAmountLabel: "2-3× your savings",
+        tenor_months: { min: 6, max: 24 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: true,
+          bankAccount_required: false,
+          mustHave: ["Rwandan citizen", "Umurenge SACCO membership", "Regular savings (3+ months)"]
+        },
+        targetFarmers: "All rural farmers across Rwanda",
+        notes: "Government established Umurenge SACCOs in every Sector (Umurenge) in Rwanda — the most accessible community finance in Rwanda. Every Rwandan can join their local Umurenge SACCO.",
+        applyAt: "Your Sector (Umurenge) SACCO office"
+      },
+      {
+        id: "minagri_rw",
+        name: "MINAGRI Crop Insurance & Input Credit (e-Soko)",
+        type: "Government Scheme",
+        typeBadge: "Gov Scheme",
+        interestRate_pct: 0,
+        maxAmount: null,
+        maxAmountLabel: "Input credit in-kind",
+        tenor_months: { min: 3, max: 6 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: true,
+          bankAccount_required: false,
+          mustHave: ["Registration with MINAGRI or local cooperative", "Membership of a farmer organization"]
+        },
+        targetFarmers: "Smallholder food crop farmers in cooperative systems",
+        disbursement: "Fertilizer and seed distributed on credit via Crop Intensification Programme (CIP). Repayment after harvest via cooperative.",
+        notes: "Rwanda's flagship agricultural intensification program. Covers maize, wheat, Irish potato, rice. Insurance against crop failure included in most regions.",
+        applyAt: "Your cooperative or local agriculture office (Sector Agronomist)"
+      }
+    ]
+  },
+
+  "CI": {
+    country: "Côte d'Ivoire", flag: "🇨🇮", currency: "XOF", symbol: "CFA",
+    programs: [
+      {
+        id: "bni_ci",
+        name: "BNI (Banque Nationale d'Investissement) Agri-Loans",
+        type: "Government Bank",
+        typeBadge: "Gov Bank",
+        interestRate_pct: 7,
+        maxAmount: 50000000,
+        minAmount: 100000,
+        tenor_months: { min: 12, max: 84 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: true,
+          mustHave: ["Ivorian national ID", "Farm or business registration", "Business plan"]
+        },
+        targetFarmers: "All farmers and agribusinesses in Côte d'Ivoire",
+        notes: "State-owned investment bank with mandate for agri-finance. Competitive rates. Key lender for cocoa and cashew value chains.",
+        applyAt: "BNI branches across Côte d'Ivoire"
+      },
+      {
+        id: "boad_ci",
+        name: "BOAD Regional Agri-Credit (via local banks)",
+        type: "Regional Development Bank",
+        typeBadge: "BOAD Regional",
+        interestRate_pct: { min: 5, max: 7 },
+        maxAmount: 500000000,
+        minAmount: 10000000,
+        tenor_months: { min: 36, max: 180 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: true,
+          mustHave: ["Business registration", "Detailed project plan", "Participating local bank relationship", "Environmental impact assessment (for large projects)"]
+        },
+        targetFarmers: "Large agri-investments — processing, export, commercial farms",
+        notes: "BOAD (West African Development Bank) provides concessional financing to WAEMU zone including Côte d'Ivoire. Accessed through partner local banks. Not for smallholders.",
+        applyAt: "Via BNI, SIB, or BICICI with BOAD facility request"
+      },
+      {
+        id: "fafci",
+        name: "FAFCI Agricultural Guarantee Fund",
+        type: "Government Guarantee",
+        typeBadge: "Guarantee",
+        interestRate_pct: { min: 8, max: 14 },
+        maxAmount: 20000000,
+        minAmount: 200000,
+        tenor_months: { min: 12, max: 60 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: true,
+          mustHave: ["Agribusiness registration", "Farm records", "Bank account at participating bank"]
+        },
+        targetFarmers: "Farmers and agro-SMEs needing bank guarantee support",
+        notes: "FAFCI guarantees up to 70% of agri-loans, enabling smaller farmers to access commercial bank credit. Apply through your bank — ask if they work with FAFCI.",
+        applyAt: "Via participating commercial banks (ask about FAFCI guarantee)"
+      },
+      {
+        id: "coopec_ci",
+        name: "COOPEC / Cooperative Credit Unions (CFA Zone)",
+        type: "Cooperative / Microfinance",
+        typeBadge: "Coop Finance",
+        interestRate_pct: { min: 12, max: 24 },
+        maxAmount: 5000000,
+        minAmount: 50000,
+        tenor_months: { min: 6, max: 24 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: true,
+          bankAccount_required: false,
+          mustHave: ["Cooperative membership", "Regular savings", "Fellow member guarantors"]
+        },
+        targetFarmers: "Smallholder farmers in cooperatives",
+        notes: "Hundreds of COOPECs and mutual savings and loan associations across Côte d'Ivoire. Best for cocoa, rubber, and cashew farmer cooperatives.",
+        applyAt: "Your local COOPEC or cooperative credit union"
+      },
+      {
+        id: "advans_ci",
+        name: "Advans Côte d'Ivoire Microfinance",
+        type: "Microfinance",
+        typeBadge: "Microfinance",
+        interestRate_pct: { min: 18, max: 30 },
+        maxAmount: 2000000,
+        minAmount: 50000,
+        tenor_months: { min: 3, max: 18 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: false,
+          mustHave: ["Ivorian ID", "Business or farm activity proof", "Guarantor or group"]
+        },
+        targetFarmers: "Smallholders, market traders, women farmers",
+        notes: "International MFI with strong Côte d'Ivoire presence. Individual and group loans. Fast processing.",
+        applyAt: "Advans Côte d'Ivoire offices in Abidjan and secondary cities"
+      }
+    ]
+  },
+
+  "CM": {
+    country: "Cameroon", flag: "🇨🇲", currency: "XAF", symbol: "FCFA",
+    programs: [
+      {
+        id: "bdeac_cm",
+        name: "BDEAC (Central African Development Bank) via local banks",
+        type: "Regional Development Bank",
+        typeBadge: "BDEAC Regional",
+        interestRate_pct: { min: 6, max: 9 },
+        maxAmount: 1000000000,
+        minAmount: 50000000,
+        tenor_months: { min: 60, max: 240 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: true,
+          mustHave: ["Business registration (RCCM)", "Feasibility study", "Environmental impact assessment", "Partnership with local bank for on-lending"]
+        },
+        targetFarmers: "Large agri-investments — agro-processing, commercial farms, cooperatives",
+        notes: "BDEAC provides long-term concessional financing to CEMAC zone (Cameroon, Chad, Congo, CAR, Gabon, Equatorial Guinea). Best for large projects.",
+        applyAt: "Via Afriland First Bank, CCA, or other commercial banks with BDEAC facilities"
+      },
+      {
+        id: "afriland_cm",
+        name: "Afriland First Bank Agri-Loan",
+        type: "Commercial Bank",
+        typeBadge: "Commercial",
+        interestRate_pct: { min: 12, max: 16 },
+        maxAmount: 200000000,
+        minAmount: 500000,
+        tenor_months: { min: 12, max: 60 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: true,
+          collateral_required: true,
+          mustHave: ["Afriland account", "Business plan", "Collateral (land, buildings, equipment)", "Farm records"]
+        },
+        targetFarmers: "Medium to large commercial farmers and agribusinesses",
+        notes: "Afriland First Bank has strong agriculture portfolio, especially cocoa, coffee, and palm oil. Good support for exporting farmers.",
+        applyAt: "Afriland First Bank branches across Cameroon"
+      },
+      {
+        id: "camccul",
+        name: "CamCCUL (Cameroon Cooperative Credit Union League)",
+        type: "Cooperative Credit Union",
+        typeBadge: "Credit Union",
+        interestRate_pct: { min: 10, max: 18 },
+        maxAmount: 10000000,
+        minAmount: 50000,
+        tenor_months: { min: 6, max: 36 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: true,
+          bankAccount_required: false,
+          mustHave: ["CamCCUL credit union membership", "Regular savings (3+ months)", "Guarantors from fellow members"]
+        },
+        targetFarmers: "Farmers in credit union cooperatives",
+        notes: "Largest cooperative financial network in Cameroon. Over 300 credit unions (COOPECS). Very accessible for rural farmers in Anglophone and Francophone regions.",
+        applyAt: "Your nearest CamCCUL credit union"
+      },
+      {
+        id: "mc2_cm",
+        name: "MC2 (Mutuelles Communautaires de Croissance)",
+        type: "Community Finance",
+        typeBadge: "Community MFI",
+        interestRate_pct: { min: 15, max: 24 },
+        maxAmount: 5000000,
+        minAmount: 25000,
+        tenor_months: { min: 4, max: 24 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: false,
+          mustHave: ["Community membership", "Regular savings in MC2", "Guarantors"]
+        },
+        targetFarmers: "Rural smallholder farmers",
+        notes: "MC2 are community savings and loan cooperatives created in village contexts, especially in the Western highlands and forested South. Over 200 MC2s across Cameroon.",
+        applyAt: "Your village MC2 or nearest branch"
+      }
+    ]
+  },
+
+  "SN": {
+    country: "Senegal", flag: "🇸🇳", currency: "XOF", symbol: "CFA",
+    programs: [
+      {
+        id: "cncas",
+        name: "CNCAS (Caisse Nationale de Crédit Agricole du Sénégal)",
+        type: "Government Development Bank",
+        typeBadge: "Gov Agri Bank",
+        interestRate_pct: 7.5,
+        maxAmount: 500000000,
+        minAmount: 50000,
+        tenor_months: { min: 6, max: 84 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: true,
+          mustHave: ["Senegalese national ID (CNIE)", "Farm registration or land document", "Business plan"]
+        },
+        targetFarmers: "All Senegalese farmers — groundnut, rice, horticulture, livestock",
+        notes: "Senegal's primary agricultural bank. Subsidized government rates. Seasonal crop loans structured around groundnut and cereal campaigns. Over 60 years of agri-lending.",
+        applyAt: "CNCAS branches in Dakar and all regional capitals"
+      },
+      {
+        id: "boad_sn",
+        name: "BOAD Regional Agri-Credit (via local banks)",
+        type: "Regional Development Bank",
+        typeBadge: "BOAD Regional",
+        interestRate_pct: { min: 5, max: 7 },
+        maxAmount: 500000000,
+        minAmount: 10000000,
+        tenor_months: { min: 36, max: 180 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: true,
+          mustHave: ["Business registration", "Project plan", "Environmental plan", "Local bank partnership"]
+        },
+        targetFarmers: "Large agri-processing, export horticulture, commercial farms",
+        notes: "BOAD provides WAEMU-wide concessional finance. Senegal is a priority country. Accessed through CNCAS, BOA, or Ecobank Sénégal.",
+        applyAt: "Via CNCAS or BOA Sénégal with BOAD facility"
+      },
+      {
+        id: "der_fj",
+        name: "DER/FJ (Délégation pour l'Entrepreneuriat Rapide des Femmes et Jeunes)",
+        type: "Government Youth/Women Fund",
+        typeBadge: "Gov Fund",
+        interestRate_pct: { min: 0, max: 5 },
+        maxAmount: 50000000,
+        minAmount: 100000,
+        tenor_months: { min: 12, max: 60 },
+        eligibility: {
+          minAge: 18, maxAge: 40,
+          cooperative_required: false,
+          bankAccount_required: true,
+          mustHave: ["Senegalese citizen aged 18-40", "Business plan", "DER/FJ application form"]
+        },
+        targetFarmers: "Young farmers (18-40) and women in agribusiness",
+        notes: "Government fund targeting youth and women entrepreneurs including agribusiness. Very low rates (0-5%). Annual application windows.",
+        applyAt: "DER/FJ offices or der.gouv.sn"
+      },
+      {
+        id: "pamecas_sn",
+        name: "PAMECAS / ACEP Microfinance",
+        type: "Microfinance",
+        typeBadge: "Microfinance",
+        interestRate_pct: { min: 12, max: 24 },
+        maxAmount: 10000000,
+        minAmount: 50000,
+        tenor_months: { min: 4, max: 24 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: false,
+          mustHave: ["National ID", "Savings account with MFI (recommended)", "Guarantor or group membership"]
+        },
+        targetFarmers: "Smallholder farmers, market women, informal sector",
+        notes: "PAMECAS and ACEP are Senegal's largest MFIs. ACEP focuses on entrepreneur lending. PAMECAS is cooperative-based. Fast approval (1-7 days).",
+        applyAt: "PAMECAS or ACEP offices across Senegal"
+      }
+    ]
+  },
+
+  "MA": {
+    country: "Morocco", flag: "🇲🇦", currency: "MAD", symbol: "DH",
+    programs: [
+      {
+        id: "cam_ma",
+        name: "Crédit Agricole du Maroc (CAM)",
+        type: "Government Agricultural Bank",
+        typeBadge: "Gov Agri Bank",
+        interestRate_pct: { min: 3.5, max: 6 },
+        maxAmount: 5000000,
+        minAmount: 1000,
+        tenor_months: { min: 6, max: 180 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: true,
+          mustHave: ["Moroccan national ID (CIN)", "Agricultural land proof or lease", "CAM account"]
+        },
+        targetFarmers: "All Moroccan farmers — from subsistence to commercial",
+        notes: "Morocco's dominant agricultural lender — provides 70%+ of agri-credit nationally. Very competitive rates. Wide network. Products: Tamwil Al Fellah (smallholder), seasonal crop loans, equipment finance.",
+        applyAt: "Crédit Agricole du Maroc (CAM) branches nationwide"
+      },
+      {
+        id: "fda_ma",
+        name: "FDA (Fonds de Développement Agricole) Subsidies",
+        type: "Government Subsidy Fund",
+        typeBadge: "Gov Subsidy",
+        interestRate_pct: 0,
+        maxAmount: null,
+        maxAmountLabel: "30-100% equipment/investment subsidy",
+        tenor_months: { min: 0, max: 0 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: true,
+          mustHave: ["Moroccan ID", "Agricultural activity proof", "Application via CAM or OCP distribution"]
+        },
+        targetFarmers: "All Moroccan farmers investing in equipment, irrigation, seeds",
+        notes: "Not a loan — grants/subsidies for agricultural investment. 30-100% subsidy depending on investment type: drip irrigation (60%), tractors (30-40%), greenhouse (40%), certified seeds (50%). Apply via CAM.",
+        applyAt: "Crédit Agricole du Maroc (CAM) or Ministry of Agriculture offices"
+      },
+      {
+        id: "cih_ma",
+        name: "CIH Bank Agricultural Loans",
+        type: "Commercial Bank",
+        typeBadge: "Commercial",
+        interestRate_pct: { min: 5, max: 7 },
+        maxAmount: 3000000,
+        minAmount: 10000,
+        tenor_months: { min: 12, max: 84 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: true,
+          mustHave: ["Moroccan ID", "CIH account", "Business plan or farm description", "Collateral for large loans"]
+        },
+        targetFarmers: "Small to medium commercial farmers",
+        notes: "CIH Bank is Morocco's second-most active agri-lender. Competitive rates. Green agriculture focus.",
+        applyAt: "CIH Bank branches"
+      },
+      {
+        id: "al_amana",
+        name: "Al Amana Microfinance",
+        type: "Microfinance",
+        typeBadge: "Microfinance",
+        interestRate_pct: { min: 14, max: 24 },
+        maxAmount: 100000,
+        minAmount: 2000,
+        tenor_months: { min: 6, max: 36 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: false,
+          mustHave: ["Moroccan ID", "Proof of income-generating activity", "Guarantor or group membership"]
+        },
+        targetFarmers: "Smallholder farmers, rural women, micro-entrepreneurs",
+        notes: "Al Amana is Morocco's largest MFI. Group and individual loans. Fast approval. Rural coverage nationwide.",
+        applyAt: "Al Amana offices across Morocco"
+      }
+    ]
+  },
+
+  "TN": {
+    country: "Tunisia", flag: "🇹🇳", currency: "TND", symbol: "DT",
+    programs: [
+      {
+        id: "bna_tn",
+        name: "BNA (Banque Nationale Agricole)",
+        type: "Government Agricultural Bank",
+        typeBadge: "Gov Agri Bank",
+        interestRate_pct: { min: 5, max: 8 },
+        maxAmount: 2000000,
+        minAmount: 1000,
+        tenor_months: { min: 6, max: 120 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: true,
+          mustHave: ["Tunisian national ID (CIN)", "Agricultural land or lease", "BNA account"]
+        },
+        targetFarmers: "All Tunisian farmers",
+        notes: "Tunisia's dedicated agricultural bank. Widest rural branch coverage. Short-term seasonal loans, medium-term equipment, long-term land. Key lender for olive oil, dates, cereals.",
+        applyAt: "BNA branches (Banque Nationale Agricole) nationwide"
+      },
+      {
+        id: "apia_tn",
+        name: "APIA (Agricultural Investment Promotion Agency) Subsidized Loans",
+        type: "Government Scheme",
+        typeBadge: "Gov Scheme",
+        interestRate_pct: 2,
+        maxAmount: 1000000,
+        minAmount: 5000,
+        tenor_months: { min: 36, max: 180 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: true,
+          mustHave: ["Tunisian ID", "Agricultural investment project plan", "APIA approval (must apply to APIA first)", "Via BNA or STB account"]
+        },
+        targetFarmers: "Farmers investing in agricultural projects (irrigation, greenhouse, livestock)",
+        notes: "APIA subsidizes interest to just 2%. Must first get APIA approval for your project, then take the loan via BNA or another authorized bank. Best rates available in Tunisia.",
+        applyAt: "Apply to APIA first (apia.com.tn), then via BNA or STB"
+      },
+      {
+        id: "stb_tn",
+        name: "STB (Société Tunisienne de Banque) Agri-Loan",
+        type: "Government Commercial Bank",
+        typeBadge: "Gov Bank",
+        interestRate_pct: { min: 7, max: 10 },
+        maxAmount: 1000000,
+        minAmount: 5000,
+        tenor_months: { min: 12, max: 84 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: true,
+          mustHave: ["National ID", "STB account", "Farm records", "Collateral for loans > DT 50,000"]
+        },
+        targetFarmers: "Commercial farmers and agribusinesses",
+        notes: "STB is a major state commercial bank with agri-portfolio. APIA-subsidized loans disbursed through STB.",
+        applyAt: "STB branches nationwide"
+      },
+      {
+        id: "enda_tn",
+        name: "Enda Tamweel Microfinance",
+        type: "Microfinance",
+        typeBadge: "Microfinance",
+        interestRate_pct: { min: 18, max: 30 },
+        maxAmount: 20000,
+        minAmount: 500,
+        tenor_months: { min: 6, max: 24 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: false,
+          mustHave: ["Tunisian ID", "Proof of income-generating activity", "Guarantor or group"]
+        },
+        targetFarmers: "Small farmers, rural women, peri-urban entrepreneurs",
+        notes: "Enda Tamweel is Tunisia's main MFI. Focus on rural and peri-urban finance. Smaller loan sizes but accessible for those without bank accounts.",
+        applyAt: "Enda Tamweel offices across Tunisia"
+      }
+    ]
+  },
+
+  "AO": {
+    country: "Angola", flag: "🇦🇴", currency: "AOA", symbol: "Kz",
+    programs: [
+      {
+        id: "bda_ao",
+        name: "BDA (Banco de Desenvolvimento de Angola)",
+        type: "Government Development Bank",
+        typeBadge: "Dev Bank",
+        interestRate_pct: { min: 8, max: 10 },
+        maxAmount: 500000000,
+        minAmount: 1000000,
+        tenor_months: { min: 24, max: 120 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: true,
+          mustHave: ["Angolan national ID (BI)", "Business registration", "Project feasibility study", "Business plan", "Collateral"]
+        },
+        targetFarmers: "Commercial farmers and agro-processors",
+        notes: "Angola's primary development finance institution. Strong focus on agricultural diversification away from oil. Supports livestock, cassava, maize, horticulture, and coffee.",
+        applyAt: "BDA headquarters in Luanda or regional offices"
+      },
+      {
+        id: "prodesi_ao",
+        name: "PRODESI (Programa de Apoio à Produção)",
+        type: "Government Programme",
+        typeBadge: "Gov Programme",
+        interestRate_pct: { min: 4, max: 8 },
+        maxAmount: 50000000,
+        minAmount: 500000,
+        tenor_months: { min: 12, max: 60 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: true,
+          mustHave: ["Angolan ID", "Registered business or cooperative", "Business plan", "MINFIN pre-qualification"]
+        },
+        targetFarmers: "All agricultural producers — smallholder to commercial",
+        notes: "National programme to diversify Angola's economy via domestic production. Subsidized rates. Also covers inputs and equipment. Managed by Ministry of Economy and Finance.",
+        applyAt: "MINFIN (Ministry of Finance) offices or BDA"
+      },
+      {
+        id: "bic_ao",
+        name: "BIC / BAI Agricultural Loans",
+        type: "Commercial Bank",
+        typeBadge: "Commercial",
+        interestRate_pct: { min: 12, max: 18 },
+        maxAmount: 100000000,
+        minAmount: 1000000,
+        tenor_months: { min: 12, max: 60 },
+        eligibility: {
+          minAge: 21,
+          cooperative_required: false,
+          bankAccount_required: true,
+          collateral_required: true,
+          mustHave: ["Angolan ID", "Bank account with BIC or BAI", "Business registration", "Collateral (property, equipment)"]
+        },
+        targetFarmers: "Commercial farmers with track record",
+        notes: "BIC and BAI are Angola's largest commercial banks. Standard commercial rates but faster processing than BDA.",
+        applyAt: "BIC or BAI branches in Luanda and provincial capitals"
+      },
+      {
+        id: "angofin_ao",
+        name: "Angolan Microfinance Institutions (Kixicrédito, NGO channels)",
+        type: "Microfinance",
+        typeBadge: "Microfinance",
+        interestRate_pct: { min: 18, max: 36 },
+        maxAmount: 2000000,
+        minAmount: 50000,
+        tenor_months: { min: 3, max: 18 },
+        eligibility: {
+          minAge: 18,
+          cooperative_required: false,
+          bankAccount_required: false,
+          mustHave: ["Angolan ID", "Proof of agricultural activity", "Guarantor"]
+        },
+        targetFarmers: "Smallholder farmers and rural micro-entrepreneurs",
+        notes: "Angola's microfinance sector is still developing. Kixicrédito (informal savings groups) and NGO-linked MFIs serve rural farmers where formal banks don't reach.",
+        applyAt: "Local Kixicrédito groups or NGO-supported credit programs in your region"
+      }
+    ]
+  }
+};

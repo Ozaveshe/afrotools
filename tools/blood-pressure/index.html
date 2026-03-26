@@ -230,12 +230,22 @@ function check() {
   if (sys < 60 || sys > 260 || dia < 40 || dia > 160) return;
 
   const result = classify(sys, dia);
+  const pulseNum = parseInt(pulse);
+  let pulseInfo = '';
+  if (pulseNum >= 30 && pulseNum <= 200) {
+    let pulseClass, pulseLabel, pulseAdv;
+    if (pulseNum < 60) { pulseClass='#f59e0b'; pulseLabel='Low (Bradycardia)'; pulseAdv='Resting HR below 60 — normal in athletes, but see a doctor if you feel dizzy or faint.'; }
+    else if (pulseNum <= 100) { pulseClass='#22c55e'; pulseLabel='Normal'; pulseAdv='Healthy resting heart rate.'; }
+    else if (pulseNum <= 120) { pulseClass='#f97316'; pulseLabel='Slightly Elevated'; pulseAdv='Could be due to stress, caffeine, or anxiety. If persistent, consult a doctor.'; }
+    else { pulseClass='#ef4444'; pulseLabel='High (Tachycardia)'; pulseAdv='Resting HR above 120 needs medical evaluation. Avoid stimulants and rest.'; }
+    pulseInfo = `<div style="background:#f8fafc;border-radius:8px;padding:10px 14px;margin-top:10px;border-left:4px solid ${pulseClass};font-size:.82rem"><strong>Pulse: ${pulseNum} bpm — ${pulseLabel}</strong><br><span style="color:#64748b">${pulseAdv}</span></div>`;
+  }
   document.getElementById('bpResult').innerHTML = `
     <div class="bp-result ${result.cls}">
       <div class="reading">${sys}/${dia} <span style="font-size:.8rem;font-weight:400">mmHg</span></div>
       <div class="category">${result.cat}</div>
       <div class="advice">${result.advice}</div>
-    </div>`;
+    </div>${pulseInfo}`;
   document.getElementById('resultCard').style.display = 'block';
 
   // Save to history
@@ -253,6 +263,19 @@ function renderHistory() {
     return;
   }
   let html = '';
+  // Trend analysis (if 3+ readings)
+  if (history.length >= 3) {
+    const recent3 = history.slice(0, 3);
+    const avgSys = recent3.reduce((s,h) => s + h.sys, 0) / 3;
+    const older3 = history.slice(-Math.min(3, history.length));
+    const oldAvgSys = older3.reduce((s,h) => s + h.sys, 0) / older3.length;
+    const diff = avgSys - oldAvgSys;
+    let trendIcon, trendTxt, trendColor;
+    if (Math.abs(diff) < 3) { trendIcon = '→'; trendTxt = 'Stable'; trendColor = '#64748b'; }
+    else if (diff < 0) { trendIcon = '↓'; trendTxt = 'Improving'; trendColor = '#22c55e'; }
+    else { trendIcon = '↑'; trendTxt = 'Worsening'; trendColor = '#ef4444'; }
+    html += `<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:10px 14px;margin-bottom:10px;font-size:.82rem"><strong style="color:${trendColor}">${trendIcon} Trend: ${trendTxt}</strong> — Recent avg systolic: ${Math.round(avgSys)} mmHg (last ${history.length} reading${history.length>1?'s':''})</div>`;
+  }
   history.forEach(h => {
     const d = new Date(h.date);
     const dateStr = d.toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'}) + ' ' + d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});

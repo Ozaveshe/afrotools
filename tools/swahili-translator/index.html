@@ -19,7 +19,7 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6}
 .hero{background:linear-gradient(135deg,#4c1d95 0%,#6d28d9 50%,#a78bfa 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}
-.hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}
+.hero h1{color:#fff;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}
 .hero p{font-size:1.05rem;opacity:.9;max-width:600px;margin:0 auto}
 .container{max-width:1000px;margin:0 auto;padding:1.5rem}
 .card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:1.5rem}
@@ -280,7 +280,55 @@ const PHRASES=[
 {en:'Celebration',sw:'Sherehe',pron:'sheh-REH-heh',cat:'Culture'},
 {en:'Welcome home',sw:'Karibu nyumbani',pron:'kah-REE-boo nyoom-BAH-nee',cat:'Culture'},
 {en:'God bless you',sw:'Mungu akubariki',pron:'MOON-goo ah-koo-bah-REE-kee',cat:'Culture'},
-{en:'Respect',sw:'Heshima',pron:'heh-SHEE-mah',cat:'Culture'}
+{en:'Respect',sw:'Heshima',pron:'heh-SHEE-mah',cat:'Culture'},
+// Market & Shopping
+{en:'Do you have this?',sw:'Una hii?',pron:'OO-nah hee',cat:'Market & Shopping'},
+{en:'I am looking for...',sw:'Natafuta...',pron:'nah-tah-FOO-tah',cat:'Market & Shopping'},
+{en:'Give me a discount',sw:'Nipunguzie bei',pron:'nee-poon-goo-ZEE-eh BEH-ee',cat:'Market & Shopping'},
+{en:'Final price',sw:'Bei ya mwisho',pron:'BEH-ee yah MWEE-shoh',cat:'Market & Shopping'},
+{en:'Wrap it for me',sw:'Nifungie',pron:'nee-foon-GEE-eh',cat:'Market & Shopping'},
+{en:'I need change',sw:'Ninahitaji chenji',pron:'nee-nah-hee-TAH-jee CHEN-jee',cat:'Market & Shopping'},
+{en:'Is this fresh?',sw:'Hii ni mbichi?',pron:'hee nee m-BEE-chee',cat:'Market & Shopping'},
+{en:'I will come back',sw:'Nitarudi',pron:'nee-tah-ROO-dee',cat:'Market & Shopping'},
+{en:'Pay via M-Pesa',sw:'Lipa kupitia M-Pesa',pron:'LEE-pah koo-pee-TEE-ah em-PEH-sah',cat:'Market & Shopping'},
+{en:'Give me a receipt',sw:'Nipe risiti',pron:'NEE-peh ree-SEE-tee',cat:'Market & Shopping'},
+{en:'I want two of these',sw:'Nataka mbili za hizi',pron:'nah-TAH-kah m-BEE-lee zah HEE-zee',cat:'Market & Shopping'},
+// Health & Body
+{en:'I have a headache',sw:'Kichwa changu kinauma',pron:'KEECH-wah CHAHN-goo kee-nah-OO-mah',cat:'Health & Body'},
+{en:'I have malaria',sw:'Nina malaria',pron:'NEE-nah mah-LAH-ree-ah',cat:'Health & Body'},
+{en:'I need medicine',sw:'Ninahitaji dawa',pron:'nee-nah-hee-TAH-jee DAH-wah',cat:'Health & Body'},
+{en:'Stomach pain',sw:'Tumbo linauma',pron:'TOOM-boh lee-nah-OO-mah',cat:'Health & Body'},
+{en:'I am pregnant',sw:'Nina mimba',pron:'NEE-nah MEEM-bah',cat:'Health & Body'},
+{en:'High blood pressure',sw:'Shinikizo la damu juu',pron:'shee-nee-KEE-zoh lah DAH-moo JOO',cat:'Health & Body'},
+{en:'Pharmacy',sw:'Duka la dawa',pron:'DOO-kah lah DAH-wah',cat:'Health & Body'},
+{en:'Get well soon',sw:'Pona haraka',pron:'POH-nah hah-RAH-kah',cat:'Health & Body'},
+{en:'Blood test',sw:'Kipimo cha damu',pron:'kee-PEE-moh chah DAH-moo',cat:'Health & Body'},
+{en:'Take this daily',sw:'Chukua hii kila siku',pron:'choo-KOO-ah HEE KEE-lah SEE-koo',cat:'Health & Body'},
+// Social & Slang
+{en:'No problem at all',sw:'Hakuna shida',pron:'hah-KOO-nah SHEE-dah',cat:'Social & Slang'},
+{en:'Let\'s go!',sw:'Twende!',pron:'TWEN-deh',cat:'Social & Slang'},
+{en:'Congratulations',sw:'Hongera!',pron:'hohn-GEH-rah',cat:'Social & Slang'},
+{en:'Happy birthday',sw:'Heri ya siku ya kuzaliwa',pron:'HEH-ree yah SEE-koo yah koo-zah-LEE-wah',cat:'Social & Slang'},
+{en:'Stay strong',sw:'Jipe moyo',pron:'JEE-peh MOH-yoh',cat:'Social & Slang'},
+{en:'Good luck!',sw:'Bahati nzuri!',pron:'bah-HAH-tee n-ZOO-ree',cat:'Social & Slang'},
+{en:'How was your day?',sw:'Siku yako ilikuwaje?',pron:'SEE-koo YAH-koh ee-lee-koo-WAH-jeh',cat:'Social & Slang'},
+{en:'Send me the money',sw:'Nitumie pesa',pron:'nee-too-MEE-eh PEH-sah',cat:'Social & Slang'},
+{en:'It is finished',sw:'Imekwisha',pron:'ee-meh-KWEE-shah',cat:'Social & Slang'},
+// Money & Finance
+{en:'I want to transfer money',sw:'Nataka kutuma pesa',pron:'nah-TAH-kah koo-TOO-mah PEH-sah',cat:'Money & Finance'},
+{en:'ATM machine',sw:'Mashine ya pesa',pron:'mah-SHEE-neh yah PEH-sah',cat:'Money & Finance'},
+{en:'What is the exchange rate?',sw:'Kiwango cha ubadilishaji ni?',pron:'kee-WAHN-goh chah oo-bah-dee-lee-SHAH-jee nee',cat:'Money & Finance'},
+{en:'I want to save',sw:'Nataka kuweka akiba',pron:'nah-TAH-kah koo-WEH-kah ah-KEE-bah',cat:'Money & Finance'},
+{en:'Loan',sw:'Mkopo',pron:'m-KOH-poh',cat:'Money & Finance'},
+{en:'Interest rate',sw:'Kiwango cha riba',pron:'kee-WAHN-goh chah REE-bah',cat:'Money & Finance'},
+// Agriculture
+{en:'Maize',sw:'Mahindi',pron:'mah-HEEN-dee',cat:'Agriculture'},
+{en:'Cassava',sw:'Muhogo',pron:'moo-HOH-goh',cat:'Agriculture'},
+{en:'Coffee beans',sw:'Kahawa',pron:'kah-HAH-wah',cat:'Agriculture'},
+{en:'Farm',sw:'Shamba',pron:'SHAHM-bah',cat:'Agriculture'},
+{en:'Harvest time',sw:'Wakati wa mavuno',pron:'wah-KAH-tee wah mah-VOO-noh',cat:'Agriculture'},
+{en:'Fertiliser',sw:'Mbolea',pron:'m-BOH-leh-ah',cat:'Agriculture'},
+{en:'Irrigation',sw:'Umwagiliaji',pron:'oom-wah-gee-lee-AH-jee',cat:'Agriculture'}
 ];
 
 let activeCat='All';

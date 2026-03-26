@@ -21,7 +21,7 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6}
 .hero{background:linear-gradient(135deg,#14532d 0%,#15803d 50%,#22c55e 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}
-.hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}
+.hero h1{color:#fff;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}
 .hero p{font-size:1.05rem;opacity:.9;max-width:600px;margin:0 auto}
 .container{max-width:900px;margin:0 auto;padding:1.5rem}
 .card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:1.5rem}
@@ -110,7 +110,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <afro-navbar></afro-navbar>
 <section class="hero">
 <h1>Crop Farming Profit Calculator</h1>
-<p>Estimate your farming profitability per hectare. Calculate input costs, expected revenue, and return on investment for African crops.</p>
+<p>Estimate your farming profitability per hectare. Calculate input costs, yield, post-harvest loss, and return on investment for 16 African crops across 8 countries.</p>
 </section>
 <div class="container">
 <div class="card">
@@ -128,6 +128,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <div class="form-group"><label for="country">Country</label><select id="country" onchange="loadCropDefaults()">
 <option value="NG">Nigeria</option><option value="KE">Kenya</option><option value="GH">Ghana</option>
 <option value="TZ">Tanzania</option><option value="UG">Uganda</option><option value="ZA">South Africa</option>
+<option value="ET">Ethiopia</option><option value="EG">Egypt</option>
 </select></div>
 <div class="form-group"><label for="method">Farming Method</label><select id="method" onchange="loadCropDefaults()">
 <option value="traditional">Traditional / Manual</option><option value="improved">Improved / Mechanised</option>
@@ -155,6 +156,12 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <div class="form-grid">
 <div class="form-group"><label for="yieldPerHa">Expected Yield (kg/ha)</label><input type="number" id="yieldPerHa" value="0"></div>
 <div class="form-group"><label for="pricePerKg">Market Price (per kg)</label><input type="number" id="pricePerKg" value="0" step="0.1"></div>
+<div class="form-group"><label for="postHarvestLoss">Post-Harvest Loss % <span style="font-weight:400;color:#94a3b8">(typical 10-30%)</span></label><input type="number" id="postHarvestLoss" value="15" min="0" max="80" step="5"></div>
+<div class="form-group"><label for="seasons">Seasons per Year</label><select id="seasons">
+<option value="1">1 season/year</option>
+<option value="2">2 seasons/year</option>
+<option value="3">3 seasons/year (irrigated)</option>
+</select></div>
 </div>
 </div>
 
@@ -196,6 +203,8 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <details><summary>Should I include family labour as a cost?</summary><p>Yes. Even if you don't pay wages to family members, their time has value (opportunity cost). Including family labour at the local daily wage rate gives you a true picture of profitability. Without it, you might think a crop is profitable when you're actually paying yourself below minimum wage.</p></details>
 <details><summary>How do I account for post-harvest losses?</summary><p>African post-harvest losses average 20-40% for perishable crops and 10-20% for grains. Reduce your expected yield by the estimated loss percentage, or add post-harvest loss value to the "Other Costs" field. Investing in proper storage (hermetic bags for grains, cold chain for vegetables) can significantly reduce losses.</p></details>
 <details><summary>What about land rental costs?</summary><p>If you rent farmland, include the rental cost in "Other Costs." If you own the land, you may still want to include an opportunity cost (what you could earn by renting it out) for a true economic analysis. Land costs vary enormously — from 5,000 NGN/ha in northern Nigeria to millions per hectare near cities.</p></details>
+<details><summary>What is the break-even yield and why does it matter?</summary><p>Break-even yield is the minimum kilograms per hectare you must harvest and sell (at the current price) to cover your total production costs. If your actual yield falls below this number, you make a loss. This is critical for risk assessment — if the break-even yield is close to typical yields for that crop in your region, the crop is risky. Compare it with the typical yield range from agricultural extension data before committing.</p></details>
+<details><summary>How do multiple seasons per year affect profitability?</summary><p>With 2+ seasons per year (possible with irrigation), land preparation costs are partially amortised but seed, fertilizer, chemicals, and labour costs repeat each season. Some crops like vegetables (tomato, pepper, onion) can yield 2-3 harvests per year under irrigation. Cash flow improves significantly with multiple seasons even if annual ROI stays the same. Use the "Seasons per Year" selector to see annual totals.</p></details>
 </section>
 <afro-related-tools></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
@@ -205,34 +214,106 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <script src="/assets/js/components/related-tools.js" defer></script>
 <script src="/assets/js/components/newsletter-cta.js" defer></script>
 <script>
-const SYMS={NG:'\u20a6',KE:'KSh',GH:'GH\u20b5',TZ:'TSh',UG:'USh',ZA:'R'};
-const CROP_DATA={
-maize:{NG:{t:{landPrep:40000,seeds:25000,fertilizer:60000,chemicals:15000,labour:50000,irrigation:0,transport:20000,other:10000,yield:3000,price:250},i:{landPrep:80000,seeds:35000,fertilizer:100000,chemicals:25000,labour:80000,irrigation:20000,transport:30000,other:15000,yield:5500,price:250},c:{landPrep:150000,seeds:45000,fertilizer:150000,chemicals:40000,labour:120000,irrigation:50000,transport:50000,other:30000,yield:8000,price:230}},KE:{t:{landPrep:8000,seeds:5000,fertilizer:12000,chemicals:3000,labour:15000,irrigation:0,transport:5000,other:2000,yield:2500,price:40},i:{landPrep:15000,seeds:8000,fertilizer:20000,chemicals:5000,labour:20000,irrigation:5000,transport:8000,other:3000,yield:5000,price:40},c:{landPrep:30000,seeds:12000,fertilizer:35000,chemicals:8000,labour:30000,irrigation:15000,transport:12000,other:5000,yield:7500,price:38}}},
-rice:{NG:{t:{landPrep:50000,seeds:30000,fertilizer:70000,chemicals:20000,labour:60000,irrigation:30000,transport:25000,other:15000,yield:2500,price:450},i:{landPrep:100000,seeds:40000,fertilizer:120000,chemicals:30000,labour:100000,irrigation:60000,transport:35000,other:20000,yield:4500,price:450},c:{landPrep:180000,seeds:50000,fertilizer:180000,chemicals:45000,labour:150000,irrigation:100000,transport:50000,other:30000,yield:7000,price:420}},KE:{t:{landPrep:10000,seeds:8000,fertilizer:15000,chemicals:4000,labour:20000,irrigation:8000,transport:5000,other:3000,yield:2000,price:80},i:{landPrep:20000,seeds:12000,fertilizer:25000,chemicals:7000,labour:30000,irrigation:15000,transport:8000,other:5000,yield:4500,price:80},c:{landPrep:40000,seeds:16000,fertilizer:40000,chemicals:10000,labour:45000,irrigation:30000,transport:15000,other:8000,yield:7000,price:75}}},
-cassava:{NG:{t:{landPrep:35000,seeds:20000,fertilizer:30000,chemicals:10000,labour:45000,irrigation:0,transport:15000,other:10000,yield:15000,price:100},i:{landPrep:70000,seeds:30000,fertilizer:60000,chemicals:20000,labour:80000,irrigation:0,transport:25000,other:15000,yield:25000,price:100},c:{landPrep:120000,seeds:40000,fertilizer:100000,chemicals:30000,labour:120000,irrigation:20000,transport:40000,other:25000,yield:35000,price:95}},KE:{t:{landPrep:6000,seeds:4000,fertilizer:5000,chemicals:2000,labour:12000,irrigation:0,transport:4000,other:2000,yield:12000,price:15},i:{landPrep:12000,seeds:6000,fertilizer:10000,chemicals:4000,labour:18000,irrigation:0,transport:6000,other:3000,yield:22000,price:15},c:{landPrep:25000,seeds:8000,fertilizer:18000,chemicals:6000,labour:28000,irrigation:5000,transport:10000,other:5000,yield:30000,price:14}}}
+var SYMS={NG:'\u20a6',KE:'KSh',GH:'GH\u20b5',TZ:'TSh',UG:'USh',ZA:'R',ET:'Br',EG:'E\u00a3'};
+// Currency units per USD (approx 2025/26)
+var USD_RATES={NG:1600,KE:130,GH:15,TZ:2700,UG:3700,ZA:19,ET:110,EG:49};
+// Scale factor vs NG: convert NG costs to other currencies
+function scaleFromNG(ngVal,country){return Math.round(ngVal*(USD_RATES[country]||1)/1600);}
+
+// Data format: {landPrep,seeds,fertilizer,chemicals,labour,irrigation,transport,other,yield(kg/ha),price(local/kg)}
+// t=traditional, i=improved, c=commercial
+var CROP_DATA={
+maize:{
+  NG:{t:{landPrep:40000,seeds:25000,fertilizer:60000,chemicals:15000,labour:50000,irrigation:0,transport:20000,other:10000,yield:3000,price:250},i:{landPrep:80000,seeds:35000,fertilizer:100000,chemicals:25000,labour:80000,irrigation:20000,transport:30000,other:15000,yield:5500,price:250},c:{landPrep:150000,seeds:45000,fertilizer:150000,chemicals:40000,labour:120000,irrigation:50000,transport:50000,other:30000,yield:8000,price:230}},
+  KE:{t:{landPrep:8000,seeds:5000,fertilizer:12000,chemicals:3000,labour:15000,irrigation:0,transport:5000,other:2000,yield:2500,price:40},i:{landPrep:15000,seeds:8000,fertilizer:20000,chemicals:5000,labour:20000,irrigation:5000,transport:8000,other:3000,yield:5000,price:40},c:{landPrep:30000,seeds:12000,fertilizer:35000,chemicals:8000,labour:30000,irrigation:15000,transport:12000,other:5000,yield:7500,price:38}},
+  GH:{t:{landPrep:350,seeds:250,fertilizer:700,chemicals:200,labour:600,irrigation:0,transport:150,other:100,yield:1500,price:3.5},i:{landPrep:650,seeds:400,fertilizer:1200,chemicals:350,labour:1000,irrigation:200,transport:250,other:150,yield:3500,price:3.5},c:{landPrep:1200,seeds:600,fertilizer:2000,chemicals:600,labour:1500,irrigation:600,transport:400,other:250,yield:6000,price:3.2}},
+  TZ:{t:{landPrep:60000,seeds:40000,fertilizer:95000,chemicals:24000,labour:80000,irrigation:0,transport:32000,other:16000,yield:2000,price:600},i:{landPrep:120000,seeds:55000,fertilizer:160000,chemicals:40000,labour:130000,irrigation:30000,transport:50000,other:24000,yield:5000,price:600},c:{landPrep:230000,seeds:70000,fertilizer:240000,chemicals:65000,labour:195000,irrigation:80000,transport:80000,other:48000,yield:7500,price:560}},
+  UG:{t:{landPrep:90000,seeds:55000,fertilizer:130000,chemicals:33000,labour:110000,irrigation:0,transport:44000,other:22000,yield:2500,price:800},i:{landPrep:175000,seeds:80000,fertilizer:220000,chemicals:55000,labour:180000,irrigation:40000,transport:70000,other:33000,yield:5000,price:800},c:{landPrep:320000,seeds:100000,fertilizer:330000,chemicals:90000,labour:270000,irrigation:110000,transport:110000,other:66000,yield:7500,price:750}},
+  ZA:{t:{landPrep:2500,seeds:1500,fertilizer:4000,chemicals:800,labour:3000,irrigation:0,transport:1200,other:600,yield:5000,price:3.8},i:{landPrep:4500,seeds:2500,fertilizer:6500,chemicals:1400,labour:4500,irrigation:1200,transport:2000,other:1000,yield:9000,price:3.8},c:{landPrep:8000,seeds:3500,fertilizer:11000,chemicals:2200,labour:7000,irrigation:3000,transport:3000,other:1800,yield:13000,price:3.5}}
+},
+rice:{
+  NG:{t:{landPrep:50000,seeds:30000,fertilizer:70000,chemicals:20000,labour:60000,irrigation:30000,transport:25000,other:15000,yield:2500,price:450},i:{landPrep:100000,seeds:40000,fertilizer:120000,chemicals:30000,labour:100000,irrigation:60000,transport:35000,other:20000,yield:4500,price:450},c:{landPrep:180000,seeds:50000,fertilizer:180000,chemicals:45000,labour:150000,irrigation:100000,transport:50000,other:30000,yield:7000,price:420}},
+  KE:{t:{landPrep:10000,seeds:8000,fertilizer:15000,chemicals:4000,labour:20000,irrigation:8000,transport:5000,other:3000,yield:2000,price:80},i:{landPrep:20000,seeds:12000,fertilizer:25000,chemicals:7000,labour:30000,irrigation:15000,transport:8000,other:5000,yield:4500,price:80},c:{landPrep:40000,seeds:16000,fertilizer:40000,chemicals:10000,labour:45000,irrigation:30000,transport:15000,other:8000,yield:7000,price:75}},
+  GH:{t:{landPrep:450,seeds:300,fertilizer:800,chemicals:250,labour:700,irrigation:300,transport:200,other:120,yield:2000,price:7},i:{landPrep:850,seeds:480,fertilizer:1400,chemicals:420,labour:1200,irrigation:600,transport:350,other:200,yield:4000,price:7},c:{landPrep:1600,seeds:650,fertilizer:2300,chemicals:700,labour:1900,irrigation:1200,transport:550,other:330,yield:6500,price:6.5}},
+  TZ:{t:{landPrep:75000,seeds:48000,fertilizer:110000,chemicals:32000,labour:96000,irrigation:48000,transport:40000,other:24000,yield:2000,price:800},i:{landPrep:150000,seeds:64000,fertilizer:190000,chemicals:48000,labour:160000,irrigation:96000,transport:56000,other:32000,yield:4500,price:800},c:{landPrep:275000,seeds:80000,fertilizer:285000,chemicals:72000,labour:240000,irrigation:160000,transport:80000,other:48000,yield:7000,price:750}}
+},
+cassava:{
+  NG:{t:{landPrep:35000,seeds:20000,fertilizer:30000,chemicals:10000,labour:45000,irrigation:0,transport:15000,other:10000,yield:15000,price:100},i:{landPrep:70000,seeds:30000,fertilizer:60000,chemicals:20000,labour:80000,irrigation:0,transport:25000,other:15000,yield:25000,price:100},c:{landPrep:120000,seeds:40000,fertilizer:100000,chemicals:30000,labour:120000,irrigation:20000,transport:40000,other:25000,yield:35000,price:95}},
+  KE:{t:{landPrep:6000,seeds:4000,fertilizer:5000,chemicals:2000,labour:12000,irrigation:0,transport:4000,other:2000,yield:12000,price:15},i:{landPrep:12000,seeds:6000,fertilizer:10000,chemicals:4000,labour:18000,irrigation:0,transport:6000,other:3000,yield:22000,price:15},c:{landPrep:25000,seeds:8000,fertilizer:18000,chemicals:6000,labour:28000,irrigation:5000,transport:10000,other:5000,yield:30000,price:14}},
+  GH:{t:{landPrep:280,seeds:180,fertilizer:250,chemicals:100,labour:450,irrigation:0,transport:130,other:80,yield:13000,price:1.5},i:{landPrep:550,seeds:280,fertilizer:500,chemicals:200,labour:750,irrigation:0,transport:220,other:130,yield:22000,price:1.5},c:{landPrep:1000,seeds:380,fertilizer:900,chemicals:300,labour:1100,irrigation:200,transport:350,other:200,yield:30000,price:1.4}},
+  UG:{t:{landPrep:75000,seeds:45000,fertilizer:65000,chemicals:25000,labour:100000,irrigation:0,transport:33000,other:22000,yield:14000,price:200},i:{landPrep:150000,seeds:70000,fertilizer:130000,chemicals:50000,labour:175000,irrigation:0,transport:55000,other:33000,yield:24000,price:200},c:{landPrep:275000,seeds:95000,fertilizer:220000,chemicals:75000,labour:260000,irrigation:50000,transport:90000,other:55000,yield:33000,price:185}}
+},
+yam:{
+  NG:{t:{landPrep:60000,seeds:80000,fertilizer:40000,chemicals:15000,labour:70000,irrigation:0,transport:20000,other:15000,yield:15000,price:200},i:{landPrep:100000,seeds:120000,fertilizer:70000,chemicals:25000,labour:100000,irrigation:0,transport:30000,other:20000,yield:25000,price:200},c:{landPrep:160000,seeds:180000,fertilizer:120000,chemicals:40000,labour:150000,irrigation:20000,transport:50000,other:30000,yield:35000,price:185}},
+  GH:{t:{landPrep:480,seeds:650,fertilizer:320,chemicals:120,labour:550,irrigation:0,transport:160,other:120,yield:13000,price:2.8},i:{landPrep:800,seeds:1000,fertilizer:550,chemicals:200,labour:800,irrigation:0,transport:240,other:160,yield:22000,price:2.8},c:{landPrep:1280,seeds:1450,fertilizer:950,chemicals:320,labour:1200,irrigation:160,transport:400,other:240,yield:30000,price:2.5}}
+},
+sorghum:{
+  NG:{t:{landPrep:30000,seeds:15000,fertilizer:40000,chemicals:12000,labour:40000,irrigation:0,transport:15000,other:8000,yield:2000,price:280},i:{landPrep:60000,seeds:25000,fertilizer:75000,chemicals:20000,labour:65000,irrigation:15000,transport:22000,other:12000,yield:3500,price:280},c:{landPrep:110000,seeds:35000,fertilizer:120000,chemicals:30000,labour:100000,irrigation:35000,transport:35000,other:20000,yield:5500,price:260}}
+},
+cowpea:{
+  NG:{t:{landPrep:30000,seeds:20000,fertilizer:25000,chemicals:20000,labour:40000,irrigation:5000,transport:15000,other:10000,yield:1200,price:600},i:{landPrep:55000,seeds:30000,fertilizer:45000,chemicals:30000,labour:60000,irrigation:10000,transport:22000,other:15000,yield:2000,price:600},c:{landPrep:95000,seeds:40000,fertilizer:75000,chemicals:45000,labour:90000,irrigation:25000,transport:35000,other:25000,yield:3000,price:580}},
+  KE:{t:{landPrep:5000,seeds:4000,fertilizer:4500,chemicals:3500,labour:7000,irrigation:800,transport:2500,other:1700,yield:1000,price:100},i:{landPrep:9000,seeds:5500,fertilizer:8000,chemicals:5000,labour:10000,irrigation:1600,transport:3800,other:2600,yield:1700,price:100},c:{landPrep:15000,seeds:7000,fertilizer:12500,chemicals:7500,labour:15000,irrigation:4000,transport:5500,other:4000,yield:2500,price:95}}
+},
+groundnut:{
+  NG:{t:{landPrep:35000,seeds:25000,fertilizer:20000,chemicals:15000,labour:45000,irrigation:0,transport:15000,other:10000,yield:1500,price:550},i:{landPrep:65000,seeds:40000,fertilizer:40000,chemicals:25000,labour:70000,irrigation:10000,transport:22000,other:15000,yield:2500,price:550},c:{landPrep:110000,seeds:60000,fertilizer:70000,chemicals:40000,labour:105000,irrigation:25000,transport:35000,other:25000,yield:3500,price:520}}
+},
+soybean:{
+  NG:{t:{landPrep:35000,seeds:20000,fertilizer:30000,chemicals:20000,labour:45000,irrigation:10000,transport:15000,other:10000,yield:2000,price:450},i:{landPrep:65000,seeds:30000,fertilizer:55000,chemicals:30000,labour:70000,irrigation:20000,transport:22000,other:15000,yield:3200,price:450},c:{landPrep:110000,seeds:45000,fertilizer:90000,chemicals:50000,labour:105000,irrigation:45000,transport:35000,other:25000,yield:5000,price:420}}
+},
+cocoa:{
+  NG:{t:{landPrep:80000,seeds:50000,fertilizer:60000,chemicals:30000,labour:100000,irrigation:0,transport:20000,other:20000,yield:500,price:3500},i:{landPrep:140000,seeds:80000,fertilizer:110000,chemicals:50000,labour:160000,irrigation:20000,transport:30000,other:30000,yield:1000,price:3500},c:{landPrep:220000,seeds:120000,fertilizer:180000,chemicals:80000,labour:240000,irrigation:50000,transport:50000,other:50000,yield:1800,price:3200}},
+  GH:{t:{landPrep:650,seeds:420,fertilizer:500,chemicals:250,labour:820,irrigation:0,transport:160,other:160,yield:450,price:50},i:{landPrep:1150,seeds:680,fertilizer:900,chemicals:420,labour:1300,irrigation:160,transport:240,other:240,yield:900,price:50},c:{landPrep:1800,seeds:1000,fertilizer:1500,chemicals:680,labour:1950,irrigation:400,transport:400,other:400,yield:1600,price:46}}
+},
+tomato:{
+  NG:{t:{landPrep:80000,seeds:30000,fertilizer:80000,chemicals:50000,labour:100000,irrigation:60000,transport:30000,other:20000,yield:20000,price:150},i:{landPrep:140000,seeds:50000,fertilizer:140000,chemicals:80000,labour:160000,irrigation:100000,transport:50000,other:30000,yield:35000,price:150},c:{landPrep:230000,seeds:75000,fertilizer:220000,chemicals:130000,labour:250000,irrigation:180000,transport:80000,other:50000,yield:55000,price:135}},
+  KE:{t:{landPrep:12000,seeds:5000,fertilizer:15000,chemicals:9000,labour:18000,irrigation:10000,transport:5500,other:3500,yield:18000,price:25},i:{landPrep:22000,seeds:8000,fertilizer:26000,chemicals:14000,labour:28000,irrigation:18000,transport:9000,other:5500,yield:32000,price:25},c:{landPrep:38000,seeds:12000,fertilizer:42000,chemicals:23000,labour:45000,irrigation:32000,transport:14000,other:9000,yield:50000,price:22}},
+  GH:{t:{landPrep:640,seeds:250,fertilizer:640,chemicals:400,labour:800,irrigation:480,transport:240,other:160,yield:17000,price:2.2},i:{landPrep:1150,seeds:400,fertilizer:1150,chemicals:650,labour:1300,irrigation:800,transport:400,other:250,yield:30000,price:2.2},c:{landPrep:1900,seeds:600,fertilizer:1800,chemicals:1050,labour:2050,irrigation:1450,transport:650,other:400,yield:48000,price:2}}
+},
+pepper:{
+  NG:{t:{landPrep:60000,seeds:25000,fertilizer:50000,chemicals:40000,labour:80000,irrigation:40000,transport:25000,other:15000,yield:5000,price:600},i:{landPrep:100000,seeds:40000,fertilizer:90000,chemicals:65000,labour:130000,irrigation:70000,transport:40000,other:25000,yield:9000,price:600},c:{landPrep:165000,seeds:60000,fertilizer:145000,chemicals:100000,labour:200000,irrigation:120000,transport:65000,other:40000,yield:14000,price:560}}
+},
+onion:{
+  NG:{t:{landPrep:50000,seeds:20000,fertilizer:60000,chemicals:30000,labour:80000,irrigation:50000,transport:25000,other:15000,yield:15000,price:300},i:{landPrep:90000,seeds:35000,fertilizer:105000,chemicals:50000,labour:130000,irrigation:85000,transport:40000,other:25000,yield:25000,price:300},c:{landPrep:150000,seeds:55000,fertilizer:170000,chemicals:80000,labour:200000,irrigation:140000,transport:65000,other:40000,yield:38000,price:280}},
+  KE:{t:{landPrep:8000,seeds:3500,fertilizer:11000,chemicals:5500,labour:14000,irrigation:9000,transport:4500,other:2600,yield:13000,price:50},i:{landPrep:15000,seeds:6000,fertilizer:19000,chemicals:9000,labour:22000,irrigation:15000,transport:7000,other:4200,yield:22000,price:50},c:{landPrep:25000,seeds:9500,fertilizer:30000,chemicals:14000,labour:34000,irrigation:25000,transport:11000,other:6600,yield:34000,price:46}}
+},
+potato:{
+  KE:{t:{landPrep:10000,seeds:20000,fertilizer:18000,chemicals:8000,labour:20000,irrigation:5000,transport:6000,other:3000,yield:10000,price:35},i:{landPrep:18000,seeds:32000,fertilizer:30000,chemicals:14000,labour:32000,irrigation:10000,transport:10000,other:5000,yield:20000,price:35},c:{landPrep:30000,seeds:50000,fertilizer:50000,chemicals:22000,labour:50000,irrigation:20000,transport:16000,other:8000,yield:32000,price:32}},
+  EG:{t:{landPrep:1500,seeds:3000,fertilizer:2800,chemicals:1200,labour:3000,irrigation:800,transport:900,other:450,yield:18000,price:6},i:{landPrep:2800,seeds:5000,fertilizer:5000,chemicals:2200,labour:5000,irrigation:1600,transport:1600,other:800,yield:32000,price:6},c:{landPrep:4500,seeds:7500,fertilizer:8000,chemicals:3500,labour:8000,irrigation:3000,transport:2500,other:1200,yield:48000,price:5.5}}
+},
+plantain:{
+  NG:{t:{landPrep:50000,seeds:40000,fertilizer:35000,chemicals:15000,labour:60000,irrigation:0,transport:20000,other:15000,yield:12000,price:250},i:{landPrep:90000,seeds:70000,fertilizer:65000,chemicals:25000,labour:100000,irrigation:15000,transport:35000,other:25000,yield:20000,price:250},c:{landPrep:145000,seeds:110000,fertilizer:105000,chemicals:40000,labour:155000,irrigation:40000,transport:55000,other:40000,yield:30000,price:230}},
+  GH:{t:{landPrep:400,seeds:330,fertilizer:280,chemicals:120,labour:480,irrigation:0,transport:160,other:120,yield:10000,price:3.5},i:{landPrep:730,seeds:580,fertilizer:520,chemicals:200,labour:800,irrigation:120,transport:280,other:200,yield:18000,price:3.5},c:{landPrep:1160,seeds:880,fertilizer:840,chemicals:320,labour:1240,irrigation:320,transport:440,other:320,yield:27000,price:3.2}}
+},
+cotton:{
+  NG:{t:{landPrep:35000,seeds:18000,fertilizer:50000,chemicals:30000,labour:55000,irrigation:10000,transport:20000,other:12000,yield:1200,price:700},i:{landPrep:65000,seeds:28000,fertilizer:90000,chemicals:50000,labour:90000,irrigation:25000,transport:30000,other:18000,yield:2200,price:700},c:{landPrep:110000,seeds:40000,fertilizer:145000,chemicals:80000,labour:135000,irrigation:60000,transport:50000,other:30000,yield:3500,price:650}}
+},
+coffee:{
+  KE:{t:{landPrep:15000,seeds:10000,fertilizer:20000,chemicals:8000,labour:30000,irrigation:0,transport:8000,other:5000,yield:600,price:300},i:{landPrep:28000,seeds:18000,fertilizer:38000,chemicals:14000,labour:52000,irrigation:8000,transport:14000,other:8000,yield:1200,price:300},c:{landPrep:50000,seeds:28000,fertilizer:65000,chemicals:24000,labour:90000,irrigation:20000,transport:22000,other:14000,yield:2200,price:280}},
+  ET:{t:{landPrep:1500,seeds:900,fertilizer:1800,chemicals:700,labour:2700,irrigation:0,transport:700,other:450,yield:800,price:200},i:{landPrep:2800,seeds:1600,fertilizer:3200,chemicals:1300,labour:4600,irrigation:700,transport:1300,other:700,yield:1600,price:200},c:{landPrep:5000,seeds:2500,fertilizer:5500,chemicals:2200,labour:8000,irrigation:2000,transport:2000,other:1200,yield:3000,price:185}}
+}
 };
 
 function loadCropDefaults(){
-  const crop=document.getElementById('crop').value;
-  const country=document.getElementById('country').value;
-  const method=document.getElementById('method').value;
-  const methodKey={traditional:'t',improved:'i',commercial:'c'}[method];
-  const data=CROP_DATA[crop]?.[country]?.[methodKey];
+  var crop=document.getElementById('crop').value;
+  var country=document.getElementById('country').value;
+  var method=document.getElementById('method').value;
+  var methodKey={traditional:'t',improved:'i',commercial:'c'}[method];
+  var cropObj=CROP_DATA[crop];
+  var data=(cropObj&&cropObj[country])?cropObj[country][methodKey]:null;
   if(!data){
-    // Generate reasonable defaults based on NG data scaled
-    const ngData=CROP_DATA.maize?.NG?.[methodKey];
+    // Fall back to NG data for this crop scaled by currency, or to maize NG if no NG data
+    var ngData=(cropObj&&cropObj.NG)?cropObj.NG[methodKey]:(CROP_DATA.maize.NG[methodKey]);
     if(ngData){
-      const scale={NG:1,KE:0.2,GH:0.05,TZ:25,UG:30,ZA:0.02}[country]||1;
-      document.getElementById('landPrep').value=Math.round(ngData.landPrep*scale);
-      document.getElementById('seeds').value=Math.round(ngData.seeds*scale);
-      document.getElementById('fertilizer').value=Math.round(ngData.fertilizer*scale);
-      document.getElementById('chemicals').value=Math.round(ngData.chemicals*scale);
-      document.getElementById('labour').value=Math.round(ngData.labour*scale);
-      document.getElementById('irrigation').value=Math.round(ngData.irrigation*scale);
-      document.getElementById('transport').value=Math.round(ngData.transport*scale);
-      document.getElementById('otherCost').value=Math.round(ngData.other*scale);
+      document.getElementById('landPrep').value=scaleFromNG(ngData.landPrep,country);
+      document.getElementById('seeds').value=scaleFromNG(ngData.seeds,country);
+      document.getElementById('fertilizer').value=scaleFromNG(ngData.fertilizer,country);
+      document.getElementById('chemicals').value=scaleFromNG(ngData.chemicals,country);
+      document.getElementById('labour').value=scaleFromNG(ngData.labour,country);
+      document.getElementById('irrigation').value=scaleFromNG(ngData.irrigation,country);
+      document.getElementById('transport').value=scaleFromNG(ngData.transport,country);
+      document.getElementById('otherCost').value=scaleFromNG(ngData.other,country);
       document.getElementById('yieldPerHa').value=ngData.yield;
-      document.getElementById('pricePerKg').value=Math.round(ngData.price*scale);
+      document.getElementById('pricePerKg').value=scaleFromNG(ngData.price,country);
     }
     return;
   }
@@ -249,67 +330,85 @@ function loadCropDefaults(){
 }
 
 function calculate(){
-  const area=parseFloat(document.getElementById('area').value)||1;
-  const country=document.getElementById('country').value;
-  const sym=SYMS[country]||'';
+  var area=parseFloat(document.getElementById('area').value)||1;
+  var country=document.getElementById('country').value;
+  var sym=SYMS[country]||'';
+  var phlPct=(parseFloat(document.getElementById('postHarvestLoss').value)||0)/100;
+  var seasons=parseInt(document.getElementById('seasons').value)||1;
 
-  const costs={
+  var costs={
     'Land Preparation':parseFloat(document.getElementById('landPrep').value)||0,
     'Seeds / Seedlings':parseFloat(document.getElementById('seeds').value)||0,
     'Fertilizer':parseFloat(document.getElementById('fertilizer').value)||0,
-    'Chemicals':parseFloat(document.getElementById('chemicals').value)||0,
+    'Chemicals (Pesticide/Herbicide)':parseFloat(document.getElementById('chemicals').value)||0,
     'Labour':parseFloat(document.getElementById('labour').value)||0,
     'Irrigation':parseFloat(document.getElementById('irrigation').value)||0,
-    'Transport':parseFloat(document.getElementById('transport').value)||0,
+    'Transport / Logistics':parseFloat(document.getElementById('transport').value)||0,
     'Other Costs':parseFloat(document.getElementById('otherCost').value)||0
   };
 
-  const yieldPerHa=parseFloat(document.getElementById('yieldPerHa').value)||0;
-  const pricePerKg=parseFloat(document.getElementById('pricePerKg').value)||0;
+  var yieldPerHa=parseFloat(document.getElementById('yieldPerHa').value)||0;
+  var pricePerKg=parseFloat(document.getElementById('pricePerKg').value)||0;
 
-  let totalCostPerHa=Object.values(costs).reduce((a,b)=>a+b,0);
-  const totalCost=totalCostPerHa*area;
-  const totalYield=yieldPerHa*area;
-  const totalRevenue=totalYield*pricePerKg;
-  const profit=totalRevenue-totalCost;
-  const roi=totalCost>0?(profit/totalCost*100):0;
-  const costPerKg=yieldPerHa>0?(totalCostPerHa/yieldPerHa):0;
-  const isProfit=profit>=0;
+  var totalCostPerHa=Object.values(costs).reduce(function(a,b){return a+b;},0);
+  var totalCost=totalCostPerHa*area*seasons;
+  // Apply post-harvest loss to yield
+  var effectiveYieldPerHa=yieldPerHa*(1-phlPct);
+  var totalYield=effectiveYieldPerHa*area*seasons;
+  var totalRevenue=totalYield*pricePerKg;
+  var profit=totalRevenue-totalCost;
+  var roi=totalCost>0?(profit/totalCost*100):0;
+  var costPerKg=effectiveYieldPerHa>0?(totalCostPerHa/effectiveYieldPerHa):0;
+  var isProfit=profit>=0;
+  // Break-even calculations
+  var breakEvenYield=pricePerKg>0?(totalCostPerHa/pricePerKg):0; // kg/ha needed to break even
+  var breakEvenPrice=effectiveYieldPerHa>0?(totalCostPerHa/effectiveYieldPerHa):0; // price/kg needed to break even
 
-  document.getElementById('summaryCards').innerHTML=`
-    <div class="result-card"><div class="result-label">Total Revenue</div><div class="result-value" style="color:#0369a1">${sym}${totalRevenue.toLocaleString()}</div></div>
-    <div class="result-card"><div class="result-label">Total Cost</div><div class="result-value" style="color:#dc2626">${sym}${totalCost.toLocaleString()}</div></div>
-    <div class="result-card ${isProfit?'profit':'loss'}"><div class="result-label">Net ${isProfit?'Profit':'Loss'}</div><div class="result-value">${sym}${Math.abs(profit).toLocaleString()}</div></div>
-    <div class="result-card"><div class="result-label">ROI</div><div class="result-value" style="color:${roi>=0?'#16a34a':'#dc2626'}">${roi.toFixed(1)}%</div></div>
-  `;
+  var phlNote=phlPct>0?' (after '+Math.round(phlPct*100)+'% PHL)':'';
+  var seasonNote=seasons>1?' × '+seasons+' seasons':'';
 
-  const maxVal=Math.max(totalRevenue,totalCost);
-  const costPct=maxVal>0?(totalCost/maxVal*100):0;
-  const profitPct=isProfit&&maxVal>0?(profit/maxVal*100):0;
+  document.getElementById('summaryCards').innerHTML=
+    '<div class="result-card"><div class="result-label">Total Revenue'+seasonNote+'</div><div class="result-value" style="color:#0369a1">'+sym+Math.round(totalRevenue).toLocaleString()+'</div></div>'+
+    '<div class="result-card"><div class="result-label">Total Cost'+seasonNote+'</div><div class="result-value" style="color:#dc2626">'+sym+Math.round(totalCost).toLocaleString()+'</div></div>'+
+    '<div class="result-card '+(isProfit?'profit':'loss')+'"><div class="result-label">Net '+(isProfit?'Profit':'Loss')+'</div><div class="result-value">'+sym+Math.round(Math.abs(profit)).toLocaleString()+'</div></div>'+
+    '<div class="result-card"><div class="result-label">ROI</div><div class="result-value" style="color:'+(roi>=0?'#16a34a':'#dc2626')+'">'+roi.toFixed(1)+'%</div></div>'+
+    '<div class="result-card"><div class="result-label">Break-Even Yield</div><div class="result-value" style="font-size:1rem;color:#0369a1">'+Math.round(breakEvenYield).toLocaleString()+' kg/ha</div></div>'+
+    '<div class="result-card"><div class="result-label">Break-Even Price</div><div class="result-value" style="font-size:1rem;color:#0369a1">'+sym+breakEvenPrice.toFixed(1)+'/kg</div></div>';
+
+  var maxVal=Math.max(totalRevenue,totalCost);
+  var costPct=maxVal>0?(totalCost/maxVal*100):0;
+  var profitPct=isProfit&&maxVal>0?(profit/maxVal*100):0;
   document.getElementById('barCost').style.width=costPct+'%';
   document.getElementById('barProfit').style.width=profitPct+'%';
   document.getElementById('barProfit').style.left=costPct+'%';
 
-  let table='<thead><tr><th>Cost Item</th><th style="text-align:right">Per Hectare</th><th style="text-align:right">Total ('+area+' ha)</th><th style="text-align:right">% of Cost</th></tr></thead><tbody>';
-  Object.entries(costs).forEach(([name,val])=>{
+  var table='<thead><tr><th>Cost Item</th><th style="text-align:right">Per Hectare/Season</th><th style="text-align:right">Total ('+area+' ha'+seasonNote+')</th><th style="text-align:right">% of Cost</th></tr></thead><tbody>';
+  Object.keys(costs).forEach(function(name){
+    var val=costs[name];
     if(val>0){
-      table+=`<tr><td>${name}</td><td style="text-align:right">${sym}${val.toLocaleString()}</td><td style="text-align:right">${sym}${(val*area).toLocaleString()}</td><td style="text-align:right">${(val/totalCostPerHa*100).toFixed(1)}%</td></tr>`;
+      table+='<tr><td>'+name+'</td><td style="text-align:right">'+sym+Math.round(val).toLocaleString()+'</td><td style="text-align:right">'+sym+Math.round(val*area*seasons).toLocaleString()+'</td><td style="text-align:right">'+(val/totalCostPerHa*100).toFixed(1)+'%</td></tr>';
     }
   });
-  table+=`<tr class="total-row"><td>Total Cost</td><td style="text-align:right">${sym}${totalCostPerHa.toLocaleString()}</td><td style="text-align:right">${sym}${totalCost.toLocaleString()}</td><td style="text-align:right">100%</td></tr>`;
-  table+=`<tr><td colspan="4" style="padding:.25rem"></td></tr>`;
-  table+=`<tr><td>Expected Yield</td><td style="text-align:right">${yieldPerHa.toLocaleString()} kg/ha</td><td style="text-align:right">${totalYield.toLocaleString()} kg</td><td></td></tr>`;
-  table+=`<tr><td>Market Price</td><td style="text-align:right">${sym}${pricePerKg}/kg</td><td></td><td></td></tr>`;
-  table+=`<tr><td>Cost per kg produced</td><td style="text-align:right">${sym}${costPerKg.toFixed(1)}/kg</td><td></td><td></td></tr>`;
-  table+=`<tr style="font-weight:700;background:${isProfit?'#f0fdf4':'#fef2f2'}"><td>NET ${isProfit?'PROFIT':'LOSS'}</td><td style="text-align:right">${sym}${Math.abs(profit/area).toLocaleString()}/ha</td><td style="text-align:right">${sym}${Math.abs(profit).toLocaleString()}</td><td style="text-align:right">ROI: ${roi.toFixed(1)}%</td></tr>`;
+  table+='<tr class="total-row"><td>Total Cost</td><td style="text-align:right">'+sym+Math.round(totalCostPerHa).toLocaleString()+'/ha</td><td style="text-align:right">'+sym+Math.round(totalCost).toLocaleString()+'</td><td style="text-align:right">100%</td></tr>';
+  table+='<tr><td colspan="4" style="padding:.25rem"></td></tr>';
+  table+='<tr><td>Gross Yield</td><td style="text-align:right">'+Math.round(yieldPerHa).toLocaleString()+' kg/ha</td><td style="text-align:right">'+Math.round(yieldPerHa*area*seasons).toLocaleString()+' kg</td><td></td></tr>';
+  if(phlPct>0){
+    table+='<tr><td>Post-Harvest Loss ('+Math.round(phlPct*100)+'%)</td><td style="text-align:right">−'+Math.round(yieldPerHa*phlPct).toLocaleString()+' kg/ha</td><td style="text-align:right">−'+Math.round(yieldPerHa*area*seasons*phlPct).toLocaleString()+' kg</td><td></td></tr>';
+    table+='<tr><td>Net Marketable Yield'+phlNote+'</td><td style="text-align:right">'+Math.round(effectiveYieldPerHa).toLocaleString()+' kg/ha</td><td style="text-align:right">'+Math.round(totalYield).toLocaleString()+' kg</td><td></td></tr>';
+  }
+  table+='<tr><td>Market Price</td><td style="text-align:right">'+sym+pricePerKg+'/kg</td><td></td><td></td></tr>';
+  table+='<tr><td>Cost per kg sold</td><td style="text-align:right">'+sym+costPerKg.toFixed(1)+'/kg</td><td></td><td></td></tr>';
+  table+='<tr><td>Break-Even Yield</td><td style="text-align:right">'+Math.round(breakEvenYield).toLocaleString()+' kg/ha</td><td colspan="2" style="font-size:.82rem;color:#64748b">Minimum yield needed to cover costs at current price</td></tr>';
+  table+='<tr><td>Break-Even Price</td><td style="text-align:right">'+sym+breakEvenPrice.toFixed(1)+'/kg</td><td colspan="2" style="font-size:.82rem;color:#64748b">Minimum price needed to cover costs at current yield</td></tr>';
+  table+='<tr style="font-weight:700;background:'+(isProfit?'#f0fdf4':'#fef2f2')+'"><td>NET '+(isProfit?'PROFIT':'LOSS')+'</td><td style="text-align:right">'+sym+Math.round(Math.abs(profit/area/seasons)).toLocaleString()+'/ha/season</td><td style="text-align:right">'+sym+Math.round(Math.abs(profit)).toLocaleString()+'</td><td style="text-align:right">ROI: '+roi.toFixed(1)+'%</td></tr>';
   table+='</tbody>';
   document.getElementById('costTable').innerHTML=table;
 
   document.getElementById('results').style.display='block';
   document.getElementById('results').scrollIntoView({behavior:'smooth'});
 
-  var cropName = document.getElementById('crop').selectedOptions[0].text;
-  var countryName = document.getElementById('country').selectedOptions[0].text;
+  var cropName = document.getElementById('crop').options[document.getElementById('crop').selectedIndex].text;
+  var countryName = document.getElementById('country').options[document.getElementById('country').selectedIndex].text;
   var saveBtn = document.querySelector('save-result-button[tool-slug="agric-profit"]');
   if (saveBtn) {
     saveBtn.setAttribute('country-code', country);
@@ -319,9 +418,11 @@ function calculate(){
         crop: cropName,
         country: countryName,
         farmSize: area + ' ha',
-        method: document.getElementById('method').selectedOptions[0].text,
-        yieldPerHa: yieldPerHa + ' kg/ha',
-        pricePerKg: sym + pricePerKg + '/kg'
+        method: document.getElementById('method').options[document.getElementById('method').selectedIndex].text,
+        yieldPerHa: yieldPerHa + ' kg/ha (gross)',
+        effectiveYield: Math.round(effectiveYieldPerHa) + ' kg/ha (after PHL)',
+        pricePerKg: sym + pricePerKg + '/kg',
+        seasons: seasons + ' season(s)/year'
       },
       outputs: {
         totalRevenue: sym + totalRevenue.toLocaleString(),

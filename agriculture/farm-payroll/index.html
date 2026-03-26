@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.bd27dfaf.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Farm Worker Payroll Calculator — 54 African Countries | AfroTools</title>
+<meta name="description" content="Calculate farm worker wages, deductions, and take-home pay for all 54 African countries. Agricultural minimum wage, pension, health insurance, and PAYE for permanent, casual, and seasonal farm workers.">
+<link rel="canonical" href="https://afrotools.com/agriculture/farm-payroll/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/agriculture/farm-payroll/" />
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/agriculture/farm-payroll/" />
+
+<meta property="og:title" content="Farm Worker Payroll Calculator for Africa — AfroTools">
+<meta property="og:description" content="Calculate farm worker wages, deductions and take-home pay for all 54 African countries. Covers permanent, casual, seasonal and piece-rate workers.">
+<meta property="og:url" content="https://afrotools.com/agriculture/farm-payroll/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Farm Worker Payroll Calculator for Africa — AfroTools">
+<meta name="twitter:description" content="Calculate farm worker wages, deductions and take-home pay for all 54 African countries.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Farm Worker Payroll Calculator for Africa",
+  "url": "https://afrotools.com/agriculture/farm-payroll/",
+  "description": "Free farm worker payroll calculators for all 54 African countries. Covers wages, deductions, and take-home pay.",
+  "author": { "@type": "Organization", "name": "AfroTools", "url": "https://afrotools.com" }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What worker types does this calculator support?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The calculator supports four worker types: Permanent (monthly salary), Casual/daily hire (paid per day), Seasonal (harvest workers paid for a fixed season), and Piece-rate (paid per unit of work completed — e.g., per kg of tea picked or per row weeded)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does agricultural minimum wage differ from the national minimum wage?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, in several African countries the agricultural minimum wage is set separately and is often lower than the general national minimum wage. Kenya, Morocco, and Tunisia are notable examples where agri workers have their own (lower) minimum wage. South Africa equalized agricultural and national minimum wages in 2022."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What deductions are included?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Country-specific deductions include pension/social security (employee share), health insurance, housing levies (where applicable), and links to the PAYE income tax calculator. Most informal farm workers in Africa are exempt from pension and health deductions — the calculator shows which deductions apply."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is employer cost vs. gross salary?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The total cost to the employer is higher than the gross salary — it includes employer pension contributions, employer health contributions, and an annual leave provision (monthly accrual for leave entitlement). This is the true cost of employing a farm worker."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What are in-kind payments and how are they treated?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "In-kind payments are non-cash benefits like housing (accommodation on the farm) and food provided to workers. These are common on residential farms across Africa. For compliance purposes, in-kind benefits are added to gross pay when calculating deductions and minimum wage compliance checks."
+      }
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "AfroTools", "item": "https://afrotools.com/" },
+    { "@type": "ListItem", "position": 2, "name": "Agriculture", "item": "https://afrotools.com/agriculture/" },
+    { "@type": "ListItem", "position": 3, "name": "Farm Worker Payroll Calculator", "item": "https://afrotools.com/agriculture/farm-payroll/" }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+
+<style>
+:root {
+  --calc-accent: #007AFF;
+  --calc-accent-dark: #0063D1;
+  --calc-accent-light: #E8F2FF;
+  --color-bg: #F8F9FA;
+  --color-bg-card: #FFFFFF;
+  --color-text: #1A1A2E;
+  --color-text-muted: #6B7280;
+  --radius-md: 18px;
+}
+*, *::before, *::after { box-sizing: border-box; }
+body { font-family: 'DM Sans', sans-serif; background: var(--color-bg); color: var(--color-text); margin: 0; }
+
+.hub-hero {
+  background: var(--color-bg-dark, #0A1628);
+  color: #fff;
+  padding: 3rem 1rem 2.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hub-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 30% 50%, rgba(0,122,255,0.12) 0%, transparent 60%);
+  pointer-events: none;
+}
+.hub-hero-inner { max-width: 720px; margin: 0 auto; }
+.hub-hero .breadcrumb { font-size: 0.85rem; opacity: 0.7; margin-bottom: 0.75rem; }
+.hub-hero .breadcrumb a { color: #fff; text-decoration: none; }
+.hub-hero .breadcrumb a:hover { text-decoration: underline; }
+.hub-hero h1 {
+  color: #fff;
+  font-size: clamp(1.5rem, 5.5vw, 2.6rem);
+  font-weight: 800;
+  margin: 0 0 0.75rem;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+.hub-hero p { font-size: 1.05rem; opacity: 0.85; line-height: 1.6; max-width: 600px; margin: 0 auto; }
+.hub-hero .badge-row { display: flex; justify-content: center; gap: 0.75rem; margin-top: 1rem; flex-wrap: wrap; }
+.hub-badge {
+  background: rgba(255,255,255,0.15);
+  border-radius: 980px;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.hub-main { max-width: 1100px; margin: -1.5rem auto 3rem; padding: 0 1rem; }
+
+.region-section { margin-bottom: 2rem; }
+.region-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 2px solid var(--calc-accent-light);
+}
+
+.country-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.75rem;
+}
+.country-card {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--color-bg-card);
+  border: 1.5px solid #E5E7EB;
+  border-radius: 14px;
+  padding: 0.85rem 1rem;
+  text-decoration: none;
+  color: var(--color-text);
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+.country-card:hover {
+  border-color: var(--calc-accent);
+  box-shadow: 0 4px 12px rgba(0,122,255,0.12);
+  transform: translateY(-2px);
+}
+.country-card .flag { font-size: 1.5rem; flex-shrink: 0; }
+.country-card .name { flex: 1; }
+.country-card .arrow { color: var(--color-text-muted); font-size: 1.1rem; }
+
+.seo-content {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+.seo-content h2 {
+  font-size: 1.2rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin: 2rem 0 0.75rem;
+  color: var(--color-text);
+}
+.seo-content p {
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: var(--color-text-muted);
+}
+.faq details {
+  border-bottom: 1px solid #E5E7EB;
+  padding: 0.85rem 0;
+}
+.faq summary {
+  font-weight: 600;
+  font-size: 0.92rem;
+  cursor: pointer;
+  list-style: none;
+}
+.faq summary::before { content: '+ '; color: var(--calc-accent); font-weight: 800; }
+.faq details[open] summary::before { content: '- '; }
+.faq p { font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.6; margin: 0.5rem 0 0; }
+</style>
+</head>
+
+<body>
+<afro-navbar theme="dark" active="tools"></afro-navbar>
+
+<section class="hub-hero">
+  <div class="hub-hero-inner">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">AfroTools</a> &rsaquo; <a href="/agriculture/">Agriculture</a> &rsaquo; Farm Worker Payroll Calculator
+    </nav>
+    <h1>&#128119; Farm Worker Payroll Calculator</h1>
+    <p>Calculate farm worker wages, deductions, and take-home pay for all 54 African countries. Covers permanent, casual, seasonal, and piece-rate workers with agricultural minimum wage compliance checks.</p>
+    <div class="badge-row">
+      <span class="hub-badge">&#127758; 54 Countries</span>
+      <span class="hub-badge">&#128119; 4 Worker Types</span>
+      <span class="hub-badge">&#128204; Min Wage Compliance</span>
+      <span class="hub-badge">&#127760; 100% Free</span>
+    </div>
+  </div>
+</section>
+
+<div class="hub-main" id="hubMain"></div>
+
+<section class="seo-content">
+  <h2>About the Farm Worker Payroll Calculator</h2>
+  <p>AfroTools' Farm Worker Payroll Calculator covers the full spectrum of agricultural employment across all 54 African nations. Whether you manage a small family farm with a few casual laborers or a large estate with hundreds of permanent workers, this tool calculates gross pay, all applicable deductions, net take-home pay, and the true cost to your farm.</p>
+
+  <h2>Agricultural vs. National Minimum Wage</h2>
+  <p>Many African countries maintain a separate — and often lower — agricultural minimum wage distinct from the general national minimum. Kenya sets a specific gazetted agricultural minimum (KSh 7,997/month in 2024, vs. KSh 15,201 for general workers in Nairobi). Morocco's agricultural SMIG is lower than the general SMIG. South Africa equalized its farm worker and national minimum wages in 2022 — a landmark change for the continent. This calculator uses the correct minimum wage for agricultural workers in each country.</p>
+
+  <h2>Frequently Asked Questions</h2>
+  <div class="faq">
+    <details>
+      <summary>What worker types does this calculator support?</summary>
+      <p>Four types: Permanent (monthly salary), Casual/daily (paid per day or week), Seasonal (harvest workers for a fixed season), and Piece-rate (paid per unit — per kg of tea picked, per row weeded, per basin of cocoa harvested). Each type calculates gross pay differently before applying the same deduction logic.</p>
+    </details>
+    <details>
+      <summary>Does agricultural minimum wage differ from the national minimum wage?</summary>
+      <p>Yes, in several African countries. Kenya, Morocco, and Tunisia have lower agricultural minimum wages. Ethiopia has no national minimum wage at all. South Africa equalized agricultural and national minimum wages in 2022. This calculator always uses the correct agricultural rate for the country selected.</p>
+    </details>
+    <details>
+      <summary>What deductions are included?</summary>
+      <p>Country-specific deductions include pension/provident fund (employee share), health/medical insurance, and housing levies where applicable (e.g., Kenya's Affordable Housing Levy). PAYE income tax is flagged with a cross-link to the full PAYE calculator. Note: most informal farm workers across Africa are exempt from statutory deductions — the calculator explains which rules apply.</p>
+    </details>
+    <details>
+      <summary>What is employer cost vs. gross salary?</summary>
+      <p>Employer cost includes gross salary + employer pension contributions + employer health contributions + monthly leave provision accrual. This is the true cost of employment. For example, in Kenya, an employer pays 6% NSSF + 1.5% housing levy + SHIF employer share on top of the gross salary — making the total employer cost 10-15% higher than gross pay.</p>
+    </details>
+    <details>
+      <summary>What are in-kind payments?</summary>
+      <p>In-kind payments are non-cash benefits: housing (accommodation on the farm), food, or transport provided to workers. These are common on residential farms across Africa — particularly on tea, coffee, and sugar estates. For tax and deduction purposes, in-kind benefits are added to gross pay in the calculation.</p>
+    </details>
+  </div>
+</section>
+
+<afro-footer></afro-footer>
+
+<script src="/data/agriculture/country-index.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var countries = window.AfroTools.countryIndex;
+  var regionLabels = window.AfroTools.regionLabels;
+  var hub = document.getElementById('hubMain');
+
+  var regionOrder = ['west_africa', 'east_africa', 'central_africa', 'southern_africa', 'north_africa', 'island_nations'];
+
+  regionOrder.forEach(function (regionKey) {
+    var info = regionLabels[regionKey];
+    var group = countries.filter(function (c) { return c.region === regionKey; });
+    if (!group.length) return;
+
+    var section = document.createElement('div');
+    section.className = 'region-section';
+
+    var label = document.createElement('div');
+    label.className = 'region-label';
+    label.textContent = info.name + ' (' + group.length + ')';
+    section.appendChild(label);
+
+    var grid = document.createElement('div');
+    grid.className = 'country-grid';
+
+    group.forEach(function (c) {
+      var a = document.createElement('a');
+      a.className = 'country-card';
+      a.href = '/agriculture/farm-payroll/' + c.slug;
+      a.innerHTML = '<span class="flag">' + c.flag + '</span><span class="name">' + c.name + '</span><span class="arrow">&rsaquo;</span>';
+      grid.appendChild(a);
+    });
+
+    section.appendChild(grid);
+    hub.appendChild(section);
+  });
+})();
+</script>
+</body>
+</html>

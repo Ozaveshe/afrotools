@@ -26,7 +26,7 @@
 </script>
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
 <style>
-:root{--sky:#0ea5e9;--sky-light:#f0f9ff;--sky-dark:#0284c7}*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6}.hero{background:linear-gradient(135deg,#0c4a6e 0%,#0284c7 50%,#38bdf8 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}.hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}.hero p{font-size:1.05rem;opacity:.9;max-width:600px;margin:0 auto}.container{max-width:1100px;margin:0 auto;padding:1.5rem}.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:1.5rem}.card h2{font-size:1.1rem;font-weight:700;margin-bottom:1rem;color:#0c4a6e}
+:root{--sky:#0ea5e9;--sky-light:#f0f9ff;--sky-dark:#0284c7}*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6}.hero{background:linear-gradient(135deg,#0c4a6e 0%,#0284c7 50%,#38bdf8 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}.hero h1{color:#fff;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}.hero p{font-size:1.05rem;opacity:.9;max-width:600px;margin:0 auto}.container{max-width:1100px;margin:0 auto;padding:1.5rem}.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:1.5rem}.card h2{font-size:1.1rem;font-weight:700;margin-bottom:1rem;color:#0c4a6e}
 .editor{display:grid;grid-template-columns:1fr 300px;gap:1.5rem}
 @media(max-width:800px){.editor{grid-template-columns:1fr}}
 .canvas-wrap{border-radius:8px;overflow:hidden;border:1px solid #e2e8f0;background:#f1f5f9}
@@ -101,6 +101,7 @@
 <div class="form-group"><label>Venue</label><input type="text" id="venue" value="The Landmark Centre, Lagos" oninput="draw()"></div>
 <div class="form-group"><label>Details / Description</label><textarea id="details" oninput="draw()">Live Music | Drinks | Food | Networking</textarea></div>
 <div class="form-group"><label>Accent Color</label><input type="color" id="accent" value="#ffd700" oninput="draw()"></div>
+<div class="form-group"><label>Contact / WhatsApp</label><input type="text" id="contact" placeholder="e.g. 0801 234 5678 | WhatsApp: +234..." oninput="draw()"></div>
 <div class="form-group"><label>Footer Text</label><input type="text" id="footer" value="Tickets: afrotools.com | Free Entry" oninput="draw()"></div>
 <button class="btn" onclick="download()">Download Flyer</button>
 </div>
@@ -144,6 +145,12 @@ const TEMPLATES=[
 {name:'Sunset',bg1:'#831843',bg2:'#fb923c',title:'#ffffff',accent:'#fef08a'},
 {name:'Monochrome',bg1:'#0f172a',bg2:'#334155',title:'#ffffff',accent:'#38bdf8'},
 {name:'Earth',bg1:'#44403c',bg2:'#a16207',title:'#fef3c7',accent:'#f97316'},
+{name:'Church',bg1:'#1e1b4b',bg2:'#4338ca',title:'#ffffff',accent:'#fde68a'},
+{name:'Wedding',bg1:'#3d1c3c',bg2:'#be185d',title:'#fff1f2',accent:'#fde68a'},
+{name:'Kente',bg1:'#7c2d12',bg2:'#ca8a04',title:'#fef3c7',accent:'#4ade80'},
+{name:'Ankara',bg1:'#164e63',bg2:'#ea580c',title:'#fff',accent:'#fef08a'},
+{name:'Campus',bg1:'#0c2340',bg2:'#1d4ed8',title:'#ffffff',accent:'#34d399'},
+{name:'Naija Green',bg1:'#064e3b',bg2:'#15803d',title:'#ffffff',accent:'#fbbf24'},
 ];
 
 document.getElementById('templates').innerHTML=TEMPLATES.map((t,i)=>`<div class="tpl-card" onclick="applyTpl(${i})"><div class="tpl-preview" style="background:linear-gradient(135deg,${t.bg1},${t.bg2})"></div>${t.name}</div>`).join('');
@@ -221,6 +228,13 @@ function draw(){
   if(details){
     ctx.font=`400 ${20*scale}px DM Sans,sans-serif`;ctx.fillStyle='rgba(255,255,255,0.7)';
     ctx.fillText(details,w/2,h*0.70);
+  }
+
+  // Contact / WhatsApp
+  const contact=document.getElementById('contact').value;
+  if(contact){
+    ctx.font=`600 ${18*scale}px DM Sans,sans-serif`;ctx.fillStyle='rgba(255,255,255,0.9)';
+    ctx.fillText('📱 '+contact,w/2,h*0.81);
   }
 
   // Footer

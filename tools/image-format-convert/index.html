@@ -26,7 +26,7 @@
 </script>
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
 <style>
-:root{--sky:#0ea5e9;--sky-light:#f0f9ff;--sky-dark:#0284c7}*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6}.hero{background:linear-gradient(135deg,#0c4a6e 0%,#0284c7 50%,#38bdf8 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}.hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}.hero p{font-size:1.05rem;opacity:.9;max-width:600px;margin:0 auto}.container{max-width:1000px;margin:0 auto;padding:1.5rem}.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:1.5rem}.card h2{font-size:1.1rem;font-weight:700;margin-bottom:1rem;color:#0c4a6e}
+:root{--sky:#0ea5e9;--sky-light:#f0f9ff;--sky-dark:#0284c7}*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6}.hero{background:linear-gradient(135deg,#0c4a6e 0%,#0284c7 50%,#38bdf8 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}.hero h1{color:#fff;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}.hero p{font-size:1.05rem;opacity:.9;max-width:600px;margin:0 auto}.container{max-width:1000px;margin:0 auto;padding:1.5rem}.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:1.5rem}.card h2{font-size:1.1rem;font-weight:700;margin-bottom:1rem;color:#0c4a6e}
 .drop-zone{border:2px dashed #cbd5e1;border-radius:10px;padding:3rem 1.5rem;text-align:center;cursor:pointer;transition:all .2s;background:#f8fafc}
 .drop-zone:hover,.drop-zone.active{border-color:var(--sky);background:var(--sky-light)}
 .drop-zone .icon{font-size:2.5rem;margin-bottom:.5rem}
@@ -94,16 +94,27 @@
 <div class="icon">&#128247;</div>
 <p>Drop an image here or click to browse<br><small>Supports PNG, JPG, WebP, BMP, GIF, SVG</small></p>
 </div>
-<input type="file" id="fileInput" accept="image/*" style="display:none" onchange="handleFile(this.files[0])">
+<input type="file" id="fileInput" accept="image/*" multiple style="display:none" onchange="handleFiles(this.files)">
 </div>
+<div class="file-list" id="batchList" style="display:none;margin-top:-.5rem;margin-bottom:1rem"></div>
 <div class="card" id="convertCard" style="display:none">
-<h2>Convert</h2>
+<h2>Convert Settings</h2>
+<div style="margin-bottom:1rem">
+<div style="font-size:.82rem;font-weight:600;color:#475569;margin-bottom:.4rem">Quick Presets</div>
+<div style="display:flex;gap:.5rem;flex-wrap:wrap">
+<button class="btn" style="background:#7c3aed;font-size:.82rem;padding:.4rem .9rem" onclick="applyPreset('datasaver')">Africa Data Saver</button>
+<button class="btn" style="background:#16a34a;font-size:.82rem;padding:.4rem .9rem" onclick="applyPreset('whatsapp')">WhatsApp Share</button>
+<button class="btn" style="background:#0284c7;font-size:.82rem;padding:.4rem .9rem" onclick="applyPreset('webopt')">Web Optimised</button>
+<button class="btn" style="background:#334155;font-size:.82rem;padding:.4rem .9rem" onclick="applyPreset('hq')">High Quality</button>
+</div>
+</div>
 <div class="form-row">
-<div class="form-group"><label>Output Format</label><select id="format"><option value="image/png">PNG</option><option value="image/jpeg">JPG</option><option value="image/webp">WebP</option><option value="image/bmp">BMP</option></select></div>
-<div class="form-group"><label>Quality (JPG/WebP)</label><input type="range" id="quality" min="10" max="100" value="85" oninput="document.getElementById('qualVal').textContent=this.value+'%'"><span id="qualVal" style="font-size:.82rem;color:#64748b">85%</span></div>
+<div class="form-group"><label>Output Format</label><select id="format"><option value="image/png">PNG (lossless)</option><option value="image/jpeg">JPG (photos)</option><option value="image/webp">WebP (best web)</option><option value="image/avif">AVIF (smallest)</option><option value="image/bmp">BMP (uncompressed)</option></select></div>
+<div class="form-group"><label>Quality (JPG/WebP/AVIF)</label><input type="range" id="quality" min="10" max="100" value="85" oninput="document.getElementById('qualVal').textContent=this.value+'%'"><span id="qualVal" style="font-size:.82rem;color:#64748b">85%</span></div>
 <div class="form-group"><label>Resize (%)</label><input type="number" id="resize" value="100" min="10" max="200" step="5"></div>
 <div class="form-group"><label>&nbsp;</label><button class="btn" onclick="convert()">Convert</button></div>
 </div>
+<div id="batchConvertBtn" style="display:none;margin-bottom:1rem"><button class="btn" style="background:#16a34a;width:100%" onclick="convertAll()">Convert All Files &amp; Download</button></div>
 <div class="preview-grid" id="preview"></div>
 <div class="privacy-note">Your images are processed entirely in your browser. Nothing is uploaded to any server.</div>
 </div>
@@ -121,6 +132,8 @@
 <details><summary>Are my images uploaded to a server?</summary><p>No. All conversion happens entirely in your browser using the HTML5 Canvas API. Your images never leave your device. This tool works even offline once the page is loaded.</p></details>
 <details><summary>What is the best format for web?</summary><p>WebP offers the best balance of quality and file size for modern browsers (supported by Chrome, Firefox, Safari, Edge). If you need transparency, WebP or PNG. For photographs without transparency, WebP or JPG. For universal compatibility with older browsers, use JPG for photos and PNG for graphics.</p></details>
 <details><summary>Does conversion reduce quality?</summary><p>Converting to JPG or WebP involves lossy compression — some quality is lost to reduce file size. You can control this with the quality slider. Converting to PNG is lossless — no quality is lost. Converting between lossy formats (e.g., JPG to WebP) introduces additional generation loss, so always start from the highest quality source.</p></details>
+<details><summary>How can I optimize images for WhatsApp sharing?</summary><p>WhatsApp compresses images automatically when you send them, sometimes reducing quality dramatically. To maintain better control, use the "WhatsApp Share" preset which converts to JPG at 75% quality and 80% size before sharing. This produces a file that WhatsApp's internal compression won't degrade as much, while still keeping file sizes small for data-conscious users. JPG is preferred over PNG for photos when sharing on WhatsApp.</p></details>
+<details><summary>What formats do African social media platforms prefer?</summary><p>Most African social media platforms (Facebook, Instagram, Twitter/X, TikTok) work best with JPG for photos and PNG for graphics/screenshots. WebP is increasingly supported but not yet universal. For profile photos, JPG at 85% quality keeps files small while maintaining good visual quality. For WhatsApp status updates, JPG under 5MB works best. For e-commerce product images on platforms like Jumia or Konga, high-quality JPG (85%+) is recommended.</p></details>
 </section>
 <afro-related-tools></afro-related-tools><afro-newsletter-cta></afro-newsletter-cta>
 <section style="background:#f8fafc;padding:40px 24px;border-top:1px solid #e2e8f0"><div style="max-width:900px;margin:0 auto">
@@ -130,23 +143,41 @@
 </div>
 </div></section>
 <afro-footer></afro-footer>
-<script src="/assets/js/components/navbar.js" defer></script><script src="/assets/js/components/footer.js" defer></script><script src="/assets/js/components/related-tools.js" defer></script><script src="/assets/js/components/newsletter-cta.js" defer></script>
+<script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script><script src="/assets/js/components/related-tools.min.js" defer></script><script src="/assets/js/components/newsletter-cta.min.js" defer></script>
 <script>
-const dz=document.getElementById('dropZone');
-dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('active');});
-dz.addEventListener('dragleave',()=>dz.classList.remove('active'));
-dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('active');if(e.dataTransfer.files[0])handleFile(e.dataTransfer.files[0]);});
+var dz=document.getElementById('dropZone');
+dz.addEventListener('dragover',function(e){e.preventDefault();dz.classList.add('active');});
+dz.addEventListener('dragleave',function(){dz.classList.remove('active');});
+dz.addEventListener('drop',function(e){e.preventDefault();dz.classList.remove('active');if(e.dataTransfer.files.length)handleFiles(e.dataTransfer.files);});
 
-let origImg=null,origName='',origSize=0;
+var origImg=null,origName='',origSize=0,fileQueue=[];
+var EXT_MAP={'image/png':'png','image/jpeg':'jpg','image/webp':'webp','image/avif':'avif','image/bmp':'bmp'};
+
+function handleFiles(files){
+  fileQueue=Array.from(files).filter(function(f){return f.type.startsWith('image/');});
+  if(!fileQueue.length)return;
+  var bl=document.getElementById('batchList');
+  if(fileQueue.length>1){
+    bl.style.display='block';
+    bl.innerHTML='<div style="font-weight:600;font-size:.9rem;color:#0c4a6e;margin-bottom:.4rem">'+fileQueue.length+' files selected:</div>'+
+      fileQueue.map(function(f){return '<div class="file-item"><span class="name">'+f.name+'</span><span class="size">'+fmt(f.size)+'</span></div>';}).join('');
+    document.getElementById('batchConvertBtn').style.display='block';
+  } else {bl.style.display='none';document.getElementById('batchConvertBtn').style.display='none';}
+  handleFile(fileQueue[0]);
+}
 
 function handleFile(f){
   if(!f||!f.type.startsWith('image/'))return;
   origName=f.name;origSize=f.size;
-  const reader=new FileReader();
-  reader.onload=e=>{
-    const img=new Image();
-    img.onload=()=>{origImg=img;document.getElementById('convertCard').style.display='block';
-      document.getElementById('preview').innerHTML=`<div class="preview-box"><img src="${e.target.result}" alt=""><div class="info">Original: ${img.width}x${img.height} | ${f.type} | ${fmt(f.size)}</div></div><div class="preview-box" id="outputPreview"><div style="padding:3rem;color:#94a3b8">Click "Convert" to see result</div></div>`;
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var img=new Image();
+    img.onload=function(){
+      origImg=img;
+      document.getElementById('convertCard').style.display='block';
+      document.getElementById('preview').innerHTML=
+        '<div class="preview-box"><img src="'+e.target.result+'" alt=""><div class="info">Original: '+img.width+'x'+img.height+' | '+f.type.split('/')[1].toUpperCase()+' | '+fmt(f.size)+'</div></div>' +
+        '<div class="preview-box" id="outputPreview"><div style="padding:3rem;color:#94a3b8">Click Convert to see result</div></div>';
     };
     img.src=e.target.result;
   };
@@ -155,21 +186,63 @@ function handleFile(f){
 
 function convert(){
   if(!origImg)return;
-  const format=document.getElementById('format').value;
-  const quality=parseInt(document.getElementById('quality').value)/100;
-  const scale=parseInt(document.getElementById('resize').value)/100;
-  const w=Math.round(origImg.width*scale);
-  const h=Math.round(origImg.height*scale);
-  const canvas=document.createElement('canvas');
-  canvas.width=w;canvas.height=h;
-  const ctx=canvas.getContext('2d');
-  if(format==='image/jpeg'){ctx.fillStyle='#FFFFFF';ctx.fillRect(0,0,w,h);}
+  var format=document.getElementById('format').value;
+  var quality=parseInt(document.getElementById('quality').value)/100;
+  var scale=parseInt(document.getElementById('resize').value)/100;
+  var w=Math.round(origImg.width*scale);var h=Math.round(origImg.height*scale);
+  var canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;
+  var ctx=canvas.getContext('2d');
+  if(format==='image/jpeg'){ctx.fillStyle='#FFF';ctx.fillRect(0,0,w,h);}
   ctx.drawImage(origImg,0,0,w,h);
-  const ext={['image/png']:'png',['image/jpeg']:'jpg',['image/webp']:'webp',['image/bmp']:'bmp'}[format];
-  canvas.toBlob(blob=>{
-    const url=URL.createObjectURL(blob);
-    document.getElementById('outputPreview').innerHTML=`<img src="${url}" alt=""><div class="info">Converted: ${w}x${h} | ${ext.toUpperCase()} | ${fmt(blob.size)} <a href="${url}" download="${origName.replace(/\.[^.]+$/,'')}.${ext}" style="color:var(--sky);font-weight:600;margin-left:.5rem">Download</a></div>`;
+  var ext=EXT_MAP[format]||'png';
+  canvas.toBlob(function(blob){
+    var url=URL.createObjectURL(blob);
+    var pct=origSize>0?Math.round((1-blob.size/origSize)*100):0;
+    var savingTxt=pct>0?'<span style="color:#16a34a;font-weight:600"> ('+pct+'% smaller)</span>':pct<0?'<span style="color:#dc2626"> ('+Math.abs(pct)+'% larger)</span>':'';
+    document.getElementById('outputPreview').innerHTML=
+      '<img src="'+url+'" alt=""><div class="info">Converted: '+w+'x'+h+' | '+ext.toUpperCase()+' | '+fmt(blob.size)+savingTxt+
+      ' <a href="'+url+'" download="'+origName.replace(/\.[^.]+$/,'')+'.'+ext+'" style="color:var(--sky);font-weight:600;margin-left:.5rem">Download</a></div>';
   },format,quality);
+}
+
+function convertAll(){
+  var format=document.getElementById('format').value;
+  var quality=parseInt(document.getElementById('quality').value)/100;
+  var scale=parseInt(document.getElementById('resize').value)/100;
+  var ext=EXT_MAP[format]||'png';
+  var done=0;
+  fileQueue.forEach(function(f){
+    var reader=new FileReader();
+    reader.onload=function(ev){
+      var img=new Image();
+      img.onload=function(){
+        var w=Math.round(img.width*scale);var h=Math.round(img.height*scale);
+        var canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;
+        var ctx=canvas.getContext('2d');
+        if(format==='image/jpeg'){ctx.fillStyle='#FFF';ctx.fillRect(0,0,w,h);}
+        ctx.drawImage(img,0,0,w,h);
+        canvas.toBlob(function(blob){
+          var url=URL.createObjectURL(blob);
+          var a=document.createElement('a');a.href=url;a.download=f.name.replace(/\.[^.]+$/,'')+'.'+ext;a.click();
+          done++;
+          if(done===fileQueue.length){
+            var btn=document.getElementById('batchConvertBtn').querySelector('button');
+            if(btn){btn.textContent='All '+done+' files downloaded!';btn.style.background='#16a34a';}
+          }
+        },format,quality);
+      };
+      img.src=ev.target.result;
+    };
+    reader.readAsDataURL(f);
+  });
+}
+
+function applyPreset(p){
+  var f=document.getElementById('format');var q=document.getElementById('quality');var qv=document.getElementById('qualVal');var r=document.getElementById('resize');
+  if(p==='datasaver'){f.value='image/webp';q.value=55;qv.textContent='55%';r.value=70;}
+  else if(p==='whatsapp'){f.value='image/jpeg';q.value=75;qv.textContent='75%';r.value=80;}
+  else if(p==='webopt'){f.value='image/webp';q.value=80;qv.textContent='80%';r.value=100;}
+  else if(p==='hq'){f.value='image/png';q.value=100;qv.textContent='100%';r.value=100;}
 }
 
 function fmt(bytes){

@@ -7,7 +7,7 @@
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'Tenancy Agreement Generator'});</script>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Tenancy Agreement Generator — African Rental Contracts</title>
-<meta name="description" content="Generate a professional tenancy agreement for Nigerian, Kenyan, Ghanaian, or South African rental properties. Customise clauses, download and print.">
+<meta name="description" content="Generate a professional tenancy agreement for Nigerian, Kenyan, Ghanaian, South African, Tanzanian, Ugandan, Rwandan, or Ethiopian rental properties. Customise clauses, download and print.">
 <meta name="keywords" content="tenancy agreement, rental contract, Nigerian tenancy agreement, landlord tenant agreement, rent agreement template, lease agreement Africa">
 <link rel="canonical" href="https://afrotools.com/tools/tenancy-agreement/">
 <meta property="og:title" content="Tenancy Agreement Generator for Africa">
@@ -20,7 +20,7 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6}
 .hero{background:linear-gradient(135deg,#1e3a5f 0%,#1d4ed8 50%,#3b82f6 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}
-.hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}
+.hero h1{color:#fff;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}
 .hero p{font-size:1.05rem;opacity:.9;max-width:600px;margin:0 auto}
 .container{max-width:900px;margin:0 auto;padding:1.5rem}
 .card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:1.5rem}
@@ -111,7 +111,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <div class="card">
 <h2>Property & Jurisdiction</h2>
 <div class="form-grid">
-<div class="form-group"><label>Country</label><select id="country" onchange="updateLabels()"><option value="NG">Nigeria</option><option value="KE">Kenya</option><option value="GH">Ghana</option><option value="ZA">South Africa</option></select></div>
+<div class="form-group"><label>Country</label><select id="country" onchange="updateLabels()"><option value="NG">Nigeria</option><option value="KE">Kenya</option><option value="GH">Ghana</option><option value="ZA">South Africa</option><option value="TZ">Tanzania</option><option value="UG">Uganda</option><option value="RW">Rwanda</option><option value="ET">Ethiopia</option></select></div>
 <div class="form-group"><label>Property Type</label><select id="propType"><option>Residential Apartment</option><option>Self-Contained Room</option><option>Detached House</option><option>Semi-Detached House</option><option>Commercial Shop</option><option>Office Space</option></select></div>
 <div class="form-group" style="grid-column:1/-1"><label>Property Address</label><input type="text" id="propAddress" placeholder="Full property address"></div>
 </div>
@@ -132,6 +132,15 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <div class="form-group"><label>Address (current)</label><input type="text" id="tAddress" placeholder="Current address"></div>
 <div class="form-group"><label>Phone</label><input type="tel" id="tPhone" placeholder="Phone number"></div>
 <div class="form-group"><label>ID Number</label><input type="text" id="tId" placeholder="National ID / NIN"></div>
+</div>
+</div>
+<div class="card" id="guarantorCard" style="display:none">
+<h2>Guarantor Details</h2>
+<div class="form-grid">
+<div class="form-group"><label>Guarantor Full Name</label><input type="text" id="gName" placeholder="Guarantor's full legal name"></div>
+<div class="form-group"><label>Guarantor Address</label><input type="text" id="gAddress" placeholder="Guarantor's address"></div>
+<div class="form-group"><label>Guarantor Phone</label><input type="tel" id="gPhone" placeholder="Phone number"></div>
+<div class="form-group"><label>Guarantor ID Number</label><input type="text" id="gId" placeholder="National ID / NIN"></div>
 </div>
 </div>
 <div class="card">
@@ -156,6 +165,8 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <label><input type="checkbox" id="clMaintenance" checked> Tenant maintains premises</label>
 <label><input type="checkbox" id="clNotice" checked> Notice period required</label>
 <label><input type="checkbox" id="clEarlyTermination"> Early termination clause</label>
+<label><input type="checkbox" id="clGuarantor" onchange="document.getElementById('guarantorCard').style.display=this.checked?'block':'none'"> Guarantor / surety clause</label>
+<label><input type="checkbox" id="clRentReview"> Annual rent review clause</label>
 </div>
 </div>
 <div style="text-align:center;margin:1.5rem 0">
@@ -183,78 +194,92 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <details><summary>Do I need a lawyer to create a tenancy agreement?</summary><p>For standard residential tenancies, a well-drafted agreement like this one is typically sufficient. For commercial leases, properties of high value, or complex arrangements, consulting a property lawyer is recommended. This tool gives you a professional starting point that you can have reviewed if needed.</p></details>
 <details><summary>What is a caution/security deposit?</summary><p>It's a refundable amount paid upfront to cover potential damages or unpaid rent. In Nigeria, it's typically 1-2 years' rent equivalent. In Kenya, 1-2 months' rent. In South Africa, a maximum of 2 months' rent. The deposit should be returned at the end of the tenancy minus any legitimate deductions.</p></details>
 <details><summary>Can the landlord increase rent during the tenancy?</summary><p>Generally, rent cannot be increased during the agreed tenancy period unless the agreement includes a rent review clause. After the tenancy expires, the landlord can propose new terms. Some countries (like South Africa) have guidelines on reasonable rent increases.</p></details>
+<details><summary>What is a guarantor/surety clause and when do I need one?</summary><p>A guarantor (or surety) clause brings in a third party who agrees to pay rent or cover damages if the tenant defaults. It is particularly useful for: first-time renters without rental history, students or young professionals with limited income proof, and tenants whose monthly income is less than 3x the monthly rent. The guarantor should have an independent source of income and sign the agreement alongside both parties. Under Nigerian and South African law, a guarantor's liability is joint and several with the tenant — meaning the landlord can claim from either party directly.</p></details>
+<details><summary>What are the 2024 updates to African tenancy laws I should know about?</summary><p>Key updates: Uganda's new Landlord and Tenant Act 2022 (effective) now requires written agreements for all tenancies exceeding 6 months and caps security deposits at 2 months' rent. South Africa's Rental Housing Amendment Act (2023) introduced stricter dispute resolution through provincial Rental Housing Tribunals — tenants can lodge complaints for free. Kenya's Business Laws Amendment Act 2024 affected landlord notice requirements. Nigeria's Lagos State has been reviewing the Tenancy Law; confirm with a local solicitor for any updates beyond 2023. Always check with your country's housing authority for the most recent regulations.</p></details>
 </section>
 <afro-related-tools></afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
-<script src="/assets/js/components/navbar.js" defer></script>
-<script src="/assets/js/components/footer.js" defer></script>
-<script src="/assets/js/components/related-tools.js" defer></script>
-<script src="/assets/js/components/newsletter-cta.js" defer></script>
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<script src="/assets/js/components/related-tools.min.js" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js" defer></script>
 <script>
-const LAWS={NG:{name:'Nigeria',deposit:'Caution Deposit',law:'Lagos State Tenancy Law 2011 and Recovery of Premises Act',notice:'6 months for yearly tenancy, 1 month for monthly tenancy',currency:'\u20a6'},KE:{name:'Kenya',deposit:'Security Deposit',law:'Landlord and Tenant (Shops, Hotels and Catering Establishments) Act and Rent Restriction Act',notice:'1 month for monthly tenancy',currency:'KSh'},GH:{name:'Ghana',deposit:'Security Deposit',law:'Rent Act 1963 (Act 220) as amended',notice:'3 months for yearly tenancy, 1 month for monthly tenancy',currency:'GH\u20b5'},ZA:{name:'South Africa',deposit:'Damage Deposit',law:'Rental Housing Act 50 of 1999 as amended',notice:'1 calendar month',currency:'R'}};
+var LAWS={NG:{name:'Nigeria',deposit:'Caution Deposit',law:'Lagos State Tenancy Law 2011 and Recovery of Premises Act',notice:'6 months for yearly tenancy, 1 month for monthly tenancy',currency:'\u20a6'},KE:{name:'Kenya',deposit:'Security Deposit',law:'Landlord and Tenant (Shops, Hotels and Catering Establishments) Act and Rent Restriction Act',notice:'1 month for monthly tenancy',currency:'KSh'},GH:{name:'Ghana',deposit:'Security Deposit',law:'Rent Act 1963 (Act 220) as amended',notice:'3 months for yearly tenancy, 1 month for monthly tenancy',currency:'GH\u20b5'},ZA:{name:'South Africa',deposit:'Damage Deposit',law:'Rental Housing Act 50 of 1999 as amended',notice:'1 calendar month',currency:'R'},TZ:{name:'Tanzania',deposit:'Security Deposit',law:'Rent Restriction Act 1984 and Land Act 1999',notice:'1 month for monthly tenancy',currency:'TSh'},UG:{name:'Uganda',deposit:'Security Deposit',law:'Landlord and Tenant Act 2022',notice:'1 month for monthly tenancy',currency:'USh'},RW:{name:'Rwanda',deposit:'Security Deposit',law:'Law No 43/2013 on Leasing of Land in Rwanda',notice:'3 months\u2019 written notice',currency:'RF'},ET:{name:'Ethiopia',deposit:'Security Deposit',law:'Ethiopian Civil Code (Lease Provisions) and Urban Lands Lease Proclamation No 721/2011',notice:'1 month for monthly tenancy',currency:'Br'}};
 
-function updateLabels(){const c=document.getElementById('country').value;document.getElementById('cautionLabel').textContent=LAWS[c].deposit;}
-function val(id){return document.getElementById(id)?.value||'';}
-function num(id){return parseFloat(document.getElementById(id)?.value)||0;}
-function checked(id){return document.getElementById(id)?.checked;}
-function fmtDate(d){if(!d)return'_____________';const dt=new Date(d);return dt.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});}
+function updateLabels(){var c=document.getElementById('country').value;document.getElementById('cautionLabel').textContent=LAWS[c].deposit;}
+function val(id){var el=document.getElementById(id);return el?el.value:'';}
+function num(id){var el=document.getElementById(id);return el?parseFloat(el.value)||0:0;}
+function checked(id){var el=document.getElementById(id);return el?el.checked:false;}
+function fmtDate(d){if(!d)return'_____________';var dt=new Date(d);return dt.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});}
 
 function generate(){
-  const c=val('country');const law=LAWS[c];const sym=law.currency;
-  const dur=parseInt(val('duration'));
-  const start=val('startDate');
-  let endDate='';
-  if(start){const d=new Date(start);d.setFullYear(d.getFullYear()+dur);endDate=d.toISOString().split('T')[0];}
+  var c=val('country');var law=LAWS[c];var sym=law.currency;
+  var dur=parseInt(val('duration'));
+  var start=val('startDate');
+  var endDate='';
+  if(start){var dEnd=new Date(start);dEnd.setFullYear(dEnd.getFullYear()+dur);endDate=dEnd.toISOString().split('T')[0];}
 
-  let clauses=[];
-  clauses.push(`The Landlord hereby lets and the Tenant hereby takes the property described above for a period of ${dur} year${dur>1?'s':''} commencing from ${fmtDate(start)} and expiring on ${fmtDate(endDate)}.`);
-  clauses.push(`The Tenant shall pay rent of ${sym}${num('rent').toLocaleString()} per annum, payable ${val('payFreq')}.`);
-  if(num('caution')>0) clauses.push(`The Tenant shall pay a ${law.deposit} of ${sym}${num('caution').toLocaleString()}, refundable at the end of the tenancy subject to the condition of the premises.`);
-  if(num('agentFee')>0) clauses.push(`An agent's commission of ${sym}${num('agentFee').toLocaleString()} is payable by the Tenant to the appointed agent.`);
-  clauses.push(`The Tenant shall use the premises solely as a ${val('propType').toLowerCase()} and for no other purpose without the prior written consent of the Landlord.`);
+  var clauses=[];
+  clauses.push('The Landlord hereby lets and the Tenant hereby takes the property described above for a period of '+dur+' year'+(dur>1?'s':'')+' commencing from '+fmtDate(start)+' and expiring on '+fmtDate(endDate)+'.');
+  clauses.push('The Tenant shall pay rent of '+sym+num('rent').toLocaleString()+' per annum, payable '+val('payFreq')+'.');
+  if(num('caution')>0) clauses.push('The Tenant shall pay a '+law.deposit+' of '+sym+num('caution').toLocaleString()+', refundable at the end of the tenancy subject to the condition of the premises.');
+  if(num('agentFee')>0) clauses.push('An agent\'s commission of '+sym+num('agentFee').toLocaleString()+' is payable by the Tenant to the appointed agent.');
+  clauses.push('The Tenant shall use the premises solely as a '+val('propType').toLowerCase()+' and for no other purpose without the prior written consent of the Landlord.');
   if(checked('clNoSubletting')) clauses.push('The Tenant shall not assign, sublet, or part with possession of the premises or any part thereof without the prior written consent of the Landlord.');
   if(checked('clPets')) clauses.push('No pets or animals of any kind shall be kept on the premises without the prior written consent of the Landlord.');
   if(checked('clRenovation')) clauses.push('The Tenant shall not make any structural alterations, additions, or modifications to the premises without the prior written consent of the Landlord.');
   if(checked('clNoise')) clauses.push('The Tenant shall observe quiet hours between 10:00 PM and 6:00 AM and shall not cause nuisance or disturbance to neighbours.');
   if(checked('clUtilities')) clauses.push('The Tenant shall be responsible for payment of all utility bills including electricity, water, waste disposal, and any other service charges during the tenancy period.');
   if(checked('clMaintenance')) clauses.push('The Tenant shall keep the premises in good and tenantable condition and shall be responsible for minor repairs not exceeding 10% of monthly rent equivalent. Major structural repairs remain the responsibility of the Landlord.');
-  if(checked('clNotice')) clauses.push(`Either party wishing to terminate this agreement shall give the other party notice as prescribed by law (${law.notice}).`);
+  if(checked('clNotice')) clauses.push('Either party wishing to terminate this agreement shall give the other party notice as prescribed by law ('+law.notice+').');
   if(checked('clEarlyTermination')) clauses.push('In the event of early termination by the Tenant, the Tenant shall forfeit two months\' rent equivalent. In the event of early termination by the Landlord, the Landlord shall refund the pro-rated unused portion of rent within 30 days.');
+  if(checked('clGuarantor')&&val('gName')) clauses.push('<strong>GUARANTOR:</strong> '+(val('gName')||'_____________')+', of '+(val('gAddress')||'_____________')+', ID: '+(val('gId')||'_____________')+', Phone: '+(val('gPhone')||'_____________')+' hereby unconditionally and irrevocably guarantees the full and faithful performance by the Tenant of all obligations under this Agreement, including payment of rent and any damages. The Guarantor\'s liability shall be joint and several with the Tenant.');
+  if(checked('clRentReview')) clauses.push('The rent payable under this Agreement shall be subject to an annual review at the end of each tenancy year. Any rent increase shall not exceed 10% of the then-current rent and shall be notified to the Tenant in writing not less than 2 months before the review date.');
   clauses.push('The Tenant shall yield up the premises at the expiration or earlier determination of this tenancy in the same condition as received, fair wear and tear excepted.');
-  clauses.push(`This agreement shall be governed by and construed in accordance with the laws of ${law.name}, specifically the ${law.law}.`);
+  clauses.push('This agreement shall be governed by and construed in accordance with the laws of '+law.name+', specifically the '+law.law+'.');
   clauses.push('Any dispute arising from this agreement shall first be referred to mediation before either party may seek legal remedy in a court of competent jurisdiction.');
 
-  const html=`
-  <h1>Tenancy Agreement</h1>
-  <p style="text-align:center;color:#64748b">Made pursuant to the ${law.law}</p>
-  <h2>Parties</h2>
-  <p><strong>LANDLORD:</strong> ${val('llName')||'_____________'}, of ${val('llAddress')||'_____________'}, ID: ${val('llId')||'_____________'}, Phone: ${val('llPhone')||'_____________'} (hereinafter called "the Landlord")</p>
-  <p><strong>TENANT:</strong> ${val('tName')||'_____________'}, of ${val('tAddress')||'_____________'}, ID: ${val('tId')||'_____________'}, Phone: ${val('tPhone')||'_____________'} (hereinafter called "the Tenant")</p>
-  <h2>Property</h2>
-  <p>The property known as and situate at: <strong>${val('propAddress')||'_____________'}</strong> (${val('propType')})</p>
-  <h2>Terms and Conditions</h2>
-  <div style="counter-reset:clause">${clauses.map(c=>`<div class="clause">${c}</div>`).join('')}</div>
-  <h2>Signatures</h2>
-  <p>IN WITNESS WHEREOF, the parties have executed this agreement on the date first written above.</p>
-  <div class="signatures">
-    <div class="sig-block"><div class="sig-line"></div><strong>${val('llName')||'Landlord'}</strong><br>Date: ${fmtDate(start)}</div>
-    <div class="sig-block"><div class="sig-line"></div><strong>${val('tName')||'Tenant'}</strong><br>Date: ${fmtDate(start)}</div>
-  </div>
-  <div class="signatures" style="margin-top:1.5rem">
-    <div class="sig-block"><div class="sig-line"></div>Witness 1<br>Name: _____________</div>
-    <div class="sig-block"><div class="sig-line"></div>Witness 2<br>Name: _____________</div>
-  </div>
-  <p style="text-align:center;color:#94a3b8;margin-top:2rem;font-size:.8rem">Generated by AfroTools Tenancy Agreement Generator — afrotools.com</p>`;
+  var clauseHtml='';
+  clauses.forEach(function(cl){clauseHtml+='<div class="clause">'+cl+'</div>';});
+
+  var guarantorSig='';
+  if(checked('clGuarantor')&&val('gName')){
+    guarantorSig='<div class="signatures" style="margin-top:1.5rem"><div class="sig-block" style="grid-column:1/-1"><div class="sig-line"></div><strong>Guarantor: '+val('gName')+'</strong><br>Date: '+fmtDate(start)+'</div></div>';
+  }
+
+  var html=
+    '<h1>Tenancy Agreement</h1>'+
+    '<p style="text-align:center;color:#64748b">Made pursuant to the '+law.law+'</p>'+
+    '<h2>Parties</h2>'+
+    '<p><strong>LANDLORD:</strong> '+(val('llName')||'_____________')+', of '+(val('llAddress')||'_____________')+', ID: '+(val('llId')||'_____________')+', Phone: '+(val('llPhone')||'_____________')+' (hereinafter called "the Landlord")</p>'+
+    '<p><strong>TENANT:</strong> '+(val('tName')||'_____________')+', of '+(val('tAddress')||'_____________')+', ID: '+(val('tId')||'_____________')+', Phone: '+(val('tPhone')||'_____________')+' (hereinafter called "the Tenant")</p>'+
+    '<h2>Property</h2>'+
+    '<p>The property known as and situate at: <strong>'+(val('propAddress')||'_____________')+'</strong> ('+val('propType')+')</p>'+
+    '<h2>Terms and Conditions</h2>'+
+    '<div style="counter-reset:clause">'+clauseHtml+'</div>'+
+    '<h2>Signatures</h2>'+
+    '<p>IN WITNESS WHEREOF, the parties have executed this agreement on the date first written above.</p>'+
+    '<div class="signatures">'+
+      '<div class="sig-block"><div class="sig-line"></div><strong>'+(val('llName')||'Landlord')+'</strong><br>Date: '+fmtDate(start)+'</div>'+
+      '<div class="sig-block"><div class="sig-line"></div><strong>'+(val('tName')||'Tenant')+'</strong><br>Date: '+fmtDate(start)+'</div>'+
+    '</div>'+
+    guarantorSig+
+    '<div class="signatures" style="margin-top:1.5rem">'+
+      '<div class="sig-block"><div class="sig-line"></div>Witness 1<br>Name: _____________</div>'+
+      '<div class="sig-block"><div class="sig-line"></div>Witness 2<br>Name: _____________</div>'+
+    '</div>'+
+    '<p style="text-align:center;color:#94a3b8;margin-top:2rem;font-size:.8rem">Generated by AfroTools Tenancy Agreement Generator &mdash; afrotools.com</p>';
+
   document.getElementById('agreementContent').innerHTML=html;
   document.getElementById('output').style.display='block';
   document.getElementById('output').scrollIntoView({behavior:'smooth'});
 }
 
 function downloadText(){
-  const text=document.getElementById('agreementContent').innerText;
-  const blob=new Blob([text],{type:'text/plain'});
-  const a=document.createElement('a');
+  var text=document.getElementById('agreementContent').innerText;
+  var blob=new Blob([text],{type:'text/plain'});
+  var a=document.createElement('a');
   a.href=URL.createObjectURL(blob);
   a.download='tenancy-agreement.txt';a.click();
 }

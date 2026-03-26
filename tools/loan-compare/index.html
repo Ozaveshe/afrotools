@@ -150,10 +150,14 @@ h1 em{color:var(--afro-blue);font-style:normal}
 <div class="card-head">
 <span class="card-title">Loan Offers</span>
 <select id="currency" class="f-select" style="width:auto;padding:6px 10px;font-size:.78rem">
-<option value="NGN">NGN</option><option value="KES">KES</option><option value="ZAR">ZAR</option><option value="GHS">GHS</option><option value="USD">USD</option><option value="GBP">GBP</option>
+<option value="NGN">NGN — Nigeria</option><option value="KES">KES — Kenya</option><option value="ZAR">ZAR — South Africa</option><option value="GHS">GHS — Ghana</option><option value="TZS">TZS — Tanzania</option><option value="UGX">UGX — Uganda</option><option value="ETB">ETB — Ethiopia</option><option value="RWF">RWF — Rwanda</option><option value="XOF">XOF — West Africa CFA</option><option value="USD">USD</option><option value="GBP">GBP</option>
 </select>
 </div>
 <div class="card-body">
+<div style="margin-bottom:14px">
+<div style="font-size:.72rem;font-weight:700;color:#64748b;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px">Quick Fill — African Lender Presets</div>
+<div style="display:flex;flex-wrap:wrap;gap:6px" id="presetBtns"></div>
+</div>
 <div class="loans-grid" id="loansGrid"></div>
 <button class="add-loan-btn" id="addLoanBtn" onclick="addLoan()" style="margin-top:14px">+ Add Another Loan</button>
 <button class="calc-btn" onclick="compare()" style="margin-top:18px">Compare Loans</button>
@@ -208,7 +212,36 @@ let loanCount=0;
 function visibleLoans(){return document.querySelectorAll('#loansGrid .loan-card').length}
 
 function parseNum(s){return parseFloat(String(s).replace(/[^0-9.\-]/g,''))||0}
-function fmt(n,cur){const symbols={NGN:'\u20A6',KES:'KSh ',ZAR:'R',GHS:'GH\u20B5',USD:'$',GBP:'\u00A3'};return(symbols[cur]||'')+n.toLocaleString('en',{minimumFractionDigits:0,maximumFractionDigits:0})}
+function fmt(n,cur){const symbols={NGN:'\u20A6',KES:'KSh ',ZAR:'R',GHS:'GH\u20B5',TZS:'TSh',UGX:'USh',ETB:'Br',RWF:'RF',XOF:'CFA',USD:'$',GBP:'\u00A3'};return(symbols[cur]||cur+' ')+n.toLocaleString('en',{minimumFractionDigits:0,maximumFractionDigits:0})}
+
+// African bank presets: {name, rate (annual %), term (months)}
+var PRESETS=[
+  {name:'GTBank NG',rate:28,term:24},{name:'Access NG',rate:25,term:36},
+  {name:'FairMoney NG',rate:60,term:12},{name:'Carbon NG',rate:48,term:6},
+  {name:'Equity KE',rate:18,term:36},{name:'KCB KE',rate:16,term:48},
+  {name:'Tala KE',rate:84,term:3},{name:'FNB ZA',rate:22,term:60},
+  {name:'Standard ZA',rate:20,term:48},{name:'Absa GH',rate:32,term:24},
+  {name:'CRDB TZ',rate:20,term:36},{name:'Stanbic UG',rate:22,term:36}
+];
+function initPresets(){
+  var pb=document.getElementById('presetBtns');
+  PRESETS.forEach(function(p){
+    var btn=document.createElement('button');
+    btn.className='add-loan-btn';
+    btn.style.cssText='width:auto;padding:5px 10px;font-size:.7rem;margin:0';
+    btn.textContent=p.name+' '+p.rate+'%';
+    btn.onclick=function(){
+      if(visibleLoans()>=4)return;
+      addLoan(p.name);
+      var i=loanCount-1;
+      setTimeout(function(){
+        var el=document.getElementById('lRate'+i);if(el)el.value=p.rate;
+        var et=document.getElementById('lTerm'+i);if(et)et.value=p.term;
+      },50);
+    };
+    pb.appendChild(btn);
+  });
+}
 
 function addLoan(name){
   if(visibleLoans()>=4)return;
@@ -330,6 +363,7 @@ function compare(){
 // Initialize with 2 loans
 addLoan('Bank A');
 addLoan('Bank B');
+initPresets();
 </script>
 
 <script>

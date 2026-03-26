@@ -270,6 +270,20 @@
 # already handled above, eliminating the /path → /path/ 301 redirect that
 # Google Search Console flags as "Page with redirect".
 
+# French fallback redirects — send unbuilt /fr/* paths to English equivalents
+# These fire only when no earlier rule or static file matches (first-match-wins)
+/fr/dashboard/vault/  /dashboard/vault/   302
+/fr/dashboard/*       /dashboard/:splat   302
+/fr/tools/*           /tools/:splat       302
+/fr/engineering/*     /engineering/:splat 302
+/fr/salary-tax/       /salary-tax/        302
+/fr/salary-tax        /salary-tax/        302
+/fr/countries/        /                   302
+/fr/countries         /                   302
+/fr/:country/:page    /:country/:page     302
+/fr/:country/         /:country/          302
+/fr/:country          /:country/          302
+
 # Tool pages: /tools/xyz → /tools/xyz/index.html (200, no redirect)
 /tools/:tool          /tools/:tool/index.html          200
 

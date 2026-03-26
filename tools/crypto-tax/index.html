@@ -113,8 +113,8 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <section class="tool-hero"><div class="tool-hero-inner">
 <div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Crypto Tax</span></div>
 <h1>African <em>Crypto Tax Calculator</em></h1>
-<p class="hero-sub">Calculate capital gains tax on your cryptocurrency disposals in Nigeria, Kenya, South Africa, and Ghana. Covers Bitcoin, Ethereum, and all crypto assets.</p>
-<div class="hero-badges"><span class="badge b-em">Capital Gains</span><span class="badge b-em">4 Countries</span><span class="badge b-em">2026 Rates</span></div>
+<p class="hero-sub">Calculate capital gains tax on your cryptocurrency disposals in Nigeria, Kenya, South Africa, Ghana, Uganda, and Rwanda. Covers Bitcoin, Ethereum, and all crypto assets.</p>
+<div class="hero-badges"><span class="badge b-em">Capital Gains</span><span class="badge b-em">6 Countries</span><span class="badge b-em">2026 Rates</span></div>
 </div></section>
 
 <section class="tool-main"><div class="tool-main-inner">
@@ -129,6 +129,8 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <option value="KE">Kenya</option>
 <option value="ZA">South Africa</option>
 <option value="GH">Ghana</option>
+<option value="UG">Uganda</option>
+<option value="RW">Rwanda</option>
 </select></div>
 <div><label>Transaction Type</label>
 <select id="txType">
@@ -245,6 +247,21 @@ const TAX_INFO = {
     marginalRates: { low: 0.05, mid: 0.175, high: 0.30 },
     exclusion: 0,
     info: '<p><strong>Ghana:</strong> No specific crypto tax rules. GRA applies general CGT (15%) and income tax rules. Crypto profits treated as assessable income. Limited enforcement currently.</p><p style="margin-top:6px"><strong>Filing:</strong> Annual return via GRA.</p>'
+  },
+  UG: {
+    name: 'Uganda', symbol: 'USh', currency: 'UGX',
+    cgtRate: 0.10, // 10% digital asset tax on transfer value (Finance Act 2023)
+    digitalAssetTax: 0.10,
+    marginalRates: { low: 0.10, mid: 0.20, high: 0.30 },
+    exclusion: 0,
+    info: '<p><strong>Uganda:</strong> Finance Act 2023 introduced 10% tax on the transfer value of digital assets (not on gains). URA is the tax authority. Agents/exchanges must withhold this tax.</p><p style="margin-top:6px"><strong>Filing:</strong> Via URA e-Tax portal. URA TIN required.</p>'
+  },
+  RW: {
+    name: 'Rwanda', symbol: 'RF', currency: 'RWF',
+    cgtRate: 0.15, // 15% CGT general rate
+    marginalRates: { low: 0.10, mid: 0.20, high: 0.30 },
+    exclusion: 0,
+    info: '<p><strong>Rwanda:</strong> RRA applies standard CGT (15%) on crypto gains. Rwanda is actively developing its fintech framework and courting digital asset businesses. No specific crypto legislation yet.</p><p style="margin-top:6px"><strong>Filing:</strong> Via RRA M-Declaration. TIN required.</p>'
   }
 };
 
@@ -294,6 +311,11 @@ function calculate() {
     tax = Math.max(dat, cgt); // Conservative: use higher
     method = dat > cgt ? `Digital Asset Tax: 3% of sale value` : `CGT: ${(t.cgtRate*100)}% of net gain`;
     effectiveRate = gain > 0 ? (tax / gain * 100) : 0;
+  } else if (c === 'UG') {
+    // Uganda: 10% on transfer value (not gain)
+    tax = salePrice * t.digitalAssetTax;
+    method = 'Digital Asset Tax: 10% of disposal value';
+    effectiveRate = gain > 0 ? (tax / gain * 100) : 0;
   } else {
     // NG, GH: CGT or income tax
     const taxableGainAfterExemption = Math.max(0, totalGains - (t.exclusion || 0));
@@ -335,7 +357,9 @@ function calculate() {
     NG: 'Keep records of all purchases and sales. FIRS is increasing digital asset monitoring. Consider using a crypto tax tracking tool.',
     KE: 'The 3% DAT is withheld by licensed exchanges. If using P2P or foreign exchanges, you must self-report to KRA.',
     ZA: 'Use the R40,000 annual exclusion wisely. Hold assets for longer periods when possible. SARS has data-sharing agreements with major exchanges.',
-    GH: 'While enforcement is limited, GRA is building capacity. File voluntarily to avoid future penalties. Keep all transaction records.'
+    GH: 'While enforcement is limited, GRA is building capacity. File voluntarily to avoid future penalties. Keep all transaction records.',
+    UG: 'Uganda\'s 10% DAT applies to the transfer value, not just gains — making it expensive even for small profits. Use licensed URA-compliant exchanges where possible.',
+    RW: 'Rwanda\'s RRA applies standard income/CGT rules. Rwanda is actively developing its blockchain regulatory framework. Maintain complete transaction logs.'
   };
   document.getElementById('tipBox').innerHTML = '<strong>Tax Tip:</strong> ' + tips[c];
 

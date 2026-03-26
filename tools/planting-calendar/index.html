@@ -90,15 +90,57 @@ select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(2
 <div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Planting Calendar</span></div>
 <h1>African <em>Crop Planting</em> Calendar</h1>
 <p class="hero-sub">Know the best planting, growing, and harvesting times for major crops in your African climate zone. Select your region to get a customized 12-month planting guide.</p>
-<div class="hero-badges"><span class="badge b-em">15+ Crops</span><span class="badge b-em">6 Climate Zones</span><span class="badge b-em">Visual Calendar</span></div>
+<div class="hero-badges"><span class="badge b-em">20+ Crops</span><span class="badge b-em">7 Climate Zones</span><span class="badge b-em">Country Quick-Select</span><span class="badge b-em">Visual Calendar</span></div>
 </div></section>
 
 <section class="tool-main"><div class="tool-main-inner">
 <div class="card">
 <div class="card-head"><span class="card-title">Select Your Region</span></div>
 <div class="card-body">
+<div class="field">
+<label>Quick Country Select (auto-sets climate zone)</label>
+<select id="country" onchange="pickCountry()">
+<option value="">-- Select Country --</option>
+<optgroup label="West Africa">
+<option value="forest">Nigeria (South / Rivers, Cross River, Edo)</option>
+<option value="guinea">Nigeria (Middle Belt — Benue, Kwara, Plateau)</option>
+<option value="sudan">Nigeria (North — Kano, Katsina, Sokoto)</option>
+<option value="forest">Ghana (South / Accra, Eastern, Western)</option>
+<option value="guinea">Ghana (North / Tamale, Bolgatanga)</option>
+<option value="guinea">Senegal</option>
+<option value="guinea">Côte d'Ivoire (North)</option>
+<option value="forest">Côte d'Ivoire (South / Abidjan)</option>
+<option value="sudan">Mali</option>
+<option value="sudan">Burkina Faso</option>
+<option value="sudan">Niger</option>
+<option value="guinea">Togo / Benin</option>
+<option value="forest">Cameroon (South)</option>
+<option value="guinea">Cameroon (North)</option>
+<option value="forest">Liberia / Sierra Leone / Guinea</option>
+</optgroup>
+<optgroup label="East Africa">
+<option value="highland">Kenya (Highlands — Rift Valley, Central)</option>
+<option value="coastal-ea">Kenya (Coast — Mombasa, Kilifi)</option>
+<option value="highland">Ethiopia</option>
+<option value="highland">Rwanda / Burundi</option>
+<option value="highland">Uganda</option>
+<option value="highland">Tanzania (Highlands — Kilimanjaro, Iringa)</option>
+<option value="coastal-ea">Tanzania (Coast — Dar es Salaam, Tanga)</option>
+</optgroup>
+<optgroup label="Southern Africa">
+<option value="southern">South Africa</option>
+<option value="southern">Zimbabwe / Zambia</option>
+<option value="southern">Malawi / Mozambique</option>
+<option value="southern">Botswana / Namibia</option>
+</optgroup>
+<optgroup label="North Africa">
+<option value="north-arid">Egypt</option>
+<option value="north-arid">Morocco / Algeria / Tunisia</option>
+</optgroup>
+</select>
+</div>
 <div class="row field">
-<div><label>Climate Zone</label>
+<div><label>Climate Zone (or select manually)</label>
 <select id="zone" onchange="generate()">
 <option value="forest">Forest / Humid Tropical (S. Nigeria, Ghana coast, Cameroon)</option>
 <option value="guinea" selected>Guinea Savanna (N. Ghana, C. Nigeria, Senegal)</option>
@@ -106,11 +148,12 @@ select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(2
 <option value="highland">East African Highlands (Kenya, Ethiopia, Rwanda)</option>
 <option value="coastal-ea">East African Coastal (Tanzania, Mombasa, Mozambique)</option>
 <option value="southern">Southern Africa (SA, Zimbabwe, Zambia, Malawi)</option>
+<option value="north-arid">North Africa / Mediterranean (Egypt, Morocco, Algeria)</option>
 </select></div>
 <div><label>Rainfall Pattern</label>
 <select id="rainfall" onchange="generate()">
-<option value="bimodal">Bimodal (two rainy seasons)</option>
-<option value="unimodal" selected>Unimodal (one rainy season)</option>
+<option value="unimodal" selected>Unimodal (one rainy season — most of West Africa)</option>
+<option value="bimodal">Bimodal (two rainy seasons — forest zones, East Africa)</option>
 </select></div>
 </div>
 </div></div>
@@ -136,7 +179,11 @@ select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(2
 
 <h2>Frequently Asked Questions</h2>
 <details class="faq-item"><summary>When is the best time to plant maize in Nigeria?</summary><p>In southern Nigeria (Forest zone): early planting March-April, late planting July-August. In the Guinea Savanna (middle belt): May-June. In the Sudan Savanna (north): June-July with the onset of rains. Early planting generally gives better yields as crops benefit from the full rainy season.</p></details>
-<details class="faq-item"><summary>Can I grow crops in the dry season?</summary><p>Yes, with irrigation. Dry season farming (fadama in Nigeria) is increasingly important. Vegetables (tomato, pepper, onion), rice, and wheat can be grown during the dry season with adequate water supply. Many farmers supplement rainfed crops with irrigated dry-season vegetables for additional income.</p></details>
+<details class="faq-item"><summary>Can I grow crops in the dry season?</summary><p>Yes, with irrigation. Dry season farming (fadama in Nigeria, irrigation schemes in Egypt and Morocco) is increasingly important. Vegetables (tomato, pepper, onion), rice, and wheat can be grown during the dry season with adequate water supply. Many farmers supplement rainfed crops with irrigated dry-season vegetables for additional income.</p></details>
+<details class="faq-item"><summary>What crops grow best in North Africa (Egypt, Morocco)?</summary><p>North Africa has a Mediterranean climate with cool, wet winters and hot, dry summers. Winter crops include wheat, barley, onion, and vegetables. Summer crops include maize, tomato, sunflower, and grapes. Date palms thrive in desert oases and river valleys. Citrus fruits (oranges, lemons) are harvested January-March. The Nile Delta and Maghreb plains support year-round vegetable production with irrigation.</p></details>
+<details class="faq-item"><summary>When should I plant cassava in West Africa?</summary><p>Cassava can be planted at almost any time in the Forest zone, but the best time is at the beginning of the rainy season (March-May for the major season in southern Nigeria/Ghana). It takes 9-18 months to mature depending on variety. Plant cuttings (stems) 15-20cm long. Cassava tolerates poor soils and drought better than most crops, making it a critical food security crop across Africa.</p></details>
+<details class="faq-item"><summary>What is the difference between unimodal and bimodal rainfall?</summary><p>Unimodal regions have one main rainy season (e.g., Sudan Savanna May-October). Bimodal regions have two distinct wet seasons (e.g., East African Highlands with long rains March-May and short rains October-December; southern Nigeria with major season March-July and minor season August-November). Bimodal areas allow two crop cycles per year. Your climate zone and country selection will tell you which applies to your area.</p></details>
+<details class="faq-item"><summary>How does climate change affect African planting calendars?</summary><p>Climate change is shifting rainfall patterns across Africa. Rains are starting later and becoming less predictable. Key observations: the Sahel's rainy season is shifting 2-4 weeks; East Africa is experiencing more intense but shorter rain periods; Southern Africa is seeing more frequent dry spells. Recommendations: plant drought-tolerant varieties, consider early-maturing varieties, use minimum tillage to conserve soil moisture, and consider rainwater harvesting.</p></details>
 </section>
 
 <afro-related-tools category="health" current="planting-calendar"></afro-related-tools>
@@ -225,29 +272,66 @@ const ZONES={
     'Potato':[0,0,3,0,0,0,0,0,1,1,2,2],
     'Sunflower':[1,1,2,2,3,0,0,0,0,0,0,1],
     'Beans':[0,1,1,2,3,0,0,0,0,0,1,1],
+    'Sweet Potato':[1,1,2,2,2,3,0,0,0,0,0,1],
     'Vegetables':[0,1,2,3,0,0,0,1,1,2,3,0],
+  },
+  'north-arid':{
+    'Wheat (Winter)':[2,2,3,0,0,0,0,0,0,0,1,1],
+    'Barley':[2,3,0,0,0,0,0,0,0,0,1,2],
+    'Maize (Summer)':[0,0,0,0,1,1,2,2,3,0,0,0],
+    'Date Palm':[0,0,0,0,0,0,0,3,3,2,2,2],
+    'Citrus':[3,3,0,0,0,0,0,0,0,0,0,3],
+    'Olive':[0,0,0,0,0,0,0,0,0,0,3,3],
+    'Potato (Spring)':[1,1,2,2,3,0,0,0,0,0,0,0],
+    'Potato (Autumn)':[0,0,0,0,0,0,0,0,1,1,2,3],
+    'Tomato':[0,0,1,1,2,2,3,0,0,0,0,0],
+    'Onion':[1,2,2,3,0,0,0,0,0,0,1,1],
+    'Grapes':[0,0,0,1,2,2,2,3,3,0,0,0],
+    'Alfalfa / Fodder':[1,1,2,2,2,2,2,3,3,2,2,1],
+    'Vegetables (Autumn)':[0,0,0,0,0,0,0,1,1,2,2,3],
   }
 };
 
+function pickCountry(){
+  var c = document.getElementById('country').value;
+  if(c) {
+    document.getElementById('zone').value = c;
+    // Auto-set rainfall for bimodal zones
+    var bimodalZones = ['forest','highland','coastal-ea'];
+    document.getElementById('rainfall').value = bimodalZones.indexOf(c) > -1 ? 'bimodal' : 'unimodal';
+    generate();
+  }
+}
+
 function generate(){
-  const zone=document.getElementById('zone').value;
-  const crops=ZONES[zone];
-  if(!crops)return;
+  var zone = document.getElementById('zone').value;
+  var rainfall = document.getElementById('rainfall').value;
+  var crops = ZONES[zone];
+  if(!crops) return;
 
-  let html='';
+  // For bimodal zones, add a note and emphasize dual seasons
+  var note = '';
+  if(rainfall === 'bimodal' && (zone === 'forest' || zone === 'highland' || zone === 'coastal-ea')) {
+    note = '<div style="background:#f0fdf4;border:1px solid #86efac;border-radius:7px;padding:10px 14px;font-size:.78rem;color:#14532d;font-weight:600;margin-bottom:12px;">🌧️ Bimodal rainfall: two planting seasons shown (e.g. Early/Late or Long/Short Rain)</div>';
+  } else if(rainfall === 'unimodal' && (zone === 'forest')) {
+    note = '<div style="background:#fffbeb;border:1px solid #fde68a;border-radius:7px;padding:10px 14px;font-size:.78rem;color:#92400e;font-weight:600;margin-bottom:12px;">☀️ Unimodal selected: forest zones often have two seasons. Consider switching to Bimodal for your area.</div>';
+  }
+
+  var html = note;
   // Month headers
-  MONTHS.forEach(m=>html+=`<div class="month-header">${m}</div>`);
+  MONTHS.forEach(function(m){ html += '<div class="month-header">'+m+'</div>'; });
 
-  Object.entries(crops).forEach(([crop,months])=>{
-    html+=`<div class="crop-name">${crop}</div>`;
-    months.forEach((v,i)=>{
-      const cls=['none','plant','grow','harvest'][v];
-      const lbl=['','Sow','','Harv'][v];
-      html+=`<div class="cell ${cls}">${lbl}</div>`;
+  Object.keys(crops).forEach(function(crop){
+    var months = crops[crop];
+    html += '<div class="crop-name">'+crop+'</div>';
+    months.forEach(function(v){
+      var cls = ['none','plant','grow','harvest'][v];
+      var lbl = ['','Sow','','Harv'][v];
+      html += '<div class="cell '+cls+'">'+lbl+'</div>';
     });
   });
 
-  document.getElementById('calendarGrid').innerHTML=html;
+  document.getElementById('calendarGrid').innerHTML = html;
 }
 
 generate();

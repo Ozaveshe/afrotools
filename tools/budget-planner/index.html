@@ -5,8 +5,8 @@
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');gtag('event','tool_view',{tool_name:'budget-planner'});</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Budget Planner — Monthly Income & Expense Tracker</title>
-<meta name="description" content="Plan your monthly budget with our free tool. Track income, categorise expenses, see savings potential. Supports African currencies. 50/30/20 rule guidance.">
+<title>Budget Planner Africa — Monthly Income & Expense Tracker</title>
+<meta name="description" content="Plan your monthly budget with our free African budget planner. Track income, categorise expenses, see savings potential. Supports 18 African currencies. 50/30/20 rule guidance.">
 <link rel="canonical" href="https://afrotools.com/tools/budget-planner/">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Monthly Budget Planner — Free Tool">
@@ -53,6 +53,10 @@ h1 em{color:var(--afro-blue);font-style:normal}
 .calc-btn:hover{background:#0059B3;transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,113,227,.3)}
 .add-btn{padding:7px 14px;background:var(--afro-blue);color:#fff;border:none;border-radius:6px;font-size:.72rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif}
 .add-btn:hover{background:#0059B3}
+.preset-btn{padding:6px 12px;background:#f1f5f9;color:#334155;border:1.5px solid #cbd5e1;border-radius:6px;font-size:.72rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s}
+.preset-btn:hover{background:var(--afro-blue);color:#fff;border-color:var(--afro-blue)}
+.reset-btn{padding:8px 18px;background:#f1f5f9;color:#ef4444;border:1.5px solid #fecaca;border-radius:6px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif}
+.reset-btn:hover{background:#fee2e2}
 .remove-btn{width:28px;height:28px;background:#fee2e2;color:#ef4444;border:1px solid #fecaca;border-radius:6px;cursor:pointer;font-size:.85rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .remove-btn:hover{background:#ef4444;color:#fff}
 .expense-row{display:grid;grid-template-columns:1fr 120px 32px;gap:8px;align-items:center;margin-bottom:8px}
@@ -141,9 +145,10 @@ h1 em{color:var(--afro-blue);font-style:normal}
 <h1>Budget <em>Planner</em></h1>
 <p class="hero-sub">Plan your monthly budget, categorise expenses, and track how much you can save. Supports African currencies and the 50/30/20 budgeting rule.</p>
 <div class="hero-badges">
-<span class="badge b-blue">Multi-Currency</span>
+<span class="badge b-blue">18 African Currencies</span>
 <span class="badge b-green">50/30/20 Rule</span>
-<span class="badge b-blue">Save to Browser</span>
+<span class="badge b-blue">Household Presets</span>
+<span class="badge b-blue">Auto-Save</span>
 </div>
 </div>
 </section>
@@ -162,15 +167,32 @@ h1 em{color:var(--afro-blue);font-style:normal}
 <option value="KES">KES - Kenyan Shilling</option>
 <option value="ZAR">ZAR - South African Rand</option>
 <option value="GHS">GHS - Ghanaian Cedi</option>
-<option value="XOF">XOF - CFA Franc (West)</option>
-<option value="XAF">XAF - CFA Franc (Central)</option>
-<option value="UGX">UGX - Uganda Shilling</option>
-<option value="TZS">TZS - Tanzania Shilling</option>
+<option value="XOF">XOF - CFA Franc (West Africa)</option>
+<option value="XAF">XAF - CFA Franc (Central Africa)</option>
+<option value="UGX">UGX - Ugandan Shilling</option>
+<option value="TZS">TZS - Tanzanian Shilling</option>
+<option value="RWF">RWF - Rwandan Franc</option>
 <option value="ETB">ETB - Ethiopian Birr</option>
+<option value="EGP">EGP - Egyptian Pound</option>
+<option value="MAD">MAD - Moroccan Dirham</option>
+<option value="ZMW">ZMW - Zambian Kwacha</option>
+<option value="MWK">MWK - Malawian Kwacha</option>
+<option value="AOA">AOA - Angolan Kwanza</option>
+<option value="GMD">GMD - Gambian Dalasi</option>
 <option value="USD">USD - US Dollar</option>
 <option value="GBP">GBP - British Pound</option>
 <option value="EUR">EUR - Euro</option>
 </select>
+</div>
+<div class="field">
+<label class="f-label">Quick Preset <span style="font-weight:400;color:#94a3b8">(fills sample figures)</span></label>
+<div style="display:flex;gap:8px;flex-wrap:wrap">
+<button class="preset-btn" onclick="loadPreset('lagos')">🇳🇬 Lagos</button>
+<button class="preset-btn" onclick="loadPreset('nairobi')">🇰🇪 Nairobi</button>
+<button class="preset-btn" onclick="loadPreset('joburg')">🇿🇦 Joburg</button>
+<button class="preset-btn" onclick="loadPreset('accra')">🇬🇭 Accra</button>
+<button class="preset-btn" onclick="loadPreset('kampala')">🇺🇬 Kampala</button>
+</div>
 </div>
 <div id="incomeRows">
 <div class="expense-row">
@@ -192,7 +214,10 @@ h1 em{color:var(--afro-blue);font-style:normal}
 </div>
 </div>
 
-<button class="calc-btn" onclick="calculate()" style="margin-top:16px">Calculate Budget</button>
+<div style="display:flex;gap:10px;margin-top:16px;align-items:center">
+<button class="calc-btn" onclick="calculate()" style="flex:1">Calculate Budget</button>
+<button class="reset-btn" onclick="resetBudget()" title="Clear all entries">Reset</button>
+</div>
 
 <div class="card" id="summaryCard" style="display:none;margin-top:18px">
 <div class="card-head"><span class="card-title">Budget Summary</span></div>
@@ -223,10 +248,17 @@ h1 em{color:var(--afro-blue);font-style:normal}
 <div class="card">
 <div class="card-head"><span class="card-title">African Budgeting Tips</span></div>
 <div class="card-body">
-<p><strong>Generator/fuel costs:</strong> If you're in Nigeria, budget for fuel/diesel separately — it's often a major hidden expense.</p>
-<p style="margin-top:8px"><strong>Extended family:</strong> Many Africans support relatives. Include this as a fixed expense to avoid surprises.</p>
-<p style="margin-top:8px"><strong>Informal savings:</strong> Ajo/Esusu (Nigeria), Chama (Kenya), Stokvel (South Africa) — group savings can help build discipline.</p>
-<p style="margin-top:8px"><strong>Inflation buffer:</strong> In high-inflation environments, add 5-10% buffer to your expense estimates monthly.</p>
+<p><strong>Generator costs:</strong> In Nigeria and Ghana, budget 5-10% of income for fuel/diesel — it's a "hidden utility bill" most tools ignore.</p>
+<p style="margin-top:8px"><strong>Family support:</strong> Budget a fixed monthly amount for family. Unplanned transfers are the #1 budget-killer in Africa.</p>
+<p style="margin-top:8px"><strong>Inflation buffer:</strong> NGN, EGP, AOA economies are volatile. Add 5-10% to monthly expense estimates and save in dollars or T-Bills.</p>
+<p style="margin-top:8px"><strong>Fintech savings tools:</strong></p>
+<ul style="margin:4px 0 0 16px;padding:0">
+<li>🇳🇬 <strong>PiggyVest / Cowrywise</strong> — auto-save & invest</li>
+<li>🇰🇪 <strong>M-Shwari / Sacco</strong> — mobile savings & loans</li>
+<li>🇿🇦 <strong>Stokvel / Easy Equities</strong> — group & retail investing</li>
+<li>🇬🇭 <strong>Susu / MoMo Save</strong> — mobile money savings</li>
+</ul>
+<p style="margin-top:8px"><strong>Irregular income:</strong> Budget on your lowest monthly income. Treat excess months as bonus savings.</p>
 </div>
 </div>
 </div>
@@ -253,10 +285,13 @@ h1 em{color:var(--afro-blue);font-style:normal}
 
 <div class="faq">
 <h2>Frequently Asked Questions</h2>
-<details><summary>How do I start budgeting?</summary><div>Start by tracking all your income and expenses for one month. Categorise everything, then use this planner to set spending limits for each category. Review and adjust monthly. The hardest part is starting — this tool makes it simple.</div></details>
-<details><summary>What if my expenses exceed my income?</summary><div>This is a red flag that needs immediate attention. Look for expenses you can reduce or eliminate (subscriptions, dining out, unnecessary purchases). Consider ways to increase income. Prioritise essential needs and cut discretionary spending until you achieve a positive balance.</div></details>
-<details><summary>How much should I save?</summary><div>Aim for at least 10-20% of your income. In high-inflation African economies, saving in naira or local currency alone may not be enough — consider investments that outpace inflation (T-bills, stocks, dollar-denominated assets). Build an emergency fund of 3-6 months' expenses first.</div></details>
-<details><summary>Should I include irregular income?</summary><div>If you have variable income (freelancing, business), use your average monthly income from the past 6 months. Budget based on your lowest expected income and treat higher-earning months as bonus savings opportunities.</div></details>
+<details><summary>How do I start budgeting for the first time?</summary><div>Start by tracking all income and expenses for one month — write down everything including airtime, transport, and family transfers. Categorise it all, then use this planner to see where your money actually goes. Adjust your spending plan monthly. The hardest part is starting. Load a preset for your city to get sample figures quickly.</div></details>
+<details><summary>What if my expenses exceed my income?</summary><div>Immediate red flag. First, identify all wants (subscriptions, dining out, leisure) — cut these temporarily. Then look at needs: can you negotiate rent, move to a cheaper area, or reduce transport by relocating? Also look for ways to add income: freelancing, weekend gigs, or selling unused items. Never use debt to cover regular monthly expenses.</div></details>
+<details><summary>How much should I save each month in Africa?</summary><div>Aim for at least 20% in stable economies (Kenya, South Africa, Ghana). In high-inflation countries like Nigeria or Egypt, aim for 25-30% — and importantly, save in instruments that beat inflation: Treasury Bills, US dollar accounts, money market funds, or stocks. Build a 3-6 month emergency fund first before investing.</div></details>
+<details><summary>Should I include irregular income in my budget?</summary><div>Use your average monthly income from the past 6 months as your baseline. Budget based on your lowest expected month and treat above-average months as surplus for savings or debt repayment. This is especially important for traders, freelancers, and seasonal earners common across Africa.</div></details>
+<details><summary>How do I use PiggyVest, Cowrywise, or M-Shwari for budgeting?</summary><div>These apps complement your budget planner. Use this tool to know how much to save each month, then automate transfers to your savings app. PiggyVest (Nigeria) lets you lock funds so you can't access them impulsively. M-Shwari (Kenya) earns interest on mobile money. Cowrywise offers mutual funds starting from small amounts. Set up auto-debits on payday before you can spend the money.</div></details>
+<details><summary>What is the 50/30/20 rule and does it work in Africa?</summary><div>The 50/30/20 rule allocates 50% of income to needs (rent, food, transport), 30% to wants (entertainment, dining out), and 20% to savings. In many African cities like Lagos, Nairobi, and Cairo, housing and food alone can consume 60-70% of income, making the strict 50/30/20 unrealistic. Adapt it to your reality — even 60/20/20 or 70/15/15 is better than no budget at all. The savings percentage matters most: protect it first.</div></details>
+<details><summary>How do I budget for family support obligations?</summary><div>Family support (sending money to parents, siblings, or relatives) is a major and often unplanned expense for many Africans. The key is to treat it like a fixed expense — decide on a maximum monthly amount and include it in your budget. Communicate this limit clearly to family. If unplanned requests come in mid-month, use your discretionary "wants" budget to cover them, not your savings.</div></details>
 </div>
 </section>
 
@@ -265,16 +300,130 @@ h1 em{color:var(--afro-blue);font-style:normal}
 <afro-footer></afro-footer>
 
 <script>
-const CATEGORIES=[
-  {name:'Housing',color:'#3b82f6',items:['Rent','Electricity','Water','Internet','Generator/Fuel']},
-  {name:'Food & Groceries',color:'#10b981',items:['Groceries','Eating Out']},
-  {name:'Transport',color:'#f59e0b',items:['Fuel/Transport','Car Maintenance']},
-  {name:'Family & Giving',color:'#8b5cf6',items:['Family Support','Tithes/Charity']},
-  {name:'Personal',color:'#ec4899',items:['Clothing','Health/Medical','Phone/Data']},
-  {name:'Entertainment',color:'#06b6d4',items:['Subscriptions','Leisure/Fun']},
-  {name:'Education',color:'#84cc16',items:['School Fees','Books/Courses']},
-  {name:'Savings & Investment',color:'#f97316',items:['Emergency Fund','Investments']}
+var CATEGORIES=[
+  {name:'Housing',color:'#3b82f6',items:['Rent/Mortgage','Electricity','Water','Internet/Wifi','Generator Fuel/Diesel','Building Maintenance']},
+  {name:'Food & Groceries',color:'#10b981',items:['Groceries/Market','Eating Out/Takeaway','Water Sachet/Bottle']},
+  {name:'Transport',color:'#f59e0b',items:['Fuel/Petrol','BRT/Matatu/Trotro Fare','Ride-hailing (Uber/Bolt)','Car Maintenance']},
+  {name:'Family & Giving',color:'#8b5cf6',items:['Family Support (Parents/Siblings)','Tithes/Charity/Mosque']},
+  {name:'Personal',color:'#ec4899',items:['Clothing & Shoes','Health/Pharmacy','Airtime/Mobile Data','Hair & Beauty/Grooming']},
+  {name:'Entertainment',color:'#06b6d4',items:['DSTV/Cable TV','Streaming (Netflix/Showmax)','Leisure/Outings']},
+  {name:'Education',color:'#84cc16',items:['School Fees','Books/Courses/Training']},
+  {name:'Savings & Investment',color:'#f97316',items:['Emergency Fund','Savings (PiggyVest/Stokvel/Chama)','Investments (Stocks/T-Bills)']}
 ];
+
+// Household presets — approximate middle-class monthly budgets
+var PRESETS={
+  lagos:{
+    currency:'NGN',
+    income:[{name:'Salary',amount:'350000'},{name:'Side Income',amount:'50000'}],
+    expenses:{
+      0:[{name:'Rent',amount:'80000'},{name:'Electricity/NEPA',amount:'15000'},{name:'Water',amount:'3000'},{name:'Internet/Wifi',amount:'20000'},{name:'Generator Fuel/Diesel',amount:'25000'},{name:'Building Maintenance',amount:'5000'}],
+      1:[{name:'Groceries/Market',amount:'60000'},{name:'Eating Out/Takeaway',amount:'15000'},{name:'Water Sachet/Bottle',amount:'3000'}],
+      2:[{name:'Fuel/Petrol',amount:'25000'},{name:'BRT/Matatu/Trotro Fare',amount:'0'},{name:'Ride-hailing (Uber/Bolt)',amount:'10000'},{name:'Car Maintenance',amount:'10000'}],
+      3:[{name:'Family Support (Parents/Siblings)',amount:'20000'},{name:'Tithes/Charity/Mosque',amount:'10000'}],
+      4:[{name:'Clothing & Shoes',amount:'10000'},{name:'Health/Pharmacy',amount:'8000'},{name:'Airtime/Mobile Data',amount:'10000'},{name:'Hair & Beauty/Grooming',amount:'8000'}],
+      5:[{name:'DSTV/Cable TV',amount:'6000'},{name:'Streaming (Netflix/Showmax)',amount:'4500'},{name:'Leisure/Outings',amount:'10000'}],
+      6:[{name:'School Fees',amount:'20000'},{name:'Books/Courses/Training',amount:'5000'}],
+      7:[{name:'Emergency Fund',amount:'20000'},{name:'Savings (PiggyVest/Stokvel/Chama)',amount:'15000'},{name:'Investments (Stocks/T-Bills)',amount:'10000'}]
+    }
+  },
+  nairobi:{
+    currency:'KES',
+    income:[{name:'Salary',amount:'85000'},{name:'Side Income',amount:'15000'}],
+    expenses:{
+      0:[{name:'Rent/Mortgage',amount:'25000'},{name:'Electricity',amount:'3500'},{name:'Water',amount:'1500'},{name:'Internet/Wifi',amount:'3000'},{name:'Generator Fuel/Diesel',amount:'0'},{name:'Building Maintenance',amount:'1000'}],
+      1:[{name:'Groceries/Market',amount:'18000'},{name:'Eating Out/Takeaway',amount:'5000'},{name:'Water Sachet/Bottle',amount:'500'}],
+      2:[{name:'Fuel/Petrol',amount:'5000'},{name:'BRT/Matatu/Trotro Fare',amount:'4000'},{name:'Ride-hailing (Uber/Bolt)',amount:'3000'},{name:'Car Maintenance',amount:'3000'}],
+      3:[{name:'Family Support (Parents/Siblings)',amount:'5000'},{name:'Tithes/Charity/Mosque',amount:'3000'}],
+      4:[{name:'Clothing & Shoes',amount:'3000'},{name:'Health/Pharmacy',amount:'2000'},{name:'Airtime/Mobile Data',amount:'2000'},{name:'Hair & Beauty/Grooming',amount:'2000'}],
+      5:[{name:'DSTV/Cable TV',amount:'2000'},{name:'Streaming (Netflix/Showmax)',amount:'1100'},{name:'Leisure/Outings',amount:'3000'}],
+      6:[{name:'School Fees',amount:'8000'},{name:'Books/Courses/Training',amount:'2000'}],
+      7:[{name:'Emergency Fund',amount:'5000'},{name:'Savings (PiggyVest/Stokvel/Chama)',amount:'3000'},{name:'Investments (Stocks/T-Bills)',amount:'5000'}]
+    }
+  },
+  joburg:{
+    currency:'ZAR',
+    income:[{name:'Salary',amount:'22000'},{name:'Side Income',amount:'3000'}],
+    expenses:{
+      0:[{name:'Rent/Mortgage',amount:'7500'},{name:'Electricity',amount:'1200'},{name:'Water',amount:'600'},{name:'Internet/Wifi',amount:'800'},{name:'Generator Fuel/Diesel',amount:'0'},{name:'Building Maintenance',amount:'500'}],
+      1:[{name:'Groceries/Market',amount:'4000'},{name:'Eating Out/Takeaway',amount:'1500'},{name:'Water Sachet/Bottle',amount:'0'}],
+      2:[{name:'Fuel/Petrol',amount:'1800'},{name:'BRT/Matatu/Trotro Fare',amount:'600'},{name:'Ride-hailing (Uber/Bolt)',amount:'500'},{name:'Car Maintenance',amount:'800'}],
+      3:[{name:'Family Support (Parents/Siblings)',amount:'1000'},{name:'Tithes/Charity/Mosque',amount:'500'}],
+      4:[{name:'Clothing & Shoes',amount:'800'},{name:'Health/Pharmacy',amount:'500'},{name:'Airtime/Mobile Data',amount:'500'},{name:'Hair & Beauty/Grooming',amount:'600'}],
+      5:[{name:'DSTV/Cable TV',amount:'900'},{name:'Streaming (Netflix/Showmax)',amount:'300'},{name:'Leisure/Outings',amount:'1000'}],
+      6:[{name:'School Fees',amount:'2000'},{name:'Books/Courses/Training',amount:'500'}],
+      7:[{name:'Emergency Fund',amount:'1500'},{name:'Savings (PiggyVest/Stokvel/Chama)',amount:'1000'},{name:'Investments (Stocks/T-Bills)',amount:'1000'}]
+    }
+  },
+  accra:{
+    currency:'GHS',
+    income:[{name:'Salary',amount:'5000'},{name:'Side Income',amount:'1000'}],
+    expenses:{
+      0:[{name:'Rent/Mortgage',amount:'1500'},{name:'Electricity',amount:'300'},{name:'Water',amount:'100'},{name:'Internet/Wifi',amount:'200'},{name:'Generator Fuel/Diesel',amount:'200'},{name:'Building Maintenance',amount:'100'}],
+      1:[{name:'Groceries/Market',amount:'1000'},{name:'Eating Out/Takeaway',amount:'300'},{name:'Water Sachet/Bottle',amount:'80'}],
+      2:[{name:'Fuel/Petrol',amount:'400'},{name:'BRT/Matatu/Trotro Fare',amount:'200'},{name:'Ride-hailing (Uber/Bolt)',amount:'150'},{name:'Car Maintenance',amount:'200'}],
+      3:[{name:'Family Support (Parents/Siblings)',amount:'300'},{name:'Tithes/Charity/Mosque',amount:'150'}],
+      4:[{name:'Clothing & Shoes',amount:'150'},{name:'Health/Pharmacy',amount:'100'},{name:'Airtime/Mobile Data',amount:'120'},{name:'Hair & Beauty/Grooming',amount:'100'}],
+      5:[{name:'DSTV/Cable TV',amount:'100'},{name:'Streaming (Netflix/Showmax)',amount:'60'},{name:'Leisure/Outings',amount:'200'}],
+      6:[{name:'School Fees',amount:'500'},{name:'Books/Courses/Training',amount:'100'}],
+      7:[{name:'Emergency Fund',amount:'300'},{name:'Savings (PiggyVest/Stokvel/Chama)',amount:'200'},{name:'Investments (Stocks/T-Bills)',amount:'200'}]
+    }
+  },
+  kampala:{
+    currency:'UGX',
+    income:[{name:'Salary',amount:'2500000'},{name:'Side Income',amount:'400000'}],
+    expenses:{
+      0:[{name:'Rent/Mortgage',amount:'700000'},{name:'Electricity',amount:'80000'},{name:'Water',amount:'30000'},{name:'Internet/Wifi',amount:'60000'},{name:'Generator Fuel/Diesel',amount:'50000'},{name:'Building Maintenance',amount:'20000'}],
+      1:[{name:'Groceries/Market',amount:'500000'},{name:'Eating Out/Takeaway',amount:'100000'},{name:'Water Sachet/Bottle',amount:'20000'}],
+      2:[{name:'Fuel/Petrol',amount:'150000'},{name:'BRT/Matatu/Trotro Fare',amount:'80000'},{name:'Ride-hailing (Uber/Bolt)',amount:'60000'},{name:'Car Maintenance',amount:'80000'}],
+      3:[{name:'Family Support (Parents/Siblings)',amount:'100000'},{name:'Tithes/Charity/Mosque',amount:'50000'}],
+      4:[{name:'Clothing & Shoes',amount:'60000'},{name:'Health/Pharmacy',amount:'50000'},{name:'Airtime/Mobile Data',amount:'50000'},{name:'Hair & Beauty/Grooming',amount:'40000'}],
+      5:[{name:'DSTV/Cable TV',amount:'40000'},{name:'Streaming (Netflix/Showmax)',amount:'20000'},{name:'Leisure/Outings',amount:'60000'}],
+      6:[{name:'School Fees',amount:'200000'},{name:'Books/Courses/Training',amount:'50000'}],
+      7:[{name:'Emergency Fund',amount:'100000'},{name:'Savings (PiggyVest/Stokvel/Chama)',amount:'80000'},{name:'Investments (Stocks/T-Bills)',amount:'60000'}]
+    }
+  }
+};
+
+function loadPreset(key){
+  var p=PRESETS[key];
+  if(!p)return;
+  if(!confirm('Load '+key.charAt(0).toUpperCase()+key.slice(1)+' preset? This will overwrite your current entries.'))return;
+  document.getElementById('currency').value=p.currency;
+  // Rebuild expense categories first
+  buildExpenseCategories();
+  // Fill income
+  var incContainer=document.getElementById('incomeRows');
+  incContainer.innerHTML='';
+  p.income.forEach(function(inc){
+    var row=document.createElement('div');
+    row.className='expense-row';
+    row.innerHTML='<input type="text" class="f-input inc-name" placeholder="Income source" value="'+inc.name+'"><input type="text" class="f-input inc-amt" placeholder="Amount" inputmode="numeric" value="'+inc.amount+'"><button class="remove-btn" onclick="removeRow(this)" title="Remove">&times;</button>';
+    incContainer.appendChild(row);
+  });
+  // Fill expenses
+  Object.keys(p.expenses).forEach(function(ci){
+    var container=document.getElementById('catRows'+ci);
+    if(!container)return;
+    container.innerHTML='';
+    p.expenses[ci].forEach(function(exp){
+      var row=document.createElement('div');
+      row.className='expense-row';
+      row.innerHTML='<input type="text" class="f-input exp-name" data-cat="'+ci+'" placeholder="Item name" value="'+exp.name+'"><input type="text" class="f-input exp-amt" data-cat="'+ci+'" placeholder="0" inputmode="numeric" value="'+exp.amount+'"><button class="remove-btn" onclick="removeRow(this)" title="Remove">&times;</button>';
+      container.appendChild(row);
+    });
+  });
+  calculate();
+}
+
+function resetBudget(){
+  if(!confirm('Clear all budget entries?'))return;
+  localStorage.removeItem('afro_budget');
+  buildExpenseCategories();
+  var incContainer=document.getElementById('incomeRows');
+  incContainer.innerHTML='<div class="expense-row"><input type="text" class="f-input inc-name" placeholder="Salary" value="Salary"><input type="text" class="f-input inc-amt" placeholder="Amount" inputmode="numeric"><button class="remove-btn" onclick="removeRow(this)" title="Remove">&times;</button></div>';
+  document.getElementById('summaryCard').style.display='none';
+}
 
 function init(){
   buildExpenseCategories();
@@ -282,10 +431,10 @@ function init(){
 }
 
 function buildExpenseCategories(){
-  const area=document.getElementById('expenseArea');
+  var area=document.getElementById('expenseArea');
   area.innerHTML='';
-  CATEGORIES.forEach((cat,ci)=>{
-    const section=document.createElement('div');
+  CATEGORIES.forEach(function(cat,ci){
+    var section=document.createElement('div');
     section.className='category-section';
     section.innerHTML=`
       <div class="cat-header">
@@ -332,7 +481,8 @@ function removeRow(btn){
 }
 
 function parseNum(s){return parseFloat(String(s).replace(/[^0-9.\-]/g,''))||0}
-function fmt(n,cur){const symbols={NGN:'\u20A6',KES:'KSh ',ZAR:'R',GHS:'GH\u20B5',XOF:'CFA ',XAF:'CFA ',UGX:'USh ',TZS:'TSh ',ETB:'Br ',USD:'$',GBP:'\u00A3',EUR:'\u20AC'};return(symbols[cur]||'')+n.toLocaleString('en',{minimumFractionDigits:0,maximumFractionDigits:0})}
+var CUR_SYMBOLS={NGN:'\u20A6',KES:'KSh ',ZAR:'R ',GHS:'GH\u20B5',XOF:'CFA ',XAF:'FCFA ',UGX:'USh ',TZS:'TSh ',RWF:'RWF ',ETB:'Br ',EGP:'E\u00A3',MAD:'MAD ',ZMW:'K',MWK:'MK',AOA:'Kz',GMD:'D',USD:'$',GBP:'\u00A3',EUR:'\u20AC'};
+function fmt(n,cur){return(CUR_SYMBOLS[cur]||'')+Math.round(n).toLocaleString('en')}
 
 function calculate(){
   const cur=document.getElementById('currency').value;
@@ -362,13 +512,12 @@ function calculate(){
   document.getElementById('sRate').textContent=savingsRate.toFixed(1)+'%';
   document.getElementById('sRate').className='s-value '+(savingsRate>=20?'green':savingsRate>=10?'blue':'red');
 
-  // Bar chart
-  const maxCat=Math.max(...catTotals.map(c=>c.total),1);
-  let barHtml='';
+  // Bar chart — bars proportional to income share
+  let barHtml='<div style="font-size:.7rem;font-weight:600;color:#94a3b8;margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em">Spending by Category (% of income)</div>';
   catTotals.filter(c=>c.total>0).sort((a,b)=>b.total-a.total).forEach(c=>{
     const pct=totalIncome>0?((c.total/totalIncome)*100):0;
-    const barW=((c.total/maxCat)*100);
-    barHtml+=`<div class="bar-row"><div class="bar-label">${c.name}</div><div class="bar-track"><div class="bar-fill" style="width:${barW}%;background:${c.color}">${fmt(c.total,cur)}</div></div><div class="bar-pct">${pct.toFixed(0)}%</div></div>`;
+    const barW=Math.min(100,pct);
+    barHtml+=`<div class="bar-row"><div class="bar-label">${c.name}</div><div class="bar-track"><div class="bar-fill" style="width:${barW}%;background:${c.color}">${pct>=8?fmt(c.total,cur):''}</div></div><div class="bar-pct">${pct.toFixed(0)}%</div></div>`;
   });
   document.getElementById('barChart').innerHTML=barHtml;
 
@@ -388,20 +537,25 @@ function calculate(){
   const needsPct=totalIncome>0?((needsTotal/totalIncome)*100):0;
   const wantsPct=totalIncome>0?((wantsTotal/totalIncome)*100):0;
 
-  let ruleClass,ruleMsg;
-  if(savingsRate>=20){
+  // High-inflation currencies where saving more matters more
+  var highInflationCurrencies=['NGN','EGP','ZMW','MWK','AOA','ETB'];
+  var savingsTarget = highInflationCurrencies.indexOf(cur)>-1 ? 25 : 20;
+  var savingsNote = highInflationCurrencies.indexOf(cur)>-1 ? ' (In your economy, aim for 25%+ and invest in T-Bills, dollar assets, or money market funds to beat inflation.)' : '';
+
+  var ruleClass,ruleMsg;
+  if(savingsRate>=savingsTarget){
     ruleClass='rule-good';
-    ruleMsg=`Great job! You're saving ${savingsRate.toFixed(0)}% of your income. Needs: ${needsPct.toFixed(0)}%, Wants: ${wantsPct.toFixed(0)}%, Savings: ${savingsRate.toFixed(0)}%. You're meeting or exceeding the 50/30/20 guideline.`;
+    ruleMsg='Great job! You\'re saving '+savingsRate.toFixed(0)+'% of your income. Needs: '+needsPct.toFixed(0)+'%, Wants: '+wantsPct.toFixed(0)+'%, Savings: '+savingsRate.toFixed(0)+'%. You\'re meeting or exceeding the budgeting guideline.'+savingsNote;
   }else if(savingsRate>=10){
     ruleClass='rule-warn';
-    ruleMsg=`You're saving ${savingsRate.toFixed(0)}% — decent, but try to reach 20%. Needs: ${needsPct.toFixed(0)}%, Wants: ${wantsPct.toFixed(0)}%. Look at reducing wants or finding additional income.`;
+    ruleMsg='You\'re saving '+savingsRate.toFixed(0)+'% — decent, but try to reach '+savingsTarget+'%. Needs: '+needsPct.toFixed(0)+'%, Wants: '+wantsPct.toFixed(0)+'%. Look at reducing wants or finding additional income.'+savingsNote;
   }else{
     ruleClass='rule-bad';
     ruleMsg=savings<0
-      ? `Warning: You're spending ${fmt(Math.abs(savings),cur)} more than you earn. You need to cut expenses or increase income immediately.`
-      : `You're only saving ${savingsRate.toFixed(0)}% of income. Needs: ${needsPct.toFixed(0)}%, Wants: ${wantsPct.toFixed(0)}%. Try to cut discretionary spending and aim for at least 10-20% savings.`;
+      ? 'Warning: You\'re spending '+fmt(Math.abs(savings),cur)+' more than you earn. Cut expenses or increase income immediately.'
+      : 'You\'re only saving '+savingsRate.toFixed(0)+'% of income. Needs: '+needsPct.toFixed(0)+'%, Wants: '+wantsPct.toFixed(0)+'%. Try to cut discretionary spending and aim for at least '+savingsTarget+'% savings.'+savingsNote;
   }
-  document.getElementById('ruleIndicator').innerHTML=`<div class="rule-indicator ${ruleClass}">${ruleMsg}</div>`;
+  document.getElementById('ruleIndicator').innerHTML='<div class="rule-indicator '+ruleClass+'">'+ruleMsg+'</div>';
 
   document.getElementById('summaryCard').style.display='block';
   saveBudget();

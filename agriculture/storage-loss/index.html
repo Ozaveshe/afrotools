@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grain Storage Loss Calculator — How Much Are You Losing? | AfroTools</title>
+<meta name="description" content="Calculate how much grain and money you lose to poor storage. Compare traditional vs hermetic (PICS) bags vs metal silos. See the ROI of improved storage.">
+<link rel="canonical" href="https://afrotools.com/agriculture/storage-loss/">
+<meta property="og:title" content="Grain Storage Loss Calculator | AfroTools">
+<meta property="og:description" content="Calculate how much grain and money you lose to poor storage. Compare traditional vs hermetic (PICS) bags vs metal silos. See the ROI of improved storage.">
+<meta property="og:url" content="https://afrotools.com/agriculture/storage-loss/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Grain Storage Loss Calculator | AfroTools">
+<meta name="twitter:description" content="See exactly how much grain you lose to poor storage — and the ROI of PICS bags and metal silos.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Grain Storage Loss Calculator",
+  "url": "https://afrotools.com/agriculture/storage-loss/",
+  "description": "Calculate how much grain and money you lose to poor storage. Compare traditional vs hermetic (PICS) bags vs metal silos. Pan-African post-harvest loss tool.",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web",
+  "author": {"@type": "Organization", "name": "AfroTools", "url": "https://afrotools.com"},
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How much grain do African farmers lose to poor storage?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sub-Saharan Africa loses 20–30% of harvested grain to post-harvest storage problems every year. The World Bank's 'Missing Food' report estimates this at over $4 billion annually. For maize stored in traditional granaries, weight losses of 15–30% are common within 6 months due to weevils, larger grain borer, and rodents."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What are PICS bags and how do they work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "PICS (Purdue Improved Crop Storage) bags are triple-layer hermetic bags: two high-density polyethylene inner liners plus one outer woven polypropylene bag. When sealed, insects trapped inside consume oxygen and die within 7–10 days. In trials across West and East Africa, PICS bags reduce grain weight loss to under 1% for up to 9 months — compared to 15–30% in traditional storage. One bag costs roughly $2.50 USD and can be reused 2–3 times."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the ROI of investing in hermetic storage?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The ROI is extremely high. For a farmer storing 2 tonnes of maize in Nigeria at ₦320,000/tonne: traditional granary losses of 20% = ₦128,000 lost. PICS bags cost only ₦70,000 total and reduce loss to under 1%, saving ₦115,000+ in grain value — not counting the additional price premium from storing to sell 3–4 months later. ROI typically exceeds 200–400% in the first season."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why do farmers need to dry grain before using hermetic bags?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Hermetic bags work by limiting oxygen — but if grain moisture content exceeds 13–14%, mold (not insects) becomes the threat inside the sealed bag. Fungi like Aspergillus flavus thrive in moist, oxygen-depleted conditions and produce aflatoxin — a cancer-causing toxin. Always dry grain to below 13% moisture before sealing into hermetic bags."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What causes cowpea losses to be so high?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The cowpea bruchid beetle (Callosobruchus maculatus) is the primary culprit. Adults lay eggs inside mature cowpea pods, and the larvae develop inside the grain. In traditional storage, losses of 30–50% within 3–4 months are common — and infested grain may become entirely unfit for sale or human consumption. PICS bags were originally developed specifically for cowpea storage and achieve near-zero losses."
+      }
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+
+<style>
+:root{
+  --acc:#007AFF;--acc-dk:#0063D1;--acc-lt:#E8F2FF;--acc-pale:#F0F7FF;
+  --bg:#F8FAFD;--bg-card:#FFF;--text:#0f172a;--muted:#6B7280;
+  --r:18px;--border:#E5E7EB;
+  --danger:#DC2626;--danger-bg:#FEF2F2;--danger-border:#FCA5A5;
+  --warn:#D97706;--warn-bg:#FFFBEB;--warn-border:#FDE68A;
+  --success:#16A34A;--success-bg:#F0FDF4;--success-border:#86EFAC;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);margin:0}
+
+/* HERO */
+.hero{background:#0A1628;color:#fff;padding:3rem 1rem 2rem;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(0,122,255,.15) 0%,transparent 60%);pointer-events:none}
+.hero-inner{max-width:680px;margin:0 auto;position:relative}
+.breadcrumb{font-size:.82rem;opacity:.65;margin-bottom:.75rem}
+.breadcrumb a{color:#fff;text-decoration:none}.breadcrumb a:hover{text-decoration:underline}
+.hero h1{color:#fff;font-size:clamp(1.6rem,5vw,2.5rem);font-weight:800;margin:0 0 .75rem;letter-spacing:-.02em;line-height:1.15;text-transform:uppercase}
+.hero p{font-size:1rem;opacity:.85;line-height:1.6;max-width:560px;margin:0 auto}
+.badge-row{display:flex;justify-content:center;gap:.6rem;margin-top:1.1rem;flex-wrap:wrap}
+.badge{background:rgba(255,255,255,.15);border-radius:980px;padding:.3rem .85rem;font-size:.8rem;font-weight:600}
+
+/* STAT BAR */
+.stat-bar{background:#0d2040;border-bottom:1px solid rgba(255,255,255,.06);padding:.9rem 1rem}
+.stat-bar-inner{max-width:860px;margin:0 auto;display:flex;gap:2rem;flex-wrap:wrap;justify-content:center}
+.stat-item{text-align:center}
+.stat-num{font-size:1.25rem;font-weight:800;color:#fff}
+.stat-lbl{font-size:.72rem;color:rgba(255,255,255,.5);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+
+/* LAYOUT */
+.main{max-width:900px;margin:0 auto;padding:2rem 1rem 3rem}
+
+/* CARD */
+.card{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--r);padding:1.5rem;margin-bottom:1.25rem}
+.card-title{font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:0 0 1.1rem}
+
+/* FORM */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media(max-width:580px){.form-grid{grid-template-columns:1fr}}
+.field{display:flex;flex-direction:column;gap:.4rem}
+.field label{font-size:.82rem;font-weight:700;color:var(--text)}
+.field input,.field select{width:100%;padding:.65rem .9rem;border:1.5px solid var(--border);border-radius:12px;font-family:inherit;font-size:.92rem;color:var(--text);background:#fff;transition:border-color .2s}
+.field input:focus,.field select:focus{outline:none;border-color:var(--acc)}
+.field .hint{font-size:.75rem;color:var(--muted);line-height:1.4}
+.full-width{grid-column:1/-1}
+
+/* BUTTON */
+.btn-calc{display:block;width:100%;margin-top:1.25rem;padding:.85rem 1.5rem;background:var(--acc);color:#fff;border:none;border-radius:980px;font-family:inherit;font-size:1rem;font-weight:800;cursor:pointer;letter-spacing:.01em;transition:background .2s,transform .1s}
+.btn-calc:hover{background:var(--acc-dk);transform:translateY(-1px)}
+.btn-calc:active{transform:translateY(0)}
+
+/* RESULTS */
+#results{display:none}
+
+/* LOSS HERO */
+.loss-hero{background:linear-gradient(135deg,#0A1628 0%,#1a0a0a 100%);border-radius:var(--r);padding:1.75rem;margin-bottom:1.25rem;text-align:center;position:relative;overflow:hidden}
+.loss-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(220,38,38,.25) 0%,transparent 65%);pointer-events:none}
+.loss-hero-label{font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.5);margin-bottom:.5rem}
+.loss-hero-number{font-size:clamp(2.5rem,8vw,4rem);font-weight:800;color:#ef4444;line-height:1;margin-bottom:.3rem}
+.loss-hero-sub{font-size:1rem;color:rgba(255,255,255,.7);margin-bottom:1rem}
+.loss-hero-value{font-size:1.4rem;font-weight:800;color:#fff}
+.loss-hero-value-label{font-size:.82rem;color:rgba(255,255,255,.5);margin-top:.15rem}
+
+/* COMPARISON TABLE */
+.comp-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.comp-table{width:100%;border-collapse:collapse;font-size:.88rem;min-width:480px}
+.comp-table th{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;padding:.7rem 1rem;text-align:left;border-bottom:2px solid var(--border);color:var(--muted)}
+.comp-table th.current-col{background:#FFFBEB;color:var(--warn)}
+.comp-table th.pics-col{background:var(--acc-pale);color:var(--acc)}
+.comp-table th.silo-col{background:#F0FDF4;color:var(--success)}
+.comp-table td{padding:.7rem 1rem;border-bottom:1px solid var(--border);vertical-align:top}
+.comp-table td.current-col{background:#FFFBEB}
+.comp-table td.pics-col{background:var(--acc-pale)}
+.comp-table td.silo-col{background:#F0FDF4}
+.comp-table tr:last-child td{border-bottom:none}
+.comp-table .row-label{font-weight:700;font-size:.82rem;color:var(--muted);white-space:nowrap}
+.val-big{font-size:1.05rem;font-weight:800;color:var(--text)}
+.val-red{color:var(--danger)}
+.val-blue{color:var(--acc)}
+.val-green{color:var(--success)}
+.tag-free{background:#f3f4f6;color:var(--muted);border-radius:6px;padding:2px 8px;font-size:.75rem;font-weight:700}
+.tag-roi{background:var(--acc-lt);color:var(--acc);border-radius:6px;padding:2px 8px;font-size:.75rem;font-weight:700}
+.tag-roi-green{background:#DCFCE7;color:var(--success);border-radius:6px;padding:2px 8px;font-size:.75rem;font-weight:700}
+
+/* PRICE TIMING PANEL */
+.timing-panel{background:var(--acc-pale);border:1.5px solid var(--acc-lt);border-radius:14px;padding:1.1rem 1.25rem;display:flex;align-items:flex-start;gap:1rem;flex-wrap:wrap}
+.timing-icon{font-size:1.8rem;flex-shrink:0;line-height:1}
+.timing-body{flex:1;min-width:0}
+.timing-title{font-weight:800;font-size:.92rem;color:var(--text);margin-bottom:.3rem}
+.timing-detail{font-size:.85rem;color:var(--muted);line-height:1.5}
+.timing-amount{font-size:1.2rem;font-weight:800;color:var(--acc);margin-top:.3rem}
+
+/* TOTAL IMPACT */
+.impact-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.85rem;margin-top:.85rem}
+.impact-stat{text-align:center;padding:1rem;background:var(--bg);border:1.5px solid var(--border);border-radius:14px}
+.impact-stat .istat-val{font-size:1.4rem;font-weight:800;color:var(--acc)}
+.impact-stat .istat-val.green{color:var(--success)}
+.impact-stat .istat-lbl{font-size:.75rem;color:var(--muted);font-weight:600;margin-top:.2rem;line-height:1.35}
+
+/* AFLATOXIN WARNING */
+.afla-warn{background:#FEF2F2;border:1.5px solid #FCA5A5;border-radius:14px;padding:1rem 1.25rem}
+.afla-warn-title{font-weight:800;font-size:.88rem;color:var(--danger);text-transform:uppercase;letter-spacing:.04em;margin-bottom:.4rem}
+.afla-warn p{font-size:.85rem;color:#7F1D1D;line-height:1.6;margin:0}
+
+/* WHERE TO BUY */
+.buy-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.85rem;margin-top:.85rem}
+.buy-card{background:var(--bg-card);border:1.5px solid var(--border);border-radius:14px;padding:1rem}
+.buy-card .buy-icon{font-size:1.4rem;margin-bottom:.4rem}
+.buy-card .buy-name{font-weight:800;font-size:.9rem;margin-bottom:.25rem}
+.buy-card .buy-desc{font-size:.8rem;color:var(--muted);line-height:1.4}
+.buy-card .buy-price{font-size:.82rem;color:var(--acc);font-weight:700;margin-top:.4rem}
+
+/* MOISTURE WARNING */
+.moisture-tip{background:var(--warn-bg);border:1.5px solid var(--warn-border);border-radius:12px;padding:.85rem 1rem;font-size:.84rem;color:#92400E;line-height:1.5;margin-top:.75rem}
+.moisture-tip strong{display:block;font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;margin-bottom:.25rem}
+
+/* CROSS LINKS */
+.agri-links{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.75rem;margin-top:1rem}
+.agri-link{display:flex;align-items:center;gap:.6rem;background:var(--bg-card);border:1.5px solid var(--border);border-radius:14px;padding:.75rem 1rem;text-decoration:none;color:var(--text);font-weight:600;font-size:.88rem;transition:border-color .2s,box-shadow .2s}
+.agri-link:hover{border-color:var(--acc);box-shadow:0 3px 10px rgba(0,122,255,.1)}
+.agri-link .al-icon{font-size:1.2rem;flex-shrink:0}
+.agri-link .al-arr{color:var(--muted);margin-left:auto}
+
+/* FAQ */
+.faq details{border-bottom:1px solid var(--border);padding:.85rem 0}
+.faq summary{font-weight:700;font-size:.9rem;cursor:pointer;list-style:none}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::before{content:'+ ';color:var(--acc);font-weight:800}
+.faq details[open] summary::before{content:'− '}
+.faq p{font-size:.85rem;color:var(--muted);line-height:1.65;margin:.5rem 0 0}
+
+/* SEO PROSE */
+.seo-prose{max-width:720px;margin:0 auto}
+.seo-prose h2{font-size:1.05rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;margin:1.75rem 0 .6rem}
+.seo-prose p{font-size:.88rem;line-height:1.7;color:var(--muted)}
+
+/* SECTION TITLE */
+.section-title{font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:0 0 1rem}
+</style>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<section class="hero">
+  <div class="hero-inner">
+    <p class="breadcrumb"><a href="/">AfroTools</a> › <a href="/agriculture/">Agriculture</a> › Grain Storage Loss</p>
+    <h1>Grain Storage Loss Calculator</h1>
+    <p>See exactly how much grain and money you lose to poor storage — and calculate the ROI of PICS bags and metal silos to stop the bleeding.</p>
+    <div class="badge-row">
+      <span class="badge">🌍 Pan-African</span>
+      <span class="badge">🛍️ PICS Bags vs Metal Silos</span>
+      <span class="badge">8 Crops</span>
+      <span class="badge">📊 Full ROI</span>
+    </div>
+  </div>
+</section>
+
+<div class="stat-bar">
+  <div class="stat-bar-inner">
+    <div class="stat-item">
+      <div class="stat-num">$4B+</div>
+      <div class="stat-lbl">Lost annually in Africa</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">30%</div>
+      <div class="stat-lbl">Typical cowpea loss</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">20%</div>
+      <div class="stat-lbl">Typical maize loss</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">&lt;1%</div>
+      <div class="stat-lbl">Loss with PICS bags</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">$2.50</div>
+      <div class="stat-lbl">Cost of 1 PICS bag (100 kg)</div>
+    </div>
+  </div>
+</div>
+
+<main class="main">
+
+  <!-- CALCULATOR CARD -->
+  <div class="card">
+    <p class="card-title">Enter Your Storage Details</p>
+    <div class="form-grid">
+
+      <div class="field">
+        <label for="crop-select">Crop Stored</label>
+        <select id="crop-select" onchange="onCropChange()">
+          <option value="">— Select crop —</option>
+          <option value="maize">🌽 Maize (Corn)</option>
+          <option value="cowpea">🫘 Cowpea (Black-eyed pea)</option>
+          <option value="sorghum">🌾 Sorghum</option>
+          <option value="millet">🌾 Millet (Pearl/Finger)</option>
+          <option value="rice_paddy">🍚 Rice (Paddy)</option>
+          <option value="common_bean">🫘 Common Bean</option>
+          <option value="groundnut">🥜 Groundnut (Peanut)</option>
+          <option value="wheat">🌾 Wheat</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="country-select">Country (for currency)</label>
+        <select id="country-select" onchange="onCountryChange()">
+          <option value="ALL">🌍 Show in USD</option>
+          <option value="NG">🇳🇬 Nigeria</option>
+          <option value="KE">🇰🇪 Kenya</option>
+          <option value="ET">🇪🇹 Ethiopia</option>
+          <option value="GH">🇬🇭 Ghana</option>
+          <option value="TZ">🇹🇿 Tanzania</option>
+          <option value="ZA">🇿🇦 South Africa</option>
+          <option value="UG">🇺🇬 Uganda</option>
+          <option value="ZM">🇿🇲 Zambia</option>
+          <option value="MW">🇲🇼 Malawi</option>
+          <option value="MZ">🇲🇿 Mozambique</option>
+          <option value="RW">🇷🇼 Rwanda</option>
+          <option value="BF">🇧🇫 Burkina Faso</option>
+          <option value="NE">🇳🇪 Niger</option>
+          <option value="ML">🇲🇱 Mali</option>
+          <option value="SN">🇸🇳 Senegal</option>
+          <option value="CI">🇨🇮 Côte d'Ivoire</option>
+          <option value="CM">🇨🇲 Cameroon</option>
+          <option value="MA">🇲🇦 Morocco</option>
+          <option value="EG">🇪🇬 Egypt</option>
+          <option value="TN">🇹🇳 Tunisia</option>
+          <option value="SD">🇸🇩 Sudan</option>
+          <option value="AO">🇦🇴 Angola</option>
+          <option value="TG">🇹🇬 Togo</option>
+          <option value="BJ">🇧🇯 Benin</option>
+          <option value="ZW">🇿🇼 Zimbabwe</option>
+          <option value="SS">🇸🇸 South Sudan</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="quantity-input">Quantity Stored (tonnes)</label>
+        <input type="number" id="quantity-input" min="0.1" max="1000" step="0.1" placeholder="e.g. 2" inputmode="decimal">
+        <span class="hint">1 tonne = 10 standard 100 kg bags</span>
+      </div>
+
+      <div class="field">
+        <label for="method-select">Current Storage Method</label>
+        <select id="method-select">
+          <option value="">— Select crop first —</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="duration-input">Storage Duration (months)</label>
+        <input type="number" id="duration-input" min="1" max="12" step="1" value="6" inputmode="numeric">
+        <span class="hint">How many months do you store grain before selling?</span>
+      </div>
+
+      <div class="field">
+        <label for="price-input">Grain Price at Harvest (<span id="currency-label">USD</span> per tonne)</label>
+        <input type="number" id="price-input" min="1" step="1" placeholder="e.g. 200" inputmode="numeric">
+        <span class="hint" id="price-hint">Farm-gate price at harvest (lowest price of the year).</span>
+      </div>
+
+    </div>
+    <button class="btn-calc" onclick="calculate()">Calculate My Storage Losses →</button>
+  </div>
+
+  <!-- RESULTS (hidden until calculated) -->
+  <div id="results">
+
+    <!-- LOSS HERO -->
+    <div class="loss-hero">
+      <div class="loss-hero-label">Every season you lose</div>
+      <div class="loss-hero-number" id="res-loss-tonnes">0 t</div>
+      <div class="loss-hero-sub" id="res-loss-pct">of your stored grain to pests &amp; spoilage</div>
+      <div class="loss-hero-value" id="res-loss-value">—</div>
+      <div class="loss-hero-value-label">value of grain destroyed</div>
+    </div>
+
+    <!-- COMPARISON TABLE -->
+    <div class="card">
+      <p class="card-title">Storage Method Comparison</p>
+      <div class="comp-table-wrap">
+        <table class="comp-table">
+          <thead>
+            <tr>
+              <th style="min-width:130px"></th>
+              <th class="current-col">⚠️ Current Method</th>
+              <th class="pics-col">🛍️ PICS Bags</th>
+              <th class="silo-col">🏭 Metal Silo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="row-label">Loss rate</td>
+              <td class="current-col"><span class="val-big val-red" id="ct-loss-pct">—</span></td>
+              <td class="pics-col"><span class="val-big val-blue" id="pics-loss-pct">—</span></td>
+              <td class="silo-col"><span class="val-big val-green" id="silo-loss-pct">—</span></td>
+            </tr>
+            <tr>
+              <td class="row-label">Grain lost</td>
+              <td class="current-col"><span class="val-big val-red" id="ct-grain-lost">—</span></td>
+              <td class="pics-col"><span class="val-big val-blue" id="pics-grain-lost">—</span></td>
+              <td class="silo-col"><span class="val-big val-green" id="silo-grain-lost">—</span></td>
+            </tr>
+            <tr>
+              <td class="row-label">Value lost</td>
+              <td class="current-col"><span class="val-big val-red" id="ct-val-lost">—</span></td>
+              <td class="pics-col"><span class="val-big val-blue" id="pics-val-lost">—</span></td>
+              <td class="silo-col"><span class="val-big val-green" id="silo-val-lost">—</span></td>
+            </tr>
+            <tr>
+              <td class="row-label">Technology cost</td>
+              <td class="current-col"><span class="tag-free">Free / already used</span></td>
+              <td class="pics-col"><span class="val-big" id="pics-tech-cost">—</span></td>
+              <td class="silo-col"><span class="val-big" id="silo-tech-cost">—</span></td>
+            </tr>
+            <tr>
+              <td class="row-label">Net savings vs current</td>
+              <td class="current-col">—</td>
+              <td class="pics-col"><span class="val-big val-blue" id="pics-net-save">—</span></td>
+              <td class="silo-col"><span class="val-big val-green" id="silo-net-save">—</span></td>
+            </tr>
+            <tr>
+              <td class="row-label">ROI</td>
+              <td class="current-col">—</td>
+              <td class="pics-col"><span class="tag-roi" id="pics-roi">—</span></td>
+              <td class="silo-col"><span class="tag-roi-green" id="silo-roi">—</span></td>
+            </tr>
+            <tr>
+              <td class="row-label">Payback</td>
+              <td class="current-col">—</td>
+              <td class="pics-col"><span class="val-big" id="pics-payback">—</span></td>
+              <td class="silo-col"><span class="val-big" id="silo-payback">—</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="moisture-tip">
+        <strong>⚠️ Important: Dry Your Grain First</strong>
+        Hermetic bags and metal silos only work if grain is dried to below 13% moisture before sealing. Sealing moist grain traps humidity and encourages mold. If you're unsure, spread grain in the sun for 2–3 days before bagging.
+      </div>
+    </div>
+
+    <!-- PRICE TIMING BENEFIT -->
+    <div class="card">
+      <p class="card-title">Price Timing Benefit</p>
+      <div class="timing-panel">
+        <div class="timing-icon">📈</div>
+        <div class="timing-body">
+          <div class="timing-title">Sell after the harvest glut — not during it</div>
+          <div class="timing-detail" id="timing-detail">Farmers who sell at harvest receive the lowest price of the year. Storing grain for 3–4 months and selling during the lean season typically increases revenue by 30–60%.</div>
+          <div class="timing-amount" id="timing-amount">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOTAL IMPACT -->
+    <div class="card">
+      <p class="card-title">Total Impact with PICS Bags</p>
+      <div class="impact-grid">
+        <div class="impact-stat">
+          <div class="istat-val val-blue" id="imp-grain-saved">—</div>
+          <div class="istat-lbl">Extra grain saved per season</div>
+        </div>
+        <div class="impact-stat">
+          <div class="istat-val val-blue" id="imp-val-saved">—</div>
+          <div class="istat-lbl">Value of grain saved</div>
+        </div>
+        <div class="impact-stat">
+          <div class="istat-val green" id="imp-timing">—</div>
+          <div class="istat-lbl">Price timing gain (3 months)</div>
+        </div>
+        <div class="impact-stat">
+          <div class="istat-val green" id="imp-total">—</div>
+          <div class="istat-lbl">Total additional income/season</div>
+        </div>
+        <div class="impact-stat">
+          <div class="istat-val" id="imp-bags">—</div>
+          <div class="istat-lbl">PICS bags needed</div>
+        </div>
+        <div class="impact-stat">
+          <div class="istat-val" id="imp-invest">—</div>
+          <div class="istat-lbl">Total bag investment</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AFLATOXIN WARNING (shown for maize / groundnut) -->
+    <div class="afla-warn" id="afla-section" style="display:none;margin-bottom:1.25rem">
+      <div class="afla-warn-title">🍄 Aflatoxin Risk Warning</div>
+      <p id="afla-text">Poor storage of <span id="afla-crop">this crop</span> promotes <em>Aspergillus flavus</em> mold growth, which produces <strong>aflatoxin</strong> — a potent carcinogen that is invisible, odorless, and heat-stable. Contaminated grain is rejected at export and banned from sale in many markets. Hermetic storage significantly limits oxygen available to the mold, reducing aflatoxin development. Combine hermetic storage with rapid drying (&lt;13% moisture) for maximum protection.</p>
+    </div>
+
+    <!-- WHERE TO BUY -->
+    <div class="card" id="buy-section">
+      <p class="card-title">Where to Get Storage Solutions</p>
+      <div class="buy-grid">
+        <div class="buy-card">
+          <div class="buy-icon">🛍️</div>
+          <div class="buy-name">PICS Bags</div>
+          <div class="buy-desc">Available through agro-input dealers, farmer cooperatives, and NGO programs. Ask at your nearest PICS distributor or extension service.</div>
+          <div class="buy-price" id="buy-pics-price">~$2.50 USD per 100 kg bag</div>
+        </div>
+        <div class="buy-card">
+          <div class="buy-icon">🏭</div>
+          <div class="buy-name">Metal Silos</div>
+          <div class="buy-desc">Fabricated by local tinsmiths or agro-equipment suppliers. FAO, GIZ and government programs often subsidize metal silos. Ask your Ministry of Agriculture.</div>
+          <div class="buy-price" id="buy-silo-price">~$100 USD for 500 kg</div>
+        </div>
+        <div class="buy-card">
+          <div class="buy-icon">🏛️</div>
+          <div class="buy-name">Extension Services</div>
+          <div class="buy-desc">Government agricultural extension officers can connect you with subsidized storage programs, PICS bag distributors, and group purchasing schemes.</div>
+          <div class="buy-price" style="color:var(--success)">Usually free to consult</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /results -->
+
+  <!-- HOW IT WORKS -->
+  <div class="card">
+    <p class="card-title">How This Calculator Works</p>
+    <div class="seo-prose">
+      <p>Post-harvest losses are calculated using loss rates from the <strong>APHLIS (African Postharvest Losses Information System)</strong> database and the World Bank's "Missing Food" report. Loss rates represent typical percentage weight loss over the stated storage period for each method.</p>
+      <p>The <strong>ROI calculation</strong> compares the cost of improved storage technology against the value of grain saved. For PICS bags, cost is based on bag price × quantity needed. For metal silos, the annual cost is amortized over the 15-year lifespan.</p>
+      <p>The <strong>price timing benefit</strong> reflects the well-documented pattern across sub-Saharan Africa where farm-gate prices at harvest (glut period) are 30–60% lower than prices 3–6 months later (lean season). Improved storage enables farmers to choose when to sell.</p>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="card">
+    <p class="card-title">Frequently Asked Questions</p>
+    <div class="faq">
+      <details>
+        <summary>How much grain do African farmers typically lose to poor storage?</summary>
+        <p>Sub-Saharan Africa loses 20–30% of harvested grain to post-harvest problems annually. The World Bank estimates this at over $4 billion per year. Maize in traditional granaries typically loses 15–30% within 6 months. Cowpea stored in polypropylene bags can lose 30–50% within 4 months due to bruchid beetles.</p>
+      </details>
+      <details>
+        <summary>What are PICS bags and do they really work?</summary>
+        <p>PICS (Purdue Improved Crop Storage) bags are triple-layer hermetic bags — two HDPE inner liners plus an outer woven PP bag. When sealed, insects trapped inside consume the oxygen and die within 7–10 days. Multiple large-scale trials across West Africa and East Africa have verified less than 1% weight loss after 9 months, compared to 15–30% in traditional storage. One bag costs approximately $2.50 USD and can be reused 2–3 times.</p>
+      </details>
+      <details>
+        <summary>Must I dry grain before using hermetic bags?</summary>
+        <p>Yes — this is critical. Hermetic bags stop insects by eliminating oxygen. But if grain moisture exceeds 13%, mold (not insects) becomes the threat inside the sealed bag. Fungi like Aspergillus flavus thrive in moist, low-oxygen environments and produce aflatoxin. Always dry grain in the sun for 2–3 days and test moisture before sealing.</p>
+      </details>
+      <details>
+        <summary>Why is cowpea loss so much higher than maize?</summary>
+        <p>The cowpea bruchid beetle (Callosobruchus maculatus) lays its eggs inside pods while grain is still on the plant. The larvae develop inside the grain, and adults emerge to lay more eggs inside storage. Within 3–4 months, an entire bag of cowpea can be rendered inedible. This is why PICS bags were originally developed specifically for cowpea storage in West Africa.</p>
+      </details>
+      <details>
+        <summary>How long does a metal silo last?</summary>
+        <p>A properly made galvanized steel silo lasts 15–20 years with basic maintenance. It is airtight when sealed with the lid gasket, making it hermetic and effectively immune to insect attack. A 500 kg silo costs approximately $100 USD, giving an annual cost of only $7/year amortized over 15 years — far cheaper than the grain it saves each season.</p>
+      </details>
+    </div>
+  </div>
+
+  <!-- RELATED TOOLS -->
+  <div class="card">
+    <p class="card-title">Related Agriculture Tools</p>
+    <div class="agri-links">
+      <a href="/agriculture/farm-profit/" class="agri-link"><span class="al-icon">📊</span>Farm Profit Calculator<span class="al-arr">›</span></a>
+      <a href="/agriculture/crop-yield/" class="agri-link"><span class="al-icon">🌾</span>Crop Yield Estimator<span class="al-arr">›</span></a>
+      <a href="/agriculture/fertilizer/" class="agri-link"><span class="al-icon">🧪</span>Fertilizer Calculator<span class="al-arr">›</span></a>
+      <a href="/agriculture/pesticide-dosage/" class="agri-link"><span class="al-icon">🧴</span>Pesticide Dosage<span class="al-arr">›</span></a>
+      <a href="/agriculture/soil-ph/" class="agri-link"><span class="al-icon">🧪</span>Soil pH Calculator<span class="al-arr">›</span></a>
+      <a href="/agriculture/harvest-date/" class="agri-link"><span class="al-icon">📅</span>Harvest Date Estimator<span class="al-arr">›</span></a>
+    </div>
+  </div>
+
+  <!-- SEO SECTION -->
+  <section class="seo-prose">
+    <h2>Post-Harvest Loss in Africa: The Silent Harvest</h2>
+    <p>Every year, African farmers lose up to 30% of their harvested grain before it ever reaches the market. This is known as post-harvest loss (PHL) — and it is one of the biggest but most invisible challenges in African agriculture. The World Bank's landmark "Missing Food" report estimated that Sub-Saharan Africa loses over $4 billion worth of grain annually to insects, rodents, mold, and poor handling.</p>
+    <h2>The PICS Bag Revolution</h2>
+    <p>The Purdue Improved Crop Storage (PICS) bag was developed at Purdue University specifically for African smallholder farmers. These triple-layer hermetic bags eliminate the oxygen that insects need to survive. Within one week of sealing, all insects inside the bag die. Independent trials in Niger, Burkina Faso, Mali, Kenya, and Tanzania consistently show less than 1% weight loss after 9 months — compared to 15–30% in traditional granaries. At $2.50 per 100 kg bag, the return on investment can exceed 400% in a single season.</p>
+    <h2>Metal Silos: The Long-Term Solution</h2>
+    <p>For farmers with larger quantities or who want a permanent solution, galvanized steel metal silos offer the best long-term storage. Available in capacities from 500 kg to 3 tonnes, a metal silo costs $100–$400 USD and lasts 15–20 years. When properly sealed, they are hermetic and provide near-zero grain loss. FAO and many national governments run programs to subsidize metal silo fabrication and distribution.</p>
+    <h2>The Hidden Benefit: Price Timing</h2>
+    <p>Beyond just preventing loss, improved storage enables farmers to choose when to sell. At harvest, when every farmer is selling simultaneously, prices are at their lowest. Grain prices in sub-Saharan Africa typically rise 30–80% from harvest to the lean season 3–6 months later. A farmer with hermetic storage can wait and sell at the better price — turning a storage tool into a price management tool.</p>
+  </section>
+
+</main>
+
+<afro-footer></afro-footer>
+
+<script src="/data/agriculture/storage-data.js"></script>
+<script>
+(function() {
+  'use strict';
+
+  // ── HELPERS ────────────────────────────────────────────────────────────────
+
+  function fmt(n, currency, symbol) {
+    if (!isFinite(n)) return '—';
+    var abs = Math.abs(n);
+    var formatted;
+    // Use compact notation for large numbers
+    if (abs >= 1000000) {
+      formatted = (n / 1000000).toFixed(1) + 'M';
+    } else if (abs >= 1000) {
+      formatted = (n / 1000).toFixed(0) + 'k';
+    } else {
+      formatted = n.toLocaleString('en', {maximumFractionDigits: 0});
+    }
+    return symbol + formatted;
+  }
+
+  function fmtFull(n, symbol) {
+    if (!isFinite(n)) return '—';
+    return symbol + n.toLocaleString('en', {maximumFractionDigits: 0});
+  }
+
+  function fmtTonnes(t) {
+    if (t < 0.1) return (t * 1000).toFixed(0) + ' kg';
+    return t.toFixed(2) + ' t';
+  }
+
+  // ── UI UPDATES ─────────────────────────────────────────────────────────────
+
+  function onCropChange() {
+    var crop = document.getElementById('crop-select').value;
+    var methodSel = document.getElementById('method-select');
+    methodSel.innerHTML = '<option value="">— Select method —</option>';
+
+    if (!crop || !STORAGE_DATA.lossRates[crop]) return;
+
+    var methods = STORAGE_DATA.lossRates[crop].methods;
+    for (var key in methods) {
+      if (!methods.hasOwnProperty(key)) continue;
+      var m = methods[key];
+      var opt = document.createElement('option');
+      opt.value = key;
+      opt.textContent = m.label + ' (' + m.loss_pct + '% loss)';
+      methodSel.appendChild(opt);
+    }
+
+    // Pre-fill price if country selected
+    updatePrice();
+  }
+
+  function onCountryChange() {
+    var cc = document.getElementById('country-select').value;
+    var country = STORAGE_DATA.countries[cc] || STORAGE_DATA.countries['ALL'];
+    document.getElementById('currency-label').textContent = country.currency;
+    updatePrice();
+  }
+
+  function updatePrice() {
+    var crop = document.getElementById('crop-select').value;
+    var cc = document.getElementById('country-select').value || 'ALL';
+    if (!crop) return;
+
+    var prices = STORAGE_DATA.harvestPrices[cc] || STORAGE_DATA.harvestPrices['ALL'];
+    if (prices && prices[crop]) {
+      document.getElementById('price-input').value = prices[crop];
+    }
+  }
+
+  // ── MAIN CALCULATION ───────────────────────────────────────────────────────
+
+  function calculate() {
+    var crop      = document.getElementById('crop-select').value;
+    var cc        = document.getElementById('country-select').value || 'ALL';
+    var qty       = parseFloat(document.getElementById('quantity-input').value);
+    var methodKey = document.getElementById('method-select').value;
+    var duration  = parseInt(document.getElementById('duration-input').value) || 6;
+    var price     = parseFloat(document.getElementById('price-input').value);
+
+    if (!crop || !methodKey || !qty || !price) {
+      alert('Please fill in all fields before calculating.');
+      return;
+    }
+
+    var cropData   = STORAGE_DATA.lossRates[crop];
+    var method     = cropData.methods[methodKey];
+    var country    = STORAGE_DATA.countries[cc] || STORAGE_DATA.countries['ALL'];
+    var symbol     = country.symbol;
+    var rate       = country.rate; // local currency per USD
+
+    // Pick best hermetic method for this crop
+    var picsKey = cropData.methods.hermetic_bags_PICS ? 'hermetic_bags_PICS'
+                : cropData.methods.hermetic_bags ? 'hermetic_bags'
+                : cropData.methods.hermetic_bags_other ? 'hermetic_bags_other'
+                : null;
+    var siloKey = cropData.methods.metal_silo ? 'metal_silo' : null;
+
+    var currentLossPct = method.loss_pct;
+    var picsLossPct    = picsKey ? cropData.methods[picsKey].loss_pct : 1;
+    var siloLossPct    = siloKey ? cropData.methods[siloKey].loss_pct : 0.5;
+
+    // Adjust loss for duration (if stored longer than the "typical" period, scale loss up slightly)
+    var typicalMonths = method.period_months || 6;
+    var durationFactor = Math.min(duration / typicalMonths, 1.5);
+    var adjCurrentLoss  = Math.min(currentLossPct * durationFactor, 95);
+    var adjPicsLoss     = Math.min(picsLossPct * (duration / (picsKey ? cropData.methods[picsKey].period_months || 9 : 9)), 5);
+    var adjSiloLoss     = Math.min(siloLossPct * (duration / 12), 3);
+
+    // Grain quantities
+    var currentLossTonnes = qty * (adjCurrentLoss / 100);
+    var picsLossTonnes    = qty * (adjPicsLoss / 100);
+    var siloLossTonnes    = qty * (adjSiloLoss / 100);
+
+    // Values
+    var currentLossVal = currentLossTonnes * price;
+    var picsLossVal    = picsLossTonnes * price;
+    var siloLossVal    = siloLossTonnes * price;
+
+    // Grain saved vs current
+    var picsGrainSaved = currentLossTonnes - picsLossTonnes;
+    var siloGrainSaved = currentLossTonnes - siloLossTonnes;
+    var picsValSaved   = picsGrainSaved * price;
+    var siloValSaved   = siloGrainSaved * price;
+
+    // Technology costs
+    var bagsNeeded   = Math.ceil((qty * 1000) / 100); // 100 kg bags
+    var picsBagCost  = country.pics_bag || (2.50 * rate);
+    var picsTotalCost = bagsNeeded * picsBagCost;
+    var picsPerUseCost = picsTotalCost / 3; // reusable 3 times
+
+    // Metal silo — pick size
+    var siloCapKg = qty * 1000;
+    var siloCostLocal, siloLabel;
+    if (siloCapKg <= 500) {
+      siloCostLocal = country.silo_500kg || (100 * rate);
+      siloLabel = '500 kg silo';
+    } else if (siloCapKg <= 1000) {
+      siloCostLocal = country.silo_1000kg || (180 * rate);
+      siloLabel = '1 tonne silo';
+    } else {
+      var numSilos1t = Math.ceil(qty);
+      siloCostLocal = numSilos1t * (country.silo_1000kg || (180 * rate));
+      siloLabel = numSilos1t + ' × 1 t silos';
+    }
+    var siloAnnualCost = siloCostLocal / 15; // 15-year lifespan
+
+    // Net savings (grain saved value minus cost)
+    var picsNetSave = picsValSaved - picsPerUseCost;
+    var siloNetSave = siloValSaved - siloAnnualCost;
+
+    // ROI
+    var picsROI = picsPerUseCost > 0 ? ((picsValSaved - picsPerUseCost) / picsPerUseCost * 100) : 999;
+    var siloROI = siloAnnualCost > 0 ? ((siloValSaved - siloAnnualCost) / siloAnnualCost * 100) : 999;
+
+    // Payback (seasons to recoup one-time cost)
+    var picsPaybackSeasons = picsValSaved > 0 ? (picsTotalCost / picsValSaved).toFixed(1) : '—';
+    var siloPaybackSeasons = siloValSaved > 0 ? (siloCostLocal / siloValSaved).toFixed(1) : '—';
+
+    // Price timing benefit
+    var seasonal = STORAGE_DATA.seasonalPriceIncrease[crop] || 40;
+    var grainForSale = qty - picsLossTonnes;
+    var timingGain = grainForSale * price * (seasonal / 100);
+
+    // Total with PICS
+    var totalBenefit = picsValSaved + timingGain;
+
+    // ── RENDER RESULTS ──────────────────────────────────────────────────────
+
+    // Hero
+    document.getElementById('res-loss-tonnes').textContent = fmtTonnes(currentLossTonnes);
+    document.getElementById('res-loss-pct').textContent = adjCurrentLoss.toFixed(1) + '% of your stored grain to pests & spoilage';
+    document.getElementById('res-loss-value').textContent = fmtFull(currentLossVal, symbol);
+    document.getElementById('res-loss-value').style.color = '#ef4444';
+
+    // Table — current
+    document.getElementById('ct-loss-pct').textContent  = adjCurrentLoss.toFixed(1) + '%';
+    document.getElementById('ct-grain-lost').textContent = fmtTonnes(currentLossTonnes);
+    document.getElementById('ct-val-lost').textContent   = fmtFull(currentLossVal, symbol);
+
+    // Table — PICS
+    document.getElementById('pics-loss-pct').textContent   = adjPicsLoss.toFixed(2) + '%';
+    document.getElementById('pics-grain-lost').textContent  = fmtTonnes(picsLossTonnes);
+    document.getElementById('pics-val-lost').textContent    = fmtFull(picsLossVal, symbol);
+    document.getElementById('pics-tech-cost').textContent   = fmtFull(picsPerUseCost, symbol) + '/season';
+    document.getElementById('pics-net-save').textContent    = fmtFull(picsNetSave, symbol);
+    document.getElementById('pics-roi').textContent         = picsROI > 0 ? Math.round(picsROI) + '% ROI' : 'N/A';
+    document.getElementById('pics-payback').textContent     = picsPaybackSeasons + ' seasons';
+
+    // Table — silo
+    document.getElementById('silo-loss-pct').textContent   = adjSiloLoss.toFixed(2) + '%';
+    document.getElementById('silo-grain-lost').textContent  = fmtTonnes(siloLossTonnes);
+    document.getElementById('silo-val-lost').textContent    = fmtFull(siloLossVal, symbol);
+    document.getElementById('silo-tech-cost').textContent   = fmtFull(siloAnnualCost, symbol) + '/yr (' + siloLabel + ')';
+    document.getElementById('silo-net-save').textContent    = fmtFull(siloNetSave, symbol);
+    document.getElementById('silo-roi').textContent         = siloROI > 0 ? Math.round(siloROI) + '% ROI' : 'N/A';
+    document.getElementById('silo-payback').textContent     = siloPaybackSeasons + ' seasons';
+
+    // Price timing
+    document.getElementById('timing-detail').textContent = cropData.label + ' prices typically rise ' + seasonal + '% from harvest to lean season (3–4 months later). With ' + fmtTonnes(grainForSale) + ' to sell after PICS bag storage:';
+    document.getElementById('timing-amount').textContent = '+' + fmtFull(timingGain, symbol) + ' additional revenue from selling later';
+
+    // Total impact
+    document.getElementById('imp-grain-saved').textContent = fmtTonnes(picsGrainSaved);
+    document.getElementById('imp-val-saved').textContent   = fmtFull(picsValSaved, symbol);
+    document.getElementById('imp-timing').textContent      = '+' + fmtFull(timingGain, symbol);
+    document.getElementById('imp-total').textContent       = fmtFull(totalBenefit, symbol);
+    document.getElementById('imp-bags').textContent        = bagsNeeded + ' bags';
+    document.getElementById('imp-invest').textContent      = fmtFull(picsTotalCost, symbol) + ' (reuse 3×)';
+
+    // Aflatoxin warning
+    var aflaSection = document.getElementById('afla-section');
+    if (cropData.aflatoxinRisk) {
+      aflaSection.style.display = 'block';
+      document.getElementById('afla-crop').textContent = cropData.label.toLowerCase();
+    } else {
+      aflaSection.style.display = 'none';
+    }
+
+    // Where to buy prices
+    document.getElementById('buy-pics-price').textContent = '~' + fmtFull(picsBagCost, symbol) + ' per 100 kg bag';
+    document.getElementById('buy-silo-price').textContent = '~' + fmtFull(country.silo_500kg || (100 * rate), symbol) + ' for 500 kg silo';
+
+    // Show results
+    var resultsEl = document.getElementById('results');
+    resultsEl.style.display = 'block';
+    resultsEl.scrollIntoView({behavior: 'smooth', block: 'start'});
+  }
+
+  // Expose to onclick handlers
+  window.calculate = calculate;
+  window.onCropChange = onCropChange;
+  window.onCountryChange = onCountryChange;
+
+})();
+</script>
+</body>
+</html>

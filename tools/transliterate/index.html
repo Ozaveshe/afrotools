@@ -15,7 +15,7 @@
 <meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/transliterate/">
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
 <style>
-:root{--purple:#7c3aed;--purple-light:#f5f3ff;--purple-dark:#6d28d9}*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6}.hero{background:linear-gradient(135deg,#4c1d95 0%,#6d28d9 50%,#a78bfa 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}.hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}.hero p{font-size:1.05rem;opacity:.9;max-width:600px;margin:0 auto}.container{max-width:1000px;margin:0 auto;padding:1.5rem}.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:1.5rem}.card h2{font-size:1.1rem;font-weight:700;margin-bottom:1rem;color:#4c1d95}
+:root{--purple:#7c3aed;--purple-light:#f5f3ff;--purple-dark:#6d28d9}*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6}.hero{background:linear-gradient(135deg,#4c1d95 0%,#6d28d9 50%,#a78bfa 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}.hero h1{color:#fff;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}.hero p{font-size:1.05rem;opacity:.9;max-width:600px;margin:0 auto}.container{max-width:1000px;margin:0 auto;padding:1.5rem}.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:1.5rem}.card h2{font-size:1.1rem;font-weight:700;margin-bottom:1rem;color:#4c1d95}
 .form-group{display:flex;flex-direction:column;gap:.3rem;margin-bottom:1rem}
 .form-group label{font-weight:600;font-size:.85rem;color:#475569}
 .form-group select,.form-group textarea{padding:.55rem .75rem;border:1.5px solid #cbd5e1;border-radius:7px;font-size:1rem;background:#f8fafc;font-family:inherit}
@@ -83,13 +83,35 @@ textarea{min-height:120px;resize:vertical}
 <div class="form-group"><label>Script Output</label><div class="output-box" id="output"></div></div>
 </div>
 <div style="display:flex;gap:.5rem;flex-wrap:wrap">
-<button class="btn btn-sm" onclick="copyOutput()">Copy Output</button>
+<button class="btn btn-sm" onclick="copyOutput(this)">Copy Output</button>
+<button class="btn btn-sm" onclick="trySample()" style="background:#16a34a">Try Sample</button>
 <button class="btn btn-sm" onclick="document.getElementById('input').value='';convert()" style="background:#64748b">Clear</button>
 </div>
+<div id="sampleHint" style="margin-top:.5rem;font-size:.8rem;color:#94a3b8"></div>
 </div>
 <div class="card">
 <h2>Character Map — Click to Insert</h2>
 <div class="char-grid" id="charGrid"></div>
+</div>
+<div class="card">
+<h2>Keyboard Guide</h2>
+<details style="margin-bottom:.5rem">
+<summary style="cursor:pointer;font-weight:600;color:#4c1d95;padding:.4rem 0">Ge'ez (Ethiopic) — Consonant mapping</summary>
+<div style="overflow-x:auto;margin-top:.5rem"><table style="width:100%;border-collapse:collapse;font-size:.85rem"><thead><tr><th style="background:#f5f3ff;padding:.4rem .6rem;border:1px solid #e2e8f0">Type</th><th style="background:#f5f3ff;padding:.4rem .6rem;border:1px solid #e2e8f0">Result</th><th style="background:#f5f3ff;padding:.4rem .6rem;border:1px solid #e2e8f0">Notes</th></tr></thead><tbody>
+<tr><td style="padding:.3rem .6rem;border:1px solid #f1f5f9">h, l, m, r, s</td><td style="padding:.3rem .6rem;border:1px solid #f1f5f9">ሀ, ሀ, ሀ, ሀ, ሀ</td><td style="padding:.3rem .6rem;border:1px solid #f1f5f9">Add vowel: ha=ሃ, hu=ሁ, hi=ሂ, haa=ሄ, hee=ሄ, ho=ሆ</td></tr>
+<tr><td style="padding:.3rem .6rem;border:1px solid #f1f5f9">sh, ch, gn</td><td style="padding:.3rem .6rem;border:1px solid #f1f5f9">Digraphs</td><td style="padding:.3rem .6rem;border:1px solid #f1f5f9">Type "sh" before vowel: sha=ሻ, she=ሸ</td></tr>
+<tr><td style="padding:.3rem .6rem;border:1px solid #f1f5f9">q, k, b, t, n, z, y, d, j, g, f, p, w</td><td style="padding:.3rem .6rem;border:1px solid #f1f5f9">ቀ-ፕ</td><td style="padding:.3rem .6rem;border:1px solid #f1f5f9">+ vowel (a/u/i/aa/ee/e/o)</td></tr>
+<tr><td style="padding:.3rem .6rem;border:1px solid #f1f5f9">a, e, i, o, u</td><td style="padding:.3rem .6rem;border:1px solid #f1f5f9">አ ኢ ኡ ኦ</td><td style="padding:.3rem .6rem;border:1px solid #f1f5f9">Standalone vowels use Ethiopic base vowel characters</td></tr>
+</tbody></table></div>
+</details>
+<details style="margin-bottom:.5rem">
+<summary style="cursor:pointer;font-weight:600;color:#4c1d95;padding:.4rem 0">Tifinagh (Amazigh) — Key mapping</summary>
+<div style="overflow-x:auto;margin-top:.5rem"><p style="font-size:.85rem;color:#475569">a→ⴰ b→ⴱ g→ⴳ d→ⴷ e→ⴻ f→ⴼ h→ⵀ i→ⵉ j→ⵊ k→ⴾ l→ⵍ m→ⵎ n→ⵏ o→ⵓ q→ⵇ r→ⵔ s→ⵙ t→ⵜ u→ⵓ w→ⵡ y→ⵢ z→ⵣ | Digraphs: sh→ⵛ ch→ⵞ gh→ⵖ kh→ⵅ</p></div>
+</details>
+<details>
+<summary style="cursor:pointer;font-weight:600;color:#4c1d95;padding:.4rem 0">N'Ko (Manding) — Syllable mapping</summary>
+<div style="margin-top:.5rem"><p style="font-size:.85rem;color:#475569">N'Ko maps consonant+vowel pairs: ba→ߏ be→ߐ ka→ߛ la→ߝ ma→ߟ na→ߡ ra→ߣ sa→ߥ ta→ߧ | Standalone vowels: a→ߊ e→ߋ i→ߌ o→ߍ u→ߎ | N'Ko is written right-to-left.</p></div>
+</details>
 </div>
 <div class="card">
 <h2>African Writing Systems</h2>
@@ -116,12 +138,15 @@ textarea{min-height:120px;resize:vertical}
 <details><summary>What is transliteration?</summary><p>Transliteration is the process of converting text from one writing system to another, mapping characters based on their phonetic values. Unlike translation (which converts meaning), transliteration preserves the sounds of the original text in a different script. For example, the Amharic word for "peace" can be transliterated from Ge'ez to Latin as "selam."</p></details>
 <details><summary>Are these scripts still used today?</summary><p>Yes, all four scripts featured here are actively used. Ge'ez is the official script for Amharic and Tigrinya, used by over 50 million people daily. Neo-Tifinagh is taught in Moroccan schools and used on road signs. N'Ko is used for literacy programs across West Africa with millions of learners. Vai continues to be used in Liberia.</p></details>
 <details><summary>How accurate is this transliteration?</summary><p>This tool provides phonetic transliteration based on standard mapping tables. For Ge'ez, it maps Latin consonant-vowel pairs to the corresponding Ethiopic syllable characters. Results are approximate and may not capture all nuances of each script. For professional or academic use, please verify with native-script-literate reviewers.</p></details>
+<details><summary>Why do African scripts matter for education and digital inclusion?</summary><p>Over 2,000 languages are spoken across Africa, and many have writing systems predating European contact. Teaching literacy in a person's mother tongue using its native script has been shown to accelerate learning. However, most digital keyboards, software, and websites default to Latin script. Tools like this one help bridge that gap by making African scripts accessible digitally — supporting language preservation, cultural identity, and technological inclusion for African communities worldwide.</p></details>
+<details><summary>What is the difference between a syllabary and an alphabet?</summary><p>An alphabet (like Latin, Arabic, or Tifinagh) assigns symbols to individual sounds (phonemes). A syllabary (like Ge'ez/Ethiopic, Vai, and N'Ko) assigns symbols to syllables — combinations of consonants and vowels. For example, in Ge'ez, the character ሀ (ha) represents the full syllable "ha" — you cannot separate the "h" from the "a." This means Ge'ez has hundreds of characters (one per consonant-vowel pair), while Latin has just 26.</p></details>
 </section>
 <afro-related-tools></afro-related-tools><afro-newsletter-cta></afro-newsletter-cta><afro-footer></afro-footer>
-<script src="/assets/js/components/navbar.js" defer></script><script src="/assets/js/components/footer.js" defer></script><script src="/assets/js/components/related-tools.js" defer></script><script src="/assets/js/components/newsletter-cta.js" defer></script>
+<script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script><script src="/assets/js/components/related-tools.min.js" defer></script><script src="/assets/js/components/newsletter-cta.min.js" defer></script>
+<script src="/assets/js/bundles/core.5473a555.min.js" defer></script>
 <script>
 // Ge'ez transliteration map (consonant x 7 vowel forms: a, u, i, aa, ee, e/schwa, o)
-const GEEZ_MAP={
+var GEEZ_MAP={
 'h':['\u1200','\u1201','\u1202','\u1203','\u1204','\u1205','\u1206'],
 'l':['\u1208','\u1209','\u120A','\u120B','\u120C','\u120D','\u120E'],
 'm':['\u1218','\u1219','\u121A','\u121B','\u121C','\u121D','\u121E'],
@@ -144,37 +169,35 @@ const GEEZ_MAP={
 'f':['\u1348','\u1349','\u134A','\u134B','\u134C','\u134D','\u134E'],
 'p':['\u1350','\u1351','\u1352','\u1353','\u1354','\u1355','\u1356']
 };
-const VOWEL_IDX={'a':0,'u':1,'i':2,'aa':3,'ee':4,'e':5,'o':6,'':5};
+var VOWEL_IDX={'a':0,'u':1,'i':2,'aa':3,'ee':4,'e':5,'o':6,'':5};
 
-const TIFINAGH_MAP={'a':'\u2D30','b':'\u2D31','g':'\u2D33','d':'\u2D37','e':'\u2D3B','f':'\u2D3C','k':'\u2D3E','h':'\u2D40','q':'\u2D45','i':'\u2D49','j':'\u2D4A','l':'\u2D4D','m':'\u2D4E','n':'\u2D4F','u':'\u2D53','r':'\u2D54','s':'\u2D59','t':'\u2D5C','w':'\u2D61','y':'\u2D62','z':'\u2D63','o':'\u2D67','sh':'\u2D5B','ch':'\u2D5E','gh':'\u2D56','kh':'\u2D46'};
+var TIFINAGH_MAP={'a':'\u2D30','b':'\u2D31','g':'\u2D33','d':'\u2D37','e':'\u2D3B','f':'\u2D3C','k':'\u2D3E','h':'\u2D40','q':'\u2D45','i':'\u2D49','j':'\u2D4A','l':'\u2D4D','m':'\u2D4E','n':'\u2D4F','u':'\u2D53','r':'\u2D54','s':'\u2D59','t':'\u2D5C','w':'\u2D61','y':'\u2D62','z':'\u2D63','o':'\u2D67','sh':'\u2D5B','ch':'\u2D5E','gh':'\u2D56','kh':'\u2D46'};
 
-const NKO_MAP={'a':'\u07CA','e':'\u07CB','i':'\u07CC','o':'\u07CD','u':'\u07CE','ba':'\u07CF','be':'\u07D0','bi':'\u07D1','bo':'\u07D2','bu':'\u07D3','da':'\u07D4','de':'\u07D5','di':'\u07D6','do':'\u07D7','du':'\u07D8','fa':'\u07D9','fe':'\u07DA','ka':'\u07DB','ke':'\u07DC','la':'\u07DD','le':'\u07DE','ma':'\u07DF','me':'\u07E0','na':'\u07E1','ne':'\u07E2','ra':'\u07E3','re':'\u07E4','sa':'\u07E5','se':'\u07E6','ta':'\u07E7','te':'\u07E8'};
+var NKO_MAP={'a':'\u07CA','e':'\u07CB','i':'\u07CC','o':'\u07CD','u':'\u07CE','ba':'\u07CF','be':'\u07D0','bi':'\u07D1','bo':'\u07D2','bu':'\u07D3','da':'\u07D4','de':'\u07D5','di':'\u07D6','do':'\u07D7','du':'\u07D8','fa':'\u07D9','fe':'\u07DA','ka':'\u07DB','ke':'\u07DC','la':'\u07DD','le':'\u07DE','ma':'\u07DF','me':'\u07E0','na':'\u07E1','ne':'\u07E2','ra':'\u07E3','re':'\u07E4','sa':'\u07E5','se':'\u07E6','ta':'\u07E7','te':'\u07E8'};
 
 function convertGeez(text){
-  let out='';let i=0;
-  const t=text.toLowerCase();
+  var out='';var i=0;
+  var t=text.toLowerCase();
   while(i<t.length){
     if(t[i]===' '||t[i]==='\n'){out+=t[i];i++;continue;}
-    let cons='';let matched=false;
-    // Try 2-char consonants first
+    var cons='';var matched=false;
     if(i+1<t.length){
-      const di=t.substr(i,2);
+      var di=t.substr(i,2);
       if(GEEZ_MAP[di]){cons=di;i+=2;matched=true;}
     }
     if(!matched&&GEEZ_MAP[t[i]]){cons=t[i];i++;matched=true;}
     if(matched){
-      let vowel='';
+      var vowel='';
       if(i<t.length&&'aeiou'.includes(t[i])){
         if(t[i]==='a'&&i+1<t.length&&t[i+1]==='a'){vowel='aa';i+=2;}
         else if(t[i]==='e'&&i+1<t.length&&t[i+1]==='e'){vowel='ee';i+=2;}
         else{vowel=t[i];i++;}
       }
-      const vi=VOWEL_IDX[vowel]!==undefined?VOWEL_IDX[vowel]:5;
+      var vi=VOWEL_IDX[vowel]!==undefined?VOWEL_IDX[vowel]:5;
       out+=GEEZ_MAP[cons][vi];
     } else {
-      // Check if it's a standalone vowel
       if('aeiou'.includes(t[i])){
-        const vMap={'a':'\u12A0','u':'\u12A1','i':'\u12A2','e':'\u12A5','o':'\u12A6'};
+        var vMap={'a':'\u12A0','u':'\u12A1','i':'\u12A2','e':'\u12A5','o':'\u12A6'};
         out+=vMap[t[i]]||t[i];i++;
       } else {out+=t[i];i++;}
     }
@@ -183,11 +206,11 @@ function convertGeez(text){
 }
 
 function convertTifinagh(text){
-  let out='';let i=0;const t=text.toLowerCase();
+  var out='';var i=0;var t=text.toLowerCase();
   while(i<t.length){
     if(t[i]===' '||t[i]==='\n'){out+=t[i];i++;continue;}
     if(i+1<t.length){
-      const di=t.substr(i,2);
+      var di=t.substr(i,2);
       if(TIFINAGH_MAP[di]){out+=TIFINAGH_MAP[di];i+=2;continue;}
     }
     out+=TIFINAGH_MAP[t[i]]||t[i];i++;
@@ -196,11 +219,11 @@ function convertTifinagh(text){
 }
 
 function convertNko(text){
-  let out='';let i=0;const t=text.toLowerCase();
+  var out='';var i=0;var t=text.toLowerCase();
   while(i<t.length){
     if(t[i]===' '||t[i]==='\n'){out+=t[i];i++;continue;}
     if(i+1<t.length){
-      const di=t.substr(i,2);
+      var di=t.substr(i,2);
       if(NKO_MAP[di]){out+=NKO_MAP[di];i+=2;continue;}
     }
     out+=NKO_MAP[t[i]]||t[i];i++;
@@ -208,29 +231,29 @@ function convertNko(text){
   return out;
 }
 
+var VAI_MAP={'a':'\uA500','e':'\uA501','i':'\uA502','o':'\uA503','u':'\uA504',
+  'ba':'\uA506','be':'\uA507','bi':'\uA508','bo':'\uA509','bu':'\uA50A',
+  'da':'\uA50C','de':'\uA50D','di':'\uA50E','do':'\uA50F','du':'\uA510',
+  'fa':'\uA512','fe':'\uA513','ga':'\uA516','ge':'\uA517','ha':'\uA51A',
+  'he':'\uA51B','ka':'\uA51E','ke':'\uA51F','la':'\uA522','le':'\uA523',
+  'ma':'\uA526','me':'\uA527','na':'\uA52A','ne':'\uA52B','pa':'\uA52E',
+  'pe':'\uA52F','ra':'\uA530','re':'\uA531','sa':'\uA534','se':'\uA535',
+  'ta':'\uA538','te':'\uA539','wa':'\uA53C','we':'\uA53D','ya':'\uA540','ye':'\uA541'};
+
 function convertVai(text){
-  // Vai syllabary - simplified mapping
-  const VAI={'a':'\uA500','e':'\uA501','i':'\uA502','o':'\uA503','u':'\uA504',
-    'ba':'\uA506','be':'\uA507','bi':'\uA508','bo':'\uA509','bu':'\uA50A',
-    'da':'\uA50C','de':'\uA50D','di':'\uA50E','do':'\uA50F','du':'\uA510',
-    'fa':'\uA512','fe':'\uA513','ga':'\uA516','ge':'\uA517','ha':'\uA51A',
-    'he':'\uA51B','ka':'\uA51E','ke':'\uA51F','la':'\uA522','le':'\uA523',
-    'ma':'\uA526','me':'\uA527','na':'\uA52A','ne':'\uA52B','pa':'\uA52E',
-    'pe':'\uA52F','ra':'\uA530','re':'\uA531','sa':'\uA534','se':'\uA535',
-    'ta':'\uA538','te':'\uA539','wa':'\uA53C','we':'\uA53D','ya':'\uA540','ye':'\uA541'};
-  let out='';let i=0;const t=text.toLowerCase();
+  var out='';var i=0;var t=text.toLowerCase();
   while(i<t.length){
     if(t[i]===' '||t[i]==='\n'){out+=t[i];i++;continue;}
-    if(i+1<t.length){const di=t.substr(i,2);if(VAI[di]){out+=VAI[di];i+=2;continue;}}
-    out+=VAI[t[i]]||t[i];i++;
+    if(i+1<t.length){var di=t.substr(i,2);if(VAI_MAP[di]){out+=VAI_MAP[di];i+=2;continue;}}
+    out+=VAI_MAP[t[i]]||t[i];i++;
   }
   return out;
 }
 
 function convert(){
-  const script=document.getElementById('script').value;
-  const text=document.getElementById('input').value;
-  let result='';
+  var script=document.getElementById('script').value;
+  var text=document.getElementById('input').value;
+  var result='';
   switch(script){
     case 'geez':result=convertGeez(text);break;
     case 'tifinagh':result=convertTifinagh(text);break;
@@ -241,39 +264,78 @@ function convert(){
 }
 
 function updateCharGrid(){
-  const script=document.getElementById('script').value;
-  let html='';
+  var script=document.getElementById('script').value;
+  var html='';
+  var vLabels=['a','u','i','aa','ee','e','o'];
   if(script==='geez'){
-    Object.keys(GEEZ_MAP).forEach(c=>{
-      GEEZ_MAP[c].forEach((ch,vi)=>{
-        const vl=['a','u','i','aa','ee','e','o'][vi];
-        html+=`<div class="char-cell" onclick="insertChar('${ch}')">${ch}<span class="latin">${c}${vl}</span></div>`;
+    Object.keys(GEEZ_MAP).forEach(function(c){
+      GEEZ_MAP[c].forEach(function(ch, vi){
+        var vl=vLabels[vi];
+        html+='<div class="char-cell" onclick="insertChar(\'' + ch + '\')">' + ch + '<span class="latin">' + c + vl + '</span></div>';
       });
     });
   } else if(script==='tifinagh'){
-    Object.keys(TIFINAGH_MAP).forEach(c=>{
-      html+=`<div class="char-cell" onclick="insertChar('${TIFINAGH_MAP[c]}')">${TIFINAGH_MAP[c]}<span class="latin">${c}</span></div>`;
+    Object.keys(TIFINAGH_MAP).forEach(function(c){
+      html+='<div class="char-cell" onclick="insertChar(\'' + TIFINAGH_MAP[c] + '\')">' + TIFINAGH_MAP[c] + '<span class="latin">' + c + '</span></div>';
     });
   } else if(script==='nko'){
-    Object.keys(NKO_MAP).forEach(c=>{
-      html+=`<div class="char-cell" onclick="insertChar('${NKO_MAP[c]}')">${NKO_MAP[c]}<span class="latin">${c}</span></div>`;
+    Object.keys(NKO_MAP).forEach(function(c){
+      html+='<div class="char-cell" onclick="insertChar(\'' + NKO_MAP[c] + '\')">' + NKO_MAP[c] + '<span class="latin">' + c + '</span></div>';
     });
   }
   document.getElementById('charGrid').innerHTML=html;
 }
 
 function insertChar(ch){
-  const inp=document.getElementById('input');
+  var inp=document.getElementById('input');
   inp.value+=ch;
-  const out=document.getElementById('output');
-  out.textContent+=ch;
+  convert();
 }
 
-function copyOutput(){
-  const t=document.getElementById('output').textContent;
-  navigator.clipboard.writeText(t).then(()=>{
-    const btn=event.target;btn.textContent='Copied!';setTimeout(()=>btn.textContent='Copy Output',1500);
+function copyOutput(btn){
+  var t=document.getElementById('output').textContent;
+  navigator.clipboard.writeText(t).then(function(){
+    if(btn){btn.textContent='Copied!';setTimeout(function(){btn.textContent='Copy Output';},1500);}
   });
+}
+
+var SAMPLES={
+geez:[
+  {latin:'selam',meaning:'Peace / Hello (ሰላም)'},
+  {latin:'ameseginaleh',meaning:'Thank you (አመሰግናለሁ)'},
+  {latin:'ethiopia',meaning:'Ethiopia (ኢትዮጵያ)'},
+  {latin:'buna',meaning:'Coffee (ቡና)'},
+  {latin:'ishi',meaning:'Okay / Fine (ኢሺ)'}
+],
+tifinagh:[
+  {latin:'amur',meaning:'Love (ⴰⵎⵓⵔ)'},
+  {latin:'tamazight',meaning:'The Amazigh language'},
+  {latin:'azul',meaning:'Hello / Blue (ⴰⵣⵓⵍ)'},
+  {latin:'amghar',meaning:'Elder / Chief'}
+],
+nko:[
+  {latin:'kuma',meaning:'Speech / Word'},
+  {latin:'dena',meaning:'Health / Wellness'},
+  {latin:'soba',meaning:'Greeting in N\'Ko context'},
+  {latin:'mali',meaning:'Mali'}
+],
+vai:[
+  {latin:'sande',meaning:'Women\'s society (Sande society)'},
+  {latin:'kpo',meaning:'Vai word for house'},
+  {latin:'pele',meaning:'Friend'},
+  {latin:'dea',meaning:'God / Creator'}
+]
+};
+var sampleIdx={geez:0,tifinagh:0,nko:0,vai:0};
+function trySample(){
+  var script=document.getElementById('script').value;
+  var samples=SAMPLES[script]||[];
+  if(!samples.length)return;
+  var s=samples[sampleIdx[script]%samples.length];
+  sampleIdx[script]++;
+  document.getElementById('input').value=s.latin;
+  document.getElementById('sampleHint').textContent='Meaning: '+s.meaning;
+  convert();
 }
 
 updateCharGrid();

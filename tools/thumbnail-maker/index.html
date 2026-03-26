@@ -26,7 +26,7 @@
 </script>
 <link rel="stylesheet" href="/assets/css/tokens.min.css">
 <style>
-:root{--sky:#0ea5e9;--sky-light:#f0f9ff;--sky-dark:#0284c7}*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6}.hero{background:linear-gradient(135deg,#0c4a6e 0%,#0284c7 50%,#38bdf8 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}.hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}.hero p{font-size:1.05rem;opacity:.9;max-width:600px;margin:0 auto}.container{max-width:1100px;margin:0 auto;padding:1.5rem}.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:1.5rem}.card h2{font-size:1.1rem;font-weight:700;margin-bottom:1rem;color:#0c4a6e}
+:root{--sky:#0ea5e9;--sky-light:#f0f9ff;--sky-dark:#0284c7}*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6}.hero{background:linear-gradient(135deg,#0c4a6e 0%,#0284c7 50%,#38bdf8 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}.hero h1{color:#fff;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}.hero p{font-size:1.05rem;opacity:.9;max-width:600px;margin:0 auto}.container{max-width:1100px;margin:0 auto;padding:1.5rem}.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:1.5rem}.card h2{font-size:1.1rem;font-weight:700;margin-bottom:1rem;color:#0c4a6e}
 .editor{display:grid;grid-template-columns:1fr 320px;gap:1.5rem}
 @media(max-width:800px){.editor{grid-template-columns:1fr}}
 .canvas-wrap{position:relative;border-radius:8px;overflow:hidden;border:1px solid #e2e8f0}
@@ -98,9 +98,11 @@
 </div>
 <div class="form-group"><label>Main Text</label><textarea id="mainText" oninput="draw()">YOUR TITLE HERE</textarea></div>
 <div class="form-group"><label>Text Size</label><input type="range" id="textSize" min="30" max="120" value="72" oninput="draw()"></div>
-<div class="form-group"><label>Text Color</label><div class="color-row"><input type="color" id="textColor" value="#ffffff" oninput="draw()"><label style="font-size:.78rem"><input type="checkbox" id="textShadow" checked onchange="draw()"> Shadow</label></div></div>
+<div class="form-group"><label>Text Color</label><div class="color-row"><input type="color" id="textColor" value="#ffffff" oninput="draw()"><label style="font-size:.78rem"><input type="checkbox" id="textShadow" checked onchange="draw()"> Shadow</label><label style="font-size:.78rem"><input type="checkbox" id="textStroke" onchange="draw()"> Outline</label></div></div>
+<div class="form-group"><label>Text Position</label><select id="textPos" onchange="draw()"><option value="center">Center</option><option value="upper">Upper Third</option><option value="lower">Lower Third</option></select></div>
 <div class="form-group"><label>Subtitle</label><input type="text" id="subText" placeholder="Optional subtitle..." oninput="draw()"></div>
 <div class="form-group"><label>Subtitle Color</label><input type="color" id="subColor" value="#ffd700" oninput="draw()"></div>
+<div class="form-group"><label>Channel Name (bottom)</label><input type="text" id="channelName" placeholder="e.g. @YourChannel" oninput="draw()"></div>
 <div class="form-group"><label>Overlay</label><select id="overlay" onchange="draw()"><option value="none">None</option><option value="dark">Dark Vignette</option><option value="gradient-bottom">Bottom Gradient</option><option value="stripe">Diagonal Stripe</option></select></div>
 <button class="btn" onclick="download()">Download Thumbnail (1280x720)</button>
 <button class="btn btn-secondary" onclick="resetCanvas()">Reset</button>
@@ -145,6 +147,12 @@ const TEMPLATES=[
 {name:'Royal',bg1:'#312e81',bg2:'#a78bfa',text:'#ffffff',sub:'#fde68a',overlay:'gradient-bottom'},
 {name:'Monochrome',bg1:'#000000',bg2:'#404040',text:'#ffffff',sub:'#fbbf24',overlay:'none'},
 {name:'Afro Gold',bg1:'#1c1917',bg2:'#d97706',text:'#ffffff',sub:'#fef3c7',overlay:'dark'},
+{name:'Kente',bg1:'#7c2d12',bg2:'#d97706',text:'#fef3c7',sub:'#4ade80',overlay:'stripe'},
+{name:'Ankara',bg1:'#0e7490',bg2:'#f97316',text:'#ffffff',sub:'#fef08a',overlay:'none'},
+{name:'Lagos Night',bg1:'#030712',bg2:'#7c3aed',text:'#f9fafb',sub:'#fbbf24',overlay:'dark'},
+{name:'Savanna',bg1:'#78350f',bg2:'#d97706',text:'#fef3c7',sub:'#86efac',overlay:'gradient-bottom'},
+{name:'Ubuntu Red',bg1:'#1c0a00',bg2:'#e11d48',text:'#ffffff',sub:'#fde68a',overlay:'dark'},
+{name:'Sahara',bg1:'#451a03',bg2:'#f59e0b',text:'#fef3c7',sub:'#e2e8f0',overlay:'none'},
 ];
 
 document.getElementById('templates').innerHTML=TEMPLATES.map((t,i)=>`<button class="tpl-btn" onclick="applyTemplate(${i})">${t.name}</button>`).join('');
@@ -214,11 +222,17 @@ function draw(){
   ctx.textAlign='center';ctx.textBaseline='middle';
   ctx.font=`900 ${textSize}px DM Sans,Impact,sans-serif`;
   if(hasShadow){ctx.shadowColor='rgba(0,0,0,0.5)';ctx.shadowBlur=12;ctx.shadowOffsetX=4;ctx.shadowOffsetY=4;}
-  ctx.fillStyle=textColor;
-  // Word wrap
   const lines=mainText.split('\n');
   const lineH=textSize*1.15;
-  const startY=h/2-(lines.length-1)*lineH/2;
+  const pos=document.getElementById('textPos').value;
+  const centerY=pos==='upper'?h*0.3:pos==='lower'?h*0.65:h/2;
+  const startY=centerY-(lines.length-1)*lineH/2;
+  const hasStroke=document.getElementById('textStroke').checked;
+  if(hasStroke){
+    ctx.strokeStyle='rgba(0,0,0,0.9)';ctx.lineWidth=textSize*0.08;ctx.lineJoin='round';
+    lines.forEach((line,i)=>{ctx.strokeText(line,w/2,startY+i*lineH);});
+  }
+  ctx.fillStyle=textColor;
   lines.forEach((line,i)=>{ctx.fillText(line,w/2,startY+i*lineH);});
   ctx.shadowColor='transparent';ctx.shadowBlur=0;ctx.shadowOffsetX=0;ctx.shadowOffsetY=0;
 
@@ -228,6 +242,16 @@ function draw(){
     ctx.font=`700 ${Math.round(textSize*0.4)}px DM Sans,sans-serif`;
     ctx.fillStyle=document.getElementById('subColor').value;
     ctx.fillText(subText,w/2,startY+lines.length*lineH+10);
+  }
+
+  // Channel name branding
+  const channelName=document.getElementById('channelName').value;
+  if(channelName){
+    ctx.font='600 28px DM Sans,sans-serif';
+    ctx.fillStyle='rgba(255,255,255,0.75)';
+    ctx.textAlign='right';
+    ctx.fillText(channelName,w-40,h-36);
+    ctx.textAlign='center';
   }
 }
 
@@ -241,7 +265,10 @@ function resetCanvas(){
   bgImg=null;
   document.getElementById('mainText').value='YOUR TITLE HERE';
   document.getElementById('subText').value='';
+  document.getElementById('channelName').value='';
   document.getElementById('textSize').value=72;
+  document.getElementById('textPos').value='center';
+  document.getElementById('textStroke').checked=false;
   applyTemplate(0);
 }
 
