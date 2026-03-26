@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Incoterms 2020 Calculator & Explainer — African Trade Guide | AfroTools</title>
+<meta name="description" content="Understand Incoterms 2020 for African trade. Interactive explainer with cost calculator. FOB, CIF, DDP and all 11 terms explained with Africa-specific guidance.">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/assets/css/tool-landing.css">
+<style>
+:root{--ic-blue:#007AFF;--ic-dark:#0A1628;}
+.ic-hero{background:var(--ic-dark);color:#fff;padding:2.5rem 1.5rem 2rem;}
+.ic-hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-family:'Instrument Serif',serif;line-height:1.2;margin:0 0 .75rem;}
+.ic-hero h1 em{color:var(--ic-blue);font-style:normal;}
+.ic-hero p{color:#94A3B8;max-width:580px;margin:0 0 1.25rem;}
+.badges{display:flex;flex-wrap:wrap;gap:.5rem;}
+.badge{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:980px;padding:.3rem .85rem;font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#CBD5E1;}
+.badge.blue{background:rgba(0,122,255,.2);border-color:rgba(0,122,255,.4);color:#60A5FA;}
+.ic-body{padding:1.5rem;max-width:960px;margin:0 auto;}
+.ic-tabs{display:flex;gap:.25rem;background:#F1F5F9;border-radius:12px;padding:.3rem;margin-bottom:1.5rem;overflow-x:auto;}
+.ic-tab{flex:1;padding:.55rem 1rem;border:none;background:transparent;border-radius:9px;font-size:.82rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;color:#64748B;white-space:nowrap;}
+.ic-tab.on{background:#fff;color:var(--ic-blue);box-shadow:0 1px 4px rgba(0,0,0,.1);}
+.tab-panel{display:none;}.tab-panel.on{display:block;}
+.card{background:#fff;border:1px solid #E2E8F0;border-radius:18px;padding:1.5rem;margin-bottom:1.25rem;}
+.card-head{font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#94A3B8;margin-bottom:1rem;}
+/* Incoterm Cards - Explainer */
+.ic-group-head{font-size:.7rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#94A3B8;padding:.5rem 0 .35rem;border-bottom:1px solid #F1F5F9;margin-bottom:.75rem;}
+.ic-term-card{border:2px solid #E2E8F0;border-radius:14px;padding:1.1rem;margin-bottom:.75rem;cursor:pointer;transition:all .2s;}
+.ic-term-card:hover{border-color:#BAE0FF;background:#F0F9FF;}
+.ic-term-card.open{background:#EFF6FF;border-color:var(--ic-blue);}
+.ic-term-header{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;}
+.ic-code{font-size:1.3rem;font-weight:900;color:var(--ic-dark);min-width:52px;}
+.ic-name{font-weight:700;color:#334155;font-size:.9rem;}
+.ic-transport{font-size:.75rem;color:#64748B;margin-top:.15rem;}
+.ic-pop{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;}
+.ic-detail{display:none;margin-top:1rem;padding-top:1rem;border-top:1px solid #E2E8F0;}
+.ic-term-card.open .ic-detail{display:block;}
+.ic-split{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
+@media(max-width:600px){.ic-split{grid-template-columns:1fr;}}
+.ic-party{border-radius:10px;padding:.75rem;}
+.ic-party.seller{background:#ECFDF5;}
+.ic-party.buyer{background:#EFF6FF;}
+.ic-party-head{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.4rem;}
+.ic-party.seller .ic-party-head{color:#065F46;}
+.ic-party.buyer .ic-party-head{color:#1D4ED8;}
+.ic-party-list{list-style:none;padding:0;margin:0;}
+.ic-party-list li{font-size:.82rem;color:#334155;padding:.15rem 0;}
+.ic-party-list li:before{content:'• ';}
+.ic-risk-line{font-size:.8rem;background:#FFFBEB;color:#92400E;border-radius:8px;padding:.5rem .75rem;margin-bottom:.75rem;}
+.africa-note{font-size:.82rem;background:#F8FAFD;border-left:3px solid var(--ic-blue);padding:.65rem .9rem;border-radius:0 8px 8px 0;color:#334155;margin-top:.5rem;}
+/* Cost Calculator */
+.f-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1rem;}
+@media(max-width:680px){.f-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:420px){.f-grid{grid-template-columns:1fr;}}
+.f-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#64748B;margin-bottom:.35rem;}
+.f-input,.f-select{width:100%;padding:.6rem .85rem;border:1.5px solid #E2E8F0;border-radius:10px;font-size:.9rem;color:#0f172a;background:#FAFAFA;box-sizing:border-box;}
+.f-input:focus,.f-select:focus{outline:none;border-color:var(--ic-blue);}
+.calc-btn{padding:.9rem 1.5rem;background:var(--ic-blue);color:#fff;border:none;border-radius:980px;font-size:.95rem;font-weight:800;cursor:pointer;}
+.calc-btn.full{width:100%;}
+/* Split bar */
+.split-bar-wrap{height:28px;border-radius:14px;overflow:hidden;display:flex;margin:.75rem 0;}
+.split-bar-seller{background:#10B981;display:flex;align-items:center;padding:0 .75rem;font-size:.78rem;font-weight:700;color:#fff;transition:width .5s;}
+.split-bar-buyer{background:var(--ic-blue);display:flex;align-items:center;padding:0 .75rem;font-size:.78rem;font-weight:700;color:#fff;transition:width .5s;justify-content:flex-end;}
+.calc-table{width:100%;border-collapse:collapse;}
+.calc-table tr td{padding:.5rem .75rem;font-size:.85rem;border-bottom:1px solid #F1F5F9;}
+.calc-table tr td:nth-child(2){text-align:center;}
+.calc-table tr td:last-child{text-align:right;font-weight:700;}
+.calc-table tr.seller-row td:nth-child(2){color:#10B981;font-weight:700;}
+.calc-table tr.buyer-row td:nth-child(2){color:var(--ic-blue);font-weight:700;}
+.calc-table tr.total-row td{background:#F8FAFD;font-weight:800;}
+/* Compare */
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;}
+@media(max-width:600px){.compare-grid{grid-template-columns:1fr;}}
+.cmp-panel{border:2px solid #E2E8F0;border-radius:14px;padding:1rem;}
+.cmp-panel.term1{border-color:#10B981;}
+.cmp-panel.term2{border-color:var(--ic-blue);}
+.cmp-code{font-size:1.6rem;font-weight:900;margin-bottom:.25rem;}
+.cmp-name{font-size:.9rem;color:#64748B;margin-bottom:.75rem;}
+/* Africa Top */
+.top-item{display:flex;gap:.85rem;padding:.75rem;border-radius:12px;background:#F8FAFD;margin-bottom:.6rem;align-items:flex-start;}
+.top-code-badge{background:var(--ic-dark);color:#fff;border-radius:8px;padding:.3rem .7rem;font-weight:900;font-size:.95rem;flex-shrink:0;}
+/* Obs */
+.obs-item{display:flex;gap:.65rem;padding:.75rem;border-radius:10px;margin-bottom:.6rem;font-size:.875rem;line-height:1.5;}
+.obs-item.info{background:#EFF6FF;color:#1D4ED8;}
+.obs-item.warn{background:#FFFBEB;color:#92400E;}
+.obs-item.tip{background:#ECFDF5;color:#065F46;}
+</style>
+  <link rel="canonical" href="https://afrotools.com/tools/incoterms-calculator/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://afrotools.com/tools/incoterms-calculator/">
+  <meta property="og:title" content="Incoterms 2020 Calculator & Explainer — African Trade Guide">
+  <meta property="og:description" content="Understand Incoterms 2020 for African trade. Interactive explainer with cost calculator. FOB, CIF, DDP and all 11 terms explained with Africa-specific guid">
+  <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+  <meta property="og:site_name" content="AfroTools">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Incoterms 2020 Calculator & Explainer — African Trade Guide">
+  <meta name="twitter:description" content="Understand Incoterms 2020 for African trade. Interactive explainer with cost calculator. FOB, CIF, DDP and all 11 terms explained with Africa-specific guid">
+  <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+</head>
+<body>
+<afro-navbar active="tools"></afro-navbar>
+
+<div class="ic-hero">
+  <nav aria-label="Breadcrumb" style="margin-bottom:1rem;font-size:.8rem;color:#64748B;">
+    <a href="/" style="color:#94A3B8;text-decoration:none;">Home</a> /
+    <a href="/tools" style="color:#94A3B8;text-decoration:none;">Tools</a> /
+    <span style="color:#CBD5E1;">Incoterms Calculator</span>
+  </nav>
+  <h1>Incoterms 2020<br><em>Calculator & Explainer</em></h1>
+  <p>Understand all 11 Incoterms 2020 with Africa-specific guidance. Calculate who pays what, compare two terms, and see the cost split for your actual shipment.</p>
+  <div class="badges">
+    <span class="badge blue">All 11 Incoterms 2020</span>
+    <span class="badge">Africa-Specific Notes</span>
+    <span class="badge">Cost Calculator</span>
+    <span class="badge">Side-by-Side Comparison</span>
+  </div>
+</div>
+
+<div class="ic-body">
+  <div class="ic-tabs" role="tablist">
+    <button class="ic-tab on" onclick="setTab('explain',this)">📖 Explainer</button>
+    <button class="ic-tab" onclick="setTab('calc',this)">🧮 Cost Calculator</button>
+    <button class="ic-tab" onclick="setTab('compare',this)">↔️ Compare</button>
+    <button class="ic-tab" onclick="setTab('africa',this)">🌍 Africa Guide</button>
+  </div>
+
+  <!-- TAB 1: Explainer -->
+  <div id="tabExplain" class="tab-panel on">
+    <div class="card">
+      <div class="card-head">Click any Incoterm to expand</div>
+      <div id="termList"></div>
+    </div>
+  </div>
+
+  <!-- TAB 2: Cost Calculator -->
+  <div id="tabCalc" class="tab-panel">
+    <div class="card">
+      <div class="card-head">Enter Shipment Costs</div>
+      <div style="margin-bottom:1rem;">
+        <div class="f-label">Incoterm</div>
+        <select id="calcTerm" class="f-select" onchange="onCalcTermChange()" style="max-width:400px;"></select>
+      </div>
+      <div style="margin-bottom:.75rem;">
+        <div class="f-label">Quick Fill — FOB Value (USD) <span style="font-weight:400;text-transform:none;font-size:.8rem;">(auto-estimates other costs)</span></div>
+        <div style="display:flex;gap:.75rem;max-width:400px;">
+          <input type="number" id="fobFill" class="f-input" placeholder="e.g. 10000" value="10000">
+          <button onclick="autoFill()" style="padding:.65rem 1rem;background:#F1F5F9;border:1.5px solid #E2E8F0;border-radius:10px;font-size:.85rem;font-weight:700;cursor:pointer;white-space:nowrap;">Auto-fill</button>
+        </div>
+      </div>
+      <div class="f-grid" id="costInputs"></div>
+      <button class="calc-btn full" onclick="runCalc()">🧮 Calculate Cost Split</button>
+    </div>
+    <div id="calcResult" style="display:none;">
+      <div class="card">
+        <div class="card-head" id="calcResultTitle">Cost Split</div>
+        <div class="split-bar-wrap">
+          <div class="split-bar-seller" id="barSeller"></div>
+          <div class="split-bar-buyer" id="barBuyer"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:.85rem;font-weight:700;margin-bottom:1rem;">
+          <span style="color:#10B981;">🟢 Seller: <span id="sellerTotal">—</span></span>
+          <span style="color:var(--ic-blue);">🔵 Buyer: <span id="buyerTotal">—</span></span>
+        </div>
+        <table class="calc-table" id="calcTable"></table>
+      </div>
+      <div id="calcObs"></div>
+    </div>
+  </div>
+
+  <!-- TAB 3: Compare -->
+  <div id="tabCompare" class="tab-panel">
+    <div class="card">
+      <div class="card-head">Compare Two Incoterms</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;align-items:flex-end;">
+        <div><div class="f-label">Term 1</div><select id="cmpTerm1" class="f-select"></select></div>
+        <div><div class="f-label">Term 2</div><select id="cmpTerm2" class="f-select"></select></div>
+        <div><button class="calc-btn" onclick="runCompare()">Compare</button></div>
+      </div>
+      <div style="margin-top:1rem;">
+        <div class="f-label">FOB Value for Comparison (USD)</div>
+        <input type="number" id="cmpFOB" class="f-input" value="50000" style="max-width:200px;">
+      </div>
+    </div>
+    <div id="compareResult" style="display:none;">
+      <div class="card">
+        <div class="card-head">Cost Comparison</div>
+        <div class="compare-grid" id="compareGrid"></div>
+        <div id="compareSummary" style="margin-top:1rem;padding:1rem;background:#F8FAFD;border-radius:12px;font-size:.9rem;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 4: Africa Guide -->
+  <div id="tabAfrica" class="tab-panel">
+    <div class="card">
+      <div class="card-head">🌍 Most Common Incoterms for African Trade</div>
+      <div id="africaTopList"></div>
+    </div>
+    <div class="card">
+      <div class="card-head">Key Rules for African Importers</div>
+      <ul style="font-size:.9rem;line-height:1.9;color:#334155;margin:0;padding-left:1.25rem;">
+        <li>📊 <strong>CIF is the standard customs valuation base in Africa</strong> — import duties = CIF value × tariff rate. Always calculate CIF to estimate landed costs.</li>
+        <li>🚢 <strong>Avoid FOB for containers</strong> — technically risk transfers at the ship's rail, which is ambiguous for container cargo. Use FCA instead.</li>
+        <li>🛡️ <strong>Under CIF, seller only provides minimum insurance (ICC-C)</strong> — buyers should purchase additional all-risks (ICC-A) coverage for high-value cargo.</li>
+        <li>🇳🇬 <strong>Nigerian CBN requirements</strong> — CBN Form M must state the Incoterm. CIF is preferred by CBN for calculation purposes.</li>
+        <li>⚠️ <strong>DDP in Africa = red flag</strong> — if a supplier offers DDP to your African port, verify they have a licensed clearing agent there. Many informal DDP arrangements use unofficial channels.</li>
+        <li>💡 <strong>For air freight imports</strong> — use CIP instead of CIF (CIP provides all-risks insurance), and FCA instead of FOB.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-head">Incoterms & Customs Duty Calculation</div>
+      <div style="background:var(--ic-dark);color:#fff;border-radius:12px;padding:1rem 1.25rem;font-size:.9rem;line-height:1.8;">
+        <div><strong style="color:var(--ic-blue);">FOB →</strong> FOB value used. Add freight + insurance to get CIF for duty base.</div>
+        <div><strong style="color:var(--ic-blue);">CIF →</strong> CIF value = duty base. Most convenient for African customs calculation.</div>
+        <div><strong style="color:var(--ic-blue);">EXW →</strong> Must add: loading + export clearance + freight + insurance = CIF equivalent.</div>
+        <div><strong style="color:var(--ic-blue);">DDP →</strong> CIF value = agreed DDP price minus import duties (work backwards).</div>
+        <div style="margin-top:.5rem;font-size:.8rem;color:#94A3B8;">Formula: Import Duty = CIF Value × Tariff Rate. VAT = (CIF + Duty + Levies) × VAT Rate.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<afro-footer></afro-footer>
+<script src="/assets/js/bundles/core.5473a555.min.js" defer></script>
+<script src="/assets/js/bundles/tool-page.4701dd1d.min.js" defer></script>
+<script src="/data/trade/incoterms-data.js"></script>
+<script src="/engines/incoterms-engine.js"></script>
+<script>
+function setTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(function(p){ p.classList.remove('on'); });
+  document.querySelectorAll('.ic-tab').forEach(function(b){ b.classList.remove('on'); });
+  document.getElementById('tab' + id.charAt(0).toUpperCase() + id.slice(1)).classList.add('on');
+  btn.classList.add('on');
+}
+
+(function init() {
+  var terms = IncotermsEngine.getAllTerms();
+  var groups = { E:'Group E — Departure', F:'Group F — Pre-Carriage', C:'Group C — Main Carriage Paid', D:'Group D — Delivery' };
+  var listEl = document.getElementById('termList');
+  var html = '';
+  var lastGroup = '';
+  terms.forEach(function(t) {
+    if (t.group !== lastGroup) {
+      if (lastGroup) html += '</div>';
+      html += '<div class="ic-group-head">' + (groups[t.group]||t.group) + '</div><div>';
+      lastGroup = t.group;
+    }
+    var popColor = t.popularity >= 4 ? '#10B981' : t.popularity >= 3 ? '#F59E0B' : '#94A3B8';
+    html += '<div class="ic-term-card" onclick="toggleTerm(this)">';
+    html += '<div class="ic-term-header">';
+    html += '<div><span class="ic-code">' + t.code + '</span></div>';
+    html += '<div style="flex:1;"><div class="ic-name">' + t.name + '</div><div class="ic-transport">' + t.transportIcon + ' ' + t.transport + '</div></div>';
+    html += '<div style="text-align:right;"><div class="ic-pop" style="color:' + popColor + ';">' + '★'.repeat(t.popularity) + '☆'.repeat(5-t.popularity) + '</div><div style="font-size:.7rem;color:#94A3B8;margin-top:.1rem;">Popularity</div></div>';
+    html += '</div>';
+    html += '<div class="ic-detail">';
+    html += '<div class="ic-risk-line">⚡ Risk Transfer: ' + t.riskTransfer + '</div>';
+    html += '<div class="ic-split">';
+    html += '<div class="ic-party seller"><div class="ic-party-head">🟢 Seller Pays</div><ul class="ic-party-list">' + t.sellerPays.map(function(p){ return '<li>' + p + '</li>'; }).join('') + '</ul></div>';
+    html += '<div class="ic-party buyer"><div class="ic-party-head">🔵 Buyer Pays</div><ul class="ic-party-list">' + t.buyerPays.map(function(p){ return '<li>' + p + '</li>'; }).join('') + '</ul></div>';
+    html += '</div>';
+    if (t.bestFor) html += '<div style="font-size:.82rem;color:#334155;margin-bottom:.4rem;"><strong>Best for:</strong> ' + t.bestFor + '</div>';
+    if (t.africaNote) html += '<div class="africa-note">🌍 <strong>Africa Note:</strong> ' + t.africaNote + '</div>';
+    html += '</div></div>';
+  });
+  if (lastGroup) html += '</div>';
+  listEl.innerHTML = html;
+
+  // Populate term selects
+  ['calcTerm','cmpTerm1','cmpTerm2'].forEach(function(selId) {
+    var sel = document.getElementById(selId);
+    if (!sel) return;
+    terms.forEach(function(t) {
+      var o = document.createElement('option'); o.value = t.code;
+      o.textContent = t.code + ' — ' + t.name; sel.appendChild(o);
+    });
+  });
+  document.getElementById('calcTerm').value = 'CIF';
+  document.getElementById('cmpTerm1').value = 'FOB';
+  document.getElementById('cmpTerm2').value = 'CIF';
+
+  buildCostInputs();
+
+  // Africa top terms
+  var top = IncotermsEngine.getAfricaTopTerms();
+  document.getElementById('africaTopList').innerHTML = top.map(function(t) {
+    var term = IncotermsEngine.getTerm(t.code);
+    return '<div class="top-item"><div class="top-code-badge">' + t.code + '</div><div><strong style="font-size:.9rem;">' + (term ? term.name : t.code) + '</strong><div style="font-size:.82rem;color:#64748B;margin-top:.2rem;">' + t.reason + '</div></div></div>';
+  }).join('');
+})();
+
+function toggleTerm(card) {
+  var isOpen = card.classList.contains('open');
+  document.querySelectorAll('.ic-term-card.open').forEach(function(c){ c.classList.remove('open'); });
+  if (!isOpen) card.classList.add('open');
+}
+
+function buildCostInputs() {
+  var comps = INCOTERMS_DATA.costComponents;
+  var html = '';
+  comps.forEach(function(c) {
+    html += '<div><div class="f-label">' + c.label + '</div><input type="number" class="f-input cost-input" id="cost_' + c.id + '" placeholder="USD" value="0" min="0"></div>';
+  });
+  document.getElementById('costInputs').innerHTML = html;
+}
+
+function autoFill() {
+  var fob = parseFloat(document.getElementById('fobFill').value) || 10000;
+  var defaults = IncotermsEngine.getDefaultCosts(fob);
+  INCOTERMS_DATA.costComponents.forEach(function(c) {
+    var el = document.getElementById('cost_' + c.id);
+    if (el) el.value = defaults[c.id] || 0;
+  });
+}
+
+function onCalcTermChange() {}
+
+function runCalc() {
+  var termCode = document.getElementById('calcTerm').value;
+  var costInputs = {};
+  INCOTERMS_DATA.costComponents.forEach(function(c) {
+    var el = document.getElementById('cost_' + c.id);
+    costInputs[c.id] = parseFloat(el ? el.value : 0) || 0;
+  });
+  var result = IncotermsEngine.calculateCostSplit(termCode, costInputs);
+  if (!result) return;
+
+  var term = IncotermsEngine.getTerm(termCode);
+  document.getElementById('calcResultTitle').textContent = (term ? term.code + ' — ' + term.name : termCode) + ' · Cost Split';
+
+  document.getElementById('barSeller').style.width = result.sellerPct + '%';
+  document.getElementById('barSeller').textContent = 'Seller ' + result.sellerPct + '%';
+  document.getElementById('barBuyer').style.width = result.buyerPct + '%';
+  document.getElementById('barBuyer').textContent = 'Buyer ' + result.buyerPct + '%';
+  document.getElementById('sellerTotal').textContent = '$' + Math.round(result.sellerTotal).toLocaleString();
+  document.getElementById('buyerTotal').textContent = '$' + Math.round(result.buyerTotal).toLocaleString();
+
+  var rows = '';
+  result.breakdown.forEach(function(r) {
+    if (r.amount === 0) return;
+    var isSeller = r.paidBy === 'seller';
+    rows += '<tr class="' + (isSeller ? 'seller' : 'buyer') + '-row">';
+    rows += '<td>' + r.label + '</td>';
+    rows += '<td>' + (isSeller ? '🟢 Seller' : '🔵 Buyer') + '</td>';
+    rows += '<td>$' + Math.round(r.amount).toLocaleString() + '</td></tr>';
+  });
+  rows += '<tr class="total-row"><td colspan="2">Total (Seller + Buyer)</td><td>$' + Math.round(result.total).toLocaleString() + '</td></tr>';
+  document.getElementById('calcTable').innerHTML = rows;
+  document.getElementById('calcResult').style.display = 'block';
+
+  var obs = IncotermsEngine.getObservations(termCode, { isAfrican: true });
+  var icons = { info:'ℹ️', warn:'⚠️', tip:'💡' };
+  document.getElementById('calcObs').innerHTML = obs.map(function(o){
+    return '<div class="obs-item ' + o.type + '"><span style="font-size:1rem;flex-shrink:0;">' + (icons[o.type]||'ℹ️') + '</span><span>' + o.text + '</span></div>';
+  }).join('');
+}
+
+function runCompare() {
+  var t1 = document.getElementById('cmpTerm1').value;
+  var t2 = document.getElementById('cmpTerm2').value;
+  var fob = parseFloat(document.getElementById('cmpFOB').value) || 50000;
+  var defaults = IncotermsEngine.getDefaultCosts(fob);
+  var result = IncotermsEngine.compareTwoTerms(t1, t2, defaults);
+  if (!result) return;
+
+  function renderPanel(termData, cssClass) {
+    var sp = termData.split;
+    return '<div class="cmp-panel ' + cssClass + '">' +
+      '<div class="cmp-code">' + termData.code + '</div>' +
+      '<div class="cmp-name">' + termData.name + '</div>' +
+      '<div class="split-bar-wrap" style="height:20px;">' +
+        '<div class="split-bar-seller" style="width:' + sp.sellerPct + '%;font-size:.7rem;">' + sp.sellerPct + '%</div>' +
+        '<div class="split-bar-buyer" style="width:' + sp.buyerPct + '%;font-size:.7rem;">' + sp.buyerPct + '%</div>' +
+      '</div>' +
+      '<div style="display:flex;justify-content:space-between;font-size:.85rem;font-weight:700;margin-top:.4rem;">' +
+        '<span style="color:#10B981;">Seller: $' + Math.round(sp.sellerTotal).toLocaleString() + '</span>' +
+        '<span style="color:var(--ic-blue);">Buyer: $' + Math.round(sp.buyerTotal).toLocaleString() + '</span>' +
+      '</div></div>';
+  }
+
+  document.getElementById('compareGrid').innerHTML = renderPanel(result.term1, 'term1') + renderPanel(result.term2, 'term2');
+
+  var bd = result.buyerDiff;
+  var summary = bd > 0
+    ? '<strong>' + t2 + '</strong> costs the buyer $' + Math.abs(Math.round(bd)).toLocaleString() + ' <strong>more</strong> than <strong>' + t1 + '</strong> — because the seller transfers more costs to the buyer under ' + t1 + '.'
+    : bd < 0
+    ? '<strong>' + t2 + '</strong> costs the buyer $' + Math.abs(Math.round(bd)).toLocaleString() + ' <strong>less</strong> than <strong>' + t1 + '</strong> — because the seller takes on more costs under ' + t2 + '.'
+    : 'Both terms result in the <strong>same cost</strong> to the buyer under these inputs.';
+  document.getElementById('compareSummary').innerHTML = summary;
+  document.getElementById('compareResult').style.display = 'block';
+}
+</script>
+</body>
+</html>

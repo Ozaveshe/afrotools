@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SADC Rules of Origin Checker — Preferential Trade for Southern Africa | AfroTools</title>
+<meta name="description" content="Check if your product qualifies for SADC preferential tariffs. Rules of origin criteria, value-added requirements, and Certificate of Origin guide for all 16 SADC member states.">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/assets/css/tool-landing.css">
+<style>
+.state-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin:12px 0}
+.state-btn{background:var(--surface);border:2px solid var(--border);border-radius:12px;padding:10px;text-align:center;cursor:pointer;font-size:12px;font-weight:700;transition:all .2s}
+.state-btn:hover,.state-btn.active{border-color:var(--brand);background:#E8F2FF}
+.sacu-badge{font-size:10px;background:#E8F2FF;color:var(--brand);border-radius:4px;padding:1px 5px;font-weight:700}
+.result-card{border-radius:18px;padding:24px;margin:16px 0}
+.result-pass{background:#F0FFF4;border:2px solid #34C759}
+.result-fail{background:#FFF0F0;border:2px solid #FF3B30}
+.result-partial{background:#FFFBF0;border:2px solid #FF9500}
+.check-row{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid rgba(0,0,0,.08);font-size:14px}
+.check-icon{font-size:18px;flex-shrink:0;width:24px}
+.check-label{font-weight:700;font-size:13px;margin-bottom:2px}
+.check-detail{font-size:13px;color:var(--text-secondary)}
+.rule-card{background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:16px;margin-bottom:10px;cursor:pointer;transition:all .2s}
+.rule-card:hover{border-color:var(--brand);background:#F8FBFF}
+.rule-hs{font-size:12px;font-weight:800;color:var(--brand);text-transform:uppercase;margin-bottom:4px}
+.rule-name{font-weight:800;font-size:14px}
+.rule-label{font-size:13px;color:var(--text-secondary);margin-top:4px}
+.obs-box{background:#F0F7FF;border-left:4px solid var(--brand);border-radius:0 12px 12px 0;padding:14px 16px;margin:8px 0;font-size:14px}
+.cert-box{background:linear-gradient(135deg,#E8F2FF,#F0F7FF);border:2px solid var(--brand);border-radius:14px;padding:18px;margin-top:16px}
+.cert-box h4{font-weight:800;font-size:14px;margin-bottom:10px;color:var(--brand)}
+.cert-row{display:flex;gap:12px;margin-bottom:8px;font-size:13px}
+.cert-lbl{font-weight:700;width:140px;flex-shrink:0;color:var(--text-muted)}
+.doc-row{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+.doc-req{font-size:11px;font-weight:800;text-transform:uppercase;padding:2px 8px;border-radius:4px}
+.doc-required{background:#D4F5DC;color:#1A7A32}
+.doc-optional{background:#E8F2FF;color:var(--brand)}
+.va-input-group{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:12px 0}
+</style>
+  <link rel="canonical" href="https://afrotools.com/tools/sadc-roo/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://afrotools.com/tools/sadc-roo/">
+  <meta property="og:title" content="SADC Rules of Origin Checker — Preferential Trade for Southern Africa">
+  <meta property="og:description" content="Check if your product qualifies for SADC preferential tariffs. Rules of origin criteria, value-added requirements, and Certificate of Origin guide for all ">
+  <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+  <meta property="og:site_name" content="AfroTools">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="SADC Rules of Origin Checker — Preferential Trade for Southern Africa">
+  <meta name="twitter:description" content="Check if your product qualifies for SADC preferential tariffs. Rules of origin criteria, value-added requirements, and Certificate of Origin guide for all ">
+  <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+</head>
+<body>
+<afro-navbar active="tools"></afro-navbar>
+
+<main class="tool-shell">
+  <div class="tool-hero">
+    <div class="tool-hero-icon">🌐</div>
+    <h1 class="tool-hero-title">SADC Rules of Origin Checker</h1>
+    <p class="tool-hero-desc">Check if your product qualifies for SADC preferential tariff treatment. Covers all 16 member states and product-specific rules.</p>
+    <div class="tool-tabs" id="tabs">
+      <button class="tool-tab on" onclick="setTab('checker',this)">Origin Checker</button>
+      <button class="tool-tab" onclick="setTab('rules',this)">Product Rules</button>
+      <button class="tool-tab" onclick="setTab('docs',this)">Documentation</button>
+      <button class="tool-tab" onclick="setTab('members',this)">Member States</button>
+    </div>
+  </div>
+
+  <!-- CHECKER TAB -->
+  <div class="tool-panel on" id="checker">
+    <div class="tool-section">
+      <h2 class="section-title">Check Your Product</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+        <div>
+          <h3 style="font-size:13px;font-weight:800;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px">Exporting Country</h3>
+          <div class="state-grid" id="exportGrid"></div>
+        </div>
+        <div>
+          <h3 style="font-size:13px;font-weight:800;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px">Importing Country</h3>
+          <div class="state-grid" id="importGrid"></div>
+        </div>
+      </div>
+      <div style="margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div class="field-group">
+          <label class="field-label">HS Chapter (2-digit, e.g. 09 for coffee)</label>
+          <input class="field-input" type="number" id="hsChapter" value="09" min="1" max="99" onchange="detectRule()">
+        </div>
+        <div class="field-group" id="detectedRule" style="display:flex;flex-direction:column;justify-content:flex-end">
+          <div id="detectedRuleText" style="padding:8px 12px;background:#E8F2FF;border-radius:10px;font-size:13px"></div>
+        </div>
+      </div>
+      <div class="va-input-group" id="vaGroup">
+        <div class="field-group">
+          <label class="field-label">Ex-Works Price (USD)</label>
+          <input class="field-input" type="number" id="exWorks" value="10000" min="1" onchange="updateVA()">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Non-SADC Material Cost (USD)</label>
+          <input class="field-input" type="number" id="nonSadc" value="5000" min="0" onchange="updateVA()">
+        </div>
+        <div class="field-group">
+          <label class="field-label">SADC Value Added</label>
+          <div id="vaDisplay" style="padding:10px 14px;background:#E8F2FF;border-radius:10px;font-size:16px;font-weight:800;color:var(--brand)">50.0%</div>
+        </div>
+      </div>
+      <div id="ruleOptions" style="display:flex;flex-wrap:wrap;gap:12px;margin:12px 0">
+        <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer">
+          <input type="checkbox" id="chkWO" style="accent-color:var(--brand);width:16px;height:16px"> Wholly obtained in SADC
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer">
+          <input type="checkbox" id="chkCTH" style="accent-color:var(--brand);width:16px;height:16px"> CTH achieved (non-SADC inputs changed heading)
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer" id="fabricFwdLabel">
+          <input type="checkbox" id="chkFabric" style="accent-color:var(--brand);width:16px;height:16px"> Fabric forward (for textiles only)
+        </label>
+      </div>
+      <button class="pill-btn" onclick="runCheck()" style="background:var(--brand);color:#fff">Check Origin Rules →</button>
+      <div id="checkerResult" style="margin-top:20px"></div>
+    </div>
+  </div>
+
+  <!-- RULES TAB -->
+  <div class="tool-panel" id="rules">
+    <div class="tool-section">
+      <h2 class="section-title">Product-Specific Rules</h2>
+      <p class="section-desc">Click any rule to see detailed requirements.</p>
+      <div id="rulesList"></div>
+      <div class="obs-box" style="margin-top:16px">📋 The general rule for all products not covered by product-specific rules is: <strong>maximum 65% of ex-works price from non-SADC materials</strong> (i.e. minimum 35% SADC value added).</div>
+    </div>
+  </div>
+
+  <!-- DOCS TAB -->
+  <div class="tool-panel" id="docs">
+    <div class="tool-section">
+      <h2 class="section-title">Required Documentation</h2>
+      <p class="section-desc">Documents needed to claim SADC preferential tariff rates at customs.</p>
+      <div id="docsList"></div>
+      <div class="obs-box" style="margin-top:16px">💡 <strong>Cumulation advantage:</strong> Under SADC full cumulation, materials and processing from ANY SADC member state count as originating. You can split production across multiple SADC countries and combine the value added.</div>
+    </div>
+  </div>
+
+  <!-- MEMBERS TAB -->
+  <div class="tool-panel" id="members">
+    <div class="tool-section">
+      <h2 class="section-title">SADC Member States (16)</h2>
+      <div class="state-grid" id="membersDisplay"></div>
+      <div class="obs-box" style="margin-top:16px">🌍 SADC (Southern African Development Community) has 16 member states. The SADC Free Trade Area was launched in 2008. SACU (Southern African Customs Union) members (ZA, BW, LS, NA, SZ) form a deeper economic union within SADC.</div>
+      <div class="obs-box">📋 The Tripartite Free Trade Area (TFTA) links SADC, COMESA, and EAC — creating a larger regional bloc covering 26 countries and 625 million people.</div>
+    </div>
+  </div>
+</main>
+
+<afro-footer></afro-footer>
+<script src="/assets/js/bundles/core.5473a555.min.js" defer></script>
+<script src="/assets/js/bundles/tool-page.4701dd1d.min.js" defer></script>
+<script src="/engines/sadc-roo-engine.js"></script>
+<script>
+var selectedExport = 'ZA';
+var selectedImport = 'MZ';
+
+function setTab(id, btn) {
+  document.querySelectorAll('.tool-panel').forEach(function(p){ p.classList.remove('on'); });
+  document.querySelectorAll('.tool-tab').forEach(function(b){ b.classList.remove('on'); });
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('on');
+}
+
+/* ── State Grids ────────────────────────────────────── */
+function buildStateGrid(containerId, selected, onSelectFn) {
+  var members = SadcRooEngine.getMemberStates();
+  document.getElementById(containerId).innerHTML = members.map(function(m) {
+    return '<div class="state-btn' + (m.code === selected ? ' active' : '') + '" id="' + containerId + '-' + m.code + '" onclick="' + onSelectFn + '(\'' + m.code + '\')">' +
+      m.flag + '<br>' + m.name + (m.sacuMember ? '<br><span class="sacu-badge">SACU</span>' : '') + '</div>';
+  }).join('');
+}
+
+function selectExport(code) {
+  selectedExport = code;
+  document.querySelectorAll('#exportGrid .state-btn').forEach(function(b){ b.classList.remove('active'); });
+  var el = document.getElementById('exportGrid-' + code);
+  if (el) el.classList.add('active');
+}
+
+function selectImport(code) {
+  selectedImport = code;
+  document.querySelectorAll('#importGrid .state-btn').forEach(function(b){ b.classList.remove('active'); });
+  var el = document.getElementById('importGrid-' + code);
+  if (el) el.classList.add('active');
+}
+
+/* ── VA calculation display ──────────────────────────── */
+function updateVA() {
+  var ew = parseFloat(document.getElementById('exWorks').value) || 1;
+  var ns = parseFloat(document.getElementById('nonSadc').value) || 0;
+  var pct = ((1 - ns / ew) * 100).toFixed(1);
+  document.getElementById('vaDisplay').textContent = pct + '%';
+  document.getElementById('vaDisplay').style.color = parseFloat(pct) >= 35 ? '#34C759' : '#FF3B30';
+}
+
+/* ── Detect rule from HS chapter ─────────────────────── */
+function detectRule() {
+  var ch = parseInt(document.getElementById('hsChapter').value) || 0;
+  var rule = SadcRooEngine.getProductRule(ch);
+  var el = document.getElementById('detectedRuleText');
+  if (rule) {
+    el.textContent = '📋 Rule: ' + rule.ruleLabel;
+    document.getElementById('fabricFwdLabel').style.display = rule.id === 'textiles' ? 'flex' : 'none';
+  } else {
+    el.textContent = 'General rule: 35% SADC value added';
+    document.getElementById('fabricFwdLabel').style.display = 'none';
+  }
+}
+
+/* ── Run Check ───────────────────────────────────────── */
+function runCheck() {
+  var hs     = parseInt(document.getElementById('hsChapter').value) || 0;
+  var ew     = parseFloat(document.getElementById('exWorks').value) || 10000;
+  var ns     = parseFloat(document.getElementById('nonSadc').value) || 0;
+  var chkWO  = document.getElementById('chkWO').checked;
+  var chkCTH = document.getElementById('chkCTH').checked;
+  var chkFab = document.getElementById('chkFabric').checked;
+
+  var res = SadcRooEngine.checkOrigin({
+    hsChapter: hs, exportCountry: selectedExport, importCountry: selectedImport,
+    exWorksPrice: ew, nonSadcCost: ns, whollyObtained: chkWO, hasCTH: chkCTH, hasFabricFwd: chkFab
+  });
+
+  var cardClass = res.eligible ? 'result-pass' : 'result-fail';
+  var html = '<div class="result-card ' + cardClass + '">';
+  html += '<div style="font-size:20px;font-weight:800;margin-bottom:12px">' + (res.eligible ? '✅ QUALIFIES for SADC Preferential Rate' : '❌ Does NOT Qualify') + '</div>';
+
+  res.checks.forEach(function(c) {
+    html += '<div class="check-row"><div class="check-icon">' + (c.pass ? '✅' : '❌') + '</div><div><div class="check-label">' + c.label + '</div><div class="check-detail">' + c.detail + '</div></div></div>';
+  });
+
+  if (res.nonSadcPct !== undefined) {
+    html += '<div style="margin-top:12px;padding:10px;background:rgba(255,255,255,.5);border-radius:8px;font-size:13px">';
+    html += '<strong>Value breakdown:</strong> Non-SADC content: ' + res.nonSadcPct + '% | SADC Value Added: ' + res.sadcVA + '%';
+    html += '</div>';
+  }
+
+  if (res.certificate) {
+    html += '<div class="cert-box"><h4>📜 Certificate of Origin Guide</h4>';
+    html += '<div class="cert-row"><span class="cert-lbl">Document:</span><span>' + res.certificate.form + '</span></div>';
+    html += '<div class="cert-row"><span class="cert-lbl">Issuing Authority:</span><span>' + res.certificate.issuingAuthority + '</span></div>';
+    html += '<div class="cert-row"><span class="cert-lbl">Validity:</span><span>' + res.certificate.validity + '</span></div>';
+    html += '<div class="cert-row"><span class="cert-lbl">Copies:</span><span>' + res.certificate.copies + '</span></div>';
+    html += '<div class="cert-row"><span class="cert-lbl">Important:</span><span style="color:#C0392B">' + res.certificate.notes + '</span></div>';
+    html += '</div>';
+  }
+
+  if (res.observations) {
+    res.observations.forEach(function(o){ html += '<div class="obs-box">' + o + '</div>'; });
+  }
+
+  html += '</div>';
+  document.getElementById('checkerResult').innerHTML = html;
+}
+
+/* ── Rules List ──────────────────────────────────────── */
+function buildRulesList() {
+  var rules = SadcRooEngine.getProductRules();
+  document.getElementById('rulesList').innerHTML = rules.map(function(r) {
+    return '<div class="rule-card" onclick="jumpToChecker(' + r.hsMin + ')">' +
+      '<div class="rule-hs">HS ' + r.hsRange + '</div>' +
+      '<div class="rule-name">' + r.description + '</div>' +
+      '<div class="rule-label">' + r.ruleLabel + '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function jumpToChecker(ch) {
+  document.getElementById('hsChapter').value = ch;
+  detectRule();
+  setTab('checker', document.querySelectorAll('.tool-tab')[0]);
+}
+
+/* ── Docs ────────────────────────────────────────────── */
+function buildDocs() {
+  var docs = SadcRooEngine.getDocumentation();
+  document.getElementById('docsList').innerHTML = docs.map(function(d) {
+    return '<div class="doc-row">' +
+      '<span class="doc-req ' + (d.required ? 'doc-required' : 'doc-optional') + '">' + (d.required ? 'Required' : 'Optional') + '</span>' +
+      '<div><div style="font-weight:700;font-size:14px">' + d.doc + '</div><div style="font-size:12px;color:var(--text-muted);margin-top:2px">' + d.note + '</div></div>' +
+    '</div>';
+  }).join('');
+}
+
+/* ── Members ─────────────────────────────────────────── */
+function buildMembersDisplay() {
+  var members = SadcRooEngine.getMemberStates();
+  document.getElementById('membersDisplay').innerHTML = members.map(function(m) {
+    return '<div style="background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:12px;text-align:center;font-size:12px;font-weight:700">' +
+      '<span style="font-size:22px;display:block;margin-bottom:4px">' + m.flag + '</span>' +
+      m.name + '<br>' +
+      (m.sacuMember ? '<span class="sacu-badge">SACU</span>' : '<span style="font-size:10px;color:var(--text-muted)">SADC</span>') +
+    '</div>';
+  }).join('');
+}
+
+/* ── init ─────────────────────────────────────────────── */
+buildStateGrid('exportGrid', selectedExport, 'selectExport');
+buildStateGrid('importGrid', selectedImport, 'selectImport');
+buildRulesList();
+buildDocs();
+buildMembersDisplay();
+detectRule();
+updateVA();
+</script>
+</body>
+</html>

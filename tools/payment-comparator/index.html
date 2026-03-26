@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cross-Border Payment Comparator — B2B Fees for African Trade | AfroTools</title>
+<meta name="description" content="Compare B2B cross-border payment fees for African businesses. SWIFT, PAPSS, Flutterwave, Paystack, Wise Business and more. Find the cheapest way to pay suppliers and receive payments.">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/assets/css/tool-landing.css">
+<style>
+.pay-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-top:16px}
+.pay-card{background:var(--surface);border:1.5px solid var(--border);border-radius:18px;padding:20px;cursor:pointer;transition:all .2s}
+.pay-card:hover,.pay-card.selected{border-color:var(--brand);box-shadow:0 4px 20px rgba(0,122,255,.13)}
+.pay-card.selected{background:#E8F2FF}
+.pay-logo{font-size:32px;margin-bottom:8px}
+.pay-name{font-weight:800;font-size:15px}
+.pay-type{font-size:11px;font-weight:800;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px}
+.pay-fee{font-size:20px;font-weight:800;color:var(--brand)}
+.pay-fee-lbl{font-size:11px;color:var(--text-muted)}
+.pay-speed{font-size:12px;margin-top:6px}
+.rank-num{font-size:20px;font-weight:800;width:32px;flex-shrink:0;text-align:center}
+.rank-row{display:flex;align-items:center;gap:12px;padding:14px;background:var(--surface);border:1.5px solid var(--border);border-radius:14px;margin-bottom:10px;transition:all .2s}
+.rank-row.rank-1{border-color:#34C759;background:#F0FFF4}
+.rank-row.rank-2{border-color:#007AFF;background:#F0F7FF}
+.rank-row.rank-3{border-color:#FF9500;background:#FFFBF0}
+.rank-bar-track{flex:1;height:12px;background:#F0F0F0;border-radius:6px;overflow:hidden}
+.rank-bar-fill{height:100%;border-radius:6px;transition:width .5s ease}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.detail-box{background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:16px}
+.detail-box h4{font-size:11px;font-weight:800;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px}
+.pro-item{display:flex;gap:8px;align-items:flex-start;font-size:13px;margin-bottom:6px}
+.pro-item::before{content:'✅';flex-shrink:0}
+.con-item{display:flex;gap:8px;align-items:flex-start;font-size:13px;margin-bottom:6px}
+.con-item::before{content:'❌';flex-shrink:0}
+.amount-slider{width:100%;accent-color:var(--brand)}
+.obs-box{background:#F0F7FF;border-left:4px solid var(--brand);border-radius:0 12px 12px 0;padding:14px 16px;margin:8px 0;font-size:14px}
+.papss-highlight{background:linear-gradient(135deg,#0A1628,#1a2d4a);color:#fff;border-radius:18px;padding:20px;margin:16px 0}
+.scenario-table{width:100%;border-collapse:collapse;font-size:13px}
+.scenario-table th{background:var(--brand);color:#fff;font-weight:800;text-transform:uppercase;font-size:11px;padding:10px 12px;text-align:left}
+.scenario-table td{padding:10px 12px;border-bottom:1px solid var(--border)}
+</style>
+  <link rel="canonical" href="https://afrotools.com/tools/payment-comparator/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://afrotools.com/tools/payment-comparator/">
+  <meta property="og:title" content="Cross-Border Payment Comparator — B2B Fees for African Trade">
+  <meta property="og:description" content="Compare B2B cross-border payment fees for African businesses. SWIFT, PAPSS, Flutterwave, Paystack, Wise Business and more. Find the cheapest way to pay sup">
+  <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+  <meta property="og:site_name" content="AfroTools">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Cross-Border Payment Comparator — B2B Fees for African Trade">
+  <meta name="twitter:description" content="Compare B2B cross-border payment fees for African businesses. SWIFT, PAPSS, Flutterwave, Paystack, Wise Business and more. Find the cheapest way to pay sup">
+  <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+</head>
+<body>
+<afro-navbar active="tools"></afro-navbar>
+
+<main class="tool-shell">
+  <div class="tool-hero">
+    <div class="tool-hero-icon">💸</div>
+    <h1 class="tool-hero-title">Cross-Border Payment Comparator</h1>
+    <p class="tool-hero-desc">Compare B2B cross-border payment fees for African businesses — SWIFT, PAPSS, Flutterwave, Wise and more.</p>
+    <div class="tool-tabs" id="tabs">
+      <button class="tool-tab on" onclick="setTab('compare',this)">Compare Fees</button>
+      <button class="tool-tab" onclick="setTab('providers',this)">All Providers</button>
+      <button class="tool-tab" onclick="setTab('scenario',this)">Volume Scenario</button>
+    </div>
+  </div>
+
+  <!-- COMPARE TAB -->
+  <div class="tool-panel on" id="compare">
+    <div class="tool-section">
+      <h2 class="section-title">How much are you sending?</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+        <div class="field-group">
+          <label class="field-label">Payment Amount (USD)</label>
+          <input class="field-input" type="number" id="compareAmount" value="10000" min="100" onchange="runCompare()">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Adjust with slider</label>
+          <input type="range" class="amount-slider" id="amountSlider" min="500" max="500000" step="500" value="10000" oninput="document.getElementById('compareAmount').value=this.value;runCompare()">
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted)"><span>$500</span><span>$500k</span></div>
+        </div>
+      </div>
+      <h3 style="font-size:14px;font-weight:800;margin-bottom:4px">Ranked by Lowest Fee</h3>
+      <div id="rankList"></div>
+      <div id="compareObs" style="margin-top:16px"></div>
+    </div>
+  </div>
+
+  <!-- PROVIDERS TAB -->
+  <div class="tool-panel" id="providers">
+    <div class="tool-section">
+      <h2 class="section-title">All 8 Payment Providers</h2>
+      <div class="papss-highlight">
+        <div style="font-size:22px;margin-bottom:8px">🌍 PAPSS — The AfCFTA Payment System</div>
+        <p style="font-size:14px;opacity:.9">The Pan-African Payment &amp; Settlement System (PAPSS) eliminates USD conversion for intra-Africa payments. Instead of Nigeria → USD → Kenya, it's NGN → NGN direct — saving 2–4% per transaction. Built by Afreximbank for AfCFTA trade.</p>
+      </div>
+      <div class="pay-grid" id="providerGrid"></div>
+      <div class="detail-grid" id="providerDetail" style="display:none"></div>
+    </div>
+  </div>
+
+  <!-- SCENARIO TAB -->
+  <div class="tool-panel" id="scenario">
+    <div class="tool-section">
+      <h2 class="section-title">Volume Cost Scenario</h2>
+      <p class="section-desc">Calculate total annual payment costs across providers based on your trade volume.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px">
+        <div class="field-group">
+          <label class="field-label">Per Transaction (USD)</label>
+          <input class="field-input" type="number" id="scnAmount" value="5000" onchange="runScenario()">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Frequency</label>
+          <select class="field-select" id="scnFreq" onchange="runScenario()">
+            <option value="monthly">Monthly (12/yr)</option>
+            <option value="weekly">Weekly (48/yr)</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Provider</label>
+          <select class="field-select" id="scnProvider" onchange="runScenario()"></select>
+        </div>
+      </div>
+      <div id="scenarioResult"></div>
+      <div id="scenarioCompare" style="margin-top:20px"></div>
+    </div>
+  </div>
+</main>
+
+<afro-footer></afro-footer>
+<script src="/assets/js/bundles/core.5473a555.min.js" defer></script>
+<script src="/assets/js/bundles/tool-page.4701dd1d.min.js" defer></script>
+<script src="/data/trade/b2b-payments-data.js"></script>
+<script src="/engines/payment-comparator-engine.js"></script>
+<script>
+function setTab(id, btn) {
+  document.querySelectorAll('.tool-panel').forEach(function(p){ p.classList.remove('on'); });
+  document.querySelectorAll('.tool-tab').forEach(function(b){ b.classList.remove('on'); });
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('on');
+}
+
+function fmtUSD2(n){ return '$' + Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function fmtUSD(n){ return '$' + Number(n).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0}); }
+
+/* ── Compare ──────────────────────────────────────────── */
+function runCompare() {
+  var amount = parseFloat(document.getElementById('compareAmount').value) || 10000;
+  document.getElementById('amountSlider').value = Math.min(amount, 500000);
+  var results = PaymentComparatorEngine.compareAll(amount);
+  var maxFee  = results.length ? results[results.length-1].estimatedFee : 1;
+
+  document.getElementById('rankList').innerHTML = results.map(function(r, idx) {
+    var barWidth = (r.estimatedFee / maxFee * 100).toFixed(1);
+    return '<div class="rank-row rank-' + (idx+1) + '">' +
+      '<div class="rank-num">#' + (idx+1) + '</div>' +
+      '<div style="font-size:22px;width:30px">' + r.logo + '</div>' +
+      '<div style="flex:1">' +
+        '<div style="font-weight:800;font-size:14px">' + r.name + '</div>' +
+        '<div style="font-size:11px;color:var(--text-muted)">' + r.speed.min + '–' + r.speed.max + ' ' + r.speed.unit + '</div>' +
+        '<div class="rank-bar-track" style="margin-top:6px"><div class="rank-bar-fill" style="width:' + barWidth + '%;background:' + (r.color||'#007AFF') + '"></div></div>' +
+      '</div>' +
+      '<div style="text-align:right">' +
+        '<div style="font-size:18px;font-weight:800;color:var(--brand)">' + fmtUSD2(r.estimatedFee) + '</div>' +
+        '<div style="font-size:11px;color:var(--text-muted)">' + r.feePct + '% fee</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+
+  var obs = PaymentComparatorEngine.getObservations(amount, results);
+  document.getElementById('compareObs').innerHTML = obs.map(function(o){ return '<div class="obs-box">' + o + '</div>'; }).join('');
+}
+
+/* ── Providers ────────────────────────────────────────── */
+function buildProviderGrid() {
+  var providers = PaymentComparatorEngine.getAllProviders();
+  document.getElementById('providerGrid').innerHTML = providers.map(function(p) {
+    var feeStr = '';
+    var fs = p.feeStructure;
+    if (fs.flatFee) feeStr = '$' + fs.flatFee.min + '–$' + fs.flatFee.max + ' + ' + ((fs.fxMargin && fs.fxMargin.min) || (fs.fxMargin||0)) + '% FX';
+    else if (fs.percentFee && fs.percentFee.international) feeStr = fs.percentFee.international + '% intl.';
+    else if (fs.percentFee && fs.percentFee.min !== undefined) feeStr = fs.percentFee.min + '–' + fs.percentFee.max + '%';
+    else if (fs.percentFee && fs.percentFee.domestic) feeStr = fs.percentFee.domestic + '%+ FX';
+    return '<div class="pay-card" onclick="showProviderDetail(\'' + p.id + '\')" id="pc-' + p.id + '">' +
+      '<div class="pay-logo">' + p.logo + '</div>' +
+      '<div class="pay-name">' + p.name + '</div>' +
+      '<div class="pay-type">' + p.typeLabel + '</div>' +
+      '<div class="pay-fee">' + feeStr + '</div>' +
+      '<div class="pay-fee-lbl">Fee structure</div>' +
+      '<div class="pay-speed">⏱ ' + p.speed.min + '–' + p.speed.max + ' ' + p.speed.unit + '</div>' +
+      '<div style="font-size:11px;color:var(--text-muted);margin-top:6px">📍 ' + p.africaCoverage + '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function showProviderDetail(id) {
+  document.querySelectorAll('.pay-card').forEach(function(c){ c.classList.remove('selected'); });
+  document.getElementById('pc-' + id).classList.add('selected');
+  var p = PaymentComparatorEngine.getDetail(id);
+  if (!p) return;
+  var pc = p.proscons || {};
+  var html = '';
+  html += '<div class="detail-box"><h4>Pros</h4>' + (pc.pros||[]).map(function(x){ return '<div class="pro-item">' + x + '</div>'; }).join('') + '</div>';
+  html += '<div class="detail-box"><h4>Cons</h4>' + (pc.cons||[]).map(function(x){ return '<div class="con-item">' + x + '</div>'; }).join('') + '</div>';
+  html += '<div class="detail-box" style="grid-column:span 2"><h4>Best For</h4><p style="font-size:14px">' + p.bestFor + '</p>' + (p.notes ? '<div class="obs-box">' + p.notes + '</div>' : '') + '</div>';
+  var det = document.getElementById('providerDetail');
+  det.style.display = 'grid';
+  det.innerHTML = html;
+  det.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* ── Scenario ─────────────────────────────────────────── */
+function buildScenarioSelect() {
+  var providers = PaymentComparatorEngine.getAllProviders();
+  document.getElementById('scnProvider').innerHTML = providers.map(function(p) {
+    return '<option value="' + p.id + '">' + p.shortName + '</option>';
+  }).join('');
+}
+
+function runScenario() {
+  var amount   = parseFloat(document.getElementById('scnAmount').value) || 5000;
+  var freq     = document.getElementById('scnFreq').value;
+  var provider = document.getElementById('scnProvider').value;
+  var res = PaymentComparatorEngine.calculateScenario(amount, freq, provider);
+  if (!res) return;
+  var txnsPerYear = freq === 'weekly' ? 48 : 12;
+  var html = '<div style="background:var(--surface);border:1.5px solid var(--border);border-radius:18px;padding:20px">';
+  html += '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">';
+  html += '<div style="text-align:center"><div style="font-size:22px;font-weight:800;color:var(--brand)">' + fmtUSD2(res.perTxnFee) + '</div><div style="font-size:11px;text-transform:uppercase;color:var(--text-muted);font-weight:800">Per Transaction</div></div>';
+  html += '<div style="text-align:center"><div style="font-size:22px;font-weight:800">' + fmtUSD2(res.monthlyFee) + '</div><div style="font-size:11px;text-transform:uppercase;color:var(--text-muted);font-weight:800">Monthly Fee</div></div>';
+  html += '<div style="text-align:center"><div style="font-size:22px;font-weight:800;color:#FF3B30">' + fmtUSD(res.annualFee) + '</div><div style="font-size:11px;text-transform:uppercase;color:var(--text-muted);font-weight:800">Annual Fee</div></div>';
+  html += '</div></div>';
+  document.getElementById('scenarioResult').innerHTML = html;
+
+  // Compare all providers at this amount
+  var allComp = PaymentComparatorEngine.compareAll(amount);
+  var tableHtml = '<h3 style="font-size:14px;font-weight:800;margin-bottom:12px">All Providers at ' + fmtUSD(amount) + ' per transaction (' + txnsPerYear + 'x/yr)</h3>';
+  tableHtml += '<table class="scenario-table"><thead><tr><th>#</th><th>Provider</th><th>Per Transaction</th><th>Annual Cost</th></tr></thead><tbody>';
+  allComp.forEach(function(r, idx) {
+    var annual = r.estimatedFee * txnsPerYear;
+    tableHtml += '<tr' + (r.id === provider ? ' style="background:#E8F2FF;font-weight:700"' : '') + '>' +
+      '<td>#' + (idx+1) + '</td><td>' + r.logo + ' ' + r.shortName + '</td>' +
+      '<td>' + fmtUSD2(r.estimatedFee) + '</td><td>' + fmtUSD(annual) + '</td></tr>';
+  });
+  tableHtml += '</tbody></table>';
+  document.getElementById('scenarioCompare').innerHTML = tableHtml;
+}
+
+/* ── init ─────────────────────────────────────────────── */
+runCompare();
+buildProviderGrid();
+buildScenarioSelect();
+runScenario();
+</script>
+</body>
+</html>

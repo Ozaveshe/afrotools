@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AfCFTA Tariff Reduction Tracker 2026 — Free Trade Progress | AfroTools</title>
+<meta name="description" content="Track AfCFTA tariff reduction progress across all 54 African countries. See which products qualify for preferential rates, Category A/B/C schedules, and Guided Trade Initiative status.">
+<link rel="canonical" href="https://afrotools.com/tools/afcfta-tracker/">
+<meta property="og:title" content="AfCFTA Tariff Reduction Tracker 2026 | AfroTools">
+<meta property="og:description" content="Track AfCFTA tariff reductions across Africa. Category A/B/C schedules, corridor checker, and product lookup.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<style>
+:root{--color-brand:var(--color-primary)}
+.t-hero{background:var(--color-bg-dark);padding:40px 0 28px}
+.t-hero .bc{display:flex;gap:6px;align-items:center;font-size:.72rem;color:rgba(255,255,255,.5);margin-bottom:16px}
+.t-hero .bc a{color:rgba(255,255,255,.5);text-decoration:none}.t-hero .bc a:hover{color:#4DA3FF}
+.t-hero h1{font-size:clamp(1.5rem,3vw,2.1rem);font-weight:800;color:#fff;line-height:1.2;margin-bottom:8px}
+.t-hero h1 em{font-style:normal;color:#4DA3FF}
+.t-hero-sub{font-size:.88rem;color:rgba(255,255,255,.55);max-width:600px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+.badge{font-size:.68rem;font-weight:700;padding:4px 10px;border-radius:4px;text-transform:uppercase;letter-spacing:.05em}
+.badge-green{background:rgba(34,197,94,.15);color:#4ade80}.badge-blue{background:rgba(59,130,246,.15);color:#93c5fd}.badge-grey{background:rgba(255,255,255,.08);color:rgba(255,255,255,.5)}.badge-yellow{background:rgba(245,158,11,.15);color:#fbbf24}
+.t-main{background:var(--color-bg,#F8FAFD);padding:28px 0 60px}
+.tabs{display:flex;gap:4px;background:#E8F2FF;padding:4px;border-radius:8px;margin-bottom:20px;overflow-x:auto}
+.tab{flex:1;min-width:120px;padding:9px 12px;font-size:.78rem;font-weight:700;border:none;border-radius:5px;cursor:pointer;background:transparent;color:#64748B;transition:all .15s;white-space:nowrap;font-family:var(--font-body)}
+.tab.on{background:#fff;color:var(--color-primary,#007AFF);box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.tab-panel{display:none}.tab-panel.on{display:block}
+.card{background:#fff;border:1px solid #E2E8F0;border-radius:10px;box-shadow:0 1px 8px rgba(0,0,0,.04);margin-bottom:16px}
+.card-head{padding:14px 20px;border-bottom:1px solid #E2E8F0;display:flex;align-items:center;justify-content:space-between}
+.card-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#3D5A80}
+.card-body{padding:20px}
+/* Status grid */
+.status-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+.status-card{border-radius:8px;padding:12px 14px;border:1px solid transparent;cursor:pointer;transition:box-shadow .15s}
+.status-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.status-card.active_GTI{background:#DCFCE7;border-color:#86EFAC}
+.status-card.preparing{background:#FEF9C3;border-color:#FDE68A}
+.status-card.not_started{background:#FEE2E2;border-color:#FCA5A5}
+.sc-flag{font-size:1.4rem}
+.sc-name{font-size:.82rem;font-weight:700;margin-top:4px}
+.sc-status{font-size:.68rem;font-weight:700;text-transform:uppercase;margin-top:2px}
+.active_GTI .sc-status{color:#16a34a}.preparing .sc-status{color:#b45309}.not_started .sc-status{color:#dc2626}
+/* Corridor checker */
+.corridor-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+@media(max-width:600px){.corridor-grid{grid-template-columns:1fr}}
+.f-label{font-size:.72rem;font-weight:700;color:#3D5A80;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:5px}
+.f-input,.f-select{width:100%;padding:10px 12px;font-size:.95rem;font-weight:600;font-family:var(--font-body);border:1.5px solid #CBD5E1;border-radius:7px;background:#F4F7FA;outline:none;box-sizing:border-box}
+.f-input:focus,.f-select:focus{border-color:var(--color-primary,#007AFF);background:#fff}
+.btn-primary{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;background:var(--color-primary,#007AFF);color:#fff;border:none;border-radius:980px;font-size:.85rem;font-weight:700;cursor:pointer;font-family:var(--font-body);transition:background .15s}
+.btn-primary:hover{background:var(--color-primary-dark,#0063D1)}
+/* Corridor result */
+.corridor-result{display:none}.corridor-result.on{display:block}
+.cr-header{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.cr-arrow{font-size:1.4rem;color:#94A3B8}
+.cr-country{text-align:center}
+.cr-flag{font-size:2rem}
+.cr-name{font-size:.8rem;font-weight:700;color:#0f172a}
+/* Timeline */
+.timeline-bar{margin-bottom:12px}
+.tb-label{font-size:.75rem;font-weight:700;margin-bottom:4px;color:#475569}
+.tb-track{height:24px;background:#F1F5F9;border-radius:4px;position:relative;overflow:hidden}
+.tb-fill{height:100%;border-radius:4px;display:flex;align-items:center;padding-left:8px;font-size:.65rem;font-weight:700;color:#fff;transition:width .6s ease}
+.tb-fill.catA{background:#22c55e}
+.tb-fill.catB{background:#f59e0b}
+.tb-year{font-size:.68rem;color:#94A3B8;margin-top:2px}
+/* AI panel */
+.ai-panel{background:#EFF6FF;border:1px solid #BFDBFE;border-radius:10px;padding:16px 18px;margin-top:16px}
+.ai-panel-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--color-primary,#007AFF);margin-bottom:10px}
+.ai-obs{font-size:.82rem;color:#1e40af;line-height:1.55;padding:7px 10px;border-radius:6px;margin-bottom:6px;display:flex;gap:8px;align-items:flex-start}
+.ai-obs.tip{background:#DBEAFE}.ai-obs.warn{background:#FEF3C7;color:#92400e}.ai-obs.info{background:#F0FDF4;color:#14532d}
+/* Stats row */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+@media(max-width:600px){.stats-row{grid-template-columns:1fr 1fr}}
+.stat-card{background:#fff;border:1px solid #E2E8F0;border-radius:10px;padding:16px;text-align:center}
+.stat-num{font-size:1.8rem;font-weight:800;color:var(--color-primary,#007AFF)}
+.stat-lbl{font-size:.72rem;color:#64748B;margin-top:4px}
+/* Legend */
+.legend{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:16px}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:.78rem;font-weight:600}
+.legend-dot{width:12px;height:12px;border-radius:3px;flex-shrink:0}
+.dot-green{background:#22c55e}.dot-yellow{background:#f59e0b}.dot-red{background:#ef4444}.dot-grey{background:#94A3B8}
+/* Category cards */
+.cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+@media(max-width:600px){.cat-grid{grid-template-columns:1fr}}
+.cat-card{border-radius:10px;padding:16px;border:2px solid transparent}
+.cat-card.A{background:#DCFCE7;border-color:#86EFAC}.cat-card.B{background:#FEF9C3;border-color:#FDE68A}.cat-card.C{background:#FEE2E2;border-color:#FCA5A5}
+.cat-name{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.cat-card.A .cat-name{color:#15803d}.cat-card.B .cat-name{color:#b45309}.cat-card.C .cat-name{color:#b91c1c}
+.cat-desc{font-size:.8rem;line-height:1.5}
+@media(prefers-color-scheme:dark){
+  .t-main{background:#0B1120}.card{background:#131D2E;border-color:#1E2D40}.card-head{border-color:#1E2D40}
+  .card-title{color:#93A5BE}.status-card.active_GTI{background:#052e16;border-color:#166534}
+  .status-card.preparing{background:#1c1007;border-color:#92400e}.status-card.not_started{background:#1c0a0a;border-color:#7f1d1d}
+  .f-input,.f-select{background:#111D30;color:#E2E8F0;border-color:#1E2D40}
+  .tabs{background:#111D30}.tab.on{background:#131D2E}.stat-card{background:#131D2E;border-color:#1E2D40}
+  .tb-track{background:#1E2D40}.ai-panel{background:#172554;border-color:#1e3a8a}
+}
+</style>
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<script src="/assets/js/bundles/core.5473a555.min.js" defer></script>
+</head>
+<body class="tool-page">
+<afro-navbar active="tools"></afro-navbar>
+
+<section class="t-hero">
+  <div class="container">
+    <nav class="bc" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span aria-current="page">AfCFTA Tracker</span></nav>
+    <h1>AfCFTA Tariff Reduction<br><em>Tracker 2026</em></h1>
+    <p class="t-hero-sub">Track free trade progress across all 54 African countries. Check corridor-specific tariff schedules, product eligibility, and Category A/B/C phase-down timelines.</p>
+    <div class="hero-badges">
+      <span class="badge badge-green">54 Member States</span>
+      <span class="badge badge-blue">24 Trading Nations</span>
+      <span class="badge badge-yellow">Cat B Started Jan 2026</span>
+      <span class="badge badge-grey">87.8% Rules of Origin Finalised</span>
+    </div>
+  </div>
+</section>
+
+<div class="t-main">
+  <div class="container">
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-num">54</div><div class="stat-lbl">Signed</div></div>
+      <div class="stat-card"><div class="stat-num">49</div><div class="stat-lbl">Ratified</div></div>
+      <div class="stat-card"><div class="stat-num">24</div><div class="stat-lbl">Actively Trading</div></div>
+      <div class="stat-card"><div class="stat-num">87.8%</div><div class="stat-lbl">Rules of Origin Done</div></div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs" role="tablist">
+      <button class="tab on" onclick="setTab('status',this)">🌍 Status Map</button>
+      <button class="tab" onclick="setTab('corridor',this)">↔️ Corridor Checker</button>
+      <button class="tab" onclick="setTab('timeline',this)">📅 Phase-Down Timeline</button>
+      <button class="tab" onclick="setTab('roo',this)">📋 Rules of Origin</button>
+    </div>
+
+    <!-- STATUS MAP -->
+    <div class="tab-panel on" id="tabStatus">
+      <div class="card">
+        <div class="card-head"><span class="card-title">Member State Status</span>
+          <div class="legend">
+            <div class="legend-item"><div class="legend-dot dot-green"></div>Actively Trading (GTI)</div>
+            <div class="legend-item"><div class="legend-dot dot-yellow"></div>Schedule Filed</div>
+            <div class="legend-item"><div class="legend-dot dot-red"></div>Not Started</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="status-grid" id="statusGrid"></div>
+        </div>
+      </div>
+      <div class="ai-panel">
+        <div class="ai-panel-title">📊 AfCFTA Snapshot — March 2026</div>
+        <div class="ai-obs tip"><span>💡</span><span>Category B tariff reductions began January 2026. Countries in the Guided Trade Initiative (GTI) have active bilateral reductions running.</span></div>
+        <div class="ai-obs info"><span>✅</span><span>Ethiopia's Regulation 574/2025 (July 2025) enacted AfCFTA domestically — Category A reductions are retroactive to 2021, meaning significant tariff savings are now available.</span></div>
+        <div class="ai-obs warn"><span>⚠️</span><span>Algeria, Libya, and Eritrea have not ratified. DR Congo and Angola have not filed tariff schedules. Traders cannot claim AfCFTA rates for these countries.</span></div>
+      </div>
+    </div>
+
+    <!-- CORRIDOR CHECKER -->
+    <div class="tab-panel" id="tabCorridor">
+      <div class="card">
+        <div class="card-head"><span class="card-title">Corridor Tariff Checker</span></div>
+        <div class="card-body">
+          <div class="corridor-grid">
+            <div>
+              <label class="f-label" for="corrOrigin">Origin Country</label>
+              <select class="f-select" id="corrOrigin"></select>
+            </div>
+            <div>
+              <label class="f-label" for="corrDest">Destination Country</label>
+              <select class="f-select" id="corrDest"></select>
+            </div>
+          </div>
+          <div style="margin-bottom:12px">
+            <label class="f-label" for="corrHS">HS Code (optional — check product eligibility)</label>
+            <input type="text" class="f-input" id="corrHS" placeholder="e.g. 8517.12 or leave blank for all categories" style="max-width:320px">
+          </div>
+          <button class="btn-primary" onclick="checkCorridor()">Check Corridor</button>
+        </div>
+      </div>
+      <div class="corridor-result" id="corridorResult">
+        <div class="card">
+          <div class="card-head"><span class="card-title" id="corrResultTitle">Corridor Analysis</span></div>
+          <div class="card-body" id="corrResultBody"></div>
+        </div>
+        <div class="ai-panel" id="corrAiPanel"></div>
+      </div>
+    </div>
+
+    <!-- TIMELINE -->
+    <div class="tab-panel" id="tabTimeline">
+      <div class="cat-grid">
+        <div class="cat-card A"><div class="cat-name">Category A</div><div class="cat-desc">~90% of tariff lines. Phase to 0% over 10 years. Started 2021, complete by 2030. Currently 50% of the way (2025 = 50% reduction).</div></div>
+        <div class="cat-card B"><div class="cat-name">Category B</div><div class="cat-desc">~7% of tariff lines (sensitive products). Phase to 0% over 13 years. Reductions began January 2026.</div></div>
+        <div class="cat-card C"><div class="cat-name">Category C</div><div class="cat-desc">~3% of tariff lines. Excluded from liberalisation — countries' most sensitive products permanently protected.</div></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Category A Phase-Down Progress (2021–2030)</span><span style="font-size:.7rem;color:#94A3B8">Based on standard schedule</span></div>
+        <div class="card-body" id="timelineBody"></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Category B Phase-Down Progress (2026–2033)</span></div>
+        <div class="card-body" id="timelineBBody"></div>
+      </div>
+    </div>
+
+    <!-- RULES OF ORIGIN -->
+    <div class="tab-panel" id="tabRoo">
+      <div class="card">
+        <div class="card-head"><span class="card-title">Rules of Origin Status</span><span style="font-size:.7rem;color:#22c55e;font-weight:700">87.8% Finalised</span></div>
+        <div class="card-body">
+          <div style="margin-bottom:16px">
+            <div style="height:12px;background:#F1F5F9;border-radius:6px;overflow:hidden">
+              <div style="height:100%;width:87.8%;background:linear-gradient(90deg,#22c55e,#4ade80);border-radius:6px"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:.7rem;color:#94A3B8;margin-top:4px"><span>0%</span><span>87.8% complete</span><span>100%</span></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+            <div>
+              <div style="font-size:.72rem;font-weight:700;color:#16a34a;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">✅ Finalised Sectors</div>
+              <div id="rooFinalised"></div>
+            </div>
+            <div>
+              <div style="font-size:.72rem;font-weight:700;color:#dc2626;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">⏳ Pending Sectors</div>
+              <div id="rooPending"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ai-panel">
+        <div class="ai-panel-title">💡 What Rules of Origin Mean for Traders</div>
+        <div class="ai-obs tip"><span>💡</span><span>To claim AfCFTA preferential duty rates, goods must meet the Rules of Origin (RoO) for their sector. The product must be "sufficiently transformed" in an AfCFTA member state.</span></div>
+        <div class="ai-obs warn"><span>⚠️</span><span>Textiles, Automotive, Sugar, Dairy, and Leather goods rules are still being negotiated. Until finalised, traders cannot reliably claim AfCFTA rates for these categories.</span></div>
+        <div class="ai-obs info"><span>✅</span><span>Agriculture, Electronics, Chemicals, Machinery — rules are finalised. If your products originate here, you can claim AfCFTA rates today where corridors are active.</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<afro-footer></afro-footer>
+<script src="/data/trade/afcfta-schedule.js"></script>
+<script>
+var CURRENT_YEAR = 2026;
+
+function setTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('on')});
+  document.querySelectorAll('.tab').forEach(function(b){b.classList.remove('on')});
+  var map={status:'tabStatus',corridor:'tabCorridor',timeline:'tabTimeline',roo:'tabRoo'};
+  document.getElementById(map[id]).classList.add('on');
+  btn.classList.add('on');
+  if(id==='corridor'&&!document.getElementById('corrOrigin').children.length) buildCorridorSelects();
+  if(id==='timeline'&&!document.getElementById('timelineBody').innerHTML) buildTimeline();
+  if(id==='roo'&&!document.getElementById('rooFinalised').innerHTML) buildRoo();
+}
+
+// Status grid
+(function buildStatus(){
+  var grid=document.getElementById('statusGrid');
+  var statusLabels={active_GTI:'Actively Trading (GTI)',preparing:'Schedule Filed',not_started:'Not Started'};
+  var states=AFCFTA_DATA.memberStates;
+  var html='';
+  Object.keys(states).forEach(function(k){
+    var s=states[k];
+    html+='<div class="status-card '+s.tradingStatus+'" title="'+(s.notes||'')+'">' +
+      '<div class="sc-flag">'+(s.flag||'🌍')+'</div>' +
+      '<div class="sc-name">'+(s.name||k)+'</div>' +
+      '<div class="sc-status">'+statusLabels[s.tradingStatus]+'</div>' +
+      (s.categoryALines?'<div style="font-size:.65rem;color:#64748B;margin-top:2px">'+s.categoryALines+' Cat A lines</div>':'') +
+      '</div>';
+  });
+  grid.innerHTML=html;
+})();
+
+// Corridor selects
+function buildCorridorSelects(){
+  var states=AFCFTA_DATA.memberStates;
+  var opts='<option value="">— Select country —</option>';
+  Object.keys(states).forEach(function(k){
+    var s=states[k];
+    if(s.ratified) opts+='<option value="'+k+'">'+(s.flag||'')+ ' '+s.name+'</option>';
+  });
+  document.getElementById('corrOrigin').innerHTML=opts;
+  document.getElementById('corrDest').innerHTML=opts;
+}
+
+function checkCorridor(){
+  var o=document.getElementById('corrOrigin').value;
+  var d=document.getElementById('corrDest').value;
+  if(!o||!d){alert('Please select both countries');return;}
+  if(o===d){alert('Please select different countries');return;}
+  var os=AFCFTA_DATA.memberStates[o], ds=AFCFTA_DATA.memberStates[d];
+  document.getElementById('corrResultTitle').textContent='Corridor: '+os.name+' → '+ds.name;
+  var bothActive=os.tradingStatus==='active_GTI'&&ds.tradingStatus==='active_GTI';
+  var hs=document.getElementById('corrHS').value.trim();
+  // Current year Cat A reduction
+  var catASchedule=os.reductionSchedule&&os.reductionSchedule.catA;
+  var catAReduction=catASchedule?catASchedule[CURRENT_YEAR]:60;
+  var html='<div class="cr-header">' +
+    '<div class="cr-country"><div class="cr-flag">'+(os.flag||'')+'</div><div class="cr-name">'+os.name+'</div></div>' +
+    '<div class="cr-arrow">→</div>' +
+    '<div class="cr-country"><div class="cr-flag">'+(ds.flag||'')+'</div><div class="cr-name">'+ds.name+'</div></div>' +
+    '</div>';
+  html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">';
+  html+='<div style="background:#F4F7FA;border-radius:8px;padding:12px"><div style="font-size:.68rem;font-weight:700;color:#64748B;text-transform:uppercase;margin-bottom:6px">'+os.name+' Status</div>';
+  html+='<div style="font-size:.85rem;font-weight:700;color:'+(os.tradingStatus==='active_GTI'?'#16a34a':os.tradingStatus==='preparing'?'#b45309':'#dc2626')+'">'+(os.tradingStatus==='active_GTI'?'✅ Active GTI':os.tradingStatus==='preparing'?'⏳ Preparing':'❌ Not Started')+'</div>';
+  if(os.scheduleFiled) html+='<div style="font-size:.75rem;color:#64748B;margin-top:4px">Tariff schedule filed ✓</div>';
+  html+='</div>';
+  html+='<div style="background:#F4F7FA;border-radius:8px;padding:12px"><div style="font-size:.68rem;font-weight:700;color:#64748B;text-transform:uppercase;margin-bottom:6px">'+ds.name+' Status</div>';
+  html+='<div style="font-size:.85rem;font-weight:700;color:'+(ds.tradingStatus==='active_GTI'?'#16a34a':ds.tradingStatus==='preparing'?'#b45309':'#dc2626')+'">'+(ds.tradingStatus==='active_GTI'?'✅ Active GTI':ds.tradingStatus==='preparing'?'⏳ Preparing':'❌ Not Started')+'</div>';
+  if(ds.scheduleFiled) html+='<div style="font-size:.75rem;color:#64748B;margin-top:4px">Tariff schedule filed ✓</div>';
+  html+='</div></div>';
+  if(bothActive){
+    html+='<div style="background:#DCFCE7;border:1px solid #86EFAC;border-radius:8px;padding:14px;margin-bottom:12px">';
+    html+='<div style="font-size:.85rem;font-weight:700;color:#15803d;margin-bottom:6px">✅ AfCFTA Rates Claimable on This Corridor</div>';
+    html+='<div style="font-size:.82rem;color:#166534">Category A: <strong>'+catAReduction+'% tariff reduction</strong> as of '+CURRENT_YEAR+' (on applicable lines)</div>';
+    html+='<div style="font-size:.82rem;color:#166534;margin-top:4px">Category B: <strong>Phase-down started Jan 2026</strong> — 12.5% reduction in 2026</div>';
+    html+='</div>';
+  } else {
+    html+='<div style="background:#FEF3C7;border:1px solid #FDE68A;border-radius:8px;padding:14px;margin-bottom:12px">';
+    html+='<div style="font-size:.85rem;font-weight:700;color:#b45309">⚠️ AfCFTA Rates Not Yet Active on This Corridor</div>';
+    html+='<div style="font-size:.82rem;color:#92400e;margin-top:4px">One or both countries have not yet activated trading under AfCFTA. MFN rates apply.</div>';
+    html+='</div>';
+  }
+  // Sensitive products
+  var sp=(os.sensitiveProducts||[]).concat(ds.sensitiveProducts||[]).filter(function(v,i,a){return a.indexOf(v)===i;});
+  if(sp.length){
+    html+='<div style="margin-top:12px"><div style="font-size:.72rem;font-weight:700;color:#64748B;text-transform:uppercase;margin-bottom:6px">Sensitive / Category C Products on This Corridor</div>';
+    html+='<div style="display:flex;flex-wrap:wrap;gap:6px">';
+    sp.forEach(function(p){html+='<span style="font-size:.75rem;background:#FEE2E2;color:#b91c1c;padding:3px 8px;border-radius:4px">'+p+'</span>';});
+    html+='</div></div>';
+  }
+  if(hs) html+='<div style="margin-top:12px;padding:12px;background:#EFF6FF;border-radius:8px;font-size:.82rem"><strong>HS '+hs+':</strong> '+(bothActive?'May qualify for Category A AfCFTA rates. Verify against official tariff schedule and confirm Rules of Origin compliance.':'AfCFTA rates not yet active on this corridor — MFN rate applies.')+'</div>';
+  document.getElementById('corrResultBody').innerHTML=html;
+  // AI panel
+  var aiHtml='<div class="ai-panel-title">📊 AfroTools Corridor Insights</div>';
+  if(bothActive){
+    aiHtml+='<div class="ai-obs tip"><span>💡</span><span>'+os.name+'–'+ds.name+' corridor is active under the Guided Trade Initiative. Category A tariff lines are at '+catAReduction+'% reduction in '+CURRENT_YEAR+'. This means eligible goods face only '+(100-catAReduction)+'% of the standard MFN duty.</span></div>';
+  } else {
+    aiHtml+='<div class="ai-obs warn"><span>⚠️</span><span>This corridor is not yet active for AfCFTA trading. Goods must pay full MFN duty rates. Monitor AUDA-NEPAD and your country\'s trade authority for activation updates.</span></div>';
+  }
+  aiHtml+='<div class="ai-obs info"><span>✅</span><span>Rules of Origin compliance is mandatory. Goods must have a Certificate of Origin (Form AfCFTA/CO/001) and meet sector-specific transformation criteria.</span></div>';
+  document.getElementById('corrAiPanel').innerHTML=aiHtml;
+  document.getElementById('corridorResult').classList.add('on');
+}
+
+// Timeline
+function buildTimeline(){
+  var catASchedule={2021:10,2022:20,2023:30,2024:40,2025:50,2026:60,2027:70,2028:80,2029:90,2030:100};
+  var catBSchedule={2026:12.5,2027:25,2028:37.5,2029:50,2030:62.5,2031:75,2032:87.5,2033:100};
+  var html='';
+  Object.keys(catASchedule).forEach(function(yr){
+    var pct=catASchedule[yr];
+    var isCurrent=parseInt(yr)===CURRENT_YEAR;
+    html+='<div class="timeline-bar">' +
+      '<div class="tb-label">'+yr+(isCurrent?' <span style="font-size:.65rem;background:#007AFF;color:#fff;padding:1px 5px;border-radius:3px">NOW</span>':'')+'</div>' +
+      '<div class="tb-track"><div class="tb-fill catA" style="width:'+pct+'%">'+pct+'% reduction</div></div>' +
+      '<div class="tb-year">'+pct+'% of tariff lines at 0% duty</div>' +
+      '</div>';
+  });
+  document.getElementById('timelineBody').innerHTML=html;
+  var html2='';
+  Object.keys(catBSchedule).forEach(function(yr){
+    var pct=catBSchedule[yr];
+    var isCurrent=parseInt(yr)===CURRENT_YEAR;
+    html2+='<div class="timeline-bar">' +
+      '<div class="tb-label">'+yr+(isCurrent?' <span style="font-size:.65rem;background:#f59e0b;color:#fff;padding:1px 5px;border-radius:3px">NOW</span>':'')+'</div>' +
+      '<div class="tb-track"><div class="tb-fill catB" style="width:'+pct+'%">'+pct+'% reduction</div></div>' +
+      '</div>';
+  });
+  document.getElementById('timelineBBody').innerHTML=html2;
+}
+
+// RoO
+function buildRoo(){
+  var fin=document.getElementById('rooFinalised');
+  var pend=document.getElementById('rooPending');
+  fin.innerHTML=AFCFTA_DATA.rulesOfOrigin.finalized.map(function(s){
+    return '<div style="font-size:.82rem;padding:5px 0;border-bottom:1px dashed #E2E8F0;color:#166534">✅ '+s+'</div>';
+  }).join('');
+  pend.innerHTML=AFCFTA_DATA.rulesOfOrigin.pending.map(function(s){
+    return '<div style="font-size:.82rem;padding:5px 0;border-bottom:1px dashed #E2E8F0;color:#b91c1c">⏳ '+s+'</div>';
+  }).join('');
+}
+</script>
+</body>
+</html>

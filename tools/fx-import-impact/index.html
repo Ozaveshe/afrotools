@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exchange Rate Impact Calculator — Import Cost Sensitivity | AfroTools</title>
+<meta name="description" content="See how exchange rate changes affect your import costs in African currencies. Model FX scenarios, find breakeven rates, and track currency impact on trade.">
+<link rel="canonical" href="https://afrotools.com/tools/fx-import-impact/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<style>
+:root{--color-brand:var(--color-primary)}
+.t-hero{background:var(--color-bg-dark);padding:40px 0 28px}
+.t-hero .bc{display:flex;gap:6px;align-items:center;font-size:.72rem;color:rgba(255,255,255,.5);margin-bottom:16px}
+.t-hero .bc a{color:rgba(255,255,255,.5);text-decoration:none}.t-hero .bc a:hover{color:#4DA3FF}
+.t-hero h1{font-size:clamp(1.5rem,3vw,2.1rem);font-weight:800;color:#fff;line-height:1.2;margin-bottom:8px}
+.t-hero h1 em{font-style:normal;color:#4DA3FF}
+.t-hero-sub{font-size:.88rem;color:rgba(255,255,255,.55);max-width:600px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:8px}
+.badge{font-size:.68rem;font-weight:700;padding:4px 10px;border-radius:4px;text-transform:uppercase;letter-spacing:.05em}
+.badge-green{background:rgba(34,197,94,.15);color:#4ade80}.badge-blue{background:rgba(59,130,246,.15);color:#93c5fd}.badge-grey{background:rgba(255,255,255,.08);color:rgba(255,255,255,.5)}
+.t-main{background:var(--color-bg,#F8FAFD);padding:28px 0 60px}
+.tabs{display:flex;gap:4px;background:#E8F2FF;padding:4px;border-radius:8px;margin-bottom:20px;overflow-x:auto}
+.tab{flex:1;min-width:120px;padding:9px 12px;font-size:.78rem;font-weight:700;border:none;border-radius:5px;cursor:pointer;background:transparent;color:#64748B;transition:all .15s;white-space:nowrap;font-family:var(--font-body)}
+.tab.on{background:#fff;color:var(--color-primary,#007AFF);box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.tab-panel{display:none}.tab-panel.on{display:block}
+.card{background:#fff;border:1px solid #E2E8F0;border-radius:10px;box-shadow:0 1px 8px rgba(0,0,0,.04);margin-bottom:16px}
+.card-head{padding:14px 20px;border-bottom:1px solid #E2E8F0;display:flex;align-items:center;justify-content:space-between}
+.card-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#3D5A80}
+.card-body{padding:20px}
+.f-label{font-size:.72rem;font-weight:700;color:#3D5A80;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:5px}
+.f-select,.f-input{width:100%;padding:10px 12px;font-size:.95rem;font-weight:600;font-family:var(--font-body);border:1.5px solid #CBD5E1;border-radius:7px;background:#F4F7FA;outline:none;box-sizing:border-box;margin-bottom:14px}
+.f-select:focus,.f-input:focus{border-color:var(--color-primary,#007AFF);background:#fff}
+.btn-primary{display:inline-flex;align-items:center;gap:6px;padding:11px 24px;background:var(--color-primary,#007AFF);color:#fff;border:none;border-radius:980px;font-size:.88rem;font-weight:700;cursor:pointer;font-family:var(--font-body);transition:background .15s}
+.btn-primary:hover{background:var(--color-primary-dark,#0063D1)}
+/* Result hero */
+.res-hero{background:var(--color-bg-dark,#0A1628);border-radius:10px;padding:20px;margin-bottom:16px;display:none}
+.res-hero.on{display:block}
+.rh-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.45);margin-bottom:4px}
+.rh-amount{font-size:clamp(1.8rem,4vw,2.5rem);font-weight:800;color:var(--color-primary-light,#4DA3FF)}
+.rh-sub{font-size:.82rem;color:rgba(255,255,255,.6);margin-top:4px}
+/* Scenario table */
+.sc-table{width:100%;border-collapse:collapse;font-size:.84rem}
+.sc-table th{font-size:.65rem;font-weight:700;text-transform:uppercase;color:#64748B;padding:8px 10px;border-bottom:2px solid #E2E8F0;text-align:left}
+.sc-table td{padding:9px 10px;border-bottom:1px solid #F1F5F9}
+.sc-table tr.baseline td{background:#EFF6FF;font-weight:700}
+.sc-table tr:hover td{background:#F8FAFD}
+.sc-delta-pos{color:#dc2626;font-weight:700}
+.sc-delta-neg{color:#16a34a;font-weight:700}
+/* Slider */
+.slider-wrap{margin-bottom:20px}
+.slider{width:100%;height:6px;border-radius:3px;outline:none;cursor:pointer;-webkit-appearance:none;background:linear-gradient(90deg,#ef4444 0%,#f59e0b 40%,#22c55e 50%,#f59e0b 60%,#ef4444 100%)}
+.slider::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--color-primary,#007AFF);cursor:pointer;border:3px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.slider-val{font-size:1.4rem;font-weight:800;text-align:center;margin-top:8px;color:var(--color-primary,#007AFF)}
+/* Chart canvas */
+.chart-wrap{position:relative;height:220px;margin-top:8px}
+/* Breakeven */
+.be-result{display:none;background:#0A1628;color:#fff;border-radius:10px;padding:20px;margin-top:12px}
+.be-result.on{display:block}
+.be-label{font-size:.68rem;color:rgba(255,255,255,.45);text-transform:uppercase;margin-bottom:4px}
+.be-rate{font-size:2rem;font-weight:800;color:#4DA3FF}
+/* AI panel */
+.ai-panel{background:#EFF6FF;border:1px solid #BFDBFE;border-radius:10px;padding:16px 18px;margin-top:16px}
+.ai-panel-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--color-primary,#007AFF);margin-bottom:10px}
+.ai-obs{font-size:.82rem;color:#1e40af;line-height:1.55;padding:7px 10px;border-radius:6px;margin-bottom:6px;display:flex;gap:8px;align-items:flex-start}
+.ai-obs.tip{background:#DBEAFE}.ai-obs.warn{background:#FEF3C7;color:#92400e}.ai-obs.info{background:#F0FDF4;color:#14532d}
+@media(prefers-color-scheme:dark){
+  .t-main{background:#0B1120}.card{background:#131D2E;border-color:#1E2D40}.card-head{border-color:#1E2D40}
+  .card-title{color:#93A5BE}.f-select,.f-input{background:#111D30;color:#E2E8F0;border-color:#1E2D40}
+  .tabs{background:#111D30}.tab.on{background:#131D2E}.sc-table tr:hover td{background:#1E293B}
+  .sc-table tr.baseline td{background:#172554}.ai-panel{background:#172554;border-color:#1e3a8a}
+}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<script src="/assets/js/bundles/core.5473a555.min.js" defer></script>
+</head>
+<body class="tool-page">
+<afro-navbar active="tools"></afro-navbar>
+
+<section class="t-hero">
+  <div class="container">
+    <nav class="bc" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span aria-current="page">FX Import Impact</span></nav>
+    <h1>Exchange Rate Impact<br><em>on Import Costs 2026</em></h1>
+    <p class="t-hero-sub">See how currency movements affect your import costs. Model scenarios, find your FX breakeven rate, and track 12-month cost history in local currency.</p>
+    <div class="hero-badges">
+      <span class="badge badge-green">15 African Currencies</span>
+      <span class="badge badge-blue">12-Month History</span>
+      <span class="badge badge-grey">FX Scenario Modeler</span>
+    </div>
+  </div>
+</section>
+
+<div class="t-main">
+  <div class="container">
+
+    <!-- Input card -->
+    <div class="card">
+      <div class="card-head"><span class="card-title">Import Value &amp; Currency</span></div>
+      <div class="card-body" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+        <div>
+          <label class="f-label" for="usdAmount">Import Value (USD)</label>
+          <input type="number" class="f-input" id="usdAmount" placeholder="e.g. 10000" value="10000" min="1">
+        </div>
+        <div>
+          <label class="f-label" for="countrySelect">Destination Country</label>
+          <select class="f-select" id="countrySelect" onchange="onCountryChange()"></select>
+        </div>
+        <div style="display:flex;align-items:flex-end">
+          <button class="btn-primary" onclick="calculate()" style="margin-bottom:14px">Calculate Impact</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Result hero -->
+    <div class="res-hero" id="resHero">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;flex-wrap:wrap">
+        <div><div class="rh-label">Today's Cost</div><div class="rh-amount" id="rhToday">—</div><div class="rh-sub" id="rhTodayRate">—</div></div>
+        <div><div class="rh-label">6 Months Ago</div><div class="rh-amount" style="color:#94A3B8" id="rh6m">—</div><div class="rh-sub" id="rh6mDiff">—</div></div>
+        <div><div class="rh-label">12 Months Ago</div><div class="rh-amount" style="color:#64748B" id="rh12m">—</div><div class="rh-sub" id="rh12mDiff">—</div></div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs" role="tablist">
+      <button class="tab on" onclick="setTab('history',this)">📈 Cost History</button>
+      <button class="tab" onclick="setTab('scenario',this)">🎚️ FX Scenarios</button>
+      <button class="tab" onclick="setTab('breakeven',this)">⚖️ Breakeven</button>
+    </div>
+
+    <!-- HISTORY -->
+    <div class="tab-panel on" id="tabHistory">
+      <div class="card">
+        <div class="card-head"><span class="card-title" id="histTitle">Cost in Local Currency — Last 12 Months</span></div>
+        <div class="card-body">
+          <div class="chart-wrap"><canvas id="histChart"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCENARIOS -->
+    <div class="tab-panel" id="tabScenario">
+      <div class="card">
+        <div class="card-head"><span class="card-title">FX Scenario Modeler</span><span style="font-size:.7rem;color:#94A3B8">Drag slider to model impact</span></div>
+        <div class="card-body">
+          <div class="slider-wrap">
+            <input type="range" class="slider" id="fxSlider" min="-20" max="20" value="0" step="5" oninput="updateSlider(this.value)">
+            <div class="slider-val" id="sliderVal">0% change</div>
+          </div>
+          <table class="sc-table" id="scTable">
+            <thead><tr><th>FX Change</th><th>Exchange Rate</th><th>Local Cost</th><th>Delta vs Today</th></tr></thead>
+            <tbody id="scBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- BREAKEVEN -->
+    <div class="tab-panel" id="tabBreakeven">
+      <div class="card">
+        <div class="card-head"><span class="card-title">FX Breakeven Calculator</span></div>
+        <div class="card-body">
+          <p style="font-size:.85rem;color:#64748B;margin-bottom:16px">Enter your selling price and other local costs to find the maximum exchange rate at which this import remains profitable.</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+            <div>
+              <label class="f-label" for="sellPrice">Selling Price (local currency)</label>
+              <input type="number" class="f-input" id="sellPrice" placeholder="e.g. 5000000">
+            </div>
+            <div>
+              <label class="f-label" for="otherCosts">Other Local Costs (duty, freight, etc.)</label>
+              <input type="number" class="f-input" id="otherCosts" placeholder="e.g. 500000" value="0">
+            </div>
+          </div>
+          <button class="btn-primary" onclick="calcBreakeven()">Calculate Breakeven Rate</button>
+          <div class="be-result" id="beResult">
+            <div class="be-label">Maximum FX Rate (Breakeven)</div>
+            <div class="be-rate" id="beRate">—</div>
+            <div style="font-size:.82rem;color:rgba(255,255,255,.7);margin-top:8px" id="beSub">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI Panel -->
+    <div class="ai-panel" id="aiPanel" style="display:none">
+      <div class="ai-panel-title">📊 AfroTools FX Insights</div>
+      <div id="aiObs"></div>
+    </div>
+
+  </div>
+</div>
+
+<afro-footer></afro-footer>
+<script src="/data/trade/fx-history.js"></script>
+<script src="/engines/fx-impact-engine.js"></script>
+<script>
+var histChartInst = null;
+var currentCountry = null;
+var currentRate = null;
+var currentUSD = 0;
+
+// Init country select
+(function init(){
+  var cList = FxImpactEngine.getAllCountries();
+  var sel = document.getElementById('countrySelect');
+  cList.forEach(function(c){
+    var op = document.createElement('option'); op.value=c.code; op.textContent=c.flag+' '+c.name+' ('+c.currency+')'; sel.appendChild(op);
+  });
+  currentCountry = cList[0].code;
+})();
+
+function onCountryChange(){ currentCountry = document.getElementById('countrySelect').value; }
+
+function setTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('on')});
+  document.querySelectorAll('.tab').forEach(function(b){b.classList.remove('on')});
+  var map={history:'tabHistory',scenario:'tabScenario',breakeven:'tabBreakeven'};
+  document.getElementById(map[id]).classList.add('on'); btn.classList.add('on');
+}
+
+function fmtLocal(val, sym){ return (sym||'')+Math.round(val).toLocaleString(); }
+
+function calculate(){
+  var usd = parseFloat(document.getElementById('usdAmount').value)||10000;
+  currentUSD = usd;
+  currentCountry = document.getElementById('countrySelect').value;
+  currentRate = FxImpactEngine.getCurrentRate(currentCountry);
+  var data = FX_HISTORY[currentCountry];
+  if(!data||!currentRate){alert('No FX data for selected country');return;}
+  var sym = data.symbol||data.currency;
+  // Hero
+  var localToday = usd * currentRate;
+  var series = FxImpactEngine.getHistoricalCostSeries(usd, currentCountry);
+  var sixMonthsAgo = series.length>=6 ? series[series.length-6] : null;
+  var twelveMonthsAgo = series.length>=12 ? series[series.length-12] : null;
+  document.getElementById('rhToday').textContent = fmtLocal(localToday, sym);
+  document.getElementById('rhTodayRate').textContent = '1 USD = '+currentRate+' '+data.currency;
+  if(sixMonthsAgo){
+    var d6 = localToday - sixMonthsAgo.localCost;
+    document.getElementById('rh6m').textContent = fmtLocal(sixMonthsAgo.localCost, sym);
+    document.getElementById('rh6mDiff').textContent = (d6>0?'+':'')+fmtLocal(d6,sym)+' vs today';
+  }
+  if(twelveMonthsAgo){
+    var d12 = localToday - twelveMonthsAgo.localCost;
+    document.getElementById('rh12m').textContent = fmtLocal(twelveMonthsAgo.localCost, sym);
+    document.getElementById('rh12mDiff').textContent = (d12>0?'+':'')+fmtLocal(d12,sym)+' vs today';
+  }
+  document.getElementById('resHero').classList.add('on');
+  // Title
+  document.getElementById('histTitle').textContent = 'Cost of $'+usd.toLocaleString()+' USD in '+data.currency+' — Last 12 Months';
+  // Chart
+  buildChart(series, sym, data.currency);
+  // Scenarios
+  buildScenarios(usd, currentRate, sym);
+  // AI
+  var obs = FxImpactEngine.getObservations(currentCountry, usd, currentRate);
+  var aiHtml = '';
+  obs.forEach(function(o){ var icons={tip:'💡',warn:'⚠️',info:'✅'}; aiHtml+='<div class="ai-obs '+o.type+'"><span>'+(icons[o.type]||'ℹ️')+'</span><span>'+o.text+'</span></div>'; });
+  document.getElementById('aiObs').innerHTML = aiHtml;
+  document.getElementById('aiPanel').style.display = 'block';
+}
+
+function buildChart(series, sym, currency){
+  var labels = series.map(function(s){ return s.month; });
+  var values = series.map(function(s){ return Math.round(s.localCost); });
+  var ctx = document.getElementById('histChart').getContext('2d');
+  if(histChartInst) histChartInst.destroy();
+  histChartInst = new Chart(ctx, {
+    type:'line',
+    data:{ labels:labels, datasets:[{ label:'Cost in '+currency, data:values, borderColor:'#007AFF', backgroundColor:'rgba(0,122,255,0.08)', fill:true, tension:0.3, pointRadius:4, pointBackgroundColor:'#007AFF' }] },
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label:function(ctx){ return sym+ctx.parsed.y.toLocaleString(); } } } }, scales:{ y:{ ticks:{ callback:function(v){ return sym+v.toLocaleString(); } } } } }
+  });
+}
+
+function buildScenarios(usd, rate, sym){
+  var scenarios = FxImpactEngine.modelScenarios(usd, currentCountry, rate);
+  var html = '';
+  scenarios.forEach(function(s){
+    var isBase = s.changePercent===0;
+    html += '<tr class="'+(isBase?'baseline':'')+'">'+
+      '<td style="font-weight:700">'+(s.changePercent>0?'+':'')+s.changePercent+'%</td>'+
+      '<td>'+s.rate+' '+FX_HISTORY[currentCountry].currency+'</td>'+
+      '<td>'+sym+Math.round(s.localCost).toLocaleString()+'</td>'+
+      '<td>'+(isBase?'<span style="color:#94A3B8">Baseline</span>':(s.delta>0?'<span class="sc-delta-pos">+'+sym+Math.round(s.delta).toLocaleString()+'</span>':'<span class="sc-delta-neg">'+sym+Math.round(s.delta).toLocaleString()+'</span>'))+'</td>'+
+      '</tr>';
+  });
+  document.getElementById('scBody').innerHTML = html;
+}
+
+function updateSlider(val){
+  document.getElementById('sliderVal').textContent = (val>0?'+':'')+val+'% FX change';
+  if(!currentRate||!currentUSD) return;
+  var data = FX_HISTORY[currentCountry];
+  var newRate = currentRate * (1 + val/100);
+  var newCost = currentUSD * newRate;
+  var sym = data.symbol||data.currency;
+  document.getElementById('sliderVal').textContent = (val>0?'+':'')+val+'% → Rate: '+newRate.toFixed(2)+' '+data.currency+' | Cost: '+sym+Math.round(newCost).toLocaleString();
+}
+
+function calcBreakeven(){
+  var sp = parseFloat(document.getElementById('sellPrice').value)||0;
+  var oc = parseFloat(document.getElementById('otherCosts').value)||0;
+  if(!currentUSD||!currentCountry){alert('Please calculate cost first');return;}
+  var result = FxImpactEngine.calcBreakeven(sp, currentUSD, oc);
+  if(!result){alert('Please enter a selling price');return;}
+  var data = FX_HISTORY[currentCountry];
+  var sym = data.symbol||data.currency;
+  document.getElementById('beRate').textContent = '1 USD = '+result.breakevenRate+' '+data.currency;
+  document.getElementById('beSub').textContent = 'Max local cost for USD import: '+sym+Math.round(result.maxLocalCost).toLocaleString()+'. Current rate: '+currentRate+' '+data.currency+'. '+(result.breakevenRate > currentRate ? '✅ Profitable at current rate.' : '❌ Unprofitable at current rate — rate has exceeded breakeven.');
+  document.getElementById('beResult').classList.add('on');
+}
+</script>
+</body>
+</html>

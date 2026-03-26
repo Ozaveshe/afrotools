@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Landed Cost Calculator for Africa 2026 — Full Import Cost Breakdown | AfroTools</title>
+<meta name="description" content="Calculate your total landed cost for imports into any African country. FOB to warehouse — customs duty, VAT, levies, port charges, clearing fees. AI-powered advisor for 54 countries.">
+<link rel="canonical" href="https://afrotools.com/tools/landed-cost/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<style>
+:root{--color-brand:var(--color-primary)}
+.t-hero{background:var(--color-bg-dark);padding:40px 0 28px}
+.t-hero .bc{display:flex;gap:6px;align-items:center;font-size:.72rem;color:rgba(255,255,255,.5);margin-bottom:16px}
+.t-hero .bc a{color:rgba(255,255,255,.5);text-decoration:none}.t-hero .bc a:hover{color:#4DA3FF}
+.t-hero h1{font-size:clamp(1.5rem,3vw,2.1rem);font-weight:800;color:#fff;line-height:1.2;margin-bottom:8px}
+.t-hero h1 em{font-style:normal;color:#4DA3FF}
+.t-hero-sub{font-size:.88rem;color:rgba(255,255,255,.55);max-width:600px;margin-bottom:14px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:8px}
+.badge{font-size:.68rem;font-weight:700;padding:4px 10px;border-radius:4px;text-transform:uppercase;letter-spacing:.05em}
+.badge-green{background:rgba(34,197,94,.15);color:#4ade80}.badge-blue{background:rgba(59,130,246,.15);color:#93c5fd}.badge-grey{background:rgba(255,255,255,.08);color:rgba(255,255,255,.5)}.badge-yellow{background:rgba(245,158,11,.15);color:#fbbf24}
+.t-main{background:var(--color-bg,#F8FAFD);padding:28px 0 60px}
+.tabs{display:flex;gap:4px;background:#E8F2FF;padding:4px;border-radius:8px;margin-bottom:20px;overflow-x:auto}
+.tab{flex:1;min-width:110px;padding:9px 12px;font-size:.78rem;font-weight:700;border:none;border-radius:5px;cursor:pointer;background:transparent;color:#64748B;transition:all .15s;white-space:nowrap;font-family:var(--font-body)}
+.tab.on{background:#fff;color:var(--color-primary,#007AFF);box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.tab-panel{display:none}.tab-panel.on{display:block}
+.card{background:#fff;border:1px solid #E2E8F0;border-radius:10px;box-shadow:0 1px 8px rgba(0,0,0,.04);margin-bottom:16px}
+.card-head{padding:14px 20px;border-bottom:1px solid #E2E8F0;display:flex;align-items:center;justify-content:space-between}
+.card-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#3D5A80}
+.card-body{padding:20px}
+.f-label{font-size:.72rem;font-weight:700;color:#3D5A80;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:5px;margin-top:10px}
+.f-select,.f-input{width:100%;padding:10px 12px;font-size:.95rem;font-weight:600;font-family:var(--font-body);border:1.5px solid #CBD5E1;border-radius:7px;background:#F4F7FA;outline:none;box-sizing:border-box}
+.f-select:focus,.f-input:focus{border-color:var(--color-primary,#007AFF);background:#fff}
+.f-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:600px){.f-grid{grid-template-columns:1fr}}
+.btn-primary{display:inline-flex;align-items:center;gap:6px;padding:11px 24px;background:var(--color-primary,#007AFF);color:#fff;border:none;border-radius:980px;font-size:.88rem;font-weight:700;cursor:pointer;font-family:var(--font-body);transition:background .15s;margin-top:16px}
+.btn-primary:hover{background:var(--color-primary-dark,#0063D1)}
+/* Results */
+.results{display:none}.results.on{display:block}
+.res-hero{background:var(--color-bg-dark,#0A1628);border-radius:10px;padding:20px;margin-bottom:16px}
+.rh-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.45);margin-bottom:4px}
+.rh-amount{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;color:var(--color-primary-light,#4DA3FF)}
+.rh-sub{font-size:.82rem;color:rgba(255,255,255,.6);margin-top:4px}
+.waterfall{display:flex;flex-direction:column;gap:4px;margin-top:16px}
+.wf-row{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-radius:6px;font-size:.84rem}
+.wf-row.section-head{background:#F4F7FA;font-size:.7rem;font-weight:700;color:#64748B;text-transform:uppercase;letter-spacing:.06em;margin-top:8px}
+.wf-row.levy{background:#FFFBEB;border-left:3px solid #F59E0B}
+.wf-row.duty{background:#EFF6FF;border-left:3px solid #3B82F6}
+.wf-row.vat{background:#F0FDF4;border-left:3px solid #22C55E}
+.wf-row.total{background:#0A1628;color:#fff;font-weight:800;font-size:1rem;border-radius:8px;margin-top:8px}
+.wf-row.total .wf-val{color:#4DA3FF}
+.wf-label{color:#475569}.wf-label.total{color:#fff}
+.wf-val{font-weight:700;font-family:monospace;font-size:.9rem;tabular-nums:true}
+/* Effective rate badge */
+.eff-rate{display:inline-flex;align-items:center;gap:6px;background:rgba(239,68,68,.12);color:#dc2626;padding:4px 10px;border-radius:980px;font-size:.75rem;font-weight:700;margin-top:8px}
+/* P&L */
+.pnl-result{display:none}.pnl-result.on{display:block}
+/* AI Chat */
+.chat-wrap{display:flex;flex-direction:column;height:380px}
+.chat-messages{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px}
+.msg{max-width:85%;padding:10px 14px;border-radius:10px;font-size:.84rem;line-height:1.55}
+.msg.user{align-self:flex-end;background:var(--color-primary,#007AFF);color:#fff;border-radius:10px 10px 2px 10px}
+.msg.ai{align-self:flex-start;background:#F4F7FA;color:#0f172a;border-radius:10px 10px 10px 2px}
+.msg.ai.loading{color:#94A3B8;font-style:italic}
+.chat-input-row{display:flex;gap:8px;padding:12px;border-top:1px solid #E2E8F0}
+.chat-input{flex:1;padding:9px 12px;border:1.5px solid #CBD5E1;border-radius:7px;font-size:.9rem;font-family:var(--font-body);outline:none;background:#F4F7FA}
+.chat-input:focus{border-color:var(--color-primary,#007AFF);background:#fff}
+.chat-send{padding:9px 16px;background:var(--color-primary,#007AFF);color:#fff;border:none;border-radius:7px;cursor:pointer;font-weight:700;font-family:var(--font-body)}
+.chat-suggestions{display:flex;flex-wrap:wrap;gap:6px;padding:0 12px 10px}
+.chat-sug{font-size:.72rem;padding:5px 10px;background:#EFF6FF;color:var(--color-primary,#007AFF);border:1px solid #BFDBFE;border-radius:980px;cursor:pointer;font-family:var(--font-body)}
+.chat-sug:hover{background:#DBEAFE}
+.premium-badge{background:linear-gradient(135deg,#F5A623,#E8930A);color:#fff;font-size:.65rem;font-weight:800;padding:2px 6px;border-radius:3px;text-transform:uppercase;letter-spacing:.05em}
+@media(prefers-color-scheme:dark){
+  .t-main{background:#0B1120}.card{background:#131D2E;border-color:#1E2D40}.card-head{border-color:#1E2D40}
+  .card-title{color:#93A5BE}.f-select,.f-input{background:#111D30;color:#E2E8F0;border-color:#1E2D40}
+  .tabs{background:#111D30}.tab.on{background:#131D2E}
+  .wf-row.section-head{background:#1E2D40;color:#93A5BE}
+  .wf-row.levy{background:#1c1007;border-color:#f59e0b}
+  .wf-row.duty{background:#172554;border-color:#3B82F6}
+  .wf-row.vat{background:#052e16;border-color:#22c55e}
+  .wf-label{color:#CBD5E1}
+  .msg.ai{background:#1E2D40;color:#E2E8F0}
+  .chat-input{background:#111D30;color:#E2E8F0;border-color:#1E2D40}
+  .chat-input-row{border-color:#1E2D40}
+  .chat-suggestions{} .chat-sug{background:#172554;border-color:#1e3a8a}
+}
+</style>
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<script src="/assets/js/bundles/core.5473a555.min.js" defer></script>
+</head>
+<body class="tool-page">
+<afro-navbar active="tools"></afro-navbar>
+
+<section class="t-hero">
+  <div class="container">
+    <nav class="bc" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/tools/">Tools</a><span>/</span><span aria-current="page">Landed Cost Calculator</span></nav>
+    <h1>Landed Cost Calculator —<br><em>FOB to Warehouse 2026</em></h1>
+    <p class="t-hero-sub">The definitive import cost calculator. From FOB price through every customs charge, levy, VAT, port fee, and clearing cost — to total landed cost in local currency.</p>
+    <div class="hero-badges">
+      <span class="badge badge-green">10 African Countries</span>
+      <span class="badge badge-blue">Full Cost Waterfall</span>
+      <span class="badge badge-yellow">Tier 1 — AI Advisor</span>
+      <span class="badge badge-grey">P&L View Included</span>
+    </div>
+  </div>
+</section>
+
+<div class="t-main">
+  <div class="container">
+    <div class="tabs" role="tablist">
+      <button class="tab on" onclick="setTab('calc',this)">🧮 Calculate</button>
+      <button class="tab" onclick="setTab('compare',this)">↔️ Compare Scenarios</button>
+      <button class="tab" onclick="setTab('pnl',this)">💹 P&L View</button>
+      <button class="tab" onclick="setTab('chat',this)">🤖 AI Advisor <span class="premium-badge">TIER 1</span></button>
+    </div>
+
+    <!-- CALCULATE -->
+    <div class="tab-panel on" id="tabCalc">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+        <div>
+          <!-- Input card -->
+          <div class="card">
+            <div class="card-head"><span class="card-title">Import Details</span></div>
+            <div class="card-body">
+              <div class="f-grid">
+                <div>
+                  <label class="f-label" for="destCountry">Destination Country</label>
+                  <select class="f-select" id="destCountry" onchange="onCountryChange()"></select>
+                </div>
+                <div>
+                  <label class="f-label" for="portSelect">Entry Port</label>
+                  <select class="f-select" id="portSelect"></select>
+                </div>
+              </div>
+              <div class="f-grid">
+                <div>
+                  <label class="f-label" for="fobValue">FOB Value (USD)</label>
+                  <input type="number" class="f-input" id="fobValue" placeholder="e.g. 10000" value="10000" min="0">
+                </div>
+                <div>
+                  <label class="f-label" for="dutyRate">Duty Rate (%)</label>
+                  <input type="number" class="f-input" id="dutyRate" placeholder="e.g. 20" value="20" min="0" max="200" step="0.5">
+                </div>
+              </div>
+              <div class="f-grid">
+                <div>
+                  <label class="f-label" for="freightUSD">Sea Freight (USD)</label>
+                  <input type="number" class="f-input" id="freightUSD" placeholder="e.g. 2000" value="2000" min="0">
+                </div>
+                <div>
+                  <label class="f-label" for="insuranceUSD">Insurance (USD)</label>
+                  <input type="number" class="f-input" id="insuranceUSD" placeholder="auto 0.5%" value="">
+                </div>
+              </div>
+              <div class="f-grid">
+                <div>
+                  <label class="f-label" for="fxRate">Exchange Rate (1 USD =)</label>
+                  <input type="number" class="f-input" id="fxRate" placeholder="e.g. 1660" value="">
+                  <div style="font-size:.68rem;color:#94A3B8;margin-top:4px" id="fxHint"></div>
+                </div>
+                <div>
+                  <label class="f-label" for="quantity">Quantity (units)</label>
+                  <input type="number" class="f-input" id="quantity" placeholder="e.g. 100" value="1" min="1">
+                </div>
+              </div>
+              <div class="f-grid" style="margin-top:10px">
+                <div>
+                  <label class="f-label" for="brokerFee">Customs Broker Fee (local)</label>
+                  <input type="number" class="f-input" id="brokerFee" placeholder="auto-filled" value="">
+                </div>
+                <div>
+                  <label class="f-label" for="handlingFee">Port Handling (local)</label>
+                  <input type="number" class="f-input" id="handlingFee" placeholder="e.g. 75000" value="">
+                </div>
+              </div>
+              <button class="btn-primary" onclick="doCalculate()">📦 Calculate Landed Cost</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Results -->
+        <div>
+          <div class="results" id="calcResults">
+            <div class="res-hero">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+                <div>
+                  <div class="rh-label">Total Landed Cost</div>
+                  <div class="rh-amount" id="rhTotal">—</div>
+                  <div class="rh-sub" id="rhTotalUSD">—</div>
+                </div>
+                <div>
+                  <div class="rh-label">Per Unit Cost</div>
+                  <div class="rh-amount" style="color:#a78bfa" id="rhPerUnit">—</div>
+                  <div class="rh-sub" id="rhEffRate">—</div>
+                </div>
+              </div>
+            </div>
+            <!-- Waterfall -->
+            <div class="card">
+              <div class="card-head"><span class="card-title">Cost Waterfall Breakdown</span></div>
+              <div class="card-body" style="padding:12px">
+                <div class="waterfall" id="waterfall"></div>
+              </div>
+            </div>
+          </div>
+          <div style="text-align:center;padding:32px;color:#94A3B8;font-size:.88rem" id="calcEmpty">Fill in the form and calculate to see full cost breakdown</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMPARE -->
+    <div class="tab-panel" id="tabCompare">
+      <div class="card">
+        <div class="card-head"><span class="card-title">Compare Two Scenarios</span><span style="font-size:.7rem;color:#94A3B8">Same product, different ports or countries</span></div>
+        <div class="card-body">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+            <div>
+              <div style="font-size:.78rem;font-weight:800;color:var(--color-primary,#007AFF);text-transform:uppercase;margin-bottom:12px">Scenario A</div>
+              <label class="f-label" for="cmpACountry">Country</label>
+              <select class="f-select" id="cmpACountry" onchange="onCmpCountryChange('A')"></select>
+              <label class="f-label" for="cmpAPort">Port</label>
+              <select class="f-select" id="cmpAPort"></select>
+              <label class="f-label" for="cmpADuty">Duty Rate (%)</label>
+              <input type="number" class="f-input" id="cmpADuty" value="20">
+              <label class="f-label" for="cmpAFX">FX Rate</label>
+              <input type="number" class="f-input" id="cmpAFX" placeholder="1 USD =">
+            </div>
+            <div>
+              <div style="font-size:.78rem;font-weight:800;color:#a78bfa;text-transform:uppercase;margin-bottom:12px">Scenario B</div>
+              <label class="f-label" for="cmpBCountry">Country</label>
+              <select class="f-select" id="cmpBCountry" onchange="onCmpCountryChange('B')"></select>
+              <label class="f-label" for="cmpBPort">Port</label>
+              <select class="f-select" id="cmpBPort"></select>
+              <label class="f-label" for="cmpBDuty">Duty Rate (%)</label>
+              <input type="number" class="f-input" id="cmpBDuty" value="25">
+              <label class="f-label" for="cmpBFX">FX Rate</label>
+              <input type="number" class="f-input" id="cmpBFX" placeholder="1 USD =">
+            </div>
+          </div>
+          <div style="margin-top:14px">
+            <label class="f-label" for="cmpFOB">FOB Value (USD) — same for both</label>
+            <input type="number" class="f-input" id="cmpFOB" value="10000" style="max-width:240px">
+          </div>
+          <button class="btn-primary" onclick="doCompare()">Compare Scenarios</button>
+        </div>
+      </div>
+      <div id="cmpResults" style="display:none">
+        <div class="card">
+          <div class="card-head"><span class="card-title">Side-by-Side Comparison</span></div>
+          <div class="card-body" style="overflow-x:auto">
+            <table style="width:100%;border-collapse:collapse;font-size:.84rem" id="cmpTable">
+              <thead><tr><th style="padding:8px;text-align:left;border-bottom:2px solid #E2E8F0">Cost Item</th><th style="padding:8px;text-align:right;border-bottom:2px solid #E2E8F0;color:var(--color-primary,#007AFF)">Scenario A</th><th style="padding:8px;text-align:right;border-bottom:2px solid #E2E8F0;color:#a78bfa">Scenario B</th><th style="padding:8px;text-align:right;border-bottom:2px solid #E2E8F0">Difference</th></tr></thead>
+              <tbody id="cmpBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- P&L VIEW -->
+    <div class="tab-panel" id="tabPnl">
+      <div class="card">
+        <div class="card-head"><span class="card-title">Profit &amp; Loss View</span></div>
+        <div class="card-body">
+          <p style="font-size:.85rem;color:#64748B;margin-bottom:16px">Run the main calculation first, then enter your selling price to see profit margin analysis.</p>
+          <div class="f-grid" style="margin-bottom:16px">
+            <div>
+              <label class="f-label" for="sellPriceLocal">Selling Price (local currency per unit)</label>
+              <input type="number" class="f-input" id="sellPriceLocal" placeholder="e.g. 3000000">
+            </div>
+            <div style="display:flex;align-items:flex-end">
+              <button class="btn-primary" style="margin-top:0" onclick="doPnl()">Calculate P&L</button>
+            </div>
+          </div>
+          <div class="pnl-result" id="pnlResult">
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+              <div style="background:#EFF6FF;border-radius:8px;padding:14px;text-align:center">
+                <div style="font-size:.68rem;color:#64748B;text-transform:uppercase;margin-bottom:4px">Cost / Unit</div>
+                <div style="font-size:1.1rem;font-weight:800;color:#1d4ed8" id="pnlCost">—</div>
+              </div>
+              <div style="background:#F0FDF4;border-radius:8px;padding:14px;text-align:center">
+                <div style="font-size:.68rem;color:#64748B;text-transform:uppercase;margin-bottom:4px">Profit / Unit</div>
+                <div style="font-size:1.1rem;font-weight:800;color:#15803d" id="pnlProfit">—</div>
+              </div>
+              <div style="background:#FEF9C3;border-radius:8px;padding:14px;text-align:center">
+                <div style="font-size:.68rem;color:#64748B;text-transform:uppercase;margin-bottom:4px">Gross Margin</div>
+                <div style="font-size:1.1rem;font-weight:800;color:#b45309" id="pnlMargin">—</div>
+              </div>
+              <div style="background:#FEE2E2;border-radius:8px;padding:14px;text-align:center">
+                <div style="font-size:.68rem;color:#64748B;text-transform:uppercase;margin-bottom:4px">Markup</div>
+                <div style="font-size:1.1rem;font-weight:800;color:#b91c1c" id="pnlMarkup">—</div>
+              </div>
+            </div>
+            <div style="margin-top:12px;font-size:.82rem;color:#64748B" id="pnlBreakeven"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI ADVISOR CHAT -->
+    <div class="tab-panel" id="tabChat">
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">AI Trade Advisor</span>
+          <span class="premium-badge">TIER 1 — AI POWERED</span>
+        </div>
+        <div class="chat-wrap">
+          <div class="chat-messages" id="chatMessages">
+            <div class="msg ai">👋 Hi! I'm your AfroTools Trade Advisor. I can help you calculate landed costs, compare ports, understand duty rates, and analyse your import margins across African countries. What would you like to know?</div>
+          </div>
+          <div class="chat-suggestions" id="chatSugs">
+            <div class="chat-sug" onclick="sendSug(this)">Is it cheaper to import via Apapa or Tin Can?</div>
+            <div class="chat-sug" onclick="sendSug(this)">What is the duty on HS 8517 in Ghana?</div>
+            <div class="chat-sug" onclick="sendSug(this)">How is VAT calculated on imports in Kenya?</div>
+            <div class="chat-sug" onclick="sendSug(this)">What levies apply on imports in Nigeria?</div>
+            <div class="chat-sug" onclick="sendSug(this)">Compare landed cost: Nigeria vs Ghana for electronics</div>
+          </div>
+          <div class="chat-input-row">
+            <input type="text" class="chat-input" id="chatInput" placeholder="Ask about import costs, duty rates, ports..." onkeydown="if(event.key==='Enter')sendChat()">
+            <button class="chat-send" onclick="sendChat()">Send</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<afro-footer></afro-footer>
+<script src="/data/trade/country-duty-rates.js"></script>
+<script src="/data/trade/landed-cost-data.js"></script>
+<script src="/data/trade/fx-history.js"></script>
+<script src="/engines/landed-cost-engine.js"></script>
+<script>
+var lastResult = null;
+
+// Init
+(function init(){
+  var countries = LandedCostEngine.getAllCountries();
+  var opts = countries.map(function(c){ return '<option value="'+c.code+'">'+(c.flag||'')+' '+c.name+' ('+c.currency+')</option>'; }).join('');
+  document.getElementById('destCountry').innerHTML = opts;
+  document.getElementById('cmpACountry').innerHTML = opts;
+  document.getElementById('cmpBCountry').innerHTML = opts;
+  onCountryChange();
+  onCmpCountryChange('A'); onCmpCountryChange('B');
+})();
+
+function setTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('on')});
+  document.querySelectorAll('.tab').forEach(function(b){b.classList.remove('on')});
+  var map={calc:'tabCalc',compare:'tabCompare',pnl:'tabPnl',chat:'tabChat'};
+  document.getElementById(map[id]).classList.add('on'); btn.classList.add('on');
+}
+
+function onCountryChange(){
+  var cc = document.getElementById('destCountry').value;
+  var ports = LandedCostEngine.getCountryPorts(cc);
+  var pSel = document.getElementById('portSelect');
+  pSel.innerHTML = ports.map(function(p){ return '<option value="'+p.code+'">'+p.name+' ('+p.type+')</option>'; }).join('');
+  // Auto-fill FX rate
+  if(FX_HISTORY[cc]){
+    var months = Object.keys(FX_HISTORY[cc].monthlyAverages).sort();
+    var rate = FX_HISTORY[cc].monthlyAverages[months[months.length-1]];
+    document.getElementById('fxRate').value = rate;
+    document.getElementById('fxHint').textContent = '1 USD ≈ '+rate+' '+FX_HISTORY[cc].currency+' (March 2026)';
+  }
+  // Auto-fill broker fee
+  var fee = LandedCostEngine.getDefaultBrokerFee(cc);
+  if(fee) document.getElementById('brokerFee').value = fee;
+}
+
+function onCmpCountryChange(ab){
+  var cc = document.getElementById('cmpACountry'.replace('A',ab).replace('B',ab)+'Country').value;
+  var ports = LandedCostEngine.getCountryPorts(cc);
+  var pSel = document.getElementById('cmp'+ab+'Port');
+  pSel.innerHTML = ports.map(function(p){ return '<option value="'+p.code+'">'+p.name+'</option>'; }).join('');
+  if(FX_HISTORY[cc]){
+    var months=Object.keys(FX_HISTORY[cc].monthlyAverages).sort();
+    document.getElementById('cmp'+ab+'FX').value = FX_HISTORY[cc].monthlyAverages[months[months.length-1]];
+  }
+}
+
+function fmtUSD(v){ return '$'+parseFloat(v).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function fmtLocal(v, sym){ return (sym||'')+Math.round(v).toLocaleString(); }
+
+function doCalculate(){
+  var params = {
+    fobUSD: document.getElementById('fobValue').value,
+    freightUSD: document.getElementById('freightUSD').value,
+    insuranceUSD: document.getElementById('insuranceUSD').value,
+    destCountry: document.getElementById('destCountry').value,
+    dutyRate: document.getElementById('dutyRate').value,
+    portCode: document.getElementById('portSelect').value,
+    quantity: document.getElementById('quantity').value,
+    fxRate: document.getElementById('fxRate').value,
+    brokerFeeLocal: document.getElementById('brokerFee').value,
+    handlingLocal: document.getElementById('handlingFee').value,
+    haulageLocal: 0
+  };
+  var r = LandedCostEngine.calculate(params);
+  if(!r){alert('Could not calculate — check inputs');return;}
+  lastResult = r;
+  var sym = r.symbol||r.currency;
+  // Hero
+  document.getElementById('rhTotal').textContent = fmtLocal(r.totalLandedLocal, sym);
+  document.getElementById('rhTotalUSD').textContent = fmtUSD(r.totalLandedUSD)+' USD';
+  document.getElementById('rhPerUnit').textContent = fmtLocal(r.perUnitLocal, sym);
+  document.getElementById('rhEffRate').textContent = 'Effective tax rate: '+r.effectiveTaxRate+'%';
+  // Waterfall
+  var wf = '';
+  wf += wfRow('', 'FOB Value (Goods)', r.fobUSD, 'USD', '');
+  wf += wfRow('section-head', 'FREIGHT & INSURANCE', '', '', '');
+  wf += wfRow('', 'Sea Freight', r.freightUSD, 'USD', '');
+  wf += wfRow('', 'Insurance', r.insuranceUSD, 'USD', '');
+  wf += wfRow('duty', '➕ CIF Value', r.cifUSD, 'USD', '');
+  wf += wfRow('section-head', 'IMPORT DUTY', '', '', '');
+  wf += wfRow('duty', 'Import Duty ('+r.dutyRate+'%)', r.importDutyUSD, 'USD', '');
+  if(r.levyBreakdown.length){
+    wf += wfRow('section-head', 'ADDITIONAL LEVIES', '', '', '');
+    r.levyBreakdown.forEach(function(l){ wf += wfRow('levy', l.name+' ('+l.rate+'% on '+l.base+')', l.amountUSD, 'USD', ''); });
+  }
+  wf += wfRow('section-head', 'VAT', '', '', '');
+  wf += wfRow('vat', 'VAT ('+r.vatRate+'%)', r.vatUSD, 'USD', '');
+  if(r.localChargesUSD > 0){
+    wf += wfRow('section-head', 'PORT & CLEARING (converted to USD)', '', '', '');
+    if(r.brokerFeeUSD>0) wf += wfRow('', 'Customs Broker Fee', r.brokerFeeUSD, 'USD', '');
+    if(r.handlingUSD>0) wf += wfRow('', 'Terminal Handling', r.handlingUSD, 'USD', '');
+  }
+  wf += wfRow('total', '🏭 TOTAL LANDED COST', r.totalLandedUSD, 'USD (= '+fmtLocal(r.totalLandedLocal,sym)+')', 'total');
+  document.getElementById('waterfall').innerHTML = wf;
+  document.getElementById('calcEmpty').style.display = 'none';
+  document.getElementById('calcResults').classList.add('on');
+}
+
+function wfRow(cls, label, val, suffix, extraCls){
+  if(cls==='section-head') return '<div class="wf-row section-head">'+label+'</div>';
+  var fmtVal = typeof val==='number' ? fmtUSD(val)+(suffix?' '+suffix:'') : '';
+  return '<div class="wf-row '+cls+'"><span class="wf-label '+(extraCls||'')+'">'+label+'</span><span class="wf-val">'+fmtVal+'</span></div>';
+}
+
+function doCompare(){
+  var fob = parseFloat(document.getElementById('cmpFOB').value)||10000;
+  var make = function(ab){
+    var cc = document.getElementById('cmp'+ab+'Country').value;
+    return LandedCostEngine.calculate({
+      fobUSD: fob, freightUSD: 2000, destCountry: cc,
+      dutyRate: document.getElementById('cmp'+ab+'Duty').value,
+      quantity:1,
+      fxRate: document.getElementById('cmp'+ab+'FX').value,
+      portCode: document.getElementById('cmp'+ab+'Port').value,
+      brokerFeeLocal:0, handlingLocal:0
+    });
+  };
+  var A=make('A'), B=make('B');
+  if(!A||!B){alert('Error calculating');return;}
+  var rows=[
+    ['FOB Value', A.fobUSD, B.fobUSD, '$'],
+    ['Freight', A.freightUSD, B.freightUSD, '$'],
+    ['CIF', A.cifUSD, B.cifUSD, '$'],
+    ['Import Duty', A.importDutyUSD, B.importDutyUSD, '$'],
+    ['Total Levies', A.totalLeviesUSD, B.totalLeviesUSD, '$'],
+    ['VAT', A.vatUSD, B.vatUSD, '$'],
+    ['Total Landed (USD)', A.totalLandedUSD, B.totalLandedUSD, '$'],
+    ['Effective Tax Rate', parseFloat(A.effectiveTaxRate), parseFloat(B.effectiveTaxRate), '', '%']
+  ];
+  var html = rows.map(function(r){
+    var diff = r[1]-r[2];
+    var aStr = r[3]==='$' ? '$'+Math.round(r[1]).toLocaleString()+(r[4]||'') : r[1].toLocaleString()+'%';
+    var bStr = r[3]==='$' ? '$'+Math.round(r[2]).toLocaleString()+(r[4]||'') : r[2].toLocaleString()+'%';
+    var dStr = (diff>0?'+':'')+( r[3]==='$' ? '$'+Math.round(Math.abs(diff)).toLocaleString() : Math.abs(diff).toFixed(1)+'%');
+    var dColor = diff>0 ? '#dc2626' : (diff<0?'#16a34a':'#94A3B8');
+    return '<tr><td style="padding:9px 10px;border-bottom:1px solid #F1F5F9">'+r[0]+'</td>' +
+      '<td style="padding:9px 10px;border-bottom:1px solid #F1F5F9;text-align:right;font-weight:700;color:var(--color-primary,#007AFF)">'+aStr+'</td>' +
+      '<td style="padding:9px 10px;border-bottom:1px solid #F1F5F9;text-align:right;font-weight:700;color:#a78bfa">'+bStr+'</td>' +
+      '<td style="padding:9px 10px;border-bottom:1px solid #F1F5F9;text-align:right;font-weight:700;color:'+dColor+'">'+dStr+'</td></tr>';
+  }).join('');
+  document.getElementById('cmpBody').innerHTML = html;
+  document.getElementById('cmpResults').style.display = 'block';
+}
+
+function doPnl(){
+  if(!lastResult){alert('Please run the main calculation first');return;}
+  var sp = parseFloat(document.getElementById('sellPriceLocal').value)||0;
+  if(!sp){alert('Please enter a selling price');return;}
+  var analysis = lastResult.getMarginAnalysis(sp);
+  var sym = lastResult.symbol||lastResult.currency;
+  document.getElementById('pnlCost').textContent = fmtLocal(analysis.costPerUnit, sym);
+  document.getElementById('pnlProfit').textContent = fmtLocal(analysis.profit, sym);
+  document.getElementById('pnlMargin').textContent = analysis.margin+'%';
+  document.getElementById('pnlMarkup').textContent = analysis.markup+'%';
+  document.getElementById('pnlBreakeven').textContent = 'Breakeven selling price: '+fmtLocal(analysis.breakeven, sym)+' per unit. '+(analysis.profit>0?'✅ Profitable at this price.':'❌ Loss — raise price or reduce costs.');
+  document.getElementById('pnlResult').classList.add('on');
+}
+
+// AI Chat
+var chatCtx = [];
+function sendSug(el){ document.getElementById('chatInput').value=el.textContent; sendChat(); }
+function sendChat(){
+  var input = document.getElementById('chatInput');
+  var msg = input.value.trim();
+  if(!msg) return;
+  addMsg('user', msg);
+  input.value = '';
+  var aiDiv = addMsg('ai loading', '...');
+  var context = lastResult ? 'User has calculated: FOB $'+lastResult.fobUSD+', Country: '+lastResult.currency+', Total landed $'+lastResult.totalLandedUSD.toFixed(2)+', Effective tax rate '+lastResult.effectiveTaxRate+'%.' : '';
+  callAI(msg, context, function(reply){ aiDiv.classList.remove('loading'); aiDiv.textContent=reply; });
+}
+function addMsg(cls, text){
+  var div=document.createElement('div'); div.className='msg '+cls; div.textContent=text;
+  var msgs=document.getElementById('chatMessages'); msgs.appendChild(div); msgs.scrollTop=msgs.scrollHeight;
+  return div;
+}
+function callAI(msg, ctx, cb){
+  fetch('/.netlify/functions/ai-advisor', { method:'POST', headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({ tool:'landed-cost', message:msg, context:ctx })
+  }).then(function(r){return r.json();}).then(function(d){ cb(d.response||d.message||'I cannot answer that right now.'); })
+  .catch(function(){ cb('Sorry, the AI advisor is temporarily unavailable. Please try again.'); });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ECOWAS Trade Levy Calculator 2026 — CET &amp; Customs Duties | AfroTools</title>
+<meta name="description" content="Calculate ECOWAS Common External Tariff (CET) rates and associated levies. 5-band tariff system for all 15 West African countries. ETLS duty-free trade eligibility checker.">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/assets/css/tool-landing.css">
+<style>
+.band-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin:16px 0}
+.band-card{border-radius:14px;padding:16px;text-align:center;cursor:pointer;border:2px solid transparent;transition:all .2s}
+.band-card:hover{transform:translateY(-2px)}
+.band-card.selected{border-color:#0063D1;box-shadow:0 4px 16px rgba(0,122,255,.2)}
+.band-rate{font-size:32px;font-weight:800}
+.band-label{font-size:12px;font-weight:800;text-transform:uppercase;margin-top:4px}
+.band-desc{font-size:11px;margin-top:6px;opacity:.85}
+.result-hero{background:linear-gradient(135deg,var(--brand),#4DA3FF);border-radius:18px;padding:28px;color:#fff;text-align:center;margin:20px 0}
+.result-total{font-size:42px;font-weight:800}
+.result-sub{font-size:16px;opacity:.85}
+.breakdown-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+.breakdown-row.total{font-weight:800;font-size:15px;border:none}
+.breakdown-row.cet{font-weight:700;color:var(--brand)}
+.country-select-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;margin:12px 0}
+.country-btn{background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:10px;text-align:center;cursor:pointer;font-size:12px;font-weight:700;transition:all .2s}
+.country-btn:hover,.country-btn.active{border-color:var(--brand);background:#E8F2FF}
+.etls-check{background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px}
+.etls-check label{display:flex;align-items:center;gap:10px;font-size:14px;cursor:pointer}
+.etls-check input[type=checkbox]{width:18px;height:18px;accent-color:var(--brand)}
+.check-pass{color:#34C759;font-weight:700}
+.check-fail{color:#FF3B30;font-weight:700}
+.obs-box{background:#F0F7FF;border-left:4px solid var(--brand);border-radius:0 12px 12px 0;padding:14px 16px;margin:8px 0;font-size:14px}
+.warn-box{background:#FFF3CD;border-left:4px solid #FF9500;border-radius:0 12px 12px 0;padding:14px 16px;margin:8px 0;font-size:14px}
+.member-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin:12px 0}
+.member-pill{background:#E8F2FF;color:var(--brand);padding:6px 12px;border-radius:8px;font-size:13px;font-weight:600}
+</style>
+  <link rel="canonical" href="https://afrotools.com/tools/ecowas-levy/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://afrotools.com/tools/ecowas-levy/">
+  <meta property="og:title" content="ECOWAS Trade Levy Calculator 2026 — CET &amp; Customs Duties">
+  <meta property="og:description" content="Calculate ECOWAS Common External Tariff (CET) rates and associated levies. 5-band tariff system for all 15 West African countries. ETLS duty-free trade eli">
+  <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+  <meta property="og:site_name" content="AfroTools">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ECOWAS Trade Levy Calculator 2026 — CET &amp; Customs Duties">
+  <meta name="twitter:description" content="Calculate ECOWAS Common External Tariff (CET) rates and associated levies. 5-band tariff system for all 15 West African countries. ETLS duty-free trade eli">
+  <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+</head>
+<body>
+<afro-navbar active="tools"></afro-navbar>
+
+<main class="tool-shell">
+  <div class="tool-hero">
+    <div class="tool-hero-icon">🌍</div>
+    <h1 class="tool-hero-title">ECOWAS Trade Levy Calculator</h1>
+    <p class="tool-hero-desc">Calculate Common External Tariff (CET) and all associated levies for imports into ECOWAS member states.</p>
+    <div class="tool-tabs" id="tabs">
+      <button class="tool-tab on" onclick="setTab('calculator',this)">Calculate Duties</button>
+      <button class="tool-tab" onclick="setTab('etls',this)">ETLS Checker</button>
+      <button class="tool-tab" onclick="setTab('bands',this)">Tariff Bands</button>
+      <button class="tool-tab" onclick="setTab('members',this)">Member States</button>
+    </div>
+  </div>
+
+  <!-- CALCULATOR TAB -->
+  <div class="tool-panel on" id="calculator">
+    <div class="tool-section">
+      <h2 class="section-title">Calculate Import Duties</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div class="field-group">
+          <label class="field-label">CIF Value (USD)</label>
+          <input class="field-input" type="number" id="cifValue" value="10000" min="1" onchange="runCalc()">
+        </div>
+        <div class="field-group">
+          <label class="field-label">FOB Value (USD)</label>
+          <input class="field-input" type="number" id="fobValue" value="9500" min="1" onchange="runCalc()">
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px">
+        <div class="field-group">
+          <label class="field-label">HS Code (first 4 digits, optional)</label>
+          <input class="field-input" type="text" id="hsCode" placeholder="e.g. 1006 for rice" maxlength="6" onchange="runCalc()">
+        </div>
+        <div class="field-group" style="display:flex;align-items:flex-end">
+          <label style="display:flex;align-items:center;gap:10px;font-size:14px;cursor:pointer;padding-bottom:8px">
+            <input type="checkbox" id="isEtls" style="width:18px;height:18px;accent-color:var(--brand)" onchange="runCalc()">
+            ETLS Origin (Duty-Free)
+          </label>
+        </div>
+      </div>
+      <h3 style="font-size:14px;font-weight:800;margin:16px 0 8px">Select Destination Country</h3>
+      <div class="country-select-grid" id="countrySelectGrid"></div>
+      <h3 style="font-size:14px;font-weight:800;margin:16px 0 8px">Select CET Tariff Band</h3>
+      <div class="band-grid" id="bandSelector"></div>
+      <div id="calcResult"></div>
+    </div>
+  </div>
+
+  <!-- ETLS TAB -->
+  <div class="tool-panel" id="etls">
+    <div class="tool-section">
+      <h2 class="section-title">ETLS Eligibility Checker</h2>
+      <p class="section-desc">Check if goods from an ECOWAS member state qualify for duty-free ETLS treatment.</p>
+      <div class="field-group">
+        <label class="field-label">Origin Country (ECOWAS Code)</label>
+        <select class="field-select" id="etlsOrigin">
+          <option value="">— Select origin country —</option>
+        </select>
+      </div>
+      <div class="etls-check">
+        <label><input type="checkbox" id="etlsCOO"> ECOWAS Certificate of Origin held</label>
+      </div>
+      <div class="etls-check">
+        <label><input type="checkbox" id="etlsCTH"> Change of Tariff Heading (CTH) achieved</label>
+      </div>
+      <div class="field-group" style="margin-top:12px">
+        <label class="field-label">Local Value Added in ECOWAS (%)</label>
+        <input class="field-input" type="number" id="etlsVA" value="35" min="0" max="100">
+      </div>
+      <button class="pill-btn" onclick="runEtls()" style="margin-top:12px;background:var(--brand);color:#fff">Check ETLS Eligibility →</button>
+      <div id="etlsResult" style="margin-top:16px"></div>
+    </div>
+  </div>
+
+  <!-- BANDS TAB -->
+  <div class="tool-panel" id="bands">
+    <div class="tool-section">
+      <h2 class="section-title">ECOWAS CET — 5-Band Tariff Structure</h2>
+      <div id="bandsDisplay"></div>
+    </div>
+  </div>
+
+  <!-- MEMBERS TAB -->
+  <div class="tool-panel" id="members">
+    <div class="tool-section">
+      <h2 class="section-title">ECOWAS Member States (15)</h2>
+      <div class="member-grid" id="memberList"></div>
+      <div class="obs-box" style="margin-top:16px">🌍 ECOWAS (Economic Community of West African States) was founded in 1975. The Common External Tariff was adopted in 2015 and fully implemented across most member states by 2020.</div>
+    </div>
+  </div>
+</main>
+
+<afro-footer></afro-footer>
+<script src="/assets/js/bundles/core.5473a555.min.js" defer></script>
+<script src="/assets/js/bundles/tool-page.4701dd1d.min.js" defer></script>
+<script src="/engines/ecowas-levy-engine.js"></script>
+<script>
+var BAND_COLORS = ['#F0FFF4','#E8F5FF','#FFF8E8','#FFE8E8','#F5E8FF'];
+var BAND_TEXT   = ['#1A7A32','#0063D1','#856404','#C0392B','#6B21A8'];
+var selectedBand    = 3;
+var selectedCountry = 'NG';
+
+function setTab(id, btn) {
+  document.querySelectorAll('.tool-panel').forEach(function(p){ p.classList.remove('on'); });
+  document.querySelectorAll('.tool-tab').forEach(function(b){ b.classList.remove('on'); });
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('on');
+}
+
+function fmtUSD2(n){ return '$' + Number(n).toFixed(2); }
+function fmtUSD(n){ return '$' + Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+
+/* ── Country Select ──────────────────────────────────── */
+function buildCountrySelect() {
+  var countries = EcowasLevyEngine.getSupportedCountries();
+  document.getElementById('countrySelectGrid').innerHTML = countries.map(function(c) {
+    return '<div class="country-btn' + (c.code === selectedCountry ? ' active' : '') + '" id="csb-' + c.code + '" onclick="selectCountry(\'' + c.code + '\')">' +
+      c.flag + '<br>' + c.name + '</div>';
+  }).join('');
+}
+
+function selectCountry(code) {
+  selectedCountry = code;
+  document.querySelectorAll('.country-btn').forEach(function(b){ b.classList.remove('active'); });
+  var el = document.getElementById('csb-' + code);
+  if (el) el.classList.add('active');
+  runCalc();
+}
+
+/* ── Band Selector ───────────────────────────────────── */
+function buildBandSelector() {
+  var bands = EcowasLevyEngine.getTariffBands();
+  document.getElementById('bandSelector').innerHTML = bands.map(function(b) {
+    return '<div class="band-card" id="bs-' + b.band + '" style="background:' + BAND_COLORS[b.band] + ';color:' + BAND_TEXT[b.band] + '" onclick="selectBand(' + b.band + ')">' +
+      '<div class="band-rate">' + b.rate + '%</div>' +
+      '<div class="band-label">Band ' + b.band + '</div>' +
+      '<div class="band-desc">' + b.description + '</div>' +
+    '</div>';
+  }).join('');
+  highlightBand(selectedBand);
+}
+
+function highlightBand(band) {
+  document.querySelectorAll('.band-card').forEach(function(c){ c.classList.remove('selected'); });
+  var el = document.getElementById('bs-' + band);
+  if (el) el.classList.add('selected');
+}
+
+function selectBand(band) {
+  selectedBand = band;
+  highlightBand(band);
+  runCalc();
+}
+
+/* ── Main Calc ───────────────────────────────────────── */
+function runCalc() {
+  var cif    = parseFloat(document.getElementById('cifValue').value) || 10000;
+  var fob    = parseFloat(document.getElementById('fobValue').value) || cif * 0.95;
+  var hs     = document.getElementById('hsCode').value.trim();
+  var isEtls = document.getElementById('isEtls').checked;
+  var res = EcowasLevyEngine.calculate({ cifValue: cif, fobValue: fob, cetBand: selectedBand, countryCode: selectedCountry, hsCode: hs, isEtls: isEtls });
+  if (!res) return;
+
+  var country = EcowasLevyEngine.getSupportedCountries().find(function(c){ return c.code === selectedCountry; }) || { flag:'', name: selectedCountry };
+  var html = '<div class="result-hero">';
+  html += '<div style="font-size:13px;opacity:.8;margin-bottom:4px">' + country.flag + ' ' + country.name + ' — Total Import Cost</div>';
+  html += '<div class="result-total">' + fmtUSD(res.totalLandedCost) + '</div>';
+  html += '<div class="result-sub">Effective rate: ' + res.effectiveRate + '% on CIF value</div>';
+  if (isEtls) html += '<div style="font-size:13px;margin-top:8px;background:rgba(255,255,255,.2);border-radius:8px;padding:6px 12px">✅ ETLS applied — duty waived</div>';
+  html += '</div>';
+
+  html += '<h3 style="font-size:14px;font-weight:800;margin-bottom:12px">Full Duty Breakdown</h3>';
+  html += '<div class="breakdown-row"><span>CIF Value (base)</span><span>' + fmtUSD(cif) + '</span></div>';
+  res.breakdown.forEach(function(row) {
+    html += '<div class="breakdown-row' + (row.highlight ? ' cet' : '') + '"><span>' + row.label + '</span><span>' + fmtUSD2(row.amount) + '</span></div>';
+  });
+  html += '<div class="breakdown-row total"><span>Total Charges</span><span>' + fmtUSD(res.totalCharges) + '</span></div>';
+  html += '<div class="breakdown-row total"><span>Total Landed Cost</span><span>' + fmtUSD(res.totalLandedCost) + '</span></div>';
+
+  if (res.specialRateNote) html += '<div class="warn-box" style="margin-top:16px">⚠️ Special Rate Note: ' + res.specialRateNote + '</div>';
+  res.observations.forEach(function(o){ html += '<div class="obs-box">' + o + '</div>'; });
+  document.getElementById('calcResult').innerHTML = html;
+}
+
+/* ── ETLS Checker ────────────────────────────────────── */
+function buildEtlsSelect() {
+  var members = EcowasLevyEngine.getMemberStates();
+  document.getElementById('etlsOrigin').innerHTML = '<option value="">— Select —</option>' +
+    members.map(function(m){ return '<option value="' + m.code + '">' + m.name + ' (' + m.code + ')</option>'; }).join('');
+}
+
+function runEtls() {
+  var origin = document.getElementById('etlsOrigin').value;
+  var hasCOO = document.getElementById('etlsCOO').checked;
+  var hasCTH = document.getElementById('etlsCTH').checked;
+  var va     = parseFloat(document.getElementById('etlsVA').value) || 0;
+  if (!origin) { alert('Please select an origin country.'); return; }
+  var res = EcowasLevyEngine.checkEtls({ originCountry: origin, hasCOO: hasCOO, hasCTH: hasCTH, localValuePct: va });
+  var color = res.eligible ? '#F0FFF4' : '#FFE5E5';
+  var border = res.eligible ? '#34C759' : '#FF3B30';
+  var html = '<div style="background:' + color + ';border:2px solid ' + border + ';border-radius:14px;padding:20px">';
+  html += '<div style="font-size:18px;font-weight:800;margin-bottom:12px">' + (res.eligible ? '✅ ETLS ELIGIBLE' : '❌ NOT ELIGIBLE') + '</div>';
+  html += '<p style="font-size:14px;margin-bottom:12px">' + res.notes + '</p>';
+  res.requirements.forEach(function(r){ html += '<div style="font-size:13px;margin-bottom:6px">' + r + '</div>'; });
+  html += '</div>';
+  document.getElementById('etlsResult').innerHTML = html;
+}
+
+/* ── Bands Display ───────────────────────────────────── */
+function buildBandsDisplay() {
+  var bands = EcowasLevyEngine.getTariffBands();
+  document.getElementById('bandsDisplay').innerHTML = bands.map(function(b) {
+    return '<div style="background:' + BAND_COLORS[b.band] + ';border-radius:14px;padding:20px;margin-bottom:12px">' +
+      '<div style="display:flex;align-items:center;gap:16px">' +
+        '<div style="font-size:36px;font-weight:800;color:' + BAND_TEXT[b.band] + '">' + b.rate + '%</div>' +
+        '<div><div style="font-weight:800;font-size:16px">' + b.label + '</div><div style="font-size:13px;margin-top:4px">' + b.description + '</div></div>' +
+      '</div>' +
+      '<div style="margin-top:12px;font-size:13px;background:rgba(255,255,255,.6);border-radius:8px;padding:10px"><strong>Examples:</strong> ' + b.examples + '</div>' +
+    '</div>';
+  }).join('');
+}
+
+/* ── Members ─────────────────────────────────────────── */
+function buildMembers() {
+  var members = EcowasLevyEngine.getMemberStates();
+  document.getElementById('memberList').innerHTML = members.map(function(m) {
+    return '<div class="member-pill">' + m.name + ' (' + m.code + ')</div>';
+  }).join('');
+}
+
+/* ── init ─────────────────────────────────────────────── */
+buildCountrySelect();
+buildBandSelector();
+buildEtlsSelect();
+buildBandsDisplay();
+buildMembers();
+runCalc();
+</script>
+</body>
+</html>

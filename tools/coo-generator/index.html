@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Certificate of Origin Generator for Africa — AfCFTA, ECOWAS, EAC, SADC | AfroTools</title>
+<meta name="description" content="Generate Certificates of Origin for African exports. AfCFTA, ECOWAS, EAC, SADC and standard COO templates. Check if your product qualifies for preferential tariff treatment.">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="/assets/css/tool-landing.css">
+<style>
+:root{--coo-blue:#007AFF;--coo-dark:#0A1628;--coo-green:#00A651;}
+.coo-hero{background:var(--coo-dark);color:#fff;padding:2.5rem 1.5rem 2rem;}
+.coo-hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-family:'Instrument Serif',serif;line-height:1.2;margin:0 0 .75rem;}
+.coo-hero h1 em{color:var(--coo-blue);font-style:normal;}
+.coo-hero p{color:#94A3B8;max-width:580px;margin:0 0 1.25rem;}
+.badges{display:flex;flex-wrap:wrap;gap:.5rem;}
+.badge{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:980px;padding:.3rem .85rem;font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#CBD5E1;}
+.badge.blue{background:rgba(0,122,255,.2);border-color:rgba(0,122,255,.4);color:#60A5FA;}
+.badge.green{background:rgba(0,166,81,.15);border-color:rgba(0,166,81,.4);color:#6EE7B7;}
+.coo-body{padding:1.5rem;max-width:900px;margin:0 auto;}
+.coo-tabs{display:flex;gap:.25rem;background:#F1F5F9;border-radius:12px;padding:.3rem;margin-bottom:1.5rem;overflow-x:auto;}
+.coo-tab{flex:1;padding:.55rem 1rem;border:none;background:transparent;border-radius:9px;font-size:.82rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;color:#64748B;white-space:nowrap;}
+.coo-tab.on{background:#fff;color:var(--coo-blue);box-shadow:0 1px 4px rgba(0,0,0,.1);}
+.tab-panel{display:none;}.tab-panel.on{display:block;}
+.card{background:#fff;border:1px solid #E2E8F0;border-radius:18px;padding:1.5rem;margin-bottom:1.25rem;}
+.card-head{font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#94A3B8;margin-bottom:1rem;}
+/* Template Cards */
+.tpl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+@media(max-width:660px){.tpl-grid{grid-template-columns:1fr;}}
+.tpl-card{border:2px solid #E2E8F0;border-radius:14px;padding:1rem;cursor:pointer;transition:all .2s;}
+.tpl-card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.08);}
+.tpl-card.selected{border-color:var(--coo-blue);background:#EFF6FF;}
+.tpl-badge{display:inline-block;border-radius:980px;padding:.25rem .7rem;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#fff;margin-bottom:.6rem;}
+.tpl-name{font-weight:800;font-size:.9rem;margin-bottom:.3rem;color:#0f172a;}
+.tpl-applies{font-size:.75rem;color:#64748B;}
+/* Form */
+.f-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
+@media(max-width:600px){.f-grid{grid-template-columns:1fr;}}
+.f-label{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#64748B;margin-bottom:.35rem;}
+.f-input,.f-select,.f-textarea{width:100%;padding:.65rem .9rem;border:1.5px solid #E2E8F0;border-radius:10px;font-size:.9rem;color:#0f172a;background:#FAFAFA;box-sizing:border-box;}
+.f-textarea{height:80px;resize:vertical;}
+.f-input:focus,.f-select:focus,.f-textarea:focus{outline:none;border-color:var(--coo-blue);background:#fff;}
+.gen-btn{width:100%;padding:.9rem;background:var(--coo-blue);color:#fff;border:none;border-radius:980px;font-size:.95rem;font-weight:800;cursor:pointer;margin-top:.75rem;}
+.gen-btn:hover{background:#0063D1;}
+/* Preview */
+.coo-preview{background:#fff;border:2px solid #0f172a;border-radius:4px;padding:2rem;font-family:Georgia,serif;font-size:.85rem;line-height:1.6;color:#0f172a;margin-top:1rem;}
+.coo-preview .coo-title{text-align:center;font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;border-bottom:2px solid #0f172a;padding-bottom:.75rem;margin-bottom:1rem;}
+.coo-preview .coo-subtitle{text-align:center;font-size:.8rem;color:#475569;margin-bottom:1.5rem;}
+.coo-table{width:100%;border-collapse:collapse;margin-bottom:1rem;}
+.coo-table td,.coo-table th{border:1px solid #0f172a;padding:.4rem .6rem;font-size:.8rem;vertical-align:top;}
+.coo-table th{background:#F1F5F9;font-weight:700;text-align:left;}
+.coo-print-btn{padding:.7rem 1.25rem;background:var(--coo-dark);color:#fff;border:none;border-radius:980px;font-size:.85rem;font-weight:700;cursor:pointer;margin-top:1rem;}
+/* Origin criteria */
+.criteria-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
+@media(max-width:580px){.criteria-grid{grid-template-columns:1fr;}}
+.criteria-card{border:2px solid #E2E8F0;border-radius:12px;padding:1rem;}
+.criteria-card.pass{border-color:#10B981;background:#F0FDF4;}
+.criteria-card.fail{border-color:#EF4444;background:#FEF2F2;}
+.criteria-code{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem;}
+.criteria-name{font-weight:700;font-size:.88rem;margin-bottom:.3rem;}
+.criteria-status{font-size:.8rem;font-weight:700;}
+/* Obs */
+.obs-item{display:flex;gap:.65rem;padding:.75rem;border-radius:10px;margin-bottom:.6rem;font-size:.875rem;line-height:1.5;}
+.obs-item.info{background:#EFF6FF;color:#1D4ED8;}
+.obs-item.warn{background:#FFFBEB;color:#92400E;}
+.obs-item.tip{background:#ECFDF5;color:#065F46;}
+@media print{.coo-hero,.coo-body>*:not(.coo-preview),.coo-tabs,.card:not(.preview-card),.badges,afro-navbar,afro-footer{display:none!important;} .coo-preview{border:2px solid #000;padding:1.5cm;}}
+</style>
+  <link rel="canonical" href="https://afrotools.com/tools/coo-generator/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://afrotools.com/tools/coo-generator/">
+  <meta property="og:title" content="Certificate of Origin Generator for Africa — AfCFTA, ECOWAS, EAC, SADC">
+  <meta property="og:description" content="Generate Certificates of Origin for African exports. AfCFTA, ECOWAS, EAC, SADC and standard COO templates. Check if your product qualifies for preferential">
+  <meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+  <meta property="og:site_name" content="AfroTools">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Certificate of Origin Generator for Africa — AfCFTA, ECOWAS, EAC, SADC">
+  <meta name="twitter:description" content="Generate Certificates of Origin for African exports. AfCFTA, ECOWAS, EAC, SADC and standard COO templates. Check if your product qualifies for preferential">
+  <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+</head>
+<body>
+<afro-navbar active="tools"></afro-navbar>
+
+<div class="coo-hero">
+  <nav aria-label="Breadcrumb" style="margin-bottom:1rem;font-size:.8rem;color:#64748B;">
+    <a href="/" style="color:#94A3B8;text-decoration:none;">Home</a> /
+    <a href="/tools" style="color:#94A3B8;text-decoration:none;">Tools</a> /
+    <span style="color:#CBD5E1;">COO Generator</span>
+  </nav>
+  <h1>Certificate of Origin<br><em>Generator 2026</em></h1>
+  <p>Generate printable Certificates of Origin for African exports. AfCFTA, ECOWAS, EAC, SADC, COMESA — check which preferential scheme applies and fill in your COO form.</p>
+  <div class="badges">
+    <span class="badge green">AfCFTA COO</span>
+    <span class="badge blue">6 COO Types</span>
+    <span class="badge">Origin Criteria Checker</span>
+    <span class="badge">Printable Form</span>
+  </div>
+</div>
+
+<div class="coo-body">
+  <div class="coo-tabs" role="tablist">
+    <button class="coo-tab on" onclick="setTab('select',this)">📋 Select Template</button>
+    <button class="coo-tab" onclick="setTab('fill',this)">✏️ Fill Form</button>
+    <button class="coo-tab" onclick="setTab('origin',this)">🔍 Origin Checker</button>
+    <button class="coo-tab" onclick="setTab('preview',this)">👁 Preview & Print</button>
+  </div>
+
+  <!-- TAB 1: Select Template -->
+  <div id="tabSelect" class="tab-panel on">
+    <div class="card">
+      <div class="card-head">Choose COO Type</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem;">
+        <div>
+          <div class="f-label">Exporter Country</div>
+          <select id="exporterCountry" class="f-select" onchange="updateApplicable()">
+            <option value="">— Any —</option>
+            <option value="NG">Nigeria</option><option value="KE">Kenya</option><option value="ZA">South Africa</option>
+            <option value="GH">Ghana</option><option value="EG">Egypt</option><option value="ET">Ethiopia</option>
+            <option value="TZ">Tanzania</option><option value="UG">Uganda</option><option value="RW">Rwanda</option>
+            <option value="CI">Côte d'Ivoire</option><option value="SN">Senegal</option><option value="CM">Cameroon</option>
+            <option value="MA">Morocco</option><option value="TN">Tunisia</option><option value="AO">Angola</option>
+            <option value="ZM">Zambia</option><option value="ZW">Zimbabwe</option>
+          </select>
+        </div>
+        <div>
+          <div class="f-label">Importer Country</div>
+          <select id="importerCountry" class="f-select" onchange="updateApplicable()">
+            <option value="">— Any —</option>
+            <option value="NG">Nigeria</option><option value="KE">Kenya</option><option value="ZA">South Africa</option>
+            <option value="GH">Ghana</option><option value="EG">Egypt</option><option value="ET">Ethiopia</option>
+            <option value="TZ">Tanzania</option><option value="UG">Uganda</option><option value="RW">Rwanda</option>
+            <option value="CI">Côte d'Ivoire</option><option value="SN">Senegal</option><option value="CM">Cameroon</option>
+            <option value="MA">Morocco</option><option value="TN">Tunisia</option><option value="AO">Angola</option>
+            <option value="ZM">Zambia</option><option value="ZW">Zimbabwe</option>
+          </select>
+        </div>
+      </div>
+      <div id="tplGrid" class="tpl-grid"></div>
+    </div>
+  </div>
+
+  <!-- TAB 2: Fill Form -->
+  <div id="tabFill" class="tab-panel">
+    <div class="card" id="formCard">
+      <div class="card-head" id="formTitle">Fill in COO Details</div>
+      <div id="formFields"></div>
+      <button class="gen-btn" onclick="generatePreview()">👁 Generate Preview</button>
+    </div>
+  </div>
+
+  <!-- TAB 3: Origin Checker -->
+  <div id="tabOrigin" class="tab-panel">
+    <div class="card">
+      <div class="card-head">AfCFTA Origin Criteria Checker</div>
+      <p style="font-size:.875rem;color:#64748B;margin:0 0 1rem;">Check if your product qualifies for AfCFTA preferential tariff treatment based on the Rules of Origin.</p>
+      <div class="f-grid">
+        <div>
+          <div class="f-label">Ex-Works Price (USD)</div>
+          <input type="number" id="exWorksPrice" class="f-input" placeholder="e.g. 10000">
+        </div>
+        <div>
+          <div class="f-label">Value of Non-Originating Materials (USD)</div>
+          <input type="number" id="nonOrigMat" class="f-input" placeholder="e.g. 3000">
+        </div>
+      </div>
+      <div class="f-grid">
+        <div class="toggle-row" style="margin:0;">
+          <label style="display:flex;align-items:center;gap:.6rem;cursor:pointer;">
+            <input type="checkbox" id="hasWO" style="width:16px;height:16px;">
+            <span style="font-size:.9rem;">Product is Wholly Obtained (grown/mined in exporting country)</span>
+          </label>
+        </div>
+        <div class="toggle-row" style="margin:0;">
+          <label style="display:flex;align-items:center;gap:.6rem;cursor:pointer;">
+            <input type="checkbox" id="hasCTH" style="width:16px;height:16px;">
+            <span style="font-size:.9rem;">Change in Tariff Heading (HS heading changes during production)</span>
+          </label>
+        </div>
+      </div>
+      <button class="gen-btn" style="margin-top:1rem;" onclick="checkOrigin()">🔍 Check Origin Qualification</button>
+    </div>
+    <div id="originResults"></div>
+  </div>
+
+  <!-- TAB 4: Preview -->
+  <div id="tabPreview" class="tab-panel">
+    <div class="card preview-card" style="padding:1rem;">
+      <div class="card-head">Certificate of Origin Preview</div>
+      <button class="coo-print-btn" onclick="window.print()">🖨 Print / Save as PDF</button>
+    </div>
+    <div class="coo-preview" id="cooPreview">
+      <div class="coo-title">Certificate of Origin</div>
+      <div class="coo-subtitle">Fill in the form and click Generate Preview to see your COO here.</div>
+    </div>
+    <div id="obsPanel"></div>
+  </div>
+</div>
+
+<afro-footer></afro-footer>
+<script src="/assets/js/bundles/core.5473a555.min.js" defer></script>
+<script src="/assets/js/bundles/tool-page.4701dd1d.min.js" defer></script>
+<script src="/data/trade/coo-templates.js"></script>
+<script src="/engines/coo-engine.js"></script>
+<script>
+var selectedTemplate = 'standard';
+var formValues = {};
+
+function setTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(function(p){ p.classList.remove('on'); });
+  document.querySelectorAll('.coo-tab').forEach(function(b){ b.classList.remove('on'); });
+  var el = document.getElementById('tab' + id.charAt(0).toUpperCase() + id.slice(1));
+  if (el) el.classList.add('on');
+  btn.classList.add('on');
+}
+
+function updateApplicable() {
+  var exp = document.getElementById('exporterCountry').value;
+  var imp = document.getElementById('importerCountry').value;
+  var tpls = CooEngine.getApplicableTemplates(exp || null, imp || null);
+  var html = '';
+  tpls.forEach(function(t) {
+    var isSelected = t.id === selectedTemplate;
+    html += '<div class="tpl-card' + (isSelected ? ' selected' : '') + '" onclick="selectTemplate(\'' + t.id + '\')">';
+    html += '<div class="tpl-badge" style="background:' + t.color + ';">' + (t.preferential ? '⭐ Preferential' : 'Standard') + '</div>';
+    html += '<div class="tpl-name">' + t.name + '</div>';
+    html += '<div class="tpl-applies" style="font-size:.75rem;color:#64748B;">' + t.applicableFor + '</div>';
+    html += '<div style="font-size:.78rem;color:#94A3B8;margin-top:.4rem;">' + t.description.slice(0,90) + '…</div>';
+    html += '</div>';
+  });
+  document.getElementById('tplGrid').innerHTML = html;
+}
+
+function selectTemplate(id) {
+  selectedTemplate = id;
+  updateApplicable();
+  buildForm(id);
+  // Switch to fill tab
+  document.querySelectorAll('.tab-panel').forEach(function(p){ p.classList.remove('on'); });
+  document.querySelectorAll('.coo-tab').forEach(function(b){ b.classList.remove('on'); });
+  document.getElementById('tabFill').classList.add('on');
+  document.querySelectorAll('.coo-tab')[1].classList.add('on');
+}
+
+function buildForm(templateId) {
+  var tpl = CooEngine.getTemplate(templateId);
+  if (!tpl) return;
+  document.getElementById('formTitle').textContent = 'Fill in — ' + tpl.name;
+  var html = '';
+  var fields = tpl.fields;
+  for (var i = 0; i < fields.length; i += 2) {
+    html += '<div class="f-grid">';
+    for (var j = i; j < Math.min(i + 2, fields.length); j++) {
+      var fid = fields[j];
+      var label = CooEngine.getFieldLabel(fid);
+      var isTextarea = fid === 'goods_description' || fid === 'direct_consignment_declaration';
+      html += '<div><div class="f-label">' + label + '</div>';
+      if (isTextarea) html += '<textarea class="f-textarea" id="ff_' + fid + '" placeholder="' + label + '">' + (formValues[fid] || '') + '</textarea>';
+      else html += '<input type="text" class="f-input" id="ff_' + fid + '" value="' + (formValues[fid] || '') + '" placeholder="' + label + '">';
+      html += '</div>';
+    }
+    html += '</div>';
+  }
+  // AfCFTA origin criteria dropdown
+  if (templateId === 'afcfta') {
+    html += '<div><div class="f-label">Origin Criteria</div><select class="f-select" id="ff_origin_criteria">' +
+      '<option value="WO">WO — Wholly Obtained</option>' +
+      '<option value="CTH">CTH — Change in Tariff Heading</option>' +
+      '<option value="VA">VA — Value Added (40%)</option>' +
+      '<option value="SP">SP — Specific Process</option>' +
+      '</select></div>';
+  }
+  document.getElementById('formFields').innerHTML = html;
+}
+
+function generatePreview() {
+  var tpl = CooEngine.getTemplate(selectedTemplate);
+  if (!tpl) return;
+  tpl.fields.forEach(function(fid) {
+    var el = document.getElementById('ff_' + fid);
+    if (el) formValues[fid] = el.value;
+  });
+  var ocEl = document.getElementById('ff_origin_criteria');
+  if (ocEl) formValues.origin_criteria = ocEl.value;
+
+  var data = CooEngine.generateFormData(selectedTemplate, formValues);
+  if (!data) return;
+
+  var html = '<div class="coo-title">' + data.templateName.toUpperCase() + '</div>';
+  html += '<div class="coo-subtitle">Issuing Authority: ' + data.issuingAuthority + ' &nbsp;|&nbsp; Generated: ' + data.generatedAt + '</div>';
+  html += '<table class="coo-table">';
+  var fields = Object.keys(data.fields);
+  fields.forEach(function(fid) {
+    var f = data.fields[fid];
+    html += '<tr><th style="width:35%;">' + f.label + '</th><td>' + (f.value || '<em style="color:#94A3B8;">—</em>') + '</td></tr>';
+  });
+  html += '</table>';
+  html += '<div style="margin-top:1.5rem;display:grid;grid-template-columns:1fr 1fr;gap:2rem;">';
+  html += '<div><div style="font-weight:700;font-size:.8rem;margin-bottom:.5rem;">DECLARATION BY EXPORTER</div><div style="border-bottom:1px solid #0f172a;height:40px;"></div><div style="font-size:.75rem;margin-top:.25rem;">Date & Signature of Authorized Signatory</div></div>';
+  html += '<div><div style="font-weight:700;font-size:.8rem;margin-bottom:.5rem;">CERTIFICATION BY ISSUING AUTHORITY</div><div style="border-bottom:1px solid #0f172a;height:40px;"></div><div style="font-size:.75rem;margin-top:.25rem;">Official Stamp & Signature</div></div>';
+  html += '</div>';
+
+  document.getElementById('cooPreview').innerHTML = html;
+
+  // Observations
+  var obs = CooEngine.getObservations(selectedTemplate, formValues.exporter_country, formValues.goods_description);
+  var icons = { info:'ℹ️', warn:'⚠️', tip:'💡' };
+  document.getElementById('obsPanel').innerHTML = obs.map(function(o){
+    return '<div class="obs-item ' + o.type + '"><span style="font-size:1rem;flex-shrink:0;">' + (icons[o.type]||'ℹ️') + '</span><span>' + o.text + '</span></div>';
+  }).join('');
+
+  // Switch to preview tab
+  document.querySelectorAll('.tab-panel').forEach(function(p){ p.classList.remove('on'); });
+  document.querySelectorAll('.coo-tab').forEach(function(b){ b.classList.remove('on'); });
+  document.getElementById('tabPreview').classList.add('on');
+  document.querySelectorAll('.coo-tab')[3].classList.add('on');
+}
+
+function checkOrigin() {
+  var params = {
+    exWorksPrice: parseFloat(document.getElementById('exWorksPrice').value) || 0,
+    nonOriginatingMaterialsCost: parseFloat(document.getElementById('nonOrigMat').value) || 0,
+    hasWhollyObtained: document.getElementById('hasWO').checked,
+    hasCTH: document.getElementById('hasCTH').checked
+  };
+  var results = CooEngine.checkOriginCriteria(params);
+  if (!results.length) {
+    document.getElementById('originResults').innerHTML = '<div class="obs-item warn">⚠️ Enter values above to check origin qualification.</div>';
+    return;
+  }
+  var html = '<div class="card"><div class="card-head">Origin Qualification Results</div><div class="criteria-grid">';
+  results.forEach(function(r) {
+    html += '<div class="criteria-card ' + (r.qualifies ? 'pass' : 'fail') + '">';
+    html += '<div class="criteria-code" style="color:' + (r.qualifies ? '#065F46' : '#991B1B') + ';">' + r.criteria + '</div>';
+    html += '<div class="criteria-name">' + r.label + '</div>';
+    html += '<div class="criteria-status" style="color:' + (r.qualifies ? '#065F46' : '#991B1B') + ';">' + (r.qualifies ? '✅ Qualifies' : '❌ Does not qualify') + '</div>';
+    if (r.percentage) html += '<div style="font-size:.78rem;margin-top:.3rem;color:#334155;">Value added: ' + r.percentage + '% (need ≥40%)</div>';
+    html += '<div style="font-size:.78rem;margin-top:.4rem;color:#64748B;">' + r.desc + '</div>';
+    html += '</div>';
+  });
+  html += '</div></div>';
+  var anyQualifies = results.some(function(r){ return r.qualifies; });
+  if (anyQualifies) html += '<div class="obs-item info">✅ Your product qualifies for AfCFTA preferential treatment under at least one origin criterion. You can claim preferential tariff rates when exporting to AfCFTA member states.</div>';
+  else html += '<div class="obs-item warn">❌ Based on the inputs, your product may not meet AfCFTA Rules of Origin. Consider increasing local value addition or checking if a Specific Process rule applies to your product category.</div>';
+  document.getElementById('originResults').innerHTML = html;
+}
+
+// Init
+updateApplicable();
+buildForm('standard');
+</script>
+</body>
+</html>
