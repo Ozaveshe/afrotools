@@ -110,7 +110,7 @@
       <span class="badge b-blue">CNSS · Income Tax</span>
       <span class="badge b-grey">XAF · Gabon</span>
     </div>
-    <p class="hero-meta">Last verified: July 2025 · Source: TRA (tra.go.tz) · Income Tax Act 2004 · Finance Act 2024/25</p>
+    <p class="hero-meta">Last verified: July 2025 · Source: DGI (dgi.gouv.ga) · Code Général des Impôts · CNSS</p>
     <p style="font-size:0.8rem;color:#64748b;margin-top:8px;">Also see: <a href="/gabon/ga-vat" style="color:#007AFF;font-weight:600;">Gabon VAT Calculator</a></p>
   </div>
 </section>
@@ -139,8 +139,8 @@
           <div class="field">
             <div class="f-label"><span class="f-label-text">Sector</span><span class="f-hint">Determines social security fund</span></div>
             <div class="sector-row">
-              <button class="sec-btn on" id="btnPrivate" onclick="setSector('private',this)">Private (NSSF)</button>
-              <button class="sec-btn" id="btnPublic" onclick="setSector('public',this)">Public Sector (PSSSF)</button>
+              <button class="sec-btn on" id="btnPrivate" onclick="setSector('private',this)">Private (CNSS)</button>
+              <button class="sec-btn" id="btnPublic" onclick="setSector('public',this)">Public Sector (CNSS)</button>
             </div>
           </div>
 
@@ -178,14 +178,14 @@
             <div class="toggles">
               <div class="tog on" data-tog="nssf" onclick="togItem(this)">
                 <div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                <div><div class="tog-label" id="nssfLabel">NSSF (private)</div><div class="tog-rate">10% employee — tax-deductible</div></div>
+                <div><div class="tog-label" id="nssfLabel">CNSS (2.5%)</div><div class="tog-rate">2.5% employee — tax-deductible</div></div>
               </div>
               <div class="tog" data-tog="secondary" onclick="togItem(this)">
                 <div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                 <div><div class="tog-label">Secondary Employment</div><div class="tog-rate">Flat 30% no deductions</div></div>
               </div>
             </div>
-            <p class="f-note">NSSF employee contribution (10%) is fully deductible from taxable income before PAYE is calculated. Employer NSSF (10%) is an additional cost shown in employer chart. No NSSF cap — applies to full gross salary.</p>
+            <p class="f-note">CNSS employee contribution (2.5%) is deductible from taxable income before IRPP is calculated. Employer CNSS (16.6%) is an additional cost shown in employer chart. No cap on CNSS contributions.</p>
           </div>
 
           <button class="calc-btn" onclick="calculate()">Calculate My Take-Home Pay →</button>
@@ -196,8 +196,8 @@
       <div class="card results-card" id="resultsCard">
         <div class="res-hero">
           <div class="res-hero-label">Monthly Take-Home Pay</div>
-          <div class="res-hero-amount" id="resAmount">TZS 0</div>
-          <div class="res-hero-period">After PAYE, NSSF &amp; all deductions</div>
+          <div class="res-hero-amount" id="resAmount">XAF 0</div>
+          <div class="res-hero-period">After IRPP, CNSS &amp; all deductions</div>
           <div class="res-hero-gross" id="resGross"></div>
         </div>
         <div class="res-body">
@@ -265,7 +265,7 @@
           <span class="ai-head-by">Powered by Claude</span>
         </div>
         <div class="ai-body">
-          <p class="ai-status" id="aiStatus">Calculate your salary first — I'll analyse your TRA PAYE position, explain NSSF deductibility, SDL implications, and give specific optimisation tips for Tanzania.</p>
+          <p class="ai-status" id="aiStatus">Calculate your salary first — I'll analyse your Gabon IRPP position, explain CNSS deductibility, and give specific optimisation tips for Gabon.</p>
           <div class="ai-response" id="aiResp"></div>
           <button class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Calculate first to unlock →</button>
           <div class="ai-chat" id="aiChat">
@@ -280,41 +280,40 @@
               </div>
       </div>
 
-<!-- TRA TAX BANDS -->
+<!-- DGI IRPP BANDS -->
       <div class="card bands-card">
         <div class="card-head" onclick="toggleBands(this)">
-          <span class="card-title">TRA 2025/26 Monthly Bands</span>
+          <span class="card-title">DGI IRPP 2025/26 Monthly Bands</span>
           <span class="tog-arrow">▾</span>
         </div>
         <div class="bands-body">
-          <div class="band-row"><span class="band-range">TZS 0 – 270,000</span><span class="band-zero">0% — exempt</span></div>
-          <div class="band-row"><span class="band-range">TZS 270,001 – 520,000</span><span class="band-rate">8% on excess above 270k</span></div>
-          <div class="band-row"><span class="band-range">TZS 520,001 – 760,000</span><span class="band-rate">TZS 20,000 + 20% on excess</span></div>
-          <div class="band-row"><span class="band-range">TZS 760,001 – 1,000,000</span><span class="band-rate">TZS 68,000 + 25% on excess</span></div>
-          <div class="band-row"><span class="band-range">Above TZS 1,000,000</span><span class="band-rate">TZS 128,000 + 30% on excess</span></div>
-          <p class="band-note">Calculated monthly on taxable income (gross minus NSSF/PSSSF). Annual tax-free threshold: TZS 3,240,000. Secondary employment: flat 30% on gross, no deductions.</p>
+          <div class="band-row"><span class="band-range">XAF 0 – 125,000</span><span class="band-zero">0% — exempt</span></div>
+          <div class="band-row"><span class="band-range">XAF 125,001 – 166,667</span><span class="band-rate">5% on excess</span></div>
+          <div class="band-row"><span class="band-range">XAF 166,668 – 250,000</span><span class="band-rate">10% on excess</span></div>
+          <div class="band-row"><span class="band-range">XAF 250,001 – 416,667</span><span class="band-rate">15% on excess</span></div>
+          <div class="band-row"><span class="band-range">XAF 416,668 – 583,333</span><span class="band-rate">20% on excess</span></div>
+          <div class="band-row"><span class="band-range">XAF 583,334 – 833,333</span><span class="band-rate">25% on excess</span></div>
+          <div class="band-row"><span class="band-range">XAF 833,334 – 1,250,000</span><span class="band-rate">30% on excess</span></div>
+          <div class="band-row"><span class="band-range">Above XAF 1,250,000</span><span class="band-rate">35% on excess</span></div>
+          <p class="band-note">Monthly withholding = 1/12 of annual IRPP. Taxable income = gross minus CNSS (2.5%). Annual tax-free threshold: XAF 1,500,000. Secondary employment: flat 30% on gross.</p>
         </div>
       </div>
 
-      <!-- LEVIES -->
+      <!-- CNSS -->
       <div class="card bands-card">
         <div class="card-head" onclick="toggleBands(this)">
-          <span class="card-title">NSSF · SDL · WCF Rates 2025</span>
+          <span class="card-title">CNSS Rates 2025</span>
           <span class="tog-arrow">▾</span>
         </div>
         <div class="bands-body">
-          <div class="band-row"><span class="band-range">Employee NSSF (private sector)</span><span class="band-rate">10% of gross (no cap)</span></div>
-          <div class="band-row"><span class="band-range">Employer NSSF (private sector)</span><span class="band-rate">10% of gross (no cap)</span></div>
-          <div class="band-row"><span class="band-range">Employee PSSSF (public sector)</span><span class="band-rate">5% of basic salary</span></div>
-          <div class="band-row"><span class="band-range">Employer PSSSF (public sector)</span><span class="band-rate">15% of basic salary</span></div>
-          <div class="band-row"><span class="band-range">SDL (employer only, 10+ staff)</span><span class="band-rate">3.5% of gross emoluments</span></div>
-          <div class="band-row"><span class="band-range">WCF (employer only, private)</span><span class="band-rate">0.5% of monthly wage bill</span></div>
-          <p class="band-note">NSSF/PSSSF employee contribution deductible from taxable income. SDL due by 7th of following month (same as PAYE). NSSF due end of following month. No cap on NSSF contributions.</p>
+          <div class="band-row"><span class="band-range">Employee CNSS</span><span class="band-rate">2.5% of gross (tax-deductible)</span></div>
+          <div class="band-row"><span class="band-range">Employer CNSS</span><span class="band-rate">16.6% of gross (no cap)</span></div>
+          <p class="band-note">CNSS employee contribution (2.5%) is deductible from gross income before IRPP calculation. Employer CNSS (16.6%) is one of the highest in francophone Africa. No ceiling on contributions.</p>
         </div>
       </div>
 
       <div class="disclaimer">
-        <strong>Disclaimer:</strong> For informational purposes only. Not professional tax or legal advice. Rates based on Tanzania Income Tax Act 2004, Finance Act 2024/25. Verify with TRA (tra.go.tz) or a qualified Tanzanian tax advisor.
+        <strong>Disclaimer:</strong> For informational purposes only. Not professional tax or legal advice. Rates based on Gabon Code Général des Impôts, IRPP 2025/26. Verify with DGI (dgi.gouv.ga) or a qualified Gabonese tax advisor.
       </div>
 
       <div class="tool-info-card">
@@ -359,28 +358,28 @@
     <h2 class="sec-title">Common Gabon PAYE Questions</h2>
     <div class="faq-grid">
       <div class="faq-item">
-        <div class="faq-q">What are the Tanzania PAYE tax bands for 2025/26?</div>
-        <p class="faq-a">Five monthly bands: 0% on first TZS 270,000; 8% on TZS 270,001–520,000; TZS 20,000 plus 20% on TZS 520,001–760,000; TZS 68,000 plus 25% on TZS 760,001–1,000,000; TZS 128,000 plus 30% above TZS 1,000,000. These bands are applied monthly against taxable income (after NSSF deduction).</p>
+        <div class="faq-q">What are the Gabon IRPP tax bands for 2025/26?</div>
+        <p class="faq-a">Eight annual bands: 0% on first XAF 1,500,000; 5% on XAF 1.5M–2M; 10% on XAF 2M–3M; 15% on XAF 3M–5M; 20% on XAF 5M–7M; 25% on XAF 7M–10M; 30% on XAF 10M–15M; 35% above XAF 15,000,000. Monthly PAYE withholding is 1/12 of the annual IRPP. Applied to taxable income (gross minus CNSS 2.5%).</p>
       </div>
       <div class="faq-item">
-        <div class="faq-q">Is NSSF contribution deductible from PAYE taxable income?</div>
-        <p class="faq-a">Yes — the employee's mandatory 10% NSSF contribution (private sector) or 5% PSSSF contribution (public sector) is fully deductible from gross pay before calculating PAYE. This reduces your taxable income and therefore your PAYE tax. The employer's matching contribution is a separate employer cost, not deducted from your pay.</p>
+        <div class="faq-q">Is CNSS contribution deductible from IRPP taxable income?</div>
+        <p class="faq-a">Yes — the employee's mandatory 2.5% CNSS contribution is deductible from gross income before IRPP is calculated. This reduces your taxable income and therefore your IRPP. The employer CNSS contribution (16.6%) is a separate employer cost and does not affect employee take-home pay.</p>
       </div>
       <div class="faq-item">
-        <div class="faq-q">What is the Skills Development Levy (SDL)?</div>
-        <p class="faq-a">SDL is an employer-only payroll tax of 3.5% of gross monthly emoluments, paid to TRA by the 7th of the following month alongside PAYE. It applies to organisations employing 10 or more people on Tanzania Mainland (4+ in Zanzibar). SDL is not deducted from employee pay — it's an additional cost borne entirely by the employer.</p>
+        <div class="faq-q">What is CNSS in Gabon?</div>
+        <p class="faq-a">The Caisse Nationale de Sécurité Sociale (CNSS) is Gabon's mandatory social security body covering pension, family allowances, and occupational risk. Employees contribute 2.5% of gross salary and employers contribute 16.6% — one of the highest employer rates in francophone Africa. There is no ceiling on CNSS contributions.</p>
       </div>
       <div class="faq-item">
-        <div class="faq-q">How is secondary employment taxed in Tanzania?</div>
-        <p class="faq-a">Income from a second job in Tanzania is taxed at a flat rate of 30% at source, with no deductions or tax-free band allowed. This is a final withholding tax — the secondary employer withholds 30% of the full gross amount and remits it to TRA. This prevents the progressive bands from being applied twice across two employers.</p>
+        <div class="faq-q">How is secondary employment taxed in Gabon?</div>
+        <p class="faq-a">Secondary employment income in Gabon is subject to IRPP at a flat withholding rate of 30% at source with no deductions or tax-free threshold. The secondary employer withholds 30% of the full gross amount and remits it to the DGI. This prevents progressive bands from being claimed twice.</p>
       </div>
       <div class="faq-item">
-        <div class="faq-q">What is the Workers' Compensation Fund (WCF)?</div>
-        <p class="faq-a">WCF is an employer-only contribution of 0.5% of the monthly gross wage bill for private sector employers (0.5% for public sector too). It funds compensation for employees injured at work. WCF returns are filed annually (1 March to 28 February), with monthly payments. This is separate from SDL and NSSF.</p>
+        <div class="faq-q">What is the total employer cost in Gabon?</div>
+        <p class="faq-a">Employers in Gabon pay the gross salary plus CNSS employer contribution of 16.6%. On a monthly gross of XAF 1,000,000, the total employer cost is XAF 1,166,000 — a significant payroll cost that makes Gabon one of the more expensive hiring environments in Central Africa.</p>
       </div>
       <div class="faq-item">
-        <div class="faq-q">When must employers remit PAYE to TRA?</div>
-        <p class="faq-a">PAYE and SDL must be filed and paid to TRA by the 7th day of the month following the payroll month. NSSF and WCF contributions are due by the end of the following month. Late payment attracts penalties of 2.5% per month (minimum TZS 100,000 for individuals). Employers must file a monthly PAYE return even for nil-tax months.</p>
+        <div class="faq-q">When must employers remit IRPP and CNSS in Gabon?</div>
+        <p class="faq-a">Employers must remit IRPP withholding to the DGI and CNSS contributions to the Caisse Nationale de Sécurité Sociale on a monthly basis. Declarations are typically due by the 15th of the following month. Late filing attracts penalties and interest. The DGI can be contacted at dgi.gouv.ga.</p>
       </div>
     </div>
   </div>
@@ -391,7 +390,7 @@
   <div class="modal">
     <div id="modalForm">
       <h3>📄 Download Your PAYE Summary</h3>
-      <p>Enter your email to get a detailed PDF — we'll notify you when Tanzania tax rates change.</p>
+      <p>Enter your email to get a detailed PDF — we'll notify you when Gabon IRPP rates change.</p>
       <form name="pdf-leads" data-netlify="true" netlify-honeypot="bot-field" id="leadForm" onsubmit="submitPdf(event)">
         <input type="hidden" name="form-name" value="pdf-leads">
       <p style="display:none"><input name="bot-field"></p>
@@ -441,6 +440,30 @@
   <p style="font-size:0.82rem;color:#6b7280;margin-top:0.75rem;">IRPP: progressive 0%–35% annual bands. Currency: XAF (CEMAC CFA franc, fixed to EUR at 655.957). Note: calculator social security rate may not reflect exact CNSS — verify current rates with DGI Gabon.</p>
 </section>
 
+<section style="padding:48px 16px;background:#f8fafd">
+  <div style="max-width:800px;margin:0 auto">
+    <h2 style="font-size:1.45rem;font-weight:700;color:#0f172a;margin-bottom:1rem">Gabon IRPP: How Income Tax Works</h2>
+    <p style="color:#374151;line-height:1.7;margin-bottom:1rem">Gabon's <strong>Impôt sur le Revenu des Personnes Physiques (IRPP)</strong> is a progressive income tax administered by the <strong>Direction Générale des Impôts (DGI)</strong> under the Code Général des Impôts. Tax is calculated on annual taxable income — which equals gross salary minus any deductible CNSS employee contributions (2.5%). The annual IRPP is then divided by 12 for monthly withholding. All employees working in Gabon are subject to IRPP, regardless of nationality.</p>
+    <p style="color:#374151;line-height:1.7;margin-bottom:1rem">Social security in Gabon is managed by the <strong>Caisse Nationale de Sécurité Sociale (CNSS)</strong>. Employees contribute <strong>2.5%</strong> of gross salary, while employers contribute <strong>16.6%</strong>. The CNSS employee contribution is deductible from taxable income before IRPP is calculated. There is no Skills Development Levy or Workers Compensation Fund equivalent deducted via payroll in Gabon.</p>
+    <p style="color:#374151;line-height:1.7;margin-bottom:1.5rem">IRPP is filed and remitted monthly by the employer on behalf of employees. Employers must submit payroll declarations and pay IRPP by the 15th of the following month via the DGI portal. Failure to withhold and remit IRPP correctly can result in penalties. The tax year in Gabon follows the calendar year (January–December), and annual reconciliation is required for employees with multiple income sources.</p>
+    <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;font-size:0.9rem">
+        <thead><tr style="background:#0A1628;color:#fff"><th style="padding:10px 12px;text-align:left">Annual Taxable Income (XAF)</th><th style="padding:10px 12px;text-align:right">Rate</th></tr></thead>
+        <tbody>
+          <tr style="background:#fff"><td style="padding:9px 12px;border-bottom:1px solid #e5e7eb">0 – 1,500,000</td><td style="padding:9px 12px;text-align:right;border-bottom:1px solid #e5e7eb">0%</td></tr>
+          <tr style="background:#f8fafd"><td style="padding:9px 12px;border-bottom:1px solid #e5e7eb">1,500,001 – 2,000,000</td><td style="padding:9px 12px;text-align:right;border-bottom:1px solid #e5e7eb">5%</td></tr>
+          <tr style="background:#fff"><td style="padding:9px 12px;border-bottom:1px solid #e5e7eb">2,000,001 – 3,000,000</td><td style="padding:9px 12px;text-align:right;border-bottom:1px solid #e5e7eb">10%</td></tr>
+          <tr style="background:#f8fafd"><td style="padding:9px 12px;border-bottom:1px solid #e5e7eb">3,000,001 – 5,000,000</td><td style="padding:9px 12px;text-align:right;border-bottom:1px solid #e5e7eb">15%</td></tr>
+          <tr style="background:#fff"><td style="padding:9px 12px;border-bottom:1px solid #e5e7eb">5,000,001 – 7,000,000</td><td style="padding:9px 12px;text-align:right;border-bottom:1px solid #e5e7eb">20%</td></tr>
+          <tr style="background:#f8fafd"><td style="padding:9px 12px;border-bottom:1px solid #e5e7eb">7,000,001 – 10,000,000</td><td style="padding:9px 12px;text-align:right;border-bottom:1px solid #e5e7eb">25%</td></tr>
+          <tr style="background:#fff"><td style="padding:9px 12px;border-bottom:1px solid #e5e7eb">10,000,001 – 15,000,000</td><td style="padding:9px 12px;text-align:right;border-bottom:1px solid #e5e7eb">30%</td></tr>
+          <tr style="background:#f8fafd"><td style="padding:9px 12px">Above 15,000,000</td><td style="padding:9px 12px;text-align:right">35%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
 <section class="more-tools-sec">
   <div class="more-tools-inner">
     <h2 class="more-tools-title">More African Tax Tools</h2>
@@ -470,10 +493,9 @@
 
 <script>
 // ══════════════════════════════════════════════════════════════════
-//  TANZANIA PAYE CALCULATOR 2025/26
-//  TRA Progressive Monthly Tax · NSSF/PSSSF · SDL · WCF
-//  Source: Income Tax Act 2004 · Finance Act 2024/25 · TRA (tra.go.tz)
-//          NSSF Act 2018 · PSSSF · Skills & Development Levy Act
+//  GABON IRPP CALCULATOR 2025/26
+//  DGI Progressive Monthly Tax · CNSS Social Security
+//  Source: Code Général des Impôts · DGI (dgi.gouv.ga) · CNSS
 // ══════════════════════════════════════════════════════════════════
 
 var RESULT=null;
@@ -483,7 +505,7 @@ let CHART_TYPE   = 'donut';
 let CHAT_HISTORY = [];
 let SECTOR       = 'private'; // 'private' | 'public'
 
-const fmt = n => 'TZS\u00A0' + Math.round(Math.abs(n)).toLocaleString('en-TZ');
+const fmt = n => 'XAF\u00A0' + Math.round(Math.abs(n)).toLocaleString('fr-GA');
 const pct = r => { const v = r * 100; return (v % 1 === 0 ? v.toFixed(0) : parseFloat(v.toFixed(2)).toString()) + '%'; };
 
 // ── SECTOR SELECTOR ───────────────────────────────────────────
@@ -492,8 +514,8 @@ function setSector(s, btn) {
   document.querySelectorAll('.sec-btn').forEach(b => b.classList.remove('on'));
   btn.classList.add('on');
   const nssfTog = document.querySelector('[data-tog="nssf"]');
-  document.getElementById('nssfLabel').textContent = s === 'private' ? 'NSSF (private)' : 'PSSSF (public)';
-  nssfTog.querySelector('.tog-rate').textContent = s === 'private' ? '10% employee — tax-deductible' : '5% employee — tax-deductible';
+  document.getElementById('nssfLabel').textContent = 'CNSS (2.5%)';
+  nssfTog.querySelector('.tog-rate').textContent = '2.5% employee — tax-deductible';
 }
 
 // ── SLIDER ────────────────────────────────────────────────────
@@ -523,59 +545,86 @@ function togItem(el) { el.classList.toggle('on'); }
 function isOn(tog) { return !!document.querySelector(`[data-tog="${tog}"]`)?.classList.contains('on'); }
 
 // ══════════════════════════════════════════════════════════════
-//  TRA PAYE TAX ENGINE (MONTHLY)
-//  Bands on MONTHLY TAXABLE INCOME (gross minus social security):
-//  0%    on first  TZS 270,000
-//  8%    on next   TZS 250,000  (270,001–520,000)
-//  20%   on next   TZS 240,000  (520,001–760,000) [base TZS 20,000]
-//  25%   on next   TZS 240,000  (760,001–1,000,000) [base TZS 68,000]
-//  30%   above     TZS 1,000,000 [base TZS 128,000]
+//  GABON IRPP TAX ENGINE (MONTHLY — annual/12)
+//  Bands on MONTHLY TAXABLE INCOME (annual gross minus CNSS 2.5%, divided by 12):
+//  0%     on first  XAF 125,000   (annual: 1,500,000)
+//  5%     on next   XAF 41,667    (125,001–166,667)
+//  10%    on next   XAF 83,333    (166,668–250,000)
+//  15%    on next   XAF 166,667   (250,001–416,667)
+//  20%    on next   XAF 166,666   (416,668–583,333)
+//  25%    on next   XAF 250,000   (583,334–833,333)
+//  30%    on next   XAF 416,667   (833,334–1,250,000)
+//  35%    above     XAF 1,250,000
 // ══════════════════════════════════════════════════════════════
 
 function calcMonthlyPAYE(monthlyTaxableIncome) {
   const income = Math.max(0, monthlyTaxableIncome);
   const bandBreakdown = [];
 
-  if (income <= 270000) {
+  if (income <= 125000) {
     bandBreakdown.push({ rate: 0, income, tax: 0 });
     return { tax: 0, bandBreakdown };
   }
 
   let tax = 0;
 
-  // Band 1: 0% on first 270,000
-  bandBreakdown.push({ rate: 0, income: 270000, tax: 0 });
+  // Band 1: 0% on first 125,000
+  bandBreakdown.push({ rate: 0, income: 125000, tax: 0 });
 
-  // Band 2: 8% on 270,001–520,000
-  if (income > 270000) {
-    const chunk = Math.min(income - 270000, 250000);
-    const t = chunk * 0.08;
+  // Band 2: 5% on 125,001–166,667
+  if (income > 125000) {
+    const chunk = Math.min(income - 125000, 41667);
+    const t = chunk * 0.05;
     tax += t;
-    bandBreakdown.push({ rate: 0.08, income: chunk, tax: t });
+    bandBreakdown.push({ rate: 0.05, income: chunk, tax: t });
   }
 
-  // Band 3: 20% on 520,001–760,000
-  if (income > 520000) {
-    const chunk = Math.min(income - 520000, 240000);
+  // Band 3: 10% on 166,668–250,000
+  if (income > 166667) {
+    const chunk = Math.min(income - 166667, 83333);
+    const t = chunk * 0.10;
+    tax += t;
+    bandBreakdown.push({ rate: 0.10, income: chunk, tax: t });
+  }
+
+  // Band 4: 15% on 250,001–416,667
+  if (income > 250000) {
+    const chunk = Math.min(income - 250000, 166667);
+    const t = chunk * 0.15;
+    tax += t;
+    bandBreakdown.push({ rate: 0.15, income: chunk, tax: t });
+  }
+
+  // Band 5: 20% on 416,668–583,333
+  if (income > 416667) {
+    const chunk = Math.min(income - 416667, 166666);
     const t = chunk * 0.20;
     tax += t;
     bandBreakdown.push({ rate: 0.20, income: chunk, tax: t });
   }
 
-  // Band 4: 25% on 760,001–1,000,000
-  if (income > 760000) {
-    const chunk = Math.min(income - 760000, 240000);
+  // Band 6: 25% on 583,334–833,333
+  if (income > 583333) {
+    const chunk = Math.min(income - 583333, 250000);
     const t = chunk * 0.25;
     tax += t;
     bandBreakdown.push({ rate: 0.25, income: chunk, tax: t });
   }
 
-  // Band 5: 30% above 1,000,000
-  if (income > 1000000) {
-    const chunk = income - 1000000;
+  // Band 7: 30% on 833,334–1,250,000
+  if (income > 833333) {
+    const chunk = Math.min(income - 833333, 416667);
     const t = chunk * 0.30;
     tax += t;
     bandBreakdown.push({ rate: 0.30, income: chunk, tax: t });
+  }
+
+  // Band 8: 35% above 1,250,000
+  if (income > 1250000) {
+    const chunk = income - 1250000;
+    const t = chunk * 0.35;
+    tax += t;
+    bandBreakdown.push({ rate: 0.35, income: chunk, tax: t });
   }
 
   return { tax, bandBreakdown: bandBreakdown.filter(b => b.income > 0) };
@@ -604,13 +653,13 @@ function calcMonthlyPAYE(monthlyTaxableIncome) {
   const isSecondary = isOn('secondary');
   const hasNSSF     = isOn('nssf');
 
-  // NSSF / PSSSF calculation
-  const socialRate     = hasNSSF ? (SECTOR === 'private' ? 0.10 : 0.05) : 0;
-  const empSocialRate  = SECTOR === 'private' ? 0.10 : 0.15;
+  // CNSS calculation
+  const socialRate     = hasNSSF ? 0.025 : 0;
+  const empSocialRate  = 0.166;
   const social         = gross * socialRate;
   const empSocial      = gross * empSocialRate;
 
-  // PAYE
+  // IRPP
   let monthlyPAYE = 0;
   let bandBreakdown = [];
 
@@ -625,9 +674,9 @@ function calcMonthlyPAYE(monthlyTaxableIncome) {
     bandBreakdown = result.bandBreakdown;
   }
 
-  // Employer levies (on gross emoluments, employer cost only)
-  const sdl = gross * 0.035;      // 3.5% employer only
-  const wcf = gross * 0.005;      // 0.5% employer only
+  // No SDL/WCF in Gabon
+  const sdl = 0;
+  const wcf = 0;
 
   // Net pay
   const totalEmployeeDeductions = social + monthlyPAYE;
@@ -644,7 +693,7 @@ function calcMonthlyPAYE(monthlyTaxableIncome) {
     totalEmployeeDeductions, netMonthly, effectiveRate,
     annualGross: annual(gross), annualNet: annual(netMonthly),
     annualTax: annual(monthlyPAYE), annualSocial: annual(social),
-    totalEmployerCostMonthly: gross + empSocial + sdl + wcf,
+    totalEmployerCostMonthly: gross + empSocial,
   };
 
   document.getElementById('resAmount').textContent      = fmt(netMonthly);
@@ -655,7 +704,7 @@ function calcMonthlyPAYE(monthlyTaxableIncome) {
   document.getElementById('hiddenGross').value = gross;
 
   const strip = document.getElementById('employerStrip');
-  strip.innerHTML = `<strong>Total Employer Cost: ${fmt(RESULT.totalEmployerCostMonthly)}/month</strong><br>Gross + NSSF ${fmt(empSocial)}/mo + SDL ${fmt(sdl)}/mo + WCF ${fmt(wcf)}/mo.`;
+  strip.innerHTML = `<strong>Total Employer Cost: ${fmt(RESULT.totalEmployerCostMonthly)}/month</strong><br>Gross + CNSS employer ${fmt(empSocial)}/mo.`;
   strip.classList.add('on');
 
   document.getElementById('resultsCard').classList.add('on');
@@ -709,14 +758,14 @@ function renderRows(R, period) {
     </div>
     <div class="res-section">
       <div class="res-section-title">Deductions</div>
-      ${R.social > 0 ? row(`${R.sector === 'private' ? 'NSSF' : 'PSSSF'} (${pct(R.socialRate)}, no cap)`, fmt(social), 'c-red') : ''}
+      ${R.social > 0 ? row(`CNSS employee (${pct(R.socialRate)}, no cap)`, fmt(social), 'c-red') : ''}
       ${R.isSecondary
-        ? `<div style="background:rgba(220,100,0,.06);border:1px solid rgba(220,100,0,.2);border-radius:5px;padding:8px 12px;font-size:.78rem;color:#7a3800;line-height:1.5;margin:6px 0">⚠ Secondary employment: flat 30% applied to full gross — no tax-free band, no NSSF deduction for PAYE purposes.</div>`
+        ? `<div style="background:rgba(220,100,0,.06);border:1px solid rgba(220,100,0,.2);border-radius:5px;padding:8px 12px;font-size:.78rem;color:#7a3800;line-height:1.5;margin:6px 0">⚠ Secondary employment: flat 30% applied to full gross — no tax-free band.</div>`
         : row(`Net taxable income${lbl}`, fmt(isAnnual ? R.annualGross - R.annualSocial : R.gross - R.social), 'c-mut')
       }
     </div>
     <div class="res-section">
-      <div class="res-section-title">PAYE (TRA)</div>
+      <div class="res-section-title">IRPP (DGI)</div>
       ${row(`Income tax (PAYE)${lbl}`, fmt(paye), 'c-red')}
     </div>
     <div class="res-section">
@@ -769,7 +818,7 @@ function renderChart(type) {
     CHART = new Chart(canvas, {
       type: 'doughnut',
       data: {
-        labels: ['Take-Home', 'PAYE Tax', R.sector === 'private' ? 'NSSF' : 'PSSSF'],
+        labels: ['Take-Home', 'IRPP Tax', 'CNSS'],
         datasets: [{ data: [R.netMonthly, R.monthlyPAYE, R.social], backgroundColor: AfroChartColors.doughnut.slice(0, 3), borderWidth: 2, borderColor: '#fff' }]
       },
       options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{size:11,weight:'600'}, padding:12 } } } }
@@ -781,18 +830,18 @@ function renderChart(type) {
       type: 'bar',
       data: {
         labels: bands.map(b => b.isFlat ? '30% flat' : (b.rate*100)+'%'),
-        datasets: [{ label:'Tax (TZS)', data: bands.map(b=>b.tax), backgroundColor: AfroChartColors.series.slice(0, bands.length), borderRadius:5 }]
+        datasets: [{ label:'Tax (XAF)', data: bands.map(b=>b.tax), backgroundColor: AfroChartColors.series.slice(0, bands.length), borderRadius:5 }]
       },
-      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'TZS'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid: { color: AfroChartColors.grid} }, x:{ticks:{font:{size:10,weight:'600'}}} } }
+      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'XAF'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid: { color: AfroChartColors.grid} }, x:{ticks:{font:{size:10,weight:'600'}}} } }
     });
   } else if (type === 'employer') {
     CHART = new Chart(canvas, {
       type: 'bar',
       data: {
-        labels: ['Take-Home', 'PAYE', R.sector==='private'?'Emp NSSF':'Emp PSSSF', 'Empr Social', 'SDL', 'WCF'],
-        datasets: [{ label:'TZS', data:[R.netMonthly, R.monthlyPAYE, R.social, R.empSocial, R.sdl, R.wcf], backgroundColor: AfroChartColors.doughnut.slice(0, 6), borderRadius:5 }]
+        labels: ['Take-Home', 'IRPP', 'Emp CNSS', 'CNSS Empl.'],
+        datasets: [{ label:'XAF', data:[R.netMonthly, R.monthlyPAYE, R.empSocial, R.social], backgroundColor: AfroChartColors.doughnut.slice(0, 4), borderRadius:5 }]
       },
-      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'TZS'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid: { color: AfroChartColors.grid} }, x:{ticks:{font:{size:9,weight:'600'}}} } }
+      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'XAF'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid: { color: AfroChartColors.grid} }, x:{ticks:{font:{size:9,weight:'600'}}} } }
     });
   }
 }
@@ -807,7 +856,7 @@ async function submitPdf(e) {
   const email = document.getElementById('pdfEmail').value;
   if (!email) return;
   try {
-    await fetch('/', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body: new URLSearchParams({'form-name':'pdf-leads',email,country:'Tanzania',country_code:'TZ',tool:'paye',tool_id:'tz-paye',currency:'TZS',gross_salary:RESULT.gross}).toString() });
+    await fetch('/', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body: new URLSearchParams({'form-name':'pdf-leads',email,country:'Gabon',country_code:'GA',tool:'paye',tool_id:'ga-paye',currency:'XAF',gross_salary:RESULT.gross}).toString() });
   } catch(e){}
   document.getElementById('modalForm').style.display  = 'none';
   document.getElementById('modalSuccess').style.display = 'block';
@@ -817,15 +866,15 @@ async function submitPdf(e) {
 function generatePdf() {
   if (!RESULT) return;
   const R      = RESULT;
-  const dateStr= new Date().toLocaleDateString('en-TZ',{day:'numeric',month:'long',year:'numeric'});
-  const refNo  = 'AFT-TZ-PAYE-' + Date.now().toString(36).toUpperCase().slice(-6);
+  const dateStr= new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+  const refNo  = 'AFT-GA-PAYE-' + Date.now().toString(36).toUpperCase().slice(-6);
 
   const bandRows = R.bandBreakdown.filter(b => b.tax > 0).map(b =>
-    `<tr><td style="padding-left:14px;color:#4b5563">${b.isFlat ? 'Flat 30% (secondary employment)' : 'Rate ' + (b.rate*100) + '% on TZS ' + Math.round(b.income).toLocaleString()}</td><td class="num red">(TZS ${Math.round(b.tax).toLocaleString()})</td></tr>`
+    `<tr><td style="padding-left:14px;color:#4b5563">${b.isFlat ? 'Flat 30% (secondary employment)' : 'Rate ' + (b.rate*100) + '% on XAF ' + Math.round(b.income).toLocaleString()}</td><td class="num red">(XAF ${Math.round(b.tax).toLocaleString()})</td></tr>`
   ).join('');
 
   const html = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
-<title>AfroTools Tanzania PAYE — ${refNo}</title>
+<title>AfroTools Gabon IRPP — ${refNo}</title>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'DM Sans',Arial,sans-serif;background:#fff;color:#111827;font-size:9pt;line-height:1.5}@page{size:A4;margin:0}
@@ -855,65 +904,62 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
     <div><div class="brand">AFRO<b>TOOLS</b></div><div class="brand-sub">Africa's Everything Platform</div></div>
     <div><div class="ref-label">Reference</div><div class="ref-val">${refNo}</div></div>
   </div>
-  <div class="doc-title">Tanzania PAYE<br><span>Summary 2025/26</span></div>
-  <div class="doc-meta">Generated ${dateStr} · afrotools.com/tanzania/tz-paye</div>
-  <div class="badge">TRA 2025/26 · Finance Act 2024/25</div>
+  <div class="doc-title">Gabon IRPP<br><span>Summary 2025/26</span></div>
+  <div class="doc-meta">Generated ${dateStr} · afrotools.com/gabon/ga-paye</div>
+  <div class="badge">DGI 2025/26 · Loi de Finances 2024/25</div>
 </div>
 <div class="body">
   <div class="sh">
-    <div class="shi"><div class="sh-lbl">Monthly Take-Home</div><div class="sh-val gold">TZS ${Math.round(R.netMonthly).toLocaleString()}</div></div>
+    <div class="shi"><div class="sh-lbl">Monthly Take-Home</div><div class="sh-val gold">XAF ${Math.round(R.netMonthly).toLocaleString()}</div></div>
     <div class="sh-div"></div>
-    <div class="shi"><div class="sh-lbl">Monthly Gross</div><div class="sh-val">TZS ${Math.round(R.gross).toLocaleString()}</div></div>
+    <div class="shi"><div class="sh-lbl">Monthly Gross</div><div class="sh-val">XAF ${Math.round(R.gross).toLocaleString()}</div></div>
     <div class="sh-div"></div>
-    <div class="shi"><div class="sh-lbl">Monthly PAYE</div><div class="sh-val red">TZS ${Math.round(R.monthlyPAYE).toLocaleString()}</div></div>
+    <div class="shi"><div class="sh-lbl">Monthly IRPP</div><div class="sh-val red">XAF ${Math.round(R.monthlyPAYE).toLocaleString()}</div></div>
     <div class="sh-div"></div>
     <div class="shi"><div class="sh-lbl">Effective Rate</div><div class="sh-val red">${pct(R.effectiveRate)}</div></div>
   </div>
 
   <div class="sec-head">Section 1 — Monthly Income &amp; Deductions</div>
   <table>
-    <tr><td>Monthly Gross Salary</td><td class="num">TZS ${Math.round(R.gross).toLocaleString()}</td></tr>
-    ${R.social > 0 ? `<tr><td style="padding-left:14px;color:#4b5563">${R.sector==='private'?'NSSF':'PSSSF'} employee contribution (${pct(R.socialRate)}, no cap)</td><td class="num red">(TZS ${Math.round(R.social).toLocaleString()})</td></tr>` : ''}
-    ${!R.isSecondary ? `<tr><td style="font-weight:600">Monthly Taxable Income</td><td class="num muted">TZS ${Math.round(R.gross - R.social).toLocaleString()}</td></tr>` : ''}
+    <tr><td>Monthly Gross Salary</td><td class="num">XAF ${Math.round(R.gross).toLocaleString()}</td></tr>
+    ${R.social > 0 ? `<tr><td style="padding-left:14px;color:#4b5563">CNSS employee contribution (${pct(R.socialRate)}, tax-deductible)</td><td class="num red">(XAF ${Math.round(R.social).toLocaleString()})</td></tr>` : ''}
+    ${!R.isSecondary ? `<tr><td style="font-weight:600">Monthly Taxable Income</td><td class="num muted">XAF ${Math.round(R.gross - R.social).toLocaleString()}</td></tr>` : ''}
   </table>
 
-  <div class="sec-head">Section 2 — PAYE Computation (TRA 2025/26)</div>
+  <div class="sec-head">Section 2 — IRPP Computation (DGI 2025/26)</div>
   <table>
-    ${R.isSecondary ? `<tr><td colspan="2" style="color:#7a3800;padding:8px 4px">⚠ Secondary employment — flat 30% applied to gross TZS ${Math.round(R.gross).toLocaleString()}</td></tr>` : ''}
-    ${bandRows || '<tr><td colspan="2" style="color:#94A3B8;padding-left:14px">Income in 0% band — no PAYE due</td></tr>'}
-    <tr class="total"><td>Monthly PAYE</td><td class="num red">TZS ${Math.round(R.monthlyPAYE).toLocaleString()}</td></tr>
+    ${R.isSecondary ? `<tr><td colspan="2" style="color:#7a3800;padding:8px 4px">⚠ Secondary employment — flat 35% applied to gross XAF ${Math.round(R.gross).toLocaleString()}</td></tr>` : ''}
+    ${bandRows || '<tr><td colspan="2" style="color:#94A3B8;padding-left:14px">Income in 0% band — no IRPP due</td></tr>'}
+    <tr class="total"><td>Monthly IRPP</td><td class="num red">XAF ${Math.round(R.monthlyPAYE).toLocaleString()}</td></tr>
   </table>
 
   <div class="sec-head">Section 3 — Monthly Net Pay Summary</div>
   <table>
-    ${R.social > 0 ? `<tr><td>${R.sector==='private'?'NSSF':'PSSSF'} (employee)</td><td class="num red">(TZS ${Math.round(R.social).toLocaleString()})</td></tr>` : ''}
-    <tr><td>PAYE income tax</td><td class="num red">(TZS ${Math.round(R.monthlyPAYE).toLocaleString()})</td></tr>
-    <tr><td style="font-weight:700">Total Monthly Deductions</td><td class="num red">(TZS ${Math.round(R.totalEmployeeDeductions).toLocaleString()})</td></tr>
-    <tr class="total"><td style="color:#2563EB;font-weight:800">Monthly Take-Home Pay</td><td class="num green">TZS ${Math.round(R.netMonthly).toLocaleString()}</td></tr>
-    <tr class="total"><td style="color:#2563EB;font-weight:800">Annual Take-Home Pay</td><td class="num green">TZS ${Math.round(R.annualNet).toLocaleString()}</td></tr>
+    ${R.social > 0 ? `<tr><td>CNSS (employee 2.5%)</td><td class="num red">(XAF ${Math.round(R.social).toLocaleString()})</td></tr>` : ''}
+    <tr><td>IRPP income tax</td><td class="num red">(XAF ${Math.round(R.monthlyPAYE).toLocaleString()})</td></tr>
+    <tr><td style="font-weight:700">Total Monthly Deductions</td><td class="num red">(XAF ${Math.round(R.totalEmployeeDeductions).toLocaleString()})</td></tr>
+    <tr class="total"><td style="color:#2563EB;font-weight:800">Monthly Take-Home Pay</td><td class="num green">XAF ${Math.round(R.netMonthly).toLocaleString()}</td></tr>
+    <tr class="total"><td style="color:#2563EB;font-weight:800">Annual Take-Home Pay</td><td class="num green">XAF ${Math.round(R.annualNet).toLocaleString()}</td></tr>
   </table>
 
   <div class="sec-head">Section 4 — Employer Cost (Monthly)</div>
   <table>
-    <tr><td>Employee gross salary</td><td class="num">TZS ${Math.round(R.gross).toLocaleString()}</td></tr>
-    <tr><td>Employer ${R.sector==='private'?'NSSF (10%)':'PSSSF (15%)'}</td><td class="num red">TZS ${Math.round(R.empSocial).toLocaleString()}</td></tr>
-    <tr><td>Skills Development Levy — SDL (3.5%, employer only)</td><td class="num red">TZS ${Math.round(R.sdl).toLocaleString()}</td></tr>
-    <tr><td>Workers Compensation Fund — WCF (0.5%, employer only)</td><td class="num red">TZS ${Math.round(R.wcf).toLocaleString()}</td></tr>
-    <tr class="total"><td style="font-weight:800">Total Employer Monthly Cost</td><td class="num red">TZS ${Math.round(R.totalEmployerCostMonthly).toLocaleString()}</td></tr>
+    <tr><td>Employee gross salary</td><td class="num">XAF ${Math.round(R.gross).toLocaleString()}</td></tr>
+    <tr><td>CNSS employer contribution (16.6%)</td><td class="num red">XAF ${Math.round(R.empSocial).toLocaleString()}</td></tr>
+    <tr class="total"><td style="font-weight:800">Total Employer Monthly Cost</td><td class="num red">XAF ${Math.round(R.totalEmployerCostMonthly).toLocaleString()}</td></tr>
   </table>
 
   <div class="sec-head">Section 5 — Legal Basis &amp; Sources</div>
   <table>
-    <tr><td style="width:30%"><span class="src">ITA 2004</span>Income Tax Act</td><td style="color:#6b7280;font-size:8pt">Progressive PAYE on employment income. Monthly brackets unchanged in Finance Act 2024/25. NSSF contribution deductible from taxable income.</td></tr>
-    <tr><td><span class="src">NSSF Act 2018</span>NSSF</td><td style="color:#6b7280;font-size:8pt">Total 20% of gross (private sector): 10% employer + 10% employee. No upper cap. Due end of following month via nssf.go.tz portal.</td></tr>
-    <tr><td><span class="src">SDL Act</span>Skills Development Levy</td><td style="color:#6b7280;font-size:8pt">3.5% of gross emoluments, employer only. Organisations with 10+ employees. Due 7th of following month alongside PAYE to TRA.</td></tr>
+    <tr><td style="width:30%"><span class="src">CGI Gabon</span>IRPP</td><td style="color:#6b7280;font-size:8pt">Progressive tax on employment income. 8 annual brackets from 0% to 35%. CNSS employee contribution deductible from taxable income. Administered by DGI (dgi.gouv.ga).</td></tr>
+    <tr><td><span class="src">CNSS Gabon</span>CNSS</td><td style="color:#6b7280;font-size:8pt">Total 19.1% of gross: 16.6% employer + 2.5% employee. Due monthly to CNSS (cnss.ga). No SDL or WCF in Gabon.</td></tr>
   </table>
 </div>
 <div style="background:#f9fafb;border-top:1px solid #e5e7eb;padding:14px 36px">
   <div style="display:flex;justify-content:space-between;align-items:flex-start">
     <div>
       <div style="font-size:7pt;font-weight:700;color:#111827">AFRO<b style="color:#2563EB">TOOLS</b>.COM — Africa's Financial Calculator Platform</div>
-      <div style="font-size:6.5pt;color:#9ca3af;max-width:440px;line-height:1.4;margin-top:4px">Informational only. Not professional tax advice. Verify with TRA (tra.go.tz) or a qualified Tanzanian tax advisor.</div>
+      <div style="font-size:6.5pt;color:#9ca3af;max-width:440px;line-height:1.4;margin-top:4px">Informational only. Not professional tax advice. Verify with DGI (dgi.gouv.ga) or a qualified Gabonese tax advisor.</div>
     </div>
     <div style="text-align:right;font-size:7pt;color:#9ca3af;white-space:nowrap;margin-left:20px">
       <div>Ref: ${refNo}</div><div style="margin-top:2px">${dateStr}</div><div style="margin-top:2px">afrotools.com</div>
@@ -936,9 +982,9 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 // ── SHARE ─────────────────────────────────────────────────────
 function shareResult() {
   if (!RESULT) return;
-  const text = `My Tanzania PAYE breakdown: Gross TZS ${Math.round(RESULT.gross).toLocaleString()}/mo → Take-home TZS ${Math.round(RESULT.netMonthly).toLocaleString()}/mo (${pct(RESULT.effectiveRate)} effective rate). Calculated at afrotools.com/tanzania/tz-paye`;
+  const text = `My Gabon IRPP breakdown: Gross XAF ${Math.round(RESULT.gross).toLocaleString()}/mo → Take-home XAF ${Math.round(RESULT.netMonthly).toLocaleString()}/mo (${pct(RESULT.effectiveRate)} effective rate). Calculated at afrotools.com/gabon/ga-paye`;
   if (navigator.share) {
-    navigator.share({title:'My Tanzania PAYE',text,url:'https://afrotools.com/tanzania/tz-paye'});
+    navigator.share({title:'My Gabon IRPP',text,url:'https://afrotools.com/gabon/ga-paye'});
   } else if (navigator.clipboard) {
     navigator.clipboard.writeText(text);
     const btn = document.getElementById('tzShareBtn');
@@ -958,26 +1004,25 @@ async function getAI() {
   respEl.style.display = 'block'; respEl.className = 'ai-response typing'; respEl.textContent = '';
   document.getElementById('aiStatus').style.display = 'none';
 
-  const prompt = `Tanzania PAYE analysis (2025/26, TRA):
-- Monthly gross: TZS ${Math.round(R.gross).toLocaleString()}
-- Sector: ${R.sector === 'private' ? 'Private (NSSF)' : 'Public (PSSSF)'}
-- ${R.sector==='private'?'NSSF':'PSSSF'} employee (${pct(R.socialRate)}): TZS ${Math.round(R.social).toLocaleString()}/mo
-- Taxable income after social security: TZS ${Math.round(R.gross - R.social).toLocaleString()}/mo
-- Monthly PAYE: TZS ${Math.round(R.monthlyPAYE).toLocaleString()}
-- Monthly take-home: TZS ${Math.round(R.netMonthly).toLocaleString()}
+  const prompt = `Gabon IRPP analysis (2025/26, DGI):
+- Monthly gross: XAF ${Math.round(R.gross).toLocaleString()}
+- Sector: ${R.sector === 'private' ? 'Private (CNSS)' : 'Public (CNSS)'}
+- CNSS employee (${pct(R.socialRate)}, tax-deductible): XAF ${Math.round(R.social).toLocaleString()}/mo
+- Taxable income after CNSS deduction: XAF ${Math.round(R.gross - R.social).toLocaleString()}/mo
+- Monthly IRPP: XAF ${Math.round(R.monthlyPAYE).toLocaleString()}
+- Monthly take-home: XAF ${Math.round(R.netMonthly).toLocaleString()}
 - Effective tax rate: ${pct(R.effectiveRate)}
-- Secondary employment: ${R.isSecondary ? 'YES — flat 30% applied' : 'No'}
-- Employer SDL (3.5%): TZS ${Math.round(R.sdl).toLocaleString()}/mo
-- Employer WCF (0.5%): TZS ${Math.round(R.wcf).toLocaleString()}/mo
-- Total employer cost: TZS ${Math.round(R.totalEmployerCostMonthly).toLocaleString()}/mo
+- Secondary employment: ${R.isSecondary ? 'YES — flat 35% applied' : 'No'}
+- CNSS employer (16.6%): XAF ${Math.round(R.empSocial).toLocaleString()}/mo
+- Total employer cost: XAF ${Math.round(R.totalEmployerCostMonthly).toLocaleString()}/mo
 
-Give: 1) Plain English summary of PAYE position 2) Two specific legal ways to reduce Tanzania tax liability (NSSF deductibility, approved pension deductions, approved housing benefit) 3) One TRA compliance point to know 4) One thing most Tanzanian employees get wrong about SDL or NSSF. Under 200 words. No markdown, no asterisks, no bullet symbols.`;
+Give: 1) Plain English summary of IRPP position 2) Two specific legal ways to reduce Gabon tax liability (CNSS deductibility, approved pension contributions, professional expense allowances) 3) One DGI compliance point to know 4) One thing most Gabonese employees get wrong about CNSS or IRPP. Under 200 words. No markdown, no asterisks, no bullet symbols.`;
 
   try {
     const res = await fetch('/.netlify/functions/ai-advisor', {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({
-        system:'You are AfroTools AI Tax Advisor specialising in Tanzanian PAYE — TRA progressive tax, NSSF, SDL, WCF, Income Tax Act 2004. Be concise, specific, practical. No markdown, no asterisks.',
+        system:'You are AfroTools AI Tax Advisor specialising in Gabon IRPP — DGI progressive tax, CNSS, Code Général des Impôts. Be concise, specific, practical. No markdown, no asterisks.',
         messages:[{role:'user',content:prompt}]
       })
     });
@@ -1014,7 +1059,7 @@ async function sendChat() {
     const res = await fetch('/.netlify/functions/ai-advisor',{
       method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
-        system:`AfroTools AI Tax Advisor, Tanzania. User: ${R.sector} sector, gross TZS ${Math.round(R.gross).toLocaleString()}/mo, take-home TZS ${Math.round(R.netMonthly).toLocaleString()}/mo, effective rate ${pct(R.effectiveRate)}. Concise. No markdown.`,
+        system:`AfroTools AI Tax Advisor, Gabon. User: ${R.sector} sector, gross XAF ${Math.round(R.gross).toLocaleString()}/mo, take-home XAF ${Math.round(R.netMonthly).toLocaleString()}/mo, effective rate ${pct(R.effectiveRate)}. Concise. No markdown.`,
         messages:CHAT_HISTORY
       })
     });
