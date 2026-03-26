@@ -77,6 +77,14 @@
   .tabs{background:#111D30}.tab.on{background:#131D2E}.sc-table tr:hover td{background:#1E293B}
   .sc-table tr.baseline td{background:#172554}.ai-panel{background:#172554;border-color:#1e3a8a}
 }
+
+.fx-input-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.fx-res-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.fx-2col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+@media(max-width:640px){
+  .fx-input-row,.fx-res-row{grid-template-columns:1fr;}
+  .fx-2col{grid-template-columns:1fr;}
+}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="/assets/js/components/navbar.min.js" defer></script>
@@ -105,7 +113,7 @@
     <!-- Input card -->
     <div class="card">
       <div class="card-head"><span class="card-title">Import Value &amp; Currency</span></div>
-      <div class="card-body" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+      <div class="card-body fx-input-row">
         <div>
           <label class="f-label" for="usdAmount">Import Value (USD)</label>
           <input type="number" class="f-input" id="usdAmount" placeholder="e.g. 10000" value="10000" min="1">
@@ -122,7 +130,7 @@
 
     <!-- Result hero -->
     <div class="res-hero" id="resHero">
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;flex-wrap:wrap">
+      <div class="fx-res-row">
         <div><div class="rh-label">Today's Cost</div><div class="rh-amount" id="rhToday">—</div><div class="rh-sub" id="rhTodayRate">—</div></div>
         <div><div class="rh-label">6 Months Ago</div><div class="rh-amount" style="color:#94A3B8" id="rh6m">—</div><div class="rh-sub" id="rh6mDiff">—</div></div>
         <div><div class="rh-label">12 Months Ago</div><div class="rh-amount" style="color:#64748B" id="rh12m">—</div><div class="rh-sub" id="rh12mDiff">—</div></div>
@@ -169,7 +177,7 @@
         <div class="card-head"><span class="card-title">FX Breakeven Calculator</span></div>
         <div class="card-body">
           <p style="font-size:.85rem;color:#64748B;margin-bottom:16px">Enter your selling price and other local costs to find the maximum exchange rate at which this import remains profitable.</p>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+          <div class="fx-2col">
             <div>
               <label class="f-label" for="sellPrice">Selling Price (local currency)</label>
               <input type="number" class="f-input" id="sellPrice" placeholder="e.g. 5000000">

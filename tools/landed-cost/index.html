@@ -91,6 +91,17 @@
   .chat-input-row{border-color:#1E2D40}
   .chat-suggestions{} .chat-sug{background:#172554;border-color:#1e3a8a}
 }
+
+.lc-2col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.lc-2col-sm{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.lc-4col{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:640px){
+  .lc-2col,.lc-2col-sm{grid-template-columns:1fr;}
+  .lc-4col{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:400px){
+  .lc-4col{grid-template-columns:1fr;}
+}
 </style>
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
@@ -124,7 +135,7 @@
 
     <!-- CALCULATE -->
     <div class="tab-panel on" id="tabCalc">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+      <div class="lc-2col">
         <div>
           <!-- Input card -->
           <div class="card">
@@ -190,7 +201,7 @@
         <div>
           <div class="results" id="calcResults">
             <div class="res-hero">
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+              <div class="lc-2col-sm">
                 <div>
                   <div class="rh-label">Total Landed Cost</div>
                   <div class="rh-amount" id="rhTotal">—</div>
@@ -221,7 +232,7 @@
       <div class="card">
         <div class="card-head"><span class="card-title">Compare Two Scenarios</span><span style="font-size:.7rem;color:#94A3B8">Same product, different ports or countries</span></div>
         <div class="card-body">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+          <div class="lc-2col">
             <div>
               <div style="font-size:.78rem;font-weight:800;color:var(--color-primary,#007AFF);text-transform:uppercase;margin-bottom:12px">Scenario A</div>
               <label class="f-label" for="cmpACountry">Country</label>
@@ -281,7 +292,7 @@
             </div>
           </div>
           <div class="pnl-result" id="pnlResult">
-            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+            <div class="lc-4col">
               <div style="background:#EFF6FF;border-radius:8px;padding:14px;text-align:center">
                 <div style="font-size:.68rem;color:#64748B;text-transform:uppercase;margin-bottom:4px">Cost / Unit</div>
                 <div style="font-size:1.1rem;font-weight:800;color:#1d4ed8" id="pnlCost">—</div>
