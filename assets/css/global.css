@@ -339,3 +339,67 @@ p {
     overflow-x: hidden !important;
   }
 }
+
+/* =====================================================================
+ * VIEW TRANSITIONS API — smooth page-to-page navigation
+ * Progressive enhancement: ignored by browsers that don't support it.
+ * Chrome 111+, Safari 18+. Zero performance cost.
+ * ===================================================================== */
+
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root) {
+  animation: vt-fade-out 0.15s ease-out;
+}
+
+::view-transition-new(root) {
+  animation: vt-fade-in 0.15s ease-in;
+}
+
+@keyframes vt-fade-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+@keyframes vt-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Navbar stays static during transitions (no fade flicker) */
+.afro-navbar,
+afro-navbar {
+  view-transition-name: navbar;
+}
+
+::view-transition-old(navbar),
+::view-transition-new(navbar) {
+  animation: none;
+}
+
+/* Hero section slides up/down between pages */
+.hero,
+.compare-hero,
+[class*="-hero"] {
+  view-transition-name: hero;
+}
+
+::view-transition-old(hero) {
+  animation: vt-slide-out-up 0.2s ease-out;
+}
+
+::view-transition-new(hero) {
+  animation: vt-slide-in-up 0.2s ease-in;
+}
+
+@keyframes vt-slide-out-up {
+  from { transform: translateY(0);    opacity: 1; }
+  to   { transform: translateY(-20px); opacity: 0; }
+}
+
+@keyframes vt-slide-in-up {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}

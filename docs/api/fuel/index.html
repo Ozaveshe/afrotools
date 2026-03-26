@@ -1,103 +1,104 @@
-<!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.bd27dfaf.min.js" lang="en">
-<head>
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AfroFuel API Overview — AfroTools API Docs</title>
-<meta name="description" content="AfroFuel API: fuel prices (petrol, diesel, LPG) for all 54 African countries. Weekly updates from national petroleum regulators.">
-<meta name="theme-color" content="#007AFF">
-<link rel="canonical" href="https://afrotools.com/docs/api/fuel/">
-<link rel="stylesheet" href="/assets/css/tokens.min.css">
-<link rel="stylesheet" href="/assets/css/design-system.css">
-<link rel="stylesheet" href="/assets/css/api-docs.css">
-<script src="/assets/js/components/navbar.js" defer></script>
-<script src="/assets/js/components/footer.js" defer></script>
-<script src="/assets/js/components/api-sidebar.js" defer></script>
-<script src="/assets/js/components/api-code-tabs.js" defer></script>
-
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.bd27dfaf.min.js" lang="en">
+<head>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AfroFuel API Overview — AfroTools API Docs</title>
+<meta name="description" content="AfroFuel API: fuel prices (petrol, diesel, LPG) for all 54 African countries. Weekly updates from national petroleum regulators.">
+<meta name="theme-color" content="#007AFF">
+<link rel="canonical" href="https://afrotools.com/docs/api/fuel/">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/design-system.css">
+<link rel="stylesheet" href="/assets/css/api-docs.css">
+<script src="/assets/js/components/navbar.js" defer></script>
+<script src="/assets/js/components/footer.js" defer></script>
+<script src="/assets/js/components/api-sidebar.js" defer></script>
+<script src="/assets/js/components/api-code-tabs.js" defer></script>
+
 
 <meta property="og:title" content="AfroFuel API Overview - AfroTools API Docs">
 <meta property="og:description" content="AfroFuel API: fuel prices (petrol, diesel, LPG) for all 54 African countries. Weekly updates from national petroleum regulators.">
-</head>
-<body class="api-docs-body">
-<afro-navbar></afro-navbar>
-<div class="api-docs-layout">
-  <api-sidebar active="/docs/api/fuel/"></api-sidebar>
-  <main class="api-content">
-    <div class="api-two-panel api-two-panel--wide-left">
-      <div class="api-content__left">
-        <h1 class="mt-0">AfroFuel API</h1>
-        <p class="api-subtitle">Fuel prices (petrol, diesel, kerosene, LPG) for all 54 African countries. Updated weekly from national petroleum regulators.</p>
-
-        <h2>Overview</h2>
-        <p>The AfroFuel API provides current and historical fuel prices across Africa. Data is sourced directly from national petroleum pricing agencies and updated weekly (or whenever governments adjust prices).</p>
-
-        <h3>Fuel Types Covered</h3>
-        <ul style="margin:8px 0 20px 20px;font-size:.88rem;color:#4B5563;line-height:1.8">
-          <li><strong>PMS (Petrol)</strong> &mdash; Premium Motor Spirit / Gasoline</li>
-          <li><strong>AGO (Diesel)</strong> &mdash; Automotive Gas Oil</li>
-          <li><strong>DPK (Kerosene)</strong> &mdash; Dual Purpose Kerosene</li>
-          <li><strong>LPG</strong> &mdash; Liquefied Petroleum Gas (cooking gas)</li>
-        </ul>
-
-        <h2>Endpoints</h2>
-        <div class="api-cards-grid">
-          <a href="/docs/api/fuel/prices.html" class="api-card">
-            <div class="api-card__title"><span class="endpoint-method endpoint-method--get" style="font-size:.6rem;vertical-align:middle;margin-right:6px">GET</span> Fuel Prices</div>
-            <div class="api-card__desc">Get current fuel prices for a specific country or all countries. Includes price per litre in local currency.</div>
-          </a>
-        </div>
-      </div>
-
-      <div class="api-content__right">
-        <div class="code-label">Base URL</div>
-        <div class="code-example">https://afrotools.com/api/fuel</div>
-
-        <hr class="api-divider api-divider--dark">
-
-        <div class="code-label">Quick Example</div>
-        <div class="code-example"><span class="c"># Get Nigerian fuel prices</span>
-curl "https://afrotools.com/api/fuel?country=NG" \
-  -H "x-api-key: afro_test_abc123"</div>
-
-        <hr class="api-divider api-divider--dark">
-
-        <div class="code-label">Example Response</div>
-        <div class="code-example">{
-  "success": true,
-  "data": {
-    "country": "NG",
-    "country_name": "Nigeria",
-    "currency": "NGN",
-    "fuels": {
-      "petrol": {
-        "price": 897.00,
-        "unit": "litre",
-        "change": 0
-      },
-      "diesel": {
-        "price": 1420.00,
-        "unit": "litre",
-        "change": -30.00
-      },
-      "kerosene": {
-        "price": 1250.00,
-        "unit": "litre",
-        "change": 0
-      },
-      "lpg": {
-        "price": 1150.00,
-        "unit": "kg",
-        "change": 50.00
-      }
-    },
-    "updated": "2026-03-10"
-  }
-}</div>
-      </div>
-    </div>
-  </main>
-</div>
-</body>
-</html>
+</head>
+<body class="api-docs-body">
+<afro-navbar></afro-navbar>
+<div class="api-docs-layout">
+  <api-sidebar active="/docs/api/fuel/"></api-sidebar>
+  <main class="api-content">
+    <div class="api-two-panel api-two-panel--wide-left">
+      <div class="api-content__left">
+        <h1 class="mt-0">AfroFuel API</h1>
+        <p class="api-subtitle">Fuel prices (petrol, diesel, kerosene, LPG) for all 54 African countries. Updated weekly from national petroleum regulators.</p>
+
+        <h2>Overview</h2>
+        <p>The AfroFuel API provides current and historical fuel prices across Africa. Data is sourced directly from national petroleum pricing agencies and updated weekly (or whenever governments adjust prices).</p>
+
+        <h3>Fuel Types Covered</h3>
+        <ul style="margin:8px 0 20px 20px;font-size:.88rem;color:#4B5563;line-height:1.8">
+          <li><strong>PMS (Petrol)</strong> &mdash; Premium Motor Spirit / Gasoline</li>
+          <li><strong>AGO (Diesel)</strong> &mdash; Automotive Gas Oil</li>
+          <li><strong>DPK (Kerosene)</strong> &mdash; Dual Purpose Kerosene</li>
+          <li><strong>LPG</strong> &mdash; Liquefied Petroleum Gas (cooking gas)</li>
+        </ul>
+
+        <h2>Endpoints</h2>
+        <div class="api-cards-grid">
+          <a href="/docs/api/fuel/prices.html" class="api-card">
+            <div class="api-card__title"><span class="endpoint-method endpoint-method--get" style="font-size:.6rem;vertical-align:middle;margin-right:6px">GET</span> Fuel Prices</div>
+            <div class="api-card__desc">Get current fuel prices for a specific country or all countries. Includes price per litre in local currency.</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="api-content__right">
+        <div class="code-label">Base URL</div>
+        <div class="code-example">https://afrotools.com/api/fuel</div>
+
+        <hr class="api-divider api-divider--dark">
+
+        <div class="code-label">Quick Example</div>
+        <div class="code-example"><span class="c"># Get Nigerian fuel prices</span>
+curl "https://afrotools.com/api/fuel?country=NG" \
+  -H "x-api-key: afro_test_abc123"</div>
+
+        <hr class="api-divider api-divider--dark">
+
+        <div class="code-label">Example Response</div>
+        <div class="code-example">{
+  "success": true,
+  "data": {
+    "country": "NG",
+    "country_name": "Nigeria",
+    "currency": "NGN",
+    "fuels": {
+      "petrol": {
+        "price": 897.00,
+        "unit": "litre",
+        "change": 0
+      },
+      "diesel": {
+        "price": 1420.00,
+        "unit": "litre",
+        "change": -30.00
+      },
+      "kerosene": {
+        "price": 1250.00,
+        "unit": "litre",
+        "change": 0
+      },
+      "lpg": {
+        "price": 1150.00,
+        "unit": "kg",
+        "change": 50.00
+      }
+    },
+    "updated": "2026-03-10"
+  }
+}</div>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

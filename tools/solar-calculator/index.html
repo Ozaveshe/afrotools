@@ -1,828 +1,829 @@
-<!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.bd27dfaf.min.js" lang="en">
-<head>
-<!-- Google Analytics 4 -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-D859CGF391');
-</script>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Solar Panel Calculator – AfroTools</title>
-<meta name="description" content="Size your solar system for Africa. Get panel count, battery bank, inverter size, and ROI vs generator. Country-specific irradiance data for Nigeria, Kenya, Ghana, South Africa and 40+ countries.">
-<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
-<link rel="icon" href="/assets/img/favicon.ico">
-<link rel="stylesheet" href="/assets/css/tokens.min.css">
-<link rel="stylesheet" href="/assets/css/global.min.css">
-<script src="/assets/js/components/tool-registry.min.js" defer></script>
-<script src="/assets/js/components/navbar.min.js" defer></script>
-<script src="/assets/js/components/footer.min.js" defer></script>
-<style>
-/* ── PAGE SHELL ── */
-.solar-wrap{max-width:1100px;margin:0 auto;padding:24px 20px 60px;}
-.solar-hero{background:linear-gradient(135deg,#0d1117 0%,#1a2332 50%,#0f1f0f 100%);border-radius:20px;padding:48px 40px 40px;margin-bottom:32px;position:relative;overflow:hidden;}
-.solar-hero::before{content:'';position:absolute;top:-40%;right:-10%;width:500px;height:500px;background:radial-gradient(circle,rgba(255,200,0,.08) 0%,transparent 70%);pointer-events:none;}
-.solar-hero::after{content:'';position:absolute;bottom:-30%;left:-5%;width:400px;height:400px;background:radial-gradient(circle,rgba(0,122,255,.06) 0%,transparent 70%);pointer-events:none;}
-.solar-hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,200,0,.1);border:1px solid rgba(255,200,0,.2);color:#ffc800;border-radius:20px;padding:5px 12px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:16px;}
-.solar-hero h1{font-size:clamp(1.35rem,5.5vw,2.4rem);color:#fff;font-weight:900;letter-spacing:-.02em;margin-bottom:10px;line-height:1.1;}
-.solar-hero p{color:rgba(255,255,255,.75);font-size:.95rem;max-width:500px;line-height:1.6;}
-.solar-hero-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;}
-.solar-hero-tags span{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.75);padding:5px 12px;border-radius:16px;font-size:12px;font-weight:600;}
-
-/* ── LAYOUT ── */
-.solar-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
-@media(max-width:760px){.solar-grid{grid-template-columns:1fr;}}
-.solar-panel{background:#fff;border:1.5px solid #e5e7eb;border-radius:16px;padding:28px;}
-.solar-panel h2{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#6b7280;margin-bottom:20px;display:flex;align-items:center;gap:8px;}
-.solar-panel h2 span{font-size:1.1rem;}
-
-/* ── FORM ELEMENTS ── */
-.field-group{margin-bottom:18px;}
-.field-label{font-size:.75rem;font-weight:700;color:#374151;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;text-transform:uppercase;letter-spacing:.04em;}
-.field-label .hint{font-size:.7rem;color:#9ca3af;text-transform:none;letter-spacing:0;font-weight:500;}
-.field-input{width:100%;padding:10px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.9rem;color:#111;background:#fafafa;transition:border-color .2s,box-shadow .2s;}
-.field-input:focus{outline:none;border-color:#ffc800;box-shadow:0 0 0 3px rgba(255,200,0,.1);background:#fff;}
-select.field-input{cursor:pointer;}
-.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-
-/* ── COUNTRY PICKER ── */
-.country-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-height:220px;overflow-y:auto;padding-right:4px;}
-.country-btn{padding:8px 6px;border:1.5px solid #e5e7eb;border-radius:8px;background:#fafafa;cursor:pointer;text-align:center;font-size:.68rem;font-weight:700;color:#374151;transition:all .15s;line-height:1.3;}
-.country-btn:hover{border-color:#ffc800;background:#fffbeb;}
-.country-btn.active{border-color:#ffc800;background:#ffc800;color:#000;}
-.country-btn .flag{font-size:1.2rem;display:block;margin-bottom:2px;}
-
-/* ── APPLIANCE TABLE ── */
-.appliance-table{width:100%;border-collapse:collapse;}
-.appliance-table th{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#9ca3af;padding:6px 8px;text-align:left;border-bottom:1px solid #f3f4f6;}
-.appliance-table td{padding:7px 8px;border-bottom:1px solid #f3f4f6;font-size:.82rem;color:#374151;}
-.appliance-table input{width:100%;padding:5px 8px;border:1.5px solid #e5e7eb;border-radius:6px;font-size:.82rem;text-align:right;background:#fafafa;}
-.appliance-table input:focus{outline:none;border-color:#ffc800;background:#fff;}
-.appliance-qty{width:48px;}
-.appliance-del{background:none;border:none;color:#d1d5db;cursor:pointer;font-size:1rem;padding:2px 4px;}
-.appliance-del:hover{color:#ef4444;}
-.add-appliance-btn{margin-top:10px;width:100%;padding:9px;border:1.5px dashed #d1d5db;border-radius:8px;background:none;cursor:pointer;font-size:.8rem;color:#6b7280;font-weight:600;transition:all .15s;}
-.add-appliance-btn:hover{border-color:#ffc800;color:#92400e;background:#fffbeb;}
-
-/* ── RESULT CARDS ── */
-.result-section{background:#fff;border:1.5px solid #e5e7eb;border-radius:16px;padding:28px;margin-top:24px;}
-.result-section h2{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#6b7280;margin-bottom:20px;display:flex;align-items:center;gap:8px;}
-.result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;}
-@media(max-width:600px){.result-grid{grid-template-columns:1fr 1fr;}}
-.result-card{background:linear-gradient(135deg,#f9fafb,#f3f4f6);border:1px solid #e5e7eb;border-radius:12px;padding:16px;text-align:center;}
-.result-card.highlight{background:linear-gradient(135deg,#fffbeb,#fef3c7);border-color:#fbbf24;}
-.result-card.green{background:linear-gradient(135deg,#EFF6FF,#DBEAFE);border-color:#93C5FD;}
-.result-card.blue{background:linear-gradient(135deg,#eff6ff,#dbeafe);border-color:#93c5fd;}
-.result-card .val{font-size:1.7rem;font-weight:900;color:#111;line-height:1;margin-bottom:4px;font-family:'Inter',system-ui,sans-serif;}
-.result-card .val span{font-size:1rem;color:#6b7280;font-weight:600;}
-.result-card .lbl{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#9ca3af;}
-
-/* ── ROI CHART ── */
-.roi-chart{margin-top:20px;}
-.roi-bar-wrap{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
-.roi-bar-label{font-size:.75rem;font-weight:700;color:#374151;width:120px;flex-shrink:0;}
-.roi-bar-outer{flex:1;height:22px;background:#f3f4f6;border-radius:6px;overflow:hidden;}
-.roi-bar-inner{height:100%;border-radius:6px;transition:width .6s cubic-bezier(.22,1,.36,1);display:flex;align-items:center;justify-content:flex-end;padding-right:8px;}
-.roi-bar-inner .roi-val{font-size:.7rem;font-weight:700;color:#fff;}
-.roi-table{width:100%;border-collapse:collapse;font-size:.82rem;margin-top:16px;}
-.roi-table th{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#9ca3af;padding:8px 10px;text-align:left;border-bottom:2px solid #f3f4f6;}
-.roi-table td{padding:8px 10px;border-bottom:1px solid #f9fafb;color:#374151;}
-.roi-table tr:hover td{background:#fafafa;}
-.roi-table .positive{color:#2563EB;font-weight:700;}
-.roi-table .neutral{color:#6b7280;}
-
-/* ── SYSTEM DIAGRAM ── */
-.system-diagram{background:#0d1117;border-radius:12px;padding:20px;margin-top:16px;display:flex;justify-content:center;align-items:center;gap:0;}
-.sys-block{text-align:center;padding:12px 16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;min-width:80px;}
-.sys-block .sys-icon{font-size:1.8rem;margin-bottom:4px;}
-.sys-block .sys-label{font-size:.65rem;font-weight:700;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.05em;white-space:nowrap;}
-.sys-block .sys-spec{font-size:.78rem;font-weight:800;color:#ffc800;margin-top:2px;}
-.sys-arrow{color:rgba(255,255,255,.25);font-size:1.2rem;padding:0 6px;flex-shrink:0;}
-
-/* ── CALC BTN ── */
-.calc-btn{width:100%;padding:14px;background:linear-gradient(135deg,#ffc800,#f59e0b);border:none;border-radius:12px;font-size:.95rem;font-weight:800;color:#000;cursor:pointer;text-transform:uppercase;letter-spacing:.06em;margin-top:8px;transition:transform .15s,box-shadow .15s;}
-.calc-btn:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(255,200,0,.35);}
-.calc-btn:active{transform:translateY(0);}
-
-/* ── IRRADIANCE BADGE ── */
-.irr-badge{display:inline-flex;align-items:center;gap:5px;background:#fffbeb;border:1px solid #fbbf24;border-radius:8px;padding:5px 10px;font-size:.75rem;font-weight:700;color:#92400e;margin-bottom:16px;}
-
-/* ── TABS ── */
-.result-tabs{display:flex;gap:4px;background:#f3f4f6;border-radius:10px;padding:4px;margin-bottom:20px;}
-.result-tab{flex:1;padding:8px;text-align:center;font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#6b7280;border-radius:7px;cursor:pointer;border:none;background:none;transition:all .15s;}
-.result-tab.active{background:#fff;color:#111;box-shadow:0 1px 4px rgba(0,0,0,.1);}
-.tab-pane{display:none;}
-.tab-pane.active{display:block;}
-
-/* ── INFO BOX ── */
-.info-box{background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:14px 16px;font-size:.8rem;color:#1e40af;line-height:1.6;margin-top:16px;}
-.info-box strong{font-weight:700;}
-</style>
-
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"","description":"","url":"","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
-</script>
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","name":"","url":"","description":"","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com"}}
-</script>
-<script src="/assets/js/bundles/core.5473a555.min.js" defer></script><script src="/assets/js/afro-history.js" defer></script>
-<script src="/assets/js/components/save-result-button.js" defer></script>
-<script src="/assets/js/components/share-card-generator.js" defer></script>
-<script src="/assets/js/components/share-button.js" defer></script>
-<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/solar-calculator/" />
-<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/solar-calculator/" />
-<meta property="og:locale" content="en_US">
-<meta property="og:locale:alternate" content="fr_FR">
-<meta property="og:site_name" content="AfroTools">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Solar Panel Calculator – AfroTools">
-<meta name="twitter:description" content="Size your solar system for Africa. Get panel count, battery bank, inverter size, and ROI vs generator. Country-specific irradiance data for Nigeria, Kenya, Ghana, South Africa and 40+ countries.">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
-
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.bd27dfaf.min.js" lang="en">
+<head>
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-D859CGF391');
+</script>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solar Panel Calculator – AfroTools</title>
+<meta name="description" content="Size your solar system for Africa. Get panel count, battery bank, inverter size, and ROI vs generator. Country-specific irradiance data for Nigeria, Kenya, Ghana, South Africa and 40+ countries.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<link rel="icon" href="/assets/img/favicon.ico">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/tool-registry.min.js" defer></script>
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+/* ── PAGE SHELL ── */
+.solar-wrap{max-width:1100px;margin:0 auto;padding:24px 20px 60px;}
+.solar-hero{background:linear-gradient(135deg,#0d1117 0%,#1a2332 50%,#0f1f0f 100%);border-radius:20px;padding:48px 40px 40px;margin-bottom:32px;position:relative;overflow:hidden;}
+.solar-hero::before{content:'';position:absolute;top:-40%;right:-10%;width:500px;height:500px;background:radial-gradient(circle,rgba(255,200,0,.08) 0%,transparent 70%);pointer-events:none;}
+.solar-hero::after{content:'';position:absolute;bottom:-30%;left:-5%;width:400px;height:400px;background:radial-gradient(circle,rgba(0,122,255,.06) 0%,transparent 70%);pointer-events:none;}
+.solar-hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,200,0,.1);border:1px solid rgba(255,200,0,.2);color:#ffc800;border-radius:20px;padding:5px 12px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:16px;}
+.solar-hero h1{font-size:clamp(1.35rem,5.5vw,2.4rem);color:#fff;font-weight:900;letter-spacing:-.02em;margin-bottom:10px;line-height:1.1;}
+.solar-hero p{color:rgba(255,255,255,.75);font-size:.95rem;max-width:500px;line-height:1.6;}
+.solar-hero-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;}
+.solar-hero-tags span{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.75);padding:5px 12px;border-radius:16px;font-size:12px;font-weight:600;}
+
+/* ── LAYOUT ── */
+.solar-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+@media(max-width:760px){.solar-grid{grid-template-columns:1fr;}}
+.solar-panel{background:#fff;border:1.5px solid #e5e7eb;border-radius:16px;padding:28px;}
+.solar-panel h2{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#6b7280;margin-bottom:20px;display:flex;align-items:center;gap:8px;}
+.solar-panel h2 span{font-size:1.1rem;}
+
+/* ── FORM ELEMENTS ── */
+.field-group{margin-bottom:18px;}
+.field-label{font-size:.75rem;font-weight:700;color:#374151;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;text-transform:uppercase;letter-spacing:.04em;}
+.field-label .hint{font-size:.7rem;color:#9ca3af;text-transform:none;letter-spacing:0;font-weight:500;}
+.field-input{width:100%;padding:10px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.9rem;color:#111;background:#fafafa;transition:border-color .2s,box-shadow .2s;}
+.field-input:focus{outline:none;border-color:#ffc800;box-shadow:0 0 0 3px rgba(255,200,0,.1);background:#fff;}
+select.field-input{cursor:pointer;}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+
+/* ── COUNTRY PICKER ── */
+.country-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-height:220px;overflow-y:auto;padding-right:4px;}
+.country-btn{padding:8px 6px;border:1.5px solid #e5e7eb;border-radius:8px;background:#fafafa;cursor:pointer;text-align:center;font-size:.68rem;font-weight:700;color:#374151;transition:all .15s;line-height:1.3;}
+.country-btn:hover{border-color:#ffc800;background:#fffbeb;}
+.country-btn.active{border-color:#ffc800;background:#ffc800;color:#000;}
+.country-btn .flag{font-size:1.2rem;display:block;margin-bottom:2px;}
+
+/* ── APPLIANCE TABLE ── */
+.appliance-table{width:100%;border-collapse:collapse;}
+.appliance-table th{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#9ca3af;padding:6px 8px;text-align:left;border-bottom:1px solid #f3f4f6;}
+.appliance-table td{padding:7px 8px;border-bottom:1px solid #f3f4f6;font-size:.82rem;color:#374151;}
+.appliance-table input{width:100%;padding:5px 8px;border:1.5px solid #e5e7eb;border-radius:6px;font-size:.82rem;text-align:right;background:#fafafa;}
+.appliance-table input:focus{outline:none;border-color:#ffc800;background:#fff;}
+.appliance-qty{width:48px;}
+.appliance-del{background:none;border:none;color:#d1d5db;cursor:pointer;font-size:1rem;padding:2px 4px;}
+.appliance-del:hover{color:#ef4444;}
+.add-appliance-btn{margin-top:10px;width:100%;padding:9px;border:1.5px dashed #d1d5db;border-radius:8px;background:none;cursor:pointer;font-size:.8rem;color:#6b7280;font-weight:600;transition:all .15s;}
+.add-appliance-btn:hover{border-color:#ffc800;color:#92400e;background:#fffbeb;}
+
+/* ── RESULT CARDS ── */
+.result-section{background:#fff;border:1.5px solid #e5e7eb;border-radius:16px;padding:28px;margin-top:24px;}
+.result-section h2{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#6b7280;margin-bottom:20px;display:flex;align-items:center;gap:8px;}
+.result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;}
+@media(max-width:600px){.result-grid{grid-template-columns:1fr 1fr;}}
+.result-card{background:linear-gradient(135deg,#f9fafb,#f3f4f6);border:1px solid #e5e7eb;border-radius:12px;padding:16px;text-align:center;}
+.result-card.highlight{background:linear-gradient(135deg,#fffbeb,#fef3c7);border-color:#fbbf24;}
+.result-card.green{background:linear-gradient(135deg,#EFF6FF,#DBEAFE);border-color:#93C5FD;}
+.result-card.blue{background:linear-gradient(135deg,#eff6ff,#dbeafe);border-color:#93c5fd;}
+.result-card .val{font-size:1.7rem;font-weight:900;color:#111;line-height:1;margin-bottom:4px;font-family:'Inter',system-ui,sans-serif;}
+.result-card .val span{font-size:1rem;color:#6b7280;font-weight:600;}
+.result-card .lbl{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#9ca3af;}
+
+/* ── ROI CHART ── */
+.roi-chart{margin-top:20px;}
+.roi-bar-wrap{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.roi-bar-label{font-size:.75rem;font-weight:700;color:#374151;width:120px;flex-shrink:0;}
+.roi-bar-outer{flex:1;height:22px;background:#f3f4f6;border-radius:6px;overflow:hidden;}
+.roi-bar-inner{height:100%;border-radius:6px;transition:width .6s cubic-bezier(.22,1,.36,1);display:flex;align-items:center;justify-content:flex-end;padding-right:8px;}
+.roi-bar-inner .roi-val{font-size:.7rem;font-weight:700;color:#fff;}
+.roi-table{width:100%;border-collapse:collapse;font-size:.82rem;margin-top:16px;}
+.roi-table th{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#9ca3af;padding:8px 10px;text-align:left;border-bottom:2px solid #f3f4f6;}
+.roi-table td{padding:8px 10px;border-bottom:1px solid #f9fafb;color:#374151;}
+.roi-table tr:hover td{background:#fafafa;}
+.roi-table .positive{color:#2563EB;font-weight:700;}
+.roi-table .neutral{color:#6b7280;}
+
+/* ── SYSTEM DIAGRAM ── */
+.system-diagram{background:#0d1117;border-radius:12px;padding:20px;margin-top:16px;display:flex;justify-content:center;align-items:center;gap:0;}
+.sys-block{text-align:center;padding:12px 16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;min-width:80px;}
+.sys-block .sys-icon{font-size:1.8rem;margin-bottom:4px;}
+.sys-block .sys-label{font-size:.65rem;font-weight:700;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.05em;white-space:nowrap;}
+.sys-block .sys-spec{font-size:.78rem;font-weight:800;color:#ffc800;margin-top:2px;}
+.sys-arrow{color:rgba(255,255,255,.25);font-size:1.2rem;padding:0 6px;flex-shrink:0;}
+
+/* ── CALC BTN ── */
+.calc-btn{width:100%;padding:14px;background:linear-gradient(135deg,#ffc800,#f59e0b);border:none;border-radius:12px;font-size:.95rem;font-weight:800;color:#000;cursor:pointer;text-transform:uppercase;letter-spacing:.06em;margin-top:8px;transition:transform .15s,box-shadow .15s;}
+.calc-btn:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(255,200,0,.35);}
+.calc-btn:active{transform:translateY(0);}
+
+/* ── IRRADIANCE BADGE ── */
+.irr-badge{display:inline-flex;align-items:center;gap:5px;background:#fffbeb;border:1px solid #fbbf24;border-radius:8px;padding:5px 10px;font-size:.75rem;font-weight:700;color:#92400e;margin-bottom:16px;}
+
+/* ── TABS ── */
+.result-tabs{display:flex;gap:4px;background:#f3f4f6;border-radius:10px;padding:4px;margin-bottom:20px;}
+.result-tab{flex:1;padding:8px;text-align:center;font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#6b7280;border-radius:7px;cursor:pointer;border:none;background:none;transition:all .15s;}
+.result-tab.active{background:#fff;color:#111;box-shadow:0 1px 4px rgba(0,0,0,.1);}
+.tab-pane{display:none;}
+.tab-pane.active{display:block;}
+
+/* ── INFO BOX ── */
+.info-box{background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:14px 16px;font-size:.8rem;color:#1e40af;line-height:1.6;margin-top:16px;}
+.info-box strong{font-weight:700;}
+</style>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"","description":"","url":"","inLanguage":"en","applicationCategory":"DeveloperApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","name":"","url":"","description":"","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com"}}
+</script>
+<script src="/assets/js/bundles/core.5473a555.min.js" defer></script><script src="/assets/js/afro-history.js" defer></script>
+<script src="/assets/js/components/save-result-button.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js" defer></script>
+<script src="/assets/js/components/share-button.js" defer></script>
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/solar-calculator/" />
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/solar-calculator/" />
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Solar Panel Calculator – AfroTools">
+<meta name="twitter:description" content="Size your solar system for Africa. Get panel count, battery bank, inverter size, and ROI vs generator. Country-specific irradiance data for Nigeria, Kenya, Ghana, South Africa and 40+ countries.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+
 
 <link rel="canonical" href="https://afrotools.com/tools/solar-calculator/">
 <meta property="og:title" content="Solar Panel Calculator - AfroTools">
 <meta property="og:description" content="Size your solar system for Africa. Get panel count, battery bank, inverter size, and ROI vs generator. Country-specific irradiance data for Nigeria, Kenya, Ghana, South Africa and 40+ countries.">
-</head>
-<body>
-<afro-navbar></afro-navbar>
-
-<div class="solar-wrap">
-  <!-- HERO -->
-  <div class="solar-hero">
-    <div class="solar-hero-badge">☀️ Solar Calculator</div>
-    <h1>Solar System Sizer<br>for Africa</h1>
-    <p>Country-specific irradiance data. Size your panels, batteries, inverter, and cable — and see your ROI vs running a generator.</p>
-    <div class="solar-hero-tags">
-      <span>🌍 33 African Countries</span>
-      <span>🔋 Battery Bank Sizing</span>
-      <span>💰 Generator ROI Comparison</span>
-      <span>⚡ Off-Grid & Hybrid</span>
-      <span>📊 10-Year Savings Projection</span>
-    </div>
-  </div>
-
-  <!-- MAIN GRID -->
-  <div class="solar-grid">
-    <!-- LEFT: INPUTS -->
-    <div>
-      <!-- Country -->
-      <div class="solar-panel">
-        <h2><span>🌍</span> Select Your Country</h2>
-        <div class="country-grid" id="countryGrid"></div>
-        <div id="irrBadge" class="irr-badge" style="margin-top:14px;display:none;">
-          ☀️ <span id="irrVal"></span>
-        </div>
-      </div>
-
-      <!-- System Setup -->
-      <div class="solar-panel" style="margin-top:16px;">
-        <h2><span>⚙️</span> System Setup</h2>
-        <div class="field-group">
-          <div class="field-label">System Type</div>
-          <select class="field-input" id="systemType">
-            <option value="offgrid">Off-Grid (No Utility Connection)</option>
-            <option value="hybrid" selected>Hybrid (Solar + Grid Backup)</option>
-            <option value="ongrid">On-Grid (Grid-Tied)</option>
-          </select>
-        </div>
-        <div class="field-row">
-          <div class="field-group">
-            <div class="field-label">Panel Wattage <span class="hint">per panel</span></div>
-            <select class="field-input" id="panelWatts">
-              <option value="250">250W (Poly)</option>
-              <option value="300">300W (Mono)</option>
-              <option value="400" selected>400W (Mono PERC)</option>
-              <option value="450">450W (Half-Cut)</option>
-              <option value="550">550W (Bifacial)</option>
-            </select>
-          </div>
-          <div class="field-group">
-            <div class="field-label">Battery Type</div>
-            <select class="field-input" id="battType">
-              <option value="lead">Lead-Acid (FLA)</option>
-              <option value="gel">Gel VRLA</option>
-              <option value="lifepo4" selected>LiFePO4 (Lithium)</option>
-            </select>
-          </div>
-        </div>
-        <div class="field-row">
-          <div class="field-group">
-            <div class="field-label">Backup Days <span class="hint">cloudy days</span></div>
-            <select class="field-input" id="backupDays">
-              <option value="1">1 Day</option>
-              <option value="2" selected>2 Days</option>
-              <option value="3">3 Days</option>
-              <option value="5">5 Days</option>
-            </select>
-          </div>
-          <div class="field-group">
-            <div class="field-label">Panel Efficiency Loss <span class="hint">%/year</span></div>
-            <input type="number" class="field-input" id="degradation" value="0.5" min="0.3" max="1" step="0.1">
-          </div>
-        </div>
-        <div class="field-group">
-          <div class="field-label">Generator (Comparison) <span class="hint">monthly fuel cost</span></div>
-          <div style="display:flex;gap:10px;align-items:center;">
-            <input type="number" class="field-input" id="genCost" placeholder="e.g. 50000" style="flex:1;">
-            <select class="field-input" id="currency" style="width:90px;">
-              <option value="NGN">NGN ₦</option>
-              <option value="KES">KES KSh</option>
-              <option value="GHS">GHS ₵</option>
-              <option value="ZAR">ZAR R</option>
-              <option value="UGX">UGX USh</option>
-              <option value="TZS">TZS TSh</option>
-              <option value="USD">USD $</option>
-            </select>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- RIGHT: APPLIANCES -->
-    <div class="solar-panel">
-      <h2><span>🔌</span> Your Appliances</h2>
-      <div style="margin-bottom:12px;">
-        <div style="font-size:.68rem;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">Quick Load Presets</div>
-        <div id="presetBtns" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
-      </div>
-      <table class="appliance-table">
-        <thead>
-          <tr>
-            <th>Appliance</th>
-            <th style="text-align:right;">Watts</th>
-            <th style="text-align:right;">Qty</th>
-            <th style="text-align:right;">Hrs/Day</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody id="applianceBody"></tbody>
-      </table>
-      <button class="add-appliance-btn" onclick="addAppliance()">+ Add Appliance</button>
-
-      <div style="margin-top:20px;padding-top:16px;border-top:1px solid #f3f4f6;">
-        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
-          <span style="font-size:.82rem;color:#6b7280;font-weight:600;">Total Daily Load</span>
-          <span style="font-size:1rem;font-weight:900;color:#111;" id="totalWh">0 Wh</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
-          <span style="font-size:.82rem;color:#6b7280;font-weight:600;">Peak Power Demand</span>
-          <span style="font-size:1rem;font-weight:900;color:#111;" id="peakW">0 W</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;">
-          <span style="font-size:.82rem;color:#6b7280;font-weight:600;">System with 25% Buffer</span>
-          <span style="font-size:1rem;font-weight:800;color:#f59e0b;" id="totalWhBuffer">0 Wh</span>
-        </div>
-      </div>
-
-      <button class="calc-btn" onclick="calculate()">☀️ Calculate My Solar System</button>
-    </div>
-  </div>
-
-  <!-- RESULTS -->
-  <div class="result-section" id="resultsSection" style="display:none;">
-    <h2><span>📊</span> Your Solar System</h2>
-
-    <!-- Result Cards -->
-    <div class="result-grid">
-      <div class="result-card highlight">
-        <div class="val" id="rPanels">—</div>
-        <div class="lbl">Solar Panels</div>
-      </div>
-      <div class="result-card highlight">
-        <div class="val" id="rBatteries">—</div>
-        <div class="lbl">Batteries</div>
-      </div>
-      <div class="result-card highlight">
-        <div class="val" id="rInverter">—</div>
-        <div class="lbl">Inverter Size</div>
-      </div>
-      <div class="result-card blue">
-        <div class="val" id="rPanelKW">— <span>kWp</span></div>
-        <div class="lbl">Panel Array</div>
-      </div>
-      <div class="result-card blue">
-        <div class="val" id="rBattKWh">— <span>kWh</span></div>
-        <div class="lbl">Battery Bank</div>
-      </div>
-      <div class="result-card green" id="rSavingsCard">
-        <div class="val" id="rMonthlySave">—</div>
-        <div class="lbl">Monthly Savings vs Gen</div>
-      </div>
-    </div>
-
-    <!-- System Diagram -->
-    <div class="system-diagram" id="sysDiagram">
-      <div class="sys-block">
-        <div class="sys-icon">☀️</div>
-        <div class="sys-label">Panels</div>
-        <div class="sys-spec" id="diagPanels">— × —W</div>
-      </div>
-      <div class="sys-arrow">→</div>
-      <div class="sys-block">
-        <div class="sys-icon">🔄</div>
-        <div class="sys-label">Charge Controller</div>
-        <div class="sys-spec" id="diagMPPT">— MPPT</div>
-      </div>
-      <div class="sys-arrow">→</div>
-      <div class="sys-block">
-        <div class="sys-icon">🔋</div>
-        <div class="sys-label">Battery Bank</div>
-        <div class="sys-spec" id="diagBatt">— kWh</div>
-      </div>
-      <div class="sys-arrow">→</div>
-      <div class="sys-block">
-        <div class="sys-icon">⚡</div>
-        <div class="sys-label">Inverter</div>
-        <div class="sys-spec" id="diagInv">— kVA</div>
-      </div>
-      <div class="sys-arrow">→</div>
-      <div class="sys-block">
-        <div class="sys-icon">🏠</div>
-        <div class="sys-label">Loads</div>
-        <div class="sys-spec" id="diagLoad">— kWh/d</div>
-      </div>
-    </div>
-
-    <!-- Tabs -->
-    <div style="margin-top:24px;">
-      <div class="result-tabs">
-        <button class="result-tab active" onclick="showTab('roi')">💰 ROI vs Generator</button>
-        <button class="result-tab" onclick="showTab('specs')">🔧 Specifications</button>
-        <button class="result-tab" onclick="showTab('tips')">💡 Tips</button>
-      </div>
-
-      <!-- ROI Tab -->
-      <div class="tab-pane active" id="tab-roi">
-        <div class="roi-chart" id="roiChart"></div>
-        <table class="roi-table" id="roiTable">
-          <thead>
-            <tr>
-              <th>Year</th>
-              <th>Solar Cumulative Cost</th>
-              <th>Generator Cumulative Cost</th>
-              <th>Savings / (Loss)</th>
-            </tr>
-          </thead>
-          <tbody id="roiTableBody"></tbody>
-        </table>
-      </div>
-
-      <!-- Specs Tab -->
-      <div class="tab-pane" id="tab-specs">
-        <table class="roi-table" id="specsTable">
-          <thead>
-            <tr>
-              <th>Component</th>
-              <th>Specification</th>
-              <th>Recommendation</th>
-            </tr>
-          </thead>
-          <tbody id="specsBody"></tbody>
-        </table>
-      </div>
-
-      <!-- Tips Tab -->
-      <div class="tab-pane" id="tab-tips">
-        <div id="tipsContent"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<afro-related-tools category="engineering" current="solar-calculator"></afro-related-tools>
-<afro-chat
-  tool="solar-calculator"
-  system="You are an expert African solar and renewable energy advisor. Help users size solar systems, choose between inverter types (pure sine wave, modified), battery technologies (lithium vs lead-acid), and calculate ROI on solar investments. Be specific about African conditions — high sun hours (4.5–6 hrs/day), power outage frequency, NEPA/PHCN situation in Nigeria, Eskom load-shedding in South Africa, and real product prices in African markets."
-></afro-chat>
-<afro-footer></afro-footer>
-
-<script>
-// ── COUNTRY DATA ──
-// Peak Sun Hours (PSH) = average daily irradiance in kWh/m²/day
-const COUNTRIES = [
-  // West Africa
-  {code:'NG',name:'Nigeria',        flag:'🇳🇬',psh:5.0,curr:'NGN',sym:'₦',   lat:9},
-  {code:'GH',name:'Ghana',          flag:'🇬🇭',psh:5.2,curr:'GHS',sym:'₵',   lat:8},
-  {code:'SN',name:'Senegal',        flag:'🇸🇳',psh:5.8,curr:'XOF',sym:'CFA', lat:15},
-  {code:'CI',name:"Côte d'Ivoire",  flag:'🇨🇮',psh:5.2,curr:'XOF',sym:'CFA', lat:6},
-  {code:'ML',name:'Mali',           flag:'🇲🇱',psh:6.1,curr:'XOF',sym:'CFA', lat:17},
-  {code:'BF',name:'Burkina Faso',   flag:'🇧🇫',psh:5.9,curr:'XOF',sym:'CFA', lat:12},
-  {code:'NE',name:'Niger',          flag:'🇳🇪',psh:6.2,curr:'XOF',sym:'CFA', lat:17},
-  {code:'BJ',name:'Benin',          flag:'🇧🇯',psh:5.3,curr:'XOF',sym:'CFA', lat:9},
-  {code:'GM',name:'Gambia',         flag:'🇬🇲',psh:5.5,curr:'GMD',sym:'D',   lat:13},
-  // Central Africa
-  {code:'CM',name:'Cameroon',       flag:'🇨🇲',psh:4.9,curr:'XAF',sym:'FCFA',lat:4},
-  {code:'CD',name:'DR Congo',       flag:'🇨🇩',psh:5.0,curr:'CDF',sym:'FC',  lat:-4},
-  // East Africa
-  {code:'KE',name:'Kenya',          flag:'🇰🇪',psh:5.5,curr:'KES',sym:'KSh', lat:-1},
-  {code:'TZ',name:'Tanzania',       flag:'🇹🇿',psh:5.4,curr:'TZS',sym:'TSh', lat:-6},
-  {code:'UG',name:'Uganda',         flag:'🇺🇬',psh:5.3,curr:'UGX',sym:'USh', lat:1},
-  {code:'RW',name:'Rwanda',         flag:'🇷🇼',psh:5.2,curr:'RWF',sym:'RF',  lat:-2},
-  {code:'ET',name:'Ethiopia',       flag:'🇪🇹',psh:5.6,curr:'ETB',sym:'Br',  lat:9},
-  {code:'SD',name:'Sudan',          flag:'🇸🇩',psh:6.0,curr:'SDG',sym:'£S',  lat:15},
-  {code:'DJ',name:'Djibouti',       flag:'🇩🇯',psh:6.3,curr:'DJF',sym:'Fr',  lat:12},
-  // Southern Africa
-  {code:'ZA',name:'South Africa',   flag:'🇿🇦',psh:5.8,curr:'ZAR',sym:'R',   lat:-29},
-  {code:'ZM',name:'Zambia',         flag:'🇿🇲',psh:5.5,curr:'ZMW',sym:'K',   lat:-15},
-  {code:'ZW',name:'Zimbabwe',       flag:'🇿🇼',psh:5.7,curr:'ZWL',sym:'Z$',  lat:-20},
-  {code:'MW',name:'Malawi',         flag:'🇲🇼',psh:5.4,curr:'MWK',sym:'MK',  lat:-14},
-  {code:'MZ',name:'Mozambique',     flag:'🇲🇿',psh:5.6,curr:'MZN',sym:'MT',  lat:-18},
-  {code:'AO',name:'Angola',         flag:'🇦🇴',psh:5.3,curr:'AOA',sym:'Kz',  lat:-11},
-  {code:'NA',name:'Namibia',        flag:'🇳🇦',psh:6.0,curr:'NAD',sym:'N$',  lat:-22},
-  {code:'BW',name:'Botswana',       flag:'🇧🇼',psh:6.1,curr:'BWP',sym:'P',   lat:-22},
-  // Island nations
-  {code:'MG',name:'Madagascar',     flag:'🇲🇬',psh:5.5,curr:'MGA',sym:'Ar',  lat:-20},
-  {code:'MU',name:'Mauritius',      flag:'🇲🇺',psh:4.8,curr:'MUR',sym:'Rs',  lat:-20},
-  // North Africa
-  {code:'EG',name:'Egypt',          flag:'🇪🇬',psh:6.2,curr:'EGP',sym:'E£',  lat:27},
-  {code:'MA',name:'Morocco',        flag:'🇲🇦',psh:5.5,curr:'MAD',sym:'DH',  lat:32},
-  {code:'TN',name:'Tunisia',        flag:'🇹🇳',psh:5.2,curr:'TND',sym:'DT',  lat:34},
-  {code:'DZ',name:'Algeria',        flag:'🇩🇿',psh:6.0,curr:'DZD',sym:'DA',  lat:28},
-  {code:'LY',name:'Libya',          flag:'🇱🇾',psh:6.5,curr:'LYD',sym:'LD',  lat:27},
-];
-
-// DOD (Depth of Discharge) by battery type
-const BATT_DOD = {lead:0.5,gel:0.55,lifepo4:0.8};
-const BATT_EFF = {lead:0.85,gel:0.87,lifepo4:0.97};
-const BATT_CYCLES = {lead:500,gel:700,lifepo4:3500};
-// Typical 100Ah 12V battery
-const BATT_UNIT_WH = 1200; // 100Ah × 12V = 1200 Wh
-
-// Default appliances
-const DEFAULT_APPLIANCES = [
-  {name:'LED Lights (×4)',watts:40,qty:1,hrs:6},
-  {name:'Phone Chargers (×4)',watts:20,qty:1,hrs:4},
-  {name:'32″ TV',watts:80,qty:1,hrs:5},
-  {name:'Laptop',watts:65,qty:1,hrs:6},
-  {name:'Fan (ceiling/standing)',watts:75,qty:2,hrs:8},
-  {name:'Fridge (Energy Star)',watts:150,qty:1,hrs:24},
-  {name:'WiFi Router',watts:15,qty:1,hrs:24},
-];
-
-// Quick load presets for common African home types
-const HOME_PRESETS = [
-  {label:'🏠 Small Flat', apps:[
-    {name:'LED Lights (×3)',watts:30,qty:1,hrs:5},
-    {name:'Standing Fan',watts:75,qty:1,hrs:8},
-    {name:'32″ TV',watts:80,qty:1,hrs:5},
-    {name:'Phone Chargers (×2)',watts:15,qty:1,hrs:4},
-    {name:'WiFi Router',watts:15,qty:1,hrs:24},
-  ]},
-  {label:'👨‍👩‍👧 Family Home', apps:[
-    {name:'LED Lights (×6)',watts:60,qty:1,hrs:6},
-    {name:'Ceiling Fans (×2)',watts:75,qty:2,hrs:10},
-    {name:'43″ Smart TV',watts:120,qty:1,hrs:6},
-    {name:'Fridge (Energy Star)',watts:150,qty:1,hrs:24},
-    {name:'Phone Chargers (×4)',watts:20,qty:1,hrs:4},
-    {name:'Laptop',watts:65,qty:1,hrs:6},
-    {name:'WiFi Router',watts:15,qty:1,hrs:24},
-    {name:'Water Pump (small)',watts:500,qty:1,hrs:1},
-  ]},
-  {label:'🏪 Small Shop', apps:[
-    {name:'LED Shop Lights (×6)',watts:60,qty:1,hrs:10},
-    {name:'Ceiling Fans (×2)',watts:75,qty:2,hrs:10},
-    {name:'CCTV (4 cameras)',watts:20,qty:1,hrs:24},
-    {name:'POS Terminal',watts:15,qty:1,hrs:10},
-    {name:'Computer / Laptop',watts:65,qty:1,hrs:8},
-    {name:'Fridge (drinks)',watts:150,qty:1,hrs:24},
-  ]},
-  {label:'🌾 Rural Homestead', apps:[
-    {name:'LED Lights (×4)',watts:40,qty:1,hrs:5},
-    {name:'Radio / Small TV',watts:50,qty:1,hrs:4},
-    {name:'Phone Chargers (×3)',watts:15,qty:1,hrs:3},
-    {name:'Water Pump (motor)',watts:250,qty:1,hrs:2},
-    {name:'Electric Kettle (1L)',watts:1000,qty:1,hrs:0.3},
-  ]},
-  {label:'🏢 Small Office', apps:[
-    {name:'LED Lights (×8)',watts:80,qty:1,hrs:9},
-    {name:'Ceiling Fans (×3)',watts:75,qty:3,hrs:9},
-    {name:'Desktop PCs (×3)',watts:120,qty:3,hrs:8},
-    {name:'Laser Printer',watts:400,qty:1,hrs:1},
-    {name:'Router + Switch',watts:25,qty:1,hrs:24},
-    {name:'CCTV (4 cameras)',watts:20,qty:1,hrs:24},
-  ]},
-];
-
-let selectedCountry = COUNTRIES[0];
-let appliances = JSON.parse(JSON.stringify(DEFAULT_APPLIANCES));
-
-// ── INIT ──
-(function init(){
-  // Build country grid
-  const grid = document.getElementById('countryGrid');
-  COUNTRIES.forEach((c,i) => {
-    const btn = document.createElement('button');
-    btn.className = 'country-btn' + (i===0?' active':'');
-    btn.dataset.code = c.code;
-    btn.innerHTML = `<span class="flag">${c.flag}</span>${c.name}`;
-    btn.onclick = () => selectCountry(c, btn);
-    grid.appendChild(btn);
-  });
-  // Currency sync
-  document.getElementById('currency').value = selectedCountry.curr;
-  showIrradiance(selectedCountry);
-  renderAppliances();
-  updateTotals();
-
-  // Build preset buttons
-  var presetBtnsEl = document.getElementById('presetBtns');
-  HOME_PRESETS.forEach(function(p) {
-    var btn = document.createElement('button');
-    btn.style.cssText = 'padding:5px 10px;border:1.5px solid #e5e7eb;border-radius:6px;background:#fafafa;cursor:pointer;font-size:.72rem;font-weight:600;color:#374151;transition:all .15s;font-family:inherit;';
-    btn.textContent = p.label;
-    btn.onmouseover = function(){ this.style.borderColor='#ffc800'; this.style.background='#fffbeb'; };
-    btn.onmouseout = function(){ this.style.borderColor='#e5e7eb'; this.style.background='#fafafa'; };
-    btn.onclick = function(){ appliances = JSON.parse(JSON.stringify(p.apps)); renderAppliances(); };
-    presetBtnsEl.appendChild(btn);
-  });
-})();
-
-function selectCountry(c, btn){
-  selectedCountry = c;
-  document.querySelectorAll('.country-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  // Update currency
-  const sel = document.getElementById('currency');
-  const opt = [...sel.options].find(o => o.value === c.curr);
-  if(opt) sel.value = c.curr;
-  showIrradiance(c);
-}
-
-function showIrradiance(c){
-  const badge = document.getElementById('irrBadge');
-  const val = document.getElementById('irrVal');
-  let quality = c.psh >= 6 ? '☀️☀️ Exceptional' : c.psh >= 5.5 ? '☀️ Very Good' : c.psh >= 5 ? '☀️ Good' : '⛅ Moderate';
-  const tilt = Math.min(35, Math.abs(c.lat || 5) + 10);
-  const facing = (c.lat || 0) < 0 ? 'north-facing' : 'south-facing';
-  val.textContent = `${c.name}: ${c.psh} PSH/day — ${quality} · Tilt panels ${tilt}° ${facing}`;
-  badge.style.display = 'inline-flex';
-}
-
-// ── APPLIANCES ──
-function renderAppliances(){
-  const tbody = document.getElementById('applianceBody');
-  tbody.innerHTML = '';
-  appliances.forEach((app, i) => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td><input type="text" value="${app.name}" onchange="appliances[${i}].name=this.value" style="width:100%;padding:5px 8px;border:1.5px solid #e5e7eb;border-radius:6px;font-size:.82rem;background:#fafafa;"></td>
-      <td><input type="number" class="appliance-qty" value="${app.watts}" onchange="appliances[${i}].watts=+this.value;updateTotals()"></td>
-      <td><input type="number" class="appliance-qty" value="${app.qty}" onchange="appliances[${i}].qty=+this.value;updateTotals()"></td>
-      <td><input type="number" class="appliance-qty" value="${app.hrs}" onchange="appliances[${i}].hrs=+this.value;updateTotals()"></td>
-      <td><button class="appliance-del" onclick="removeAppliance(${i})">✕</button></td>
-    `;
-    tbody.appendChild(tr);
-  });
-  updateTotals();
-}
-
-function addAppliance(){
-  appliances.push({name:'New Appliance',watts:0,qty:1,hrs:0});
-  renderAppliances();
-}
-
-function removeAppliance(i){
-  appliances.splice(i,1);
-  renderAppliances();
-}
-
-function getTotals(){
-  let totalWh = 0, peakW = 0;
-  appliances.forEach(a => {
-    totalWh += a.watts * a.qty * a.hrs;
-    peakW += a.watts * a.qty;
-  });
-  return {totalWh, peakW};
-}
-
-function updateTotals(){
-  const {totalWh, peakW} = getTotals();
-  const buf = totalWh * 1.25;
-  document.getElementById('totalWh').textContent = formatNum(totalWh) + ' Wh';
-  document.getElementById('peakW').textContent = formatNum(peakW) + ' W';
-  document.getElementById('totalWhBuffer').textContent = formatNum(Math.round(buf)) + ' Wh';
-}
-
-// ── CALCULATE ──
-function calculate(){
-  const {totalWh, peakW} = getTotals();
-  if(totalWh === 0){ alert('Please add some appliances first.'); return; }
-
-  const psh = selectedCountry.psh;
-  const panelW = +document.getElementById('panelWatts').value;
-  const battType = document.getElementById('battType').value;
-  const backupDays = +document.getElementById('backupDays').value;
-  const degradation = +document.getElementById('degradation').value / 100;
-  const genCost = +document.getElementById('genCost').value || 0;
-  const curr = document.getElementById('currency').value;
-  const currSym = [...document.getElementById('currency').options].find(o=>o.value===curr)?.text.split(' ')[1] || '';
-  const systemType = document.getElementById('systemType').value;
-
-  // Add 25% system loss factor (wiring, inverter, temp)
-  const adjustedWh = totalWh / 0.75;
-
-  // ── PANELS ──
-  // Panel kWp needed = Daily Wh needed / (PSH × (1 - system losses))
-  const panelKW = adjustedWh / (psh * 1000);
-  const numPanels = Math.ceil(panelKW * 1000 / panelW);
-  const actualKWp = (numPanels * panelW) / 1000;
-
-  // ── BATTERIES ──
-  const dod = BATT_DOD[battType];
-  const eff = BATT_EFF[battType];
-  // kWh needed in battery bank
-  const battKWhNeeded = (adjustedWh / 1000) * backupDays / (dod * eff);
-  const numBatteries = Math.ceil(battKWhNeeded * 1000 / BATT_UNIT_WH);
-  const actualBattKWh = (numBatteries * BATT_UNIT_WH) / 1000;
-
-  // ── INVERTER ──
-  // Size for peak load + 20% headroom
-  const invKVA = Math.ceil((peakW * 1.2) / 1000 * 2) / 2; // round up to nearest 0.5 kVA
-
-  // ── MPPT ──
-  const mpptA = Math.ceil(actualKWp * 1000 / (panelW > 400 ? 24 : 12) * 1.25 / 10) * 10;
-
-  // ── APPROX SYSTEM COST ──
-  const panelCostUSD = numPanels * 220; // ~$220/400W panel
-  const battCostUSD = numBatteries * (battType === 'lifepo4' ? 280 : 90);
-  const invCostUSD = invKVA * 180;
-  const totalCostUSD = (panelCostUSD + battCostUSD + invCostUSD) * 1.3; // +30% installation
-
-  // ── ROI ──
-  const monthlyGenCost = genCost;
-  const annualGenCost = monthlyGenCost * 12;
-
-  // Currency conversion (rough)
-  const USD_RATES = {
-    NGN:1600,KES:130,GHS:15,ZAR:19,UGX:3800,TZS:2700,EGP:50,ETB:110,
-    RWF:1300,XOF:620,XAF:620,ZMW:26,ZWL:350,MWK:1700,MZN:64,AOA:850,
-    SDG:600,MAD:10,TND:3.1,GMD:68,CDF:2800,DJF:178,NAD:19,BWP:13.5,
-    MGA:4600,MUR:46,DZD:135,LYD:4.8,USD:1
-  };
-  const rate = USD_RATES[curr] || 1;
-  const sysLocalCost = totalCostUSD * rate;
-
-  // ── UPDATE UI ──
-  document.getElementById('rPanels').textContent = numPanels;
-  document.getElementById('rBatteries').textContent = numBatteries;
-  document.getElementById('rInverter').textContent = invKVA + ' kVA';
-  document.getElementById('rPanelKW').innerHTML = actualKWp.toFixed(1) + ' <span>kWp</span>';
-  document.getElementById('rBattKWh').innerHTML = actualBattKWh.toFixed(1) + ' <span>kWh</span>';
-
-  // Savings
-  if(monthlyGenCost > 0){
-    const annualSaving = annualGenCost;
-    const payback = sysLocalCost / annualSaving;
-    document.getElementById('rMonthlySave').textContent = currSym + formatNum(monthlyGenCost);
-    document.getElementById('rSavingsCard').style.display = '';
-  } else {
-    document.getElementById('rSavingsCard').style.display = 'none';
-  }
-
-  // Diagram
-  document.getElementById('diagPanels').textContent = numPanels + ' × ' + panelW + 'W';
-  document.getElementById('diagMPPT').textContent = mpptA + 'A MPPT';
-  document.getElementById('diagBatt').textContent = actualBattKWh.toFixed(1) + ' kWh';
-  document.getElementById('diagInv').textContent = invKVA + ' kVA';
-  document.getElementById('diagLoad').textContent = (totalWh/1000).toFixed(1) + ' kWh/d';
-
-  // ROI Table
-  buildROITable(sysLocalCost, annualGenCost, curr, currSym, degradation, rate);
-
-  // Specs
-  buildSpecs(numPanels, panelW, actualKWp, numBatteries, battType, actualBattKWh, invKVA, mpptA);
-
-  // Tips
-  buildTips(selectedCountry, systemType, battType, numPanels, invKVA);
-
-  document.getElementById('resultsSection').style.display = 'block';
-  document.getElementById('resultsSection').scrollIntoView({behavior:'smooth',block:'start'});
-}
-
-function buildROITable(sysCost, annualGen, curr, sym, degradation, rate){
-  const tbody = document.getElementById('roiTableBody');
-  tbody.innerHTML = '';
-  const roiChart = document.getElementById('roiChart');
-  roiChart.innerHTML = '<div style="font-size:.75rem;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;">10-Year Cumulative Cost Comparison</div>';
-
-  let solarCum = sysCost;
-  let genCum = 0;
-  // Annual maintenance ~2% of system cost
-  const annualMaint = sysCost * 0.02;
-  const maxBar = (annualGen * 10);
-
-  for(let y=1; y<=10; y++){
-    genCum += annualGen;
-    solarCum += annualMaint;
-    const saving = genCum - solarCum;
-
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>Year ${y}</td>
-      <td>${sym}${formatNum(Math.round(solarCum))}</td>
-      <td>${sym}${formatNum(Math.round(genCum))}</td>
-      <td class="${saving>0?'positive':'neutral'}">${saving>0?'Saved ':'Loss '}${sym}${formatNum(Math.abs(Math.round(saving)))}</td>
-    `;
-    tbody.appendChild(tr);
-
-    // Chart bar (years 1,3,5,7,10)
-    if([1,3,5,7,10].includes(y)){
-      const barWrap = document.createElement('div');
-      barWrap.className = 'roi-bar-wrap';
-      const solarPct = Math.min(100, (solarCum/maxBar)*100);
-      const genPct = Math.min(100, (genCum/maxBar)*100);
-      barWrap.innerHTML = `
-        <div class="roi-bar-label">Year ${y}</div>
-        <div style="flex:1;">
-          <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
-            <div style="width:60px;font-size:.68rem;color:#6b7280;">Solar</div>
-            <div class="roi-bar-outer" style="flex:1;"><div class="roi-bar-inner" style="width:${solarPct}%;background:linear-gradient(90deg,#fbbf24,#f59e0b);"><span class="roi-val">${sym}${formatNum(Math.round(solarCum))}</span></div></div>
-          </div>
-          <div style="display:flex;align-items:center;gap:6px;">
-            <div style="width:60px;font-size:.68rem;color:#6b7280;">Generator</div>
-            <div class="roi-bar-outer" style="flex:1;"><div class="roi-bar-inner" style="width:${genPct}%;background:linear-gradient(90deg,#ef4444,#dc2626);"><span class="roi-val">${sym}${formatNum(Math.round(genCum))}</span></div></div>
-          </div>
-        </div>
-      `;
-      roiChart.appendChild(barWrap);
-    }
-  }
-}
-
-function buildSpecs(nPanels, pW, kWp, nBatt, bType, bKWh, invKVA, mpptA){
-  const battNames = {lead:'Lead-Acid FLA (100Ah/12V)',gel:'Gel VRLA (100Ah/12V)',lifepo4:'LiFePO4 Lithium (100Ah/12V)'};
-  const invRecs = invKVA <= 2 ? 'Victron Phoenix / Axpert 2kVA' : invKVA <= 5 ? 'Victron MultiPlus / Axpert 5kVA' : 'Victron Quattro / Deye 8kVA';
-  const specs = [
-    ['Solar Panels', `${nPanels} × ${pW}W = ${kWp.toFixed(1)} kWp`, pW>=400?'Mono PERC or Half-Cut preferred':'Mono PERC recommended'],
-    ['Battery Bank', `${nBatt} × ${battNames[bType]}`, bType==='lifepo4'?'Best ROI long-term (3,500+ cycles)':'Consider upgrading to LiFePO4'],
-    ['Battery Total', `${bKWh.toFixed(1)} kWh usable`, 'Wire batteries in series/parallel for 24V or 48V bank'],
-    ['Inverter/Charger', `${invKVA} kVA`, invRecs],
-    ['MPPT Controller', `${mpptA}A`, 'Victron SmartSolar or EPever MPPT'],
-    ['DC Cable (Panels→MPPT)', `Panels in series → MPPT input`, '6mm² or 10mm² DC solar cable (TÜV certified)'],
-    ['AC Cable (Inv→DB)', `AC distribution board`, '6mm² for runs under 10m, 10mm² for longer'],
-    ['Mounting', `Roof/ground mount`, (function(){ const tilt = Math.min(35, Math.abs(selectedCountry.lat||5)+10); const dir = (selectedCountry.lat||0)<0?'north':'south'; return `Tilt ${tilt}° ${dir}-facing for ${selectedCountry.name}. Fixed mount on IBR/concrete roof.`; })()],
-  ];
-
-  const tbody = document.getElementById('specsBody');
-  tbody.innerHTML = '';
-  specs.forEach(([comp,spec,rec]) => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td style="font-weight:700;">${comp}</td><td style="color:#2563EB;font-weight:600;">${spec}</td><td>${rec}</td>`;
-    tbody.appendChild(tr);
-  });
-}
-
-function buildTips(country, sysType, battType, nPanels, invKVA){
-  const tips = [
-    `<strong>☀️ ${country.name} Solar Tips:</strong> With ${country.psh} peak sun hours/day, ${country.name} has excellent solar potential. Dry season produces more energy — plan your battery bank for the rainy season.`,
-    `<strong>🔋 Battery Tip:</strong> ${battType==='lifepo4'?'LiFePO4 is the right choice — 3,500+ cycles means 10-year life with proper care. Charge to 90% daily max, not 100%.':'Consider upgrading to LiFePO4 lithium batteries when budget allows. They last 5–7× longer than lead-acid.'}`,
-    `<strong>⚡ Inverter Sizing:</strong> Your ${invKVA}kVA inverter handles normal loads. Avoid running high-surge devices (AC units, water pumps, welders) simultaneously. Motor loads have 3–6× surge current at startup.`,
-    `<strong>🌡️ Heat Management:</strong> Solar panels lose efficiency above 25°C. In tropical African climates, derate by 15–20%. Ensure 10–15cm air gap below panels for cooling.`,
-    `<strong>🔧 Maintenance Schedule:</strong> Clean panels monthly with a soft cloth and water. Check cable connections quarterly. Test battery voltage monthly. Professional inspection annually.`,
-    `<strong>📋 Installation Note:</strong> Use a certified solar installer — improper wiring is a fire risk. In Nigeria (NEMSA), Kenya (ERC), Ghana (ECG) — always get a certified system inspection.`,
-  ];
-
-  const sysNotes = {
-    offgrid: `<strong>🏠 Off-Grid Mode:</strong> You are fully independent from the utility grid. Size your battery bank generously — ${Math.round(+document.getElementById('backupDays').value)} days of autonomy during cloudy periods.`,
-    hybrid: `<strong>🔌 Hybrid Mode:</strong> Your solar charges batteries first, uses grid as backup. This is ideal for most African cities — you get solar savings while maintaining grid reliability.`,
-    ongrid: `<strong>🔄 On-Grid (Grid-Tied):</strong> No battery needed. Feed excess power back to the grid if your utility allows net metering. Check with your DISCO/utility about connection requirements.`,
-  };
-  tips.push(sysNotes[sysType]);
-
-  document.getElementById('tipsContent').innerHTML = tips.map(t => `<div class="info-box" style="margin-bottom:10px;">${t}</div>`).join('');
-}
-
-// ── TABS ──
-function showTab(id){
-  document.querySelectorAll('.result-tab').forEach((t,i) => {
-    const panes = ['roi','specs','tips'];
-    t.classList.toggle('active', panes[i]===id);
-  });
-  document.querySelectorAll('.tab-pane').forEach(p => {
-    p.classList.toggle('active', p.id==='tab-'+id);
-  });
-}
-
-// ── UTIL ──
-function formatNum(n){ return n.toLocaleString('en'); }
-</script>
-
-<script>
-// Save/Share buttons — manual placement needed
-(function(){
-  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
-  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
-  div.innerHTML = '<save-result-button tool-slug="solar-calculator" tool-name="Solar Calculator"></save-result-button><share-result-button tool-name="Solar Calculator" tool-slug="solar-calculator"></share-result-button>';
-  target.appendChild(div);
-})();
-</script>
-</body>
-</html>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<div class="solar-wrap">
+  <!-- HERO -->
+  <div class="solar-hero">
+    <div class="solar-hero-badge">☀️ Solar Calculator</div>
+    <h1>Solar System Sizer<br>for Africa</h1>
+    <p>Country-specific irradiance data. Size your panels, batteries, inverter, and cable — and see your ROI vs running a generator.</p>
+    <div class="solar-hero-tags">
+      <span>🌍 33 African Countries</span>
+      <span>🔋 Battery Bank Sizing</span>
+      <span>💰 Generator ROI Comparison</span>
+      <span>⚡ Off-Grid & Hybrid</span>
+      <span>📊 10-Year Savings Projection</span>
+    </div>
+  </div>
+
+  <!-- MAIN GRID -->
+  <div class="solar-grid">
+    <!-- LEFT: INPUTS -->
+    <div>
+      <!-- Country -->
+      <div class="solar-panel">
+        <h2><span>🌍</span> Select Your Country</h2>
+        <div class="country-grid" id="countryGrid"></div>
+        <div id="irrBadge" class="irr-badge" style="margin-top:14px;display:none;">
+          ☀️ <span id="irrVal"></span>
+        </div>
+      </div>
+
+      <!-- System Setup -->
+      <div class="solar-panel" style="margin-top:16px;">
+        <h2><span>⚙️</span> System Setup</h2>
+        <div class="field-group">
+          <div class="field-label">System Type</div>
+          <select class="field-input" id="systemType">
+            <option value="offgrid">Off-Grid (No Utility Connection)</option>
+            <option value="hybrid" selected>Hybrid (Solar + Grid Backup)</option>
+            <option value="ongrid">On-Grid (Grid-Tied)</option>
+          </select>
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <div class="field-label">Panel Wattage <span class="hint">per panel</span></div>
+            <select class="field-input" id="panelWatts">
+              <option value="250">250W (Poly)</option>
+              <option value="300">300W (Mono)</option>
+              <option value="400" selected>400W (Mono PERC)</option>
+              <option value="450">450W (Half-Cut)</option>
+              <option value="550">550W (Bifacial)</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <div class="field-label">Battery Type</div>
+            <select class="field-input" id="battType">
+              <option value="lead">Lead-Acid (FLA)</option>
+              <option value="gel">Gel VRLA</option>
+              <option value="lifepo4" selected>LiFePO4 (Lithium)</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <div class="field-label">Backup Days <span class="hint">cloudy days</span></div>
+            <select class="field-input" id="backupDays">
+              <option value="1">1 Day</option>
+              <option value="2" selected>2 Days</option>
+              <option value="3">3 Days</option>
+              <option value="5">5 Days</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <div class="field-label">Panel Efficiency Loss <span class="hint">%/year</span></div>
+            <input type="number" class="field-input" id="degradation" value="0.5" min="0.3" max="1" step="0.1">
+          </div>
+        </div>
+        <div class="field-group">
+          <div class="field-label">Generator (Comparison) <span class="hint">monthly fuel cost</span></div>
+          <div style="display:flex;gap:10px;align-items:center;">
+            <input type="number" class="field-input" id="genCost" placeholder="e.g. 50000" style="flex:1;">
+            <select class="field-input" id="currency" style="width:90px;">
+              <option value="NGN">NGN ₦</option>
+              <option value="KES">KES KSh</option>
+              <option value="GHS">GHS ₵</option>
+              <option value="ZAR">ZAR R</option>
+              <option value="UGX">UGX USh</option>
+              <option value="TZS">TZS TSh</option>
+              <option value="USD">USD $</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: APPLIANCES -->
+    <div class="solar-panel">
+      <h2><span>🔌</span> Your Appliances</h2>
+      <div style="margin-bottom:12px;">
+        <div style="font-size:.68rem;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">Quick Load Presets</div>
+        <div id="presetBtns" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
+      </div>
+      <table class="appliance-table">
+        <thead>
+          <tr>
+            <th>Appliance</th>
+            <th style="text-align:right;">Watts</th>
+            <th style="text-align:right;">Qty</th>
+            <th style="text-align:right;">Hrs/Day</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="applianceBody"></tbody>
+      </table>
+      <button class="add-appliance-btn" onclick="addAppliance()">+ Add Appliance</button>
+
+      <div style="margin-top:20px;padding-top:16px;border-top:1px solid #f3f4f6;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+          <span style="font-size:.82rem;color:#6b7280;font-weight:600;">Total Daily Load</span>
+          <span style="font-size:1rem;font-weight:900;color:#111;" id="totalWh">0 Wh</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+          <span style="font-size:.82rem;color:#6b7280;font-weight:600;">Peak Power Demand</span>
+          <span style="font-size:1rem;font-weight:900;color:#111;" id="peakW">0 W</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;">
+          <span style="font-size:.82rem;color:#6b7280;font-weight:600;">System with 25% Buffer</span>
+          <span style="font-size:1rem;font-weight:800;color:#f59e0b;" id="totalWhBuffer">0 Wh</span>
+        </div>
+      </div>
+
+      <button class="calc-btn" onclick="calculate()">☀️ Calculate My Solar System</button>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="result-section" id="resultsSection" style="display:none;">
+    <h2><span>📊</span> Your Solar System</h2>
+
+    <!-- Result Cards -->
+    <div class="result-grid">
+      <div class="result-card highlight">
+        <div class="val" id="rPanels">—</div>
+        <div class="lbl">Solar Panels</div>
+      </div>
+      <div class="result-card highlight">
+        <div class="val" id="rBatteries">—</div>
+        <div class="lbl">Batteries</div>
+      </div>
+      <div class="result-card highlight">
+        <div class="val" id="rInverter">—</div>
+        <div class="lbl">Inverter Size</div>
+      </div>
+      <div class="result-card blue">
+        <div class="val" id="rPanelKW">— <span>kWp</span></div>
+        <div class="lbl">Panel Array</div>
+      </div>
+      <div class="result-card blue">
+        <div class="val" id="rBattKWh">— <span>kWh</span></div>
+        <div class="lbl">Battery Bank</div>
+      </div>
+      <div class="result-card green" id="rSavingsCard">
+        <div class="val" id="rMonthlySave">—</div>
+        <div class="lbl">Monthly Savings vs Gen</div>
+      </div>
+    </div>
+
+    <!-- System Diagram -->
+    <div class="system-diagram" id="sysDiagram">
+      <div class="sys-block">
+        <div class="sys-icon">☀️</div>
+        <div class="sys-label">Panels</div>
+        <div class="sys-spec" id="diagPanels">— × —W</div>
+      </div>
+      <div class="sys-arrow">→</div>
+      <div class="sys-block">
+        <div class="sys-icon">🔄</div>
+        <div class="sys-label">Charge Controller</div>
+        <div class="sys-spec" id="diagMPPT">— MPPT</div>
+      </div>
+      <div class="sys-arrow">→</div>
+      <div class="sys-block">
+        <div class="sys-icon">🔋</div>
+        <div class="sys-label">Battery Bank</div>
+        <div class="sys-spec" id="diagBatt">— kWh</div>
+      </div>
+      <div class="sys-arrow">→</div>
+      <div class="sys-block">
+        <div class="sys-icon">⚡</div>
+        <div class="sys-label">Inverter</div>
+        <div class="sys-spec" id="diagInv">— kVA</div>
+      </div>
+      <div class="sys-arrow">→</div>
+      <div class="sys-block">
+        <div class="sys-icon">🏠</div>
+        <div class="sys-label">Loads</div>
+        <div class="sys-spec" id="diagLoad">— kWh/d</div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div style="margin-top:24px;">
+      <div class="result-tabs">
+        <button class="result-tab active" onclick="showTab('roi')">💰 ROI vs Generator</button>
+        <button class="result-tab" onclick="showTab('specs')">🔧 Specifications</button>
+        <button class="result-tab" onclick="showTab('tips')">💡 Tips</button>
+      </div>
+
+      <!-- ROI Tab -->
+      <div class="tab-pane active" id="tab-roi">
+        <div class="roi-chart" id="roiChart"></div>
+        <table class="roi-table" id="roiTable">
+          <thead>
+            <tr>
+              <th>Year</th>
+              <th>Solar Cumulative Cost</th>
+              <th>Generator Cumulative Cost</th>
+              <th>Savings / (Loss)</th>
+            </tr>
+          </thead>
+          <tbody id="roiTableBody"></tbody>
+        </table>
+      </div>
+
+      <!-- Specs Tab -->
+      <div class="tab-pane" id="tab-specs">
+        <table class="roi-table" id="specsTable">
+          <thead>
+            <tr>
+              <th>Component</th>
+              <th>Specification</th>
+              <th>Recommendation</th>
+            </tr>
+          </thead>
+          <tbody id="specsBody"></tbody>
+        </table>
+      </div>
+
+      <!-- Tips Tab -->
+      <div class="tab-pane" id="tab-tips">
+        <div id="tipsContent"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<afro-related-tools category="engineering" current="solar-calculator"></afro-related-tools>
+<afro-chat
+  tool="solar-calculator"
+  system="You are an expert African solar and renewable energy advisor. Help users size solar systems, choose between inverter types (pure sine wave, modified), battery technologies (lithium vs lead-acid), and calculate ROI on solar investments. Be specific about African conditions — high sun hours (4.5–6 hrs/day), power outage frequency, NEPA/PHCN situation in Nigeria, Eskom load-shedding in South Africa, and real product prices in African markets."
+></afro-chat>
+<afro-footer></afro-footer>
+
+<script>
+// ── COUNTRY DATA ──
+// Peak Sun Hours (PSH) = average daily irradiance in kWh/m²/day
+const COUNTRIES = [
+  // West Africa
+  {code:'NG',name:'Nigeria',        flag:'🇳🇬',psh:5.0,curr:'NGN',sym:'₦',   lat:9},
+  {code:'GH',name:'Ghana',          flag:'🇬🇭',psh:5.2,curr:'GHS',sym:'₵',   lat:8},
+  {code:'SN',name:'Senegal',        flag:'🇸🇳',psh:5.8,curr:'XOF',sym:'CFA', lat:15},
+  {code:'CI',name:"Côte d'Ivoire",  flag:'🇨🇮',psh:5.2,curr:'XOF',sym:'CFA', lat:6},
+  {code:'ML',name:'Mali',           flag:'🇲🇱',psh:6.1,curr:'XOF',sym:'CFA', lat:17},
+  {code:'BF',name:'Burkina Faso',   flag:'🇧🇫',psh:5.9,curr:'XOF',sym:'CFA', lat:12},
+  {code:'NE',name:'Niger',          flag:'🇳🇪',psh:6.2,curr:'XOF',sym:'CFA', lat:17},
+  {code:'BJ',name:'Benin',          flag:'🇧🇯',psh:5.3,curr:'XOF',sym:'CFA', lat:9},
+  {code:'GM',name:'Gambia',         flag:'🇬🇲',psh:5.5,curr:'GMD',sym:'D',   lat:13},
+  // Central Africa
+  {code:'CM',name:'Cameroon',       flag:'🇨🇲',psh:4.9,curr:'XAF',sym:'FCFA',lat:4},
+  {code:'CD',name:'DR Congo',       flag:'🇨🇩',psh:5.0,curr:'CDF',sym:'FC',  lat:-4},
+  // East Africa
+  {code:'KE',name:'Kenya',          flag:'🇰🇪',psh:5.5,curr:'KES',sym:'KSh', lat:-1},
+  {code:'TZ',name:'Tanzania',       flag:'🇹🇿',psh:5.4,curr:'TZS',sym:'TSh', lat:-6},
+  {code:'UG',name:'Uganda',         flag:'🇺🇬',psh:5.3,curr:'UGX',sym:'USh', lat:1},
+  {code:'RW',name:'Rwanda',         flag:'🇷🇼',psh:5.2,curr:'RWF',sym:'RF',  lat:-2},
+  {code:'ET',name:'Ethiopia',       flag:'🇪🇹',psh:5.6,curr:'ETB',sym:'Br',  lat:9},
+  {code:'SD',name:'Sudan',          flag:'🇸🇩',psh:6.0,curr:'SDG',sym:'£S',  lat:15},
+  {code:'DJ',name:'Djibouti',       flag:'🇩🇯',psh:6.3,curr:'DJF',sym:'Fr',  lat:12},
+  // Southern Africa
+  {code:'ZA',name:'South Africa',   flag:'🇿🇦',psh:5.8,curr:'ZAR',sym:'R',   lat:-29},
+  {code:'ZM',name:'Zambia',         flag:'🇿🇲',psh:5.5,curr:'ZMW',sym:'K',   lat:-15},
+  {code:'ZW',name:'Zimbabwe',       flag:'🇿🇼',psh:5.7,curr:'ZWL',sym:'Z$',  lat:-20},
+  {code:'MW',name:'Malawi',         flag:'🇲🇼',psh:5.4,curr:'MWK',sym:'MK',  lat:-14},
+  {code:'MZ',name:'Mozambique',     flag:'🇲🇿',psh:5.6,curr:'MZN',sym:'MT',  lat:-18},
+  {code:'AO',name:'Angola',         flag:'🇦🇴',psh:5.3,curr:'AOA',sym:'Kz',  lat:-11},
+  {code:'NA',name:'Namibia',        flag:'🇳🇦',psh:6.0,curr:'NAD',sym:'N$',  lat:-22},
+  {code:'BW',name:'Botswana',       flag:'🇧🇼',psh:6.1,curr:'BWP',sym:'P',   lat:-22},
+  // Island nations
+  {code:'MG',name:'Madagascar',     flag:'🇲🇬',psh:5.5,curr:'MGA',sym:'Ar',  lat:-20},
+  {code:'MU',name:'Mauritius',      flag:'🇲🇺',psh:4.8,curr:'MUR',sym:'Rs',  lat:-20},
+  // North Africa
+  {code:'EG',name:'Egypt',          flag:'🇪🇬',psh:6.2,curr:'EGP',sym:'E£',  lat:27},
+  {code:'MA',name:'Morocco',        flag:'🇲🇦',psh:5.5,curr:'MAD',sym:'DH',  lat:32},
+  {code:'TN',name:'Tunisia',        flag:'🇹🇳',psh:5.2,curr:'TND',sym:'DT',  lat:34},
+  {code:'DZ',name:'Algeria',        flag:'🇩🇿',psh:6.0,curr:'DZD',sym:'DA',  lat:28},
+  {code:'LY',name:'Libya',          flag:'🇱🇾',psh:6.5,curr:'LYD',sym:'LD',  lat:27},
+];
+
+// DOD (Depth of Discharge) by battery type
+const BATT_DOD = {lead:0.5,gel:0.55,lifepo4:0.8};
+const BATT_EFF = {lead:0.85,gel:0.87,lifepo4:0.97};
+const BATT_CYCLES = {lead:500,gel:700,lifepo4:3500};
+// Typical 100Ah 12V battery
+const BATT_UNIT_WH = 1200; // 100Ah × 12V = 1200 Wh
+
+// Default appliances
+const DEFAULT_APPLIANCES = [
+  {name:'LED Lights (×4)',watts:40,qty:1,hrs:6},
+  {name:'Phone Chargers (×4)',watts:20,qty:1,hrs:4},
+  {name:'32″ TV',watts:80,qty:1,hrs:5},
+  {name:'Laptop',watts:65,qty:1,hrs:6},
+  {name:'Fan (ceiling/standing)',watts:75,qty:2,hrs:8},
+  {name:'Fridge (Energy Star)',watts:150,qty:1,hrs:24},
+  {name:'WiFi Router',watts:15,qty:1,hrs:24},
+];
+
+// Quick load presets for common African home types
+const HOME_PRESETS = [
+  {label:'🏠 Small Flat', apps:[
+    {name:'LED Lights (×3)',watts:30,qty:1,hrs:5},
+    {name:'Standing Fan',watts:75,qty:1,hrs:8},
+    {name:'32″ TV',watts:80,qty:1,hrs:5},
+    {name:'Phone Chargers (×2)',watts:15,qty:1,hrs:4},
+    {name:'WiFi Router',watts:15,qty:1,hrs:24},
+  ]},
+  {label:'👨‍👩‍👧 Family Home', apps:[
+    {name:'LED Lights (×6)',watts:60,qty:1,hrs:6},
+    {name:'Ceiling Fans (×2)',watts:75,qty:2,hrs:10},
+    {name:'43″ Smart TV',watts:120,qty:1,hrs:6},
+    {name:'Fridge (Energy Star)',watts:150,qty:1,hrs:24},
+    {name:'Phone Chargers (×4)',watts:20,qty:1,hrs:4},
+    {name:'Laptop',watts:65,qty:1,hrs:6},
+    {name:'WiFi Router',watts:15,qty:1,hrs:24},
+    {name:'Water Pump (small)',watts:500,qty:1,hrs:1},
+  ]},
+  {label:'🏪 Small Shop', apps:[
+    {name:'LED Shop Lights (×6)',watts:60,qty:1,hrs:10},
+    {name:'Ceiling Fans (×2)',watts:75,qty:2,hrs:10},
+    {name:'CCTV (4 cameras)',watts:20,qty:1,hrs:24},
+    {name:'POS Terminal',watts:15,qty:1,hrs:10},
+    {name:'Computer / Laptop',watts:65,qty:1,hrs:8},
+    {name:'Fridge (drinks)',watts:150,qty:1,hrs:24},
+  ]},
+  {label:'🌾 Rural Homestead', apps:[
+    {name:'LED Lights (×4)',watts:40,qty:1,hrs:5},
+    {name:'Radio / Small TV',watts:50,qty:1,hrs:4},
+    {name:'Phone Chargers (×3)',watts:15,qty:1,hrs:3},
+    {name:'Water Pump (motor)',watts:250,qty:1,hrs:2},
+    {name:'Electric Kettle (1L)',watts:1000,qty:1,hrs:0.3},
+  ]},
+  {label:'🏢 Small Office', apps:[
+    {name:'LED Lights (×8)',watts:80,qty:1,hrs:9},
+    {name:'Ceiling Fans (×3)',watts:75,qty:3,hrs:9},
+    {name:'Desktop PCs (×3)',watts:120,qty:3,hrs:8},
+    {name:'Laser Printer',watts:400,qty:1,hrs:1},
+    {name:'Router + Switch',watts:25,qty:1,hrs:24},
+    {name:'CCTV (4 cameras)',watts:20,qty:1,hrs:24},
+  ]},
+];
+
+let selectedCountry = COUNTRIES[0];
+let appliances = JSON.parse(JSON.stringify(DEFAULT_APPLIANCES));
+
+// ── INIT ──
+(function init(){
+  // Build country grid
+  const grid = document.getElementById('countryGrid');
+  COUNTRIES.forEach((c,i) => {
+    const btn = document.createElement('button');
+    btn.className = 'country-btn' + (i===0?' active':'');
+    btn.dataset.code = c.code;
+    btn.innerHTML = `<span class="flag">${c.flag}</span>${c.name}`;
+    btn.onclick = () => selectCountry(c, btn);
+    grid.appendChild(btn);
+  });
+  // Currency sync
+  document.getElementById('currency').value = selectedCountry.curr;
+  showIrradiance(selectedCountry);
+  renderAppliances();
+  updateTotals();
+
+  // Build preset buttons
+  var presetBtnsEl = document.getElementById('presetBtns');
+  HOME_PRESETS.forEach(function(p) {
+    var btn = document.createElement('button');
+    btn.style.cssText = 'padding:5px 10px;border:1.5px solid #e5e7eb;border-radius:6px;background:#fafafa;cursor:pointer;font-size:.72rem;font-weight:600;color:#374151;transition:all .15s;font-family:inherit;';
+    btn.textContent = p.label;
+    btn.onmouseover = function(){ this.style.borderColor='#ffc800'; this.style.background='#fffbeb'; };
+    btn.onmouseout = function(){ this.style.borderColor='#e5e7eb'; this.style.background='#fafafa'; };
+    btn.onclick = function(){ appliances = JSON.parse(JSON.stringify(p.apps)); renderAppliances(); };
+    presetBtnsEl.appendChild(btn);
+  });
+})();
+
+function selectCountry(c, btn){
+  selectedCountry = c;
+  document.querySelectorAll('.country-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  // Update currency
+  const sel = document.getElementById('currency');
+  const opt = [...sel.options].find(o => o.value === c.curr);
+  if(opt) sel.value = c.curr;
+  showIrradiance(c);
+}
+
+function showIrradiance(c){
+  const badge = document.getElementById('irrBadge');
+  const val = document.getElementById('irrVal');
+  let quality = c.psh >= 6 ? '☀️☀️ Exceptional' : c.psh >= 5.5 ? '☀️ Very Good' : c.psh >= 5 ? '☀️ Good' : '⛅ Moderate';
+  const tilt = Math.min(35, Math.abs(c.lat || 5) + 10);
+  const facing = (c.lat || 0) < 0 ? 'north-facing' : 'south-facing';
+  val.textContent = `${c.name}: ${c.psh} PSH/day — ${quality} · Tilt panels ${tilt}° ${facing}`;
+  badge.style.display = 'inline-flex';
+}
+
+// ── APPLIANCES ──
+function renderAppliances(){
+  const tbody = document.getElementById('applianceBody');
+  tbody.innerHTML = '';
+  appliances.forEach((app, i) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><input type="text" value="${app.name}" onchange="appliances[${i}].name=this.value" style="width:100%;padding:5px 8px;border:1.5px solid #e5e7eb;border-radius:6px;font-size:.82rem;background:#fafafa;"></td>
+      <td><input type="number" class="appliance-qty" value="${app.watts}" onchange="appliances[${i}].watts=+this.value;updateTotals()"></td>
+      <td><input type="number" class="appliance-qty" value="${app.qty}" onchange="appliances[${i}].qty=+this.value;updateTotals()"></td>
+      <td><input type="number" class="appliance-qty" value="${app.hrs}" onchange="appliances[${i}].hrs=+this.value;updateTotals()"></td>
+      <td><button class="appliance-del" onclick="removeAppliance(${i})">✕</button></td>
+    `;
+    tbody.appendChild(tr);
+  });
+  updateTotals();
+}
+
+function addAppliance(){
+  appliances.push({name:'New Appliance',watts:0,qty:1,hrs:0});
+  renderAppliances();
+}
+
+function removeAppliance(i){
+  appliances.splice(i,1);
+  renderAppliances();
+}
+
+function getTotals(){
+  let totalWh = 0, peakW = 0;
+  appliances.forEach(a => {
+    totalWh += a.watts * a.qty * a.hrs;
+    peakW += a.watts * a.qty;
+  });
+  return {totalWh, peakW};
+}
+
+function updateTotals(){
+  const {totalWh, peakW} = getTotals();
+  const buf = totalWh * 1.25;
+  document.getElementById('totalWh').textContent = formatNum(totalWh) + ' Wh';
+  document.getElementById('peakW').textContent = formatNum(peakW) + ' W';
+  document.getElementById('totalWhBuffer').textContent = formatNum(Math.round(buf)) + ' Wh';
+}
+
+// ── CALCULATE ──
+function calculate(){
+  const {totalWh, peakW} = getTotals();
+  if(totalWh === 0){ alert('Please add some appliances first.'); return; }
+
+  const psh = selectedCountry.psh;
+  const panelW = +document.getElementById('panelWatts').value;
+  const battType = document.getElementById('battType').value;
+  const backupDays = +document.getElementById('backupDays').value;
+  const degradation = +document.getElementById('degradation').value / 100;
+  const genCost = +document.getElementById('genCost').value || 0;
+  const curr = document.getElementById('currency').value;
+  const currSym = [...document.getElementById('currency').options].find(o=>o.value===curr)?.text.split(' ')[1] || '';
+  const systemType = document.getElementById('systemType').value;
+
+  // Add 25% system loss factor (wiring, inverter, temp)
+  const adjustedWh = totalWh / 0.75;
+
+  // ── PANELS ──
+  // Panel kWp needed = Daily Wh needed / (PSH × (1 - system losses))
+  const panelKW = adjustedWh / (psh * 1000);
+  const numPanels = Math.ceil(panelKW * 1000 / panelW);
+  const actualKWp = (numPanels * panelW) / 1000;
+
+  // ── BATTERIES ──
+  const dod = BATT_DOD[battType];
+  const eff = BATT_EFF[battType];
+  // kWh needed in battery bank
+  const battKWhNeeded = (adjustedWh / 1000) * backupDays / (dod * eff);
+  const numBatteries = Math.ceil(battKWhNeeded * 1000 / BATT_UNIT_WH);
+  const actualBattKWh = (numBatteries * BATT_UNIT_WH) / 1000;
+
+  // ── INVERTER ──
+  // Size for peak load + 20% headroom
+  const invKVA = Math.ceil((peakW * 1.2) / 1000 * 2) / 2; // round up to nearest 0.5 kVA
+
+  // ── MPPT ──
+  const mpptA = Math.ceil(actualKWp * 1000 / (panelW > 400 ? 24 : 12) * 1.25 / 10) * 10;
+
+  // ── APPROX SYSTEM COST ──
+  const panelCostUSD = numPanels * 220; // ~$220/400W panel
+  const battCostUSD = numBatteries * (battType === 'lifepo4' ? 280 : 90);
+  const invCostUSD = invKVA * 180;
+  const totalCostUSD = (panelCostUSD + battCostUSD + invCostUSD) * 1.3; // +30% installation
+
+  // ── ROI ──
+  const monthlyGenCost = genCost;
+  const annualGenCost = monthlyGenCost * 12;
+
+  // Currency conversion (rough)
+  const USD_RATES = {
+    NGN:1600,KES:130,GHS:15,ZAR:19,UGX:3800,TZS:2700,EGP:50,ETB:110,
+    RWF:1300,XOF:620,XAF:620,ZMW:26,ZWL:350,MWK:1700,MZN:64,AOA:850,
+    SDG:600,MAD:10,TND:3.1,GMD:68,CDF:2800,DJF:178,NAD:19,BWP:13.5,
+    MGA:4600,MUR:46,DZD:135,LYD:4.8,USD:1
+  };
+  const rate = USD_RATES[curr] || 1;
+  const sysLocalCost = totalCostUSD * rate;
+
+  // ── UPDATE UI ──
+  document.getElementById('rPanels').textContent = numPanels;
+  document.getElementById('rBatteries').textContent = numBatteries;
+  document.getElementById('rInverter').textContent = invKVA + ' kVA';
+  document.getElementById('rPanelKW').innerHTML = actualKWp.toFixed(1) + ' <span>kWp</span>';
+  document.getElementById('rBattKWh').innerHTML = actualBattKWh.toFixed(1) + ' <span>kWh</span>';
+
+  // Savings
+  if(monthlyGenCost > 0){
+    const annualSaving = annualGenCost;
+    const payback = sysLocalCost / annualSaving;
+    document.getElementById('rMonthlySave').textContent = currSym + formatNum(monthlyGenCost);
+    document.getElementById('rSavingsCard').style.display = '';
+  } else {
+    document.getElementById('rSavingsCard').style.display = 'none';
+  }
+
+  // Diagram
+  document.getElementById('diagPanels').textContent = numPanels + ' × ' + panelW + 'W';
+  document.getElementById('diagMPPT').textContent = mpptA + 'A MPPT';
+  document.getElementById('diagBatt').textContent = actualBattKWh.toFixed(1) + ' kWh';
+  document.getElementById('diagInv').textContent = invKVA + ' kVA';
+  document.getElementById('diagLoad').textContent = (totalWh/1000).toFixed(1) + ' kWh/d';
+
+  // ROI Table
+  buildROITable(sysLocalCost, annualGenCost, curr, currSym, degradation, rate);
+
+  // Specs
+  buildSpecs(numPanels, panelW, actualKWp, numBatteries, battType, actualBattKWh, invKVA, mpptA);
+
+  // Tips
+  buildTips(selectedCountry, systemType, battType, numPanels, invKVA);
+
+  document.getElementById('resultsSection').style.display = 'block';
+  document.getElementById('resultsSection').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function buildROITable(sysCost, annualGen, curr, sym, degradation, rate){
+  const tbody = document.getElementById('roiTableBody');
+  tbody.innerHTML = '';
+  const roiChart = document.getElementById('roiChart');
+  roiChart.innerHTML = '<div style="font-size:.75rem;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;">10-Year Cumulative Cost Comparison</div>';
+
+  let solarCum = sysCost;
+  let genCum = 0;
+  // Annual maintenance ~2% of system cost
+  const annualMaint = sysCost * 0.02;
+  const maxBar = (annualGen * 10);
+
+  for(let y=1; y<=10; y++){
+    genCum += annualGen;
+    solarCum += annualMaint;
+    const saving = genCum - solarCum;
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>Year ${y}</td>
+      <td>${sym}${formatNum(Math.round(solarCum))}</td>
+      <td>${sym}${formatNum(Math.round(genCum))}</td>
+      <td class="${saving>0?'positive':'neutral'}">${saving>0?'Saved ':'Loss '}${sym}${formatNum(Math.abs(Math.round(saving)))}</td>
+    `;
+    tbody.appendChild(tr);
+
+    // Chart bar (years 1,3,5,7,10)
+    if([1,3,5,7,10].includes(y)){
+      const barWrap = document.createElement('div');
+      barWrap.className = 'roi-bar-wrap';
+      const solarPct = Math.min(100, (solarCum/maxBar)*100);
+      const genPct = Math.min(100, (genCum/maxBar)*100);
+      barWrap.innerHTML = `
+        <div class="roi-bar-label">Year ${y}</div>
+        <div style="flex:1;">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+            <div style="width:60px;font-size:.68rem;color:#6b7280;">Solar</div>
+            <div class="roi-bar-outer" style="flex:1;"><div class="roi-bar-inner" style="width:${solarPct}%;background:linear-gradient(90deg,#fbbf24,#f59e0b);"><span class="roi-val">${sym}${formatNum(Math.round(solarCum))}</span></div></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <div style="width:60px;font-size:.68rem;color:#6b7280;">Generator</div>
+            <div class="roi-bar-outer" style="flex:1;"><div class="roi-bar-inner" style="width:${genPct}%;background:linear-gradient(90deg,#ef4444,#dc2626);"><span class="roi-val">${sym}${formatNum(Math.round(genCum))}</span></div></div>
+          </div>
+        </div>
+      `;
+      roiChart.appendChild(barWrap);
+    }
+  }
+}
+
+function buildSpecs(nPanels, pW, kWp, nBatt, bType, bKWh, invKVA, mpptA){
+  const battNames = {lead:'Lead-Acid FLA (100Ah/12V)',gel:'Gel VRLA (100Ah/12V)',lifepo4:'LiFePO4 Lithium (100Ah/12V)'};
+  const invRecs = invKVA <= 2 ? 'Victron Phoenix / Axpert 2kVA' : invKVA <= 5 ? 'Victron MultiPlus / Axpert 5kVA' : 'Victron Quattro / Deye 8kVA';
+  const specs = [
+    ['Solar Panels', `${nPanels} × ${pW}W = ${kWp.toFixed(1)} kWp`, pW>=400?'Mono PERC or Half-Cut preferred':'Mono PERC recommended'],
+    ['Battery Bank', `${nBatt} × ${battNames[bType]}`, bType==='lifepo4'?'Best ROI long-term (3,500+ cycles)':'Consider upgrading to LiFePO4'],
+    ['Battery Total', `${bKWh.toFixed(1)} kWh usable`, 'Wire batteries in series/parallel for 24V or 48V bank'],
+    ['Inverter/Charger', `${invKVA} kVA`, invRecs],
+    ['MPPT Controller', `${mpptA}A`, 'Victron SmartSolar or EPever MPPT'],
+    ['DC Cable (Panels→MPPT)', `Panels in series → MPPT input`, '6mm² or 10mm² DC solar cable (TÜV certified)'],
+    ['AC Cable (Inv→DB)', `AC distribution board`, '6mm² for runs under 10m, 10mm² for longer'],
+    ['Mounting', `Roof/ground mount`, (function(){ const tilt = Math.min(35, Math.abs(selectedCountry.lat||5)+10); const dir = (selectedCountry.lat||0)<0?'north':'south'; return `Tilt ${tilt}° ${dir}-facing for ${selectedCountry.name}. Fixed mount on IBR/concrete roof.`; })()],
+  ];
+
+  const tbody = document.getElementById('specsBody');
+  tbody.innerHTML = '';
+  specs.forEach(([comp,spec,rec]) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td style="font-weight:700;">${comp}</td><td style="color:#2563EB;font-weight:600;">${spec}</td><td>${rec}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function buildTips(country, sysType, battType, nPanels, invKVA){
+  const tips = [
+    `<strong>☀️ ${country.name} Solar Tips:</strong> With ${country.psh} peak sun hours/day, ${country.name} has excellent solar potential. Dry season produces more energy — plan your battery bank for the rainy season.`,
+    `<strong>🔋 Battery Tip:</strong> ${battType==='lifepo4'?'LiFePO4 is the right choice — 3,500+ cycles means 10-year life with proper care. Charge to 90% daily max, not 100%.':'Consider upgrading to LiFePO4 lithium batteries when budget allows. They last 5–7× longer than lead-acid.'}`,
+    `<strong>⚡ Inverter Sizing:</strong> Your ${invKVA}kVA inverter handles normal loads. Avoid running high-surge devices (AC units, water pumps, welders) simultaneously. Motor loads have 3–6× surge current at startup.`,
+    `<strong>🌡️ Heat Management:</strong> Solar panels lose efficiency above 25°C. In tropical African climates, derate by 15–20%. Ensure 10–15cm air gap below panels for cooling.`,
+    `<strong>🔧 Maintenance Schedule:</strong> Clean panels monthly with a soft cloth and water. Check cable connections quarterly. Test battery voltage monthly. Professional inspection annually.`,
+    `<strong>📋 Installation Note:</strong> Use a certified solar installer — improper wiring is a fire risk. In Nigeria (NEMSA), Kenya (ERC), Ghana (ECG) — always get a certified system inspection.`,
+  ];
+
+  const sysNotes = {
+    offgrid: `<strong>🏠 Off-Grid Mode:</strong> You are fully independent from the utility grid. Size your battery bank generously — ${Math.round(+document.getElementById('backupDays').value)} days of autonomy during cloudy periods.`,
+    hybrid: `<strong>🔌 Hybrid Mode:</strong> Your solar charges batteries first, uses grid as backup. This is ideal for most African cities — you get solar savings while maintaining grid reliability.`,
+    ongrid: `<strong>🔄 On-Grid (Grid-Tied):</strong> No battery needed. Feed excess power back to the grid if your utility allows net metering. Check with your DISCO/utility about connection requirements.`,
+  };
+  tips.push(sysNotes[sysType]);
+
+  document.getElementById('tipsContent').innerHTML = tips.map(t => `<div class="info-box" style="margin-bottom:10px;">${t}</div>`).join('');
+}
+
+// ── TABS ──
+function showTab(id){
+  document.querySelectorAll('.result-tab').forEach((t,i) => {
+    const panes = ['roi','specs','tips'];
+    t.classList.toggle('active', panes[i]===id);
+  });
+  document.querySelectorAll('.tab-pane').forEach(p => {
+    p.classList.toggle('active', p.id==='tab-'+id);
+  });
+}
+
+// ── UTIL ──
+function formatNum(n){ return n.toLocaleString('en'); }
+</script>
+
+<script>
+// Save/Share buttons — manual placement needed
+(function(){
+  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
+  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;padding:0 22px 16px';
+  div.innerHTML = '<save-result-button tool-slug="solar-calculator" tool-name="Solar Calculator"></save-result-button><share-result-button tool-name="Solar Calculator" tool-slug="solar-calculator"></share-result-button>';
+  target.appendChild(div);
+})();
+</script>
+</body>
+</html>
