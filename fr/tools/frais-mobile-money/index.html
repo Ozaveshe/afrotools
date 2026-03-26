@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.bd27dfaf.min.js" lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comparateur Frais Mobile Money – M-Pesa, MTN MoMo, Airtel</title>
+<meta name="description" content="Comparez les frais de transfert mobile money M-Pesa, MTN MoMo, Airtel Money, Orange Money pour Nigeria, Kenya, Ghana, Ouganda, Tanzanie, Rwanda et tous les pays africains.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://afrotools.com/fr/tools/frais-mobile-money/">
+<meta property="og:title" content="Calculateur Frais Mobile Money — M-Pesa, MoMo">
+<meta property="og:description" content="Comparez les frais de mobile money M-Pesa, MTN MoMo, Airtel Money, Wave. Voyez les frais exacts avant d'envoyer.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="AfroTools">
+<meta property="og:url" content="https://afrotools.com/fr/tools/frais-mobile-money/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Calculateur Frais Mobile Money — M-Pesa, MoMo">
+<meta name="twitter:description" content="Comparez les frais de mobile money M-Pesa, MTN MoMo, Airtel Money, Wave. Voyez les frais exacts avant d'envoyer.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<script src="/assets/js/components/tool-registry.min.js" defer></script>
+<script src="/assets/js/components/navbar.min.js" defer></script>
+<script src="/assets/js/components/footer.min.js" defer></script>
+<style>
+/* ── PAGE ── */
+.mm-wrap{max-width:1000px;margin:0 auto;padding:24px 20px 60px;}
+
+/* CALCULATOR */
+.mm-calc{background:#fff;border:1.5px solid #e5e7eb;border-radius:16px;padding:28px;margin-bottom:20px;}
+.mm-calc-title{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#9ca3af;margin-bottom:20px;display:flex;align-items:center;gap:7px;}
+.mm-form-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:20px;}
+@media(max-width:640px){.mm-form-row{grid-template-columns:1fr;}}
+.mm-field label{display:block;font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#374151;margin-bottom:6px;}
+.mm-field select,.mm-field input{width:100%;padding:10px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.9rem;color:#111;background:#fafafa;transition:border-color .2s,box-shadow .2s;}
+.mm-field select:focus,.mm-field input:focus{outline:none;border-color:var(--color-primary);box-shadow:0 0 0 3px rgba(0,122,255,.08);background:#fff;}
+
+/* PROVIDER FILTER */
+.mm-providers{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;}
+.mm-prov-btn{padding:7px 14px;border:1.5px solid #e5e7eb;border-radius:8px;background:#fafafa;cursor:pointer;font-size:.75rem;font-weight:700;color:#374151;transition:all .15s;display:flex;align-items:center;gap:6px;}
+.mm-prov-btn.active{border-color:var(--color-primary);background:#eff6ff;color:var(--color-primary);}
+.mm-prov-btn .prov-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+
+/* COMPARE BTN */
+.mm-compare-btn{width:100%;padding:13px;background:linear-gradient(135deg,var(--color-primary),#0059B3);border:none;border-radius:11px;color:#fff;font-size:.9rem;font-weight:800;cursor:pointer;text-transform:uppercase;letter-spacing:.06em;transition:transform .15s,box-shadow .15s;}
+.mm-compare-btn:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,122,255,.3);}
+
+/* RESULTS TABLE */
+.mm-results{margin-top:24px;}
+.mm-results-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
+.mm-results-header h3{font-size:.85rem;font-weight:800;color:#111;text-transform:uppercase;letter-spacing:.04em;}
+.mm-cheapest-tag{background:#DBEAFE;border:1px solid #93C5FD;color:#1D4ED8;padding:5px 12px;border-radius:8px;font-size:.72rem;font-weight:700;}
+
+.mm-table-wrap{overflow-x:auto;}
+.mm-table{width:100%;border-collapse:collapse;}
+.mm-table thead{background:#f9fafb;border-bottom:2px solid #e5e7eb;}
+.mm-table th{padding:10px 14px;text-align:left;font-size:.67rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:#9ca3af;}
+.mm-table th.right{text-align:right;}
+.mm-table td{padding:11px 14px;border-bottom:1px solid #f3f4f6;font-size:.85rem;color:#374151;}
+.mm-table td.right{text-align:right;font-weight:700;color:#111;}
+.mm-table tr:hover td{background:#fafafa;}
+.mm-table tr.cheapest td{background:#EFF6FF;}
+.mm-table tr.cheapest td:first-child{position:relative;}
+.mm-table tr.cheapest td:first-child::before{content:'BEST';background:#2563EB;color:#fff;font-size:.55rem;font-weight:900;padding:1px 5px;border-radius:3px;margin-right:6px;letter-spacing:.06em;}
+.mm-table tr.not-available td{color:#d1d5db;}
+
+/* PROVIDER BADGE */
+.prov-badge{display:inline-flex;align-items:center;gap:6px;font-weight:700;}
+.prov-badge .p-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+
+/* FEE BAR */
+.fee-bar-cell{display:flex;align-items:center;gap:8px;}
+.fee-bar{flex:1;height:6px;background:#f3f4f6;border-radius:3px;overflow:hidden;min-width:60px;}
+.fee-bar-fill{height:100%;border-radius:3px;transition:width .4s;}
+
+/* TIPS */
+.mm-tips{margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:600px){.mm-tips{grid-template-columns:1fr;}}
+.mm-tip{background:#f0f9ff;border:1px solid #bae6fd;border-radius:10px;padding:14px;}
+.mm-tip h4{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:#0369a1;margin-bottom:5px;}
+.mm-tip p{font-size:.78rem;color:#1e40af;line-height:1.5;}
+
+/* COUNTRY INFO */
+.mm-country-info{background:#0d1117;border-radius:12px;padding:16px 20px;margin-top:12px;color:rgba(255,255,255,.8);font-size:.8rem;line-height:1.6;}
+.mm-country-info strong{color:#4DA3FF;}
+
+/* AMOUNT BREAKDOWN */
+.mm-breakdown{background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:14px;margin-top:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+@media(max-width:480px){.mm-breakdown{grid-template-columns:1fr 1fr;}}
+.mm-bk-item{text-align:center;}
+.mm-bk-val{font-size:1.1rem;font-weight:900;color:#111;}
+.mm-bk-lbl{font-size:.65rem;color:#9ca3af;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-top:2px;}
+
+/* HISTORY */
+.mm-history{margin-top:20px;}
+.mm-history-title{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#9ca3af;margin-bottom:10px;}
+.mm-history-list{display:flex;flex-direction:column;gap:6px;}
+.mm-hist-item{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:#fafafa;border:1px solid #f3f4f6;border-radius:8px;font-size:.78rem;cursor:pointer;transition:border-color .15s;}
+.mm-hist-item:hover{border-color:var(--color-primary);}
+.mm-hist-item .hi-amount{font-weight:700;color:#111;}
+.mm-hist-item .hi-cheapest{color:#2563EB;font-weight:700;}
+.mm-hist-item .hi-del{color:#d1d5db;font-size:.9rem;cursor:pointer;padding:2px 4px;}
+.mm-hist-item .hi-del:hover{color:#ef4444;}
+.mfun{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.mfun-card{padding:16px;border-radius:10px;text-align:center}
+.mfun-card.gold{background:#FFF8E7;border:1.5px solid rgba(212,168,67,.3)}
+.mfun-card.blue{background:#E8F2FF;border:1.5px solid rgba(0,122,255,.2)}
+.mfun-card.rose{background:#fff1f2;border:1.5px solid rgba(225,29,72,.2)}
+.mfun-card.green{background:#f0fdf4;border:1.5px solid #86efac}
+.mfun-emoji{font-size:2rem;margin-bottom:6px}
+.mfun-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.mfun-card.gold .mfun-title{color:#92400e}
+.mfun-card.blue .mfun-title{color:#1e40af}
+.mfun-card.rose .mfun-title{color:#be123c}
+.mfun-card.green .mfun-title{color:#166534}
+.mfun-text{font-size:.78rem;font-weight:600;color:#1e293b;line-height:1.5}
+.mfun-dyk{margin-top:16px;background:linear-gradient(135deg,#faf5ff,#f3e8ff);border:1.5px solid #c4b5fd;border-radius:12px;padding:18px}
+.mfun-dyk-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6d28d9;margin-bottom:8px}
+.mfun-dyk-text{font-size:.82rem;color:#4c1d95;line-height:1.7}
+@media(max-width:500px){.mfun{grid-template-columns:1fr}}
+</style>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Mobile Money Fee Checker — Compare M-Pesa, MTN MoMo, Airtel, Wave","description":"Compare mobile money transfer fees across M-Pesa, MTN MoMo, Airtel Money, Orange Money, Wave and OPay for 20+ African countries. Find the cheapest provider instantly.","url":"https://afrotools.com/tools/mobile-money-fees/","inLanguage":"fr","applicationCategory":"FinanceApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","name":"Mobile Money Fee Checker — Compare M-Pesa, MTN MoMo, Airtel, Wave","url":"https://afrotools.com/tools/mobile-money-fees/","description":"Compare mobile money transfer fees across M-Pesa, MTN MoMo, Airtel Money, Orange Money, Wave and OPay for 20+ African countries. Find the cheapest provider instantly.","inLanguage":"fr","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com"}}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What are mobile money fees and why do they vary?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Mobile money fees are charges applied by providers each time you perform a transaction such as sending money, withdrawing cash, or paying a bill. Fees vary because each provider sets its own tiered fee schedule based on the transaction amount, and national regulators in each country impose different rules. Transaction type also matters: merchant payments are often free, while cash withdrawals tend to carry the highest fees."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How accurate are the fee estimates shown by this tool?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The fee data is based on publicly available fee schedules and regulatory filings as of early 2026. Providers occasionally revise their tariffs, so confirm the exact fee via your provider's USSD menu or official app before making large transfers. The tool gives a reliable ballpark comparison to identify the cheapest option quickly."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I use this tool for international mobile money transfers?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Select International Transfer as the transaction type to see cross-border fees. International transfers often involve additional foreign-exchange spreads and receiving-side charges not captured in the basic fee band. For large remittances, compare mobile money costs against dedicated remittance services for the best overall rate."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which mobile money provider is the cheapest in Africa?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "There is no single cheapest provider across the entire continent because fees depend on the country, the amount, and the transaction type. In West Africa, Wave's flat one-percent model is often the lowest. In East Africa, Airtel Money frequently undercuts M-Pesa on smaller amounts. In Nigeria, OPay tends to have slightly lower send fees than MTN MoMo."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are mobile money merchant payments free in Africa?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "In most African markets, paying a merchant or bill via mobile money is free for the sender. Providers typically charge the merchant a small percentage instead. This makes mobile money payments cheaper than cash withdrawals or person-to-person transfers for everyday purchases."
+      }
+    }
+  ]
+}
+</script>
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/frais-mobile-money/" />
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/fr/tools/frais-mobile-money/" />
+<meta property="og:locale" content="fr_FR">
+<meta property="og:locale:alternate" content="fr_FR">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "AfroTools",
+      "item": "https://afrotools.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Outils",
+      "item": "https://afrotools.com/tools/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Calculateur Frais Mobile Money",
+      "item": "https://afrotools.com/fr/tools/frais-mobile-money/"
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<section class="tool-hero" style="background:linear-gradient(135deg,#0f1419 0%,#1a1f2e 100%);padding:44px 0 36px">
+<div style="max-width:1200px;margin:0 auto;padding:0 24px">
+<div class="breadcrumb" style="font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px"><a href="/" style="color:rgba(255,255,255,.3);text-decoration:none">AfroTools</a> / <a href="/uniquely-african/" style="color:rgba(255,255,255,.3);text-decoration:none">Uniquement Africain</a> / <span style="color:#93c5fd">Comparateur Frais Mobile Money</span></div>
+<h1 style="font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px">Comparateur de Frais <em style="color:var(--color-primary);font-style:normal">Mobile Money</em></h1>
+<p style="font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px">Comparez instantanément les frais M-Pesa, MTN MoMo, Airtel Money, OPay et Chipper Cash. Trouvez le moyen le moins cher d'envoyer de l'argent mobile en Afrique.</p>
+<div style="display:flex;flex-wrap:wrap;gap:7px"><span style="display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em;background:rgba(147,197,253,.2);color:#93c5fd;border:1px solid rgba(147,197,253,.4)">🌍 Pan-African</span><span style="display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em;background:rgba(147,197,253,.2);color:#93c5fd;border:1px solid rgba(147,197,253,.4)">Client-side</span><span style="display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em;background:rgba(147,197,253,.2);color:#93c5fd;border:1px solid rgba(147,197,253,.4)">Free</span></div>
+</div></section>
+
+<div class="mm-wrap">
+  <!-- CALCULATOR -->
+  <div class="mm-calc">
+    <div class="mm-calc-title">⚡ Calculer les frais de transfert</div>
+
+    <div class="mm-form-row">
+      <div class="mm-field">
+        <label>Pays</label>
+        <select id="mmCountry" onchange="onCountryChange()"></select>
+      </div>
+      <div class="mm-field">
+        <label>Montant du transfert</label>
+        <input type="number" id="mmAmount" placeholder="e.g. 5000" min="1">
+      </div>
+      <div class="mm-field">
+        <label>Type de transaction</label>
+        <select id="mmTxType">
+          <option value="send">Envoyer à une autre personne</option>
+          <option value="withdraw">Retrait vers banque</option>
+          <option value="pay">Payer un marchand/facture</option>
+          <option value="international">Transfert international</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Provider Filter -->
+    <div style="font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#9ca3af;margin-bottom:8px;">Sélectionner les prestataires à comparer</div>
+    <div class="mm-providers" id="providerFilter"></div>
+
+    <button class="mm-compare-btn" onclick="compare()">📊 Comparer les frais maintenant</button>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="resultsSection" style="display:none;">
+    <div class="mm-calc" style="border-color:#e5e7eb;">
+      <div class="mm-results-header">
+        <h3>Comparaison des frais</h3>
+        <div class="mm-cheapest-tag" id="cheapestTag">✓ Cheapest: —</div>
+      </div>
+
+      <!-- Breakdown -->
+      <div class="mm-breakdown" id="amtBreakdown"></div>
+
+      <!-- Table -->
+      <div class="mm-table-wrap" style="margin-top:16px;">
+        <table class="mm-table" id="mmTable">
+          <thead>
+            <tr>
+              <th>Prestataire</th>
+              <th class="right">Frais</th>
+              <th class="right">% du montant</th>
+              <th class="right">Vous envoyez</th>
+              <th class="right">Ils reçoivent</th>
+              <th>Tranche de frais</th>
+            </tr>
+          </thead>
+          <tbody id="mmTableBody"></tbody>
+        </table>
+      </div>
+
+      <!-- Country Info -->
+      <div class="mm-country-info" id="countryInfo"></div>
+
+      <!-- Tips -->
+      <div class="mm-tips" id="mmTips"></div>
+    </div>
+  </div>
+
+  <!-- HISTORY -->
+  <div id="historySection" style="display:none;">
+    <div class="mm-calc">
+      <div class="mm-history-title">Comparaisons récentes</div>
+      <div class="mm-history-list" id="historyList"></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SEO CONTENT SECTION -->
+<section style="max-width:860px;margin:48px auto;padding:0 24px;font-family:'DM Sans',system-ui,sans-serif;color:#374151;line-height:1.8;">
+
+  <h2 style="font-size:1.6rem;font-weight:800;color:#111;margin-bottom:16px;">Comprendre les frais de Mobile Money en Afrique</h2>
+  <p>Le mobile money a révolutionné l'accès financier sur le continent africain, permettant à des centaines de millions de personnes d'envoyer, de recevoir et de stocker de l'argent avec seulement un téléphone mobile basique. Des marchés animés de Lagos aux villages ruraux du Kenya occidental, les plateformes de mobile money sont devenues l'épine dorsale du commerce quotidien et des finances personnelles. Cependant, chaque transaction entraîne des frais, et ceux-ci varient considérablement selon le prestataire, le pays, le type de transaction et le montant transféré. Comprendre ces coûts est essentiel pour quiconque utilise le mobile money pour des transactions quotidiennes, des paiements professionnels ou des envois de fonds transfrontaliers.</p>
+  <p>Le Comparateur de Frais Mobile Money d'AfroTools est un outil de comparaison gratuit conçu spécifiquement pour les utilisateurs africains de mobile money. Il agrège les données réelles des tranches de frais des plus grands prestataires opérant dans plus de 20 pays africains, vous permettant de voir instantanément quelle plateforme offre le coût le plus bas pour votre transfert spécifique. Que vous envoyiez de l'argent à un membre de votre famille, retiriez des espèces chez un agent, payiez un marchand ou transfériez des fonds à l'international, cet outil calcule les frais exacts que chaque prestataire facturera et met en évidence l'option la moins chère.</p>
+
+  <h3 style="font-size:1.15rem;font-weight:700;color:#111;margin-top:32px;margin-bottom:10px;">Comment fonctionne le comparateur de frais</h3>
+  <p>Using the tool is straightforward. First, select the country where you are making the transaction. The tool then loads all mobile money providers that operate in that country, along with their current fee schedules. Next, enter the amount you wish to transfer and choose the transaction type: person-to-person send, bank withdrawal, merchant or bill payment, or international transfer. Click the compare button and the tool instantly calculates the fee for every selected provider, presenting the results in a sortable table. The cheapest provider is highlighted at the top, and a visual bar chart makes it easy to see relative costs at a glance. You can also toggle individual providers on or off if you only want to compare a subset. Recent comparisons are saved to your browser history for quick reference.</p>
+
+  <h3 style="font-size:1.15rem;font-weight:700;color:#111;margin-top:32px;margin-bottom:10px;">Prestataires Mobile Money pris en charge</h3>
+  <p>The tool covers the six most widely used mobile money platforms on the continent:</p>
+  <ul style="margin:10px 0 10px 20px;">
+    <li><strong>M-Pesa</strong> — Operated by Safaricom and Vodacom, M-Pesa is the pioneer of mobile money and dominates in Kenya, Tanzania, Ethiopia, Egypt, Ghana, and Rwanda. With over 50 million active users, it offers one of the widest agent networks in East Africa.</li>
+    <li><strong>MTN MoMo (Mobile Money)</strong> — MTN MoMo is the largest mobile money service in West and Central Africa, serving users in Nigeria, Ghana, Uganda, Rwanda, Cameroon, Senegal, and several other markets. It benefits from MTN's massive subscriber base.</li>
+    <li><strong>Airtel Money</strong> — Airtel Money operates across East, West, and Southern Africa, including Kenya, Tanzania, Uganda, Ghana, Zambia, Malawi, Nigeria, and Cote d'Ivoire. It is often the most competitively priced alternative to M-Pesa and MTN MoMo.</li>
+    <li><strong>Orange Money</strong> — Popular in Francophone West and Central Africa, Orange Money has a strong presence in Senegal, Cote d'Ivoire, Cameroon, Burkina Faso, Mali, and Guinea. It benefits from Orange's extensive telecom infrastructure.</li>
+    <li><strong>Wave</strong> — A fintech disruptor in West Africa, Wave offers a flat one-percent fee model that has made it hugely popular in Senegal, Cote d'Ivoire, Burkina Faso, Mali, and Guinea. Its simple pricing is easy to understand and often the cheapest option.</li>
+    <li><strong>OPay</strong> — Focused on Nigeria, OPay has grown rapidly since 2021 with competitive send and withdrawal fees, a large agent network, and additional services like ride-hailing and food delivery.</li>
+  </ul>
+
+  <h3 style="font-size:1.15rem;font-weight:700;color:#111;margin-top:32px;margin-bottom:10px;">Questions Fréquemment Posées</h3>
+
+  <details style="border:1px solid #e5e7eb;border-radius:8px;padding:14px 16px;margin-bottom:10px;">
+    <summary style="font-weight:700;cursor:pointer;color:#111;">Que sont les frais de mobile money et pourquoi varient-ils ?</summary>
+    <p style="margin-top:10px;">Mobile money fees are charges applied by providers each time you perform a transaction such as sending money, withdrawing cash, or paying a bill. Fees vary because each provider sets its own tiered fee schedule based on the transaction amount, and national regulators in each country impose different rules. For example, Kenya's M-Pesa uses flat-fee bands where sending under KSh 100 is free, while Ghana applies a 1.5% government E-levy on electronic transfers above GH₵100. Transaction type also matters: merchant payments are often free, while cash withdrawals tend to carry the highest fees because they involve agent commissions.</p>
+  </details>
+
+  <details style="border:1px solid #e5e7eb;border-radius:8px;padding:14px 16px;margin-bottom:10px;">
+    <summary style="font-weight:700;cursor:pointer;color:#111;">Quelle est la précision des estimations de frais affichées par cet outil ?</summary>
+    <p style="margin-top:10px;">The fee data in this tool is based on publicly available fee schedules and regulatory filings as of early 2026. Providers occasionally revise their tariffs, so we recommend confirming the exact fee via your provider's USSD menu or official app before making large transfers. The tool is designed to give you a reliable ballpark comparison so you can identify the cheapest option quickly, but it should not be treated as a binding quote.</p>
+  </details>
+
+  <details style="border:1px solid #e5e7eb;border-radius:8px;padding:14px 16px;margin-bottom:10px;">
+    <summary style="font-weight:700;cursor:pointer;color:#111;">Puis-je utiliser cet outil pour des transferts de mobile money internationaux ?</summary>
+    <p style="margin-top:10px;">Yes. Select "International Transfer" as the transaction type to see cross-border fees. Keep in mind that international transfers often involve additional foreign-exchange spreads and receiving-side charges that are not captured in the basic fee band. For large remittances, consider comparing mobile money costs against dedicated remittance services like Chipper Cash, Sendwave, or WorldRemit for the best overall rate.</p>
+  </details>
+
+  <details style="border:1px solid #e5e7eb;border-radius:8px;padding:14px 16px;margin-bottom:10px;">
+    <summary style="font-weight:700;cursor:pointer;color:#111;">Quel prestataire de mobile money est le moins cher en Afrique ?</summary>
+    <p style="margin-top:10px;">There is no single cheapest provider across the entire continent because fees depend on the country, the amount, and the transaction type. In West Africa, Wave's flat one-percent model is often the lowest cost for person-to-person transfers. In East Africa, Airtel Money frequently undercuts M-Pesa on smaller amounts. In Nigeria, OPay tends to have slightly lower send fees than MTN MoMo. The best approach is to use this tool to compare providers for your specific country and transfer amount.</p>
+  </details>
+
+  <div style="background:#F0F7FF;border:1px solid #DBEAFE;border-radius:8px;padding:14px 16px;margin-top:1.5rem;">
+    <p style="margin:0;font-size:0.85rem;color:#1e293b;font-weight:600;">Related reading:</p>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;">
+      <a href="/blog/mobile-money-fees-africa-compared/" style="color:#007AFF;font-size:0.82rem;font-weight:600;text-decoration:none;">Mobile Money Fees Compared Across Africa →</a>
+      <a href="/blog/mobile-money-app-comparison-africa-2026/" style="color:#007AFF;font-size:0.82rem;font-weight:600;text-decoration:none;">Best Mobile Money Apps in Africa 2026 →</a>
+      <a href="/blog/mobile-money-fees-comparison/" style="color:#007AFF;font-size:0.82rem;font-weight:600;text-decoration:none;">M-Pesa vs MTN MoMo: Full Fee Breakdown →</a>
+    </div>
+  </div>
+
+  <div style="margin-top:1.5rem;">
+    <p style="font-size:0.85rem;font-weight:700;color:#1e293b;margin-bottom:10px;">Related tools:</p>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;">
+      <a href="/tools/currency-converter/" style="padding:8px 16px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:8px;color:#007AFF;font-size:0.82rem;font-weight:600;text-decoration:none;">African Currency Converter</a>
+      <a href="/tools/import-duty/" style="padding:8px 16px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:8px;color:#007AFF;font-size:0.82rem;font-weight:600;text-decoration:none;">Import Duty Calculator</a>
+      <a href="/kenya/ke-paye" style="padding:8px 16px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:8px;color:#007AFF;font-size:0.82rem;font-weight:600;text-decoration:none;">Kenya PAYE Calculator</a>
+      <a href="/nigeria/ng-salary-tax" style="padding:8px 16px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:8px;color:#007AFF;font-size:0.82rem;font-weight:600;text-decoration:none;">Nigeria PAYE Calculator</a>
+    </div>
+  </div>
+
+</section>
+
+<afro-related-tools category="african" current="mobile-money-fees"></afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// AFROTOOLS MOBILE MONEY FEE CHECKER
+// Real fee band data per country + provider
+// ═══════════════════════════════════════════════════════════════
+
+// ── PROVIDER CONFIG ──
+const PROVIDERS = {
+  mpesa:   {name:'M-Pesa',   color:'#007AFF', dot:'#007AFF', countries:['KE','TZ','GH','EG','RW','ET']},
+  mtnmomo: {name:'MTN MoMo', color:'#FFCC00', dot:'#FFCC00', countries:['NG','GH','UG','RW','CI','CM','SN','BF','BJ']},
+  airtel:  {name:'Airtel Money',color:'#ED1C24',dot:'#ED1C24',countries:['KE','TZ','UG','GH','ZM','MW','NG','CI']},
+  orange:  {name:'Orange Money',color:'#FF6600',dot:'#FF6600',countries:['SN','CI','CM','BF','ML','GN']},
+  wave:    {name:'Wave',      color:'#1AC8FF', dot:'#1AC8FF', countries:['SN','CI','BF','ML','GN']},
+  opay:    {name:'OPay',      color:'#2563EB', dot:'#2563EB', countries:['NG']},
+};
+
+// ── FEE TABLES ──
+// Each entry: [maxAmount, flatFee, percentFee]
+// Fee = Math.max(flatFee, amount * percentFee)
+// percentFee = 0 means flat only
+
+const FEE_TABLES = {
+  // KENYA – M-Pesa (per Central Bank Kenya 2024 rates)
+  KE: {
+    sym:'KSh', name:'Kenya',
+    mpesa:{
+      send:[
+        [100,0,0],        // under 100 – free
+        [500,7,0],
+        [1000,13,0],
+        [1500,23,0],
+        [2500,33,0],
+        [3500,52,0],
+        [5000,57,0],
+        [7500,78,0],
+        [10000,90,0],
+        [15000,100,0],
+        [20000,105,0],
+        [35000,108,0],
+        [50000,108,0],
+        [150000,108,0],  // max 300k
+        [300000,108,0],
+      ],
+      withdraw:[
+        [100,0,0],
+        [500,11,0],
+        [1000,29,0],
+        [1500,29,0],
+        [2500,29,0],
+        [3500,52,0],
+        [5000,69,0],
+        [7500,87,0],
+        [10000,115,0],
+        [15000,167,0],
+        [20000,185,0],
+        [35000,197,0],
+        [50000,278,0],
+        [150000,309,0],
+        [300000,309,0],
+      ],
+      pay:[
+        [Infinity,0,0], // most merchant payments free
+      ],
+    },
+    airtel:{
+      send:[
+        [100,0,0],[500,5,0],[1000,10,0],[2500,25,0],[5000,45,0],[10000,75,0],[50000,95,0],[300000,0,0.001+0.002],
+      ],
+      withdraw:[
+        [100,0,0],[500,15,0],[1000,28,0],[2500,38,0],[5000,62,0],[10000,100,0],[50000,250,0],[300000,0,0.006],
+      ],
+      pay:[[Infinity,0,0]],
+    },
+    info:'M-Pesa dominates Kenya with 30+ million users. Free to send to M-Pesa users under KSh 100. Safaricom network has widest agent coverage.',
+  },
+
+  // NIGERIA – MTN MoMo & OPay
+  NG: {
+    sym:'₦', name:'Nigeria',
+    mtnmomo:{
+      send:[
+        [1000,10,0],[5000,25,0],[10000,50,0],[50000,0,0.005],[200000,0,0.005],[Infinity,0,0.005],
+      ],
+      withdraw:[
+        [1000,50,0],[5000,100,0],[10000,150,0],[50000,0,0.015],[200000,0,0.015],[Infinity,0,0.015],
+      ],
+      pay:[[Infinity,0,0]],
+    },
+    airtel:{
+      send:[
+        [1000,10,0],[5000,25,0],[10000,45,0],[50000,0,0.005],[Infinity,0,0.005],
+      ],
+      withdraw:[
+        [1000,50,0],[5000,100,0],[10000,150,0],[Infinity,0,0.015],
+      ],
+      pay:[[Infinity,0,0]],
+    },
+    opay:{
+      send:[
+        [1000,10,0],[5000,20,0],[10000,35,0],[50000,0,0.004],[Infinity,0,0.004],
+      ],
+      withdraw:[
+        [5000,52.5,0],[10000,52.5,0],[20000,105,0],[50000,0,0.015],[Infinity,0,0.015],
+      ],
+      pay:[[Infinity,0,0]],
+    },
+    info:'CBN regulates mobile money in Nigeria. NIP transfers between banks cost ₦10 flat under ₦5,000. USSD banking is widely used. OPay has grown rapidly since 2021.',
+  },
+
+  // GHANA – MTN MoMo & Airtel
+  GH: {
+    sym:'₵', name:'Ghana',
+    mpesa:{
+      send:[
+        [1,0,0],[50,0.5,0],[200,1,0],[500,2,0],[1000,4,0],[5000,10,0],[Infinity,0,0.004],
+      ],
+      withdraw:[
+        [50,0.5,0],[200,1.5,0],[500,4,0],[1000,5,0],[5000,10,0],[Infinity,0,0.007],
+      ],
+      pay:[[Infinity,0,0]],
+    },
+    mtnmomo:{
+      send:[
+        [1,0,0],[50,0.5,0],[200,1,0],[500,1.5,0],[1000,3,0],[5000,8,0],[Infinity,0,0.003],
+      ],
+      withdraw:[
+        [50,0.5,0],[200,1.5,0],[500,3.5,0],[1000,4.5,0],[5000,9,0],[Infinity,0,0.0065],
+      ],
+      pay:[[Infinity,0,0]],
+    },
+    airtel:{
+      send:[
+        [50,0.5,0],[200,1,0],[500,2,0],[1000,4,0],[Infinity,0,0.004],
+      ],
+      withdraw:[
+        [50,0.7,0],[200,1.5,0],[500,3.5,0],[1000,4.5,0],[Infinity,0,0.007],
+      ],
+      pay:[[Infinity,0,0]],
+    },
+    info:'Ghana has high mobile money penetration. GRA requires 1.5% E-levy on electronic transfers above ₵100. MTN MoMo leads with ~67% market share.',
+  },
+
+  // UGANDA – MTN MoMo & Airtel
+  UG: {
+    sym:'USh', name:'Uganda',
+    mtnmomo:{
+      send:[
+        [2500,250,0],[5000,250,0],[15000,375,0],[30000,500,0],[60000,750,0],[125000,750,0],[Infinity,0,0.006],
+      ],
+      withdraw:[
+        [2500,750,0],[5000,750,0],[15000,1500,0],[30000,2000,0],[60000,2500,0],[125000,2750,0],[Infinity,0,0.022],
+      ],
+      pay:[[Infinity,0,0]],
+    },
+    airtel:{
+      send:[
+        [2500,250,0],[5000,250,0],[15000,350,0],[30000,500,0],[60000,700,0],[Infinity,0,0.006],
+      ],
+      withdraw:[
+        [2500,700,0],[5000,700,0],[15000,1400,0],[30000,1800,0],[Infinity,0,0.021],
+      ],
+      pay:[[Infinity,0,0]],
+    },
+    info:'Uganda has one of Africa\'s most developed mobile money ecosystems. Government 0.5% tax on withdrawals applies. MTN MoMo and Airtel Money together cover 95%+ of users.',
+  },
+
+  // TANZANIA – M-Pesa & Airtel
+  TZ: {
+    sym:'TSh', name:'Tanzania',
+    mpesa:{
+      send:[
+        [1000,0,0],[5000,500,0],[10000,650,0],[20000,900,0],[50000,0,0.0125],[Infinity,0,0.0125],
+      ],
+      withdraw:[
+        [1000,350,0],[5000,800,0],[10000,1200,0],[20000,1600,0],[50000,0,0.017],[Infinity,0,0.017],
+      ],
+      pay:[[Infinity,0,0]],
+    },
+    airtel:{
+      send:[
+        [1000,0,0],[5000,450,0],[10000,600,0],[20000,850,0],[50000,0,0.012],[Infinity,0,0.012],
+      ],
+      withdraw:[
+        [1000,350,0],[5000,750,0],[10000,1100,0],[20000,1500,0],[50000,0,0.016],[Infinity,0,0.016],
+      ],
+      pay:[[Infinity,0,0]],
+    },
+    info:'Tanzania TCRA regulates mobile money. Vodacom M-Pesa leads with ~10M active users. Government requires NIN linked to SIM for all transactions.',
+  },
+
+  // RWANDA – M-Pesa & MTN MoMo
+  RW: {
+    sym:'RF', name:'Rwanda',
+    mpesa:{
+      send:[
+        [1000,0,0],[5000,50,0],[10000,80,0],[50000,150,0],[Infinity,0,0.005],
+      ],
+      withdraw:[
+        [5000,100,0],[10000,180,0],[50000,350,0],[Infinity,0,0.012],
+      ],
+      pay:[[Infinity,0,0]],
+    },
+    mtnmomo:{
+      send:[
+        [1000,0,0],[5000,40,0],[10000,70,0],[50000,130,0],[Infinity,0,0.005],
+      ],
+      withdraw:[
+        [5000,100,0],[10000,170,0],[50000,320,0],[Infinity,0,0.011],
+      ],
+      pay:[[Infinity,0,0]],
+    },
+    info:'Rwanda has near-universal mobile money coverage. BNR mandates interoperability between providers. Government aims for 100% cashless by 2026.',
+  },
+
+  // SENEGAL – Orange Money & Wave
+  SN: {
+    sym:'CFA', name:'Senegal',
+    orange:{
+      send:[
+        [500,50,0],[2000,100,0],[10000,200,0],[50000,0,0.007],[Infinity,0,0.007],
+      ],
+      withdraw:[
+        [500,100,0],[2000,200,0],[10000,500,0],[50000,0,0.02],[Infinity,0,0.02],
+      ],
+      pay:[[Infinity,0,0]],
+    },
+    wave:{
+      send:[
+        [Infinity,0,0.01], // Wave charges flat 1% for all sends
+      ],
+      withdraw:[
+        [Infinity,0,0.01],
+      ],
+      pay:[[Infinity,0,0]],
+    },
+    mtnmomo:{
+      send:[
+        [500,50,0],[2000,100,0],[10000,200,0],[Infinity,0,0.007],
+      ],
+      withdraw:[
+        [500,100,0],[2000,200,0],[10000,500,0],[Infinity,0,0.02],
+      ],
+      pay:[[Infinity,0,0]],
+    },
+    info:'Wave disrupted West African mobile money with its 1% flat fee model. Orange Money has the most extensive agent network in Senegal. BCEAO regulates all providers.',
+  },
+
+  // CÔTE D'IVOIRE – Orange, MTN, Wave
+  CI: {
+    sym:'CFA', name:"Côte d'Ivoire",
+    orange:{
+      send:[
+        [500,50,0],[2000,100,0],[10000,200,0],[50000,0,0.007],[Infinity,0,0.007],
+      ],
+      withdraw:[
+        [500,100,0],[2000,250,0],[10000,500,0],[Infinity,0,0.02],
+      ],
+      pay:[[Infinity,0,0]],
+    },
+    mtnmomo:{
+      send:[
+        [500,50,0],[2000,100,0],[10000,200,0],[Infinity,0,0.007],
+      ],
+      withdraw:[
+        [500,100,0],[2000,250,0],[10000,500,0],[Infinity,0,0.02],
+      ],
+      pay:[[Infinity,0,0]],
+    },
+    wave:{
+      send:[[Infinity,0,0.01]],
+      withdraw:[[Infinity,0,0.01]],
+      pay:[[Infinity,0,0]],
+    },
+    airtel:{
+      send:[
+        [500,50,0],[2000,100,0],[10000,200,0],[Infinity,0,0.007],
+      ],
+      withdraw:[
+        [2000,250,0],[10000,500,0],[Infinity,0,0.02],
+      ],
+      pay:[[Infinity,0,0]],
+    },
+    info:'MTN MoMo and Orange Money dominate CI. BCEAO-regulated. Wave growth is rapid due to lower fees.',
+  },
+
+  // ZAMBIA – Airtel Money
+  ZM: {
+    sym:'K', name:'Zambia',
+    airtel:{
+      send:[
+        [50,1,0],[200,2,0],[1000,5,0],[5000,10,0],[Infinity,0,0.003],
+      ],
+      withdraw:[
+        [50,3,0],[200,7,0],[1000,15,0],[5000,25,0],[Infinity,0,0.01],
+      ],
+      pay:[[Infinity,0,0]],
+    },
+    mtnmomo:{
+      send:[
+        [50,1,0],[200,2.5,0],[1000,6,0],[Infinity,0,0.004],
+      ],
+      withdraw:[
+        [50,3,0],[200,7.5,0],[1000,16,0],[Infinity,0,0.011],
+      ],
+      pay:[[Infinity,0,0]],
+    },
+    info:'Bank of Zambia regulates mobile money. Zambia has seen rapid mobile money growth since 2020.',
+  },
+
+  // ETHIOPIA – M-Pesa & TeleBirr
+  ET: {
+    sym:'Br', name:'Ethiopia',
+    mpesa:{
+      send:[
+        [100,0,0],[500,5,0],[1000,8,0],[5000,20,0],[Infinity,0,0.005],
+      ],
+      withdraw:[
+        [100,5,0],[500,10,0],[1000,16,0],[5000,35,0],[Infinity,0,0.012],
+      ],
+      pay:[[Infinity,0,0]],
+    },
+    info:'Ethiopia launched mobile money in 2020. TeleBirr (Ethio Telecom) is the largest provider. Safaricom-backed M-Pesa entered Ethiopia in 2022. NBE regulates mobile money.',
+  },
+
+  // EGYPT – M-Pesa & Vodafone Cash
+  EG: {
+    sym:'E£', name:'Egypt',
+    mpesa:{
+      send:[
+        [200,1,0],[1000,4,0],[5000,15,0],[Infinity,0,0.005],
+      ],
+      withdraw:[
+        [200,3,0],[1000,10,0],[5000,30,0],[Infinity,0,0.012],
+      ],
+      pay:[[Infinity,0,0]],
+    },
+    info:'CBE regulates mobile wallets in Egypt. Vodafone Cash, Etisalat Cash (now e&), and Orange Cash are the main providers. InstaPay enables real-time transfers.',
+  },
+};
+
+let history = JSON.parse(localStorage.getItem('mmHistory')||'[]');
+let selectedProviders = new Set();
+
+// ── INIT ──
+(function init(){
+  const countrySelect = document.getElementById('mmCountry');
+  Object.entries(FEE_TABLES).forEach(([code, data]) => {
+    const opt = document.createElement('option');
+    opt.value = code;
+    opt.textContent = `${getFlagEmoji(code)} ${data.name}`;
+    countrySelect.appendChild(opt);
+  });
+
+  // Set Kenya as default
+  countrySelect.value = 'KE';
+  document.getElementById('mmAmount').value = '5000';
+  onCountryChange();
+  renderHistory();
+})();
+
+function getFlagEmoji(code){
+  const flags={KE:'🇰🇪',NG:'🇳🇬',GH:'🇬🇭',UG:'🇺🇬',TZ:'🇹🇿',RW:'🇷🇼',SN:'🇸🇳',CI:'🇨🇮',ZM:'🇿🇲',ET:'🇪🇹',EG:'🇪🇬',CM:'🇨🇲'};
+  return flags[code]||'🌍';
+}
+
+function onCountryChange(){
+  const code = document.getElementById('mmCountry').value;
+  const countryData = FEE_TABLES[code];
+  if(!countryData) return;
+
+  // Get available providers for this country
+  const available = Object.keys(countryData).filter(k => k !== 'sym' && k !== 'name' && k !== 'info');
+  selectedProviders = new Set(available);
+
+  const filter = document.getElementById('providerFilter');
+  filter.innerHTML = '';
+  available.forEach(pKey => {
+    const p = PROVIDERS[pKey];
+    if(!p) return;
+    const btn = document.createElement('button');
+    btn.className = 'mm-prov-btn active';
+    btn.dataset.key = pKey;
+    btn.innerHTML = `<span class="prov-dot" style="background:${p.color}"></span>${p.name}`;
+    btn.onclick = () => toggleProvider(pKey, btn);
+    filter.appendChild(btn);
+  });
+}
+
+function toggleProvider(key, btn){
+  if(selectedProviders.has(key)){
+    if(selectedProviders.size <= 1) return; // keep at least one
+    selectedProviders.delete(key);
+    btn.classList.remove('active');
+  } else {
+    selectedProviders.add(key);
+    btn.classList.add('active');
+  }
+}
+
+function getFee(feeBands, amount){
+  for(let [max, flat, pct] of feeBands){
+    if(amount <= max){
+      return pct > 0 ? Math.max(flat, amount * pct) : flat;
+    }
+  }
+  // Fallback: last band with percentage
+  const last = feeBands[feeBands.length-1];
+  return last[2] > 0 ? amount * last[2] : last[1];
+}
+
+function compare(){
+  const code = document.getElementById('mmCountry').value;
+  const amount = parseFloat(document.getElementById('mmAmount').value);
+  const txType = document.getElementById('mmTxType').value;
+
+  if(!amount || amount <= 0){ alert('Please enter a valid transfer amount.'); return; }
+
+  const countryData = FEE_TABLES[code];
+  if(!countryData){ alert('Country data not available.'); return; }
+  const sym = countryData.sym;
+
+  const results = [];
+
+  selectedProviders.forEach(pKey => {
+    const pData = countryData[pKey];
+    if(!pData) return;
+    const txData = pData[txType] || pData.send;
+    if(!txData) return;
+    const fee = getFee(txData, amount);
+    const prov = PROVIDERS[pKey];
+    results.push({
+      key: pKey,
+      name: prov?.name || pKey,
+      color: prov?.color || '#666',
+      fee: fee,
+      pct: fee/amount*100,
+      youSend: amount + fee,
+      theyReceive: amount,
+    });
+  });
+
+  if(results.length === 0){ alert('No providers selected.'); return; }
+
+  // Sort by fee
+  results.sort((a,b) => a.fee - b.fee);
+  const cheapest = results[0];
+  const maxFee = results[results.length-1].fee || 1;
+
+  // Cheapest tag
+  document.getElementById('cheapestTag').textContent = `✓ Cheapest: ${cheapest.name} (${sym}${fmtN(cheapest.fee)})`;
+
+  // Amount breakdown
+  document.getElementById('amtBreakdown').innerHTML = `
+    <div class="mm-bk-item"><div class="mm-bk-val">${sym}${fmtN(amount)}</div><div class="mm-bk-lbl">Transfer Amount</div></div>
+    <div class="mm-bk-item"><div class="mm-bk-val" style="color:#2563EB;">${sym}${fmtN(cheapest.fee)}</div><div class="mm-bk-lbl">Lowest Fee</div></div>
+    <div class="mm-bk-item"><div class="mm-bk-val">${cheapest.pct.toFixed(2)}%</div><div class="mm-bk-lbl">Fee %</div></div>
+  `;
+
+  // Table
+  const tbody = document.getElementById('mmTableBody');
+  tbody.innerHTML = '';
+  results.forEach((r, i) => {
+    const barPct = maxFee > 0 ? Math.round((r.fee/maxFee)*100) : 0;
+    const isCheapest = i === 0;
+    const tr = document.createElement('tr');
+    tr.className = r.fee === 0 ? 'cheapest' : isCheapest ? 'cheapest' : '';
+    tr.innerHTML = `
+      <td><span class="prov-badge"><span class="p-dot" style="background:${r.color}"></span>${r.name}</span></td>
+      <td class="right">${r.fee === 0 ? '<span style="color:#2563EB;font-weight:800;">FREE</span>' : sym + fmtN(r.fee)}</td>
+      <td class="right">${r.fee === 0 ? '0%' : r.pct.toFixed(2)+'%'}</td>
+      <td class="right">${sym}${fmtN(r.youSend)}</td>
+      <td class="right">${sym}${fmtN(r.theyReceive)}</td>
+      <td>
+        <div class="fee-bar-cell">
+          <div class="fee-bar"><div class="fee-bar-fill" style="width:${barPct}%;background:${r.color};"></div></div>
+          <span style="font-size:.7rem;color:#9ca3af;">${barPct}%</span>
+        </div>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  // Country info
+  document.getElementById('countryInfo').innerHTML = `<strong>💡 ${countryData.name}:</strong> ${countryData.info || 'Check provider apps or USSD for real-time rates.'}`;
+
+  // Tips
+  const savingsVsWorst = results[results.length-1].fee - cheapest.fee;
+  document.getElementById('mmTips').innerHTML = `
+    <div class="mm-tip">
+      <h4>💰 Your Savings</h4>
+      <p>By choosing ${cheapest.name} over the most expensive option, you save <strong>${sym}${fmtN(savingsVsWorst)}</strong> on this transfer.</p>
+    </div>
+    <div class="mm-tip">
+      <h4>📅 When Fees Change</h4>
+      <p>Mobile money fees are revised periodically. Always check the provider's USSD menu (**** codes) for the most current rates before large transfers.</p>
+    </div>
+    <div class="mm-tip">
+      <h4>⚡ Transfer Limits</h4>
+      <p>Daily/monthly limits apply per provider and regulatory tier. For large amounts, consider bank transfer or multiple smaller transactions.</p>
+    </div>
+    <div class="mm-tip">
+      <h4>🔒 Safety Tips</h4>
+      <p>Always confirm recipient number before sending. Mobile money transfers cannot be reversed once confirmed. Use PIN never share it.</p>
+    </div>
+  `;
+
+  // Fun comparisons based on savings
+  var funTarget = document.getElementById('mmFunComparisons');
+  if (!funTarget) {
+    funTarget = document.createElement('div');
+    funTarget.id = 'mmFunComparisons';
+    document.getElementById('mmTips').parentElement.appendChild(funTarget);
+  }
+  if (savingsVsWorst > 0) {
+    var coffeePrice = code === 'KE' ? 350 : code === 'NG' ? 1500 : code === 'GH' ? 25 : code === 'UG' ? 8000 : code === 'TZ' ? 4000 : code === 'SN' || code === 'CI' ? 1000 : 500;
+    var moviePrice = code === 'KE' ? 800 : code === 'NG' ? 5000 : code === 'GH' ? 50 : code === 'UG' ? 20000 : code === 'TZ' ? 10000 : code === 'SN' || code === 'CI' ? 3000 : 1000;
+    var streetFoodPrice = code === 'KE' ? 200 : code === 'NG' ? 1000 : code === 'GH' ? 15 : code === 'UG' ? 5000 : code === 'TZ' ? 3000 : code === 'SN' || code === 'CI' ? 500 : 300;
+    var kwhPrice = code === 'KE' ? 25 : code === 'NG' ? 68 : code === 'GH' ? 1.5 : code === 'UG' ? 820 : code === 'TZ' ? 350 : code === 'SN' || code === 'CI' ? 120 : 50;
+
+    var coffees = Math.floor(savingsVsWorst / coffeePrice);
+    var movies = Math.floor(savingsVsWorst / moviePrice);
+    var meals = Math.floor(savingsVsWorst / streetFoodPrice);
+    var kwh = Math.floor(savingsVsWorst / kwhPrice);
+
+    funTarget.innerHTML = '<div class="mfun">'
+      + '<div class="mfun-card gold"><div class="mfun-emoji">\u2615</div><div class="mfun-title">Caf\u00E9 Visits</div><div class="mfun-text">' + coffees + ' cups of coffee</div></div>'
+      + '<div class="mfun-card blue"><div class="mfun-emoji">🎬</div><div class="mfun-title">Movies</div><div class="mfun-text">' + movies + ' movie tickets</div></div>'
+      + '<div class="mfun-card rose"><div class="mfun-emoji">🍕</div><div class="mfun-title">Street Food</div><div class="mfun-text">' + meals + ' plates of street food</div></div>'
+      + '<div class="mfun-card green"><div class="mfun-emoji">💡</div><div class="mfun-title">Electricity</div><div class="mfun-text">' + kwh + ' kWh of power</div></div>'
+      + '</div>'
+      + '<div class="mfun-dyk"><div class="mfun-dyk-title">💡 Did You Know?</div><div class="mfun-dyk-text">M-Pesa launched in Kenya in 2007 and now processes more transactions per day than PayPal does globally! Over 50 million Africans use mobile money daily. Africa invented fintech. 📱💚</div></div>';
+  } else {
+    funTarget.innerHTML = '<div class="mfun-dyk" style="margin-top:16px"><div class="mfun-dyk-title">💡 Did You Know?</div><div class="mfun-dyk-text">M-Pesa launched in Kenya in 2007 and now processes more transactions per day than PayPal does globally! Over 50 million Africans use mobile money daily. Africa invented fintech. 📱💚</div></div>';
+  }
+
+  // Save to history
+  saveHistory(code, countryData.name, amount, sym, cheapest.name, cheapest.fee);
+
+  document.getElementById('resultsSection').style.display = 'block';
+  document.getElementById('resultsSection').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function saveHistory(code, country, amount, sym, cheapest, fee){
+  const entry = {code, country, amount, sym, cheapest, fee, time: Date.now()};
+  history.unshift(entry);
+  if(history.length > 10) history = history.slice(0,10);
+  localStorage.setItem('mmHistory', JSON.stringify(history));
+  renderHistory();
+}
+
+function renderHistory(){
+  if(history.length === 0){ document.getElementById('historySection').style.display='none'; return; }
+  document.getElementById('historySection').style.display = 'block';
+  const list = document.getElementById('historyList');
+  list.innerHTML = '';
+  history.forEach((h, i) => {
+    const div = document.createElement('div');
+    div.className = 'mm-hist-item';
+    div.onclick = () => {
+      document.getElementById('mmCountry').value = h.code;
+      document.getElementById('mmAmount').value = h.amount;
+      onCountryChange();
+      compare();
+    };
+    div.innerHTML = `
+      <span>${getFlagEmoji(h.code)} ${h.country}</span>
+      <span class="hi-amount">${h.sym}${fmtN(h.amount)}</span>
+      <span>→</span>
+      <span class="hi-cheapest">${h.cheapest}: ${h.sym}${fmtN(h.fee)}</span>
+      <span style="color:#9ca3af;font-size:.7rem;">${timeAgo(h.time)}</span>
+      <span class="hi-del" onclick="event.stopPropagation();deleteHistory(${i})">✕</span>
+    `;
+    list.appendChild(div);
+  });
+}
+
+function deleteHistory(i){
+  history.splice(i,1);
+  localStorage.setItem('mmHistory', JSON.stringify(history));
+  renderHistory();
+}
+
+function timeAgo(ts){
+  const mins = Math.floor((Date.now()-ts)/60000);
+  if(mins<1) return 'just now';
+  if(mins<60) return mins+'m ago';
+  const hrs = Math.floor(mins/60);
+  if(hrs<24) return hrs+'h ago';
+  return Math.floor(hrs/24)+'d ago';
+}
+
+function fmtN(n){ return n===0?'0':Math.round(n).toLocaleString('en'); }
+</script>
+</body>
+</html>
