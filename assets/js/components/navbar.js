@@ -7,8 +7,8 @@
 
   const NAV_ITEMS = [
     {
-      id: 'financial', label: 'Salary & Tax', labelFr: 'Salaire & Impôts', labelSw: 'Mshahara na Kodi', icon: '💰',
-      desc: 'PAYE, income tax, take-home pay', descFr: 'PAYE, impôt sur le revenu, salaire net', descSw: 'PAYE, kodi ya mapato, mshahara halisi',
+      id: 'financial', label: 'Salary & Tax', labelFr: 'Salaire & Impôts', labelSw: 'Mshahara & Kodi', icon: '💰',
+      desc: 'PAYE, income tax, FX, crypto', descFr: 'PAYE, impôt, change, crypto', descSw: 'PAYE, kodi, sarafu, crypto',
       href: '/salary-tax/', hrefFr: '/fr/', hrefSw: '/sw/mshahara-na-kodi/', color: '#e8f0fd', accent: '#0062CC',
       tools: []
     },
@@ -81,34 +81,13 @@
       tools: []
     },
     {
-      id: 'crypto', label: 'Crypto & Web3', labelFr: 'Crypto & Web3', labelSw: 'Crypto na Web3', icon: '₿',
-      desc: 'P2P rates, prices, stablecoins, arbitrage', descFr: 'Taux P2P, prix, stablecoins, arbitrage', descSw: 'Viwango P2P, bei, stablecoins, arbitrage',
-      href: '/crypto/', color: '#fff7ed', accent: '#f97316',
-      tools: [
-        { label: 'P2P Rate Comparator', href: '/crypto/p2p-rates/', emoji: '₿', badge: 'LIVE' },
-        { label: 'Live Crypto Prices', href: '/crypto/prices/', emoji: '📊', badge: 'LIVE' },
-        { label: 'Portfolio Tracker', href: '/crypto/portfolio/', emoji: '📁', badge: 'LIVE' },
-        { label: 'DCA Calculator', href: '/crypto/dca-calculator/', emoji: '📈', badge: 'LIVE' },
-        { label: 'Crypto Tax', href: '/crypto/tax-calculator/', emoji: '🧾', badge: 'LIVE' },
-        { label: 'Profit Calculator', href: '/crypto/profit-calculator/', emoji: '💰', badge: 'LIVE' },
-        { label: 'Mining Calculator', href: '/crypto/mining-calculator/', emoji: '⛏️', badge: 'LIVE' },
-        { label: 'Stablecoin Tracker', href: '/crypto/stablecoins/', emoji: '💵', badge: 'LIVE' },
-        { label: 'Crypto Remittance', href: '/crypto/remittance/', emoji: '🌐', badge: 'LIVE' },
-        { label: 'Naira Arbitrage', href: '/crypto/arbitrage/', emoji: '⚡', badge: 'LIVE' },
-        { label: 'Scam Checker', href: '/crypto/scam-checker/', emoji: '🛡️', badge: 'NEW' },
-        { label: 'Address Validator', href: '/crypto/address-validator/', emoji: '🔍', badge: 'NEW' },
-        { label: 'Exchange Ratings', href: '/crypto/exchange-ratings/', emoji: '⭐', badge: 'NEW' },
-        { label: 'Contract Scanner', href: '/crypto/contract-scanner/', emoji: '📜', badge: 'NEW' },
-        { label: 'Crypto Quiz', href: '/crypto/quiz/', emoji: '🧠', badge: 'NEW' },
-      ]
-    },
-    {
       id: 'african', label: 'Uniquely African', labelFr: 'Spécialités Africaines', labelSw: 'Vya Kiafrika', icon: '🌍',
       desc: 'Japa, generator, ajo, mobile money', descFr: 'Épargne collective, mobile money, recettes', descSw: 'Japa, jenereta, chama, pesa za simu',
       href: '/african/', color: '#fef2f2', accent: '#dc2626',
       tools: [
         { label: 'AfroAtlas Explorer', href: '/tools/afroatlas/', emoji: '🌍', badge: 'NEW' },
         { label: 'AfroKitchen Recipes', href: '/tools/afrokitchen/', emoji: '🍲' },
+        { label: 'AfroConflict', href: '/tools/africa-conflict/', emoji: '⚔️', badge: 'LIVE' },
       ]
     },
     {
@@ -1330,6 +1309,13 @@
       var s = document.createElement('script'); s.id = 'afro-animations-js';
       s.src = '/assets/js/animations.js'; s.defer = true;
       document.head.appendChild(s);
+    }
+
+    /* Error boundary (global error handler + UI helpers) */
+    if (!document.getElementById('afro-error-boundary-js')) {
+      var eb = document.createElement('script'); eb.id = 'afro-error-boundary-js';
+      eb.src = '/assets/js/lib/error-boundary.js'; eb.defer = true;
+      document.head.appendChild(eb);
     }
 
     /* Pro gate */
