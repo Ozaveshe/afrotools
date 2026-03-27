@@ -192,7 +192,7 @@
     nav {
       position: relative;
       height: 60px;
-      background: rgba(248, 250, 253, 0.95);
+      background: rgba(248, 250, 253, 0.98);
       backdrop-filter: blur(20px) saturate(180%);
       -webkit-backdrop-filter: blur(20px) saturate(180%);
       border-bottom: 1px solid rgba(0, 0, 0, 0.06);
@@ -239,7 +239,7 @@
     .mega {
       position: fixed;
       top: 60px; left: 0; right: 0;
-      background: rgba(255,255,255,0.85);
+      background: rgba(255,255,255,0.97);
       -webkit-backdrop-filter: saturate(180%) blur(20px);
       backdrop-filter: saturate(180%) blur(20px);
       border-bottom: 1px solid rgba(0,0,0,0.07);
