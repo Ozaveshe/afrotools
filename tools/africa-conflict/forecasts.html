@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.bd27dfaf.min.js" lang="en">
+<head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scenario Forecasts — AfroConflict | AfroTools</title>
+<meta name="description" content="Scenario-based conflict outlooks — base case, optimistic, and worst case scenarios for active African conflicts.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta name="robots" content="index, follow">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="style.css">
+<script src="/engines/africa-conflict-engine.js" defer></script>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<main class="acd-page">
+  <div class="acd-hero">
+    <div class="acd-hero-inner">
+      <div>
+        <div class="acd-hero-title"><span class="acd-live-dot"></span><h1>🔮 Scenario Forecasts</h1></div>
+        <p class="acd-hero-desc">Model estimates — not predictions. Conflict duration is inherently uncertain.</p>
+      </div>
+      <nav class="acd-hero-nav">
+        <a href="/tools/africa-conflict/">Dashboard</a>
+        <a href="/tools/africa-conflict/conflicts.html">All Conflicts</a>
+        <a href="/tools/africa-conflict/forecasts.html" class="active">Forecasts</a>
+        <a href="/tools/africa-conflict/methodology.html">Methodology</a>
+      </nav>
+    </div>
+  </div>
+
+  <div class="acd-section">
+    <div class="acd-forecast-label">⚠️ MODEL ESTIMATES — These are scenario-based outlooks built from analyst research, not algorithmic predictions. Conflict duration is inherently uncertain and these forecasts carry significant uncertainty ranges.</div>
+
+    <!-- Conflict selector -->
+    <div style="margin-bottom:20px">
+      <label style="font-size:.78rem;color:var(--acd-text-muted);display:block;margin-bottom:6px">Select a conflict to view its forecast:</label>
+      <select id="acd-conflict-select" style="background:var(--acd-bg-card);border:1px solid var(--acd-border);color:var(--acd-text);padding:10px 14px;border-radius:8px;font-family:inherit;font-size:.85rem;max-width:400px;width:100%">
+        <option value="">— Choose a conflict —</option>
+      </select>
+    </div>
+
+    <!-- Forecast display -->
+    <div id="acd-forecast-display"></div>
+
+    <!-- Summary table of all forecasts -->
+    <div style="margin-top:32px">
+      <h2 style="font-size:1rem;font-weight:700;font-family:'Instrument Serif',serif;margin-bottom:16px">All Conflict Forecasts — Summary</h2>
+      <div id="acd-forecast-table"><div class="acd-loading">Loading...</div></div>
+    </div>
+  </div>
+</main>
+<afro-footer></afro-footer>
+<script src="/assets/js/components/navbar.js" defer></script>
+<script src="/assets/js/components/footer.js" defer></script>
+<script>
+(function(){
+  var allConflicts = [];
+
+  function scenarioCard(label, months, outcome, trigger, confidence, color) {
+    return '<div class="acd-scenario-card" style="border-top:3px solid '+color+'"><div class="acd-scenario-label" style="color:'+color+'">'+label+'</div><div class="acd-scenario-duration">'+(months?months+' months est.':'—')+'</div><div class="acd-scenario-outcome">'+(outcome||'No forecast entered yet')+'</div>'+(trigger?'<div style="font-size:.75rem;color:var(--acd-text-dim);margin-top:4px;padding:6px;background:rgba(255,255,255,0.03);border-radius:4px">Trigger: '+trigger+'</div>':'')+'<div class="acd-scenario-confidence">Confidence: '+(confidence||0)+'%</div></div>';
+  }
+
+  async function loadForecast(slug) {
+    var el = document.getElementById('acd-forecast-display');
+    if (!slug) { el.innerHTML = ''; return; }
+    el.innerHTML = '<div class="acd-loading">Loading forecast...</div>';
+    try {
+      var res = await fetch('/api/conflicts/'+slug+'/forecast');
+      var json = await res.json();
+      var fc = json.data;
+      if (!fc) {
+        el.innerHTML = '<div class="acd-empty"><div class="acd-empty-icon">🔮</div><div class="acd-empty-title">No forecast recorded for this conflict yet.<br>Admin can add one via the <a href="/admin/conflict.html" style="color:var(--acd-accent)">admin panel</a>.</div></div>';
+        return;
+      }
+      el.innerHTML =
+        '<div class="acd-scenarios">'+
+          scenarioCard('🟢 Optimistic',fc.opt_duration_months,fc.opt_outcome,fc.opt_trigger,fc.opt_confidence,'#16a34a')+
+          scenarioCard('🟡 Base Case',fc.base_duration_months,fc.base_outcome,null,fc.base_confidence,'#ca8a04')+
+          scenarioCard('🔴 Worst Case',fc.worst_duration_months,fc.worst_outcome,fc.worst_trigger,fc.worst_confidence,'#dc2626')+
+        '</div>'+
+        (fc.analyst_notes?'<div class="acd-overview-box"><h3>Analyst Notes</h3><p style="font-size:.85rem;line-height:1.7;color:var(--acd-text-muted)">'+fc.analyst_notes+'</p></div>':'')+
+        '<div style="font-size:.72rem;color:var(--acd-text-dim);margin-top:8px">Forecast date: '+AfroConflict.formatDate(fc.forecast_date)+' · Model: '+(fc.model_version||'manual-v1')+'</div>';
+    } catch(e) {
+      el.innerHTML = '<div class="acd-empty"><div class="acd-empty-title">Error loading forecast</div></div>';
+    }
+  }
+
+  async function load() {
+    var res = await fetch('/api/conflicts');
+    var json = await res.json();
+    allConflicts = json.data || [];
+
+    // Populate select
+    var sel = document.getElementById('acd-conflict-select');
+    var african = allConflicts.filter(function(c){ return c.is_african; });
+    var global = allConflicts.filter(function(c){ return !c.is_african; });
+
+    if (african.length) {
+      var og = document.createElement('optgroup');
+      og.label = 'African Conflicts';
+      african.forEach(function(c){ var o=document.createElement('option');o.value=c.slug;o.textContent=AfroConflict.flagEmoji(c.primary_country)+' '+c.name;og.appendChild(o); });
+      sel.appendChild(og);
+    }
+    if (global.length) {
+      var og2 = document.createElement('optgroup');
+      og2.label = 'Global Impact Conflicts';
+      global.forEach(function(c){ var o=document.createElement('option');o.value=c.slug;o.textContent=c.name;og2.appendChild(o); });
+      sel.appendChild(og2);
+    }
+
+    sel.addEventListener('change', function(){ loadForecast(this.value); });
+
+    // Summary table
+    document.getElementById('acd-forecast-table').innerHTML =
+      '<div class="acd-disclaimer-box">Forecasts must be entered per-conflict via the admin panel. Once entered, they appear in each conflict\'s detail page and here. Below is the current conflict list ordered by escalation risk.</div>'+
+      '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:.8rem"><thead><tr style="border-bottom:2px solid var(--acd-border)"><th style="padding:8px;text-align:left;color:var(--acd-text-dim)">Conflict</th><th style="padding:8px;text-align:left;color:var(--acd-text-dim)">Status</th><th style="padding:8px;text-align:left;color:var(--acd-text-dim)">Risk</th><th style="padding:8px;text-align:left;color:var(--acd-text-dim)">Duration</th></tr></thead><tbody>'+
+      allConflicts.map(function(c){
+        return '<tr style="border-bottom:1px solid var(--acd-border);cursor:pointer" onclick="document.getElementById(\'acd-conflict-select\').value=\''+c.slug+'\';loadForecast(\''+c.slug+'\')"><td style="padding:8px">'+AfroConflict.flagEmoji(c.primary_country)+' <a href="/tools/africa-conflict/detail.html?id='+c.slug+'" style="color:var(--acd-accent)">'+(c.short_name||c.name)+'</a></td><td style="padding:8px">'+AfroConflict.statusBadge(c.status)+'</td><td style="padding:8px">'+AfroConflict.riskBadge(c.escalation_risk,'')+'</td><td style="padding:8px;color:var(--acd-text-muted)">'+AfroConflict.formatDuration(c.duration_days)+'</td></tr>';
+      }).join('')+'</tbody></table></div>';
+  }
+
+  window.loadForecast = function(slug){ /* make accessible from inline onclick */ };
+  document.addEventListener('DOMContentLoaded', function(){
+    AfroConflict.init();
+    load();
+    window.loadForecast = loadForecast;
+  });
+})();
+</script>
+</body>
+</html>

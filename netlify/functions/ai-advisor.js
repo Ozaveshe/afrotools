@@ -32,21 +32,33 @@ async function checkRateLimit(event) {
   const key = `ai_rate_${ip}_${today}`;
 
   // Check if user is authenticated (higher limit)
+  // Pro status verified server-side via Supabase Auth API — never trust client JWT claims
   let limit = 3; // anonymous users: 3 requests/day
   let isPro = false;
   let isLoggedIn = false;
   const authHeader = event.headers.authorization || '';
-  if (authHeader.startsWith('Bearer ') && AUTH_SECRET) {
+  if (authHeader.startsWith('Bearer ') && SUPABASE_AUTH_KEY) {
     try {
-      const { createHmac } = await import("crypto");
       const token = authHeader.replace('Bearer ', '');
-      const [b64, sig] = token.split('.');
-      const expected = createHmac('sha256', AUTH_SECRET).update(b64).digest('base64url');
-      if (sig === expected) {
-        const payload = JSON.parse(Buffer.from(b64, 'base64url').toString());
-        if (payload.exp > Date.now()) {
-          isPro = payload.tier === 'pro';
+      // Verify the token by calling Supabase Auth API (server-side verification)
+      const userRes = await fetch(`${SUPABASE_AUTH_URL}/auth/v1/user`, {
+        headers: { apikey: SUPABASE_AUTH_KEY, Authorization: `Bearer ${token}` }
+      });
+      if (userRes.ok) {
+        const user = await userRes.json();
+        if (user && user.id) {
           isLoggedIn = true;
+          // Check subscription tier from profiles table (source of truth)
+          const profileRes = await fetch(
+            `${SUPABASE_AUTH_URL}/rest/v1/subscriptions?user_id=eq.${encodeURIComponent(user.id)}&status=eq.active&select=status,expires_at&limit=1`,
+            { headers: { apikey: SUPABASE_AUTH_KEY, Authorization: `Bearer ${SUPABASE_AUTH_KEY}` } }
+          );
+          if (profileRes.ok) {
+            const subs = await profileRes.json();
+            if (subs && subs[0] && new Date(subs[0].expires_at) > new Date()) {
+              isPro = true;
+            }
+          }
           limit = isPro ? Infinity : 10; // Pro: unlimited, logged-in free: 10/day
         }
       }
@@ -99,7 +111,7 @@ async function fetchUserContext(userId, userContextFromClient) {
   // Fetch profile from AUTH Supabase
   if (SUPABASE_AUTH_KEY && !result.country) {
     fetches.push(
-      fetch(`${SUPABASE_AUTH_URL}/rest/v1/profiles?id=eq.${userId}&select=country_code,currency,employment_type,subscription_tier&limit=1`, {
+      fetch(`${SUPABASE_AUTH_URL}/rest/v1/profiles?id=eq.${encodeURIComponent(userId)}&select=country_code,currency,employment_type,subscription_tier&limit=1`, {
         headers: { apikey: SUPABASE_AUTH_KEY, Authorization: `Bearer ${SUPABASE_AUTH_KEY}` }
       }).then(r => r.ok ? r.json() : []).then(rows => {
         if (rows[0]) {
@@ -115,7 +127,7 @@ async function fetchUserContext(userId, userContextFromClient) {
   // Fetch recent calculations from DATA Supabase
   if (SUPABASE_DATA_KEY) {
     fetches.push(
-      fetch(`${SUPABASE_DATA_URL}/rest/v1/calculation_history?user_id=eq.${userId}&select=tool_slug,tool_name,inputs,outputs,created_at&order=created_at.desc&limit=5`, {
+      fetch(`${SUPABASE_DATA_URL}/rest/v1/calculation_history?user_id=eq.${encodeURIComponent(userId)}&select=tool_slug,tool_name,inputs,outputs,created_at&order=created_at.desc&limit=5`, {
         headers: { apikey: SUPABASE_DATA_KEY, Authorization: `Bearer ${SUPABASE_DATA_KEY}` }
       }).then(r => r.ok ? r.json() : []).then(rows => {
         if (rows && rows.length > 0) {
@@ -342,6 +354,210 @@ const TOOL_CONTEXT = {
   // ── DASHBOARD & GENERAL ───────────────────────────────────────────
   "dashboard": "You are the AfroTools assistant on the user's dashboard. Help them navigate tools, understand their financial data, and plan next steps. You can reference their recent calculations and suggest workflows. Be concise and helpful. Suggest specific AfroTools calculators when relevant.",
   "general": "You are the AfroTools assistant. Help users find the right tool, answer general questions about African tax, finance, and business. Suggest specific AfroTools calculators when relevant. Cover all 54 African countries.",
+
+  // ── DOCUMENT & PDF TOOLS ──────────────────────────────────────────
+  "pdf-workspace": "All-in-one PDF workspace. Split, merge, rearrange, rotate, compress, add page numbers. Files processed in-browser only.",
+  "pdf-merge-split": "Combine multiple PDFs into one or split a PDF into separate pages. Drag-drop reorder support.",
+  "pdf-compress": "Reduce PDF file size with quality presets (screen/ebook/print). All processing client-side.",
+  "pdf-image-convert": "Convert PDFs to PNG/JPG images or images to PDF. Uses pdf.js and jsPDF in-browser.",
+  "pdf-watermark": "Add text or image watermarks to PDFs. Custom opacity, position, and rotation settings.",
+  "pdf-password": "Encrypt or decrypt PDFs with password protection. No server upload required.",
+  "pdf-page-numbers": "Add page numbers to PDFs. Custom format, position, font, and starting number.",
+  "pdf-sign": "Draw, type, or upload a signature to sign PDFs in-browser. No account needed.",
+  "pdf-ocr": "Extract text from scanned PDFs and images using Tesseract.js OCR. 100% browser-based.",
+  "pdf-form-filler": "Fill PDF form fields (AcroForms) in-browser. Detect fields, fill, and save.",
+  "pdf-redact": "Permanently redact sensitive content in PDFs. Draw black boxes over text, then flatten.",
+  "pdf-header-footer": "Add custom headers and footers to every page of a PDF. Company name, dates, logos.",
+  "pdf-editor": "Add text, images, shapes, highlights, and annotations to PDFs. Free browser-based editor.",
+  "pdf-convert": "Convert Word (.docx) and Excel (.xlsx) to PDF, or extract text from PDFs. All client-side.",
+  "pdf-reorder": "Rotate, reorder, and delete PDF pages. Drag-drop page arrangement with thumbnails.",
+  "pdf-compare": "Compare two PDFs side-by-side. Text diff with highlights and visual overlay mode.",
+  "pdf-to-audio": "Listen to PDFs read aloud. Adjustable speed, multiple voices via browser text-to-speech.",
+  "pdf-bates": "Add Bates numbers to PDFs for legal document management. Custom prefix, suffix, zero-padding.",
+  "html-to-pdf": "Convert HTML code or rich text content to PDF documents. Paste HTML and download as PDF.",
+  "pdf-find-replace": "Find text in PDFs and replace with new text. Visual overlay replacement on all pages.",
+  "pdf-repair": "Fix corrupt or damaged PDF files. Recover pages and re-save clean copies. Client-side.",
+  "pdf-workflow": "Chain PDF operations: compress, watermark, encrypt, page numbers. Build custom pipelines.",
+  "cv-builder": "Africa-ready CV/resume builder. NYSC, NSS, KCSE aware. Templates for African job markets.",
+  "invoice-generator": "Create professional invoices with VAT, multi-currency, and African business formats. PDF export.",
+  "cover-letter": "Write professional cover letters with industry templates. Guided builder with PDF export.",
+  "meeting-minutes": "Create professional meeting minutes. Attendees, agenda, action items with deadlines, PDF export.",
+  "receipt-generator": "Generate professional receipts with mobile money transaction references for African businesses.",
+  "business-plan": "7-section business plan builder with financial projections, industry templates, AI review, and PDF export.",
+
+  // ── IMAGE & DESIGN TOOLS ──────────────────────────────────────────
+  "image-compress": "Reduce image file size with quality slider. Critical for low-bandwidth African networks. Batch mode.",
+  "image-resize": "Resize images and convert between WebP/PNG/JPG. Social media presets included.",
+  "qr-generator": "Generate QR codes for M-Pesa links, WhatsApp, WiFi, URLs. Download as PNG/SVG.",
+  "background-remover": "AI-powered background removal in-browser. No upload to server. Batch support.",
+  "passport-photo": "Crop and resize photos to passport specs for all 54 African + international countries.",
+  "image-crop": "Free-form crop, rotate, flip images. Social media aspect ratio presets included.",
+  "color-picker": "HEX/RGB/HSL/CMYK colour conversion. WCAG contrast checker. Palette generator.",
+  "favicon-generator": "Generate favicon sets (ICO, PNG 16/32/64) from any image or text.",
+  "image-to-text": "Extract text from images using OCR. Supports Arabic, Swahili, French, English scripts.",
+  "meme-generator": "African meme templates plus custom images. Naija, Kenyan, SA meme packs included.",
+  "logo-maker": "Simple SVG logo maker with African pattern templates for small businesses.",
+  "image-filters": "Apply filters, adjust brightness, contrast, saturation in-browser. No upload needed.",
+  "social-card": "Design Twitter/LinkedIn/WhatsApp cards. African holiday and cultural templates included.",
+  "certificate-maker": "Create professional certificates. School, church, corporate templates for African organisations.",
+  "flyer-maker": "Design flyers for events, church, market. WhatsApp-optimised export for African sharing.",
+  "thumbnail-maker": "Design viral YouTube thumbnails with African art styles and custom text overlays.",
+  "watermark-bulk": "Add text or image watermarks to up to 50 photos at once. Perfect for photographers.",
+  "image-format-convert": "Convert JPG, PNG, WebP, HEIC, AVIF. Batch convert up to 100 images at once.",
+  "colour-palette": "Generate brand palettes inspired by kente, ankara, mudcloth, and African art motifs.",
+
+  // ── DEVELOPER TOOLS ───────────────────────────────────────────────
+  "data-converter": "Convert between JSON, CSV, XML, YAML, TOML, TSV. Auto-detect format, SQL INSERT generator.",
+  "hash-generator": "MD5, SHA-1, SHA-256, SHA-512, SHA-3, HMAC, CRC32. All-at-once grid with file hashing.",
+  "base64": "Encode/decode text and files to Base64. Image-to-Base64, URL-safe mode, live encoding stats.",
+  "cron-builder": "Visual cron expression builder with human-readable output and next-run preview.",
+  "url-encoder": "Encode/decode URLs. URL parser, query builder, bulk mode, double-encode detection.",
+  "uuid-generator": "UUID v1/v4/v7, ULID, Nano ID generator. Bulk gen, anatomy display, collision calculator.",
+  "html-entities": "Encode/decode HTML entities and escape special characters for web development.",
+  "diff-checker": "Compare two blocks of text or code and highlight differences. Side-by-side or inline view.",
+  "color-contrast": "WCAG contrast ratio checker. Verify text/background accessibility compliance (AA/AAA).",
+  "ussd-simulator": "Visual USSD menu builder for African fintech developers. Simulate *123# flows.",
+  "api-tester": "REST API testing in-browser. Pre-built Africa fintech API collections (M-Pesa, Paystack, Flutterwave).",
+  "sql-playground": "SQLite in-browser. Practice SQL queries without any installation or setup.",
+  "css-gradient": "Visual linear/radial/conic gradient builder. Copy CSS code instantly.",
+  "meta-tag-gen": "Generate SEO meta tags, Open Graph, and Twitter Card tags for websites.",
+  "meta-tag-generator": "Generate optimised title, description, OG tags and JSON-LD for African businesses.",
+  "htaccess-gen": "Generate .htaccess rules for redirects, password protection, caching.",
+  "robots-txt": "Visual robots.txt builder. Validate and test against Googlebot crawl rules.",
+  "sitemap-gen": "Generate XML sitemaps for small sites. Manual or URL-import mode.",
+  "password-gen": "Strong password generator. No server involved. Entropy meter included.",
+  "sql-formatter": "Format, beautify, and validate SQL queries. Supports MySQL, PostgreSQL, SQLite dialects.",
+
+  // ── LANGUAGE & TRANSLATION TOOLS ──────────────────────────────────
+  "swahili-translator": "English-Swahili translator with 50,000+ word pairs including business terms. Covers Kenya, Tanzania, Uganda.",
+  "yoruba-translator": "English-Yoruba translator with tones. Business, greetings, legal phrases for Nigeria.",
+  "hausa-translator": "English-Hausa translator. Business, market, greetings, legal phrases. Nigeria, Niger, Ghana.",
+  "igbo-translator": "English-Igbo translator with tone marks. Business and everyday phrases for Nigeria.",
+  "amharic-translator": "English-Amharic translator with Ge'ez script support. For Ethiopia and Eritrea.",
+  "zulu-translator": "English-Zulu translator. South African business and cultural phrases.",
+  "arabic-calc": "Western to Arabic-Indic numeral converter. Useful for North African documents and forms.",
+  "transliterate": "Romanise Arabic, Amharic, Tifinagh scripts and vice versa. Multi-script support.",
+  "pidgin-translator": "English-Nigerian Pidgin translator with common phrases and slang dictionary.",
+  "french-african": "French-English translator with West and Central African French business terminology.",
+  "african-name-meaning": "Find meaning, origin, and pronunciation of 5,000+ African names across 50 cultures.",
+
+  // ── UNIQUELY AFRICAN TOOLS ────────────────────────────────────────
+  "mobile-money-fees": "Compare M-Pesa, MTN MoMo, Airtel Money, OPay, Chipper fees across African countries.",
+  "electricity-estimator": "Prepaid meter units calculator per country. African tariff bands and usage estimator.",
+  "fuel-cost": "Route fuel cost estimator with African city routes and live fuel prices across the continent.",
+  "tithe-offering": "10% tithe, first fruits, and offering calculator. Multi-currency for African churches.",
+  "lobola-calculator": "Estimate lobola in cattle, cash, or ZAR/ZWG equivalents. Southern Africa traditions.",
+  "hawala-tracker": "Compare hawala, Western Union, and bank wire costs for Horn of Africa remittances.",
+  "burial-cost": "Estimate funeral and burial costs in Nigeria, Kenya, Ghana, South Africa. Local packages.",
+  "land-size": "Convert Nigerian plots, hectares, acres, perches. Country-specific African land units.",
+  "naira-to-words": "Convert Naira amounts to words for cheques and legal documents. Nigerian format.",
+  "amount-words-ke": "Convert Kenya Shilling amounts to words for cheques and legal documents.",
+  "amount-words-gh": "Convert Ghana Cedi amounts to words for cheques and legal documents.",
+  "susu-tracker": "Manage susu/esusu/ajo savings groups. Track contributions, arrears, payouts. Ghana, Nigeria.",
+  "whatsapp-link": "Generate wa.me links with pre-filled messages. Essential for African small businesses.",
+  "remittance-compare": "Compare Wise, WorldRemit, Western Union and 8+ services for sending money to Africa.",
+  "cost-of-living": "Compare living costs across 54 African capitals. Basket of goods approach with local prices.",
+  "afroatlas": "Interactive African geography explorer. Countries, capitals, currencies, languages, borders.",
+  "okada-income": "Daily income, expenses, and profit tracker for motorcycle taxi (okada/boda boda) riders.",
+  "market-days": "Eke, Orie, Afor, Nkwo cycle tracker and weekly market day finder for Nigerian markets.",
+  "ajo-interest": "Calculate returns on Ajo/Esusu rotating savings groups. Optimal contribution amounts.",
+  "ajo-chama-calc": "Plan rotating savings (Ajo, Chama, Tontine, Stokvel). Contribution schedules and payout tracking.",
+
+  // ── TRADE & IMPORT TOOLS ──────────────────────────────────────────
+  "afcfta-tracker": "Live AfCFTA tariff schedule. Check duty-free status for products between 54 African countries.",
+  "landed-cost": "Calculate total landed cost of imports into Africa. CIF, duty, VAT, port charges, clearing fees.",
+  "shipping-estimator": "Estimate sea freight, air freight, and road haulage costs for African trade corridors.",
+  "fx-import-impact": "Calculate how currency depreciation affects import costs. Model FX scenarios for 15 currencies.",
+  "lc-calculator": "Calculate Letter of Credit opening, confirmation, and amendment fees. 15 countries, 9 LC types.",
+  "export-docs": "Export documentation checklist generator. Country-specific requirements for African exporters.",
+  "coo-generator": "Generate AfCFTA, ECOWAS, EAC, SADC, COMESA Certificates of Origin with criteria checker.",
+  "demurrage-calculator": "Calculate port demurrage and storage charges at 16 African ports. Tiered daily rates.",
+  "incoterms-calculator": "All 11 Incoterms 2020 explained with cost-split calculator and Africa-specific trade guide.",
+  "trade-finance-comparator": "Compare 6 trade finance instruments: LC Sight, Usance, T/T, CAD, Open Account, SBLC.",
+  "commodity-tracker": "Top imports and exports for 8 African economies. Trade balance and commodity price data.",
+  "payment-comparator": "Compare cross-border B2B payment fees. SWIFT, PAPSS, Flutterwave, Wise, Paystack.",
+  "ecowas-levy": "Calculate ECOWAS Common External Tariff and ETLS levies for West African trade.",
+  "sadc-roo": "SADC Rules of Origin checker. Verify product eligibility for preferential tariff treatment.",
+  "eac-cet": "EAC Common External Tariff lookup. Duty rates for imports into Kenya, Uganda, Tanzania, Rwanda.",
+  "proforma-invoice": "Generate proforma invoices for international trade. HS codes, Incoterms, FOB/CIF pricing.",
+  "packing-list": "Generate packing lists for international shipping. Auto-calculate CBM and container utilisation.",
+  "bol-generator": "Generate draft Bill of Lading templates. B/L types explained for African importers/exporters.",
+  "hs-code-lookup": "Search HS codes and customs tariff rates for all 54 African countries by product name.",
+
+  // ── ENGINEERING TOOLS ─────────────────────────────────────────────
+  "afrodraft": "2D CAD tool with 60+ AutoCAD-style features. Draw, dimension, annotate, trim. SVG/DXF/PNG export.",
+  "solar-calculator": "Size solar systems with African irradiance data. Battery bank, inverter sizing, 10-year ROI vs generator.",
+  "floor-plan": "Estimate construction cost per m2 by African city. 10 cities, 4 finish tiers, room-by-room input.",
+  "boq-generator": "BOQ builder with 11 QS categories, 5 templates, 9 African currencies. Branded PDF export.",
+  "boq-gen": "Generate detailed Bill of Quantities for African construction. Local material prices for NG, KE, GH, ZA.",
+  "structural-calc": "KEBS/SABS/SON building code calculations. Structural load analysis for African standards.",
+  "electrical-load": "Household and commercial electrical load calculation. Generator sizing. Per-country grid voltage.",
+  "concrete-calc": "Bags of cement, sand, granite per cubic metre. Nigerian and Kenyan brand pricing included.",
+  "paint-calc": "Litres of paint needed per room. Local brands: Dulux, Crown, Berger Africa pricing.",
+  "tiles-calc": "Number of tiles needed per room with wastage factor. African tile brand pricing included.",
+  "water-tank": "Household water storage needs per day. Common African tank brands and sizes.",
+  "roofing-calc": "Iron sheets, tiles, or shingles per m2. Per-country African price estimates included.",
+  "borehole-cost": "Borehole drilling cost per metre by country and geology type. 7 African countries covered.",
+  "rebar-calc": "Bar bending schedule, cutting lengths, lap lengths, weight and cost. Y8-Y32 with African steel prices.",
+  "generator-sizing": "Size your generator load for home or office. Nigeria, Ghana, East Africa power specifications.",
+  "home-renovation-cost": "Estimate kitchen, bathroom, bedroom renovation costs in Nigeria, Kenya, South Africa, Ghana.",
+
+  // ── AGRICULTURE TOOLS (new entries) ───────────────────────────────
+  "planting-calendar": "Crop planting calendar for 200+ crops across African climate zones. Season timing by region.",
+  "fertilizer-calc": "Fertilizer quantity per hectare by crop type and soil. African agri data and local product names.",
+  "crop-yield-estimator": "Estimate crop yields across 54 African countries. 40+ crops, FAOSTAT-backed regional data.",
+  "fertilizer-calculator": "Calculate NPK fertilizer needs with local product recommendations, prices, and subsidy info.",
+  "irrigation-calculator": "Calculate crop water requirements and irrigation schedules. FAO Penman-Monteith method.",
+  "farm-profit-calculator": "Farming profitability analysis: seeds, fertilizer, labor, transport, post-harvest losses. ROI and break-even.",
+  "seed-rate-calculator": "Calculate exact seed quantities, planting spacing, and local seed prices for 20+ African crops.",
+  "harvest-date-estimator": "Estimate crop harvest dates based on planting date, variety, and local growing conditions.",
+  "fish-farming-nigeria": "Catfish and tilapia ROI calculator for Nigeria. Local feed prices, fingerling costs, pond setup.",
+  "fish-farming-kenya": "Tilapia, catfish, and trout ROI for Kenya. Lake Victoria cage culture and highland trout farms.",
+  "fish-farming-south-africa": "Tilapia, trout, and catfish ROI for South Africa. RAS systems and KZN trout farms.",
+  "fish-farming-ghana": "Tilapia and catfish ROI for Ghana. Lake Volta cage culture and pond farming.",
+  "fish-farming-egypt": "Tilapia and catfish ROI for Egypt. Africa's #1 aquaculture producer, Nile Delta farms.",
+  "fish-farming-ethiopia": "Tilapia and trout ROI for Ethiopia. Rift Valley lakes and highland trout farms.",
+  "fish-farming-tanzania": "Tilapia and catfish ROI for Tanzania. Lake Victoria and pond farming.",
+  "fish-farming-uganda": "Tilapia and catfish ROI for Uganda. Lake Victoria region aquaculture.",
+  "fish-farming-rwanda": "Tilapia and catfish ROI for Rwanda. Government hatchery program and Kigali market.",
+  "fish-farming-cote-d-ivoire": "Tilapia and catfish ROI for Cote d'Ivoire. Abidjan market and coastal aquaculture.",
+  "fish-farming-cameroon": "Catfish and tilapia ROI for Cameroon. Government aquaculture stations in Kribi and Yaounde.",
+  "fish-farming-senegal": "Tilapia and catfish ROI for Senegal. Saint-Louis and Casamance inland aquaculture.",
+  "fish-farming-morocco": "Tilapia and trout ROI for Morocco. Atlas Mountain trout and Souss-Massa tilapia farms.",
+  "fish-farming-tunisia": "Tilapia and catfish ROI for Tunisia. Freshwater aquaculture with government subsidies.",
+  "fish-farming-angola": "Tilapia and catfish ROI for Angola. MINAGRI program, Malanje and Huambo provinces.",
+  "greenhouse-nigeria": "Greenhouse setup costs and ROI for Nigeria. NGN prices, 5 types, 6 crops.",
+  "greenhouse-kenya": "Greenhouse setup costs and ROI for Kenya. KSh prices, 50,000+ greenhouses nationwide.",
+  "greenhouse-south-africa": "Greenhouse setup costs and ROI for South Africa. ZAR prices, Western Cape and KZN data.",
+  "greenhouse-ghana": "Greenhouse setup costs and ROI for Ghana. GHS prices, dry season vegetable production.",
+  "greenhouse-egypt": "Greenhouse setup costs and ROI for Egypt. EGP prices, Nile Delta and desert farming.",
+  "greenhouse-ethiopia": "Greenhouse setup costs and ROI for Ethiopia. ETB prices, floriculture and horticulture hubs.",
+  "greenhouse-tanzania": "Greenhouse setup costs and ROI for Tanzania. TZS prices, Arusha horticulture zone.",
+  "greenhouse-uganda": "Greenhouse setup costs and ROI for Uganda. UGX prices, export horticulture sector.",
+  "greenhouse-rwanda": "Greenhouse setup costs and ROI for Rwanda. RWF prices, RAB horticulture program.",
+  "greenhouse-cote-d-ivoire": "Greenhouse setup costs and ROI for Cote d'Ivoire. XOF prices, Abidjan horticulture.",
+  "greenhouse-cameroon": "Greenhouse setup costs and ROI for Cameroon. XAF prices, West Region highlands.",
+  "greenhouse-senegal": "Greenhouse setup costs and ROI for Senegal. XOF prices, Niayes and Casamance horticulture.",
+  "greenhouse-morocco": "Greenhouse setup costs and ROI for Morocco. Africa's largest greenhouse exporter. Souss-Massa.",
+  "greenhouse-tunisia": "Greenhouse setup costs and ROI for Tunisia. TND prices, Cap Bon and Bizerte clusters.",
+  "greenhouse-angola": "Greenhouse setup costs and ROI for Angola. AOA prices, PRODESI agri programme.",
+  "cassava-processing-nigeria": "Garri, fufu flour, and HQCF processing profits in Nigeria. Local NGN prices and labour rates.",
+  "cassava-processing-ghana": "Garri and HQCF processing profits in Ghana. GHS prices, MOFA processing zones.",
+  "cassava-processing-tanzania": "Cassava chips, flour, and starch profit calculator for Tanzania. Animal feed market.",
+  "cassava-processing-mozambique": "Cassava chips and flour profit calculator for Mozambique. Zambezia and Nampula processing.",
+  "cassava-processing-dr-congo": "Cassava flour and chips profit calculator for DR Congo. CDF prices, Kinshasa market.",
+  "cassava-processing-cameroon": "Garri and HQCF processing profit calculator for Cameroon. Yaounde and Douala markets.",
+  "cassava-processing-cote-d-ivoire": "Garri and attieke processing profit calculator for Cote d'Ivoire. Abidjan market.",
+  "cassava-processing-angola": "Cassava flour and chips profit calculator for Angola. MINAGRI processing support.",
+  "cassava-processing-uganda": "HQCF and cassava chips profit calculator for Uganda. Kampala bakery market.",
+  "cassava-processing-malawi": "HQCF and cassava chips profit calculator for Malawi. Lilongwe and Blantyre markets.",
+  "cassava-processing-sierra-leone": "Garri and fufu flour profit calculator for Sierra Leone. Western Area processing groups.",
+  "cassava-processing-benin": "Garri and HQCF profit calculator for Benin. XOF prices, export to Nigeria and Togo.",
+
+  // ── CRYPTO TOOLS (new entries) ────────────────────────────────────
+  "crypto-arbitrage": "Find crypto price gaps across Nigerian platforms. Spot buy-low sell-high Naira arbitrage opportunities.",
+  "crypto-address": "Validate BTC, ETH, SOL, TRX wallet addresses. Format check plus scam database cross-reference.",
+  "crypto-contract": "Verify smart contracts on Ethereum and BSC. Check honeypot risk, rug-pull indicators, holder analysis.",
 };
 
 // Tool affinity map — suggests related tools after a calculation

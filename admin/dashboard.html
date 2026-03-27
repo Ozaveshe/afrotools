@@ -126,6 +126,7 @@
       <a class="link-card" href="/admin/wages.html"><span class="icon">💵</span><div><span class="label">Minimum Wages</span><div style="font-size:.72rem;color:#6B7F99">54 countries · Farm payroll · Annual</div></div></a>
       <a class="link-card" href="/admin/remittance.html"><span class="icon">💸</span><div><span class="label">Remittance Fees</span><div style="font-size:.72rem;color:#6B7F99">9 providers · All corridors · Monthly</div></div></a>
       <a class="link-card" href="/admin/alerts.html"><span class="icon">🔔</span><div><span class="label">Tax & Regulatory Alerts</span><div style="font-size:.72rem;color:#6B7F99">Country alerts · As needed</div></div></a>
+      <a class="link-card" href="/admin/conflict.html"><span class="icon">⚔️</span><div><span class="label">AfroConflict Management</span><div style="font-size:.72rem;color:#6B7F99">Conflicts · Timeline · Forecasts · Sync</div></div></a>
     </div>
   </div>
 
@@ -133,12 +134,12 @@
   <div class="section">
     <h2><span>🔗</span> External Dashboards</h2>
     <div class="link-grid">
-      <a class="link-card" href="https://analytics.google.com" target="_blank"><span class="icon">📈</span><span class="label">Google Analytics (GA4)</span></a>
-      <a class="link-card" href="https://search.google.com/search-console" target="_blank"><span class="icon">🔍</span><span class="label">Search Console</span></a>
-      <a class="link-card" href="https://app.netlify.com" target="_blank"><span class="icon">🚀</span><span class="label">Netlify Dashboard</span></a>
-      <a class="link-card" href="https://www.semrush.com" target="_blank"><span class="icon">📊</span><span class="label">Semrush</span></a>
-      <a class="link-card" href="https://github.com/Ozaveshe/afrotools" target="_blank"><span class="icon">🐙</span><span class="label">GitHub Repo</span></a>
-      <a class="link-card" href="/style-guide.html" target="_blank"><span class="icon">🎨</span><span class="label">Style Guide</span></a>
+      <a class="link-card" href="https://analytics.google.com" target="_blank" rel="noopener noreferrer"><span class="icon">📈</span><span class="label">Google Analytics (GA4)</span></a>
+      <a class="link-card" href="https://search.google.com/search-console" target="_blank" rel="noopener noreferrer"><span class="icon">🔍</span><span class="label">Search Console</span></a>
+      <a class="link-card" href="https://app.netlify.com" target="_blank" rel="noopener noreferrer"><span class="icon">🚀</span><span class="label">Netlify Dashboard</span></a>
+      <a class="link-card" href="https://www.semrush.com" target="_blank" rel="noopener noreferrer"><span class="icon">📊</span><span class="label">Semrush</span></a>
+      <a class="link-card" href="https://github.com/Ozaveshe/afrotools" target="_blank" rel="noopener noreferrer"><span class="icon">🐙</span><span class="label">GitHub Repo</span></a>
+      <a class="link-card" href="/style-guide.html" target="_blank" rel="noopener noreferrer"><span class="icon">🎨</span><span class="label">Style Guide</span></a>
     </div>
   </div>
 
@@ -151,6 +152,14 @@
 </div>
 
 <script>
+var adminKey = sessionStorage.getItem('admin_key');
+if (!adminKey) {
+  adminKey = prompt('Enter admin password:');
+  if (adminKey) sessionStorage.setItem('admin_key', adminKey);
+}
+if (!adminKey) {
+  document.body.innerHTML = '<div style="text-align:center;padding:80px 24px;font-family:DM Sans,sans-serif;"><h1 style="font-size:1.4rem;margin-bottom:8px;">Access Denied</h1><p style="color:#6B7F99;font-size:.9rem;">Admin password required.</p><a href="/" style="color:#007AFF;font-size:.85rem;">Back to AfroTools</a></div>';
+}
 function _initDashboard() {
   if (typeof AFRO_TOOLS === 'undefined') return;
   var stats = getRegistryStats();

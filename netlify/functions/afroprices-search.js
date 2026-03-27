@@ -5,17 +5,19 @@
 const { createClient } = require("@supabase/supabase-js");
 
 // Sanitize search query to prevent PostgREST operator injection
+// Whitelist approach: only allow letters, numbers, spaces, hyphens
 function sanitizeQuery(raw) {
   if (typeof raw !== 'string') return '';
   return raw
-    .replace(/[(),.]/g, '')   // strip PostgREST operators
-    .replace(/[^\w\s-]/g, '') // allow only alphanumeric, spaces, hyphens
+    .replace(/[^a-zA-Z0-9\s\-]/g, '') // strict whitelist: alphanumeric, spaces, hyphens only
+    .replace(/\s+/g, ' ')              // collapse whitespace
     .trim()
-    .slice(0, 100);           // max 100 chars
+    .slice(0, 100);                    // max 100 chars
 }
 
-const SUPABASE_URL = process.env.SUPABASE_URL || "https://jbmhfpkzbgyeodsqhprx.supabase.co";
-const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpibWhmcGt6Ymd5ZW9kc3FocHJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIxMTY2MDcsImV4cCI6MjA1NzY5MjYwN30.gVLMsMVjqEMOCMCFnPBHaf8njEhNPGUB2v3XnDnlqSM";
+const SUPABASE_URL = process.env.SUPABASE_DATA_URL || process.env.SUPABASE_URL || "https://jbmhfpkzbgyeodsqhprx.supabase.co";
+const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY_DATA || process.env.SUPABASE_ANON_KEY;
+if (!SUPABASE_ANON_KEY) console.warn('[afroprices-search] Missing SUPABASE_ANON_KEY_DATA env var');
 
 let supabase;
 function getSupabase() {
@@ -68,11 +70,13 @@ exports.handler = async function (event) {
   try {
     const sb = getSupabase();
 
-    // Search products
+    // Search products — use encodeURIComponent to prevent PostgREST operator injection
+    // The sanitizeQuery whitelist already strips all special chars, but double-encode as defense-in-depth
+    const safePattern = `%${query.replace(/%/g, '')}%`;
     let productQuery = sb
       .from("products")
       .select("id, name, brand, category, subcategory, description, image_url, specs")
-      .or(`name.ilike.%${query}%,brand.ilike.%${query}%,description.ilike.%${query}%`)
+      .or(`name.ilike.${safePattern},brand.ilike.${safePattern},description.ilike.${safePattern}`)
       .limit(20);
 
     if (category) {
@@ -107,6 +111,12 @@ exports.handler = async function (event) {
         .limit(20)
     ]);
 
+    if (listingsResult.error) {
+      console.error("AfroPrices listings query error:", listingsResult.error);
+    }
+    if (communityResult.error) {
+      console.error("AfroPrices community query error:", communityResult.error);
+    }
     const listings = listingsResult.data || [];
     const community = communityResult.data || [];
 

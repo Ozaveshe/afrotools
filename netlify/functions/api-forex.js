@@ -107,9 +107,9 @@ exports.handler = async function (event) {
 
     if (from === 'USD' && data.rates[to]) {
       rate = data.rates[to];
-    } else if (to === 'USD' && data.rates[from]) {
+    } else if (to === 'USD' && data.rates[from] && data.rates[from] !== 0) {
       rate = 1 / data.rates[from];
-    } else if (data.rates[from] && data.rates[to]) {
+    } else if (data.rates[from] && data.rates[to] && data.rates[from] !== 0) {
       // Cross rate via USD
       rate = data.rates[to] / data.rates[from];
     }
@@ -138,9 +138,9 @@ exports.handler = async function (event) {
       let rate = null;
       if (from === 'USD' && data.rates[to]) {
         rate = data.rates[to];
-      } else if (to === 'USD' && data.rates[from]) {
+      } else if (to === 'USD' && data.rates[from] && data.rates[from] !== 0) {
         rate = 1 / data.rates[from];
-      } else if (data.rates[from] && data.rates[to]) {
+      } else if (data.rates[from] && data.rates[to] && data.rates[from] !== 0) {
         rate = data.rates[to] / data.rates[from];
       }
 
@@ -170,8 +170,8 @@ exports.handler = async function (event) {
 
   // Convert rates to requested base
   const baseRate = data.rates[base];
-  if (!baseRate) {
-    return jsonResponse(404, { error: `Base currency ${base} not found` });
+  if (!baseRate || baseRate === 0) {
+    return jsonResponse(404, { error: `Base currency ${base} not found or has zero rate` });
   }
 
   const convertedRates = {};

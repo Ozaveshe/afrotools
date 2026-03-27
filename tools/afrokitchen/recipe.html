@@ -171,7 +171,9 @@
 
 <script src="/assets/js/components/navbar.min.js" defer></script>
 <script src="/assets/js/components/footer.min.js" defer></script>
-<script src="/engines/afrokitchen-engine.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="/assets/js/afro-auth.js?v=6"></script>
+<script src="/engines/afrokitchen-engine.js?v=2"></script>
 <script>
 var AKPage = (function () {
   'use strict';
@@ -696,17 +698,20 @@ var AKPage = (function () {
   });
 
   // ── Touch swipe for cooking mode ──
-  var touchStartX = 0;
+  var touchStartX = 0, touchStartY = 0;
   document.getElementById('cooking-mode').addEventListener('touchstart', function (e) {
     touchStartX = e.touches[0].clientX;
-  });
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
   document.getElementById('cooking-mode').addEventListener('touchend', function (e) {
-    var diff = e.changedTouches[0].clientX - touchStartX;
-    if (Math.abs(diff) > 50) {
-      if (diff < 0) cookingNext();
+    var diffX = e.changedTouches[0].clientX - touchStartX;
+    var diffY = e.changedTouches[0].clientY - touchStartY;
+    // Only treat as horizontal swipe if X movement dominates Y (not a scroll)
+    if (Math.abs(diffX) > 60 && Math.abs(diffX) > Math.abs(diffY) * 1.5) {
+      if (diffX < 0) cookingNext();
       else cookingPrev();
     }
-  });
+  }, { passive: true });
 
   init();
 

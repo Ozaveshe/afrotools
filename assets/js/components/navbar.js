@@ -736,6 +736,16 @@
         srchEmpty:    isSw ? 'Zana 100+ za Afrika'          : isFr ? '100+ outils africains'                            : 'Search 100+ African tools',
         srchHint:     isSw ? 'Jaribu "PAYE", "PDF", "kodi", "BMI"…'            : isFr ? 'Essayez "PAYE", "salaire", "TVA"…'               : 'Try "PAYE", "PDF", "japa", "BMI"…',
       };
+      /* L3: Inject skip-to-main link into light DOM (outside shadow) */
+      if (!document.getElementById('skip-to-main')) {
+        var skipLink = document.createElement('a');
+        skipLink.id = 'skip-to-main';
+        skipLink.className = 'skip-to-main';
+        skipLink.href = '#main-content';
+        skipLink.textContent = isSw ? 'Ruka hadi maudhui' : isFr ? 'Aller au contenu' : 'Skip to main content';
+        document.body.insertBefore(skipLink, document.body.firstChild);
+      }
+
       this.shadowRoot.innerHTML = `
         <style>${CSS}</style>
         <nav role="navigation" aria-label="${T.ariaNav}">

@@ -11,8 +11,9 @@
 
 const { getData, setData } = require('./_shared/data-store');
 
-const SUPABASE_DATA_URL = 'https://jbmhfpkzbgyeodsqhprx.supabase.co';
-const SUPABASE_DATA_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpibWhmcGt6Ymd5ZW9kc3FocHJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2MTg2NzIsImV4cCI6MjA2MDE5NDY3Mn0.71rkEJm1dXSKJSNPFLAmdLU-_XmEf0-UrFaLW5XUGQ0';
+const SUPABASE_DATA_URL = process.env.SUPABASE_DATA_URL || 'https://jbmhfpkzbgyeodsqhprx.supabase.co';
+const SUPABASE_DATA_ANON = process.env.SUPABASE_ANON_KEY_DATA || process.env.SUPABASE_ANON_KEY;
+if (!SUPABASE_DATA_ANON) console.warn('[api-scholarships] Missing SUPABASE_ANON_KEY_DATA env var');
 
 const CACHE_KEY = 'scholarships-latest';
 const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour

@@ -36,6 +36,16 @@
 /tools/afroatlas/country/:slug/  /tools/afroatlas/country/:slug/index.html  200
 /tools/afroatlas/country/:slug   /tools/afroatlas/country/:slug/index.html  200
 
+# AfroConflict — API routes
+/api/conflicts                    /.netlify/functions/conflict-data  200
+/api/conflicts/*                  /.netlify/functions/conflict-data  200
+/api/stats                        /.netlify/functions/conflict-data  200
+/api/events/recent                /.netlify/functions/conflict-data  200
+/api/events/*                     /.netlify/functions/conflict-data  200
+/api/admin/*                      /.netlify/functions/conflict-admin 200
+# AfroConflict — SEO-friendly conflict detail URL
+/tools/africa-conflict/detail/:slug  /tools/africa-conflict/detail.html?id=:slug  200
+
 /tools/afrokitchen/recipe/:slug/  /tools/afrokitchen/recipe.html?slug=:slug  200
 /tools/afrokitchen/recipe/:slug   /tools/afrokitchen/recipe.html?slug=:slug  200
 /tools/afrokitchen/country/:code/ /tools/afrokitchen/country.html?country=:code  200
@@ -475,20 +485,24 @@
 /fr/morocco            /fr/maroc/            301
 /fr/tunisia/           /fr/tunisie/          301
 /fr/tunisia            /fr/tunisie/          301
+/fr/car/               /fr/centrafrique/     301
+/fr/car                /fr/centrafrique/     301
+/fr/cape-verde/        /fr/cabo-verde/       301
+/fr/cape-verde         /fr/cabo-verde/       301
 
 # French fallback redirects — send unbuilt /fr/* paths to English equivalents
 # These fire only when no earlier rule or static file matches (first-match-wins)
-/fr/dashboard/vault/  /dashboard/vault/   302
-/fr/dashboard/*       /dashboard/:splat   302
-/fr/tools/*           /tools/:splat       302
-/fr/engineering/*     /engineering/:splat 302
-/fr/salary-tax/       /salary-tax/        302
-/fr/salary-tax        /salary-tax/        302
-/fr/countries/        /                   302
-/fr/countries         /                   302
-/fr/:country/:page    /:country/:page     302
-/fr/:country/         /:country/          302
-/fr/:country          /:country/          302
+/fr/dashboard/vault/  /dashboard/vault/   301
+/fr/dashboard/*       /dashboard/:splat   301
+/fr/tools/*           /tools/:splat       301
+/fr/engineering/*     /engineering/:splat 301
+/fr/salary-tax/       /salary-tax/        301
+/fr/salary-tax        /salary-tax/        301
+/fr/countries/        /                   301
+/fr/countries         /                   301
+/fr/:country/:page    /:country/:page     301
+/fr/:country/         /:country/          301
+/fr/:country          /:country/          301
 
 # Tool pages: /tools/xyz → /tools/xyz/index.html (200, no redirect)
 /tools/:tool          /tools/:tool/index.html          200

@@ -350,15 +350,16 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
       plan = interval + '_' + currency; // e.g. 'monthly_ngn'
     }
 
-    // Get email: try logged-in user first, then prompt
-    var email = '';
-    if (window.AfroAuth && AfroAuth.isLoggedIn && AfroAuth.isLoggedIn()) {
-      var user = AfroAuth.getUser();
-      if (user && user.email) email = user.email;
+    // Require login to subscribe
+    if (!window.AfroAuth || !AfroAuth.isLoggedIn || !AfroAuth.isLoggedIn()) {
+      alert('Please sign in first to subscribe to Pro.');
+      if (AfroAuth && AfroAuth.showLogin) AfroAuth.showLogin();
+      return;
     }
-    if (!email) {
-      email = prompt('Enter your email to start:');
-      if (!email) return;
+    var token = AfroAuth.getSessionToken ? AfroAuth.getSessionToken() : null;
+    if (!token) {
+      alert('Please sign in first to subscribe to Pro.');
+      return;
     }
 
     // Disable buttons
@@ -368,9 +369,8 @@ body{margin:0;font-family:'DM Sans',sans-serif;color:#111827;background:#fff}
     try {
       var res = await fetch('/.netlify/functions/create-subscription', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
         body: JSON.stringify({
-          email: email,
           plan: plan,
           callbackUrl: window.location.origin + '/pro/success/'
         })

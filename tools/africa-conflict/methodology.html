@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.bd27dfaf.min.js" lang="en">
+<head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Methodology — AfroConflict | AfroTools</title>
+<meta name="description" content="AfroConflict data methodology, sources, uncertainty framework, conflict economy approach, and forecast model documentation.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta name="robots" content="index, follow">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="style.css">
+<script src="/engines/africa-conflict-engine.js" defer></script>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+<main class="acd-page">
+  <div class="acd-hero">
+    <div class="acd-hero-inner">
+      <div>
+        <div class="acd-hero-title"><span class="acd-live-dot"></span><h1>📋 Methodology</h1></div>
+        <p class="acd-hero-desc">Data sources, uncertainty framework, and how AfroConflict works</p>
+      </div>
+      <nav class="acd-hero-nav">
+        <a href="/tools/africa-conflict/">Dashboard</a>
+        <a href="/tools/africa-conflict/conflicts.html">All Conflicts</a>
+        <a href="/tools/africa-conflict/forecasts.html">Forecasts</a>
+        <a href="/tools/africa-conflict/methodology.html" class="active">Methodology</a>
+      </nav>
+    </div>
+  </div>
+
+  <div class="acd-section">
+
+    <!-- Full Disclaimer -->
+    <div class="acd-overview-box" style="border-left:4px solid #dc2626;margin-bottom:28px">
+      <h3 style="color:#dc2626">⚠️ Important Disclaimer</h3>
+      <p style="font-size:.85rem;line-height:1.8;color:var(--acd-text-muted);margin-top:8px">
+        AfroConflict aggregates data from ACLED, UCDP, UNHCR, IDMC, SIPRI, the World Bank, UN agencies, and curated research literature. All figures are estimates with inherent uncertainty ranges. Fatality figures in particular are notoriously difficult to verify in active conflict zones and should be treated as order-of-magnitude estimates only. Displacement figures lag real-time conditions by weeks to months. Economic impact figures are modelled estimates, not official accounting.
+      </p>
+      <p style="font-size:.85rem;line-height:1.8;color:var(--acd-text-muted);margin-top:10px">
+        AfroConflict is an analytical tool, not a news service. It does not take political positions on any conflict. Conflict classification (who is the aggressor, which group is "rebel" vs "state") reflects standard academic definitions from UCDP/ACLED and does not constitute editorial endorsement. Conflict economy actors are listed based on evidence-graded research and UN Panel of Experts reports — these are research listings, not legal determinations, and do not constitute accusations of wrongdoing.
+      </p>
+      <p style="font-size:.85rem;line-height:1.8;color:var(--acd-text-muted);margin-top:10px">
+        Scenario forecasts are model estimates based on analyst research and historical conflict patterns. They are not predictions and carry wide uncertainty ranges. The base case represents the most likely trajectory given current conditions; optimistic and worst-case scenarios represent plausible but less likely outcomes. No forecast should be used as the sole basis for operational, financial, or safety decisions.
+      </p>
+    </div>
+
+    <!-- Data Sources Table -->
+    <div class="acd-chart-box">
+      <h3>Data Sources</h3>
+      <div style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse;font-size:.82rem">
+          <thead>
+            <tr style="border-bottom:2px solid var(--acd-border)">
+              <th style="padding:10px 8px;text-align:left;color:var(--acd-text-dim)">Source</th>
+              <th style="padding:10px 8px;text-align:left;color:var(--acd-text-dim)">What We Use It For</th>
+              <th style="padding:10px 8px;text-align:left;color:var(--acd-text-dim)">Update Frequency</th>
+              <th style="padding:10px 8px;text-align:left;color:var(--acd-text-dim)">Access</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom:1px solid var(--acd-border)">
+              <td style="padding:10px 8px;font-weight:700">ACLED<br><span style="font-weight:400;color:var(--acd-text-muted);font-size:.75rem">Armed Conflict Location & Event Data</span></td>
+              <td style="padding:10px 8px;color:var(--acd-text-muted)">Conflict events (battles, explosions, protests, fatalities), geo-coordinates, actor names, event dates</td>
+              <td style="padding:10px 8px;color:var(--acd-text-muted)">Weekly (lagged ~1 week)</td>
+              <td style="padding:10px 8px"><span style="font-size:.72rem;background:rgba(59,130,246,0.15);color:#3b82f6;padding:2px 8px;border-radius:4px">API Key Required</span></td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--acd-border)">
+              <td style="padding:10px 8px;font-weight:700">UCDP<br><span style="font-weight:400;color:var(--acd-text-muted);font-size:.75rem">Uppsala Conflict Data Program</span></td>
+              <td style="padding:10px 8px;color:var(--acd-text-muted)">Conflict classification (interstate/intrastate/non-state), conflict start dates, battle-related deaths (annual)</td>
+              <td style="padding:10px 8px;color:var(--acd-text-muted)">Annual</td>
+              <td style="padding:10px 8px"><span style="font-size:.72rem;background:rgba(22,163,74,0.15);color:#16a34a;padding:2px 8px;border-radius:4px">Open</span></td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--acd-border)">
+              <td style="padding:10px 8px;font-weight:700">UNHCR<br><span style="font-weight:400;color:var(--acd-text-muted);font-size:.75rem">Refugee Data Finder</span></td>
+              <td style="padding:10px 8px;color:var(--acd-text-muted)">Refugee counts by country of origin, asylum country, year. Returnee figures.</td>
+              <td style="padding:10px 8px;color:var(--acd-text-muted)">Annual (mid-year updates)</td>
+              <td style="padding:10px 8px"><span style="font-size:.72rem;background:rgba(22,163,74,0.15);color:#16a34a;padding:2px 8px;border-radius:4px">Open API</span></td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--acd-border)">
+              <td style="padding:10px 8px;font-weight:700">IDMC<br><span style="font-weight:400;color:var(--acd-text-muted);font-size:.75rem">Internal Displacement Monitoring Centre</span></td>
+              <td style="padding:10px 8px;color:var(--acd-text-muted)">IDP (internally displaced persons) counts by country and crisis, new displacement events</td>
+              <td style="padding:10px 8px;color:var(--acd-text-muted)">Annual (emergency updates)</td>
+              <td style="padding:10px 8px"><span style="font-size:.72rem;background:rgba(22,163,74,0.15);color:#16a34a;padding:2px 8px;border-radius:4px">Open</span></td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--acd-border)">
+              <td style="padding:10px 8px;font-weight:700">SIPRI<br><span style="font-weight:400;color:var(--acd-text-muted);font-size:.75rem">Stockholm International Peace Research Institute</span></td>
+              <td style="padding:10px 8px;color:var(--acd-text-muted)">Military expenditure data (% of GDP, USD constant), arms transfers, conflict databases</td>
+              <td style="padding:10px 8px;color:var(--acd-text-muted)">Annual</td>
+              <td style="padding:10px 8px"><span style="font-size:.72rem;background:rgba(22,163,74,0.15);color:#16a34a;padding:2px 8px;border-radius:4px">Open</span></td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--acd-border)">
+              <td style="padding:10px 8px;font-weight:700">World Bank Open Data</td>
+              <td style="padding:10px 8px;color:var(--acd-text-muted)">GDP growth rate (NY.GDP.MKTP.KD.ZG), military expenditure % GDP (MS.MIL.XPND.GD.ZS), poverty headcount</td>
+              <td style="padding:10px 8px;color:var(--acd-text-muted)">Annual (1–2yr lag)</td>
+              <td style="padding:10px 8px"><span style="font-size:.72rem;background:rgba(22,163,74,0.15);color:#16a34a;padding:2px 8px;border-radius:4px">Open API</span></td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--acd-border)">
+              <td style="padding:10px 8px;font-weight:700">UN Panel of Experts Reports</td>
+              <td style="padding:10px 8px;color:var(--acd-text-muted)">Conflict economy actors (smuggling networks, arms brokers, resource extraction financing), sanctions lists</td>
+              <td style="padding:10px 8px;color:var(--acd-text-muted)">Per-mandate cycle (~annual)</td>
+              <td style="padding:10px 8px"><span style="font-size:.72rem;background:rgba(22,163,74,0.15);color:#16a34a;padding:2px 8px;border-radius:4px">Open</span></td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--acd-border)">
+              <td style="padding:10px 8px;font-weight:700">FAO / WFP</td>
+              <td style="padding:10px 8px;color:var(--acd-text-muted)">Food insecurity data (IPC phases), famine declarations, conflict-food nexus analysis</td>
+              <td style="padding:10px 8px;color:var(--acd-text-muted)">Periodic</td>
+              <td style="padding:10px 8px"><span style="font-size:.72rem;background:rgba(22,163,74,0.15);color:#16a34a;padding:2px 8px;border-radius:4px">Open</span></td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--acd-border)">
+              <td style="padding:10px 8px;font-weight:700">Analyst Research<br><span style="font-weight:400;color:var(--acd-text-muted);font-size:.75rem">Manual curation</span></td>
+              <td style="padding:10px 8px;color:var(--acd-text-muted)">Scenario forecasts, stage classifications, foreign backer analysis, conflict narrative summaries, economy actor evidence</td>
+              <td style="padding:10px 8px;color:var(--acd-text-muted)">As updated via admin</td>
+              <td style="padding:10px 8px"><span style="font-size:.72rem;background:rgba(202,138,4,0.15);color:#ca8a04;padding:2px 8px;border-radius:4px">Internal</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Conflict Classification -->
+    <div class="acd-chart-box">
+      <h3>Conflict Classification Framework</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-top:4px">
+        <div style="background:var(--acd-bg-card-hover);border-radius:8px;padding:16px">
+          <div style="font-weight:700;font-size:.9rem;margin-bottom:8px">Conflict Types</div>
+          <ul style="list-style:none;padding:0;font-size:.8rem;color:var(--acd-text-muted);line-height:2">
+            <li><strong style="color:var(--acd-text)">Interstate</strong> — War between two or more states</li>
+            <li><strong style="color:var(--acd-text)">Intrastate</strong> — Civil war / rebellion within a state</li>
+            <li><strong style="color:var(--acd-text)">Non-state</strong> — Fighting between non-government armed groups</li>
+            <li><strong style="color:var(--acd-text)">Communal</strong> — Ethnically or religiously motivated violence</li>
+            <li><strong style="color:var(--acd-text)">Jihadist Insurgency</strong> — Religiously-motivated armed groups</li>
+            <li><strong style="color:var(--acd-text)">Coup / Political Crisis</strong> — Violent transfer of state power</li>
+          </ul>
+        </div>
+        <div style="background:var(--acd-bg-card-hover);border-radius:8px;padding:16px">
+          <div style="font-weight:700;font-size:.9rem;margin-bottom:8px">Escalation Risk Levels</div>
+          <ul style="list-style:none;padding:0;font-size:.8rem;line-height:2.2">
+            <li><span style="color:#dc2626;font-weight:700">● Critical</span> — Active mass casualty events, territory rapidly changing hands</li>
+            <li><span style="color:#ea580c;font-weight:700">● High</span> — Frequent combat, significant civilian casualties</li>
+            <li><span style="color:#ca8a04;font-weight:700">● Medium</span> — Sporadic violence, ongoing but contained</li>
+            <li><span style="color:#65a30d;font-weight:700">● Low</span> — Infrequent incidents, mostly stable</li>
+            <li><span style="color:#16a34a;font-weight:700">● Minimal</span> — Largely resolved, rare isolated incidents</li>
+          </ul>
+        </div>
+        <div style="background:var(--acd-bg-card-hover);border-radius:8px;padding:16px">
+          <div style="font-weight:700;font-size:.9rem;margin-bottom:8px">Conflict Stage (1–6)</div>
+          <ul style="list-style:none;padding:0;font-size:.8rem;color:var(--acd-text-muted);line-height:2">
+            <li><strong style="color:var(--acd-text)">1 — Pre-conflict</strong>: Tension, no armed violence</li>
+            <li><strong style="color:var(--acd-text)">2 — Escalation</strong>: Armed clashes intensifying</li>
+            <li><strong style="color:var(--acd-text)">3 — War</strong>: Full-scale armed conflict</li>
+            <li><strong style="color:var(--acd-text)">4 — Stalemate</strong>: Neither side can win militarily</li>
+            <li><strong style="color:var(--acd-text)">5 — De-escalation</strong>: Ceasefire, peace talks</li>
+            <li><strong style="color:var(--acd-text)">6 — Post-conflict</strong>: Settlement, reconstruction</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Conflict Economy Methodology -->
+    <div class="acd-chart-box">
+      <h3>Conflict Economy Methodology</h3>
+      <p style="font-size:.85rem;color:var(--acd-text-muted);line-height:1.8;margin-bottom:16px">
+        The conflict economy section tracks actors who benefit financially from the continuation of a conflict. This is distinct from tracking combatants. Economy actors include: natural resource extractors (licit and illicit), arms suppliers, humanitarian aid contractors, foreign businesses operating in conflict zones, and financial intermediaries.
+      </p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px">
+        <div style="background:var(--acd-bg-card-hover);border-radius:8px;padding:14px">
+          <div style="font-weight:700;font-size:.85rem;margin-bottom:6px">Evidence Levels</div>
+          <ul style="list-style:none;padding:0;font-size:.78rem;line-height:2.2">
+            <li><span style="color:#16a34a;font-weight:700">● Confirmed</span> — Court judgment, UN PoE finding, or documented transaction</li>
+            <li><span style="color:#3b82f6;font-weight:700">● Strong</span> — Corroborating investigative journalism + official report</li>
+            <li><span style="color:#ca8a04;font-weight:700">● Circumstantial</span> — Single credible source, plausible but unconfirmed</li>
+            <li><span style="color:#6b7280;font-weight:700">● Alleged</span> — Reported but disputed or unverified</li>
+          </ul>
+        </div>
+        <div style="background:var(--acd-bg-card-hover);border-radius:8px;padding:14px">
+          <div style="font-weight:700;font-size:.85rem;margin-bottom:6px">Primary Source Hierarchy</div>
+          <ol style="padding-left:18px;font-size:.78rem;color:var(--acd-text-muted);line-height:2">
+            <li>UN Panel of Experts final reports</li>
+            <li>International Criminal Court indictments</li>
+            <li>OFAC / EU sanctions designations</li>
+            <li>NGO investigative reports (Global Witness, PAX)</li>
+            <li>Investigative journalism (Reuters, BBC Africa Eye)</li>
+            <li>Academic peer-reviewed conflict finance literature</li>
+          </ol>
+        </div>
+        <div style="background:var(--acd-bg-card-hover);border-radius:8px;padding:14px">
+          <div style="font-weight:700;font-size:.85rem;margin-bottom:6px">Legal Notice</div>
+          <p style="font-size:.78rem;color:var(--acd-text-muted);line-height:1.7">
+            Inclusion of any entity in the conflict economy section does not constitute an accusation of criminal wrongdoing. These are research listings for analytical purposes. For legal determinations, consult official sanctions databases and court records. Corrections can be submitted via the contact form below.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Forecast Methodology -->
+    <div class="acd-chart-box">
+      <h3>Forecast Methodology</h3>
+      <p style="font-size:.85rem;color:var(--acd-text-muted);line-height:1.8;margin-bottom:16px">
+        AfroConflict scenario forecasts are manually developed by analysts using a structured scenario planning framework, informed by historical conflict duration data and current conflict indicators.
+      </p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px">
+        <div style="background:var(--acd-bg-card-hover);border-radius:8px;padding:14px;border-top:3px solid #16a34a">
+          <div style="font-weight:700;font-size:.88rem;margin-bottom:8px;color:#16a34a">🟢 Optimistic Scenario</div>
+          <p style="font-size:.78rem;color:var(--acd-text-muted);line-height:1.7">
+            Assumes best-case resolution mechanisms activate: effective mediation, military stalemate leading to negotiations, foreign backer disengagement, or battlefield reversal that forces a settlement. Duration estimate reflects time to ceasefire + initial settlement. Trigger conditions are explicitly listed.
+          </p>
+        </div>
+        <div style="background:var(--acd-bg-card-hover);border-radius:8px;padding:14px;border-top:3px solid #ca8a04">
+          <div style="font-weight:700;font-size:.88rem;margin-bottom:8px;color:#ca8a04">🟡 Base Case Scenario</div>
+          <p style="font-size:.78rem;color:var(--acd-text-muted);line-height:1.7">
+            Most probable trajectory given current indicators: continuation of existing dynamics, incremental changes in control, no dramatic escalation or resolution. Based on similar historical conflict duration patterns from UCDP data and analyst assessment of current conflict dynamics.
+          </p>
+        </div>
+        <div style="background:var(--acd-bg-card-hover);border-radius:8px;padding:14px;border-top:3px solid #dc2626">
+          <div style="font-weight:700;font-size:.88rem;margin-bottom:8px;color:#dc2626">🔴 Worst Case Scenario</div>
+          <p style="font-size:.78rem;color:var(--acd-text-muted);line-height:1.7">
+            Assumes escalation vectors activate: regional spillover, increased foreign military involvement, humanitarian catastrophe, or political collapse in affected states. Duration may be "indefinite" for entrenched conflicts. Trigger conditions identify what would push toward this scenario.
+          </p>
+        </div>
+      </div>
+      <div class="acd-disclaimer-box" style="margin-top:16px">
+        Confidence percentages represent analyst-assessed probability that the scenario becomes the actual outcome within the forecast horizon. Confidence levels for all three scenarios do not sum to 100% — they represent independent probability assessments per scenario. Forecasts are reviewed and updated when material changes occur in a conflict.
+      </div>
+    </div>
+
+    <!-- Update Frequency -->
+    <div class="acd-chart-box">
+      <h3>Update Frequency</h3>
+      <div style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse;font-size:.82rem">
+          <thead>
+            <tr style="border-bottom:2px solid var(--acd-border)">
+              <th style="padding:10px 8px;text-align:left;color:var(--acd-text-dim)">Data Type</th>
+              <th style="padding:10px 8px;text-align:left;color:var(--acd-text-dim)">Sync Method</th>
+              <th style="padding:10px 8px;text-align:left;color:var(--acd-text-dim)">Frequency</th>
+              <th style="padding:10px 8px;text-align:left;color:var(--acd-text-dim)">Lag</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom:1px solid var(--acd-border)">
+              <td style="padding:10px 8px">Conflict Events (battles, fatalities)</td>
+              <td style="padding:10px 8px;color:var(--acd-text-muted)">ACLED API (automated)</td>
+              <td style="padding:10px 8px;color:var(--acd-text-muted)">Daily at 03:00 UTC</td>
+              <td style="padding:10px 8px;color:var(--acd-text-muted)">1–7 days</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--acd-border)">
+              <td style="padding:10px 8px">Displacement Figures (IDPs, refugees)</td>
+              <td style="padding:10px 8px;color:var(--acd-text-muted)">UNHCR API (automated)</td>
+              <td style="padding:10px 8px;color:var(--acd-text-muted)">Daily at 03:00 UTC</td>
+              <td style="padding:10px 8px;color:var(--acd-text-muted)">Weeks to months</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--acd-border)">
+              <td style="padding:10px 8px">GDP / Economic Indicators</td>
+              <td style="padding:10px 8px;color:var(--acd-text-muted)">World Bank API (automated)</td>
+              <td style="padding:10px 8px;color:var(--acd-text-muted)">Daily at 03:00 UTC</td>
+              <td style="padding:10px 8px;color:var(--acd-text-muted)">1–2 years</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--acd-border)">
+              <td style="padding:10px 8px">Conflict Narratives / Stage</td>
+              <td style="padding:10px 8px;color:var(--acd-text-muted)">Manual (admin panel)</td>
+              <td style="padding:10px 8px;color:var(--acd-text-muted)">As events warrant</td>
+              <td style="padding:10px 8px;color:var(--acd-text-muted)">Variable</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--acd-border)">
+              <td style="padding:10px 8px">Scenario Forecasts</td>
+              <td style="padding:10px 8px;color:var(--acd-text-muted)">Manual (admin panel)</td>
+              <td style="padding:10px 8px;color:var(--acd-text-muted)">Per-conflict review cycle</td>
+              <td style="padding:10px 8px;color:var(--acd-text-muted)">Variable</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--acd-border)">
+              <td style="padding:10px 8px">Economy Actors</td>
+              <td style="padding:10px 8px;color:var(--acd-text-muted)">Manual (admin panel)</td>
+              <td style="padding:10px 8px;color:var(--acd-text-muted)">When new reports published</td>
+              <td style="padding:10px 8px;color:var(--acd-text-muted)">Variable</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- What We Don't Cover -->
+    <div class="acd-chart-box">
+      <h3>Scope and Limitations</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+        <div>
+          <div style="font-weight:700;font-size:.88rem;margin-bottom:10px;color:#16a34a">✓ In Scope</div>
+          <ul style="font-size:.8rem;color:var(--acd-text-muted);padding-left:18px;line-height:2">
+            <li>Armed conflicts with ≥25 battle-related deaths/year (UCDP threshold)</li>
+            <li>Active insurgencies and protracted low-intensity conflicts</li>
+            <li>Displacement crises linked to armed conflict</li>
+            <li>Global conflicts with direct African economic impact (commodity, trade, remittance)</li>
+            <li>Political violence by non-state armed groups</li>
+          </ul>
+        </div>
+        <div>
+          <div style="font-weight:700;font-size:.88rem;margin-bottom:10px;color:#dc2626">✗ Out of Scope</div>
+          <ul style="font-size:.8rem;color:var(--acd-text-muted);padding-left:18px;line-height:2">
+            <li>Criminal gang violence (unless meeting UCDP threshold)</li>
+            <li>Electoral violence below armed conflict threshold</li>
+            <li>Individual terrorist incidents (tracked in events but not primary)</li>
+            <li>Historical resolved conflicts (archive only)</li>
+            <li>Near-real-time battlefield tracking</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact / Corrections -->
+    <div class="acd-overview-box">
+      <h3>Corrections & Contact</h3>
+      <p style="font-size:.85rem;color:var(--acd-text-muted);line-height:1.8;margin-top:8px">
+        We take data accuracy seriously. If you identify an error in conflict data, believe an economy actor entry is incorrect, or have access to primary source documents that would improve our analysis, please contact us.
+      </p>
+      <div style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap">
+        <a href="/contact/" style="display:inline-flex;align-items:center;gap:6px;background:var(--acd-accent);color:#fff;padding:10px 18px;border-radius:8px;text-decoration:none;font-size:.85rem;font-weight:600">
+          📧 Submit a Correction
+        </a>
+        <a href="https://acleddata.com" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:var(--acd-bg-card-hover);color:var(--acd-text);padding:10px 18px;border-radius:8px;text-decoration:none;font-size:.85rem;font-weight:600;border:1px solid var(--acd-border)">
+          ACLED Data ↗
+        </a>
+        <a href="https://www.unhcr.org/refugee-statistics/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:var(--acd-bg-card-hover);color:var(--acd-text);padding:10px 18px;border-radius:8px;text-decoration:none;font-size:.85rem;font-weight:600;border:1px solid var(--acd-border)">
+          UNHCR Data ↗
+        </a>
+        <a href="https://www.sipri.org" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:var(--acd-bg-card-hover);color:var(--acd-text);padding:10px 18px;border-radius:8px;text-decoration:none;font-size:.85rem;font-weight:600;border:1px solid var(--acd-border)">
+          SIPRI ↗
+        </a>
+      </div>
+      <p style="font-size:.72rem;color:var(--acd-text-dim);margin-top:16px">
+        Model version: manual-v1 · Last methodology review: March 2026 · AfroConflict is a tool of AfroTools Africa Ltd. · Not affiliated with any government, military, or intelligence agency.
+      </p>
+    </div>
+
+  </div>
+</main>
+<afro-footer></afro-footer>
+<script src="/assets/js/components/navbar.js" defer></script>
+<script src="/assets/js/components/footer.js" defer></script>
+</body>
+</html>

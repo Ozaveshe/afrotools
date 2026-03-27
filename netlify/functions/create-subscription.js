@@ -16,13 +16,46 @@ exports.handler = async (event) => {
   }
 
   try {
-    const { email, plan, callbackUrl } = JSON.parse(event.body);
+    const { plan, callbackUrl } = JSON.parse(event.body);
 
-    if (!email || !plan) {
+    if (!plan) {
       return {
         statusCode: 400,
         headers: corsHeaders(),
-        body: JSON.stringify({ error: 'Missing required fields: email, plan' })
+        body: JSON.stringify({ error: 'Missing required field: plan' })
+      };
+    }
+
+    // Verify auth token and extract email — prevents subscribing on behalf of others
+    const authHeader = event.headers['authorization'] || event.headers['Authorization'] || '';
+    const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : null;
+    if (!token) {
+      return {
+        statusCode: 401,
+        headers: corsHeaders(),
+        body: JSON.stringify({ error: 'Authentication required' })
+      };
+    }
+
+    const SUPABASE_URL = process.env.SUPABASE_AUTH_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
+    const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY_AUTH;
+    const userRes = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
+      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${token}` },
+    });
+    if (!userRes.ok) {
+      return {
+        statusCode: 401,
+        headers: corsHeaders(),
+        body: JSON.stringify({ error: 'Invalid or expired session' })
+      };
+    }
+    const user = await userRes.json();
+    const email = user.email;
+    if (!email) {
+      return {
+        statusCode: 400,
+        headers: corsHeaders(),
+        body: JSON.stringify({ error: 'No email associated with account' })
       };
     }
 
@@ -104,7 +137,7 @@ exports.handler = async (event) => {
 function corsHeaders() {
   return {
     'Access-Control-Allow-Origin': 'https://afrotools.com',
-    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     'Access-Control-Allow-Methods': 'POST, OPTIONS'
   };
 }

@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.bd27dfaf.min.js" lang="en">
+<head>
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AfroConflict — Africa Conflict Intelligence Dashboard | AfroTools</title>
+<meta name="description" content="Live intelligence dashboard tracking armed conflicts across Africa — displacement, economic impact, actor networks, and scenario forecasts. Built by Africans for Africans.">
+<link rel="canonical" href="https://afrotools.com/tools/africa-conflict/">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="AfroConflict — Africa Conflict Intelligence Dashboard">
+<meta property="og:description" content="Live tracking of armed conflicts across Africa — displacement, economic impact, conflict economy actors, and scenario forecasts.">
+<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/tools/africa-conflict/">
+<meta name="robots" content="index, follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
+<link rel="stylesheet" href="style.css">
+<!-- Leaflet.js -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
+<script src="/assets/js/components/tool-registry.js" defer></script>
+<script src="/assets/js/supabase-auth.js" defer></script>
+<script src="/engines/africa-conflict-engine.js" defer></script>
+</head>
+<body>
+<afro-navbar></afro-navbar>
+
+<main class="acd-page">
+
+  <!-- Hero -->
+  <div class="acd-hero">
+    <div class="acd-hero-inner">
+      <div>
+        <div class="acd-hero-title">
+          <span class="acd-live-dot"></span>
+          <h1>⚔️ AfroConflict</h1>
+        </div>
+        <p class="acd-hero-desc">Africa Conflict Intelligence Dashboard — live tracking of armed conflicts, displacement, and conflict economy actors</p>
+        <p class="acd-hero-meta" id="acd-last-updated">Updating data...</p>
+      </div>
+      <nav class="acd-hero-nav">
+        <a href="/tools/africa-conflict/" class="active">Dashboard</a>
+        <a href="/tools/africa-conflict/map.html">Map</a>
+        <a href="/tools/africa-conflict/conflicts.html">All Conflicts</a>
+        <a href="/tools/africa-conflict/economy.html">Economy</a>
+        <a href="/tools/africa-conflict/displacement.html">Displacement</a>
+        <a href="/tools/africa-conflict/actors.html">Actors</a>
+        <a href="/tools/africa-conflict/forecasts.html">Forecasts</a>
+        <a href="/tools/africa-conflict/methodology.html">Methodology</a>
+      </nav>
+    </div>
+  </div>
+
+  <!-- KPI Row -->
+  <div class="acd-kpi-row" id="acd-kpi-row">
+    <!-- JS populated -->
+    <div class="acd-kpi-card acd-skeleton" style="height:90px"></div>
+    <div class="acd-kpi-card acd-skeleton" style="height:90px"></div>
+    <div class="acd-kpi-card acd-skeleton" style="height:90px"></div>
+    <div class="acd-kpi-card acd-skeleton" style="height:90px"></div>
+    <div class="acd-kpi-card acd-skeleton" style="height:90px"></div>
+    <div class="acd-kpi-card acd-skeleton" style="height:90px"></div>
+    <div class="acd-kpi-card acd-skeleton" style="height:90px"></div>
+    <div class="acd-kpi-card acd-skeleton" style="height:90px"></div>
+  </div>
+
+  <!-- Map + Top Conflicts -->
+  <div class="acd-main-split">
+
+    <!-- Map -->
+    <div class="acd-map-container">
+      <div class="acd-map-header">
+        <h2>🗺️ Conflict Map</h2>
+        <div class="acd-map-toggles">
+          <button class="acd-map-toggle active" data-layer="all">All</button>
+          <button class="acd-map-toggle" data-layer="density">Density</button>
+          <button class="acd-map-toggle" data-layer="displacement">Displacement</button>
+          <button class="acd-map-toggle" data-layer="spillover">Spillover</button>
+        </div>
+      </div>
+      <div id="acd-map"></div>
+      <div class="acd-map-legend">
+        <div class="acd-legend-item"><div class="acd-legend-dot" style="background:#dc2626"></div>Critical</div>
+        <div class="acd-legend-item"><div class="acd-legend-dot" style="background:#ea580c"></div>High</div>
+        <div class="acd-legend-item"><div class="acd-legend-dot" style="background:#ca8a04"></div>Medium</div>
+        <div class="acd-legend-item"><div class="acd-legend-dot" style="background:#65a30d"></div>Low</div>
+        <div class="acd-legend-item"><div class="acd-legend-dot" style="background:#6b7280"></div>Frozen/Other</div>
+        <span class="acd-source-tag">ACLED/Manual</span>
+      </div>
+    </div>
+
+    <!-- Top Conflicts -->
+    <div class="acd-top-conflicts">
+      <div class="acd-top-header">
+        <h2>🔴 Top Conflicts</h2>
+        <a href="/tools/africa-conflict/conflicts.html">View All →</a>
+      </div>
+      <div id="acd-top-list">
+        <div class="acd-loading">Loading conflicts...</div>
+      </div>
+    </div>
+
+  </div><!-- /.acd-main-split -->
+
+  <!-- Recent Events Feed -->
+  <div class="acd-events-section">
+    <div class="acd-events-header">
+      <h2>📡 Recent Events</h2>
+      <span class="acd-source-tag">ACLED / Manual · Auto-refreshes every 5 min</span>
+    </div>
+    <div class="acd-events-scroll" id="acd-events-feed">
+      <div class="acd-loading">Loading events...</div>
+    </div>
+  </div>
+
+</main>
+
+<afro-footer></afro-footer>
+
+<script src="/assets/js/components/navbar.js" defer></script>
+<script src="/assets/js/components/footer.js" defer></script>
+<script>
+(function () {
+  'use strict';
+
+  var API = '/.netlify/functions/conflict-data';
+  var map = null;
+  var allConflicts = [];
+
+  function q(sel) { return document.querySelector(sel); }
+
+  // Build KPI cards
+  function renderKPIs(stats) {
+    var kpiRow = q('#acd-kpi-row');
+    if (!kpiRow) return;
+    var kpis = [
+      { icon: '⚔️', label: 'Active Conflicts', val: stats.active_conflicts, sub: 'ACLED/Manual', color: '#dc2626' },
+      { icon: '🏕️', label: 'Total Displaced', val: AfroConflict.formatNumber(stats.total_displaced), sub: 'UNHCR', color: '#ea580c' },
+      { icon: '☠️', label: 'Est. Fatalities', val: AfroConflict.formatRange(stats.fatalities_min, stats.fatalities_max), sub: 'UCDP/ACLED', color: '#dc2626' },
+      { icon: '💸', label: 'Military Spend/yr', val: AfroConflict.formatCurrency(stats.military_spend_usd_m), sub: 'SIPRI/Manual', color: '#d97706' },
+      { icon: '📉', label: 'Est. Economic Loss', val: 'USD ' + stats.economic_loss_max_usd_b + 'B+', sub: 'WB/Manual', color: '#ca8a04' },
+      { icon: '🚨', label: 'Critical Risk', val: stats.critical_risk_count, sub: 'AfroConflict', color: '#dc2626' },
+      { icon: '🌍', label: 'Spillover Threats', val: stats.spillover_threat_countries + ' countries', sub: 'AfroConflict', color: '#ea580c' },
+      { icon: '📈', label: 'New Escalations (30d)', val: stats.new_escalations_30d, sub: 'ACLED', color: '#8b5cf6' }
+    ];
+
+    kpiRow.innerHTML = kpis.map(function (k) {
+      return '<div class="acd-kpi-card" style="border-top-color:' + k.color + '">' +
+        '<div class="acd-kpi-icon">' + k.icon + '</div>' +
+        '<div class="acd-kpi-value">' + k.val + '</div>' +
+        '<div class="acd-kpi-label">' + k.label + '</div>' +
+        '<div class="acd-kpi-sub">' + k.sub + '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  // Top conflicts sidebar
+  function renderTopConflicts(conflicts) {
+    var el = q('#acd-top-list');
+    if (!el) return;
+    var top = conflicts
+      .filter(function(c) { return c.is_african; })
+      .sort(function(a,b) {
+        var riskOrder = { critical:0, high:1, medium:2, low:3, minimal:4 };
+        var ra = riskOrder[a.escalation_risk] !== undefined ? riskOrder[a.escalation_risk] : 5;
+        var rb = riskOrder[b.escalation_risk] !== undefined ? riskOrder[b.escalation_risk] : 5;
+        if (ra !== rb) return ra - rb;
+        return (b.fatalities_max||0) - (a.fatalities_max||0);
+      })
+      .slice(0, 8);
+
+    el.innerHTML = top.map(function (c) {
+      var color = AfroConflict.CONFIG.riskColors[c.escalation_risk] || '#6b7280';
+      return '<a href="/tools/africa-conflict/detail.html?id=' + c.slug + '" class="acd-conflict-row">' +
+        '<div class="acd-row-risk-dot" style="background:' + color + '"></div>' +
+        '<div class="acd-row-body">' +
+          '<div class="acd-row-name">' + AfroConflict.flagEmoji(c.primary_country) + ' ' + (c.short_name || c.name) + '</div>' +
+          '<div class="acd-row-sub">' + AfroConflict.statusBadge(c.status) + '</div>' +
+        '</div>' +
+        '<div class="acd-row-stats">' +
+          '<div>☠️ ' + AfroConflict.formatRange(c.fatalities_min, c.fatalities_max) + '</div>' +
+          '<div>🏕️ ' + AfroConflict.formatNumber((c.idps_count||0)+(c.refugees_count||0)) + '</div>' +
+        '</div>' +
+      '</a>';
+    }).join('');
+  }
+
+  // Events feed
+  function renderEvents(events) {
+    var el = q('#acd-events-feed');
+    if (!el || !events.length) {
+      if (el) el.innerHTML = '<div class="acd-empty"><div class="acd-empty-icon">📡</div><div class="acd-empty-title">No recent events data</div></div>';
+      return;
+    }
+
+    el.innerHTML = events.slice(0, 20).map(function (e) {
+      var icon = AfroConflict.CONFIG.eventTypeIcons[e.event_type] || '📋';
+      var conflict = e.ac_conflicts || {};
+      return '<div class="acd-event-chip">' +
+        '<div class="acd-event-chip-top">' +
+          '<span>' + icon + '</span>' +
+          '<span class="acd-event-chip-date">' + AfroConflict.formatDate(e.event_date) + '</span>' +
+        '</div>' +
+        '<div class="acd-event-chip-loc">' + (e.location || 'Unknown location') + '</div>' +
+        '<div class="acd-event-chip-conflict">' + (conflict.short_name || conflict.name || '—') + '</div>' +
+        (e.fatalities > 0 ? '<div class="acd-event-chip-fat">☠️ ' + e.fatalities + ' fatalities</div>' : '') +
+      '</div>';
+    }).join('');
+  }
+
+  // Init map
+  function initMap(conflicts) {
+    if (typeof L === 'undefined' || map) return;
+    map = AfroConflict.renderMap('acd-map', conflicts.filter(function(c) { return c.is_african; }));
+
+    // Layer toggle buttons
+    document.querySelectorAll('.acd-map-toggle').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('.acd-map-toggle').forEach(function(b){ b.classList.remove('active'); });
+        btn.classList.add('active');
+        // Future: switch layers based on data-layer attribute
+      });
+    });
+  }
+
+  // Load all data
+  async function loadData() {
+    try {
+      // Stats
+      var statsRes = await fetch(API + '?action=stats');
+      var statsJson = await statsRes.json();
+      var stats = statsJson.data || {};
+      renderKPIs(stats);
+      q('#acd-last-updated').textContent = 'Last updated: ' + new Date().toLocaleTimeString();
+
+      // Conflicts
+      var conflictsRes = await fetch(API + '?action=list');
+      var conflictsJson = await conflictsRes.json();
+      allConflicts = conflictsJson.data || [];
+      renderTopConflicts(allConflicts);
+
+      // Map (after Leaflet loads)
+      if (typeof L !== 'undefined') {
+        initMap(allConflicts);
+      } else {
+        window.addEventListener('load', function () { initMap(allConflicts); });
+      }
+
+      // Recent events
+      var eventsRes = await fetch(API + '?action=recent_events');
+      var eventsJson = await eventsRes.json();
+      renderEvents(eventsJson.data || []);
+
+    } catch (err) {
+      console.error('AfroConflict load error:', err);
+    }
+  }
+
+  // Wire up conflict-data.js to handle the action query param
+  // (The function reads ?action= via the URL rewrite path)
+  // Override fetch to map action params to the right path
+  var origFetch = window.fetch;
+  window.fetch = function(url, opts) {
+    if (typeof url === 'string' && url.includes('conflict-data') && url.includes('action=')) {
+      var u = new URL(url, window.location.href);
+      var action = u.searchParams.get('action');
+      var slug = u.searchParams.get('slug');
+      var newUrl = url;
+
+      var pathMap = {
+        'stats':         '/.netlify/functions/conflict-data',
+        'list':          '/.netlify/functions/conflict-data?is_published=eq.true',
+        'recent_events': '/.netlify/functions/conflict-data'
+      };
+
+      // For direct Supabase-style calls, we need to remap
+      // The function uses the original path routing — just pass through
+      return origFetch.call(this, url, opts);
+    }
+    return origFetch.apply(this, arguments);
+  };
+
+  // Simple direct approach — call the function with query params it understands
+  window.fetch = origFetch; // restore
+
+  // Use direct API endpoint paths
+  async function loadDataDirect() {
+    var BASE = '/.netlify/functions/conflict-data';
+    try {
+      // Stats — pass empty path (function routes to stats when path is empty)
+      var [statsRes, conflictsRes, eventsRes] = await Promise.all([
+        fetch(BASE),         // no params → stats (handled by function's path routing)
+        fetch(BASE + '?is_published=eq.true'),  // conflicts list
+        fetch(BASE + '?recent=1')  // recent events
+      ]);
+
+      // Since the function routes by URL path not query params,
+      // use the redirect-mapped paths instead
+    } catch(e) {}
+  }
+
+  // Use the /api/* redirected paths
+  async function loadAll() {
+    try {
+      var [statsRes, conflictsRes, eventsRes] = await Promise.all([
+        fetch('/api/stats'),
+        fetch('/api/conflicts'),
+        fetch('/api/events/recent')
+      ]);
+
+      if (statsRes.ok) {
+        var s = await statsRes.json();
+        renderKPIs(s.data || {});
+        q('#acd-last-updated').textContent = 'Updated: ' + new Date().toLocaleTimeString();
+      }
+
+      if (conflictsRes.ok) {
+        var c = await conflictsRes.json();
+        allConflicts = c.data || [];
+        renderTopConflicts(allConflicts);
+        if (typeof L !== 'undefined') initMap(allConflicts);
+      }
+
+      if (eventsRes.ok) {
+        var e = await eventsRes.json();
+        renderEvents(e.data || []);
+      }
+    } catch (err) {
+      console.error('[AfroConflict]', err);
+    }
+  }
+
+  // Wait for Leaflet then load data
+  document.addEventListener('DOMContentLoaded', function () {
+    AfroConflict.init();
+    loadAll();
+
+    // Auto-refresh every 5 minutes when tab is visible
+    setInterval(function () {
+      if (!document.hidden) loadAll();
+    }, 300000);
+
+    // Init map when Leaflet is ready (it's deferred)
+    var leafletCheck = setInterval(function () {
+      if (typeof L !== 'undefined' && allConflicts.length && !map) {
+        initMap(allConflicts);
+        clearInterval(leafletCheck);
+      }
+    }, 200);
+  });
+
+})();
+</script>
+</body>
+</html>

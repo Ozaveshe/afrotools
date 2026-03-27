@@ -10,13 +10,18 @@
 
   function getProd() {
     if (!PROD) PROD = window.AfroTools.PoultryProduction;
+    if (!PROD) {
+      console.error('[PoultryROI] PoultryProduction data not loaded. Ensure the data script is included before this engine.');
+      return null;
+    }
     return PROD;
   }
 
   // ── helpers ─────────────────────────────────────────────
   function usdToLocal(usd, code) {
-    var rates = getProd().usdRates;
-    return usd * (rates[code] || 1);
+    var prod = getProd();
+    if (!prod || !prod.usdRates) return usd;
+    return usd * (prod.usdRates[code] || 1);
   }
 
   function getFeedPriceKg(cd, type) {

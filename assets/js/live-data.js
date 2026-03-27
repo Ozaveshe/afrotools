@@ -49,7 +49,7 @@ var LiveData = (function() {
       if (data.ok !== false) { cacheSet(cacheKey, data); return data; }
       throw new Error(data.error || 'API error');
     } catch(e) {
-      console.warn('[LiveData] API unavailable (' + cacheKey + '):', e.message);
+      if (window.AFRO_DEBUG) console.warn('[LiveData] API unavailable (' + cacheKey + '):', e.message);
       return null;
     }
   }

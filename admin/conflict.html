@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.bd27dfaf.min.js" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>AfroConflict Management — AfroTools Admin</title>
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', -apple-system, sans-serif; background: #F5F9FF; color: #1a2e22; line-height: 1.6; }
+  .dash { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
+  .dash-header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+  .dash-header h1 { font-size: 1.4rem; font-weight: 800; }
+  .badge { background: #fef3cd; color: #92400e; font-size: .65rem; font-weight: 700; padding: 3px 10px; border-radius: 12px; text-transform: uppercase; }
+  .badge-live { background: #ECFDF5; color: #059669; }
+  .back-link { font-size: .82rem; color: #007AFF; text-decoration: none; margin-bottom: 20px; display: inline-block; }
+  .back-link:hover { text-decoration: underline; }
+
+  /* Auth gate */
+  #auth-gate { max-width: 400px; margin: 80px auto; background: #fff; border: 1px solid #E8F0FE; border-radius: 16px; padding: 32px; text-align: center; }
+  #auth-gate h2 { font-size: 1.2rem; font-weight: 800; margin-bottom: 8px; }
+  #auth-gate p { font-size: .82rem; color: #6B7F99; margin-bottom: 20px; }
+  #auth-gate input { width: 100%; padding: 10px 14px; border: 1.5px solid #E5E7EB; border-radius: 8px; font-family: inherit; font-size: .9rem; margin-bottom: 12px; }
+  #auth-gate input:focus { border-color: #007AFF; outline: none; }
+
+  /* Tabs */
+  .tabs { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 20px; border-bottom: 2px solid #E8F0FE; padding-bottom: 0; }
+  .tab-btn { padding: 8px 16px; border: none; background: none; font-family: inherit; font-size: .82rem; font-weight: 600; color: #6B7F99; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; border-radius: 6px 6px 0 0; transition: all .15s; }
+  .tab-btn.active { color: #007AFF; border-bottom-color: #007AFF; background: #EFF6FF; }
+  .tab-btn:hover:not(.active) { background: #F5F9FF; color: #1a2e22; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* Sections */
+  .section { background: #fff; border: 1px solid #E8F0FE; border-radius: 12px; padding: 24px; margin-bottom: 20px; overflow-x: auto; }
+  .section h2 { font-size: 1rem; font-weight: 700; margin-bottom: 16px; }
+
+  /* Stats */
+  .stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; margin-bottom: 20px; }
+  .stat-card { background: #fff; border: 1px solid #E8F0FE; border-radius: 10px; padding: 14px; text-align: center; }
+  .stat-value { font-size: 1.5rem; font-weight: 800; color: #007AFF; }
+  .stat-label { font-size: .7rem; color: #6B7F99; margin-top: 2px; }
+
+  /* Forms */
+  .form-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+  .form-group { display: flex; flex-direction: column; gap: 4px; }
+  .form-group.full { grid-column: 1/-1; }
+  label { font-size: .78rem; font-weight: 600; color: #4B5563; }
+  input[type=text], input[type=number], input[type=date], input[type=url],
+  select, textarea {
+    padding: 8px 12px; border: 1.5px solid #E5E7EB; border-radius: 8px;
+    font-family: inherit; font-size: .82rem; background: #fff; color: #1a2e22;
+    transition: border-color .15s;
+  }
+  input:focus, select:focus, textarea:focus { border-color: #007AFF; outline: none; }
+  textarea { resize: vertical; min-height: 80px; }
+  .hint { font-size: .7rem; color: #94a3b8; margin-top: 2px; }
+
+  /* Buttons */
+  .btn { padding: 8px 18px; border: none; border-radius: 8px; font-family: inherit; font-size: .82rem; font-weight: 600; cursor: pointer; transition: background .15s; }
+  .btn-primary { background: #007AFF; color: #fff; }
+  .btn-primary:hover { background: #0063D1; }
+  .btn-danger { background: #dc2626; color: #fff; }
+  .btn-danger:hover { background: #b91c1c; }
+  .btn-outline { background: none; border: 1.5px solid #E5E7EB; color: #4B5563; }
+  .btn-outline:hover { background: #F5F9FF; }
+  .btn-success { background: #059669; color: #fff; }
+  .btn-success:hover { background: #047857; }
+  .btn-sm { padding: 4px 10px; font-size: .72rem; }
+
+  /* Table */
+  table { width: 100%; border-collapse: collapse; font-size: .78rem; min-width: 700px; }
+  th { text-align: left; font-weight: 600; color: #6B7F99; padding: 8px 8px; border-bottom: 2px solid #E8F0FE; white-space: nowrap; }
+  td { padding: 7px 8px; border-bottom: 1px solid #EFF6FF; vertical-align: middle; }
+  tr:hover td { background: #F5F9FF; }
+
+  /* Risk badges */
+  .risk-critical { background: #FEE2E2; color: #991B1B; }
+  .risk-high { background: #FFEDD5; color: #9A3412; }
+  .risk-medium { background: #FEF9C3; color: #854D0E; }
+  .risk-low { background: #DCFCE7; color: #166534; }
+  .risk-badge { font-size: .65rem; font-weight: 700; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; }
+
+  /* Toast */
+  .toast { position: fixed; top: 20px; right: 20px; padding: 12px 20px; border-radius: 8px; color: #fff; font-size: .85rem; font-weight: 500; z-index: 9999; transform: translateY(-20px); opacity: 0; transition: all .3s; pointer-events: none; }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast.success { background: #059669; }
+  .toast.error { background: #dc2626; }
+  .toast.info { background: #007AFF; }
+
+  /* Sync output */
+  #sync-output { background: #0f172a; color: #94a3b8; padding: 16px; border-radius: 8px; font-family: monospace; font-size: .78rem; white-space: pre-wrap; min-height: 120px; margin-top: 12px; }
+
+  /* Conflict cards in list */
+  .conflict-row-actions { display: flex; gap: 6px; }
+
+  .section-divider { font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: #94a3b8; font-weight: 700; margin: 20px 0 10px; border-bottom: 1px solid #E8F0FE; padding-bottom: 6px; }
+
+  @media (max-width: 600px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .tabs { gap: 2px; }
+    .tab-btn { padding: 6px 10px; font-size: .75rem; }
+  }
+</style>
+</head>
+<body>
+
+<div id="auth-gate">
+  <div style="font-size:2rem;margin-bottom:12px">⚔️</div>
+  <h2>AfroConflict Admin</h2>
+  <p>Enter your admin token to access conflict management.</p>
+  <input type="password" id="token-input" placeholder="Admin token..." autocomplete="off">
+  <button class="btn btn-primary" style="width:100%" onclick="doAuth()">Access Admin Panel</button>
+  <div id="auth-error" style="color:#dc2626;font-size:.78rem;margin-top:8px"></div>
+</div>
+
+<div id="main-ui" style="display:none">
+<div class="dash">
+  <a class="back-link" href="/admin/dashboard.html">← Admin Dashboard</a>
+  <div class="dash-header">
+    <span style="font-size:1.6rem">⚔️</span>
+    <h1>AfroConflict Management</h1>
+    <span class="badge badge-live">LIVE</span>
+    <span id="sync-status" style="font-size:.72rem;color:#6B7F99;margin-left:auto"></span>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats" id="admin-stats">
+    <div class="stat-card"><div class="stat-value" id="s-total">—</div><div class="stat-label">Total Conflicts</div></div>
+    <div class="stat-card"><div class="stat-value" id="s-active">—</div><div class="stat-label">Active</div></div>
+    <div class="stat-card"><div class="stat-value" id="s-critical">—</div><div class="stat-label">Critical Risk</div></div>
+    <div class="stat-card"><div class="stat-value" id="s-events">—</div><div class="stat-label">Events (90d)</div></div>
+    <div class="stat-card"><div class="stat-value" id="s-displaced">—</div><div class="stat-label">Displaced (M)</div></div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('conflicts')">📋 Conflicts List</button>
+    <button class="tab-btn" onclick="switchTab('add-conflict')">➕ Add / Edit Conflict</button>
+    <button class="tab-btn" onclick="switchTab('timeline')">📅 Add Timeline Event</button>
+    <button class="tab-btn" onclick="switchTab('economy-actor')">💰 Add Economy Actor</button>
+    <button class="tab-btn" onclick="switchTab('forecast')">🔮 Add Forecast</button>
+    <button class="tab-btn" onclick="switchTab('sync')">🔄 Sync</button>
+  </div>
+
+  <!-- Tab: Conflicts List -->
+  <div class="tab-panel active" id="tab-conflicts">
+    <div class="section">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+        <h2 style="margin:0">All Conflicts</h2>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <input id="list-search" type="text" placeholder="Search conflicts..." style="padding:6px 12px;width:200px" oninput="filterList()">
+          <select id="list-filter-risk" onchange="filterList()" style="padding:6px 10px">
+            <option value="">All Risk Levels</option>
+            <option value="critical">Critical</option>
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="low">Low</option>
+          </select>
+          <select id="list-filter-status" onchange="filterList()" style="padding:6px 10px">
+            <option value="">All Statuses</option>
+            <option value="active">Active</option>
+            <option value="escalating">Escalating</option>
+            <option value="frozen">Frozen</option>
+            <option value="negotiation">Negotiation</option>
+            <option value="post_conflict">Post-Conflict</option>
+          </select>
+        </div>
+      </div>
+      <div style="overflow-x:auto">
+        <table>
+          <thead>
+            <tr>
+              <th>Conflict</th>
+              <th>Status</th>
+              <th>Risk</th>
+              <th>Type</th>
+              <th>Stage</th>
+              <th>Published</th>
+              <th>Last Sync</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="conflicts-tbody">
+            <tr><td colspan="8" style="text-align:center;color:#94a3b8;padding:24px">Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab: Add / Edit Conflict -->
+  <div class="tab-panel" id="tab-add-conflict">
+    <div class="section">
+      <h2 id="conflict-form-title">Add New Conflict</h2>
+      <input type="hidden" id="cf-id">
+
+      <div class="section-divider">Basic Information</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Conflict Name *</label>
+          <input type="text" id="cf-name" placeholder="e.g. Sudan Civil War 2023–">
+          <span class="hint">Full descriptive name</span>
+        </div>
+        <div class="form-group">
+          <label>Short Name</label>
+          <input type="text" id="cf-short-name" placeholder="e.g. Sudan Civil War">
+          <span class="hint">For cards and tables</span>
+        </div>
+        <div class="form-group">
+          <label>Slug (auto-generated)</label>
+          <input type="text" id="cf-slug" placeholder="e.g. sudan-civil-war-2023" readonly style="background:#F5F9FF">
+        </div>
+        <div class="form-group">
+          <label>Primary Country (ISO2) *</label>
+          <input type="text" id="cf-primary-country" placeholder="e.g. SD, NG, ET" maxlength="2">
+        </div>
+        <div class="form-group">
+          <label>Conflict Type *</label>
+          <select id="cf-type">
+            <option value="">— Select type —</option>
+            <option value="interstate">Interstate</option>
+            <option value="intrastate">Intrastate</option>
+            <option value="non_state">Non-State</option>
+            <option value="communal">Communal</option>
+            <option value="jihadist_insurgency">Jihadist Insurgency</option>
+            <option value="coup">Coup / Political Crisis</option>
+            <option value="separatist">Separatist</option>
+            <option value="proxy">Proxy War</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Status *</label>
+          <select id="cf-status">
+            <option value="active">Active</option>
+            <option value="escalating">Escalating</option>
+            <option value="stalemated">Stalemated</option>
+            <option value="frozen">Frozen</option>
+            <option value="negotiation">Negotiation</option>
+            <option value="de_escalating">De-escalating</option>
+            <option value="post_conflict">Post-Conflict</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Escalation Risk *</label>
+          <select id="cf-risk">
+            <option value="critical">Critical</option>
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="low">Low</option>
+            <option value="minimal">Minimal</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Conflict Stage (1–6)</label>
+          <select id="cf-stage">
+            <option value="1">1 — Pre-conflict</option>
+            <option value="2">2 — Escalation</option>
+            <option value="3">3 — War</option>
+            <option value="4">4 — Stalemate</option>
+            <option value="5">5 — De-escalation</option>
+            <option value="6">6 — Post-conflict</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Start Date *</label>
+          <input type="date" id="cf-start-date">
+        </div>
+        <div class="form-group">
+          <label>End Date (leave blank if ongoing)</label>
+          <input type="date" id="cf-end-date">
+        </div>
+        <div class="form-group">
+          <label>Coordinates — Latitude</label>
+          <input type="number" id="cf-lat" placeholder="e.g. 15.5518" step="0.0001">
+        </div>
+        <div class="form-group">
+          <label>Coordinates — Longitude</label>
+          <input type="number" id="cf-lng" placeholder="e.g. 32.5324" step="0.0001">
+        </div>
+      </div>
+
+      <div class="section-divider">Parties & Involvement</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Primary Parties (comma-separated)</label>
+          <input type="text" id="cf-parties" placeholder="e.g. SAF, RSF, SPLM-N">
+        </div>
+        <div class="form-group">
+          <label>Countries Involved (ISO2, comma-separated)</label>
+          <input type="text" id="cf-countries-involved" placeholder="e.g. SD,SS,ET,AE,RU">
+        </div>
+        <div class="form-group">
+          <label>African Region</label>
+          <select id="cf-region">
+            <option value="">— Select region —</option>
+            <option value="east_africa">East Africa</option>
+            <option value="west_africa">West Africa</option>
+            <option value="central_africa">Central Africa</option>
+            <option value="north_africa">North Africa</option>
+            <option value="southern_africa">Southern Africa</option>
+            <option value="horn_of_africa">Horn of Africa</option>
+            <option value="sahel">Sahel</option>
+            <option value="great_lakes">Great Lakes</option>
+          </select>
+        </div>
+        <div class="form-group" style="display:flex;flex-direction:row;align-items:center;gap:10px;padding-top:22px">
+          <input type="checkbox" id="cf-is-african" style="width:18px;height:18px" checked>
+          <label for="cf-is-african" style="cursor:pointer">African Conflict (uncheck for Global Impact)</label>
+        </div>
+      </div>
+
+      <div class="section-divider">Fatality & Humanitarian Data</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Fatalities Min</label>
+          <input type="number" id="cf-fat-min" placeholder="e.g. 5000">
+        </div>
+        <div class="form-group">
+          <label>Fatalities Max</label>
+          <input type="number" id="cf-fat-max" placeholder="e.g. 15000">
+        </div>
+        <div class="form-group">
+          <label>Fatalities Source</label>
+          <input type="text" id="cf-fat-source" placeholder="e.g. ACLED/UN OCHA">
+        </div>
+        <div class="form-group">
+          <label>Civilians Killed (estimated)</label>
+          <input type="number" id="cf-civilians-killed" placeholder="e.g. 3000">
+        </div>
+        <div class="form-group">
+          <label>IDPs Count</label>
+          <input type="number" id="cf-idps" placeholder="e.g. 1500000">
+        </div>
+        <div class="form-group">
+          <label>Refugees Count</label>
+          <input type="number" id="cf-refugees" placeholder="e.g. 800000">
+        </div>
+        <div class="form-group">
+          <label>Returnees Count</label>
+          <input type="number" id="cf-returnees" placeholder="e.g. 50000">
+        </div>
+        <div class="form-group">
+          <label>Displacement Source</label>
+          <input type="text" id="cf-disp-source" placeholder="e.g. UNHCR/IDMC">
+        </div>
+        <div class="form-group" style="display:flex;flex-direction:row;align-items:center;gap:10px;padding-top:22px">
+          <input type="checkbox" id="cf-food-insecurity" style="width:18px;height:18px">
+          <label for="cf-food-insecurity" style="cursor:pointer">Food Insecurity Link (FAO)</label>
+        </div>
+      </div>
+
+      <div class="section-divider">Economic Data</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Economic Loss Min (USD Billions)</label>
+          <input type="number" id="cf-econ-min" placeholder="e.g. 5.2" step="0.1">
+        </div>
+        <div class="form-group">
+          <label>Economic Loss Max (USD Billions)</label>
+          <input type="number" id="cf-econ-max" placeholder="e.g. 18.0" step="0.1">
+        </div>
+        <div class="form-group">
+          <label>Military Spend / yr (USD Millions)</label>
+          <input type="number" id="cf-mil-spend" placeholder="e.g. 2500" step="1">
+        </div>
+        <div class="form-group">
+          <label>GDP Drag %</label>
+          <input type="number" id="cf-gdp-drag" placeholder="e.g. 3.5" step="0.1">
+        </div>
+        <div class="form-group">
+          <label>Resource Links (comma-separated)</label>
+          <input type="text" id="cf-resource-links" placeholder="e.g. oil,gold,timber,coltan">
+          <span class="hint">oil, gas, gold, diamonds, coltan, timber, cocoa, cotton, wheat, water</span>
+        </div>
+        <div class="form-group" style="display:flex;flex-direction:row;align-items:center;gap:10px;padding-top:22px">
+          <input type="checkbox" id="cf-climate-link" style="width:18px;height:18px">
+          <label for="cf-climate-link" style="cursor:pointer">Climate-Conflict Link</label>
+        </div>
+      </div>
+
+      <div class="section-divider">Narrative</div>
+      <div class="form-grid">
+        <div class="form-group full">
+          <label>Overview / Summary *</label>
+          <textarea id="cf-overview" rows="4" placeholder="2–4 paragraph conflict overview. Describe origins, key parties, current situation, and humanitarian impact."></textarea>
+        </div>
+        <div class="form-group full">
+          <label>Current Situation</label>
+          <textarea id="cf-current-situation" rows="3" placeholder="What is happening right now? Last updated context."></textarea>
+        </div>
+        <div class="form-group full">
+          <label>Background / Historical Context</label>
+          <textarea id="cf-background" rows="3" placeholder="Root causes, historical triggers, colonial legacy if relevant."></textarea>
+        </div>
+        <div class="form-group full">
+          <label>Humanitarian Impact</label>
+          <textarea id="cf-humanitarian" rows="3" placeholder="Displacement, food insecurity, healthcare collapse, atrocities."></textarea>
+        </div>
+        <div class="form-group full">
+          <label>Peace Prospects</label>
+          <textarea id="cf-peace-prospects" rows="3" placeholder="Current negotiations, peace agreements, obstacles to resolution."></textarea>
+        </div>
+        <div class="form-group full">
+          <label>Key Sources (one per line)</label>
+          <textarea id="cf-sources" rows="3" placeholder="ACLED, 2024&#10;UN OCHA Sudan Situation Report, Jan 2025&#10;ICG Report, 2024"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Featured Image URL</label>
+          <input type="url" id="cf-image" placeholder="https://...">
+        </div>
+        <div class="form-group">
+          <label>Image Credit</label>
+          <input type="text" id="cf-image-credit" placeholder="e.g. Reuters / Fadel Senna">
+        </div>
+      </div>
+
+      <div class="section-divider">Admin Flags</div>
+      <div class="form-grid">
+        <div class="form-group" style="flex-direction:row;align-items:center;gap:10px;padding-top:4px">
+          <input type="checkbox" id="cf-published" style="width:18px;height:18px" checked>
+          <label for="cf-published" style="cursor:pointer">Published (visible to public)</label>
+        </div>
+        <div class="form-group" style="flex-direction:row;align-items:center;gap:10px;padding-top:4px">
+          <input type="checkbox" id="cf-featured" style="width:18px;height:18px">
+          <label for="cf-featured" style="cursor:pointer">Featured (show on dashboard)</label>
+        </div>
+        <div class="form-group" style="flex-direction:row;align-items:center;gap:10px;padding-top:4px">
+          <input type="checkbox" id="cf-manually-overridden" style="width:18px;height:18px">
+          <label for="cf-manually-overridden" style="cursor:pointer">Manually Overridden (skip auto-sync)</label>
+        </div>
+      </div>
+
+      <div style="margin-top:24px;display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="saveConflict()">💾 Save Conflict</button>
+        <button class="btn btn-outline" onclick="clearConflictForm()">✕ Clear Form</button>
+        <div id="cf-status-msg" style="font-size:.78rem;color:#6B7F99;align-self:center"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab: Timeline Event -->
+  <div class="tab-panel" id="tab-timeline">
+    <div class="section">
+      <h2>Add Timeline Event</h2>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Conflict *</label>
+          <select id="tl-conflict-id">
+            <option value="">— Select conflict —</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Event Date *</label>
+          <input type="date" id="tl-date">
+        </div>
+        <div class="form-group">
+          <label>Event Title *</label>
+          <input type="text" id="tl-title" placeholder="e.g. SAF captures Khartoum North">
+        </div>
+        <div class="form-group">
+          <label>Event Type</label>
+          <select id="tl-type">
+            <option value="military">Military</option>
+            <option value="political">Political</option>
+            <option value="diplomatic">Diplomatic</option>
+            <option value="humanitarian">Humanitarian</option>
+            <option value="atrocity">Atrocity / War Crime</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Significance</label>
+          <select id="tl-significance">
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+            <option value="critical">Critical (turning point)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Source</label>
+          <input type="text" id="tl-source" placeholder="e.g. Reuters, UN OCHA">
+        </div>
+        <div class="form-group full">
+          <label>Description *</label>
+          <textarea id="tl-description" rows="3" placeholder="Detailed description of the event, including who did what, where, and the immediate consequences."></textarea>
+        </div>
+      </div>
+      <div style="margin-top:16px;display:flex;gap:10px">
+        <button class="btn btn-primary" onclick="saveTimeline()">💾 Save Event</button>
+        <button class="btn btn-outline" onclick="clearTimelineForm()">✕ Clear</button>
+        <div id="tl-status-msg" style="font-size:.78rem;color:#6B7F99;align-self:center"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab: Economy Actor -->
+  <div class="tab-panel" id="tab-economy-actor">
+    <div class="section">
+      <h2>Add Conflict Economy Actor</h2>
+      <div class="acd-disclaimer-box" style="background:#FEF9C3;border:1px solid #fde68a;border-radius:8px;padding:12px;font-size:.78rem;color:#854d0e;margin-bottom:16px">
+        ⚠️ This section lists actors who benefit from conflict continuation. Entries require evidence. Include source with evidence level. These are research listings — not legal determinations.
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Conflict *</label>
+          <select id="ea-conflict-id">
+            <option value="">— Select conflict —</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Actor Name *</label>
+          <input type="text" id="ea-name" placeholder="e.g. Wagner Group, XYZ Mining Co.">
+        </div>
+        <div class="form-group">
+          <label>Actor Type *</label>
+          <select id="ea-type">
+            <option value="">— Select type —</option>
+            <option value="arms_supplier">Arms Supplier</option>
+            <option value="resource_extractor">Resource Extractor</option>
+            <option value="financial_intermediary">Financial Intermediary</option>
+            <option value="foreign_state">Foreign State Backer</option>
+            <option value="mercenary">Mercenary / PMC</option>
+            <option value="smuggler">Smuggling Network</option>
+            <option value="contractor">Humanitarian / Aid Contractor</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Country (ISO2 or name)</label>
+          <input type="text" id="ea-country" placeholder="e.g. RU, UAE, France">
+        </div>
+        <div class="form-group">
+          <label>Evidence Level *</label>
+          <select id="ea-evidence">
+            <option value="confirmed">Confirmed (court/UN PoE finding)</option>
+            <option value="strong">Strong (multiple corroborating sources)</option>
+            <option value="circumstantial">Circumstantial (single credible source)</option>
+            <option value="alleged">Alleged (reported but disputed)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Est. Annual Revenue (USD M)</label>
+          <input type="number" id="ea-revenue" placeholder="e.g. 250" step="1">
+          <span class="hint">Leave blank if unknown</span>
+        </div>
+        <div class="form-group">
+          <label>Sanctioned?</label>
+          <select id="ea-sanctioned">
+            <option value="false">No</option>
+            <option value="true">Yes</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Sanction Details</label>
+          <input type="text" id="ea-sanction-details" placeholder="e.g. OFAC SDN, EU sanctions 2023">
+        </div>
+        <div class="form-group full">
+          <label>Description / Role in Conflict Economy *</label>
+          <textarea id="ea-description" rows="3" placeholder="Describe what this actor does, how they benefit from the conflict, and what evidence exists."></textarea>
+        </div>
+        <div class="form-group full">
+          <label>Source / Evidence Citation *</label>
+          <textarea id="ea-source" rows="2" placeholder="e.g. UN Panel of Experts on Sudan, S/2024/XX, para. YY&#10;Reuters investigation, March 2024"></textarea>
+        </div>
+      </div>
+      <div style="margin-top:16px;display:flex;gap:10px">
+        <button class="btn btn-primary" onclick="saveEconomyActor()">💾 Save Actor</button>
+        <button class="btn btn-outline" onclick="clearEconomyForm()">✕ Clear</button>
+        <div id="ea-status-msg" style="font-size:.78rem;color:#6B7F99;align-self:center"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab: Forecast -->
+  <div class="tab-panel" id="tab-forecast">
+    <div class="section">
+      <h2>Add / Update Scenario Forecast</h2>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Conflict *</label>
+          <select id="fc-conflict-id">
+            <option value="">— Select conflict —</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Forecast Date</label>
+          <input type="date" id="fc-date">
+        </div>
+        <div class="form-group">
+          <label>Model Version</label>
+          <input type="text" id="fc-model" value="manual-v1">
+        </div>
+      </div>
+
+      <div class="section-divider" style="color:#16a34a">🟢 Optimistic Scenario</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Duration Estimate (months)</label>
+          <input type="number" id="fc-opt-duration" placeholder="e.g. 6">
+        </div>
+        <div class="form-group">
+          <label>Confidence (%)</label>
+          <input type="number" id="fc-opt-confidence" placeholder="e.g. 20" min="0" max="100">
+        </div>
+        <div class="form-group">
+          <label>Trigger Condition</label>
+          <input type="text" id="fc-opt-trigger" placeholder="e.g. SAF-RSF ceasefire agreement">
+        </div>
+        <div class="form-group full">
+          <label>Outcome Description</label>
+          <textarea id="fc-opt-outcome" rows="2" placeholder="What happens in this scenario? What does resolution look like?"></textarea>
+        </div>
+      </div>
+
+      <div class="section-divider" style="color:#ca8a04">🟡 Base Case Scenario</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Duration Estimate (months)</label>
+          <input type="number" id="fc-base-duration" placeholder="e.g. 24">
+        </div>
+        <div class="form-group">
+          <label>Confidence (%)</label>
+          <input type="number" id="fc-base-confidence" placeholder="e.g. 60" min="0" max="100">
+        </div>
+        <div class="form-group full">
+          <label>Outcome Description</label>
+          <textarea id="fc-base-outcome" rows="2" placeholder="Most likely continuation of current dynamics."></textarea>
+        </div>
+      </div>
+
+      <div class="section-divider" style="color:#dc2626">🔴 Worst Case Scenario</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Duration Estimate (months)</label>
+          <input type="number" id="fc-worst-duration" placeholder="e.g. 60">
+        </div>
+        <div class="form-group">
+          <label>Confidence (%)</label>
+          <input type="number" id="fc-worst-confidence" placeholder="e.g. 20" min="0" max="100">
+        </div>
+        <div class="form-group">
+          <label>Escalation Trigger</label>
+          <input type="text" id="fc-worst-trigger" placeholder="e.g. Regional spillover into Chad/Egypt">
+        </div>
+        <div class="form-group full">
+          <label>Outcome Description</label>
+          <textarea id="fc-worst-outcome" rows="2" placeholder="What happens if the conflict escalates to its worst case?"></textarea>
+        </div>
+      </div>
+
+      <div class="section-divider">Analyst Notes</div>
+      <div class="form-group full" style="grid-column:unset">
+        <label>Analyst Notes (optional)</label>
+        <textarea id="fc-analyst-notes" rows="4" placeholder="Key uncertainties, what would change this forecast, key variables to watch."></textarea>
+      </div>
+
+      <div style="margin-top:20px;display:flex;gap:10px">
+        <button class="btn btn-primary" onclick="saveForecast()">💾 Save Forecast</button>
+        <button class="btn btn-outline" onclick="clearForecastForm()">✕ Clear</button>
+        <div id="fc-status-msg" style="font-size:.78rem;color:#6B7F99;align-self:center"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab: Sync -->
+  <div class="tab-panel" id="tab-sync">
+    <div class="section">
+      <h2>Data Sync & Maintenance</h2>
+      <p style="font-size:.82rem;color:#6B7F99;margin-bottom:20px">Manual sync triggers for data sources. The automated sync runs daily at 03:00 UTC.</p>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px">
+        <div style="background:#F5F9FF;border-radius:10px;padding:16px;border:1px solid #E8F0FE">
+          <div style="font-weight:700;font-size:.9rem;margin-bottom:6px">🗡️ ACLED Events Sync</div>
+          <p style="font-size:.75rem;color:#6B7F99;margin-bottom:12px">Fetch latest conflict events from ACLED API. Requires ACLED_API_KEY env var to be set.</p>
+          <button class="btn btn-primary btn-sm" onclick="triggerSync('acled')">Trigger ACLED Sync</button>
+        </div>
+        <div style="background:#F5F9FF;border-radius:10px;padding:16px;border:1px solid #E8F0FE">
+          <div style="font-weight:700;font-size:.9rem;margin-bottom:6px">🌍 UNHCR Displacement Sync</div>
+          <p style="font-size:.75rem;color:#6B7F99;margin-bottom:12px">Update displacement figures from UNHCR Data Finder and IDMC.</p>
+          <button class="btn btn-primary btn-sm" onclick="triggerSync('unhcr')">Trigger UNHCR Sync</button>
+        </div>
+        <div style="background:#F5F9FF;border-radius:10px;padding:16px;border:1px solid #E8F0FE">
+          <div style="font-weight:700;font-size:.9rem;margin-bottom:6px">📊 World Bank GDP Sync</div>
+          <p style="font-size:.75rem;color:#6B7F99;margin-bottom:12px">Update GDP growth and economic indicators for conflict countries.</p>
+          <button class="btn btn-primary btn-sm" onclick="triggerSync('worldbank')">Trigger WB Sync</button>
+        </div>
+        <div style="background:#F5F9FF;border-radius:10px;padding:16px;border:1px solid #E8F0FE">
+          <div style="font-weight:700;font-size:.9rem;margin-bottom:6px">🔄 Full Daily Sync</div>
+          <p style="font-size:.75rem;color:#6B7F99;margin-bottom:12px">Run all sync steps: ACLED → UNHCR → World Bank → Monthly stats recalculation.</p>
+          <button class="btn btn-success btn-sm" onclick="triggerSync('all')">Trigger Full Sync</button>
+        </div>
+      </div>
+
+      <div id="sync-output">Sync output will appear here...</div>
+    </div>
+
+    <div class="section">
+      <h2>⚠️ Danger Zone</h2>
+      <p style="font-size:.82rem;color:#6B7F99;margin-bottom:16px">Destructive operations. Confirm before proceeding.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn btn-danger btn-sm" onclick="confirmDelete()">Delete a Conflict</button>
+        <button class="btn btn-outline btn-sm" onclick="unpublishAll()">Unpublish All</button>
+      </div>
+      <div id="danger-zone-msg" style="font-size:.78rem;color:#dc2626;margin-top:8px"></div>
+    </div>
+  </div>
+
+</div><!-- .dash -->
+</div><!-- #main-ui -->
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  var token = '';
+  var conflicts = [];
+  var API_ADMIN = '/api/admin';
+  var API_PUBLIC = '/api/conflicts';
+
+  /* ── Auth ─────────────────────────────────────── */
+  function doAuth() {
+    var t = document.getElementById('token-input').value.trim();
+    if (!t) { document.getElementById('auth-error').textContent = 'Enter a token.'; return; }
+    token = t;
+    localStorage.setItem('acd_admin_token', t);
+    checkAuth();
+  }
+  window.doAuth = doAuth;
+
+  document.getElementById('token-input').addEventListener('keydown', function(e){ if(e.key==='Enter') doAuth(); });
+
+  function checkAuth() {
+    var saved = localStorage.getItem('acd_admin_token');
+    if (saved) token = saved;
+    if (!token) return;
+    document.getElementById('auth-gate').style.display = 'none';
+    document.getElementById('main-ui').style.display = 'block';
+    init();
+  }
+
+  /* ── Toast ─────────────────────────────────────── */
+  function showToast(msg, type) {
+    var el = document.getElementById('toast');
+    el.textContent = msg;
+    el.className = 'toast ' + (type||'info') + ' show';
+    setTimeout(function(){ el.className = 'toast'; }, 3500);
+  }
+
+  /* ── Tabs ─────────────────────────────────────── */
+  function switchTab(id) {
+    document.querySelectorAll('.tab-panel').forEach(function(p){ p.classList.remove('active'); });
+    document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+    document.getElementById('tab-'+id).classList.add('active');
+    event.target.classList.add('active');
+  }
+  window.switchTab = switchTab;
+
+  /* ── API helpers ──────────────────────────────── */
+  function authHeaders() {
+    return { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token };
+  }
+
+  async function apiFetch(url, opts) {
+    var res = await fetch(url, Object.assign({ headers: authHeaders() }, opts||{}));
+    if (!res.ok) {
+      var err = await res.json().catch(function(){ return { error: res.statusText }; });
+      throw new Error(err.error || res.statusText);
+    }
+    return res.json();
+  }
+
+  /* ── Init ─────────────────────────────────────── */
+  async function init() {
+    await loadConflicts();
+    populateSelects();
+    loadStats();
+    var today = new Date().toISOString().split('T')[0];
+    document.getElementById('tl-date').value = today;
+    document.getElementById('fc-date').value = today;
+  }
+
+  async function loadConflicts() {
+    try {
+      var json = await fetch(API_PUBLIC).then(function(r){ return r.json(); });
+      conflicts = json.data || [];
+      renderConflictsList();
+    } catch(e) {
+      console.error('Load conflicts error:', e);
+    }
+  }
+
+  function loadStats() {
+    var total = conflicts.length;
+    var active = conflicts.filter(function(c){ return ['active','escalating','stalemated'].includes(c.status); }).length;
+    var critical = conflicts.filter(function(c){ return c.escalation_risk === 'critical'; }).length;
+    var totalDisp = conflicts.reduce(function(s,c){ return s + (c.idps_count||0) + (c.refugees_count||0); }, 0);
+    document.getElementById('s-total').textContent = total;
+    document.getElementById('s-active').textContent = active;
+    document.getElementById('s-critical').textContent = critical;
+    document.getElementById('s-displaced').textContent = (totalDisp/1e6).toFixed(1);
+    document.getElementById('sync-status').textContent = 'Loaded ' + total + ' conflicts';
+  }
+
+  function populateSelects() {
+    var selectors = ['tl-conflict-id', 'ea-conflict-id', 'fc-conflict-id'];
+    conflicts.sort(function(a,b){ return (a.name||'').localeCompare(b.name||''); });
+    selectors.forEach(function(id) {
+      var sel = document.getElementById(id);
+      sel.innerHTML = '<option value="">— Select conflict —</option>';
+      conflicts.forEach(function(c){
+        var o = document.createElement('option');
+        o.value = c.id;
+        o.textContent = (c.is_african ? '' : '🌐 ') + (c.short_name||c.name);
+        sel.appendChild(o);
+      });
+    });
+  }
+
+  /* ── Conflicts List ───────────────────────────── */
+  var listData = [];
+  function renderConflictsList() {
+    listData = conflicts.slice();
+    filterList();
+  }
+
+  function filterList() {
+    var search = (document.getElementById('list-search').value||'').toLowerCase();
+    var risk = document.getElementById('list-filter-risk').value;
+    var status = document.getElementById('list-filter-status').value;
+    var filtered = listData.filter(function(c){
+      if (search && !(c.name||'').toLowerCase().includes(search) && !(c.short_name||'').toLowerCase().includes(search)) return false;
+      if (risk && c.escalation_risk !== risk) return false;
+      if (status && c.status !== status) return false;
+      return true;
+    });
+    var riskColors = { critical:'#FEE2E2;color:#991B1B', high:'#FFEDD5;color:#9A3412', medium:'#FEF9C3;color:#854D0E', low:'#DCFCE7;color:#166534', minimal:'#ECFDF5;color:#065F46' };
+    document.getElementById('conflicts-tbody').innerHTML = filtered.length ?
+      filtered.map(function(c){
+        var rc = riskColors[c.escalation_risk] || '#F3F4F6;color:#374151';
+        var sync = c.last_api_sync ? new Date(c.last_api_sync).toLocaleDateString() : '—';
+        return '<tr>'+
+          '<td><strong>'+(c.short_name||c.name)+'</strong><div style="font-size:.68rem;color:#6B7F99">'+c.slug+'</div></td>'+
+          '<td><span style="font-size:.65rem;font-weight:700;padding:2px 7px;border-radius:4px;background:#EFF6FF;color:#1e40af">'+c.status+'</span></td>'+
+          '<td><span class="risk-badge" style="background:'+rc+'">'+c.escalation_risk+'</span></td>'+
+          '<td style="font-size:.72rem;color:#6B7F99">'+(c.conflict_type||'—')+'</td>'+
+          '<td style="text-align:center">'+(c.conflict_stage||'—')+'</td>'+
+          '<td style="text-align:center">'+(c.is_published ? '✅' : '⬜')+'</td>'+
+          '<td style="font-size:.7rem;color:#94a3b8">'+sync+'</td>'+
+          '<td>'+
+            '<div class="conflict-row-actions">'+
+              '<button class="btn btn-outline btn-sm" onclick="editConflict(\''+c.slug+'\')">Edit</button>'+
+              '<a href="/tools/africa-conflict/detail.html?id='+c.slug+'" target="_blank" class="btn btn-outline btn-sm">View</a>'+
+            '</div>'+
+          '</td>'+
+        '</tr>';
+      }).join('') :
+      '<tr><td colspan="8" style="text-align:center;color:#94a3b8;padding:24px">No conflicts match filters</td></tr>';
+  }
+  window.filterList = filterList;
+
+  /* ── Edit conflict ───────────────────────────── */
+  function editConflict(slug) {
+    var c = conflicts.find(function(x){ return x.slug === slug; });
+    if (!c) return;
+    document.getElementById('cf-id').value = c.id;
+    document.getElementById('cf-name').value = c.name || '';
+    document.getElementById('cf-short-name').value = c.short_name || '';
+    document.getElementById('cf-slug').value = c.slug || '';
+    document.getElementById('cf-primary-country').value = c.primary_country || '';
+    document.getElementById('cf-type').value = c.conflict_type || '';
+    document.getElementById('cf-status').value = c.status || 'active';
+    document.getElementById('cf-risk').value = c.escalation_risk || 'high';
+    document.getElementById('cf-stage').value = c.conflict_stage || '3';
+    document.getElementById('cf-start-date').value = c.start_date || '';
+    document.getElementById('cf-end-date').value = c.end_date || '';
+    document.getElementById('cf-lat').value = c.lat || '';
+    document.getElementById('cf-lng').value = c.lng || '';
+    document.getElementById('cf-parties').value = (c.primary_parties||[]).join(', ');
+    document.getElementById('cf-countries-involved').value = (c.countries_involved||[]).join(', ');
+    document.getElementById('cf-region').value = c.region || '';
+    document.getElementById('cf-is-african').checked = c.is_african !== false;
+    document.getElementById('cf-fat-min').value = c.fatalities_min || '';
+    document.getElementById('cf-fat-max').value = c.fatalities_max || '';
+    document.getElementById('cf-fat-source').value = c.fatalities_source || '';
+    document.getElementById('cf-civilians-killed').value = c.civilians_killed || '';
+    document.getElementById('cf-idps').value = c.idps_count || '';
+    document.getElementById('cf-refugees').value = c.refugees_count || '';
+    document.getElementById('cf-returnees').value = c.returnees_count || '';
+    document.getElementById('cf-disp-source').value = c.displacement_source || '';
+    document.getElementById('cf-food-insecurity').checked = !!c.food_insecurity_link;
+    document.getElementById('cf-econ-min').value = c.economic_loss_min_usd_b || '';
+    document.getElementById('cf-econ-max').value = c.economic_loss_max_usd_b || '';
+    document.getElementById('cf-mil-spend').value = c.military_spend_usd_m || '';
+    document.getElementById('cf-gdp-drag').value = c.gdp_drag_pct || '';
+    document.getElementById('cf-resource-links').value = (c.resource_links||[]).join(', ');
+    document.getElementById('cf-climate-link').checked = !!c.climate_conflict_link;
+    document.getElementById('cf-overview').value = c.overview || '';
+    document.getElementById('cf-current-situation').value = c.current_situation || '';
+    document.getElementById('cf-background').value = c.background || '';
+    document.getElementById('cf-humanitarian').value = c.humanitarian_impact || '';
+    document.getElementById('cf-peace-prospects').value = c.peace_prospects || '';
+    document.getElementById('cf-sources').value = (c.key_sources||[]).join('\n');
+    document.getElementById('cf-image').value = c.featured_image_url || '';
+    document.getElementById('cf-image-credit').value = c.image_credit || '';
+    document.getElementById('cf-published').checked = c.is_published !== false;
+    document.getElementById('cf-featured').checked = !!c.is_featured;
+    document.getElementById('cf-manually-overridden').checked = !!c.manually_overridden;
+    document.getElementById('conflict-form-title').textContent = 'Edit: ' + (c.short_name||c.name);
+    switchTab('add-conflict');
+    document.getElementById('tab-add-conflict').closest('.dash').querySelectorAll('.tab-btn').forEach(function(b,i){
+      if(i===1) b.classList.add('active'); else b.classList.remove('active');
+    });
+  }
+  window.editConflict = editConflict;
+
+  /* ── Save conflict ─────────────────────────────── */
+  async function saveConflict() {
+    var id = document.getElementById('cf-id').value;
+    var name = document.getElementById('cf-name').value.trim();
+    if (!name) { showToast('Conflict name is required', 'error'); return; }
+
+    function csvToArray(val) { return val.split(',').map(function(s){ return s.trim(); }).filter(Boolean); }
+
+    var body = {
+      name: name,
+      short_name: document.getElementById('cf-short-name').value.trim() || name,
+      primary_country: document.getElementById('cf-primary-country').value.trim().toUpperCase(),
+      conflict_type: document.getElementById('cf-type').value,
+      status: document.getElementById('cf-status').value,
+      escalation_risk: document.getElementById('cf-risk').value,
+      conflict_stage: parseInt(document.getElementById('cf-stage').value)||3,
+      start_date: document.getElementById('cf-start-date').value || null,
+      end_date: document.getElementById('cf-end-date').value || null,
+      lat: parseFloat(document.getElementById('cf-lat').value)||null,
+      lng: parseFloat(document.getElementById('cf-lng').value)||null,
+      primary_parties: csvToArray(document.getElementById('cf-parties').value),
+      countries_involved: csvToArray(document.getElementById('cf-countries-involved').value),
+      region: document.getElementById('cf-region').value || null,
+      is_african: document.getElementById('cf-is-african').checked,
+      fatalities_min: parseInt(document.getElementById('cf-fat-min').value)||null,
+      fatalities_max: parseInt(document.getElementById('cf-fat-max').value)||null,
+      fatalities_source: document.getElementById('cf-fat-source').value.trim() || null,
+      civilians_killed: parseInt(document.getElementById('cf-civilians-killed').value)||null,
+      idps_count: parseInt(document.getElementById('cf-idps').value)||null,
+      refugees_count: parseInt(document.getElementById('cf-refugees').value)||null,
+      returnees_count: parseInt(document.getElementById('cf-returnees').value)||null,
+      displacement_source: document.getElementById('cf-disp-source').value.trim() || null,
+      food_insecurity_link: document.getElementById('cf-food-insecurity').checked,
+      economic_loss_min_usd_b: parseFloat(document.getElementById('cf-econ-min').value)||null,
+      economic_loss_max_usd_b: parseFloat(document.getElementById('cf-econ-max').value)||null,
+      military_spend_usd_m: parseFloat(document.getElementById('cf-mil-spend').value)||null,
+      gdp_drag_pct: parseFloat(document.getElementById('cf-gdp-drag').value)||null,
+      resource_links: csvToArray(document.getElementById('cf-resource-links').value),
+      climate_conflict_link: document.getElementById('cf-climate-link').checked,
+      overview: document.getElementById('cf-overview').value.trim() || null,
+      current_situation: document.getElementById('cf-current-situation').value.trim() || null,
+      background: document.getElementById('cf-background').value.trim() || null,
+      humanitarian_impact: document.getElementById('cf-humanitarian').value.trim() || null,
+      peace_prospects: document.getElementById('cf-peace-prospects').value.trim() || null,
+      key_sources: document.getElementById('cf-sources').value.trim().split('\n').map(function(s){ return s.trim(); }).filter(Boolean),
+      featured_image_url: document.getElementById('cf-image').value.trim() || null,
+      image_credit: document.getElementById('cf-image-credit').value.trim() || null,
+      is_published: document.getElementById('cf-published').checked,
+      is_featured: document.getElementById('cf-featured').checked,
+      manually_overridden: document.getElementById('cf-manually-overridden').checked
+    };
+
+    var statusMsg = document.getElementById('cf-status-msg');
+    statusMsg.textContent = 'Saving...';
+    try {
+      var method = id ? 'PUT' : 'POST';
+      var url = id ? API_ADMIN + '/conflicts/' + id : API_ADMIN + '/conflicts';
+      await apiFetch(url, { method: method, body: JSON.stringify(body) });
+      showToast(id ? 'Conflict updated!' : 'Conflict created!', 'success');
+      statusMsg.textContent = '';
+      await loadConflicts();
+      populateSelects();
+      if (!id) clearConflictForm();
+    } catch(e) {
+      showToast('Error: ' + e.message, 'error');
+      statusMsg.textContent = 'Error: ' + e.message;
+    }
+  }
+  window.saveConflict = saveConflict;
+
+  function clearConflictForm() {
+    document.getElementById('cf-id').value = '';
+    ['cf-name','cf-short-name','cf-slug','cf-primary-country','cf-parties','cf-countries-involved',
+     'cf-lat','cf-lng','cf-fat-min','cf-fat-max','cf-fat-source','cf-civilians-killed',
+     'cf-idps','cf-refugees','cf-returnees','cf-disp-source','cf-econ-min','cf-econ-max',
+     'cf-mil-spend','cf-gdp-drag','cf-resource-links','cf-overview','cf-current-situation',
+     'cf-background','cf-humanitarian','cf-peace-prospects','cf-sources','cf-image','cf-image-credit'
+    ].forEach(function(id){ document.getElementById(id).value = ''; });
+    document.getElementById('cf-type').value = '';
+    document.getElementById('cf-status').value = 'active';
+    document.getElementById('cf-risk').value = 'high';
+    document.getElementById('cf-stage').value = '3';
+    document.getElementById('cf-region').value = '';
+    document.getElementById('cf-is-african').checked = true;
+    document.getElementById('cf-food-insecurity').checked = false;
+    document.getElementById('cf-climate-link').checked = false;
+    document.getElementById('cf-published').checked = true;
+    document.getElementById('cf-featured').checked = false;
+    document.getElementById('cf-manually-overridden').checked = false;
+    document.getElementById('conflict-form-title').textContent = 'Add New Conflict';
+    document.getElementById('cf-status-msg').textContent = '';
+  }
+  window.clearConflictForm = clearConflictForm;
+
+  /* Auto-generate slug from name */
+  document.addEventListener('DOMContentLoaded', function(){
+    document.getElementById('cf-name').addEventListener('input', function(){
+      if (!document.getElementById('cf-id').value) {
+        document.getElementById('cf-slug').value = this.value.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+      }
+    });
+  });
+
+  /* ── Timeline ─────────────────────────────────── */
+  async function saveTimeline() {
+    var conflictId = document.getElementById('tl-conflict-id').value;
+    var title = document.getElementById('tl-title').value.trim();
+    var desc = document.getElementById('tl-description').value.trim();
+    var date = document.getElementById('tl-date').value;
+    if (!conflictId || !title || !desc || !date) { showToast('Fill all required fields', 'error'); return; }
+    document.getElementById('tl-status-msg').textContent = 'Saving...';
+    try {
+      await apiFetch(API_ADMIN + '/timeline', { method: 'POST', body: JSON.stringify({
+        conflict_id: conflictId,
+        event_date: date,
+        title: title,
+        description: desc,
+        event_type: document.getElementById('tl-type').value,
+        significance: document.getElementById('tl-significance').value,
+        source: document.getElementById('tl-source').value.trim() || null
+      })});
+      showToast('Timeline event saved!', 'success');
+      clearTimelineForm();
+    } catch(e) {
+      showToast('Error: ' + e.message, 'error');
+      document.getElementById('tl-status-msg').textContent = 'Error: ' + e.message;
+    }
+  }
+  window.saveTimeline = saveTimeline;
+
+  function clearTimelineForm() {
+    ['tl-title','tl-description','tl-source'].forEach(function(id){ document.getElementById(id).value=''; });
+    document.getElementById('tl-type').value = 'military';
+    document.getElementById('tl-significance').value = 'medium';
+    document.getElementById('tl-conflict-id').value = '';
+    document.getElementById('tl-status-msg').textContent = '';
+  }
+  window.clearTimelineForm = clearTimelineForm;
+
+  /* ── Economy Actor ────────────────────────────── */
+  async function saveEconomyActor() {
+    var conflictId = document.getElementById('ea-conflict-id').value;
+    var name = document.getElementById('ea-name').value.trim();
+    var type = document.getElementById('ea-type').value;
+    var desc = document.getElementById('ea-description').value.trim();
+    if (!conflictId || !name || !type || !desc) { showToast('Fill all required fields', 'error'); return; }
+    document.getElementById('ea-status-msg').textContent = 'Saving...';
+    try {
+      await apiFetch(API_ADMIN + '/economy-actors', { method: 'POST', body: JSON.stringify({
+        conflict_id: conflictId,
+        name: name,
+        actor_type: type,
+        country: document.getElementById('ea-country').value.trim() || null,
+        evidence_level: document.getElementById('ea-evidence').value,
+        estimated_revenue_usd_m: parseFloat(document.getElementById('ea-revenue').value)||null,
+        is_sanctioned: document.getElementById('ea-sanctioned').value === 'true',
+        sanction_details: document.getElementById('ea-sanction-details').value.trim() || null,
+        description: desc,
+        source: document.getElementById('ea-source').value.trim() || null
+      })});
+      showToast('Economy actor saved!', 'success');
+      clearEconomyForm();
+    } catch(e) {
+      showToast('Error: ' + e.message, 'error');
+      document.getElementById('ea-status-msg').textContent = 'Error: ' + e.message;
+    }
+  }
+  window.saveEconomyActor = saveEconomyActor;
+
+  function clearEconomyForm() {
+    ['ea-name','ea-country','ea-sanction-details','ea-description','ea-source','ea-revenue'].forEach(function(id){ document.getElementById(id).value=''; });
+    document.getElementById('ea-type').value = '';
+    document.getElementById('ea-evidence').value = 'circumstantial';
+    document.getElementById('ea-sanctioned').value = 'false';
+    document.getElementById('ea-conflict-id').value = '';
+    document.getElementById('ea-status-msg').textContent = '';
+  }
+  window.clearEconomyForm = clearEconomyForm;
+
+  /* ── Forecast ─────────────────────────────────── */
+  async function saveForecast() {
+    var conflictId = document.getElementById('fc-conflict-id').value;
+    if (!conflictId) { showToast('Select a conflict', 'error'); return; }
+    document.getElementById('fc-status-msg').textContent = 'Saving...';
+    try {
+      await apiFetch(API_ADMIN + '/forecasts', { method: 'POST', body: JSON.stringify({
+        conflict_id: conflictId,
+        forecast_date: document.getElementById('fc-date').value || new Date().toISOString().split('T')[0],
+        model_version: document.getElementById('fc-model').value || 'manual-v1',
+        opt_duration_months: parseInt(document.getElementById('fc-opt-duration').value)||null,
+        opt_confidence: parseInt(document.getElementById('fc-opt-confidence').value)||null,
+        opt_trigger: document.getElementById('fc-opt-trigger').value.trim() || null,
+        opt_outcome: document.getElementById('fc-opt-outcome').value.trim() || null,
+        base_duration_months: parseInt(document.getElementById('fc-base-duration').value)||null,
+        base_confidence: parseInt(document.getElementById('fc-base-confidence').value)||null,
+        base_outcome: document.getElementById('fc-base-outcome').value.trim() || null,
+        worst_duration_months: parseInt(document.getElementById('fc-worst-duration').value)||null,
+        worst_confidence: parseInt(document.getElementById('fc-worst-confidence').value)||null,
+        worst_trigger: document.getElementById('fc-worst-trigger').value.trim() || null,
+        worst_outcome: document.getElementById('fc-worst-outcome').value.trim() || null,
+        analyst_notes: document.getElementById('fc-analyst-notes').value.trim() || null
+      })});
+      showToast('Forecast saved!', 'success');
+      clearForecastForm();
+    } catch(e) {
+      showToast('Error: ' + e.message, 'error');
+      document.getElementById('fc-status-msg').textContent = 'Error: ' + e.message;
+    }
+  }
+  window.saveForecast = saveForecast;
+
+  function clearForecastForm() {
+    ['fc-opt-duration','fc-opt-confidence','fc-opt-trigger','fc-opt-outcome',
+     'fc-base-duration','fc-base-confidence','fc-base-outcome',
+     'fc-worst-duration','fc-worst-confidence','fc-worst-trigger','fc-worst-outcome','fc-analyst-notes'
+    ].forEach(function(id){ document.getElementById(id).value=''; });
+    document.getElementById('fc-conflict-id').value = '';
+    document.getElementById('fc-model').value = 'manual-v1';
+    document.getElementById('fc-status-msg').textContent = '';
+  }
+  window.clearForecastForm = clearForecastForm;
+
+  /* ── Sync ─────────────────────────────────────── */
+  async function triggerSync(type) {
+    var out = document.getElementById('sync-output');
+    out.textContent = 'Triggering ' + type + ' sync...\n';
+    try {
+      var res = await fetch(API_ADMIN + '/sync-trigger', {
+        method: 'POST',
+        headers: authHeaders(),
+        body: JSON.stringify({ type: type })
+      });
+      var json = await res.json();
+      out.textContent = JSON.stringify(json, null, 2);
+      showToast('Sync triggered: ' + type, 'success');
+    } catch(e) {
+      out.textContent = 'Error: ' + e.message;
+      showToast('Sync error: ' + e.message, 'error');
+    }
+  }
+  window.triggerSync = triggerSync;
+
+  function confirmDelete() {
+    var slug = prompt('Enter the slug of the conflict to delete:');
+    if (!slug) return;
+    var c = conflicts.find(function(x){ return x.slug === slug; });
+    if (!c) { document.getElementById('danger-zone-msg').textContent = 'Conflict "'+slug+'" not found'; return; }
+    if (!confirm('DELETE "'+c.name+'"? This cannot be undone.')) return;
+    apiFetch(API_ADMIN + '/conflicts/' + c.id, { method: 'DELETE' })
+      .then(function(){ showToast('Deleted: ' + c.name, 'success'); loadConflicts(); })
+      .catch(function(e){ showToast('Error: '+e.message, 'error'); });
+  }
+  window.confirmDelete = confirmDelete;
+
+  function unpublishAll() {
+    if (!confirm('Unpublish ALL conflicts? They will be hidden from the public site.')) return;
+    document.getElementById('danger-zone-msg').textContent = 'Not implemented — update individual conflicts via the Edit form.';
+  }
+  window.unpublishAll = unpublishAll;
+
+  /* ── Bootstrap ────────────────────────────────── */
+  checkAuth();
+})();
+</script>
+</body>
+</html>

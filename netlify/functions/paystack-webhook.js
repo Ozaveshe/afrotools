@@ -27,6 +27,10 @@ exports.handler = async (event) => {
   );
 
   // Verify Paystack signature
+  if (!process.env.PAYSTACK_SECRET_KEY) {
+    console.error('Missing PAYSTACK_SECRET_KEY env var');
+    return { statusCode: 500, body: 'Server misconfigured' };
+  }
   const hash = crypto
     .createHmac('sha512', process.env.PAYSTACK_SECRET_KEY)
     .update(event.body)
@@ -111,6 +115,47 @@ exports.handler = async (event) => {
             .update({ plan_status: 'past_due', updated_at: new Date().toISOString() })
             .eq('email', email);
           console.log(`Payment failed for ${email}`);
+        }
+        break;
+      }
+
+      case 'charge.dispute.create':
+      case 'charge.dispute.remind': {
+        // Dispute opened — downgrade to disputed status to prevent abuse
+        const email = data.customer?.email;
+        if (email) {
+          await supabase
+            .from('profiles')
+            .update({ plan_status: 'disputed', updated_at: new Date().toISOString() })
+            .eq('email', email);
+          console.log(`Pro disputed for ${email}`);
+        }
+        break;
+      }
+
+      case 'charge.dispute.resolve': {
+        // Dispute resolved — check resolution: merchant-accepted means refunded
+        const email = data.customer?.email;
+        const resolution = data.resolution?.merchant;
+        if (email && resolution === 'accepted') {
+          await supabase
+            .from('profiles')
+            .update({ plan_status: 'refunded', plan: 'free', updated_at: new Date().toISOString() })
+            .eq('email', email);
+          console.log(`Pro revoked (dispute resolved) for ${email}`);
+        }
+        break;
+      }
+
+      case 'refund.processed': {
+        // Refund completed — revoke Pro access
+        const email = data.customer?.email;
+        if (email) {
+          await supabase
+            .from('profiles')
+            .update({ plan_status: 'refunded', plan: 'free', updated_at: new Date().toISOString() })
+            .eq('email', email);
+          console.log(`Pro revoked (refund) for ${email}`);
         }
         break;
       }

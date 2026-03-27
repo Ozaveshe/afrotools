@@ -117,7 +117,7 @@
     cd:'DR Congo', cg:'Congo', td:'Chad', cf:'Central African Rep.',
     ga:'Gabon', gq:'Equatorial Guinea', st:'São Tomé & Príncipe',
     na:'Namibia', bw:'Botswana', ls:'Lesotho', sz:'Eswatini',
-    rw:'Rwanda', ly:'Libya'
+    rw:'Rwanda'
   };
 
   /* ── HELPERS ─────────────────────────────────────────────────────── */
@@ -224,9 +224,8 @@
 
     var cc       = getCountry();
     var category = getCategory();
-    var current  = path;
 
-    var strip = buildStrip(cc, category, current);
+    var strip = buildStrip(cc, category, path);
     if (!strip) return;
 
     // Mount before <afro-footer> if present, otherwise before </body>
