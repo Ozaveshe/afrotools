@@ -21,7 +21,7 @@ const PRECACHE = [
   '/assets/js/lib/error-boundary.js',
   '/assets/img/logo-mark.svg',
   '/assets/img/icon-192.svg',
-  '/assets/img/icon-512.svg'  '/assets/js/bundles/core.5473a555.min.js',
+  '/assets/img/icon-512.svg'  '/assets/js/bundles/core.1f4e81f7.min.js',
   '/assets/js/bundles/tool-page.4701dd1d.min.js',
   '/assets/js/bundles/chat.bd27dfaf.min.js',
 ];

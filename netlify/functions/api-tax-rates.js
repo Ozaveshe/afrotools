@@ -9,9 +9,10 @@
  */
 var { validateApiKey, rateLimitHeaders } = require('./utils/api-auth');
 var engines = require('./_engines/index');
+var { getAllowedOrigin } = require('./utils/cors');
 
 var CORS = {
-  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Origin': 'https://afrotools.com',
   'Access-Control-Allow-Methods': 'GET, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type, x-api-key',
   'Content-Type': 'application/json'
@@ -137,6 +138,7 @@ function buildCountryData(code) {
 }
 
 exports.handler = async function(event) {
+  CORS['Access-Control-Allow-Origin'] = getAllowedOrigin(event);
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: CORS };
   if (event.httpMethod !== 'GET') return respond(405, { error: 'Method not allowed' });
 

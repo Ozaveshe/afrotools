@@ -8,12 +8,13 @@
  */
 
 var { validateApiKey, rateLimitHeaders } = require('./utils/api-auth');
+var { getAllowedOrigin } = require('./utils/cors');
 
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://jbmhfpkzbgyeodsqhprx.supabase.co';
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY;
 
 var CORS_HEADERS = {
-  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Origin': 'https://afrotools.com',
   'Access-Control-Allow-Methods': 'GET, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type, x-api-key',
   'Cache-Control': 'public, max-age=3600'
@@ -32,6 +33,7 @@ async function querySupabase(path) {
 }
 
 exports.handler = async function (event) {
+  CORS_HEADERS['Access-Control-Allow-Origin'] = getAllowedOrigin(event);
   if (event.httpMethod === 'OPTIONS') {
     return { statusCode: 204, headers: CORS_HEADERS, body: '' };
   }

@@ -6,9 +6,10 @@
  */
 const engines = require('./_engines/index');
 const { getStore } = require('@netlify/blobs');
+const { getAllowedOrigin } = require('./utils/cors');
 
 const CORS = {
-  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Origin': 'https://afrotools.com',
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type, x-api-key',
   'Content-Type': 'application/json'
@@ -79,6 +80,7 @@ async function validateApiKey(apiKey) {
 }
 
 exports.handler = async (event) => {
+  CORS['Access-Control-Allow-Origin'] = getAllowedOrigin(event);
   /* ---- CORS preflight ---- */
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: CORS };
 

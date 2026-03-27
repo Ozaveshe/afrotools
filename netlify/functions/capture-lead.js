@@ -5,9 +5,10 @@
 
 const SUPABASE_DATA_URL = process.env.SUPABASE_URL || 'https://jbmhfpkzbgyeodsqhprx.supabase.co';
 const SUPABASE_DATA_KEY = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY;
+const { getAllowedOrigin } = require('./utils/cors');
 
 const CORS_HEADERS = {
-  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Origin': 'https://afrotools.com',
   'Access-Control-Allow-Headers': 'Content-Type',
   'Access-Control-Allow-Methods': 'POST, OPTIONS'
 };
@@ -57,6 +58,7 @@ function cleanNumeric(val) {
 }
 
 exports.handler = async (event) => {
+  CORS_HEADERS['Access-Control-Allow-Origin'] = getAllowedOrigin(event);
   if (event.httpMethod === 'OPTIONS') {
     return { statusCode: 204, headers: CORS_HEADERS, body: '' };
   }

@@ -7,6 +7,8 @@
  * Caches aggressively (7 days) since coin logos rarely change.
  */
 
+const { getAllowedOrigin } = require('./utils/cors');
+
 const ALLOWED_HOSTS = [
   'coin-images.coingecko.com',
   'assets.coingecko.com',
@@ -14,12 +16,12 @@ const ALLOWED_HOSTS = [
 
 exports.handler = async function (event) {
   if (event.httpMethod === 'OPTIONS') {
-    return { statusCode: 204, headers: corsHeaders(), body: '' };
+    return { statusCode: 204, headers: corsHeaders(event), body: '' };
   }
 
   const imageUrl = (event.queryStringParameters || {}).url;
   if (!imageUrl) {
-    return { statusCode: 400, headers: corsHeaders(), body: 'Missing url parameter' };
+    return { statusCode: 400, headers: corsHeaders(event), body: 'Missing url parameter' };
   }
 
   // Validate URL is from allowed hosts only
@@ -27,11 +29,11 @@ exports.handler = async function (event) {
   try {
     parsed = new URL(imageUrl);
   } catch {
-    return { statusCode: 400, headers: corsHeaders(), body: 'Invalid URL' };
+    return { statusCode: 400, headers: corsHeaders(event), body: 'Invalid URL' };
   }
 
   if (!ALLOWED_HOSTS.includes(parsed.hostname)) {
-    return { statusCode: 403, headers: corsHeaders(), body: 'Host not allowed' };
+    return { statusCode: 403, headers: corsHeaders(event), body: 'Host not allowed' };
   }
 
   try {
@@ -43,7 +45,7 @@ exports.handler = async function (event) {
     });
 
     if (!res.ok) {
-      return { statusCode: res.status, headers: corsHeaders(), body: `Upstream error: ${res.status}` };
+      return { statusCode: res.status, headers: corsHeaders(event), body: `Upstream error: ${res.status}` };
     }
 
     const buffer = await res.arrayBuffer();
@@ -52,7 +54,7 @@ exports.handler = async function (event) {
     return {
       statusCode: 200,
       headers: {
-        ...corsHeaders(),
+        ...corsHeaders(event),
         'Content-Type': contentType,
         'Cache-Control': 'public, max-age=604800, s-maxage=604800', // 7 days
       },
@@ -60,13 +62,13 @@ exports.handler = async function (event) {
       isBase64Encoded: true,
     };
   } catch (err) {
-    return { statusCode: 502, headers: corsHeaders(), body: `Proxy error: ${err.message}` };
+    return { statusCode: 502, headers: corsHeaders(event), body: `Proxy error: ${err.message}` };
   }
 };
 
-function corsHeaders() {
+function corsHeaders(evt) {
   return {
-    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Origin': getAllowedOrigin(evt || {}),
     'Access-Control-Allow-Methods': 'GET, OPTIONS',
   };
 }

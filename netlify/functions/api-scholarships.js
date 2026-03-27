@@ -16,9 +16,10 @@ const SUPABASE_DATA_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXB
 
 const CACHE_KEY = 'scholarships-latest';
 const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
+const { getAllowedOrigin } = require('./utils/cors');
 
 const CORS_HEADERS = {
-  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Origin': 'https://afrotools.com',
   'Access-Control-Allow-Headers': 'Content-Type',
   'Access-Control-Allow-Methods': 'GET, OPTIONS',
   'Content-Type': 'application/json',
@@ -80,6 +81,7 @@ function filterScholarships(scholarships, params) {
 }
 
 exports.handler = async function (event) {
+  CORS_HEADERS['Access-Control-Allow-Origin'] = getAllowedOrigin(event);
   if (event.httpMethod === 'OPTIONS') {
     return { statusCode: 204, headers: CORS_HEADERS, body: '' };
   }

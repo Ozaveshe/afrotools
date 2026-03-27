@@ -1,9 +1,10 @@
 import { getStore } from "@netlify/blobs";
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
+const { getAllowedOrigin } = require('./utils/cors');
 
 const CORS = {
-  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Origin': 'https://afrotools.com',
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type, x-api-key',
   'Content-Type': 'application/json'
@@ -31,6 +32,7 @@ function makeMeta(tool, auth, startTime) {
 }
 
 export default async function handler(event) {
+  CORS['Access-Control-Allow-Origin'] = getAllowedOrigin(event);
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: CORS };
 
   // --- GET: return API info and available tools ---

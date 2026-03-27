@@ -6,9 +6,10 @@
  */
 var { getStore } = require('@netlify/blobs');
 var { randomBytes } = require('crypto');
+var { getAllowedOrigin } = require('./utils/cors');
 
 var CORS = {
-  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Origin': 'https://afrotools.com',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type',
   'Content-Type': 'application/json'
@@ -19,6 +20,7 @@ function json(status, body) {
 }
 
 exports.handler = async function(event) {
+  CORS['Access-Control-Allow-Origin'] = getAllowedOrigin(event);
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: CORS };
   if (event.httpMethod !== 'POST') return json(405, { error: 'Method not allowed' });
 

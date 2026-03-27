@@ -13,8 +13,10 @@
  *   pcm (Nigerian Pidgin — mapped to en for API, with custom post-processing)
  */
 
+const { getAllowedOrigin } = require('./utils/cors');
+
 const CORS_HEADERS = {
-  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Origin': 'https://afrotools.com',
   'Access-Control-Allow-Headers': 'Content-Type, x-api-key',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Content-Type': 'application/json',
@@ -71,6 +73,7 @@ const LANG_MAP = {
 };
 
 exports.handler = async (event) => {
+  CORS_HEADERS['Access-Control-Allow-Origin'] = getAllowedOrigin(event);
   // CORS preflight
   if (event.httpMethod === 'OPTIONS') {
     return { statusCode: 204, headers: CORS_HEADERS, body: '' };

@@ -4,10 +4,11 @@
 // GET /api/remittance                      → all active rows
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY;
+const { getAllowedOrigin } = require('./utils/cors');
 
 exports.handler = async (event) => {
   const headers = {
-    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Origin': getAllowedOrigin(event),
     'Content-Type': 'application/json',
     'Cache-Control': 'public, max-age=3600, stale-while-revalidate=7200',
   };

@@ -1,12 +1,13 @@
 // netlify/functions/api-wages.js
 // GET /api/wages?country=NG   → single country
 // GET /api/wages              → all 54 countries
+const { getAllowedOrigin } = require('./utils/cors');
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY;
 
 exports.handler = async (event) => {
   const headers = {
-    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Origin': getAllowedOrigin(event),
     'Content-Type': 'application/json',
     'Cache-Control': 'public, max-age=86400, stale-while-revalidate=172800', // 24h — wages change annually
   };

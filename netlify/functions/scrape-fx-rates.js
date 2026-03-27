@@ -9,6 +9,7 @@
 
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://jbmhfpkzbgyeodsqhprx.supabase.co';
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY;
+const { getAllowedOrigin } = require('./utils/cors');
 
 const AFRICAN_CURRENCIES = [
   'NGN', 'KES', 'ZAR', 'GHS', 'EGP', 'TZS', 'UGX', 'RWF', 'ETB',
@@ -115,7 +116,7 @@ async function upsertToSupabase(rows) {
 exports.handler = async function (event) {
   var headers = {
     'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*'
+    'Access-Control-Allow-Origin': getAllowedOrigin(event)
   };
 
   try {

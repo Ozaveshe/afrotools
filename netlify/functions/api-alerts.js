@@ -9,9 +9,10 @@
  */
 
 const SUPABASE_DATA_URL = process.env.SUPABASE_URL || 'https://zpclagtgczsygrgztlts.supabase.co';
+const { getAllowedOrigin } = require('./utils/cors');
 
 const CORS_HEADERS = {
-  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Origin': 'https://afrotools.com',
   'Access-Control-Allow-Headers': 'Content-Type, x-admin-key',
   'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
   'Content-Type': 'application/json',
@@ -53,6 +54,7 @@ async function supaFetch(path, options = {}) {
 }
 
 exports.handler = async function (event) {
+  CORS_HEADERS['Access-Control-Allow-Origin'] = getAllowedOrigin(event);
   if (event.httpMethod === 'OPTIONS') {
     return { statusCode: 204, headers: CORS_HEADERS, body: '' };
   }
