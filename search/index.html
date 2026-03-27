@@ -988,7 +988,7 @@ function doRender() {
 // ════════════════════════════════════════════════════════════
 function updateChipCounts() {
   if (typeof AFRO_TOOLS === 'undefined') return;
-  var allCount = AFRO_TOOLS.length;
+  var allCount = typeof getTotalToolCount==='function'?getTotalToolCount():AFRO_TOOLS.length;
   var liveCount = AFRO_TOOLS.filter(function(t) { return t.status === 'live' || t.status === 'new'; }).length;
   var el1 = document.getElementById('chip-count-all');
   var el2 = document.getElementById('chip-count-live');

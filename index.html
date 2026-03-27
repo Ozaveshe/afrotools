@@ -211,7 +211,7 @@
 <script>
 (function(){
   if(typeof AFRO_TOOLS==='undefined'||typeof AFRO_CATEGORIES==='undefined') return;
-  var total=AFRO_TOOLS.length;
+  var total=typeof getTotalToolCount==='function'?getTotalToolCount():AFRO_TOOLS.length;
   var live=AFRO_TOOLS.filter(function(t){return t.status==='live'||t.status==='new';}).length;
   var cats=Object.keys(AFRO_CATEGORIES).length;
   var liveF=AFRO_TOOLS.filter(function(t){return(t.status==='live'||t.status==='new')&&t.category==='financial'&&t.countries[0]!=='ALL';}).length;
@@ -1294,7 +1294,7 @@ document.addEventListener('DOMContentLoaded', function() {
   (function populateDynamicStats() {
     if (typeof AFRO_TOOLS === 'undefined' || typeof AFRO_CATEGORIES === 'undefined') return;
     var s = window._afroStats || {};
-    var total = s.total || AFRO_TOOLS.length;
+    var total = s.total || (typeof getTotalToolCount==='function'?getTotalToolCount():AFRO_TOOLS.length);
     var live  = s.live  || AFRO_TOOLS.filter(function(t){ return t.status==='live'||t.status==='new'; }).length;
     var cats  = s.cats  || Object.keys(AFRO_CATEGORIES).length;
     var liveF = s.liveF || AFRO_TOOLS.filter(function(t){
@@ -1329,7 +1329,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Update heading
     var h = document.getElementById('cats-heading');
     if (h) {
-      var total = AFRO_TOOLS.length;
+      var total = typeof getTotalToolCount==='function'?getTotalToolCount():AFRO_TOOLS.length;
       h.innerHTML = total + '+ Tools. 54 Countries. <span id="cats-tool-count">English &amp; French</span>.';
     }
 

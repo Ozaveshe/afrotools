@@ -333,7 +333,7 @@ function renderTools(){
   const allPlanned = AFRO_TOOLS.filter(t => t.status==='planned').length;
   document.getElementById('statLive').textContent = allLive;
   document.getElementById('statPlanned').textContent = allPlanned;
-  document.getElementById('countAll').textContent = AFRO_TOOLS.length;
+  document.getElementById('countAll').textContent = typeof getTotalToolCount==='function'?getTotalToolCount():AFRO_TOOLS.length;
   document.getElementById('countLive').textContent = allLive;
   document.getElementById('resultsCount').textContent = tools.length + ' tool' + (tools.length!==1?'s':'');
 

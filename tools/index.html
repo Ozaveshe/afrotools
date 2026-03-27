@@ -250,7 +250,7 @@ document.addEventListener('DOMContentLoaded', function() {
   };
 
   // Stats
-  var total = AFRO_TOOLS.length;
+  var total = typeof getTotalToolCount==='function'?getTotalToolCount():AFRO_TOOLS.length;
   var live = AFRO_TOOLS.filter(function(t) { return t.status === 'live' || t.status === 'new'; }).length;
   var cats = Object.keys(AFRO_CATEGORIES).length;
   document.getElementById('s-total').textContent = total;
