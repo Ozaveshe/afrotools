@@ -1,0 +1,161 @@
+/* ── Agriculture shared fixes ──
+   Loaded on all /agriculture/ pages.
+   Fixes: twemoji flag sizing, hero text legibility,
+   result-container text contrast, container overlap.
+   ───────────────────────────────────────────────── */
+
+/* ── 1. Twemoji flag images ─────────────────────
+   twemoji.parse() replaces emoji with <img class="emoji">.
+   Without explicit sizing the images collapse on some desktops. */
+img.emoji {
+  width: 1.3em;
+  height: 1.3em;
+  vertical-align: -0.15em;
+  display: inline-block;
+}
+.country-card .flag img.emoji {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+.hub-hero img.emoji,
+.tool-hero img.emoji,
+.ir-hero img.emoji,
+.ed-hero img.emoji,
+.hero img.emoji {
+  width: 1.1em;
+  height: 1.1em;
+  vertical-align: -0.1em;
+}
+
+/* ── 2. Hero subtitle text legibility ───────────
+   Many hero subtexts use opacity:.85 or rgba(…,0.5)
+   on dark gradients → barely visible. Override to
+   readable white with slight softness. */
+
+/* Hub index pages */
+.hub-hero p {
+  opacity: 1 !important;
+  color: rgba(255,255,255,0.92) !important;
+}
+.hub-hero .breadcrumb {
+  opacity: 1 !important;
+  color: rgba(255,255,255,0.7) !important;
+}
+
+/* Country tool pages — all prefixed hero variants */
+.tool-hero-sub,
+.ir-hero-sub,
+.ed-hero-sub,
+.cost-sub,
+.harvest-sub,
+.payslip-sub,
+.profit-sub,
+.dmi-sub {
+  opacity: 1 !important;
+  color: rgba(255,255,255,0.92) !important;
+}
+
+/* Generic .hero p (farm-budget, cocoa, coffee, commodity, cooperative) */
+.hero p {
+  opacity: 1 !important;
+  color: rgba(255,255,255,0.92) !important;
+}
+
+/* Breadcrumb separators — too faint at 0.4 */
+.breadcrumb {
+  opacity: 1 !important;
+  color: rgba(255,255,255,0.7) !important;
+}
+.breadcrumb span {
+  opacity: 0.6 !important;
+}
+.breadcrumb a {
+  color: rgba(255,255,255,0.7) !important;
+}
+.breadcrumb a:hover {
+  color: #fff !important;
+}
+
+/* ── 3. Result container text contrast ──────────
+   Blue/green/dark gradient result banners have labels
+   at opacity:.85 or rgba(…,0.55) — unreadable.
+   Force all text on colored result containers to
+   full-white readable values. */
+
+/* Farm budget — .results-summary on blue gradient */
+.results-summary .rs-label,
+.results-summary .rs-sub,
+.results-summary .rs-amount {
+  opacity: 1 !important;
+  color: #fff !important;
+}
+
+/* Crop yield / crop insurance — .res-hero on gradient */
+.res-hero-label {
+  color: rgba(255,255,255,0.92) !important;
+}
+.res-hero-amount {
+  color: #fff !important;
+}
+
+/* Cassava / profit result containers */
+.profit-label {
+  color: rgba(255,255,255,0.92) !important;
+}
+.profit-sub {
+  color: rgba(255,255,255,0.92) !important;
+}
+
+/* Commodity revenue sub */
+.rev-sub {
+  opacity: 1 !important;
+  color: rgba(255,255,255,0.92) !important;
+}
+
+/* Loss hero (storage-loss) */
+.loss-hero-label,
+.loss-hero-value-label {
+  color: rgba(255,255,255,0.92) !important;
+}
+
+/* Catch-all: any label/sub INSIDE a known gradient result container */
+.res-hero [class$="-label"],
+.profit-hero [class$="-label"],
+.results-summary [class$="-label"],
+.results-summary [class$="-sub"] {
+  opacity: 1 !important;
+  color: #fff !important;
+}
+
+/* ── 4. Hero → content overlap (negative margin) ─
+   The main container uses margin-top: -1.5rem (or -20px)
+   to overlap the hero. Ensure the hero has enough
+   bottom padding so text is never clipped.  */
+.hub-hero {
+  padding-bottom: 3.5rem !important;
+}
+.tool-hero {
+  padding-bottom: 3rem !important;
+}
+.ir-hero {
+  padding-bottom: 3rem !important;
+}
+.ed-hero {
+  padding-bottom: 3rem !important;
+}
+.hero {
+  padding-bottom: 3rem !important;
+}
+
+/* ── 5. Hub badge pills — slightly more visible ─ */
+.hub-badge {
+  background: rgba(255,255,255,0.2) !important;
+  color: #fff !important;
+}
+.badge-green {
+  color: #fff !important;
+  background: rgba(0,122,255,0.25) !important;
+}
+.badge-grey {
+  color: rgba(255,255,255,0.8) !important;
+}
