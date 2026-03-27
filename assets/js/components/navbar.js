@@ -1252,9 +1252,11 @@
 
       const updateAuthUI = () => {
         if (typeof AfroAuth === 'undefined' || !AfroAuth.isLoggedIn || !AfroAuth.isLoggedIn()) {
-          // Not logged in — show Sign in
-          if (loginBtn) { loginBtn.textContent = 'Sign in'; loginBtn.href = '/dashboard/'; }
-          if (mobLoginBtn) { mobLoginBtn.textContent = 'Sign In'; mobLoginBtn.href = '/dashboard/'; }
+          // Not logged in — show Sign in (i18n)
+          var _lang = this._getLang();
+          var _signLabel = _lang === 'sw' ? 'Ingia' : _lang === 'fr' ? 'Connexion' : 'Sign in';
+          if (loginBtn) { loginBtn.textContent = _signLabel; loginBtn.href = '/dashboard/'; }
+          if (mobLoginBtn) { mobLoginBtn.textContent = _signLabel; mobLoginBtn.href = '/dashboard/'; }
           if (mobVaultLink) mobVaultLink.style.display = 'none';
           return;
         }
