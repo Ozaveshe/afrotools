@@ -235,26 +235,24 @@
 <script src="/assets/js/afro-auth.js?v=6"></script>
 <script src="/engines/afrokitchen-engine.js?v=2"></script>
 <script>
-// ── Recipe image mapping (loaded once, used in renderRecipeCard) ──
+// ── Recipe image mapping (stored as Promise so loadRecipes() can await it) ──
 var recipeImages = {};
-(function () {
-  Promise.all([
-    fetch('/tools/afrokitchen/recipe-images.json')
-      .then(function (r) { return r.json(); })
-      .catch(function () { return { recipes: {} }; }),
-    fetch('/tools/afrokitchen/recipe-images-override.json')
-      .then(function (r) { return r.json(); })
-      .catch(function () { return { recipes: {} }; })
-  ]).then(function (results) {
-    var base      = (results[0] && results[0].recipes) || {};
-    var overrides = (results[1] && results[1].recipes) || {};
-    Object.keys(base).forEach(function (k) { recipeImages[k] = base[k]; });
-    // Overrides win — applied last
-    Object.keys(overrides).forEach(function (k) {
-      if (k.charAt(0) !== '_') recipeImages[k] = overrides[k];
-    });
+var recipeImagesReady = Promise.all([
+  fetch('/tools/afrokitchen/recipe-images.json')
+    .then(function (r) { return r.json(); })
+    .catch(function () { return { recipes: {} }; }),
+  fetch('/tools/afrokitchen/recipe-images-override.json')
+    .then(function (r) { return r.json(); })
+    .catch(function () { return { recipes: {} }; })
+]).then(function (results) {
+  var base      = (results[0] && results[0].recipes) || {};
+  var overrides = (results[1] && results[1].recipes) || {};
+  Object.keys(base).forEach(function (k) { recipeImages[k] = base[k]; });
+  // Overrides win — applied last
+  Object.keys(overrides).forEach(function (k) {
+    if (k.charAt(0) !== '_') recipeImages[k] = overrides[k];
   });
-})();
+}).catch(function () {});
 
 (function () {
   'use strict';
@@ -350,6 +348,9 @@ var recipeImages = {};
     grid.innerHTML = '';
     loading.style.display = '';
     empty.style.display = 'none';
+
+    // Wait for image map before rendering so photos appear on first load
+    await recipeImagesReady;
 
     var filters = getFilters();
     var recipes = await AK.fetchRecipes(filters);

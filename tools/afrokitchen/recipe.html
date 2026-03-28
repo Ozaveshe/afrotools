@@ -12,6 +12,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css">
+<link rel="stylesheet" href="/assets/css/global.min.css">
 <link rel="stylesheet" href="style.css">
 <script type="application/ld+json" id="recipe-schema"></script>
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/afrokitchen/recipe" />
@@ -176,25 +178,23 @@
 <script src="/assets/js/afro-auth.js?v=6"></script>
 <script src="/engines/afrokitchen-engine.js?v=2"></script>
 <script>
-// ── Recipe image mapping (attribution + fallback full-res URLs) ──
+// ── Recipe image mapping (stored as Promise so init() can await it) ──
 var recipeImages = {};
-fetch('/tools/afrokitchen/recipe-images.json')
-  .then(function (r) { return r.json(); })
-  .catch(function () { return { recipes: {} }; })
-  .then(function (d) {
-    var base = (d && d.recipes) || {};
-    Object.keys(base).forEach(function (k) { recipeImages[k] = base[k]; });
-    // Also apply overrides
-    return fetch('/tools/afrokitchen/recipe-images-override.json')
-      .then(function (r) { return r.json(); })
-      .catch(function () { return { recipes: {} }; });
-  })
-  .then(function (d) {
-    var overrides = (d && d.recipes) || {};
-    Object.keys(overrides).forEach(function (k) {
-      if (k.charAt(0) !== '_') recipeImages[k] = overrides[k];
-    });
+var recipeImagesReady = Promise.all([
+  fetch('/tools/afrokitchen/recipe-images.json')
+    .then(function (r) { return r.json(); })
+    .catch(function () { return { recipes: {} }; }),
+  fetch('/tools/afrokitchen/recipe-images-override.json')
+    .then(function (r) { return r.json(); })
+    .catch(function () { return { recipes: {} }; })
+]).then(function (results) {
+  var base      = (results[0] && results[0].recipes) || {};
+  var overrides = (results[1] && results[1].recipes) || {};
+  Object.keys(base).forEach(function (k) { recipeImages[k] = base[k]; });
+  Object.keys(overrides).forEach(function (k) {
+    if (k.charAt(0) !== '_') recipeImages[k] = overrides[k];
   });
+}).catch(function () {});
 
 var AKPage = (function () {
   'use strict';
@@ -213,9 +213,17 @@ var AKPage = (function () {
     if (!slug) { show404(); return; }
 
     recipe = await AK.fetchRecipeBySlug(slug);
+    // Retry once after a short delay if first attempt fails (handles slow Supabase init)
+    if (!recipe) {
+      await new Promise(function (res) { setTimeout(res, 1200); });
+      recipe = await AK.fetchRecipeBySlug(slug);
+    }
     if (!recipe) { show404(); return; }
 
     servings = recipe.default_servings;
+
+    // Wait for image map to be ready so hero photo appears on first render
+    await recipeImagesReady;
 
     // Update page title and meta
     document.title = recipe.name + ' — AfroKitchen | AfroTools';
