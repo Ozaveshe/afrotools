@@ -235,25 +235,6 @@
 <script src="/assets/js/afro-auth.js?v=6"></script>
 <script src="/engines/afrokitchen-engine.js?v=2"></script>
 <script>
-// ── Recipe image mapping (stored as Promise so loadRecipes() can await it) ──
-var recipeImages = {};
-var recipeImagesReady = Promise.all([
-  fetch('/tools/afrokitchen/recipe-images.json')
-    .then(function (r) { return r.json(); })
-    .catch(function () { return { recipes: {} }; }),
-  fetch('/tools/afrokitchen/recipe-images-override.json')
-    .then(function (r) { return r.json(); })
-    .catch(function () { return { recipes: {} }; })
-]).then(function (results) {
-  var base      = (results[0] && results[0].recipes) || {};
-  var overrides = (results[1] && results[1].recipes) || {};
-  Object.keys(base).forEach(function (k) { recipeImages[k] = base[k]; });
-  // Overrides win — applied last
-  Object.keys(overrides).forEach(function (k) {
-    if (k.charAt(0) !== '_') recipeImages[k] = overrides[k];
-  });
-}).catch(function () {});
-
 (function () {
   'use strict';
   var AK = AfroKitchenEngine;
@@ -307,26 +288,8 @@ var recipeImagesReady = Promise.all([
     var card = document.createElement('a');
     card.className = 'ak-recipe-card';
     card.href = 'recipe.html?slug=' + r.slug;
-    var imgData = recipeImages[r.slug] || null;
-  var imgUrl  = (imgData && imgData.thumb) || r.image_url || null;
-  var catEmojis = { main:'🍚', soup_stew:'🍲', rice:'🍛', snack:'🍢', dessert:'🍮',
-                    drink:'🥤', breakfast:'🍳', side:'🥗', street_food:'🍖', starter:'🥘' };
-  var cardImgHtml;
-  if (imgUrl) {
-    var creditHtml = (imgData && imgData.photographer)
-      ? '<span class="ak-img-credit">Photo: <a href="' + (imgData.photographer_url || '#') +
-        '" target="_blank" rel="noopener" onclick="event.stopPropagation()">' +
-        imgData.photographer + '</a></span>'
-      : '';
-    cardImgHtml = '<div class="ak-recipe-card-thumb">' +
-      '<img class="ak-recipe-card-img" src="' + imgUrl + '" alt="' + (r.image_alt || r.name) +
-      '" loading="lazy" onerror="this.parentElement.classList.add(\'ak-img-fallback\');this.style.display=\'none\'">' +
-      creditHtml + '</div>';
-  } else {
-    cardImgHtml = '<div class="ak-recipe-card-thumb ak-img-fallback">' +
-      '<span class="ak-card-emoji">' + (catEmojis[r.category] || '🍽️') + '</span></div>';
-  }
-  card.innerHTML = cardImgHtml +
+    card.innerHTML =
+      '<img class="ak-recipe-card-img" src="' + (r.image_url || '/assets/img/og-default.png') + '" alt="' + (r.image_alt || r.name) + '" loading="lazy">' +
       '<div class="ak-recipe-card-body">' +
         '<div class="ak-recipe-card-flag">' + (country.flag || '') + ' ' + r.country_name + '</div>' +
         '<div class="ak-recipe-card-title">' + r.name + '</div>' +
@@ -348,9 +311,6 @@ var recipeImagesReady = Promise.all([
     grid.innerHTML = '';
     loading.style.display = '';
     empty.style.display = 'none';
-
-    // Wait for image map before rendering so photos appear on first load
-    await recipeImagesReady;
 
     var filters = getFilters();
     var recipes = await AK.fetchRecipes(filters);

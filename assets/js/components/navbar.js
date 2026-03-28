@@ -1019,36 +1019,11 @@
       let hoverTimer;
       const navEl = allBtn?.closest('li');
       navEl?.addEventListener('mouseenter', () => { clearTimeout(hoverTimer); openMega(); });
-      navEl?.addEventListener('mouseleave', () => { hoverTimer = setTimeout(closeMega, 150); });
+      navEl?.addEventListener('mouseleave', () => { hoverTimer = setTimeout(closeMega, 200); });
       mega?.addEventListener('mouseenter', () => clearTimeout(hoverTimer));
-      mega?.addEventListener('mouseleave', () => { hoverTimer = setTimeout(closeMega, 150); });
+      mega?.addEventListener('mouseleave', () => { hoverTimer = setTimeout(closeMega, 200); });
 
-      // Tool sub-panels: show on hover/click of category cards
-      var megaCols = mega?.querySelectorAll('.mega-col.has-tools');
-      megaCols?.forEach(col => {
-        var catId = col.getAttribute('data-cat');
-        var panel = mega.querySelector('.mega-tools[data-for="' + catId + '"]');
-        if (!panel) return;
-        var hideTimer;
-        col.addEventListener('mouseenter', () => {
-          clearTimeout(hideTimer);
-          mega.querySelectorAll('.mega-tools.open').forEach(p => { if (p !== panel) p.classList.remove('open'); });
-          panel.classList.add('open');
-        });
-        col.addEventListener('mouseleave', () => {
-          hideTimer = setTimeout(() => panel.classList.remove('open'), 200);
-        });
-        panel.addEventListener('mouseenter', () => clearTimeout(hideTimer));
-        panel.addEventListener('mouseleave', () => {
-          hideTimer = setTimeout(() => panel.classList.remove('open'), 150);
-        });
-        col.addEventListener('click', e => {
-          if (panel.classList.contains('open')) return; // let link work if tools visible
-          e.preventDefault();
-          mega.querySelectorAll('.mega-tools.open').forEach(p => p.classList.remove('open'));
-          panel.classList.toggle('open');
-        });
-      });
+      // Tool sub-panels: disabled — category cards navigate directly to their pages
 
       // Click outside
       if (this._outsideFn) document.removeEventListener('click', this._outsideFn);

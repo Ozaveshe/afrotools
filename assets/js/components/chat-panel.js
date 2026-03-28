@@ -675,12 +675,21 @@
       this._showLoading();
 
       try {
-        const reply = await window.AfroTools.ai.ask(
-          this._messages[this._messages.length - 1].content,
-          '',
-          this._messages.slice(0, -1),
-          { tool: this.tool, context: this.context }
-        );
+        const lastMsg = this._messages[this._messages.length - 1].content;
+        const history = this._messages.slice(0, -1);
+        let reply;
+        if (typeof window.AfroTools !== 'undefined' && window.AfroTools.ai && typeof window.AfroTools.ai.ask === 'function') {
+          reply = await window.AfroTools.ai.ask(lastMsg, '', history, { tool: this.tool, context: this.context });
+        } else {
+          const res = await fetch('/.netlify/functions/ai-advisor', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: lastMsg, messages: history, tool: this.tool, context: this.context })
+          });
+          if (!res.ok) throw new Error(`Request failed (${res.status})`);
+          const data = await res.json();
+          reply = data.reply || data.text || '';
+        }
         this._hideLoading();
         this._addMessage('assistant', reply);
         this._messages.push({ role: 'assistant', content: reply });
