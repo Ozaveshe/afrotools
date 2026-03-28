@@ -288,8 +288,11 @@
     var card = document.createElement('a');
     card.className = 'ak-recipe-card';
     card.href = 'recipe.html?slug=' + r.slug;
-    card.innerHTML =
-      '<img class="ak-recipe-card-img" src="' + (r.image_url || '/assets/img/og-default.png') + '" alt="' + (r.image_alt || r.name) + '" loading="lazy">' +
+    var catEmojis = { main:'🍚', soup_stew:'🍲', rice:'🍛', snack:'🍢', dessert:'🍮', drink:'🥤', breakfast:'🍳', side:'🥗', street_food:'🍖', starter:'🥘' };
+    var thumbHtml = r.image_url
+      ? '<div class="ak-recipe-card-thumb"><img class="ak-recipe-card-img" src="' + r.image_url + '" alt="' + (r.image_alt || r.name) + '" loading="lazy" onerror="this.parentElement.className+=\' ak-img-fallback\';this.style.display=\'none\'"></div>'
+      : '<div class="ak-recipe-card-thumb ak-img-fallback"><span class="ak-card-emoji">' + (catEmojis[r.category] || '🍽️') + '</span></div>';
+    card.innerHTML = thumbHtml +
       '<div class="ak-recipe-card-body">' +
         '<div class="ak-recipe-card-flag">' + (country.flag || '') + ' ' + r.country_name + '</div>' +
         '<div class="ak-recipe-card-title">' + r.name + '</div>' +
@@ -333,9 +336,12 @@
     if (!r) return;
     var country = AK.COUNTRIES[r.country_code] || {};
     var totalMin = (r.prep_time_minutes || 0) + (r.cook_time_minutes || 0);
+    var featImgHtml = r.image_url
+      ? '<img class="ak-featured-img" src="' + r.image_url + '" alt="' + r.name + '" onerror="this.style.display=\'none\'">'
+      : '<div class="ak-featured-img" style="background:linear-gradient(135deg,#1A1008,#2A1A0A 60%,rgba(212,101,46,.3) 100%)"></div>';
     document.getElementById('featured-recipe').innerHTML =
       '<a class="ak-featured-card" href="recipe.html?slug=' + r.slug + '">' +
-        '<img class="ak-featured-img" src="' + (r.image_url || '/assets/img/og-default.png') + '" alt="' + r.name + '">' +
+        featImgHtml +
         '<div class="ak-featured-overlay">' +
           '<h3>' + r.name + '</h3>' +
           '<div class="ak-featured-meta">' +
