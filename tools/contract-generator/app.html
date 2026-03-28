@@ -67,6 +67,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#f1f5f9;color:#1e293b
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Contract Generator | AfroTools">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="article:modified_time" content="2026-03-28">
 </head>
 <body>
 
@@ -302,6 +303,7 @@ function exportPDF() {
   if (!currentTemplate) { alert('Please choose a template first.'); return; }
   if (window.afroEmailGate && !window.afroEmailGate.check()) return;
   var w = window.open('','_blank');
+<meta property="article:modified_time" content="2026-03-28">
   var html = '<html><head><title>'+TEMPLATES[currentTemplate].name+'</title><style>body{font-family:Arial,sans-serif;max-width:700px;margin:40px auto;font-size:13px;line-height:1.8;color:#333}h2{text-align:center;font-size:18px;text-transform:uppercase;letter-spacing:.05em;margin-bottom:20px}.clause{margin-bottom:12px}.clause-num{font-weight:700}.blank{font-weight:700;border-bottom:1px solid #333}@media print{body{margin:20px}}</style></head><body>';
   html += generateContractHTML().replace(/class="blank"/g, 'class="blank" style="font-weight:700;border-bottom:1px solid #333"');
   html += '</body></html>';

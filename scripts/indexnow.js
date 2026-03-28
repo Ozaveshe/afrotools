@@ -17,8 +17,11 @@ function getUrlsFromGit() {
       .filter(f => f.endsWith('.html') || f.endsWith('index.html'))
       .map(f => {
         // Convert file path to URL path
-        const url = '/' + f.replace(/index\.html$/, '').replace(/\.html$/, '');
-        return url === '//' ? '/' : url;
+        let url = '/' + f.replace(/index\.html$/, '').replace(/\.html$/, '');
+        if (url === '//') url = '/';
+        // Ensure trailing slash for consistency
+        if (url !== '/' && !url.endsWith('/')) url += '/';
+        return url;
       })
       .filter(u => u.length > 0);
   } catch (e) {
